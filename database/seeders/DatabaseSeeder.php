@@ -30,7 +30,7 @@ class DatabaseSeeder extends Seeder
 
 
 
-        \App\Models\ProductLoanSystem::factory(10)->create();
+        // \App\Models\ProductLoanSystem::factory(10)->create();
 
 
 
