@@ -13,11 +13,11 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('roles', function (Blueprint $table) {
+        Schema::create('community_types', function (Blueprint $table) {
             $table->id();
-            $table->string('role_uid');
-            $table->string('role_name');
-            $table->text('role_value');
+            $table->unsignedBigInteger('community_id');
+            $table->string('community_type_name');
+            $table->text('community_type_value');
             $table->timestamps();
         });
     }
@@ -29,6 +29,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('roles');
+        Schema::dropIfExists('community_types');
     }
 };

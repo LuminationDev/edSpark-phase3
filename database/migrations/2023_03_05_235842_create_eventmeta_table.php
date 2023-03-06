@@ -13,11 +13,11 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('roles', function (Blueprint $table) {
+        Schema::create('event_metas', function (Blueprint $table) {
             $table->id();
-            $table->string('role_uid');
-            $table->string('role_name');
-            $table->text('role_value');
+            $table->unsignedBigInteger('event_id');
+            $table->string('event_meta_key');
+            $table->text('event_meta_value');
             $table->timestamps();
         });
     }
@@ -29,6 +29,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('roles');
+        Schema::dropIfExists('event_metas');
     }
 };

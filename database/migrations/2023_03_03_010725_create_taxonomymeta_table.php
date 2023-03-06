@@ -13,16 +13,12 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('taxonomymeta', function (Blueprint $table) {
+        Schema::create('taxonomy_metas', function (Blueprint $table) {
             $table->id();
-            $table->bigInteger('taxonomy_id');
-            $table->string('taxonomymeta_title');
-            $table->text('taxonomymeta_value');
+            $table->unsignedBigInteger('taxonomy_id');
+            $table->string('taxonomy_meta_key');
+            $table->text('taxonomy_meta_value');
             $table->timestamps();
-
-            // FOREIGN KEY
-            $table->foreign('taxonomy_id')
-                ->references('id')->on('taxonomy')->onDelete('cascade');
         });
     }
 
@@ -33,6 +29,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('taxonomymeta');
+        Schema::dropIfExists('taxonomy_metas');
     }
 };

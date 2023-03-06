@@ -13,16 +13,12 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('usermeta', function (Blueprint $table) {
+        Schema::create('user_metas', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('user_id');
-            $table->string('meta_title');
-            $table->text('meta_value');
+            $table->string('user_meta_key');
+            $table->text('user_meta_value');
             $table->timestamps();
-
-            //FOREIGN KEY
-            $table->foreign('user_id')
-                ->references('id')->on('users')->onDelete('cascade');
         });
     }
 
@@ -33,6 +29,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('usermeta');
+        Schema::dropIfExists('user_metas');
     }
 };

@@ -13,11 +13,13 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('roles', function (Blueprint $table) {
+        Schema::create('waitlists', function (Blueprint $table) {
             $table->id();
-            $table->string('role_uid');
-            $table->string('role_name');
-            $table->text('role_value');
+            $table->unsignedBigInteger('loan_id');
+            $table->unsignedBigInteger('user_id');
+            $table->string('current_loan_length');
+            $table->dateTime('date_requested');
+            $table->dateTime('time_requested');
             $table->timestamps();
         });
     }
@@ -29,6 +31,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('roles');
+        Schema::dropIfExists('waitlists');
     }
 };

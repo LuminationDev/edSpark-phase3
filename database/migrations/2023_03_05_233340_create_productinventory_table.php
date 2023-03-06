@@ -13,11 +13,14 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('roles', function (Blueprint $table) {
+        Schema::create('product_inventories', function (Blueprint $table) {
             $table->id();
-            $table->string('role_uid');
-            $table->string('role_name');
-            $table->text('role_value');
+            $table->string('product_inventory_name');
+            $table->text('product_inventory_description');
+            $table->integer('product_inventory_quantity');
+            $table->unsignedBigInteger('product_brand');
+            $table->unsignedBigInteger('product_category');
+            $table->integer('qty_on_loan');
             $table->timestamps();
         });
     }
@@ -29,6 +32,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('roles');
+        Schema::dropIfExists('product_inventories');
     }
 };

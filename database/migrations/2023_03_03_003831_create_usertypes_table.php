@@ -13,16 +13,12 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('usertypes', function (Blueprint $table) {
+        Schema::create('user_types', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('user_id');
-            $table->string('type_title');
-            $table->text('type_value');
+            $table->string('user_type_name');
+            $table->text('user_type_value');
             $table->timestamps();
-
-            // FOREIGN KEY
-            $table->foreign('user_id')
-                ->references('id')->on('users')->onDelete('cascade');
         });
     }
 
@@ -33,6 +29,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('usertypes');
+        Schema::dropIfExists('user_types');
     }
 };

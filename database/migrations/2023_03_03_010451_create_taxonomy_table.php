@@ -13,10 +13,10 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('taxonomy', function (Blueprint $table) {
+        Schema::create('taxonomies', function (Blueprint $table) {
             $table->id();
             $table->integer('object_id');
-            $table->string('taxonomy_title');
+            $table->string('taxonomy_name');
             $table->text('taxonomy_description');
             $table->integer('taxonomy_count');
             $table->timestamps();
@@ -30,6 +30,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('taxonomy');
+        Schema::dropIfExists('taxonomies');
     }
 };

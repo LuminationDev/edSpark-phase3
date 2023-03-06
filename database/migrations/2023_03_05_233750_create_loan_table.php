@@ -13,19 +13,18 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('users', function (Blueprint $table) {
+        Schema::create('loans', function (Blueprint $table) {
             $table->id();
-            $table->string('full_name');
-            $table->string('display_name');
-            $table->string('email');
-            $table->string('password');
+            $table->unsignedBigInteger('product_id');
+            $table->unsignedBigInteger('user_id');
+            $table->dateTime('loan_start');
+            $table->dateTime('loan_end');
+            $table->boolean('is_available');
             $table->string('status');
-            $table->unsignedBigInteger('role_id');
-            $table->unsignedBigInteger('permission_id');
-            $table->unsignedBigInteger('site_id');
-            $table->unsignedBigInteger('type_id');
+            $table->integer('quantity');
+            $table->unsignedBigInteger('inventory_id');
+            $table->boolean('is_returned');
             $table->timestamps();
-
         });
     }
 
@@ -36,6 +35,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('users');
+        Schema::dropIfExists('loans');
     }
 };

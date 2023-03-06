@@ -13,16 +13,12 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('rolemeta', function (Blueprint $table) {
+        Schema::create('role_metas', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('role_id');
-            $table->string('rolemeta_title');
-            $table->text('rolemeta_value');
+            $table->string('role_meta_key');
+            $table->text('role_meta_value');
             $table->timestamps();
-
-            // FOREIGN KEY
-            $table->foreign('role_id')
-                ->references('id')->on('roles')->onDelete('cascade');
         });
     }
 
@@ -33,6 +29,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('rolemeta');
+        Schema::dropIfExists('role_metas');
     }
 };
