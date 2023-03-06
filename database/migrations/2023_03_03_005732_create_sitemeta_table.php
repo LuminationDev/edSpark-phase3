@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('site_metas', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('site_id');
+            $table->unsignedBigInteger('site_id')->nullable();
             $table->string('site_meta_key');
             $table->text('site_meta_value');
             $table->timestamps();
