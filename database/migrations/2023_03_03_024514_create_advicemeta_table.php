@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('advice_metas', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('advice_id');
+            $table->unsignedBigInteger('advice_id')->nullable();
             $table->string('advice_meta_key');
             $table->text('advice_meta_value');
             $table->timestamps();

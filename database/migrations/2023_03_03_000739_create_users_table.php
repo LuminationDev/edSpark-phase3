@@ -20,10 +20,10 @@ return new class extends Migration
             $table->string('email');
             $table->string('password');
             $table->string('status');
-            $table->unsignedBigInteger('role_id');
-            $table->unsignedBigInteger('permission_id');
-            $table->unsignedBigInteger('site_id');
-            $table->unsignedBigInteger('type_id');
+            $table->unsignedBigInteger('role_id')->nullable();
+            $table->unsignedBigInteger('permission_id')->nullable();
+            $table->unsignedBigInteger('site_id')->nullable();
+            $table->unsignedBigInteger('type_id')->nullable();
             $table->timestamps();
 
         });

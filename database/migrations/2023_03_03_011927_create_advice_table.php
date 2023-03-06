@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('advices', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('author_id');
+            $table->unsignedBigInteger('author_id')->nullable();
             $table->string('post_title');
             $table->longText('post_content');
             $table->text('post_excerpt');

@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('event_metas', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('event_id');
+            $table->unsignedBigInteger('event_id')->nullable();
             $table->string('event_meta_key');
             $table->text('event_meta_value');
             $table->timestamps();
