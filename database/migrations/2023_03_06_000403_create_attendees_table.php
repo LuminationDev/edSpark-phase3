@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('attendees', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('event_id');
+            $table->unsignedBigInteger('event_id')->nullable();
             $table->longText('attendees_list');
             $table->text('attendees_type');
             $table->timestamps();

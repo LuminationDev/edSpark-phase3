@@ -15,8 +15,8 @@ return new class extends Migration
     {
         Schema::create('loan_histories', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('product_id');
-            $table->unsignedBigInteger('user_id');
+            $table->unsignedBigInteger('product_id')->nullable();
+            $table->unsignedBigInteger('user_id')->nullable();
             $table->dateTime('loan_start');
             $table->dateTime('loan_end');
             $table->timestamps();

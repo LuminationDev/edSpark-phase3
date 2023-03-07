@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('sites', function (Blueprint $table) {
             $table->id();
-            $table->string('site_uid')->unique();
+            $table->string('site_uid')->unique()->nullable();
             $table->string('site_name');
             $table->text('site_value');
             $table->timestamps();

@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('community_metas', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('community_id');
+            $table->unsignedBigInteger('community_id')->nullable();
             $table->string('community_meta_key');
             $table->text('community_meta_value');
             $table->timestamps();

@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('capacities', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('event_id');
+            $table->unsignedBigInteger('event_id')->nullable();
             $table->string('capacity_name');
             $table->text('capacity_value');
             $table->timestamps();
