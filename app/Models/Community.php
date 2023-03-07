@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Site extends Model
+class Community extends Model
 {
     use HasFactory;
 
@@ -14,5 +14,5 @@ class Site extends Model
      *
      * @var string
      */
-    protected $table = 'sites';
+    protected $table = 'communities';
 }

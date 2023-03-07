@@ -22,8 +22,13 @@ class DatabaseSeeder extends Seeder
             RoleSeeder::class,
             PermissionSeeder::class,
             SiteSeeder::class,
-            UserType::class,
+            UsertypeSeeder::class,
             UserSeeder::class,
+            AdviceSeeder::class,
+            CommunitySeeder::class,
+            SoftwareSeeder::class,
+            HardwareSeeder::class,
+            EventSeeder::class
         ]);
 
     }
