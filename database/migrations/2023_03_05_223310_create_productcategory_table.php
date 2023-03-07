@@ -17,8 +17,8 @@ return new class extends Migration
             $table->id();
             $table->string('product_category_name');
             $table->text('product_category_description');
-            $table->unsignedBigInteger('product_brand');
-            $table->unsignedBigInteger('product_inventory');
+            $table->unsignedBigInteger('product_brand')->nullable();
+            $table->unsignedBigInteger('product_inventory')->nullable();
             $table->dateTime('product_created_at');
             $table->dateTime('product_modified_at');
             $table->timestamps();

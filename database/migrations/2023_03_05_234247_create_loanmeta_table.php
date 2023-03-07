@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('loan_metas', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('loan_id');
+            $table->unsignedBigInteger('loan_id')->nullable();
             $table->string('loan_meta_key');
             $table->text('loan_meta_value');
             $table->timestamps();

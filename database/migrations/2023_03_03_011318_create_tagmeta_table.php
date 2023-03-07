@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('tag_metas', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('tag_id');
+            $table->unsignedBigInteger('tag_id')->nullable();
             $table->string('tag_meta_key');
             $table->text('tag_meta_value');
             $table->timestamps();

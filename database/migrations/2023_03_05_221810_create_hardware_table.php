@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('hardwares', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('product_owner');
+            $table->unsignedBigInteger('product_owner')->nullable();
             $table->string('product_name');
             $table->longText('product_content');
             $table->text('product_excerpt');
@@ -23,9 +23,9 @@ return new class extends Migration
             $table->dateTime('created');
             $table->dateTime('modified');
             $table->string('product_SKU');
-            $table->unsignedBigInteger('product_category');
-            $table->unsignedBigInteger('product_inventory');
-            $table->unsignedBigInteger('product_brand');
+            $table->unsignedBigInteger('product_category')->nullable();
+            $table->unsignedBigInteger('product_inventory')->nullable();
+            $table->unsignedBigInteger('product_brand')->nullable();
             $table->boolean('product_isLoan');
             //TODO: Terms and Taxonomy relations
             $table->timestamps();

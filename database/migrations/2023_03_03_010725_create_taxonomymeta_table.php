@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('taxonomy_metas', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('taxonomy_id');
+            $table->unsignedBigInteger('taxonomy_id')->nullable();
             $table->string('taxonomy_meta_key');
             $table->text('taxonomy_meta_value');
             $table->timestamps();

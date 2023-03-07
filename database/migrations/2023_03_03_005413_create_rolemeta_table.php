@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('role_metas', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('role_id');
+            $table->unsignedBigInteger('role_id')->nullable();
             $table->string('role_meta_key');
             $table->text('role_meta_value');
             $table->timestamps();

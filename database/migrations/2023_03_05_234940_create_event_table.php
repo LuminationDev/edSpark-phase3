@@ -15,18 +15,18 @@ return new class extends Migration
     {
         Schema::create('events', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('author');
+            $table->unsignedBigInteger('author')->nullable();
             $table->string('event_title');
             $table->longText('event_content');
             $table->text('event_excerpt');
             $table->dateTime('start_date');
             $table->dateTime('end_date');
             $table->string('event_status');
-            $table->unsignedBigInteger('event_type');
+            $table->unsignedBigInteger('event_type')->nullable();
             //TODO: Terms and Taxonomy relations
-            $table->unsignedBigInteger('attendees_id');
-            $table->unsignedBigInteger('location_id');
-            $table->unsignedBigInteger('capacity_id');
+            $table->unsignedBigInteger('attendees_id')->nullable();
+            $table->unsignedBigInteger('location_id')->nullable();
+            $table->unsignedBigInteger('capacity_id')->nullable();
 
             $table->timestamps();
         });

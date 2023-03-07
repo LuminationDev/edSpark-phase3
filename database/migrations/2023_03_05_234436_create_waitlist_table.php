@@ -15,8 +15,8 @@ return new class extends Migration
     {
         Schema::create('waitlists', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('loan_id');
-            $table->unsignedBigInteger('user_id');
+            $table->unsignedBigInteger('loan_id')->nullable();
+            $table->unsignedBigInteger('user_id')->nullable();
             $table->string('current_loan_length');
             $table->dateTime('date_requested');
             $table->dateTime('time_requested');

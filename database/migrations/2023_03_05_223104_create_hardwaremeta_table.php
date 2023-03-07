@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('hardware_metas', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('product_id');
+            $table->unsignedBigInteger('product_id')->nullable();
             $table->string('product_meta_key');
             $table->text('product_meta_value');
             $table->timestamps();
