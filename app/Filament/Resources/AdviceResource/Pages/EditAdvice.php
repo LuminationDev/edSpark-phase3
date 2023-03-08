@@ -41,6 +41,6 @@ class EditAdvice extends EditRecord
 
     protected function getCreatedNotificationTitle(): ?string
     {
-        return 'Advice successfully updated';
+        return 'Advice updated successfully';
     }
 }
