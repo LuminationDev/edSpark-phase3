@@ -27,8 +27,10 @@ class User extends Authenticatable implements HasName
      */
     protected $fillable = [
         'full_name',
+        'display_name',
         'email',
-        'password'
+        'password',
+        'status'
     ];
 
     public function canAccessFilament(): bool {
@@ -38,5 +40,20 @@ class User extends Authenticatable implements HasName
     public function getFilamentName(): string
     {
         return "{$this->full_name}";
+    }
+
+    public function role()
+    {
+        return $this->belongsTo(Role::class);
+    }
+
+    public function site()
+    {
+        return $this->belongsTo(Site::class);
+    }
+
+    public function usertype()
+    {
+        return $this->belongsTo(Usertype::class);
     }
 }
