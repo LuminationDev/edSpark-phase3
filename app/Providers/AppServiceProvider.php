@@ -34,8 +34,8 @@ class AppServiceProvider extends ServiceProvider
         //     Filament::registerNavigationGroups(
         //         [
         //             NavigationGroup::make()
-        //                 ->label('Shop')
-        //                 ->icon('heroicon-s-shopping-cart')
+        //                 ->label('User Management')
+        //                 ->icon('heroicon-o-collection')
         //                 ->collapsed(),
         //         ]
         //     );
@@ -44,14 +44,14 @@ class AppServiceProvider extends ServiceProvider
         //     Filament::registerNavigationItems(
         //         [
         //             NavigationItem::make('My Custom Link 1')
-        //                 ->url('https://filament.pirsch.io', shouldOpenInNewTab: true)
+        //                 ->url('https://filament.pirsch.io', shouldOpenInNewTab: false)
         //                 ->icon('heroicon-o-link')
-        //                 ->group('Shop')
+        //                 ->group('User Management')
         //                 ->sort(1),
         //             NavigationItem::make('My Custom Link 2')
-        //                 ->url('https://filament.pirsch.io', shouldOpenInNewTab: true)
+        //                 ->url('https://filament.pirsch.io', shouldOpenInNewTab: false)
         //                 ->icon('heroicon-o-link')
-        //                 ->group('Shop')
+        //                 ->group('User Management')
         //                 ->sort(2),
 
         //         ]
