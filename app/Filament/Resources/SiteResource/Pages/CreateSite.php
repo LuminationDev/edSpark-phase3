@@ -9,4 +9,14 @@ use Filament\Resources\Pages\CreateRecord;
 class CreateSite extends CreateRecord
 {
     protected static string $resource = SiteResource::class;
+
+    protected function getRedirectUrl(): string
+    {
+        return $this->previousUrl ?? $this->getResource()::getUrl('index');
+    }
+
+    protected function getCreatedNotificationTitle(): ?string
+    {
+        return 'Site created successfully';
+    }
 }

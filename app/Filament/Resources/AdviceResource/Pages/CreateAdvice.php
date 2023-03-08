@@ -29,6 +29,6 @@ class CreateAdvice extends CreateRecord
 
     protected function getCreatedNotificationTitle(): ?string
     {
-        return 'Advice successfully created';
+        return 'Advice created successfully';
     }
 }
