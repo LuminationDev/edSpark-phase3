@@ -17,11 +17,13 @@ class EventFactory extends Factory
     public function definition()
     {
         return [
-            'name' => $this->faker->word(),
-            'date' => $this->faker->dateTime(),
-            'location' => $this->faker->numberBetween(1, 10),
-            'category_id' => $this->faker->numberBetween(1, 20),
-            'tag_id' => $this->faker->numberBetween(1, 20),
+            'author' => 1,
+            'event_title' => $this->faker->text,
+            'event_content' => $this->faker->paragraph,
+            'event_excerpt' => $this->faker->sentence,
+            'start_Date' => $this->faker->dateTime,
+            'end_date' => $this->faker->dateTime,
+            'event_status' => 'Active'
         ];
     }
 }
