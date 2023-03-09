@@ -22,7 +22,7 @@ class AdviceResource extends Resource
     protected static ?string $navigationGroup = 'Content Management';
     protected static ?string $navigationGroupIcon = 'heroicon-o-collection';
 
-    protected static ?int $navigationSort = 2;
+    protected static ?int $navigationSort = 1;
 
     protected static ?string $navigationIcon = 'heroicon-o-collection';
 
@@ -44,16 +44,18 @@ class AdviceResource extends Resource
                             ->required()
                             ->maxLength(65535),
                         Forms\Components\RichEditor::make('post_excerpt')
-                            ->required()
                             ->label('Excerpt')
                             ->disableToolbarButtons([
                                 'attachFiles',
                             ]),
-                        Forms\Components\Grid::make(2)
+                        Forms\Components\Grid::make(3)
                             ->schema([
                                 Forms\Components\TextInput::make('Author')
                                     ->default($user)
                                     ->disabled(),
+                                Forms\Components\BelongsToSelect::make('advice_type')
+                                    ->label('Advice type')
+                                    ->relationship('advicetype', 'advice_type_name'),
                                 Forms\Components\Select::make('post_status')
                                     ->options([
                                         'Published' => 'Published',
@@ -76,10 +78,10 @@ class AdviceResource extends Resource
                     ->label('Title')
                     ->sortable()
                     ->searchable(),
-                // Tables\Columns\TextColumn::make('post_type')
-                //     ->label('Type')
-                //     ->sortable()
-                //     ->searchable(),
+                Tables\Columns\TextColumn::make('advicetype.advice_type_name')
+                    ->label('Type')
+                    ->sortable()
+                    ->searchable(),
                 Tables\Columns\TextColumn::make('author.full_name')->label('Author'),
                 Tables\Columns\TextColumn::make('post_date')
                     ->date()
@@ -97,8 +99,9 @@ class AdviceResource extends Resource
                 //
             ])
             ->actions([
-                Tables\Actions\ViewAction::make(),
+                // Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make(),
+                Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\DeleteBulkAction::make(),

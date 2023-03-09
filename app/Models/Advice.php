@@ -28,12 +28,18 @@ class Advice extends Model
         'post_status',
         'post_date',
         'post_modified',
-        'author_id'
+        'author_id',
+        'advicetype_id'
     ];
 
     public function author()
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function advicetype()
+    {
+        return $this->belongsTo(Advicetype::class);
     }
 
 }

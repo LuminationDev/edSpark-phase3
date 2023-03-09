@@ -39,8 +39,8 @@ class EditAdvice extends EditRecord
         return $this->previousUrl ?? $this->getResource()::getUrl('index');
     }
 
-    protected function getCreatedNotificationTitle(): ?string
+    protected function getSavedNotificationTitle(): ?string
     {
-        return 'Advice successfully updated';
+        return 'Advice updated successfully';
     }
 }

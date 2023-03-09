@@ -65,7 +65,7 @@ class UsersResource extends Resource
                 Tables\Columns\TextColumn::make('full_name')->sortable()->searchable(),
                 Tables\Columns\TextColumn::make('display_name')->sortable()->searchable(),
                 Tables\Columns\TextColumn::make('email')->sortable()->searchable(),
-                Tables\Columns\TextColumn::make('status'),
+                Tables\Columns\TextColumn::make('status')->sortable()->searchable(),
                 Tables\Columns\TextColumn::make('role.role_name'),
                 Tables\Columns\TextColumn::make('site.site_name'),
                 // Tables\Columns\TextColumn::make('type_id')

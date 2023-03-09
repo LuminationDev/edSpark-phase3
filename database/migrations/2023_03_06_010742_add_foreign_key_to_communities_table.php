@@ -17,7 +17,7 @@ return new class extends Migration
             // FOREIGN KEYS
             $table->foreign('author_id')
                 ->references('id')->on('users')->onDelete('cascade');
-            $table->foreign('post_type')
+            $table->foreign('communitytype_id')
                 ->references('id')->on('community_types')->onDelete('cascade');
         });
     }
@@ -31,7 +31,7 @@ return new class extends Migration
     {
         Schema::table('communities', function (Blueprint $table) {
             $table->dropForeign(['author_id']);
-            $table->dropForeign(['post_type']);
+            $table->dropForeign(['communitytype_id']);
         });
     }
 };

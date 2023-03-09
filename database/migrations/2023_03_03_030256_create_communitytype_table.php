@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('community_types', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('community_id')->nullable();
+            // $table->unsignedBigInteger('community_id')->nullable();
             $table->string('community_type_name');
             $table->text('community_type_value');
             $table->timestamps();
