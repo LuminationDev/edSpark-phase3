@@ -1,18 +1,17 @@
 <?php
 
-namespace App\Filament\Resources\AdviceResource\Pages;
+namespace App\Filament\Resources\SoftwareResource\Pages;
 
-use App\Filament\Resources\AdviceResource;
+use App\Filament\Resources\SoftwareResource;
 use Filament\Pages\Actions;
 use Filament\Resources\Pages\EditRecord;
 
 use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
 
-
-class EditAdvice extends EditRecord
+class EditSoftware extends EditRecord
 {
-    protected static string $resource = AdviceResource::class;
+    protected static string $resource = SoftwareResource::class;
 
     protected function getActions(): array
     {
@@ -30,7 +29,9 @@ class EditAdvice extends EditRecord
 
     protected function mutateFormDataBeforeSave(array $data): array
     {
+        // dd($data); // Before mutation
         $data['post_modified'] = Carbon::now();
+        // dd($data); // After mutation
         return $data;
     }
 
@@ -41,6 +42,6 @@ class EditAdvice extends EditRecord
 
     protected function getSavedNotificationTitle(): ?string
     {
-        return 'Advice updated successfully';
+        return 'Software updated successfully';
     }
 }

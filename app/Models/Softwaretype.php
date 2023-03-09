@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Role extends Model
+class Softwaretype extends Model
 {
     use HasFactory;
 
@@ -14,7 +14,7 @@ class Role extends Model
      *
      * @var string
      */
-    protected $table = 'roles';
+    protected $table = 'software_types';
 
     /**
      * The attributes that are mass assignable
@@ -22,7 +22,8 @@ class Role extends Model
      * @var array
      */
     protected $fillable = [
-        'role_name',
-        'role_value'
+        'software_type_name',
+        'software_type_value'
     ];
+
 }

@@ -18,11 +18,11 @@ return new class extends Migration
             $table->unsignedBigInteger('author_id')->nullable();
             $table->string('post_title');
             $table->longText('post_content');
-            $table->text('post_excerpt');
-            $table->dateTime('post_date');
-            $table->dateTime('post_modified');
+            $table->text('post_excerpt')->nullable();
+            $table->dateTime('post_date')->nullable();
+            $table->dateTime('post_modified')->nullable();
             $table->string('post_status');
-            $table->unsignedBigInteger('post_type')->nullable();
+            $table->unsignedBigInteger('advicetype_id')->nullable();
             //TODO: Terms and Taxonomy relations
             $table->timestamps();
         });

@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Role extends Model
+class Advicetype extends Model
 {
     use HasFactory;
 
@@ -14,7 +14,7 @@ class Role extends Model
      *
      * @var string
      */
-    protected $table = 'roles';
+    protected $table = 'advice_types';
 
     /**
      * The attributes that are mass assignable
@@ -22,7 +22,13 @@ class Role extends Model
      * @var array
      */
     protected $fillable = [
-        'role_name',
-        'role_value'
+        'advice_type_name',
+        'advice_type_value'
     ];
+
+    // public function advice()
+    // {
+    //     return $this->hasMany(Advice::class);
+    // }
+
 }

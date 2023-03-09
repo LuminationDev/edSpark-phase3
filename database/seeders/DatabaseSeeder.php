@@ -25,8 +25,10 @@ class DatabaseSeeder extends Seeder
             UsertypeSeeder::class,
             UserSeeder::class,
             AdviceSeeder::class,
+            AdvicetypeSeeder::class,
             CommunitySeeder::class,
             SoftwareSeeder::class,
+            SoftwaretypeSeeder::class,
             HardwareSeeder::class,
             EventSeeder::class
         ]);
