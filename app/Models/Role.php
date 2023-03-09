@@ -15,4 +15,14 @@ class Role extends Model
      * @var string
      */
     protected $table = 'roles';
+
+    /**
+     * The attributes that are mass assignable
+     *
+     * @var array
+     */
+    protected $fillable = [
+        'role_name',
+        'role_value'
+    ];
 }

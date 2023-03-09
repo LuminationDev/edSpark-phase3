@@ -21,7 +21,7 @@ return new class extends Migration
                 ->references('id')->on('user_permissions')->onDelete('cascade');
             $table->foreign('site_id')
                 ->references('id')->on('sites')->onDelete('cascade');
-            $table->foreign('type_id')
+            $table->foreign('usertype_id')
                 ->references('id')->on('user_types')->onDelete('cascade');
         });
     }
@@ -37,7 +37,7 @@ return new class extends Migration
             $table->dropForeign(['role_id']);
             $table->dropForeign(['permission_id']);
             $table->dropForeign(['site_id']);
-            $table->dropForeign(['type_id']);
+            $table->dropForeign(['usertype_id']);
         });
     }
 };

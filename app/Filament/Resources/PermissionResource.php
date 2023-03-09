@@ -25,13 +25,15 @@ class PermissionResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('user_id'),
-                Forms\Components\TextInput::make('user_permission_name')
-                    ->required()
-                    ->maxLength(255),
-                Forms\Components\Textarea::make('user_permission_value')
-                    ->required()
-                    ->maxLength(65535),
+                Forms\Components\Card::make()
+                    ->schema([
+                        Forms\Components\TextInput::make('user_permission_name')
+                            ->required()
+                            ->maxLength(255),
+                        Forms\Components\Textarea::make('user_permission_value')
+                            ->required()
+                            ->maxLength(65535),
+                            ]),
             ]);
     }
 
@@ -40,7 +42,7 @@ class PermissionResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('user_permission_name')->label('name'),
-                Tables\Columns\TextColumn::make('user_permission_value')->label('value')->wrap(),
+                Tables\Columns\TextColumn::make('user_permission_value')->label('value')->limit(50),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime(),
                 Tables\Columns\TextColumn::make('updated_at')
@@ -51,6 +53,7 @@ class PermissionResource extends Resource
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
+                Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
                 // Tables\Actions\DeleteBulkAction::make(),

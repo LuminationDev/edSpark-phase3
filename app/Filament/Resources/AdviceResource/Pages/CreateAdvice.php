@@ -15,6 +15,7 @@ class CreateAdvice extends CreateRecord
 
     protected function mutateFormDataBeforeCreate(array $data): array
     {
+        // dd($data);
         $data['author_id'] = Auth::user()->id;
         $data['post_date'] = Carbon::now();
         $data['post_modified'] = Carbon::now();
@@ -29,6 +30,6 @@ class CreateAdvice extends CreateRecord
 
     protected function getCreatedNotificationTitle(): ?string
     {
-        return 'Advice successfully created';
+        return 'Advice created successfully';
     }
 }

@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::table('software_metas', function (Blueprint $table) {
             // FOREIGN KEY
-            $table->foreign('post_id')
+            $table->foreign('software_id')
                 ->references('id')->on('users')->onDelete('cascade');
         });
     }
@@ -28,7 +28,7 @@ return new class extends Migration
     public function down()
     {
         Schema::table('software_metas', function (Blueprint $table) {
-            $table->dropForeign(['post_id']);
+            $table->dropForeign(['software_id']);
         });
     }
 };

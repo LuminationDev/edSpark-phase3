@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('advice_types', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('advice_id')->nullable();
+            // $table->unsignedBigInteger('advice_id')->nullable();
             $table->string('advice_type_name');
             $table->text('advice_type_value');
             $table->timestamps();
