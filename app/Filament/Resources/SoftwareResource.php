@@ -2,9 +2,9 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\AdviceResource\Pages;
-use App\Filament\Resources\AdviceResource\RelationManagers;
-use App\Models\Advice;
+use App\Filament\Resources\SoftwareResource\Pages;
+use App\Filament\Resources\SoftwareResource\RelationManagers;
+use App\Models\Software;
 use Filament\Forms;
 use Filament\Resources\Form;
 use Filament\Resources\Resource;
@@ -15,18 +15,17 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Illuminate\Support\Facades\Auth;
 
 
-class AdviceResource extends Resource
+class SoftwareResource extends Resource
 {
-    protected static ?string $model = Advice::class;
+    protected static ?string $model = Software::class;
 
     protected static ?string $navigationGroup = 'Content Management';
     protected static ?string $navigationGroupIcon = 'heroicon-o-collection';
 
-    protected static ?int $navigationSort = 1;
+    protected static ?int $navigationSort = 3;
+
 
     protected static ?string $navigationIcon = 'heroicon-o-collection';
-
-    // protected static bool $shouldRegisterNavigation = false;
 
     public static function form(Form $form): Form
     {
@@ -41,8 +40,7 @@ class AdviceResource extends Resource
                             ->maxLength(255),
                         Forms\Components\RichEditor::make('post_content')
                             ->label('Content')
-                            ->required()
-                            ->maxLength(65535),
+                            ->required(),
                         Forms\Components\RichEditor::make('post_excerpt')
                             ->label('Excerpt')
                             ->disableToolbarButtons([
@@ -53,9 +51,9 @@ class AdviceResource extends Resource
                                 Forms\Components\TextInput::make('Author')
                                     ->default($user)
                                     ->disabled(),
-                                Forms\Components\BelongsToSelect::make('advice_type')
-                                    ->label('Advice type')
-                                    ->relationship('advicetype', 'advice_type_name'),
+                                Forms\Components\BelongsToSelect::make('software_type')
+                                    ->label('Software type')
+                                    ->relationship('softwaretype', 'software_type_name'),
                                 Forms\Components\Select::make('post_status')
                                     ->options([
                                         'Published' => 'Published',
@@ -64,9 +62,9 @@ class AdviceResource extends Resource
                                         'Pending' => 'Pending'
                                     ])
                                     ->label('Status')
-                                    ->required(),
-                            ])
-                    ]),
+                                    ->required()
+                            ]),
+                            ]),
             ]);
     }
 
@@ -75,31 +73,31 @@ class AdviceResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('post_title')
-                    ->label('Title')
-                    ->sortable()
+                ->label('Title')
+                ->searchable()
+                ->sortable(),
+                Tables\Columns\TextColumn::make('post_content')
+                ->limit(50)
+                ->label('Content'),
+                Tables\Columns\TextColumn::make('author.full_name')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('advicetype.advice_type_name')
+                Tables\Columns\TextColumn::make('softwaretype.software_type_name')
                     ->label('Type')
                     ->sortable()
                     ->searchable(),
-                Tables\Columns\TextColumn::make('author.full_name')->label('Author'),
-                Tables\Columns\TextColumn::make('post_date')
-                    ->date()
-                    ->label('Created At'),
-                Tables\Columns\TextColumn::make('post_modified')
-                    ->date()
-                    ->label('Modified At'),
                 Tables\Columns\TextColumn::make('post_status')
                     ->label('Status')
                     ->sortable()
                     ->searchable(),
-
+                Tables\Columns\TextColumn::make('created_at')
+                    ->dateTime(),
+                Tables\Columns\TextColumn::make('updated_at')
+                    ->dateTime(),
             ])
             ->filters([
                 //
             ])
             ->actions([
-                // Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make(),
                 Tables\Actions\DeleteAction::make(),
             ])
@@ -118,9 +116,9 @@ class AdviceResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListAdvice::route('/'),
-            'create' => Pages\CreateAdvice::route('/create'),
-            'edit' => Pages\EditAdvice::route('/{record}/edit'),
+            'index' => Pages\ListSoftware::route('/'),
+            'create' => Pages\CreateSoftware::route('/create'),
+            'edit' => Pages\EditSoftware::route('/{record}/edit'),
         ];
     }
 }

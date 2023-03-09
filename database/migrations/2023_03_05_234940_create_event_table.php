@@ -18,11 +18,11 @@ return new class extends Migration
             $table->unsignedBigInteger('author')->nullable();
             $table->string('event_title');
             $table->longText('event_content');
-            $table->text('event_excerpt');
+            $table->text('event_excerpt')->nullable();
             $table->dateTime('start_date');
             $table->dateTime('end_date');
             $table->string('event_status');
-            $table->unsignedBigInteger('event_type')->nullable();
+            $table->unsignedBigInteger('eventtype_id')->nullable();
             //TODO: Terms and Taxonomy relations
             $table->unsignedBigInteger('attendees_id')->nullable();
             $table->unsignedBigInteger('location_id')->nullable();

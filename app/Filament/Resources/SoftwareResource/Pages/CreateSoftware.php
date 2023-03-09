@@ -1,25 +1,25 @@
 <?php
 
-namespace App\Filament\Resources\AdviceResource\Pages;
+namespace App\Filament\Resources\SoftwareResource\Pages;
 
-use App\Filament\Resources\AdviceResource;
+use App\Filament\Resources\SoftwareResource;
 use Filament\Pages\Actions;
 use Filament\Resources\Pages\CreateRecord;
 
 use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
 
-class CreateAdvice extends CreateRecord
+class CreateSoftware extends CreateRecord
 {
-    protected static string $resource = AdviceResource::class;
+    protected static string $resource = SoftwareResource::class;
 
     protected function mutateFormDataBeforeCreate(array $data): array
     {
-        // dd($data);
+        // dd($data); // before mutation
         $data['author_id'] = Auth::user()->id;
         $data['post_date'] = Carbon::now();
         $data['post_modified'] = Carbon::now();
-
+        // dd($data); //after mutation
         return $data;
     }
 
@@ -30,6 +30,6 @@ class CreateAdvice extends CreateRecord
 
     protected function getCreatedNotificationTitle(): ?string
     {
-        return 'Advice created successfully';
+        return 'Software created successfully';
     }
 }

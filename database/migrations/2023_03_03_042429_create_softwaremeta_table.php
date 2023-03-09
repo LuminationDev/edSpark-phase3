@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('software_metas', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('post_id')->nullable();
+            $table->unsignedBigInteger('software_id')->nullable();
             $table->string('software_meta_key');
             $table->text('software_meta_value');
             $table->timestamps();

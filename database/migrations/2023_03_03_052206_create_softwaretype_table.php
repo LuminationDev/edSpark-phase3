@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('software_types', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('software_id')->nullable();
+            // $table->unsignedBigInteger('software_id')->nullable();
             $table->string('software_type_name');
             $table->text('software_type_value');
             $table->timestamps();
