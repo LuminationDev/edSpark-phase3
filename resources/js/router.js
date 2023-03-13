@@ -13,7 +13,8 @@ import {
     Hardware,
     Community,
     Partners,
-    Events
+    Events,
+    SchoolsSingle
 } from './pages'
 
 const router = createRouter({
@@ -32,7 +33,12 @@ const router = createRouter({
         {
             name: 'schools',
             path: '/schools',
-            component: Schools
+            component: Schools,
+        },
+        {
+            name: 'schoolsSingle',
+            path: '/schools/:name',
+            component: SchoolsSingle
         },
         {
             name: 'advice',
@@ -64,7 +70,14 @@ const router = createRouter({
             path: '/events',
             component: Events
         },
-    ]
+    ],
+    scrollBehavior(to, from, savedPosition) {
+        if (savedPosition) {
+            return savedPosition
+        } else {
+            return { top: 0 }
+        }
+    },
 });
 
 export default router;

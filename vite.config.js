@@ -19,5 +19,11 @@ export default defineConfig({
         alias: {
             '@': fileURLToPath(new URL('./resources', import.meta.url))
         }
-    }
+    },
+    optimizeDeps: {
+        include: [
+            "vue-google-maps-community-fork",
+            "fast-deep-equal",
+        ],
+    },
 });
