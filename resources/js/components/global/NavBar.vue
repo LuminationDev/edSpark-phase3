@@ -1,14 +1,29 @@
 <script>
+    import { ref } from 'vue';
     import { RouterLink } from 'vue-router';
     import NavSwoosh from '../svg/NavSwoosh.vue';
     import Logo from '../svg/Logo.vue';
 
     export default {
+        setup() {
+            const navDropdownToggle = ref(false);
+            const profileDropdown = ref(false);
 
+            return {
+                navDropdownToggle,
+                profileDropdown
+            }
+        },
 
         components: {
             NavSwoosh,
             Logo
+        },
+
+        methods: {
+            handleAvatar() {
+                console.log('This has been clicked!!!');
+            }
         }
     }
 </script>
@@ -35,12 +50,34 @@
                             Advice
                         </li>
                     </RouterLink>
+                        <li class="relative cursor-pointer">
+                            <div
+                                @mouseover="navDropdownToggle = true"
+                                @mouseleave="navDropdownToggle = false"
+                                class="h-fit"
+                            >
+                                Technology
+                                <div v-show="navDropdownToggle" @mouseover="navDropdownToggle = true" class="navDropdown absolute  ">
+                                    <div class="bg-[#002856]/50 mt-[8px]">
+                                        <ul class="flex flex-col gap-4 py-4 text-white text-center text-[24px] font-semibold font-['Poppins']">
+                                            <RouterLink class="flex" to="/software">
+                                                <li class="px-4 mx-auto cursor-pointer hover:underline decoration-[#B8E2DC] decoration-4 underline-offset-8 transition-all">
+                                                    Software
+                                                </li>
+                                            </RouterLink>
+                                            <RouterLink to="/hardware">
+                                                <li class="px-4 mx-auto cursor-pointer hover:underline decoration-[#B8E2DC] decoration-4 underline-offset-8 transition-all">
+                                                    Hardware
+                                                </li>
+                                            </RouterLink>
+                                        </ul>
+                                    </div>
 
-                    <!-- <RouterLink> -->
-                        <li class="cursor-pointer hover:underline decoration-[#B8E2DC] decoration-4 underline-offset-8 transition-all">
-                            Technology
+
+                                </div>
+                            </div>
                         </li>
-                    <!-- </RouterLink> -->
+
 
                     <RouterLink to="/community">
                         <li class="cursor-pointer hover:underline decoration-[#B8E2DC] decoration-4 underline-offset-8 transition-all">
@@ -64,6 +101,13 @@
             </nav>
 
         </div>
+        <div @click.prevent="handleAvatar" @mouseenter="this.profileDropdown = true " @mouseleave="this.profileDropdown = false" class="w-[48px] h-[48px] absolute top-64 right-96 z-50 border rounded-full cursor-pointer hover:shadow-2xl" >
+            <div v-show="this.profileDropdown" class="relative w-full h-full">
+                <div class="absolute top-6 left-6 z-40 w-[240px] h-[350px] bg-[#002856]/60">
+
+                </div>
+            </div>
+        </div>
         <Logo class="absolute right-20 top-4 z-40"/>
         <NavSwoosh class="w-full absolute -bottom-6 left-0 right-0 pointer-events-none" />
     </div>
@@ -76,5 +120,11 @@
 <style>
     .nav-background {
         clip-path: inset(0 0 round 0 0 75%);
+    }
+
+    .navDropdown {
+        width: 170px;
+        left: 50%;
+        transform: translateX(-50%);
     }
 </style>
