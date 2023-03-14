@@ -1,4 +1,8 @@
 <script>
+    /**
+     * IMPORT DEPENDENCIES
+     */
+    import sanitizeHtml from 'sanitize-html';
     import { computed, ref } from 'vue';
 
     /**
@@ -32,14 +36,17 @@
     */
     import { useAdviceStore } from '../stores/useAdviceStore.js';
     import { useSoftwareStore } from '../stores/useSoftwareStore.js';
+    import { useUserStore } from '../stores/useUserStore';
 
     export default {
         setup() {
             const adviceStore = useAdviceStore();
             const softwareStore = useSoftwareStore();
+            const userStore = useSessionStorage();
 
             adviceStore.loadResources();
             softwareStore.loadArticles();
+            userStore.loadCurrentUser();
 
             const adviceResources = computed(() => {
                 return adviceStore.getResources;
@@ -55,7 +62,7 @@
             /**
              * Change this to TRUE to simulate the First Login Experience
              */
-            const isFirstVisit = ref(false);
+            const isFirstVisit = ref(true);
 
             return {
                 adviceStore,
@@ -376,6 +383,11 @@
                 console.log('close the popup');
                 this.isFirstVisit = false
             },
+
+            handleSanitizeContent(string, allowedTags) {
+                const clean = sanitizeHtml(string, { allowedTags: allowedTags }).trim();
+                return clean;
+            }
         },
 
         mounted() {
@@ -688,8 +700,11 @@
                                 <template #created_at>
                                     {{ handleTimeString(resource.created_at) }}
                                 </template>
-                                <template #description>
-                                    {{  resource.post_content }}
+                                <template #description v-if="resource.post_excerpt">
+                                    {{ this.handleSanitizeContent(resource.post_excerpt, []) }}
+                                </template>
+                                <template #description v-else>
+                                    {{ this.handleSanitizeContent(resource.post_content, []) }}
                                 </template>
                             </ContentSection>
                         </div>
