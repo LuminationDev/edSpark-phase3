@@ -18,8 +18,8 @@ return new class extends Migration
             $table->string('product_inventory_name');
             $table->text('product_inventory_description')->nullable();
             $table->integer('product_inventory_quantity');
-            $table->unsignedBigInteger('product_brand')->nullable();
-            $table->unsignedBigInteger('product_category')->nullable();
+            $table->unsignedBigInteger('brand_id')->nullable();
+            $table->unsignedBigInteger('category_id')->nullable();
             $table->integer('qty_on_loan');
             $table->timestamps();
         });

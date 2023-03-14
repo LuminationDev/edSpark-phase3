@@ -29,8 +29,10 @@ class DatabaseSeeder extends Seeder
             CommunitySeeder::class,
             SoftwareSeeder::class,
             SoftwaretypeSeeder::class,
+            EventSeeder::class,
+            ProductbrandSeeder::class,
+            ProductcategorySeeder::class,
             HardwareSeeder::class,
-            EventSeeder::class
         ]);
 
     }
