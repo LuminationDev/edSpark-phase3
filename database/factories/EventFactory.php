@@ -17,13 +17,14 @@ class EventFactory extends Factory
     public function definition()
     {
         return [
-            'author' => 1,
+            'author_id' => 1,
             'event_title' => $this->faker->text,
             'event_content' => $this->faker->paragraph,
             'event_excerpt' => $this->faker->sentence,
             'start_Date' => $this->faker->dateTime,
             'end_date' => $this->faker->dateTime,
-            'event_status' => 'Active'
+            'event_status' => 'Active',
+            'cover_image' => $this->faker->imageUrl(),
         ];
     }
 }

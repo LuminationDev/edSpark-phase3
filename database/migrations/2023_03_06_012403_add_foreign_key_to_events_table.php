@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::table('events', function (Blueprint $table) {
             // FOREIGN KEYS
-            $table->foreign('author')
+            $table->foreign('author_id')
                 ->references('id')->on('users')->onDelete('cascade');
             $table->foreign('eventtype_id')
                 ->references('id')->on('event_types')->onDelete('cascade');
@@ -36,7 +36,7 @@ return new class extends Migration
     public function down()
     {
         Schema::table('events', function (Blueprint $table) {
-            $table->dropForeign(['author']);
+            $table->dropForeign(['author_id']);
             $table->dropForeign(['eventtype_id']);
             $table->dropForeign(['attendees_id']);
             $table->dropForeign(['location_id']);
