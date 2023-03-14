@@ -6,6 +6,7 @@ use App\Filament\Resources\AdviceResource\Pages;
 use App\Filament\Resources\AdviceResource\RelationManagers;
 use App\Models\Advice;
 use Filament\Forms;
+use Filament\Forms\Components\FileUpload;
 use Filament\Resources\Form;
 use Filament\Resources\Resource;
 use Filament\Resources\Table;
@@ -13,7 +14,6 @@ use Filament\Tables;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Illuminate\Support\Facades\Auth;
-
 
 class AdviceResource extends Resource
 {
@@ -65,7 +65,13 @@ class AdviceResource extends Resource
                                     ])
                                     ->label('Status')
                                     ->required(),
-                            ])
+                                    ]),
+                        Forms\Components\FileUpload::make('cover_image')
+                            ->preserveFilenames()
+                            ->label('Cover Image')
+                            ->disk('public')
+                            ->directory('uploads')
+                            ->acceptedFileTypes(['image/jpeg', 'image/png'])
                     ]),
             ]);
     }

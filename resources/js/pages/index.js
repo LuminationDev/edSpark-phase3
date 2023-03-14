@@ -7,3 +7,5 @@ export { default as Hardware } from './Hardware.vue';
 export { default as Community } from './Community.vue';
 export { default as Partners } from './Partners.vue';
 export { default as Events } from './Events.vue';
+export { default as SchoolsSingle } from './SchoolsSingle.vue';
+export { default as UserProfile } from './UserProfile.vue';

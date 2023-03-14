@@ -44,6 +44,8 @@ class UserController extends Controller
             $userId = '';
             $data = $request->data;
 
+            var_dump($data);
+
             $error = '';
 
             if($data) {
@@ -62,27 +64,27 @@ class UserController extends Controller
                 }
             }
 
-            $metaData = $request->metaData;
-            if ($metaData) {
-                // save user info into meta table
-                $dataToInsert = [];
-                try{
-                    foreach ($metaData as $key => $value){
-                        $result = [
-                            'user_id' => $userId,
-                            'user_meta_key' => $key,
-                            'user_meta_value' => implode(', ', $value),
-                            'created_at' => Carbon::now(),
-                            'updated_at' => Carbon::now(),
-                        ];
-                        $dataToInsert[] = $result;
-                    }
-                    Usermeta::insert($dataToInsert);
-                } catch (Exception $e) {
-                    $error = $e->getMessage();
-                }
+            // $metaData = $request->metaData;
+            // if ($metaData) {
+            //     // save user info into meta table
+            //     $dataToInsert = [];
+            //     try{
+            //         foreach ($metaData as $key => $value){
+            //             $result = [
+            //                 'user_id' => $userId,
+            //                 'user_meta_key' => $key,
+            //                 'user_meta_value' => implode(', ', $value),
+            //                 'created_at' => Carbon::now(),
+            //                 'updated_at' => Carbon::now(),
+            //             ];
+            //             $dataToInsert[] = $result;
+            //         }
+            //         Usermeta::insert($dataToInsert);
+            //     } catch (Exception $e) {
+            //         $error = $e->getMessage();
+            //     }
 
-            }
+            // }
 
             return response()->json([
                 'message' => "User added successfully",
