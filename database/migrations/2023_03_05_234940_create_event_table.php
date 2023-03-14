@@ -15,10 +15,11 @@ return new class extends Migration
     {
         Schema::create('events', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('author')->nullable();
+            $table->unsignedBigInteger('author_id')->nullable();
             $table->string('event_title');
             $table->longText('event_content');
             $table->text('event_excerpt')->nullable();
+            $table->string('cover_image')->nullable();
             $table->dateTime('start_date');
             $table->dateTime('end_date');
             $table->string('event_status');

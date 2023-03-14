@@ -15,4 +15,37 @@ class Hardware extends Model
      * @var string
      */
     protected $table = 'hardwares';
+
+    /**
+     * The attributes that are mass assignable
+     *
+     * @var array
+     */
+    protected $fillable = [
+        'product_name',
+        'product_content',
+        'product_excerpt',
+        'price',
+        'product_SKU'
+    ];
+
+    public function owner()
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    public function brand()
+    {
+        return $this->belongsTo(Productbrand::class);
+    }
+
+    public function category()
+    {
+        return $this->belongsTo(Productcategory::class);
+    }
+
+    // public function inventory()
+    // {
+    //     return $this->belongsTo(Productinventory::class);
+    // }
 }

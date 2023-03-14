@@ -17,7 +17,7 @@ class HardwareFactory extends Factory
     public function definition()
     {
         return [
-            'product_owner' => 1,
+            'owner_id' => 1,
             'product_name' => $this->faker->company,
             'product_content' => $this->faker->paragraph,
             'product_excerpt' => $this->faker->text,
@@ -25,7 +25,8 @@ class HardwareFactory extends Factory
             'created' => $this->faker->dateTime,
             'modified' => $this->faker->dateTime,
             'product_SKU' => '100',
-            'product_isLoan' => 0
+            'product_isLoan' => 0,
+            'cover_image' => $this->faker->imageUrl(),
         ];
     }
 }
