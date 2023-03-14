@@ -23,7 +23,8 @@ class AdviceFactory extends Factory
             'post_excerpt' => $this->faker->text,
             'post_date' => $this->faker->dateTime,
             'post_modified' => $this->faker->dateTime,
-            'post_status' => 'Published'
+            'post_status' => 'Published',
+            'cover_image' => $this->faker->imageUrl(),
         ];
     }
 }

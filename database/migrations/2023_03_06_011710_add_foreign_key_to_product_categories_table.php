@@ -15,9 +15,9 @@ return new class extends Migration
     {
         Schema::table('product_categories', function (Blueprint $table) {
             // FOREIGN KEY
-            $table->foreign('product_brand')
+            $table->foreign('brand_id')
                 ->references('id')->on('product_brands')->onDelete('cascade');
-            $table->foreign('product_inventory')
+            $table->foreign('inventory_id')
                 ->references('id')->on('product_inventories')->onDelete('cascade');
         });
     }
@@ -30,8 +30,8 @@ return new class extends Migration
     public function down()
     {
         Schema::table('product_categories', function (Blueprint $table) {
-            $table->dropForeign(['product_brand']);
-            $table->dropForeign(['product_inventory']);
+            $table->dropForeign(['brand_id']);
+            $table->dropForeign(['inventory_id']);
         });
     }
 };

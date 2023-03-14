@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('post_title');
             $table->longText('post_content');
             $table->text('post_excerpt')->nullable();
+            $table->string('cover_image')->nullable();
             $table->dateTime('post_date')->nullable();
             $table->dateTime('post_modified')->nullable();
             $table->string('post_status');
