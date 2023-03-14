@@ -13,8 +13,8 @@
     <link rel="stylesheet" href="{{ mix('resources/css/app.css')}}" type="text/css">
     @vite(['resources/js/app.js'])
 </head>
-<body>
-    <div id="app" class="container mx-auto shadow-lg min-h-screen font-['Poppins']"></div>
+<body class="relative">
+    <div id="app" class="flex flex-col container mx-auto shadow-lg min-h-screen font-['Poppins']"></div>
     <script src="{{ mix('resources/js/app.js') }}" type="text/javascript">
 </body>
 </html>
