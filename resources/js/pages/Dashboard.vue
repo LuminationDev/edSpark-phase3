@@ -42,7 +42,7 @@
         setup() {
             const adviceStore = useAdviceStore();
             const softwareStore = useSoftwareStore();
-            const userStore = useSessionStorage();
+            const userStore = useUserStore();
 
             adviceStore.loadResources();
             softwareStore.loadArticles();
@@ -64,7 +64,16 @@
              */
             const isFirstVisit = ref(true);
 
+
+
+            const createNewUser = async (data) => {
+                const result = await userStore.createUser(data);
+                return result;
+            }
+
             return {
+                createNewUser,
+                userStore,
                 adviceStore,
                 softwareStore,
                 adviceResources,
@@ -355,9 +364,19 @@
             },
 
             submitForm() {
-                console.log('Submit the form')
-            //api call to submit all data via post request
-            //redirect to somewhere
+                console.log('Submit the form');
+
+                const data = {
+                    name: this.name,
+                    email: this.email,
+                    role: this.role,
+                    site: this.site,
+                    yearLevels: this.yearLevels,
+                    subjects: this.subjects,
+                    interests: this.interests
+                }
+                console.log(data);
+                this.createNewUser(data);
             },
 
             onChangeFile(event) {
