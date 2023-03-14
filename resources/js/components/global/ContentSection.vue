@@ -58,12 +58,12 @@
         overflow: hidden;
         text-overflow: ellipsis;
         display: -webkit-box;
-        -webkit-line-clamp: 8;
+        -webkit-line-clamp: 6;
         -webkit-box-orient: vertical;
     }
 
     .card_parent:hover .card-content_body {
-        -webkit-line-clamp: 14 !important;
+        -webkit-line-clamp: 14;
     }
 
     .card-content_title {
