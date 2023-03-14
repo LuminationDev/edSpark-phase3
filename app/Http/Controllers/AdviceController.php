@@ -21,6 +21,7 @@ class AdviceController extends Controller
                 'post_content' => $advice->post_content,
                 'post_excerpt' => $advice->post_excerpt,
                 'author' => $advice->author->full_name,
+                'cover_image' => ($advice->cover_image) ? $advice->cover_image : NULL,
                 'post_date' => $advice->post_date,
                 'post_modified' => $advice->post_modified,
                 'post_status' => $advice->post_status,
@@ -36,3 +37,5 @@ class AdviceController extends Controller
 
     }
 }
+
+
