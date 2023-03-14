@@ -40,7 +40,8 @@ class UserController extends Controller
     public function createUser(Request $request)
     {
         if ($request->isMethod('post')) {
-            $userId = $request->id;
+            // $userId = $request->id;
+            $userId = '';
             $data = $request->data;
 
             $error = '';
@@ -55,7 +56,7 @@ class UserController extends Controller
                         'created_at' => Carbon::now(),
                         'updated_at' => Carbon::now()
                     ];
-                    User::insert($dataToInsert);
+                    $userId = User::insertGetId($dataToInsert);
                 } catch (Exception $e) {
                     $error = $e->getMessage();
                 }
