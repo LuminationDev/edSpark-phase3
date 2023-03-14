@@ -14,7 +14,8 @@ import {
     Community,
     Partners,
     Events,
-    SchoolsSingle
+    SchoolsSingle,
+    UserProfile
 } from './pages'
 
 const router = createRouter({
@@ -70,6 +71,11 @@ const router = createRouter({
             path: '/events',
             component: Events
         },
+        {
+            name: 'userProfile',
+            path: '/profile/:userId',
+            component: UserProfile
+        }
     ],
     scrollBehavior(to, from, savedPosition) {
         if (savedPosition) {

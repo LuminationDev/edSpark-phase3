@@ -40,8 +40,10 @@ class UserController extends Controller
     public function createUser(Request $request)
     {
         if ($request->isMethod('post')) {
-            $userId = $request->id;
+            $userId = '';
             $data = $request->data;
+
+            var_dump($data);
 
             $error = '';
 
@@ -55,33 +57,33 @@ class UserController extends Controller
                         'created_at' => Carbon::now(),
                         'updated_at' => Carbon::now()
                     ];
-                    User::insert($dataToInsert);
+                    $userId = User::insertGetId($dataToInsert);
                 } catch (Exception $e) {
                     $error = $e->getMessage();
                 }
             }
 
-            $metaData = $request->metaData;
-            if ($metaData) {
-                // save user info into meta table
-                $dataToInsert = [];
-                try{
-                    foreach ($metaData as $key => $value){
-                        $result = [
-                            'user_id' => $userId,
-                            'user_meta_key' => $key,
-                            'user_meta_value' => implode(', ', $value),
-                            'created_at' => Carbon::now(),
-                            'updated_at' => Carbon::now(),
-                        ];
-                        $dataToInsert[] = $result;
-                    }
-                    Usermeta::insert($dataToInsert);
-                } catch (Exception $e) {
-                    $error = $e->getMessage();
-                }
+            // $metaData = $request->metaData;
+            // if ($metaData) {
+            //     // save user info into meta table
+            //     $dataToInsert = [];
+            //     try{
+            //         foreach ($metaData as $key => $value){
+            //             $result = [
+            //                 'user_id' => $userId,
+            //                 'user_meta_key' => $key,
+            //                 'user_meta_value' => implode(', ', $value),
+            //                 'created_at' => Carbon::now(),
+            //                 'updated_at' => Carbon::now(),
+            //             ];
+            //             $dataToInsert[] = $result;
+            //         }
+            //         Usermeta::insert($dataToInsert);
+            //     } catch (Exception $e) {
+            //         $error = $e->getMessage();
+            //     }
 
-            }
+            // }
 
             return response()->json([
                 'message' => "User added successfully",
