@@ -2,63 +2,63 @@
     /**
      * Import Dependencies
      */
-    import { ref } from 'vue';
-    import { RouterLink } from 'vue-router';
+import { ref } from 'vue';
+import { RouterLink } from 'vue-router';
 
-    /**
-     * Import Components
-     */
+/**
+ * Import Components
+ */
 
 
-    /**
-     * Import SVG's
-     */
-    import NavSwoosh from '../svg/NavSwoosh.vue';
-    import Logo from '../svg/Logo.vue';
-    import Profile from '../svg/Profile.vue';
+/**
+ * Import SVG's
+ */
+import NavSwoosh from '../svg/NavSwoosh.vue';
+import Logo from '../svg/Logo.vue';
+import Profile from '../svg/Profile.vue';
 
-    /**
-     * Import Stores
-     */
-    import { useUserStore } from '../../stores/useUserStore';
+/**
+ * Import Stores
+ */
+import { useUserStore } from '../../stores/useUserStore';
 
-    export default {
-        setup() {
-            const userStore = useUserStore();
+export default {
 
-            const navDropdownToggle = ref(false);
-            const profileDropdown = ref(false);
+    components: {
+        NavSwoosh,
+        Logo,
+        Profile,
+    },
+    setup() {
+        const userStore = useUserStore();
 
-            return {
-                navDropdownToggle,
-                profileDropdown,
-                userStore,
-            }
-        },
+        const navDropdownToggle = ref(false);
+        const profileDropdown = ref(false);
 
-        components: {
-            NavSwoosh,
-            Logo,
-            Profile,
-        },
+        return {
+            navDropdownToggle,
+            profileDropdown,
+            userStore,
+        }
+    }, 
 
-        data() {
-            return {
-                currentUser: {}
-            }
-        },
+    data() {
+        return {
+            currentUser: {}
+        }
+    },
 
-        methods: {
-            handleAvatar() {
-                console.log('This has been clicked!!!');
-                this.profileDropdown = !this.profileDropdown
-            }
-        },
+    mounted() {
+        this.currentUser = this.userStore.getUser
+    },
 
-        mounted() {
-            this.currentUser = this.userStore.getUser
+    methods: {
+        handleAvatar() {
+            console.log('This has been clicked!!!');
+            this.profileDropdown = !this.profileDropdown
         }
     }
+}
 </script>
 
 <template>
@@ -83,33 +83,38 @@
                             Advice
                         </li>
                     </RouterLink>
-                        <li class="relative cursor-pointer">
+                    <li class="relative cursor-pointer">
+                        <div
+                            class="h-fit"
+                            @mouseover="navDropdownToggle = true"
+                            @mouseleave="navDropdownToggle = false"
+                        >
+                            Technology
                             <div
+                                v-show="navDropdownToggle"
+                                class="navDropdown absolute  "
                                 @mouseover="navDropdownToggle = true"
-                                @mouseleave="navDropdownToggle = false"
-                                class="h-fit"
                             >
-                                Technology
-                                <div v-show="navDropdownToggle" @mouseover="navDropdownToggle = true" class="navDropdown absolute  ">
-                                    <div class="bg-[#002856]/50 mt-[8px]">
-                                        <ul class="flex flex-col gap-4 py-4 text-white text-center text-[24px] font-semibold font-['Poppins']">
-                                            <RouterLink class="flex" to="/software">
-                                                <li class="px-4 mx-auto cursor-pointer hover:underline decoration-[#B8E2DC] decoration-4 underline-offset-8 transition-all">
-                                                    Software
-                                                </li>
-                                            </RouterLink>
-                                            <RouterLink to="/hardware">
-                                                <li class="px-4 mx-auto cursor-pointer hover:underline decoration-[#B8E2DC] decoration-4 underline-offset-8 transition-all">
-                                                    Hardware
-                                                </li>
-                                            </RouterLink>
-                                        </ul>
-                                    </div>
-
-
+                                <div class="bg-[#002856]/50 mt-[8px]">
+                                    <ul class="flex flex-col gap-4 py-4 text-white text-center text-[24px] font-semibold font-['Poppins']">
+                                        <RouterLink
+                                            class="flex"
+                                            to="/software"
+                                        >
+                                            <li class="px-4 mx-auto cursor-pointer hover:underline decoration-[#B8E2DC] decoration-4 underline-offset-8 transition-all">
+                                                Software
+                                            </li>
+                                        </RouterLink>
+                                        <RouterLink to="/hardware">
+                                            <li class="px-4 mx-auto cursor-pointer hover:underline decoration-[#B8E2DC] decoration-4 underline-offset-8 transition-all">
+                                                Hardware
+                                            </li>
+                                        </RouterLink>
+                                    </ul>
                                 </div>
                             </div>
-                        </li>
+                        </div>
+                    </li>
 
 
                     <RouterLink to="/community">
@@ -129,7 +134,6 @@
                             Events
                         </li>
                     </RouterLink>
-
                 </ul>
             </nav>
         </div>
@@ -140,18 +144,26 @@
         </div> -->
 
         <div class="w-[48px] h-[48px] absolute top-64 right-96">
-            <div @click.prevent="handleAvatar" class="z-50 relative h-full w-full bg-orange-500 flex rounded-full cursor-pointer hover:shadow-2xl">
-                <p class="text-[1.25rem] text-white font-bold m-auto">{{ this.currentUser.display_name }}</p>
-
+            <div
+                class="z-50 relative h-full w-full bg-orange-500 flex rounded-full cursor-pointer hover:shadow-2xl"
+                @click.prevent="handleAvatar"
+            >
+                <p class="text-[1.25rem] text-white font-bold m-auto">
+                    {{ currentUser.display_name }}
+                </p>
             </div>
 
-            <div v-show="this.profileDropdown" @mouseleave="handleAvatar" class="relative w-full h-full z-40">
+            <div
+                v-show="profileDropdown"
+                class="relative w-full h-full z-40"
+                @mouseleave="handleAvatar"
+            >
                 <div class="absolute py-6 px-4 -top-6 left-[24px] z-50 w-[240px] h-[350px] bg-[#637D99] flex flex-col shadow-lg">
                     <div class="w-full h-fit text-white text-[24px] font-bold text-center border-b border-white pb-3">
-                        <h5>{{ this.currentUser.full_name }}</h5>
+                        <h5>{{ currentUser.full_name }}</h5>
                     </div>
                     <div class="flex flex-col gap-3 py-3 border-b border-white">
-                        <router-link :to="`/profile/${this.currentUser.id}`">
+                        <router-link :to="`/profile/${currentUser.id}`">
                             <button class="flex flex-row gap-4 justify-start py-3 px-2 text-white text-[18px] font-medium place-items-center hover:bg-[#405974]">
                                 <Profile />
                                 Profile
@@ -176,13 +188,9 @@
             </div>
         </div>
 
-        <Logo class="absolute right-20 top-4 z-30"/>
+        <Logo class="absolute right-20 top-4 z-30" />
         <NavSwoosh class="w-full absolute -bottom-6 left-0 right-0 pointer-events-none" />
     </div>
-
-
-
-
 </template>
 
 <style>
