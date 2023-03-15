@@ -22,11 +22,16 @@ class Hardware extends Model
      * @var array
      */
     protected $fillable = [
+        'owner_id',
         'product_name',
         'product_content',
         'product_excerpt',
         'price',
-        'product_SKU'
+        'product_SKU',
+        'created',
+        'modified',
+        'product_isLoan'
+
     ];
 
     public function owner()
