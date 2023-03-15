@@ -45,13 +45,24 @@ class SiteResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('site_uid')->label('uid'),
-                Tables\Columns\TextColumn::make('site_name')->label('name'),
-                Tables\Columns\TextColumn::make('site_value')->label('value')->wrap(),
-                // Tables\Columns\TextColumn::make('created_at')
-                //     ->dateTime(),
-                // Tables\Columns\TextColumn::make('updated_at')
-                //     ->dateTime(),
+                // Tables\Columns\TextColumn::make('site_uid')->label('uid'),
+                Tables\Columns\TextColumn::make('site_name')
+                    ->label('Name')
+                    ->sortable()
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('site_value')
+                    ->label('Value')
+                    ->limit(50),
+                Tables\Columns\TextColumn::make('category_desc')
+                    ->label('Category')
+                    ->sortable()
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('site_type_desc')
+                    ->label('Type')
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('site_sub_type_desc')
+                    ->label('Sub Type')
+                    ->searchable()
             ])
             ->filters([
                 //

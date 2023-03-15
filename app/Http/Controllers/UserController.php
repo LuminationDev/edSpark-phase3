@@ -97,4 +97,55 @@ class UserController extends Controller
 
         }
     }
+
+    public function updateUser(Request $request)
+    {
+        if ($request->isMethod('post')) {
+
+            $userId = $request->id;
+            $data = $request->data;
+            $metaData = $request->metaData;
+            // dd($data['updateField']);
+
+            $updatedData = [];
+            $updatedMetaData = [];
+
+            $error = '';
+
+            if ($data) {
+                // TODO update user table
+                try{
+                    User::where('id', '=', $userId)
+                        ->update([$data['updateField'] => $data['updateValue']]);
+                    $updatedUser = User::find($userId);
+                } catch (Exception $e){
+                    $error = $e->getMessage();
+                }
+            }
+
+            if ($metaData) {
+                // TODO update user meta table
+                try {
+                    Usermeta::where('user_id', '=', $userId)
+                        ->update([
+                            'user_meta_key' => $metaData['updateField'],
+                            'user_meta_value' => implode(', ', $metaData['updateValue']),
+                        ]);
+                    $updatedMetaData = Usermeta::where('user_id', $userId)->get();
+
+                } catch (Exception $e){
+                    $error = $e->getMessage();
+                }
+            }
+
+            return response()->json([
+                'message' => "User updated successfully",
+                // 'data' => $updatedData,
+                // 'metaData' => $updatedMetaData,
+                'error' => $error,
+                'status' => 200
+            ]);
+
+        }
+    }
 }
