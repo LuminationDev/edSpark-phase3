@@ -14,10 +14,9 @@ import {
     Community,
     Partners,
     Events,
-    SchoolsSingle,
+    SchoolSingle,
     UserProfile
 } from './pages'
-
 const router = createRouter({
     history: createWebHistory(),
     routes: [
@@ -37,9 +36,9 @@ const router = createRouter({
             component: Schools,
         },
         {
-            name: 'schoolsSingle',
+            name: 'schoolSingle',
             path: '/schools/:name',
-            component: SchoolsSingle
+            component: SchoolSingle
         },
         {
             name: 'advice',
