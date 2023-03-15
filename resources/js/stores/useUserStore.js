@@ -30,17 +30,22 @@ export const useUserStore = defineStore('user', {
         },
 
         async createUser(user) {
+
             /**
-             * Temporry user ID (Jake M)
+             * Set the users initials - save as display_name
              */
-            const userId = 1
-            /** **/
+            let str = user.name;
+            let matches = str.match(/\b(\w)/g);
+            let initials = matches.join('');
+
+            console.log(initials);
 
             let data = {
                 data: {
                     full_name: user.name,
                     email: user.email,
-                    role: user.role
+                    role: user.role,
+                    display_name: initials
                 },
                 metaData: {
                     yearLevels: user.yearLevels,
