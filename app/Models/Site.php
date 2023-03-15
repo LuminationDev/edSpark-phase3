@@ -22,7 +22,17 @@ class Site extends Model
      * @var array
      */
     protected $fillable = [
+        'site_uid',
+        'site_id',
         'site_name',
-        'site_value'
+        'site_value',
+        'category_code',
+        'category_desc',
+        'site_type_code',
+        'site_type_desc',
+        'site_sub_type_code',
+        'site_sub_type_desc',
+        'created_at',
+        'updated_at'
     ];
 }

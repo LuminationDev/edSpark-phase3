@@ -33,10 +33,13 @@ class HardwareResource extends Resource
                         Forms\Components\TextInput::make('product_name')
                             ->required()
                             ->maxLength(255),
-                        Forms\Components\Textarea::make('product_content')
+                        Forms\Components\RichEditor::make('product_content')
                             ->required(),
-                        Forms\Components\Textarea::make('product_excerpt')
-                            ->maxLength(65535),
+                        Forms\Components\RichEditor::make('product_excerpt')
+                            ->maxLength(65535)
+                            ->disableToolbarButtons([
+                                'attachFiles'
+                            ]),
                         Forms\Components\TextInput::make('price')
                             ->required(),
                         Forms\Components\BelongsToSelect::make('brand')
