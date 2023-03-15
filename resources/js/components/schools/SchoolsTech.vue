@@ -1,16 +1,19 @@
-<script>
-    export default {
-        props: {
-            tech: Object
-        }
+<script setup>
+const props = defineProps({
+    techHover: {
+        type: Object,
+        required: true
     }
+})
 </script>
 
-<template>
+<template> 
     <div class="absolute left-0 px-[24px] pt-[18px]">
-        <h5 class="hidden group-hover/tech:inline-block text-[16px] font-bold">{{ tech.category }}:</h5>
+        <h5 class="hidden group-hover/tech:inline-block text-[16px] font-bold">
+            {{ techHover.category }}
+        </h5>
         <div class="schools-tech_description">
-            <p><strong>{{ tech.name }}</strong> {{ tech.description }}</p>
+            <p><strong>{{ techHover.name }}</strong> {{ techHover.description }}</p>
         </div>
     </div>
 </template>
