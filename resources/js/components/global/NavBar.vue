@@ -6,11 +6,6 @@ import { ref } from 'vue';
 import { RouterLink } from 'vue-router';
 
 /**
- * Import Components
- */
-
-
-/**
  * Import SVG's
  */
 import NavSwoosh from '../svg/NavSwoosh.vue';
@@ -22,40 +17,47 @@ import Profile from '../svg/Profile.vue';
  */
 import { useUserStore } from '../../stores/useUserStore';
 
-export default {
+    /**
+     * Import Components
+     */
+    import ProfileDropdown from './ProfileDropdown.vue';
 
-    components: {
-        NavSwoosh,
-        Logo,
-        Profile,
-    },
-    setup() {
-        const userStore = useUserStore();
+    export default {
+        setup() {
+            const userStore = useUserStore();
 
-        const navDropdownToggle = ref(false);
-        const profileDropdown = ref(false);
+            const navDropdownToggle = ref(false);
+            const profileDropdown = ref(false);
 
-        return {
-            navDropdownToggle,
-            profileDropdown,
-            userStore,
-        }
-    }, 
+            return {
+                navDropdownToggle,
+                profileDropdown,
+                userStore,
+            }
+        },
 
-    data() {
-        return {
-            currentUser: {}
-        }
-    },
+        components: {
+            NavSwoosh,
+            Logo,
+            Profile,
+            ProfileDropdown
+        },
 
-    mounted() {
-        this.currentUser = this.userStore.getUser
-    },
+        data() {
+            return {
+                currentUser: {}
+            }
+        },
 
-    methods: {
-        handleAvatar() {
-            console.log('This has been clicked!!!');
-            this.profileDropdown = !this.profileDropdown
+        methods: {
+            handleAvatarClick() {
+                console.log('This has been clicked!!!');
+                this.profileDropdown = !this.profileDropdown
+            }
+        },
+
+        mounted() {
+            this.currentUser = this.userStore.getUser
         }
     }
 }
@@ -187,6 +189,11 @@ export default {
                 </div>
             </div>
         </div>
+        <profileDropdown
+            :currentUser="this.currentUser"
+            :profileDropdown="this.profileDropdown"
+            @handleAvatarClick="handleAvatarClick"
+        />
 
         <Logo class="absolute right-20 top-4 z-30" />
         <NavSwoosh class="w-full absolute -bottom-6 left-0 right-0 pointer-events-none" />
