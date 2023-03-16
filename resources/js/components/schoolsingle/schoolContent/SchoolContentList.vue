@@ -13,6 +13,7 @@ const props = defineProps({
             <li
                 v-for="(listItem,index) in data.data.items"
                 :key="index"
+                class="pb-1"
             >
                 {{ listItem }}
             </li>
@@ -23,6 +24,7 @@ const props = defineProps({
             <li
                 v-for="(listItem,index) in data.data.items"
                 :key="index"
+                class="pb-1"
             >
                 {{ listItem }}
             </li>
