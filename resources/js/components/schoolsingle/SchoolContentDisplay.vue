@@ -2,6 +2,7 @@
 import SchoolContentHeading from "@/js/components/schoolsingle/schoolContent/SchoolContentHeading.vue";
 import SchoolContentParagraph from "@/js/components/schoolsingle/schoolContent/SchoolContentParagraph.vue";
 import SchoolContentList from "@/js/components/schoolsingle/schoolContent/SchoolContentList.vue";
+import SchoolContentImage from "@/js/components/schoolsingle/schoolContent/SchoolContentImage.vue";
 /**
  * Receive the whole content from the parents
  * either temp data or data received from Https call
@@ -16,17 +17,25 @@ const props = defineProps({
      * schoolContent.blocks
      * [{id: string,
      * type: string ( Heading, paragraph, list)
-     * data: Object {
-     *     text: string
-     * } <paragraph>
-     * or Object {
-     *     text: string
-     *     level: integer (default 2)
-     * } <heading>
-     *     Object {
-     *     style: string (ordered)
-     *     items: Array<String>
-     * } <List>
+     * data:
+     *     Object<paragraph> {
+     *          text: string
+     *      }
+     *     Object<heading> {
+     *          text: string
+     *          level: integer (default 2)
+     *      }
+     *     Object<list> {
+     *          style: string (ordered)
+     *          items: Array<String>
+     *      }
+     *      Object<image>{
+     *          url: string,
+     *          caption: string,
+     *          withBorder: boolean
+     *          withBackgroun: boolean,
+     *          stretched: boolean
+     *      }
      * }
      * ]
      */
@@ -49,6 +58,9 @@ const props = defineProps({
         </template>
         <template v-else-if="item.type == 'list'">
             <SchoolContentList :data="item" />
+        </template>
+        <template v-else-if="item.type == 'image'">
+            <SchoolContentImage :data="item" />
         </template>
     </div>
 </template>

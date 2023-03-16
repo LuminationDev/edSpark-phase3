@@ -59,6 +59,17 @@ const tempSchoolContent = {
                     "We do not compromise under no circumstances"
                 ]
             }
+        },
+        {
+            "id": "I_AlVcagery",
+            "type" : "image",
+            "data" : {
+                "url" : "https://www.tesla.com/tesla_theme/assets/img/_vehicle_redesign/roadster_and_semi/roadster/hero.jpg",
+                "caption" : "Roadster // tesla.com",
+                "withBorder" : false,
+                "withBackground" : false,
+                "stretched" : true
+            }
         }
     ],
     "version": "2.26.5"
