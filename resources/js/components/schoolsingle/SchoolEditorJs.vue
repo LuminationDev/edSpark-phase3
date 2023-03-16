@@ -76,12 +76,32 @@ const editor = new EditorJS({
     },
     onChange: (api, event) =>{
         // console.log(api.blocks)
-        console.log(event.detail.target.holder.innerText)
-        console.log(event.detail.index + ' is the index emitting the onchange')
+        // console.log(event)
+        // console.log(event.detail.target.holder.innerText)
+        // console.log(event.detail.index + ' is the index emitting the onchange')
     }
 })
 
-const handleEditorButtonClick = () =>{
+const editorJsEvent = (customEvent) => {
+    // customEvent.type
+    switch(customEvent.type){
+    case 'block-added':
+        console.log('handler for blockadded')
+        break;
+    case 'block-changed':
+        console.log('handler for block changed')
+        break;
+    }
+
+}
+
+
+const handleEditorSaveClick = () =>{
+    editor.save().then(outputData => {
+        console.log('we have ' + JSON.stringify(outputData))
+    }).catch(err =>{
+        console.log('error has happened ' + err)
+    })
 }
 </script>
 <template>
@@ -90,11 +110,9 @@ const handleEditorButtonClick = () =>{
         class="text-genericDark mt-8 rounded-lg editor"
     />
     <button
-
-        template
-        class="py-5 px-2 bg-slate-600 rounded-lg"
-        @click="handleEditorButtonClick"
+        class="w-18 rounded-lg px-2 py-4  bg-slate-500"
+        @click="handleEditorSaveClick"
     >
-        Testin button
+        Save Content
     </button>
 </template>
