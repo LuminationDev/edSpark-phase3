@@ -6,7 +6,7 @@ import SchoolContentDisplay from "@/js/components/schoolsingle/SchoolContentDisp
 
 const editMode = ref(false)
 
-// Axios here call to fetch content
+// Axios here call to fetch content from backenmd
 
 const tempSchoolContent = {
     "time": 1678961115519,
