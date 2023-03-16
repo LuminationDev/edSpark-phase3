@@ -6,6 +6,8 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\AdviceController;
 use App\Http\Controllers\SoftwareController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\ProductController;
+use App\Http\Controllers\SiteController;
 
 /*
 |--------------------------------------------------------------------------
@@ -18,9 +20,19 @@ use App\Http\Controllers\UserController;
 |
 */
 Route::middleware('api')->group(function() {
-    Route::resource('category', CategoryController::class);
+    // Content Management
     Route::get('fetchAdvicePosts', [AdviceController::class, 'fetchAdvicePosts']);
     Route::get('fetchSoftwarePosts', [SoftwareController::class, 'fetchSoftwarePosts']);
+
+    // User Management
     Route::get('fetchUser/{id}', [UserController::class, 'fetchUser']);
     Route::post('createUser', [UserController::class, 'createUser']);
+    Route::post('updateUser', [UserController::class, 'updateUser']);
+    Route::get('fetchAllSites', [SiteController::class, 'fetchAllSites']);
+    Route::get('fetchSiteById/{id}', [SiteController::class, 'fetchSiteById']);
+
+    // Product Management
+    Route::get('fetchAllBrands', [ProductController::class, 'fetchAllBrands']);
+    Route::get('fetchAllCategories', [ProductController::class, 'fetchAllCategories']);
+    Route::get('fetchAllProducts', [ProductController::class, 'fetchAllProducts']);
 });
