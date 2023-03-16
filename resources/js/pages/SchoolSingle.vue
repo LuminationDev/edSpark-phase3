@@ -75,6 +75,7 @@ const tempSchoolData = {
                                         Home
                                     </p>
                                 </router-link>
+                                <!-- TODO: Breadcrumb builder -- gotta be smart -->
                                 <ChevronRight />
                                 <router-link to="/schools">
                                     <p class="text-[14px] text-white hover:text-[#44B8F3]">
@@ -101,7 +102,6 @@ const tempSchoolData = {
                 <SchoolContent />
             </div>
             <div class="school-tech basis-1/3">
-                <OurStory />
                 <SchoolTech :tech-list="tempSchoolData.techUsed" />
             </div>
         </div>
