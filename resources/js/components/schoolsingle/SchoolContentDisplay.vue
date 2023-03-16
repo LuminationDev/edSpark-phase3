@@ -49,7 +49,7 @@ const props = defineProps({
         class="schoolContentIterator mb-2"
     >
         <!-- All styles are still hardcoded-->
-        <!--  Once we figured out styling from Editorjs, render accordingly     -->
+        <!-- Once we figured out styling from Editorjs, render accordingly     -->
         <template v-if="item.type == 'header'">
             <SchoolContentHeading :data="item" />
         </template>
