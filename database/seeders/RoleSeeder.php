@@ -18,6 +18,13 @@ class RoleSeeder extends Seeder
         // Role::factory(5)->create();
         $roles = [
             [
+                'role_uid' => 'f5802c86-964c-4d0a-8830-da253d9379f1',
+                'role_name' => 'Superadmin',
+                'role_value' => 'Super admin',
+                'created_at' => new \DateTime(),
+                'updated_at' => new \DateTime(),
+            ],
+            [
                 'role_uid' => '005859de-df19-47a9-b118-b25e6273df22',
                 'role_name' => 'Administrator',
                 'role_value' => 'Able to administrate',

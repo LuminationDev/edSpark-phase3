@@ -17,8 +17,6 @@ return new class extends Migration
             // FOREIGN KEYS
             $table->foreign('role_id')
                 ->references('id')->on('roles')->onDelete('cascade');
-            $table->foreign('permission_id')
-                ->references('id')->on('user_permissions')->onDelete('cascade');
             $table->foreign('site_id')
                 ->references('id')->on('sites')->onDelete('cascade');
             $table->foreign('usertype_id')
@@ -35,7 +33,6 @@ return new class extends Migration
     {
         Schema::table('users', function (Blueprint $table) {
             $table->dropForeign(['role_id']);
-            $table->dropForeign(['permission_id']);
             $table->dropForeign(['site_id']);
             $table->dropForeign(['usertype_id']);
         });

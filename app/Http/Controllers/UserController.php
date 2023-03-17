@@ -11,7 +11,9 @@ class UserController extends Controller
 {
     public function fetchUser($id)
     {
+
         $user = User::find($id);
+
         $userMetaData = Usermeta::where('user_id', $id)->get();
         $userMetaDataToSend = [];
         if( $userMetaData) {
@@ -31,6 +33,7 @@ class UserController extends Controller
             'email' => $user->email,
             'status' => $user->status,
             'role' => ($user->role) ? $user->role->role_name : NULL,
+            'permissions' => ($user->role) ? $user->role->permissions->pluck('permission_name') : NULL,
             'metadata' => ($userMetaDataToSend) ? $userMetaDataToSend : NULL
         ];
 

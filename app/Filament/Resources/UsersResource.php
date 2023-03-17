@@ -22,7 +22,7 @@ class UsersResource extends Resource
     protected static ?string $navigationGroup = 'User Management';
     protected static ?string $navigationGroupIcon = 'heroicon-o-collection';
 
-    protected static ?string $navigationIcon = 'heroicon-o-collection';
+    protected static ?string $navigationIcon = 'heroicon-o-users';
 
 
     public static function form(Form $form): Form
