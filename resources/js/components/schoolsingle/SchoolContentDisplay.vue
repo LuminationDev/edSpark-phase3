@@ -33,7 +33,7 @@ const props = defineProps({
      *          url: string,
      *          caption: string,
      *          withBorder: boolean
-     *          withBackgroun: boolean,
+     *          withBackground: boolean,
      *          stretched: boolean
      *      }
      * }
