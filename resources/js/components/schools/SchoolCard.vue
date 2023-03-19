@@ -29,8 +29,8 @@ const props = defineProps({
 
 </script>
 <template>
-    <router-link :to="`/schools/${props.schoolData.title}`">
-        <ContentSection :tech-used="props.schoolData.techUsed">
+    <router-link :to="`/schools/${props.schoolData.full_name}`">
+        <ContentSection :tech-used="JSON.parse(props.schoolData.tech_used)">
             <template #cover>
                 <div
                     :class="`bg-[url('${props.schoolData.cover}')]`"
@@ -38,7 +38,7 @@ const props = defineProps({
                 />
             </template>
             <template #title>
-                {{ props.schoolData.title }}
+                {{ props.schoolData.full_name }}
             </template>
             <template #techUsed="{techUsed}">
                 <p class="pt-6 text-black text-[18px] font-medium">

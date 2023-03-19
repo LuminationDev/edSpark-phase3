@@ -74,6 +74,7 @@ const tempSchoolContent = {
     ],
     "version": "2.26.5"
 }
+console.log(JSON.stringify(tempSchoolContent))
 </script>
 <template>
     <div
