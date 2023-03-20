@@ -9,6 +9,6 @@ const props = defineProps({
 </script>
 <template>
     <div class="text-lg ">
-        {{ data.data.text }}
+        <span v-html="data.data.text" />
     </div>
 </template>
