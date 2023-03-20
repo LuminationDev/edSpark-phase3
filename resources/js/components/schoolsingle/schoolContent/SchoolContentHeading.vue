@@ -7,7 +7,7 @@ const props = defineProps({
 })
 </script>
 <template>
-    <div class="text-xl font-bold ">
-        {{ data.data.text }}
+    <div class="text-2xl">
+        <span v-html="data.data.text" />
     </div>
 </template>

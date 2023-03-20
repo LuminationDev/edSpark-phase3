@@ -9,13 +9,13 @@ const props = defineProps({
 </script>
 <template>
     <div v-if="data.data.style == 'ordered'">
-        <ol>
+        <ol class="list-decimal ml-2">
             <li
                 v-for="(listItem,index) in data.data.items"
                 :key="index"
-                class="pb-1"
+                class="pb-1 ml-1"
             >
-                {{ listItem }}
+                <span v-html="listItem" />
             </li>
         </ol>
     </div>
@@ -26,7 +26,7 @@ const props = defineProps({
                 :key="index"
                 class="pb-1"
             >
-                {{ listItem }}
+                <span v-html="listItem" />
             </li>
         </ul>
     </div>
