@@ -39,4 +39,6 @@ Route::middleware('api')->group(function() {
     // School Info Management
     Route::get('fetchSchoolInfoById/{id}', [SchoolInfoController::class, 'fetchSchoolInfoById']);
     Route::get('fetchSchoolByFullName/{name}',[SchoolInfoController::class, 'fetchSchoolByFullName']);
+    Route::get('getAllInfoOfOneSchool/{name}',[SchoolInfoController::class, 'getAllInfoOfOneSchoolByFullName']);
+    Route::post('setSchoolInfoByName/{name}',[SchoolInfoController::class, 'setSchoolInfoByName']);
 });
