@@ -101,6 +101,12 @@
                                                                                 <li class="tocify-item level-2" data-unique="endpoints-GETapi-fetchAllProducts">
                                 <a href="#endpoints-GETapi-fetchAllProducts">GET api/fetchAllProducts</a>
                             </li>
+                                                                                <li class="tocify-item level-2" data-unique="endpoints-GETapi-fetchSchoolInfoById--id-">
+                                <a href="#endpoints-GETapi-fetchSchoolInfoById--id-">GET api/fetchSchoolInfoById/{id}</a>
+                            </li>
+                                                                                <li class="tocify-item level-2" data-unique="endpoints-GETapi-fetchSchoolByFullName--name-">
+                                <a href="#endpoints-GETapi-fetchSchoolByFullName--name-">GET api/fetchSchoolByFullName/{name}</a>
+                            </li>
                                                                         </ul>
                             </ul>
             </div>
@@ -110,7 +116,7 @@
     </ul>
 
     <ul class="toc-footer" id="last-updated">
-        <li>Last updated: March 15, 2023</li>
+        <li>Last updated: March 20, 2023</li>
     </ul>
 </div>
 
@@ -187,80 +193,80 @@ print_r(json_decode((string) $body));</code></pre></div>
             <pre><code class="language-http">cache-control: no-cache, private
 content-type: application/json
 x-ratelimit-limit: 60
-x-ratelimit-remaining: 59
+x-ratelimit-remaining: 49
 access-control-allow-origin: *
  </code></pre></details>         <pre>
 
 <code class="language-json" style="max-height: 300px;">[
     {
         &quot;post_id&quot;: 1,
-        &quot;post_title&quot;: &quot;Sequi sint et eos iusto.&quot;,
-        &quot;post_content&quot;: &quot;Dolore aut deleniti expedita soluta omnis. Consequatur nostrum explicabo qui accusantium rem. Quasi qui ducimus similique repudiandae consequuntur dolorem quibusdam. Fuga nam consequatur odio.&quot;,
-        &quot;post_excerpt&quot;: &quot;Consequuntur doloremque sapiente occaecati omnis. Sit occaecati sed quis autem eos. Sunt perferendis sed hic ratione ab quia culpa voluptatem.&quot;,
+        &quot;post_title&quot;: &quot;Nihil officiis reiciendis illum omnis animi odio itaque.&quot;,
+        &quot;post_content&quot;: &quot;Enim incidunt odio itaque laborum soluta. Corporis beatae aut omnis ut excepturi at.&quot;,
+        &quot;post_excerpt&quot;: &quot;Quae qui numquam pariatur aut deleniti est. Nemo quia magnam voluptate aut provident sequi. Esse eos velit quia non.&quot;,
         &quot;author&quot;: &quot;Jake Mackinlay&quot;,
-        &quot;cover_image&quot;: &quot;https://via.placeholder.com/640x480.png/0066ff?text=animi&quot;,
-        &quot;post_date&quot;: &quot;1992-06-16 11:04:18&quot;,
-        &quot;post_modified&quot;: &quot;2012-07-04 20:14:18&quot;,
+        &quot;cover_image&quot;: &quot;https://via.placeholder.com/640x480.png/009966?text=molestiae&quot;,
+        &quot;post_date&quot;: &quot;1995-02-13 12:19:47&quot;,
+        &quot;post_modified&quot;: &quot;1980-09-26 11:05:47&quot;,
         &quot;post_status&quot;: &quot;Published&quot;,
         &quot;advice_type&quot;: null,
-        &quot;created_at&quot;: &quot;2023-03-15T02:47:46.000000Z&quot;,
-        &quot;updated_at&quot;: &quot;2023-03-15T02:47:46.000000Z&quot;
+        &quot;created_at&quot;: &quot;2023-03-16T22:42:36.000000Z&quot;,
+        &quot;updated_at&quot;: &quot;2023-03-16T22:42:36.000000Z&quot;
     },
     {
         &quot;post_id&quot;: 2,
-        &quot;post_title&quot;: &quot;Quod commodi distinctio provident.&quot;,
-        &quot;post_content&quot;: &quot;Rerum ipsa aut ratione minima officiis. Quaerat ipsa commodi rem alias adipisci ea.&quot;,
-        &quot;post_excerpt&quot;: &quot;Deleniti est omnis ad possimus. Saepe possimus et officia officia ut ea illum.&quot;,
+        &quot;post_title&quot;: &quot;Blanditiis quod molestias hic praesentium suscipit architecto.&quot;,
+        &quot;post_content&quot;: &quot;Et unde qui itaque qui distinctio occaecati. Quia et sit aliquam rerum quo vel delectus nobis. Molestiae velit dolorem et vel.&quot;,
+        &quot;post_excerpt&quot;: &quot;Cupiditate sed sed veritatis aperiam. Sit doloremque et et sapiente eos incidunt.&quot;,
         &quot;author&quot;: &quot;Jake Mackinlay&quot;,
-        &quot;cover_image&quot;: &quot;https://via.placeholder.com/640x480.png/00bbee?text=debitis&quot;,
-        &quot;post_date&quot;: &quot;2006-12-25 15:09:14&quot;,
-        &quot;post_modified&quot;: &quot;1989-08-19 02:35:40&quot;,
+        &quot;cover_image&quot;: &quot;https://via.placeholder.com/640x480.png/0088aa?text=totam&quot;,
+        &quot;post_date&quot;: &quot;2021-11-08 02:01:10&quot;,
+        &quot;post_modified&quot;: &quot;2019-04-06 07:22:45&quot;,
         &quot;post_status&quot;: &quot;Published&quot;,
         &quot;advice_type&quot;: null,
-        &quot;created_at&quot;: &quot;2023-03-15T02:47:46.000000Z&quot;,
-        &quot;updated_at&quot;: &quot;2023-03-15T02:47:46.000000Z&quot;
+        &quot;created_at&quot;: &quot;2023-03-16T22:42:36.000000Z&quot;,
+        &quot;updated_at&quot;: &quot;2023-03-16T22:42:36.000000Z&quot;
     },
     {
         &quot;post_id&quot;: 3,
-        &quot;post_title&quot;: &quot;Architecto et sit aut quo ea.&quot;,
-        &quot;post_content&quot;: &quot;Aut quos cum inventore est voluptatem est facilis. At aut rerum dolores quam voluptatem perspiciatis reprehenderit. Consectetur molestias quis cupiditate necessitatibus laboriosam veritatis. Modi accusamus voluptas rem aut exercitationem corrupti. Sint dolores cupiditate fugiat est sit dicta.&quot;,
-        &quot;post_excerpt&quot;: &quot;Voluptatum rerum quia quas necessitatibus asperiores id. Laborum laudantium accusantium animi maxime et aut voluptatem repellat. Architecto qui velit enim sit sunt earum.&quot;,
+        &quot;post_title&quot;: &quot;Perferendis eius vel sed.&quot;,
+        &quot;post_content&quot;: &quot;Quia saepe dignissimos adipisci laudantium ut. Ut aspernatur rerum quia. Quia ut ullam autem.&quot;,
+        &quot;post_excerpt&quot;: &quot;Et tempora nobis ex voluptatum odit id. Sint ut vitae pariatur non minus omnis et officia. Aperiam culpa ad corporis dolore hic quo.&quot;,
         &quot;author&quot;: &quot;Jake Mackinlay&quot;,
-        &quot;cover_image&quot;: &quot;https://via.placeholder.com/640x480.png/0088aa?text=rerum&quot;,
-        &quot;post_date&quot;: &quot;2008-10-22 22:50:34&quot;,
-        &quot;post_modified&quot;: &quot;1999-01-28 04:16:29&quot;,
+        &quot;cover_image&quot;: &quot;https://via.placeholder.com/640x480.png/001188?text=odio&quot;,
+        &quot;post_date&quot;: &quot;2000-06-19 03:49:03&quot;,
+        &quot;post_modified&quot;: &quot;1977-01-10 22:05:48&quot;,
         &quot;post_status&quot;: &quot;Published&quot;,
         &quot;advice_type&quot;: null,
-        &quot;created_at&quot;: &quot;2023-03-15T02:47:46.000000Z&quot;,
-        &quot;updated_at&quot;: &quot;2023-03-15T02:47:46.000000Z&quot;
+        &quot;created_at&quot;: &quot;2023-03-16T22:42:36.000000Z&quot;,
+        &quot;updated_at&quot;: &quot;2023-03-16T22:42:36.000000Z&quot;
     },
     {
         &quot;post_id&quot;: 4,
-        &quot;post_title&quot;: &quot;Qui laborum libero accusamus asperiores dolorem.&quot;,
-        &quot;post_content&quot;: &quot;Cumque ut culpa eligendi quo. Quo sit sit saepe tenetur ut labore corrupti mollitia. Vel et rerum cumque. Architecto voluptas voluptas vel quia tempore qui. Nulla qui at rem vel necessitatibus veritatis.&quot;,
-        &quot;post_excerpt&quot;: &quot;Aliquid temporibus nulla voluptatibus excepturi deserunt commodi. Commodi ut non accusantium facilis natus reprehenderit. Voluptas soluta debitis qui et ut.&quot;,
+        &quot;post_title&quot;: &quot;Amet eius dolores maxime laudantium sunt ut.&quot;,
+        &quot;post_content&quot;: &quot;Cum sequi quo suscipit reprehenderit. Qui molestias earum quia illum consequuntur consequuntur deserunt. Porro facere dolorum exercitationem accusamus.&quot;,
+        &quot;post_excerpt&quot;: &quot;Reprehenderit alias voluptas ratione qui. Aut dignissimos eligendi quis exercitationem odit molestiae asperiores. Quasi sunt aut saepe numquam et nisi.&quot;,
         &quot;author&quot;: &quot;Jake Mackinlay&quot;,
-        &quot;cover_image&quot;: &quot;https://via.placeholder.com/640x480.png/0033cc?text=ad&quot;,
-        &quot;post_date&quot;: &quot;2013-02-23 11:58:37&quot;,
-        &quot;post_modified&quot;: &quot;2000-03-31 04:20:16&quot;,
+        &quot;cover_image&quot;: &quot;https://via.placeholder.com/640x480.png/00dd11?text=occaecati&quot;,
+        &quot;post_date&quot;: &quot;1980-12-04 19:26:44&quot;,
+        &quot;post_modified&quot;: &quot;2021-01-05 14:28:20&quot;,
         &quot;post_status&quot;: &quot;Published&quot;,
         &quot;advice_type&quot;: null,
-        &quot;created_at&quot;: &quot;2023-03-15T02:47:46.000000Z&quot;,
-        &quot;updated_at&quot;: &quot;2023-03-15T02:47:46.000000Z&quot;
+        &quot;created_at&quot;: &quot;2023-03-16T22:42:36.000000Z&quot;,
+        &quot;updated_at&quot;: &quot;2023-03-16T22:42:36.000000Z&quot;
     },
     {
         &quot;post_id&quot;: 5,
-        &quot;post_title&quot;: &quot;Esse quidem minus nesciunt laborum dolorem et fuga.&quot;,
-        &quot;post_content&quot;: &quot;Quae quae nihil aliquam aut asperiores est. Quis voluptatum voluptate porro. Facilis ducimus distinctio quaerat nam labore aut.&quot;,
-        &quot;post_excerpt&quot;: &quot;Sequi tenetur sed in et. Laborum ipsa labore illo error nemo ea voluptatibus. Neque nisi dolorum natus rerum officia. Aliquam consequatur dolor rerum laudantium.&quot;,
+        &quot;post_title&quot;: &quot;Quod excepturi qui maxime eius numquam.&quot;,
+        &quot;post_content&quot;: &quot;Qui ut vitae et ab velit. Recusandae sit sit voluptate similique est odit. Nihil quod maxime eveniet. Fugit ad vitae numquam laboriosam voluptas sapiente.&quot;,
+        &quot;post_excerpt&quot;: &quot;Et molestiae quia ipsum unde. Et debitis vitae voluptate atque ducimus iste voluptatibus. Quia est omnis itaque dolorem et aut magni.&quot;,
         &quot;author&quot;: &quot;Jake Mackinlay&quot;,
-        &quot;cover_image&quot;: &quot;https://via.placeholder.com/640x480.png/00ddcc?text=molestiae&quot;,
-        &quot;post_date&quot;: &quot;2016-09-07 05:33:03&quot;,
-        &quot;post_modified&quot;: &quot;2000-10-29 08:55:51&quot;,
+        &quot;cover_image&quot;: &quot;https://via.placeholder.com/640x480.png/0044dd?text=quas&quot;,
+        &quot;post_date&quot;: &quot;1997-12-06 11:28:57&quot;,
+        &quot;post_modified&quot;: &quot;1985-08-29 02:43:59&quot;,
         &quot;post_status&quot;: &quot;Published&quot;,
         &quot;advice_type&quot;: null,
-        &quot;created_at&quot;: &quot;2023-03-15T02:47:46.000000Z&quot;,
-        &quot;updated_at&quot;: &quot;2023-03-15T02:47:46.000000Z&quot;
+        &quot;created_at&quot;: &quot;2023-03-16T22:42:36.000000Z&quot;,
+        &quot;updated_at&quot;: &quot;2023-03-16T22:42:36.000000Z&quot;
     }
 ]</code>
  </pre>
@@ -382,80 +388,80 @@ print_r(json_decode((string) $body));</code></pre></div>
             <pre><code class="language-http">cache-control: no-cache, private
 content-type: application/json
 x-ratelimit-limit: 60
-x-ratelimit-remaining: 58
+x-ratelimit-remaining: 48
 access-control-allow-origin: *
  </code></pre></details>         <pre>
 
 <code class="language-json" style="max-height: 300px;">[
     {
         &quot;post_id&quot;: 1,
-        &quot;post_title&quot;: &quot;Deleniti nihil deleniti quae maiores.&quot;,
-        &quot;post_content&quot;: &quot;Quas et hic suscipit iste voluptatem. Veritatis et soluta laudantium omnis facilis.&quot;,
-        &quot;post_excerpt&quot;: &quot;Aut amet est nostrum vel ipsam. Nobis maxime debitis ullam modi quibusdam inventore esse incidunt. Nulla saepe similique et ipsam.&quot;,
+        &quot;post_title&quot;: &quot;Facere reprehenderit aliquid tempora harum ducimus ipsa.&quot;,
+        &quot;post_content&quot;: &quot;Vero quas magnam iste fugiat rerum quibusdam ut doloribus. Accusantium voluptatem unde amet. Et molestias et consequatur doloremque fuga ullam. Corporis quis iusto sint eveniet aut quidem.&quot;,
+        &quot;post_excerpt&quot;: &quot;Nam laborum atque optio sed. Sunt illum aut quae. Molestiae corporis nihil quia deleniti minus officia natus.&quot;,
         &quot;author&quot;: &quot;Jake Mackinlay&quot;,
-        &quot;cover_image&quot;: &quot;https://via.placeholder.com/640x480.png/007711?text=perspiciatis&quot;,
-        &quot;post_date&quot;: &quot;1988-03-09 09:46:41&quot;,
-        &quot;post_modified&quot;: &quot;2003-09-06 04:33:43&quot;,
+        &quot;cover_image&quot;: &quot;https://via.placeholder.com/640x480.png/008855?text=sint&quot;,
+        &quot;post_date&quot;: &quot;2002-10-11 04:53:53&quot;,
+        &quot;post_modified&quot;: &quot;2003-11-27 18:19:35&quot;,
         &quot;post_status&quot;: &quot;Published&quot;,
         &quot;advice_type&quot;: null,
-        &quot;created_at&quot;: &quot;2023-03-15T02:47:46.000000Z&quot;,
-        &quot;updated_at&quot;: &quot;2023-03-15T02:47:46.000000Z&quot;
+        &quot;created_at&quot;: &quot;2023-03-16T22:42:36.000000Z&quot;,
+        &quot;updated_at&quot;: &quot;2023-03-16T22:42:36.000000Z&quot;
     },
     {
         &quot;post_id&quot;: 2,
-        &quot;post_title&quot;: &quot;Dolorem sunt unde ut aut voluptatem et eum.&quot;,
-        &quot;post_content&quot;: &quot;Eum explicabo a ducimus labore rerum accusamus unde in. Consequatur deleniti alias minima tempora itaque ratione. Enim aut iste magni eos ut sint incidunt.&quot;,
-        &quot;post_excerpt&quot;: &quot;Laudantium vel adipisci nemo assumenda. Recusandae id minus tempore perspiciatis incidunt. Autem nam suscipit numquam et.&quot;,
+        &quot;post_title&quot;: &quot;Voluptate accusamus possimus ipsum harum reiciendis fugit rerum eveniet.&quot;,
+        &quot;post_content&quot;: &quot;Quia dolores quisquam quo. Nihil reiciendis exercitationem eum asperiores dolore omnis et numquam. Est est quae consectetur eaque et voluptates. Inventore modi ullam dolore similique autem.&quot;,
+        &quot;post_excerpt&quot;: &quot;Possimus voluptatum sed laudantium. Quaerat consectetur voluptatem incidunt. A omnis aut suscipit nesciunt. Repellat magni neque et. Exercitationem iusto occaecati velit non.&quot;,
         &quot;author&quot;: &quot;Jake Mackinlay&quot;,
-        &quot;cover_image&quot;: &quot;https://via.placeholder.com/640x480.png/00ee88?text=temporibus&quot;,
-        &quot;post_date&quot;: &quot;1979-03-19 20:28:41&quot;,
-        &quot;post_modified&quot;: &quot;1999-04-15 01:17:11&quot;,
+        &quot;cover_image&quot;: &quot;https://via.placeholder.com/640x480.png/005566?text=eum&quot;,
+        &quot;post_date&quot;: &quot;2012-10-19 09:22:49&quot;,
+        &quot;post_modified&quot;: &quot;2008-09-13 04:10:32&quot;,
         &quot;post_status&quot;: &quot;Published&quot;,
         &quot;advice_type&quot;: null,
-        &quot;created_at&quot;: &quot;2023-03-15T02:47:46.000000Z&quot;,
-        &quot;updated_at&quot;: &quot;2023-03-15T02:47:46.000000Z&quot;
+        &quot;created_at&quot;: &quot;2023-03-16T22:42:36.000000Z&quot;,
+        &quot;updated_at&quot;: &quot;2023-03-16T22:42:36.000000Z&quot;
     },
     {
         &quot;post_id&quot;: 3,
-        &quot;post_title&quot;: &quot;Sed et nam tenetur officiis iusto odio esse.&quot;,
-        &quot;post_content&quot;: &quot;Praesentium impedit ipsum qui sint nulla veniam voluptates. Deserunt et aut debitis debitis ratione molestiae sit. Voluptatem aliquam facere quia provident voluptas assumenda sint. Et ut eos aut ut. Et exercitationem quaerat ipsum quos non a.&quot;,
-        &quot;post_excerpt&quot;: &quot;Maiores qui maiores ut impedit rem. Voluptate ad quam et consequatur et nesciunt. Aperiam sed eius qui eaque omnis.&quot;,
+        &quot;post_title&quot;: &quot;Consectetur vel est eligendi aliquid labore sed.&quot;,
+        &quot;post_content&quot;: &quot;Repudiandae doloribus quia sed et ducimus reiciendis. Reprehenderit vero veritatis rerum non dolorum voluptatem. Non voluptatem nesciunt natus incidunt sint sed. Autem rerum officia consequatur magnam.&quot;,
+        &quot;post_excerpt&quot;: &quot;Et placeat nostrum dolorem odit id libero. Suscipit quo quaerat et ipsa rerum. Nisi quia accusamus eum.&quot;,
         &quot;author&quot;: &quot;Jake Mackinlay&quot;,
-        &quot;cover_image&quot;: &quot;https://via.placeholder.com/640x480.png/00ffcc?text=voluptas&quot;,
-        &quot;post_date&quot;: &quot;2021-12-22 13:06:51&quot;,
-        &quot;post_modified&quot;: &quot;2014-09-08 19:18:18&quot;,
+        &quot;cover_image&quot;: &quot;https://via.placeholder.com/640x480.png/00aa22?text=placeat&quot;,
+        &quot;post_date&quot;: &quot;2021-03-04 09:56:52&quot;,
+        &quot;post_modified&quot;: &quot;1996-07-11 17:19:24&quot;,
         &quot;post_status&quot;: &quot;Published&quot;,
         &quot;advice_type&quot;: null,
-        &quot;created_at&quot;: &quot;2023-03-15T02:47:46.000000Z&quot;,
-        &quot;updated_at&quot;: &quot;2023-03-15T02:47:46.000000Z&quot;
+        &quot;created_at&quot;: &quot;2023-03-16T22:42:36.000000Z&quot;,
+        &quot;updated_at&quot;: &quot;2023-03-16T22:42:36.000000Z&quot;
     },
     {
         &quot;post_id&quot;: 4,
-        &quot;post_title&quot;: &quot;Molestiae id corporis nihil et odio eius expedita.&quot;,
-        &quot;post_content&quot;: &quot;Dolor aut et minus rerum hic sed id. Minus debitis rem accusamus natus culpa tempore repellat. Eos in sit tempora enim asperiores rerum voluptas. Nulla voluptatibus reiciendis laudantium sed quia repellat voluptatem.&quot;,
-        &quot;post_excerpt&quot;: &quot;Voluptas aut eligendi in dolor aut aut. Eum voluptate sunt occaecati sunt et amet. Ratione hic quo id consequuntur. Et aliquam asperiores adipisci accusamus esse.&quot;,
+        &quot;post_title&quot;: &quot;Sed sed velit laborum quas.&quot;,
+        &quot;post_content&quot;: &quot;Deleniti sit dolor molestiae eligendi. Velit est voluptates saepe nihil. Rerum tenetur fuga nihil non occaecati.&quot;,
+        &quot;post_excerpt&quot;: &quot;Amet laborum quia et voluptas blanditiis. Provident quasi et possimus maiores eum. Similique eius dolores quos est voluptatem voluptate.&quot;,
         &quot;author&quot;: &quot;Jake Mackinlay&quot;,
-        &quot;cover_image&quot;: &quot;https://via.placeholder.com/640x480.png/00bbdd?text=fuga&quot;,
-        &quot;post_date&quot;: &quot;1988-01-10 22:02:25&quot;,
-        &quot;post_modified&quot;: &quot;1988-04-10 19:05:36&quot;,
+        &quot;cover_image&quot;: &quot;https://via.placeholder.com/640x480.png/0088aa?text=voluptas&quot;,
+        &quot;post_date&quot;: &quot;2012-04-11 21:18:46&quot;,
+        &quot;post_modified&quot;: &quot;1991-08-23 09:50:24&quot;,
         &quot;post_status&quot;: &quot;Published&quot;,
         &quot;advice_type&quot;: null,
-        &quot;created_at&quot;: &quot;2023-03-15T02:47:47.000000Z&quot;,
-        &quot;updated_at&quot;: &quot;2023-03-15T02:47:47.000000Z&quot;
+        &quot;created_at&quot;: &quot;2023-03-16T22:42:36.000000Z&quot;,
+        &quot;updated_at&quot;: &quot;2023-03-16T22:42:36.000000Z&quot;
     },
     {
         &quot;post_id&quot;: 5,
-        &quot;post_title&quot;: &quot;Voluptate est veniam quaerat tenetur.&quot;,
-        &quot;post_content&quot;: &quot;Sequi repellendus maxime aut. Qui laudantium hic sit suscipit. Consectetur et nisi omnis assumenda qui dolorem. Quae magni deserunt sed exercitationem.&quot;,
-        &quot;post_excerpt&quot;: &quot;Nam eius modi dolor quo ut facilis nam. Rerum aut qui et voluptas minima deserunt. Id eos aspernatur odio aut corrupti officiis omnis fugit.&quot;,
+        &quot;post_title&quot;: &quot;Error excepturi assumenda nisi labore assumenda sit.&quot;,
+        &quot;post_content&quot;: &quot;Qui in mollitia corrupti velit amet quia placeat. Alias et enim et maiores. Dolore blanditiis tempora sint necessitatibus eveniet doloribus. Sed tenetur voluptatem explicabo nihil.&quot;,
+        &quot;post_excerpt&quot;: &quot;Aut minus cum sit asperiores. Aut eaque earum veritatis praesentium qui. Aliquam iure et est tenetur sunt. Eligendi quod sed adipisci rerum cumque.&quot;,
         &quot;author&quot;: &quot;Jake Mackinlay&quot;,
-        &quot;cover_image&quot;: &quot;https://via.placeholder.com/640x480.png/003377?text=quod&quot;,
-        &quot;post_date&quot;: &quot;1984-02-26 00:48:47&quot;,
-        &quot;post_modified&quot;: &quot;1990-12-06 14:53:13&quot;,
+        &quot;cover_image&quot;: &quot;https://via.placeholder.com/640x480.png/0011bb?text=dolores&quot;,
+        &quot;post_date&quot;: &quot;1984-09-17 06:38:37&quot;,
+        &quot;post_modified&quot;: &quot;1971-09-06 17:21:44&quot;,
         &quot;post_status&quot;: &quot;Published&quot;,
         &quot;advice_type&quot;: null,
-        &quot;created_at&quot;: &quot;2023-03-15T02:47:47.000000Z&quot;,
-        &quot;updated_at&quot;: &quot;2023-03-15T02:47:47.000000Z&quot;
+        &quot;created_at&quot;: &quot;2023-03-16T22:42:37.000000Z&quot;,
+        &quot;updated_at&quot;: &quot;2023-03-16T22:42:37.000000Z&quot;
     }
 ]</code>
  </pre>
@@ -577,473 +583,473 @@ print_r(json_decode((string) $body));</code></pre></div>
             <pre><code class="language-http">cache-control: no-cache, private
 content-type: application/json
 x-ratelimit-limit: 60
-x-ratelimit-remaining: 57
+x-ratelimit-remaining: 47
 access-control-allow-origin: *
  </code></pre></details>         <pre>
 
 <code class="language-json" style="max-height: 300px;">{
     &quot;message&quot;: &quot;Attempt to read property \&quot;id\&quot; on null&quot;,
     &quot;exception&quot;: &quot;ErrorException&quot;,
-    &quot;file&quot;: &quot;C:\\Users\\athap\\Desktop\\Projects-Lumination\\edSpark-phase3\\app\\Http\\Controllers\\UserController.php&quot;,
+    &quot;file&quot;: &quot;/Users/erickhartawan/Documents/workspace/edSpark-phase3/app/Http/Controllers/UserController.php&quot;,
     &quot;line&quot;: 28,
     &quot;trace&quot;: [
         {
-            &quot;file&quot;: &quot;C:\\Users\\athap\\Desktop\\Projects-Lumination\\edSpark-phase3\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Bootstrap\\HandleExceptions.php&quot;,
+            &quot;file&quot;: &quot;/Users/erickhartawan/Documents/workspace/edSpark-phase3/vendor/laravel/framework/src/Illuminate/Foundation/Bootstrap/HandleExceptions.php&quot;,
             &quot;line&quot;: 266,
             &quot;function&quot;: &quot;handleError&quot;,
             &quot;class&quot;: &quot;Illuminate\\Foundation\\Bootstrap\\HandleExceptions&quot;,
             &quot;type&quot;: &quot;-&gt;&quot;
         },
         {
-            &quot;file&quot;: &quot;C:\\Users\\athap\\Desktop\\Projects-Lumination\\edSpark-phase3\\app\\Http\\Controllers\\UserController.php&quot;,
+            &quot;file&quot;: &quot;/Users/erickhartawan/Documents/workspace/edSpark-phase3/app/Http/Controllers/UserController.php&quot;,
             &quot;line&quot;: 28,
             &quot;function&quot;: &quot;Illuminate\\Foundation\\Bootstrap\\{closure}&quot;,
             &quot;class&quot;: &quot;Illuminate\\Foundation\\Bootstrap\\HandleExceptions&quot;,
             &quot;type&quot;: &quot;-&gt;&quot;
         },
         {
-            &quot;file&quot;: &quot;C:\\Users\\athap\\Desktop\\Projects-Lumination\\edSpark-phase3\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Controller.php&quot;,
+            &quot;file&quot;: &quot;/Users/erickhartawan/Documents/workspace/edSpark-phase3/vendor/laravel/framework/src/Illuminate/Routing/Controller.php&quot;,
             &quot;line&quot;: 54,
             &quot;function&quot;: &quot;fetchUser&quot;,
             &quot;class&quot;: &quot;App\\Http\\Controllers\\UserController&quot;,
             &quot;type&quot;: &quot;-&gt;&quot;
         },
         {
-            &quot;file&quot;: &quot;C:\\Users\\athap\\Desktop\\Projects-Lumination\\edSpark-phase3\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\ControllerDispatcher.php&quot;,
+            &quot;file&quot;: &quot;/Users/erickhartawan/Documents/workspace/edSpark-phase3/vendor/laravel/framework/src/Illuminate/Routing/ControllerDispatcher.php&quot;,
             &quot;line&quot;: 43,
             &quot;function&quot;: &quot;callAction&quot;,
             &quot;class&quot;: &quot;Illuminate\\Routing\\Controller&quot;,
             &quot;type&quot;: &quot;-&gt;&quot;
         },
         {
-            &quot;file&quot;: &quot;C:\\Users\\athap\\Desktop\\Projects-Lumination\\edSpark-phase3\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Route.php&quot;,
+            &quot;file&quot;: &quot;/Users/erickhartawan/Documents/workspace/edSpark-phase3/vendor/laravel/framework/src/Illuminate/Routing/Route.php&quot;,
             &quot;line&quot;: 259,
             &quot;function&quot;: &quot;dispatch&quot;,
             &quot;class&quot;: &quot;Illuminate\\Routing\\ControllerDispatcher&quot;,
             &quot;type&quot;: &quot;-&gt;&quot;
         },
         {
-            &quot;file&quot;: &quot;C:\\Users\\athap\\Desktop\\Projects-Lumination\\edSpark-phase3\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Route.php&quot;,
+            &quot;file&quot;: &quot;/Users/erickhartawan/Documents/workspace/edSpark-phase3/vendor/laravel/framework/src/Illuminate/Routing/Route.php&quot;,
             &quot;line&quot;: 205,
             &quot;function&quot;: &quot;runController&quot;,
             &quot;class&quot;: &quot;Illuminate\\Routing\\Route&quot;,
             &quot;type&quot;: &quot;-&gt;&quot;
         },
         {
-            &quot;file&quot;: &quot;C:\\Users\\athap\\Desktop\\Projects-Lumination\\edSpark-phase3\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Router.php&quot;,
+            &quot;file&quot;: &quot;/Users/erickhartawan/Documents/workspace/edSpark-phase3/vendor/laravel/framework/src/Illuminate/Routing/Router.php&quot;,
             &quot;line&quot;: 798,
             &quot;function&quot;: &quot;run&quot;,
             &quot;class&quot;: &quot;Illuminate\\Routing\\Route&quot;,
             &quot;type&quot;: &quot;-&gt;&quot;
         },
         {
-            &quot;file&quot;: &quot;C:\\Users\\athap\\Desktop\\Projects-Lumination\\edSpark-phase3\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php&quot;,
+            &quot;file&quot;: &quot;/Users/erickhartawan/Documents/workspace/edSpark-phase3/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php&quot;,
             &quot;line&quot;: 141,
             &quot;function&quot;: &quot;Illuminate\\Routing\\{closure}&quot;,
             &quot;class&quot;: &quot;Illuminate\\Routing\\Router&quot;,
             &quot;type&quot;: &quot;-&gt;&quot;
         },
         {
-            &quot;file&quot;: &quot;C:\\Users\\athap\\Desktop\\Projects-Lumination\\edSpark-phase3\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Middleware\\SubstituteBindings.php&quot;,
+            &quot;file&quot;: &quot;/Users/erickhartawan/Documents/workspace/edSpark-phase3/vendor/laravel/framework/src/Illuminate/Routing/Middleware/SubstituteBindings.php&quot;,
             &quot;line&quot;: 50,
             &quot;function&quot;: &quot;Illuminate\\Pipeline\\{closure}&quot;,
             &quot;class&quot;: &quot;Illuminate\\Pipeline\\Pipeline&quot;,
             &quot;type&quot;: &quot;-&gt;&quot;
         },
         {
-            &quot;file&quot;: &quot;C:\\Users\\athap\\Desktop\\Projects-Lumination\\edSpark-phase3\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php&quot;,
+            &quot;file&quot;: &quot;/Users/erickhartawan/Documents/workspace/edSpark-phase3/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php&quot;,
             &quot;line&quot;: 180,
             &quot;function&quot;: &quot;handle&quot;,
             &quot;class&quot;: &quot;Illuminate\\Routing\\Middleware\\SubstituteBindings&quot;,
             &quot;type&quot;: &quot;-&gt;&quot;
         },
         {
-            &quot;file&quot;: &quot;C:\\Users\\athap\\Desktop\\Projects-Lumination\\edSpark-phase3\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Middleware\\ThrottleRequests.php&quot;,
+            &quot;file&quot;: &quot;/Users/erickhartawan/Documents/workspace/edSpark-phase3/vendor/laravel/framework/src/Illuminate/Routing/Middleware/ThrottleRequests.php&quot;,
             &quot;line&quot;: 126,
             &quot;function&quot;: &quot;Illuminate\\Pipeline\\{closure}&quot;,
             &quot;class&quot;: &quot;Illuminate\\Pipeline\\Pipeline&quot;,
             &quot;type&quot;: &quot;-&gt;&quot;
         },
         {
-            &quot;file&quot;: &quot;C:\\Users\\athap\\Desktop\\Projects-Lumination\\edSpark-phase3\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Middleware\\ThrottleRequests.php&quot;,
+            &quot;file&quot;: &quot;/Users/erickhartawan/Documents/workspace/edSpark-phase3/vendor/laravel/framework/src/Illuminate/Routing/Middleware/ThrottleRequests.php&quot;,
             &quot;line&quot;: 92,
             &quot;function&quot;: &quot;handleRequest&quot;,
             &quot;class&quot;: &quot;Illuminate\\Routing\\Middleware\\ThrottleRequests&quot;,
             &quot;type&quot;: &quot;-&gt;&quot;
         },
         {
-            &quot;file&quot;: &quot;C:\\Users\\athap\\Desktop\\Projects-Lumination\\edSpark-phase3\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Middleware\\ThrottleRequests.php&quot;,
+            &quot;file&quot;: &quot;/Users/erickhartawan/Documents/workspace/edSpark-phase3/vendor/laravel/framework/src/Illuminate/Routing/Middleware/ThrottleRequests.php&quot;,
             &quot;line&quot;: 54,
             &quot;function&quot;: &quot;handleRequestUsingNamedLimiter&quot;,
             &quot;class&quot;: &quot;Illuminate\\Routing\\Middleware\\ThrottleRequests&quot;,
             &quot;type&quot;: &quot;-&gt;&quot;
         },
         {
-            &quot;file&quot;: &quot;C:\\Users\\athap\\Desktop\\Projects-Lumination\\edSpark-phase3\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php&quot;,
+            &quot;file&quot;: &quot;/Users/erickhartawan/Documents/workspace/edSpark-phase3/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php&quot;,
             &quot;line&quot;: 180,
             &quot;function&quot;: &quot;handle&quot;,
             &quot;class&quot;: &quot;Illuminate\\Routing\\Middleware\\ThrottleRequests&quot;,
             &quot;type&quot;: &quot;-&gt;&quot;
         },
         {
-            &quot;file&quot;: &quot;C:\\Users\\athap\\Desktop\\Projects-Lumination\\edSpark-phase3\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php&quot;,
+            &quot;file&quot;: &quot;/Users/erickhartawan/Documents/workspace/edSpark-phase3/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php&quot;,
             &quot;line&quot;: 116,
             &quot;function&quot;: &quot;Illuminate\\Pipeline\\{closure}&quot;,
             &quot;class&quot;: &quot;Illuminate\\Pipeline\\Pipeline&quot;,
             &quot;type&quot;: &quot;-&gt;&quot;
         },
         {
-            &quot;file&quot;: &quot;C:\\Users\\athap\\Desktop\\Projects-Lumination\\edSpark-phase3\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Router.php&quot;,
+            &quot;file&quot;: &quot;/Users/erickhartawan/Documents/workspace/edSpark-phase3/vendor/laravel/framework/src/Illuminate/Routing/Router.php&quot;,
             &quot;line&quot;: 797,
             &quot;function&quot;: &quot;then&quot;,
             &quot;class&quot;: &quot;Illuminate\\Pipeline\\Pipeline&quot;,
             &quot;type&quot;: &quot;-&gt;&quot;
         },
         {
-            &quot;file&quot;: &quot;C:\\Users\\athap\\Desktop\\Projects-Lumination\\edSpark-phase3\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Router.php&quot;,
+            &quot;file&quot;: &quot;/Users/erickhartawan/Documents/workspace/edSpark-phase3/vendor/laravel/framework/src/Illuminate/Routing/Router.php&quot;,
             &quot;line&quot;: 776,
             &quot;function&quot;: &quot;runRouteWithinStack&quot;,
             &quot;class&quot;: &quot;Illuminate\\Routing\\Router&quot;,
             &quot;type&quot;: &quot;-&gt;&quot;
         },
         {
-            &quot;file&quot;: &quot;C:\\Users\\athap\\Desktop\\Projects-Lumination\\edSpark-phase3\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Router.php&quot;,
+            &quot;file&quot;: &quot;/Users/erickhartawan/Documents/workspace/edSpark-phase3/vendor/laravel/framework/src/Illuminate/Routing/Router.php&quot;,
             &quot;line&quot;: 740,
             &quot;function&quot;: &quot;runRoute&quot;,
             &quot;class&quot;: &quot;Illuminate\\Routing\\Router&quot;,
             &quot;type&quot;: &quot;-&gt;&quot;
         },
         {
-            &quot;file&quot;: &quot;C:\\Users\\athap\\Desktop\\Projects-Lumination\\edSpark-phase3\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Router.php&quot;,
+            &quot;file&quot;: &quot;/Users/erickhartawan/Documents/workspace/edSpark-phase3/vendor/laravel/framework/src/Illuminate/Routing/Router.php&quot;,
             &quot;line&quot;: 729,
             &quot;function&quot;: &quot;dispatchToRoute&quot;,
             &quot;class&quot;: &quot;Illuminate\\Routing\\Router&quot;,
             &quot;type&quot;: &quot;-&gt;&quot;
         },
         {
-            &quot;file&quot;: &quot;C:\\Users\\athap\\Desktop\\Projects-Lumination\\edSpark-phase3\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Kernel.php&quot;,
+            &quot;file&quot;: &quot;/Users/erickhartawan/Documents/workspace/edSpark-phase3/vendor/laravel/framework/src/Illuminate/Foundation/Http/Kernel.php&quot;,
             &quot;line&quot;: 190,
             &quot;function&quot;: &quot;dispatch&quot;,
             &quot;class&quot;: &quot;Illuminate\\Routing\\Router&quot;,
             &quot;type&quot;: &quot;-&gt;&quot;
         },
         {
-            &quot;file&quot;: &quot;C:\\Users\\athap\\Desktop\\Projects-Lumination\\edSpark-phase3\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php&quot;,
+            &quot;file&quot;: &quot;/Users/erickhartawan/Documents/workspace/edSpark-phase3/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php&quot;,
             &quot;line&quot;: 141,
             &quot;function&quot;: &quot;Illuminate\\Foundation\\Http\\{closure}&quot;,
             &quot;class&quot;: &quot;Illuminate\\Foundation\\Http\\Kernel&quot;,
             &quot;type&quot;: &quot;-&gt;&quot;
         },
         {
-            &quot;file&quot;: &quot;C:\\Users\\athap\\Desktop\\Projects-Lumination\\edSpark-phase3\\vendor\\livewire\\livewire\\src\\DisableBrowserCache.php&quot;,
+            &quot;file&quot;: &quot;/Users/erickhartawan/Documents/workspace/edSpark-phase3/vendor/livewire/livewire/src/DisableBrowserCache.php&quot;,
             &quot;line&quot;: 19,
             &quot;function&quot;: &quot;Illuminate\\Pipeline\\{closure}&quot;,
             &quot;class&quot;: &quot;Illuminate\\Pipeline\\Pipeline&quot;,
             &quot;type&quot;: &quot;-&gt;&quot;
         },
         {
-            &quot;file&quot;: &quot;C:\\Users\\athap\\Desktop\\Projects-Lumination\\edSpark-phase3\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php&quot;,
+            &quot;file&quot;: &quot;/Users/erickhartawan/Documents/workspace/edSpark-phase3/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php&quot;,
             &quot;line&quot;: 180,
             &quot;function&quot;: &quot;handle&quot;,
             &quot;class&quot;: &quot;Livewire\\DisableBrowserCache&quot;,
             &quot;type&quot;: &quot;-&gt;&quot;
         },
         {
-            &quot;file&quot;: &quot;C:\\Users\\athap\\Desktop\\Projects-Lumination\\edSpark-phase3\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Middleware\\TransformsRequest.php&quot;,
+            &quot;file&quot;: &quot;/Users/erickhartawan/Documents/workspace/edSpark-phase3/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/TransformsRequest.php&quot;,
             &quot;line&quot;: 21,
             &quot;function&quot;: &quot;Illuminate\\Pipeline\\{closure}&quot;,
             &quot;class&quot;: &quot;Illuminate\\Pipeline\\Pipeline&quot;,
             &quot;type&quot;: &quot;-&gt;&quot;
         },
         {
-            &quot;file&quot;: &quot;C:\\Users\\athap\\Desktop\\Projects-Lumination\\edSpark-phase3\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Middleware\\ConvertEmptyStringsToNull.php&quot;,
+            &quot;file&quot;: &quot;/Users/erickhartawan/Documents/workspace/edSpark-phase3/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/ConvertEmptyStringsToNull.php&quot;,
             &quot;line&quot;: 31,
             &quot;function&quot;: &quot;handle&quot;,
             &quot;class&quot;: &quot;Illuminate\\Foundation\\Http\\Middleware\\TransformsRequest&quot;,
             &quot;type&quot;: &quot;-&gt;&quot;
         },
         {
-            &quot;file&quot;: &quot;C:\\Users\\athap\\Desktop\\Projects-Lumination\\edSpark-phase3\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php&quot;,
+            &quot;file&quot;: &quot;/Users/erickhartawan/Documents/workspace/edSpark-phase3/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php&quot;,
             &quot;line&quot;: 180,
             &quot;function&quot;: &quot;handle&quot;,
             &quot;class&quot;: &quot;Illuminate\\Foundation\\Http\\Middleware\\ConvertEmptyStringsToNull&quot;,
             &quot;type&quot;: &quot;-&gt;&quot;
         },
         {
-            &quot;file&quot;: &quot;C:\\Users\\athap\\Desktop\\Projects-Lumination\\edSpark-phase3\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Middleware\\TransformsRequest.php&quot;,
+            &quot;file&quot;: &quot;/Users/erickhartawan/Documents/workspace/edSpark-phase3/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/TransformsRequest.php&quot;,
             &quot;line&quot;: 21,
             &quot;function&quot;: &quot;Illuminate\\Pipeline\\{closure}&quot;,
             &quot;class&quot;: &quot;Illuminate\\Pipeline\\Pipeline&quot;,
             &quot;type&quot;: &quot;-&gt;&quot;
         },
         {
-            &quot;file&quot;: &quot;C:\\Users\\athap\\Desktop\\Projects-Lumination\\edSpark-phase3\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Middleware\\TrimStrings.php&quot;,
+            &quot;file&quot;: &quot;/Users/erickhartawan/Documents/workspace/edSpark-phase3/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/TrimStrings.php&quot;,
             &quot;line&quot;: 40,
             &quot;function&quot;: &quot;handle&quot;,
             &quot;class&quot;: &quot;Illuminate\\Foundation\\Http\\Middleware\\TransformsRequest&quot;,
             &quot;type&quot;: &quot;-&gt;&quot;
         },
         {
-            &quot;file&quot;: &quot;C:\\Users\\athap\\Desktop\\Projects-Lumination\\edSpark-phase3\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php&quot;,
+            &quot;file&quot;: &quot;/Users/erickhartawan/Documents/workspace/edSpark-phase3/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php&quot;,
             &quot;line&quot;: 180,
             &quot;function&quot;: &quot;handle&quot;,
             &quot;class&quot;: &quot;Illuminate\\Foundation\\Http\\Middleware\\TrimStrings&quot;,
             &quot;type&quot;: &quot;-&gt;&quot;
         },
         {
-            &quot;file&quot;: &quot;C:\\Users\\athap\\Desktop\\Projects-Lumination\\edSpark-phase3\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Middleware\\ValidatePostSize.php&quot;,
+            &quot;file&quot;: &quot;/Users/erickhartawan/Documents/workspace/edSpark-phase3/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/ValidatePostSize.php&quot;,
             &quot;line&quot;: 27,
             &quot;function&quot;: &quot;Illuminate\\Pipeline\\{closure}&quot;,
             &quot;class&quot;: &quot;Illuminate\\Pipeline\\Pipeline&quot;,
             &quot;type&quot;: &quot;-&gt;&quot;
         },
         {
-            &quot;file&quot;: &quot;C:\\Users\\athap\\Desktop\\Projects-Lumination\\edSpark-phase3\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php&quot;,
+            &quot;file&quot;: &quot;/Users/erickhartawan/Documents/workspace/edSpark-phase3/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php&quot;,
             &quot;line&quot;: 180,
             &quot;function&quot;: &quot;handle&quot;,
             &quot;class&quot;: &quot;Illuminate\\Foundation\\Http\\Middleware\\ValidatePostSize&quot;,
             &quot;type&quot;: &quot;-&gt;&quot;
         },
         {
-            &quot;file&quot;: &quot;C:\\Users\\athap\\Desktop\\Projects-Lumination\\edSpark-phase3\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Middleware\\PreventRequestsDuringMaintenance.php&quot;,
+            &quot;file&quot;: &quot;/Users/erickhartawan/Documents/workspace/edSpark-phase3/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/PreventRequestsDuringMaintenance.php&quot;,
             &quot;line&quot;: 86,
             &quot;function&quot;: &quot;Illuminate\\Pipeline\\{closure}&quot;,
             &quot;class&quot;: &quot;Illuminate\\Pipeline\\Pipeline&quot;,
             &quot;type&quot;: &quot;-&gt;&quot;
         },
         {
-            &quot;file&quot;: &quot;C:\\Users\\athap\\Desktop\\Projects-Lumination\\edSpark-phase3\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php&quot;,
+            &quot;file&quot;: &quot;/Users/erickhartawan/Documents/workspace/edSpark-phase3/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php&quot;,
             &quot;line&quot;: 180,
             &quot;function&quot;: &quot;handle&quot;,
             &quot;class&quot;: &quot;Illuminate\\Foundation\\Http\\Middleware\\PreventRequestsDuringMaintenance&quot;,
             &quot;type&quot;: &quot;-&gt;&quot;
         },
         {
-            &quot;file&quot;: &quot;C:\\Users\\athap\\Desktop\\Projects-Lumination\\edSpark-phase3\\vendor\\laravel\\framework\\src\\Illuminate\\Http\\Middleware\\HandleCors.php&quot;,
+            &quot;file&quot;: &quot;/Users/erickhartawan/Documents/workspace/edSpark-phase3/vendor/laravel/framework/src/Illuminate/Http/Middleware/HandleCors.php&quot;,
             &quot;line&quot;: 62,
             &quot;function&quot;: &quot;Illuminate\\Pipeline\\{closure}&quot;,
             &quot;class&quot;: &quot;Illuminate\\Pipeline\\Pipeline&quot;,
             &quot;type&quot;: &quot;-&gt;&quot;
         },
         {
-            &quot;file&quot;: &quot;C:\\Users\\athap\\Desktop\\Projects-Lumination\\edSpark-phase3\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php&quot;,
+            &quot;file&quot;: &quot;/Users/erickhartawan/Documents/workspace/edSpark-phase3/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php&quot;,
             &quot;line&quot;: 180,
             &quot;function&quot;: &quot;handle&quot;,
             &quot;class&quot;: &quot;Illuminate\\Http\\Middleware\\HandleCors&quot;,
             &quot;type&quot;: &quot;-&gt;&quot;
         },
         {
-            &quot;file&quot;: &quot;C:\\Users\\athap\\Desktop\\Projects-Lumination\\edSpark-phase3\\vendor\\laravel\\framework\\src\\Illuminate\\Http\\Middleware\\TrustProxies.php&quot;,
+            &quot;file&quot;: &quot;/Users/erickhartawan/Documents/workspace/edSpark-phase3/vendor/laravel/framework/src/Illuminate/Http/Middleware/TrustProxies.php&quot;,
             &quot;line&quot;: 39,
             &quot;function&quot;: &quot;Illuminate\\Pipeline\\{closure}&quot;,
             &quot;class&quot;: &quot;Illuminate\\Pipeline\\Pipeline&quot;,
             &quot;type&quot;: &quot;-&gt;&quot;
         },
         {
-            &quot;file&quot;: &quot;C:\\Users\\athap\\Desktop\\Projects-Lumination\\edSpark-phase3\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php&quot;,
+            &quot;file&quot;: &quot;/Users/erickhartawan/Documents/workspace/edSpark-phase3/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php&quot;,
             &quot;line&quot;: 180,
             &quot;function&quot;: &quot;handle&quot;,
             &quot;class&quot;: &quot;Illuminate\\Http\\Middleware\\TrustProxies&quot;,
             &quot;type&quot;: &quot;-&gt;&quot;
         },
         {
-            &quot;file&quot;: &quot;C:\\Users\\athap\\Desktop\\Projects-Lumination\\edSpark-phase3\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php&quot;,
+            &quot;file&quot;: &quot;/Users/erickhartawan/Documents/workspace/edSpark-phase3/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php&quot;,
             &quot;line&quot;: 116,
             &quot;function&quot;: &quot;Illuminate\\Pipeline\\{closure}&quot;,
             &quot;class&quot;: &quot;Illuminate\\Pipeline\\Pipeline&quot;,
             &quot;type&quot;: &quot;-&gt;&quot;
         },
         {
-            &quot;file&quot;: &quot;C:\\Users\\athap\\Desktop\\Projects-Lumination\\edSpark-phase3\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Kernel.php&quot;,
+            &quot;file&quot;: &quot;/Users/erickhartawan/Documents/workspace/edSpark-phase3/vendor/laravel/framework/src/Illuminate/Foundation/Http/Kernel.php&quot;,
             &quot;line&quot;: 165,
             &quot;function&quot;: &quot;then&quot;,
             &quot;class&quot;: &quot;Illuminate\\Pipeline\\Pipeline&quot;,
             &quot;type&quot;: &quot;-&gt;&quot;
         },
         {
-            &quot;file&quot;: &quot;C:\\Users\\athap\\Desktop\\Projects-Lumination\\edSpark-phase3\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Kernel.php&quot;,
+            &quot;file&quot;: &quot;/Users/erickhartawan/Documents/workspace/edSpark-phase3/vendor/laravel/framework/src/Illuminate/Foundation/Http/Kernel.php&quot;,
             &quot;line&quot;: 134,
             &quot;function&quot;: &quot;sendRequestThroughRouter&quot;,
             &quot;class&quot;: &quot;Illuminate\\Foundation\\Http\\Kernel&quot;,
             &quot;type&quot;: &quot;-&gt;&quot;
         },
         {
-            &quot;file&quot;: &quot;C:\\Users\\athap\\Desktop\\Projects-Lumination\\edSpark-phase3\\vendor\\knuckleswtf\\scribe\\src\\Extracting\\Strategies\\Responses\\ResponseCalls.php&quot;,
+            &quot;file&quot;: &quot;/Users/erickhartawan/Documents/workspace/edSpark-phase3/vendor/knuckleswtf/scribe/src/Extracting/Strategies/Responses/ResponseCalls.php&quot;,
             &quot;line&quot;: 299,
             &quot;function&quot;: &quot;handle&quot;,
             &quot;class&quot;: &quot;Illuminate\\Foundation\\Http\\Kernel&quot;,
             &quot;type&quot;: &quot;-&gt;&quot;
         },
         {
-            &quot;file&quot;: &quot;C:\\Users\\athap\\Desktop\\Projects-Lumination\\edSpark-phase3\\vendor\\knuckleswtf\\scribe\\src\\Extracting\\Strategies\\Responses\\ResponseCalls.php&quot;,
+            &quot;file&quot;: &quot;/Users/erickhartawan/Documents/workspace/edSpark-phase3/vendor/knuckleswtf/scribe/src/Extracting/Strategies/Responses/ResponseCalls.php&quot;,
             &quot;line&quot;: 287,
             &quot;function&quot;: &quot;callLaravelOrLumenRoute&quot;,
             &quot;class&quot;: &quot;Knuckles\\Scribe\\Extracting\\Strategies\\Responses\\ResponseCalls&quot;,
             &quot;type&quot;: &quot;-&gt;&quot;
         },
         {
-            &quot;file&quot;: &quot;C:\\Users\\athap\\Desktop\\Projects-Lumination\\edSpark-phase3\\vendor\\knuckleswtf\\scribe\\src\\Extracting\\Strategies\\Responses\\ResponseCalls.php&quot;,
+            &quot;file&quot;: &quot;/Users/erickhartawan/Documents/workspace/edSpark-phase3/vendor/knuckleswtf/scribe/src/Extracting/Strategies/Responses/ResponseCalls.php&quot;,
             &quot;line&quot;: 92,
             &quot;function&quot;: &quot;makeApiCall&quot;,
             &quot;class&quot;: &quot;Knuckles\\Scribe\\Extracting\\Strategies\\Responses\\ResponseCalls&quot;,
             &quot;type&quot;: &quot;-&gt;&quot;
         },
         {
-            &quot;file&quot;: &quot;C:\\Users\\athap\\Desktop\\Projects-Lumination\\edSpark-phase3\\vendor\\knuckleswtf\\scribe\\src\\Extracting\\Strategies\\Responses\\ResponseCalls.php&quot;,
+            &quot;file&quot;: &quot;/Users/erickhartawan/Documents/workspace/edSpark-phase3/vendor/knuckleswtf/scribe/src/Extracting/Strategies/Responses/ResponseCalls.php&quot;,
             &quot;line&quot;: 45,
             &quot;function&quot;: &quot;makeResponseCall&quot;,
             &quot;class&quot;: &quot;Knuckles\\Scribe\\Extracting\\Strategies\\Responses\\ResponseCalls&quot;,
             &quot;type&quot;: &quot;-&gt;&quot;
         },
         {
-            &quot;file&quot;: &quot;C:\\Users\\athap\\Desktop\\Projects-Lumination\\edSpark-phase3\\vendor\\knuckleswtf\\scribe\\src\\Extracting\\Strategies\\Responses\\ResponseCalls.php&quot;,
+            &quot;file&quot;: &quot;/Users/erickhartawan/Documents/workspace/edSpark-phase3/vendor/knuckleswtf/scribe/src/Extracting/Strategies/Responses/ResponseCalls.php&quot;,
             &quot;line&quot;: 35,
             &quot;function&quot;: &quot;makeResponseCallIfConditionsPass&quot;,
             &quot;class&quot;: &quot;Knuckles\\Scribe\\Extracting\\Strategies\\Responses\\ResponseCalls&quot;,
             &quot;type&quot;: &quot;-&gt;&quot;
         },
         {
-            &quot;file&quot;: &quot;C:\\Users\\athap\\Desktop\\Projects-Lumination\\edSpark-phase3\\vendor\\knuckleswtf\\scribe\\src\\Extracting\\Extractor.php&quot;,
+            &quot;file&quot;: &quot;/Users/erickhartawan/Documents/workspace/edSpark-phase3/vendor/knuckleswtf/scribe/src/Extracting/Extractor.php&quot;,
             &quot;line&quot;: 209,
             &quot;function&quot;: &quot;__invoke&quot;,
             &quot;class&quot;: &quot;Knuckles\\Scribe\\Extracting\\Strategies\\Responses\\ResponseCalls&quot;,
             &quot;type&quot;: &quot;-&gt;&quot;
         },
         {
-            &quot;file&quot;: &quot;C:\\Users\\athap\\Desktop\\Projects-Lumination\\edSpark-phase3\\vendor\\knuckleswtf\\scribe\\src\\Extracting\\Extractor.php&quot;,
+            &quot;file&quot;: &quot;/Users/erickhartawan/Documents/workspace/edSpark-phase3/vendor/knuckleswtf/scribe/src/Extracting/Extractor.php&quot;,
             &quot;line&quot;: 163,
             &quot;function&quot;: &quot;iterateThroughStrategies&quot;,
             &quot;class&quot;: &quot;Knuckles\\Scribe\\Extracting\\Extractor&quot;,
             &quot;type&quot;: &quot;-&gt;&quot;
         },
         {
-            &quot;file&quot;: &quot;C:\\Users\\athap\\Desktop\\Projects-Lumination\\edSpark-phase3\\vendor\\knuckleswtf\\scribe\\src\\Extracting\\Extractor.php&quot;,
+            &quot;file&quot;: &quot;/Users/erickhartawan/Documents/workspace/edSpark-phase3/vendor/knuckleswtf/scribe/src/Extracting/Extractor.php&quot;,
             &quot;line&quot;: 95,
             &quot;function&quot;: &quot;fetchResponses&quot;,
             &quot;class&quot;: &quot;Knuckles\\Scribe\\Extracting\\Extractor&quot;,
             &quot;type&quot;: &quot;-&gt;&quot;
         },
         {
-            &quot;file&quot;: &quot;C:\\Users\\athap\\Desktop\\Projects-Lumination\\edSpark-phase3\\vendor\\knuckleswtf\\scribe\\src\\GroupedEndpoints\\GroupedEndpointsFromApp.php&quot;,
+            &quot;file&quot;: &quot;/Users/erickhartawan/Documents/workspace/edSpark-phase3/vendor/knuckleswtf/scribe/src/GroupedEndpoints/GroupedEndpointsFromApp.php&quot;,
             &quot;line&quot;: 124,
             &quot;function&quot;: &quot;processRoute&quot;,
             &quot;class&quot;: &quot;Knuckles\\Scribe\\Extracting\\Extractor&quot;,
             &quot;type&quot;: &quot;-&gt;&quot;
         },
         {
-            &quot;file&quot;: &quot;C:\\Users\\athap\\Desktop\\Projects-Lumination\\edSpark-phase3\\vendor\\knuckleswtf\\scribe\\src\\GroupedEndpoints\\GroupedEndpointsFromApp.php&quot;,
+            &quot;file&quot;: &quot;/Users/erickhartawan/Documents/workspace/edSpark-phase3/vendor/knuckleswtf/scribe/src/GroupedEndpoints/GroupedEndpointsFromApp.php&quot;,
             &quot;line&quot;: 71,
             &quot;function&quot;: &quot;extractEndpointsInfoFromLaravelApp&quot;,
             &quot;class&quot;: &quot;Knuckles\\Scribe\\GroupedEndpoints\\GroupedEndpointsFromApp&quot;,
             &quot;type&quot;: &quot;-&gt;&quot;
         },
         {
-            &quot;file&quot;: &quot;C:\\Users\\athap\\Desktop\\Projects-Lumination\\edSpark-phase3\\vendor\\knuckleswtf\\scribe\\src\\GroupedEndpoints\\GroupedEndpointsFromApp.php&quot;,
+            &quot;file&quot;: &quot;/Users/erickhartawan/Documents/workspace/edSpark-phase3/vendor/knuckleswtf/scribe/src/GroupedEndpoints/GroupedEndpointsFromApp.php&quot;,
             &quot;line&quot;: 49,
             &quot;function&quot;: &quot;extractEndpointsInfoAndWriteToDisk&quot;,
             &quot;class&quot;: &quot;Knuckles\\Scribe\\GroupedEndpoints\\GroupedEndpointsFromApp&quot;,
             &quot;type&quot;: &quot;-&gt;&quot;
         },
         {
-            &quot;file&quot;: &quot;C:\\Users\\athap\\Desktop\\Projects-Lumination\\edSpark-phase3\\vendor\\knuckleswtf\\scribe\\src\\Commands\\GenerateDocumentation.php&quot;,
+            &quot;file&quot;: &quot;/Users/erickhartawan/Documents/workspace/edSpark-phase3/vendor/knuckleswtf/scribe/src/Commands/GenerateDocumentation.php&quot;,
             &quot;line&quot;: 51,
             &quot;function&quot;: &quot;get&quot;,
             &quot;class&quot;: &quot;Knuckles\\Scribe\\GroupedEndpoints\\GroupedEndpointsFromApp&quot;,
             &quot;type&quot;: &quot;-&gt;&quot;
         },
         {
-            &quot;file&quot;: &quot;C:\\Users\\athap\\Desktop\\Projects-Lumination\\edSpark-phase3\\vendor\\laravel\\framework\\src\\Illuminate\\Container\\BoundMethod.php&quot;,
+            &quot;file&quot;: &quot;/Users/erickhartawan/Documents/workspace/edSpark-phase3/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php&quot;,
             &quot;line&quot;: 36,
             &quot;function&quot;: &quot;handle&quot;,
             &quot;class&quot;: &quot;Knuckles\\Scribe\\Commands\\GenerateDocumentation&quot;,
             &quot;type&quot;: &quot;-&gt;&quot;
         },
         {
-            &quot;file&quot;: &quot;C:\\Users\\athap\\Desktop\\Projects-Lumination\\edSpark-phase3\\vendor\\laravel\\framework\\src\\Illuminate\\Container\\Util.php&quot;,
+            &quot;file&quot;: &quot;/Users/erickhartawan/Documents/workspace/edSpark-phase3/vendor/laravel/framework/src/Illuminate/Container/Util.php&quot;,
             &quot;line&quot;: 41,
             &quot;function&quot;: &quot;Illuminate\\Container\\{closure}&quot;,
             &quot;class&quot;: &quot;Illuminate\\Container\\BoundMethod&quot;,
             &quot;type&quot;: &quot;::&quot;
         },
         {
-            &quot;file&quot;: &quot;C:\\Users\\athap\\Desktop\\Projects-Lumination\\edSpark-phase3\\vendor\\laravel\\framework\\src\\Illuminate\\Container\\BoundMethod.php&quot;,
+            &quot;file&quot;: &quot;/Users/erickhartawan/Documents/workspace/edSpark-phase3/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php&quot;,
             &quot;line&quot;: 93,
             &quot;function&quot;: &quot;unwrapIfClosure&quot;,
             &quot;class&quot;: &quot;Illuminate\\Container\\Util&quot;,
             &quot;type&quot;: &quot;::&quot;
         },
         {
-            &quot;file&quot;: &quot;C:\\Users\\athap\\Desktop\\Projects-Lumination\\edSpark-phase3\\vendor\\laravel\\framework\\src\\Illuminate\\Container\\BoundMethod.php&quot;,
+            &quot;file&quot;: &quot;/Users/erickhartawan/Documents/workspace/edSpark-phase3/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php&quot;,
             &quot;line&quot;: 35,
             &quot;function&quot;: &quot;callBoundMethod&quot;,
             &quot;class&quot;: &quot;Illuminate\\Container\\BoundMethod&quot;,
             &quot;type&quot;: &quot;::&quot;
         },
         {
-            &quot;file&quot;: &quot;C:\\Users\\athap\\Desktop\\Projects-Lumination\\edSpark-phase3\\vendor\\laravel\\framework\\src\\Illuminate\\Container\\Container.php&quot;,
+            &quot;file&quot;: &quot;/Users/erickhartawan/Documents/workspace/edSpark-phase3/vendor/laravel/framework/src/Illuminate/Container/Container.php&quot;,
             &quot;line&quot;: 661,
             &quot;function&quot;: &quot;call&quot;,
             &quot;class&quot;: &quot;Illuminate\\Container\\BoundMethod&quot;,
             &quot;type&quot;: &quot;::&quot;
         },
         {
-            &quot;file&quot;: &quot;C:\\Users\\athap\\Desktop\\Projects-Lumination\\edSpark-phase3\\vendor\\laravel\\framework\\src\\Illuminate\\Console\\Command.php&quot;,
+            &quot;file&quot;: &quot;/Users/erickhartawan/Documents/workspace/edSpark-phase3/vendor/laravel/framework/src/Illuminate/Console/Command.php&quot;,
             &quot;line&quot;: 183,
             &quot;function&quot;: &quot;call&quot;,
             &quot;class&quot;: &quot;Illuminate\\Container\\Container&quot;,
             &quot;type&quot;: &quot;-&gt;&quot;
         },
         {
-            &quot;file&quot;: &quot;C:\\Users\\athap\\Desktop\\Projects-Lumination\\edSpark-phase3\\vendor\\symfony\\console\\Command\\Command.php&quot;,
+            &quot;file&quot;: &quot;/Users/erickhartawan/Documents/workspace/edSpark-phase3/vendor/symfony/console/Command/Command.php&quot;,
             &quot;line&quot;: 312,
             &quot;function&quot;: &quot;execute&quot;,
             &quot;class&quot;: &quot;Illuminate\\Console\\Command&quot;,
             &quot;type&quot;: &quot;-&gt;&quot;
         },
         {
-            &quot;file&quot;: &quot;C:\\Users\\athap\\Desktop\\Projects-Lumination\\edSpark-phase3\\vendor\\laravel\\framework\\src\\Illuminate\\Console\\Command.php&quot;,
+            &quot;file&quot;: &quot;/Users/erickhartawan/Documents/workspace/edSpark-phase3/vendor/laravel/framework/src/Illuminate/Console/Command.php&quot;,
             &quot;line&quot;: 152,
             &quot;function&quot;: &quot;run&quot;,
             &quot;class&quot;: &quot;Symfony\\Component\\Console\\Command\\Command&quot;,
             &quot;type&quot;: &quot;-&gt;&quot;
         },
         {
-            &quot;file&quot;: &quot;C:\\Users\\athap\\Desktop\\Projects-Lumination\\edSpark-phase3\\vendor\\symfony\\console\\Application.php&quot;,
+            &quot;file&quot;: &quot;/Users/erickhartawan/Documents/workspace/edSpark-phase3/vendor/symfony/console/Application.php&quot;,
             &quot;line&quot;: 1022,
             &quot;function&quot;: &quot;run&quot;,
             &quot;class&quot;: &quot;Illuminate\\Console\\Command&quot;,
             &quot;type&quot;: &quot;-&gt;&quot;
         },
         {
-            &quot;file&quot;: &quot;C:\\Users\\athap\\Desktop\\Projects-Lumination\\edSpark-phase3\\vendor\\symfony\\console\\Application.php&quot;,
+            &quot;file&quot;: &quot;/Users/erickhartawan/Documents/workspace/edSpark-phase3/vendor/symfony/console/Application.php&quot;,
             &quot;line&quot;: 314,
             &quot;function&quot;: &quot;doRunCommand&quot;,
             &quot;class&quot;: &quot;Symfony\\Component\\Console\\Application&quot;,
             &quot;type&quot;: &quot;-&gt;&quot;
         },
         {
-            &quot;file&quot;: &quot;C:\\Users\\athap\\Desktop\\Projects-Lumination\\edSpark-phase3\\vendor\\symfony\\console\\Application.php&quot;,
+            &quot;file&quot;: &quot;/Users/erickhartawan/Documents/workspace/edSpark-phase3/vendor/symfony/console/Application.php&quot;,
             &quot;line&quot;: 168,
             &quot;function&quot;: &quot;doRun&quot;,
             &quot;class&quot;: &quot;Symfony\\Component\\Console\\Application&quot;,
             &quot;type&quot;: &quot;-&gt;&quot;
         },
         {
-            &quot;file&quot;: &quot;C:\\Users\\athap\\Desktop\\Projects-Lumination\\edSpark-phase3\\vendor\\laravel\\framework\\src\\Illuminate\\Console\\Application.php&quot;,
+            &quot;file&quot;: &quot;/Users/erickhartawan/Documents/workspace/edSpark-phase3/vendor/laravel/framework/src/Illuminate/Console/Application.php&quot;,
             &quot;line&quot;: 102,
             &quot;function&quot;: &quot;run&quot;,
             &quot;class&quot;: &quot;Symfony\\Component\\Console\\Application&quot;,
             &quot;type&quot;: &quot;-&gt;&quot;
         },
         {
-            &quot;file&quot;: &quot;C:\\Users\\athap\\Desktop\\Projects-Lumination\\edSpark-phase3\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Console\\Kernel.php&quot;,
+            &quot;file&quot;: &quot;/Users/erickhartawan/Documents/workspace/edSpark-phase3/vendor/laravel/framework/src/Illuminate/Foundation/Console/Kernel.php&quot;,
             &quot;line&quot;: 155,
             &quot;function&quot;: &quot;run&quot;,
             &quot;class&quot;: &quot;Illuminate\\Console\\Application&quot;,
             &quot;type&quot;: &quot;-&gt;&quot;
         },
         {
-            &quot;file&quot;: &quot;C:\\Users\\athap\\Desktop\\Projects-Lumination\\edSpark-phase3\\artisan&quot;,
+            &quot;file&quot;: &quot;/Users/erickhartawan/Documents/workspace/edSpark-phase3/artisan&quot;,
             &quot;line&quot;: 35,
             &quot;function&quot;: &quot;handle&quot;,
             &quot;class&quot;: &quot;Illuminate\\Foundation\\Console\\Kernel&quot;,
@@ -1182,7 +1188,7 @@ print_r(json_decode((string) $body));</code></pre></div>
             <pre><code class="language-http">cache-control: no-cache, private
 content-type: application/json
 x-ratelimit-limit: 60
-x-ratelimit-remaining: 56
+x-ratelimit-remaining: 46
 access-control-allow-origin: *
  </code></pre></details>         <pre>
 
@@ -1310,7 +1316,7 @@ print_r(json_decode((string) $body));</code></pre></div>
             <pre><code class="language-http">cache-control: no-cache, private
 content-type: application/json
 x-ratelimit-limit: 60
-x-ratelimit-remaining: 55
+x-ratelimit-remaining: 45
 access-control-allow-origin: *
  </code></pre></details>         <pre>
 
@@ -1438,7 +1444,7 @@ print_r(json_decode((string) $body));</code></pre></div>
             <pre><code class="language-http">cache-control: no-cache, private
 content-type: application/json
 x-ratelimit-limit: 60
-x-ratelimit-remaining: 54
+x-ratelimit-remaining: 44
 access-control-allow-origin: *
  </code></pre></details>         <pre>
 
@@ -1446,8 +1452,8 @@ access-control-allow-origin: *
     {
         &quot;id&quot;: 1,
         &quot;site_id&quot;: null,
-        &quot;site_name&quot;: &quot;Massachusetts&quot;,
-        &quot;site_value&quot;: &quot;83984 Considine Mall\nAnkundingburgh, KY 16584-1749&quot;,
+        &quot;site_name&quot;: &quot;Rhode Island&quot;,
+        &quot;site_value&quot;: &quot;907 Camden Creek Suite 104\nNorth Lloydbury, AR 71412-6579&quot;,
         &quot;category_code&quot;: null,
         &quot;category_desc&quot;: null,
         &quot;site_type_code&quot;: null,
@@ -1458,8 +1464,8 @@ access-control-allow-origin: *
     {
         &quot;id&quot;: 2,
         &quot;site_id&quot;: null,
-        &quot;site_name&quot;: &quot;New York&quot;,
-        &quot;site_value&quot;: &quot;92518 Caden Row\nNorth Gwen, MD 01706&quot;,
+        &quot;site_name&quot;: &quot;Colorado&quot;,
+        &quot;site_value&quot;: &quot;2503 Barton Square\nTillmanmouth, NC 82474&quot;,
         &quot;category_code&quot;: null,
         &quot;category_desc&quot;: null,
         &quot;site_type_code&quot;: null,
@@ -1470,8 +1476,8 @@ access-control-allow-origin: *
     {
         &quot;id&quot;: 3,
         &quot;site_id&quot;: null,
-        &quot;site_name&quot;: &quot;Virginia&quot;,
-        &quot;site_value&quot;: &quot;750 Mayert Throughway\nNew Tiffanyton, WY 48948&quot;,
+        &quot;site_name&quot;: &quot;Tennessee&quot;,
+        &quot;site_value&quot;: &quot;995 Nolan Light Suite 960\nNorth Ernestotown, HI 73793-9348&quot;,
         &quot;category_code&quot;: null,
         &quot;category_desc&quot;: null,
         &quot;site_type_code&quot;: null,
@@ -1482,8 +1488,8 @@ access-control-allow-origin: *
     {
         &quot;id&quot;: 4,
         &quot;site_id&quot;: null,
-        &quot;site_name&quot;: &quot;West Virginia&quot;,
-        &quot;site_value&quot;: &quot;3841 Johnston Light Apt. 870\nPort Abbeyberg, AR 08286-2558&quot;,
+        &quot;site_name&quot;: &quot;Maine&quot;,
+        &quot;site_value&quot;: &quot;50080 May Square\nNew Angelica, NH 32356&quot;,
         &quot;category_code&quot;: null,
         &quot;category_desc&quot;: null,
         &quot;site_type_code&quot;: null,
@@ -1494,8 +1500,8 @@ access-control-allow-origin: *
     {
         &quot;id&quot;: 5,
         &quot;site_id&quot;: null,
-        &quot;site_name&quot;: &quot;Arizona&quot;,
-        &quot;site_value&quot;: &quot;2395 Kutch Passage Apt. 223\nTreutelborough, MA 04054-2197&quot;,
+        &quot;site_name&quot;: &quot;Montana&quot;,
+        &quot;site_value&quot;: &quot;975 Schinner Views Suite 236\nKesslerland, FL 09200-1572&quot;,
         &quot;category_code&quot;: null,
         &quot;category_desc&quot;: null,
         &quot;site_type_code&quot;: null,
@@ -24999,7 +25005,7 @@ print_r(json_decode((string) $body));</code></pre></div>
             <pre><code class="language-http">cache-control: no-cache, private
 content-type: application/json
 x-ratelimit-limit: 60
-x-ratelimit-remaining: 53
+x-ratelimit-remaining: 43
 access-control-allow-origin: *
  </code></pre></details>         <pre>
 
@@ -25135,34 +25141,30 @@ print_r(json_decode((string) $body));</code></pre></div>
             <pre><code class="language-http">cache-control: no-cache, private
 content-type: application/json
 x-ratelimit-limit: 60
-x-ratelimit-remaining: 52
+x-ratelimit-remaining: 42
 access-control-allow-origin: *
  </code></pre></details>         <pre>
 
 <code class="language-json" style="max-height: 300px;">[
     {
-        &quot;brandName&quot;: &quot;Itaque molestias rerum aut suscipit. Temporibus non nihil mollitia autem velit harum. Sed officia velit in nihil odio enim. Ut ratione similique eligendi illum incidunt nisi non.&quot;,
-        &quot;brandDescription&quot;: &quot;Aut et ullam aut earum voluptatem non. Illo nostrum dolor earum et rerum occaecati dolorem odio. Quas tempora harum repellat omnis.&quot;
+        &quot;brandName&quot;: &quot;Molestias excepturi adipisci temporibus sed. Maiores et voluptate et aut. Sequi mollitia ea dicta quia.&quot;,
+        &quot;brandDescription&quot;: &quot;Esse exercitationem in molestiae quisquam sit. Perspiciatis harum quasi repellendus ullam quisquam et ipsum aut. Laudantium dolorum nobis quam accusamus. Assumenda minima non nisi expedita architecto.&quot;
     },
     {
-        &quot;brandName&quot;: &quot;A et maxime atque eum blanditiis est est. Rerum iusto rerum et voluptas eligendi necessitatibus. Modi iure temporibus consectetur eius mollitia nihil. Odit quae maiores quia exercitationem occaecati.&quot;,
-        &quot;brandDescription&quot;: &quot;Harum vel aliquam repudiandae dignissimos vel. Quisquam aut et accusamus et fugit. Eum quo possimus tempore est molestias aut est.&quot;
+        &quot;brandName&quot;: &quot;In voluptatibus nobis molestiae eos molestiae quasi. Labore aut quo laborum adipisci ipsam consectetur. Et dolor ut accusamus totam. Voluptatum pariatur ducimus saepe ad eum quidem voluptatem ea.&quot;,
+        &quot;brandDescription&quot;: &quot;Veritatis asperiores eveniet dicta sint sed. Non laboriosam dignissimos iure vitae in reprehenderit placeat rem.&quot;
     },
     {
-        &quot;brandName&quot;: &quot;Id nam atque repudiandae voluptatum. Sit rem vitae quis aspernatur est in cupiditate numquam. Deserunt illum quasi repellendus maxime.&quot;,
-        &quot;brandDescription&quot;: &quot;Nihil quisquam ut ea. Et voluptas dolores excepturi cum error.&quot;
+        &quot;brandName&quot;: &quot;Molestias ea qui sapiente dignissimos vel blanditiis. Id itaque enim qui eum aspernatur consequatur. Facilis consequuntur quis numquam qui quia. Magni vel asperiores provident quae et id eveniet.&quot;,
+        &quot;brandDescription&quot;: &quot;Officiis excepturi dignissimos aut eaque corrupti aut pariatur. Eum at animi ut sapiente. Minus enim quibusdam id dolor maxime necessitatibus expedita. Harum et magni quasi voluptatem.&quot;
     },
     {
-        &quot;brandName&quot;: &quot;Iusto quia nisi est fugiat culpa et harum. Ut necessitatibus asperiores assumenda.&quot;,
-        &quot;brandDescription&quot;: &quot;Tenetur eveniet quasi nihil voluptas. Exercitationem qui maiores possimus velit. Magni deserunt reprehenderit nesciunt necessitatibus ratione et quam. Autem molestiae et nostrum officiis illo.&quot;
+        &quot;brandName&quot;: &quot;Sit consectetur ab assumenda quod rerum. Aut incidunt numquam ut magni vitae hic in. Commodi facere tempora hic inventore iste. Voluptate sapiente sapiente nihil excepturi.&quot;,
+        &quot;brandDescription&quot;: &quot;Et itaque ipsam illum. Adipisci cupiditate dolores est perspiciatis. Iste iure maxime quaerat quo qui deserunt cupiditate.&quot;
     },
     {
-        &quot;brandName&quot;: &quot;Veniam consequatur placeat harum explicabo pariatur. Sed deserunt provident ut ducimus accusantium. Necessitatibus tenetur ex rerum consequatur saepe suscipit.&quot;,
-        &quot;brandDescription&quot;: &quot;Labore officia voluptatem at quaerat iusto inventore voluptatem eos. Ut hic laborum voluptates. Sit accusamus dolorem quibusdam quos fugit suscipit. Temporibus facere modi commodi repudiandae consequatur iure doloremque consequatur.&quot;
-    },
-    {
-        &quot;brandName&quot;: &quot;brand&quot;,
-        &quot;brandDescription&quot;: &quot;brand&quot;
+        &quot;brandName&quot;: &quot;Ex suscipit consequatur non aut rerum laborum expedita. Doloribus fuga itaque inventore explicabo. Eos occaecati beatae sequi ut nostrum ipsa. Eveniet consequatur laborum est recusandae.&quot;,
+        &quot;brandDescription&quot;: &quot;Et adipisci ut sit et nihil doloribus qui. Et id neque cupiditate eveniet. Aliquam expedita mollitia nam praesentium. Dolores illo nam tempora ratione doloribus.&quot;
     }
 ]</code>
  </pre>
@@ -25284,34 +25286,30 @@ print_r(json_decode((string) $body));</code></pre></div>
             <pre><code class="language-http">cache-control: no-cache, private
 content-type: application/json
 x-ratelimit-limit: 60
-x-ratelimit-remaining: 51
+x-ratelimit-remaining: 41
 access-control-allow-origin: *
  </code></pre></details>         <pre>
 
 <code class="language-json" style="max-height: 300px;">[
     {
-        &quot;categoryName&quot;: &quot;Et voluptas sed id. Commodi id enim omnis aliquam. Et rerum laborum quia sequi libero quos corrupti.&quot;,
-        &quot;categoryDescription&quot;: &quot;Hic reprehenderit quo suscipit et. Et culpa provident sint consequatur et eveniet. Et minus voluptatum minima vitae aut.&quot;
+        &quot;categoryName&quot;: &quot;Exercitationem aut temporibus dolor omnis atque. Iusto quis aperiam earum iure. Voluptatem labore recusandae velit.&quot;,
+        &quot;categoryDescription&quot;: &quot;Velit mollitia ut qui nobis ullam. In sint cumque consequatur et iusto. Explicabo enim amet quasi id nostrum. Non eum tempora laboriosam.&quot;
     },
     {
-        &quot;categoryName&quot;: &quot;Eum rerum assumenda vel accusamus. Porro facere labore doloremque suscipit aperiam pariatur. Sunt quo minima earum delectus quibusdam voluptatem. Eveniet ut et sint sit quaerat ut similique.&quot;,
-        &quot;categoryDescription&quot;: &quot;Rem quod dolores laudantium ut vitae. Occaecati error et deserunt qui pariatur est voluptas. Labore ab adipisci consequatur officia ut labore quibusdam.&quot;
+        &quot;categoryName&quot;: &quot;Odit voluptatem aspernatur aperiam iusto quia. Repudiandae qui quia qui nihil rerum dolore ut. Commodi sit quo non et. Quisquam saepe possimus omnis sed.&quot;,
+        &quot;categoryDescription&quot;: &quot;Ut omnis numquam consequatur tenetur tempora sapiente. Et aliquam eius odio exercitationem rem sed culpa.&quot;
     },
     {
-        &quot;categoryName&quot;: &quot;Et velit non sint excepturi est ut. Et ut inventore sapiente sit praesentium. Ea qui aut ratione debitis tempora itaque.&quot;,
-        &quot;categoryDescription&quot;: &quot;Facilis aperiam consequatur necessitatibus minus fugiat culpa. Tempora incidunt dicta qui. Consequuntur qui sit soluta eveniet corporis perferendis eum.&quot;
+        &quot;categoryName&quot;: &quot;Sint distinctio ut laboriosam dolores quia. Dolores adipisci rerum tempore dolore enim. Veniam itaque tempora sunt ea.&quot;,
+        &quot;categoryDescription&quot;: &quot;Unde nisi consequuntur commodi aspernatur. Autem culpa consequuntur magnam dolor quia repudiandae non. Est laudantium dolores autem pariatur. Doloremque dolores laboriosam natus ut libero.&quot;
     },
     {
-        &quot;categoryName&quot;: &quot;Aut quam aperiam fuga. Ut et magnam voluptatum aut voluptatem doloremque perspiciatis debitis. Doloremque hic cupiditate iste error fugit.&quot;,
-        &quot;categoryDescription&quot;: &quot;Perferendis quos optio necessitatibus est quam. Sed repellat vero velit. Rerum quaerat cum tempora enim temporibus.&quot;
+        &quot;categoryName&quot;: &quot;Iste rem vel in omnis vel illo dolores. Sed porro doloremque laudantium aspernatur cum voluptate vitae. Ad illo rerum natus cupiditate dolore iste. Tempore voluptatibus eos est.&quot;,
+        &quot;categoryDescription&quot;: &quot;Expedita neque minima voluptatum architecto perspiciatis omnis. Culpa iusto voluptatibus quasi tempore.&quot;
     },
     {
-        &quot;categoryName&quot;: &quot;Et numquam laboriosam iure harum non. Fugit alias magni recusandae asperiores et doloribus. Tempore dicta molestiae sed vitae exercitationem consectetur.&quot;,
-        &quot;categoryDescription&quot;: &quot;Neque et quo libero qui similique qui. Quas ut sed provident culpa adipisci placeat. Quod non voluptatem sint amet.&quot;
-    },
-    {
-        &quot;categoryName&quot;: &quot;category&quot;,
-        &quot;categoryDescription&quot;: &quot;category&quot;
+        &quot;categoryName&quot;: &quot;Voluptatibus et dolor accusamus et perferendis et. Voluptas officia dolor explicabo sed repellat error labore.&quot;,
+        &quot;categoryDescription&quot;: &quot;Laudantium ab est quo itaque officiis. Fugiat qui molestiae sit voluptas. Expedita sit nulla rerum pariatur labore dolor. Culpa temporibus ipsam quasi adipisci dignissimos perferendis. Repellat molestiae doloremque amet sit et at.&quot;
     }
 ]</code>
  </pre>
@@ -25433,18 +25431,18 @@ print_r(json_decode((string) $body));</code></pre></div>
             <pre><code class="language-http">cache-control: no-cache, private
 content-type: application/json
 x-ratelimit-limit: 60
-x-ratelimit-remaining: 50
+x-ratelimit-remaining: 40
 access-control-allow-origin: *
  </code></pre></details>         <pre>
 
 <code class="language-json" style="max-height: 300px;">[
     {
         &quot;id&quot;: 1,
-        &quot;product_name&quot;: &quot;Hudson PLC&quot;,
-        &quot;product_content&quot;: &quot;Iste aut dolorem voluptas aliquam similique laborum. Enim qui earum distinctio. Iste doloremque doloribus nihil deserunt.&quot;,
-        &quot;product_excerpt&quot;: &quot;Sunt ut omnis quo non dicta. Vero neque consectetur nihil itaque quod. Odio minus praesentium eos commodi suscipit incidunt. Dolores ratione qui nemo dolores laboriosam dolores delectus.&quot;,
+        &quot;product_name&quot;: &quot;Hamill, Bosco and Kulas&quot;,
+        &quot;product_content&quot;: &quot;Necessitatibus dolorem delectus pariatur est est ratione consequuntur ut. Consequatur est accusamus qui facere. Magni et aliquam quo vero quisquam eum. Nulla in placeat similique tempore.&quot;,
+        &quot;product_excerpt&quot;: &quot;Non aut magnam cumque possimus deleniti excepturi. Nostrum et sed dolorem numquam optio a excepturi voluptatem.&quot;,
         &quot;price&quot;: 100,
-        &quot;cover_image&quot;: &quot;https://via.placeholder.com/640x480.png/0022ff?text=ut&quot;,
+        &quot;cover_image&quot;: &quot;https://via.placeholder.com/640x480.png/0055aa?text=pariatur&quot;,
         &quot;product_SKU&quot;: &quot;100&quot;,
         &quot;category&quot;: {
             &quot;categoryId&quot;: null,
@@ -25458,11 +25456,11 @@ access-control-allow-origin: *
     },
     {
         &quot;id&quot;: 2,
-        &quot;product_name&quot;: &quot;Stoltenberg-Nikolaus&quot;,
-        &quot;product_content&quot;: &quot;Fugiat assumenda recusandae voluptatibus ea. Tenetur omnis quasi velit optio nobis. Temporibus omnis iure atque dolores animi magnam aut.&quot;,
-        &quot;product_excerpt&quot;: &quot;Et maiores culpa qui occaecati. Illum cumque quia laborum aut sed dignissimos. Harum nulla odit eos aut. Iste aut rem necessitatibus vero rerum.&quot;,
+        &quot;product_name&quot;: &quot;Ernser-Heathcote&quot;,
+        &quot;product_content&quot;: &quot;Aut maxime magni esse. Nesciunt ipsa eum dicta et quia aut ad. Nihil velit nisi vitae voluptas est sed.&quot;,
+        &quot;product_excerpt&quot;: &quot;Accusamus consequatur ex eos aut assumenda enim dolores. Omnis repellat animi ipsam quod quidem. Optio aliquid est qui eligendi in necessitatibus.&quot;,
         &quot;price&quot;: 100,
-        &quot;cover_image&quot;: &quot;https://via.placeholder.com/640x480.png/0099ff?text=consequatur&quot;,
+        &quot;cover_image&quot;: &quot;https://via.placeholder.com/640x480.png/00dd33?text=sed&quot;,
         &quot;product_SKU&quot;: &quot;100&quot;,
         &quot;category&quot;: {
             &quot;categoryId&quot;: null,
@@ -25476,11 +25474,11 @@ access-control-allow-origin: *
     },
     {
         &quot;id&quot;: 3,
-        &quot;product_name&quot;: &quot;Gibson-Bailey&quot;,
-        &quot;product_content&quot;: &quot;Similique delectus hic est a. Velit veritatis ducimus iste cumque. Et deserunt quis voluptatum id dolores voluptas sunt vitae.&quot;,
-        &quot;product_excerpt&quot;: &quot;Atque ipsam recusandae hic et blanditiis. Dignissimos ipsa voluptate repudiandae laudantium debitis asperiores. Alias non ipsa repudiandae repellendus delectus temporibus dolorum.&quot;,
+        &quot;product_name&quot;: &quot;Roob-Padberg&quot;,
+        &quot;product_content&quot;: &quot;Quia veniam qui magni porro eveniet alias. Voluptas exercitationem dolores doloribus nulla cupiditate tempora iusto. Eaque tenetur autem illum non culpa. Temporibus placeat voluptate est.&quot;,
+        &quot;product_excerpt&quot;: &quot;Vel reprehenderit suscipit qui nesciunt placeat eos aliquam. Ipsum dolore saepe deleniti magni delectus esse expedita. Et maiores non aperiam accusantium perspiciatis qui.&quot;,
         &quot;price&quot;: 100,
-        &quot;cover_image&quot;: &quot;https://via.placeholder.com/640x480.png/0088bb?text=quam&quot;,
+        &quot;cover_image&quot;: &quot;https://via.placeholder.com/640x480.png/002266?text=in&quot;,
         &quot;product_SKU&quot;: &quot;100&quot;,
         &quot;category&quot;: {
             &quot;categoryId&quot;: null,
@@ -25494,11 +25492,11 @@ access-control-allow-origin: *
     },
     {
         &quot;id&quot;: 4,
-        &quot;product_name&quot;: &quot;Schmidt-Barton&quot;,
-        &quot;product_content&quot;: &quot;Et commodi sit quam rem consequatur veniam placeat. Reiciendis facere quia impedit aut facilis. Quo sint eaque laboriosam labore quo rem. Qui corrupti in et ut quia doloribus.&quot;,
-        &quot;product_excerpt&quot;: &quot;Magni voluptatem molestiae voluptatum et velit. Deserunt magni qui dolor eum modi est ut sit. Inventore in ut quia sed.&quot;,
+        &quot;product_name&quot;: &quot;Zemlak Ltd&quot;,
+        &quot;product_content&quot;: &quot;Incidunt omnis nihil eius impedit illo facere est rerum. Cumque praesentium enim praesentium perferendis aut. Quos ut aliquid rerum officiis.&quot;,
+        &quot;product_excerpt&quot;: &quot;Voluptatem qui voluptate voluptate cupiditate quis suscipit ipsam repellat. Id cum veniam repudiandae ut recusandae et. Quidem a illum distinctio aut.&quot;,
         &quot;price&quot;: 100,
-        &quot;cover_image&quot;: &quot;https://via.placeholder.com/640x480.png/00ccaa?text=omnis&quot;,
+        &quot;cover_image&quot;: &quot;https://via.placeholder.com/640x480.png/006611?text=pariatur&quot;,
         &quot;product_SKU&quot;: &quot;100&quot;,
         &quot;category&quot;: {
             &quot;categoryId&quot;: null,
@@ -25512,11 +25510,11 @@ access-control-allow-origin: *
     },
     {
         &quot;id&quot;: 5,
-        &quot;product_name&quot;: &quot;Hermann, Boehm and Romaguera&quot;,
-        &quot;product_content&quot;: &quot;Amet est officiis et veritatis iste. Amet sit ea ut atque rerum esse eius. Officiis praesentium commodi illo voluptatum et fugit. Iste in est provident laudantium et.&quot;,
-        &quot;product_excerpt&quot;: &quot;Officiis saepe dolorem laboriosam consequatur ab rerum. Et ullam similique maiores suscipit.&quot;,
+        &quot;product_name&quot;: &quot;Ward Group&quot;,
+        &quot;product_content&quot;: &quot;Repellendus rerum repudiandae nostrum ipsam. Maiores commodi error beatae voluptates dolor aut facere. Facere fugiat numquam eligendi reiciendis natus tempore adipisci.&quot;,
+        &quot;product_excerpt&quot;: &quot;Temporibus sit cum omnis aspernatur aut aut. Quo soluta qui aut itaque. Rem quia at laudantium itaque autem vitae reiciendis. Dolorum distinctio eligendi quia iusto.&quot;,
         &quot;price&quot;: 100,
-        &quot;cover_image&quot;: &quot;https://via.placeholder.com/640x480.png/00aa22?text=quaerat&quot;,
+        &quot;cover_image&quot;: &quot;https://via.placeholder.com/640x480.png/0033bb?text=optio&quot;,
         &quot;product_SKU&quot;: &quot;100&quot;,
         &quot;category&quot;: {
             &quot;categoryId&quot;: null,
@@ -25525,24 +25523,6 @@ access-control-allow-origin: *
         &quot;brand&quot;: {
             &quot;brandId&quot;: null,
             &quot;brandName&quot;: null
-        },
-        &quot;product_isLoan&quot;: null
-    },
-    {
-        &quot;id&quot;: 6,
-        &quot;product_name&quot;: &quot;hardware&quot;,
-        &quot;product_content&quot;: &quot;hardware&quot;,
-        &quot;product_excerpt&quot;: &quot;hardware&quot;,
-        &quot;price&quot;: 100,
-        &quot;cover_image&quot;: null,
-        &quot;product_SKU&quot;: &quot;100&quot;,
-        &quot;category&quot;: {
-            &quot;categoryId&quot;: 6,
-            &quot;categoryName&quot;: &quot;category&quot;
-        },
-        &quot;brand&quot;: {
-            &quot;brandId&quot;: 6,
-            &quot;brandName&quot;: &quot;brand&quot;
         },
         &quot;product_isLoan&quot;: null
     }
@@ -25611,6 +25591,278 @@ access-control-allow-origin: *
 <p>Example: <code>application/json</code></p>
             </div>
                         </form>
+
+                    <h2 id="endpoints-GETapi-fetchSchoolInfoById--id-">GET api/fetchSchoolInfoById/{id}</h2>
+
+<p>
+</p>
+
+
+
+<span id="example-requests-GETapi-fetchSchoolInfoById--id-">
+<blockquote>Example request:</blockquote>
+
+
+<div class="javascript-example">
+    <pre><code class="language-javascript">const url = new URL(
+    "http://localhost:8000/api/fetchSchoolInfoById/culpa"
+);
+
+const headers = {
+    "Content-Type": "application/json",
+    "Accept": "application/json",
+};
+
+fetch(url, {
+    method: "GET",
+    headers,
+}).then(response =&gt; response.json());</code></pre></div>
+
+
+<div class="php-example">
+    <pre><code class="language-php">$client = new \GuzzleHttp\Client();
+$response = $client-&gt;get(
+    'http://localhost:8000/api/fetchSchoolInfoById/culpa',
+    [
+        'headers' =&gt; [
+            'Content-Type' =&gt; 'application/json',
+            'Accept' =&gt; 'application/json',
+        ],
+    ]
+);
+$body = $response-&gt;getBody();
+print_r(json_decode((string) $body));</code></pre></div>
+
+</span>
+
+<span id="example-responses-GETapi-fetchSchoolInfoById--id-">
+            <blockquote>
+            <p>Example response (200):</p>
+        </blockquote>
+                <details class="annotation">
+            <summary style="cursor: pointer;">
+                <small onclick="textContent = parentElement.parentElement.open ? 'Show headers' : 'Hide headers'">Show headers</small>
+            </summary>
+            <pre><code class="language-http">cache-control: no-cache, private
+content-type: application/json
+x-ratelimit-limit: 60
+x-ratelimit-remaining: 39
+access-control-allow-origin: *
+ </code></pre></details>         <pre>
+
+<code class="language-json" style="max-height: 300px;">&quot;No site found&quot;</code>
+ </pre>
+    </span>
+<span id="execution-results-GETapi-fetchSchoolInfoById--id-" hidden>
+    <blockquote>Received response<span
+                id="execution-response-status-GETapi-fetchSchoolInfoById--id-"></span>:
+    </blockquote>
+    <pre class="json"><code id="execution-response-content-GETapi-fetchSchoolInfoById--id-" style="max-height: 400px;"></code></pre>
+</span>
+<span id="execution-error-GETapi-fetchSchoolInfoById--id-" hidden>
+    <blockquote>Request failed with error:</blockquote>
+    <pre><code id="execution-error-message-GETapi-fetchSchoolInfoById--id-"></code></pre>
+</span>
+<form id="form-GETapi-fetchSchoolInfoById--id-" data-method="GET"
+      data-path="api/fetchSchoolInfoById/{id}"
+      data-authed="0"
+      data-hasfiles="0"
+      data-isarraybody="0"
+      autocomplete="off"
+      onsubmit="event.preventDefault(); executeTryOut('GETapi-fetchSchoolInfoById--id-', this);">
+    <h3>
+        Request&nbsp;&nbsp;&nbsp;
+                    <button type="button"
+                    style="background-color: #8fbcd4; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-tryout-GETapi-fetchSchoolInfoById--id-"
+                    onclick="tryItOut('GETapi-fetchSchoolInfoById--id-');">Try it out ⚡
+            </button>
+            <button type="button"
+                    style="background-color: #c97a7e; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-canceltryout-GETapi-fetchSchoolInfoById--id-"
+                    onclick="cancelTryOut('GETapi-fetchSchoolInfoById--id-');" hidden>Cancel 🛑
+            </button>&nbsp;&nbsp;
+            <button type="submit"
+                    style="background-color: #6ac174; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-executetryout-GETapi-fetchSchoolInfoById--id-" hidden>Send Request 💥
+            </button>
+            </h3>
+            <p>
+            <small class="badge badge-green">GET</small>
+            <b><code>api/fetchSchoolInfoById/{id}</code></b>
+        </p>
+                <h4 class="fancy-heading-panel"><b>Headers</b></h4>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Content-Type</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+               name="Content-Type"                data-endpoint="GETapi-fetchSchoolInfoById--id-"
+               value="application/json"
+               data-component="header">
+    <br>
+<p>Example: <code>application/json</code></p>
+            </div>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Accept</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+               name="Accept"                data-endpoint="GETapi-fetchSchoolInfoById--id-"
+               value="application/json"
+               data-component="header">
+    <br>
+<p>Example: <code>application/json</code></p>
+            </div>
+                        <h4 class="fancy-heading-panel"><b>URL Parameters</b></h4>
+                    <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>id</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+               name="id"                data-endpoint="GETapi-fetchSchoolInfoById--id-"
+               value="culpa"
+               data-component="url">
+    <br>
+<p>The ID of the fetchSchoolInfoById. Example: <code>culpa</code></p>
+            </div>
+                    </form>
+
+                    <h2 id="endpoints-GETapi-fetchSchoolByFullName--name-">GET api/fetchSchoolByFullName/{name}</h2>
+
+<p>
+</p>
+
+
+
+<span id="example-requests-GETapi-fetchSchoolByFullName--name-">
+<blockquote>Example request:</blockquote>
+
+
+<div class="javascript-example">
+    <pre><code class="language-javascript">const url = new URL(
+    "http://localhost:8000/api/fetchSchoolByFullName/culpa"
+);
+
+const headers = {
+    "Content-Type": "application/json",
+    "Accept": "application/json",
+};
+
+fetch(url, {
+    method: "GET",
+    headers,
+}).then(response =&gt; response.json());</code></pre></div>
+
+
+<div class="php-example">
+    <pre><code class="language-php">$client = new \GuzzleHttp\Client();
+$response = $client-&gt;get(
+    'http://localhost:8000/api/fetchSchoolByFullName/culpa',
+    [
+        'headers' =&gt; [
+            'Content-Type' =&gt; 'application/json',
+            'Accept' =&gt; 'application/json',
+        ],
+    ]
+);
+$body = $response-&gt;getBody();
+print_r(json_decode((string) $body));</code></pre></div>
+
+</span>
+
+<span id="example-responses-GETapi-fetchSchoolByFullName--name-">
+            <blockquote>
+            <p>Example response (200):</p>
+        </blockquote>
+                <details class="annotation">
+            <summary style="cursor: pointer;">
+                <small onclick="textContent = parentElement.parentElement.open ? 'Show headers' : 'Hide headers'">Show headers</small>
+            </summary>
+            <pre><code class="language-http">cache-control: no-cache, private
+content-type: application/json
+x-ratelimit-limit: 60
+x-ratelimit-remaining: 38
+access-control-allow-origin: *
+ </code></pre></details>         <pre>
+
+<code class="language-json" style="max-height: 300px;">&quot;No site found&quot;</code>
+ </pre>
+    </span>
+<span id="execution-results-GETapi-fetchSchoolByFullName--name-" hidden>
+    <blockquote>Received response<span
+                id="execution-response-status-GETapi-fetchSchoolByFullName--name-"></span>:
+    </blockquote>
+    <pre class="json"><code id="execution-response-content-GETapi-fetchSchoolByFullName--name-" style="max-height: 400px;"></code></pre>
+</span>
+<span id="execution-error-GETapi-fetchSchoolByFullName--name-" hidden>
+    <blockquote>Request failed with error:</blockquote>
+    <pre><code id="execution-error-message-GETapi-fetchSchoolByFullName--name-"></code></pre>
+</span>
+<form id="form-GETapi-fetchSchoolByFullName--name-" data-method="GET"
+      data-path="api/fetchSchoolByFullName/{name}"
+      data-authed="0"
+      data-hasfiles="0"
+      data-isarraybody="0"
+      autocomplete="off"
+      onsubmit="event.preventDefault(); executeTryOut('GETapi-fetchSchoolByFullName--name-', this);">
+    <h3>
+        Request&nbsp;&nbsp;&nbsp;
+                    <button type="button"
+                    style="background-color: #8fbcd4; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-tryout-GETapi-fetchSchoolByFullName--name-"
+                    onclick="tryItOut('GETapi-fetchSchoolByFullName--name-');">Try it out ⚡
+            </button>
+            <button type="button"
+                    style="background-color: #c97a7e; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-canceltryout-GETapi-fetchSchoolByFullName--name-"
+                    onclick="cancelTryOut('GETapi-fetchSchoolByFullName--name-');" hidden>Cancel 🛑
+            </button>&nbsp;&nbsp;
+            <button type="submit"
+                    style="background-color: #6ac174; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-executetryout-GETapi-fetchSchoolByFullName--name-" hidden>Send Request 💥
+            </button>
+            </h3>
+            <p>
+            <small class="badge badge-green">GET</small>
+            <b><code>api/fetchSchoolByFullName/{name}</code></b>
+        </p>
+                <h4 class="fancy-heading-panel"><b>Headers</b></h4>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Content-Type</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+               name="Content-Type"                data-endpoint="GETapi-fetchSchoolByFullName--name-"
+               value="application/json"
+               data-component="header">
+    <br>
+<p>Example: <code>application/json</code></p>
+            </div>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Accept</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+               name="Accept"                data-endpoint="GETapi-fetchSchoolByFullName--name-"
+               value="application/json"
+               data-component="header">
+    <br>
+<p>Example: <code>application/json</code></p>
+            </div>
+                        <h4 class="fancy-heading-panel"><b>URL Parameters</b></h4>
+                    <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>name</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+               name="name"                data-endpoint="GETapi-fetchSchoolByFullName--name-"
+               value="culpa"
+               data-component="url">
+    <br>
+<p>Example: <code>culpa</code></p>
+            </div>
+                    </form>
 
             
 
