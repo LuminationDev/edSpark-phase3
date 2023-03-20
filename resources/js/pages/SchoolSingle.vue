@@ -3,6 +3,7 @@
      * IMPORT DEPENDENCIES
      */
 import { useRouter, useRoute } from 'vue-router';
+import {ref} from 'vue'
 
 /**
  * IMPORT COMPONENTS
@@ -16,6 +17,7 @@ import SchoolTech from "@/js/components/schoolsingle/SchoolTech.vue";
  */
 import SchoolsSubMenu from '../components/svg/SchoolsSubMenu.vue';
 import ChevronRight from '../components/svg/ChevronRight.vue';
+import {onBeforeMount} from "vue";
 
 const route = useRoute();
 const router = useRouter();
@@ -24,7 +26,10 @@ const urlOrigin = window.location.origin
 const breadCrumbPrev = 'Schools'
 const breadCrumbName = route.params.name
 
+const schoolData = ref({})
+onBeforeMount( () =>{
 
+})
 
 /**
  * No receiving props into this. do query instead to get data and render them out
@@ -75,6 +80,7 @@ const tempSchoolData = {
                                         Home
                                     </p>
                                 </router-link>
+                                <!-- TODO: Breadcrumb builder -- gotta be smart -->
                                 <ChevronRight />
                                 <router-link to="/schools">
                                     <p class="text-[14px] text-white hover:text-[#44B8F3]">
@@ -101,7 +107,6 @@ const tempSchoolData = {
                 <SchoolContent />
             </div>
             <div class="school-tech basis-1/3">
-                <OurStory />
                 <SchoolTech :tech-list="tempSchoolData.techUsed" />
             </div>
         </div>

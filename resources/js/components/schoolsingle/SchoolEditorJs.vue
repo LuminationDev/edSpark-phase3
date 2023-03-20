@@ -6,7 +6,21 @@ import EditorJS from '@editorjs/editorjs';
 import Header from '@editorjs/header';
 import Paragraph from '@editorjs/paragraph';
 import List from '@editorjs/list';
-import ImageTool from '@editorjs/image';
+import SimpleImage from '@editorjs/simple-image';
+import FontSize from 'editorjs-inline-font-size-tool'
+
+const props = defineProps({
+    existingData:{
+        type: Object,
+        required: false
+    },
+    editMode:{
+        type: Boolean,
+        required: false
+    }
+})
+
+const emits = defineEmits(['saveNewData'])
 
 const editorJsTools = {
     header:{
@@ -16,6 +30,8 @@ const editorJsTools = {
             placeholder: "Insert Header"
         }
     },
+    fontSize: FontSize,
+
     paragraph: {
         class: Paragraph,
         inlineToolbar: true,
@@ -33,37 +49,38 @@ const editorJsTools = {
         class: List,
         inlineToolbar: true,
     },
-    image: {
-        class: ImageTool,
-        config: {
-            actions: [
-                {
-                    name: 'new_button',
-                    icon: '<svg>...</svg>',
-                    title: 'New Button',
-                    toggle: true,
-                    action: (name) => {
-                        alert(`${name} button clicked`);
-                    }
-                }
-            ],
-            uploader: {
-                async uploadByFile(file) {
-                    /**
-                     * Need to upload with form multipart during save
-                     * POST request should do it
-                     * TODO - Once API from server is ready
-                     */
-                }
-
-            }
-        },
-        toolbox: [
-            {
-                icon: '<svg width="22" height="21" viewBox="0 0 22 21" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M2.71563 20.625C2.07625 20.625 1.52871 20.4049 1.07301 19.9646C0.618087 19.5236 0.390625 18.9937 0.390625 18.375V2.625C0.390625 2.00625 0.618087 1.47637 1.07301 1.03537C1.52871 0.595125 2.07625 0.375 2.71563 0.375H13.1781V2.625H2.71563V18.375H18.9906V8.25H21.3156V18.375C21.3156 18.9937 21.0882 19.5236 20.6332 19.9646C20.1775 20.4049 19.63 20.625 18.9906 20.625H2.71563ZM16.6656 7.125V4.875H14.3406V2.625H16.6656V0.375H18.9906V2.625H21.3156V4.875H18.9906V7.125H16.6656ZM3.87813 16.125H17.8281L13.4688 10.5L9.98125 15L7.36563 11.625L3.87813 16.125Z" fill="white"/></svg>'
-            }
-        ]
-    }
+    // image: {
+    //     class: ImageTool,
+    //     config: {
+    //         actions: [
+    //             {
+    //                 name: 'new_button',
+    //                 icon: '<svg>...</svg>',
+    //                 title: 'New Button',
+    //                 toggle: true,
+    //                 action: (name) => {
+    //                     alert(`${name} button clicked`);
+    //                 }
+    //             }
+    //         ],
+    //         uploader: {
+    //             async uploadByFile(file) {
+    //                 /**
+    //                  * Need to upload with form multipart during save
+    //                  * POST request should do it
+    //                  * TODO - Once API from server is ready
+    //                  */
+    //             }
+    //
+    //         }
+    //     },
+    //     toolbox: [
+    //         {
+    //             icon: '<svg width="22" height="21" viewBox="0 0 22 21" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M2.71563 20.625C2.07625 20.625 1.52871 20.4049 1.07301 19.9646C0.618087 19.5236 0.390625 18.9937 0.390625 18.375V2.625C0.390625 2.00625 0.618087 1.47637 1.07301 1.03537C1.52871 0.595125 2.07625 0.375 2.71563 0.375H13.1781V2.625H2.71563V18.375H18.9906V8.25H21.3156V18.375C21.3156 18.9937 21.0882 19.5236 20.6332 19.9646C20.1775 20.4049 19.63 20.625 18.9906 20.625H2.71563ZM16.6656 7.125V4.875H14.3406V2.625H16.6656V0.375H18.9906V2.625H21.3156V4.875H18.9906V7.125H16.6656ZM3.87813 16.125H17.8281L13.4688 10.5L9.98125 15L7.36563 11.625L3.87813 16.125Z" fill="white"/></svg>'
+    //         }
+    //     ]
+    // }
+    image: SimpleImage
 
 }
 
@@ -73,15 +90,44 @@ const editor = new EditorJS({
     autofocus: true,
     onReady: () => {
         console.log('EditorJs in the chamber and ready to be emptied 🔫')
+        if(props.existingData){
+            for(let block of props.existingData.blocks){
+                editor.blocks.insert(block.type, block.data)
+            }
+            // Add an auto delete first block due editorjs automatically create 1 empty block on init
+            // when props exists, delete first empty block to ensure consistent representation of data
+            editor.blocks.delete(0)
+        }
     },
     onChange: (api, event) =>{
         // console.log(api.blocks)
-        console.log(event.detail.target.holder.innerText)
-        console.log(event.detail.index + ' is the index emitting the onchange')
+        // console.log(event)
+        // console.log(event.detail.target.holder.innerText)
+        // console.log(event.detail.index + ' is the index emitting the onchange')
     }
 })
 
-const handleEditorButtonClick = () =>{
+const editorJsEvent = (customEvent) => {
+    // customEvent.type
+    switch(customEvent.type){
+    case 'block-added':
+        console.log('handler for blockadded')
+        break;
+    case 'block-changed':
+        console.log('handler for block changed')
+        break;
+    }
+
+}
+
+
+const handleEditorSaveClick = () =>{
+    editor.save().then(outputData => {
+        // console.log('we have ' + JSON.stringify(outputData))
+        emits('saveNewData', outputData)
+    }).catch(err =>{
+        console.log('error has happened ' + err)
+    })
 }
 </script>
 <template>
@@ -90,11 +136,9 @@ const handleEditorButtonClick = () =>{
         class="text-genericDark mt-8 rounded-lg editor"
     />
     <button
-
-        template
-        class="py-5 px-2 bg-slate-600 rounded-lg"
-        @click="handleEditorButtonClick"
+        class="w-18 rounded-lg px-2 py-4  bg-slate-500"
+        @click="handleEditorSaveClick"
     >
-        Testin button
+        Save Content
     </button>
 </template>

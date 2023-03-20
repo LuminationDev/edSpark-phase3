@@ -17,50 +17,50 @@ import Profile from '../svg/Profile.vue';
  */
 import { useUserStore } from '../../stores/useUserStore';
 
-    /**
-     * Import Components
-     */
-    import ProfileDropdown from './ProfileDropdown.vue';
+/**
+ * Import Components
+ */
+import ProfileDropdown from './ProfileDropdown.vue';
 
-    export default {
-        setup() {
-            const userStore = useUserStore();
+export default {
 
-            const navDropdownToggle = ref(false);
-            const profileDropdown = ref(false);
+    components: {
+        NavSwoosh,
+        Logo,
+        Profile,
+        ProfileDropdown
+    },
+    setup() {
+        const userStore = useUserStore();
 
-            return {
-                navDropdownToggle,
-                profileDropdown,
-                userStore,
-            }
-        },
+        const navDropdownToggle = ref(false);
+        const profileDropdown = ref(false);
 
-        components: {
-            NavSwoosh,
-            Logo,
-            Profile,
-            ProfileDropdown
-        },
+        return {
+            navDropdownToggle,
+            profileDropdown,
+            userStore,
+        }
+    },
 
-        data() {
-            return {
-                currentUser: {}
-            }
-        },
+    data() {
+        return {
+            currentUser: {}
+        }
+    },
 
-        methods: {
-            handleAvatarClick() {
-                console.log('This has been clicked!!!');
-                this.profileDropdown = !this.profileDropdown
-            }
-        },
+    mounted() {
+        this.currentUser = this.userStore.getUser
+    },
 
-        mounted() {
-            this.currentUser = this.userStore.getUser
+    methods: {
+        handleAvatarClick() {
+            console.log('This has been clicked!!!');
+            this.profileDropdown = !this.profileDropdown
         }
     }
 }
+
 </script>
 
 <template>
@@ -190,8 +190,8 @@ import { useUserStore } from '../../stores/useUserStore';
             </div>
         </div>
         <profileDropdown
-            :currentUser="this.currentUser"
-            :profileDropdown="this.profileDropdown"
+            :current-user="currentUser"
+            :profile-dropdown="profileDropdown"
             @handleAvatarClick="handleAvatarClick"
         />
 
