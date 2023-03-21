@@ -55,6 +55,7 @@ class UserController extends Controller
                     $dataToInsert = [
                         'full_name' => $data['full_name'],
                         'email' => $data['email'],
+                        'display_name' => $data['display_name'],
                         'status' => 'Inactive',
                         'created_at' => Carbon::now(),
                         'updated_at' => Carbon::now()
@@ -64,6 +65,9 @@ class UserController extends Controller
                     $error = $e->getMessage();
                 }
             }
+
+            // TODO: JM handle bio (text field - inputing with other info)
+            // TODO: JM handle images (system wide image handling)
 
             $metaData = $request->metaData;
             if ($metaData) {

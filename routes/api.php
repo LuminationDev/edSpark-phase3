@@ -11,6 +11,7 @@ use App\Http\Controllers\SiteController;
 use App\Http\Controllers\EventController;
 use App\Http\Controllers\CommunityController;
 
+use App\Http\Controllers\SchoolInfoController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -39,4 +40,10 @@ Route::middleware('api')->group(function() {
     Route::get('fetchAllBrands', [ProductController::class, 'fetchAllBrands']);
     Route::get('fetchAllCategories', [ProductController::class, 'fetchAllCategories']);
     Route::get('fetchAllProducts', [ProductController::class, 'fetchAllProducts']);
+
+    // School Info Management
+    Route::get('fetchSchoolInfoById/{id}', [SchoolInfoController::class, 'fetchSchoolInfoById']);
+    Route::get('fetchSchoolByFullName/{name}',[SchoolInfoController::class, 'fetchSchoolByFullName']);
+    Route::get('getAllInfoOfOneSchool/{name}',[SchoolInfoController::class, 'getAllInfoOfOneSchoolByFullName']);
+    Route::post('setSchoolInfoByName/{name}',[SchoolInfoController::class, 'setSchoolInfoByName']);
 });

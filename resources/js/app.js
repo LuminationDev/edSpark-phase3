@@ -7,15 +7,13 @@ import './bootstrap'
 
 import VueGoogleMaps from 'vue-google-maps-community-fork';
 
-// TODO: include pinia for state amangement
 const pinia = createPinia();
-
 createApp(App)
     .use(pinia)
     .use(router)
     .use(VueGoogleMaps, {
         load: {
-          key: 'AIzaSyAFbqxGQntzgzfzKFh6bArwU14MJhcV1Wc',
+          key: import.meta.env.VITE_GOOGLE_MAPS_API_KEY,
         },
       })
     .mount('#app');

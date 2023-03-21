@@ -1,52 +1,52 @@
-<script>
+<script setup>
     /**
      * IMPORT SVG's
      */
-    import Like from '../svg/Like.vue';
-    import BookMark from '../svg/BookMark.vue';
+import Like from '../svg/Like.vue';
+import BookMark from '../svg/BookMark.vue';
 
-    export default {
-        props: {
-
-        },
-
-        components: {
-            Like,
-            BookMark,
-        },
-
-        methods: {
-            checkData() {
-                // console.log(this.posts);
-            }
-        },
-
-        mounted() {
-            this.checkData();
-        },
+const props = defineProps({
+    techUsed:{
+        type: Array,
+        required: false
     }
+})
 </script>
 
 <template>
-    <div class="h-full flex flex-col"> <!-- CARD BODY -->
-        <div class="relative h-36 group-hover:h-0 transition-all"> <!-- CARD HEADER -->
-            <slot name="cover"></slot>
-            <slot name="typeTag"></slot>
+    <div class="h-full flex flex-col">
+        <!-- CARD BODY -->
+        <div class="relative h-36 group-hover:h-0 transition-all">
+            <!-- CARD HEADER -->
+            <slot name="cover" />
+            <slot name="typeTag" />
         </div>
-        <div class="px-[24px] py-[18px] relative transition-all"> <!-- CARD CONTENT -->
-            <div class="card-content_title min-h-[72px] transition-all"> <!-- CARD CONTENT HEADER -->
+        <div class="px-[24px] py-[18px] relative transition-all">
+            <!-- CARD CONTENT -->
+            <div class="card-content_title min-h-[72px] transition-all">
+                <!-- CARD CONTENT HEADER -->
                 <h5 class="mr-[36px] text-[24px] font-medium group-hover:mr-28 transition-all">
-                    <slot name="title"></slot>
+                    <slot name="title" />
                 </h5>
             </div>
-            <slot name="negotiatedDeals"></slot>
-            <div class="card-content_body transition-all"> <!-- CARD CONTENT BODY-->
-                <slot name="techUsed"></slot>
-                <p class="transition-all"><small><slot name="created_at"></slot></small></p>
-                <p class="transition-all"><slot name="description"></slot></p>
+            <slot name="negotiatedDeals" />
+            <div class="card-content_body transition-all">
+                <!-- CARD CONTENT BODY-->
+                <!-- Scope slot props -->
+                <slot
+                    name="techUsed"
+                    :tech-used="props.techUsed"
+                />
+                <p class="transition-all">
+                    <small><slot name="created_at" /></small>
+                </p>
+                <p class="transition-all">
+                    <slot name="description" />
+                </p>
             </div>
         </div>
-        <div class="px-[24px] py-[18px] mt-auto flex gap-4"> <!-- CARD FOOTER -->
+        <div class="px-[24px] py-[18px] mt-auto flex gap-4">
+            <!-- CARD FOOTER -->
             <Like />
             <bookMark />
         </div>

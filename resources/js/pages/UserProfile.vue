@@ -130,13 +130,13 @@
                 <nav class="bg-[#1C5CA9]">
                     <ul class="flex flex-row gap-4 mt-[100px] px-[81px] text-white text-[18px] font-bold">
                         <li class="my-2">
-                            <button class="py-2 px-4">Bio</button>
+                            <button class="py-2 px-4 hover:underline decoration-[#B8E2DC] decoration-4 underline-offset-8 transition-all">Bio</button>
                         </li>
                         <li class="my-2">
-                            <button class="py-2 px-4">Interests</button>
+                            <button class="py-2 px-4 hover:underline decoration-[#B8E2DC] decoration-4 underline-offset-8 transition-all">Interests</button>
                         </li>
                         <li class="my-2">
-                            <button class="py-2 px-4">Work</button>
+                            <button class="py-2 px-4 hover:underline decoration-[#B8E2DC] decoration-4 underline-offset-8 transition-all">Work</button>
                         </li>
                     </ul>
                 </nav>
