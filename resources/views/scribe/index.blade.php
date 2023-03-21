@@ -30,9 +30,9 @@
         var useCsrf = Boolean(1);
         var csrfUrl = "/sanctum/csrf-cookie";
     </script>
-    <script src="../docs/js/tryitout-4.16.0.js"></script>
+    <script src="../docs/js/tryitout-4.17.0.js"></script>
 
-    <script src="../docs/js/theme-default-4.16.0.js"></script>
+    <script src="../docs/js/theme-default-4.17.0.js"></script>
 
 </head>
 
@@ -77,6 +77,12 @@
                                                                                 <li class="tocify-item level-2" data-unique="endpoints-GETapi-fetchSoftwarePosts">
                                 <a href="#endpoints-GETapi-fetchSoftwarePosts">GET api/fetchSoftwarePosts</a>
                             </li>
+                                                                                <li class="tocify-item level-2" data-unique="endpoints-GETapi-fetchEventPosts">
+                                <a href="#endpoints-GETapi-fetchEventPosts">GET api/fetchEventPosts</a>
+                            </li>
+                                                                                <li class="tocify-item level-2" data-unique="endpoints-GETapi-fetchCommunityPosts">
+                                <a href="#endpoints-GETapi-fetchCommunityPosts">GET api/fetchCommunityPosts</a>
+                            </li>
                                                                                 <li class="tocify-item level-2" data-unique="endpoints-GETapi-fetchUser--id-">
                                 <a href="#endpoints-GETapi-fetchUser--id-">GET api/fetchUser/{id}</a>
                             </li>
@@ -110,7 +116,7 @@
     </ul>
 
     <ul class="toc-footer" id="last-updated">
-        <li>Last updated: March 17, 2023</li>
+        <li>Last updated: March 21, 2023</li>
     </ul>
 </div>
 
@@ -523,6 +529,426 @@ access-control-allow-origin: *
             </div>
                         </form>
 
+                    <h2 id="endpoints-GETapi-fetchEventPosts">GET api/fetchEventPosts</h2>
+
+<p>
+</p>
+
+
+
+<span id="example-requests-GETapi-fetchEventPosts">
+<blockquote>Example request:</blockquote>
+
+
+<div class="javascript-example">
+    <pre><code class="language-javascript">const url = new URL(
+    "http://localhost:8000/api/fetchEventPosts"
+);
+
+const headers = {
+    "Content-Type": "application/json",
+    "Accept": "application/json",
+};
+
+fetch(url, {
+    method: "GET",
+    headers,
+}).then(response =&gt; response.json());</code></pre></div>
+
+
+<div class="php-example">
+    <pre><code class="language-php">$client = new \GuzzleHttp\Client();
+$response = $client-&gt;get(
+    'http://localhost:8000/api/fetchEventPosts',
+    [
+        'headers' =&gt; [
+            'Content-Type' =&gt; 'application/json',
+            'Accept' =&gt; 'application/json',
+        ],
+    ]
+);
+$body = $response-&gt;getBody();
+print_r(json_decode((string) $body));</code></pre></div>
+
+</span>
+
+<span id="example-responses-GETapi-fetchEventPosts">
+            <blockquote>
+            <p>Example response (200):</p>
+        </blockquote>
+                <details class="annotation">
+            <summary style="cursor: pointer;">
+                <small onclick="textContent = parentElement.parentElement.open ? 'Show headers' : 'Hide headers'">Show headers</small>
+            </summary>
+            <pre><code class="language-http">cache-control: no-cache, private
+content-type: application/json
+x-ratelimit-limit: 60
+x-ratelimit-remaining: 57
+access-control-allow-origin: *
+ </code></pre></details>         <pre>
+
+<code class="language-json" style="max-height: 300px;">[
+    {
+        &quot;event_id&quot;: 1,
+        &quot;event_title&quot;: &quot;Quisquam accusantium enim asperiores necessitatibus hic. Enim quae facilis eaque dolores. Deserunt laudantium ea rerum explicabo nisi.&quot;,
+        &quot;event_content&quot;: &quot;Consequatur autem molestias tenetur. Molestiae exercitationem vel sint cum tempore illum labore modi.&quot;,
+        &quot;event_excerpt&quot;: &quot;Porro molestiae voluptas fugit itaque laboriosam nisi.&quot;,
+        &quot;author&quot;: &quot;Jake Mackinlay&quot;,
+        &quot;cover_image&quot;: &quot;https://via.placeholder.com/640x480.png/0044ee?text=eum&quot;,
+        &quot;start_date&quot;: &quot;1989-04-21 16:56:41&quot;,
+        &quot;end_date&quot;: &quot;2005-06-07 14:54:23&quot;,
+        &quot;event_status&quot;: &quot;Published&quot;,
+        &quot;event_type&quot;: &quot;test event&quot;,
+        &quot;created_at&quot;: &quot;2023-03-16T05:19:06.000000Z&quot;,
+        &quot;updated_at&quot;: &quot;2023-03-16T05:19:06.000000Z&quot;
+    },
+    {
+        &quot;event_id&quot;: 2,
+        &quot;event_title&quot;: &quot;Quia quidem et corrupti dolorum qui. Minima tempore dicta nihil nam neque voluptatum illum quo. Voluptas odio dignissimos in ipsum sunt quia. Soluta nihil est eius nesciunt odio corrupti sit.&quot;,
+        &quot;event_content&quot;: &quot;Voluptatem ratione dolorem corporis asperiores ut dolorem sed odit. Autem voluptas dolorem hic. Ea voluptatum est adipisci et sit tenetur. Animi illum ut et quia maiores sed illo.&quot;,
+        &quot;event_excerpt&quot;: &quot;Molestias maxime qui aut sed rerum.&quot;,
+        &quot;author&quot;: &quot;Jake Mackinlay&quot;,
+        &quot;cover_image&quot;: &quot;https://via.placeholder.com/640x480.png/0044cc?text=occaecati&quot;,
+        &quot;start_date&quot;: &quot;2006-12-09 13:40:07&quot;,
+        &quot;end_date&quot;: &quot;1979-01-30 12:16:35&quot;,
+        &quot;event_status&quot;: &quot;Published&quot;,
+        &quot;event_type&quot;: &quot;test event&quot;,
+        &quot;created_at&quot;: &quot;2023-03-16T05:19:06.000000Z&quot;,
+        &quot;updated_at&quot;: &quot;2023-03-16T05:19:06.000000Z&quot;
+    },
+    {
+        &quot;event_id&quot;: 3,
+        &quot;event_title&quot;: &quot;Est id dolore nesciunt rerum dolor voluptas. Similique repellat omnis non ea et ducimus omnis error. Quia excepturi placeat vel.&quot;,
+        &quot;event_content&quot;: &quot;Perferendis sit aliquid omnis ut. At voluptatem et sequi explicabo. Pariatur consequatur dolorem quis perferendis beatae aperiam distinctio. Deleniti maxime rerum laboriosam quaerat.&quot;,
+        &quot;event_excerpt&quot;: &quot;Quasi hic non quae neque perferendis.&quot;,
+        &quot;author&quot;: &quot;Jake Mackinlay&quot;,
+        &quot;cover_image&quot;: &quot;https://via.placeholder.com/640x480.png/0066ff?text=molestiae&quot;,
+        &quot;start_date&quot;: &quot;2002-08-15 11:05:10&quot;,
+        &quot;end_date&quot;: &quot;2011-03-25 23:27:15&quot;,
+        &quot;event_status&quot;: &quot;Published&quot;,
+        &quot;event_type&quot;: &quot;test event&quot;,
+        &quot;created_at&quot;: &quot;2023-03-16T05:19:06.000000Z&quot;,
+        &quot;updated_at&quot;: &quot;2023-03-16T05:19:06.000000Z&quot;
+    },
+    {
+        &quot;event_id&quot;: 4,
+        &quot;event_title&quot;: &quot;Ut nostrum assumenda perferendis ex reiciendis aut. Dicta accusamus et est et eaque consequatur nobis.&quot;,
+        &quot;event_content&quot;: &quot;Quia incidunt itaque dolorem officiis voluptatem. Ab ipsa adipisci officiis ipsum velit et illum. Illum consequatur magni accusantium sunt sed sit. Porro libero rerum nulla asperiores aut porro cumque.&quot;,
+        &quot;event_excerpt&quot;: &quot;Vel quis et cum pariatur ad illo.&quot;,
+        &quot;author&quot;: &quot;Jake Mackinlay&quot;,
+        &quot;cover_image&quot;: &quot;https://via.placeholder.com/640x480.png/0099ee?text=voluptatem&quot;,
+        &quot;start_date&quot;: &quot;2001-01-30 11:18:22&quot;,
+        &quot;end_date&quot;: &quot;2009-03-22 04:45:57&quot;,
+        &quot;event_status&quot;: &quot;Published&quot;,
+        &quot;event_type&quot;: &quot;test event&quot;,
+        &quot;created_at&quot;: &quot;2023-03-16T05:19:06.000000Z&quot;,
+        &quot;updated_at&quot;: &quot;2023-03-16T05:19:06.000000Z&quot;
+    },
+    {
+        &quot;event_id&quot;: 5,
+        &quot;event_title&quot;: &quot;Voluptatibus ut quia ea non rem. Laboriosam ipsum vitae impedit et. Molestiae et accusamus quos laborum. Ut natus minus a harum mollitia beatae consequuntur harum.&quot;,
+        &quot;event_content&quot;: &quot;Rerum aut placeat voluptatem. Sunt aliquid magni inventore mollitia ut rerum. Sunt consequatur ut eaque inventore dolorum quis.&quot;,
+        &quot;event_excerpt&quot;: &quot;Vel maiores praesentium odit necessitatibus praesentium.&quot;,
+        &quot;author&quot;: &quot;Jake Mackinlay&quot;,
+        &quot;cover_image&quot;: &quot;https://via.placeholder.com/640x480.png/00ffee?text=ipsum&quot;,
+        &quot;start_date&quot;: &quot;2008-03-02 11:13:14&quot;,
+        &quot;end_date&quot;: &quot;2020-12-31 06:11:32&quot;,
+        &quot;event_status&quot;: &quot;Published&quot;,
+        &quot;event_type&quot;: &quot;test event&quot;,
+        &quot;created_at&quot;: &quot;2023-03-16T05:19:06.000000Z&quot;,
+        &quot;updated_at&quot;: &quot;2023-03-16T05:19:06.000000Z&quot;
+    },
+    {
+        &quot;event_id&quot;: 6,
+        &quot;event_title&quot;: &quot;Test event test&quot;,
+        &quot;event_content&quot;: &quot;&lt;p&gt;test test event content&lt;/p&gt;&quot;,
+        &quot;event_excerpt&quot;: &quot;&lt;p&gt;test test event excerpt&lt;/p&gt;&quot;,
+        &quot;author&quot;: &quot;&quot;,
+        &quot;cover_image&quot;: null,
+        &quot;start_date&quot;: &quot;2023-03-28 00:00:00&quot;,
+        &quot;end_date&quot;: &quot;2023-03-29 00:00:00&quot;,
+        &quot;event_status&quot;: &quot;Published&quot;,
+        &quot;event_type&quot;: &quot;test event&quot;,
+        &quot;created_at&quot;: &quot;2023-03-20T21:36:50.000000Z&quot;,
+        &quot;updated_at&quot;: &quot;2023-03-20T22:07:08.000000Z&quot;
+    },
+    {
+        &quot;event_id&quot;: 7,
+        &quot;event_title&quot;: &quot;another event&quot;,
+        &quot;event_content&quot;: &quot;&lt;p&gt;another event&lt;/p&gt;&quot;,
+        &quot;event_excerpt&quot;: &quot;&lt;p&gt;another event&lt;/p&gt;&quot;,
+        &quot;author&quot;: &quot;Asim Thapa&quot;,
+        &quot;cover_image&quot;: null,
+        &quot;start_date&quot;: &quot;2023-03-22 00:00:00&quot;,
+        &quot;end_date&quot;: &quot;2023-03-24 00:00:00&quot;,
+        &quot;event_status&quot;: &quot;Published&quot;,
+        &quot;event_type&quot;: &quot;test event&quot;,
+        &quot;created_at&quot;: &quot;2023-03-20T21:40:21.000000Z&quot;,
+        &quot;updated_at&quot;: &quot;2023-03-20T21:40:21.000000Z&quot;
+    }
+]</code>
+ </pre>
+    </span>
+<span id="execution-results-GETapi-fetchEventPosts" hidden>
+    <blockquote>Received response<span
+                id="execution-response-status-GETapi-fetchEventPosts"></span>:
+    </blockquote>
+    <pre class="json"><code id="execution-response-content-GETapi-fetchEventPosts" style="max-height: 400px;"></code></pre>
+</span>
+<span id="execution-error-GETapi-fetchEventPosts" hidden>
+    <blockquote>Request failed with error:</blockquote>
+    <pre><code id="execution-error-message-GETapi-fetchEventPosts"></code></pre>
+</span>
+<form id="form-GETapi-fetchEventPosts" data-method="GET"
+      data-path="api/fetchEventPosts"
+      data-authed="0"
+      data-hasfiles="0"
+      data-isarraybody="0"
+      autocomplete="off"
+      onsubmit="event.preventDefault(); executeTryOut('GETapi-fetchEventPosts', this);">
+    <h3>
+        Request&nbsp;&nbsp;&nbsp;
+                    <button type="button"
+                    style="background-color: #8fbcd4; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-tryout-GETapi-fetchEventPosts"
+                    onclick="tryItOut('GETapi-fetchEventPosts');">Try it out ⚡
+            </button>
+            <button type="button"
+                    style="background-color: #c97a7e; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-canceltryout-GETapi-fetchEventPosts"
+                    onclick="cancelTryOut('GETapi-fetchEventPosts');" hidden>Cancel 🛑
+            </button>&nbsp;&nbsp;
+            <button type="submit"
+                    style="background-color: #6ac174; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-executetryout-GETapi-fetchEventPosts" hidden>Send Request 💥
+            </button>
+            </h3>
+            <p>
+            <small class="badge badge-green">GET</small>
+            <b><code>api/fetchEventPosts</code></b>
+        </p>
+                <h4 class="fancy-heading-panel"><b>Headers</b></h4>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Content-Type</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+               name="Content-Type"                data-endpoint="GETapi-fetchEventPosts"
+               value="application/json"
+               data-component="header">
+    <br>
+<p>Example: <code>application/json</code></p>
+            </div>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Accept</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+               name="Accept"                data-endpoint="GETapi-fetchEventPosts"
+               value="application/json"
+               data-component="header">
+    <br>
+<p>Example: <code>application/json</code></p>
+            </div>
+                        </form>
+
+                    <h2 id="endpoints-GETapi-fetchCommunityPosts">GET api/fetchCommunityPosts</h2>
+
+<p>
+</p>
+
+
+
+<span id="example-requests-GETapi-fetchCommunityPosts">
+<blockquote>Example request:</blockquote>
+
+
+<div class="javascript-example">
+    <pre><code class="language-javascript">const url = new URL(
+    "http://localhost:8000/api/fetchCommunityPosts"
+);
+
+const headers = {
+    "Content-Type": "application/json",
+    "Accept": "application/json",
+};
+
+fetch(url, {
+    method: "GET",
+    headers,
+}).then(response =&gt; response.json());</code></pre></div>
+
+
+<div class="php-example">
+    <pre><code class="language-php">$client = new \GuzzleHttp\Client();
+$response = $client-&gt;get(
+    'http://localhost:8000/api/fetchCommunityPosts',
+    [
+        'headers' =&gt; [
+            'Content-Type' =&gt; 'application/json',
+            'Accept' =&gt; 'application/json',
+        ],
+    ]
+);
+$body = $response-&gt;getBody();
+print_r(json_decode((string) $body));</code></pre></div>
+
+</span>
+
+<span id="example-responses-GETapi-fetchCommunityPosts">
+            <blockquote>
+            <p>Example response (200):</p>
+        </blockquote>
+                <details class="annotation">
+            <summary style="cursor: pointer;">
+                <small onclick="textContent = parentElement.parentElement.open ? 'Show headers' : 'Hide headers'">Show headers</small>
+            </summary>
+            <pre><code class="language-http">cache-control: no-cache, private
+content-type: application/json
+x-ratelimit-limit: 60
+x-ratelimit-remaining: 56
+access-control-allow-origin: *
+ </code></pre></details>         <pre>
+
+<code class="language-json" style="max-height: 300px;">[
+    {
+        &quot;community_id&quot;: 1,
+        &quot;post_title&quot;: &quot;Facilis esse possimus iusto commodi sint ut voluptatum in.&quot;,
+        &quot;post_content&quot;: &quot;Praesentium reiciendis et quae laborum consequatur tempora. Est sit dolores quo animi deserunt vel quisquam exercitationem. Beatae earum qui delectus.&quot;,
+        &quot;post_excerpt&quot;: &quot;Aspernatur dolorem ut nostrum. Est asperiores suscipit ea autem quia assumenda odit nobis. Quisquam provident vel debitis quo voluptatibus. Perferendis rem iure nulla fugiat sint.&quot;,
+        &quot;author&quot;: &quot;Jake Mackinlay&quot;,
+        &quot;cover_image&quot;: &quot;https://via.placeholder.com/640x480.png/0044ee?text=ut&quot;,
+        &quot;post_status&quot;: &quot;Published&quot;,
+        &quot;community_type&quot;: null,
+        &quot;created_at&quot;: &quot;2023-03-16T05:19:06.000000Z&quot;,
+        &quot;updated_at&quot;: &quot;2023-03-16T05:19:06.000000Z&quot;
+    },
+    {
+        &quot;community_id&quot;: 2,
+        &quot;post_title&quot;: &quot;Et voluptates ducimus rem nulla nihil.&quot;,
+        &quot;post_content&quot;: &quot;Odio possimus perspiciatis vel ad sunt voluptatem. Nemo quia nemo non qui et maxime. Aut ut et pariatur et dolore.&quot;,
+        &quot;post_excerpt&quot;: &quot;Voluptate voluptates ad corporis dicta dolores ex. Ullam veniam quos repudiandae eveniet quas aut sed. Fuga aut ut sed est vel. Quia voluptatem numquam ut ad unde est.&quot;,
+        &quot;author&quot;: &quot;Jake Mackinlay&quot;,
+        &quot;cover_image&quot;: &quot;https://via.placeholder.com/640x480.png/003311?text=enim&quot;,
+        &quot;post_status&quot;: &quot;Published&quot;,
+        &quot;community_type&quot;: null,
+        &quot;created_at&quot;: &quot;2023-03-16T05:19:06.000000Z&quot;,
+        &quot;updated_at&quot;: &quot;2023-03-16T05:19:06.000000Z&quot;
+    },
+    {
+        &quot;community_id&quot;: 3,
+        &quot;post_title&quot;: &quot;Illum assumenda aut nisi vero et qui.&quot;,
+        &quot;post_content&quot;: &quot;Itaque beatae nam quo excepturi quae asperiores. Corrupti sed voluptate non accusantium. Consequatur odio consequatur temporibus rerum dolorum excepturi iste hic. Qui laudantium quam ducimus ex rerum accusantium nam.&quot;,
+        &quot;post_excerpt&quot;: &quot;Porro qui molestiae deleniti nulla maiores distinctio. Magnam et laborum impedit iste ipsa alias numquam. Rem non eos quod non. Molestiae nostrum dolor corrupti sunt illum atque nulla tempore.&quot;,
+        &quot;author&quot;: &quot;Jake Mackinlay&quot;,
+        &quot;cover_image&quot;: &quot;https://via.placeholder.com/640x480.png/00aaff?text=et&quot;,
+        &quot;post_status&quot;: &quot;Published&quot;,
+        &quot;community_type&quot;: null,
+        &quot;created_at&quot;: &quot;2023-03-16T05:19:06.000000Z&quot;,
+        &quot;updated_at&quot;: &quot;2023-03-16T05:19:06.000000Z&quot;
+    },
+    {
+        &quot;community_id&quot;: 4,
+        &quot;post_title&quot;: &quot;Commodi ratione aut laboriosam ad nihil.&quot;,
+        &quot;post_content&quot;: &quot;Deleniti maiores qui animi soluta dolorum repudiandae. Aut nulla consequuntur odio rerum provident.&quot;,
+        &quot;post_excerpt&quot;: &quot;Cupiditate eligendi laboriosam vitae sequi et enim aut. Veritatis quia sunt rem omnis velit a tenetur. Sit culpa commodi doloribus qui velit alias placeat.&quot;,
+        &quot;author&quot;: &quot;Jake Mackinlay&quot;,
+        &quot;cover_image&quot;: &quot;https://via.placeholder.com/640x480.png/0011ff?text=illo&quot;,
+        &quot;post_status&quot;: &quot;Published&quot;,
+        &quot;community_type&quot;: null,
+        &quot;created_at&quot;: &quot;2023-03-16T05:19:06.000000Z&quot;,
+        &quot;updated_at&quot;: &quot;2023-03-16T05:19:06.000000Z&quot;
+    },
+    {
+        &quot;community_id&quot;: 5,
+        &quot;post_title&quot;: &quot;Dolores quo non expedita beatae cumque.&quot;,
+        &quot;post_content&quot;: &quot;Quod voluptatum sint fugit ut fugiat veniam quasi amet. Aperiam a qui non aut et. Assumenda aut quod sint. Consequatur rerum aut fugiat consectetur consequuntur ipsa quae.&quot;,
+        &quot;post_excerpt&quot;: &quot;Molestiae suscipit beatae aut ipsum non delectus velit assumenda. Ut cupiditate sed et dolores minus eius quasi quibusdam. Vel distinctio eos voluptatum nobis.&quot;,
+        &quot;author&quot;: &quot;Jake Mackinlay&quot;,
+        &quot;cover_image&quot;: &quot;https://via.placeholder.com/640x480.png/00ffdd?text=id&quot;,
+        &quot;post_status&quot;: &quot;Published&quot;,
+        &quot;community_type&quot;: null,
+        &quot;created_at&quot;: &quot;2023-03-16T05:19:06.000000Z&quot;,
+        &quot;updated_at&quot;: &quot;2023-03-16T05:19:06.000000Z&quot;
+    },
+    {
+        &quot;community_id&quot;: 6,
+        &quot;post_title&quot;: &quot;test community post&quot;,
+        &quot;post_content&quot;: &quot;&lt;p&gt;test content&lt;/p&gt;&quot;,
+        &quot;post_excerpt&quot;: &quot;&lt;p&gt;test excerpt&lt;/p&gt;&quot;,
+        &quot;author&quot;: &quot;Asim Thapa&quot;,
+        &quot;cover_image&quot;: null,
+        &quot;post_status&quot;: &quot;Published&quot;,
+        &quot;community_type&quot;: &quot;test community type&quot;,
+        &quot;created_at&quot;: &quot;2023-03-21T00:33:55.000000Z&quot;,
+        &quot;updated_at&quot;: &quot;2023-03-21T00:36:10.000000Z&quot;
+    }
+]</code>
+ </pre>
+    </span>
+<span id="execution-results-GETapi-fetchCommunityPosts" hidden>
+    <blockquote>Received response<span
+                id="execution-response-status-GETapi-fetchCommunityPosts"></span>:
+    </blockquote>
+    <pre class="json"><code id="execution-response-content-GETapi-fetchCommunityPosts" style="max-height: 400px;"></code></pre>
+</span>
+<span id="execution-error-GETapi-fetchCommunityPosts" hidden>
+    <blockquote>Request failed with error:</blockquote>
+    <pre><code id="execution-error-message-GETapi-fetchCommunityPosts"></code></pre>
+</span>
+<form id="form-GETapi-fetchCommunityPosts" data-method="GET"
+      data-path="api/fetchCommunityPosts"
+      data-authed="0"
+      data-hasfiles="0"
+      data-isarraybody="0"
+      autocomplete="off"
+      onsubmit="event.preventDefault(); executeTryOut('GETapi-fetchCommunityPosts', this);">
+    <h3>
+        Request&nbsp;&nbsp;&nbsp;
+                    <button type="button"
+                    style="background-color: #8fbcd4; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-tryout-GETapi-fetchCommunityPosts"
+                    onclick="tryItOut('GETapi-fetchCommunityPosts');">Try it out ⚡
+            </button>
+            <button type="button"
+                    style="background-color: #c97a7e; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-canceltryout-GETapi-fetchCommunityPosts"
+                    onclick="cancelTryOut('GETapi-fetchCommunityPosts');" hidden>Cancel 🛑
+            </button>&nbsp;&nbsp;
+            <button type="submit"
+                    style="background-color: #6ac174; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-executetryout-GETapi-fetchCommunityPosts" hidden>Send Request 💥
+            </button>
+            </h3>
+            <p>
+            <small class="badge badge-green">GET</small>
+            <b><code>api/fetchCommunityPosts</code></b>
+        </p>
+                <h4 class="fancy-heading-panel"><b>Headers</b></h4>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Content-Type</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+               name="Content-Type"                data-endpoint="GETapi-fetchCommunityPosts"
+               value="application/json"
+               data-component="header">
+    <br>
+<p>Example: <code>application/json</code></p>
+            </div>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Accept</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+               name="Accept"                data-endpoint="GETapi-fetchCommunityPosts"
+               value="application/json"
+               data-component="header">
+    <br>
+<p>Example: <code>application/json</code></p>
+            </div>
+                        </form>
+
                     <h2 id="endpoints-GETapi-fetchUser--id-">GET api/fetchUser/{id}</h2>
 
 <p>
@@ -577,7 +1003,7 @@ print_r(json_decode((string) $body));</code></pre></div>
             <pre><code class="language-http">cache-control: no-cache, private
 content-type: application/json
 x-ratelimit-limit: 60
-x-ratelimit-remaining: 57
+x-ratelimit-remaining: 55
 access-control-allow-origin: *
  </code></pre></details>         <pre>
 
@@ -1182,7 +1608,7 @@ print_r(json_decode((string) $body));</code></pre></div>
             <pre><code class="language-http">cache-control: no-cache, private
 content-type: application/json
 x-ratelimit-limit: 60
-x-ratelimit-remaining: 56
+x-ratelimit-remaining: 54
 access-control-allow-origin: *
  </code></pre></details>         <pre>
 
@@ -1310,7 +1736,7 @@ print_r(json_decode((string) $body));</code></pre></div>
             <pre><code class="language-http">cache-control: no-cache, private
 content-type: application/json
 x-ratelimit-limit: 60
-x-ratelimit-remaining: 55
+x-ratelimit-remaining: 53
 access-control-allow-origin: *
  </code></pre></details>         <pre>
 
@@ -1438,7 +1864,7 @@ print_r(json_decode((string) $body));</code></pre></div>
             <pre><code class="language-http">cache-control: no-cache, private
 content-type: application/json
 x-ratelimit-limit: 60
-x-ratelimit-remaining: 54
+x-ratelimit-remaining: 52
 access-control-allow-origin: *
  </code></pre></details>         <pre>
 
@@ -1623,7 +2049,7 @@ print_r(json_decode((string) $body));</code></pre></div>
             <pre><code class="language-http">cache-control: no-cache, private
 content-type: application/json
 x-ratelimit-limit: 60
-x-ratelimit-remaining: 53
+x-ratelimit-remaining: 51
 access-control-allow-origin: *
  </code></pre></details>         <pre>
 
@@ -1759,7 +2185,7 @@ print_r(json_decode((string) $body));</code></pre></div>
             <pre><code class="language-http">cache-control: no-cache, private
 content-type: application/json
 x-ratelimit-limit: 60
-x-ratelimit-remaining: 52
+x-ratelimit-remaining: 50
 access-control-allow-origin: *
  </code></pre></details>         <pre>
 
@@ -1904,7 +2330,7 @@ print_r(json_decode((string) $body));</code></pre></div>
             <pre><code class="language-http">cache-control: no-cache, private
 content-type: application/json
 x-ratelimit-limit: 60
-x-ratelimit-remaining: 51
+x-ratelimit-remaining: 49
 access-control-allow-origin: *
  </code></pre></details>         <pre>
 
@@ -2049,7 +2475,7 @@ print_r(json_decode((string) $body));</code></pre></div>
             <pre><code class="language-http">cache-control: no-cache, private
 content-type: application/json
 x-ratelimit-limit: 60
-x-ratelimit-remaining: 50
+x-ratelimit-remaining: 48
 access-control-allow-origin: *
  </code></pre></details>         <pre>
 

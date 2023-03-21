@@ -2,11 +2,10 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\AdviceResource\Pages;
-use App\Filament\Resources\AdviceResource\RelationManagers;
-use App\Models\Advice;
+use App\Filament\Resources\AdvicemoderationResource\Pages;
+use App\Filament\Resources\AdvicemoderationResource\RelationManagers;
+use App\Models\Advicemoderation;
 use Filament\Forms;
-use Filament\Forms\Components\FileUpload;
 use Filament\Resources\Form;
 use Filament\Resources\Resource;
 use Filament\Resources\Table;
@@ -15,18 +14,16 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Illuminate\Support\Facades\Auth;
 
-class AdviceResource extends Resource
+class AdvicemoderationResource extends Resource
 {
-    protected static ?string $model = Advice::class;
-
-    protected static ?string $navigationGroup = 'Content Management';
-    protected static ?string $navigationGroupIcon = 'heroicon-o-collection';
-
-    protected static ?int $navigationSort = 1;
+    protected static ?string $model = Advicemoderation::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-collection';
 
-    // protected static bool $shouldRegisterNavigation = false;
+    protected static ?string $navigationGroup = 'Moderation';
+    protected static ?string $navigationLabel = 'Advice Moderation';
+
+    protected static ?int $navigationSort = 1;
 
     public static function form(Form $form): Form
     {
@@ -48,11 +45,12 @@ class AdviceResource extends Resource
                             ->disableToolbarButtons([
                                 'attachFiles',
                             ]),
-                        Forms\Components\Grid::make(3)
+                        Forms\Components\Grid::make(2)
                             ->schema([
-                                Forms\Components\TextInput::make('Author')
-                                    ->default($user)
-                                    ->disabled(),
+                                // Forms\Components\TextInput::make('author_id')
+                                //     ->label('Author')
+                                //     ->relationship('author', 'full_name')
+                                //     ->disabled(),
                                 Forms\Components\BelongsToSelect::make('advice_type')
                                     ->label('Advice type')
                                     ->relationship('advicetype', 'advice_type_name'),
@@ -66,12 +64,6 @@ class AdviceResource extends Resource
                                     ->label('Status')
                                     ->required(),
                                     ]),
-                        Forms\Components\FileUpload::make('cover_image')
-                            ->preserveFilenames()
-                            ->label('Cover Image')
-                            ->disk('public')
-                            ->directory('uploads')
-                            ->acceptedFileTypes(['image/jpeg', 'image/png'])
                     ]),
             ]);
     }
@@ -99,18 +91,16 @@ class AdviceResource extends Resource
                     ->label('Status')
                     ->sortable()
                     ->searchable(),
-
             ])
             ->filters([
                 //
             ])
             ->actions([
-                // Tables\Actions\ViewAction::make(),
+                Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
-                Tables\Actions\DeleteBulkAction::make(),
+                // Tables\Actions\DeleteBulkAction::make(),
             ]);
     }
 
@@ -124,14 +114,25 @@ class AdviceResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListAdvice::route('/'),
-            'create' => Pages\CreateAdvice::route('/create'),
-            'edit' => Pages\EditAdvice::route('/{record}/edit'),
+            'index' => Pages\ListAdvicemoderations::route('/'),
+            'create' => Pages\CreateAdvicemoderation::route('/create'),
+            'edit' => Pages\EditAdvicemoderation::route('/{record}/edit'),
         ];
     }
 
     public static function getEloquentQuery(): Builder
     {
-        return parent::getEloquentQuery()->where('post_status', 'Published');
+        return parent::getEloquentQuery()->where('post_status', 'Pending');
     }
+
+    protected static function getNavigationBadge(): ?string
+    {
+        $count = static::getModel()::query()->where('post_status', 'pending')->count();
+        if ($count > 0) {
+            return $count;
+        }else {
+            return '';
+        }
+    }
+
 }
