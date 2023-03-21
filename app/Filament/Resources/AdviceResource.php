@@ -129,4 +129,9 @@ class AdviceResource extends Resource
             'edit' => Pages\EditAdvice::route('/{record}/edit'),
         ];
     }
+
+    public static function getEloquentQuery(): Builder
+    {
+        return parent::getEloquentQuery()->where('post_status', 'Published');
+    }
 }

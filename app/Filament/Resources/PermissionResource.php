@@ -3,7 +3,7 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\PermissionResource\Pages;
-use App\Filament\Resources\PermissionResource\RelationManagers;
+use App\Filament\Resources\PermissionResource\RelationManagers\RolesRelationManager;
 use App\Models\Permission;
 use Filament\Forms;
 use Filament\Resources\Form;
@@ -19,7 +19,7 @@ class PermissionResource extends Resource
 
     protected static ?string $navigationGroup = 'User Management';
 
-    protected static ?string $navigationIcon = 'heroicon-o-collection';
+    protected static ?string $navigationIcon = 'heroicon-o-lock-closed';
 
     public static function form(Form $form): Form
     {
@@ -27,13 +27,22 @@ class PermissionResource extends Resource
             ->schema([
                 Forms\Components\Card::make()
                     ->schema([
-                        Forms\Components\TextInput::make('user_permission_name')
+                        Forms\Components\TextInput::make('permission_name')
                             ->required()
                             ->maxLength(255),
-                        Forms\Components\Textarea::make('user_permission_value')
-                            ->required()
+                        Forms\Components\Textarea::make('permission_value')
                             ->maxLength(65535),
                             ]),
+
+                Forms\Components\Card::make()
+                    ->schema([
+                        Forms\Components\CheckboxList::make('roles')
+                            ->label('Associated Roles')
+                            ->extraAttributes(['class' => 'text-primary-600'])
+                            ->relationship('roles', 'role_name')
+                            ->columns(4)
+                            ->bulkToggleable()
+                    ])
             ]);
     }
 
@@ -41,8 +50,8 @@ class PermissionResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('user_permission_name')->label('name'),
-                Tables\Columns\TextColumn::make('user_permission_value')->label('value')->limit(50),
+                Tables\Columns\TextColumn::make('permission_name')->label('name'),
+                Tables\Columns\TextColumn::make('permission_value')->label('value')->limit(50),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime(),
                 Tables\Columns\TextColumn::make('updated_at')
@@ -56,14 +65,14 @@ class PermissionResource extends Resource
                 Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
-                // Tables\Actions\DeleteBulkAction::make(),
+                Tables\Actions\DeleteBulkAction::make(),
             ]);
     }
 
     public static function getRelations(): array
     {
         return [
-            //
+            RolesRelationManager::class
         ];
     }
 

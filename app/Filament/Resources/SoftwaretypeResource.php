@@ -24,6 +24,9 @@ class SoftwaretypeResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-collection';
 
+    protected static ?string $navigationLabel = 'Software types';
+
+
     public static function form(Form $form): Form
     {
         return $form
@@ -50,7 +53,8 @@ class SoftwaretypeResource extends Resource
                     ->searchable()
                     ->label('Name'),
                 Tables\Columns\TextColumn::make('software_type_value')
-                    ->label('Value'),
+                    ->label('Value')
+                    ->limit(50),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime(),
                 Tables\Columns\TextColumn::make('updated_at')
