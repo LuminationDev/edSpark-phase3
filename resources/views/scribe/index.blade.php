@@ -45,12 +45,12 @@
     </span>
 </a>
 <div class="tocify-wrapper">
-    
+
             <div class="lang-selector">
                                             <button type="button" class="lang-button" data-language-name="javascript">javascript</button>
                                             <button type="button" class="lang-button" data-language-name="php">php</button>
                     </div>
-    
+
     <div class="search">
         <input type="text" class="search" id="input-search" placeholder="Search">
     </div>
@@ -107,6 +107,12 @@
                                                                                 <li class="tocify-item level-2" data-unique="endpoints-GETapi-fetchAllProducts">
                                 <a href="#endpoints-GETapi-fetchAllProducts">GET api/fetchAllProducts</a>
                             </li>
+                                                                                <li class="tocify-item level-2" data-unique="endpoints-GETapi-fetchSchoolInfoById--id-">
+                                <a href="#endpoints-GETapi-fetchSchoolInfoById--id-">GET api/fetchSchoolInfoById/{id}</a>
+                            </li>
+                                                                                <li class="tocify-item level-2" data-unique="endpoints-GETapi-fetchSchoolByFullName--name-">
+                                <a href="#endpoints-GETapi-fetchSchoolByFullName--name-">GET api/fetchSchoolByFullName/{name}</a>
+                            </li>
                                                                         </ul>
                             </ul>
             </div>
@@ -137,7 +143,7 @@ You can switch the language used with the tabs at the top right (or from the nav
 
         <h1 id="endpoints">Endpoints</h1>
 
-    
+
 
                                 <h2 id="endpoints-GETapi-fetchAdvicePosts">GET api/fetchAdvicePosts</h2>
 
@@ -193,7 +199,7 @@ print_r(json_decode((string) $body));</code></pre></div>
             <pre><code class="language-http">cache-control: no-cache, private
 content-type: application/json
 x-ratelimit-limit: 60
-x-ratelimit-remaining: 59
+x-ratelimit-remaining: 49
 access-control-allow-origin: *
  </code></pre></details>         <pre>
 
@@ -388,7 +394,7 @@ print_r(json_decode((string) $body));</code></pre></div>
             <pre><code class="language-http">cache-control: no-cache, private
 content-type: application/json
 x-ratelimit-limit: 60
-x-ratelimit-remaining: 58
+x-ratelimit-remaining: 48
 access-control-allow-origin: *
  </code></pre></details>         <pre>
 
@@ -1014,7 +1020,7 @@ access-control-allow-origin: *
     &quot;line&quot;: 30,
     &quot;trace&quot;: [
         {
-            &quot;file&quot;: &quot;C:\\Users\\athap\\Desktop\\Projects-Lumination\\edSpark-phase3\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Bootstrap\\HandleExceptions.php&quot;,
+            &quot;file&quot;: &quot;/Users/erickhartawan/Documents/workspace/edSpark-phase3/vendor/laravel/framework/src/Illuminate/Foundation/Bootstrap/HandleExceptions.php&quot;,
             &quot;line&quot;: 266,
             &quot;function&quot;: &quot;handleError&quot;,
             &quot;class&quot;: &quot;Illuminate\\Foundation\\Bootstrap\\HandleExceptions&quot;,
@@ -1028,448 +1034,448 @@ access-control-allow-origin: *
             &quot;type&quot;: &quot;-&gt;&quot;
         },
         {
-            &quot;file&quot;: &quot;C:\\Users\\athap\\Desktop\\Projects-Lumination\\edSpark-phase3\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Controller.php&quot;,
+            &quot;file&quot;: &quot;/Users/erickhartawan/Documents/workspace/edSpark-phase3/vendor/laravel/framework/src/Illuminate/Routing/Controller.php&quot;,
             &quot;line&quot;: 54,
             &quot;function&quot;: &quot;fetchUser&quot;,
             &quot;class&quot;: &quot;App\\Http\\Controllers\\UserController&quot;,
             &quot;type&quot;: &quot;-&gt;&quot;
         },
         {
-            &quot;file&quot;: &quot;C:\\Users\\athap\\Desktop\\Projects-Lumination\\edSpark-phase3\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\ControllerDispatcher.php&quot;,
+            &quot;file&quot;: &quot;/Users/erickhartawan/Documents/workspace/edSpark-phase3/vendor/laravel/framework/src/Illuminate/Routing/ControllerDispatcher.php&quot;,
             &quot;line&quot;: 43,
             &quot;function&quot;: &quot;callAction&quot;,
             &quot;class&quot;: &quot;Illuminate\\Routing\\Controller&quot;,
             &quot;type&quot;: &quot;-&gt;&quot;
         },
         {
-            &quot;file&quot;: &quot;C:\\Users\\athap\\Desktop\\Projects-Lumination\\edSpark-phase3\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Route.php&quot;,
+            &quot;file&quot;: &quot;/Users/erickhartawan/Documents/workspace/edSpark-phase3/vendor/laravel/framework/src/Illuminate/Routing/Route.php&quot;,
             &quot;line&quot;: 259,
             &quot;function&quot;: &quot;dispatch&quot;,
             &quot;class&quot;: &quot;Illuminate\\Routing\\ControllerDispatcher&quot;,
             &quot;type&quot;: &quot;-&gt;&quot;
         },
         {
-            &quot;file&quot;: &quot;C:\\Users\\athap\\Desktop\\Projects-Lumination\\edSpark-phase3\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Route.php&quot;,
+            &quot;file&quot;: &quot;/Users/erickhartawan/Documents/workspace/edSpark-phase3/vendor/laravel/framework/src/Illuminate/Routing/Route.php&quot;,
             &quot;line&quot;: 205,
             &quot;function&quot;: &quot;runController&quot;,
             &quot;class&quot;: &quot;Illuminate\\Routing\\Route&quot;,
             &quot;type&quot;: &quot;-&gt;&quot;
         },
         {
-            &quot;file&quot;: &quot;C:\\Users\\athap\\Desktop\\Projects-Lumination\\edSpark-phase3\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Router.php&quot;,
+            &quot;file&quot;: &quot;/Users/erickhartawan/Documents/workspace/edSpark-phase3/vendor/laravel/framework/src/Illuminate/Routing/Router.php&quot;,
             &quot;line&quot;: 798,
             &quot;function&quot;: &quot;run&quot;,
             &quot;class&quot;: &quot;Illuminate\\Routing\\Route&quot;,
             &quot;type&quot;: &quot;-&gt;&quot;
         },
         {
-            &quot;file&quot;: &quot;C:\\Users\\athap\\Desktop\\Projects-Lumination\\edSpark-phase3\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php&quot;,
+            &quot;file&quot;: &quot;/Users/erickhartawan/Documents/workspace/edSpark-phase3/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php&quot;,
             &quot;line&quot;: 141,
             &quot;function&quot;: &quot;Illuminate\\Routing\\{closure}&quot;,
             &quot;class&quot;: &quot;Illuminate\\Routing\\Router&quot;,
             &quot;type&quot;: &quot;-&gt;&quot;
         },
         {
-            &quot;file&quot;: &quot;C:\\Users\\athap\\Desktop\\Projects-Lumination\\edSpark-phase3\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Middleware\\SubstituteBindings.php&quot;,
+            &quot;file&quot;: &quot;/Users/erickhartawan/Documents/workspace/edSpark-phase3/vendor/laravel/framework/src/Illuminate/Routing/Middleware/SubstituteBindings.php&quot;,
             &quot;line&quot;: 50,
             &quot;function&quot;: &quot;Illuminate\\Pipeline\\{closure}&quot;,
             &quot;class&quot;: &quot;Illuminate\\Pipeline\\Pipeline&quot;,
             &quot;type&quot;: &quot;-&gt;&quot;
         },
         {
-            &quot;file&quot;: &quot;C:\\Users\\athap\\Desktop\\Projects-Lumination\\edSpark-phase3\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php&quot;,
+            &quot;file&quot;: &quot;/Users/erickhartawan/Documents/workspace/edSpark-phase3/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php&quot;,
             &quot;line&quot;: 180,
             &quot;function&quot;: &quot;handle&quot;,
             &quot;class&quot;: &quot;Illuminate\\Routing\\Middleware\\SubstituteBindings&quot;,
             &quot;type&quot;: &quot;-&gt;&quot;
         },
         {
-            &quot;file&quot;: &quot;C:\\Users\\athap\\Desktop\\Projects-Lumination\\edSpark-phase3\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Middleware\\ThrottleRequests.php&quot;,
+            &quot;file&quot;: &quot;/Users/erickhartawan/Documents/workspace/edSpark-phase3/vendor/laravel/framework/src/Illuminate/Routing/Middleware/ThrottleRequests.php&quot;,
             &quot;line&quot;: 126,
             &quot;function&quot;: &quot;Illuminate\\Pipeline\\{closure}&quot;,
             &quot;class&quot;: &quot;Illuminate\\Pipeline\\Pipeline&quot;,
             &quot;type&quot;: &quot;-&gt;&quot;
         },
         {
-            &quot;file&quot;: &quot;C:\\Users\\athap\\Desktop\\Projects-Lumination\\edSpark-phase3\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Middleware\\ThrottleRequests.php&quot;,
+            &quot;file&quot;: &quot;/Users/erickhartawan/Documents/workspace/edSpark-phase3/vendor/laravel/framework/src/Illuminate/Routing/Middleware/ThrottleRequests.php&quot;,
             &quot;line&quot;: 92,
             &quot;function&quot;: &quot;handleRequest&quot;,
             &quot;class&quot;: &quot;Illuminate\\Routing\\Middleware\\ThrottleRequests&quot;,
             &quot;type&quot;: &quot;-&gt;&quot;
         },
         {
-            &quot;file&quot;: &quot;C:\\Users\\athap\\Desktop\\Projects-Lumination\\edSpark-phase3\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Middleware\\ThrottleRequests.php&quot;,
+            &quot;file&quot;: &quot;/Users/erickhartawan/Documents/workspace/edSpark-phase3/vendor/laravel/framework/src/Illuminate/Routing/Middleware/ThrottleRequests.php&quot;,
             &quot;line&quot;: 54,
             &quot;function&quot;: &quot;handleRequestUsingNamedLimiter&quot;,
             &quot;class&quot;: &quot;Illuminate\\Routing\\Middleware\\ThrottleRequests&quot;,
             &quot;type&quot;: &quot;-&gt;&quot;
         },
         {
-            &quot;file&quot;: &quot;C:\\Users\\athap\\Desktop\\Projects-Lumination\\edSpark-phase3\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php&quot;,
+            &quot;file&quot;: &quot;/Users/erickhartawan/Documents/workspace/edSpark-phase3/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php&quot;,
             &quot;line&quot;: 180,
             &quot;function&quot;: &quot;handle&quot;,
             &quot;class&quot;: &quot;Illuminate\\Routing\\Middleware\\ThrottleRequests&quot;,
             &quot;type&quot;: &quot;-&gt;&quot;
         },
         {
-            &quot;file&quot;: &quot;C:\\Users\\athap\\Desktop\\Projects-Lumination\\edSpark-phase3\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php&quot;,
+            &quot;file&quot;: &quot;/Users/erickhartawan/Documents/workspace/edSpark-phase3/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php&quot;,
             &quot;line&quot;: 116,
             &quot;function&quot;: &quot;Illuminate\\Pipeline\\{closure}&quot;,
             &quot;class&quot;: &quot;Illuminate\\Pipeline\\Pipeline&quot;,
             &quot;type&quot;: &quot;-&gt;&quot;
         },
         {
-            &quot;file&quot;: &quot;C:\\Users\\athap\\Desktop\\Projects-Lumination\\edSpark-phase3\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Router.php&quot;,
+            &quot;file&quot;: &quot;/Users/erickhartawan/Documents/workspace/edSpark-phase3/vendor/laravel/framework/src/Illuminate/Routing/Router.php&quot;,
             &quot;line&quot;: 797,
             &quot;function&quot;: &quot;then&quot;,
             &quot;class&quot;: &quot;Illuminate\\Pipeline\\Pipeline&quot;,
             &quot;type&quot;: &quot;-&gt;&quot;
         },
         {
-            &quot;file&quot;: &quot;C:\\Users\\athap\\Desktop\\Projects-Lumination\\edSpark-phase3\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Router.php&quot;,
+            &quot;file&quot;: &quot;/Users/erickhartawan/Documents/workspace/edSpark-phase3/vendor/laravel/framework/src/Illuminate/Routing/Router.php&quot;,
             &quot;line&quot;: 776,
             &quot;function&quot;: &quot;runRouteWithinStack&quot;,
             &quot;class&quot;: &quot;Illuminate\\Routing\\Router&quot;,
             &quot;type&quot;: &quot;-&gt;&quot;
         },
         {
-            &quot;file&quot;: &quot;C:\\Users\\athap\\Desktop\\Projects-Lumination\\edSpark-phase3\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Router.php&quot;,
+            &quot;file&quot;: &quot;/Users/erickhartawan/Documents/workspace/edSpark-phase3/vendor/laravel/framework/src/Illuminate/Routing/Router.php&quot;,
             &quot;line&quot;: 740,
             &quot;function&quot;: &quot;runRoute&quot;,
             &quot;class&quot;: &quot;Illuminate\\Routing\\Router&quot;,
             &quot;type&quot;: &quot;-&gt;&quot;
         },
         {
-            &quot;file&quot;: &quot;C:\\Users\\athap\\Desktop\\Projects-Lumination\\edSpark-phase3\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Router.php&quot;,
+            &quot;file&quot;: &quot;/Users/erickhartawan/Documents/workspace/edSpark-phase3/vendor/laravel/framework/src/Illuminate/Routing/Router.php&quot;,
             &quot;line&quot;: 729,
             &quot;function&quot;: &quot;dispatchToRoute&quot;,
             &quot;class&quot;: &quot;Illuminate\\Routing\\Router&quot;,
             &quot;type&quot;: &quot;-&gt;&quot;
         },
         {
-            &quot;file&quot;: &quot;C:\\Users\\athap\\Desktop\\Projects-Lumination\\edSpark-phase3\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Kernel.php&quot;,
+            &quot;file&quot;: &quot;/Users/erickhartawan/Documents/workspace/edSpark-phase3/vendor/laravel/framework/src/Illuminate/Foundation/Http/Kernel.php&quot;,
             &quot;line&quot;: 190,
             &quot;function&quot;: &quot;dispatch&quot;,
             &quot;class&quot;: &quot;Illuminate\\Routing\\Router&quot;,
             &quot;type&quot;: &quot;-&gt;&quot;
         },
         {
-            &quot;file&quot;: &quot;C:\\Users\\athap\\Desktop\\Projects-Lumination\\edSpark-phase3\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php&quot;,
+            &quot;file&quot;: &quot;/Users/erickhartawan/Documents/workspace/edSpark-phase3/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php&quot;,
             &quot;line&quot;: 141,
             &quot;function&quot;: &quot;Illuminate\\Foundation\\Http\\{closure}&quot;,
             &quot;class&quot;: &quot;Illuminate\\Foundation\\Http\\Kernel&quot;,
             &quot;type&quot;: &quot;-&gt;&quot;
         },
         {
-            &quot;file&quot;: &quot;C:\\Users\\athap\\Desktop\\Projects-Lumination\\edSpark-phase3\\vendor\\livewire\\livewire\\src\\DisableBrowserCache.php&quot;,
+            &quot;file&quot;: &quot;/Users/erickhartawan/Documents/workspace/edSpark-phase3/vendor/livewire/livewire/src/DisableBrowserCache.php&quot;,
             &quot;line&quot;: 19,
             &quot;function&quot;: &quot;Illuminate\\Pipeline\\{closure}&quot;,
             &quot;class&quot;: &quot;Illuminate\\Pipeline\\Pipeline&quot;,
             &quot;type&quot;: &quot;-&gt;&quot;
         },
         {
-            &quot;file&quot;: &quot;C:\\Users\\athap\\Desktop\\Projects-Lumination\\edSpark-phase3\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php&quot;,
+            &quot;file&quot;: &quot;/Users/erickhartawan/Documents/workspace/edSpark-phase3/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php&quot;,
             &quot;line&quot;: 180,
             &quot;function&quot;: &quot;handle&quot;,
             &quot;class&quot;: &quot;Livewire\\DisableBrowserCache&quot;,
             &quot;type&quot;: &quot;-&gt;&quot;
         },
         {
-            &quot;file&quot;: &quot;C:\\Users\\athap\\Desktop\\Projects-Lumination\\edSpark-phase3\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Middleware\\TransformsRequest.php&quot;,
+            &quot;file&quot;: &quot;/Users/erickhartawan/Documents/workspace/edSpark-phase3/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/TransformsRequest.php&quot;,
             &quot;line&quot;: 21,
             &quot;function&quot;: &quot;Illuminate\\Pipeline\\{closure}&quot;,
             &quot;class&quot;: &quot;Illuminate\\Pipeline\\Pipeline&quot;,
             &quot;type&quot;: &quot;-&gt;&quot;
         },
         {
-            &quot;file&quot;: &quot;C:\\Users\\athap\\Desktop\\Projects-Lumination\\edSpark-phase3\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Middleware\\ConvertEmptyStringsToNull.php&quot;,
+            &quot;file&quot;: &quot;/Users/erickhartawan/Documents/workspace/edSpark-phase3/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/ConvertEmptyStringsToNull.php&quot;,
             &quot;line&quot;: 31,
             &quot;function&quot;: &quot;handle&quot;,
             &quot;class&quot;: &quot;Illuminate\\Foundation\\Http\\Middleware\\TransformsRequest&quot;,
             &quot;type&quot;: &quot;-&gt;&quot;
         },
         {
-            &quot;file&quot;: &quot;C:\\Users\\athap\\Desktop\\Projects-Lumination\\edSpark-phase3\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php&quot;,
+            &quot;file&quot;: &quot;/Users/erickhartawan/Documents/workspace/edSpark-phase3/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php&quot;,
             &quot;line&quot;: 180,
             &quot;function&quot;: &quot;handle&quot;,
             &quot;class&quot;: &quot;Illuminate\\Foundation\\Http\\Middleware\\ConvertEmptyStringsToNull&quot;,
             &quot;type&quot;: &quot;-&gt;&quot;
         },
         {
-            &quot;file&quot;: &quot;C:\\Users\\athap\\Desktop\\Projects-Lumination\\edSpark-phase3\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Middleware\\TransformsRequest.php&quot;,
+            &quot;file&quot;: &quot;/Users/erickhartawan/Documents/workspace/edSpark-phase3/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/TransformsRequest.php&quot;,
             &quot;line&quot;: 21,
             &quot;function&quot;: &quot;Illuminate\\Pipeline\\{closure}&quot;,
             &quot;class&quot;: &quot;Illuminate\\Pipeline\\Pipeline&quot;,
             &quot;type&quot;: &quot;-&gt;&quot;
         },
         {
-            &quot;file&quot;: &quot;C:\\Users\\athap\\Desktop\\Projects-Lumination\\edSpark-phase3\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Middleware\\TrimStrings.php&quot;,
+            &quot;file&quot;: &quot;/Users/erickhartawan/Documents/workspace/edSpark-phase3/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/TrimStrings.php&quot;,
             &quot;line&quot;: 40,
             &quot;function&quot;: &quot;handle&quot;,
             &quot;class&quot;: &quot;Illuminate\\Foundation\\Http\\Middleware\\TransformsRequest&quot;,
             &quot;type&quot;: &quot;-&gt;&quot;
         },
         {
-            &quot;file&quot;: &quot;C:\\Users\\athap\\Desktop\\Projects-Lumination\\edSpark-phase3\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php&quot;,
+            &quot;file&quot;: &quot;/Users/erickhartawan/Documents/workspace/edSpark-phase3/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php&quot;,
             &quot;line&quot;: 180,
             &quot;function&quot;: &quot;handle&quot;,
             &quot;class&quot;: &quot;Illuminate\\Foundation\\Http\\Middleware\\TrimStrings&quot;,
             &quot;type&quot;: &quot;-&gt;&quot;
         },
         {
-            &quot;file&quot;: &quot;C:\\Users\\athap\\Desktop\\Projects-Lumination\\edSpark-phase3\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Middleware\\ValidatePostSize.php&quot;,
+            &quot;file&quot;: &quot;/Users/erickhartawan/Documents/workspace/edSpark-phase3/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/ValidatePostSize.php&quot;,
             &quot;line&quot;: 27,
             &quot;function&quot;: &quot;Illuminate\\Pipeline\\{closure}&quot;,
             &quot;class&quot;: &quot;Illuminate\\Pipeline\\Pipeline&quot;,
             &quot;type&quot;: &quot;-&gt;&quot;
         },
         {
-            &quot;file&quot;: &quot;C:\\Users\\athap\\Desktop\\Projects-Lumination\\edSpark-phase3\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php&quot;,
+            &quot;file&quot;: &quot;/Users/erickhartawan/Documents/workspace/edSpark-phase3/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php&quot;,
             &quot;line&quot;: 180,
             &quot;function&quot;: &quot;handle&quot;,
             &quot;class&quot;: &quot;Illuminate\\Foundation\\Http\\Middleware\\ValidatePostSize&quot;,
             &quot;type&quot;: &quot;-&gt;&quot;
         },
         {
-            &quot;file&quot;: &quot;C:\\Users\\athap\\Desktop\\Projects-Lumination\\edSpark-phase3\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Middleware\\PreventRequestsDuringMaintenance.php&quot;,
+            &quot;file&quot;: &quot;/Users/erickhartawan/Documents/workspace/edSpark-phase3/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/PreventRequestsDuringMaintenance.php&quot;,
             &quot;line&quot;: 86,
             &quot;function&quot;: &quot;Illuminate\\Pipeline\\{closure}&quot;,
             &quot;class&quot;: &quot;Illuminate\\Pipeline\\Pipeline&quot;,
             &quot;type&quot;: &quot;-&gt;&quot;
         },
         {
-            &quot;file&quot;: &quot;C:\\Users\\athap\\Desktop\\Projects-Lumination\\edSpark-phase3\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php&quot;,
+            &quot;file&quot;: &quot;/Users/erickhartawan/Documents/workspace/edSpark-phase3/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php&quot;,
             &quot;line&quot;: 180,
             &quot;function&quot;: &quot;handle&quot;,
             &quot;class&quot;: &quot;Illuminate\\Foundation\\Http\\Middleware\\PreventRequestsDuringMaintenance&quot;,
             &quot;type&quot;: &quot;-&gt;&quot;
         },
         {
-            &quot;file&quot;: &quot;C:\\Users\\athap\\Desktop\\Projects-Lumination\\edSpark-phase3\\vendor\\laravel\\framework\\src\\Illuminate\\Http\\Middleware\\HandleCors.php&quot;,
+            &quot;file&quot;: &quot;/Users/erickhartawan/Documents/workspace/edSpark-phase3/vendor/laravel/framework/src/Illuminate/Http/Middleware/HandleCors.php&quot;,
             &quot;line&quot;: 62,
             &quot;function&quot;: &quot;Illuminate\\Pipeline\\{closure}&quot;,
             &quot;class&quot;: &quot;Illuminate\\Pipeline\\Pipeline&quot;,
             &quot;type&quot;: &quot;-&gt;&quot;
         },
         {
-            &quot;file&quot;: &quot;C:\\Users\\athap\\Desktop\\Projects-Lumination\\edSpark-phase3\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php&quot;,
+            &quot;file&quot;: &quot;/Users/erickhartawan/Documents/workspace/edSpark-phase3/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php&quot;,
             &quot;line&quot;: 180,
             &quot;function&quot;: &quot;handle&quot;,
             &quot;class&quot;: &quot;Illuminate\\Http\\Middleware\\HandleCors&quot;,
             &quot;type&quot;: &quot;-&gt;&quot;
         },
         {
-            &quot;file&quot;: &quot;C:\\Users\\athap\\Desktop\\Projects-Lumination\\edSpark-phase3\\vendor\\laravel\\framework\\src\\Illuminate\\Http\\Middleware\\TrustProxies.php&quot;,
+            &quot;file&quot;: &quot;/Users/erickhartawan/Documents/workspace/edSpark-phase3/vendor/laravel/framework/src/Illuminate/Http/Middleware/TrustProxies.php&quot;,
             &quot;line&quot;: 39,
             &quot;function&quot;: &quot;Illuminate\\Pipeline\\{closure}&quot;,
             &quot;class&quot;: &quot;Illuminate\\Pipeline\\Pipeline&quot;,
             &quot;type&quot;: &quot;-&gt;&quot;
         },
         {
-            &quot;file&quot;: &quot;C:\\Users\\athap\\Desktop\\Projects-Lumination\\edSpark-phase3\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php&quot;,
+            &quot;file&quot;: &quot;/Users/erickhartawan/Documents/workspace/edSpark-phase3/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php&quot;,
             &quot;line&quot;: 180,
             &quot;function&quot;: &quot;handle&quot;,
             &quot;class&quot;: &quot;Illuminate\\Http\\Middleware\\TrustProxies&quot;,
             &quot;type&quot;: &quot;-&gt;&quot;
         },
         {
-            &quot;file&quot;: &quot;C:\\Users\\athap\\Desktop\\Projects-Lumination\\edSpark-phase3\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php&quot;,
+            &quot;file&quot;: &quot;/Users/erickhartawan/Documents/workspace/edSpark-phase3/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php&quot;,
             &quot;line&quot;: 116,
             &quot;function&quot;: &quot;Illuminate\\Pipeline\\{closure}&quot;,
             &quot;class&quot;: &quot;Illuminate\\Pipeline\\Pipeline&quot;,
             &quot;type&quot;: &quot;-&gt;&quot;
         },
         {
-            &quot;file&quot;: &quot;C:\\Users\\athap\\Desktop\\Projects-Lumination\\edSpark-phase3\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Kernel.php&quot;,
+            &quot;file&quot;: &quot;/Users/erickhartawan/Documents/workspace/edSpark-phase3/vendor/laravel/framework/src/Illuminate/Foundation/Http/Kernel.php&quot;,
             &quot;line&quot;: 165,
             &quot;function&quot;: &quot;then&quot;,
             &quot;class&quot;: &quot;Illuminate\\Pipeline\\Pipeline&quot;,
             &quot;type&quot;: &quot;-&gt;&quot;
         },
         {
-            &quot;file&quot;: &quot;C:\\Users\\athap\\Desktop\\Projects-Lumination\\edSpark-phase3\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Kernel.php&quot;,
+            &quot;file&quot;: &quot;/Users/erickhartawan/Documents/workspace/edSpark-phase3/vendor/laravel/framework/src/Illuminate/Foundation/Http/Kernel.php&quot;,
             &quot;line&quot;: 134,
             &quot;function&quot;: &quot;sendRequestThroughRouter&quot;,
             &quot;class&quot;: &quot;Illuminate\\Foundation\\Http\\Kernel&quot;,
             &quot;type&quot;: &quot;-&gt;&quot;
         },
         {
-            &quot;file&quot;: &quot;C:\\Users\\athap\\Desktop\\Projects-Lumination\\edSpark-phase3\\vendor\\knuckleswtf\\scribe\\src\\Extracting\\Strategies\\Responses\\ResponseCalls.php&quot;,
+            &quot;file&quot;: &quot;/Users/erickhartawan/Documents/workspace/edSpark-phase3/vendor/knuckleswtf/scribe/src/Extracting/Strategies/Responses/ResponseCalls.php&quot;,
             &quot;line&quot;: 299,
             &quot;function&quot;: &quot;handle&quot;,
             &quot;class&quot;: &quot;Illuminate\\Foundation\\Http\\Kernel&quot;,
             &quot;type&quot;: &quot;-&gt;&quot;
         },
         {
-            &quot;file&quot;: &quot;C:\\Users\\athap\\Desktop\\Projects-Lumination\\edSpark-phase3\\vendor\\knuckleswtf\\scribe\\src\\Extracting\\Strategies\\Responses\\ResponseCalls.php&quot;,
+            &quot;file&quot;: &quot;/Users/erickhartawan/Documents/workspace/edSpark-phase3/vendor/knuckleswtf/scribe/src/Extracting/Strategies/Responses/ResponseCalls.php&quot;,
             &quot;line&quot;: 287,
             &quot;function&quot;: &quot;callLaravelOrLumenRoute&quot;,
             &quot;class&quot;: &quot;Knuckles\\Scribe\\Extracting\\Strategies\\Responses\\ResponseCalls&quot;,
             &quot;type&quot;: &quot;-&gt;&quot;
         },
         {
-            &quot;file&quot;: &quot;C:\\Users\\athap\\Desktop\\Projects-Lumination\\edSpark-phase3\\vendor\\knuckleswtf\\scribe\\src\\Extracting\\Strategies\\Responses\\ResponseCalls.php&quot;,
+            &quot;file&quot;: &quot;/Users/erickhartawan/Documents/workspace/edSpark-phase3/vendor/knuckleswtf/scribe/src/Extracting/Strategies/Responses/ResponseCalls.php&quot;,
             &quot;line&quot;: 92,
             &quot;function&quot;: &quot;makeApiCall&quot;,
             &quot;class&quot;: &quot;Knuckles\\Scribe\\Extracting\\Strategies\\Responses\\ResponseCalls&quot;,
             &quot;type&quot;: &quot;-&gt;&quot;
         },
         {
-            &quot;file&quot;: &quot;C:\\Users\\athap\\Desktop\\Projects-Lumination\\edSpark-phase3\\vendor\\knuckleswtf\\scribe\\src\\Extracting\\Strategies\\Responses\\ResponseCalls.php&quot;,
+            &quot;file&quot;: &quot;/Users/erickhartawan/Documents/workspace/edSpark-phase3/vendor/knuckleswtf/scribe/src/Extracting/Strategies/Responses/ResponseCalls.php&quot;,
             &quot;line&quot;: 45,
             &quot;function&quot;: &quot;makeResponseCall&quot;,
             &quot;class&quot;: &quot;Knuckles\\Scribe\\Extracting\\Strategies\\Responses\\ResponseCalls&quot;,
             &quot;type&quot;: &quot;-&gt;&quot;
         },
         {
-            &quot;file&quot;: &quot;C:\\Users\\athap\\Desktop\\Projects-Lumination\\edSpark-phase3\\vendor\\knuckleswtf\\scribe\\src\\Extracting\\Strategies\\Responses\\ResponseCalls.php&quot;,
+            &quot;file&quot;: &quot;/Users/erickhartawan/Documents/workspace/edSpark-phase3/vendor/knuckleswtf/scribe/src/Extracting/Strategies/Responses/ResponseCalls.php&quot;,
             &quot;line&quot;: 35,
             &quot;function&quot;: &quot;makeResponseCallIfConditionsPass&quot;,
             &quot;class&quot;: &quot;Knuckles\\Scribe\\Extracting\\Strategies\\Responses\\ResponseCalls&quot;,
             &quot;type&quot;: &quot;-&gt;&quot;
         },
         {
-            &quot;file&quot;: &quot;C:\\Users\\athap\\Desktop\\Projects-Lumination\\edSpark-phase3\\vendor\\knuckleswtf\\scribe\\src\\Extracting\\Extractor.php&quot;,
+            &quot;file&quot;: &quot;/Users/erickhartawan/Documents/workspace/edSpark-phase3/vendor/knuckleswtf/scribe/src/Extracting/Extractor.php&quot;,
             &quot;line&quot;: 209,
             &quot;function&quot;: &quot;__invoke&quot;,
             &quot;class&quot;: &quot;Knuckles\\Scribe\\Extracting\\Strategies\\Responses\\ResponseCalls&quot;,
             &quot;type&quot;: &quot;-&gt;&quot;
         },
         {
-            &quot;file&quot;: &quot;C:\\Users\\athap\\Desktop\\Projects-Lumination\\edSpark-phase3\\vendor\\knuckleswtf\\scribe\\src\\Extracting\\Extractor.php&quot;,
+            &quot;file&quot;: &quot;/Users/erickhartawan/Documents/workspace/edSpark-phase3/vendor/knuckleswtf/scribe/src/Extracting/Extractor.php&quot;,
             &quot;line&quot;: 163,
             &quot;function&quot;: &quot;iterateThroughStrategies&quot;,
             &quot;class&quot;: &quot;Knuckles\\Scribe\\Extracting\\Extractor&quot;,
             &quot;type&quot;: &quot;-&gt;&quot;
         },
         {
-            &quot;file&quot;: &quot;C:\\Users\\athap\\Desktop\\Projects-Lumination\\edSpark-phase3\\vendor\\knuckleswtf\\scribe\\src\\Extracting\\Extractor.php&quot;,
+            &quot;file&quot;: &quot;/Users/erickhartawan/Documents/workspace/edSpark-phase3/vendor/knuckleswtf/scribe/src/Extracting/Extractor.php&quot;,
             &quot;line&quot;: 95,
             &quot;function&quot;: &quot;fetchResponses&quot;,
             &quot;class&quot;: &quot;Knuckles\\Scribe\\Extracting\\Extractor&quot;,
             &quot;type&quot;: &quot;-&gt;&quot;
         },
         {
-            &quot;file&quot;: &quot;C:\\Users\\athap\\Desktop\\Projects-Lumination\\edSpark-phase3\\vendor\\knuckleswtf\\scribe\\src\\GroupedEndpoints\\GroupedEndpointsFromApp.php&quot;,
+            &quot;file&quot;: &quot;/Users/erickhartawan/Documents/workspace/edSpark-phase3/vendor/knuckleswtf/scribe/src/GroupedEndpoints/GroupedEndpointsFromApp.php&quot;,
             &quot;line&quot;: 124,
             &quot;function&quot;: &quot;processRoute&quot;,
             &quot;class&quot;: &quot;Knuckles\\Scribe\\Extracting\\Extractor&quot;,
             &quot;type&quot;: &quot;-&gt;&quot;
         },
         {
-            &quot;file&quot;: &quot;C:\\Users\\athap\\Desktop\\Projects-Lumination\\edSpark-phase3\\vendor\\knuckleswtf\\scribe\\src\\GroupedEndpoints\\GroupedEndpointsFromApp.php&quot;,
+            &quot;file&quot;: &quot;/Users/erickhartawan/Documents/workspace/edSpark-phase3/vendor/knuckleswtf/scribe/src/GroupedEndpoints/GroupedEndpointsFromApp.php&quot;,
             &quot;line&quot;: 71,
             &quot;function&quot;: &quot;extractEndpointsInfoFromLaravelApp&quot;,
             &quot;class&quot;: &quot;Knuckles\\Scribe\\GroupedEndpoints\\GroupedEndpointsFromApp&quot;,
             &quot;type&quot;: &quot;-&gt;&quot;
         },
         {
-            &quot;file&quot;: &quot;C:\\Users\\athap\\Desktop\\Projects-Lumination\\edSpark-phase3\\vendor\\knuckleswtf\\scribe\\src\\GroupedEndpoints\\GroupedEndpointsFromApp.php&quot;,
+            &quot;file&quot;: &quot;/Users/erickhartawan/Documents/workspace/edSpark-phase3/vendor/knuckleswtf/scribe/src/GroupedEndpoints/GroupedEndpointsFromApp.php&quot;,
             &quot;line&quot;: 49,
             &quot;function&quot;: &quot;extractEndpointsInfoAndWriteToDisk&quot;,
             &quot;class&quot;: &quot;Knuckles\\Scribe\\GroupedEndpoints\\GroupedEndpointsFromApp&quot;,
             &quot;type&quot;: &quot;-&gt;&quot;
         },
         {
-            &quot;file&quot;: &quot;C:\\Users\\athap\\Desktop\\Projects-Lumination\\edSpark-phase3\\vendor\\knuckleswtf\\scribe\\src\\Commands\\GenerateDocumentation.php&quot;,
+            &quot;file&quot;: &quot;/Users/erickhartawan/Documents/workspace/edSpark-phase3/vendor/knuckleswtf/scribe/src/Commands/GenerateDocumentation.php&quot;,
             &quot;line&quot;: 51,
             &quot;function&quot;: &quot;get&quot;,
             &quot;class&quot;: &quot;Knuckles\\Scribe\\GroupedEndpoints\\GroupedEndpointsFromApp&quot;,
             &quot;type&quot;: &quot;-&gt;&quot;
         },
         {
-            &quot;file&quot;: &quot;C:\\Users\\athap\\Desktop\\Projects-Lumination\\edSpark-phase3\\vendor\\laravel\\framework\\src\\Illuminate\\Container\\BoundMethod.php&quot;,
+            &quot;file&quot;: &quot;/Users/erickhartawan/Documents/workspace/edSpark-phase3/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php&quot;,
             &quot;line&quot;: 36,
             &quot;function&quot;: &quot;handle&quot;,
             &quot;class&quot;: &quot;Knuckles\\Scribe\\Commands\\GenerateDocumentation&quot;,
             &quot;type&quot;: &quot;-&gt;&quot;
         },
         {
-            &quot;file&quot;: &quot;C:\\Users\\athap\\Desktop\\Projects-Lumination\\edSpark-phase3\\vendor\\laravel\\framework\\src\\Illuminate\\Container\\Util.php&quot;,
+            &quot;file&quot;: &quot;/Users/erickhartawan/Documents/workspace/edSpark-phase3/vendor/laravel/framework/src/Illuminate/Container/Util.php&quot;,
             &quot;line&quot;: 41,
             &quot;function&quot;: &quot;Illuminate\\Container\\{closure}&quot;,
             &quot;class&quot;: &quot;Illuminate\\Container\\BoundMethod&quot;,
             &quot;type&quot;: &quot;::&quot;
         },
         {
-            &quot;file&quot;: &quot;C:\\Users\\athap\\Desktop\\Projects-Lumination\\edSpark-phase3\\vendor\\laravel\\framework\\src\\Illuminate\\Container\\BoundMethod.php&quot;,
+            &quot;file&quot;: &quot;/Users/erickhartawan/Documents/workspace/edSpark-phase3/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php&quot;,
             &quot;line&quot;: 93,
             &quot;function&quot;: &quot;unwrapIfClosure&quot;,
             &quot;class&quot;: &quot;Illuminate\\Container\\Util&quot;,
             &quot;type&quot;: &quot;::&quot;
         },
         {
-            &quot;file&quot;: &quot;C:\\Users\\athap\\Desktop\\Projects-Lumination\\edSpark-phase3\\vendor\\laravel\\framework\\src\\Illuminate\\Container\\BoundMethod.php&quot;,
+            &quot;file&quot;: &quot;/Users/erickhartawan/Documents/workspace/edSpark-phase3/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php&quot;,
             &quot;line&quot;: 35,
             &quot;function&quot;: &quot;callBoundMethod&quot;,
             &quot;class&quot;: &quot;Illuminate\\Container\\BoundMethod&quot;,
             &quot;type&quot;: &quot;::&quot;
         },
         {
-            &quot;file&quot;: &quot;C:\\Users\\athap\\Desktop\\Projects-Lumination\\edSpark-phase3\\vendor\\laravel\\framework\\src\\Illuminate\\Container\\Container.php&quot;,
+            &quot;file&quot;: &quot;/Users/erickhartawan/Documents/workspace/edSpark-phase3/vendor/laravel/framework/src/Illuminate/Container/Container.php&quot;,
             &quot;line&quot;: 661,
             &quot;function&quot;: &quot;call&quot;,
             &quot;class&quot;: &quot;Illuminate\\Container\\BoundMethod&quot;,
             &quot;type&quot;: &quot;::&quot;
         },
         {
-            &quot;file&quot;: &quot;C:\\Users\\athap\\Desktop\\Projects-Lumination\\edSpark-phase3\\vendor\\laravel\\framework\\src\\Illuminate\\Console\\Command.php&quot;,
+            &quot;file&quot;: &quot;/Users/erickhartawan/Documents/workspace/edSpark-phase3/vendor/laravel/framework/src/Illuminate/Console/Command.php&quot;,
             &quot;line&quot;: 183,
             &quot;function&quot;: &quot;call&quot;,
             &quot;class&quot;: &quot;Illuminate\\Container\\Container&quot;,
             &quot;type&quot;: &quot;-&gt;&quot;
         },
         {
-            &quot;file&quot;: &quot;C:\\Users\\athap\\Desktop\\Projects-Lumination\\edSpark-phase3\\vendor\\symfony\\console\\Command\\Command.php&quot;,
+            &quot;file&quot;: &quot;/Users/erickhartawan/Documents/workspace/edSpark-phase3/vendor/symfony/console/Command/Command.php&quot;,
             &quot;line&quot;: 312,
             &quot;function&quot;: &quot;execute&quot;,
             &quot;class&quot;: &quot;Illuminate\\Console\\Command&quot;,
             &quot;type&quot;: &quot;-&gt;&quot;
         },
         {
-            &quot;file&quot;: &quot;C:\\Users\\athap\\Desktop\\Projects-Lumination\\edSpark-phase3\\vendor\\laravel\\framework\\src\\Illuminate\\Console\\Command.php&quot;,
+            &quot;file&quot;: &quot;/Users/erickhartawan/Documents/workspace/edSpark-phase3/vendor/laravel/framework/src/Illuminate/Console/Command.php&quot;,
             &quot;line&quot;: 152,
             &quot;function&quot;: &quot;run&quot;,
             &quot;class&quot;: &quot;Symfony\\Component\\Console\\Command\\Command&quot;,
             &quot;type&quot;: &quot;-&gt;&quot;
         },
         {
-            &quot;file&quot;: &quot;C:\\Users\\athap\\Desktop\\Projects-Lumination\\edSpark-phase3\\vendor\\symfony\\console\\Application.php&quot;,
+            &quot;file&quot;: &quot;/Users/erickhartawan/Documents/workspace/edSpark-phase3/vendor/symfony/console/Application.php&quot;,
             &quot;line&quot;: 1022,
             &quot;function&quot;: &quot;run&quot;,
             &quot;class&quot;: &quot;Illuminate\\Console\\Command&quot;,
             &quot;type&quot;: &quot;-&gt;&quot;
         },
         {
-            &quot;file&quot;: &quot;C:\\Users\\athap\\Desktop\\Projects-Lumination\\edSpark-phase3\\vendor\\symfony\\console\\Application.php&quot;,
+            &quot;file&quot;: &quot;/Users/erickhartawan/Documents/workspace/edSpark-phase3/vendor/symfony/console/Application.php&quot;,
             &quot;line&quot;: 314,
             &quot;function&quot;: &quot;doRunCommand&quot;,
             &quot;class&quot;: &quot;Symfony\\Component\\Console\\Application&quot;,
             &quot;type&quot;: &quot;-&gt;&quot;
         },
         {
-            &quot;file&quot;: &quot;C:\\Users\\athap\\Desktop\\Projects-Lumination\\edSpark-phase3\\vendor\\symfony\\console\\Application.php&quot;,
+            &quot;file&quot;: &quot;/Users/erickhartawan/Documents/workspace/edSpark-phase3/vendor/symfony/console/Application.php&quot;,
             &quot;line&quot;: 168,
             &quot;function&quot;: &quot;doRun&quot;,
             &quot;class&quot;: &quot;Symfony\\Component\\Console\\Application&quot;,
             &quot;type&quot;: &quot;-&gt;&quot;
         },
         {
-            &quot;file&quot;: &quot;C:\\Users\\athap\\Desktop\\Projects-Lumination\\edSpark-phase3\\vendor\\laravel\\framework\\src\\Illuminate\\Console\\Application.php&quot;,
+            &quot;file&quot;: &quot;/Users/erickhartawan/Documents/workspace/edSpark-phase3/vendor/laravel/framework/src/Illuminate/Console/Application.php&quot;,
             &quot;line&quot;: 102,
             &quot;function&quot;: &quot;run&quot;,
             &quot;class&quot;: &quot;Symfony\\Component\\Console\\Application&quot;,
             &quot;type&quot;: &quot;-&gt;&quot;
         },
         {
-            &quot;file&quot;: &quot;C:\\Users\\athap\\Desktop\\Projects-Lumination\\edSpark-phase3\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Console\\Kernel.php&quot;,
+            &quot;file&quot;: &quot;/Users/erickhartawan/Documents/workspace/edSpark-phase3/vendor/laravel/framework/src/Illuminate/Foundation/Console/Kernel.php&quot;,
             &quot;line&quot;: 155,
             &quot;function&quot;: &quot;run&quot;,
             &quot;class&quot;: &quot;Illuminate\\Console\\Application&quot;,
             &quot;type&quot;: &quot;-&gt;&quot;
         },
         {
-            &quot;file&quot;: &quot;C:\\Users\\athap\\Desktop\\Projects-Lumination\\edSpark-phase3\\artisan&quot;,
+            &quot;file&quot;: &quot;/Users/erickhartawan/Documents/workspace/edSpark-phase3/artisan&quot;,
             &quot;line&quot;: 35,
             &quot;function&quot;: &quot;handle&quot;,
             &quot;class&quot;: &quot;Illuminate\\Foundation\\Console\\Kernel&quot;,
@@ -2636,9 +2642,281 @@ access-control-allow-origin: *
             </div>
                         </form>
 
-            
+                    <h2 id="endpoints-GETapi-fetchSchoolInfoById--id-">GET api/fetchSchoolInfoById/{id}</h2>
 
-        
+<p>
+</p>
+
+
+
+<span id="example-requests-GETapi-fetchSchoolInfoById--id-">
+<blockquote>Example request:</blockquote>
+
+
+<div class="javascript-example">
+    <pre><code class="language-javascript">const url = new URL(
+    "http://localhost:8000/api/fetchSchoolInfoById/culpa"
+);
+
+const headers = {
+    "Content-Type": "application/json",
+    "Accept": "application/json",
+};
+
+fetch(url, {
+    method: "GET",
+    headers,
+}).then(response =&gt; response.json());</code></pre></div>
+
+
+<div class="php-example">
+    <pre><code class="language-php">$client = new \GuzzleHttp\Client();
+$response = $client-&gt;get(
+    'http://localhost:8000/api/fetchSchoolInfoById/culpa',
+    [
+        'headers' =&gt; [
+            'Content-Type' =&gt; 'application/json',
+            'Accept' =&gt; 'application/json',
+        ],
+    ]
+);
+$body = $response-&gt;getBody();
+print_r(json_decode((string) $body));</code></pre></div>
+
+</span>
+
+<span id="example-responses-GETapi-fetchSchoolInfoById--id-">
+            <blockquote>
+            <p>Example response (200):</p>
+        </blockquote>
+                <details class="annotation">
+            <summary style="cursor: pointer;">
+                <small onclick="textContent = parentElement.parentElement.open ? 'Show headers' : 'Hide headers'">Show headers</small>
+            </summary>
+            <pre><code class="language-http">cache-control: no-cache, private
+content-type: application/json
+x-ratelimit-limit: 60
+x-ratelimit-remaining: 39
+access-control-allow-origin: *
+ </code></pre></details>         <pre>
+
+<code class="language-json" style="max-height: 300px;">&quot;No site found&quot;</code>
+ </pre>
+    </span>
+<span id="execution-results-GETapi-fetchSchoolInfoById--id-" hidden>
+    <blockquote>Received response<span
+                id="execution-response-status-GETapi-fetchSchoolInfoById--id-"></span>:
+    </blockquote>
+    <pre class="json"><code id="execution-response-content-GETapi-fetchSchoolInfoById--id-" style="max-height: 400px;"></code></pre>
+</span>
+<span id="execution-error-GETapi-fetchSchoolInfoById--id-" hidden>
+    <blockquote>Request failed with error:</blockquote>
+    <pre><code id="execution-error-message-GETapi-fetchSchoolInfoById--id-"></code></pre>
+</span>
+<form id="form-GETapi-fetchSchoolInfoById--id-" data-method="GET"
+      data-path="api/fetchSchoolInfoById/{id}"
+      data-authed="0"
+      data-hasfiles="0"
+      data-isarraybody="0"
+      autocomplete="off"
+      onsubmit="event.preventDefault(); executeTryOut('GETapi-fetchSchoolInfoById--id-', this);">
+    <h3>
+        Request&nbsp;&nbsp;&nbsp;
+                    <button type="button"
+                    style="background-color: #8fbcd4; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-tryout-GETapi-fetchSchoolInfoById--id-"
+                    onclick="tryItOut('GETapi-fetchSchoolInfoById--id-');">Try it out ⚡
+            </button>
+            <button type="button"
+                    style="background-color: #c97a7e; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-canceltryout-GETapi-fetchSchoolInfoById--id-"
+                    onclick="cancelTryOut('GETapi-fetchSchoolInfoById--id-');" hidden>Cancel 🛑
+            </button>&nbsp;&nbsp;
+            <button type="submit"
+                    style="background-color: #6ac174; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-executetryout-GETapi-fetchSchoolInfoById--id-" hidden>Send Request 💥
+            </button>
+            </h3>
+            <p>
+            <small class="badge badge-green">GET</small>
+            <b><code>api/fetchSchoolInfoById/{id}</code></b>
+        </p>
+                <h4 class="fancy-heading-panel"><b>Headers</b></h4>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Content-Type</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+               name="Content-Type"                data-endpoint="GETapi-fetchSchoolInfoById--id-"
+               value="application/json"
+               data-component="header">
+    <br>
+<p>Example: <code>application/json</code></p>
+            </div>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Accept</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+               name="Accept"                data-endpoint="GETapi-fetchSchoolInfoById--id-"
+               value="application/json"
+               data-component="header">
+    <br>
+<p>Example: <code>application/json</code></p>
+            </div>
+                        <h4 class="fancy-heading-panel"><b>URL Parameters</b></h4>
+                    <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>id</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+               name="id"                data-endpoint="GETapi-fetchSchoolInfoById--id-"
+               value="culpa"
+               data-component="url">
+    <br>
+<p>The ID of the fetchSchoolInfoById. Example: <code>culpa</code></p>
+            </div>
+                    </form>
+
+                    <h2 id="endpoints-GETapi-fetchSchoolByFullName--name-">GET api/fetchSchoolByFullName/{name}</h2>
+
+<p>
+</p>
+
+
+
+<span id="example-requests-GETapi-fetchSchoolByFullName--name-">
+<blockquote>Example request:</blockquote>
+
+
+<div class="javascript-example">
+    <pre><code class="language-javascript">const url = new URL(
+    "http://localhost:8000/api/fetchSchoolByFullName/culpa"
+);
+
+const headers = {
+    "Content-Type": "application/json",
+    "Accept": "application/json",
+};
+
+fetch(url, {
+    method: "GET",
+    headers,
+}).then(response =&gt; response.json());</code></pre></div>
+
+
+<div class="php-example">
+    <pre><code class="language-php">$client = new \GuzzleHttp\Client();
+$response = $client-&gt;get(
+    'http://localhost:8000/api/fetchSchoolByFullName/culpa',
+    [
+        'headers' =&gt; [
+            'Content-Type' =&gt; 'application/json',
+            'Accept' =&gt; 'application/json',
+        ],
+    ]
+);
+$body = $response-&gt;getBody();
+print_r(json_decode((string) $body));</code></pre></div>
+
+</span>
+
+<span id="example-responses-GETapi-fetchSchoolByFullName--name-">
+            <blockquote>
+            <p>Example response (200):</p>
+        </blockquote>
+                <details class="annotation">
+            <summary style="cursor: pointer;">
+                <small onclick="textContent = parentElement.parentElement.open ? 'Show headers' : 'Hide headers'">Show headers</small>
+            </summary>
+            <pre><code class="language-http">cache-control: no-cache, private
+content-type: application/json
+x-ratelimit-limit: 60
+x-ratelimit-remaining: 38
+access-control-allow-origin: *
+ </code></pre></details>         <pre>
+
+<code class="language-json" style="max-height: 300px;">&quot;No site found&quot;</code>
+ </pre>
+    </span>
+<span id="execution-results-GETapi-fetchSchoolByFullName--name-" hidden>
+    <blockquote>Received response<span
+                id="execution-response-status-GETapi-fetchSchoolByFullName--name-"></span>:
+    </blockquote>
+    <pre class="json"><code id="execution-response-content-GETapi-fetchSchoolByFullName--name-" style="max-height: 400px;"></code></pre>
+</span>
+<span id="execution-error-GETapi-fetchSchoolByFullName--name-" hidden>
+    <blockquote>Request failed with error:</blockquote>
+    <pre><code id="execution-error-message-GETapi-fetchSchoolByFullName--name-"></code></pre>
+</span>
+<form id="form-GETapi-fetchSchoolByFullName--name-" data-method="GET"
+      data-path="api/fetchSchoolByFullName/{name}"
+      data-authed="0"
+      data-hasfiles="0"
+      data-isarraybody="0"
+      autocomplete="off"
+      onsubmit="event.preventDefault(); executeTryOut('GETapi-fetchSchoolByFullName--name-', this);">
+    <h3>
+        Request&nbsp;&nbsp;&nbsp;
+                    <button type="button"
+                    style="background-color: #8fbcd4; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-tryout-GETapi-fetchSchoolByFullName--name-"
+                    onclick="tryItOut('GETapi-fetchSchoolByFullName--name-');">Try it out ⚡
+            </button>
+            <button type="button"
+                    style="background-color: #c97a7e; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-canceltryout-GETapi-fetchSchoolByFullName--name-"
+                    onclick="cancelTryOut('GETapi-fetchSchoolByFullName--name-');" hidden>Cancel 🛑
+            </button>&nbsp;&nbsp;
+            <button type="submit"
+                    style="background-color: #6ac174; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-executetryout-GETapi-fetchSchoolByFullName--name-" hidden>Send Request 💥
+            </button>
+            </h3>
+            <p>
+            <small class="badge badge-green">GET</small>
+            <b><code>api/fetchSchoolByFullName/{name}</code></b>
+        </p>
+                <h4 class="fancy-heading-panel"><b>Headers</b></h4>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Content-Type</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+               name="Content-Type"                data-endpoint="GETapi-fetchSchoolByFullName--name-"
+               value="application/json"
+               data-component="header">
+    <br>
+<p>Example: <code>application/json</code></p>
+            </div>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Accept</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+               name="Accept"                data-endpoint="GETapi-fetchSchoolByFullName--name-"
+               value="application/json"
+               data-component="header">
+    <br>
+<p>Example: <code>application/json</code></p>
+            </div>
+                        <h4 class="fancy-heading-panel"><b>URL Parameters</b></h4>
+                    <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>name</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+               name="name"                data-endpoint="GETapi-fetchSchoolByFullName--name-"
+               value="culpa"
+               data-component="url">
+    <br>
+<p>Example: <code>culpa</code></p>
+            </div>
+                    </form>
+
+
+
+
     </div>
     <div class="dark-box">
                     <div class="lang-selector">
