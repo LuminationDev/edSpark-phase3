@@ -5,6 +5,7 @@ namespace App\Providers;
 use Filament\Facades\Filament;
 use Filament\Navigation\NavigationGroup;
 use Filament\Navigation\NavigationItem;
+use Filament\Navigation\UserMenuItem;
 
 use Illuminate\Support\ServiceProvider;
 
@@ -34,8 +35,7 @@ class AppServiceProvider extends ServiceProvider
         //     Filament::registerNavigationGroups(
         //         [
         //             NavigationGroup::make()
-        //                 ->label('User Management')
-        //                 ->icon('heroicon-o-collection')
+        //                 ->label('Moderation')
         //                 ->collapsed(),
         //         ]
         //     );
@@ -43,16 +43,26 @@ class AppServiceProvider extends ServiceProvider
         //     // Then we register the links that will go into that naviagtion group
         //     Filament::registerNavigationItems(
         //         [
-        //             NavigationItem::make('My Custom Link 1')
-        //                 ->url('https://filament.pirsch.io', shouldOpenInNewTab: false)
-        //                 ->icon('heroicon-o-link')
-        //                 ->group('User Management')
+        //             NavigationItem::make('Advice')
+        //                 // ->url('https://filament.pirsch.io', shouldOpenInNewTab: false)
+        //                 ->icon('heroicon-o-collection')
+        //                 ->group('Moderation')
         //                 ->sort(1),
-        //             NavigationItem::make('My Custom Link 2')
-        //                 ->url('https://filament.pirsch.io', shouldOpenInNewTab: false)
-        //                 ->icon('heroicon-o-link')
-        //                 ->group('User Management')
+        //             NavigationItem::make('Software')
+        //                 // ->url('https://filament.pirsch.io', shouldOpenInNewTab: false)
+        //                 ->icon('heroicon-o-collection')
+        //                 ->group('Moderation')
         //                 ->sort(2),
+        //             NavigationItem::make('Event')
+        //                 // ->url('https://filament.pirsch.io', shouldOpenInNewTab: false)
+        //                 ->icon('heroicon-o-collection')
+        //                 ->group('Moderation')
+        //                 ->sort(3),
+        //             NavigationItem::make('Community')
+        //                 // ->url('https://filament.pirsch.io', shouldOpenInNewTab: false)
+        //                 ->icon('heroicon-o-collection')
+        //                 ->group('Moderation')
+        //                 ->sort(4),
 
         //         ]
         //     );

@@ -14,7 +14,7 @@ class Permission extends Model
      *
      * @var string
      */
-    protected $table = 'user_permissions';
+    protected $table = 'permissions';
 
     /**
      * The attributes that are mass assignable
@@ -22,7 +22,13 @@ class Permission extends Model
      * @var array
      */
     protected $fillable = [
-        'user_permission_name',
-        'user_permission_value'
+        'permission_name',
+        'permission_value'
     ];
+
+    public function roles()
+    {
+        // return $this->belongsToMany('App\Models\Role', 'permission_role', 'role_id', 'permission_id');
+        return $this->belongsToMany(Role::class);
+    }
 }

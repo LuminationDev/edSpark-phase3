@@ -8,6 +8,9 @@ use App\Http\Controllers\SoftwareController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\SiteController;
+use App\Http\Controllers\EventController;
+use App\Http\Controllers\CommunityController;
+
 use App\Http\Controllers\SchoolInfoController;
 /*
 |--------------------------------------------------------------------------
@@ -23,6 +26,8 @@ Route::middleware('api')->group(function() {
     // Content Management
     Route::get('fetchAdvicePosts', [AdviceController::class, 'fetchAdvicePosts']);
     Route::get('fetchSoftwarePosts', [SoftwareController::class, 'fetchSoftwarePosts']);
+    Route::get('fetchEventPosts', [EventController::class, 'fetchEventPosts']);
+    Route::get('fetchCommunityPosts', [CommunityController::class, 'fetchCommunityPosts']);
 
     // User Management
     Route::get('fetchUser/{id}', [UserController::class, 'fetchUser']);
