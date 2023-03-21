@@ -86,6 +86,88 @@ endpoints:
   -
     httpMethods:
       - GET
+    uri: api/fetchEventPosts
+    metadata:
+      groupName: Endpoints
+      groupDescription: ''
+      subgroup: ''
+      subgroupDescription: ''
+      title: ''
+      description: ''
+      authenticated: false
+      custom: []
+    headers:
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters: []
+    cleanUrlParameters: []
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses:
+      -
+        status: 200
+        content: '[{"event_id":1,"event_title":"Quisquam accusantium enim asperiores necessitatibus hic. Enim quae facilis eaque dolores. Deserunt laudantium ea rerum explicabo nisi.","event_content":"Consequatur autem molestias tenetur. Molestiae exercitationem vel sint cum tempore illum labore modi.","event_excerpt":"Porro molestiae voluptas fugit itaque laboriosam nisi.","author":"Jake Mackinlay","cover_image":"https:\/\/via.placeholder.com\/640x480.png\/0044ee?text=eum","start_date":"1989-04-21 16:56:41","end_date":"2005-06-07 14:54:23","event_status":"Published","event_type":"test event","created_at":"2023-03-16T05:19:06.000000Z","updated_at":"2023-03-16T05:19:06.000000Z"},{"event_id":2,"event_title":"Quia quidem et corrupti dolorum qui. Minima tempore dicta nihil nam neque voluptatum illum quo. Voluptas odio dignissimos in ipsum sunt quia. Soluta nihil est eius nesciunt odio corrupti sit.","event_content":"Voluptatem ratione dolorem corporis asperiores ut dolorem sed odit. Autem voluptas dolorem hic. Ea voluptatum est adipisci et sit tenetur. Animi illum ut et quia maiores sed illo.","event_excerpt":"Molestias maxime qui aut sed rerum.","author":"Jake Mackinlay","cover_image":"https:\/\/via.placeholder.com\/640x480.png\/0044cc?text=occaecati","start_date":"2006-12-09 13:40:07","end_date":"1979-01-30 12:16:35","event_status":"Published","event_type":"test event","created_at":"2023-03-16T05:19:06.000000Z","updated_at":"2023-03-16T05:19:06.000000Z"},{"event_id":3,"event_title":"Est id dolore nesciunt rerum dolor voluptas. Similique repellat omnis non ea et ducimus omnis error. Quia excepturi placeat vel.","event_content":"Perferendis sit aliquid omnis ut. At voluptatem et sequi explicabo. Pariatur consequatur dolorem quis perferendis beatae aperiam distinctio. Deleniti maxime rerum laboriosam quaerat.","event_excerpt":"Quasi hic non quae neque perferendis.","author":"Jake Mackinlay","cover_image":"https:\/\/via.placeholder.com\/640x480.png\/0066ff?text=molestiae","start_date":"2002-08-15 11:05:10","end_date":"2011-03-25 23:27:15","event_status":"Published","event_type":"test event","created_at":"2023-03-16T05:19:06.000000Z","updated_at":"2023-03-16T05:19:06.000000Z"},{"event_id":4,"event_title":"Ut nostrum assumenda perferendis ex reiciendis aut. Dicta accusamus et est et eaque consequatur nobis.","event_content":"Quia incidunt itaque dolorem officiis voluptatem. Ab ipsa adipisci officiis ipsum velit et illum. Illum consequatur magni accusantium sunt sed sit. Porro libero rerum nulla asperiores aut porro cumque.","event_excerpt":"Vel quis et cum pariatur ad illo.","author":"Jake Mackinlay","cover_image":"https:\/\/via.placeholder.com\/640x480.png\/0099ee?text=voluptatem","start_date":"2001-01-30 11:18:22","end_date":"2009-03-22 04:45:57","event_status":"Published","event_type":"test event","created_at":"2023-03-16T05:19:06.000000Z","updated_at":"2023-03-16T05:19:06.000000Z"},{"event_id":5,"event_title":"Voluptatibus ut quia ea non rem. Laboriosam ipsum vitae impedit et. Molestiae et accusamus quos laborum. Ut natus minus a harum mollitia beatae consequuntur harum.","event_content":"Rerum aut placeat voluptatem. Sunt aliquid magni inventore mollitia ut rerum. Sunt consequatur ut eaque inventore dolorum quis.","event_excerpt":"Vel maiores praesentium odit necessitatibus praesentium.","author":"Jake Mackinlay","cover_image":"https:\/\/via.placeholder.com\/640x480.png\/00ffee?text=ipsum","start_date":"2008-03-02 11:13:14","end_date":"2020-12-31 06:11:32","event_status":"Published","event_type":"test event","created_at":"2023-03-16T05:19:06.000000Z","updated_at":"2023-03-16T05:19:06.000000Z"},{"event_id":6,"event_title":"Test event test","event_content":"<p>test test event content<\/p>","event_excerpt":"<p>test test event excerpt<\/p>","author":"","cover_image":null,"start_date":"2023-03-28 00:00:00","end_date":"2023-03-29 00:00:00","event_status":"Published","event_type":"test event","created_at":"2023-03-20T21:36:50.000000Z","updated_at":"2023-03-20T22:07:08.000000Z"},{"event_id":7,"event_title":"another event","event_content":"<p>another event<\/p>","event_excerpt":"<p>another event<\/p>","author":"Asim Thapa","cover_image":null,"start_date":"2023-03-22 00:00:00","end_date":"2023-03-24 00:00:00","event_status":"Published","event_type":"test event","created_at":"2023-03-20T21:40:21.000000Z","updated_at":"2023-03-20T21:40:21.000000Z"}]'
+        headers:
+          cache-control: 'no-cache, private'
+          content-type: application/json
+          x-ratelimit-limit: '60'
+          x-ratelimit-remaining: '57'
+          access-control-allow-origin: '*'
+        description: null
+        custom: []
+    responseFields: []
+    auth: []
+    controller: null
+    method: null
+    route: null
+    custom: []
+  -
+    httpMethods:
+      - GET
+    uri: api/fetchCommunityPosts
+    metadata:
+      groupName: Endpoints
+      groupDescription: ''
+      subgroup: ''
+      subgroupDescription: ''
+      title: ''
+      description: ''
+      authenticated: false
+      custom: []
+    headers:
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters: []
+    cleanUrlParameters: []
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses:
+      -
+        status: 200
+        content: '[{"community_id":1,"post_title":"Facilis esse possimus iusto commodi sint ut voluptatum in.","post_content":"Praesentium reiciendis et quae laborum consequatur tempora. Est sit dolores quo animi deserunt vel quisquam exercitationem. Beatae earum qui delectus.","post_excerpt":"Aspernatur dolorem ut nostrum. Est asperiores suscipit ea autem quia assumenda odit nobis. Quisquam provident vel debitis quo voluptatibus. Perferendis rem iure nulla fugiat sint.","author":"Jake Mackinlay","cover_image":"https:\/\/via.placeholder.com\/640x480.png\/0044ee?text=ut","post_status":"Published","community_type":null,"created_at":"2023-03-16T05:19:06.000000Z","updated_at":"2023-03-16T05:19:06.000000Z"},{"community_id":2,"post_title":"Et voluptates ducimus rem nulla nihil.","post_content":"Odio possimus perspiciatis vel ad sunt voluptatem. Nemo quia nemo non qui et maxime. Aut ut et pariatur et dolore.","post_excerpt":"Voluptate voluptates ad corporis dicta dolores ex. Ullam veniam quos repudiandae eveniet quas aut sed. Fuga aut ut sed est vel. Quia voluptatem numquam ut ad unde est.","author":"Jake Mackinlay","cover_image":"https:\/\/via.placeholder.com\/640x480.png\/003311?text=enim","post_status":"Published","community_type":null,"created_at":"2023-03-16T05:19:06.000000Z","updated_at":"2023-03-16T05:19:06.000000Z"},{"community_id":3,"post_title":"Illum assumenda aut nisi vero et qui.","post_content":"Itaque beatae nam quo excepturi quae asperiores. Corrupti sed voluptate non accusantium. Consequatur odio consequatur temporibus rerum dolorum excepturi iste hic. Qui laudantium quam ducimus ex rerum accusantium nam.","post_excerpt":"Porro qui molestiae deleniti nulla maiores distinctio. Magnam et laborum impedit iste ipsa alias numquam. Rem non eos quod non. Molestiae nostrum dolor corrupti sunt illum atque nulla tempore.","author":"Jake Mackinlay","cover_image":"https:\/\/via.placeholder.com\/640x480.png\/00aaff?text=et","post_status":"Published","community_type":null,"created_at":"2023-03-16T05:19:06.000000Z","updated_at":"2023-03-16T05:19:06.000000Z"},{"community_id":4,"post_title":"Commodi ratione aut laboriosam ad nihil.","post_content":"Deleniti maiores qui animi soluta dolorum repudiandae. Aut nulla consequuntur odio rerum provident.","post_excerpt":"Cupiditate eligendi laboriosam vitae sequi et enim aut. Veritatis quia sunt rem omnis velit a tenetur. Sit culpa commodi doloribus qui velit alias placeat.","author":"Jake Mackinlay","cover_image":"https:\/\/via.placeholder.com\/640x480.png\/0011ff?text=illo","post_status":"Published","community_type":null,"created_at":"2023-03-16T05:19:06.000000Z","updated_at":"2023-03-16T05:19:06.000000Z"},{"community_id":5,"post_title":"Dolores quo non expedita beatae cumque.","post_content":"Quod voluptatum sint fugit ut fugiat veniam quasi amet. Aperiam a qui non aut et. Assumenda aut quod sint. Consequatur rerum aut fugiat consectetur consequuntur ipsa quae.","post_excerpt":"Molestiae suscipit beatae aut ipsum non delectus velit assumenda. Ut cupiditate sed et dolores minus eius quasi quibusdam. Vel distinctio eos voluptatum nobis.","author":"Jake Mackinlay","cover_image":"https:\/\/via.placeholder.com\/640x480.png\/00ffdd?text=id","post_status":"Published","community_type":null,"created_at":"2023-03-16T05:19:06.000000Z","updated_at":"2023-03-16T05:19:06.000000Z"},{"community_id":6,"post_title":"test community post","post_content":"<p>test content<\/p>","post_excerpt":"<p>test excerpt<\/p>","author":"Asim Thapa","cover_image":null,"post_status":"Published","community_type":"test community type","created_at":"2023-03-21T00:33:55.000000Z","updated_at":"2023-03-21T00:36:10.000000Z"}]'
+        headers:
+          cache-control: 'no-cache, private'
+          content-type: application/json
+          x-ratelimit-limit: '60'
+          x-ratelimit-remaining: '56'
+          access-control-allow-origin: '*'
+        description: null
+        custom: []
+    responseFields: []
+    auth: []
+    controller: null
+    method: null
+    route: null
+    custom: []
+  -
+    httpMethods:
+      - GET
     uri: 'api/fetchUser/{id}'
     metadata:
       groupName: Endpoints
@@ -592,7 +674,7 @@ endpoints:
           cache-control: 'no-cache, private'
           content-type: application/json
           x-ratelimit-limit: '60'
-          x-ratelimit-remaining: '57'
+          x-ratelimit-remaining: '55'
           access-control-allow-origin: '*'
         description: null
         custom: []
@@ -633,7 +715,7 @@ endpoints:
           cache-control: 'no-cache, private'
           content-type: application/json
           x-ratelimit-limit: '60'
-          x-ratelimit-remaining: '56'
+          x-ratelimit-remaining: '54'
           access-control-allow-origin: '*'
         description: null
         custom: []
@@ -674,7 +756,7 @@ endpoints:
           cache-control: 'no-cache, private'
           content-type: application/json
           x-ratelimit-limit: '60'
-          x-ratelimit-remaining: '55'
+          x-ratelimit-remaining: '53'
           access-control-allow-origin: '*'
         description: null
         custom: []
@@ -715,7 +797,7 @@ endpoints:
           cache-control: 'no-cache, private'
           content-type: application/json
           x-ratelimit-limit: '60'
-          x-ratelimit-remaining: '54'
+          x-ratelimit-remaining: '52'
           access-control-allow-origin: '*'
         description: null
         custom: []
@@ -764,7 +846,7 @@ endpoints:
           cache-control: 'no-cache, private'
           content-type: application/json
           x-ratelimit-limit: '60'
-          x-ratelimit-remaining: '53'
+          x-ratelimit-remaining: '51'
           access-control-allow-origin: '*'
         description: null
         custom: []
@@ -805,7 +887,7 @@ endpoints:
           cache-control: 'no-cache, private'
           content-type: application/json
           x-ratelimit-limit: '60'
-          x-ratelimit-remaining: '52'
+          x-ratelimit-remaining: '50'
           access-control-allow-origin: '*'
         description: null
         custom: []
@@ -846,7 +928,7 @@ endpoints:
           cache-control: 'no-cache, private'
           content-type: application/json
           x-ratelimit-limit: '60'
-          x-ratelimit-remaining: '51'
+          x-ratelimit-remaining: '49'
           access-control-allow-origin: '*'
         description: null
         custom: []
@@ -887,7 +969,7 @@ endpoints:
           cache-control: 'no-cache, private'
           content-type: application/json
           x-ratelimit-limit: '60'
-          x-ratelimit-remaining: '50'
+          x-ratelimit-remaining: '48'
           access-control-allow-origin: '*'
         description: null
         custom: []

@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Event extends Model
+class Communitymoderation extends Model
 {
     use HasFactory;
 
@@ -14,7 +14,7 @@ class Event extends Model
      *
      * @var string
      */
-    protected $table = 'events';
+    protected $table = 'communities';
 
     /**
      * The attributes that are mass assignable
@@ -23,13 +23,14 @@ class Event extends Model
      */
     protected $fillable = [
         'author_id',
-        'event_title',
-        'event_content',
-        'event_excerpt',
-        'start_date',
-        'end_date',
-        'event_status',
-        'eventtype_id',
+        'post_title',
+        'post_content',
+        'post_excerpt',
+        'post_status',
+        'post_date',
+        'post_modified',
+        'post_status',
+        'communitytype_id'
     ];
 
     public function author()
@@ -37,8 +38,8 @@ class Event extends Model
         return $this->belongsTo(User::class);
     }
 
-    public function eventtype()
+    public function communitytype()
     {
-        return $this->belongsTo(Eventtype::class);
+        return $this->belongsTo(Communitytype::class);
     }
 }

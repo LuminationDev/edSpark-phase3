@@ -2,11 +2,10 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\AdviceResource\Pages;
-use App\Filament\Resources\AdviceResource\RelationManagers;
-use App\Models\Advice;
+use App\Filament\Resources\SoftwaremoderationResource\Pages;
+use App\Filament\Resources\SoftwaremoderationResource\RelationManagers;
+use App\Models\Softwaremoderation;
 use Filament\Forms;
-use Filament\Forms\Components\FileUpload;
 use Filament\Resources\Form;
 use Filament\Resources\Resource;
 use Filament\Resources\Table;
@@ -15,18 +14,16 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Illuminate\Support\Facades\Auth;
 
-class AdviceResource extends Resource
+class SoftwaremoderationResource extends Resource
 {
-    protected static ?string $model = Advice::class;
-
-    protected static ?string $navigationGroup = 'Content Management';
-    protected static ?string $navigationGroupIcon = 'heroicon-o-collection';
-
-    protected static ?int $navigationSort = 1;
+    protected static ?string $model = Softwaremoderation::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-collection';
 
-    // protected static bool $shouldRegisterNavigation = false;
+    protected static ?string $navigationGroup = 'Moderation';
+    protected static ?string $navigationLabel = 'Software Moderation';
+
+    protected static ?int $navigationSort = 2;
 
     public static function form(Form $form): Form
     {
@@ -41,21 +38,20 @@ class AdviceResource extends Resource
                             ->maxLength(255),
                         Forms\Components\RichEditor::make('post_content')
                             ->label('Content')
-                            ->required()
-                            ->maxLength(65535),
+                            ->required(),
                         Forms\Components\RichEditor::make('post_excerpt')
                             ->label('Excerpt')
                             ->disableToolbarButtons([
                                 'attachFiles',
                             ]),
-                        Forms\Components\Grid::make(3)
+                        Forms\Components\Grid::make(2)
                             ->schema([
-                                Forms\Components\TextInput::make('Author')
-                                    ->default($user)
-                                    ->disabled(),
-                                Forms\Components\BelongsToSelect::make('advice_type')
-                                    ->label('Advice type')
-                                    ->relationship('advicetype', 'advice_type_name'),
+                                // Forms\Components\TextInput::make('Author')
+                                //     ->default($user)
+                                //     ->disabled(),
+                                Forms\Components\BelongsToSelect::make('software_type')
+                                    ->label('Software type')
+                                    ->relationship('softwaretype', 'software_type_name'),
                                 Forms\Components\Select::make('post_status')
                                     ->options([
                                         'Published' => 'Published',
@@ -64,15 +60,9 @@ class AdviceResource extends Resource
                                         'Pending' => 'Pending'
                                     ])
                                     ->label('Status')
-                                    ->required(),
-                                    ]),
-                        Forms\Components\FileUpload::make('cover_image')
-                            ->preserveFilenames()
-                            ->label('Cover Image')
-                            ->disk('public')
-                            ->directory('uploads')
-                            ->acceptedFileTypes(['image/jpeg', 'image/png'])
-                    ]),
+                                    ->required()
+                            ]),
+                            ]),
             ]);
     }
 
@@ -84,7 +74,7 @@ class AdviceResource extends Resource
                     ->label('Title')
                     ->sortable()
                     ->searchable(),
-                Tables\Columns\TextColumn::make('advicetype.advice_type_name')
+                Tables\Columns\TextColumn::make('softwaretype.software_type_name')
                     ->label('Type')
                     ->sortable()
                     ->searchable(),
@@ -99,18 +89,16 @@ class AdviceResource extends Resource
                     ->label('Status')
                     ->sortable()
                     ->searchable(),
-
             ])
             ->filters([
                 //
             ])
             ->actions([
-                // Tables\Actions\ViewAction::make(),
+                Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
-                Tables\Actions\DeleteBulkAction::make(),
+                // Tables\Actions\DeleteBulkAction::make(),
             ]);
     }
 
@@ -124,14 +112,24 @@ class AdviceResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListAdvice::route('/'),
-            'create' => Pages\CreateAdvice::route('/create'),
-            'edit' => Pages\EditAdvice::route('/{record}/edit'),
+            'index' => Pages\ListSoftwaremoderations::route('/'),
+            'create' => Pages\CreateSoftwaremoderation::route('/create'),
+            'edit' => Pages\EditSoftwaremoderation::route('/{record}/edit'),
         ];
     }
 
     public static function getEloquentQuery(): Builder
     {
-        return parent::getEloquentQuery()->where('post_status', 'Published');
+        return parent::getEloquentQuery()->where('post_status', 'Pending');
+    }
+
+    protected static function getNavigationBadge(): ?string
+    {
+        $count = static::getModel()::query()->where('post_status', 'pending')->count();
+        if ($count > 0){
+            return $count;
+        }else{
+            return '';
+        }
     }
 }

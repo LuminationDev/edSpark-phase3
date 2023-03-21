@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Event extends Model
+class Softwaremoderation extends Model
 {
     use HasFactory;
 
@@ -14,7 +14,7 @@ class Event extends Model
      *
      * @var string
      */
-    protected $table = 'events';
+    protected $table = 'softwares';
 
     /**
      * The attributes that are mass assignable
@@ -22,14 +22,14 @@ class Event extends Model
      * @var array
      */
     protected $fillable = [
+        'post_title',
+        'post_content',
+        'post_excerpt',
+        'post_date',
+        'post_modified',
+        'post_status',
         'author_id',
-        'event_title',
-        'event_content',
-        'event_excerpt',
-        'start_date',
-        'end_date',
-        'event_status',
-        'eventtype_id',
+        'softwaretype_id'
     ];
 
     public function author()
@@ -37,8 +37,8 @@ class Event extends Model
         return $this->belongsTo(User::class);
     }
 
-    public function eventtype()
+    public function softwaretype()
     {
-        return $this->belongsTo(Eventtype::class);
+        return $this->belongsTo(Softwaretype::class);
     }
 }
