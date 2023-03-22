@@ -8,6 +8,8 @@ const props = defineProps({
         required: true
     }
 })
+
+console.log(props)
 </script>
 <template>
     <div class="bg-white border-[0.5px] border-black px-5 py-8 flex flex-col relative overflow-hidden max-w-xs">

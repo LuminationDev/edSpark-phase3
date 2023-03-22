@@ -35,6 +35,10 @@
             handleAvatar() {
                 console.log(this.profileDropdown);
                 this.$emit('handleAvatarClick');
+            },
+
+            async logout () {
+                await this.$auth.signOut()
             }
         },
     }
@@ -70,7 +74,7 @@
                     </button>
                 </div>
                 <div class="pt-3">
-                    <button class="py-3 px-2 text-white text-[18px] font-medium w-full hover:underline">
+                    <button class="py-3 px-2 text-white text-[18px] font-medium w-full hover:underline" @click.prevent="logout">
                         Logout
                     </button>
                 </div>

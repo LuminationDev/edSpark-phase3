@@ -26,11 +26,11 @@ onMounted(() =>{
 
 const schoolTempData  = [
     {
-        title: 'Adelaide High School',
+        full_name: 'Adelaide High School',
         description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse feugiat metus auctor, tempor eros ut, faucibus augue. Integer laoreet metus ac vulputate dictum. Nulla maximus et purus nec ullamcorper. Donec non ligula lacus. Quisque quis luctus turpis. Nam et arcu facilisis, blandit felis ut, egestas dolor. Cras at dignissim augue. Curabitur placerat fermentum mollis. Vestibulum mollis facilisis placerat.',
         created_at: '25th Feb 2023',
         cover: 'https://picsum.photos/200/300',
-        techUsed: [
+        tech_used: [
             {
                 name: 'VR',
                 description: 'is a simulated experience that employs pose tracking and 3D near-eye displays to give the user an immersive feel of a virtual world.',
@@ -54,11 +54,11 @@ const schoolTempData  = [
         ]
     },
     {
-        title: 'East Adelaide School',
+        full_name: 'East Adelaide School',
         description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse feugiat metus auctor, tempor eros ut, faucibus augue. Integer laoreet metus ac vulputate dictum. Nulla maximus et purus nec ullamcorper. Donec non ligula lacus.',
         created_at: '14th Feb 2023',
         cover: 'https://picsum.photos/200/300',
-        techUsed: [
+        tech_used: [
             {
                 name: 'Microsoft Teams',
                 description: 'is a proprietary business communication platform developed by Microsoft, as part of the Microsoft 365 family of products.',
@@ -82,11 +82,11 @@ const schoolTempData  = [
         ]
     },
     {
-        title: 'North Adelaide Primary School',
+        full_name: 'North Adelaide Primary School',
         description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse feugiat metus auctor, tempor eros ut, faucibus augue. Integer laoreet metus ac vulputate dictum. Nulla maximus et purus nec ullamcorper. Donec non ligula lacus. Nam et arcu facilisis, blandit felis ut, egestas dolor.',
         created_at: '29th Jan 2023',
         cover: 'https://picsum.photos/200/300',
-        techUsed: [
+        tech_used: [
             {
                 name: 'Apple',
                 description: 'technology and resources empower every kind of educator — and every kind of student — to learn, create and define their own success.',
@@ -110,11 +110,11 @@ const schoolTempData  = [
         ]
     },
     {
-        title: 'Adelaide Botanic High School',
+        full_name: 'Adelaide Botanic High School',
         description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse feugiat metus auctor, tempor eros ut, faucibus augue. Integer laoreet metus ac vulputate dictum. Nulla maximus et purus nec ullamcorper. Donec non ligula lacus. Nam et arcu facilisis, blandit felis ut, egestas dolor.',
         created_at: '29th Jan 2023',
         cover: 'https://picsum.photos/200/300',
-        techUsed: [
+        tech_used: [
             {
                 name: 'VR',
                 description: 'is a simulated experience that employs pose tracking and 3D near-eye displays to give the user an immersive feel of a virtual world.',
@@ -145,12 +145,12 @@ const schoolTempData  = [
         <div class="px-[81px] py-20">
             <div class="grid grid-cols-4 gap-[24px] w-full">
                 <div
-                    v-for="(school,index) in featuredSitesData"
+                    v-for="(school,index) in schoolTempData"
                     :key="index"
                     class="col-span-1 bg-white border-[0.5px] border-black cursor-pointer h-[470px] transition-all group hover:shadow-2xl"
                 >
                     <SchoolCard
-                        v-if="featuredSitesData"
+                        v-if="schoolTempData"
                         :school-data="school"
                     />
                 </div>

@@ -2,63 +2,67 @@
     /**
      * Import Dependencies
      */
-import { ref } from 'vue';
-import { RouterLink } from 'vue-router';
+    import { ref } from 'vue';
+    import { RouterLink } from 'vue-router';
 
-/**
- * Import SVG's
- */
-import NavSwoosh from '../svg/NavSwoosh.vue';
-import Logo from '../svg/Logo.vue';
-import Profile from '../svg/Profile.vue';
+    /**
+     * Import SVG's
+     */
+    import NavSwoosh from '../svg/NavSwoosh.vue';
+    import Logo from '../svg/Logo.vue';
+    import Profile from '../svg/Profile.vue';
 
-/**
- * Import Stores
- */
-import { useUserStore } from '../../stores/useUserStore';
+    /**
+     * Import Stores
+     */
+    import { useUserStore } from '../../stores/useUserStore';
 
-/**
- * Import Components
- */
-import ProfileDropdown from './ProfileDropdown.vue';
+    /**
+     * Import Components
+     */
+    import ProfileDropdown from './ProfileDropdown.vue';
 
-export default {
+    export default {
+        props: {
+            isFirstVisit: Boolean
+        },
 
-    components: {
-        NavSwoosh,
-        Logo,
-        Profile,
-        ProfileDropdown
-    },
-    setup() {
-        const userStore = useUserStore();
+        setup() {
+            const userStore = useUserStore();
 
-        const navDropdownToggle = ref(false);
-        const profileDropdown = ref(false);
+            const navDropdownToggle = ref(false);
+            const profileDropdown = ref(false);
 
-        return {
-            navDropdownToggle,
-            profileDropdown,
-            userStore,
+            return {
+                navDropdownToggle,
+                profileDropdown,
+                userStore,
+            }
+        },
+
+        components: {
+            NavSwoosh,
+            Logo,
+            Profile,
+            ProfileDropdown
+        },
+
+        data() {
+            return {
+                currentUser: {}
+            }
+        },
+
+        mounted() {
+            this.currentUser = this.userStore.getUser
+        },
+
+        methods: {
+            handleAvatarClick() {
+                console.log('This has been clicked!!!');
+                this.profileDropdown = !this.profileDropdown
+            }
         }
-    },
-
-    data() {
-        return {
-            currentUser: {}
-        }
-    },
-
-    mounted() {
-        this.currentUser = this.userStore.getUser
-    },
-
-    methods: {
-        handleAvatarClick() {
-            console.log('This has been clicked!!!');
-            this.profileDropdown = !this.profileDropdown
-        }
-    }
 }
 
 </script>

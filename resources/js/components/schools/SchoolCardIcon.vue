@@ -11,9 +11,10 @@ const props = defineProps({
         type: Object,
         required: true
     }
-})
+});
 
 
+console.log(props);
 </script>
 <template>
     <div class="my-auto group/tech schools-tech">
