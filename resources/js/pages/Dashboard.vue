@@ -62,7 +62,7 @@
             /**
              * Change this to TRUE to simulate the First Login Experience
              */
-            const isFirstVisit = ref(true);
+            const isFirstVisit = ref(false);
 
 
 
