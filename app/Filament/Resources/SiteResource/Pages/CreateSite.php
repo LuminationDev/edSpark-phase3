@@ -19,4 +19,9 @@ class CreateSite extends CreateRecord
     {
         return 'Site created successfully';
     }
+
+    protected function mutateFormDataBeforeCreate(array $data): array
+    {
+        // dd($data);
+    }
 }

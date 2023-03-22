@@ -11,7 +11,9 @@ class UserController extends Controller
 {
     public function fetchUser($id)
     {
+
         $user = User::find($id);
+
         $userMetaData = Usermeta::where('user_id', $id)->get();
         $userMetaDataToSend = [];
         if( $userMetaData) {
@@ -31,6 +33,7 @@ class UserController extends Controller
             'email' => $user->email,
             'status' => $user->status,
             'role' => ($user->role) ? $user->role->role_name : NULL,
+            'permissions' => ($user->role) ? $user->role->permissions->pluck('permission_name') : NULL,
             'metadata' => ($userMetaDataToSend) ? $userMetaDataToSend : NULL
         ];
 
@@ -53,7 +56,7 @@ class UserController extends Controller
                         'full_name' => $data['full_name'],
                         'email' => $data['email'],
                         'display_name' => $data['display_name'],
-                        'status' => 'Inactive',
+                        'status' => 'Active',
                         'created_at' => Carbon::now(),
                         'updated_at' => Carbon::now()
                     ];
@@ -72,6 +75,7 @@ class UserController extends Controller
                 $dataToInsert = [];
                 try{
                     foreach ($metaData as $key => $value){
+                        var_dump($value);
                         $result = [
                             'user_id' => $userId,
                             'user_meta_key' => $key,
@@ -81,7 +85,7 @@ class UserController extends Controller
                         ];
                         $dataToInsert[] = $result;
                     }
-                    Usermeta::insert($dataToInsert);
+                    // Usermeta::insert($dataToInsert);
                 } catch (Exception $e) {
                     $error = $e->getMessage();
                 }
@@ -94,6 +98,57 @@ class UserController extends Controller
                 'status' => 200
             ]);
 
+
+        }
+    }
+
+    public function updateUser(Request $request)
+    {
+        if ($request->isMethod('post')) {
+
+            $userId = $request->id;
+            $data = $request->data;
+            $metaData = $request->metaData;
+            // dd($data['updateField']);
+
+            $updatedData = [];
+            $updatedMetaData = [];
+
+            $error = '';
+
+            if ($data) {
+                // TODO update user table
+                try{
+                    User::where('id', '=', $userId)
+                        ->update([$data['updateField'] => $data['updateValue']]);
+                    $updatedUser = User::find($userId);
+                } catch (Exception $e){
+                    $error = $e->getMessage();
+                }
+            }
+
+            if ($metaData) {
+                // TODO update user meta table
+                try {
+                    Usermeta::where('user_id', '=', $userId)
+                        ->update([
+                            'user_meta_key' => $metaData['updateField'],
+                            'user_meta_value' => implode(', ', $metaData['updateValue']),
+                        ]);
+                    $updatedMetaData = Usermeta::where('user_id', $userId)->get();
+
+                } catch (Exception $e){
+                    $error = $e->getMessage();
+                }
+            }
+
+            return response()->json([
+                'message' => "User updated successfully",
+                // 'data' => $updatedData,
+                // 'metaData' => $updatedMetaData,
+                'error' => $error,
+                'status' => 200
+            ]);
 
         }
     }

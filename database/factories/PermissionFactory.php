@@ -17,8 +17,8 @@ class PermissionFactory extends Factory
     public function definition()
     {
         return [
-            'user_permission_name' => $this->faker->word,
-            'user_permission_value' => $this->faker->text
+            'permission_name' => $this->faker->word,
+            'permission_value' => $this->faker->text
         ];
     }
 }

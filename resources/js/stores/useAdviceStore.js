@@ -13,7 +13,7 @@ export const useAdviceStore = defineStore('advice', {
     },
 
     actions: {
-        async loadResources() {
+        async loadDashboardResources() {
             await axios.get('http://localhost:8000/api/fetchAdvicePosts').then(response => {
                 console.log(response);
                 const dashboardAdvice = [];

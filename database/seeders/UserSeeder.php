@@ -56,7 +56,7 @@ class UserSeeder extends Seeder
                         'email' => 'luser@lumination.com.au',
                         'password' => Hash::make('12345678'),
                         'status' => 'Active',
-                        'role_id' => 1,
+                        'role_id' => 2,
                         'created_at' => new \DateTime(),
                         'updated_at' => new \DateTime(),
                     ]

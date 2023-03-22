@@ -15,7 +15,7 @@ import VueGoogleMaps from 'vue-google-maps-community-fork';
 // AND THIS!!!!!!!
 const oktaAuth = new OktaAuth({
     issuer: 'https://portal-test.edpass.sa.edu.au',
-    clientId: '0oa1xyje6zV6eKawK3l7',
+    clientId: '0oa1x7h530VPdjQlQ3l7',
     redirectUri: 'http://localhost:8000/dashboard',
     scopes: ['openid', 'profile', 'email'],
     tokenManager: {

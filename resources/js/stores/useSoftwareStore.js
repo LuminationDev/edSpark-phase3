@@ -16,7 +16,15 @@ export const useSoftwareStore = defineStore('software', {
         async loadArticles() {
             await axios.get('http://localhost:8000/api/fetchSoftwarePosts').then(response => {
                 console.log(response);
-                this.articles = response.data;
+                const dashboardSoftware = [];
+                response.data.forEach(software => {
+                    if (software.software_type === 'Dashboard Featured') {
+                        dashboardSoftware.push(software);
+                    };
+                });
+
+                this.articles = dashboardSoftware;
+                // this.articles = response.data;
             }).catch(error => {
                 console.log('Sorry, there was a problem retrieving the Advice Articles');
                 console.error(error);
