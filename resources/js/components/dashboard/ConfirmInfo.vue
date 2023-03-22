@@ -56,14 +56,35 @@
 
             closePopup() {
                 this.$emit('closePopup');
-                
+
+            },
+
+            handleKeepPopupCenter() {
+                // const popup = this.$refs.newVisitorForm;
+                // const windowHeight = window.innerHeight;
+                // const windowWidth = window.innerWidth;
+                // const popupWidth = popup.offsetWidth;
+                // const popupHeight = popup.offsetHeight;
+
+                // console.log(popup);
+                // console.log(popupWidth);
+                // console.log(windowWidth - popupWidth);
+
+                // const topOffset = (windowHeight - popupHeight) / 2;
+
+                // popup.style.left = `${(windowWidth - popupWidth) / 2}px`;
+                // popup.style.top = `${topOffset - 540}px`;
             }
+        },
+
+        mounted() {
+            this.handleKeepPopupCenter();
         }
     }
 </script>
 
 <template>
-    <div class="bg-white p-[48px] w-[500px] flex flex-col absolute z-50 shadow-lg -top-[500px] left-1/2 -translate-x-1/2">
+    <div ref="newVisitorForm" class="bg-white p-[48px] w-[500px] flex flex-col absolute z-50 shadow-lg -top-[700px] left-1/2 -translate-x-1/2">
         <slot name="formHeader"></slot>
 
         <form @submit.prevent="submitStep">
