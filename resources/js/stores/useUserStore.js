@@ -50,7 +50,8 @@ export const useUserStore = defineStore('user', {
                 metaData: {
                     yearLevels: user.yearLevels,
                     interest: user.interests,
-                    subjects: user.subjects
+                    subjects: user.subjects,
+                    biography: user.biography,
                 }
             };
 
@@ -68,6 +69,19 @@ export const useUserStore = defineStore('user', {
                 console.log('There was a problem updating your info');
                 console.error(error);
             })
+        },
+
+        async updateSingleUserItem(change) {
+            let data = {
+                data: {
+                    updateField: 'full_name',
+                    updateValue: 'new name'
+                },
+                metaData: {
+                    updateField: 'yearLevels',
+                    updateValue: ['1', '3']
+                }
+            }
         }
     }
 })

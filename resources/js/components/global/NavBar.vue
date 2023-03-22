@@ -23,6 +23,10 @@
     import { useUserStore } from '../../stores/useUserStore';
 
     export default {
+        props: {
+            isFirstVisit: Boolean
+        },
+
         setup() {
             const userStore = useUserStore();
 

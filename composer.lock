@@ -8,16 +8,16 @@
     "packages": [
         {
             "name": "akaunting/laravel-money",
-            "version": "4.0.0",
+            "version": "4.0.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/akaunting/laravel-money.git",
-                "reference": "1b9a56e9cfdfe53291be2936754592c2c432ddcf"
+                "reference": "df99d0f5d415490ef7e79362c3b694e8cc8af903"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/akaunting/laravel-money/zipball/1b9a56e9cfdfe53291be2936754592c2c432ddcf",
-                "reference": "1b9a56e9cfdfe53291be2936754592c2c432ddcf",
+                "url": "https://api.github.com/repos/akaunting/laravel-money/zipball/df99d0f5d415490ef7e79362c3b694e8cc8af903",
+                "reference": "df99d0f5d415490ef7e79362c3b694e8cc8af903",
                 "shasum": ""
             },
             "require": {
@@ -30,7 +30,7 @@
             },
             "require-dev": {
                 "orchestra/testbench": "^7.4|^8.0",
-                "phpunit/phpunit": "^9.5",
+                "phpunit/phpunit": "^9.5|^10.0",
                 "vimeo/psalm": "^4.23"
             },
             "type": "library",
@@ -71,9 +71,9 @@
             ],
             "support": {
                 "issues": "https://github.com/akaunting/laravel-money/issues",
-                "source": "https://github.com/akaunting/laravel-money/tree/4.0.0"
+                "source": "https://github.com/akaunting/laravel-money/tree/4.0.1"
             },
-            "time": "2023-02-14T18:09:30+00:00"
+            "time": "2023-03-16T14:39:27+00:00"
         },
         {
             "name": "blade-ui-kit/blade-heroicons",
@@ -757,16 +757,16 @@
         },
         {
             "name": "filament/filament",
-            "version": "v2.17.15",
+            "version": "v2.17.17",
             "source": {
                 "type": "git",
                 "url": "https://github.com/filamentphp/app.git",
-                "reference": "9d09faa556c6ab18e33cac7c55d0b015e17ec9d3"
+                "reference": "bfec9ec35da33a6ef3cee806d61ca9fd1fba01fd"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/filamentphp/app/zipball/9d09faa556c6ab18e33cac7c55d0b015e17ec9d3",
-                "reference": "9d09faa556c6ab18e33cac7c55d0b015e17ec9d3",
+                "url": "https://api.github.com/repos/filamentphp/app/zipball/bfec9ec35da33a6ef3cee806d61ca9fd1fba01fd",
+                "reference": "bfec9ec35da33a6ef3cee806d61ca9fd1fba01fd",
                 "shasum": ""
             },
             "require": {
@@ -816,20 +816,20 @@
                 "issues": "https://github.com/filamentphp/filament/issues",
                 "source": "https://github.com/filamentphp/filament"
             },
-            "time": "2023-03-12T12:20:31+00:00"
+            "time": "2023-03-17T16:54:17+00:00"
         },
         {
             "name": "filament/forms",
-            "version": "v2.17.15",
+            "version": "v2.17.17",
             "source": {
                 "type": "git",
                 "url": "https://github.com/filamentphp/forms.git",
-                "reference": "d6f2a810e47381d6cf8ebb5547bfce7c95e02ef4"
+                "reference": "eb4c7c77d924844a72c3aae53950721cf04209da"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/filamentphp/forms/zipball/d6f2a810e47381d6cf8ebb5547bfce7c95e02ef4",
-                "reference": "d6f2a810e47381d6cf8ebb5547bfce7c95e02ef4",
+                "url": "https://api.github.com/repos/filamentphp/forms/zipball/eb4c7c77d924844a72c3aae53950721cf04209da",
+                "reference": "eb4c7c77d924844a72c3aae53950721cf04209da",
                 "shasum": ""
             },
             "require": {
@@ -874,11 +874,11 @@
                 "issues": "https://github.com/filamentphp/filament/issues",
                 "source": "https://github.com/filamentphp/filament"
             },
-            "time": "2023-03-12T12:20:28+00:00"
+            "time": "2023-03-17T16:54:27+00:00"
         },
         {
             "name": "filament/notifications",
-            "version": "v2.17.15",
+            "version": "v2.17.17",
             "source": {
                 "type": "git",
                 "url": "https://github.com/filamentphp/notifications.git",
@@ -931,7 +931,7 @@
         },
         {
             "name": "filament/support",
-            "version": "v2.17.15",
+            "version": "v2.17.17",
             "source": {
                 "type": "git",
                 "url": "https://github.com/filamentphp/support.git",
@@ -981,16 +981,16 @@
         },
         {
             "name": "filament/tables",
-            "version": "v2.17.15",
+            "version": "v2.17.17",
             "source": {
                 "type": "git",
                 "url": "https://github.com/filamentphp/tables.git",
-                "reference": "8c27563b3e2e0e23e9b4586c4eef4eccd34b6691"
+                "reference": "8861b670fc99152d12108a4c548d7dd0167ae77c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/filamentphp/tables/zipball/8c27563b3e2e0e23e9b4586c4eef4eccd34b6691",
-                "reference": "8c27563b3e2e0e23e9b4586c4eef4eccd34b6691",
+                "url": "https://api.github.com/repos/filamentphp/tables/zipball/8861b670fc99152d12108a4c548d7dd0167ae77c",
+                "reference": "8861b670fc99152d12108a4c548d7dd0167ae77c",
                 "shasum": ""
             },
             "require": {
@@ -1033,7 +1033,7 @@
                 "issues": "https://github.com/filamentphp/filament/issues",
                 "source": "https://github.com/filamentphp/filament"
             },
-            "time": "2023-03-12T12:20:31+00:00"
+            "time": "2023-03-17T16:54:45+00:00"
         },
         {
             "name": "flowframe/laravel-trend",
@@ -9472,5 +9472,5 @@
         "php": "^8.0.2"
     },
     "platform-dev": [],
-    "plugin-api-version": "2.3.0"
+    "plugin-api-version": "2.2.0"
 }
