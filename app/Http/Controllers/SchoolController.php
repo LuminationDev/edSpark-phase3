@@ -84,7 +84,6 @@ class SchoolController extends Controller
 
     public function fetchAllSchools() {
         $schools = School::get();
-        // dd($schools);
         $data = [];
 
         foreach ($schools as $school) {
@@ -99,7 +98,7 @@ class SchoolController extends Controller
                     'owner_name' => ($school->owner_id) ? $school->owner->full_name : NULL
                 ],
                 'name' => $school->name,
-                'content_blocks' => ($school->content_blocks) ? json_decode($school->owner_id) : NULL,
+                'content_blocks' => ($school->content_blocks) ? json_decode($school->content_blocks) : NULL,
                 'logo' => ($school->logo) ? $school->logo : NULL,
                 'cover_image' => ($school->cover_image) ? $school->cover_image : NULL,
                 'tech_used' => ($school->tech_used) ? json_decode($school->tech_used) : NULL,
