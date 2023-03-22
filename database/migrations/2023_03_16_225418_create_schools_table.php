@@ -13,15 +13,20 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('school_info', function (Blueprint $table) {
+        Schema::create('schools', function (Blueprint $table) {
             $table->id();
-            $table->string('full_name')->nullable();
-            $table->string('description')->nullable();
-            $table->string('cover')->nullable();
-            $table->string('tech_used')->nullable();
-            $table->string('school_content')->nullable();
+            $table->unsignedBigInteger('site_id')->nullable();
+            $table->unsignedBigInteger('owner_id')->nullable();
+            $table->string('allowEditIds')->nullable();
+            $table->string('name');
+            $table->longText('content_blocks')->nullable();
+            $table->string('logo')->nullable();
+            $table->string('cover_image')->nullable();
+            $table->longText('tech_used')->nullable();
+            $table->longText('pedagogical_approaches')->nullable();
+            $table->longText('tech_landscape')->nullable();
+            $table->boolean('isFeatured')->default(0);
             $table->timestamps();
-
         });
     }
 
@@ -32,6 +37,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('school_info');
+        Schema::dropIfExists('schools');
     }
 };
