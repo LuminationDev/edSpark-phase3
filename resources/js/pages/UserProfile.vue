@@ -2,7 +2,7 @@
     /**
      * Import Dependencies
      */
-    import { ref } from 'vue';
+    import { ref, computed } from 'vue';
 
     /**
      * Import Stores
@@ -22,7 +22,7 @@
     import Edit from '../components/svg/Edit.vue';
 
     export default {
-        setup() {
+        setup(refs) {
             const userStore = useUserStore();
 
             const isEditAvatar = ref(false);
@@ -34,11 +34,17 @@
                 // userStore.updateUser(updatedName.value);
             };
 
+            const metadata = computed(() => {
+                return userStore.getUser.metadata
+            });
+
+
             return {
                 userStore,
                 isEditAvatar,
                 handleSaveChange,
                 updatedName,
+                metadata,
             };
         },
 
@@ -52,13 +58,45 @@
         data() {
             return {
                 user: this.userStore.getUser,
-                metadata: this.userStore.getUser.metadata,
+                // metadata: this.userStore.getUser.metadata,
+                biography: null,
+                interests: null,
+                subjects: null,
+                yearLevels: [],
                 editingField: false,
-                userInfoMenu: [],
+                editBio: false,
+                editYearLevels: false,
+                theYearLevels: [
+                    1,2,3,4,5,6,7,8,9,10,11,12,13
+                ],
+                userInfoMenu: [
+                    {
+                        name: 'Biography',
+                        isActive: true
+                    },
+                    {
+                        name: 'Year levels',
+                        isActive: false
+                    },
+                    {
+                        name: 'Subjects',
+                        isActive: false
+                    },
+                    {
+                        name: 'Interests',
+                        isActive: false
+                    }
+                ],
                 activeProfileField: 'Info',
                 activeInfoItem: 'Biography',
                 updatedYearLevel: 0,
                 editIndex: null,
+                replacementMeta: [
+                    'biography',
+                    'yearLevels',
+                    'subjects',
+                    'interests'
+                ],
                 subMenuItems: [
                     {
                         name: 'Info',
@@ -117,45 +155,54 @@
 
             //     this.updatedYearLevel = item;
             // },
+            handleMetaData() {
+                console.log(this.metadata);
+                if (this.metadata) {
+                    this.metadata.forEach(meta => {
+                        switch (meta.user_meta_key) {
+                            case 'biography':
+                                if ( typeof meta.user_meta_value === 'string') {
+                                    this.biography = meta.user_meta_value
+                                } else {
+                                    this.biography = meta.user_meta_value.join(', ');
+                                }
+                                break;
+                            case 'yearLevels':
+                                    this.yearLevels = meta.user_meta_value
+                                break;
+                            case 'interests':
+                                    this.interests = meta.user_meta_value
+                                break;
+                            case 'subjects':
+                                    this.subjects = meta.user_meta_value
+                                break;
+
+                            default:
+                                this.biography = null;
+                                this.yearLevels = null;
+                                this.interests = null;
+                                this.subjects = null
+                                break;
+                        }
+                    })
+                }
+            },
+
+            handleEditBio() {
+
+            },
+
+            updateYearLevels(year) {
+                this.yearLevels.push(year);
+            }
         },
 
         mounted() {
-            console.log(this.metadata);
-            this.metadata.forEach(meta => {
-                console.log(meta);
-                switch (meta.user_meta_key) {
-                    case 'biography':
-                            this.userInfoMenu.push({
-                                name: 'Biography',
-                                isActive: true
-                            })
-                        break;
-                    case 'yearLevels':
-                            this.userInfoMenu.push({
-                                name: 'Year levels',
-                                isActive: false
-                            });
-                        break;
-
-                    case 'subjects':
-                            this.userInfoMenu.push({
-                                name: 'Subjects',
-                                isActive: false
-                            });
-                        break;
-
-                    case 'interests':
-                            this.userInfoMenu.push({
-                                name: 'Interests',
-                                isActive: false
-                            });
-                        break;
-
-                    default:
-                        break;
-                }
-            });
-
+            this.handleMetaData();
+            console.log(this.biography);
+            console.log(this.yearLevels);
+            console.log(this.subjects);
+            console.log(this.interests);
 
         }
 
@@ -289,10 +336,91 @@
                                 <!-- <div v-for="menuItem in this.userInfoMenu"> -->
                                     <!-- {{ item }} -->
 
-                                    <div v-if="item.user_meta_key === 'biography' && this.activeInfoItem === 'Biography'">
-                                        <p class="text-[18px] font-medium text-black col-span-3">
-                                            {{ item.user_meta_value[0] }}
-                                        </p>
+                                    <div v-if="this.activeInfoItem === 'Biography'">
+                                        <div  v-if="this.biography !== null">
+                                            <div v-if="!this.editBio" @click.prevent="this.editBio = !this.editBio">
+                                                <p class="text-[18px] font-medium text-black col-span-3">
+                                                    {{ this.biography }}
+                                                </p>
+                                            </div>
+
+                                        </div>
+                                        <div v-if="this.editBio" class="flex flex-col gap-6">
+                                            <label for="bio">Edit your bio</label>
+                                            <textarea ref="bioTextarea" name="bio" id="bio" v-model="this.biography" class="min-h-[190px]"></textarea>
+
+                                            <div class="flex justify-self-end flex-row gap-4 ml-auto">
+                                                <button @click.prevent="this.editBio = !this.editBio" class="px-4 py-2 bg-transparent border-2 border-[#1C5CA9] text-[#1C5CA9] rounded-lg hover:bg-[#1C5CA9] hover:text-white">
+                                                    Cancel
+                                                </button>
+
+                                                <button class="px-4 py-2 bg-[#1C5CA9] border-2 border-[#1C5CA9] text-white rounded-lg hover:bg-[#143965] hover:border-[#143965]">
+                                                    Save
+                                                </button>
+                                            </div>
+                                        </div>
+
+                                    </div>
+
+                                    <div v-if="this.activeInfoItem === 'Year levels'">
+                                        <div v-if="this.editYearLevels">
+                                            <p v-for="year in this.yearLevels" class="h-[24px] w-[24px] bg-gray-100 rounded-full flex place-items-center justify-center">
+                                                {{ year }}
+                                            </p>
+                                        </div>
+                                        <div v-if="!this.editYearLevels">
+                                            <label for="yearLevels">What year levels do you teach?</label>
+
+                                            <div class="flex flex-col gap-6">
+                                                <div class="flex flex-row gap-3 w-full">
+                                                    <div v-for="(year, index) in this.theYearLevels">
+                                                        <label :for="year">{{ year }}</label>
+                                                        <input type="checkbox" :id="year" :value="year">
+                                                    </div>
+                                                </div>
+
+                                                <div class="flex justify-self-end flex-row gap-4 ml-auto">
+                                                    <button @click.prevent="this.editBio = !this.editBio" class="px-4 py-2 bg-transparent border-2 border-[#1C5CA9] text-[#1C5CA9] rounded-lg hover:bg-[#1C5CA9] hover:text-white">
+                                                        Cancel
+                                                    </button>
+
+                                                    <button @click="updateYearLevels(year)" class="px-4 py-2 bg-[#1C5CA9] border-2 border-[#1C5CA9] text-white rounded-lg hover:bg-[#143965] hover:border-[#143965]">
+                                                        Save
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+
+                                    <div v-if="this.activeInfoItem === 'Subjects'">
+                                        <div v-if="this.subjects !== null">
+                                            YA YA YA, I AM SUBJECTS
+                                        </div>
+                                        <div v-else>
+                                            NO SUBJECT
+                                        </div>
+                                    </div>
+
+                                    <div v-if="this.activeInfoItem === 'Interests'">
+                                        <div v-if="this.interests !== null">
+                                            YA YA YA, I AM INTERSEST
+                                        </div>
+                                        <div v-else>
+                                            NO INTERSEST
+                                        </div>
+                                    </div>
+                                    <!-- <div v-if="item.user_meta_key === 'biography' && this.activeInfoItem === 'Biography'">
+                                        <div v-for="(biography, index) in item.user_meta_value" @click.prevent="this.editIndex = index;">
+                                            <p v-if="this.editIndex !== index" @click.prevent="this.editIndex = index;" class="text-[18px] font-medium text-black col-span-3">
+                                                {{ biography }}
+                                            </p>
+
+                                            <div v-else ref="bioInput">
+                                                <textarea name="" id="" cols="30" rows="10"></textarea>
+                                            </div>
+                                        </div>
+
                                     </div>
 
                                     <div v-if="item.user_meta_key === 'yearLevels' && this.activeInfoItem == 'Year levels'" class="flex flex-col gap-4">
@@ -321,7 +449,7 @@
                                         <p v-for="interest in item.user_meta_value">
                                             {{ interest }}
                                         </p>
-                                    </div>
+                                    </div> -->
                                 <!-- </div> -->
                             </div>
                         </div>
