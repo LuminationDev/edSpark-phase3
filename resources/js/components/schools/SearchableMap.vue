@@ -12,8 +12,6 @@
                 showFilters.value = !showFilters.value;
             });
 
-
-
             const locations = [
                 { lat: -34.9256, lng: 138.5870 },
                 { lat: -34.92577, lng: 138.58661 },
@@ -53,7 +51,7 @@
         watch: {
             showFilters: {
                 handler(newVal, oldVal) {
-
+                    // Watch for filters
                 }
             }
         },
@@ -67,21 +65,13 @@
             return {
                 center: { lat: -34.9285, lng: 138.6007 },
                 zoom: 12,
-                savedLocations: [],
-                // markers: [
-                //     {
-                //         position: {
-                //             lat: 51.093048, lng: 6.842120
-                //         },
-                //     }
-                // ],
                 options: {
-                    zoomControl: true,
-                    mapTypeControl: true,
-                    scaleControl: true,
-                    streetViewControl: true,
-                    rotateControl: true,
-                    fullscreenControl: true,
+                    zoomControl: false,
+                    mapTypeControl: false,
+                    scaleControl: false,
+                    streetViewControl: false,
+                    rotateControl: false,
+                    fullscreenControl: false,
                     mapId: '164f2a0469c00794'
                 }
             }
@@ -90,14 +80,13 @@
         methods: {
             handleOnClusterClick(location, index) {
                 console.log('Event clicked', location, index);
+                // Handle the click event here, show the popup with basic school info
             }
         },
 
 
         mounted() {
             console.log(this.markers);
-
-
         }
     }
 </script>
@@ -121,36 +110,14 @@
                     api-key="AIzaSyAFbqxGQntzgzfzKFh6bArwU14MJhcV1Wc"
                     style="width: 100%; height: 700px"
                     :center="center"
-                    :zoom="15"
+                    :zoom="this.zoom"
                     :options="this.options"
                 >
-                    <!-- <Marker v-for="(m, index) in this.markers" :options="markerOptions" /> -->
                     <MarkerCluster>
                         <Marker v-for="(location, i) in locations" :options="{ position: location }" :key="i" @click="handleOnClusterClick(location, i)" />
                     </MarkerCluster>
                 </GoogleMap>
             </div>
-
-            <!-- <GMapMap
-                :center="this.center"
-                :options="'164f2a0469c00794'"
-                :zoom="this.zoom"
-                :disableDefaultUI="true"
-                map-type-id="terrain"
-                style="width: 100%; height: 700px">
-                    <GmapMarker
-                        :key="index"
-                        v-for="(m, index) in this.markers"
-                        :position="m.position"
-                        :clickable="true"
-                        :draggable="false"
-                        :icon= '{
-                            url: "https://image.flaticon.com/teams/slug/google.jpg",
-                            scaledSize: {width: 77, height: 77},
-                            labelOrigin: {x: 16, y: -10}
-                        }'
-                    />
-            </GMapMap> -->
         </div>
 
     </div>
