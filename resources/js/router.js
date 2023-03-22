@@ -14,11 +14,9 @@ import {
     Community,
     Partners,
     Events,
-    SchoolsSingle,
-    UserProfile,
-    Login
+    SchoolSingle,
+    UserProfile
 } from './pages'
-
 const router = createRouter({
     history: createWebHistory(),
     routes: [
@@ -38,9 +36,9 @@ const router = createRouter({
             component: Schools,
         },
         {
-            name: 'schoolsSingle',
+            name: 'schoolSingle',
             path: '/schools/:name',
-            component: SchoolsSingle
+            component: SchoolSingle
         },
         {
             name: 'advice',
@@ -77,11 +75,11 @@ const router = createRouter({
             path: '/profile/:userId',
             component: UserProfile
         },
-        {
-            name: 'login',
-            path: '/login',
-            component: Login
-        }
+        // {
+        //     name: 'login',
+        //     path: '/login',
+        //     component: Login
+        // }
     ],
     scrollBehavior(to, from, savedPosition) {
         if (savedPosition) {

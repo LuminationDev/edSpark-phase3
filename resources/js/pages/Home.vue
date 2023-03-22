@@ -18,10 +18,6 @@
                 console.log(this.$auth)
                 await this.$auth.signInWithRedirect();
             },
-
-            async logout () {
-                await this.$auth.signOut()
-            }
         }
     }
 </script>

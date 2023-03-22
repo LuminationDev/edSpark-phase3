@@ -44,7 +44,7 @@
             const softwareStore = useSoftwareStore();
             const userStore = useUserStore();
 
-            adviceStore.loadResources();
+            adviceStore.loadDashboardResources();
             softwareStore.loadArticles();
             userStore.loadCurrentUser();
 
@@ -62,7 +62,7 @@
             /**
              * Change this to TRUE to simulate the First Login Experience
              */
-            const isFirstVisit = ref(false);
+            const isFirstVisit = ref(true);
 
 
 
@@ -149,11 +149,11 @@
                 ],
                 schools: [
                     {
-                        title: 'Adelaide High School',
+                        full_name: 'Adelaide High School',
                         description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse feugiat metus auctor, tempor eros ut, faucibus augue. Integer laoreet metus ac vulputate dictum. Nulla maximus et purus nec ullamcorper. Donec non ligula lacus. Quisque quis luctus turpis. Nam et arcu facilisis, blandit felis ut, egestas dolor. Cras at dignissim augue. Curabitur placerat fermentum mollis. Vestibulum mollis facilisis placerat.',
                         created_at: '25th Feb 2023',
                         cover: 'https://picsum.photos/200/300',
-                        techUsed: [
+                        tech_used: [
                             {
                                 name: 'VR',
                                 description: 'is a simulated experience that employs pose tracking and 3D near-eye displays to give the user an immersive feel of a virtual world.',
@@ -177,11 +177,11 @@
                         ]
                     },
                     {
-                        title: 'East Adelaide School',
+                        full_name: 'East Adelaide School',
                         description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse feugiat metus auctor, tempor eros ut, faucibus augue. Integer laoreet metus ac vulputate dictum. Nulla maximus et purus nec ullamcorper. Donec non ligula lacus.',
                         created_at: '14th Feb 2023',
                         cover: 'https://picsum.photos/200/300',
-                        techUsed: [
+                        tech_used: [
                             {
                                 name: 'Mircosoft Teams',
                                 description: 'is a proprietary business communication platform developed by Microsoft, as part of the Microsoft 365 family of products.',
@@ -205,11 +205,11 @@
                         ]
                     },
                     {
-                        title: 'North Adelaide Primary School',
+                        full_name: 'North Adelaide Primary School',
                         description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse feugiat metus auctor, tempor eros ut, faucibus augue. Integer laoreet metus ac vulputate dictum. Nulla maximus et purus nec ullamcorper. Donec non ligula lacus. Nam et arcu facilisis, blandit felis ut, egestas dolor.',
                         created_at: '29th Jan 2023',
                         cover: 'https://picsum.photos/200/300',
-                        techUsed: [
+                        tech_used: [
                             {
                                 name: 'Apple',
                                 description: 'technology and resources empower every kind of educator — and every kind of student — to learn, create and define their own success.',
@@ -233,11 +233,11 @@
                         ]
                     },
                     {
-                        title: 'Adelaide Botanic High School',
+                        full_name: 'Adelaide Botanic High School',
                         description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse feugiat metus auctor, tempor eros ut, faucibus augue. Integer laoreet metus ac vulputate dictum. Nulla maximus et purus nec ullamcorper. Donec non ligula lacus. Nam et arcu facilisis, blandit felis ut, egestas dolor.',
                         created_at: '29th Jan 2023',
                         cover: 'https://picsum.photos/200/300',
-                        techUsed: [
+                        tech_used: [
                             {
                                 name: 'VR',
                                 description: 'is a simulated experience that employs pose tracking and 3D near-eye displays to give the user an immersive feel of a virtual world.',
@@ -414,7 +414,7 @@
 
         mounted() {
             // this.checkFirstVisit();
-            console.log(this.$auth);
+            console.log(this.schools);
         }
     }
 </script>
@@ -758,26 +758,26 @@
         <div class="px-[81px] py-20">
             <div class="grid grid-cols-4 gap-[24px] w-full">
                 <div v-for="school in this.schools" class="col-span-1 bg-white border-[0.5px] border-black cursor-pointer h-[470px] transition-all group hover:shadow-2xl">
-                    <router-link :to="`/schools/${school.title}`">
+                    <router-link :to="`/schools/${school.full_name}`">
                         <ContentSection>
                             <template #cover>
                                 <div :class="`bg-[url('${school.cover}')]`" class="h-36 group-hover:h-0 transition-all"></div>
                             </template>
                             <template #title>
-                                {{ school.title }}
+                                {{ school.full_name }}
                             </template>
                             <template #techUsed>
                                 <p class="pt-6 text-black text-[18px] font-medium">Tech used:</p>
                                 <div class=" pt-4 flex flex-row w-full justify-between place-items-center ">
-                                    <div class="flex" v-for="tech in school.techUsed">
-                                        <div class="my-auto group/tech schools-tech" v-if="tech.name === 'Mircosoft Teams'"><Microsoft /><SchoolsTech :tech="tech"/></div>
-                                        <div class="my-auto group/tech schools-tech" v-if="tech.name === '3D Printing'"><ThreeDPrintingIcon /><SchoolsTech :tech="tech"/></div>
-                                        <div class="my-auto group/tech schools-tech" v-if="tech.name === 'Apple'"><AppleIcon /><SchoolsTech :tech="tech"/></div>
-                                        <div class="my-auto group/tech schools-tech" v-if="tech.name === 'Frog'"><FrogIcon /><SchoolsTech :tech="tech"/></div>
-                                        <div class="my-auto group/tech schools-tech" v-if="tech.name === 'IoT'"><IoTIcon /><SchoolsTech :tech="tech"/></div>
-                                        <div class="my-auto group/tech schools-tech" v-if="tech.name === 'Robotics'"><RoboticsIcon /><SchoolsTech :tech="tech"/></div>
-                                        <div class="my-auto group/tech schools-tech" v-if="tech.name === 'AR'"><ARIcon /><SchoolsTech :tech="tech"/></div>
-                                        <div class="my-auto group/tech schools-tech" v-if="tech.name === 'VR'"><VRIcon /><SchoolsTech :tech="tech"/></div>
+                                    <div class="flex" v-for="tech in school.tech_used">
+                                        <div class="my-auto group/tech schools-tech" v-if="tech.name === 'Mircosoft Teams'"><Microsoft /><SchoolsTech :techHover="tech"/></div>
+                                        <div class="my-auto group/tech schools-tech" v-if="tech.name === '3D Printing'"><ThreeDPrintingIcon /><SchoolsTech :techHover="tech"/></div>
+                                        <div class="my-auto group/tech schools-tech" v-if="tech.name === 'Apple'"><AppleIcon /><SchoolsTech :techHover="tech"/></div>
+                                        <div class="my-auto group/tech schools-tech" v-if="tech.name === 'Frog'"><FrogIcon /><SchoolsTech :techHover="tech"/></div>
+                                        <div class="my-auto group/tech schools-tech" v-if="tech.name === 'IoT'"><IoTIcon /><SchoolsTech :techHover="tech"/></div>
+                                        <div class="my-auto group/tech schools-tech" v-if="tech.name === 'Robotics'"><RoboticsIcon /><SchoolsTech :techHover="tech"/></div>
+                                        <div class="my-auto group/tech schools-tech" v-if="tech.name === 'AR'"><ARIcon /><SchoolsTech :techHover="tech"/></div>
+                                        <div class="my-auto group/tech schools-tech" v-if="tech.name === 'VR'"><VRIcon /><SchoolsTech :techHover="tech"/></div>
                                     </div>
                                 </div>
                             </template>

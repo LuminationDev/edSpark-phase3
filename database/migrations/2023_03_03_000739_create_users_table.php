@@ -21,7 +21,6 @@ return new class extends Migration
             $table->string('password')->nullable();
             $table->string('status')->nullable();
             $table->unsignedBigInteger('role_id')->nullable();
-            $table->unsignedBigInteger('permission_id')->nullable();
             $table->unsignedBigInteger('site_id')->nullable();
             $table->unsignedBigInteger('usertype_id')->nullable();
             $table->timestamps();

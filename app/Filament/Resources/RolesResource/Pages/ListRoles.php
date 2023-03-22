@@ -6,6 +6,10 @@ use App\Filament\Resources\RolesResource;
 use Filament\Pages\Actions;
 use Filament\Resources\Pages\ListRecords;
 
+use Konnco\FilamentImport\Actions\ImportAction;
+use Konnco\FilamentImport\Actions\ImportField;
+
+
 class ListRoles extends ListRecords
 {
     protected static string $resource = RolesResource::class;
@@ -14,6 +18,14 @@ class ListRoles extends ListRecords
     {
         return [
             Actions\CreateAction::make(),
+
+            ImportAction::make()
+                ->fields([
+                    ImportField::make('role_name')
+                        ->label('Role Name'),
+                    ImportField::make('role_value')
+                        ->label('Role Value')
+                ])
         ];
     }
 }

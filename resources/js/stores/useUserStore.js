@@ -41,6 +41,16 @@ export const useUserStore = defineStore('user', {
             console.log(initials);
 
             let data = {
+
+            };
+
+            // data = JSON.stringify(data);
+
+            console.log(data);
+
+            await axios({
+                method: 'POST',
+                url: 'http://localhost:8000/api/createUser',
                 data: {
                     full_name: user.name,
                     email: user.email,
@@ -53,16 +63,6 @@ export const useUserStore = defineStore('user', {
                     subjects: user.subjects,
                     biography: user.biography,
                 }
-            };
-
-            // data = JSON.stringify(data);
-
-            console.log(data);
-
-            await axios({
-                method: 'POST',
-                url: 'http://localhost:8000/api/createUser',
-                data: data
             }).then(response => {
                 console.log(response);
             }).catch(error => {

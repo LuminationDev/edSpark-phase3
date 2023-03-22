@@ -23,7 +23,7 @@ class EventFactory extends Factory
             'event_excerpt' => $this->faker->sentence,
             'start_Date' => $this->faker->dateTime,
             'end_date' => $this->faker->dateTime,
-            'event_status' => 'Active',
+            'event_status' => 'Published',
             'cover_image' => $this->faker->imageUrl(),
         ];
     }

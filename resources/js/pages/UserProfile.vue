@@ -120,6 +120,7 @@
         },
 
         mounted() {
+            console.log(this.metadata);
             this.metadata.forEach(meta => {
                 console.log(meta);
                 switch (meta.user_meta_key) {
