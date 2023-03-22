@@ -26,7 +26,7 @@ class DatabaseSeeder extends Seeder
             UserSeeder::class,
             AdviceSeeder::class,
             AdvicetypeSeeder::class,
-            CommunittypeSeeder::class,
+            CommunitytypeSeeder::class,
             CommunitySeeder::class,
             SoftwareSeeder::class,
             SoftwaretypeSeeder::class,

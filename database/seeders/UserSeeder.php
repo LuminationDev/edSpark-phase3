@@ -31,7 +31,7 @@ class UserSeeder extends Seeder
                         'updated_at' => new \DateTime(),
                     ],
                     [
-                        'full_name' => 'Eric Hartawan',
+                        'full_name' => 'Erick Hartawan',
                         'display_name' => 'EH',
                         'email' => 'ehartawan@lumination.com.au',
                         'password' => Hash::make('12345678'),

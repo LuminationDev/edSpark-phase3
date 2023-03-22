@@ -12,6 +12,8 @@ use App\Http\Controllers\EventController;
 use App\Http\Controllers\CommunityController;
 
 use App\Http\Controllers\SchoolInfoController;
+use App\Http\Controllers\SchoolController;
+
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -46,4 +48,9 @@ Route::middleware('api')->group(function() {
     Route::get('fetchSchoolByFullName/{name}',[SchoolInfoController::class, 'fetchSchoolByFullName']);
     Route::get('getAllInfoOfOneSchool/{name}',[SchoolInfoController::class, 'getAllInfoOfOneSchoolByFullName']);
     Route::post('setSchoolInfoByName/{name}',[SchoolInfoController::class, 'setSchoolInfoByName']);
+
+    Route::post('createSchool', [SchoolController::class, 'createSchool']);
+    Route::post('updateSchool', [SchoolController::class, 'updateSchool']);
+    Route::get('fetchAllSchools', [SchoolController::class, 'fetchAllSchools']);
+    Route::get('fetchFeaturedSchools', [SchoolController::class, 'fetchFeaturedSchools']);
 });
