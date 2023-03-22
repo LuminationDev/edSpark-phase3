@@ -15,6 +15,7 @@ const props = defineProps({
     }
 })
 
+console.log(props.schoolData)
 /**
  * schoolData : Object
  * {
@@ -26,11 +27,10 @@ const props = defineProps({
  * }
  */
 
-
 </script>
 <template>
     <router-link :to="`/schools/${props.schoolData.full_name}`">
-        <ContentSection :tech-used="JSON.parse(props.schoolData.tech_used)">
+        <ContentSection :tech-used="props.schoolData.tech_used">
             <template #cover>
                 <div
                     :class="`bg-[url('${props.schoolData.cover}')]`"

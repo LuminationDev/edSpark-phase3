@@ -10,7 +10,9 @@ const props = defineProps({
         type: Array,
         required: false
     }
-})
+});
+
+console.log(props)
 </script>
 
 <template>
@@ -48,7 +50,7 @@ const props = defineProps({
         <div class="px-[24px] py-[18px] mt-auto flex gap-4">
             <!-- CARD FOOTER -->
             <Like />
-            <bookMark />
+            <BookMark />
         </div>
     </div>
 </template>
