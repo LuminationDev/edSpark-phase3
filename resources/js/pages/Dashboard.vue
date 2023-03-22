@@ -89,10 +89,10 @@
                     console.log(newVal, oldVal)
                     if (newVal !== oldVal ) {
                         if (this.isFirstVisit) {
-                            console.log('is first visit...')
+                            console.log('is first visit...');
                             document.body.style.overflow = 'hidden';
                         } else {
-                            console.log('is NOT first visit...')
+                            console.log('is NOT first visit...');
                             document.body.style.overflow = 'auto';
                         }
                     }
@@ -278,6 +278,7 @@
                 yearLevels: [],
                 subjects: [],
                 interests: [],
+                biography: '',
                 avatar: '',
                 avatarURL: '',
                 hasAvatarURL: false,
@@ -373,7 +374,8 @@
                     site: this.site,
                     yearLevels: this.yearLevels,
                     subjects: this.subjects,
-                    interests: this.interests
+                    interests: this.interests,
+                    biography: this.biography
                 }
                 console.log(data);
                 this.createNewUser(data);
@@ -400,7 +402,8 @@
 
             closePopup() {
                 console.log('close the popup');
-                this.isFirstVisit = false
+                this.isFirstVisit = false;
+                // this.$emit('handleFirstLogin', this.isFirstVisit);
             },
 
             handleSanitizeContent(string, allowedTags) {
@@ -411,7 +414,7 @@
 
         mounted() {
             // this.checkFirstVisit();
-
+            console.log(this.$auth);
         }
     }
 </script>
@@ -421,7 +424,7 @@
         <DashboardHero class="-mt-[140px]" />
 
         <!-- v-if="this.isFirstVisit" -->
-        <div  :class="this.isFirstVisit ? 'bg-black' : 'bg-transparent -z-50' " class="absolute w-full h-screen z-40 transition-colors duration-1000 left-0 right-0 top-0 bottom-0">
+        <div  :class="this.isFirstVisit ? 'bg-black' : 'bg-transparent -z-50' " class="absolute w-full h-screen z-50 transition-colors duration-1000 left-0 right-0 top-0 bottom-0">
 
         </div>
 
@@ -494,6 +497,13 @@
                             <label class="shrink-0" :for="tech">{{ tech }}</label>
                         </div>
 
+                    </div>
+
+                    <h5 class="text-[18px] font-bold">Tell us a little bit about yourself</h5>
+                    <div>
+                        <textarea name="" id="" cols="30" rows="8" v-model="biography"></textarea>
+                        <!-- <input type="checkbox" :id="tech" :value="tech" v-model="interests"> -->
+                        <label class="shrink-0" :for="tech">{{ tech }}</label>
                     </div>
                 </template>
 
@@ -781,7 +791,7 @@
 </template>
 
 <style>
-    input {
+    input, textarea {
         width: 100% !important;
         padding: .75rem 1.5rem !important;
         border: solid 0.5px black !important;

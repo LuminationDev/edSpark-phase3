@@ -11,15 +11,30 @@
         components: {
             NavBar,
             Footer
+        },
+
+        data() {
+            return {
+                isFirstVisit: false
+            }
+        },
+
+        methods: {
+            handleFirstLogin(firstVisit) {
+                console.log('Hello there friends!', firstVisit);
+                this.isFirstVisit = firstVisit;
+            }
         }
     }
 </script>
 
 <template>
-    <NavBar />
+    <NavBar
+        :isFirstVisit="this.isFirstVisit"
+    />
 
     <div>
-        <router-view></router-view>
+        <router-view @handleFirstLogin="this.handleFirstLogin"></router-view>
     </div>
 
     <footer class="mt-auto">
