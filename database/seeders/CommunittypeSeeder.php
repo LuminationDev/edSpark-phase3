@@ -7,7 +7,7 @@ use Illuminate\Database\Seeder;
 
 use App\Models\Communitytype;
 
-class CommunitytypeSeeder extends Seeder
+class CommunittypeSeeder extends Seeder
 {
     /**
      * Run the database seeds.

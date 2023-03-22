@@ -56,7 +56,7 @@ class UserController extends Controller
                         'full_name' => $data['full_name'],
                         'email' => $data['email'],
                         'display_name' => $data['display_name'],
-                        'status' => 'Inactive',
+                        'status' => 'Active',
                         'created_at' => Carbon::now(),
                         'updated_at' => Carbon::now()
                     ];
@@ -75,6 +75,7 @@ class UserController extends Controller
                 $dataToInsert = [];
                 try{
                     foreach ($metaData as $key => $value){
+                        var_dump($value);
                         $result = [
                             'user_id' => $userId,
                             'user_meta_key' => $key,
@@ -84,7 +85,7 @@ class UserController extends Controller
                         ];
                         $dataToInsert[] = $result;
                     }
-                    Usermeta::insert($dataToInsert);
+                    // Usermeta::insert($dataToInsert);
                 } catch (Exception $e) {
                     $error = $e->getMessage();
                 }

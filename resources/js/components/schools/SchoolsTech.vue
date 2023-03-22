@@ -4,10 +4,12 @@ const props = defineProps({
         type: Object,
         required: true
     }
-})
+});
+
+console.log(props)
 </script>
 
-<template> 
+<template>
     <div class="absolute left-0 px-[24px] pt-[18px]">
         <h5 class="hidden group-hover/tech:inline-block text-[16px] font-bold">
             {{ techHover.category }}
