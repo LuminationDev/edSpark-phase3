@@ -23,7 +23,7 @@ class SoftwareController extends Controller
                 'post_date' => $software->post_date,
                 'post_modified' => $software->post_modified,
                 'post_status' => $software->post_status,
-                'advice_type' => ($software->softwaretype) ? $advice->softwaretype->software_type_name : NULL ,
+                'software_type' => ($software->softwaretype) ? $software->softwaretype->software_type_name : NULL ,
                 'created_at' => $software->created_at,
                 'updated_at' => $software->updated_at
             ];
