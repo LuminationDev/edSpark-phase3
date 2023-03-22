@@ -15,7 +15,6 @@ const props = defineProps({
     }
 })
 
-console.log(props.schoolData)
 /**
  * schoolData : Object
  * {
