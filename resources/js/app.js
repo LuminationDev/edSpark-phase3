@@ -46,5 +46,6 @@ createApp(App)
         load: {
           key: import.meta.env.VITE_GOOGLE_MAPS_API_KEY,
         },
+        autobindAllEvents: true,
       })
     .mount('#app');
