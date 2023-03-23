@@ -6,45 +6,46 @@ import SchoolContentImage from "@/js/components/schoolsingle/schoolContent/Schoo
 /**
  * Receive the whole content from the parents
  * either temp data or data received from Https call
- * @type {Readonly<ExtractPropTypes<{schoolContent: {type: ObjectConstructor, required: boolean}}>>}
  */
 const props = defineProps({
-    schoolContent:{
+    schoolContentBlocks:{
         type: Object,
         required: true
     }
-    /**
-     * schoolContent.blocks
-     * [{id: string,
-     * type: string ( Heading, paragraph, list)
-     * data:
-     *     Object<paragraph> {
-     *          text: string
-     *      }
-     *     Object<heading> {
-     *          text: string
-     *          level: integer (default 2)
-     *      }
-     *     Object<list> {
-     *          style: string (ordered)
-     *          items: Array<String>
-     *      }
-     *      Object<image>{
-     *          url: string,
-     *          caption: string,
-     *          withBorder: boolean
-     *          withBackground: boolean,
-     *          stretched: boolean
-     *      }
-     * }
-     * ]
-     */
 })
+
+/**
+ * schoolContentBlocks.blocks
+ * [{id: string,
+ * type: string ( Heading, paragraph, list)
+ * data:
+ *     Object<paragraph> {
+ *          text: string
+ *      }
+ *     Object<heading> {
+ *          text: string
+ *          level: integer (default 2)
+ *      }
+ *     Object<list> {
+ *          style: string (ordered)
+ *          items: Array<String>
+ *      }
+ *      Object<image>{
+ *          url: string,
+ *          caption: string,
+ *          withBorder: boolean
+ *          withBackground: boolean,
+ *          stretched: boolean
+ *      }
+ * }
+ * ]
+ */
+
 </script>
 
 <template>
     <div
-        v-for="(item,index) in schoolContent.blocks"
+        v-for="(item,index) in schoolContentBlocks.blocks"
         :key="index"
         class="schoolContentIterator mb-2"
     >
