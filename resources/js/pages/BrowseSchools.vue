@@ -42,7 +42,7 @@ const filteredSchool = computed(() =>{
                 v-for="(school, index) in filteredSchool"
                 :key="index"
                 s
-                class="border-2 mx-4 my-4 basis-1/5  h-[470px] transition-all group hover:shadow-2xl"
+                class="border-2 mx-4 my-4 basis-1/5  h-[470px] transition-all group hover:shadow-2xl rounded-xl"
             >
                 <SchoolCard
                     :school-data="school"

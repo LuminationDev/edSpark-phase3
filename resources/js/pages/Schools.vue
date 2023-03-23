@@ -39,7 +39,7 @@ const handleBrowseAllSchool = () => {
                 <div
                     v-for="(school,index) in featuredSitesData"
                     :key="index"
-                    class="col-span-1 bg-white border-[0.5px] border-black cursor-pointer h-[470px] transition-all group hover:shadow-2xl"
+                    class="col-span-1 bg-white cursor-pointer h-[470px] border-2 transition-all group hover:shadow-2xl rounded-xl"
                 >
                     <SchoolCard
                         v-if="featuredSitesData"
