@@ -41,7 +41,6 @@ const props = defineProps({
  * ]
  */
 
-console.log(props.schoolContent)
 </script>
 
 <template>

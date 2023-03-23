@@ -1,5 +1,5 @@
 <script setup>
-import {ref, onMounted} from 'vue'
+import {reactive, ref, onMounted} from 'vue'
 import SchoolEditorJs from "@/js/components/schoolsingle/SchoolEditorJs.vue";
 import SchoolContentDisplay from "@/js/components/schoolsingle/SchoolContentDisplay.vue";
 
@@ -9,6 +9,7 @@ const props = defineProps({
         required : true
     }
 })
+const emits = defineEmits(['sendInfoToParent'])
 
 const editMode = ref(false)
 
@@ -18,10 +19,11 @@ const handleEditButton = () => {
 
 const handleSaveButton = (data) =>{
     console.log('data from schoolContent' + JSON.stringify(data))
-    tempSchoolContent.value = data
+    emits('sendInfoToParent', data)
     editMode.value = false
 
 }
+// update: no state here and leave the entirety of logic to parent
 
 </script>
 <template>
@@ -31,7 +33,7 @@ const handleSaveButton = (data) =>{
     >
         Curate your school content by adding blocks here with desired contents.
         <SchoolEditorJs
-            :existing-data="schoolContent"
+            :existing-data="schoolContent.content_blocks"
             @save-new-data="handleSaveButton"
         />
     </div>
