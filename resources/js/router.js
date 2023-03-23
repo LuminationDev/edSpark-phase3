@@ -17,6 +17,7 @@ import {
     SchoolSingle,
     UserProfile
 } from './pages'
+import BrowseSchools from "@/js/pages/BrowseSchools.vue";
 const router = createRouter({
     history: createWebHistory(),
     routes: [
@@ -29,6 +30,11 @@ const router = createRouter({
             name: 'dashboard',
             path: '/dashboard',
             component: Dashboard
+        },
+        {
+            name: 'browse-schools',
+            path: '/browse/schools',
+            component: BrowseSchools,
         },
         {
             name: 'schools',

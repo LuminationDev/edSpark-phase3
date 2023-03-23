@@ -4,7 +4,8 @@ import axios from 'axios'
 import SchoolsHero from '../components/schools/SchoolsHero.vue';
 import SearchableMap from '../components/schools/SearchableMap.vue';
 import SchoolCard from "@/js/components/schools/SchoolCard.vue";
-
+import GenericButton from "@/js/components/button/GenericButton.vue";
+import {useRouter} from "vue-router";
 const schoolsLoading = ref(false)
 const serverURL = import.meta.env.VITE_SERVER_URL_API
 
@@ -14,6 +15,9 @@ const featuredSiteIds = [292,69,55,42]
 const featuredSites = ref([])
 const featuredSitesData = ref([])
 
+const router = useRouter()
+
+
 onMounted(() =>{
     axios.get(`${serverURL}/fetchAllSchools`).then(res => {
         featuredSites.value = res.data.splice(0,4)
@@ -21,6 +25,10 @@ onMounted(() =>{
 
     })
 })
+
+const handleBrowseAllSchool = () => {
+    router.push('/browse/schools')
+}
 
 </script>
 <template>
@@ -39,7 +47,16 @@ onMounted(() =>{
                     />
                 </div>
             </div>
+            <GenericButton
+                id="browse-all-school-button"
+                type="school"
+                class="bg-blue-800 text-white text-center px-6 py-2"
+                :callback="handleBrowseAllSchool"
+            >
+                Browse All School
+            </GenericButton>
         </div>
+
 
         <div class="px-[81px] py-20">
             <SearchableMap />

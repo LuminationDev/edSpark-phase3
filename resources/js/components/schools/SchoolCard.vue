@@ -1,5 +1,4 @@
 <script setup>
-import {onMounted} from "vue";
 import ContentSection from "@/js/components/global/ContentSection.vue";
 import SchoolCardIconList from "@/js/components/schools/SchoolCardIconList.vue";
 

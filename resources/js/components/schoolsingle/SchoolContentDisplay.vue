@@ -15,7 +15,7 @@ const props = defineProps({
 })
 
 /**
- * schoolContent.blocks
+ * schoolContentBlocks.blocks
  * [{id: string,
  * type: string ( Heading, paragraph, list)
  * data:
