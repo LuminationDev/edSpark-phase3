@@ -24,7 +24,7 @@ class AdviceResource extends Resource
 
     protected static ?int $navigationSort = 1;
 
-    protected static ?string $navigationIcon = 'heroicon-o-collection';
+    protected static ?string $navigationIcon = 'heroicon-o-light-bulb';
 
     // protected static bool $shouldRegisterNavigation = false;
 

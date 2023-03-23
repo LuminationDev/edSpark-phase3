@@ -52,4 +52,5 @@ Route::middleware('api')->group(function() {
     Route::post('createSchool', [SchoolController::class, 'createSchool']);
     Route::post('updateSchool', [SchoolController::class, 'updateSchool']);
     Route::get('fetchAllSchools', [SchoolController::class, 'fetchAllSchools']);
+    Route::get('fetchFeaturedSchools', [SchoolController::class, 'fetchFeaturedSchools']);
 });
