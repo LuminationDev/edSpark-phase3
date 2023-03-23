@@ -37,6 +37,20 @@ onBeforeMount( async () =>{
     })
 
 })
+    
+const handleSaveNewSchoolInfo = async (data) => {
+    const body = Object.assign({},schoolContent.value)
+    body.content_blocks = data
+    console.log(body)
+    await axios.post(`${serverURL}/updateSchool`, body).then(res =>{        // assign school info with newest data that has been saved succesfully to trigger update
+        schoolContent.value = _.cloneDeep(body)
+    }).catch(err =>{
+        console.log(err)
+        console.log('Something wrong while attempting to post ')
+
+    })
+}
+
 
 </script>
 
@@ -82,6 +96,7 @@ onBeforeMount( async () =>{
             >
                 <SchoolContent
                     :school-content="schoolContent"
+                    @send-info-to-parent="handleSaveNewSchoolInfo"
                 />
             </div>
             <div class="school-tech basis-1/3">
