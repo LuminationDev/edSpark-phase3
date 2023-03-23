@@ -98,7 +98,7 @@ class SchoolController extends Controller
                     'owner_name' => ($school->owner_id) ? $school->owner->full_name : NULL
                 ],
                 'name' => $school->name,
-                'content_blocks' => ($school->content_blocks) ? json_decode($school->owner_id) : NULL,
+                'content_blocks' => ($school->content_blocks) ? json_decode($school->content_blocks) : NULL,
                 'logo' => ($school->logo) ? $school->logo : NULL,
                 'cover_image' => ($school->cover_image) ? $school->cover_image : NULL,
                 'tech_used' => ($school->tech_used) ? json_decode($school->tech_used) : NULL,
@@ -130,17 +130,19 @@ class SchoolController extends Controller
                     'owner_name' => ($school->owner_id) ? $school->owner->full_name : NULL
                 ],
                 'name' => $school->name,
-                'content_blocks' => ($school->content_blocks) ? json_decode($school->owner_id) : NULL,
+                'content_blocks' => ($school->content_blocks) ? json_decode($school->content_blocks) : NULL,
                 'logo' => ($school->logo) ? $school->logo : NULL,
                 'cover_image' => ($school->cover_image) ? $school->cover_image : NULL,
                 'tech_used' => ($school->tech_used) ? json_decode($school->tech_used) : NULL,
                 'pedagogical_approaches' => ($school->pedagogical_approaches) ? json_decode($school->pedagogical_approaches) : NULL,
                 'tech_landscape' => ($school->tech_landscape) ? json_decode($school->tech_landscape) : NULL
-
             ];
             $data[] = $result;
         }
 
         return response()->json($data);
+
     }
+
+    //TODO: fetch featured schools only 4
 }

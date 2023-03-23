@@ -1,43 +1,52 @@
 <script setup>
-import {onMounted} from "vue";
 import ContentSection from "@/js/components/global/ContentSection.vue";
 import SchoolCardIconList from "@/js/components/schools/SchoolCardIconList.vue";
 
 
 const props = defineProps({
     schoolData:{
-        type: Object,
+        type: Object ,
         required: true
     },
     linkTarget:{
         type: String,
-        required: true
+        required: false
     }
 })
 
 /**
- * schoolData : Object
- * {
- *     title: string,
- *     description: string,
- *     created_at: string,
- *     cover: string
- *     techUsed: Array<{name: string, description: string, category: string}>
+ * SchoolData props: {
+ *     content_blocks: Object,
+ *     cover_image: string (link),
+ *     id: number,
+ *     logo: string(link),
+ *     owner : Object {
+ *         owner_id : number,
+ *         owner_name: string
+ *     }
+ *     pedagogical_approaches: {
+ *         Object -- EditorJs
+ *     },
+ *     site: Object,
+ *     tech_landscape: Object,
+ *     tech_used: Array<Object>
+ *
  * }
  */
 
+
 </script>
 <template>
-    <router-link :to="`/schools/${props.schoolData.full_name}`">
+    <router-link :to="`/schools/${props.schoolData.name}`">
         <ContentSection :tech-used="props.schoolData.tech_used">
             <template #cover>
                 <div
-                    :class="`bg-[url('${props.schoolData.cover}')]`"
+                    :class="`bg-[url('${props.schoolData.cover_image}')] rounded-t-xl`"
                     class="h-36 group-hover:h-0 transition-all"
                 />
             </template>
             <template #title>
-                {{ props.schoolData.full_name }}
+                {{ props.schoolData.name }}
             </template>
             <template #techUsed="{techUsed}">
                 <p class="pt-6 text-black text-[18px] font-medium">

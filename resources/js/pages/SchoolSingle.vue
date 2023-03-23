@@ -4,7 +4,7 @@
      */
 import { useRouter, useRoute } from 'vue-router';
 import {ref} from 'vue'
-
+import axios from 'axios'
 /**
  * IMPORT COMPONENTS
  */
@@ -21,47 +21,34 @@ import {onBeforeMount} from "vue";
 
 const route = useRoute();
 const router = useRouter();
+const serverURL = import.meta.env.VITE_SERVER_URL_API
+
 
 const urlOrigin = window.location.origin
 const breadCrumbPrev = 'Schools'
 const breadCrumbName = route.params.name
 
-const schoolData = ref({})
-onBeforeMount( () =>{
+const schoolContent = ref({})
+
+onBeforeMount( async () =>{
+    // TODO Erick - Replace with get one school instead of all then filter.
+    await axios.get(`${serverURL}/fetchAllSchools`).then(res => {
+        schoolContent.value = res.data.filter(school => school.name === route.params.name.replace('%20', ' ' ))[0]
+    })
 
 })
+    
+const handleSaveNewSchoolInfo = async (data) => {
+    const body = Object.assign({},schoolContent.value)
+    body.content_blocks = data
+    console.log(body)
+    await axios.post(`${serverURL}/updateSchool`, body).then(res =>{        // assign school info with newest data that has been saved succesfully to trigger update
+        schoolContent.value = _.cloneDeep(body)
+    }).catch(err =>{
+        console.log(err)
+        console.log('Something wrong while attempting to post ')
 
-/**
- * No receiving props into this. do query instead to get data and render them out
- * Need to pass props into School profile image, content and tech
- */
-const tempSchoolData = {
-    title: 'Adelaide Botanic High School',
-    description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse feugiat metus auctor, tempor eros ut, faucibus augue. Integer laoreet metus ac vulputate dictum. Nulla maximus et purus nec ullamcorper. Donec non ligula lacus. Nam et arcu facilisis, blandit felis ut, egestas dolor.',
-    created_at: '29th Jan 2023',
-    cover: 'https://picsum.photos/200/300',
-    techUsed: [
-        {
-            name: 'VR',
-            description: 'is a simulated experience that employs pose tracking and 3D near-eye displays to give the user an immersive feel of a virtual world.',
-            category: 'Emerging tech',
-        },
-        {
-            name: 'AR',
-            description: '(Augmented Reality) is an interactive experience that combines the real world and computer-generated content.',
-            category: 'Emerging tech',
-        },
-        {
-            name: '3D Printing',
-            description: '3D Printing or additive manufacturing is the construction of a three-dimensional object from a CAD model or a digital 3D model.',
-            category: 'Emerging tech',
-        },
-        {
-            name: 'Microsoft Teams',
-            description: 'is a proprietary business communication platform developed by Microsoft, as part of the Microsoft 365 family of products.',
-            category: 'Platforms',
-        },
-    ]
+    })
 }
 
 
@@ -103,12 +90,24 @@ const tempSchoolData = {
             <SchoolsSubMenu />
         </div>
         <div class="flex flex-row">
-            <div class="school-content py-2 px-10 basis-2/3">
-                <SchoolContent />
+            <div
+                v-if="Object.keys(schoolContent).length > 0"
+                class="school-content py-2 px-10 basis-2/3"
+            >
+                <SchoolContent
+                    :school-content="schoolContent"
+                    @send-info-to-parent="handleSaveNewSchoolInfo"
+                />
             </div>
             <div class="school-tech basis-1/3">
-                <SchoolTech :tech-list="tempSchoolData.techUsed" />
+                <SchoolTech :tech-list="schoolContent.tech_used" />
             </div>
         </div>
     </div>
+<!--    <button-->
+<!--        class="w-24 h-12 bg-slate-500"-->
+<!--        @click="handleAddNewSchool"-->
+<!--    >-->
+<!--        Add new school-->
+<!--    </button>-->
 </template>
