@@ -17,10 +17,12 @@ class UserController extends Controller
         $userMetaData = Usermeta::where('user_id', $id)->get();
         $userMetaDataToSend = [];
         if( $userMetaData) {
-            foreach($userMetaData as $value){
+            foreach($userMetaData as $key => $value){
                 $result = [
                     'user_meta_key' => $value->user_meta_key,
-                    'user_meta_value' => explode(', ', $value->user_meta_value)
+                    // 'user_meta_value' => explode(', ', $value->user_meta_value)
+                    // Updated to handle my badly implemented biography, should be able to fix later
+                    'user_meta_value' => ($key === 'biography') ? $value : explode(', ', $value->user_meta_value)
                 ];
                 $userMetaDataToSend[] = $result;
             }
@@ -45,8 +47,7 @@ class UserController extends Controller
         if ($request->isMethod('post')) {
 
             $userId = '';
-            $data = $request->data;
-
+            $data = $request->userData;
             $error = '';
 
             if($data) {
@@ -69,7 +70,7 @@ class UserController extends Controller
             // TODO: JM handle bio (text field - inputing with other info)
             // TODO: JM handle images (system wide image handling)
 
-            $metaData = $request->metaData;
+            $metaData = $request->userMetaData;
             if ($metaData) {
                 // save user info into meta table
                 $dataToInsert = [];
@@ -78,7 +79,7 @@ class UserController extends Controller
                         $result = [
                             'user_id' => $userId,
                             'user_meta_key' => $key,
-                            'user_meta_value' => implode(', ', $value),
+                            'user_meta_value' => (is_string($value)) ? $value : implode(', ', $value),
                             'created_at' => Carbon::now(),
                             'updated_at' => Carbon::now(),
                         ];

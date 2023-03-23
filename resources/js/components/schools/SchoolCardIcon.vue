@@ -13,7 +13,6 @@ const props = defineProps({
     }
 });
 
-
 </script>
 <template>
     <div class="my-auto group/tech schools-tech">

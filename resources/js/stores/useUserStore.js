@@ -41,7 +41,18 @@ export const useUserStore = defineStore('user', {
             console.log(initials);
 
             let data = {
-
+                userData: {
+                    full_name: user.name,
+                    email: user.email,
+                    role: user.role,
+                    display_name: initials
+                },
+                userMetaData: {
+                    yearLevels: user.yearLevels,
+                    interest: user.interests,
+                    subjects: user.subjects,
+                    biography: user.biography,
+                }
             };
 
             // data = JSON.stringify(data);
@@ -52,16 +63,18 @@ export const useUserStore = defineStore('user', {
                 method: 'POST',
                 url: 'http://localhost:8000/api/createUser',
                 data: {
-                    full_name: user.name,
-                    email: user.email,
-                    role: user.role,
-                    display_name: initials
-                },
-                metaData: {
-                    yearLevels: user.yearLevels,
-                    interest: user.interests,
-                    subjects: user.subjects,
-                    biography: user.biography,
+                    userData: {
+                        full_name: user.name,
+                        email: user.email,
+                        role: user.role,
+                        display_name: initials
+                    },
+                    userMetaData: {
+                        yearLevels: user.yearLevels,
+                        interest: user.interests,
+                        subjects: user.subjects,
+                        biography: user.biography,
+                    }
                 }
             }).then(response => {
                 console.log(response);
