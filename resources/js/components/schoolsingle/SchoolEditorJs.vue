@@ -20,7 +20,7 @@ const props = defineProps({
     }
 })
 
-const emits = defineEmits(['saveNewData'])
+const emits = defineEmits(['sendSchoolData'])
 
 const editorJsTools = {
     header:{
@@ -89,26 +89,22 @@ const editorJsEvent = (customEvent) => {
 
 }
 
-
-const handleEditorSaveClick = () =>{
-    editor.save().then(outputData => {
-        // console.log('we have ' + JSON.stringify(outputData))
-        emits('saveNewData', outputData)
+const handleEditorSave = async () =>{
+    await editor.save().then(outputData => {
+        emits('sendSchoolData', outputData)
     }).catch(err =>{
         console.log('error has happened ' + err)
     })
 }
 
+defineExpose({
+    handleEditorSave
+})
+
 </script>
 <template>
     <div
         id="editorJs"
-        class="text-genericDark mt-8 rounded-lg editor"
+        class="text-genericDark mt-8 rounded-lg editor flex-col"
     />
-    <button
-        class="w-18 rounded-lg px-2 py-4  bg-slate-500"
-        @click="handleEditorSaveClick"
-    >
-        Save Content
-    </button>
 </template>
