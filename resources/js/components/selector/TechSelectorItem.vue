@@ -15,10 +15,22 @@ const props = defineProps({
                 class="min-w-[60px] pr-4 m-2"
             />
         </div>
-        <div class="basis-2/3 overflow-scroll">
+        <div class="basis-2/3 overflow-clip techSelectorItemDescription overflow-y-scroll">
             <p class="line-clamp-3 ">
                 {{ `${item.name} ${item.description}` }}
             </p>
         </div>
     </div>
 </template>
+<style>
+.techSelectorItemDescription::-webkit-scrollbar{
+    display:none
+
+}
+.techSelectorItemDescription{
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+
+}
+
+</style>

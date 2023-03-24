@@ -11,7 +11,7 @@ const props = defineProps({
 
 </script>
 <template>
-    <div class="bg-white border-[0.5px] border-black px-5 py-8 flex flex-col relative overflow-hidden max-w-xs">
+    <div class="bg-white border-[0.5px] border-black px-5 py-8 flex flex-col relative overflow-hidden">
         <div class="absolute techListBackground -right-28 -top-24 ">
             <LaptopGear />
         </div>
@@ -21,14 +21,14 @@ const props = defineProps({
         <div
             v-for="(tech,index) in techList"
             :key="index"
-            class="w-full flex pb-4 basis-1/4"
+            class="w-full flex pb-4 mb-4 basis-1/4"
         >
             <SchoolTechIconGenerator
                 :tech-name="tech.name"
                 class="min-w-[60px] pr-4 m-2"
             />
             <p class="text-base font-light basis-3/4 ">
-                {{ tech.description }}
+                {{ `${tech.name} ${tech.description}` }}
             </p>
         </div>
     </div>

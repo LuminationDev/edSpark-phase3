@@ -1,6 +1,19 @@
-<script>
-export default {
+<script setup>
+import {schoolColorKeys, schoolColorTheme} from "@/js/constants/schoolColorTheme";
+import {ref } from 'vue'
 
+const props = defineProps({
+    colorTheme:{
+        type: String,
+        required: false
+    }
+})
+const useCustomColor= ref(false)
+/**
+ * Check if the color passed in is a part of supported color
+ */
+if(schoolColorKeys.includes(props.colorTheme)){
+    useCustomColor.value = true
 }
 </script>
 
@@ -25,15 +38,15 @@ export default {
             >
                 <stop
                     offset="0.217599"
-                    stop-color="#002858"
+                    :stop-color="(useCustomColor ? schoolColorTheme[colorTheme]['dark'] :'#0d47a1')"
                 />
                 <stop
                     offset="0.640707"
-                    stop-color="#0072DA"
+                    :stop-color="(useCustomColor ? schoolColorTheme[colorTheme]['med'] :'#1e88e5')"
                 />
                 <stop
                     offset="1"
-                    stop-color="#44B8F3"
+                    :stop-color="(useCustomColor ? schoolColorTheme[colorTheme]['light'] : '#64b5f6')"
                 />
             </linearGradient>
         </defs>

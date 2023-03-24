@@ -29,6 +29,7 @@ const breadCrumbPrev = 'Schools'
 const breadCrumbName = route.params.name
 
 const schoolContent = ref({})
+const colorTheme = ref('amber') // default color theme
 
 onBeforeMount( async () =>{
     // TODO Erick - Replace with get one school instead of all then filter.
@@ -56,6 +57,10 @@ const handleSaveNewSchoolInfo = async (content_blocks, tech_used) => {
     })
 }
 
+const handleChangeColorTheme = (newColor) => {
+    console.log('received command to swap color to -> ' + 'newColor')
+    colorTheme.value = newColor
+}
 
 </script>
 
@@ -92,7 +97,7 @@ const handleSaveNewSchoolInfo = async (content_blocks, tech_used) => {
         </SchoolsProfile>
 
         <div class="-mt-[180px] mb-20">
-            <SchoolsSubMenu />
+            <SchoolsSubMenu :color-theme="colorTheme" />
         </div>
         <div class="flex flex-row w-full">
             <div
@@ -101,15 +106,11 @@ const handleSaveNewSchoolInfo = async (content_blocks, tech_used) => {
             >
                 <SchoolContent
                     :school-content="schoolContent"
-                    @send-info-to-parent="handleSaveNewSchoolInfo"
+                    :color-theme="colorTheme"
+                    @send-info-to-school-single="handleSaveNewSchoolInfo"
+                    @send-color-to-school-single="handleChangeColorTheme"
                 />
             </div>
         </div>
     </div>
-<!--    <button-->
-<!--        class="w-24 h-12 bg-slate-500"-->
-<!--        @click="handleAddNewSchool"-->
-<!--    >-->
-<!--        Add new school-->
-<!--    </button>-->
 </template>
