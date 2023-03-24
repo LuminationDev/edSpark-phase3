@@ -13,6 +13,7 @@ use Filament\Tables;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Illuminate\Support\Facades\Auth;
+use Livewire\TemporaryUploadedFile;
 
 
 class SoftwareResource extends Resource
@@ -46,6 +47,14 @@ class SoftwareResource extends Resource
                             ->disableToolbarButtons([
                                 'attachFiles',
                             ]),
+                        Forms\Components\FileUpload::make('cover_image')
+                            ->preserveFilenames()
+                            ->disk('public')
+                            ->directory('uploads/software')
+                            ->acceptedFileTypes(['image/jpeg', 'image/jpg', 'image/png'])
+                            ->getUploadedFileNameForStorageUsing(function (TemporaryUploadedFile $file): string {
+                                return (string) str($file->getClientOriginalName())->prepend('edSpark-software-');
+                            }),
                         Forms\Components\Grid::make(3)
                             ->schema([
                                 Forms\Components\TextInput::make('Author')
@@ -79,6 +88,7 @@ class SoftwareResource extends Resource
                 Tables\Columns\TextColumn::make('post_content')
                 ->limit(50)
                 ->label('Content'),
+                Tables\Columns\ImageColumn::make('cover_image'),
                 Tables\Columns\TextColumn::make('author.full_name')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('softwaretype.software_type_name')
