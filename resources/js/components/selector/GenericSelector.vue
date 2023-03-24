@@ -1,5 +1,6 @@
 <script setup>
-import {onBeforeMount, ref} from 'vue'
+import {onBeforeMount, ref, computed} from 'vue'
+import { schoolColorTheme, schoolColorKeys} from "@/js/constants/schoolColorTheme";
 
 const props = defineProps({
     title:{
@@ -12,6 +13,9 @@ const props = defineProps({
     existingData:{
         type: Array,
         required: false
+    },
+    colorTheme:{
+        type: String, required: false
     }
 })
 
@@ -44,6 +48,10 @@ const checkIfObjectIsSelected = (itemObj) => {
     return result.value.map(item => item.name).includes(itemObj.name)
 }
 
+const customBackground = computed(() => {
+    console.log(`!bg-[${schoolColorTheme[props.colorTheme]['med']}]`)
+    return `!bg-[${schoolColorTheme[props.colorTheme]['light']}]`
+})
 
 
 </script>
@@ -53,7 +61,9 @@ const checkIfObjectIsSelected = (itemObj) => {
             v-for="(item,index) in listData"
             :key="index"
             class=" h-28 p-2 my-2 bg-blue-300 text-white rounded-xl grayscale opacity-60"
-            :class="{'!bg-blue-500 !grayscale-0 !opacity-100' : checkIfObjectIsSelected(item) }"
+            :class="[{'bg-blue-300 !grayscale-0 !opacity-100' : checkIfObjectIsSelected(item)}, customBackground]"
+
+
             @click="() => handleSelectItem(item)"
         >
             <slot

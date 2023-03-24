@@ -4,18 +4,24 @@ import SchoolEditorJs from "@/js/components/schoolsingle/SchoolEditorJs.vue";
 import SchoolContentDisplay from "@/js/components/schoolsingle/SchoolContentDisplay.vue";
 import SchoolTech from "@/js/components/schoolsingle/SchoolTech.vue";
 import TechSelector from "@/js/components/selector/TechSelector.vue";
+import SchoolColorPicker from "@/js/components/schoolsingle/schoolContent/SchoolColorPicker.vue";
 
 const props = defineProps({
     schoolContent: {
         type: Object,
         required : true
+    },
+    colorTheme:{
+        type: String, required: false
     }
 })
-const emits = defineEmits(['sendInfoToParent'])
+const emits = defineEmits(['sendInfoToSchoolSingle','sendColorToSchoolSingle'])
 
-const editMode = ref(true)
+const editMode = ref(false)
 const newSchoolContent = ref({})
 const newTechUsed = ref([])
+const schoolEditorRef = ref() // for the sake of triggering save inside editorjs component
+
 
 onBeforeMount(() => {
     newSchoolContent.value = props.schoolContent.content_blocks
@@ -35,11 +41,14 @@ const handleSchoolTech = (techData) => {
     newTechUsed.value = techData
 
 }
-const schoolEditorRef = ref()
+
 const handleAllSaveButton = async () => {
     await schoolEditorRef.value.handleEditorSave() //  will update newSchoolContent Automatically
-    emits('sendInfoToParent', newSchoolContent.value, newTechUsed.value)
+    emits('sendInfoToSchoolSingle', newSchoolContent.value, newTechUsed.value)
     editMode.value = false
+}
+const handleColorSelected  = (newColor) => {
+    emits('sendColorToSchoolSingle', newColor)
 }
 
 </script>
@@ -51,6 +60,10 @@ const handleAllSaveButton = async () => {
                 class="schoolContent contentEditor flex flex-row justify-between w-full"
             >
                 <div class="flex flex-col basis-2/3">
+                    <SchoolColorPicker
+                        class="self-center mb-5"
+                        @color-selected="handleColorSelected"
+                    />
                     Curate your school content by adding blocks here with desired contents.
                     <SchoolEditorJs
                         ref="schoolEditorRef"
@@ -62,13 +75,14 @@ const handleAllSaveButton = async () => {
                     Tech selector component to go here
                     <TechSelector
                         :existing-tech-used="newTechUsed"
+                        :color-theme="colorTheme"
                         @send-school-tech="handleSchoolTech"
                     />
                 </div>
             </div>
             <div
                 v-else
-                class="schoolContent contentDisplay flex flex-row justify-between w-full"
+                class="schoolContent contentDisplay flex flex-row justify-between w-full gap-4"
             >
                 <div class="basis-2/3">
                     <SchoolContentDisplay :school-content-blocks="schoolContent.content_blocks" />

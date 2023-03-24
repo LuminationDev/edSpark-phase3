@@ -7,6 +7,10 @@ const props = defineProps({
     existingTechUsed :{
         type: Array,
         required: false
+    },
+    colorTheme:{
+        type: String,
+        required: false
     }
 })
 const emits = defineEmits(['sendSchoolTech'])
@@ -21,6 +25,7 @@ const handleDataFromChildren = (techUsedList) =>{
             title="Please select the technology relevant to your school"
             :list-data="schoolTech"
             :existing-data="existingTechUsed"
+            :color-theme="colorTheme"
             @send-data-to-parent="handleDataFromChildren"
         >
             <template
