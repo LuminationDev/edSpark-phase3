@@ -60,6 +60,7 @@ class ProductController extends Controller
                     'product_excerpt' => $product->product_excerpt,
                     'price' => $product->price,
                     'cover_image' => ($product->cover_image) ? $product->cover_image : NULL,
+                    'gallery' => ($product->gallery) ? $product->gallery : NULL,
                     'product_SKU' => $product->product_SKU,
                     'category' => [
                         'categoryId' => ($product->category_id) ? $product->category_id : NULL,

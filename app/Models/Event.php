@@ -29,6 +29,7 @@ class Event extends Model
         'start_date',
         'end_date',
         'event_status',
+        'cover_image',
         'eventtype_id',
     ];
 
@@ -41,4 +42,8 @@ class Event extends Model
     {
         return $this->belongsTo(Eventtype::class);
     }
+
+    protected $casts = [
+        'cover_image' => 'array',
+    ];
 }
