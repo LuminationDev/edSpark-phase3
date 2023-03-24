@@ -1,0 +1,35 @@
+<script setup>
+import GenericSelector from "@/js/components/selector/GenericSelector.vue";
+import {schoolTech} from "@/js/constants/schoolTech";
+import TechSelectorItem from "@/js/components/selector/TechSelectorItem.vue";
+
+const props = defineProps({
+    existingTechUsed :{
+        type: Array,
+        required: false
+    }
+})
+const emits = defineEmits(['sendSchoolTech'])
+const handleDataFromChildren = (techUsedList) =>{
+    emits('sendSchoolTech', techUsedList)
+}
+
+</script>
+<template>
+    <div class="schoolTechContainer">
+        <GenericSelector
+            title="Please select the technology relevant to your school"
+            :list-data="schoolTech"
+            :existing-data="existingTechUsed"
+            @send-data-to-parent="handleDataFromChildren"
+        >
+            <template
+                v-for="(item,index) in schoolTech"
+                :key="index"
+                #[`selectorItem_${index}`]
+            >
+                <TechSelectorItem :item="item" />
+            </template>
+        </GenericSelector>
+    </div>
+</template>

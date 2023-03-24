@@ -34,13 +34,18 @@ onBeforeMount( async () =>{
     // TODO Erick - Replace with get one school instead of all then filter.
     await axios.get(`${serverURL}/fetchAllSchools`).then(res => {
         schoolContent.value = res.data.filter(school => school.name === route.params.name.replace('%20', ' ' ))[0]
+        console.log('successfully saved school content')
+    }).catch(err => {
+        console.log('uhh ohh something occured during the attempt of saving school info')
+        console.log(err)
     })
 
 })
     
-const handleSaveNewSchoolInfo = async (data) => {
+const handleSaveNewSchoolInfo = async (content_blocks, tech_used) => {
     const body = Object.assign({},schoolContent.value)
-    body.content_blocks = data
+    body.content_blocks = content_blocks
+    body.tech_used  = tech_used
     console.log(body)
     await axios.post(`${serverURL}/updateSchool`, body).then(res =>{        // assign school info with newest data that has been saved succesfully to trigger update
         schoolContent.value = _.cloneDeep(body)
@@ -89,18 +94,15 @@ const handleSaveNewSchoolInfo = async (data) => {
         <div class="-mt-[180px] mb-20">
             <SchoolsSubMenu />
         </div>
-        <div class="flex flex-row">
+        <div class="flex flex-row w-full">
             <div
-                v-if="Object.keys(schoolContent).length > 0"
-                class="school-content py-2 px-10 basis-2/3"
+                v-if="Object.keys(schoolContent).length > 1"
+                class="school-content py-2 px-10 flex w-full"
             >
                 <SchoolContent
                     :school-content="schoolContent"
                     @send-info-to-parent="handleSaveNewSchoolInfo"
                 />
-            </div>
-            <div class="school-tech basis-1/3">
-                <SchoolTech :tech-list="schoolContent.tech_used" />
             </div>
         </div>
     </div>
