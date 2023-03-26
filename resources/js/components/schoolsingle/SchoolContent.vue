@@ -1,53 +1,111 @@
 <script setup>
-import {reactive, ref, onMounted} from 'vue'
+import {onBeforeMount, onMounted, ref} from 'vue'
 import SchoolEditorJs from "@/js/components/schoolsingle/SchoolEditorJs.vue";
 import SchoolContentDisplay from "@/js/components/schoolsingle/SchoolContentDisplay.vue";
+import SchoolTech from "@/js/components/schoolsingle/SchoolTech.vue";
+import TechSelector from "@/js/components/selector/TechSelector.vue";
+import SchoolColorPicker from "@/js/components/schoolsingle/schoolContent/SchoolColorPicker.vue";
 
 const props = defineProps({
     schoolContent: {
         type: Object,
         required : true
+    },
+    colorTheme:{
+        type: String, required: false
     }
 })
-const emits = defineEmits(['sendInfoToParent'])
+const emits = defineEmits(['sendInfoToSchoolSingle','sendColorToSchoolSingle'])
 
 const editMode = ref(false)
+const newSchoolContent = ref({})
+const newTechUsed = ref([])
+const schoolEditorRef = ref() // for the sake of triggering save inside editorjs component
 
+
+onBeforeMount(() => {
+    newSchoolContent.value = props.schoolContent.content_blocks
+    newTechUsed.value = props.schoolContent.tech_used
+})
 const handleEditButton = () => {
     editMode.value = true
 }
 
-const handleSaveButton = (data) =>{
+const handleSchoolData = (data) =>{
     console.log('data from schoolContent' + JSON.stringify(data))
-    emits('sendInfoToParent', data)
-    editMode.value = false
+    // emits('sendInfoToParent', data)
+    newSchoolContent.value =  data
+}
+
+const handleSchoolTech = (techData) => {
+    newTechUsed.value = techData
 
 }
-// update: no state here and leave the entirety of logic to parent
+
+const handleAllSaveButton = async () => {
+    await schoolEditorRef.value.handleEditorSave() //  will update newSchoolContent Automatically
+    emits('sendInfoToSchoolSingle', newSchoolContent.value, newTechUsed.value)
+    editMode.value = false
+}
+const handleColorSelected  = (newColor) => {
+    emits('sendColorToSchoolSingle', newColor)
+}
 
 </script>
 <template>
-    <div
-        v-if="editMode"
-        class="schoolContent contentEditor"
-    >
-        Curate your school content by adding blocks here with desired contents.
-        <SchoolEditorJs
-            :existing-data="schoolContent.content_blocks"
-            @save-new-data="handleSaveButton"
-        />
+    <div class="flex flex-col w-full">
+        <div class="flex flex-row w-full">
+            <div
+                v-if="editMode"
+                class="schoolContent contentEditor flex flex-row justify-between w-full"
+            >
+                <div class="flex flex-col basis-2/3">
+                    <SchoolColorPicker
+                        class="self-center mb-5"
+                        @color-selected="handleColorSelected"
+                    />
+                    Curate your school content by adding blocks here with desired contents.
+                    <SchoolEditorJs
+                        ref="schoolEditorRef"
+                        :existing-data="newSchoolContent"
+                        @send-school-data="handleSchoolData"
+                    />
+                </div>
+                <div class="flex flex-col basis-1/3">
+                    Tech selector component to go here
+                    <TechSelector
+                        :existing-tech-used="newTechUsed"
+                        :color-theme="colorTheme"
+                        @send-school-tech="handleSchoolTech"
+                    />
+                </div>
+            </div>
+            <div
+                v-else
+                class="schoolContent contentDisplay flex flex-row justify-between w-full gap-4"
+            >
+                <div class="basis-2/3">
+                    <SchoolContentDisplay :school-content-blocks="schoolContent.content_blocks" />
+                </div>
+                <div class="school-tech basis-1/3">
+                    <SchoolTech :tech-list="schoolContent.tech_used" />
+                </div>
+            </div>
+        </div>
+
+        <button
+            v-if="!editMode"
+            class="px-6 py-2 bg-blue-600 text-white rounded w-48"
+            @click="handleEditButton"
+        >
+            Edit This page
+        </button>
+        <button
+            v-else
+            class="w-36 rounded-lg px-2 py-4  bg-slate-500"
+            @click="handleAllSaveButton"
+        >
+            Save Content
+        </button>
     </div>
-    <div
-        v-else
-        class="schoolContent contentDisplay"
-    >
-        <SchoolContentDisplay :school-content-blocks="schoolContent.content_blocks" />
-    </div>
-    <button
-        v-if="!editMode"
-        class="px-6 py-2 bg-blue-600 text-white rounded"
-        @click="handleEditButton"
-    >
-        Edit This page
-    </button>
 </template>
