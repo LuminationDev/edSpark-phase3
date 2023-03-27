@@ -110,6 +110,8 @@ class SchoolController extends Controller
                                 'school_id' => $data['id'],
                                 'schoolmeta_key' => $key,
                                 'schoolmeta_value' => $value,
+                                'created_at' => Carbon::now(),
+                                'updated_at' => Carbon::now()
                             ]);
                         }
                     } catch (Exception $e){
