@@ -3,7 +3,7 @@
      * IMPORT DEPENDENCIES
      */
     import sanitizeHtml from 'sanitize-html';
-    import { computed, ref } from 'vue';
+    import { computed, ref, getCurrentInstance } from 'vue';
 
     /**
      * IMPORT COMPONENTS
@@ -282,6 +282,7 @@
                 avatar: '',
                 avatarURL: '',
                 hasAvatarURL: false,
+                claims: [],
                 years: [
                     { yearLevel: 1, value: 'one' },
                     { yearLevel: 2, value: 'two' },
@@ -385,7 +386,7 @@
                 const target = event.target
                 if (target && target.files) {
                     this.avatar = target.files[0];
-
+                    console.log(this.avatar);
                     const reader = new FileReader();
 
                     reader.onload = function(event) {
@@ -409,12 +410,41 @@
             handleSanitizeContent(string, allowedTags) {
                 const clean = sanitizeHtml(string, { allowedTags: allowedTags }).trim();
                 return clean;
-            }
+            },
         },
 
-        mounted() {
-            // this.checkFirstVisit();
-            console.log(this.schools);
+        async created () {
+
+            const auth = getCurrentInstance().appContext.app.config.globalProperties.$auth
+
+
+            const idToken = await auth.token?.parseFromUrl()
+            .then(async res => {
+                const { idToken } = res.tokens;
+                const { accessToken } = res.tokens;
+
+                console.log(`Hi ${idToken.claims.email}!`);
+                console.log(`accessToken ${accessToken}!`);
+
+            }).catch(err => {
+                console.log('There is a serious error');
+                console.error(err);
+            })
+
+            // const idToken = await this.$auth.tokenManager.get('idToken');
+            // const token = this.$auth.authStateManager.getAuthState();
+            // console.log(token);
+
+            // console.log(localStorage.getItem('okta-shared-transaction-storage'));
+
+            // const oktaSharedTransactionStorage = JSON.parse(localStorage.getItem('okta-shared-transaction-storage'));
+
+            // console.log(Object.entries(oktaSharedTransactionStorage));
+
+            // // this.claims = await Object.entries(idToken.claims).map(entry => ({ claim: entry[0], value: entry[1] }))
+
+            // this.claims = await Object.entries(oktaSharedTransactionStorage).map(entry => ({ claim: entry[0], value: entry[1] }))
+
         }
     }
 </script>
@@ -791,7 +821,7 @@
 </template>
 
 <style>
-    input, textarea {
+    input, textarea, select {
         width: 100% !important;
         padding: .75rem 1.5rem !important;
         border: solid 0.5px black !important;
