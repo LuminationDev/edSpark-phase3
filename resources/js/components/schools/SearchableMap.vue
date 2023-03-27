@@ -2,6 +2,7 @@
     import { ref, computed } from 'vue';
     import axios from 'axios';
     import { GoogleMap, Marker, MarkerCluster } from 'vue3-google-map'
+    import { useRouter } from 'vue-router';
 
     /**
      * Import Components
@@ -14,6 +15,7 @@
     export default {
 
         setup() {
+            const router = useRouter();
             const showFilters = ref(false);
             const toggleFilters = computed(() => {
                 console.log('toggle', showFilters.value);
@@ -29,6 +31,7 @@
                 showFilters,
                 center,
                 toggleMapPopup,
+                router
             }
         },
 
@@ -56,12 +59,14 @@
                     mapId: '164f2a0469c00794'
                 },
                 mapPopupName: null,
+                mapPopupIndex: null,
                 popupX: '',
                 popupY: '',
                 elWidth: null,
                 elHeight: null,
                 schools: [
                     {
+                        id: 'abhs',
                         name: 'Adelaide Botanic high School',
                         type: 'High',
                         techUsed: [
@@ -76,6 +81,7 @@
                         }
                     },
                     {
+                        id: 'ahs',
                         name: 'Adelaide high School',
                         type: 'High',
                         techUsed: [
@@ -90,6 +96,7 @@
                         }
                     },
                     {
+                        id: 'eas',
                         name: 'East Adelaide School',
                         type: 'Area',
                         techUsed: [
@@ -103,6 +110,7 @@
                         }
                     },
                     {
+                        id: 'naps',
                         name: 'North Adelaide Primary School',
                         type: 'Primary',
                         techUsed: [
@@ -166,6 +174,7 @@
                 }
 
                 this.toggleMapPopup = !this.toggleMapPopup;
+                this.mapPopupIndex = location.id;
                 this.mapPopupName = location.name;
 
                 console.log(this.elWidth);
@@ -181,6 +190,19 @@
 
             handleFilterBarClick() {
                 this.showFilters = !this.showFilters
+            },
+
+            handleLinkToSchool() {
+                this.schools.forEach(school => {
+                    const idMatch = school.id;
+                    if (idMatch.includes(this.mapPopupIndex)) {
+                        let schoolUrlFriendly = school.name.replace(/\s+/g, '-').toLowerCase();
+                        this.router.push({
+                            name: 'schoolSingle',
+                            params: { name: school.name }
+                        })
+                    }
+                })
             }
         },
 
@@ -243,7 +265,9 @@
                         v-if="toggleMapPopup"
                         :class="toggleMapPopup ? `top-[${this.popupY}px] left-[${this.popupX}px]`: ''"
                         :mapPopupName="this.mapPopupName"
+                        :mapPopupIndex="this.mapPopupIndex"
                         @handleToggle="handleTogglePopupEmit"
+                        @handleLinkToSchool="handleLinkToSchool"
                     />
                 </GoogleMap>
             </div>
