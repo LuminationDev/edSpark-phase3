@@ -26,8 +26,6 @@ const oktaAuth = new OktaAuth(oktaConfig.oidc);
 //     }
 // });
 
-console.log(window.location.origin);
-
 
 const pinia = createPinia();
 createApp(App)
