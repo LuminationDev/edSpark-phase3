@@ -34,22 +34,31 @@ const colorTheme = ref('amber') // default color theme
 onBeforeMount( async () =>{
     // TODO Erick - Replace with get one school instead of all then filter.
     await axios.get(`${serverURL}/fetchAllSchools`).then(res => {
-        schoolContent.value = res.data.filter(school => school.name === route.params.name.replace('%20', ' ' ))[0]
-        console.log('successfully saved school content')
+        const filteredSchool =res.data.filter(school => school.name === route.params.name.replace('%20', ' ' ))[0]
+        schoolContent.value = filteredSchool
+        const colorThemeMeta = filteredSchool.metadata.filter(meta => meta['schoolmeta_key'] === 'school_color_theme')
+        colorTheme.value = colorThemeMeta[0]['schoolmeta_value']
+
     }).catch(err => {
-        console.log('uhh ohh something occured during the attempt of saving school info')
         console.log(err)
     })
 
 })
     
 const handleSaveNewSchoolInfo = async (content_blocks, tech_used) => {
-    const body = Object.assign({},schoolContent.value)
-    body.content_blocks = content_blocks
-    body.tech_used  = tech_used
+    const schoolData = Object.assign({},schoolContent.value)
+    schoolData.content_blocks = content_blocks
+    schoolData.tech_used  = tech_used
+
+    const schoolMetadata = {school_color_theme : colorTheme.value}
+    let body = {
+        schoolData : schoolData,
+        schoolMetadata: schoolMetadata
+    }
     console.log(body)
-    await axios.post(`${serverURL}/updateSchool`, body).then(res =>{        // assign school info with newest data that has been saved succesfully to trigger update
-        schoolContent.value = _.cloneDeep(body)
+    await axios.post(`${serverURL}/updateSchool`, body).then(res =>{
+        console.log()// assign school info with newest data that has been saved succesfully to trigger update
+        schoolContent.value = _.cloneDeep(body.schoolData)
     }).catch(err =>{
         console.log(err)
         console.log('Something wrong while attempting to post ')

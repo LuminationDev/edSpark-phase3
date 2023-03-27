@@ -97,8 +97,6 @@ class UserController extends Controller
                 'error' => $error,
                 'status' => 200
             ]);
-
-
         }
     }
 

@@ -55,27 +55,10 @@ export const useUserStore = defineStore('user', {
                 }
             };
 
-            // data = JSON.stringify(data);
-
-            console.log(data);
-
             await axios({
                 method: 'POST',
                 url: 'http://localhost:8000/api/createUser',
-                data: {
-                    userData: {
-                        full_name: user.name,
-                        email: user.email,
-                        role: user.role,
-                        display_name: initials
-                    },
-                    userMetaData: {
-                        yearLevels: user.yearLevels,
-                        interest: user.interests,
-                        subjects: user.subjects,
-                        biography: user.biography,
-                    }
-                }
+                data: data
             }).then(response => {
                 console.log(response);
             }).catch(error => {
