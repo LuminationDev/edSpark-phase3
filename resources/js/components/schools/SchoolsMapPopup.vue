@@ -7,7 +7,7 @@
     export default {
         props: {
             mapPopupName: String,
-
+            mapPopupIndex: String
         },
 
         components: {
@@ -15,14 +15,20 @@
         },
 
         mounted() {
-            console.log(this.mapPopupName)
+            console.log(this.mapPopupIndex)
         },
 
         methods: {
             handleClosePopup() {
                 this.$emit('handleToggle')
+            },
+
+            handleEmit() {
+                this.$emit('handleLinkToSchool')
             }
-        }
+        },
+
+
     }
 </script>
 
@@ -45,7 +51,10 @@
             </div>
         </div>
         <div class="flex flex-row justify-end">
-            <button class="bg-[#0072DA] text-white px-8 py-3 hover:bg-[#0359a9]">Visit</button>
+            <button
+                class="bg-[#0072DA] text-white px-8 py-3 hover:bg-[#0359a9]"
+                @click="handleEmit"
+            >Visit</button>
         </div>
     </div>
 </template>
