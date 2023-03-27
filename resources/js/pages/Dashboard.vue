@@ -3,7 +3,7 @@
      * IMPORT DEPENDENCIES
      */
     import sanitizeHtml from 'sanitize-html';
-    import { computed, ref } from 'vue';
+    import { computed, ref, getCurrentInstance } from 'vue';
 
     /**
      * IMPORT COMPONENTS
@@ -411,40 +411,39 @@
                 const clean = sanitizeHtml(string, { allowedTags: allowedTags }).trim();
                 return clean;
             },
-
-            async getUserClaims () {
-                const idToken = this.$auth.token.parseFromUrl()
-                this.claims = await Object.entries(await this.$auth.getUser()).map(entry => ({ claim: entry[0], value: entry[1] }))
-
-                // const idToken = this.$auth.tokenManager.get('idToken');
-                // console.log(this.$auth.tokenManager);
-                // console.log(this.$auth.token.parseFromUrl());
-                // console.log(idToken);
-                // this.claims = await Object.entries(idToken.claims).map(entry => ({ claim: entry[0], value: entry[1] }))
-            }
         },
 
-        async mounted() {
-            this.getUserClaims();
-            // this.checkFirstVisit();
-            // console.log(this.schools);
-            // console.log(this.$auth);
-            // this.getUserClaims();
-            // if (this.$auth.isAuthenticated) {
-            //     console.log('Authenticated');
-            //     this.$auth.token.parseFromUrl().then(response => {
-            //         console.log(response);
-            //     }).catch(err => {
-            //         console.error(err);
-            //     });
-            //     // console.log(this.$auth.isAuthenticated);
-            //     // const idToken = await this.$auth.getUser();
-            //     // console.log(idToken);
-            // } else {
-            //     console.log('Not allowed');
-            // }
+        async created () {
+
+            const auth = getCurrentInstance().appContext.app.config.globalProperties.$auth
 
 
+            const idToken = await auth.token?.parseFromUrl()
+            .then(async res => {
+                const { idToken } = res.tokens;
+                const { accessToken } = res.tokens;
+
+                console.log(`Hi ${idToken.claims.email}!`);
+                console.log(`accessToken ${accessToken}!`);
+
+            }).catch(err => {
+                console.log('There is a serious error');
+                console.error(err);
+            })
+
+            // const idToken = await this.$auth.tokenManager.get('idToken');
+            // const token = this.$auth.authStateManager.getAuthState();
+            // console.log(token);
+
+            // console.log(localStorage.getItem('okta-shared-transaction-storage'));
+
+            // const oktaSharedTransactionStorage = JSON.parse(localStorage.getItem('okta-shared-transaction-storage'));
+
+            // console.log(Object.entries(oktaSharedTransactionStorage));
+
+            // // this.claims = await Object.entries(idToken.claims).map(entry => ({ claim: entry[0], value: entry[1] }))
+
+            // this.claims = await Object.entries(oktaSharedTransactionStorage).map(entry => ({ claim: entry[0], value: entry[1] }))
 
         }
     }
