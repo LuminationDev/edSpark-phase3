@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\School;
+use App\Models\Schoolmeta;
 use Carbon\Carbon;
 
 class SchoolController extends Controller
@@ -11,7 +12,7 @@ class SchoolController extends Controller
     public function createSchool(Request $request)
     {
         if ($request->isMethod('post')) {
-            $data = $request->all(); // if not data key present
+            $data = $request->schoolData; // if not data key present
             // $data = $request->data; // if data key present can be used later for metaData
             $error = '';
 
@@ -32,8 +33,28 @@ class SchoolController extends Controller
                         'created_at' => Carbon::now(),
                         'updated_at' => Carbon::now()
                     ];
-                    School::insert($dataToInsert);
+                    $schoolId = School::insertGetId($dataToInsert);
                 } catch (Exception $e) {
+                    $error = $e->getMessage();
+                }
+            }
+            $schoolMeta = $request->schoolMetadata;
+            if($schoolMeta) {
+                try {
+                    foreach ($schoolMeta as $key => $value){
+                        $res =
+                        [
+                            'school_id' => $schoolId,
+                            'schoolmeta_key' => $key,
+                            'schoolmeta_value' => (is_string($value)) ? $value : implode(', ', $value),
+                            'created_at' => Carbon::now(),
+                            'updated_at' => Carbon::now()
+                        ];
+                        $metadataToInsert[] = $res;
+                    }
+                Schoolmeta::insert($metadataToInsert);
+
+                } catch(Exception $e){
                     $error = $e->getMessage();
                 }
             }
@@ -49,8 +70,7 @@ class SchoolController extends Controller
     public function updateSchool(Request $request)
     {
         if ($request->isMethod('post')) {
-            $data = $request->all();
-            // dd($data);
+            $data = $request->schoolData;
             $error = '';
 
             if ($data) {
@@ -73,6 +93,31 @@ class SchoolController extends Controller
                 }
             }
 
+            $metadata = $request->schoolMetadata;
+            if($metadata){
+                foreach ($metadata as $key => $value){
+                    try {
+                        $meta = Schoolmeta::where([['school_id',$data['id']],['schoolmeta_key', $key]])->get();
+                        //meta already exist
+                        if(count($meta) > 0 ) {
+                            Schoolmeta::where([['school_id',$data['id']],['schoolmeta_key',$key]])->update([
+                                'schoolmeta_value' => $value,
+                            ]);
+                        }
+                        // meta doesnt exist and create a new one
+                        else {
+                            Schoolmeta::insert([
+                                'school_id' => $data['id'],
+                                'schoolmeta_key' => $key,
+                                'schoolmeta_value' => $value,
+                            ]);
+                        }
+                    } catch (Exception $e){
+                        $error = $e->getMessage();
+                    }
+                }
+            };
+
             return response()->json([
                 'message' => "School updated successfully",
                 'error' => $error,
@@ -87,6 +132,17 @@ class SchoolController extends Controller
         $data = [];
 
         foreach ($schools as $school) {
+            $schoolMetadata = Schoolmeta::where('school_id', $school->id)->get();
+            $schoolMetadataToSend = [];
+            if($schoolMetadata){
+                foreach($schoolMetadata as $key => $value){
+                    $res = [
+                        'schoolmeta_key' => $value->schoolmeta_key,
+                        'schoolmeta_value' => $value->schoolmeta_value
+                    ];
+                $schoolMetadataToSend[] = $res;
+                }
+            }
             $result = [
                 'id' => $school->id,
                 'site' => [
@@ -103,7 +159,8 @@ class SchoolController extends Controller
                 'cover_image' => ($school->cover_image) ? $school->cover_image : NULL,
                 'tech_used' => ($school->tech_used) ? json_decode($school->tech_used) : NULL,
                 'pedagogical_approaches' => ($school->pedagogical_approaches) ? json_decode($school->pedagogical_approaches) : NULL,
-                'tech_landscape' => ($school->tech_landscape) ? json_decode($school->tech_landscape) : NULL
+                'tech_landscape' => ($school->tech_landscape) ? json_decode($school->tech_landscape) : NULL,
+                'metadata' => ($schoolMetadataToSend) ? $schoolMetadataToSend : NULL
             ];
             $data[] = $result;
         }

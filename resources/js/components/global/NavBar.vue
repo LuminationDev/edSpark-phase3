@@ -2,67 +2,66 @@
     /**
      * Import Dependencies
      */
-    import { ref } from 'vue';
-    import { RouterLink } from 'vue-router';
+import { ref } from 'vue';
 
-    /**
-     * Import SVG's
-     */
-    import NavSwoosh from '../svg/NavSwoosh.vue';
-    import Logo from '../svg/Logo.vue';
-    import Profile from '../svg/Profile.vue';
+/**
+ * Import SVG's
+ */
+import NavSwoosh from '../svg/NavSwoosh.vue';
+import Logo from '../svg/Logo.vue';
+import Profile from '../svg/Profile.vue';
 
-    /**
-     * Import Stores
-     */
-    import { useUserStore } from '../../stores/useUserStore';
+/**
+ * Import Stores
+ */
+import { useUserStore } from '@/js/stores/useUserStore';
 
-    /**
-     * Import Components
-     */
-    import ProfileDropdown from './ProfileDropdown.vue';
+/**
+ * Import Components
+ */
+import ProfileDropdown from './ProfileDropdown.vue';
 
-    export default {
-        props: {
-            isFirstVisit: Boolean
-        },
+export default {
 
-        setup() {
-            const userStore = useUserStore();
+    components: {
+        NavSwoosh,
+        Logo,
+        Profile,
+        ProfileDropdown
+    },
+    props: {
+        isFirstVisit: Boolean
+    },
 
-            const navDropdownToggle = ref(false);
-            const profileDropdown = ref(false);
+    setup() {
+        const userStore = useUserStore();
 
-            return {
-                navDropdownToggle,
-                profileDropdown,
-                userStore,
-            }
-        },
+        const navDropdownToggle = ref(false);
+        const profileDropdown = ref(false);
 
-        components: {
-            NavSwoosh,
-            Logo,
-            Profile,
-            ProfileDropdown
-        },
-
-        data() {
-            return {
-                currentUser: {}
-            }
-        },
-
-        mounted() {
-            this.currentUser = this.userStore.getUser
-        },
-
-        methods: {
-            handleAvatarClick() {
-                console.log('This has been clicked!!!');
-                this.profileDropdown = !this.profileDropdown
-            }
+        return {
+            navDropdownToggle,
+            profileDropdown,
+            userStore,
         }
+    },
+
+    data() {
+        return {
+            currentUser: {}
+        }
+    },
+
+    mounted() {
+        this.currentUser = this.userStore.getUser
+    },
+
+    methods: {
+        handleAvatarClick() {
+            console.log('This has been clicked!!!');
+            this.profileDropdown = !this.profileDropdown
+        }
+    }
 }
 
 </script>
@@ -199,7 +198,7 @@
             @handleAvatarClick="handleAvatarClick"
         />
 
-        <Logo class="absolute right-20 top-4 z-30" />
+        <Logo class="absolute right-20 top-4 z-30 md:w-48 md:h-48 sm:w-36 sm:w-36" />
         <NavSwoosh class="w-full absolute -bottom-6 left-0 right-0 pointer-events-none" />
     </div>
 </template>

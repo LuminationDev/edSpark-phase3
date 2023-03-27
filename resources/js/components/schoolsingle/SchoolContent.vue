@@ -33,7 +33,6 @@ const handleEditButton = () => {
 
 const handleSchoolData = (data) =>{
     console.log('data from schoolContent' + JSON.stringify(data))
-    // emits('sendInfoToParent', data)
     newSchoolContent.value =  data
 }
 
