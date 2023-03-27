@@ -282,6 +282,7 @@
                 avatar: '',
                 avatarURL: '',
                 hasAvatarURL: false,
+                claims: [],
                 years: [
                     { yearLevel: 1, value: 'one' },
                     { yearLevel: 2, value: 'two' },
@@ -385,7 +386,7 @@
                 const target = event.target
                 if (target && target.files) {
                     this.avatar = target.files[0];
-
+                    console.log(this.avatar);
                     const reader = new FileReader();
 
                     reader.onload = function(event) {
@@ -409,12 +410,42 @@
             handleSanitizeContent(string, allowedTags) {
                 const clean = sanitizeHtml(string, { allowedTags: allowedTags }).trim();
                 return clean;
+            },
+
+            async getUserClaims () {
+                const idToken = this.$auth.token.parseFromUrl()
+                this.claims = await Object.entries(await this.$auth.getUser()).map(entry => ({ claim: entry[0], value: entry[1] }))
+
+                // const idToken = this.$auth.tokenManager.get('idToken');
+                // console.log(this.$auth.tokenManager);
+                // console.log(this.$auth.token.parseFromUrl());
+                // console.log(idToken);
+                // this.claims = await Object.entries(idToken.claims).map(entry => ({ claim: entry[0], value: entry[1] }))
             }
         },
 
-        mounted() {
+        async mounted() {
+            this.getUserClaims();
             // this.checkFirstVisit();
-            console.log(this.schools);
+            // console.log(this.schools);
+            // console.log(this.$auth);
+            // this.getUserClaims();
+            // if (this.$auth.isAuthenticated) {
+            //     console.log('Authenticated');
+            //     this.$auth.token.parseFromUrl().then(response => {
+            //         console.log(response);
+            //     }).catch(err => {
+            //         console.error(err);
+            //     });
+            //     // console.log(this.$auth.isAuthenticated);
+            //     // const idToken = await this.$auth.getUser();
+            //     // console.log(idToken);
+            // } else {
+            //     console.log('Not allowed');
+            // }
+
+
+
         }
     }
 </script>

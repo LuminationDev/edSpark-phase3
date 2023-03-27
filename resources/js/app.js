@@ -4,6 +4,7 @@ import router from './router';
 import { createPinia } from 'pinia';
 import '../css/app.css';
 import './bootstrap';
+import oktaConfig from './constants/oktaConfig';
 /**
  * THIS BIT!!!!!
  */
@@ -13,15 +14,7 @@ import OktaVue, { LoginCallback } from '@okta/okta-vue';
 import VueGoogleMaps from 'vue-google-maps-community-fork';
 
 // AND THIS!!!!!!!
-const oktaAuth = new OktaAuth({
-    issuer: 'https://portal-test.edpass.sa.edu.au',
-    clientId: '0oa1x7h530VPdjQlQ3l7',
-    redirectUri: 'http://localhost:8000/dashboard',
-    scopes: ['openid', 'profile', 'email'],
-    tokenManager: {
-        storage: 'localStorage'
-    }
-});
+const oktaAuth = new OktaAuth(oktaConfig.oidc);
 
 // const oktaAuth = new OktaAuth({
 //     issuer: 'https://dev-75424864.okta.com/oauth2/default',
