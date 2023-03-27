@@ -19,14 +19,31 @@ class SchoolController extends Controller
             if ($data) {
                 // save school info into school table
                 try{
+                    $prefix = "edspark-school";
+                    if ($request->hasFile($data['logo'])){
+                        $schoolLogo = $request->file($data['logo']);
+                        $imgName = $prefix.'-'.md5(Str::random(30).time().'_'.$schoolLogo).'.'.$schoolLogo->getClientOriginalExtension();
+                        $schoolLogo->storeAs('public/uploads/school/logo', $imgName);
+                        $schoolLogoUrl = "uploads\/school\/logo\/". $imgName;
+                    }
+
+                    if ($request->hasFile($data['cover_image'])) {
+                        $coverImage = $request->file($data['cover_image']);
+                        $imgName = $prefix.'-'.md5(Str::random(30).time().'_'.$coverImage).'.'.$coverImage->getClientOriginalExtension();
+                        $coverImage->storeAs('public/uploads/school', $imgName);
+                        $coverImageUrl = "uploads\/school\/". $imgName;
+                    }
+
                     $dataToInsert = [
                         'site_id' => $data['site_id'],
                         'owner_id' => $data['owner_id'],
                         // 'allowEditIds' => ($data['allowEditIds'])
                         'name' => $data['name'],
                         'content_blocks' => json_encode($data['content_blocks']),
-                        'logo' => isset($data['logo']) ? $data['logo'] : NULL,
-                        'cover_image' => isset($data['cover_image']) ? $data['cover_image'] : NULL,
+                        // 'logo' => isset($data['logo']) ? $data['logo'] : NULL,
+                        'logo' => isset($schoolLogoUrl) ? $schoolLogoUrl : NULL,
+                        // 'cover_image' => isset($data['cover_image']) ? $data['cover_image'] : NULL,
+                        'cover_image' => isset($coverImageUrl) ? $coverImageUrl : NULL,
                         'tech_used' => json_encode($data['tech_used']),
                         'pedagogical_approaches' => json_encode($data['pedagogical_approaches']),
                         'tech_landscape' => json_encode($data['tech_landscape']),
