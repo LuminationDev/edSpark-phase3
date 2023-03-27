@@ -7,7 +7,9 @@
      * Import Components
      */
     import SchoolsMapPopup from './SchoolsMapPopup.vue';
-    import SchoolsMapFilterBar from './SchoolsMapFilterBar.vue';
+    import SchoolsMapFilterName from './SchoolsMapFilterName.vue';
+    import SchoolsMapFilterType from './SchoolsMapFilterType.vue';
+    import SchoolsMapFilterTech from './SchoolsMapFilterTech.vue';
 
     export default {
 
@@ -35,7 +37,9 @@
             Marker,
             MarkerCluster,
             SchoolsMapPopup,
-            SchoolsMapFilterBar
+            SchoolsMapFilterName,
+            SchoolsMapFilterType,
+            SchoolsMapFilterTech
         },
 
         data() {
@@ -59,6 +63,12 @@
                 schools: [
                     {
                         name: 'Adelaide Botanic high School',
+                        type: 'High',
+                        techUsed: [
+                            'VR',
+                            'AR',
+                            'Drones'
+                        ],
                         metadata: {
                             location: {
                                 lat: -34.9172, lng: 138.6067
@@ -67,6 +77,12 @@
                     },
                     {
                         name: 'Adelaide high School',
+                        type: 'High',
+                        techUsed: [
+                            'VR',
+                            'Drones',
+                            'Robotics'
+                        ],
                         metadata: {
                             location: {
                                 lat: -34.9256, lng: 138.5870
@@ -75,6 +91,11 @@
                     },
                     {
                         name: 'East Adelaide School',
+                        type: 'Area',
+                        techUsed: [
+                            'Robotics',
+                            'Drones'
+                        ],
                         metadata: {
                             location: {
                                 lat: -34.9054, lng: 138.6268
@@ -83,6 +104,12 @@
                     },
                     {
                         name: 'North Adelaide Primary School',
+                        type: 'Primary',
+                        techUsed: [
+                            'VR',
+                            'AR',
+                            'IoT'
+                        ],
                         metadata: {
                             location: {
                                 lat: -34.90806, lng: 138.59458
@@ -90,16 +117,44 @@
                         }
                     },
                 ],
-                mapInput: ''
+                schoolNameFilter: '',
+                schoolTypeFilter: 'All',
+                schoolTechFilter: null
             }
         },
 
         computed: {
             filteredList() {
-                return this.schools.filter(school => {
-                    // Use toLowerCase() to make the search case-insensitive
-                    return school.name.toLowerCase().includes(this.mapInput.toLowerCase());
-                });
+                let filtered = this.schools;
+
+                if (this.schoolNameFilter) {
+                    filtered = filtered.filter(school => {
+                        // Use toLowerCase() to make the search case-insensitive
+                        return school.name.toLowerCase().includes(this.schoolNameFilter.toLowerCase());
+                    });
+                }
+
+                if (this.schoolTypeFilter) {
+                    filtered = filtered.filter(school => {
+                        if (this.schoolTypeFilter === 'All') {
+                            return this.schools;
+                        } else {
+                            return school.type === this.schoolTypeFilter
+                        }
+                    });
+                }
+
+                if (this.schoolTechFilter) {
+                    filtered = filtered.filter(school => {
+                        if (this.schoolTechFilter === 'All') {
+                            return this.schools;
+                        } else {
+                            return school.techUsed.includes(this.schoolTechFilter);
+                        }
+                    })
+                }
+
+                return filtered;
             }
         },
 
@@ -147,10 +202,22 @@
             </button>
         </div>
 
-        <SchoolsMapFilterBar
-            :showFilters="this.showFilters"
-            v-model="mapInput"
-        />
+        <div class="absolute p-6 transition-all top-0 bottom-0 w-full bg-[#0072DA] z-40" :class="showFilters ? 'h-[350px]' : '!h-0 opacity-0' ">
+            <div class="mt-12 flex flex-row flex-wrap gap-6">
+                <SchoolsMapFilterName
+                    v-model="schoolNameFilter"
+                />
+
+                <SchoolsMapFilterType
+                    v-model="this.schoolTypeFilter"
+                    :schoolTypeFilter="this.schoolTypeFilter"
+                />
+                <SchoolsMapFilterTech
+                    v-model="this.schoolTechFilter"
+
+                />
+            </div>
+        </div>
 
         <div class="relative">
             <div ref="map">
@@ -163,7 +230,6 @@
 
                 >
                     <MarkerCluster>
-                        <!-- <Marker class="relative" v-for="(location, i) in (this.mapInput === '' ? this.schools: this.filteredList)" :options="{ position: location.metadata.location }" :key="i" @click="handleOnClusterClick(location, i)"> -->
                         <Marker
                             class="relative"
                             v-for="(location, i) in this.filteredList"
