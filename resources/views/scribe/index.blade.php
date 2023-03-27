@@ -140,7 +140,7 @@
     </ul>
 
     <ul class="toc-footer" id="last-updated">
-        <li>Last updated: March 22, 2023</li>
+        <li>Last updated: March 23, 2023</li>
     </ul>
 </div>
 
@@ -216,7 +216,7 @@ print_r(json_decode((string) $body));</code></pre></div>
             <pre><code class="language-http">cache-control: no-cache, private
 content-type: application/json
 x-ratelimit-limit: 60
-x-ratelimit-remaining: 59
+x-ratelimit-remaining: 36
 access-control-allow-origin: *
  </code></pre></details>         <pre>
 
@@ -227,7 +227,7 @@ access-control-allow-origin: *
         &quot;post_content&quot;: &quot;Eos eum cumque rerum veritatis fugiat. Sed ut aperiam recusandae minima est officiis vel. Mollitia et veniam in dignissimos aperiam temporibus eveniet.&quot;,
         &quot;post_excerpt&quot;: &quot;Temporibus eligendi eos quis quibusdam rem qui. Quia rerum quae non voluptatem quasi quia pariatur rerum. Molestiae voluptatum ut placeat sequi quia.&quot;,
         &quot;author&quot;: &quot;Jake Mackinlay&quot;,
-        &quot;cover_image&quot;: &quot;https://via.placeholder.com/640x480.png/009966?text=excepturi&quot;,
+        &quot;cover_image&quot;: null,
         &quot;post_date&quot;: &quot;1987-10-18 10:09:31&quot;,
         &quot;post_modified&quot;: &quot;2001-03-18 18:12:41&quot;,
         &quot;post_status&quot;: &quot;Published&quot;,
@@ -241,7 +241,7 @@ access-control-allow-origin: *
         &quot;post_content&quot;: &quot;Dolores et non aliquam consequuntur minus quam voluptatem. Quos molestiae ad quia odit est accusantium ad. Excepturi eveniet est et itaque modi et consequatur. Animi accusamus maiores consectetur aspernatur.&quot;,
         &quot;post_excerpt&quot;: &quot;Veniam dolore ut explicabo autem. Quidem qui ullam earum similique. Nisi sed laudantium repellat architecto non.&quot;,
         &quot;author&quot;: &quot;Jake Mackinlay&quot;,
-        &quot;cover_image&quot;: &quot;https://via.placeholder.com/640x480.png/00ccee?text=deleniti&quot;,
+        &quot;cover_image&quot;: null,
         &quot;post_date&quot;: &quot;1995-06-21 13:58:21&quot;,
         &quot;post_modified&quot;: &quot;1989-12-06 02:36:39&quot;,
         &quot;post_status&quot;: &quot;Published&quot;,
@@ -255,7 +255,7 @@ access-control-allow-origin: *
         &quot;post_content&quot;: &quot;Qui et commodi id. Omnis expedita provident iusto quos minus in. Dignissimos enim alias aut facere odit sint. Officiis expedita eveniet aut excepturi vel corrupti maiores.&quot;,
         &quot;post_excerpt&quot;: &quot;Provident necessitatibus laudantium et dolore velit. In commodi aliquam sunt dolor repellat et. Maiores dolorem sit facilis dolores eius a.&quot;,
         &quot;author&quot;: &quot;Jake Mackinlay&quot;,
-        &quot;cover_image&quot;: &quot;https://via.placeholder.com/640x480.png/00bbdd?text=molestiae&quot;,
+        &quot;cover_image&quot;: null,
         &quot;post_date&quot;: &quot;1973-05-24 21:17:46&quot;,
         &quot;post_modified&quot;: &quot;2008-12-23 09:14:05&quot;,
         &quot;post_status&quot;: &quot;Published&quot;,
@@ -269,13 +269,27 @@ access-control-allow-origin: *
         &quot;post_content&quot;: &quot;Deserunt laudantium nihil vel molestiae nostrum consequuntur repellendus nostrum. Et corrupti sed dolor dolor expedita vel alias. Laudantium qui molestias vero.&quot;,
         &quot;post_excerpt&quot;: &quot;Perspiciatis veritatis et quisquam voluptas ratione dolorem ut. Maiores fugit et sunt quos aut. Quia quo minus saepe quia.&quot;,
         &quot;author&quot;: &quot;Jake Mackinlay&quot;,
-        &quot;cover_image&quot;: &quot;https://via.placeholder.com/640x480.png/00ffbb?text=tempora&quot;,
+        &quot;cover_image&quot;: null,
         &quot;post_date&quot;: &quot;1999-05-13 12:27:11&quot;,
         &quot;post_modified&quot;: &quot;2003-05-02 16:51:51&quot;,
         &quot;post_status&quot;: &quot;Published&quot;,
         &quot;advice_type&quot;: null,
         &quot;created_at&quot;: &quot;2023-03-16T05:19:06.000000Z&quot;,
         &quot;updated_at&quot;: &quot;2023-03-16T05:19:06.000000Z&quot;
+    },
+    {
+        &quot;post_id&quot;: 11,
+        &quot;post_title&quot;: &quot;test&quot;,
+        &quot;post_content&quot;: &quot;&lt;p&gt;test&lt;/p&gt;&quot;,
+        &quot;post_excerpt&quot;: &quot;&lt;p&gt;test&lt;/p&gt;&quot;,
+        &quot;author&quot;: &quot;Asim Thapa&quot;,
+        &quot;cover_image&quot;: &quot;uploads/advice/edSpark-advice-arnaud-mariat-OMj98kMI2dE-unsplash.jpg&quot;,
+        &quot;post_date&quot;: &quot;2023-03-22 22:51:29&quot;,
+        &quot;post_modified&quot;: &quot;2023-03-22 22:51:29&quot;,
+        &quot;post_status&quot;: &quot;Published&quot;,
+        &quot;advice_type&quot;: &quot;dignissimos&quot;,
+        &quot;created_at&quot;: &quot;2023-03-22T22:51:29.000000Z&quot;,
+        &quot;updated_at&quot;: &quot;2023-03-22T22:51:29.000000Z&quot;
     }
 ]</code>
  </pre>
@@ -397,7 +411,7 @@ print_r(json_decode((string) $body));</code></pre></div>
             <pre><code class="language-http">cache-control: no-cache, private
 content-type: application/json
 x-ratelimit-limit: 60
-x-ratelimit-remaining: 58
+x-ratelimit-remaining: 35
 access-control-allow-origin: *
  </code></pre></details>         <pre>
 
@@ -408,7 +422,7 @@ access-control-allow-origin: *
         &quot;post_content&quot;: &quot;Ut quia nesciunt officia ipsum qui assumenda sed. Exercitationem a et ut doloribus. Est omnis ut facere ea porro qui sit. Et ex sunt et autem voluptatem dolores necessitatibus consequatur.&quot;,
         &quot;post_excerpt&quot;: &quot;Consectetur odio aut consequuntur odit voluptas. Eaque omnis occaecati quia et. Quia aperiam sit at totam rerum et. Facere minus placeat et delectus laborum.&quot;,
         &quot;author&quot;: &quot;Jake Mackinlay&quot;,
-        &quot;cover_image&quot;: &quot;https://via.placeholder.com/640x480.png/00ccee?text=quia&quot;,
+        &quot;cover_image&quot;: null,
         &quot;post_date&quot;: &quot;1977-10-30 23:07:57&quot;,
         &quot;post_modified&quot;: &quot;2011-10-27 07:07:31&quot;,
         &quot;post_status&quot;: &quot;Published&quot;,
@@ -422,7 +436,7 @@ access-control-allow-origin: *
         &quot;post_content&quot;: &quot;Aut dolorem omnis vel sit neque quo. Iste culpa neque nisi quasi labore provident id. Quod dolor consequuntur ut quia aut.&quot;,
         &quot;post_excerpt&quot;: &quot;Distinctio neque sit quo debitis sint. Quam aliquam quas eaque non. Illum ut deleniti quas aut nesciunt maxime. Ea aut tenetur non facilis accusamus facere nam dolorem.&quot;,
         &quot;author&quot;: &quot;Jake Mackinlay&quot;,
-        &quot;cover_image&quot;: &quot;https://via.placeholder.com/640x480.png/00ff11?text=sequi&quot;,
+        &quot;cover_image&quot;: null,
         &quot;post_date&quot;: &quot;1988-06-27 20:40:18&quot;,
         &quot;post_modified&quot;: &quot;2002-03-30 03:44:05&quot;,
         &quot;post_status&quot;: &quot;Published&quot;,
@@ -436,7 +450,7 @@ access-control-allow-origin: *
         &quot;post_content&quot;: &quot;Dolore id voluptatem itaque ipsa neque id natus. Alias consequatur quia quia expedita nemo. Necessitatibus autem sint qui quidem ab. Quasi quis placeat voluptatem enim.&quot;,
         &quot;post_excerpt&quot;: &quot;Optio esse blanditiis culpa sint minus. Eum placeat dolores aperiam consequatur excepturi. Ullam optio nihil eos nesciunt adipisci sunt dolorem perferendis. Non quisquam totam error dolorem.&quot;,
         &quot;author&quot;: &quot;Jake Mackinlay&quot;,
-        &quot;cover_image&quot;: &quot;https://via.placeholder.com/640x480.png/007777?text=dolor&quot;,
+        &quot;cover_image&quot;: null,
         &quot;post_date&quot;: &quot;1999-10-20 09:08:00&quot;,
         &quot;post_modified&quot;: &quot;2021-09-12 19:32:49&quot;,
         &quot;post_status&quot;: &quot;Published&quot;,
@@ -450,7 +464,7 @@ access-control-allow-origin: *
         &quot;post_content&quot;: &quot;Suscipit doloribus ipsa sint autem aliquam culpa qui omnis. Rerum eos perspiciatis fugiat in et. Adipisci et doloribus nesciunt aliquid. Et voluptatem ullam iure earum. Harum in nisi libero ipsa unde consequatur aliquam.&quot;,
         &quot;post_excerpt&quot;: &quot;Sequi assumenda possimus enim et sed et sed. Rem odio a eveniet eum delectus. Rerum ipsam incidunt eius.&quot;,
         &quot;author&quot;: &quot;Jake Mackinlay&quot;,
-        &quot;cover_image&quot;: &quot;https://via.placeholder.com/640x480.png/0055bb?text=distinctio&quot;,
+        &quot;cover_image&quot;: null,
         &quot;post_date&quot;: &quot;2016-11-07 02:17:18&quot;,
         &quot;post_modified&quot;: &quot;2004-03-04 02:26:11&quot;,
         &quot;post_status&quot;: &quot;Published&quot;,
@@ -464,7 +478,7 @@ access-control-allow-origin: *
         &quot;post_content&quot;: &quot;Doloremque ex fugit sint aut ut enim quis. Laborum aut cumque rem sed. Et labore facilis laboriosam. Suscipit sunt sit quia est fugiat ad qui vel.&quot;,
         &quot;post_excerpt&quot;: &quot;Consequatur sit accusamus odio ducimus error ut voluptatum unde. Omnis dolor ut quia sequi cum dolorem. Excepturi est et ipsa ratione omnis consequuntur aperiam inventore.&quot;,
         &quot;author&quot;: &quot;Jake Mackinlay&quot;,
-        &quot;cover_image&quot;: &quot;https://via.placeholder.com/640x480.png/001166?text=minus&quot;,
+        &quot;cover_image&quot;: null,
         &quot;post_date&quot;: &quot;2023-02-27 05:29:52&quot;,
         &quot;post_modified&quot;: &quot;1972-11-28 19:51:38&quot;,
         &quot;post_status&quot;: &quot;Published&quot;,
@@ -606,7 +620,7 @@ print_r(json_decode((string) $body));</code></pre></div>
             <pre><code class="language-http">cache-control: no-cache, private
 content-type: application/json
 x-ratelimit-limit: 60
-x-ratelimit-remaining: 57
+x-ratelimit-remaining: 34
 access-control-allow-origin: *
  </code></pre></details>         <pre>
 
@@ -617,7 +631,7 @@ access-control-allow-origin: *
         &quot;event_content&quot;: &quot;Consequatur autem molestias tenetur. Molestiae exercitationem vel sint cum tempore illum labore modi.&quot;,
         &quot;event_excerpt&quot;: &quot;Porro molestiae voluptas fugit itaque laboriosam nisi.&quot;,
         &quot;author&quot;: &quot;Jake Mackinlay&quot;,
-        &quot;cover_image&quot;: &quot;https://via.placeholder.com/640x480.png/0044ee?text=eum&quot;,
+        &quot;cover_image&quot;: null,
         &quot;start_date&quot;: &quot;1989-04-21 16:56:41&quot;,
         &quot;end_date&quot;: &quot;2005-06-07 14:54:23&quot;,
         &quot;event_status&quot;: &quot;Published&quot;,
@@ -631,7 +645,7 @@ access-control-allow-origin: *
         &quot;event_content&quot;: &quot;Voluptatem ratione dolorem corporis asperiores ut dolorem sed odit. Autem voluptas dolorem hic. Ea voluptatum est adipisci et sit tenetur. Animi illum ut et quia maiores sed illo.&quot;,
         &quot;event_excerpt&quot;: &quot;Molestias maxime qui aut sed rerum.&quot;,
         &quot;author&quot;: &quot;Jake Mackinlay&quot;,
-        &quot;cover_image&quot;: &quot;https://via.placeholder.com/640x480.png/0044cc?text=occaecati&quot;,
+        &quot;cover_image&quot;: null,
         &quot;start_date&quot;: &quot;2006-12-09 13:40:07&quot;,
         &quot;end_date&quot;: &quot;1979-01-30 12:16:35&quot;,
         &quot;event_status&quot;: &quot;Published&quot;,
@@ -645,7 +659,7 @@ access-control-allow-origin: *
         &quot;event_content&quot;: &quot;Perferendis sit aliquid omnis ut. At voluptatem et sequi explicabo. Pariatur consequatur dolorem quis perferendis beatae aperiam distinctio. Deleniti maxime rerum laboriosam quaerat.&quot;,
         &quot;event_excerpt&quot;: &quot;Quasi hic non quae neque perferendis.&quot;,
         &quot;author&quot;: &quot;Jake Mackinlay&quot;,
-        &quot;cover_image&quot;: &quot;https://via.placeholder.com/640x480.png/0066ff?text=molestiae&quot;,
+        &quot;cover_image&quot;: null,
         &quot;start_date&quot;: &quot;2002-08-15 11:05:10&quot;,
         &quot;end_date&quot;: &quot;2011-03-25 23:27:15&quot;,
         &quot;event_status&quot;: &quot;Published&quot;,
@@ -659,7 +673,7 @@ access-control-allow-origin: *
         &quot;event_content&quot;: &quot;Quia incidunt itaque dolorem officiis voluptatem. Ab ipsa adipisci officiis ipsum velit et illum. Illum consequatur magni accusantium sunt sed sit. Porro libero rerum nulla asperiores aut porro cumque.&quot;,
         &quot;event_excerpt&quot;: &quot;Vel quis et cum pariatur ad illo.&quot;,
         &quot;author&quot;: &quot;Jake Mackinlay&quot;,
-        &quot;cover_image&quot;: &quot;https://via.placeholder.com/640x480.png/0099ee?text=voluptatem&quot;,
+        &quot;cover_image&quot;: null,
         &quot;start_date&quot;: &quot;2001-01-30 11:18:22&quot;,
         &quot;end_date&quot;: &quot;2009-03-22 04:45:57&quot;,
         &quot;event_status&quot;: &quot;Published&quot;,
@@ -673,7 +687,7 @@ access-control-allow-origin: *
         &quot;event_content&quot;: &quot;Rerum aut placeat voluptatem. Sunt aliquid magni inventore mollitia ut rerum. Sunt consequatur ut eaque inventore dolorum quis.&quot;,
         &quot;event_excerpt&quot;: &quot;Vel maiores praesentium odit necessitatibus praesentium.&quot;,
         &quot;author&quot;: &quot;Jake Mackinlay&quot;,
-        &quot;cover_image&quot;: &quot;https://via.placeholder.com/640x480.png/00ffee?text=ipsum&quot;,
+        &quot;cover_image&quot;: null,
         &quot;start_date&quot;: &quot;2008-03-02 11:13:14&quot;,
         &quot;end_date&quot;: &quot;2020-12-31 06:11:32&quot;,
         &quot;event_status&quot;: &quot;Published&quot;,
@@ -815,7 +829,7 @@ print_r(json_decode((string) $body));</code></pre></div>
             <pre><code class="language-http">cache-control: no-cache, private
 content-type: application/json
 x-ratelimit-limit: 60
-x-ratelimit-remaining: 56
+x-ratelimit-remaining: 33
 access-control-allow-origin: *
  </code></pre></details>         <pre>
 
@@ -826,7 +840,7 @@ access-control-allow-origin: *
         &quot;post_content&quot;: &quot;Praesentium reiciendis et quae laborum consequatur tempora. Est sit dolores quo animi deserunt vel quisquam exercitationem. Beatae earum qui delectus.&quot;,
         &quot;post_excerpt&quot;: &quot;Aspernatur dolorem ut nostrum. Est asperiores suscipit ea autem quia assumenda odit nobis. Quisquam provident vel debitis quo voluptatibus. Perferendis rem iure nulla fugiat sint.&quot;,
         &quot;author&quot;: &quot;Jake Mackinlay&quot;,
-        &quot;cover_image&quot;: &quot;https://via.placeholder.com/640x480.png/0044ee?text=ut&quot;,
+        &quot;cover_image&quot;: null,
         &quot;post_status&quot;: &quot;Published&quot;,
         &quot;community_type&quot;: null,
         &quot;created_at&quot;: &quot;2023-03-16T05:19:06.000000Z&quot;,
@@ -838,7 +852,7 @@ access-control-allow-origin: *
         &quot;post_content&quot;: &quot;Odio possimus perspiciatis vel ad sunt voluptatem. Nemo quia nemo non qui et maxime. Aut ut et pariatur et dolore.&quot;,
         &quot;post_excerpt&quot;: &quot;Voluptate voluptates ad corporis dicta dolores ex. Ullam veniam quos repudiandae eveniet quas aut sed. Fuga aut ut sed est vel. Quia voluptatem numquam ut ad unde est.&quot;,
         &quot;author&quot;: &quot;Jake Mackinlay&quot;,
-        &quot;cover_image&quot;: &quot;https://via.placeholder.com/640x480.png/003311?text=enim&quot;,
+        &quot;cover_image&quot;: null,
         &quot;post_status&quot;: &quot;Published&quot;,
         &quot;community_type&quot;: null,
         &quot;created_at&quot;: &quot;2023-03-16T05:19:06.000000Z&quot;,
@@ -850,7 +864,7 @@ access-control-allow-origin: *
         &quot;post_content&quot;: &quot;Itaque beatae nam quo excepturi quae asperiores. Corrupti sed voluptate non accusantium. Consequatur odio consequatur temporibus rerum dolorum excepturi iste hic. Qui laudantium quam ducimus ex rerum accusantium nam.&quot;,
         &quot;post_excerpt&quot;: &quot;Porro qui molestiae deleniti nulla maiores distinctio. Magnam et laborum impedit iste ipsa alias numquam. Rem non eos quod non. Molestiae nostrum dolor corrupti sunt illum atque nulla tempore.&quot;,
         &quot;author&quot;: &quot;Jake Mackinlay&quot;,
-        &quot;cover_image&quot;: &quot;https://via.placeholder.com/640x480.png/00aaff?text=et&quot;,
+        &quot;cover_image&quot;: null,
         &quot;post_status&quot;: &quot;Published&quot;,
         &quot;community_type&quot;: null,
         &quot;created_at&quot;: &quot;2023-03-16T05:19:06.000000Z&quot;,
@@ -862,7 +876,7 @@ access-control-allow-origin: *
         &quot;post_content&quot;: &quot;Deleniti maiores qui animi soluta dolorum repudiandae. Aut nulla consequuntur odio rerum provident.&quot;,
         &quot;post_excerpt&quot;: &quot;Cupiditate eligendi laboriosam vitae sequi et enim aut. Veritatis quia sunt rem omnis velit a tenetur. Sit culpa commodi doloribus qui velit alias placeat.&quot;,
         &quot;author&quot;: &quot;Jake Mackinlay&quot;,
-        &quot;cover_image&quot;: &quot;https://via.placeholder.com/640x480.png/0011ff?text=illo&quot;,
+        &quot;cover_image&quot;: null,
         &quot;post_status&quot;: &quot;Published&quot;,
         &quot;community_type&quot;: null,
         &quot;created_at&quot;: &quot;2023-03-16T05:19:06.000000Z&quot;,
@@ -874,11 +888,23 @@ access-control-allow-origin: *
         &quot;post_content&quot;: &quot;Quod voluptatum sint fugit ut fugiat veniam quasi amet. Aperiam a qui non aut et. Assumenda aut quod sint. Consequatur rerum aut fugiat consectetur consequuntur ipsa quae.&quot;,
         &quot;post_excerpt&quot;: &quot;Molestiae suscipit beatae aut ipsum non delectus velit assumenda. Ut cupiditate sed et dolores minus eius quasi quibusdam. Vel distinctio eos voluptatum nobis.&quot;,
         &quot;author&quot;: &quot;Jake Mackinlay&quot;,
-        &quot;cover_image&quot;: &quot;https://via.placeholder.com/640x480.png/00ffdd?text=id&quot;,
+        &quot;cover_image&quot;: null,
         &quot;post_status&quot;: &quot;Published&quot;,
         &quot;community_type&quot;: null,
         &quot;created_at&quot;: &quot;2023-03-16T05:19:06.000000Z&quot;,
         &quot;updated_at&quot;: &quot;2023-03-16T05:19:06.000000Z&quot;
+    },
+    {
+        &quot;community_id&quot;: 9,
+        &quot;post_title&quot;: &quot;test community post&quot;,
+        &quot;post_content&quot;: &quot;&lt;p&gt;test community post content&lt;/p&gt;&quot;,
+        &quot;post_excerpt&quot;: &quot;&lt;p&gt;test community post excerpt&lt;/p&gt;&quot;,
+        &quot;author&quot;: &quot;Asim Thapa&quot;,
+        &quot;cover_image&quot;: &quot;uploads/community/edSpark-community-fotis-fotopoulos-DuHKoV44prg-unsplash.jpg&quot;,
+        &quot;post_status&quot;: &quot;Published&quot;,
+        &quot;community_type&quot;: &quot;test community type&quot;,
+        &quot;created_at&quot;: &quot;2023-03-22T23:54:59.000000Z&quot;,
+        &quot;updated_at&quot;: &quot;2023-03-22T23:54:59.000000Z&quot;
     }
 ]</code>
  </pre>
@@ -959,7 +985,7 @@ access-control-allow-origin: *
 
 <div class="javascript-example">
     <pre><code class="language-javascript">const url = new URL(
-    "http://localhost:8000/api/fetchUser/laudantium"
+    "http://localhost:8000/api/fetchUser/quisquam"
 );
 
 const headers = {
@@ -976,7 +1002,7 @@ fetch(url, {
 <div class="php-example">
     <pre><code class="language-php">$client = new \GuzzleHttp\Client();
 $response = $client-&gt;get(
-    'http://localhost:8000/api/fetchUser/laudantium',
+    'http://localhost:8000/api/fetchUser/quisquam',
     [
         'headers' =&gt; [
             'Content-Type' =&gt; 'application/json',
@@ -1000,7 +1026,7 @@ print_r(json_decode((string) $body));</code></pre></div>
             <pre><code class="language-http">cache-control: no-cache, private
 content-type: application/json
 x-ratelimit-limit: 60
-x-ratelimit-remaining: 55
+x-ratelimit-remaining: 32
 access-control-allow-origin: *
  </code></pre></details>         <pre>
 
@@ -1544,10 +1570,10 @@ access-control-allow-origin: *
  &nbsp;
                 <input type="text" style="display: none"
                name="id"                data-endpoint="GETapi-fetchUser--id-"
-               value="laudantium"
+               value="quisquam"
                data-component="url">
     <br>
-<p>The ID of the fetchUser. Example: <code>laudantium</code></p>
+<p>The ID of the fetchUser. Example: <code>quisquam</code></p>
             </div>
                     </form>
 
@@ -1605,7 +1631,7 @@ print_r(json_decode((string) $body));</code></pre></div>
             <pre><code class="language-http">cache-control: no-cache, private
 content-type: application/json
 x-ratelimit-limit: 60
-x-ratelimit-remaining: 54
+x-ratelimit-remaining: 31
 access-control-allow-origin: *
  </code></pre></details>         <pre>
 
@@ -1733,7 +1759,7 @@ print_r(json_decode((string) $body));</code></pre></div>
             <pre><code class="language-http">cache-control: no-cache, private
 content-type: application/json
 x-ratelimit-limit: 60
-x-ratelimit-remaining: 53
+x-ratelimit-remaining: 30
 access-control-allow-origin: *
  </code></pre></details>         <pre>
 
@@ -1861,7 +1887,7 @@ print_r(json_decode((string) $body));</code></pre></div>
             <pre><code class="language-http">cache-control: no-cache, private
 content-type: application/json
 x-ratelimit-limit: 60
-x-ratelimit-remaining: 52
+x-ratelimit-remaining: 29
 access-control-allow-origin: *
  </code></pre></details>         <pre>
 
@@ -25381,7 +25407,7 @@ access-control-allow-origin: *
 
 <div class="javascript-example">
     <pre><code class="language-javascript">const url = new URL(
-    "http://localhost:8000/api/fetchSiteById/cupiditate"
+    "http://localhost:8000/api/fetchSiteById/nulla"
 );
 
 const headers = {
@@ -25398,7 +25424,7 @@ fetch(url, {
 <div class="php-example">
     <pre><code class="language-php">$client = new \GuzzleHttp\Client();
 $response = $client-&gt;get(
-    'http://localhost:8000/api/fetchSiteById/cupiditate',
+    'http://localhost:8000/api/fetchSiteById/nulla',
     [
         'headers' =&gt; [
             'Content-Type' =&gt; 'application/json',
@@ -25422,7 +25448,7 @@ print_r(json_decode((string) $body));</code></pre></div>
             <pre><code class="language-http">cache-control: no-cache, private
 content-type: application/json
 x-ratelimit-limit: 60
-x-ratelimit-remaining: 51
+x-ratelimit-remaining: 28
 access-control-allow-origin: *
  </code></pre></details>         <pre>
 
@@ -25497,10 +25523,10 @@ access-control-allow-origin: *
  &nbsp;
                 <input type="text" style="display: none"
                name="id"                data-endpoint="GETapi-fetchSiteById--id-"
-               value="cupiditate"
+               value="nulla"
                data-component="url">
     <br>
-<p>The ID of the fetchSiteById. Example: <code>cupiditate</code></p>
+<p>The ID of the fetchSiteById. Example: <code>nulla</code></p>
             </div>
                     </form>
 
@@ -25558,7 +25584,7 @@ print_r(json_decode((string) $body));</code></pre></div>
             <pre><code class="language-http">cache-control: no-cache, private
 content-type: application/json
 x-ratelimit-limit: 60
-x-ratelimit-remaining: 50
+x-ratelimit-remaining: 27
 access-control-allow-origin: *
  </code></pre></details>         <pre>
 
@@ -25703,7 +25729,7 @@ print_r(json_decode((string) $body));</code></pre></div>
             <pre><code class="language-http">cache-control: no-cache, private
 content-type: application/json
 x-ratelimit-limit: 60
-x-ratelimit-remaining: 49
+x-ratelimit-remaining: 26
 access-control-allow-origin: *
  </code></pre></details>         <pre>
 
@@ -25848,7 +25874,7 @@ print_r(json_decode((string) $body));</code></pre></div>
             <pre><code class="language-http">cache-control: no-cache, private
 content-type: application/json
 x-ratelimit-limit: 60
-x-ratelimit-remaining: 48
+x-ratelimit-remaining: 25
 access-control-allow-origin: *
  </code></pre></details>         <pre>
 
@@ -25859,7 +25885,8 @@ access-control-allow-origin: *
         &quot;product_content&quot;: &quot;Exercitationem et nemo non hic neque provident quia. Alias aperiam quod accusamus deleniti.&quot;,
         &quot;product_excerpt&quot;: &quot;Tempore eos et itaque et accusamus. Illo adipisci perferendis voluptate ut repellendus similique cum. Ipsa ratione non architecto animi. Quia neque voluptatum molestiae qui veniam recusandae.&quot;,
         &quot;price&quot;: 100,
-        &quot;cover_image&quot;: &quot;https://via.placeholder.com/640x480.png/00ff22?text=deserunt&quot;,
+        &quot;cover_image&quot;: null,
+        &quot;gallery&quot;: null,
         &quot;product_SKU&quot;: &quot;100&quot;,
         &quot;category&quot;: {
             &quot;categoryId&quot;: null,
@@ -25877,7 +25904,8 @@ access-control-allow-origin: *
         &quot;product_content&quot;: &quot;Ratione consequatur quasi impedit distinctio quasi neque. Aliquam et mollitia maxime rerum maiores debitis. Occaecati ex iusto deleniti et labore. Labore est hic accusantium unde.&quot;,
         &quot;product_excerpt&quot;: &quot;Esse officiis voluptatem maxime. Quam error culpa tenetur consectetur atque. Incidunt rerum consequatur dolor id ea voluptatem commodi. Qui distinctio repellat earum voluptas repudiandae quam qui.&quot;,
         &quot;price&quot;: 100,
-        &quot;cover_image&quot;: &quot;https://via.placeholder.com/640x480.png/003377?text=saepe&quot;,
+        &quot;cover_image&quot;: null,
+        &quot;gallery&quot;: null,
         &quot;product_SKU&quot;: &quot;100&quot;,
         &quot;category&quot;: {
             &quot;categoryId&quot;: null,
@@ -25895,7 +25923,8 @@ access-control-allow-origin: *
         &quot;product_content&quot;: &quot;Commodi numquam omnis aut ea atque enim. Qui maxime maxime enim optio. Culpa fugiat quis quod unde rem aut. Corrupti veniam necessitatibus ipsam quia aperiam dolorum omnis.&quot;,
         &quot;product_excerpt&quot;: &quot;Vitae sit dolores aspernatur et consectetur inventore. Minus dolor mollitia officiis beatae distinctio aut eum.&quot;,
         &quot;price&quot;: 100,
-        &quot;cover_image&quot;: &quot;https://via.placeholder.com/640x480.png/0099aa?text=sint&quot;,
+        &quot;cover_image&quot;: null,
+        &quot;gallery&quot;: null,
         &quot;product_SKU&quot;: &quot;100&quot;,
         &quot;category&quot;: {
             &quot;categoryId&quot;: null,
@@ -25913,7 +25942,8 @@ access-control-allow-origin: *
         &quot;product_content&quot;: &quot;Repudiandae ipsum dolores ad id. Illum incidunt quod velit sit. Sint occaecati corrupti provident nisi. Quia temporibus nihil quis eaque et adipisci dolores.&quot;,
         &quot;product_excerpt&quot;: &quot;Iste veniam non perspiciatis id ea animi. Excepturi et facere ipsam ipsam voluptatibus sed. Ut harum exercitationem pariatur possimus voluptas. Voluptate dicta qui dolorem et dignissimos quas.&quot;,
         &quot;price&quot;: 100,
-        &quot;cover_image&quot;: &quot;https://via.placeholder.com/640x480.png/00bb88?text=doloremque&quot;,
+        &quot;cover_image&quot;: null,
+        &quot;gallery&quot;: null,
         &quot;product_SKU&quot;: &quot;100&quot;,
         &quot;category&quot;: {
             &quot;categoryId&quot;: null,
@@ -25931,7 +25961,32 @@ access-control-allow-origin: *
         &quot;product_content&quot;: &quot;Quod et voluptatem ullam id. Aut dolorem odit sed similique numquam voluptatum vero. Reiciendis dolores rerum et eum mollitia eaque neque enim.&quot;,
         &quot;product_excerpt&quot;: &quot;Quia aliquam autem veniam ut laborum. Et iste laboriosam magnam repellat debitis reprehenderit. Quisquam ut quo deleniti repellat ab et.&quot;,
         &quot;price&quot;: 100,
-        &quot;cover_image&quot;: &quot;https://via.placeholder.com/640x480.png/00bb99?text=dolore&quot;,
+        &quot;cover_image&quot;: null,
+        &quot;gallery&quot;: null,
+        &quot;product_SKU&quot;: &quot;100&quot;,
+        &quot;category&quot;: {
+            &quot;categoryId&quot;: null,
+            &quot;categoryName&quot;: null
+        },
+        &quot;brand&quot;: {
+            &quot;brandId&quot;: null,
+            &quot;brandName&quot;: null
+        },
+        &quot;product_isLoan&quot;: null
+    },
+    {
+        &quot;id&quot;: 6,
+        &quot;product_name&quot;: &quot;test&quot;,
+        &quot;product_content&quot;: &quot;&lt;p&gt;test&lt;/p&gt;&quot;,
+        &quot;product_excerpt&quot;: &quot;&lt;p&gt;test&lt;/p&gt;&quot;,
+        &quot;price&quot;: 150,
+        &quot;cover_image&quot;: &quot;uploads/hardware/edSpark-hardware-rodion-kutsaev-0VGG7cqTwCo-unsplash.jpg&quot;,
+        &quot;gallery&quot;: [
+            &quot;uploads/hardware/gallery/edSpark-hardware-gallery-emily-bernal-v9vII5gV8Lw-unsplash.jpg&quot;,
+            &quot;uploads/hardware/gallery/edSpark-hardware-gallery-desola-lanre-ologun-vII7qKAk-9A-unsplash.jpg&quot;,
+            &quot;uploads/hardware/gallery/edSpark-hardware-gallery-fotis-fotopoulos-DuHKoV44prg-unsplash.jpg&quot;,
+            &quot;uploads/hardware/gallery/edSpark-hardware-gallery-john-schnobrich-FlPc9_VocJ4-unsplash.jpg&quot;
+        ],
         &quot;product_SKU&quot;: &quot;100&quot;,
         &quot;category&quot;: {
             &quot;categoryId&quot;: null,
@@ -26022,7 +26077,7 @@ access-control-allow-origin: *
 
 <div class="javascript-example">
     <pre><code class="language-javascript">const url = new URL(
-    "http://localhost:8000/api/fetchSchoolInfoById/magnam"
+    "http://localhost:8000/api/fetchSchoolInfoById/aut"
 );
 
 const headers = {
@@ -26039,7 +26094,7 @@ fetch(url, {
 <div class="php-example">
     <pre><code class="language-php">$client = new \GuzzleHttp\Client();
 $response = $client-&gt;get(
-    'http://localhost:8000/api/fetchSchoolInfoById/magnam',
+    'http://localhost:8000/api/fetchSchoolInfoById/aut',
     [
         'headers' =&gt; [
             'Content-Type' =&gt; 'application/json',
@@ -26063,12 +26118,12 @@ print_r(json_decode((string) $body));</code></pre></div>
             <pre><code class="language-http">cache-control: no-cache, private
 content-type: application/json
 x-ratelimit-limit: 60
-x-ratelimit-remaining: 47
+x-ratelimit-remaining: 24
 access-control-allow-origin: *
  </code></pre></details>         <pre>
 
 <code class="language-json" style="max-height: 300px;">{
-    &quot;message&quot;: &quot;SQLSTATE[42S02]: Base table or view not found: 1146 Table &#039;edspark-phase3.school_info&#039; doesn&#039;t exist (SQL: select * from `school_info` where `school_id` = magnam limit 1)&quot;,
+    &quot;message&quot;: &quot;SQLSTATE[42S02]: Base table or view not found: 1146 Table &#039;edspark-phase3.school_info&#039; doesn&#039;t exist (SQL: select * from `school_info` where `school_id` = aut limit 1)&quot;,
     &quot;exception&quot;: &quot;Illuminate\\Database\\QueryException&quot;,
     &quot;file&quot;: &quot;C:\\Users\\athap\\Desktop\\Projects-Lumination\\edSpark-phase3\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Connection.php&quot;,
     &quot;line&quot;: 760,
@@ -26663,10 +26718,10 @@ access-control-allow-origin: *
  &nbsp;
                 <input type="text" style="display: none"
                name="id"                data-endpoint="GETapi-fetchSchoolInfoById--id-"
-               value="magnam"
+               value="aut"
                data-component="url">
     <br>
-<p>The ID of the fetchSchoolInfoById. Example: <code>magnam</code></p>
+<p>The ID of the fetchSchoolInfoById. Example: <code>aut</code></p>
             </div>
                     </form>
 
@@ -26683,7 +26738,7 @@ access-control-allow-origin: *
 
 <div class="javascript-example">
     <pre><code class="language-javascript">const url = new URL(
-    "http://localhost:8000/api/fetchSchoolByFullName/distinctio"
+    "http://localhost:8000/api/fetchSchoolByFullName/aut"
 );
 
 const headers = {
@@ -26700,7 +26755,7 @@ fetch(url, {
 <div class="php-example">
     <pre><code class="language-php">$client = new \GuzzleHttp\Client();
 $response = $client-&gt;get(
-    'http://localhost:8000/api/fetchSchoolByFullName/distinctio',
+    'http://localhost:8000/api/fetchSchoolByFullName/aut',
     [
         'headers' =&gt; [
             'Content-Type' =&gt; 'application/json',
@@ -26724,12 +26779,12 @@ print_r(json_decode((string) $body));</code></pre></div>
             <pre><code class="language-http">cache-control: no-cache, private
 content-type: application/json
 x-ratelimit-limit: 60
-x-ratelimit-remaining: 46
+x-ratelimit-remaining: 23
 access-control-allow-origin: *
  </code></pre></details>         <pre>
 
 <code class="language-json" style="max-height: 300px;">{
-    &quot;message&quot;: &quot;SQLSTATE[42S02]: Base table or view not found: 1146 Table &#039;edspark-phase3.school_info&#039; doesn&#039;t exist (SQL: select * from `school_info` where `full_name` = distinctio limit 1)&quot;,
+    &quot;message&quot;: &quot;SQLSTATE[42S02]: Base table or view not found: 1146 Table &#039;edspark-phase3.school_info&#039; doesn&#039;t exist (SQL: select * from `school_info` where `full_name` = aut limit 1)&quot;,
     &quot;exception&quot;: &quot;Illuminate\\Database\\QueryException&quot;,
     &quot;file&quot;: &quot;C:\\Users\\athap\\Desktop\\Projects-Lumination\\edSpark-phase3\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Connection.php&quot;,
     &quot;line&quot;: 760,
@@ -27324,10 +27379,10 @@ access-control-allow-origin: *
  &nbsp;
                 <input type="text" style="display: none"
                name="name"                data-endpoint="GETapi-fetchSchoolByFullName--name-"
-               value="distinctio"
+               value="aut"
                data-component="url">
     <br>
-<p>Example: <code>distinctio</code></p>
+<p>Example: <code>aut</code></p>
             </div>
                     </form>
 
@@ -27344,7 +27399,7 @@ access-control-allow-origin: *
 
 <div class="javascript-example">
     <pre><code class="language-javascript">const url = new URL(
-    "http://localhost:8000/api/getAllInfoOfOneSchool/quis"
+    "http://localhost:8000/api/getAllInfoOfOneSchool/aperiam"
 );
 
 const headers = {
@@ -27361,7 +27416,7 @@ fetch(url, {
 <div class="php-example">
     <pre><code class="language-php">$client = new \GuzzleHttp\Client();
 $response = $client-&gt;get(
-    'http://localhost:8000/api/getAllInfoOfOneSchool/quis',
+    'http://localhost:8000/api/getAllInfoOfOneSchool/aperiam',
     [
         'headers' =&gt; [
             'Content-Type' =&gt; 'application/json',
@@ -27385,12 +27440,12 @@ print_r(json_decode((string) $body));</code></pre></div>
             <pre><code class="language-http">cache-control: no-cache, private
 content-type: application/json
 x-ratelimit-limit: 60
-x-ratelimit-remaining: 45
+x-ratelimit-remaining: 22
 access-control-allow-origin: *
  </code></pre></details>         <pre>
 
 <code class="language-json" style="max-height: 300px;">{
-    &quot;message&quot;: &quot;SQLSTATE[42S02]: Base table or view not found: 1146 Table &#039;edspark-phase3.school_info&#039; doesn&#039;t exist (SQL: select * from `school_info` where `full_name` = quis)&quot;,
+    &quot;message&quot;: &quot;SQLSTATE[42S02]: Base table or view not found: 1146 Table &#039;edspark-phase3.school_info&#039; doesn&#039;t exist (SQL: select * from `school_info` where `full_name` = aperiam)&quot;,
     &quot;exception&quot;: &quot;Illuminate\\Database\\QueryException&quot;,
     &quot;file&quot;: &quot;C:\\Users\\athap\\Desktop\\Projects-Lumination\\edSpark-phase3\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Connection.php&quot;,
     &quot;line&quot;: 760,
@@ -27978,10 +28033,10 @@ access-control-allow-origin: *
  &nbsp;
                 <input type="text" style="display: none"
                name="name"                data-endpoint="GETapi-getAllInfoOfOneSchool--name-"
-               value="quis"
+               value="aperiam"
                data-component="url">
     <br>
-<p>Example: <code>quis</code></p>
+<p>Example: <code>aperiam</code></p>
             </div>
                     </form>
 
@@ -27998,7 +28053,7 @@ access-control-allow-origin: *
 
 <div class="javascript-example">
     <pre><code class="language-javascript">const url = new URL(
-    "http://localhost:8000/api/setSchoolInfoByName/aut"
+    "http://localhost:8000/api/setSchoolInfoByName/quam"
 );
 
 const headers = {
@@ -28015,7 +28070,7 @@ fetch(url, {
 <div class="php-example">
     <pre><code class="language-php">$client = new \GuzzleHttp\Client();
 $response = $client-&gt;post(
-    'http://localhost:8000/api/setSchoolInfoByName/aut',
+    'http://localhost:8000/api/setSchoolInfoByName/quam',
     [
         'headers' =&gt; [
             'Content-Type' =&gt; 'application/json',
@@ -28039,12 +28094,12 @@ print_r(json_decode((string) $body));</code></pre></div>
             <pre><code class="language-http">cache-control: no-cache, private
 content-type: application/json
 x-ratelimit-limit: 60
-x-ratelimit-remaining: 44
+x-ratelimit-remaining: 21
 access-control-allow-origin: *
  </code></pre></details>         <pre>
 
 <code class="language-json" style="max-height: 300px;">{
-    &quot;message&quot;: &quot;SQLSTATE[42S02]: Base table or view not found: 1146 Table &#039;edspark-phase3.school_info&#039; doesn&#039;t exist (SQL: select * from `school_info` where (`full_name` = aut and `status` = published) order by `created_at` desc limit 1)&quot;,
+    &quot;message&quot;: &quot;SQLSTATE[42S02]: Base table or view not found: 1146 Table &#039;edspark-phase3.school_info&#039; doesn&#039;t exist (SQL: select * from `school_info` where (`full_name` = quam and `status` = published) order by `created_at` desc limit 1)&quot;,
     &quot;exception&quot;: &quot;Illuminate\\Database\\QueryException&quot;,
     &quot;file&quot;: &quot;C:\\Users\\athap\\Desktop\\Projects-Lumination\\edSpark-phase3\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Connection.php&quot;,
     &quot;line&quot;: 760,
@@ -28646,10 +28701,10 @@ access-control-allow-origin: *
  &nbsp;
                 <input type="text" style="display: none"
                name="name"                data-endpoint="POSTapi-setSchoolInfoByName--name-"
-               value="aut"
+               value="quam"
                data-component="url">
     <br>
-<p>Example: <code>aut</code></p>
+<p>Example: <code>quam</code></p>
             </div>
                     </form>
 
@@ -28707,7 +28762,7 @@ print_r(json_decode((string) $body));</code></pre></div>
             <pre><code class="language-http">cache-control: no-cache, private
 content-type: application/json
 x-ratelimit-limit: 60
-x-ratelimit-remaining: 43
+x-ratelimit-remaining: 20
 access-control-allow-origin: *
  </code></pre></details>         <pre>
 
@@ -28835,7 +28890,7 @@ print_r(json_decode((string) $body));</code></pre></div>
             <pre><code class="language-http">cache-control: no-cache, private
 content-type: application/json
 x-ratelimit-limit: 60
-x-ratelimit-remaining: 42
+x-ratelimit-remaining: 19
 access-control-allow-origin: *
  </code></pre></details>         <pre>
 
@@ -28963,7 +29018,7 @@ print_r(json_decode((string) $body));</code></pre></div>
             <pre><code class="language-http">cache-control: no-cache, private
 content-type: application/json
 x-ratelimit-limit: 60
-x-ratelimit-remaining: 41
+x-ratelimit-remaining: 18
 access-control-allow-origin: *
  </code></pre></details>         <pre>
 
@@ -29448,7 +29503,7 @@ print_r(json_decode((string) $body));</code></pre></div>
             <pre><code class="language-http">cache-control: no-cache, private
 content-type: application/json
 x-ratelimit-limit: 60
-x-ratelimit-remaining: 40
+x-ratelimit-remaining: 17
 access-control-allow-origin: *
  </code></pre></details>         <pre>
 

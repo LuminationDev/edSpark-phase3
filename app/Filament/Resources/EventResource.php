@@ -14,6 +14,8 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 use Illuminate\Support\Facades\Auth;
+use Livewire\TemporaryUploadedFile;
+
 
 
 class EventResource extends Resource
@@ -47,6 +49,14 @@ class EventResource extends Resource
                                 'attachFiles',
                             ])
                             ->maxLength(65535),
+                        Forms\Components\FileUpload::make('cover_image')
+                            ->preserveFilenames()
+                            ->disk('public')
+                            ->directory('uploads/event')
+                            ->acceptedFileTypes(['image/jpeg', 'image/jpg', 'image/png'])
+                            ->getUploadedFileNameForStorageUsing(function (TemporaryUploadedFile $file): string {
+                                return (string) str($file->getClientOriginalName())->prepend('edSpark-event-');
+                            }),
                         Forms\Components\Grid::make(3)
                             ->schema([
                                 Forms\Components\DateTimePicker::make('start_date')
@@ -94,6 +104,7 @@ class EventResource extends Resource
                 Tables\Columns\TextColumn::make('event_content')
                     ->label('Content')
                     ->limit(20),
+                Tables\Columns\ImageColumn::make('cover_image'),
                 // Tables\Columns\TextColumn::make('event_excerpt'),
                 // Tables\Columns\TextColumn::make('cover_image'),
                 // Tables\Columns\TextColumn::make('start_date')

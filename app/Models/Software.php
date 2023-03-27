@@ -29,6 +29,7 @@ class Software extends Model
         'post_modified',
         'post_status',
         'author_id',
+        'cover_image',
         'softwaretype_id'
     ];
 
@@ -41,4 +42,8 @@ class Software extends Model
     {
         return $this->belongsTo(Softwaretype::class);
     }
+
+    protected $casts = [
+        'cover_image' => 'array',
+    ];
 }

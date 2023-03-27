@@ -14,6 +14,7 @@ use Filament\Tables;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Illuminate\Support\Facades\Auth;
+use Livewire\TemporaryUploadedFile;
 
 class AdviceResource extends Resource
 {
@@ -31,49 +32,46 @@ class AdviceResource extends Resource
     public static function form(Form $form): Form
     {
         $user = Auth::user()->full_name;
-        return $form
-            ->schema([
-                Forms\Components\Card::make()
-                    ->schema([
-                        Forms\Components\TextInput::make('post_title')
-                            ->label('Title')
-                            ->required()
-                            ->maxLength(255),
-                        Forms\Components\RichEditor::make('post_content')
-                            ->label('Content')
-                            ->required()
-                            ->maxLength(65535),
-                        Forms\Components\RichEditor::make('post_excerpt')
-                            ->label('Excerpt')
-                            ->disableToolbarButtons([
-                                'attachFiles',
-                            ]),
-                        Forms\Components\Grid::make(3)
-                            ->schema([
-                                Forms\Components\TextInput::make('Author')
-                                    ->default($user)
-                                    ->disabled(),
-                                Forms\Components\BelongsToSelect::make('advice_type')
-                                    ->label('Advice type')
-                                    ->relationship('advicetype', 'advice_type_name'),
-                                Forms\Components\Select::make('post_status')
-                                    ->options([
-                                        'Published' => 'Published',
-                                        'Unpublished' => 'Unpublished',
-                                        'Draft' => 'Draft',
-                                        'Pending' => 'Pending'
-                                    ])
-                                    ->label('Status')
-                                    ->required(),
-                                    ]),
-                        Forms\Components\FileUpload::make('cover_image')
-                            ->preserveFilenames()
-                            ->label('Cover Image')
-                            ->disk('public')
-                            ->directory('uploads')
-                            ->acceptedFileTypes(['image/jpeg', 'image/png'])
-                    ]),
-            ]);
+        return $form->schema([
+            Forms\Components\Card::make()->schema([
+                Forms\Components\TextInput::make('post_title')
+                    ->label('Title')
+                    ->required()
+                    ->maxLength(255),
+                Forms\Components\RichEditor::make('post_content')
+                    ->label('Content')
+                    ->required()
+                    ->maxLength(65535),
+                Forms\Components\RichEditor::make('post_excerpt')
+                    ->label('Excerpt')
+                    ->disableToolbarButtons(['attachFiles']),
+                Forms\Components\FileUpload::make('cover_image')
+                    ->preserveFilenames()
+                    ->disk('public')
+                    ->directory('uploads/advice')
+                    ->acceptedFileTypes(['image/jpeg', 'image/jpg', 'image/png'])
+                    ->getUploadedFileNameForStorageUsing(function (TemporaryUploadedFile $file): string {
+                        return (string) str($file->getClientOriginalName())->prepend('edSpark-advice-');
+                    }),
+                Forms\Components\Grid::make(3)->schema([
+                    Forms\Components\TextInput::make('Author')
+                        ->default($user)
+                        ->disabled(),
+                    Forms\Components\BelongsToSelect::make('advice_type')
+                        ->label('Advice type')
+                        ->relationship('advicetype', 'advice_type_name'),
+                    Forms\Components\Select::make('post_status')
+                        ->options([
+                            'Published' => 'Published',
+                            'Unpublished' => 'Unpublished',
+                            'Draft' => 'Draft',
+                            'Pending' => 'Pending',
+                        ])
+                        ->label('Status')
+                        ->required(),
+                ]),
+            ]),
+        ]);
     }
 
     public static function table(Table $table): Table
@@ -84,6 +82,7 @@ class AdviceResource extends Resource
                     ->label('Title')
                     ->sortable()
                     ->searchable(),
+                Tables\Columns\ImageColumn::make('cover_image'),
                 Tables\Columns\TextColumn::make('advicetype.advice_type_name')
                     ->label('Type')
                     ->sortable()
@@ -99,7 +98,6 @@ class AdviceResource extends Resource
                     ->label('Status')
                     ->sortable()
                     ->searchable(),
-
             ])
             ->filters([
                 //
@@ -109,16 +107,14 @@ class AdviceResource extends Resource
                 Tables\Actions\EditAction::make(),
                 Tables\Actions\DeleteAction::make(),
             ])
-            ->bulkActions([
-                Tables\Actions\DeleteBulkAction::make(),
-            ]);
+            ->bulkActions([Tables\Actions\DeleteBulkAction::make()]);
     }
 
     public static function getRelations(): array
     {
         return [
-            //
-        ];
+                //
+            ];
     }
 
     public static function getPages(): array
@@ -130,8 +126,8 @@ class AdviceResource extends Resource
         ];
     }
 
-    public static function getEloquentQuery(): Builder
-    {
-        return parent::getEloquentQuery()->where('post_status', 'Published');
-    }
+    // public static function getEloquentQuery(): Builder
+    // {
+    //     return parent::getEloquentQuery()->where('post_status', 'Published');
+    // }
 }

@@ -39,7 +39,7 @@ class PermissionResource extends Resource
                         Forms\Components\CheckboxList::make('roles')
                             ->label('Associated Roles')
                             ->extraAttributes(['class' => 'text-primary-600'])
-                            ->relationship('roles', 'role_name')
+                            ->relationship('roles', 'role_name', fn (Builder $query) => $query->where('role_name', '!=', 'superadmin'))
                             ->columns(4)
                             ->bulkToggleable()
                     ])

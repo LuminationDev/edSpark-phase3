@@ -30,6 +30,8 @@ class Hardware extends Model
         'product_SKU',
         'created',
         'modified',
+        'cover_image',
+        'gallery',
         'product_isLoan'
 
     ];
@@ -53,4 +55,10 @@ class Hardware extends Model
     // {
     //     return $this->belongsTo(Productinventory::class);
     // }
+
+    protected $casts = [
+        'cover_image' => 'array',
+        'gallery' => 'array',
+    ];
+
 }
