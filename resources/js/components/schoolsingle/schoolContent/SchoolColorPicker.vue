@@ -1,11 +1,9 @@
 <script setup>
 
-console.log('inside schoolcolorpicker')
 import { schoolColorTheme} from "@/js/constants/schoolColorTheme";
 
 const emits = defineEmits(['colorSelected'])
 const handleColorBoxClick = (color) => {
-    console.log('handling colorbox click ' + color.toUpperCase())
     emits('colorSelected' , color)
 }
 </script>

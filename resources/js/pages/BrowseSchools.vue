@@ -1,13 +1,13 @@
 <script setup>
 import SchoolCard from "@/js/components/schools/SchoolCard.vue";
-import {computed , onMounted, ref} from "vue";
+import {computed, onBeforeMount,  ref} from "vue";
 import axios from "axios";
 import SearchBar from "@/js/components/browseschools/SearchBar.vue";
 const serverURL = import.meta.env.VITE_SERVER_URL_API
 
 
 const allSchoolsArray = ref([])
-onMounted(() =>{
+onBeforeMount(() =>{
     axios.get(`${serverURL}/fetchAllSchools`).then(res => {
         allSchoolsArray.value = res.data
     })
