@@ -127,8 +127,8 @@ class SchoolController extends Controller
                     $error = $e->getMessage();
                 }
             }
-
-            $metadata = $request->all()->schoolMetadata;
+            // still not working need to fix updateMetadata
+            $metadata = $request->schoolMetadata;
             if($metadata){
                 foreach ($metadata as $key => $value){
                     try {
@@ -154,11 +154,47 @@ class SchoolController extends Controller
                     }
                 }
             };
+            // get the latest data with the correct/expected form and return with res()
+            $school = School::where('id', $data['id'])->first();
+
+            // get metadata
+            $schoolMetadata = Schoolmeta::where('school_id', $school->id)->get();
+            $schoolMetadataToSend = [];
+            if($schoolMetadata){
+                foreach($schoolMetadata as $key => $value){
+                    $res = [
+                        'schoolmeta_key' => $value->schoolmeta_key,
+                        'schoolmeta_value' => $value->schoolmeta_value
+                    ];
+                $schoolMetadataToSend[] = $res;
+                }
+            }
+
+            $returningResult = [
+                'id' => $school->id,
+                'site' => [
+                    'site_id' => $school->site_id,
+                    'site_name' => ($school->site_id) ? $school->site->site_name : NULL
+                ],
+                'owner' => [
+                    'owner_id' => $school->owner_id,
+                    'owner_name' => ($school->owner_id) ? $school->owner->full_name : NULL
+                ],
+                'name' => $school->name,
+                'content_blocks' => ($school->content_blocks) ? json_decode($school->content_blocks) : NULL,
+                'logo' => ($school->logo) ? $school->logo : NULL,
+                'cover_image' => ($school->cover_image) ? $school->cover_image : NULL,
+                'tech_used' => ($school->tech_used) ? json_decode($school->tech_used) : NULL,
+                'pedagogical_approaches' => ($school->pedagogical_approaches) ? json_decode($school->pedagogical_approaches) : NULL,
+                'tech_landscape' => ($school->tech_landscape) ? json_decode($school->tech_landscape) : NULL,
+                'metadata' => isset($schoolMetadataToSend) ? $schoolMetadataToSend : NULL
+            ];
 
             return response()->json([
                 'message' => "School updated successfully",
                 'error' => $error,
-                'status' => 200
+                'status' => 200,
+                'data' => $returningResult
             ]);
         }
     }

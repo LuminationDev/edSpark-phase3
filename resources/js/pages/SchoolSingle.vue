@@ -90,8 +90,13 @@ const handleSaveNewSchoolInfo = async (content_blocks, tech_used) => {
         data: newUpdatedSchoolFormData,
         headers: {"Content-Type" : "multipart/form-data"}
     }).then(res =>{
-        console.log('success post not sure if backend works haha')// assign school info with newest data that has been saved succesfully to trigger update
-        schoolContent.value = _.cloneDeep(newUpdatedSchoolFormData.schoolData)
+        // assign school info with newest data that has been saved succesfully to trigger update
+        console.log(res.data.data)
+        schoolContent.value = res.data.data
+        // parse JSON after receiving data from backend. can be done better
+        // can consider computed function
+        schoolContent.value.content_blocks = parseToJsonIfString(schoolContent.value.content_blocks)
+        schoolContent.value.tech_used = parseToJsonIfString(schoolContent.value.tech_used)
     }).catch(err =>{
         console.log(err)
         console.log('Something wrong while attempting to post ')
@@ -103,8 +108,12 @@ const handleChangeColorTheme = (newColor) => {
     console.log('received command to swap color to -> ' + 'newColor')
     colorTheme.value = newColor
 }
-
-const handleReceivePhotoFromContent = (type, file)=> {
+/**
+ * Handle Event emitted from children containing type {logo,coverImage} and Image file
+ * @param {String} type
+ * @param {File} file
+ */
+const handleReceivePhotoFromContent = (type,file) => {
     switch(type){
     case 'logo':
         console.log('received logo')
