@@ -15,7 +15,7 @@ const props = defineProps({
 </script>
 <template>
     <div
-        v-for="(tech,index) in techList"
+        v-for="(tech,index) in props.techList"
         :key="index"
     >
         <SchoolCardIcon

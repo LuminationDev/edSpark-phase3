@@ -5,25 +5,24 @@
 import { useRouter, useRoute } from 'vue-router';
 import {ref} from 'vue'
 import axios from 'axios'
+import {parseToJsonIfString} from "@/js/helpers/jsonHelpers";
+
 /**
  * IMPORT COMPONENTS
  */
 import SchoolsProfile from '../components/schools/SchoolsProfile.vue';
-import OurStory from '../components/schools/OurStory.vue';
 import SchoolContent from "@/js/components/schoolsingle/SchoolContent.vue";
-import SchoolTech from "@/js/components/schoolsingle/SchoolTech.vue";
 /**
  * IMPORT SVGS
  */
 import SchoolsSubMenu from '../components/svg/SchoolsSubMenu.vue';
 import ChevronRight from '../components/svg/ChevronRight.vue';
 import {onBeforeMount} from "vue";
-import {useUserStore} from "@/js/stores/useUserStore";
-import {storeToRefs} from "pinia";
 
 const route = useRoute();
 const router = useRouter();
 const serverURL = import.meta.env.VITE_SERVER_URL_API
+const imageURL = import.meta.env.VITE_SERVER_IMAGE_API
 
 
 const urlOrigin = window.location.origin
@@ -37,11 +36,19 @@ const colorTheme = ref('amber') // default color theme
 onBeforeMount( async () =>{
     // TODO Erick - Replace with get one school instead of all then filter.
     await axios.get(`${serverURL}/fetchAllSchools`).then(res => {
-        const filteredSchool =res.data.filter(school => school.name === route.params.name.replace('%20', ' ' ))[0]
-        schoolContent.value = filteredSchool
-        const colorThemeMeta = filteredSchool.metadata.filter(meta => meta['schoolmeta_key'] === 'school_color_theme')
-        colorTheme.value = colorThemeMeta[0]['schoolmeta_value']
-
+        const filteredSchool = res.data.filter(school => school.name === route.params.name.replace('%20', ' ' ))[0]
+        schoolContent.value = (typeof filteredSchool === 'string') ? JSON.parse(filteredSchool) : filteredSchool
+        /**
+         * Parse content of SchoolContent upon receiving from server.
+         * avoid further processing down the components
+         */
+        schoolContent.value.content_blocks = parseToJsonIfString(schoolContent.value.content_blocks)
+        schoolContent.value.tech_used = parseToJsonIfString(schoolContent.value.tech_used)
+        schoolContent.value.cover_image = schoolContent.value.cover_image.replace("/\\/g", "")
+        if(filteredSchool.metadata){
+            const colorThemeMeta = schoolContent.value['metadata'].filter(meta => meta['schoolmeta_key'] === 'school_color_theme')
+            colorTheme.value = colorThemeMeta[0]['schoolmeta_value']
+        }
     }).catch(err => {
         console.log(err)
     })
@@ -79,7 +86,10 @@ const handleChangeColorTheme = (newColor) => {
     <div class="-mt-[140px] flex flex-col ">
         <SchoolsProfile>
             <template #hero>
-                <div class="px-[48px] bg-[url(http://localhost:5173/resources/assets/images/adelaide-high-school.png)] h-[680px] w-full bg-center bg-no-repeat bg-cover">
+                <div
+                    class="px-[48px]  h-[680px] w-full bg-center bg-no-repeat bg-cover"
+                    :class="`bg-[url(${imageURL}/${schoolContent.cover_image})]`"
+                >
                     <div class="h-full w-full grid grid-cols-12">
                         <div class="col-span-7 flex mt-[190px]">
                             <div class="flex flex-row gap-2 h-fit place-items-center">
