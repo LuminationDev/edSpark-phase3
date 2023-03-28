@@ -3,13 +3,16 @@ import SchoolCard from "@/js/components/schools/SchoolCard.vue";
 import {computed, onBeforeMount,  ref} from "vue";
 import axios from "axios";
 import SearchBar from "@/js/components/browseschools/SearchBar.vue";
+import {parseToJsonIfString, schoolContentArrParser} from "@/js/helpers/jsonHelpers";
 const serverURL = import.meta.env.VITE_SERVER_URL_API
+
+
 
 
 const allSchoolsArray = ref([])
 onBeforeMount(() =>{
     axios.get(`${serverURL}/fetchAllSchools`).then(res => {
-        allSchoolsArray.value = res.data
+        allSchoolsArray.value = schoolContentArrParser(res.data)
     })
 })
 const filterTerm = ref('')
