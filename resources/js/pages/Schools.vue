@@ -1,11 +1,14 @@
 <script setup>
-import {onMounted, ref} from 'vue'
+import {onBeforeMount, onMounted, ref} from 'vue'
 import axios from 'axios'
 import SchoolsHero from '../components/schools/SchoolsHero.vue';
 import SearchableMap from '../components/schools/SearchableMap.vue';
 import SchoolCard from "@/js/components/schools/SchoolCard.vue";
 import GenericButton from "@/js/components/button/GenericButton.vue";
 import {useRouter} from "vue-router";
+import {useUserStore} from "@/js/stores/useUserStore";
+import {storeToRefs} from "pinia";
+import CreateSchoolForm from "@/js/components/schools/createSchool/CreateSchoolForm.vue";
 const schoolsLoading = ref(false)
 const serverURL = import.meta.env.VITE_SERVER_URL_API
 
@@ -14,8 +17,38 @@ const serverURL = import.meta.env.VITE_SERVER_URL_API
 const featuredSiteIds = [292,69,55,42]
 const featuredSites = ref([])
 const featuredSitesData = ref([])
+const createSchool = ref(false)
 
-const router = useRouter()
+const router = useRouter();
+
+const userStore = useUserStore()
+const {currentUser} = storeToRefs(userStore)
+
+onBeforeMount(async () => {
+    /**
+     * Perform check for user meta here
+     * has_school field
+     */
+    let currentUserHasSchool
+    const currentUserId = currentUser.value.id
+    const currentUserRole = currentUser.value.role
+    try{
+        await axios.post(`${serverURL}/getUserMetadata`,{id: currentUserId, userMetakey: 'has_school'}).then(res => {
+            currentUserHasSchool = res.data[0].user_meta_value == 'false'? false : true
+        })
+        if(!currentUserHasSchool && (currentUserRole == 'Principal' || currentUserRole == 'Superadmin')){
+            console.log('School is not init yet. you should init the school')
+            createSchool.value = true
+        } else if(!currentUserHasSchool){
+            console.log('Please notify your principal to set up the school')
+        } else{
+            console.log('hasnt been handled yet')
+        }
+
+    } catch(err){
+        console.log(err)
+    }
+})
 
 
 onMounted(() =>{
@@ -26,13 +59,23 @@ onMounted(() =>{
     })
 })
 
+const handleFinishCreateSchool = () =>{
+    createSchool.value = false
+}
+
 const handleBrowseAllSchool = () => {
     router.push('/browse/schools')
 }
 
 </script>
 <template>
-    <div>
+    <div
+        v-if="createSchool"
+        class="mt-10"
+    >
+        <CreateSchoolForm @finish-create-school="handleFinishCreateSchool" />
+    </div>
+    <div v-else>
         <SchoolsHero />
         <div class="px-[81px] py-20">
             <div class="grid grid-cols-4 gap-[24px] w-full">

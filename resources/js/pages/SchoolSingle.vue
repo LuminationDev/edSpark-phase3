@@ -18,6 +18,8 @@ import SchoolTech from "@/js/components/schoolsingle/SchoolTech.vue";
 import SchoolsSubMenu from '../components/svg/SchoolsSubMenu.vue';
 import ChevronRight from '../components/svg/ChevronRight.vue';
 import {onBeforeMount} from "vue";
+import {useUserStore} from "@/js/stores/useUserStore";
+import {storeToRefs} from "pinia";
 
 const route = useRoute();
 const router = useRouter();
@@ -31,6 +33,7 @@ const breadCrumbName = route.params.name
 const schoolContent = ref({})
 const colorTheme = ref('amber') // default color theme
 
+
 onBeforeMount( async () =>{
     // TODO Erick - Replace with get one school instead of all then filter.
     await axios.get(`${serverURL}/fetchAllSchools`).then(res => {
@@ -42,7 +45,6 @@ onBeforeMount( async () =>{
     }).catch(err => {
         console.log(err)
     })
-
 })
     
 const handleSaveNewSchoolInfo = async (content_blocks, tech_used) => {
