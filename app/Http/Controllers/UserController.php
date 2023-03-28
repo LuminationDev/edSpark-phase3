@@ -23,7 +23,7 @@ class UserController extends Controller
                 $result = [
                     'user_meta_key' => $value->user_meta_key,
                     'user_meta_value' => explode(', ', $value->user_meta_value)
-                s];
+                ];
                 $userMetaDataToSend[] = $result;
             }
         }
@@ -166,5 +166,24 @@ class UserController extends Controller
             ]);
 
         }
+    }
+
+    public function getUserMetadata(Request $request){
+        if($request->isMethod('post')){
+            $userMetaDataToSend = [];
+            $userId = $request->id;
+            $userMetakey = $request->userMetakey;
+            $result = Usermeta::where([['user_id', $userId],['user_meta_key', $userMetakey]])->get();
+            if($result) {
+                foreach($result as $key => $value){
+                    $result = [
+                        'user_meta_key' => $value->user_meta_key,
+                        'user_meta_value' => $value->user_meta_value
+                    ];
+                    $userMetaDataToSend[] = $result;
+                }
+            }
+        }
+        return response()->json($userMetaDataToSend);
     }
 }

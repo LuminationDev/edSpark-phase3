@@ -6,34 +6,42 @@ use Illuminate\Http\Request;
 use App\Models\School;
 use App\Models\Schoolmeta;
 use Carbon\Carbon;
+use Illuminate\Support\Str;
 
 class SchoolController extends Controller
 {
     public function createSchool(Request $request)
     {
         if ($request->isMethod('post')) {
-            $data = $request->schoolData; // if not data key present
+
+            $data = $request->all(); // if not data key present
             // $data = $request->data; // if data key present can be used later for metaData
+//             dd(json_decode($data));
             $error = '';
 
             if ($data) {
                 // save school info into school table
                 try{
                     $prefix = "edspark-school";
-                    if ($request->hasFile($data['logo'])){
-                        $schoolLogo = $request->file($data['logo']);
+                    if ($data['logo']){
+                        $schoolLogo = $data['logo'];
+//                         $schoolLogo = $request->file($data['logo']);
+//                         dd(is_file($data['logo']));
+//                         dd($data['logo']->getClientOriginalExtension());
+//                         var_dump(file_get_contents($data['logo']->path())); exit;
                         $imgName = $prefix.'-'.md5(Str::random(30).time().'_'.$schoolLogo).'.'.$schoolLogo->getClientOriginalExtension();
                         $schoolLogo->storeAs('public/uploads/school/logo', $imgName);
                         $schoolLogoUrl = "uploads\/school\/logo\/". $imgName;
+
                     }
 
-                    if ($request->hasFile($data['cover_image'])) {
-                        $coverImage = $request->file($data['cover_image']);
+                    if ($data['cover_image']) {
+//                         $coverImage = $request->file($data['cover_image']);
+                        $coverImage = $data['cover_image'];
                         $imgName = $prefix.'-'.md5(Str::random(30).time().'_'.$coverImage).'.'.$coverImage->getClientOriginalExtension();
                         $coverImage->storeAs('public/uploads/school', $imgName);
                         $coverImageUrl = "uploads\/school\/". $imgName;
                     }
-
                     $dataToInsert = [
                         'site_id' => $data['site_id'],
                         'owner_id' => $data['owner_id'],
