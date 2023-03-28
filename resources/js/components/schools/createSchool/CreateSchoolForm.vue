@@ -45,7 +45,7 @@ onBeforeMount(async () => {
 const emits = defineEmits(['finishCreateSchool'])
 
 const handleSubmitButton = async () => {
-
+    // TODO - refactor with helper SchoolDataFormDataBuilder
     let schoolData = new FormData();
     schoolData.append('site_id',state.siteId)
     schoolData.append('owner_id', 1)
@@ -75,12 +75,10 @@ const handleSelected = (data) => {
 
 const handleLogoUpload = (event) =>{
     logoFile.value = event.target.files[0]
-    console.log(event.target.files)
 }
 
 const handleCoverImageUpload = (event) => {
     coverImageFile.value = event.target.files[0]
-    console.log(event.target.files)
 }
 
 </script>

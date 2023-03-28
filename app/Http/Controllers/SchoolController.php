@@ -28,7 +28,6 @@ class SchoolController extends Controller
                         $imgName = $prefix.'-'.md5(Str::random(30).time().'_'.$schoolLogo).'.'.$schoolLogo->getClientOriginalExtension();
                         $schoolLogo->storeAs('public/uploads/school/logo', $imgName);
                         $schoolLogoUrl = "uploads\/school\/logo\/". $imgName;
-
                     }
 
                     if ($data['cover_image']) {
@@ -87,16 +86,35 @@ class SchoolController extends Controller
     public function updateSchool(Request $request)
     {
         if ($request->isMethod('post')) {
-            $data = $request->schoolData;
+            $data = $request->all();
             $error = '';
 
             if ($data) {
                 try {
+                    $prefix = "edspark-school";
+                    if (isset($data['logo']) && is_string($data['logo']) === false){
+                        $schoolLogo = $data['logo'];
+                        $imgName = $prefix.'-'.md5(Str::random(30).time().'_'.$schoolLogo).'.'.$schoolLogo->getClientOriginalExtension();
+                        $schoolLogo->storeAs('public/uploads/school/logo', $imgName);
+                        $schoolLogoUrl = "uploads\/school\/logo\/". $imgName;
+
+                    }
+
+                    if (isset($data['cover_image']) && is_string($data['cover_image']) === false) {
+                        $coverImage = $data['cover_image'];
+                        $imgName = $prefix.'-'.md5(Str::random(30).time().'_'.$coverImage).'.'.$coverImage->getClientOriginalExtension();
+                        $coverImage->storeAs('public/uploads/school', $imgName);
+                        $coverImageUrl = "uploads\/school\/". $imgName;
+                    }
+
                     $dataToUpdate = [
                         'name' => $data['name'],
                         'content_blocks' => json_encode($data['content_blocks']),
-                        'logo' => isset($data['logo']) ? $data['logo'] : NULL,
-                        'cover_image' => isset($data['cover_image']) ? $data['cover_image'] : NULL,
+                        // if logo or coverImage is not string, schoolLogoURL and coverImageUrl will be set
+                        // and will be used as new value
+                        // if not set, old value will be used instead
+                        'logo' => isset($schoolLogoUrl) ? $schoolLogoUrl : $data['logo'],
+                        'cover_image' => isset($coverImageUrl) ? $coverImageUrl : $data['cover_image'],
                         'tech_used' => json_encode($data['tech_used']),
                         'pedagogical_approaches' => json_encode($data['pedagogical_approaches']),
                         'tech_landscape' => json_encode($data['tech_landscape']),
@@ -110,7 +128,7 @@ class SchoolController extends Controller
                 }
             }
 
-            $metadata = $request->schoolMetadata;
+            $metadata = $request->all()->schoolMetadata;
             if($metadata){
                 foreach ($metadata as $key => $value){
                     try {

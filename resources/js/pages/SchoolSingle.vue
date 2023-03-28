@@ -6,6 +6,7 @@ import { useRouter, useRoute } from 'vue-router';
 import {ref} from 'vue'
 import axios from 'axios'
 import {parseToJsonIfString} from "@/js/helpers/jsonHelpers";
+import {schoolDataFormDataBuilder, printOutFormData} from "@/js/helpers/schoolDataHelpers";
 
 /**
  * IMPORT COMPONENTS
@@ -32,12 +33,16 @@ const breadCrumbName = route.params.name
 const schoolContent = ref({})
 const colorTheme = ref('amber') // default color theme
 
+// ref to hold images from editing
+const logoStorage = ref(null)
+const coverImageStorage = ref(null)
+
 
 onBeforeMount( async () =>{
     // TODO Erick - Replace with get one school instead of all then filter.
     await axios.get(`${serverURL}/fetchAllSchools`).then(res => {
         const filteredSchool = res.data.filter(school => school.name === route.params.name.replace('%20', ' ' ))[0]
-        schoolContent.value = (typeof filteredSchool === 'string') ? JSON.parse(filteredSchool) : filteredSchool
+        schoolContent.value = parseToJsonIfString(filteredSchool)
         /**
          * Parse content of SchoolContent upon receiving from server.
          * avoid further processing down the components
@@ -55,19 +60,38 @@ onBeforeMount( async () =>{
 })
     
 const handleSaveNewSchoolInfo = async (content_blocks, tech_used) => {
-    const schoolData = Object.assign({},schoolContent.value)
+    /**
+     * Copy current schoolData and replace content_blocks and tech_used
+     */
+    const schoolData = _.cloneDeep(schoolContent.value)
     schoolData.content_blocks = content_blocks
     schoolData.tech_used  = tech_used
+    const newUpdatedSchoolFormData = schoolDataFormDataBuilder(schoolData)
+
+    if(logoStorage.value){
+        newUpdatedSchoolFormData.append('logo', logoStorage.value)
+    } else{
+        newUpdatedSchoolFormData.append('logo', schoolData.logo)
+    }
+    if(coverImageStorage.value){
+        newUpdatedSchoolFormData.append('cover_image', coverImageStorage.value)
+    } else{
+        newUpdatedSchoolFormData.append('cover_image', schoolData.cover_image)
+    }
+
+
 
     const schoolMetadata = {school_color_theme : colorTheme.value}
-    let body = {
-        schoolData : schoolData,
-        schoolMetadata: schoolMetadata
-    }
-    console.log(body)
-    await axios.post(`${serverURL}/updateSchool`, body).then(res =>{
-        console.log()// assign school info with newest data that has been saved succesfully to trigger update
-        schoolContent.value = _.cloneDeep(body.schoolData)
+    newUpdatedSchoolFormData.append('metadata', schoolMetadata)
+    printOutFormData(newUpdatedSchoolFormData)
+    await axios({
+        url: `${serverURL}/updateSchool`,
+        method: 'post',
+        data: newUpdatedSchoolFormData,
+        headers: {"Content-Type" : "multipart/form-data"}
+    }).then(res =>{
+        console.log('success post not sure if backend works haha')// assign school info with newest data that has been saved succesfully to trigger update
+        schoolContent.value = _.cloneDeep(newUpdatedSchoolFormData.schoolData)
     }).catch(err =>{
         console.log(err)
         console.log('Something wrong while attempting to post ')
@@ -80,6 +104,21 @@ const handleChangeColorTheme = (newColor) => {
     colorTheme.value = newColor
 }
 
+const handleReceivePhotoFromContent = (type, file)=> {
+    switch(type){
+    case 'logo':
+        console.log('received logo')
+        logoStorage.value = file
+        break;
+    case 'coverImage':
+        console.log('received cover Image')
+        coverImageStorage.value = file
+        break;
+    default:
+        console.log('received unknown type image')
+        break;
+    }
+}
 </script>
 
 <template>
@@ -130,6 +169,7 @@ const handleChangeColorTheme = (newColor) => {
                     :color-theme="colorTheme"
                     @send-info-to-school-single="handleSaveNewSchoolInfo"
                     @send-color-to-school-single="handleChangeColorTheme"
+                    @send-photo-to-school-single="handleReceivePhotoFromContent"
                 />
             </div>
         </div>
