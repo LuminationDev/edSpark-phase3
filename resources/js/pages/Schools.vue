@@ -9,6 +9,7 @@ import {useRouter} from "vue-router";
 import {useUserStore} from "@/js/stores/useUserStore";
 import {storeToRefs} from "pinia";
 import CreateSchoolForm from "@/js/components/schools/createSchool/CreateSchoolForm.vue";
+import {parseToJsonIfString, schoolContentArrParser} from "@/js/helpers/jsonHelpers";
 const schoolsLoading = ref(false)
 const serverURL = import.meta.env.VITE_SERVER_URL_API
 
@@ -38,7 +39,7 @@ onBeforeMount(async () => {
         })
         if(!currentUserHasSchool && (currentUserRole == 'Principal' || currentUserRole == 'Superadmin')){
             console.log('School is not init yet. you should init the school')
-            createSchool.value = true
+            createSchool.value = false
         } else if(!currentUserHasSchool){
             console.log('Please notify your principal to set up the school')
         } else{
@@ -51,11 +52,10 @@ onBeforeMount(async () => {
 })
 
 
-onMounted(() =>{
-    axios.get(`${serverURL}/fetchAllSchools`).then(res => {
+onMounted(async () =>{
+    await axios.get(`${serverURL}/fetchAllSchools`).then(res => {
         featuredSites.value = res.data.splice(0,4)
-        featuredSitesData.value = featuredSites.value
-
+        featuredSitesData.value = schoolContentArrParser(featuredSites.value)
     })
 })
 
