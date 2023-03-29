@@ -147,4 +147,16 @@ class EventResource extends Resource
             'edit' => Pages\EditEvent::route('/{record}/edit'),
         ];
     }
+
+    public static function shouldRegisterNavigation(): bool
+    {
+        // use Illuminate\Support\Facades\Auth;
+
+        // Moderator check
+        if(Auth::user()->role->role_name == 'Moderator') {
+            return false;
+        }
+
+        return true;
+    }
 }
