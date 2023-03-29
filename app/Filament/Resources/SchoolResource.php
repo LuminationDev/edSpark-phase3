@@ -14,6 +14,8 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Closure;
 
+use Illuminate\Support\Facades\Auth;
+
 class SchoolResource extends Resource
 {
     protected static ?string $model = School::class;
@@ -100,5 +102,17 @@ class SchoolResource extends Resource
     protected function getTableRecordActionUsing(): ?Closure
     {
         return null;
+    }
+
+    public static function shouldRegisterNavigation(): bool
+    {
+        // use Illuminate\Support\Facades\Auth;
+
+        // Moderator check
+        if(Auth::user()->role->role_name == 'Moderator') {
+            return false;
+        }
+
+        return true;
     }
 }

@@ -56,4 +56,15 @@ class User extends Authenticatable implements HasName
     {
         return $this->belongsTo(Usertype::class);
     }
+
+    public function hasRole($roleName){
+        $role = Role::where('role_name', $roleName)->first();
+        return User::where('role_id', $role->id)->get();
+    }
+
+    // public function hasPermissions($roleName){
+    //     $role = Role::where('role_name', $roleName)->first();
+    //     $permissions = $role->permissions;
+    //     return $permissions;
+    // }
 }

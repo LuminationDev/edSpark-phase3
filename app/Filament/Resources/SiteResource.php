@@ -13,6 +13,8 @@ use Filament\Tables;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
+use Illuminate\Support\Facades\Auth;
+
 class SiteResource extends Resource
 {
     protected static ?string $model = Site::class;
@@ -90,5 +92,17 @@ class SiteResource extends Resource
             'create' => Pages\CreateSite::route('/create'),
             'edit' => Pages\EditSite::route('/{record}/edit'),
         ];
+    }
+
+    public static function shouldRegisterNavigation(): bool
+    {
+        // use Illuminate\Support\Facades\Auth;
+
+        // Moderator check
+        if(Auth::user()->role->role_name == 'Moderator') {
+            return false;
+        }
+
+        return true;
     }
 }
