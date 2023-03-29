@@ -3,7 +3,7 @@ import { createRouter, createWebHistory } from 'vue-router';
 
 // Import pages
 // const Welcome = () => import('../components/Welcome.vue');
-
+import { LoginCallback, navigationGuard } from '@okta/okta-vue'
 import {
     Home,
     Dashboard,
@@ -30,6 +30,7 @@ const router = createRouter({
             name: 'dashboard',
             path: '/dashboard',
             component: Dashboard
+            // component: LoginCallback
         },
         {
             name: 'browse-schools',
@@ -81,6 +82,10 @@ const router = createRouter({
             path: '/profile/:userId',
             component: UserProfile
         },
+        {
+            path: '/login/callback',
+            component: LoginCallback
+        },
         // {
         //     name: 'login',
         //     path: '/login',
@@ -95,5 +100,7 @@ const router = createRouter({
         }
     },
 });
+
+router.beforeEach(navigationGuard);
 
 export default router;
