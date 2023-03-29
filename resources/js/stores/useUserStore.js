@@ -3,6 +3,19 @@ import { useSessionStorage } from "@vueuse/core";
 import axios from "axios";
 
 export const useUserStore = defineStore('user', {
+    /**
+     * currentUser from server
+     * has {
+     *     full_name : string,
+     *     display_name: string,
+     *     email: string
+     *     id: number
+     *     metadata: Array<{user_meta_key: string, user_meta_value: string}>
+     *     permissions: Array<string>
+     *     role: string,
+     *     status: string {Active, Inactive}
+     * }
+     */
     state: () => ({
         currentUser: useSessionStorage('currentUser', {}),
     }),
