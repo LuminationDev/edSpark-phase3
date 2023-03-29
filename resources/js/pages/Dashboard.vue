@@ -1,9 +1,9 @@
 <script>
-    /**
-     * IMPORT DEPENDENCIES
-     */
+/**
+ * IMPORT DEPENDENCIES
+ */
 import sanitizeHtml from 'sanitize-html';
-import { computed, ref } from 'vue';
+import { computed, ref, getCurrentInstance } from 'vue';
 
 /**
  * IMPORT COMPONENTS
@@ -318,13 +318,18 @@ export default {
         }
     },
 
-    created() {
-
-    },
-
-    mounted() {
-        // this.checkFirstVisit();
-        console.log(this.schools);
+    async created() {
+        const auth = getCurrentInstance().appContext.app.config.globalProperties.$auth
+        const idToken = await auth.token?.parseFromUrl()
+            .then(async res => {
+                const { idToken } = res.tokens;
+                const { accessToken } = res.tokens;
+                console.log(`Hi ${idToken.claims.email}!`);
+                console.log(`accessToken ${accessToken}!`);
+            }).catch(err => {
+                console.log('There is a serious error');
+                console.error(err);
+            })
     },
 
     methods: {
@@ -498,7 +503,8 @@ export default {
                     </h5>
                     <div class="flex gap-6 flex-wrap">
                         <label
-                            v-for="year in years"
+                            v-for="(year,index) in years"
+                            :key="index"
                             class="flex gap-2"
                             :for="year.value"
                         >
@@ -517,7 +523,8 @@ export default {
                     </h5>
                     <div class="flex gap-6 flex-row flex-wrap w-full">
                         <div
-                            v-for="subject in allSubjects"
+                            v-for="(subject,index) in allSubjects"
+                            :key="index"
                             class="flex gap-2"
                         >
                             <input
@@ -540,7 +547,8 @@ export default {
                     </h5>
                     <div class="flex gap-6 flex-wrap">
                         <div
-                            v-for="tech in digitalTechnologies"
+                            v-for="(tech,index) in digitalTechnologies"
+                            :key="index"
                             class="flex gap-2"
                         >
                             <input
@@ -630,7 +638,8 @@ export default {
         <div class="px-[81px] py-20">
             <div class="grid grid-cols-3 gap-[24px] w-full">
                 <div
-                    v-for="post in posts"
+                    v-for="(post,index) in posts"
+                    :key="index"
                     class="col-span-1 bg-white border-[0.5px] border-black cursor-pointer h-[530px] transition-all group card_parent hover:shadow-2xl"
                     @mouseenter="cardHoverToggle = true"
                 >
@@ -841,7 +850,8 @@ export default {
                 <div class="col-span-2">
                     <div class="grid grid-cols-2 grid-rows-1 gap-[24px] w-full h-full">
                         <div
-                            v-for="resource in adviceResources.slice(0, 2)"
+                            v-for="(resource,index) in adviceResources.slice(0, 2)"
+                            :key="index"
                             class="col-span-1 row-span-1 bg-white border-[0.5px] border-black cursor-pointer h-[470px] transition-all group hover:shadow-2xl"
                         >
                             <ContentSection>
@@ -904,7 +914,9 @@ export default {
         <div class="px-[81px] py-20">
             <div class="grid grid-cols-4 gap-[24px] w-full">
                 <div
-                    v-for="school in schools"
+                    v-for="(school,index) in schools"
+                    :key="index"
+
                     class="col-span-1 bg-white border-[0.5px] border-black cursor-pointer h-[470px] transition-all group hover:shadow-2xl"
                 >
                     <router-link :to="`/schools/${school.full_name}`">
@@ -924,7 +936,8 @@ export default {
                                 </p>
                                 <div class=" pt-4 flex flex-row w-full justify-between place-items-center ">
                                     <div
-                                        v-for="tech in school.tech_used"
+                                        v-for="(tech,index) in school.tech_used"
+                                        :key="index"
                                         class="flex"
                                     >
                                         <div
@@ -986,8 +999,8 @@ export default {
     </div>
 </template>
 
-<style>
-    input, textarea {
+<style scoped>
+    input, textarea, select {
         width: 100% !important;
         padding: .75rem 1.5rem !important;
         border: solid 0.5px black !important;

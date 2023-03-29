@@ -2,7 +2,8 @@
     "private": true,
     "scripts": {
         "dev": "vite",
-        "build": "vite build"
+        "build": "vite build",
+        "prod": "cp -r ./public/* ./web"
     },
     "devDependencies": {
         "@tailwindcss/aspect-ratio": "^0.4.2",
