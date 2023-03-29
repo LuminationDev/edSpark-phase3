@@ -23,10 +23,13 @@ class PermissionsRelationManager extends RelationManager
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('permission_name')
-                    // ->required()
-                    ->maxLength(255),
-                Forms\Components\TextInput::make('permission_value')
+                Forms\Components\Card::make()
+                    ->schema([
+                        Forms\Components\TextInput::make('permission_name')
+                        // ->required()
+                        ->maxLength(255),
+                        Forms\Components\TextInput::make('permission_value')
+                    ])
             ]);
     }
 
@@ -56,7 +59,7 @@ class PermissionsRelationManager extends RelationManager
             // ->actions([
             //     Tables\Actions\EditAction::make(),
             //     Tables\Actions\DeleteAction::make(),
-            // ])
+            // ]);
             // ->bulkActions([
             //     Tables\Actions\DeleteBulkAction::make(),
             // ]);
