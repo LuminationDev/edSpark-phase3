@@ -16,6 +16,8 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Illuminate\Support\Facades\Auth;
 use Livewire\TemporaryUploadedFile;
 
+use App\Models\User;
+
 class AdviceResource extends Resource
 {
     protected static ?string $model = Advice::class;
@@ -130,4 +132,16 @@ class AdviceResource extends Resource
     // {
     //     return parent::getEloquentQuery()->where('post_status', 'Published');
     // }
+
+    public static function shouldRegisterNavigation(): bool
+    {
+        // use Illuminate\Support\Facades\Auth;
+
+        // Moderator check
+        if(Auth::user()->role->role_name == 'Moderator') {
+            return false;
+        }
+
+        return true;
+    }
 }

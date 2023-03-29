@@ -104,4 +104,15 @@ class UsersResource extends Resource
             'edit' => Pages\EditUsers::route('/{record}/edit'),
         ];
     }
+
+    public static function shouldRegisterNavigation(): bool
+    {
+
+        // Moderator check
+        if(Auth::user()->role->role_name == 'Moderator') {
+            return false;
+        }
+
+        return true;
+    }
 }

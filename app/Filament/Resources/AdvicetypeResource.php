@@ -13,6 +13,8 @@ use Filament\Tables;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
+use Illuminate\Support\Facades\Auth;
+
 class AdvicetypeResource extends Resource
 {
     protected static ?string $model = Advicetype::class;
@@ -84,5 +86,17 @@ class AdvicetypeResource extends Resource
             'create' => Pages\CreateAdvicetype::route('/create'),
             'edit' => Pages\EditAdvicetype::route('/{record}/edit'),
         ];
+    }
+
+    public static function shouldRegisterNavigation(): bool
+    {
+        // use Illuminate\Support\Facades\Auth;
+
+        // Moderator check
+        if(Auth::user()->role->role_name == 'Moderator') {
+            return false;
+        }
+
+        return true;
     }
 }
