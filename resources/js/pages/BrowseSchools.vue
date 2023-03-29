@@ -1,15 +1,18 @@
 <script setup>
 import SchoolCard from "@/js/components/schools/SchoolCard.vue";
-import {computed , onMounted, ref} from "vue";
+import {computed, onBeforeMount,  ref} from "vue";
 import axios from "axios";
 import SearchBar from "@/js/components/browseschools/SearchBar.vue";
+import {parseToJsonIfString, schoolContentArrParser} from "@/js/helpers/jsonHelpers";
 const serverURL = import.meta.env.VITE_SERVER_URL_API
 
 
+
+
 const allSchoolsArray = ref([])
-onMounted(() =>{
+onBeforeMount(() =>{
     axios.get(`${serverURL}/fetchAllSchools`).then(res => {
-        allSchoolsArray.value = res.data
+        allSchoolsArray.value = schoolContentArrParser(res.data)
     })
 })
 const filterTerm = ref('')
@@ -36,16 +39,16 @@ const filteredSchool = computed(() =>{
         />
         <div
             v-if="allSchoolsArray"
-            class="card-iterator-container w-[80%] flex flex-row flex-wrap my-4 items-center justify-evenly"
+            class="card-iterator-container w-full flex flex-row flex-wrap my-4 items-center justify-evenly"
         >
             <div
                 v-for="(school, index) in filteredSchool"
                 :key="index"
-                s
-                class="border-2 mx-4 my-4 basis-1/5  h-[470px] transition-all group hover:shadow-2xl rounded-xl"
+                class="border-2 mx-4 my-4 basis-1/4  h-[470px] transition-all group hover:shadow-2xl rounded-xl"
             >
                 <SchoolCard
                     :school-data="school"
+                    class="w-full"
                 />
             </div>
             <div

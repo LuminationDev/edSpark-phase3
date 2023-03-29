@@ -12,6 +12,8 @@ use Filament\Resources\Table;
 use Filament\Tables;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Livewire\TemporaryUploadedFile;
+
 
 class HardwareResource extends Resource
 {
@@ -40,6 +42,26 @@ class HardwareResource extends Resource
                             ->disableToolbarButtons([
                                 'attachFiles'
                             ]),
+                        Forms\Components\FileUpload::make('cover_image')
+                            ->preserveFilenames()
+                            ->disk('public')
+                            ->directory('uploads/hardware')
+                            ->acceptedFileTypes(['image/jpeg','image/jpg', 'image/png'])
+                            ->getUploadedFileNameForStorageUsing(function (TemporaryUploadedFile $file): string {
+                                return (string) str($file->getClientOriginalName())->prepend('edSpark-hardware-');
+                            }),
+                        Forms\Components\FileUpload::make('gallery')
+                            ->multiple()
+                            ->preserveFilenames()
+                            ->disk('public')
+                            ->directory('uploads/hardware/gallery')
+                            ->acceptedFileTypes(['image/jpeg', 'image/jpg', 'image/png'])
+                            ->getUploadedFileNameForStorageUsing(function (TemporaryUploadedFile $file): string {
+                                return (string) str($file->getClientOriginalName())->prepend('edSpark-hardware-gallery-');
+                            })
+                            ->enableReordering()
+                            ->minFiles(2)
+                            ->maxFiles(5),
                         Forms\Components\TextInput::make('price')
                             ->required(),
                         Forms\Components\BelongsToSelect::make('brand')
