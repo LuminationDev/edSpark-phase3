@@ -49,7 +49,6 @@ const checkIfObjectIsSelected = (itemObj) => {
 }
 
 const customBackground = computed(() => {
-    console.log(`!bg-[${schoolColorTheme[props.colorTheme]['med']}]`)
     return `!bg-[${schoolColorTheme[props.colorTheme]['light']}]`
 })
 

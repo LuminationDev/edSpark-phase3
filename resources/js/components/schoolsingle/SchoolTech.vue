@@ -19,7 +19,7 @@ const props = defineProps({
             Tech used at this school
         </div>
         <div
-            v-for="(tech,index) in techList"
+            v-for="(tech,index) in props.techList"
             :key="index"
             class="w-full flex pb-4 mb-4 basis-1/4"
         >

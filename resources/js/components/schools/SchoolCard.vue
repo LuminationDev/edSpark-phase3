@@ -2,7 +2,7 @@
 import ContentSection from "@/js/components/global/ContentSection.vue";
 import SchoolCardIconList from "@/js/components/schools/SchoolCardIconList.vue";
 
-
+const imageURL = import.meta.env.VITE_SERVER_IMAGE_API
 const props = defineProps({
     schoolData:{
         type: Object ,
@@ -41,7 +41,7 @@ const props = defineProps({
         <ContentSection :tech-used="props.schoolData.tech_used">
             <template #cover>
                 <div
-                    :class="`bg-[url('${props.schoolData.cover_image}')] rounded-t-xl`"
+                    :class="`bg-[url('${imageURL}/${props.schoolData.cover_image}')] rounded-t-xl bg-cover`"
                     class="h-36 group-hover:h-0 transition-all"
                 />
             </template>

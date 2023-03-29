@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Usermeta;
 use Carbon\Carbon;
+use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Storage;
 
 class UserController extends Controller
 {
@@ -20,9 +22,7 @@ class UserController extends Controller
             foreach($userMetaData as $key => $value){
                 $result = [
                     'user_meta_key' => $value->user_meta_key,
-                    // 'user_meta_value' => explode(', ', $value->user_meta_value)
-                    // Updated to handle my badly implemented biography, should be able to fix later
-                    'user_meta_value' => ($key === 'biography') ? $value : explode(', ', $value->user_meta_value)
+                    'user_meta_value' => explode(', ', $value->user_meta_value)
                 ];
                 $userMetaDataToSend[] = $result;
             }
@@ -67,10 +67,9 @@ class UserController extends Controller
                 }
             }
 
-            // TODO: JM handle bio (text field - inputing with other info)
             // TODO: JM handle images (system wide image handling)
 
-            $metaData = $request->userMetaData;
+            $metaData = $request->metaData;
             if ($metaData) {
                 // save user info into meta table
                 $dataToInsert = [];
@@ -92,13 +91,29 @@ class UserController extends Controller
 
             }
 
+            if($request->hasFile('userAvatar')){
+                // save user avatar into meta table and upload folder
+
+                $userAvatar = $request->file('userAvatar');
+                $destinationPath = 'uploads/user';
+                $prefix = "edpsark-user";
+                $imgName = $prefix.'-'.md5(Str::random(30).time().'_'.$userAvatar).'.'.$userAvatar->getClientOriginalExtension();
+                $userAvatar->storeAs('public/uploads/user', $imgName);
+                $imageUrl = "uploads\/user\/". $imgName;
+                $result = [
+                    'user_id' => $userId,
+                    'user_meta_key' => 'userAvatar',
+                    'user_meta_value' => $imageUrl,
+                    'created_at' => Carbon::now(),
+                    'updated_at' => Carbon::now(),
+                ];
+                Usermeta::insert($result);
+            }
             return response()->json([
                 'message' => "User added successfully",
                 'error' => $error,
                 'status' => 200
             ]);
-
-
         }
     }
 
@@ -151,5 +166,24 @@ class UserController extends Controller
             ]);
 
         }
+    }
+
+    public function getUserMetadata(Request $request){
+        if($request->isMethod('post')){
+            $userMetaDataToSend = [];
+            $userId = $request->id;
+            $userMetakey = $request->userMetakey;
+            $result = Usermeta::where([['user_id', $userId],['user_meta_key', $userMetakey]])->get();
+            if($result) {
+                foreach($result as $key => $value){
+                    $result = [
+                        'user_meta_key' => $value->user_meta_key,
+                        'user_meta_value' => $value->user_meta_value
+                    ];
+                    $userMetaDataToSend[] = $result;
+                }
+            }
+        }
+        return response()->json($userMetaDataToSend);
     }
 }

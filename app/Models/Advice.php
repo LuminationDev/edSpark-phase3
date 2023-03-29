@@ -29,6 +29,7 @@ class Advice extends Model
         'post_date',
         'post_modified',
         'author_id',
+        'cover_image',
         'advicetype_id'
     ];
 
@@ -41,5 +42,9 @@ class Advice extends Model
     {
         return $this->belongsTo(Advicetype::class);
     }
+
+    protected $casts = [
+        'cover_image' => 'array',
+    ];
 
 }
