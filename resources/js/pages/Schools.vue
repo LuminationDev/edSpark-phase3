@@ -31,7 +31,8 @@ onBeforeMount(async () => {
      * has_school field
      */
     let currentUserHasSchool
-    const currentUserId = currentUser.value.id
+    // const currentUserId = currentUser.value.id
+    const currentUserId = 1
     const currentUserRole = currentUser.value.role
     try{
         await axios.post(`${serverURL}/getUserMetadata`,{id: currentUserId, userMetakey: 'has_school'}).then(res => {
@@ -82,7 +83,7 @@ const handleBrowseAllSchool = () => {
                 <div
                     v-for="(school,index) in featuredSitesData"
                     :key="index"
-                    class="col-span-1 bg-white cursor-pointer h-[470px] border-2 transition-all group hover:shadow-2xl rounded-xl"
+                    class="col-span-1 bg-white cursor-pointer h-[470px] border-2 transition-all group hover:shadow-2xl"
                 >
                     <SchoolCard
                         v-if="featuredSitesData"
