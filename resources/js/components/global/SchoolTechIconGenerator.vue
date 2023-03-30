@@ -29,6 +29,10 @@ const getIconPath = (iconType) => {
         return '/components/svg/ARIcon.vue'
     case "VR":
         return '/components/svg/VRIcon.vue'
+    case "Lumination":
+        return '/components/svg/LuminationIcon.vue'
+    case "Makers Empire":
+        return '/components/svg/MakersEmpireIcon.vue'
     }
 }
 

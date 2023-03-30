@@ -2,7 +2,7 @@
 import {onBeforeMount, onMounted, ref} from 'vue'
 import axios from 'axios'
 import SchoolsHero from '../components/schools/SchoolsHero.vue';
-import SearchableMap from '../components/schools/SearchableMap.vue';
+import SearchableMap from '../components/schools/schoolMap/SearchableMap.vue';
 import SchoolCard from "@/js/components/schools/SchoolCard.vue";
 import GenericButton from "@/js/components/button/GenericButton.vue";
 import {useRouter} from "vue-router";
@@ -10,15 +10,17 @@ import {useUserStore} from "@/js/stores/useUserStore";
 import {storeToRefs} from "pinia";
 import CreateSchoolForm from "@/js/components/schools/createSchool/CreateSchoolForm.vue";
 import {parseToJsonIfString, schoolContentArrParser} from "@/js/helpers/jsonHelpers";
-const schoolsLoading = ref(false)
+import SchoolWelcomePopup from "@/js/components/schools/schoolPopup/SchoolWelcomePopup.vue";
 const serverURL = import.meta.env.VITE_SERVER_URL_API
 
 // TODO- Create an API in the backend to get featured schools
 // Currently fetching 4 random
 const featuredSiteIds = [292,69,55,42]
+const schoolsLoading = ref(false)
 const featuredSites = ref([])
 const featuredSitesData = ref([])
 const createSchool = ref(false)
+const showWelcomePopup = ref(true)
 
 const router = useRouter();
 
@@ -34,8 +36,9 @@ onBeforeMount(async () => {
     const currentUserId = currentUser.value.id
     const currentUserRole = currentUser.value.role
     try{
-        await axios.post(`${serverURL}/getUserMetadata`,{id: currentUserId, userMetakey: 'has_school'}).then(res => {
+        await axios.post(`${serverURL}/getUserMetadata`,{id: 1, userMetakey: 'has_school'}).then(res => {
             currentUserHasSchool = res.data[0].user_meta_value == 'false'? false : true
+            console.log('current user has_school meta is ' + currentUserHasSchool)
         })
         if(!currentUserHasSchool && (currentUserRole == 'Principal' || currentUserRole == 'Superadmin')){
             console.log('School is not init yet. you should init the school')
@@ -53,6 +56,7 @@ onBeforeMount(async () => {
 
 
 onMounted(async () =>{
+    // TODO switch route to featured schools
     await axios.get(`${serverURL}/fetchAllSchools`).then(res => {
         featuredSites.value = res.data.splice(0,4)
         featuredSitesData.value = schoolContentArrParser(featuredSites.value)
@@ -67,6 +71,17 @@ const handleBrowseAllSchool = () => {
     router.push('/browse/schools')
 }
 
+const handleCloseWelcomePopup = () => {
+    showWelcomePopup.value = false
+}
+
+const handleSaveWelcomePopup = (data)=>{
+    console.log('Received from modal')
+    console.log(data)
+    showWelcomePopup.value = false
+
+}
+
 </script>
 <template>
     <div
@@ -76,6 +91,14 @@ const handleBrowseAllSchool = () => {
         <CreateSchoolForm @finish-create-school="handleFinishCreateSchool" />
     </div>
     <div v-else>
+        <SchoolWelcomePopup
+            v-if="showWelcomePopup"
+            class="mt-10"
+            :show-popup="showWelcomePopup"
+            :close-popup="handleCloseWelcomePopup"
+            @send-click-outside-popup="handleCloseWelcomePopup"
+            @send-save-popup="handleSaveWelcomePopup"
+        />
         <SchoolsHero />
         <div class="px-[81px] py-20">
             <div class="grid grid-cols-4 gap-[24px] w-full">
