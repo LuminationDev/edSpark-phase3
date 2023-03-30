@@ -999,10 +999,10 @@ export default {
     </div>
 </template>
 
-<style scoped>
+<!-- <style scoped>
     input, textarea, select {
         width: 100% !important;
         padding: .75rem 1.5rem !important;
         border: solid 0.5px black !important;
     }
-</style>
+</style> -->

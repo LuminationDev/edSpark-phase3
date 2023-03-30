@@ -5,7 +5,11 @@ const props = defineProps({
     techName:{
         type: String,
         required: true
-    }
+    },
+    // toggleTooltip: {
+    //     type: Boolean,
+    //     required: false
+    // }
 })
 
 
@@ -42,5 +46,6 @@ import(`../../${getIconPath(props.techName)}`).then(val =>
     <component
         :is="techIcon"
         v-if="techIcon"
+
     />
 </template>
