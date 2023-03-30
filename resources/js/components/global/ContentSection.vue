@@ -24,7 +24,7 @@ const props = defineProps({
         </div>
         <div class="px-6 py-4 relative transition-all">
             <!-- CARD CONTENT -->
-            <div class="card-content_title text-center min-h-[72px] transition-all">
+            <div class="card-content_title min-h-[72px] transition-all">
                 <!-- CARD CONTENT HEADER -->
                 <h5 class="text-xl font-medium transition-all">
                     <slot name="title" />
