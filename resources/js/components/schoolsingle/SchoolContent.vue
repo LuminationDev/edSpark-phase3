@@ -80,7 +80,9 @@ const handleReceivePhotoFromImageChange = (type, file) => {
                     />
                 </div>
                 <div class="flex flex-col basis-1/3">
-                    Tech selector component to go here
+                    <p class="font-bold text-lg">
+                        Tech Selector:
+                    </p>
                     <TechSelector
                         :existing-tech-used="newTechUsed"
                         :color-theme="colorTheme"
