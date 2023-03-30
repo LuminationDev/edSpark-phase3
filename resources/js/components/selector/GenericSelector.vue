@@ -56,6 +56,9 @@ const customBackground = computed(() => {
 </script>
 <template>
     <div class="genericSelectorContainer">
+        <div class="font-semibold text-lg underline">
+            {{ props.title }}
+        </div>
         <div
             v-for="(item,index) in listData"
             :key="index"
