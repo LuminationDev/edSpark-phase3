@@ -52,10 +52,19 @@ const props = defineProps({
                 <p class="pt-6 text-black text-[18px] font-medium">
                     Tech used:
                 </p>
-                <div class=" pt-4 flex flex-row w-full justify-between place-items-center ">
+                <div class="iconListContainer pt-4 flex flex-row w-full justify-between overflow-scroll gap-4 overflow-x-auto items-center pb-6 cursor-grab">
                     <SchoolCardIconList :tech-list="techUsed" />
                 </div>
             </template>
         </ContentSection>
     </router-link>
 </template>
+<style scoped>
+.iconListContainer::-webkit-scrollbar {
+    display: none;
+}
+.iconListContainer {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+</style>
