@@ -46,5 +46,6 @@ import(`../../${getIconPath(props.techName)}`).then(val =>
     <component
         :is="techIcon"
         v-if="techIcon"
+        class="pointer-events-none"
     />
 </template>
