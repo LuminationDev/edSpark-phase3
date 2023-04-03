@@ -5,6 +5,9 @@ import vue from '@vitejs/plugin-vue';
 
 
 export default defineConfig({
+    build: {
+        outDir: './web/build'
+    },
     plugins: [
         vue(),
         laravel({

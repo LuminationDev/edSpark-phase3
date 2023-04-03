@@ -16,7 +16,7 @@
             async login () {
                 console.log('Hello');
                 console.log(this.$auth)
-                await this.$auth.signInWithRedirect();
+                await this.$auth.signInWithRedirect({ originalUri: '/' });
             },
         }
     }
