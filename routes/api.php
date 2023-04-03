@@ -39,6 +39,7 @@ Route::middleware('api')->group(function() {
     Route::post('updateUser', [UserController::class, 'updateUser']);
     Route::get('fetchAllSites', [SiteController::class, 'fetchAllSites']);
     Route::get('fetchSiteById/{id}', [SiteController::class, 'fetchSiteById']);
+    Route::post('getUserMetadata',[UserController::class, 'getUserMetadata'] );
 
     // Product Management
     Route::get('fetchAllBrands', [ProductController::class, 'fetchAllBrands']);

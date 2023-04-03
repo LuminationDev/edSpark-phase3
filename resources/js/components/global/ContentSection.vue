@@ -12,7 +12,6 @@ const props = defineProps({
     }
 });
 
-console.log(props)
 </script>
 
 <template>
@@ -23,11 +22,11 @@ console.log(props)
             <slot name="cover" />
             <slot name="typeTag" />
         </div>
-        <div class="px-[24px] py-[18px] relative transition-all">
+        <div class="px-6 py-4 relative transition-all">
             <!-- CARD CONTENT -->
-            <div class="card-content_title min-h-[72px] transition-all">
+            <div class="card-content_title text-center min-h-[72px] transition-all">
                 <!-- CARD CONTENT HEADER -->
-                <h5 class="mr-[36px] text-[24px] font-medium group-hover:mr-28 transition-all">
+                <h5 class="text-xl font-medium transition-all">
                     <slot name="title" />
                 </h5>
             </div>
