@@ -18,7 +18,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        //
+        // Filament::registerSvgIconDirectory('my-icon-pack', resource_path('svg/my-icon-pack')); //not working
     }
 
     /**
@@ -67,5 +67,12 @@ class AppServiceProvider extends ServiceProvider
         //         ]
         //     );
         // });
+
+        // Filament::registerSvgIconPacks([
+        //     'my-custom-icons' => [
+        //         'path' => resource_path('svg'),
+        //         'prefix' => 'my-',
+        //     ],
+        // ]);
     }
 }
