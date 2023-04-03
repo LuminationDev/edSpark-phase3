@@ -131,6 +131,9 @@
                                                                                 <li class="tocify-item level-2" data-unique="endpoints-GETapi-fetchFeaturedSchools">
                                 <a href="#endpoints-GETapi-fetchFeaturedSchools">GET api/fetchFeaturedSchools</a>
                             </li>
+                                                                                <li class="tocify-item level-2" data-unique="endpoints-GETapi-fetchAllTechs">
+                                <a href="#endpoints-GETapi-fetchAllTechs">GET api/fetchAllTechs</a>
+                            </li>
                                                                         </ul>
                             </ul>
             </div>
@@ -140,7 +143,7 @@
     </ul>
 
     <ul class="toc-footer" id="last-updated">
-        <li>Last updated: March 23, 2023</li>
+        <li>Last updated: March 30, 2023</li>
     </ul>
 </div>
 
@@ -216,7 +219,7 @@ print_r(json_decode((string) $body));</code></pre></div>
             <pre><code class="language-http">cache-control: no-cache, private
 content-type: application/json
 x-ratelimit-limit: 60
-x-ratelimit-remaining: 36
+x-ratelimit-remaining: 38
 access-control-allow-origin: *
  </code></pre></details>         <pre>
 
@@ -411,7 +414,7 @@ print_r(json_decode((string) $body));</code></pre></div>
             <pre><code class="language-http">cache-control: no-cache, private
 content-type: application/json
 x-ratelimit-limit: 60
-x-ratelimit-remaining: 35
+x-ratelimit-remaining: 37
 access-control-allow-origin: *
  </code></pre></details>         <pre>
 
@@ -620,7 +623,7 @@ print_r(json_decode((string) $body));</code></pre></div>
             <pre><code class="language-http">cache-control: no-cache, private
 content-type: application/json
 x-ratelimit-limit: 60
-x-ratelimit-remaining: 34
+x-ratelimit-remaining: 36
 access-control-allow-origin: *
  </code></pre></details>         <pre>
 
@@ -829,7 +832,7 @@ print_r(json_decode((string) $body));</code></pre></div>
             <pre><code class="language-http">cache-control: no-cache, private
 content-type: application/json
 x-ratelimit-limit: 60
-x-ratelimit-remaining: 33
+x-ratelimit-remaining: 35
 access-control-allow-origin: *
  </code></pre></details>         <pre>
 
@@ -985,7 +988,7 @@ access-control-allow-origin: *
 
 <div class="javascript-example">
     <pre><code class="language-javascript">const url = new URL(
-    "http://localhost:8000/api/fetchUser/quisquam"
+    "http://localhost:8000/api/fetchUser/deleniti"
 );
 
 const headers = {
@@ -1002,7 +1005,7 @@ fetch(url, {
 <div class="php-example">
     <pre><code class="language-php">$client = new \GuzzleHttp\Client();
 $response = $client-&gt;get(
-    'http://localhost:8000/api/fetchUser/quisquam',
+    'http://localhost:8000/api/fetchUser/deleniti',
     [
         'headers' =&gt; [
             'Content-Type' =&gt; 'application/json',
@@ -1026,7 +1029,7 @@ print_r(json_decode((string) $body));</code></pre></div>
             <pre><code class="language-http">cache-control: no-cache, private
 content-type: application/json
 x-ratelimit-limit: 60
-x-ratelimit-remaining: 32
+x-ratelimit-remaining: 34
 access-control-allow-origin: *
  </code></pre></details>         <pre>
 
@@ -1034,7 +1037,7 @@ access-control-allow-origin: *
     &quot;message&quot;: &quot;Attempt to read property \&quot;id\&quot; on null&quot;,
     &quot;exception&quot;: &quot;ErrorException&quot;,
     &quot;file&quot;: &quot;C:\\Users\\athap\\Desktop\\Projects-Lumination\\edSpark-phase3\\app\\Http\\Controllers\\UserController.php&quot;,
-    &quot;line&quot;: 30,
+    &quot;line&quot;: 32,
     &quot;trace&quot;: [
         {
             &quot;file&quot;: &quot;C:\\Users\\athap\\Desktop\\Projects-Lumination\\edSpark-phase3\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Bootstrap\\HandleExceptions.php&quot;,
@@ -1045,7 +1048,7 @@ access-control-allow-origin: *
         },
         {
             &quot;file&quot;: &quot;C:\\Users\\athap\\Desktop\\Projects-Lumination\\edSpark-phase3\\app\\Http\\Controllers\\UserController.php&quot;,
-            &quot;line&quot;: 30,
+            &quot;line&quot;: 32,
             &quot;function&quot;: &quot;Illuminate\\Foundation\\Bootstrap\\{closure}&quot;,
             &quot;class&quot;: &quot;Illuminate\\Foundation\\Bootstrap\\HandleExceptions&quot;,
             &quot;type&quot;: &quot;-&gt;&quot;
@@ -1570,10 +1573,10 @@ access-control-allow-origin: *
  &nbsp;
                 <input type="text" style="display: none"
                name="id"                data-endpoint="GETapi-fetchUser--id-"
-               value="quisquam"
+               value="deleniti"
                data-component="url">
     <br>
-<p>The ID of the fetchUser. Example: <code>quisquam</code></p>
+<p>The ID of the fetchUser. Example: <code>deleniti</code></p>
             </div>
                     </form>
 
@@ -1631,7 +1634,7 @@ print_r(json_decode((string) $body));</code></pre></div>
             <pre><code class="language-http">cache-control: no-cache, private
 content-type: application/json
 x-ratelimit-limit: 60
-x-ratelimit-remaining: 31
+x-ratelimit-remaining: 33
 access-control-allow-origin: *
  </code></pre></details>         <pre>
 
@@ -1759,7 +1762,7 @@ print_r(json_decode((string) $body));</code></pre></div>
             <pre><code class="language-http">cache-control: no-cache, private
 content-type: application/json
 x-ratelimit-limit: 60
-x-ratelimit-remaining: 30
+x-ratelimit-remaining: 32
 access-control-allow-origin: *
  </code></pre></details>         <pre>
 
@@ -1887,7 +1890,7 @@ print_r(json_decode((string) $body));</code></pre></div>
             <pre><code class="language-http">cache-control: no-cache, private
 content-type: application/json
 x-ratelimit-limit: 60
-x-ratelimit-remaining: 29
+x-ratelimit-remaining: 31
 access-control-allow-origin: *
  </code></pre></details>         <pre>
 
@@ -25407,7 +25410,7 @@ access-control-allow-origin: *
 
 <div class="javascript-example">
     <pre><code class="language-javascript">const url = new URL(
-    "http://localhost:8000/api/fetchSiteById/nulla"
+    "http://localhost:8000/api/fetchSiteById/et"
 );
 
 const headers = {
@@ -25424,7 +25427,7 @@ fetch(url, {
 <div class="php-example">
     <pre><code class="language-php">$client = new \GuzzleHttp\Client();
 $response = $client-&gt;get(
-    'http://localhost:8000/api/fetchSiteById/nulla',
+    'http://localhost:8000/api/fetchSiteById/et',
     [
         'headers' =&gt; [
             'Content-Type' =&gt; 'application/json',
@@ -25448,7 +25451,7 @@ print_r(json_decode((string) $body));</code></pre></div>
             <pre><code class="language-http">cache-control: no-cache, private
 content-type: application/json
 x-ratelimit-limit: 60
-x-ratelimit-remaining: 28
+x-ratelimit-remaining: 30
 access-control-allow-origin: *
  </code></pre></details>         <pre>
 
@@ -25523,10 +25526,10 @@ access-control-allow-origin: *
  &nbsp;
                 <input type="text" style="display: none"
                name="id"                data-endpoint="GETapi-fetchSiteById--id-"
-               value="nulla"
+               value="et"
                data-component="url">
     <br>
-<p>The ID of the fetchSiteById. Example: <code>nulla</code></p>
+<p>The ID of the fetchSiteById. Example: <code>et</code></p>
             </div>
                     </form>
 
@@ -25584,7 +25587,7 @@ print_r(json_decode((string) $body));</code></pre></div>
             <pre><code class="language-http">cache-control: no-cache, private
 content-type: application/json
 x-ratelimit-limit: 60
-x-ratelimit-remaining: 27
+x-ratelimit-remaining: 29
 access-control-allow-origin: *
  </code></pre></details>         <pre>
 
@@ -25729,7 +25732,7 @@ print_r(json_decode((string) $body));</code></pre></div>
             <pre><code class="language-http">cache-control: no-cache, private
 content-type: application/json
 x-ratelimit-limit: 60
-x-ratelimit-remaining: 26
+x-ratelimit-remaining: 28
 access-control-allow-origin: *
  </code></pre></details>         <pre>
 
@@ -25874,7 +25877,7 @@ print_r(json_decode((string) $body));</code></pre></div>
             <pre><code class="language-http">cache-control: no-cache, private
 content-type: application/json
 x-ratelimit-limit: 60
-x-ratelimit-remaining: 25
+x-ratelimit-remaining: 27
 access-control-allow-origin: *
  </code></pre></details>         <pre>
 
@@ -26077,7 +26080,7 @@ access-control-allow-origin: *
 
 <div class="javascript-example">
     <pre><code class="language-javascript">const url = new URL(
-    "http://localhost:8000/api/fetchSchoolInfoById/aut"
+    "http://localhost:8000/api/fetchSchoolInfoById/quisquam"
 );
 
 const headers = {
@@ -26094,7 +26097,7 @@ fetch(url, {
 <div class="php-example">
     <pre><code class="language-php">$client = new \GuzzleHttp\Client();
 $response = $client-&gt;get(
-    'http://localhost:8000/api/fetchSchoolInfoById/aut',
+    'http://localhost:8000/api/fetchSchoolInfoById/quisquam',
     [
         'headers' =&gt; [
             'Content-Type' =&gt; 'application/json',
@@ -26118,12 +26121,12 @@ print_r(json_decode((string) $body));</code></pre></div>
             <pre><code class="language-http">cache-control: no-cache, private
 content-type: application/json
 x-ratelimit-limit: 60
-x-ratelimit-remaining: 24
+x-ratelimit-remaining: 26
 access-control-allow-origin: *
  </code></pre></details>         <pre>
 
 <code class="language-json" style="max-height: 300px;">{
-    &quot;message&quot;: &quot;SQLSTATE[42S02]: Base table or view not found: 1146 Table &#039;edspark-phase3.school_info&#039; doesn&#039;t exist (SQL: select * from `school_info` where `school_id` = aut limit 1)&quot;,
+    &quot;message&quot;: &quot;SQLSTATE[42S02]: Base table or view not found: 1146 Table &#039;edspark-phase3.school_info&#039; doesn&#039;t exist (SQL: select * from `school_info` where `school_id` = quisquam limit 1)&quot;,
     &quot;exception&quot;: &quot;Illuminate\\Database\\QueryException&quot;,
     &quot;file&quot;: &quot;C:\\Users\\athap\\Desktop\\Projects-Lumination\\edSpark-phase3\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Connection.php&quot;,
     &quot;line&quot;: 760,
@@ -26718,10 +26721,10 @@ access-control-allow-origin: *
  &nbsp;
                 <input type="text" style="display: none"
                name="id"                data-endpoint="GETapi-fetchSchoolInfoById--id-"
-               value="aut"
+               value="quisquam"
                data-component="url">
     <br>
-<p>The ID of the fetchSchoolInfoById. Example: <code>aut</code></p>
+<p>The ID of the fetchSchoolInfoById. Example: <code>quisquam</code></p>
             </div>
                     </form>
 
@@ -26738,7 +26741,7 @@ access-control-allow-origin: *
 
 <div class="javascript-example">
     <pre><code class="language-javascript">const url = new URL(
-    "http://localhost:8000/api/fetchSchoolByFullName/aut"
+    "http://localhost:8000/api/fetchSchoolByFullName/corrupti"
 );
 
 const headers = {
@@ -26755,7 +26758,7 @@ fetch(url, {
 <div class="php-example">
     <pre><code class="language-php">$client = new \GuzzleHttp\Client();
 $response = $client-&gt;get(
-    'http://localhost:8000/api/fetchSchoolByFullName/aut',
+    'http://localhost:8000/api/fetchSchoolByFullName/corrupti',
     [
         'headers' =&gt; [
             'Content-Type' =&gt; 'application/json',
@@ -26779,12 +26782,12 @@ print_r(json_decode((string) $body));</code></pre></div>
             <pre><code class="language-http">cache-control: no-cache, private
 content-type: application/json
 x-ratelimit-limit: 60
-x-ratelimit-remaining: 23
+x-ratelimit-remaining: 25
 access-control-allow-origin: *
  </code></pre></details>         <pre>
 
 <code class="language-json" style="max-height: 300px;">{
-    &quot;message&quot;: &quot;SQLSTATE[42S02]: Base table or view not found: 1146 Table &#039;edspark-phase3.school_info&#039; doesn&#039;t exist (SQL: select * from `school_info` where `full_name` = aut limit 1)&quot;,
+    &quot;message&quot;: &quot;SQLSTATE[42S02]: Base table or view not found: 1146 Table &#039;edspark-phase3.school_info&#039; doesn&#039;t exist (SQL: select * from `school_info` where `full_name` = corrupti limit 1)&quot;,
     &quot;exception&quot;: &quot;Illuminate\\Database\\QueryException&quot;,
     &quot;file&quot;: &quot;C:\\Users\\athap\\Desktop\\Projects-Lumination\\edSpark-phase3\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Connection.php&quot;,
     &quot;line&quot;: 760,
@@ -27379,10 +27382,10 @@ access-control-allow-origin: *
  &nbsp;
                 <input type="text" style="display: none"
                name="name"                data-endpoint="GETapi-fetchSchoolByFullName--name-"
-               value="aut"
+               value="corrupti"
                data-component="url">
     <br>
-<p>Example: <code>aut</code></p>
+<p>Example: <code>corrupti</code></p>
             </div>
                     </form>
 
@@ -27399,7 +27402,7 @@ access-control-allow-origin: *
 
 <div class="javascript-example">
     <pre><code class="language-javascript">const url = new URL(
-    "http://localhost:8000/api/getAllInfoOfOneSchool/aperiam"
+    "http://localhost:8000/api/getAllInfoOfOneSchool/asperiores"
 );
 
 const headers = {
@@ -27416,7 +27419,7 @@ fetch(url, {
 <div class="php-example">
     <pre><code class="language-php">$client = new \GuzzleHttp\Client();
 $response = $client-&gt;get(
-    'http://localhost:8000/api/getAllInfoOfOneSchool/aperiam',
+    'http://localhost:8000/api/getAllInfoOfOneSchool/asperiores',
     [
         'headers' =&gt; [
             'Content-Type' =&gt; 'application/json',
@@ -27440,12 +27443,12 @@ print_r(json_decode((string) $body));</code></pre></div>
             <pre><code class="language-http">cache-control: no-cache, private
 content-type: application/json
 x-ratelimit-limit: 60
-x-ratelimit-remaining: 22
+x-ratelimit-remaining: 24
 access-control-allow-origin: *
  </code></pre></details>         <pre>
 
 <code class="language-json" style="max-height: 300px;">{
-    &quot;message&quot;: &quot;SQLSTATE[42S02]: Base table or view not found: 1146 Table &#039;edspark-phase3.school_info&#039; doesn&#039;t exist (SQL: select * from `school_info` where `full_name` = aperiam)&quot;,
+    &quot;message&quot;: &quot;SQLSTATE[42S02]: Base table or view not found: 1146 Table &#039;edspark-phase3.school_info&#039; doesn&#039;t exist (SQL: select * from `school_info` where `full_name` = asperiores)&quot;,
     &quot;exception&quot;: &quot;Illuminate\\Database\\QueryException&quot;,
     &quot;file&quot;: &quot;C:\\Users\\athap\\Desktop\\Projects-Lumination\\edSpark-phase3\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Connection.php&quot;,
     &quot;line&quot;: 760,
@@ -28033,10 +28036,10 @@ access-control-allow-origin: *
  &nbsp;
                 <input type="text" style="display: none"
                name="name"                data-endpoint="GETapi-getAllInfoOfOneSchool--name-"
-               value="aperiam"
+               value="asperiores"
                data-component="url">
     <br>
-<p>Example: <code>aperiam</code></p>
+<p>Example: <code>asperiores</code></p>
             </div>
                     </form>
 
@@ -28053,7 +28056,7 @@ access-control-allow-origin: *
 
 <div class="javascript-example">
     <pre><code class="language-javascript">const url = new URL(
-    "http://localhost:8000/api/setSchoolInfoByName/quam"
+    "http://localhost:8000/api/setSchoolInfoByName/ducimus"
 );
 
 const headers = {
@@ -28070,7 +28073,7 @@ fetch(url, {
 <div class="php-example">
     <pre><code class="language-php">$client = new \GuzzleHttp\Client();
 $response = $client-&gt;post(
-    'http://localhost:8000/api/setSchoolInfoByName/quam',
+    'http://localhost:8000/api/setSchoolInfoByName/ducimus',
     [
         'headers' =&gt; [
             'Content-Type' =&gt; 'application/json',
@@ -28094,12 +28097,12 @@ print_r(json_decode((string) $body));</code></pre></div>
             <pre><code class="language-http">cache-control: no-cache, private
 content-type: application/json
 x-ratelimit-limit: 60
-x-ratelimit-remaining: 21
+x-ratelimit-remaining: 23
 access-control-allow-origin: *
  </code></pre></details>         <pre>
 
 <code class="language-json" style="max-height: 300px;">{
-    &quot;message&quot;: &quot;SQLSTATE[42S02]: Base table or view not found: 1146 Table &#039;edspark-phase3.school_info&#039; doesn&#039;t exist (SQL: select * from `school_info` where (`full_name` = quam and `status` = published) order by `created_at` desc limit 1)&quot;,
+    &quot;message&quot;: &quot;SQLSTATE[42S02]: Base table or view not found: 1146 Table &#039;edspark-phase3.school_info&#039; doesn&#039;t exist (SQL: select * from `school_info` where (`full_name` = ducimus and `status` = published) order by `created_at` desc limit 1)&quot;,
     &quot;exception&quot;: &quot;Illuminate\\Database\\QueryException&quot;,
     &quot;file&quot;: &quot;C:\\Users\\athap\\Desktop\\Projects-Lumination\\edSpark-phase3\\vendor\\laravel\\framework\\src\\Illuminate\\Database\\Connection.php&quot;,
     &quot;line&quot;: 760,
@@ -28701,10 +28704,10 @@ access-control-allow-origin: *
  &nbsp;
                 <input type="text" style="display: none"
                name="name"                data-endpoint="POSTapi-setSchoolInfoByName--name-"
-               value="quam"
+               value="ducimus"
                data-component="url">
     <br>
-<p>Example: <code>quam</code></p>
+<p>Example: <code>ducimus</code></p>
             </div>
                     </form>
 
@@ -28762,7 +28765,7 @@ print_r(json_decode((string) $body));</code></pre></div>
             <pre><code class="language-http">cache-control: no-cache, private
 content-type: application/json
 x-ratelimit-limit: 60
-x-ratelimit-remaining: 20
+x-ratelimit-remaining: 22
 access-control-allow-origin: *
  </code></pre></details>         <pre>
 
@@ -28890,7 +28893,7 @@ print_r(json_decode((string) $body));</code></pre></div>
             <pre><code class="language-http">cache-control: no-cache, private
 content-type: application/json
 x-ratelimit-limit: 60
-x-ratelimit-remaining: 19
+x-ratelimit-remaining: 21
 access-control-allow-origin: *
  </code></pre></details>         <pre>
 
@@ -29018,7 +29021,7 @@ print_r(json_decode((string) $body));</code></pre></div>
             <pre><code class="language-http">cache-control: no-cache, private
 content-type: application/json
 x-ratelimit-limit: 60
-x-ratelimit-remaining: 18
+x-ratelimit-remaining: 20
 access-control-allow-origin: *
  </code></pre></details>         <pre>
 
@@ -29503,7 +29506,7 @@ print_r(json_decode((string) $body));</code></pre></div>
             <pre><code class="language-http">cache-control: no-cache, private
 content-type: application/json
 x-ratelimit-limit: 60
-x-ratelimit-remaining: 17
+x-ratelimit-remaining: 19
 access-control-allow-origin: *
  </code></pre></details>         <pre>
 
@@ -29927,6 +29930,143 @@ access-control-allow-origin: *
  &nbsp;
                 <input type="text" style="display: none"
                name="Accept"                data-endpoint="GETapi-fetchFeaturedSchools"
+               value="application/json"
+               data-component="header">
+    <br>
+<p>Example: <code>application/json</code></p>
+            </div>
+                        </form>
+
+                    <h2 id="endpoints-GETapi-fetchAllTechs">GET api/fetchAllTechs</h2>
+
+<p>
+</p>
+
+
+
+<span id="example-requests-GETapi-fetchAllTechs">
+<blockquote>Example request:</blockquote>
+
+
+<div class="javascript-example">
+    <pre><code class="language-javascript">const url = new URL(
+    "http://localhost:8000/api/fetchAllTechs"
+);
+
+const headers = {
+    "Content-Type": "application/json",
+    "Accept": "application/json",
+};
+
+fetch(url, {
+    method: "GET",
+    headers,
+}).then(response =&gt; response.json());</code></pre></div>
+
+
+<div class="php-example">
+    <pre><code class="language-php">$client = new \GuzzleHttp\Client();
+$response = $client-&gt;get(
+    'http://localhost:8000/api/fetchAllTechs',
+    [
+        'headers' =&gt; [
+            'Content-Type' =&gt; 'application/json',
+            'Accept' =&gt; 'application/json',
+        ],
+    ]
+);
+$body = $response-&gt;getBody();
+print_r(json_decode((string) $body));</code></pre></div>
+
+</span>
+
+<span id="example-responses-GETapi-fetchAllTechs">
+            <blockquote>
+            <p>Example response (200):</p>
+        </blockquote>
+                <details class="annotation">
+            <summary style="cursor: pointer;">
+                <small onclick="textContent = parentElement.parentElement.open ? 'Show headers' : 'Hide headers'">Show headers</small>
+            </summary>
+            <pre><code class="language-http">cache-control: no-cache, private
+content-type: application/json
+x-ratelimit-limit: 60
+x-ratelimit-remaining: 18
+access-control-allow-origin: *
+ </code></pre></details>         <pre>
+
+<code class="language-json" style="max-height: 300px;">[
+    {
+        &quot;tech_id&quot;: 1,
+        &quot;tech_name&quot;: &quot;test test&quot;,
+        &quot;tech_value&quot;: &quot;test test&quot;,
+        &quot;tech_icon&quot;: &quot;heroicon-o-desktop-computer&quot;
+    },
+    {
+        &quot;tech_id&quot;: 2,
+        &quot;tech_name&quot;: &quot;another test&quot;,
+        &quot;tech_value&quot;: &quot;another test&quot;,
+        &quot;tech_icon&quot;: &quot;heroicon-o-gift&quot;
+    }
+]</code>
+ </pre>
+    </span>
+<span id="execution-results-GETapi-fetchAllTechs" hidden>
+    <blockquote>Received response<span
+                id="execution-response-status-GETapi-fetchAllTechs"></span>:
+    </blockquote>
+    <pre class="json"><code id="execution-response-content-GETapi-fetchAllTechs" style="max-height: 400px;"></code></pre>
+</span>
+<span id="execution-error-GETapi-fetchAllTechs" hidden>
+    <blockquote>Request failed with error:</blockquote>
+    <pre><code id="execution-error-message-GETapi-fetchAllTechs"></code></pre>
+</span>
+<form id="form-GETapi-fetchAllTechs" data-method="GET"
+      data-path="api/fetchAllTechs"
+      data-authed="0"
+      data-hasfiles="0"
+      data-isarraybody="0"
+      autocomplete="off"
+      onsubmit="event.preventDefault(); executeTryOut('GETapi-fetchAllTechs', this);">
+    <h3>
+        Request&nbsp;&nbsp;&nbsp;
+                    <button type="button"
+                    style="background-color: #8fbcd4; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-tryout-GETapi-fetchAllTechs"
+                    onclick="tryItOut('GETapi-fetchAllTechs');">Try it out ⚡
+            </button>
+            <button type="button"
+                    style="background-color: #c97a7e; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-canceltryout-GETapi-fetchAllTechs"
+                    onclick="cancelTryOut('GETapi-fetchAllTechs');" hidden>Cancel 🛑
+            </button>&nbsp;&nbsp;
+            <button type="submit"
+                    style="background-color: #6ac174; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-executetryout-GETapi-fetchAllTechs" hidden>Send Request 💥
+            </button>
+            </h3>
+            <p>
+            <small class="badge badge-green">GET</small>
+            <b><code>api/fetchAllTechs</code></b>
+        </p>
+                <h4 class="fancy-heading-panel"><b>Headers</b></h4>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Content-Type</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+               name="Content-Type"                data-endpoint="GETapi-fetchAllTechs"
+               value="application/json"
+               data-component="header">
+    <br>
+<p>Example: <code>application/json</code></p>
+            </div>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Accept</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+               name="Accept"                data-endpoint="GETapi-fetchAllTechs"
                value="application/json"
                data-component="header">
     <br>
