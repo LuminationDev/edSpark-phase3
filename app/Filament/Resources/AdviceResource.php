@@ -18,6 +18,11 @@ use Livewire\TemporaryUploadedFile;
 
 use App\Models\User;
 
+use Illuminate\Filesystem\Filesystem;
+use Illuminate\Support\Collection;
+use Illuminate\Support\Str;
+use SplFileInfo;
+
 class AdviceResource extends Resource
 {
     protected static ?string $model = Advice::class;
@@ -55,25 +60,66 @@ class AdviceResource extends Resource
                     ->getUploadedFileNameForStorageUsing(function (TemporaryUploadedFile $file): string {
                         return (string) str($file->getClientOriginalName())->prepend('edSpark-advice-');
                     }),
-                Forms\Components\Grid::make(3)->schema([
-                    Forms\Components\TextInput::make('Author')
-                        ->default($user)
-                        ->disabled(),
-                    Forms\Components\BelongsToSelect::make('advice_type')
-                        ->label('Advice type')
-                        ->relationship('advicetype', 'advice_type_name'),
-                    Forms\Components\Select::make('post_status')
-                        ->options([
-                            'Published' => 'Published',
-                            'Unpublished' => 'Unpublished',
-                            'Draft' => 'Draft',
-                            'Pending' => 'Pending',
-                        ])
-                        ->label('Status')
-                        ->required(),
-                ]),
+                // Forms\Components\Grid::make(3)->schema([
+                //     Forms\Components\TextInput::make('Author')
+                //         ->default($user)
+                //         ->disabled(),
+                //     Forms\Components\BelongsToSelect::make('advice_type')
+                //         ->label('Advice type')
+                //         ->relationship('advicetype', 'advice_type_name'),
+                //     Forms\Components\Select::make('post_status')
+                //         ->options([
+                //             'Published' => 'Published',
+                //             'Unpublished' => 'Unpublished',
+                //             'Draft' => 'Draft',
+                //             'Pending' => 'Pending',
+                //         ])
+                //         ->label('Status')
+                //         ->required(),
+                //     Forms\Components\Select::make('template')
+                //         ->reactive()
+                //         ->options(static::getTemplates()),
+
+                //         ...static::getTemplateSchemas(),
+                // ]),
             ]),
         ]);
+    }
+
+    public static function getTemplates(): Collection
+    {
+        return static::getTemplateClasses()->mapWithKeys(fn ($class) => [$class => $class::title()]);
+    }
+
+    public static function getTemplateClasses(): Collection
+    {
+        $filesystem = app(Filesystem::class);
+
+        return collect($filesystem->allFiles(app_path('Filament/PageTemplates')))
+            ->map(function (SplFileInfo $file): string {
+                return (string) Str::of('App\\Filament\\PageTemplates')
+                    ->append('\\', $file->getRelativePathname())
+                    ->replace(['/', '.php'], ['\\', '']);
+            });
+    }
+
+    public static function getTemplateSchemas(): array
+    {
+        return static::getTemplateClasses()
+            ->map(fn ($class) =>
+                Forms\Components\Group::make($class::schema())
+                    ->columnSpan(2)
+                    ->afterStateHydrated(fn ($component, $state) => $component->getChildComponentContainer()->fill($state))
+                    ->statePath('temp_content.' . static::getTemplateName($class))
+                    ->visible(fn ($get) => $get('template') == $class)
+            )
+            ->toArray();
+
+    }
+
+    public static function getTemplateName($class)
+    {
+        return Str::of($class)->afterLast('\\')->snake()->toString();
     }
 
     public static function table(Table $table): Table
