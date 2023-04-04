@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Filament\PageTemplates;
 
 use Filament\Forms\Components\Repeater;
@@ -16,13 +17,15 @@ final class Faq
     {
         return [
             TextInput::make('title'),
-            Repeator::make('faq')->label('FAQ')->schema([
+            Repeater::make('faq')->label('FAQ')->schema([
                 TextInput::make('title'),
-                Repeator::make('items')->schema([
+                Repeater::make('items')->schema([
                     TextInput::make('title'),
                     RichEditor::make('content')
                 ])
             ])
+
+
         ];
     }
 }
