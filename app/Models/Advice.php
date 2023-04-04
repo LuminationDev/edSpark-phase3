@@ -30,7 +30,9 @@ class Advice extends Model
         'post_modified',
         'author_id',
         'cover_image',
-        'advicetype_id'
+        'advicetype_id',
+        'template',
+        'extra_content'
     ];
 
     public function author()
@@ -45,6 +47,7 @@ class Advice extends Model
 
     protected $casts = [
         'cover_image' => 'array',
+        'extra_content' => 'array',
     ];
 
 }

@@ -30,7 +30,9 @@ class Software extends Model
         'post_status',
         'author_id',
         'cover_image',
-        'softwaretype_id'
+        'softwaretype_id',
+        'template',
+        'extra_content'
     ];
 
     public function author()
@@ -45,5 +47,6 @@ class Software extends Model
 
     protected $casts = [
         'cover_image' => 'array',
+        'extra_content' => 'array'
     ];
 }
