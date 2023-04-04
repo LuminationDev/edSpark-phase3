@@ -23,6 +23,9 @@ use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 use SplFileInfo;
 
+use Guava\FilamentIconPicker\Forms\IconPicker;
+use Guava\FilamentIconPicker\Tables\IconColumn;
+
 class AdviceResource extends Resource
 {
     protected static ?string $model = Advice::class;
@@ -60,29 +63,37 @@ class AdviceResource extends Resource
                     ->getUploadedFileNameForStorageUsing(function (TemporaryUploadedFile $file): string {
                         return (string) str($file->getClientOriginalName())->prepend('edSpark-advice-');
                     }),
-                // Forms\Components\Grid::make(3)->schema([
-                //     Forms\Components\TextInput::make('Author')
-                //         ->default($user)
-                //         ->disabled(),
-                //     Forms\Components\BelongsToSelect::make('advice_type')
-                //         ->label('Advice type')
-                //         ->relationship('advicetype', 'advice_type_name'),
-                //     Forms\Components\Select::make('post_status')
-                //         ->options([
-                //             'Published' => 'Published',
-                //             'Unpublished' => 'Unpublished',
-                //             'Draft' => 'Draft',
-                //             'Pending' => 'Pending',
-                //         ])
-                //         ->label('Status')
-                //         ->required(),
-                //     Forms\Components\Select::make('template')
-                //         ->reactive()
-                //         ->options(static::getTemplates()),
+                Forms\Components\Grid::make(3)->schema([
+                    Forms\Components\TextInput::make('Author')
+                        ->default($user)
+                        ->disabled(),
+                    Forms\Components\BelongsToSelect::make('advice_type')
+                        ->label('Advice type')
+                        ->relationship('advicetype', 'advice_type_name'),
+                    Forms\Components\Select::make('post_status')
+                        ->options([
+                            'Published' => 'Published',
+                            'Unpublished' => 'Unpublished',
+                            'Draft' => 'Draft',
+                            'Pending' => 'Pending',
+                        ])
+                        ->label('Status')
+                        ->required(),
+                ]),
 
-                //         ...static::getTemplateSchemas(),
-                // ]),
             ]),
+
+            Forms\Components\Card::make()
+                ->schema([
+                    Forms\Components\Select::make('template')
+                        ->label('Choose a Template')
+                        ->reactive()
+                        ->options(static::getTemplates()),
+
+                        ...static::getTemplateSchemas(),
+                ]),
+
+
         ]);
     }
 
@@ -95,9 +106,9 @@ class AdviceResource extends Resource
     {
         $filesystem = app(Filesystem::class);
 
-        return collect($filesystem->allFiles(app_path('Filament/PageTemplates')))
+        return collect($filesystem->allFiles(app_path('Filament/PageTemplates/Advice')))
             ->map(function (SplFileInfo $file): string {
-                return (string) Str::of('App\\Filament\\PageTemplates')
+                return (string) Str::of('App\\Filament\\PageTemplates\\Advice')
                     ->append('\\', $file->getRelativePathname())
                     ->replace(['/', '.php'], ['\\', '']);
             });
@@ -110,7 +121,8 @@ class AdviceResource extends Resource
                 Forms\Components\Group::make($class::schema())
                     ->columnSpan(2)
                     ->afterStateHydrated(fn ($component, $state) => $component->getChildComponentContainer()->fill($state))
-                    ->statePath('temp_content.' . static::getTemplateName($class))
+                    ->statePath('extra_content.' . static::getTemplateName($class))
+                    // ->statePath(static::getTemplateName($class))
                     ->visible(fn ($get) => $get('template') == $class)
             )
             ->toArray();
@@ -174,10 +186,11 @@ class AdviceResource extends Resource
         ];
     }
 
-    // public static function getEloquentQuery(): Builder
-    // {
-    //     return parent::getEloquentQuery()->where('post_status', 'Published');
-    // }
+    public static function getEloquentQuery(): Builder
+    {
+        // return parent::getEloquentQuery()->where('post_status', 'Published');
+        return parent::getEloquentQuery()->orderBy('created_at', 'DESC');
+    }
 
     public static function shouldRegisterNavigation(): bool
     {
