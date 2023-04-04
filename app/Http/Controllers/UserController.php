@@ -19,7 +19,7 @@ class UserController extends Controller
         $userMetaData = Usermeta::where('user_id', $id)->get();
         $userMetaDataToSend = [];
         if( $userMetaData) {
-            foreach($userMetaData as $value){
+            foreach($userMetaData as $key => $value){
                 $result = [
                     'user_meta_key' => $value->user_meta_key,
                     'user_meta_value' => explode(', ', $value->user_meta_value)
@@ -48,7 +48,6 @@ class UserController extends Controller
 
             $userId = '';
             $data = $request->userData;
-
             $error = '';
 
             if($data) {
@@ -68,7 +67,6 @@ class UserController extends Controller
                 }
             }
 
-
             // TODO: JM handle images (system wide image handling)
 
             $metaData = $request->metaData;
@@ -80,7 +78,7 @@ class UserController extends Controller
                         $result = [
                             'user_id' => $userId,
                             'user_meta_key' => $key,
-                            'user_meta_value' => implode(', ', $value),
+                            'user_meta_value' => (is_string($value)) ? $value : implode(', ', $value),
                             'created_at' => Carbon::now(),
                             'updated_at' => Carbon::now(),
                         ];
@@ -116,8 +114,6 @@ class UserController extends Controller
                 'error' => $error,
                 'status' => 200
             ]);
-
-
         }
     }
 
@@ -170,5 +166,24 @@ class UserController extends Controller
             ]);
 
         }
+    }
+
+    public function getUserMetadata(Request $request){
+        if($request->isMethod('post')){
+            $userMetaDataToSend = [];
+            $userId = $request->id;
+            $userMetakey = $request->userMetakey;
+            $result = Usermeta::where([['user_id', $userId],['user_meta_key', $userMetakey]])->get();
+            if($result) {
+                foreach($result as $key => $value){
+                    $result = [
+                        'user_meta_key' => $value->user_meta_key,
+                        'user_meta_value' => $value->user_meta_value
+                    ];
+                    $userMetaDataToSend[] = $result;
+                }
+            }
+        }
+        return response()->json($userMetaDataToSend);
     }
 }

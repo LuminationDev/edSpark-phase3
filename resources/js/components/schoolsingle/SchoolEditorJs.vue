@@ -20,7 +20,7 @@ const props = defineProps({
     }
 })
 
-const emits = defineEmits(['saveNewData'])
+const emits = defineEmits(['sendSchoolData'])
 
 const editorJsTools = {
     header:{
@@ -49,37 +49,6 @@ const editorJsTools = {
         class: List,
         inlineToolbar: true,
     },
-    // image: {
-    //     class: ImageTool,
-    //     config: {
-    //         actions: [
-    //             {
-    //                 name: 'new_button',
-    //                 icon: '<svg>...</svg>',
-    //                 title: 'New Button',
-    //                 toggle: true,
-    //                 action: (name) => {
-    //                     alert(`${name} button clicked`);
-    //                 }
-    //             }
-    //         ],
-    //         uploader: {
-    //             async uploadByFile(file) {
-    //                 /**
-    //                  * Need to upload with form multipart during save
-    //                  * POST request should do it
-    //                  * TODO - Once API from server is ready
-    //                  */
-    //             }
-    //
-    //         }
-    //     },
-    //     toolbox: [
-    //         {
-    //             icon: '<svg width="22" height="21" viewBox="0 0 22 21" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M2.71563 20.625C2.07625 20.625 1.52871 20.4049 1.07301 19.9646C0.618087 19.5236 0.390625 18.9937 0.390625 18.375V2.625C0.390625 2.00625 0.618087 1.47637 1.07301 1.03537C1.52871 0.595125 2.07625 0.375 2.71563 0.375H13.1781V2.625H2.71563V18.375H18.9906V8.25H21.3156V18.375C21.3156 18.9937 21.0882 19.5236 20.6332 19.9646C20.1775 20.4049 19.63 20.625 18.9906 20.625H2.71563ZM16.6656 7.125V4.875H14.3406V2.625H16.6656V0.375H18.9906V2.625H21.3156V4.875H18.9906V7.125H16.6656ZM3.87813 16.125H17.8281L13.4688 10.5L9.98125 15L7.36563 11.625L3.87813 16.125Z" fill="white"/></svg>'
-    //         }
-    //     ]
-    // }
     image: SimpleImage
 
 }
@@ -120,25 +89,22 @@ const editorJsEvent = (customEvent) => {
 
 }
 
-
-const handleEditorSaveClick = () =>{
-    editor.save().then(outputData => {
-        // console.log('we have ' + JSON.stringify(outputData))
-        emits('saveNewData', outputData)
+const handleEditorSave = async () =>{
+    await editor.save().then(outputData => {
+        emits('sendSchoolData', outputData)
     }).catch(err =>{
         console.log('error has happened ' + err)
     })
 }
+
+defineExpose({
+    handleEditorSave
+})
+
 </script>
 <template>
     <div
         id="editorJs"
-        class="text-genericDark mt-8 rounded-lg editor"
+        class="text-genericDark mt-8 rounded-lg editor flex-col"
     />
-    <button
-        class="w-18 rounded-lg px-2 py-4  bg-slate-500"
-        @click="handleEditorSaveClick"
-    >
-        Save Content
-    </button>
 </template>
