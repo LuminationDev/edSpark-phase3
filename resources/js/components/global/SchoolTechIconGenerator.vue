@@ -29,6 +29,10 @@ const getIconPath = (iconType) => {
         return '/components/svg/ARIcon.vue'
     case "VR":
         return '/components/svg/VRIcon.vue'
+    case "Lumination":
+        return '/components/svg/LuminationIcon.vue'
+    case "Makers Empire":
+        return '/components/svg/MakersEmpireIcon.vue'
     }
 }
 
@@ -42,5 +46,6 @@ import(`../../${getIconPath(props.techName)}`).then(val =>
     <component
         :is="techIcon"
         v-if="techIcon"
+        class="pointer-events-none"
     />
 </template>
