@@ -83,15 +83,51 @@ class AdviceResource extends Resource
 
             ]),
 
+//            Forms\Components\Card::make()
+//                ->schema([
+//                    Forms\Components\Select::make('template')
+//                        ->label('Choose a Template')
+//                        ->reactive()
+//                        ->options(static::getTemplates()),
+//
+//                        ...static::getTemplateSchemas(),
+//                ]),
+
             Forms\Components\Card::make()
                 ->schema([
-                    Forms\Components\Select::make('template')
-                        ->label('Choose a Template')
-                        ->reactive()
-                        ->options(static::getTemplates()),
-
-                        ...static::getTemplateSchemas(),
-                ]),
+                    Forms\Components\Builder::make('extra_content')
+                        ->blocks([
+                            Forms\Components\Builder\Block::make('templates')
+                                ->schema([
+                                    Forms\Components\Select::make('template')
+                                        ->label('Choose a Template')
+                                        ->reactive()
+                                        ->options(static::getTemplates()),
+                                    ...static::getTemplateSchemas()
+                                ]),
+                            Forms\Components\Builder\Block::make('extra_resources')
+                                ->schema([
+                                    Forms\Components\Repeater::make('item')
+                                        ->schema([
+                                            Forms\Components\TextInput::make('heading'),
+                                            Forms\Components\RichEditor::make('content')
+                                                ->disableToolbarButtons([
+                                                    'attachFiles',
+                                                    'blockquote',
+                                                    'bulletList',
+                                                    'codeBlock',
+                                                    'h2',
+                                                    'h3',
+                                                    'orderedList',
+                                                    'redo',
+                                                    'undo',
+                                                ]),
+                                        ])
+                                ])
+                                ->label('Extra Resources')
+                        ])
+                        ->label('Extra content')
+                ])
 
 
         ]);
