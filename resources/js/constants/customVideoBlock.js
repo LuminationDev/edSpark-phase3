@@ -10,7 +10,22 @@ class VideoRecorder {
         this.api = api;
 
         this.recButton = null;
+        this.wrapper = undefined;
+
+        this.mediaRecorder = null;
+        this.stream = null;
+        this.videoLocal = null;
+        this.blobsRecorded = [];
+
+        this.recordingLengthMS = 60000;
         //  document.getElementById('recordButton');
+    }
+
+    /**
+     * @param {any} item
+     */
+    set setStream(item) {
+        this.stream = item;
     }
 
     renderActions() {
@@ -18,33 +33,17 @@ class VideoRecorder {
         const recordButton = document.createElement('div');
 
         // Add record button classes
-        recordButton.classList.add('absolute');
-        recordButton.classList.add('top-1/2');
-        recordButton.classList.add('left-1/2');
-        recordButton.classList.add('-translate-x-1/2');
-        recordButton.classList.add('-translate-y-1/2');
-        recordButton.classList.add('w-fit');
-        recordButton.classList.add('h-fit');
+        recordButton.classList.add('custom_block-record_button-wrapper');
 
         // Create the record inner button
         this.recButton = document.createElement('button');
-        // const record = document.createElement('button');
-        this.recButton.classList.add('rounded-full');
-        this.recButton.classList.add('w-[96px]');
-        this.recButton.classList.add('h-[96px]');
-        this.recButton.classList.add('bg-[#EF5350]');
-        this.recButton.classList.add('flex');
-        this.recButton.classList.add('place-items-center');
-        this.recButton.classList.add('justify-center');
-        this.recButton.classList.add('hover:bg-[#ab3b39]');
+        this.recButton.classList.add('custom_block-record_button-inner');
         // Add record button inner id
         this.recButton.setAttribute('id', 'recordButton');
 
         // Create inner 'REC' text
         const rec = document.createElement('span');
-        rec.classList.add('text-white');
-        rec.classList.add('font-bold');
-        rec.classList.add('text-[33px]');
+        rec.classList.add('rec_button-text');
         rec.innerText = 'REC';
 
 
@@ -52,7 +51,6 @@ class VideoRecorder {
         const stopButton = document.createElement('button');
         const stopIcon = document.createElement('img');
         stopIcon.src = '/storage/uploads/videoControls/stop-white.png';
-        // stopButton.classList.add('hidden');
         stopButton.setAttribute('id', 'stopButton');
         stopButton.appendChild(stopIcon);
 
@@ -76,11 +74,7 @@ class VideoRecorder {
 
         // Create playback progress bar
         const progressBar = document.createElement('div');
-        progressBar.classList.add('w-[450px]');
-        progressBar.classList.add('h-[6px]');
-        progressBar.classList.add('rounded');
-        progressBar.classList.add('bg-[#B83F3D]');
-
+        progressBar.classList.add('cusomt_block-progress_bar');
         // Add progress bar id
         progressBar.setAttribute('id', 'progressBar');
         // Add progress bar classes
@@ -94,30 +88,19 @@ class VideoRecorder {
         resetPlayback.appendChild(resetIcon);
 
 
+        // Countdown timer wrapper
         const countdown = document.createElement('div');
         countdown.setAttribute('id', 'countdown');
-        countdown.classList.add('hidden');
-        countdown.classList.add('absolute');
-        countdown.classList.add('left-0');
-        countdown.classList.add('top-0');
-        countdown.classList.add('w-full');
-        countdown.classList.add('h-full');
-
-        // countdown.classList.add('-translate-x-1/2');
-        // countdown.classList.add('-translate-y-1/2');
-
-
+        countdown.classList.add('custom_block-countdown_wrapper');
 
         // Create playback elapsed
         const timeElapsed = document.createElement('span');
-
         // Add playback elapsed id
         timeElapsed.setAttribute('id', 'timeElapsed');
         // Add playback elapsed classes
 
         // Create playback remaining
         const timeRemaining = document.createElement('span');
-
         // Add playback elapsed id
         timeRemaining.setAttribute('id', 'timeRemaining');
         // Add playback elapsed classes
@@ -125,19 +108,13 @@ class VideoRecorder {
 
         // Create re-record button
         const reRecordButton = document.createElement('button');
-
         // Add re-record button id
         reRecordButton.setAttribute('id', 'reRecordButton');
-        // Add re-record button classes
-
-
-        // Create parent elements for each
 
 
         // Append children to parents
         recordButton.appendChild(this.recButton);
         this.recButton.appendChild(rec);
-        // this.recButton.appendChild(stopButton);
 
         return {
             recordButton,
@@ -155,53 +132,44 @@ class VideoRecorder {
         // Set the container document
         const videoContainer = document.createElement('div');
         // Add the classes
-        videoContainer.classList.add('w-full');
-        // videoContainer.classList.add('p-4');
-        videoContainer.classList.add('flex');
-        videoContainer.classList.add('flex-row');
-        videoContainer.classList.add('justify-between');
+        videoContainer.classList.add('custom_block-video_container');
 
         // Set the inner container
         const videoContainerInner = document.createElement('div');
         // Add the classes
-        videoContainerInner.classList.add('h-[365px]');
-        videoContainerInner.classList.add('w-full');
-        videoContainerInner.classList.add('relative');
+        videoContainerInner.classList.add('custom_block-video_container-inner');
 
         // Set the video player
         const videoPlayer = document.createElement('video');
         // Set the classes
-        videoPlayer.classList.add('h-[365px]');
-        videoPlayer.classList.add('w-full');
-        videoPlayer.classList.add('object-cover');
-        // videoPlayer.classList.add('relative');
+        videoPlayer.classList.add('custom_block-video');
         // Set the id
         videoPlayer.setAttribute('id', 'video_player');
+        navigator.mediaDevices.getUserMedia({
+            video: true,
+            audio: true
+        }).then(stream => {
+            // const video = videoPlayer;
 
-        // Add a download link (for testing)
-        const download = document.createElement('button');
-        download.classList.add('px-6');
-        download.classList.add('py-6');
-        download.classList.add('bg-white');
-        download.classList.add('text-black');
-        download.download = 'test.webm';
+            if ('srcObject' in videoPlayer) {
+                this.stream = stream;
+                videoPlayer.srcObject = this.stream;
+                this.mediaRecorder = new MediaRecorder(this.stream, { mimeType: 'video/webm' });
+            } else {
+                videoPlayer.src = window.URL.createObjectURL(this.stream);
+            };
 
-        download.innerText = 'Download';
+            videoPlayer.onloadedmetadata = (e) => {
+                videoPlayer.play();
+            };
 
-        // Create a container to float in the boc
+        });
+
+
+
+        // Create a container to float in the block
         const controlContainer = document.createElement('div');
-        controlContainer.classList.add('absolute');
-        controlContainer.classList.add('bottom-0');
-        controlContainer.classList.add('left-1/2');
-        controlContainer.classList.add('-translate-x-1/2')
-        controlContainer.classList.add('flex');
-        controlContainer.classList.add('justify-between');
-        controlContainer.classList.add('place-items-center');
-        controlContainer.classList.add('gap-6');
-        controlContainer.classList.add('py-4');
-        controlContainer.classList.add('px-12');
-
-
+        controlContainer.classList.add('cusomt_block-controls_container');
 
 
         // Get the controls
@@ -223,10 +191,219 @@ class VideoRecorder {
         controlContainer.appendChild(controls.stopButton);
         controlContainer.appendChild(controls.resetPlayback);
 
-        // controlContainer.appendChild(download);
-        // videoPlayer.appendChild(controls);
 
-        openCam();
+        /**
+         * Get permissions for the camera
+         */
+        // openCam();
+
+        /**
+         * Record Button
+         */
+        this.api.listeners.on(controls.recordButton, 'click', (e, block) => {
+            console.log('record button clicked');
+
+            /**
+             * Set the required countdown timer variables
+             */
+            const fullDashArray = 283;
+            const warningThreshold = 10;
+            const alertThreshold = 5;
+
+            const colorCodes = {
+                info: {
+                    color: 'green',
+                },
+                warning: {
+                    color: 'orange',
+                    threshold: warningThreshold
+                },
+                alert: {
+                    color: 'red',
+                    threshold: alertThreshold
+                }
+            };
+
+            const timeLimit = 3;
+            let timePassed = 0;
+            let timeLeft = timeLimit;
+            let timerInterval = null;
+            let remainingPathColor = colorCodes.info.color;
+
+            const startTimer = () => {
+                timerInterval = setInterval(() => {
+                    timePassed = timePassed += 1;
+                    timeLeft = timeLimit - timePassed;
+                    document.getElementById("base-timer-label").innerHTML = formatTime(
+                        timeLeft
+                    );
+                    setCircleDasharray();
+                    setRemainingPathColor(timeLeft);
+
+                    if (timeLeft === 0) {
+                        onTimesUp();
+                    }
+                }, 1000);
+            };
+
+            const formatTime = (time) => {
+                const minutes = Math.floor(time / 60);
+                let seconds = time % 60;
+                console.log(seconds);
+                return `0${seconds}`;
+            };
+
+            const  onTimesUp = () => {
+                clearInterval(timerInterval);
+                document.getElementById('countdown').classList.add('hidden');
+
+                // set MIME type of recording as video/webm
+                // this.mediaRecorder = new MediaRecorder(this.stream, { mimeType: 'video/webm' });
+
+                // event : new recorded video blob available
+                const chunkArray = [];
+                this.mediaRecorder.addEventListener('dataavailable', function(e) {
+                    chunkArray.push(e.data);
+
+                    // console.log('CHUNKS', e.data);
+                    this.blobsRecorded = chunkArray;
+                });
+
+                // event : recording stopped & all blobs sent
+                this.mediaRecorder.addEventListener('stop', function() {
+                    // create local object URL from the recorded video blobs
+                    this.videoLocal = URL.createObjectURL(new Blob(this.blobsRecorded, { type: 'video/webm' }));
+                    // console.log(this.videoLocal);
+                    // this.mediaRecorder = null;
+                    // this.stream = this.videoLocal;
+                    handlePlayback(this.videoLocal);
+                    // download_link.href = video_local;
+                });
+
+                this.mediaRecorder.start();
+                console.log(this.mediaRecorder.state + " for " + (this.recordingLengthMS / 1000) + " seconds...");
+
+
+            };
+
+            const handlePlayback = (video) => {
+                console.log('playback has been stopped');
+                console.log('the media recorder state is ', this.mediaRecorder.state);
+                console.log('chunks available', this.blobsRecorded);
+                // const playbackElement = document.createElement('video');
+                // playbackElement.classList.add('custom_block-video');
+                // playbackElement.setAttribute('id', 'video_playback');
+                // // playbackElement.srcObject = this.stream;
+                // videoContainerInner.appendChild(playbackElement);
+                // videoPlayer.style.display = 'none';
+
+                // console.log(video);
+                // if ('srcObject' in playbackElement) {
+                //     // this.stream = stream;
+                //     console.log('STATE', video);
+                //     playbackElement.srcObject = this.mediaRecorder;
+                //     playbackElement.play();
+                //     console.log(playbackElement.srcObject);
+                //     // this.mediaRecorder = new MediaRecorder(this.videoLocal, { mimeType: 'video/webm' });
+                // } else {
+                //     playbackElement.src = window.URL.createObjectURL(this.stream);
+                // };
+            }
+
+            const setRemainingPathColor = (timeLeft) => {
+                const { alert, warning, info } = colorCodes;
+                if (timeLeft <= alert.threshold) {
+                    document
+                    .getElementById("base-timer-path-remaining")
+                    .classList.remove(warning.color);
+                    document
+                    .getElementById("base-timer-path-remaining")
+                    .classList.add(alert.color);
+                } else if (timeLeft <= warning.threshold) {
+                    document
+                    .getElementById("base-timer-path-remaining")
+                    .classList.remove(info.color);
+                    document
+                    .getElementById("base-timer-path-remaining")
+                    .classList.add(warning.color);
+                }
+            }
+
+            const  calculateTimeFraction = () => {
+                const rawTimeFraction = timeLeft / timeLimit;
+                return rawTimeFraction - (1 / timeLimit) * (1 - rawTimeFraction);
+            }
+
+            const setCircleDasharray = () => {
+                const circleDasharray = `${(
+                    calculateTimeFraction() * fullDashArray
+                ).toFixed(0)} 283`;
+                document
+                    .getElementById("base-timer-path-remaining")
+                    .setAttribute("stroke-dasharray", circleDasharray);
+            }
+
+            controls.recordButton.style.display = 'none';
+            controls.countdown.style.display = 'flex';
+            controls.countdown.innerHTML = `
+                <div class="base-timer">
+                    <svg class="base-timer__svg" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                        <g class="base-timer__circle">
+                        <circle class="base-timer__path-elapsed" cx="50" cy="50" r="45"></circle>
+                        <path
+                            id="base-timer-path-remaining"
+                            stroke-dasharray="283"
+                            class="base-timer__path-remaining ${remainingPathColor}"
+                            d="
+                            M 50, 50
+                            m -45, 0
+                            a 45,45 0 1,0 90,0
+                            a 45,45 0 1,0 -90,0
+                            "
+                        ></path>
+                        </g>
+                    </svg>
+                    <span id="base-timer-label" class="base-timer__label">${formatTime(
+                        timeLeft
+                    )}</span>
+                </div>
+            `;
+
+            startTimer();
+
+        });
+
+        /**
+         * Pause Button
+         */
+        this.api.listeners.on(controls.pauseButton, 'click', (e, block) => {
+            console.log('pause button clicked')
+        });
+
+        /**
+         * Play Button
+         */
+        this.api.listeners.on(controls.playbackButton, 'click', (e, block) => {
+            console.log('play button clicked')
+        });
+
+        /**
+         * Stop Button
+         */
+        this.api.listeners.on(controls.stopButton, 'click', (e, block) => {
+            console.log('stop button clicked');
+            this.mediaRecorder.stop();
+            console.log(this.mediaRecorder);
+        });
+
+        /**
+         * Reset Record Button
+         */
+        this.api.listeners.on(controls.resetPlayback, 'click', (e, block) => {
+            console.log('reset button clicked')
+        });
+
+
         return videoContainer;
     }
 
@@ -235,16 +412,6 @@ class VideoRecorder {
             file: blockContent.value
         }
     }
-
-    recButtonClick() {
-        console.log(this.api)
-        this.recButton.addEventListener('click', () => {
-            console.log('click');
-        })
-        this.api.listeners.on(this.recButton, 'click', () => {
-            console.log('Button clicked!');
-        }, true);
-    }
 }
 
 export default VideoRecorder;
@@ -252,37 +419,67 @@ export default VideoRecorder;
 /**
  * HELPER - get the camera and check for audio and video permissions
  */
-const openCam = () => {
-    // let allMediaDevices = navigator.mediaDevices;
-    // if (!allMediaDevices || !allMediaDevices.getUserMedia) {
-    //     console.log('Get user media not supported');
-    //     return;
-    // }
+// const openCam = () => {
+//     let allMediaDevices = navigator.mediaDevices;
+//     if (!allMediaDevices || !allMediaDevices.getUserMedia) {
+//         console.log('Get user media not supported');
+//         return;
+//     }
 
-    // allMediaDevices.getUserMedia({
-    //     audio: true,
-    //     video: true
-    // }).then(stream => {
-    //     const video = document.getElementById('video_player');
+//     allMediaDevices.getUserMedia({
+//         audio: true,
+//         video: true
+//     }).then(stream => {
+//         const video = document.getElementById('video_player');
 
-    //     if ('srcObject' in video) {
-    //         video.srcObject = stream;
-    //     } else {
-    //         video.src = window.URL.createObjectURL(stream);
-    //     };
+//         if ('srcObject' in video) {
+//             video.srcObject = stream;
+//         } else {
+//             video.src = window.URL.createObjectURL(stream);
+//         };
 
-    //     video.onloadedmetadata = (e) => {
-    //         video.play();
-    //     };
-    // }).catch(error => {
-    //     console.log(error.name +': ' + error.message);
-    // })
-}
+//         video.onloadedmetadata = (e) => {
+//             video.play();
+//         };
+//     }).catch(error => {
+//         console.log(error.name +': ' + error.message);
+//     })
+// }
+
+/**
+ * HELPER - start the video recorder
+ * called after countdown timer has completed
+ */
+// const startTimer = () => {
+//     timerInterval = setInterval(() => {
+//         timePassed = timePassed += 1;
+//         timeLeft = TIME_LIMIT - timePassed;
+//         document.getElementById("base-timer-label").innerHTML = formatTime(
+//         timeLeft
+//         );
+//         setCircleDasharray();
+//         setRemainingPathColor(timeLeft);
+
+//         if (timeLeft === 0) {
+//         onTimesUp();
+//         }
+//     }, 1000);
+// }
+
+/**
+ * HELPER - format the time rendered
+ */
+// const formatTime = (time) => {
+//     const minutes = Math.floor(time / 60);
+//     // if (time < 10) {
+//     //     time = 0 + time
+//     // }
+//     let seconds = time % 60;
 
 
 
-
-
+//     return `0${seconds}`;
+// }
 
 
 

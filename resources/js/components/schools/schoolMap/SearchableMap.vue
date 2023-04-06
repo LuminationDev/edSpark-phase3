@@ -1,7 +1,7 @@
 <script>
 import { ref, computed } from 'vue';
 import axios from 'axios';
-import { GoogleMap, Marker, MarkerCluster } from 'vue3-google-map'
+import { GoogleMap, Marker, MarkerCluster, } from 'vue3-google-map'
 import { useRouter } from 'vue-router';
 
 /**

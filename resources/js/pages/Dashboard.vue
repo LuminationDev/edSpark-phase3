@@ -38,6 +38,13 @@ import { useAdviceStore } from '../stores/useAdviceStore.js';
 import { useSoftwareStore } from '../stores/useSoftwareStore.js';
 import { useUserStore } from '../stores/useUserStore';
 
+/**
+ * TESTING
+ */
+import oktaAuth from '../constants/oktaAuth.js';
+// import { JwtVerifier } from '@okta/jwt-verifier';
+// import { useOktaAuth } from '@okta/okta-vue';
+
 export default {
 
     components: {
@@ -83,16 +90,32 @@ export default {
         /**
          * Change this to TRUE to simulate the First Login Experience
          */
-        const isFirstVisit = ref(false);
+        const isFirstVisit = ref(true);
 
 
 
         const createNewUser = async (data) => {
             const result = await userStore.createUser(data);
             return result;
-        }
+        };
+
+        // const { auth } = useOktaAuth();
+        // const jwtVerifier = new JwtVerifier({
+        //     issuer: '',
+        //     clientId: ''
+        // });
+
+        // const email = computed(() => {
+        //     if ($auth?.token) {
+        //         const { claims } = jwtVerifier.decode(auth.token.accessToken);
+        //         return claims.email
+        //     };
+        //     return null;
+        // })
 
         return {
+            // email,
+
             createNewUser,
             userStore,
             adviceStore,
@@ -319,17 +342,43 @@ export default {
     },
 
     async created() {
-        const auth = getCurrentInstance().appContext.app.config.globalProperties.$auth
-        const idToken = await auth.token?.parseFromUrl()
-            .then(async res => {
-                const { idToken } = res.tokens;
-                const { accessToken } = res.tokens;
-                console.log(`Hi ${idToken.claims.email}!`);
-                console.log(`accessToken ${accessToken}!`);
-            }).catch(err => {
-                console.log('There is a serious error');
-                console.error(err);
-            })
+        // const auth = getCurrentInstance().appContext.app.config.globalProperties.$auth;
+        // console.log(localStorage.getItem('okta-cache-storage'));
+        // const idToken = await auth.token?.parseFromUrl(localStorage.getItem('okta-cache-storage'))
+        //     .then(async res => {
+        //         const { idToken } = res.tokens;
+        //         const { accessToken } = res.tokens;
+        //         console.log(`Hi ${idToken.claims.email}!`);
+        //         console.log(`accessToken ${accessToken}!`);
+        //     }).catch(err => {
+        //         console.log('There is a serious error');
+        //         console.error(err);
+        //     })
+    },
+
+    mounted() {
+        // if (this.$auth.isAuthenticated()) {
+        //     console.log(this.$auth);
+        // } else {
+        //     console.log('Naaaaahhhhhh');
+        // }
+
+        oktaAuth.handleLoginRedirect().then(response => {
+            if (!response) {
+                throw new Error('Authentication failed: No response received');
+            }
+
+            if (!response.tokens) {
+                throw new Error('Authentication failed');
+            }
+
+            const { idToken, accessToken, state } = response.tokens;
+            const claims = response.claims || {};
+
+            console.log(claims);
+        }).catch(error => {
+            console.error(error);
+        });
     },
 
     methods: {
