@@ -178,7 +178,7 @@ console.log(schoolContent);
                             <div class="flex flex-col">
                                 <div class="">
                                     <h1 class="text-white text-[48px] font-bold">
-                                        {{ schoolContent.name }} {{ colorTheme }}
+                                        {{ schoolContent.name }}
                                     </h1>
                                 </div>
                                 <div class="flex flex-row gap-4 place-items-center">

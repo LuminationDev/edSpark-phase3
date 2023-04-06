@@ -56,10 +56,13 @@ const customBackground = computed(() => {
 </script>
 <template>
     <div class="genericSelectorContainer">
+        <div class="font-semibold text-lg underline">
+            {{ props.title }}
+        </div>
         <div
             v-for="(item,index) in listData"
             :key="index"
-            class=" h-28 p-2 my-2 bg-blue-300 text-white rounded-xl grayscale opacity-60"
+            class=" h-28 p-2 my-2 bg-blue-300 text-white rounded-xl grayscale opacity-60 cursor-pointer group hover:shadow-xl"
             :class="[{'bg-blue-300 !grayscale-0 !opacity-100' : checkIfObjectIsSelected(item)}, customBackground]"
 
 

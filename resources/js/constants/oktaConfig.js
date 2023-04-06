@@ -1,3 +1,5 @@
+import { AuthSdkError } from '@okta/okta-auth-js';
+
 export default {
     oidc: {
         clientId: '0oa1x7h530VPdjQlQ3l7',
@@ -5,8 +7,10 @@ export default {
         redirectUri: 'http://localhost:8000/dashboard',
         // redirectUri: window.location.origin + '/login/callback',
         scopes: ['openid', 'profile', 'email', 'edspark'],
-        tokenManager: {
-            storage: 'localStorage'
-        }
+        // tokenManager: {
+        //     storage: 'localStorage'
+        // },
+        pkce: true,
+        logLevel: AuthSdkError,
     }
 }

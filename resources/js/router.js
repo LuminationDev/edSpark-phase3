@@ -83,7 +83,7 @@ const router = createRouter({
             component: UserProfile
         },
         {
-            path: '/login/callback',
+            path: '/login',
             component: LoginCallback
         },
         // {
@@ -101,6 +101,6 @@ const router = createRouter({
     },
 });
 
-router.beforeEach(navigationGuard);
+// router.beforeEach(navigationGuard);
 
 export default router;

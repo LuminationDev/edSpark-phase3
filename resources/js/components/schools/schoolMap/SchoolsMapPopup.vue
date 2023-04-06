@@ -2,34 +2,34 @@
     /**
      * Import SVG's
      */
-    import Close from '../svg/Close.vue';
+import Close from '../../svg/Close.vue';
 
-    export default {
-        props: {
-            mapPopupName: String,
-            mapPopupIndex: String
+export default {
+
+    components: {
+        Close
+    },
+    props: {
+        mapPopupName: String,
+        mapPopupIndex: String
+    },
+
+    mounted() {
+        console.log(this.mapPopupIndex)
+    },
+
+    methods: {
+        handleClosePopup() {
+            this.$emit('handleToggle')
         },
 
-        components: {
-            Close
-        },
-
-        mounted() {
-            console.log(this.mapPopupIndex)
-        },
-
-        methods: {
-            handleClosePopup() {
-                this.$emit('handleToggle')
-            },
-
-            handleEmit() {
-                this.$emit('handleLinkToSchool')
-            }
-        },
+        handleEmit() {
+            this.$emit('handleLinkToSchool')
+        }
+    },
 
 
-    }
+}
 </script>
 
 <template>
@@ -40,7 +40,9 @@
         class="absolute p-4 bg-white shadow-xl w-[340px] flex flex-col gap-6"
     >
         <div class="relative flex flex-row justify-between place-items-center">
-            <h3 class="text-[18px] font-medium">{{ mapPopupName }}</h3>
+            <h3 class="text-[18px] font-medium">
+                {{ mapPopupName }}
+            </h3>
             <div class="">
                 <button class="hover:bg-gray-100 p-2">
                     <Close
@@ -54,7 +56,9 @@
             <button
                 class="bg-[#0072DA] text-white px-8 py-3 hover:bg-[#0359a9]"
                 @click="handleEmit"
-            >Visit</button>
+            >
+                Visit
+            </button>
         </div>
     </div>
 </template>
