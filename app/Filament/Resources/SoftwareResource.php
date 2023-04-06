@@ -22,6 +22,8 @@ use Illuminate\Support\Str;
 use SplFileInfo;
 
 
+
+
 class SoftwareResource extends Resource
 {
     protected static ?string $model = Software::class;
@@ -83,11 +85,59 @@ class SoftwareResource extends Resource
 
                 Forms\Components\Card::make()
                     ->schema([
-                        Forms\Components\Select::make('template')
-                            ->label('Choose a Template')
-                            ->reactive()
-                            ->options(static::getTemplates()),
-                        ...static::getTemplateSchemas(),
+//                        Forms\Components\Select::make('template')
+//                            ->label('Choose a Template')
+//                            ->reactive()
+//                            ->options(static::getTemplates()),
+//                        ...static::getTemplateSchemas(),
+
+//                        Forms\Components\Builder::make('content')
+//                            ->blocks([
+//                                Forms\Components\Builder\Block::make('heading')
+//                                    ->schema([
+//                                        Forms\Components\TextInput::make('content')
+//                                            ->label('Heading')
+//                                            ->required()
+//                                    ]),
+//                                Forms\Components\Builder\Block::make('paragraph')
+//                                    ->schema([
+//                                        Forms\Components\MarkdownEditor::make('content')
+//                                            ->label('Paragraph')
+//                                            ->required()
+//                                    ]),
+//                                Forms\Components\Builder\Block::make('image')
+//                                    ->schema([
+//                                        Forms\Components\FileUpload::make('url')
+//                                            ->label('image')
+//                                            ->image()
+//                                            ->required()
+//                                    ])
+//                            ]),
+
+
+                        Forms\Components\Builder::make('extra_content')
+                            ->blocks([
+                                    Forms\Components\Builder\Block::make('templates')
+                                        ->schema([
+                                            Forms\Components\Select::make('template')
+                                                ->label('Choose a Template')
+                                                ->reactive()
+                                                ->options(static::getTemplates()),
+                                            ...static::getTemplateSchemas()
+                                        ]),
+                                    Forms\Components\Builder\Block::make('extra_resources')
+                                        ->schema([
+                                            Forms\Components\Repeater::make('item')
+                                                ->schema([
+                                                    Forms\Components\TextInput::make('heading'),
+                                                    Forms\Components\RichEditor::make('content')
+                                                ])
+                                        ])
+                                        ->label('Extra Resources')
+                                ]
+                            )
+                            ->label('Extra content')
+
                     ])
             ]);
     }

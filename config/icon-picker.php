@@ -17,8 +17,8 @@ return [
     */
     'sets' => null,
 //     example:
-        // 'sets' => 'my-icon-pack',
-    // 'sets' => 'fontawesome-solid',
+//         'sets' => 'edspark-svg',
+//     'sets' => 'fontawesome-solid',
 //     'sets' => [
 //        'heroicons',
 //        'fontawesome-solid',
