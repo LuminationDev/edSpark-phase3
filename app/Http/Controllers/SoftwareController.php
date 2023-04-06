@@ -24,6 +24,8 @@ class SoftwareController extends Controller
                 'post_modified' => $software->post_modified,
                 'post_status' => $software->post_status,
                 'software_type' => ($software->softwaretype) ? $software->softwaretype->software_type_name : NULL ,
+                'template' => ($software->template) ? $software->template : NULL,
+                'extra_content' => ($software->extra_content) ? $software->extra_content : NULL,
                 'created_at' => $software->created_at,
                 'updated_at' => $software->updated_at
             ];

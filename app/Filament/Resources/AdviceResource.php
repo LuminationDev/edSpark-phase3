@@ -18,6 +18,14 @@ use Livewire\TemporaryUploadedFile;
 
 use App\Models\User;
 
+use Illuminate\Filesystem\Filesystem;
+use Illuminate\Support\Collection;
+use Illuminate\Support\Str;
+use SplFileInfo;
+
+use Guava\FilamentIconPicker\Forms\IconPicker;
+use Guava\FilamentIconPicker\Tables\IconColumn;
+
 class AdviceResource extends Resource
 {
     protected static ?string $model = Advice::class;
@@ -72,8 +80,58 @@ class AdviceResource extends Resource
                         ->label('Status')
                         ->required(),
                 ]),
+
             ]),
+
+            Forms\Components\Card::make()
+                ->schema([
+                    Forms\Components\Select::make('template')
+                        ->label('Choose a Template')
+                        ->reactive()
+                        ->options(static::getTemplates()),
+
+                        ...static::getTemplateSchemas(),
+                ]),
+
+
         ]);
+    }
+
+    public static function getTemplates(): Collection
+    {
+        return static::getTemplateClasses()->mapWithKeys(fn ($class) => [$class => $class::title()]);
+    }
+
+    public static function getTemplateClasses(): Collection
+    {
+        $filesystem = app(Filesystem::class);
+
+        return collect($filesystem->allFiles(app_path('Filament/PageTemplates/Advice')))
+            ->map(function (SplFileInfo $file): string {
+                return (string) Str::of('App\\Filament\\PageTemplates\\Advice')
+                    ->append('\\', $file->getRelativePathname())
+                    ->replace(['/', '.php'], ['\\', '']);
+            });
+    }
+
+    public static function getTemplateSchemas(): array
+    {
+        return static::getTemplateClasses()
+            ->map(fn ($class) =>
+                Forms\Components\Group::make($class::schema())
+                    ->columnSpan(2)
+                    ->afterStateHydrated(fn ($component, $state) => $component->getChildComponentContainer()->fill($state))
+                    ->statePath('extra_content.' . static::getTemplateName($class))
+                    // ->statePath(static::getTemplateName($class))
+                    ->visible(fn ($get) => $get('template') == $class)
+            )
+            ->toArray();
+
+    }
+
+    public static function getTemplateName($class)
+    {
+        return Str::of($class)->afterLast('\\')->snake()->toString();
     }
 
     public static function table(Table $table): Table
@@ -128,10 +186,11 @@ class AdviceResource extends Resource
         ];
     }
 
-    // public static function getEloquentQuery(): Builder
-    // {
-    //     return parent::getEloquentQuery()->where('post_status', 'Published');
-    // }
+    public static function getEloquentQuery(): Builder
+    {
+        // return parent::getEloquentQuery()->where('post_status', 'Published');
+        return parent::getEloquentQuery()->orderBy('created_at', 'DESC');
+    }
 
     public static function shouldRegisterNavigation(): bool
     {
