@@ -3,6 +3,10 @@
     "file": "assets/FooterSwoosh-74226902.png",
     "src": "resources/assets/images/FooterSwoosh.png"
   },
+  "resources/assets/images/departmentProvidedAndApproved.png": {
+    "file": "assets/departmentProvidedAndApproved-45068dc9.png",
+    "src": "resources/assets/images/departmentProvidedAndApproved.png"
+  },
   "resources/assets/images/negotiatedDeals.png": {
     "file": "assets/negotiatedDeals-0e67ab26.png",
     "src": "resources/assets/images/negotiatedDeals.png"
@@ -15,32 +19,28 @@
     "file": "assets/WhatIsDag-10bb387b.png",
     "src": "resources/assets/images/WhatIsDag.png"
   },
-  "resources/assets/images/departmentProvidedAndApproved.png": {
-    "file": "assets/departmentProvidedAndApproved-45068dc9.png",
-    "src": "resources/assets/images/departmentProvidedAndApproved.png"
+  "resources/assets/images/CommunityIllustration.png": {
+    "file": "assets/CommunityIllustration-a28447f8.png",
+    "src": "resources/assets/images/CommunityIllustration.png"
   },
   "resources/assets/images/PartnersPuzzle.png": {
     "file": "assets/PartnersPuzzle-f8ea4960.png",
     "src": "resources/assets/images/PartnersPuzzle.png"
-  },
-  "resources/assets/images/CommunityIllustration.png": {
-    "file": "assets/CommunityIllustration-a28447f8.png",
-    "src": "resources/assets/images/CommunityIllustration.png"
   },
   "resources/assets/images/eventsCalendar.png": {
     "file": "assets/eventsCalendar-39cdf35b.png",
     "src": "resources/assets/images/eventsCalendar.png"
   },
   "resources/js/app.css": {
-    "file": "assets/app-37a60bec.css",
+    "file": "assets/app-effde88f.css",
     "src": "resources/js/app.css"
   },
   "resources/js/app.js": {
-    "file": "assets/app-b0c54c70.js",
+    "file": "assets/app-1c747b53.js",
     "src": "resources/js/app.js",
     "isEntry": true,
     "css": [
-      "assets/app-37a60bec.css"
+      "assets/app-effde88f.css"
     ],
     "assets": [
       "assets/FooterSwoosh-74226902.png",
