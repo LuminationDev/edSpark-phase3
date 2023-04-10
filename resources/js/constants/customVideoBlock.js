@@ -19,6 +19,35 @@ class VideoRecorder {
 
         this.recordingLengthMS = 60000;
         //  document.getElementById('recordButton');
+        /**
+         * SET ALL THE NECESSARY ELEMENTS
+         * include: wrapper elements for video players
+         */
+
+        // Video player (recording)
+        this.videoRecorder = null;
+        // Video player (recording) - wrapper
+        this.videoRecorderWrapper = null;
+        // Video player (playback)
+        this.videoPlayback = null;
+        // Video player (playback) - wrapper
+        this.videoPlaybackWrapper = null;
+        // Record button
+        this.recordButton = null;
+        // Countdown
+        this.countdown = null;
+        // Play
+        this.playButton = null;
+        // Pause
+        this.pauseButton = null;
+        // Stop
+        this.stopButton = null;
+        // Restart
+        this.restartButton = null;
+        // Progress
+        this.progressBar = null;
+
+
     }
 
     /**

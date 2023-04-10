@@ -24,9 +24,9 @@ const props = defineProps({
         </div>
         <div class="px-6 py-4 relative transition-all">
             <!-- CARD CONTENT -->
-            <div class="card-content_title min-h-[72px] transition-all">
+            <div class="card-content_title min-h-[72px] transition-all group-hover:mr-24">
                 <!-- CARD CONTENT HEADER -->
-                <h5 class="text-xl font-medium transition-all">
+                <h5 class="text-xl font-medium transition-all flex justify-between place-items-center group-hover:mr-8">
                     <slot name="title" />
                 </h5>
             </div>
@@ -72,6 +72,14 @@ const props = defineProps({
         text-overflow: ellipsis;
         display: -webkit-box;
         -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+    }
+
+    .card-content_body {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display: -webkit-box;
+        -webkit-line-clamp: 4;
         -webkit-box-orient: vertical;
     }
 

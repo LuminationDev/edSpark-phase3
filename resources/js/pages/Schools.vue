@@ -38,6 +38,7 @@ onBeforeMount(async () => {
     const currentUserRole = currentUser.value.role
     try{
         await axios.post(`${serverURL}/getUserMetadata`,{id: 1, userMetakey: 'has_school'}).then(res => {
+            console.log(res);
             currentUserHasSchool = res.data[0].user_meta_value == 'false'? false : true
             console.log('current user has_school meta is ' + currentUserHasSchool)
         })

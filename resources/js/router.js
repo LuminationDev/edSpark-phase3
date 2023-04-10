@@ -101,6 +101,8 @@ const router = createRouter({
     },
 });
 
-// router.beforeEach(navigationGuard);
+router.beforeEach(navigationGuard);
 
 export default router;
+
+// AuthError: Custom scopes are not allowed for this request.

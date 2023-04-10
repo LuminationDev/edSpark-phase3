@@ -21,7 +21,8 @@
         methods: {
             async login () {
                 console.log('Hello');
-                console.log(oktaAuth);
+                // console.log(oktaAuth);
+                await this.$auth.signInWithRedirect();
                 // if (!oktaAuth.isAuthenticated()) {
                 //     oktaAuth.signInWithRedirect();
                 // } else {
@@ -30,7 +31,7 @@
                 // }
                 // const { claims } = await this.$auth.signInWithRedirect({ originalUri: '/' });
                 // console.log(claims);
-                oktaAuth.signInWithRedirect();
+                // oktaAuth.signInWithRedirect();
 
                 /**
                  * NOT ALLOWED
@@ -80,10 +81,20 @@
 
 
     <h1 class="text-[48px] mt-12 font-bold text-slate-900">Landing Page</h1>
-
-    <button @click="login" class="bg-blue-500 px-4 py-2 text-white font-bold text-[24px]">
+    <button
+        v-if="authState && authState.isAuthenticated"
+        class="bg-blue-500 px-4 py-2 text-white font-bold text-[24px]"
+    >
+        Logout
+    </button>
+    <button
+        v-else
+        @click="login"
+        class="bg-blue-500 px-4 py-2 text-white font-bold text-[24px]"
+    >
         Login
     </button>
+
     <!-- <router-link :to="{name: 'login'}"></router-link> -->
     <RouterView />
 
