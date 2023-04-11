@@ -100,7 +100,7 @@ const handleSaveWelcomePopup = (data)=>{
             @send-save-popup="handleSaveWelcomePopup"
         />
         <SchoolsHero />
-        <div class="px-[81px] py-20">
+        <div class=" py-20">
             <div class="grid grid-cols-4 gap-[24px] w-full">
                 <div
                     v-for="(school,index) in featuredSitesData"
@@ -124,7 +124,7 @@ const handleSaveWelcomePopup = (data)=>{
         </div>
 
 
-        <div class="px-[81px] py-20">
+        <div class="py-20">
             <SearchableMap />
         </div>
     </div>

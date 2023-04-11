@@ -4,7 +4,7 @@ import SchoolsRobot from '@/js/components/svg/schoolsRobot/SchoolsRobot.vue';
 
 <template>
     <div>
-        <div class="bg-gradient-to-r from-[#002858] via-[#0072DA] to-[#44B8F3]/50 mx-[81px] mt-[95px] py-[36px] px-[48px] grid grid-cols-8">
+        <div class="bg-gradient-to-r from-[#002858] via-[#0072DA] to-[#44B8F3]/50 mt-[95px] py-[36px] px-[48px] grid grid-cols-8">
             <div class="col-span-5">
                 <h1 class="text-white text-[36px] font-semibold pb-8">
                     Schools
