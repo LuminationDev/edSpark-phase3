@@ -8,6 +8,7 @@
      * Import Stores
      */
     import { useUserStore } from '../stores/useUserStore';
+    import { useSiteStore } from '../stores/useSiteStore';
 
     /**
      * Import Components
@@ -24,6 +25,7 @@
     export default {
         setup(refs) {
             const userStore = useUserStore();
+            const siteStore = useSiteStore();
 
             const isEditAvatar = ref(false);
 
@@ -41,6 +43,7 @@
 
             return {
                 userStore,
+                siteStore,
                 isEditAvatar,
                 handleSaveChange,
                 updatedName,
@@ -66,6 +69,7 @@
                 editingField: false,
                 editBio: false,
                 editYearLevels: false,
+                userAvatar: null,
                 theYearLevels: [
                     1,2,3,4,5,6,7,8,9,10,11,12,13
                 ],
@@ -156,7 +160,6 @@
             //     this.updatedYearLevel = item;
             // },
             handleMetaData() {
-                console.log(this.metadata);
                 if (this.metadata) {
                     this.metadata.forEach(meta => {
                         switch (meta.user_meta_key) {
@@ -176,12 +179,16 @@
                             case 'subjects':
                                     this.subjects = meta.user_meta_value
                                 break;
+                            case 'userAvatar':
+                                    this.userAvatar = meta.user_meta_value
+                                break;
 
                             default:
                                 this.biography = null;
                                 this.yearLevels = null;
                                 this.interests = null;
-                                this.subjects = null
+                                this.subjects = null;
+                                this.userAvatar = null;
                                 break;
                         }
                     })
@@ -194,16 +201,16 @@
 
             updateYearLevels(year) {
                 this.yearLevels.push(year);
+            },
+
+            fetchUserSite(siteId) {
+                // Get the site by id
+                return this.siteStore.getSiteById(siteId);
             }
         },
 
         mounted() {
             this.handleMetaData();
-            console.log(this.biography);
-            console.log(this.yearLevels);
-            console.log(this.subjects);
-            console.log(this.interests);
-
         }
 
     }
@@ -292,8 +299,9 @@
                             </template>
 
                             <template #currentDetails>
-                                <p class="text-[24px] font-normal group-hover:underline">Edwardstown Primary School
-</p>
+                                <p class="text-[24px] font-normal group-hover:underline">
+                                    {{ fetchUserSite(user.site_id) }}
+                                </p>
                             </template>
                         </UserInfoProfileFields>
                     </div>

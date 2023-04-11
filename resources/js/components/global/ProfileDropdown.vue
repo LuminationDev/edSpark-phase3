@@ -38,7 +38,8 @@
             },
 
             async logout () {
-                await this.$auth.signOut()
+                await this.$auth.signOut();
+                this.userStore.clearStore();
             }
         },
     }

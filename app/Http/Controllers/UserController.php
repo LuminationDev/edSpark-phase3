@@ -57,7 +57,9 @@ class UserController extends Controller
                         'full_name' => $data['full_name'],
                         'email' => $data['email'],
                         'display_name' => $data['display_name'],
-                        'status' => 'Inactive',
+                        'status' => 'Active',
+                        'role_id' => $data['role_id'],
+                        'site_id' => $data['site_id'],
                         'created_at' => Carbon::now(),
                         'updated_at' => Carbon::now()
                     ];
@@ -88,27 +90,33 @@ class UserController extends Controller
                 } catch (Exception $e) {
                     $error = $e->getMessage();
                 }
-
             }
 
             if($request->hasFile('userAvatar')){
-                // save user avatar into meta table and upload folder
+                try {
+                    // save user avatar into meta table and upload folder
 
-                $userAvatar = $request->file('userAvatar');
-                $destinationPath = 'uploads/user';
-                $prefix = "edpsark-user";
-                $imgName = $prefix.'-'.md5(Str::random(30).time().'_'.$userAvatar).'.'.$userAvatar->getClientOriginalExtension();
-                $userAvatar->storeAs('public/uploads/user', $imgName);
-                $imageUrl = "uploads\/user\/". $imgName;
-                $result = [
-                    'user_id' => $userId,
-                    'user_meta_key' => 'userAvatar',
-                    'user_meta_value' => $imageUrl,
-                    'created_at' => Carbon::now(),
-                    'updated_at' => Carbon::now(),
-                ];
-                Usermeta::insert($result);
+                    $userAvatar = $request->file('userAvatar');
+                    $destinationPath = 'uploads/user';
+                    $prefix = "edpsark-user";
+                    $imgName = $prefix.'-'.md5(Str::random(30).time().'_'.$userAvatar).'.'.$userAvatar->getClientOriginalExtension();
+                    $userAvatar->storeAs('public/uploads/user', $imgName);
+                    $imageUrl = "uploads\/user\/". $imgName;
+
+                    $result = [
+                        'user_id' => $userId,
+                        'user_meta_key' => 'userAvatar',
+                        'user_meta_value' => $imageUrl,
+                        'created_at' => Carbon::now(),
+                        'updated_at' => Carbon::now(),
+                    ];
+                    Usermeta::insert($result);
+
+                } catch(Exception $e) {
+                    $error = $e->getMessage();
+                }
             }
+
             return response()->json([
                 'message' => "User added successfully",
                 'error' => $error,

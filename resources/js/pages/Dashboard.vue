@@ -13,6 +13,7 @@ import SectionHeader from '../components/global/SectionHeader.vue';
 import ContentSection from '../components/global/ContentSection.vue';
 import SchoolsTech from '../components/schools/SchoolsTech.vue';
 import ConfirmInfo from '../components/dashboard/ConfirmInfo.vue';
+import SearchDropdown from 'search-dropdown-vue';
 
 /**
  * IMPORT SVGS
@@ -39,6 +40,8 @@ import { useAdviceStore } from '../stores/useAdviceStore.js';
 import { useSoftwareStore } from '../stores/useSoftwareStore.js';
 import { useUserStore } from '../stores/useUserStore';
 import { useSchoolsStore } from '../stores/useSchoolsStore.js';
+import { useSiteStore } from '../stores/useSiteStore.js';
+import { useEventsStore } from '../stores/useEventsStore.js';
 
 /**
  * TESTING
@@ -50,7 +53,6 @@ import oktaAuth from '../constants/oktaAuth.js';
 
 
 export default {
-
     components: {
         DashboardHero,
         SectionHeader,
@@ -70,32 +72,54 @@ export default {
         ARIcon,
         VRIcon,
         SoftwareRobot,
-        ConfirmInfo
+        ConfirmInfo,
+        SearchDropdown
     },
+
     setup() {
         const adviceStore = useAdviceStore();
         const softwareStore = useSoftwareStore();
         const userStore = useUserStore();
         const schoolsStore = useSchoolsStore();
+        const siteStore = useSiteStore();
+        const eventsStore = useEventsStore();
+
+        siteStore.loadSites();
 
         adviceStore.loadDashboardResources();
         softwareStore.loadArticles();
         userStore.loadCurrentUser();
         schoolsStore.loadSchools();
+        eventsStore.loadEvents();
 
         const adviceResources = computed(() => {
             return adviceStore.getResources;
         });
 
-        console.log(adviceResources);
-
         const softwareArticles = computed(() => {
-            // console.log(softwareStore.getArticles);
             return softwareStore.getArticles;
         });
 
         const schools = computed(() => {
             return schoolsStore.getSchools;
+        });
+
+        const events = computed(() => {
+            return eventsStore.getEvents;
+        });
+
+        const allSites = computed(() => {
+            const theSites = siteStore.getSites;
+            const siteArr = [];
+            theSites.forEach(site => {
+                if (site.category_code === 'SCHL' || site.category_code === 'PRESC') {
+                    siteArr.push({ id: site.id, name: site.site_name });
+                }
+            });
+            console.log(siteArr);
+            if (siteArr.length > 0) {
+                return siteArr;
+            }
         });
 
         const cardHoverToggle = ref(false);
@@ -105,12 +129,17 @@ export default {
          */
         const isFirstVisit = ref(false);
 
-
-
         const createNewUser = async (data) => {
+            // Get the site according to the ID
+            const sites = siteStore.getSites;
+            const siteData = sites.find(site => site.id === data.site.id);
+            data.site = siteData;
+            console.log(data);
             const result = await userStore.createUser(data);
             return result;
         };
+
+
 
         // const { auth } = useOktaAuth();
         // const jwtVerifier = new JwtVerifier({
@@ -140,7 +169,9 @@ export default {
             cardHoverToggle,
             isFirstVisit,
             imageURL,
-            schools
+            schools,
+            allSites,
+            events
         }
     },
 
@@ -169,120 +200,6 @@ export default {
                     type: 'Virtual'
                 }
             ],
-            // schools: [
-            //     {
-            //         full_name: 'Adelaide High School',
-            //         description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse feugiat metus auctor, tempor eros ut, faucibus augue. Integer laoreet metus ac vulputate dictum. Nulla maximus et purus nec ullamcorper. Donec non ligula lacus. Quisque quis luctus turpis. Nam et arcu facilisis, blandit felis ut, egestas dolor. Cras at dignissim augue. Curabitur placerat fermentum mollis. Vestibulum mollis facilisis placerat.',
-            //         created_at: '25th Feb 2023',
-            //         cover: 'https://picsum.photos/200/300',
-            //         tech_used: [
-            //             {
-            //                 name: 'VR',
-            //                 description: 'is a simulated experience that employs pose tracking and 3D near-eye displays to give the user an immersive feel of a virtual world.',
-            //                 category: 'Emerging tech',
-            //             },
-            //             {
-            //                 name: 'AR',
-            //                 description: '(Augmented Reality) is an interactive experience that combines the real world and computer-generated content.',
-            //                 category: 'Emerging tech',
-            //             },
-            //             {
-            //                 name: '3D Printing',
-            //                 description: 'or additive manufacturing is the construction of a three-dimensional object from a CAD model or a digital 3D model.',
-            //                 category: 'Emerging tech',
-            //             },
-            //             {
-            //                 name: 'Mircosoft Teams',
-            //                 description: 'is a proprietary business communication platform developed by Microsoft, as part of the Microsoft 365 family of products.',
-            //                 category: 'Platforms',
-            //             },
-            //         ]
-            //     },
-            //     {
-            //         full_name: 'East Adelaide School',
-            //         description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse feugiat metus auctor, tempor eros ut, faucibus augue. Integer laoreet metus ac vulputate dictum. Nulla maximus et purus nec ullamcorper. Donec non ligula lacus.',
-            //         created_at: '14th Feb 2023',
-            //         cover: 'https://picsum.photos/200/300',
-            //         tech_used: [
-            //             {
-            //                 name: 'Mircosoft Teams',
-            //                 description: 'is a proprietary business communication platform developed by Microsoft, as part of the Microsoft 365 family of products.',
-            //                 category: 'Platforms',
-            //             },
-            //             {
-            //                 name: 'Robotics',
-            //                 description: 'is an interdisciplinary branch of computer science and engineering. Robotics involves design, construction, operation, and use of robots. ',
-            //                 category: 'Emerging tech',
-            //             },
-            //             {
-            //                 name: 'Frog',
-            //                 description: 'provides whole school systems for teaching, learning and communication. Additionally we create platforms that allow businesses, MATs and schools to create and deliver online training',
-            //                 category: 'Platforms'
-            //             },
-            //             {
-            //                 name: 'IoT',
-            //                 description: '(or "Internet of Things") describes physical objects with sensors, processing ability, software, and other technologies that connect and exchange data with other devices and systems over the Internet or other communications networks.',
-            //                 category: 'Emerging tech',
-            //             },
-            //         ]
-            //     },
-            //     {
-            //         full_name: 'North Adelaide Primary School',
-            //         description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse feugiat metus auctor, tempor eros ut, faucibus augue. Integer laoreet metus ac vulputate dictum. Nulla maximus et purus nec ullamcorper. Donec non ligula lacus. Nam et arcu facilisis, blandit felis ut, egestas dolor.',
-            //         created_at: '29th Jan 2023',
-            //         cover: 'https://picsum.photos/200/300',
-            //         tech_used: [
-            //             {
-            //                 name: 'Apple',
-            //                 description: 'technology and resources empower every kind of educator — and every kind of student — to learn, create and define their own success.',
-            //                 category: 'Platforms'
-            //             },
-            //             {
-            //                 name: 'Frog',
-            //                 description: 'provides whole school systems for teaching, learning and communication. Additionally we create platforms that allow businesses, MATs and schools to create and deliver online training',
-            //                 category: 'Platforms'
-            //             },
-            //             {
-            //                 name: 'VR',
-            //                 description: 'is a simulated experience that employs pose tracking and 3D near-eye displays to give the user an immersive feel of a virtual world.',
-            //                 category: 'Emerging tech',
-            //             },
-            //             {
-            //                 name: 'IoT',
-            //                 description: '(or "Internet of Things") describes physical objects with sensors, processing ability, software, and other technologies that connect and exchange data with other devices and systems over the Internet or other communications networks.',
-            //                 category: 'Emerging tech',
-            //             },
-            //         ]
-            //     },
-            //     {
-            //         full_name: 'Adelaide Botanic High School',
-            //         description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse feugiat metus auctor, tempor eros ut, faucibus augue. Integer laoreet metus ac vulputate dictum. Nulla maximus et purus nec ullamcorper. Donec non ligula lacus. Nam et arcu facilisis, blandit felis ut, egestas dolor.',
-            //         created_at: '29th Jan 2023',
-            //         cover: 'https://picsum.photos/200/300',
-            //         tech_used: [
-            //             {
-            //                 name: 'VR',
-            //                 description: 'is a simulated experience that employs pose tracking and 3D near-eye displays to give the user an immersive feel of a virtual world.',
-            //                 category: 'Emerging tech',
-            //             },
-            //             {
-            //                 name: 'AR',
-            //                 description: '(Augmented Reality) is an interactive experience that combines the real world and computer-generated content.',
-            //                 category: 'Emerging tech',
-            //             },
-            //             {
-            //                 name: '3D Printing',
-            //                 description: 'or additive manufacturing is the construction of a three-dimensional object from a CAD model or a digital 3D model.',
-            //                 category: 'Emerging tech',
-            //             },
-            //             {
-            //                 name: 'Mircosoft Teams',
-            //                 description: 'is a proprietary business communication platform developed by Microsoft, as part of the Microsoft 365 family of products.',
-            //                 category: 'Platforms',
-            //             },
-            //         ]
-            //     }
-            // ],
             steps:[
                 {'step_no':1,'step_valid':false,'step_skip':true},
                 {'step_no':2,'step_valid':false,'step_skip':true},
@@ -296,7 +213,7 @@ export default {
             name: '',
             email: '',
             role: '',
-            site: '',
+            site: {},
             yearLevels: [],
             subjects: [],
             interests: [],
@@ -304,6 +221,7 @@ export default {
             avatar: '',
             avatarURL: '',
             hasAvatarURL: false,
+            customSiteSearch: [],
             years: [
                 { yearLevel: 1, value: 'one' },
                 { yearLevel: 2, value: 'two' },
@@ -356,6 +274,35 @@ export default {
                 }
             },
             immediate: true
+        },
+
+        yearLevels: {
+            handler (newVal, oldVal) {
+                console.log('THE NEW VALUE: ', newVal);
+                console.log('THE OLD VALUE: ', oldVal);
+                console.log(this.customSiteSearch);
+
+
+                switch (this.allSites.site_type_code) {
+                    case 'PRIM':
+                        console.log('Primary School');
+                        break;
+                    case 'PRSEC':
+                        console.log('Primary Secondary School');
+                        break;
+                    case 'SEC':
+                        console.log('Secondary School');
+                        break;
+                    case 'SPEC':
+                        console.log('Special Education');
+                        break;
+                    case 'ABAN':
+                        console.log('Aboriginal/Anangu Schools');
+                        break;
+                    default:
+                        break;
+                }
+            }
         }
     },
 
@@ -379,6 +326,7 @@ export default {
     },
 
     mounted() {
+        console.log(this.allSites);
         // if (this.$auth.isAuthenticated()) {
         //     console.log(this.$auth);
         // } else {
@@ -404,6 +352,7 @@ export default {
     },
 
     methods: {
+
         stripTags(content) {
             const element = document.createElement('div');
             element.innerHTML = content
@@ -463,7 +412,8 @@ export default {
                 yearLevels: this.yearLevels,
                 subjects: this.subjects,
                 interests: this.interests,
-                biography: this.biography
+                biography: this.biography,
+                avatar: this.avatar
             }
             console.log(data);
             this.createNewUser(data);
@@ -497,6 +447,11 @@ export default {
         handleSanitizeContent(string, allowedTags) {
             const clean = sanitizeHtml(string, { allowedTags: allowedTags }).trim();
             return clean;
+        },
+
+        onSelectedOptionSites(payload) {
+            console.log(payload);
+            this.site = payload;
         }
     }
 }
@@ -564,14 +519,16 @@ export default {
                         >
                     </div>
 
-                    <div>
+                    <div class="flex flex-col">
                         <label for="Role">Your Site</label>
-                        <input
-                            v-model="site"
-                            type="text"
-                            name="Site"
-                            placeholder="Site..."
-                        >
+                        <SearchDropdown
+                            class="searchable_dropdown"
+                            :options="this.allSites"
+                            :placeholder="'Search for your site...'"
+                            name="site"
+                            :closeOnOutsideClick="true"
+                            @selected="onSelectedOptionSites"
+                        />
                     </div>
                 </template>
 
@@ -680,7 +637,7 @@ export default {
                 <template #formFooter>
                     <button
                         class="!bg-[#002856] ml-auto mt-auto px-4 py-2 text-white w-fit"
-                        type="submit"
+                        :type="stepIndex === 3 ? 'submit': ''"
                     >
                         {{ infoButtonText }}
                     </button>
@@ -716,7 +673,7 @@ export default {
         <div class="px-[81px] py-20">
             <div class="grid grid-cols-3 gap-[24px] w-full">
                 <div
-                    v-for="(post,index) in posts"
+                    v-for="(event,index) in events.slice(0, 3)"
                     :key="index"
                     class="col-span-1 bg-white border-[0.5px] border-black cursor-pointer h-[530px] transition-all group card_parent hover:shadow-2xl"
                     @mouseenter="cardHoverToggle = true"
@@ -724,12 +681,12 @@ export default {
                     <ContentSection>
                         <template #cover>
                             <div
-                                :class="`bg-[url('${post.cover}')]`"
-                                class="h-full group-hover:h-0 transition-all"
+                                :class="`bg-[url('${imageURL}/${event.cover_image}')]`"
+                                class="h-36 transition-all bg-cover bg-no-repeat bg-center group-hover:h-0"
                             />
                         </template>
                         <template
-                            v-if="post.type"
+                            v-if="event.eventtype_id"
                             #typeTag
                         >
                             <div class="absolute rounded bg-[#DE4668] min-w-[136px] h-[39px] text-white flex flex-row justify-around gap-3 place-items-center -right-3 top-3 px-4">
@@ -739,13 +696,13 @@ export default {
                             </div>
                         </template>
                         <template #title>
-                            {{ post.title }}
+                            {{ event.event_title }}
                         </template>
                         <template #created_at>
-                            {{ post.created_at }}
+                            {{ handleTimeString(event.start_date) }}
                         </template>
                         <template #description>
-                            {{ post.description }}
+                            {{ stripTags(event.event_content) }}
                         </template>
                     </ContentSection>
                 </div>
@@ -1086,11 +1043,3 @@ export default {
         </div>
     </div>
 </template>
-
-<!-- <style scoped>
-    input, textarea, select {
-        width: 100% !important;
-        padding: .75rem 1.5rem !important;
-        border: solid 0.5px black !important;
-    }
-</style> -->
