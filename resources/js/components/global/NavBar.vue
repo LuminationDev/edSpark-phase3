@@ -147,9 +147,9 @@ export default {
         <!-- <div @click.prevent="handleAvatar" class="w-fit h-fit" >
 
         </div> -->
-
         <div class="w-[48px] h-[48px] absolute top-64 right-96">
             <div
+                v-if="!Object.keys(this.currentUser) === 0"
                 class="z-50 relative h-full w-full bg-orange-500 flex rounded-full cursor-pointer hover:shadow-2xl"
                 @click.prevent="handleAvatar"
             >

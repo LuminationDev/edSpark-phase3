@@ -12,6 +12,19 @@ input, textarea, select {
     padding: .75rem 1.5rem !important;
     border: solid 0.5px black !important;
 }
+
+.searchable_dropdown .dropdown-toggle {
+    width: 100%;
+}
+
+.searchable_dropdown .dropdown-toggle input {
+    width: 100% !important;
+    padding: .75rem 1.5rem !important;
+    border: solid 0.5px black !important;
+    background: #fff;
+    border-radius: 0;
+}
+
 /*
 #recordButton {
     height: 64px;

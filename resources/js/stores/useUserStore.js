@@ -43,7 +43,7 @@ export const useUserStore = defineStore('user', {
         },
 
         async createUser(user) {
-
+            console.log(user);
             /**
              * Set the users initials - save as display_name
              */
@@ -58,15 +58,21 @@ export const useUserStore = defineStore('user', {
                     full_name: user.name,
                     email: user.email,
                     role: user.role,
-                    display_name: initials
+                    display_name: initials,
+                    site_id: user.site.id,
+                    role_id: 4
                 },
-                userMetaData: {
+                metaData: {
                     yearLevels: user.yearLevels,
                     interest: user.interests,
                     subjects: user.subjects,
                     biography: user.biography,
-                }
+                    userAvatar: user.avatar
+                },
+
             };
+
+            console.log(data);
 
             await axios({
                 method: 'POST',
@@ -91,6 +97,12 @@ export const useUserStore = defineStore('user', {
                     updateValue: ['1', '3']
                 }
             }
+        },
+
+        clearStore() {
+            this.currentUser = {};
+            if (sessionStorage.getItem('currentUser') === null) return;
+            sessionStorage.removeItem('currentUser');
         }
     }
 })

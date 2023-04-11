@@ -19,7 +19,7 @@ export const useSchoolsStore = defineStore('schools', {
                 this.schools = res.data;
                 // featuredSites.value = res.data.splice(0,4)
                 // featuredSitesData.value = schoolContentArrParser(featuredSites.value)
-            })
+            });
         }
     }
 })
