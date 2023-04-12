@@ -5,15 +5,14 @@ import Spinner from "@/js/components/spinner/Spinner.vue";
 import EducatorHero from "@/js/components/advice/EducatorHero.vue";
 import PartnerHero from "@/js/components/advice/PartnerHero.vue";
 import AdviceCard from "@/js/components/advice/AdviceCard.vue";
+import {serverURL} from "@/js/constants/serverUrl";
 
-const serverUrl = import.meta.env.VITE_SERVER_URL_API
 const allAdvice = ref([])
 
 
 onBeforeMount( async () =>{
     console.log('inside before mount')
-    await axios.get( `${serverUrl}/fetchAdvicePosts`).then(res => {
-        console.log(res.data)
+    await axios.get( `${serverURL}/fetchAdvicePosts`).then(res => {
         allAdvice.value = res.data
     })
 
@@ -47,7 +46,7 @@ const advicePartner = computed(() => {
 
 <template>
     <AdviceHero />
-    <div class="DAGAdviceRow AdviceContentContainer flex flex-col h-full">
+    <div class="DAGAdviceRow AdviceContentContainer flex flex-col h-full px-10">
         <div
             v-if="adviceDAG"
             class="AdviceCardListContainer heading text-xl pt-10 flex flex-row flex-1 justify-between flex-wrap  gap-6"
@@ -56,6 +55,7 @@ const advicePartner = computed(() => {
                 v-for="(advice, index) in adviceDAG.slice(0,3)"
                 :key="index"
                 :advice-content="advice"
+                :show-icon="true"
             />
         </div>
         <div v-else>
@@ -63,15 +63,17 @@ const advicePartner = computed(() => {
         </div>
     </div>
     <EducatorHero />
+
     <div
         v-if="adviceEducator"
-        class="EducatorsAdviceRow AdviceCardListContainer heading text-xl pt-10 flex flex-row flex-wrap justify-between gap-2 flex-1 w-full"
+        class="EducatorsAdviceRow AdviceCardListContainer heading text-xl pt-10 flex flex-row flex-wrap justify-between gap-2 flex-1 w-full px-10"
     >
         <AdviceCard
             v-for="(advice, index) in adviceEducator.slice(0,6)"
             :key="index"
             :advice-content="advice"
             :number-per-row="3"
+            :show-icon="true"
         />
     </div>
     <div v-else>
@@ -80,7 +82,7 @@ const advicePartner = computed(() => {
     <PartnerHero />
     <div
         v-if="advicePartner"
-        class="PartnerAdviceRow AdviceCardListContainer heading text-xl pt-10 flex flex-row flex-wrap justify-between gap-4 flex-1 w-full"
+        class="PartnerAdviceRow AdviceCardListContainer heading text-xl pt-10 flex flex-row flex-wrap justify-between gap-4 flex-1 w-full px-10"
     >
         <AdviceCard
             v-for="(advice, index) in advicePartner.slice(0,6)"

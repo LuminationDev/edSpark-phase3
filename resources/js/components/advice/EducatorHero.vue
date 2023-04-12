@@ -1,11 +1,10 @@
 <script setup>
-import AdviceRobot from '../svg/adviceRobot/AdviceRobot.vue';
-
+import AdviceEducatorsIcon from "@/js/components/svg/adviceIcon/AdviceEducatorsIcon.vue";
 </script>
 
 <template>
     <div class="EducatorHeroContainer">
-        <div class="bg-gradient-to-r from-[#002858] via-[#0B7342] to-[#81BFA2] mt-[95px] py-6 px-[48px] grid grid-cols-8">
+        <div class="bg-gradient-to-r from-[#002858] via-[#0B7342] to-[#81BFA2] mt-[95px] py-6 px-[48px] grid grid-cols-8 h-80 ">
             <div class="col-span-5">
                 <h1 class="text-white text-[36px] font-semibold pb-8 uppercase">
                     Advice for Educators
@@ -16,7 +15,7 @@ import AdviceRobot from '../svg/adviceRobot/AdviceRobot.vue';
                 </p>
             </div>
             <div class="col-span-3 relative">
-                <AdviceRobot class="absolute right-12" />
+                <AdviceEducatorsIcon class="absolute right-12" />
             </div>
         </div>
     </div>

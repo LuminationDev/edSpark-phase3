@@ -127,7 +127,7 @@ class SchoolController extends Controller
                     $error = $e->getMessage();
                 }
             }
-            // still not working need to fix updateMetadata
+            // still not working need to fix updateMetadata TODO
             $metadata = $request->schoolMetadata;
             if($metadata){
                 foreach ($metadata as $key => $value){

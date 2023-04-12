@@ -9,7 +9,6 @@ const props = defineProps({
 })
 
 const techIcon = shallowRef('')
-console.log(props.iconPath + 'inside baseicongen')
 
 import(`../../${props.iconPath}`).then(val =>
     techIcon.value = val.default

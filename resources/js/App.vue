@@ -33,7 +33,7 @@ export default {
         :is-first-visit="isFirstVisit"
     />
 
-    <div class="pageBodyContentContainer mx-20">
+    <div class="pageBodyContentContainer">
         <router-view @handleFirstLogin="handleFirstLogin" />
     </div>
 
