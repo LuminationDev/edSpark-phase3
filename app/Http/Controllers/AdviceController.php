@@ -18,7 +18,7 @@ class AdviceController extends Controller
                 'post_title' => $advice->post_title,
                 'post_excerpt' => $advice->post_excerpt,
                 'author' => $advice->author->full_name,
-                'cover_image' => ($advice->cover_image) ? $advice->cover_image : NULL,
+                'cover_image' => $advice->cover_image,
                 'template' => ($advice->template) ? $advice->template : NULL,
                 'extra_content' => ($advice->extra_content) ? $advice->extra_content : NULL,
                 'post_date' => $advice->post_date,
