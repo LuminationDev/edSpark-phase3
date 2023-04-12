@@ -141,6 +141,8 @@ class UserController extends Controller
 
             return response()->json([
                 'message' => "User added successfully",
+                'uid' => $userId,
+                'avatarUrl' => $imageUrl,
                 'error' => $error,
                 'status' => 200
             ]);
