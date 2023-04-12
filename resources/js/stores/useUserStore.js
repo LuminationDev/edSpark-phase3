@@ -43,7 +43,7 @@ export const useUserStore = defineStore('user', {
         },
 
         async createUser(user) {
-            console.log(user);
+            console.log(user.avatar);
             /**
              * Set the users initials - save as display_name
              */
@@ -51,25 +51,48 @@ export const useUserStore = defineStore('user', {
             let matches = str.match(/\b(\w)/g);
             let initials = matches.join('');
 
-            console.log(initials);
+            let userData = new FormData();
+            // let metaData = new FormData();
+            // let formAvatar = new FormData();
+
+            userData.append('userAvatar', user.avatar);
+            /**
+             * Populate formData Object
+             */
+            userData.append('full_name', user.name);
+            userData.append('email', user.email);
+            userData.append('display_name', JSON.stringify(initials));
+            userData.append('site_id', JSON.stringify(user.site.id)); // Use the id to store as foreign key
+            userData.append('role_id', JSON.stringify(4)); // Use the id to store as foreign key
+
+            /**
+             * Populate metaData Object
+             */
+            userData.append('yearLevels', JSON.stringify(user.yearLevels));
+            userData.append('interest', JSON.stringify(user.interests));
+            userData.append('subjects', JSON.stringify(user.subjects));
+            userData.append('biography', JSON.stringify(user.biography));
+
+            console.log(userData.get('full_name'));
 
             let data = {
-                userData: {
-                    full_name: user.name,
-                    email: user.email,
-                    role: user.role,
-                    display_name: initials,
-                    site_id: user.site.id,
-                    role_id: 4
-                },
-                metaData: {
-                    yearLevels: user.yearLevels,
-                    interest: user.interests,
-                    subjects: user.subjects,
-                    biography: user.biography,
-                    userAvatar: user.avatar
-                },
-
+                // userData: userData,
+                // metaData: metaData
+                // userData: {
+                //     full_name: user.name,
+                //     email: user.email,
+                //     role: user.role,
+                //     display_name: initials,
+                //     site_id: user.site.id,
+                //     role_id: 4
+                // },
+                // metaData: {
+                //     yearLevels: user.yearLevels,
+                //     interest: user.interests,
+                //     subjects: user.subjects,
+                //     biography: user.biography,
+                //     userAvatar: formAvatar
+                // },
             };
 
             console.log(data);
@@ -77,7 +100,8 @@ export const useUserStore = defineStore('user', {
             await axios({
                 method: 'POST',
                 url: 'http://localhost:8000/api/createUser',
-                data: data
+                data: userData,
+                headers: { "Content-Type" : "multipart/form-data" }
             }).then(response => {
                 console.log(response);
             }).catch(error => {
