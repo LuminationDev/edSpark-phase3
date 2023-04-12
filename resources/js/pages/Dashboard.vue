@@ -90,7 +90,7 @@ export default {
 
         adviceStore.loadDashboardResources();
         softwareStore.loadArticles();
-        userStore.loadCurrentUser();
+        // userStore.loadCurrentUser();
         schoolsStore.loadSchools();
         eventsStore.loadEvents();
         roleStore.loadRoles();
@@ -171,7 +171,7 @@ export default {
         /**
          * Change this to TRUE to simulate the First Login Experience
          */
-        const isFirstVisit = ref(true);
+        const isFirstVisit = ref(false);
 
         const createNewUser = async (data) => {
             // Get the site according to the ID

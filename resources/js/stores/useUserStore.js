@@ -18,6 +18,7 @@ export const useUserStore = defineStore('user', {
      */
     state: () => ({
         currentUser: useSessionStorage('currentUser', {}),
+        userAvatar: useSessionStorage('userAvatar', ''),
     }),
 
     getters: {
@@ -27,11 +28,11 @@ export const useUserStore = defineStore('user', {
     },
 
     actions: {
-        async loadCurrentUser() {
+        async loadCurrentUser(userId) {
             /**
              * Temporry user ID (Jake M)
              */
-            const userId = 1
+            // const userId = 72
             /** **/
             await axios.get(`http://localhost:8000/api/fetchUser/${userId}`).then(response => {
                 console.log(response.data);
@@ -73,30 +74,6 @@ export const useUserStore = defineStore('user', {
             userData.append('subjects', JSON.stringify(user.subjects));
             userData.append('biography', JSON.stringify(user.biography));
 
-            console.log(userData.get('full_name'));
-
-            let data = {
-                // userData: userData,
-                // metaData: metaData
-                // userData: {
-                //     full_name: user.name,
-                //     email: user.email,
-                //     role: user.role,
-                //     display_name: initials,
-                //     site_id: user.site.id,
-                //     role_id: 4
-                // },
-                // metaData: {
-                //     yearLevels: user.yearLevels,
-                //     interest: user.interests,
-                //     subjects: user.subjects,
-                //     biography: user.biography,
-                //     userAvatar: formAvatar
-                // },
-            };
-
-            console.log(data);
-
             await axios({
                 method: 'POST',
                 url: 'http://localhost:8000/api/createUser',
@@ -104,6 +81,8 @@ export const useUserStore = defineStore('user', {
                 headers: { "Content-Type" : "multipart/form-data" }
             }).then(response => {
                 console.log(response);
+                loadCurrentUser(response.data.uid);
+                this.userAvatar = response.data.avatarUrl;
             }).catch(error => {
                 console.log('There was a problem updating your info');
                 console.error(error);

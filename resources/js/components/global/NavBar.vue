@@ -39,10 +39,18 @@ export default {
         const navDropdownToggle = ref(false);
         const profileDropdown = ref(false);
 
+        // const imageURL = import.meta.env.VITE_SERVER_IMAGE_API;
+        // const userMetadata = userStore.getUser.metadata;
+        // const userAvatarMeta = userMetadata.filter(meta => meta.user_meta_key === 'userAvatar');
+        // const avatarUrl = userAvatarMeta[0].user_meta_value[0].replace(/\\\//g, "/");
+        // console.log(avatarUrl);
+
         return {
             navDropdownToggle,
             profileDropdown,
             userStore,
+            // imageURL,
+            // avatarUrl
         }
     },
 
@@ -148,15 +156,12 @@ export default {
 
         </div> -->
         <div class="w-[48px] h-[48px] absolute top-64 right-96">
-            <div
-                v-if="!Object.keys(this.currentUser) === 0"
-                class="z-50 relative h-full w-full bg-orange-500 flex rounded-full cursor-pointer hover:shadow-2xl"
+            <!-- <div
+                class="z-50 relative h-full w-full flex rounded-full cursor-pointer hover:shadow-2xl bg-cover bg-no-repeat bg-center"
                 @click.prevent="handleAvatar"
             >
-                <p class="text-[1.25rem] text-white font-bold m-auto">
-                    {{ currentUser.display_name }}
-                </p>
-            </div>
+                <img :src="`${imageURL}/${avatarUrl}`" alt="user avatar">
+            </div> -->
 
             <div
                 v-show="profileDropdown"
