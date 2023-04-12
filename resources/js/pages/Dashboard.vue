@@ -635,7 +635,7 @@ export default {
             </template>
         </SectionHeader>
 
-        <div class="px-[81px] py-20">
+        <div class="py-20">
             <div class="grid grid-cols-3 gap-[24px] w-full">
                 <div
                     v-for="(post,index) in posts"
@@ -690,7 +690,7 @@ export default {
             </template>
         </SectionHeader>
 
-        <div class="px-[81px] py-20">
+        <div class="py-20">
             <div class="grid grid-cols-12 gap-[24px] w-full h-full relative group/bg">
                 <div class="absolute softwareRobot -z-10 transition-all duration-700 opacity-10 top-1/2 -translate-y-1/2 left-1/3 group-hover/bg:left-[15%] group-hover/bg:scale-125">
                     <SoftwareRobot />
@@ -814,7 +814,7 @@ export default {
             </template>
         </SectionHeader>
 
-        <div class="px-[81px] py-20">
+        <div class="py-20">
             <div class="grid grid-cols-3 gap-[24px] w-full h-full">
                 <div class="col-span-1">
                     <div class="grid grid-cols-3 row-span-4 py-4">
@@ -911,7 +911,7 @@ export default {
             </template>
         </SectionHeader>
 
-        <div class="px-[81px] py-20">
+        <div class="py-20">
             <div class="grid grid-cols-4 gap-[24px] w-full">
                 <div
                     v-for="(school,index) in schools"

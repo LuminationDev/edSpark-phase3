@@ -1,5 +1,5 @@
 <script setup>
-import {computed} from "vue";
+import {computed, ref} from "vue";
 const props = defineProps({
     title:{
         type: String,
@@ -34,6 +34,7 @@ const formattedDate = computed(() =>{
 })
 const tempCoverImage ='http://localhost:8000/storage//uploads\/school\/edspark-school-afc6de98542b2aaac72bc1402a51530c.webp'
 
+const cardHoverToggle = ref(false)
 </script>
 
 <template>
@@ -42,10 +43,11 @@ const tempCoverImage ='http://localhost:8000/storage//uploads\/school\/edspark-s
                  'w-[22%]': numberPerRow === 4,
                  'w-[40%]': numberPerRow === 2
         }"
-        class="GenericCardContainer border-2 border-black rounded mx-2 mb-4 flex flex-col min-h-[500px] max-w-[400px] max-h-[500px]"
+        class="GenericCardContainer border-2 border-black rounded mx-2 mb-4 flex flex-col min-h-[500px] max-w-[400px] max-h-[500px] group transition-all card_parent cursor-pointer"
+        @mouseenter="cardHoverToggle = true"
     >
         <div
-            class="cardTopCoverImage relative min-h-[35%] bg-cover"
+            class="cardTopCoverImage relative min-h-[35%] bg-cover group-hover:min-h-[0%] group-hover:h-0 transition-all"
             :class="`bg-[url(${tempCoverImage})]`"
         >
             <template
@@ -63,32 +65,59 @@ const tempCoverImage ='http://localhost:8000/storage//uploads\/school\/edspark-s
                 <slot name="icon" />
             </div>
         </div>
-        <div class="cardContent flex flex-col p-4 overflow-hidden">
+        <div class="cardContent flex flex-col p-4 overflow-hidden transition-all">
             <div
                 v-if="props.title"
-                class="cardTitle text-xl font-bold uppercase"
+                class="cardTitle card-content_title text-xl font-bold uppercase transition-all"
             >
                 {{ props.title }}
             </div>
-            <div
-                v-if="props.displayAuthor"
-                class="cardAuthor text-base font-semibold mt-2"
-            >
-                {{ props.displayAuthor }}
-            </div>
-            <div
-                v-if="props.displayDate"
-                class="cardDate text-base  mb-2"
-            >
-                {{ formattedDate }}
-            </div>
-            <div
-                v-if="props.displayContent"
-                class="cardDisplayPreview pt-2 font-light text-lg overflow-hidden mt-auto pb-6"
-            >
-                <p>{{ props.displayContent }}</p>
+            <div class="flex flex-col card-content_body">
+                <div
+                    v-if="props.displayAuthor"
+                    class="cardAuthor text-base font-semibold mt-2 transition-all"
+                >
+                    {{ props.displayAuthor }}
+                </div>
+                <div
+                    v-if="props.displayDate"
+                    class="cardDate text-base  mb-2 transition-all"
+                >
+                    {{ formattedDate }}
+                </div>
+                <div
+                    v-if="props.displayContent"
+                    class="cardDisplayPreview pt-2 font-light text-lg overflow-hidden mt-auto pb-6 transition-all"
+                >
+                    <p>{{ props.displayContent }}</p>
+                </div>
             </div>
         </div>
     </div>
 </template>
 
+<style>
+.card-content_body {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 6;
+    -webkit-box-orient: vertical;
+}
+
+.card_parent:hover .card-content_body {
+    -webkit-line-clamp: 14;
+}
+
+.card-content_title {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+}
+
+.card_parent:hover .card-content_title {
+    -webkit-line-clamp: 4 !important;
+}
+</style>
