@@ -24,6 +24,11 @@ const props = defineProps({
     },
     coverImage:{
         type: String, required: false
+    },
+    clickCallback:{
+        type: Function,
+        required: false,
+        default: () => {}
     }
 
 })
@@ -45,6 +50,7 @@ const cardHoverToggle = ref(false)
         }"
         class="GenericCardContainer border-2 border-black rounded mx-2 mb-4 flex flex-col min-h-[500px] max-w-[400px] max-h-[500px] group transition-all card_parent cursor-pointer"
         @mouseenter="cardHoverToggle = true"
+        @click="clickCallback"
     >
         <div
             class="cardTopCoverImage relative min-h-[35%] bg-cover group-hover:min-h-[0%] group-hover:h-0 transition-all"
