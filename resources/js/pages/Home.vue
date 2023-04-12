@@ -22,7 +22,7 @@
             async login () {
                 console.log('Hello');
                 // console.log(oktaAuth);
-                await this.$auth.signInWithRedirect();
+                await this.$auth.signInWithRedirect({ originalUri: '/dashboard' });
                 // if (!oktaAuth.isAuthenticated()) {
                 //     oktaAuth.signInWithRedirect();
                 // } else {

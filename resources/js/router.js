@@ -83,7 +83,8 @@ const router = createRouter({
             component: UserProfile
         },
         {
-            path: '/login',
+            path: '/login/callback',
+            name: 'login',
             component: LoginCallback
         },
         // {

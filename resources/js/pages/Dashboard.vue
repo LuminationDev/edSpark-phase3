@@ -42,6 +42,7 @@ import { useUserStore } from '../stores/useUserStore';
 import { useSchoolsStore } from '../stores/useSchoolsStore.js';
 import { useSiteStore } from '../stores/useSiteStore.js';
 import { useEventsStore } from '../stores/useEventsStore.js';
+import { useRolesStore } from '../stores/useRolesStore.js';
 
 /**
  * TESTING
@@ -83,6 +84,7 @@ export default {
         const schoolsStore = useSchoolsStore();
         const siteStore = useSiteStore();
         const eventsStore = useEventsStore();
+        const roleStore = useRolesStore();
 
         siteStore.loadSites();
 
@@ -91,6 +93,7 @@ export default {
         userStore.loadCurrentUser();
         schoolsStore.loadSchools();
         eventsStore.loadEvents();
+        roleStore.loadRoles();
 
         const adviceResources = computed(() => {
             return adviceStore.getResources;
@@ -122,12 +125,53 @@ export default {
             }
         });
 
+        /**
+         * Temporary - working on roles controller
+         */
+        const allRoles = computed(() => {
+            return [
+                {
+                    id: 'SCHLDR',
+                    name: 'School Principal',
+                },
+                {
+                    id: 'PRESCLDR',
+                    name: 'Preschool Director',
+                },
+                {
+                    id: 'SITELDR',
+                    name: 'Site Leadership Team',
+                },
+                {
+                    id: 'STCH',
+                    name: 'School Teacher',
+                },
+                {
+                    id: 'PTCH',
+                    name: 'Preschool Teacher',
+                },
+                {
+                    id: 'SITESUPP',
+                    name: 'Site Support Staff',
+                },
+                {
+                    id: 'PSACT',
+                    name: 'Public Sector Act',
+                },
+                {
+                    id: 'IT',
+                    name: 'Staff with IT admin responsibilities',
+                },
+
+            ]
+        });
+
         const cardHoverToggle = ref(false);
 
         /**
          * Change this to TRUE to simulate the First Login Experience
          */
-        const isFirstVisit = ref(false);
+        const isFirstVisit = ref(true);
 
         const createNewUser = async (data) => {
             // Get the site according to the ID
@@ -138,22 +182,6 @@ export default {
             const result = await userStore.createUser(data);
             return result;
         };
-
-
-
-        // const { auth } = useOktaAuth();
-        // const jwtVerifier = new JwtVerifier({
-        //     issuer: '',
-        //     clientId: ''
-        // });
-
-        // const email = computed(() => {
-        //     if ($auth?.token) {
-        //         const { claims } = jwtVerifier.decode(auth.token.accessToken);
-        //         return claims.email
-        //     };
-        //     return null;
-        // })
 
         const imageURL = import.meta.env.VITE_SERVER_IMAGE_API
 
@@ -171,35 +199,13 @@ export default {
             imageURL,
             schools,
             allSites,
-            events
+            events,
+            allRoles
         }
     },
 
     data() {
         return {
-            posts: [
-                {
-                    title: 'Im a Post',
-                    description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse feugiat metus auctor, tempor eros ut, faucibus augue. Integer laoreet metus ac vulputate dictum. Nulla maximus et purus nec ullamcorper. Donec non ligula lacus. Quisque quis luctus turpis. Nam et arcu facilisis, blandit felis ut, egestas dolor. Cras at dignissim augue. Curabitur placerat fermentum mollis. Vestibulum mollis facilisis placerat.',
-                    created_at: '25th Feb 2023',
-                    cover: 'https://picsum.photos/200/300',
-                    type: 'Virtual'
-                },
-                {
-                    title: 'Test content title',
-                    description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse feugiat metus auctor, tempor eros ut, faucibus augue. Integer laoreet metus ac vulputate dictum. Nulla maximus et purus nec ullamcorper. Donec non ligula lacus.',
-                    created_at: '14th Feb 2023',
-                    cover: 'https://picsum.photos/200/300',
-                    type: 'In Person'
-                },
-                {
-                    title: 'Try out a slightly longer title',
-                    description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse feugiat metus auctor, tempor eros ut, faucibus augue. Integer laoreet metus ac vulputate dictum. Nulla maximus et purus nec ullamcorper. Donec non ligula lacus. Nam et arcu facilisis, blandit felis ut, egestas dolor.',
-                    created_at: '29th Jan 2023',
-                    cover: 'https://picsum.photos/200/300',
-                    type: 'Virtual'
-                }
-            ],
             steps:[
                 {'step_no':1,'step_valid':false,'step_skip':true},
                 {'step_no':2,'step_valid':false,'step_skip':true},
@@ -212,7 +218,9 @@ export default {
 
             name: '',
             email: '',
+            roleId: '',
             role: '',
+            siteId: '',
             site: {},
             yearLevels: [],
             subjects: [],
@@ -275,80 +283,42 @@ export default {
             },
             immediate: true
         },
-
-        yearLevels: {
-            handler (newVal, oldVal) {
-                console.log('THE NEW VALUE: ', newVal);
-                console.log('THE OLD VALUE: ', oldVal);
-                console.log(this.customSiteSearch);
-
-
-                switch (this.allSites.site_type_code) {
-                    case 'PRIM':
-                        console.log('Primary School');
-                        break;
-                    case 'PRSEC':
-                        console.log('Primary Secondary School');
-                        break;
-                    case 'SEC':
-                        console.log('Secondary School');
-                        break;
-                    case 'SPEC':
-                        console.log('Special Education');
-                        break;
-                    case 'ABAN':
-                        console.log('Aboriginal/Anangu Schools');
-                        break;
-                    default:
-                        break;
-                }
-            }
-        }
     },
 
     async created() {
-        // const auth = getCurrentInstance().appContext.app.config.globalProperties.$auth;
-        // console.log(localStorage.getItem('okta-cache-storage'));
-        // const idToken = await auth.token?.parseFromUrl(localStorage.getItem('okta-cache-storage'))
-        //     .then(async res => {
-        //         const { idToken } = res.tokens;
-        //         const { accessToken } = res.tokens;
-        //         console.log(`Hi ${idToken.claims.email}!`);
-        //         console.log(`accessToken ${accessToken}!`);
-        //     }).catch(err => {
-        //         console.log('There is a serious error');
-        //         console.error(err);
-        //     })
+
         const idToken = await this.$auth.tokenManager.get('idToken');
         console.log(idToken);
-        this.claims = await Object.entries(idToken.claims).map(entry => ({ claim: entry[0], value: entry[1 ]}));
+        this.claims = await Object.entries(idToken.claims).map(entry => ({ claim: entry[0], value: entry[ 1 ]}));
         console.log(this.claims);
+
+        /**
+         * Set the pre-fill information as much as possible
+         */
+        this.claims.forEach(claim => {
+            console.log(claim);
+            switch (claim.claim) {
+                case 'name':
+                        this.name = claim.value;
+                    break;
+                case 'email':
+                        this.email = claim.value;
+                    break;
+                case 'site':
+                        this.siteId = claim.value;
+                    break;
+                case 'role':
+                        this.roleId = claim.value;
+                    break;
+
+                default:
+                    break;
+            }
+        });
     },
 
     mounted() {
         console.log(this.allSites);
-        // if (this.$auth.isAuthenticated()) {
-        //     console.log(this.$auth);
-        // } else {
-        //     console.log('Naaaaahhhhhh');
-        // }
-
-        // oktaAuth.handleLoginRedirect().then(response => {
-        //     if (!response) {
-        //         throw new Error('Authentication failed: No response received');
-        //     }
-
-        //     if (!response.tokens) {
-        //         throw new Error('Authentication failed');
-        //     }
-
-        //     const { idToken, accessToken, state } = response.tokens;
-        //     const claims = response.claims || {};
-
-        //     console.log(claims);
-        // }).catch(error => {
-        //     console.error(error);
-        // });
     },
 
     methods: {
@@ -509,14 +479,16 @@ export default {
                         >
                     </div>
 
-                    <div>
+                    <div class="flex flex-col">
                         <label for="Role">Your Role</label>
-                        <input
-                            v-model="role"
-                            type="text"
-                            name="Role"
-                            placeholder="Role..."
-                        >
+                        <SearchDropdown
+                            class="searchable_dropdown"
+                            :options="this.allRoles"
+                            :placeholder="'Search for your role...'"
+                            name="site"
+                            :closeOnOutsideClick="true"
+                            @selected="onSelectedOptionRoles"
+                        />
                     </div>
 
                     <div class="flex flex-col">
