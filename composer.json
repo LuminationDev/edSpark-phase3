@@ -19,6 +19,7 @@
         "laravel/tinker": "^2.7",
         "livewire/livewire": "^2.10",
         "nesbot/carbon": "^2.66",
+        "owenvoke/blade-fontawesome": "^2.2",
         "saade/filament-laravel-log": "^1.2"
     },
     "require-dev": {
