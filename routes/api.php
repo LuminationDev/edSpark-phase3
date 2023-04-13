@@ -10,10 +10,9 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\SiteController;
 use App\Http\Controllers\EventController;
 use App\Http\Controllers\CommunityController;
-
 use App\Http\Controllers\SchoolController;
-
 use App\Http\Controllers\TechController;
+use App\Http\Controllers\ImageController;
 
 /*
 |--------------------------------------------------------------------------
@@ -52,4 +51,7 @@ Route::middleware('api')->group(function() {
     Route::get('fetchFeaturedSchools', [SchoolController::class, 'fetchFeaturedSchools']);
 
     Route::get('fetchAllTechs', [TechController::class, 'fetchAllTechs']);
+
+    // Image upload
+    Route::post('uploadImage', [ImageController::class, 'imageUpload']);
 });
