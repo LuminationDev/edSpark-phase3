@@ -1,22 +1,20 @@
 <script setup>
 import {onBeforeMount, onMounted, ref} from 'vue'
 import axios from 'axios'
+import {useRouter} from "vue-router";
+import {storeToRefs} from "pinia";
+
+import {schoolContentArrParser} from "@/js/helpers/jsonHelpers";
+import {useUserStore} from "@/js/stores/useUserStore";
+import {serverURL} from "@/js/constants/serverUrl";
+
 import SchoolsHero from '../components/schools/SchoolsHero.vue';
 import SearchableMap from '../components/schools/schoolMap/SearchableMap.vue';
 import SchoolCard from "@/js/components/schools/SchoolCard.vue";
-import GenericButton from "@/js/components/button/GenericButton.vue";
-import {useRouter} from "vue-router";
-import {useUserStore} from "@/js/stores/useUserStore";
-import {storeToRefs} from "pinia";
 import CreateSchoolForm from "@/js/components/schools/createSchool/CreateSchoolForm.vue";
-import {parseToJsonIfString, schoolContentArrParser} from "@/js/helpers/jsonHelpers";
 import SchoolWelcomePopup from "@/js/components/schools/schoolPopup/SchoolWelcomePopup.vue";
-const serverURL = import.meta.env.VITE_SERVER_URL_API
+import SectionHeader from "@/js/components/global/SectionHeader.vue";
 
-// TODO- Create an API in the backend to get featured schools
-// Currently fetching 4 random
-const featuredSiteIds = [292,69,55,42]
-const schoolsLoading = ref(false)
 const featuredSites = ref([])
 const featuredSitesData = ref([])
 const createSchool = ref(false)
@@ -100,12 +98,30 @@ const handleSaveWelcomePopup = (data)=>{
             @send-save-popup="handleSaveWelcomePopup"
         />
         <SchoolsHero />
-        <div class=" py-20">
-            <div class="grid grid-cols-4 gap-[24px] w-full">
+        <div class=" py-20 ">
+            <SectionHeader
+                :classes="'bg-[#002858]'"
+                :section="'schools'"
+            >
+                <template #header>
+                    <h3 class="text-white text-[36px] font-semibold self-center section-header uppercase">
+                        Featured Schools
+                    </h3>
+                </template>
+                <template #cta>
+                    <button
+                        class="bg-white px-4 py-2 rounded-sm border-2 border-[#002858] text-[#002858] text-[15px] font-medium cursor-pointer hover:text-[#0b1829] hover:border-2 hover:border-[#0b1829]"
+                        @click="handleBrowseAllSchool"
+                    >
+                        View all schools
+                    </button>
+                </template>
+            </SectionHeader>
+            <div class="grid grid-cols-4 gap-[24px] w-full px-10 pt-8 ">
                 <div
                     v-for="(school,index) in featuredSitesData"
                     :key="index"
-                    class="col-span-1 bg-white cursor-pointer h-[470px] border-2 transition-all group hover:shadow-2xl rounded-xl"
+                    class="col-span-1 bg-white cursor-pointer h-[470px] border-2  border-black transition-all group hover:shadow-2xl rounded"
                 >
                     <SchoolCard
                         v-if="featuredSitesData"
@@ -113,14 +129,6 @@ const handleSaveWelcomePopup = (data)=>{
                     />
                 </div>
             </div>
-            <GenericButton
-                id="browse-all-school-button"
-                type="school"
-                class="bg-blue-800 text-white text-center px-6 py-2"
-                :callback="handleBrowseAllSchool"
-            >
-                Browse All School
-            </GenericButton>
         </div>
 
 
