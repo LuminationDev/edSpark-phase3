@@ -41,7 +41,7 @@ const props = defineProps({
         <ContentSection :tech-used="props.schoolData.tech_used">
             <template #cover>
                 <div
-                    :class="`bg-[url('${imageURL}/${props.schoolData.cover_image}')] rounded-t-xl bg-cover`"
+                    :class="`bg-[url('${imageURL}/${props.schoolData.cover_image}')] bg-cover`"
                     class="h-36 group-hover:h-0 transition-all"
                 />
             </template>

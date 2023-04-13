@@ -15,10 +15,10 @@ return [
     | When set to null (default), every installed icon set will be used.
     |
     */
-    'sets' => null,
+//    'sets' => null,
 //     example:
-        // 'sets' => 'my-icon-pack',
-    // 'sets' => 'fontawesome-solid',
+//         'sets' => 'edspark-svg',
+     'sets' => 'fontawesome-solid',
 //     'sets' => [
 //        'heroicons',
 //        'fontawesome-solid',
