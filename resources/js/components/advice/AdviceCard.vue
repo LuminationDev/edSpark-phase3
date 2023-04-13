@@ -27,8 +27,9 @@ const randomIconName = computed(() => {
 })
 
 const handleClickAdviceCard = () => {
-    console.log('handleClickAdviceCardCalled')
-    //id inside param must be the same as the route path specified for advice-single
+    /**
+     * id inside param must be the same as the route path specified for advice-single
+     */
     // which is /advice/resources/:id
     router.push({ name:"advice-single", params: {id: props.adviceContent.post_id, adviceContent: JSON.stringify(props.adviceContent) }})
 
