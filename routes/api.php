@@ -54,4 +54,5 @@ Route::middleware('api')->group(function() {
 
     // Image upload
     Route::post('uploadImage', [ImageController::class, 'imageUpload']);
+    Route::post('uploadImageEditorjs', [ImageController::class, 'imageUploadEditorjs']);
 });
