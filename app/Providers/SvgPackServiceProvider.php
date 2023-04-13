@@ -3,7 +3,8 @@
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
-use Filament\Facades\Filament;
+use Illuminate\Contracts\Container\Container;
+
 
 class SvgPackServiceProvider extends ServiceProvider
 {
@@ -12,9 +13,12 @@ class SvgPackServiceProvider extends ServiceProvider
      *
      * @return void
      */
-    public function register()
+    public function register(): void
     {
-        // Filament::registerSvg('my-icon-pack', resource_path('svg/my-icon-pack'));
+
+        $this->app->singleton('edspark-svg', function () {
+            return file_get_contents(resource_path('svg/edspark-icon-pack/appleIcon.svg'));
+        });
     }
 
     /**
