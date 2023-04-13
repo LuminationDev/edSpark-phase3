@@ -29,6 +29,7 @@ use App\Http\Controllers\TechController;
 Route::middleware('api')->group(function() {
     // Content Management
     Route::get('fetchAdvicePosts', [AdviceController::class, 'fetchAdvicePosts']);
+    Route::get('fetchAdvicePostById/{id}', [AdviceController::class, 'fetchAdvicePostById']);
     Route::get('fetchSoftwarePosts', [SoftwareController::class, 'fetchSoftwarePosts']);
     Route::get('fetchEventPosts', [EventController::class, 'fetchEventPosts']);
     Route::get('fetchCommunityPosts', [CommunityController::class, 'fetchCommunityPosts']);

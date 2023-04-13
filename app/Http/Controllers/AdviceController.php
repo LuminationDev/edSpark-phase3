@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Advicemeta;
 use Illuminate\Http\Request;
 use App\Models\Advice;
 
@@ -35,6 +36,30 @@ class AdviceController extends Controller
 
         return response()->json($data);
 
+    }
+
+    public function fetchAdvicePostById($id)
+    {
+        $advice = Advice::find($id);
+
+        $data = [
+            'post_id' => $advice->id,
+            'post_title' => $advice->post_title,
+            'post_content' => $advice->post_content,
+            'post_excerpt' => $advice->post_excerpt,
+            'author' => $advice->author->full_name,
+            'cover_image' => ($advice->cover_image) ? $advice->cover_image : NULL,
+            'template' => ($advice->template) ? $advice->template : NULL,
+            'extra_content' => ($advice->extra_content) ? $advice->extra_content : NULL,
+            'post_date' => $advice->post_date,
+            'post_modified' => $advice->post_modified,
+            'post_status' => $advice->post_status,
+            'advice_type' => ($advice->advicetype) ? $advice->advicetype->advice_type_name : NULL ,
+            'created_at' => $advice->created_at,
+            'updated_at' => $advice->updated_at
+        ];
+
+        return response()->json($data);
     }
 }
 
