@@ -40,8 +40,8 @@ onBeforeMount(async () =>{
     // TODO: Need to compare if params and adviceSingleContent is the same
     if(!route.params.adviceContent){
         console.log('No adviceContent passed in. Will request from server')
-        await axios.get(`${serverURL}/fetchAdvicePosts`).then(res => {
-            adviceSingleContent.value = res.data.filter(advice => advice['post_id'] === Number(route.params.id))[0]
+        await axios.get(`${serverURL}/fetchAdvicePostById/${route.params.id}`).then(res => {
+            adviceSingleContent.value = res.data
         })
     } else{
         console.info('Advice content received from parent. No request will be sent to server')
