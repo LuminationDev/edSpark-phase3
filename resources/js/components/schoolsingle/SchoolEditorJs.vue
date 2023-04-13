@@ -6,6 +6,9 @@ import EditorJS from '@editorjs/editorjs';
 import Header from '@editorjs/header';
 import Paragraph from '@editorjs/paragraph';
 import List from '@editorjs/list';
+import ImageTool from '@editorjs/image'
+import {serverURL} from "@/js/constants/serverUrl";
+
 import SimpleImage from '@editorjs/simple-image';
 import FontSize from 'editorjs-inline-font-size-tool'
 
@@ -49,8 +52,15 @@ const editorJsTools = {
         class: List,
         inlineToolbar: true,
     },
-    image: SimpleImage
-
+    // image: SimpleImage
+    image: {
+        class: ImageTool,
+        config:{
+            endpoints:{
+                byFile: `${serverURL}/uploadImageEditorjs`
+            }
+        }
+    }
 }
 
 const editor = new EditorJS({
