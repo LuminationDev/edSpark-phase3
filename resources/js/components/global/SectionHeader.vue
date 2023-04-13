@@ -25,7 +25,7 @@ export default {
 </script>
 
 <template>
-    <div class="px-[81px] mt-20">
+    <div class="mt-20">
         <div
             :class="[classes]"
             class="flex flex-row justify-between h-[72px] w-full px-12 relative group/headerbg"

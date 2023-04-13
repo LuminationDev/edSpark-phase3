@@ -18,6 +18,8 @@ import {
     UserProfile
 } from './pages'
 import BrowseSchools from "@/js/pages/BrowseSchools.vue";
+import AdviceSingle from "@/js/pages/AdviceSingle.vue";
+
 const router = createRouter({
     history: createWebHistory(),
     routes: [
@@ -43,7 +45,7 @@ const router = createRouter({
             component: Schools,
         },
         {
-            name: 'schoolSingle',
+            name: 'school-single',
             path: '/schools/:name',
             component: SchoolSingle
         },
@@ -51,6 +53,12 @@ const router = createRouter({
             name: 'advice',
             path: '/advice',
             component: Advice
+        },
+        {
+            name: 'advice-single',
+            path: '/advice/resources/:id',
+            component: AdviceSingle,
+            params: true
         },
         {
             name: 'software',
