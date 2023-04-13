@@ -1,14 +1,23 @@
 `<script setup>
 import {useRoute} from "vue-router";
-import {onBeforeMount, ref, computed } from "vue";
+import {onBeforeMount, ref, computed, watch} from "vue";
+import axios from 'axios'
+import {isEqual} from "lodash";
+
 import {imageURL, serverURL} from "@/js/constants/serverUrl";
 import BaseHero from "@/js/components/hero/BaseHero.vue";
-import axios from 'axios'
 import AdviceSingleExtraContentRenderer from "@/js/components/advice/AdviceSingleExtraContentRenderer.vue";
 import AdviceSingleCuratedContent from "@/js/components/advice/AdviceSingleCuratedContent.vue";
 
 
 const route = useRoute()
+const currentId = computed(() =>{
+    if(route.params.id){
+        return route.params.id
+
+    }
+    else return 0
+})
 /**
  *  type AdviceSingleContent = {
  *      post_id: number
@@ -28,7 +37,7 @@ const route = useRoute()
 const adviceSingleContent = ref({})
 
 onBeforeMount(async () =>{
-    // if no content passd in as props
+    // TODO: Need to compare if params and adviceSingleContent is the same
     if(!route.params.adviceContent){
         console.log('No adviceContent passed in. Will request from server')
         await axios.get(`${serverURL}/fetchAdvicePosts`).then(res => {
@@ -39,6 +48,15 @@ onBeforeMount(async () =>{
         adviceSingleContent.value = JSON.parse(route.params.adviceContent)
     }
 })
+
+watch(currentId ,() => {
+    console.log('inside watcher params id')
+    if(route.params.adviceContent && adviceSingleContent.value){
+        if(!isEqual(JSON.parse(route.params.adviceContent), adviceSingleContent.value)){
+            adviceSingleContent.value = JSON.parse(route.params.adviceContent)
+        }
+    }
+} )
 
 const temp_cover_image = 'uploads\\/school\\/edspark-school-5b586cc3d79f3dc9c34a05a44e2e83e3.jpg'
 
