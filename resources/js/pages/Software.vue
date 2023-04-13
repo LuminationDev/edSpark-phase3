@@ -1,9 +1,10 @@
 <script setup>
 import SoftwareHero from "@/js/components/software/SoftwareHero.vue";
-import DeptNegotiatedIcon from "@/js/components/software/DeptNegotiatedIcon.vue";
-import DeptApprovedIcon from "@/js/components/software/DeptApprovedIcon.vue";
-import DeptProvidedIcon from "@/js/components/software/DeptProvidedIcon.vue";
+import DeptNegotiatedIcon from "@/js/components/svg/software/DeptNegotiatedIcon.vue";
+import DeptApprovedIcon from "@/js/components/svg/software/DeptApprovedIcon.vue";
+import DeptProvidedIcon from "@/js/components/svg/software/DeptProvidedIcon.vue";
 import SectionHeader from "@/js/components/global/SectionHeader.vue";
+import SoftwareCardGallery from "@/js/components/software/SoftwareCardGallery.vue";
 </script>
 
 <template>
@@ -64,6 +65,7 @@ import SectionHeader from "@/js/components/global/SectionHeader.vue";
                     </button>
                 </template>
             </SectionHeader>
+            <SoftwareCardGallery />
         </div>
     </div>
 </template>

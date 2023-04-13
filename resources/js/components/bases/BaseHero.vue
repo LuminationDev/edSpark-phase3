@@ -27,7 +27,7 @@ const heroBackground = computed(() => {
     if(!props.backgroundUrl){
         return `bg-gradient-to-r from-[${props.color1}] via-[${props.color2}] to-[${props.color3}]`
     } else{
-        return `bg-[url(${imageURL}${props.backgroundUrl})]`
+        return `bg-[url(${imageURL}${props.backgroundUrl.replace(' ',"%20")})] bg-blend-soft-light bg-center bg-no-repeat bg-gray-600`
     }
 })
 </script>
@@ -35,7 +35,7 @@ const heroBackground = computed(() => {
 <template>
     <div class="BaseHeroContainer h-[40vh]">
         <div
-            :class="'py-[36px] px-[48px] grid grid-cols-8 bg-contain h-full '+ heroBackground"
+            :class="'py-[36px] px-[48px] grid grid-cols-8 bg-cover h-full '+ heroBackground"
         >
             <div
                 v-if="$slots.titleText || $slots.subtitleText1 || $slots.subtitleText2"

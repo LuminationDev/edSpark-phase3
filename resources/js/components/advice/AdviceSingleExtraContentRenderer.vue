@@ -11,7 +11,7 @@ const props  = defineProps({
 let contentType = 'numbereditems'
 // can use Object.keys(props.content['data']['extra_content']) to get all the keys
 // props.content['data']['template']
-console.log(props.content['data']['template'].split("\\")[props.content['data']['template'].split("\\").length - 1].toLowerCase() )
+// console.log(props.content['data']['template'].split("\\")[props.content['data']['template'].split("\\").length - 1].toLowerCase() )
 /**
  * itemArray = Array<{
  *     content: string-html
