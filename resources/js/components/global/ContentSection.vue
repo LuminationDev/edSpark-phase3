@@ -54,7 +54,7 @@ const props = defineProps({
     </div>
 </template>
 
-<style>
+<style scoped>
     .card-content_body {
         overflow: hidden;
         text-overflow: ellipsis;

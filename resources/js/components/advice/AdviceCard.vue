@@ -42,6 +42,7 @@ const handleClickAdviceCard = () => {
         :display-author="author"
         :display-date="created_at"
         :number-per-row="numberPerRow"
+        :cover-image="cover_image"
         :click-callback="handleClickAdviceCard"
     >
         <template

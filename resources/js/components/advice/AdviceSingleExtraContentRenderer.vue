@@ -36,7 +36,7 @@ const itemArray = computed(()=> {
         >
             <div class="flex flex-row w-full">
                 <div class="extraContentIcon w-1/3 flex justify-center items-center">
-                    🔫
+                    🔫🏥
                 </div>
                 <div
                     class="w-2/3"
