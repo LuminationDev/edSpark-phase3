@@ -1,6 +1,6 @@
 <script setup>
 
-import BaseHero from "@/js/components/hero/BaseHero.vue";
+import BaseHero from "@/js/components/bases/BaseHero.vue";
 import SoftwareRobot from "@/js/components/svg/software/SoftwareRobot.vue";
 </script>
 <template>
