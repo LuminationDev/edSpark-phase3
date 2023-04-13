@@ -10,9 +10,7 @@ class AdviceController extends Controller
 {
     public function fetchAdvicePosts()
     {
-        // $advices = Advice::with('author', 'advicetype')->where('post_status', 'Published')->get();
         $advices = Advice::where('post_status', 'Published')->get();
-        // dd($advices);
         $data = [];
 
         foreach ($advices as $advice){
@@ -22,7 +20,7 @@ class AdviceController extends Controller
                 'post_content' => $advice->post_content,
                 'post_excerpt' => $advice->post_excerpt,
                 'author' => $advice->author->full_name,
-                'cover_image' => ($advice->cover_image) ? $advice->cover_image : NULL,
+                'cover_image' => ($advice->cover_image) ? $advice->cover_image : NULL ,
                 'template' => ($advice->template) ? $advice->template : NULL,
                 'extra_content' => ($advice->extra_content) ? $advice->extra_content : NULL,
                 'post_date' => $advice->post_date,
