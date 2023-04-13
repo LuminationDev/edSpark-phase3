@@ -8,7 +8,7 @@ const props = defineProps({
 </script>
 <template>
     <img
-        :src="data.data.url"
+        :src="data.data.file.url"
     >
     <p class="text-center">
         {{ data.data.caption }}
