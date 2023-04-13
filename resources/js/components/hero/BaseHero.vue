@@ -37,8 +37,13 @@ const heroBackground = computed(() => {
         <div
             :class="'py-[36px] px-[48px] grid grid-cols-8 bg-contain h-full '+ heroBackground"
         >
-            <div class="col-span-5 bg-slate-500/75 p-2">
-                <h1 class="text-white text-[36px] font-semibold pb-8">
+            <div
+                v-if="$slots.titleText || $slots.subtitleText1 || $slots.subtitleText2"
+                class="col-span-5 p-2"
+            >
+                <h1
+                    class="text-white text-[36px] font-semibold pb-8"
+                >
                     <slot name="titleText" />
                 </h1>
 

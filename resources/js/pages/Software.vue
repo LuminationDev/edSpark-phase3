@@ -1,11 +1,16 @@
-<script>
-    export default {
+<script setup>
+import SoftwareHero from "@/js/components/software/SoftwareHero.vue";
 
-    }
 </script>
 
 <template>
-    <div>
-        <h1 class="text-[48px] font-bold text-slate-900">Software</h1>
+    <SoftwareHero />
+    <div class="SoftwareContentContainer px-10">
+        <div className="HowItWorksContainer">
+            How it worksa
+        </div>
+        <div class="softwareListContainer">
+            <SectionHeader />
+        </div>
     </div>
 </template>

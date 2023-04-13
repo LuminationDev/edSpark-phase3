@@ -11,7 +11,6 @@ const allAdvice = ref([])
 
 
 onBeforeMount( async () =>{
-    console.log('inside before mount')
     await axios.get( `${serverURL}/fetchAdvicePosts`).then(res => {
         allAdvice.value = res.data
     })
