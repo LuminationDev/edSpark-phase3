@@ -10,7 +10,7 @@ class AdviceController extends Controller
 {
     public function fetchAdvicePosts()
     {
-        $advices = Advice::where('post_status', 'Published')->get();
+        $advices = Advice::where('post_status', 'Published')->orderBy('created_at', 'DESC')->get();
         $data = [];
 
         foreach ($advices as $advice){
@@ -26,7 +26,7 @@ class AdviceController extends Controller
                 'post_date' => $advice->post_date,
                 'post_modified' => $advice->post_modified,
                 'post_status' => $advice->post_status,
-                'advice_type' => ($advice->advicetype) ? $advice->advicetype->advice_type_name : NULL ,
+                'advice_type' => ($advice->advicetypes) ? $advice->advicetypes->pluck('advice_type_name') : NULL ,
                 'created_at' => $advice->created_at,
                 'updated_at' => $advice->updated_at
             ];
@@ -54,7 +54,7 @@ class AdviceController extends Controller
             'post_date' => $advice->post_date,
             'post_modified' => $advice->post_modified,
             'post_status' => $advice->post_status,
-            'advice_type' => ($advice->advicetype) ? $advice->advicetype->advice_type_name : NULL ,
+            'advice_type' => ($advice->advicetypes) ? $advice->advicetypes->pluck('advice_type_name') : NULL ,
             'created_at' => $advice->created_at,
             'updated_at' => $advice->updated_at
         ];

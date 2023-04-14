@@ -29,6 +29,7 @@ Route::middleware('api')->group(function() {
     Route::get('fetchAdvicePosts', [AdviceController::class, 'fetchAdvicePosts']);
     Route::get('fetchAdvicePostById/{id}', [AdviceController::class, 'fetchAdvicePostById']);
     Route::get('fetchSoftwarePosts', [SoftwareController::class, 'fetchSoftwarePosts']);
+    Route::get('fetchSoftwarePostById/{id}', [SoftwareController::class, 'fetchSoftwarePostById']);
     Route::get('fetchEventPosts', [EventController::class, 'fetchEventPosts']);
     Route::get('fetchCommunityPosts', [CommunityController::class, 'fetchCommunityPosts']);
 

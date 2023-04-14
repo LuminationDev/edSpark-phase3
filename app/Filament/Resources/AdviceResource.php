@@ -63,13 +63,24 @@ class AdviceResource extends Resource
                     ->getUploadedFileNameForStorageUsing(function (TemporaryUploadedFile $file): string {
                         return (string) str($file->getClientOriginalName())->prepend('edSpark-advice-');
                     }),
-                Forms\Components\Grid::make(3)->schema([
+
+                Forms\Components\Card::make()
+                    ->schema([
+                        Forms\Components\CheckboxList::make('advice_type')
+                            ->label('Advice type')
+                            ->extraAttributes(['class' => 'text-primary-600'])
+                            ->relationship('advicetypes', 'advice_type_name')
+                            ->columns(3)
+                            ->bulkToggleable(),
+                    ]),
+
+                Forms\Components\Grid::make(2)->schema([
                     Forms\Components\TextInput::make('Author')
                         ->default($user)
                         ->disabled(),
-                    Forms\Components\BelongsToSelect::make('advice_type')
-                        ->label('Advice type')
-                        ->relationship('advicetype', 'advice_type_name'),
+//                    Forms\Components\BelongsToSelect::make('advice_type')
+//                        ->label('Advice type')
+//                        ->relationship('advicetype', 'advice_type_name'),
                     Forms\Components\Select::make('post_status')
                         ->options([
                             'Published' => 'Published',
@@ -179,10 +190,11 @@ class AdviceResource extends Resource
                     ->sortable()
                     ->searchable(),
                 Tables\Columns\ImageColumn::make('cover_image'),
-                Tables\Columns\TextColumn::make('advicetype.advice_type_name')
+                Tables\Columns\TextColumn::make('advicetypes.advice_type_name')
                     ->label('Type')
                     ->sortable()
-                    ->searchable(),
+                    ->searchable()
+                    ->wrap(),
                 Tables\Columns\TextColumn::make('author.full_name')->label('Author'),
                 Tables\Columns\TextColumn::make('post_date')
                     ->date()
