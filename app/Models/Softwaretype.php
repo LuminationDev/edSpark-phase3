@@ -26,4 +26,9 @@ class Softwaretype extends Model
         'software_type_value'
     ];
 
+    public function softwares()
+    {
+        return $this->belongsToMany(Software::class);
+    }
+
 }
