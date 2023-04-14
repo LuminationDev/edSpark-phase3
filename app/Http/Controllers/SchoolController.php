@@ -14,8 +14,6 @@ class SchoolController extends Controller
     public function createSchool(Request $request)
     {
         if ($request->isMethod('post')) {
-            dd(Metahelper::insert());
-
             $data = $request->all(); // if not data key present
             // $data = $request->data; // if data key present can be used later for metaData
 //             dd(json_decode($data));
