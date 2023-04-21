@@ -80,6 +80,9 @@
                                                                                 <li class="tocify-item level-2" data-unique="endpoints-GETapi-fetchSoftwarePosts">
                                 <a href="#endpoints-GETapi-fetchSoftwarePosts">GET api/fetchSoftwarePosts</a>
                             </li>
+                                                                                <li class="tocify-item level-2" data-unique="endpoints-GETapi-fetchSoftwarePostById--id-">
+                                <a href="#endpoints-GETapi-fetchSoftwarePostById--id-">GET api/fetchSoftwarePostById/{id}</a>
+                            </li>
                                                                                 <li class="tocify-item level-2" data-unique="endpoints-GETapi-fetchEventPosts">
                                 <a href="#endpoints-GETapi-fetchEventPosts">GET api/fetchEventPosts</a>
                             </li>
@@ -140,7 +143,7 @@
     </ul>
 
     <ul class="toc-footer" id="last-updated">
-        <li>Last updated: April 13, 2023</li>
+        <li>Last updated: April 14, 2023</li>
     </ul>
 </div>
 
@@ -216,74 +219,46 @@ print_r(json_decode((string) $body));</code></pre></div>
             <pre><code class="language-http">cache-control: no-cache, private
 content-type: application/json
 x-ratelimit-limit: 60
-x-ratelimit-remaining: 51
+x-ratelimit-remaining: 58
 access-control-allow-origin: *
  </code></pre></details>         <pre>
 
 <code class="language-json" style="max-height: 300px;">[
     {
-        &quot;post_id&quot;: 1,
-        &quot;post_title&quot;: &quot;Aliquam rerum magnam quidem molestias aut maxime.&quot;,
-        &quot;post_content&quot;: &quot;Eos eum cumque rerum veritatis fugiat. Sed ut aperiam recusandae minima est officiis vel. Mollitia et veniam in dignissimos aperiam temporibus eveniet.&quot;,
-        &quot;post_excerpt&quot;: &quot;Temporibus eligendi eos quis quibusdam rem qui. Quia rerum quae non voluptatem quasi quia pariatur rerum. Molestiae voluptatum ut placeat sequi quia.&quot;,
-        &quot;author&quot;: &quot;Jake Mackinlay&quot;,
+        &quot;post_id&quot;: 23,
+        &quot;post_title&quot;: &quot;content w/o type&quot;,
+        &quot;post_content&quot;: &quot;&lt;p&gt;test&lt;/p&gt;&quot;,
+        &quot;post_excerpt&quot;: &quot;&lt;p&gt;test&lt;/p&gt;&quot;,
+        &quot;author&quot;: &quot;Asim Thapa&quot;,
         &quot;cover_image&quot;: null,
         &quot;template&quot;: null,
         &quot;extra_content&quot;: null,
-        &quot;post_date&quot;: &quot;1987-10-18 10:09:31&quot;,
-        &quot;post_modified&quot;: &quot;2001-03-18 18:12:41&quot;,
+        &quot;post_date&quot;: &quot;2023-04-14 01:57:40&quot;,
+        &quot;post_modified&quot;: &quot;2023-04-14 01:57:40&quot;,
         &quot;post_status&quot;: &quot;Published&quot;,
-        &quot;advice_type&quot;: null,
-        &quot;created_at&quot;: &quot;2023-03-16T05:19:06.000000Z&quot;,
-        &quot;updated_at&quot;: &quot;2023-03-16T05:19:06.000000Z&quot;
+        &quot;advice_type&quot;: [],
+        &quot;created_at&quot;: &quot;2023-04-14T01:57:40.000000Z&quot;,
+        &quot;updated_at&quot;: &quot;2023-04-14T01:57:40.000000Z&quot;
     },
     {
-        &quot;post_id&quot;: 2,
-        &quot;post_title&quot;: &quot;Eveniet dolores alias qui incidunt.&quot;,
-        &quot;post_content&quot;: &quot;Dolores et non aliquam consequuntur minus quam voluptatem. Quos molestiae ad quia odit est accusantium ad. Excepturi eveniet est et itaque modi et consequatur. Animi accusamus maiores consectetur aspernatur.&quot;,
-        &quot;post_excerpt&quot;: &quot;Veniam dolore ut explicabo autem. Quidem qui ullam earum similique. Nisi sed laudantium repellat architecto non.&quot;,
-        &quot;author&quot;: &quot;Jake Mackinlay&quot;,
+        &quot;post_id&quot;: 22,
+        &quot;post_title&quot;: &quot;test&quot;,
+        &quot;post_content&quot;: &quot;&lt;p&gt;tes&lt;/p&gt;&quot;,
+        &quot;post_excerpt&quot;: &quot;&lt;p&gt;test&lt;/p&gt;&quot;,
+        &quot;author&quot;: &quot;Asim Thapa&quot;,
         &quot;cover_image&quot;: null,
         &quot;template&quot;: null,
         &quot;extra_content&quot;: null,
-        &quot;post_date&quot;: &quot;1995-06-21 13:58:21&quot;,
-        &quot;post_modified&quot;: &quot;1989-12-06 02:36:39&quot;,
+        &quot;post_date&quot;: &quot;2023-04-14 01:10:44&quot;,
+        &quot;post_modified&quot;: &quot;2023-04-14 01:10:44&quot;,
         &quot;post_status&quot;: &quot;Published&quot;,
-        &quot;advice_type&quot;: null,
-        &quot;created_at&quot;: &quot;2023-03-16T05:19:06.000000Z&quot;,
-        &quot;updated_at&quot;: &quot;2023-03-16T05:19:06.000000Z&quot;
-    },
-    {
-        &quot;post_id&quot;: 3,
-        &quot;post_title&quot;: &quot;Corrupti cum nemo aut non similique fugiat aut aut.&quot;,
-        &quot;post_content&quot;: &quot;Qui et commodi id. Omnis expedita provident iusto quos minus in. Dignissimos enim alias aut facere odit sint. Officiis expedita eveniet aut excepturi vel corrupti maiores.&quot;,
-        &quot;post_excerpt&quot;: &quot;Provident necessitatibus laudantium et dolore velit. In commodi aliquam sunt dolor repellat et. Maiores dolorem sit facilis dolores eius a.&quot;,
-        &quot;author&quot;: &quot;Jake Mackinlay&quot;,
-        &quot;cover_image&quot;: null,
-        &quot;template&quot;: null,
-        &quot;extra_content&quot;: null,
-        &quot;post_date&quot;: &quot;1973-05-24 21:17:46&quot;,
-        &quot;post_modified&quot;: &quot;2008-12-23 09:14:05&quot;,
-        &quot;post_status&quot;: &quot;Published&quot;,
-        &quot;advice_type&quot;: null,
-        &quot;created_at&quot;: &quot;2023-03-16T05:19:06.000000Z&quot;,
-        &quot;updated_at&quot;: &quot;2023-03-16T05:19:06.000000Z&quot;
-    },
-    {
-        &quot;post_id&quot;: 4,
-        &quot;post_title&quot;: &quot;Velit eum molestiae animi illum ab dolorem.&quot;,
-        &quot;post_content&quot;: &quot;Deserunt laudantium nihil vel molestiae nostrum consequuntur repellendus nostrum. Et corrupti sed dolor dolor expedita vel alias. Laudantium qui molestias vero.&quot;,
-        &quot;post_excerpt&quot;: &quot;Perspiciatis veritatis et quisquam voluptas ratione dolorem ut. Maiores fugit et sunt quos aut. Quia quo minus saepe quia.&quot;,
-        &quot;author&quot;: &quot;Jake Mackinlay&quot;,
-        &quot;cover_image&quot;: null,
-        &quot;template&quot;: null,
-        &quot;extra_content&quot;: null,
-        &quot;post_date&quot;: &quot;1999-05-13 12:27:11&quot;,
-        &quot;post_modified&quot;: &quot;2003-05-02 16:51:51&quot;,
-        &quot;post_status&quot;: &quot;Published&quot;,
-        &quot;advice_type&quot;: null,
-        &quot;created_at&quot;: &quot;2023-03-16T05:19:06.000000Z&quot;,
-        &quot;updated_at&quot;: &quot;2023-03-16T05:19:06.000000Z&quot;
+        &quot;advice_type&quot;: [
+            &quot;Advice for educators&quot;,
+            &quot;Digital Adoption Group&quot;,
+            &quot;Partner published resources&quot;
+        ],
+        &quot;created_at&quot;: &quot;2023-04-14T01:10:44.000000Z&quot;,
+        &quot;updated_at&quot;: &quot;2023-04-14T01:10:44.000000Z&quot;
     },
     {
         &quot;post_id&quot;: 21,
@@ -295,11 +270,13 @@ access-control-allow-origin: *
         &quot;template&quot;: null,
         &quot;extra_content&quot;: null,
         &quot;post_date&quot;: &quot;2023-04-13 00:56:23&quot;,
-        &quot;post_modified&quot;: &quot;2023-04-13 00:56:23&quot;,
+        &quot;post_modified&quot;: &quot;2023-04-14 01:21:35&quot;,
         &quot;post_status&quot;: &quot;Published&quot;,
-        &quot;advice_type&quot;: &quot;hic&quot;,
+        &quot;advice_type&quot;: [
+            &quot;Digital Adoption Group&quot;
+        ],
         &quot;created_at&quot;: &quot;2023-04-13T00:56:23.000000Z&quot;,
-        &quot;updated_at&quot;: &quot;2023-04-13T00:56:23.000000Z&quot;
+        &quot;updated_at&quot;: &quot;2023-04-14T01:21:35.000000Z&quot;
     }
 ]</code>
  </pre>
@@ -380,7 +357,7 @@ access-control-allow-origin: *
 
 <div class="javascript-example">
     <pre><code class="language-javascript">const url = new URL(
-    "http://localhost:8000/api/fetchAdvicePostById/quasi"
+    "http://localhost:8000/api/fetchAdvicePostById/fugiat"
 );
 
 const headers = {
@@ -397,7 +374,7 @@ fetch(url, {
 <div class="php-example">
     <pre><code class="language-php">$client = new \GuzzleHttp\Client();
 $response = $client-&gt;get(
-    'http://localhost:8000/api/fetchAdvicePostById/quasi',
+    'http://localhost:8000/api/fetchAdvicePostById/fugiat',
     [
         'headers' =&gt; [
             'Content-Type' =&gt; 'application/json',
@@ -421,7 +398,7 @@ print_r(json_decode((string) $body));</code></pre></div>
             <pre><code class="language-http">cache-control: no-cache, private
 content-type: application/json
 x-ratelimit-limit: 60
-x-ratelimit-remaining: 50
+x-ratelimit-remaining: 57
 access-control-allow-origin: *
  </code></pre></details>         <pre>
 
@@ -965,10 +942,10 @@ access-control-allow-origin: *
  &nbsp;
                 <input type="text" style="display: none"
                name="id"                data-endpoint="GETapi-fetchAdvicePostById--id-"
-               value="quasi"
+               value="fugiat"
                data-component="url">
     <br>
-<p>The ID of the fetchAdvicePostById. Example: <code>quasi</code></p>
+<p>The ID of the fetchAdvicePostById. Example: <code>fugiat</code></p>
             </div>
                     </form>
 
@@ -1026,137 +1003,47 @@ print_r(json_decode((string) $body));</code></pre></div>
             <pre><code class="language-http">cache-control: no-cache, private
 content-type: application/json
 x-ratelimit-limit: 60
-x-ratelimit-remaining: 49
+x-ratelimit-remaining: 56
 access-control-allow-origin: *
  </code></pre></details>         <pre>
 
 <code class="language-json" style="max-height: 300px;">[
     {
-        &quot;post_id&quot;: 1,
-        &quot;post_title&quot;: &quot;Vitae dolorem aut recusandae quia.&quot;,
-        &quot;post_content&quot;: &quot;Ut quia nesciunt officia ipsum qui assumenda sed. Exercitationem a et ut doloribus. Est omnis ut facere ea porro qui sit. Et ex sunt et autem voluptatem dolores necessitatibus consequatur.&quot;,
-        &quot;post_excerpt&quot;: &quot;Consectetur odio aut consequuntur odit voluptas. Eaque omnis occaecati quia et. Quia aperiam sit at totam rerum et. Facere minus placeat et delectus laborum.&quot;,
-        &quot;author&quot;: &quot;Jake Mackinlay&quot;,
-        &quot;cover_image&quot;: null,
-        &quot;post_date&quot;: &quot;1977-10-30 23:07:57&quot;,
-        &quot;post_modified&quot;: &quot;2011-10-27 07:07:31&quot;,
-        &quot;post_status&quot;: &quot;Published&quot;,
-        &quot;software_type&quot;: null,
-        &quot;template&quot;: null,
-        &quot;extra_content&quot;: null,
-        &quot;created_at&quot;: &quot;2023-03-16T05:19:06.000000Z&quot;,
-        &quot;updated_at&quot;: &quot;2023-03-16T05:19:06.000000Z&quot;
-    },
-    {
-        &quot;post_id&quot;: 2,
-        &quot;post_title&quot;: &quot;Recusandae id provident iure cupiditate sed quia.&quot;,
-        &quot;post_content&quot;: &quot;Aut dolorem omnis vel sit neque quo. Iste culpa neque nisi quasi labore provident id. Quod dolor consequuntur ut quia aut.&quot;,
-        &quot;post_excerpt&quot;: &quot;Distinctio neque sit quo debitis sint. Quam aliquam quas eaque non. Illum ut deleniti quas aut nesciunt maxime. Ea aut tenetur non facilis accusamus facere nam dolorem.&quot;,
-        &quot;author&quot;: &quot;Jake Mackinlay&quot;,
-        &quot;cover_image&quot;: null,
-        &quot;post_date&quot;: &quot;1988-06-27 20:40:18&quot;,
-        &quot;post_modified&quot;: &quot;2002-03-30 03:44:05&quot;,
-        &quot;post_status&quot;: &quot;Published&quot;,
-        &quot;software_type&quot;: null,
-        &quot;template&quot;: null,
-        &quot;extra_content&quot;: null,
-        &quot;created_at&quot;: &quot;2023-03-16T05:19:06.000000Z&quot;,
-        &quot;updated_at&quot;: &quot;2023-03-16T05:19:06.000000Z&quot;
-    },
-    {
-        &quot;post_id&quot;: 3,
-        &quot;post_title&quot;: &quot;Ut dolore aperiam voluptatem explicabo eligendi.&quot;,
-        &quot;post_content&quot;: &quot;Dolore id voluptatem itaque ipsa neque id natus. Alias consequatur quia quia expedita nemo. Necessitatibus autem sint qui quidem ab. Quasi quis placeat voluptatem enim.&quot;,
-        &quot;post_excerpt&quot;: &quot;Optio esse blanditiis culpa sint minus. Eum placeat dolores aperiam consequatur excepturi. Ullam optio nihil eos nesciunt adipisci sunt dolorem perferendis. Non quisquam totam error dolorem.&quot;,
-        &quot;author&quot;: &quot;Jake Mackinlay&quot;,
-        &quot;cover_image&quot;: null,
-        &quot;post_date&quot;: &quot;1999-10-20 09:08:00&quot;,
-        &quot;post_modified&quot;: &quot;2021-09-12 19:32:49&quot;,
-        &quot;post_status&quot;: &quot;Published&quot;,
-        &quot;software_type&quot;: null,
-        &quot;template&quot;: null,
-        &quot;extra_content&quot;: null,
-        &quot;created_at&quot;: &quot;2023-03-16T05:19:06.000000Z&quot;,
-        &quot;updated_at&quot;: &quot;2023-03-16T05:19:06.000000Z&quot;
-    },
-    {
-        &quot;post_id&quot;: 4,
-        &quot;post_title&quot;: &quot;Qui distinctio quas vero aut officia praesentium ut.&quot;,
-        &quot;post_content&quot;: &quot;Suscipit doloribus ipsa sint autem aliquam culpa qui omnis. Rerum eos perspiciatis fugiat in et. Adipisci et doloribus nesciunt aliquid. Et voluptatem ullam iure earum. Harum in nisi libero ipsa unde consequatur aliquam.&quot;,
-        &quot;post_excerpt&quot;: &quot;Sequi assumenda possimus enim et sed et sed. Rem odio a eveniet eum delectus. Rerum ipsam incidunt eius.&quot;,
-        &quot;author&quot;: &quot;Jake Mackinlay&quot;,
-        &quot;cover_image&quot;: null,
-        &quot;post_date&quot;: &quot;2016-11-07 02:17:18&quot;,
-        &quot;post_modified&quot;: &quot;2004-03-04 02:26:11&quot;,
-        &quot;post_status&quot;: &quot;Published&quot;,
-        &quot;software_type&quot;: null,
-        &quot;template&quot;: null,
-        &quot;extra_content&quot;: null,
-        &quot;created_at&quot;: &quot;2023-03-16T05:19:06.000000Z&quot;,
-        &quot;updated_at&quot;: &quot;2023-03-16T05:19:06.000000Z&quot;
-    },
-    {
-        &quot;post_id&quot;: 5,
-        &quot;post_title&quot;: &quot;Similique voluptatem delectus deserunt cumque incidunt.&quot;,
-        &quot;post_content&quot;: &quot;Doloremque ex fugit sint aut ut enim quis. Laborum aut cumque rem sed. Et labore facilis laboriosam. Suscipit sunt sit quia est fugiat ad qui vel.&quot;,
-        &quot;post_excerpt&quot;: &quot;Consequatur sit accusamus odio ducimus error ut voluptatum unde. Omnis dolor ut quia sequi cum dolorem. Excepturi est et ipsa ratione omnis consequuntur aperiam inventore.&quot;,
-        &quot;author&quot;: &quot;Jake Mackinlay&quot;,
-        &quot;cover_image&quot;: null,
-        &quot;post_date&quot;: &quot;2023-02-27 05:29:52&quot;,
-        &quot;post_modified&quot;: &quot;1972-11-28 19:51:38&quot;,
-        &quot;post_status&quot;: &quot;Published&quot;,
-        &quot;software_type&quot;: null,
-        &quot;template&quot;: null,
-        &quot;extra_content&quot;: null,
-        &quot;created_at&quot;: &quot;2023-03-16T05:19:06.000000Z&quot;,
-        &quot;updated_at&quot;: &quot;2023-03-16T05:19:06.000000Z&quot;
-    },
-    {
-        &quot;post_id&quot;: 6,
-        &quot;post_title&quot;: &quot;test software&quot;,
-        &quot;post_content&quot;: &quot;&lt;p&gt;test software&lt;/p&gt;&quot;,
-        &quot;post_excerpt&quot;: &quot;&lt;p&gt;test software&lt;/p&gt;&quot;,
+        &quot;post_id&quot;: 11,
+        &quot;post_title&quot;: &quot;test w/o software type&quot;,
+        &quot;post_content&quot;: &quot;&lt;p&gt;test&lt;/p&gt;&quot;,
+        &quot;post_excerpt&quot;: &quot;&lt;p&gt;tes&lt;/p&gt;&quot;,
         &quot;author&quot;: &quot;Asim Thapa&quot;,
         &quot;cover_image&quot;: null,
-        &quot;post_date&quot;: &quot;2023-03-21 03:40:58&quot;,
-        &quot;post_modified&quot;: &quot;2023-03-21 03:46:38&quot;,
+        &quot;post_date&quot;: &quot;2023-04-14 02:11:11&quot;,
+        &quot;post_modified&quot;: &quot;2023-04-14 02:12:15&quot;,
         &quot;post_status&quot;: &quot;Published&quot;,
-        &quot;software_type&quot;: &quot;doloribus&quot;,
+        &quot;software_type&quot;: [
+            &quot;Department Approved&quot;
+        ],
         &quot;template&quot;: null,
         &quot;extra_content&quot;: null,
-        &quot;created_at&quot;: &quot;2023-03-21T03:40:58.000000Z&quot;,
-        &quot;updated_at&quot;: &quot;2023-03-21T03:46:38.000000Z&quot;
+        &quot;created_at&quot;: &quot;2023-04-14T02:11:11.000000Z&quot;,
+        &quot;updated_at&quot;: &quot;2023-04-14T02:12:15.000000Z&quot;
     },
     {
-        &quot;post_id&quot;: 9,
-        &quot;post_title&quot;: &quot;test software&quot;,
-        &quot;post_content&quot;: &quot;&lt;p&gt;test softwre&lt;/p&gt;&quot;,
-        &quot;post_excerpt&quot;: &quot;&lt;p&gt;test software&lt;/p&gt;&quot;,
+        &quot;post_id&quot;: 10,
+        &quot;post_title&quot;: &quot;test&quot;,
+        &quot;post_content&quot;: &quot;&lt;p&gt;test&lt;/p&gt;&quot;,
+        &quot;post_excerpt&quot;: &quot;&lt;p&gt;tes&lt;/p&gt;&quot;,
         &quot;author&quot;: &quot;Asim Thapa&quot;,
         &quot;cover_image&quot;: null,
-        &quot;post_date&quot;: &quot;2023-04-04 06:10:08&quot;,
-        &quot;post_modified&quot;: &quot;2023-04-04 06:11:43&quot;,
+        &quot;post_date&quot;: &quot;2023-04-14 01:52:27&quot;,
+        &quot;post_modified&quot;: &quot;2023-04-14 01:52:27&quot;,
         &quot;post_status&quot;: &quot;Published&quot;,
-        &quot;software_type&quot;: &quot;est&quot;,
-        &quot;template&quot;: &quot;App\\Filament\\PageTemplates\\Software\\Extraresource&quot;,
-        &quot;extra_content&quot;: {
-            &quot;extraresource&quot;: {
-                &quot;item&quot;: [
-                    {
-                        &quot;icon&quot;: null,
-                        &quot;content&quot;: &quot;&lt;p&gt;test content 1&lt;/p&gt;&quot;,
-                        &quot;heading&quot;: &quot;Tesst heading 1&quot;
-                    },
-                    {
-                        &quot;icon&quot;: null,
-                        &quot;content&quot;: &quot;&lt;p&gt;Test content 2&lt;/p&gt;&quot;,
-                        &quot;heading&quot;: &quot;Test heading 2&quot;
-                    }
-                ]
-            }
-        },
-        &quot;created_at&quot;: &quot;2023-04-04T06:10:08.000000Z&quot;,
-        &quot;updated_at&quot;: &quot;2023-04-04T06:11:43.000000Z&quot;
+        &quot;software_type&quot;: [
+            &quot;Department Approved&quot;,
+            &quot;Department Provided&quot;
+        ],
+        &quot;template&quot;: null,
+        &quot;extra_content&quot;: null,
+        &quot;created_at&quot;: &quot;2023-04-14T01:52:27.000000Z&quot;,
+        &quot;updated_at&quot;: &quot;2023-04-14T01:52:27.000000Z&quot;
     }
 ]</code>
  </pre>
@@ -1224,6 +1111,611 @@ access-control-allow-origin: *
             </div>
                         </form>
 
+                    <h2 id="endpoints-GETapi-fetchSoftwarePostById--id-">GET api/fetchSoftwarePostById/{id}</h2>
+
+<p>
+</p>
+
+
+
+<span id="example-requests-GETapi-fetchSoftwarePostById--id-">
+<blockquote>Example request:</blockquote>
+
+
+<div class="javascript-example">
+    <pre><code class="language-javascript">const url = new URL(
+    "http://localhost:8000/api/fetchSoftwarePostById/libero"
+);
+
+const headers = {
+    "Content-Type": "application/json",
+    "Accept": "application/json",
+};
+
+fetch(url, {
+    method: "GET",
+    headers,
+}).then(response =&gt; response.json());</code></pre></div>
+
+
+<div class="php-example">
+    <pre><code class="language-php">$client = new \GuzzleHttp\Client();
+$response = $client-&gt;get(
+    'http://localhost:8000/api/fetchSoftwarePostById/libero',
+    [
+        'headers' =&gt; [
+            'Content-Type' =&gt; 'application/json',
+            'Accept' =&gt; 'application/json',
+        ],
+    ]
+);
+$body = $response-&gt;getBody();
+print_r(json_decode((string) $body));</code></pre></div>
+
+</span>
+
+<span id="example-responses-GETapi-fetchSoftwarePostById--id-">
+            <blockquote>
+            <p>Example response (500):</p>
+        </blockquote>
+                <details class="annotation">
+            <summary style="cursor: pointer;">
+                <small onclick="textContent = parentElement.parentElement.open ? 'Show headers' : 'Hide headers'">Show headers</small>
+            </summary>
+            <pre><code class="language-http">cache-control: no-cache, private
+content-type: application/json
+x-ratelimit-limit: 60
+x-ratelimit-remaining: 55
+access-control-allow-origin: *
+ </code></pre></details>         <pre>
+
+<code class="language-json" style="max-height: 300px;">{
+    &quot;message&quot;: &quot;Attempt to read property \&quot;id\&quot; on null&quot;,
+    &quot;exception&quot;: &quot;ErrorException&quot;,
+    &quot;file&quot;: &quot;C:\\Users\\athap\\Desktop\\Projects-Lumination\\edSpark-phase3\\app\\Http\\Controllers\\SoftwareController.php&quot;,
+    &quot;line&quot;: 44,
+    &quot;trace&quot;: [
+        {
+            &quot;file&quot;: &quot;C:\\Users\\athap\\Desktop\\Projects-Lumination\\edSpark-phase3\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Bootstrap\\HandleExceptions.php&quot;,
+            &quot;line&quot;: 266,
+            &quot;function&quot;: &quot;handleError&quot;,
+            &quot;class&quot;: &quot;Illuminate\\Foundation\\Bootstrap\\HandleExceptions&quot;,
+            &quot;type&quot;: &quot;-&gt;&quot;
+        },
+        {
+            &quot;file&quot;: &quot;C:\\Users\\athap\\Desktop\\Projects-Lumination\\edSpark-phase3\\app\\Http\\Controllers\\SoftwareController.php&quot;,
+            &quot;line&quot;: 44,
+            &quot;function&quot;: &quot;Illuminate\\Foundation\\Bootstrap\\{closure}&quot;,
+            &quot;class&quot;: &quot;Illuminate\\Foundation\\Bootstrap\\HandleExceptions&quot;,
+            &quot;type&quot;: &quot;-&gt;&quot;
+        },
+        {
+            &quot;file&quot;: &quot;C:\\Users\\athap\\Desktop\\Projects-Lumination\\edSpark-phase3\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Controller.php&quot;,
+            &quot;line&quot;: 54,
+            &quot;function&quot;: &quot;fetchSoftwarePostById&quot;,
+            &quot;class&quot;: &quot;App\\Http\\Controllers\\SoftwareController&quot;,
+            &quot;type&quot;: &quot;-&gt;&quot;
+        },
+        {
+            &quot;file&quot;: &quot;C:\\Users\\athap\\Desktop\\Projects-Lumination\\edSpark-phase3\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\ControllerDispatcher.php&quot;,
+            &quot;line&quot;: 43,
+            &quot;function&quot;: &quot;callAction&quot;,
+            &quot;class&quot;: &quot;Illuminate\\Routing\\Controller&quot;,
+            &quot;type&quot;: &quot;-&gt;&quot;
+        },
+        {
+            &quot;file&quot;: &quot;C:\\Users\\athap\\Desktop\\Projects-Lumination\\edSpark-phase3\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Route.php&quot;,
+            &quot;line&quot;: 259,
+            &quot;function&quot;: &quot;dispatch&quot;,
+            &quot;class&quot;: &quot;Illuminate\\Routing\\ControllerDispatcher&quot;,
+            &quot;type&quot;: &quot;-&gt;&quot;
+        },
+        {
+            &quot;file&quot;: &quot;C:\\Users\\athap\\Desktop\\Projects-Lumination\\edSpark-phase3\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Route.php&quot;,
+            &quot;line&quot;: 205,
+            &quot;function&quot;: &quot;runController&quot;,
+            &quot;class&quot;: &quot;Illuminate\\Routing\\Route&quot;,
+            &quot;type&quot;: &quot;-&gt;&quot;
+        },
+        {
+            &quot;file&quot;: &quot;C:\\Users\\athap\\Desktop\\Projects-Lumination\\edSpark-phase3\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Router.php&quot;,
+            &quot;line&quot;: 798,
+            &quot;function&quot;: &quot;run&quot;,
+            &quot;class&quot;: &quot;Illuminate\\Routing\\Route&quot;,
+            &quot;type&quot;: &quot;-&gt;&quot;
+        },
+        {
+            &quot;file&quot;: &quot;C:\\Users\\athap\\Desktop\\Projects-Lumination\\edSpark-phase3\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php&quot;,
+            &quot;line&quot;: 141,
+            &quot;function&quot;: &quot;Illuminate\\Routing\\{closure}&quot;,
+            &quot;class&quot;: &quot;Illuminate\\Routing\\Router&quot;,
+            &quot;type&quot;: &quot;-&gt;&quot;
+        },
+        {
+            &quot;file&quot;: &quot;C:\\Users\\athap\\Desktop\\Projects-Lumination\\edSpark-phase3\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Middleware\\SubstituteBindings.php&quot;,
+            &quot;line&quot;: 50,
+            &quot;function&quot;: &quot;Illuminate\\Pipeline\\{closure}&quot;,
+            &quot;class&quot;: &quot;Illuminate\\Pipeline\\Pipeline&quot;,
+            &quot;type&quot;: &quot;-&gt;&quot;
+        },
+        {
+            &quot;file&quot;: &quot;C:\\Users\\athap\\Desktop\\Projects-Lumination\\edSpark-phase3\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php&quot;,
+            &quot;line&quot;: 180,
+            &quot;function&quot;: &quot;handle&quot;,
+            &quot;class&quot;: &quot;Illuminate\\Routing\\Middleware\\SubstituteBindings&quot;,
+            &quot;type&quot;: &quot;-&gt;&quot;
+        },
+        {
+            &quot;file&quot;: &quot;C:\\Users\\athap\\Desktop\\Projects-Lumination\\edSpark-phase3\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Middleware\\ThrottleRequests.php&quot;,
+            &quot;line&quot;: 126,
+            &quot;function&quot;: &quot;Illuminate\\Pipeline\\{closure}&quot;,
+            &quot;class&quot;: &quot;Illuminate\\Pipeline\\Pipeline&quot;,
+            &quot;type&quot;: &quot;-&gt;&quot;
+        },
+        {
+            &quot;file&quot;: &quot;C:\\Users\\athap\\Desktop\\Projects-Lumination\\edSpark-phase3\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Middleware\\ThrottleRequests.php&quot;,
+            &quot;line&quot;: 92,
+            &quot;function&quot;: &quot;handleRequest&quot;,
+            &quot;class&quot;: &quot;Illuminate\\Routing\\Middleware\\ThrottleRequests&quot;,
+            &quot;type&quot;: &quot;-&gt;&quot;
+        },
+        {
+            &quot;file&quot;: &quot;C:\\Users\\athap\\Desktop\\Projects-Lumination\\edSpark-phase3\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Middleware\\ThrottleRequests.php&quot;,
+            &quot;line&quot;: 54,
+            &quot;function&quot;: &quot;handleRequestUsingNamedLimiter&quot;,
+            &quot;class&quot;: &quot;Illuminate\\Routing\\Middleware\\ThrottleRequests&quot;,
+            &quot;type&quot;: &quot;-&gt;&quot;
+        },
+        {
+            &quot;file&quot;: &quot;C:\\Users\\athap\\Desktop\\Projects-Lumination\\edSpark-phase3\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php&quot;,
+            &quot;line&quot;: 180,
+            &quot;function&quot;: &quot;handle&quot;,
+            &quot;class&quot;: &quot;Illuminate\\Routing\\Middleware\\ThrottleRequests&quot;,
+            &quot;type&quot;: &quot;-&gt;&quot;
+        },
+        {
+            &quot;file&quot;: &quot;C:\\Users\\athap\\Desktop\\Projects-Lumination\\edSpark-phase3\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php&quot;,
+            &quot;line&quot;: 116,
+            &quot;function&quot;: &quot;Illuminate\\Pipeline\\{closure}&quot;,
+            &quot;class&quot;: &quot;Illuminate\\Pipeline\\Pipeline&quot;,
+            &quot;type&quot;: &quot;-&gt;&quot;
+        },
+        {
+            &quot;file&quot;: &quot;C:\\Users\\athap\\Desktop\\Projects-Lumination\\edSpark-phase3\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Router.php&quot;,
+            &quot;line&quot;: 797,
+            &quot;function&quot;: &quot;then&quot;,
+            &quot;class&quot;: &quot;Illuminate\\Pipeline\\Pipeline&quot;,
+            &quot;type&quot;: &quot;-&gt;&quot;
+        },
+        {
+            &quot;file&quot;: &quot;C:\\Users\\athap\\Desktop\\Projects-Lumination\\edSpark-phase3\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Router.php&quot;,
+            &quot;line&quot;: 776,
+            &quot;function&quot;: &quot;runRouteWithinStack&quot;,
+            &quot;class&quot;: &quot;Illuminate\\Routing\\Router&quot;,
+            &quot;type&quot;: &quot;-&gt;&quot;
+        },
+        {
+            &quot;file&quot;: &quot;C:\\Users\\athap\\Desktop\\Projects-Lumination\\edSpark-phase3\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Router.php&quot;,
+            &quot;line&quot;: 740,
+            &quot;function&quot;: &quot;runRoute&quot;,
+            &quot;class&quot;: &quot;Illuminate\\Routing\\Router&quot;,
+            &quot;type&quot;: &quot;-&gt;&quot;
+        },
+        {
+            &quot;file&quot;: &quot;C:\\Users\\athap\\Desktop\\Projects-Lumination\\edSpark-phase3\\vendor\\laravel\\framework\\src\\Illuminate\\Routing\\Router.php&quot;,
+            &quot;line&quot;: 729,
+            &quot;function&quot;: &quot;dispatchToRoute&quot;,
+            &quot;class&quot;: &quot;Illuminate\\Routing\\Router&quot;,
+            &quot;type&quot;: &quot;-&gt;&quot;
+        },
+        {
+            &quot;file&quot;: &quot;C:\\Users\\athap\\Desktop\\Projects-Lumination\\edSpark-phase3\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Kernel.php&quot;,
+            &quot;line&quot;: 190,
+            &quot;function&quot;: &quot;dispatch&quot;,
+            &quot;class&quot;: &quot;Illuminate\\Routing\\Router&quot;,
+            &quot;type&quot;: &quot;-&gt;&quot;
+        },
+        {
+            &quot;file&quot;: &quot;C:\\Users\\athap\\Desktop\\Projects-Lumination\\edSpark-phase3\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php&quot;,
+            &quot;line&quot;: 141,
+            &quot;function&quot;: &quot;Illuminate\\Foundation\\Http\\{closure}&quot;,
+            &quot;class&quot;: &quot;Illuminate\\Foundation\\Http\\Kernel&quot;,
+            &quot;type&quot;: &quot;-&gt;&quot;
+        },
+        {
+            &quot;file&quot;: &quot;C:\\Users\\athap\\Desktop\\Projects-Lumination\\edSpark-phase3\\vendor\\livewire\\livewire\\src\\DisableBrowserCache.php&quot;,
+            &quot;line&quot;: 19,
+            &quot;function&quot;: &quot;Illuminate\\Pipeline\\{closure}&quot;,
+            &quot;class&quot;: &quot;Illuminate\\Pipeline\\Pipeline&quot;,
+            &quot;type&quot;: &quot;-&gt;&quot;
+        },
+        {
+            &quot;file&quot;: &quot;C:\\Users\\athap\\Desktop\\Projects-Lumination\\edSpark-phase3\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php&quot;,
+            &quot;line&quot;: 180,
+            &quot;function&quot;: &quot;handle&quot;,
+            &quot;class&quot;: &quot;Livewire\\DisableBrowserCache&quot;,
+            &quot;type&quot;: &quot;-&gt;&quot;
+        },
+        {
+            &quot;file&quot;: &quot;C:\\Users\\athap\\Desktop\\Projects-Lumination\\edSpark-phase3\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Middleware\\TransformsRequest.php&quot;,
+            &quot;line&quot;: 21,
+            &quot;function&quot;: &quot;Illuminate\\Pipeline\\{closure}&quot;,
+            &quot;class&quot;: &quot;Illuminate\\Pipeline\\Pipeline&quot;,
+            &quot;type&quot;: &quot;-&gt;&quot;
+        },
+        {
+            &quot;file&quot;: &quot;C:\\Users\\athap\\Desktop\\Projects-Lumination\\edSpark-phase3\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Middleware\\ConvertEmptyStringsToNull.php&quot;,
+            &quot;line&quot;: 31,
+            &quot;function&quot;: &quot;handle&quot;,
+            &quot;class&quot;: &quot;Illuminate\\Foundation\\Http\\Middleware\\TransformsRequest&quot;,
+            &quot;type&quot;: &quot;-&gt;&quot;
+        },
+        {
+            &quot;file&quot;: &quot;C:\\Users\\athap\\Desktop\\Projects-Lumination\\edSpark-phase3\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php&quot;,
+            &quot;line&quot;: 180,
+            &quot;function&quot;: &quot;handle&quot;,
+            &quot;class&quot;: &quot;Illuminate\\Foundation\\Http\\Middleware\\ConvertEmptyStringsToNull&quot;,
+            &quot;type&quot;: &quot;-&gt;&quot;
+        },
+        {
+            &quot;file&quot;: &quot;C:\\Users\\athap\\Desktop\\Projects-Lumination\\edSpark-phase3\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Middleware\\TransformsRequest.php&quot;,
+            &quot;line&quot;: 21,
+            &quot;function&quot;: &quot;Illuminate\\Pipeline\\{closure}&quot;,
+            &quot;class&quot;: &quot;Illuminate\\Pipeline\\Pipeline&quot;,
+            &quot;type&quot;: &quot;-&gt;&quot;
+        },
+        {
+            &quot;file&quot;: &quot;C:\\Users\\athap\\Desktop\\Projects-Lumination\\edSpark-phase3\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Middleware\\TrimStrings.php&quot;,
+            &quot;line&quot;: 40,
+            &quot;function&quot;: &quot;handle&quot;,
+            &quot;class&quot;: &quot;Illuminate\\Foundation\\Http\\Middleware\\TransformsRequest&quot;,
+            &quot;type&quot;: &quot;-&gt;&quot;
+        },
+        {
+            &quot;file&quot;: &quot;C:\\Users\\athap\\Desktop\\Projects-Lumination\\edSpark-phase3\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php&quot;,
+            &quot;line&quot;: 180,
+            &quot;function&quot;: &quot;handle&quot;,
+            &quot;class&quot;: &quot;Illuminate\\Foundation\\Http\\Middleware\\TrimStrings&quot;,
+            &quot;type&quot;: &quot;-&gt;&quot;
+        },
+        {
+            &quot;file&quot;: &quot;C:\\Users\\athap\\Desktop\\Projects-Lumination\\edSpark-phase3\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Middleware\\ValidatePostSize.php&quot;,
+            &quot;line&quot;: 27,
+            &quot;function&quot;: &quot;Illuminate\\Pipeline\\{closure}&quot;,
+            &quot;class&quot;: &quot;Illuminate\\Pipeline\\Pipeline&quot;,
+            &quot;type&quot;: &quot;-&gt;&quot;
+        },
+        {
+            &quot;file&quot;: &quot;C:\\Users\\athap\\Desktop\\Projects-Lumination\\edSpark-phase3\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php&quot;,
+            &quot;line&quot;: 180,
+            &quot;function&quot;: &quot;handle&quot;,
+            &quot;class&quot;: &quot;Illuminate\\Foundation\\Http\\Middleware\\ValidatePostSize&quot;,
+            &quot;type&quot;: &quot;-&gt;&quot;
+        },
+        {
+            &quot;file&quot;: &quot;C:\\Users\\athap\\Desktop\\Projects-Lumination\\edSpark-phase3\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Middleware\\PreventRequestsDuringMaintenance.php&quot;,
+            &quot;line&quot;: 86,
+            &quot;function&quot;: &quot;Illuminate\\Pipeline\\{closure}&quot;,
+            &quot;class&quot;: &quot;Illuminate\\Pipeline\\Pipeline&quot;,
+            &quot;type&quot;: &quot;-&gt;&quot;
+        },
+        {
+            &quot;file&quot;: &quot;C:\\Users\\athap\\Desktop\\Projects-Lumination\\edSpark-phase3\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php&quot;,
+            &quot;line&quot;: 180,
+            &quot;function&quot;: &quot;handle&quot;,
+            &quot;class&quot;: &quot;Illuminate\\Foundation\\Http\\Middleware\\PreventRequestsDuringMaintenance&quot;,
+            &quot;type&quot;: &quot;-&gt;&quot;
+        },
+        {
+            &quot;file&quot;: &quot;C:\\Users\\athap\\Desktop\\Projects-Lumination\\edSpark-phase3\\vendor\\laravel\\framework\\src\\Illuminate\\Http\\Middleware\\HandleCors.php&quot;,
+            &quot;line&quot;: 62,
+            &quot;function&quot;: &quot;Illuminate\\Pipeline\\{closure}&quot;,
+            &quot;class&quot;: &quot;Illuminate\\Pipeline\\Pipeline&quot;,
+            &quot;type&quot;: &quot;-&gt;&quot;
+        },
+        {
+            &quot;file&quot;: &quot;C:\\Users\\athap\\Desktop\\Projects-Lumination\\edSpark-phase3\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php&quot;,
+            &quot;line&quot;: 180,
+            &quot;function&quot;: &quot;handle&quot;,
+            &quot;class&quot;: &quot;Illuminate\\Http\\Middleware\\HandleCors&quot;,
+            &quot;type&quot;: &quot;-&gt;&quot;
+        },
+        {
+            &quot;file&quot;: &quot;C:\\Users\\athap\\Desktop\\Projects-Lumination\\edSpark-phase3\\vendor\\laravel\\framework\\src\\Illuminate\\Http\\Middleware\\TrustProxies.php&quot;,
+            &quot;line&quot;: 39,
+            &quot;function&quot;: &quot;Illuminate\\Pipeline\\{closure}&quot;,
+            &quot;class&quot;: &quot;Illuminate\\Pipeline\\Pipeline&quot;,
+            &quot;type&quot;: &quot;-&gt;&quot;
+        },
+        {
+            &quot;file&quot;: &quot;C:\\Users\\athap\\Desktop\\Projects-Lumination\\edSpark-phase3\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php&quot;,
+            &quot;line&quot;: 180,
+            &quot;function&quot;: &quot;handle&quot;,
+            &quot;class&quot;: &quot;Illuminate\\Http\\Middleware\\TrustProxies&quot;,
+            &quot;type&quot;: &quot;-&gt;&quot;
+        },
+        {
+            &quot;file&quot;: &quot;C:\\Users\\athap\\Desktop\\Projects-Lumination\\edSpark-phase3\\vendor\\laravel\\framework\\src\\Illuminate\\Pipeline\\Pipeline.php&quot;,
+            &quot;line&quot;: 116,
+            &quot;function&quot;: &quot;Illuminate\\Pipeline\\{closure}&quot;,
+            &quot;class&quot;: &quot;Illuminate\\Pipeline\\Pipeline&quot;,
+            &quot;type&quot;: &quot;-&gt;&quot;
+        },
+        {
+            &quot;file&quot;: &quot;C:\\Users\\athap\\Desktop\\Projects-Lumination\\edSpark-phase3\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Kernel.php&quot;,
+            &quot;line&quot;: 165,
+            &quot;function&quot;: &quot;then&quot;,
+            &quot;class&quot;: &quot;Illuminate\\Pipeline\\Pipeline&quot;,
+            &quot;type&quot;: &quot;-&gt;&quot;
+        },
+        {
+            &quot;file&quot;: &quot;C:\\Users\\athap\\Desktop\\Projects-Lumination\\edSpark-phase3\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Http\\Kernel.php&quot;,
+            &quot;line&quot;: 134,
+            &quot;function&quot;: &quot;sendRequestThroughRouter&quot;,
+            &quot;class&quot;: &quot;Illuminate\\Foundation\\Http\\Kernel&quot;,
+            &quot;type&quot;: &quot;-&gt;&quot;
+        },
+        {
+            &quot;file&quot;: &quot;C:\\Users\\athap\\Desktop\\Projects-Lumination\\edSpark-phase3\\vendor\\knuckleswtf\\scribe\\src\\Extracting\\Strategies\\Responses\\ResponseCalls.php&quot;,
+            &quot;line&quot;: 299,
+            &quot;function&quot;: &quot;handle&quot;,
+            &quot;class&quot;: &quot;Illuminate\\Foundation\\Http\\Kernel&quot;,
+            &quot;type&quot;: &quot;-&gt;&quot;
+        },
+        {
+            &quot;file&quot;: &quot;C:\\Users\\athap\\Desktop\\Projects-Lumination\\edSpark-phase3\\vendor\\knuckleswtf\\scribe\\src\\Extracting\\Strategies\\Responses\\ResponseCalls.php&quot;,
+            &quot;line&quot;: 287,
+            &quot;function&quot;: &quot;callLaravelOrLumenRoute&quot;,
+            &quot;class&quot;: &quot;Knuckles\\Scribe\\Extracting\\Strategies\\Responses\\ResponseCalls&quot;,
+            &quot;type&quot;: &quot;-&gt;&quot;
+        },
+        {
+            &quot;file&quot;: &quot;C:\\Users\\athap\\Desktop\\Projects-Lumination\\edSpark-phase3\\vendor\\knuckleswtf\\scribe\\src\\Extracting\\Strategies\\Responses\\ResponseCalls.php&quot;,
+            &quot;line&quot;: 92,
+            &quot;function&quot;: &quot;makeApiCall&quot;,
+            &quot;class&quot;: &quot;Knuckles\\Scribe\\Extracting\\Strategies\\Responses\\ResponseCalls&quot;,
+            &quot;type&quot;: &quot;-&gt;&quot;
+        },
+        {
+            &quot;file&quot;: &quot;C:\\Users\\athap\\Desktop\\Projects-Lumination\\edSpark-phase3\\vendor\\knuckleswtf\\scribe\\src\\Extracting\\Strategies\\Responses\\ResponseCalls.php&quot;,
+            &quot;line&quot;: 45,
+            &quot;function&quot;: &quot;makeResponseCall&quot;,
+            &quot;class&quot;: &quot;Knuckles\\Scribe\\Extracting\\Strategies\\Responses\\ResponseCalls&quot;,
+            &quot;type&quot;: &quot;-&gt;&quot;
+        },
+        {
+            &quot;file&quot;: &quot;C:\\Users\\athap\\Desktop\\Projects-Lumination\\edSpark-phase3\\vendor\\knuckleswtf\\scribe\\src\\Extracting\\Strategies\\Responses\\ResponseCalls.php&quot;,
+            &quot;line&quot;: 35,
+            &quot;function&quot;: &quot;makeResponseCallIfConditionsPass&quot;,
+            &quot;class&quot;: &quot;Knuckles\\Scribe\\Extracting\\Strategies\\Responses\\ResponseCalls&quot;,
+            &quot;type&quot;: &quot;-&gt;&quot;
+        },
+        {
+            &quot;file&quot;: &quot;C:\\Users\\athap\\Desktop\\Projects-Lumination\\edSpark-phase3\\vendor\\knuckleswtf\\scribe\\src\\Extracting\\Extractor.php&quot;,
+            &quot;line&quot;: 209,
+            &quot;function&quot;: &quot;__invoke&quot;,
+            &quot;class&quot;: &quot;Knuckles\\Scribe\\Extracting\\Strategies\\Responses\\ResponseCalls&quot;,
+            &quot;type&quot;: &quot;-&gt;&quot;
+        },
+        {
+            &quot;file&quot;: &quot;C:\\Users\\athap\\Desktop\\Projects-Lumination\\edSpark-phase3\\vendor\\knuckleswtf\\scribe\\src\\Extracting\\Extractor.php&quot;,
+            &quot;line&quot;: 163,
+            &quot;function&quot;: &quot;iterateThroughStrategies&quot;,
+            &quot;class&quot;: &quot;Knuckles\\Scribe\\Extracting\\Extractor&quot;,
+            &quot;type&quot;: &quot;-&gt;&quot;
+        },
+        {
+            &quot;file&quot;: &quot;C:\\Users\\athap\\Desktop\\Projects-Lumination\\edSpark-phase3\\vendor\\knuckleswtf\\scribe\\src\\Extracting\\Extractor.php&quot;,
+            &quot;line&quot;: 95,
+            &quot;function&quot;: &quot;fetchResponses&quot;,
+            &quot;class&quot;: &quot;Knuckles\\Scribe\\Extracting\\Extractor&quot;,
+            &quot;type&quot;: &quot;-&gt;&quot;
+        },
+        {
+            &quot;file&quot;: &quot;C:\\Users\\athap\\Desktop\\Projects-Lumination\\edSpark-phase3\\vendor\\knuckleswtf\\scribe\\src\\GroupedEndpoints\\GroupedEndpointsFromApp.php&quot;,
+            &quot;line&quot;: 124,
+            &quot;function&quot;: &quot;processRoute&quot;,
+            &quot;class&quot;: &quot;Knuckles\\Scribe\\Extracting\\Extractor&quot;,
+            &quot;type&quot;: &quot;-&gt;&quot;
+        },
+        {
+            &quot;file&quot;: &quot;C:\\Users\\athap\\Desktop\\Projects-Lumination\\edSpark-phase3\\vendor\\knuckleswtf\\scribe\\src\\GroupedEndpoints\\GroupedEndpointsFromApp.php&quot;,
+            &quot;line&quot;: 71,
+            &quot;function&quot;: &quot;extractEndpointsInfoFromLaravelApp&quot;,
+            &quot;class&quot;: &quot;Knuckles\\Scribe\\GroupedEndpoints\\GroupedEndpointsFromApp&quot;,
+            &quot;type&quot;: &quot;-&gt;&quot;
+        },
+        {
+            &quot;file&quot;: &quot;C:\\Users\\athap\\Desktop\\Projects-Lumination\\edSpark-phase3\\vendor\\knuckleswtf\\scribe\\src\\GroupedEndpoints\\GroupedEndpointsFromApp.php&quot;,
+            &quot;line&quot;: 49,
+            &quot;function&quot;: &quot;extractEndpointsInfoAndWriteToDisk&quot;,
+            &quot;class&quot;: &quot;Knuckles\\Scribe\\GroupedEndpoints\\GroupedEndpointsFromApp&quot;,
+            &quot;type&quot;: &quot;-&gt;&quot;
+        },
+        {
+            &quot;file&quot;: &quot;C:\\Users\\athap\\Desktop\\Projects-Lumination\\edSpark-phase3\\vendor\\knuckleswtf\\scribe\\src\\Commands\\GenerateDocumentation.php&quot;,
+            &quot;line&quot;: 51,
+            &quot;function&quot;: &quot;get&quot;,
+            &quot;class&quot;: &quot;Knuckles\\Scribe\\GroupedEndpoints\\GroupedEndpointsFromApp&quot;,
+            &quot;type&quot;: &quot;-&gt;&quot;
+        },
+        {
+            &quot;file&quot;: &quot;C:\\Users\\athap\\Desktop\\Projects-Lumination\\edSpark-phase3\\vendor\\laravel\\framework\\src\\Illuminate\\Container\\BoundMethod.php&quot;,
+            &quot;line&quot;: 36,
+            &quot;function&quot;: &quot;handle&quot;,
+            &quot;class&quot;: &quot;Knuckles\\Scribe\\Commands\\GenerateDocumentation&quot;,
+            &quot;type&quot;: &quot;-&gt;&quot;
+        },
+        {
+            &quot;file&quot;: &quot;C:\\Users\\athap\\Desktop\\Projects-Lumination\\edSpark-phase3\\vendor\\laravel\\framework\\src\\Illuminate\\Container\\Util.php&quot;,
+            &quot;line&quot;: 41,
+            &quot;function&quot;: &quot;Illuminate\\Container\\{closure}&quot;,
+            &quot;class&quot;: &quot;Illuminate\\Container\\BoundMethod&quot;,
+            &quot;type&quot;: &quot;::&quot;
+        },
+        {
+            &quot;file&quot;: &quot;C:\\Users\\athap\\Desktop\\Projects-Lumination\\edSpark-phase3\\vendor\\laravel\\framework\\src\\Illuminate\\Container\\BoundMethod.php&quot;,
+            &quot;line&quot;: 93,
+            &quot;function&quot;: &quot;unwrapIfClosure&quot;,
+            &quot;class&quot;: &quot;Illuminate\\Container\\Util&quot;,
+            &quot;type&quot;: &quot;::&quot;
+        },
+        {
+            &quot;file&quot;: &quot;C:\\Users\\athap\\Desktop\\Projects-Lumination\\edSpark-phase3\\vendor\\laravel\\framework\\src\\Illuminate\\Container\\BoundMethod.php&quot;,
+            &quot;line&quot;: 35,
+            &quot;function&quot;: &quot;callBoundMethod&quot;,
+            &quot;class&quot;: &quot;Illuminate\\Container\\BoundMethod&quot;,
+            &quot;type&quot;: &quot;::&quot;
+        },
+        {
+            &quot;file&quot;: &quot;C:\\Users\\athap\\Desktop\\Projects-Lumination\\edSpark-phase3\\vendor\\laravel\\framework\\src\\Illuminate\\Container\\Container.php&quot;,
+            &quot;line&quot;: 661,
+            &quot;function&quot;: &quot;call&quot;,
+            &quot;class&quot;: &quot;Illuminate\\Container\\BoundMethod&quot;,
+            &quot;type&quot;: &quot;::&quot;
+        },
+        {
+            &quot;file&quot;: &quot;C:\\Users\\athap\\Desktop\\Projects-Lumination\\edSpark-phase3\\vendor\\laravel\\framework\\src\\Illuminate\\Console\\Command.php&quot;,
+            &quot;line&quot;: 183,
+            &quot;function&quot;: &quot;call&quot;,
+            &quot;class&quot;: &quot;Illuminate\\Container\\Container&quot;,
+            &quot;type&quot;: &quot;-&gt;&quot;
+        },
+        {
+            &quot;file&quot;: &quot;C:\\Users\\athap\\Desktop\\Projects-Lumination\\edSpark-phase3\\vendor\\symfony\\console\\Command\\Command.php&quot;,
+            &quot;line&quot;: 312,
+            &quot;function&quot;: &quot;execute&quot;,
+            &quot;class&quot;: &quot;Illuminate\\Console\\Command&quot;,
+            &quot;type&quot;: &quot;-&gt;&quot;
+        },
+        {
+            &quot;file&quot;: &quot;C:\\Users\\athap\\Desktop\\Projects-Lumination\\edSpark-phase3\\vendor\\laravel\\framework\\src\\Illuminate\\Console\\Command.php&quot;,
+            &quot;line&quot;: 152,
+            &quot;function&quot;: &quot;run&quot;,
+            &quot;class&quot;: &quot;Symfony\\Component\\Console\\Command\\Command&quot;,
+            &quot;type&quot;: &quot;-&gt;&quot;
+        },
+        {
+            &quot;file&quot;: &quot;C:\\Users\\athap\\Desktop\\Projects-Lumination\\edSpark-phase3\\vendor\\symfony\\console\\Application.php&quot;,
+            &quot;line&quot;: 1022,
+            &quot;function&quot;: &quot;run&quot;,
+            &quot;class&quot;: &quot;Illuminate\\Console\\Command&quot;,
+            &quot;type&quot;: &quot;-&gt;&quot;
+        },
+        {
+            &quot;file&quot;: &quot;C:\\Users\\athap\\Desktop\\Projects-Lumination\\edSpark-phase3\\vendor\\symfony\\console\\Application.php&quot;,
+            &quot;line&quot;: 314,
+            &quot;function&quot;: &quot;doRunCommand&quot;,
+            &quot;class&quot;: &quot;Symfony\\Component\\Console\\Application&quot;,
+            &quot;type&quot;: &quot;-&gt;&quot;
+        },
+        {
+            &quot;file&quot;: &quot;C:\\Users\\athap\\Desktop\\Projects-Lumination\\edSpark-phase3\\vendor\\symfony\\console\\Application.php&quot;,
+            &quot;line&quot;: 168,
+            &quot;function&quot;: &quot;doRun&quot;,
+            &quot;class&quot;: &quot;Symfony\\Component\\Console\\Application&quot;,
+            &quot;type&quot;: &quot;-&gt;&quot;
+        },
+        {
+            &quot;file&quot;: &quot;C:\\Users\\athap\\Desktop\\Projects-Lumination\\edSpark-phase3\\vendor\\laravel\\framework\\src\\Illuminate\\Console\\Application.php&quot;,
+            &quot;line&quot;: 102,
+            &quot;function&quot;: &quot;run&quot;,
+            &quot;class&quot;: &quot;Symfony\\Component\\Console\\Application&quot;,
+            &quot;type&quot;: &quot;-&gt;&quot;
+        },
+        {
+            &quot;file&quot;: &quot;C:\\Users\\athap\\Desktop\\Projects-Lumination\\edSpark-phase3\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Console\\Kernel.php&quot;,
+            &quot;line&quot;: 155,
+            &quot;function&quot;: &quot;run&quot;,
+            &quot;class&quot;: &quot;Illuminate\\Console\\Application&quot;,
+            &quot;type&quot;: &quot;-&gt;&quot;
+        },
+        {
+            &quot;file&quot;: &quot;C:\\Users\\athap\\Desktop\\Projects-Lumination\\edSpark-phase3\\artisan&quot;,
+            &quot;line&quot;: 35,
+            &quot;function&quot;: &quot;handle&quot;,
+            &quot;class&quot;: &quot;Illuminate\\Foundation\\Console\\Kernel&quot;,
+            &quot;type&quot;: &quot;-&gt;&quot;
+        }
+    ]
+}</code>
+ </pre>
+    </span>
+<span id="execution-results-GETapi-fetchSoftwarePostById--id-" hidden>
+    <blockquote>Received response<span
+                id="execution-response-status-GETapi-fetchSoftwarePostById--id-"></span>:
+    </blockquote>
+    <pre class="json"><code id="execution-response-content-GETapi-fetchSoftwarePostById--id-" style="max-height: 400px;"></code></pre>
+</span>
+<span id="execution-error-GETapi-fetchSoftwarePostById--id-" hidden>
+    <blockquote>Request failed with error:</blockquote>
+    <pre><code id="execution-error-message-GETapi-fetchSoftwarePostById--id-"></code></pre>
+</span>
+<form id="form-GETapi-fetchSoftwarePostById--id-" data-method="GET"
+      data-path="api/fetchSoftwarePostById/{id}"
+      data-authed="0"
+      data-hasfiles="0"
+      data-isarraybody="0"
+      autocomplete="off"
+      onsubmit="event.preventDefault(); executeTryOut('GETapi-fetchSoftwarePostById--id-', this);">
+    <h3>
+        Request&nbsp;&nbsp;&nbsp;
+                    <button type="button"
+                    style="background-color: #8fbcd4; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-tryout-GETapi-fetchSoftwarePostById--id-"
+                    onclick="tryItOut('GETapi-fetchSoftwarePostById--id-');">Try it out ⚡
+            </button>
+            <button type="button"
+                    style="background-color: #c97a7e; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-canceltryout-GETapi-fetchSoftwarePostById--id-"
+                    onclick="cancelTryOut('GETapi-fetchSoftwarePostById--id-');" hidden>Cancel 🛑
+            </button>&nbsp;&nbsp;
+            <button type="submit"
+                    style="background-color: #6ac174; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-executetryout-GETapi-fetchSoftwarePostById--id-" hidden>Send Request 💥
+            </button>
+            </h3>
+            <p>
+            <small class="badge badge-green">GET</small>
+            <b><code>api/fetchSoftwarePostById/{id}</code></b>
+        </p>
+                <h4 class="fancy-heading-panel"><b>Headers</b></h4>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Content-Type</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+               name="Content-Type"                data-endpoint="GETapi-fetchSoftwarePostById--id-"
+               value="application/json"
+               data-component="header">
+    <br>
+<p>Example: <code>application/json</code></p>
+            </div>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Accept</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+               name="Accept"                data-endpoint="GETapi-fetchSoftwarePostById--id-"
+               value="application/json"
+               data-component="header">
+    <br>
+<p>Example: <code>application/json</code></p>
+            </div>
+                        <h4 class="fancy-heading-panel"><b>URL Parameters</b></h4>
+                    <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>id</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+               name="id"                data-endpoint="GETapi-fetchSoftwarePostById--id-"
+               value="libero"
+               data-component="url">
+    <br>
+<p>The ID of the fetchSoftwarePostById. Example: <code>libero</code></p>
+            </div>
+                    </form>
+
                     <h2 id="endpoints-GETapi-fetchEventPosts">GET api/fetchEventPosts</h2>
 
 <p>
@@ -1278,7 +1770,7 @@ print_r(json_decode((string) $body));</code></pre></div>
             <pre><code class="language-http">cache-control: no-cache, private
 content-type: application/json
 x-ratelimit-limit: 60
-x-ratelimit-remaining: 48
+x-ratelimit-remaining: 54
 access-control-allow-origin: *
  </code></pre></details>         <pre>
 
@@ -1487,7 +1979,7 @@ print_r(json_decode((string) $body));</code></pre></div>
             <pre><code class="language-http">cache-control: no-cache, private
 content-type: application/json
 x-ratelimit-limit: 60
-x-ratelimit-remaining: 47
+x-ratelimit-remaining: 53
 access-control-allow-origin: *
  </code></pre></details>         <pre>
 
@@ -1643,7 +2135,7 @@ access-control-allow-origin: *
 
 <div class="javascript-example">
     <pre><code class="language-javascript">const url = new URL(
-    "http://localhost:8000/api/fetchUser/et"
+    "http://localhost:8000/api/fetchUser/fugit"
 );
 
 const headers = {
@@ -1660,7 +2152,7 @@ fetch(url, {
 <div class="php-example">
     <pre><code class="language-php">$client = new \GuzzleHttp\Client();
 $response = $client-&gt;get(
-    'http://localhost:8000/api/fetchUser/et',
+    'http://localhost:8000/api/fetchUser/fugit',
     [
         'headers' =&gt; [
             'Content-Type' =&gt; 'application/json',
@@ -1684,7 +2176,7 @@ print_r(json_decode((string) $body));</code></pre></div>
             <pre><code class="language-http">cache-control: no-cache, private
 content-type: application/json
 x-ratelimit-limit: 60
-x-ratelimit-remaining: 46
+x-ratelimit-remaining: 52
 access-control-allow-origin: *
  </code></pre></details>         <pre>
 
@@ -2228,10 +2720,10 @@ access-control-allow-origin: *
  &nbsp;
                 <input type="text" style="display: none"
                name="id"                data-endpoint="GETapi-fetchUser--id-"
-               value="et"
+               value="fugit"
                data-component="url">
     <br>
-<p>The ID of the fetchUser. Example: <code>et</code></p>
+<p>The ID of the fetchUser. Example: <code>fugit</code></p>
             </div>
                     </form>
 
@@ -2289,7 +2781,7 @@ print_r(json_decode((string) $body));</code></pre></div>
             <pre><code class="language-http">cache-control: no-cache, private
 content-type: application/json
 x-ratelimit-limit: 60
-x-ratelimit-remaining: 45
+x-ratelimit-remaining: 51
 access-control-allow-origin: *
  </code></pre></details>         <pre>
 
@@ -2417,7 +2909,7 @@ print_r(json_decode((string) $body));</code></pre></div>
             <pre><code class="language-http">cache-control: no-cache, private
 content-type: application/json
 x-ratelimit-limit: 60
-x-ratelimit-remaining: 44
+x-ratelimit-remaining: 50
 access-control-allow-origin: *
  </code></pre></details>         <pre>
 
@@ -2545,7 +3037,7 @@ print_r(json_decode((string) $body));</code></pre></div>
             <pre><code class="language-http">cache-control: no-cache, private
 content-type: application/json
 x-ratelimit-limit: 60
-x-ratelimit-remaining: 43
+x-ratelimit-remaining: 49
 access-control-allow-origin: *
  </code></pre></details>         <pre>
 
@@ -26065,7 +26557,7 @@ access-control-allow-origin: *
 
 <div class="javascript-example">
     <pre><code class="language-javascript">const url = new URL(
-    "http://localhost:8000/api/fetchSiteById/repellat"
+    "http://localhost:8000/api/fetchSiteById/aperiam"
 );
 
 const headers = {
@@ -26082,7 +26574,7 @@ fetch(url, {
 <div class="php-example">
     <pre><code class="language-php">$client = new \GuzzleHttp\Client();
 $response = $client-&gt;get(
-    'http://localhost:8000/api/fetchSiteById/repellat',
+    'http://localhost:8000/api/fetchSiteById/aperiam',
     [
         'headers' =&gt; [
             'Content-Type' =&gt; 'application/json',
@@ -26106,7 +26598,7 @@ print_r(json_decode((string) $body));</code></pre></div>
             <pre><code class="language-http">cache-control: no-cache, private
 content-type: application/json
 x-ratelimit-limit: 60
-x-ratelimit-remaining: 42
+x-ratelimit-remaining: 48
 access-control-allow-origin: *
  </code></pre></details>         <pre>
 
@@ -26181,10 +26673,10 @@ access-control-allow-origin: *
  &nbsp;
                 <input type="text" style="display: none"
                name="id"                data-endpoint="GETapi-fetchSiteById--id-"
-               value="repellat"
+               value="aperiam"
                data-component="url">
     <br>
-<p>The ID of the fetchSiteById. Example: <code>repellat</code></p>
+<p>The ID of the fetchSiteById. Example: <code>aperiam</code></p>
             </div>
                     </form>
 
@@ -26242,7 +26734,7 @@ print_r(json_decode((string) $body));</code></pre></div>
             <pre><code class="language-http">cache-control: no-cache, private
 content-type: application/json
 x-ratelimit-limit: 60
-x-ratelimit-remaining: 41
+x-ratelimit-remaining: 47
 access-control-allow-origin: *
  </code></pre></details>         <pre>
 
@@ -26366,7 +26858,7 @@ print_r(json_decode((string) $body));</code></pre></div>
             <pre><code class="language-http">cache-control: no-cache, private
 content-type: application/json
 x-ratelimit-limit: 60
-x-ratelimit-remaining: 40
+x-ratelimit-remaining: 46
 access-control-allow-origin: *
  </code></pre></details>         <pre>
 
@@ -26511,7 +27003,7 @@ print_r(json_decode((string) $body));</code></pre></div>
             <pre><code class="language-http">cache-control: no-cache, private
 content-type: application/json
 x-ratelimit-limit: 60
-x-ratelimit-remaining: 39
+x-ratelimit-remaining: 45
 access-control-allow-origin: *
  </code></pre></details>         <pre>
 
@@ -26656,7 +27148,7 @@ print_r(json_decode((string) $body));</code></pre></div>
             <pre><code class="language-http">cache-control: no-cache, private
 content-type: application/json
 x-ratelimit-limit: 60
-x-ratelimit-remaining: 38
+x-ratelimit-remaining: 44
 access-control-allow-origin: *
  </code></pre></details>         <pre>
 
@@ -26900,7 +27392,7 @@ print_r(json_decode((string) $body));</code></pre></div>
             <pre><code class="language-http">cache-control: no-cache, private
 content-type: application/json
 x-ratelimit-limit: 60
-x-ratelimit-remaining: 37
+x-ratelimit-remaining: 43
 access-control-allow-origin: *
  </code></pre></details>         <pre>
 
@@ -27028,7 +27520,7 @@ print_r(json_decode((string) $body));</code></pre></div>
             <pre><code class="language-http">cache-control: no-cache, private
 content-type: application/json
 x-ratelimit-limit: 60
-x-ratelimit-remaining: 36
+x-ratelimit-remaining: 42
 access-control-allow-origin: *
  </code></pre></details>         <pre>
 
@@ -27621,7 +28113,7 @@ print_r(json_decode((string) $body));</code></pre></div>
             <pre><code class="language-http">cache-control: no-cache, private
 content-type: application/json
 x-ratelimit-limit: 60
-x-ratelimit-remaining: 35
+x-ratelimit-remaining: 41
 access-control-allow-origin: *
  </code></pre></details>         <pre>
 
@@ -28206,7 +28698,7 @@ print_r(json_decode((string) $body));</code></pre></div>
             <pre><code class="language-http">cache-control: no-cache, private
 content-type: application/json
 x-ratelimit-limit: 60
-x-ratelimit-remaining: 34
+x-ratelimit-remaining: 40
 access-control-allow-origin: *
  </code></pre></details>         <pre>
 
@@ -28787,7 +29279,7 @@ print_r(json_decode((string) $body));</code></pre></div>
             <pre><code class="language-http">cache-control: no-cache, private
 content-type: application/json
 x-ratelimit-limit: 60
-x-ratelimit-remaining: 33
+x-ratelimit-remaining: 39
 access-control-allow-origin: *
  </code></pre></details>         <pre>
 
@@ -28924,7 +29416,7 @@ print_r(json_decode((string) $body));</code></pre></div>
             <pre><code class="language-http">cache-control: no-cache, private
 content-type: application/json
 x-ratelimit-limit: 60
-x-ratelimit-remaining: 32
+x-ratelimit-remaining: 38
 access-control-allow-origin: *
  </code></pre></details>         <pre>
 
