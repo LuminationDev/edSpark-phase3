@@ -42,6 +42,65 @@ class UserController extends Controller
         return response()->json($data);
     }
 
+    public function fetchUserByEmail($email)
+    {
+
+        $user = User::where('email', $email)->get();
+        $error = '';
+        $data = [];
+        $isFirstVisit = false;
+        // dd($user);
+
+        try {
+            if (isset($user)) {
+                $user_id = $user['id'];
+
+                $userMetaData = Usermeta::where('user_id', $id)->get();
+                $userMetaDataToSend = [];
+                if( $userMetaData) {
+                    foreach($userMetaData as $key => $value){
+                        $result = [
+                            'user_meta_key' => $value->user_meta_key,
+                            'user_meta_value' => explode(', ', $value->user_meta_value)
+                        ];
+                        $userMetaDataToSend[] = $result;
+                    }
+                }
+
+                $data[] = [
+                    'id' => $user->id,
+                    'full_name' => $user->full_name,
+                    'display_name' => ($user->display_name) ? $user->display_name : NULL,
+                    'email' => $user->email,
+                    'status' => $user->status,
+                    'role' => ($user->role) ? $user->role->role_name : NULL,
+                    'permissions' => ($user->role) ? $user->role->permissions->pluck('permission_name') : NULL,
+                    'metadata' => ($userMetaDataToSend) ? $userMetaDataToSend : NULL,
+                ];
+
+                $isFirstVisit = false;
+
+                // return response()->json($data);
+            } else {
+                $isFirstVisit = false;
+            }
+
+            return response()->json([
+                'message' => isset($data) ? "User exists" : "User does not exist",
+                'user' => isset($data) ? $data : NULL,
+                'isFirstVisit' => $isFirstVisit,
+                'error' => $error,
+                'status' => 200
+            ]);
+        } catch(Exception $e) {
+            $error = $e->getMessage();
+        }
+
+
+
+
+    }
+
     public function createUser(Request $request)
     {
         if ($request->isMethod('post')) {

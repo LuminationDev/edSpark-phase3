@@ -35,6 +35,7 @@ Route::middleware('api')->group(function() {
 
     // User Management
     Route::get('fetchUser/{id}', [UserController::class, 'fetchUser']);
+    Route::get('fetchUserByEmail/{email}', [UserController::class, 'fetchUserByEmail']);
     Route::post('createUser', [UserController::class, 'createUser']);
     Route::post('updateUser', [UserController::class, 'updateUser']);
     Route::get('fetchAllSites', [SiteController::class, 'fetchAllSites']);

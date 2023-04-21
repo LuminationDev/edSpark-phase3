@@ -8,7 +8,7 @@ import oktaConfig from './constants/oktaConfig';
 /**
  * THIS BIT!!!!!
  */
-import { OktaAuth } from '@okta/okta-auth-js'
+// import { OktaAuth } from '@okta/okta-auth-js'
 import OktaVue, { LoginCallback } from '@okta/okta-vue';
 
 import VueGoogleMaps from 'vue-google-maps-community-fork';

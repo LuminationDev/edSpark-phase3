@@ -292,17 +292,20 @@ export default {
         this.claims = await Object.entries(idToken.claims).map(entry => ({ claim: entry[0], value: entry[ 1 ]}));
         console.log(this.claims);
 
+
+
         /**
          * Set the pre-fill information as much as possible
          */
         this.claims.forEach(claim => {
-            console.log(claim);
+            // console.log(claim);
             switch (claim.claim) {
                 case 'name':
                         this.name = claim.value;
                     break;
                 case 'email':
                         this.email = claim.value;
+                        this.userStore.checkUser(claim.value);
                     break;
                 case 'site':
                         this.siteId = claim.value;
