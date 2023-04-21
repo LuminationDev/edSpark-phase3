@@ -63,14 +63,24 @@ class SoftwareResource extends Resource
                             ->getUploadedFileNameForStorageUsing(function (TemporaryUploadedFile $file): string {
                                 return (string) str($file->getClientOriginalName())->prepend('edSpark-software-');
                             }),
-                        Forms\Components\Grid::make(3)
+
+                        Forms\Components\Card::make()
+                            ->schema([
+                                Forms\Components\CheckboxList::make('software_type')
+                                    ->label('Software type')
+                                    ->extraAttributes(['class' => 'text-primary-600'])
+                                    ->relationship('softwaretypes', 'software_type_name')
+                                    ->columns(3)
+                                    ->bulkToggleable()
+                            ]),
+                        Forms\Components\Grid::make(2)
                             ->schema([
                                 Forms\Components\TextInput::make('Author')
                                     ->default($user)
                                     ->disabled(),
-                                Forms\Components\BelongsToSelect::make('software_type')
-                                    ->label('Software type')
-                                    ->relationship('softwaretype', 'software_type_name'),
+//                                Forms\Components\BelongsToSelect::make('software_type')
+//                                    ->label('Software type')
+//                                    ->relationship('softwaretype', 'software_type_name'),
                                 Forms\Components\Select::make('post_status')
                                     ->options([
                                         'Published' => 'Published',
@@ -79,7 +89,7 @@ class SoftwareResource extends Resource
                                         'Pending' => 'Pending'
                                     ])
                                     ->label('Status')
-                                    ->required()
+                                    ->required(),
                             ]),
                     ]),
 
@@ -185,16 +195,18 @@ class SoftwareResource extends Resource
                 ->label('Title')
                 ->searchable()
                 ->sortable(),
-                Tables\Columns\TextColumn::make('post_content')
-                ->limit(50)
-                ->label('Content'),
+//                Tables\Columns\TextColumn::make('post_content')
+//                ->limit(50)
+//                ->label('Content'),
                 Tables\Columns\ImageColumn::make('cover_image'),
-                Tables\Columns\TextColumn::make('author.full_name')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('softwaretype.software_type_name')
+                Tables\Columns\TextColumn::make('softwaretypes.software_type_name')
                     ->label('Type')
                     ->sortable()
+                    ->searchable()
+                    ->wrap(),
+                Tables\Columns\TextColumn::make('author.full_name')
                     ->searchable(),
+
                 Tables\Columns\TextColumn::make('post_status')
                     ->label('Status')
                     ->sortable()
