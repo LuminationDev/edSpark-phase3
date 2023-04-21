@@ -1,6 +1,8 @@
 <script setup>
 
-import {shallowRef} from "vue";
+import {ref} from "vue";
+import BaseIconGenerator from "@/js/components/global/BaseIconGenerator.vue";
+
 const props = defineProps({
     techName:{
         type: String,
@@ -11,45 +13,28 @@ const props = defineProps({
     //     required: false
     // }
 })
+const iconPath = ref('')
 
-
-const techIcon = shallowRef('')
-
-const getIconPath = (iconType) => {
-    switch(iconType){
-    case "Microsoft Teams":
-        return '/components/svg/Microsoft.vue'
-    case "3D Printing":
-        return '/components/svg/ThreeDPrintingIcon.vue'
-    case "Apple":
-        return '/components/svg/AppleIcon.vue'
-    case "Frog":
-        return '/components/svg/FrogIcon.vue'
-    case "IoT":
-        return '/components/svg/IoTIcon.vue'
-    case "Robotics":
-        return '/components/svg/RoboticsIcon.vue'
-    case "AR":
-        return '/components/svg/ARIcon.vue'
-    case "VR":
-        return '/components/svg/VRIcon.vue'
-    case "Lumination":
-        return '/components/svg/LuminationIcon.vue'
-    case "Makers Empire":
-        return '/components/svg/MakersEmpireIcon.vue'
-    }
+const schoolTechIconPaths = {
+    "Microsoft Teams": "/components/svg/Microsoft.vue",
+    "3D Printing": '/components/svg/ThreeDPrintingIcon.vue',
+    "Apple": '/components/svg/AppleIcon.vue',
+    "Frog":'/components/svg/FrogIcon.vue',
+    "IoT":'/components/svg/IoTIcon.vue',
+    "Robotics":'/components/svg/RoboticsIcon.vue',
+    "AR":'/components/svg/ARIcon.vue',
+    "VR":'/components/svg/VRIcon.vue',
+    "Lumination":'/components/svg/LuminationIcon.vue',
+    "Makers Empire":'/components/svg/MakersEmpireIcon.vue'
 }
 
-import(`../../${getIconPath(props.techName)}`).then(val =>
-    techIcon.value = val.default
-)
-
+if(Object.keys(schoolTechIconPaths).includes(props.techName)){
+    iconPath.value = schoolTechIconPaths[`${props.techName}`]
+}
 
 </script>
 <template>
-    <component
-        :is="techIcon"
-        v-if="techIcon"
-        class="pointer-events-none"
-    />
+    <template v-if="iconPath">
+        <BaseIconGenerator :icon-path="iconPath" />
+    </template>
 </template>

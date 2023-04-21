@@ -31,4 +31,9 @@ class Advicetype extends Model
     //     return $this->hasMany(Advice::class);
     // }
 
+    public function advices()
+    {
+        return $this->belongsToMany(Advice::class);
+    }
+
 }

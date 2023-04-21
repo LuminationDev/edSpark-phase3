@@ -66,7 +66,6 @@ export default {
 
     methods: {
         handleAvatarClick() {
-            console.log('This has been clicked!!!');
             this.profileDropdown = !this.profileDropdown
         }
     }

@@ -10,11 +10,9 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\SiteController;
 use App\Http\Controllers\EventController;
 use App\Http\Controllers\CommunityController;
-
-use App\Http\Controllers\SchoolInfoController;
 use App\Http\Controllers\SchoolController;
-
 use App\Http\Controllers\TechController;
+use App\Http\Controllers\ImageController;
 
 /*
 |--------------------------------------------------------------------------
@@ -29,7 +27,9 @@ use App\Http\Controllers\TechController;
 Route::middleware('api')->group(function() {
     // Content Management
     Route::get('fetchAdvicePosts', [AdviceController::class, 'fetchAdvicePosts']);
+    Route::get('fetchAdvicePostById/{id}', [AdviceController::class, 'fetchAdvicePostById']);
     Route::get('fetchSoftwarePosts', [SoftwareController::class, 'fetchSoftwarePosts']);
+    Route::get('fetchSoftwarePostById/{id}', [SoftwareController::class, 'fetchSoftwarePostById']);
     Route::get('fetchEventPosts', [EventController::class, 'fetchEventPosts']);
     Route::get('fetchCommunityPosts', [CommunityController::class, 'fetchCommunityPosts']);
 
@@ -47,16 +47,14 @@ Route::middleware('api')->group(function() {
     Route::get('fetchAllCategories', [ProductController::class, 'fetchAllCategories']);
     Route::get('fetchAllProducts', [ProductController::class, 'fetchAllProducts']);
 
-    // School Info Management
-    Route::get('fetchSchoolInfoById/{id}', [SchoolInfoController::class, 'fetchSchoolInfoById']);
-    Route::get('fetchSchoolByFullName/{name}',[SchoolInfoController::class, 'fetchSchoolByFullName']);
-    Route::get('getAllInfoOfOneSchool/{name}',[SchoolInfoController::class, 'getAllInfoOfOneSchoolByFullName']);
-    Route::post('setSchoolInfoByName/{name}',[SchoolInfoController::class, 'setSchoolInfoByName']);
-
     Route::post('createSchool', [SchoolController::class, 'createSchool']);
     Route::post('updateSchool', [SchoolController::class, 'updateSchool']);
     Route::get('fetchAllSchools', [SchoolController::class, 'fetchAllSchools']);
     Route::get('fetchFeaturedSchools', [SchoolController::class, 'fetchFeaturedSchools']);
 
     Route::get('fetchAllTechs', [TechController::class, 'fetchAllTechs']);
+
+    // Image upload
+    Route::post('uploadImage', [ImageController::class, 'imageUpload']);
+    Route::post('uploadImageEditorjs', [ImageController::class, 'imageUploadEditorjs']);
 });

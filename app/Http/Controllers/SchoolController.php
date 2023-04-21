@@ -7,13 +7,13 @@ use App\Models\School;
 use App\Models\Schoolmeta;
 use Carbon\Carbon;
 use Illuminate\Support\Str;
+use App\Helpers\Metahelper;
 
 class SchoolController extends Controller
 {
     public function createSchool(Request $request)
     {
         if ($request->isMethod('post')) {
-
             $data = $request->all(); // if not data key present
             // $data = $request->data; // if data key present can be used later for metaData
 //             dd(json_decode($data));
@@ -127,7 +127,7 @@ class SchoolController extends Controller
                     $error = $e->getMessage();
                 }
             }
-            // still not working need to fix updateMetadata
+            // still not working need to fix updateMetadata TODO
             $metadata = $request->schoolMetadata;
             if($metadata){
                 foreach ($metadata as $key => $value){

@@ -18,6 +18,9 @@ import {
     UserProfile
 } from './pages'
 import BrowseSchools from "@/js/pages/BrowseSchools.vue";
+import AdviceSingle from "@/js/pages/AdviceSingle.vue";
+import SoftwareSingle from "@/js/components/software/softwareSingle/SoftwareSingle.vue";
+
 const router = createRouter({
     history: createWebHistory(),
     routes: [
@@ -43,7 +46,7 @@ const router = createRouter({
             component: Schools,
         },
         {
-            name: 'schoolSingle',
+            name: 'school-single',
             path: '/schools/:name',
             component: SchoolSingle
         },
@@ -53,9 +56,22 @@ const router = createRouter({
             component: Advice
         },
         {
+            name: 'advice-single',
+            path: '/advice/resources/:id',
+            component: AdviceSingle,
+            params: true
+        },
+        {
             name: 'software',
             path: '/software',
             component: Software
+        },
+        {
+            name: "software-single",
+            path: "/software/resources/:id",
+            component: SoftwareSingle,
+            params: true
+
         },
         {
             name: 'hardware',
