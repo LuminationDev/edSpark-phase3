@@ -40,9 +40,14 @@ class Software extends Model
         return $this->belongsTo(User::class);
     }
 
-    public function softwaretype()
+//    public function softwaretype()
+//    {
+//        return $this->belongsTo(Softwaretype::class);
+//    }
+
+    public function softwaretypes()
     {
-        return $this->belongsTo(Softwaretype::class);
+        return $this->belongsToMany(Softwaretype::class);
     }
 
     protected $casts = [

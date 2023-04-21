@@ -40,9 +40,14 @@ class Advice extends Model
         return $this->belongsTo(User::class);
     }
 
-    public function advicetype()
+//    public function advicetype()
+//    {
+//        return $this->belongsTo(Advicetype::class);
+//    }
+
+    public function advicetypes()
     {
-        return $this->belongsTo(Advicetype::class);
+        return $this->belongsToMany(Advicetype::class);
     }
 
     protected $casts = [
