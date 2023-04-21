@@ -15,11 +15,9 @@ class CreateSoftware extends CreateRecord
 
     protected function mutateFormDataBeforeCreate(array $data): array
     {
-         dd($data); // before mutation
         $data['author_id'] = Auth::user()->id;
         $data['post_date'] = Carbon::now();
         $data['post_modified'] = Carbon::now();
-        // dd($data); //after mutation
         return $data;
     }
 

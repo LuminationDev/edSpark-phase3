@@ -8,7 +8,12 @@ module.exports = {
         './resources/**/*.{ vue, js, ts, jsx, tsx }'
     ],
     theme: {
-        extend: {},
+        extend: {
+            colors:{
+                adviceYellow: '#FFC836',
+                adviceGreen: '#048246'
+            }
+        },
     },
     plugins: [
         require('@tailwindcss/line-clamp')

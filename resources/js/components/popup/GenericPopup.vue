@@ -76,7 +76,7 @@ const currentContent = computed( () =>{
 <template>
     <div class="absolute grid place-content-center top-0 bottom-0 left-0 right-0 !mt-0">
         <div
-            class="grey-overlay sticky w-screen h-screen bg-gray-400 z-30 opacity-60 top-0 left-0 grid place-content-center top-0 bottom-0 left-0 right-0"
+            class="grey-overlay sticky w-screen h-screen bg-gray-400 z-30 opacity-60 top-0 left-0 grid place-content-center top-0 bottom-0 left-0 right-0 mt-[-100%]"
             @click="handleClickOutsidePopup"
         />
         <div

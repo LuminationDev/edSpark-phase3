@@ -15,7 +15,7 @@ const props = defineProps({
 </script>
 
 <template>
-    <div class="h-full flex flex-col">
+    <div class="h-full flex flex-col ">
         <!-- CARD BODY -->
         <div class="relative h-36 group-hover:h-0 transition-all">
             <!-- CARD HEADER -->
@@ -54,7 +54,7 @@ const props = defineProps({
     </div>
 </template>
 
-<style>
+<style scoped>
     .card-content_body {
         overflow: hidden;
         text-overflow: ellipsis;
