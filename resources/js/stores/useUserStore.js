@@ -43,6 +43,16 @@ export const useUserStore = defineStore('user', {
             })
         },
 
+        async checkUser(email) {
+            console.log('HERE YOU ARE!!!!!');
+            await axios.get(`http://localhost:8000/api/fetchUserByEmail/${email}`).then(res => {
+                console.log(res);
+            }).catch(err => {
+                console.log('Theres a problem');
+                console.error(err);
+            })
+        },
+
         async createUser(user) {
             console.log(user.avatar);
             /**
