@@ -7,13 +7,13 @@
     "file": "assets/departmentProvidedAndApproved-45068dc9.png",
     "src": "resources/assets/images/departmentProvidedAndApproved.png"
   },
-  "resources/assets/images/negotiatedDeals.png": {
-    "file": "assets/negotiatedDeals-0e67ab26.png",
-    "src": "resources/assets/images/negotiatedDeals.png"
-  },
   "resources/assets/images/NegotiatedDealsIcon.png": {
     "file": "assets/NegotiatedDealsIcon-ffb76863.png",
     "src": "resources/assets/images/NegotiatedDealsIcon.png"
+  },
+  "resources/assets/images/negotiatedDeals.png": {
+    "file": "assets/negotiatedDeals-0e67ab26.png",
+    "src": "resources/assets/images/negotiatedDeals.png"
   },
   "resources/assets/images/WhatIsDag.png": {
     "file": "assets/WhatIsDag-10bb387b.png",
@@ -32,15 +32,15 @@
     "src": "resources/assets/images/CommunityIllustration.png"
   },
   "resources/js/app.css": {
-    "file": "assets/app-a9386d5d.css",
+    "file": "assets/app-d7018be7.css",
     "src": "resources/js/app.css"
   },
   "resources/js/app.js": {
-    "file": "assets/app-b05821e9.js",
+    "file": "assets/app-6aaf2469.js",
     "src": "resources/js/app.js",
     "isEntry": true,
     "css": [
-      "assets/app-a9386d5d.css"
+      "assets/app-d7018be7.css"
     ],
     "assets": [
       "assets/FooterSwoosh-74226902.png",

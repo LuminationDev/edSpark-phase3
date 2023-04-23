@@ -68,7 +68,7 @@ const handleFinishCreateSchool = () =>{
 }
 
 const handleBrowseAllSchool = () => {
-    router.push('/browse/schools')
+    router.push({ name: 'browse-schools' })
 }
 
 const handleCloseWelcomePopup = () => {
@@ -119,11 +119,11 @@ const handleSaveWelcomePopup = (data)=>{
                     </button>
                 </template>
             </SectionHeader>
-            <div class="grid grid-cols-4 gap-[24px] w-full px-10 pt-8 ">
+            <div class="grid grid-cols-4 gap-[24px] w-full px-20 pt-8 ">
                 <div
                     v-for="(school,index) in featuredSitesData"
                     :key="index"
-                    class="col-span-1 bg-white cursor-pointer h-[470px] border-2  border-black transition-all group hover:shadow-2xl rounded"
+                    class="col-span-1 bg-white cursor-pointer h-[470px] border-[0.5px]  border-black transition-all group hover:shadow-2xl"
                 >
                     <SchoolCard
                         v-if="featuredSitesData"
@@ -134,7 +134,7 @@ const handleSaveWelcomePopup = (data)=>{
         </div>
 
 
-        <div class="py-20">
+        <div class="py-20 px-20">
             <SearchableMap />
         </div>
     </div>
