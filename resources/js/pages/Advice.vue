@@ -19,7 +19,8 @@ onBeforeMount( async () =>{
 
 const adviceDAG = computed(() => {
     if(allAdvice.value){
-        return allAdvice.value.filter(advice => advice['advice_type'] === 'D.A.G advice')
+        console.log(allAdvice.value)
+        return allAdvice.value.filter(advice => advice['advice_type'].includes('D.A.G Advice'))
     }else{
         return []
     }
@@ -45,11 +46,11 @@ const advicePartner = computed(() => {
 
 <template>
     <AdviceHero />
-    <div class="DAGAdviceRow AdviceContentContainer flex flex-col h-full px-10">
+    <div class="DAGAdviceRow AdviceContentContainer flex flex-col h-full px-20">
         <div
             v-if="adviceDAG"
             class="AdviceCardListContainer heading text-xl pt-10 flex flex-row flex-1 justify-between flex-wrap  gap-6"
-        >             
+        >
             <AdviceCard
                 v-for="(advice, index) in adviceDAG.slice(0,3)"
                 :key="index"

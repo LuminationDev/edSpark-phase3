@@ -319,7 +319,7 @@
 
             </div>
 
-            <div class="col-span-12 row-span-4 ">
+            <div class="col-span-12 row-span-4 mx-20">
                 <nav class="bg-[#1C5CA9]">
                     <ul class="flex flex-row gap-4 mt-[100px] px-[81px] text-white text-[18px] font-bold">
                         <li class="my-2" v-for="subMenuItem in this.subMenuItems">
@@ -328,7 +328,7 @@
                     </ul>
                 </nav>
 
-                <div class="mt-[100px] px-[81px]" v-if="this.activeProfileField === 'Info'">
+                <div class="mt-[100px] " v-if="this.activeProfileField === 'Info'">
                     <div class="grid grid-cols-6 gap-12">
                         <div class="col-span-1 border-r border-slate-300 pr-12">
                             <ul>

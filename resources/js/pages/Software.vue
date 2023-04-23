@@ -9,8 +9,8 @@ import SoftwareCardGallery from "@/js/components/software/SoftwareCardGallery.vu
 
 <template>
     <SoftwareHero />
-    <div class="SoftwareContentContainer px-10">
-        <div class="HowItWorksContainer flex flex-col ">
+    <div class="SoftwareContentContainer">
+        <div class="HowItWorksContainer flex flex-col px-20">
             <div class="howItWorksTitle uppercase text-xl font-semibold">
                 How it works
             </div>

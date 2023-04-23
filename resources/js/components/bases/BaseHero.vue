@@ -1,4 +1,5 @@
 <script setup>
+import ArticleSingleSwoosh from '../svg/ArticleSingleSwoosh.vue';
 import {computed} from 'vue'
 import {imageURL} from "@/js/constants/serverUrl";
 const props = defineProps({
@@ -27,19 +28,20 @@ const heroBackground = computed(() => {
     if(!props.backgroundUrl){
         return `bg-gradient-to-r from-[${props.color1}] via-[${props.color2}] to-[${props.color3}]`
     } else{
-        return `bg-[url(${imageURL}${props.backgroundUrl.replace(' ',"%20")})] bg-blend-soft-light bg-center bg-no-repeat bg-gray-600`
+        return `bg-[url(${imageURL}/${props.backgroundUrl.replace(' ',"%20")})] bg-blend-soft-light bg-center bg-no-repeat bg-gray-600`
     }
 })
 </script>
 
 <template>
-    <div class="BaseHeroContainer h-[40vh]">
+    <div class="BaseHeroContainer h-[680px] -mt-28 relative -z-10">
         <div
-            :class="'py-[36px] px-[48px] grid grid-cols-8 bg-cover h-full '+ heroBackground"
+            :class="'BaseHeroClipThisPath pb-[36px] pt-[190px] px-[48px] grid grid-cols-8 bg-cover h-full relative '+ heroBackground"
         >
+            <div class="BaseHeroBgOverlay absolute w-full h-full bg-gradient-to-r from-black/75 z-10"></div>
             <div
                 v-if="$slots.titleText || $slots.subtitleText1 || $slots.subtitleText2"
-                class="col-span-5 p-2"
+                class="col-span-5 p-2 relative z-20"
             >
                 <h1
                     class="text-white text-[36px] font-semibold pb-8"
@@ -61,5 +63,14 @@ const heroBackground = computed(() => {
                 </div>
             </div>
         </div>
+        <ArticleSingleSwoosh
+            class="absolute w-full -bottom-2"
+        />
     </div>
 </template>
+
+<style>
+    .BaseHeroClipThisPath {
+        clip-path: polygon(100% 0, 100% 94%, 91% 98%, 71% 100%, 50% 100%, 0 100%, 0 0);
+    }
+</style>

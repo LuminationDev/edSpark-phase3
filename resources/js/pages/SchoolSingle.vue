@@ -185,7 +185,7 @@ console.log(schoolContent);
                                     <!-- {{ schoolContent.tech_used }} -->
                                     <!-- <SchoolTech :tech-list="schoolContent.tech_used" /> -->
                                     <div
-                                        class="w-[60px] relative"
+                                        class="w-[60px] relative cursor-pointer"
                                         v-for="(tech, index) in schoolContent.tech_used"
                                     >
                                         <div
