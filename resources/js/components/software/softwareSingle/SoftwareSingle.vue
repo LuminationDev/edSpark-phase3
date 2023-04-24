@@ -34,7 +34,7 @@ import BaseHero from "@/js/components/bases/BaseHero.vue";
                     {{ contentFromBase['post_date'] }}
                 </template>
                 <template #subtitleText2>
-                    {{ contentFromBase['post_excerpt'] }}
+                    <div v-html="contentFromBase['post_excerpt']" />
                 </template>
             </BaseHero>
         </template>

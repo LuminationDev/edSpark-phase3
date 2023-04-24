@@ -54,17 +54,12 @@ import BaseSingle from "@/js/components/bases/BaseSingle.vue";
                         class="text-lg flex content-paragraph overflow-hidden max-w-full"
                         v-html="contentFromBase['post_content']"
                     />
-                    <div class="text-lg">
-                        Some other content need to wait for data from backend
-                        {{ contentFromBase['extra_content'] }}
-                    </div>
-                    <div
+                    <template
                         v-for="(content,index) in contentFromBase['extra_content']"
                         :key="index"
-                        class="extraContent"
                     >
                         <AdviceSingleExtraContentRenderer :content="content" />
-                    </div>
+                    </template>
                 </div>
                 <!--      Curated Content      -->
                 <div class="w-1/3 flex flex-col">
