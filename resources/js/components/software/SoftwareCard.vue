@@ -30,7 +30,7 @@ const handleClickCard = () => {
         <template #icon>
             <SoftwareCardIcon
                 class="icon absolute -top-6 -right-6 "
-                :software-icon-name="software['software_type']"
+                :software-icon-name="software['software_type'][0]"
             />
         </template>
     </GenericCard>

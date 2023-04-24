@@ -20,7 +20,7 @@ onBeforeMount( async () =>{
 const adviceDAG = computed(() => {
     if(allAdvice.value){
         console.log(allAdvice.value)
-        return allAdvice.value.filter(advice => advice['advice_type'].includes('D.A.G Advice'))
+        return allAdvice.value.filter(advice => advice['advice_type'].includes('D.A.G advice'))
     }else{
         return []
     }
@@ -29,7 +29,7 @@ const adviceDAG = computed(() => {
 
 const adviceEducator = computed(() => {
     if(allAdvice.value){
-        return allAdvice.value.filter(advice => advice['advice_type'] === 'Your Classroom' || advice['advice_type'] === 'Your Work'  || advice['advice_type'] === 'Your Learning'  )
+        return allAdvice.value.filter(advice => advice['advice_type'].includes('Your Classroom') || advice['advice_type'].includes('Your Work')  || advice['advice_type'].includes('Your Learning'))
     }else{
         return []
     }
@@ -37,7 +37,7 @@ const adviceEducator = computed(() => {
 
 const advicePartner = computed(() => {
     if(allAdvice.value){
-        return allAdvice.value.filter(advice => advice['advice_type'] === 'Partner')
+        return allAdvice.value.filter(advice => advice['advice_type'].includes('Partner'))
     }else{
         return []
     }
@@ -66,7 +66,7 @@ const advicePartner = computed(() => {
 
     <div
         v-if="adviceEducator"
-        class="EducatorsAdviceRow AdviceCardListContainer heading text-xl pt-10 flex flex-row flex-wrap justify-between gap-2 flex-1 w-full px-10"
+        class="EducatorsAdviceRow AdviceCardListContainer heading text-xl pt-10 flex flex-row flex-wrap justify-between gap-2 flex-1 w-full px-20"
     >
         <AdviceCard
             v-for="(advice, index) in adviceEducator.slice(0,6)"
@@ -82,7 +82,7 @@ const advicePartner = computed(() => {
     <PartnerHero />
     <div
         v-if="advicePartner"
-        class="PartnerAdviceRow AdviceCardListContainer heading text-xl pt-10 flex flex-row flex-wrap justify-between gap-4 flex-1 w-full px-10"
+        class="PartnerAdviceRow AdviceCardListContainer heading text-xl pt-10 flex flex-row flex-wrap justify-between gap-4 flex-1 w-full px-20"
     >
         <AdviceCard
             v-for="(advice, index) in advicePartner.slice(0,6)"
