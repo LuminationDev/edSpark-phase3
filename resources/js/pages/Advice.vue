@@ -1,25 +1,22 @@
-<script setup xmlns="http://www.w3.org/1999/html">
+<script setup>
 import AdviceHero from '../components/advice/AdviceHero.vue'
 import {onBeforeMount, ref, computed} from "vue";
+import useSWRV from "swrv";
+
+import SectionHeader from "@/js/components/global/SectionHeader.vue";
 import Spinner from "@/js/components/spinner/Spinner.vue";
 import EducatorHero from "@/js/components/advice/EducatorHero.vue";
 import PartnerHero from "@/js/components/advice/PartnerHero.vue";
 import AdviceCard from "@/js/components/advice/AdviceCard.vue";
 import {serverURL} from "@/js/constants/serverUrl";
+import {axiosFetcher} from "@/js/helpers/fetcher";
+import {useRouter} from "vue-router";
 
-const allAdvice = ref([])
-
-
-onBeforeMount( async () =>{
-    await axios.get( `${serverURL}/fetchAdvicePosts`).then(res => {
-        allAdvice.value = res.data
-    })
-
-})
+const router = useRouter()
+const {data: allAdvice, error: adviceError} = useSWRV(`${serverURL}/fetchAdvicePosts`, axiosFetcher)
 
 const adviceDAG = computed(() => {
     if(allAdvice.value){
-        console.log(allAdvice.value)
         return allAdvice.value.filter(advice => advice['advice_type'].includes('D.A.G advice'))
     }else{
         return []
@@ -42,9 +39,32 @@ const advicePartner = computed(() => {
         return []
     }
 })
+
+const handleBrowseAllAdvice = () => {
+    router.push('/browse/advice')
+}
+
 </script>
 
 <template>
+    <SectionHeader
+        :classes="'bg-[#002858] !'"
+        :section="'advice'"
+    >
+        <template #header>
+            <h3 class="text-white text-[36px] font-semibold self-center section-header uppercase">
+                Advice
+            </h3>
+        </template>
+        <template #cta>
+            <button
+                class="bg-white px-4 py-2 rounded-sm border-2 border-[#002858] text-[#002858] text-[15px] font-medium cursor-pointer hover:text-[#0b1829] hover:border-2 hover:border-[#0b1829]"
+                @click="handleBrowseAllAdvice"
+            >
+                Browse all Advice
+            </button>
+        </template>
+    </SectionHeader>
     <AdviceHero />
     <div class="DAGAdviceRow AdviceContentContainer flex flex-col h-full px-20">
         <div
@@ -63,7 +83,6 @@ const advicePartner = computed(() => {
         </div>
     </div>
     <EducatorHero />
-
     <div
         v-if="adviceEducator"
         class="EducatorsAdviceRow AdviceCardListContainer heading text-xl pt-10 flex flex-row flex-wrap justify-between gap-2 flex-1 w-full px-20"
@@ -91,6 +110,7 @@ const advicePartner = computed(() => {
             :number-per-row="4"
         />
     </div>
+
     <div v-else>
         <Spinner />
     </div>
