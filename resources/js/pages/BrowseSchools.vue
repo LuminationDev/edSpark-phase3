@@ -44,7 +44,7 @@ const filteredSchool = computed(() =>{
             <div
                 v-for="(school, index) in filteredSchool"
                 :key="index"
-                class="border-2 mx-4 my-4 basis-1/4 max-w-[320px] h-[470px] transition-all group hover:shadow-2xl rounded-xl"
+                class="border-2 mx-4 my-4 basis-1/4 max-w-[320px] h-[470px] border-[0.5px] border-black transition-all group hover:shadow-2xl"
             >
                 <SchoolCard
                     :school-data="school"
