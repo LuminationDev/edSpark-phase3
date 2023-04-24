@@ -18,3 +18,7 @@ yarn-error.log
 /.vscode
 /.scribe
 /app/config/filesystems.php
+filesystems.php
+index.php
+app.blade.php
+oktaConfig.js
