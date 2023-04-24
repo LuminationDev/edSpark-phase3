@@ -1,5 +1,9 @@
 <script>
     /**
+     * Import Dependencies
+     */
+    import { ref } from 'vue';
+    /**
      * Import SVG's
      */
 import Profile from '../svg/Profile.vue';
@@ -36,10 +40,43 @@ export default {
             this.$emit('handleAvatarClick');
         },
 
-        async logout () {
-            await this.$auth.signOut()
-        }
-    },
+        setup() {
+            const userStore = useUserStore();
+
+            const avatarUrl = ref(null);
+
+            const imageURL = import.meta.env.VITE_SERVER_IMAGE_API;
+            const userMetadata = userStore.getUser.metadata;
+            if (userMetadata !== undefined) {
+                const userAvatarMeta = userMetadata.filter(meta => meta.user_meta_key === 'userAvatar');
+                avatarUrl.value = userAvatarMeta[0].user_meta_value[0].replace(/\\\//g, "/");
+            }
+
+            console.log(avatarUrl);
+
+            return {
+                userStore,
+                imageURL,
+                avatarUrl
+            }
+        },
+
+        components: {
+            Profile,
+        },
+
+        methods: {
+            handleAvatar() {
+                console.log(this.profileDropdown);
+                this.$emit('handleAvatarClick');
+            },
+
+            async logout () {
+                await this.$auth.signOut();
+                this.userStore.clearStore();
+            }
+        },
+    }
 }
 </script>
 

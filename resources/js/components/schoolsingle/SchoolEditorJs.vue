@@ -10,7 +10,10 @@ import ImageTool from '@editorjs/image'
 import {serverURL} from "@/js/constants/serverUrl";
 
 import SimpleImage from '@editorjs/simple-image';
-import FontSize from 'editorjs-inline-font-size-tool'
+import FontSize from 'editorjs-inline-font-size-tool';
+import VideoRecorder from '../../constants/customVideoBlock';
+
+import { onMounted } from 'vue';
 
 const props = defineProps({
     existingData:{
@@ -26,6 +29,14 @@ const props = defineProps({
 const emits = defineEmits(['sendSchoolData'])
 
 const editorJsTools = {
+    videoRecorder: {
+        class: VideoRecorder,
+        // inlineToolbar: true,
+        // autofocus: true,
+        // config: {
+        //     placeholder: 'Record Video'
+        // },
+    },
     header:{
         class: Header,
         inlineToolbar: true,
@@ -75,16 +86,13 @@ const editor = new EditorJS({
             }
             // Add an auto delete first block due editorjs automatically create 1 empty block on init
             // when props exists, delete first empty block to ensure consistent representation of data
-            editor.blocks.delete(0)
+            editor.blocks.delete(0);
         }
     },
-    onChange: (api, event) =>{
-        // console.log(api.blocks)
-        // console.log(event)
-        // console.log(event.detail.target.holder.innerText)
-        // console.log(event.detail.index + ' is the index emitting the onchange')
+    onChange: async (api, event) =>{
+        const blockCount = editor.blocks.getBlocksCount();
     }
-})
+});
 
 const editorJsEvent = (customEvent) => {
     // customEvent.type
@@ -108,7 +116,7 @@ const handleEditorSave = async () =>{
 }
 
 defineExpose({
-    handleEditorSave
+    handleEditorSave,
 })
 
 </script>

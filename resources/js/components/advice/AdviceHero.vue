@@ -5,7 +5,7 @@ import AdviceRobot from '../svg/adviceRobot/AdviceRobot.vue';
 
 <template>
     <div class="AdviceHeroContainer">
-        <div class="bg-gradient-to-r from-[#002858] via-[#0A7982] to-[#FCEFCC] py-[36px] px-[48px] grid grid-cols-8">
+        <div class="bg-gradient-to-r from-[#002858] via-[#0A7982] to-[#FCEFCC] py-[36px] px-[48px] grid grid-cols-8 mx-20 mt-20">
             <div class="col-span-5">
                 <h1 class="text-white text-[36px] font-semibold pb-8">
                     Digital Adoption Group
