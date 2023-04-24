@@ -17,6 +17,7 @@
         "laravel/framework": "^9.19",
         "laravel/sanctum": "^3.0",
         "laravel/tinker": "^2.7",
+        "leandrocfe/filament-apex-charts": "^1.0",
         "livewire/livewire": "^2.10",
         "nesbot/carbon": "^2.66",
         "owenvoke/blade-fontawesome": "^2.2",
