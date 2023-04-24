@@ -18,13 +18,14 @@ export const useSoftwareStore = defineStore('software', {
                 console.log(response);
                 const dashboardSoftware = [];
                 response.data.forEach(software => {
-                    if (software.software_type === 'Dashboard Featured') {
+                    // if (software.software_type === 'Dashboard Featured') {
                         dashboardSoftware.push(software);
-                    };
+                    // };
                 });
 
                 this.articles = dashboardSoftware;
                 // this.articles = response.data;
+                // console.log(this.articles);
             }).catch(error => {
                 console.log('Sorry, there was a problem retrieving the Advice Articles');
                 console.error(error);
