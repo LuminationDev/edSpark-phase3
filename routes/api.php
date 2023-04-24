@@ -13,6 +13,7 @@ use App\Http\Controllers\CommunityController;
 use App\Http\Controllers\SchoolController;
 use App\Http\Controllers\TechController;
 use App\Http\Controllers\ImageController;
+use App\Http\Controllers\RoleController;
 
 /*
 |--------------------------------------------------------------------------
@@ -37,9 +38,13 @@ Route::middleware('api')->group(function() {
     Route::get('fetchUser/{id}', [UserController::class, 'fetchUser']);
     Route::post('createUser', [UserController::class, 'createUser']);
     Route::post('updateUser', [UserController::class, 'updateUser']);
+    Route::post('checkEmail', [UserController::class, 'checkEmail']);
     Route::get('fetchAllSites', [SiteController::class, 'fetchAllSites']);
     Route::get('fetchSiteById/{id}', [SiteController::class, 'fetchSiteById']);
+    Route::get('fetchSiteByCode/{siteCode}', [SiteController::class, 'fetchSiteByCode']);
     Route::post('getUserMetadata',[UserController::class, 'getUserMetadata'] );
+
+    Route::get('fetchRoleByCode/{roleCode}', [RoleController::class, 'fetchRoleByCode']);
 
     // Product Management
     Route::get('fetchAllBrands', [ProductController::class, 'fetchAllBrands']);
