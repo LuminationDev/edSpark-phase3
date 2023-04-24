@@ -18,6 +18,7 @@ export const useUserStore = defineStore('user', {
      */
     state: () => ({
         currentUser: useSessionStorage('currentUser', {}),
+        userAvatar: useSessionStorage('userAvatar', ''),
     }),
 
     getters: {
@@ -27,11 +28,11 @@ export const useUserStore = defineStore('user', {
     },
 
     actions: {
-        async loadCurrentUser() {
+        async loadCurrentUser(userId) {
             /**
              * Temporry user ID (Jake M)
              */
-            const userId = 1
+            // const userId = 72
             /** **/
             await axios.get(`http://localhost:8000/api/fetchUser/${userId}`).then(response => {
                 console.log(response.data);
@@ -42,8 +43,18 @@ export const useUserStore = defineStore('user', {
             })
         },
 
-        async createUser(user) {
+        async checkUser(email) {
+            console.log('HERE YOU ARE!!!!!');
+            await axios.get(`http://localhost:8000/api/fetchUserByEmail/${email}`).then(res => {
+                console.log(res);
+            }).catch(err => {
+                console.log('Theres a problem');
+                console.error(err);
+            })
+        },
 
+        async createUser(user) {
+            console.log(user.avatar);
             /**
              * Set the users initials - save as display_name
              */
@@ -51,29 +62,37 @@ export const useUserStore = defineStore('user', {
             let matches = str.match(/\b(\w)/g);
             let initials = matches.join('');
 
-            console.log(initials);
+            let userData = new FormData();
+            // let metaData = new FormData();
+            // let formAvatar = new FormData();
 
-            let data = {
-                userData: {
-                    full_name: user.name,
-                    email: user.email,
-                    role: user.role,
-                    display_name: initials
-                },
-                userMetaData: {
-                    yearLevels: user.yearLevels,
-                    interest: user.interests,
-                    subjects: user.subjects,
-                    biography: user.biography,
-                }
-            };
+            userData.append('userAvatar', user.avatar);
+            /**
+             * Populate formData Object
+             */
+            userData.append('full_name', user.name);
+            userData.append('email', user.email);
+            userData.append('display_name', JSON.stringify(initials));
+            userData.append('site_id', JSON.stringify(user.site.id)); // Use the id to store as foreign key
+            userData.append('role_id', JSON.stringify(4)); // Use the id to store as foreign key
+
+            /**
+             * Populate metaData Object
+             */
+            userData.append('yearLevels', JSON.stringify(user.yearLevels));
+            userData.append('interest', JSON.stringify(user.interests));
+            userData.append('subjects', JSON.stringify(user.subjects));
+            userData.append('biography', JSON.stringify(user.biography));
 
             await axios({
                 method: 'POST',
                 url: 'http://localhost:8000/api/createUser',
-                data: data
+                data: userData,
+                headers: { "Content-Type" : "multipart/form-data" }
             }).then(response => {
                 console.log(response);
+                loadCurrentUser(response.data.uid);
+                this.userAvatar = response.data.avatarUrl;
             }).catch(error => {
                 console.log('There was a problem updating your info');
                 console.error(error);
@@ -91,6 +110,12 @@ export const useUserStore = defineStore('user', {
                     updateValue: ['1', '3']
                 }
             }
+        },
+
+        clearStore() {
+            this.currentUser = {};
+            if (sessionStorage.getItem('currentUser') === null) return;
+            sessionStorage.removeItem('currentUser');
         }
     }
 })

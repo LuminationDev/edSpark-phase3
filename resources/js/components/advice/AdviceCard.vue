@@ -27,10 +27,11 @@ const randomIconName = computed(() => {
 })
 
 const handleClickAdviceCard = () => {
-    console.log('handleClickAdviceCardCalled')
-    //id inside param must be the same as the route path specified for advice-single
+    /**
+     * id inside param must be the same as the route path specified for advice-single
+     */
     // which is /advice/resources/:id
-    router.push({ name:"advice-single", params: {id: props.adviceContent.post_id, adviceContent: JSON.stringify(props.adviceContent) }})
+    router.push({ name:"advice-single", params: {id: props.adviceContent.post_id, content: JSON.stringify(props.adviceContent) }})
 
 }
 </script>
@@ -55,7 +56,10 @@ const handleClickAdviceCard = () => {
             v-if="showIcon"
             #icon
         >
-            <AdviceCardIcon :advice-icon-name="randomIconName" />
+            <AdviceCardIcon
+                class="icon absolute right-2 bottom-2 group-hover:-bottom-28"
+                :advice-icon-name="randomIconName"
+            />
         </template>
     </GenericCard>
 </template>

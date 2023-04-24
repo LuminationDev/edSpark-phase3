@@ -19,6 +19,7 @@ import {
 } from './pages'
 import BrowseSchools from "@/js/pages/BrowseSchools.vue";
 import AdviceSingle from "@/js/pages/AdviceSingle.vue";
+import SoftwareSingle from "@/js/components/software/softwareSingle/SoftwareSingle.vue";
 
 const router = createRouter({
     history: createWebHistory(),
@@ -66,6 +67,13 @@ const router = createRouter({
             component: Software
         },
         {
+            name: "software-single",
+            path: "/software/resources/:id",
+            component: SoftwareSingle,
+            params: true
+
+        },
+        {
             name: 'hardware',
             path: '/hardware',
             component: Hardware
@@ -92,6 +100,7 @@ const router = createRouter({
         },
         {
             path: '/login/callback',
+            name: 'login',
             component: LoginCallback
         },
         // {
@@ -112,3 +121,5 @@ const router = createRouter({
 router.beforeEach(navigationGuard);
 
 export default router;
+
+// AuthError: Custom scopes are not allowed for this request.

@@ -8,13 +8,15 @@ import oktaConfig from './constants/oktaConfig';
 /**
  * THIS BIT!!!!!
  */
-import { OktaAuth } from '@okta/okta-auth-js'
+// import { OktaAuth } from '@okta/okta-auth-js'
 import OktaVue, { LoginCallback } from '@okta/okta-vue';
 
 import VueGoogleMaps from 'vue-google-maps-community-fork';
 
+import oktaAuth from './constants/oktaAuth';
 // AND THIS!!!!!!!
-const oktaAuth = new OktaAuth(oktaConfig.oidc);
+// const oktaAuth = new OktaAuth(oktaConfig.oidc);
+console.log(oktaAuth)
 
 // const oktaAuth = new OktaAuth({
 //     issuer: 'https://dev-75424864.okta.com/oauth2/default',
@@ -38,5 +40,5 @@ createApp(App)
           key: import.meta.env.VITE_GOOGLE_MAPS_API_KEY,
         },
         autobindAllEvents: true,
-      })
+    })
     .mount('#app');
