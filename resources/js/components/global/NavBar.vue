@@ -2,66 +2,75 @@
     /**
      * Import Dependencies
      */
-import { ref } from 'vue';
+    import { ref } from 'vue';
 
-/**
- * Import SVG's
- */
-import NavSwoosh from '../svg/NavSwoosh.vue';
-import Logo from '../svg/Logo.vue';
-import Profile from '../svg/Profile.vue';
+    /**
+     * Import SVG's
+     */
+    import NavSwoosh from '../svg/NavSwoosh.vue';
+    import Logo from '../svg/Logo.vue';
+    import Profile from '../svg/Profile.vue';
 
-/**
- * Import Stores
- */
-import { useUserStore } from '@/js/stores/useUserStore';
+    /**
+     * Import Stores
+     */
+    import { useUserStore } from '@/js/stores/useUserStore';
 
-/**
- * Import Components
- */
-import ProfileDropdown from './ProfileDropdown.vue';
+    /**
+     * Import Components
+     */
+    import ProfileDropdown from './ProfileDropdown.vue';
 
-export default {
+    export default {
 
-    components: {
-        NavSwoosh,
-        Logo,
-        Profile,
-        ProfileDropdown
-    },
-    props: {
-        isFirstVisit: Boolean
-    },
+        components: {
+            NavSwoosh,
+            Logo,
+            Profile,
+            ProfileDropdown
+        },
+        props: {
+            isFirstVisit: Boolean
+        },
 
-    setup() {
-        const userStore = useUserStore();
+        setup() {
+            const userStore = useUserStore();
 
-        const navDropdownToggle = ref(false);
-        const profileDropdown = ref(false);
+            const navDropdownToggle = ref(false);
+            const profileDropdown = ref(false);
 
-        return {
-            navDropdownToggle,
-            profileDropdown,
-            userStore,
-        }
-    },
+            // const imageURL = import.meta.env.VITE_SERVER_IMAGE_API;
+            // const userMetadata = userStore.getUser.metadata;
+            // const userAvatarMeta = userMetadata.filter(meta => meta.user_meta_key === 'userAvatar');
+            // const avatarUrl = userAvatarMeta[0].user_meta_value[0].replace(/\\\//g, "/");
+            // console.log(avatarUrl);
 
-    data() {
-        return {
-            currentUser: {}
-        }
-    },
+            return {
+                navDropdownToggle,
+                profileDropdown,
+                userStore,
+                // imageURL,
+                // avatarUrl
+            }
+        },
 
-    mounted() {
-        this.currentUser = this.userStore.getUser
-    },
+        data() {
+            return {
+                currentUser: {}
+            }
+        },
 
-    methods: {
-        handleAvatarClick() {
-            this.profileDropdown = !this.profileDropdown
+        mounted() {
+            this.currentUser = this.userStore.getUser
+            console.log(this.userStore.getUser);
+        },
+
+        methods: {
+            handleAvatarClick() {
+                this.profileDropdown = !this.profileDropdown
+            }
         }
     }
-}
 
 </script>
 
@@ -146,16 +155,13 @@ export default {
         <!-- <div @click.prevent="handleAvatar" class="w-fit h-fit" >
 
         </div> -->
-
         <div class="w-[48px] h-[48px] absolute top-64 right-96">
-            <div
-                class="z-50 relative h-full w-full bg-orange-500 flex rounded-full cursor-pointer hover:shadow-2xl"
+            <!-- <div
+                class="z-50 relative h-full w-full flex rounded-full cursor-pointer hover:shadow-2xl bg-cover bg-no-repeat bg-center"
                 @click.prevent="handleAvatar"
             >
-                <p class="text-[1.25rem] text-white font-bold m-auto">
-                    {{ currentUser.display_name }}
-                </p>
-            </div>
+                <img :src="`${imageURL}/${avatarUrl}`" alt="user avatar">
+            </div> -->
 
             <div
                 v-show="profileDropdown"

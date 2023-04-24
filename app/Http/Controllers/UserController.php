@@ -42,75 +42,166 @@ class UserController extends Controller
         return response()->json($data);
     }
 
+    public function fetchUserByEmail($email)
+    {
+
+        $user = User::where('email', $email)->get();
+        $error = '';
+        $data = [];
+        $isFirstVisit = false;
+        // dd($user);
+
+        try {
+            if (isset($user)) {
+                $user_id = $user['id'];
+
+                $userMetaData = Usermeta::where('user_id', $id)->get();
+                $userMetaDataToSend = [];
+                if( $userMetaData) {
+                    foreach($userMetaData as $key => $value){
+                        $result = [
+                            'user_meta_key' => $value->user_meta_key,
+                            'user_meta_value' => explode(', ', $value->user_meta_value)
+                        ];
+                        $userMetaDataToSend[] = $result;
+                    }
+                }
+
+                $data[] = [
+                    'id' => $user->id,
+                    'full_name' => $user->full_name,
+                    'display_name' => ($user->display_name) ? $user->display_name : NULL,
+                    'email' => $user->email,
+                    'status' => $user->status,
+                    'role' => ($user->role) ? $user->role->role_name : NULL,
+                    'permissions' => ($user->role) ? $user->role->permissions->pluck('permission_name') : NULL,
+                    'metadata' => ($userMetaDataToSend) ? $userMetaDataToSend : NULL,
+                ];
+
+                $isFirstVisit = false;
+
+                // return response()->json($data);
+            } else {
+                $isFirstVisit = false;
+            }
+
+            return response()->json([
+                'message' => isset($data) ? "User exists" : "User does not exist",
+                'user' => isset($data) ? $data : NULL,
+                'isFirstVisit' => $isFirstVisit,
+                'error' => $error,
+                'status' => 200
+            ]);
+        } catch(Exception $e) {
+            $error = $e->getMessage();
+        }
+
+
+
+
+    }
+
     public function createUser(Request $request)
     {
         if ($request->isMethod('post')) {
 
-            $userId = '';
-            $data = $request->userData;
+            $data = $request->all();
             $error = '';
 
-            if($data) {
-                //save user info into user table
-                try{
+            if ($data) {
+                // Handle Main Data
+                try {
                     $dataToInsert = [
                         'full_name' => $data['full_name'],
                         'email' => $data['email'],
                         'display_name' => $data['display_name'],
-                        'status' => 'Inactive',
+                        'status' => 'Active',
+                        'role_id' => $data['role_id'],
+                        'site_id' => $data['site_id'],
                         'created_at' => Carbon::now(),
                         'updated_at' => Carbon::now()
                     ];
                     $userId = User::insertGetId($dataToInsert);
-                } catch (Exception $e) {
+                }catch (Exception $e) {
                     $error = $e->getMessage();
                 }
-            }
 
-            // TODO: JM handle images (system wide image handling)
-
-            $metaData = $request->metaData;
-            if ($metaData) {
-                // save user info into meta table
-                $dataToInsert = [];
-                try{
-                    foreach ($metaData as $key => $value){
+                // Handle Metadata
+                try {
+                    $metaToInsert = [];
+                    if ($data['yearLevels']) {
                         $result = [
                             'user_id' => $userId,
-                            'user_meta_key' => $key,
-                            'user_meta_value' => (is_string($value)) ? $value : implode(', ', $value),
+                            'user_meta_key' => 'yearLevels',
+                            'user_meta_value' => (is_string($data['yearLevels'])) ? $data['yearLevels'] : implode(', ', $data['yearLevels']),
                             'created_at' => Carbon::now(),
                             'updated_at' => Carbon::now(),
                         ];
-                        $dataToInsert[] = $result;
+                        $metaToInsert[] = $result;
                     }
-                    Usermeta::insert($dataToInsert);
-                } catch (Exception $e) {
+                    if ($data['interest']) {
+                        $result = [
+                            'user_id' => $userId,
+                            'user_meta_key' => 'interest',
+                            'user_meta_value' => (is_string($data['interest'])) ? $data['interest'] : implode(', ', $data['interest']),
+                            'created_at' => Carbon::now(),
+                            'updated_at' => Carbon::now(),
+                        ];
+                        $metaToInsert[] = $result;
+                    }
+                    if ($data['subjects']) {
+                        $result = [
+                            'user_id' => $userId,
+                            'user_meta_key' => 'subjects',
+                            'user_meta_value' => (is_string($data['subjects'])) ? $data['subjects'] : implode(', ', $data['subjects']),
+                            'created_at' => Carbon::now(),
+                            'updated_at' => Carbon::now(),
+                        ];
+                        $metaToInsert[] = $result;
+                    }
+                    if ($data['biography']) {
+                        $result = [
+                            'user_id' => $userId,
+                            'user_meta_key' => 'biography',
+                            'user_meta_value' => (is_string($data['biography'])) ? $data['biography'] : implode(', ', $data['biography']),
+                            'created_at' => Carbon::now(),
+                            'updated_at' => Carbon::now(),
+                        ];
+                        $metaToInsert[] = $result;
+                    }
+                    Usermeta::insert($metaToInsert);
+                }catch (Exception $e) {
+                    $error = $e->getMessage();
+                }
+
+                // Handle User Avatar
+                try {
+                    if ($data['userAvatar']) {
+                        $userAvatar = $data['userAvatar'];
+                        $prefix = "edpsark-user";
+                        $imgName = $prefix.'-'.md5(Str::random(30).time().'_'.$userAvatar).'.'.$userAvatar->getClientOriginalExtension();
+                        $userAvatar->storeAs('public/uploads/user', $imgName);
+                        $imageUrl = "uploads\/user\/". $imgName;
+
+                        $result = [
+                            'user_id' => $userId,
+                            'user_meta_key' => 'userAvatar',
+                            'user_meta_value' => $imageUrl,
+                            'created_at' => Carbon::now(),
+                            'updated_at' => Carbon::now(),
+                        ];
+                        Usermeta::insert($result);
+                    }
+                }catch (Exception $e) {
                     $error = $e->getMessage();
                 }
 
             }
 
-            if($request->hasFile('userAvatar')){
-                // save user avatar into meta table and upload folder
-
-                $userAvatar = $request->file('userAvatar');
-                $destinationPath = 'uploads/user';
-                $prefix = "edpsark-user";
-                $imgName = $prefix.'-'.md5(Str::random(30).time().'_'.$userAvatar).'.'.$userAvatar->getClientOriginalExtension();
-                $userAvatar->storeAs('public/uploads/user', $imgName);
-                $imageUrl = "uploads\/user\/". $imgName;
-                $result = [
-                    'user_id' => $userId,
-                    'user_meta_key' => 'userAvatar',
-                    'user_meta_value' => $imageUrl,
-                    'created_at' => Carbon::now(),
-                    'updated_at' => Carbon::now(),
-                ];
-                Usermeta::insert($result);
-            }
             return response()->json([
                 'message' => "User added successfully",
+                'uid' => $userId,
+                'avatarUrl' => $imageUrl,
                 'error' => $error,
                 'status' => 200
             ]);

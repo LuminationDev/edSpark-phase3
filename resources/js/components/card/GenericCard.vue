@@ -48,13 +48,13 @@ const cardHoverToggle = ref(false)
                  '!w-[22%]': numberPerRow === 4,
                  '!w-[40%]': numberPerRow === 2
         }"
-        class="GenericCardContainer w-full border-2 border-black rounded mx-2 mb-4 flex flex-col min-h-[450px] max-w-[400px] max-h-[450px] group transition-all card_parent cursor-pointer"
+        class="GenericCardContainer w-full border-[0.5px] border-black hover:shadow-2xl mx-2 mb-4 flex flex-col min-h-[450px] max-w-[400px] max-h-[450px] group transition-all card_parent cursor-pointer"
         @mouseenter="cardHoverToggle = true"
         @click="clickCallback"
     >
         <div
             class="cardTopCoverImage relative min-h-[35%] bg-cover bg-center group-hover:min-h-[0%] group-hover:h-0 transition-all"
-            :class="`bg-[url('${imageURL}${coverImage.replace(' ','%20' )}')]`"
+            :class="`bg-[url('${imageURL}/${coverImage.replace(' ','%20' )}')]`"
         >
             <template
                 v-if="$slots.typeTag"

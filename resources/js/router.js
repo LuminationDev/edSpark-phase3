@@ -100,6 +100,7 @@ const router = createRouter({
         },
         {
             path: '/login/callback',
+            name: 'login',
             component: LoginCallback
         },
         // {
@@ -120,3 +121,5 @@ const router = createRouter({
 router.beforeEach(navigationGuard);
 
 export default router;
+
+// AuthError: Custom scopes are not allowed for this request.

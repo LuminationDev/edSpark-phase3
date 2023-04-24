@@ -17,7 +17,7 @@ onBeforeMount(() => {
 </script>
 <template>
     <template v-if="softwareList.length > 0">
-        <div class="flex flex-row flex-wrap w-full justify-between pt-10 gap-6">
+        <div class="flex flex-row flex-wrap w-full justify-between pt-10 gap-6 px-20">
             <SoftwareCard
                 v-for="(software,index) in softwareList"
                 :key="index"

@@ -13,6 +13,9 @@ import {schoolDataFormDataBuilder, printOutFormData} from "@/js/helpers/schoolDa
  */
 import SchoolsProfile from '../components/schools/SchoolsProfile.vue';
 import SchoolContent from "@/js/components/schoolsingle/SchoolContent.vue";
+// import SchoolTech from "@/js/components/schoolsingle/SchoolTech.vue";
+import SchoolTechIconGenerator from "@/js/components/global/SchoolTechIconGenerator.vue";
+
 /**
  * IMPORT SVGS
  */
@@ -37,6 +40,14 @@ const colorTheme = ref('amber') // default color theme
 const logoStorage = ref(null)
 const coverImageStorage = ref(null)
 
+// ref to handle tooltip
+const toggleTooltip = ref(false);
+const tooltipIndex = ref(null);
+
+const handleToggleTooltip = (index) => {
+    toggleTooltip.value = !toggleTooltip.value;
+    tooltipIndex.value = index;
+}
 
 onBeforeMount( async () =>{
     // TODO Erick - Replace with get one school instead of all then filter.
@@ -56,9 +67,9 @@ onBeforeMount( async () =>{
         }
     }).catch(err => {
         console.log(err)
-    })
+    });
 })
-    
+
 const handleSaveNewSchoolInfo = async (content_blocks, tech_used) => {
     /**
      * Copy current schoolData and replace content_blocks and tech_used
@@ -83,6 +94,7 @@ const handleSaveNewSchoolInfo = async (content_blocks, tech_used) => {
 
     const schoolMetadata = {school_color_theme : colorTheme.value}
     newUpdatedSchoolFormData.append('metadata', schoolMetadata)
+    console.log(newUpdatedSchoolFormData);
     printOutFormData(newUpdatedSchoolFormData)
     await axios({
         url: `${serverURL}/updateSchool`,
@@ -128,6 +140,7 @@ const handleReceivePhotoFromContent = (type,file) => {
         break;
     }
 }
+console.log(schoolContent);
 </script>
 
 <template>
@@ -138,9 +151,9 @@ const handleReceivePhotoFromContent = (type,file) => {
                     class="px-[48px]  h-[680px] w-full bg-center bg-no-repeat bg-cover"
                     :class="`bg-[url(${imageURL}/${schoolContent.cover_image})]`"
                 >
-                    <div class="h-full w-full grid grid-cols-12">
+                    <div class="h-full w-full grid grid-cols-12 grid-rows-2">
                         <div class="col-span-7 flex mt-[190px]">
-                            <div class="flex flex-row gap-2 h-fit place-items-center">
+                            <div class="flex flex-row gap-2 h-[24px] place-items-center">
                                 <router-link to="/">
                                     <p class="text-[14px] text-white hover:text-[#44B8F3]">
                                         Home
@@ -160,6 +173,46 @@ const handleReceivePhotoFromContent = (type,file) => {
                             </div>
                         </div>
                         <div class="col-span-5" />
+
+                        <div class="w-full h-full col-span-12 flex flex-row -mt-[100px]">
+                            <div class="flex flex-col">
+                                <div class="">
+                                    <h1 class="text-white text-[48px] font-bold">
+                                        {{ schoolContent.name }}
+                                    </h1>
+                                </div>
+                                <div class="flex flex-row gap-4 place-items-center">
+                                    <!-- {{ schoolContent.tech_used }} -->
+                                    <!-- <SchoolTech :tech-list="schoolContent.tech_used" /> -->
+                                    <div
+                                        class="w-[60px] relative cursor-pointer"
+                                        v-for="(tech, index) in schoolContent.tech_used"
+                                    >
+                                        <div
+                                            @mouseenter="handleToggleTooltip(index)"
+                                            @mouseleave="handleToggleTooltip(index)"
+                                        >
+                                            <SchoolTechIconGenerator
+                                                :tech-name="tech.name"
+                                                class="min-w-[60px] pr-4 m-2 cursor-pointer relative"
+
+                                            />
+                                            <div v-if="toggleTooltip && tooltipIndex === index" class="absolute shadow-xl w-[450px] px-[24px] py-[18px] border-l-[3px] border-white" :class="`bg-${colorTheme}-600`">
+                                                <h3 class="text-[24px] font-semibold text-white">
+                                                    {{ tech.name }}
+                                                </h3>
+                                                <p class="text-white font-normal">
+                                                    {{ tech.description }}
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="w-[200px] py-6">
+                                    <img :src="`${imageURL}/${schoolContent.logo}`" :alt="`${schoolContent.name} logo`">
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </template>

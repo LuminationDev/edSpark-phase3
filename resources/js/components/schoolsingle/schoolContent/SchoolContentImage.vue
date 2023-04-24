@@ -4,11 +4,11 @@ const props = defineProps({
         type: Object,
         required: true
     }
-})
+});
 </script>
 <template>
     <img
-        :src="data.data.file.url"
+        :src="data.data.url"
     >
     <p class="text-center">
         {{ data.data.caption }}

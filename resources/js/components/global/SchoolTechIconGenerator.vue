@@ -7,7 +7,11 @@ const props = defineProps({
     techName:{
         type: String,
         required: true
-    }
+    },
+    // toggleTooltip: {
+    //     type: Boolean,
+    //     required: false
+    // }
 })
 const iconPath = ref('')
 

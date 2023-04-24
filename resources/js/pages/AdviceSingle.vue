@@ -36,7 +36,7 @@ import BaseSingle from "@/js/components/bases/BaseSingle.vue";
                     {{ contentFromBase['post_date'] }}
                 </template>
                 <template #subtitleText2>
-                    {{ contentFromBase['post_excerpt'] }}
+                    <div v-html="contentFromBase['post_excerpt']" />
                 </template>
             </BaseHero>
         </template>
@@ -56,6 +56,7 @@ import BaseSingle from "@/js/components/bases/BaseSingle.vue";
                     />
                     <div class="text-lg">
                         Some other content need to wait for data from backend
+                        {{ contentFromBase['extra_content'] }}
                     </div>
                     <div
                         v-for="(content,index) in contentFromBase['extra_content']"
