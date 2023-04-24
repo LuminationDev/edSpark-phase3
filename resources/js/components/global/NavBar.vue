@@ -2,75 +2,74 @@
     /**
      * Import Dependencies
      */
-    import { ref } from 'vue';
+import { ref } from 'vue';
 
-    /**
-     * Import SVG's
-     */
-    import NavSwoosh from '../svg/NavSwoosh.vue';
-    import Logo from '../svg/Logo.vue';
-    import Profile from '../svg/Profile.vue';
+/**
+ * Import SVG's
+ */
+import NavSwoosh from '../svg/NavSwoosh.vue';
+import Logo from '../svg/Logo.vue';
+import Profile from '../svg/Profile.vue';
 
-    /**
-     * Import Stores
-     */
-    import { useUserStore } from '@/js/stores/useUserStore';
+/**
+ * Import Stores
+ */
+import { useUserStore } from '@/js/stores/useUserStore';
 
-    /**
-     * Import Components
-     */
-    import ProfileDropdown from './ProfileDropdown.vue';
+/**
+ * Import Components
+ */
+import ProfileDropdown from './ProfileDropdown.vue';
 
-    export default {
+export default {
 
-        components: {
-            NavSwoosh,
-            Logo,
-            Profile,
-            ProfileDropdown
-        },
-        props: {
-            isFirstVisit: Boolean
-        },
+    components: {
+        NavSwoosh,
+        Logo,
+        Profile,
+        ProfileDropdown
+    },
+    props: {
+        isFirstVisit: Boolean
+    },
 
-        setup() {
-            const userStore = useUserStore();
+    setup() {
+        const userStore = useUserStore();
 
-            const navDropdownToggle = ref(false);
-            const profileDropdown = ref(false);
+        const navDropdownToggle = ref(false);
+        const profileDropdown = ref(false);
 
-            // const imageURL = import.meta.env.VITE_SERVER_IMAGE_API;
-            // const userMetadata = userStore.getUser.metadata;
-            // const userAvatarMeta = userMetadata.filter(meta => meta.user_meta_key === 'userAvatar');
-            // const avatarUrl = userAvatarMeta[0].user_meta_value[0].replace(/\\\//g, "/");
-            // console.log(avatarUrl);
+        // const imageURL = import.meta.env.VITE_SERVER_IMAGE_API;
+        // const userMetadata = userStore.getUser.metadata;
+        // const userAvatarMeta = userMetadata.filter(meta => meta.user_meta_key === 'userAvatar');
+        // const avatarUrl = userAvatarMeta[0].user_meta_value[0].replace(/\\\//g, "/");
+        // console.log(avatarUrl);
 
-            return {
-                navDropdownToggle,
-                profileDropdown,
-                userStore,
-                // imageURL,
-                // avatarUrl
-            }
-        },
+        return {
+            navDropdownToggle,
+            profileDropdown,
+            userStore,
+            // imageURL,
+            // avatarUrl
+        }
+    },
 
-        data() {
-            return {
-                currentUser: {}
-            }
-        },
+    data() {
+        return {
+            currentUser: {}
+        }
+    },
 
-        mounted() {
-            this.currentUser = this.userStore.getUser
-            console.log(this.userStore.getUser);
-        },
+    mounted() {
+        this.currentUser = this.userStore.getUser
+    },
 
-        methods: {
-            handleAvatarClick() {
-                this.profileDropdown = !this.profileDropdown
-            }
+    methods: {
+        handleAvatarClick() {
+            this.profileDropdown = !this.profileDropdown
         }
     }
+}
 
 </script>
 

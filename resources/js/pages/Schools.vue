@@ -1,8 +1,10 @@
 <script setup>
-import {onBeforeMount, onMounted, ref} from 'vue'
+import {computed, onBeforeMount, onMounted, ref, watch} from 'vue'
 import axios from 'axios'
 import {useRouter} from "vue-router";
 import {storeToRefs} from "pinia";
+import useSWRV from "swrv";
+
 
 import {schoolContentArrParser} from "@/js/helpers/jsonHelpers";
 import {useUserStore} from "@/js/stores/useUserStore";
@@ -15,15 +17,33 @@ import CreateSchoolForm from "@/js/components/schools/createSchool/CreateSchoolF
 import SchoolWelcomePopup from "@/js/components/schools/schoolPopup/SchoolWelcomePopup.vue";
 import SectionHeader from "@/js/components/global/SectionHeader.vue";
 
-const featuredSites = ref([])
-const featuredSitesData = ref([])
+// const featuredSitesData = ref([])
 const createSchool = ref(false)
-const showWelcomePopup = ref(true)
+const showWelcomePopup = ref(false)
 
 const router = useRouter();
 
 const userStore = useUserStore()
 const {currentUser} = storeToRefs(userStore)
+
+const axiosFetcher = (url) => {
+    return axios.get(url).then(res => {return res.data})
+}
+
+
+const {data: featuredSites, error: schoolsError} = useSWRV(`${serverURL}/fetchFeaturedSchools`, axiosFetcher)
+
+// watch(featuredSites, (newFeaturedSites) => {
+//     console.log('watcher triggered')
+//     featuredSitesData.value = schoolContentArrParser(featuredSites.value)
+// })
+
+const featuredSitesData = computed(() => {
+    if(!featuredSites.value ) return []
+    else{
+        return schoolContentArrParser(featuredSites.value)
+    }
+})
 
 onBeforeMount(async () => {
     /**
@@ -31,36 +51,26 @@ onBeforeMount(async () => {
      * has_school field
      */
     let currentUserHasSchool
-    // const currentUserId = currentUser.value.id
     const currentUserId = 1
     const currentUserRole = currentUser.value.role
     try{
         await axios.post(`${serverURL}/getUserMetadata`,{id: 1, userMetakey: 'has_school'}).then(res => {
-            console.log(res);
-            currentUserHasSchool = res.data[0].user_meta_value == 'false'? false : true
-            console.log('current user has_school meta is ' + currentUserHasSchool)
+            currentUserHasSchool = res.data[0]['user_meta_value'] === 'false'? false : true
+            // console.log('current user has_school meta is ' + currentUserHasSchool)
         })
+
         if(!currentUserHasSchool && (currentUserRole == 'Principal' || currentUserRole == 'Superadmin')){
-            console.log('School is not init yet. you should init the school')
+            // console.log('School is not init yet. you should init the school')
             createSchool.value = false
         } else if(!currentUserHasSchool){
-            console.log('Please notify your principal to set up the school')
+            // console.log('Please notify your principal to set up the school')
         } else{
-            console.log('hasnt been handled yet')
+            // console.log('hasnt been handled yet')
         }
 
     } catch(err){
         console.log(err)
     }
-})
-
-
-onMounted(async () =>{
-    // TODO switch route to featured schools
-    await axios.get(`${serverURL}/fetchAllSchools`).then(res => {
-        featuredSites.value = res.data.splice(0,4)
-        featuredSitesData.value = schoolContentArrParser(featuredSites.value)
-    })
 })
 
 const handleFinishCreateSchool = () =>{
@@ -121,7 +131,7 @@ const handleSaveWelcomePopup = (data)=>{
             </SectionHeader>
             <div class="grid grid-cols-4 gap-[24px] w-full px-20 pt-8 ">
                 <div
-                    v-for="(school,index) in featuredSitesData"
+                    v-for="(school,index) in featuredSitesData.splice(0,4)"
                     :key="index"
                     class="col-span-1 bg-white cursor-pointer h-[470px] border-[0.5px]  border-black transition-all group hover:shadow-2xl"
                 >

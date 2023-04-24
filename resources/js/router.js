@@ -20,6 +20,7 @@ import {
 import BrowseSchools from "@/js/pages/BrowseSchools.vue";
 import AdviceSingle from "@/js/pages/AdviceSingle.vue";
 import SoftwareSingle from "@/js/components/software/softwareSingle/SoftwareSingle.vue";
+import BaseSearchPage from "@/js/components/bases/BaseSearchPage.vue";
 
 const router = createRouter({
     history: createWebHistory(),
@@ -39,6 +40,11 @@ const router = createRouter({
             name: 'browse-schools',
             path: '/browse/schools',
             component: BrowseSchools,
+        },
+        {
+            name: 'browse-pages',
+            path: '/browse/:type',
+            component: BaseSearchPage,
         },
         {
             name: 'schools',
