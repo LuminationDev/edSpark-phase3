@@ -119,7 +119,7 @@ export default {
                     siteArr.push({ id: site.id, name: site.site_name });
                 }
             });
-            console.log(siteArr);
+
             if (siteArr.length > 0) {
                 return siteArr;
             }
@@ -172,6 +172,12 @@ export default {
          * Change this to TRUE to simulate the First Login Experience
          */
         const isFirstVisit = ref(true);
+        /**
+         * Use the following email addresses in the simple allowlist
+         *          Ernani.Contursi102@schools.sa.edu.au
+         *          Darren.Macolino169@schools.sa.edu.au
+         *          ClintonTeacherB.Williams199@test-schools.sa.edu.au
+         */
 
         const createNewUser = async (data) => {
             // Get the site according to the ID
@@ -310,6 +316,7 @@ export default {
                 case 'mainsiteid':
                     console.log(claim.value)
                         this.siteId = claim.value;
+
                     break;
                 case 'mainrolecode':
                         console.log(claim.value)

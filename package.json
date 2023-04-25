@@ -3,7 +3,7 @@
     "scripts": {
         "dev": "vite",
         "build": "vite build",
-        "prod": "cp -r ./public/* ./web"
+        "prod": "vite build && composer update && php artisan migrate cp -r ./public/* ./web"
     },
     "devDependencies": {
         "@tailwindcss/aspect-ratio": "^0.4.2",
