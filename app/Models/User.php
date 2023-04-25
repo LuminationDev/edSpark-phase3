@@ -67,4 +67,14 @@ class User extends Authenticatable implements HasName
     //     $permissions = $role->permissions;
     //     return $permissions;
     // }
+
+    public function bookmarks()
+    {
+        return $this->hasMany(Bookmark::class);
+    }
+
+    public function likes()
+    {
+        return $this->hasMany(Like::class);
+    }
 }
