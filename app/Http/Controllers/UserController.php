@@ -259,7 +259,7 @@ class UserController extends Controller
         }
     }
 
-    public function getUserMetadata(Request $request){
+    public function getUserMetadata(Request $request) {
         if($request->isMethod('post')){
             $userMetaDataToSend = [];
             $userId = $request->id;
@@ -276,5 +276,29 @@ class UserController extends Controller
             }
         }
         return response()->json($userMetaDataToSend);
+    }
+
+    public function checkEmail(Request $request) {
+        if ($request->isMethod('post')) {
+            $email = $request->email;
+            $userEmailDetails = User::where('email', '=', $email)->first();
+            if ($userEmailDetails === null) {
+                return response()->json([
+                    "message" => "The email is not registered",
+                    "status" => FALSE,
+
+                ]);
+            } else {
+                return response()->json([
+                    "message" => "The email already exists",
+                    "status" => TRUE,
+                    "userdata" => [
+                        'user_id' => $userEmailDetails->id,
+                        'user_name' => $userEmailDetails->full_name,
+                        'user_status' => $userEmailDetails->status
+                    ],
+                ]);
+            }
+        }
     }
 }
