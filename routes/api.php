@@ -2,7 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\CategoryController;
+//use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\AdviceController;
 use App\Http\Controllers\SoftwareController;
 use App\Http\Controllers\UserController;
@@ -13,6 +13,8 @@ use App\Http\Controllers\CommunityController;
 use App\Http\Controllers\SchoolController;
 use App\Http\Controllers\TechController;
 use App\Http\Controllers\ImageController;
+use App\Http\Controllers\RoleController;
+use App\Http\Controllers\LikeBookmarkController;
 
 /*
 |--------------------------------------------------------------------------
@@ -38,9 +40,13 @@ Route::middleware('api')->group(function() {
     Route::get('fetchUserByEmail/{email}', [UserController::class, 'fetchUserByEmail']);
     Route::post('createUser', [UserController::class, 'createUser']);
     Route::post('updateUser', [UserController::class, 'updateUser']);
+    Route::post('checkEmail', [UserController::class, 'checkEmail']);
     Route::get('fetchAllSites', [SiteController::class, 'fetchAllSites']);
     Route::get('fetchSiteById/{id}', [SiteController::class, 'fetchSiteById']);
+    Route::get('fetchSiteByCode/{siteCode}', [SiteController::class, 'fetchSiteByCode']);
     Route::post('getUserMetadata',[UserController::class, 'getUserMetadata'] );
+
+    Route::get('fetchRoleByCode/{roleCode}', [RoleController::class, 'fetchRoleByCode']);
 
     // Product Management
     Route::get('fetchAllBrands', [ProductController::class, 'fetchAllBrands']);
@@ -56,5 +62,12 @@ Route::middleware('api')->group(function() {
 
     // Image upload
     Route::post('uploadImage', [ImageController::class, 'imageUpload']);
-    Route::post('uploadImageEditorjs', [ImageController::class, 'imageUploadEditorjs']);
+
+    // Like and Bookmark
+    Route::post('like', [LikeBookmarkController::class, 'like']);
+    Route::post('bookmark', [LikeBookmarkController::class, 'bookmark']);
+    Route::post('fetchAllLikes', [LikeBookmarkController::class, 'fetchAllLikes']);
+    Route::post('fetchAllBookmarks', [LikeBookmarkController::class, 'fetchAllBookmarks']);
+    Route::post('fetchAllLikesByType', [LikeBookmarkController::class, 'fetchAllLikesByType']);
+    Route::post('fetchAllBookmarksByType', [LikeBookmarkController::class, 'fetchAllBookmarksByType']);
 });
