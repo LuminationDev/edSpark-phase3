@@ -171,7 +171,7 @@ export default {
         /**
          * Change this to TRUE to simulate the First Login Experience
          */
-        const isFirstVisit = ref(false);
+        const isFirstVisit = ref(true);
 
         const createNewUser = async (data) => {
             // Get the site according to the ID
