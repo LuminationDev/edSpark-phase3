@@ -5,6 +5,12 @@ import DeptApprovedIcon from "@/js/components/svg/software/DeptApprovedIcon.vue"
 import DeptProvidedIcon from "@/js/components/svg/software/DeptProvidedIcon.vue";
 import SectionHeader from "@/js/components/global/SectionHeader.vue";
 import SoftwareCardGallery from "@/js/components/software/SoftwareCardGallery.vue";
+import {useRouter} from "vue-router";
+
+const router = useRouter()
+const handleBrowseAllSoftware = () => {
+    router.push('/browse/software')
+}
 </script>
 
 <template>
@@ -60,6 +66,7 @@ import SoftwareCardGallery from "@/js/components/software/SoftwareCardGallery.vu
                 <template #cta>
                     <button
                         class="bg-white px-4 py-2 rounded-sm border-2 border-[#002858] text-[#002858] text-[15px] font-medium cursor-pointer hover:text-[#0b1829] hover:border-2 hover:border-[#0b1829]"
+                        @click="handleBrowseAllSoftware"
                     >
                         View all software
                     </button>
