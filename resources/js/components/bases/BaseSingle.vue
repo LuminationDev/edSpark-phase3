@@ -36,7 +36,7 @@ let apiLink;
 
 switch (props.contentType){
 case 'software':
-    apiLink = 'fetchAdvicePostById'
+    apiLink = 'fetchSoftwarePostById'
     break;
 case 'advice':
     apiLink ='fetchAdvicePostById'
@@ -58,6 +58,7 @@ onBeforeMount(async () =>{
         console.log('No adviceContent passed in. Will request from server')
         await axios.get(`${serverURL}/${apiLink}/${route.params.id}`).then(res => {
             singleContent.value = res.data
+            console.log(singleContent.value)
         })
     } else{
         console.info('Advice content received from parent. No request will be sent to server')
@@ -88,3 +89,12 @@ watch(currentId ,() => {
         />
     </div>
 </template>
+
+<style scoped>
+h2{
+    font-weight: bolder;
+}
+h3{
+    font-weight: bold;
+}
+</style>
