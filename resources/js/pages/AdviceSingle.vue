@@ -46,7 +46,7 @@ import BaseSingle from "@/js/components/bases/BaseSingle.vue";
                 class="adviceSingleContent p-4 px-8 flex flex-row w-full overflow-hidden"
             >
                 <!--    Content of the Advice    -->
-                <div class="w-2/3 flex flex-col flex-wrap border-2">
+                <div class="w-2/3 flex flex-col flex-wrap py-4 px-2">
                     <div class="text-2xl flex font-bold uppercase">
                         Getting started
                     </div>

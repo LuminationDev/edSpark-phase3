@@ -13,6 +13,7 @@ const props = defineProps({
         default: 3
     }
 })
+console.log(props)
 const router = useRouter()
 const handleClickCard = () => {
     /**

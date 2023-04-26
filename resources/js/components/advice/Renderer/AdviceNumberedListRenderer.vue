@@ -10,7 +10,7 @@ const props = defineProps({
 <template>
     <div class="extraContent relative ">
         <div
-            class="connectingLine absolute w-1 h-[65%] bg-black z-10 top-[20%] left-[16.5%]"
+            class="connectingLine absolute w-1 h-[69%] bg-black z-10 top-[18%] left-[16.5%]"
         />
         <div
             v-for="(item,index) in props.itemArray"
