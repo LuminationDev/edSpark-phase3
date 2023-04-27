@@ -4,24 +4,24 @@ import {computed, onBeforeMount,  ref} from "vue";
 import axios from "axios";
 import SearchBar from "@/js/components/browseschools/SearchBar.vue";
 import {parseToJsonIfString, schoolContentArrParser} from "@/js/helpers/jsonHelpers";
+import useSWRV from "swrv";
 const serverURL = import.meta.env.VITE_SERVER_URL_API
+const axiosFetcher = (url) => {
+    return axios.get(url).then(res => res.data)
+}
+const {data: allSchoolsArray, error: schoolsError} = useSWRV(`${serverURL}/fetchAllSchools`, axiosFetcher)
 
-
-
-
-const allSchoolsArray = ref([])
-onBeforeMount(() =>{
-    axios.get(`${serverURL}/fetchAllSchools`).then(res => {
-        allSchoolsArray.value = schoolContentArrParser(res.data)
-    })
+const allSchoolsData = computed(() => {
+    return schoolContentArrParser(allSchoolsArray.value)
 })
+
 const filterTerm = ref('')
 const handleSearchTerm = (term) => {
     filterTerm.value = term.toLowerCase()
 }
 
 const filteredSchool = computed(() =>{
-    return allSchoolsArray.value.filter(sch => {
+    return allSchoolsData.value.filter(sch => {
         if(filterTerm.value.length < 1) return true
         if(sch.name.toLowerCase().includes(filterTerm.value)) return true
     })
@@ -44,7 +44,7 @@ const filteredSchool = computed(() =>{
             <div
                 v-for="(school, index) in filteredSchool"
                 :key="index"
-                class="border-2 mx-4 my-4 basis-1/4 max-w-[320px] h-[470px] transition-all group hover:shadow-2xl rounded-xl"
+                class="border-2 mx-4 my-4 basis-1/4 max-w-[320px] h-[470px] border-[0.5px] border-black transition-all group hover:shadow-2xl"
             >
                 <SchoolCard
                     :school-data="school"

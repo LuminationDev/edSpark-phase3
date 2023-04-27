@@ -1,23 +1,20 @@
 <script>
-    import { RouterLink, RouterView } from 'vue-router';
+    import { RouterView } from 'vue-router';
+    import { useRouter } from 'vue-router';
 
     // Import components
 
     export default {
         setup() {
+            const router = useRouter();
 
+            return {
+                router
+            }
         },
 
-        components: {
-            // NavBar,
-        },
-
-        methods: {
-            async login () {
-                console.log('Hello');
-                console.log(this.$auth)
-                await this.$auth.signInWithRedirect({ originalUri: '/' });
-            },
+        async mounted() {
+            await this.$auth.signInWithRedirect({ originalUri: '/dashboard' });
         }
     }
 </script>
@@ -26,11 +23,19 @@
 
 
     <h1 class="text-[48px] mt-12 font-bold text-slate-900">Landing Page</h1>
-
-    <button @click.prevent="login" class="bg-blue-500 px-4 py-2 text-white font-bold text-[24px]">
+    <button
+        v-if="authState && authState.isAuthenticated"
+        class="bg-blue-500 px-4 py-2 text-white font-bold text-[24px]"
+    >
+        Logout
+    </button>
+    <button
+        v-else
+        @click="login"
+        class="bg-blue-500 px-4 py-2 text-white font-bold text-[24px]"
+    >
         Login
     </button>
-    <router-link :to="{name: 'login'}"></router-link>
     <RouterView />
 
 </template>

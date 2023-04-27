@@ -18,10 +18,10 @@ export const useAdviceStore = defineStore('advice', {
                 console.log(response);
                 const dashboardAdvice = [];
                 response.data.forEach( async advice => {
-                    if (advice.advice_type === 'Dashboard Featured') {
+                    // if (advice.advice_type === 'Dashboard Featured') {
                         dashboardAdvice.push(advice);
-                        console.log(advice);
-                    }
+                        // console.log(advice);
+                    // }
                 });
                 this.resources = dashboardAdvice;
 

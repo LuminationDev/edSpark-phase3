@@ -19,13 +19,12 @@ export default {
     },
 
     mounted() {
-        console.log(this.section)
     },
 }
 </script>
 
 <template>
-    <div class="mt-20">
+    <div class="mt-20 px-20">
         <div
             :class="[classes]"
             class="flex flex-row justify-between h-[72px] w-full px-12 relative group/headerbg"

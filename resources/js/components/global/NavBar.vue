@@ -39,10 +39,18 @@ export default {
         const navDropdownToggle = ref(false);
         const profileDropdown = ref(false);
 
+        // const imageURL = import.meta.env.VITE_SERVER_IMAGE_API;
+        // const userMetadata = userStore.getUser.metadata;
+        // const userAvatarMeta = userMetadata.filter(meta => meta.user_meta_key === 'userAvatar');
+        // const avatarUrl = userAvatarMeta[0].user_meta_value[0].replace(/\\\//g, "/");
+        // console.log(avatarUrl);
+
         return {
             navDropdownToggle,
             profileDropdown,
             userStore,
+            // imageURL,
+            // avatarUrl
         }
     },
 
@@ -58,7 +66,6 @@ export default {
 
     methods: {
         handleAvatarClick() {
-            console.log('This has been clicked!!!');
             this.profileDropdown = !this.profileDropdown
         }
     }
@@ -71,23 +78,23 @@ export default {
         <div class="nav-background w-full h-full pt-7 bg-[url(http://localhost:5173/resources/assets/images/children-vr.png)] bg-no-repeat bg-cover">
             <nav class="bg-[#002856]/50 py-2 px-12 w-full">
                 <ul class="flex flex-wrap gap-8 text-white text-[24px] font-semibold font-['Poppins']">
-                    <RouterLink to="/dashboard">
+                    <router-link to="/dashboard">
                         <li class="cursor-pointer hover:underline decoration-[#B8E2DC] decoration-4 underline-offset-8 transition-all">
                             Dash
                         </li>
-                    </RouterLink>
+                    </router-link>
 
-                    <RouterLink to="/schools">
+                    <router-link to="/schools">
                         <li class="cursor-pointer hover:underline decoration-[#B8E2DC] decoration-4 underline-offset-8 transition-all">
                             Schools
                         </li>
-                    </RouterLink>
+                    </router-link>
 
-                    <RouterLink to="/advice">
+                    <router-link to="/advice">
                         <li class="cursor-pointer hover:underline decoration-[#B8E2DC] decoration-4 underline-offset-8 transition-all">
                             Advice
                         </li>
-                    </RouterLink>
+                    </router-link>
                     <li class="relative cursor-pointer">
                         <div
                             class="h-fit"
@@ -102,19 +109,19 @@ export default {
                             >
                                 <div class="bg-[#002856]/50 mt-[8px]">
                                     <ul class="flex flex-col gap-4 py-4 text-white text-center text-[24px] font-semibold font-['Poppins']">
-                                        <RouterLink
+                                        <router-link
                                             class="flex"
                                             to="/software"
                                         >
                                             <li class="px-4 mx-auto cursor-pointer hover:underline decoration-[#B8E2DC] decoration-4 underline-offset-8 transition-all">
                                                 Software
                                             </li>
-                                        </RouterLink>
-                                        <RouterLink to="/hardware">
+                                        </router-link>
+                                        <router-link to="/hardware">
                                             <li class="px-4 mx-auto cursor-pointer hover:underline decoration-[#B8E2DC] decoration-4 underline-offset-8 transition-all">
                                                 Hardware
                                             </li>
-                                        </RouterLink>
+                                        </router-link>
                                     </ul>
                                 </div>
                             </div>
@@ -122,23 +129,23 @@ export default {
                     </li>
 
 
-                    <RouterLink to="/community">
+                    <router-link to="/community">
                         <li class="cursor-pointer hover:underline decoration-[#B8E2DC] decoration-4 underline-offset-8 transition-all">
                             Community
                         </li>
-                    </RouterLink>
+                    </router-link>
 
-                    <RouterLink to="/partners">
+                    <router-link to="/partners">
                         <li class="cursor-pointer hover:underline decoration-[#B8E2DC] decoration-4 underline-offset-8 transition-all">
                             Partners
                         </li>
-                    </RouterLink>
+                    </router-link>
 
-                    <RouterLink to="/events">
+                    <router-link to="/events">
                         <li class="cursor-pointer hover:underline decoration-[#B8E2DC] decoration-4 underline-offset-8 transition-all">
                             Events
                         </li>
-                    </RouterLink>
+                    </router-link>
                 </ul>
             </nav>
         </div>
@@ -147,16 +154,13 @@ export default {
         <!-- <div @click.prevent="handleAvatar" class="w-fit h-fit" >
 
         </div> -->
-
         <div class="w-[48px] h-[48px] absolute top-64 right-96">
-            <div
-                class="z-50 relative h-full w-full bg-orange-500 flex rounded-full cursor-pointer hover:shadow-2xl"
+            <!-- <div
+                class="z-50 relative h-full w-full flex rounded-full cursor-pointer hover:shadow-2xl bg-cover bg-no-repeat bg-center"
                 @click.prevent="handleAvatar"
             >
-                <p class="text-[1.25rem] text-white font-bold m-auto">
-                    {{ currentUser.display_name }}
-                </p>
-            </div>
+                <img :src="`${imageURL}/${avatarUrl}`" alt="user avatar">
+            </div> -->
 
             <div
                 v-show="profileDropdown"
