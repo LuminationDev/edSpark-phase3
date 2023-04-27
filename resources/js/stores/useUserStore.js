@@ -32,7 +32,6 @@ export const useUserStore = defineStore('user', {
             /**
              * Temporry user ID (Jake M)
              */
-            // const userId = 72
             /** **/
             await axios.get(`http://localhost:8000/api/fetchUser/${userId}`).then(response => {
                 console.log(response.data);
@@ -44,17 +43,74 @@ export const useUserStore = defineStore('user', {
         },
 
         async checkUser(email) {
-            console.log('HERE YOU ARE!!!!!');
-            await axios.get(`http://localhost:8000/api/fetchUserByEmail/${email}`).then(res => {
-                console.log(res);
-            }).catch(err => {
-                console.log('Theres a problem');
-                console.error(err);
+            return new Promise(async resolve => {
+                console.log('HERE YOU ARE!!!!!');
+                await axios({
+                    method: 'POST',
+                    url: 'http://localhost:8000/api/checkEmail',
+                    data: {
+                        email: email
+                    }
+                }).then(response => {
+                    console.log(response.data);
+                    resolve(response.data);
+                }).catch(error => {
+                    console.log(error);
+                    return error
+                })
+            })
+        },
+
+        async fetchAllRoles() {
+            return new Promise(async (resolve, reject) => {
+                await axios.get('http://localhost:8000/api/fetchAllRoles').then(response => {
+                    // console.log(response);
+                    const allowedValues = [
+                        'SCHLDR',
+                        'PRESCLDR',
+                        'SITELDR',
+                        'STCH',
+                        'PTCH',
+                        'SITESUPP',
+                        'PSACT',
+                        'IT',
+                        'OTHER',
+                        'STAFF'
+                    ];
+
+                    let allowedList = response.data.filter((item) => allowedValues.indexOf(item.role_name) !== -1);
+
+                    let mutatedArray = [];
+
+                    allowedList.forEach(item => {
+                        mutatedArray.push({
+                            id: item.id,
+                            name: item.role_value
+                        });
+                    });
+                    resolve(mutatedArray);
+                }).catch(error => {
+                    console.log(error);
+                    reject(error.code);
+                })
+            })
+        },
+
+        getUserSiteById(siteId) {
+            siteId = siteId.replace(/^0+/, '');
+            console.log(siteId);
+            return new Promise(async resolve => {
+                await axios.get(`http://localhost:8000/api/fetchSiteByCode/${siteId}`).then(response => {
+                    console.log(response.data);
+                    resolve(response.data);
+                }).catch(error => {
+                    console.log('error', error);
+                })
             })
         },
 
         async createUser(user) {
-            console.log(user.avatar);
+            console.log(user);
             /**
              * Set the users initials - save as display_name
              */
@@ -66,7 +122,7 @@ export const useUserStore = defineStore('user', {
             // let metaData = new FormData();
             // let formAvatar = new FormData();
 
-            userData.append('userAvatar', user.avatar);
+            userData.append('userAvatar', user.avatar ? user.avatar : user.avatarUrl);
             /**
              * Populate formData Object
              */
@@ -91,7 +147,7 @@ export const useUserStore = defineStore('user', {
                 headers: { "Content-Type" : "multipart/form-data" }
             }).then(response => {
                 console.log(response);
-                loadCurrentUser(response.data.uid);
+                this.loadCurrentUser(response.data.uid);
                 this.userAvatar = response.data.avatarUrl;
             }).catch(error => {
                 console.log('There was a problem updating your info');

@@ -899,7 +899,6 @@
         },
         {
             "name": "filament/filament",
-
             "version": "v2.17.28",
             "source": {
                 "type": "git",

@@ -13,7 +13,7 @@
             }
         },
 
-        async mounted() {
+        async created() {
             await this.$auth.signInWithRedirect({ originalUri: '/dashboard' });
         }
     }

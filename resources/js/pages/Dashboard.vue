@@ -4,6 +4,7 @@
  */
 import sanitizeHtml from 'sanitize-html';
 import { computed, ref, getCurrentInstance } from 'vue';
+import { useRouter } from 'vue-router';
 
 /**
  * IMPORT COMPONENTS
@@ -86,6 +87,8 @@ export default {
         const eventsStore = useEventsStore();
         const roleStore = useRolesStore();
 
+        const router = useRouter();
+
         siteStore.loadSites();
 
         adviceStore.loadDashboardResources();
@@ -111,6 +114,8 @@ export default {
             return eventsStore.getEvents;
         });
 
+        // This is the bit you need....
+        // not sure whats going on here
         const allSites = computed(() => {
             const theSites = siteStore.getSites;
             const siteArr = [];
@@ -119,7 +124,7 @@ export default {
                     siteArr.push({ id: site.id, name: site.site_name });
                 }
             });
-            console.log(siteArr);
+
             if (siteArr.length > 0) {
                 return siteArr;
             }
@@ -128,43 +133,7 @@ export default {
         /**
          * Temporary - working on roles controller
          */
-        const allRoles = computed(() => {
-            return [
-                {
-                    id: 'SCHLDR',
-                    name: 'School Principal',
-                },
-                {
-                    id: 'PRESCLDR',
-                    name: 'Preschool Director',
-                },
-                {
-                    id: 'SITELDR',
-                    name: 'Site Leadership Team',
-                },
-                {
-                    id: 'STCH',
-                    name: 'School Teacher',
-                },
-                {
-                    id: 'PTCH',
-                    name: 'Preschool Teacher',
-                },
-                {
-                    id: 'SITESUPP',
-                    name: 'Site Support Staff',
-                },
-                {
-                    id: 'PSACT',
-                    name: 'Public Sector Act',
-                },
-                {
-                    id: 'IT',
-                    name: 'Staff with IT admin responsibilities',
-                },
-
-            ]
-        });
+        const allRoles = ref([]);
 
         const cardHoverToggle = ref(false);
 
@@ -172,7 +141,12 @@ export default {
          * Change this to TRUE to simulate the First Login Experience
          */
         const isFirstVisit = ref(false);
-
+        /**
+         * Use the following email addresses in the simple allowlist
+         *          Ernani.Contursi102@schools.sa.edu.au
+         *          Darren.Macolino169@schools.sa.edu.au
+         *          ClintonTeacherB.Williams199@test-schools.sa.edu.au
+         */
         const createNewUser = async (data) => {
             // Get the site according to the ID
             const sites = siteStore.getSites;
@@ -187,7 +161,7 @@ export default {
 
         return {
             // email,
-
+            router,
             createNewUser,
             userStore,
             adviceStore,
@@ -289,40 +263,32 @@ export default {
 
         const idToken = await this.$auth.tokenManager.get('idToken');
         console.log(idToken);
-        this.claims = await Object.entries(idToken.claims).map(entry => ({ claim: entry[0], value: entry[ 1 ]}));
+        // this.claims = await Object.entries(idToken.claims).map(entry => ({ claim: entry[0], value: entry[ 1 ]}));
+        console.log(idToken);
+        this.claims = await idToken.claims;
         console.log(this.claims);
 
+        this.name = this.claims.name;
+        this.email = this.claims.email;
+        // this.role = this.claims.mainrolecode;
+        this.role = this.allRoles.filter(role => role.role_name === this.claims.mainrolecode);
+        this.site = this.claims.mainsiteid;
+        console.log(this.email);
+        const checkFirstVisit = await this.userStore.checkUser(this.email);
 
+        if (checkFirstVisit.status) {
+            this.isFirstVisit = false;
+            this.userStore.loadCurrentUser(checkFirstVisit.userdata.user_id)
+        } else {
+            this.isFirstVisit = true
+        };
 
-        /**
-         * Set the pre-fill information as much as possible
-         */
-        this.claims.forEach(claim => {
-            // console.log(claim.claim);
-            switch (claim.claim) {
-            case 'name':
-                this.name = claim.value;
-                break;
-            case 'email':
-                this.email = claim.value;
-                this.userStore.checkUser(claim.value);
-                break;
-            case 'mainsiteid':
-                console.log(claim.value)
-                this.siteId = claim.value;
-                break;
-            case 'mainrolecode':
-                console.log(claim.value)
-                this.roleId = claim.value;
-                break;
+        this.allRoles = await this.userStore.fetchAllRoles();
 
-            default:
-                break;
-            }
-        });
+        console.log(this.allRoles);
     },
 
-    mounted() {
+    async mounted() {
         console.log(this.allSites);
     },
 
@@ -390,8 +356,17 @@ export default {
                 biography: this.biography,
                 avatar: this.avatar
             }
-            console.log(data);
+
             this.createNewUser(data);
+
+            if (data.role.name === 'School Principal') {
+                this.router.push({
+                    name: 'school-single',
+                    params: {
+                        name: data.site.site_name
+                    }
+                });
+            }
         },
 
         onChangeFile(event) {
@@ -427,6 +402,11 @@ export default {
         onSelectedOptionSites(payload) {
             console.log(payload);
             this.site = payload;
+        },
+
+        onSelectedOptionRoles(payload) {
+            console.log(payload);
+            this.role = payload;
         }
     }
 }
@@ -486,6 +466,14 @@ export default {
 
                     <div class="flex flex-col">
                         <label for="Role">Your Role</label>
+                        <!-- <select
+                            name="role"
+                            id="role"
+                        >
+                            <option v-for="role in this.allRoles" :value="role.role_value" :selected="this.role = role.role_name ? true : false">
+                                {{ role.role_value }}
+                            </option>
+                        </select> -->
                         <SearchDropdown
                             class="searchable_dropdown"
                             :options="allRoles"
@@ -500,8 +488,8 @@ export default {
                         <label for="Role">Your Site</label>
                         <SearchDropdown
                             class="searchable_dropdown"
-                            :options="allSites"
-                            :placeholder="'Search for your site...'"
+                            :options="this.allSites"
+                            :placeholder="'Search for your site...' "
                             name="site"
                             :close-on-outside-click="true"
                             @selected="onSelectedOptionSites"

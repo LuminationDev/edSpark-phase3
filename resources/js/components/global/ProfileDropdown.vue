@@ -3,81 +3,85 @@
      * Import Dependencies
      */
     import { ref } from 'vue';
+    import oktaAuth from '../../constants/oktaAuth.js';
     /**
      * Import SVG's
      */
-import Profile from '../svg/Profile.vue';
+    import Profile from '../svg/Profile.vue';
 
-/**
- * Import stores
- */
-import { useUserStore } from '../../stores/useUserStore';
+    /**
+     * Import stores
+     */
+    import { useUserStore } from '../../stores/useUserStore';
 
-/**
- * Import components
- */
+    /**
+     * Import components
+     */
 
-export default {
+    export default {
 
-    components: {
-        Profile,
-    },
-    props: {
-        currentUser: Object,
-        profileDropdown: Boolean
-    },
-
-    setup() {
-        const userStore = useUserStore();
-
-        return {
-            userStore
-        }
-    },
-
-    methods: {
-        handleAvatar() {
-            this.$emit('handleAvatarClick');
+        components: {
+            Profile,
+        },
+        props: {
+            currentUser: Object,
+            profileDropdown: Boolean
         },
 
         setup() {
             const userStore = useUserStore();
 
-            const avatarUrl = ref(null);
-
-            const imageURL = import.meta.env.VITE_SERVER_IMAGE_API;
-            const userMetadata = userStore.getUser.metadata;
-            if (userMetadata !== undefined) {
-                const userAvatarMeta = userMetadata.filter(meta => meta.user_meta_key === 'userAvatar');
-                avatarUrl.value = userAvatarMeta[0].user_meta_value[0].replace(/\\\//g, "/");
-            }
-
-            console.log(avatarUrl);
-
             return {
-                userStore,
-                imageURL,
-                avatarUrl
+                userStore
             }
-        },
-
-        components: {
-            Profile,
         },
 
         methods: {
             handleAvatar() {
-                console.log(this.profileDropdown);
                 this.$emit('handleAvatarClick');
             },
 
-            async logout () {
-                await this.$auth.signOut();
-                this.userStore.clearStore();
-            }
-        },
+            setup(props) {
+                const userStore = useUserStore();
+
+                const avatarUrl = ref(null);
+
+                const imageURL = import.meta.env.VITE_SERVER_IMAGE_API;
+                const userMetadata = userStore.getUser.metadata;
+                if (userMetadata !== undefined) {
+                    const userAvatarMeta = userMetadata.filter(meta => meta.user_meta_key === 'userAvatar');
+                    avatarUrl.value = userAvatarMeta[0].user_meta_value[0].replace(/\\\//g, "/");
+                }
+
+                console.log(avatarUrl);
+
+                console.log(props.currentUser.display_name.replace(/"/g, ''))
+
+                return {
+                    userStore,
+                    imageURL,
+                    avatarUrl
+                }
+            },
+
+            components: {
+                Profile,
+            },
+
+            methods: {
+                handleAvatar() {
+                    console.log(this.profileDropdown);
+                    this.$emit('handleAvatarClick');
+                },
+
+                async logout() {
+                    console.log('clicked the button');
+                    await oktaAuth.signOut();
+                    this.userStore.clearStore();
+                }
+            },
+        }
     }
-}
 </script>
 
 <template>
@@ -87,7 +91,7 @@ export default {
             @click.prevent="handleAvatar"
         >
             <p class="text-[1.25rem] text-white font-bold m-auto">
-                {{ currentUser.display_name }}
+                <!-- {{ currentUser.display_name.replace(/"/g, '') }} -->
             </p>
         </div>
 
@@ -120,9 +124,9 @@ export default {
                 <div class="pt-3">
                     <button
                         class="py-3 px-2 text-white text-[18px] font-medium w-full hover:underline"
-                        @click.prevent="logout"
+                        @click="this.logout"
                     >
-                        Logout
+                        Sign out
                     </button>
                 </div>
             </div>
