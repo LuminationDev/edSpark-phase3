@@ -14,21 +14,21 @@ export const useSoftwareStore = defineStore('software', {
 
     actions: {
         async loadArticles() {
-            await axios.get('http://localhost:8000/api/fetchSoftwarePosts').then(response => {
-                console.log(response);
-                const dashboardSoftware = [];
-                response.data.forEach(software => {
-                    // if (software.software_type === 'Dashboard Featured') {
+            return new Promise(async (resolve, reject) => {
+                await axios.get('http://localhost:8000/api/fetchSoftwarePosts').then(response => {
+                    const dashboardSoftware = [];
+                    response.data.forEach(software => {
                         dashboardSoftware.push(software);
-                    // };
-                });
+                    });
 
-                this.articles = dashboardSoftware;
-                // this.articles = response.data;
-                // console.log(this.articles);
-            }).catch(error => {
-                console.log('Sorry, there was a problem retrieving the Advice Articles');
-                console.error(error);
+                    this.articles = dashboardSoftware;
+
+                    resolve(dashboardSoftware);
+                }).catch(error => {
+                    console.log('Sorry, there was a problem retrieving the Advice Articles');
+                    console.error(error);
+                    reject(error.code);
+                })
             })
         }
     }
