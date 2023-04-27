@@ -114,7 +114,9 @@ class LikeBookmarkController extends Controller
             $user = User::findOrFail($userId);
             $likes = $user->likes;
             $dataToSend = [];
+            $count = 0;
             if ($likes) {
+                $count += count($likes);
                 foreach ($likes as $like) {
                     $result = [
                         'post_id' => $like->post_id,
@@ -123,7 +125,10 @@ class LikeBookmarkController extends Controller
                     $dataToSend[] = $result;
                 }
             }
-            return response()->json($dataToSend);
+            return response()->json([
+                "data" => $dataToSend,
+                "count" => $count
+            ]);
         }
 
     }
@@ -136,7 +141,9 @@ class LikeBookmarkController extends Controller
             $user = User::findOrFail($userId);
             $bookmarks = $user->bookmarks;
             $dataToSend = [];
+            $count = 0;
             if ($bookmarks) {
+                $count += count($bookmarks);
                 foreach ($bookmarks as $bookmark) {
                     $result = [
                         'post_id' => $bookmark->post_id,
@@ -145,7 +152,10 @@ class LikeBookmarkController extends Controller
                     $dataToSend[] = $result;
                 }
             }
-            return response()->json($dataToSend);
+            return response()->json([
+                "data" => $dataToSend,
+                "count" => $count
+            ]);
         }
     }
 
@@ -159,7 +169,9 @@ class LikeBookmarkController extends Controller
                             ->where('post_type', '=', $postType)
                             ->get();
             $dataToSend = [];
+            $count = 0;
             if ($likes) {
+                $count += count($likes);
                 foreach ($likes as $like) {
                     $result = [
                         'post_id' => $like->post_id
@@ -167,7 +179,10 @@ class LikeBookmarkController extends Controller
                     $dataToSend[] = $result;
                 }
             }
-            return response()->json($dataToSend);
+            return response()->json([
+                "data" => $dataToSend,
+                "count" => $count
+            ]);
 
         }
     }
@@ -182,8 +197,9 @@ class LikeBookmarkController extends Controller
                                     ->where('post_type', '=', $postType)
                                     ->get();
             $dataToSend = [];
-
+            $count = 0;
             if ($bookmarks) {
+                $count += count($bookmarks);
                 foreach ($bookmarks as $bookmark) {
                     $result = [
                         'post_id' => $bookmark->post_id
@@ -192,7 +208,10 @@ class LikeBookmarkController extends Controller
                 }
             }
 
-            return response()->json($dataToSend);
+            return response()->json([
+                "data" => $dataToSend,
+                "count" => $count
+            ]);
         }
     }
 }
