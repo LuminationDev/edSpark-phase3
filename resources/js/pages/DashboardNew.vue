@@ -5,6 +5,7 @@
     import DashboardHero from '../components/dashboard/DashboardHero.vue';
     import BlackOverlay from '../components/dashboard/BlackOverlay.vue';
     import FirstVisitForm from '../components/dashboard/FirstVisitForm.vue';
+    import SectionHeader from '../components/global/SectionHeader.vue';
 
     /**
      * Depends on
@@ -60,19 +61,14 @@
      * Check if user has an exisitng account
      */
     const checkFirstVisit = async (emailAddress) => {
-        console.log(emailAddress);
         let emailCheck = await userStore.checkUser(emailAddress);
         if (emailCheck.status === true) {
             isFirstVisit.value = false;
-            userStore.loadCurrentUser(isFirstVisit.value.userdata.user_id);
+            userStore.loadCurrentUser(emailCheck.userdata.user_id);
         } else {
             isFirstVisit.value = true;
         }
-
-
     };
-
-    console.log(isFirstVisit.value);
 
     getIdToken();
 
@@ -98,6 +94,41 @@
             />
         </div>
 
+        <!-- Individual Sections -->
+
+        <SectionHeader
+            :classes="'bg-[#339999]'"
+            :section="'events'"
+            :title="'New Events'"
+            :buttonText="'View all events'"
+        />
+
+        <!-- Events Cards Here -->
+
+        <SectionHeader
+            :classes="'bg-[#1C5CA9]'"
+            :section="'software'"
+            :title="'Top Software'"
+            :buttonText="'View all software'"
+        />
+
+        <!-- Software Cards Here -->
+
+        <SectionHeader
+            :classes="'bg-[#0A7982]'"
+            :section="'advice'"
+            :title="'Advice'"
+            :buttonText="'View all resources'"
+        />
+
+        <!-- Advice Cards Here -->
+
+        <SectionHeader
+            :classes="'bg-[#002858]'"
+            :section="'schools'"
+            :title="'Latest School Profiles'"
+            :buttonText="'View all schools'"
+        />
     </div>
 
 

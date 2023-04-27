@@ -33,6 +33,7 @@ export const useUserStore = defineStore('user', {
              * Temporry user ID (Jake M)
              */
             /** **/
+            console.log(userId);
             await axios.get(`http://localhost:8000/api/fetchUser/${userId}`).then(response => {
                 console.log(response.data);
                 this.currentUser = response.data;
@@ -43,7 +44,6 @@ export const useUserStore = defineStore('user', {
         },
 
         async checkUser(email) {
-            console.log(email);
             return new Promise(async resolve => {
                 console.log('HERE YOU ARE!!!!!');
                 await axios({
