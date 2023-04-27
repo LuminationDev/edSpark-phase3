@@ -25,14 +25,17 @@
         },
         props: {
             currentUser: Object,
-            profileDropdown: Boolean
+            profileDropdown: Boolean,
+            avatarUrl: String
         },
 
         setup() {
             const userStore = useUserStore();
+            const imageURL = import.meta.env.VITE_SERVER_IMAGE_API
 
             return {
-                userStore
+                userStore,
+                imageURL
             }
         },
 
@@ -44,18 +47,28 @@
             setup(props) {
                 const userStore = useUserStore();
 
-                const avatarUrl = ref(null);
+                const avatarUrl = ref('');
 
-                const imageURL = import.meta.env.VITE_SERVER_IMAGE_API;
+                const imageURL = import.meta.env.VITE_SERVER_IMAGE_API
+
                 const userMetadata = userStore.getUser.metadata;
                 if (userMetadata !== undefined) {
                     const userAvatarMeta = userMetadata.filter(meta => meta.user_meta_key === 'userAvatar');
                     avatarUrl.value = userAvatarMeta[0].user_meta_value[0].replace(/\\\//g, "/");
                 }
 
-                console.log(avatarUrl);
+                // console.log(imageURL);
+                // console.log(avatarUrl);
 
-                console.log(props.currentUser.display_name.replace(/"/g, ''))
+                // console.log(props.currentUser.display_name.replace(/"/g, ''))
+
+
+                // props.currentUser.metadata.forEach(meta => {
+                //     if (meta.user_meta_key === 'userAvatar') {
+                //         console.log(meta);
+                //         avatarUrl.value = meta.user_meta_value;
+                //     }
+                // })
 
                 return {
                     userStore,
@@ -66,6 +79,12 @@
 
             components: {
                 Profile,
+            },
+
+            data() {
+                return {
+                    userAvatar
+                }
             },
 
             methods: {
@@ -80,18 +99,25 @@
                     this.userStore.clearStore();
                 }
             },
+
+            mounted() {
+
+            }
         }
     }
 </script>
 
 <template>
-    <div class="w-[48px] h-[48px] absolute top-64 right-96">
+    <div class="w-[48px] h-[48px] absolute top-64 right-72">
         <div
-            class="z-50 relative h-full w-full bg-orange-500 flex rounded-full cursor-pointer hover:shadow-2xl"
+            class="z-50 relative h-full w-full bg-orange-500 flex rounded-full cursor-pointer hover:shadow-2xl overflow-hidden"
             @click.prevent="handleAvatar"
+
         >
+            <img class="w-full m-auto" :src="`${ imageURL }/${avatarUrl}`" alt="">
             <p class="text-[1.25rem] text-white font-bold m-auto">
                 <!-- {{ currentUser.display_name.replace(/"/g, '') }} -->
+                {{ currentUser.display_name }}
             </p>
         </div>
 

@@ -56,12 +56,20 @@ export default {
 
     data() {
         return {
-            currentUser: {}
+            currentUser: {},
+            avatarUrl: ''
         }
     },
 
     mounted() {
-        this.currentUser = this.userStore.getUser
+        this.currentUser = this.userStore.getUser;
+
+        this.currentUser.metadata.forEach(meta => {
+            if (meta.user_meta_key === 'userAvatar') {
+                console.log(meta);
+                this.avatarUrl = meta.user_meta_value[0].replace(/\\\//g, "/");;
+            }
+        })
     },
 
     methods: {
@@ -199,6 +207,7 @@ export default {
         <ProfileDropdown
             :current-user="currentUser"
             :profile-dropdown="profileDropdown"
+            :avatarUrl="avatarUrl"
             @handleAvatarClick="handleAvatarClick"
         />
 

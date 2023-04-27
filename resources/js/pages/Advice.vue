@@ -62,7 +62,7 @@ const query = {
  */
 axios.post(`${serverURL}/fetchAllLikes`, query).then(res => {
     let temp = {}
-    for(let x of res.data){
+    for(let x of res.data.data){
         if(!temp[x.post_type]){
             temp[x.post_type] = []
         }
@@ -73,7 +73,7 @@ axios.post(`${serverURL}/fetchAllLikes`, query).then(res => {
 
 axios.post(`${serverURL}/fetchAllBookmarks`, query).then(res => {
     let temp = {}
-    for(let x of res.data){
+    for(let x of res.data.data){
         if(!temp[x.post_type]){
             temp[x.post_type] = []
         }

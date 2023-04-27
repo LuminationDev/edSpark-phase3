@@ -105,6 +105,9 @@
         softwares.value = await softwareStore.loadArticles();
         advice.value = await adviceStore.loadDashboardResources();
         schools.value = await schoolsStore.loadSchools();
+
+
+        console.log(typeof schools.value);
     };
 
     loadDashboardData();
