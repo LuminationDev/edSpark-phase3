@@ -5,6 +5,7 @@
     import DashboardHero from '../components/dashboard/DashboardHero.vue';
     import BlackOverlay from '../components/dashboard/BlackOverlay.vue';
     import FirstVisitForm from '../components/dashboard/FirstVisitForm.vue';
+    import SectionHeader from '../components/global/SectionHeader.vue';
 
     /**
      * Depends on
@@ -17,8 +18,16 @@
      * (import and set up stores)
      */
     import { useUserStore } from '../stores/useUserStore';
+    import { useEventsStore } from '../stores/useEventsStore';
+    import { useSoftwareStore } from '../stores/useSoftwareStore';
+    import { useAdviceStore } from '../stores/useAdviceStore';
+    import { useSchoolsStore } from '../stores/useSchoolsStore';
 
     const userStore = useUserStore();
+    const eventStore = useEventsStore();
+    const softwareStore = useSoftwareStore();
+    const adviceStore = useAdviceStore();
+    const schoolsStore = useSchoolsStore();
 
     /**
      * SVG's
@@ -52,25 +61,51 @@
         userDetails.email = claims.value.email;
         userDetails.siteId = claims.value.mainsiteid;
         userDetails.roleId = claims.value.mainrolecode;
+
+        checkFirstVisit(claims.value.email);
     };
 
     /**
      * Check if user has an exisitng account
      */
-    const checkFirstVisit = async () => {
-        let emailCheck = await userStore.checkUser(userDetails.email);
-        if (emailCheck.status) {
+    const checkFirstVisit = async (emailAddress) => {
+        let emailCheck = await userStore.checkUser(emailAddress);
+        if (emailCheck.status === true) {
             isFirstVisit.value = false;
-            userStore.loadCurrentUser(isFirstVisit.value.userdata.user_id);
+            userStore.loadCurrentUser(emailCheck.userdata.user_id);
         } else {
             isFirstVisit.value = true;
         }
-
-
     };
 
     getIdToken();
-    checkFirstVisit();
+
+    /**
+     * Data for the cards (hopefully it'll plug straight in)
+     * Events
+     * Software
+     * Advice
+     * Schools
+     */
+
+    const events = ref([]);
+    const software = ref([]);
+    const advice = ref([]);
+    const schools = ref([]);
+
+    const loadDashboardData = async () => {
+        events.value = await eventStore.loadEvents();
+        software.value = await softwareStore.loadArticles();
+        advice.value = await adviceStore.loadDashboardResources();
+        schools.value = await schoolsStore.loadSchools();
+
+        console.log(events.value);
+        console.log(software.value);
+        console.log(advice.value);
+        console.log(schools.value);
+    }
+
+    loadDashboardData();
 
 </script>
 
@@ -94,6 +129,41 @@
             />
         </div>
 
+        <!-- Individual Sections -->
+
+        <SectionHeader
+            :classes="'bg-[#339999]'"
+            :section="'events'"
+            :title="'New Events'"
+            :buttonText="'View all events'"
+        />
+
+        <!-- Events Cards Here -->
+
+        <SectionHeader
+            :classes="'bg-[#1C5CA9]'"
+            :section="'software'"
+            :title="'Top Software'"
+            :buttonText="'View all software'"
+        />
+
+        <!-- Software Cards Here -->
+
+        <SectionHeader
+            :classes="'bg-[#0A7982]'"
+            :section="'advice'"
+            :title="'Advice'"
+            :buttonText="'View all resources'"
+        />
+
+        <!-- Advice Cards Here -->
+
+        <SectionHeader
+            :classes="'bg-[#002858]'"
+            :section="'schools'"
+            :title="'Latest School Profiles'"
+            :buttonText="'View all schools'"
+        />
     </div>
 
 
