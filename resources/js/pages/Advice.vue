@@ -11,9 +11,14 @@ import AdviceCard from "@/js/components/advice/AdviceCard.vue";
 import {serverURL} from "@/js/constants/serverUrl";
 import {axiosFetcher} from "@/js/helpers/fetcher";
 import {useRouter} from "vue-router";
+import axios from "axios";
+import {useUserStore} from "@/js/stores/useUserStore";
+import {storeToRefs} from "pinia";
 
 const router = useRouter()
 const {data: allAdvice, error: adviceError} = useSWRV(`${serverURL}/fetchAdvicePosts`, axiosFetcher)
+
+
 
 const adviceDAG = computed(() => {
     if(allAdvice.value){
@@ -22,7 +27,6 @@ const adviceDAG = computed(() => {
         return []
     }
 })
-
 
 const adviceEducator = computed(() => {
     if(allAdvice.value){
@@ -43,6 +47,41 @@ const advicePartner = computed(() => {
 const handleBrowseAllAdvice = () => {
     router.push('/browse/advice')
 }
+
+const userStore = useUserStore()
+const {userLikeList, userBookmarkList} = storeToRefs(userStore)
+
+const query = {
+    user_id: 2,
+}
+
+/**
+ * Populate user store with all the items they liked. will be moved to dashboard once dashboard is ready
+ * two fields: UserLikeList, userBookmarkList
+ * Notes: Can be awaited and used in a suspense ( good for dashboard )
+ */
+axios.post(`${serverURL}/fetchAllLikes`, query).then(res => {
+    let temp = {}
+    for(let x of res.data){
+        if(!temp[x.post_type]){
+            temp[x.post_type] = []
+        }
+        temp[x.post_type] = [...temp[x.post_type], x.post_id]
+    }
+    userLikeList.value = temp
+})
+
+axios.post(`${serverURL}/fetchAllBookmarks`, query).then(res => {
+    let temp = {}
+    for(let x of res.data){
+        if(!temp[x.post_type]){
+            temp[x.post_type] = []
+        }
+        temp[x.post_type] = [...temp[x.post_type], x.post_id]
+    }
+    userBookmarkList.value = temp
+})
+
 
 </script>
 
