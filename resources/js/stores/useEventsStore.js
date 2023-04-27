@@ -13,13 +13,16 @@ export const useEventsStore = defineStore('events', {
     },
 
     actions: {
-        loadEvents() {
-            axios.get('http://localhost:8000/api/fetchEventPosts').then(res => {
-                console.log(res.data);
-                this.events = res.data;
-            }).catch(err => {
-                console.log('There was an error!');
-                console.error(err);
+        async loadEvents() {
+            return new Promise(async (resolve, reject) => {
+                await axios.get('http://localhost:8000/api/fetchEventPosts').then(res => {
+                    this.events = res.data;
+                    resolve(res.data);
+                }).catch(err => {
+                    console.log('There was an error!');
+                    console.error(err);
+                    reject(err.code);
+                })
             })
         }
     }

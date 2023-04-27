@@ -14,22 +14,21 @@ export const useAdviceStore = defineStore('advice', {
 
     actions: {
         async loadDashboardResources() {
-            await axios.get('http://localhost:8000/api/fetchAdvicePosts').then(response => {
-                console.log(response);
-                const dashboardAdvice = [];
-                response.data.forEach( async advice => {
-                    // if (advice.advice_type === 'Dashboard Featured') {
+            return new Promise(async (resolve, reject) => {
+                await axios.get('http://localhost:8000/api/fetchAdvicePosts').then(response => {
+                    const dashboardAdvice = [];
+                    response.data.forEach( async advice => {
                         dashboardAdvice.push(advice);
-                        // console.log(advice);
-                    // }
-                });
-                this.resources = dashboardAdvice;
+                    });
+                    this.resources = dashboardAdvice;
 
-                // this.resources = response.data;
-            }).catch(error => {
-                console.log('Sorry, there was a problem retrieving the Advice Articles');
-                console.error(error);
-            })
+                    resolve(dashboardAdvice);
+                }).catch(error => {
+                    console.log('Sorry, there was a problem retrieving the Advice Articles');
+                    console.error(error);
+                    reject(error.code);
+                });
+            });
         }
     }
 })
