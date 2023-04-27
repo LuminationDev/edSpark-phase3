@@ -43,7 +43,7 @@ const featuredSitesData = computed(() => {
     else{
         return schoolContentArrParser(featuredSites.value)
     }
-})
+});
 
 onBeforeMount(async () => {
     /**
@@ -114,21 +114,9 @@ const handleSaveWelcomePopup = (data)=>{
             <SectionHeader
                 :classes="'bg-[#002858]'"
                 :section="'schools'"
-            >
-                <template #header>
-                    <h3 class="text-white text-[36px] font-semibold self-center section-header uppercase">
-                        Featured Schools
-                    </h3>
-                </template>
-                <template #cta>
-                    <button
-                        class="bg-white px-4 py-2 rounded-sm border-2 border-[#002858] text-[#002858] text-[15px] font-medium cursor-pointer hover:text-[#0b1829] hover:border-2 hover:border-[#0b1829]"
-                        @click="handleBrowseAllSchool"
-                    >
-                        View all schools
-                    </button>
-                </template>
-            </SectionHeader>
+                :title="'Featured Schools'"
+                :buttonText="'View all schools'"
+            />
             <div class="grid grid-cols-4 gap-[24px] w-full px-20 pt-8 ">
                 <div
                     v-for="(school,index) in featuredSitesData.splice(0,4)"

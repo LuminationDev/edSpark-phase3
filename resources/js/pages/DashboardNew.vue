@@ -8,6 +8,14 @@
     import SectionHeader from '../components/global/SectionHeader.vue';
 
     /**
+     * Card Components /sections
+     */
+    import SoftwareDashboard from '../components/dashboard/SoftwareDashboard.vue';
+    import AdviceDashboard from '../components/dashboard/AdviceDashboard.vue';
+    import EventsDashboard from '../components/dashboard/EventsDashboard.vue';
+    import SchoolsDashboard from '../components/dashboard/SchoolsDashboard.vue';
+
+    /**
      * Depends on
      */
     import { ref, reactive, watch,  } from 'vue';
@@ -87,23 +95,20 @@
      * Advice
      * Schools
      */
-
     const events = ref([]);
-    const software = ref([]);
+    const softwares = ref([]);
     const advice = ref([]);
     const schools = ref([]);
 
     const loadDashboardData = async () => {
         events.value = await eventStore.loadEvents();
-        software.value = await softwareStore.loadArticles();
+        softwares.value = await softwareStore.loadArticles();
         advice.value = await adviceStore.loadDashboardResources();
         schools.value = await schoolsStore.loadSchools();
 
-        console.log(events.value);
-        console.log(software.value);
-        console.log(advice.value);
-        console.log(schools.value);
-    }
+
+        console.log(typeof schools.value);
+    };
 
     loadDashboardData();
 
@@ -139,6 +144,9 @@
         />
 
         <!-- Events Cards Here -->
+        <EventsDashboard
+            :events="events"
+        />
 
         <SectionHeader
             :classes="'bg-[#1C5CA9]'"
@@ -148,6 +156,9 @@
         />
 
         <!-- Software Cards Here -->
+        <SoftwareDashboard
+            :softwares="softwares"
+        />
 
         <SectionHeader
             :classes="'bg-[#0A7982]'"
@@ -157,12 +168,20 @@
         />
 
         <!-- Advice Cards Here -->
+        <AdviceDashboard
+            :advice="advice"
+        />
 
         <SectionHeader
             :classes="'bg-[#002858]'"
             :section="'schools'"
             :title="'Latest School Profiles'"
             :buttonText="'View all schools'"
+        />
+
+        <!-- School Cards Here -->
+        <SchoolsDashboard
+            :schools="schools"
         />
     </div>
 

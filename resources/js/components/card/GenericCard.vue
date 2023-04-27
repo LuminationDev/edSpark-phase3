@@ -80,6 +80,7 @@ const handleDefaultLike = async (data) => {
     await axios.post(likeURL, data )
         .then(res => {
             if(res.data.isLiked){
+                console.log(userLikeList.value);
                 userLikeList.value[post_type].push(data.post_id)
             } else{
                 const indexRemoval = userLikeList.value[post_type].indexOf(data.post_id)
@@ -91,7 +92,8 @@ const handleDefaultLike = async (data) => {
             }
         })
         .catch(err => {
-            console.log(err)
+            console.log(err);
+            console.error(err.code)
         })
 }
 
@@ -117,13 +119,15 @@ const handleDefaultBookmark = async (data) => {
 
 
 const cardHoverToggle = ref(false)
+
+console.log(props);
 </script>
 
 <template>
     <div
         :class="{'!w-[30%]': numberPerRow === 3,
                  '!w-[22%]': numberPerRow === 4,
-                 '!w-[40%]': numberPerRow === 2,
+                 '!w-[45%]': numberPerRow === 2,
                  '!w-[95%]' : numberPerRow === 1
         }"
         class="GenericCardContainer w-full border-[0.5px] border-black hover:shadow-2xl mx-2 mb-4 flex flex-col min-h-[480px] max-w-[400px] max-h-[480px] group transition-all card_parent cursor-pointer"

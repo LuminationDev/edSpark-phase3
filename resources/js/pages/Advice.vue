@@ -22,7 +22,7 @@ const {data: allAdvice, error: adviceError} = useSWRV(`${serverURL}/fetchAdviceP
 
 const adviceDAG = computed(() => {
     if(allAdvice.value){
-        return allAdvice.value.filter(advice => advice['advice_type'].includes('D.A.G advice'))
+        return allAdvice.value.filter(advice => advice['advice_type'].includes('D.A.G Advice'))
     }else{
         return []
     }
@@ -62,7 +62,7 @@ const query = {
  */
 axios.post(`${serverURL}/fetchAllLikes`, query).then(res => {
     let temp = {}
-    for(let x of res.data){
+    for(let x of res.data.data){
         if(!temp[x.post_type]){
             temp[x.post_type] = []
         }
@@ -73,7 +73,7 @@ axios.post(`${serverURL}/fetchAllLikes`, query).then(res => {
 
 axios.post(`${serverURL}/fetchAllBookmarks`, query).then(res => {
     let temp = {}
-    for(let x of res.data){
+    for(let x of res.data.data){
         if(!temp[x.post_type]){
             temp[x.post_type] = []
         }
@@ -86,24 +86,12 @@ axios.post(`${serverURL}/fetchAllBookmarks`, query).then(res => {
 </script>
 
 <template>
-    <SectionHeader
+    <!-- <SectionHeader
         :classes="'bg-[#002858] !'"
         :section="'advice'"
-    >
-        <template #header>
-            <h3 class="text-white text-[36px] font-semibold self-center section-header uppercase">
-                Advice
-            </h3>
-        </template>
-        <template #cta>
-            <button
-                class="bg-white px-4 py-2 rounded-sm border-2 border-[#002858] text-[#002858] text-[15px] font-medium cursor-pointer hover:text-[#0b1829] hover:border-2 hover:border-[#0b1829]"
-                @click="handleBrowseAllAdvice"
-            >
-                Browse all Advice
-            </button>
-        </template>
-    </SectionHeader>
+        :title="'Advice'"
+        :buttonText="'Browse all resources'"
+    /> -->
     <AdviceHero />
     <div class="DAGAdviceRow AdviceContentContainer flex flex-col h-full px-20">
         <div
