@@ -19,6 +19,8 @@ export const useUserStore = defineStore('user', {
     state: () => ({
         currentUser: useSessionStorage('currentUser', {}),
         userAvatar: useSessionStorage('userAvatar', ''),
+        userLikeList: [],
+        userBookmarkList: []
     }),
 
     getters: {
