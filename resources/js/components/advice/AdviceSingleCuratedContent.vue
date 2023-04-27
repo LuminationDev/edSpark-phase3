@@ -1,26 +1,17 @@
 <script setup>
-import {onBeforeMount, ref, computed, onMounted} from "vue";
+import { ref, computed, onMounted} from "vue";
 import {serverURL} from "@/js/constants/serverUrl";
 import AdviceCard from "@/js/components/advice/AdviceCard.vue";
-
-console.log('hehe')
-
-const allCuratedAdvice = ref([])
+import {axiosFetcher} from "@/js/helpers/fetcher";
+import useSWRV from "swrv";
 
 
-onMounted( async () =>{
-    console.log('inside before mount')
-    await axios.get( `${serverURL}/fetchAdvicePosts`).then(res => {
-        allCuratedAdvice.value = res.data
-    })
+const {data : allCuratedAdvice, error: curatedAdviceError} = useSWRV(`${serverURL}/fetchAdvicePosts`, axiosFetcher)
 
-})
-//TODO - Look at some params. Random two for now
 const twoRecommendation  = computed( () => {
     let temp = []
     if(allCuratedAdvice.value){
         for(let i= 0; i < 2 ; i++){
-            console.log(allCuratedAdvice.value[Math.floor(Math.random() * allCuratedAdvice.value.length)])
             temp.push(allCuratedAdvice.value[Math.floor(Math.random() * allCuratedAdvice.value.length)])
         }
     }
@@ -30,7 +21,7 @@ const twoRecommendation  = computed( () => {
 </script>
 <template>
     <div
-        v-if="allCuratedAdvice.length > 0"
+        v-if="allCuratedAdvice"
         class="adviceSingleCuratedContentContainer flex flex-col justify-center items-center ml-4 px-10 rounded bg-orange-50"
     >
         <div class="curatedResourcesTitle uppercase font-bold text-2xl text-center py-8 my-2">

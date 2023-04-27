@@ -38,7 +38,6 @@ const formattedDate = computed(() =>{
     const date = new Date(Date.parse(props.displayDate))
     return date.toDateString()
 })
-// const tempCoverImage ='http://localhost:8000/storage//uploads\/school\/edspark-school-afc6de98542b2aaac72bc1402a51530c.webp'
 
 const cardHoverToggle = ref(false)
 </script>
@@ -47,15 +46,16 @@ const cardHoverToggle = ref(false)
     <div
         :class="{'!w-[30%]': numberPerRow === 3,
                  '!w-[22%]': numberPerRow === 4,
-                 '!w-[40%]': numberPerRow === 2
+                 '!w-[40%]': numberPerRow === 2,
+                 '!w-[95%]' : numberPerRow === 1
         }"
-        class="GenericCardContainer w-full border-2 border-black rounded mx-2 mb-4 flex flex-col min-h-[500px] max-w-[400px] max-h-[500px] group transition-all card_parent cursor-pointer"
+        class="GenericCardContainer w-full border-[0.5px] border-black hover:shadow-2xl mx-2 mb-4 flex flex-col min-h-[450px] max-w-[400px] max-h-[450px] group transition-all card_parent cursor-pointer"
         @mouseenter="cardHoverToggle = true"
         @click="clickCallback"
     >
         <div
-            class="cardTopCoverImage relative min-h-[35%] bg-cover group-hover:min-h-[0%] group-hover:h-0 transition-all"
-            :class="`bg-[url('${imageURL}${coverImage}')]`"
+            class="cardTopCoverImage relative min-h-[35%] bg-cover bg-center group-hover:min-h-[0%] group-hover:h-0 transition-all"
+            :class="`bg-[url('${imageURL}/${coverImage.replace(' ','%20' )}')]`"
         >
             <template
                 v-if="$slots.typeTag"
@@ -67,7 +67,6 @@ const cardHoverToggle = ref(false)
 
             <div
                 v-if="$slots.icon"
-                class="icon absolute right-2 bottom-2 group-hover:-bottom-28"
             >
                 <slot name="icon" />
             </div>
@@ -75,7 +74,7 @@ const cardHoverToggle = ref(false)
         <div class="cardContent flex flex-col p-4 overflow-hidden transition-all ">
             <div
                 v-if="props.title"
-                class="cardTitle text-xl font-bold uppercase transition-all group-hover:w-3/4"
+                class="cardTitle text-xl font-bold uppercase transition-all mb-4 group-hover:w-3/4"
             >
                 {{ props.title }}
             </div>

@@ -27,11 +27,11 @@ const props = defineProps({
         default: 'button'
     }
 })
-const onClick = async (): Promise<void> => {
+const onClick = async () => {
     await asyncCall()
 }
 
-const asyncCall = (): Promise<void> => {
+const asyncCall = () => {
     return new Promise((resolve) => {
         resolve(props.callback())
     }).then()
