@@ -77,22 +77,16 @@ const formattedDate = computed(() =>{
 
 const handleDefaultLike = async (data) => {
     const {post_type} = props.likeBookmarkData
-    console.log('clicked like buttoon '  + data.post_id)
     await axios.post(likeURL, data )
         .then(res => {
-            console.log(res.data.message)
             if(res.data.isLiked){
-                console.log('yeah liked')
                 userLikeList.value[post_type].push(data.post_id)
             } else{
-                console.log('unliked something ' + data.post_id )
-                console.log(data.post_id)
-                console.log(userLikeList.value[post_type])
                 const indexRemoval = userLikeList.value[post_type].indexOf(data.post_id)
                 if(indexRemoval !== -1){
                     userLikeList.value[post_type].splice(indexRemoval, 1)
                 } else{
-                    console.log('id not found hehe ' + data.post_id)
+                    console.log('tried to unlike something that doesnt exist in the database')
                 }
             }
         })
@@ -105,15 +99,15 @@ const handleDefaultBookmark = async (data) => {
     const {post_type} = props.likeBookmarkData
     await axios.post(bookmarkURL, data )
         .then(res => {
-            console.log(res.data.message)
             if(res.data.isBookmarked){
-                console.log('bookmarked ' + data.post_id)
                 userBookmarkList.value[post_type].push(data.post_id)
-
             } else{
-                console.log('unbookmarked ' + data.post_id)
                 const indexRemoval = userBookmarkList.value[post_type].indexOf(data.post_id)
-                userBookmarkList.value[post_type].splice(indexRemoval, 1)
+                if(indexRemoval !== -1){
+                    userBookmarkList.value[post_type].splice(indexRemoval, 1)
+                } else{
+                    console.log('tried to unbookmark something that doesnt exist in the database')
+                }
             }
         })
         .catch(err => {

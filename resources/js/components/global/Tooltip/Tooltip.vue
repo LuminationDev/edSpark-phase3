@@ -6,7 +6,7 @@ defineProps({
     },
 
     toolTipMargin: {
-        type: String,
+        type: [String, Object],
         default: '-ml-1.5'
     }
 })
