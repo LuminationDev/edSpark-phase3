@@ -28,8 +28,8 @@ export const useSoftwareStore = defineStore('software', {
                     console.log('Sorry, there was a problem retrieving the Advice Articles');
                     console.error(error);
                     reject(error.code);
-                })
-            })
+                });
+            });
         }
     }
 })
