@@ -147,7 +147,6 @@ export default {
          *          Darren.Macolino169@schools.sa.edu.au
          *          ClintonTeacherB.Williams199@test-schools.sa.edu.au
          */
-
         const createNewUser = async (data) => {
             // Get the site according to the ID
             const sites = siteStore.getSites;
@@ -274,8 +273,6 @@ export default {
         // this.role = this.claims.mainrolecode;
         this.role = this.allRoles.filter(role => role.role_name === this.claims.mainrolecode);
         this.site = this.claims.mainsiteid;
-
-
         console.log(this.email);
         const checkFirstVisit = await this.userStore.checkUser(this.email);
 
@@ -479,10 +476,10 @@ export default {
                         </select> -->
                         <SearchDropdown
                             class="searchable_dropdown"
-                            :options="this.allRoles"
+                            :options="allRoles"
                             :placeholder="'Search for your role...'"
                             name="site"
-                            :closeOnOutsideClick="true"
+                            :close-on-outside-click="true"
                             @selected="onSelectedOptionRoles"
                         />
                     </div>
@@ -494,7 +491,7 @@ export default {
                             :options="this.allSites"
                             :placeholder="'Search for your site...' "
                             name="site"
-                            :closeOnOutsideClick="true"
+                            :close-on-outside-click="true"
                             @selected="onSelectedOptionSites"
                         />
                     </div>
@@ -758,7 +755,10 @@ export default {
                             <ContentSection>
                                 <template #cover>
                                     <!-- TODO: get the images for each resource type -->
-                                    <div :class="`bg-[url(${imageURL}/${software.cover_image})]`" class="h-36 transition-all bg-cover bg-no-repeat bg-center group-hover:h-0"></div>
+                                    <div
+                                        :class="`bg-[url(${imageURL}/${software.cover_image})]`"
+                                        class="h-36 transition-all bg-cover bg-no-repeat bg-center group-hover:h-0"
+                                    />
                                     <!-- <div
                                         :class="`bg-[url('http://localhost:8000/storage/uploads/software/edSpark-software-boy-with-virtual-reality-headset-school%203.jpg')]`"
                                         class="h-36 group-hover:h-0 transition-all"
@@ -768,10 +768,16 @@ export default {
                                     v-if="software.software_type"
                                     #typeTag
                                 >
-                                    <div class="absolute -top-3 -right-3" v-if="software.software_type === 'Department Approved'">
+                                    <div
+                                        v-if="software.software_type === 'Department Approved'"
+                                        class="absolute -top-3 -right-3"
+                                    >
                                         <DepartmentApproved />
                                     </div>
-                                    <div class="absolute -top-3 -right-3" v-if="software.software_type === 'Department Provided'">
+                                    <div
+                                        v-if="software.software_type === 'Department Provided'"
+                                        class="absolute -top-3 -right-3"
+                                    >
                                         <DepartmentProvided />
                                     </div>
                                 </template>
@@ -862,7 +868,10 @@ export default {
                         >
                             <ContentSection>
                                 <template #cover>
-                                    <div :class="`bg-[url(${imageURL}/${resource.cover_image})]`" class="h-36 transition-all bg-cover bg-no-repeat bg-center group-hover:h-0"></div>
+                                    <div
+                                        :class="`bg-[url(${imageURL}/${resource.cover_image})]`"
+                                        class="h-36 transition-all bg-cover bg-no-repeat bg-center group-hover:h-0"
+                                    />
                                     <!-- <div :class="`bg-[url('${resource.cover}')]`" class="h-36 transition-all group-hover:h-0"></div> -->
                                     <!-- <div
                                         :class="`bg-[url('https://picsum.photos/200/300')]`"
@@ -930,7 +939,10 @@ export default {
                     <router-link :to="`/schools/${school.name}`">
                         <ContentSection>
                             <template #cover>
-                                <div :class="`bg-[url(${imageURL}/${school.cover_image})]`" class="h-36 transition-all bg-cover bg-no-repeat bg-center group-hover:h-0"></div>
+                                <div
+                                    :class="`bg-[url(${imageURL}/${school.cover_image})]`"
+                                    class="h-36 transition-all bg-cover bg-no-repeat bg-center group-hover:h-0"
+                                />
 
                                 <!-- <div
                                     :class="`bg-[url('${school.cover}')]`"
@@ -1000,7 +1012,6 @@ export default {
                                                 <VRIcon /><SchoolsTech :tech-hover="tech" />
                                             </div>
                                         </div>
-
                                     </div>
                                 </div>
                             </template>

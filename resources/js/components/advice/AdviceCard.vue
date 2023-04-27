@@ -47,7 +47,7 @@ const handleClickAdviceCard = () => {
         :click-callback="handleClickAdviceCard"
     >
         <template
-            v-if="advice_type"
+            v-if="advice_type.length > 0"
             #typeTag
         >
             <AdviceTypeTag :type-tag="advice_type" />
