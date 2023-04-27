@@ -43,6 +43,7 @@ export const useUserStore = defineStore('user', {
         },
 
         async checkUser(email) {
+            console.log(email);
             return new Promise(async resolve => {
                 console.log('HERE YOU ARE!!!!!');
                 await axios({

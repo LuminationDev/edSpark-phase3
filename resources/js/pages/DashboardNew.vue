@@ -52,14 +52,17 @@
         userDetails.email = claims.value.email;
         userDetails.siteId = claims.value.mainsiteid;
         userDetails.roleId = claims.value.mainrolecode;
+
+        checkFirstVisit(claims.value.email);
     };
 
     /**
      * Check if user has an exisitng account
      */
-    const checkFirstVisit = async () => {
-        let emailCheck = await userStore.checkUser(userDetails.email);
-        if (emailCheck.status) {
+    const checkFirstVisit = async (emailAddress) => {
+        console.log(emailAddress);
+        let emailCheck = await userStore.checkUser(emailAddress);
+        if (emailCheck.status === true) {
             isFirstVisit.value = false;
             userStore.loadCurrentUser(isFirstVisit.value.userdata.user_id);
         } else {
@@ -69,8 +72,9 @@
 
     };
 
+    console.log(isFirstVisit.value);
+
     getIdToken();
-    checkFirstVisit();
 
 </script>
 
