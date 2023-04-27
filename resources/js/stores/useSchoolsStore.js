@@ -18,12 +18,10 @@ export const useSchoolsStore = defineStore('schools', {
 
     actions: {
         async loadSchools() {
-            return new Promise(async (resolve, reject) => {
-                await axios.get(`http://localhost:8000/api/fetchAllSchools`).then(res => {
-                    this.schools = res.data;
-                    resolve(res.data);
-                });
-            })
+            return await axios.get(`http://localhost:8000/api/fetchAllSchools`).then(res => {
+                this.schools = res.data;
+                return res.data;
+            });
         },
 
         /**

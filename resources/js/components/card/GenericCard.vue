@@ -40,6 +40,8 @@ const formattedDate = computed(() =>{
 })
 
 const cardHoverToggle = ref(false)
+
+console.log(props);
 </script>
 
 <template>
