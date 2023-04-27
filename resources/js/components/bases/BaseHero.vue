@@ -38,7 +38,7 @@ const heroBackground = computed(() => {
         <div
             :class="'BaseHeroClipThisPath pb-[36px] pt-[190px] px-[48px] grid grid-cols-8 bg-cover h-full relative '+ heroBackground"
         >
-            <div class="BaseHeroBgOverlay absolute w-full h-full bg-gradient-to-r from-black/75 z-10"></div>
+            <div class="BaseHeroBgOverlay absolute w-full h-full bg-gradient-to-r from-black/75 z-10" />
             <div
                 v-if="$slots.titleText || $slots.subtitleText1 || $slots.subtitleText2"
                 class="col-span-5 p-2 relative z-20"
@@ -49,7 +49,8 @@ const heroBackground = computed(() => {
                     <slot name="titleText" />
                 </h1>
 
-                <p class="text-white text-[18px] font-normal pb-4">
+                <p class="text-white flex flex-row gap-4 text-[18px] font-normal pb-4">
+                    <slot name="authorName" />
                     <slot name="subtitleText1" />
                 </p>
 
@@ -64,6 +65,9 @@ const heroBackground = computed(() => {
             </div>
         </div>
         <ArticleSingleSwoosh
+            :color1="props.color1"
+            :color2="props.color2"
+            :color3="props.color3"
             class="absolute w-full -bottom-2"
         />
     </div>
