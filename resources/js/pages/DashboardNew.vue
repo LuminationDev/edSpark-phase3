@@ -18,8 +18,16 @@
      * (import and set up stores)
      */
     import { useUserStore } from '../stores/useUserStore';
+    import { useEventsStore } from '../stores/useEventsStore';
+    import { useSoftwareStore } from '../stores/useSoftwareStore';
+    import { useAdviceStore } from '../stores/useAdviceStore';
+    import { useSchoolsStore } from '../stores/useSchoolsStore';
 
     const userStore = useUserStore();
+    const eventStore = useEventsStore();
+    const softwareStore = useSoftwareStore();
+    const adviceStore = useAdviceStore();
+    const schoolsStore = useSchoolsStore();
 
     /**
      * SVG's
@@ -71,6 +79,33 @@
     };
 
     getIdToken();
+
+    /**
+     * Data for the cards (hopefully it'll plug straight in)
+     * Events
+     * Software
+     * Advice
+     * Schools
+     */
+
+    const events = ref([]);
+    const software = ref([]);
+    const advice = ref([]);
+    const schools = ref([]);
+
+    const loadDashboardData = async () => {
+        events.value = await eventStore.loadEvents();
+        software.value = await softwareStore.loadArticles();
+        advice.value = await adviceStore.loadDashboardResources();
+        schools.value = await schoolsStore.loadSchools();
+
+        console.log(events.value);
+        console.log(software.value);
+        console.log(advice.value);
+        console.log(schools.value);
+    }
+
+    loadDashboardData();
 
 </script>
 
