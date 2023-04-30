@@ -39,7 +39,7 @@
         "editorjs-inline-font-size-tool": "^1.0.1",
         "font-awesome": "^4.7.0",
         "http-proxy-middleware": "^2.0.6",
-        "pinia": "^2.0.33",
+        "pinia": "^2.0.34",
         "sanitize-html": "^2.10.0",
         "sass": "^1.62.1",
         "search-dropdown-vue": "^1.0.3",
