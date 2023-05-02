@@ -15,6 +15,7 @@ use App\Http\Controllers\TechController;
 use App\Http\Controllers\ImageController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\LikeBookmarkController;
+use App\Http\Controllers\NotificationController;
 
 /*
 |--------------------------------------------------------------------------
@@ -70,4 +71,9 @@ Route::middleware('api')->group(function() {
     Route::post('fetchAllBookmarks', [LikeBookmarkController::class, 'fetchAllBookmarks']);
     Route::post('fetchAllLikesByType', [LikeBookmarkController::class, 'fetchAllLikesByType']);
     Route::post('fetchAllBookmarksByType', [LikeBookmarkController::class, 'fetchAllBookmarksByType']);
+
+    // Notifications
+    Route::get('fetchAllNotifications', [NotificationController::class, 'getAllNotifications']);
+    Route::get('fetchSingleNotification', [NotificationController::class, 'getSingleNotification']);
+    Route::get('fetchNotificationByType', [NotificationController::class, 'getNotificationByType']);
 });
