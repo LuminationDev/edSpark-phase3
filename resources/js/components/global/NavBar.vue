@@ -56,12 +56,20 @@ export default {
 
     data() {
         return {
-            currentUser: {}
+            currentUser: {},
+            avatarUrl: ''
         }
     },
 
     mounted() {
-        this.currentUser = this.userStore.getUser
+        this.currentUser = this.userStore.getUser;
+
+        this.currentUser.metadata.forEach(meta => {
+            if (meta.user_meta_key === 'userAvatar') {
+                console.log(meta);
+                this.avatarUrl = meta.user_meta_value[0].replace(/\\\//g, "/");;
+            }
+        })
     },
 
     methods: {
@@ -154,16 +162,16 @@ export default {
         <!-- <div @click.prevent="handleAvatar" class="w-fit h-fit" >
 
         </div> -->
-        <div class="w-[48px] h-[48px] absolute top-64 right-96">
-            <!-- <div
+        <!-- <div class="w-[48px] h-[48px] absolute top-64 right-96">
+            <div
                 class="z-50 relative h-full w-full flex rounded-full cursor-pointer hover:shadow-2xl bg-cover bg-no-repeat bg-center"
                 @click.prevent="handleAvatar"
             >
                 <img :src="`${imageURL}/${avatarUrl}`" alt="user avatar">
-            </div> -->
+            </div>
 
             <div
-                v-show="profileDropdown"
+                v-if="profileDropdown"
                 class="relative w-full h-full z-40"
                 @mouseleave="handleAvatar"
             >
@@ -195,10 +203,11 @@ export default {
                     </div>
                 </div>
             </div>
-        </div>
-        <profileDropdown
+        </div> -->
+        <ProfileDropdown
             :current-user="currentUser"
             :profile-dropdown="profileDropdown"
+            :avatarUrl="avatarUrl"
             @handleAvatarClick="handleAvatarClick"
         />
 

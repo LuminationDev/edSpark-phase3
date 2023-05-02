@@ -15,8 +15,9 @@ import {
     Partners,
     Events,
     SchoolSingle,
-    UserProfile
-} from './pages'
+    UserProfile,
+} from './pages';
+import DashboardNew from './pages/DashboardNew.vue';
 import BrowseSchools from "@/js/pages/BrowseSchools.vue";
 import AdviceSingle from "@/js/pages/AdviceSingle.vue";
 import SoftwareSingle from "@/js/components/software/softwareSingle/SoftwareSingle.vue";
@@ -33,7 +34,8 @@ const router = createRouter({
         {
             name: 'dashboard',
             path: '/dashboard',
-            component: Dashboard
+            component: DashboardNew
+            // component: Dashboard
             // component: LoginCallback
         },
         {
@@ -127,5 +129,3 @@ const router = createRouter({
 router.beforeEach(navigationGuard);
 
 export default router;
-
-// AuthError: Custom scopes are not allowed for this request.
