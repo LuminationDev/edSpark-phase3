@@ -77,4 +77,9 @@ class User extends Authenticatable implements HasName
     {
         return $this->hasMany(Like::class);
     }
+
+    public function notifications()
+    {
+        return $this->hasMany(Notification::class);
+    }
 }
