@@ -1,3 +1,4 @@
+
 <?php
 
 use Illuminate\Http\Request;
@@ -48,6 +49,7 @@ Route::middleware('api')->group(function() {
     Route::post('getUserMetadata',[UserController::class, 'getUserMetadata'] );
 
     Route::get('fetchRoleByCode/{roleCode}', [RoleController::class, 'fetchRoleByCode']);
+    Route::get('fetchAllRoles', [RoleController::class, 'fetchAllRoles']);
 
     // Product Management
     Route::get('fetchAllBrands', [ProductController::class, 'fetchAllBrands']);

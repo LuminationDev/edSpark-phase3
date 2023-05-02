@@ -17,17 +17,7 @@
                 console.log('Next step')
                 this.activeStepIndex++;
 
-                this.$emit('handleStep', this.activeStepIndex)
-
-                // if(!this.steps[this.activeStepIndex].step_valid){
-                //     this.$emit('valdiateStep', this.stepIndex);
-                //     return false;
-                // } else {
-
-                // }
-
-                // console.log('step length', this.steps.length);
-                // console.log('active step', this.activeStepIndex);
+                this.$emit('handleStep', this.activeStepIndex);
                 console.log('Stop when true', this.activeStepIndex === this.steps.length)
 
                 if(this.activeStepIndex === this.steps.length){

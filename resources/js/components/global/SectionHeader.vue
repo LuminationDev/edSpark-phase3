@@ -1,33 +1,35 @@
-<script>
-import EventsCollection from '../svg/EventsCollection.vue';
-import SoftwareCollection from '../svg/SoftwareCollection.vue';
-import AdviceCollection from '../svg/AdviceCollection.vue';
-import SchoolsCollection from '../svg/SchoolsCollection.vue';
+<script setup>
+    import EventsCollection from '../svg/EventsCollection.vue';
+    import SoftwareCollection from '../svg/SoftwareCollection.vue';
+    import AdviceCollection from '../svg/AdviceCollection.vue';
+    import SchoolsCollection from '../svg/SchoolsCollection.vue';
 
-export default {
+    const props = defineProps({
+        classes: {
+            type: String,
+            required: false
+        },
+        section: {
+            type: String,
+            required: false
+        },
+        title: {
+            type: String,
+            required: true
+        },
+        buttonText: {
+            type: String,
+            required: true
+        }
+    });
 
-    components: {
-        EventsCollection,
-        SoftwareCollection,
-        AdviceCollection,
-        SchoolsCollection
-    },
-
-    props: {
-        classes: String,
-        section: String
-    },
-
-    mounted() {
-    },
-}
 </script>
 
 <template>
     <div class="mt-20 px-20">
         <div
             :class="[classes]"
-            class="flex flex-row justify-between h-[72px] w-full px-12 relative group/headerbg"
+            class="flex flex-row justify-between h-[72px] w-full px-12 relative group/headerbg place-items-center"
         >
             <EventsCollection
                 v-if="section === 'events'"
@@ -46,10 +48,12 @@ export default {
                 class="absolute top-1/2 -translate-y-1/2 right-16 group-hover/headerbg:scale-125 transition-all duration-500"
             />
 
-            <slot name="header" />
-            <div class="self-center z-10">
-                <slot name="cta" />
-            </div>
+            <h3 class="text-white text-[36px] font-semibold self-center section-header uppercase">
+                {{ title }}
+            </h3>
+            <button class="bg-white px-4 h-fit py-2 rounded-sm border-2 z-20 border-[#339999] text-[#339999] text-[15px] font-medium cursor-pointer hover:text-[#307474] hover:border-2 hover:border-[#307474]">
+                {{ buttonText }}
+            </button>
         </div>
     </div>
 </template>

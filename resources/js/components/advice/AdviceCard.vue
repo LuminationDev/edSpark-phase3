@@ -29,11 +29,18 @@ const randomIconName = computed(() => {
 const handleClickAdviceCard = () => {
     /**
      * id inside param must be the same as the route path specified for advice-single
+     * which is /advice/resources/:id
      */
-    // which is /advice/resources/:id
     router.push({ name:"advice-single", params: {id: props.adviceContent.post_id, content: JSON.stringify(props.adviceContent) }})
 
 }
+
+const likeBookmarkData = {
+    post_id: props.adviceContent.post_id,
+    user_id: 2,
+    post_type: 'advice'
+}
+
 </script>
 
 <template>
@@ -45,6 +52,7 @@ const handleClickAdviceCard = () => {
         :number-per-row="numberPerRow"
         :cover-image="cover_image"
         :click-callback="handleClickAdviceCard"
+        :like-bookmark-data="likeBookmarkData"
     >
         <template
             v-if="advice_type.length > 0"

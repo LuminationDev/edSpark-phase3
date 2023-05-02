@@ -18,13 +18,16 @@ export const useSiteStore = defineStore('sites', {
 
     actions: {
         loadSites() {
-            console.log('Hi there');
-            axios.get('http://localhost:8000/api/fetchAllSites').then(res => {
-                console.log(res);
-                this.sites = res.data;
-            }).catch(err => {
-                console.error(err);
-                console.log('Theres an error');
+            return new Promise( async (resolve, reject) => {
+                await axios.get('http://localhost:8000/api/fetchAllSites').then(res => {
+                    // console.log(res);
+                    resolve(res.data);
+                    // this.sites = res.data;
+                }).catch(err => {
+                    console.error(err);
+                    console.log('Theres an error');
+                    reject(err.code);
+                })
             })
         },
 

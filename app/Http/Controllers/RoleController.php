@@ -23,4 +23,34 @@ class RoleController extends Controller
             return response()->json('No role found');
         }
     }
+
+    public function fetchAllRoles()
+    {
+        $roles = Role::all();
+        $data = [];
+
+        if ($roles) {
+            foreach($roles as $role) {
+
+                if (
+                    $role->role_name !== 'Superadmin' ||
+                    $role->role_name !== 'Administrator' ||
+                    $role->role_name !== 'Editor' ||
+                    $role->role_name !== 'Viewer' ||
+                    $role->role_name !== 'Moderator'
+                ) {
+                    $result = [
+                        'id' => $role->id,
+                        'role_name' => $role->role_name,
+                        'role_value' => $role->role_value
+                    ];
+                    $data[] = $result;
+                }
+
+            }
+        }
+
+        return response()->json($data);
+
+    }
 }

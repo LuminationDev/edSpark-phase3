@@ -11,18 +11,22 @@ import AdviceCard from "@/js/components/advice/AdviceCard.vue";
 import {serverURL} from "@/js/constants/serverUrl";
 import {axiosFetcher} from "@/js/helpers/fetcher";
 import {useRouter} from "vue-router";
+import axios from "axios";
+import {useUserStore} from "@/js/stores/useUserStore";
+import {storeToRefs} from "pinia";
 
 const router = useRouter()
 const {data: allAdvice, error: adviceError} = useSWRV(`${serverURL}/fetchAdvicePosts`, axiosFetcher)
 
+
+
 const adviceDAG = computed(() => {
     if(allAdvice.value){
-        return allAdvice.value.filter(advice => advice['advice_type'].includes('D.A.G advice'))
+        return allAdvice.value.filter(advice => advice['advice_type'].includes('D.A.G Advice'))
     }else{
         return []
     }
 })
-
 
 const adviceEducator = computed(() => {
     if(allAdvice.value){
@@ -44,27 +48,50 @@ const handleBrowseAllAdvice = () => {
     router.push('/browse/advice')
 }
 
+const userStore = useUserStore()
+const {userLikeList, userBookmarkList} = storeToRefs(userStore)
+
+const query = {
+    user_id: 2,
+}
+
+/**
+ * Populate user store with all the items they liked. will be moved to dashboard once dashboard is ready
+ * two fields: UserLikeList, userBookmarkList
+ * Notes: Can be awaited and used in a suspense ( good for dashboard )
+ */
+axios.post(`${serverURL}/fetchAllLikes`, query).then(res => {
+    let temp = {}
+    for(let x of res.data.data){
+        if(!temp[x.post_type]){
+            temp[x.post_type] = []
+        }
+        temp[x.post_type] = [...temp[x.post_type], x.post_id]
+    }
+    userLikeList.value = temp
+})
+
+axios.post(`${serverURL}/fetchAllBookmarks`, query).then(res => {
+    let temp = {}
+    for(let x of res.data.data){
+        if(!temp[x.post_type]){
+            temp[x.post_type] = []
+        }
+        temp[x.post_type] = [...temp[x.post_type], x.post_id]
+    }
+    userBookmarkList.value = temp
+})
+
+
 </script>
 
 <template>
-    <SectionHeader
+    <!-- <SectionHeader
         :classes="'bg-[#002858] !'"
         :section="'advice'"
-    >
-        <template #header>
-            <h3 class="text-white text-[36px] font-semibold self-center section-header uppercase">
-                Advice
-            </h3>
-        </template>
-        <template #cta>
-            <button
-                class="bg-white px-4 py-2 rounded-sm border-2 border-[#002858] text-[#002858] text-[15px] font-medium cursor-pointer hover:text-[#0b1829] hover:border-2 hover:border-[#0b1829]"
-                @click="handleBrowseAllAdvice"
-            >
-                Browse all Advice
-            </button>
-        </template>
-    </SectionHeader>
+        :title="'Advice'"
+        :buttonText="'Browse all resources'"
+    /> -->
     <AdviceHero />
     <div class="DAGAdviceRow AdviceContentContainer flex flex-col h-full px-20">
         <div
