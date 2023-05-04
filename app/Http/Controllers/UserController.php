@@ -222,25 +222,68 @@ class UserController extends Controller
 
             $error = '';
 
-            if ($data) {
-                // TODO update user table
-                try{
-                    User::where('id', '=', $userId)
-                        ->update([$data['updateField'] => $data['updateValue']]);
-                    $updatedUser = User::find($userId);
-                } catch (Exception $e){
-                    $error = $e->getMessage();
-                }
-            }
+            // if ($data) {
+            //     // TODO update user table
+            //     try{
+            //         User::where('id', '=', $userId)
+            //             ->update([$data['updateField'] => $data['updateValue']]);
+            //         $updatedUser = User::find($userId);
+            //     } catch (Exception $e){
+            //         $error = $e->getMessage();
+            //     }
+            // }
 
             if ($metaData) {
                 // TODO update user meta table
                 try {
-                    Usermeta::where('user_id', '=', $userId)
-                        ->update([
-                            'user_meta_key' => $metaData['updateField'],
-                            'user_meta_value' => implode(', ', $metaData['updateValue']),
-                        ]);
+
+                    // $checkMetaData = Usermeta::where('user_id', '=', $userId)->where('user_meta_key', '=', $metaData['updateField'])->get();
+                    $checkUserMetaData = Usermeta::where('user_id', '=', $userId)->get();
+
+                    if ($checkUserMetaData) {
+
+                        $checkMetaData = Usermeta::where('user_meta_key', '=', $metaData['updateField'])->get();
+                        // dd($checkMetaData);
+                        if ($checkMetaData) {
+                            dd('aa');
+                            $checkMetaData::update([
+                                'user_meta_key' => $metaData['updateField'],
+                                'user_meta_value' => (is_string($metaData['updateValue'])) ? $metaData['updateValue'] : implode(', ', $metaData['updateValue'])
+                                // 'user_meta_value' => implode(', ', $metaData['updateValue']),
+                            ]);
+                        } else {
+                            dd('bb');
+                            Usermeta::create([
+                                'user_meta_key' => $metaData['updateField'],
+                                'user_meta_value' => (is_string($metaData['updateValue'])) ? $metaData['updateValue'] : implode(', ', $metaData['updateValue'])
+                            ]);
+                        }
+
+                    } else {
+
+                    }
+
+                    // dd($checkMetaData);
+                    // if($checkMetaData) {
+                    //     dd('aa');
+                    //     // Usermeta::where('user_id', '=', $userId)->where('user_meta_key', '=', $metaData['updateField'])
+                    //     //     ->update([
+                    //     //         'user_meta_key' => $metaData['updateField'],
+                    //     //         'user_meta_value' => (is_string($metaData['updateValue'])) ? $metaData['updateValue'] : implode(', ', $metaData['updateValue'])
+                    //     //         // 'user_meta_value' => implode(', ', $metaData['updateValue']),
+                    //     //     ]);
+                    //     $checkMetaData::update([
+                    //                 'user_meta_key' => $metaData['updateField'],
+                    //                 'user_meta_value' => (is_string($metaData['updateValue'])) ? $metaData['updateValue'] : implode(', ', $metaData['updateValue'])
+                    //                 // 'user_meta_value' => implode(', ', $metaData['updateValue']),
+                    //             ]);
+                    // }else{
+                    //     dd('bb');
+                    //     Usermeta::create([
+                    //         'user_meta_key' => $metaData['updateField'],
+                    //         'user_meta_value' => (is_string($metaData['updateValue'])) ? $metaData['updateValue'] : implode(', ', $metaData['updateValue'])
+                    //     ]);
+                    // }
                     $updatedMetaData = Usermeta::where('user_id', $userId)->get();
 
                 } catch (Exception $e){

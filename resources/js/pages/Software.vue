@@ -57,8 +57,10 @@ const handleBrowseAllSoftware = () => {
             <SectionHeader
                 :classes="'bg-[#002858]'"
                 :section="'software'"
+                :title="'Software'"
+                :buttonText="'View all software'"
             >
-                <template #header>
+                <!-- <template #header>
                     <h3 class="text-white text-[36px] font-semibold self-center section-header uppercase">
                         Software
                     </h3>
@@ -70,7 +72,7 @@ const handleBrowseAllSoftware = () => {
                     >
                         View all software
                     </button>
-                </template>
+                </template> -->
             </SectionHeader>
             <SoftwareCardGallery />
         </div>

@@ -3,6 +3,7 @@
      * Import Dependencies
      */
     import { ref, computed } from 'vue';
+    import axios from 'axios';
 
     /**
      * Import Stores
@@ -40,6 +41,8 @@
                 return userStore.getUser.metadata
             });
 
+            const imageURL = import.meta.env.VITE_SERVER_IMAGE_API;
+            const serverURL = import.meta.env.VITE_SERVER_URL_API;
 
             return {
                 userStore,
@@ -48,6 +51,8 @@
                 handleSaveChange,
                 updatedName,
                 metadata,
+                imageURL,
+                serverURL
             };
         },
 
@@ -180,7 +185,7 @@
                                     this.subjects = meta.user_meta_value
                                 break;
                             case 'userAvatar':
-                                    this.userAvatar = meta.user_meta_value
+                                    this.userAvatar = meta.user_meta_value[0].replace(/\\\//g, "/");
                                 break;
 
                             default:
@@ -195,12 +200,52 @@
                 }
             },
 
-            handleEditBio() {
+            async saveBioUpdate() {
+                console.log(this.biography);
 
+                await axios({
+                    method: 'POST',
+                    url: `${this.serverURL}/updateUser`,
+                    data: {
+                        id: this.userStore.getUser.id,
+                        metaData:
+                            {
+                                updateField: 'biography',
+                                updateValue: this.biography
+                            }
+
+                    },
+                }).then(response => {
+                    console.log(response);
+                }).catch(error => {
+                    console.log(error);
+                    console.error(error.code);
+                })
             },
 
-            updateYearLevels(year) {
+            async updateYearLevels(year) {
                 this.yearLevels.push(year);
+
+                console.log(year);
+
+                await axios({
+                    method: 'POST',
+                    url: `${this.serverURL}/updateUser`,
+                    data: {
+                        id: this.userStore.getUser.id,
+                        metaData:
+                            {
+                                updateField: 'yearLevels',
+                                updateValue: this.yearLevels
+                            }
+
+                    },
+                }).then(response => {
+                    console.log(response);
+                }).catch(error => {
+                    console.log(error);
+                    console.error(error.code);
+                })
             },
 
             fetchUserSite(siteId) {
@@ -211,6 +256,7 @@
 
         mounted() {
             this.handleMetaData();
+            console.log(this.userAvatar);
         }
 
     }
@@ -220,15 +266,18 @@
     <div class="h-full w-full bg-white">
         <div class="w-full flex flex-col">
 
-            <div class="col-span-12 row-span-2 grid grid-cols-6 justify-center mt-[100px] px-[81px]">
-                <div @mouseenter="isEditAvatar = !isEditAvatar" @mouseleave="isEditAvatar = !isEditAvatar" class="col-span-1 cursor-pointer h-[200px] w-[200px] bg-orange-500 rounded-full flex justify-center place-items-center relative">
-                    <h1 class="text-[72px] text-white font-bold">
+            <div class="col-span-12 row-span-2 grid grid-cols-6 justify-center mt-[100px] px-[81px] relative">
+                <div @mouseenter="isEditAvatar = !isEditAvatar" @mouseleave="isEditAvatar = !isEditAvatar" class="col-span-1 cursor-pointer h-[200px] w-[200px] bg-orange-500 rounded-full flex justify-center place-items-center overflow-hidden">
+                    <!-- <h1 class="text-[72px] text-white font-bold" v-if="!userAvatar.length <= 0">
                         {{ user.display_name }}
-                    </h1>
-                    <div class="absolute w-[48px] h-[48px] rounded-full bg-white flex justify-center place-items-center top-0 right-[24px] border border-black border-2" v-if="isEditAvatar">
-                        <Edit class="w-[24px] h-24px" />
-                    </div>
+                    </h1> -->
 
+                    <img :src="`${imageURL}/${userAvatar}`" alt="">
+
+
+                </div>
+                <div class="absolute w-[48px] h-[48px] rounded-full bg-white flex justify-center place-items-center top-0 left-28 border border-black border-2" v-if="isEditAvatar">
+                    <Edit class="w-[24px] h-24px" />
                 </div>
 
                 <!-- User information component -->
@@ -332,15 +381,15 @@
                     <div class="grid grid-cols-6 gap-12">
                         <div class="col-span-1 border-r border-slate-300 pr-12">
                             <ul>
-                                <li v-for="item in this.userInfoMenu">
-                                    <button @click.prevent="handleProfileInfoSelection(item)" :class="item.isActive ? 'underline' : ''" class="w-full text-left px-4 py-2 hover:underline decoration-[#1C5CA9] decoration-4 underline-offset-8 transition-all">
+                                <li v-for="(item, index) in this.userInfoMenu">
+                                    <button @click.prevent="handleProfileInfoSelection(item)" :key="index" :class="item.isActive ? 'underline' : ''" class="w-full text-left px-4 py-2 hover:underline decoration-[#1C5CA9] decoration-4 underline-offset-8 transition-all">
                                         {{ item.name }}
                                     </button>
                                 </li>
                             </ul>
                         </div>
                         <div class="col-span-5">
-                            <div v-for="item in this.metadata">
+                            <div >
                                 <!-- <div v-for="menuItem in this.userInfoMenu"> -->
                                     <!-- {{ item }} -->
 
@@ -362,7 +411,10 @@
                                                     Cancel
                                                 </button>
 
-                                                <button class="px-4 py-2 bg-[#1C5CA9] border-2 border-[#1C5CA9] text-white rounded-lg hover:bg-[#143965] hover:border-[#143965]">
+                                                <button
+                                                    class="px-4 py-2 bg-[#1C5CA9] border-2 border-[#1C5CA9] text-white rounded-lg hover:bg-[#143965] hover:border-[#143965]"
+                                                    @click="saveBioUpdate"
+                                                >
                                                     Save
                                                 </button>
                                             </div>
@@ -383,7 +435,7 @@
                                                 <div class="flex flex-row gap-3 w-full">
                                                     <div v-for="(year, index) in this.theYearLevels">
                                                         <label :for="year">{{ year }}</label>
-                                                        <input type="checkbox" :id="year" :value="year">
+                                                        <input type="checkbox" :id="year" :value="year" v-model="this.yearLevels">
                                                     </div>
                                                 </div>
 
