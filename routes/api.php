@@ -75,7 +75,7 @@ Route::middleware('api')->group(function() {
     Route::post('fetchAllBookmarksByType', [LikeBookmarkController::class, 'fetchAllBookmarksByType']);
 
     // Notifications
-    Route::get('fetchAllNotifications', [NotificationController::class, 'getAllNotifications']);
+    Route::get('fetchAllNotifications/{userId}', [NotificationController::class, 'getAllNotifications']);
     Route::get('fetchSingleNotification', [NotificationController::class, 'getSingleNotification']);
     Route::get('fetchNotificationByType', [NotificationController::class, 'getNotificationByType']);
 });

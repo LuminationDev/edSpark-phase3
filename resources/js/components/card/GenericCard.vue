@@ -135,7 +135,7 @@ console.log(props);
     >
         <div
             class="cardTopCoverImage relative min-h-[35%] bg-cover bg-center group-hover:min-h-[0%] group-hover:h-0 transition-all"
-            :class="`bg-[url('${imageURL}/${coverImage.replace(' ','%20' )}')]`"
+            :class="`bg-[url('${imageURL}/${coverImage}')]`"
             @click="clickCallback"
         >
             <template

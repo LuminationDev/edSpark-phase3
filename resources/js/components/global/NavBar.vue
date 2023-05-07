@@ -64,12 +64,16 @@ export default {
     mounted() {
         this.currentUser = this.userStore.getUser;
 
-        this.currentUser.metadata.forEach(meta => {
-            if (meta.user_meta_key === 'userAvatar') {
-                console.log(meta);
-                this.avatarUrl = meta.user_meta_value[0].replace(/\\\//g, "/");;
-            }
-        })
+        //TODO fix issue
+        // commented for now
+        // if (Object.keys(this.currentUser).length > 0) {
+        //     this.currentUser.metadata.forEach(meta => {
+        //         if (meta.user_meta_key === 'userAvatar') {
+        //             console.log(meta);
+        //             this.avatarUrl = meta.user_meta_value[0].replace(/\\\//g, "/");;
+        //         }
+        //     })
+        // }
     },
 
     methods: {
