@@ -899,7 +899,7 @@
         },
         {
             "name": "filament/filament",
-            "version": "v2.17.32",
+            "version": "v2.17.34",
             "source": {
                 "type": "git",
                 "url": "https://github.com/filamentphp/app.git",
@@ -962,7 +962,7 @@
         },
         {
             "name": "filament/forms",
-            "version": "v2.17.32",
+            "version": "v2.17.34",
             "source": {
                 "type": "git",
                 "url": "https://github.com/filamentphp/forms.git",
@@ -1020,7 +1020,7 @@
         },
         {
             "name": "filament/notifications",
-            "version": "v2.17.32",
+            "version": "v2.17.34",
             "source": {
                 "type": "git",
                 "url": "https://github.com/filamentphp/notifications.git",
@@ -1073,7 +1073,7 @@
         },
         {
             "name": "filament/support",
-            "version": "v2.17.32",
+            "version": "v2.17.34",
             "source": {
                 "type": "git",
                 "url": "https://github.com/filamentphp/support.git",
@@ -1123,7 +1123,7 @@
         },
         {
             "name": "filament/tables",
-            "version": "v2.17.32",
+            "version": "v2.17.34",
             "source": {
                 "type": "git",
                 "url": "https://github.com/filamentphp/tables.git",

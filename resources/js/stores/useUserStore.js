@@ -20,12 +20,17 @@ export const useUserStore = defineStore('user', {
         currentUser: useSessionStorage('currentUser', {}),
         userAvatar: useSessionStorage('userAvatar', ''),
         userLikeList: [],
-        userBookmarkList: []
+        userBookmarkList: [],
+        notifications: [],
     }),
 
     getters: {
         getUser() {
             return this.currentUser;
+        },
+
+        getNotifications() {
+            return this.notifications;
         }
     },
 
@@ -169,6 +174,20 @@ export const useUserStore = defineStore('user', {
                     updateValue: ['1', '3']
                 }
             }
+        },
+
+        async fetchAllNotifications(userId) {
+            return new Promise(async (resolve, reject) => {
+                await axios.get(`http://localhost:8000/api/fetchAllNotifications/${userId}`)
+                    .then(response => {
+                        // console.log(response.data)
+                        this.notifications = response.data;
+                    }).catch(error => {
+                        console.log('Sorry, there was problem retrieving notification data');
+                        console.error(error);
+                        reject(error.code);
+                    });
+            });
         },
 
         clearStore() {
