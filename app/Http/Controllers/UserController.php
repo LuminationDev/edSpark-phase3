@@ -36,7 +36,9 @@ class UserController extends Controller
             'status' => $user->status,
             'role' => ($user->role) ? $user->role->role_name : NULL,
             'permissions' => ($user->role) ? $user->role->permissions->pluck('permission_name') : NULL,
-            'metadata' => ($userMetaDataToSend) ? $userMetaDataToSend : NULL
+            'metadata' => ($userMetaDataToSend) ? $userMetaDataToSend : NULL,
+            // 'notifications' => ($user->notifications) ? $user->notifications : NULL,
+            // 'notificationCount' => ($user->notifications) ? count($user->notifications) : NULL,
         ];
 
         return response()->json($data);
