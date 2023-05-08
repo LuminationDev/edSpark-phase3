@@ -12,10 +12,8 @@ class NotificationController extends Controller
      * Get All Notifications
      *
      */
-    public function getAllNotifications(Request $request)
+    public function getAllNotifications($userId)
     {
-        $data = $request->all();
-        $userId = $data['userId'];
         $notifications = Notification::where('user_id', '=', $userId)
                                 ->where('status', '=', 0)
                                 ->get();
@@ -35,7 +33,7 @@ class NotificationController extends Controller
             }
         }
         return response()->json([
-            "data" => $dataToSend,
+            "result" => $dataToSend,
             "count" => $count
         ]);
 

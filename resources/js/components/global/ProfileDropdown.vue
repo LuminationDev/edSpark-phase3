@@ -69,7 +69,8 @@
                 //         avatarUrl.value = meta.user_meta_value;
                 //     }
                 // })
-
+                const notificationCount = userStore.getNotifications;
+                console.log(notificationCount);
                 return {
                     userStore,
                     imageURL,
@@ -136,10 +137,12 @@
                             Profile
                         </button>
                     </router-link>
-                    <button class="flex flex-row gap-4 justify-start py-3 px-2 text-white text-[18px] font-medium place-items-center hover:bg-[#405974] w-full">
-                        <Profile />
-                        Messages
-                    </button>
+                    <router-link :to="`/message/${currentUser.id}`">
+                        <button class="flex flex-row gap-4 justify-start py-3 px-2 text-white text-[18px] font-medium place-items-center hover:bg-[#405974] w-full">
+                            <Profile />
+                            Messages
+                        </button>
+                    </router-link>
 
                     <button class="flex flex-row gap-4 justify-start py-3 px-2 text-white text-[18px] font-medium place-items-center hover:bg-[#405974] w-full">
                         <Profile />
