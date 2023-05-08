@@ -34,7 +34,7 @@ const heroBackground = computed(() => {
 </script>
 
 <template>
-    <div class="BaseHeroContainer h-[680px] -mt-28 relative -z-10">
+    <div class="BaseHeroContainer h-[720px] -mt-28 relative -z-10">
         <div
             :class="'BaseHeroClipThisPath pb-[36px] pt-[190px] px-[48px] grid grid-cols-8 bg-cover h-full relative '+ heroBackground"
         >
