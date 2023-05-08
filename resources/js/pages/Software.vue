@@ -57,21 +57,10 @@ const handleBrowseAllSoftware = () => {
             <SectionHeader
                 :classes="'bg-[#002858]'"
                 :section="'software'"
-            >
-                <template #header>
-                    <h3 class="text-white text-[36px] font-semibold self-center section-header uppercase">
-                        Software
-                    </h3>
-                </template>
-                <template #cta>
-                    <button
-                        class="bg-white px-4 py-2 rounded-sm border-2 border-[#002858] text-[#002858] text-[15px] font-medium cursor-pointer hover:text-[#0b1829] hover:border-2 hover:border-[#0b1829]"
-                        @click="handleBrowseAllSoftware"
-                    >
-                        View all software
-                    </button>
-                </template>
-            </SectionHeader>
+                title="Software"
+                button-text="View all Software"
+                :button-callback="handleBrowseAllSoftware"
+            />
             <SoftwareCardGallery />
         </div>
     </div>
