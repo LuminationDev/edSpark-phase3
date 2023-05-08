@@ -8,7 +8,7 @@ export { default as Community } from './Community.vue';
 export { default as Partners } from './Partners.vue';
 export { default as Events } from './Events.vue';
 export { default as SchoolSingle } from './SchoolSingle.vue';
-export { default as UserProfile } from './UserProfile.vue';
+export { default as UserMessage } from '../components/userprofile/UserMessage.vue';
 export { default as Login } from './Login.vue';
 
 // CREATING NEW DASHBOARD

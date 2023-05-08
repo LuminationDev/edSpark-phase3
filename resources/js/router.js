@@ -15,13 +15,20 @@ import {
     Partners,
     Events,
     SchoolSingle,
-    UserProfile,
+    UserMessage
 } from './pages';
 import DashboardNew from './pages/DashboardNew.vue';
 import BrowseSchools from "@/js/pages/BrowseSchools.vue";
 import AdviceSingle from "@/js/pages/AdviceSingle.vue";
 import SoftwareSingle from "@/js/components/software/softwareSingle/SoftwareSingle.vue";
 import BaseSearchPage from "@/js/components/bases/BaseSearchPage.vue";
+import UserProfile from  '@/js/components/userprofile/UserProfile.vue'
+
+import ProfileWork from '@/js/components/userprofile/ProfileWork.vue'
+import ProfileInfo  from '@/js/components/userprofile/ProfileInfo.vue'
+import ProfileMessages  from '@/js/components/userprofile/ProfileMessages.vue'
+
+
 
 const router = createRouter({
     history: createWebHistory(),
@@ -102,7 +109,29 @@ const router = createRouter({
         {
             name: 'userProfile',
             path: '/profile/:userId',
-            component: UserProfile
+            component: UserProfile,
+            children: [
+                {
+                    path: '',
+                    name:'userProfileInfo',
+                    component: ProfileInfo
+                },
+                {
+                    path: 'work',
+                    name: 'userProfileWork',
+                    component: ProfileWork
+                },
+                {
+                    path: 'messages',
+                    name:'userProfileMessages',
+                    component: ProfileMessages
+                }
+        ]
+        },
+        {
+            name: 'userMessage',
+            path: '/message/:userId',
+            component: UserMessage
         },
         {
             path: '/login/callback',

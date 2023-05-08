@@ -36,7 +36,9 @@ class UserController extends Controller
             'status' => $user->status,
             'role' => ($user->role) ? $user->role->role_name : NULL,
             'permissions' => ($user->role) ? $user->role->permissions->pluck('permission_name') : NULL,
-            'metadata' => ($userMetaDataToSend) ? $userMetaDataToSend : NULL
+            'metadata' => ($userMetaDataToSend) ? $userMetaDataToSend : NULL,
+            // 'notifications' => ($user->notifications) ? $user->notifications : NULL,
+            // 'notificationCount' => ($user->notifications) ? count($user->notifications) : NULL,
         ];
 
         return response()->json($data);
@@ -215,34 +217,49 @@ class UserController extends Controller
             $userId = $request->id;
             $data = $request->data;
             $metaData = $request->metaData;
-            // dd($data['updateField']);
-
             $updatedData = [];
             $updatedMetaData = [];
 
             $error = '';
 
+            /**
+             * If Data exists
+             */
             if ($data) {
-                // TODO update user table
+
                 try{
                     User::where('id', '=', $userId)
                         ->update([$data['updateField'] => $data['updateValue']]);
+
                     $updatedUser = User::find($userId);
                 } catch (Exception $e){
                     $error = $e->getMessage();
                 }
             }
 
+            /*
+             * If MetaData exists
+             */
             if ($metaData) {
-                // TODO update user meta table
-                try {
-                    Usermeta::where('user_id', '=', $userId)
-                        ->update([
-                            'user_meta_key' => $metaData['updateField'],
-                            'user_meta_value' => implode(', ', $metaData['updateValue']),
-                        ]);
-                    $updatedMetaData = Usermeta::where('user_id', $userId)->get();
 
+                try {
+                    // CHECK IN USER META TABLE
+                    $checkMetaData = Usermeta::where('user_id', '=', $userId)
+                            ->where('user_meta_key', '=', $metaData['updateField'])
+                            ->first();
+
+                    if ($checkMetaData) { // IF EXISTS UPDATE
+                        $checkMetaData->update([
+                            'user_meta_key' => $metaData['updateField'],
+                            'user_meta_value' => (is_string($metaData['updateValue'])) ? $metaData['updateValue'] : implode(', ', $metaData['updateValue']),
+                        ]);
+                    } else { // IF NOT CREATE A NEW USER META
+                        Usermeta::create([
+                            'user_id' => $userId,
+                            'user_meta_key' => $metaData['updateField'],
+                            'user_meta_value' => $metaData['updateValue']
+                        ]);
+                    }
                 } catch (Exception $e){
                     $error = $e->getMessage();
                 }

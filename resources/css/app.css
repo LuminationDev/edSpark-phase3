@@ -1,7 +1,7 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-@import "./font-awesome/css/font-awesome.css";
+/*@import "./font-awesome/css/font-awesome.css";*/
 
 html {
     font-family: 'Poppins';
