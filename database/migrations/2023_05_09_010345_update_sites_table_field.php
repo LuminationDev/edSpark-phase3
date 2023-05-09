@@ -14,8 +14,8 @@ return new class extends Migration
     public function up()
     {
         Schema::table('sites', function (Blueprint $table) {
-            $table->string('site_lattitude')->after('site_sub_type_desc')->nullable();
-            $table->string('site_longitude')->after('site_lattitude')->nullable();
+            $table->string('site_latitude')->after('site_sub_type_desc')->nullable();
+            $table->string('site_longitude')->after('site_latitude')->nullable();
         });
     }
 
@@ -27,7 +27,7 @@ return new class extends Migration
     public function down()
     {
         Schema::table('sites', function (Blueprint $table) {
-            $table->dropColumn('site_lattitude');
+            $table->dropColumn('site_latitude');
             $table->dropColumn('site_longitude');
         });
     }
