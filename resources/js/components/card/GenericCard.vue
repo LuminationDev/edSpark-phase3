@@ -44,7 +44,7 @@ const props = defineProps({
     }
 })
 
-const currentUserLiked = computed(() => {
+const currentUserLiked = computed(  () => {
     if(userLikeList.value[props.likeBookmarkData.post_type] &&
         userLikeList.value[props.likeBookmarkData.post_type].length > 0 &&
         userLikeList.value[props.likeBookmarkData.post_type].filter(eachItem => {
@@ -80,7 +80,6 @@ const handleDefaultLike = async (data) => {
     await axios.post(likeURL, data )
         .then(res => {
             if(res.data.isLiked){
-                console.log(userLikeList.value);
                 userLikeList.value[post_type].push(data.post_id)
             } else{
                 const indexRemoval = userLikeList.value[post_type].indexOf(data.post_id)
@@ -120,7 +119,6 @@ const handleDefaultBookmark = async (data) => {
 
 const cardHoverToggle = ref(false)
 
-console.log(props);
 </script>
 
 <template>

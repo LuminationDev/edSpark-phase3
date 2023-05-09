@@ -1,13 +1,13 @@
 <script setup>
 
-    import SchoolCard from '../schools/SchoolCard.vue';
+import SchoolCard from '../schools/SchoolCard.vue';
 
-    const props = defineProps({
-        schools: {
-            type: Array,
-            required: true
-        }
-    });
+const props = defineProps({
+    schools: {
+        type: Array,
+        required: true
+    }
+});
 
 
 </script>
