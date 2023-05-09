@@ -3,11 +3,10 @@
      * IMPORT DEPENDENCIES
      */
 import { useRouter, useRoute } from 'vue-router';
-import {ref} from 'vue'
+import {computed, ref, watch} from 'vue'
 import axios from 'axios'
-import {parseToJsonIfString} from "@/js/helpers/jsonHelpers";
+import {parseToJsonIfString, schoolContentArrParser} from "@/js/helpers/jsonHelpers";
 import {schoolDataFormDataBuilder, printOutFormData} from "@/js/helpers/schoolDataHelpers";
-
 /**
  * IMPORT COMPONENTS
  */
@@ -61,6 +60,7 @@ onBeforeMount( async () =>{
         schoolContent.value.content_blocks = parseToJsonIfString(schoolContent.value.content_blocks)
         schoolContent.value.tech_used = parseToJsonIfString(schoolContent.value.tech_used)
         schoolContent.value.cover_image = schoolContent.value.cover_image.replace("/\\/g", "")
+        schoolContent.value.logo = schoolContent.value.logo.replace("/\\/g", "")
         if(filteredSchool.metadata){
             const colorThemeMeta = schoolContent.value['metadata'].filter(meta => meta['schoolmeta_key'] === 'school_color_theme')
             colorTheme.value = colorThemeMeta[0]['schoolmeta_value']
@@ -90,12 +90,8 @@ const handleSaveNewSchoolInfo = async (content_blocks, tech_used) => {
         newUpdatedSchoolFormData.append('cover_image', schoolData.cover_image)
     }
 
-
-
     const schoolMetadata = {school_color_theme : colorTheme.value}
     newUpdatedSchoolFormData.append('metadata', schoolMetadata)
-    console.log(newUpdatedSchoolFormData);
-    printOutFormData(newUpdatedSchoolFormData)
     await axios({
         url: `${serverURL}/updateSchool`,
         method: 'post',
@@ -140,7 +136,24 @@ const handleReceivePhotoFromContent = (type,file) => {
         break;
     }
 }
-console.log(schoolContent);
+
+/**
+ * Cover image loading workaround
+ */
+const isCoverImageLoaded = ref(false)
+const coverImageLink = computed(() => {
+    if(!isCoverImageLoaded.value){
+        console.log('rendered placeholder image')
+        return 'bg-[url(https://placehold.co/600x400)]'
+    } else{
+        console.log('rendered real image because finished loading')
+        return `bg-[url(${imageURL}/${schoolContent.value.cover_image})]`
+    }
+})
+const handleCoverImageLoaded = () => {
+    isCoverImageLoaded.value = true
+}
+
 </script>
 
 <template>
@@ -149,8 +162,14 @@ console.log(schoolContent);
             <template #hero>
                 <div
                     class="px-[48px]  h-[680px] w-full bg-center bg-no-repeat bg-cover"
-                    :class="`bg-[url(${imageURL}/${schoolContent.cover_image})]`"
+                    :class="coverImageLink"
                 >
+                    <img
+                        class="hidden"
+                        aria-hidden="true"
+                        :src="`${imageURL}/${schoolContent.cover_image}`"
+                        @load="handleCoverImageLoaded"
+                    >
                     <div class="h-full w-full grid grid-cols-12 grid-rows-2">
                         <div class="col-span-7 flex mt-[190px]">
                             <div class="flex flex-row gap-2 h-[24px] place-items-center">
@@ -185,8 +204,8 @@ console.log(schoolContent);
                                     <!-- {{ schoolContent.tech_used }} -->
                                     <!-- <SchoolTech :tech-list="schoolContent.tech_used" /> -->
                                     <div
-                                        class="w-[60px] relative cursor-pointer"
                                         v-for="(tech, index) in schoolContent.tech_used"
+                                        class="w-[60px] relative cursor-pointer"
                                     >
                                         <div
                                             @mouseenter="handleToggleTooltip(index)"
@@ -195,9 +214,12 @@ console.log(schoolContent);
                                             <SchoolTechIconGenerator
                                                 :tech-name="tech.name"
                                                 class="min-w-[60px] pr-4 m-2 cursor-pointer relative"
-
                                             />
-                                            <div v-if="toggleTooltip && tooltipIndex === index" class="absolute shadow-xl w-[450px] px-[24px] py-[18px] border-l-[3px] border-white" :class="`bg-${colorTheme}-600`">
+                                            <div
+                                                v-if="toggleTooltip && tooltipIndex === index"
+                                                class="absolute shadow-xl w-[450px] px-[24px] py-[18px] border-l-[3px] border-white"
+                                                :class="`bg-${colorTheme}-600`"
+                                            >
                                                 <h3 class="text-[24px] font-semibold text-white">
                                                     {{ tech.name }}
                                                 </h3>
@@ -209,7 +231,10 @@ console.log(schoolContent);
                                     </div>
                                 </div>
                                 <div class="w-[200px] py-6">
-                                    <img :src="`${imageURL}/${schoolContent.logo}`" :alt="`${schoolContent.name} logo`">
+                                    <img
+                                        :src="`${imageURL}/${schoolContent.logo}`"
+                                        :alt="`${schoolContent.name} logo`"
+                                    >
                                 </div>
                             </div>
                         </div>
