@@ -18,7 +18,7 @@ const updatedName = ref('');
 
 const handleSaveChange = () => {
     console.log('Handle save values here');
-    // userStore.updateUser(updatedName.value);
+    userStore.updateUserName(updatedName.value);
 };
 const { currentUser, notifications } = storeToRefs(userStore)
 
@@ -36,11 +36,13 @@ const handleSelectSubmenu = () => {
     console.log('submenu selected')
 }
 
+const editName = ref(null);
+
 function editField() {
     editingField.value = true;
     // TODO: make this not rely on a timeout for component to render
     setTimeout(() => {
-        this.$refs.editName.focus();
+        editName.value.focus();
     }, 100);
 }
 
@@ -53,7 +55,15 @@ function fetchUserSite(siteId) {
 }
 
 
+const imageURL = import.meta.env.VITE_SERVER_IMAGE_API;
+const avatarUrl = ref('');
+const userMetadata = userStore.getUser.metadata;
+if (userMetadata !== undefined) {
+    const userAvatarMeta = userMetadata.filter(meta => meta.user_meta_key === 'userAvatar');
+    avatarUrl.value = userAvatarMeta[0].user_meta_value[0].replace(/\\\//g, "/");
+}
 
+console.log(imageURL + '/' + avatarUrl.value);
 
 </script>
 <template>
@@ -62,10 +72,11 @@ function fetchUserSite(siteId) {
             <div class="col-span-12 row-span-2 grid grid-cols-6 justify-center mt-[100px] px-[81px]">
                 <div
                     class="col-span-1 cursor-pointer h-[200px] w-[200px] bg-orange-500 rounded-full flex justify-center place-items-center relative"
+                    :class="!avatarUrl.length <= 0 ? `bg-[url(${imageURL}/${avatarUrl})]` : ''"
                     @mouseenter="isEditAvatar = !isEditAvatar"
                     @mouseleave="isEditAvatar = !isEditAvatar"
                 >
-                    <h1 class="text-[72px] text-white font-bold">
+                    <h1 class="text-[72px] text-white font-bold" v-if="!avatarUrl.length > 0">
                         {{ currentUser.display_name }}
                     </h1>
                     <div
@@ -83,7 +94,7 @@ function fetchUserSite(siteId) {
                             <input
                                 v-if="editingField"
                                 ref="editName"
-                                v-model="updatedname"
+                                v-model="updatedName"
                                 class="!w-[320px]"
                                 type="text"
                                 :placeholder="currentUser.full_name"
@@ -130,6 +141,7 @@ function fetchUserSite(siteId) {
                             >
                                 <Save
                                     v-if="editingField"
+
                                     class="h-[24px] w-[24px]"
                                 />
                             </button>

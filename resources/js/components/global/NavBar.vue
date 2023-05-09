@@ -212,6 +212,7 @@ export default {
             :current-user="currentUser"
             :profile-dropdown="profileDropdown"
             :avatarUrl="avatarUrl"
+            :key="currentUser"
             @handleAvatarClick="handleAvatarClick"
         />
 

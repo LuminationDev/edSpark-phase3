@@ -120,7 +120,6 @@ const handleDefaultBookmark = async (data) => {
 
 const cardHoverToggle = ref(false)
 
-console.log(props);
 </script>
 
 <template>

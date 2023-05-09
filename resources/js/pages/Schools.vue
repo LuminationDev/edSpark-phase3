@@ -54,10 +54,16 @@ onBeforeMount(async () => {
     const currentUserId = 1
     const currentUserRole = currentUser.value.role
     try{
-        await axios.post(`${serverURL}/getUserMetadata`,{id: 1, userMetakey: 'has_school'}).then(res => {
-            currentUserHasSchool = res.data[0]['user_meta_value'] === 'false'? false : true
-            // console.log('current user has_school meta is ' + currentUserHasSchool)
-        })
+        console.log(currentUser.value.metadata);
+        // await axios.post(`${serverURL}/getUserMetadata`,{id: 1, userMetakey: 'has_school'}).then(res => {
+        //     console.log(res.data[0])
+        //     currentUserHasSchool = res.data[0]['user_meta_value'] === 'false'? false : true
+        //     // console.log('current user has_school meta is ' + currentUserHasSchool)
+        // });
+
+        if (Object.keys(currentUser.value.metadata) === 'has_school') {
+            currentUserHasSchool = true;
+        }
 
         if(!currentUserHasSchool && (currentUserRole == 'Principal' || currentUserRole == 'Superadmin')){
             // console.log('School is not init yet. you should init the school')
