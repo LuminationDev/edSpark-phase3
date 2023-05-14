@@ -1,11 +1,11 @@
 <template>
     <div class="lds-facebook">
-        <div></div>
-        <div></div>
-        <div></div>
+        <div />
+        <div />
+        <div />
     </div>
 </template>
-<script setup lang="ts"></script>
+<script setup></script>
 <style lang="css">
 .lds-facebook {
     display: inline-block;

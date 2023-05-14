@@ -1,6 +1,6 @@
 import { defineStore } from "pinia";
 import axios from 'axios';
-import { schoolContentArrParser } from '../helpers/jsonHelpers.js';
+import {schoolContentArrParser} from "@/js/helpers/jsonHelpers";
 
 export const useSchoolsStore = defineStore('schools', {
     state: () => ({
@@ -20,9 +20,9 @@ export const useSchoolsStore = defineStore('schools', {
     actions: {
         async loadSchools() {
             return await axios.get(`http://localhost:8000/api/fetchAllSchools`).then(res => {
-
-                this.schools = schoolContentArrParser(res.data);
-                return schoolContentArrParser(res.data);
+                const parsedRes = schoolContentArrParser(res.data)
+                this.schools = parsedRes;
+                return parsedRes;
             });
         },
 
