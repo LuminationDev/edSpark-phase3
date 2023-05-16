@@ -100,9 +100,7 @@ const events = ref([]);
 const softwares = ref([]);
 const advice = ref([]);
 const schools = ref([]);
-
 const router = useRouter()
-
 const loadDashboardData = async () => {
     events.value = await eventStore.loadEvents();
     softwares.value = await softwareStore.loadArticles();
@@ -146,7 +144,8 @@ loadDashboardData();
             :button-text="'View all events'"
         />
 
-        <!--        Events Cards Here-->
+<!--        Events Cards Here-->
+
         <!--        <EventsDashboard-->
         <!--            :events="events"-->
         <!--        />-->
