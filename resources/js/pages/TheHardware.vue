@@ -1,7 +1,14 @@
 <script setup>
+// Named TheHardware as eslint doesn't like single word filename
 import HardwareLanding from "@/js/components/svg/hardware/HardwareLanding.vue";
 import HardwareHero from "@/js/components/hardware/HardwareHero.vue";
 import SectionHeader from "@/js/components/global/SectionHeader.vue";
+import HardwareLaptopSection from "@/js/components/svg/hardware/HardwareLaptopSection.vue";
+
+
+
+
+
 </script>
 
 <template>
@@ -31,5 +38,8 @@ import SectionHeader from "@/js/components/global/SectionHeader.vue";
             section="laptops"
             button-text="View all laptops"
         />
+        <HardwareLaptopSection />
     </div>
 </template>
+
+
