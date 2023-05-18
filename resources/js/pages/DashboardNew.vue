@@ -112,6 +112,10 @@ const loadDashboardData = async () => {
 
 loadDashboardData();
 
+const onClosePopup = () => {
+    isFirstVisit.value = !isFirstVisit.value;
+};
+
 </script>
 
 <template>
@@ -131,6 +135,7 @@ loadDashboardData();
             <FirstVisitForm
                 :is-first-visit="isFirstVisit"
                 :user-details="userDetails"
+                @onClosePopup="onClosePopup"
             />
         </div>
 
@@ -144,9 +149,9 @@ loadDashboardData();
         />
 
         <!-- Events Cards Here -->
-        <!--        <EventsDashboard-->
-        <!--            :events="events"-->
-        <!--        />-->
+        <EventsDashboard
+            :events="events"
+        />
 
         <SectionHeader
             :classes="'bg-[#1C5CA9]'"

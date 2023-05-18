@@ -22,7 +22,8 @@ import BrowseSchools from "@/js/pages/BrowseSchools.vue";
 import AdviceSingle from "@/js/pages/AdviceSingle.vue";
 import SoftwareSingle from "@/js/components/software/softwareSingle/SoftwareSingle.vue";
 import BaseSearchPage from "@/js/components/bases/BaseSearchPage.vue";
-import UserProfile from  '@/js/components/userprofile/UserProfile.vue'
+import UserProfile from  '@/js/components/userprofile/UserProfile.vue';
+import HardwareSingle from '@/js/pages/HardwareSingle.vue';
 
 import ProfileWork from '@/js/components/userprofile/ProfileWork.vue'
 import ProfileInfo  from '@/js/components/userprofile/ProfileInfo.vue'
@@ -92,6 +93,12 @@ const router = createRouter({
             name: 'hardware',
             path: '/hardware',
             component: Hardware
+        },
+        {
+            name: 'hardware-single',
+            path: '/hardware/resources/:id',
+            component: HardwareSingle,
+            params: true
         },
         {
             name: 'community',

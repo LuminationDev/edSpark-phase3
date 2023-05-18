@@ -418,6 +418,15 @@
         }
     };
 
+    const emits = defineEmits(['onClosePopup'])
+
+    /**
+     * Close the popup
+     */
+    const closePopup = () => {
+        emits('onClosePopup');
+    }
+
 </script>
 
 <template>

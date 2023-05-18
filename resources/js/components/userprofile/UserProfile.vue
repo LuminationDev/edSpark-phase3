@@ -71,7 +71,7 @@ console.log(imageURL + '/' + avatarUrl.value);
         <div class="w-full flex flex-col">
             <div class="col-span-12 row-span-2 grid grid-cols-6 justify-center mt-[100px] px-[81px]">
                 <div
-                    class="col-span-1 cursor-pointer h-[200px] w-[200px] bg-orange-500 rounded-full flex justify-center place-items-center relative"
+                    class="userAvatar col-span-1 cursor-pointer h-[200px] w-[200px] bg-orange-500 rounded-full flex justify-center place-items-center relative"
                     :class="!avatarUrl.length <= 0 ? `bg-[url(${imageURL}/${avatarUrl})]` : ''"
                     @mouseenter="isEditAvatar = !isEditAvatar"
                     @mouseleave="isEditAvatar = !isEditAvatar"
@@ -215,3 +215,10 @@ console.log(imageURL + '/' + avatarUrl.value);
     </div>
 </template>
 
+<style scoped>
+    .userAvatar {
+        background-position: center center;
+        background-repeat: no-repeat;
+        background-size: cover;
+    }
+</style>
