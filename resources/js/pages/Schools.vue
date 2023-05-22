@@ -18,6 +18,7 @@ import SchoolWelcomePopup from "@/js/components/schools/schoolPopup/SchoolWelcom
 import SectionHeader from "@/js/components/global/SectionHeader.vue";
 import SchoolsSearchableMap from '../components/schools/schoolMap/SchoolsSearchableMap.vue';
 import Loader from '../components/spinner/Loader.vue';
+import CardLoading from '../components/card/CardLoading.vue';
 
 // const featuredSitesData = ref([])
 const createSchool = ref(false)
@@ -35,6 +36,8 @@ const axiosFetcher = (url) => {
 
 const {data: featuredSites, error: schoolsError} = useSWRV(`${serverURL}/fetchFeaturedSchools`, axiosFetcher)
 
+const cardsLoading = ref(true);
+
 const allSchools = ref([]);
 const schoolsAvailable = ref(false);
 
@@ -50,6 +53,7 @@ fetchAllSchools();
 const featuredSitesData = computed(() => {
     if(!featuredSites.value ) return []
     else{
+        cardsLoading.value = false;
         return schoolContentArrParser(featuredSites.value)
     }
 });
@@ -134,7 +138,10 @@ const handleSaveWelcomePopup = (data)=>{
                 :title="'Featured Schools'"
                 :buttonText="'View all schools'"
             />
-            <div class="grid grid-cols-4 gap-[24px] w-full px-20 pt-8 ">
+            <div
+                class="grid grid-cols-4 gap-[24px] w-full px-20 pt-8 "
+                v-if="!cardsLoading"
+            >
                 <div
                     v-for="(school,index) in featuredSitesData.splice(0,4)"
                     :key="index"
@@ -145,6 +152,13 @@ const handleSaveWelcomePopup = (data)=>{
                         :school-data="school"
                     />
                 </div>
+            </div>
+            <div
+                v-else
+            >
+                <CardLoading
+                :number-per-row="4"
+                />
             </div>
         </div>
 

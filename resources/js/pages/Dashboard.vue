@@ -759,10 +759,6 @@ export default {
                                         :class="`bg-[url(${imageURL}/${software.cover_image})]`"
                                         class="h-36 transition-all bg-cover bg-no-repeat bg-center group-hover:h-0"
                                     />
-                                    <!-- <div
-                                        :class="`bg-[url('http://localhost:8000/storage/uploads/software/edSpark-software-boy-with-virtual-reality-headset-school%203.jpg')]`"
-                                        class="h-36 group-hover:h-0 transition-all"
-                                    /> -->
                                 </template>
                                 <template
                                     v-if="software.software_type"
