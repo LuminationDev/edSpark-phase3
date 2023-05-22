@@ -3,15 +3,18 @@
      * IMPORT DEPENDENCIES
      */
 import { useRouter, useRoute } from 'vue-router';
-import {ref} from 'vue'
+import {computed, ref, watch} from 'vue'
 import axios from 'axios'
+import {parseToJsonIfString, schoolContentArrParser} from "@/js/helpers/jsonHelpers";
+import {schoolDataFormDataBuilder, printOutFormData} from "@/js/helpers/schoolDataHelpers";
 /**
  * IMPORT COMPONENTS
  */
 import SchoolsProfile from '../components/schools/SchoolsProfile.vue';
-import OurStory from '../components/schools/OurStory.vue';
 import SchoolContent from "@/js/components/schoolsingle/SchoolContent.vue";
-import SchoolTech from "@/js/components/schoolsingle/SchoolTech.vue";
+// import SchoolTech from "@/js/components/schoolsingle/SchoolTech.vue";
+import SchoolTechIconGenerator from "@/js/components/global/SchoolTechIconGenerator.vue";
+
 /**
  * IMPORT SVGS
  */
@@ -22,6 +25,7 @@ import {onBeforeMount} from "vue";
 const route = useRoute();
 const router = useRouter();
 const serverURL = import.meta.env.VITE_SERVER_URL_API
+const imageURL = import.meta.env.VITE_SERVER_IMAGE_API
 
 
 const urlOrigin = window.location.origin
@@ -31,25 +35,76 @@ const breadCrumbName = route.params.name
 const schoolContent = ref({})
 const colorTheme = ref('amber') // default color theme
 
+// ref to hold images from editing
+const logoStorage = ref(null)
+const coverImageStorage = ref(null)
+
+// ref to handle tooltip
+const toggleTooltip = ref(false);
+const tooltipIndex = ref(null);
+
+const handleToggleTooltip = (index) => {
+    toggleTooltip.value = !toggleTooltip.value;
+    tooltipIndex.value = index;
+}
+
 onBeforeMount( async () =>{
     // TODO Erick - Replace with get one school instead of all then filter.
     await axios.get(`${serverURL}/fetchAllSchools`).then(res => {
-        schoolContent.value = res.data.filter(school => school.name === route.params.name.replace('%20', ' ' ))[0]
-        console.log('successfully saved school content')
+        const filteredSchool = res.data.filter(school => school.name === route.params.name.replace('%20', ' ' ))[0]
+        schoolContent.value = parseToJsonIfString(filteredSchool)
+        /**
+         * Parse content of SchoolContent upon receiving from server.
+         * avoid further processing down the components
+         */
+        schoolContent.value.content_blocks = parseToJsonIfString(schoolContent.value.content_blocks)
+        schoolContent.value.tech_used = parseToJsonIfString(schoolContent.value.tech_used)
+        schoolContent.value.cover_image = schoolContent.value.cover_image.replace("/\\/g", "")
+        schoolContent.value.logo = schoolContent.value.logo.replace("/\\/g", "")
+        if(filteredSchool.metadata){
+            const colorThemeMeta = schoolContent.value['metadata'].filter(meta => meta['schoolmeta_key'] === 'school_color_theme')
+            colorTheme.value = colorThemeMeta[0]['schoolmeta_value']
+        }
     }).catch(err => {
-        console.log('uhh ohh something occured during the attempt of saving school info')
         console.log(err)
-    })
-
+    });
 })
-    
+
 const handleSaveNewSchoolInfo = async (content_blocks, tech_used) => {
-    const body = Object.assign({},schoolContent.value)
-    body.content_blocks = content_blocks
-    body.tech_used  = tech_used
-    console.log(body)
-    await axios.post(`${serverURL}/updateSchool`, body).then(res =>{        // assign school info with newest data that has been saved succesfully to trigger update
-        schoolContent.value = _.cloneDeep(body)
+    /**
+     * Copy current schoolData and replace content_blocks and tech_used
+     */
+    const schoolData = _.cloneDeep(schoolContent.value)
+    schoolData.content_blocks = content_blocks
+    schoolData.tech_used  = tech_used
+    const newUpdatedSchoolFormData = schoolDataFormDataBuilder(schoolData)
+
+    if(logoStorage.value){
+        newUpdatedSchoolFormData.append('logo', logoStorage.value)
+    } else{
+        newUpdatedSchoolFormData.append('logo', schoolData.logo)
+    }
+    if(coverImageStorage.value){
+        newUpdatedSchoolFormData.append('cover_image', coverImageStorage.value)
+    } else{
+        newUpdatedSchoolFormData.append('cover_image', schoolData.cover_image)
+    }
+
+    const schoolMetadata = {school_color_theme : colorTheme.value}
+    newUpdatedSchoolFormData.append('metadata', schoolMetadata)
+    await axios({
+        url: `${serverURL}/updateSchool`,
+        method: 'post',
+        data: newUpdatedSchoolFormData,
+        headers: {"Content-Type" : "multipart/form-data"}
+    }).then(res =>{
+        // assign school info with newest data that has been saved succesfully to trigger update
+        console.log(res.data.data)
+        schoolContent.value = res.data.data
+        // parse JSON after receiving data from backend. can be done better
+        // can consider computed function
+        schoolContent.value.content_blocks = parseToJsonIfString(schoolContent.value.content_blocks)
+        schoolContent.value.tech_used = parseToJsonIfString(schoolContent.value.tech_used)
     }).catch(err =>{
         console.log(err)
         console.log('Something wrong while attempting to post ')
@@ -61,6 +116,43 @@ const handleChangeColorTheme = (newColor) => {
     console.log('received command to swap color to -> ' + 'newColor')
     colorTheme.value = newColor
 }
+/**
+ * Handle Event emitted from children containing type {logo,coverImage} and Image file
+ * @param {String} type
+ * @param {File} file
+ */
+const handleReceivePhotoFromContent = (type,file) => {
+    switch(type){
+    case 'logo':
+        console.log('received logo')
+        logoStorage.value = file
+        break;
+    case 'coverImage':
+        console.log('received cover Image')
+        coverImageStorage.value = file
+        break;
+    default:
+        console.log('received unknown type image')
+        break;
+    }
+}
+
+/**
+ * Cover image loading workaround
+ */
+const isCoverImageLoaded = ref(false)
+const coverImageLink = computed(() => {
+    if(!isCoverImageLoaded.value){
+        console.log('rendered placeholder image')
+        return 'bg-[url(https://placehold.co/600x400)]'
+    } else{
+        console.log('rendered real image because finished loading')
+        return `bg-[url(${imageURL}/${schoolContent.value.cover_image})]`
+    }
+})
+const handleCoverImageLoaded = () => {
+    isCoverImageLoaded.value = true
+}
 
 </script>
 
@@ -68,10 +160,19 @@ const handleChangeColorTheme = (newColor) => {
     <div class="-mt-[140px] flex flex-col ">
         <SchoolsProfile>
             <template #hero>
-                <div class="px-[48px] bg-[url(http://localhost:5173/resources/assets/images/adelaide-high-school.png)] h-[680px] w-full bg-center bg-no-repeat bg-cover">
-                    <div class="h-full w-full grid grid-cols-12">
+                <div
+                    class="px-[48px]  h-[680px] w-full bg-center bg-no-repeat bg-cover"
+                    :class="coverImageLink"
+                >
+                    <img
+                        class="hidden"
+                        aria-hidden="true"
+                        :src="`${imageURL}/${schoolContent.cover_image}`"
+                        @load="handleCoverImageLoaded"
+                    >
+                    <div class="h-full w-full grid grid-cols-12 grid-rows-2">
                         <div class="col-span-7 flex mt-[190px]">
-                            <div class="flex flex-row gap-2 h-fit place-items-center">
+                            <div class="flex flex-row gap-2 h-[24px] place-items-center">
                                 <router-link to="/">
                                     <p class="text-[14px] text-white hover:text-[#44B8F3]">
                                         Home
@@ -91,6 +192,52 @@ const handleChangeColorTheme = (newColor) => {
                             </div>
                         </div>
                         <div class="col-span-5" />
+
+                        <div class="w-full h-full col-span-12 flex flex-row -mt-[100px]">
+                            <div class="flex flex-col">
+                                <div class="">
+                                    <h1 class="text-white text-[48px] font-bold">
+                                        {{ schoolContent.name }}
+                                    </h1>
+                                </div>
+                                <div class="flex flex-row gap-4 place-items-center">
+                                    <!-- {{ schoolContent.tech_used }} -->
+                                    <!-- <SchoolTech :tech-list="schoolContent.tech_used" /> -->
+                                    <div
+                                        v-for="(tech, index) in schoolContent.tech_used"
+                                        class="w-[60px] relative cursor-pointer"
+                                    >
+                                        <div
+                                            @mouseenter="handleToggleTooltip(index)"
+                                            @mouseleave="handleToggleTooltip(index)"
+                                        >
+                                            <SchoolTechIconGenerator
+                                                :tech-name="tech.name"
+                                                class="min-w-[60px] pr-4 m-2 cursor-pointer relative"
+                                            />
+                                            <div
+                                                v-if="toggleTooltip && tooltipIndex === index"
+                                                class="absolute shadow-xl w-[450px] px-[24px] py-[18px] border-l-[3px] border-white"
+                                                :class="`bg-${colorTheme}-600`"
+                                            >
+                                                <h3 class="text-[24px] font-semibold text-white">
+                                                    {{ tech.name }}
+                                                </h3>
+                                                <p class="text-white font-normal">
+                                                    {{ tech.description }}
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="w-[200px] py-6">
+                                    <img
+                                        :src="`${imageURL}/${schoolContent.logo}`"
+                                        :alt="`${schoolContent.name} logo`"
+                                    >
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </template>
@@ -109,6 +256,7 @@ const handleChangeColorTheme = (newColor) => {
                     :color-theme="colorTheme"
                     @send-info-to-school-single="handleSaveNewSchoolInfo"
                     @send-color-to-school-single="handleChangeColorTheme"
+                    @send-photo-to-school-single="handleReceivePhotoFromContent"
                 />
             </div>
         </div>

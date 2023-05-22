@@ -135,4 +135,17 @@ class AdvicemoderationResource extends Resource
         }
     }
 
+    // public static function shouldRegisterNavigation(): bool
+    // {
+    //     // use Illuminate\Support\Facades\Auth;
+
+    //     // Moderator check
+    //     // if(Auth::user()->role->role_name == 'Moderator') {
+    //     //     return false;
+    //     // }
+
+    //     // return true;
+    //     dd(Auth::user()->hasPermissions('Moderator'));
+    // }
+
 }

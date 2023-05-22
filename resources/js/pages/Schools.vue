@@ -1,45 +1,170 @@
 <script setup>
-import {onMounted, ref} from 'vue'
+import {computed, onBeforeMount, onMounted, ref, watch} from 'vue'
 import axios from 'axios'
-import SchoolsHero from '../components/schools/SchoolsHero.vue';
-import SearchableMap from '../components/schools/SearchableMap.vue';
-import SchoolCard from "@/js/components/schools/SchoolCard.vue";
-import GenericButton from "@/js/components/button/GenericButton.vue";
 import {useRouter} from "vue-router";
-const schoolsLoading = ref(false)
-const serverURL = import.meta.env.VITE_SERVER_URL_API
-
-// TODO- Create an API in the backend to get featured schools
-// Currently fetching 4 random
-const featuredSiteIds = [292,69,55,42]
-const featuredSites = ref([])
-const featuredSitesData = ref([])
-
-const router = useRouter()
+import {storeToRefs} from "pinia";
+import useSWRV from "swrv";
 
 
-onMounted(() =>{
-    axios.get(`${serverURL}/fetchAllSchools`).then(res => {
-        featuredSites.value = res.data.splice(0,4)
-        featuredSitesData.value = featuredSites.value
+import {schoolContentArrParser} from "@/js/helpers/jsonHelpers";
+import {useUserStore} from "@/js/stores/useUserStore";
+import {serverURL} from "@/js/constants/serverUrl";
 
-    })
+import SchoolsHero from '../components/schools/SchoolsHero.vue';
+import SearchableMap from '../components/schools/schoolMap/SearchableMap.vue';
+import SchoolCard from "@/js/components/schools/SchoolCard.vue";
+import CreateSchoolForm from "@/js/components/schools/createSchool/CreateSchoolForm.vue";
+import SchoolWelcomePopup from "@/js/components/schools/schoolPopup/SchoolWelcomePopup.vue";
+import SectionHeader from "@/js/components/global/SectionHeader.vue";
+import SchoolsSearchableMap from '../components/schools/schoolMap/SchoolsSearchableMap.vue';
+import Loader from '../components/spinner/Loader.vue';
+
+// const featuredSitesData = ref([])
+const createSchool = ref(false)
+const showWelcomePopup = ref(false)
+
+const router = useRouter();
+
+const userStore = useUserStore()
+const {currentUser} = storeToRefs(userStore)
+
+const axiosFetcher = (url) => {
+    return axios.get(url).then(res => {return res.data})
+}
+
+
+const {data: featuredSites, error: schoolsError} = useSWRV(`${serverURL}/fetchFeaturedSchools`, axiosFetcher)
+
+const allSchools = ref([]);
+const schoolsAvailable = ref(false);
+
+const fetchAllSchools = async () => {
+    let theSchools = await axios.get(`${serverURL}/fetchAllSchools`);
+    let theSchoolsData = theSchools.data;
+
+    const sitePromise = new Promise(async (resolve, reject) => {
+        const schoolsTempArray = [];
+        for (let i = 0; i < theSchoolsData.length; i++) {
+            let siteId = await theSchoolsData[i].site.site_id;
+            let site = await axios.get(`${serverURL}/fetchSiteById/${siteId}`);
+
+            theSchoolsData[i].location = {
+                lat: parseFloat(site.data.site_latitude),
+                lng: parseFloat(site.data.site_longitude)
+            };
+
+            schoolsTempArray.push(theSchoolsData[i]);
+        }
+
+        schoolsAvailable.value = true;
+        resolve(schoolsTempArray);
+    });
+
+    allSchools.value = await sitePromise;
+    console.log(allSchools.value);
+    console.log(schoolsAvailable.value);
+};
+
+fetchAllSchools();
+
+// watch(featuredSites, (newFeaturedSites) => {
+//     console.log('watcher triggered')
+//     featuredSitesData.value = schoolContentArrParser(featuredSites.value)
+// })
+
+const featuredSitesData = computed(() => {
+    if(!featuredSites.value ) return []
+    else{
+        return schoolContentArrParser(featuredSites.value)
+    }
+});
+
+console.log(featuredSitesData);
+
+onBeforeMount(async () => {
+    /**
+     * Perform check for user meta here
+     * has_school field
+     */
+    let currentUserHasSchool
+    const currentUserId = 1
+    const currentUserRole = currentUser.value.role
+    try{
+        console.log(currentUser.value.metadata);
+        // await axios.post(`${serverURL}/getUserMetadata`,{id: 1, userMetakey: 'has_school'}).then(res => {
+        //     console.log(res.data[0])
+        //     currentUserHasSchool = res.data[0]['user_meta_value'] === 'false'? false : true
+        //     // console.log('current user has_school meta is ' + currentUserHasSchool)
+        // });
+
+        if (Object.keys(currentUser.value.metadata) === 'has_school') {
+            currentUserHasSchool = true;
+        }
+
+        if(!currentUserHasSchool && (currentUserRole == 'Principal' || currentUserRole == 'Superadmin')){
+            // console.log('School is not init yet. you should init the school')
+            createSchool.value = false
+        } else if(!currentUserHasSchool){
+            // console.log('Please notify your principal to set up the school')
+        } else{
+            // console.log('hasnt been handled yet')
+        }
+
+    } catch(err){
+        console.log(err)
+    }
 })
 
+const handleFinishCreateSchool = () =>{
+    createSchool.value = false
+}
+
 const handleBrowseAllSchool = () => {
-    router.push('/browse/schools')
+    router.push({ name: 'browse-schools' })
+}
+
+const handleCloseWelcomePopup = () => {
+    showWelcomePopup.value = false
+}
+
+const handleSaveWelcomePopup = (data)=>{
+    console.log('Received from modal')
+    console.log(data)
+    showWelcomePopup.value = false
+
 }
 
 </script>
 <template>
-    <div>
+    <div
+        v-if="createSchool"
+        class="mt-10"
+    >
+        <CreateSchoolForm @finish-create-school="handleFinishCreateSchool" />
+    </div>
+    <div v-else>
+        <SchoolWelcomePopup
+            v-if="showWelcomePopup"
+            class="mt-10"
+            :show-popup="showWelcomePopup"
+            :close-popup="handleCloseWelcomePopup"
+            @send-click-outside-popup="handleCloseWelcomePopup"
+            @send-save-popup="handleSaveWelcomePopup"
+        />
         <SchoolsHero />
-        <div class="px-[81px] py-20">
-            <div class="grid grid-cols-4 gap-[24px] w-full">
+        <div class=" py-20 ">
+            <SectionHeader
+                :classes="'bg-[#002858]'"
+                :section="'schools'"
+                :title="'Featured Schools'"
+                :button-text="'View all schools'"
+                :button-callback="handleBrowseAllSchool"
+            />
+            <div class="grid grid-cols-4 gap-[24px] w-full px-20 pt-8 ">
                 <div
-                    v-for="(school,index) in featuredSitesData"
+                    v-for="(school,index) in featuredSitesData.splice(0,4)"
                     :key="index"
-                    class="col-span-1 bg-white cursor-pointer h-[470px] border-2 transition-all group hover:shadow-2xl rounded-xl"
+                    class="col-span-1 bg-white cursor-pointer h-[470px] border-[0.5px]  border-black transition-all group hover:shadow-2xl"
                 >
                     <SchoolCard
                         v-if="featuredSitesData"
@@ -47,19 +172,23 @@ const handleBrowseAllSchool = () => {
                     />
                 </div>
             </div>
-            <GenericButton
-                id="browse-all-school-button"
-                type="school"
-                class="bg-blue-800 text-white text-center px-6 py-2"
-                :callback="handleBrowseAllSchool"
-            >
-                Browse All School
-            </GenericButton>
         </div>
 
 
-        <div class="px-[81px] py-20">
-            <SearchableMap />
+        <div class="py-20 px-20" v-if="schoolsAvailable">
+            <!-- <SearchableMap /> -->
+            <SchoolsSearchableMap
+                :key="schoolsAvailable"
+                :schools="allSchools"
+                :schools-available="schoolsAvailable"
+            />
+        </div>
+
+        <div class="w-full flex" v-else>
+            <Loader
+                :loader-color="'#0072DA'"
+                :loader-message="'Map Loading'"
+            />
         </div>
     </div>
 </template>

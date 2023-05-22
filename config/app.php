@@ -195,6 +195,8 @@ return [
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
 
+        App\Providers\SvgPackServiceProvider::class,
+
     ],
 
     /*
@@ -210,6 +212,8 @@ return [
 
     'aliases' => Facade::defaultAliases()->merge([
         // 'ExampleClass' => App\Example\ExampleClass::class,
+        'Metahelper' => App\Helpers\Metahelper::class,
+        'NotificationHelper' => App\Helpers\NotificationHelper::class
     ])->toArray(),
 
 ];

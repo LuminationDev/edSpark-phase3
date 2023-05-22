@@ -3,23 +3,65 @@ import { useSessionStorage } from "@vueuse/core";
 import axios from "axios";
 
 export const useUserStore = defineStore('user', {
+    /**
+     * currentUser from server
+     * has {
+     *     full_name : string,
+     *     display_name: string,
+     *     email: string
+     *     id: number
+     *     metadata: Array<{user_meta_key: string, user_meta_value: string}>
+     *     permissions: Array<string>
+     *     role: string,
+     *     status: string {Active, Inactive}
+     * }
+     */
     state: () => ({
         currentUser: useSessionStorage('currentUser', {}),
+        userAvatar: useSessionStorage('userAvatar', ''),
+        userLikeList: [],
+        userBookmarkList: [],
+        notifications: [],
     }),
 
     getters: {
         getUser() {
             return this.currentUser;
+        },
+
+        getNotifications() {
+            return this.notifications;
         }
     },
 
     actions: {
-        async loadCurrentUser() {
+        async updateUserName(newName) {
+
+            await axios({
+                method: 'POST',
+                url: `http://localhost:8000/api/updateUser`,
+                data: {
+                    id: this.currentUser.id,
+                    data: {
+                        updateField: 'full_name',
+                        updateValue: newName
+                    }
+                }
+            }).then(response => {
+                console.log(response);
+
+                this.currentUser.full_name = newName;
+            }).catch(error => {
+                console.error(error);
+            });
+        },
+
+        async loadCurrentUser(userId) {
             /**
              * Temporry user ID (Jake M)
              */
-            const userId = 1
             /** **/
+            console.log(userId);
             await axios.get(`http://localhost:8000/api/fetchUser/${userId}`).then(response => {
                 console.log(response.data);
                 this.currentUser = response.data;
@@ -29,8 +71,75 @@ export const useUserStore = defineStore('user', {
             })
         },
 
-        async createUser(user) {
+        async checkUser(email) {
+            return new Promise(async resolve => {
+                console.log('HERE YOU ARE!!!!!');
+                await axios({
+                    method: 'POST',
+                    url: 'http://localhost:8000/api/checkEmail',
+                    data: {
+                        email: email
+                    }
+                }).then(response => {
+                    console.log(response.data);
+                    resolve(response.data);
+                }).catch(error => {
+                    console.log(error);
+                    return error
+                })
+            })
+        },
 
+        async fetchAllRoles() {
+            return new Promise(async (resolve, reject) => {
+                await axios.get('http://localhost:8000/api/fetchAllRoles').then(response => {
+                    // console.log(response);
+                    const allowedValues = [
+                        'SCHLDR',
+                        'PRESCLDR',
+                        'SITELDR',
+                        'STCH',
+                        'PTCH',
+                        'SITESUPP',
+                        'PSACT',
+                        'IT',
+                        'OTHER',
+                        'STAFF'
+                    ];
+
+                    let allowedList = response.data.filter((item) => allowedValues.indexOf(item.role_name) !== -1);
+
+                    let mutatedArray = [];
+
+                    allowedList.forEach(item => {
+                        mutatedArray.push({
+                            id: item.id,
+                            name: item.role_value
+                        });
+                    });
+                    resolve(mutatedArray);
+                }).catch(error => {
+                    console.log(error);
+                    reject(error.code);
+                })
+            })
+        },
+
+        getUserSiteById(siteId) {
+            siteId = siteId.replace(/^0+/, '');
+            console.log(siteId);
+            return new Promise(async resolve => {
+                await axios.get(`http://localhost:8000/api/fetchSiteByCode/${siteId}`).then(response => {
+                    console.log(response.data);
+                    resolve(response.data);
+                }).catch(error => {
+                    console.log('error', error);
+                })
+            })
+        },
+
+        async createUser(user) {
+            console.log(user);
             /**
              * Set the users initials - save as display_name
              */
@@ -38,46 +147,37 @@ export const useUserStore = defineStore('user', {
             let matches = str.match(/\b(\w)/g);
             let initials = matches.join('');
 
-            console.log(initials);
+            let userData = new FormData();
+            // let metaData = new FormData();
+            // let formAvatar = new FormData();
 
-            let data = {
-                userData: {
-                    full_name: user.name,
-                    email: user.email,
-                    role: user.role,
-                    display_name: initials
-                },
-                userMetaData: {
-                    yearLevels: user.yearLevels,
-                    interest: user.interests,
-                    subjects: user.subjects,
-                    biography: user.biography,
-                }
-            };
+            userData.append('userAvatar', user.avatar ? user.avatar : user.avatarUrl);
+            /**
+             * Populate formData Object
+             */
+            userData.append('full_name', user.name);
+            userData.append('email', user.email);
+            userData.append('display_name', JSON.stringify(initials));
+            userData.append('site_id', JSON.stringify(user.site.id)); // Use the id to store as foreign key
+            userData.append('role_id', JSON.stringify(4)); // Use the id to store as foreign key
 
-            // data = JSON.stringify(data);
-
-            console.log(data);
+            /**
+             * Populate metaData Object
+             */
+            userData.append('yearLevels', JSON.stringify(user.yearLevels));
+            userData.append('interest', JSON.stringify(user.interests));
+            userData.append('subjects', JSON.stringify(user.subjects));
+            userData.append('biography', JSON.stringify(user.biography));
 
             await axios({
                 method: 'POST',
                 url: 'http://localhost:8000/api/createUser',
-                data: {
-                    userData: {
-                        full_name: user.name,
-                        email: user.email,
-                        role: user.role,
-                        display_name: initials
-                    },
-                    userMetaData: {
-                        yearLevels: user.yearLevels,
-                        interest: user.interests,
-                        subjects: user.subjects,
-                        biography: user.biography,
-                    }
-                }
+                data: userData,
+                headers: { "Content-Type" : "multipart/form-data" }
             }).then(response => {
                 console.log(response);
+                this.loadCurrentUser(response.data.uid);
+                this.userAvatar = response.data.avatarUrl;
             }).catch(error => {
                 console.log('There was a problem updating your info');
                 console.error(error);
@@ -95,6 +195,26 @@ export const useUserStore = defineStore('user', {
                     updateValue: ['1', '3']
                 }
             }
+        },
+
+        async fetchAllNotifications(userId) {
+            return new Promise(async (resolve, reject) => {
+                await axios.get(`http://localhost:8000/api/fetchAllNotifications/${userId}`)
+                    .then(response => {
+                        // console.log(response.data)
+                        this.notifications = response.data;
+                    }).catch(error => {
+                        console.log('Sorry, there was problem retrieving notification data');
+                        console.error(error);
+                        reject(error.code);
+                    });
+            });
+        },
+
+        clearStore() {
+            this.currentUser = {};
+            if (sessionStorage.getItem('currentUser') === null) return;
+            sessionStorage.removeItem('currentUser');
         }
     }
 })

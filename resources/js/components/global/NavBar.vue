@@ -2,67 +2,85 @@
     /**
      * Import Dependencies
      */
-    import { ref } from 'vue';
-    import { RouterLink } from 'vue-router';
+import { ref } from 'vue';
 
-    /**
-     * Import SVG's
-     */
-    import NavSwoosh from '../svg/NavSwoosh.vue';
-    import Logo from '../svg/Logo.vue';
-    import Profile from '../svg/Profile.vue';
+/**
+ * Import SVG's
+ */
+import NavSwoosh from '../svg/NavSwoosh.vue';
+import Logo from '../svg/Logo.vue';
+import Profile from '../svg/Profile.vue';
 
-    /**
-     * Import Stores
-     */
-    import { useUserStore } from '../../stores/useUserStore';
+/**
+ * Import Stores
+ */
+import { useUserStore } from '@/js/stores/useUserStore';
 
-    /**
-     * Import Components
-     */
-    import ProfileDropdown from './ProfileDropdown.vue';
+/**
+ * Import Components
+ */
+import ProfileDropdown from './ProfileDropdown.vue';
 
-    export default {
-        props: {
-            isFirstVisit: Boolean
-        },
+export default {
 
-        setup() {
-            const userStore = useUserStore();
+    components: {
+        NavSwoosh,
+        Logo,
+        Profile,
+        ProfileDropdown
+    },
+    props: {
+        isFirstVisit: Boolean
+    },
 
-            const navDropdownToggle = ref(false);
-            const profileDropdown = ref(false);
+    setup() {
+        const userStore = useUserStore();
 
-            return {
-                navDropdownToggle,
-                profileDropdown,
-                userStore,
-            }
-        },
+        const navDropdownToggle = ref(false);
+        const profileDropdown = ref(false);
 
-        components: {
-            NavSwoosh,
-            Logo,
-            Profile,
-            ProfileDropdown
-        },
+        // const imageURL = import.meta.env.VITE_SERVER_IMAGE_API;
+        // const userMetadata = userStore.getUser.metadata;
+        // const userAvatarMeta = userMetadata.filter(meta => meta.user_meta_key === 'userAvatar');
+        // const avatarUrl = userAvatarMeta[0].user_meta_value[0].replace(/\\\//g, "/");
+        // console.log(avatarUrl);
 
-        data() {
-            return {
-                currentUser: {}
-            }
-        },
-
-        mounted() {
-            this.currentUser = this.userStore.getUser
-        },
-
-        methods: {
-            handleAvatarClick() {
-                console.log('This has been clicked!!!');
-                this.profileDropdown = !this.profileDropdown
-            }
+        return {
+            navDropdownToggle,
+            profileDropdown,
+            userStore,
+            // imageURL,
+            // avatarUrl
         }
+    },
+
+    data() {
+        return {
+            currentUser: {},
+            avatarUrl: ''
+        }
+    },
+
+    mounted() {
+
+        if (!Object.keys(this.userStore.getUser).length <= 0) {
+            this.currentUser = this.userStore.getUser;
+
+            this.currentUser.metadata.forEach(meta => {
+                if (meta.user_meta_key === 'userAvatar') {
+                    console.log(meta);
+                    this.avatarUrl = meta.user_meta_value[0].replace(/\\\//g, "/");;
+                }
+            })
+        }
+
+    },
+
+    methods: {
+        handleAvatarClick() {
+            this.profileDropdown = !this.profileDropdown
+        }
+    }
 }
 
 </script>
@@ -72,23 +90,23 @@
         <div class="nav-background w-full h-full pt-7 bg-[url(http://localhost:5173/resources/assets/images/children-vr.png)] bg-no-repeat bg-cover">
             <nav class="bg-[#002856]/50 py-2 px-12 w-full">
                 <ul class="flex flex-wrap gap-8 text-white text-[24px] font-semibold font-['Poppins']">
-                    <RouterLink to="/dashboard">
+                    <router-link to="/dashboard">
                         <li class="cursor-pointer hover:underline decoration-[#B8E2DC] decoration-4 underline-offset-8 transition-all">
                             Dash
                         </li>
-                    </RouterLink>
+                    </router-link>
 
-                    <RouterLink to="/schools">
+                    <router-link to="/schools">
                         <li class="cursor-pointer hover:underline decoration-[#B8E2DC] decoration-4 underline-offset-8 transition-all">
                             Schools
                         </li>
-                    </RouterLink>
+                    </router-link>
 
-                    <RouterLink to="/advice">
+                    <router-link to="/advice">
                         <li class="cursor-pointer hover:underline decoration-[#B8E2DC] decoration-4 underline-offset-8 transition-all">
                             Advice
                         </li>
-                    </RouterLink>
+                    </router-link>
                     <li class="relative cursor-pointer">
                         <div
                             class="h-fit"
@@ -103,19 +121,19 @@
                             >
                                 <div class="bg-[#002856]/50 mt-[8px]">
                                     <ul class="flex flex-col gap-4 py-4 text-white text-center text-[24px] font-semibold font-['Poppins']">
-                                        <RouterLink
+                                        <router-link
                                             class="flex"
                                             to="/software"
                                         >
                                             <li class="px-4 mx-auto cursor-pointer hover:underline decoration-[#B8E2DC] decoration-4 underline-offset-8 transition-all">
                                                 Software
                                             </li>
-                                        </RouterLink>
-                                        <RouterLink to="/hardware">
+                                        </router-link>
+                                        <router-link to="/hardware">
                                             <li class="px-4 mx-auto cursor-pointer hover:underline decoration-[#B8E2DC] decoration-4 underline-offset-8 transition-all">
                                                 Hardware
                                             </li>
-                                        </RouterLink>
+                                        </router-link>
                                     </ul>
                                 </div>
                             </div>
@@ -123,23 +141,23 @@
                     </li>
 
 
-                    <RouterLink to="/community">
+                    <router-link to="/community">
                         <li class="cursor-pointer hover:underline decoration-[#B8E2DC] decoration-4 underline-offset-8 transition-all">
                             Community
                         </li>
-                    </RouterLink>
+                    </router-link>
 
-                    <RouterLink to="/partners">
+                    <router-link to="/partners">
                         <li class="cursor-pointer hover:underline decoration-[#B8E2DC] decoration-4 underline-offset-8 transition-all">
                             Partners
                         </li>
-                    </RouterLink>
+                    </router-link>
 
-                    <RouterLink to="/events">
+                    <router-link to="/events">
                         <li class="cursor-pointer hover:underline decoration-[#B8E2DC] decoration-4 underline-offset-8 transition-all">
                             Events
                         </li>
-                    </RouterLink>
+                    </router-link>
                 </ul>
             </nav>
         </div>
@@ -148,19 +166,16 @@
         <!-- <div @click.prevent="handleAvatar" class="w-fit h-fit" >
 
         </div> -->
-
-        <div class="w-[48px] h-[48px] absolute top-64 right-96">
+        <!-- <div class="w-[48px] h-[48px] absolute top-64 right-96">
             <div
-                class="z-50 relative h-full w-full bg-orange-500 flex rounded-full cursor-pointer hover:shadow-2xl"
+                class="z-50 relative h-full w-full flex rounded-full cursor-pointer hover:shadow-2xl bg-cover bg-no-repeat bg-center"
                 @click.prevent="handleAvatar"
             >
-                <p class="text-[1.25rem] text-white font-bold m-auto">
-                    {{ currentUser.display_name }}
-                </p>
+                <img :src="`${imageURL}/${avatarUrl}`" alt="user avatar">
             </div>
 
             <div
-                v-show="profileDropdown"
+                v-if="profileDropdown"
                 class="relative w-full h-full z-40"
                 @mouseleave="handleAvatar"
             >
@@ -192,14 +207,16 @@
                     </div>
                 </div>
             </div>
-        </div>
-        <profileDropdown
+        </div> -->
+        <ProfileDropdown
             :current-user="currentUser"
             :profile-dropdown="profileDropdown"
+            :avatarUrl="avatarUrl"
+            :key="currentUser"
             @handleAvatarClick="handleAvatarClick"
         />
 
-        <Logo class="absolute right-20 top-4 z-30" />
+        <Logo class="absolute right-20 top-36 z-30 md:w-44 md:h-44 md:top-24 sm:w-36 sm:h-36 sm:top-32 w-36 h-36 lg:top-24" />
         <NavSwoosh class="w-full absolute -bottom-6 left-0 right-0 pointer-events-none" />
     </div>
 </template>

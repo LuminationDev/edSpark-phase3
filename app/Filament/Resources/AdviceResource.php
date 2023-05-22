@@ -14,6 +14,17 @@ use Filament\Tables;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Illuminate\Support\Facades\Auth;
+use Livewire\TemporaryUploadedFile;
+
+use App\Models\User;
+
+use Illuminate\Filesystem\Filesystem;
+use Illuminate\Support\Collection;
+use Illuminate\Support\Str;
+use SplFileInfo;
+
+use Guava\FilamentIconPicker\Forms\IconPicker;
+use Guava\FilamentIconPicker\Tables\IconColumn;
 
 class AdviceResource extends Resource
 {
@@ -31,49 +42,143 @@ class AdviceResource extends Resource
     public static function form(Form $form): Form
     {
         $user = Auth::user()->full_name;
-        return $form
-            ->schema([
+        return $form->schema([
+            Forms\Components\Card::make()->schema([
+                Forms\Components\TextInput::make('post_title')
+                    ->label('Title')
+                    ->required()
+                    ->maxLength(255),
+                Forms\Components\RichEditor::make('post_content')
+                    ->label('Content')
+                    ->required()
+                    ->maxLength(65535),
+                Forms\Components\RichEditor::make('post_excerpt')
+                    ->label('Excerpt')
+                    ->disableToolbarButtons(['attachFiles']),
+                Forms\Components\FileUpload::make('cover_image')
+                    ->preserveFilenames()
+                    ->disk('public')
+                    ->directory('uploads/advice')
+                    ->acceptedFileTypes(['image/jpeg', 'image/jpg', 'image/png'])
+                    ->getUploadedFileNameForStorageUsing(function (TemporaryUploadedFile $file): string {
+                        return (string) str($file->getClientOriginalName())->prepend('edSpark-advice-');
+                    }),
+
                 Forms\Components\Card::make()
                     ->schema([
-                        Forms\Components\TextInput::make('post_title')
-                            ->label('Title')
-                            ->required()
-                            ->maxLength(255),
-                        Forms\Components\RichEditor::make('post_content')
-                            ->label('Content')
-                            ->required()
-                            ->maxLength(65535),
-                        Forms\Components\RichEditor::make('post_excerpt')
-                            ->label('Excerpt')
-                            ->disableToolbarButtons([
-                                'attachFiles',
-                            ]),
-                        Forms\Components\Grid::make(3)
-                            ->schema([
-                                Forms\Components\TextInput::make('Author')
-                                    ->default($user)
-                                    ->disabled(),
-                                Forms\Components\BelongsToSelect::make('advice_type')
-                                    ->label('Advice type')
-                                    ->relationship('advicetype', 'advice_type_name'),
-                                Forms\Components\Select::make('post_status')
-                                    ->options([
-                                        'Published' => 'Published',
-                                        'Unpublished' => 'Unpublished',
-                                        'Draft' => 'Draft',
-                                        'Pending' => 'Pending'
-                                    ])
-                                    ->label('Status')
-                                    ->required(),
-                                    ]),
-                        Forms\Components\FileUpload::make('cover_image')
-                            ->preserveFilenames()
-                            ->label('Cover Image')
-                            ->disk('public')
-                            ->directory('uploads')
-                            ->acceptedFileTypes(['image/jpeg', 'image/png'])
+                        Forms\Components\CheckboxList::make('advice_type')
+                            ->label('Advice type')
+                            ->extraAttributes(['class' => 'text-primary-600'])
+                            ->relationship('advicetypes', 'advice_type_name')
+                            ->columns(3)
+                            ->bulkToggleable(),
                     ]),
-            ]);
+
+                Forms\Components\Grid::make(2)->schema([
+                    Forms\Components\TextInput::make('Author')
+                        ->default($user)
+                        ->disabled(),
+//                    Forms\Components\BelongsToSelect::make('advice_type')
+//                        ->label('Advice type')
+//                        ->relationship('advicetype', 'advice_type_name'),
+                    Forms\Components\Select::make('post_status')
+                        ->options([
+                            'Published' => 'Published',
+                            'Unpublished' => 'Unpublished',
+                            'Draft' => 'Draft',
+                            'Pending' => 'Pending',
+                        ])
+                        ->label('Status')
+                        ->required(),
+                ]),
+
+            ]),
+
+//            Forms\Components\Card::make()
+//                ->schema([
+//                    Forms\Components\Select::make('template')
+//                        ->label('Choose a Template')
+//                        ->reactive()
+//                        ->options(static::getTemplates()),
+//
+//                        ...static::getTemplateSchemas(),
+//                ]),
+
+            Forms\Components\Card::make()
+                ->schema([
+                    Forms\Components\Builder::make('extra_content')
+                        ->blocks([
+                            Forms\Components\Builder\Block::make('templates')
+                                ->schema([
+                                    Forms\Components\Select::make('template')
+                                        ->label('Choose a Template')
+                                        ->reactive()
+                                        ->options(static::getTemplates()),
+                                    ...static::getTemplateSchemas()
+                                ]),
+                            Forms\Components\Builder\Block::make('extra_resources')
+                                ->schema([
+                                    Forms\Components\Repeater::make('item')
+                                        ->schema([
+                                            Forms\Components\TextInput::make('heading'),
+                                            Forms\Components\RichEditor::make('content')
+                                                ->disableToolbarButtons([
+                                                    'attachFiles',
+                                                    'blockquote',
+                                                    'bulletList',
+                                                    'codeBlock',
+                                                    'h2',
+                                                    'h3',
+                                                    'orderedList',
+                                                    'redo',
+                                                    'undo',
+                                                ]),
+                                        ])
+                                ])
+                                ->label('Extra Resources')
+                        ])
+                        ->label('Extra content')
+                ])
+
+
+        ]);
+    }
+
+    public static function getTemplates(): Collection
+    {
+        return static::getTemplateClasses()->mapWithKeys(fn ($class) => [$class => $class::title()]);
+    }
+
+    public static function getTemplateClasses(): Collection
+    {
+        $filesystem = app(Filesystem::class);
+
+        return collect($filesystem->allFiles(app_path('Filament/PageTemplates/Advice')))
+            ->map(function (SplFileInfo $file): string {
+                return (string) Str::of('App\\Filament\\PageTemplates\\Advice')
+                    ->append('\\', $file->getRelativePathname())
+                    ->replace(['/', '.php'], ['\\', '']);
+            });
+    }
+
+    public static function getTemplateSchemas(): array
+    {
+        return static::getTemplateClasses()
+            ->map(fn ($class) =>
+                Forms\Components\Group::make($class::schema())
+                    ->columnSpan(2)
+                    ->afterStateHydrated(fn ($component, $state) => $component->getChildComponentContainer()->fill($state))
+                    ->statePath('extra_content.' . static::getTemplateName($class))
+                    // ->statePath(static::getTemplateName($class))
+                    ->visible(fn ($get) => $get('template') == $class)
+            )
+            ->toArray();
+
+    }
+
+    public static function getTemplateName($class)
+    {
+        return Str::of($class)->afterLast('\\')->snake()->toString();
     }
 
     public static function table(Table $table): Table
@@ -84,10 +189,12 @@ class AdviceResource extends Resource
                     ->label('Title')
                     ->sortable()
                     ->searchable(),
-                Tables\Columns\TextColumn::make('advicetype.advice_type_name')
+                Tables\Columns\ImageColumn::make('cover_image'),
+                Tables\Columns\TextColumn::make('advicetypes.advice_type_name')
                     ->label('Type')
                     ->sortable()
-                    ->searchable(),
+                    ->searchable()
+                    ->wrap(),
                 Tables\Columns\TextColumn::make('author.full_name')->label('Author'),
                 Tables\Columns\TextColumn::make('post_date')
                     ->date()
@@ -99,7 +206,6 @@ class AdviceResource extends Resource
                     ->label('Status')
                     ->sortable()
                     ->searchable(),
-
             ])
             ->filters([
                 //
@@ -109,16 +215,14 @@ class AdviceResource extends Resource
                 Tables\Actions\EditAction::make(),
                 Tables\Actions\DeleteAction::make(),
             ])
-            ->bulkActions([
-                Tables\Actions\DeleteBulkAction::make(),
-            ]);
+            ->bulkActions([Tables\Actions\DeleteBulkAction::make()]);
     }
 
     public static function getRelations(): array
     {
         return [
-            //
-        ];
+                //
+            ];
     }
 
     public static function getPages(): array
@@ -132,6 +236,19 @@ class AdviceResource extends Resource
 
     public static function getEloquentQuery(): Builder
     {
-        return parent::getEloquentQuery()->where('post_status', 'Published');
+        // return parent::getEloquentQuery()->where('post_status', 'Published');
+        return parent::getEloquentQuery()->orderBy('created_at', 'DESC');
+    }
+
+    public static function shouldRegisterNavigation(): bool
+    {
+        // use Illuminate\Support\Facades\Auth;
+
+        // Moderator check
+        if(Auth::user()->role->role_name == 'Moderator') {
+            return false;
+        }
+
+        return true;
     }
 }

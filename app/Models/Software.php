@@ -29,7 +29,10 @@ class Software extends Model
         'post_modified',
         'post_status',
         'author_id',
-        'softwaretype_id'
+        'cover_image',
+        'softwaretype_id',
+        'template',
+        'extra_content'
     ];
 
     public function author()
@@ -37,8 +40,18 @@ class Software extends Model
         return $this->belongsTo(User::class);
     }
 
-    public function softwaretype()
+//    public function softwaretype()
+//    {
+//        return $this->belongsTo(Softwaretype::class);
+//    }
+
+    public function softwaretypes()
     {
-        return $this->belongsTo(Softwaretype::class);
+        return $this->belongsToMany(Softwaretype::class);
     }
+
+    protected $casts = [
+        'cover_image' => 'array',
+        'extra_content' => 'array'
+    ];
 }

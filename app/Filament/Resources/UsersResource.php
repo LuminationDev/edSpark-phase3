@@ -14,6 +14,7 @@ use Filament\Tables\Filters\Filter;
 use Filament\Tables\Filters\SelectFilter;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Illuminate\Support\Facades\Auth;
 
 class UsersResource extends Resource
 {
@@ -44,7 +45,7 @@ class UsersResource extends Resource
                         Forms\Components\Grid::make(3)
                             ->schema([
                                 Forms\Components\BelongsToSelect::make('role_id')
-                                    ->relationship('role', 'role_name'),
+                                    ->relationship('role', 'role_name', fn (Builder $query) => $query->where('role_name','!=' ,'superadmin')),
                                 Forms\Components\BelongsToSelect::make('site_id')
                                     ->relationship('site', 'site_name'),
                                 Forms\Components\Select::make('status')
@@ -102,5 +103,16 @@ class UsersResource extends Resource
             'create' => Pages\CreateUsers::route('/create'),
             'edit' => Pages\EditUsers::route('/{record}/edit'),
         ];
+    }
+
+    public static function shouldRegisterNavigation(): bool
+    {
+
+        // Moderator check
+        if(Auth::user()->role->role_name == 'Moderator') {
+            return false;
+        }
+
+        return true;
     }
 }

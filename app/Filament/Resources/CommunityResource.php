@@ -14,6 +14,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 use Illuminate\Support\Facades\Auth;
+use Livewire\TemporaryUploadedFile;
 
 
 class CommunityResource extends Resource
@@ -44,6 +45,14 @@ class CommunityResource extends Resource
                             ]),
                         Forms\Components\RichEditor::make('post_excerpt')
                             ->maxLength(65535),
+                        Forms\Components\FileUpload::make('cover_image')
+                            ->preserveFilenames()
+                            ->disk('public')
+                            ->directory('uploads/community')
+                            ->acceptedFileTypes(['image/jpeg', 'image/jpg', 'image/png'])
+                            ->getUploadedFileNameForStorageUsing(function (TemporaryUploadedFile $file): string {
+                                return (string) str($file->getClientOriginalName())->prepend('edSpark-community-');
+                            }),
                         Forms\Components\Grid::make(3)
                             ->schema([
                                 Forms\Components\TextInput::make('Author')
@@ -80,6 +89,7 @@ class CommunityResource extends Resource
                 Tables\Columns\TextColumn::make('post_content')
                     ->label('Content')
                     ->limit(50),
+                Tables\Columns\ImageColumn::make('cover_image'),
                 Tables\Columns\TextColumn::make('author.full_name')->label('Author'),
                 Tables\Columns\TextColumn::make('post_status')
                     ->label('Status')
@@ -117,4 +127,18 @@ class CommunityResource extends Resource
             'edit' => Pages\EditCommunity::route('/{record}/edit'),
         ];
     }
+
+    public static function shouldRegisterNavigation(): bool
+    {
+        // use Illuminate\Support\Facades\Auth;
+
+        // Moderator check
+        if(Auth::user()->role->role_name == 'Moderator') {
+            return false;
+        }
+
+        return true;
+    }
+
+
 }

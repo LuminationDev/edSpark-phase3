@@ -10,14 +10,27 @@ import {
     Schools,
     Advice,
     Software,
-    Hardware,
+    TheHardware,
     Community,
     Partners,
     Events,
     SchoolSingle,
-    UserProfile
-} from './pages'
+    UserMessage
+} from './pages';
+import DashboardNew from './pages/DashboardNew.vue';
 import BrowseSchools from "@/js/pages/BrowseSchools.vue";
+import AdviceSingle from "@/js/pages/AdviceSingle.vue";
+import SoftwareSingle from "@/js/components/software/softwareSingle/SoftwareSingle.vue";
+import BaseSearchPage from "@/js/components/bases/BaseSearchPage.vue";
+import UserProfile from  '@/js/components/userprofile/UserProfile.vue';
+import HardwareSingle from '@/js/pages/HardwareSingle.vue';
+
+import ProfileWork from '@/js/components/userprofile/ProfileWork.vue'
+import ProfileInfo  from '@/js/components/userprofile/ProfileInfo.vue'
+import ProfileMessages  from '@/js/components/userprofile/ProfileMessages.vue'
+
+
+
 const router = createRouter({
     history: createWebHistory(),
     routes: [
@@ -29,8 +42,7 @@ const router = createRouter({
         {
             name: 'dashboard',
             path: '/dashboard',
-            component: Dashboard
-            // component: LoginCallback
+            component: DashboardNew
         },
         {
             name: 'browse-schools',
@@ -38,12 +50,17 @@ const router = createRouter({
             component: BrowseSchools,
         },
         {
+            name: 'browse-pages',
+            path: '/browse/:type',
+            component: BaseSearchPage,
+        },
+        {
             name: 'schools',
             path: '/schools',
             component: Schools,
         },
         {
-            name: 'schoolSingle',
+            name: 'school-single',
             path: '/schools/:name',
             component: SchoolSingle
         },
@@ -53,14 +70,33 @@ const router = createRouter({
             component: Advice
         },
         {
+            name: 'advice-single',
+            path: '/advice/resources/:id',
+            component: AdviceSingle,
+            params: true
+        },
+        {
             name: 'software',
             path: '/software',
             component: Software
         },
         {
+            name: "software-single",
+            path: "/software/resources/:id",
+            component: SoftwareSingle,
+            params: true
+
+        },
+        {
             name: 'hardware',
             path: '/hardware',
-            component: Hardware
+            component: TheHardware
+        },
+        {
+            name: 'hardware-single',
+            path: '/hardware/resources/:id',
+            component: HardwareSingle,
+            params: true
         },
         {
             name: 'community',
@@ -80,17 +116,35 @@ const router = createRouter({
         {
             name: 'userProfile',
             path: '/profile/:userId',
-            component: UserProfile
+            component: UserProfile,
+            children: [
+                {
+                    path: '',
+                    name:'userProfileInfo',
+                    component: ProfileInfo
+                },
+                {
+                    path: 'work',
+                    name: 'userProfileWork',
+                    component: ProfileWork
+                },
+                {
+                    path: 'messages',
+                    name:'userProfileMessages',
+                    component: ProfileMessages
+                }
+        ]
+        },
+        {
+            name: 'userMessage',
+            path: '/message/:userId',
+            component: UserMessage
         },
         {
             path: '/login/callback',
+            name: 'login',
             component: LoginCallback
         },
-        // {
-        //     name: 'login',
-        //     path: '/login',
-        //     component: Login
-        // }
     ],
     scrollBehavior(to, from, savedPosition) {
         if (savedPosition) {

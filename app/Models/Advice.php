@@ -29,7 +29,10 @@ class Advice extends Model
         'post_date',
         'post_modified',
         'author_id',
-        'advicetype_id'
+        'cover_image',
+        'advicetype_id',
+        'template',
+        'extra_content'
     ];
 
     public function author()
@@ -37,9 +40,19 @@ class Advice extends Model
         return $this->belongsTo(User::class);
     }
 
-    public function advicetype()
+//    public function advicetype()
+//    {
+//        return $this->belongsTo(Advicetype::class);
+//    }
+
+    public function advicetypes()
     {
-        return $this->belongsTo(Advicetype::class);
+        return $this->belongsToMany(Advicetype::class);
     }
+
+    protected $casts = [
+        'cover_image' => 'array',
+        'extra_content' => 'array',
+    ];
 
 }

@@ -13,6 +13,10 @@ use Filament\Tables;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
+use App\Models\User;
+use Illuminate\Support\Facades\Auth;
+
+
 class PermissionResource extends Resource
 {
     protected static ?string $model = Permission::class;
@@ -39,7 +43,7 @@ class PermissionResource extends Resource
                         Forms\Components\CheckboxList::make('roles')
                             ->label('Associated Roles')
                             ->extraAttributes(['class' => 'text-primary-600'])
-                            ->relationship('roles', 'role_name')
+                            ->relationship('roles', 'role_name', fn (Builder $query) => $query->where('role_name', '!=', 'superadmin'))
                             ->columns(4)
                             ->bulkToggleable()
                     ])
@@ -50,7 +54,9 @@ class PermissionResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('permission_name')->label('name'),
+                Tables\Columns\TextColumn::make('permission_name')->label('name')
+                    ->sortable()
+                    ->searchable(),
                 Tables\Columns\TextColumn::make('permission_value')->label('value')->limit(50),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime(),
@@ -84,4 +90,14 @@ class PermissionResource extends Resource
             'edit' => Pages\EditPermission::route('/{record}/edit'),
         ];
     }
+
+    public static function shouldRegisterNavigation(): bool
+    {
+        if(Auth::user()->role->role_name != 'Superadmin') {
+            return false;
+        }
+
+        return true;
+    }
+
 }

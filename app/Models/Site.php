@@ -32,6 +32,8 @@ class Site extends Model
         'site_type_desc',
         'site_sub_type_code',
         'site_sub_type_desc',
+        'site_latitude',
+        'site_longitude',
         'created_at',
         'updated_at'
     ];
