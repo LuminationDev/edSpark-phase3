@@ -41,6 +41,9 @@ case 'software':
 case 'advice':
     apiLink ='fetchAdvicePostById'
     break;
+case 'hardware':
+    apiLink ='fetchProductById'
+    break;
 }
 
 const route = useRoute()
@@ -73,8 +76,7 @@ watch(currentId ,() => {
             singleContent.value = JSON.parse(route.params.content)
         }
     }
-} )
-
+})
 
 </script>
 <template>

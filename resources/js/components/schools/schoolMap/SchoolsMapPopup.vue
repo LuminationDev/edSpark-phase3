@@ -1,35 +1,32 @@
-<script>
-    /**
-     * Import SVG's
-     */
-import Close from '../../svg/Close.vue';
+<script setup>
 
-export default {
+    import Close from '../../svg/Close.vue';
+    import SchoolCardIconList from '../SchoolCardIconList.vue';
 
-    components: {
-        Close
-    },
-    props: {
-        mapPopupName: String,
-        mapPopupIndex: String
-    },
-
-    mounted() {
-        console.log(this.mapPopupIndex)
-    },
-
-    methods: {
-        handleClosePopup() {
-            this.$emit('handleToggle')
+    const props = defineProps({
+        mapPopupName: {
+            type: String,
+            required: true
         },
-
-        handleEmit() {
-            this.$emit('handleLinkToSchool')
+        mapPopupIndex: {
+            type: String,
+            required: false
+        },
+        mapPopupInfo: {
+            type: Object,
+            required: true
         }
-    },
+    });
 
+    const emits = defineEmits(['handleLinkToSchool', 'handleToggle']);
 
-}
+    const handleClosePopup = () => {
+        emits('handleToggle');
+    };
+
+    const handleEmit = () => {
+        emits('handleLinkToSchool');
+    }
 </script>
 
 <template>
@@ -51,6 +48,11 @@ export default {
                     />
                 </button>
             </div>
+        </div>
+        <div class="flex flex-row gap-6 h-[180px]">
+            <SchoolCardIconList
+                :tech-list="mapPopupInfo.tech_used"
+            />
         </div>
         <div class="flex flex-row justify-end">
             <button

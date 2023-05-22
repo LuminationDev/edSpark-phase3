@@ -35,6 +35,27 @@ export const useUserStore = defineStore('user', {
     },
 
     actions: {
+        async updateUserName(newName) {
+
+            await axios({
+                method: 'POST',
+                url: `http://localhost:8000/api/updateUser`,
+                data: {
+                    id: this.currentUser.id,
+                    data: {
+                        updateField: 'full_name',
+                        updateValue: newName
+                    }
+                }
+            }).then(response => {
+                console.log(response);
+
+                this.currentUser.full_name = newName;
+            }).catch(error => {
+                console.error(error);
+            });
+        },
+
         async loadCurrentUser(userId) {
             /**
              * Temporry user ID (Jake M)
