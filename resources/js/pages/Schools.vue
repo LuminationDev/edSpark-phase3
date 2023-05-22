@@ -16,6 +16,8 @@ import SchoolCard from "@/js/components/schools/SchoolCard.vue";
 import CreateSchoolForm from "@/js/components/schools/createSchool/CreateSchoolForm.vue";
 import SchoolWelcomePopup from "@/js/components/schools/schoolPopup/SchoolWelcomePopup.vue";
 import SectionHeader from "@/js/components/global/SectionHeader.vue";
+import SchoolsSearchableMap from '../components/schools/schoolMap/SchoolsSearchableMap.vue';
+import Loader from '../components/spinner/Loader.vue';
 
 // const featuredSitesData = ref([])
 const createSchool = ref(false)
@@ -33,6 +35,38 @@ const axiosFetcher = (url) => {
 
 const {data: featuredSites, error: schoolsError} = useSWRV(`${serverURL}/fetchFeaturedSchools`, axiosFetcher)
 
+const allSchools = ref([]);
+const schoolsAvailable = ref(false);
+
+const fetchAllSchools = async () => {
+    let theSchools = await axios.get(`${serverURL}/fetchAllSchools`);
+    let theSchoolsData = theSchools.data;
+
+    const sitePromise = new Promise(async (resolve, reject) => {
+        const schoolsTempArray = [];
+        for (let i = 0; i < theSchoolsData.length; i++) {
+            let siteId = await theSchoolsData[i].site.site_id;
+            let site = await axios.get(`${serverURL}/fetchSiteById/${siteId}`);
+
+            theSchoolsData[i].location = {
+                lat: parseFloat(site.data.site_latitude),
+                lng: parseFloat(site.data.site_longitude)
+            };
+
+            schoolsTempArray.push(theSchoolsData[i]);
+        }
+
+        schoolsAvailable.value = true;
+        resolve(schoolsTempArray);
+    });
+
+    allSchools.value = await sitePromise;
+    console.log(allSchools.value);
+    console.log(schoolsAvailable.value);
+};
+
+fetchAllSchools();
+
 // watch(featuredSites, (newFeaturedSites) => {
 //     console.log('watcher triggered')
 //     featuredSitesData.value = schoolContentArrParser(featuredSites.value)
@@ -44,6 +78,8 @@ const featuredSitesData = computed(() => {
         return schoolContentArrParser(featuredSites.value)
     }
 });
+
+console.log(featuredSitesData);
 
 onBeforeMount(async () => {
     /**
@@ -138,8 +174,20 @@ const handleSaveWelcomePopup = (data)=>{
         </div>
 
 
-        <div class="py-20 px-20">
-            <SearchableMap />
+        <div class="py-20 px-20" v-if="schoolsAvailable">
+            <!-- <SearchableMap /> -->
+            <SchoolsSearchableMap
+                :key="schoolsAvailable"
+                :schools="allSchools"
+                :schools-available="schoolsAvailable"
+            />
+        </div>
+
+        <div class="w-full flex" v-else>
+            <Loader
+                :loader-color="'#0072DA'"
+                :loader-message="'Map Loading'"
+            />
         </div>
     </div>
 </template>

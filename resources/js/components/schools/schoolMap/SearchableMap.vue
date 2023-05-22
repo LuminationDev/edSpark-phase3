@@ -34,12 +34,12 @@ export default {
 
         const toggleMapPopup =ref(false);
 
-        const center = { lat: 40.689247, lng: -74.044502 };
+        // const center = { lat: 40.689247, lng: -74.044502 };
 
         return {
             toggleFilters,
             showFilters,
-            center,
+            // center,
             toggleMapPopup,
             router
         }
