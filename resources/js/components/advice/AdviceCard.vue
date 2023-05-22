@@ -1,5 +1,5 @@
 <script setup>
-import {computed} from "vue";
+import { computed } from "vue";
 import GenericCard from "@/js/components/card/GenericCard.vue";
 import AdviceTypeTag from "@/js/components/advice/AdviceTypeTag.vue";
 import AdviceCardIcon from "@/js/components/advice/AdviceCardIcon.vue";
@@ -15,7 +15,7 @@ const props = defineProps({
     numberPerRow:{
         type: Number, required: false, default: 3
     }
-})
+});
 
 const { post_id, post_title, cover_image, advice_type, created_at, post_excerpt, author } = props.adviceContent
 const router = useRouter()
@@ -45,6 +45,7 @@ const likeBookmarkData = {
 
 <template>
     <GenericCard
+        :key="post_id"
         :title="post_title"
         :display-content="post_excerpt"
         :display-author="author"
