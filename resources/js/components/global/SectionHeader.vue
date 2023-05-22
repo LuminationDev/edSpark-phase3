@@ -1,27 +1,33 @@
 <script setup>
-    import EventsCollection from '../svg/EventsCollection.vue';
-    import SoftwareCollection from '../svg/SoftwareCollection.vue';
-    import AdviceCollection from '../svg/AdviceCollection.vue';
-    import SchoolsCollection from '../svg/SchoolsCollection.vue';
+import EventsCollection from '../svg/EventsCollection.vue';
+import SoftwareCollection from '../svg/SoftwareCollection.vue';
+import AdviceCollection from '../svg/AdviceCollection.vue';
+import SchoolsCollection from '../svg/SchoolsCollection.vue';
+import LaptopCollection from "@/js/components/svg/hardware/LaptopCollection.vue";
 
-    const props = defineProps({
-        classes: {
-            type: String,
-            required: false
-        },
-        section: {
-            type: String,
-            required: false
-        },
-        title: {
-            type: String,
-            required: true
-        },
-        buttonText: {
-            type: String,
-            required: true
-        }
-    });
+const props = defineProps({
+    classes: {
+        type: String,
+        required: false
+    },
+    section: {
+        type: String,
+        required: false
+    },
+    title: {
+        type: String,
+        required: true
+    },
+    buttonText: {
+        type: String,
+        required: true
+    },
+    buttonCallback:{
+        type: Function,
+        required: false,
+        default: () => {}
+    }
+});
 
 </script>
 
@@ -47,11 +53,18 @@
                 v-if="section === 'schools'"
                 class="absolute top-1/2 -translate-y-1/2 right-16 group-hover/headerbg:scale-125 transition-all duration-500"
             />
+            <LaptopCollection
+                v-if="section === 'laptops'"
+                class="absolute top-1/2 -translate-y-1/2 right-16 group-hover/headerbg:scale-125 transition-all duration-500"
+            />
 
-            <h3 class="text-white text-[36px] font-semibold self-center section-header uppercase">
+            <h3 class="text-white text-4xl font-semibold self-center section-header uppercase">
                 {{ title }}
             </h3>
-            <button class="bg-white px-4 h-fit py-2 rounded-sm border-2 z-20 border-[#339999] text-[#339999] text-[15px] font-medium cursor-pointer hover:text-[#307474] hover:border-2 hover:border-[#307474]">
+            <button
+                class="bg-white px-4 h-fit py-2 rounded-sm border-2 z-20 border-[#339999] text-[#339999] text-base font-medium cursor-pointer hover:text-[#307474] hover:border-2 hover:border-[#307474]"
+                @click="props.buttonCallback"
+            >
                 {{ buttonText }}
             </button>
         </div>

@@ -35,6 +35,7 @@ import {useEventsStore} from '../stores/useEventsStore';
 import {useSoftwareStore} from '../stores/useSoftwareStore';
 import {useAdviceStore} from '../stores/useAdviceStore';
 import {useSchoolsStore} from '../stores/useSchoolsStore';
+import {useRouter} from "vue-router";
 
 const userStore = useUserStore();
 const eventStore = useEventsStore();
@@ -188,6 +189,7 @@ const onClosePopup = () => {
             :section="'software'"
             :title="'Top Software'"
             :button-text="'View all software'"
+            :button-callback="() => router.push('/browse/software')"
         />
 
         <!-- Software Cards Here -->
@@ -206,6 +208,7 @@ const onClosePopup = () => {
             :section="'advice'"
             :title="'Advice'"
             :button-text="'View all resources'"
+            :button-callback="() => router.push('/browse/advice')"
         />
 
         <!-- Advice Cards Here -->
@@ -224,6 +227,7 @@ const onClosePopup = () => {
             :section="'schools'"
             :title="'Latest School Profiles'"
             :button-text="'View all schools'"
+            :button-callback="() => router.push('/browse/schools')"
         />
 
         <!-- School Cards Here -->
