@@ -30,7 +30,7 @@
         "@fawmi/vue-google-maps": "^0.9.79",
         "@googlemaps/js-api-loader": "^1.15.1",
         "@okta/jwt-verifier": "^3.0.1",
-        "@okta/okta-auth-js": "^7.2.0",
+        "@okta/okta-auth-js": "^7.3.0",
         "@okta/okta-vue": "^5.6.0",
         "@vite/vitejs": "^2.3.19",
         "@vitejs/plugin-vue": "^4.2.1",
