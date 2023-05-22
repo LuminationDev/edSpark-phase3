@@ -30,6 +30,7 @@ import {useEventsStore} from '../stores/useEventsStore';
 import {useSoftwareStore} from '../stores/useSoftwareStore';
 import {useAdviceStore} from '../stores/useAdviceStore';
 import {useSchoolsStore} from '../stores/useSchoolsStore';
+import {useRouter} from "vue-router";
 
 const userStore = useUserStore();
 const eventStore = useEventsStore();
@@ -99,7 +100,7 @@ const events = ref([]);
 const softwares = ref([]);
 const advice = ref([]);
 const schools = ref([]);
-
+const router = useRouter()
 const loadDashboardData = async () => {
     events.value = await eventStore.loadEvents();
     softwares.value = await softwareStore.loadArticles();
@@ -111,6 +112,10 @@ const loadDashboardData = async () => {
 };
 
 loadDashboardData();
+
+const onClosePopup = () => {
+    isFirstVisit.value = !isFirstVisit.value;
+};
 
 </script>
 
@@ -131,6 +136,7 @@ loadDashboardData();
             <FirstVisitForm
                 :is-first-visit="isFirstVisit"
                 :user-details="userDetails"
+                @onClosePopup="onClosePopup"
             />
         </div>
 
@@ -143,16 +149,17 @@ loadDashboardData();
             :button-text="'View all events'"
         />
 
-        <!-- Events Cards Here -->
-        <!--        <EventsDashboard-->
-        <!--            :events="events"-->
-        <!--        />-->
+
+<!--        <EventsDashboard-->
+<!--            :events="events"-->
+<!--        />-->
 
         <SectionHeader
             :classes="'bg-[#1C5CA9]'"
             :section="'software'"
             :title="'Top Software'"
             :button-text="'View all software'"
+            :button-callback="() => router.push('/browse/software')"
         />
 
         <!-- Software Cards Here -->
@@ -165,6 +172,7 @@ loadDashboardData();
             :section="'advice'"
             :title="'Advice'"
             :button-text="'View all resources'"
+            :button-callback="() => router.push('/browse/advice')"
         />
 
         <!-- Advice Cards Here -->
@@ -177,6 +185,7 @@ loadDashboardData();
             :section="'schools'"
             :title="'Latest School Profiles'"
             :button-text="'View all schools'"
+            :button-callback="() => router.push('/browse/schools')"
         />
 
         <!-- School Cards Here -->

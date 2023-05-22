@@ -488,7 +488,7 @@ export default {
                         <label for="Role">Your Site</label>
                         <SearchDropdown
                             class="searchable_dropdown"
-                            :options="this.allSites"
+                            :options="allSites"
                             :placeholder="'Search for your site...' "
                             name="site"
                             :close-on-outside-click="true"
@@ -677,18 +677,10 @@ export default {
         <SectionHeader
             :classes="'bg-[#1C5CA9]'"
             :section="'software'"
-        >
-            <template #header>
-                <h3 class="text-white text-[36px] font-semibold self-center section-header uppercase">
-                    Top Software
-                </h3>
-            </template>
-            <template #cta>
-                <button class="bg-white px-4 py-2 rounded-sm border-2 border-[#1C5CA9] text-[#1C5CA9] text-[15px] font-medium cursor-pointer hover:text-[#1a3b64] hover:border-2 hover:border-[#1a3b64]">
-                    View all software
-                </button>
-            </template>
-        </SectionHeader>
+            title="Top Software"
+            button-text="View all software"
+            :button-callback="() => router.push('/browse/software')"
+        />
 
         <div class="py-20 px-20">
             <div class="grid grid-cols-12 gap-[24px] w-full h-full relative group/bg">

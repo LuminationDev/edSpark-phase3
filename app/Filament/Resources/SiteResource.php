@@ -64,7 +64,11 @@ class SiteResource extends Resource
                     ->searchable(),
                 Tables\Columns\TextColumn::make('site_sub_type_desc')
                     ->label('Sub Type')
-                    ->searchable()
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('site_latitude')
+                    ->label('Latitude'),
+                Tables\Columns\TextColumn::make('site_longitude')
+                        ->label('Longitude')
             ])
             ->filters([
                 //

@@ -6,10 +6,10 @@ import {useUserStore} from "@/js/stores/useUserStore";
 import {storeToRefs} from "pinia";
 import axios from "axios";
 import {serverURL} from "@/js/constants/serverUrl";
+import { useRouter } from 'vue-router';
 
 
-
-
+const router = useRouter();
 const userStore = useUserStore()
 const {userLikeList, userBookmarkList, currentUser} = storeToRefs(userStore)
 
@@ -46,7 +46,9 @@ axios.post(`${serverURL}/fetchAllBookmarksByType`, query).then(res => {
 </script>
 
 <template>
-    <NavBar />
+    <NavBar
+        :key="router.currentRoute.value"
+    />
 
     <div class="pageBodyContentContainer">
         <router-view />

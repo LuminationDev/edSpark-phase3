@@ -34,7 +34,7 @@ const heroBackground = computed(() => {
 </script>
 
 <template>
-    <div class="BaseHeroContainer h-[680px] -mt-28 relative -z-10">
+    <div class="BaseHeroContainer h-[720px] -mt-28 relative -z-10">
         <div
             :class="'BaseHeroClipThisPath pb-[36px] pt-[190px] px-[48px] grid grid-cols-8 bg-cover h-full relative '+ heroBackground"
         >
@@ -52,6 +52,7 @@ const heroBackground = computed(() => {
                 <p class="text-white flex flex-row gap-4 text-[18px] font-normal pb-4">
                     <slot name="authorName" />
                     <slot name="subtitleText1" />
+                    <slot name="hardwareProvider"/>
                 </p>
 
                 <p class="text-white text-[18px] font-normal">

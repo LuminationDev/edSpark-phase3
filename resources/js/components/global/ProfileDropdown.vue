@@ -102,7 +102,7 @@
             },
 
             mounted() {
-
+                console.log(this.currentUser.full_name);
             }
         }
     }
@@ -115,9 +115,8 @@
             @click.prevent="handleAvatar"
 
         >
-            <img class="w-full m-auto" :src="`${ imageURL }/${avatarUrl}`" alt="">
-            <p class="text-[1.25rem] text-white font-bold m-auto">
-                <!-- {{ currentUser.display_name.replace(/"/g, '') }} -->
+            <img class="w-full m-auto" :src="`${ imageURL }/${avatarUrl}`" alt="" v-if="!avatarUrl.length <= 0">
+            <p class="text-[1.25rem] text-white font-bold m-auto" v-else>
                 {{ currentUser.display_name }}
             </p>
         </div>
@@ -153,7 +152,7 @@
                 <div class="pt-3">
                     <button
                         class="py-3 px-2 text-white text-[18px] font-medium w-full hover:underline"
-                        @click="this.logout"
+                        @click="logout"
                     >
                         Sign out
                     </button>

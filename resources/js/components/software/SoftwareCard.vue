@@ -14,10 +14,6 @@ const props = defineProps({
         required: false,
         default: 3
     },
-    key:{
-        type: Number,
-        required: true
-    }
 })
 const router = useRouter()
 

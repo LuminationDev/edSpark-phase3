@@ -25,7 +25,9 @@ class SiteController extends Controller
                     'site_type_code' => $site->site_type_code,
                     'site_type_desc' => $site->site_type_desc,
                     'site_sub_type_code' => $site->site_sub_type_code,
-                    'site_sub_type_desc' => $site->site_sub_type_desc
+                    'site_sub_type_desc' => $site->site_sub_type_desc,
+                    'site_latitude' => $site->site_latitude,
+                'site_longitude' => $site->site_longitude
                 ];
                 $data[] = $result;
             }
@@ -49,7 +51,9 @@ class SiteController extends Controller
                 'site_type_code' => $site->site_type_code,
                 'site_type_desc' => $site->site_type_desc,
                 'site_sub_type_code' => $site->site_sub_type_code,
-                'site_sub_type_desc' => $site->site_sub_type_desc
+                'site_sub_type_desc' => $site->site_sub_type_desc,
+                'site_latitude' => $site->site_latitude,
+                'site_longitude' => $site->site_longitude
             ];
 
             return response()->json($result);
@@ -74,7 +78,9 @@ class SiteController extends Controller
                 'site_type_code' => $site->site_type_code,
                 'site_type_desc' => $site->site_type_desc,
                 'site_sub_type_code' => $site->site_sub_type_code,
-                'site_sub_type_desc' => $site->site_sub_type_desc
+                'site_sub_type_desc' => $site->site_sub_type_desc,
+                'site_latitude' => $site->site_latitude,
+                'site_longitude' => $site->site_longitude
             ];
 
             return response()->json($result);

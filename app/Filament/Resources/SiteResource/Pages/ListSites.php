@@ -41,7 +41,11 @@ class ListSites extends ListRecords
                     ImportField::make('site_sub_type_code')
                         ->label('Site Sub Type Code'),
                     ImportField::make('site_sub_type_desc')
-                        ->label('Site Sub Type Description')
+                        ->label('Site Sub Type Description'),
+                    ImportField::make('site_latitude')
+                        ->label('Site Latitude'),
+                    ImportField::make('site_longitude')
+                        ->label('Site Longitude')
                 ])
         ];
     }
