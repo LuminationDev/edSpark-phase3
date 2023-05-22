@@ -40,7 +40,7 @@
         "epic-spinners": "^2.0.0",
         "font-awesome": "^4.7.0",
         "http-proxy-middleware": "^2.0.6",
-        "pinia": "^2.0.34",
+        "pinia": "^2.0.35",
         "sanitize-html": "^2.10.0",
         "vue": "^3.2.47",
         "sass": "^1.62.1",
