@@ -1,4 +1,4 @@
-<script>
+<script setup>
     /**
      * Import Dependencies
      */
@@ -18,100 +18,50 @@
      * Import components
      */
 
-    export default {
-
-        components: {
-            Profile,
+    const props = defineProps({
+        currentUser: {
+            type: Object,
+            required: true,
         },
-        props: {
-            currentUser: Object,
-            profileDropdown: Boolean,
-            avatarUrl: String
+        profileDropdown: {
+            type: Boolean,
+            required: true
         },
-
-        setup() {
-            const userStore = useUserStore();
-            const imageURL = import.meta.env.VITE_SERVER_IMAGE_API
-
-            return {
-                userStore,
-                imageURL
-            }
-        },
-
-        methods: {
-            handleAvatar() {
-                this.$emit('handleAvatarClick');
-            },
-
-            setup(props) {
-                const userStore = useUserStore();
-
-                const avatarUrl = ref('');
-
-                const imageURL = import.meta.env.VITE_SERVER_IMAGE_API
-
-                const userMetadata = userStore.getUser.metadata;
-                if (userMetadata !== undefined) {
-                    const userAvatarMeta = userMetadata.filter(meta => meta.user_meta_key === 'userAvatar');
-                    avatarUrl.value = userAvatarMeta[0].user_meta_value[0].replace(/\\\//g, "/");
-                }
-
-                // console.log(imageURL);
-                // console.log(avatarUrl);
-
-                // console.log(props.currentUser.display_name.replace(/"/g, ''))
-
-
-                // props.currentUser.metadata.forEach(meta => {
-                //     if (meta.user_meta_key === 'userAvatar') {
-                //         console.log(meta);
-                //         avatarUrl.value = meta.user_meta_value;
-                //     }
-                // })
-                const notificationCount = userStore.getNotifications;
-                console.log(notificationCount);
-                return {
-                    userStore,
-                    imageURL,
-                    avatarUrl
-                }
-            },
-
-            components: {
-                Profile,
-            },
-
-            data() {
-                return {
-                    userAvatar
-                }
-            },
-
-            methods: {
-                handleAvatar() {
-                    console.log(this.profileDropdown);
-                    this.$emit('handleAvatarClick');
-                },
-
-                async logout() {
-                    console.log('clicked the button');
-                    await oktaAuth.signOut();
-                    this.userStore.clearStore();
-                }
-            },
-
-            mounted() {
-                console.log(this.currentUser.full_name);
-            }
+        avatarUrl: {
+            type: String,
+            required: true
         }
-    }
+    });
+
+    const emits = defineEmits(['handleAvatarClick'])
+
+    const userStore = useUserStore();
+    const imageURL = import.meta.env.VITE_SERVER_IMAGE_API;
+    const avatarUrl = ref('');
+    const userMetadata = userStore.getUser.metadata;
+
+    if (userMetadata !== undefined) {
+        const userAvatarMeta = userMetadata.filter(meta => meta.user_meta_key === 'userAvatar');
+        avatarUrl.value = userAvatarMeta[0].user_meta_value[0].replace(/\\\//g, "/");
+    };
+
+    const notificationCount = userStore.getNotifications;
+
+    const handleAvatar = () => {
+        emits('handleAvatarClick');
+    };
+
+    const handleLogoutUser = async () => {
+        console.log('clicked the button');
+        await oktaAuth.signOut();
+        this.userStore.clearStore();
+    };
 </script>
 
 <template>
     <div class="w-[48px] h-[48px] absolute top-64 right-72">
         <div
-            class="z-50 relative h-full w-full bg-orange-500 flex rounded-full cursor-pointer hover:shadow-2xl overflow-hidden"
+            class="z-50 relative h-full w-full bg-slate-200 flex rounded-full cursor-pointer hover:shadow-2xl overflow-hidden"
             @click.prevent="handleAvatar"
 
         >
@@ -152,7 +102,7 @@
                 <div class="pt-3">
                     <button
                         class="py-3 px-2 text-white text-[18px] font-medium w-full hover:underline"
-                        @click="logout"
+                        @click.prevent="handleLogoutUser"
                     >
                         Sign out
                     </button>

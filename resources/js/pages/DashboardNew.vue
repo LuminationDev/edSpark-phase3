@@ -63,6 +63,8 @@ const getIdToken = async () => {
     idToken.value = await oktaAuth.tokenManager.get('idToken');
     claims.value = await idToken.value.claims;
 
+    console.log(idToken);
+
     /**
      * User Details
      */
@@ -114,7 +116,7 @@ const loadDashboardData = async () => {
 loadDashboardData();
 
 const onClosePopup = () => {
-    isFirstVisit.value = !isFirstVisit.value;
+    isFirstVisit.value = false;
 };
 
 </script>
@@ -126,6 +128,7 @@ const onClosePopup = () => {
         />
 
         <BlackOverlay
+            v-if="isFirstVisit"
             :is-first-visit="isFirstVisit"
         />
 

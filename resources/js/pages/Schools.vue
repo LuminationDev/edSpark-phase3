@@ -41,36 +41,11 @@ const schoolsAvailable = ref(false);
 const fetchAllSchools = async () => {
     let theSchools = await axios.get(`${serverURL}/fetchAllSchools`);
     let theSchoolsData = theSchools.data;
-
-    const sitePromise = new Promise(async (resolve, reject) => {
-        const schoolsTempArray = [];
-        for (let i = 0; i < theSchoolsData.length; i++) {
-            let siteId = await theSchoolsData[i].site.site_id;
-            let site = await axios.get(`${serverURL}/fetchSiteById/${siteId}`);
-
-            theSchoolsData[i].location = {
-                lat: parseFloat(site.data.site_latitude),
-                lng: parseFloat(site.data.site_longitude)
-            };
-
-            schoolsTempArray.push(theSchoolsData[i]);
-        }
-
-        schoolsAvailable.value = true;
-        resolve(schoolsTempArray);
-    });
-
-    allSchools.value = await sitePromise;
-    console.log(allSchools.value);
-    console.log(schoolsAvailable.value);
+    allSchools.value = theSchoolsData;
+    schoolsAvailable.value = true;
 };
 
 fetchAllSchools();
-
-// watch(featuredSites, (newFeaturedSites) => {
-//     console.log('watcher triggered')
-//     featuredSitesData.value = schoolContentArrParser(featuredSites.value)
-// })
 
 const featuredSitesData = computed(() => {
     if(!featuredSites.value ) return []

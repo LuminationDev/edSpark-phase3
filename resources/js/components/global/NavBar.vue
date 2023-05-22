@@ -1,95 +1,85 @@
-<script>
+<script setup>
     /**
      * Import Dependencies
      */
-import { ref } from 'vue';
+    import { ref, onMounted } from 'vue';
+    import { useRouter } from 'vue-router';
 
-/**
- * Import SVG's
- */
-import NavSwoosh from '../svg/NavSwoosh.vue';
-import Logo from '../svg/Logo.vue';
-import Profile from '../svg/Profile.vue';
+    /**
+     * Import SVG's
+     */
+    import NavSwoosh from '../svg/NavSwoosh.vue';
+    import Logo from '../svg/Logo.vue';
+    import Profile from '../svg/Profile.vue';
 
-/**
- * Import Stores
- */
-import { useUserStore } from '@/js/stores/useUserStore';
+    /**
+     * Import Stores
+     */
+    import { useUserStore } from '@/js/stores/useUserStore';
 
-/**
- * Import Components
- */
-import ProfileDropdown from './ProfileDropdown.vue';
+    /**
+     * Import Components
+     */
+    import ProfileDropdown from './ProfileDropdown.vue';
+    import NavItems from './NavItems.vue';
 
-export default {
-
-    components: {
-        NavSwoosh,
-        Logo,
-        Profile,
-        ProfileDropdown
-    },
-    props: {
-        isFirstVisit: Boolean
-    },
-
-    setup() {
-        const userStore = useUserStore();
-
-        const navDropdownToggle = ref(false);
-        const profileDropdown = ref(false);
-
-        // const imageURL = import.meta.env.VITE_SERVER_IMAGE_API;
-        // const userMetadata = userStore.getUser.metadata;
-        // const userAvatarMeta = userMetadata.filter(meta => meta.user_meta_key === 'userAvatar');
-        // const avatarUrl = userAvatarMeta[0].user_meta_value[0].replace(/\\\//g, "/");
-        // console.log(avatarUrl);
-
-        return {
-            navDropdownToggle,
-            profileDropdown,
-            userStore,
-            // imageURL,
-            // avatarUrl
+    const props = defineProps({
+        isFirstVisit: {
+            type: Boolean,
+            required: true
         }
-    },
+    });
 
-    data() {
-        return {
-            currentUser: {},
-            avatarUrl: ''
-        }
-    },
+    const router = useRouter();
+    const userStore = useUserStore();
+    const navDropdownToggle = ref(false);
+    const profileDropdown = ref(false);
+    const currentUser = ref({});
+    const avatarUrl = ref('');
+    const navLinks = ref([]);
 
-    mounted() {
+    onMounted(() => {
+        if (!Object.keys(userStore.getUser).length <= 0) {
+            currentUser.value = userStore.getUser;
 
-        if (!Object.keys(this.userStore.getUser).length <= 0) {
-            this.currentUser = this.userStore.getUser;
-
-            this.currentUser.metadata.forEach(meta => {
+            currentUser.value.metadata.forEach(meta => {
                 if (meta.user_meta_key === 'userAvatar') {
                     console.log(meta);
-                    this.avatarUrl = meta.user_meta_value[0].replace(/\\\//g, "/");;
+                    avatarUrl.value = meta.user_meta_value[0].replace(/\\\//g, "/");;
                 }
             })
         }
+    });
 
-    },
+    const handleAvatarClick = () => {
+        profileDropdown.value = !profileDropdown.value;
+    };
 
-    methods: {
-        handleAvatarClick() {
-            this.profileDropdown = !this.profileDropdown
-        }
-    }
-}
+    const setupRoutes = () => {
+        const tempNavArray = [];
+        router.options.routes.forEach(route => {
+            if (Object.keys(route).includes('meta') && route.meta.navigation) {
+                console.log(route);
+                tempNavArray.push(route);
+            }
+        });
+        navLinks.value = tempNavArray;
+    };
 
+    setupRoutes();
 </script>
 
 <template>
     <div class="w-full h-[240px] relative">
         <div class="nav-background w-full h-full pt-7 bg-[url(http://localhost:5173/resources/assets/images/children-vr.png)] bg-no-repeat bg-cover">
-            <nav class="bg-[#002856]/50 py-2 px-12 w-full">
-                <ul class="flex flex-wrap gap-8 text-white text-[24px] font-semibold font-['Poppins']">
+            <nav class="bg-[#002856]/50 py-2 px-12 w-full" >
+                <ul class="flex flex-row flex-wrap gap-8 text-white text-[24px] font-semibold font-['Poppins']">
+                    <NavItems
+                        v-for="(route, i) in navLinks"
+                        :route="route"
+                    />
+                </ul>
+                <!-- <ul class="flex flex-wrap gap-8 text-white text-[24px] font-semibold font-['Poppins']">
                     <router-link to="/dashboard">
                         <li class="cursor-pointer hover:underline decoration-[#B8E2DC] decoration-4 underline-offset-8 transition-all">
                             Dash
@@ -158,7 +148,7 @@ export default {
                             Events
                         </li>
                     </router-link>
-                </ul>
+                </ul> -->
             </nav>
         </div>
         <!-- Hover Settings for Profile Dropdown -->
