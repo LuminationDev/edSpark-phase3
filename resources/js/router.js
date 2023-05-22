@@ -28,6 +28,7 @@ import HardwareSingle from '@/js/pages/HardwareSingle.vue';
 import ProfileWork from '@/js/components/userprofile/ProfileWork.vue'
 import ProfileInfo  from '@/js/components/userprofile/ProfileInfo.vue'
 import ProfileMessages  from '@/js/components/userprofile/ProfileMessages.vue'
+import Hardware from "@/js/pages/Hardware.vue";
 
 
 
@@ -90,7 +91,7 @@ const router = createRouter({
         {
             name: 'hardware',
             path: '/hardware',
-            component: TheHardware
+            component: Hardware
         },
         {
             name: 'hardware-single',

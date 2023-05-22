@@ -21,6 +21,8 @@ import SchoolTechIconGenerator from "@/js/components/global/SchoolTechIconGenera
 import SchoolsSubMenu from '../components/svg/SchoolsSubMenu.vue';
 import ChevronRight from '../components/svg/ChevronRight.vue';
 import {onBeforeMount} from "vue";
+import BaseHero from "@/js/components/bases/BaseHero.vue";
+import BaseSingle from "@/js/components/bases/BaseSingle.vue";
 
 const route = useRoute();
 const router = useRouter();
@@ -147,7 +149,7 @@ const coverImageLink = computed(() => {
         return 'bg-[url(https://placehold.co/600x400)]'
     } else{
         console.log('rendered real image because finished loading')
-        return `bg-[url(${imageURL}/${schoolContent.value.cover_image})]`
+        return `bg-[url(${imageURL}/${schoolContent.value['cover_image']})]`
     }
 })
 const handleCoverImageLoaded = () => {
@@ -158,7 +160,7 @@ const handleCoverImageLoaded = () => {
 
 <template>
     <div class="-mt-[140px] flex flex-col ">
-        <SchoolsProfile>
+        <BaseSingle>
             <template #hero>
                 <div
                     class="px-[48px]  h-[680px] w-full bg-center bg-no-repeat bg-cover"
@@ -241,7 +243,7 @@ const handleCoverImageLoaded = () => {
                     </div>
                 </div>
             </template>
-        </SchoolsProfile>
+        </BaseSingle>
 
         <div class="-mt-[180px] mb-20">
             <SchoolsSubMenu :color-theme="colorTheme" />

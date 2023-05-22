@@ -1,46 +1,49 @@
 <script setup>
-    import BaseHero from '@/js/components/bases/BaseHero.vue';
-    import BaseSingle from '@/js/components/bases/BaseSingle.vue';
-    import HardwareCarousel from '@/js/components/hardware/HardwareCarousel.vue';
-    import GenericCard from '../components/card/GenericCard.vue';
+import BaseHero from '@/js/components/bases/BaseHero.vue';
+import BaseSingle from '@/js/components/bases/BaseSingle.vue';
+import HardwareCarousel from '@/js/components/hardware/HardwareCarousel.vue';
+import GenericCard from '../components/card/GenericCard.vue';
 
-    import axios from 'axios';
-    import { ref, onBeforeMount, onMounted } from 'vue';
-    import { useRoute, useRouter } from 'vue-router';
-    import { useHardwareStore } from '../stores/useHardwareStore.js';
+import axios from 'axios';
+import {ref, onBeforeMount, onMounted} from 'vue';
+import {useRoute, useRouter} from 'vue-router';
+import {useHardwareStore} from '../stores/useHardwareStore.js';
 
-    const hardwareStore = useHardwareStore();
-    const recommendedResources = ref([]);
-    const baseContentRef = ref(null);
-    const route = useRoute();
-    const router = useRouter();
+const hardwareStore = useHardwareStore();
+const recommendedResources = ref([]);
+const baseContentRef = ref(null);
+const route = useRoute();
+const router = useRouter();
 
-    const likeBookmarkData = {
-        post_id: route.params.id,
-        user_id: 2,
-        post_type: 'hardware'
-    };
+const likeBookmarkData = {
+    post_id: route.params.id,
+    user_id: 2,
+    post_type: 'hardware'
+};
 
-    const loadRecommendedResources = async () => {
-        recommendedResources.value = await hardwareStore.loadAllArticles();
-    };
+const loadRecommendedResources = async () => {
+    recommendedResources.value = await hardwareStore.loadAllArticles();
+};
 
-    loadRecommendedResources();
+loadRecommendedResources();
 
-    const handleClickHardwareCard = (resource) => {
-        router.push({
-            name: 'hardware-single',
-            params: {
-                id: resource.id,
-                content: JSON.stringify(resource)
-            }
-        })
-    }
+const handleClickHardwareCard = (resource) => {
+    router.push({
+        name: 'hardware-single',
+        params: {
+            id: resource.id,
+            content: JSON.stringify(resource)
+        }
+    })
+}
 
 </script>
 
 <template>
-    <BaseSingle content-hero="hardware" :content-type="'hardware'">
+    <BaseSingle
+        content-hero="hardware"
+        :content-type="'hardware'"
+    >
         <template #hero="{contentFromBase}">
             <BaseHero
                 :background-url="contentFromBase['cover_image']"
@@ -48,7 +51,10 @@
                 <template #titleText>
                     {{ contentFromBase['product_name'] }}
                 </template>
-                <template #hardwareProvider v-if="contentFromBase['brand']">
+                <template
+                    v-if="contentFromBase['brand']"
+                    #hardwareProvider
+                >
                     <div>
                         <p class="text-[15px] font-medium">
                             {{ contentFromBase['brand']['brandName'] }}
@@ -63,9 +69,9 @@
 
         <template #content="{ contentFromBase }">
             <div
-                class="p-4 px-8 flex flex-col w-full overflow-hidden"
-                ref="baseContentRef"
                 :id="contentFromBase['id']"
+                ref="baseContentRef"
+                class="py-4 px-20 flex flex-col w-full overflow-hidden bg-slate-200"
             >
                 <!-- Carousel here -->
                 <HardwareCarousel
@@ -86,18 +92,24 @@
                         />
                     </div>
 
-                    <div class="w-1/3" v-if="contentFromBase['brand']">
-                        <div class="bg-[#048246]/5 flex flex-col px-6 py-6 gap-6">
+                    <div
+                        v-if="contentFromBase['brand']"
+                        class="w-1/3"
+                    >
+                        <div
+                            v-if="recommendedResources"
+                            class="bg-[#048246]/5 flex flex-col px-6 py-6 gap-6"
+                        >
                             <h3 class="text-[24px] font-bold mx-auto pb-8">
                                 More from {{ contentFromBase['brand']['brandName'] }}
                             </h3>
                             <div
-                                class="flex justify-between"
                                 v-for="item in recommendedResources.slice(0,2)"
+                                class="flex justify-between"
                             >
                                 <GenericCard
-                                    class="mx-auto bg-white"
                                     v-if="item['brand']['brandName'] === contentFromBase['brand']['brandName']"
+                                    class="mx-auto bg-white"
                                     :title="item['product_name']"
                                     :cover-image="item['cover_image']"
                                     :number-per-row="1"
@@ -110,34 +122,35 @@
                         </div>
                     </div>
                 </div>
-
             </div>
         </template>
-
     </BaseSingle>
 </template>
 
 <style lang="scss">
-    .content-paragraph {
-        h2 {
-            font-size: 24px;
-            font-weight: 600;
-            padding-top: 16px;
-            padding-bottom: 12px;
-        }
-        h3 {
-            font-weight: 500;
-            font-size: 20px;
-            padding-top: 8px;
-            padding-bottom: 8px;
-        }
-        p {
-            padding-bottom: 12px;
-        }
-        ul {
-            padding-bottom: 12px;
-            padding-left: 36px;
-            list-style: disc;
-        }
+.content-paragraph {
+    h2 {
+        font-size: 24px;
+        font-weight: 600;
+        padding-top: 16px;
+        padding-bottom: 12px;
     }
+
+    h3 {
+        font-weight: 500;
+        font-size: 20px;
+        padding-top: 8px;
+        padding-bottom: 8px;
+    }
+
+    p {
+        padding-bottom: 12px;
+    }
+
+    ul {
+        padding-bottom: 12px;
+        padding-left: 36px;
+        list-style: disc;
+    }
+}
 </style>

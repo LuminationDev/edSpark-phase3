@@ -21,13 +21,14 @@ const props = defineProps({
 <template>
     <svg
         width="1800"
-        height="81"
+        height="180"
         viewBox="0 0 1800 81"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
+        class="absolute w-full -top-28 left-0 overflow-clip"
     >
         <path
-            d="M1800 0V64.7592C1800 64.7592 1777.29 70.7336 1665 76.7861C1599.38 80.3234 1499.38 81 1499.38 81H0V55.562H875.625C875.625 55.562 1068.75 55.562 1332.5 55.562C1596.25 55.562 1730.62 36.0808 1800 0Z"
+            d="M 1805 -3 V 22 V 40 C 1793 61 1727 101 1716 101 C 1573 101 1583 101 1500 101 H 0 V 26 H 874 C 1065 26 1342 26 1499 27 C 1656 24 1730 21 1805 -74 Z"
             fill="url(#paint0_linear_1830_23198)"
         />
         <defs>
