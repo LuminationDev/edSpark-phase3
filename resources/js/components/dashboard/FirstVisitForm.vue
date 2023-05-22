@@ -7,6 +7,7 @@
 
     import { reactive, ref, computed, onMounted } from 'vue';
     import axios from 'axios';
+    import { serverURL } from "@/js/constants/serverUrl";
 
     /**
      * Consider setting up all imports at the top, in one place for consistency.
@@ -34,7 +35,7 @@
     const schoolStore = useSchoolsStore();
 
     /**
-     * Image URL stuff
+     * URL stuff
      */
     const imageURL = import.meta.env.VITE_SERVER_IMAGE_API;
 
@@ -254,7 +255,7 @@
         return new Promise( async (resolve, reject) => {
             await axios({
                 method: 'POST',
-                url: 'http://localhost:8000/api/uploadImage',
+                url: `${serverURL}/uploadImage`,
                 data: {
                     type: 'school',
                     image: image

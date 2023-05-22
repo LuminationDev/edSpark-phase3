@@ -30,4 +30,7 @@ export default defineConfig({
             "fast-deep-equal",
         ],
     },
+    esbuild: {
+        drop: ['console', 'debugger'],
+    },
 });

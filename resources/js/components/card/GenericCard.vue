@@ -1,5 +1,5 @@
 <script setup>
-import {computed, ref} from "vue";
+import { computed, ref } from "vue";
 import {bookmarkURL, imageURL, likeURL} from "@/js/constants/serverUrl";
 import Tooltip from "@/js/components/global/Tooltip/Tooltip.vue";
 
@@ -42,7 +42,7 @@ const props = defineProps({
         type: Object,
         required: false
     }
-})
+});
 
 const currentUserLiked = computed(  () => {
     if(userLikeList.value[props.likeBookmarkData.post_type] &&

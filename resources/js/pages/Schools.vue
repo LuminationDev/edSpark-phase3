@@ -18,6 +18,7 @@ import SchoolWelcomePopup from "@/js/components/schools/schoolPopup/SchoolWelcom
 import SectionHeader from "@/js/components/global/SectionHeader.vue";
 import SchoolsSearchableMap from '../components/schools/schoolMap/SchoolsSearchableMap.vue';
 import Loader from '../components/spinner/Loader.vue';
+import CardLoading from '../components/card/CardLoading.vue';
 
 // const featuredSitesData = ref([])
 const createSchool = ref(false)
@@ -35,46 +36,24 @@ const axiosFetcher = (url) => {
 
 const {data: featuredSites, error: schoolsError} = useSWRV(`${serverURL}/fetchFeaturedSchools`, axiosFetcher)
 
+const cardsLoading = ref(true);
+
 const allSchools = ref([]);
 const schoolsAvailable = ref(false);
 
 const fetchAllSchools = async () => {
     let theSchools = await axios.get(`${serverURL}/fetchAllSchools`);
     let theSchoolsData = theSchools.data;
-
-    const sitePromise = new Promise(async (resolve, reject) => {
-        const schoolsTempArray = [];
-        for (let i = 0; i < theSchoolsData.length; i++) {
-            let siteId = await theSchoolsData[i].site.site_id;
-            let site = await axios.get(`${serverURL}/fetchSiteById/${siteId}`);
-
-            theSchoolsData[i].location = {
-                lat: parseFloat(site.data.site_latitude),
-                lng: parseFloat(site.data.site_longitude)
-            };
-
-            schoolsTempArray.push(theSchoolsData[i]);
-        }
-
-        schoolsAvailable.value = true;
-        resolve(schoolsTempArray);
-    });
-
-    allSchools.value = await sitePromise;
-    console.log(allSchools.value);
-    console.log(schoolsAvailable.value);
+    allSchools.value = theSchoolsData;
+    schoolsAvailable.value = true;
 };
 
 fetchAllSchools();
 
-// watch(featuredSites, (newFeaturedSites) => {
-//     console.log('watcher triggered')
-//     featuredSitesData.value = schoolContentArrParser(featuredSites.value)
-// })
-
 const featuredSitesData = computed(() => {
     if(!featuredSites.value ) return []
     else{
+        cardsLoading.value = false;
         return schoolContentArrParser(featuredSites.value)
     }
 });
@@ -160,7 +139,10 @@ const handleSaveWelcomePopup = (data)=>{
                 :button-text="'View all schools'"
                 :button-callback="handleBrowseAllSchool"
             />
-            <div class="grid grid-cols-4 gap-[24px] w-full px-20 pt-8 ">
+            <div
+                class="grid grid-cols-4 gap-[24px] w-full px-20 pt-8 "
+                v-if="!cardsLoading"
+            >
                 <div
                     v-for="(school,index) in featuredSitesData.splice(0,4)"
                     :key="index"
@@ -171,6 +153,13 @@ const handleSaveWelcomePopup = (data)=>{
                         :school-data="school"
                     />
                 </div>
+            </div>
+            <div
+                v-else
+            >
+                <CardLoading
+                :number-per-row="4"
+                />
             </div>
         </div>
 
