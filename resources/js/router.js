@@ -37,12 +37,15 @@ const router = createRouter({
         {
             name: 'home',
             path: '/',
-            component: Home
+            component: Home,
         },
         {
             name: 'dashboard',
             path: '/dashboard',
-            component: DashboardNew
+            component: DashboardNew,
+            meta: {
+                navigation: true
+            }
             // component: Dashboard
             // component: LoginCallback
         },
@@ -60,6 +63,9 @@ const router = createRouter({
             name: 'schools',
             path: '/schools',
             component: Schools,
+            meta: {
+                navigation: true
+            }
         },
         {
             name: 'school-single',
@@ -69,7 +75,10 @@ const router = createRouter({
         {
             name: 'advice',
             path: '/advice',
-            component: Advice
+            component: Advice,
+            meta: {
+                navigation: true
+            }
         },
         {
             name: 'advice-single',
@@ -80,7 +89,11 @@ const router = createRouter({
         {
             name: 'software',
             path: '/software',
-            component: Software
+            component: Software,
+            meta: {
+                navigation: true,
+                dropdownItem: true
+            }
         },
         {
             name: "software-single",
@@ -92,7 +105,11 @@ const router = createRouter({
         {
             name: 'hardware',
             path: '/hardware',
-            component: Hardware
+            component: Hardware,
+            meta: {
+                navigation: true,
+                dropdownItem: true
+            }
         },
         {
             name: 'hardware-single',
@@ -103,17 +120,26 @@ const router = createRouter({
         {
             name: 'community',
             path: '/community',
-            component: Community
+            component: Community,
+            meta: {
+                navigation: false
+            }
         },
         {
             name: 'partners',
             path: '/partners',
-            component: Partners
+            component: Partners,
+            meta: {
+                navigation: true
+            }
         },
         {
             name: 'events',
             path: '/events',
-            component: Events
+            component: Events,
+            meta: {
+                navigation: true
+            }
         },
         {
             name: 'userProfile',
