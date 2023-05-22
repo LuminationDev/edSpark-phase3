@@ -1,42 +1,58 @@
-<script>
-    // Dependencies
-    // import { RouterView } from 'vue-router';
+<script setup>
 
-    // Components
-    import NavBar from './components/global/NavBar.vue';
-    import Footer from './components/global/Footer.vue';
+import NavBar from './components/global/NavBar.vue';
+import Footer from './components/global/Footer.vue';
+import {useUserStore} from "@/js/stores/useUserStore";
+import {storeToRefs} from "pinia";
+import axios from "axios";
+import {serverURL} from "@/js/constants/serverUrl";
+import { useRouter } from 'vue-router';
 
-    export default {
 
-        components: {
-            NavBar,
-            Footer
-        },
+const router = useRouter();
+const userStore = useUserStore()
+const {userLikeList, userBookmarkList, currentUser} = storeToRefs(userStore)
 
-        data() {
-            return {
-                isFirstVisit: false
-            }
-        },
 
-        methods: {
-            handleFirstLogin(firstVisit) {
-                console.log('Hello there friends!', firstVisit);
-                this.isFirstVisit = firstVisit;
-            }
-        }
+const query = {
+    user_id: currentUser.value.id,
+    post_type: 'software'
+}
+axios.post(`${serverURL}/fetchAllLikesByType`, query).then(res => {
+    let temp = []
+    // get id Number only
+    for(let x of res.data.data){
+        temp.push(x.post_id)
     }
+    userLikeList.value.software = temp
+
+}).catch(err => {
+    console.log(`there has been an error while fetching users like`)
+    console.log(err.message)
+})
+
+axios.post(`${serverURL}/fetchAllBookmarksByType`, query).then(res => {
+    let temp = []
+    // get id Number only
+    for(let x of res.data.data){
+        temp.push(x.post_id)
+    }
+    userBookmarkList.value.software = temp
+
+}).catch(err => {
+    console.log(`there has been an error while fetching users like`)
+    console.log(err.message)
+})
 </script>
 
 <template>
     <NavBar
-        :isFirstVisit="this.isFirstVisit"
+        :key="router.currentRoute.value"
     />
 
-    <div>
-        <router-view @handleFirstLogin="this.handleFirstLogin"></router-view>
+    <div class="pageBodyContentContainer">
+        <router-view />
     </div>
-
     <footer class="mt-auto">
         <Footer />
     </footer>

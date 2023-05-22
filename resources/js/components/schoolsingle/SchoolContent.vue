@@ -5,6 +5,7 @@ import SchoolContentDisplay from "@/js/components/schoolsingle/SchoolContentDisp
 import SchoolTech from "@/js/components/schoolsingle/SchoolTech.vue";
 import TechSelector from "@/js/components/selector/TechSelector.vue";
 import SchoolColorPicker from "@/js/components/schoolsingle/schoolContent/SchoolColorPicker.vue";
+import SchoolImageChange from "@/js/components/schoolsingle/schoolContent/SchoolImageChange.vue";
 
 const props = defineProps({
     schoolContent: {
@@ -15,7 +16,7 @@ const props = defineProps({
         type: String, required: false
     }
 })
-const emits = defineEmits(['sendInfoToSchoolSingle','sendColorToSchoolSingle'])
+const emits = defineEmits(['sendInfoToSchoolSingle','sendColorToSchoolSingle','sendPhotoToSchoolSingle'])
 
 const editMode = ref(false)
 const newSchoolContent = ref({})
@@ -33,7 +34,6 @@ const handleEditButton = () => {
 
 const handleSchoolData = (data) =>{
     console.log('data from schoolContent' + JSON.stringify(data))
-    // emits('sendInfoToParent', data)
     newSchoolContent.value =  data
 }
 
@@ -42,14 +42,21 @@ const handleSchoolTech = (techData) => {
 
 }
 
-const handleAllSaveButton = async () => {
-    await schoolEditorRef.value.handleEditorSave() //  will update newSchoolContent Automatically
-    emits('sendInfoToSchoolSingle', newSchoolContent.value, newTechUsed.value)
-    editMode.value = false
+const handleAllSaveButton = () => {
+    schoolEditorRef.value.handleEditorSave().then(res => {
+        emits('sendInfoToSchoolSingle', newSchoolContent.value, newTechUsed.value)
+        editMode.value = false
+
+    })
 }
 const handleColorSelected  = (newColor) => {
     emits('sendColorToSchoolSingle', newColor)
 }
+
+const handleReceivePhotoFromImageChange = (type, file) => {
+    emits('sendPhotoToSchoolSingle',type, file)
+}
+
 
 </script>
 <template>
@@ -60,10 +67,7 @@ const handleColorSelected  = (newColor) => {
                 class="schoolContent contentEditor flex flex-row justify-between w-full"
             >
                 <div class="flex flex-col basis-2/3">
-                    <SchoolColorPicker
-                        class="self-center mb-5"
-                        @color-selected="handleColorSelected"
-                    />
+
                     Curate your school content by adding blocks here with desired contents.
                     <SchoolEditorJs
                         ref="schoolEditorRef"
@@ -72,7 +76,15 @@ const handleColorSelected  = (newColor) => {
                     />
                 </div>
                 <div class="flex flex-col basis-1/3">
+                    <SchoolImageChange @send-uploaded-photo-to-content="handleReceivePhotoFromImageChange" />
+                    <SchoolColorPicker
+                        class="self-center mb-5"
+                        @color-selected="handleColorSelected"
+                    />
                     Tech selector component to go here
+                    <p class="font-bold text-lg">
+                        Tech Selector:
+                    </p>
                     <TechSelector
                         :existing-tech-used="newTechUsed"
                         :color-theme="colorTheme"

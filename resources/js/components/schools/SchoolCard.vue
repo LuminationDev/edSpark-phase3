@@ -2,7 +2,7 @@
 import ContentSection from "@/js/components/global/ContentSection.vue";
 import SchoolCardIconList from "@/js/components/schools/SchoolCardIconList.vue";
 
-
+const imageURL = import.meta.env.VITE_SERVER_IMAGE_API
 const props = defineProps({
     schoolData:{
         type: Object ,
@@ -41,7 +41,7 @@ const props = defineProps({
         <ContentSection :tech-used="props.schoolData.tech_used">
             <template #cover>
                 <div
-                    :class="`bg-[url('${props.schoolData.cover_image}')] rounded-t-xl`"
+                    :class="`bg-[url('${imageURL}/${props.schoolData.cover_image}')] bg-cover`"
                     class="h-36 group-hover:h-0 transition-all"
                 />
             </template>
@@ -52,10 +52,19 @@ const props = defineProps({
                 <p class="pt-6 text-black text-[18px] font-medium">
                     Tech used:
                 </p>
-                <div class=" pt-4 flex flex-row w-full justify-between place-items-center ">
+                <div class="iconListContainer pt-4 flex flex-row w-full justify-between overflow-scroll gap-4 overflow-x-auto items-center pb-6 cursor-grab">
                     <SchoolCardIconList :tech-list="techUsed" />
                 </div>
             </template>
         </ContentSection>
     </router-link>
 </template>
+<style scoped>
+.iconListContainer::-webkit-scrollbar {
+    display: none;
+}
+.iconListContainer {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+</style>

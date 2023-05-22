@@ -30,6 +30,7 @@ class Community extends Model
         'post_date',
         'post_modified',
         'post_status',
+        'cover_image',
         'communitytype_id'
     ];
 
@@ -42,5 +43,9 @@ class Community extends Model
     {
         return $this->belongsTo(Communitytype::class);
     }
+
+    protected $casts = [
+        'cover_image' => 'array',
+    ];
 
 }

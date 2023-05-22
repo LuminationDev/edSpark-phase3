@@ -6,14 +6,15 @@ import vue from '@vitejs/plugin-vue';
 
 export default defineConfig({
     build: {
-        outDir: './web/build'
+        outDir: './public/build'
     },
     plugins: [
         vue(),
         laravel({
             input: [
                 // 'resources/css/app.css',
-                'resources/js/app.js'
+                'resources/js/app.js',
+                'resources/css/filament.css'
             ],
             refresh: true,
         }),

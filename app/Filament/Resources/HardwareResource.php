@@ -12,6 +12,8 @@ use Filament\Resources\Table;
 use Filament\Tables;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Livewire\TemporaryUploadedFile;
+use Illuminate\Support\Facades\Auth;
 
 class HardwareResource extends Resource
 {
@@ -40,6 +42,26 @@ class HardwareResource extends Resource
                             ->disableToolbarButtons([
                                 'attachFiles'
                             ]),
+                        Forms\Components\FileUpload::make('cover_image')
+                            ->preserveFilenames()
+                            ->disk('public')
+                            ->directory('uploads/hardware')
+                            ->acceptedFileTypes(['image/jpeg','image/jpg', 'image/png'])
+                            ->getUploadedFileNameForStorageUsing(function (TemporaryUploadedFile $file): string {
+                                return (string) str($file->getClientOriginalName())->prepend('edSpark-hardware-');
+                            }),
+                        Forms\Components\FileUpload::make('gallery')
+                            ->multiple()
+                            ->preserveFilenames()
+                            ->disk('public')
+                            ->directory('uploads/hardware/gallery')
+                            ->acceptedFileTypes(['image/jpeg', 'image/jpg', 'image/png'])
+                            ->getUploadedFileNameForStorageUsing(function (TemporaryUploadedFile $file): string {
+                                return (string) str($file->getClientOriginalName())->prepend('edSpark-hardware-gallery-');
+                            })
+                            ->enableReordering()
+                            ->minFiles(2)
+                            ->maxFiles(5),
                         Forms\Components\TextInput::make('price')
                             ->required(),
                         Forms\Components\BelongsToSelect::make('brand')
@@ -104,5 +126,17 @@ class HardwareResource extends Resource
             'create' => Pages\CreateHardware::route('/create'),
             'edit' => Pages\EditHardware::route('/{record}/edit'),
         ];
+    }
+
+    public static function shouldRegisterNavigation(): bool
+    {
+        // use Illuminate\Support\Facades\Auth;
+
+        // Moderator check
+        if(Auth::user()->role->role_name == 'Moderator') {
+            return false;
+        }
+
+        return true;
     }
 }

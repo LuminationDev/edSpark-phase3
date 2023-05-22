@@ -13,6 +13,15 @@ use Filament\Tables;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Illuminate\Support\Facades\Auth;
+use Livewire\TemporaryUploadedFile;
+
+
+use Illuminate\Filesystem\Filesystem;
+use Illuminate\Support\Collection;
+use Illuminate\Support\Str;
+use SplFileInfo;
+
+
 
 
 class SoftwareResource extends Resource
@@ -46,14 +55,32 @@ class SoftwareResource extends Resource
                             ->disableToolbarButtons([
                                 'attachFiles',
                             ]),
-                        Forms\Components\Grid::make(3)
+                        Forms\Components\FileUpload::make('cover_image')
+                            ->preserveFilenames()
+                            ->disk('public')
+                            ->directory('uploads/software')
+                            ->acceptedFileTypes(['image/jpeg', 'image/jpg', 'image/png'])
+                            ->getUploadedFileNameForStorageUsing(function (TemporaryUploadedFile $file): string {
+                                return (string) str($file->getClientOriginalName())->prepend('edSpark-software-');
+                            }),
+
+                        Forms\Components\Card::make()
+                            ->schema([
+                                Forms\Components\CheckboxList::make('software_type')
+                                    ->label('Software type')
+                                    ->extraAttributes(['class' => 'text-primary-600'])
+                                    ->relationship('softwaretypes', 'software_type_name')
+                                    ->columns(3)
+                                    ->bulkToggleable()
+                            ]),
+                        Forms\Components\Grid::make(2)
                             ->schema([
                                 Forms\Components\TextInput::make('Author')
                                     ->default($user)
                                     ->disabled(),
-                                Forms\Components\BelongsToSelect::make('software_type')
-                                    ->label('Software type')
-                                    ->relationship('softwaretype', 'software_type_name'),
+//                                Forms\Components\BelongsToSelect::make('software_type')
+//                                    ->label('Software type')
+//                                    ->relationship('softwaretype', 'software_type_name'),
                                 Forms\Components\Select::make('post_status')
                                     ->options([
                                         'Published' => 'Published',
@@ -62,10 +89,102 @@ class SoftwareResource extends Resource
                                         'Pending' => 'Pending'
                                     ])
                                     ->label('Status')
-                                    ->required()
+                                    ->required(),
                             ]),
-                            ]),
+                    ]),
+
+                Forms\Components\Card::make()
+                    ->schema([
+//                        Forms\Components\Select::make('template')
+//                            ->label('Choose a Template')
+//                            ->reactive()
+//                            ->options(static::getTemplates()),
+//                        ...static::getTemplateSchemas(),
+
+//                        Forms\Components\Builder::make('content')
+//                            ->blocks([
+//                                Forms\Components\Builder\Block::make('heading')
+//                                    ->schema([
+//                                        Forms\Components\TextInput::make('content')
+//                                            ->label('Heading')
+//                                            ->required()
+//                                    ]),
+//                                Forms\Components\Builder\Block::make('paragraph')
+//                                    ->schema([
+//                                        Forms\Components\MarkdownEditor::make('content')
+//                                            ->label('Paragraph')
+//                                            ->required()
+//                                    ]),
+//                                Forms\Components\Builder\Block::make('image')
+//                                    ->schema([
+//                                        Forms\Components\FileUpload::make('url')
+//                                            ->label('image')
+//                                            ->image()
+//                                            ->required()
+//                                    ])
+//                            ]),
+
+
+                        Forms\Components\Builder::make('extra_content')
+                            ->blocks([
+                                    Forms\Components\Builder\Block::make('templates')
+                                        ->schema([
+                                            Forms\Components\Select::make('template')
+                                                ->label('Choose a Template')
+                                                ->reactive()
+                                                ->options(static::getTemplates()),
+                                            ...static::getTemplateSchemas()
+                                        ]),
+                                    Forms\Components\Builder\Block::make('extra_resources')
+                                        ->schema([
+                                            Forms\Components\Repeater::make('item')
+                                                ->schema([
+                                                    Forms\Components\TextInput::make('heading'),
+                                                    Forms\Components\RichEditor::make('content')
+                                                ])
+                                        ])
+                                        ->label('Extra Resources')
+                                ]
+                            )
+                            ->label('Extra content')
+
+                    ])
             ]);
+    }
+
+    public static function getTemplates(): Collection
+    {
+        return static::getTemplateClasses()->mapWithKeys(fn ($class) => [$class => $class::title()]);
+    }
+
+    public static function getTemplateClasses(): Collection
+    {
+        $filesystem = app(Filesystem::class);
+
+        return collect($filesystem->allFiles(app_path('Filament/PageTemplates/Software')))
+            ->map(function (SplFileInfo $file): string {
+                return (string) Str::of('App\\Filament\\PageTemplates\\Software')
+                    ->append('\\', $file->getRelativePathname())
+                    ->replace(['/', '.php'], ['\\', '']);
+            });
+    }
+
+    public static function getTemplateSchemas(): array
+    {
+        return static::getTemplateClasses()
+            ->map(fn ($class) =>
+                Forms\Components\Group::make($class::schema())
+                    ->columnSpan(2)
+                    ->afterStateHydrated(fn ($component, $state) => $component->getChildComponentContainer()->fill($state))
+                    ->statePath('extra_content.' . static::getTemplateName($class))
+                    ->visible(fn ($get) => $get('template') == $class)
+            )
+            ->toArray();
+    }
+
+    public static function getTemplateName($class)
+    {
+        return Str::of($class)->afterLast('\\')->snake()->toString();
     }
 
     public static function table(Table $table): Table
@@ -76,15 +195,18 @@ class SoftwareResource extends Resource
                 ->label('Title')
                 ->searchable()
                 ->sortable(),
-                Tables\Columns\TextColumn::make('post_content')
-                ->limit(50)
-                ->label('Content'),
-                Tables\Columns\TextColumn::make('author.full_name')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('softwaretype.software_type_name')
+//                Tables\Columns\TextColumn::make('post_content')
+//                ->limit(50)
+//                ->label('Content'),
+                Tables\Columns\ImageColumn::make('cover_image'),
+                Tables\Columns\TextColumn::make('softwaretypes.software_type_name')
                     ->label('Type')
                     ->sortable()
+                    ->searchable()
+                    ->wrap(),
+                Tables\Columns\TextColumn::make('author.full_name')
                     ->searchable(),
+
                 Tables\Columns\TextColumn::make('post_status')
                     ->label('Status')
                     ->sortable()
@@ -121,4 +243,23 @@ class SoftwareResource extends Resource
             'edit' => Pages\EditSoftware::route('/{record}/edit'),
         ];
     }
+
+    public static function getEloquentQuery(): Builder
+    {
+        return parent::getEloquentQuery()->orderBy('created_at', 'DESC'); // TODO: Change the autogenerated stub
+    }
+
+    public static function shouldRegisterNavigation(): bool
+    {
+        // use Illuminate\Support\Facades\Auth;
+
+        // Moderator check
+        if(Auth::user()->role->role_name == 'Moderator') {
+            return false;
+        }
+
+        return true;
+    }
+
+
 }

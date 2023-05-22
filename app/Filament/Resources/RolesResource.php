@@ -19,6 +19,9 @@ use Closure;
 use App\Filament\Resources\RolesResource\RelationManagers\PermissionsRelationManager;
 use Illuminate\Database\Eloquent\Model;
 
+use Illuminate\Support\Facades\Auth;
+
+
 class RolesResource extends Resource
 {
     protected static ?string $model = Role::class;
@@ -281,5 +284,14 @@ class RolesResource extends Resource
             'create' => Pages\CreateRoles::route('/create'),
             'edit' => Pages\EditRoles::route('/{record}/edit'),
         ];
+    }
+
+    public static function shouldRegisterNavigation(): bool
+    {
+        if(Auth::user()->role->role_name != 'Superadmin') {
+            return false;
+        }
+
+        return true;
     }
 }
