@@ -10,7 +10,7 @@ import {
     Schools,
     Advice,
     Software,
-    Hardware,
+    TheHardware,
     Community,
     Partners,
     Events,
@@ -43,8 +43,6 @@ const router = createRouter({
             name: 'dashboard',
             path: '/dashboard',
             component: DashboardNew
-            // component: Dashboard
-            // component: LoginCallback
         },
         {
             name: 'browse-schools',
@@ -92,7 +90,7 @@ const router = createRouter({
         {
             name: 'hardware',
             path: '/hardware',
-            component: Hardware
+            component: TheHardware
         },
         {
             name: 'hardware-single',
@@ -147,11 +145,6 @@ const router = createRouter({
             name: 'login',
             component: LoginCallback
         },
-        // {
-        //     name: 'login',
-        //     path: '/login',
-        //     component: Login
-        // }
     ],
     scrollBehavior(to, from, savedPosition) {
         if (savedPosition) {
