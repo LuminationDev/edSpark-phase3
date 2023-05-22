@@ -157,7 +157,8 @@ const handleSaveWelcomePopup = (data)=>{
                 :classes="'bg-[#002858]'"
                 :section="'schools'"
                 :title="'Featured Schools'"
-                :buttonText="'View all schools'"
+                :button-text="'View all schools'"
+                :button-callback="handleBrowseAllSchool"
             />
             <div class="grid grid-cols-4 gap-[24px] w-full px-20 pt-8 ">
                 <div
