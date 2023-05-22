@@ -52,6 +52,7 @@ const heroBackground = computed(() => {
                 <p class="text-white flex flex-row gap-4 text-[18px] font-normal pb-4">
                     <slot name="authorName" />
                     <slot name="subtitleText1" />
+                    <slot name="hardwareProvider"/>
                 </p>
 
                 <p class="text-white text-[18px] font-normal">

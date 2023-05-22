@@ -79,4 +79,64 @@ class ProductController extends Controller
 
         return response()->json($data);
     }
+
+    public function fetchProductById($id)
+    {
+        $product = Product::find($id);
+        $data = [
+            'id' => $product->id,
+            'product_name' => $product->product_name,
+            'product_content' => $product->product_content,
+            'product_excerpt' => $product->product_excerpt,
+            'price' => $product->price,
+            'cover_image' => ($product->cover_image) ? $product->cover_image : NULL,
+            'gallery' => ($product->gallery) ? $product->gallery : NULL,
+            'product_SKU' => $product->product_SKU,
+            'category' => [
+                'categoryId' => ($product->category_id) ? $product->category_id : NULL,
+                'categoryName' => ($product->category) ? $product->category->product_category_name : NULL,
+            ],
+            'brand' => [
+                'brandId' => ($product->brand_id) ? $product->brand_id : NULL,
+                'brandName' => ($product->brand) ? $product->brand->product_brand_name : NULL,
+            ],
+            'product_isLoan' => ($product->product_isLoan) ? $product->product_isLoan : NULL
+        ];
+
+        return response()->json($data);
+    }
+
+    public function fetchProductByBrand($brand)
+    {
+        $product = Product::where('brandName', '=', $brand);
+        $data = [];
+
+        if ($products) {
+            forEach($products as $product) {
+                $result = [
+                    'id' => $product->id,
+                    'product_name' => $product->product_name,
+                    'product_content' => $product->product_content,
+                    'product_excerpt' => $product->product_excerpt,
+                    'price' => $product->price,
+                    'cover_image' => ($product->cover_image) ? $product->cover_image : NULL,
+                    'gallery' => ($product->gallery) ? $product->gallery : NULL,
+                    'product_SKU' => $product->product_SKU,
+                    'category' => [
+                        'categoryId' => ($product->category_id) ? $product->category_id : NULL,
+                        'categoryName' => ($product->category) ? $product->category->product_category_name : NULL,
+                    ],
+                    'brand' => [
+                        'brandId' => ($product->brand_id) ? $product->brand_id : NULL,
+                        'brandName' => ($product->brand) ? $product->brand->product_brand_name : NULL,
+                    ],
+                    'product_isLoan' => ($product->product_isLoan) ? $product->product_isLoan : NULL
+                ];
+
+                $data[] = $result;
+            }
+        }
+
+        return response->json($data);
+    }
 }
