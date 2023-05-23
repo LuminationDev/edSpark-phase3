@@ -19,10 +19,10 @@ const props = defineProps({
         default: 3
     }
 });
-
+console.log(props.hardwareContent)
 const router = useRouter();
 const {
-    post_id,
+    id,
     product_name,
     cover_image,
     category,
@@ -59,7 +59,5 @@ const handleClickHardwareCard = () => {
         :cover-image="cover_image"
         :click-callback="handleClickHardwareCard"
         :like-bookmark-data="likeBookmarkData"
-    >
-
-    </GenericCard>
+    />
 </template>
