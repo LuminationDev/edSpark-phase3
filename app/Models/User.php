@@ -82,4 +82,16 @@ class User extends Authenticatable implements HasName
     {
         return $this->hasMany(Notification::class);
     }
+
+    /**
+     * Overrides the method to ignore the remember token.
+     */
+    public function setAttribute($key, $value)
+    {
+        $isRememberTokenAttribute = $key == $this->getRememberTokenName();
+        if (!$isRememberTokenAttribute)
+        {
+            parent::setAttribute($key, $value);
+        }
+    }
 }

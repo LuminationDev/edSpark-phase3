@@ -40,6 +40,10 @@ return [
             'driver' => 'session',
             'provider' => 'users',
         ],
+        'okta' => [
+            'driver' => 'session',
+            'provider' => 'users'
+        ],
     ],
 
     /*
