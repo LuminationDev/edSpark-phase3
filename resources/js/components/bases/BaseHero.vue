@@ -22,6 +22,10 @@ const props = defineProps({
         required: false,
         default:"#0A7982"
     },
+    swooshColorTheme:{
+        type: String,
+        required: false
+    }
 })
 
 const heroBackground = computed(() => {
@@ -43,6 +47,7 @@ const heroBackground = computed(() => {
                 v-if="$slots.titleText || $slots.subtitleText1 || $slots.subtitleText2"
                 class="col-span-5 p-2 relative z-20"
             >
+                <slot name="smallTitle" />
                 <h1
                     class="text-white text-[36px] font-semibold pb-8"
                 >
@@ -67,9 +72,7 @@ const heroBackground = computed(() => {
         </div>
         <div class="articleSwooshContainer relative w-full h-44 z-50">
             <ArticleSingleSwoosh
-                :color1="props.color1"
-                :color2="props.color2"
-                :color3="props.color3"
+                :color-theme="swooshColorTheme"
             />
             <div class=" absolute mt-1 pt-2 pl-12 -top-9 w-full h-16 text-white font-base text-2xl">
                 <slot

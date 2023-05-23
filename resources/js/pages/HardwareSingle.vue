@@ -1,6 +1,7 @@
 <script setup>
 import BaseHero from '@/js/components/bases/BaseHero.vue';
 import BaseSingle from '@/js/components/bases/BaseSingle.vue';
+import BaseSingleSubmenu from "@/js/components/bases/BaseSingleSubmenu.vue";
 import HardwareCarousel from '@/js/components/hardware/HardwareCarousel.vue';
 import GenericCard from '../components/card/GenericCard.vue';
 
@@ -36,6 +37,30 @@ const handleClickHardwareCard = (resource) => {
         }
     })
 }
+/**
+ * Submenu specific codes
+ */
+const hardwareSubmenu = [
+    {
+        displayText: 'Overview',
+        value: 'overview'
+    },
+    {
+
+        displayText: 'Tech Specs',
+        value: 'techspecs'
+    }]
+const activeSubmenu = ref(hardwareSubmenu[0]['value'])
+
+// handleChangeSubmenu will be triggered by emit from BaseSingle
+const handleChangeSubmenu = (value) => {
+    activeSubmenu.value = value
+    console.log('active submenu has been changed to ', value)
+}
+/**
+ * End of submenu specific code  plus @emit-active-tab-to-specific-page in BaseSingle
+ * */
+
 
 </script>
 
@@ -43,8 +68,9 @@ const handleClickHardwareCard = (resource) => {
     <BaseSingle
         content-hero="hardware"
         :content-type="'hardware'"
+        @emit-active-tab-to-specific-page="handleChangeSubmenu"
     >
-        <template #hero="{contentFromBase}">
+        <template #hero="{contentFromBase, emitFromSubmenu}">
             <BaseHero
                 :background-url="contentFromBase['cover_image']"
             >
@@ -64,64 +90,82 @@ const handleClickHardwareCard = (resource) => {
                 <template #subtitleText2>
                     <div v-html="contentFromBase['product_excerpt']" />
                 </template>
+                <template #submenu>
+                    <div class="hardwareSubmenu flex flex-row gap-4 z-40 cursor-pointer">
+                        <BaseSingleSubmenu
+                            :emit-to-base="emitFromSubmenu"
+                            :menu-array="hardwareSubmenu"
+                            :active-subpage="activeSubmenu"
+                        />
+                    </div>
+                </template>
             </BaseHero>
         </template>
 
         <template #content="{ contentFromBase }">
-            <div
-                :id="contentFromBase['id']"
-                ref="baseContentRef"
-                class="py-4 px-20 flex flex-col w-full overflow-hidden bg-slate-200"
-            >
-                <!-- Carousel here -->
-                <HardwareCarousel
-                    :slide-items="contentFromBase"
-                />
-                <div class="flex flex-row mt-[64px] gap-12">
-                    <div class="w-2/3 flex flex-col py-4">
-                        <div>
-                            <h1
-                                class="text-2xl flex font-bold uppercase"
-                            >
-                                {{ contentFromBase['product_name'] }}
-                            </h1>
-                        </div>
-                        <div
-                            class="pt-8 text-lg flex flex-col content-paragraph overflow-hidden max-w-full"
-                            v-html="contentFromBase['product_content']"
-                        />
-                    </div>
-
+            <div class="flex flex-row w-full mt-20">
+                <template v-if="activeSubmenu === hardwareSubmenu[0]['value']">
                     <div
-                        v-if="contentFromBase['brand']"
-                        class="w-1/3"
+                        :id="contentFromBase['id']"
+                        ref="baseContentRef"
+                        class="py-4 px-20 flex flex-col w-full overflow-hidden"
                     >
-                        <div
-                            v-if="recommendedResources"
-                            class="bg-[#048246]/5 flex flex-col px-6 py-6 gap-6"
-                        >
-                            <h3 class="text-[24px] font-bold mx-auto pb-8">
-                                More from {{ contentFromBase['brand']['brandName'] }}
-                            </h3>
-                            <div
-                                v-for="item in recommendedResources.slice(0,2)"
-                                class="flex justify-between"
-                            >
-                                <GenericCard
-                                    v-if="item['brand']['brandName'] === contentFromBase['brand']['brandName']"
-                                    class="mx-auto bg-white"
-                                    :title="item['product_name']"
-                                    :cover-image="item['cover_image']"
-                                    :number-per-row="1"
-                                    :display-author="item['brand']['brandName']"
-                                    :display-content="item['product_excerpt']"
-                                    :like-bookmark-data="likeBookmarkData"
-                                    @click="handleClickHardwareCard(item)"
+                        <!-- Carousel here -->
+                        <HardwareCarousel
+                            :slide-items="contentFromBase"
+                        />
+                        <div class="flex flex-row mt-[64px] gap-12">
+                            <div class="w-2/3 flex flex-col py-4">
+                                <div>
+                                    <h1
+                                        class="text-2xl flex font-bold uppercase"
+                                    >
+                                        {{ contentFromBase['product_name'] }}
+                                    </h1>
+                                </div>
+                                <div
+                                    class="pt-8 text-lg flex flex-col content-paragraph overflow-hidden max-w-full"
+                                    v-html="contentFromBase['product_content']"
                                 />
+                            </div>
+
+                            <div
+                                v-if="contentFromBase['brand']"
+                                class="w-1/3"
+                            >
+                                <div
+                                    v-if="recommendedResources"
+                                    class="bg-[#048246]/5 flex flex-col px-6 py-6 gap-6"
+                                >
+                                    <h3 class="text-[24px] font-bold mx-auto pb-8">
+                                        More from {{ contentFromBase['brand']['brandName'] }}
+                                    </h3>
+                                    <div
+                                        v-for="item in recommendedResources.slice(0,2)"
+                                        class="flex justify-between"
+                                    >
+                                        <GenericCard
+                                            v-if="item['brand']['brandName'] === contentFromBase['brand']['brandName']"
+                                            class="mx-auto bg-white"
+                                            :title="item['product_name']"
+                                            :cover-image="item['cover_image']"
+                                            :number-per-row="1"
+                                            :display-author="item['brand']['brandName']"
+                                            :display-content="item['product_excerpt']"
+                                            :like-bookmark-data="likeBookmarkData"
+                                            @click="handleClickHardwareCard(item)"
+                                        />
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
+                </template>
+                <template v-if="activeSubmenu === hardwareSubmenu[1]['value']">
+                    <div class="text-black py-4 px-20">
+                        Hello from techspec page
+                    </div>
+                </template>
             </div>
         </template>
     </BaseSingle>

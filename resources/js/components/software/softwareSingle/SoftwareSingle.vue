@@ -36,6 +36,10 @@ import {ref} from 'vue'
  * }
  * const activetab =
  */
+
+/**
+ * Submenu specific codes
+ */
 const softwareSubmenu = [
     {
         displayText: 'Details',
@@ -53,6 +57,10 @@ const handleChangeSubmenu = (value) => {
     activeSubmenu.value = value
     console.log('active submenu has been changed to ', value)
 }
+
+/**
+ * End of submenu specific code  plus @emit-active-tab-to-specific-page in BaseSingle
+ * */
 </script>
 
 <template>
@@ -74,8 +82,8 @@ const handleChangeSubmenu = (value) => {
                 <template #subtitleText2>
                     <div v-html="contentFromBase['post_excerpt']" />
                 </template>
+                <!--  Selectable sub menu    -->
                 <template #submenu>
-                    <!--need a submenu component-->
                     <div class="softwareSubmenu flex flex-row gap-4 z-40 cursor-pointer">
                         <BaseSingleSubmenu
                             :emit-to-base="emitFromSubmenu"

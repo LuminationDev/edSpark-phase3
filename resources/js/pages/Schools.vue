@@ -53,6 +53,7 @@ fetchAllSchools();
 const featuredSitesData = computed(() => {
     if(!featuredSites.value ) return []
     else{
+        // eslint-disable-next-line vue/no-side-effects-in-computed-properties
         cardsLoading.value = false;
         return schoolContentArrParser(featuredSites.value)
     }
@@ -66,7 +67,7 @@ onBeforeMount(async () => {
      * has_school field
      */
     let currentUserHasSchool
-    const currentUserId = 1
+    const currentUserId = currentUser.value.id
     const currentUserRole = currentUser.value.role
     try{
         console.log(currentUser.value.metadata);
@@ -140,8 +141,8 @@ const handleSaveWelcomePopup = (data)=>{
                 :button-callback="handleBrowseAllSchool"
             />
             <div
-                class="grid grid-cols-4 gap-[24px] w-full px-20 pt-8 "
                 v-if="!cardsLoading"
+                class="grid grid-cols-4 gap-[24px] w-full px-20 pt-8 "
             >
                 <div
                     v-for="(school,index) in featuredSitesData.splice(0,4)"
@@ -158,13 +159,16 @@ const handleSaveWelcomePopup = (data)=>{
                 v-else
             >
                 <CardLoading
-                :number-per-row="4"
+                    :number-per-row="4"
                 />
             </div>
         </div>
 
 
-        <div class="py-20 px-20" v-if="schoolsAvailable">
+        <div
+            v-if="schoolsAvailable"
+            class="py-20 px-20"
+        >
             <!-- <SearchableMap /> -->
             <SchoolsSearchableMap
                 :key="schoolsAvailable"
@@ -173,7 +177,10 @@ const handleSaveWelcomePopup = (data)=>{
             />
         </div>
 
-        <div class="w-full flex" v-else>
+        <div
+            v-else
+            class="w-full flex"
+        >
             <Loader
                 :loader-color="'#0072DA'"
                 :loader-message="'Map Loading'"
