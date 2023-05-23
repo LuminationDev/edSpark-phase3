@@ -2,7 +2,7 @@
     /**
      * Import Dependencies
      */
-    import { ref } from 'vue';
+    import { ref, computed } from 'vue';
     import oktaAuth from '../../constants/oktaAuth.js';
     /**
      * Import SVG's
@@ -56,6 +56,30 @@
         await oktaAuth.signOut();
         this.userStore.clearStore();
     };
+
+    const isAdmin = ref(false);
+    const checkUserRole = () => {
+        let userRole = userStore.getUser.role;
+        console.log(userRole);
+
+        switch (userRole) {
+            case 'Administrator':
+                    isAdmin.value = true;
+                break;
+            case 'Moderator':
+                    isAdmin.value = true;
+                break;
+            case 'PSACT':
+                    isAdmin.value = true;
+                break;
+
+            default:
+                    isAdmin.value = false;
+                break;
+        }
+    };
+
+    checkUserRole();
 </script>
 
 <template>
@@ -76,7 +100,7 @@
             class="relative w-full h-full z-40"
             @mouseleave="handleAvatar"
         >
-            <div class="absolute py-6 px-4 -top-6 left-[24px] z-50 w-[240px] h-[350px] bg-[#637D99] flex flex-col shadow-lg">
+            <div class="absolute py-6 px-4 -top-6 left-[24px] z-50 w-[240px] bg-[#637D99] flex flex-col shadow-lg">
                 <div class="w-full h-fit text-white text-[24px] font-bold text-center border-b border-white pb-3">
                     <h5>{{ currentUser.full_name }}</h5>
                 </div>
@@ -98,6 +122,12 @@
                         <Profile />
                         Help
                     </button>
+                    <router-link to="/admin" v-if="isAdmin">
+                        <button class="flex flex-row gap-4 justify-start py-3 px-2 text-white text-[18px] font-medium place-items-center hover:bg-[#405974] w-full">
+                            <Profile />
+                            Admin
+                        </button>
+                    </router-link>
                 </div>
                 <div class="pt-3">
                     <button

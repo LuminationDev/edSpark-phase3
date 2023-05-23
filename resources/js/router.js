@@ -24,6 +24,7 @@ import SoftwareSingle from "@/js/components/software/softwareSingle/SoftwareSing
 import BaseSearchPage from "@/js/components/bases/BaseSearchPage.vue";
 import UserProfile from  '@/js/components/userprofile/UserProfile.vue';
 import HardwareSingle from '@/js/pages/HardwareSingle.vue';
+import Hardware from '@/js/pages/Hardware.vue';
 
 import ProfileWork from '@/js/components/userprofile/ProfileWork.vue'
 import ProfileInfo  from '@/js/components/userprofile/ProfileInfo.vue'
