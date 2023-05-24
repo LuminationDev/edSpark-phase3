@@ -4,11 +4,13 @@ import BaseSingle from '@/js/components/bases/BaseSingle.vue';
 import BaseSingleSubmenu from "@/js/components/bases/BaseSingleSubmenu.vue";
 import HardwareCarousel from '@/js/components/hardware/HardwareCarousel.vue';
 import GenericCard from '../components/card/GenericCard.vue';
+import HardwareExtraContentRenderer from "@/js/components/hardware/HardwareExtraContentRenderer.vue";
 
-import axios from 'axios';
 import {ref, onBeforeMount, onMounted} from 'vue';
 import {useRoute, useRouter} from 'vue-router';
 import {useHardwareStore} from '../stores/useHardwareStore.js';
+import {useUserStore} from "@/js/stores/useUserStore";
+import {storeToRefs} from "pinia";
 
 const hardwareStore = useHardwareStore();
 const recommendedResources = ref([]);
@@ -16,17 +18,20 @@ const baseContentRef = ref(null);
 const route = useRoute();
 const router = useRouter();
 
+const userStore = useUserStore()
+const {currentUser } = storeToRefs(userStore)
+
 const likeBookmarkData = {
     post_id: route.params.id,
-    user_id: 2,
+    user_id: currentUser.value.id,
     post_type: 'hardware'
 };
 
-const loadRecommendedResources = async () => {
-    recommendedResources.value = await hardwareStore.loadAllArticles();
-};
-
-loadRecommendedResources();
+// const loadRecommendedResources = async () => {
+//     recommendedResources.value = await hardwareStore.loadAllArticles();
+// };
+//
+// loadRecommendedResources();
 
 const handleClickHardwareCard = (resource) => {
     router.push({
@@ -46,7 +51,6 @@ const hardwareSubmenu = [
         value: 'overview'
     },
     {
-
         displayText: 'Tech Specs',
         value: 'techspecs'
     }]
@@ -127,6 +131,12 @@ const handleChangeSubmenu = (value) => {
                                     class="pt-8 text-lg flex flex-col content-paragraph overflow-hidden max-w-full"
                                     v-html="contentFromBase['product_content']"
                                 />
+                                <template
+                                    v-for="(content,index) in contentFromBase['extra_content']"
+                                    :key="index"
+                                >
+                                    <HardwareExtraContentRenderer :content="content" />
+                                </template>
                             </div>
 
                             <div
@@ -141,7 +151,8 @@ const handleChangeSubmenu = (value) => {
                                         More from {{ contentFromBase['brand']['brandName'] }}
                                     </h3>
                                     <div
-                                        v-for="item in recommendedResources.slice(0,2)"
+                                        v-for="(item,index) in recommendedResources.slice(0,2)"
+                                        :key="index"
                                         class="flex justify-between"
                                     >
                                         <GenericCard
