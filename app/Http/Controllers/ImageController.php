@@ -12,7 +12,7 @@ class ImageController extends Controller
     {
         if ($request->isMethod('post')) {
             $data = $request->all();
-            // dd($data);
+            dd($data);
             $imagePath = "";
             if ($data) {
                 $type = $data['type'];

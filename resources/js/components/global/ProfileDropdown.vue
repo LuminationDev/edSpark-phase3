@@ -72,6 +72,9 @@
             case 'PSACT':
                     isAdmin.value = true;
                 break;
+            case 'SCHLDR':
+                    isAdmin.value = true;
+                break;
 
             default:
                     isAdmin.value = false;
