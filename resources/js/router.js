@@ -6,11 +6,9 @@ import { createRouter, createWebHistory } from 'vue-router';
 import { LoginCallback, navigationGuard } from '@okta/okta-vue'
 import {
     Home,
-    Dashboard,
     Schools,
     Advice,
     Software,
-    TheHardware,
     Community,
     Partners,
     Events,
@@ -22,12 +20,13 @@ import BrowseSchools from "@/js/pages/BrowseSchools.vue";
 import AdviceSingle from "@/js/pages/AdviceSingle.vue";
 import SoftwareSingle from "@/js/components/software/softwareSingle/SoftwareSingle.vue";
 import BaseSearchPage from "@/js/components/bases/BaseSearchPage.vue";
-import UserProfile from  '@/js/components/userprofile/UserProfile.vue'
+import UserProfile from  '@/js/components/userprofile/UserProfile.vue';
+import HardwareSingle from '@/js/pages/HardwareSingle.vue';
 
 import ProfileWork from '@/js/components/userprofile/ProfileWork.vue'
 import ProfileInfo  from '@/js/components/userprofile/ProfileInfo.vue'
 import ProfileMessages  from '@/js/components/userprofile/ProfileMessages.vue'
-
+import Hardware from "@/js/pages/Hardware.vue";
 
 
 const router = createRouter({
@@ -36,12 +35,15 @@ const router = createRouter({
         {
             name: 'home',
             path: '/',
-            component: Home
+            component: Home,
         },
         {
             name: 'dashboard',
             path: '/dashboard',
-            component: DashboardNew
+            component: DashboardNew,
+            meta: {
+                navigation: true
+            }
         },
         {
             name: 'browse-schools',
@@ -57,6 +59,9 @@ const router = createRouter({
             name: 'schools',
             path: '/schools',
             component: Schools,
+            meta: {
+                navigation: true
+            }
         },
         {
             name: 'school-single',
@@ -66,7 +71,16 @@ const router = createRouter({
         {
             name: 'advice',
             path: '/advice',
-            component: Advice
+            component: Advice,
+            meta: {
+                navigation: true
+            }
+        },
+        {
+            name: 'advice-single',
+            path: '/advice/resources/:id',
+            component: AdviceSingle,
+            params: true
         },
         {
             name: 'advice-single',
@@ -77,7 +91,18 @@ const router = createRouter({
         {
             name: 'software',
             path: '/software',
-            component: Software
+            component: Software,
+            meta: {
+                navigation: true,
+                dropdownItem: true
+            }
+        },
+        {
+            name: "software-single",
+            path: "/software/resources/:id",
+            component: SoftwareSingle,
+            params: true
+
         },
         {
             name: "software-single",
@@ -89,22 +114,41 @@ const router = createRouter({
         {
             name: 'hardware',
             path: '/hardware',
-            component: TheHardware
+            component: Hardware,
+            meta: {
+                navigation: true,
+                dropdownItem: true
+            }
+        },
+        {
+            name: 'hardware-single',
+            path: '/hardware/resources/:id',
+            component: HardwareSingle,
+            params: true
         },
         {
             name: 'community',
             path: '/community',
-            component: Community
+            component: Community,
+            meta: {
+                navigation: false
+            }
         },
         {
             name: 'partners',
             path: '/partners',
-            component: Partners
+            component: Partners,
+            meta: {
+                navigation: true
+            }
         },
         {
             name: 'events',
             path: '/events',
-            component: Events
+            component: Events,
+            meta: {
+                navigation: true
+            }
         },
         {
             name: 'userProfile',

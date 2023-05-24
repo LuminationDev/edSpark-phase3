@@ -1,22 +1,13 @@
-<script>
-    import { RouterView } from 'vue-router';
-    import { useRouter } from 'vue-router';
+<script setup>
+    import oktaAuth from '../constants/oktaAuth.js';
 
-    // Import components
+    console.log(oktaAuth);
 
-    export default {
-        setup() {
-            const router = useRouter();
+    const handleLoginRedirect = async () => {
+        await oktaAuth.signInWithRedirect({ originalUri: '/dashboard' });
+    };
 
-            return {
-                router
-            }
-        },
-
-        async created() {
-            await this.$auth.signInWithRedirect({ originalUri: '/dashboard' });
-        }
-    }
+    handleLoginRedirect();
 </script>
 
 <template>
@@ -36,6 +27,6 @@
     >
         Login
     </button>
-    <RouterView />
+    <!-- <RouterView /> -->
 
 </template>

@@ -42,11 +42,11 @@ const props = defineProps({
                 class="absolute top-1/2 -translate-y-1/2 right-16 group-hover/headerbg:scale-125 transition-all duration-500"
             />
             <SoftwareCollection
-                v-if="section === 'software'"
+                v-if="section === 'software' || section === 'hardware-laptops'"
                 class="absolute top-1/2 -translate-y-1/2 right-16 group-hover/headerbg:scale-125 transition-all duration-500"
             />
             <AdviceCollection
-                v-if="section === 'advice'"
+                v-if="section === 'advice' || section === 'hardware-emerging'"
                 class="absolute top-1/2 -translate-y-1/2 right-16 group-hover/headerbg:scale-125 transition-all duration-500"
             />
             <SchoolsCollection

@@ -1,12 +1,13 @@
 <script setup>
 
 import EventsCard from '../events/EventsCard.vue';
+// import CardLoading from '../card/CardLoading.vue';
 
 const props = defineProps({
     events: {
         type: Array,
         required: true
-    }
+    },
 });
 
 </script>
@@ -14,7 +15,6 @@ const props = defineProps({
 <template>
     <div class="py-20 px-20">
         <div
-            v-if="props.events"
             class="flex flex-row flex-1 flex-wrap justify-between"
         >
             <EventsCard

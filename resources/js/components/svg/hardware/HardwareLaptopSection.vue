@@ -15,7 +15,7 @@ const laptopData = computed(() => {
 <template>
     <div
         v-if="laptopData"
-        class="HardwareLaptopSectionCantainer Card gallery flex flex-row"
+        class="HardwareLaptopSectionCantainer Card gallery flex flex-row gap-6"
     >
         <div
             v-for="(hardware,index) in laptopData"
@@ -23,7 +23,7 @@ const laptopData = computed(() => {
             class="hardwareCard"
         >
             <HardwareCard
-                :hardware="hardware"
+                :hardware-content="hardware"
                 number-per-row="4"
             />
         </div>

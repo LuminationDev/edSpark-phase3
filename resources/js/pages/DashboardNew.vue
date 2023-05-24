@@ -16,6 +16,11 @@ import EventsDashboard from '../components/dashboard/EventsDashboard.vue';
 import SchoolsDashboard from '../components/dashboard/SchoolsDashboard.vue';
 
 /**
+ * Loading Cards
+ */
+import CardLoading from '../components/card/CardLoading.vue';
+
+/**
  * Depends on
  */
 import {ref, reactive, watch,} from 'vue';
@@ -63,6 +68,8 @@ const getIdToken = async () => {
     idToken.value = await oktaAuth.tokenManager.get('idToken');
     claims.value = await idToken.value.claims;
 
+    console.log(idToken);
+
     /**
      * User Details
      */
@@ -100,18 +107,39 @@ const events = ref([]);
 const softwares = ref([]);
 const advice = ref([]);
 const schools = ref([]);
-const router = useRouter()
+
+const eventsLoading = ref(true);
+const softwareLoading = ref(true);
+const adviceLoading = ref(true);
+const schoolsLoading = ref(true);
+
 const loadDashboardData = async () => {
-    events.value = await eventStore.loadEvents();
-    softwares.value = await softwareStore.loadArticles();
-    advice.value = await adviceStore.loadDashboardResources();
-    schools.value = await schoolsStore.loadSchools();
+    eventStore.loadEvents().then(response => {
+        events.value = response;
+        eventsLoading.value = false;
+    });
 
+    softwareStore.loadArticles().then(response => {
+        softwares.value = response;
+        softwareLoading.value = false;
+    });
 
-    console.log(typeof schools.value);
+    adviceStore.loadDashboardResources().then(response => {
+        advice.value = response;
+        adviceLoading.value = false;
+    });
+
+    schoolsStore.loadSchools().then(response => {
+        schools.value = response;
+        schoolsLoading.value = false;
+    });
 };
 
 loadDashboardData();
+
+const onClosePopup = () => {
+    isFirstVisit.value = false;
+};
 
 </script>
 
@@ -122,6 +150,7 @@ loadDashboardData();
         />
 
         <BlackOverlay
+            v-if="isFirstVisit"
             :is-first-visit="isFirstVisit"
         />
 
@@ -132,6 +161,7 @@ loadDashboardData();
             <FirstVisitForm
                 :is-first-visit="isFirstVisit"
                 :user-details="userDetails"
+                @onClosePopup="onClosePopup"
             />
         </div>
 
@@ -144,11 +174,15 @@ loadDashboardData();
             :button-text="'View all events'"
         />
 
-<!--        Events Cards Here-->
-
-        <!--        <EventsDashboard-->
-        <!--            :events="events"-->
-        <!--        />-->
+        <!-- Events Cards Here -->
+        <EventsDashboard
+            :events="events"
+            v-if="!eventsLoading"
+        />
+        <CardLoading
+            :number-per-row="3"
+            v-else
+        />
 
         <SectionHeader
             :classes="'bg-[#1C5CA9]'"
@@ -161,6 +195,12 @@ loadDashboardData();
         <!-- Software Cards Here -->
         <SoftwareDashboard
             :softwares="softwares"
+            v-if="!softwareLoading"
+        />
+        <CardLoading
+            :number-per-row="2"
+            :additional-classes="'!justify-end'"
+            v-else
         />
 
         <SectionHeader
@@ -174,6 +214,12 @@ loadDashboardData();
         <!-- Advice Cards Here -->
         <AdviceDashboard
             :advice="advice"
+            v-if="!adviceLoading"
+        />
+        <CardLoading
+            :number-per-row="2"
+            :additional-classes="'!justify-end'"
+            v-else
         />
 
         <SectionHeader
@@ -186,7 +232,12 @@ loadDashboardData();
 
         <!-- School Cards Here -->
         <SchoolsDashboard
+            v-if="!schoolsLoading"
             :schools="schools"
+        />
+        <CardLoading
+            :number-per-row="4"
+            v-else
         />
     </div>
 </template>

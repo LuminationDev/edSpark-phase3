@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\School;
 use App\Models\Schoolmeta;
+use App\Models\Site;
 use Carbon\Carbon;
 use Illuminate\Support\Str;
 use App\Helpers\Metahelper;
@@ -206,6 +207,13 @@ class SchoolController extends Controller
 
         foreach ($schools as $school) {
             $schoolMetadata = Schoolmeta::where('school_id', $school->id)->get();
+            $site = Site::find($school->site_id);
+
+            $siteLocation = (object) [
+                'lat' => (float) $site->site_latitude,
+                'lng' => (float) $site->site_longitude
+            ];
+
             $schoolMetadataToSend = [];
             if($schoolMetadata){
                 foreach($schoolMetadata as $key => $value){
@@ -233,7 +241,8 @@ class SchoolController extends Controller
                 'tech_used' => ($school->tech_used) ? json_decode($school->tech_used) : NULL,
                 'pedagogical_approaches' => ($school->pedagogical_approaches) ? json_decode($school->pedagogical_approaches) : NULL,
                 'tech_landscape' => ($school->tech_landscape) ? json_decode($school->tech_landscape) : NULL,
-                'metadata' => ($schoolMetadataToSend) ? $schoolMetadataToSend : NULL
+                'metadata' => ($schoolMetadataToSend) ? $schoolMetadataToSend : NULL,
+                'location' => $siteLocation
             ];
             $data[] = $result;
         }

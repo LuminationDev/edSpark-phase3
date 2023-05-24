@@ -16,6 +16,9 @@ import SchoolCard from "@/js/components/schools/SchoolCard.vue";
 import CreateSchoolForm from "@/js/components/schools/createSchool/CreateSchoolForm.vue";
 import SchoolWelcomePopup from "@/js/components/schools/schoolPopup/SchoolWelcomePopup.vue";
 import SectionHeader from "@/js/components/global/SectionHeader.vue";
+import SchoolsSearchableMap from '../components/schools/schoolMap/SchoolsSearchableMap.vue';
+import Loader from '../components/spinner/Loader.vue';
+import CardLoading from '../components/card/CardLoading.vue';
 
 // const featuredSitesData = ref([])
 const createSchool = ref(false)
@@ -33,17 +36,30 @@ const axiosFetcher = (url) => {
 
 const {data: featuredSites, error: schoolsError} = useSWRV(`${serverURL}/fetchFeaturedSchools`, axiosFetcher)
 
-// watch(featuredSites, (newFeaturedSites) => {
-//     console.log('watcher triggered')
-//     featuredSitesData.value = schoolContentArrParser(featuredSites.value)
-// })
+const cardsLoading = ref(true);
+
+const allSchools = ref([]);
+const schoolsAvailable = ref(false);
+
+const fetchAllSchools = async () => {
+    let theSchools = await axios.get(`${serverURL}/fetchAllSchools`);
+    let theSchoolsData = theSchools.data;
+    allSchools.value = theSchoolsData;
+    schoolsAvailable.value = true;
+};
+
+fetchAllSchools();
 
 const featuredSitesData = computed(() => {
     if(!featuredSites.value ) return []
     else{
+        // eslint-disable-next-line vue/no-side-effects-in-computed-properties
+        cardsLoading.value = false;
         return schoolContentArrParser(featuredSites.value)
     }
 });
+
+console.log(featuredSitesData);
 
 onBeforeMount(async () => {
     /**
@@ -51,13 +67,19 @@ onBeforeMount(async () => {
      * has_school field
      */
     let currentUserHasSchool
-    const currentUserId = 1
+    const currentUserId = currentUser.value.id
     const currentUserRole = currentUser.value.role
     try{
-        await axios.post(`${serverURL}/getUserMetadata`,{id: 1, userMetakey: 'has_school'}).then(res => {
-            currentUserHasSchool = res.data[0]['user_meta_value'] === 'false'? false : true
-            // console.log('current user has_school meta is ' + currentUserHasSchool)
-        })
+        console.log(currentUser.value.metadata);
+        // await axios.post(`${serverURL}/getUserMetadata`,{id: 1, userMetakey: 'has_school'}).then(res => {
+        //     console.log(res.data[0])
+        //     currentUserHasSchool = res.data[0]['user_meta_value'] === 'false'? false : true
+        //     // console.log('current user has_school meta is ' + currentUserHasSchool)
+        // });
+
+        if (Object.keys(currentUser.value.metadata) === 'has_school') {
+            currentUserHasSchool = true;
+        }
 
         if(!currentUserHasSchool && (currentUserRole == 'Principal' || currentUserRole == 'Superadmin')){
             // console.log('School is not init yet. you should init the school')
@@ -118,7 +140,10 @@ const handleSaveWelcomePopup = (data)=>{
                 :button-text="'View all schools'"
                 :button-callback="handleBrowseAllSchool"
             />
-            <div class="grid grid-cols-4 gap-[24px] w-full px-20 pt-8 ">
+            <div
+                v-if="!cardsLoading"
+                class="grid grid-cols-4 gap-[24px] w-full px-20 pt-8 "
+            >
                 <div
                     v-for="(school,index) in featuredSitesData.splice(0,4)"
                     :key="index"
@@ -130,11 +155,36 @@ const handleSaveWelcomePopup = (data)=>{
                     />
                 </div>
             </div>
+            <div
+                v-else
+            >
+                <CardLoading
+                    :number-per-row="4"
+                />
+            </div>
         </div>
 
 
-        <div class="py-20 px-20">
-            <SearchableMap />
+        <div
+            v-if="schoolsAvailable"
+            class="py-20 px-20"
+        >
+            <!-- <SearchableMap /> -->
+            <SchoolsSearchableMap
+                :key="schoolsAvailable"
+                :schools="allSchools"
+                :schools-available="schoolsAvailable"
+            />
+        </div>
+
+        <div
+            v-else
+            class="w-full flex"
+        >
+            <Loader
+                :loader-color="'#0072DA'"
+                :loader-message="'Map Loading'"
+            />
         </div>
     </div>
 </template>

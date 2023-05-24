@@ -1,4 +1,6 @@
 <script setup>
+import Edit from  '@/js/svg/Edit.svg'
+import Save from  '@/js/svg/Save.svg'
 </script>
 <template>
     <div class="profileWorkContainer flex flex-col pt-4 px-6 py-6 bg-blue-200">

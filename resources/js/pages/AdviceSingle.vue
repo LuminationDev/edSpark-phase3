@@ -1,4 +1,4 @@
-`<script setup>
+<script setup>
 
 import BaseHero from "@/js/components/bases/BaseHero.vue";
 import AdviceSingleExtraContentRenderer from "@/js/components/advice/AdviceSingleExtraContentRenderer.vue";
