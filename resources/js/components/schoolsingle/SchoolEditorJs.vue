@@ -72,7 +72,7 @@ const editorJsTools = {
         class: ImageTool,
         config:{
             endpoints:{
-                byFile: `${serverURL}/imageUpload`
+                byFile: `${serverURL}/uploadImageEditorjs`
             }
         }
     }
