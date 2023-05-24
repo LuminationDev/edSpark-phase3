@@ -10,10 +10,15 @@ use Filament\Resources\Form;
 use Filament\Resources\Resource;
 use Filament\Resources\Table;
 use Filament\Tables;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
+
+
+use Illuminate\Filesystem\Filesystem;
+use Illuminate\Support\Collection;
+use Illuminate\Support\Str;
 use Livewire\TemporaryUploadedFile;
 use Illuminate\Support\Facades\Auth;
+use SplFileInfo;
+
 
 class HardwareResource extends Resource
 {
@@ -46,9 +51,9 @@ class HardwareResource extends Resource
                             ->preserveFilenames()
                             ->disk('public')
                             ->directory('uploads/hardware')
-                            ->acceptedFileTypes(['image/jpeg','image/jpg', 'image/png'])
+                            ->acceptedFileTypes(['image/jpeg', 'image/jpg', 'image/png'])
                             ->getUploadedFileNameForStorageUsing(function (TemporaryUploadedFile $file): string {
-                                return (string) str($file->getClientOriginalName())->prepend('edSpark-hardware-');
+                                return (string)str($file->getClientOriginalName())->prepend('edSpark-hardware-');
                             }),
                         Forms\Components\FileUpload::make('gallery')
                             ->multiple()
@@ -57,7 +62,7 @@ class HardwareResource extends Resource
                             ->directory('uploads/hardware/gallery')
                             ->acceptedFileTypes(['image/jpeg', 'image/jpg', 'image/png'])
                             ->getUploadedFileNameForStorageUsing(function (TemporaryUploadedFile $file): string {
-                                return (string) str($file->getClientOriginalName())->prepend('edSpark-hardware-gallery-');
+                                return (string)str($file->getClientOriginalName())->prepend('edSpark-hardware-gallery-');
                             })
                             ->enableReordering()
                             ->minFiles(2)
@@ -67,11 +72,84 @@ class HardwareResource extends Resource
                         Forms\Components\BelongsToSelect::make('brand')
                             ->relationship('brand', 'product_brand_name'),
                         Forms\Components\BelongsToSelect::make('category')
-                            ->relationship('category', 'product_category_name')
+                            ->relationship('category', 'product_category_name'),
                         // Forms\Components\Toggle::make('product_isLoan'),
-                    ]),
 
+
+                    ]),
+                Forms\Components\Card::make()
+                    ->schema([
+                        Forms\Components\Builder::make('extra_content')
+                            ->blocks([
+                                Forms\Components\Builder\Block::make('templates')
+                                    ->schema([
+                                        Forms\Components\Select::make('template')
+                                            ->label('Choose a Template')
+                                            ->reactive()
+                                            ->options(static::getTemplates()),
+                                        ...static::getTemplateSchemas()
+                                    ]),
+                                Forms\Components\Builder\Block::make('extra_resources')
+                                    ->schema([
+                                        Forms\Components\Repeater::make('item')
+                                            ->schema([
+                                                Forms\Components\TextInput::make('heading'),
+                                                Forms\Components\RichEditor::make('content')
+                                                    ->disableToolbarButtons([
+                                                        'attachFiles',
+                                                        'blockquote',
+                                                        'bulletList',
+                                                        'codeBlock',
+                                                        'h2',
+                                                        'h3',
+                                                        'orderedList',
+                                                        'redo',
+                                                        'undo',
+                                                    ]),
+                                            ])
+                                    ])
+                                    ->label('Extra Resources')
+                            ])
+                            ->label('Extra content')
+                    ])
             ]);
+
+    }
+
+    public static function getTemplates(): Collection
+    {
+        return static::getTemplateClasses()->mapWithKeys(fn($class) => [$class => $class::title()]);
+    }
+
+    public static function getTemplateClasses(): Collection
+    {
+        $filesystem = app(Filesystem::class);
+
+        return collect($filesystem->allFiles(app_path('Filament/PageTemplates/Hardware')))
+            ->map(function (SplFileInfo $file): string {
+                return (string)Str::of('App\\Filament\\PageTemplates\\Hardware')
+                    ->append('\\', $file->getRelativePathname())
+                    ->replace(['/', '.php'], ['\\', '']);
+            });
+    }
+
+    public static function getTemplateSchemas(): array
+    {
+        return static::getTemplateClasses()
+            ->map(fn($class) => Forms\Components\Group::make($class::schema())
+                ->columnSpan(2)
+                ->afterStateHydrated(fn($component, $state) => $component->getChildComponentContainer()->fill($state))
+                ->statePath('extra_content.' . static::getTemplateName($class))
+                // ->statePath(static::getTemplateName($class))
+                ->visible(fn($get) => $get('template') == $class)
+            )
+            ->toArray();
+
+    }
+
+    public static function getTemplateName($class)
+    {
+        return Str::of($class)->afterLast('\\')->snake()->toString();
     }
 
     public static function table(Table $table): Table
@@ -133,7 +211,7 @@ class HardwareResource extends Resource
         // use Illuminate\Support\Facades\Auth;
 
         // Moderator check
-        if(Auth::user()->role->role_name == 'Moderator') {
+        if (Auth::user()->role->role_name == 'Moderator') {
             return false;
         }
 

@@ -36,6 +36,7 @@ import {useSoftwareStore} from '../stores/useSoftwareStore';
 import {useAdviceStore} from '../stores/useAdviceStore';
 import {useSchoolsStore} from '../stores/useSchoolsStore';
 import {useRouter} from "vue-router";
+const router = useRouter()
 
 const userStore = useUserStore();
 const eventStore = useEventsStore();
@@ -172,16 +173,17 @@ const onClosePopup = () => {
             :section="'events'"
             :title="'New Events'"
             :button-text="'View all events'"
+            :button-callback="() => router.push('/browse/event')"
         />
 
         <!-- Events Cards Here -->
         <EventsDashboard
-            :events="events"
             v-if="!eventsLoading"
+            :events="events"
         />
         <CardLoading
-            :number-per-row="3"
             v-else
+            :number-per-row="3"
         />
 
         <SectionHeader
@@ -194,13 +196,13 @@ const onClosePopup = () => {
 
         <!-- Software Cards Here -->
         <SoftwareDashboard
-            :softwares="softwares"
             v-if="!softwareLoading"
+            :softwares="softwares"
         />
         <CardLoading
+            v-else
             :number-per-row="2"
             :additional-classes="'!justify-end'"
-            v-else
         />
 
         <SectionHeader
@@ -213,13 +215,13 @@ const onClosePopup = () => {
 
         <!-- Advice Cards Here -->
         <AdviceDashboard
-            :advice="advice"
             v-if="!adviceLoading"
+            :advice="advice"
         />
         <CardLoading
+            v-else
             :number-per-row="2"
             :additional-classes="'!justify-end'"
-            v-else
         />
 
         <SectionHeader
@@ -236,8 +238,8 @@ const onClosePopup = () => {
             :schools="schools"
         />
         <CardLoading
-            :number-per-row="4"
             v-else
+            :number-per-row="4"
         />
     </div>
 </template>
