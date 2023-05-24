@@ -26,7 +26,9 @@ const adviceDAG = computed(() => {
     }else{
         return []
     }
-})
+});
+
+console.log(adviceDAG.value);
 
 const adviceEducator = computed(() => {
     if(allAdvice.value){
