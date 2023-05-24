@@ -180,6 +180,7 @@ const onClosePopup = () => {
             v-if="!eventsLoading"
         />
         <CardLoading
+            class="px-huge"
             :number-per-row="3"
             v-else
         />
@@ -198,6 +199,7 @@ const onClosePopup = () => {
             v-if="!softwareLoading"
         />
         <CardLoading
+            class="px-huge"
             :number-per-row="2"
             :additional-classes="'!justify-end'"
             v-else
@@ -217,6 +219,7 @@ const onClosePopup = () => {
             v-if="!adviceLoading"
         />
         <CardLoading
+            class="px-huge"
             :number-per-row="2"
             :additional-classes="'!justify-end'"
             v-else
@@ -236,6 +239,7 @@ const onClosePopup = () => {
             :schools="schools"
         />
         <CardLoading
+            class="px-huge"
             :number-per-row="4"
             v-else
         />
