@@ -70,7 +70,7 @@
 </script>
 
 <template>
-    <div class="w-full h-[240px] relative">
+    <div class="w-full h-[240px] relative z-20">
         <div class="nav-background w-full h-full pt-7 bg-[url(http://localhost:5173/resources/assets/images/children-vr.png)] bg-no-repeat bg-cover">
             <nav class="bg-[#002856]/50 py-2 px-12 w-full" >
                 <ul class="flex flex-row flex-wrap gap-8 text-white text-[24px] font-semibold font-['Poppins']">
@@ -153,10 +153,10 @@
         </div>
 
         <ProfileDropdown
+            :key="currentUser"
             :current-user="currentUser"
             :profile-dropdown="profileDropdown"
-            :avatarUrl="avatarUrl"
-            :key="currentUser"
+            :avatar-url="avatarUrl"
             @handleAvatarClick="handleAvatarClick"
         />
 

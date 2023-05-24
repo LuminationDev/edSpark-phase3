@@ -22,6 +22,10 @@ const props = defineProps({
         required: false,
         default:"#0A7982"
     },
+    swooshColorTheme:{
+        type: String,
+        required: false
+    }
 })
 
 const heroBackground = computed(() => {
@@ -34,7 +38,7 @@ const heroBackground = computed(() => {
 </script>
 
 <template>
-    <div class="BaseHeroContainer h-[720px] -mt-28 relative -z-10">
+    <div class="BaseHeroContainer h-[720px] -mt-28 relative z-10">
         <div
             :class="'BaseHeroClipThisPath pb-[36px] pt-[190px] px-[48px] grid grid-cols-8 bg-cover h-full relative '+ heroBackground"
         >
@@ -43,6 +47,7 @@ const heroBackground = computed(() => {
                 v-if="$slots.titleText || $slots.subtitleText1 || $slots.subtitleText2"
                 class="col-span-5 p-2 relative z-20"
             >
+                <slot name="smallTitle" />
                 <h1
                     class="text-white text-[36px] font-semibold pb-8"
                 >
@@ -52,7 +57,7 @@ const heroBackground = computed(() => {
                 <p class="text-white flex flex-row gap-4 text-[18px] font-normal pb-4">
                     <slot name="authorName" />
                     <slot name="subtitleText1" />
-                    <slot name="hardwareProvider"/>
+                    <slot name="hardwareProvider" />
                 </p>
 
                 <p class="text-white text-[18px] font-normal">
@@ -65,12 +70,16 @@ const heroBackground = computed(() => {
                 </div>
             </div>
         </div>
-        <ArticleSingleSwoosh
-            :color1="props.color1"
-            :color2="props.color2"
-            :color3="props.color3"
-            class="absolute w-full -bottom-2"
-        />
+        <div class="articleSwooshContainer relative w-full h-44 z-50">
+            <ArticleSingleSwoosh
+                :color-theme="swooshColorTheme"
+            />
+            <div class=" absolute mt-1 pt-2 pl-12 -top-9 w-full h-16 text-white font-base text-2xl">
+                <slot
+                    name="submenu"
+                />
+            </div>
+        </div>
     </div>
 </template>
 

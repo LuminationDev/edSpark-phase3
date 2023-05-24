@@ -6,11 +6,9 @@ import { createRouter, createWebHistory } from 'vue-router';
 import { LoginCallback, navigationGuard } from '@okta/okta-vue'
 import {
     Home,
-    Dashboard,
     Schools,
     Advice,
     Software,
-    TheHardware,
     Community,
     Partners,
     Events,
@@ -29,7 +27,7 @@ import Hardware from '@/js/pages/Hardware.vue';
 import ProfileWork from '@/js/components/userprofile/ProfileWork.vue'
 import ProfileInfo  from '@/js/components/userprofile/ProfileInfo.vue'
 import ProfileMessages  from '@/js/components/userprofile/ProfileMessages.vue'
-
+import Hardware from "@/js/pages/Hardware.vue";
 
 
 const router = createRouter({

@@ -4,8 +4,6 @@ import {serverURL} from "@/js/constants/serverUrl";
 import SoftwareCard from "@/js/components/software/SoftwareCard.vue";
 import {axiosFetcher} from "@/js/helpers/fetcher";
 import useSWRV from "swrv";
-import {useUserStore} from "@/js/stores/useUserStore";
-import {storeToRefs} from "pinia";
 
 const {data: softwareList , error} = useSWRV(`${serverURL}/fetchSoftwarePosts`, axiosFetcher)
 

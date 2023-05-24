@@ -1,31 +1,31 @@
 <script setup>
-    import 'vue3-carousel/dist/carousel.css';
-    import { Carousel, Slide, Pagination, Navigation } from 'vue3-carousel';
-    import { ref } from 'vue';
+import 'vue3-carousel/dist/carousel.css';
+import {Carousel, Slide, Pagination, Navigation} from 'vue3-carousel';
+import {ref} from 'vue';
 
-    const imageURL = import.meta.env.VITE_SERVER_IMAGE_API;
+const imageURL = import.meta.env.VITE_SERVER_IMAGE_API;
 
-    const props = defineProps({
-        slideItems: {
-            type: Object,
-            required: true
-        }
-    });
-
-    const carouselItemIndex = ref(null);
-
-    const handleImageGallery = (index) => {
-        carouselItemIndex.value = index;
+const props = defineProps({
+    slideItems: {
+        type: Object,
+        required: true
     }
+});
+
+const carouselItemIndex = ref(null);
+
+const handleImageGallery = (index) => {
+    carouselItemIndex.value = index;
+}
 
 </script>
 
 <template>
-    <div class="flex flex-row gap-8 flex-wrap place-items-center">
-        <div class="w-[65%]">
+    <div class="flex flex-row gap-8 flex-wrap place-items-center justify-around">
+        <div class="w-[50%]">
             <carousel
                 :items-to-show="1"
-                :wrapAround="true"
+                :wrap-around="true"
                 :model-value="carouselItemIndex"
             >
                 <Slide
@@ -35,7 +35,7 @@
                     <img
                         :src="`${imageURL}/${slide}`"
                         :alt="slideItems.product_excerpt"
-                        class="min-w-[300px]"
+                        class="min-w-[300px] w-full rounded-lg"
                     >
                 </Slide>
 
@@ -45,7 +45,7 @@
                 </template>
             </carousel>
         </div>
-        <div class="w-[32%]">
+        <div class="w-[30%]">
             <div class="w-full border border-black grid grid-cols-2">
                 <div
                     v-for="(item, index) in slideItems['gallery']"
@@ -61,10 +61,7 @@
                         class="group-hover:bg-black/20 absolute w-full h-full top-0 left-0 pointer-events-none"
                     />
                 </div>
-
             </div>
         </div>
-
     </div>
-
 </template>

@@ -61,7 +61,6 @@ onBeforeMount(async () =>{
         console.log('No adviceContent passed in. Will request from server')
         await axios.get(`${serverURL}/${apiLink}/${route.params.id}`).then(res => {
             singleContent.value = res.data
-            console.log(singleContent.value)
         })
     } else{
         console.info('Advice content received from parent. No request will be sent to server')
@@ -77,6 +76,11 @@ watch(currentId ,() => {
         }
     }
 })
+const emits = defineEmits(['emitActiveTabToSpecificPage'])
+const handleEmitFromSubmenu = (value) => {
+    console.log('handleEmitFrom submenu called ', value)
+    emits('emitActiveTabToSpecificPage' , value)
+}
 
 </script>
 <template>
@@ -84,6 +88,7 @@ watch(currentId ,() => {
         <slot
             name="hero"
             :content-from-base="singleContent"
+            :emit-from-submenu="handleEmitFromSubmenu"
         />
         <slot
             name="content"

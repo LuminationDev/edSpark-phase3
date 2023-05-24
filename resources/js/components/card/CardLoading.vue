@@ -1,15 +1,15 @@
 <script setup>
 
-    const props = defineProps({
-        numberPerRow: {
-            type: Number,
-            required: true
-        },
-        additionalClasses: {
-            type: String,
-            required: false
-        }
-    })
+const props = defineProps({
+    numberPerRow: {
+        type: Number,
+        required: true
+    },
+    additionalClasses: {
+        type: String,
+        required: false
+    }
+})
 </script>
 
 <template>
@@ -21,28 +21,21 @@
             <div
                 v-for="count in numberPerRow"
                 :class="{'!w-[30%]': numberPerRow === 3,
-                        '!w-[22%]': numberPerRow === 4,
-                        '!w-[45%]': numberPerRow === 2,
-                        '!w-[95%]' : numberPerRow === 1
+                         '!w-[22%]': numberPerRow === 4,
+                         '!w-[45%]': numberPerRow === 2,
+                         '!w-[95%]' : numberPerRow === 1
                 }"
                 class="GenericCardContainer loadingCard w-full border-[0.5px] border-black hover:shadow-2xl mx-2 mb-4 flex flex-col min-h-[480px] max-w-[400px] max-h-[480px] group transition-all card_parent pointer-events-none"
-                @mouseenter="cardHoverToggle = true"
             >
                 <div
                     class="cardTopCoverImage loadingCard-image relative min-h-[35%] bg-cover bg-center group-hover:min-h-[0%] group-hover:h-0 transition-all"
-
                 />
                 <div
                     class="cardContent loadingCard-content h-full flex flex-col gap-6 p-4 overflow-hidden transition-all"
-                    @click="clickCallback"
                 >
-                    <div class="loadingCard-title h-[2.25rem] w-full rounded-xl">
+                    <div class="loadingCard-title h-[2.25rem] w-full rounded-xl" />
 
-                    </div>
-
-                    <div class="loadingCard-description h-full w-full rounded-xl">
-
-                    </div>
+                    <div class="loadingCard-description h-full w-full rounded-xl" />
                 </div>
             </div>
         </div>
