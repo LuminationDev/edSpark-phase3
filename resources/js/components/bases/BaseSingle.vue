@@ -49,7 +49,7 @@ case 'hardware':
     recommendationAPILink = 'fetchProductByBrand'
     break;
 case 'event':
-    apiLink = 'fetchEventPostById'
+    byIdAPILink = 'fetchEventPostById'
     break;
 }
 

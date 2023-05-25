@@ -16,7 +16,19 @@ const props = defineProps({
     }
 });
 
-const { event_id, author, cover_image, created_at, end_date, event_content, event_excerpt, event_status, event_title, event_type, start_date, updated_at } = props.eventContent
+const {
+    event_id,
+    author,
+    cover_image,
+    created_at,
+    end_date,
+    event_excerpt,
+    event_status,
+    event_title,
+    event_type,
+    start_date,
+    updated_at } = props.eventContent;
+
 const router = useRouter();
 
 const handleClickEventCard = () => {
@@ -26,12 +38,8 @@ const handleClickEventCard = () => {
      */
     router.push({
         name:"event-single",
-        params: {
-            id: props.eventContent.event_id
-        },
-        state: {
-            content: JSON.stringify(props.eventContent)
-        },
+        params: { id: props.eventContent.event_id},
+        state: {content: JSON.stringify(props.eventContent)},
     })
 }
 

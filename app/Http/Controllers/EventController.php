@@ -26,7 +26,8 @@ class EventController extends Controller
                 'event_status' => $event->event_status,
                 'event_type' => ($event->eventtype) ? $event->eventtype->event_type_name : NULL,
                 'created_at' => $event->created_at,
-                'updated_at' => $event->updated_at
+                'updated_at' => $event->updated_at,
+                'extra_content' => ($event->extra_content) ? $event->extra_content : NULL,
             ];
 
             $data[] = $result;
@@ -52,7 +53,8 @@ class EventController extends Controller
             'event_status' => $event->event_status,
             'event_type' => ($event->eventtype) ? $event->eventtype->event_type_name : NULL,
             'created_at' => $event->created_at,
-            'updated_at' => $event->updated_at
+            'updated_at' => $event->updated_at,
+            'extra_content' => ($event->extra_content) ? $event->extra_content : NULL,
         ];
 
         return response()->json($data);
