@@ -2,61 +2,61 @@
     /**
      * Import Dependencies
      */
-    import { ref } from 'vue';
-    import oktaAuth from '../../constants/oktaAuth.js';
-    /**
-     * Import SVG's
-     */
-    import Profile from '../svg/Profile.vue';
+import { ref } from 'vue';
+import oktaAuth from '../../constants/oktaAuth.js';
+/**
+ * Import SVG's
+ */
+import Profile from '../svg/Profile.vue';
 
-    /**
-     * Import stores
-     */
-    import { useUserStore } from '../../stores/useUserStore';
+/**
+ * Import stores
+ */
+import { useUserStore } from '../../stores/useUserStore';
 
-    /**
-     * Import components
-     */
+/**
+ * Import components
+ */
 
-    const props = defineProps({
-        currentUser: {
-            type: Object,
-            required: true,
-        },
-        profileDropdown: {
-            type: Boolean,
-            required: true
-        },
-        avatarUrl: {
-            type: String,
-            required: true
-        }
-    });
+const props = defineProps({
+    currentUser: {
+        type: Object,
+        required: true,
+    },
+    profileDropdown: {
+        type: Boolean,
+        required: true
+    },
+    avatarUrl: {
+        type: String,
+        required: true
+    }
+});
 
-    const emits = defineEmits(['handleAvatarClick'])
+const emits = defineEmits(['handleAvatarClick'])
 
-    const userStore = useUserStore();
-    const imageURL = import.meta.env.VITE_SERVER_IMAGE_API;
-    const avatarUrl = ref('');
-    const userMetadata = userStore.getUser.metadata;
-    console.log("USERMETADATA", userMetadata);
+const userStore = useUserStore();
+const imageURL = import.meta.env.VITE_SERVER_IMAGE_API;
+const avatarUrl = ref('');
+const userMetadata = userStore.getUser.metadata;
+// console.log("USERMETADATA", userMetadata);
 
-    // if (userMetadata !== undefined) {
-    //     const userAvatarMeta = userMetadata.filter(meta => meta.user_meta_key === 'userAvatar');
-    //     avatarUrl.value = userAvatarMeta[0].user_meta_value[0].replace(/\\\//g, "/");
-    // };
+// if (userMetadata !== undefined) {
+//     const userAvatarMeta = userMetadata.filter(meta => meta.user_meta_key === 'userAvatar');
+//     avatarUrl.value = userAvatarMeta[0].user_meta_value[0].replace(/\\\//g, "/");
+// };
 
-    const notificationCount = userStore.getNotifications;
+const notificationCount = userStore.getNotifications;
 
-    const handleAvatar = () => {
-        emits('handleAvatarClick');
-    };
+const handleAvatar = () => {
+    emits('handleAvatarClick');
+};
 
-    const handleLogoutUser = async () => {
-        console.log('clicked the button');
-        await oktaAuth.signOut();
-        this.userStore.clearStore();
-    };
+const handleLogoutUser = async () => {
+    console.log('clicked the button');
+    await oktaAuth.signOut();
+    this.userStore.clearStore();
+};
 </script>
 
 <template>
@@ -64,10 +64,17 @@
         <div
             class="z-50 relative h-full w-full bg-slate-200 flex rounded-full cursor-pointer hover:shadow-2xl overflow-hidden"
             @click.prevent="handleAvatar"
-
         >
-            <img class="w-full m-auto" :src="`${ imageURL }/${avatarUrl}`" alt="" v-if="!avatarUrl.length <= 0">
-            <p class="text-[1.25rem] text-white font-bold m-auto" v-else>
+            <img
+                v-if="!avatarUrl.length <= 0"
+                class="w-full m-auto"
+                :src="`${ imageURL }/${avatarUrl}`"
+                alt=""
+            >
+            <p
+                v-else
+                class="text-[1.25rem] text-white font-bold m-auto"
+            >
                 {{ currentUser.display_name }}
             </p>
         </div>

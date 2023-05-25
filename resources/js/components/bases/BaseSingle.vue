@@ -44,6 +44,9 @@ case 'advice':
 case 'hardware':
     apiLink ='fetchProductById'
     break;
+case 'event':
+    apiLink = 'fetchEventPostById'
+    break;
 }
 
 const route = useRoute()

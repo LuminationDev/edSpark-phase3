@@ -35,6 +35,7 @@ Route::middleware('api')->group(function() {
     Route::get('fetchSoftwarePosts', [SoftwareController::class, 'fetchSoftwarePosts']);
     Route::get('fetchSoftwarePostById/{id}', [SoftwareController::class, 'fetchSoftwarePostById']);
     Route::get('fetchEventPosts', [EventController::class, 'fetchEventPosts']);
+    Route::get('fetchEventPostById/{id}', [EventController::class, 'fetchEventPostById']);
     Route::get('fetchCommunityPosts', [CommunityController::class, 'fetchCommunityPosts']);
 
     // User Management
