@@ -15,7 +15,7 @@ class CreateHardware extends CreateRecord
 
     protected function mutateFormDataBeforeCreate(array $data): array
     {
-        // dd($data); // Before mutation
+         dd($data); // Before mutation
         $data['owner_id'] = Auth::user()->id;
         $data['created'] = Carbon::now();
         $data['modified'] = Carbon::now();

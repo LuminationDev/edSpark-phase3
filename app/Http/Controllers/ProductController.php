@@ -136,7 +136,8 @@ class ProductController extends Controller
                         'brandId' => ($product->brand_id) ? $product->brand_id : NULL,
                         'brandName' => ($product->brand) ? $product->brand->product_brand_name : NULL,
                     ],
-                    'product_isLoan' => ($product->product_isLoan) ? $product->product_isLoan : NULL
+                    'product_isLoan' => ($product->product_isLoan) ? $product->product_isLoan : NULL,
+                    'extra_content' => ($product->extra_content) ?: NULL
                 ];
 
                 $data[] = $result;

@@ -111,7 +111,7 @@ const router = createRouter({
             name: 'hardware-single',
             path: '/hardware/resources/:id',
             component: HardwareSingle,
-            params: true
+            params: true,
         },
         {
             name: 'community',

@@ -27,13 +27,13 @@ final class HardwareLaptopTechSpecs
     {
         return [
             Repeater::make('item')->schema([
-                TextInput::make('Screen Size'),
-                TextInput::make('Operating System'),
-                TextInput::make('Processor'),
-                TextInput::make('Memory capacity'),
-                TextInput::make('Storage capacity'),
-                TextInput::make('Graphics'),
-                TextInput::make('Feature highlights (separate each feature with a comma)'),
+                TextInput::make('screen')->label('Screen Size'),
+                TextInput::make('os')->label('Operating System'),
+                TextInput::make('processor')->label('Processor'),
+                TextInput::make('memory')->label('Memory Capacity'),
+                TextInput::make('storage')->label('Storage Capacity'),
+                TextInput::make('graphic')->label('Graphics'),
+                TextInput::make('features')->label('Features Highlights (separate with a comma)'),
 
             ])
                 ->label('Tech Specs')

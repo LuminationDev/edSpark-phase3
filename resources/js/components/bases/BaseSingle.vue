@@ -1,6 +1,6 @@
 -
 <script setup>
-import {useRoute} from "vue-router";
+import {useRoute, useRouter} from "vue-router";
 import {onBeforeMount, ref, computed, watch} from "vue";
 import axios from 'axios'
 import {isEqual} from "lodash";
@@ -52,6 +52,7 @@ case 'hardware':
 
 
 const route = useRoute()
+const router = useRouter()
 const currentId = computed(() => {
     if (route.params.id) {
         return route.params.id
@@ -65,6 +66,8 @@ const getRecommendationBasedOnContentType = () => {
         if (recommendationAPILink) {
             return axios.get(`${serverURL}/${recommendationAPILink}/${singleContent.value['brand']['brandName']}`).then(res => {
                 recommendedContent.value = res.data
+            }).catch(e =>{
+                console.log(e.message)
             })
         }
         break;
@@ -95,10 +98,12 @@ onBeforeMount(async () => {
 })
 
 watch(currentId, () => {
-    console.log('inside watcher params id')
-    if (route.params.content && singleContent.value) {
-        if (!isEqual(JSON.parse(route.params.content), singleContent.value)) {
-            singleContent.value = JSON.parse(route.params.content)
+    console.log('inside watcher params id ', currentId.value)
+    console.log(window.history.state)
+    console.log(route)
+    if (window.history.state.content && singleContent.value) {
+        if (!isEqual(JSON.parse(window.history.state.content), singleContent.value)) {
+            singleContent.value = JSON.parse(window.history.state.content)
         }
     }
 })
@@ -119,6 +124,7 @@ const handleEmitFromSubmenu = (value) => {
         <slot
             name="content"
             :content-from-base="singleContent"
+            :recommendation-from-base="recommendedContent"
         />
     </div>
 </template>
