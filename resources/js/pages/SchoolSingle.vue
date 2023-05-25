@@ -51,9 +51,9 @@ const handleToggleTooltip = (index) => {
     tooltipIndex.value = index;
 }
 
-onBeforeMount(async () => {
+onBeforeMount( () => {
     // TODO Erick - Replace with get one school instead of all then filter.
-    await axios.get(`${serverURL}/fetchAllSchools`).then(res => {
+    axios.get(`${serverURL}/fetchAllSchools`).then(res => {
         const filteredSchool = res.data.filter(school => school.name === route.params.name.replace('%20', ' '))[0]
         schoolContent.value = parseToJsonIfString(filteredSchool)
         /**

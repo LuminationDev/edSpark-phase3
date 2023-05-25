@@ -1,5 +1,6 @@
+-
 <script setup>
-import {useRoute} from "vue-router";
+import {useRoute, useRouter} from "vue-router";
 import {onBeforeMount, ref, computed, watch} from "vue";
 import axios from 'axios'
 import {isEqual} from "lodash";
@@ -32,57 +33,87 @@ const props = defineProps({
  *  }
  */
 const singleContent = ref({})
-let apiLink;
+const recommendedContent = ref({})
+let byIdAPILink;
+let recommendationAPILink;
 
-switch (props.contentType){
+switch (props.contentType) {
 case 'software':
-    apiLink = 'fetchSoftwarePostById'
+    byIdAPILink = 'fetchSoftwarePostById'
     break;
 case 'advice':
-    apiLink ='fetchAdvicePostById'
+    byIdAPILink = 'fetchAdvicePostById'
     break;
 case 'hardware':
-    apiLink ='fetchProductById'
+    byIdAPILink = 'fetchProductById'
+    recommendationAPILink = 'fetchProductByBrand'
     break;
 case 'event':
     apiLink = 'fetchEventPostById'
     break;
 }
 
-const route = useRoute()
-const currentId = computed(() =>{
-    if(route.params.id){
-        return route.params.id
 
-    }
-    else return 0
+const route = useRoute()
+const router = useRouter()
+const currentId = computed(() => {
+    if (route.params.id) {
+        return route.params.id
+    } else return 0
 })
 
-onBeforeMount(async () =>{
+const getRecommendationBasedOnContentType = () => {
+    switch (props.contentType) {
+    case 'hardware':
+        console.log('called recommendation for hardware')
+        if (recommendationAPILink) {
+            return axios.get(`${serverURL}/${recommendationAPILink}/${singleContent.value['brand']['brandName']}`).then(res => {
+                recommendedContent.value = res.data
+            }).catch(e =>{
+                console.log(e.message)
+            })
+        }
+        break;
+    case 'software':
+        console.log('called recommendation for software -- not complete TODO')
+        break;
+    case 'advice':
+        console.log('called recommendation for advice -- not complete TODO')
+        break;
+    default:
+        console.log('no recommendation request was sent')
+    }
+}
+
+onBeforeMount(async () => {
     // TODO: Need to compare if params and adviceSingleContent is the same
-    if(!route.params.content){
+    if (!route.params.content) {
         console.log('No adviceContent passed in. Will request from server')
-        await axios.get(`${serverURL}/${apiLink}/${route.params.id}`).then(res => {
+        await axios.get(`${serverURL}/${byIdAPILink}/${route.params.id}`).then(res => {
             singleContent.value = res.data
         })
-    } else{
+    } else {
         console.info('Advice content received from parent. No request will be sent to server')
         singleContent.value = JSON.parse(route.params.content)
     }
+    // get recommendation. need to have switch case
+    getRecommendationBasedOnContentType()
 })
 
-watch(currentId ,() => {
-    console.log('inside watcher params id')
-    if(route.params.content && singleContent.value){
-        if(!isEqual(JSON.parse(route.params.content), singleContent.value)){
-            singleContent.value = JSON.parse(route.params.content)
+watch(currentId, () => {
+    console.log('inside watcher params id ', currentId.value)
+    console.log(window.history.state)
+    console.log(route)
+    if (window.history.state.content && singleContent.value) {
+        if (!isEqual(JSON.parse(window.history.state.content), singleContent.value)) {
+            singleContent.value = JSON.parse(window.history.state.content)
         }
     }
 })
 const emits = defineEmits(['emitActiveTabToSpecificPage'])
 const handleEmitFromSubmenu = (value) => {
     console.log('handleEmitFrom submenu called ', value)
-    emits('emitActiveTabToSpecificPage' , value)
+    emits('emitActiveTabToSpecificPage', value)
 }
 
 </script>
@@ -96,15 +127,17 @@ const handleEmitFromSubmenu = (value) => {
         <slot
             name="content"
             :content-from-base="singleContent"
+            :recommendation-from-base="recommendedContent"
         />
     </div>
 </template>
 
 <style scoped>
-h2{
+h2 {
     font-weight: bolder;
 }
-h3{
+
+h3 {
     font-weight: bold;
 }
 </style>

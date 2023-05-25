@@ -32,7 +32,9 @@ class Hardware extends Model
         'modified',
         'cover_image',
         'gallery',
-        'product_isLoan'
+        'product_isLoan',
+        'template',
+        'extra_content'
 
     ];
 
@@ -59,6 +61,7 @@ class Hardware extends Model
     protected $casts = [
         'cover_image' => 'array',
         'gallery' => 'array',
+        'extra_content' => 'array'
     ];
 
 }
