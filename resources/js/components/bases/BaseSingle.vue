@@ -48,6 +48,9 @@ case 'hardware':
     byIdAPILink = 'fetchProductById'
     recommendationAPILink = 'fetchProductByBrand'
     break;
+case 'event':
+    apiLink = 'fetchEventPostById'
+    break;
 }
 
 

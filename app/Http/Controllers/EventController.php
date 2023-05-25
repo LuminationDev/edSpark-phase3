@@ -35,4 +35,26 @@ class EventController extends Controller
         return response()->json($data);
 
     }
+
+    public function fetchEventPostById($id)
+    {
+        $event = Event::find($id);
+
+        $data = [
+            'event_id' => $event->id,
+            'event_title' => $event->event_title,
+            'event_content' => $event->event_content,
+            'event_excerpt' => $event->event_excerpt,
+            'author' => ($event->author) ? $event->author->full_name : '',
+            'cover_image' => ($event->cover_image) ? $event->cover_image : NULL,
+            'start_date' => $event->start_date,
+            'end_date' => $event->end_date,
+            'event_status' => $event->event_status,
+            'event_type' => ($event->eventtype) ? $event->eventtype->event_type_name : NULL,
+            'created_at' => $event->created_at,
+            'updated_at' => $event->updated_at
+        ];
+
+        return response()->json($data);
+    }
 }

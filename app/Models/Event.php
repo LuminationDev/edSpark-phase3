@@ -31,6 +31,7 @@ class Event extends Model
         'event_status',
         'cover_image',
         'eventtype_id',
+        'extra_content',
     ];
 
     public function author()
@@ -45,5 +46,6 @@ class Event extends Model
 
     protected $casts = [
         'cover_image' => 'array',
+        'extra_content' => 'array',
     ];
 }
