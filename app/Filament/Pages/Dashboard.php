@@ -8,4 +8,3 @@ class Dashboard extends BasePage
 {
     // ...
 }
-

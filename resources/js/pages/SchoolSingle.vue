@@ -108,11 +108,7 @@ const handleSaveNewSchoolInfo = async (content_blocks, tech_used) => {
         // can consider computed function
         schoolContent.value.content_blocks = parseToJsonIfString(schoolContent.value.content_blocks)
         schoolContent.value.tech_used = parseToJsonIfString(schoolContent.value.tech_used)
-<<<<<<< HEAD
-    }).catch(err =>{
-=======
     }).catch(err => {
->>>>>>> 9c4af75b41fe553df20b043847d77a2fdf76e791
         console.log(err)
         console.log('Something wrong while attempting to post ')
 

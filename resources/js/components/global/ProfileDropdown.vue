@@ -39,11 +39,12 @@
     const imageURL = import.meta.env.VITE_SERVER_IMAGE_API;
     const avatarUrl = ref('');
     const userMetadata = userStore.getUser.metadata;
+    console.log("USERMETADATA", userMetadata);
 
-    if (userMetadata !== undefined) {
-        const userAvatarMeta = userMetadata.filter(meta => meta.user_meta_key === 'userAvatar');
-        avatarUrl.value = userAvatarMeta[0].user_meta_value[0].replace(/\\\//g, "/");
-    };
+    // if (userMetadata !== undefined) {
+    //     const userAvatarMeta = userMetadata.filter(meta => meta.user_meta_key === 'userAvatar');
+    //     avatarUrl.value = userAvatarMeta[0].user_meta_value[0].replace(/\\\//g, "/");
+    // };
 
     const notificationCount = userStore.getNotifications;
 

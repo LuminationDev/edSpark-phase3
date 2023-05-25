@@ -171,3 +171,4 @@ class OktaAuthMiddleware
         return $userId;
     }
 }
+

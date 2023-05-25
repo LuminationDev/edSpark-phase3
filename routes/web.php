@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Http\Request;
 
 /*
 |--------------------------------------------------------------------------
@@ -40,4 +41,9 @@ Route::get('{any}', function () {
 //        // This route will only be accessible if the user is authenticated through Okta
 //        return 'Authenticated';
 //    })->middleware('web');
+//});
+
+//Route::get('/admin', function (Request $request) {
+//    $value = $request->session()->get('okta-token-storage');
+//    var_dump($value);
 //});

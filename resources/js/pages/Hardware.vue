@@ -42,7 +42,6 @@ const emergingTech = computed(()=>{
 </script>
 
 <template>
-
     <div>
         <HardwareHero />
 
@@ -134,6 +133,5 @@ const emergingTech = computed(()=>{
                 />
             </div>
         </div>
-
     </div>
 </template>
