@@ -33,6 +33,7 @@ console.log(dateItemContent)
                 <div class="extraContentIcon w-1/3 flex justify-center items-center relative">
                     <div class="numberListcontainer font-bold text-2xl border-4 bg-white border-black p-4 w-24 h-24 rounded-[50%] flex justify-center items-center absolute z-20">
                         {{ index + 1 }}
+                        <!-- {{ dateTime(item.start_date) }} -->
                     </div>
                 </div>
                 <div
