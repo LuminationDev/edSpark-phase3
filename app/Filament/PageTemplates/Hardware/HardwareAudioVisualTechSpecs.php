@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Filament\PageTemplates\Software;
+namespace App\Filament\PageTemplates\Hardware;
 
+use Faker\Provider\Text;
 use Filament\Forms;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\RichEditor;
@@ -14,24 +15,25 @@ use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\MarkdownEditor;
 use Filament\Forms\Components\Select;
 
-final class Extraresource
+
+final class HardwareAudioVisualTechSpecs
 {
     public static function title()
     {
-        return 'Extra Resources';
+        return 'Audio Visual Tech Specs';
     }
 
     public static function schema()
     {
         return [
             Repeater::make('item')->schema([
-                IconPicker::make('icon')
-                    ->columns(4),
-                TextInput::make('heading'),
-                RichEditor::make('content')
+                TextInput::make('screen')->label('Screen Size'),
+                TextInput::make('number_student')->label('Number of Students'),
+                TextInput::make('features')->label('Feature highlights (separate each feature with a comma)'),
+
             ])
-            ->label('Item')
-            ->collapsible()
+                ->label('Tech Specs')
+                ->collapsible()
         ];
     }
 }

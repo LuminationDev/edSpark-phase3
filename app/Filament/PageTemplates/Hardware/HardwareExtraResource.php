@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Filament\PageTemplates\Software;
+namespace App\Filament\PageTemplates\Hardware;
 
 use Filament\Forms;
 use Filament\Forms\Components\TextInput;
@@ -14,11 +14,12 @@ use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\MarkdownEditor;
 use Filament\Forms\Components\Select;
 
-final class Extraresource
+
+final class HardwareExtraResource
 {
     public static function title()
     {
-        return 'Extra Resources';
+        return 'Hardware Numbered Template';
     }
 
     public static function schema()
@@ -30,8 +31,8 @@ final class Extraresource
                 TextInput::make('heading'),
                 RichEditor::make('content')
             ])
-            ->label('Item')
-            ->collapsible()
+                ->label('Item')
+                ->collapsible()
         ];
     }
 }
