@@ -77,6 +77,7 @@ const laptopTechSpecs = computed(() => {
             <TechSpecsRow
                 :value="laptopTechSpecs.features"
                 label="Features"
+                :is-list="true"
             />
         </template>
         <template v-else>

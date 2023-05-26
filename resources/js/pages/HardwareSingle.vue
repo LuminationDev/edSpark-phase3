@@ -14,6 +14,7 @@ import {storeToRefs} from "pinia";
 import HardwareCard from "@/js/components/hardware/HardwareCard.vue";
 import HardwareLaptopTechSpecs from "@/js/components/hardware/HardwareLaptopTechSpecs.vue";
 import HardwareEmergingTechSpecs from "@/js/components/hardware/HardwareEmergingTechSpecs.vue";
+import HardwareAudioVisualTechSpecs from "@/js/components/hardware/HardwareAudioVisualTechSpecs.vue";
 
 const hardwareStore = useHardwareStore();
 const recommendedResources = ref([]);
@@ -160,11 +161,16 @@ const handleChangeSubmenu = (value) => {
                         <template v-if="contentFromBase['category']['categoryName'] == 'Laptop'">
                             <HardwareLaptopTechSpecs :extra-content="contentFromBase['extra_content']" />
                         </template>
-                        <template v-else-if="contentFromBase['category']['categoryName'] == 'Emerging Tech'">
+                        <template v-else-if="contentFromBase['category']['categoryName'] == 'Emerging Technology'">
                             <HardwareEmergingTechSpecs :extra-content="contentFromBase['extra_content']" />
                         </template>
                         <template v-else-if="contentFromBase['category']['categoryName'] == 'Audio Visual'">
                             <HardwareAudioVisualTechSpecs :extra-content="contentFromBase['extra_content']" />
+                        </template>
+                        <template v-else>
+                            <div class="text-black w-full flex justify-center text-2xl">
+                                Sorry technical specification is not available for this item
+                            </div>
                         </template>
                     </div>
                 </template>

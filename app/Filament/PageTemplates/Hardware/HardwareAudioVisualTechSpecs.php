@@ -27,9 +27,9 @@ final class HardwareAudioVisualTechSpecs
     {
         return [
             Repeater::make('item')->schema([
-                TextInput::make('Screen Size'),
-                TextInput::make('Number of Students'),
-                TextInput::make('Feature highlights (separate each feature with a comma)'),
+                TextInput::make('screen')->label('Screen Size'),
+                TextInput::make('number_student')->label('Number of Students'),
+                TextInput::make('features')->label('Feature highlights (separate each feature with a comma)'),
 
             ])
                 ->label('Tech Specs')

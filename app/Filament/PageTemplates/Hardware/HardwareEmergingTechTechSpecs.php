@@ -26,19 +26,21 @@ final class HardwareEmergingTechTechSpecs
     {
         return [
             Repeater::make('item')->schema([
-                TextInput::make('Number of Units'),
-                Select::make("Technology Areas")
+                TextInput::make('units')->label('Number of Unit included'),
+                Select::make("tech_area")->label('Technology area(s)')
                     ->multiple()
                     ->options([
-                        '3d_printing' =>'3D Printing',
-                        'microsoft_teams' => 'Microsoft Teams',
-                        'apple' => 'Apple',
-                        'frog' => 'Frog',
-                        'iot' => 'Internet of Things (IoT)',
-                        'vr' => 'Virtual Reality',
-                        'ar' => 'Augmented Reality',
-                        'robotics' => 'Robotics',
-                ])
+                        '3D Printing' =>'3D Printing',
+                        'Microsoft Teams' => 'Microsoft Teams',
+                        'Apple' => 'Apple',
+                        'Frog' => 'Frog',
+                        'IoT' => 'Internet of Things (IoT)',
+                        'VR' => 'Virtual Reality',
+                        'AR' => 'Augmented Reality',
+                        'Robotics' => 'Robotics',
+                ]),
+                TextInput::make('features')->label('Feature highlights (separate each feature with a comma)'),
+
             ])
                 ->label('Tech Specs')
                 ->collapsible()

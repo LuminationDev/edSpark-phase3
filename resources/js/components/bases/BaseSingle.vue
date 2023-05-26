@@ -1,7 +1,7 @@
 -
 <script setup>
 import {useRoute, useRouter} from "vue-router";
-import {onBeforeMount, ref, computed, watch} from "vue";
+import {onBeforeMount, ref, computed, watch, onUnmounted} from "vue";
 import axios from 'axios'
 import {isEqual} from "lodash";
 
@@ -84,14 +84,23 @@ const getRecommendationBasedOnContentType = () => {
 
 onBeforeMount(async () => {
     // TODO: Need to compare if params and adviceSingleContent is the same
-    if (!route.params.content) {
+    console.log(window.history.state)
+    if (!window.history.state.content) { // doesn't exists
         console.log('No adviceContent passed in. Will request from server')
         await axios.get(`${serverURL}/${byIdAPILink}/${route.params.id}`).then(res => {
             singleContent.value = res.data
         })
     } else {
-        console.info('Advice content received from parent. No request will be sent to server')
-        singleContent.value = JSON.parse(route.params.content)
+        //content exists in window.history.state
+        if((JSON.parse(window.history.state.content).post_id || JSON.parse(window.history.state.content).id) == route.params.id){
+            console.log('same id inside window history id compated to params id ')
+            console.info('Advice content received from parent. No request will be sent to server')
+            singleContent.value = JSON.parse(window.history.state.content)
+        } else{
+            await axios.get(`${serverURL}/${byIdAPILink}/${route.params.id}`).then(res => {
+                singleContent.value = res.data
+            })
+        }
     }
     // get recommendation. need to have switch case
     getRecommendationBasedOnContentType()

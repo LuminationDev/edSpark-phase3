@@ -9,16 +9,15 @@ const props = defineProps({
     value:{
         type: String,
         required: true
+    },
+    isList:{
+        type: Boolean,
+        required: false,
+        default: false
     }
 })
 
 const emits = defineEmits([])
-const valueIsList = computed(() => {
-    if(props.value.split(',').length > 3){
-        return true
-    }
-    else return false
-})
 
 
 </script>
@@ -29,14 +28,14 @@ const valueIsList = computed(() => {
             {{ props.label }}
         </div>
         <div
-            v-if="valueIsList"
+            v-if="props.isList"
             class="techSpecsValue w-1/2 font-base"
         >
             <ul class="valueList pl-6">
                 <li
                     v-for="(feature, index) in value.split(',')"
                     :key="index"
-                    class="list-disc"
+                    class="list-disc capitalize"
                 >
                     {{ feature }}
                 </li>
