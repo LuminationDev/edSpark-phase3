@@ -21,7 +21,9 @@ import CardLoading from '../components/card/CardLoading.vue';
 const router = useRouter()
 const {data: allAdvice, error: adviceError, isValidating: isValidating} = useSWRV(`${serverURL}/fetchAdvicePosts`, axiosFetcher);
 const { state, STATES } = useSwrvState(allAdvice, adviceError, isValidating);
-const { data: adviceByType } = useSWRV(`${serverURL}/fetchAdvicePostByType/Partner`);
+const { data: adviceByType } = useSWRV(`${serverURL}/fetchAdvicePostByType/D.A.G Advice`);
+
+console.log(adviceByType.value);
 
 console.log(adviceByType.value);
 
