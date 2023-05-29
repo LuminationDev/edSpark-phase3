@@ -13,7 +13,7 @@ const props = defineProps({
 </script>
 
 <template>
-    <div class="grid grid-cols-4 gap-[24px] w-full px-20 pt-8 ">
+    <div class="grid grid-cols-4 gap-[24px] w-full py-8 px-huge">
         <div
             v-for="(school,index) in schools.splice(0,4)"
             :key="index"

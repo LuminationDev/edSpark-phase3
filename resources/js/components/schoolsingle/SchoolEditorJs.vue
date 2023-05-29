@@ -12,6 +12,8 @@ import {serverURL} from "@/js/constants/serverUrl";
 import SimpleImage from '@editorjs/simple-image';
 import FontSize from 'editorjs-inline-font-size-tool';
 import VideoRecorder from '../../constants/customVideoBlock';
+// import VideoRecorder from '../../constants/videoRecorder';
+
 
 import { onMounted } from 'vue';
 
@@ -33,9 +35,11 @@ const editorJsTools = {
         class: VideoRecorder,
         // inlineToolbar: true,
         // autofocus: true,
-        // config: {
-        //     placeholder: 'Record Video'
-        // },
+        config: {
+            endpoints:{
+                byFile: `${serverURL}/imageUpload`
+            }
+        },
     },
     header:{
         class: Header,
@@ -68,7 +72,7 @@ const editorJsTools = {
         class: ImageTool,
         config:{
             endpoints:{
-                byFile: `${serverURL}/uploadImageEditorjs`
+                byFile: `${serverURL}/imageUpload`
             }
         }
     }

@@ -147,7 +147,7 @@ const onClosePopup = () => {
 <template>
     <div>
         <DashboardHero
-            class="-mt-[140px]"
+            class="-mt-extraHuge"
         />
 
         <BlackOverlay
@@ -169,7 +169,7 @@ const onClosePopup = () => {
         <!--        Individual Sections -->
 
         <SectionHeader
-            :classes="'bg-[#339999]'"
+            :classes="'bg-primary-teal'"
             :section="'events'"
             :title="'New Events'"
             :button-text="'View all events'"
@@ -182,12 +182,14 @@ const onClosePopup = () => {
             :events="events"
         />
         <CardLoading
+            class="px-huge"
+            :number-per-row="3"
             v-else
             :number-per-row="3"
         />
 
         <SectionHeader
-            :classes="'bg-[#1C5CA9]'"
+            :classes="'bg-secondary-darkBlue'"
             :section="'software'"
             :title="'Top Software'"
             :button-text="'View all software'"
@@ -200,13 +202,14 @@ const onClosePopup = () => {
             :softwares="softwares"
         />
         <CardLoading
+            class="px-huge"
             v-else
             :number-per-row="2"
             :additional-classes="'!justify-end'"
         />
 
         <SectionHeader
-            :classes="'bg-[#0A7982]'"
+            :classes="'bg-primary-darkTeal'"
             :section="'advice'"
             :title="'Advice'"
             :button-text="'View all resources'"
@@ -215,17 +218,19 @@ const onClosePopup = () => {
 
         <!-- Advice Cards Here -->
         <AdviceDashboard
+            :advice="advice"
             v-if="!adviceLoading"
             :advice="advice"
         />
         <CardLoading
-            v-else
+            class="px-huge"
             :number-per-row="2"
             :additional-classes="'!justify-end'"
+            v-else
         />
 
         <SectionHeader
-            :classes="'bg-[#002858]'"
+            :classes="'bg-primary-navy'"
             :section="'schools'"
             :title="'Latest School Profiles'"
             :button-text="'View all schools'"
@@ -238,8 +243,9 @@ const onClosePopup = () => {
             :schools="schools"
         />
         <CardLoading
-            v-else
+            class="px-huge"
             :number-per-row="4"
+            v-else
         />
     </div>
 </template>
