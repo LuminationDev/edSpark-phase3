@@ -160,14 +160,17 @@ export const useUserStore = defineStore('user', {
             userData.append('display_name', JSON.stringify(initials));
             userData.append('site_id', JSON.stringify(user.site.id)); // Use the id to store as foreign key
             userData.append('role_id', JSON.stringify(4)); // Use the id to store as foreign key
+            let userMetadata = {
+                yearLevels: user.yearLevels,
+                interests: user.interests,
+                subjects: user.subjects,
+                biography: user.biography
 
+            }
             /**
              * Populate metaData Object
              */
-            userData.append('yearLevels', JSON.stringify(user.yearLevels));
-            userData.append('interest', JSON.stringify(user.interests));
-            userData.append('subjects', JSON.stringify(user.subjects));
-            userData.append('biography', JSON.stringify(user.biography));
+            userData.append('metadata', JSON.stringify(userMetadata));
 
             await axios({
                 method: 'POST',

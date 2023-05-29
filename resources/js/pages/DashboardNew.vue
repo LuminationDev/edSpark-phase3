@@ -67,20 +67,22 @@ const userDetails = reactive({
  * Get the idToken from Okta and set up the claims
  */
 const getIdToken = async () => {
-    idToken.value = await oktaAuth.tokenManager.get('idToken');
-    claims.value = await idToken.value.claims;
+    try {
+        idToken.value = await oktaAuth.tokenManager.get('idToken');
+        claims.value = await idToken.value.claims;
+        console.log(idToken);
+        /**
+         * User Details
+         */
+        userDetails.name = claims.value.name;
+        userDetails.email = claims.value.email;
+        userDetails.siteId = claims.value.mainsiteid;
+        userDetails.roleId = claims.value.mainrolecode;
 
-    console.log(idToken);
-
-    /**
-     * User Details
-     */
-    userDetails.name = claims.value.name;
-    userDetails.email = claims.value.email;
-    userDetails.siteId = claims.value.mainsiteid;
-    userDetails.roleId = claims.value.mainrolecode;
-
-    checkFirstVisit(claims.value.email);
+        checkFirstVisit(claims.value.email);
+    } catch(e){
+        console.warn('Failed to get Auth data. User is not logged in')
+    }
 };
 
 /**
@@ -95,8 +97,7 @@ const checkFirstVisit = async (emailAddress) => {
         isFirstVisit.value = true;
     }
 };
-
-getIdToken();
+getIdToken()
 
 /**
  * Data for the cards (hopefully it'll plug straight in)
@@ -150,22 +151,22 @@ const onClosePopup = () => {
         <DashboardHero
             class="-mt-extraHuge"
         />
-
-        <BlackOverlay
+        <template
             v-if="isFirstVisit"
-            :is-first-visit="isFirstVisit"
-        />
-
-        <div
-            v-if="isFirstVisit"
-            class="relative"
         >
-            <FirstVisitForm
+            <BlackOverlay
                 :is-first-visit="isFirstVisit"
-                :user-details="userDetails"
-                @on-close-popup="onClosePopup"
             />
-        </div>
+
+            <div
+                class="relative"
+            >
+                <FirstVisitForm
+                    :user-details="userDetails"
+                    @on-close-popup="onClosePopup"
+                />
+            </div>
+        </template>
 
         <!--        Individual Sections -->
 

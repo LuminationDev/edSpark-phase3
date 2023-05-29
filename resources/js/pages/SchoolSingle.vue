@@ -53,25 +53,30 @@ const handleToggleTooltip = (index) => {
 
 onBeforeMount( () => {
     const currentSchoolName = route.params.name
-    axios.get(`${serverURL}/fetchSchoolByName/${currentSchoolName}`).then(res => {
-        const filteredSchool = res.data
-        console.log(filteredSchool)
-        schoolContent.value = parseToJsonIfString(filteredSchool)
-        /**
-         * Parse content of SchoolContent upon receiving from server.
-         * avoid further processing down the components
-         */
-        schoolContent.value.content_blocks = parseToJsonIfString(schoolContent.value.content_blocks)
-        schoolContent.value.tech_used = parseToJsonIfString(schoolContent.value.tech_used)
-        schoolContent.value.cover_image = schoolContent.value.cover_image.replace("/\\/g", "")
-        schoolContent.value.logo = schoolContent.value.logo.replace("/\\/g", "")
-        if (filteredSchool.metadata) {
-            const colorThemeMeta = schoolContent.value['metadata'].filter(meta => meta['schoolmeta_key'] === 'school_color_theme')
-            colorTheme.value = colorThemeMeta[0]['schoolmeta_value']
-        }
-    }).catch(err => {
-        console.log(err)
-    });
+    try{
+        axios.get(`${serverURL}/fetchSchoolByName/${currentSchoolName}`).then(res => {
+            const filteredSchool = res.data
+            console.log(filteredSchool)
+            schoolContent.value = parseToJsonIfString(filteredSchool)
+            /**
+             * Parse content of SchoolContent upon receiving from server.
+             * avoid further processing down the components
+             */
+            schoolContent.value.content_blocks = parseToJsonIfString(schoolContent.value.content_blocks)
+            schoolContent.value.tech_used = parseToJsonIfString(schoolContent.value.tech_used)
+            schoolContent.value.cover_image = schoolContent.value.cover_image.replace("/\\/g", "")
+            schoolContent.value.logo = schoolContent.value.logo.replace("/\\/g", "")
+            if (filteredSchool.metadata) {
+                const colorThemeMeta = schoolContent.value['metadata'].filter(meta => meta['schoolmeta_key'] === 'school_color_theme')
+                colorTheme.value = colorThemeMeta[0]['schoolmeta_value']
+            }
+        }).catch(err => {
+            console.log(err.message)
+        });
+
+    } catch(e){
+        console.log('failed to fetchSchoolByName')
+    }
 })
 
 const handleSaveNewSchoolInfo = async (content_blocks, tech_used) => {

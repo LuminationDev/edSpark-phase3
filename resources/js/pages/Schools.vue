@@ -43,6 +43,8 @@ const cardsLoading = computed(() => {
         return false
     } else if ([STATES.PENDING].includes(state.value)) {
         return true
+    } else if ([STATES.VALIDATING].includes(state.value)){
+        return false
     } else {
         return ![STATES.SUCCESS, STATES.VALIDATING, STATES.STALE_IF_ERROR].includes(state.value)}
 })
@@ -51,6 +53,7 @@ const allSchools = ref([]);
 const schoolsAvailable = ref(false);
 
 const fetchAllSchools = () => {
+    console.log('fetch all school called')
     axios.get(`${serverURL}/fetchAllSchools`).then(res => {
         allSchools.value = res.data
         schoolsAvailable.value = true;
@@ -58,13 +61,6 @@ const fetchAllSchools = () => {
 };
 
 fetchAllSchools();
-
-const featuredSitesData = computed(() => {
-    if(!featuredSites.value ) return []
-    else{
-        return schoolContentArrParser(featuredSites.value)
-    }
-});
 
 onBeforeMount(async () => {
     /**
@@ -136,7 +132,7 @@ const handleSaveWelcomePopup = (data) => {
             @send-save-popup="handleSaveWelcomePopup"
         />
         <SchoolsHero />
-        <div class=" py-20 ">
+        <div class="featuredClassContainer py-20 ">
             <SectionHeader
                 :classes="'bg-[#002858]'"
                 :section="'schools'"
@@ -149,12 +145,11 @@ const handleSaveWelcomePopup = (data) => {
                 class="grid grid-cols-4 gap-[24px] w-full px-20 pt-8 "
             >
                 <div
-                    v-for="(school,index) in featuredSitesData.splice(0,4)"
+                    v-for="(school,index) in schoolContentArrParser(featuredSites).splice(0,4)"
                     :key="index"
                     class="col-span-1 bg-white cursor-pointer h-[470px] border-[0.5px]  border-black transition-all group hover:shadow-2xl"
                 >
                     <SchoolCard
-                        v-if="featuredSitesData"
                         :school-data="school"
                     />
                 </div>

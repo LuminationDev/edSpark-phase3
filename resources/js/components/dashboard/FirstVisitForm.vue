@@ -47,10 +47,6 @@ const props = defineProps({
         type: Object,
         required: true
     },
-    isFirstVisit: {
-        type: Boolean,
-        required: true
-    }
 });
 
 /**
@@ -379,7 +375,7 @@ const handleStep = (stepIndex) => {
         formStepData.infoWelcomeHeaderBlurb = 'We see this is your first time visiting us, please confirm the following information.';
         formStepData.infoButtonText = 'Next';
     }
-    ;
+
 
     if (stepIndex === 1) {
         if (newUserData.role.name === 'School Principal') {
@@ -394,7 +390,6 @@ const handleStep = (stepIndex) => {
             formStepData.infoButtonText = 'Next';
         }
     }
-    ;
 
     if (stepIndex === 2) {
         if (newUserData.role.name === 'School Principal') {
@@ -408,7 +403,6 @@ const handleStep = (stepIndex) => {
             formStepData.infoButtonText = 'Next';
         }
     }
-    ;
 
     if (stepIndex === 3) {
         if (newUserData.role.name === 'School Principal') {
@@ -451,7 +445,7 @@ const closePopup = () => {
                 {{ formStepData.infoWelcomeHeaderBlurb }}
             </p>
         </template>
-
+        <!-- Step 1: New users data. Name, email, Role and Site -->
         <template #step1>
             <div>
                 <label
@@ -509,6 +503,7 @@ const closePopup = () => {
                 />
             </div>
         </template>
+        <!-- Step 2: If role is principal, set school name and motto, if not principal (means a regular staff), choose yr levels and subjects  -->
 
         <template
             v-if="!isPrincipal"
@@ -587,6 +582,8 @@ const closePopup = () => {
                 />
             </div>
         </template>
+        <!-- Step 3: if pricipal, upload school logo and add cover photo -->
+        <!-- Step 3: if regular staff: choose tech interest, biography -->
 
         <template
             v-if="!isPrincipal"
@@ -708,6 +705,7 @@ const closePopup = () => {
             </div>
         </template>
 
+        <!-- Step 4: Upload an avatar only works for  -->
         <template #step4>
             <h5 class="text-[18px] font-bold">
                 Upload an avatar
