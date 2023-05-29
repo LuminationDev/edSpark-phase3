@@ -1,23 +1,23 @@
 <script setup>
-import { computed } from "vue";
+import {computed} from "vue";
 import GenericCard from "@/js/components/card/GenericCard.vue";
 import AdviceTypeTag from "@/js/components/advice/AdviceTypeTag.vue";
 import AdviceCardIcon from "@/js/components/advice/AdviceCardIcon.vue";
 import {useRouter} from "vue-router";
 
 const props = defineProps({
-    adviceContent:{
+    adviceContent: {
         type: Object, required: true
     },
-    showIcon:{
+    showIcon: {
         type: Boolean, required: false
     },
-    numberPerRow:{
+    numberPerRow: {
         type: Number, required: false, default: 3
     }
 });
 
-const { post_id, post_title, cover_image, advice_type, created_at, post_excerpt, author } = props.adviceContent
+const {post_id, post_title, cover_image, advice_type, created_at, post_excerpt, author} = props.adviceContent
 const router = useRouter()
 
 
@@ -31,7 +31,11 @@ const handleClickAdviceCard = () => {
      * id inside param must be the same as the route path specified for advice-single
      * which is /advice/resources/:id
      */
-    router.push({ name:"advice-single", params: {id: props.adviceContent.post_id, content: JSON.stringify(props.adviceContent) }})
+    router.push({
+        name: "advice-single",
+        params: {id: props.adviceContent.post_id},
+        state: {content: JSON.stringify(props.adviceContent)}
+    })
 
 }
 

@@ -19,8 +19,9 @@ const props = defineProps({
         default: 3
     }
 });
-console.log(props.hardwareContent)
+
 const router = useRouter();
+
 const {
     id,
     product_name,
@@ -43,6 +44,8 @@ const handleClickHardwareCard = () => {
         name: 'hardware-single',
         params: {
             id: props.hardwareContent.id,
+        },
+        state:{
             content: JSON.stringify(props.hardwareContent)
         }
     })

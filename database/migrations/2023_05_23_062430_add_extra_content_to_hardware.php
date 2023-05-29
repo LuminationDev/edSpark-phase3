@@ -13,8 +13,8 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::table('softwares', function (Blueprint $table) {
-            $table->string('template')->after('softwaretype_id')->nullable();
+        Schema::table('hardwares', function (Blueprint $table) {
+            $table->string('template')->after('product_isLoan')->nullable();
             $table->json('extra_content')->after('template')->nullable();
         });
     }
@@ -26,7 +26,7 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::table('softwares', function (Blueprint $table) {
+        Schema::table('hardwares', function (Blueprint $table) {
             $table->dropColumn('template');
             $table->dropColumn('extra_content');
         });

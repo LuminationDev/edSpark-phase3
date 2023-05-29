@@ -2,9 +2,9 @@ import { defineStore } from "pinia";
 import axios from 'axios';
 
 export const useHardwareStore = defineStore('hardware', {
-    state: () => {
+    state: () => ({
         allHardware: []
-    },
+    }),
 
     getters: {
         getAllHardware() {
@@ -19,7 +19,6 @@ export const useHardwareStore = defineStore('hardware', {
                 }).catch(error => {
                     console.log('Error');
                     console.error(error.code);
-                    reject(error.code);
             });
         },
 
