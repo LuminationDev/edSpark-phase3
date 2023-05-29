@@ -182,9 +182,8 @@ const onClosePopup = () => {
             :events="events"
         />
         <CardLoading
-            class="px-huge"
-            :number-per-row="3"
             v-else
+            class="px-huge"
             :number-per-row="3"
         />
 
@@ -202,8 +201,8 @@ const onClosePopup = () => {
             :softwares="softwares"
         />
         <CardLoading
-            class="px-huge"
             v-else
+            class="px-huge"
             :number-per-row="2"
             :additional-classes="'!justify-end'"
         />
@@ -218,15 +217,14 @@ const onClosePopup = () => {
 
         <!-- Advice Cards Here -->
         <AdviceDashboard
-            :advice="advice"
             v-if="!adviceLoading"
             :advice="advice"
         />
         <CardLoading
+            v-else
             class="px-huge"
             :number-per-row="2"
             :additional-classes="'!justify-end'"
-            v-else
         />
 
         <SectionHeader
@@ -243,9 +241,9 @@ const onClosePopup = () => {
             :schools="schools"
         />
         <CardLoading
+            v-else
             class="px-huge"
             :number-per-row="4"
-            v-else
         />
     </div>
 </template>

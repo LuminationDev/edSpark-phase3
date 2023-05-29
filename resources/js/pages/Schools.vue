@@ -19,8 +19,8 @@ import SectionHeader from "@/js/components/global/SectionHeader.vue";
 import SchoolsSearchableMap from '../components/schools/schoolMap/SchoolsSearchableMap.vue';
 import Loader from '../components/spinner/Loader.vue';
 import CardLoading from '../components/card/CardLoading.vue';
-
-// const featuredSitesData = ref([])
+import {axiosFetcher} from "@/js/helpers/fetcher";
+import useSwrvState from "@/js/helpers/useSwrvState";
 const createSchool = ref(false)
 const showWelcomePopup = ref(false)
 
@@ -29,20 +29,30 @@ const router = useRouter();
 const userStore = useUserStore()
 const {currentUser} = storeToRefs(userStore)
 
-const axiosFetcher = (url) => {
-    return axios.get(url).then(res => {return res.data})
-}
+const {
+    data: featuredSites,
+    error: featuredSitesError,
+    isValidating: isValidatingFeatured
+} = useSWRV(`${serverURL}/fetchFeaturedSchools`, axiosFetcher)
 
+const {state, STATES} = useSwrvState(featuredSites, featuredSitesError, isValidatingFeatured)
 
-const {data: featuredSites, error: schoolsError} = useSWRV(`${serverURL}/fetchFeaturedSchools`, axiosFetcher)
-
-const cardsLoading = ref(true);
+const cardsLoading = computed(() => {
+    console.log(state.value)
+    if ([STATES.ERROR, STATES.STALE_IF_ERROR].includes(state.value)) {
+        return false
+    } else if ([STATES.PENDING].includes(state.value) || [STATES.VALIDATING].includes(state.value)) {
+        return true
+    } else {
+        console.log('its hereeee')
+        return ![STATES.SUCCESS, STATES.VALIDATING, STATES.STALE_IF_ERROR].includes(state.value)}
+})
 
 const allSchools = ref([]);
 const schoolsAvailable = ref(false);
 
-const fetchAllSchools =  () => {
-    axios.get(`${serverURL}/fetchAllSchools`).then(res =>{
+const fetchAllSchools = () => {
+    axios.get(`${serverURL}/fetchAllSchools`).then(res => {
         allSchools.value = res.data
         schoolsAvailable.value = true;
     })
@@ -53,13 +63,9 @@ fetchAllSchools();
 const featuredSitesData = computed(() => {
     if(!featuredSites.value ) return []
     else{
-        // eslint-disable-next-line vue/no-side-effects-in-computed-properties
-        cardsLoading.value = false;
         return schoolContentArrParser(featuredSites.value)
     }
 });
-
-console.log(featuredSitesData);
 
 onBeforeMount(async () => {
     /**
@@ -69,45 +75,44 @@ onBeforeMount(async () => {
     let currentUserHasSchool
     const currentUserId = currentUser.value.id
     const currentUserRole = currentUser.value.role
-    try{
-        console.log(currentUser.value.metadata);
+    try {
         // await axios.post(`${serverURL}/getUserMetadata`,{id: 1, userMetakey: 'has_school'}).then(res => {
         //     console.log(res.data[0])
         //     currentUserHasSchool = res.data[0]['user_meta_value'] === 'false'? false : true
         //     // console.log('current user has_school meta is ' + currentUserHasSchool)
         // });
 
-        if (Object.keys(currentUser.value.metadata) === 'has_school') {
+        if (currentUser.value.metadata && Object.keys(currentUser.value.metadata) === 'has_school') {
             currentUserHasSchool = true;
         }
 
-        if(!currentUserHasSchool && (currentUserRole == 'Principal' || currentUserRole == 'Superadmin')){
+        if (!currentUserHasSchool && (currentUserRole === 'Principal' || currentUserRole === 'Superadmin')) {
             // console.log('School is not init yet. you should init the school')
             createSchool.value = false
-        } else if(!currentUserHasSchool){
+        } else if (!currentUserHasSchool) {
             // console.log('Please notify your principal to set up the school')
-        } else{
+        } else {
             // console.log('hasnt been handled yet')
         }
 
-    } catch(err){
+    } catch (err) {
         console.log(err)
     }
 })
 
-const handleFinishCreateSchool = () =>{
+const handleFinishCreateSchool = () => {
     createSchool.value = false
 }
 
 const handleBrowseAllSchool = () => {
-    router.push({ name: 'browse-schools' })
+    router.push({name: 'browse-schools'})
 }
 
 const handleCloseWelcomePopup = () => {
     showWelcomePopup.value = false
 }
 
-const handleSaveWelcomePopup = (data)=>{
+const handleSaveWelcomePopup = (data) => {
     console.log('Received from modal')
     console.log(data)
     showWelcomePopup.value = false
