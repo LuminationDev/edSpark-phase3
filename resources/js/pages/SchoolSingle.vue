@@ -36,7 +36,7 @@ const breadCrumbPrev = 'Schools'
 const breadCrumbName = route.params.name
 
 const schoolContent = ref({})
-const colorTheme = ref('amber') // default color theme
+const colorTheme = ref('teal') // default color theme
 
 // ref to hold images from editing
 const logoStorage = ref(null)
@@ -52,9 +52,10 @@ const handleToggleTooltip = (index) => {
 }
 
 onBeforeMount( () => {
-    // TODO Erick - Replace with get one school instead of all then filter.
-    axios.get(`${serverURL}/fetchAllSchools`).then(res => {
-        const filteredSchool = res.data.filter(school => school.name === route.params.name.replace('%20', ' '))[0]
+    const currentSchoolName = route.params.name
+    axios.get(`${serverURL}/fetchSchoolByName/${currentSchoolName}`).then(res => {
+        const filteredSchool = res.data
+        console.log(filteredSchool)
         schoolContent.value = parseToJsonIfString(filteredSchool)
         /**
          * Parse content of SchoolContent upon receiving from server.

@@ -41,10 +41,9 @@ const cardsLoading = computed(() => {
     console.log(state.value)
     if ([STATES.ERROR, STATES.STALE_IF_ERROR].includes(state.value)) {
         return false
-    } else if ([STATES.PENDING].includes(state.value) || [STATES.VALIDATING].includes(state.value)) {
+    } else if ([STATES.PENDING].includes(state.value)) {
         return true
     } else {
-        console.log('its hereeee')
         return ![STATES.SUCCESS, STATES.VALIDATING, STATES.STALE_IF_ERROR].includes(state.value)}
 })
 

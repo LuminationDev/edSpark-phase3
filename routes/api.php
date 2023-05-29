@@ -63,6 +63,7 @@ Route::middleware('api')->group(function() {
     Route::post('updateSchool', [SchoolController::class, 'updateSchool']);
     Route::get('fetchAllSchools', [SchoolController::class, 'fetchAllSchools']);
     Route::get('fetchFeaturedSchools', [SchoolController::class, 'fetchFeaturedSchools']);
+    Route::get('fetchSchoolByName/{schoolName}', [SchoolController::class, 'fetchSchoolByName']);
 
     Route::get('fetchAllTechs', [TechController::class, 'fetchAllTechs']);
 

@@ -202,18 +202,14 @@ class SchoolController extends Controller
 
     public function fetchAllSchools() {
         $schools = School::get();
-
         $data = [];
-
         foreach ($schools as $school) {
             $schoolMetadata = Schoolmeta::where('school_id', $school->id)->get();
             $site = Site::find($school->site_id);
-
             $siteLocation = (object) [
                 'lat' => (float) $site->site_latitude,
                 'lng' => (float) $site->site_longitude
             ];
-
             $schoolMetadataToSend = [];
             if($schoolMetadata){
                 foreach($schoolMetadata as $key => $value){
@@ -248,6 +244,51 @@ class SchoolController extends Controller
         }
 
         return response()->json($data);
+
+    }
+
+    public function fetchSchoolByName($schoolName) {
+        $schoolName = str_replace('%20', ' ', $schoolName);
+        $school = School::where('name', $schoolName)->first();
+        $schoolMetadata = Schoolmeta::where('school_id', $school->id)->get();
+        $site = Site::find($school->site_id);
+        $siteLocation = (object) [
+            'lat' => (float) $site->site_latitude,
+            'lng' => (float) $site->site_longitude
+        ];
+        $schoolMetadataToSend = [];
+        if($schoolMetadata){
+            foreach($schoolMetadata as $key => $value){
+                $res = [
+                    'schoolmeta_key' => $value->schoolmeta_key,
+                    'schoolmeta_value' => $value->schoolmeta_value
+                ];
+                $schoolMetadataToSend[] = $res;
+            }
+        }
+        $result = [
+            'id' => $school->id,
+            'site' => [
+                'site_id' => $school->site_id,
+                'site_name' => ($school->site_id) ? $school->site->site_name : NULL
+            ],
+            'owner' => [
+                'owner_id' => $school->owner_id,
+                'owner_name' => ($school->owner_id) ? $school->owner->full_name : NULL
+            ],
+            'name' => $school->name,
+            'content_blocks' => ($school->content_blocks) ? json_decode($school->content_blocks) : NULL,
+            'logo' => ($school->logo) ? $school->logo : NULL,
+            'cover_image' => ($school->cover_image) ? $school->cover_image : NULL,
+            'tech_used' => ($school->tech_used) ? json_decode($school->tech_used) : NULL,
+            'pedagogical_approaches' => ($school->pedagogical_approaches) ? json_decode($school->pedagogical_approaches) : NULL,
+            'tech_landscape' => ($school->tech_landscape) ? json_decode($school->tech_landscape) : NULL,
+            'metadata' => ($schoolMetadataToSend) ?: NULL,
+            'location' => $siteLocation
+        ];
+
+
+        return response()->json($result);
 
     }
 
