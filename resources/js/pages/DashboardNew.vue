@@ -36,6 +36,7 @@ import {useSoftwareStore} from '../stores/useSoftwareStore';
 import {useAdviceStore} from '../stores/useAdviceStore';
 import {useSchoolsStore} from '../stores/useSchoolsStore';
 import {useRouter} from "vue-router";
+
 const router = useRouter()
 
 const userStore = useUserStore();
@@ -162,7 +163,7 @@ const onClosePopup = () => {
             <FirstVisitForm
                 :is-first-visit="isFirstVisit"
                 :user-details="userDetails"
-                @onClosePopup="onClosePopup"
+                @on-close-popup="onClosePopup"
             />
         </div>
 
