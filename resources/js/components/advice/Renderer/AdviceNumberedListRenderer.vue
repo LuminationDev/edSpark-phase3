@@ -1,4 +1,6 @@
 <script setup>
+import {computed} from "vue";
+
 const props = defineProps({
     itemArray: {
         type: Array,
@@ -6,6 +8,15 @@ const props = defineProps({
 
     }
 })
+
+const numberedListContent = computed(() => {
+    if(typeof props.itemArray == "object"){
+        return Object.values(props.itemArray)
+    }else{
+        return props.itemArray
+    }
+})
+
 </script>
 <template>
     <div class="extraContent relative ">
@@ -13,7 +24,7 @@ const props = defineProps({
             class="connectingLine absolute w-1 h-[69%] bg-black z-10 top-[14%] left-[12.4%]"
         />
         <div
-            v-for="(item,index) in props.itemArray"
+            v-for="(item,index) in numberedListContent"
             :key="index"
             class="eachContent py-2"
         >

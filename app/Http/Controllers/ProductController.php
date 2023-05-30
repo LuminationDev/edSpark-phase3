@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Productbrand;
 use Illuminate\Http\Request;
 use App\Models\Productbrand as Brand;
 use App\Models\ProductCategory as Category;
@@ -70,7 +71,8 @@ class ProductController extends Controller
                         'brandId' => ($product->brand_id) ? $product->brand_id : NULL,
                         'brandName' => ($product->brand) ? $product->brand->product_brand_name : NULL,
                     ],
-                    'product_isLoan' => ($product->product_isLoan) ? $product->product_isLoan : NULL
+                    'product_isLoan' => ($product->product_isLoan) ? $product->product_isLoan : NULL,
+                    'extra_content' => ($product->extra_content) ?: NULL
 
                 ];
                 $data[] = $result;
@@ -89,18 +91,20 @@ class ProductController extends Controller
             'product_content' => $product->product_content,
             'product_excerpt' => $product->product_excerpt,
             'price' => $product->price,
-            'cover_image' => ($product->cover_image) ? $product->cover_image : NULL,
-            'gallery' => ($product->gallery) ? $product->gallery : NULL,
+            'cover_image' => ($product->cover_image) ?: NULL,
+            'gallery' => ($product->gallery) ?: NULL,
             'product_SKU' => $product->product_SKU,
             'category' => [
-                'categoryId' => ($product->category_id) ? $product->category_id : NULL,
+                'categoryId' => ($product->category_id) ?: NULL,
                 'categoryName' => ($product->category) ? $product->category->product_category_name : NULL,
             ],
             'brand' => [
                 'brandId' => ($product->brand_id) ? $product->brand_id : NULL,
                 'brandName' => ($product->brand) ? $product->brand->product_brand_name : NULL,
             ],
-            'product_isLoan' => ($product->product_isLoan) ? $product->product_isLoan : NULL
+            'product_isLoan' => ($product->product_isLoan) ? $product->product_isLoan : NULL,
+            'extra_content' => ($product->extra_content) ?: NULL
+
         ];
 
         return response()->json($data);
@@ -108,7 +112,9 @@ class ProductController extends Controller
 
     public function fetchProductByBrand($brand)
     {
-        $product = Product::where('brandName', '=', $brand);
+        $productBrand = Productbrand::where('product_brand_name', $brand)->get();
+        $productBrandIdInEdspark = $productBrand[0]->id;
+        $products = Product::where('brand_id', $productBrandIdInEdspark)->get();
         $data = [];
 
         if ($products) {
@@ -117,7 +123,7 @@ class ProductController extends Controller
                     'id' => $product->id,
                     'product_name' => $product->product_name,
                     'product_content' => $product->product_content,
-                    'product_excerpt' => $product->product_excerpt,
+                    'product_excerpt' => $product->product_excerpAt,
                     'price' => $product->price,
                     'cover_image' => ($product->cover_image) ? $product->cover_image : NULL,
                     'gallery' => ($product->gallery) ? $product->gallery : NULL,
@@ -130,13 +136,14 @@ class ProductController extends Controller
                         'brandId' => ($product->brand_id) ? $product->brand_id : NULL,
                         'brandName' => ($product->brand) ? $product->brand->product_brand_name : NULL,
                     ],
-                    'product_isLoan' => ($product->product_isLoan) ? $product->product_isLoan : NULL
+                    'product_isLoan' => ($product->product_isLoan) ? $product->product_isLoan : NULL,
+                    'extra_content' => ($product->extra_content) ?: NULL
                 ];
 
                 $data[] = $result;
             }
         }
 
-        return response->json($data);
+        return response()->json($data);
     }
 }

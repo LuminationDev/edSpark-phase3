@@ -19,13 +19,13 @@ const props = defineProps({
 </script>
 
 <template>
-    <div
+    <button
         v-for="(menu, index) in menuArray"
         :key="index"
-        class="py-2 px-6"
+        class="py-3 px-6"
         :class="{'!text-black h-full rounded-t-md bg-white ' : menu['value'] === activeSubpage}"
         @click="() => emitToBase(menu.value)"
     >
         {{ menu['displayText'] }}
-    </div>
+    </button>
 </template>

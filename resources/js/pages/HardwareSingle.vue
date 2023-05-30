@@ -4,11 +4,17 @@ import BaseSingle from '@/js/components/bases/BaseSingle.vue';
 import BaseSingleSubmenu from "@/js/components/bases/BaseSingleSubmenu.vue";
 import HardwareCarousel from '@/js/components/hardware/HardwareCarousel.vue';
 import GenericCard from '../components/card/GenericCard.vue';
+import HardwareExtraContentRenderer from "@/js/components/hardware/HardwareExtraContentRenderer.vue";
 
-import axios from 'axios';
-import {ref, onBeforeMount, onMounted} from 'vue';
+import {ref, onBeforeMount, onMounted, computed} from 'vue';
 import {useRoute, useRouter} from 'vue-router';
 import {useHardwareStore} from '../stores/useHardwareStore.js';
+import {useUserStore} from "@/js/stores/useUserStore";
+import {storeToRefs} from "pinia";
+import HardwareCard from "@/js/components/hardware/HardwareCard.vue";
+import HardwareLaptopTechSpecs from "@/js/components/hardware/HardwareLaptopTechSpecs.vue";
+import HardwareEmergingTechSpecs from "@/js/components/hardware/HardwareEmergingTechSpecs.vue";
+import HardwareAudioVisualTechSpecs from "@/js/components/hardware/HardwareAudioVisualTechSpecs.vue";
 
 const hardwareStore = useHardwareStore();
 const recommendedResources = ref([]);
@@ -16,27 +22,16 @@ const baseContentRef = ref(null);
 const route = useRoute();
 const router = useRouter();
 
+const userStore = useUserStore()
+const {currentUser } = storeToRefs(userStore)
+
 const likeBookmarkData = {
     post_id: route.params.id,
-    user_id: 2,
+    user_id: currentUser.value.id,
     post_type: 'hardware'
 };
 
-const loadRecommendedResources = async () => {
-    recommendedResources.value = await hardwareStore.loadAllArticles();
-};
 
-loadRecommendedResources();
-
-const handleClickHardwareCard = (resource) => {
-    router.push({
-        name: 'hardware-single',
-        params: {
-            id: resource.id,
-            content: JSON.stringify(resource)
-        }
-    })
-}
 /**
  * Submenu specific codes
  */
@@ -46,7 +41,6 @@ const hardwareSubmenu = [
         value: 'overview'
     },
     {
-
         displayText: 'Tech Specs',
         value: 'techspecs'
     }]
@@ -102,7 +96,7 @@ const handleChangeSubmenu = (value) => {
             </BaseHero>
         </template>
 
-        <template #content="{ contentFromBase }">
+        <template #content="{ contentFromBase,recommendationFromBase }">
             <div class="flex flex-row w-full mt-20">
                 <template v-if="activeSubmenu === hardwareSubmenu[0]['value']">
                     <div
@@ -127,6 +121,12 @@ const handleChangeSubmenu = (value) => {
                                     class="pt-8 text-lg flex flex-col content-paragraph overflow-hidden max-w-full"
                                     v-html="contentFromBase['product_content']"
                                 />
+                                <template
+                                    v-for="(content,index) in contentFromBase['extra_content']"
+                                    :key="index"
+                                >
+                                    <HardwareExtraContentRenderer :content="content" />
+                                </template>
                             </div>
 
                             <div
@@ -134,26 +134,21 @@ const handleChangeSubmenu = (value) => {
                                 class="w-1/3"
                             >
                                 <div
-                                    v-if="recommendedResources"
+                                    v-if="recommendationFromBase && recommendationFromBase.length > 0"
                                     class="bg-[#048246]/5 flex flex-col px-6 py-6 gap-6"
                                 >
                                     <h3 class="text-[24px] font-bold mx-auto pb-8">
                                         More from {{ contentFromBase['brand']['brandName'] }}
                                     </h3>
                                     <div
-                                        v-for="item in recommendedResources.slice(0,2)"
+                                        v-for="(item,index) in recommendationFromBase.slice(0,2)"
+                                        :key="index"
                                         class="flex justify-between"
                                     >
-                                        <GenericCard
-                                            v-if="item['brand']['brandName'] === contentFromBase['brand']['brandName']"
+                                        <HardwareCard
                                             class="mx-auto bg-white"
-                                            :title="item['product_name']"
-                                            :cover-image="item['cover_image']"
+                                            :hardware-content="item"
                                             :number-per-row="1"
-                                            :display-author="item['brand']['brandName']"
-                                            :display-content="item['product_excerpt']"
-                                            :like-bookmark-data="likeBookmarkData"
-                                            @click="handleClickHardwareCard(item)"
                                         />
                                     </div>
                                 </div>
@@ -162,8 +157,21 @@ const handleChangeSubmenu = (value) => {
                     </div>
                 </template>
                 <template v-if="activeSubmenu === hardwareSubmenu[1]['value']">
-                    <div class="text-black py-4 px-20">
-                        Hello from techspec page
+                    <div class="text-black py-4 px-20 w-full">
+                        <template v-if="contentFromBase['category']['categoryName'] == 'Laptop'">
+                            <HardwareLaptopTechSpecs :extra-content="contentFromBase['extra_content']" />
+                        </template>
+                        <template v-else-if="contentFromBase['category']['categoryName'] == 'Emerging Technology'">
+                            <HardwareEmergingTechSpecs :extra-content="contentFromBase['extra_content']" />
+                        </template>
+                        <template v-else-if="contentFromBase['category']['categoryName'] == 'Audio Visual'">
+                            <HardwareAudioVisualTechSpecs :extra-content="contentFromBase['extra_content']" />
+                        </template>
+                        <template v-else>
+                            <div class="text-black w-full flex justify-center text-2xl">
+                                Sorry technical specification is not available for this item
+                            </div>
+                        </template>
                     </div>
                 </template>
             </div>

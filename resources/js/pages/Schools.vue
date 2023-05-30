@@ -41,11 +41,11 @@ const cardsLoading = ref(true);
 const allSchools = ref([]);
 const schoolsAvailable = ref(false);
 
-const fetchAllSchools = async () => {
-    let theSchools = await axios.get(`${serverURL}/fetchAllSchools`);
-    let theSchoolsData = theSchools.data;
-    allSchools.value = theSchoolsData;
-    schoolsAvailable.value = true;
+const fetchAllSchools =  () => {
+    axios.get(`${serverURL}/fetchAllSchools`).then(res =>{
+        allSchools.value = res.data
+        schoolsAvailable.value = true;
+    })
 };
 
 fetchAllSchools();
