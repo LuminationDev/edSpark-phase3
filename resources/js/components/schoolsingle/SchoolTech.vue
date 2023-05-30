@@ -9,7 +9,6 @@ const props = defineProps({
         required: true
     }
 })
-console.log(props.techList)
 
 const deptTech = computed( () =>{
     return props.techList.filter(el => el.name !== 'Lumination' && el.name !== 'Makers Empire')
@@ -19,8 +18,6 @@ const partnerTech  =computed(() => {
     return props.techList.filter(el => el.name == 'Lumination' || el.name == 'Makers Empire')
 })
 
-console.log(deptTech.value)
-console.log(partnerTech.value)
 </script>
 <template>
     <div class="bg-white border-[0.5px] border-black px-5 py-8 flex flex-col relative overflow-hidden">

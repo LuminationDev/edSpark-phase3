@@ -2,87 +2,78 @@
     /**
      * Import Dependencies
      */
-    import { ref, computed } from 'vue';
-    import oktaAuth from '../../constants/oktaAuth.js';
-    /**
-     * Import SVG's
-     */
-    import Profile from '../svg/Profile.vue';
+import { ref, computed } from 'vue';
+import oktaAuth from '../../constants/oktaAuth.js';
+/**
+ * Import SVG's
+ */
+import Profile from '../svg/Profile.vue';
 
-    /**
-     * Import stores
-     */
-    import { useUserStore } from '../../stores/useUserStore';
+/**
+ * Import stores
+ */
+import { useUserStore } from '../../stores/useUserStore';
 
-    /**
-     * Import components
-     */
+/**
+ * Import components
+ */
 
-    const props = defineProps({
-        currentUser: {
-            type: Object,
-            required: true,
-        },
-        profileDropdown: {
-            type: Boolean,
-            required: true
-        },
-        avatarUrl: {
-            type: String,
-            required: true
-        }
-    });
+const props = defineProps({
+    currentUser: {
+        type: Object,
+        required: true,
+    },
+    profileDropdown: {
+        type: Boolean,
+        required: true
+    },
+    avatarUrl: {
+        type: String,
+        required: true
+    }
+});
 
-    const emits = defineEmits(['handleAvatarClick'])
+const emits = defineEmits(['handleAvatarClick'])
 
-    const userStore = useUserStore();
-    const imageURL = import.meta.env.VITE_SERVER_IMAGE_API;
-    const avatarUrl = ref('');
-    const userMetadata = userStore.getUser.metadata;
+const userStore = useUserStore();
+const imageURL = import.meta.env.VITE_SERVER_IMAGE_API;
+const avatarUrl = ref('');
+const userMetadata = userStore.getUser.metadata;
 
-    if (userMetadata !== undefined) {
-        const userAvatarMeta = userMetadata.filter(meta => meta.user_meta_key === 'userAvatar');
-        avatarUrl.value = userAvatarMeta[0].user_meta_value[0].replace(/\\\//g, "/");
-    };
+if (userMetadata !== undefined) {
+    const userAvatarMeta = userMetadata.filter(meta => meta.user_meta_key === 'userAvatar');
+    avatarUrl.value = userAvatarMeta[0].user_meta_value[0].replace(/\\\//g, "/");
+};
 
-    const notificationCount = userStore.getNotifications;
+const notificationCount = userStore.getNotifications;
 
-    const handleAvatar = () => {
-        emits('handleAvatarClick');
-    };
+const handleAvatar = () => {
+    emits('handleAvatarClick');
+};
 
-    const handleLogoutUser = async () => {
-        console.log('clicked the button');
-        await oktaAuth.signOut();
-        this.userStore.clearStore();
-    };
+const handleLogoutUser = async () => {
+    console.log('clicked the button');
+    await oktaAuth.signOut();
+    this.userStore.clearStore();
+};
 
-    const isAdmin = ref(false);
-    const checkUserRole = () => {
-        let userRole = userStore.getUser.role;
-        console.log(userRole);
+const isAdmin = ref(false);
+const checkUserRole = () => {
+    let userRole = userStore.getUser.role;
+    switch (userRole) {
+    case 'Administrator':
+    case 'Moderator':
+    case 'PSACT':
+    case 'SCHLDR':
+        isAdmin.value = true;
+        break;
+    default:
+        isAdmin.value = false;
+        break;
+    }
+};
 
-        switch (userRole) {
-            case 'Administrator':
-                    isAdmin.value = true;
-                break;
-            case 'Moderator':
-                    isAdmin.value = true;
-                break;
-            case 'PSACT':
-                    isAdmin.value = true;
-                break;
-            case 'SCHLDR':
-                    isAdmin.value = true;
-                break;
-
-            default:
-                    isAdmin.value = false;
-                break;
-        }
-    };
-
-    checkUserRole();
+checkUserRole();
 </script>
 
 <template>
@@ -90,10 +81,17 @@
         <div
             class="z-50 relative h-full w-full bg-slate-200 flex rounded-full cursor-pointer hover:shadow-2xl overflow-hidden"
             @click.prevent="handleAvatar"
-
         >
-            <img class="w-full m-auto" :src="`${ imageURL }/${avatarUrl}`" alt="" v-if="!avatarUrl.length <= 0">
-            <p class="text-[1.25rem] text-white font-bold m-auto" v-else>
+            <img
+                v-if="!avatarUrl.length <= 0"
+                class="w-full m-auto"
+                :src="`${ imageURL }/${avatarUrl}`"
+                alt=""
+            >
+            <p
+                v-else
+                class="text-[1.25rem] text-white font-bold m-auto"
+            >
                 {{ currentUser.display_name }}
             </p>
         </div>
@@ -125,7 +123,10 @@
                         <Profile />
                         Help
                     </button>
-                    <router-link to="/admin" v-if="isAdmin">
+                    <router-link
+                        v-if="isAdmin"
+                        to="/admin"
+                    >
                         <button class="flex flex-row gap-4 justify-start py-3 px-2 text-white text-[18px] font-medium place-items-center hover:bg-[#405974] w-full">
                             <Profile />
                             Admin

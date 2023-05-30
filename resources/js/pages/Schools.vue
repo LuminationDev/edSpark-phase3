@@ -38,7 +38,6 @@ const {
 const {state, STATES} = useSwrvState(featuredSites, featuredSitesError, isValidatingFeatured)
 
 const cardsLoading = computed(() => {
-    console.log(state.value)
     if ([STATES.ERROR, STATES.STALE_IF_ERROR].includes(state.value)) {
         return false
     } else if ([STATES.PENDING].includes(state.value)) {
@@ -77,7 +76,7 @@ onBeforeMount(async () => {
         //     // console.log('current user has_school meta is ' + currentUserHasSchool)
         // });
 
-        if (currentUser.value.metadata && Object.keys(currentUser.value.metadata) === 'has_school') {
+        if (currentUser.value && currentUser.value.metadata && Object.keys(currentUser.value.metadata) === 'has_school') {
             currentUserHasSchool = true;
         }
 

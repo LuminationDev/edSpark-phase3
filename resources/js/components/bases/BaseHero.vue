@@ -24,7 +24,8 @@ const props = defineProps({
     },
     swooshColorTheme:{
         type: String,
-        required: false
+        required: false,
+        default: 'teal'
     }
 })
 
@@ -32,7 +33,7 @@ const heroBackground = computed(() => {
     if(!props.backgroundUrl){
         return `bg-gradient-to-r from-[${props.color1}] via-[${props.color2}] to-[${props.color3}]`
     } else{
-        return `bg-[url(${imageURL}/${props.backgroundUrl.replace(' ',"%20")})] bg-blend-soft-light bg-center bg-no-repeat bg-gray-600`
+        return `bg-[url(${imageURL}/${props.backgroundUrl.replace(' ',"%20").replace(/\\/g, "")}')] bg-blend-soft-light bg-center bg-no-repeat bg-gray-600`
     }
 })
 </script>
