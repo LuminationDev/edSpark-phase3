@@ -151,7 +151,7 @@ const cardHoverToggle = ref(false)
             </div>
         </div>
         <div
-            class="cardContent h-full flex flex-col p-4 overflow-hidden transition-all"
+            class="cardContent h-full flex flex-col p-4 overflow-hidden transition-all bg-white"
             @click="clickCallback"
         >
             <div
@@ -180,7 +180,7 @@ const cardHoverToggle = ref(false)
                 />
             </div>
         </div>
-        <div class="flex flex-row h-18 pl-4 gap-4 mt-auto">
+        <div class="flex flex-row h-18 pl-4 gap-4 mt-auto bg-white">
             <div class="p-2">
                 <span class="has-tooltip">
                     <LikeFull

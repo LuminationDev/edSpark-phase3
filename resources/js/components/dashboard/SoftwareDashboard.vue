@@ -9,7 +9,7 @@
         }
     });
 
-    console.log(props);
+    const imageURL = import.meta.env.VITE_SERVER_IMAGE_API;
 
 </script>
 
@@ -24,7 +24,7 @@
                         <div class="col-span-1 row-span-1">
                             <img
                                 class=""
-                                src="../../../assets/images/departmentProvidedAndApproved.png"
+                                src='../../../assets/images/departmentProvidedAndApproved.png'
                                 alt="Department Approved And Provided"
                             >
                         </div>
