@@ -159,7 +159,7 @@ export const useUserStore = defineStore('user', {
             userData.append('email', user.email);
             userData.append('display_name', JSON.stringify(initials));
             userData.append('site_id', JSON.stringify(user.site.id)); // Use the id to store as foreign key
-            userData.append('role_id', JSON.stringify(4)); // Use the id to store as foreign key
+            userData.append('role_id', JSON.stringify(user.role.id)); // Use the id to store as foreign key
             let userMetadata = {
                 yearLevels: user.yearLevels,
                 interests: user.interests,
@@ -179,11 +179,16 @@ export const useUserStore = defineStore('user', {
                 headers: { "Content-Type" : "multipart/form-data" }
             }).then(response => {
                 console.log(response);
+                // TODO: Maybe populate user data from here instead?
+                // in opposed to sending another request. make create user return user data if success
                 this.loadCurrentUser(response.data.uid);
                 this.userAvatar = response.data.avatarUrl;
             }).catch(error => {
-                console.log('There was a problem updating your info');
-                console.error(error);
+                if(error.status === 403){
+                    console.log('Forbidden. User Email has been registered')
+                }
+                console.log(error.message)
+
             })
         },
 

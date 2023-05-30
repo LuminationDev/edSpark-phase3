@@ -79,7 +79,7 @@ const getIdToken = async () => {
         userDetails.siteId = claims.value.mainsiteid;
         userDetails.roleId = claims.value.mainrolecode;
 
-        checkFirstVisit(claims.value.email);
+        await checkFirstVisit(claims.value.email);
     } catch(e){
         console.warn('Failed to get Auth data. User is not logged in')
     }

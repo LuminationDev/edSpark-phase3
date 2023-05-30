@@ -1,5 +1,5 @@
 /** @type {import('tailwindcss').Config} */
-module.exports = {
+module.exports ={
     content: [
         './resources/**/*.blade.php',
         './resources/**/*.js',
@@ -45,7 +45,6 @@ module.exports = {
         },
     },
     plugins: [
-        require('@tailwindcss/line-clamp')
     ],
 }
 

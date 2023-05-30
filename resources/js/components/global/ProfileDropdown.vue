@@ -12,7 +12,7 @@ import Profile from '../svg/Profile.vue';
 /**
  * Import stores
  */
-import { useUserStore } from '../../stores/useUserStore';
+import { useUserStore } from '@/js/stores/useUserStore';
 
 /**
  * Import components

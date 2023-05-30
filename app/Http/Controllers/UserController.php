@@ -7,7 +7,7 @@ use App\Models\User;
 use App\Models\Usermeta;
 use Carbon\Carbon;
 use Illuminate\Support\Str;
-use Illuminate\Support\Facades\Storage;
+use App\Helpers\OutputHelper;
 
 class UserController extends Controller
 {
@@ -15,6 +15,7 @@ class UserController extends Controller
     {
 
         $user = User::find($id);
+        OutputHelper::print("HAHHAHAHAHAAHHA");
 
         $userMetaData = Usermeta::where('user_id', $id)->get();
         $userMetaDataToSend = [];
@@ -101,11 +102,16 @@ class UserController extends Controller
 
     public function createUser(Request $request)
     {
+        $data = $request->all();
+
         if ($request->isMethod('post')) {
+            $user = User::where('email', $data['email'])->get();
+            // user already exists
+            if(isset($user)){
+             return response('User Already exist', 403);
+            }
 
-            $data = $request->all();
             $error = '';
-
             if ($data) {
                 // Handle Main Data
                 try {

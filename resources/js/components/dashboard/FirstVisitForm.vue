@@ -86,7 +86,6 @@ const getAllRolesAndSites = async () => {
         if (site.category_code === 'SCHL' || site.category_code === 'PRESC') {
             adjustedSiteArr.push({id: site.id, name: site.site_name});
         }
-        ;
     });
 
     allSites.value = adjustedSiteArr;
@@ -205,12 +204,7 @@ const onChangeFile = async (selector, event) => {
         if (target && target.files) {
             const reader = new FileReader();
             reader.readAsDataURL(target.files[0]);
-
-
-            // console.log(imageUploadUrl.data.file.url);
-
             errorMessage.value = '';
-
             reader.onload = async function (event) {
                 const imageData = event.target.result;
 

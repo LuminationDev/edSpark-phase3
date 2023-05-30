@@ -2,31 +2,28 @@
 /**
  * IMPORT DEPENDENCIES
  */
-import {useRouter, useRoute} from 'vue-router';
-import {computed, ref, watch} from 'vue'
 import axios from 'axios'
+import {useRouter, useRoute} from 'vue-router';
+import {onBeforeMount,computed, ref, watch} from 'vue'
+import {storeToRefs} from "pinia";
 import {parseToJsonIfString, schoolContentArrParser} from "@/js/helpers/jsonHelpers";
 import {schoolDataFormDataBuilder, printOutFormData} from "@/js/helpers/schoolDataHelpers";
 /**
  * IMPORT COMPONENTS
  */
-import SchoolsProfile from '../components/schools/SchoolsProfile.vue';
 import SchoolContent from "@/js/components/schoolsingle/SchoolContent.vue";
 import BaseSingleSubmenu from "@/js/components/bases/BaseSingleSubmenu.vue";
-// import SchoolTech from "@/js/components/schoolsingle/SchoolTech.vue";
 import SchoolTechIconGenerator from "@/js/components/global/SchoolTechIconGenerator.vue";
+import BaseHero from "@/js/components/bases/BaseHero.vue";
+import BaseSingle from "@/js/components/bases/BaseSingle.vue";
+import SchoolNotAvailable from "@/js/components/schools/SchoolNotAvailable.vue";
+import GenericButton from "@/js/components/button/GenericButton.vue";
 /**
  * IMPORT SVGS
  */
-import SchoolsSubMenu from '../components/svg/SchoolsSubMenu.vue';
-import ChevronRight from '../components/svg/ChevronRight.vue';
-import {onBeforeMount} from "vue";
-import BaseHero from "@/js/components/bases/BaseHero.vue";
-import BaseSingle from "@/js/components/bases/BaseSingle.vue";
 import {useSchoolsStore} from "@/js/stores/useSchoolsStore";
-import {storeToRefs} from "pinia";
 import {useUserStore} from "@/js/stores/useUserStore";
-import SchoolNotAvailable from "@/js/components/schools/SchoolNotAvailable.vue";
+import ChevronRight from '../components/svg/ChevronRight.vue';
 import {isObjectEmpty} from "@/js/helpers/objectHelpers";
 
 const route = useRoute();
@@ -42,6 +39,7 @@ const breadCrumbName = route.params.name
 const schoolContent = ref({})
 const colorTheme = ref('teal') // default color theme
 const showSchoolNotAvailable = ref(false)
+const showRetryCreateSchool = ref(false)
 
 // ref to hold images from editing
 const logoStorage = ref(null)
@@ -62,6 +60,7 @@ const {currentUser} = storeToRefs(useUserStore())
 onBeforeMount( async () => {
     const currentSchoolName = route.params.name
     await axios.get(`${serverURL}/fetchSchoolByName/${currentSchoolName}`).then(res => {
+        console.log('Found the school. populating data now inside SchoolSingle')
         const filteredSchool = res.data
         console.log(filteredSchool)
         schoolContent.value = parseToJsonIfString(filteredSchool)
@@ -98,41 +97,48 @@ onBeforeMount( async () => {
      * }
      */
     // will only run if data from FirstVisitForm exists
-    if (newSchool.value.schoolName &&
-        schoolContent.value === {} &&
-        (currentUser.value.role === "Principal" || currentUser.value.role === "SCHLDR")){
-        // TODO: check if newSchool.schoolName is valid inside site database
-        console.log('Starting new school creation sequence')
-        newSchool.value.site['site_id'] = newSchool.value.site.id // add an site_id field to adjust data structure
-        let processedSchoolData = {
-            site: newSchool.value.site,
-            owner: {
-                owner_id: currentUser.value.id
-            },
-            name: newSchool.value.schoolName,
-        }
-        const schoolFormData = schoolDataFormDataBuilder(processedSchoolData)
-        schoolFormData.append('logo', newSchool.value.logoUrl)
-        schoolFormData.append('cover_image', newSchool.value.coverImageUrl)
-        console.log(schoolFormData)
-        await axios({
-            method: "post",
-            url: `${serverURL}/createSchool`,
-            data: schoolFormData,
-            headers: { "Content-Type": "multipart/form-data" },
-        }).then(res => {
-            console.log(res.data)
-            console.log('School Created with FirstVisitData')
-        }).catch(e => {
-            console.log('there has been an issue while trying to create school from newSchool from schoolstore')
-            showSchoolNotAvailable.value = true
 
-        })
+
+    if (newSchool.value.schoolName &&
+        Object.keys(schoolContent.value).length <= 0 &&
+        (currentUser.value.role === "Principal" || currentUser.value.role === "SCHLDR")){
+        // TODO: check if newSchool.schoolName is valid inside site databasr
+        await triggerCreateNewSchoolFromSchoolStore()
     } else {
         console.log('No new school will be created')
         showSchoolNotAvailable.value = true
     }
 })
+
+const triggerCreateNewSchoolFromSchoolStore = () => {
+    console.log('TriggeredCreateNewSchoolFromSchoolStore')
+    // create a site_id field inside site in order for the helper function to work
+    newSchool.value.site['site_id'] = newSchool.value.site['site_id'] || newSchool.value.site.id
+    let processedSchoolData = {
+        site: newSchool.value.site,
+        owner: {
+            owner_id: currentUser.value.id
+        },
+        name: newSchool.value.schoolName,
+    }
+    const schoolFormData = schoolDataFormDataBuilder(processedSchoolData)
+    schoolFormData.append('logo', newSchool.value.logoUrl)
+    schoolFormData.append('cover_image', newSchool.value.coverImageUrl)
+    return axios({
+        method: "post",
+        url: `${serverURL}/createSchool`,
+        data: schoolFormData,
+        headers: {"Content-Type": "multipart/form-data"},
+    }).then(res => {
+        console.log(res.data)
+        console.log('School Created with FirstVisitData')
+        showRetryCreateSchool.value = false
+    }).catch(e => {
+        console.log('there has been an issue while trying to create school from newSchool from schoolstore')
+        showSchoolNotAvailable.value = true
+        showRetryCreateSchool.value = true
+    })
+}
 
 const handleSaveNewSchoolInfo = async (content_blocks, tech_used) => {
     /**
@@ -387,10 +393,24 @@ const isSchoolContentPopulated = computed( () => {
         <SchoolNotAvailable />
     </div>
     <div
+        v-else-if="!isSchoolContentPopulated && showRetryCreateSchool"
+        class="mt-[10vh] flex flex-col justify-center items-center h-36"
+    >
+        <GenericButton
+            :callback="triggerCreateNewSchoolFromSchoolStore"
+            type="school"
+        >
+            <div class="font-bold py-2 px-2 text-md">
+                Retry create school
+            </div>
+        </GenericButton>
+    </div>
+
+    <div
         v-else
         class="mt-[10vh] flex flex-col justify-center items-center h-36"
     >
-        <div class="font-bold text-md">
+        <div class="font-bold text-lg">
             Please wait. Loading data...
         </div>
     </div>

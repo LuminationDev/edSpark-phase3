@@ -36,12 +36,22 @@ const heroBackground = computed(() => {
         return `bg-[url(${imageURL}/${props.backgroundUrl.replace(' ',"%20").replace(/\\/g, "")}')] bg-blend-soft-light bg-center bg-no-repeat bg-gray-600`
     }
 })
+
+
+const heroBackgroundLinkOnly = computed(() => {
+    if(props.backgroundUrl){
+        return `${imageURL}/${props.backgroundUrl.replace(' ',"%20").replace(/\\/g, "")}`
+    } else{
+        return ''
+    }
+})
 </script>
 
 <template>
     <div class="BaseHeroContainer h-[720px] -mt-28 relative z-10">
         <div
             :class="'BaseHeroClipThisPath pb-[36px] pt-[190px] px-[48px] grid grid-cols-8 bg-cover h-full relative '+ heroBackground"
+            :style="'background-image: url(' + heroBackgroundLinkOnly +')'"
         >
             <div class="BaseHeroBgOverlay absolute w-full h-full bg-gradient-to-r from-black/75 z-10" />
             <div
