@@ -3,6 +3,7 @@ import App from './App.vue';
 import router from './router';
 import { createPinia } from 'pinia';
 import '../css/app.css';
+import '../css/output.css';
 import './bootstrap';
 import oktaConfig from './constants/oktaConfig';
 import OktaVue, { LoginCallback } from '@okta/okta-vue';

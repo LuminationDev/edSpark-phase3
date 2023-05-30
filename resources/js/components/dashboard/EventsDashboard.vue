@@ -13,7 +13,7 @@ const props = defineProps({
 </script>
 
 <template>
-    <div class="py-20 px-20">
+    <div class="py-8 px-huge">
         <div
             class="flex flex-row flex-1 flex-wrap justify-between"
         >
