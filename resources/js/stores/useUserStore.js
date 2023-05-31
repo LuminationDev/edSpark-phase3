@@ -56,11 +56,7 @@ export const useUserStore = defineStore('user', {
             });
         },
 
-        async loadCurrentUser(userId) {
-            /**
-             * Temporry user ID (Jake M)
-             */
-            /** **/
+        async fetchCurrentUserAndLoadIntoStore(userId) {
             console.log(userId);
             await axios.get(`http://localhost:8000/api/fetchUser/${userId}`).then(response => {
                 console.log(response.data);

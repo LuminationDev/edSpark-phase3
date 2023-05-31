@@ -66,22 +66,8 @@ class AdviceController extends Controller
     public function fetchAdvicePostByType($type) {
         $adviceTypes = Advicetype::where('advice_type_name', $type)->first();
         $adviceArticles = Advice::where('advicetype_id', $adviceTypes->id)->get();
-
-        dd($adviceTypes->id);
-
-        foreach($adviceArticles as $advice) {
-            dd($advice);
-        }
-
-
-
-
         // $adviceTypes = Advicetype::where('advice_type_name', $type)->get();
         // $adviceArticles = Advice::where('advicetype_id', $adviceTypes->id)->get();
-
-
-
-
 
         // $advices = Advice::where('post_status', 'Published')->orderBy('created_at', 'DESC')->get();
         // $error = '';

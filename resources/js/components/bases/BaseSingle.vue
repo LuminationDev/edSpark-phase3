@@ -108,9 +108,6 @@ onBeforeMount(async () => {
 })
 
 watch(currentId, () => {
-    console.log('inside watcher params id ', currentId.value)
-    console.log(window.history.state)
-    console.log(route)
     if (window.history.state.content && singleContent.value) {
         if (!isEqual(JSON.parse(window.history.state.content), singleContent.value)) {
             singleContent.value = JSON.parse(window.history.state.content)
@@ -119,7 +116,6 @@ watch(currentId, () => {
 })
 const emits = defineEmits(['emitActiveTabToSpecificPage'])
 const handleEmitFromSubmenu = (value) => {
-    console.log('handleEmitFrom submenu called ', value)
     emits('emitActiveTabToSpecificPage', value)
 }
 

@@ -37,7 +37,6 @@ onMounted(() => {
 
         currentUser.value.metadata.forEach(meta => {
             if (meta.user_meta_key === 'userAvatar') {
-                console.log(meta);
                 avatarUrl.value = meta.user_meta_value[0].replace(/\\\//g, "/");
                 ;
             }

@@ -84,7 +84,7 @@ const getAllRolesAndSites = async () => {
     const adjustedSiteArr = [];
     everySiteAvailable.forEach(site => {
         if (site.category_code === 'SCHL' || site.category_code === 'PRESC') {
-            adjustedSiteArr.push({id: site.id, name: site.site_name});
+            adjustedSiteArr.push({id: site.site_id, name: site.site_name});
         }
     });
 
@@ -498,7 +498,6 @@ const closePopup = () => {
             </div>
         </template>
         <!-- Step 2: If role is principal, set school name and motto, if not principal (means a regular staff), choose yr levels and subjects  -->
-
         <template
             v-if="!isPrincipal"
             #step2

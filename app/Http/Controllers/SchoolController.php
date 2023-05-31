@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Helpers\OutputHelper;
+use App\Models\User;
 use Illuminate\Http\Request;
 use App\Models\School;
 use App\Models\Schoolmeta;
@@ -329,6 +331,20 @@ class SchoolController extends Controller
         return response()->json($data);
 
     }
+    public function fetchAllStaffFromSite($site_id): \Illuminate\Http\JsonResponse
+    {
+            $all_staff = User::where('site_id', $site_id)->get();
+            foreach($all_staff as $staff){
+                $result = [
+                    'id' => $staff->id,
+                    'name' => $staff->name,
+                    'email' => $staff->email,
+                    'role' => ($staff->role) ? $staff->role->role_name : NULL,
+                ];
+                $final_result[] = $result;
+            }
+            return response()->json($final_result);
+    }
 
-    //TODO: fetch featured schools only 4
+
 }

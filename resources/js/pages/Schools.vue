@@ -19,21 +19,30 @@ import SectionHeader from "@/js/components/global/SectionHeader.vue";
 import SchoolsSearchableMap from '../components/schools/schoolMap/SchoolsSearchableMap.vue';
 import Loader from '../components/spinner/Loader.vue';
 import CardLoading from '../components/card/CardLoading.vue';
-import {axiosFetcher} from "@/js/helpers/fetcher";
+import {axiosSchoolFetcher} from "@/js/helpers/fetcher";
 import useSwrvState from "@/js/helpers/useSwrvState";
+import {useSchoolsStore} from "@/js/stores/useSchoolsStore";
+
 const createSchool = ref(false)
 const showWelcomePopup = ref(false)
 
 const router = useRouter();
 
 const userStore = useUserStore()
+const schoolStore = useSchoolsStore()
+const {schools} = storeToRefs(schoolStore)
 const {currentUser} = storeToRefs(userStore)
+
+const swrvOptions = {
+    revalidateOnFocus: false, // disable refresh on every focus, suspect its too often
+    refreshInterval: 30000 // refresh or revalidate data every 30 secs
+}
 
 const {
     data: featuredSites,
     error: featuredSitesError,
     isValidating: isValidatingFeatured
-} = useSWRV(`${serverURL}/fetchFeaturedSchools`, axiosFetcher)
+} = useSWRV(`${serverURL}/fetchFeaturedSchools`, axiosSchoolFetcher, swrvOptions)
 
 const {state, STATES} = useSwrvState(featuredSites, featuredSitesError, isValidatingFeatured)
 
@@ -42,26 +51,34 @@ const cardsLoading = computed(() => {
         return false
     } else if ([STATES.PENDING].includes(state.value)) {
         return true
-    } else if ([STATES.VALIDATING].includes(state.value)){
+    } else if ([STATES.VALIDATING].includes(state.value)) {
         return false
     } else {
-        return ![STATES.SUCCESS, STATES.VALIDATING, STATES.STALE_IF_ERROR].includes(state.value)}
+        return ![STATES.SUCCESS, STATES.VALIDATING, STATES.STALE_IF_ERROR].includes(state.value)
+    }
 })
 
-const allSchools = ref([]);
 const schoolsAvailable = ref(false);
 
 const fetchAllSchools = () => {
-    console.log('fetch all school called')
-    axios.get(`${serverURL}/fetchAllSchools`).then(res => {
-        allSchools.value = res.data
+    if (schools.value.length === 0) {
+        console.log('fetch all school called')
+        axios.get(`${serverURL}/fetchAllSchools`).then(res => {
+            schools.value = res.data
+            schoolsAvailable.value = true;
+        })
+    } else {
+        console.log('fetchAllSchool not called due to data available inside allSchoolsRef')
         schoolsAvailable.value = true;
-    })
+
+    }
+
 };
 
-fetchAllSchools();
 
 onBeforeMount(async () => {
+    fetchAllSchools();
+
     /**
      * Perform check for user meta here
      * has_school field
@@ -140,11 +157,18 @@ const handleSaveWelcomePopup = (data) => {
                 :button-callback="handleBrowseAllSchool"
             />
             <div
-                v-if="!cardsLoading"
+                v-if="cardsLoading"
+            >
+                <CardLoading
+                    :number-per-row="4"
+                />
+            </div>
+            <div
+                v-else
                 class="grid grid-cols-4 gap-[24px] w-full px-20 pt-8 "
             >
                 <div
-                    v-for="(school,index) in schoolContentArrParser(featuredSites).splice(0,4)"
+                    v-for="(school,index) in featuredSites"
                     :key="index"
                     class="col-span-1 bg-white cursor-pointer h-[470px] border-[0.5px]  border-black transition-all group hover:shadow-2xl"
                 >
@@ -152,13 +176,6 @@ const handleSaveWelcomePopup = (data) => {
                         :school-data="school"
                     />
                 </div>
-            </div>
-            <div
-                v-else
-            >
-                <CardLoading
-                    :number-per-row="4"
-                />
             </div>
         </div>
 
@@ -170,7 +187,7 @@ const handleSaveWelcomePopup = (data) => {
             <!-- <SearchableMap /> -->
             <SchoolsSearchableMap
                 :key="schoolsAvailable"
-                :schools="allSchools"
+                :schools="schools"
                 :schools-available="schoolsAvailable"
             />
         </div>

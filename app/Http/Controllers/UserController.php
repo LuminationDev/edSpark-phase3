@@ -107,7 +107,8 @@ class UserController extends Controller
         if ($request->isMethod('post')) {
             $user = User::where('email', $data['email'])->get();
             // user already exists
-            if(isset($user)){
+            OutputHelper::print($user);
+            if($user){
              return response('User Already exist', 403);
             }
 

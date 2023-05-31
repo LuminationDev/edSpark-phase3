@@ -23,7 +23,7 @@ import CardLoading from '../components/card/CardLoading.vue';
 /**
  * Depends on
  */
-import {ref, reactive, watch,} from 'vue';
+import {ref, reactive, watch, computed, onBeforeMount,} from 'vue';
 import oktaAuth from '../constants/oktaAuth';
 
 /**
@@ -36,19 +36,14 @@ import {useSoftwareStore} from '../stores/useSoftwareStore';
 import {useAdviceStore} from '../stores/useAdviceStore';
 import {useSchoolsStore} from '../stores/useSchoolsStore';
 import {useRouter} from "vue-router";
+import {serverURL} from "@/js/constants/serverUrl";
+import {axiosFetcher, axiosSchoolFetcher} from "@/js/helpers/fetcher";
+import useSwrvState from "@/js/helpers/useSwrvState";
+import useSWRV from "swrv";
 
 const router = useRouter()
 
 const userStore = useUserStore();
-const eventStore = useEventsStore();
-const softwareStore = useSoftwareStore();
-const adviceStore = useAdviceStore();
-const schoolsStore = useSchoolsStore();
-
-/**
- * SVG's
- */
-
 /**
  * First things first. Handle the user details from okta
  */
@@ -65,12 +60,14 @@ const userDetails = reactive({
 
 /**
  * Get the idToken from Okta and set up the claims
+ * TODO: Push to the top of the app (where appropriate-considering in App.vue but the redirect from okta login might fail it)
  */
 const getIdToken = async () => {
     try {
         idToken.value = await oktaAuth.tokenManager.get('idToken');
         claims.value = await idToken.value.claims;
-        console.log(idToken);
+        console.log('Below this is IDToken')
+        console.log(idToken.value);
         /**
          * User Details
          */
@@ -89,56 +86,79 @@ const getIdToken = async () => {
  * Check if user has an exisitng account
  */
 const checkFirstVisit = async (emailAddress) => {
-    let emailCheck = await userStore.checkUser(emailAddress);
+    let emailCheck =  await userStore.checkUser(emailAddress);
     if (emailCheck.status === true) {
         isFirstVisit.value = false;
-        await userStore.loadCurrentUser(emailCheck.userdata.user_id);
+        await userStore.fetchCurrentUserAndLoadIntoStore(emailCheck.userdata.user_id);
     } else {
         isFirstVisit.value = true;
     }
 };
-getIdToken()
+onBeforeMount(async() =>{
+    await getIdToken()
 
-/**
- * Data for the cards (hopefully it'll plug straight in)
- * Events
- * Software
- * Advice
- * Schools
- */
-const events = ref([]);
-const softwares = ref([]);
-const advice = ref([]);
-const schools = ref([]);
+})
 
-const eventsLoading = ref(true);
-const softwareLoading = ref(true);
-const adviceLoading = ref(true);
-const schoolsLoading = ref(true);
 
-const loadDashboardData = async () => {
-    eventStore.loadEvents().then(response => {
-        events.value = response;
-        eventsLoading.value = false;
-    });
 
-    softwareStore.loadArticles().then(response => {
-        softwares.value = response;
-        softwareLoading.value = false;
-    });
+const swrvOptions = {
+    revalidateOnFocus: false, // disable refresh on every focus, suspect its too often
+    refreshInterval: 30000 // refresh or revalidate data every 30 secs
+}
 
-    adviceStore.loadDashboardResources().then(response => {
-        advice.value = response;
-        adviceLoading.value = false;
-    });
+// more code but much fast
+// had to refactor this as the normal implementation blocks the user identity fetching request :(
+const { data: eventsData, error: eventsError, isValidating: eventsIsValidating } = useSWRV(`${serverURL}/fetchEventPosts`, axiosFetcher, swrvOptions)
+const { data: softwaresData, error: softwaresError, isValidating: softwaresIsValidating } = useSWRV(`${serverURL}/fetchSoftwarePosts`, axiosFetcher, swrvOptions)
+const { data: advicesData, error: advicesError, isValidating: advicesIsValidating } = useSWRV(`${serverURL}/fetchAdvicePosts`, axiosFetcher, swrvOptions)
+const { data: schoolsData, error: schoolsError, isValidating: schoolsIsValidating } = useSWRV(`${serverURL}/fetchFeaturedSchools`, axiosSchoolFetcher, swrvOptions)
 
-    schoolsStore.loadSchools().then(response => {
-        schools.value = response;
-        schoolsLoading.value = false;
-    });
-};
+const {state: eventsState, STATES:ALLSTATES} = useSwrvState(eventsData,eventsError,eventsIsValidating)
+const {state: softwaresState} = useSwrvState(softwaresData,softwaresError,softwaresIsValidating)
+const {state: advicesState} = useSwrvState(advicesData,advicesError,advicesIsValidating)
+const {state: schoolsState} = useSwrvState(schoolsData,schoolsError,schoolsIsValidating)
 
-loadDashboardData();
+// who needs a one line ref to indicate loading state when you can have 10 lines 😆
+const eventsLoading =  computed(() => {
+    if ([ALLSTATES.ERROR, ALLSTATES.STALE_IF_ERROR].includes(eventsState.value)) {
+        return false
+    } else if ([ALLSTATES.PENDING].includes(eventsState.value)) {
+        return true
+    } else if ([ALLSTATES.VALIDATING].includes(eventsState.value)){
+        return false
+    } else {
+        return ![ALLSTATES.SUCCESS, ALLSTATES.VALIDATING, ALLSTATES.STALE_IF_ERROR].includes(eventsState.value)}
+})
+const softwareLoading =  computed(() => {
+    if ([ALLSTATES.ERROR, ALLSTATES.STALE_IF_ERROR].includes(softwaresState.value)) {
+        return false
+    } else if ([ALLSTATES.PENDING].includes(softwaresState.value)) {
+        return true
+    } else if ([ALLSTATES.VALIDATING].includes(softwaresState.value)){
+        return false
+    } else {
+        return ![ALLSTATES.SUCCESS, ALLSTATES.VALIDATING, ALLSTATES.STALE_IF_ERROR].includes(softwaresState.value)}
+})
+const adviceLoading = computed(() => {
+    if ([ALLSTATES.ERROR, ALLSTATES.STALE_IF_ERROR].includes(advicesState.value)) {
+        return false
+    } else if ([ALLSTATES.PENDING].includes(advicesState.value)) {
+        return true
+    } else if ([ALLSTATES.VALIDATING].includes(advicesState.value)){
+        return false
+    } else {
+        return ![ALLSTATES.SUCCESS, ALLSTATES.VALIDATING, ALLSTATES.STALE_IF_ERROR].includes(advicesState.value)}
+})
+const schoolsLoading =  computed(() => {
+    if ([ALLSTATES.ERROR, ALLSTATES.STALE_IF_ERROR].includes(schoolsState.value)) {
+        return false
+    } else if ([ALLSTATES.PENDING].includes(schoolsState.value)) {
+        return true
+    } else if ([ALLSTATES.VALIDATING].includes(schoolsState.value)){
+        return false
+    } else {
+        return ![ALLSTATES.SUCCESS, ALLSTATES.VALIDATING, ALLSTATES.STALE_IF_ERROR].includes(schoolsState.value)}
+})
 
 const onClosePopup = () => {
     isFirstVisit.value = false;
@@ -181,7 +201,7 @@ const onClosePopup = () => {
         <!-- Events Cards Here -->
         <EventsDashboard
             v-if="!eventsLoading"
-            :events="events"
+            :events="eventsData"
         />
         <CardLoading
             v-else
@@ -200,7 +220,7 @@ const onClosePopup = () => {
         <!-- Software Cards Here -->
         <SoftwareDashboard
             v-if="!softwareLoading"
-            :softwares="softwares"
+            :softwares="softwaresData"
         />
         <CardLoading
             v-else
@@ -220,7 +240,7 @@ const onClosePopup = () => {
         <!-- Advice Cards Here -->
         <AdviceDashboard
             v-if="!adviceLoading"
-            :advice="advice"
+            :advice="advicesData"
         />
         <CardLoading
             v-else
@@ -240,7 +260,7 @@ const onClosePopup = () => {
         <!-- School Cards Here -->
         <SchoolsDashboard
             v-if="!schoolsLoading"
-            :schools="schools"
+            :schools="schoolsData"
         />
         <CardLoading
             v-else

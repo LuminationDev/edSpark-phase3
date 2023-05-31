@@ -59,23 +59,7 @@ const {currentUser} = storeToRefs(useUserStore())
 
 onBeforeMount( async () => {
     const currentSchoolName = route.params.name
-    await axios.get(`${serverURL}/fetchSchoolByName/${currentSchoolName}`).then(res => {
-        console.log('Found the school. populating data now inside SchoolSingle')
-        const filteredSchool = res.data
-        console.log(filteredSchool)
-        schoolContent.value = parseToJsonIfString(filteredSchool)
-        schoolContent.value.content_blocks = parseToJsonIfString(schoolContent.value.content_blocks)
-        schoolContent.value.tech_used = parseToJsonIfString(schoolContent.value.tech_used)
-        schoolContent.value.cover_image = schoolContent.value.cover_image.replace("/\\/g", "")
-        schoolContent.value.logo = schoolContent.value.logo.replace("/\\/g", "")
-        if (filteredSchool.metadata) {
-            const colorThemeMeta = schoolContent.value['metadata'].filter(meta => meta['schoolmeta_key'] === 'school_color_theme')
-            colorTheme.value = colorThemeMeta[0]['schoolmeta_value']
-        }
-    }).catch(async err => {
-        console.log(err.message + 'Inside fetchSchoolByName')
-        schoolContent.value = {}
-    });
+    await fetchSchoolByNameAsync(currentSchoolName)
     /**
      * newSchool (reside inside schoolsStore from FirstVisitForm):{
      *     coverImage: File,
@@ -96,19 +80,39 @@ onBeforeMount( async () => {
      *
      * }
      */
-    // will only run if data from FirstVisitForm exists
 
-
+    //scenario where school is not created but Principal has entered school information in the firstVisitForm
     if (newSchool.value.schoolName &&
         Object.keys(schoolContent.value).length <= 0 &&
         (currentUser.value.role === "Principal" || currentUser.value.role === "SCHLDR")){
         // TODO: check if newSchool.schoolName is valid inside site databasr
-        await triggerCreateNewSchoolFromSchoolStore()
+        triggerCreateNewSchoolFromSchoolStore().then(res =>{
+            console.log('fetching school after triggeringCreation')
+            fetchSchoolByNameAsync(currentSchoolName)
+        })
     } else {
         console.log('No new school will be created')
         showSchoolNotAvailable.value = true
     }
 })
+const fetchSchoolByNameAsync = (schoolName) =>{
+    return axios.get(`${serverURL}/fetchSchoolByName/${schoolName}`).then(res => {
+        console.log('Found the school. populating data now inside SchoolSingle')
+        const filteredSchool = res.data
+        schoolContent.value = parseToJsonIfString(filteredSchool)
+        schoolContent.value.content_blocks = parseToJsonIfString(schoolContent.value.content_blocks)
+        schoolContent.value.tech_used = parseToJsonIfString(schoolContent.value.tech_used)
+        schoolContent.value.cover_image = schoolContent.value.cover_image.replace("/\\/g", "")
+        schoolContent.value.logo = schoolContent.value.logo.replace("/\\/g", "")
+        if (filteredSchool.metadata) {
+            const colorThemeMeta = schoolContent.value['metadata'].filter(meta => meta['schoolmeta_key'] === 'school_color_theme')
+            colorTheme.value = colorThemeMeta[0]['schoolmeta_value']
+        }
+    }).catch(async err => {
+        console.log(err.message + ' Inside fetchSchoolByName')
+        schoolContent.value = {}
+    });
+}
 
 const triggerCreateNewSchoolFromSchoolStore = () => {
     console.log('TriggeredCreateNewSchoolFromSchoolStore')
@@ -132,6 +136,7 @@ const triggerCreateNewSchoolFromSchoolStore = () => {
     }).then(res => {
         console.log(res.data)
         console.log('School Created with FirstVisitData')
+        // need to populate schoolContent.value
         showRetryCreateSchool.value = false
     }).catch(e => {
         console.log('there has been an issue while trying to create school from newSchool from schoolstore')
@@ -353,7 +358,7 @@ const isSchoolContentPopulated = computed( () => {
                     </BaseHero>
                 </template>
                 <template #content>
-                    <div class="flex flex-row w-full mt-20">
+                    <div class="flex flex-col w-full mt-20">
                         <!--details submenu-->
                         <template v-if="activeSubmenu === schoolSubmenu[0]['value']">
                             <div
@@ -368,6 +373,15 @@ const isSchoolContentPopulated = computed( () => {
                                     @send-photo-to-school-single="handleReceivePhotoFromContent"
                                 />
                             </div>
+                            <GenericButton
+                                :callback="()=> {}"
+                                type="school"
+                                class="w-40 ml-10"
+                            >
+                                <div class="">
+                                    Nominated someone to build your school page
+                                </div>
+                            </GenericButton>
                         </template>
                         <!--whats new submenu-->
                         <template v-if="activeSubmenu === schoolSubmenu[1]['value']">

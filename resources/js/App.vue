@@ -7,6 +7,8 @@ import {storeToRefs} from "pinia";
 import axios from "axios";
 import {serverURL} from "@/js/constants/serverUrl";
 import {useRouter} from 'vue-router';
+import oktaAuth from "@/js/constants/oktaAuth";
+import {onBeforeMount, reactive, ref} from "vue";
 
 
 const router = useRouter();
@@ -51,6 +53,9 @@ try {
 } catch (e) {
     console.log('failed to retrive bookmarks')
 }
+
+
+
 </script>
 
 <template>
