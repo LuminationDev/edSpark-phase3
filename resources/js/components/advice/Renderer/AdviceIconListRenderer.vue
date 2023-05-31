@@ -18,13 +18,13 @@ const props = defineProps({
             class="eachContent py-2"
         >
             <div class="flex flex-row w-full">
-                <div class="extraContentIcon w-1/3 flex justify-center items-center relative">
+                <div class="extraContentIcon w-1/4 flex justify-center items-center relative">
                     <div class="numberListcontainer font-bold text-2xl border-4 bg-white border-black p-4 w-24 h-24 rounded-[50%] flex justify-center items-center absolute z-20">
                         {{ index + 1 }} <span :class=" 'fa ' + item.icon.replace('fas', 'fa') + ' w-12 h-12'" />
                     </div>
                 </div>
                 <div
-                    class="w-2/3 flex flex-col"
+                    class="w-3/4 flex flex-col"
                 >
                     <div class="heading font-semibold mt-6 text-xl mb-2">
                         {{ `${index + 1}. ` + item.heading }}

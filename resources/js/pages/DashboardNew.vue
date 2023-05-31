@@ -79,6 +79,7 @@ const getIdToken = async () => {
     userDetails.siteId = claims.value.mainsiteid;
     userDetails.roleId = claims.value.mainrolecode;
 
+    console.log(claims.value);
     checkFirstVisit(claims.value.email);
 };
 

@@ -22,6 +22,14 @@ import BaseSingle from "@/js/components/bases/BaseSingle.vue";
  *  }
  */
 
+const timeFormatter = (originalFormat) => {
+    const dateObj = new Date(originalFormat);
+    const options = { year: 'numeric', month: 'short', day: 'numeric' };
+    const formattedDate = dateObj.toLocaleDateString(undefined, options);
+
+    return formattedDate !== 'Invalid Date' ? formattedDate : '';
+}
+
 </script>
 <template>
     <BaseSingle content-type="advice">
@@ -32,9 +40,15 @@ import BaseSingle from "@/js/components/bases/BaseSingle.vue";
                 <template #titleText>
                     {{ contentFromBase['post_title'] }}
                 </template>
-                <template #subtitleText1>
-                    {{ contentFromBase['post_date'] }}
+                <template #authorName>
+                    {{ contentFromBase['author'] }}
                 </template>
+                <template #contentDate>
+                    {{ timeFormatter(contentFromBase['post_date']) }}
+                </template>
+                <!-- <template #subtitleText1>
+                    {{ timeFormatter(contentFromBase['post_date']) }}
+                </template> -->
                 <template #subtitleText2>
                     <div v-html="contentFromBase['post_excerpt']" />
                 </template>
@@ -43,7 +57,7 @@ import BaseSingle from "@/js/components/bases/BaseSingle.vue";
 
         <template #content="{contentFromBase}">
             <div
-                class="adviceSingleContent p-4 px-8 flex flex-row w-full overflow-hidden"
+                class="adviceSingleContent p-4 px-8 flex flex-row w-full overflow-hidden mt-14"
             >
                 <!--    Content of the Advice    -->
                 <div class="w-2/3 flex flex-col flex-wrap py-4 px-2">
@@ -51,7 +65,7 @@ import BaseSingle from "@/js/components/bases/BaseSingle.vue";
                         Getting started
                     </div>
                     <div
-                        class="text-lg flex content-paragraph overflow-hidden max-w-full"
+                        class="text-lg flex flex-col content-paragraph overflow-hidden max-w-full"
                         v-html="contentFromBase['post_content']"
                     />
                     <template
@@ -69,3 +83,21 @@ import BaseSingle from "@/js/components/bases/BaseSingle.vue";
         </template>
     </BaseSingle>
 </template>
+
+<style lang="scss">
+    .adviceSingleContent {
+        figure {
+            margin: 20px 0;
+            a {
+                img {
+                    max-height: 400px !important;
+                    width: auto;
+                }
+            }
+        }
+
+        figcaption {
+            display: none;
+        }
+    }
+</style>

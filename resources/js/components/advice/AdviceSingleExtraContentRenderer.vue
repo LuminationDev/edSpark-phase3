@@ -1,22 +1,31 @@
 <script setup>
-import {computed} from 'vue'
+import { computed, ref } from 'vue'
 import AdviceNumberedListRenderer from "@/js/components/advice/Renderer/AdviceNumberedListRenderer.vue";
 import AdviceIconListRenderer from "@/js/components/advice/Renderer/AdviceIconListRenderer.vue";
 import AdviceNumberedIconListRenderer from "@/js/components/advice/Renderer/AdviceNumberedIconListRenderer.vue";
+import AdviceExtraResourcesRenderer from '@/js/components/advice/Renderer/AdviceExtraResourcesRenderer.vue';
+
 const props  = defineProps({
     content:{
-        type: Object,
+        type: Array,
         required: true
     }
-})
-// get contentType from somewhere
-let contentType = 'numbereditems'
-// console.log(Object.keys(props.content['data']['extra_content'])[0])
-// can use Object.keys(props.content['data']['extra_content']) to get all the keys
-// props.content['data']['template']
-// console.log(props.content['data']['template'].split("\\")[props.content['data']['template'].split("\\").length - 1].toLowerCase() )
+});
 
-contentType = Object.keys(props.content['data']['extra_content'])[0]
+const contentType = computed(() => {
+    if (Object.keys(props.content.data).includes('extra_content')) {
+        if (props.content.data.template.includes('Numbereditems')) {
+            return 'numbereditems';
+        } else if (props.content.data.template.includes('Iconitems')) {
+            return 'iconitems';
+        } else if (props.content.data.template.includes('Numberedicontems')) {
+            return 'numberedicontems';
+        }
+    } else if (props.content.type === 'extra_resources') {
+        return 'extraresources';
+    }
+});
+
 /**
  * itemArray = Array<{
  *     content: string-html
@@ -25,7 +34,17 @@ contentType = Object.keys(props.content['data']['extra_content'])[0]
  * }>
  */
 const itemArray = computed(()=> {
-    return props.content['data']['extra_content'][contentType]['item']
+    if (Object.keys(props.content.data).includes('extra_content')) {
+        if (props.content.data.template.includes('Numbereditems')) {
+            return props.content.data.extra_content.numbereditems.item;
+        } else if (props.content.data.template.includes('Iconitems')) {
+            return props.content.data.extra_content.iconitems.item;
+        } else if (props.content.data.template.includes('Numberedicontems')) {
+            return props.content.data.extra_content.numberedicontems.item;
+        }
+    } else if (props.content.type === 'extra_resources') {
+        return props.content.data.item;
+    }
 })
 
 
@@ -43,6 +62,12 @@ const itemArray = computed(()=> {
         </template>
         <template v-else-if="contentType == 'numberedicontems'">
             <AdviceNumberedIconListRenderer :item-array="itemArray" />
+        </template>
+        <template v-else-if="contentType === 'extraresources'">
+            <AdviceExtraResourcesRenderer
+                v-for="(item, index) in itemArray"
+                :item-array="item"
+            />
         </template>
         <template v-else>
             <div v-html="itemArray" />

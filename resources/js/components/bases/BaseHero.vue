@@ -26,7 +26,7 @@ const props = defineProps({
         type: String,
         required: false
     }
-})
+});
 
 const heroBackground = computed(() => {
     if(!props.backgroundUrl){
@@ -34,37 +34,60 @@ const heroBackground = computed(() => {
     } else{
         return `bg-[url(${imageURL}/${props.backgroundUrl.replace(' ',"%20")})] bg-blend-soft-light bg-center bg-no-repeat bg-gray-600`
     }
-})
+});
+
+const setTheBackground = computed(() => {
+    return props.backgroundUrl;
+});
+
 </script>
 
 <template>
     <div class="BaseHeroContainer h-[720px] -mt-28 relative z-10">
         <div
-            :class="'BaseHeroClipThisPath pb-[36px] pt-[190px] px-[48px] grid grid-cols-8 bg-cover h-full relative '+ heroBackground"
+            :class="`BaseHeroClipThisPath pb-[36px] pt-[190px] px-[48px] grid grid-cols-8 bg-cover bg-center bg-no-repeat h-full relative bg-[url(${imageURL}/${setTheBackground})]`"
         >
-            <div class="BaseHeroBgOverlay absolute w-full h-full bg-gradient-to-r from-black/75 z-10" />
+            <div class="BaseHeroBgOverlay absolute w-full h-full bg-gradient-to-r from-black via-black/75 via-40% z-10" />
             <div
                 v-if="$slots.titleText || $slots.subtitleText1 || $slots.subtitleText2"
                 class="col-span-5 p-2 relative z-20"
             >
                 <slot name="smallTitle" />
                 <h1
-                    class="text-white text-[36px] font-semibold pb-8"
+                    class="text-white text-[36px] font-semibold pb-8 uppercase"
                 >
                     <slot name="titleText" />
                 </h1>
 
-                <p class="text-white flex flex-row gap-4 text-[18px] font-normal pb-4">
+                <p class="text-white flex flex-col gap-4 text-[18px] font-semibold" v-if="$slots.authorName">
                     <slot name="authorName" />
+                </p>
+
+                <p class="text-white flex flex-col gap-4 text-[16px] font-thin pb-4" v-if="$slots.contentDate">
+                    <!-- <slot name="authorName" /> -->
+                    <slot name="contentDate" />
+                    <!-- <slot name="hardwareProvider" /> -->
+                </p>
+
+                <p class="text-white flex flex-col gap-4 text-[16px] font-thin pb-4" v-if="$slots.subtitleText1">
+                    <!-- <slot name="authorName" /> -->
                     <slot name="subtitleText1" />
+                    <!-- <slot name="hardwareProvider" /> -->
+                </p>
+
+                <p class="text-white flex flex-col gap-4 text-[14px] font-normal pb-4" v-if="$slots.hardwareProvider">
                     <slot name="hardwareProvider" />
                 </p>
 
-                <p class="text-white text-[18px] font-normal">
+                <p
+                    class="text-white text-[18px] font-normal"
+                    :class="$slots.subtitleText2 ? 'mt-[36px]' : ''"
+                    v-if="$slots.subtitleText2"
+                >
                     <slot name="subtitleText2" />
                 </p>
             </div>
-            <div class="col-span-3 relative">
+            <div class="col-span-3 relative" v-if="$slots.icon">
                 <div class="absolute right-12">
                     <slot name="icon" />
                 </div>
