@@ -4,7 +4,7 @@
  */
 import axios from 'axios'
 import {useRouter, useRoute} from 'vue-router';
-import {onBeforeMount,computed, ref, watch} from 'vue'
+import {onBeforeMount, computed, ref, watch} from 'vue'
 import {storeToRefs} from "pinia";
 import {parseToJsonIfString, schoolContentArrParser} from "@/js/helpers/jsonHelpers";
 import {schoolDataFormDataBuilder, printOutFormData} from "@/js/helpers/schoolDataHelpers";
@@ -55,42 +55,19 @@ const handleToggleTooltip = (index) => {
     tooltipIndex.value = index;
 }
 
-const { newSchool } = storeToRefs(useSchoolsStore())
+const {newSchool} = storeToRefs(useSchoolsStore())
 const {currentUser} = storeToRefs(useUserStore())
 
-onBeforeMount( async () => {
+onBeforeMount(async () => {
     const currentSchoolName = route.params.name
     await fetchSchoolByNameAsync(currentSchoolName)
-    /**
-     * newSchool (reside inside schoolsStore from FirstVisitForm):{
-     *     coverImage: File,
-     *     coverImageUrl: string | null,
-     *     logo: File,
-     *     logoUrl: string | null,
-     *     role:{
-     *         id: number,
-     *         name: string
-     *     },
-     *     schoolMessage: String (motto),
-     *     schoolName: String,
-     *     site:{
-     *         id: number
-     *         name: string
-     *     },
-     *     techUsed: Array<string>
-     *
-     * }
-     */
-
     //scenario where school is not created but Principal has entered school information in the firstVisitForm
-    console.log(newSchool.value.schoolName)
-    console.log(Object.keys(schoolContent.value).length)
-    console.log(currentUser.value.role)
+
     if (newSchool.value.schoolName &&
         Object.keys(schoolContent.value).length <= 0 &&
-        (currentUser.value.role === "Principal" || currentUser.value.role === "SCHLDR")){
+        (currentUser.value.role === "Principal" || currentUser.value.role === "SCHLDR")) {
         // TODO: check if newSchool.schoolName is valid inside site databasr
-        triggerCreateNewSchoolFromSchoolStore().then(res =>{
+        triggerCreateNewSchoolFromSchoolStore().then(res => {
             console.log('fetching school after triggeringCreation')
             fetchSchoolByNameAsync(currentSchoolName)
         })
@@ -99,7 +76,7 @@ onBeforeMount( async () => {
         showSchoolNotAvailable.value = true
     }
 })
-const fetchSchoolByNameAsync = (schoolName) =>{
+const fetchSchoolByNameAsync = (schoolName) => {
     return axios.get(`${serverURL}/fetchSchoolByName/${schoolName}`).then(res => {
         console.log('Found the school. populating data now inside SchoolSingle')
         const filteredSchool = res.data
@@ -109,6 +86,7 @@ const fetchSchoolByNameAsync = (schoolName) =>{
         schoolContent.value.cover_image = schoolContent.value.cover_image.replace("/\\/g", "")
         schoolContent.value.logo = schoolContent.value.logo.replace("/\\/g", "")
         if (filteredSchool.metadata) {
+            // here is some meta filtering code
             const colorThemeMeta = schoolContent.value['metadata'].filter(meta => meta['schoolmeta_key'] === 'school_color_theme')
             colorTheme.value = colorThemeMeta[0]['schoolmeta_value']
         }
@@ -150,9 +128,7 @@ const triggerCreateNewSchoolFromSchoolStore = () => {
 }
 
 const handleSaveNewSchoolInfo = async (content_blocks, tech_used) => {
-    /**
-     * Copy current schoolData and replace content_blocks and tech_used
-     */
+    // Copy current schoolData and replace content_blocks and tech_used
     const schoolData = _.cloneDeep(schoolContent.value)
     schoolData.content_blocks = content_blocks
     schoolData.tech_used = tech_used
@@ -180,8 +156,6 @@ const handleSaveNewSchoolInfo = async (content_blocks, tech_used) => {
         // assign school info with newest data that has been saved succesfully to trigger update
         console.log(res.data.data)
         schoolContent.value = res.data.data
-        // parse JSON after receiving data from backend. can be done better
-        // can consider computed function
         schoolContent.value.content_blocks = parseToJsonIfString(schoolContent.value.content_blocks)
         schoolContent.value.tech_used = parseToJsonIfString(schoolContent.value.tech_used)
     }).catch(err => {
@@ -218,9 +192,7 @@ const handleReceivePhotoFromContent = (type, file) => {
     }
 }
 
-/**
- * Cover image loading workaround
- */
+// Cover image loading workaround
 const isCoverImageLoaded = ref(false)
 
 const coverImageLink = computed(() => {
@@ -234,9 +206,8 @@ const handleCoverImageLoaded = () => {
     isCoverImageLoaded.value = true
 }
 
-/**
- * Submenu specific codes
- */
+
+// Submenu specific codes
 const schoolSubmenu = [
     {
         displayText: 'Details',
@@ -255,13 +226,11 @@ const activeSubmenu = ref(schoolSubmenu[0]['value'])
 const handleChangeSubmenu = (value) => {
     activeSubmenu.value = value
 }
-const isSchoolContentPopulated = computed( () => {
+const isSchoolContentPopulated = computed(() => {
     return !isObjectEmpty(schoolContent.value)
 })
 
-/**
- * End of submenu specific code  plus @emit-active-tab-to-specific-page in BaseSingle
- * */
+// End of submenu specific code  plus @emit-active-tab-to-specific-page in BaseSingle
 
 </script>
 <template>

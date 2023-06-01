@@ -3,6 +3,8 @@ import {ref, computed} from 'vue'
 import GenericButton from "@/js/components/button/GenericButton.vue";
 import SearchDropdown from 'search-dropdown-vue';
 import {serverURL} from "@/js/constants/serverUrl";
+import {storeToRefs} from "pinia";
+import {useUserStore} from "@/js/stores/useUserStore";
 
 const props = defineProps({
     siteId: {
@@ -10,21 +12,32 @@ const props = defineProps({
         required: true
     }
 })
-const siteStaffList = ref([])
 
+const { currentUser } = storeToRefs(useUserStore())
+
+const siteStaffList = ref([])
+const selectedStaff = ref({})
 
 console.log('site id received is ' + props.siteId)
 // fetchAllStaffFromSite/{ssite_id}
 axios.get(`${serverURL}/fetchStaffFromSite/${props.siteId}`).then(res => {
     console.log(res.data)
-    siteStaffList.value = res.data.map(staff => {
+    siteStaffList.value = res.data.filter(staff => staff.id !== currentUser.value.id).map(staff => {
         return {id: staff.id, name: staff.name}
     })
 })
+
+
+// check for nominated staff here/ or schoolsingle
 const showNominationDialog = ref(false)
 
 const handleClickNominationButton = () => {
     showNominationDialog.value = !showNominationDialog.value
+}
+
+const handleSelectedStaffDropdown = (payload) =>{
+    console.log(payload)
+    selectedStaff.value = payload
 }
 
 </script>
@@ -47,6 +60,7 @@ const handleClickNominationButton = () => {
             >
                 <SearchDropdown
                     :options="siteStaffList"
+                    @selected="handleSelectedStaffDropdown"
                 />
             </form>
             <div v-else>

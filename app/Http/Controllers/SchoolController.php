@@ -338,7 +338,7 @@ class SchoolController extends Controller
             foreach($all_staff as $staff){
                 $result = [
                     'id' => $staff->id,
-                    'name' => $staff->name,
+                    'name' => $staff->full_name,
                     'email' => $staff->email,
                     'role' => ($staff->role) ? $staff->role->role_name : NULL,
                 ];
