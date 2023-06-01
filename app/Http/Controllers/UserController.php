@@ -107,9 +107,8 @@ class UserController extends Controller
         if ($request->isMethod('post')) {
             $user = User::where('email', $data['email'])->get();
             // user already exists
-            OutputHelper::print($user);
-            if($user){
-             return response('User Already exist', 403);
+            if (count($user) > 0) {
+                return response('User Already exist', 403);
             }
 
             $error = '';
@@ -122,7 +121,7 @@ class UserController extends Controller
                         'display_name' => $data['display_name'],
                         'status' => 'Active',
                         'role_id' => $data['role_id'],
-                        'site_id' => $data['site_id'],
+                        'site_id' => (int)$data['site_id'],
                         'created_at' => Carbon::now(),
                         'updated_at' => Carbon::now()
                     ];
@@ -135,14 +134,14 @@ class UserController extends Controller
                 try {
                     $metadata = json_decode($data['metadata']);
                     try {
-                        foreach ($metadata as $metakey => $metavalue){
+                        foreach ($metadata as $metakey => $metavalue) {
                             $checkMetaData = Usermeta::where('user_id', '=', $userId)
                                 ->where('user_meta_key', '=', $metakey)
                                 ->first();
 
                             if ($checkMetaData) { // IF EXISTS UPDATE
                                 $checkMetaData->update([
-                                    'user_meta_key' =>  $metakey,
+                                    'user_meta_key' => $metakey,
                                     'user_meta_value' => (is_string($metavalue)) ? $metavalue : implode(', ', $metavalue),
                                 ]);
                             } else { // IF NOT CREATE A NEW USER META
