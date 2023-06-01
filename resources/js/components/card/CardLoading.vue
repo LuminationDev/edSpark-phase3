@@ -37,7 +37,7 @@ const props = defineProps({
                     class="cardTopCoverImage loadingCard-image relative min-h-[35%] bg-cover bg-center group-hover:min-h-[0%] group-hover:h-0 transition-all"
                 />
                 <div
-                    class="cardContent loadingCard-content h-full flex flex-col gap-6 p-4 overflow-hidden transition-all"
+                    class="cardContent loadingCard-content h-full flex flex-col gap-6 p-4 overflow-hidden transition-all bg-white"
                 >
                     <div class="loadingCard-title h-[2.25rem] w-full rounded-xl" />
 

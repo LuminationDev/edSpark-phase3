@@ -5,6 +5,12 @@ module.exports ={
         './resources/**/*.js',
         './resources/**/*.vue',
     ],
+    safelist: [
+        {
+            pattern: /bg-([url(*)])/,
+        },
+        'bg-[url(*)]'
+    ],
     theme: {
         extend: {
             colors: {

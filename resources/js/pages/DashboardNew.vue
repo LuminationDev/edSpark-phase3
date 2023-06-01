@@ -23,7 +23,7 @@ import CardLoading from '../components/card/CardLoading.vue';
 /**
  * Depends on
  */
-import {ref, reactive, watch, computed, onBeforeMount,} from 'vue';
+import {ref, reactive, computed} from 'vue';
 import oktaAuth from '../constants/oktaAuth';
 
 /**
@@ -94,8 +94,6 @@ const checkFirstVisit = async (emailAddress) => {
         isFirstVisit.value = true;
     }
 };
-onBeforeMount(async() =>{
-    await getIdToken()
 
 })
 
