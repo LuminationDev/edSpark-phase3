@@ -1,6 +1,5 @@
 // Import router dependencies
 import { createRouter, createWebHistory } from 'vue-router';
-
 // Import pages
 // const Welcome = () => import('../components/Welcome.vue');
 import { LoginCallback, navigationGuard } from '@okta/okta-vue'
@@ -36,6 +35,14 @@ const router = createRouter({
             name: 'home',
             path: '/',
             component: Home,
+        },
+        {
+            name: "admin",
+            path:"/admin",
+            component:DashboardNew,
+            beforeEnter(to, from,next){
+                window.location.href = "http://localhost:8000/admin/login"
+            }
         },
         {
             name: 'dashboard',

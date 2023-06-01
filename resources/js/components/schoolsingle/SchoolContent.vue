@@ -67,7 +67,6 @@ const handleReceivePhotoFromImageChange = (type, file) => {
                 class="schoolContent contentEditor flex flex-row justify-between w-full"
             >
                 <div class="flex flex-col basis-2/3">
-
                     Curate your school content by adding blocks here with desired contents.
                     <SchoolEditorJs
                         ref="schoolEditorRef"
@@ -81,8 +80,7 @@ const handleReceivePhotoFromImageChange = (type, file) => {
                         class="self-center mb-5"
                         @color-selected="handleColorSelected"
                     />
-                    Tech selector component to go here
-                    <p class="font-bold text-lg">
+                    <p class="font-semibold text-xl">
                         Tech Selector:
                     </p>
                     <TechSelector

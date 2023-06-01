@@ -56,11 +56,7 @@ export const useUserStore = defineStore('user', {
             });
         },
 
-        async loadCurrentUser(userId) {
-            /**
-             * Temporry user ID (Jake M)
-             */
-            /** **/
+        async fetchCurrentUserAndLoadIntoStore(userId) {
             console.log(userId);
             await axios.get(`http://localhost:8000/api/fetchUser/${userId}`).then(response => {
                 console.log(response.data);
@@ -159,15 +155,18 @@ export const useUserStore = defineStore('user', {
             userData.append('email', user.email);
             userData.append('display_name', JSON.stringify(initials));
             userData.append('site_id', JSON.stringify(user.site.id)); // Use the id to store as foreign key
-            userData.append('role_id', JSON.stringify(4)); // Use the id to store as foreign key
+            userData.append('role_id', JSON.stringify(user.role.id)); // Use the id to store as foreign key
+            let userMetadata = {
+                yearLevels: user.yearLevels,
+                interests: user.interests,
+                subjects: user.subjects,
+                biography: user.biography
 
+            }
             /**
              * Populate metaData Object
              */
-            userData.append('yearLevels', JSON.stringify(user.yearLevels));
-            userData.append('interest', JSON.stringify(user.interests));
-            userData.append('subjects', JSON.stringify(user.subjects));
-            userData.append('biography', JSON.stringify(user.biography));
+            userData.append('metadata', JSON.stringify(userMetadata));
 
             await axios({
                 method: 'POST',
@@ -176,11 +175,16 @@ export const useUserStore = defineStore('user', {
                 headers: { "Content-Type" : "multipart/form-data" }
             }).then(response => {
                 console.log(response);
-                this.loadCurrentUser(response.data.uid);
+                // TODO: Maybe populate user data from here instead?
+                // in opposed to sending another request. make create user return user data if success
+                this.fetchCurrentUserAndLoadIntoStore(response.data.uid);
                 this.userAvatar = response.data.avatarUrl;
             }).catch(error => {
-                console.log('There was a problem updating your info');
-                console.error(error);
+                if(error.status === 403){
+                    console.log('Forbidden. User Email has been registered')
+                }
+                console.log(error.message)
+
             })
         },
 

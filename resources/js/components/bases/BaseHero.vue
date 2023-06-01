@@ -24,15 +24,25 @@ const props = defineProps({
     },
     swooshColorTheme:{
         type: String,
-        required: false
+        required: false,
+        default: 'teal'
     }
-});
+})
 
 const heroBackground = computed(() => {
     if(!props.backgroundUrl){
         return `bg-gradient-to-r from-[${props.color1}] via-[${props.color2}] to-[${props.color3}]`
     } else{
-        return `bg-[url(${imageURL}/${props.backgroundUrl.replace(' ',"%20")})] bg-blend-soft-light bg-center bg-no-repeat bg-gray-600`
+        return `bg-[url(${imageURL}/${props.backgroundUrl.replace(' ',"%20").replace(/\\/g, "")}')] bg-blend-soft-light bg-center bg-no-repeat bg-gray-600`
+    }
+})
+
+
+const heroBackgroundLinkOnly = computed(() => {
+    if(props.backgroundUrl){
+        return `${imageURL}/${props.backgroundUrl.replace(' ',"%20").replace(/\\/g, "")}`
+    } else{
+        return ''
     }
 });
 
@@ -45,7 +55,8 @@ const setTheBackground = computed(() => {
 <template>
     <div class="BaseHeroContainer h-[720px] -mt-28 relative z-10">
         <div
-            :class="`BaseHeroClipThisPath pb-[36px] pt-[190px] px-[48px] grid grid-cols-8 bg-cover bg-center bg-no-repeat h-full relative bg-[url(${imageURL}/${setTheBackground})]`"
+            :class="`BaseHeroClipThisPath pb-[36px] pt-[190px] px-[48px] grid grid-cols-8 bg-cover h-full relative bg-[url(${imageURL}/${setTheBackground}) `+ heroBackground"
+            :style="'background-image: url(' + heroBackgroundLinkOnly +')'"
         >
             <div class="BaseHeroBgOverlay absolute w-full h-full bg-gradient-to-r from-black via-black/75 via-40% z-10" />
             <div

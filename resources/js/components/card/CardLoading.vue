@@ -18,7 +18,7 @@ const props = defineProps({
 </script>
 
 <template>
-    <div class="pt-8">
+    <div class="pt-8 px-10">
         <div
             v-for="row in numberOfRows"
             class="flex flex-row flex-1 flex-wrap justify-between"
@@ -27,9 +27,9 @@ const props = defineProps({
             <div
                 v-for="count in numberPerRow"
                 :class="{'!w-[30%]': numberPerRow === 3,
-                        '!w-[22%]': numberPerRow === 4,
-                        '!w-[45%]': numberPerRow === 2,
-                        '!w-[95%]' : numberPerRow === 1
+                         '!w-[22%]': numberPerRow === 4,
+                         '!w-[45%]': numberPerRow === 2,
+                         '!w-[95%]' : numberPerRow === 1
                 }"
                 class="GenericCardContainer loadingCard w-full border-[0.5px] border-black hover:shadow-2xl mx-2 mb-4 flex flex-col min-h-[480px] max-w-[400px] max-h-[480px] group transition-all card_parent pointer-events-none"
             >
