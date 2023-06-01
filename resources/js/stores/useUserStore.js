@@ -177,7 +177,7 @@ export const useUserStore = defineStore('user', {
                 console.log(response);
                 // TODO: Maybe populate user data from here instead?
                 // in opposed to sending another request. make create user return user data if success
-                this.loadCurrentUser(response.data.uid);
+                this.fetchCurrentUserAndLoadIntoStore(response.data.uid);
                 this.userAvatar = response.data.avatarUrl;
             }).catch(error => {
                 if(error.status === 403){

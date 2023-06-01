@@ -15,7 +15,6 @@ class UserController extends Controller
     {
 
         $user = User::find($id);
-        OutputHelper::print("HAHHAHAHAHAAHHA");
 
         $userMetaData = Usermeta::where('user_id', $id)->get();
         $userMetaDataToSend = [];
@@ -34,6 +33,7 @@ class UserController extends Controller
             'full_name' => $user->full_name,
             'display_name' => ($user->display_name) ? $user->display_name : NULL,
             'email' => $user->email,
+            'site_id' => ($user->site_id) ?:NULL,
             'status' => $user->status,
             'role' => ($user->role) ? $user->role->role_name : NULL,
             'permissions' => ($user->role) ? $user->role->permissions->pluck('permission_name') : NULL,
@@ -56,7 +56,7 @@ class UserController extends Controller
             if (isset($user)) {
                 $user_id = $user['id'];
 
-                $userMetaData = Usermeta::where('user_id', $id)->get();
+                $userMetaData = Usermeta::where('user_id', $user_id)->get();
                 $userMetaDataToSend = [];
                 if ($userMetaData) {
                     foreach ($userMetaData as $key => $value) {
@@ -114,6 +114,7 @@ class UserController extends Controller
             $error = '';
             if ($data) {
                 // Handle Main Data
+                OutputHelper::print($data['site_id']);
                 try {
                     $dataToInsert = [
                         'full_name' => $data['full_name'],
@@ -121,7 +122,7 @@ class UserController extends Controller
                         'display_name' => $data['display_name'],
                         'status' => 'Active',
                         'role_id' => $data['role_id'],
-                        'site_id' => (int)$data['site_id'],
+                        'site_id' => intval($data['site_id']),
                         'created_at' => Carbon::now(),
                         'updated_at' => Carbon::now()
                     ];
