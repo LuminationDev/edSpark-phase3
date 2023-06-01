@@ -58,7 +58,7 @@ export const useUserStore = defineStore('user', {
 
         async fetchCurrentUserAndLoadIntoStore(userId) {
             console.log(userId);
-            await axios.get(`http://localhost:8000/api/fetchUser/${userId}`).then(response => {
+            return axios.get(`http://localhost:8000/api/fetchUser/${userId}`).then(response => {
                 console.log(response.data);
                 this.currentUser = response.data;
             }).catch(error => {
@@ -168,16 +168,16 @@ export const useUserStore = defineStore('user', {
              */
             userData.append('metadata', JSON.stringify(userMetadata));
 
-            await axios({
+            return axios({
                 method: 'POST',
                 url: 'http://localhost:8000/api/createUser',
                 data: userData,
                 headers: { "Content-Type" : "multipart/form-data" }
-            }).then(response => {
+            }).then(async response => {
                 console.log(response);
                 // TODO: Maybe populate user data from here instead?
                 // in opposed to sending another request. make create user return user data if success
-                this.fetchCurrentUserAndLoadIntoStore(response.data.uid);
+                await this.fetchCurrentUserAndLoadIntoStore(response.data.uid);
                 this.userAvatar = response.data.avatarUrl;
             }).catch(error => {
                 if(error.status === 403){

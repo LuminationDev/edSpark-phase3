@@ -334,6 +334,7 @@ class SchoolController extends Controller
     public function fetchAllStaffFromSite($site_id): \Illuminate\Http\JsonResponse
     {
             $all_staff = User::where('site_id', $site_id)->get();
+            $final_result = [];
             foreach($all_staff as $staff){
                 $result = [
                     'id' => $staff->id,

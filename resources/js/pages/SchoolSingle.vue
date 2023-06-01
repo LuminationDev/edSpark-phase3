@@ -22,9 +22,10 @@ import GenericButton from "@/js/components/button/GenericButton.vue";
  * IMPORT SVGS
  */
 import {useSchoolsStore} from "@/js/stores/useSchoolsStore";
-import {useUserStore} from "@/js/stores/useUserStore";
 import ChevronRight from '../components/svg/ChevronRight.vue';
 import {isObjectEmpty} from "@/js/helpers/objectHelpers";
+import {useUserStore} from "@/js/stores/useUserStore";
+import SchoolNominationButton from "@/js/components/schools/SchoolNominationButton.vue";
 
 const route = useRoute();
 const router = useRouter();
@@ -82,6 +83,9 @@ onBeforeMount( async () => {
      */
 
     //scenario where school is not created but Principal has entered school information in the firstVisitForm
+    console.log(newSchool.value.schoolName)
+    console.log(Object.keys(schoolContent.value).length)
+    console.log(currentUser.value.role)
     if (newSchool.value.schoolName &&
         Object.keys(schoolContent.value).length <= 0 &&
         (currentUser.value.role === "Principal" || currentUser.value.role === "SCHLDR")){
@@ -191,6 +195,8 @@ const handleChangeColorTheme = (newColor) => {
     console.log('received command to swap color to -> ' + 'newColor')
     colorTheme.value = newColor
 }
+
+
 /**
  * Handle Event emitted from children containing type {logo,coverImage} and Image file
  * @param {String} type
@@ -373,15 +379,10 @@ const isSchoolContentPopulated = computed( () => {
                                     @send-photo-to-school-single="handleReceivePhotoFromContent"
                                 />
                             </div>
-                            <GenericButton
-                                :callback="()=> {}"
-                                type="school"
-                                class="w-40 ml-10"
-                            >
-                                <div class="">
-                                    Nominated someone to build your school page
-                                </div>
-                            </GenericButton>
+                            <SchoolNominationButton
+                                v-if="schoolContent['site']['site_id']"
+                                :site-id="schoolContent['site']['site_id']"
+                            />
                         </template>
                         <!--whats new submenu-->
                         <template v-if="activeSubmenu === schoolSubmenu[1]['value']">

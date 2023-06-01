@@ -306,8 +306,7 @@ const steps = ref([
  *  Create a new user
  */
 const createNewUser = async (data) => {
-    const result = await userStore.createUser(data);
-    return result;
+    return await userStore.createUser(data);
 };
 
 /**
@@ -326,7 +325,7 @@ const submitForm = async () => {
         avatar: newUserData.avatar
     };
 
-    createNewUser(data);
+    await createNewUser(data);
     schoolStore.setNewSchoolOnSignIn(newSchoolData);
 
     /**
