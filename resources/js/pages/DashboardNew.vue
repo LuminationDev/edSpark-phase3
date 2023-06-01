@@ -40,10 +40,12 @@ import {serverURL} from "@/js/constants/serverUrl";
 import {axiosFetcher, axiosSchoolFetcher} from "@/js/helpers/fetcher";
 import useSwrvState from "@/js/helpers/useSwrvState";
 import useSWRV from "swrv";
+import {storeToRefs} from "pinia";
 
 const router = useRouter()
 
 const userStore = useUserStore();
+const {currentUser } = storeToRefs(userStore)
 /**
  * First things first. Handle the user details from okta
  */
@@ -93,12 +95,9 @@ const checkFirstVisit = async (emailAddress) => {
     } else {
         isFirstVisit.value = true;
     }
-};
+}
 
-})
-
-
-
+getIdToken()
 const swrvOptions = {
     revalidateOnFocus: false, // disable refresh on every focus, suspect its too often
     refreshInterval: 30000 // refresh or revalidate data every 30 secs
@@ -106,10 +105,10 @@ const swrvOptions = {
 
 // more code but much fast
 // had to refactor this as the normal implementation blocks the user identity fetching request :(
-const { data: eventsData, error: eventsError, isValidating: eventsIsValidating } = useSWRV(`${serverURL}/fetchEventPosts`, axiosFetcher, swrvOptions)
-const { data: softwaresData, error: softwaresError, isValidating: softwaresIsValidating } = useSWRV(`${serverURL}/fetchSoftwarePosts`, axiosFetcher, swrvOptions)
-const { data: advicesData, error: advicesError, isValidating: advicesIsValidating } = useSWRV(`${serverURL}/fetchAdvicePosts`, axiosFetcher, swrvOptions)
-const { data: schoolsData, error: schoolsError, isValidating: schoolsIsValidating } = useSWRV(`${serverURL}/fetchFeaturedSchools`, axiosSchoolFetcher, swrvOptions)
+const { data: eventsData, error: eventsError, isValidating: eventsIsValidating } = useSWRV(() => currentUser.value.id ?`${serverURL}/fetchEventPosts`: null, axiosFetcher, swrvOptions)
+const { data: softwaresData, error: softwaresError, isValidating: softwaresIsValidating } = useSWRV(() => currentUser.value.id ?`${serverURL}/fetchSoftwarePosts`: null, axiosFetcher, swrvOptions)
+const { data: advicesData, error: advicesError, isValidating: advicesIsValidating } = useSWRV(() => currentUser.value.id ?`${serverURL}/fetchAdvicePosts`: null, axiosFetcher, swrvOptions)
+const { data: schoolsData, error: schoolsError, isValidating: schoolsIsValidating } = useSWRV(() => currentUser.value.id ?`${serverURL}/fetchFeaturedSchools`: null, axiosSchoolFetcher, swrvOptions)
 
 const {state: eventsState, STATES:ALLSTATES} = useSwrvState(eventsData,eventsError,eventsIsValidating)
 const {state: softwaresState} = useSwrvState(softwaresData,softwaresError,softwaresIsValidating)
