@@ -13,16 +13,17 @@ import Profile from '../svg/Profile.vue';
  * Import stores
  */
 import { useUserStore } from '@/js/stores/useUserStore';
+import {storeToRefs} from "pinia";
 
 /**
  * Import components
  */
 
 const props = defineProps({
-    currentUser: {
-        type: Object,
-        required: true,
-    },
+    // currentUser: {
+    //     type: Object,
+    //     required: true,
+    // },
     profileDropdown: {
         type: Boolean,
         required: true
@@ -36,6 +37,7 @@ const props = defineProps({
 const emits = defineEmits(['handleAvatarClick'])
 
 const userStore = useUserStore();
+const {currentUser} = storeToRefs(userStore)
 const imageURL = import.meta.env.VITE_SERVER_IMAGE_API;
 const avatarUrl = ref('');
 const userMetadata = userStore.getUser.metadata;

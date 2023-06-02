@@ -123,7 +123,7 @@ const currentContent = computed( () =>{
                         {{ `next ->` }}
                     </GenericButton>
                     <GenericButton
-                        v-if="currentIndex == modalContent.length - 1"
+                        v-if="currentIndex === modalContent.length - 1"
                         class="px-8 py-2"
                         :callback="handleSaveModal"
                     >
