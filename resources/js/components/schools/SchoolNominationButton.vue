@@ -43,11 +43,11 @@ const handleSelectedStaffDropdown = (payload) =>{
 </script>
 
 <template>
-    <div class="relative flex flex-row  justify-between bg-slate-100 w-1/2">
+    <div class="relative flex flex-row  justify-around  w-full">
         <GenericButton
             :callback="handleClickNominationButton"
             type="school"
-            class="w-48 ml-10 rounded"
+            class="w-48 rounded px-6"
         >
             <div class="">
                 Nominate staff to build
@@ -66,13 +66,6 @@ const handleSelectedStaffDropdown = (payload) =>{
             <div v-else>
                 Sorry no staff registered under your site
             </div>
-        </div>
-        <div class=" my-3 listOfNominated px-3">
-            <ul>
-                <li>One</li>
-                <li>Two</li>
-                <li>Three</li>
-            </ul>
         </div>
     </div>
 </template>

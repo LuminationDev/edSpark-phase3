@@ -86,7 +86,7 @@ const fetchSchoolByNameAsync = (schoolName) => {
         schoolContent.value.cover_image = schoolContent.value.cover_image.replace("/\\/g", "")
         schoolContent.value.logo = schoolContent.value.logo.replace("/\\/g", "")
         if (filteredSchool.metadata) {
-            // here is some meta filtering code
+            // here is some meta filtering coded
             const colorThemeMeta = schoolContent.value['metadata'].filter(meta => meta['schoolmeta_key'] === 'school_color_theme')
             colorTheme.value = colorThemeMeta[0]['schoolmeta_value']
         }
@@ -346,12 +346,15 @@ const isSchoolContentPopulated = computed(() => {
                                     @send-info-to-school-single="handleSaveNewSchoolInfo"
                                     @send-color-to-school-single="handleChangeColorTheme"
                                     @send-photo-to-school-single="handleReceivePhotoFromContent"
-                                />
+                                >
+                                    <template #additionalContentActions>
+                                        <SchoolNominationButton
+                                            v-if="schoolContent['site']['site_id']"
+                                            :site-id="schoolContent['site']['site_id']"
+                                        />
+                                    </template>
+                                </SchoolContent>
                             </div>
-                            <SchoolNominationButton
-                                v-if="schoolContent['site']['site_id']"
-                                :site-id="schoolContent['site']['site_id']"
-                            />
                         </template>
                         <!--whats new submenu-->
                         <template v-if="activeSubmenu === schoolSubmenu[1]['value']">

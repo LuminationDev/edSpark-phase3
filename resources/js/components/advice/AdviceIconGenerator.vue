@@ -12,7 +12,6 @@ const props = defineProps({
         required: true
     }
 })
-console.log(props.iconName)
 
 
 const adviceIconComponents = {

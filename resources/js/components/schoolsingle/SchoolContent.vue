@@ -1,5 +1,5 @@
 <script setup>
-import {onBeforeMount, onMounted, ref} from 'vue'
+import {computed, onBeforeMount, onMounted, ref} from 'vue'
 import SchoolEditorJs from "@/js/components/schoolsingle/SchoolEditorJs.vue";
 import SchoolContentDisplay from "@/js/components/schoolsingle/SchoolContentDisplay.vue";
 import SchoolTech from "@/js/components/schoolsingle/SchoolTech.vue";
@@ -10,13 +10,13 @@ import SchoolImageChange from "@/js/components/schoolsingle/schoolContent/School
 const props = defineProps({
     schoolContent: {
         type: Object,
-        required : true
+        required: true
     },
-    colorTheme:{
+    colorTheme: {
         type: String, required: false
     }
 })
-const emits = defineEmits(['sendInfoToSchoolSingle','sendColorToSchoolSingle','sendPhotoToSchoolSingle'])
+const emits = defineEmits(['sendInfoToSchoolSingle', 'sendColorToSchoolSingle', 'sendPhotoToSchoolSingle'])
 
 const editMode = ref(false)
 const newSchoolContent = ref({})
@@ -32,9 +32,9 @@ const handleEditButton = () => {
     editMode.value = true
 }
 
-const handleSchoolData = (data) =>{
+const handleSchoolData = (data) => {
     console.log('data from schoolContent' + JSON.stringify(data))
-    newSchoolContent.value =  data
+    newSchoolContent.value = data
 }
 
 const handleSchoolTech = (techData) => {
@@ -49,14 +49,25 @@ const handleAllSaveButton = () => {
 
     })
 }
-const handleColorSelected  = (newColor) => {
+const handleColorSelected = (newColor) => {
     emits('sendColorToSchoolSingle', newColor)
 }
 
 const handleReceivePhotoFromImageChange = (type, file) => {
-    emits('sendPhotoToSchoolSingle',type, file)
+    emits('sendPhotoToSchoolSingle', type, file)
 }
 
+const isCurrUserAdmin = computed(() => {
+    console.log('inside currUserAdmin')
+    console.log(props.schoolContent['id'])
+    // if(props.schoolContent['id'])
+    return false
+})
+
+const isCurrUserNominated = computed(() => {
+    console.log('inside is nominated')
+    return false
+})
 
 </script>
 <template>
@@ -75,6 +86,12 @@ const handleReceivePhotoFromImageChange = (type, file) => {
                     />
                 </div>
                 <div class="flex flex-col basis-1/3">
+                    <button
+                        class="px-6 py-2 bg-blue-600 text-white rounded w-48 mb-2"
+                        @click="handleAllSaveButton"
+                    >
+                        Save Content
+                    </button>
                     <SchoolImageChange @send-uploaded-photo-to-content="handleReceivePhotoFromImageChange" />
                     <SchoolColorPicker
                         class="self-center mb-5"
@@ -98,24 +115,22 @@ const handleReceivePhotoFromImageChange = (type, file) => {
                     <SchoolContentDisplay :school-content-blocks="schoolContent.content_blocks" />
                 </div>
                 <div class="school-tech basis-1/3">
+                    <div class="schoolAdminSection border-[1px] border-gray flex flex-col p-2 mb-2 ">
+                        <h2 class="mb-2 text-slate-400">
+                            Admin Sections
+                        </h2>
+                        <button
+                            v-if="!editMode"
+                            class="px-6 py-2 bg-blue-600 text-white rounded w-48"
+                            @click="handleEditButton"
+                        >
+                            Edit This page
+                        </button>
+                        <slot name="additionalContentActions" />
+                    </div>
                     <SchoolTech :tech-list="schoolContent.tech_used" />
                 </div>
             </div>
         </div>
-
-        <button
-            v-if="!editMode"
-            class="px-6 py-2 bg-blue-600 text-white rounded w-48"
-            @click="handleEditButton"
-        >
-            Edit This page
-        </button>
-        <button
-            v-else
-            class="w-36 rounded-lg px-2 py-4  bg-slate-500"
-            @click="handleAllSaveButton"
-        >
-            Save Content
-        </button>
     </div>
 </template>
