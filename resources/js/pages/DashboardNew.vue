@@ -192,7 +192,7 @@ const onClosePopup = () => {
             :section="'events'"
             :title="'New Events'"
             :button-text="'View all events'"
-            :button-callback="() => router.push('/browse/event')"
+            :button-callback="() => router.push('/browse/events')"
         />
 
         <!-- Events Cards Here -->
@@ -211,7 +211,7 @@ const onClosePopup = () => {
             :section="'software'"
             :title="'Top Software'"
             :button-text="'View all software'"
-            :button-callback="() => router.push('/browse/software')"
+            :button-callback="() => router.push('/browse/softwares')"
         />
 
         <!-- Software Cards Here -->
@@ -231,7 +231,7 @@ const onClosePopup = () => {
             :section="'advice'"
             :title="'Advice'"
             :button-text="'View all resources'"
-            :button-callback="() => router.push('/browse/advice')"
+            :button-callback="() => router.push('/browse/advices')"
         />
 
         <!-- Advice Cards Here -->
