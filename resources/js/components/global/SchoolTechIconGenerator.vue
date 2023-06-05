@@ -19,12 +19,9 @@ const props = defineProps({
         type: String,
         required: true
     },
-    // toggleTooltip: {
-    //     type: Boolean,
-    //     required: false
-    // }
 })
 const iconPath = ref('')
+
 
 const schoolTechIconComponents = {
     "Microsoft Teams": MicrosoftTeamsIcon,
@@ -39,11 +36,6 @@ const schoolTechIconComponents = {
     "Makers Empire": MakersEmpireIcon
 }
 
-// if(Object.keys(schoolTechIconComponents).includes(props.techName)){
-//     // iconPath.value = schoolTechIconComponents[`${props.techName}`]
-//     iconPath.value = props.techName
-//
-// }
 
 </script>
 <template>

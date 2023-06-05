@@ -4,7 +4,7 @@
  */
 import axios from 'axios'
 import {useRouter, useRoute} from 'vue-router';
-import {onBeforeMount, computed, ref, watch} from 'vue'
+import {onBeforeMount, computed, ref} from 'vue'
 import {storeToRefs} from "pinia";
 import {parseToJsonIfString, schoolContentArrParser} from "@/js/helpers/jsonHelpers";
 import {schoolDataFormDataBuilder, printOutFormData} from "@/js/helpers/schoolDataHelpers";
@@ -76,6 +76,8 @@ onBeforeMount(async () => {
         showSchoolNotAvailable.value = true
     }
 })
+
+
 const fetchSchoolByNameAsync = (schoolName) => {
     return axios.get(`${serverURL}/fetchSchoolByName/${schoolName}`).then(res => {
         console.log('Found the school. populating data now inside SchoolSingle')
@@ -86,9 +88,12 @@ const fetchSchoolByNameAsync = (schoolName) => {
         schoolContent.value.cover_image = schoolContent.value.cover_image.replace("/\\/g", "")
         schoolContent.value.logo = schoolContent.value.logo.replace("/\\/g", "")
         if (filteredSchool.metadata) {
-            // here is some meta filtering code
+            console.log(filteredSchool.metadata)
+            // here is some meta filtering coded
             const colorThemeMeta = schoolContent.value['metadata'].filter(meta => meta['schoolmeta_key'] === 'school_color_theme')
-            colorTheme.value = colorThemeMeta[0]['schoolmeta_value']
+            if (colorThemeMeta.length > 0) {
+                colorTheme.value = colorThemeMeta[0]['schoolmeta_value']
+            }
         }
     }).catch(async err => {
         console.log(err.message + ' Inside fetchSchoolByName')
@@ -346,12 +351,16 @@ const isSchoolContentPopulated = computed(() => {
                                     @send-info-to-school-single="handleSaveNewSchoolInfo"
                                     @send-color-to-school-single="handleChangeColorTheme"
                                     @send-photo-to-school-single="handleReceivePhotoFromContent"
-                                />
+                                >
+                                    <template #additionalContentActions>
+                                        <SchoolNominationButton
+                                            v-if="schoolContent['site']['site_id']"
+                                            :site-id="schoolContent['site']['site_id']"
+                                            :school-id="schoolContent['id']"
+                                        />
+                                    </template>
+                                </SchoolContent>
                             </div>
-                            <SchoolNominationButton
-                                v-if="schoolContent['site']['site_id']"
-                                :site-id="schoolContent['site']['site_id']"
-                            />
                         </template>
                         <!--whats new submenu-->
                         <template v-if="activeSubmenu === schoolSubmenu[1]['value']">

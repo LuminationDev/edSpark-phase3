@@ -1,6 +1,6 @@
 <script setup>
 
-import {computed, resolveDynamicComponent, shallowRef} from "vue";
+import {computed, resolveDynamicComponent} from "vue";
 
 const props = defineProps({
     iconPath :{
@@ -10,12 +10,6 @@ const props = defineProps({
         type: Object, required: true
     }
 })
-// const techIcon = shallowRef('')
-
-// import(`../../${props.iconPath}`).then(val =>
-//     techIcon.value = val.default
-// )
-
 
 const loadIconComponent =  (iconPath) => {
     try {
@@ -26,10 +20,8 @@ const loadIconComponent =  (iconPath) => {
     }
 };
 
-// techIcon.value = loadIconComponent(props.iconPath)
 
 const resolvedComponent = computed(() => {
-    console.log('resolced vomponent is here ehhehhe triggered')
     return resolveDynamicComponent(loadIconComponent(props.iconPath))
 })
 
