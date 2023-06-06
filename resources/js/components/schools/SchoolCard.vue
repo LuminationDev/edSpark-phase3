@@ -42,6 +42,7 @@ const props = defineProps({
             <template #cover>
                 <div
                     :class="`bg-[url('${imageURL}/${props.schoolData.cover_image}')] bg-cover`"
+                    :style="`background-image: url(${imageURL}/${props.schoolData.cover_image}) `"
                     class="h-36 group-hover:h-0 transition-all"
                 />
             </template>

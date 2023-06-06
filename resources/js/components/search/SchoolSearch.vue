@@ -1,7 +1,51 @@
 <script setup>
-console.log('inside school search')
+import {ref} from "vue";
+import axios from 'axios'
+
+import {serverURL} from "@/js/constants/serverUrl";
+import BaseSearch from "@/js/components/search/BaseSearch.vue";
+import GenericMultiSelectFilter from "@/js/components/search/hardware/GenericMultiSelectFilter.vue";
+import useSWRV from "swrv";
+import {axiosSchoolFetcher} from "@/js/helpers/fetcher";
+
+const swrvOptions = {
+    revalidateOnFocus: false, // disable refresh on every focus, suspect its too often
+    refreshInterval: 30000 // refresh or revalidate data every 30 secs
+}
+
+const {data: schoolList, error: schoolError} = useSWRV(`${serverURL}/fetchAllSchools`, axiosSchoolFetcher, swrvOptions)
+
+let schoolFilterList = [
+    {name: "Preschool", value:"PRE"},
+    {name: "Primary Education", value:"PRIM"},
+    {name: "Primary/Secondary", value:"PRSEC"},
+    {name: "Secondary Education", value:"SEC"},
+    {name: "Special Education", value:"SPEC"},
+    {name: "Specialist Facilities", value:"SPFAC"},
+    {name: "Aboriginal/Anangu Schools", value:"ABAN"},
+]
+
+const filterObject = ref({})
+
+const handleFilter = (filters, dataPath) => {
+    filterObject.value[dataPath] = filters.map(filter => filter.value)
+}
+
 </script>
 
 <template>
-    <div> Hello</div>
+    <BaseSearch
+        search-type="school"
+        :resource-list="schoolList"
+        :live-filter-object="filterObject"
+    >
+        <template #filterBar>
+            <GenericMultiSelectFilter
+                placeholder="Filter by SchoolType"
+                :filter-list="schoolFilterList"
+                data-path="site_type"
+                @transmit-selected-filters="handleFilter"
+            />
+        </template>
+    </BaseSearch>
 </template>

@@ -6,6 +6,7 @@ import SearchBar from "@/js/components/browseschools/SearchBar.vue";
 import AdviceCard from "@/js/components/advice/AdviceCard.vue";
 import SoftwareCard from "@/js/components/software/SoftwareCard.vue";
 import {findNestedKeyValue} from "@/js/helpers/objectHelpers";
+import SchoolCard from "@/js/components/schools/SchoolCard.vue";
 const props = defineProps({
     resourceList:{
         type: Array,
@@ -110,7 +111,6 @@ function filterProducts(products, filterBy) {
             //     }
             // }
         }
-        console.log(filterResult)
         for(let eachResult of Object.values(filterResult)){
             if(!eachResult) return false
         }
@@ -173,6 +173,16 @@ const filteredData = computed(()=>{
                         :hardware-content="data"
                         :number-per-row="4"
                     />
+                </template>
+                <template v-else-if="searchType === 'school'">
+                    <div
+                        :key="data.id"
+                        class="border-2 mx-4 my-4 basis-1/4 max-w-[320px] h-[470px] border-[0.5px] border-black transition-all group hover:shadow-2xl"
+                    >
+                        <SchoolCard
+                            :school-data="data"
+                        />
+                    </div>
                 </template>
             </template>
             <div

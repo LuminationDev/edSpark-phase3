@@ -210,9 +210,10 @@ class SchoolController extends Controller
             $schoolMetadata = Schoolmeta::where('school_id', $school->id)->get();
             $site = Site::find($school->site_id);
             $siteLocation = (object)[
-                'lat' => (float)$site->site_latitude,
-                'lng' => (float)$site->site_longitude
+                'lat' => (float)($site->site_latitude ?: 0),
+                'lng' => (float)($site->site_longitude ?: 0)
             ];
+            $site_type = $site->site_type_code;
             $schoolMetadataToSend = [];
             if ($schoolMetadata) {
                 foreach ($schoolMetadata as $key => $value) {
@@ -227,7 +228,8 @@ class SchoolController extends Controller
                 'id' => $school->id,
                 'site' => [
                     'site_id' => $school->site_id,
-                    'site_name' => ($school->site_id) ? $school->site->site_name : NULL
+                    'site_name' => ($school->site_id) ? $school->site->site_name : NULL,
+                    'site_type' => ($site_type) ?: NULL,
                 ],
                 'owner' => [
                     'owner_id' => $school->owner_id,
