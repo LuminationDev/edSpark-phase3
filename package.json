@@ -45,7 +45,7 @@
         "sass": "^1.62.1",
         "search-dropdown-vue": "^1.0.3",
         "swrv": "^1.0.3",
-        "vue": "^3.2.47",
+        "vue": "^3.3.1",
         "vue-axios": "^3.5.2",
         "vue-google-maps-community-fork": "^0.3.1",
         "vue-router": "^4.1.6",
