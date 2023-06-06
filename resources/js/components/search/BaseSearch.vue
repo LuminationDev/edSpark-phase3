@@ -77,15 +77,26 @@ function filterProducts(products, filterBy) {
     return products.filter(product => {
         let filterResult = {}
         for (let key in filterBy) {
-            // try using helper function
+            // using findNestedKeyValue helper function
             let productValue = findNestedKeyValue(product, key)
             let filterValues = filterBy[key];
             if(filterValues.length === 0){
                 filterResult[key] = true
             } else{
-                filterResult[key] = filterValues.includes(productValue[0])
+                // Handle if there are more than 1 result inside productValue. should just check
+                // if atleast one of the result match the filter and return true
+                if(productValue.length === 1 ){
+                    filterResult[key] = filterValues.includes(productValue[0])
+                }else {
+                    let result = false
+                    productValue.forEach(item => {
+                        if(filterValues.includes(item)){
+                            result = true
+                        }
+                    })
+                    filterResult[key] = result
+                }
             }
-            // try
 
             // below is original version-- above is refactored with findNestedKeyValue
             // keeping this code might come in handy as we add more filtering - Erick
@@ -156,7 +167,7 @@ const filteredData = computed(()=>{
                         :number-per-row="2"
                     />
                 </template>
-                <template v-else-if="searchType == 'hardware'">
+                <template v-else-if="searchType === 'hardware'">
                     <HardwareCard
                         :key="data.id"
                         :hardware-content="data"

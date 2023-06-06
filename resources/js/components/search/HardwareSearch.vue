@@ -76,5 +76,4 @@ const handleCategoryFilter = (filters, dataPath) => {
             />
         </template>
     </BaseSearch>
-    <pre> {{ hardwareList }}</pre>
 </template>
