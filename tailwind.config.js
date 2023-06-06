@@ -1,23 +1,64 @@
-// const autoprefixer = require('autoprefixer');
-
-// /** @type {import('tailwindcss').Config} */
+/** @type {import('tailwindcss').Config} */
 module.exports = {
-    mode: 'jit',
     content: [
         './resources/**/*.blade.php',
-        './resources/**/*.{ vue, js, ts, jsx, tsx }',
-        './vendor/filament/**/*.blade.php',
+        './resources/**/*.js',
+        './resources/**/*.vue',
+    ],
+    safelist: [
+        'bg-[url(*)]',
+        'bg-[#4A5568]',
+        'bg-[#e53935]',
+        'bg-[#DD6B20]',
+        'bg-[#D69E2E]',
+        'bg-[#38A169]',
+        'bg-[#319795]',
+        'bg-[#3182CE]',
+        'bg-[#5A67D8]',
+        'bg-[#6B46C1]',
+        'bg-[#4338CA]',
+        'bg-[#D53F8C]',
+        'bg-[#ffa000]',
     ],
     theme: {
         extend: {
-            colors:{
+            colors: {
+                primary: {
+                    navy: '#002858',
+                    darkTeal: '#0A7982',
+                    teal: '#339999',
+                    lightTeal: '#28D5CB',
+                },
+                secondary: {
+                    blue: '#0072DA',
+                    lightBlue: '#44B8F3',
+                    darkBlue: '#1C5CA9',
+                    green: '#048246',
+                    lightGreen: '#A5D1BD',
+                    purple: '#8866C5',
+                    lightPurple: '#8866C5',
+                    yellow: '#FFC836',
+                    lightYellow: '#F5E1AD',
+                    red: '#DE4668',
+                    lightRed: '#F7C1C5',
+
+                },
+
                 adviceYellow: '#FFC836',
                 adviceGreen: '#048246',
                 adminTeal: '#339999'
-            }
+            },
+            spacing: {
+                extraSmall: '12px',
+                small: '18px',
+                medium: '24px',
+                large: '36px',
+                extraLarge: '48px',
+                huge: '81px',
+                extraHuge: '140px'
+            },
         },
     },
-    plugins: [
-        require('@tailwindcss/line-clamp')
-    ],
+    plugins: [],
 }
+

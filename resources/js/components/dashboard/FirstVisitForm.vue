@@ -1,431 +1,423 @@
 <script setup>
-    /**
-     * Imports and other things necessary for the sign on for the first time form.
-     * In this form we are handling user checks etc
-     */
-    import ConfirmInfo from './ConfirmInfo.vue';
+/**
+ * Imports and other things necessary for the sign on for the first time form.
+ * In this form we are handling user checks etc
+ */
+import ConfirmInfo from './ConfirmInfo.vue';
 
-    import { reactive, ref, computed, onMounted } from 'vue';
-    import axios from 'axios';
+import {reactive, ref, computed, onMounted} from 'vue';
+import axios from 'axios';
+import {serverURL} from "@/js/constants/serverUrl";
 
-    /**
-     * Consider setting up all imports at the top, in one place for consistency.
-     * Not like this weird, import and declare situation I have here...
-     * Any input would be greatly appreciated!!
-     */
-    import SearchDropdown from 'search-dropdown-vue';
-    import ErrorHandler from '../global/ErrorHandler.vue';
-    import GenericSelector from '../selector/GenericSelector.vue';
+/**
+ * Consider setting up all imports at the top, in one place for consistency.
+ * Not like this weird, import and declare situation I have here...
+ * Any input would be greatly appreciated!!
+ */
+import SearchDropdown from 'search-dropdown-vue';
+import ErrorHandler from '../global/ErrorHandler.vue';
+import GenericSelector from '../selector/GenericSelector.vue';
 
-    /**
-     * Import and initialise stores
-     * Import and initialise vue router
-     */
-    import { useRouter } from 'vue-router';
+/**
+ * Import and initialise stores
+ * Import and initialise vue router
+ */
+import {useRouter} from 'vue-router';
 
-    const router = useRouter();
+const router = useRouter();
 
-    import { useSiteStore } from '../../stores/useSiteStore.js';
-    import { useUserStore } from '../../stores/useUserStore.js';
-    import { useSchoolsStore } from '../../stores/useSchoolsStore.js';
+import {useSiteStore} from '../../stores/useSiteStore.js';
+import {useUserStore} from '../../stores/useUserStore.js';
+import {useSchoolsStore} from '../../stores/useSchoolsStore.js';
 
-    const siteStore = useSiteStore();
-    const userStore = useUserStore();
-    const schoolStore = useSchoolsStore();
+const siteStore = useSiteStore();
+const userStore = useUserStore();
+const schoolStore = useSchoolsStore();
 
-    /**
-     * Image URL stuff
-     */
-    const imageURL = import.meta.env.VITE_SERVER_IMAGE_API;
+/**
+ * URL stuff
+ */
+const imageURL = import.meta.env.VITE_SERVER_IMAGE_API;
 
-    /**
-     * User details props
-     */
-    const props = defineProps({
-        userDetails: {
-            type: Object,
-            required: true
-        },
-        isFirstVisit: {
-            type: Boolean,
-            required: true
+/**
+ * User details props
+ */
+const props = defineProps({
+    userDetails: {
+        type: Object,
+        required: true
+    },
+});
+
+/**
+ * Set the popup form ref for access later
+ */
+const multiStepForm = ref(null);
+
+/**
+ * Set all elements/details/prefill data of the form
+ *
+ * Form step data
+ *
+ * Roles
+ *
+ * Sites
+ *
+ * Form selection fields (year levels, subjects, interests)
+ *
+ * Gathered user information
+ */
+const formStepData = reactive({
+    infoWelcomeHeaderText: 'Welcome to edSpark!',
+    infoWelcomeHeaderBlurb: 'We see this is your first time visiting us, please confirm the following information.',
+    infoButtonText: 'Next',
+});
+
+/**
+ * Handle gathering of all roles and sites
+ */
+const allRoles = ref([]);
+const allSites = ref([]);
+const getAllRolesAndSites = async () => {
+    allRoles.value = await userStore.fetchAllRoles();
+    const everySiteAvailable = await siteStore.loadSites();
+    const adjustedSiteArr = [];
+    everySiteAvailable.forEach(site => {
+        if (site.category_code === 'SCHL' || site.category_code === 'PRESC') {
+            adjustedSiteArr.push({id: site.site_id, name: site.site_name});
         }
     });
 
-    /**
-     * Set the popup form ref for access later
-     */
-    const multiStepForm = ref(null);
+    allSites.value = adjustedSiteArr;
+    return true;
+};
+getAllRolesAndSites();
 
-    /**
-     * Set all elements/details/prefill data of the form
-     *
-     * Form step data
-     *
-     * Roles
-     *
-     * Sites
-     *
-     * Form selection fields (year levels, subjects, interests)
-     *
-     * Gathered user information
-     */
-    const formStepData = reactive({
-        infoWelcomeHeaderText: 'Welcome to edSpark!',
-        infoWelcomeHeaderBlurb: 'We see this is your first time visiting us, please confirm the following information.',
-        infoButtonText: 'Next',
-    });
+/**
+ * Form selection fields
+ */
+const formFieldData = reactive({
+    years: [
+        {yearLevel: 1, value: 'one'},
+        {yearLevel: 2, value: 'two'},
+        {yearLevel: 3, value: 'three'},
+        {yearLevel: 4, value: 'four'},
+        {yearLevel: 5, value: 'five'},
+        {yearLevel: 6, value: 'six'},
+        {yearLevel: 7, value: 'seven'},
+        {yearLevel: 8, value: 'eight'},
+        {yearLevel: 9, value: 'nine'},
+        {yearLevel: 10, value: 'ten'},
+        {yearLevel: 11, value: 'eleven'},
+        {yearLevel: 12, value: 'twelve'},
+    ],
+    allSubjects: [
+        'English',
+        'Mathematics',
+        'Science',
+        'HASS',
+        'The Arts',
+        'Technologies',
+        'Health and PE',
+        'Languages',
+        'Work Studies'
+    ],
+    digitalTechnologies: [
+        'Drones',
+        'VR',
+        'AR',
+        'Robotics',
+        'AV systems',
+        'IoT'
+    ],
+})
 
-    /**
-     * Handle gathering of all roles and sites
-     */
-    const allRoles = ref([]);
-    const allSites = ref([]);
-    const getAllRolesAndSites = async () => {
-        allRoles.value = await userStore.fetchAllRoles();
-        const everySiteAvailable = await siteStore.loadSites();
-        const adjustedSiteArr = [];
-        everySiteAvailable.forEach(site => {
-            if (site.category_code === 'SCHL' || site.category_code === 'PRESC') {
-                adjustedSiteArr.push({ id: site.id, name: site.site_name });
-            };
-        });
+/**
+ * User details to gather
+ */
+const newUserData = reactive({
+    name: Object.keys(props.userDetails).length >= 0 ? props.userDetails.name : '',
+    email: Object.keys(props.userDetails).length >= 0 ? props.userDetails.email : '',
+    role: {},
+    site: {},
+    yearLevels: [],
+    subjects: [],
+    interests: [],
+    biography: '',
+    avatar: '',
+    avatarUrl: '',
+});
 
-        allSites.value = adjustedSiteArr;
-        return true;
-    };
-    getAllRolesAndSites();
+/**
+ * User details to gather
+ */
+const newSchoolData = reactive({
+    schoolName: '',
+    schoolMessage: '',
+    coverImage: {},
+    coverImageUrl: '',
+    logo: {},
+    logoUrl: '',
+    techUsed: []
+});
 
-    /**
-     * Form selection fields
-     */
-    const formFieldData = reactive({
-        years: [
-            { yearLevel: 1, value: 'one' },
-            { yearLevel: 2, value: 'two' },
-            { yearLevel: 3, value: 'three' },
-            { yearLevel: 4, value: 'four' },
-            { yearLevel: 5, value: 'five' },
-            { yearLevel: 6, value: 'six' },
-            { yearLevel: 7, value: 'seven' },
-            { yearLevel: 8, value: 'eight' },
-            { yearLevel: 9, value: 'nine' },
-            { yearLevel: 10, value: 'ten' },
-            { yearLevel: 11, value: 'eleven' },
-            { yearLevel: 12, value: 'twelve' },
-        ],
-        allSubjects: [
-            'English',
-            'Mathematics',
-            'Science',
-            'HASS',
-            'The Arts',
-            'Technologies',
-            'Health and PE',
-            'Languages',
-            'Work Studies'
-        ],
-        digitalTechnologies: [
-            'Drones',
-            'VR',
-            'AR',
-            'Robotics',
-            'AV systems',
-            'IoT'
-        ],
-    })
+/**
+ * Handle submit on searchable dropdowns
+ *
+ * Site
+ *
+ * Role
+ */
+const onSelectedOptionSites = (payload) => {
+    newUserData.site = payload;
+    newSchoolData.site = payload;
+    console.log(newUserData.site);
+    console.log(newSchoolData.site);
+};
 
-    /**
-     * User details to gather
-     */
-    const newUserData = reactive({
-        name: Object.keys(props.userDetails).length >= 0 ? props.userDetails.name : '',
-        email: Object.keys(props.userDetails).length >= 0 ? props.userDetails.email : '',
-        role: {},
-        site: {},
-        yearLevels: [],
-        subjects: [],
-        interests: [],
-        biography: '',
-        avatar: '',
-        avatarUrl: '',
-    });
+const onSelectedOptionRoles = (payload) => {
+    console.log(payload);
+    newUserData.role = payload;
+    newSchoolData.role = payload;
+    console.log(newUserData.role);
+};
 
-    /**
-     * User details to gather
-     */
-    const newSchoolData = reactive({
-        schoolName: '',
-        schoolMessage: '',
-        coverImage: {},
-        coverImageUrl: '',
-        logo: {},
-        logoUrl: '',
-        techUsed: []
-    });
+/**
+ * Set a ref for the error mesage
+ */
+const errorMessage = ref('');
 
-    /**
-     * Handle submit on searchable dropdowns
-     *
-     * Site
-     *
-     * Role
-     */
-    const onSelectedOptionSites = (payload) => {
-        newUserData.site = payload;
-        newSchoolData.site = payload;
-        console.log(newUserData.site);
-        console.log(newSchoolData.site);
-    };
+/**
+ * Handle image upload
+ */
+const showUploadedAvatar = ref(false);
+const showUploadedLogo = ref(false);
+const showUploadedCover = ref(false);
+const onChangeFile = async (selector, event) => {
+    console.log(event);
+    const target = event.target
 
-    const onSelectedOptionRoles = (payload) => {
-        console.log(payload);
-        newUserData.role = payload;
-        newSchoolData.role = payload;
-        console.log(newUserData.role);
-    };
+    if (target.files[0].size > 5000000) {
+        errorMessage.value = 'Sorry, that image is larger than 5mb. Please try another.';
+        return;
+    } else {
+        if (target && target.files) {
+            const reader = new FileReader();
+            reader.readAsDataURL(target.files[0]);
+            errorMessage.value = '';
+            reader.onload = async function (event) {
+                const imageData = event.target.result;
 
-    /**
-     * Set a ref for the error mesage
-     */
-    const errorMessage = ref('');
+                console.log(imageData.length);
 
-    /**
-     * Handle image upload
-     */
-    const showUploadedAvatar = ref(false);
-    const showUploadedLogo = ref(false);
-    const showUploadedCover = ref(false);
-    const onChangeFile = async (selector, event) => {
-        console.log(event);
-        const target = event.target
+                switch (selector) {
+                case 'schoolLogo':
+                    // localStorage.setItem('schoolLogo', imageData);
+                    newSchoolData.logo = target.files[0];
+                    console.log(axiosImageHelper(target.files[0]));
+                    newSchoolData.logoUrl = await axiosImageHelper(target.files[0]);
+                    showUploadedLogo.value = true;
+                    break;
 
-        if (target.files[0].size > 5000000) {
-            errorMessage.value = 'Sorry, that image is larger than 5mb. Please try another.';
-            return;
-        } else {
-            if (target && target.files) {
-                const reader = new FileReader();
-                reader.readAsDataURL(target.files[0]);
+                case 'schoolCover':
+                    // localStorage.setItem('schoolCover', imageData);
+                    newSchoolData.coverImage = target.files[0];
+                    newSchoolData.coverImageUrl = await axiosImageHelper(target.files[0]);
+                    showUploadedCover.value = true;
+                    break;
 
+                case 'userAvatar':
+                    // localStorage.setItem('userAvatar', imageData);
+                    newUserData.avatar = target.files[0];
+                    newUserData.avatarUrl = await axiosImageHelper(target.files[0]);
+                    showUploadedAvatar.value = true;
+                    break;
 
-
-                // console.log(imageUploadUrl.data.file.url);
-
-                errorMessage.value = '';
-
-                reader.onload = async function(event) {
-                    const imageData = event.target.result;
-
-                    console.log(imageData.length);
-
-                    switch (selector) {
-                        case 'schoolLogo':
-                                // localStorage.setItem('schoolLogo', imageData);
-                                newSchoolData.logo = target.files[0];
-                                console.log(axiosImageHelper(target.files[0]));
-                                newSchoolData.logoUrl = await axiosImageHelper(target.files[0]);
-                                showUploadedLogo.value = true;
-                            break;
-
-                        case 'schoolCover':
-                                // localStorage.setItem('schoolCover', imageData);
-                                newSchoolData.coverImage = target.files[0];
-                                newSchoolData.coverImageUrl = await axiosImageHelper(target.files[0]);
-                                showUploadedCover.value = true;
-                            break;
-
-                        case 'userAvatar':
-                                // localStorage.setItem('userAvatar', imageData);
-                                newUserData.avatar = target.files[0];
-                                newUserData.avatarUrl = await axiosImageHelper(target.files[0]);
-                                showUploadedAvatar.value = true;
-                            break;
-
-                        default:
-                            break;
-                    }
+                default:
+                    break;
                 }
             }
-        };
+        }
+    }
+    ;
+};
+
+const axiosImageHelper = async (image) => {
+    return new Promise(async (resolve, reject) => {
+        await axios({
+            method: 'POST',
+            url: `${serverURL}/uploadImage`,
+            data: {
+                type: 'school',
+                image: image
+            },
+            headers: {"Content-Type": "multipart/form-data"}
+        }).then(response => {
+            console.log(response.data.file.url);
+            resolve(response.data.file.url);
+        }).catch(error => {
+            reject(error);
+        });
+    });
+}
+
+const handleChangeImage = (creatine) => {
+    switch (creatine) {
+    case 'schoolLogo':
+        showUploadedLogo.value = false;
+        newSchoolData.logoUrl = '';
+        localStorage.removeItem('schoolLogo');
+        break;
+
+    case 'schoolCover':
+        showUploadedCover.value = false;
+        newSchoolData.coverImageUrl = '';
+        localStorage.removeItem('schoolCover');
+        break;
+
+    case 'userAvatar':
+        showUploadedAvatar.value = false;
+        newUserData.avatarUrl = '';
+        localStorage.removeItem('userAvatar');
+        break;
+
+    default:
+        break;
+    }
+}
+
+/**
+ * Set the form steps
+ */
+const steps = ref([
+    {'step_no': 1, 'step_valid': false, 'step_skip': true},
+    {'step_no': 2, 'step_valid': false, 'step_skip': true},
+    {'step_no': 3, 'step_valid': false, 'step_skip': true},
+    {'step_no': 4, 'step_valid': false, 'step_skip': true},
+]);
+
+/**
+ * Handle all functions
+ *
+ * They do things and even some stuff
+ */
+
+/**
+ *  Create a new user
+ */
+const createNewUser = async (data) => {
+    return await userStore.createUser(data);
+};
+
+/**
+ * Submit button click
+ */
+const submitForm = async () => {
+    const data = {
+        name: newUserData.name,
+        email: newUserData.email,
+        role: newUserData.role,
+        site: newUserData.site,
+        yearLevels: newUserData.yearLevels,
+        subjects: newUserData.subjects,
+        interests: newUserData.interests,
+        biography: newUserData.biography,
+        avatar: newUserData.avatar
     };
 
-    const axiosImageHelper = async (image) => {
-        return new Promise( async (resolve, reject) => {
-            await axios({
-                method: 'POST',
-                url: 'http://localhost:8000/api/uploadImage',
-                data: {
-                    type: 'school',
-                    image: image
-                },
-                headers: { "Content-Type" : "multipart/form-data" }
-            }).then(response => {
-                console.log(response.data.file.url);
-                resolve(response.data.file.url);
-            }).catch(error => {
-                reject(error);
-            });
+    await createNewUser(data);
+    schoolStore.setNewSchoolOnSignIn(newSchoolData);
+
+    /**
+     * This check needs to be brought forward in the process
+     */
+    if (data.role.name === 'School Principal') {
+        router.push({
+            name: 'school-single',
+            params: {
+                name: newSchoolData.schoolName
+            }
         });
     }
+};
 
-    const handleChangeImage = (creatine) => {
-        switch (creatine) {
-            case 'schoolLogo':
-                    showUploadedLogo.value = false;
-                    newSchoolData.logoUrl = '';
-                    localStorage.removeItem('schoolLogo');
-                break;
+/**
+ * Handle step validation here
+ */
+const validateStep = (stepIndex) => {
+    /**
+     * Run step validation.
+     * If true, set as true
+     */
+    steps[stepIndex].step_valid = true;
+    multiStepForm.value.submitStep(); // Potential error issues here...
+};
 
-            case 'schoolCover':
-                    showUploadedCover.value = false;
-                    newSchoolData.coverImageUrl = '';
-                    localStorage.removeItem('schoolCover');
-                break;
+/**
+ * Provide a ref to handle rendering depending on the users role (handle principals differently)
+ */
+const isPrincipal = ref(false);
 
-            case 'userAvatar':
-                    showUploadedAvatar.value = false;
-                    newUserData.avatarUrl = '';
-                    localStorage.removeItem('userAvatar');
-                break;
-
-            default:
-                break;
-        }
+/**
+ * Handle steps using step index
+ */
+const handleStep = (stepIndex) => {
+    console.log('the current step is', stepIndex);
+    if (stepIndex === 0) {
+        formStepData.infoWelcomeHeaderText = 'Welcome to edSpark!';
+        formStepData.infoWelcomeHeaderBlurb = 'We see this is your first time visiting us, please confirm the following information.';
+        formStepData.infoButtonText = 'Next';
     }
 
-    /**
-     * Set the form steps
-     */
-    const steps = ref([
-        {'step_no':1,'step_valid':false,'step_skip':true},
-        {'step_no':2,'step_valid':false,'step_skip':true},
-        {'step_no':3,'step_valid':false,'step_skip':true},
-        {'step_no':4,'step_valid':false,'step_skip':true},
-    ]);
 
-    /**
-     * Handle all functions
-     *
-     * They do things and even some stuff
-     */
-
-    /**
-     *  Create a new user
-     */
-    const createNewUser = async (data) => {
-        const result = await userStore.createUser(data);
-        return result;
-    };
-
-    /**
-     * Submit button click
-     */
-    const submitForm = async () => {
-        const data = {
-            name: newUserData.name,
-            email: newUserData.email,
-            role: newUserData.role,
-            site: newUserData.site,
-            yearLevels: newUserData.yearLevels,
-            subjects: newUserData.subjects,
-            interests: newUserData.interests,
-            biography: newUserData.biography,
-            avatar: newUserData.avatar
-        };
-
-        createNewUser(data);
-        schoolStore.setNewSchoolOnSignIn(newSchoolData);
-
-        /**
-         * This check needs to be brought forward in the process
-         */
-        if (data.role.name === 'School Principal') {
-            router.push({
-                name: 'school-single',
-                params: {
-                    name: newSchoolData.schoolName
-                }
-            });
-        }
-    };
-
-    /**
-     * Handle step validation here
-     */
-    const validateStep = (stepIndex) => {
-        /**
-         * Run step validation.
-         * If true, set as true
-         */
-        steps[stepIndex].step_valid = true;
-        multiStepForm.submitStep(); // Potential error issues here...
-    };
-
-    /**
-     * Provide a ref to handle rendering depending on the users role (handle principals differently)
-     */
-    const isPrincipal = ref(false);
-
-    /**
-     * Handle steps using step index
-     */
-    const handleStep = (stepIndex) => {
-        console.log('the current step is', stepIndex);
-        if (stepIndex === 0) {
-            formStepData.infoWelcomeHeaderText = 'Welcome to edSpark!';
-            formStepData.infoWelcomeHeaderBlurb = 'We see this is your first time visiting us, please confirm the following information.';
+    if (stepIndex === 1) {
+        if (newUserData.role.name === 'School Principal') {
+            isPrincipal.value = true;
+            newSchoolData.schoolName = newUserData.site.name;
+            formStepData.infoWelcomeHeaderText = 'Thanks! Now we\'ll get a little bit of information for your school profile.';
+            formStepData.infoWelcomeHeaderBlurb = 'If you\'d prefer, you can nominate one your staff members to manage this information and profile for you.';
             formStepData.infoButtonText = 'Next';
-        };
-
-        if (stepIndex === 1) {
-            if (newUserData.role.name === 'School Principal') {
-                isPrincipal.value = true;
-                newSchoolData.schoolName = newUserData.site.name;
-                formStepData.infoWelcomeHeaderText = 'Thanks! Now we\'ll get a little bit of information for your school profile.';
-                formStepData.infoWelcomeHeaderBlurb = 'If you\'d prefer, you can nominate one your staff members to manage this information and profile for you.';
-                formStepData.infoButtonText = 'Next';
-            } else {
-                formStepData.infoWelcomeHeaderText = 'Now, a little bit about you.';
-                formStepData.infoWelcomeHeaderBlurb = 'Please fill out the following information for a tailored experience. Don\'t worry, you can skip for now a return later.';
-                formStepData.infoButtonText = 'Next';
-            }
-        };
-
-        if (stepIndex === 2) {
-            if (newUserData.role.name === 'School Principal') {
-                isPrincipal.value = true;
-                formStepData.infoWelcomeHeaderText = 'Upload a logo and a cover image for your school.';
-                formStepData.infoWelcomeHeaderBlurb = 'Please use a high resolution image for the cover photo. For the logo, please use an image width of at least 200 pixels';
-                formStepData.infoButtonText = 'Next';
-            } else {
-                formStepData.infoWelcomeHeaderText = 'Not much further, we\'re nearly there!';
-                formStepData.infoWelcomeHeaderBlurb = 'Hang in there, the finish line is in sight!';
-                formStepData.infoButtonText = 'Next';
-            }
-        };
-
-        if (stepIndex === 3) {
-            if (newUserData.role.name === 'School Principal') {
-                formStepData.infoWelcomeHeaderText = 'Thanks! Now we\'ll just get your avatar sorted out!';
-                formStepData.infoWelcomeHeaderBlurb = 'Please upload your avatar';
-                formStepData.infoButtonText = 'Submit';
-            } else {
-                formStepData.infoWelcomeHeaderText = 'We made it!';
-                formStepData.infoWelcomeHeaderBlurb = 'Just confirm the following and we\'re all set!';
-                formStepData.infoButtonText = 'Submit';
-            }
+        } else {
+            formStepData.infoWelcomeHeaderText = 'Now, a little bit about you.';
+            formStepData.infoWelcomeHeaderBlurb = 'Please fill out the following information for a tailored experience. Don\'t worry, you can skip for now a return later.';
+            formStepData.infoButtonText = 'Next';
         }
-    };
-
-    const emits = defineEmits(['onClosePopup'])
-
-    /**
-     * Close the popup
-     */
-    const closePopup = () => {
-        emits('onClosePopup');
     }
+
+    if (stepIndex === 2) {
+        if (newUserData.role.name === 'School Principal') {
+            isPrincipal.value = true;
+            formStepData.infoWelcomeHeaderText = 'Upload a logo and a cover image for your school.';
+            formStepData.infoWelcomeHeaderBlurb = 'Please use a high resolution image for the cover photo. For the logo, please use an image width of at least 200 pixels';
+            formStepData.infoButtonText = 'Next';
+        } else {
+            formStepData.infoWelcomeHeaderText = 'Not much further, we\'re nearly there!';
+            formStepData.infoWelcomeHeaderBlurb = 'Hang in there, the finish line is in sight!';
+            formStepData.infoButtonText = 'Next';
+        }
+    }
+
+    if (stepIndex === 3) {
+        if (newUserData.role.name === 'School Principal') {
+            formStepData.infoWelcomeHeaderText = 'Thanks! Now we\'ll just get your avatar sorted out!';
+            formStepData.infoWelcomeHeaderBlurb = 'Please upload your avatar';
+            formStepData.infoButtonText = 'Submit';
+        } else {
+            formStepData.infoWelcomeHeaderText = 'We made it!';
+            formStepData.infoWelcomeHeaderBlurb = 'Just confirm the following and we\'re all set!';
+            formStepData.infoButtonText = 'Submit';
+        }
+    }
+};
+
+const emits = defineEmits(['onClosePopup'])
+
+/**
+ * Close the popup
+ */
+const closePopup = () => {
+    emits('onClosePopup');
+}
 
 </script>
 
@@ -433,10 +425,10 @@
     <ConfirmInfo
         ref="multiStepForm"
         :steps="steps"
-        @onComplete="submitForm"
-        @validateStep="validateStep"
-        @handleStep="handleStep"
-        @closePopup="closePopup"
+        @on-complete="submitForm"
+        @validate-step="validateStep"
+        @handle-step="handleStep"
+        @close-popup="closePopup"
     >
         <template #formHeader>
             <h3 class="text-[36px] text-black font-bold">
@@ -446,10 +438,13 @@
                 {{ formStepData.infoWelcomeHeaderBlurb }}
             </p>
         </template>
-
+        <!-- Step 1: New users data. Name, email, Role and Site -->
         <template #step1>
             <div>
-                <label class="text-[18px] font-bold" for="Name">Your name</label>
+                <label
+                    class="text-[18px] font-bold"
+                    for="Name"
+                >Your name</label>
                 <input
                     v-model="newUserData.name"
                     type="text"
@@ -459,7 +454,10 @@
             </div>
 
             <div>
-                <label class="text-[18px] font-bold" for="Email">Your email</label>
+                <label
+                    class="text-[18px] font-bold"
+                    for="Email"
+                >Your email</label>
                 <input
                     v-model="newUserData.email"
                     type="email"
@@ -469,31 +467,40 @@
             </div>
 
             <div class="flex flex-col">
-                <label class="text-[18px] font-bold" for="Role">Your Role</label>
+                <label
+                    class="text-[18px] font-bold"
+                    for="Role"
+                >Your Role</label>
                 <SearchDropdown
                     class="searchable_dropdown"
                     :options="allRoles"
                     :placeholder="'Search for your role...'"
                     name="site"
-                    :closeOnOutsideClick="true"
+                    :close-on-outside-click="true"
                     @selected="onSelectedOptionRoles"
                 />
             </div>
 
             <div class="flex flex-col">
-                <label class="text-[18px] font-bold" for="Role">Your Site</label>
+                <label
+                    class="text-[18px] font-bold"
+                    for="Role"
+                >Your Site</label>
                 <SearchDropdown
                     class="searchable_dropdown"
                     :options="allSites"
                     :placeholder="'Search for your site...' "
                     name="site"
-                    :closeOnOutsideClick="true"
+                    :close-on-outside-click="true"
                     @selected="onSelectedOptionSites"
                 />
             </div>
         </template>
-
-        <template #step2 v-if="!isPrincipal">
+        <!-- Step 2: If role is principal, set school name and motto, if not principal (means a regular staff), choose yr levels and subjects  -->
+        <template
+            v-if="!isPrincipal"
+            #step2
+        >
             <h5 class="text-[18px] font-bold">
                 What year levels do you work with?
             </h5>
@@ -537,9 +544,15 @@
             </div>
         </template>
 
-        <template #step2 v-else>
+        <template
+            v-else
+            #step2
+        >
             <div>
-                <label class="text-[18px] font-bold" for="SchoolName">School name</label>
+                <label
+                    class="text-[18px] font-bold"
+                    for="SchoolName"
+                >School name</label>
                 <input
                     v-model="newSchoolData.schoolName"
                     type="text"
@@ -561,8 +574,13 @@
                 />
             </div>
         </template>
+        <!-- Step 3: if pricipal, upload school logo and add cover photo -->
+        <!-- Step 3: if regular staff: choose tech interest, biography -->
 
-        <template #step3 v-if="!isPrincipal">
+        <template
+            v-if="!isPrincipal"
+            #step3
+        >
             <h5 class="text-[18px] font-bold">
                 What digital technologies are you interested in
             </h5>
@@ -604,8 +622,13 @@
             </div>
         </template>
 
-        <template #step3 v-else>
-            <h5 class="text-[18px] font-bold">Upload your school logo</h5>
+        <template
+            v-else
+            #step3
+        >
+            <h5 class="text-[18px] font-bold">
+                Upload your school logo
+            </h5>
             <div>
                 <input
                     v-if="!showUploadedLogo"
@@ -627,22 +650,24 @@
 
                     <!-- <div class=""> -->
 
-                        <button
-                            class="h-fit px-7 py-3 ml-auto mb-auto hover:underline"
-                            @click="handleChangeImage('schoolLogo')"
-                        >
-                            Change
-                        </button>
+                    <button
+                        class="h-fit px-7 py-3 ml-auto mb-auto hover:underline"
+                        @click="handleChangeImage('schoolLogo')"
+                    >
+                        Change
+                    </button>
                     <!-- </div> -->
                 </div>
 
                 <ErrorHandler
                     v-if="errorMessage.length > 0"
-                    :errorMessage="errorMessage"
+                    :error-message="errorMessage"
                 />
             </div>
 
-            <h5 class="text-[18px] font-bold">Add a cover photo</h5>
+            <h5 class="text-[18px] font-bold">
+                Add a cover photo
+            </h5>
             <div>
                 <input
                     v-if="!showUploadedCover"
@@ -672,6 +697,7 @@
             </div>
         </template>
 
+        <!-- Step 4: Upload an avatar only works for  -->
         <template #step4>
             <h5 class="text-[18px] font-bold">
                 Upload an avatar
@@ -702,7 +728,6 @@
                         Change
                     </button>
                 </div>
-
             </div>
         </template>
 

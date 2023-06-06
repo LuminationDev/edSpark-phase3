@@ -14,7 +14,7 @@ use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\MarkdownEditor;
 use Filament\Forms\Components\Select;
 
-final class extraresource
+final class Extraresource
 {
     public static function title()
     {

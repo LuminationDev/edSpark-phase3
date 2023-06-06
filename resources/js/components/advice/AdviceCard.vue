@@ -6,23 +6,23 @@ import AdviceCardIcon from "@/js/components/advice/AdviceCardIcon.vue";
 import {useRouter} from "vue-router";
 
 const props = defineProps({
-    adviceContent:{
+    adviceContent: {
         type: Object, required: true
     },
-    showIcon:{
+    showIcon: {
         type: Boolean, required: false
     },
-    numberPerRow:{
+    numberPerRow: {
         type: Number, required: false, default: 3
     }
-})
+});
 
-const { post_id, post_title, cover_image, advice_type, created_at, post_excerpt, author } = props.adviceContent
+const {post_id, post_title, cover_image, advice_type, created_at, post_excerpt, author} = props.adviceContent
 const router = useRouter()
 
 
 const randomIconName = computed(() => {
-    const source = ['Book Light', 'Book Stars', 'Book Search']
+    const source = ['iconBookLight', 'iconBookStars', 'iconBookSearch']
     return source[Math.floor(Math.random() * source.length)]
 })
 
@@ -31,7 +31,11 @@ const handleClickAdviceCard = () => {
      * id inside param must be the same as the route path specified for advice-single
      * which is /advice/resources/:id
      */
-    router.push({ name:"advice-single", params: {id: props.adviceContent.post_id, content: JSON.stringify(props.adviceContent) }})
+    router.push({
+        name: "advice-single",
+        params: {id: props.adviceContent.post_id},
+        state: {content: JSON.stringify(props.adviceContent)}
+    })
 
 }
 
@@ -45,6 +49,7 @@ const likeBookmarkData = {
 
 <template>
     <GenericCard
+        :key="post_id"
         :title="post_title"
         :display-content="post_excerpt"
         :display-author="author"

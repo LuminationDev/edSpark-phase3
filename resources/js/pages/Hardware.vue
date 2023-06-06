@@ -1,33 +1,43 @@
 <script setup>
-    import HardwareHero from '../components/hardware/HardwareHero.vue';
-    import HardwareInformation from '../components/hardware/HardwareInformation.vue';
-    import SectionHeader from '../components/global/SectionHeader.vue';
-    import HardwareCard from '../components/hardware/HardwareCard.vue';
+import HardwareHero from '../components/hardware/HardwareHero.vue';
+import HardwareInformation from '../components/hardware/HardwareInformation.vue';
+import SectionHeader from '../components/global/SectionHeader.vue';
+import HardwareCard from '../components/hardware/HardwareCard.vue';
 
-    import VideoConferencing from '../components/svg/VideoConferencing.vue';
-    import MonitorDisplay from '../components/svg/MonitorDisplay.vue';
+import VideoConferencing from '../components/svg/VideoConferencing.vue';
+import MonitorDisplay from '../components/svg/MonitorDisplay.vue';
 
-    import { ref } from 'vue';
-    import { useHardwareStore } from '../stores/useHardwareStore';
+import {computed} from 'vue';
+import useSWRV from "swrv";
+import {serverURL} from "@/js/constants/serverUrl";
+import {axiosFetcher} from "@/js/helpers/fetcher";
 
-    const hardwareStore = useHardwareStore();
-
-    const laptops = ref([]);
-    const audioVisual = ref([]);
-    const emergingTech = ref([]);
-
-    const loadHardwareData = async () => {
-        let hardware = await hardwareStore.loadAllArticles();
-
-        laptops.value = hardware.filter(item => item.category.categoryName === 'Laptops');
-        audioVisual.value = hardware.filter(item => item.category.categoryName === 'Audio and Visual');
-        emergingTech.value = hardware.filter(item => item.category.categoryName === 'Emerging Technology');
-
-    };
+const {data: hardware, error } = useSWRV(`${serverURL}/fetchAllProducts`, axiosFetcher)
 
 
+const laptops = computed(()=>{
+    if(hardware.value){
+        return hardware.value.filter(item => item.category['categoryName'] === 'Laptop');
+    } else{
+        return []
+    }
+})
+const audioVisual = computed(()=>{
+    if(hardware.value){
+        return hardware.value.filter(item => item.category['categoryName'] === 'Audio Visual');
+    } else{
+        return []
+    }
+})
+const emergingTech = computed(()=>{
+    if(hardware.value){
+        return hardware.value.filter(item => item.category['categoryName'] === 'Emerging Technology');
+    } else{
+        return []
+    }
+})
 
-    loadHardwareData();
+
 
 </script>
 

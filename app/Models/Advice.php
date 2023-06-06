@@ -55,4 +55,5 @@ class Advice extends Model
         'extra_content' => 'array',
     ];
 
+
 }

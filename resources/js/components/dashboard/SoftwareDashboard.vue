@@ -9,12 +9,12 @@
         }
     });
 
-    console.log(props);
+    const imageURL = import.meta.env.VITE_SERVER_IMAGE_API;
 
 </script>
 
 <template>
-    <div class="py-20 px-20">
+    <div class="py-8 px-huge">
             <div class="grid grid-cols-12 gap-[24px] w-full h-full relative group/bg">
                 <div class="absolute softwareRobot -z-10 transition-all duration-700 opacity-10 top-1/2 -translate-y-1/2 left-1/3 group-hover/bg:left-[15%] group-hover/bg:scale-125">
                     <SoftwareRobot />
@@ -24,7 +24,7 @@
                         <div class="col-span-1 row-span-1">
                             <img
                                 class=""
-                                src="../../../assets/images/departmentProvidedAndApproved.png"
+                                src='../../../assets/images/departmentProvidedAndApproved.png'
                                 alt="Department Approved And Provided"
                             >
                         </div>

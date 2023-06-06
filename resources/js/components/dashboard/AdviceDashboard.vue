@@ -10,7 +10,7 @@
 </script>
 
 <template>
-    <div class="py-20 px-20">
+    <div class="py-8 px-huge">
         <div class="grid grid-cols-3 gap-[24px] w-full h-full">
             <div class="col-span-1">
                 <div class="grid grid-cols-3 row-span-4 py-4">

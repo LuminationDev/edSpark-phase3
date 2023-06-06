@@ -1,7 +1,9 @@
 <script setup>
 
-import {ref} from "vue";
 import BaseIconGenerator from "@/js/components/global/BaseIconGenerator.vue";
+import DeptApprovedIcon from "@/js/components/svg/software/DeptApprovedIcon.vue"
+import DeptProvidedIcon from '@/js/components/svg/software/DeptProvidedIcon.vue'
+import DeptNegotiatedIcon from "@/js/components/svg/software/DeptNegotiatedIcon.vue";
 
 const props = defineProps({
     iconName:{
@@ -9,21 +11,19 @@ const props = defineProps({
         required: true
     }
 })
-const iconPath = ref('')
-const adviceIconPaths = {
-    'Department Approved':"/components/svg/software/DeptApprovedIcon.vue",
-    'Department Provided': '/components/svg/software/DeptProvidedIcon.vue',
-    'Approved and Negotiated': '/components/svg/software/DeptNegotiatedIcon.vue'
+const adviceIconComponents = {
+    'Department Approved':DeptApprovedIcon,
+    'Department Provided': DeptProvidedIcon,
+    'Approved and Negotiated': DeptNegotiatedIcon
 
-}
-
-if(Object.keys(adviceIconPaths).includes(props.iconName)){
-    iconPath.value = adviceIconPaths[`${props.iconName}`]
 }
 
 </script>
 <template>
-    <template v-if="iconPath">
-        <BaseIconGenerator :icon-path="iconPath" />
+    <template v-if="iconName">
+        <BaseIconGenerator
+            :icon-path="iconName"
+            :components-object="adviceIconComponents"
+        />
     </template>
 </template>
