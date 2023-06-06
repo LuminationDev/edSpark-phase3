@@ -3,7 +3,12 @@
 const props = defineProps({
     numberPerRow: {
         type: Number,
-        required: true
+        required: false
+    },
+    numberOfRows: {
+        type: Number,
+        required: false,
+        default: 1
     },
     additionalClasses: {
         type: String,
@@ -13,8 +18,9 @@ const props = defineProps({
 </script>
 
 <template>
-    <div class="py-8 px-20">
+    <div class="pt-8 px-10">
         <div
+            v-for="row in numberOfRows"
             class="flex flex-row flex-1 flex-wrap justify-between"
             :class="additionalClasses"
         >
@@ -31,7 +37,7 @@ const props = defineProps({
                     class="cardTopCoverImage loadingCard-image relative min-h-[35%] bg-cover bg-center group-hover:min-h-[0%] group-hover:h-0 transition-all"
                 />
                 <div
-                    class="cardContent loadingCard-content h-full flex flex-col gap-6 p-4 overflow-hidden transition-all"
+                    class="cardContent loadingCard-content h-full flex flex-col gap-6 p-4 overflow-hidden transition-all bg-white"
                 >
                     <div class="loadingCard-title h-[2.25rem] w-full rounded-xl" />
 

@@ -1,5 +1,4 @@
 <script setup>
-console.log('aseSingleSubmenu')
 
 const props = defineProps({
     menuArray:{

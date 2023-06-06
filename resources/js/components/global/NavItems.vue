@@ -1,14 +1,14 @@
 <script setup>
-    import { ref } from 'vue';
+import {ref} from 'vue';
 
-    const props = defineProps({
-        route: {
-            type: Object,
-            required: true
-        }
-    });
+const props = defineProps({
+    route: {
+        type: Object,
+        required: true
+    }
+});
 
-    const navDropdownToggle = ref(false);
+const navDropdownToggle = ref(false);
 </script>
 
 <template>

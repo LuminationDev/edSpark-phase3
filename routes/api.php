@@ -32,6 +32,7 @@ Route::middleware('api')->group(function() {
     // Content Management
     Route::get('fetchAdvicePosts', [AdviceController::class, 'fetchAdvicePosts']);
     Route::get('fetchAdvicePostById/{id}', [AdviceController::class, 'fetchAdvicePostById']);
+    Route::get('fetchAdvicePostByType/{type}', [AdviceController::class, 'fetchAdvicePostByType']);
     Route::get('fetchSoftwarePosts', [SoftwareController::class, 'fetchSoftwarePosts']);
     Route::get('fetchSoftwarePostById/{id}', [SoftwareController::class, 'fetchSoftwarePostById']);
     Route::get('fetchEventPosts', [EventController::class, 'fetchEventPosts']);
@@ -58,10 +59,18 @@ Route::middleware('api')->group(function() {
     Route::get('fetchProductById/{id}', [ProductController::class, 'fetchProductById']);
     Route::get('fetchProductByBrand/{brand}', [ProductController::class, 'fetchProductByBrand']);
 
+    // School APIs
     Route::post('createSchool', [SchoolController::class, 'createSchool']);
     Route::post('updateSchool', [SchoolController::class, 'updateSchool']);
     Route::get('fetchAllSchools', [SchoolController::class, 'fetchAllSchools']);
     Route::get('fetchFeaturedSchools', [SchoolController::class, 'fetchFeaturedSchools']);
+    Route::get('fetchSchoolByName/{schoolName}', [SchoolController::class, 'fetchSchoolByName']);
+    Route::get('fetchStaffFromSite/{site_id}',[SchoolController::class, 'fetchAllStaffFromSite']);
+    Route::post('checkUserCanEdit',[SchoolController::class, 'checkUserCanEdit']);
+    Route::post('nominateUserForSchool',[SchoolController::class, 'nominateUserForSchool']);
+    Route::post('deleteNominatedUser',[SchoolController::class, 'deleteNominatedUserSchool']);
+    Route::post('getNominatedUsersFromSchool',[SchoolController::class, 'getNominatedUsersFromSchool']);
+
 
     Route::get('fetchAllTechs', [TechController::class, 'fetchAllTechs']);
 

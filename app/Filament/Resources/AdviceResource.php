@@ -125,17 +125,15 @@ class AdviceResource extends Resource
                                                 ->disableToolbarButtons([
                                                     'attachFiles',
                                                     'blockquote',
-                                                    'bulletList',
-                                                    'codeBlock',
+                                                    // 'codeBlock',
                                                     'h2',
                                                     'h3',
-                                                    'orderedList',
                                                     'redo',
                                                     'undo',
-                                                ]),
+                                                ])
                                         ])
                                 ])
-                                ->label('Extra Resources')
+                                ->label('Extra Resources'),
                         ])
                         ->label('Extra content')
                 ])

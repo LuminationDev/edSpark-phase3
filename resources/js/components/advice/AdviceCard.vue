@@ -22,7 +22,7 @@ const router = useRouter()
 
 
 const randomIconName = computed(() => {
-    const source = ['Book Light', 'Book Stars', 'Book Search']
+    const source = ['iconBookLight', 'iconBookStars', 'iconBookSearch']
     return source[Math.floor(Math.random() * source.length)]
 })
 

@@ -60,3 +60,4 @@ const filteredSchool = computed(() =>{
         </div>
     </div>
 </template>
+

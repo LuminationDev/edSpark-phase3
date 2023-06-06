@@ -3,6 +3,24 @@ import axios from 'axios';
 import {schoolContentArrParser} from "@/js/helpers/jsonHelpers";
 
 export const useSchoolsStore = defineStore('schools', {
+    /** newSchool (reside inside schoolsStore from FirstVisitForm):{
+     *     coverImage: File,
+     *     coverImageUrl: string | null,
+     *     logo: File,
+     *     logoUrl: string | null,
+     *     role:{
+     *         id: number,
+     *         name: string
+     *     },
+     *     schoolMessage: String (motto),
+     *     schoolName: String,
+     *     site:{
+     *         id: number
+     *         name: string
+     *     },
+     *     techUsed: Array<string>
+     * }
+     */
     state: () => ({
         schools: [],
         newSchool: {}
