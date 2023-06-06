@@ -80,7 +80,10 @@ export default {
     >
         <slot name="formHeader" />
 
-        <form @submit.prevent="submitStep">
+        <form
+            autocomplete="off"
+            @submit.prevent="submitStep"
+        >
             <div
                 v-for="(step, index) in steps"
                 v-show="activeStepIndex === index"

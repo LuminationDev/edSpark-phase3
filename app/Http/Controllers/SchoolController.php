@@ -331,20 +331,211 @@ class SchoolController extends Controller
         return response()->json($data);
 
     }
+
     public function fetchAllStaffFromSite($site_id): \Illuminate\Http\JsonResponse
     {
-            $all_staff = User::where('site_id', $site_id)->get();
-            foreach($all_staff as $staff){
-                $result = [
-                    'id' => $staff->id,
-                    'name' => $staff->name,
-                    'email' => $staff->email,
-                    'role' => ($staff->role) ? $staff->role->role_name : NULL,
-                ];
-                $final_result[] = $result;
-            }
-            return response()->json($final_result);
+        $all_staff = User::where('site_id', $site_id)->get();
+        $final_result = [];
+        foreach ($all_staff as $staff) {
+            $result = [
+                'id' => $staff->id,
+                'name' => $staff->full_name,
+                'email' => $staff->email,
+                'role' => ($staff->role) ? $staff->role->role_name : NULL,
+            ];
+            $final_result[] = $result;
+        }
+        return response()->json($final_result);
     }
 
+    public function nominateUserForSchool(Request $request): \Illuminate\Http\JsonResponse
+    {
+        if ($request->isMethod('post')) {
+            $requestData = $request->validate([
+                'school_id' => 'required',
+                'site_id' => 'required',
+                'user_id' => 'required',
+                'nominated_user_id' => 'required',
+            ]);
 
+            $school_id = $requestData['school_id'];
+            $site_id = $requestData['site_id'];
+            $user_id = $requestData['user_id'];
+            $nominated_user_id = $requestData['nominated_user_id'];
+
+            $user_record = User::find($user_id);
+
+            if ($user_record && $user_record->site_id == $site_id && $user_record->role->role_name === 'SCHLDR') {
+                OutputHelper::print('User is the school principal.');
+                $meta_to_insert = [
+                    "school_id" => $school_id,
+                    "schoolmeta_key" => 'nominated_user',
+                    'schoolmeta_value' => $nominated_user_id,
+                ];
+                Schoolmeta::create($meta_to_insert);
+
+                return response()->json([
+                    "status" => 200,
+                    "result" => 'User has been nominated successfully.'
+                ]);
+            } else {
+                return response()->json([
+                    "status" => 401,
+                    "result" => 'Failed to nominate user. User is not authorized.'
+                ]);
+            }
+        } else {
+            return response()->json([
+                "status" => 401,
+                "result" => 'Failed to nominate user. Invalid request method.'
+            ]);
+        }
+    }
+
+    public function deleteNominatedUserSchool(Request $request)
+    {
+        if ($request->isMethod('post')) {
+            $requestData = $request->validate([
+                'school_id' => 'required',
+                'site_id' => 'required',
+                'user_id' => 'required',
+                'nominated_id_delete' => 'required',
+            ]);
+
+            $school_id = $requestData['school_id'];
+            $site_id = $requestData['site_id'];
+            $user_id = $requestData['user_id'];
+            $nominated_id_delete = $requestData['nominated_id_delete'];
+
+            $user_record = User::find($user_id);
+
+            if ($user_record && $user_record->site_id == $site_id && $user_record->role->role_name === 'SCHLDR') {
+                OutputHelper::print('User is the school principal.');
+
+                $deleted = Schoolmeta::where('school_id', $school_id)
+                    ->where('schoolmeta_key', 'nominated_user')
+                    ->where('schoolmeta_value', $nominated_id_delete)
+                    ->delete();
+
+                if ($deleted) {
+                    return response()->json([
+                        "status" => 200,
+                        "result" => 'User nomination has been deleted successfully.'
+                    ]);
+                } else {
+                    return response()->json([
+                        "status" => 400,
+                        "result" => 'Failed to delete user nomination. Key not found.'
+                    ]);
+                }
+            } else {
+                return response()->json([
+                    "status" => 401,
+                    "result" => 'Failed to delete user nomination. User is not authorized.'
+                ]);
+            }
+        } else {
+            return response()->json([
+                "status" => 401,
+                "result" => 'Failed to delete user nomination. Invalid request method.'
+            ]);
+        }
+    }
+    public function getNominatedUsersFromSchool(Request $request): \Illuminate\Http\JsonResponse
+    {
+        if ($request->isMethod('post')) {
+            $requestData = $request->validate([
+                'school_id' => 'required',
+                'user_id' => 'required',
+                'site_id' => 'required'
+            ]);
+
+            $school_id = $requestData['school_id'];
+            $site_id = $requestData['site_id'];
+            $user_id = $requestData['user_id'];
+
+            $user_record = User::find($user_id);
+
+            if ($user_record && $user_record->site_id == $site_id && $user_record->role->role_name === 'SCHLDR') {
+                OutputHelper::print('User is the school principal.');
+
+                $nominated_users = Schoolmeta::where('school_id', $school_id)
+                    ->where('schoolmeta_key', 'nominated_user')
+                    ->pluck('schoolmeta_value');
+
+                $users = User::whereIn('id', $nominated_users)
+                    ->pluck('full_name', 'id')
+                    ->toArray();
+
+                return response()->json([
+                    "status" => 200,
+                    "result" => $users
+                ]);
+            } else {
+                return response()->json([
+                    "status" => 401,
+                    "result" => 'Failed to retrieve nominated users. User is not authorized as the school principal.'
+                ]);
+            }
+        } else {
+            return response()->json([
+                "status" => 401,
+                "result" => 'Invalid request method.'
+            ]);
+        }
+    }
+
+    public function checkUserCanEdit(Request $request): \Illuminate\Http\JsonResponse
+    {
+        // user id
+        if ($request->isMethod('post')) {
+            $requestData = $request->validate([
+                'school_id' => 'required',
+                'user_id' => 'required',
+                'site_id' => 'required'
+            ]);
+
+            $site_id = $requestData['site_id'];
+            $user_id = $requestData['user_id'];
+            $school_id = $requestData['school_id'];
+            //check user site id == school Id && user role === school principal
+            $user_record = User::find($user_id);
+
+            if ($user_record && $user_record->site_id == $site_id && $user_record->role->role_name === 'SCHLDR') {
+                OutputHelper::print('User is the school principal hehe');
+                return response()->json([
+                    "status" => 200,
+                    "result" => true,
+                    'canNominate' => true
+                ]);
+            }
+            // check school meta
+            // if user's id is inside meta, in the nominated_user field
+            $schoolmeta_record = Schoolmeta::where('school_id', $school_id)
+                ->where('schoolmeta_key', 'nominated_user')
+                ->where('schoolmeta_value', $user_id)
+                ->first();
+
+            if ($schoolmeta_record) {
+                OutputHelper::print('User is nominated in school meta.');
+                return response()->json([
+                    "status" => 200,
+                    "result" => true,
+                    'canNominate' => false
+                ]);
+            }
+
+            OutputHelper::print('User is not authorized');
+            return response()->json([
+                "status" => 401,
+                "result" => False
+            ]);
+
+        }
+        return response()->json([
+            "status" => 401,
+            "result" => False
+        ]);
+
+    }
 }

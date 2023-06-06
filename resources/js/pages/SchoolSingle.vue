@@ -4,7 +4,7 @@
  */
 import axios from 'axios'
 import {useRouter, useRoute} from 'vue-router';
-import {onBeforeMount,computed, ref, watch} from 'vue'
+import {onBeforeMount, computed, ref} from 'vue'
 import {storeToRefs} from "pinia";
 import {parseToJsonIfString, schoolContentArrParser} from "@/js/helpers/jsonHelpers";
 import {schoolDataFormDataBuilder, printOutFormData} from "@/js/helpers/schoolDataHelpers";
@@ -22,9 +22,10 @@ import GenericButton from "@/js/components/button/GenericButton.vue";
  * IMPORT SVGS
  */
 import {useSchoolsStore} from "@/js/stores/useSchoolsStore";
-import {useUserStore} from "@/js/stores/useUserStore";
 import ChevronRight from '../components/svg/ChevronRight.vue';
 import {isObjectEmpty} from "@/js/helpers/objectHelpers";
+import {useUserStore} from "@/js/stores/useUserStore";
+import SchoolNominationButton from "@/js/components/schools/SchoolNominationButton.vue";
 
 const route = useRoute();
 const router = useRouter();
@@ -54,39 +55,19 @@ const handleToggleTooltip = (index) => {
     tooltipIndex.value = index;
 }
 
-const { newSchool } = storeToRefs(useSchoolsStore())
+const {newSchool} = storeToRefs(useSchoolsStore())
 const {currentUser} = storeToRefs(useUserStore())
 
-onBeforeMount( async () => {
+onBeforeMount(async () => {
     const currentSchoolName = route.params.name
     await fetchSchoolByNameAsync(currentSchoolName)
-    /**
-     * newSchool (reside inside schoolsStore from FirstVisitForm):{
-     *     coverImage: File,
-     *     coverImageUrl: string | null,
-     *     logo: File,
-     *     logoUrl: string | null,
-     *     role:{
-     *         id: number,
-     *         name: string
-     *     },
-     *     schoolMessage: String (motto),
-     *     schoolName: String,
-     *     site:{
-     *         id: number
-     *         name: string
-     *     },
-     *     techUsed: Array<string>
-     *
-     * }
-     */
-
     //scenario where school is not created but Principal has entered school information in the firstVisitForm
+
     if (newSchool.value.schoolName &&
         Object.keys(schoolContent.value).length <= 0 &&
-        (currentUser.value.role === "Principal" || currentUser.value.role === "SCHLDR")){
+        (currentUser.value.role === "Principal" || currentUser.value.role === "SCHLDR")) {
         // TODO: check if newSchool.schoolName is valid inside site databasr
-        triggerCreateNewSchoolFromSchoolStore().then(res =>{
+        triggerCreateNewSchoolFromSchoolStore().then(res => {
             console.log('fetching school after triggeringCreation')
             fetchSchoolByNameAsync(currentSchoolName)
         })
@@ -95,7 +76,9 @@ onBeforeMount( async () => {
         showSchoolNotAvailable.value = true
     }
 })
-const fetchSchoolByNameAsync = (schoolName) =>{
+
+
+const fetchSchoolByNameAsync = (schoolName) => {
     return axios.get(`${serverURL}/fetchSchoolByName/${schoolName}`).then(res => {
         console.log('Found the school. populating data now inside SchoolSingle')
         const filteredSchool = res.data
@@ -105,8 +88,12 @@ const fetchSchoolByNameAsync = (schoolName) =>{
         schoolContent.value.cover_image = schoolContent.value.cover_image.replace("/\\/g", "")
         schoolContent.value.logo = schoolContent.value.logo.replace("/\\/g", "")
         if (filteredSchool.metadata) {
+            console.log(filteredSchool.metadata)
+            // here is some meta filtering coded
             const colorThemeMeta = schoolContent.value['metadata'].filter(meta => meta['schoolmeta_key'] === 'school_color_theme')
-            colorTheme.value = colorThemeMeta[0]['schoolmeta_value']
+            if (colorThemeMeta.length > 0) {
+                colorTheme.value = colorThemeMeta[0]['schoolmeta_value']
+            }
         }
     }).catch(async err => {
         console.log(err.message + ' Inside fetchSchoolByName')
@@ -146,9 +133,7 @@ const triggerCreateNewSchoolFromSchoolStore = () => {
 }
 
 const handleSaveNewSchoolInfo = async (content_blocks, tech_used) => {
-    /**
-     * Copy current schoolData and replace content_blocks and tech_used
-     */
+    // Copy current schoolData and replace content_blocks and tech_used
     const schoolData = _.cloneDeep(schoolContent.value)
     schoolData.content_blocks = content_blocks
     schoolData.tech_used = tech_used
@@ -176,8 +161,6 @@ const handleSaveNewSchoolInfo = async (content_blocks, tech_used) => {
         // assign school info with newest data that has been saved succesfully to trigger update
         console.log(res.data.data)
         schoolContent.value = res.data.data
-        // parse JSON after receiving data from backend. can be done better
-        // can consider computed function
         schoolContent.value.content_blocks = parseToJsonIfString(schoolContent.value.content_blocks)
         schoolContent.value.tech_used = parseToJsonIfString(schoolContent.value.tech_used)
     }).catch(err => {
@@ -191,6 +174,8 @@ const handleChangeColorTheme = (newColor) => {
     console.log('received command to swap color to -> ' + 'newColor')
     colorTheme.value = newColor
 }
+
+
 /**
  * Handle Event emitted from children containing type {logo,coverImage} and Image file
  * @param {String} type
@@ -212,9 +197,7 @@ const handleReceivePhotoFromContent = (type, file) => {
     }
 }
 
-/**
- * Cover image loading workaround
- */
+// Cover image loading workaround
 const isCoverImageLoaded = ref(false)
 
 const coverImageLink = computed(() => {
@@ -228,9 +211,8 @@ const handleCoverImageLoaded = () => {
     isCoverImageLoaded.value = true
 }
 
-/**
- * Submenu specific codes
- */
+
+// Submenu specific codes
 const schoolSubmenu = [
     {
         displayText: 'Details',
@@ -249,13 +231,11 @@ const activeSubmenu = ref(schoolSubmenu[0]['value'])
 const handleChangeSubmenu = (value) => {
     activeSubmenu.value = value
 }
-const isSchoolContentPopulated = computed( () => {
+const isSchoolContentPopulated = computed(() => {
     return !isObjectEmpty(schoolContent.value)
 })
 
-/**
- * End of submenu specific code  plus @emit-active-tab-to-specific-page in BaseSingle
- * */
+// End of submenu specific code  plus @emit-active-tab-to-specific-page in BaseSingle
 
 </script>
 <template>
@@ -371,17 +351,16 @@ const isSchoolContentPopulated = computed( () => {
                                     @send-info-to-school-single="handleSaveNewSchoolInfo"
                                     @send-color-to-school-single="handleChangeColorTheme"
                                     @send-photo-to-school-single="handleReceivePhotoFromContent"
-                                />
+                                >
+                                    <template #additionalContentActions>
+                                        <SchoolNominationButton
+                                            v-if="schoolContent['site']['site_id']"
+                                            :site-id="schoolContent['site']['site_id']"
+                                            :school-id="schoolContent['id']"
+                                        />
+                                    </template>
+                                </SchoolContent>
                             </div>
-                            <GenericButton
-                                :callback="()=> {}"
-                                type="school"
-                                class="w-40 ml-10"
-                            >
-                                <div class="">
-                                    Nominated someone to build your school page
-                                </div>
-                            </GenericButton>
                         </template>
                         <!--whats new submenu-->
                         <template v-if="activeSubmenu === schoolSubmenu[1]['value']">
