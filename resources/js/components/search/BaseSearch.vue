@@ -41,7 +41,7 @@ const handleSearchTerm = (term) => {
     filterTerm.value = term.toLowerCase()
 }
 
-
+// original implementation of the filtering. keeping this code here - Erick
 // Function to recursively check for matches in nested objects
 function checkNested(obj, key, value) {
     if (obj && typeof obj === 'object') {
@@ -61,8 +61,8 @@ function checkNested(obj, key, value) {
         }
     }
     return false;
-}
 
+}
 // Function to filter the products based on the filterBy object
 function filterProducts(products, filterBy) {
     const filterValues = Object.values(filterBy)
@@ -77,16 +77,29 @@ function filterProducts(products, filterBy) {
     return products.filter(product => {
         let filterResult = {}
         for (let key in filterBy) {
-
-            if (filterBy.hasOwnProperty(key)) {
-                let filterValues = filterBy[key];
-                if(filterValues.length === 0){
-                    filterResult[key] = true
-                } else{
-                    filterResult[key] = checkNested(product, key, filterValues)
-                }
+            // try using helper function
+            let productValue = findNestedKeyValue(product, key)
+            let filterValues = filterBy[key];
+            if(filterValues.length === 0){
+                filterResult[key] = true
+            } else{
+                filterResult[key] = filterValues.includes(productValue[0])
             }
+            // try
+
+            // below is original version-- above is refactored with findNestedKeyValue
+            // keeping this code might come in handy as we add more filtering - Erick
+
+            // if (filterBy.hasOwnProperty(key)) {
+            //     let filterValues = filterBy[key];
+            //     if(filterValues.length === 0){
+            //         filterResult[key] = true
+            //     } else{
+            //         filterResult[key] = checkNested(product, key, filterValues)
+            //     }
+            // }
         }
+        console.log(filterResult)
         for(let eachResult of Object.values(filterResult)){
             if(!eachResult) return false
         }
