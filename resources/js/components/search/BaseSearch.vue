@@ -5,7 +5,7 @@ import HardwareCard from "@/js/components/hardware/HardwareCard.vue";
 import SearchBar from "@/js/components/browseschools/SearchBar.vue";
 import AdviceCard from "@/js/components/advice/AdviceCard.vue";
 import SoftwareCard from "@/js/components/software/SoftwareCard.vue";
-
+import {findNestedKeyValue} from "@/js/helpers/objectHelpers";
 const props = defineProps({
     resourceList:{
         type: Array,
@@ -14,25 +14,95 @@ const props = defineProps({
     searchType: {
         type: String,
         required: true
+    },
+    liveFilterObject:{
+        type: Object,
+        required: true
     }
-
-
 })
 
 const filterTerm = ref('')
 const route = useRoute()
 
-const filteredData = computed(() => {
+const filteredTermData = computed(() => {
     return props.resourceList.filter(data => {
         if (filterTerm.value.length < 1) return true
-        console.log(data)
-        if (data.post_title.toLowerCase().includes(filterTerm.value)) return true
+        if(data.post_title){
+            if (data.post_title.toLowerCase().includes(filterTerm.value)) return true
+        } else if(data.product_name){
+            // just to accomodate product_name in hardware
+            if (data.product_name.toLowerCase().includes(filterTerm.value)) return true
+        }
+        return false
     })
 })
 
 const handleSearchTerm = (term) => {
     filterTerm.value = term.toLowerCase()
 }
+
+
+// Function to recursively check for matches in nested objects
+function checkNested(obj, key, value) {
+    if (obj && typeof obj === 'object') {
+        for (let k in obj) {
+            if (obj.hasOwnProperty(k) && k !== 'extra_content') {
+                if (k === key) {
+                    // if that compared brandName/category is inside value (an array) return true
+                    for(let eachValue of value){
+                        if(obj[k] === eachValue){
+                            return true;
+                        }
+                    }
+                } else if (checkNested(obj[k], key, value)) {
+                    return true;
+                }
+            }
+        }
+    }
+    return false;
+}
+
+// Function to filter the products based on the filterBy object
+function filterProducts(products, filterBy) {
+    const filterValues = Object.values(filterBy)
+    let totalValuesCount = 0
+    for(let eachValue of filterValues){
+        totalValuesCount += eachValue.length
+    }
+    if (totalValuesCount === 0) {
+        console.log('returned al products bcs no filterin hehe')
+        return products; // Return all products if filterBy object is empty
+    }
+    return products.filter(product => {
+        let filterResult = {}
+        for (let key in filterBy) {
+
+            if (filterBy.hasOwnProperty(key)) {
+                let filterValues = filterBy[key];
+                if(filterValues.length === 0){
+                    filterResult[key] = true
+                } else{
+                    filterResult[key] = checkNested(product, key, filterValues)
+                }
+            }
+        }
+        for(let eachResult of Object.values(filterResult)){
+            if(!eachResult) return false
+        }
+        return true
+
+    });
+}
+
+
+const filteredData = computed(()=>{
+    if(Object.values(props.liveFilterObject).length === 0) return filteredTermData.value
+    return filterProducts(filteredTermData.value, props.liveFilterObject)
+})
+
+
+
 </script>
 
 <template>
@@ -54,13 +124,13 @@ const handleSearchTerm = (term) => {
             class="resourceResult pt-10 flex flex-row flex-wrap justify-around gap-2 flex-1 w-full px-20"
         >
             <template
-                v-for="(data, index) in filteredData"
-                :key="index"
+                v-for="(data) in filteredData"
             >
                 <template
                     v-if="searchType === 'advice'"
                 >
                     <AdviceCard
+                        :key="data.id"
                         :advice-content="data"
                         :number-per-row="2"
                         :show-icon="true"
@@ -68,12 +138,14 @@ const handleSearchTerm = (term) => {
                 </template>
                 <template v-else-if="searchType === 'software'">
                     <SoftwareCard
+                        :key="data.id"
                         :software="data"
                         :number-per-row="2"
                     />
                 </template>
                 <template v-else-if="searchType == 'hardware'">
                     <HardwareCard
+                        :key="data.id"
                         :hardware-content="data"
                         :number-per-row="4"
                     />

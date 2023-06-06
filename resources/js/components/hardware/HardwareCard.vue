@@ -34,7 +34,7 @@ const {
 } = props.hardwareContent;
 
 const likeBookmarkData = {
-    post_id: props.hardwareContent.post_id,
+    post_id: props.hardwareContent.id,
     user_id: currentUser.value.id,
     post_type: 'hardware'
 };
