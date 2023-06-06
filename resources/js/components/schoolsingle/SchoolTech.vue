@@ -20,7 +20,7 @@ const partnerTech  =computed(() => {
 
 </script>
 <template>
-    <div class="bg-white border-[0.5px] border-black px-5 py-8 flex flex-col relative overflow-hidden">
+    <div class="bg-white border-[0.5px] border-black px-4 py-4 flex flex-col relative overflow-hidden">
         <div class="absolute techListBackground -right-28 -top-24 ">
             <LaptopGear />
         </div>

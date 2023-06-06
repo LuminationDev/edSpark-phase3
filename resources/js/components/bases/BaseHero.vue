@@ -70,41 +70,56 @@ const setTheBackground = computed(() => {
                     <slot name="titleText" />
                 </h1>
 
-                <p class="text-white flex flex-col gap-4 text-[18px] font-semibold" v-if="$slots.authorName">
+                <p
+                    v-if="$slots.authorName"
+                    class="text-white flex flex-col gap-4 text-[18px] font-semibold"
+                >
                     <slot name="authorName" />
                 </p>
 
-                <p class="text-white flex flex-col gap-4 text-[16px] font-thin pb-4" v-if="$slots.contentDate">
+                <p
+                    v-if="$slots.contentDate"
+                    class="text-white flex flex-col gap-4 text-[16px] font-thin pb-4"
+                >
                     <!-- <slot name="authorName" /> -->
                     <slot name="contentDate" />
                     <!-- <slot name="hardwareProvider" /> -->
                 </p>
 
-                <p class="text-white flex flex-col gap-4 text-[16px] font-thin pb-4" v-if="$slots.subtitleText1">
+                <p
+                    v-if="$slots.subtitleText1"
+                    class="text-white flex flex-col gap-4 text-[16px] font-thin pb-4"
+                >
                     <!-- <slot name="authorName" /> -->
                     <slot name="subtitleText1" />
                     <!-- <slot name="hardwareProvider" /> -->
                 </p>
 
-                <p class="text-white flex flex-col gap-4 text-[14px] font-normal pb-4" v-if="$slots.hardwareProvider">
+                <p
+                    v-if="$slots.hardwareProvider"
+                    class="text-white flex flex-col gap-4 text-[14px] font-normal pb-4"
+                >
                     <slot name="hardwareProvider" />
                 </p>
 
                 <p
+                    v-if="$slots.subtitleText2"
                     class="text-white text-[18px] font-normal"
                     :class="$slots.subtitleText2 ? 'mt-[36px]' : ''"
-                    v-if="$slots.subtitleText2"
                 >
                     <slot name="subtitleText2" />
                 </p>
             </div>
-            <div class="col-span-3 relative" v-if="$slots.icon">
+            <div
+                v-if="$slots.icon"
+                class="col-span-3 relative"
+            >
                 <div class="absolute right-12">
                     <slot name="icon" />
                 </div>
             </div>
         </div>
-        <div class="articleSwooshContainer relative w-full h-44 z-50">
+        <div class="articleSwooshContainer relative w-full z-50">
             <ArticleSingleSwoosh
                 :color-theme="swooshColorTheme"
             />
