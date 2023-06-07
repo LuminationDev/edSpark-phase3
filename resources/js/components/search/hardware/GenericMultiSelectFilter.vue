@@ -39,7 +39,7 @@ const handleEmitSelectedFilters = () =>{
             :placeholder="props.placeholder"
             :close-on-select="false"
             label="name"
-            track-by="value"
+            track-by="name"
             @select="handleEmitSelectedFilters"
             @remove="handleEmitSelectedFilters"
         />

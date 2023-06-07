@@ -22,7 +22,7 @@ const props = defineProps({
         default: 3
     },
     displayAuthor:{
-        type: String, required: true
+        type: String, required: false
     },
     displayDate:{
         type: String, required: false

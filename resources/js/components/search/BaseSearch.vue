@@ -1,6 +1,10 @@
 <script setup>
 import {ref, computed} from 'vue'
 import {useRoute} from "vue-router";
+import VPagination from "@hennge/vue3-pagination";
+import "@hennge/vue3-pagination/dist/vue3-pagination.css";
+
+
 import HardwareCard from "@/js/components/hardware/HardwareCard.vue";
 import SearchBar from "@/js/components/browseschools/SearchBar.vue";
 import AdviceCard from "@/js/components/advice/AdviceCard.vue";
@@ -26,6 +30,7 @@ const filterTerm = ref('')
 const route = useRoute()
 
 const filteredTermData = computed(() => {
+    if(!props.resourceList) return []
     return props.resourceList.filter(data => {
         if (filterTerm.value.length < 1) return true
         if(data.post_title){
@@ -79,7 +84,7 @@ function filterProducts(products, filterBy) {
         let filterResult = {}
         for (let key in filterBy) {
             // using findNestedKeyValue helper function
-            let productValue = findNestedKeyValue(product, key)
+            let productValue = findNestedKeyValue(product, key).flat(1)
             let filterValues = filterBy[key];
             if(filterValues.length === 0){
                 filterResult[key] = true
@@ -87,6 +92,10 @@ function filterProducts(products, filterBy) {
                 // Handle if there are more than 1 result inside productValue. should just check
                 // if atleast one of the result match the filter and return true
                 if(productValue.length === 1 ){
+                    console.log('below is filter values being filter AGAINST')
+                    console.log(filterValues)
+                    console.log('below is product valuem what the object has')
+                    console.log(productValue)
                     filterResult[key] = filterValues.includes(productValue[0])
                 }else {
                     let result = false
@@ -125,8 +134,28 @@ const filteredData = computed(()=>{
     return filterProducts(filteredTermData.value, props.liveFilterObject)
 })
 
+// pagination code below
+const page = ref(1)
+const numberOfItemsPerPage = 10
 
+const handleChangePageNumber = (newPageNumber) => {
+    console.log('handleChangePage number is called')
+    page.value= newPageNumber
+}
 
+const numberOfAvailablePages = computed(() =>{
+    return Math.ceil(filteredData.value.length / numberOfItemsPerPage)
+})
+
+const paginatedFilteredData = computed(() =>{
+    if(page.value === numberOfAvailablePages.value){
+        //show the rest without hard limit
+        return filteredData.value.slice((page.value - 1) * numberOfItemsPerPage)
+    }else{
+
+        return filteredData.value.slice((page.value - 1)  * numberOfItemsPerPage, page.value * numberOfItemsPerPage)
+    }
+})
 </script>
 
 <template>
@@ -148,13 +177,13 @@ const filteredData = computed(()=>{
             class="resourceResult pt-10 flex flex-row flex-wrap justify-around gap-2 flex-1 w-full px-20"
         >
             <template
-                v-for="(data) in filteredData"
+                v-for="(data) in paginatedFilteredData"
             >
                 <template
                     v-if="searchType === 'advice'"
                 >
                     <AdviceCard
-                        :key="data.id"
+                        :key="data.post_id"
                         :advice-content="data"
                         :number-per-row="2"
                         :show-icon="true"
@@ -162,7 +191,7 @@ const filteredData = computed(()=>{
                 </template>
                 <template v-else-if="searchType === 'software'">
                     <SoftwareCard
-                        :key="data.id"
+                        :key="data.post_id"
                         :software="data"
                         :number-per-row="2"
                     />
@@ -185,6 +214,7 @@ const filteredData = computed(()=>{
                     </div>
                 </template>
             </template>
+
             <div
                 v-if="filteredData.length <= 0"
                 class="text-xl font-semibold"
@@ -193,4 +223,49 @@ const filteredData = computed(()=>{
             </div>
         </div>
     </div>
+    <div class="BaseSearchPaginationContainer flex justify-center text-lg mt-12">
+        <v-pagination
+            v-model="page"
+            :range-size="1"
+            :pages="numberOfAvailablePages"
+            active-color="#DCEDFF"
+            @update:model-value="handleChangePageNumber"
+        />
+    </div>
 </template>
+<style lang="scss">
+.BaseSearchPaginationContainer {
+
+    .Pagination{
+        font-size: large;
+
+        .PaginationControl{
+
+            .Control{
+                height: 35px;
+                width: 35px;
+            }
+        }
+        li {
+
+            button {
+                font-size: 24px;
+                margin-left: 16px;
+                margin-right: 16px;
+
+            }
+            .Page,
+            .Page-active {
+                border: 1px transparent solid;
+                padding: 16px;
+            }
+            .Page:hover{
+                border: 1px #339999 solid;
+
+            }
+
+
+        }
+    }
+}
+</style>
