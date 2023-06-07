@@ -92,10 +92,6 @@ function filterProducts(products, filterBy) {
                 // Handle if there are more than 1 result inside productValue. should just check
                 // if atleast one of the result match the filter and return true
                 if(productValue.length === 1 ){
-                    console.log('below is filter values being filter AGAINST')
-                    console.log(filterValues)
-                    console.log('below is product valuem what the object has')
-                    console.log(productValue)
                     filterResult[key] = filterValues.includes(productValue[0])
                 }else {
                     let result = false

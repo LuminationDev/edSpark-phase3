@@ -1,7 +1,46 @@
 <script setup>
-console.log('inside software search')
+import {ref} from "vue";
+
+import {serverURL} from "@/js/constants/serverUrl";
+import BaseSearch from "@/js/components/search/BaseSearch.vue";
+import GenericMultiSelectFilter from "@/js/components/search/hardware/GenericMultiSelectFilter.vue";
+import useSWRV from "swrv";
+import {axiosFetcher} from "@/js/helpers/fetcher";
+
+const swrvOptions = {
+    revalidateOnFocus: false, // disable refresh on every focus, suspect its too often
+    refreshInterval: 30000 // refresh or revalidate data every 30 secs
+}
+
+const {data: softwareList, error: softwareError} = useSWRV(`${serverURL}/fetchSoftwarePosts`, axiosFetcher, swrvOptions)
+
+let softwareFilterList = [
+    {name: "Department Provided", value:"Department Provided"},
+    {name: "Department Approved", value:"Department Approved"},
+    {name: "Department Approved and Negotiated", value:"Approved and Negotiated"},
+]
+
+const filterObject = ref({})
+
+const handleFilter = (filters, dataPath) => {
+    filterObject.value[dataPath] = filters.map(filter =>filter.value).flat(1)
+}
+
 </script>
 
 <template>
-    <div> Hello</div>
+    <BaseSearch
+        search-type="software"
+        :resource-list="softwareList"
+        :live-filter-object="filterObject"
+    >
+        <template #filterBar>
+            <GenericMultiSelectFilter
+                placeholder="Filter by software type"
+                :filter-list="softwareFilterList"
+                data-path="software_type"
+                @transmit-selected-filters="handleFilter"
+            />
+        </template>
+    </BaseSearch>
 </template>

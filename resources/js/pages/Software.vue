@@ -9,7 +9,7 @@ import {useRouter} from "vue-router";
 
 const router = useRouter()
 const handleBrowseAllSoftware = () => {
-    router.push('/browse/software')
+    router.push('/browse/softwares')
 }
 </script>
 
