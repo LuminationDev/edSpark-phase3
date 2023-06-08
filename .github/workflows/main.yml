@@ -1,0 +1,36 @@
+# Test workflow to setup automatic deployment
+name: Deploy to test site
+
+
+# Controls when the workflow will run
+on:
+    # Triggers the workflow on push or pull request events but only for the "development" branch
+    pull_request:
+        branches: ['test']
+        types: [closed]
+    push:
+        branches: ['test']
+
+    # Allows you to run this workflow manually from the Actions tab
+    workflow_dispatch:
+
+jobs:
+    merge_job:
+        # this job will only run if the PR has been merged
+        # if: github.event.pull_request.merged == true
+        runs-on: ubuntu-latest
+        steps:
+            - name: SSH Remote Commands
+              uses: appleboy/ssh-action@v0.1.4
+              with:
+                script: |
+                    cd public_html/test
+                    echo 'test test workflow'
+                host: 'edspark.sa.edu.au'
+                username: 'luminationdev'
+                password: ${{ secrets.EDSPARK_DIGITAL_HUB }}
+
+            - run: |
+                    echo $GITHUB_REF
+                    echo $GITHUB_PATH
+                    echo $GITHUB_REF_NAME
