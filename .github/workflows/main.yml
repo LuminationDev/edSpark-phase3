@@ -26,9 +26,9 @@ jobs:
                 script: |
                     cd public_html/test
                     git checkout main -f
+                    git pull
                     git branch -D ${{github.ref_name}}
                     git checkout ${{github.ref_name}}
-                    git pull
                     npm run buildtest
                 host: 'edspark.sa.edu.au'
                 username: 'luminationdev'
