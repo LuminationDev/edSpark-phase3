@@ -81,6 +81,7 @@ const getIdToken = async () => {
         await checkFirstVisit(claims.value.email);
     } catch(e){
         console.warn('Failed to get Auth data. User is not logged in')
+        currentUser.value.id = 99999 // fallback user id
     }
 };
 
