@@ -2,7 +2,6 @@
 import AdviceHero from '../components/advice/AdviceHero.vue'
 import useSWRV from "swrv";
 import useSwrvState from '@/js/helpers/useSwrvState';
-
 import EducatorHero from "@/js/components/advice/EducatorHero.vue";
 import PartnerHero from "@/js/components/advice/PartnerHero.vue";
 import AdviceCard from "@/js/components/advice/AdviceCard.vue";

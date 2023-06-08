@@ -4,7 +4,7 @@
         "dev": "vite",
         "build": "vite build && npx tailwindcss build -i ./resources/css/app.css -o ./resources/css/output.css",
         "prod": "vite build && composer update && php artisan migrate && cp -r ./public/* ./web",
-        "buildtest": "vite build && composer update && php artisan migrate"
+        "buildtest": "vite build && composer update"
 
     },
     "devDependencies": {
