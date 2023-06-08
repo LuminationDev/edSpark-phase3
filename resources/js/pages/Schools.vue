@@ -132,9 +132,6 @@ const handleSaveWelcomePopup = (data) => {
 
 </script>
 <template>
-    <div class="text-lg text-genericDark flex mt-24">
-        HELOOOOO
-    </div>
     <div
         v-if="createSchool"
         class="mt-10"
