@@ -25,7 +25,10 @@ jobs:
               with:
                 script: |
                     cd public_html/test
-                    echo 'test test workflow'
+                    git checkout main -f
+                    git branch -D ${{github.ref_name}}
+                    git checkout ${{github.ref_name}}
+                    npm run buildtest
                 host: 'edspark.sa.edu.au'
                 username: 'luminationdev'
                 password: ${{ secrets.EDSPARK_DIGITAL_HUB }}
