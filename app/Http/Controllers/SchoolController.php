@@ -208,7 +208,7 @@ class SchoolController extends Controller
         $data = [];
         foreach ($schools as $school) {
             $schoolMetadata = Schoolmeta::where('school_id', $school->id)->get();
-            $site = Site::find($school->site_id);
+            $site = Site::where('site_id',$school->site_id)->first();
             $siteLocation = (object)[
                 'lat' => (float)($site->site_latitude ?: 0),
                 'lng' => (float)($site->site_longitude ?: 0)
@@ -309,11 +309,12 @@ class SchoolController extends Controller
         $data = [];
 
         foreach ($schools as $school) {
+            OutputHelper::print(serialize($school->site));
             $result = [
                 'id' => $school->id,
                 'site' => [
                     'site_id' => $school->site_id,
-                    'site_name' => ($school->site_id) ? $school->site->site_name : NULL
+                    'site_name' => ($school->site) ? $school->site->site_name : NULL
                 ],
                 'owner' => [
                     'owner_id' => $school->owner_id,
@@ -491,6 +492,11 @@ class SchoolController extends Controller
     {
         // user id
         if ($request->isMethod('post')) {
+            return response()->json([
+                "status" => 200,
+                "result" => true,
+                'canNominate' => true
+            ]);
             $requestData = $request->validate([
                 'school_id' => 'required',
                 'user_id' => 'required',
