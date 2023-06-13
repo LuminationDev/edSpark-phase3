@@ -1,6 +1,7 @@
 import { defineStore } from "pinia";
 import { useSessionStorage } from "@vueuse/core";
 import axios from "axios";
+import {serverURL} from "@/js/constants/serverUrl";
 
 export const useUserStore = defineStore('user', {
     /**
@@ -19,8 +20,8 @@ export const useUserStore = defineStore('user', {
     state: () => ({
         currentUser: useSessionStorage('currentUser', {}),
         userAvatar: useSessionStorage('userAvatar', ''),
-        userLikeList: [],
-        userBookmarkList: [],
+        userLikeList: {},
+        userBookmarkList: {},
         notifications: [],
     }),
 
@@ -36,7 +37,6 @@ export const useUserStore = defineStore('user', {
 
     actions: {
         async updateUserName(newName) {
-
             await axios({
                 method: 'POST',
                 url: `http://localhost:8000/api/updateUser`,
@@ -186,6 +186,32 @@ export const useUserStore = defineStore('user', {
                 console.log(error.message)
 
             })
+        },
+        populateUserLikesAndBookmark(){
+            let data = {
+                user_id: this.currentUser.id
+            }
+            axios.post(`${serverURL}/fetchAllLikes`, data).then(res => {
+                res.data.data.forEach(like =>{
+                    if(!this.userLikeList[like.post_type]){
+                        this.userLikeList[like.post_type] = []
+                    }
+                    if(!this.userLikeList[like.post_type].includes(like.post_id)){
+                        this.userLikeList[like.post_type].push(like.post_id)
+                    }
+                })
+            })
+            axios.post(`${serverURL}/fetchAllBookmarks`, data).then(res => {
+                res.data.data.forEach(bookmark =>{
+                    if(!this.userBookmarkList[bookmark.post_type]){
+                        this.userBookmarkList[bookmark.post_type] = []
+                    }
+                    if(!this.userBookmarkList[bookmark.post_type].includes(bookmark.post_id)){
+                        this.userBookmarkList[bookmark.post_type].push(bookmark.post_id)
+                    }
+                })
+            })
+
         },
 
         async updateSingleUserItem(change) {

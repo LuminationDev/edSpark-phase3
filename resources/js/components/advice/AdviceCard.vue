@@ -4,6 +4,8 @@ import GenericCard from "@/js/components/card/GenericCard.vue";
 import AdviceTypeTag from "@/js/components/advice/AdviceTypeTag.vue";
 import AdviceCardIcon from "@/js/components/advice/AdviceCardIcon.vue";
 import {useRouter} from "vue-router";
+import {storeToRefs} from "pinia";
+import {useUserStore} from "@/js/stores/useUserStore";
 
 const props = defineProps({
     adviceContent: {
@@ -19,7 +21,7 @@ const props = defineProps({
 
 const {post_id, post_title, cover_image, advice_type, created_at, post_excerpt, author} = props.adviceContent
 const router = useRouter()
-
+const {currentUser} = storeToRefs(useUserStore())
 
 const randomIconName = computed(() => {
     const source = ['iconBookLight', 'iconBookStars', 'iconBookSearch']
@@ -41,7 +43,7 @@ const handleClickAdviceCard = () => {
 
 const likeBookmarkData = {
     post_id: props.adviceContent.post_id,
-    user_id: 2,
+    user_id: currentUser.value.id || 9999,
     post_type: 'advice'
 }
 

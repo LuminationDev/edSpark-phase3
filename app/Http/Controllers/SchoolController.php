@@ -131,32 +131,38 @@ class SchoolController extends Controller
                     $error = $e->getMessage();
                 }
             }
-            // still not working need to fix updateMetadata TODO
-            $metadata = $request->schoolMetadata;
-            if ($metadata) {
-                foreach ($metadata as $key => $value) {
-                    try {
-                        $meta = Schoolmeta::where([['school_id', $data['id']], ['schoolmeta_key', $key]])->get();
-                        //meta already exist
-                        if (count($meta) > 0) {
-                            Schoolmeta::where([['school_id', $data['id']], ['schoolmeta_key', $key]])->update([
-                                'schoolmeta_value' => $value,
-                            ]);
-                        } // meta doesnt exist and create a new one
-                        else {
-                            Schoolmeta::insert([
-                                'school_id' => $data['id'],
-                                'schoolmeta_key' => $key,
-                                'schoolmeta_value' => $value,
-                                'created_at' => Carbon::now(),
-                                'updated_at' => Carbon::now()
-                            ]);
-                        }
-                    } catch (Exception $e) {
-                        $error = $e->getMessage();
-                    }
+            $metadata = json_decode($data['metadata']);
+            if (!empty($metadata)) {
+                if(gettype($metadata) != 'array'){
+                    $metadata = [$metadata]; // cast it to an array containing one object
                 }
-            };
+                foreach ($metadata as $meta) {
+                    foreach ($meta as $key => $value){
+                        try {
+                            $existingMeta = Schoolmeta::where('school_id', $data['id'])
+                                ->where('schoolmeta_key', $key)
+                                ->first();
+
+                            if ($existingMeta) {
+                                $existingMeta->schoolmeta_value = $value;
+                                $existingMeta->save();
+                            } else {
+                                Schoolmeta::create([
+                                    'school_id' => $data['id'],
+                                    'schoolmeta_key' => $key,
+                                    'schoolmeta_value' => $value,
+                                    'created_at' => now(),
+                                    'updated_at' => now(),
+                                ]);
+                            }
+                        } catch (Exception $e) {
+                            $error = $e->getMessage();
+                            // Handle the error as needed
+                        }
+                    }
+
+                }
+            }
             // get the latest data with the correct/expected form and return with res()
             $school = School::where('id', $data['id'])->first();
 

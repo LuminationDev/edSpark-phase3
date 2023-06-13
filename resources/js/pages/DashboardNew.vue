@@ -41,6 +41,7 @@ import {axiosFetcher, axiosSchoolFetcher} from "@/js/helpers/fetcher";
 import useSwrvState from "@/js/helpers/useSwrvState";
 import useSWRV from "swrv";
 import {storeToRefs} from "pinia";
+import {swrvOptions} from "@/js/constants/swrvConstants";
 
 const router = useRouter()
 
@@ -78,7 +79,11 @@ const getIdToken = async () => {
         userDetails.siteId = claims.value.mainsiteid;
         userDetails.roleId = claims.value.mainrolecode;
 
-        await checkFirstVisit(claims.value.email);
+        checkFirstVisit(claims.value.email).then(() =>{
+            console.log('inside then in checkfirst visit')
+            console.log(currentUser.value.id)
+            userStore.populateUserLikesAndBookmark()
+        })
     } catch(e){
         console.warn('Failed to get Auth data. User is not logged in')
     }
@@ -98,10 +103,7 @@ const checkFirstVisit = async (emailAddress) => {
 }
 
 getIdToken()
-const swrvOptions = {
-    revalidateOnFocus: false, // disable refresh on every focus, suspect its too often
-    refreshInterval: 30000 // refresh or revalidate data every 30 secs
-}
+
 
 // more code but much fast
 // had to refactor this as the normal implementation blocks the user identity fetching request :(

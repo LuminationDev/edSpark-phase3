@@ -17,7 +17,6 @@ const props = defineProps({
         <div
             v-for="(school,index) in schools.splice(0,4)"
             :key="index"
-            class="col-span-1 bg-white cursor-pointer h-[470px] border-[0.5px]  border-black transition-all group hover:shadow-2xl"
         >
             <SchoolCard
                 :school-data="school"
