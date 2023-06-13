@@ -39,7 +39,7 @@ export const useUserStore = defineStore('user', {
         async updateUserName(newName) {
             await axios({
                 method: 'POST',
-                url: `http://localhost:8000/api/updateUser`,
+                url: `${serverURL}/updateUser`,
                 data: {
                     id: this.currentUser.id,
                     data: {
@@ -58,7 +58,7 @@ export const useUserStore = defineStore('user', {
 
         async fetchCurrentUserAndLoadIntoStore(userId) {
             console.log(userId);
-            return axios.get(`http://localhost:8000/api/fetchUser/${userId}`).then(response => {
+            return axios.get(`${serverURL}fetchUser/${userId}`).then(response => {
                 console.log(response.data);
                 this.currentUser = response.data;
             }).catch(error => {
@@ -72,7 +72,7 @@ export const useUserStore = defineStore('user', {
                 console.log('HERE YOU ARE!!!!!');
                 await axios({
                     method: 'POST',
-                    url: 'http://localhost:8000/api/checkEmail',
+                    url: `${serverURL}/checkEmail`,
                     data: {
                         email: email
                     }
@@ -88,7 +88,7 @@ export const useUserStore = defineStore('user', {
 
         async fetchAllRoles() {
             return new Promise(async (resolve, reject) => {
-                await axios.get('http://localhost:8000/api/fetchAllRoles').then(response => {
+                await axios.get(`${serverURL}/fetchAllRoles`).then(response => {
                     // console.log(response);
                     const allowedValues = [
                         'SCHLDR',
@@ -125,7 +125,7 @@ export const useUserStore = defineStore('user', {
             siteId = siteId.replace(/^0+/, '');
             console.log(siteId);
             return new Promise(async resolve => {
-                await axios.get(`http://localhost:8000/api/fetchSiteByCode/${siteId}`).then(response => {
+                await axios.get(`${serverURL}/fetchSiteByCode/${siteId}`).then(response => {
                     console.log(response.data);
                     resolve(response.data);
                 }).catch(error => {
@@ -170,7 +170,7 @@ export const useUserStore = defineStore('user', {
 
             return axios({
                 method: 'POST',
-                url: 'http://localhost:8000/api/createUser',
+                url: `${serverURL}/createUser`,
                 data: userData,
                 headers: { "Content-Type" : "multipart/form-data" }
             }).then(async response => {
@@ -229,7 +229,7 @@ export const useUserStore = defineStore('user', {
 
         async fetchAllNotifications(userId) {
             return new Promise(async (resolve, reject) => {
-                await axios.get(`http://localhost:8000/api/fetchAllNotifications/${userId}`)
+                await axios.get(`${serverURL}/fetchAllNotifications/${userId}`)
                     .then(response => {
                         // console.log(response.data)
                         this.notifications = response.data;
