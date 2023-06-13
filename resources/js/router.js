@@ -19,6 +19,7 @@ import SoftwareSingle from "@/js/components/software/softwareSingle/SoftwareSing
 import BaseSearchPage from "@/js/components/search/BaseSearchPage.vue";
 import UserProfile from  '@/js/components/userprofile/UserProfile.vue';
 import HardwareSingle from '@/js/pages/HardwareSingle.vue';
+import EventSingle from "@/js/pages/EventSingle.vue";
 
 import ProfileWork from '@/js/components/userprofile/ProfileWork.vue'
 import ProfileInfo  from '@/js/components/userprofile/ProfileInfo.vue'
@@ -168,6 +169,12 @@ const router = createRouter({
             meta: {
                 navigation: true
             }
+        },
+        {
+            name: 'event-single',
+            path: '/event/resources/:id',
+            component: EventSingle,
+            params: true
         },
         {
             name: 'userProfile',
