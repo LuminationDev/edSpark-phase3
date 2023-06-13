@@ -305,11 +305,9 @@ class SchoolController extends Controller
     public function fetchFeaturedSchools()
     {
         $schools = School::where('isFeatured', 1)->get();
-        // dd($schools);
         $data = [];
 
         foreach ($schools as $school) {
-            OutputHelper::print(serialize($school->site));
             $result = [
                 'id' => $school->id,
                 'site' => [
