@@ -52,9 +52,9 @@ const cardsLoading = computed(() => {
     } else if ([STATES.PENDING].includes(state.value)) {
         return true
     } else if ([STATES.VALIDATING].includes(state.value)) {
-        return false
+        return !featuredSites.value.length;
     } else {
-        return ![STATES.SUCCESS, STATES.VALIDATING, STATES.STALE_IF_ERROR].includes(state.value)
+        return ![STATES.SUCCESS, STATES.STALE_IF_ERROR].includes(state.value)
     }
 })
 
@@ -76,7 +76,7 @@ const fetchAllSchools = () => {
 };
 
 
-onBeforeMount(async () => {
+onBeforeMount(() => {
     fetchAllSchools();
 
     /**

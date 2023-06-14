@@ -58,8 +58,7 @@ export const useUserStore = defineStore('user', {
 
         async fetchCurrentUserAndLoadIntoStore(userId) {
             console.log(userId);
-            return axios.get(`${serverURL}fetchUser/${userId}`).then(response => {
-                console.log(response.data);
+            return axios.get(`${serverURL}/fetchUser/${userId}`).then(response => {
                 this.currentUser = response.data;
             }).catch(error => {
                 console.log('There was a problem retrieving that user');
@@ -188,29 +187,35 @@ export const useUserStore = defineStore('user', {
             })
         },
         populateUserLikesAndBookmark(){
-            let data = {
-                user_id: this.currentUser.id
+            if(this.currentUser.id){
+                console.log('called populate like and bookmark')
+                let data = {
+                    user_id: this.currentUser.id
+                }
+                axios.post(`${serverURL}/fetchAllLikes`, data).then(res => {
+                    res.data.data.forEach(like =>{
+                        if(!this.userLikeList[like.post_type]){
+                            this.userLikeList[like.post_type] = []
+                        }
+                        if(!this.userLikeList[like.post_type].includes(like.post_id)){
+                            this.userLikeList[like.post_type].push(like.post_id)
+                        }
+                    })
+                })
+                axios.post(`${serverURL}/fetchAllBookmarks`, data).then(res => {
+                    res.data.data.forEach(bookmark =>{
+                        if(!this.userBookmarkList[bookmark.post_type]){
+                            this.userBookmarkList[bookmark.post_type] = []
+                        }
+                        if(!this.userBookmarkList[bookmark.post_type].includes(bookmark.post_id)){
+                            this.userBookmarkList[bookmark.post_type].push(bookmark.post_id)
+                        }
+                    })
+                })
+
+            } else {
+                console.log('No currentUser Id. didnt fetch')
             }
-            axios.post(`${serverURL}/fetchAllLikes`, data).then(res => {
-                res.data.data.forEach(like =>{
-                    if(!this.userLikeList[like.post_type]){
-                        this.userLikeList[like.post_type] = []
-                    }
-                    if(!this.userLikeList[like.post_type].includes(like.post_id)){
-                        this.userLikeList[like.post_type].push(like.post_id)
-                    }
-                })
-            })
-            axios.post(`${serverURL}/fetchAllBookmarks`, data).then(res => {
-                res.data.data.forEach(bookmark =>{
-                    if(!this.userBookmarkList[bookmark.post_type]){
-                        this.userBookmarkList[bookmark.post_type] = []
-                    }
-                    if(!this.userBookmarkList[bookmark.post_type].includes(bookmark.post_id)){
-                        this.userBookmarkList[bookmark.post_type].push(bookmark.post_id)
-                    }
-                })
-            })
 
         },
 

@@ -31,10 +31,6 @@ import oktaAuth from '../constants/oktaAuth';
  * (import and set up stores)
  */
 import {useUserStore} from '../stores/useUserStore';
-import {useEventsStore} from '../stores/useEventsStore';
-import {useSoftwareStore} from '../stores/useSoftwareStore';
-import {useAdviceStore} from '../stores/useAdviceStore';
-import {useSchoolsStore} from '../stores/useSchoolsStore';
 import {useRouter} from "vue-router";
 import {serverURL} from "@/js/constants/serverUrl";
 import {axiosFetcher, axiosSchoolFetcher} from "@/js/helpers/fetcher";
@@ -68,7 +64,7 @@ const userDetails = reactive({
 const getIdToken = async () => {
     try {
         idToken.value = await oktaAuth.tokenManager.get('idToken');
-        claims.value = await idToken.value.claims;
+        claims.value = idToken.value.claims;
         console.log('Below this is IDToken')
         console.log(idToken.value);
         /**
@@ -119,6 +115,7 @@ const {state: advicesState} = useSwrvState(advicesData,advicesError,advicesIsVal
 const {state: schoolsState} = useSwrvState(schoolsData,schoolsError,schoolsIsValidating)
 
 // who needs a one line ref to indicate loading state when you can have 10 lines 😆
+// todo: compile all ref into an array and process with map
 const eventsLoading =  computed(() => {
     if ([ALLSTATES.ERROR, ALLSTATES.STALE_IF_ERROR].includes(eventsState.value)) {
         return false

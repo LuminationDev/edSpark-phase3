@@ -44,7 +44,6 @@ const likeBookmarkData = {
  * }
  */
 
-console.log(props.schoolData)
 </script>
 <template>
     <GenericCard

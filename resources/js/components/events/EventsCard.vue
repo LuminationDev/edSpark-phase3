@@ -2,6 +2,8 @@
 import GenericCard from '../card/GenericCard.vue';
 import InPerson from '../svg/InPerson.vue';
 import Virtual from '../svg/Virtual.vue';
+import {storeToRefs} from "pinia";
+import {useUserStore} from "@/js/stores/useUserStore";
 
 const props = defineProps({
     event: {
@@ -15,9 +17,11 @@ const props = defineProps({
     }
 })
 
+const {currentUser } = storeToRefs(useUserStore())
+
 const likeBookmarkData = {
-    post_id: props.event.post_id,
-    user_id: 2, // to be replaced with userId from userStore
+    post_id: props.event.event_id,
+    user_id: currentUser.value.id, // to be replaced with userId from userStore
     post_type: 'event'
 }
 
