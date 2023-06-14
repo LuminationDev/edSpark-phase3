@@ -36,6 +36,7 @@ import {useSoftwareStore} from '../stores/useSoftwareStore';
 import {useAdviceStore} from '../stores/useAdviceStore';
 import {useSchoolsStore} from '../stores/useSchoolsStore';
 import {useRouter} from "vue-router";
+import axios from 'axios';
 const router = useRouter()
 
 const userStore = useUserStore();
@@ -69,7 +70,25 @@ const getIdToken = async () => {
     idToken.value = await oktaAuth.tokenManager.get('idToken');
     claims.value = await idToken.value.claims;
 
-    console.log(idToken);
+    let token = localStorage.getItem('okta-token-storage');
+    token = JSON.parse(token);
+    token = token.accessToken.accessToken;
+    console.log(token);
+
+    await axios({
+        method: 'POST',
+        url: 'http://localhost:8000/api/authenticate',
+        data: {
+            accessToken: token
+        },
+        headers: {
+            'Bearer': token
+        }
+    }).then(response => {
+        console.log(response)
+    }).catch(err =>{
+        throw new Error(err);
+    })
 
     /**
      * User Details

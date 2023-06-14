@@ -6,7 +6,7 @@ import vue from '@vitejs/plugin-vue';
 
 export default defineConfig({
     build: {
-        outDir: './public/build'
+        outDir: './public/build',
     },
     plugins: [
         vue(),
@@ -14,7 +14,6 @@ export default defineConfig({
             input: [
                 'resources/css/output.css',
                 'resources/js/app.js',
-                // 'resources/css/filament.css'
             ],
             refresh: true,
         }),

@@ -11,8 +11,8 @@ import {serverURL} from "@/js/constants/serverUrl";
 
 import SimpleImage from '@editorjs/simple-image';
 import FontSize from 'editorjs-inline-font-size-tool';
-import VideoRecorder from '../../constants/customVideoBlock';
-// import VideoRecorder from '../../constants/videoRecorder';
+// import VideoRecorder from '../../constants/customVideoBlock';
+import VideoRecorder from '../../constants/editorJsCustomVideoRecorder.js';
 
 
 import { onMounted } from 'vue';
