@@ -1,5 +1,6 @@
 import { defineStore } from "pinia";
 import axios from 'axios';
+import {serverURL} from "@/js/constants/serverUrl";
 
 export const useSiteStore = defineStore('sites', {
     state: () => ({
@@ -19,7 +20,7 @@ export const useSiteStore = defineStore('sites', {
     actions: {
          loadSites() {
             return new Promise( async (resolve, reject) => {
-                await axios.get('http://localhost:8000/api/fetchAllSites').then(res => {
+                await axios.get(`${serverURL}/fetchAllSites`).then(res => {
                     // console.log(res);
                     resolve(res.data);
                     // this.sites = res.data;

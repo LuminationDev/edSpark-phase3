@@ -9,13 +9,16 @@ const props = defineProps({
     techUsed:{
         type: Array,
         required: false
+    },
+    schoolName:{
+        type: String, required: true
     }
 });
 
 </script>
 
 <template>
-    <div class="h-full flex flex-col ">
+    <router-link :to="`/schools/${props.schoolName}`">
         <!-- CARD BODY -->
         <div class="relative h-36 group-hover:h-0 transition-all">
             <!-- CARD HEADER -->
@@ -46,11 +49,12 @@ const props = defineProps({
                 </p>
             </div>
         </div>
-        <div class="px-[24px] py-[18px] mt-auto flex gap-4">
-            <!-- CARD FOOTER -->
-            <Like />
-            <BookMark />
-        </div>
+    </router-link>
+            
+    <div class="px-[24px] py-[18px] mt-auto flex gap-4">
+        <!-- CARD FOOTER -->
+        <Like />
+        <BookMark />
     </div>
 </template>
 

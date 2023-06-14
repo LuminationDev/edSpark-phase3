@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
 use App\Models\Like;
@@ -15,50 +16,53 @@ class LikeBookmarkController extends Controller
      * Like Feature
      * Toggable: like and unlike
      */
-    public function like(Request $request)
+    public function like(Request $request): JsonResponse
     {
         if ($request->isMethod('post')) {
             $data = $request->all();
-            if ($data) {
+
+            if (!empty($data)) {
                 $postId = $data['post_id'];
                 $postType = $data['post_type'];
                 $userId = $data['user_id'];
 
-                //check whether the post id exists or not in Like table
-                $checkLike = Like::where('post_id', '=', $postId)
-                                ->where('user_id', '=', $userId)
-                                ->first();
+                // Check whether the post exists in the Like table for the given user
+                $checkLike = Like::where('post_id', $postId)
+                    ->where('user_id', $userId)
+                    ->where('post_type', $postType)
+                    ->first();
 
-                if($checkLike) {
-                    // if like exists delete from database
+                if ($checkLike) {
+                    // Unlike the post
                     $checkLike->delete();
 
                     return response()->json([
-                        "message" => "You have unliked a post.",
-                        "isLiked" => FALSE,
+                        "message" => "You have unliked the post.",
+                        "isLiked" => false,
                         "status" => 200
                     ]);
-
                 } else {
-                    // if like doesnot exists insert into database
-                    $dataToInsert = [
+                    // Like the post
+                    $like = Like::create([
                         'post_id' => $postId,
                         'post_type' => $postType,
                         'user_id' => $userId
-                    ];
-                    Like::insert($dataToInsert);
-
-                    return response()->json([
-                        "message" => "You have liked a post.",
-                        "isLiked" => TRUE,
-                        "status" => 200
                     ]);
 
+                    return response()->json([
+                        "message" => "You have liked the post.",
+                        "isLiked" => true,
+                        "status" => 200
+                    ]);
                 }
-
             }
         }
+        return response()->json([
+            "message" => "Invalid request.",
+            "status" => 400
+        ]);
     }
+
 
     /**
      * Bookmark Feature

@@ -1,5 +1,5 @@
 <script setup>
-import { computed, ref } from "vue";
+import {computed, ref} from "vue";
 import {bookmarkURL, imageURL, likeURL} from "@/js/constants/serverUrl";
 import Tooltip from "@/js/components/global/Tooltip/Tooltip.vue";
 
@@ -9,10 +9,11 @@ import BookMark from "@/js/components/svg/BookMark.vue";
 import {storeToRefs} from "pinia";
 import {useUserStore} from "@/js/stores/useUserStore";
 import BookmarkFull from "@/js/components/svg/BookmarkFull.vue";
+
 const {userLikeList, userBookmarkList} = storeToRefs(useUserStore())
 
 const props = defineProps({
-    title:{
+    title: {
         type: String,
         required: true
     },
@@ -21,36 +22,51 @@ const props = defineProps({
         required: false,
         default: 3
     },
-    displayAuthor:{
-        type: String, required: false
+    displayAuthor: {
+        type: String,
+        required: false,
+        default: ''
     },
-    displayDate:{
-        type: String, required: false
+    displayDate: {
+        type: String,
+        required: false,
+        default: ''
     },
-    displayContent:{
-        type: String, required: true
+    displayContent: {
+        type: String,
+        required: false,
+        default: ''
     },
-    coverImage:{
-        type: String, required: false
+    coverImage: {
+        type: String,
+        required: false,
+        default: ''
     },
-    clickCallback:{
+    clickCallback: {
         type: Function,
         required: false,
-        default: () => {}
+        default: () => {
+        }
     },
-    likeBookmarkData:{
+    likeBookmarkData: {
         type: Object,
-        required: false
+        required: false,
+        default: () => {
+        }
+    },
+    overrideContent: {
+        type: Boolean,
+        required: false,
+        default: false
     }
 });
 
-const currentUserLiked = computed(  () => {
-    if(userLikeList.value[props.likeBookmarkData.post_type] &&
+const currentUserLiked = computed(() => {
+    if (userLikeList.value[props.likeBookmarkData.post_type] &&
         userLikeList.value[props.likeBookmarkData.post_type].length > 0 &&
         userLikeList.value[props.likeBookmarkData.post_type].filter(eachItem => {
-            if( eachItem == props.likeBookmarkData.post_id) return true
-        }).length > 0)
-    {
+            if (eachItem == props.likeBookmarkData.post_id) return true
+        }).length > 0) {
         return true
     } else {
         return false
@@ -58,56 +74,64 @@ const currentUserLiked = computed(  () => {
 })
 
 const currentUserBookmarked = computed(() => {
-    if(userBookmarkList.value[props.likeBookmarkData.post_type] &&
+    if (userBookmarkList.value[props.likeBookmarkData.post_type] &&
         userBookmarkList.value[props.likeBookmarkData.post_type].length > 0 &&
         userBookmarkList.value[props.likeBookmarkData.post_type].filter(eachItem => {
-            if( eachItem == props.likeBookmarkData.post_id) return true
-        }).length > 0)
-    {
+            if (eachItem == props.likeBookmarkData.post_id) return true
+        }).length > 0) {
         return true
     } else {
         return false
     }
 })
 
-const formattedDate = computed(() =>{
+const formattedDate = computed(() => {
     const date = new Date(Date.parse(props.displayDate))
     return date.toDateString()
 })
 
 const handleDefaultLike = async (data) => {
     const {post_type} = props.likeBookmarkData
-    await axios.post(likeURL, data )
+    await axios.post(likeURL, data)
         .then(res => {
-            if(res.data.isLiked){
+            if (res.data.isLiked) {
+                if (!userLikeList.value[post_type]) {
+                    userLikeList.value[post_type] = []
+                }
                 userLikeList.value[post_type].push(data.post_id)
-            } else{
-                const indexRemoval = userLikeList.value[post_type].indexOf(data.post_id)
-                if(indexRemoval !== -1){
-                    userLikeList.value[post_type].splice(indexRemoval, 1)
-                } else{
-                    console.log('tried to unlike something that doesnt exist in the database')
+            } else {
+                if (userLikeList.value[post_type]) {
+                    const indexRemoval = userLikeList.value[post_type].indexOf(data.post_id)
+                    if (indexRemoval !== -1) {
+                        userLikeList.value[post_type].splice(indexRemoval, 1)
+                    } else {
+                        console.log('tried to unlike something that doesnt exist in the database')
+                    }
                 }
             }
         })
         .catch(err => {
             console.log(err);
-            console.error(err.code)
         })
 }
 
 const handleDefaultBookmark = async (data) => {
     const {post_type} = props.likeBookmarkData
-    await axios.post(bookmarkURL, data )
+    await axios.post(bookmarkURL, data)
         .then(res => {
-            if(res.data.isBookmarked){
+            if (res.data.isBookmarked) {
+                if (!userBookmarkList.value[post_type]) {
+                    userBookmarkList.value[post_type] = []
+                }
                 userBookmarkList.value[post_type].push(data.post_id)
-            } else{
-                const indexRemoval = userBookmarkList.value[post_type].indexOf(data.post_id)
-                if(indexRemoval !== -1){
-                    userBookmarkList.value[post_type].splice(indexRemoval, 1)
-                } else{
-                    console.log('tried to unbookmark something that doesnt exist in the database')
+            } else {
+                if (userBookmarkList.value[post_type]) {
+                    const indexRemoval = userBookmarkList.value[post_type].indexOf(data.post_id)
+                    if (indexRemoval !== -1) {
+                        userBookmarkList.value[post_type].splice(indexRemoval, 1)
+                    } else {
+                        console.log('tried to unbookmark something that doesnt exist in the database')
+                    }
                 }
             }
         })
@@ -131,56 +155,61 @@ const cardHoverToggle = ref(false)
         class="GenericCardContainer w-full border-[0.5px] border-black hover:shadow-2xl mx-2 mb-4 flex flex-col min-h-[480px] max-w-[400px] max-h-[480px] group transition-all card_parent cursor-pointer"
         @mouseenter="cardHoverToggle = true"
     >
-        <div
-            class="cardTopCoverImage relative min-h-[35%] bg-cover bg-center group-hover:min-h-[0%] group-hover:h-0 transition-all"
-            :class="`bg-[url('${imageURL}/${coverImage}')]`"
-            :style="`background-image: url('${imageURL}/${coverImage}')`"
-            @click="clickCallback"
-        >
-            <template
-                v-if="$slots.typeTag"
+        <template v-if="!props.overrideContent">
+            <div
+                class="cardTopCoverImage relative min-h-[35%] bg-cover bg-center group-hover:min-h-[0%] group-hover:h-0 transition-all"
+                :class="`bg-[url('${imageURL}/${coverImage}')]`"
+                :style="`background-image: url('${imageURL}/${coverImage}')`"
+                @click="clickCallback"
             >
-                <slot
-                    name="typeTag"
-                />
-            </template>
+                <template
+                    v-if="$slots.typeTag"
+                >
+                    <slot
+                        name="typeTag"
+                    />
+                </template>
 
-            <div
-                v-if="$slots.icon"
-            >
-                <slot name="icon" />
-            </div>
-        </div>
-        <div
-            class="cardContent h-full flex flex-col p-4 overflow-hidden transition-all bg-white"
-            @click="clickCallback"
-        >
-            <div
-                v-if="props.title"
-                class="cardTitle text-xl font-bold uppercase transition-all mb-4 group-hover:w-3/4"
-            >
-                {{ props.title }}
-            </div>
-            <div class="flex flex-col card-content_body h-full">
                 <div
-                    v-if="props.displayAuthor"
-                    class="cardAuthor text-base font-semibold mt-2 transition-all"
+                    v-if="$slots.icon"
                 >
-                    {{ props.displayAuthor }}
+                    <slot name="icon" />
                 </div>
-                <div
-                    v-if="props.displayDate"
-                    class="cardDate text-base  mb-2 transition-all"
-                >
-                    {{ formattedDate }}
-                </div>
-                <div
-                    v-if="props.displayContent"
-                    class="cardDisplayPreview pt-2 h-full font-light text-lg overflow-hidden mt-auto pb-6 transition-all"
-                    v-html="props.displayContent"
-                />
             </div>
-        </div>
+            <div
+                class="cardContent h-full flex flex-col p-4 overflow-hidden transition-all bg-white"
+                @click="clickCallback"
+            >
+                <div
+                    v-if="props.title"
+                    class="cardTitle text-xl font-bold uppercase transition-all mb-4 group-hover:w-3/4"
+                >
+                    {{ props.title }}
+                </div>
+                <div class="flex flex-col card-content_body h-full">
+                    <div
+                        v-if="props.displayAuthor"
+                        class="cardAuthor text-base font-semibold mt-2 transition-all"
+                    >
+                        {{ props.displayAuthor }}
+                    </div>
+                    <div
+                        v-if="props.displayDate"
+                        class="cardDate text-base  mb-2 transition-all"
+                    >
+                        {{ formattedDate }}
+                    </div>
+                    <div
+                        v-if="props.displayContent"
+                        class="cardDisplayPreview pt-2 h-full font-light text-lg overflow-hidden mt-auto pb-6 transition-all"
+                        v-html="props.displayContent"
+                    />
+                </div>
+            </div>
+        </template>
+        <template v-else>
+            <slot name="overiddenContent" />
+        </template>
         <div class="flex flex-row h-18 pl-4 gap-4 mt-auto bg-white">
             <div class="p-2">
                 <span class="has-tooltip">
@@ -218,5 +247,37 @@ const cardHoverToggle = ref(false)
     </div>
 </template>
 
+
 <style scoped>
+.card-content_body {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 6;
+    -webkit-box-orient: vertical;
+}
+
+.card_parent:hover .card-content_body {
+    -webkit-line-clamp: 14;
+}
+
+.card-content_title {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+}
+
+.card-content_body {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 4;
+    -webkit-box-orient: vertical;
+}
+
+.card_parent:hover .card-content_title {
+    -webkit-line-clamp: 4 !important;
+}
 </style>
