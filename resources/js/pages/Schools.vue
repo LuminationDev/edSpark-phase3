@@ -116,7 +116,7 @@ const handleFinishCreateSchool = () => {
 }
 
 const handleBrowseAllSchool = () => {
-    router.push({name: 'browse-schools'})
+    router.push('/browse/schools')
 }
 
 const handleCloseWelcomePopup = () => {
@@ -170,7 +170,6 @@ const handleSaveWelcomePopup = (data) => {
                 <div
                     v-for="(school,index) in featuredSites"
                     :key="index"
-                    class="col-span-1 bg-white cursor-pointer h-[470px] border-[0.5px]  border-black transition-all group hover:shadow-2xl"
                 >
                     <SchoolCard
                         :school-data="school"

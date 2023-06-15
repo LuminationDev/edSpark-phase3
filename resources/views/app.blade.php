@@ -15,12 +15,12 @@
     {{-- <link rel="stylesheet" href="{{ asset('css/app.css') }}" type="text/css"> --}}
 
 
-    <link rel="icon" type="image/x-icon" href="{{ mix('resources/assets/svg/Logo.svg') }}">
+{{--    <link rel="icon" type="image/x-icon" href="{{ mix('resources/assets/svg/Logo.svg') }}">--}}
     @vite(['resources/js/app.js'])
 
 </head>
 <body class="relative">
     <div id="app" class="flex flex-col container mx-auto shadow-lg min-h-screen font-['Poppins']"></div>
-    <script src="{{ mix('resources/js/app.js') }}" type="text/javascript">
+{{--    <script src="{{ mix('resources/js/app.js') }}" type="text/javascript"></script>--}}
 </body>
 </html>

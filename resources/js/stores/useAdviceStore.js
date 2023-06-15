@@ -1,5 +1,6 @@
 import { defineStore } from "pinia";
 import axios from 'axios';
+import {serverURL} from "@/js/constants/serverUrl";
 
 export const useAdviceStore = defineStore('advice', {
     state: () => ({
@@ -15,7 +16,7 @@ export const useAdviceStore = defineStore('advice', {
     actions: {
         async loadDashboardResources() {
             return new Promise(async (resolve, reject) => {
-                await axios.get('http://localhost:8000/api/fetchAdvicePosts').then(response => {
+                await axios.get(`${serverURL}/fetchAdvicePosts`).then(response => {
                     const dashboardAdvice = [];
                     response.data.forEach( async advice => {
                         dashboardAdvice.push(advice);

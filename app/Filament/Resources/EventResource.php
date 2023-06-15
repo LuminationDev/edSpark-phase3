@@ -17,6 +17,11 @@ use Illuminate\Support\Facades\Auth;
 use Livewire\TemporaryUploadedFile;
 
 
+use Illuminate\Filesystem\Filesystem;
+use Illuminate\Support\Collection;
+use Illuminate\Support\Str;
+use SplFileInfo;
+
 
 class EventResource extends Resource
 {
@@ -80,11 +85,63 @@ class EventResource extends Resource
                                         'Pending' => 'Pending'
                                     ])
                                     ->required(),
+                            ]),
+
+                        Forms\Components\Card::make()
+                            ->schema([
+                                Forms\Components\Builder::make('extra_content')
+                                    ->blocks([
+                                        Forms\Components\Builder\Block::make('templates')
+                                            ->schema([
+                                                Forms\Components\Select::make('template')
+                                                    ->label('Choose a Template')
+                                                    ->reactive()
+                                                    ->options(static::getTemplates()),
+                                                ...static::getTemplateSchemas()
+                                            ])
+                                    ])
                             ])
 
                     ])
 
             ]);
+    }
+
+    public static function getTemplates(): Collection
+    {
+        return static::getTemplateClasses()->mapWithKeys(fn ($class) => [$class => $class::title()]);
+    }
+
+    public static function getTemplateClasses(): Collection
+    {
+        $filesystem = app(Filesystem::class);
+
+        return collect($filesystem->allFiles(app_path('Filament/PageTemplates/Event')))
+            ->map(function (SplFileInfo $file): string {
+                return (string) Str::of('App\\Filament\\PageTemplates\\Event')
+                    ->append('\\', $file->getRelativePathname())
+                    ->replace(['/', '.php'],['\\', '']);
+            });
+    }
+
+    public static function getTemplateSchemas(): array
+    {
+        return static::getTemplateClasses()
+            ->map(fn ($class) =>
+            Forms\Components\Group::make($class::schema())
+                ->columnSpan(2)
+                ->afterStateHydrated(fn ($component, $state) => $component->getChildComponentContainer()->fill($state))
+                ->statePath('extra_content.' . static::getTemplateName($class))
+                // ->statePath(static::getTemplateName($class))
+                ->visible(fn ($get) => $get('template') == $class)
+            )
+            ->toArray();
+
+    }
+
+    public static function getTemplateName($class)
+    {
+        return Str::of($class)->afterLast('\\')->snake()->toString();
     }
 
     public static function table(Table $table): Table

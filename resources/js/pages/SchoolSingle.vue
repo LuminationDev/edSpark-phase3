@@ -151,7 +151,8 @@ const handleSaveNewSchoolInfo = async (content_blocks, tech_used) => {
     }
 
     const schoolMetadata = {school_color_theme: colorTheme.value}
-    newUpdatedSchoolFormData.append('metadata', schoolMetadata)
+    newUpdatedSchoolFormData.append('metadata', JSON.stringify(schoolMetadata))
+    console.log(schoolMetadata)
     await axios({
         url: `${serverURL}/updateSchool`,
         method: 'post',

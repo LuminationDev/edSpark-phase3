@@ -20,7 +20,7 @@ const emits = defineEmits(['emitSearchTerm'])
         <input
             id="searchbar-text-input"
             v-model="searchTerm"
-            class="!w-[60%] h-12 border-4 !border-slate-300 shadow-md rounded mt-4 px-12"
+            class="!w-[60%] h-12 border-2 !border-slate-300 shadow-md rounded mt-4 px-12"
             type="text"
             :placeholder="props.placeholder"
             @input="handleSearchChange"

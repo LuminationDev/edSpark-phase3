@@ -39,6 +39,7 @@ Route::middleware('api')->group(function() {
     Route::get('fetchSoftwarePosts', [SoftwareController::class, 'fetchSoftwarePosts']);
     Route::get('fetchSoftwarePostById/{id}', [SoftwareController::class, 'fetchSoftwarePostById']);
     Route::get('fetchEventPosts', [EventController::class, 'fetchEventPosts']);
+    Route::get('fetchEventPostById/{id}', [EventController::class, 'fetchEventPostById']);
     Route::get('fetchCommunityPosts', [CommunityController::class, 'fetchCommunityPosts']);
 
     // User Management
@@ -94,11 +95,5 @@ Route::middleware('api')->group(function() {
     Route::get('fetchNotificationByType', [NotificationController::class, 'getNotificationByType']);
 
     Route::post('authenticate', [OktaAuthController::class, 'authenticate']);
-    // Route::get('session-data', function () {
-    //     dd(Session::all());
-    //     return response()->json([
-    //         'email' => Session::get('email'),
-    //     ]);
-    // });
 
 });

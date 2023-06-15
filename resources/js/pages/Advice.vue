@@ -1,21 +1,14 @@
 <script setup>
 import AdviceHero from '../components/advice/AdviceHero.vue'
-import {onBeforeMount, ref, computed, watchEffect} from "vue";
 import useSWRV from "swrv";
-import useSwrvState from '@/js/helpers/useSWRVState';
-
-import SectionHeader from "@/js/components/global/SectionHeader.vue";
-import Spinner from "@/js/components/spinner/Spinner.vue";
+import useSwrvState from '@/js/helpers/useSwrvState';
 import EducatorHero from "@/js/components/advice/EducatorHero.vue";
 import PartnerHero from "@/js/components/advice/PartnerHero.vue";
 import AdviceCard from "@/js/components/advice/AdviceCard.vue";
 import {serverURL} from "@/js/constants/serverUrl";
 import {axiosFetcher} from "@/js/helpers/fetcher";
 import {useRouter} from "vue-router";
-import axios from "axios";
-import {useUserStore} from "@/js/stores/useUserStore";
-import {storeToRefs} from "pinia";
-
+import {swrvOptions} from "@/js/constants/swrvConstants";
 import CardLoading from '../components/card/CardLoading.vue';
 
 const router = useRouter();
@@ -24,21 +17,21 @@ const router = useRouter();
  * Get the DAG Advice articles
  * and states
  */
-const { data: dagAdvice, error: dagError, isValidating: dagValidating } = useSWRV(`${serverURL}/fetchAdvicePostByType/D.A.G advice`, axiosFetcher);
+const { data: dagAdvice, error: dagError, isValidating: dagValidating } = useSWRV(`${serverURL}/fetchAdvicePostByType/D.A.G advice`, axiosFetcher,swrvOptions);
 const { state: dagState, STATES: DAGSTATES } = useSwrvState(dagAdvice, dagError, dagValidating);
 
 /**
  * Get the Partner advice
  * and states
  */
-const { data: partnerAdvice, error: partnerError, isValidating: partnerValidating } = useSWRV(`${serverURL}/fetchAdvicePostByType/Partner`, axiosFetcher);
+const { data: partnerAdvice, error: partnerError, isValidating: partnerValidating } = useSWRV(`${serverURL}/fetchAdvicePostByType/Partner`, axiosFetcher,swrvOptions);
 const { state: partnerState, STATES: PARTNERSTATES } = useSwrvState(partnerAdvice, partnerError, partnerValidating);
 
 /**
  * Get General Advice articles (your work, classroom, learning)
  * and states
  */
-const { data: generalAdvice, error: generalError, isValidating: generalValidating } = useSWRV(`${serverURL}/fetchAdvicePostByType/${['Your Classroom', 'Your Work', 'Your Learning']}`, axiosFetcher);
+const { data: generalAdvice, error: generalError, isValidating: generalValidating } = useSWRV(`${serverURL}/fetchAdvicePostByType/${['Your Classroom', 'Your Work', 'Your Learning']}`, axiosFetcher,swrvOptions);
 const { state: generalState, STATES: GENERALSTATE } = useSwrvState(generalAdvice, generalError, generalValidating);
 
 const handleBrowseAllAdvice = () => {
@@ -51,7 +44,7 @@ const handleBrowseAllAdvice = () => {
     <AdviceHero />
     <div class="DAGAdviceRow AdviceContentContainer flex flex-col h-full px-huge">
         <div
-            v-if="dagState === 'SUCCESS'"
+            v-if="dagState === 'SUCCESS' || dagState === 'VALIDATING'"
             class="AdviceCardListContainer heading text-xl pt-10 flex flex-row flex-1 justify-between flex-wrap  gap-6"
         >
             <AdviceCard
@@ -61,7 +54,7 @@ const handleBrowseAllAdvice = () => {
                 :show-icon="true"
             />
         </div>
-        <div v-else-if="dagState === 'PENDING' || dagState === 'VALIDATING'">
+        <div v-else-if="dagState === 'PENDING'">
             <CardLoading
                 :number-per-row="3"
                 :number-of-rows="1"
@@ -70,7 +63,7 @@ const handleBrowseAllAdvice = () => {
     </div>
     <EducatorHero />
     <div
-        v-if="generalState === 'SUCCESS'"
+        v-if="generalState === 'SUCCESS'|| generalState === 'VALIDATING'"
         class="EducatorsAdviceRow AdviceCardListContainer heading text-xl pt-10 flex flex-row flex-wrap justify-between gap-2 flex-1 w-full px-huge"
     >
         <AdviceCard
@@ -82,7 +75,7 @@ const handleBrowseAllAdvice = () => {
         />
     </div>
     <div
-        v-else-if="generalState === 'PENDING' || generalState === 'VALIDATING'"
+        v-else-if="generalState === 'PENDING' "
         class="px-huge"
     >
         <CardLoading
@@ -92,7 +85,7 @@ const handleBrowseAllAdvice = () => {
     </div>
     <PartnerHero />
     <div
-        v-if="partnerState === 'SUCCESS'"
+        v-if="partnerState === 'SUCCESS'|| partnerState === 'VALIDATING'"
         class="PartnerAdviceRow AdviceCardListContainer heading text-xl pt-10 flex flex-row flex-wrap justify-between gap-4 flex-1 w-full px-huge"
     >
         <AdviceCard
@@ -104,7 +97,7 @@ const handleBrowseAllAdvice = () => {
     </div>
 
     <div
-        v-else-if="partnerState === 'PENDING' || partnerState === 'VALIDATING'"
+        v-else-if="partnerState === 'PENDING' "
         class="px-huge"
     >
         <CardLoading

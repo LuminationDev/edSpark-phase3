@@ -11,7 +11,10 @@ import {computed} from 'vue';
 import useSWRV from "swrv";
 import {serverURL} from "@/js/constants/serverUrl";
 import {axiosFetcher} from "@/js/helpers/fetcher";
+import {useRouter} from "vue-router";
 
+
+const router = useRouter()
 const {data: hardware, error } = useSWRV(`${serverURL}/fetchAllProducts`, axiosFetcher)
 
 
@@ -53,6 +56,7 @@ const emergingTech = computed(()=>{
             :section="'hardware-laptops'"
             :title="'Laptops'"
             :button-text="'View all laptops'"
+            :button-callback="() => router.push('/browse/hardwares')"
         />
         <div class="mx-[81px] mt-[64px] flex flex-row flex-1 flex-wrap h-full justify-between">
             <HardwareCard

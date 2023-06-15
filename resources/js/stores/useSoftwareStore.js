@@ -1,5 +1,6 @@
 import { defineStore } from "pinia";
 import axios from 'axios';
+import {serverURL} from "@/js/constants/serverUrl";
 
 export const useSoftwareStore = defineStore('software', {
     state: () => ({
@@ -15,7 +16,7 @@ export const useSoftwareStore = defineStore('software', {
     actions: {
         async loadArticles() {
             return new Promise(async (resolve, reject) => {
-                await axios.get('http://localhost:8000/api/fetchSoftwarePosts').then(response => {
+                await axios.get(`${serverURL}/fetchSoftwarePosts`).then(response => {
                     const dashboardSoftware = [];
                     response.data.forEach(software => {
                         dashboardSoftware.push(software);

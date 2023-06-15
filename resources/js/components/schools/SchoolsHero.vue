@@ -1,5 +1,5 @@
 <script setup>
-import SchoolsRobot from '@/js/components/svg/schoolsRobot/SchoolsRobot.vue';
+import SchoolsRobot from '@/js/components/svg/schoolsRobot/schoolsRobot.vue';
 </script>
 
 <template>

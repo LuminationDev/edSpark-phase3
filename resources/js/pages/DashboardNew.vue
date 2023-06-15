@@ -42,6 +42,8 @@ import useSwrvState from "@/js/helpers/useSwrvState";
 import useSWRV from "swrv";
 import { storeToRefs } from "pinia";
 import axios from 'axios';
+import {storeToRefs} from "pinia";
+import {swrvOptions} from "@/js/constants/swrvConstants";
 
 const router = useRouter()
 
@@ -127,15 +129,17 @@ const getIdToken = async () => {
 
     try {
         const response = await axios.get('http://localhost:8000/okta-data');
-        console.log("RESPONSE", response);
+        // console.log("RESPONSE", response);
         if (response.data.success === true){
             email.value = response.data.email;
-            console.log('EMAIL ID: ', email.value);
+            // console.log('EMAIL ID: ', email.value);
 
             await checkFirstVisit(email.value);
         }
     }catch (error) {
         console.error(error);
+        console.warn('Failed to get Auth data. User is not logged in')
+        currentUser.value.id = 9999
     }
 };
 
@@ -154,10 +158,7 @@ const checkFirstVisit = async (emailAddress) => {
 }
 
 getIdToken()
-const swrvOptions = {
-    revalidateOnFocus: false, // disable refresh on every focus, suspect its too often
-    refreshInterval: 30000 // refresh or revalidate data every 30 secs
-}
+
 
 // more code but much fast
 // had to refactor this as the normal implementation blocks the user identity fetching request :(
@@ -289,22 +290,37 @@ onMounted(async () => {
 
         <!--        Individual Sections -->
 
-        <SectionHeader :classes="'bg-primary-teal'" :section="'events'" :title="'New Events'"
-            :button-text="'View all events'" :button-callback="() => router.push('/browse/event')" />
+        <SectionHeader
+            :classes="'bg-primary-teal'"
+            :section="'events'"
+            :title="'New Events'"
+            :button-text="'View all events'"
+            :button-callback="() => router.push('/browse/events')"
+        />
 
         <!-- Events Cards Here -->
         <EventsDashboard v-if="!eventsLoading" :events="eventsData" />
         <CardLoading v-else class="px-huge" :number-per-row="3" />
 
-        <SectionHeader :classes="'bg-secondary-darkBlue'" :section="'software'" :title="'Top Software'"
-            :button-text="'View all software'" :button-callback="() => router.push('/browse/software')" />
+        <SectionHeader
+            :classes="'bg-secondary-darkBlue'"
+            :section="'software'"
+            :title="'Top Software'"
+            :button-text="'View all software'"
+            :button-callback="() => router.push('/browse/softwares')"
+        />
 
         <!-- Software Cards Here -->
         <SoftwareDashboard v-if="!softwareLoading" :softwares="softwaresData" />
         <CardLoading v-else class="px-huge" :number-per-row="2" :additional-classes="'!justify-end'" />
 
-        <SectionHeader :classes="'bg-primary-darkTeal'" :section="'advice'" :title="'Advice'"
-            :button-text="'View all resources'" :button-callback="() => router.push('/browse/advice')" />
+        <SectionHeader
+            :classes="'bg-primary-darkTeal'"
+            :section="'advice'"
+            :title="'Advice'"
+            :button-text="'View all resources'"
+            :button-callback="() => router.push('/browse/advices')"
+        />
 
         <!-- Advice Cards Here -->
         <AdviceDashboard v-if="!adviceLoading" :advice="advicesData" />
