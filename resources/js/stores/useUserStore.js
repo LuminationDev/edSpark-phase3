@@ -19,6 +19,7 @@ export const useUserStore = defineStore('user', {
     state: () => ({
         currentUser: useSessionStorage('currentUser', {}),
         userAvatar: useSessionStorage('userAvatar', ''),
+        // isAdminAuthenticated: userSessionStorage('adminAuth', false),
         userLikeList: [],
         userBookmarkList: [],
         notifications: [],

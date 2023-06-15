@@ -2,7 +2,7 @@
 import { createRouter, createWebHistory } from 'vue-router';
 // Import pages
 // const Welcome = () => import('../components/Welcome.vue');
-import { LoginCallback, navigationGuard } from '@okta/okta-vue'
+// import { LoginCallback, navigationGuard } from '@okta/okta-vue'
 import {
     Home,
     Schools,
@@ -36,14 +36,14 @@ const router = createRouter({
             path: '/',
             component: Home,
         },
-        {
-            name: "admin",
-            path:"/admin",
-            component:DashboardNew,
-            beforeEnter(to, from,next){
-                window.location.href = "http://localhost:8000/admin/login"
-            }
-        },
+        // {
+        //     name: "admin",
+        //     path:"/admin",
+        //     component:DashboardNew,
+        //     beforeEnter(to, from,next){
+        //         window.location.href = "http://localhost:8000/admin/login"
+        //     }
+        // },
         {
             name: 'dashboard',
             path: '/dashboard',
@@ -51,6 +51,10 @@ const router = createRouter({
             meta: {
                 navigation: true
             }
+        },
+        {
+            path: '/dashboard/:email',
+            component: DashboardNew
         },
         {
             name: 'browse-schools',
@@ -171,11 +175,12 @@ const router = createRouter({
             path: '/message/:userId',
             component: UserMessage
         },
-        {
-            path: '/login/callback',
-            name: 'login',
-            component: LoginCallback
-        },
+        // {
+        //     path: '/login/callback',
+        //     name: 'login',
+        //     component: LoginCallback
+        // },
+
     ],
     scrollBehavior(to, from, savedPosition) {
         if (savedPosition) {
@@ -186,6 +191,6 @@ const router = createRouter({
     },
 });
 
-router.beforeEach(navigationGuard);
+// router.beforeEach(navigationGuard);
 
 export default router;
