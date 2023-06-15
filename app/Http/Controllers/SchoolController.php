@@ -496,11 +496,6 @@ class SchoolController extends Controller
     {
         // user id
         if ($request->isMethod('post')) {
-            return response()->json([
-                "status" => 200,
-                "result" => true,
-                'canNominate' => true
-            ]);
             $requestData = $request->validate([
                 'school_id' => 'required',
                 'user_id' => 'required',
