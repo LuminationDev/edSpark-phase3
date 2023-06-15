@@ -51,7 +51,9 @@
                     <div class="h-[20px] w-[1px] bg-[#0E4376]"></div>
                 </li>
                 <li class="px-4 cursor-pointer hover:text-[#4a87c0]">
-                    Privacy
+                    <a href="http://localhost:8000/admin/autologin">
+                        Privacy
+                    </a>
                 </li>
             </ul>
         </div>

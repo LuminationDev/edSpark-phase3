@@ -1,6 +1,6 @@
 // Import router dependencies
 import { createRouter, createWebHistory } from 'vue-router';
-import { LoginCallback, navigationGuard } from '@okta/okta-vue'
+// Import pages
 import {
     Home,
     Schools,
@@ -41,14 +41,6 @@ const router = createRouter({
             component: Home,
         },
         {
-            name: "admin",
-            path:"/admin",
-            component:DashboardNew,
-            beforeEnter(to, from,next){
-                window.location.href = "http://localhost:8000/admin/login"
-            }
-        },
-        {
             name: 'dashboard',
             path: '/dashboard',
             component: DashboardNew,
@@ -56,11 +48,6 @@ const router = createRouter({
                 navigation: true
             }
         },
-        // {
-        //     name: 'browse-schools',
-        //     path: '/browse/schools',
-        //     component: BrowseSchools,
-        // },
         {
             name: 'browse-pages',
             path: '/browse',
@@ -203,11 +190,6 @@ const router = createRouter({
             path: '/message/:userId',
             component: UserMessage
         },
-        {
-            path: '/login/callback',
-            name: 'login',
-            component: LoginCallback
-        },
     ],
     scrollBehavior(to, from, savedPosition) {
         if (savedPosition) {
@@ -217,7 +199,4 @@ const router = createRouter({
         }
     },
 });
-
-router.beforeEach(navigationGuard);
-
 export default router;

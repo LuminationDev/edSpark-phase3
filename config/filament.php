@@ -12,9 +12,8 @@ use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Session\Middleware\AuthenticateSession;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
-
+use App\Http\Middleware\OktaAuthenticationMiddleware;
 return [
-
     /*
     |--------------------------------------------------------------------------
     | Filament Path
@@ -328,6 +327,8 @@ return [
             SubstituteBindings::class,
             DispatchServingFilamentEvent::class,
             MirrorConfigToSubpackages::class,
+            // \App\Http\Middleware\OktaAuthenticationMiddleware::class,
+
         ],
     ],
 

@@ -58,7 +58,7 @@ export const useUserStore = defineStore('user', {
 
         async fetchCurrentUserAndLoadIntoStore(userId) {
             console.log(userId);
-            return axios.get(`${serverURL}fetchUser/${userId}`).then(response => {
+            return axios.get(`${serverURL}/fetchUser/${userId}`).then(response => {
                 console.log(response.data);
                 this.currentUser = response.data;
             }).catch(error => {
