@@ -26,6 +26,8 @@ import ChevronRight from '../components/svg/ChevronRight.vue';
 import {isObjectEmpty} from "@/js/helpers/objectHelpers";
 import {useUserStore} from "@/js/stores/useUserStore";
 import SchoolNominationButton from "@/js/components/schools/SchoolNominationButton.vue";
+import SchoolContact from "@/js/components/schoolsingle/SchoolContact.vue";
+import SchoolWhatsNew from "@/js/components/schoolsingle/SchoolWhatsNew.vue";
 
 const route = useRoute();
 const router = useRouter();
@@ -365,15 +367,11 @@ const isSchoolContentPopulated = computed(() => {
                         </template>
                         <!--whats new submenu-->
                         <template v-if="activeSubmenu === schoolSubmenu[1]['value']">
-                            <div class="text-genericDark py-2 px-10">
-                                Welcome to whats new subpage
-                            </div>
+                            <SchoolWhatsNew />
                         </template>
                         <!--contact submenu-->
                         <template v-if="activeSubmenu === schoolSubmenu[2]['value']">
-                            <div class="text-black py-2 px-10">
-                                Welcome to contact page
-                            </div>
+                            <SchoolContact />
                         </template>
                     </div>
                 </template>
