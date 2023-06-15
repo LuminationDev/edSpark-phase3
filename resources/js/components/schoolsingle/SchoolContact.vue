@@ -21,6 +21,10 @@ const props = defineProps({
         type:Object,
         required: false,
         default: () =>({lat: 0, lng:0})
+    },
+    currentUserCanEdit:{
+        type: Boolean,
+        required: true
     }
 })
 
@@ -121,7 +125,7 @@ const mapOptions = {
                 Contact details
             </div>
             <div
-                v-if="editMode"
+                v-if="editMode && props.currentUserCanEdit"
                 class="contactForm flex flex-col"
             >
                 <div class="contactFormTitle text-xl font-semibold mb-4">
@@ -204,6 +208,7 @@ const mapOptions = {
                 </template>
             </div>
             <GenericButton
+                v-if="props.currentUserCanEdit"
                 :callback="handleToggleEditContactForm"
                 class="mt-2"
             >

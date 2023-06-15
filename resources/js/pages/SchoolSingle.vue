@@ -343,39 +343,40 @@ const isSchoolContentPopulated = computed(() => {
                 <template #content>
                     <div class="flex flex-col w-full mt-20">
                         <!--details submenu-->
-                        <template v-if="activeSubmenu === schoolSubmenu[0]['value']">
-                            <div
-                                v-if="Object.keys(schoolContent).length > 1"
-                                class="school-content py-2 px-10 flex w-full"
-                            >
-                                <SchoolContent
-                                    :school-content="schoolContent"
-                                    :color-theme="colorTheme"
-                                    @send-info-to-school-single="handleSaveNewSchoolInfo"
-                                    @send-color-to-school-single="handleChangeColorTheme"
-                                    @send-photo-to-school-single="handleReceivePhotoFromContent"
-                                >
-                                    <template #additionalContentActions>
-                                        <SchoolNominationButton
-                                            v-if="schoolContent['site']['site_id']"
-                                            :site-id="schoolContent['site']['site_id']"
-                                            :school-id="schoolContent['id']"
-                                        />
-                                    </template>
-                                </SchoolContent>
-                            </div>
-                        </template>
+                        <!--                        <template v-if="activeSubmenu === schoolSubmenu[0]['value']">-->
+                        <!--                            <div-->
+                        <!--                                v-if="Object.keys(schoolContent).length > 1"-->
+                        <!--                                class="school-content py-2 px-10 flex w-full"-->
+                        <!--                            >-->
+                        <SchoolContent
+                            :school-content="schoolContent"
+                            :color-theme="colorTheme"
+                            :active-submenu="activeSubmenu"
+                            @send-info-to-school-single="handleSaveNewSchoolInfo"
+                            @send-color-to-school-single="handleChangeColorTheme"
+                            @send-photo-to-school-single="handleReceivePhotoFromContent"
+                        >
+                            <template #additionalContentActions>
+                                <SchoolNominationButton
+                                    v-if="schoolContent['site']['site_id']"
+                                    :site-id="schoolContent['site']['site_id']"
+                                    :school-id="schoolContent['id']"
+                                />
+                            </template>
+                        </SchoolContent>
+                        <!--                            </div>-->
+                        <!--                        </template>-->
                         <!--whats new submenu-->
-                        <template v-if="activeSubmenu === schoolSubmenu[1]['value']">
-                            <SchoolWhatsNew />
-                        </template>
-                        <!--contact submenu-->
-                        <template v-if="activeSubmenu === schoolSubmenu[2]['value']">
-                            <SchoolContact
-                                :school-id="schoolContent['id'] || 9999"
-                                :school-location="schoolContent['location']"
-                            />
-                        </template>
+                        <!--                        <template v-if="activeSubmenu === schoolSubmenu[1]['value']">-->
+                        <!--                            <SchoolWhatsNew />-->
+                        <!--                        </template>-->
+                        <!--                        &lt;!&ndash;contact submenu&ndash;&gt;-->
+                        <!--                        <template v-if="activeSubmenu === schoolSubmenu[2]['value']">-->
+                        <!--                            <SchoolContact-->
+                        <!--                                :school-id="schoolContent['id'] || 9999"-->
+                        <!--                                :school-location="schoolContent['location']"-->
+                        <!--                            />-->
+                        <!--                        </template>-->
                     </div>
                 </template>
             </BaseSingle>
