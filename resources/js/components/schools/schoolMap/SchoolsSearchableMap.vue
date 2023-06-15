@@ -1,160 +1,163 @@
 <script setup>
-    import { ref, computed, onMounted, watch } from 'vue';
-    import axios from 'axios';
-    import { GoogleMap, Marker, MarkerCluster, } from 'vue3-google-map'
-    import { useRouter } from 'vue-router';
-    import { serverURL } from "@/js/constants/serverUrl";
+import {ref, computed, onMounted, watch} from 'vue';
+import axios from 'axios';
+import {GoogleMap, Marker, MarkerCluster,} from 'vue3-google-map'
+import {useRouter} from 'vue-router';
+import {serverURL} from "@/js/constants/serverUrl";
 
-    /**
-     * Components
-     */
-    import SchoolsMapPopup from './SchoolsMapPopup.vue';
-    import SchoolsMapFilterName from './SchoolsMapFilterName.vue';
-    import SchoolsMapFilterType from './SchoolsMapFilterType.vue';
-    import SchoolsMapFilterTech from './SchoolsMapFilterTech.vue';
+/**
+ * Components
+ */
+import SchoolsMapPopup from './SchoolsMapPopup.vue';
+import SchoolsMapFilterName from './SchoolsMapFilterName.vue';
+import SchoolsMapFilterType from './SchoolsMapFilterType.vue';
+import SchoolsMapFilterTech from './SchoolsMapFilterTech.vue';
 
-    /**
-     * Get some props
-     */
-    const props = defineProps({
-        schools: {
-            type: Array,
-            required: true
-        },
-        schoolsAvailable: {
-            type: Boolean,
-            required: true
-        }
-    });
+/**
+ * Get some props
+ */
+const props = defineProps({
+    schools: {
+        type: Array,
+        required: true
+    },
+    schoolsAvailable: {
+        type: Boolean,
+        required: true
+    }
+});
 
-    const router = useRouter();
-    const showFilters = ref(false);
-    const toggleMapPopup = ref(false);
-    // const toggleFilters = computed(() => {
-    //     showFilters.value = !showFilters.value;
-    // });
+const router = useRouter();
+const showFilters = ref(false);
+const toggleMapPopup = ref(false);
+// const toggleFilters = computed(() => {
+//     showFilters.value = !showFilters.value;
+// });
 
-    /**
-     * Set the maps center point
-     */
-    const mapOptions = ref({
-        center: {
-            lat: -34.9285,
-            lng: 138.6007
-        },
-        zoom: 12,
-        options: {
-            zoomControl: false,
-            mapTypeControl: false,
-            scaleControl: false,
-            streetViewControl: false,
-            rotateControl: false,
-            fullScreenControl: false,
-            mapId: '164f2a0469c00794'
-        }
-    });
+/**
+ * Set the maps center point
+ */
+const mapOptions = ref({
+    center: {
+        lat: -34.9285,
+        lng: 138.6007
+    },
+    zoom: 12,
+    options: {
+        zoomControl: false,
+        mapTypeControl: false,
+        scaleControl: false,
+        streetViewControl: false,
+        rotateControl: false,
+        fullScreenControl: false,
+        mapId: '164f2a0469c00794'
+    }
+});
 
-    /**
-     * Map markers and filters
-     */
-    const schoolNameFilter = ref('');
-    const schoolTypeFilter = ref('All');
-    const schoolTechFilter = ref('All');
+/**
+ * Map markers and filters
+ */
+const schoolNameFilter = ref('');
+const schoolTypeFilter = ref('All');
+const schoolTechFilter = ref('All');
 
-    const schoolsArray = ref(props.schools);
-    // const filteredList = ref([]);
+const schoolsArray = ref(props.schools);
+// const filteredList = ref([]);
 
-    const filteredList = computed({
-        get() {
-            return props.schools;
-        },
+const filteredList = computed({
+    get() {
+        return props.schools;
+    },
 
-        set(newValue) {
-            console.log(newValue)
+    set(newValue) {
+        console.log(newValue)
 
-            schoolsArray.value = newValue;
-        }
-    });
+        schoolsArray.value = newValue;
+    }
+});
 
-    /**
-     * Handle filter
-     */
-    const handleFilterName = (value) => {
-        filteredList.value = filteredList.value.filter(school => school.name.toLowerCase().includes(value.toLowerCase()));
-    };
+/**
+ * Handle filter
+ */
+const handleFilterName = (value) => {
+    filteredList.value = filteredList.value.filter(school => school.name.toLowerCase().includes(value.toLowerCase()));
+};
 
-    const handleFilterTech = (value) => {
-        if (value === 'All') {
-            filteredList.value = filteredList.value;
-        } else {
-            filteredList.value = filteredList.value.filter(
-                school => school.tech_used.some(
-                    tech => tech.name === value
-                )
+const handleFilterTech = (value) => {
+    if (value === 'All') {
+        filteredList.value = filteredList.value;
+    } else {
+        filteredList.value = filteredList.value.filter(
+            school => school.tech_used.some(
+                tech => tech.name === value
             )
-        };
-    };
+        )
+    }
+    ;
+};
 
 
-    const handleFilterType = (value) => {
-        console.log(value);
-        if (value === 'All') {
-            filteredList.value = filteredList.value.value;
-        } else {
-            filteredList.value = filteredList.value.filter(
-                school => school.metadata.find(
-                    item => item.schoolmeta_value === value
-                )
+const handleFilterType = (value) => {
+    console.log(value);
+    if (value === 'All') {
+        filteredList.value = filteredList.value.value;
+    } else {
+        filteredList.value = filteredList.value.filter(
+            school => school.metadata.find(
+                item => item.schoolmeta_value === value
             )
-        };
-    };
+        )
+    }
+    ;
+};
 
-    const popupX = ref('');
-    const popupY = ref('');
-    const mapPopupIndex = ref(null);
-    const mapPopupName = ref('');
-    const mapPopupInfo = ref({});
+const popupX = ref('');
+const popupY = ref('');
+const mapPopupIndex = ref(null);
+const mapPopupName = ref('');
+const mapPopupInfo = ref({});
 
-    /**
-     * Map methods
-     */
-    const handleOnClusterClick = (location, index) => {
-        if (toggleMapPopup.value) {
-            toggleMapPopup.value = false;
-        };
+/**
+ * Map methods
+ */
+const handleOnClusterClick = (location, index) => {
+    if (toggleMapPopup.value) {
+        toggleMapPopup.value = false;
+    }
+    ;
 
-        toggleMapPopup.value = !toggleMapPopup.value;
-        mapPopupIndex.value = location.id;
-        mapPopupName.value = location.name;
-        mapPopupInfo.value = location;
+    toggleMapPopup.value = !toggleMapPopup.value;
+    mapPopupIndex.value = location.id;
+    mapPopupName.value = location.name;
+    mapPopupInfo.value = location;
 
-        popupX.value = event.clientX / 2;
-        popupY.value = event.clientY / 2;
-    };
+    popupX.value = event.clientX / 2;
+    popupY.value = event.clientY / 2;
+};
 
-    const handleTogglePopupEmit = () => {
-        toggleMapPopup.value = !toggleMapPopup.value;
-    };
+const handleTogglePopupEmit = () => {
+    toggleMapPopup.value = !toggleMapPopup.value;
+};
 
-    const handleFilterBarClick = () => {
-        showFilters.value = !showFilters.value;
-    };
+const handleFilterBarClick = () => {
+    showFilters.value = !showFilters.value;
+};
 
-    const handleLinkToSchool = () => {
-        props.schools.forEach(school => {
-            const idMatch = school.id;
-            console.log(idMatch);
-            if (idMatch === mapPopupIndex.value) {
-                let schoolUrlFriendly = school.name.replace(/\s+/g, '-').toLowerCase();
-                router.push({
-                    name: 'school-single',
-                    params: {
-                        name: school.name
-                    }
-                });
-            }
-        });
-    };
+const handleLinkToSchool = () => {
+    props.schools.forEach(school => {
+        const idMatch = school.id;
+        console.log(idMatch);
+        if (idMatch === mapPopupIndex.value) {
+            let schoolUrlFriendly = school.name.replace(/\s+/g, '-').toLowerCase();
+            router.push({
+                name: 'school-single',
+                params: {
+                    name: school.name
+                }
+            });
+        }
+    });
+};
 
 </script>
 

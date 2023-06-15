@@ -371,7 +371,10 @@ const isSchoolContentPopulated = computed(() => {
                         </template>
                         <!--contact submenu-->
                         <template v-if="activeSubmenu === schoolSubmenu[2]['value']">
-                            <SchoolContact />
+                            <SchoolContact
+                                :school-id="schoolContent['id'] || 9999"
+                                :school-location="schoolContent['location']"
+                            />
                         </template>
                     </div>
                 </template>

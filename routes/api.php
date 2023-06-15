@@ -70,7 +70,8 @@ Route::middleware('api')->group(function() {
     Route::post('nominateUserForSchool',[SchoolController::class, 'nominateUserForSchool']);
     Route::post('deleteNominatedUser',[SchoolController::class, 'deleteNominatedUserSchool']);
     Route::post('getNominatedUsersFromSchool',[SchoolController::class, 'getNominatedUsersFromSchool']);
-
+    Route::post('createOrUpdateSchoolContact', [SchoolController::class , 'createOrUpdateContact']);
+    Route::post('fetchSchoolContact', [SchoolController::class, 'fetchSchoolContact']);
 
     Route::get('fetchAllTechs', [TechController::class, 'fetchAllTechs']);
 
