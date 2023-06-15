@@ -1,5 +1,6 @@
 import { defineStore } from "pinia";
 import axios from 'axios';
+import {serverURL} from "@/js/constants/serverUrl";
 
 export const useHardwareStore = defineStore('hardware', {
     state: () => ({
@@ -14,7 +15,7 @@ export const useHardwareStore = defineStore('hardware', {
 
     actions: {
         async loadAllArticles() {
-                await axios.get(`http://localhost:8000/api/fetchAllProducts`).then(response => {
+                await axios.get(`${serverURL}/fetchAllProducts`).then(response => {
                     return response.data
                 }).catch(error => {
                     console.log('Error');
@@ -23,7 +24,7 @@ export const useHardwareStore = defineStore('hardware', {
         },
 
         async loadProductsByBrand(brand) {
-                return axios.get(`http://localhost:8000/api/fetchProductByBrand/${brand}`).then(response => {
+                return axios.get(`${serverURL}/fetchProductByBrand/${brand}`).then(response => {
                     return response.data
                 }).catch(error => {
                     console.log('Error!!');

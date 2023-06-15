@@ -1,5 +1,6 @@
 import { defineStore } from "pinia";
 import axios from "axios";
+import {serverURL} from "@/js/constants/serverUrl";
 
 export const useEventsStore = defineStore('events', {
     state: () => ({
@@ -15,7 +16,7 @@ export const useEventsStore = defineStore('events', {
     actions: {
         async loadEvents() {
             return new Promise(async (resolve, reject) => {
-                await axios.get('http://localhost:8000/api/fetchEventPosts').then(res => {
+                await axios.get(`${serverURL}/fetchEventPosts`).then(res => {
                     this.events = res.data;
                     resolve(res.data);
                 }).catch(err => {

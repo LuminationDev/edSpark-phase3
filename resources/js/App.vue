@@ -12,47 +12,47 @@ import {onBeforeMount, reactive, ref} from "vue";
 
 
 const router = useRouter();
-const userStore = useUserStore()
-const {userLikeList, userBookmarkList, currentUser} = storeToRefs(userStore)
-
-
-const query = {
-    // user_id: currentUser.value.id,
-    user_id: 20,
-    post_type: 'software'
-}
-try {
-    axios.post(`${serverURL}/fetchAllLikesByType`, query).then(res => {
-        let temp = []
-        // get id Number only
-        for (let x of res.data.data) {
-            temp.push(x.post_id)
-        }
-        userLikeList.value.software = temp
-
-    }).catch(err => {
-        console.log('Failed while sending post request')
-    })
-} catch (e) {
-    console.log('failed to retreive likes')
-}
-
-try {
-    axios.post(`${serverURL}/fetchAllBookmarksByType`, query).then(res => {
-        let temp = []
-        // get id Number only
-        for (let x of res.data.data) {
-            temp.push(x.post_id)
-        }
-        userBookmarkList.value.software = temp
-
-    }).catch(err => {
-        console.log(`there has been an error while fetching users bookmark`)
-    })
-
-} catch (e) {
-    console.log('failed to retrive bookmarks')
-}
+// const userStore = useUserStore()
+// const {userLikeList, userBookmarkList, currentUser} = storeToRefs(userStore)
+//
+//
+// const query = {
+//     // user_id: currentUser.value.id,
+//     user_id: 20,
+//     post_type: 'software'
+// }
+// try {
+//     axios.post(`${serverURL}/fetchAllLikesByType`, query).then(res => {
+//         let temp = []
+//         // get id Number only
+//         for (let x of res.data.data) {
+//             temp.push(x.post_id)
+//         }
+//         userLikeList.value.software = temp
+//
+//     }).catch(err => {
+//         console.log('Failed while sending post request')
+//     })
+// } catch (e) {
+//     console.log('failed to retreive likes')
+// }
+//
+// try {
+//     axios.post(`${serverURL}/fetchAllBookmarksByType`, query).then(res => {
+//         let temp = []
+//         // get id Number only
+//         for (let x of res.data.data) {
+//             temp.push(x.post_id)
+//         }
+//         userBookmarkList.value.software = temp
+//
+//     }).catch(err => {
+//         console.log(`there has been an error while fetching users bookmark`)
+//     })
+//
+// } catch (e) {
+//     console.log('failed to retrive bookmarks')
+// }
 
 
 

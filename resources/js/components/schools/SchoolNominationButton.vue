@@ -26,7 +26,6 @@ const nominatedStaffList = ref([])
 
 onMounted(() => {
     axios.get(`${serverURL}/fetchStaffFromSite/${props.siteId}`).then(res => {
-        console.log(res.data)
         siteStaffList.value = res.data.filter(staff => staff.id !== currentUser.value.id).map(staff => {
             return {id: staff.id, name: staff.name}
         })
@@ -67,25 +66,29 @@ const handleClickNominationButton = () => {
 }
 
 const handleSelectedStaffDropdown = (payload) => {
-    console.log(payload)
     selectedStaff.value = payload
-    axios({
-        method: "POST",
-        url: `${serverURL}/nominateUserForSchool`,
-        data: {
-            "site_id": props.siteId,
-            "school_id": props.schoolId,
-            "user_id": currentUser.value.id,
-            'nominated_user_id': payload.id
-        }
-    }).then(res => {
-        console.log(res.data)
-        nominatedStaffList.value.push({
-            id: payload.id,
-            name: payload.name
+    if (payload.id) {
+        axios({
+            method: "POST",
+            url: `${serverURL}/nominateUserForSchool`,
+            data: {
+                "site_id": props.siteId,
+                "school_id": props.schoolId,
+                "user_id": currentUser.value.id,
+                'nominated_user_id': payload.id
+            }
+        }).then(res => {
+            nominatedStaffList.value.push({
+                id: payload.id,
+                name: payload.name
+            })
+
         })
 
-    })
+    }
+    else{
+        console.log('payload.id is missing')
+    }
 }
 
 const doesSiteStaffListExists = computed(() => {
@@ -94,21 +97,26 @@ const doesSiteStaffListExists = computed(() => {
 
 const handleDeleteNominatedUser = async (staffId) => {
     console.log('deleted nominated user ' + staffId)
-    await axios({
-        method: "POST",
-        url: `${serverURL}/deleteNominatedUser`,
-        data: {
-            "site_id": props.siteId,
-            "school_id": props.schoolId,
-            "user_id": currentUser.value.id,
-            'nominated_id_delete': staffId
-        }
-    }).then(res => {
-        if(res.data.status === 200){
-            nominatedStaffList.value = nominatedStaffList.value.filter(staff => staff.id !== staffId)
-        }
-        console.log(res.data.result)
-    });
+    if (staffId) {
+        await axios({
+            method: "POST",
+            url: `${serverURL}/deleteNominatedUser`,
+            data: {
+                "site_id": props.siteId,
+                "school_id": props.schoolId,
+                "user_id": currentUser.value.id,
+                'nominated_id_delete': staffId
+            }
+        }).then(res => {
+            if (res.data.status === 200) {
+                nominatedStaffList.value = nominatedStaffList.value.filter(staff => staff.id !== staffId)
+            }
+            console.log(res.data.result)
+        });
+
+    } else {
+        console.log('missing staffID when handleDeleteNominatedUser is called')
+    }
 }
 
 </script>
@@ -134,7 +142,7 @@ const handleDeleteNominatedUser = async (staffId) => {
             >
                 <SearchDropdown
                     :options="siteStaffList"
-                    max-item="15"
+                    :max-item="15"
                     @selected="handleSelectedStaffDropdown"
                 />
             </form>

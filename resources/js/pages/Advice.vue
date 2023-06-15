@@ -8,7 +8,7 @@ import AdviceCard from "@/js/components/advice/AdviceCard.vue";
 import {serverURL} from "@/js/constants/serverUrl";
 import {axiosFetcher} from "@/js/helpers/fetcher";
 import {useRouter} from "vue-router";
-
+import {swrvOptions} from "@/js/constants/swrvConstants";
 import CardLoading from '../components/card/CardLoading.vue';
 
 const router = useRouter();
@@ -17,21 +17,21 @@ const router = useRouter();
  * Get the DAG Advice articles
  * and states
  */
-const { data: dagAdvice, error: dagError, isValidating: dagValidating } = useSWRV(`${serverURL}/fetchAdvicePostByType/D.A.G advice`, axiosFetcher);
+const { data: dagAdvice, error: dagError, isValidating: dagValidating } = useSWRV(`${serverURL}/fetchAdvicePostByType/D.A.G advice`, axiosFetcher,swrvOptions);
 const { state: dagState, STATES: DAGSTATES } = useSwrvState(dagAdvice, dagError, dagValidating);
 
 /**
  * Get the Partner advice
  * and states
  */
-const { data: partnerAdvice, error: partnerError, isValidating: partnerValidating } = useSWRV(`${serverURL}/fetchAdvicePostByType/Partner`, axiosFetcher);
+const { data: partnerAdvice, error: partnerError, isValidating: partnerValidating } = useSWRV(`${serverURL}/fetchAdvicePostByType/Partner`, axiosFetcher,swrvOptions);
 const { state: partnerState, STATES: PARTNERSTATES } = useSwrvState(partnerAdvice, partnerError, partnerValidating);
 
 /**
  * Get General Advice articles (your work, classroom, learning)
  * and states
  */
-const { data: generalAdvice, error: generalError, isValidating: generalValidating } = useSWRV(`${serverURL}/fetchAdvicePostByType/${['Your Classroom', 'Your Work', 'Your Learning']}`, axiosFetcher);
+const { data: generalAdvice, error: generalError, isValidating: generalValidating } = useSWRV(`${serverURL}/fetchAdvicePostByType/${['Your Classroom', 'Your Work', 'Your Learning']}`, axiosFetcher,swrvOptions);
 const { state: generalState, STATES: GENERALSTATE } = useSwrvState(generalAdvice, generalError, generalValidating);
 
 const handleBrowseAllAdvice = () => {
