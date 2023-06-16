@@ -17,6 +17,9 @@ use App\Http\Controllers\ImageController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\LikeBookmarkController;
 use App\Http\Controllers\NotificationController;
+use App\Http\Controllers\OktaAuthController;
+use Illuminate\Support\Facades\Session;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -36,6 +39,7 @@ Route::middleware('api')->group(function() {
     Route::get('fetchSoftwarePosts', [SoftwareController::class, 'fetchSoftwarePosts']);
     Route::get('fetchSoftwarePostById/{id}', [SoftwareController::class, 'fetchSoftwarePostById']);
     Route::get('fetchEventPosts', [EventController::class, 'fetchEventPosts']);
+    Route::get('fetchEventPostById/{id}', [EventController::class, 'fetchEventPostById']);
     Route::get('fetchCommunityPosts', [CommunityController::class, 'fetchCommunityPosts']);
 
     // User Management
@@ -91,4 +95,7 @@ Route::middleware('api')->group(function() {
     Route::get('fetchAllNotifications/{userId}', [NotificationController::class, 'getAllNotifications']);
     Route::get('fetchSingleNotification', [NotificationController::class, 'getSingleNotification']);
     Route::get('fetchNotificationByType', [NotificationController::class, 'getNotificationByType']);
+
+    Route::post('authenticate', [OktaAuthController::class, 'authenticate']);
+
 });

@@ -44,7 +44,7 @@ const handleBrowseAllAdvice = () => {
     <AdviceHero />
     <div class="DAGAdviceRow AdviceContentContainer flex flex-col h-full px-huge">
         <div
-            v-if="dagState === 'SUCCESS'"
+            v-if="dagState === 'SUCCESS' || dagState === 'VALIDATING'"
             class="AdviceCardListContainer heading text-xl pt-10 flex flex-row flex-1 justify-between flex-wrap  gap-6"
         >
             <AdviceCard
@@ -54,7 +54,7 @@ const handleBrowseAllAdvice = () => {
                 :show-icon="true"
             />
         </div>
-        <div v-else-if="dagState === 'PENDING' || dagState === 'VALIDATING'">
+        <div v-else-if="dagState === 'PENDING'">
             <CardLoading
                 :number-per-row="3"
                 :number-of-rows="1"
@@ -63,7 +63,7 @@ const handleBrowseAllAdvice = () => {
     </div>
     <EducatorHero />
     <div
-        v-if="generalState === 'SUCCESS'"
+        v-if="generalState === 'SUCCESS'|| generalState === 'VALIDATING'"
         class="EducatorsAdviceRow AdviceCardListContainer heading text-xl pt-10 flex flex-row flex-wrap justify-between gap-2 flex-1 w-full px-huge"
     >
         <AdviceCard
@@ -75,7 +75,7 @@ const handleBrowseAllAdvice = () => {
         />
     </div>
     <div
-        v-else-if="generalState === 'PENDING' || generalState === 'VALIDATING'"
+        v-else-if="generalState === 'PENDING' "
         class="px-huge"
     >
         <CardLoading
@@ -85,7 +85,7 @@ const handleBrowseAllAdvice = () => {
     </div>
     <PartnerHero />
     <div
-        v-if="partnerState === 'SUCCESS'"
+        v-if="partnerState === 'SUCCESS'|| partnerState === 'VALIDATING'"
         class="PartnerAdviceRow AdviceCardListContainer heading text-xl pt-10 flex flex-row flex-wrap justify-between gap-4 flex-1 w-full px-huge"
     >
         <AdviceCard
@@ -97,7 +97,7 @@ const handleBrowseAllAdvice = () => {
     </div>
 
     <div
-        v-else-if="partnerState === 'PENDING' || partnerState === 'VALIDATING'"
+        v-else-if="partnerState === 'PENDING' "
         class="px-huge"
     >
         <CardLoading

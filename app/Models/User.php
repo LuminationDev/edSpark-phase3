@@ -30,7 +30,8 @@ class User extends Authenticatable implements HasName
         'display_name',
         'email',
         'password',
-        'status'
+        'status',
+        'remember_token'
     ];
 
     public function canAccessFilament(): bool {
