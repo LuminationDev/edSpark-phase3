@@ -3,6 +3,8 @@ import GenericCard from "@/js/components/card/GenericCard.vue";
 import SoftwareCardIcon from "@/js/components/software/SoftwareCardIcon.vue";
 import {useRouter} from "vue-router";
 import {likeURL, bookmarkURL} from "@/js/constants/serverUrl";
+import {useUserStore} from "@/js/stores/useUserStore";
+import {storeToRefs} from "pinia";
 
 const props = defineProps({
     software: {
@@ -15,6 +17,9 @@ const props = defineProps({
         default: 3
     },
 })
+
+const userStore = useUserStore()
+const {currentUser} = storeToRefs(userStore)
 const router = useRouter()
 
 const handleClickCard = () => {
@@ -30,7 +35,7 @@ const handleClickCard = () => {
 
 const likeBookmarkData = {
     post_id: props.software.post_id,
-    user_id: 2, // to be replaced with userId from userStore
+    user_id: currentUser.value.id,
     post_type: 'software'
 }
 

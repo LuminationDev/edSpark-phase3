@@ -36,13 +36,13 @@ const itemArray = computed(()=> {
 
 <template>
     <div class="extraContentRendererContainer flex flex-col py-2 my-2 px-4">
-        <template v-if="contentType == 'numbereditems'">
+        <template v-if="contentType === 'numbereditems'">
             <AdviceNumberedListRenderer :item-array="itemArray" />
         </template>
-        <template v-else-if="contentType == 'iconitems'">
+        <template v-else-if="contentType === 'iconitems'">
             <AdviceIconListRenderer :item-array="itemArray" />
         </template>
-        <template v-else-if="contentType == 'numberedicontems'">
+        <template v-else-if="contentType === 'numberedicontems'">
             <AdviceNumberedIconListRenderer :item-array="itemArray" />
         </template>
         <template v-else>

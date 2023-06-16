@@ -39,7 +39,7 @@ onMounted(() => {
 
 const avatarUrl = computed(() =>{
     let url = ''
-    if(!isObjectEmpty(currentUser.value)){
+    if(currentUser.value && !isObjectEmpty(currentUser.value) && !isObjectEmpty(currentUser.value['metadata'])){
         currentUser.value['metadata'].forEach(meta => {
             if (meta['user_meta_key'] === 'userAvatar') {
                 url = meta['user_meta_value'][0].replace(/\\\//g, "/");

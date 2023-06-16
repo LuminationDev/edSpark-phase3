@@ -131,32 +131,38 @@ class SchoolController extends Controller
                     $error = $e->getMessage();
                 }
             }
-            // still not working need to fix updateMetadata TODO
-            $metadata = $request->schoolMetadata;
-            if ($metadata) {
-                foreach ($metadata as $key => $value) {
-                    try {
-                        $meta = Schoolmeta::where([['school_id', $data['id']], ['schoolmeta_key', $key]])->get();
-                        //meta already exist
-                        if (count($meta) > 0) {
-                            Schoolmeta::where([['school_id', $data['id']], ['schoolmeta_key', $key]])->update([
-                                'schoolmeta_value' => $value,
-                            ]);
-                        } // meta doesnt exist and create a new one
-                        else {
-                            Schoolmeta::insert([
-                                'school_id' => $data['id'],
-                                'schoolmeta_key' => $key,
-                                'schoolmeta_value' => $value,
-                                'created_at' => Carbon::now(),
-                                'updated_at' => Carbon::now()
-                            ]);
-                        }
-                    } catch (Exception $e) {
-                        $error = $e->getMessage();
-                    }
+            $metadata = json_decode($data['metadata']);
+            if (!empty($metadata)) {
+                if(gettype($metadata) != 'array'){
+                    $metadata = [$metadata]; // cast it to an array containing one object
                 }
-            };
+                foreach ($metadata as $meta) {
+                    foreach ($meta as $key => $value){
+                        try {
+                            $existingMeta = Schoolmeta::where('school_id', $data['id'])
+                                ->where('schoolmeta_key', $key)
+                                ->first();
+
+                            if ($existingMeta) {
+                                $existingMeta->schoolmeta_value = $value;
+                                $existingMeta->save();
+                            } else {
+                                Schoolmeta::create([
+                                    'school_id' => $data['id'],
+                                    'schoolmeta_key' => $key,
+                                    'schoolmeta_value' => $value,
+                                    'created_at' => now(),
+                                    'updated_at' => now(),
+                                ]);
+                            }
+                        } catch (Exception $e) {
+                            $error = $e->getMessage();
+                            // Handle the error as needed
+                        }
+                    }
+
+                }
+            }
             // get the latest data with the correct/expected form and return with res()
             $school = School::where('id', $data['id'])->first();
 
@@ -208,7 +214,7 @@ class SchoolController extends Controller
         $data = [];
         foreach ($schools as $school) {
             $schoolMetadata = Schoolmeta::where('school_id', $school->id)->get();
-            $site = Site::find($school->site_id);
+            $site = Site::where('site_id',$school->site_id)->first();
             $siteLocation = (object)[
                 'lat' => (float)($site->site_latitude ?: 0),
                 'lng' => (float)($site->site_longitude ?: 0)
@@ -260,7 +266,7 @@ class SchoolController extends Controller
             return response('School Not found', 404);
         } else {
             $schoolMetadata = Schoolmeta::where('school_id', $school->id)->get();
-            $site = Site::find($school->site_id);
+            $site = Site::where('site_id',$school->site_id)->first();
             $siteLocation = (object)[
                 'lat' => (float)$site->site_latitude,
                 'lng' => (float)$site->site_longitude
@@ -305,7 +311,6 @@ class SchoolController extends Controller
     public function fetchFeaturedSchools()
     {
         $schools = School::where('isFeatured', 1)->get();
-        // dd($schools);
         $data = [];
 
         foreach ($schools as $school) {
@@ -313,7 +318,7 @@ class SchoolController extends Controller
                 'id' => $school->id,
                 'site' => [
                     'site_id' => $school->site_id,
-                    'site_name' => ($school->site_id) ? $school->site->site_name : NULL
+                    'site_name' => ($school->site) ? $school->site->site_name : NULL
                 ],
                 'owner' => [
                     'owner_id' => $school->owner_id,
@@ -540,4 +545,100 @@ class SchoolController extends Controller
         ]);
 
     }
+
+    /**
+     * School Contact Functions
+     */
+    public function createOrUpdateContact(Request $request): \Illuminate\Http\JsonResponse
+    {
+        if ($request->isMethod('post')) {
+            $requestData = $request->validate([
+                'school_id' => 'required',
+                'school_contact' => 'required'
+            ]);
+
+            $school_id = $requestData['school_id'];
+            $school_contact = $requestData['school_contact'];
+//            dd($school_contact);
+            $schoolmeta_record = Schoolmeta::where('school_id', $school_id)
+                ->where('schoolmeta_key', 'school_contact')
+                ->first();
+
+            if ($schoolmeta_record) {
+                // Update existing school contact
+                $schoolmeta_record->schoolmeta_value = $school_contact;
+                $schoolmeta_record->save();
+
+                OutputHelper::print('School contact updated successfully.');
+                return response()->json([
+                    "status" => 200,
+                    "result" => true,
+                    'message' => 'School contact updated successfully.'
+                ]);
+            } else {
+                // Create new school contact
+                $schoolmeta = new Schoolmeta();
+                $schoolmeta->school_id = $school_id;
+                $schoolmeta->schoolmeta_key = 'school_contact';
+                $schoolmeta->schoolmeta_value = $school_contact;
+                $schoolmeta->save();
+
+                OutputHelper::print('School contact created successfully.');
+                return response()->json([
+                    "status" => 200,
+                    "result" => true,
+                    'message' => 'School contact created successfully.'
+                ]);
+            }
+        }
+
+        return response()->json([
+            "status" => 401,
+            "result" => false,
+            'message' => 'Unauthorized'
+        ]);
+    }
+
+    public function fetchSchoolContact(Request $request): \Illuminate\Http\JsonResponse
+    {
+        if ($request->isMethod('post')) {
+            $requestData = $request->validate([
+                'school_id' => 'required',
+            ]);
+
+            $school_id = $requestData['school_id'];
+
+            $schoolmeta_record = Schoolmeta::where('school_id', $school_id)
+                ->where('schoolmeta_key', 'school_contact')
+                ->first();
+
+            if ($schoolmeta_record) {
+                OutputHelper::print('School contact retrieved successfully.');
+                return response()->json([
+                    "status" => 200,
+                    "result" => true,
+                    'school_contact' => $schoolmeta_record->schoolmeta_value
+                ]);
+            }
+
+            OutputHelper::print('School contact not found.');
+            return response()->json([
+                "status" => 404,
+                "result" => false,
+                'message' => 'School contact not found.'
+            ]);
+        }
+
+        return response()->json([
+            "status" => 401,
+            "result" => false,
+            'message' => 'Unauthorized'
+        ]);
+    }
+
+
+
+    /**
+     * End of SchoolContact Function
+     */
 }

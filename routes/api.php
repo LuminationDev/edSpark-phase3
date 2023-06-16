@@ -17,6 +17,9 @@ use App\Http\Controllers\ImageController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\LikeBookmarkController;
 use App\Http\Controllers\NotificationController;
+use App\Http\Controllers\OktaAuthController;
+use Illuminate\Support\Facades\Session;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -71,7 +74,8 @@ Route::middleware('api')->group(function() {
     Route::post('nominateUserForSchool',[SchoolController::class, 'nominateUserForSchool']);
     Route::post('deleteNominatedUser',[SchoolController::class, 'deleteNominatedUserSchool']);
     Route::post('getNominatedUsersFromSchool',[SchoolController::class, 'getNominatedUsersFromSchool']);
-
+    Route::post('createOrUpdateSchoolContact', [SchoolController::class , 'createOrUpdateContact']);
+    Route::post('fetchSchoolContact', [SchoolController::class, 'fetchSchoolContact']);
 
     Route::get('fetchAllTechs', [TechController::class, 'fetchAllTechs']);
 
@@ -83,6 +87,7 @@ Route::middleware('api')->group(function() {
     Route::post('bookmark', [LikeBookmarkController::class, 'bookmark']);
     Route::post('fetchAllLikes', [LikeBookmarkController::class, 'fetchAllLikes']);
     Route::post('fetchAllBookmarks', [LikeBookmarkController::class, 'fetchAllBookmarks']);
+    Route::post('fetchAllBookmarksWithTitle', [LikeBookmarkController::class, 'fetchAllBookmarksWithTitle']);
     Route::post('fetchAllLikesByType', [LikeBookmarkController::class, 'fetchAllLikesByType']);
     Route::post('fetchAllBookmarksByType', [LikeBookmarkController::class, 'fetchAllBookmarksByType']);
 
@@ -90,4 +95,7 @@ Route::middleware('api')->group(function() {
     Route::get('fetchAllNotifications/{userId}', [NotificationController::class, 'getAllNotifications']);
     Route::get('fetchSingleNotification', [NotificationController::class, 'getSingleNotification']);
     Route::get('fetchNotificationByType', [NotificationController::class, 'getNotificationByType']);
+
+    Route::post('authenticate', [OktaAuthController::class, 'authenticate']);
+
 });

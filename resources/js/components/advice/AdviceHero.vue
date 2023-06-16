@@ -11,13 +11,8 @@ import AdviceRobot from '../svg/adviceRobot/AdviceRobot.vue';
                     Digital Adoption Group
                 </h1>
 
-                <p class="text-white text-[18px] font-normal pb-4">
-                    The Digital Adoption Group (DAG) is a cross-divisional group that provides holistic and focused advice on digital technologies.
-                </p>
-
                 <p class="text-white text-[18px] font-normal">
-                    The objective of the DAG is to support leaders and educators to integrate high-impact technologies by providing system-wide
-                    and practical advice on what technology to purchase for teaching and learning and for what purpose.
+                    The Digital Adoption Group (DAG) offers comprehensive guidance on digital technologies, assisting leaders and educators with seamless integration. We provide practical, system-wide advice for purchasing and adopting high-impact technologies that enhance teaching and learning.
                 </p>
             </div>
             <div class="col-span-3 relative">

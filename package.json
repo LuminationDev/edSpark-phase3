@@ -5,7 +5,6 @@
         "build": "vite build && npx tailwindcss build -i ./resources/css/app.css -o ./resources/css/output.css",
         "prod": "vite build && composer update && php artisan migrate && cp -r ./public/* ./web",
         "buildtest": "vite build && composer update"
-
     },
     "devDependencies": {
         "@tailwindcss/aspect-ratio": "^0.4.2",
@@ -37,6 +36,8 @@
         "@okta/okta-vue": "^5.6.0",
         "@vite/vitejs": "^2.3.19",
         "@vitejs/plugin-vue": "^4.2.2",
+        "@vuelidate/core": "^2.0.2",
+        "@vuelidate/validators": "^2.0.2",
         "@vueuse/core": "^9.13.0",
         "editorjs-inline-font-size-tool": "^1.0.1",
         "epic-spinners": "^2.0.0",

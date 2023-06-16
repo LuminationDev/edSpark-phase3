@@ -26,6 +26,8 @@ import ChevronRight from '../components/svg/ChevronRight.vue';
 import {isObjectEmpty} from "@/js/helpers/objectHelpers";
 import {useUserStore} from "@/js/stores/useUserStore";
 import SchoolNominationButton from "@/js/components/schools/SchoolNominationButton.vue";
+import SchoolContact from "@/js/components/schoolsingle/SchoolContact.vue";
+import SchoolWhatsNew from "@/js/components/schoolsingle/SchoolWhatsNew.vue";
 
 const route = useRoute();
 const router = useRouter();
@@ -151,7 +153,8 @@ const handleSaveNewSchoolInfo = async (content_blocks, tech_used) => {
     }
 
     const schoolMetadata = {school_color_theme: colorTheme.value}
-    newUpdatedSchoolFormData.append('metadata', schoolMetadata)
+    newUpdatedSchoolFormData.append('metadata', JSON.stringify(schoolMetadata))
+    console.log(schoolMetadata)
     await axios({
         url: `${serverURL}/updateSchool`,
         method: 'post',
@@ -339,41 +342,22 @@ const isSchoolContentPopulated = computed(() => {
                 </template>
                 <template #content>
                     <div class="flex flex-col w-full mt-20">
-                        <!--details submenu-->
-                        <template v-if="activeSubmenu === schoolSubmenu[0]['value']">
-                            <div
-                                v-if="Object.keys(schoolContent).length > 1"
-                                class="school-content py-2 px-10 flex w-full"
-                            >
-                                <SchoolContent
-                                    :school-content="schoolContent"
-                                    :color-theme="colorTheme"
-                                    @send-info-to-school-single="handleSaveNewSchoolInfo"
-                                    @send-color-to-school-single="handleChangeColorTheme"
-                                    @send-photo-to-school-single="handleReceivePhotoFromContent"
-                                >
-                                    <template #additionalContentActions>
-                                        <SchoolNominationButton
-                                            v-if="schoolContent['site']['site_id']"
-                                            :site-id="schoolContent['site']['site_id']"
-                                            :school-id="schoolContent['id']"
-                                        />
-                                    </template>
-                                </SchoolContent>
-                            </div>
-                        </template>
-                        <!--whats new submenu-->
-                        <template v-if="activeSubmenu === schoolSubmenu[1]['value']">
-                            <div class="text-genericDark py-2 px-10">
-                                Welcome to whats new subpage
-                            </div>
-                        </template>
-                        <!--contact submenu-->
-                        <template v-if="activeSubmenu === schoolSubmenu[2]['value']">
-                            <div class="text-black py-2 px-10">
-                                Welcome to contact page
-                            </div>
-                        </template>
+                        <SchoolContent
+                            :school-content="schoolContent"
+                            :color-theme="colorTheme"
+                            :active-submenu="activeSubmenu"
+                            @send-info-to-school-single="handleSaveNewSchoolInfo"
+                            @send-color-to-school-single="handleChangeColorTheme"
+                            @send-photo-to-school-single="handleReceivePhotoFromContent"
+                        >
+                            <template #additionalContentActions>
+                                <SchoolNominationButton
+                                    v-if="schoolContent['site']['site_id']"
+                                    :site-id="schoolContent['site']['site_id']"
+                                    :school-id="schoolContent['id']"
+                                />
+                            </template>
+                        </SchoolContent>
                     </div>
                 </template>
             </BaseSingle>

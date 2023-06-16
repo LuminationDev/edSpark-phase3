@@ -52,9 +52,9 @@ const cardsLoading = computed(() => {
     } else if ([STATES.PENDING].includes(state.value)) {
         return true
     } else if ([STATES.VALIDATING].includes(state.value)) {
-        return false
+        return !featuredSites.value.length;
     } else {
-        return ![STATES.SUCCESS, STATES.VALIDATING, STATES.STALE_IF_ERROR].includes(state.value)
+        return ![STATES.SUCCESS, STATES.STALE_IF_ERROR].includes(state.value)
     }
 })
 
@@ -76,7 +76,7 @@ const fetchAllSchools = () => {
 };
 
 
-onBeforeMount(async () => {
+onBeforeMount(() => {
     fetchAllSchools();
 
     /**
@@ -170,7 +170,6 @@ const handleSaveWelcomePopup = (data) => {
                 <div
                     v-for="(school,index) in featuredSites"
                     :key="index"
-                    class="col-span-1 bg-white cursor-pointer h-[470px] border-[0.5px]  border-black transition-all group hover:shadow-2xl"
                 >
                     <SchoolCard
                         :school-data="school"
