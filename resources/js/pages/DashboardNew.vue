@@ -30,14 +30,10 @@ import oktaAuth from '../constants/oktaAuth';
  * I guess I should pick up some ____ from the store on my way home
  * (import and set up stores)
  */
-import { useUserStore } from '../stores/useUserStore';
-import { useEventsStore } from '../stores/useEventsStore';
-import { useSoftwareStore } from '../stores/useSoftwareStore';
-import { useAdviceStore } from '../stores/useAdviceStore';
-import { useSchoolsStore } from '../stores/useSchoolsStore';
-import { useRouter } from "vue-router";
-import { serverURL } from "@/js/constants/serverUrl";
-import { axiosFetcher, axiosSchoolFetcher } from "@/js/helpers/fetcher";
+import {useUserStore} from '../stores/useUserStore';
+import {useRouter} from "vue-router";
+import {serverURL} from "@/js/constants/serverUrl";
+import {axiosFetcher, axiosSchoolFetcher} from "@/js/helpers/fetcher";
 import useSwrvState from "@/js/helpers/useSwrvState";
 import useSWRV from "swrv";
 import { storeToRefs } from "pinia";
@@ -131,8 +127,6 @@ const getIdToken = async () => {
         // console.log("RESPONSE", response);
         if (response.data.success === true){
             email.value = response.data.email;
-            // console.log('EMAIL ID: ', email.value);
-
             await checkFirstVisit(email.value);
         }
     }catch (error) {
@@ -172,7 +166,8 @@ const { state: advicesState } = useSwrvState(advicesData, advicesError, advicesI
 const { state: schoolsState } = useSwrvState(schoolsData, schoolsError, schoolsIsValidating)
 
 // who needs a one line ref to indicate loading state when you can have 10 lines 😆
-const eventsLoading = computed(() => {
+// todo: compile all ref into an array and process with map
+const eventsLoading =  computed(() => {
     if ([ALLSTATES.ERROR, ALLSTATES.STALE_IF_ERROR].includes(eventsState.value)) {
         return false
     } else if ([ALLSTATES.PENDING].includes(eventsState.value)) {

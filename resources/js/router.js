@@ -13,10 +13,8 @@ import {
     UserMessage
 } from './pages';
 import DashboardNew from './pages/DashboardNew.vue';
-import BrowseSchools from "@/js/pages/BrowseSchools.vue";
 import AdviceSingle from "@/js/pages/AdviceSingle.vue";
 import SoftwareSingle from "@/js/components/software/softwareSingle/SoftwareSingle.vue";
-import BaseSearchPage from "@/js/components/search/BaseSearchPage.vue";
 import UserProfile from  '@/js/components/userprofile/UserProfile.vue';
 import HardwareSingle from '@/js/pages/HardwareSingle.vue';
 import EventSingle from "@/js/pages/EventSingle.vue";
@@ -28,9 +26,8 @@ import Hardware from "@/js/pages/Hardware.vue";
 import SchoolSearch from "@/js/components/search/SchoolSearch.vue";
 import SoftwareSearch from "@/js/components/search/SoftwareSearch.vue";
 import AdviceSearch from "@/js/components/search/AdviceSearch.vue";
-import HardwareLaptopSection from "@/js/components/svg/hardware/HardwareLaptopSection.vue";
 import HardwareSearch from "@/js/components/search/HardwareSearch.vue";
-
+import {useUserStore} from "@/js/stores/useUserStore";
 
 const router = createRouter({
     history: createWebHistory(),
@@ -199,4 +196,11 @@ const router = createRouter({
         }
     },
 });
+router.afterEach((to,from) =>{
+    if(!['home','login'].includes(to.name)){
+        const userStore= useUserStore()
+        console.log('inside if inside router aftereach')
+        userStore.populateUserLikesAndBookmark()
+    }
+})
 export default router;
