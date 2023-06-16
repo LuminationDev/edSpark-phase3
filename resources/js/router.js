@@ -1,8 +1,5 @@
 // Import router dependencies
 import { createRouter, createWebHistory } from 'vue-router';
-
-// Import pages
-// const Welcome = () => import('../components/Welcome.vue');
 import { LoginCallback, navigationGuard } from '@okta/okta-vue'
 import {
     Home,
@@ -19,14 +16,20 @@ import DashboardNew from './pages/DashboardNew.vue';
 import BrowseSchools from "@/js/pages/BrowseSchools.vue";
 import AdviceSingle from "@/js/pages/AdviceSingle.vue";
 import SoftwareSingle from "@/js/components/software/softwareSingle/SoftwareSingle.vue";
-import BaseSearchPage from "@/js/components/bases/BaseSearchPage.vue";
+import BaseSearchPage from "@/js/components/search/BaseSearchPage.vue";
 import UserProfile from  '@/js/components/userprofile/UserProfile.vue';
 import HardwareSingle from '@/js/pages/HardwareSingle.vue';
+import EventSingle from "@/js/pages/EventSingle.vue";
 
 import ProfileWork from '@/js/components/userprofile/ProfileWork.vue'
 import ProfileInfo  from '@/js/components/userprofile/ProfileInfo.vue'
 import ProfileMessages  from '@/js/components/userprofile/ProfileMessages.vue'
 import Hardware from "@/js/pages/Hardware.vue";
+import SchoolSearch from "@/js/components/search/SchoolSearch.vue";
+import SoftwareSearch from "@/js/components/search/SoftwareSearch.vue";
+import AdviceSearch from "@/js/components/search/AdviceSearch.vue";
+import HardwareLaptopSection from "@/js/components/svg/hardware/HardwareLaptopSection.vue";
+import HardwareSearch from "@/js/components/search/HardwareSearch.vue";
 
 
 const router = createRouter({
@@ -38,6 +41,14 @@ const router = createRouter({
             component: Home,
         },
         {
+            name: "admin",
+            path:"/admin",
+            component:DashboardNew,
+            beforeEnter(to, from,next){
+                window.location.href = "http://localhost:8000/admin/login"
+            }
+        },
+        {
             name: 'dashboard',
             path: '/dashboard',
             component: DashboardNew,
@@ -45,15 +56,37 @@ const router = createRouter({
                 navigation: true
             }
         },
-        {
-            name: 'browse-schools',
-            path: '/browse/schools',
-            component: BrowseSchools,
-        },
+        // {
+        //     name: 'browse-schools',
+        //     path: '/browse/schools',
+        //     component: BrowseSchools,
+        // },
         {
             name: 'browse-pages',
-            path: '/browse/:type',
-            component: BaseSearchPage,
+            path: '/browse',
+            children:[
+                {
+                    name: 'browseSchools',
+                    path: 'schools',
+                    component: SchoolSearch
+                },{
+                    name: 'browseAdvices',
+                    path: 'advices',
+                    component: AdviceSearch
+                },{
+                    name: 'browseSoftwares',
+                    path: 'softwares',
+                    component: SoftwareSearch
+                },{
+                    name: 'browseHardwares',
+                    path: 'hardwares',
+                    component: HardwareSearch
+                },{
+                    name: 'browseEvents',
+                    path: 'events',
+                    component: HardwareSearch
+                },
+            ]
         },
         {
             name: 'schools',
@@ -138,6 +171,12 @@ const router = createRouter({
             }
         },
         {
+            name: 'event-single',
+            path: '/event/resources/:id',
+            component: EventSingle,
+            params: true
+        },
+        {
             name: 'userProfile',
             path: '/profile/:userId',
             component: UserProfile,
@@ -179,6 +218,6 @@ const router = createRouter({
     },
 });
 
-router.beforeEach(navigationGuard);
+// router.beforeEach(navigationGuard);
 
 export default router;

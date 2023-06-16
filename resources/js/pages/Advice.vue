@@ -1,20 +1,13 @@
 <script setup>
 import AdviceHero from '../components/advice/AdviceHero.vue'
-import {onBeforeMount, ref, computed, watchEffect} from "vue";
 import useSWRV from "swrv";
-import useSwrvState from '@/js/helpers/useSWRVState';
-
-import SectionHeader from "@/js/components/global/SectionHeader.vue";
-import Spinner from "@/js/components/spinner/Spinner.vue";
+import useSwrvState from '@/js/helpers/useSwrvState';
 import EducatorHero from "@/js/components/advice/EducatorHero.vue";
 import PartnerHero from "@/js/components/advice/PartnerHero.vue";
 import AdviceCard from "@/js/components/advice/AdviceCard.vue";
 import {serverURL} from "@/js/constants/serverUrl";
 import {axiosFetcher} from "@/js/helpers/fetcher";
 import {useRouter} from "vue-router";
-import axios from "axios";
-import {useUserStore} from "@/js/stores/useUserStore";
-import {storeToRefs} from "pinia";
 
 import CardLoading from '../components/card/CardLoading.vue';
 

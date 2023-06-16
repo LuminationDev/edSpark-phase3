@@ -6,10 +6,19 @@ module.exports = {
         './resources/**/*.vue',
     ],
     safelist: [
-        {
-            pattern: /bg-([url(*)])/,
-        },
-        'bg-[url(*)]'
+        'bg-[url(*)]',
+        'bg-[#4A5568]',
+        'bg-[#e53935]',
+        'bg-[#DD6B20]',
+        'bg-[#D69E2E]',
+        'bg-[#38A169]',
+        'bg-[#319795]',
+        'bg-[#3182CE]',
+        'bg-[#5A67D8]',
+        'bg-[#6B46C1]',
+        'bg-[#4338CA]',
+        'bg-[#D53F8C]',
+        'bg-[#ffa000]',
     ],
     theme: {
         extend: {
@@ -50,8 +59,6 @@ module.exports = {
             },
         },
     },
-    plugins: [
-        require('@tailwindcss/line-clamp')
-    ],
+    plugins: [],
 }
 

@@ -17,7 +17,7 @@ export const useSiteStore = defineStore('sites', {
     },
 
     actions: {
-        loadSites() {
+         loadSites() {
             return new Promise( async (resolve, reject) => {
                 await axios.get('http://localhost:8000/api/fetchAllSites').then(res => {
                     // console.log(res);

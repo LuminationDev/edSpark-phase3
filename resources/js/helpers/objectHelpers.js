@@ -22,7 +22,9 @@ export const findNestedKeyValue = (obj, key) => {
     return result;
 }
 
-
+export const isObjectEmpty = (objectName) => {
+    return Object.keys(objectName).length === 0
+}
 //
 // {
 //     "Graphics": "RTX 4090Ti",

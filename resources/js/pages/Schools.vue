@@ -19,49 +19,66 @@ import SectionHeader from "@/js/components/global/SectionHeader.vue";
 import SchoolsSearchableMap from '../components/schools/schoolMap/SchoolsSearchableMap.vue';
 import Loader from '../components/spinner/Loader.vue';
 import CardLoading from '../components/card/CardLoading.vue';
+import {axiosSchoolFetcher} from "@/js/helpers/fetcher";
+import useSwrvState from "@/js/helpers/useSwrvState";
+import {useSchoolsStore} from "@/js/stores/useSchoolsStore";
 
-// const featuredSitesData = ref([])
 const createSchool = ref(false)
 const showWelcomePopup = ref(false)
 
 const router = useRouter();
 
 const userStore = useUserStore()
+const schoolStore = useSchoolsStore()
+const {schools} = storeToRefs(schoolStore)
 const {currentUser} = storeToRefs(userStore)
 
-const axiosFetcher = (url) => {
-    return axios.get(url).then(res => {return res.data})
+const swrvOptions = {
+    revalidateOnFocus: false, // disable refresh on every focus, suspect its too often
+    refreshInterval: 30000 // refresh or revalidate data every 30 secs
 }
 
+const {
+    data: featuredSites,
+    error: featuredSitesError,
+    isValidating: isValidatingFeatured
+} = useSWRV(`${serverURL}/fetchFeaturedSchools`, axiosSchoolFetcher, swrvOptions)
 
-const {data: featuredSites, error: schoolsError} = useSWRV(`${serverURL}/fetchFeaturedSchools`, axiosFetcher)
+const {state, STATES} = useSwrvState(featuredSites, featuredSitesError, isValidatingFeatured)
 
-const cardsLoading = ref(true);
+const cardsLoading = computed(() => {
+    if ([STATES.ERROR, STATES.STALE_IF_ERROR].includes(state.value)) {
+        return false
+    } else if ([STATES.PENDING].includes(state.value)) {
+        return true
+    } else if ([STATES.VALIDATING].includes(state.value)) {
+        return false
+    } else {
+        return ![STATES.SUCCESS, STATES.VALIDATING, STATES.STALE_IF_ERROR].includes(state.value)
+    }
+})
 
-const allSchools = ref([]);
 const schoolsAvailable = ref(false);
 
-const fetchAllSchools =  () => {
-    axios.get(`${serverURL}/fetchAllSchools`).then(res =>{
-        allSchools.value = res.data
+const fetchAllSchools = () => {
+    if (schools.value.length === 0) {
+        console.log('fetch all school called')
+        axios.get(`${serverURL}/fetchAllSchools`).then(res => {
+            schools.value = res.data
+            schoolsAvailable.value = true;
+        })
+    } else {
+        console.log('fetchAllSchool not called due to data available inside allSchoolsRef')
         schoolsAvailable.value = true;
-    })
+
+    }
+
 };
 
-fetchAllSchools();
-
-const featuredSitesData = computed(() => {
-    if(!featuredSites.value ) return []
-    else{
-        // eslint-disable-next-line vue/no-side-effects-in-computed-properties
-        cardsLoading.value = false;
-        return schoolContentArrParser(featuredSites.value)
-    }
-});
-
-console.log(featuredSitesData);
 
 onBeforeMount(async () => {
+    fetchAllSchools();
+
     /**
      * Perform check for user meta here
      * has_school field
@@ -69,45 +86,44 @@ onBeforeMount(async () => {
     let currentUserHasSchool
     const currentUserId = currentUser.value.id
     const currentUserRole = currentUser.value.role
-    try{
-        console.log(currentUser.value.metadata);
+    try {
         // await axios.post(`${serverURL}/getUserMetadata`,{id: 1, userMetakey: 'has_school'}).then(res => {
         //     console.log(res.data[0])
         //     currentUserHasSchool = res.data[0]['user_meta_value'] === 'false'? false : true
         //     // console.log('current user has_school meta is ' + currentUserHasSchool)
         // });
 
-        if (Object.keys(currentUser.value.metadata) === 'has_school') {
+        if (currentUser.value && currentUser.value.metadata && Object.keys(currentUser.value.metadata) === 'has_school') {
             currentUserHasSchool = true;
         }
 
-        if(!currentUserHasSchool && (currentUserRole == 'Principal' || currentUserRole == 'Superadmin')){
+        if (!currentUserHasSchool && (currentUserRole === 'Principal' || currentUserRole === 'Superadmin')) {
             // console.log('School is not init yet. you should init the school')
             createSchool.value = false
-        } else if(!currentUserHasSchool){
+        } else if (!currentUserHasSchool) {
             // console.log('Please notify your principal to set up the school')
-        } else{
+        } else {
             // console.log('hasnt been handled yet')
         }
 
-    } catch(err){
+    } catch (err) {
         console.log(err)
     }
 })
 
-const handleFinishCreateSchool = () =>{
+const handleFinishCreateSchool = () => {
     createSchool.value = false
 }
 
 const handleBrowseAllSchool = () => {
-    router.push({ name: 'browse-schools' })
+    router.push('/browse/schools')
 }
 
 const handleCloseWelcomePopup = () => {
     showWelcomePopup.value = false
 }
 
-const handleSaveWelcomePopup = (data)=>{
+const handleSaveWelcomePopup = (data) => {
     console.log('Received from modal')
     console.log(data)
     showWelcomePopup.value = false
@@ -132,7 +148,7 @@ const handleSaveWelcomePopup = (data)=>{
             @send-save-popup="handleSaveWelcomePopup"
         />
         <SchoolsHero />
-        <div class=" py-20 ">
+        <div class="featuredClassContainer py-20 ">
             <SectionHeader
                 :classes="'bg-[#002858]'"
                 :section="'schools'"
@@ -141,26 +157,25 @@ const handleSaveWelcomePopup = (data)=>{
                 :button-callback="handleBrowseAllSchool"
             />
             <div
-                v-if="!cardsLoading"
-                class="grid grid-cols-4 gap-[24px] w-full px-20 pt-8 "
-            >
-                <div
-                    v-for="(school,index) in featuredSitesData.splice(0,4)"
-                    :key="index"
-                    class="col-span-1 bg-white cursor-pointer h-[470px] border-[0.5px]  border-black transition-all group hover:shadow-2xl"
-                >
-                    <SchoolCard
-                        v-if="featuredSitesData"
-                        :school-data="school"
-                    />
-                </div>
-            </div>
-            <div
-                v-else
+                v-if="cardsLoading"
             >
                 <CardLoading
                     :number-per-row="4"
                 />
+            </div>
+            <div
+                v-else
+                class="grid grid-cols-4 gap-[24px] w-full px-20 pt-8 "
+            >
+                <div
+                    v-for="(school,index) in featuredSites"
+                    :key="index"
+                    class="col-span-1 bg-white cursor-pointer h-[470px] border-[0.5px]  border-black transition-all group hover:shadow-2xl"
+                >
+                    <SchoolCard
+                        :school-data="school"
+                    />
+                </div>
             </div>
         </div>
 
@@ -172,7 +187,7 @@ const handleSaveWelcomePopup = (data)=>{
             <!-- <SearchableMap /> -->
             <SchoolsSearchableMap
                 :key="schoolsAvailable"
-                :schools="allSchools"
+                :schools="schools"
                 :schools-available="schoolsAvailable"
             />
         </div>

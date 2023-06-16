@@ -22,7 +22,7 @@ const props = defineProps({
         default: 3
     },
     displayAuthor:{
-        type: String, required: true
+        type: String, required: false
     },
     displayDate:{
         type: String, required: false
@@ -137,8 +137,8 @@ const setTheBackground = computed(() => {
     >
         <div
             class="cardTopCoverImage relative min-h-[35%] bg-cover bg-center group-hover:min-h-[0%] group-hover:h-0 transition-all"
-            :style="{ backgroundImage: 'url(' + setTheBackground + ')' }"
-
+            :class="`bg-[url('${imageURL}/${coverImage}')]`"
+            :style="`background-image: url('${imageURL}/${coverImage}')`"
             @click="clickCallback"
         >
             <template

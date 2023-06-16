@@ -48,6 +48,9 @@ case 'hardware':
     byIdAPILink = 'fetchProductById'
     recommendationAPILink = 'fetchProductByBrand'
     break;
+case 'event':
+    byIdAPILink = 'fetchEventPostById'
+    break;
 }
 
 
@@ -84,8 +87,9 @@ const getRecommendationBasedOnContentType = () => {
 
 onBeforeMount(async () => {
     // TODO: Need to compare if params and adviceSingleContent is the same
-    console.log(window.history.state)
+    // console.log(window.history.state)
     if (!window.history.state.content) { // doesn't exists
+        if(!byIdAPILink) return
         console.log('No adviceContent passed in. Will request from server')
         await axios.get(`${serverURL}/${byIdAPILink}/${route.params.id}`).then(res => {
             singleContent.value = res.data
@@ -107,9 +111,6 @@ onBeforeMount(async () => {
 })
 
 watch(currentId, () => {
-    console.log('inside watcher params id ', currentId.value)
-    console.log(window.history.state)
-    console.log(route)
     if (window.history.state.content && singleContent.value) {
         if (!isEqual(JSON.parse(window.history.state.content), singleContent.value)) {
             singleContent.value = JSON.parse(window.history.state.content)
@@ -118,7 +119,6 @@ watch(currentId, () => {
 })
 const emits = defineEmits(['emitActiveTabToSpecificPage'])
 const handleEmitFromSubmenu = (value) => {
-    console.log('handleEmitFrom submenu called ', value)
     emits('emitActiveTabToSpecificPage', value)
 }
 

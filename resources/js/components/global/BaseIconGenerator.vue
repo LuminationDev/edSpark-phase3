@@ -1,24 +1,35 @@
 <script setup>
 
-import {shallowRef} from "vue";
+import {computed, resolveDynamicComponent} from "vue";
 
 const props = defineProps({
     iconPath :{
         type: String, required: true
+    },
+    componentsObject: {
+        type: Object, required: true
     }
 })
 
-const techIcon = shallowRef('')
+const loadIconComponent =  (iconPath) => {
+    try {
+        return props.componentsObject[iconPath];
+    } catch (error) {
+        console.error('Failed to load component:', error);
+        return null;
+    }
+};
 
-import(`../../${props.iconPath}`).then(val =>
-    techIcon.value = val.default
-)
+
+const resolvedComponent = computed(() => {
+    return resolveDynamicComponent(loadIconComponent(props.iconPath))
+})
+
 
 </script>
 <template>
     <component
-        :is="techIcon"
-        v-if="techIcon"
+        :is="resolvedComponent"
         class="pointer-events-none"
     />
 </template>
