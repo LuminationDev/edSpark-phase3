@@ -83,6 +83,7 @@ Route::middleware('api')->group(function() {
     Route::post('bookmark', [LikeBookmarkController::class, 'bookmark']);
     Route::post('fetchAllLikes', [LikeBookmarkController::class, 'fetchAllLikes']);
     Route::post('fetchAllBookmarks', [LikeBookmarkController::class, 'fetchAllBookmarks']);
+    Route::post('fetchAllBookmarksWithTitle', [LikeBookmarkController::class, 'fetchAllBookmarksWithTitle']);
     Route::post('fetchAllLikesByType', [LikeBookmarkController::class, 'fetchAllLikesByType']);
     Route::post('fetchAllBookmarksByType', [LikeBookmarkController::class, 'fetchAllBookmarksByType']);
 

@@ -342,12 +342,6 @@ const isSchoolContentPopulated = computed(() => {
                 </template>
                 <template #content>
                     <div class="flex flex-col w-full mt-20">
-                        <!--details submenu-->
-                        <!--                        <template v-if="activeSubmenu === schoolSubmenu[0]['value']">-->
-                        <!--                            <div-->
-                        <!--                                v-if="Object.keys(schoolContent).length > 1"-->
-                        <!--                                class="school-content py-2 px-10 flex w-full"-->
-                        <!--                            >-->
                         <SchoolContent
                             :school-content="schoolContent"
                             :color-theme="colorTheme"
@@ -364,19 +358,6 @@ const isSchoolContentPopulated = computed(() => {
                                 />
                             </template>
                         </SchoolContent>
-                        <!--                            </div>-->
-                        <!--                        </template>-->
-                        <!--whats new submenu-->
-                        <!--                        <template v-if="activeSubmenu === schoolSubmenu[1]['value']">-->
-                        <!--                            <SchoolWhatsNew />-->
-                        <!--                        </template>-->
-                        <!--                        &lt;!&ndash;contact submenu&ndash;&gt;-->
-                        <!--                        <template v-if="activeSubmenu === schoolSubmenu[2]['value']">-->
-                        <!--                            <SchoolContact-->
-                        <!--                                :school-id="schoolContent['id'] || 9999"-->
-                        <!--                                :school-location="schoolContent['location']"-->
-                        <!--                            />-->
-                        <!--                        </template>-->
                     </div>
                 </template>
             </BaseSingle>
