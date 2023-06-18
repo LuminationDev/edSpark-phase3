@@ -49,7 +49,7 @@ const likeBookmarkData = {
     <GenericCard
         :title="props.schoolData.name"
         :like-bookmark-data="likeBookmarkData"
-        number-per-row="1"
+        :number-per-row="1"
         :override-content="true"
     >
         <template #overiddenContent>
