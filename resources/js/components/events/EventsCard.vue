@@ -49,7 +49,7 @@ const handleClickEventCard = () => {
 const {currentUser } = storeToRefs(useUserStore())
 
 const likeBookmarkData = {
-    post_id: props.event.event_id,
+    post_id: props.eventContent.event_id,
     user_id: currentUser.value.id, // to be replaced with userId from userStore
     post_type: 'event'
 }
