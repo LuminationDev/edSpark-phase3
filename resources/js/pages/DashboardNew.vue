@@ -151,8 +151,6 @@ const checkFirstVisit = async (emailAddress) => {
 getIdToken()
 
 
-// more code but much fast
-// had to refactor this as the normal implementation blocks the user identity fetching request :(
 const {
     data: eventsData,
     error: eventsError,

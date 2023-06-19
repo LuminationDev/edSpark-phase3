@@ -8,7 +8,8 @@ import SchoolCardIcon from "@/js/components/schools/SchoolCardIcon.vue";
 const props = defineProps({
     techList:{
         type: Array,
-        required: true
+        required: false,
+        default: () => []
     }
 })
 

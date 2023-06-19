@@ -230,6 +230,12 @@ class SchoolController extends Controller
                     $schoolMetadataToSend[] = $res;
                 }
             }
+            //adding school_type into metadata
+            $schoolType = [
+                'schoolmeta_key' => 'school_type',
+                'schoolmeta_value' => $school->site->site_sub_type_desc
+            ];
+            $schoolMetadataToSend[] = $schoolType;
             $result = [
                 'id' => $school->id,
                 'site' => [
@@ -281,6 +287,8 @@ class SchoolController extends Controller
                     $schoolMetadataToSend[] = $res;
                 }
             }
+
+
             $result = [
                 'id' => $school->id,
                 'site' => [
