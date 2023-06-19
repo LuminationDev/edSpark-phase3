@@ -2,8 +2,13 @@
 
 import Close from '../../svg/Close.vue';
 import SchoolCardIconList from '../SchoolCardIconList.vue';
+import {imageURL} from "@/js/constants/serverUrl";
 
 const props = defineProps({
+    schoolData:{
+        type: Object,
+        required: true
+    },
     mapPopupName: {
         type: String,
         required: true
@@ -13,6 +18,8 @@ const props = defineProps({
         required: true
     }
 });
+
+console.log(props.schoolData)
 
 const emits = defineEmits(['handleLinkToSchool', 'handleToggle']);
 
@@ -29,6 +36,7 @@ const handleEmit = () => {
     <div
         ref="mapPopup"
         class="p-4 bg-white shadow-xl w-[340px] flex flex-col gap-6 overflow-scroll"
+        :style="`background-color: rgba(255,255,255,0.85); background-image: url('${imageURL}/${props.schoolData['cover_image']}'); background-size: cover ;background-blend-mode: screen; `"
     >
         <div class="relative flex flex-row justify-between place-items-center">
             <h3 class="text-[18px] font-medium">
