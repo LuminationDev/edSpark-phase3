@@ -154,7 +154,7 @@ const router = createRouter({
             path: '/events',
             component: Events,
             meta: {
-                navigation: true
+                navigation: true,
             }
         },
         {
