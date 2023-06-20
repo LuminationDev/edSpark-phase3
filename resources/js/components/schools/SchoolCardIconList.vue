@@ -30,7 +30,7 @@ const showFirstComputed = computed(() => {
     <div
         v-for="(tech,index) in props.techList"
         :key="index"
-        class="card_inner_parent"
+        class="card_inner_parent cursor-pointer"
         @mouseenter="showFirstItem = false"
         @mouseleave="showFirstItem = true"
     >

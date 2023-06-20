@@ -222,7 +222,7 @@ const cardHoverToggle = ref(false)
                         @click="() => handleDefaultLike(props.likeBookmarkData)"
                     />
                     <Tooltip
-                        tip="like this post"
+                        tip="Like this post"
                         :tool-tip-margin="{'!-ml-28' : numberPerRow > 3, '-ml-36' : true}"
                     />
                 </span>
@@ -238,7 +238,7 @@ const cardHoverToggle = ref(false)
                         @click="() => handleDefaultBookmark(props.likeBookmarkData)"
                     />
                     <Tooltip
-                        tip="bookmark this post"
+                        tip="Bookmark this post"
                         tool-tip-margin="ml-8"
                     />
                 </span>
