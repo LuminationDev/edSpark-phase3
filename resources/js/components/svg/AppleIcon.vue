@@ -20,7 +20,7 @@ export default {
 </template>
 <style scoped>
 path {
-    fill: none;
+    fill: #000000;
     stroke: #eaeaea;
     stroke-width: 1px;
     stroke-dasharray: 0;
