@@ -1,5 +1,9 @@
 <script setup>
 import AdviceEducatorsIcon from "@/js/components/svg/adviceIcon/AdviceEducatorsIcon.vue";
+import GenericButton from "@/js/components/button/GenericButton.vue";
+import {useRouter} from "vue-router";
+
+const router = useRouter()
 </script>
 
 <template>
@@ -14,8 +18,14 @@ import AdviceEducatorsIcon from "@/js/components/svg/adviceIcon/AdviceEducatorsI
                     Find advice from a range of trusted sources to help you as an educatr to integrate technology in your classroom, your work and your own learning
                 </p>
             </div>
-            <div class="col-span-3 relative">
+            <div class="col-span-3 relative flex justify-end items-end">
                 <AdviceEducatorsIcon class="absolute right-12" />
+                <GenericButton
+                    :callback="() => router.push('browse/advices')"
+                    class="bg-white text-lg font-semibold !text-adviceGreen !rounded-none border-2 border-adviceGreen z-40 px-12 hover:bg-slate-50"
+                >
+                    View all advice
+                </GenericButton>
             </div>
         </div>
     </div>
