@@ -124,13 +124,13 @@ checkUserRole();
                         <Profile />
                         Help
                     </button>
-                    <router-link v-if="isAdmin" to="/admin">
+                    <!-- <router-link v-if="isAdmin" to="/admin"> -->
                         <button
                             class="flex flex-row gap-4 justify-start py-3 px-2 text-white text-[18px] font-medium place-items-center hover:bg-[#405974] w-full">
                             <Profile />
                             Admin
                         </button>
-                    </router-link>
+                    <!-- </router-link> -->
                 </div>
                 <div class="pt-3">
                     <button class="py-3 px-2 text-white text-[18px] font-medium w-full hover:underline"

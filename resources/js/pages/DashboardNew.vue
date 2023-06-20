@@ -8,6 +8,13 @@ import FirstVisitForm from '../components/dashboard/FirstVisitForm.vue';
 import SectionHeader from '../components/global/SectionHeader.vue';
 
 /**
+ * Import Card wrapper
+ */
+import CardCarouselWrapper from '../components/card/CardCarouselWrapper.vue';
+import CardWrapper from '../components/card/CardWrapper.vue';
+import SoftwareRobot from '../components/svg/SoftwareRobot.vue';
+
+/**
  * Card Components /sections
  */
 import SoftwareDashboard from '../components/dashboard/SoftwareDashboard.vue';
@@ -128,6 +135,8 @@ const getIdToken = async () => {
         if (response.data.success === true){
             email.value = response.data.email;
             await checkFirstVisit(email.value);
+        } else{
+            currentUser.value.id = 9999
         }
     }catch (error) {
         console.error(error);
@@ -267,7 +276,7 @@ const email = ref(null);
 onMounted(async () => {
 
 
-})
+});
 
 </script>
 
@@ -293,8 +302,16 @@ onMounted(async () => {
         />
 
         <!-- Events Cards Here -->
-        <EventsDashboard v-if="!eventsLoading" :events="eventsData" />
-        <CardLoading v-else class="px-huge" :number-per-row="3" />
+        <CardCarouselWrapper
+            :key="eventsLoading"
+            :card-data="eventsData ? eventsData : []"
+            :loading="eventsLoading"
+            :row-count="1"
+            :col-count="3"
+            :section-type="'events'"
+            :type-tag-color="'bg-secondary-red'"
+        >
+        </CardCarouselWrapper>
 
         <SectionHeader
             :classes="'bg-secondary-darkBlue'"
@@ -305,8 +322,82 @@ onMounted(async () => {
         />
 
         <!-- Software Cards Here -->
-        <SoftwareDashboard v-if="!softwareLoading" :softwares="softwaresData" />
-        <CardLoading v-else class="px-huge" :number-per-row="2" :additional-classes="'!justify-end'" />
+        <div class="py-8 px-huge flex flex-row gap-[24px] relative group/bg">
+            <div
+                class="absolute softwareRobot -z-10 transition-all duration-700 opacity-10 top-1/2 -translate-y-1/2 left-1/3 group-hover/bg:left-[15%] group-hover/bg:scale-125"
+            >
+                <SoftwareRobot />
+            </div>
+            <div class="w-[35%] flex place-items-center pl-[29px]">
+                <div class="w-full h-[700px] grid grid-cols-6 grid-rows-2">
+                    <div class="col-span-1 row-span-1">
+                        <img
+                            class=""
+                            src="../../assets/images/departmentProvidedAndApproved.png"
+                            alt="Department Approved And Provided"
+                        >
+                    </div>
+                    <div class="col-span-5 row-span-1 grid grid-rows-3 h-full">
+                        <div class="row-span-1 px-8">
+                            <h5 class="text-[21px] font-semibold pt-4">
+                                Department Provided
+                            </h5>
+                            <p class="w-9/12">
+                                These applications are provided by the department
+                                at no cost to schools
+                            </p>
+                        </div>
+                        <div class="row-span-1" />
+                        <div class="row-span-1 flex flex-col h-full px-8">
+                            <h5 class="text-[21px] font-semibold mt-auto">
+                                Department Approved
+                            </h5>
+                            <p class="pb-4 w-9/12">
+                                These applications have been risk assessed and can
+                                be safely used in schools
+                            </p>
+                        </div>
+                    </div>
+                    <div class="col-span-2 row-span-1 flex">
+                        <img
+                            class="h-full pt-12 pb-8 ml-auto"
+                            src="../../assets/images/negotiatedDeals.png"
+                            alt="Negotiated Deals"
+                        >
+                    </div>
+                    <div class="col-span-3 row-span-1 flex flex-col pl-8">
+                        <h5 class="text-[18px] font-semibold mt-auto">
+                            Negotiated Deals
+                        </h5>
+                        <p class="pb-4 w-[85%]">
+                            Still risk assessed, these applications have an agreement
+                            in place for schools to receive better value. Schools will
+                            need to fund purchases
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <CardWrapper
+                class="w-[65%] mr-[29px]"
+                :key="softwareLoading"
+                :card-data="softwaresData ? softwaresData : []"
+                :loading="softwareLoading"
+                :row-count="2"
+                :col-count="2"
+                :section-type="'software'"
+                :has-info-section="true"
+            />
+        </div>
+
+        <!-- <SoftwareDashboard
+            :softwares="softwaresData ? softwaresData : []"
+            :software-loading="softwareLoading"
+        /> -->
+        <!-- <CardLoading class="px-huge" :number-per-row="2" :additional-classes="'!justify-end'" /> -->
+
+        <!-- UNIFORMITY & KEEPING ALL OF THE STUF THAT ISNT CARDS -->
+        <!-- <SoftwareDashboard v-if="!softwareLoading" :softwares="softwaresData" :software-loading="softwareLoading" />
+        <CardLoading v-else class="px-huge" :number-per-row="2" :additional-classes="'!justify-end'" /> -->
 
         <SectionHeader
             :classes="'bg-primary-darkTeal'"
@@ -316,16 +407,76 @@ onMounted(async () => {
             :button-callback="() => router.push('/browse/advices')"
         />
 
-        <!-- Advice Cards Here -->
-        <AdviceDashboard v-if="!adviceLoading" :advice="advicesData" />
-        <CardLoading v-else class="px-huge" :number-per-row="2" :additional-classes="'!justify-end'" />
+        <CardCarouselWrapper
+            :key="adviceLoading"
+            :card-data="advicesData ? advicesData : []"
+            :loading="adviceLoading"
+            :row-count="1"
+            :col-count="2"
+            :additional-classes="'w-[66.66%]'"
+            :section-type="'advice'"
+        >
+            <template #cardInfoSection>
+                <div class="grid w-[33.33%] gap-[24px] h-full">
+                    <div class="col-span-1">
+                        <div class="grid grid-cols-3 row-span-4 py-4">
+                            <div class="col-span-1 row-span-1">
+                                <img
+                                    class=""
+                                    src="../../assets/images/WhatIsDag.png"
+                                    alt="Digital Adoption Group Icon"
+                                >
+                            </div>
+                            <div class="col-span-2 row-span-1 flex place-items-center">
+                                <h4 class="text-[24px] font-semibold">
+                                    What is the D.A.G?
+                                </h4>
+                            </div>
+                            <div class="col-span-3 row-span-3 py-8">
+                                <p>
+                                    The Digital Adoption Group (DAG) is a cross-divisional
+                                    group that provides holistic and focused advice on
+                                    digital technologies
+                                </p>
+                                <p class="mt-8">
+                                    The objective of the DAG is to support leaders and
+                                    educators to integrate high-impact technologies by
+                                    providing system-wide and practical advice on what
+                                    technology to purchase for teaching and learning
+                                    and for what purpose.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </template>
+        </CardCarouselWrapper>
 
-        <SectionHeader :classes="'bg-primary-navy'" :section="'schools'" :title="'Latest School Profiles'"
-            :button-text="'View all schools'" :button-callback="() => router.push('/browse/schools')" />
+        <!-- Advice Cards Here -->
+        <!-- <AdviceDashboard v-if="!adviceLoading" :advice="advicesData" />
+        <CardLoading v-else class="px-huge" :number-per-row="2" :additional-classes="'!justify-end'" /> -->
+
+        <SectionHeader
+            :classes="'bg-primary-navy'"
+            :section="'schools'"
+            :title="'Latest School Profiles'"
+            :button-text="'View all schools'"
+            :button-callback="() => router.push('/browse/schools')"
+        />
+
+
+        <CardCarouselWrapper
+            :key="schoolsLoading"
+            :card-data="schoolsData ? schoolsData : []"
+            :loading="schoolsLoading"
+            :row-count="1"
+            :col-count="4"
+            :section-type="'schools'"
+        />
 
         <!-- School Cards Here -->
-        <SchoolsDashboard v-if="!schoolsLoading" :schools="schoolsData" />
-        <CardLoading v-else class="px-huge" :number-per-row="4" />
+        <!-- <SchoolsDashboard v-if="!schoolsLoading" :schools="schoolsData" />
+        <CardLoading v-else class="px-huge" :number-per-row="4" /> -->
 
     </div>
 </template>

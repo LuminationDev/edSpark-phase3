@@ -4,7 +4,7 @@ import AdviceEducatorsIcon from "@/js/components/svg/adviceIcon/AdviceEducatorsI
 
 <template>
     <div class="EducatorHeroContainer">
-        <div class="bg-gradient-to-r from-[#002858] via-[#0B7342] to-[#81BFA2] mt-20 py-6 px-[48px] grid grid-cols-8 h-80 mx-huge">
+        <div class="bg-gradient-to-r from-[#002858] via-[#0B7342] to-[#81BFA2] mt-20 py-6 px-[48px] grid grid-cols-8 mx-huge">
             <div class="col-span-5">
                 <h1 class="text-white text-[36px] font-semibold pb-8 uppercase">
                     Advice for Educators
@@ -15,7 +15,7 @@ import AdviceEducatorsIcon from "@/js/components/svg/adviceIcon/AdviceEducatorsI
                 </p>
             </div>
             <div class="col-span-3 relative">
-                <AdviceEducatorsIcon class="absolute right-12" />
+                <AdviceEducatorsIcon class="absolute right-12 -top-20" />
             </div>
         </div>
     </div>

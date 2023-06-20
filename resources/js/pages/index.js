@@ -1,5 +1,4 @@
 export { default as Home } from './Home.vue';
-export { default as Dashboard } from './Dashboard.vue';
 export { default as Schools } from './Schools.vue';
 export { default as Advice } from './Advice.vue';
 export { default as Software } from './Software.vue';

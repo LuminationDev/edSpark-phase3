@@ -32,7 +32,7 @@ const props = defineProps({
 </script>
 
 <template>
-    <div class="mt-20 px-20">
+    <div class="mt-20 mb-6 px-20">
         <div
             :class="[classes]"
             class="flex flex-row justify-between h-[72px] w-full px-12 relative group/headerbg place-items-center"
@@ -62,7 +62,7 @@ const props = defineProps({
                 {{ title }}
             </h3>
             <button
-                class="bg-white px-4 h-fit py-2 rounded-sm border-2 z-20 border-[#339999] text-[#339999] text-base font-medium cursor-pointer hover:text-[#307474] hover:border-2 hover:border-[#307474]"
+                class="bg-white px-4 h-fit py-2 rounded-sm border-2 z-20 border-[#307474] text-[#307474] text-base font-medium cursor-pointer hover:text-[#339999] hover:border-2 hover:border-[#339999]"
                 @click="props.buttonCallback"
             >
                 {{ buttonText }}

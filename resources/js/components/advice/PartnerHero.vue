@@ -5,7 +5,7 @@ import AdviceRobot from '../svg/adviceRobot/AdviceRobot.vue';
 
 <template>
     <div class="PartnerHeroContainer">
-        <div class="bg-gradient-to-r from-[#0C7B83] via-[#4AB1B3] to-[#26CBC3] mt-20 py-[36px] px-[48px] grid grid-cols-8 h-80 mx-huge">
+        <div class="bg-gradient-to-r from-[#0C7B83] via-[#4AB1B3] to-[#26CBC3] mt-20 py-[36px] px-[48px] grid grid-cols-8 mx-huge">
             <div class="col-span-5">
                 <h1 class="text-white text-[36px] font-semibold pb-8 uppercase">
                     Partner Published Resources
@@ -16,7 +16,7 @@ import AdviceRobot from '../svg/adviceRobot/AdviceRobot.vue';
                 </p>
             </div>
             <div class="col-span-3 relative">
-                <AdviceRobot class="absolute right-12 -bottom-[20%] h-[250px]" />
+                <AdviceRobot class="absolute right-12 -top-16 h-[250px]" />
             </div>
         </div>
     </div>
