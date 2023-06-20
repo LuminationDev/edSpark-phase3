@@ -102,7 +102,7 @@ const mapOptions = {
         lat: props.schoolLocation.lat,
         lng: props.schoolLocation.lng
     },
-    zoom: 17,
+    zoom: 18,
     options : {
         zoomControl: false,
         mapTypeControl: false,
@@ -192,23 +192,29 @@ const mapOptions = {
             </div>
             <div
                 v-else
-                class="displayContact pt-8 p-4 flex flex-col border-2 rounded border-blue-800"
+                class="displayContact pt-8 p-4 flex flex-col "
             >
                 <template
                     v-for="(value,key) in state"
+                    :key="key"
                 >
                     <div class="flex flex-row my-4">
-                        <div class="flex w-1/3 text-xl font-semibold justify-end mr-4">
+                        <div class="flex w-1/4 text-xl font-semibold justify-end mr-4">
                             {{ key.toUpperCase() }}
                         </div>
-                        <div class="flex w-2/3 text-lg">
-                            {{ value }}
+                        <div
+                            class="flex flex-wrap w-3/4 text-lg"
+                        >
+                            <p class="text-ellipsis w-full break-words">
+                                {{ value }}
+                            </p>
                         </div>
                     </div>
                 </template>
             </div>
             <GenericButton
-                v-if="props.currentUserCanEdit"
+                v-if="
+                    props.currentUserCanEdit"
                 :callback="handleToggleEditContactForm"
                 class="mt-2"
             >

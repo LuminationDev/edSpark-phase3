@@ -225,7 +225,7 @@ const handleChangeInfoWindows = () => {
 
         <div
             class="absolute p-6 transition-all top-0 bottom-0 w-full bg-[#0072DA] z-40"
-            :class="showFilters ? 'h-[350px]' : '!h-0 opacity-0 pointer-events-none' "
+            :class="showFilters ? 'h-[200px]' : '!h-0 opacity-0 pointer-events-none' "
         >
             <div class="mt-12 flex flex-row flex-wrap gap-6">
                 <SchoolsMapFilterName
@@ -250,6 +250,7 @@ const handleChangeInfoWindows = () => {
                     :zoom="mapOptions.zoom"
                     :options="mapOptions.options"
                     @click="showFilters = false"
+                    @drag="showFilters = false"
                 >
                     <MarkerCluster>
                         <Marker
@@ -283,6 +284,19 @@ const handleChangeInfoWindows = () => {
     span {
         width: 30px !important;
         height: 30px !important;
+    }
+}
+
+
+.gm-style-iw.gm-style-iw-c{
+    padding: 0 0 0 0 !important;
+    .gm-style-iw-d{
+        padding: 0 0 0 0 !important;
+        -ms-overflow-style: none !important;   /* IE and Edge */
+        scrollbar-width: none !important;  /* Firefox */
+    }
+    .gm-style-iw-d::-webkit-scrollbar {
+        display: none !important;
     }
 }
 </style>
