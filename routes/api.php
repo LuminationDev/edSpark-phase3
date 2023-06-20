@@ -74,7 +74,8 @@ Route::middleware('api')->group(function() {
     Route::post('nominateUserForSchool',[SchoolController::class, 'nominateUserForSchool']);
     Route::post('deleteNominatedUser',[SchoolController::class, 'deleteNominatedUserSchool']);
     Route::post('getNominatedUsersFromSchool',[SchoolController::class, 'getNominatedUsersFromSchool']);
-
+    Route::post('createOrUpdateSchoolContact', [SchoolController::class , 'createOrUpdateContact']);
+    Route::post('fetchSchoolContact', [SchoolController::class, 'fetchSchoolContact']);
 
     Route::get('fetchAllTechs', [TechController::class, 'fetchAllTechs']);
 
@@ -86,6 +87,7 @@ Route::middleware('api')->group(function() {
     Route::post('bookmark', [LikeBookmarkController::class, 'bookmark']);
     Route::post('fetchAllLikes', [LikeBookmarkController::class, 'fetchAllLikes']);
     Route::post('fetchAllBookmarks', [LikeBookmarkController::class, 'fetchAllBookmarks']);
+    Route::post('fetchAllBookmarksWithTitle', [LikeBookmarkController::class, 'fetchAllBookmarksWithTitle']);
     Route::post('fetchAllLikesByType', [LikeBookmarkController::class, 'fetchAllLikesByType']);
     Route::post('fetchAllBookmarksByType', [LikeBookmarkController::class, 'fetchAllBookmarksByType']);
 

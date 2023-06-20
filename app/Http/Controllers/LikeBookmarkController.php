@@ -2,12 +2,17 @@
 
 namespace App\Http\Controllers;
 
+use App\Helpers\OutputHelper;
+use App\Helpers\PostHelper;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
 use App\Models\Like;
 use App\Models\Bookmark;
 use App\Models\User;
+use Konnco\FilamentImport\Tests\Resources\Models\Post;
+use Ramsey\Uuid\Type\Integer;
+use Symfony\Component\Console\Output\Output;
 
 
 class LikeBookmarkController extends Controller
@@ -152,6 +157,36 @@ class LikeBookmarkController extends Controller
                     $result = [
                         'post_id' => $bookmark->post_id,
                         'post_type' => $bookmark->post_type
+                    ];
+                    $dataToSend[] = $result;
+                }
+            }
+            return response()->json([
+                "data" => $dataToSend,
+                "count" => $count
+            ]);
+        }
+    }
+
+
+    public function fetchAllBookmarksWithTitle(Request $request){
+        if ($request->isMethod('post')) {
+            $data = $request->all();
+            $userId = $data['user_id'];
+            $user = User::findOrFail($userId);
+            $bookmarks = $user->bookmarks;
+            $dataToSend = [];
+            $count = 0;
+            if ($bookmarks) {
+                $count += count($bookmarks);
+                foreach ($bookmarks as $bookmark) {
+                    $post_info = PostHelper::getPostTitle($bookmark->post_id,$bookmark->post_type);
+                    OutputHelper::print(serialize($post_info));
+                    $result = [
+                        'post_id' => $bookmark->post_id,
+                        'post_type' => $bookmark->post_type,
+                        'post_title' => $post_info['post_title'],
+                        'cover_image' => $post_info['cover_image'],
                     ];
                     $dataToSend[] = $result;
                 }

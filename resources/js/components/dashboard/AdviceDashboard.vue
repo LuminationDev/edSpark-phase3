@@ -1,12 +1,12 @@
 <script setup>
-    import AdviceCard from '../advice/AdviceCard.vue';
+import AdviceCard from '../advice/AdviceCard.vue';
 
-    const props = defineProps({
-        advice: {
-            type: Array,
-            required: true
-        }
-    });
+const props = defineProps({
+    advice: {
+        type: Array,
+        required: true
+    }
+});
 </script>
 
 <template>
@@ -50,7 +50,7 @@
                         :key="index"
                         :advice-content="advice"
                         :show-icon="true"
-                        :numberPerRow="2"
+                        :number-per-row="2"
                     />
                 </div>
             </div>

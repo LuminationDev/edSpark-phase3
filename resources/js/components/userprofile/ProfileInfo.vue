@@ -50,22 +50,21 @@ const handleClickProfileInfoMenu = (menuName) => {
 
 </script>
 <template>
-    <div class="profileInfoContainer flex flex-col pt-4 px-6 py-6 bg-blue-200">
+    <div class="profileInfoContainer flex flex-col pt-4 px-6 py-6 bg-primary-teal/80 text-white text-lg rounded-b-xl">
         <div class="flex flex-row">
             <div class="profileInfoMenu flex flex-col pl-4 basis-1/4 col-span-1 border-r border-slate-300 pr-12">
                 <div
                     v-for="(item,index) in userInfoMenu"
                     :key="index"
-                    class="profileInfoMenuItem py-2 hover:cursor-pointer w-full text-left px-4 py-2 hover:underline decoration-[#1C5CA9] decoration-4 underline-offset-8 transition-all"
-                    :class="{'font-semibold' : item === currentActiveUserInfoMenu ,
-                             'underline' : item === currentActiveUserInfoMenu
+                    class="profileInfoMenuItem hover:cursor-pointer w-full text-left px-4 py-4 hover:underline decoration-white decoration-4 underline-offset-8 transition-all"
+                    :class="{'font-bold underline' : item === currentActiveUserInfoMenu ,
                     }"
                     @click=" () => handleClickProfileInfoMenu(item)"
                 >
                     {{ item }}
                 </div>
             </div>
-            <div class="profileInfoContent basis-3/4 bg-green-100">
+            <div class="profileInfoContent basis-3/4 bg-white">
                 <ProfileInfoContent :content-type="currentActiveUserInfoMenu" />
             </div>
         </div>
