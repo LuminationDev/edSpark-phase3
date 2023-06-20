@@ -1,60 +1,58 @@
 <script setup>
 
-    import Close from '../../svg/Close.vue';
-    import SchoolCardIconList from '../SchoolCardIconList.vue';
+import Close from '../../svg/Close.vue';
+import SchoolCardIconList from '../SchoolCardIconList.vue';
+import {imageURL} from "@/js/constants/serverUrl";
 
-    const props = defineProps({
-        mapPopupName: {
-            type: String,
-            required: true
-        },
-        mapPopupIndex: {
-            type: String,
-            required: false
-        },
-        mapPopupInfo: {
-            type: Object,
-            required: true
-        }
-    });
-
-    const emits = defineEmits(['handleLinkToSchool', 'handleToggle']);
-
-    const handleClosePopup = () => {
-        emits('handleToggle');
-    };
-
-    const handleEmit = () => {
-        emits('handleLinkToSchool');
+const props = defineProps({
+    schoolData:{
+        type: Object,
+        required: true
+    },
+    mapPopupName: {
+        type: String,
+        required: true
+    },
+    mapPopupInfo: {
+        type: Object,
+        required: true
     }
+});
+
+console.log(props.schoolData)
+
+const emits = defineEmits(['handleLinkToSchool', 'handleToggle']);
+
+const handleClosePopup = () => {
+    emits('handleToggle');
+};
+
+const handleEmit = () => {
+    emits('handleLinkToSchool');
+}
 </script>
 
 <template>
     <div
-
-        ref="mapPopup"
-
-        class="absolute p-4 bg-white shadow-xl w-[340px] flex flex-col gap-6"
+        class=" mapOuterContainer flex flex-col"
+        :style="`background-color: rgba(255,255,255,0.85); background-image: url('${imageURL}/${props.schoolData['cover_image']}'); background-size: cover ;background-blend-mode: screen; `"
     >
-        <div class="relative flex flex-row justify-between place-items-center">
-            <h3 class="text-[18px] font-medium">
+        <div class="relative flex p-4 flex-row justify-between place-items-center">
+            <h3 class="text-xl font-medium">
                 {{ mapPopupName }}
             </h3>
-            <div class="">
-                <button class="hover:bg-gray-100 p-2">
-                    <Close
-                        class="w-[18px] h-[18px]"
-                        @click="handleClosePopup"
-                    />
-                </button>
+        </div>
+        <div
+            ref="mapPopup"
+            class="mapPopupContent p-4  w-[340px] flex flex-col gap-6 overflow-scroll"
+        >
+            <div class="flex flex-row gap-6 h-[180px]">
+                <SchoolCardIconList
+                    :tech-list="mapPopupInfo.tech_used"
+                />
             </div>
         </div>
-        <div class="flex flex-row gap-6 h-[180px]">
-            <SchoolCardIconList
-                :tech-list="mapPopupInfo.tech_used"
-            />
-        </div>
-        <div class="flex flex-row justify-end">
+        <div class="flex flex-row justify-end mb-4 mr-4">
             <button
                 class="bg-[#0072DA] text-white px-8 py-3 hover:bg-[#0359a9]"
                 @click="handleEmit"
@@ -64,3 +62,12 @@
         </div>
     </div>
 </template>
+<style>
+.mapPopupContent::-webkit-scrollbar {
+    display: none !important;
+}
+.mapPopupContent{
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+</style>

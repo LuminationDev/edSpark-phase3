@@ -4,22 +4,12 @@ import axios from 'axios';
 
 const schoolTechFilter = ref('');
 
-const emits = defineEmits(['handleEmitTechFilter']);
+const emits = defineEmits(['update:modelValue']);
 
 const handleEmitTech = () => {
-    emits('handleEmitTechFilter', schoolTechFilter.value);
+    emits('update:modelValue', schoolTechFilter.value);
 };
 
-const allTech = ref([]);
-import {serverURL} from "@/js/constants/serverUrl";
-
-    // const loadAllTech = async () => {
-    //     await axios.get(`${serverURL}/fetchAllTechs`).then(response => {
-    //         console.log(response);
-    //     })
-    // };
-    //
-    // loadAllTech();
 </script>
 
 <template>

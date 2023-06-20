@@ -70,7 +70,7 @@ const fetchAllSchools = () => {
     if (schools.value.length === 0) {
         console.log('fetch all school called')
         axios.get(`${serverURL}/fetchAllSchools`).then(res => {
-            schools.value = res.data
+            schools.value = schoolContentArrParser(res.data)
             schoolsAvailable.value = true;
         })
     } else {

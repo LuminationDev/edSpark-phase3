@@ -30,17 +30,9 @@ const props = defineProps({
             <EventsCard
                 v-for="(event, index) in events.slice(0,colCount)"
                 :key="index"
-                :event="event"
-                :number-per-row="colCount"
+                :event-content="event"
+                :number-per-row="3"
             />
         </div>
-
-        <div v-else>
-            <CardLoading
-                :number-per-row="colCount"
-                :number-of-rows="rowCount"
-            />
-        </div>
-
     </div>
 </template>

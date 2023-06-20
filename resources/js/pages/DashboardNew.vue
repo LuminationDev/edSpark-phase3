@@ -30,7 +30,7 @@ import CardLoading from '../components/card/CardLoading.vue';
 /**
  * Depends on
  */
-import { ref, reactive, computed, onMounted } from 'vue';
+import {ref, reactive, computed, onMounted} from 'vue';
 import oktaAuth from '../constants/oktaAuth';
 
 /**
@@ -43,14 +43,14 @@ import {serverURL} from "@/js/constants/serverUrl";
 import {axiosFetcher, axiosSchoolFetcher} from "@/js/helpers/fetcher";
 import useSwrvState from "@/js/helpers/useSwrvState";
 import useSWRV from "swrv";
-import { storeToRefs } from "pinia";
+import {storeToRefs} from "pinia";
 import axios from 'axios';
 import {swrvOptions} from "@/js/constants/swrvConstants";
 
 const router = useRouter()
 
 const userStore = useUserStore();
-const { currentUser, isAdminAuthenticated } = storeToRefs(userStore)
+const {currentUser, isAdminAuthenticated} = storeToRefs(userStore)
 /**
  * First things first. Handle the user details from okta
  */
@@ -123,8 +123,6 @@ const getIdToken = async () => {
     //     await checkFirstVisit(claims.value.email);
 
 
-
-
     // } catch (e) {
     //     console.warn('Failed to get Auth data. User is not logged in')
     // }
@@ -132,13 +130,13 @@ const getIdToken = async () => {
     try {
         const response = await axios.get('http://localhost:8000/okta-data');
         // console.log("RESPONSE", response);
-        if (response.data.success === true){
+        if (response.data.success === true) {
             email.value = response.data.email;
             await checkFirstVisit(email.value);
         } else{
             currentUser.value.id = 9999
         }
-    }catch (error) {
+    } catch (error) {
         console.error(error);
         console.warn('Failed to get Auth data. User is not logged in')
         currentUser.value.id = 9999
@@ -162,21 +160,35 @@ const checkFirstVisit = async (emailAddress) => {
 getIdToken()
 
 
-// more code but much fast
-// had to refactor this as the normal implementation blocks the user identity fetching request :(
-const { data: eventsData, error: eventsError, isValidating: eventsIsValidating } = useSWRV(() => currentUser.value.id ? `${serverURL}/fetchEventPosts` : null, axiosFetcher, swrvOptions)
-const { data: softwaresData, error: softwaresError, isValidating: softwaresIsValidating } = useSWRV(() => currentUser.value.id ? `${serverURL}/fetchSoftwarePosts` : null, axiosFetcher, swrvOptions)
-const { data: advicesData, error: advicesError, isValidating: advicesIsValidating } = useSWRV(() => currentUser.value.id ? `${serverURL}/fetchAdvicePosts` : null, axiosFetcher, swrvOptions)
-const { data: schoolsData, error: schoolsError, isValidating: schoolsIsValidating } = useSWRV(() => currentUser.value.id ? `${serverURL}/fetchFeaturedSchools` : null, axiosSchoolFetcher, swrvOptions)
+const {
+    data: eventsData,
+    error: eventsError,
+    isValidating: eventsIsValidating
+} = useSWRV(() => currentUser.value.id ? `${serverURL}/fetchEventPosts` : null, axiosFetcher, swrvOptions)
+const {
+    data: softwaresData,
+    error: softwaresError,
+    isValidating: softwaresIsValidating
+} = useSWRV(() => currentUser.value.id ? `${serverURL}/fetchSoftwarePosts` : null, axiosFetcher, swrvOptions)
+const {
+    data: advicesData,
+    error: advicesError,
+    isValidating: advicesIsValidating
+} = useSWRV(() => currentUser.value.id ? `${serverURL}/fetchAdvicePosts` : null, axiosFetcher, swrvOptions)
+const {
+    data: schoolsData,
+    error: schoolsError,
+    isValidating: schoolsIsValidating
+} = useSWRV(() => currentUser.value.id ? `${serverURL}/fetchFeaturedSchools` : null, axiosSchoolFetcher, swrvOptions)
 
-const { state: eventsState, STATES: ALLSTATES } = useSwrvState(eventsData, eventsError, eventsIsValidating)
-const { state: softwaresState } = useSwrvState(softwaresData, softwaresError, softwaresIsValidating)
-const { state: advicesState } = useSwrvState(advicesData, advicesError, advicesIsValidating)
-const { state: schoolsState } = useSwrvState(schoolsData, schoolsError, schoolsIsValidating)
+const {state: eventsState, STATES: ALLSTATES} = useSwrvState(eventsData, eventsError, eventsIsValidating)
+const {state: softwaresState} = useSwrvState(softwaresData, softwaresError, softwaresIsValidating)
+const {state: advicesState} = useSwrvState(advicesData, advicesError, advicesIsValidating)
+const {state: schoolsState} = useSwrvState(schoolsData, schoolsError, schoolsIsValidating)
 
 // who needs a one line ref to indicate loading state when you can have 10 lines 😆
 // todo: compile all ref into an array and process with map
-const eventsLoading =  computed(() => {
+const eventsLoading = computed(() => {
     if ([ALLSTATES.ERROR, ALLSTATES.STALE_IF_ERROR].includes(eventsState.value)) {
         return false
     } else if ([ALLSTATES.PENDING].includes(eventsState.value)) {
@@ -287,7 +299,10 @@ onMounted(async () => {
             <BlackOverlay :is-first-visit="isFirstVisit" />
 
             <div class="relative">
-                <FirstVisitForm :user-details="userDetails" @on-close-popup="onClosePopup" />
+                <FirstVisitForm
+                    :user-details="userDetails"
+                    @on-close-popup="onClosePopup"
+                />
             </div>
         </template>
 
@@ -477,6 +492,5 @@ onMounted(async () => {
         <!-- School Cards Here -->
         <!-- <SchoolsDashboard v-if="!schoolsLoading" :schools="schoolsData" />
         <CardLoading v-else class="px-huge" :number-per-row="4" /> -->
-
     </div>
 </template>
