@@ -22,7 +22,7 @@ const router = useRouter()
                 <AdviceEducatorsIcon class="absolute right-12" />
                 <GenericButton
                     :callback="() => router.push('browse/advices')"
-                    class="bg-white text-lg font-semibold !text-adviceGreen !rounded-none border-2 border-adviceGreen z-40 px-12 hover:bg-slate-50"
+                    class="bg-white text-lg font-semibold !text-adviceGreen !rounded-none border-2 border-adviceGreen z-30 px-12 hover:bg-slate-50"
                 >
                     View all advice
                 </GenericButton>

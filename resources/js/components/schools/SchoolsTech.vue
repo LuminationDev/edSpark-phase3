@@ -66,7 +66,7 @@ const computedProps = computed(() => {
 }
 .schoolTechDescription{
     font-size: 16px;
-    
+
 }
 
 

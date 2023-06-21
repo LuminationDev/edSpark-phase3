@@ -22,7 +22,7 @@ const router = useRouter()
                 <AdviceRobot class="absolute right-12 -bottom-[20%] h-[250px]" />
                 <GenericButton
                     :callback="() => router.push('browse/advices')"
-                    class="bg-white text-lg font-semibold !text-secondary-darkBlue !rounded-none border-2 border-secondary-darkBlue z-40 px-12 hover:bg-slate-50"
+                    class="bg-white text-lg font-semibold !text-secondary-darkBlue !rounded-none border-2 border-secondary-darkBlue z-30 px-12 hover:bg-slate-50"
                 >
                     View all advice
                 </GenericButton>
