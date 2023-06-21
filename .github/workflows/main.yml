@@ -29,6 +29,7 @@ jobs:
                     git pull
                     git branch -D ${{github.ref_name}}
                     git checkout ${{github.ref_name}}
+                    npm install
                     npm run buildtest
                 host: 'edspark.sa.edu.au'
                 username: 'luminationdev'
