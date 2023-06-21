@@ -92,7 +92,7 @@ setupRoutes();
         />
 
         <Logo
-            class="absolute right-20 top-36 z-30 md:w-44 md:h-44 md:top-24 sm:w-36 sm:h-36 sm:top-32 w-36 h-36 lg:top-24"
+            class="absolute right-20 top-16 z-30 md:w-44 md:h-44 md:top-10 sm:w-36 sm:h-36 sm:top-32 w-36 h-36 lg:top-24"
         />
         <NavSwoosh class="w-full absolute -bottom-6 left-0 right-0 pointer-events-none" />
     </div>
