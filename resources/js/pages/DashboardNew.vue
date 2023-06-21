@@ -393,7 +393,7 @@ onMounted(async () => {
                 </div>
             </div>
             <CardWrapper
-                class="w-[65%] mr-[29px]"
+                class="w-[65%]"
                 :key="softwareLoading"
                 :card-data="softwaresData ? softwaresData : []"
                 :loading="softwareLoading"
@@ -401,6 +401,7 @@ onMounted(async () => {
                 :col-count="2"
                 :section-type="'software'"
                 :has-info-section="true"
+                :additional-classes="'!w-[372px]'"
             />
         </div>
 
@@ -430,6 +431,7 @@ onMounted(async () => {
             :col-count="2"
             :additional-classes="'w-[66.66%]'"
             :section-type="'advice'"
+            :advice-type="'Dashboard'"
         >
             <template #cardInfoSection>
                 <div class="grid w-[33.33%] gap-[24px] h-full">

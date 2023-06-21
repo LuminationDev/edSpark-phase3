@@ -41,6 +41,8 @@ const handleBrowseAllAdvice = () => {
     router.push('/browse/advice')
 }
 
+console.log(generalAdvice.value);
+
 </script>
 
 <template>
@@ -85,7 +87,7 @@ const handleBrowseAllAdvice = () => {
             :key="generalState"
             :card-data="generalAdvice ? generalAdvice : []"
             :loading-state="generalState"
-            :row-count="3"
+            :row-count="2"
             :col-count="3"
             :section-type="'advice'"
             :advice-type="'General'"
@@ -119,7 +121,16 @@ const handleBrowseAllAdvice = () => {
         />
     </div> -->
     <PartnerHero />
-    <div
+    <CardCarouselWrapper
+        :key="partnerState"
+        :card-data="partnerAdvice ? partnerAdvice : []"
+        :loading-state="partnerState"
+        :row-count="1"
+        :col-count="3"
+        :section-type="'advice'"
+        :advice-type="'Partner'"
+    />
+    <!-- <div
         v-if="partnerState === 'SUCCESS'|| partnerState === 'VALIDATING'"
         class="PartnerAdviceRow AdviceCardListContainer heading text-xl pt-10 flex flex-row flex-wrap justify-between gap-4 flex-1 w-full px-huge"
     >
@@ -139,5 +150,5 @@ const handleBrowseAllAdvice = () => {
             :number-per-row="4"
             :number-of-rows="1"
         />
-    </div>
+    </div> -->
 </template>

@@ -26,6 +26,7 @@ const showFirstComputed = computed(() => {
 })
 
 </script>
+
 <template>
     <div
         v-for="(tech,index) in props.techList"
@@ -45,3 +46,4 @@ const showFirstComputed = computed(() => {
 <style>
 
 </style>
+

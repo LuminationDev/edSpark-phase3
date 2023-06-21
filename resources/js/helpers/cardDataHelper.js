@@ -1,7 +1,6 @@
 
 
 export const cardDataHelper = (cardData, section) => {
-    console.log(section, cardData);
     let cardObject = {};
 
     const tempArray = [];
@@ -22,10 +21,7 @@ export const cardDataHelper = (cardData, section) => {
 
             break;
         case 'advice':
-                let count = 0;
                 cardData.forEach(data => {
-                    count++
-                    console.log(count, data.advice_type);
 
                     tempArray.push({
                         id: data.post_id,

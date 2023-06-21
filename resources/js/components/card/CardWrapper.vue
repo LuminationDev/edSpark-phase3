@@ -4,6 +4,7 @@
      */
 
     import { computed, ref } from 'vue';
+    import { useRouter } from 'vue-router';
     import { storeToRefs } from 'pinia';
     import { useUserStore } from '../../stores/useUserStore';
 
@@ -15,6 +16,8 @@
 
     const { currentUser } = storeToRefs(useUserStore());
 
+    const router = useRouter();
+
     const props = defineProps({
         cardData: {
             type: Array,
@@ -22,7 +25,13 @@
         },
         loading: {
             type: Boolean,
-            required: true
+            required: true,
+            default: false
+        },
+        loadingState: {
+            type: String,
+            required: false,
+            default: 'SUCCESS'
         },
         rowCount: {
             type: Number,
@@ -35,6 +44,10 @@
         sectionType: {
             type: String,
             required: true
+        },
+        adviceType: {
+            type: String,
+            required: false
         },
         additionalClasses: {
             type: String,
@@ -64,19 +77,30 @@
         return props.cardData;
     });
 
+    const getLatestContent = (data) => {
+        data.sort(function compare(a, b) {
+            let dateA = new Date(a.post_date);
+            let dateB = new Date(b.post_date);
+            return dateA - dateB;
+        })
+    };
+
     const computedCardData = computed(() => {
         if (props.loading) {
             return;
         } else {
+            console.log(props);
             if (props.sectionType === 'advice') {
                 let mutatedData = [];
-
+                console.log('it is advice were looking at???', props.adviceType)
                 switch (props.adviceType) {
                     case 'DAG':
                             mutatedData = props.cardData.filter(data => data.advice_type.includes('D.A.G advice'));
+                            console.log('DAG');
                         break;
 
                     case 'General':
+                            console.log('General');
                             let classroom = props.cardData.filter(data => data.advice_type.includes('Your Classroom'));
                             let work = props.cardData.filter(data => data.advice_type.includes('Your Work'));
                             let learning = props.cardData.filter(data => data.advice_type.includes('Your Learning'));
@@ -86,6 +110,12 @@
 
                     case 'Partner':
                             mutatedData = props.cardData.filter(data => data.advice_type.includes('Partner'));
+                            console.log('Partner');
+                        break;
+
+                    case 'Dashboard':
+                            mutatedData = getLatestContent(props.cardData);
+                            console.log('DAAAAAAASSHHHH', mutatedData);
                         break;
                     default:
                         break;
@@ -99,39 +129,119 @@
         }
     });
 
-    const handleClickCard = () => {
+    const handleClickCard = (item) => {
 
+        let sectionId = '';
+
+        switch (props.sectionType) {
+            case 'advice':
+                    sectionId = 'post_id'
+                break;
+
+            case 'software':
+                    sectionId = 'post_id'
+                break;
+
+            case 'schools':
+                    sectionId = 'id'
+                break;
+            case 'events':
+                    sectionId = 'event_id'
+                break;
+            case 'hardware':
+                    sectionId = 'id'
+                break;
+
+            default:
+                break;
+        }
+
+        const content = props.cardData.filter(data => data[sectionId] === item.id);
+
+        router.push({
+            name: `${props.sectionType}-single`,
+            params: {id: item.id},
+            state: {content: JSON.stringify(content[0])}
+        })
     }
 </script>
 
 <template>
     <div class="">
         <slot name="biggerInfoSection" />
-
         <div
             class="card__wrapper"
-            :class="additionalClasses + hasInfoSection ? 'w-[66.66%]' : ''"
-            v-if="!loading"
+            :class="additionalClasses + hasInfoSection ? '' : ''"
+            v-if="!loading && loadingState === 'SUCCESS' || !loading && loadingState === 'VALIDATING'"
         >
             <div
-                class="flex flex-row flex-1 flex-wrap w-full justify-between"
+                class="flex flex-row flex-1 flex-wrap w-full justify-between px-[29px]"
             >
                 <div
                     v-for="(col, index) in (props.rowCount + props.colCount)"
                     class="!max-w-[400px] w-[400px] mb-[42px]"
+                    :class="additionalClasses"
                 >
                     <GenericCard
+                        v-if="computedCardData"
                         :key="computedCardData[index].id"
+                        :item="computedCardData[index]"
                         :title="computedCardData[index].title"
-                        :display-content="computedCardData[index].content"
+                        :display-content="computedCardData[index].excerpt"
                         :display-author="computedCardData[index].author"
                         :display-date="computedCardData[index].created_at"
                         :cover-image="computedCardData[index].cover_image"
                         :number-per-row="2"
                         :like-bookmark-data="getLikeBookmarkData(computedCardData[index])"
-                        :click-callback="handleClickCard"
-                        :extra-classes="'!max-w-[400px] w-[400px] '"
+                        @emitCardClick="handleClickCard"
+                        :extra-classes="!additional-classes ? '!max-w-[400px] w-[400px] ' : additional-classes"
+                        :section-type="sectionType"
                     >
+                    <template
+                            #typeTag
+                            v-if="sectionType === 'advice'"
+                        >
+                            <div
+                                class="TypeTag absolute gap-4 -right-6 top-4 p-1 px-6 h-[39px] place-items-center bg-secondary-yellow text-white flex rounded"
+                                :class="typeTagColor"
+                                v-if="computedCardData[index].type === 'D.A.G advice'"
+                            >
+                                {{ computedCardData[index].type }}
+                            </div>
+
+                            <div
+                                class="TypeTag absolute gap-4 -right-6 top-4 p-1 px-6 h-[39px] place-items-center bg-secondary-green text-white flex rounded"
+                                :class="typeTagColor"
+                                v-else-if="computedCardData[index].type === 'Your Classroom'"
+                            >
+                                {{ computedCardData[index].type }}
+                            </div>
+
+                            <div
+                                class="TypeTag absolute gap-4 -right-6 top-4 p-1 px-6 h-[39px] place-items-center bg-secondary-green text-white flex rounded"
+                                :class="typeTagColor"
+                                v-else-if="computedCardData[index].type === 'Your Work'"
+                            >
+                                {{ computedCardData[index].type }}
+                            </div>
+
+                            <div
+                                class="TypeTag absolute gap-4 -right-6 top-4 p-1 px-6 h-[39px] place-items-center bg-secondary-green text-white flex rounded"
+                                :class="typeTagColor"
+                                v-else-if="computedCardData[index].type === 'Your Learning'"
+                            >
+                                {{ computedCardData[index].type }}
+                            </div>
+
+                            <div
+                                class="TypeTag absolute gap-4 -right-6 top-4 p-1 px-6 h-[39px] place-items-center bg-secondary-yellow text-white flex rounded"
+                                :class="typeTagColor"
+                                v-if="computedCardData[index].type === 'Partner'"
+                            >
+                                {{ computedCardData[index].type }}
+                            </div>
+                        </template>
+
                         <template #icon>
                             <SoftwareCardIcon
                                 class="icon absolute -top-6 -right-6 "
@@ -141,7 +251,6 @@
                     </GenericCard>
                 </div>
             </div>
-
         </div>
         <div v-else>
             <CardLoading

@@ -7,6 +7,7 @@
     import { computed, ref } from 'vue';
     import { storeToRefs } from 'pinia';
     import { useUserStore } from '../../stores/useUserStore';
+    import { useRouter } from 'vue-router';
 
     import GenericCard from './GenericCard.vue';
     import CardLoading from '../card/CardLoading.vue';
@@ -19,7 +20,9 @@
 
     import { cardDataHelper } from '../../helpers/cardDataHelper.js';
 
-    const {currentUser } = storeToRefs(useUserStore())
+    const {currentUser } = storeToRefs(useUserStore());
+
+    const router = useRouter();
 
     const props = defineProps({
         cardData: {
@@ -33,7 +36,8 @@
         },
         loadingState: {
             type: String,
-            required: false
+            required: false,
+            default: 'SUCCESS'
         },
         rowCount: {
             type: Number,
@@ -74,6 +78,14 @@
         return props.cardData;
     });
 
+    const getLatestContent = (data) => {
+        cardDataHelper(data).sort(function compare(a, b) {
+            let dateA = new Date(a.post_date);
+            let dateB = new Date(b.post_date);
+            return dateA - dateB;
+        })
+    };
+
     const computedCardData = computed(() => {
         if (props.loading) {
             return;
@@ -97,28 +109,87 @@
                     case 'Partner':
                             mutatedData = props.cardData.filter(data => data.advice_type.includes('Partner'));
                         break;
+
+                    case 'Dashboard':
+
+                            mutatedData = props.cardData;
+                            console.log('DAAAAAAASSHHHH', mutatedData);
+                        break;
                     default:
                         break;
                 }
 
                 return cardDataHelper(mutatedData, props.sectionType);
 
+            } else if (props.adviceType === 'Dashboard') {
+                return cardDataHelper(props.cardData, props.sectionType);
             } else {
                 return cardDataHelper(props.cardData, props.sectionType);
             }
         }
     });
 
-    const handleClickCard = () => {
-
-    }
-
     const randomIconName = computed(() => {
         const source = ['iconBookLight', 'iconBookStars', 'iconBookSearch']
         return source[Math.floor(Math.random() * source.length)]
     });
 
-    console.log(computedCardData.value);
+    const showFirstTech = ref(false)
+    const firstTechId = ref('');
+    const handleMouseEnterCard = (id) => {
+        console.log(id)
+        firstTechId.value = id;
+        showFirstTech.value = true
+    }
+
+    const handleMouseExitCard = () =>{
+        firstTechId.value = '';
+        showFirstTech.value = false
+    }
+
+    const canShowFirstTech = (id) => {
+        if (id === firstTechId.value) {
+            return true;
+        } else {
+            return false
+        }
+    }
+
+    const handleClickCard = (item) => {
+
+        let sectionId = '';
+
+        switch (props.sectionType) {
+            case 'advice':
+                    sectionId = 'post_id'
+                break;
+
+            case 'software':
+                    sectionId = 'post_id'
+                break;
+
+            case 'schools':
+                    sectionId = 'id'
+                break;
+            case 'events':
+                    sectionId = 'event_id'
+                break;
+            case 'hardware':
+                    sectionId = 'id'
+                break;
+
+            default:
+                break;
+        }
+
+        const content = props.cardData.filter(data => data[sectionId] === item.id);
+
+        router.push({
+            name: `${props.sectionType}-single`,
+            params: {id: item.id},
+            state: {content: JSON.stringify(content[0])}
+        })
+    }
 </script>
 
 <template>
@@ -128,7 +199,7 @@
         <div
             class="carousel__wrapper"
             :class="additionalClasses"
-            v-if="!loading || loadingState === 'SUCCESS'"
+            v-if="!loading && loadingState === 'SUCCESS' || !loading && loadingState === 'VALIDATING'"
         >
             <Carousel
                 :items-to-show="colCount"
@@ -143,13 +214,14 @@
                         v-if="sectionType !== 'schools'"
                         :key="slide.id"
                         :title="slide.title"
+                        :item="slide"
                         :display-content="slide.excerpt"
                         :display-author="slide.author"
                         :display-date="slide.created_at"
                         :cover-image="slide.cover_image"
                         :number-per-row="colCount"
                         :like-bookmark-data="getLikeBookmarkData(slide)"
-                        :click-callback="handleClickCard"
+                        @emitCardClick="handleClickCard"
                         :section-type="sectionType"
                     >
                         <!-- For event types -->
@@ -239,9 +311,15 @@
                         :number-per-row="colCount"
                         :extra-classes="'!w-[300px]'"
                         :section-type="sectionType"
+                        :item="slide"
+                        @emitCardClick="handleClickCard"
                     >
                         <template #overiddenContent>
-                            <div class="h-full flex flex-col ">
+                            <div
+                                class="h-full flex flex-col"
+                                @mouseenter="handleMouseEnterCard(slide.id)"
+                                @mouseleave="handleMouseExitCard"
+                            >
                                 <router-link :to="`/schools/${slide.title}`">
                                     <div class="cardTopCoverImage relative min-h-[35%] bg-white bg-cover bg-center transition-all group-hover:min-h-[0%] group-hover:h-0">
                                         <div
@@ -265,7 +343,14 @@
                                             <div
                                                 class="iconListContainer pt-4 flex flex-row w-full justify-between overflow-scroll gap-4 overflow-x-auto items-center pb-6 cursor-grab"
                                             >
-                                                <SchoolCardIconList :tech-list="slide.tech_used" />
+
+                                                <!-- :show-first-tech="firstTechId === slide.id ? showFirstTech : !showFirstTech"
+                                                    :show-first-tech="showFirstTech" -->
+                                                <SchoolCardIconList
+                                                    :tech-list="slide.tech_used"
+
+                                                    :show-first-tech="canShowFirstTech(slide.id)"
+                                                />
                                             </div>
                                         </div>
                                     </div>

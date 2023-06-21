@@ -66,6 +66,10 @@ const props = defineProps({
     sectionType: {
         type: String,
         required: false
+    },
+    item: {
+        type: Object,
+        required: true
     }
 });
 
@@ -153,7 +157,14 @@ const cardHoverToggle = ref(false);
 
 const setTheBackground = computed(() => {
     return `${imageURL}/${props.coverImage}`;
-})
+});
+
+const emits = defineEmits(['emitCardClick']);
+
+const handleEmitClick = () => {
+    console.log('ive clicked in the card');
+    emits('emitCardClick', props.item);
+}
 
 </script>
 
@@ -163,13 +174,13 @@ const setTheBackground = computed(() => {
         class="GenericCardContainer card_parent generic-card__wrapper group"
         :class="extraClasses"
         @mouseenter="cardHoverToggle = true"
+        @click="handleEmitClick"
     >
         <template v-if="!props.overrideContent">
             <div
-                class="cardTopCoverImage relative min-h-[35%] bg-white bg-cover bg-center transition-all group-hover:min-h-[0%] group-hover:h-0"
+                class="cardTopCoverImage relative min-h-[35%] bg-slate-50 bg-cover bg-center transition-all group-hover:min-h-[0%] group-hover:h-0"
                 :class="`bg-[url('${imageURL}/${coverImage}')]`"
                 :style="`background-image: url('${imageURL}/${coverImage}')`"
-                @click="clickCallback"
             >
                 <template
                     v-if="$slots.typeTag"
