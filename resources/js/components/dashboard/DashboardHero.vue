@@ -1,7 +1,22 @@
 <script>
-    import Swoosh from '../svg/DashboardSwoosh.vue';
-    // import WelcomeRobot from '../svg/WelcomeRobot.vue';
-    import {
+import Swoosh from '../svg/DashboardSwoosh.vue';
+// import WelcomeRobot from '../svg/WelcomeRobot.vue';
+import {
+    Circle,
+    Gear,
+    GearDottedLines,
+    Shadow,
+    RobotBody,
+    RobotHead,
+    LeftArm,
+    RightArm
+} from '../svg/welcomeRobot/index.js'
+
+export default {
+
+    components: {
+        Swoosh,
+        // WelcomeRobot
         Circle,
         Gear,
         GearDottedLines,
@@ -10,29 +25,14 @@
         RobotHead,
         LeftArm,
         RightArm
-    } from '../svg/welcomeRobot/index.js'
-
-    export default {
-        data() {
-            return {
-                welcomeMessage: 'Welcome to edSpark!',
-                welcomeDescription: 'The edSpark Digital Hub is where education and technology meet. Discover how schools are already using technology effectively. Spark your imagination with advice on integrating tech into your classroom. Gain access to the best software and hardware at great prices. Join a community of like minded educators and partners with forums and events.'
-            }
-        },
-
-        components: {
-            Swoosh,
-            // WelcomeRobot
-            Circle,
-            Gear,
-            GearDottedLines,
-            Shadow,
-            RobotBody,
-            RobotHead,
-            LeftArm,
-            RightArm
+    },
+    data() {
+        return {
+            welcomeMessage: 'Welcome to edSpark!',
+            welcomeDescription: 'The edSpark Digital Hub is where education and technology meet. Discover how schools are already using technology effectively. Spark your imagination with advice on integrating tech into your classroom. Gain access to the best software and hardware at great prices. Join a community of like minded educators and partners.'
         }
     }
+}
 </script>
 
 <template>
@@ -41,17 +41,17 @@
             <div class="grid grid-cols-6 px-40">
                 <div class="col-span-3">
                     <h1 class="pt-[240px] pb-8 text-white text-[48px] font-semibold">
-                        {{ this.welcomeMessage }}
+                        {{ welcomeMessage }}
                     </h1>
 
                     <p class="text-white font-normal text-[18px]">
-                        {{ this.welcomeDescription }}
+                        {{ welcomeDescription }}
                     </p>
                 </div>
                 <div class="welcomeRobot col-span-3 relative">
                     <!-- Gear and dots -->
                     <div class="">
-                        <Gear class="z-10 gear absolute top-48 left-12"/>
+                        <Gear class="z-10 gear absolute top-48 left-12" />
                         <GearDottedLines class="z-10 dottedLines absolute top-48 left-12" />
                     </div>
                     <!-- Shadow -->
@@ -68,7 +68,7 @@
                     </div>
                     <!-- Robot Left Arm -->
                     <div class="">
-                        <LeftArm class="leftArm z-20 absolute top-[390px] left-[410px]"/>
+                        <LeftArm class="leftArm z-20 absolute top-[390px] left-[410px]" />
                     </div>
                     <!-- Robot Right Arm -->
                     <div class="">

@@ -39,7 +39,7 @@ onMounted(() => {
 
 const avatarUrl = computed(() =>{
     let url = ''
-    if(!isObjectEmpty(currentUser.value)){
+    if(currentUser.value && !isObjectEmpty(currentUser.value) && !isObjectEmpty(currentUser.value['metadata'])){
         currentUser.value['metadata'].forEach(meta => {
             if (meta['user_meta_key'] === 'userAvatar') {
                 url = meta['user_meta_value'][0].replace(/\\\//g, "/");
@@ -68,7 +68,7 @@ setupRoutes();
 </script>
 
 <template>
-    <div class="w-full h-[240px] relative z-20">
+    <div class="w-full h-[240px] relative z-30">
         <div
             class="nav-background w-full h-full pt-7 bg-[url(http://localhost:5173/resources/assets/images/children-vr.png)] bg-no-repeat bg-cover"
         >
@@ -92,7 +92,7 @@ setupRoutes();
         />
 
         <Logo
-            class="absolute right-20 top-36 z-30 md:w-44 md:h-44 md:top-24 sm:w-36 sm:h-36 sm:top-32 w-36 h-36 lg:top-24"
+            class="absolute right-20 top-16 z-30 md:w-44 md:h-44 md:top-10 sm:w-36 sm:h-36 sm:top-32 w-36 h-36 lg:top-24"
         />
         <NavSwoosh class="w-full absolute -bottom-6 left-0 right-0 pointer-events-none" />
     </div>

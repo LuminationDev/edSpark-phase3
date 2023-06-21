@@ -58,6 +58,18 @@ const props = defineProps({
         type: Boolean,
         required: false,
         default: false
+    },
+    extraClasses: {
+        type: String,
+        required: false
+    },
+    sectionType: {
+        type: String,
+        required: false
+    },
+    item: {
+        type: Object,
+        required: true
     }
 });
 
@@ -141,26 +153,34 @@ const handleDefaultBookmark = async (data) => {
 }
 
 
-const cardHoverToggle = ref(false)
+const cardHoverToggle = ref(false);
+
+const setTheBackground = computed(() => {
+    return `${imageURL}/${props.coverImage}`;
+});
+
+const emits = defineEmits(['emitCardClick']);
+
+const handleEmitClick = () => {
+    console.log('ive clicked in the card');
+    emits('emitCardClick', props.item);
+}
 
 </script>
 
 <template>
     <div
-        :class="{'!w-[30%]': numberPerRow === 3,
-                 '!w-[22%]': numberPerRow === 4,
-                 '!w-[45%]': numberPerRow === 2,
-                 '!w-[95%]' : numberPerRow === 1
-        }"
-        class="GenericCardContainer w-full border-[0.5px] border-black hover:shadow-2xl mx-2 mb-4 flex flex-col min-h-[480px] max-w-[400px] max-h-[480px] group transition-all card_parent cursor-pointer"
+
+        class="GenericCardContainer card_parent generic-card__wrapper group"
+        :class="extraClasses"
         @mouseenter="cardHoverToggle = true"
+        @click="handleEmitClick"
     >
         <template v-if="!props.overrideContent">
             <div
-                class="cardTopCoverImage relative min-h-[35%] bg-cover bg-center group-hover:min-h-[0%] group-hover:h-0 transition-all"
+                class="cardTopCoverImage relative min-h-[35%] bg-slate-50 bg-cover bg-center transition-all group-hover:min-h-[0%] group-hover:h-0"
                 :class="`bg-[url('${imageURL}/${coverImage}')]`"
                 :style="`background-image: url('${imageURL}/${coverImage}')`"
-                @click="clickCallback"
             >
                 <template
                     v-if="$slots.typeTag"
@@ -176,41 +196,44 @@ const cardHoverToggle = ref(false)
                     <slot name="icon" />
                 </div>
             </div>
-            <div
-                class="cardContent h-full flex flex-col p-4 overflow-hidden transition-all bg-white"
-                @click="clickCallback"
-            >
+            <!-- <div class="cardContentOuter"> -->
                 <div
-                    v-if="props.title"
-                    class="cardTitle text-xl font-bold uppercase transition-all mb-4 group-hover:w-3/4"
+                    class="cardContent transition-all"
+                    @click="clickCallback"
                 >
-                    {{ props.title }}
-                </div>
-                <div class="flex flex-col card-content_body h-full">
                     <div
-                        v-if="props.displayAuthor"
-                        class="cardAuthor text-base font-semibold mt-2 transition-all"
+                        v-if="props.title"
+                        class="cardTitle transition-all"
+                        :class="(sectionType === 'events' || sectionType === 'advice') ? 'group-hover:w-3/4' : ''"
                     >
-                        {{ props.displayAuthor }}
+                        {{ props.title }}
                     </div>
-                    <div
-                        v-if="props.displayDate"
-                        class="cardDate text-base  mb-2 transition-all"
-                    >
-                        {{ formattedDate }}
+                    <div class="card-content_body transition-all">
+                        <div
+                            v-if="props.displayAuthor"
+                            class="cardAuthor transition-all"
+                        >
+                            {{ props.displayAuthor }}
+                        </div>
+                        <div
+                            v-if="props.displayDate"
+                            class="cardDate transition-all"
+                        >
+                            {{ formattedDate }}
+                        </div>
+                        <div
+                            v-if="props.displayContent"
+                            class="cardDisplayPreview"
+                            v-html="props.displayContent"
+                        />
                     </div>
-                    <div
-                        v-if="props.displayContent"
-                        class="cardDisplayPreview pt-2 h-full font-light text-lg overflow-hidden mt-auto pb-6 transition-all"
-                        v-html="props.displayContent"
-                    />
                 </div>
-            </div>
+            <!-- </div> -->
         </template>
         <template v-else>
             <slot name="overiddenContent" />
         </template>
-        <div class="flex flex-row h-18 pl-4 gap-4 mt-auto bg-white">
+        <div class="generic-card__footer flex flex-row h-18 place-items-end pl-4 gap-4 mt-auto">
             <div class="p-2">
                 <span class="has-tooltip">
                     <LikeFull
@@ -222,7 +245,7 @@ const cardHoverToggle = ref(false)
                         @click="() => handleDefaultLike(props.likeBookmarkData)"
                     />
                     <Tooltip
-                        tip="like this post"
+                        tip="Like this post"
                         :tool-tip-margin="{'!-ml-28' : numberPerRow > 3, '-ml-36' : true}"
                     />
                 </span>
@@ -238,7 +261,7 @@ const cardHoverToggle = ref(false)
                         @click="() => handleDefaultBookmark(props.likeBookmarkData)"
                     />
                     <Tooltip
-                        tip="bookmark this post"
+                        tip="Bookmark this post"
                         tool-tip-margin="ml-8"
                     />
                 </span>
@@ -250,11 +273,11 @@ const cardHoverToggle = ref(false)
 
 <style scoped>
 .card-content_body {
-    overflow: hidden;
+    /* overflow: hidden;
     text-overflow: ellipsis;
     display: -webkit-box;
     -webkit-line-clamp: 6;
-    -webkit-box-orient: vertical;
+    -webkit-box-orient: vertical; */
 }
 
 .card_parent:hover .card-content_body {
@@ -269,15 +292,28 @@ const cardHoverToggle = ref(false)
     -webkit-box-orient: vertical;
 }
 
-.card-content_body {
+/* .card-content_body {
     overflow: hidden;
     text-overflow: ellipsis;
     display: -webkit-box;
     -webkit-line-clamp: 4;
     -webkit-box-orient: vertical;
-}
+} */
 
 .card_parent:hover .card-content_title {
     -webkit-line-clamp: 4 !important;
 }
+</style>
+
+<style>
+    .generic-card__footer {
+        background: rgb(255,255,255);
+        /* background: linear-gradient(0deg, rgba(255,255,255,1) 0%, rgba(255,255,255,1) 70%, rgba(255,255,255,0.8491771708683473) 84%, rgba(255,255,255,0.7511379551820728) 92%, rgba(255,255,255,0.40948879551820727) 100%, rgba(255,255,255,0) 100%); */
+    }
+
+    .cardContent {
+        box-shadow: 0px -109px 54px -65px rgba(255,255,255,0.87) inset;
+        -webkit-box-shadow: 0px -109px 54px -65px rgba(255,255,255,0.87) inset;
+        -moz-box-shadow: 0px -109px 54px -65px rgba(255,255,255,0.87) inset;
+    }
 </style>

@@ -4,8 +4,9 @@ import SchoolCardIconList from "@/js/components/schools/SchoolCardIconList.vue";
 import GenericCard from "@/js/components/card/GenericCard.vue";
 import {storeToRefs} from "pinia";
 import {useUserStore} from "@/js/stores/useUserStore";
+import {ref} from "vue";
 
-const { currentUser } = storeToRefs(useUserStore())
+const {currentUser} = storeToRefs(useUserStore())
 
 const imageURL = import.meta.env.VITE_SERVER_IMAGE_API
 const props = defineProps({
@@ -43,18 +44,28 @@ const likeBookmarkData = {
  *
  * }
  */
+const showFirstTech = ref(false)
+const handleMouseEnterCard = () => {
+    showFirstTech.value = true
+}
 
-console.log(props.schoolData)
+const handleMouseExitCard = () =>{
+    showFirstTech.value = false
+}
 </script>
 <template>
     <GenericCard
         :title="props.schoolData.name"
         :like-bookmark-data="likeBookmarkData"
-        number-per-row="1"
+        :number-per-row="1"
         :override-content="true"
     >
         <template #overiddenContent>
-            <div class="h-full flex flex-col ">
+            <div
+                class="h-full flex flex-col "
+                @mouseenter="handleMouseEnterCard"
+                @mouseleave="handleMouseExitCard"
+            >
                 <router-link :to="`/schools/${props.schoolData.name}`">
                     <div class="relative h-36 group-hover:h-0 transition-all">
                         <div
@@ -78,7 +89,11 @@ console.log(props.schoolData)
                             <div
                                 class="iconListContainer pt-4 flex flex-row w-full justify-between overflow-scroll gap-4 overflow-x-auto items-center pb-6 cursor-grab"
                             >
-                                <SchoolCardIconList :tech-list="props.schoolData.tech_used" />
+                                <span />
+                                <SchoolCardIconList
+                                    :tech-list="props.schoolData.tech_used"
+                                    :show-first-tech="showFirstTech"
+                                />
                             </div>
                         </div>
                     </div>
@@ -87,7 +102,7 @@ console.log(props.schoolData)
         </template>
     </GenericCard>
 </template>
-<style scoped>
+<style>
 .iconListContainer::-webkit-scrollbar {
     display: none;
 }
@@ -95,6 +110,30 @@ console.log(props.schoolData)
 .iconListContainer {
     -ms-overflow-style: none;
     scrollbar-width: none;
+    padding-right: 20px;
+    padding-left: 0px;
+
+}
+
+/* Much potentialo */
+.iconListContainer:after {
+    content: '';
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    background-image: linear-gradient(270deg, #fff 50%, 80%, transparent);
+    width: 15%;
+    height: 8em;
+}
+
+.iconListContainer span:after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    background-image: linear-gradient(90deg, #fff 50%, 80%, transparent);
+    width: 15%;
+    height: 6em;
 }
 
 .card-content_body {

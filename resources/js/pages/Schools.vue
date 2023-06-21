@@ -23,6 +23,12 @@ import {axiosSchoolFetcher} from "@/js/helpers/fetcher";
 import useSwrvState from "@/js/helpers/useSwrvState";
 import {useSchoolsStore} from "@/js/stores/useSchoolsStore";
 
+/**
+ * Import Card wrapper
+ */
+import CardCarouselWrapper from '../components/card/CardCarouselWrapper.vue';
+import CardWrapper from '../components/card/CardWrapper.vue';
+
 const createSchool = ref(false)
 const showWelcomePopup = ref(false)
 
@@ -52,9 +58,9 @@ const cardsLoading = computed(() => {
     } else if ([STATES.PENDING].includes(state.value)) {
         return true
     } else if ([STATES.VALIDATING].includes(state.value)) {
-        return false
+        return !featuredSites.value.length;
     } else {
-        return ![STATES.SUCCESS, STATES.VALIDATING, STATES.STALE_IF_ERROR].includes(state.value)
+        return ![STATES.SUCCESS, STATES.STALE_IF_ERROR].includes(state.value)
     }
 })
 
@@ -64,7 +70,7 @@ const fetchAllSchools = () => {
     if (schools.value.length === 0) {
         console.log('fetch all school called')
         axios.get(`${serverURL}/fetchAllSchools`).then(res => {
-            schools.value = res.data
+            schools.value = schoolContentArrParser(res.data)
             schoolsAvailable.value = true;
         })
     } else {
@@ -76,7 +82,7 @@ const fetchAllSchools = () => {
 };
 
 
-onBeforeMount(async () => {
+onBeforeMount(() => {
     fetchAllSchools();
 
     /**
@@ -156,7 +162,17 @@ const handleSaveWelcomePopup = (data) => {
                 :button-text="'View all schools'"
                 :button-callback="handleBrowseAllSchool"
             />
-            <div
+
+            <CardCarouselWrapper
+                :key="cardsLoading"
+                :card-data="featuredSites ? featuredSites : []"
+                :loading="cardsLoading"
+                :row-count="1"
+                :col-count="4"
+                :section-type="'schools'"
+            />
+
+            <!-- <div
                 v-if="cardsLoading"
             >
                 <CardLoading
@@ -175,7 +191,7 @@ const handleSaveWelcomePopup = (data) => {
                         :school-data="school"
                     />
                 </div>
-            </div>
+            </div> -->
         </div>
 
 

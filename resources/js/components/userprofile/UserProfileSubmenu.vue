@@ -36,11 +36,11 @@ onMounted( () => {
 
 </script>
 <template>
-    <div class="UserProfileSubmenuContainer flex flex-row w-full h-16 bg-blue-800 items-center text-white uppercase">
+    <div class="UserProfileSubmenuContainer flex flex-row w-full h-16 bg-primary-darkTeal rounded-t-xl items-center text-white text-lg uppercase font-semibold">
         <div
             v-for="(item,index) in props.submenuItems"
             :key="index"
-            class="submenuItems mx-4 hover:text-blue-400 hover:cursor-pointer"
+            class="submenuItems mx-4 hover:text-primary-lightTeal hover:cursor-pointer"
             @click="() => handleClickSubmenu(item)"
         >
             {{ item }}

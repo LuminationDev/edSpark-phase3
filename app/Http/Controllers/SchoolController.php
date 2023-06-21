@@ -230,6 +230,12 @@ class SchoolController extends Controller
                     $schoolMetadataToSend[] = $res;
                 }
             }
+            //adding school_type into metadata
+            $schoolType = [
+                'schoolmeta_key' => 'school_type',
+                'schoolmeta_value' => $school->site->site_sub_type_desc
+            ];
+            $schoolMetadataToSend[] = $schoolType;
             $result = [
                 'id' => $school->id,
                 'site' => [
@@ -266,7 +272,7 @@ class SchoolController extends Controller
             return response('School Not found', 404);
         } else {
             $schoolMetadata = Schoolmeta::where('school_id', $school->id)->get();
-            $site = Site::find($school->site_id);
+            $site = Site::where('site_id',$school->site_id)->first();
             $siteLocation = (object)[
                 'lat' => (float)$site->site_latitude,
                 'lng' => (float)$site->site_longitude
@@ -281,6 +287,8 @@ class SchoolController extends Controller
                     $schoolMetadataToSend[] = $res;
                 }
             }
+
+
             $result = [
                 'id' => $school->id,
                 'site' => [
@@ -496,11 +504,6 @@ class SchoolController extends Controller
     {
         // user id
         if ($request->isMethod('post')) {
-            return response()->json([
-                "status" => 200,
-                "result" => true,
-                'canNominate' => true
-            ]);
             $requestData = $request->validate([
                 'school_id' => 'required',
                 'user_id' => 'required',
@@ -550,4 +553,100 @@ class SchoolController extends Controller
         ]);
 
     }
+
+    /**
+     * School Contact Functions
+     */
+    public function createOrUpdateContact(Request $request): \Illuminate\Http\JsonResponse
+    {
+        if ($request->isMethod('post')) {
+            $requestData = $request->validate([
+                'school_id' => 'required',
+                'school_contact' => 'required'
+            ]);
+
+            $school_id = $requestData['school_id'];
+            $school_contact = $requestData['school_contact'];
+//            dd($school_contact);
+            $schoolmeta_record = Schoolmeta::where('school_id', $school_id)
+                ->where('schoolmeta_key', 'school_contact')
+                ->first();
+
+            if ($schoolmeta_record) {
+                // Update existing school contact
+                $schoolmeta_record->schoolmeta_value = $school_contact;
+                $schoolmeta_record->save();
+
+                OutputHelper::print('School contact updated successfully.');
+                return response()->json([
+                    "status" => 200,
+                    "result" => true,
+                    'message' => 'School contact updated successfully.'
+                ]);
+            } else {
+                // Create new school contact
+                $schoolmeta = new Schoolmeta();
+                $schoolmeta->school_id = $school_id;
+                $schoolmeta->schoolmeta_key = 'school_contact';
+                $schoolmeta->schoolmeta_value = $school_contact;
+                $schoolmeta->save();
+
+                OutputHelper::print('School contact created successfully.');
+                return response()->json([
+                    "status" => 200,
+                    "result" => true,
+                    'message' => 'School contact created successfully.'
+                ]);
+            }
+        }
+
+        return response()->json([
+            "status" => 401,
+            "result" => false,
+            'message' => 'Unauthorized'
+        ]);
+    }
+
+    public function fetchSchoolContact(Request $request): \Illuminate\Http\JsonResponse
+    {
+        if ($request->isMethod('post')) {
+            $requestData = $request->validate([
+                'school_id' => 'required',
+            ]);
+
+            $school_id = $requestData['school_id'];
+
+            $schoolmeta_record = Schoolmeta::where('school_id', $school_id)
+                ->where('schoolmeta_key', 'school_contact')
+                ->first();
+
+            if ($schoolmeta_record) {
+                OutputHelper::print('School contact retrieved successfully.');
+                return response()->json([
+                    "status" => 200,
+                    "result" => true,
+                    'school_contact' => $schoolmeta_record->schoolmeta_value
+                ]);
+            }
+
+            OutputHelper::print('School contact not found.');
+            return response()->json([
+                "status" => 404,
+                "result" => false,
+                'message' => 'School contact not found.'
+            ]);
+        }
+
+        return response()->json([
+            "status" => 401,
+            "result" => false,
+            'message' => 'Unauthorized'
+        ]);
+    }
+
+
+
+    /**
+     * End of SchoolContact Function
+     */
 }

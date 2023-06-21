@@ -1,160 +1,207 @@
 <script setup>
-    import { ref, computed, onMounted, watch } from 'vue';
-    import axios from 'axios';
-    import { GoogleMap, Marker, MarkerCluster, } from 'vue3-google-map'
-    import { useRouter } from 'vue-router';
-    import { serverURL } from "@/js/constants/serverUrl";
+import {ref, computed, onMounted, watch, watchEffect} from 'vue';
+import axios from 'axios';
+import {GoogleMap, Marker, MarkerCluster, InfoWindow} from 'vue3-google-map'
+import {useRouter} from 'vue-router';
+import {serverURL} from "@/js/constants/serverUrl";
 
-    /**
-     * Components
-     */
-    import SchoolsMapPopup from './SchoolsMapPopup.vue';
-    import SchoolsMapFilterName from './SchoolsMapFilterName.vue';
-    import SchoolsMapFilterType from './SchoolsMapFilterType.vue';
-    import SchoolsMapFilterTech from './SchoolsMapFilterTech.vue';
+/**
+ * Components
+ */
+import SchoolsMapPopup from './SchoolsMapPopup.vue';
+import SchoolsMapFilterName from './SchoolsMapFilterName.vue';
+import SchoolsMapFilterType from './SchoolsMapFilterType.vue';
+import SchoolsMapFilterTech from './SchoolsMapFilterTech.vue';
 
-    /**
-     * Get some props
-     */
-    const props = defineProps({
-        schools: {
-            type: Array,
-            required: true
-        },
-        schoolsAvailable: {
-            type: Boolean,
-            required: true
-        }
-    });
+/**
+ * Get some props
+ */
+const props = defineProps({
+    schools: {
+        type: Array,
+        required: true
+    },
+    schoolsAvailable: {
+        type: Boolean,
+        required: true
+    }
+});
 
-    const router = useRouter();
-    const showFilters = ref(false);
-    const toggleMapPopup = ref(false);
-    // const toggleFilters = computed(() => {
-    //     showFilters.value = !showFilters.value;
-    // });
+const router = useRouter();
+const showFilters = ref(false);
 
-    /**
-     * Set the maps center point
-     */
-    const mapOptions = ref({
-        center: {
-            lat: -34.9285,
-            lng: 138.6007
-        },
-        zoom: 12,
-        options: {
-            zoomControl: false,
-            mapTypeControl: false,
-            scaleControl: false,
-            streetViewControl: false,
-            rotateControl: false,
-            fullScreenControl: false,
-            mapId: '164f2a0469c00794'
-        }
-    });
+/**
+ * Set the maps center point
+ */
+const mapOptions = ref({
+    center: {
+        lat: -34.9285,
+        lng: 138.6007
+    },
+    zoom: 12,
+    options: {
+        zoomControl: false,
+        mapTypeControl: false,
+        scaleControl: false,
+        streetViewControl: false,
+        rotateControl: false,
+        fullScreenControl: false,
+        mapId: '164f2a0469c00794'
+    }
+});
 
-    /**
-     * Map markers and filters
-     */
-    const schoolNameFilter = ref('');
-    const schoolTypeFilter = ref('All');
-    const schoolTechFilter = ref('All');
+/**
+ * Map markers and filters
+ */
+const schoolNameFilter = ref('');
+const schoolTypeFilter = ref('All');
+const schoolTechFilter = ref('All');
 
-    const schoolsArray = ref(props.schools);
-    // const filteredList = ref([]);
+const schoolsArray = ref(props.schools);
 
-    const filteredList = computed({
-        get() {
-            return props.schools;
-        },
+const filteredListId = computed(() => {
+    if (!schoolNameFilter.value && schoolTypeFilter.value === 'All' && schoolTechFilter.value === 'All') {
+        console.log('inside all filter is empty return all')
+        return props.schools.map(school => school.id)
+    }
 
-        set(newValue) {
-            console.log(newValue)
+    return Array.from(new Set([...idsFromName.value, ...idsFromTech.value, ...idsFromType.value]))
+})
 
-            schoolsArray.value = newValue;
-        }
-    });
+const filteredList = computed(() => {
+    console.log(filteredListId.value)
+    if (filteredListId.value) {
+        return props.schools.filter(school => filteredListId.value.includes(school.id))
+    } else {
+        return []
+    }
+})
 
-    /**
-     * Handle filter
-     */
-    const handleFilterName = (value) => {
-        filteredList.value = filteredList.value.filter(school => school.name.toLowerCase().includes(value.toLowerCase()));
-    };
+/**
+ * Handle filter
+ */
+const idsFromName = computed(() => {
+    console.log('inside ids from name computed')
+    if (!schoolNameFilter.value) {
+        // console.log(props.schools.map(school => {
+        //     return school.id
+        // }))
+        return []
+    } else {
+        return props.schools.filter(school => school.name.toLowerCase().includes(schoolNameFilter.value.toLowerCase())).map(school => school.id);
+    }
 
-    const handleFilterTech = (value) => {
-        if (value === 'All') {
-            filteredList.value = filteredList.value;
-        } else {
-            filteredList.value = filteredList.value.filter(
-                school => school.tech_used.some(
-                    tech => tech.name === value
-                )
-            )
-        };
-    };
+})
 
+const idsFromTech = computed(() => {
+    if (schoolTechFilter.value === 'All') {
+        // console.log(props.schools.map(school => {
+        //     return school.id
+        // }))
+        return []
+    } else {
+        return props.schools.filter(
+            school => {
+                if (Array.isArray(school.tech_used)) {
+                    return school.tech_used.some(
+                        tech => tech.name === schoolTechFilter.value
+                    )
 
-    const handleFilterType = (value) => {
-        console.log(value);
-        if (value === 'All') {
-            filteredList.value = filteredList.value.value;
-        } else {
-            filteredList.value = filteredList.value.filter(
-                school => school.metadata.find(
-                    item => item.schoolmeta_value === value
-                )
-            )
-        };
-    };
-
-    const popupX = ref('');
-    const popupY = ref('');
-    const mapPopupIndex = ref(null);
-    const mapPopupName = ref('');
-    const mapPopupInfo = ref({});
-
-    /**
-     * Map methods
-     */
-    const handleOnClusterClick = (location, index) => {
-        if (toggleMapPopup.value) {
-            toggleMapPopup.value = false;
-        };
-
-        toggleMapPopup.value = !toggleMapPopup.value;
-        mapPopupIndex.value = location.id;
-        mapPopupName.value = location.name;
-        mapPopupInfo.value = location;
-
-        popupX.value = event.clientX / 2;
-        popupY.value = event.clientY / 2;
-    };
-
-    const handleTogglePopupEmit = () => {
-        toggleMapPopup.value = !toggleMapPopup.value;
-    };
-
-    const handleFilterBarClick = () => {
-        showFilters.value = !showFilters.value;
-    };
-
-    const handleLinkToSchool = () => {
-        props.schools.forEach(school => {
-            const idMatch = school.id;
-            console.log(idMatch);
-            if (idMatch === mapPopupIndex.value) {
-                let schoolUrlFriendly = school.name.replace(/\s+/g, '-').toLowerCase();
-                router.push({
-                    name: 'school-single',
-                    params: {
-                        name: school.name
-                    }
-                });
+                } else {
+                    return false
+                }
             }
-        });
-    };
+        ).map(school => school.id)
+    }
+})
+
+const idsFromType = computed(() => {
+    if (schoolTypeFilter.value === 'All') {
+        // console.log(props.schools.map(school => {
+        //     return school.id
+        // }))
+        return []
+    } else {
+        return props.schools.filter(
+            school => {
+                if (Array.isArray(school.metadata)) {
+                    return school.metadata.some(
+                        item => {
+                            console.log(item)
+                            if (item['schoolmeta_key'] === 'school_type') {
+                                return item['schoolmeta_value'] === schoolTypeFilter.value
+                            } else {
+                                return false
+                            }
+                        }
+                    )
+                } else {
+                    return false
+                }
+            }
+        ).map(school => school.id)
+    }
+})
+
+
+const popupX = ref('');
+const popupY = ref('');
+const mapPopupIndex = ref(null);
+const mapPopupName = ref('');
+const mapPopupInfo = ref({});
+const infoWindow = ref(null)
+
+watchEffect(() => {
+    if(infoWindow.value){
+        console.log(infoWindow.value)
+    } else{
+        console.log('hmm info window is null')
+    }
+})
+/**
+ * Map methods
+ */
+const handleOnClusterClick = (location, index) => {
+    if(infoWindow.value){
+        infoWindow.value.forEach(window => {
+            window.infoWindow.close() // EUREKA
+        })
+    }
+    mapPopupIndex.value = location.id;
+    mapPopupName.value = location.name;
+    mapPopupInfo.value = location;
+
+    popupX.value = event.clientX;
+    popupY.value = event.clientY;
+};
+
+const handleTogglePopupEmit = () => {
+    // toggleMapPopup.value = !toggleMapPopup.value;
+};
+
+const handleFilterBarClick = () => {
+    showFilters.value = !showFilters.value;
+};
+
+const handleLinkToSchool = () => {
+    props.schools.forEach(school => {
+        const idMatch = school.id;
+        console.log(idMatch);
+        if (idMatch === mapPopupIndex.value) {
+            let schoolUrlFriendly = school.name.replace(/\s+/g, '-').toLowerCase();
+            router.push({
+                name: 'school-single',
+                params: {
+                    name: school.name
+                }
+            });
+        }
+    });
+};
+
+const handleChangeInfoWindows = () => {
+    console.log('inside handel infoWindwos')
+}
 
 </script>
 
@@ -178,21 +225,18 @@
 
         <div
             class="absolute p-6 transition-all top-0 bottom-0 w-full bg-[#0072DA] z-40"
-            :class="showFilters ? 'h-[350px]' : '!h-0 opacity-0' "
+            :class="showFilters ? 'h-[200px]' : '!h-0 opacity-0 pointer-events-none' "
         >
             <div class="mt-12 flex flex-row flex-wrap gap-6">
                 <SchoolsMapFilterName
                     v-model="schoolNameFilter"
-                    @handleEmitSearchName="handleFilterName"
                 />
 
                 <SchoolsMapFilterType
                     v-model="schoolTypeFilter"
-                    @handleEmitTypeFilter="handleFilterType"
                 />
                 <SchoolsMapFilterTech
                     v-model="schoolTechFilter"
-                    @handleEmitTechFilter="handleFilterTech"
                 />
             </div>
         </div>
@@ -205,27 +249,59 @@
                     :center="mapOptions.center"
                     :zoom="mapOptions.zoom"
                     :options="mapOptions.options"
+                    @click="showFilters = false"
+                    @drag="showFilters = false"
                 >
                     <MarkerCluster>
                         <Marker
                             v-for="(school, i) in filteredList"
                             :key="i"
-                            class="relative"
                             :options="{ position: school.location }"
                             @click="handleOnClusterClick(school, i)"
-                        />
+                        >
+                            <InfoWindow ref="infoWindow">
+                                <SchoolsMapPopup
+                                    :school-data="school"
+                                    :map-popup-name="mapPopupName"
+                                    :map-popup-info="mapPopupInfo"
+                                    @handle-toggle="handleTogglePopupEmit"
+                                    @handle-link-to-school="handleLinkToSchool"
+                                />
+                            </InfoWindow>
+                        </Marker>
                     </MarkerCluster>
-                    <SchoolsMapPopup
-                        v-if="toggleMapPopup"
-                        :class="toggleMapPopup ? `top-[${popupY}px] left-[${popupX}px]`: ''"
-                        :map-popup-name="mapPopupName"
-                        :map-popup-index="mapPopupIndex"
-                        :map-popup-info="mapPopupInfo"
-                        @handleToggle="handleTogglePopupEmit"
-                        @handleLinkToSchool="handleLinkToSchool"
-                    />
                 </GoogleMap>
             </div>
         </div>
     </div>
 </template>
+
+<style lang="scss">
+.gm-ui-hover-effect {
+    top: 0 !important;
+    right: 12px !important;
+
+    span {
+        width: 30px !important;
+        height: 30px !important;
+    }
+}
+.gm-style-iw.gm-style-iw-c{
+    padding: 0 0 0 0 !important;
+    .gm-style-iw-d{
+        padding: 0 0 0 0 !important;
+        -ms-overflow-style: none !important;   /* IE and Edge */
+        scrollbar-width: none !important;  /* Firefox */
+    }
+    .gm-style-iw-d::-webkit-scrollbar {
+        display: none !important;
+    }
+}
+.TechIconListCategory{
+    font-size: 22px !important;
+}
+
+.TechIconListDescription{
+    font-size: 18px;
+}
+</style>
