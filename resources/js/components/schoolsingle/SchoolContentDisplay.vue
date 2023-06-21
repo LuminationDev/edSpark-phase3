@@ -3,6 +3,7 @@ import SchoolContentHeading from "@/js/components/schoolsingle/schoolContent/Sch
 import SchoolContentParagraph from "@/js/components/schoolsingle/schoolContent/SchoolContentParagraph.vue";
 import SchoolContentList from "@/js/components/schoolsingle/schoolContent/SchoolContentList.vue";
 import SchoolContentImage from "@/js/components/schoolsingle/schoolContent/SchoolContentImage.vue";
+import SchoolContentVideo from '@/js/components/schoolsingle/schoolContent/SchoolContentVideo.vue';
 /**
  * Receive the whole content from the parents
  * either temp data or data received from Https call
@@ -40,7 +41,9 @@ const props = defineProps({
  * }
  * ]
  */
-
+props.schoolContentBlocks.blocks.forEach(block => {
+    console.log(block.data.file);
+})
 </script>
 
 <template>
@@ -62,6 +65,9 @@ const props = defineProps({
         </template>
         <template v-else-if="item.type == 'image'">
             <SchoolContentImage :data="item" />
+        </template>
+        <template v-else-if="item.type === 'videoRecorder'">
+            <SchoolContentVideo :data="item" />
         </template>
     </div>
 </template>

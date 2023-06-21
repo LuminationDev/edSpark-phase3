@@ -167,6 +167,4 @@ const handleMouseExitCard = () =>{
 .card_parent:hover .card-content_title {
     -webkit-line-clamp: 4 !important;
 }
-
-
 </style>

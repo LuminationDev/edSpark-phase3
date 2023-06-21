@@ -23,6 +23,12 @@ import {axiosSchoolFetcher} from "@/js/helpers/fetcher";
 import useSwrvState from "@/js/helpers/useSwrvState";
 import {useSchoolsStore} from "@/js/stores/useSchoolsStore";
 
+/**
+ * Import Card wrapper
+ */
+import CardCarouselWrapper from '../components/card/CardCarouselWrapper.vue';
+import CardWrapper from '../components/card/CardWrapper.vue';
+
 const createSchool = ref(false)
 const showWelcomePopup = ref(false)
 
@@ -156,7 +162,17 @@ const handleSaveWelcomePopup = (data) => {
                 :button-text="'View all schools'"
                 :button-callback="handleBrowseAllSchool"
             />
-            <div
+
+            <CardCarouselWrapper
+                :key="cardsLoading"
+                :card-data="featuredSites ? featuredSites : []"
+                :loading="cardsLoading"
+                :row-count="1"
+                :col-count="4"
+                :section-type="'schools'"
+            />
+
+            <!-- <div
                 v-if="cardsLoading"
             >
                 <CardLoading
@@ -175,7 +191,7 @@ const handleSaveWelcomePopup = (data) => {
                         :school-data="school"
                     />
                 </div>
-            </div>
+            </div> -->
         </div>
 
 
