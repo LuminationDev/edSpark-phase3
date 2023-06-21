@@ -2,8 +2,7 @@
 /**
  * Import Dependencies
  */
-import { ref, computed } from "vue";
-import oktaAuth from "../../constants/oktaAuth.js";
+import {ref, onMounted} from "vue";
 /**
  * Import SVG's
  */
@@ -15,8 +14,6 @@ import Profile from "../svg/Profile.vue";
 import { useUserStore } from "@/js/stores/useUserStore";
 import { storeToRefs } from "pinia";
 import axios from "axios";
-import { useWindowSize } from "@vueuse/core";
-
 /**
  * Import components
  */
@@ -41,7 +38,6 @@ const emits = defineEmits(["handleAvatarClick"]);
 const userStore = useUserStore();
 const { currentUser } = storeToRefs(userStore);
 const imageURL = import.meta.env.VITE_SERVER_IMAGE_API;
-const avatarUrl = ref("");
 const userMetadata = userStore.getUser.metadata;
 
 //commented for now
@@ -84,8 +80,13 @@ const checkUserRole = () => {
         break;
     }
 };
+onMounted(() => {
+    checkUserRole();
+})
 
-checkUserRole();
+const handleClickAdmin = () =>{
+    window.open(window.location.origin + '/admin','_self')
+}
 </script>
 
 <template>
@@ -141,17 +142,17 @@ checkUserRole();
                         <Profile />
                         Help
                     </button>
-                    <router-link
+                    <template
                         v-if="isAdmin"
-                        to="/admin"
                     >
                         <button
                             class="flex flex-row gap-4 justify-start py-3 px-2 text-white text-[18px] font-medium place-items-center hover:bg-[#405974] w-full"
+                            @click="handleClickAdmin"
                         >
                             <Profile />
                             Admin
                         </button>
-                    </router-link>
+                    </template>
                 </div>
                 <div class="pt-3">
                     <button
