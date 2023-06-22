@@ -25,7 +25,7 @@
         },
         loading: {
             type: Boolean,
-            required: true,
+            required: false,
             default: false
         },
         loadingState: {
@@ -72,10 +72,10 @@
         }
     };
 
-    const checkingStuff = computed(() => {
-        console.log(props.additionalClasses);
-        return props.cardData;
-    });
+    // const checkingStuff = computed(() => {
+    //     console.log(props.additionalClasses);
+    //     return props.cardData;
+    // });
 
     const getLatestContent = (data) => {
         data.sort(function compare(a, b) {
@@ -89,18 +89,14 @@
         if (props.loading) {
             return;
         } else {
-            console.log(props);
             if (props.sectionType === 'advice') {
                 let mutatedData = [];
-                console.log('it is advice were looking at???', props.adviceType)
                 switch (props.adviceType) {
                     case 'DAG':
                             mutatedData = props.cardData.filter(data => data.advice_type.includes('D.A.G advice'));
-                            console.log('DAG');
                         break;
 
                     case 'General':
-                            console.log('General');
                             let classroom = props.cardData.filter(data => data.advice_type.includes('Your Classroom'));
                             let work = props.cardData.filter(data => data.advice_type.includes('Your Work'));
                             let learning = props.cardData.filter(data => data.advice_type.includes('Your Learning'));
@@ -110,19 +106,16 @@
 
                     case 'Partner':
                             mutatedData = props.cardData.filter(data => data.advice_type.includes('Partner'));
-                            console.log('Partner');
                         break;
 
                     case 'Dashboard':
                             mutatedData = getLatestContent(props.cardData);
-                            console.log('DAAAAAAASSHHHH', mutatedData);
                         break;
                     default:
                         break;
                 }
 
                 return cardDataHelper(mutatedData, props.sectionType);
-
             } else {
                 return cardDataHelper(props.cardData, props.sectionType);
             }
@@ -163,7 +156,7 @@
             params: {id: item.id},
             state: {content: JSON.stringify(content[0])}
         })
-    }
+    };
 </script>
 
 <template>
@@ -172,13 +165,14 @@
         <div
             class="card__wrapper"
             :class="additionalClasses + hasInfoSection ? '' : ''"
-            v-if="!loading && loadingState === 'SUCCESS' || !loading && loadingState === 'VALIDATING'"
+            v-if="!loading && loadingState === 'SUCCESS' || !loading && loadingState === 'VALIDATING' || (typeof loadingState === 'boolean' && !loadingState)"
         >
             <div
                 class="flex flex-row flex-1 flex-wrap w-full justify-between px-[29px]"
             >
+
                 <div
-                    v-for="(col, index) in (props.rowCount + props.colCount)"
+                    v-for="(col, index) in (props.rowCount * props.colCount)"
                     class="!max-w-[400px] w-[400px] mb-[42px]"
                     :class="additionalClasses"
                 >
@@ -194,7 +188,7 @@
                         :number-per-row="2"
                         :like-bookmark-data="getLikeBookmarkData(computedCardData[index])"
                         @emitCardClick="handleClickCard"
-                        :extra-classes="!additional-classes ? '!max-w-[400px] w-[400px] ' : additional-classes"
+                        :extra-classes="additionalClasses ? additionalClasses : '!max-w-[400px] w-[400px]'"
                         :section-type="sectionType"
                     >
                     <template

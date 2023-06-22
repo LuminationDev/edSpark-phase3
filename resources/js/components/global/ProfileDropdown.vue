@@ -89,7 +89,7 @@ checkUserRole();
 </script>
 
 <template>
-    <div class="w-[48px] h-[48px] absolute top-64 right-72">
+    <div class="w-[48px] h-[48px] absolute top-56 right-72">
         <div class="z-50 relative h-full w-full bg-slate-200 flex rounded-full cursor-pointer hover:shadow-2xl overflow-hidden"
             @click.prevent="handleAvatar">
             <img v-if="!avatarUrl.length <= 0" class="w-full m-auto" :src="`${imageURL}/${avatarUrl}`" alt="" />

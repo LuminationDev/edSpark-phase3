@@ -50,7 +50,7 @@ props.schoolContentBlocks.blocks.forEach(block => {
     <div
         v-for="(item,index) in schoolContentBlocks.blocks"
         :key="index"
-        class="schoolContentIterator mb-2"
+        class="schoolContentIterator mb-8 mr-12"
     >
         <!-- All styles are still hardcoded-->
         <!-- Once we figured out styling from Editorjs, render accordingly     -->
@@ -64,10 +64,10 @@ props.schoolContentBlocks.blocks.forEach(block => {
             <SchoolContentList :data="item" />
         </template>
         <template v-else-if="item.type == 'image'">
-            <SchoolContentImage :data="item" />
+            <!-- <SchoolContentImage :data="item" /> -->
         </template>
-        <template v-else-if="item.type === 'videoRecorder'">
-            <SchoolContentVideo :data="item" />
+        <template v-else-if="item.type === 'video'">
+            <!-- <SchoolContentVideo :data="item" /> -->
         </template>
     </div>
 </template>

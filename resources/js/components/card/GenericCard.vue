@@ -165,7 +165,6 @@ const handleEmitClick = () => {
     console.log('ive clicked in the card');
     emits('emitCardClick', props.item);
 }
-
 </script>
 
 <template>
@@ -201,31 +200,37 @@ const handleEmitClick = () => {
                     class="cardContent transition-all"
                     @click="clickCallback"
                 >
-                    <div
-                        v-if="props.title"
-                        class="cardTitle transition-all"
-                        :class="(sectionType === 'events' || sectionType === 'advice') ? 'group-hover:w-3/4' : ''"
-                    >
-                        {{ props.title }}
-                    </div>
-                    <div class="card-content_body transition-all">
+                <!-- :class="(sectionType === 'events' || sectionType === 'advice') ? 'group-hover:w-3/5' : ''" -->
+                    <div class="cardContentWrapper">
                         <div
-                            v-if="props.displayAuthor"
-                            class="cardAuthor transition-all"
+                            v-if="props.title"
+                            class="cardTitle transition-all"
+                            :class="{
+                                'group-hover:w-3/5': sectionType === 'advice' || sectionType === 'events',
+                                'group-hover:w-4/5': sectionType === 'software'
+                            }"
                         >
-                            {{ props.displayAuthor }}
+                            {{ props.title }}
                         </div>
-                        <div
-                            v-if="props.displayDate"
-                            class="cardDate transition-all"
-                        >
-                            {{ formattedDate }}
+                        <div class="card-content_body transition-all">
+                            <div
+                                v-if="props.displayAuthor"
+                                class="cardAuthor transition-all"
+                            >
+                                {{ props.displayAuthor }}
+                            </div>
+                            <div
+                                v-if="props.displayDate"
+                                class="cardDate transition-all"
+                            >
+                                {{ formattedDate }}
+                            </div>
+                            <div
+                                v-if="props.displayContent"
+                                class="cardDisplayPreview"
+                                v-html="props.displayContent"
+                            />
                         </div>
-                        <div
-                            v-if="props.displayContent"
-                            class="cardDisplayPreview"
-                            v-html="props.displayContent"
-                        />
                     </div>
                 </div>
             <!-- </div> -->
@@ -272,6 +277,19 @@ const handleEmitClick = () => {
 
 
 <style scoped>
+
+.generic-card__footer {
+    background-color: #FFF;
+    box-shadow: 0px -23px 7px -15px rgba(255,255,255,1);
+    -webkit-box-shadow: 0px -23px 7px -15px rgba(255,255,255,1);
+    -moz-box-shadow: 0px -23px 7px -15px rgba(255,255,255,1);
+}
+
+.cardContentWrapper {
+    /* -moz-box-shadow: inset 0 -10px 10px -10px #000000;
+    -webkit-box-shadow: inset 0 -10px 10px -10px #000000;
+    box-shadow: inset 0 -10px 10px -10px #000000; */
+}
 .card-content_body {
     /* overflow: hidden;
     text-overflow: ellipsis;
@@ -305,7 +323,7 @@ const handleEmitClick = () => {
 }
 </style>
 
-<style>
+<!-- <style>
     .generic-card__footer {
         background: rgb(255,255,255);
         /* background: linear-gradient(0deg, rgba(255,255,255,1) 0%, rgba(255,255,255,1) 70%, rgba(255,255,255,0.8491771708683473) 84%, rgba(255,255,255,0.7511379551820728) 92%, rgba(255,255,255,0.40948879551820727) 100%, rgba(255,255,255,0) 100%); */
@@ -316,4 +334,4 @@ const handleEmitClick = () => {
         -webkit-box-shadow: 0px -109px 54px -65px rgba(255,255,255,0.87) inset;
         -moz-box-shadow: 0px -109px 54px -65px rgba(255,255,255,0.87) inset;
     }
-</style>
+</style> -->

@@ -91,9 +91,15 @@ setupRoutes();
             @handle-avatar-click="handleAvatarClick"
         />
 
-        <Logo
-            class="absolute right-20 top-36 z-30 md:w-44 md:h-44 md:top-24 sm:w-36 sm:h-36 sm:top-32 w-36 h-36 lg:top-24"
-        />
+        <!-- Just rempving for demo purposes TODO: fix for mobile screen etc. -->
+        <!-- class="absolute right-20 top-36 z-30 md:w-56 md:h-56 md:top-24 sm:w-36 sm:h-36 sm:top-32 w-36 h-36 lg:top-24" -->
+        <button>
+            <router-link :to="{name: 'dashboard'}">
+                <Logo
+                    class="absolute right-20 top-8 z-30 w-56 h-56 nav-logo transition-all"
+                />
+            </router-link>
+        </button>
         <NavSwoosh class="w-full absolute -bottom-6 left-0 right-0 pointer-events-none" />
     </div>
 </template>
@@ -107,5 +113,9 @@ setupRoutes();
     width: 170px;
     left: 50%;
     transform: translateX(-50%);
+}
+
+.nav-logo:hover {
+    filter: drop-shadow(0px 0px 15px rgba(0, 0, 0, 0.5));
 }
 </style>

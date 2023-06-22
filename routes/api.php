@@ -81,6 +81,7 @@ Route::middleware('api')->group(function() {
 
     // Image upload
     Route::post('uploadImage', [ImageController::class, 'imageUpload']);
+    Route::post('imageUploadEditorjs', [ImageController::class, 'imageUploadEditorjs']);
 
     // Like and Bookmark
     Route::post('like', [LikeBookmarkController::class, 'like']);

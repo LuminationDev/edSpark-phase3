@@ -1,5 +1,5 @@
 <script setup>
-import {computed} from "vue";
+import { computed, onMounted, ref } from "vue";
 
 const props = defineProps({
     itemArray: {
@@ -15,13 +15,58 @@ const numberedListContent = computed(() => {
     }else{
         return props.itemArray
     }
+});
+
+const top = ref('');
+const distanceBetweenEls = ref('');
+const floatingLineClasses = ref('');
+
+const getConnectingLinePositions = () => {
+    let listContainers = document.querySelectorAll('.numberListcontainer');
+    let firstContainer = listContainers[0];
+    let lastContainer = listContainers[listContainers.length -1];
+
+    distanceBetweenEls.value = getDistanceBetweenElements(
+        firstContainer,
+        lastContainer
+    );
+
+    let firstElHeight = firstContainer.offsetHeight;
+    top.value = firstContainer.offsetTop + firstElHeight / 2;
+    floatingLineClasses.value = `top-[${top.value}] h-[${distanceBetweenEls.value}px]`
+}
+
+onMounted(() => {
+    if (props.itemArray) {
+        document.addEventListener('resize', getConnectingLinePositions());
+        getConnectingLinePositions();
+    };
 })
+
+const getPositionAtCenter = (element) => {
+    const {top, left, width, height} = element.getBoundingClientRect();
+    return {
+        x: left + width / 2,
+        y: top + height / 2
+    };
+}
+
+const getDistanceBetweenElements = (a, b) => {
+    const aPosition = getPositionAtCenter(a);
+    const bPosition = getPositionAtCenter(b);
+
+    return Math.hypot(aPosition.x - bPosition.x, aPosition.y - bPosition.y);
+}
+
+
+
 
 </script>
 <template>
     <div class="extraContent relative ">
         <div
-            class="connectingLine absolute w-1 h-[69%] bg-black z-10 top-[14%] left-[12.4%]"
+            class="connectingLine absolute w-1 bg-black z-10 left-[12.4%]"
+            :style="`height: ${distanceBetweenEls}px; top: ${top}px;`"
         />
         <div
             v-for="(item,index) in numberedListContent"
@@ -42,9 +87,16 @@ const numberedListContent = computed(() => {
                         {{ item.heading }}
                     </div>
 
-                    <div v-html="item.content" />
+                    <div class="htmlRenderer" v-html="item.content" />
                 </div>
             </div>
         </div>
     </div>
 </template>
+
+<style>
+    .htmlRenderer ul {
+        list-style: disc !important;
+        padding-left: 36px !important;
+    }
+</style>
