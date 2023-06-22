@@ -2,194 +2,195 @@
     /**
      * Carousel stuff
      */
-    import 'vue3-carousel/dist/carousel.css';
-    import {Carousel, Slide, Pagination, Navigation} from 'vue3-carousel';
-    import { computed, ref } from 'vue';
-    import { storeToRefs } from 'pinia';
-    import { useUserStore } from '../../stores/useUserStore';
-    import { useRouter } from 'vue-router';
+import 'vue3-carousel/dist/carousel.css';
+import {Carousel, Slide, Pagination, Navigation} from 'vue3-carousel';
+import { computed, ref } from 'vue';
+import { storeToRefs } from 'pinia';
+import { useUserStore } from '../../stores/useUserStore';
+import { useRouter } from 'vue-router';
 
-    import GenericCard from './GenericCard.vue';
-    import CardLoading from '../card/CardLoading.vue';
-    import AdviceCardIcon from '../advice/AdviceCardIcon.vue';
+import GenericCard from './GenericCard.vue';
+import CardLoading from '../card/CardLoading.vue';
+import AdviceCardIcon from '../advice/AdviceCardIcon.vue';
 
-    import SchoolCardIconList from '../schools/SchoolCardIconList.vue';
+import SchoolCardIconList from '../schools/SchoolCardIconList.vue';
 
-    import InPerson from '../svg/InPerson.vue';
-    import Virtual from '../svg/Virtual.vue';
+import InPerson from '../svg/InPerson.vue';
+import Virtual from '../svg/Virtual.vue';
+import {imageURL} from "@/js/constants/serverUrl";
 
-    import { cardDataHelper } from '../../helpers/cardDataHelper.js';
+import { cardDataHelper } from '../../helpers/cardDataHelper.js';
 
-    const {currentUser } = storeToRefs(useUserStore());
+const {currentUser } = storeToRefs(useUserStore());
 
-    const router = useRouter();
+const router = useRouter();
 
-    const props = defineProps({
-        cardData: {
-            type: Array,
-            required: true
-        },
-        loading: {
-            type: Boolean,
-            required: false,
-            default: false
-        },
-        loadingState: {
-            type: String,
-            required: false,
-            default: 'SUCCESS'
-        },
-        rowCount: {
-            type: Number,
-            required: true
-        },
-        colCount: {
-            type: Number,
-            required: true
-        },
-        sectionType: {
-            type: String,
-            required: true
-        },
-        additionalClasses: {
-            type: String,
-            required: false
-        },
-        typeTagColor: {
-            type: String,
-            required: false
-        },
-        adviceType: {
-            type: String,
-            required:false
-        }
-    });
-
-    const getLikeBookmarkData = (cardData) => {
-        return {
-            post_id: cardData.id,
-            user_id: currentUser.value.id, // to be replaced with userId from userStore
-            post_type: 'event'
-        }
-    };
-
-    const checkingStuff = computed(() => {
-        console.log(props.additionalClasses);
-        return props.cardData;
-    });
-
-    const getLatestContent = (data) => {
-        cardDataHelper(data).sort(function compare(a, b) {
-            let dateA = new Date(a.post_date);
-            let dateB = new Date(b.post_date);
-            return dateA - dateB;
-        })
-    };
-
-    const computedCardData = computed(() => {
-        if (props.loading) {
-            return;
-        } else {
-            if (props.sectionType === 'advice') {
-                let mutatedData = [];
-
-                switch (props.adviceType) {
-                    case 'DAG':
-                            mutatedData = props.cardData.filter(data => data.advice_type.includes('D.A.G advice'));
-                        break;
-
-                    case 'General':
-                            let classroom = props.cardData.filter(data => data.advice_type.includes('Your Classroom'));
-                            let work = props.cardData.filter(data => data.advice_type.includes('Your Work'));
-                            let learning = props.cardData.filter(data => data.advice_type.includes('Your Learning'));
-
-                            mutatedData = classroom.concat(work, learning);
-                        break;
-
-                    case 'Partner':
-                            mutatedData = props.cardData.filter(data => data.advice_type.includes('Partner'));
-                        break;
-
-                    case 'Dashboard':
-
-                            mutatedData = props.cardData;
-                            console.log('DAAAAAAASSHHHH', mutatedData);
-                        break;
-                    default:
-                        break;
-                }
-
-                return cardDataHelper(mutatedData, props.sectionType);
-
-            } else if (props.adviceType === 'Dashboard') {
-                return cardDataHelper(props.cardData, props.sectionType);
-            } else {
-                return cardDataHelper(props.cardData, props.sectionType);
-            }
-        }
-    });
-
-    const randomIconName = computed(() => {
-        const source = ['iconBookLight', 'iconBookStars', 'iconBookSearch']
-        return source[Math.floor(Math.random() * source.length)]
-    });
-
-    const showFirstTech = ref(false)
-    const firstTechId = ref('');
-    const handleMouseEnterCard = (id) => {
-        console.log(id)
-        firstTechId.value = id;
-        showFirstTech.value = true
+const props = defineProps({
+    cardData: {
+        type: Array,
+        required: true
+    },
+    loading: {
+        type: Boolean,
+        required: false,
+        default: false
+    },
+    loadingState: {
+        type: String,
+        required: false,
+        default: 'SUCCESS'
+    },
+    rowCount: {
+        type: Number,
+        required: true
+    },
+    colCount: {
+        type: Number,
+        required: true
+    },
+    sectionType: {
+        type: String,
+        required: true
+    },
+    additionalClasses: {
+        type: String,
+        required: false
+    },
+    typeTagColor: {
+        type: String,
+        required: false
+    },
+    adviceType: {
+        type: String,
+        required:false
     }
+});
 
-    const handleMouseExitCard = () =>{
-        firstTechId.value = '';
-        showFirstTech.value = false
+const getLikeBookmarkData = (cardData) => {
+    return {
+        post_id: cardData.id,
+        user_id: currentUser.value.id, // to be replaced with userId from userStore
+        post_type: 'event'
     }
+};
 
-    const canShowFirstTech = (id) => {
-        if (id === firstTechId.value) {
-            return true;
-        } else {
-            return false
-        }
-    }
+const checkingStuff = computed(() => {
+    console.log(props.additionalClasses);
+    return props.cardData;
+});
 
-    const handleClickCard = (item) => {
+const getLatestContent = (data) => {
+    cardDataHelper(data).sort(function compare(a, b) {
+        let dateA = new Date(a.post_date);
+        let dateB = new Date(b.post_date);
+        return dateA - dateB;
+    })
+};
 
-        let sectionId = '';
+const computedCardData = computed(() => {
+    if (props.loading) {
+        return;
+    } else {
+        if (props.sectionType === 'advice') {
+            let mutatedData = [];
 
-        switch (props.sectionType) {
-            case 'advice':
-                    sectionId = 'post_id'
+            switch (props.adviceType) {
+            case 'DAG':
+                mutatedData = props.cardData.filter(data => data.advice_type.includes('D.A.G advice'));
                 break;
 
-            case 'software':
-                    sectionId = 'post_id'
+            case 'General':
+                let classroom = props.cardData.filter(data => data.advice_type.includes('Your Classroom'));
+                let work = props.cardData.filter(data => data.advice_type.includes('Your Work'));
+                let learning = props.cardData.filter(data => data.advice_type.includes('Your Learning'));
+
+                mutatedData = classroom.concat(work, learning);
                 break;
 
-            case 'schools':
-                    sectionId = 'id'
-                break;
-            case 'events':
-                    sectionId = 'event_id'
-                break;
-            case 'hardware':
-                    sectionId = 'id'
+            case 'Partner':
+                mutatedData = props.cardData.filter(data => data.advice_type.includes('Partner'));
                 break;
 
+            case 'Dashboard':
+
+                mutatedData = props.cardData;
+                console.log('DAAAAAAASSHHHH', mutatedData);
+                break;
             default:
                 break;
+            }
+
+            return cardDataHelper(mutatedData, props.sectionType);
+
+        } else if (props.adviceType === 'Dashboard') {
+            return cardDataHelper(props.cardData, props.sectionType);
+        } else {
+            return cardDataHelper(props.cardData, props.sectionType);
         }
-
-        const content = props.cardData.filter(data => data[sectionId] === item.id);
-
-        router.push({
-            name: `${props.sectionType}-single`,
-            params: {id: item.id},
-            state: {content: JSON.stringify(content[0])}
-        })
     }
+});
+
+const randomIconName = computed(() => {
+    const source = ['iconBookLight', 'iconBookStars', 'iconBookSearch']
+    return source[Math.floor(Math.random() * source.length)]
+});
+
+const showFirstTech = ref(false)
+const firstTechId = ref('');
+const handleMouseEnterCard = (id) => {
+    console.log(id)
+    firstTechId.value = id;
+    showFirstTech.value = true
+}
+
+const handleMouseExitCard = () =>{
+    firstTechId.value = '';
+    showFirstTech.value = false
+}
+
+const canShowFirstTech = (id) => {
+    if (id === firstTechId.value) {
+        return true;
+    } else {
+        return false
+    }
+}
+
+const handleClickCard = (item) => {
+
+    let sectionId = '';
+
+    switch (props.sectionType) {
+    case 'advice':
+        sectionId = 'post_id'
+        break;
+
+    case 'software':
+        sectionId = 'post_id'
+        break;
+
+    case 'schools':
+        sectionId = 'id'
+        break;
+    case 'events':
+        sectionId = 'event_id'
+        break;
+    case 'hardware':
+        sectionId = 'id'
+        break;
+
+    default:
+        break;
+    }
+
+    const content = props.cardData.filter(data => data[sectionId] === item.id);
+
+    router.push({
+        name: `${props.sectionType}-single`,
+        params: {id: item.id},
+        state: {content: JSON.stringify(content[0])}
+    })
+}
 </script>
 
 <template>
@@ -197,9 +198,9 @@
         <slot name="cardInfoSection" />
 
         <div
+            v-if="!loading && loadingState === 'SUCCESS' || !loading && loadingState === 'VALIDATING'"
             class="carousel__wrapper"
             :class="additionalClasses"
-            v-if="!loading && loadingState === 'SUCCESS' || !loading && loadingState === 'VALIDATING'"
         >
             <Carousel
                 :items-to-show="colCount"
@@ -221,26 +222,26 @@
                         :cover-image="slide.cover_image"
                         :number-per-row="colCount"
                         :like-bookmark-data="getLikeBookmarkData(slide)"
-                        @emitCardClick="handleClickCard"
                         :section-type="sectionType"
+                        @emitCardClick="handleClickCard"
                     >
                         <!-- For event types -->
                         <template
-                            #typeTag
                             v-if="sectionType === 'events'"
+                            #typeTag
                         >
                             <div
+                                v-if="slide.type === 'In Person'"
                                 class="TypeTag absolute gap-4 -right-6 top-4 p-1 px-6 h-[39px] place-items-center bg-secondary-red text-white flex rounded"
                                 :class="typeTagColor"
-                                v-if="slide.type === 'In Person'"
                             >
                                 <InPerson />{{ slide.type }}
                             </div>
 
                             <div
+                                v-else-if="slide.type === 'Virtual'"
                                 class="TypeTag absolute gap-4 -right-6 top-4 p-1 px-6 h-[39px] place-items-center bg-secondary-red text-white flex rounded"
                                 :class="typeTagColor"
-                                v-else-if="slide.type === 'Virtual'"
                             >
                                 <Virtual />{{ slide.type }}
                             </div>
@@ -248,45 +249,45 @@
 
                         <!-- For advice types -->
                         <template
-                            #typeTag
                             v-if="sectionType === 'advice'"
+                            #typeTag
                         >
                             <div
-                                class="TypeTag absolute gap-4 -right-6 top-4 p-1 px-6 h-[39px] place-items-center bg-secondary-yellow text-white flex rounded"
-                                :class="typeTagColor"
                                 v-if="slide.type === 'D.A.G advice'"
-                            >
-                                {{ slide.type }}
-                            </div>
-
-                            <div
-                                class="TypeTag absolute gap-4 -right-6 top-4 p-1 px-6 h-[39px] place-items-center bg-secondary-green text-white flex rounded"
-                                :class="typeTagColor"
-                                v-else-if="slide.type === 'Your Classroom'"
-                            >
-                                {{ slide.type }}
-                            </div>
-
-                            <div
-                                class="TypeTag absolute gap-4 -right-6 top-4 p-1 px-6 h-[39px] place-items-center bg-secondary-green text-white flex rounded"
-                                :class="typeTagColor"
-                                v-else-if="slide.type === 'Your Work'"
-                            >
-                                {{ slide.type }}
-                            </div>
-
-                            <div
-                                class="TypeTag absolute gap-4 -right-6 top-4 p-1 px-6 h-[39px] place-items-center bg-secondary-green text-white flex rounded"
-                                :class="typeTagColor"
-                                v-else-if="slide.type === 'Your Learning'"
-                            >
-                                {{ slide.type }}
-                            </div>
-
-                            <div
                                 class="TypeTag absolute gap-4 -right-6 top-4 p-1 px-6 h-[39px] place-items-center bg-secondary-yellow text-white flex rounded"
                                 :class="typeTagColor"
+                            >
+                                {{ slide.type }}
+                            </div>
+
+                            <div
+                                v-else-if="slide.type === 'Your Classroom'"
+                                class="TypeTag absolute gap-4 -right-6 top-4 p-1 px-6 h-[39px] place-items-center bg-secondary-green text-white flex rounded"
+                                :class="typeTagColor"
+                            >
+                                {{ slide.type }}
+                            </div>
+
+                            <div
+                                v-else-if="slide.type === 'Your Work'"
+                                class="TypeTag absolute gap-4 -right-6 top-4 p-1 px-6 h-[39px] place-items-center bg-secondary-green text-white flex rounded"
+                                :class="typeTagColor"
+                            >
+                                {{ slide.type }}
+                            </div>
+
+                            <div
+                                v-else-if="slide.type === 'Your Learning'"
+                                class="TypeTag absolute gap-4 -right-6 top-4 p-1 px-6 h-[39px] place-items-center bg-secondary-green text-white flex rounded"
+                                :class="typeTagColor"
+                            >
+                                {{ slide.type }}
+                            </div>
+
+                            <div
                                 v-if="slide.type === 'Partner'"
+                                class="TypeTag absolute gap-4 -right-6 top-4 p-1 px-6 h-[39px] place-items-center bg-secondary-yellow text-white flex rounded"
+                                :class="typeTagColor"
                             >
                                 {{ slide.type }}
                             </div>
@@ -343,7 +344,6 @@
                                             <div
                                                 class="iconListContainer pt-4 flex flex-row w-full justify-between overflow-scroll gap-4 overflow-x-auto items-center pb-6 cursor-grab"
                                             >
-
                                                 <!-- :show-first-tech="firstTechId === slide.id ? showFirstTech : !showFirstTech"
                                                     :show-first-tech="showFirstTech" -->
                                                 <SchoolCardIconList
@@ -368,8 +368,8 @@
         </div>
 
         <div
-            class="carousel__wrapper"
             v-else
+            class="carousel__wrapper"
         >
             <CardLoading
                 :number-per-row="colCount"

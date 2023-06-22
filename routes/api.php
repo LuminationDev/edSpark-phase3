@@ -80,7 +80,8 @@ Route::middleware('api')->group(function() {
     Route::get('fetchAllTechs', [TechController::class, 'fetchAllTechs']);
 
     // Image upload
-    Route::post('uploadImage', [ImageController::class, 'imageUpload']);
+    Route::post('imageUpload', [ImageController::class, 'imageUpload']);
+    Route::post('imageUploadEditorjs', [ImageController::class, 'imageUploadEditorjs']);
 
     // Like and Bookmark
     Route::post('like', [LikeBookmarkController::class, 'like']);
