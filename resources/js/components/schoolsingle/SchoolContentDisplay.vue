@@ -64,10 +64,10 @@ props.schoolContentBlocks.blocks.forEach(block => {
             <SchoolContentList :data="item" />
         </template>
         <template v-else-if="item.type == 'image'">
-            <!-- <SchoolContentImage :data="item" /> -->
+            <SchoolContentImage :data="item" />
         </template>
         <template v-else-if="item.type === 'video'">
-            <!-- <SchoolContentVideo :data="item" /> -->
+            <SchoolContentVideo :data="item" />
         </template>
     </div>
 </template>
