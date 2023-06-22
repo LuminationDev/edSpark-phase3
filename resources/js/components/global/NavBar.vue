@@ -68,7 +68,7 @@ setupRoutes();
 </script>
 
 <template>
-    <div class="w-full h-[240px] relative z-20">
+    <div class="w-full h-[240px] relative z-30">
         <div
             class="nav-background w-full h-full pt-7 bg-[url(http://localhost:5173/resources/assets/images/children-vr.png)] bg-no-repeat bg-cover"
         >
@@ -100,6 +100,7 @@ setupRoutes();
                 />
             </router-link>
         </button>
+
         <NavSwoosh class="w-full absolute -bottom-6 left-0 right-0 pointer-events-none" />
     </div>
 </template>

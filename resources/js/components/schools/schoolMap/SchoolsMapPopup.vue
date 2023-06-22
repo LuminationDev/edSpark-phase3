@@ -3,6 +3,7 @@
 import Close from '../../svg/Close.vue';
 import SchoolCardIconList from '../SchoolCardIconList.vue';
 import {imageURL} from "@/js/constants/serverUrl";
+import {ref} from "vue";
 
 const props = defineProps({
     schoolData:{
@@ -30,6 +31,14 @@ const handleClosePopup = () => {
 const handleEmit = () => {
     emits('handleLinkToSchool');
 }
+const showFirstTech = ref(true)
+// const handleMouseEnterCard = () => {
+//     showFirstTech.value = false
+// }
+//
+// const handleMouseExitCard = () =>{
+//     showFirstTech.value = true
+// }
 </script>
 
 <template>
@@ -49,6 +58,7 @@ const handleEmit = () => {
             <div class="flex flex-row gap-6 h-[180px]">
                 <SchoolCardIconList
                     :tech-list="mapPopupInfo.tech_used"
+                    :show-first-tech="showFirstTech"
                 />
             </div>
         </div>

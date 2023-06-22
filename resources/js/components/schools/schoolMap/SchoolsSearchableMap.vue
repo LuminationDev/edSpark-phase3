@@ -286,8 +286,6 @@ const handleChangeInfoWindows = () => {
         height: 30px !important;
     }
 }
-
-
 .gm-style-iw.gm-style-iw-c{
     padding: 0 0 0 0 !important;
     .gm-style-iw-d{
@@ -298,5 +296,12 @@ const handleChangeInfoWindows = () => {
     .gm-style-iw-d::-webkit-scrollbar {
         display: none !important;
     }
+}
+.TechIconListCategory{
+    font-size: 22px !important;
+}
+
+.TechIconListDescription{
+    font-size: 18px;
 }
 </style>
