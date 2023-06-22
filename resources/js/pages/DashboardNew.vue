@@ -432,9 +432,10 @@ onMounted(async () => {
             :additional-classes="'w-[66.66%]'"
             :section-type="'advice'"
             :advice-type="'Dashboard'"
+            :loading-classes="'w-[66.66%]'"
         >
             <template #cardInfoSection>
-                <div class="grid w-[33.33%] gap-[24px] h-full">
+                <div class="grid w-[33.33%] gap-[24px] h-full px-[29px]">
                     <div class="col-span-1">
                         <div class="grid grid-cols-3 row-span-4 py-4">
                             <div class="col-span-1 row-span-1">

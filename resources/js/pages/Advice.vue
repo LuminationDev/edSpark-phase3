@@ -36,12 +36,9 @@ const { state: partnerState, STATES: PARTNERSTATES } = useSwrvState(partnerAdvic
 const { data: generalAdvice, error: generalError, isValidating: generalValidating } = useSWRV(`${serverURL}/fetchAdvicePostByType/${['Your Classroom', 'Your Work', 'Your Learning']}`, axiosFetcher,swrvOptions);
 const { state: generalState, STATES: GENERALSTATE } = useSwrvState(generalAdvice, generalError, generalValidating);
 
-console.log('hahahahaha', generalAdvice.value);
 const handleBrowseAllAdvice = () => {
     router.push('/browse/advice')
 }
-
-console.log(generalAdvice.value);
 
 </script>
 

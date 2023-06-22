@@ -8,6 +8,7 @@
     import { storeToRefs } from 'pinia';
     import { useUserStore } from '../../stores/useUserStore';
     import { useRouter } from 'vue-router';
+    import {bookmarkURL, imageURL, likeURL} from "@/js/constants/serverUrl";
 
     import GenericCard from './GenericCard.vue';
     import CardLoading from '../card/CardLoading.vue';
@@ -62,6 +63,10 @@
         adviceType: {
             type: String,
             required:false
+        },
+        loadingClasses: {
+            type: String,
+            required: false
         }
     });
 
@@ -369,6 +374,7 @@
 
         <div
             class="carousel__wrapper"
+            :class="loadingClasses"
             v-else
         >
             <CardLoading

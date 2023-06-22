@@ -12,7 +12,7 @@ const props = defineProps({
         <div class="basis-1/3">
             <SchoolTechIconGenerator
                 :tech-name="item.name"
-                class="min-w-[60px] pr-4 m-2"
+                class="min-w-[60px] max-h-full pr-4 m-2"
             />
         </div>
         <div class="basis-2/3 overflow-clip techSelectorItemDescription overflow-y-scroll">

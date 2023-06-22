@@ -51,6 +51,8 @@ const setTheBackground = computed(() => {
     return `${imageURL}/${props.backgroundUrl}`;
 });
 
+console.log(heroBackgroundLinkOnly.value);
+
 </script>
 
 <template>

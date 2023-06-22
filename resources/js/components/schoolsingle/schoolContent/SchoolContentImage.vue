@@ -5,10 +5,12 @@ const props = defineProps({
         required: true
     }
 });
+
+console.log(props.data);
 </script>
 <template>
     <img
-        :src="data.data.url"
+        :src="data.data.file.url"
     >
     <p class="text-center">
         {{ data.data.caption }}
