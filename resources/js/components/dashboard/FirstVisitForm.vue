@@ -305,9 +305,16 @@ const steps = ref([
 /**
  *  Create a new user
  */
-const createNewUser = async (data) => {
-    return await userStore.createUser(data);
-};
+// const createNewUser = async (data) => {
+//     return await userStore.createUser(data);
+// };
+
+/**
+ * Update a new user
+ */
+const updateNewUser = async (data) => {
+    return await userStore.updateFirstTimeVisit(data);
+}
 
 /**
  * Submit button click
@@ -325,7 +332,7 @@ const submitForm = async () => {
         avatar: newUserData.avatar
     };
 
-    await createNewUser(data);
+    await updateNewUser(data);
     schoolStore.setNewSchoolOnSignIn(newSchoolData);
 
     /**
@@ -463,6 +470,7 @@ const closePopup = () => {
                     type="email"
                     name="Email"
                     placeholder="Email..."
+                    disabled
                 >
             </div>
 

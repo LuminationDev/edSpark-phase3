@@ -35,7 +35,7 @@ Route::get('okta-data', [LoginController::class, 'oktaData']);
 Route::get('partner/login', 'App\Http\Controllers\PartnerAuthController@showLoginForm')->name('partner.login');
 Route::post('partner/login', 'App\Http\Controllers\PartnerAuthController@login')->name('partner.login.submit');
 
-
+});
 Route::get('{any}', function () {
         return view('app');
     })->where('any', '.*');

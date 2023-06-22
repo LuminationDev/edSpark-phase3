@@ -48,6 +48,6 @@ const redirectToOkta = () => {
     </button>
     <RouterView /> -->
     <div>
-        <button @click="redirectToOkta" class="bg-blue-500 px-4 py-2 text-white font-bold text-[24px]">Login with Okta</button>
+        <button @click="redirectToOkta" id="okta-login" class="bg-blue-500 px-4 py-2 text-white font-bold text-[24px]">Login with Okta</button>
     </div>
 </template>

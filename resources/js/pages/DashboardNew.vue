@@ -124,7 +124,14 @@ const getIdToken = async () => {
         const response = await axios.get('http://localhost:8000/okta-data');
         // console.log("RESPONSE", response);
         if (response.data.success === true) {
+            userDetails.name = response.data.name;
+            userDetails.email = response.data.email;
+            userDetails.siteId = 106;
+            userDetails.roleId = 3;
+            // userDetails.siteId = response.data.siteId; //TODO
+            // userDetails.roleId = response.data.roleId; //TODO
             email.value = response.data.email;
+
             await checkFirstVisit(email.value);
         }
     } catch (error) {
@@ -140,12 +147,22 @@ const getIdToken = async () => {
 const checkFirstVisit = async (emailAddress) => {
     console.log(emailAddress);
     let emailCheck = await userStore.checkUser(emailAddress);
-    if (emailCheck.status === true) {
+    //old working code with okta on vuejs
+    // if (emailCheck.status === true) {
+    //     isFirstVisit.value = false;
+    //     await userStore.fetchCurrentUserAndLoadIntoStore(emailCheck.userdata.user_id);
+    // } else {
+    //     isFirstVisit.value = true;
+    // }
+
+    //new updated desperate fix :'(
+    if (emailCheck.isFirstTimeVisit === false) {
         isFirstVisit.value = false;
         await userStore.fetchCurrentUserAndLoadIntoStore(emailCheck.userdata.user_id);
     } else {
         isFirstVisit.value = true;
     }
+
 }
 
 getIdToken()
