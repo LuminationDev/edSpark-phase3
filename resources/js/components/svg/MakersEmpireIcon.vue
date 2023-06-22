@@ -1,6 +1,8 @@
 <template>
     <svg
         viewBox="5.87 0.425 65.355 68.151"
+        width="38"
+        height="44"
         xmlns="http://www.w3.org/2000/svg"
     >
         <g

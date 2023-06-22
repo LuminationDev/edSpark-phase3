@@ -32,7 +32,7 @@ const computedProps = computed(() => {
             {{ techHover.category }}
         </h5>
         <div
-            class="schools-tech_description"
+            class="schools-tech_description schoolTechDescription"
         >
             <p><strong>{{ techHover.name }}</strong> {{ techHover.description }}</p>
         </div>
@@ -41,11 +41,11 @@ const computedProps = computed(() => {
         v-if="props.showFirstTech && props.techIndex === 0"
         class="firstTimerContainer absolute flex flex-col left-0 px-[24px] pt-[18px]"
     >
-        <h5 class=" text-[16px] font-bold">
+        <h5 class="text-[16px] font-bold">
             {{ techHover.category }}
         </h5>
         <div
-            class=""
+            class="schoolTechDescription"
         >
             <p><strong>{{ techHover.name }}</strong> {{ techHover.description }}</p>
         </div>
@@ -63,6 +63,10 @@ const computedProps = computed(() => {
     display: -webkit-box;
     -webkit-line-clamp: 6;
     -webkit-box-orient: vertical;
+}
+.schoolTechDescription{
+    font-size: 16px;
+
 }
 
 
