@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Providers;
+use Illuminate\Support\Facades\Auth;
 
 // use Illuminate\Support\Facades\Gate;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
@@ -25,6 +26,11 @@ class AuthServiceProvider extends ServiceProvider
     {
         $this->registerPolicies();
 
-        //
+        Auth::viaRequest('partner', function ($request) {
+            return Partner::where('email', $request->email)->first();
+        });
+
+
+
     }
 }

@@ -83,4 +83,9 @@ class User extends Authenticatable implements HasName
     {
         return $this->hasMany(Notification::class);
     }
+
+    public function partner()
+    {
+        return $this->hasOne(Partner::class);
+    }
 }
