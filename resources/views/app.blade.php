@@ -13,9 +13,7 @@
     {{-- <script src="https://cdn.tailwindcss.com"></script> --}}
     {{-- <link rel="stylesheet" href="{{ mix('resources/css/app.css')}}" type="text/css"> --}}
     {{-- <link rel="stylesheet" href="{{ asset('css/app.css') }}" type="text/css"> --}}
-
-
-{{--    <link rel="icon" type="image/x-icon" href="{{ mix('resources/assets/svg/Logo.svg') }}">--}}
+    <link rel="icon" type="image/x-icon" href="{{ asset('build/assets/Logo.svg') }}">
     @vite(['resources/js/app.js'])
 
 </head>
