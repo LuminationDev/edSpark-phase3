@@ -126,8 +126,8 @@ const getIdToken = async () => {
         if (response.data.success === true) {
             userDetails.name = response.data.name;
             userDetails.email = response.data.email;
-            userDetails.siteId = 106;
-            userDetails.roleId = 3;
+            // userDetails.siteId = 106;
+            // userDetails.roleId = 3;
             // userDetails.siteId = response.data.siteId; //TODO
             // userDetails.roleId = response.data.roleId; //TODO
             email.value = response.data.email;

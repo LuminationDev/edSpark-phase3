@@ -200,7 +200,7 @@ class UserController extends Controller
     public function updateFirstTimeVisitUser(Request $request)
     {
         $data = $request->all();
-
+        // dd($data);
         if ($request->isMethod('post')) {
             $user = User::where('email', $data['email'])->first();
             // dd($user);
