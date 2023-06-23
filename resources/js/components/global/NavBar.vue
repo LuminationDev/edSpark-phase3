@@ -68,7 +68,7 @@ setupRoutes();
 </script>
 
 <template>
-    <div class="w-full h-[240px] relative z-30">
+    <div class="w-full h-[240px] relative z-40">
         <div
             class="nav-background w-full h-full pt-7 bg-[url(http://localhost:5173/resources/assets/images/children-vr.png)] bg-no-repeat bg-cover"
         >
