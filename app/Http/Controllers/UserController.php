@@ -197,6 +197,99 @@ class UserController extends Controller
         }
     }
 
+    public function updateFirstTimeVisitUser(Request $request)
+    {
+        $data = $request->all();
+
+        if ($request->isMethod('post')) {
+            $user = User::where('email', $data['email'])->first();
+            // dd($user);
+            $error = '';
+            if ($data) {
+                // Handle Main Data
+                try {
+                    $dataToUpdate = [
+                        'full_name' => $data['full_name'],
+                        'display_name' => $data['display_name'],
+                        'status' => 'Active',
+                        'role_id' => $data['role_id'],
+                        'site_id' => intval($data['site_id']),
+                        'isFirstTimeVisit' => FALSE,
+                        'updated_at' => Carbon::now()
+                    ];
+                    $user->update($dataToUpdate);
+                } catch (Exception $e){
+                    $error = $e->getMessage();
+                }
+
+                // Handle Metadata
+                try {
+                    $metadata = json_decode($data['metadata']);
+                    try {
+                        foreach ($metadata as $metakey => $metavalue) {
+                            $checkMetaData = Usermeta::where('user_id', '=', $user->id)
+                                ->where('user_meta_key', '=', $metakey)
+                                ->first();
+
+                            if ($checkMetaData) { // IF EXISTS UPDATE
+                                $checkMetaData->update([
+                                    'user_meta_key' => $metakey,
+                                    'user_meta_value' => (is_string($metavalue)) ? $metavalue : implode(', ', $metavalue),
+                                ]);
+                            } else { // IF NOT CREATE A NEW USER META
+                                Usermeta::create([
+                                    'user_id' => $user->id,
+                                    'user_meta_key' => $metakey,
+                                    'user_meta_value' => (is_string($metavalue)) ? $metavalue : implode(', ', $metavalue)
+                                ]);
+                            }
+                        }
+
+                    } catch (Exception $e) {
+                        $error = $e->getMessage();
+                    }
+                } catch (Exception $e) {
+                    $error = $e->getMessage();
+                }
+
+                // Handle User Avatar
+                try {
+                    if ($data['userAvatar']) {
+                        $userAvatar = $data['userAvatar'];
+                        $prefix = "edpsark-user";
+                        $imgName = $prefix . '-' . md5(Str::random(30) . time() . '_' . $userAvatar) . '.' . $userAvatar->getClientOriginalExtension();
+                        $userAvatar->storeAs('public/uploads/user', $imgName);
+                        $imageUrl = "uploads\/user\/" . $imgName;
+
+                        $result = [
+                            'user_id' => $user->id,
+                            'user_meta_key' => 'userAvatar',
+                            'user_meta_value' => $imageUrl,
+                            'created_at' => Carbon::now(),
+                            'updated_at' => Carbon::now(),
+                        ];
+                        Usermeta::insert($result);
+                    }
+                } catch (Exception $e){
+                    $error =  $e->getMessage();
+                }
+
+                return response()->json([
+                    'message' => "First time user updated successfully",
+                    'uid' => $user->id,
+                    'avatarUrl' => $imageUrl,
+                    'error' => $error,
+                    'status' => 200
+                ]);
+
+
+
+            }
+        }
+    }
+
+
+
     public function updateUser(Request $request)
     {
         if ($request->isMethod('post')) {
@@ -208,7 +301,7 @@ class UserController extends Controller
             $updatedMetaData = [];
 
             $error = '';
-
+            dd($data, $metaData);
             /**
              * If Data exists
              */
@@ -254,6 +347,8 @@ class UserController extends Controller
 
             return response()->json([
                 'message' => "User updated successfully",
+                'uid' => $userId,
+
                 // 'data' => $updatedData,
                 // 'metaData' => $updatedMetaData,
                 'error' => $error,
@@ -287,21 +382,53 @@ class UserController extends Controller
     {
         if ($request->isMethod('post')) {
             $email = $request->email;
-            $userEmailDetails = User::where('email', '=', $email)->first();
-            if ($userEmailDetails === null) {
-                return response()->json([
-                    "message" => "The email is not registered",
-                    "status" => FALSE,
+            $userEmailDetails = User::where('email', '=', $email)
+                                        ->where('isFirstTimeVisit', '=', 1)
+                                        ->first();
+            // dd($userEmailDetails);
+            // if ($userEmailDetails === null) {
+            //     dd('aa');
+            //     return response()->json([
+            //         "message" => "The email is not registered/activated",
+            //         "status" => FALSE,
 
-                ]);
-            } else {
+            //     ]);
+            // } else {
+            //     dd('bb');
+            //     return response()->json([
+            //         "message" => "The email already exists",
+            //         "status" => TRUE,
+            //         "userdata" => [
+            //             'user_id' => $userEmailDetails->id,
+            //             'user_name' => $userEmailDetails->full_name,
+            //             'user_status' => $userEmailDetails->status
+            //         ],
+            //     ]);
+            // }
+
+            if ($userEmailDetails) {
                 return response()->json([
-                    "message" => "The email already exists",
+                    "message" => "The email exists but not activated",
                     "status" => TRUE,
+                    "isFirstTimeVisit" => TRUE,
                     "userdata" => [
                         'user_id' => $userEmailDetails->id,
                         'user_name' => $userEmailDetails->full_name,
                         'user_status' => $userEmailDetails->status
+                    ],
+                ]);
+            }else{
+                $existingEmailDetails = User::where('email', '=', $email)
+                                            ->where('isFirstTimeVisit', '=', 0)
+                                            ->first();
+                return response()->json([
+                    "message" => "The email is activated",
+                    "status" => TRUE,
+                    "isFirstTimeVisit" => FALSE,
+                    "userdata" => [
+                        'user_id' => $existingEmailDetails->id,
+                        'user_name' => $existingEmailDetails->full_name,
+                        'user_status' => $existingEmailDetails->status
                     ],
                 ]);
             }

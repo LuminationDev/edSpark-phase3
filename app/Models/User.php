@@ -31,7 +31,9 @@ class User extends Authenticatable implements HasName
         'email',
         'password',
         'status',
-        'remember_token'
+        'remember_token',
+        'token',
+        'isFirstTimeVisit'
     ];
 
     public function canAccessFilament(): bool {
@@ -82,5 +84,10 @@ class User extends Authenticatable implements HasName
     public function notifications()
     {
         return $this->hasMany(Notification::class);
+    }
+
+    public function partner()
+    {
+        return $this->hasOne(Partner::class);
     }
 }

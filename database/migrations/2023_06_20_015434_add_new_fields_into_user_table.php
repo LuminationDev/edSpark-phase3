@@ -14,7 +14,8 @@ return new class extends Migration
     public function up()
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->string('remember_token', 100)->after('usertype_id');
+            $table->longText('token')->after('remember_token')->nullable();
+            $table->boolean('isFirstTimeVisit')->after('token')->nullable(); //1 True 0 False
         });
     }
 
@@ -26,7 +27,8 @@ return new class extends Migration
     public function down()
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->$table->dropColumn('remember_token');
+            $table->dropColumn('token');
+            $table->dropColumn('isFirstTimeVisit');
         });
     }
 };
