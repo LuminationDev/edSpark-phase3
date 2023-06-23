@@ -46,6 +46,7 @@ Route::middleware('api')->group(function() {
     Route::get('fetchUser/{id}', [UserController::class, 'fetchUser']);
     Route::get('fetchUserByEmail/{email}', [UserController::class, 'fetchUserByEmail']);
     Route::post('createUser', [UserController::class, 'createUser']);
+    Route::post('updateFirstTimeVisitUser', [UserController::class, 'updateFirstTimeVisitUser']);
     Route::post('updateUser', [UserController::class, 'updateUser']);
     Route::post('checkEmail', [UserController::class, 'checkEmail']);
     Route::get('fetchAllSites', [SiteController::class, 'fetchAllSites']);

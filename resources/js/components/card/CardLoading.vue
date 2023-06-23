@@ -22,7 +22,6 @@ const props = defineProps({
         <div
             v-for="row in numberOfRows"
             class="flex flex-row flex-1 flex-wrap justify-between"
-            :class="additionalClasses"
         >
             <div
                 v-for="count in numberPerRow"

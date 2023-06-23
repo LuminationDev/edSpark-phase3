@@ -6,7 +6,7 @@
         }
     });
 
-    console.log(props.data.data.file);
+    // console.log(props.data.data.file);
 </script>
 
 <template>
@@ -15,7 +15,7 @@
             controls
         >
             <source
-                :src="data.data.file"
+                :src="data.data.file.url"
             />
         </video>
     </div>

@@ -60,6 +60,7 @@ const likeBookmarkData = {
         :cover-image="cover_image"
         :click-callback="handleClickAdviceCard"
         :like-bookmark-data="likeBookmarkData"
+        :section-type="'advice'"
     >
         <template
             v-if="advice_type.length > 0"
@@ -72,7 +73,7 @@ const likeBookmarkData = {
             #icon
         >
             <AdviceCardIcon
-                class="icon absolute right-4 bottom-2 group-hover:-bottom-32"
+                class="icon absolute right-4 bottom-2 group-hover:-bottom-32 transition-all"
                 :advice-icon-name="randomIconName"
             />
         </template>
