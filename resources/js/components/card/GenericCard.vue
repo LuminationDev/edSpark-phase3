@@ -196,43 +196,43 @@ const handleEmitClick = () => {
                 </div>
             </div>
             <!-- <div class="cardContentOuter"> -->
-                <div
-                    class="cardContent transition-all"
-                    @click="clickCallback"
-                >
+            <div
+                class="cardContent transition-all"
+                @click="clickCallback"
+            >
                 <!-- :class="(sectionType === 'events' || sectionType === 'advice') ? 'group-hover:w-3/5' : ''" -->
-                    <div class="cardContentWrapper">
+                <div class="cardContentWrapper">
+                    <div
+                        v-if="props.title"
+                        class="cardTitle transition-all"
+                        :class="{
+                            'group-hover:w-3/5': ['advice','events','partners'].includes(sectionType),
+                            'group-hover:w-4/5': sectionType === 'software'
+                        }"
+                    >
+                        {{ props.title }}
+                    </div>
+                    <div class="card-content_body transition-all">
                         <div
-                            v-if="props.title"
-                            class="cardTitle transition-all"
-                            :class="{
-                                'group-hover:w-3/5': sectionType === 'advice' || sectionType === 'events',
-                                'group-hover:w-4/5': sectionType === 'software'
-                            }"
+                            v-if="props.displayAuthor"
+                            class="cardAuthor transition-all"
                         >
-                            {{ props.title }}
+                            {{ props.displayAuthor }}
                         </div>
-                        <div class="card-content_body transition-all">
-                            <div
-                                v-if="props.displayAuthor"
-                                class="cardAuthor transition-all"
-                            >
-                                {{ props.displayAuthor }}
-                            </div>
-                            <div
-                                v-if="props.displayDate"
-                                class="cardDate transition-all"
-                            >
-                                {{ formattedDate }}
-                            </div>
-                            <div
-                                v-if="props.displayContent"
-                                class="cardDisplayPreview"
-                                v-html="props.displayContent"
-                            />
+                        <div
+                            v-if="props.displayDate"
+                            class="cardDate transition-all"
+                        >
+                            {{ formattedDate }}
                         </div>
+                        <div
+                            v-if="props.displayContent"
+                            class="cardDisplayPreview"
+                            v-html="props.displayContent"
+                        />
                     </div>
                 </div>
+            </div>
             <!-- </div> -->
         </template>
         <template v-else>

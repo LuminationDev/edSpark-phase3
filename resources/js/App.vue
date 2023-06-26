@@ -54,8 +54,6 @@ const router = useRouter();
 //     console.log('failed to retrive bookmarks')
 // }
 
-
-
 </script>
 
 <template>

@@ -220,16 +220,15 @@ class SchoolController extends Controller
                 'lng' => (float)($site->site_longitude ?: 0)
             ];
             $site_type = $site->site_type_code;
-            $schoolMetadataToSend = [];
-            if ($schoolMetadata) {
-                foreach ($schoolMetadata as $key => $value) {
-                    $res = [
-                        'schoolmeta_key' => $value->schoolmeta_key,
-                        'schoolmeta_value' => $value->schoolmeta_value
-                    ];
-                    $schoolMetadataToSend[] = $res;
-                }
-            }
+            $schoolMetadataToSend = Metahelper::getMeta(Schoolmeta::class, $school, 'school_id','schoolmeta_key','schoolmeta_value' );
+//            if ($schoolMetadata) {
+//                foreach ($schoolMetadata as $key => $value) {
+//                    $res = [`
+//                        'schoolmeta_value' => $value->schoolmeta_value
+//                    ];
+//                    $schoolMetadataToSend[] = $res;
+//                }
+//            }
             //adding school_type into metadata
             $schoolType = [
                 'schoolmeta_key' => 'school_type',
@@ -249,12 +248,12 @@ class SchoolController extends Controller
                 ],
                 'name' => $school->name,
                 'content_blocks' => ($school->content_blocks) ? json_decode($school->content_blocks) : NULL,
-                'logo' => ($school->logo) ? $school->logo : NULL,
+                'logo' => ($school->logo) ?: NULL,
                 'cover_image' => ($school->cover_image) ? $school->cover_image : NULL,
                 'tech_used' => ($school->tech_used) ? json_decode($school->tech_used) : NULL,
                 'pedagogical_approaches' => ($school->pedagogical_approaches) ? json_decode($school->pedagogical_approaches) : NULL,
                 'tech_landscape' => ($school->tech_landscape) ? json_decode($school->tech_landscape) : NULL,
-                'metadata' => ($schoolMetadataToSend) ? $schoolMetadataToSend : NULL,
+                'metadata' => ($schoolMetadataToSend) ?: NULL,
                 'location' => $siteLocation
             ];
             $data[] = $result;

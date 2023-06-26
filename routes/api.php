@@ -18,6 +18,7 @@ use App\Http\Controllers\RoleController;
 use App\Http\Controllers\LikeBookmarkController;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\OktaAuthController;
+use App\Http\Controllers\PartnerController;
 use Illuminate\Support\Facades\Session;
 
 
@@ -99,5 +100,9 @@ Route::middleware('api')->group(function() {
     Route::get('fetchNotificationByType', [NotificationController::class, 'getNotificationByType']);
 
     Route::post('authenticate', [OktaAuthController::class, 'authenticate']);
+
+    // Partners API
+    Route::get('fetchAllPartners', [PartnerController::class, 'fetchAllPartners']);
+    Route::get('fetchPartnerById/{id}', [PartnerController::class, 'fetchPartnerById']);
 
 });

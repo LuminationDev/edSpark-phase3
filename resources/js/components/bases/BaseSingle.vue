@@ -51,6 +51,10 @@ case 'hardware':
 case 'event':
     byIdAPILink = 'fetchEventPostById'
     break;
+case 'partner':
+    byIdAPILink ='fetchPartnerById'
+    break;
+
 }
 
 
@@ -86,9 +90,12 @@ const getRecommendationBasedOnContentType = () => {
 }
 
 onBeforeMount(async () => {
+    /**
+     * Get content from history state or fetch from recommender
+     */
     if (!window.history.state.content) { // doesn't exists
         if(!byIdAPILink) return
-        console.log('No adviceContent passed in. Will request from server')
+        console.log('No content passed in. Will request from server')
         await axios.get(`${serverURL}/${byIdAPILink}/${route.params.id}`).then(res => {
             singleContent.value = res.data
         })
