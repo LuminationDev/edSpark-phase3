@@ -181,3 +181,15 @@ input, textarea, select {
     width: 100%;
     height: 100%;
 }
+
+.filament-button {
+    background-color: teal !important;
+    color: white !important;
+    border: none;
+    padding: 10px 20px;
+  }
+
+  .filament-button:hover {
+    background-color: blue !important;
+
+  }
