@@ -14,8 +14,7 @@ return new class extends Migration
     public function up()
     {
         Schema::table('partners', function (Blueprint $table) {
-            $table->longText('content_blocks')->nullable()->after('email');
-            $table->string('logo')->nullable()->after('content_blocks');
+            $table->string('logo')->nullable()->after('email');
             $table->string('cover_image')->nullable()->after('logo');
             $table->string('motto')->nullable()->after('cover_image');
             $table->string('introduction')->nullable()->after('motto');
@@ -30,7 +29,6 @@ return new class extends Migration
     public function down()
     {
         Schema::table('partners', function (Blueprint $table) {
-            $table->dropColumn('content_blocks');
             $table->dropColumn('logo');
             $table->dropColumn('cover_image');
             $table->dropColumn('motto');

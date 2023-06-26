@@ -4,9 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Foundation\Auth\User as Authenticatable;
 
-class Partner extends Authenticatable
+class Partnermeta extends Model
 {
     use HasFactory;
 
@@ -15,7 +14,7 @@ class Partner extends Authenticatable
      *
      * @var string
      */
-    protected $table = 'partners';
+    protected $table = 'partner_metas';
 
     /**
      * The attributes that are mass assignable
@@ -23,17 +22,8 @@ class Partner extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'user_id',
-        'name',
-        'email',
-        'logo',
-        'cover_image',
-        'motto',
-        'introduction'
+        'partner_id',
+        'partner_meta_key',
+        'partner_meta_value'
     ];
-
-    public function user()
-    {
-        return $this->belongsTo(User::class);
-    }
 }

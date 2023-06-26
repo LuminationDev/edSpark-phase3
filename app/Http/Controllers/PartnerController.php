@@ -20,7 +20,12 @@ class PartnerController extends Controller
                     'id' => $partner->id,
                     'user_id' => $partner->user_id,
                     'name' => $partner->name,
-                    'email' => $partner->email
+                    'email' => $partner->email,
+                    'logo' => $partner->logo,
+                    'cover_image' => $partner->cover_image,
+                    'motto' => $partner->motto,
+                    'introduction' => $partner->introduction,
+
                 ];
 
                 $data[] = $result;
@@ -45,7 +50,11 @@ class PartnerController extends Controller
                 'id' => $partner->id,
                 'user_id' => $partner->user_id,
                 'name' => $partner->name,
-                'email' => $partner->email
+                'email' => $partner->email,
+                'logo' => $partner->logo,
+                'cover_image' => $partner->cover_image,
+                'motto' => $partner->motto,
+                'introduction' => $partner->introduction,
             ];
 
             return response()->json($data);
