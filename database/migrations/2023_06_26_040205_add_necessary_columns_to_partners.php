@@ -14,10 +14,10 @@ return new class extends Migration
     public function up()
     {
         Schema::table('partners', function (Blueprint $table) {
-            $table->string('logo')->nullable()->after('email');
-            $table->string('cover_image')->nullable()->after('logo');
-            $table->string('motto')->nullable()->after('cover_image');
-            $table->string('introduction')->nullable()->after('motto');
+            $table->longText('logo')->nullable()->after('email');
+            $table->longText('cover_image')->nullable()->after('logo');
+            $table->longText('motto')->nullable()->after('cover_image');
+            $table->longText('introduction')->nullable()->after('motto');
         });
     }
 

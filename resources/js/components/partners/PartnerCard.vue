@@ -20,7 +20,6 @@ const userStore = useUserStore()
 const {currentUser} = storeToRefs(userStore)
 
 const router = useRouter()
-const tempPartnerContent = 'This is some content for the partner card. we are using temporary content because the data is not available just yet'
 
 const handleClickPartnerCard = () => {
     router.push({
@@ -43,7 +42,7 @@ const likeBookmarkData = {
         :key="props.partnerContent.id"
         :title="props.partnerContent.name"
         :item="props.partnerContent"
-        :display-content="tempPartnerContent"
+        :display-content="props.partnerContent.introduction"
         :display-author="props.partnerContent.name"
         :number-per-row="4"
         :like-bookmark-data="likeBookmarkData"

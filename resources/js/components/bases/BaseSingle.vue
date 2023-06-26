@@ -7,6 +7,7 @@ import {isEqual} from "lodash";
 
 import {imageURL, serverURL} from "@/js/constants/serverUrl";
 import BaseHero from "@/js/components/bases/BaseHero.vue";
+import recommenderEdsparkSingletonFactory from "@/js/recommender/recommenderEdspark";
 
 const props = defineProps({
     // to be advice, software, hardware etc
@@ -111,7 +112,13 @@ onBeforeMount(async () => {
             })
         }
     }
-    // get recommendation. need to have switch case
+    // code to emit available submenus - to be used in all baseSingle pages. remove hardcoded
+    if( singleContent.value.metadata && singleContent.value.metadata.filter(meta => Object.values(meta).includes('single_submenu'))){
+        const availableSubMenuObject = singleContent.value.metadata.filter(meta => Object.values(meta).includes('single_submenu'))[0]
+        const availableSubMenu = Object.values(availableSubMenuObject)[1] // bit rough but quite guaranteed to success
+        emits('emitAvailableSubmenu', availableSubMenu)
+    }
+
     getRecommendationBasedOnContentType()
 })
 
@@ -122,7 +129,7 @@ watch(currentId, () => {
         }
     }
 })
-const emits = defineEmits(['emitActiveTabToSpecificPage'])
+const emits = defineEmits(['emitAvailableSubmenu','emitActiveTabToSpecificPage'])
 const handleEmitFromSubmenu = (value) => {
     emits('emitActiveTabToSpecificPage', value)
 }

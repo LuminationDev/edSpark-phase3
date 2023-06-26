@@ -39,8 +39,8 @@ class Metahelper
         $metadata = $metaModel::where($idColumn, $mainModel->id)->get();
         return $metadata->map(function ($item) use ($keyColumn , $valueColumn) {
             return [
-                " $keyColumn " => $item->{$keyColumn},
-                " $valueColumn " => $item->{$valueColumn}
+                "$keyColumn" => $item->{$keyColumn},
+                "$valueColumn" => $item->{$valueColumn}
             ];
         })->toArray();
     }
