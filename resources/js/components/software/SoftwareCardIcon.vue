@@ -6,7 +6,9 @@ const props = defineProps({
         type: String,
         required: true
     }
-})
+});
+
+console.log(props.softwareIconName);
 </script>
 
 <template>

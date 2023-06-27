@@ -3,6 +3,7 @@ import SchoolContentHeading from "@/js/components/schoolsingle/schoolContent/Sch
 import SchoolContentParagraph from "@/js/components/schoolsingle/schoolContent/SchoolContentParagraph.vue";
 import SchoolContentList from "@/js/components/schoolsingle/schoolContent/SchoolContentList.vue";
 import SchoolContentImage from "@/js/components/schoolsingle/schoolContent/SchoolContentImage.vue";
+import SchoolContentVideo from '@/js/components/schoolsingle/schoolContent/SchoolContentVideo.vue';
 /**
  * Receive the whole content from the parents
  * either temp data or data received from Https call
@@ -40,14 +41,16 @@ const props = defineProps({
  * }
  * ]
  */
-
+props.schoolContentBlocks.blocks.forEach(block => {
+    console.log(block.data.file);
+})
 </script>
 
 <template>
     <div
         v-for="(item,index) in schoolContentBlocks.blocks"
         :key="index"
-        class="schoolContentIterator mb-2"
+        class="schoolContentIterator mb-8 mr-12"
     >
         <!-- All styles are still hardcoded-->
         <!-- Once we figured out styling from Editorjs, render accordingly     -->
@@ -62,6 +65,9 @@ const props = defineProps({
         </template>
         <template v-else-if="item.type == 'image'">
             <SchoolContentImage :data="item" />
+        </template>
+        <template v-else-if="item.type === 'video'">
+            <SchoolContentVideo :data="item" />
         </template>
     </div>
 </template>

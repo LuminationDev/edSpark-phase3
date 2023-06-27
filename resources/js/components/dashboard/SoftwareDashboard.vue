@@ -3,14 +3,39 @@
 import SoftwareCard from '../software/SoftwareCard.vue';
 import SoftwareRobot from "@/js/components/svg/SoftwareRobot.vue";
 
+import CardLoading from '../card/CardLoading.vue';
+import GenericCard from '../card/GenericCard.vue';
+import SoftwareCardIcon from '../software/SoftwareCardIcon.vue';
+
+import { storeToRefs } from 'pinia';
+import { useUserStore } from '../../stores/useUserStore';
+
+const {currentUser } = storeToRefs(useUserStore())
+
 const props = defineProps({
     softwares: {
         type: Array,
         required: true
+    },
+    softwareLoading: {
+        type: Boolean,
+        rqeuired: true
     }
 });
 
 const imageURL = import.meta.env.VITE_SERVER_IMAGE_API;
+
+const getLikeBookmarkData = (cardData) => {
+    return {
+        post_id: cardData.event_id,
+        user_id: currentUser.value.id, // to be replaced with userId from userStore
+        post_type: 'event'
+    }
+};
+
+const handleClickCard = () => {
+
+}
 
 </script>
 
@@ -72,14 +97,35 @@ const imageURL = import.meta.env.VITE_SERVER_IMAGE_API;
                 </div>
             </div>
 
-            <div class="col-span-7">
+            <div class="col-span-7" v-if="!softwareLoading">
                 <div class="flex flex-row flex-1 flex-wrap justify-end gap-[24px] w-full h-full">
-                    <SoftwareCard
-                        v-for="(software, index) in softwares.slice(0,4)"
-                        :key="index"
-                        :software="software"
-                        :number-per-row="2"
-                    />
+                    <GenericCard
+                        v-for="(software, index) in softwares.slice(0, colCount)"
+                        :key="software.post_id"
+                        :title="software.post_title"
+                        :display-content="software.post_excerpt"
+                        :display-author="software.post_author"
+                        :display-date="software.created_at"
+                        :cover-image="software.cover_image"
+                        :like-bookmark-data="getLikeBookmarkData(software)"
+                        :click-callback="handleClickCard"
+                    >
+                    <template #icon>
+                        <SoftwareCardIcon
+                            class="icon absolute -top-6 -right-6 "
+                            :software-icon-name="software['software_type'][0]"
+                        />
+                    </template>
+                    </GenericCard>
+                </div>
+            </div>
+
+            <div
+                class="col-span-7"
+                v-else
+            >
+                <div class="flex flex-row flex-1 gap-4 w-full h-full">
+                    <CardLoading class="" :number-per-row="2" :number-of-rows="2" :additional-classes="' w-full'" />
                 </div>
             </div>
         </div>

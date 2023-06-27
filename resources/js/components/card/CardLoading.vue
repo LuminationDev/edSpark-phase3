@@ -14,24 +14,23 @@ const props = defineProps({
         type: String,
         required: false
     }
-})
+});
 </script>
 
 <template>
-    <div class="pt-8 px-10">
+    <div class="w-full">
         <div
             v-for="row in numberOfRows"
             class="flex flex-row flex-1 flex-wrap justify-between"
-            :class="additionalClasses"
         >
             <div
                 v-for="count in numberPerRow"
-                :class="{'!w-[30%]': numberPerRow === 3,
-                         '!w-[22%]': numberPerRow === 4,
-                         '!w-[45%]': numberPerRow === 2,
-                         '!w-[95%]' : numberPerRow === 1
+                :class="{'!w-[400px]': numberPerRow === 3,
+                        '!w-[20%]': numberPerRow === 4,
+                        '!w-[42%]': numberPerRow === 2,
+                        '!w-[95%]' : numberPerRow === 1
                 }"
-                class="GenericCardContainer loadingCard w-full border-[0.5px] border-black hover:shadow-2xl mx-2 mb-4 flex flex-col min-h-[480px] max-w-[400px] max-h-[480px] group transition-all card_parent pointer-events-none"
+                class="GenericCardContainer loadingCard mx-[29px] border-[0.5px] border-black hover:shadow-2xl mb-4 flex flex-col min-h-[480px] max-h-[480px] group transition-all card_parent pointer-events-none"
             >
                 <div
                     class="cardTopCoverImage loadingCard-image relative min-h-[35%] bg-cover bg-center group-hover:min-h-[0%] group-hover:h-0 transition-all"

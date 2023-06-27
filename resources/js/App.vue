@@ -9,6 +9,7 @@ import {serverURL} from "@/js/constants/serverUrl";
 import {useRouter} from 'vue-router';
 import oktaAuth from "@/js/constants/oktaAuth";
 import {onBeforeMount, reactive, ref} from "vue";
+import recommenderEdsparkSingletonFactory from "@/js/recommender/recommenderEdspark";
 
 
 const router = useRouter();
@@ -53,8 +54,7 @@ const router = useRouter();
 // } catch (e) {
 //     console.log('failed to retrive bookmarks')
 // }
-
-
+const recommender = recommenderEdsparkSingletonFactory().getInstance(64,'Partner', 100)
 
 </script>
 

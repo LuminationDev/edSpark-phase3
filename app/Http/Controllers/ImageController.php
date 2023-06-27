@@ -37,12 +37,32 @@ class ImageController extends Controller
         if ($request->isMethod('post')) {
             $data = $request->all();
             $imagePath = "";
+            $currPath = "";
             if ($data) {
-                $type = 'image';
-                $image = $data['image'];
-
+                // dd(array_values($data)[0]);
+                $type = '';
+                $image = '';
+                $file = array_values($data)[0];
                 $prefix = "edspark-".$type;
-                $imgName = $prefix.'-'.md5(Str::random(30).time().'_'.$image).'.'.$image->getClientOriginalExtension();
+                $imgName = '';
+
+                if ($file->getMimeType() == 'video/mp4') {
+                    $type = 'video';
+                    $image = $data['file'];
+                    $imgName = $prefix.'-'.md5(Str::random(30).time().'_'.$image).'.'.$data['file']->extension();
+                } else {
+                    $type = 'image';
+                    $image = $data['image'];
+                    $imgName = $prefix.'-'.md5(Str::random(30).time().'_'.$image).'.'.$image->getClientOriginalExtension();
+                }
+
+
+
+                // if ($data['file']->getMimeType() == 'video/mp4') {
+
+
+                // }
+
                 $image->storeAs('public/uploads/'.$type, $imgName);
                 $imagePath .= "uploads/".$type."/".$imgName;
             }
