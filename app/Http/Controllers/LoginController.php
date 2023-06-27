@@ -191,13 +191,23 @@ class LoginController extends Controller
 
     public function logout()
     {
-        // Logout from Okta using Socialite
-        // Socialite::driver('okta')->logout();
+        // Clear Laravel authentication
+        // dd(Auth::check());
+        // if (Auth::check()){
+        //     Auth::logout();
+        //     // Redirect to Okta logout
+        //     return redirect()->away('https://portal-test.edpass.sa.edu.au/oauth2/default/v1/logout?id_token_hint=' . Auth::user()->token . '&post_logout_redirect_uri=' . urlencode(route('login')));
+        // }
 
-        //Logout from laravel
+        // Redirect to Okta logout URL
+        // return Socialite::driver('okta')->redirect();
+
         Auth::logout();
-        Session::flush();
-        return redirect('/');
+
+        return response()->json([
+            'message' => 'Logout successful',
+            'status' => 200
+        ]);
     }
 
     public function oktaData(Request $request)
@@ -216,5 +226,12 @@ class LoginController extends Controller
             'name' => NULL,
         ]);
 
+    }
+
+    public function checkAuthentication(Request $request)
+    {
+        return response()->json([
+            'authenticated' => Auth::user() ? true : false,
+        ]);
     }
 }

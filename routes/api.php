@@ -20,7 +20,7 @@ use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\OktaAuthController;
 use App\Http\Controllers\PartnerController;
 use Illuminate\Support\Facades\Session;
-
+use App\Http\Controllers\LoginController;
 
 /*
 |--------------------------------------------------------------------------

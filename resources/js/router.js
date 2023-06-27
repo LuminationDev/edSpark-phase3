@@ -10,7 +10,9 @@ import {
     Partners,
     Events,
     SchoolSingle,
-    UserMessage
+    UserMessage,
+    Forbidden,
+    EdsparkPageNotFound,
 } from './pages';
 import DashboardNew from './pages/DashboardNew.vue';
 import AdviceSingle from "@/js/pages/AdviceSingle.vue";
@@ -28,7 +30,11 @@ import SoftwareSearch from "@/js/components/search/SoftwareSearch.vue";
 import AdviceSearch from "@/js/components/search/AdviceSearch.vue";
 import HardwareSearch from "@/js/components/search/HardwareSearch.vue";
 import {useUserStore} from "@/js/stores/useUserStore";
+import axios from 'axios';
+import {appURL, serverURL} from "@/js/constants/serverUrl";
+import { useAuthStore } from './stores/useAuthStore';
 import PartnerSingle from "@/js/pages/PartnerSingle.vue";
+
 
 const router = createRouter({
     history: createWebHistory(),
@@ -37,13 +43,17 @@ const router = createRouter({
             name: 'home',
             path: '/',
             component: Home,
+            meta: {
+                requiresAuth: false, //guard the home route
+            }
         },
         {
             name: 'dashboard',
             path: '/dashboard',
             component: DashboardNew,
             meta: {
-                navigation: true
+                navigation: true,
+                requiresAuth: true, //guard the dashboard route
             }
         },
         {
@@ -78,27 +88,35 @@ const router = createRouter({
             path: '/schools',
             component: Schools,
             meta: {
-                navigation: true
+                navigation: true,
+                requiresAuth: true,
             }
         },
         {
             name: 'school-single',
             path: '/schools/:name',
-            component: SchoolSingle
+            component: SchoolSingle,
+            meta: {
+                requiresAuth: true,
+            }
         },
         {
             name: 'advice',
             path: '/advice',
             component: Advice,
             meta: {
-                navigation: true
+                navigation: true,
+                requiresAuth: true,
             }
         },
         {
             name: 'advice-single',
             path: '/advice/resources/:id',
             component: AdviceSingle,
-            params: true
+            params: true,
+            meta: {
+                requiresAuth: true,
+            }
         },
         {
             name: 'software',
@@ -106,14 +124,18 @@ const router = createRouter({
             component: Software,
             meta: {
                 navigation: true,
-                dropdownItem: true
+                dropdownItem: true,
+                requiresAuth: true,
             }
         },
         {
             name: "software-single",
             path: "/software/resources/:id",
             component: SoftwareSingle,
-            params: true
+            params: true,
+            meta: {
+                requiresAuth: true,
+            }
 
         },
         {
@@ -122,7 +144,8 @@ const router = createRouter({
             component: Hardware,
             meta: {
                 navigation: true,
-                dropdownItem: true
+                dropdownItem: true,
+                requiresAuth: true,
             }
         },
         {
@@ -130,13 +153,17 @@ const router = createRouter({
             path: '/hardware/resources/:id',
             component: HardwareSingle,
             params: true,
+            meta: {
+                requiresAuth: true,
+            }
         },
         {
             name: 'community',
             path: '/community',
             component: Community,
             meta: {
-                navigation: false
+                navigation: false,
+                requiresAuth: true,
             }
         },
         {
@@ -144,7 +171,8 @@ const router = createRouter({
             path: '/partners',
             component: Partners,
             meta: {
-                navigation: true
+                navigation: true,
+                requiresAuth: true,
             }
         },
         {
@@ -161,13 +189,17 @@ const router = createRouter({
             component: Events,
             meta: {
                 navigation: true,
+                requiresAuth: true,
             }
         },
         {
             name: 'event-single',
             path: '/event/resources/:id',
             component: EventSingle,
-            params: true
+            params: true,
+            meta: {
+                requiresAuth: true,
+            }
         },
         {
             name: 'userProfile',
@@ -189,12 +221,28 @@ const router = createRouter({
                     name:'userProfileMessages',
                     component: ProfileMessages
                 }
-        ]
+            ],
+            meta: {
+                requiresAuth: true,
+            }
         },
         {
             name: 'userMessage',
             path: '/message/:userId',
-            component: UserMessage
+            component: UserMessage,
+            meta: {
+                requiresAuth: true,
+            }
+        },
+        {
+            name: 'forbidden',
+            path: '/forbidden',
+            component: Forbidden,
+        },
+        {
+            path: '/:pathMatch(.*)*',
+            name: 'not-found',
+            component: EdsparkPageNotFound
         },
     ],
     scrollBehavior(to, from, savedPosition) {
@@ -205,11 +253,55 @@ const router = createRouter({
         }
     },
 });
-router.afterEach((to,from) =>{
-    if(!['home','login'].includes(to.name)){
-        const userStore= useUserStore()
-        console.log('inside if inside router aftereach')
-        userStore.populateUserLikesAndBookmark()
+// router.afterEach((to,from) =>{
+//     if(!['home','login'].includes(to.name)){
+//         const userStore= useUserStore()
+//         console.log('inside if inside router aftereach')
+//         userStore.populateUserLikesAndBookmark()
+//     }
+// })
+
+//TODO using auth store
+router.beforeEach(async (to, from, next) => {
+    const authStore = useAuthStore();
+    if (to.meta.requiresAuth) {
+        if (!authStore.isAuthenticated) {
+            await authStore.checkAuthenticationStatus();
+        }
+
+        if (authStore.isAuthenticated) {
+            next();
+        } else {
+            next('/forbidden');
+        }
+    } else {
+        next();
     }
-})
+});
+
+//working code
+// router.beforeEach((to, from, next) => {
+//     if(to.meta.requiresAuth) {
+//         // console.log('REQUIRES AUTHENTICATION');
+//         try {
+//             // Make a request to laravel backend for authentication check
+//             const response = axios.get(`${appURL}/auth/check`, { async: false });
+//             if (response.data.authenticated) {
+//                 next();
+//             } else {
+//                 // Redirect to the 403 forbidden page
+//                 next('/forbidden');
+//             }
+//         } catch (error) {
+//             // Handle error
+//             //TODO show an error page
+//             console.log(error);
+//         }
+
+//     } else {
+//         // console.log("DOESNOT REQUIRES AUTHENTICATION");
+//         next();
+//     }
+// });
+
 export default router;
