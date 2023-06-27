@@ -50,7 +50,6 @@ class UserController extends Controller
         $error = '';
         $data = [];
         $isFirstVisit = false;
-        // dd($user);
 
         try {
             if (isset($user)) {
@@ -200,10 +199,9 @@ class UserController extends Controller
     public function updateFirstTimeVisitUser(Request $request)
     {
         $data = $request->all();
-
+        // dd($data);
         if ($request->isMethod('post')) {
             $user = User::where('email', $data['email'])->first();
-            // dd($user);
             $error = '';
             if ($data) {
                 // Handle Main Data
@@ -301,7 +299,6 @@ class UserController extends Controller
             $updatedMetaData = [];
 
             $error = '';
-            dd($data, $metaData);
             /**
              * If Data exists
              */
@@ -385,7 +382,6 @@ class UserController extends Controller
             $userEmailDetails = User::where('email', '=', $email)
                                         ->where('isFirstTimeVisit', '=', 1)
                                         ->first();
-            // dd($userEmailDetails);
             // if ($userEmailDetails === null) {
             //     dd('aa');
             //     return response()->json([

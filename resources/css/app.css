@@ -221,6 +221,19 @@ input, textarea, select {
     height: 100%;
 }
 
+.filament-button {
+    background-color: teal !important;
+    color: white !important;
+    border: none;
+    padding: 10px 20px;
+  }
+
+  .filament-button:hover {
+    background-color: blue !important;
+
+  }
+
 .time_elapsed-counter {
     width: 50px;
 }
+

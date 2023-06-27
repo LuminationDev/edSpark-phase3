@@ -39,6 +39,8 @@ const userStore = useUserStore();
 const { currentUser } = storeToRefs(userStore);
 const imageURL = import.meta.env.VITE_SERVER_IMAGE_API;
 const userMetadata = userStore.getUser.metadata;
+import { appURL } from "@/js/constants/serverUrl";
+
 
 //commented for now
 // if (userMetadata !== undefined) {
@@ -54,15 +56,33 @@ const handleAvatar = () => {
 };
 
 const handleLogoutUser = async () => {
-    console.log("clicked the button");
-    // await oktaAuth.signOut(); //old but working code if okta is done on vue end
+    // console.log("clicked the button");
+    // // await oktaAuth.signOut(); //old but working code if okta is done on vue end
 
-    // Send a request to laravel logout route
-    await axios.post('/logout');
-    this.userStore.clearStore();
+    // // Send a request to laravel logout route
+    // await axios.post('/logout');
+    // this.userStore.clearStore();
 
-    // Redirect the user to the login page or perform any other necessary actions
-    window.location.href = '/';
+    // // Redirect the user to the login page or perform any other necessary actions
+    // window.location.href = '/';
+
+    // Call a logout API endpoint in laravel backend
+    try {
+        const response = await fetch(`${appURL}/logout`, {
+            method: 'POST',
+        });
+
+        // Handle the response from the server
+        const data = await response.json();
+        console.log(data.message);
+
+        userStore.clearStore();
+
+        window.location.href = '/';
+
+    } catch (error) {
+        console.error('Logout failed: ', error);
+    }
 };
 
 const isAdmin = ref(false);

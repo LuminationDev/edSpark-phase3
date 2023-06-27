@@ -1,12 +1,24 @@
 <script setup>
+import { ref } from 'vue';
+
 import { useAuthStore } from '@/js/stores/auth';
 import { generateCodeChallenge, generateCodeVerifier } from '../helpers/pkce';
 
 // const store = useAuthStore();
-
 const redirectToOkta = () => {
     console.log("Redirect to okta");
+    loginWithOktaButtonPressed.value = true;
     window.location = '/login';
+}
+
+const pageTitle = ref('EdSpark Login');
+const showModal = ref(true); // Set to true to display the modal by default
+const email = ref('');
+const password = ref('');
+const loginWithOktaButtonPressed = ref(false);
+
+function login() {
+    // Implement your login logic here
 }
 
 // const loginWithOkta = async () => {
@@ -37,17 +49,50 @@ const redirectToOkta = () => {
 //     }
 // };
 </script>
-
 <template>
-    <h1 class="text-[48px] mt-12 font-bold text-slate-900">Landing Page</h1>
-    <!-- <button v-if="authState && authState.isAuthenticated" class="bg-blue-500 px-4 py-2 text-white font-bold text-[24px]">
-        Logout
-    </button>
-    <button v-else @click="login" class="bg-blue-500 px-4 py-2 text-white font-bold text-[24px]">
-        Login
-    </button>
-    <RouterView /> -->
-    <div>
-        <button @click="redirectToOkta" id="okta-login" class="bg-blue-500 px-4 py-2 text-white font-bold text-[24px]">Login with Okta</button>
+    <div class="fixed inset-0 flex items-center justify-center z-10 overflow-hidden">
+        <!-- Modal -->
+        <!-- class="bg-gradient-to-b from-[#f9fffe] to-[#f4fefc] w-1/4 p-8 rounded-2xl flex flex-col items-center" -->
+        <div
+            class="w-1/4 p-8 rounded-2xl flex flex-col items-center">
+            <h2 class="text-2xl font-bold mb-4">{{ pageTitle }}</h2>
+            <form @submit.prevent="login" class="flex flex-col items-center w-full">
+                <div class="mb-4 w-full">
+                    <label for="email" class="block text-gray-700 mb-1">Email Address
+                        <sup class="text-danger-700 whitespace-nowrap font-medium dark:text-danger-400">
+                            *
+                        </sup>
+                    </label>
+                    <input v-model="email" type="email" id="email" placeholder="Enter you email address"
+                        class="border rounded-lg px-3 py-2 w-full focus:outline-none focus:border-[#8dc9c5]" :required="!loginWithOktaButtonPressed">
+                </div>
+                <div class="mb-4 w-full">
+                    <label for="password" class="block text-gray-700 mb-1">Password
+                        <sup class="text-danger-700 whitespace-nowrap font-medium dark:text-danger-400">
+                            *
+                        </sup>
+                    </label>
+                    <input v-model="password" type="password" id="password" placeholder="Enter your password"
+                        class="border rounded-lg px-3 py-2 w-full focus:outline-none focus:border-[#8dc9c5]" :required="!loginWithOktaButtonPressed">
+                </div>
+                <div class="flex justify-center w-full">
+                    <button type="submit"
+                        class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-lg cursor-not-allowed opacity-50"
+                        id="login" :disabled="loginWithOktaButtonPressed">
+                        Login
+                    </button>
+                    <button @click="redirectToOkta"
+                        class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-lg ml-4" id="oktalogin">
+                        Login with Okta
+                    </button>
+                </div>
+            </form>
+        </div>
+        <!-- End of Modal -->
     </div>
 </template>
+<style>
+.shadow-xl {
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+}
+</style>

@@ -2,6 +2,7 @@ import { createApp } from 'vue';
 import App from './App.vue';
 import router from './router';
 import { createPinia } from 'pinia';
+import { useAuthStore } from './stores/useAuthStore';
 import '../css/app.css';
 import '../css/output.css';
 import './bootstrap';
@@ -25,6 +26,8 @@ import VueGoogleMaps from 'vue-google-maps-community-fork';
 //     .mount('#app');
 
 const pinia = createPinia();
+// const authStore = useAuthStore(pinia);
+
 createApp(App)
     .use(pinia)
     .use(router)

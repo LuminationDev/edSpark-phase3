@@ -54,8 +54,13 @@ class ProductController extends Controller
 
         if($products) {
             foreach ($products as $product) {
+
                 $result = [
                     'id' => $product->id,
+                    'author'=> [
+                        'author_id' => $product->owner_id,
+                        'author_name' => ($product->owner_id) ? $product->owner->full_name : NULL
+                    ],
                     'product_name' => $product->product_name,
                     'product_content' => $product->product_content,
                     'product_excerpt' => $product->product_excerpt,
