@@ -1,11 +1,5 @@
 <?php
 
-// namespace App\Http\Controllers;
-
-// use Clousre;
-// use Illuminate\Http\Request;
-// use Okta\JwtVerifier\JwtVerifier;
-// use Okta\JwtVerifier\Adaptors\SpomkyLabsJose;
 namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -13,7 +7,6 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 use Filament\Facades\Filament;
 use Illuminate\Support\Facades\Session;
-// use Illuminate\Support\Facades\Cookie;
 
 class OktaAuthController extends Controller
 {

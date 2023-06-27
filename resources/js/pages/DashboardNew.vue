@@ -32,7 +32,7 @@ import oktaAuth from '../constants/oktaAuth';
  */
 import {useUserStore} from '../stores/useUserStore';
 import {useRouter} from "vue-router";
-import {serverURL} from "@/js/constants/serverUrl";
+import {appURL, serverURL} from "@/js/constants/serverUrl";
 import {axiosFetcher, axiosSchoolFetcher} from "@/js/helpers/fetcher";
 import useSwrvState from "@/js/helpers/useSwrvState";
 import useSWRV from "swrv";
@@ -121,7 +121,7 @@ const getIdToken = async () => {
     // }
 
     try {
-        const response = await axios.get('http://localhost:8000/okta-data');
+        const response = await axios.get(`${appURL}/okta-data`);
         // console.log("RESPONSE", response);
         if (response.data.success === true) {
             userDetails.name = response.data.name;

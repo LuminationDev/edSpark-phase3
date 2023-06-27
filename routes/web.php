@@ -28,6 +28,8 @@ Route::get('/login', [LoginController::class, 'redirectToOkta'])->name('okta.log
 Route::get('/login/callback', [LoginController::class, 'handleOktaCallback'])->name('okta.callback');
 Route::post('/logout', [LoginController::class, 'logout'])->name('okta.logout');
 Route::get('okta-data', [LoginController::class, 'oktaData']);
+// CHECK OKTA AUTHENTICATION
+Route::get('auth/check', [LoginController::class, 'checkAuthentication']);
 
 /**
  * PARTNER LOGIN ROUTES

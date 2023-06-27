@@ -19,5 +19,6 @@ class VerifyCsrfToken extends Middleware
         // 'http://localhost:8000'
         // '/admin',
         // '/admin/login'
+        '/logout'
     ];
 }
