@@ -28,6 +28,7 @@ import SoftwareSearch from "@/js/components/search/SoftwareSearch.vue";
 import AdviceSearch from "@/js/components/search/AdviceSearch.vue";
 import HardwareSearch from "@/js/components/search/HardwareSearch.vue";
 import {useUserStore} from "@/js/stores/useUserStore";
+import PartnerSingle from "@/js/pages/PartnerSingle.vue";
 
 const router = createRouter({
     history: createWebHistory(),
@@ -144,6 +145,14 @@ const router = createRouter({
             component: Partners,
             meta: {
                 navigation: true
+            }
+        },
+        {
+            name: 'partner-single',
+            path: '/partner/:id',
+            component: PartnerSingle,
+            meta: {
+                navigation: false
             }
         },
         {

@@ -7,7 +7,9 @@ class VideoRecorder {
     }
 
     constructor({ data, api }) {
+        console.log(data);
         this.api = api;
+        this.data = data;
 
         this.recording = false;
         this.recButton = null;
@@ -181,12 +183,12 @@ class VideoRecorder {
         videoPlayer.setAttribute('id', 'video_player');//
 
         // Set the video playback container
-        const videoPlayback = document.createElement('video');//
+        this.videoPlayback = document.createElement('video');//
         // Set classes
-        videoPlayback.classList.add('custom_block-video_playback');//
-        videoPlayback.style.display = 'none';//
+        this.videoPlayback.classList.add('custom_block-video_playback');//
+        this.videoPlayback.style.display = 'none';//
         // Set id
-        videoPlayback.setAttribute('id', 'video_playback');//
+        this.videoPlayback.setAttribute('id', 'video_playback');//
 
         // Create a container to float in the block
         const controlContainer = document.createElement('div');//
@@ -206,7 +208,7 @@ class VideoRecorder {
 
 
         // TODO: Make this all dynamic etc
-        videoContainerInner.appendChild(videoPlayback);//
+        videoContainerInner.appendChild(this.videoPlayback);//
 
         controlContainer.appendChild(controls.playbackButton);//
         controlContainer.appendChild(controls.pauseButton);//
@@ -320,6 +322,7 @@ class VideoRecorder {
                 clearInterval(timerInterval);
                 controls.countdown.style.display = 'none';
                 controlContainer.style.display = 'flex';
+                // videoPlayer.setAttribute('controls', true);
                 this.mediaRecorder.start();
                 this.recording = true;
                 progTimer();
@@ -397,7 +400,7 @@ class VideoRecorder {
          */
         this.api.listeners.on(controls.pauseButton, 'click', (e, block) => {
             console.log('pause button clicked');
-            videoPlayback.pause();
+            this.videoPlayback.pause();
         });
 
         /**
@@ -405,7 +408,7 @@ class VideoRecorder {
          */
         this.api.listeners.on(controls.playbackButton, 'click', (e, block) => {
             console.log('play button clicked');
-            videoPlayback.play();
+            this.videoPlayback.play();
         });
 
         /**
@@ -413,19 +416,19 @@ class VideoRecorder {
          */
         this.api.listeners.on(controls.stopButton, 'click', (e, block) => {
 
-            if (videoPlayback.src) {
-                videoPlayback.stop();
+            if (this.videoPlayback.src) {
+                this.videoPlayback.stop();
             } else {
                 this.recording = false;
                 this.mediaRecorder.stop();
                 videoPlayer.style.display = 'none';
-                videoPlayback.style.display = 'block';
+                this.videoPlayback.style.display = 'block';
 
                 // Set the playback element
                 this.mediaRecorder.addEventListener('dataavailable', async event => {
                     const buff = await event.data.arrayBuffer();
-                    videoPlayback.src = URL.createObjectURL( new Blob( [buff] ));
-                    videoPlayback.play();
+                    this.videoPlayback.src = URL.createObjectURL( new Blob( [buff] ));
+                    this.videoPlayback.play();
                 });
             }
 
@@ -436,9 +439,9 @@ class VideoRecorder {
          */
         this.api.listeners.on(controls.resetPlayback, 'click', (e, block) => {
             console.log('reset button clicked');
-            videoPlayback.removeAttribute('src');
+            this.videoPlayback.removeAttribute('src');
             videoPlayer.style.display = 'block';
-            videoPlayback.style.display = 'none';
+            this.videoPlayback.style.display = 'none';
             controls.countdown.style.display = 'flex';
             controlContainer.style.display = 'none';
             document.getElementById("base-timer-label").remove();
@@ -449,10 +452,24 @@ class VideoRecorder {
         return videoContainer;
     }
 
-    save(blockContent) {
-        return {
-            file: blockContent.value
+    save() {
+        console.log(this.videoPlayback.src);
+        const blob = this.videoPlayback.src;
+        const fileName = 'hahahahahaha';
+
+        const newFile = new File(
+            [blob],
+            fileName + '.mp4',
+            { type: 'video/mp4' }
+        );
+
+        const saveFile = {
+            file: newFile
         }
+
+        console.log(saveFile);
+
+        return saveFile;
     }
 }
 

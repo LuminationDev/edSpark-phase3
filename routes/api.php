@@ -18,6 +18,7 @@ use App\Http\Controllers\RoleController;
 use App\Http\Controllers\LikeBookmarkController;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\OktaAuthController;
+use App\Http\Controllers\PartnerController;
 use Illuminate\Support\Facades\Session;
 
 
@@ -81,7 +82,8 @@ Route::middleware('api')->group(function() {
     Route::get('fetchAllTechs', [TechController::class, 'fetchAllTechs']);
 
     // Image upload
-    Route::post('uploadImage', [ImageController::class, 'imageUpload']);
+    Route::post('imageUpload', [ImageController::class, 'imageUpload']);
+    Route::post('imageUploadEditorjs', [ImageController::class, 'imageUploadEditorjs']);
 
     // Like and Bookmark
     Route::post('like', [LikeBookmarkController::class, 'like']);
@@ -98,5 +100,9 @@ Route::middleware('api')->group(function() {
     Route::get('fetchNotificationByType', [NotificationController::class, 'getNotificationByType']);
 
     Route::post('authenticate', [OktaAuthController::class, 'authenticate']);
+
+    // Partners API
+    Route::get('fetchAllPartners', [PartnerController::class, 'fetchAllPartners']);
+    Route::get('fetchPartnerById/{id}', [PartnerController::class, 'fetchPartnerById']);
 
 });

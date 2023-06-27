@@ -7,12 +7,14 @@ import Header from '@editorjs/header';
 import Paragraph from '@editorjs/paragraph';
 import List from '@editorjs/list';
 import ImageTool from '@editorjs/image'
+import AttachesTool from '@editorjs/attaches';
+import CustomAttachesTool from '../../constants/attachesExtension';
 import {serverURL} from "@/js/constants/serverUrl";
 
 import SimpleImage from '@editorjs/simple-image';
 import FontSize from 'editorjs-inline-font-size-tool';
-import VideoRecorder from '../../constants/customVideoBlock';
-// import VideoRecorder from '../../constants/videoRecorder';
+// import VideoRecorder from '../../constants/customVideoBlock';
+// import VideoRecorder from '../../constants/editorJsCustomVideoRecorder.js';
 
 
 import { onMounted } from 'vue';
@@ -31,16 +33,6 @@ const props = defineProps({
 const emits = defineEmits(['sendSchoolData'])
 
 const editorJsTools = {
-    videoRecorder: {
-        class: VideoRecorder,
-        // inlineToolbar: true,
-        // autofocus: true,
-        config: {
-            endpoints:{
-                byFile: `${serverURL}/imageUpload`
-            }
-        },
-    },
     header:{
         class: Header,
         inlineToolbar: true,
@@ -72,8 +64,28 @@ const editorJsTools = {
         class: ImageTool,
         config:{
             endpoints:{
-                byFile: `${serverURL}/imageUpload`
+                byFile: `${serverURL}/imageUploadEditorjs`
             }
+            // uploader: {
+            //     async uploadByFile(file) {
+
+
+
+            //         const result = await libraryStore.tempFileStore(file, 'image')
+
+            //         console.log(result);
+            //         return result;
+            //     }
+            // }
+        }
+    },
+    video: {
+        class: CustomAttachesTool,
+        config: {
+            endpoint: `${serverURL}/imageUploadEditorjs`
+            // {
+            //     uploadByFile: `${serverURL}/imageUploadEditorjs`
+            // }
         }
     }
 }
@@ -130,3 +142,102 @@ defineExpose({
         class="text-genericDark mt-8 rounded-lg editor flex-col"
     />
 </template>
+
+<style>
+.ce-toolbar__content {
+    margin: 0 0 0 -65px;
+
+}
+
+.codex-editor .codex-editor__redactor {
+	margin-right: 50px !important;
+}
+
+.ce-block__content {
+	max-width: 100% !important;
+	padding: 0.5rem 1rem !important;
+}
+
+.ce-block {
+	margin-bottom: 2rem !important;
+	overflow: hidden;
+}
+
+.ce-block--focused {
+	border: 1px solid #d9d9d9 !important;
+	border-radius: 0.75rem !important;
+	margin-right: 0 !important;
+	padding-right: 0 !important;
+	-webkit-box-shadow: 0px 0px 36px -8px rgba(0, 0, 0, 0.15);
+	box-shadow: 0px 0px 36px -8px rgba(0, 0, 0, 0.15);
+}
+
+/* Interaction buttons (add block, edit block, etc) */
+.ce-toolbar__actions {
+	left: 2rem !important;
+	flex-direction: column-reverse;
+	max-width: 26px !important;
+}
+
+.ce-toolbar__settings-btn {
+	margin-left: 0 !important;
+	width: 26px !important;
+}
+
+.ce-popover {
+	left: 0 !important;
+	right: unset !important;
+	border: solid 1px #d9d9d9 !important;
+}
+
+.ce-settings .ce-popover {
+	left: 26px !important;
+}
+
+.ce-popover--opened {
+	background-color: #ffffff;
+}
+
+.ce-inline-toolbar {
+	left: 23px !important;
+	/* top: -40px !important; */
+}
+
+/* New block editor placehoolder override */
+.ce-paragraph[data-placeholder]:empty::before,
+.ce-header[data-placeholder]:empty::before {
+	color: #d9d9d9 !important;
+	opacity: 1 !important;
+	font-weight: 300 !important;
+	font-size: 14px !important;
+}
+
+/* Block heading sizes */
+.ce-header {
+	padding-top: 3px !important;
+}
+/* HEADING 1 */
+.ce-block__content h1 {
+	font-size: 36px;
+}
+
+.ce-block__content h2 {
+	font-size: 33px;
+}
+
+.ce-block__content h3 {
+	font-size: 30px;
+}
+
+.ce-block__content h4 {
+	font-size: 27px;
+}
+
+.ce-block__content h5 {
+	font-size: 24px;
+}
+
+.ce-block__content h6 {
+	font-size: 21px;
+}
+</style>

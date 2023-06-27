@@ -33,6 +33,7 @@ const twoRecommendation  = computed( () => {
             :advice-content="advice"
             :show-icon="true"
             :number-per-row="1"
+            class="mb-extraLarge"
         />
     </div>
     <div v-else>
