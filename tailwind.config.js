@@ -1,9 +1,14 @@
 /** @type {import('tailwindcss').Config} */
+import colors from 'tailwindcss/colors'
+import forms from '@tailwindcss/forms'
+import typography from '@tailwindcss/typography'
+
 module.exports = {
     content: [
         './resources/**/*.blade.php',
         './resources/**/*.js',
         './resources/**/*.vue',
+        './vendor/filament/**/*.blade.php',
     ],
     safelist: [
         'bg-[url(*)]',
@@ -47,7 +52,11 @@ module.exports = {
 
                 adviceYellow: '#FFC836',
                 adviceGreen: '#048246',
-                adminTeal: '#339999'
+                adminTeal: '#339999',
+                danger: colors.rose,
+                primary: colors.teal,
+                success: colors.green,
+                warning: colors.yellow,
             },
             spacing: {
                 extraSmall: '12px',
@@ -60,6 +69,9 @@ module.exports = {
             },
         },
     },
-    plugins: [],
+    plugins: [
+        forms,
+        typography,
+    ],
 }
 

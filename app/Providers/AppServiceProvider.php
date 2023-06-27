@@ -29,13 +29,9 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         Filament::serving(function () {
-            // Filament::registerStyle('my-custom-theme', resource_path('css/filament/name-of-theme.css'));
+            // Using vite
+            Filament::registerViteTheme('resources/css/filament.css');
         });
-        Filament::registerStyles([
-            // 'https://unpkg.com/tippy.js@6/dist/tippy.css',
-            asset('assets/css/filament.css'),
-            // mix('resources/css/filament.css')
-        ]);
 
         // Example to register custom navigation in admin panel
         // Filament::serving(function () {
@@ -76,6 +72,7 @@ class AppServiceProvider extends ServiceProvider
         //     );
         // });
 
+        //TODO custom icon pack
         // Filament::registerSvgIconPacks([
         //     'my-custom-icons' => [
         //         'path' => resource_path('svg'),
