@@ -18,7 +18,7 @@ class PartnerController extends Controller
             $data = [];
 
             foreach ($partners as $partner) {
-                $partnerMeta = Metahelper::getMeta(Partnermeta::class, $partner,'partner_id', 'partner_meta_key', 'partner_meta_column');
+                $partnerMeta = Metahelper::getMeta(Partnermeta::class, $partner,'partner_id', 'partner_meta_key', 'partner_meta_value');
                 $result = [
                     'id' => $partner->id,
                     'user_id' => $partner->user_id,

@@ -10,7 +10,7 @@ const props = defineProps({
 })
 
 const emits = defineEmits([])
-const availableSubmenu = ref([])
+const availableSubmenu = ref(['overview'])
 
 const formattedSubmenuData = computed(() =>{
     if(!availableSubmenu.value || availableSubmenu.value.length === 0){
@@ -35,7 +35,12 @@ const handleChangeSubmenu = (value) => {
 const handleEmittedAvailableSubmenu = (value) =>{
     console.log('handleEmitIsCalled')
     console.log(value)
-    availableSubmenu.value = value.split(',')
+    if(value){
+        availableSubmenu.value = value.split(',')
+        console.log('SubMenu Activated')
+    } else{
+        console.log('No Submenu was passed')
+    }
     activeSubMenu.value = availableSubmenu.value[0]
 }
 

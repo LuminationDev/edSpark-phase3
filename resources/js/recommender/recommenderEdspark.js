@@ -2,6 +2,9 @@ import {serverURL} from "@/js/constants/serverUrl";
 import axios from "axios";
 import {schoolContentArrParser} from "@/js/helpers/jsonHelpers";
 import {guid} from "@/js/helpers/guidGenerator";
+
+let instance;
+
 const recommenderEdsparkSingletonFactory = (function(){
         class recommenderEdspark{
             constructor(userId, userRole, siteId ){
@@ -116,10 +119,11 @@ const recommenderEdsparkSingletonFactory = (function(){
             }
         }
 
-    var instance;
         return{
             getInstance: function(userId, userRole, siteId){
+                console.log(instance)
                 if(!instance){
+                    console.log('creating new instance of recommender')
                     instance = new recommenderEdspark(userId, userRole, siteId)
                 }
                 return instance

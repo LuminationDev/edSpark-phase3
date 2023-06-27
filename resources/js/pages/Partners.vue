@@ -22,11 +22,11 @@ onMounted(() =>{
 })
 
 
-const {
-    data: partnerData,
-    error: partnerError,
-    isValidating: partnerIsValidating
-} = useSWRV(SWRVKeys.PARTNER_PERSONALISED_TECH,() => recommender.getTechByPartnerAsync(), swrvOptions)
+// const {
+//     data: partnerData,
+//     error: partnerError,
+//     isValidating: partnerIsValidating
+// } = useSWRV(SWRVKeys.PARTNER_PERSONALISED_TECH,() => recommender.getTechByPartnerAsync(), swrvOptions)
 
 
 const {
@@ -51,7 +51,7 @@ const {
         <!--        <pre> {{ partnerData }}</pre>-->
         <div
             v-if="partnerList?.partners"
-            class="PartnerListGalleryContainer flex flex-row"
+            class="PartnerListGalleryContainer flex flex-row gap-4"
         >
             <template
                 v-for="(singlePartnerData,index) in partnerList.partners"

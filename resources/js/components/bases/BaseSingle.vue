@@ -16,6 +16,8 @@ const props = defineProps({
         required: true
     }
 })
+const emits = defineEmits(['emitAvailableSubmenu','emitActiveTabToSpecificPage'])
+const singleContent = ref({})
 /**
  * type can be advice, software, hardware etc
  *  type singleContent = {
@@ -33,7 +35,6 @@ const props = defineProps({
  *      updated_at: string-date
  *  }
  */
-const singleContent = ref({})
 const recommendedContent = ref({})
 let byIdAPILink;
 let recommendationAPILink;
@@ -94,6 +95,22 @@ onBeforeMount(async () => {
     /**
      * Get content from history state or fetch from recommender
      */
+    await checkToReadOrFetchContent()
+
+    // code to emit available submenus - to be used in all baseSingle pages. remove hardcoded
+    if( singleContent.value.metadata && singleContent.value.metadata.filter(meta => Object.values(meta).includes('single_submenu'))){
+        const availableSubMenuObject = singleContent.value.metadata.filter(meta => Object.values(meta).includes('single_submenu'))[0]
+        if(availableSubMenuObject){
+            const availableSubMenu = Object.values(availableSubMenuObject)[1] // bit rough but quite guaranteed to success
+            emits('emitAvailableSubmenu', availableSubMenu)
+        }
+    }
+    /// end of emiiting submenu
+
+    getRecommendationBasedOnContentType()
+})
+
+const checkToReadOrFetchContent = async () =>{
     if (!window.history.state.content) { // doesn't exists
         if(!byIdAPILink) return
         console.log('No content passed in. Will request from server')
@@ -112,15 +129,7 @@ onBeforeMount(async () => {
             })
         }
     }
-    // code to emit available submenus - to be used in all baseSingle pages. remove hardcoded
-    if( singleContent.value.metadata && singleContent.value.metadata.filter(meta => Object.values(meta).includes('single_submenu'))){
-        const availableSubMenuObject = singleContent.value.metadata.filter(meta => Object.values(meta).includes('single_submenu'))[0]
-        const availableSubMenu = Object.values(availableSubMenuObject)[1] // bit rough but quite guaranteed to success
-        emits('emitAvailableSubmenu', availableSubMenu)
-    }
-
-    getRecommendationBasedOnContentType()
-})
+}
 
 watch(currentId, () => {
     if (window.history.state.content && singleContent.value) {
@@ -129,7 +138,6 @@ watch(currentId, () => {
         }
     }
 })
-const emits = defineEmits(['emitAvailableSubmenu','emitActiveTabToSpecificPage'])
 const handleEmitFromSubmenu = (value) => {
     emits('emitActiveTabToSpecificPage', value)
 }
