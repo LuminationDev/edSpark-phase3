@@ -160,7 +160,6 @@ export const useUserStore = defineStore('user', {
                 interests: user.interests,
                 subjects: user.subjects,
                 biography: user.biography
-
             }
             /**
              * Populate metaData Object

@@ -25,7 +25,11 @@ class Partner extends Authenticatable
     protected $fillable = [
         'user_id',
         'name',
-        'email'
+        'email',
+        'logo',
+        'cover_image',
+        'motto',
+        'introduction'
     ];
 
     public function user()

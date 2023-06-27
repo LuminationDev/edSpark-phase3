@@ -204,12 +204,25 @@ const handleReceivePhotoFromContent = (type, file) => {
 const isCoverImageLoaded = ref(false)
 
 const coverImageLink = computed(() => {
-    if (!isCoverImageLoaded.value) {
-        return 'https://placehold.co/600x400'
+    if (schoolContent.value['cover_image']) {
+        console.log('loaded');
+        return schoolContent.value['cover_image'].replace(/\\\//g, "/");
     } else {
-        return `${schoolContent.value['cover_image']}`
+        console.log('noloaddddd');
+        return;
     }
-})
+
+
+    // console.log(schoolContent.value['cover_image']);
+    // if (!isCoverImageLoaded.value) {
+    //     console.log('hasnt loaded');
+    //     return 'https://placehold.co/600x400'
+    // } else {
+    //     console.log('LOADEEEEDDDD');
+    //     return schoolContent.value['cover_image']
+    // }
+});
+
 const handleCoverImageLoaded = () => {
     isCoverImageLoaded.value = true
 }
@@ -249,8 +262,9 @@ const isSchoolContentPopulated = computed(() => {
                 aria-hidden="true"
                 :src="`${imageURL}/${schoolContent.cover_image}`"
                 alt="School background preload image"
-                @load="handleCoverImageLoaded"
+
             >
+            <!-- @load="handleCoverImageLoaded" -->
             <BaseSingle
                 content-type="school"
                 @emit-active-tab-to-specific-page="handleChangeSubmenu"
@@ -304,10 +318,11 @@ const isSchoolContentPopulated = computed(() => {
                                                         :tech-name="tech.name"
                                                         class="min-w-[60px] pr-4 m-2 cursor-pointer relative"
                                                     />
+                                                    <!-- :class="`bg-${colorTheme}-600`" -->
                                                     <div
                                                         v-if="toggleTooltip && tooltipIndex === index"
-                                                        class="absolute shadow-xl w-[450px] px-[24px] py-[18px] border-l-[3px] border-white"
-                                                        :class="`bg-${colorTheme}-600`"
+                                                        class="absolute shadow-xl w-[450px] px-[24px] py-[18px] border-l-[3px] border-white bg-primary-navy"
+
                                                     >
                                                         <h3 class="text-[24px] font-semibold text-white">
                                                             {{ tech.name }}

@@ -47,8 +47,11 @@ const heroBackgroundLinkOnly = computed(() => {
 });
 
 const setTheBackground = computed(() => {
-    return props.backgroundUrl;
+    console.log(`${imageURL}/${props.backgroundUrl}`);
+    return `${imageURL}/${props.backgroundUrl}`;
 });
+
+console.log(heroBackgroundLinkOnly.value);
 
 </script>
 

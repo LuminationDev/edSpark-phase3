@@ -13,7 +13,12 @@ const props = defineProps({
 
 const loadIconComponent =  (iconPath) => {
     try {
-        return props.componentsObject[iconPath];
+        if(!Object.keys(props.componentsObject).includes(iconPath)){
+            console.log('Oh no icon name is not recognized')
+        }else{
+            return props.componentsObject[iconPath];
+
+        }
     } catch (error) {
         console.error('Failed to load component:', error);
         return null;

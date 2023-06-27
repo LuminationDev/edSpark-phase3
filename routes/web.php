@@ -37,16 +37,6 @@ Route::get('auth/check', [LoginController::class, 'checkAuthentication']);
 Route::get('partner/login', 'App\Http\Controllers\PartnerAuthController@showLoginForm')->name('partner.login');
 Route::post('partner/login', 'App\Http\Controllers\PartnerAuthController@login')->name('partner.login.submit');
 
-Route::get('testConfig', function () {
-
-    var_dump(config('services.okta'));
-    echo '<br>';
-    var_dump(config('services.okta.base_url'));
-    echo '<br>';
-    var_dump(config('services.okta.client_id'));
-    echo '<br>';
-
-});
 Route::get('{any}', function () {
         return view('app');
     })->where('any', '.*');

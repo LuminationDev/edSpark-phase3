@@ -32,9 +32,8 @@ import HardwareSearch from "@/js/components/search/HardwareSearch.vue";
 import {useUserStore} from "@/js/stores/useUserStore";
 import axios from 'axios';
 import {appURL, serverURL} from "@/js/constants/serverUrl";
-
 import { useAuthStore } from './stores/useAuthStore';
-
+import PartnerSingle from "@/js/pages/PartnerSingle.vue";
 
 
 const router = createRouter({
@@ -174,6 +173,14 @@ const router = createRouter({
             meta: {
                 navigation: true,
                 requiresAuth: true,
+            }
+        },
+        {
+            name: 'partner-single',
+            path: '/partner/:id',
+            component: PartnerSingle,
+            meta: {
+                navigation: false
             }
         },
         {
