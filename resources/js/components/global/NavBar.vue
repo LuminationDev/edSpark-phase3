@@ -55,7 +55,7 @@ onMounted(() => {
 const avatarUrl = computed(() => {
     let url = ''
 
-    if(Object.keys(currentUser.value).length < 0 && !isObjectEmpty(currentUser.value) && !isObjectEmpty(currentUser.value['metadata'])){
+    if (Object.keys(currentUser.value).length < 0 && !isObjectEmpty(currentUser.value) && !isObjectEmpty(currentUser.value['metadata'])) {
         currentUser.value['metadata'].forEach(meta => {
             if (meta['user_meta_key'] === 'userAvatar') {
                 url = meta['user_meta_value'][0].replace(/\\\//g, "/");
@@ -97,16 +97,15 @@ setupRoutes();
         <ProfileDropdown :key="currentUser" :current-user="currentUser" :profile-dropdown="profileDropdown"
             :avatar-url="avatarUrl" @handle-avatar-click="handleAvatarClick" v-if="isAuthenticated" />
 
-        <Logo
-            class="absolute right-20 top-36 z-30 md:w-44 md:h-44 md:top-24 sm:w-36 sm:h-36 sm:top-32 w-36 h-36 lg:top-24" />
+        <!-- <Logo
+            class="absolute right-20 top-36 z-30 md:w-44 md:h-44 md:top-24 sm:w-36 sm:h-36 sm:top-32 w-36 h-36 lg:top-24" /> -->
         <!-- Just rempving for demo purposes TODO: fix for mobile screen etc. -->
         <!-- class="absolute right-20 top-36 z-30 md:w-56 md:h-56 md:top-24 sm:w-36 sm:h-36 sm:top-32 w-36 h-36 lg:top-24" -->
         <button>
-            <router-link :to="{name: 'dashboard'}">
-                <Logo
-                    class="absolute right-20 top-8 z-30 w-56 h-56 nav-logo transition-all"
-                />
+            <router-link :to="{ name: 'dashboard' }" v-if="isAuthenticated">
+                <Logo class="absolute right-20 top-8 z-30 w-56 h-56 nav-logo transition-all" />
             </router-link>
+            <Logo class="absolute right-20 top-8 z-30 w-56 h-56 nav-logo transition-all" v-else />
         </button>
         <NavSwoosh class="w-full absolute -bottom-6 left-0 right-0 pointer-events-none" />
     </div>
