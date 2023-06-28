@@ -28,6 +28,7 @@ class PartnerController extends Controller
                     'cover_image' => $partner->cover_image,
                     'motto' => $partner->motto,
                     'introduction' => $partner->introduction,
+                    'content' => $partner->content,
                     'metadata' => $partnerMeta
 
                 ];
@@ -61,7 +62,8 @@ class PartnerController extends Controller
                 'cover_image' => $partner->cover_image,
                 'motto' => $partner->motto,
                 'introduction' => $partner->introduction,
-                'metadata' => $partnerMeta
+                'metadata' => $partnerMeta,
+                'content' => $partner->content,
 
             ];
 
