@@ -8,18 +8,12 @@ import {SWRVKeys} from "@/js/constants/swrvKeys";
 import SectionHeader from "@/js/components/global/SectionHeader.vue";
 import {useRouter} from "vue-router";
 import PartnerCard from "@/js/components/partners/PartnerCard.vue";
+
+
+let recommender = recommenderEdsparkSingletonFactory().getInstance()
 const router = useRouter()
-// const recommender = recommenderEdsparkSingletonFactory.getInstance(currentUser.value.id,currentUser.value.role, currentUser.value.site_id)
-const recommender = recommenderEdsparkSingletonFactory().getInstance(64,'Partner', 100)
 const techList = ref({})
 console.log('hello inside partner')
-recommender._logRecommenderData()
-
-onMounted(() =>{
-    // recommender.getTechByPartnerAsync().then(res =>{
-    //     techList.value = res
-    // })
-})
 
 
 // const {
@@ -51,7 +45,7 @@ const {
         <!--        <pre> {{ partnerData }}</pre>-->
         <div
             v-if="partnerList?.partners"
-            class="PartnerListGalleryContainer flex flex-row gap-4"
+            class="PartnerListGalleryContainer flex flex-row justify-between gap-4 px-huge"
         >
             <template
                 v-for="(singlePartnerData,index) in partnerList.partners"

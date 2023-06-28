@@ -1,5 +1,5 @@
 import { defineStore } from "pinia";
-import { useSessionStorage } from "@vueuse/core";
+import {useSessionStorage, useStorage} from "@vueuse/core";
 import axios from "axios";
 import {serverURL} from "@/js/constants/serverUrl";
 
@@ -18,7 +18,7 @@ export const useUserStore = defineStore('user', {
      * }
      */
     state: () => ({
-        currentUser: useSessionStorage('currentUser', {}),
+        currentUser: useStorage('currentUser', {}, localStorage, { mergeDefaults: true }),
         userAvatar: useSessionStorage('userAvatar', ''),
         userLikeList: {},
         userBookmarkList: {},
@@ -26,10 +26,10 @@ export const useUserStore = defineStore('user', {
     }),
 
     getters: {
+
         getUser() {
             return this.currentUser;
         },
-
         getNotifications() {
             return this.notifications;
         }

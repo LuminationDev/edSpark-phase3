@@ -56,7 +56,7 @@ const handleClickHardwareCard = () => {
     <GenericCard
         :title="product_name"
         :display-content="product_excerpt"
-        :display-author="author"
+        :display-author="author['author_name']"
         :display-date="created_at"
         :number-per-row="numberPerRow"
         :cover-image="cover_image"
