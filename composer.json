@@ -24,6 +24,7 @@
         "nesbot/carbon": "^2.66",
         "okta/jwt-verifier": "^1.4",
         "owenvoke/blade-fontawesome": "^2.2",
+        "pboivin/filament-peek": "^0.3",
         "php-http/discovery": "^1.19",
         "php-http/guzzle7-adapter": "^1.0",
         "php-http/message": "^1.16",
