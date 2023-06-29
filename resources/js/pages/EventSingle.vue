@@ -39,22 +39,25 @@ import LocationIcon from "@/js/components/svg/event/LocationIcon.vue";
                 <template #authorName>
                     <div
                         v-if="contentFromBase['author'] && contentFromBase['author']"
-                        class="EventHeroAuthorContainer flex flex-row items-center"
+                        class="EventHeroAuthorContainer flex flex-col "
                     >
-                        <div class="smallPartnerLogo w-24 h-20 flex items-center mx-4">
-                            <img
-                                :src="`${imageURL}/${contentFromBase['author']['author_logo']}`"
-                                alt="logo"
-                            >
-                        </div>
-                        <div class="authorName">
-                            {{ contentFromBase['author']['author_name'] }}
+                        <div class="flex flex-row items-center">
+                            <div class="smallPartnerLogo w-24 h-20 flex items-center mx-4">
+                                <img
+                                    :src="`${imageURL}/${contentFromBase['author']['author_logo']}`"
+                                    alt="logo"
+                                >
+                            </div>
+                            <div class="authorName flex flex-col pt-6">
+                                <div class="mb-2 text-2xl">
+                                    {{ contentFromBase['author']['author_name'] }}
+                                </div>
+                                <div>
+                                    View Profile
+                                </div>
+                            </div>
                         </div>
                     </div>
-                </template>
-
-                <template #subtitleText1>
-                    {{ contentFromBase['created_at'] }}
                 </template>
 
                 <template #subtitleText2>
@@ -83,11 +86,11 @@ import LocationIcon from "@/js/components/svg/event/LocationIcon.vue";
 
         <template #content="{contentFromBase}">
             <div
-                class="eventSingleContent p-4 px-8 flex flex-row w-full overflow-hidden"
+                class="eventSingleContent py-20 px-8 flex flex-row w-full overflow-hidden"
             >
                 <!--    Content of the Advice    -->
-                <div class="w-2/3 flex flex-col flex-wrap py-4 px-2">
-                    <div class="text-2xl flex font-bold uppercase">
+                <div class="w-2/3 flex flex-col flex-wrap px-2">
+                    <div class="text-2xl flex border-b-4 border-black border-dashed font-semibold uppercase">
                         Details
                     </div>
                     <div
@@ -103,7 +106,8 @@ import LocationIcon from "@/js/components/svg/event/LocationIcon.vue";
                 </div>
                 <!--      Curated Content      -->
                 <div class="w-1/3 flex flex-col">
-                    <!--                   <AdviceSingleCuratedContent />-->
+                    <div>maps</div>
+                    <div> advice RSVP section</div>
                 </div>
             </div>
             <div class="overflow-scroll flex">
@@ -112,3 +116,10 @@ import LocationIcon from "@/js/components/svg/event/LocationIcon.vue";
         </template>
     </BaseSingle>
 </template>
+
+
+<style scoped>
+.eventSingleContent >>> p {
+    margin-top: 16px
+}
+</style>
