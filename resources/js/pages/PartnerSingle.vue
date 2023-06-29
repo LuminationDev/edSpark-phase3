@@ -1,5 +1,5 @@
 <script setup>
-import {ref, computed, onMounted, reactive} from 'vue'
+import {ref, computed,  reactive} from 'vue'
 import BaseSingle from "@/js/components/bases/BaseSingle.vue";
 import BaseHero from "@/js/components/bases/BaseHero.vue";
 import {imageURL} from "@/js/constants/serverUrl";
@@ -13,6 +13,7 @@ import recommenderEdsparkSingletonFactory from "@/js/recommender/recommenderEdsp
 import {storeToRefs} from "pinia";
 import {useUserStore} from "@/js/stores/useUserStore";
 import Loader from "@/js/components/spinner/Loader.vue";
+import {useRoute} from "vue-router";
 
 const props = defineProps({})
 const {currentUser} = storeToRefs(useUserStore())
@@ -43,23 +44,25 @@ const partnerData = reactive({
     hardware: {},
     curriculum: {}
 })
+const route = useRoute()
+
 
 const fetchSubmenuData = async() => {
     // perform fetches here and assign value/data into parterData(reactive)
+    const partnerId  = route.params.id
     for (const submenu of availableSubmenu.value) {
-        console.log(submenu)
         switch (submenu) {
         case 'overview':
             partnerData[submenu] = {data: 'this is temporary string for partner overview'}
             break;
         case 'software':
-            partnerData[submenu] = recommender.getTechByPartnerAsync().then(res => res['software'])
+            partnerData[submenu] = recommender.getTechByAuthorAsync(partnerId).then(res => res['software'])
             break;
         case 'hardware':
-            partnerData[submenu] = recommender.getTechByPartnerAsync().then(res => res['hardware'])
+            partnerData[submenu] = recommender.getTechByAuthorAsync(partnerId).then(res => res['hardware'])
             break;
         case 'curriculum':
-            partnerData[submenu] = recommender.getAdviceByUserId().then(res => res)
+            partnerData[submenu] = recommender.getAdviceByAuthorId(partnerId).then(res => res)
             break;
         case 'access':
             partnerData[submenu] = {overview: 'access here'}
@@ -77,13 +80,11 @@ const handleChangeSubmenu = (value) => {
 }
 
 const handleEmittedAvailableSubmenu = (value) => {
-    console.log('handleEmitIsCalled')
-    console.log(value)
     if (value) {
         availableSubmenu.value = value.split(',')
         console.log('SubMenu Activated')
     } else {
-        console.log('No Submenu was passed')
+        console.log('No Submenu was passed -- Do here to set the automatic /default ')
     }
     activeSubMenu.value = availableSubmenu.value[0]
     fetchSubmenuData()
@@ -125,8 +126,6 @@ const dynamicProps = computed(() => {
         return partnerData.overview
     }
 })
-
-
 </script>
 
 <template>
@@ -139,8 +138,8 @@ const dynamicProps = computed(() => {
                 :background-url="contentFromBase['cover_image']"
             >
                 <template #titleText>
-                    <div class="flex flex-row">
-                        <div class="smallPartnerLogo w-16 h-16">
+                    <div class="flex flex-row items-center">
+                        <div class="smallPartnerLogo w-24 h-20 flex justify-center items-center mx-4">
                             <img
                                 :src="`${imageURL}/${contentFromBase['logo']}`"
                                 alt="logo"
@@ -171,11 +170,13 @@ const dynamicProps = computed(() => {
             </BaseHero>
         </template>
         <template #content="{contentFromBase,recommendationFromBase}">
-            <div class="partnerSingleContentContainer px-10 mt-10">
+            <div class="partnerSingleContentContainer px-10 mt-20">
                 <Suspense timeout="0">
                     <component
                         :is="partnerSubPageComponent"
                         :data="dynamicProps"
+                        :content-from-base="contentFromBase"
+                        :recommendation-from-base="recommendationFromBase"
                     />
                     <template #fallback>
                         <div class="flex justify-center items-center">

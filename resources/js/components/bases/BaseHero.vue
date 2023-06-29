@@ -2,27 +2,28 @@
 import ArticleSingleSwoosh from '../svg/ArticleSingleSwoosh.vue';
 import {computed} from 'vue'
 import {imageURL} from "@/js/constants/serverUrl";
+
 const props = defineProps({
-    backgroundUrl:{
+    backgroundUrl: {
         type: String,
         required: false
     },
-    color1:{
+    color1: {
         type: String,
         required: false,
         default: "#002858"
     },
-    color2:{
+    color2: {
         type: String,
         required: false,
         default: "#0A7982"
     },
-    color3:{
+    color3: {
         type: String,
         required: false,
-        default:"#0A7982"
+        default: "#0A7982"
     },
-    swooshColorTheme:{
+    swooshColorTheme: {
         type: String,
         required: false,
         default: 'teal'
@@ -30,28 +31,27 @@ const props = defineProps({
 })
 
 const heroBackground = computed(() => {
-    if(!props.backgroundUrl){
+    if (!props.backgroundUrl) {
         return `bg-gradient-to-r from-[${props.color1}] via-[${props.color2}] to-[${props.color3}]`
-    } else{
-        return `bg-[url(${imageURL}/${props.backgroundUrl.replace(' ',"%20").replace(/\\/g, "")}')] bg-blend-soft-light bg-center bg-no-repeat bg-gray-600`
+    } else {
+        return `bg-[url(${imageURL}/${props.backgroundUrl.replace(' ', "%20").replace(/\\/g, "")}')] bg-blend-soft-light bg-center bg-no-repeat bg-gray-600`
     }
 })
 
 
 const heroBackgroundLinkOnly = computed(() => {
-    if(props.backgroundUrl){
-        return `${imageURL}/${props.backgroundUrl.replace(' ',"%20").replace(/\\/g, "")}`
-    } else{
+    if (props.backgroundUrl) {
+        return `${imageURL}/${props.backgroundUrl.replace(' ', "%20").replace(/\\/g, "")}`
+    } else {
         return ''
     }
 });
 
 const setTheBackground = computed(() => {
-    console.log(`${imageURL}/${props.backgroundUrl}`);
+    // console.log(`${imageURL}/${props.backgroundUrl}`);
     return `${imageURL}/${props.backgroundUrl}`;
 });
 
-console.log(heroBackgroundLinkOnly.value);
 
 </script>
 
@@ -61,7 +61,9 @@ console.log(heroBackgroundLinkOnly.value);
             :class="`BaseHeroClipThisPath pb-[36px] pt-[190px] px-[48px] grid grid-cols-8 bg-cover h-full relative bg-[url(${imageURL}/${setTheBackground}) `+ heroBackground"
             :style="'background-image: url(' + heroBackgroundLinkOnly +')'"
         >
-            <div class="BaseHeroBgOverlay absolute w-full h-full bg-gradient-to-r from-black via-black/75 via-40% z-10" />
+            <div
+                class="BaseHeroBgOverlay absolute w-full h-full bg-gradient-to-r from-black via-black/75 via-40% z-10"
+            />
             <div
                 v-if="$slots.titleText || $slots.subtitleText1 || $slots.subtitleText2"
                 class="col-span-5 p-2 relative z-20"
@@ -136,7 +138,7 @@ console.log(heroBackgroundLinkOnly.value);
 </template>
 
 <style>
-    .BaseHeroClipThisPath {
-        clip-path: polygon(100% 0, 100% 94%, 91% 98%, 71% 100%, 50% 100%, 0 100%, 0 0);
-    }
+.BaseHeroClipThisPath {
+    clip-path: polygon(100% 0, 100% 94%, 91% 98%, 71% 100%, 50% 100%, 0 100%, 0 0);
+}
 </style>

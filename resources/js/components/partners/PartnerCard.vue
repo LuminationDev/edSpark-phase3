@@ -15,7 +15,6 @@ const props = defineProps({
         default: 3
     }
 })
-
 const userStore = useUserStore()
 const {currentUser} = storeToRefs(userStore)
 
@@ -24,7 +23,7 @@ const router = useRouter()
 const handleClickPartnerCard = () => {
     router.push({
         name: "partner-single",
-        params: {id: props.partnerContent.id},
+        params: {id: props.partnerContent.user_id},
         state: {content: JSON.stringify(props.partnerContent)}
     })
 
@@ -43,6 +42,7 @@ const likeBookmarkData = {
         :title="props.partnerContent.name"
         :item="props.partnerContent"
         :display-content="props.partnerContent.introduction"
+        :cover-image="props.partnerContent.cover_image"
         :display-author="props.partnerContent.name"
         :number-per-row="4"
         :like-bookmark-data="likeBookmarkData"

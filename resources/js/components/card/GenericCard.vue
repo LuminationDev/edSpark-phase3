@@ -23,9 +23,9 @@ const props = defineProps({
         default: 3
     },
     displayAuthor: {
-        type: String,
+        type: [Object,String],
         required: false,
-        default: ''
+        default: () => {}
     },
     displayDate: {
         type: String,
@@ -69,7 +69,8 @@ const props = defineProps({
     },
     item: {
         type: Object,
-        required: true
+        required: false,
+        default: () => {}
     }
 });
 
@@ -162,14 +163,12 @@ const setTheBackground = computed(() => {
 const emits = defineEmits(['emitCardClick']);
 
 const handleEmitClick = () => {
-    console.log('ive clicked in the card');
     emits('emitCardClick', props.item);
 }
 </script>
 
 <template>
     <div
-
         class="GenericCardContainer card_parent generic-card__wrapper group"
         :class="extraClasses"
         @mouseenter="cardHoverToggle = true"
@@ -217,7 +216,7 @@ const handleEmitClick = () => {
                             v-if="props.displayAuthor"
                             class="cardAuthor transition-all"
                         >
-                            {{ props.displayAuthor }}
+                            {{ props.displayAuthor['author_name'] || props.displayAuthor }}
                         </div>
                         <div
                             v-if="props.displayDate"

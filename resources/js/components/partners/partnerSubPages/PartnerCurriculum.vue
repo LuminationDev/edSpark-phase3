@@ -15,9 +15,9 @@ const fulfilledData = await props.data
 </script>
 
 <template>
-    <div class="adviceSubPageContainer flex flex-col px-10 mt-5">
+    <div class="adviceSubPageContainer flex flex-col px-10">
         <div class="adviceSubpage Title">
-            <div class="font-semibold text-xl text-center pb-6">
+            <div class="font-semibold text-2xl text-center pb-6">
                 Here are your listed advices
             </div>
         </div>

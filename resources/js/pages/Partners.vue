@@ -13,14 +13,6 @@ import PartnerCard from "@/js/components/partners/PartnerCard.vue";
 let recommender = recommenderEdsparkSingletonFactory().getInstance()
 const router = useRouter()
 const techList = ref({})
-console.log('hello inside partner')
-
-
-// const {
-//     data: partnerData,
-//     error: partnerError,
-//     isValidating: partnerIsValidating
-// } = useSWRV(SWRVKeys.PARTNER_PERSONALISED_TECH,() => recommender.getTechByPartnerAsync(), swrvOptions)
 
 
 const {

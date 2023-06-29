@@ -9,13 +9,14 @@ const props = defineProps({
     }
 })
 const fulfilledData = await props.data
-const emits = defineEmits([])
+console.log(props.data)
+
 </script>
 
 <template>
-    <div class="softwareSubPageContainer flex flex-col px-10 mt-5">
+    <div class="softwareSubPageContainer flex flex-col px-10">
         <div class="softwareSubpage Title">
-            <div class="font-semibold text-xl text-center pb-6">
+            <div class="font-semibold text-2xl text-center pb-6">
                 Here are your listed softwares
             </div>
         </div>

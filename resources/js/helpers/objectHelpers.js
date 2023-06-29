@@ -25,6 +25,15 @@ export const findNestedKeyValue = (obj, key) => {
 export const isObjectEmpty = (objectName) => {
     return Object.keys(objectName).length === 0
 }
+
+export const safelyExtractFirstObjectFromArray = (array) =>{
+    if(array.length > 1){
+        throw Error('Array has more than 1 object')
+    }
+    else{
+        return array[0]
+    }
+}
 //
 // {
 //     "Graphics": "RTX 4090Ti",

@@ -104,6 +104,8 @@ onBeforeMount(async () => {
             const availableSubMenu = Object.values(availableSubMenuObject)[1] // bit rough but quite guaranteed to success
             emits('emitAvailableSubmenu', availableSubMenu)
         }
+    } else{
+
     }
     /// end of emiiting submenu
 
