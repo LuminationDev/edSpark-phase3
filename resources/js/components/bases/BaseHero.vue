@@ -76,6 +76,13 @@ const setTheBackground = computed(() => {
                 </h1>
 
                 <p
+                    v-if="$slots.additionalTags"
+                    class="flex-row gap-4"
+                >
+                    <slot name="additionalTags" />
+                </p>
+
+                <p
                     v-if="$slots.authorName"
                     class="text-white flex flex-col gap-4 text-[18px] font-semibold"
                 >

@@ -2,6 +2,11 @@
 import BaseSingle from "@/js/components/bases/BaseSingle.vue";
 import BaseHero from "@/js/components/bases/BaseHero.vue";
 import EventSingleExtraContentRenderer from "@/js/components/events/EventSingleExtraContentRenderer.vue";
+import purify from "dompurify";
+import {imageURL} from "@/js/constants/serverUrl";
+import TimeIcon from "@/js/components/svg/event/TimeIcon.vue";
+import CalendarIcon from "@/js/components/svg/event/CalendarIcon.vue";
+import LocationIcon from "@/js/components/svg/event/LocationIcon.vue";
 
 
 </script>
@@ -10,15 +15,68 @@ import EventSingleExtraContentRenderer from "@/js/components/events/EventSingleE
         <template #hero="{contentFromBase}">
             <BaseHero
                 :background-url="contentFromBase['cover_image']"
+                :swoosh-color-theme="'red'"
             >
                 <template #titleText>
                     {{ contentFromBase['event_title'] }}
                 </template>
+
+                <template #additionalTags>
+                    <div class=" flex flex-row typeAndTags text-white">
+                        <div class="EventTypeTag bg-pink-300 py-2 px-8 rounded-2xl mr-2 font-semibold">
+                            {{ contentFromBase['event_type'] }}
+                        </div>
+                        <div
+                            v-for="(tag, index) in ['Advice', 'AR', 'VR']"
+                            :key="index"
+                            class="EventTags bg-slate-300 py-2 px-8 rounded-2xl mr-2 font-semibold"
+                        >
+                            {{ tag }}
+                        </div>
+                    </div>
+                </template>
+
+                <template #authorName>
+                    <div
+                        v-if="contentFromBase['author'] && contentFromBase['author']"
+                        class="EventHeroAuthorContainer flex flex-row items-center"
+                    >
+                        <div class="smallPartnerLogo w-24 h-20 flex items-center mx-4">
+                            <img
+                                :src="`${imageURL}/${contentFromBase['author']['author_logo']}`"
+                                alt="logo"
+                            >
+                        </div>
+                        <div class="authorName">
+                            {{ contentFromBase['author']['author_name'] }}
+                        </div>
+                    </div>
+                </template>
+
                 <template #subtitleText1>
                     {{ contentFromBase['created_at'] }}
                 </template>
+
                 <template #subtitleText2>
-                    <div v-html="contentFromBase['event_excerpt']" />
+                    <div class="eventDetails here flex gap-2 flex-col">
+                        <div class="flex flex-row items-center">
+                            <CalendarIcon class="mr-2" />
+                            {{ new Date(Date.parse(contentFromBase['start_date'])).toLocaleDateString('en-GB', {
+                                day: '2-digit', month: 'long', year: 'numeric'
+                            }) }}
+                        </div>
+                        <div class="flex flex-row items-center">
+                            <TimeIcon class="mr-2 flex justify-center items-center " />
+                            {{ new Date(Date.parse(contentFromBase['start_date'])).toLocaleString('en-US',{ hour: 'numeric', minute: 'numeric', hour12: true } ) }}
+                            {{ "-" }}
+                            {{ new Date(Date.parse(contentFromBase['end_date'])).toLocaleString('en-US',{ hour: 'numeric', minute: 'numeric', hour12: true } ) }}
+                        </div>
+                        <div class="flex flex-row items-center">
+                            <LocationIcon class="mr-2" />
+                            location -TBD
+                        </div>
+                    </div>
+                    <!--                    <div v-html="purify.sanitize(contentFromBase['event_excerpt'])" />-->
                 </template>
             </BaseHero>
         </template>
@@ -34,7 +92,7 @@ import EventSingleExtraContentRenderer from "@/js/components/events/EventSingleE
                     </div>
                     <div
                         class="text-lg flex content-paragraph overflow-hidden max-w-full"
-                        v-html="contentFromBase['event_content']"
+                        v-html="purify.sanitize(contentFromBase['event_content'])"
                     />
                     <template
                         v-for="(content,index) in contentFromBase['extra_content']"
@@ -47,6 +105,9 @@ import EventSingleExtraContentRenderer from "@/js/components/events/EventSingleE
                 <div class="w-1/3 flex flex-col">
                     <!--                   <AdviceSingleCuratedContent />-->
                 </div>
+            </div>
+            <div class="overflow-scroll flex">
+                <pre> {{ contentFromBase }}</pre>
             </div>
         </template>
     </BaseSingle>

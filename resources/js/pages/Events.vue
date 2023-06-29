@@ -27,7 +27,7 @@ const { data: allEvents, error: eventError } = useSWRV(`${serverURL}/fetchEventP
     <div class="EventContentContainer flex flex-col h-full px-20">
         <div class="EventCardListContainer heading text-xl pt-10 flex flex-row flex-1 justify-between flex-wrap  gap-6">
             <EventCard
-                v-for="(event, index) in allEvents.slice(0,3)"
+                v-for="(event, index) in allEvents"
                 :key="index"
                 :event-content="event"
                 :show-icon="true"
