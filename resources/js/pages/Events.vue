@@ -1,5 +1,7 @@
 <script setup>
 import EventsHero from '../components/events/EventsHero.vue';
+import EventsCalendar from '../components/events/EventsCalendar.vue';
+import EventsView from '../components/events/EventsView.vue';
 import SectionHeader from '../components/global/SectionHeader.vue';
 import { onBeforeMount , ref, computed } from "vue";
 import useSWRV from "swrv";
@@ -33,6 +35,30 @@ const { data: allEvents, error: eventError } = useSWRV(`${serverURL}/fetchEventP
                 :show-icon="true"
             />
         </div>
+    </div>
+
+    <sectionHeader
+        :classes="'bg-[#C73858]'"
+        :section="'events'"
+        :title="'Calendar'"
+        :button-text="'View all events'"
+        :button-callback="() => router.push('/browse/events')"
+    />
+
+    <div class="eventCalendarContainer flex flex-col h-full px-20 mt-20">
+        <div class="flex flex-row flex-wrap">
+            <div class="w-1/2 pl-8">
+                <EventsCalendar
+                    :events="allEvents"
+                />
+            </div>
+            <div class="w-1/2">
+                <EventsView
+                    :events="allEvents"
+                />
+            </div>
+        </div>
+
     </div>
 </template>
 <!--<script>-->
