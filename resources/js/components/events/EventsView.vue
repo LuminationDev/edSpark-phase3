@@ -1,40 +1,41 @@
 <script setup>
-    import { ref } from 'vue';
+import {ref} from 'vue';
 
-    const props = defineProps({
-        events: {
-            type: Array,
-            required: true
+const props = defineProps({
+    events: {
+        type: Array,
+        required: true
+    }
+});
+
+const sortedEvents = ref({});
+
+const arraySorter = () => {
+    if(!props.events) return []
+    let sorted = props.events.sort((a, b) => {
+        return new Date(a.start_date) - new Date(b.start_date);
+    });
+
+    let sortedData = {};
+
+    sorted.forEach(obj => {
+        const date = obj.start_date.split(' ')[0];
+
+        if (sortedData.hasOwnProperty(date)) {
+            sortedData[date].push(obj);
+        } else {
+            sortedData[date] = [obj];
         }
     });
 
-    const sortedEvents = ref({});
+    sortedEvents.value = sortedData
+};
 
-    const arraySorter = () => {
-        let sorted = props.events.sort((a, b) => {
-            return new Date(a.start_date) - new Date(b.start_date);
-        });
+arraySorter();
 
-        let sortedData = {};
-
-        sorted.forEach(obj => {
-            const date = obj.start_date.split(' ')[0];
-
-            if (sortedData.hasOwnProperty(date)) {
-                sortedData[date].push(obj);
-            } else {
-                sortedData[date] = [obj];
-            }
-        });
-
-        sortedEvents.value = sortedData
-    };
-
-    arraySorter();
-
-    const handleClickSingleEvent = (eventId) => {
-        console.log('Clicked the event with id: ', eventId);
-    }
+const handleClickSingleEvent = (eventId) => {
+    console.log('Clicked the event with id: ', eventId);
+}
 
 </script>
 
@@ -62,9 +63,14 @@
                     class="min-w-[8px] min-h-full rounded-sm"
                 />
                 <div class="flex flex-col gap-4 overflow-hidden">
-                    <h5 class="font-semibold text-[18px]">{{ event.event_title }}</h5>
+                    <h5 class="font-semibold text-[18px]">
+                        {{ event.event_title }}
+                    </h5>
 
-                    <div class="eventEvcerptTextInline" v-html="event.event_excerpt" />
+                    <div
+                        class="eventEvcerptTextInline"
+                        v-html="event.event_excerpt"
+                    />
                 </div>
             </div>
         </div>
@@ -72,15 +78,15 @@
 </template>
 
 <style lang="scss">
-    .eventEvcerptTextInline {
-        max-width: 584px;
+.eventEvcerptTextInline {
+    max-width: 584px;
 
-        p {
-            max-width: 584px;
-            width: 584px;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            height: 100px;
-        }
+    p {
+        max-width: 584px;
+        width: 584px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        height: 100px;
     }
+}
 </style>

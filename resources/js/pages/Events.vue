@@ -58,23 +58,5 @@ const { data: allEvents, error: eventError } = useSWRV(`${serverURL}/fetchEventP
                 />
             </div>
         </div>
-
     </div>
 </template>
-<!--<script>-->
-<!--    import EventsHero from '../components/events/EventsHero.vue';-->
-
-<!--    export default {-->
-<!--        components: {-->
-<!--            EventsHero-->
-<!--        }-->
-<!--    }-->
-<!--</script>-->
-
-<!--<template>-->
-<!--    <div>-->
-<!--        <EventsHero />-->
-
-<!--       -->
-<!--    </div>-->
-<!--</template>-->

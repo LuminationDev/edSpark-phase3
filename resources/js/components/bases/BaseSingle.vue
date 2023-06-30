@@ -8,6 +8,8 @@ import {isEqual} from "lodash";
 import {imageURL, serverURL} from "@/js/constants/serverUrl";
 import BaseHero from "@/js/components/bases/BaseHero.vue";
 import recommenderEdsparkSingletonFactory from "@/js/recommender/recommenderEdspark";
+import {isObjectEmpty} from "@/js/helpers/objectHelpers";
+import Loader from "@/js/components/spinner/Loader.vue";
 
 const props = defineProps({
     // to be advice, software, hardware etc
@@ -146,7 +148,10 @@ const handleEmitFromSubmenu = (value) => {
 
 </script>
 <template>
-    <div class="singleContainer flex flex-col">
+    <div
+        v-if="!isObjectEmpty(singleContent) || props.contentType === 'school'"
+        class="singleContainer flex flex-col"
+    >
         <slot
             name="hero"
             :content-from-base="singleContent"
@@ -157,6 +162,17 @@ const handleEmitFromSubmenu = (value) => {
             :content-from-base="singleContent"
             :recommendation-from-base="recommendedContent"
         />
+    </div>
+    <div
+        v-else
+        class="flex justify-center py-10"
+    >
+        <div class="font-semibold text-xl">
+            <Loader
+                :loader-color="'#0072DA'"
+                :loader-message="'Data Loading'"
+            />
+        </div>
     </div>
 </template>
 
