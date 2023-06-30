@@ -9,21 +9,9 @@ import './bootstrap';
 // import oktaConfig from './constants/oktaConfig';
 // import OktaVue, { LoginCallback } from '@okta/okta-vue';
 import VueGoogleMaps from 'vue-google-maps-community-fork';
-// import oktaAuth from './constants/oktaAuth';
 
+import { setupCalendar } from 'v-calendar';
 
-// const pinia = createPinia();
-// createApp(App)
-//     .use(pinia)
-//     .use(router)
-//     .use(OktaVue, { oktaAuth })
-//     .use(VueGoogleMaps, {
-//         load: {
-//             key: import.meta.env.VITE_GOOGLE_MAPS_API_KEY,
-//         },
-//         autobindAllEvents: true,
-//     })
-//     .mount('#app');
 
 const pinia = createPinia();
 // const authStore = useAuthStore(pinia);
@@ -37,4 +25,5 @@ createApp(App)
         },
         autobindAllEvents: true,
     })
+    .use(setupCalendar, {})
     .mount('#app');

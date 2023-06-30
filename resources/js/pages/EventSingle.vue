@@ -7,8 +7,13 @@ import {imageURL} from "@/js/constants/serverUrl";
 import TimeIcon from "@/js/components/svg/event/TimeIcon.vue";
 import CalendarIcon from "@/js/components/svg/event/CalendarIcon.vue";
 import LocationIcon from "@/js/components/svg/event/LocationIcon.vue";
+import {useRouter} from "vue-router";
 
-
+const router = useRouter()
+const handleClickViewProfile = (author_id) => {
+    console.log('view profile has been clicked')
+    router.push('/partner/' + author_id)
+}
 </script>
 <template>
     <BaseSingle content-type="event">
@@ -52,8 +57,10 @@ import LocationIcon from "@/js/components/svg/event/LocationIcon.vue";
                                 <div class="mb-2 text-2xl">
                                     {{ contentFromBase['author']['author_name'] }}
                                 </div>
-                                <div>
-                                    View Profile
+                                <div class="hover:text-red-200 hover:cursor-pointer">
+                                    <button @click="() => handleClickViewProfile(contentFromBase['author']['author_id'])">
+                                        View Profile
+                                    </button>
                                 </div>
                             </div>
                         </div>
@@ -120,6 +127,7 @@ import LocationIcon from "@/js/components/svg/event/LocationIcon.vue";
 
 <style scoped>
 .eventSingleContent >>> p {
-    margin-top: 16px
+    /*margin-top: 16px*/
 }
+
 </style>
