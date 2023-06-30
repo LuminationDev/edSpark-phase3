@@ -8,10 +8,11 @@ import TimeIcon from "@/js/components/svg/event/TimeIcon.vue";
 import CalendarIcon from "@/js/components/svg/event/CalendarIcon.vue";
 import LocationIcon from "@/js/components/svg/event/LocationIcon.vue";
 import {useRouter} from "vue-router";
+import EventsLocation from "@/js/components/events/EventsLocation.vue";
+import EventsRsvp from "@/js/components/events/EventsRsvp.vue";
 
 const router = useRouter()
 const handleClickViewProfile = (author_id) => {
-    console.log('view profile has been clicked')
     router.push('/partner/' + author_id)
 }
 </script>
@@ -112,9 +113,9 @@ const handleClickViewProfile = (author_id) => {
                     </template>
                 </div>
                 <!--      Curated Content      -->
-                <div class="w-1/3 flex flex-col">
-                    <div>maps</div>
-                    <div> advice RSVP section</div>
+                <div class="w-1/3 flex flex-col p-4">
+                    <EventsLocation :location-type="contentFromBase['event_type']" />
+                    <EventsRsvp :location-type="contentFromBase['event_type']" />
                 </div>
             </div>
             <div class="overflow-scroll flex">
@@ -126,8 +127,9 @@ const handleClickViewProfile = (author_id) => {
 
 
 <style scoped>
-.eventSingleContent >>> p {
-    /*margin-top: 16px*/
+:deep(p){
+    margin-top: 16px;
+    text-align: justify;
 }
 
 </style>

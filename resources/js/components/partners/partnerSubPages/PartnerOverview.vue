@@ -67,7 +67,7 @@ const emits = defineEmits([])
 </template>
 <style scoped>
 
-.PartnerOverviewContainer >>>  p{
+:deep(p){
     margin-top: 16px;
     text-align: justify;
 }

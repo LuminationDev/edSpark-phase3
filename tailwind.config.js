@@ -29,7 +29,7 @@ module.exports = {
     theme: {
         extend: {
             colors: {
-                primary: {
+                main: {
                     navy: '#002858',
                     darkTeal: '#0A7982',
                     teal: '#339999',

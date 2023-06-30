@@ -32,7 +32,7 @@ const focus = () => {
 }
 const handleInput = (e) => {
     const target = e.target
-    emit('update:modelValue', target.value)
+    emit('update:modelValue', parseInt(target.value))
     emit('inputUpdate')
 }
 
@@ -54,7 +54,7 @@ defineExpose({
             ref="inputRef"
             :value="modelValue"
             :placeholder="placeholder"
-            type="text"
+            type="number"
             class="mr-1 border-2 rounded p-2 border-black text-black"
             :class="{
                 '!border-red-500': v$ && v$.$error

@@ -262,7 +262,6 @@ const isSchoolContentPopulated = computed(() => {
                 aria-hidden="true"
                 :src="`${imageURL}/${schoolContent.cover_image}`"
                 alt="School background preload image"
-
             >
             <!-- @load="handleCoverImageLoaded" -->
             <BaseSingle
@@ -321,8 +320,7 @@ const isSchoolContentPopulated = computed(() => {
                                                     <!-- :class="`bg-${colorTheme}-600`" -->
                                                     <div
                                                         v-if="toggleTooltip && tooltipIndex === index"
-                                                        class="absolute shadow-xl w-[450px] px-[24px] py-[18px] border-l-[3px] border-white bg-primary-navy"
-
+                                                        class="absolute shadow-xl w-[450px] px-[24px] py-[18px] border-l-[3px] border-white bg-main-navy"
                                                     >
                                                         <h3 class="text-[24px] font-semibold text-white">
                                                             {{ tech.name }}
