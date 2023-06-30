@@ -118,9 +118,7 @@ const handleClickViewProfile = (author_id) => {
                     <EventsRsvp :location-type="contentFromBase['event_type']" />
                 </div>
             </div>
-            <div class="overflow-scroll flex">
-                <pre> {{ contentFromBase }}</pre>
-            </div>
+            <div class="overflow-scroll flex" />
         </template>
     </BaseSingle>
 </template>
