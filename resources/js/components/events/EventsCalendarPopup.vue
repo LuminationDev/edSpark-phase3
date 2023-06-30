@@ -19,14 +19,7 @@
     }
 
     const formatTime = (theDate) => {
-        let newDate = new Date(theDate);
-        let hours = newDate.getHours();
-        let meridiem = hours >= 12 ? 'pm' : 'am';
-        hours = (hours % 12) || 12;
-        let minutes = newDate.getMinutes();
-        minutes = minutes <= 9 ? `0${minutes}` : minutes;
-
-        return `${hours}:${minutes} ${meridiem}`;
+        return new Date(theDate).toLocaleTimeString('en-us', { hour: 'numeric', minute: 'numeric', hour12: true });
     }
 
     const checkIfMultiDay = (startDate, endDate) => {
@@ -48,6 +41,9 @@
         console.log('Clicked the event with id: ', eventId);
     }
 
+const print = (thing) => {
+    console.log(thing.customData.cover_image);
+}
 </script>
 
 <template>
@@ -61,14 +57,16 @@
             <div class="eventPopupContent w-full flex flex-col gap-4">
                 <div
                     v-for="(event, index) in dayEvents"
+                    :key="index"
                 >
+                {{ print(event) }}
                     <div
                         class="flex flex-row h-[146px] gap-4 w-full place-items-center cursor-pointer hover:bg-slate-50 px-6 py-2"
                         @click="handleClickEventFromPopup(event.customData.event_id)"
                     >
                         <div
                             class="min-w-[100px] min-h-[100px] max-w-[100px] max-h-[100px]"
-                            :style="`background: url(${imageURL}/${event.customData.cover_image}) center center / cover no-repeat`"
+                            :style="`background: url('${imageURL}/${event.customData.cover_image}') center center / cover no-repeat;`"
                         />
                         <div class="shortDescription flex flex-col h-full w-[588px]">
                             <div class="flex flex-row justify-between pb-2">
@@ -89,27 +87,16 @@
     </div>
 </template>
 
-<style lang="scss">
-
-    .shortDescription  {
-        // white-space: unset !important;
-    }
-
+<style scoped>
     .eventEvcerptText {
         width: 588px;
+    }
 
-        p {
-            // -webkit-line-clamp: 4;
-            // display: -webkit-box;
-            max-width: 588px;
-            // -webkit-line-clamp: 4;
-            // line-clamp: 4;
-            // -webkit-box-orient: vertical;
-            width: 588px;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            // white-space: nowrap;
-            height: 100px;
-        }
+    .eventEvcerptText >>> p {
+        max-width: 588px;
+        width: 588px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        height: 100px;
     }
 </style>

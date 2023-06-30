@@ -51,12 +51,12 @@ const { data: allEvents, error: eventError } = useSWRV(`${serverURL}/fetchEventP
             v-if="allEvents && allEvents.length > 0"
             class="flex flex-row flex-wrap"
         >
-            <div class="w-1/2 pl-8">
+            <div class="w-2/3 pl-8">
                 <EventsCalendar
                     :events="allEvents"
                 />
             </div>
-            <div class="w-1/2">
+            <div class="w-1/3">
                 <EventsView
                     :events="allEvents"
                 />

@@ -54,6 +54,7 @@
         "sass": "^1.63.2",
         "search-dropdown-vue": "^1.0.3",
         "swrv": "^1.0.3",
+        "tailwind-scrollbar": "^3.0.4",
         "v-calendar": "^3.0.3",
         "vue": "^3.3.4",
         "vue-axios": "^3.5.2",
