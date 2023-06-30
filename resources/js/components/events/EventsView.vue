@@ -12,7 +12,8 @@ const sortedEvents = ref({});
 
 const arraySorter = () => {
     if(!props.events) return []
-    let sorted = props.events.sort((a, b) => {
+    let clonedEvents = _.cloneDeep(props.events)
+    let sorted = clonedEvents.sort((a, b) => {
         return new Date(a.start_date) - new Date(b.start_date);
     });
 
@@ -40,7 +41,7 @@ const handleClickSingleEvent = (eventId) => {
 </script>
 
 <template>
-    <div class="p-6 w-full he-fit">
+    <div class="px-6 w-full he-fit">
         <div
             v-for="(eventArr, date) in sortedEvents"
             :key="date"

@@ -11,6 +11,7 @@ import EventCard from "../components/events/EventsCard.vue";
 import {serverURL} from "../constants/serverUrl";
 import {axiosFetcher} from "../helpers/fetcher";
 import {useRouter} from "vue-router";
+import Loader from "@/js/components/spinner/Loader.vue";
 
 const router = useRouter()
 const { data: allEvents, error: eventError } = useSWRV(`${serverURL}/fetchEventPosts`, axiosFetcher)
@@ -46,7 +47,10 @@ const { data: allEvents, error: eventError } = useSWRV(`${serverURL}/fetchEventP
     />
 
     <div class="eventCalendarContainer flex flex-col h-full px-20 mt-20">
-        <div class="flex flex-row flex-wrap">
+        <div
+            v-if="allEvents && allEvents.length > 0"
+            class="flex flex-row flex-wrap"
+        >
             <div class="w-1/2 pl-8">
                 <EventsCalendar
                     :events="allEvents"
@@ -55,6 +59,17 @@ const { data: allEvents, error: eventError } = useSWRV(`${serverURL}/fetchEventP
             <div class="w-1/2">
                 <EventsView
                     :events="allEvents"
+                />
+            </div>
+        </div>
+        <div
+            v-else
+            class="flex justify-center py-10"
+        >
+            <div class="font-semibold text-xl">
+                <Loader
+                    :loader-color="'#0072DA'"
+                    :loader-message="'Calendar Loading'"
                 />
             </div>
         </div>
