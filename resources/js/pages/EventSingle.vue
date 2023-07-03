@@ -115,7 +115,11 @@ const handleClickViewProfile = (author_id) => {
                 <!--      Curated Content      -->
                 <div class="w-1/3 flex flex-col p-4">
                     <EventsLocation :location-type="contentFromBase['event_type']" />
-                    <EventsRsvp :location-type="contentFromBase['event_type']" />
+                    <EventsRsvp
+                        :author-info="contentFromBase['author']"
+                        :event-id="contentFromBase['event_id']"
+                        :location-type="contentFromBase['event_type']"
+                    />
                 </div>
             </div>
             <div class="overflow-scroll flex" />

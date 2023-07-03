@@ -27,11 +27,15 @@ defineEmits(['update:modelValue'])
                 class="flex flex-row items-center text-red-500 mt-2"
             >
                 <ErrorIconSmall
-                    class="w-6 h-6 stroke-inactive fill-inactive shrink-0 max-w-none mr-1"
+                    class="w-4 h-4 stroke-inactive fill-inactive shrink-0 max-w-none mr-2"
                     alt="error icon"
                 />
-                <span class="text-xs">{{ error.$message }}</span>
+                <span class="text-sm">{{ error.$message }}</span>
             </div>
         </div>
+        <div
+            v-else
+            class="h-4"
+        />
     </div>
 </template>

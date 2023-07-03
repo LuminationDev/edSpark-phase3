@@ -35,6 +35,7 @@ class EventController extends Controller
                 'author'=> [
                     'author_id' => $event->author->id,
                     'author_name'=> $event->author->full_name,
+                    'author_email'=> $event->author->email,
                     'author_type' => $event->author->usertype->user_type_name,
                     'author_logo' => json_decode($author_logo)
                 ],
@@ -78,6 +79,7 @@ class EventController extends Controller
             'author'=> [
                 'author_id' => $event->author->id,
                 'author_name'=> $event->author->full_name,
+                'author_email'=> $event->author->email,
                 'author_type' => $event->author->usertype->user_type_name,
                 'author_logo' => json_decode($author_logo)
             ],

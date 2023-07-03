@@ -20,7 +20,7 @@ const { data: allEvents, error: eventError } = useSWRV(`${serverURL}/fetchEventP
 
 <template>
     <EventsHero />
-    <sectionHeader
+    <SectionHeader
         :classes="'bg-[#C73858]'"
         :section="'events'"
         :title="'Upcoming Events'"
@@ -38,7 +38,7 @@ const { data: allEvents, error: eventError } = useSWRV(`${serverURL}/fetchEventP
         </div>
     </div>
 
-    <sectionHeader
+    <SectionHeader
         :classes="'bg-[#C73858]'"
         :section="'events'"
         :title="'Calendar'"
