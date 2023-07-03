@@ -51,7 +51,7 @@
         "http-proxy-middleware": "^2.0.6",
         "pinia": "^2.1.3",
         "sanitize-html": "^2.10.0",
-        "sass": "^1.63.2",
+        "sass": "^1.63.3",
         "search-dropdown-vue": "^1.0.3",
         "swrv": "^1.0.3",
         "tailwind-scrollbar": "^3.0.4",
