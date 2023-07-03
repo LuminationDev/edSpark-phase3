@@ -37,10 +37,10 @@ const handleClickBookmark = (postType, postId) => {
 
 <template>
     <div class="userBookmarkOuterContainer flex flex-col  ">
-        <div class="bookmarksectiontitle flex px-4 h-16 bg-primary-darkTeal rounded-t-xl items-center text-white text-lg uppercase font-semibold">
+        <div class="bookmarksectiontitle flex px-4 h-16 bg-main-darkTeal rounded-t-xl items-center text-white text-lg uppercase font-semibold">
             Your Bookmarks
         </div>
-        <div class="userBookmarkContentSection h-[30vh] bg-primary-teal/80 px-10 pt-6 text-white overflow-scroll rounded-b-lg">
+        <div class="userBookmarkContentSection h-[30vh] bg-main-teal/80 px-10 pt-6 text-white overflow-scroll rounded-b-lg">
             <template
                 v-for="(singleBookmark, index) in bookmarkData"
                 :key="index"

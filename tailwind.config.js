@@ -29,7 +29,7 @@ module.exports = {
     theme: {
         extend: {
             colors: {
-                primary: {
+                main: {
                     navy: 'rgba(0, 40, 88, 1)',
                     darkTeal: '#0A7982',
                     teal: '#339999',
@@ -77,7 +77,6 @@ module.exports = {
     plugins: [
         forms,
         typography,
-        require('tailwind-scrollbar')({ nocompatible: true }),
     ],
 }
 

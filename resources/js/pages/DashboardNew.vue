@@ -326,7 +326,7 @@ onMounted(async () => {
         <!--        Individual Sections -->
 
         <SectionHeader
-            :classes="'bg-primary-teal'"
+            :classes="'bg-main-teal'"
             :section="'events'"
             :title="'New Events'"
             :button-text="'View all events'"
@@ -342,8 +342,7 @@ onMounted(async () => {
             :col-count="3"
             :section-type="'events'"
             :type-tag-color="'bg-secondary-red'"
-        >
-        </CardCarouselWrapper>
+        />
 
         <SectionHeader
             :classes="'bg-secondary-darkBlue'"
@@ -410,8 +409,8 @@ onMounted(async () => {
                 </div>
             </div>
             <CardWrapper
-                class="w-[65%]"
                 :key="softwareLoading"
+                class="w-[65%]"
                 :card-data="softwaresData ? softwaresData : []"
                 :loading="softwareLoading"
                 :row-count="2"
@@ -433,7 +432,7 @@ onMounted(async () => {
         <CardLoading v-else class="px-huge" :number-per-row="2" :additional-classes="'!justify-end'" /> -->
 
         <SectionHeader
-            :classes="'bg-primary-darkTeal'"
+            :classes="'bg-main-darkTeal'"
             :section="'advice'"
             :title="'Advice'"
             :button-text="'View all resources'"
@@ -492,7 +491,7 @@ onMounted(async () => {
         <CardLoading v-else class="px-huge" :number-per-row="2" :additional-classes="'!justify-end'" /> -->
 
         <SectionHeader
-            :classes="'bg-primary-navy'"
+            :classes="'bg-main-navy'"
             :section="'schools'"
             :title="'Latest School Profiles'"
             :button-text="'View all schools'"

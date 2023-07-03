@@ -28,13 +28,12 @@
             popover: {
                 label: event.event_title
             },
-            dot: event.event_type === 'Virtual' ? 'customRed' : 'customGreen',
-            // dot: {
-            //     style: {
-            //         backgroundColor: event.event_type === 'Virtual' ? 'customRed' : 'customGreen',
-            //     }
-            // },
-            highlight: event.event_type === 'Virtual' ? 'customRed' : 'customGreen',
+            dot: {
+                style: {
+                    backgroundColor: event.event_type === 'Virtual' ? 'red' : 'blue',
+                }
+            },
+            highlight: event.event_type === 'Virtual' ? 'red' : 'blue',
             customData: event
         }))
     ]);

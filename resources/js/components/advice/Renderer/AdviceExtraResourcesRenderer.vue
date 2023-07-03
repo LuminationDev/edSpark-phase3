@@ -1,13 +1,13 @@
 <script setup>
-    const props = defineProps({
-        itemArray: {
-            type: Array,
-            required: true
+const props = defineProps({
+    itemArray: {
+        type: Array,
+        required: true
 
-        }
-    });
+    }
+});
 
-    console.log(props.itemArray);
+console.log(props.itemArray);
 </script>
 
 <template>
@@ -19,7 +19,7 @@
             <div class="w-full h-[3px] bg-black" />
         </div>
 
-        <div class="bg-primary-navy px-6 py-12 text-white">
+        <div class="bg-main-navy px-6 py-12 text-white">
             <h3 class="text-[21px] font-bold mb-3">
                 {{ itemArray.heading }}
             </h3>

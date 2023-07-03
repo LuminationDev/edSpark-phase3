@@ -20,7 +20,11 @@ class AdviceController extends Controller
                 'post_title' => $advice->post_title,
                 'post_content' => $advice->post_content,
                 'post_excerpt' => $advice->post_excerpt,
-                'author' => $advice->author->full_name,
+//                'author' => $advice->author->full_name,
+                'author'=> [
+                    'author_id' => $advice->author->id,
+                    'author_name'=> $advice->author->full_name
+                ],
                 'cover_image' => ($advice->cover_image) ? $advice->cover_image : NULL ,
                 'template' => ($advice->template) ? $advice->template : NULL,
                 'extra_content' => ($advice->extra_content) ? $advice->extra_content : NULL,
@@ -48,7 +52,10 @@ class AdviceController extends Controller
             'post_title' => $advice->post_title,
             'post_content' => $advice->post_content,
             'post_excerpt' => $advice->post_excerpt,
-            'author' => $advice->author->full_name,
+            'author'=> [
+                'author_id' => $advice->author->id,
+                'author_name'=> $advice->author->full_name
+            ],
             'cover_image' => ($advice->cover_image) ? $advice->cover_image : NULL,
             'template' => ($advice->template) ? $advice->template : NULL,
             'extra_content' => ($advice->extra_content) ? $advice->extra_content : NULL,
@@ -92,7 +99,10 @@ class AdviceController extends Controller
                         'post_title' => $advice->post_title,
                         'post_content' => $advice->post_content,
                         'post_excerpt' => $advice->post_excerpt,
-                        'author' => $advice->author->full_name,
+                        'author'=> [
+                            'author_id' => $advice->author->id,
+                            'author_name'=> $advice->author->full_name
+                        ],
                         'cover_image' => ($advice->cover_image) ? $advice->cover_image : NULL,
                         'template' => ($advice->template) ? $advice->template : NULL,
                         'extra_content' => ($advice->extra_content) ? $advice->extra_content : NULL,

@@ -58,7 +58,7 @@
                 @click="handleClickSingleEvent(event.event_id)"
             >
                 <div
-                    :class="event.event_type === 'Virtual' ? 'bg-secondary-red' : 'bg-secondary-green'"
+                    :class="event.event_type === 'Virtual' ? 'bg-red-500' : 'bg-blue-500'"
                     class="min-w-[8px] min-h-full rounded-sm"
                 />
                 <div class="flex flex-col gap-4 overflow-hidden">

@@ -1,4 +1,4 @@
-<script setup>
+\<script setup>
 /**
  * Import Dependencies
  */
@@ -86,26 +86,41 @@ setupRoutes();
 <template>
     <div class="w-full h-[240px] relative z-40">
         <div
-            class="nav-background w-full h-full pt-7 bg-[url(http://localhost:5173/resources/assets/images/children-vr.png)] bg-no-repeat bg-cover">
-            <nav class="bg-[#002856]/50 py-2 px-12 w-full" v-if="isAuthenticated">
+            class="nav-background w-full h-full pt-7 bg-[url(http://localhost:5173/resources/assets/images/children-vr.png)] bg-no-repeat bg-cover"
+        >
+            <nav
+                v-if="isAuthenticated"
+                class="bg-[#002856]/50 py-2 px-12 w-full"
+            >
                 <ul class="flex flex-row flex-wrap gap-8 text-white text-[24px] font-semibold font-['Poppins']">
-                    <NavItems v-for="(route, i) in navLinks" :key="i" :route="route" />
+                    <NavItems
+                        v-for="(route, i) in navLinks"
+                        :key="i"
+                        :route="route"
+                    />
                 </ul>
             </nav>
         </div>
 
-        <ProfileDropdown :key="currentUser" :current-user="currentUser" :profile-dropdown="profileDropdown"
-            :avatar-url="avatarUrl" @handle-avatar-click="handleAvatarClick" v-if="isAuthenticated" />
+        <ProfileDropdown
+            v-if="isAuthenticated"
+            :key="currentUser"
+            :current-user="currentUser"
+            :profile-dropdown="profileDropdown"
+            :avatar-url="avatarUrl"
+            @handle-avatar-click="handleAvatarClick"
+        />
 
-        <!-- <Logo
-            class="absolute right-20 top-36 z-30 md:w-44 md:h-44 md:top-24 sm:w-36 sm:h-36 sm:top-32 w-36 h-36 lg:top-24" /> -->
+        <!--        <Logo-->
+        <!--            class="absolute right-20 top-36 z-30 md:w-44 md:h-44 md:top-24 sm:w-36 sm:h-36 sm:top-32 w-36 h-36 lg:top-24" />-->
         <!-- Just rempving for demo purposes TODO: fix for mobile screen etc. -->
         <!-- class="absolute right-20 top-36 z-30 md:w-56 md:h-56 md:top-24 sm:w-36 sm:h-36 sm:top-32 w-36 h-36 lg:top-24" -->
         <button>
-            <router-link :to="{ name: 'dashboard' }" v-if="isAuthenticated">
-                <Logo class="absolute right-20 top-8 z-30 w-56 h-56 nav-logo transition-all" />
+            <router-link :to="{name: 'dashboard'}">
+                <Logo
+                    class="absolute right-20 top-8 z-30 w-56 h-56 nav-logo transition-all"
+                />
             </router-link>
-            <Logo class="absolute right-20 top-8 z-30 w-56 h-56 nav-logo transition-all" v-else />
         </button>
         <NavSwoosh class="w-full absolute -bottom-6 left-0 right-0 pointer-events-none" />
     </div>

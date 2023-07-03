@@ -1,4 +1,4 @@
-<script setup>
+*-<script setup>
 import { computed} from "vue";
 import {serverURL} from "@/js/constants/serverUrl";
 import SoftwareCard from "@/js/components/software/SoftwareCard.vue";
