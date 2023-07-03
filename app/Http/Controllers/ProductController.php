@@ -93,6 +93,10 @@ class ProductController extends Controller
         $data = [
             'id' => $product->id,
             'product_name' => $product->product_name,
+            'author'=> [
+                'author_id' => $product->owner_id,
+                'author_name' => ($product->owner_id) ? $product->owner->full_name : NULL
+            ],
             'product_content' => $product->product_content,
             'product_excerpt' => $product->product_excerpt,
             'price' => $product->price,
@@ -127,6 +131,10 @@ class ProductController extends Controller
                 $result = [
                     'id' => $product->id,
                     'product_name' => $product->product_name,
+                    'author'=> [
+                        'author_id' => $product->owner_id,
+                        'author_name' => ($product->owner_id) ? $product->owner->full_name : NULL
+                    ],
                     'product_content' => $product->product_content,
                     'product_excerpt' => $product->product_excerpAt,
                     'price' => $product->price,

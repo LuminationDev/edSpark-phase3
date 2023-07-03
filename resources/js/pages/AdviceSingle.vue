@@ -55,7 +55,7 @@ const timeFormatter = (originalFormat) => {
             </BaseHero>
         </template>
 
-        <template #content="{contentFromBase}">
+        <template #content="{contentFromBase,recommendationFromBase}">
             <div
                 class="adviceSingleContent p-4 px-8 flex flex-row w-full overflow-hidden mt-14"
             >
@@ -77,7 +77,7 @@ const timeFormatter = (originalFormat) => {
                 </div>
                 <!--      Curated Content      -->
                 <div class="w-1/3 flex flex-col">
-                    <AdviceSingleCuratedContent />
+                    <AdviceSingleCuratedContent :recommendation-from-base="recommendationFromBase" />
                 </div>
             </div>
         </template>

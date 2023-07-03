@@ -158,13 +158,13 @@ const handleChangeSubmenu = (value) => {
                 </template>
                 <template v-if="activeSubmenu === hardwareSubmenu[1]['value']">
                     <div class="text-black py-4 px-20 w-full">
-                        <template v-if="contentFromBase['category']['categoryName'] == 'Laptop'">
+                        <template v-if="contentFromBase['category']['categoryName'] === 'Laptop'">
                             <HardwareLaptopTechSpecs :extra-content="contentFromBase['extra_content']" />
                         </template>
-                        <template v-else-if="contentFromBase['category']['categoryName'] == 'Emerging Technology'">
+                        <template v-else-if="contentFromBase['category']['categoryName'] === 'Emerging Technology'">
                             <HardwareEmergingTechSpecs :extra-content="contentFromBase['extra_content']" />
                         </template>
-                        <template v-else-if="contentFromBase['category']['categoryName'] == 'Audio Visual'">
+                        <template v-else-if="contentFromBase['category']['categoryName'] === 'Audio Visual'">
                             <HardwareAudioVisualTechSpecs :extra-content="contentFromBase['extra_content']" />
                         </template>
                         <template v-else>

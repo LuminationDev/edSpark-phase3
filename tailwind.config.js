@@ -29,8 +29,8 @@ module.exports = {
     theme: {
         extend: {
             colors: {
-                primary: {
-                    navy: '#002858',
+                main: {
+                    navy: 'rgba(0, 40, 88, 1)',
                     darkTeal: '#0A7982',
                     teal: '#339999',
                     lightTeal: '#28D5CB',
@@ -48,6 +48,11 @@ module.exports = {
                     red: '#DE4668',
                     lightRed: '#F7C1C5',
 
+                },
+                custom: {
+                    genericLightBlue: 'rgba(180, 216, 241, 0.35)', // light blue - table header
+                    genericLighterBlue: 'rgba(180, 216, 241, 0.19)', // Even lighter blue
+                    genericScrollbarDark: '#0A0045', // only repeated coz i screwed something up with scrollbar customisation
                 },
 
                 adviceYellow: '#FFC836',

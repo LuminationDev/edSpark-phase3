@@ -4,6 +4,7 @@ import {serverURL} from "@/js/constants/serverUrl";
 import AdviceCard from "@/js/components/advice/AdviceCard.vue";
 import {axiosFetcher} from "@/js/helpers/fetcher";
 import useSWRV from "swrv";
+import {guid} from "@/js/helpers/guidGenerator";
 
 
 const {data : allCuratedAdvice, error: curatedAdviceError} = useSWRV(`${serverURL}/fetchAdvicePosts`, axiosFetcher)
@@ -29,7 +30,7 @@ const twoRecommendation  = computed( () => {
         </div>
         <AdviceCard
             v-for="(advice,index) in twoRecommendation"
-            :key="index"
+            :key="index + guid()"
             :advice-content="advice"
             :show-icon="true"
             :number-per-row="1"

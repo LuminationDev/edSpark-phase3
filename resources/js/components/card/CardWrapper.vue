@@ -188,7 +188,7 @@ const handleClickCard = (item) => {
                         :like-bookmark-data="getLikeBookmarkData(computedCardData[index])"
                         :extra-classes="additionalClasses ? additionalClasses : '!max-w-[400px] w-[400px]'"
                         :section-type="sectionType"
-                        @emitCardClick="handleClickCard"
+                        @emit-card-click="handleClickCard"
                     >
                         <template
                             v-if="sectionType === 'advice'"

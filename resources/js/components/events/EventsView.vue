@@ -39,7 +39,7 @@
 </script>
 
 <template>
-    <div class="p-6 w-full he-fit">
+    <div class="p-6 w-full h-[700px] overflow-y-scroll scrollbar-thin scrollbar-thumb-custom scrollbar-thumb-custom-genericScrollbarDark scrollbar-thumb-rounded-full mr-2">
         <div
             v-for="(eventArr, date) in sortedEvents"
             :key="date"
@@ -71,16 +71,24 @@
     </div>
 </template>
 
-<style lang="scss">
+<style scoped>
     .eventEvcerptTextInline {
-        max-width: 584px;
+        max-width: 354px;
+    }
 
-        p {
-            max-width: 584px;
-            width: 584px;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            height: 100px;
-        }
+    .eventEvcerptTextInline >>> p {
+        max-width: 354px;
+        width: 354px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        height: 100px;
+    }
+</style>
+
+<style>
+    ::-webkit-scrollbar-track {
+        margin-top: 1rem !important;
+        margin-bottom: 1rem !important;
+        margin-right: 1rem !important;
     }
 </style>

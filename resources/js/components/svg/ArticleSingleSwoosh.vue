@@ -5,7 +5,7 @@ import {ref } from 'vue'
 const props = defineProps({
     colorTheme:{
         type: String,
-        required: false
+        required: true
     }
 })
 const useCustomColor= ref(false)

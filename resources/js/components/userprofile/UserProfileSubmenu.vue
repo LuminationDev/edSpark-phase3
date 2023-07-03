@@ -36,7 +36,7 @@ onMounted( () => {
 
 </script>
 <template>
-    <div class="UserProfileSubmenuContainer flex flex-row w-full h-16 bg-primary-darkTeal rounded-t-xl items-center text-white text-lg uppercase font-semibold">
+    <div class="UserProfileSubmenuContainer flex flex-row w-full h-16 bg-main-darkTeal rounded-t-xl items-center text-white text-lg uppercase font-semibold">
         <div
             v-for="(item,index) in props.submenuItems"
             :key="index"
