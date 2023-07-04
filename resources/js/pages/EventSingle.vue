@@ -50,7 +50,7 @@ const handleClickViewProfile = (author_id, author_type) => {
                         <div class="flex flex-row items-center">
                             <div class="smallPartnerLogo w-24 h-20 flex items-center mx-4">
                                 <img
-                                    :src="`${imageURL}/${contentFromBase['author']['author_logo']}`"
+                                    :src="`${imageURL}/${String(contentFromBase['author']['author_logo'])}`"
                                     alt="logo"
                                 >
                             </div>
@@ -58,7 +58,10 @@ const handleClickViewProfile = (author_id, author_type) => {
                                 <div class="mb-2 text-2xl">
                                     {{ contentFromBase['author']['author_name'] }}
                                 </div>
-                                <div class="hover:text-red-200 hover:cursor-pointer">
+                                <div
+                                    v-if="!(contentFromBase['author']['author_type'] === 'user')"
+                                    class="hover:text-red-200 hover:cursor-pointer "
+                                >
                                     <button @click="() => handleClickViewProfile(contentFromBase['author']['author_id'],contentFromBase['author']['author_type'])">
                                         View Profile
                                     </button>
@@ -114,7 +117,10 @@ const handleClickViewProfile = (author_id, author_type) => {
                 </div>
                 <!--      Curated Content      -->
                 <div class="w-1/3 flex flex-col p-4">
-                    <EventsLocation :location-type="contentFromBase['event_type']" />
+                    <EventsLocation
+                        :location-type="contentFromBase['event_type']"
+                        :location-info="contentFromBase['event_location']"
+                    />
                     <EventsRsvp
                         :author-info="contentFromBase['author']"
                         :event-id="contentFromBase['event_id']"

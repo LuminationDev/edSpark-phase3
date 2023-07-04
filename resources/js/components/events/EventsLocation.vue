@@ -6,10 +6,14 @@ const props = defineProps({
     locationType:{
         type: String,
         required: true
+    },
+    locationInfo:{
+        type: Object,
+        required: true
     }
 })
 
-console.log(props.locationType)
+console.log(props.locationInfo)
 const emits = defineEmits([])
 
 const mapOptions = {
@@ -51,7 +55,10 @@ const mapOptions = {
             </GoogleMap>
         </div>
     </div>
-    <div v-else>
+    <div v-else-if="props.locationType.toLowerCase() === 'hybrid'">
+        {{ props.locationType }}
+    </div>
+    <div v-else-if="props.locationType.toLowerCase() === 'virtual'">
         {{ props.locationType }}
     </div>
 </template>
