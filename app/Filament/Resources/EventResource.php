@@ -22,6 +22,8 @@ use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 use SplFileInfo;
 
+use Closure;
+
 
 class EventResource extends Resource
 {
@@ -72,6 +74,22 @@ class EventResource extends Resource
                                     ->default($user)
                                     ->disabled(),
                             ]),
+                        Forms\Components\Grid::make(3)
+                            ->schema([
+                                Forms\Components\Select::make('event_location')
+                                    // ->label('Location Selector')
+                                    ->reactive()
+                                    ->options([
+                                        'in_person' => 'In Person',
+                                        'remote' => 'Remote',
+                                        'hybrid' => 'Hybrid'
+                                    ]),
+                                Forms\Components\TextInput::make('Url')
+                                    ->hidden(fn (Closure $get) => $get('event_location') == null || $get('event_location') !== 'remote' || $get('event_location') !== 'hybrid'),
+                                Forms\Components\TextInput::make('Address')
+                                    // ->required(),
+                                    ->hidden(fn (Closure $get) => $get('event_location') == null || $get('event_location') !== 'in_person' || $get('event_location') !== 'hybrid'),
+                                ]),
                         Forms\Components\Grid::make(2)
                             ->schema([
                                 Forms\Components\BelongsToSelect::make('event_type')
