@@ -11,6 +11,8 @@ import AdviceCard from "@/js/components/advice/AdviceCard.vue";
 import SoftwareCard from "@/js/components/software/SoftwareCard.vue";
 import {findNestedKeyValue} from "@/js/helpers/objectHelpers";
 import SchoolCard from "@/js/components/schools/SchoolCard.vue";
+import PartnerCard from "@/js/components/partners/PartnerCard.vue";
+import EventsCard from "@/js/components/events/EventsCard.vue";
 const props = defineProps({
     resourceList:{
         type: Array,
@@ -206,6 +208,27 @@ const paginatedFilteredData = computed(() =>{
                     >
                         <SchoolCard
                             :school-data="data"
+                        />
+                    </div>
+                </template>
+                <template v-else-if="searchType === 'partner'">
+                    <div
+                        :key="data.id"
+                        class="border-2 mx-4 my-4 basis-1/4 max-w-[320px] h-[470px] border-[0.5px] border-black transition-all group hover:shadow-2xl"
+                    >
+                        <PartnerCard
+                            :partner-content="data"
+                        />
+                    </div>
+                </template>
+                <template v-else-if="searchType === 'event'">
+                    <div
+                        :key="data.id"
+                        class="border-2 mx-4 my-4 basis-1/4 max-w-[320px] h-[470px] border-[0.5px] border-black transition-all group hover:shadow-2xl"
+                    >
+                        <EventsCard
+                            :event-content="data"
+                            :show-icon="true"
                         />
                     </div>
                 </template>
