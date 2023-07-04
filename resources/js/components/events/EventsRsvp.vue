@@ -29,9 +29,14 @@ const props = defineProps({
 })
 
 const allSites = ref([])
+const currentUserIsOwner = ref(false)
+const currentOwnerInfo = ref({})
 const currentUserRsvped = ref(false)
 const currentRsvpInfo = ref({})
 const rsvpError = ref('')
+
+
+
 const {currentUser} = storeToRefs(useUserStore())
 
 const state = reactive({
@@ -65,8 +70,13 @@ onMounted(() =>{
     }
     console.log(currentUser)
 
+    // check if current user is Rsvped or Owner
     axios.post(`${serverURL}/checkIfUserRsvped`, checkRsvpData).then(res => {
-        console.log(res.data.rsvped)
+        console.log(res.data)
+        currentUserIsOwner.value = res.data['isOwner'] === 'true'
+        if(currentUserIsOwner.value){
+            currentOwnerInfo.value = res.data['owner_info']
+        }
         currentUserRsvped.value = res.data['rsvped'] === 'true'
         currentRsvpInfo.value = res.data['rsvp_info']
 
@@ -85,13 +95,12 @@ const dropdownSites = computed(() => {
 })
 
 const onSelectedSchoolDropdown = (data) => {
-    console.log(data)
     v$.value.schoolName.$model = data.name
 }
 
 const handleSubmitRsvp = () => {
     v$.value.$validate();
-    if (!v$.value.$errors) {
+    if (!!v$.value.$errors) {
         console.log('successfully validated')
         rsvpError.value = ''
         const rsvpData = {
@@ -104,6 +113,7 @@ const handleSubmitRsvp = () => {
         return axios.post(`${serverURL}/addRsvpToEvent`, rsvpData).then(res => {
             console.log(res.data)
             currentUserRsvped.value = true
+            currentRsvpInfo.value = rsvpData
         }).catch(err =>{
             console.log(err)
             currentUserRsvped.value = false
@@ -113,6 +123,8 @@ const handleSubmitRsvp = () => {
 
     } else {
         console.log('not sending mate, there is error')
+        rsvpError.value = 'Please double check your details'
+
     }
 }
 
@@ -135,12 +147,20 @@ const handleClickContactOrganiser = () => {
                 Please register your interest below to reserve your spot!
             </div>
         </div>
-
+        <div
+            v-if="currentUserIsOwner"
+            class="flex flex-col gap-2 py-4 border-b-2 border-white border-dashed"
+        >
+            <div class="rsvpHeader font-bold uppercase text-xl">
+                You are the owner of this event
+            </div>
+            <div> Number of guests registered: {{ currentOwnerInfo['total_guest'] }} </div>
+        </div>
         <form
-            v-if="!currentUserRsvped"
+            v-else-if="!currentUserIsOwner && !currentUserRsvped"
             class="rsvpFormInputs flex flex-col gap-2 py-4 border-b-2 border-white border-dashed "
             autocomplete="off"
-            @submit.prevent
+            @submit.prevent=""
         >
             <TextInput
                 v-model="v$.firstName.$model"
@@ -209,22 +229,28 @@ const handleClickContactOrganiser = () => {
             :rsvp-info="currentRsvpInfo"
         />
         <!--   Event Contact Form     -->
-        <div class="eventContactForm contactHeader  flex flex-col py-2 text-lg border-b-2 border-b-white border-dashed">
-            <div class="rsvpHeader font-bold uppercase text-2xl">
+        <div class="eventContactForm contactHeader  flex flex-col py-4 text-lg border-b-2 border-b-white border-dashed">
+            <div class="rsvpHeader font-bold uppercase text-xl">
                 Contact the organiser
             </div>
             <div class="eventRsvp form-cta pb-4">
                 Do you have any question? Reach out to the organiser for more information.
             </div>
-
-            <GenericButton
-                :callback="handleClickContactOrganiser"
-                class="mt-4 rounded-sm !bg-main-teal w-fit px-6 font-semibold"
+            <a
+                v-if="props.authorInfo && props.authorInfo['author_email']"
+                class="flex"
+                :href="`mailto:${props.authorInfo['author_email']}`"
             >
-                <template #default>
-                    Contact
-                </template>
-            </GenericButton>
+                <GenericButton
+                    :callback="handleClickContactOrganiser"
+                    class="mt-4 rounded-sm !bg-main-teal w-fit px-6 font-semibold"
+                >
+                    <template #default>
+                        Contact
+                    </template>
+                </GenericButton>
+
+            </a>
         </div>
     </div>
 </template>

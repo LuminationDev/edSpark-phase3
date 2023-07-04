@@ -63,7 +63,6 @@ class PartnerController extends Controller
             }
             $partnerMeta = Metahelper::getMeta(Partnermeta::class, $partner,'partner_id', 'partner_meta_key', 'partner_meta_value');
 
-
             $data = [
                 'id' => $partner->id,
                 'user_id' => $partner->user_id,

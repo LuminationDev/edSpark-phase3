@@ -12,8 +12,8 @@ import EventsLocation from "@/js/components/events/EventsLocation.vue";
 import EventsRsvp from "@/js/components/events/EventsRsvp.vue";
 
 const router = useRouter()
-const handleClickViewProfile = (author_id) => {
-    router.push('/partner/' + author_id)
+const handleClickViewProfile = (author_id, author_type) => {
+    router.push(`/${author_type}/${author_id}` )
 }
 </script>
 <template>
@@ -59,7 +59,7 @@ const handleClickViewProfile = (author_id) => {
                                     {{ contentFromBase['author']['author_name'] }}
                                 </div>
                                 <div class="hover:text-red-200 hover:cursor-pointer">
-                                    <button @click="() => handleClickViewProfile(contentFromBase['author']['author_id'])">
+                                    <button @click="() => handleClickViewProfile(contentFromBase['author']['author_id'],contentFromBase['author']['author_type'])">
                                         View Profile
                                     </button>
                                 </div>

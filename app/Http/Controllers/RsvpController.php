@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Helpers\OutputHelper;
 use App\Models\Event;
 use App\Models\Rsvp;
 use App\Models\User;
@@ -10,7 +11,8 @@ use Illuminate\Support\Facades\Validator;
 
 class RsvpController extends Controller
 {
-    public function fetchRsvpByEventId($event_id){
+    public function fetchRsvpByEventId($event_id)
+    {
         $rsvps = RSVP::where('event_id', $event_id)->get();
 
         $data = [];
@@ -36,7 +38,8 @@ class RsvpController extends Controller
         return response()->json($data);
     }
 
-    public function addRsvpToEvent(Request $request){
+    public function addRsvpToEvent(Request $request)
+    {
         try {
             $data = $request->all();
 
@@ -62,7 +65,7 @@ class RsvpController extends Controller
                 ->first();
 
             if ($existingRsvp) {
-                return response()->json(['error' => 'RSVP already exists for the user and event. Please use the update function'], 400);
+                return response()->json(['error' => 'RSVP already exists for the user and event.'], 400);
             }
             $event = Event::find($data['event_id']);
             // Create a new RSVP entry
@@ -82,7 +85,8 @@ class RsvpController extends Controller
         }
     }
 
-    public function removeRsvpFromEvent(Request $request){
+    public function removeRsvpFromEvent(Request $request)
+    {
         try {
             $data = $request->all();
 
@@ -116,7 +120,10 @@ class RsvpController extends Controller
             return response()->json(['error' => 'An error occurred while removing RSVP'], 500);
         }
     }
-    public function checkIfUserRsvped(Request $request){
+
+    public function checkIfUserRsvped(Request $request)
+    //Check if user is RSVPED or isOwner
+    {
         try {
             $data = $request->all();
 
@@ -132,26 +139,43 @@ class RsvpController extends Controller
             if ($validator->fails()) {
                 return response()->json(['error' => $validator->errors()], 400);
             }
-
-            if(!(RSVP::where('event_id', $data['event_id'])->where('user_id', $data['user_id'])->exists())){
-                return response()->json(['rsvped' => 'false']);
-
-            }else{
-                $rsvp = RSVP::where('event_id', $data['event_id'])
-                    ->where('user_id', $data['user_id'])->first();
-                $result = [
-                    'rsvped' => 'true',
-                    'rsvp_info' => [
-                        'full_name' => $rsvp->full_name,
-                        'school_name' => $rsvp->school_name,
-                        'number_of_guests' => $rsvp->number_of_guests,
-                    ]
-                ];
-
-                return response()->json($result);
+            // check isOwner
+            $user = User::find($data['user_id']);
+            $event = Event::find($data['event_id']);
+            if ($event->author_id == $user->id) {
+                $isOwner = 'true';
+                $guestSum = Rsvp::where('event_id', $data['event_id'])->sum('number_of_guests');
+                OutputHelper::print('yess is owner');
+                OutputHelper::print($guestSum);
+            } else {
+                $isOwner = 'false';
+                OutputHelper::print('no not owner');
             }
 
-            // Check if the user has RSVPed for the event
+
+            if (!(RSVP::where('event_id', $data['event_id'])->where('user_id', $data['user_id'])->exists())) {
+//                return response()->json(['rsvped' => 'false']);
+                $isRsvped = 'false';
+
+            } else {
+                $rsvp = RSVP::where('event_id', $data['event_id'])
+                    ->where('user_id', $data['user_id'])->first();
+                $isRsvped = 'true';
+            }
+
+            $result = [
+                'rsvped' => $isRsvped,
+                'isOwner' => $isOwner,
+                'owner_info' => $isOwner == 'true' ? [
+                    'total_guest' => $guestSum ?? 0
+                ] : [],
+                'rsvp_info' => (isset($rsvp) ? [
+                    'full_name' => $rsvp->full_name,
+                    'school_name' => $rsvp->school_name,
+                    'number_of_guests' => $rsvp->number_of_guests,
+                ] : [])
+            ];
+            return response()->json($result);
 
         } catch (\Exception $e) {
             // Handle any exceptions that occur during RSVP check
