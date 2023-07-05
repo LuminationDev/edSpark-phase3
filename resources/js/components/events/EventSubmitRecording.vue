@@ -1,6 +1,6 @@
 <script setup>
 
-import {onMounted, ref} from "vue";
+import {computed, onMounted, ref} from "vue";
 import {storeToRefs} from "pinia";
 import {useUserStore} from "@/js/stores/useUserStore";
 import {serverURL} from "@/js/constants/serverUrl";
@@ -49,6 +49,13 @@ onMounted(() => {
     })
 })
 
+const formattedRecordingLink = computed(() =>{
+    if(!recordingLink.value.includes('http')){
+        return 'https://' + recordingLink.value
+    } else{
+        return recordingLink.value
+    }
+})
 </script>
 
 <template>
@@ -89,7 +96,12 @@ onMounted(() => {
         <div class="submitLinkbody text-base mt-4">
             Here is the recording link of the event shared by the organizer
         </div>
-        {{ recordingLink }}
+        <a
+            class="cursor-pointer font-semibold hover:text-main-teal"
+            :href="formattedRecordingLink"
+        >
+            {{ recordingLink }}
+        </a>
     </template>
     <template v-else>
         <div class="submitLinkbody text-base mt-4">
