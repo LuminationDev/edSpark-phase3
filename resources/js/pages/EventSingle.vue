@@ -125,6 +125,8 @@ const handleClickViewProfile = (author_id, author_type) => {
                         :author-info="contentFromBase['author']"
                         :event-id="contentFromBase['event_id']"
                         :location-type="contentFromBase['event_type']"
+                        :event-start-date="contentFromBase['start_date']"
+                        :event-end-date="contentFromBase['end_date']"
                     />
                 </div>
             </div>

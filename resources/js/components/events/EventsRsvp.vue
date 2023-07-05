@@ -11,6 +11,7 @@ import ErrorMessages from "@/js/components/bases/ErrorMessages.vue";
 import {storeToRefs} from "pinia";
 import {useUserStore} from "@/js/stores/useUserStore";
 import EventRsvpSummary from "@/js/components/events/EventRsvpSummary.vue";
+import EventSubmitRecording from "@/js/components/events/EventSubmitRecording.vue";
 
 
 const props = defineProps({
@@ -18,13 +19,23 @@ const props = defineProps({
         type: String,
         required: true
     },
-    eventId:{
+    eventId: {
         type: Number,
         required: true
     },
-    authorInfo:{
+    authorInfo: {
         type: Object,
         required: true
+    },
+    eventStartDate: {
+        type: String,
+        required: false,
+        default: ''
+    },
+    eventEndDate: {
+        type: String,
+        required: false,
+        default: ''
     }
 })
 
@@ -34,7 +45,6 @@ const currentOwnerInfo = ref({})
 const currentUserRsvped = ref(false)
 const currentRsvpInfo = ref({})
 const rsvpError = ref('')
-
 
 
 const {currentUser} = storeToRefs(useUserStore())
@@ -55,7 +65,6 @@ const rules = {
 const v$ = useVuelidate(rules, state)
 
 
-
 axios.get(`${serverURL}/fetchAllSites`).then(res => {
     allSites.value = res.data
 }).catch(err => {
@@ -63,7 +72,7 @@ axios.get(`${serverURL}/fetchAllSites`).then(res => {
     console.log('Theres an error');
 })
 
-onMounted(() =>{
+onMounted(() => {
     let checkRsvpData = {
         event_id: props.eventId,
         user_id: currentUser.value.id
@@ -74,7 +83,7 @@ onMounted(() =>{
     axios.post(`${serverURL}/checkIfUserRsvped`, checkRsvpData).then(res => {
         console.log(res.data)
         currentUserIsOwner.value = res.data['isOwner'] === 'true'
-        if(currentUserIsOwner.value){
+        if (currentUserIsOwner.value) {
             currentOwnerInfo.value = res.data['owner_info']
         }
         currentUserRsvped.value = res.data['rsvped'] === 'true'
@@ -82,9 +91,26 @@ onMounted(() =>{
 
     })
     v$.value.schoolName.$dirty = false
+    console.log(eventStatus.value)
 })
 
+// ENDED, RUNNING, SCHEDULED
+const eventStatus = computed(() =>{
+    const currentDate = Date.now()
+    const eventStartDate = Date.parse(props.eventStartDate)
+    const eventEndDate = Date.parse(props.eventEndDate)
+    if(currentDate > eventEndDate){
+        return "ENDED"
+    } else if (eventStartDate < currentDate  && currentDate < eventEndDate){
+        return "RUNNING"
+    } else if (currentDate < eventStartDate){
+        return "SCHEDULED"
+    } else{
+        return "UNKNOWN"
+    }
 
+
+})
 const dropdownSites = computed(() => {
     if (allSites.value.length === 0) return []
     else {
@@ -106,7 +132,7 @@ const handleSubmitRsvp = () => {
         const rsvpData = {
             user_id: currentUser.value.id,
             event_id: props.eventId,
-            full_name: state.firstName +  " " + state.lastName,
+            full_name: state.firstName + " " + state.lastName,
             school_name: state.schoolName,
             number_of_guests: state.numOfGuest
         }
@@ -114,7 +140,7 @@ const handleSubmitRsvp = () => {
             console.log(res.data)
             currentUserRsvped.value = true
             currentRsvpInfo.value = rsvpData
-        }).catch(err =>{
+        }).catch(err => {
             console.log(err)
             currentUserRsvped.value = false
             rsvpError.value = 'Failed to RSVP event. Please contact the organizer below'
@@ -154,10 +180,10 @@ const handleClickContactOrganiser = () => {
             <div class="rsvpHeader font-bold uppercase text-xl">
                 You are the owner of this event
             </div>
-            <div> Number of guests registered: {{ currentOwnerInfo['total_guest'] }} </div>
+            <div> Number of guests registered: {{ currentOwnerInfo['total_guest'] }}</div>
         </div>
         <form
-            v-else-if="!currentUserIsOwner && !currentUserRsvped"
+            v-else-if="!currentUserIsOwner && !currentUserRsvped && eventStatus !== 'ENDED'"
             class="rsvpFormInputs flex flex-col gap-2 py-4 border-b-2 border-white border-dashed "
             autocomplete="off"
             @submit.prevent=""
@@ -224,12 +250,33 @@ const handleClickContactOrganiser = () => {
                 > {{ rsvpError }}</span>
             </div>
         </form>
+
         <EventRsvpSummary
-            v-else
+            v-else-if="!currentUserIsOwner && eventStatus !== 'ENDED'"
             :rsvp-info="currentRsvpInfo"
         />
+        <div
+            v-else
+            class="eventRsvpClosed"
+        >
+            <div class="rsvpHeader font-bold uppercase text-xl mt-4">
+                This event has ended and registration has closed. Thank you
+            </div>
+        </div>
         <!--   Event Contact Form     -->
-        <div class="eventContactForm contactHeader  flex flex-col py-4 text-lg border-b-2 border-b-white border-dashed">
+        <div
+            v-if="(eventStatus === 'ENDED') "
+            class="flex flex-col py-4 text-lg border-b-2 border-b-white border-dashed"
+        >
+            <EventSubmitRecording
+                :event-id="props.eventId"
+                :current-user-is-owner="currentUserIsOwner"
+            />
+        </div>
+        <div
+            v-else
+            class="eventContactForm contactHeader  flex flex-col py-4 text-lg border-b-2 border-b-white border-dashed"
+        >
             <div class="rsvpHeader font-bold uppercase text-xl">
                 Contact the organiser
             </div>

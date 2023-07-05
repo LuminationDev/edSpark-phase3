@@ -111,4 +111,7 @@ Route::middleware('api')->group(function() {
     Route::post('addRsvpToEvent',[RsvpController::class,'addRsvpToEvent']);
     Route::post('removeRsvpFromEvent',[RsvpController::class,'removeRsvpFromEvent']);
     Route::post('checkIfUserRsvped',[RsvpController::class,'checkIfUserRsvped']);
+    Route::post('addEventRecording',[EventController::class,'addEventRecording']);
+    Route::get('checkEventRecording/{event_id}',[EventController::class,'checkEventRecording']);
+
 });
