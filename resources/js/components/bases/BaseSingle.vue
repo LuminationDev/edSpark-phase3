@@ -20,7 +20,7 @@ const props = defineProps({
 })
 const emits = defineEmits(['emitAvailableSubmenu','emitActiveTabToSpecificPage'])
 const singleContent = ref({})
-const baseIsLoading = ref(true)
+const baseIsLoading = ref(!(props.contentType.toLowerCase() === 'school') )
 /**
  * type can be advice, software, hardware etc
  *  type singleContent = {
@@ -121,6 +121,7 @@ const checkToReadOrFetchContent = async () =>{
         console.log('No content passed in. Will request from server')
         await axios.get(`${serverURL}/${byIdAPILink}/${route.params.id}`).then(res => {
             singleContent.value = res.data
+            baseIsLoading.value = false
         }).catch(err =>{
             console.log(err)
             baseIsLoading.value = false
@@ -150,6 +151,8 @@ watch(currentId, () => {
     if (window.history.state.content && singleContent.value) {
         if (!isEqual(JSON.parse(window.history.state.content), singleContent.value)) {
             singleContent.value = JSON.parse(window.history.state.content)
+            baseIsLoading.value = false
+
         }
     }
 })

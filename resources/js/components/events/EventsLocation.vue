@@ -1,6 +1,7 @@
-<script setup>
-import {ref, computed} from 'vue'
+<script setup xmlns="http://www.w3.org/1999/html">
+import {ref, computed, onMounted} from 'vue'
 import {GoogleMap, Marker} from 'vue3-google-map'
+import GenericButton from "@/js/components/button/GenericButton.vue";
 
 const props = defineProps({
     locationType:{
@@ -15,6 +16,7 @@ const props = defineProps({
 
 console.log(props.locationInfo)
 const emits = defineEmits([])
+const eventMapRef = ref(null)
 
 const mapOptions = {
     center: {
@@ -33,15 +35,50 @@ const mapOptions = {
     }
 };
 
+const markerCenter = ref({
+    lat: 0,
+    lng: 0
+})
+
+onMounted(() =>{
+    if(( props.locationType.toLowerCase() === 'in person' || props.locationType.toLowerCase() === 'hybrid') && props.locationInfo.address ){
+        const {address} = props.locationInfo
+        axios.get(`https://geocode.maps.co/search?q={${address}}`).then(res =>{
+            if(res.data[0]['lat'] && res.data[0]['lon']){
+                if(eventMapRef.value?.ready){
+                    const newCenter = {
+                        lat: Number(res.data[0]['lat']),
+                        lng: Number(res.data[0]['lon'])
+                    }
+                    eventMapRef.value.map.panTo(newCenter);
+                    markerCenter.value = newCenter;
+                }
+            }
+        })
+    }
+})
+const formattedUrl = computed(() => {
+    return props.locationInfo.url.includes('http') ? props.locationInfo.url : 'https://' + props.locationInfo.url
+})
+
+
 </script>
 
 <template>
     <div
-        v-if="props.locationType.toLowerCase() === 'in person'"
+        v-if="props.locationType.toLowerCase() === 'in person' || props.locationType.toLowerCase() === 'hybrid'"
     >
-        {{ props.locationType }}
+        <div class="border-2 p-4 border-black bg-blue-900 text-white">
+            <div class="EventAddressTitle">
+                You can attend is event in person on
+            </div>
+            <div class="eventAddress font-semibold">
+                {{ props.locationInfo.address }}
+            </div>
+        </div>
         <div class="flex w-full h-96 bg-slate-200">
             <GoogleMap
+                ref="eventMapRef"
                 api-key="AIzaSyAFbqxGQntzgzfzKFh6bArwU14MJhcV1Wc"
                 style="width: 100%; height: 100%"
                 :options="mapOptions.options"
@@ -50,15 +87,27 @@ const mapOptions = {
             >
                 <Marker
                     class="relative"
-                    :options="{ position: mapOptions.center}"
-                />
+                    :options="{ position: markerCenter}"
+                />¬
             </GoogleMap>
         </div>
     </div>
-    <div v-else-if="props.locationType.toLowerCase() === 'hybrid'">
-        {{ props.locationType }}
-    </div>
-    <div v-else-if="props.locationType.toLowerCase() === 'virtual'">
-        {{ props.locationType }}
+    <div v-else-if="props.locationType.toLowerCase() === 'virtual' || props.locationType.toLowerCase() === 'hybrid'">
+        <div
+            v-if="props.locationInfo.url"
+            class=" border-2 p-4 border-black bg-blue-900 text-white"
+        >
+            <div class="EventUrlTitle">
+                You can attend this event via this link below
+            </div>
+            <div class="VirtualEventLocationURL">
+                <a
+                    :href="formattedUrl"
+                    class="cursor-pointer font-semibold"
+                >{{ props.locationInfo.url }}</a>
+            </div>
+        </div>
     </div>
 </template>
+
+

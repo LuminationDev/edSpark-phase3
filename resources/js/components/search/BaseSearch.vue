@@ -13,6 +13,7 @@ import {findNestedKeyValue} from "@/js/helpers/objectHelpers";
 import SchoolCard from "@/js/components/schools/SchoolCard.vue";
 import PartnerCard from "@/js/components/partners/PartnerCard.vue";
 import EventsCard from "@/js/components/events/EventsCard.vue";
+import {guid} from "@/js/helpers/guidGenerator";
 const props = defineProps({
     resourceList:{
         type: Array,
@@ -33,13 +34,22 @@ const route = useRoute()
 
 const filteredTermData = computed(() => {
     if(!props.resourceList) return []
-    return props.resourceList.filter(data => {
+    let resourceWithKeys = props.resourceList.map(resource => {
+        resource['key'] = guid()
+        return resource
+    })
+    return resourceWithKeys.filter(data => {
         if (filterTerm.value.length < 1) return true
         if(data.post_title){
             if (data.post_title.toLowerCase().includes(filterTerm.value)) return true
         } else if(data.product_name){
             // just to accomodate product_name in hardware
             if (data.product_name.toLowerCase().includes(filterTerm.value)) return true
+        } else if(data.name){ // for partners
+            if(data.name.toLowerCase().includes(filterTerm.value)) return true
+        } else if(data.event_title) { // very straight forward for event
+            if(data.event_title.toLowerCase().includes(filterTerm.value)) return true
+
         }
         return false
     })
@@ -176,6 +186,7 @@ const paginatedFilteredData = computed(() =>{
         >
             <template
                 v-for="(data) in paginatedFilteredData"
+                :key="data['key']"
             >
                 <template
                     v-if="searchType === 'advice'"
