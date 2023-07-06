@@ -34,6 +34,8 @@ import axios from 'axios';
 import {appURL, serverURL} from "@/js/constants/serverUrl";
 import { useAuthStore } from './stores/useAuthStore';
 import PartnerSingle from "@/js/pages/PartnerSingle.vue";
+import PartnerSearch from "@/js/components/search/PartnerSearch.vue";
+import EventSearch from "@/js/components/search/EventSearch.vue";
 
 
 const router = createRouter({
@@ -77,9 +79,13 @@ const router = createRouter({
                     path: 'hardwares',
                     component: HardwareSearch
                 },{
+                    name: 'browsePartners',
+                    path: 'partners',
+                    component: PartnerSearch
+                },{
                     name: 'browseEvents',
                     path: 'events',
-                    component: HardwareSearch
+                    component: EventSearch
                 },
             ]
         },

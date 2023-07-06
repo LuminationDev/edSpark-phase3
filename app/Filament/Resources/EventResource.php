@@ -22,6 +22,8 @@ use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 use SplFileInfo;
 
+use Closure;
+
 
 class EventResource extends Resource
 {
@@ -72,11 +74,28 @@ class EventResource extends Resource
                                     ->default($user)
                                     ->disabled(),
                             ]),
-                        Forms\Components\Grid::make(2)
+                        Forms\Components\Grid::make(3)
                             ->schema([
+//                                Forms\Components\Select::make('event_location')
+//                                    // ->label('Location Selector')
+//                                    ->reactive()
+//                                    ->options([
+//                                        'in_person' => 'In Person',
+//                                        'remote' => 'Remote',
+//                                        'hybrid' => 'Hybrid'
+//                                    ]),
                                 Forms\Components\BelongsToSelect::make('event_type')
                                     ->label('Event type')
+                                    ->reactive()
                                     ->relationship('eventtype', 'event_type_name'),
+                                Forms\Components\TextInput::make('url')
+                                    ->label('URL')
+                                    ->hidden(fn (Closure $get) => $get('event_type') === null || $get('event_type') == '7'),
+                                Forms\Components\TextInput::make('address')
+                                    ->label('Address')
+                                    ->hidden(fn (Closure $get) => $get('event_type') === null || $get('event_type') == '6'),                                ]),
+                        Forms\Components\Grid::make(2)
+                            ->schema([
                                 Forms\Components\Select::make('event_status')
                                     ->options([
                                         'Published' => 'Published',

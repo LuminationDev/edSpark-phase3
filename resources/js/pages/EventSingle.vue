@@ -12,8 +12,8 @@ import EventsLocation from "@/js/components/events/EventsLocation.vue";
 import EventsRsvp from "@/js/components/events/EventsRsvp.vue";
 
 const router = useRouter()
-const handleClickViewProfile = (author_id) => {
-    router.push('/partner/' + author_id)
+const handleClickViewProfile = (author_id, author_type) => {
+    router.push(`/${author_type}/${author_id}` )
 }
 </script>
 <template>
@@ -50,7 +50,7 @@ const handleClickViewProfile = (author_id) => {
                         <div class="flex flex-row items-center">
                             <div class="smallPartnerLogo w-24 h-20 flex items-center mx-4">
                                 <img
-                                    :src="`${imageURL}/${contentFromBase['author']['author_logo']}`"
+                                    :src="`${imageURL}/${String(contentFromBase['author']['author_logo'])}`"
                                     alt="logo"
                                 >
                             </div>
@@ -58,8 +58,11 @@ const handleClickViewProfile = (author_id) => {
                                 <div class="mb-2 text-2xl">
                                     {{ contentFromBase['author']['author_name'] }}
                                 </div>
-                                <div class="hover:text-red-200 hover:cursor-pointer">
-                                    <button @click="() => handleClickViewProfile(contentFromBase['author']['author_id'])">
+                                <div
+                                    v-if="!(contentFromBase['author']['author_type'] === 'user')"
+                                    class="hover:text-red-200 hover:cursor-pointer "
+                                >
+                                    <button @click="() => handleClickViewProfile(contentFromBase['author']['author_id'],contentFromBase['author']['author_type'])">
                                         View Profile
                                     </button>
                                 </div>
@@ -114,8 +117,17 @@ const handleClickViewProfile = (author_id) => {
                 </div>
                 <!--      Curated Content      -->
                 <div class="w-1/3 flex flex-col p-4">
-                    <EventsLocation :location-type="contentFromBase['event_type']" />
-                    <EventsRsvp :location-type="contentFromBase['event_type']" />
+                    <EventsLocation
+                        :location-type="contentFromBase['event_type']"
+                        :location-info="contentFromBase['event_location']"
+                    />
+                    <EventsRsvp
+                        :author-info="contentFromBase['author']"
+                        :event-id="contentFromBase['event_id']"
+                        :location-type="contentFromBase['event_type']"
+                        :event-start-date="contentFromBase['start_date']"
+                        :event-end-date="contentFromBase['end_date']"
+                    />
                 </div>
             </div>
             <div class="overflow-scroll flex" />

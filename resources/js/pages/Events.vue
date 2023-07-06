@@ -12,15 +12,23 @@ import {serverURL} from "../constants/serverUrl";
 import {axiosFetcher} from "../helpers/fetcher";
 import {useRouter} from "vue-router";
 import Loader from "@/js/components/spinner/Loader.vue";
+import {guid} from "@/js/helpers/guidGenerator";
 
 const router = useRouter()
 const { data: allEvents, error: eventError } = useSWRV(`${serverURL}/fetchEventPosts`, axiosFetcher)
 
+const allEventsWithKeys = computed(() =>{
+    if(!allEvents.value) return []
+    return allEvents.value.map(event => {
+        event['key'] = guid()
+        return event
+    })
+})
 </script>
 
 <template>
     <EventsHero />
-    <sectionHeader
+    <SectionHeader
         :classes="'bg-[#C73858]'"
         :section="'events'"
         :title="'Upcoming Events'"
@@ -30,15 +38,15 @@ const { data: allEvents, error: eventError } = useSWRV(`${serverURL}/fetchEventP
     <div class="EventContentContainer flex flex-col h-full px-20">
         <div class="EventCardListContainer heading text-xl pt-10 flex flex-row flex-1 justify-between flex-wrap  gap-6">
             <EventCard
-                v-for="(event, index) in allEvents"
-                :key="index"
+                v-for="event in allEventsWithKeys.filter((event,index) => index < 3)"
+                :key="event['key']"
                 :event-content="event"
                 :show-icon="true"
             />
         </div>
     </div>
 
-    <sectionHeader
+    <SectionHeader
         :classes="'bg-[#C73858]'"
         :section="'events'"
         :title="'Calendar'"

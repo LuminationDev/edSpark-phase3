@@ -391,7 +391,7 @@ onMounted(async () => {
                     </div>
                     <div class="col-span-2 row-span-1 flex">
                         <img
-                            class="h-full pt-12 pb-8 ml-auto"
+                            class="h-full pt-12 pb-8"
                             src="../../assets/images/negotiatedDeals.png"
                             alt="Negotiated Deals"
                         >

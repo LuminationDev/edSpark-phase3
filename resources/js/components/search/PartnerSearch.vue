@@ -10,7 +10,7 @@ const swrvOptions = {
     refreshInterval: 30000 // refresh or revalidate data every 30 secs
 }
 
-const {data: eventList, error: eventError} = useSWRV(`${serverURL}/fetchEventPosts`, axiosFetcher, swrvOptions)
+const {data: partnerList, error: partnerError} = useSWRV(`${serverURL}/fetchAllPartners`, axiosFetcher, swrvOptions)
 
 const filterObject = ref({})
 
@@ -22,8 +22,8 @@ const handleFilter = (filters, dataPath) => {
 
 <template>
     <BaseSearch
-        search-type="event"
-        :resource-list="eventList"
+        search-type="partner"
+        :resource-list="partnerList"
         :live-filter-object="filterObject"
     />
 </template>

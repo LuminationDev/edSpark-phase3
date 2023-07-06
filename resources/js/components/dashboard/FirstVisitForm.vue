@@ -26,9 +26,9 @@ import {useRouter} from 'vue-router';
 
 const router = useRouter();
 
-import {useSiteStore} from '../../stores/useSiteStore.js';
-import {useUserStore} from '../../stores/useUserStore.js';
-import {useSchoolsStore} from '../../stores/useSchoolsStore.js';
+import {useSiteStore} from '@/js/stores/useSiteStore';
+import {useUserStore} from '@/js/stores/useUserStore';
+import {useSchoolsStore} from '@/js/stores/useSchoolsStore';
 
 const siteStore = useSiteStore();
 const userStore = useUserStore();
@@ -492,7 +492,7 @@ const closePopup = () => {
             <div class="flex flex-col">
                 <label
                     class="text-[18px] font-bold"
-                    for="Role"
+                    for="site"
                 >Your Site</label>
                 <SearchDropdown
                     class="searchable_dropdown"
