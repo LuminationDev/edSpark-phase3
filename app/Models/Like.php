@@ -11,12 +11,8 @@ class Like extends Model
 
     public $timestamps = false;
 
-    /**
-     *  The table associated with the model
-     *
-     * @var string
-     */
     protected $table = 'likes';
+
 
     /**
      * The attributes that are mass assignable

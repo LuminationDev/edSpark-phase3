@@ -22,7 +22,7 @@ const handleImageGallery = (index) => {
 
 <template>
     <div class="flex flex-row gap-8 flex-wrap place-items-center justify-around">
-        <div class="w-[50%]">
+        <div class="w-[50%] max-w-[500px]">
             <carousel
                 :items-to-show="1"
                 :wrap-around="true"
@@ -35,7 +35,7 @@ const handleImageGallery = (index) => {
                     <img
                         :src="`${imageURL}/${slide}`"
                         :alt="slideItems.product_excerpt"
-                        class="min-w-[300px] w-full rounded-lg"
+                        class="min-w-[300px] w-full rounded-lg w-fit"
                     >
                 </Slide>
 

@@ -14,6 +14,10 @@ module.exports = {
             "ignores": []
         }]
     },
+    parserOptions: {
+        ecmaVersion: 'latest',
+        sourceType: 'module'
+    },
     "overrides": [
         {
             "files": ["*.vue"],

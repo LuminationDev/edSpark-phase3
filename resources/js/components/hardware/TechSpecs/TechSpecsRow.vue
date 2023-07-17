@@ -41,6 +41,7 @@ const emits = defineEmits([])
                 </li>
             </ul>
         </div>
+        <!--   or   -->
         <div
             v-else
             class="techSpecsValue w-1/2 font-base"

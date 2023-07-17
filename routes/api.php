@@ -19,6 +19,7 @@ use App\Http\Controllers\LikeBookmarkController;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\OktaAuthController;
 use App\Http\Controllers\PartnerController;
+use App\Http\Controllers\RsvpController;
 use Illuminate\Support\Facades\Session;
 use App\Http\Controllers\LoginController;
 
@@ -104,5 +105,13 @@ Route::middleware('api')->group(function() {
     // Partners API
     Route::get('fetchAllPartners', [PartnerController::class, 'fetchAllPartners']);
     Route::get('fetchPartnerById/{id}', [PartnerController::class, 'fetchPartnerById']);
+
+    // Event Rsvp
+    Route::get('fetchRsvpByEventId/{event_id}',[RsvpController::class,'fetchRsvpByEventId']);
+    Route::post('addRsvpToEvent',[RsvpController::class,'addRsvpToEvent']);
+    Route::post('removeRsvpFromEvent',[RsvpController::class,'removeRsvpFromEvent']);
+    Route::post('checkIfUserRsvped',[RsvpController::class,'checkIfUserRsvped']);
+    Route::post('addEventRecording',[EventController::class,'addEventRecording']);
+    Route::get('checkEventRecording/{event_id}',[EventController::class,'checkEventRecording']);
 
 });

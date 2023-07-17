@@ -77,27 +77,48 @@ const recommenderEdsparkSingletonFactory = (function(){
             getSchoolsByTechnology(){
                 console.log('getschoolbyTech')
             }
+            async getSoftwareByUser() {
+                console.log('called gfetsoftware by user')
+            }
+
+            /**
+             *  Get software from the same author
+             * @param currentAuthor : Number
+             * @returns {Promise<void>}
+             */
+            async getSoftwareByItem(currentAuthor) {
+                const allSoftware = await this._fetchAllSoftwareAsync()
+
+                // get same brand or publisher or type - TODO}
+            }
+
+            async getAdviceByAuthorId(authorId){
+                return new Promise(async (res,rej) =>{
+                    const allAdvice = await this._fetchAllAdviceAsync()
+                    console.log(allAdvice)
+                    res(allAdvice.filter(advice => advice.author.author_id === +authorId))
+                })
+            }
 
             /**
              * Get technology (Hardware and Software) that is allowed to see by partners
              * returns a promise
              * @returns {Promise<Object>}
              */
-            async getTechByPartnerAsync(){
-                console.log('called getTechByParnter')
+            async getTechByAuthorAsync(authorId){
                 return new Promise(async(resolve, reject) => {
                     const allHardware = await this._fetchAllHardwareAsync()
                     const allSoftware = await this._fetchAllSoftwareAsync()
                     let result = {}
-                    result['hardware'] = allHardware.filter(hardware => hardware['author']['author_id'] === this.userId)
+                    result['hardware'] = allHardware.filter(hardware => hardware['author']['author_id'] === +authorId )
                     //if length is zero, return all data
-                    if(result['hardware'].length === 0){
-                        result['hardware'] = allHardware
-                    }
-                    result['software'] = allSoftware.filter(software => software['author']['author_id'] === this.userId)
-                    if(result['software'].length === 0) {
-                        result['software'] = allSoftware
-                    }
+                    // if(result['hardware'].length === 0){
+                    //     result['hardware'] = allHardware
+                    // }
+                    result['software'] = allSoftware.filter(software => software['author']['author_id'] === +authorId)
+                    // if(result['software'].length === 0) {
+                    //     result['software'] = allSoftware
+                    // }
                     resolve(result)
                 })
             }
@@ -108,11 +129,14 @@ const recommenderEdsparkSingletonFactory = (function(){
              * @returns {Promise<void>}
              */
             async getAllPartnersForPartner() {
-                console.log('called getAllPartners')
                 return new Promise( async(resolve,reject) => {
                     const allPartners = await this._fetchAllPartersAsync()
                     let result = {}
-                    result['partners'] = this.userRole !== "Partner" ? allPartners.filter(partner => partner.id !== this.userId) : allPartners
+                    console.log(this.userId)
+                    console.log(allPartners)
+                    this._logRecommenderData()
+                    // result['partners'] = this.userRole === "Partner" ? allPartners.filter(partner => partner.user_id !== this.userId) : allPartners
+                    result['partners'] = allPartners
                     resolve(result)
                 })
 
@@ -121,7 +145,6 @@ const recommenderEdsparkSingletonFactory = (function(){
 
         return{
             getInstance: function(userId, userRole, siteId){
-                console.log(instance)
                 if(!instance){
                     console.log('creating new instance of recommender')
                     instance = new recommenderEdspark(userId, userRole, siteId)

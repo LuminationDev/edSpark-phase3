@@ -19,7 +19,7 @@ onMounted(() => {
 })
 </script>
 <template>
-    <div class="profileMessageContainer flex flex-col pt-4 px-6 py-6 bg-primary-teal/80">
+    <div class="profileMessageContainer flex flex-col pt-4 px-6 py-6 bg-main-teal/80">
         <div
             v-for="(item, index) in notifications.result"
             :key="index"

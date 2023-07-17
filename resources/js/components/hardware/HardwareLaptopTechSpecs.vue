@@ -1,6 +1,6 @@
 <script setup>
 import {ref, computed} from 'vue'
-import {findNestedKeyValue} from "@/js/helpers/objectHelpers";
+import {findNestedKeyValue, isObjectEmpty} from "@/js/helpers/objectHelpers";
 import TechSpecsRow from "@/js/components/hardware/TechSpecs/TechSpecsRow.vue";
 
 const props = defineProps({
@@ -40,6 +40,8 @@ const laptopTechSpecs = computed(() => {
         if (Array.isArray(content['item'])) {
             console.log(content['item'][0])
             finalContent = content['item'][0]
+        } else{
+            finalContent = {}
         }
     }
     return finalContent
@@ -50,7 +52,7 @@ const laptopTechSpecs = computed(() => {
 
 <template>
     <div class="laptopTechSpecsContainer flex flex-col w-full bg-gray-50 text-xl p-4">
-        <template v-if="laptopTechSpecs">
+        <template v-if="!isObjectEmpty(laptopTechSpecs)">
             <div class="laptopTechSpecsTitle font-semibold text-3xl pb-6 ">
                 Tech Specs
             </div>

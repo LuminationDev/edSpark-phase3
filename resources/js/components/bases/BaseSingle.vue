@@ -8,6 +8,8 @@ import {isEqual} from "lodash";
 import {imageURL, serverURL} from "@/js/constants/serverUrl";
 import BaseHero from "@/js/components/bases/BaseHero.vue";
 import recommenderEdsparkSingletonFactory from "@/js/recommender/recommenderEdspark";
+import {isObjectEmpty} from "@/js/helpers/objectHelpers";
+import Loader from "@/js/components/spinner/Loader.vue";
 
 const props = defineProps({
     // to be advice, software, hardware etc
@@ -18,6 +20,7 @@ const props = defineProps({
 })
 const emits = defineEmits(['emitAvailableSubmenu','emitActiveTabToSpecificPage'])
 const singleContent = ref({})
+const baseIsLoading = ref(!(props.contentType.toLowerCase() === 'school') )
 /**
  * type can be advice, software, hardware etc
  *  type singleContent = {
@@ -104,6 +107,8 @@ onBeforeMount(async () => {
             const availableSubMenu = Object.values(availableSubMenuObject)[1] // bit rough but quite guaranteed to success
             emits('emitAvailableSubmenu', availableSubMenu)
         }
+    } else{
+
     }
     /// end of emiiting submenu
 
@@ -116,6 +121,10 @@ const checkToReadOrFetchContent = async () =>{
         console.log('No content passed in. Will request from server')
         await axios.get(`${serverURL}/${byIdAPILink}/${route.params.id}`).then(res => {
             singleContent.value = res.data
+            baseIsLoading.value = false
+        }).catch(err =>{
+            console.log(err)
+            baseIsLoading.value = false
         })
     } else {
         //content exists in window.history.state
@@ -123,9 +132,16 @@ const checkToReadOrFetchContent = async () =>{
             console.log('same id inside window history id compated to params id ')
             console.info('Advice content received from parent. No request will be sent to server')
             singleContent.value = JSON.parse(window.history.state.content)
+            baseIsLoading.value = false
+
         } else{
             await axios.get(`${serverURL}/${byIdAPILink}/${route.params.id}`).then(res => {
                 singleContent.value = res.data
+                baseIsLoading.value = false
+
+            }).catch(err =>{
+                console.log(err)
+                baseIsLoading.value = false
             })
         }
     }
@@ -135,6 +151,8 @@ watch(currentId, () => {
     if (window.history.state.content && singleContent.value) {
         if (!isEqual(JSON.parse(window.history.state.content), singleContent.value)) {
             singleContent.value = JSON.parse(window.history.state.content)
+            baseIsLoading.value = false
+
         }
     }
 })
@@ -144,7 +162,21 @@ const handleEmitFromSubmenu = (value) => {
 
 </script>
 <template>
-    <div class="singleContainer flex flex-col">
+    <div
+        v-if="baseIsLoading"
+        class="flex justify-center py-10"
+    >
+        <div class="font-semibold text-xl">
+            <Loader
+                :loader-color="'#0072DA'"
+                :loader-message="'Data Loading'"
+            />
+        </div>
+    </div>
+    <div
+        v-else-if="!isObjectEmpty(singleContent) || props.contentType === 'school'"
+        class="singleContainer flex flex-col"
+    >
         <slot
             name="hero"
             :content-from-base="singleContent"
@@ -155,6 +187,15 @@ const handleEmitFromSubmenu = (value) => {
             :content-from-base="singleContent"
             :recommendation-from-base="recommendedContent"
         />
+    </div>
+    <div
+        v-else
+        class="flex justify-center py-10"
+    >
+        <div class="font-semibold text-xl">
+            Sorry content not available.
+            Please go back
+        </div>
     </div>
 </template>
 

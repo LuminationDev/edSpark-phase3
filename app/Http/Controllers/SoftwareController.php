@@ -37,8 +37,8 @@ class SoftwareController extends Controller
                     'post_excerpt' => $software->post_excerpt,
 //                    'author' => ($software->author) ? $software->author->full_name : null,
                     'author' => [
-                        'author_id' => $software->author_id,
-                        'author_name' => ($software->author_id) ? $software->author->full_name : NULL
+                        'author_id' => $software->author->id,
+                        'author_name' => ($software->author->id) ? $software->author->full_name : NULL
                     ],
                     'cover_image' => ($software->cover_image) ? $software->cover_image : null,
                     'post_date' => $software->post_date,

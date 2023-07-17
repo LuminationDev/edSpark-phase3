@@ -12,6 +12,7 @@ import useSWRV from "swrv";
 import {serverURL} from "@/js/constants/serverUrl";
 import {axiosFetcher} from "@/js/helpers/fetcher";
 import {useRouter} from "vue-router";
+import {guid} from "@/js/helpers/guidGenerator";
 
 
 const router = useRouter()
@@ -58,7 +59,7 @@ const emergingTech = computed(()=>{
             :button-text="'View all laptops'"
             :button-callback="() => router.push('/browse/hardwares')"
         />
-        <div class="mx-[81px] mt-[64px] flex flex-row flex-1 flex-wrap h-full justify-between">
+        <div class="px-huge flex flex-row flex-1 gap-6 flex-wrap h-full justify-between">
             <HardwareCard
                 v-for="(laptop, index) in laptops.slice(0,4)"
                 :key="index"
@@ -75,7 +76,7 @@ const emergingTech = computed(()=>{
             :title="'Audio and Visual'"
             :button-text="'View all devices'"
         />
-        <div class="mx-[81px] mt-[64px] grid grid-cols-12">
+        <div class="px-huge grid grid-cols-12">
             <div class="col-span-3 flex flex-col gap-6">
                 <h5 class="text-[18px] font-bold">
                     A Variety of AV equipment
@@ -97,7 +98,7 @@ const emergingTech = computed(()=>{
                     </h5>
                 </div>
             </div>
-            <div class="col-span-9 flex flex-row justify-between">
+            <div class="col-span-9 flex flex-row gap-6 justify-between">
                 <HardwareCard
                     v-for="(item, index) in audioVisual.slice(0,4)"
                     :key="index"
@@ -116,22 +117,23 @@ const emergingTech = computed(()=>{
             :button-text="'View all devices'"
         />
         <div class="mx-[81px] mt-[64px] grid grid-cols-12">
-            <div class="col-span-6 flex flex-col gap-6">
+            <div class="col-span-5 flex flex-col gap-6 overflow-clip">
                 <h5 class="text-[18px] font-bold">
                     Emerging Technology Buzzwords
                 </h5>
                 <p>
                     Nam sit amet fermentum mauris. Nullam ultrices augue a turpis aliquam dapibus.
                     Vestibulum laoreet at nisl in ultrices. Quisque tempus turpis id tempus
-                    finibus. Integer lacus felis, ultrices sit amet libero nec, pulvinar dictum metus.
+                    finibus. Integer lacus felis, ulztrices sit amet libero nec, pulvinar dictum metus.
                     Curabitur sapien odio, scelerisque sit amet tincidunt ac, ullamcorper in quam.
                     Proin euismod mi ac ligula volutpat, sed facilisis leo laoreet.
                 </p>
             </div>
-            <div class="col-span-6 flex flex-row justify-between">
+            <div class="col-span-1" />
+            <div class="col-span-6 flex flex-row gap-6 justify-between">
                 <HardwareCard
                     v-for="(item, index) in emergingTech.slice(0,4)"
-                    :key="index"
+                    :key="index + guid()"
                     :hardware-content="item"
                     :number-per-row="2"
                 />

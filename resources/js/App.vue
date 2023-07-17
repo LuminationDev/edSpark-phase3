@@ -8,8 +8,10 @@ import axios from "axios";
 import {serverURL} from "@/js/constants/serverUrl";
 import {useRouter} from 'vue-router';
 import oktaAuth from "@/js/constants/oktaAuth";
-import {onBeforeMount, reactive, ref} from "vue";
+import {onBeforeMount, onMounted, reactive, ref} from "vue";
 import recommenderEdsparkSingletonFactory from "@/js/recommender/recommenderEdspark";
+import {useSessionStorage, useStorage} from "@vueuse/core";
+import {isObjectEmpty} from "@/js/helpers/objectHelpers";
 
 
 const router = useRouter();
@@ -54,8 +56,21 @@ const router = useRouter();
 // } catch (e) {
 //     console.log('failed to retrive bookmarks')
 // }
-const recommender = recommenderEdsparkSingletonFactory().getInstance(64,'Partner', 100)
+let recommender
+const userStore = useUserStore()
+const {currentUser} = storeToRefs(userStore)
 
+
+onMounted(() => {
+    if(isObjectEmpty(currentUser.value)){
+        currentUser.value = useStorage('currentUser',{}, localStorage).value
+        console.log('setCurrentUser in store to currentUSerFrom session')
+    }
+    if(currentUser.value?.id){
+        recommender = recommenderEdsparkSingletonFactory().getInstance(currentUser.value.id,'Partner', 100)
+    }
+
+})
 </script>
 
 <template>

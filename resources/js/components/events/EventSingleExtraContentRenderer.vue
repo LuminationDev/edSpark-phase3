@@ -1,6 +1,7 @@
 <script setup>
 import { computed } from 'vue';
 import EventDateListRenderer from "@/js/components/events/Renderer/EventDateListRenderer.vue";
+import purify from "dompurify";
 
 const props = defineProps({
     content: {
@@ -9,12 +10,10 @@ const props = defineProps({
     }
 });
 
-// console.log("PROPS", props.content);
 
 let contentType = 'dateItems';
 contentType = Object.keys(props.content['data']['extra_content'])[0]
 
-// console.log("CONTENT TYPE", contentType);
 
 const itemArray = computed(() => {
     return props.content['data']['extra_content'][contentType]['item']
@@ -27,7 +26,7 @@ const itemArray = computed(() => {
             <EventDateListRenderer :item-array="itemArray" />
         </template>
         <template v-else>
-            <div v-html="itemArray" />
+            <div v-html="purify.sanitize(itemArray)" />
         </template>
     </div>
 </template>

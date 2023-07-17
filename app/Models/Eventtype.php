@@ -15,7 +15,10 @@ class Eventtype extends Model
      * @var string
      */
     protected $table = 'event_types';
-
+    public function events()
+    {
+        return $this->hasMany(Event::class);
+    }
     /**
      * The attributes that are mass assignable
      *

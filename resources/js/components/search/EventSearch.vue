@@ -1,7 +1,29 @@
 <script setup>
-console.log('inside Event search')
+import {ref} from "vue";
+import {serverURL} from "@/js/constants/serverUrl";
+import BaseSearch from "@/js/components/search/BaseSearch.vue";
+import useSWRV from "swrv";
+import {axiosFetcher} from "@/js/helpers/fetcher";
+
+const swrvOptions = {
+    revalidateOnFocus: false, // disable refresh on every focus, suspect its too often
+    refreshInterval: 30000 // refresh or revalidate data every 30 secs
+}
+
+const {data: eventList, error: eventError} = useSWRV(`${serverURL}/fetchEventPosts`, axiosFetcher, swrvOptions)
+
+const filterObject = ref({})
+
+const handleFilter = (filters, dataPath) => {
+    filterObject.value[dataPath] = filters.map(filter => filter.value)
+}
+
 </script>
 
 <template>
-    <div> Hello</div>
+    <BaseSearch
+        search-type="event"
+        :resource-list="eventList"
+        :live-filter-object="filterObject"
+    />
 </template>

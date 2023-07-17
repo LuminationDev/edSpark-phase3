@@ -74,7 +74,7 @@ const getLikeBookmarkData = (cardData) => {
     return {
         post_id: cardData.id,
         user_id: currentUser.value.id, // to be replaced with userId from userStore
-        post_type: 'event'
+        post_type: props.sectionType
     }
 };
 

@@ -4,19 +4,21 @@ namespace App\Helpers;
 
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
+use Symfony\Component\Console\Output\Output;
+use function PHPUnit\Framework\isEmpty;
 
 
 class Metahelper
 {
-    public static function insert(int $id, string $metaData, $model)
+    public static function insert(int $id, $metaData, string $idColumn ,string $keyColumn, string $valueColumn, $model)
     {
         if(isset($metaData)) {
             try {
                 foreach ($metaData as $key => $value) {
                     $result = [
-                        'id' => $id,
-                        'meta_key' => $key,
-                        'meta_value' => (is_string($value)) ? $value : implode(', ', $value),
+                        "$idColumn" => $id,
+                        "$keyColumn" => $key,
+                        "$valueColumn" => (is_string($value)) ? $value : implode(', ', $value),
                         'created_at' => Carbon::now(),
                         'updated_at' => Carbon::now()
                     ];
@@ -44,6 +46,19 @@ class Metahelper
             ];
         })->toArray();
     }
+
+    public static function checkHasMetakey($metaArray, $key, $keyColumn): bool
+    {
+        if(count($metaArray) == 0) return false;
+        foreach ($metaArray as $item) {
+            if ($item["$keyColumn"] == $key) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
 
 
 }
