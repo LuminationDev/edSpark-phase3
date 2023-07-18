@@ -167,7 +167,7 @@ const handleClickContactOrganiser = () => {
 
         <div class="rsvpSubheader  flex flex-col py-2 text-lg border-b-2 border-b-white border-dashed">
             <div class="eventTypeDescriptor pb-4">
-                This event is <strong> {{ props.locationType }} </strong> only
+                This event is <strong> {{ props.locationType }} </strong> {{ props.locationType.toLowerCase() !== "hybrid" ? "only" : '' }}
             </div>
             <div class="eventRsvp form-cta pb-4">
                 Please register your interest below to reserve your spot!
@@ -180,7 +180,9 @@ const handleClickContactOrganiser = () => {
             <div class="rsvpHeader font-bold uppercase text-xl">
                 You are the owner of this event
             </div>
-            <div> Number of guests registered: {{ currentOwnerInfo['total_guest'] }}</div>
+            <div>
+                Number of guests registered: {{ currentOwnerInfo['total_guest'] }}
+            </div>
         </div>
         <form
             v-else-if="!currentUserIsOwner && !currentUserRsvped && eventStatus !== 'ENDED'"

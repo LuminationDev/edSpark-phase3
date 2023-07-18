@@ -31,7 +31,7 @@ const getConnectingLinePositions = () => {
         lastContainer
     );
 
-    let firstElHeight = firstContainer.offsetHeight;
+    let firstElHeight = firstContainer.offsetHeight
     top.value = firstContainer.offsetTop + firstElHeight / 2;
     floatingLineClasses.value = `top-[${top.value}] h-[${distanceBetweenEls.value}px]`
 }
@@ -87,7 +87,10 @@ const getDistanceBetweenElements = (a, b) => {
                         {{ item.heading }}
                     </div>
 
-                    <div class="htmlRenderer" v-html="item.content" />
+                    <div
+                        class="htmlRenderer"
+                        v-html="item.content"
+                    />
                 </div>
             </div>
         </div>

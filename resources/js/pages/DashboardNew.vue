@@ -156,15 +156,6 @@ const getIdToken = async () => {
 const checkFirstVisit = async (emailAddress) => {
     console.log(emailAddress);
     let emailCheck = await userStore.checkUser(emailAddress);
-    //old working code with okta on vuejs
-    // if (emailCheck.status === true) {
-    //     isFirstVisit.value = false;
-    //     await userStore.fetchCurrentUserAndLoadIntoStore(emailCheck.userdata.user_id);
-    // } else {
-    //     isFirstVisit.value = true;
-    // }
-
-    //new updated desperate fix :'(
     if (emailCheck.isFirstTimeVisit === false) {
         isFirstVisit.value = false;
         await userStore.fetchCurrentUserAndLoadIntoStore(emailCheck.userdata.user_id);

@@ -8,6 +8,7 @@ import {SWRVKeys} from "@/js/constants/swrvKeys";
 import SectionHeader from "@/js/components/global/SectionHeader.vue";
 import {useRouter} from "vue-router";
 import PartnerCard from "@/js/components/partners/PartnerCard.vue";
+import CardLoading from "@/js/components/card/CardLoading.vue";
 
 
 let recommender = recommenderEdsparkSingletonFactory().getInstance()
@@ -36,15 +37,23 @@ const {
         <!--        {{ partnerError }}-->
         <!--        <pre> {{ partnerData }}</pre>-->
         <div
-            v-if="partnerList?.partners"
+
             class="PartnerListGalleryContainer flex flex-row justify-between gap-4 px-huge"
         >
-            <template
-                v-for="(singlePartnerData,index) in partnerList.partners"
-                :key="index"
-            >
-                <PartnerCard
-                    :partner-content="singlePartnerData"
+            <template v-if="partnerList?.partners">
+                <template
+                    v-for="(singlePartnerData,index) in partnerList.partners"
+                    :key="index"
+                >
+                    <PartnerCard
+                        :partner-content="singlePartnerData"
+                    />
+                </template>
+            </template>
+            <template v-else>
+                <CardLoading
+                    :number-of-rows="1"
+                    :number-per-row="3"
                 />
             </template>
         </div>

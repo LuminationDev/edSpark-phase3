@@ -16,6 +16,7 @@ export default defineConfig({
                 'resources/css/output.css',
                 'resources/js/app.js',
                 'resources/css/filament.css',
+                'resources/assets/svg/Logo.svg'
             ],
             refresh: true,
         }),
