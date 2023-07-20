@@ -164,6 +164,13 @@ const paginatedFilteredData = computed(() =>{
         return filteredData.value.slice((page.value - 1)  * numberOfItemsPerPage, page.value * numberOfItemsPerPage)
     }
 })
+// schools,
+
+const formattedSearchTitle = computed(() =>{
+    if(['school','event','partner'].includes(props.searchType)) return props.searchType + 's'
+    else return props.searchType
+})
+
 </script>
 
 <template>
@@ -171,7 +178,7 @@ const paginatedFilteredData = computed(() =>{
         class="browse-schools-container mt-16 flex flex-col items-center"
     >
         <h3 class="font-semibold text-2xl">
-            Browse all {{ searchType }}
+            Browse all {{ formattedSearchTitle }}
         </h3>
         <SearchBar
             :placeholder="`Type in ${searchType} name`"
@@ -192,8 +199,8 @@ const paginatedFilteredData = computed(() =>{
                     v-if="searchType === 'advice'"
                 >
                     <AdviceCard
-                        class="w-1/3 my-4"
                         :key="data.post_id"
+                        class="w-1/3 my-4"
                         :advice-content="data"
                         :number-per-row="2"
                         :show-icon="true"
@@ -201,16 +208,16 @@ const paginatedFilteredData = computed(() =>{
                 </template>
                 <template v-else-if="searchType === 'software'">
                     <SoftwareCard
-                        class="w-1/3 my-4"
                         :key="data.post_id"
+                        class="w-1/3 my-4"
                         :software="data"
                         :number-per-row="2"
                     />
                 </template>
                 <template v-else-if="searchType === 'hardware'">
                     <HardwareCard
-                        class="w-1/3 my-2"
                         :key="data.id"
+                        class="w-1/3 my-2"
                         :hardware-content="data"
                         :number-per-row="4"
                     />
