@@ -118,7 +118,6 @@ const computedCardData = computed(() => {
             case 'Dashboard':
 
                 mutatedData = props.cardData;
-                console.log('DAAAAAAASSHHHH', mutatedData);
                 break;
             default:
                 break;
@@ -195,6 +194,8 @@ const handleClickCard = (item) => {
         state: {content: JSON.stringify(content[0])}
     })
 }
+
+console.log(computedCardData.value);
 </script>
 
 <template>
@@ -222,7 +223,7 @@ const handleClickCard = (item) => {
                         :item="slide"
                         :display-content="slide.excerpt"
                         :display-author="slide.author"
-                        :display-date="slide.created_at"
+                        :display-date="sectionType === 'events' ? slide.start_date : slide.created_at"
                         :cover-image="slide.cover_image"
                         :number-per-row="colCount"
                         :like-bookmark-data="getLikeBookmarkData(slide)"

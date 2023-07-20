@@ -13,6 +13,7 @@ import {axiosFetcher} from "../helpers/fetcher";
 import {useRouter} from "vue-router";
 import Loader from "@/js/components/spinner/Loader.vue";
 import {guid} from "@/js/helpers/guidGenerator";
+import CardLoading from "@/js/components/card/CardLoading.vue";
 
 const router = useRouter()
 const { data: allEvents, error: eventError } = useSWRV(`${serverURL}/fetchEventPosts`, axiosFetcher)
@@ -36,13 +37,21 @@ const allEventsWithKeys = computed(() =>{
         :button-callback="() => router.push('/browse/events')"
     />
     <div class="EventContentContainer flex flex-col h-full px-20">
-        <div class="EventCardListContainer heading text-xl pt-10 flex flex-row flex-1 justify-between flex-wrap  gap-6">
-            <EventCard
-                v-for="event in allEventsWithKeys.filter((event,index) => index < 3)"
-                :key="event['key']"
-                :event-content="event"
-                :show-icon="true"
-            />
+        <div class="EventCardListContainer heading text-xl flex flex-row flex-1 justify-between flex-wrap  gap-6">
+            <template v-if="allEventsWithKeys.length > 0">
+                <EventCard
+                    v-for="event in allEventsWithKeys.filter((event,index) => index < 3)"
+                    :key="event['key']"
+                    :event-content="event"
+                    :show-icon="true"
+                />
+            </template>
+            <template v-else>
+                <CardLoading
+                    :number-of-rows="1"
+                    :number-per-row="3"
+                />
+            </template>
         </div>
     </div>
 
@@ -54,7 +63,7 @@ const allEventsWithKeys = computed(() =>{
         :button-callback="() => router.push('/browse/events')"
     />
 
-    <div class="eventCalendarContainer flex flex-col h-full px-20 mt-20">
+    <div class="eventCalendarContainer flex flex-col h-full px-20">
         <div
             v-if="allEvents && allEvents.length > 0"
             class="flex flex-row flex-wrap"

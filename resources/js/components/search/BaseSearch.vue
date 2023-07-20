@@ -144,7 +144,7 @@ const filteredData = computed(()=>{
 
 // pagination code below
 const page = ref(1)
-const numberOfItemsPerPage = 10
+const numberOfItemsPerPage = 9
 
 const handleChangePageNumber = (newPageNumber) => {
     console.log('handleChangePage number is called')
@@ -164,14 +164,21 @@ const paginatedFilteredData = computed(() =>{
         return filteredData.value.slice((page.value - 1)  * numberOfItemsPerPage, page.value * numberOfItemsPerPage)
     }
 })
+// schools,
+
+const formattedSearchTitle = computed(() =>{
+    if(['school','event','partner'].includes(props.searchType)) return props.searchType + 's'
+    else return props.searchType
+})
+
 </script>
 
 <template>
     <div
-        class="browse-schools-container mt-16 flex flex-col justify-center items-center"
+        class="browse-schools-container mt-16 flex flex-col items-center"
     >
         <h3 class="font-semibold text-2xl">
-            Browse all {{ searchType }}
+            Browse all {{ formattedSearchTitle }}
         </h3>
         <SearchBar
             :placeholder="`Type in ${searchType} name`"
@@ -182,7 +189,7 @@ const paginatedFilteredData = computed(() =>{
         </div>
         <div
             v-if="resourceList"
-            class="resourceResult pt-10 flex flex-row flex-wrap justify-around gap-2 flex-1 w-full px-20"
+            class="resourceResult pt-10 flex flex-row flex-wrap flex-1 px-24 gap-12 max-w-[97%]"
         >
             <template
                 v-for="(data) in paginatedFilteredData"
@@ -193,6 +200,7 @@ const paginatedFilteredData = computed(() =>{
                 >
                     <AdviceCard
                         :key="data.post_id"
+                        class="w-1/3 my-4"
                         :advice-content="data"
                         :number-per-row="2"
                         :show-icon="true"
@@ -201,6 +209,7 @@ const paginatedFilteredData = computed(() =>{
                 <template v-else-if="searchType === 'software'">
                     <SoftwareCard
                         :key="data.post_id"
+                        class="w-1/3 my-4"
                         :software="data"
                         :number-per-row="2"
                     />
@@ -208,6 +217,7 @@ const paginatedFilteredData = computed(() =>{
                 <template v-else-if="searchType === 'hardware'">
                     <HardwareCard
                         :key="data.id"
+                        class="w-1/3 my-2"
                         :hardware-content="data"
                         :number-per-row="4"
                     />
@@ -215,9 +225,10 @@ const paginatedFilteredData = computed(() =>{
                 <template v-else-if="searchType === 'school'">
                     <div
                         :key="data.id"
-                        class="border-2 mx-4 my-4 basis-1/4 max-w-[320px] h-[470px] border-[0.5px] border-black transition-all group hover:shadow-2xl"
+                        class="w-1/3 max-w-[400px] my-4 h-[470px] transition-all group hover:shadow-2xl"
                     >
                         <SchoolCard
+                            class="mx-auto w-1/3"
                             :school-data="data"
                         />
                     </div>
@@ -225,7 +236,7 @@ const paginatedFilteredData = computed(() =>{
                 <template v-else-if="searchType === 'partner'">
                     <div
                         :key="data.id"
-                        class="border-2 mx-4 my-4 basis-1/4 max-w-[320px] h-[470px] border-[0.5px] border-black transition-all group hover:shadow-2xl"
+                        class="w-1/3 max-w-[400px] my-4 h-[470px] border-black transition-all group hover:shadow-2xl"
                     >
                         <PartnerCard
                             :partner-content="data"
@@ -235,7 +246,7 @@ const paginatedFilteredData = computed(() =>{
                 <template v-else-if="searchType === 'event'">
                     <div
                         :key="data.id"
-                        class="border-2 mx-4 my-4 basis-1/4 max-w-[320px] h-[470px] border-[0.5px] border-black transition-all group hover:shadow-2xl"
+                        class="w-1/3 max-w-[400px] my-4 h-[470px] border-black transition-all group hover:shadow-2xl"
                     >
                         <EventsCard
                             :event-content="data"
@@ -299,3 +310,4 @@ const paginatedFilteredData = computed(() =>{
     }
 }
 </style>
+

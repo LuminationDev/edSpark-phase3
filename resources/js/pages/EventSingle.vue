@@ -87,7 +87,8 @@ const handleClickViewProfile = (author_id, author_type) => {
                         </div>
                         <div class="flex flex-row items-center">
                             <LocationIcon class="mr-2" />
-                            location -TBD
+                            <!--                            {{ contentFromBase['event_type'] === 'in person' ? contentFromBase['event_location']['address'] : contentFromBase['event_type'] }}-->
+                            {{ contentFromBase['event_location']['address'] ? contentFromBase['event_location']['address'] : 'Online' }}
                         </div>
                     </div>
                     <!--                    <div v-html="purify.sanitize(contentFromBase['event_excerpt'])" />-->

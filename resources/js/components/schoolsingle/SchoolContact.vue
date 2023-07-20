@@ -45,7 +45,7 @@ const rules = {
     website: {required},
     email: {required, email},
     phone: {required, minLength: minLength(9)},
-    fax: {numeric, minLength: minLength(9)}
+    fax: {}
 }
 
 const v$ = useVuelidate(rules, state)
@@ -125,7 +125,7 @@ const mapOptions = {
                 Contact details
             </div>
             <div
-                v-if="editMode && props.currentUserCanEdit"
+                v-if="editMode && currentUserCanEdit"
                 class="contactForm flex flex-col"
             >
                 <div class="contactFormTitle text-xl font-semibold mb-4">
@@ -214,7 +214,7 @@ const mapOptions = {
             </div>
             <GenericButton
                 v-if="
-                    props.currentUserCanEdit"
+                    currentUserCanEdit"
                 :callback="handleToggleEditContactForm"
                 class="mt-2"
             >

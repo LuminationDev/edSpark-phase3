@@ -1,23 +1,26 @@
 <script>
-    import FooterSwoosh from '../svg/FooterSwoosh.vue';
+import FooterSwoosh from '../svg/FooterSwoosh.vue';
 
-    export default {
+export default {
 
-        components: {
-            FooterSwoosh
-        },
+    components: {
+        FooterSwoosh
+    },
 
 
-    }
+}
 </script>
 <template>
-
     <div class="flex flex-col w-full">
         <!-- <FooterSwoosh class="w-full pointer-events-none" /> -->
 
         <div class="w-full h-[330px] relative">
             <div class="absolute">
-                <img class="" src="../../../assets/images/FooterSwoosh.png" alt="Footer Swoosh">
+                <img
+                    class=""
+                    src="../../../assets/images/FooterSwoosh.png"
+                    alt="Footer Swoosh"
+                >
             </div>
             <div class="flex flex-row gap-8">
                 <!-- Gov icons here pls -->
@@ -30,30 +33,25 @@
                     Accessibility
                 </li>
                 <li class="px-2">
-                    <div class="h-[20px] w-[1px] bg-[#0E4376]"></div>
+                    <div class="h-[20px] w-[1px] bg-[#0E4376]" />
                 </li>
                 <li class="px-4 cursor-pointer hover:text-[#4a87c0]">
                     Acknowledgement of Country
                 </li>
                 <li class="px-2">
-                    <div class="h-[20px] w-[1px] bg-[#0E4376]"></div>
+                    <div class="h-[20px] w-[1px] bg-[#0E4376]" />
                 </li>
                 <li class="px-4 cursor-pointer hover:text-[#4a87c0]">
                     Copyright
                 </li>
                 <li class="px-2">
-                    <div class="h-[20px] w-[1px] bg-[#0E4376]"></div>
+                    <div class="h-[20px] w-[1px] bg-[#0E4376]" />
                 </li>
                 <li class="px-4 cursor-pointer hover:text-[#4a87c0]">
                     Disclaimer
                 </li>
-                <li class="px-2">
-                    <div class="h-[20px] w-[1px] bg-[#0E4376]"></div>
-                </li>
                 <li class="px-4 cursor-pointer hover:text-[#4a87c0]">
-                    <a href="http://localhost:8000/admin/autologin">
-                        Privacy
-                    </a>
+                    Privacy
                 </li>
             </ul>
         </div>

@@ -45,16 +45,28 @@ class AdviceController extends Controller
 
     public function fetchAdvicePostById($id)
     {
+        // Validate the input $id to ensure it's a positive integer
+        if (!is_numeric($id) || $id <= 0) {
+            return response()->json(['error' => 'Invalid ID provided.'], 400);
+        }
+
+        // Find the advice by ID
         $advice = Advice::find($id);
 
+        // Check if advice with given ID exists
+        if (!$advice) {
+            return response()->json(['error' => 'Advice not found.'], 404);
+        }
+
+        // Prepare the data to be returned in the response
         $data = [
             'post_id' => $advice->id,
             'post_title' => $advice->post_title,
             'post_content' => $advice->post_content,
             'post_excerpt' => $advice->post_excerpt,
-            'author'=> [
+            'author' => [
                 'author_id' => $advice->author->id,
-                'author_name'=> $advice->author->full_name
+                'author_name' => $advice->author->full_name
             ],
             'cover_image' => ($advice->cover_image) ? $advice->cover_image : NULL,
             'template' => ($advice->template) ? $advice->template : NULL,
@@ -62,11 +74,12 @@ class AdviceController extends Controller
             'post_date' => $advice->post_date,
             'post_modified' => $advice->post_modified,
             'post_status' => $advice->post_status,
-            'advice_type' => ($advice->advicetypes) ? $advice->advicetypes->pluck('advice_type_name') : NULL ,
+            'advice_type' => ($advice->advicetypes) ? $advice->advicetypes->pluck('advice_type_name') : NULL,
             'created_at' => $advice->created_at,
             'updated_at' => $advice->updated_at
         ];
 
+        // Return the data in the response
         return response()->json($data);
     }
 
