@@ -303,3 +303,4 @@ const paginatedFilteredData = computed(() =>{
     }
 }
 </style>
+

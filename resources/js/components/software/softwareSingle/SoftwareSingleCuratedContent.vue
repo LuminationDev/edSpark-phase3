@@ -24,7 +24,7 @@ const twoRecommendation  = computed( () => {
         v-if="allCuratedSoftware && allCuratedSoftware.length > 0"
         class="softwareSingleCuratedContentContainer flex flex-col justify-center items-center ml-4 px-10 rounded bg-purple-50"
     >
-        <div class="curatedResourcesTitle uppercase font-bold text-2xl text-center py-8 my-2">
+        <div class="curatedResourcesTitle uppercase font-bold text-2xl text-center py-4 my-2 ">
             RELATED
         </div>
         <SoftwareCard
@@ -33,6 +33,7 @@ const twoRecommendation  = computed( () => {
             :software="software"
             :show-icon="true"
             :number-per-row="1"
+            class="mb-4"
         />
     </div>
     <div v-else>

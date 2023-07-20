@@ -160,15 +160,6 @@ const getIdToken = async () => {
 const checkFirstVisit = async (emailAddress) => {
     console.log(emailAddress);
     let emailCheck = await userStore.checkUser(emailAddress);
-    //old working code with okta on vuejs
-    // if (emailCheck.status === true) {
-    //     isFirstVisit.value = false;
-    //     await userStore.fetchCurrentUserAndLoadIntoStore(emailCheck.userdata.user_id);
-    // } else {
-    //     isFirstVisit.value = true;
-    // }
-
-    //new updated desperate fix :'(
     if (emailCheck.isFirstTimeVisit === false) {
         isFirstVisit.value = false;
         await userStore.fetchCurrentUserAndLoadIntoStore(emailCheck.userdata.user_id);
@@ -251,6 +242,13 @@ const schoolsLoading = computed(() => {
         return false
     } else {
         return ![ALLSTATES.SUCCESS, ALLSTATES.VALIDATING, ALLSTATES.STALE_IF_ERROR].includes(schoolsState.value)
+    }
+})
+
+const reversedAdviceData = computed(() =>{
+    if(!advicesData.value || advicesData.value.length === 0 ) return []
+    else {
+        return advicesData.value.slice().reverse()
     }
 })
 
@@ -522,7 +520,7 @@ onMounted(async () => {
 
         <CardCarouselWrapper
             :key="adviceLoading"
-            :card-data="advicesData ? advicesData : []"
+            :card-data="reversedAdviceData ? reversedAdviceData : []"
             :loading="adviceLoading"
             :row-count="1"
             :col-count="2"

@@ -29,13 +29,34 @@ const itemArray = computed(()=> {
     return props.content['data']['extra_content']['hardware_extra_resource']['item']
 })
 
+// Boolean flag that return true or false whether to render extra resources.
+// if any of the field of the extra resources === null, we will skip
+const shouldRenderResources  = computed(() => {
+    if(Object.keys(itemArray.value).length === 0 ) return false
+    else {
+        let extraResourceKey = Object.keys(itemArray.value)[0] // should get a hash of the first item, only one item
+        console.log(extraResourceKey)
+        let innerItemKeysArr = Object.keys(itemArray.value[extraResourceKey])
+        for(const eachKey of innerItemKeysArr){
+            console.log(itemArray.value[extraResourceKey][eachKey])
+            if(itemArray.value[extraResourceKey][eachKey] === null){
+                return false
+            }
+        }
+        return true
+    }
+})
+
 
 
 
 </script>
 
 <template>
-    <div class="extraContentRendererContainer flex flex-col py-2 my-2 px-4">
+    <div
+        v-if="shouldRenderResources"
+        class="extraContentRendererContainer flex flex-col py-2 my-2 px-4"
+    >
         <template v-if="contentType === 'numbereditems'">
             <AdviceNumberedListRenderer :item-array="itemArray" />
         </template>
