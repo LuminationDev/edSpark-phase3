@@ -241,6 +241,13 @@ const schoolsLoading = computed(() => {
     }
 })
 
+const reversedAdviceData = computed(() =>{
+    if(!advicesData.value || advicesData.value.length === 0 ) return []
+    else {
+        return advicesData.value.slice().reverse()
+    }
+})
+
 const onClosePopup = () => {
     isFirstVisit.value = false;
 };
@@ -432,7 +439,7 @@ onMounted(async () => {
 
         <CardCarouselWrapper
             :key="adviceLoading"
-            :card-data="advicesData ? advicesData : []"
+            :card-data="reversedAdviceData ? reversedAdviceData : []"
             :loading="adviceLoading"
             :row-count="1"
             :col-count="2"
