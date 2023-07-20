@@ -14,6 +14,10 @@ import CardCarouselWrapper from '../components/card/CardCarouselWrapper.vue';
 import CardWrapper from '../components/card/CardWrapper.vue';
 import SoftwareRobot from '../components/svg/SoftwareRobot.vue';
 
+import DeptNegotiatedIcon from "@/js/components/svg/software/DeptNegotiatedIcon.vue";
+import DeptApprovedIcon from "@/js/components/svg/software/DeptApprovedIcon.vue";
+import DeptProvidedIcon from "@/js/components/svg/software/DeptProvidedIcon.vue";
+import DepartmentApprovedSolo from '../components/svg/DepartmentApprovedSolo.vue';
 /**
  * Card Components /sections
  */
@@ -300,8 +304,46 @@ const onClosePopup = () => {
 // console.log('EMAIL ID:', email);
 const email = ref(null);
 
-onMounted(async () => {
 
+/**
+ * Handling line length on the software dashboard highlights
+ */
+const top = ref('');
+const distanceBetweenEls = ref('');
+const floatingLineClasses = ref('');
+const getConnectingLinePositions = () => {
+    let listContainers = document.querySelectorAll('.softwareDashboardContentContainer');
+    let firstContainer = listContainers[0];
+    let lastContainer = listContainers[listContainers.length -1];
+
+    distanceBetweenEls.value = getDistanceBetweenElements(
+        firstContainer,
+        lastContainer
+    );
+
+    let firstElHeight = firstContainer.offsetHeight;
+    top.value = firstContainer.offsetTop + firstElHeight / 2;
+    floatingLineClasses.value = `top-[${top.value}] h-[${distanceBetweenEls.value}px]`
+};
+
+const getPositionAtCenter = (element) => {
+    const {top, left, width, height} = element.getBoundingClientRect();
+    return {
+        x: left + width / 2,
+        y: top + height / 2
+    };
+}
+
+const getDistanceBetweenElements = (a, b) => {
+    const aPosition = getPositionAtCenter(a);
+    const bPosition = getPositionAtCenter(b);
+
+    return Math.hypot(aPosition.x - bPosition.x, aPosition.y - bPosition.y);
+}
+
+onMounted(async () => {
+    document.addEventListener('resize', getConnectingLinePositions());
+    getConnectingLinePositions();
 
 });
 
@@ -351,58 +393,97 @@ onMounted(async () => {
         />
 
         <!-- Software Cards Here -->
-        <div class="py-8 px-huge flex flex-row gap-[24px] relative group/bg">
+        <div class="py-8 px-huge flex flex-row gap-[24px] relative group/bg h-full">
             <div
                 class="absolute softwareRobot -z-10 transition-all duration-700 opacity-10 top-1/2 -translate-y-1/2 left-1/3 group-hover/bg:left-[15%] group-hover/bg:scale-125"
             >
                 <SoftwareRobot />
             </div>
-            <div class="w-[35%] flex place-items-center pl-[29px]">
-                <div class="w-full h-[700px] grid grid-cols-6 grid-rows-2">
-                    <div class="col-span-1 row-span-1">
-                        <img
-                            class=""
-                            src="../../assets/images/departmentProvidedAndApproved.png"
-                            alt="Department Approved And Provided"
-                        >
-                    </div>
-                    <div class="col-span-5 row-span-1 grid grid-rows-3 h-full">
-                        <div class="row-span-1 px-8">
-                            <h5 class="text-[21px] font-semibold pt-4">
-                                Department Provided
-                            </h5>
-                            <p class="w-9/12">
-                                These applications are provided by the department
-                                at no cost to schools
-                            </p>
-                        </div>
-                        <div class="row-span-1" />
-                        <div class="row-span-1 flex flex-col h-full px-8">
-                            <h5 class="text-[21px] font-semibold mt-auto">
-                                Department Approved
-                            </h5>
-                            <p class="pb-4 w-9/12">
-                                These applications have been risk assessed and can
-                                be safely used in schools
-                            </p>
+            <div class="w-[35%] flex flex-col place-items-center pl-[29px]">
+
+                <div class="w-full h-1/2 flex flex-row gap-4">
+                    <div class="w-1/4 relative">
+                        <div
+                            class="connectingLine absolute border-[2px] border-black z-10 left-1/2"
+                            :style="`height: ${distanceBetweenEls}px; top: ${top}px;`"
+                        />
+                        <div class="flex flex-col h-full relative z-20">
+                            <div class="h-1/2 flex place-self-center">
+                                <div class="w-[100px] h-[100px] border-[4px] border-black rounded-full bg-white flex my-auto">
+                                    <DeptProvidedIcon
+                                        class="h-fit p-1"
+                                    />
+                                </div>
+                            </div>
+                            <div class="h-1/2 flex place-self-center">
+                                <div class="w-[100px] h-[100px] border-[4px] border-black rounded-full bg-white flex my-auto">
+                                    <DeptApprovedIcon
+                                        class="h-fit p-1"
+                                    />
+                                </div>
+                            </div>
                         </div>
                     </div>
-                    <div class="col-span-2 row-span-1 flex">
-                        <img
-                            class="h-full pt-12 pb-8"
-                            src="../../assets/images/negotiatedDeals.png"
-                            alt="Negotiated Deals"
-                        >
+
+                    <div class="w-3/4 h-full">
+                        <div class="flex flex-col h-full">
+                            <div class="softwareDashboardContentContainer flex flex-col h-1/2 my-auto justify-center">
+                                <h5 class="text-[21px] font-semibold pt-4">
+                                    Department Provided
+                                </h5>
+                                <p class="w-9/12">
+                                    These applications are provided by the department
+                                    at no cost to schools
+                                </p>
+                            </div>
+                            <div class="softwareDashboardContentContainer flex flex-col h-1/2 my-auto justify-center">
+                                <h5 class="text-[21px] font-semibold">
+                                    Department Approved
+                                </h5>
+                                <p class="pb-4 w-9/12">
+                                    These applications have been risk assessed and can
+                                    be safely used in schools
+                                </p>
+                            </div>
+                        </div>
                     </div>
-                    <div class="col-span-3 row-span-1 flex flex-col pl-8">
-                        <h5 class="text-[18px] font-semibold mt-auto">
-                            Negotiated Deals
-                        </h5>
-                        <p class="pb-4 w-[85%]">
-                            Still risk assessed, these applications have an agreement
-                            in place for schools to receive better value. Schools will
-                            need to fund purchases
-                        </p>
+                </div>
+
+                <div class="w-full h-1/2 relative flex flex-row gap-4">
+                    <div class="w-1/4 relative">
+                        <div
+                            class="negotiatedDealsLine absolute z-10 left-1/2 border-[1.5px] border-dashed border-black"
+                            :style="`height: ${distanceBetweenEls}px; top: calc(-${top}px + 150px);`"
+                        />
+                        <div class="flex flex-col h-full relative z-20">
+                            <div class="h-3/4 flex place-self-center">
+                                <div class="w-[100px] h-[100px] relative border-[2px] border-black border-dashed rounded-full bg-white flex my-auto">
+                                    <DeptApprovedIcon
+                                        class="h-fit p-1"
+                                    />
+                                    <DepartmentApprovedSolo
+                                        class="absolute w-[40px] h-[40px] -right-1 -top-1"
+                                    />
+                                </div>
+                            </div>
+                            <div class="h-1/4 flex place-self-center" />
+                        </div>
+                    </div>
+
+                    <div class="w-3/4">
+                        <div class="flex flex-col h-full">
+                            <div class="flex flex-col h-3/4 my-auto justify-center">
+                                <h5 class="text-[18px] font-semibold">
+                                    Negotiated Deals
+                                </h5>
+                                <p class="pb-4 w-[85%]">
+                                    Still risk assessed, these applications have an agreement
+                                    in place for schools to receive better value. Schools will
+                                    need to fund purchases
+                                </p>
+                            </div>
+                            <div class="flex flex-col h-1/4 my-auto justify-center"></div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -511,3 +592,32 @@ onMounted(async () => {
         <CardLoading v-else class="px-huge" :number-per-row="4" /> -->
     </div>
 </template>
+
+<style scoped lang="scss">
+    // .negotiatedDealsLine {
+    //     border-image: linear-gradient(rgba(0,0,0,0), #000) 30;
+    //     // border-width: 1px;
+    //     // border-style: dashed;
+    //     border: #000 dashed 1px;
+    // }
+
+
+    .negotiatedDealsLine {
+        // position: relative;
+        width: 2px;
+        // height: 200px; /* Set the desired height of the vertical line */
+        background: linear-gradient(to top, transparent, #000); /* Fading effect to transparent */
+    }
+
+    .negotiatedDealsLine::before {
+        content: "";
+        position: absolute;
+        // top: 0;
+        // left: 50%;
+        // transform: translateX(-50%);
+        // width: 100%;
+        // height: 1px;
+        // background-color: #000;
+        // background-image: repeating-linear-gradient(0deg, #000, #000 5px, transparent 5px, transparent 10px);
+    }
+</style>

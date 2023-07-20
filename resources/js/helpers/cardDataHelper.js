@@ -13,7 +13,8 @@ export const cardDataHelper = (cardData, section) => {
                         title: data.event_title,
                         excerpt: data.event_excerpt,
                         author: data.author,
-                        created_at: data.created_at,
+                        created_at: data.start_date,
+                        start_date: data.start_date,
                         cover_image: data.cover_image,
                         type: data.event_type
                     })
