@@ -26,6 +26,9 @@ class LoginController extends Controller
 
     public function handleOktaCallback(Request $request)
     {
+        $state = $request->get('state');
+        $request->session()->put('state',$state);
+
         $user = Socialite::driver('okta')->user();
         $idToken = $user->token;
 

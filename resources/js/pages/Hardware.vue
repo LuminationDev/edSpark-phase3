@@ -13,34 +13,34 @@ import {serverURL} from "@/js/constants/serverUrl";
 import {axiosFetcher} from "@/js/helpers/fetcher";
 import {useRouter} from "vue-router";
 import {guid} from "@/js/helpers/guidGenerator";
+import CardLoading from "@/js/components/card/CardLoading.vue";
 
 
 const router = useRouter()
-const {data: hardware, error } = useSWRV(`${serverURL}/fetchAllProducts`, axiosFetcher)
+const {data: hardware, error} = useSWRV(`${serverURL}/fetchAllProducts`, axiosFetcher)
 
 
-const laptops = computed(()=>{
-    if(hardware.value){
+const laptops = computed(() => {
+    if (hardware.value) {
         return hardware.value.filter(item => item.category['categoryName'] === 'Laptop');
-    } else{
+    } else {
         return []
     }
 })
-const audioVisual = computed(()=>{
-    if(hardware.value){
+const audioVisual = computed(() => {
+    if (hardware.value) {
         return hardware.value.filter(item => item.category['categoryName'] === 'Audio Visual');
-    } else{
+    } else {
         return []
     }
 })
-const emergingTech = computed(()=>{
-    if(hardware.value){
+const emergingTech = computed(() => {
+    if (hardware.value) {
         return hardware.value.filter(item => item.category['categoryName'] === 'Emerging Technology');
-    } else{
+    } else {
         return []
     }
 })
-
 
 
 </script>
@@ -56,16 +56,24 @@ const emergingTech = computed(()=>{
             :classes="`bg-[#048246]`"
             :section="'hardware-laptops'"
             :title="'Laptops'"
-            :button-text="'View all laptops'"
+            :button-text="'View all hardware'"
             :button-callback="() => router.push('/browse/hardwares')"
         />
         <div class="px-huge flex flex-row flex-1 gap-6 flex-wrap h-full justify-between">
-            <HardwareCard
-                v-for="(laptop, index) in laptops.slice(0,4)"
-                :key="index"
-                :hardware-content="laptop"
-                :number-per-row="4"
-            />
+            <template v-if="laptops && laptops.length > 0">
+                <HardwareCard
+                    v-for="(laptop, index) in laptops.slice(0,3)"
+                    :key="index"
+                    :hardware-content="laptop"
+                    :number-per-row="4"
+                />
+            </template>
+            <template v-else>
+                <CardLoading
+                    :number-of-rows="1"
+                    :number-per-row="3"
+                />
+            </template>
         </div>
 
 
@@ -74,7 +82,7 @@ const emergingTech = computed(()=>{
             :classes="`bg-[#1C5CA9]`"
             :section="'hardware-av'"
             :title="'Audio and Visual'"
-            :button-text="'View all devices'"
+            :button-text="'View all hardware'"
         />
         <div class="px-huge grid grid-cols-12">
             <div class="col-span-3 flex flex-col gap-6">
@@ -99,12 +107,20 @@ const emergingTech = computed(()=>{
                 </div>
             </div>
             <div class="col-span-9 flex flex-row gap-6 justify-between">
-                <HardwareCard
-                    v-for="(item, index) in audioVisual.slice(0,4)"
-                    :key="index"
-                    :hardware-content="item"
-                    :number-per-row="3"
-                />
+                <template v-if="audioVisual && audioVisual.length > 0">
+                    <HardwareCard
+                        v-for="(item, index) in audioVisual.slice(0,4)"
+                        :key="index"
+                        :hardware-content="item"
+                        :number-per-row="3"
+                    />
+                </template>
+                <template v-else>
+                    <CardLoading
+                        :number-of-rows="1"
+                        :number-per-row="2"
+                    />
+                </template>
             </div>
         </div>
 
@@ -114,9 +130,9 @@ const emergingTech = computed(()=>{
             :classes="`bg-[#002858]`"
             :section="'hardware-emerging'"
             :title="'Emerging Technology'"
-            :button-text="'View all devices'"
+            :button-text="'View all hardware'"
         />
-        <div class="mx-[81px] mt-[64px] grid grid-cols-12">
+        <div class="px-huge grid grid-cols-12">
             <div class="col-span-5 flex flex-col gap-6 overflow-clip">
                 <h5 class="text-[18px] font-bold">
                     Emerging Technology Buzzwords
@@ -129,14 +145,21 @@ const emergingTech = computed(()=>{
                     Proin euismod mi ac ligula volutpat, sed facilisis leo laoreet.
                 </p>
             </div>
-            <div class="col-span-1" />
-            <div class="col-span-6 flex flex-row gap-6 justify-between">
-                <HardwareCard
-                    v-for="(item, index) in emergingTech.slice(0,4)"
-                    :key="index + guid()"
-                    :hardware-content="item"
-                    :number-per-row="2"
-                />
+            <div class="col-span-7 ml-2 flex flex-row gap-4 justify-between">
+                <template v-if="emergingTech && emergingTech.length > 0">
+                    <HardwareCard
+                        v-for="(item, index) in emergingTech.slice(0,4)"
+                        :key="index + guid()"
+                        :hardware-content="item"
+                        :number-per-row="2"
+                    />
+                </template>
+                <template v-else>
+                    <CardLoading
+                        :number-of-rows="1"
+                        :number-per-row="2"
+                    />
+                </template>
             </div>
         </div>
     </div>

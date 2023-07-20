@@ -144,7 +144,7 @@ const filteredData = computed(()=>{
 
 // pagination code below
 const page = ref(1)
-const numberOfItemsPerPage = 10
+const numberOfItemsPerPage = 9
 
 const handleChangePageNumber = (newPageNumber) => {
     console.log('handleChangePage number is called')
@@ -182,7 +182,8 @@ const paginatedFilteredData = computed(() =>{
         </div>
         <div
             v-if="resourceList"
-            class="resourceResult pt-10 flex flex-row flex-wrap justify-around gap-2 flex-1 w-full px-20"
+            class="resourceResult pt-10 grid-cols-3 grid gap-4 place-items-center w-full px-20 "
+            :class="{'!justify-start !gap-16' : paginatedFilteredData.length % 3 !== 0}"
         >
             <template
                 v-for="(data) in paginatedFilteredData"
@@ -298,4 +299,5 @@ const paginatedFilteredData = computed(() =>{
         }
     }
 }
+
 </style>

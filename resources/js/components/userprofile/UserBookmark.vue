@@ -11,11 +11,13 @@ const props = defineProps({
 })
 const router = useRouter()
 
-const handleClickBookmark = (postType, postId) => {
+const handleClickBookmark = (postType, postId, postTitle) => {
     let targetUrl = ''
     switch(postType){
     case "school":
-        targetUrl = '/advice/resources/'
+        targetUrl = '/schools/' + postTitle
+        router.push(targetUrl)
+        return;
         break;
     case "advice":
         targetUrl = '/advice/resources/'
@@ -51,7 +53,7 @@ const handleClickBookmark = (postType, postId) => {
                     :display-content="singleBookmark.post_type"
                     :image-preview="singleBookmark.cover_image"
                     class="py-4 px-8 my-4  text-primary-teal"
-                    :click-callback="() => handleClickBookmark(singleBookmark.post_type, singleBookmark.post_id)"
+                    :click-callback="() => handleClickBookmark(singleBookmark.post_type, singleBookmark.post_id,singleBookmark.post_title)"
                 />
             </template>
         </div>
