@@ -400,7 +400,6 @@ onMounted(async () => {
                 <SoftwareRobot />
             </div>
             <div class="w-[35%] flex flex-col place-items-center pl-[29px]">
-
                 <div class="w-full h-1/2 flex flex-row gap-4">
                     <div class="w-1/4 relative">
                         <div
@@ -453,7 +452,7 @@ onMounted(async () => {
                     <div class="w-1/4 relative">
                         <div
                             class="negotiatedDealsLine absolute z-10 left-1/2 border-[1.5px] border-dashed border-black"
-                            :style="`height: ${distanceBetweenEls}px; top: calc(-${top}px + 150px);`"
+                            :style="`height: ${distanceBetweenEls}px; top: calc(-${top}px + 120px);`"
                         />
                         <div class="flex flex-col h-full relative z-20">
                             <div class="h-3/4 flex place-self-center">
@@ -482,7 +481,7 @@ onMounted(async () => {
                                     need to fund purchases
                                 </p>
                             </div>
-                            <div class="flex flex-col h-1/4 my-auto justify-center"></div>
+                            <div class="flex flex-col h-1/4 my-auto justify-center" />
                         </div>
                     </div>
                 </div>

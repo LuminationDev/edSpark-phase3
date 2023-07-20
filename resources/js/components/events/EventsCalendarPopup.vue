@@ -1,45 +1,52 @@
 <script setup>
-    import { imageURL } from '../../constants/serverUrl';
+import { imageURL } from '../../constants/serverUrl';
+import {useRouter} from "vue-router";
 
-    const props = defineProps({
-        dayEvents: {
-            type: Array,
-            required: true
-        },
-        date: {
-            type: String,
-            required: true
-        }
-    });
-
-    const emits = defineEmits(['emitClosePopup']);
-
-    const formatDate = (theDate) => {
-        return new Date(theDate).toLocaleDateString('en-us', { weekday:"long", year:"numeric", month:"short", day:"numeric"})
+const props = defineProps({
+    dayEvents: {
+        type: Array,
+        required: true
+    },
+    date: {
+        type: String,
+        required: true
     }
+});
 
-    const formatTime = (theDate) => {
-        return new Date(theDate).toLocaleTimeString('en-us', { hour: 'numeric', minute: 'numeric', hour12: true });
+const emits = defineEmits(['emitClosePopup']);
+const router = useRouter()
+
+const formatDate = (theDate) => {
+    return new Date(theDate).toLocaleDateString('en-us', { weekday:"long", year:"numeric", month:"short", day:"numeric"})
+}
+
+const formatTime = (theDate) => {
+    return new Date(theDate).toLocaleTimeString('en-us', { hour: 'numeric', minute: 'numeric', hour12: true });
+}
+
+const checkIfMultiDay = (startDate, endDate) => {
+    let start = new Date(startDate);
+    let end = new Date(endDate);
+
+    if (start.getDate() === end.getDate()) {
+        return;
+    } else {
+        return ' | Multi-day'
     }
+}
 
-    const checkIfMultiDay = (startDate, endDate) => {
-        let start = new Date(startDate);
-        let end = new Date(endDate);
+const handleEmitClosePopup = () => {
+    emits('emitClosePopup');
+}
 
-        if (start.getDate() === end.getDate()) {
-            return;
-        } else {
-            return ' | Multi-day'
-        }
-    }
-
-    const handleEmitClosePopup = () => {
-        emits('emitClosePopup');
-    }
-
-    const handleClickEventFromPopup = (eventId) => {
-        console.log('Clicked the event with id: ', eventId);
-    }
+const handleClickEventFromPopup = (eventId) => {
+    console.log('Clicked the event with id: ', eventId);
+    document.body.style.overflow = 'auto';
+    router.push({
+        name:"event-single",
+        params: { id: eventId},
+    })
+}
 
 const print = (thing) => {
     console.log(thing.customData.cover_image);
@@ -50,16 +57,20 @@ const print = (thing) => {
     <div class="fixed inset-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] max-h-[900px] h-fit p-6 bg-white shadow-lg flex items-center justify-center z-50">
         <div class="flex flex-col gap-4 w-full">
             <div class="flex flex-row justify-between">
-                <h4 class="text-[24px]">{{ formatDate(date) }}</h4>
+                <h4 class="text-[24px]">
+                    {{ formatDate(date) }}
+                </h4>
 
-                <button @click="handleEmitClosePopup">Close</button>
+                <button @click="handleEmitClosePopup">
+                    Close
+                </button>
             </div>
             <div class="eventPopupContent w-full flex flex-col gap-4">
                 <div
                     v-for="(event, index) in dayEvents"
                     :key="index"
                 >
-                {{ print(event) }}
+                    {{ print(event) }}
                     <div
                         class="flex flex-row h-[146px] gap-4 w-full place-items-center cursor-pointer hover:bg-slate-50 px-6 py-2"
                         @click="handleClickEventFromPopup(event.customData.event_id)"
@@ -70,8 +81,12 @@ const print = (thing) => {
                         />
                         <div class="shortDescription flex flex-col h-full w-[588px]">
                             <div class="flex flex-row justify-between pb-2">
-                                <h5 class="font-semibold">{{ event.customData.event_title }}</h5>
-                                <p class="text-[12px]">{{ formatTime(event.customData.start_date) }} to {{ formatTime(event.customData.end_date) }} <span class="font-semibold">{{ checkIfMultiDay(event.customData.start_date, event.customData.end_date) }}</span></p>
+                                <h5 class="font-semibold">
+                                    {{ event.customData.event_title }}
+                                </h5>
+                                <p class="text-[12px]">
+                                    {{ formatTime(event.customData.start_date) }} to {{ formatTime(event.customData.end_date) }} <span class="font-semibold">{{ checkIfMultiDay(event.customData.start_date, event.customData.end_date) }}</span>
+                                </p>
                             </div>
 
                             <div
@@ -81,7 +96,6 @@ const print = (thing) => {
                         </div>
                     </div>
                 </div>
-
             </div>
         </div>
     </div>
