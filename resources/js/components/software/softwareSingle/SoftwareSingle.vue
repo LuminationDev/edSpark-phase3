@@ -76,8 +76,12 @@ const handleChangeSubmenu = (value) => {
                     {{ contentFromBase['post_title'] }}
                 </template>
                 <template #subtitleText1>
-                    <div> {{ contentFromBase['author'] }}</div>
-                    <div> {{ contentFromBase['post_date'] }}</div>
+                    <div class="font-semibold">
+                        {{ contentFromBase['author']['author_name'] }}
+                    </div>
+                    <div class="font-semibold">
+                        {{ contentFromBase['post_date'] }}
+                    </div>
                 </template>
                 <template #subtitleText2>
                     <div v-html="contentFromBase['post_excerpt']" />
@@ -119,7 +123,10 @@ const handleChangeSubmenu = (value) => {
                                     :key="index"
                                     class="py-2"
                                 >
-                                    <div v-html="content.data.item[0].content" />
+                                    <div
+                                        v-if="content.data.item"
+                                        v-html="content.data.item[0].content"
+                                    />
                                 </div>
                             </div>
                         </div>

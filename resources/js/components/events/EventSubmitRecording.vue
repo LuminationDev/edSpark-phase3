@@ -19,6 +19,7 @@ const props = defineProps({
 const linkInput = ref('')
 const linkError = ref('')
 const recordingLink = ref('')
+const tempLink = ref('')
 
 const {currentUser} = storeToRefs(useUserStore())
 
@@ -32,7 +33,8 @@ const handleSubmitLinkButton = async () => {
     }
     axios.post(`${serverURL}/addEventRecording`,recordingData).then(res => {
         console.log(res.data)
-        recordingLink.value = linkInput
+        recordingLink.value = linkInput.value
+        tempLink.value = ''
     }).catch(err => {
         linkError.value = 'Failed to insert your recording. Try again'
     })
@@ -56,6 +58,16 @@ const formattedRecordingLink = computed(() =>{
         return recordingLink.value
     }
 })
+
+const toggleEditLink = () =>{
+    tempLink.value = recordingLink.value
+    recordingLink.value = ''
+}
+
+const handleCancelEditLink = () => {
+    recordingLink.value = tempLink.value
+    tempLink.value = ''
+}
 </script>
 
 <template>
@@ -84,6 +96,13 @@ const formattedRecordingLink = computed(() =>{
             >
                 Submit Link
             </button>
+            <button
+                v-if="currentUserIsOwner"
+                class="bg-red-500 flex w-fit ml-4 py-2 px-6 rounded-sm"
+                @click="handleCancelEditLink"
+            >
+                Cancel Edit
+            </button>
             <div
                 v-if="linkError"
                 class="error-message flex text-base ml-6 text-red-500 text-center items-center justify-center"
@@ -102,6 +121,15 @@ const formattedRecordingLink = computed(() =>{
         >
             {{ recordingLink }}
         </a>
+        <div class="flex flex-row">
+            <button
+                v-if="currentUserIsOwner"
+                class="bg-main-teal flex w-fit mt-2 py-2 px-6 rounded-sm"
+                @click="toggleEditLink"
+            >
+                Edit Link
+            </button>
+        </div>
     </template>
     <template v-else>
         <div class="submitLinkbody text-base mt-4">

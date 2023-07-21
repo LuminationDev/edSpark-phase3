@@ -63,13 +63,13 @@ const handleCategoryFilter = (filters, dataPath) => {
     >
         <template #filterBar>
             <GenericMultiSelectFilter
-                placeholder="Filter by Brand"
+                placeholder="Filter by brand"
                 :filter-list="brandList"
                 data-path="brandName"
                 @transmit-selected-filters="handleBrandFilter"
             />
             <GenericMultiSelectFilter
-                placeholder="Filter by Category"
+                placeholder="Filter by category"
                 :filter-list="categoryList"
                 data-path="categoryName"
                 @transmit-selected-filters="handleCategoryFilter"

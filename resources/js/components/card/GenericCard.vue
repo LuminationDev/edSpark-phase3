@@ -169,7 +169,7 @@ const handleEmitClick = () => {
 
 <template>
     <div
-        class="GenericCardContainer card_parent generic-card__wrapper group"
+        class="GenericCardContainer w-full card_parent generic-card__wrapper group"
         :class="extraClasses"
         @mouseenter="cardHoverToggle = true"
         @click="handleEmitClick"

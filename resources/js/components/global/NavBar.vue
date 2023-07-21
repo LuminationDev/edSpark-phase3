@@ -1,4 +1,4 @@
-\<script setup>
+<script setup>
 /**
  * Import Dependencies
  */
@@ -25,7 +25,7 @@ import ProfileDropdown from './ProfileDropdown.vue';
 import NavItems from './NavItems.vue';
 import { isObjectEmpty } from "@/js/helpers/objectHelpers";
 import axios from 'axios';
-import { appURL } from "@/js/constants/serverUrl";
+import {appURL, serverURL, imageURL} from "@/js/constants/serverUrl";
 
 const router = useRouter();
 const userStore = useUserStore();
@@ -86,10 +86,14 @@ setupRoutes();
 <template>
     <div class="w-full h-[240px] relative z-40">
         <div
-            class="nav-background w-full h-full pt-7 bg-[url(http://localhost:5173/resources/assets/images/children-vr.png)] bg-no-repeat bg-cover"
+            class="nav-background w-full h-full pt-7 bg-no-repeat bg-cover"
+            :style="`background-image: url(${imageURL}/uploads/image/navbar.png) `"
         >
+            <!--            <nav-->
+            <!--                v-if="isAuthenticated"-->
+            <!--                class="bg-[#002856]/50 py-2 px-12 w-full"-->
+            <!--            >-->
             <nav
-                v-if="isAuthenticated"
                 class="bg-[#002856]/50 py-2 px-12 w-full"
             >
                 <ul class="flex flex-row flex-wrap gap-8 text-white text-[24px] font-semibold font-['Poppins']">
@@ -102,8 +106,15 @@ setupRoutes();
             </nav>
         </div>
 
+        <!--        <ProfileDropdown-->
+        <!--            v-if="isAuthenticated"-->
+        <!--            :key="currentUser"-->
+        <!--            :current-user="currentUser"-->
+        <!--            :profile-dropdown="profileDropdown"-->
+        <!--            :avatar-url="avatarUrl"-->
+        <!--            @handle-avatar-click="handleAvatarClick"-->
+        <!--        />        -->
         <ProfileDropdown
-            v-if="isAuthenticated"
             :key="currentUser"
             :current-user="currentUser"
             :profile-dropdown="profileDropdown"
