@@ -24,3 +24,4 @@ app.blade.php
 oktaConfig.js
 
 /**/.DS_Store
+web/
