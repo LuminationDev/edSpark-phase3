@@ -145,12 +145,12 @@ const getIdToken = async () => {
 
             await checkFirstVisit(email.value);
         } else{
-            currentUser.value.id = 9999
+            currentUser.value.id = 61
         }
     } catch (error) {
         console.error(error);
         console.warn('Failed to get Auth data. User is not logged in')
-        currentUser.value.id = 9999
+        currentUser.value.id = 61
     }
 };
 
