@@ -244,7 +244,7 @@ console.log(computedCardData.value);
 
                         <!-- For advice types -->
                         <template v-if="sectionType === 'advice'" #typeTag>
-                            <div v-if="slide.type === 'D.A.G advice'"
+                            <div v-if="slide.type === 'DAG advice'"
                                 class="TypeTag absolute gap-4 -right-6 top-4 p-1 px-6 h-[39px] place-items-center bg-secondary-yellow text-white flex rounded"
                                 :class="typeTagColor">
                                 {{ slide.type }}
