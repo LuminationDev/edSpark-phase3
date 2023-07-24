@@ -1,14 +1,14 @@
 <script setup>
-    /**
-     * Carousel stuff
-     */
+/**
+ * Carousel stuff
+ */
 import 'vue3-carousel/dist/carousel.css';
-import {Carousel, Slide, Pagination, Navigation} from 'vue3-carousel';
+import { Carousel, Slide, Pagination, Navigation } from 'vue3-carousel';
 import { computed, ref } from 'vue';
 import { storeToRefs } from 'pinia';
 import { useUserStore } from '../../stores/useUserStore';
 import { useRouter } from 'vue-router';
-import {bookmarkURL, imageURL, likeURL} from "@/js/constants/serverUrl";
+import { bookmarkURL, imageURL, likeURL } from "@/js/constants/serverUrl";
 
 import GenericCard from './GenericCard.vue';
 import CardLoading from '../card/CardLoading.vue';
@@ -20,8 +20,9 @@ import InPerson from '../svg/InPerson.vue';
 import Virtual from '../svg/Virtual.vue';
 
 import { cardDataHelper } from '../../helpers/cardDataHelper.js';
+import Hybrid from '../svg/event/Hybrid.vue';
 
-const {currentUser } = storeToRefs(useUserStore());
+const { currentUser } = storeToRefs(useUserStore());
 
 const router = useRouter();
 
@@ -62,7 +63,7 @@ const props = defineProps({
     },
     adviceType: {
         type: String,
-        required:false
+        required: false
     },
     loadingClasses: {
         type: String,
@@ -99,28 +100,28 @@ const computedCardData = computed(() => {
             let mutatedData = [];
 
             switch (props.adviceType) {
-            case 'DAG':
-                mutatedData = props.cardData.filter(data => data.advice_type.includes('D.A.G advice'));
-                break;
+                case 'DAG':
+                    mutatedData = props.cardData.filter(data => data.advice_type.includes('D.A.G advice'));
+                    break;
 
-            case 'General':
-                let classroom = props.cardData.filter(data => data.advice_type.includes('Your Classroom'));
-                let work = props.cardData.filter(data => data.advice_type.includes('Your Work'));
-                let learning = props.cardData.filter(data => data.advice_type.includes('Your Learning'));
+                case 'General':
+                    let classroom = props.cardData.filter(data => data.advice_type.includes('Your Classroom'));
+                    let work = props.cardData.filter(data => data.advice_type.includes('Your Work'));
+                    let learning = props.cardData.filter(data => data.advice_type.includes('Your Learning'));
 
-                mutatedData = classroom.concat(work, learning);
-                break;
+                    mutatedData = classroom.concat(work, learning);
+                    break;
 
-            case 'Partner':
-                mutatedData = props.cardData.filter(data => data.advice_type.includes('Partner'));
-                break;
+                case 'Partner':
+                    mutatedData = props.cardData.filter(data => data.advice_type.includes('Partner'));
+                    break;
 
-            case 'Dashboard':
+                case 'Dashboard':
 
-                mutatedData = props.cardData;
-                break;
-            default:
-                break;
+                    mutatedData = props.cardData;
+                    break;
+                default:
+                    break;
             }
 
             return cardDataHelper(mutatedData, props.sectionType);
@@ -146,7 +147,7 @@ const handleMouseEnterCard = (id) => {
     showFirstTech.value = true
 }
 
-const handleMouseExitCard = () =>{
+const handleMouseExitCard = () => {
     firstTechId.value = '';
     showFirstTech.value = false
 }
@@ -164,35 +165,43 @@ const handleClickCard = (item) => {
     let sectionId = '';
 
     switch (props.sectionType) {
-    case 'advice':
-        sectionId = 'post_id'
-        break;
+        case 'advice':
+            sectionId = 'post_id'
+            break;
 
-    case 'software':
-        sectionId = 'post_id'
-        break;
+        case 'software':
+            sectionId = 'post_id'
+            break;
 
-    case 'schools':
-        sectionId = 'id'
-        break;
-    case 'events':
-        sectionId = 'event_id'
-        break;
-    case 'hardware':
-        sectionId = 'id'
-        break;
+        case 'schools':
+            sectionId = 'id'
+            break;
+        case 'events':
+            sectionId = 'event_id'
+            break;
+        case 'hardware':
+            sectionId = 'id'
+            break;
 
-    default:
-        break;
+        default:
+            break;
     }
 
     const content = props.cardData.filter(data => data[sectionId] === item.id);
 
-    router.push({
-        name: `${props.sectionType}-single`,
-        params: {id: item.id},
-        state: {content: JSON.stringify(content[0])}
-    })
+    if (props.sectionType === 'events') {
+        router.push({
+            name: `event-single`,
+            params: { id: item.id },
+            state: { content: JSON.stringify(content[0]) }
+        })
+    } else {
+        router.push({
+            name: `${props.sectionType}-single`,
+            params: { id: item.id },
+            state: { content: JSON.stringify(content[0]) }
+        })
+    }
 }
 
 console.log(computedCardData.value);
@@ -202,137 +211,88 @@ console.log(computedCardData.value);
     <div class="py-8 px-huge flex">
         <slot name="cardInfoSection" />
 
-        <div
-            v-if="!loading && loadingState === 'SUCCESS' || !loading && loadingState === 'VALIDATING'"
-            class="carousel__wrapper"
-            :class="additionalClasses"
-        >
-            <Carousel
-                :items-to-show="colCount"
-                :snap-align="'start'"
-                :wrap-around="true"
-            >
-                <Slide
-                    v-for="(slide, index) in computedCardData"
-                    :key="slide"
-                >
-                    <GenericCard
-                        v-if="sectionType !== 'schools'"
-                        :key="slide.id"
-                        :title="slide.title"
-                        :item="slide"
-                        :display-content="slide.excerpt"
-                        :display-author="slide.author"
+        <div v-if="!loading && loadingState === 'SUCCESS' || !loading && loadingState === 'VALIDATING'"
+            class="carousel__wrapper" :class="additionalClasses">
+            <Carousel :items-to-show="colCount" :snap-align="'start'" :wrap-around="true">
+                <Slide v-for="(slide, index) in computedCardData" :key="slide">
+                    <GenericCard v-if="sectionType !== 'schools'" :key="slide.id" :title="slide.title" :item="slide"
+                        :display-content="slide.excerpt" :display-author="slide.author"
                         :display-date="sectionType === 'events' ? slide.start_date : slide.created_at"
-                        :cover-image="slide.cover_image"
-                        :number-per-row="colCount"
-                        :like-bookmark-data="getLikeBookmarkData(slide)"
-                        :section-type="sectionType"
-                        @emitCardClick="handleClickCard"
-                    >
+                        :cover-image="slide.cover_image" :number-per-row="colCount"
+                        :like-bookmark-data="getLikeBookmarkData(slide)" :section-type="sectionType"
+                        @emitCardClick="handleClickCard">
                         <!-- For event types -->
-                        <template
-                            v-if="sectionType === 'events'"
-                            #typeTag
-                        >
-                            <div
-                                v-if="slide.type === 'In Person'"
+                        <template v-if="sectionType === 'events'" #typeTag>
+                            <div v-if="slide.type === 'In Person'"
                                 class="TypeTag absolute gap-4 -right-6 top-4 p-1 px-6 h-[39px] place-items-center bg-secondary-red text-white flex rounded"
-                                :class="typeTagColor"
-                            >
+                                :class="typeTagColor">
                                 <InPerson />{{ slide.type }}
                             </div>
 
-                            <div
-                                v-else-if="slide.type === 'Virtual'"
+                            <div v-else-if="slide.type === 'Virtual'"
                                 class="TypeTag absolute gap-4 -right-6 top-4 p-1 px-6 h-[39px] place-items-center bg-secondary-red text-white flex rounded"
-                                :class="typeTagColor"
-                            >
+                                :class="typeTagColor">
                                 <Virtual />{{ slide.type }}
+                            </div>
+                            <div v-else-if="slide.type === 'Hybrid'"
+                                class="TypeTag absolute gap-4 -right-6 top-4 p-1 px-6 h-[39px] place-items-center bg-secondary-red text-white flex rounded"
+                                :class="typeTagColor">
+                                <Hybrid />{{ slide.type }}
                             </div>
                         </template>
 
                         <!-- For advice types -->
-                        <template
-                            v-if="sectionType === 'advice'"
-                            #typeTag
-                        >
-                            <div
-                                v-if="slide.type === 'D.A.G advice'"
+                        <template v-if="sectionType === 'advice'" #typeTag>
+                            <div v-if="slide.type === 'D.A.G advice'"
                                 class="TypeTag absolute gap-4 -right-6 top-4 p-1 px-6 h-[39px] place-items-center bg-secondary-yellow text-white flex rounded"
-                                :class="typeTagColor"
-                            >
+                                :class="typeTagColor">
                                 {{ slide.type }}
                             </div>
 
-                            <div
-                                v-else-if="slide.type === 'Your Classroom'"
+                            <div v-else-if="slide.type === 'Your Classroom'"
                                 class="TypeTag absolute gap-4 -right-6 top-4 p-1 px-6 h-[39px] place-items-center bg-secondary-green text-white flex rounded"
-                                :class="typeTagColor"
-                            >
+                                :class="typeTagColor">
                                 {{ slide.type }}
                             </div>
 
-                            <div
-                                v-else-if="slide.type === 'Your Work'"
+                            <div v-else-if="slide.type === 'Your Work'"
                                 class="TypeTag absolute gap-4 -right-6 top-4 p-1 px-6 h-[39px] place-items-center bg-secondary-green text-white flex rounded"
-                                :class="typeTagColor"
-                            >
+                                :class="typeTagColor">
                                 {{ slide.type }}
                             </div>
 
-                            <div
-                                v-else-if="slide.type === 'Your Learning'"
+                            <div v-else-if="slide.type === 'Your Learning'"
                                 class="TypeTag absolute gap-4 -right-6 top-4 p-1 px-6 h-[39px] place-items-center bg-secondary-green text-white flex rounded"
-                                :class="typeTagColor"
-                            >
+                                :class="typeTagColor">
                                 {{ slide.type }}
                             </div>
 
-                            <div
-                                v-if="slide.type === 'Partner'"
+                            <div v-if="slide.type === 'Partner'"
                                 class="TypeTag absolute gap-4 -right-6 top-4 p-1 px-6 h-[39px] place-items-center bg-secondary-yellow text-white flex rounded"
-                                :class="typeTagColor"
-                            >
+                                :class="typeTagColor">
                                 {{ slide.type }}
                             </div>
                         </template>
 
-                        <template
-                            v-if="sectionType === 'advice'"
-                            #icon
-                        >
-                            <AdviceCardIcon
-                                class="icon absolute right-4 bottom-2 transition-all group-hover:-bottom-32"
-                                :advice-icon-name="randomIconName"
-                            />
+                        <template v-if="sectionType === 'advice'" #icon>
+                            <AdviceCardIcon class="icon absolute right-4 bottom-2 transition-all group-hover:-bottom-32"
+                                :advice-icon-name="randomIconName" />
                         </template>
                     </GenericCard>
 
-                    <GenericCard
-                        v-else-if="sectionType === 'schools'"
-                        :title="slide.title"
-                        :like-bookmark-data="getLikeBookmarkData(slide)"
-                        :override-content="true"
-                        :number-per-row="colCount"
-                        :extra-classes="'!w-[300px]'"
-                        :section-type="sectionType"
-                        :item="slide"
-                        @emitCardClick="handleClickCard"
-                    >
+                    <GenericCard v-else-if="sectionType === 'schools'" :title="slide.title"
+                        :like-bookmark-data="getLikeBookmarkData(slide)" :override-content="true" :number-per-row="colCount"
+                        :extra-classes="'!w-[300px]'" :section-type="sectionType" :item="slide"
+                        @emitCardClick="handleClickCard">
                         <template #overiddenContent>
-                            <div
-                                class="h-full flex flex-col"
-                                @mouseenter="handleMouseEnterCard(slide.id)"
-                                @mouseleave="handleMouseExitCard"
-                            >
+                            <div class="h-full flex flex-col" @mouseenter="handleMouseEnterCard(slide.id)"
+                                @mouseleave="handleMouseExitCard">
                                 <router-link :to="`/schools/${slide.title}`">
-                                    <div class="cardTopCoverImage relative min-h-[35%] bg-white bg-cover bg-center transition-all group-hover:min-h-[0%] group-hover:h-0">
-                                        <div
-                                            :class="`bg-[url('${imageURL}/${slide.cover_image}')] bg-cover`"
+                                    <div
+                                        class="cardTopCoverImage relative min-h-[35%] bg-white bg-cover bg-center transition-all group-hover:min-h-[0%] group-hover:h-0">
+                                        <div :class="`bg-[url('${imageURL}/${slide.cover_image}')] bg-cover`"
                                             :style="`background-image: url(${imageURL}/${slide.cover_image}) `"
-                                            class="h-36 group-hover:h-0 transition-all"
-                                        />
+                                            class="h-36 group-hover:h-0 transition-all" />
                                     </div>
                                     <div class="px-6 py-4 relative transition-all">
                                         <!-- CARD CONTENT -->
@@ -347,15 +307,11 @@ console.log(computedCardData.value);
                                                 Tech used:
                                             </p>
                                             <div
-                                                class="iconListContainer pt-4 flex flex-row w-full justify-between overflow-scroll gap-4 overflow-x-auto items-center pb-6 cursor-grab"
-                                            >
+                                                class="iconListContainer pt-4 flex flex-row w-full justify-between overflow-scroll gap-4 overflow-x-auto items-center pb-6 cursor-grab">
                                                 <!-- :show-first-tech="firstTechId === slide.id ? showFirstTech : !showFirstTech"
                                                     :show-first-tech="showFirstTech" -->
-                                                <SchoolCardIconList
-                                                    :tech-list="slide.tech_used"
-
-                                                    :show-first-tech="canShowFirstTech(slide.id)"
-                                                />
+                                                <SchoolCardIconList :tech-list="slide.tech_used"
+                                                    :show-first-tech="canShowFirstTech(slide.id)" />
                                             </div>
                                         </div>
                                     </div>
@@ -372,44 +328,35 @@ console.log(computedCardData.value);
             </Carousel>
         </div>
 
-        <div
-            v-else
-            class="carousel__wrapper"
-            :class="loadingClasses"
-        >
-            <CardLoading
-                :number-per-row="colCount"
-                :number-of-rows="rowCount"
-            />
+        <div v-else class="carousel__wrapper" :class="loadingClasses">
+            <CardLoading :number-per-row="colCount" :number-of-rows="rowCount" />
         </div>
     </div>
 </template>
 
 <style lang="scss">
+.iconListContainer::-webkit-scrollbar {
+    display: none;
+}
 
-    .iconListContainer::-webkit-scrollbar {
-        display: none;
+.iconListContainer {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+.carousel__wrapper {
+    width: 100%;
+
+    .carousel__viewport {
+        padding-bottom: 36px;
     }
 
-    .iconListContainer {
-        -ms-overflow-style: none;
-        scrollbar-width: none;
+    .carousel__next {
+        right: -20px !important;
     }
 
-    .carousel__wrapper {
-        width: 100%;
-
-        .carousel__viewport {
-            padding-bottom: 36px;
-        }
-
-        .carousel__next {
-            right: -20px !important;
-        }
-
-        .carousel__prev {
-            left: -20px !important;
-        }
+    .carousel__prev {
+        left: -20px !important;
     }
-
+}
 </style>

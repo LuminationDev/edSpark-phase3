@@ -17,21 +17,21 @@ import {
 import DashboardNew from './pages/DashboardNew.vue';
 import AdviceSingle from "@/js/pages/AdviceSingle.vue";
 import SoftwareSingle from "@/js/components/software/softwareSingle/SoftwareSingle.vue";
-import UserProfile from  '@/js/components/userprofile/UserProfile.vue';
+import UserProfile from '@/js/components/userprofile/UserProfile.vue';
 import HardwareSingle from '@/js/pages/HardwareSingle.vue';
 import EventSingle from "@/js/pages/EventSingle.vue";
 
 import ProfileWork from '@/js/components/userprofile/ProfileWork.vue'
-import ProfileInfo  from '@/js/components/userprofile/ProfileInfo.vue'
-import ProfileMessages  from '@/js/components/userprofile/ProfileMessages.vue'
+import ProfileInfo from '@/js/components/userprofile/ProfileInfo.vue'
+import ProfileMessages from '@/js/components/userprofile/ProfileMessages.vue'
 import Hardware from "@/js/pages/Hardware.vue";
 import SchoolSearch from "@/js/components/search/SchoolSearch.vue";
 import SoftwareSearch from "@/js/components/search/SoftwareSearch.vue";
 import AdviceSearch from "@/js/components/search/AdviceSearch.vue";
 import HardwareSearch from "@/js/components/search/HardwareSearch.vue";
-import {useUserStore} from "@/js/stores/useUserStore";
+import { useUserStore } from "@/js/stores/useUserStore";
 import axios from 'axios';
-import {appURL, serverURL} from "@/js/constants/serverUrl";
+import { appURL, serverURL } from "@/js/constants/serverUrl";
 import { useAuthStore } from './stores/useAuthStore';
 import PartnerSingle from "@/js/pages/PartnerSingle.vue";
 import PartnerSearch from "@/js/components/search/PartnerSearch.vue";
@@ -61,28 +61,28 @@ const router = createRouter({
         {
             name: 'browse-pages',
             path: '/browse',
-            children:[
+            children: [
                 {
                     name: 'browseSchools',
                     path: 'schools',
                     component: SchoolSearch
-                },{
+                }, {
                     name: 'browseAdvices',
                     path: 'advices',
                     component: AdviceSearch
-                },{
+                }, {
                     name: 'browseSoftwares',
                     path: 'softwares',
                     component: SoftwareSearch
-                },{
+                }, {
                     name: 'browseHardwares',
                     path: 'hardwares',
                     component: HardwareSearch
-                },{
+                }, {
                     name: 'browsePartners',
                     path: 'partners',
                     component: PartnerSearch
-                },{
+                }, {
                     name: 'browseEvents',
                     path: 'events',
                     component: EventSearch
@@ -214,7 +214,7 @@ const router = createRouter({
             children: [
                 {
                     path: '',
-                    name:'userProfileInfo',
+                    name: 'userProfileInfo',
                     component: ProfileInfo
                 },
                 {
@@ -224,7 +224,7 @@ const router = createRouter({
                 },
                 {
                     path: 'messages',
-                    name:'userProfileMessages',
+                    name: 'userProfileMessages',
                     component: ProfileMessages
                 }
             ],
@@ -268,22 +268,22 @@ const router = createRouter({
 // })
 
 //TODO using auth store
-router.beforeEach(async (to, from, next) => {
-    const authStore = useAuthStore();
-    if (to.meta.requiresAuth) {
-        if (!authStore.isAuthenticated) {
-            await authStore.checkAuthenticationStatus();
-        }
+// router.beforeEach(async (to, from, next) => {
+//     const authStore = useAuthStore();
+//     if (to.meta.requiresAuth) {
+//         if (!authStore.isAuthenticated) {
+//             await authStore.checkAuthenticationStatus();
+//         }
 
-        if (authStore.isAuthenticated) {
-            next();
-        } else {
-            next('/forbidden');
-        }
-    } else {
-        next();
-    }
-});
+//         if (authStore.isAuthenticated) {
+//             next();
+//         } else {
+//             next('/forbidden');
+//         }
+//     } else {
+//         next();
+//     }
+// });
 
 //working code
 // router.beforeEach((to, from, next) => {

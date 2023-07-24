@@ -4,3 +4,10 @@
     RewriteRule ^$ public/index.php [L]
     RewriteRule ^((?!public/).*)$ public/$1 [L,NC]
 </IfModule>
+
+#Secure a directory that the .htaccess file is in with a password
+AuthType basic
+AuthName "Protected Directory"
+AuthUserFile /home/luminationdev/public_html/futureSchools/web/.htpasswd
+AuthGroupFile /dev/null
+Require valid-user
