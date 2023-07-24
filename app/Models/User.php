@@ -9,7 +9,7 @@ use Filament\Models\Contracts\FilamentUser;
 use Filament\Models\Contracts\HasName;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
-class User extends Authenticatable implements HasName
+class User extends Authenticatable implements FilamentUser, HasName
 {
     use HasFactory;
 
@@ -40,7 +40,8 @@ class User extends Authenticatable implements HasName
     ];
 
     public function canAccessFilament(): bool {
-        return str_ends_with($this->email, 'edspark.sa.gov.au') && $this->hasVerifiedEmail();
+        return true;
+        // return str_ends_with($this->email, 'edspark.sa.gov.au') && $this->hasVerifiedEmail();
     }
 
     public function getFilamentName(): string
