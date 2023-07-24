@@ -4,6 +4,8 @@ import BaseHero from "@/js/components/bases/BaseHero.vue";
 import SoftwareSingleCuratedContent from "@/js/components/software/softwareSingle/SoftwareSingleCuratedContent.vue";
 import BaseSingleSubmenu from "@/js/components/bases/BaseSingleSubmenu.vue";
 import {ref} from 'vue'
+import {findNestedKeyValue} from "@/js/helpers/objectHelpers";
+import {formatDateToDayTime} from "@/js/helpers/dateHelper";
 /**
  *  type softwareSingleContent = {
  *      post_id: number
@@ -80,7 +82,7 @@ const handleChangeSubmenu = (value) => {
                         {{ contentFromBase['author']['author_name'] }}
                     </div>
                     <div class="font-semibold">
-                        {{ contentFromBase['post_date'] }}
+                        {{ formatDateToDayTime(contentFromBase['post_date'] ) }}
                     </div>
                 </template>
                 <template #subtitleText2>
@@ -106,27 +108,43 @@ const handleChangeSubmenu = (value) => {
                     v-if="activeSubmenu == 'detail'"
                 >
                     <div class="w-2/3 flex flex-col flex-wrap py-4 px-2">
-                        <div class="text-2xl flex font-bold uppercase">
+                        <div class="text-2xl flex font-bold uppercase py-4">
                             Getting started
                         </div>
                         <div
                             class="text-lg flex flex-col content-paragraph overflow-hidden max-w-full"
                             v-html="contentFromBase['post_content']"
                         />
-                        <div class="extraResourcesContainer">
-                            <div class="text-2xl flex extraContentHeading font-bold uppercase w-full">
+                        <div
+                            v-if="contentFromBase['extra_content'] && contentFromBase['extra_content'].length"
+                            class="extraResourcesContainer"
+                        >
+                            <div class="text-2xl flex extraContentHeading font-bold uppercase w-full py-4">
                                 Extra resources
                             </div>
-                            <div class="flex flex-col bg-indigo-800 text-white p-6 py-12">
+                            <div class="flex flex-col bg-indigo-800 text-white px-6 py-2">
                                 <div
-                                    v-for="(content,index) in contentFromBase['extra_content']"
+                                    v-for="(extra_content,index) in contentFromBase['extra_content']"
                                     :key="index"
                                     class="py-2"
                                 >
-                                    <div
-                                        v-if="content.data.item"
-                                        v-html="content.data.item[0].content"
-                                    />
+                                    <template v-if="findNestedKeyValue(extra_content,'item')">
+                                        <div
+                                            v-for="(item, index) in findNestedKeyValue(extra_content,'item')"
+                                            :key="index"
+                                            class="extraContentEachContainer mb-6"
+                                        >
+                                            <div
+                                                v-for="(innerItem, innerIndex) in item"
+                                                :key="innerIndex"
+                                            >
+                                                <p class="text-xl text-white font-semibold">
+                                                    {{ innerItem.heading }}
+                                                </p>
+                                                <div v-html="innerItem.content" />
+                                            </div>
+                                        </div>
+                                    </template>
                                 </div>
                             </div>
                         </div>
@@ -163,8 +181,16 @@ const handleChangeSubmenu = (value) => {
     p {
         padding-bottom: 12px;
     }
+    ul{
+        list-style: disc;
+    }
 }
-
+.extraContentEachContainer{
+    ul{
+        list-style: disc;
+        margin-left: 12px
+    }
+}
 
 .extraContentHeading {
     display: flex;
