@@ -1,5 +1,5 @@
 <script setup>
-import { ref } from 'vue';
+import {computed, ref} from 'vue';
 import {useRouter} from "vue-router";
 
 const props = defineProps({
@@ -41,7 +41,18 @@ const handleClickSingleEvent = (eventId) => {
         params: { id: eventId},
     })
 }
-
+const eventTypeColorClass = (eventType) => {
+    switch (eventType){
+    case 'Virtual':
+        return "bg-[#C73858]"
+        break;
+    case "In Person":
+        return "bg-blue-500"
+        break;
+    case "Hybrid":
+        return "bg-purple-500"
+    }
+}
 </script>
 
 <template>
@@ -64,7 +75,7 @@ const handleClickSingleEvent = (eventId) => {
                 @click="handleClickSingleEvent(event.event_id)"
             >
                 <div
-                    :class="event.event_type === 'Virtual' ? 'bg-red-500' : 'bg-blue-500'"
+                    :class="eventTypeColorClass(event.event_type)"
                     class="min-w-[8px] min-h-full rounded-sm"
                 />
                 <div class="flex flex-col gap-4 overflow-hidden">

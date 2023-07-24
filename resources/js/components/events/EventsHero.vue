@@ -8,7 +8,7 @@ export default {
     <div>
         <div class="bg-gradient-to-r from-[#002858] via-[#0158AD] to-[#DE4668]/50 mx-[81px] mt-24 py-[36px] px-[48px] grid grid-cols-8">
             <div class="col-span-5">
-                <h1 class="text-white text-[36px] font-semibold pb-8">
+                <h1 class="text-white text-[36px] font-semibold pb-8 uppercase">
                     Events
                 </h1>
 

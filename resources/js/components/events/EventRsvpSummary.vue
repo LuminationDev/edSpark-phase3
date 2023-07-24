@@ -36,7 +36,7 @@ const props = defineProps({
                 </ul>
             </div>
             <div class="eventRsvp form-cta pb-4">
-                Please contact the organiser with the information below if there is any changes.
+                Please contact the organiser with the information below if there are any changes.
             </div>
         </div>
     </div>

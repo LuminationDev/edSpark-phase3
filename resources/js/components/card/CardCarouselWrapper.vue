@@ -20,7 +20,7 @@ import InPerson from '../svg/InPerson.vue';
 import Virtual from '../svg/Virtual.vue';
 
 import { cardDataHelper } from '../../helpers/cardDataHelper.js';
-import Hybrid from '../svg/event/Hybrid.vue';
+import Hybrid from "@/js/components/svg/event/Hybrid.vue";
 
 const { currentUser } = storeToRefs(useUserStore());
 
@@ -237,6 +237,7 @@ console.log(computedCardData.value);
                             <div v-else-if="slide.type === 'Hybrid'"
                                 class="TypeTag absolute gap-4 -right-6 top-4 p-1 px-6 h-[39px] place-items-center bg-secondary-red text-white flex rounded"
                                 :class="typeTagColor">
+
                                 <Hybrid />{{ slide.type }}
                             </div>
                         </template>

@@ -274,7 +274,7 @@ const router = createRouter({
 //         if (!authStore.isAuthenticated) {
 //             await authStore.checkAuthenticationStatus();
 //         }
-
+//
 //         if (authStore.isAuthenticated) {
 //             next();
 //         } else {

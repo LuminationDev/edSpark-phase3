@@ -295,7 +295,7 @@ const handleClickContactOrganiser = () => {
                     class="mt-4 rounded-sm !bg-main-teal w-fit px-6 font-semibold"
                 >
                     <template #default>
-                        Contact
+                        Email organiser
                     </template>
                 </GenericButton>
 

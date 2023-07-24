@@ -29,13 +29,13 @@ const handleClickViewProfile = (author_id, author_type) => {
 
                 <template #additionalTags>
                     <div class=" flex flex-row typeAndTags text-white">
-                        <div class="EventTypeTag bg-pink-300 py-2 px-8 rounded-2xl mr-2 font-semibold">
+                        <div class="EventTypeTag bg-rose-700 py-2 px-8 rounded-2xl mr-2 font-semibold">
                             {{ contentFromBase['event_type'] }}
                         </div>
                         <div
                             v-for="(tag, index) in ['Advice', 'AR', 'VR']"
                             :key="index"
-                            class="EventTags bg-slate-300 py-2 px-8 rounded-2xl mr-2 font-semibold"
+                            class="EventTags bg-gray-50 text-black py-2 px-8 rounded-2xl mr-2 font-semibold"
                         >
                             {{ tag }}
                         </div>
@@ -52,6 +52,7 @@ const handleClickViewProfile = (author_id, author_type) => {
                                 <img
                                     :src="`${imageURL}/${String(contentFromBase['author']['author_logo'])}`"
                                     alt="logo"
+                                    class="w-24 h-24 object-contain bg-center rounded-full"
                                 >
                             </div>
                             <div class="authorName flex flex-col pt-6">
