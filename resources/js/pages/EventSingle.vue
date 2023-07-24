@@ -107,7 +107,7 @@ const handleClickViewProfile = (author_id, author_type) => {
                         Details
                     </div>
                     <div
-                        class="text-lg flex content-paragraph overflow-hidden max-w-full"
+                        class="text-lg flex flex-col content-paragraph overflow-hidden max-w-full"
                         v-html="purify.sanitize(contentFromBase['event_content'])"
                     />
                     <template
