@@ -49,6 +49,7 @@ const likeBookmarkData = {
         :number-per-row="props.numberPerRow"
         :click-callback="handleClickCard"
         :like-bookmark-data="likeBookmarkData"
+        class="mt-8"
     >
         <template #icon>
             <SoftwareCardIcon

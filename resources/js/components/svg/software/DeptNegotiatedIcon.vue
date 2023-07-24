@@ -3,7 +3,7 @@
 </script>
 <template>
     <svg
-        width="188"
+        width="300"
         height="188"
         viewBox="0 0 188 188"
         fill="none"

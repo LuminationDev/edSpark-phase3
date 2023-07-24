@@ -41,7 +41,8 @@ const timeFormatter = (originalFormat) => {
                     {{ contentFromBase['post_title'] }}
                 </template>
                 <template #authorName>
-                    {{ contentFromBase['author'] }}
+                    {{ contentFromBase['author']['author_name'] ? contentFromBase['author']['author_name'] :
+                        contentFromBase['author'] }}yes
                 </template>
                 <template #contentDate>
                     {{ timeFormatter(contentFromBase['post_date']) }}

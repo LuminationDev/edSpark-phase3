@@ -20,6 +20,7 @@ import InPerson from '../svg/InPerson.vue';
 import Virtual from '../svg/Virtual.vue';
 
 import { cardDataHelper } from '../../helpers/cardDataHelper.js';
+import Hybrid from "@/js/components/svg/event/Hybrid.vue";
 
 const {currentUser } = storeToRefs(useUserStore());
 
@@ -188,11 +189,19 @@ const handleClickCard = (item) => {
 
     const content = props.cardData.filter(data => data[sectionId] === item.id);
 
-    router.push({
-        name: `${props.sectionType}-single`,
-        params: {id: item.id},
-        state: {content: JSON.stringify(content[0])}
-    })
+    if (props.sectionType === 'events') {
+        router.push({
+            name: `event-single`,
+            params: {id: item.id},
+            state: {content: JSON.stringify(content[0])}
+        })
+    } else {
+        router.push({
+            name: `${props.sectionType}-single`,
+            params: {id: item.id},
+            state: {content: JSON.stringify(content[0])}
+        })
+    }
 }
 
 console.log(computedCardData.value);
@@ -249,6 +258,13 @@ console.log(computedCardData.value);
                                 :class="typeTagColor"
                             >
                                 <Virtual />{{ slide.type }}
+                            </div>
+                            <div
+                                v-else-if="slide.type === 'Hybrid'"
+                                class="TypeTag absolute gap-4 -right-6 top-4 p-1 px-6 h-[39px] place-items-center bg-secondary-red text-white flex rounded"
+                                :class="typeTagColor"
+                            >
+                                <Hybrid />{{ slide.type }}
                             </div>
                         </template>
 

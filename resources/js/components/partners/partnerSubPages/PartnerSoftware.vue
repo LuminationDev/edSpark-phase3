@@ -17,7 +17,7 @@ console.log(props.data)
     <div class="softwareSubPageContainer flex flex-col px-10">
         <div class="softwareSubpage Title">
             <div class="font-semibold text-2xl text-center pb-6">
-                Here are your listed softwares
+                Here is your listed software
             </div>
         </div>
         <div class="flex flex-row flex-wrap gap-6">

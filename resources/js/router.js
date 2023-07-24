@@ -268,22 +268,22 @@ const router = createRouter({
 // })
 
 //TODO using auth store
-router.beforeEach(async (to, from, next) => {
-    const authStore = useAuthStore();
-    if (to.meta.requiresAuth) {
-        if (!authStore.isAuthenticated) {
-            await authStore.checkAuthenticationStatus();
-        }
-
-        if (authStore.isAuthenticated) {
-            next();
-        } else {
-            next('/forbidden');
-        }
-    } else {
-        next();
-    }
-});
+// router.beforeEach(async (to, from, next) => {
+//     const authStore = useAuthStore();
+//     if (to.meta.requiresAuth) {
+//         if (!authStore.isAuthenticated) {
+//             await authStore.checkAuthenticationStatus();
+//         }
+//
+//         if (authStore.isAuthenticated) {
+//             next();
+//         } else {
+//             next('/forbidden');
+//         }
+//     } else {
+//         next();
+//     }
+// });
 
 //working code
 // router.beforeEach((to, from, next) => {

@@ -620,7 +620,6 @@ class SchoolController extends Controller
                 ->first();
 
             if ($schoolmeta_record) {
-                OutputHelper::print('School contact retrieved successfully.');
                 return response()->json([
                     "status" => 200,
                     "result" => true,
