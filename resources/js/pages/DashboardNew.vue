@@ -410,14 +410,14 @@ onMounted(async () => {
                             <div class="h-1/2 flex place-self-center">
                                 <div class="w-[100px] h-[100px] border-[4px] border-black rounded-full bg-white flex my-auto">
                                     <DeptProvidedIcon
-                                        class="h-fit p-1"
+                                        class="h-full p-1"
                                     />
                                 </div>
                             </div>
                             <div class="h-1/2 flex place-self-center">
                                 <div class="w-[100px] h-[100px] border-[4px] border-black rounded-full bg-white flex my-auto">
                                     <DeptApprovedIcon
-                                        class="h-fit p-1"
+                                        class="h-full p-1"
                                     />
                                 </div>
                             </div>
@@ -458,7 +458,7 @@ onMounted(async () => {
                             <div class="h-3/4 flex place-self-center">
                                 <div class="w-[100px] h-[100px] relative border-[2px] border-black border-dashed rounded-full bg-white flex my-auto">
                                     <DeptApprovedIcon
-                                        class="h-fit p-1"
+                                        class="h-full p-1"
                                     />
                                     <DepartmentApprovedSolo
                                         class="absolute w-[40px] h-[40px] -right-1 -top-1"
