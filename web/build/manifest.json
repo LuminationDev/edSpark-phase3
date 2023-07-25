@@ -52,7 +52,7 @@
     "src": "resources/css/output.css"
   },
   "resources/js/app.css": {
-    "file": "assets/app-679a0726.css",
+    "file": "assets/app-d4b0a1c8.css",
     "src": "resources/js/app.css"
   },
   "resources/js/app.js": {
@@ -65,11 +65,11 @@
       "assets/hardwareInfoImage-e7b190a8.png"
     ],
     "css": [
-      "assets/app-679a0726.css",
+      "assets/app-d4b0a1c8.css",
       "assets/app-b60ff18a.css",
       "assets/output-de5e8ffa.css"
     ],
-    "file": "assets/app-0c7818ad.js",
+    "file": "assets/app-fbb4ea56.js",
     "isEntry": true,
     "src": "resources/js/app.js"
   }

@@ -31,7 +31,7 @@ const { state: partnerState, STATES: PARTNERSTATES } = useSwrvState(partnerAdvic
 
 /**
  * Get General Advice articles (your work, classroom, learning)
- * and states
+ * and statesw
  */
 const { data: generalAdvice, error: generalError, isValidating: generalValidating } = useSWRV(`${serverURL}/fetchAdvicePostByType/${['Your Classroom', 'Your Work', 'Your Learning']}`, axiosFetcher, swrvOptions);
 const { state: generalState, STATES: GENERALSTATE } = useSwrvState(generalAdvice, generalError, generalValidating);

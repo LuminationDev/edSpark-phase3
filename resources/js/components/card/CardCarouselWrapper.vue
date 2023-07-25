@@ -101,7 +101,7 @@ const computedCardData = computed(() => {
 
             switch (props.adviceType) {
                 case 'DAG':
-                    mutatedData = props.cardData.filter(data => data.advice_type.includes('D.A.G advice'));
+                    mutatedData = props.cardData.filter(data => data.advice_type.includes('DAG advice'));
                     break;
 
                 case 'General':
