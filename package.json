@@ -46,7 +46,7 @@
         "dompurify": "^3.0.3",
         "editorjs-inline-font-size-tool": "^1.0.1",
         "epic-spinners": "^2.0.0",
-        "eslint": "^8.42.0",
+        "eslint": "^8.44.0",
         "font-awesome": "^4.7.0",
         "http-proxy-middleware": "^2.0.6",
         "pinia": "^2.1.3",
