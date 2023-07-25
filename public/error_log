@@ -1,0 +1,1 @@
+[19-Jul-2023 06:21:09 UTC] PHP Fatal error:  Trait "Pboivin\FilamentPeek\Pages\Concerns\HasPreviewModal" not found in /home/luminationdev/public_html/futureSchools/web/app/Filament/Resources/PartnerprofileResource/Pages/EditPartnerprofile.php on line 16

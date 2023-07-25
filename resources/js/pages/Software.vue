@@ -17,13 +17,6 @@ const handleBrowseAllSoftware = () => {
     <SoftwareHero />
     <div class="SoftwareContentContainer">
         <div class="HowItWorksContainer flex flex-col px-20 pt-16">
-            <div class="howItWorksTitle uppercase text-2xl font-semibold mb-4 mx-10">
-                How it works
-            </div>
-            <div class="subtitle font-normal w-1/2 mx-10 mb-8">
-                Use this page to explore software which has the department tick of approval. Find out more information,
-                see use casesm steps to purchase and possible costs.
-            </div>
             <div class="flex flex-row justify-around mt-6">
                 <div class="flex flex-col basis-1">
                     <DeptProvidedIcon />
@@ -31,7 +24,7 @@ const handleBrowseAllSoftware = () => {
                         Department Provided
                     </div>
                     <div class="text-center">
-                        These applicationms are provided by the department at no cost to schools
+                        These applications are provided by the department at no cost to schools
                     </div>
                 </div>
                 <div class="flex flex-col basis-1">

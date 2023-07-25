@@ -18,8 +18,8 @@ return [
     |
     */
 
-//    'driver' => env('SESSION_DRIVER', 'file'),
-    'driver' => 'database',
+   'driver' => env('SESSION_DRIVER', 'file'),
+    // 'driver' => 'file',
 
     /*
     |--------------------------------------------------------------------------
@@ -156,7 +156,7 @@ return [
     |
     */
 
-    'domain' => env('SESSION_DOMAIN'),
+    'domain' => env('SESSION_DOMAIN',null),
     // 'domain' => '.localhost:8000',
 
     /*
@@ -170,7 +170,7 @@ return [
     |
     */
 
-    'secure' => env('SESSION_SECURE_COOKIE'),
+    'secure' => env('SESSION_SECURE_COOKIE',false),
 
     /*
     |--------------------------------------------------------------------------
@@ -183,7 +183,7 @@ return [
     |
     */
 
-    'http_only' => true,
+    'http_only' => false,
 
     /*
     |--------------------------------------------------------------------------

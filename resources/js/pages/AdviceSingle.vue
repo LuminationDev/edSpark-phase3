@@ -33,15 +33,14 @@ const timeFormatter = (originalFormat) => {
 </script>
 <template>
     <BaseSingle content-type="advice">
-        <template #hero="{contentFromBase}">
-            <BaseHero
-                :background-url="contentFromBase['cover_image']"
-            >
+        <template #hero="{ contentFromBase }">
+            <BaseHero :background-url="contentFromBase['cover_image']">
                 <template #titleText>
                     {{ contentFromBase['post_title'] }}
                 </template>
                 <template #authorName>
-                    {{ contentFromBase['author'] }}
+                    {{ contentFromBase['author']['author_name'] ? contentFromBase['author']['author_name'] :
+                        contentFromBase['author'] }}
                 </template>
                 <template #contentDate>
                     {{ timeFormatter(contentFromBase['post_date']) }}
@@ -55,23 +54,16 @@ const timeFormatter = (originalFormat) => {
             </BaseHero>
         </template>
 
-        <template #content="{contentFromBase,recommendationFromBase}">
-            <div
-                class="adviceSingleContent p-4 px-8 flex flex-row w-full overflow-hidden mt-14"
-            >
+        <template #content="{ contentFromBase, recommendationFromBase }">
+            <div class="adviceSingleContent p-4 px-8 flex flex-row w-full overflow-hidden mt-14">
                 <!--    Content of the Advice    -->
                 <div class="w-2/3 flex flex-col flex-wrap py-4 px-2">
                     <div class="text-2xl flex font-bold uppercase">
                         Getting started
                     </div>
-                    <div
-                        class="text-lg flex flex-col content-paragraph overflow-hidden max-w-full"
-                        v-html="contentFromBase['post_content']"
-                    />
-                    <template
-                        v-for="(content,index) in contentFromBase['extra_content']"
-                        :key="index"
-                    >
+                    <div class="text-lg flex flex-col content-paragraph overflow-hidden max-w-full"
+                        v-html="contentFromBase['post_content']" />
+                    <template v-for="(content, index) in contentFromBase['extra_content']" :key="index">
                         <AdviceSingleExtraContentRenderer :content="content" />
                     </template>
                 </div>
@@ -85,19 +77,20 @@ const timeFormatter = (originalFormat) => {
 </template>
 
 <style lang="scss">
-    .adviceSingleContent {
-        figure {
-            margin: 20px 0;
-            a {
-                img {
-                    max-height: 400px !important;
-                    width: auto;
-                }
+.adviceSingleContent {
+    figure {
+        margin: 20px 0;
+
+        a {
+            img {
+                max-height: 400px !important;
+                width: auto;
             }
         }
-
-        figcaption {
-            display: none;
-        }
     }
+
+    figcaption {
+        display: none;
+    }
+}
 </style>

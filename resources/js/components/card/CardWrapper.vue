@@ -160,7 +160,7 @@ const handleClickCard = (item) => {
 </script>
 
 <template>
-    <div class="">
+    <div>
         <slot name="biggerInfoSection" />
         <div
             v-if="!loading && loadingState === 'SUCCESS' || !loading && loadingState === 'VALIDATING' || (typeof loadingState === 'boolean' && !loadingState)"

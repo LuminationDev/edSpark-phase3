@@ -121,6 +121,7 @@ const checkToReadOrFetchContent = async () =>{
         console.log('No content passed in. Will request from server')
         await axios.get(`${serverURL}/${byIdAPILink}/${route.params.id}`).then(res => {
             singleContent.value = res.data
+            console.log('set new data haha yes')
             baseIsLoading.value = false
         }).catch(err =>{
             console.log(err)
@@ -148,12 +149,15 @@ const checkToReadOrFetchContent = async () =>{
 }
 
 watch(currentId, () => {
+    console.log('watcehr on ac tion')
+    console.log(window.history.state.content)
     if (window.history.state.content && singleContent.value) {
         if (!isEqual(JSON.parse(window.history.state.content), singleContent.value)) {
             singleContent.value = JSON.parse(window.history.state.content)
             baseIsLoading.value = false
-
         }
+    } else{
+        checkToReadOrFetchContent()
     }
 })
 const handleEmitFromSubmenu = (value) => {

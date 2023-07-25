@@ -189,7 +189,7 @@ const formattedSearchTitle = computed(() =>{
         </div>
         <div
             v-if="resourceList"
-            class="resourceResult pt-10 flex flex-row flex-wrap flex-1 px-24 gap-12 max-w-[97%]"
+            class="resourceResult pt-10 grid grid-cols-3 place-items-center gap-6"
         >
             <template
                 v-for="(data) in paginatedFilteredData"
@@ -198,34 +198,46 @@ const formattedSearchTitle = computed(() =>{
                 <template
                     v-if="searchType === 'advice'"
                 >
-                    <AdviceCard
-                        :key="data.post_id"
-                        class="w-1/3 my-4"
-                        :advice-content="data"
-                        :number-per-row="2"
-                        :show-icon="true"
-                    />
+                    <div
+                        :key="data.id"
+                        class="w-full max-w-[400px] my-4 h-[470px] transition-all group hover:shadow-2xl"
+                    >
+                        <AdviceCard
+                            :key="data.post_id"
+                            :advice-content="data"
+                            :number-per-row="2"
+                            :show-icon="true"
+                        />
+                    </div>
                 </template>
                 <template v-else-if="searchType === 'software'">
-                    <SoftwareCard
-                        :key="data.post_id"
-                        class="w-1/3 my-4"
-                        :software="data"
-                        :number-per-row="2"
-                    />
+                    <div
+                        :key="data.id"
+                        class="w-full max-w-[400px] my-4 h-[470px] transition-all group hover:shadow-2xl"
+                    >
+                        <SoftwareCard
+                            :key="data.post_id"
+                            :software="data"
+                            :number-per-row="2"
+                        />
+                    </div>
                 </template>
                 <template v-else-if="searchType === 'hardware'">
-                    <HardwareCard
+                    <div
                         :key="data.id"
-                        class="w-1/3 my-2"
-                        :hardware-content="data"
-                        :number-per-row="4"
-                    />
+                        class="w-full max-w-[400px] my-4 h-[470px] transition-all group hover:shadow-2xl"
+                    >
+                        <HardwareCard
+                            :key="data.id"
+                            :hardware-content="data"
+                            :number-per-row="4"
+                        />
+                    </div>
                 </template>
                 <template v-else-if="searchType === 'school'">
                     <div
                         :key="data.id"
-                        class="w-1/3 max-w-[400px] my-4 h-[470px] transition-all group hover:shadow-2xl"
+                        class="w-full max-w-[400px] my-4 h-[470px] transition-all group hover:shadow-2xl"
                     >
                         <SchoolCard
                             class="mx-auto w-1/3"
@@ -236,7 +248,7 @@ const formattedSearchTitle = computed(() =>{
                 <template v-else-if="searchType === 'partner'">
                     <div
                         :key="data.id"
-                        class="w-1/3 max-w-[400px] my-4 h-[470px] border-black transition-all group hover:shadow-2xl"
+                        class="w-full max-w-[400px] my-4 h-[470px] border-black transition-all group hover:shadow-2xl"
                     >
                         <PartnerCard
                             :partner-content="data"
@@ -246,7 +258,7 @@ const formattedSearchTitle = computed(() =>{
                 <template v-else-if="searchType === 'event'">
                     <div
                         :key="data.id"
-                        class="w-1/3 max-w-[400px] my-4 h-[470px] border-black transition-all group hover:shadow-2xl"
+                        class="w-full max-w-[400px] my-4 h-[470px] border-black transition-all group hover:shadow-2xl"
                     >
                         <EventsCard
                             :event-content="data"

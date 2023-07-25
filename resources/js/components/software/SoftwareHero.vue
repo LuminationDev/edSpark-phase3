@@ -22,11 +22,17 @@ import SoftwareRobot from "@/js/components/svg/software/SoftwareRobot.vue";
     <!--    </BaseHero>-->
     <div class="bg-gradient-to-l from-[#C7B2EA] via-[#4F2D8D] to-[#002858] mt-24 py-[36px] px-[48px] grid grid-cols-8 mx-20">
         <div class="col-span-6">
-            <h1 class="text-white text-[36px] font-semibold pb-8">
+            <h1 class="text-white text-[36px] font-semibold pb-8 uppercase">
                 Software
             </h1>
-            <p class="text-white text-[18px] font-normal pb-4">
+            <p class="text-white text-[16px] font-normal pb-2">
                 Find out what software is available to you to use as an employee and how to access it.
+            </p>
+            <p class="text-white text-[16px] font-normal">
+                Use this page to explore software which has the Department for Education tick of approval.
+                <br>
+                Find out more information,
+                see use cases, steps to purchase and possible costs.
             </p>
         </div>
         <div class="col-span-2 relative">

@@ -332,10 +332,11 @@ const isSchoolContentPopulated = computed(() => {
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="w-[200px] py-6">
+                                        <div class="w-[180px] py-6">
                                             <img
                                                 :src="`${imageURL}/${schoolContent.logo}`"
                                                 :alt="`${schoolContent.name} logo`"
+                                                class="w-40 h-40"
                                             >
                                         </div>
                                     </div>

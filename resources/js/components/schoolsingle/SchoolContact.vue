@@ -1,15 +1,15 @@
 <script setup>
 
-import {ref, reactive, onBeforeMount} from "vue";
-import {required, minLength, email, numeric} from '@vuelidate/validators'
+import { ref, reactive, onMounted } from "vue";
+import { required, minLength, email, numeric } from '@vuelidate/validators'
 import axios from "axios";
-import {GoogleMap, Marker} from 'vue3-google-map'
+import { GoogleMap, Marker } from 'vue3-google-map'
 import useVuelidate from '@vuelidate/core'
 
 
 import TextInput from "@/js/components/bases/TextInput.vue";
 import GenericButton from "@/js/components/button/GenericButton.vue";
-import {serverURL} from "@/js/constants/serverUrl";
+import { serverURL } from "@/js/constants/serverUrl";
 
 
 const props = defineProps({
@@ -17,12 +17,12 @@ const props = defineProps({
         type: [Number, String],
         required: true
     },
-    schoolLocation:{
-        type:Object,
+    schoolLocation: {
+        type: Object,
         required: false,
-        default: () =>({lat: 0, lng:0})
+        default: () => ({ lat: 0, lng: 0 })
     },
-    currentUserCanEdit:{
+    currentUserCanEdit: {
         type: Boolean,
         required: true
     }
@@ -30,21 +30,21 @@ const props = defineProps({
 
 
 const editMode = ref(false)
-
+const contactInfoAvailable = ref(false)
 const state = reactive({
-    location:"",
+    location: "",
     website: "",
-    email:'',
+    email: '',
     phone: "",
     fax: ''
 
 })
 
 const rules = {
-    location: {required, minLength: minLength(10)},
-    website: {required},
-    email: {required, email},
-    phone: {required, minLength: minLength(9)},
+    location: { required, minLength: minLength(10) },
+    website: { required },
+    email: { required, email },
+    phone: { required, minLength: minLength(9) },
     fax: {}
 }
 
@@ -61,7 +61,7 @@ const handleSaveContactForm = () => {
         axios.post(`${serverURL}/createOrUpdateSchoolContact`, sendContactDataBody).then(res => {
             console.log('hahaha ok from server')
             console.log(res.data)
-            editMode.value= false
+            editMode.value = false
         })
 
     } else {
@@ -69,33 +69,64 @@ const handleSaveContactForm = () => {
     }
 }
 
-const handleToggleEditContactForm = ()=> {
+const handleToggleEditContactForm = () => {
     editMode.value = !editMode.value
 }
 
-onBeforeMount(() => {
-    let contactRequestBody = {
-        school_id: props.schoolId
-    }
-    axios.post(`${serverURL}/fetchSchoolContact`, contactRequestBody).then(res => {
-        console.log(res.data)
-        if (res.data.status === 200) {
-            const parsedData = JSON.parse(res.data.school_contact)
-            state.location = parsedData.location || ""
-            state.website = parsedData.website || ""
-            state.email = parsedData.email || ""
-            state.phone = parsedData.phone || ""
-            state.fax = parsedData.fax || ""
+onMounted(async () => {
 
-            console.log(parsedData)
-        } else {
-            editMode.value= true
-            console.log('schoolDataNotFound')
-        }
-    }).catch(err => {
-        console.log()
-    })
+    // await axios.post(`${serverURL}/fetchSchoolContact`, contactRequestBody).then(res => {
+    //     console.log(res.data)
+    //     if (res.data.status == 200 || res.data.result) {
+    //         const parsedData = typeof res.data.school_contact == 'string' ? JSON.parse(res.data.school_contact) : res.data.school_contact
+    //         // v$.value.location.$model = parsedData.location
+    //         // v$.value.website.$model = parsedData.website
+    //         // v$.value.email.$model = parsedData.email
+    //         // v$.value.phone.$model = parsedData.phone
+    //         // v$.value.fax.$model = parsedData.fax
+    //         state.location = parsedData.location || ""
+    //         state.website = parsedData.website || ""
+    //         state.email = parsedData.email || ""
+    //         state.phone = parsedData.phone || ""
+    //         state.fax = parsedData.fax || ""
+    //         contactInfoAvailable.value = true
+
+    //         console.log(parsedData)
+    //     } else {
+    //         console.log('schoolDataNotFound')
+    //     }
+    // }).catch(err => {
+    //     console.log()
+    // })
 })
+
+let contactRequestBody = {
+    school_id: props.schoolId
+}
+axios.post(`${serverURL}/fetchSchoolContact`, contactRequestBody).then(res => {
+    console.log(res.data)
+    if (res.data.result) {
+        const parsedData = typeof res.data.school_contact == 'string' ? JSON.parse(res.data.school_contact) : res.data.school_contact
+        // v$.value.location.$model = parsedData.location
+        // v$.value.website.$model = parsedData.website
+        // v$.value.email.$model = parsedData.email
+        // v$.value.phone.$model = parsedData.phone
+        // v$.value.fax.$model = parsedData.fax
+        state.location = parsedData.location || ""
+        state.website = parsedData.website || ""
+        state.email = parsedData.email || ""
+        state.phone = parsedData.phone || ""
+        state.fax = parsedData.fax || ""
+        contactInfoAvailable.value = true
+
+        console.log(parsedData)
+    } else {
+        console.log('schoolDataNotFound')
+    }
+}).catch(err => {
+    console.log()
+})
+
 
 const mapOptions = {
     center: {
@@ -103,7 +134,7 @@ const mapOptions = {
         lng: props.schoolLocation.lng
     },
     zoom: 18,
-    options : {
+    options: {
         zoomControl: false,
         mapTypeControl: false,
         scaleControl: false,
@@ -124,100 +155,63 @@ const mapOptions = {
             <div class="contactSubPageTitle text-xl font-semibold ">
                 Contact details
             </div>
-            <div
-                v-if="editMode && currentUserCanEdit"
-                class="contactForm flex flex-col"
-            >
+            <div v-if="editMode && currentUserCanEdit" class="contactForm flex flex-col">
                 <div class="contactFormTitle text-xl font-semibold mb-4">
                     School Contact Form
                 </div>
-                <TextInput
-                    v-model="v$.location.$model"
-                    field-id="schoolLocation"
-                    :v$="v$.location"
-                    placeholder="Enter School Address"
-                >
+                <TextInput v-model="v$.location.$model" field-id="schoolLocation" :v$="v$.location"
+                    placeholder="Enter School Address">
                     <template #label>
                         Location
                     </template>
                 </TextInput>
-                <TextInput
-                    v-model="v$.website.$model"
-                    field-id="schoolLocation"
-                    :v$="v$.website"
-                    placeholder="Enter School Website"
-                >
+                <TextInput v-model="v$.website.$model" field-id="schoolLocation" :v$="v$.website"
+                    placeholder="Enter School Website">
                     <template #label>
                         Website
                     </template>
                 </TextInput>
-                <TextInput
-                    v-model="v$.email.$model"
-                    field-id="schoolLocation"
-                    :v$="v$.email"
-                    placeholder="Enter School Email Address"
-                >
+                <TextInput v-model="v$.email.$model" field-id="schoolLocation" :v$="v$.email"
+                    placeholder="Enter School Email Address">
                     <template #label>
                         Email Address
                     </template>
                 </TextInput>
-                <TextInput
-                    v-model="v$.phone.$model"
-                    field-id="schoolLocation"
-                    :v$="v$.phone"
-                    placeholder="Enter School Phone Number"
-                >
+                <TextInput v-model="v$.phone.$model" field-id="schoolLocation" :v$="v$.phone"
+                    placeholder="Enter School Phone Number">
                     <template #label>
                         Phone Number
                     </template>
                 </TextInput>
-                <TextInput
-                    v-model="v$.fax.$model"
-                    field-id="schoolLocation"
-                    :v$="v$.fax"
-                    placeholder="Enter Fax Number"
-                >
+                <TextInput v-model="v$.fax.$model" field-id="schoolLocation" :v$="v$.fax" placeholder="Enter Fax Number">
                     <template #label>
                         Fax Number
                     </template>
                 </TextInput>
-                <GenericButton
-                    :callback="handleSaveContactForm"
-                    custom-class="mt-4"
-                >
+                <GenericButton :callback="handleSaveContactForm" custom-class="mt-4">
                     <template #default>
                         Submit Contact Information
                     </template>
                 </GenericButton>
             </div>
-            <div
-                v-else
-                class="displayContact pt-8 p-4 flex flex-col "
-            >
-                <template
-                    v-for="(value,key) in state"
-                    :key="key"
-                >
+            <div v-else-if="contactInfoAvailable" class="displayContact pt-8 p-4 flex flex-col ">
+                <template v-for="(value, key) in state" :key="key">
                     <div class="flex flex-row my-4">
                         <div class="flex w-1/4 text-xl font-semibold justify-end mr-4">
                             {{ key.toUpperCase() }}
                         </div>
-                        <div
-                            class="flex flex-wrap w-3/4 text-lg"
-                        >
+                        <div class="flex flex-wrap w-3/4 text-lg">
                             <p class="text-ellipsis w-full break-words">
-                                {{ value }}
+                                {{ state[key] }}
                             </p>
                         </div>
                     </div>
                 </template>
             </div>
-            <GenericButton
-                v-if="
-                    currentUserCanEdit"
-                :callback="handleToggleEditContactForm"
-                class="mt-2"
-            >
+            <div v-else class="no available contact pt-8 p-4 flex flex-col ">
+                Sorry contact not available yet. Please check back later
+            </div>
+            <GenericButton v-if="currentUserCanEdit" :callback="handleToggleEditContactForm" class="mt-2">
                 <template #default>
                     {{ editMode ? "Cancel Edit" : "Edit Contact" }}
                 </template>
@@ -225,17 +219,10 @@ const mapOptions = {
         </div>
 
         <div class="schoolContactMapContainer w-full">
-            <GoogleMap
-                api-key="AIzaSyAFbqxGQntzgzfzKFh6bArwU14MJhcV1Wc"
-                style="width: 100%; height: 700px"
-                :options="mapOptions.options"
-                :center="mapOptions.center"
-                :zoom="mapOptions.zoom"
-            >
-                <Marker
-                    class="relative"
-                    :options="{ position: {lat: props.schoolLocation.lat, lng: props.schoolLocation.lng} }"
-                />
+            <GoogleMap api-key="AIzaSyAFbqxGQntzgzfzKFh6bArwU14MJhcV1Wc" style="width: 100%; height: 700px"
+                :options="mapOptions.options" :center="mapOptions.center" :zoom="mapOptions.zoom">
+                <Marker class="relative"
+                    :options="{ position: { lat: props.schoolLocation.lat, lng: props.schoolLocation.lng } }" />
             </GoogleMap>
         </div>
     </div>

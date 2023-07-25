@@ -2,7 +2,7 @@
 </script>
 <template>
     <svg
-        width="176"
+        width="300"
         height="177"
         viewBox="0 0 176 177"
         fill="none"
