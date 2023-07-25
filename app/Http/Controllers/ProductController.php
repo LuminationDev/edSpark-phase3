@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Productbrand;
 use Illuminate\Http\Request;
 use App\Models\Productbrand as Brand;
-use App\Models\ProductCategory as Category;
+use App\Models\Productcategory as Category;
 use App\Models\Hardware as Product;
 
 class ProductController extends Controller

@@ -18,7 +18,7 @@ const fulfilledData = await props.data
     <div class="hardwareSubPageContainer flex flex-col px-10">
         <div class="hardwareSubpage Title">
             <div class="font-semibold text-2xl text-center pb-6">
-                Here are your listed hardwares
+                Here is your listed hardware
             </div>
         </div>
         <div class="flex flex-row flex-wrap gap-4">

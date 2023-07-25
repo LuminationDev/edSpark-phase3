@@ -55,14 +55,6 @@ class ImageController extends Controller
                     $image = $data['image'];
                     $imgName = $prefix.'-'.md5(Str::random(30).time().'_'.$image).'.'.$image->getClientOriginalExtension();
                 }
-
-
-
-                // if ($data['file']->getMimeType() == 'video/mp4') {
-
-
-                // }
-
                 $image->storeAs('public/uploads/'.$type, $imgName);
                 $imagePath .= "uploads/".$type."/".$imgName;
             }
@@ -70,7 +62,7 @@ class ImageController extends Controller
             return response()->json([
                 "success" => 1,
                 "file" => [
-                    "url" =>  'http://localhost:8000/storage/'.$imagePath
+                    "url" =>  $_ENV['VITE_SERVER_IMAGE_API'].$imagePath
                 ]
             ]);
         }
