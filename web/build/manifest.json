@@ -37,12 +37,12 @@
     "src": "resources/assets/svg/Logo.svg"
   },
   "resources/css/app.css": {
-    "file": "assets/app-b60ff18a.css",
+    "file": "assets/app-021c1a16.css",
     "isEntry": true,
     "src": "resources/css/app.css"
   },
   "resources/css/filament.css": {
-    "file": "assets/filament-37e01b63.css",
+    "file": "assets/filament-d61d58b3.css",
     "isEntry": true,
     "src": "resources/css/filament.css"
   },
@@ -52,7 +52,7 @@
     "src": "resources/css/output.css"
   },
   "resources/js/app.css": {
-    "file": "assets/app-d4b0a1c8.css",
+    "file": "assets/app-72a370b1.css",
     "src": "resources/js/app.css"
   },
   "resources/js/app.js": {
@@ -65,11 +65,11 @@
       "assets/hardwareInfoImage-e7b190a8.png"
     ],
     "css": [
-      "assets/app-d4b0a1c8.css",
-      "assets/app-b60ff18a.css",
+      "assets/app-72a370b1.css",
+      "assets/app-021c1a16.css",
       "assets/output-de5e8ffa.css"
     ],
-    "file": "assets/app-fbb4ea56.js",
+    "file": "assets/app-00aa488f.js",
     "isEntry": true,
     "src": "resources/js/app.js"
   }
