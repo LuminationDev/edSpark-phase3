@@ -303,7 +303,7 @@ const isSchoolContentPopulated = computed(() => {
                                         <h1 class="text-white text-[48px] font-bold">
                                             {{ schoolContent.name }}
                                         </h1>
-                                        <div class="flex flex-row gap-4 place-items-center">
+                                        <div class="flex flex-row gap-4 place-items-center mb-4">
                                             <div
                                                 v-for="(tech, index) in schoolContent.tech_used"
                                                 :key="index"
@@ -317,7 +317,6 @@ const isSchoolContentPopulated = computed(() => {
                                                         :tech-name="tech.name"
                                                         class="min-w-[60px] pr-4 m-2 cursor-pointer relative"
                                                     />
-                                                    <!-- :class="`bg-${colorTheme}-600`" -->
                                                     <div
                                                         v-if="toggleTooltip && tooltipIndex === index"
                                                         class="absolute shadow-xl w-[450px] px-[24px] py-[18px] border-l-[3px] border-white bg-main-navy"
@@ -332,11 +331,11 @@ const isSchoolContentPopulated = computed(() => {
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="w-[180px] py-6">
+                                        <div class="w-40 h-40 flex justify-center items-center">
                                             <img
                                                 :src="`${imageURL}/${schoolContent.logo}`"
                                                 :alt="`${schoolContent.name} logo`"
-                                                class="w-40 h-40"
+                                                class="w-full max-h-full object-contain"
                                             >
                                         </div>
                                     </div>
