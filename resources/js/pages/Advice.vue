@@ -20,7 +20,7 @@ const router = useRouter();
  * Get the DAG Advice articles
  * and states
  */
-const { data: dagAdvice, error: dagError, isValidating: dagValidating } = useSWRV(`${serverURL}/fetchAdvicePostByType/D.A.G advice`, axiosFetcher,swrvOptions);
+const { data: dagAdvice, error: dagError, isValidating: dagValidating } = useSWRV(`${serverURL}/fetchAdvicePostByType/DAG advice`, axiosFetcher, swrvOptions);
 const { state: dagState, STATES: DAGSTATES } = useSwrvState(dagAdvice, dagError, dagValidating);
 /**
  * Get the Partner advice
@@ -45,15 +45,8 @@ const handleBrowseAllAdvice = () => {
 <template>
     <AdviceHero />
     <div class="DAGAdviceRow AdviceContentContainer flex flex-col h-full">
-        <CardCarouselWrapper
-            :key="dagState"
-            :card-data="dagAdvice ? dagAdvice : []"
-            :loading-state="dagState"
-            :row-count="1"
-            :col-count="3"
-            :section-type="'advice'"
-            :advice-type="'DAG'"
-        />
+        <CardCarouselWrapper :key="dagState" :card-data="dagAdvice ? dagAdvice : []" :loading-state="dagState"
+            :row-count="1" :col-count="3" :section-type="'advice'" :advice-type="'DAG'" />
 
         <!-- <div
             v-if="dagState === 'SUCCESS' || dagState === 'VALIDATING'"
@@ -79,15 +72,8 @@ const handleBrowseAllAdvice = () => {
         class="EducatorsAdviceRow AdviceCardListContainer heading text-xl pt-10 flex flex-row flex-wrap justify-between gap-2 flex-1 w-full px-huge"
     > -->
     <div class="px-huge mt-14">
-        <CardWrapper
-            :key="generalState"
-            :card-data="generalAdvice ? generalAdvice : []"
-            :loading-state="generalState"
-            :row-count="2"
-            :col-count="3"
-            :section-type="'advice'"
-            :advice-type="'General'"
-        />
+        <CardWrapper :key="generalState" :card-data="generalAdvice ? generalAdvice : []" :loading-state="generalState"
+            :row-count="2" :col-count="3" :section-type="'advice'" :advice-type="'General'" />
     </div>
 
     <!-- <CardCarouselWrapper
@@ -117,15 +103,8 @@ const handleBrowseAllAdvice = () => {
         />
     </div> -->
     <PartnerHero />
-    <CardCarouselWrapper
-        :key="partnerState"
-        :card-data="partnerAdvice ? partnerAdvice : []"
-        :loading-state="partnerState"
-        :row-count="1"
-        :col-count="3"
-        :section-type="'advice'"
-        :advice-type="'Partner'"
-    />
+    <CardCarouselWrapper :key="partnerState" :card-data="partnerAdvice ? partnerAdvice : []" :loading-state="partnerState"
+        :row-count="1" :col-count="3" :section-type="'advice'" :advice-type="'Partner'" />
     <!-- <div
         v-if="partnerState === 'SUCCESS'|| partnerState === 'VALIDATING'"
         class="PartnerAdviceRow AdviceCardListContainer heading text-xl pt-10 flex flex-row flex-wrap justify-between gap-4 flex-1 w-full px-huge"
