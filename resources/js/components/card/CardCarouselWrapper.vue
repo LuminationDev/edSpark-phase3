@@ -94,7 +94,7 @@ const getLatestContent = (data) => {
 
 const computedCardData = computed(() => {
     if (props.loading) {
-        return;
+        return []
     } else {
         if (props.sectionType === 'advice') {
             let mutatedData = [];
@@ -104,24 +104,23 @@ const computedCardData = computed(() => {
                     mutatedData = props.cardData.filter(data => data.advice_type.includes('DAG advice'));
                     break;
 
-                case 'General':
-                    let classroom = props.cardData.filter(data => data.advice_type.includes('Your Classroom'));
-                    let work = props.cardData.filter(data => data.advice_type.includes('Your Work'));
-                    let learning = props.cardData.filter(data => data.advice_type.includes('Your Learning'));
+            case 'General':
+                let classroom = props.cardData.filter(data => data.advice_type.includes('Your Classroom'));
+                let work = props.cardData.filter(data => data.advice_type.includes('Your Work'));
+                let learning = props.cardData.filter(data => data.advice_type.includes('Your Learning'));
 
-                    mutatedData = classroom.concat(work, learning);
-                    break;
+                mutatedData = classroom.concat(work, learning);
+                break;
 
-                case 'Partner':
-                    mutatedData = props.cardData.filter(data => data.advice_type.includes('Partner'));
-                    break;
+            case 'Partner':
+                mutatedData = props.cardData.filter(data => data.advice_type.includes('Partner'));
+                break;
 
-                case 'Dashboard':
-
-                    mutatedData = props.cardData;
-                    break;
-                default:
-                    break;
+            case 'Dashboard':
+                mutatedData = props.cardData;
+                break;
+            default:
+                break;
             }
 
             return cardDataHelper(mutatedData, props.sectionType);
@@ -165,28 +164,27 @@ const handleClickCard = (item) => {
     let sectionId = '';
 
     switch (props.sectionType) {
-        case 'advice':
-            sectionId = 'post_id'
-            break;
+    case 'advice':
+        sectionId = 'post_id'
+        break;
 
-        case 'software':
-            sectionId = 'post_id'
-            break;
+    case 'software':
+        sectionId = 'post_id'
+        break;
 
-        case 'schools':
-            sectionId = 'id'
-            break;
-        case 'events':
-            sectionId = 'event_id'
-            break;
-        case 'hardware':
-            sectionId = 'id'
-            break;
+    case 'schools':
+        sectionId = 'id'
+        break;
+    case 'events':
+        sectionId = 'event_id'
+        break;
+    case 'hardware':
+        sectionId = 'id'
+        break;
 
-        default:
-            break;
+    default:
+        break;
     }
-
     const content = props.cardData.filter(data => data[sectionId] === item.id);
 
     if (props.sectionType === 'events') {
@@ -195,7 +193,13 @@ const handleClickCard = (item) => {
             params: { id: item.id },
             state: { content: JSON.stringify(content[0]) }
         })
-    } else {
+    } else if(props.sectionType === 'schools') {
+        router.push({
+            name: `school-single`,
+            params: { name: item.title },
+            state: { content: JSON.stringify(content[0]) }
+        })
+    }else {
         router.push({
             name: `${props.sectionType}-single`,
             params: { id: item.id },

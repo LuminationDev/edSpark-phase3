@@ -44,7 +44,8 @@ const likeBookmarkData = {
     <GenericCard
         :title="software['post_title']"
         :display-content="software['post_content']"
-        :display-author="software['post_author']"
+        :display-author="software['author']"
+        :display-date="software['post_modified']"
         :cover-image="software['cover_image']"
         :number-per-row="props.numberPerRow"
         :click-callback="handleClickCard"

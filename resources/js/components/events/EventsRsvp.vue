@@ -143,7 +143,7 @@ const handleSubmitRsvp = () => {
         }).catch(err => {
             console.log(err)
             currentUserRsvped.value = false
-            rsvpError.value = 'Failed to RSVP event. Please contact the organizer below'
+            rsvpError.value = err.message
         })
 
 
@@ -218,12 +218,12 @@ const handleClickContactOrganiser = () => {
                 placeholder="Enter number of guest"
             >
                 <template #label>
-                    Number of Guest.
+                    Number of guests
                 </template>
             </TextInput>
 
             <div class="school dropdown Selector flex flex-col -mt-1">
-                <label class="-mb-2 ml-2"> School Name</label>
+                <label class="-mb-2 ml-2"> School name (start typing your school name and click on the result)</label>
                 <SearchDropdown
                     class="searchable_dropdown -mt-2"
                     :options="dropdownSites"

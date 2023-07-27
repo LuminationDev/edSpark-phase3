@@ -83,6 +83,7 @@ const emergingTech = computed(() => {
             :section="'hardware-av'"
             :title="'Audio and Visual'"
             :button-text="'View all hardware'"
+            :button-callback="() => router.push('/browse/hardwares')"
         />
         <div class="px-huge grid grid-cols-12">
             <div class="col-span-3 flex flex-col gap-6">
@@ -131,6 +132,7 @@ const emergingTech = computed(() => {
             :section="'hardware-emerging'"
             :title="'Emerging Technology'"
             :button-text="'View all hardware'"
+            :button-callback="() => router.push('/browse/hardwares')"
         />
         <div class="px-huge grid grid-cols-12">
             <div class="col-span-5 flex flex-col gap-6 overflow-clip">

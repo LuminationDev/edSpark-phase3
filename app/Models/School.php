@@ -43,6 +43,6 @@ class School extends Model
 
     public function site()
     {
-        return $this->belongsTo(Site::class);
+        return $this->belongsTo(Site::class,'site_id', 'site_id');
     }
 }

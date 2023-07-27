@@ -238,7 +238,7 @@ class SchoolController extends Controller
             $result = [
                 'id' => $school->id,
                 'site' => [
-                    'site_id' => $school->site_id,
+                    'site_id' => $school->site->site_id,
                     'site_name' => ($school->site_id) ? $school->site->site_name : NULL,
                     'site_type' => ($site_type) ?: NULL,
                 ],
@@ -291,8 +291,8 @@ class SchoolController extends Controller
             $result = [
                 'id' => $school->id,
                 'site' => [
-                    'site_id' => $school->site_id,
-                    'site_name' => ($school->site_id) ? $school->site->site_name : NULL
+                    'site_id' => $school->site->site_id,
+                    'site_name' => ($school->site->site_id) ? $school->site->site_name : NULL
                 ],
                 'owner' => [
                     'owner_id' => $school->owner_id,
@@ -324,8 +324,8 @@ class SchoolController extends Controller
             $result = [
                 'id' => $school->id,
                 'site' => [
-                    'site_id' => $school->site_id,
-                    'site_name' => ($school->site) ? $school->site->site_name : NULL
+                    'site_id' => $school->site->site_id,
+                    'site_name' => ($school->site->site_id) ? $school->site->site_name : NULL
                 ],
                 'owner' => [
                     'owner_id' => $school->owner_id,

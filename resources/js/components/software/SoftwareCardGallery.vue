@@ -11,6 +11,7 @@ import { useUserStore } from '../../stores/useUserStore';
 import { storeToRefs } from 'pinia';
 
 import CardWrapper from '../card/CardWrapper.vue';
+import CardLoading from "@/js/components/card/CardLoading.vue";
 
 const userStore = useUserStore();
 const {currentUser} = storeToRefs(userStore);
@@ -47,19 +48,10 @@ const softwareLoading = computed(() => {
 
 </script>
 <template>
-    <CardWrapper
-        class="px-huge"
-        :key="softwareLoading"
-        :card-data="softwaresData ? softwaresData : []"
-        :loading-state="softwareLoading"
-        :row-count="3"
-        :col-count="4"
-        :section-type="'software'"
-    />
-    <!-- <template v-if="softwareList">
-        <div class="flex flex-row flex-wrap w-full justify-between pt-10 gap-6 px-20">
+    <template v-if="softwaresData">
+        <div class="grid grid-cols-3 place-items-center gap-6 px-20">
             <SoftwareCard
-                v-for="(software,index) in softwareList"
+                v-for="(software,index) in softwaresData"
                 :key="index"
                 :software="software"
                 :number-per-row="4"
@@ -67,6 +59,11 @@ const softwareLoading = computed(() => {
         </div>
     </template>
     <template v-else>
-        Loading
-    </template> -->
+        <div class="px-20">
+            <CardLoading
+                :number-of-rows="3"
+                :number-per-row="3"
+            />
+        </div>
+    </template>
 </template>
