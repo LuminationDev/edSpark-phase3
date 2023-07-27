@@ -53,7 +53,7 @@ const handleBrowseAllSoftware = () => {
                 :classes="'bg-[#002858]'"
                 :section="'software'"
                 title="Software"
-                button-text="View all Software"
+                button-text="View all software"
                 :button-callback="handleBrowseAllSoftware"
             />
             <SoftwareCardGallery />

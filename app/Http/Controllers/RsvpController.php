@@ -145,11 +145,8 @@ class RsvpController extends Controller
             if ($event->author_id == $user->id) {
                 $isOwner = 'true';
                 $guestSum = Rsvp::where('event_id', $data['event_id'])->sum('number_of_guests');
-                OutputHelper::print('yess is owner');
-                OutputHelper::print($guestSum);
             } else {
                 $isOwner = 'false';
-                OutputHelper::print('no not owner');
             }
 
 

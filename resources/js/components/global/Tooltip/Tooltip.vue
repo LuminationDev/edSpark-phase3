@@ -4,18 +4,12 @@ defineProps({
         type: String,
         required: true
     },
-
-    toolTipMargin: {
-        type: [String, Object],
-        default: '-ml-1.5'
-    }
 })
 </script>
 
 <template>
     <span
-        :class="toolTipMargin"
-        class="tooltip rounded shadow-lg px-3 py-1 bg-gray-700 rounded-xl text-white -mt-8"
+        class="tooltip rounded shadow-lg px-3 py-1 bg-gray-700 rounded-xl text-white"
     >{{ tip }}</span>
 </template>
 

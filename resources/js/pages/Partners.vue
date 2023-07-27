@@ -31,7 +31,7 @@ const {
             title="Our Partners"
             :classes="'bg-secondary-darkBlue'"
             section="laptops"
-            button-text="View all Partners"
+            button-text="View all partners"
             :button-callback="() => router.push('/browse/partners')"
         />
         <!--        {{ partnerError }}-->

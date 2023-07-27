@@ -20,7 +20,7 @@ const router = useRouter();
  * Get the DAG Advice articles
  * and states
  */
-const { data: dagAdvice, error: dagError, isValidating: dagValidating } = useSWRV(`${serverURL}/fetchAdvicePostByType/D.A.G advice`, axiosFetcher,swrvOptions);
+const { data: dagAdvice, error: dagError, isValidating: dagValidating } = useSWRV(`${serverURL}/fetchAdvicePostByType/DAG advice`, axiosFetcher,swrvOptions);
 const { state: dagState, STATES: DAGSTATES } = useSwrvState(dagAdvice, dagError, dagValidating);
 /**
  * Get the Partner advice
@@ -45,7 +45,6 @@ const handleBrowseAllAdvice = () => {
 <template>
     <AdviceHero />
     <div class="DAGAdviceRow AdviceContentContainer flex flex-col h-full">
-
         <CardCarouselWrapper
             :key="dagState"
             :card-data="dagAdvice ? dagAdvice : []"
@@ -91,7 +90,7 @@ const handleBrowseAllAdvice = () => {
         />
     </div>
 
-        <!-- <CardCarouselWrapper
+    <!-- <CardCarouselWrapper
             :key="generalState"
             :card-data="generalAdvice"
             :loading-state="generalState"
@@ -100,7 +99,7 @@ const handleBrowseAllAdvice = () => {
             :section-type="'advice'"
             :advice-type="'General'"
         /> -->
-        <!-- <AdviceCard
+    <!-- <AdviceCard
             v-for="(advice, index) in generalAdvice.slice(0,6)"
             :key="index"
             :advice-content="advice"

@@ -3,7 +3,7 @@ import BaseHero from "@/js/components/bases/BaseHero.vue";
 import HardwareHeroRobot from "@/js/components/svg/hardware/HardwareHeroRobot.vue";
 </script>
 <template>
-    <div class="bg-gradient-to-r from-[#8866C5] via-[#C7B2EA] to-[#FDD8DB]/50 mt-24 py-[36px] px-[48px] grid grid-cols-8 mx-20">
+    <div class="bg-gradient-to-r from-[#002858] via-[#0A7982] !to-[#A5D1BD] mt-24 py-[36px] px-[48px] grid grid-cols-8 mx-20">
         <div class="col-span-5">
             <h1 class="text-white text-[36px] font-semibold pb-8 uppercase">
                 Hardware

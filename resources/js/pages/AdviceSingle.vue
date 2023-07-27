@@ -43,7 +43,7 @@ const timeFormatter = (originalFormat) => {
                         contentFromBase['author'] }}
                 </template>
                 <template #contentDate>
-                    {{ timeFormatter(contentFromBase['post_date']) }}
+                    {{ timeFormatter(contentFromBase['post_modified']) }}
                 </template>
                 <!-- <template #subtitleText1>
                     {{ timeFormatter(contentFromBase['post_date']) }}
@@ -61,9 +61,14 @@ const timeFormatter = (originalFormat) => {
                     <div class="text-2xl flex font-bold uppercase">
                         Getting started
                     </div>
-                    <div class="text-lg flex flex-col content-paragraph overflow-hidden max-w-full"
-                        v-html="contentFromBase['post_content']" />
-                    <template v-for="(content, index) in contentFromBase['extra_content']" :key="index">
+                    <div
+                        class="text-lg flex flex-col content-paragraph overflow-hidden max-w-full"
+                        v-html="contentFromBase['post_content']"
+                    />
+                    <template
+                        v-for="(content, index) in contentFromBase['extra_content']"
+                        :key="index"
+                    >
                         <AdviceSingleExtraContentRenderer :content="content" />
                     </template>
                 </div>

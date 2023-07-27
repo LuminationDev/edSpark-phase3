@@ -239,7 +239,7 @@ const handleEmitClick = () => {
         </template>
         <div class="generic-card__footer flex flex-row h-18 place-items-end pl-4 gap-4 mt-auto">
             <div class="p-2">
-                <span class="has-tooltip">
+                <span class="has-tooltip relative">
                     <LikeFull
                         v-if="currentUserLiked"
                         @click="() => handleDefaultLike(props.likeBookmarkData)"
@@ -249,8 +249,8 @@ const handleEmitClick = () => {
                         @click="() => handleDefaultLike(props.likeBookmarkData)"
                     />
                     <Tooltip
-                        tip="Like this post"
-                        :tool-tip-margin="{'!-ml-28' : numberPerRow > 3, '-ml-36' : true}"
+                        tip="Like post"
+                        class="absolute w-24"
                     />
                 </span>
             </div>
@@ -265,8 +265,8 @@ const handleEmitClick = () => {
                         @click="() => handleDefaultBookmark(props.likeBookmarkData)"
                     />
                     <Tooltip
-                        tip="Bookmark this post"
-                        tool-tip-margin="ml-8"
+                        tip="Bookmark post"
+                        class="absolute w-36 "
                     />
                 </span>
             </div>
