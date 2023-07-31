@@ -492,7 +492,7 @@ onMounted(async () => {
                 </div>
             </div>
             <template v-if="softwaresData">
-                <div class="grid grid-cols-1 gap-6 place-items-center px-8 lg:!grid-cols-2 lg:!px-20">
+                <div class="grid grid-cols-1 gap-6 place-items-center px-8 lg:!grid-cols-2 xl:!px-20">
                     <SoftwareCard
                         v-for="(software,index) in softwaresData.slice(0,4)"
                         :key="index"

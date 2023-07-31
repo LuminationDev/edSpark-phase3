@@ -14,7 +14,7 @@ export default {
     <div class="flex flex-col w-full">
         <!-- <FooterSwoosh class="w-full pointer-events-none" /> -->
 
-        <div class="w-full h-[330px] relative">
+        <div class="hidden relative w-full xl:!h-[330px] xl:block">
             <div class="absolute">
                 <img
                     class=""
@@ -27,30 +27,33 @@ export default {
             </div>
         </div>
 
-        <div class="h-[110px] bg-white w-full flex">
-            <ul class="flex flex-row place-items-center mx-auto text-[#0E4376] text-[20px] font-medium">
-                <li class="px-4 cursor-pointer hover:text-[#4a87c0]">
+        <div class="bg-white flex py-4 w-full">
+            <ul class="flex flex-col font-medium mx-auto place-items-center text-[#0E4376] text-[20px] lg:!flex-row">
+                <li class="cursor-pointer px-4 hover:text-[#4a87c0]">
                     Accessibility
                 </li>
                 <li class="px-2">
-                    <div class="h-[20px] w-[1px] bg-[#0E4376]" />
+                    <div class="bg-[#0E4376] h-[20px] w-[1px]" />
                 </li>
-                <li class="px-4 cursor-pointer hover:text-[#4a87c0]">
+                <li class="cursor-pointer px-4 hover:text-[#4a87c0]">
                     Acknowledgement of Country
                 </li>
                 <li class="px-2">
-                    <div class="h-[20px] w-[1px] bg-[#0E4376]" />
+                    <div class="bg-[#0E4376] h-[20px] w-[1px]" />
                 </li>
-                <li class="px-4 cursor-pointer hover:text-[#4a87c0]">
+                <li class="cursor-pointer px-4 hover:text-[#4a87c0]">
                     Copyright
                 </li>
                 <li class="px-2">
-                    <div class="h-[20px] w-[1px] bg-[#0E4376]" />
+                    <div class="bg-[#0E4376] h-[20px] w-[1px]" />
                 </li>
-                <li class="px-4 cursor-pointer hover:text-[#4a87c0]">
+                <li class="cursor-pointer px-4 hover:text-[#4a87c0]">
                     Disclaimer
                 </li>
-                <li class="px-4 cursor-pointer hover:text-[#4a87c0]">
+                <li class="px-2">
+                    <div class="bg-[#0E4376] h-[20px] w-[1px]" />
+                </li>
+                <li class="cursor-pointer px-4 hover:text-[#4a87c0]">
                     Privacy
                 </li>
             </ul>

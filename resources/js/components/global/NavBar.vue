@@ -86,12 +86,7 @@ setupRoutes();
 <template>
     <div class="h-28 relative w-full z-40 md:!h-40 lg:!h-56">
         <div
-            class="bg-cover
-                bg-no-repeat
-                h-full
-                nav-background
-                pt-7
-                w-full"
+            class="bg-cover bg-no-repeat h-full nav-background pt-7 w-full"
             :style="`background-image: url(${imageURL}/uploads/image/navbar.png) `"
         >
             <!--            <nav-->
@@ -99,22 +94,19 @@ setupRoutes();
             <!--                class="bg-[#002856]/50 py-2 px-12 w-full"-->
             <!--            >-->
             <nav
-                class="bg-[#002856]/50
-                    hidden
-                    px-12
-                    py-2
-                    w-full
-                    lg:block"
+                class="bg-[#002856]/50 hidden px-12 py-2 w-full lg:block"
             >
                 <ul
                     class="2xl:gap-8
                         2xl:text-2xl
                         font-['Poppins']
                         font-semibold
-                        gap-4
                         hidden
                         text-white
                         xl:text-xl
+                        
+                        
+                        gap-4
                         lg:flex
                         lg:flex-row"
                 >
@@ -152,12 +144,14 @@ setupRoutes();
                 <Logo
                     class="absolute
                         top-4
-                        right-8
-                        h-40
+                        right-2
+                        h-32
                         nav-logo
                         transition-all
                         w-40
                         z-30
+                        
+                        
                         md:!h-44
                         md:!right-12
                         md:!top-6
@@ -172,12 +166,7 @@ setupRoutes();
             </router-link>
         </button>
         <NavSwoosh
-            class="absolute
-                right-0
-                -bottom-6
-                left-0
-                pointer-events-none
-                w-full"
+            class="absolute right-0 -bottom-6 left-0 pointer-events-none w-full"
         />
     </div>
 </template>

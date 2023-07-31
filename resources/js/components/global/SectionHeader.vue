@@ -32,7 +32,7 @@ const props = defineProps({
 </script>
 
 <template>
-    <div class="mb-6 mt-20 px-1 lg:!px-20">
+    <div class="mb-6 mt-5 px-1 lg:!mt-20 lg:!px-20">
         <div
             :class="[classes]"
             class="

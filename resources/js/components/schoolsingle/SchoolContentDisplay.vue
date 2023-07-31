@@ -50,7 +50,7 @@ props.schoolContentBlocks.blocks.forEach(block => {
     <div
         v-for="(item,index) in schoolContentBlocks.blocks"
         :key="index"
-        class="schoolContentIterator mb-8 mr-12"
+        class="mb-1 mr-2 scale-75 schoolContentIterator md:!mb-8 md:!mr-12 md:!scale-100"
     >
         <!-- All styles are still hardcoded-->
         <!-- Once we figured out styling from Editorjs, render accordingly     -->

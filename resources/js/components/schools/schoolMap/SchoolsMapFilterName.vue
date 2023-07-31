@@ -14,8 +14,8 @@ const handleEmitFilterName = () => {
     <div class="flex-1 w-[50%]">
         <label
             for="searchInput"
-            class="font-normal text-[18px] text-white mb-4"
-        >Search by school name</label>
+            class="font-normal mb-4 text-[18px] text-white"
+        >School name</label>
         <input
             id="searchInput"
             v-model="schoolNameFilter"

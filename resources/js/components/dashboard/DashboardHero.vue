@@ -46,12 +46,12 @@ export default {
                 to-[#B8E2DC]
                 h-[650px]
                 w-full
-                md:!h-[500px]
+                md:!h-[700px]
                 lg:!h-[700px]
                 xl:!h-[600px]
                 ">
-            <div class="2xl:!px-40 grid grid-cols-6 px-5 md:!px-20 xl:!px-10">
-                <div class="col-span-6 pt-[240px] lg:!col-span-3">
+            <div class="2xl:!px-40 grid grid-cols-6 px-5 xl:!px-10">
+                <div class="col-span-6 pt-[240px]  md:!col-span-3">
                     <h1 class="font-semibold pb-8 text-3xl text-white  md:!text-4xl lg:!text-5xl lg:!text-[48px]">
                         {{ welcomeMessage }}
                     </h1>
@@ -60,7 +60,7 @@ export default {
                         {{ welcomeDescription }}
                     </p>
                 </div>
-                <div class="col-span-3 hidden relative welcomeRobot lg:block">
+                <div class="hidden relative welcomeRobot   md:!-ml-20 md:!col-span-3 md:!scale-75 md:block lg:!ml-0 lg:!scale-100">
                     <!-- Gear and dots -->
                     <div class="">
                         <Gear class="absolute top-48 left-12 gear z-10" />

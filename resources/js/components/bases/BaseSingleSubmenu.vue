@@ -21,7 +21,7 @@ const props = defineProps({
     <button
         v-for="(menu, index) in menuArray"
         :key="index"
-        class="py-3 px-6"
+        class="px-4 py-3 md:!px-6"
         :class="{'!text-black h-full rounded-t-md bg-white ' : menu['value'] === activeSubpage}"
         @click="() => emitToBase(menu.value)"
     >

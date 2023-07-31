@@ -154,7 +154,7 @@ const handleSaveWelcomePopup = (data) => {
             @send-save-popup="handleSaveWelcomePopup"
         />
         <SchoolsHero />
-        <div class="featuredClassContainer py-20 ">
+        <div class="featuredClassContainer py-20">
             <SectionHeader
                 :classes="'bg-[#002858]'"
                 :section="'schools'"
@@ -171,33 +171,12 @@ const handleSaveWelcomePopup = (data) => {
                 :col-count="4"
                 :section-type="'schools'"
             />
-
-            <!-- <div
-                v-if="cardsLoading"
-            >
-                <CardLoading
-                    :number-per-row="4"
-                />
-            </div>
-            <div
-                v-else
-                class="grid grid-cols-4 gap-[24px] w-full px-20 pt-8 "
-            >
-                <div
-                    v-for="(school,index) in featuredSites"
-                    :key="index"
-                >
-                    <SchoolCard
-                        :school-data="school"
-                    />
-                </div>
-            </div> -->
         </div>
 
 
         <div
             v-if="schoolsAvailable"
-            class="py-20 px-20"
+            class="px-5 py-5 xl:!px-20 xl:!py-20"
         >
             <!-- <SearchableMap /> -->
             <SchoolsSearchableMap
@@ -209,7 +188,7 @@ const handleSaveWelcomePopup = (data) => {
 
         <div
             v-else
-            class="w-full flex"
+            class="flex w-full"
         >
             <Loader
                 :loader-color="'#0072DA'"
