@@ -168,7 +168,7 @@ const handleClickCard = (item) => {
             :class="additionalClasses + hasInfoSection ? '' : ''"
         >
             <div
-                class="flex justify-between flex-1 flex-row flex-wrap px-[29px] w-full"
+                class="flex justify-between flex-1 flex-row flex-wrap w-full lg:!px-8"
             >
                 <div
                     v-for="(col, index) in (props.rowCount * props.colCount)"
@@ -186,7 +186,7 @@ const handleClickCard = (item) => {
                         :cover-image="computedCardData[index].cover_image"
                         :number-per-row="2"
                         :like-bookmark-data="getLikeBookmarkData(computedCardData[index])"
-                        :extra-classes="additionalClasses ? additionalClasses : '!max-w-[400px] w-[400px]'"
+                        :extra-classes="additionalClasses ? additionalClasses : '!max-w-[400px] w-76 lg:!w-[400px]'"
                         :section-type="sectionType"
                         @emit-card-click="handleClickCard"
                     >

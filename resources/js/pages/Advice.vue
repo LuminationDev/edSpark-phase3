@@ -44,86 +44,38 @@ const handleBrowseAllAdvice = () => {
 
 <template>
     <AdviceHero />
-    <div class="DAGAdviceRow AdviceContentContainer flex flex-col h-full">
-        <CardCarouselWrapper :key="dagState" :card-data="dagAdvice ? dagAdvice : []" :loading-state="dagState"
-            :row-count="1" :col-count="3" :section-type="'advice'" :advice-type="'DAG'" />
-
-        <!-- <div
-            v-if="dagState === 'SUCCESS' || dagState === 'VALIDATING'"
-            class="AdviceCardListContainer heading text-xl pt-10 flex flex-row flex-1 justify-between flex-wrap  gap-6"
-        >
-            <AdviceCard
-                v-for="(advice, index) in dagAdvice.slice(0,3)"
-                :key="index"
-                :advice-content="advice"
-                :show-icon="true"
-            />
-        </div>
-        <div v-else-if="dagState === 'PENDING'">
-            <CardLoading
-                :number-per-row="3"
-                :number-of-rows="1"
-            />
-        </div> -->
+    <div class="AdviceContentContainer DAGAdviceRow flex flex-col h-full">
+        <CardCarouselWrapper
+            :key="dagState"
+            :card-data="dagAdvice ? dagAdvice : []"
+            :loading-state="dagState"
+            :row-count="1"
+            :col-count="3"
+            :section-type="'advice'"
+            :advice-type="'DAG'"
+        />
     </div>
     <EducatorHero />
-    <!-- <div
-        v-if="generalState === 'SUCCESS'|| generalState === 'VALIDATING'"
-        class="EducatorsAdviceRow AdviceCardListContainer heading text-xl pt-10 flex flex-row flex-wrap justify-between gap-2 flex-1 w-full px-huge"
-    > -->
-    <div class="px-huge mt-14">
-        <CardWrapper :key="generalState" :card-data="generalAdvice ? generalAdvice : []" :loading-state="generalState"
-            :row-count="2" :col-count="3" :section-type="'advice'" :advice-type="'General'" />
-    </div>
-
-    <!-- <CardCarouselWrapper
+    <div class="mt-14 px-5 lg:!px-huge">
+        <CardWrapper
             :key="generalState"
-            :card-data="generalAdvice"
+            :card-data="generalAdvice ? generalAdvice : []"
             :loading-state="generalState"
-            :row-count="3"
+            :row-count="2"
             :col-count="3"
             :section-type="'advice'"
             :advice-type="'General'"
-        /> -->
-    <!-- <AdviceCard
-            v-for="(advice, index) in generalAdvice.slice(0,6)"
-            :key="index"
-            :advice-content="advice"
-            :number-per-row="3"
-            :show-icon="true"
-        /> -->
-    <!-- </div> -->
-    <!-- <div
-        v-else-if="generalState === 'PENDING' "
-        class="px-huge"
-    >
-        <CardLoading
-            :number-per-row="3"
-            :number-of-rows="2"
-        />
-    </div> -->
-    <PartnerHero />
-    <CardCarouselWrapper :key="partnerState" :card-data="partnerAdvice ? partnerAdvice : []" :loading-state="partnerState"
-        :row-count="1" :col-count="3" :section-type="'advice'" :advice-type="'Partner'" />
-    <!-- <div
-        v-if="partnerState === 'SUCCESS'|| partnerState === 'VALIDATING'"
-        class="PartnerAdviceRow AdviceCardListContainer heading text-xl pt-10 flex flex-row flex-wrap justify-between gap-4 flex-1 w-full px-huge"
-    >
-        <AdviceCard
-            v-for="(advice, index) in partnerAdvice.slice(0,4)"
-            :key="index"
-            :advice-content="advice"
-            :number-per-row="4"
         />
     </div>
 
-    <div
-        v-else-if="partnerState === 'PENDING' "
-        class="px-huge"
-    >
-        <CardLoading
-            :number-per-row="4"
-            :number-of-rows="1"
-        />
-    </div> -->
+    <PartnerHero />
+    <CardCarouselWrapper
+        :key="partnerState"
+        :card-data="partnerAdvice ? partnerAdvice : []"
+        :loading-state="partnerState"
+        :row-count="1"
+        :col-count="3"
+        :section-type="'advice'"
+        :advice-type="'Partner'"
+    />
 </template>
