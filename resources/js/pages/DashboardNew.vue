@@ -50,6 +50,7 @@ import useSWRV from "swrv";
 import { storeToRefs } from "pinia";
 import axios from 'axios';
 import { swrvOptions } from "@/js/constants/swrvConstants";
+import SoftwareCard from "@/js/components/software/SoftwareCard.vue";
 
 const router = useRouter()
 
@@ -74,62 +75,6 @@ const userDetails = reactive({
  * TODO: Push to the top of the app (where appropriate-considering in App.vue but the redirect from okta login might fail it)
  */
 const getIdToken = async () => {
-    // try {
-    //     idToken.value = await oktaAuth.tokenManager.get('idToken');
-    //     claims.value = await idToken.value.claims;
-    //     console.log('Below this is IDToken')
-    //     console.log(idToken.value);
-
-    //     // /**
-    //     //  * Retireve id token from local storage
-    //     //  * send it to laravel authentication api
-    //     //  * bypass the laravel authentication
-    //     //  *
-    //     //  */
-    //     // console.log('###############################');
-    //     // let token = localStorage.getItem('okta-token-storage');
-    //     // token = JSON.parse(token);
-    //     // token = token.accessToken.accessToken;
-    //     // console.log("TOKEN", token);
-
-    //     // // check if user role requires admin access if yes do\fire this
-
-    //     // await axios({
-    //     //     method: 'POST',
-    //     //     url: 'http://localhost:8000/api/authenticate',
-    //     //     data: {
-    //     //         accessToken: token
-    //     //     },
-    //     //     headers: {
-    //     //         'Authentication': `Bearer ${token}`
-    //     //     }
-    //     // }).then(response => {
-    //     //     console.log("RESPONSE", response);
-    //     //     if (response.data.status === 'success') {
-    //     //         localStorage.setItem('authenticatedToken', JSON.stringify(response.data));
-    //     //         // window.open("http://localhost:8000/admin")
-    //     //         // window.location.href = 'http://localhost:8000/admin/autologin';
-    //     //     }
-    //     // }).catch (err => {
-    //     //     throw new error(err);
-    //     // })
-    //     // console.log('###############################');
-
-
-    //     /**
-    //      * User Details
-    //      */
-    //     userDetails.name = claims.value.name;
-    //     userDetails.email = claims.value.email;
-    //     userDetails.siteId = claims.value.mainsiteid;
-    //     userDetails.roleId = claims.value.mainrolecode;
-
-    //     await checkFirstVisit(claims.value.email);
-
-
-    // } catch (e) {
-    //     console.warn('Failed to get Auth data. User is not logged in')
-    // }
 
     try {
         const response = await axios.get(`${appURL}/okta-data`);
@@ -356,53 +301,119 @@ onMounted(async () => {
             <BlackOverlay :is-first-visit="isFirstVisit" />
 
             <div class="relative">
-                <FirstVisitForm :user-details="userDetails" @on-close-popup="onClosePopup" />
+                <FirstVisitForm
+                    :user-details="userDetails"
+                    @on-close-popup="onClosePopup"
+                />
             </div>
         </template>
 
         <!--        Individual Sections -->
 
-        <SectionHeader :classes="'bg-main-teal'" :section="'events'" :title="'New Events'" :button-text="'View all events'"
-            :button-callback="() => router.push('/browse/events')" />
+        <SectionHeader
+            :classes="'bg-main-teal'"
+            :section="'events'"
+            :title="'New Events'"
+            :button-text="'View all events'"
+            :button-callback="() => router.push('/browse/events')"
+        />
 
         <!-- Events Cards Here -->
-        <CardCarouselWrapper :key="eventsLoading" :card-data="eventsData ? eventsData : []" :loading="eventsLoading"
-            :row-count="1" :col-count="3" :section-type="'events'" :type-tag-color="'bg-secondary-red'" />
+        <CardCarouselWrapper
+            :key="eventsLoading"
+            :card-data="eventsData ? eventsData : []"
+            :loading="eventsLoading"
+            :row-count="1"
+            :col-count="3"
+            :section-type="'events'"
+            :type-tag-color="'bg-secondary-red'"
+        />
 
-        <SectionHeader :classes="'bg-secondary-darkBlue'" :section="'software'" :title="'Top Software'"
-            :button-text="'View all software'" :button-callback="() => router.push('/browse/softwares')" />
+        <SectionHeader
+            :classes="'bg-secondary-darkBlue'"
+            :section="'software'"
+            :title="'Top Software'"
+            :button-text="'View all software'"
+            :button-callback="() => router.push('/browse/softwares')"
+        />
 
         <!-- Software Cards Here -->
-        <div class="py-8 px-huge flex flex-row gap-[24px] relative group/bg h-full">
+        <div class="flex flex-col gap-[24px] group/bg h-full py-8 relative lg:!flex-row lg:!px-huge">
             <div
-                class="absolute softwareRobot -z-10 transition-all duration-700 opacity-10 top-1/2 -translate-y-1/2 left-1/3 group-hover/bg:left-[15%] group-hover/bg:scale-125">
+                class="
+                    -translate-y-1/2
+                    -z-10
+                    absolute
+                    top-1/2
+                    left-1/3
+                    duration-700
+                    group-hover/bg:left-[15%]
+                    group-hover/bg:scale-125
+                    opacity-10
+                    softwareRobot
+                    transition-all
+                    "
+            >
                 <SoftwareRobot />
             </div>
-            <div class="w-[35%] flex flex-col place-items-center pl-[29px]">
-                <div class="w-full h-1/2 flex flex-row gap-4">
-                    <div class="w-1/4 relative">
-                        <div class="connectingLine absolute border-[2px] border-black z-10 left-1/2"
-                            :style="`height: ${distanceBetweenEls}px; top: ${top}px;`" />
+            <div class="flex flex-col pl-8 place-items-center w-full lg:!w-[35%]">
+                <div class="flex flex-row gap-4 h-1/2 w-full">
+                    <div class="relative w-1/4">
+                        <!--  first line-->
+                        <div
+                            class="absolute left-1/2 border-[2px] border-black connectingLine z-10"
+                            :style="`height: ${distanceBetweenEls}px; top: ${top}px;`"
+                        />
                         <div class="flex flex-col h-full relative z-20">
-                            <div class="h-1/2 flex place-self-center">
+                            <div class="flex h-1/2 min-h-[200px] place-self-center">
                                 <div
-                                    class="w-[100px] h-[100px] border-[4px] border-black rounded-full bg-white flex my-auto">
+                                    class="
+                                        bg-white
+                                        border-[4px]
+                                        border-black
+                                        flex
+                                        h-[100px]
+                                        my-auto
+                                        rounded-full
+                                        w-[100px]
+                                        "
+                                >
                                     <DeptProvidedIcon class="h-full p-1" />
                                 </div>
                             </div>
-                            <div class="h-1/2 flex place-self-center">
+                            <div class="flex h-1/2 min-h-[200px] place-self-center">
                                 <div
-                                    class="w-[100px] h-[100px] border-[4px] border-black rounded-full bg-white flex my-auto">
+                                    class="
+                                        bg-white
+                                        border-[4px]
+                                        border-black
+                                        flex
+                                        h-[100px]
+                                        my-auto
+                                        rounded-full
+                                        w-[100px]
+                                        "
+                                >
                                     <DeptApprovedIcon class="h-full p-1" />
                                 </div>
                             </div>
                         </div>
                     </div>
 
-                    <div class="w-3/4 h-full">
+                    <div class="h-full ml-4 w-3/4">
                         <div class="flex flex-col h-full">
-                            <div class="softwareDashboardContentContainer flex flex-col h-1/2 my-auto justify-center">
-                                <h5 class="text-[21px] font-semibold pt-4">
+                            <div
+                                class="
+                                    flex
+                                    justify-center
+                                    flex-col
+                                    h-1/2
+                                    min-h-[200px]
+                                    my-auto
+                                    softwareDashboardContentContainer
+                                    "
+                            >
+                                <h5 class="font-semibold pt-4 text-[21px]">
                                     Department Provided
                                 </h5>
                                 <p class="w-9/12">
@@ -410,8 +421,18 @@ onMounted(async () => {
                                     at no cost to schools
                                 </p>
                             </div>
-                            <div class="softwareDashboardContentContainer flex flex-col h-1/2 my-auto justify-center">
-                                <h5 class="text-[21px] font-semibold">
+                            <div
+                                class="
+                                    flex
+                                    justify-center
+                                    flex-col
+                                    h-1/2
+                                    min-h-[200px]
+                                    my-auto
+                                    softwareDashboardContentContainer
+                                    "
+                            >
+                                <h5 class="font-semibold text-[21px]">
                                     Department Approved
                                 </h5>
                                 <p class="pb-4 w-9/12">
@@ -423,26 +444,40 @@ onMounted(async () => {
                     </div>
                 </div>
 
-                <div class="w-full h-1/2 relative flex flex-row gap-4">
-                    <div class="w-1/4 relative">
-                        <div class="negotiatedDealsLine absolute z-10 left-1/2 border-[1.5px] border-dashed border-black"
-                            :style="`height: ${distanceBetweenEls}px; top: calc(-${top}px + 120px);`" />
+                <div class="flex flex-row gap-4 h-1/2 relative w-full">
+                    <div class="relative w-1/4">
+                        <div
+                            class="absolute left-1/2 border-[1.5px] border-black border-dashed negotiatedDealsLine z-10"
+                            :style="`height: ${distanceBetweenEls}px; top: calc(-${top}px + 60px);`"
+                        />
                         <div class="flex flex-col h-full relative z-20">
-                            <div class="h-3/4 flex place-self-center">
+                            <div class="flex h-3/4 place-self-center">
                                 <div
-                                    class="w-[100px] h-[100px] relative border-[2px] border-black border-dashed rounded-full bg-white flex my-auto">
+                                    class="
+                                        bg-white
+                                        border-[2px]
+                                        border-black
+                                        border-dashed
+                                        flex
+                                        h-[100px]
+                                        my-auto
+                                        relative
+                                        rounded-full
+                                        w-[100px]
+                                        "
+                                >
                                     <DeptApprovedIcon class="h-full p-1" />
-                                    <DepartmentApprovedSolo class="absolute w-[40px] h-[40px] -right-1 -top-1" />
+                                    <DepartmentApprovedSolo class="absolute -top-1 -right-1 h-[40px] w-[40px]" />
                                 </div>
                             </div>
-                            <div class="h-1/4 flex place-self-center" />
+                            <div class="flex h-1/4 place-self-center" />
                         </div>
                     </div>
 
                     <div class="w-3/4">
                         <div class="flex flex-col h-full">
-                            <div class="flex flex-col h-3/4 my-auto justify-center">
-                                <h5 class="text-[18px] font-semibold">
+                            <div class="flex justify-center flex-col h-3/4 min-h-[200px] my-auto">
+                                <h5 class="font-semibold text-[18px]">
                                     Negotiated Deals
                                 </h5>
                                 <p class="pb-4 w-[85%]">
@@ -451,14 +486,29 @@ onMounted(async () => {
                                     need to fund purchases
                                 </p>
                             </div>
-                            <div class="flex flex-col h-1/4 my-auto justify-center" />
+                            <div class="flex justify-center flex-col h-1/4 my-auto" />
                         </div>
                     </div>
                 </div>
             </div>
-            <CardWrapper :key="softwareLoading" class="w-[65%]" :card-data="softwaresData ? softwaresData : []"
-                :loading="softwareLoading" :row-count="2" :col-count="2" :section-type="'software'" :has-info-section="true"
-                :additional-classes="'!w-[372px]'" />
+            <template v-if="softwaresData">
+                <div class="grid grid-cols-1 gap-6 place-items-center px-8 lg:!grid-cols-2 lg:!px-20">
+                    <SoftwareCard
+                        v-for="(software,index) in softwaresData.slice(0,4)"
+                        :key="index"
+                        :software="software"
+                        :number-per-row="2"
+                    />
+                </div>
+            </template>
+            <template v-else>
+                <div class="px-8 lg:!px-20">
+                    <CardLoading
+                        :number-of-rows="1"
+                        :number-per-row="3"
+                    />
+                </div>
+            </template>
         </div>
 
         <!-- <SoftwareDashboard
@@ -467,62 +517,79 @@ onMounted(async () => {
         /> -->
         <!-- <CardLoading class="px-huge" :number-per-row="2" :additional-classes="'!justify-end'" /> -->
 
-        <!-- UNIFORMITY & KEEPING ALL OF THE STUF THAT ISNT CARDS -->
         <!-- <SoftwareDashboard v-if="!softwareLoading" :softwares="softwaresData" :software-loading="softwareLoading" />
         <CardLoading v-else class="px-huge" :number-per-row="2" :additional-classes="'!justify-end'" /> -->
 
-        <SectionHeader :classes="'bg-main-darkTeal'" :section="'advice'" :title="'Advice'"
-            :button-text="'View all resources'" :button-callback="() => router.push('/browse/advices')" />
+        <SectionHeader
+            :classes="'bg-main-darkTeal'"
+            :section="'advice'"
+            :title="'Advice'"
+            :button-text="'View all resources'"
+            :button-callback="() => router.push('/browse/advices')"
+        />
 
-        <CardCarouselWrapper :key="adviceLoading" :card-data="reversedAdviceData ? reversedAdviceData : []"
-            :loading="adviceLoading" :row-count="1" :col-count="2" :additional-classes="'w-[66.66%]'"
-            :section-type="'advice'" :advice-type="'Dashboard'" :loading-classes="'w-[66.66%]'">
+        <CardCarouselWrapper
+            :key="adviceLoading"
+            :card-data="reversedAdviceData ? reversedAdviceData : []"
+            :loading="adviceLoading"
+            :row-count="1"
+            :col-count="2"
+            :additional-classes="'w-full lg:!w-[66.66%]'"
+            :section-type="'advice'"
+            :advice-type="'Dashboard'"
+            :loading-classes="'w-full lg:!w-[66.66%]'"
+        >
             <template #cardInfoSection>
-                <div class="grid w-[33.33%] gap-[24px] h-full px-[29px]">
-                    <div class="col-span-1">
-                        <div class="grid grid-cols-3 row-span-4 py-4">
-                            <div class="col-span-1 row-span-1">
-                                <img class="" src="../../assets/images/WhatIsDag.png" alt="Digital Adoption Group Icon">
-                            </div>
-                            <div class="col-span-2 row-span-1 flex place-items-center">
-                                <h4 class="text-[24px] font-semibold">
-                                    What is the DAG?
-                                </h4>
-                            </div>
-                            <div class="col-span-3 row-span-3 py-8">
-                                <p>
-                                    The Digital Adoption Group (DAG) is a cross-divisional
-                                    group that provides holistic and focused advice on
-                                    digital technologies
-                                </p>
-                                <p class="mt-8">
-                                    The objective of the DAG is to support leaders and
-                                    educators to integrate high-impact technologies by
-                                    providing system-wide and practical advice on what
-                                    technology to purchase for teaching and learning
-                                    and for what purpose.
-                                </p>
-                            </div>
+                <div class="grid gap-6 h-full px-4 w-full lg:!w-[33.33%]">
+                    <div class="grid grid-cols-3 py-4 row-span-4">
+                        <div class="col-span-1 row-span-1">
+                            <img
+                                class=""
+                                src="../../assets/images/WhatIsDag.png"
+                                alt="Digital Adoption Group Icon"
+                            >
+                        </div>
+                        <div class="col-span-2 flex place-items-center row-span-1">
+                            <h4 class="font-semibold text-[24px]">
+                                What is the DAG?
+                            </h4>
+                        </div>
+                        <div class="col-span-3 py-8 row-span-3">
+                            <p>
+                                The Digital Adoption Group (DAG) is a cross-divisional
+                                group that provides holistic and focused advice on
+                                digital technologies
+                            </p>
+                            <p class="mt-8">
+                                The objective of the DAG is to support leaders and
+                                educators to integrate high-impact technologies by
+                                providing system-wide and practical advice on what
+                                technology to purchase for teaching and learning
+                                and for what purpose.
+                            </p>
                         </div>
                     </div>
                 </div>
             </template>
         </CardCarouselWrapper>
 
-        <!-- Advice Cards Here -->
-        <!-- <AdviceDashboard v-if="!adviceLoading" :advice="advicesData" />
-        <CardLoading v-else class="px-huge" :number-per-row="2" :additional-classes="'!justify-end'" /> -->
+        <SectionHeader
+            :classes="'bg-main-navy'"
+            :section="'schools'"
+            :title="'Latest School Profiles'"
+            :button-text="'View all schools'"
+            :button-callback="() => router.push('/browse/schools')"
+        />
 
-        <SectionHeader :classes="'bg-main-navy'" :section="'schools'" :title="'Latest School Profiles'"
-            :button-text="'View all schools'" :button-callback="() => router.push('/browse/schools')" />
 
-
-        <CardCarouselWrapper :key="schoolsLoading" :card-data="schoolsData ? schoolsData : []" :loading="schoolsLoading"
-            :row-count="1" :col-count="4" :section-type="'schools'" />
-
-        <!-- School Cards Here -->
-        <!-- <SchoolsDashboard v-if="!schoolsLoading" :schools="schoolsData" />
-        <CardLoading v-else class="px-huge" :number-per-row="4" /> -->
+        <CardCarouselWrapper
+            :key="schoolsLoading"
+            :card-data="schoolsData ? schoolsData : []"
+            :loading="schoolsLoading"
+            :row-count="1"
+            :col-count="4"
+            :section-type="'schools'"
+        />
     </div>
 </template>
 

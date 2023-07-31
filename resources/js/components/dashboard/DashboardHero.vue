@@ -37,56 +37,67 @@ export default {
 
 <template>
     <div class="bg-clip-content">
-        <div class="bg-clip-content w-full h-[585px] bg-gradient-to-br from-[#002856] via-[#309A9A] to-[#B8E2DC]">
-            <div class="grid grid-cols-6 px-40">
-                <div class="col-span-3">
-                    <h1 class="pt-[240px] pb-8 text-white text-[48px] font-semibold">
+        <div
+            class="
+                bg-clip-content
+                bg-gradient-to-br
+                from-[#002856]
+                via-[#309A9A]
+                to-[#B8E2DC]
+                h-[650px]
+                w-full
+                md:!h-[500px]
+                lg:!h-[700px]
+                xl:!h-[600px]
+                ">
+            <div class="2xl:!px-40 grid grid-cols-6 px-5 md:!px-20 xl:!px-10">
+                <div class="col-span-6 pt-[240px] lg:!col-span-3">
+                    <h1 class="font-semibold pb-8 text-3xl text-white  md:!text-4xl lg:!text-5xl lg:!text-[48px]">
                         {{ welcomeMessage }}
                     </h1>
 
-                    <p class="text-white font-normal text-[18px]">
+                    <p class="font-normal text-white text-xl">
                         {{ welcomeDescription }}
                     </p>
                 </div>
-                <div class="welcomeRobot col-span-3 relative">
+                <div class="col-span-3 hidden relative welcomeRobot lg:block">
                     <!-- Gear and dots -->
                     <div class="">
-                        <Gear class="z-10 gear absolute top-48 left-12" />
-                        <GearDottedLines class="z-10 dottedLines absolute top-48 left-12" />
+                        <Gear class="absolute top-48 left-12 gear z-10" />
+                        <GearDottedLines class="absolute top-48 left-12 dottedLines z-10" />
                     </div>
                     <!-- Shadow -->
                     <div class="">
-                        <Shadow class="z-10 robotShadow absolute top-[620px] left-64" />
+                        <Shadow class="absolute top-[620px] left-64 robotShadow z-10" />
                     </div>
                     <!-- Robot Body -->
                     <div class="">
-                        <RobotBody class="z-20 robotBody absolute top-[450px] left-64" />
+                        <RobotBody class="absolute top-[450px] left-64 robotBody z-20" />
                     </div>
                     <!-- Robot Head -->
                     <div class="">
-                        <RobotHead class="robotHead z-20 absolute top-[250px] left-64" />
+                        <RobotHead class="absolute top-[250px] left-64 robotHead z-20" />
                     </div>
                     <!-- Robot Left Arm -->
                     <div class="">
-                        <LeftArm class="leftArm z-20 absolute top-[390px] left-[410px]" />
+                        <LeftArm class="absolute top-[390px] left-[410px] leftArm z-20" />
                     </div>
                     <!-- Robot Right Arm -->
                     <div class="">
-                        <RightArm class="rightArm z-20 absolute top-[390px] left-40" />
+                        <RightArm class="absolute top-[390px] rightArm left-40 z-20" />
                     </div>
                     <!-- Background circle -->
                     <div class="">
-                        <Circle class="z-0 absolute top-52 left-20" />
+                        <Circle class="absolute top-52 left-20 z-0" />
                     </div>
-
-
-
 
                     <!-- <WelcomeRobot  class="absolute -bottom-[150px] right-0 mx-auto"/> -->
                 </div>
             </div>
         </div>
-        <Swoosh class="-mt-[100px]" />
+        <div class="-mt-8 md:!-mt-12 lg:!-mt-24 min-h-24 swooshContainer">
+            <Swoosh />
+        </div>
     </div>
 </template>
 

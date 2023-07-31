@@ -169,14 +169,24 @@ const handleEmitClick = () => {
 
 <template>
     <div
-        class="GenericCardContainer w-full card_parent generic-card__wrapper group"
+        class="GenericCardContainer card_parent generic-card__wrapper group"
         :class="extraClasses"
         @mouseenter="cardHoverToggle = true"
         @click="handleEmitClick"
     >
         <template v-if="!props.overrideContent">
             <div
-                class="cardTopCoverImage relative min-h-[35%] bg-slate-50 bg-cover bg-center transition-all group-hover:min-h-[0%] group-hover:h-0"
+                class="
+                    bg-center
+                    bg-cover
+                    bg-slate-50
+                    cardTopCoverImage
+                    group-hover:h-0
+                    group-hover:min-h-[0%]
+                    min-h-[35%]
+                    relative
+                    transition-all
+                    "
                 :class="`bg-[url('${imageURL}/${coverImage}')]`"
                 :style="`background-image: url('${imageURL}/${coverImage}')`"
             >
@@ -237,7 +247,7 @@ const handleEmitClick = () => {
         <template v-else>
             <slot name="overiddenContent" />
         </template>
-        <div class="generic-card__footer flex flex-row h-18 place-items-end pl-4 gap-4 mt-auto">
+        <div class="flex flex-row gap-4 generic-card__footer h-18 mt-auto pl-4 place-items-end">
             <div class="p-2">
                 <span class="has-tooltip relative">
                     <LikeFull
@@ -266,7 +276,7 @@ const handleEmitClick = () => {
                     />
                     <Tooltip
                         tip="Bookmark post"
-                        class="absolute w-36 "
+                        class="absolute w-36"
                     />
                 </span>
             </div>

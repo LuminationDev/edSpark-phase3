@@ -84,9 +84,14 @@ setupRoutes();
 </script>
 
 <template>
-    <div class="w-full h-[240px] relative z-40">
+    <div class="h-28 relative w-full z-40 md:!h-40 lg:!h-56">
         <div
-            class="nav-background w-full h-full pt-7 bg-no-repeat bg-cover"
+            class="bg-cover
+                bg-no-repeat
+                h-full
+                nav-background
+                pt-7
+                w-full"
             :style="`background-image: url(${imageURL}/uploads/image/navbar.png) `"
         >
             <!--            <nav-->
@@ -94,9 +99,25 @@ setupRoutes();
             <!--                class="bg-[#002856]/50 py-2 px-12 w-full"-->
             <!--            >-->
             <nav
-                class="bg-[#002856]/50 py-2 px-12 w-full"
+                class="bg-[#002856]/50
+                    hidden
+                    px-12
+                    py-2
+                    w-full
+                    lg:block"
             >
-                <ul class="flex flex-row flex-wrap gap-8 text-white text-[24px] font-semibold font-['Poppins']">
+                <ul
+                    class="2xl:gap-8
+                        2xl:text-2xl
+                        font-['Poppins']
+                        font-semibold
+                        gap-4
+                        hidden
+                        text-white
+                        xl:text-xl
+                        lg:flex
+                        lg:flex-row"
+                >
                     <NavItems
                         v-for="(route, i) in navLinks"
                         :key="i"
@@ -123,17 +144,41 @@ setupRoutes();
         />
 
         <!--        <Logo-->
-        <!--            class="absolute right-20 top-36 z-30 md:w-44 md:h-44 md:top-24 sm:w-36 sm:h-36 sm:top-32 w-36 h-36 lg:top-24" />-->
+        <!--            class="absolute top-36 right-20 z-30 h-36 w-36 sm:top-32 sm:h-36 sm:w-36 md:top-24 md:h-44 md:w-44 lg:top-24" />-->
         <!-- Just rempving for demo purposes TODO: fix for mobile screen etc. -->
-        <!-- class="absolute right-20 top-36 z-30 md:w-56 md:h-56 md:top-24 sm:w-36 sm:h-36 sm:top-32 w-36 h-36 lg:top-24" -->
+        <!-- class="absolute top-36 right-20 z-30 h-36 w-36 sm:top-32 sm:h-36 sm:w-36 md:top-24 md:h-56 md:w-56 lg:top-24" -->
         <button>
             <router-link :to="{name: 'dashboard'}">
                 <Logo
-                    class="absolute right-20 top-8 z-30 w-56 h-56 nav-logo transition-all"
+                    class="absolute
+                        top-4
+                        right-8
+                        h-40
+                        nav-logo
+                        transition-all
+                        w-40
+                        z-30
+                        md:!h-44
+                        md:!right-12
+                        md:!top-6
+                        md:!w-44
+                        lg:!right-10
+                        lg:!top-12
+                        xl:!h-56
+                        xl:!right-20
+                        xl:!top-8
+                        xl:!w-56"
                 />
             </router-link>
         </button>
-        <NavSwoosh class="w-full absolute -bottom-6 left-0 right-0 pointer-events-none" />
+        <NavSwoosh
+            class="absolute
+                right-0
+                -bottom-6
+                left-0
+                pointer-events-none
+                w-full"
+        />
     </div>
 </template>
 
