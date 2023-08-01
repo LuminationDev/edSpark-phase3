@@ -72,11 +72,6 @@ const getLikeBookmarkData = (cardData) => {
     }
 };
 
-// const checkingStuff = computed(() => {
-//     console.log(props.additionalClasses);
-//     return props.cardData;
-// });
-
 const getLatestContent = (data) => {
     data.sort(function compare(a, b) {
         let dateA = new Date(a.post_date);
@@ -168,7 +163,7 @@ const handleClickCard = (item) => {
             :class="additionalClasses + hasInfoSection ? '' : ''"
         >
             <div
-                class="flex justify-between flex-1 flex-row flex-wrap w-full lg:!px-8"
+                class="flex justify-center flex-1 flex-row flex-wrap w-full lg:!justify-between xl:!px-8"
             >
                 <div
                     v-for="(col, index) in (props.rowCount * props.colCount)"
@@ -196,7 +191,8 @@ const handleClickCard = (item) => {
                         >
                             <div
                                 v-if="computedCardData[index].type === 'D.A.G advice'"
-                                class="TypeTag
+                                class="
+                                    TypeTag
                                     absolute
                                     top-4
                                     -right-6
@@ -208,9 +204,8 @@ const handleClickCard = (item) => {
                                     px-6
                                     rounded
                                     text-white
-                                    
-                                    
-                                    gap-4"
+                                    gap-4
+                                    "
                                 :class="typeTagColor"
                             >
                                 {{ computedCardData[index].type }}
@@ -218,7 +213,8 @@ const handleClickCard = (item) => {
 
                             <div
                                 v-else-if="computedCardData[index].type === 'Your Classroom'"
-                                class="TypeTag
+                                class="
+                                    TypeTag
                                     absolute
                                     top-4
                                     -right-6
@@ -230,9 +226,8 @@ const handleClickCard = (item) => {
                                     px-6
                                     rounded
                                     text-white
-                                    
-                                    
-                                    gap-4"
+                                    gap-4
+                                    "
                                 :class="typeTagColor"
                             >
                                 {{ computedCardData[index].type }}
@@ -240,7 +235,8 @@ const handleClickCard = (item) => {
 
                             <div
                                 v-else-if="computedCardData[index].type === 'Your Work'"
-                                class="TypeTag
+                                class="
+                                    TypeTag
                                     absolute
                                     top-4
                                     -right-6
@@ -252,9 +248,8 @@ const handleClickCard = (item) => {
                                     px-6
                                     rounded
                                     text-white
-                                    
-                                    
-                                    gap-4"
+                                    gap-4
+                                    "
                                 :class="typeTagColor"
                             >
                                 {{ computedCardData[index].type }}

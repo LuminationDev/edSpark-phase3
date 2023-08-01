@@ -8,10 +8,11 @@ import axios from "axios";
 import {serverURL} from "@/js/constants/serverUrl";
 import {useRouter} from 'vue-router';
 import oktaAuth from "@/js/constants/oktaAuth";
-import {onBeforeMount, onMounted, reactive, ref} from "vue";
+import {onBeforeMount, onBeforeUnmount, onMounted, reactive, ref} from "vue";
 import recommenderEdsparkSingletonFactory from "@/js/recommender/recommenderEdspark";
 import {useSessionStorage, useStorage} from "@vueuse/core";
 import {isObjectEmpty} from "@/js/helpers/objectHelpers";
+import {useWindowStore} from "@/js/stores/useWindowStore";
 
 
 const router = useRouter();
@@ -59,6 +60,17 @@ const router = useRouter();
 let recommender
 const userStore = useUserStore()
 const {currentUser} = storeToRefs(userStore)
+const windowStore = useWindowStore()
+const {isMobile, isTablet,windowWidth} = storeToRefs(windowStore)
+
+
+const setWindowWidth = () => {
+    windowWidth.value = window.innerWidth
+    windowStore.updateIsMobile()
+    windowStore.updateIsTablet()
+    console.log(isTablet.value)
+}
+
 
 
 onMounted(() => {
@@ -69,8 +81,16 @@ onMounted(() => {
     if(currentUser.value?.id){
         recommender = recommenderEdsparkSingletonFactory().getInstance(currentUser.value.id,'Partner', 100)
     }
+    setWindowWidth()
+    window.addEventListener('resize', setWindowWidth)
 
 })
+
+onBeforeUnmount(() => {
+    window.removeEventListener('resize', setWindowWidth);
+})
+
+
 </script>
 
 <template>

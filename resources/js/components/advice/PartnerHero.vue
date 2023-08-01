@@ -23,28 +23,67 @@ const router = useRouter()
                 lg:!mt-24
                 lg:!mx-huge
                 lg:!pt-12">
-            <div class="col-span-8 md:!col-span-5">
+            <div class="col-span-5">
                 <h1 class="font-semibold pb-8 text-[36px] text-white uppercase">
                     Partner Published Resources
                 </h1>
 
-                <p class="font-normal pb-4 text-[18px] text-white">
+                <p class="font-normal hidden pb-4 text-white text-xl md:block">
                     See the latest resources from our trusted partners
                 </p>
             </div>
-            <div class="col-span-8 flex justify-start items-start relative md:!col-span-3 md:!items-end md:!justify-end">
+            <div class="col-span-3 flex justify-start items-start relative md:!col-span-3 md:!items-end md:!justify-end">
                 <AdviceRobot
-                    class="absolute h-[250px] hidden md:!block md:!bottom-4 md:!right-0 lg:!right-0 xl:!-bottom-4 xl:!right-12"
+                    class="absolute
+                        -right-24
+                        bottom-0
+                        h-[250px]
+                        scale-75
+                        
+                        
+                        md:!block
+                        md:!bottom-4
+                        md:!right-0
+                        md:!scale-100
+                        lg:!right-0
+                        xl:!-bottom-4
+                        xl:!right-12"
                 />
                 <GenericButton
                     :callback="() => router.push('browse/advices')"
                     class="
                         !rounded-none
-                        !text-secondary-darkBlue
+                        !text-adviceGreen
                         bg-white
                         hover:bg-slate-50
                         border-2
-                        border-secondary-darkBlue
+                        border-adviceGreen
+                        font-semibold
+                        hidden
+                        px-12
+                        text-lg
+                        z-30
+                        md:!block
+                        "
+                >
+                    View all advice
+                </GenericButton>
+            </div>
+            <div class="block col-span-8 md:hidden">
+                <p class="font-normal pb-4 text-white text-xl">
+                    See the latest resources from our trusted partners
+                </p>
+            </div>
+            <div class="block col-span-8 md:hidden">
+                <GenericButton
+                    :callback="() => router.push('browse/advices')"
+                    class="
+                        !rounded-none
+                        !text-adviceGreen
+                        bg-white
+                        hover:bg-slate-50
+                        border-2
+                        border-adviceGreen
                         font-semibold
                         px-12
                         text-lg

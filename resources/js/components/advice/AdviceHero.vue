@@ -12,8 +12,9 @@ const router = useRouter()
             class="
                 -mt-12
                 lg:!mt-24
-                lg:!mx-huge
+                lg:!mx-10
                 lg:!pt-12
+                xl:!mx-huge
                 bg-gradient-to-r
                 from-[#002858]
                 via-[#0A7982]

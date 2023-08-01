@@ -29,7 +29,7 @@ import {appURL, serverURL, imageURL} from "@/js/constants/serverUrl";
 
 const router = useRouter();
 const userStore = useUserStore();
-const navDropdownToggle = ref(false);
+const navDropdownToggle = ref(false); 
 const profileDropdown = ref(false);
 const currentUser = ref({});
 const navLinks = ref([]);
@@ -84,11 +84,15 @@ setupRoutes();
 </script>
 
 <template>
-    <div class="h-28 relative w-full z-40 md:!h-40 lg:!h-56">
+    <div class="h-32 relative w-full z-40 md:!h-40 lg:!h-56">
         <div
             class="bg-cover bg-no-repeat h-full nav-background pt-7 w-full"
-            :style="`background-image: url(${imageURL}/uploads/image/navbar.png) `"
+            :style="`background-image: url(${imageURL}/uploads/image/navbar.png)`"
         >
+            <!--            <img-->
+            <!--                src="../../../assets/images/navbar.png"-->
+            <!--                class="-z-10 absolute -top-7 h-full object-cover pointer-events-none w-full"-->
+            <!--            >-->
             <!--            <nav-->
             <!--                v-if="isAuthenticated"-->
             <!--                class="bg-[#002856]/50 py-2 px-12 w-full"-->
@@ -166,7 +170,20 @@ setupRoutes();
             </router-link>
         </button>
         <NavSwoosh
-            class="absolute right-0 -bottom-6 left-0 pointer-events-none w-full"
+            class="
+                2xl:!top-0
+                absolute
+                top-12
+                -bottom-6
+                left-0
+                pointer-events-none
+                scale-y-150
+                w-full
+                md:!scale-y-100
+                md:!top-12
+                lg:!top-14
+                xl:!top-4
+                "
         />
     </div>
 </template>
