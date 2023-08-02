@@ -21,26 +21,52 @@ const props = defineProps({
     <div class="w-full">
         <div
             v-for="row in numberOfRows"
-            class="flex flex-row flex-1 flex-wrap justify-between"
+            class="flex justify-between flex-row overflow-hidden w-full"
         >
             <div
                 v-for="count in numberPerRow"
-                :class="{'!w-[400px]': numberPerRow === 3,
-                        '!w-[20%]': numberPerRow === 4,
-                        '!w-[42%]': numberPerRow === 2,
-                        '!w-[95%]' : numberPerRow === 1
-                }"
-                class="GenericCardContainer loadingCard mx-[29px] border-[0.5px] border-black hover:shadow-2xl mb-4 flex flex-col min-h-[480px] max-h-[480px] group transition-all card_parent pointer-events-none"
+                class="
+                    GenericCardContainer
+                    border-[0.5px]
+                    border-slate-100
+                    card_parent
+                    flex
+                    flex-col
+                    group
+                    loadingCard
+                    max-h-[480px]
+                    max-w-[250px]
+                    mb-4
+                    min-h-[480px]
+                    min-w-[200px]
+                    mx-[29px]
+                    pointer-events-none
+                    transition-all
+                    w-full
+                    hover:shadow-2xl
+                    lg:!min-w-[200px]
+                    xl:!min-w-[300px]
+                    "
             >
                 <div
-                    class="cardTopCoverImage loadingCard-image relative min-h-[35%] bg-cover bg-center group-hover:min-h-[0%] group-hover:h-0 transition-all"
+                    class="
+                        bg-center
+                        bg-cover
+                        cardTopCoverImage
+                        group-hover:h-0
+                        group-hover:min-h-[0%]
+                        loadingCard-image
+                        min-h-[35%]
+                        relative
+                        transition-all
+                        "
                 />
                 <div
-                    class="cardContent loadingCard-content h-full flex flex-col gap-6 p-4 overflow-hidden transition-all bg-white"
+                    class="bg-white cardContent flex flex-col gap-6 h-full loadingCard-content overflow-hidden p-4 transition-all"
                 >
-                    <div class="loadingCard-title h-[2.25rem] w-full rounded-xl" />
+                    <div class="h-[2.25rem] loadingCard-title rounded-xl w-full" />
 
-                    <div class="loadingCard-description h-full w-full rounded-xl" />
+                    <div class="h-full loadingCard-description rounded-xl w-full" />
                 </div>
             </div>
         </div>

@@ -331,16 +331,3 @@ const handleEmitClick = () => {
     -webkit-line-clamp: 4 !important;
 }
 </style>
-
-<!-- <style>
-    .generic-card__footer {
-        background: rgb(255,255,255);
-        /* background: linear-gradient(0deg, rgba(255,255,255,1) 0%, rgba(255,255,255,1) 70%, rgba(255,255,255,0.8491771708683473) 84%, rgba(255,255,255,0.7511379551820728) 92%, rgba(255,255,255,0.40948879551820727) 100%, rgba(255,255,255,0) 100%); */
-    }
-
-    .cardContent {
-        box-shadow: 0px -109px 54px -65px rgba(255,255,255,0.87) inset;
-        -webkit-box-shadow: 0px -109px 54px -65px rgba(255,255,255,0.87) inset;
-        -moz-box-shadow: 0px -109px 54px -65px rgba(255,255,255,0.87) inset;
-    }
-</style> -->

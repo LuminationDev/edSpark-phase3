@@ -26,6 +26,9 @@ import NavItems from './NavItems.vue';
 import { isObjectEmpty } from "@/js/helpers/objectHelpers";
 import axios from 'axios';
 import {appURL, serverURL, imageURL} from "@/js/constants/serverUrl";
+import NavbarMobileMenu from "@/js/components/global/NavbarMobileMenu.vue";
+import {storeToRefs} from "pinia";
+import {useWindowStore} from "@/js/stores/useWindowStore";
 
 const router = useRouter();
 const userStore = useUserStore();
@@ -81,12 +84,14 @@ const setupRoutes = () => {
 };
 
 setupRoutes();
+
+const {isMobile, isTablet}  = storeToRefs(useWindowStore)
 </script>
 
 <template>
-    <div class="h-32 relative w-full z-40 md:!h-40 lg:!h-56">
+    <div class="h-32 relative w-full z-50 md:!h-40 lg:!h-56">
         <div
-            class="bg-cover bg-no-repeat h-full nav-background pt-7 w-full"
+            class="bg-cover bg-no-repeat h-full nav-background overflow-auto pt-7 w-full z-50"
             :style="`background-image: url(${imageURL}/uploads/image/navbar.png)`"
         >
             <!--            <img-->

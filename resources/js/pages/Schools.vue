@@ -192,7 +192,7 @@ const handleSaveWelcomePopup = (data) => {
         >
             <Loader
                 :loader-color="'#0072DA'"
-                :loader-message="'Map Loading'"
+                :loader-message="'Map loading'"
             />
         </div>
     </div>

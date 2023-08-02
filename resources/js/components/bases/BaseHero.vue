@@ -136,7 +136,7 @@ const setTheBackground = computed(() => {
                 :color-theme="swooshColorTheme"
                 class="scale-y-[300%] md:!scale-y-[200%] lg:!scale-y-[150%] xl:!scale-y-100"
             />
-            <div class="absolute -top-9 font-base h-16 mt-1 pl-12 pt-2 text-base text-white w-full z-50 md:!text-2xl">
+            <div class="absolute -top-9 font-base h-16 mt-1 pl-4 pt-2 text-base text-white w-full z-50 md:!pl-12 md:!text-2xl">
                 <slot
                     name="submenu"
                 />

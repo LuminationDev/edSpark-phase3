@@ -287,7 +287,7 @@ const getDistanceBetweenElements = (a, b) => {
 }
 
 onMounted(async () => {
-    document.addEventListener('resize', getConnectingLinePositions());
+    window.addEventListener('resize', () => getConnectingLinePositions());
     getConnectingLinePositions();
 
 });
@@ -342,6 +342,7 @@ onMounted(async () => {
             <div
                 class="
                     -translate-y-1/2
+                    md:!block
                     -z-10
                     absolute
                     top-1/2
@@ -349,6 +350,7 @@ onMounted(async () => {
                     duration-700
                     group-hover/bg:left-[15%]
                     group-hover/bg:scale-125
+                    hidden
                     opacity-10
                     softwareRobot
                     transition-all
@@ -502,10 +504,10 @@ onMounted(async () => {
                 </div>
             </template>
             <template v-else>
-                <div class="px-8 lg:!px-20">
+                <div class="px-8 w-full lg:!px-20">
                     <CardLoading
-                        :number-of-rows="1"
-                        :number-per-row="3"
+                        :number-of-rows="2"
+                        :number-per-row="2"
                     />
                 </div>
             </template>
@@ -587,7 +589,7 @@ onMounted(async () => {
             :card-data="schoolsData ? schoolsData : []"
             :loading="schoolsLoading"
             :row-count="1"
-            :col-count="4"
+            :col-count="3"
             :section-type="'schools'"
         />
     </div>

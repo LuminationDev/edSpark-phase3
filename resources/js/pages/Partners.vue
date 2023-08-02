@@ -34,11 +34,19 @@ const {
             button-text="View all partners"
             :button-callback="() => router.push('/browse/partners')"
         />
-        <!--        {{ partnerError }}-->
-        <!--        <pre> {{ partnerData }}</pre>-->
         <div
-
-            class="PartnerListGalleryContainer flex flex-row justify-between gap-4 px-huge"
+            class="
+                PartnerListGalleryContainer
+                flex-row
+                justify-between
+                grid
+                grid-cols-1
+                gap-4
+                px-5
+                md:!grid-cols-2
+                lg:!px-huge
+                xl:!grid-cols-3
+                "
         >
             <template v-if="partnerList?.partners">
                 <template

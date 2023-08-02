@@ -1,24 +1,24 @@
 <script setup>
-    import { CirclesToRhombusesSpinner } from 'epic-spinners';
+import { CirclesToRhombusesSpinner } from 'epic-spinners';
 
-    const props = defineProps({
-        loaderColor: {
-            type: String,
-            required: false,
-            default: '#339999'
-        },
-        loaderMessage: {
-            type: String,
-            required: false,
-            default: 'Loading'
-        }
-    });
+const props = defineProps({
+    loaderColor: {
+        type: String,
+        required: false,
+        default: '#339999'
+    },
+    loaderMessage: {
+        type: String,
+        required: false,
+        default: 'Loading'
+    }
+});
 </script>
 
 <template>
-    <div class="mx-auto flex flex-col place-items-center">
-        <div class="text-center mb-8">
-            <h3 class="text-[24px] font-bold">
+    <div class="flex flex-col min-h-[80vh] mx-auto place-items-center">
+        <div class="mb-8 text-center">
+            <h3 class="font-bold text-[24px]">
                 {{ loaderMessage }}
             </h3>
         </div>
@@ -30,5 +30,4 @@
             :color="loaderColor"
         />
     </div>
-
 </template>

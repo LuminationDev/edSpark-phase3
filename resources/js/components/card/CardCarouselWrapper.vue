@@ -21,6 +21,7 @@ import Virtual from '../svg/Virtual.vue';
 
 import {cardDataHelper} from '../../helpers/cardDataHelper.js';
 import Hybrid from "@/js/components/svg/event/Hybrid.vue";
+import {useWindowStore} from "@/js/stores/useWindowStore";
 
 const {currentUser} = storeToRefs(useUserStore());
 
@@ -264,6 +265,9 @@ const breakpointChoser = () =>{
 }
 
 console.log(computedCardData.value);
+
+const windowStore = useWindowStore()
+
 </script>
 
 <template>
@@ -599,7 +603,7 @@ console.log(computedCardData.value);
             :class="loadingClasses"
         >
             <CardLoading
-                :number-per-row="colCount"
+                :number-per-row="windowStore.getNumberOfCardLoading"
                 :number-of-rows="rowCount"
             />
         </div>

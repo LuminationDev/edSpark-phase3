@@ -28,6 +28,7 @@ import {useUserStore} from "@/js/stores/useUserStore";
 import SchoolNominationButton from "@/js/components/schools/SchoolNominationButton.vue";
 import SchoolContact from "@/js/components/schoolsingle/SchoolContact.vue";
 import SchoolWhatsNew from "@/js/components/schoolsingle/SchoolWhatsNew.vue";
+import Loader from "@/js/components/spinner/Loader.vue";
 
 const route = useRoute();
 const router = useRouter();
@@ -438,10 +439,11 @@ const isSchoolContentPopulated = computed(() => {
 
     <div
         v-else
-        class="flex justify-center items-center flex-col h-36 mt-[10vh]"
+        class="mt-20"
     >
-        <div class="font-bold text-lg">
-            Please wait. Loading data...
-        </div>
+        <Loader
+            :loader-color="'#0072DA'"
+            :loader-message="'School loading'"
+        />
     </div>
 </template>

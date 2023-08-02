@@ -82,7 +82,7 @@ const getResponsiveDisplayData = (itemArray) => {
             :button-text="'View all hardware'"
             :button-callback="() => router.push('/browse/hardwares')"
         />
-        <div class="flex-wrap grid grid-cols-1 gap-4 place-items-center h-full px-5 md:!grid-cols-2 lg:!px-10 xl:!grid-cols-3 xl:!px-huge">
+        <div class="grid grid-cols-1 gap-4 place-items-center h-full px-5 md:!grid-cols-2 lg:!px-10 xl:!grid-cols-3 xl:!px-huge">
             <template v-if="laptops && laptops.length > 0">
                 <HardwareCard
                     v-for="(laptop, index) in getResponsiveDisplayData(laptops)"
@@ -92,10 +92,12 @@ const getResponsiveDisplayData = (itemArray) => {
                 />
             </template>
             <template v-else>
-                <CardLoading
-                    :number-of-rows="1"
-                    :number-per-row="3"
-                />
+                <div class="col-span-1 grid md:!col-span-2 xl:!col-span-3">
+                    <CardLoading
+                        :number-of-rows="1"
+                        :number-per-row="windowStore.getNumberOfCardLoading"
+                    />
+                </div>
             </template>
         </div>
 
@@ -109,7 +111,7 @@ const getResponsiveDisplayData = (itemArray) => {
             :button-callback="() => router.push('/browse/hardwares')"
         />
         <div class="grid grid-cols-12 px-5 lg:!px-20 xl:!px-huge">
-            <div class="col-span-12 flex flex-row gap-6 mb-6 xl:!col-span-3 xl:!flex-col">
+            <div class="col-span-12 flex flex-row gap-6 mb-6 xl:!col-span-4 xl:!flex-col">
                 <div class="flex items-start flex-col">
                     <h5 class="font-bold text-[18px]">
                         A Variety of AV equipment
@@ -133,7 +135,7 @@ const getResponsiveDisplayData = (itemArray) => {
                     </div>
                 </div>
             </div>
-            <div class="col-span-12 flex-row justify-between grid grid-cols-1 gap-6 md:!grid-cols-2 xl:!col-span-9 xl:!grid-cols-3">
+            <div class="col-span-12 grid grid-cols-1 gap-6 md:!grid-cols-2 xl:!col-span-8 xl:!grid-cols-3">
                 <template v-if="audioVisual && audioVisual.length > 0">
                     <HardwareCard
                         v-for="(item, index) in audioVisual.slice(0,4)"
@@ -143,10 +145,12 @@ const getResponsiveDisplayData = (itemArray) => {
                     />
                 </template>
                 <template v-else>
-                    <CardLoading
-                        :number-of-rows="1"
-                        :number-per-row="2"
-                    />
+                    <div class="col-span-1 md:!col-span-2">
+                        <CardLoading
+                            :number-of-rows="1"
+                            :number-per-row="2"
+                        />
+                    </div>
                 </template>
             </div>
         </div>
@@ -183,10 +187,12 @@ const getResponsiveDisplayData = (itemArray) => {
                     />
                 </template>
                 <template v-else>
-                    <CardLoading
-                        :number-of-rows="1"
-                        :number-per-row="2"
-                    />
+                    <div class="col-span-1 md:!col-span-2">
+                        <CardLoading
+                            :number-of-rows="1"
+                            :number-per-row="2"
+                        />
+                    </div>
                 </template>
             </div>
         </div>

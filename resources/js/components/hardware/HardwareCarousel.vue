@@ -21,8 +21,8 @@ const handleImageGallery = (index) => {
 </script>
 
 <template>
-    <div class="flex flex-row gap-8 flex-wrap place-items-center justify-around">
-        <div class="w-[50%] max-w-[500px]">
+    <div class="flex justify-around flex-col flex-wrap gap-2 place-items-center lg:!flex-row lg:!gap-8">
+        <div class="max-w-[500px] w-full lg:!w-1/2">
             <carousel
                 :items-to-show="1"
                 :wrap-around="true"
@@ -35,7 +35,7 @@ const handleImageGallery = (index) => {
                     <img
                         :src="`${imageURL}/${slide}`"
                         :alt="slideItems.product_excerpt"
-                        class="min-w-[300px] w-full rounded-lg w-fit"
+                        class="min-w-[300px] rounded-lg w-fit w-full"
                     >
                 </Slide>
 
@@ -45,20 +45,20 @@ const handleImageGallery = (index) => {
                 </template>
             </carousel>
         </div>
-        <div class="w-[30%]">
-            <div class="w-full border border-black grid grid-cols-2">
+        <div class="w-auto lg:!w-[30%]">
+            <div class="border border-black grid grid-cols-2 w-full">
                 <div
                     v-for="(item, index) in slideItems['gallery']"
-                    class="col-span-1 group relative h-[140px]"
+                    class="col-span-1 group h-[140px] relative"
                 >
                     <img
                         :src="`${imageURL}/${item}`"
                         :alt="slideItems.product_excerpt"
-                        class="min-w-full h-full group-hover:cursor-pointer object-cover"
+                        class="group-hover:cursor-pointer h-full min-w-full object-cover"
                         @click="handleImageGallery(index)"
                     >
                     <div
-                        class="group-hover:bg-black/20 absolute w-full h-full top-0 left-0 pointer-events-none"
+                        class="absolute top-0 left-0 group-hover:bg-black/20 h-full pointer-events-none w-full"
                     />
                 </div>
             </div>

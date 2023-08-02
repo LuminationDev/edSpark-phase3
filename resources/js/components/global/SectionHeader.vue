@@ -73,7 +73,7 @@ const props = defineProps({
                 class="-translate-y-1/2 absolute top-1/2 right-16 duration-500 group-hover/headerbg:scale-125 transition-all"
             />
 
-            <h3 class="font-semibold py-2 section-header text-2xl text-white uppercase  lg:!text-4xl">
+            <h3 class="font-semibold py-2 section-header text-3xl text-white uppercase  lg:!text-4xl">
                 {{ title }}
             </h3>
             <button

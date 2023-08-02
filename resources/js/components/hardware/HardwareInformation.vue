@@ -12,11 +12,11 @@
             >
         </div>
         <div class="col-span-6 flex flex-col gap-6 w-full">
-            <h3 class="font-bold text-[24px] uppercase">
+            <h3 class="font-bold text-xl uppercase md:!text-2xl">
                 Borrow or Purchase
             </h3>
 
-            <p class="font-normal text-[18px]">
+            <p class="font-normal text-base md:!text-lg">
                 Discover what is available to purchase or borrow. Request to borrow 
                 loan items and generate a quote for purchases which can then be processed
                 by your school business manager.

@@ -38,7 +38,7 @@ const getConnectingLinePositions = () => {
 
 onMounted(() => {
     if (props.itemArray) {
-        document.addEventListener('resize', getConnectingLinePositions());
+        window.addEventListener('resize', () => getConnectingLinePositions());
         getConnectingLinePositions();
     };
 })
@@ -63,9 +63,9 @@ const getDistanceBetweenElements = (a, b) => {
 
 </script>
 <template>
-    <div class="extraContent relative ">
+    <div class="extraContent relative">
         <div
-            class="connectingLine absolute w-1 bg-black z-10 left-[12.4%]"
+            class="absolute left-[12.4%] bg-black connectingLine hidden w-1 z-10 md:!block"
             :style="`height: ${distanceBetweenEls}px; top: ${top}px;`"
         />
         <div
@@ -74,15 +74,35 @@ const getDistanceBetweenElements = (a, b) => {
             class="eachContent py-2"
         >
             <div class="flex flex-row w-full">
-                <div class="extraContentIcon w-1/4 flex justify-center items-center relative">
-                    <div class="numberListcontainer font-bold text-2xl border-4 bg-white border-black p-4 w-24 h-24 rounded-[50%] flex justify-center items-center absolute z-20">
+                <div class="extraContentIcon flex justify-center items-center hidden relative w-1/4 md:!block">
+                    <div
+                        class="
+                            absolute
+                            bg-white
+                            border-4
+                            border-black
+                            flex
+                            justify-center
+                            items-center
+                            font-bold
+                            h-16
+                            numberListcontainer
+                            p-4
+                            rounded-[50%]
+                            text-2xl
+                            w-16
+                            z-20
+                            md:!h-24
+                            md:!w-24
+                            "
+                    >
                         {{ index + 1 }}
                     </div>
                 </div>
                 <div
-                    class="w-3/4 flex flex-col"
+                    class="flex flex-col w-full md:!w-3/4"
                 >
-                    <div class="heading font-semibold mt-6 text-xl mb-2">
+                    <div class="font-semibold heading mb-2 mt-6 text-xl">
                         <span class="font-bold text-2xl">{{ `${index + 1}. ` }}</span>
                         {{ item.heading }}
                     </div>

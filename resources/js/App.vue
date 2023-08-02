@@ -13,6 +13,7 @@ import recommenderEdsparkSingletonFactory from "@/js/recommender/recommenderEdsp
 import {useSessionStorage, useStorage} from "@vueuse/core";
 import {isObjectEmpty} from "@/js/helpers/objectHelpers";
 import {useWindowStore} from "@/js/stores/useWindowStore";
+import NavbarMobileMenu from "@/js/components/global/NavbarMobileMenu.vue";
 
 
 const router = useRouter();
@@ -61,7 +62,7 @@ let recommender
 const userStore = useUserStore()
 const {currentUser} = storeToRefs(userStore)
 const windowStore = useWindowStore()
-const {isMobile, isTablet,windowWidth} = storeToRefs(windowStore)
+const {isMobile, isTablet,windowWidth, showMobileNavbar} = storeToRefs(windowStore)
 
 
 const setWindowWidth = () => {
@@ -94,9 +95,16 @@ onBeforeUnmount(() => {
 </script>
 
 <template>
-    <NavBar
-        :key="router.currentRoute.value"
-    />
+    <div class="relative w-full z-50">
+        <NavBar
+            :key="router.currentRoute.value"
+        />
+        <NavbarMobileMenu
+            v-if="isMobile"
+            class="absolute top-2 left-2 lg:hidden"
+        />
+    </div>
+
 
     <div class="pageBodyContentContainer">
         <router-view />

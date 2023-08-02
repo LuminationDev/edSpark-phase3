@@ -5,7 +5,8 @@ export const useWindowStore = defineStore('window',{
     state: () => ({
         windowWidth: 0,
         isMobile: false,
-        isTablet: false
+        isTablet: false,
+        showMobileNavbar: false
     }),
     getters: {
         getWindowWidth() {
@@ -16,6 +17,12 @@ export const useWindowStore = defineStore('window',{
         },
         getIsTablet(){
             return this.isTablet
+        },
+        getMobileNavbar(){
+            return this.showMobileNavbar
+        },
+        getNumberOfCardLoading(){
+            return this.isMobile ? 1 : this.isTablet ? 2 : 3
         }
     },
     actions:{
