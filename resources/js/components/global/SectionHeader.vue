@@ -41,7 +41,9 @@ const props = defineProps({
                 items-start
                 flex-col
                 group/headerbg
-                h-28
+                h-auto
+                pb-4
+                pt-2
                 px-6
                 relative
                 w-full

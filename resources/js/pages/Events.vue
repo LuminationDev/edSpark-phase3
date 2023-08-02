@@ -36,8 +36,8 @@ const allEventsWithKeys = computed(() =>{
         :button-text="'View all events'"
         :button-callback="() => router.push('/browse/events')"
     />
-    <div class="EventContentContainer flex flex-col h-full px-20">
-        <div class="EventCardListContainer heading text-xl flex flex-row flex-1 justify-between flex-wrap  gap-6">
+    <div class="EventContentContainer flex flex-col h-full px-5 lg:!px-20">
+        <div class="EventCardListContainer grid grid-cols-1 gap-6 heading text-xl  md:!grid-cols-2 xl:!grid-cols-3">
             <template v-if="allEventsWithKeys.length > 0">
                 <EventCard
                     v-for="event in allEventsWithKeys.filter((event,index) => index < 3)"
@@ -63,17 +63,17 @@ const allEventsWithKeys = computed(() =>{
         :button-callback="() => router.push('/browse/events')"
     />
 
-    <div class="eventCalendarContainer flex flex-col h-full px-20">
+    <div class="eventCalendarContainer flex flex-col h-full px-5 lg:!px-20">
         <div
             v-if="allEvents && allEvents.length > 0"
-            class="flex flex-row flex-wrap"
+            class="flex lg:flex-row flex-col flex-wrap"
         >
-            <div class="w-2/3 pl-8">
+            <div class="pl-8 w-full lg:!w-2/3">
                 <EventsCalendar
                     :events="allEvents"
                 />
             </div>
-            <div class="w-1/3">
+            <div class="w-full lg:!w-1/3">
                 <EventsView
                     :events="allEvents"
                 />

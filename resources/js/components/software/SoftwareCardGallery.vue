@@ -61,7 +61,7 @@ const handleClickSeeMore = () => {
 </script>
 <template>
     <template v-if="softwaresData">
-        <div class="grid lg:grid-cols-2 grid-cols-1 gap-6 place-items-center px-10 xl:!grid-cols-3 xl:!px-20">
+        <div class="grid md:grid-cols-2 grid-cols-1 gap-6 place-items-center px-10 xl:!grid-cols-3 xl:!px-20">
             <SoftwareCard
                 v-for="(software,index) in responsiveDisplaySoftware"
                 :key="index"
@@ -71,6 +71,7 @@ const handleClickSeeMore = () => {
             <GenericButton
                 v-show="isMobile"
                 :callback="handleClickSeeMore"
+                s
                 class="
                     !bg-white
                     hover:!bg-main-darkTeal
@@ -79,6 +80,8 @@ const handleClickSeeMore = () => {
                     hover:!text-white
                     border-2
                     border-main-darkTeal
+                    place-self-center
+                    md:!col-span-2
                     "
             >
                 View all software

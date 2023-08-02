@@ -1,6 +1,8 @@
 <script setup>
-import FooterSwoosh from '../svg/FooterSwoosh.vue';
+import FooterSwoosh from '../../svg/FooterSwoosh.vue';
 import FooterSocialMediaIcon from "@/js/components/global/FooterSocialMediaIcon.vue";
+import FooterCollectionLogos from "@/js/components/global/Footer/FooterCollectionLogos.vue";
+import FooterBottomLinks from "@/js/components/global/Footer/FooterBottomLinks.vue";
 
 
 </script>
@@ -18,7 +20,7 @@ import FooterSocialMediaIcon from "@/js/components/global/FooterSocialMediaIcon.
                 <p class="font-base number phone text-sm">
                     1800 088 158
                 </p>
-                <p class="email font-base text-sm underline">
+                <p class="break-words email font-base text-sm underline">
                     Education.Customers@sa.gov.au
                 </p>
             </div>
@@ -40,7 +42,7 @@ import FooterSocialMediaIcon from "@/js/components/global/FooterSocialMediaIcon.
                 <p class="font-base number phone text-sm underline">
                     EDi - staff intranet
                 </p>
-                <p class="font-base number phone text-sm underline">
+                <p class="flex flex-wrap font-base number phone text-sm underline">
                     Site map
                 </p>
             </div>
@@ -109,78 +111,12 @@ import FooterSocialMediaIcon from "@/js/components/global/FooterSocialMediaIcon.
                 </div>
             </div>
         </div>
-        <!--    Footer Images row     -->
-        <div class="FooterImagesRow flex justify-between items-center flex-row w-full">
-            <div class="h-20 p-4 w-40">
-                <img
-                    src="../../../assets/images/footer/cc.png"
-                    alt=""
-                    class="h-full object-contain w-full"
-                >
-            </div>
-            <div class="h-20 p-4 w-40">
-                <img
-                    src="../../../assets/images/footer/south-australia.png"
-                    alt=""
-                    class="h-full object-contain w-full"
-                >
-            </div>
-            <div class="h-20 p-4 w-40">
-                <img
-                    src="../../../assets/images/footer/sagovau_rev.png"
-                    alt=""
-                    class="h-full object-contain w-full"
-                >
-            </div>
-            <div class="h-20 p-4 w-40">
-                <img
-                    src="../../../assets/images/footer/white-ribbon.svg"
-                    alt=""
-                    class="h-full object-contain w-full"
-                >
-            </div>
-            <div class="h-20 p-4 w-40">
-                <img
-                    src="../../../assets/images/footer/dfe.svg"
-                    alt=""
-                    class="h-full object-contain w-full"
-                >
-            </div>
-        </div>
-        <!--   End of Footer Images Row     -->
+        <FooterCollectionLogos />
+
+
         <!-- <FooterSwoosh class="w-full pointer-events-none" /> -->
-        <!--        <div class="bg-white flex py-4 w-full">-->
-        <!--            <ul class="flex flex-col font-medium mx-auto place-items-center text-[#0E4376] text-[20px] lg:!flex-row">-->
-        <!--                <li class="cursor-pointer px-4 hover:text-[#4a87c0]">-->
-        <!--                    Accessibility-->
-        <!--                </li>-->
-        <!--                <li class="px-2">-->
-        <!--                    <div class="bg-[#0E4376] h-[20px] w-[1px]" />-->
-        <!--                </li>-->
-        <!--                <li class="cursor-pointer px-4 hover:text-[#4a87c0]">-->
-        <!--                    Acknowledgement of Country-->
-        <!--                </li>-->
-        <!--                <li class="px-2">-->
-        <!--                    <div class="bg-[#0E4376] h-[20px] w-[1px]" />-->
-        <!--                </li>-->
-        <!--                <li class="cursor-pointer px-4 hover:text-[#4a87c0]">-->
-        <!--                    Copyright-->
-        <!--                </li>-->
-        <!--                <li class="px-2">-->
-        <!--                    <div class="bg-[#0E4376] h-[20px] w-[1px]" />-->
-        <!--                </li>-->
-        <!--                <li class="cursor-pointer px-4 hover:text-[#4a87c0]">-->
-        <!--                    Disclaimer-->
-        <!--                </li>-->
-        <!--                <li class="px-2">-->
-        <!--                    <div class="bg-[#0E4376] h-[20px] w-[1px]" />-->
-        <!--                </li>-->
-        <!--                <li class="cursor-pointer px-4 hover:text-[#4a87c0]">-->
-        <!--                    Privacy-->
-        <!--                </li>-->
-        <!--            </ul>-->
-        <!--        </div>-->
     </div>
+    <FooterBottomLinks />
 </template>
 
 <style>

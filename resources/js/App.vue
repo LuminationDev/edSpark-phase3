@@ -1,7 +1,7 @@
 <script setup>
 
 import NavBar from './components/global/NavBar.vue';
-import Footer from './components/global/Footer.vue';
+import Footer from './components/global/Footer/Footer.vue';
 import {useUserStore} from "@/js/stores/useUserStore";
 import {storeToRefs} from "pinia";
 import axios from "axios";
