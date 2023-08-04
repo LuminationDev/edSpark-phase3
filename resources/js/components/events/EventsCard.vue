@@ -84,6 +84,7 @@ const likeBookmarkData = {
                     place-items-center
                     px-6
                     rounded
+                    text-base
                     text-white
                     gap-4
                     "
@@ -96,12 +97,12 @@ const likeBookmarkData = {
                 <template
                     v-else-if="event_type === 'Virtual'"
                 >
-                    <InPerson />
+                    <Virtual />
                 </template>
                 <template
                     v-else-if="event_type === 'Hybrid'"
                 >
-                    <InPerson />
+                    <Hybrid />
                 </template>
                 {{ event_type }}
             </div>
