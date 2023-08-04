@@ -297,8 +297,8 @@ export const useUserStore = defineStore('user', {
 
         clearStore() {
             this.currentUser = {};
-            if (sessionStorage.getItem('currentUser') === null) return;
-            sessionStorage.removeItem('currentUser');
+            if (localStorage.getItem('currentUser') === null) return;
+            localStorage.removeItem('currentUser');
         }
     }
 })

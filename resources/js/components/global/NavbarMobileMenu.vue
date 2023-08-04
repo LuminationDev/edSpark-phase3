@@ -6,15 +6,18 @@ import {ref} from "vue";
 import {useRouter} from "vue-router";
 import NavItems from "@/js/components/global/NavItems.vue";
 import Close from "@/js/components/svg/Close.vue";
+import {useAuthStore} from "@/js/stores/useAuthStore";
 
 const {showMobileNavbar} = storeToRefs(useWindowStore())
 const navLinks = ref([]);
 const router = useRouter()
-
 const handleToggleNavbar = () => {
     showMobileNavbar.value = !showMobileNavbar.value
-
 }
+
+const authStore = useAuthStore();
+const { isAuthenticated } = storeToRefs(authStore)
+
 
 const setupRoutes = () => {
     const tempNavArray = [];
@@ -33,6 +36,7 @@ setupRoutes();
 
 <template>
     <div
+        v-if="isAuthenticated"
         class="HAMBURGER-ICON absolute top-2 left-2 bg-[#002856]/50 p-4 rounded space-y-2 z-50 hover:cursor-pointer"
         @click="handleToggleNavbar"
     >

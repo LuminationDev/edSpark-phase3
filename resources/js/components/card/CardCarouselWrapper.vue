@@ -264,7 +264,6 @@ const breakpointChoser = () =>{
     }
 }
 
-console.log(computedCardData.value);
 
 const windowStore = useWindowStore()
 

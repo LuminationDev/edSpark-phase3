@@ -32,27 +32,18 @@ import {useWindowStore} from "@/js/stores/useWindowStore";
 
 const router = useRouter();
 const userStore = useUserStore();
-const navDropdownToggle = ref(false); 
+const navDropdownToggle = ref(false);
 const profileDropdown = ref(false);
 const currentUser = ref({});
 const navLinks = ref([]);
-// const isAuthenticated = ref(false);
 
 const authStore = useAuthStore();
-//Access the authentication status
-const isAuthenticated = authStore.isAuthenticated;
+const { isAuthenticated } = storeToRefs(authStore)
 
 onMounted(() => {
     if (!Object.keys(userStore.getUser).length <= 0) {
         currentUser.value = userStore.getUser;
     }
-
-    // Make an API call to check the user's authentication status
-    // update the 'isAuthenticated' ref accordingly
-
-    // axios.get(`${appURL}/auth/check`).then(response => {
-    //     isAuthenticated.value = response.data.authenticated;
-    // });
 });
 
 const avatarUrl = computed(() => {
@@ -94,30 +85,23 @@ const {isMobile, isTablet}  = storeToRefs(useWindowStore)
             class="bg-cover bg-no-repeat h-full nav-background overflow-auto pt-7 w-full z-50"
             :style="`background-image: url(${imageURL}/uploads/image/navbar.png)`"
         >
-            <!--            <img-->
-            <!--                src="../../../assets/images/navbar.png"-->
-            <!--                class="-z-10 absolute -top-7 h-full object-cover pointer-events-none w-full"-->
-            <!--            >-->
-            <!--            <nav-->
-            <!--                v-if="isAuthenticated"-->
-            <!--                class="bg-[#002856]/50 py-2 px-12 w-full"-->
-            <!--            >-->
             <nav
-                class="bg-[#002856]/50 hidden px-12 py-2 w-full lg:block"
+                v-if="isAuthenticated"
+                class="bg-[#002856]/50 hidden px-12 py-2 w-full w-full  lg:block"
             >
                 <ul
-                    class="2xl:gap-8
+                    class="
+                        2xl:gap-8
                         2xl:text-2xl
                         font-['Poppins']
                         font-semibold
                         hidden
                         text-white
                         xl:text-xl
-                        
-                        
                         gap-4
                         lg:flex
-                        lg:flex-row"
+                        lg:flex-row
+                        "
                 >
                     <NavItems
                         v-for="(route, i) in navLinks"
@@ -128,30 +112,19 @@ const {isMobile, isTablet}  = storeToRefs(useWindowStore)
             </nav>
         </div>
 
-        <!--        <ProfileDropdown-->
-        <!--            v-if="isAuthenticated"-->
-        <!--            :key="currentUser"-->
-        <!--            :current-user="currentUser"-->
-        <!--            :profile-dropdown="profileDropdown"-->
-        <!--            :avatar-url="avatarUrl"-->
-        <!--            @handle-avatar-click="handleAvatarClick"-->
-        <!--        />        -->
         <ProfileDropdown
+            v-if="isAuthenticated"
             :key="currentUser"
             :current-user="currentUser"
             :profile-dropdown="profileDropdown"
             :avatar-url="avatarUrl"
             @handle-avatar-click="handleAvatarClick"
         />
-
-        <!--        <Logo-->
-        <!--            class="absolute top-36 right-20 z-30 h-36 w-36 sm:top-32 sm:h-36 sm:w-36 md:top-24 md:h-44 md:w-44 lg:top-24" />-->
-        <!-- Just rempving for demo purposes TODO: fix for mobile screen etc. -->
-        <!-- class="absolute top-36 right-20 z-30 h-36 w-36 sm:top-32 sm:h-36 sm:w-36 md:top-24 md:h-56 md:w-56 lg:top-24" -->
         <button>
             <router-link :to="{name: 'dashboard'}">
                 <Logo
-                    class="absolute
+                    class="
+                        absolute
                         top-4
                         right-2
                         h-32
@@ -159,8 +132,6 @@ const {isMobile, isTablet}  = storeToRefs(useWindowStore)
                         transition-all
                         w-40
                         z-30
-                        
-                        
                         md:!h-44
                         md:!right-12
                         md:!top-6
@@ -170,7 +141,8 @@ const {isMobile, isTablet}  = storeToRefs(useWindowStore)
                         xl:!h-56
                         xl:!right-20
                         xl:!top-8
-                        xl:!w-56"
+                        xl:!w-56
+                        "
                 />
             </router-link>
         </button>
