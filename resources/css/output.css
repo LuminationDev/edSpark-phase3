@@ -594,7 +594,7 @@ select {
   max-height: 480px;
   min-height: 480px;
   width: 100%;
-  max-width: 400px;
+  max-width: 350px;
   cursor: pointer;
   flex-direction: column;
   border-width: 0.5px;

@@ -588,7 +588,6 @@ const windowStore = useWindowStore()
                         </template>
                     </GenericCard>
                 </Slide>
-
                 <template #addons>
                     <navigation />
                     <pagination />

@@ -39,10 +39,10 @@ const router = useRouter()
                 <AdviceEducatorsIcon
                     class="
                         absolute
-                        -right-24
+                        -right-28
                         -bottom-6
                         h-[250px]
-                        scale-75
+                        scale-50
                         md:!block
                         md:!bottom-4
                         md:!right-0

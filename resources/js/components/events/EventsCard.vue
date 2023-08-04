@@ -4,8 +4,9 @@ import InPerson from '../svg/InPerson.vue';
 import Virtual from '../svg/Virtual.vue';
 import {storeToRefs} from "pinia";
 import {useUserStore} from "@/js/stores/useUserStore";
-import { computed } from "vue";
-import { useRouter } from "vue-router";
+import {computed} from "vue";
+import {useRouter} from "vue-router";
+import Hybrid from "@/js/components/svg/event/Hybrid.vue";
 
 const props = defineProps({
     eventContent: {
@@ -30,7 +31,8 @@ const {
     event_title,
     event_type,
     start_date,
-    updated_at } = props.eventContent;
+    updated_at
+} = props.eventContent;
 
 const router = useRouter();
 
@@ -40,13 +42,13 @@ const handleClickEventCard = () => {
      * which is /event/resources/:id
      */
     router.push({
-        name:"event-single",
-        params: { id: props.eventContent.event_id},
+        name: "event-single",
+        params: {id: props.eventContent.event_id},
         state: {content: JSON.stringify(props.eventContent)},
     })
 }
 
-const {currentUser } = storeToRefs(useUserStore())
+const {currentUser} = storeToRefs(useUserStore())
 
 const likeBookmarkData = {
     post_id: props.eventContent.event_id,
@@ -67,5 +69,42 @@ const likeBookmarkData = {
         :cover-image="cover_image"
         :like-bookmark-data="likeBookmarkData"
         :click-callback="handleClickEventCard"
-    />
+    >
+        <template #typeTag>
+            <div
+                class="
+                    TypeTag
+                    absolute
+                    top-4
+                    -right-6
+                    bg-secondary-red
+                    flex
+                    h-[39px]
+                    p-1
+                    place-items-center
+                    px-6
+                    rounded
+                    text-white
+                    gap-4
+                    "
+            >
+                <template
+                    v-if="event_type === 'In Person'"
+                >
+                    <InPerson />
+                </template>
+                <template
+                    v-else-if="event_type === 'Virtual'"
+                >
+                    <InPerson />
+                </template>
+                <template
+                    v-else-if="event_type === 'Hybrid'"
+                >
+                    <InPerson />
+                </template>
+                {{ event_type }}
+            </div>
+        </template>
+    </GenericCard>
 </template>

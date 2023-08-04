@@ -13,6 +13,7 @@ import CardLoading from '../components/card/CardLoading.vue';
 
 import CardCarouselWrapper from '../components/card/CardCarouselWrapper.vue';
 import CardWrapper from '../components/card/CardWrapper.vue';
+import CarouselGenerator from "@/js/components/card/CarouselGenerator.vue";
 
 const router = useRouter();
 
@@ -45,14 +46,19 @@ const handleBrowseAllAdvice = () => {
 <template>
     <AdviceHero />
     <div class="AdviceContentContainer DAGAdviceRow flex flex-col h-full">
-        <CardCarouselWrapper
-            :key="dagState"
-            :card-data="dagAdvice ? dagAdvice : []"
-            :loading-state="dagState"
-            :row-count="1"
-            :col-count="3"
-            :section-type="'advice'"
-            :advice-type="'DAG'"
+        <!--        <CardCarouselWrapper-->
+        <!--            :key="dagState"-->
+        <!--            :card-data="dagAdvice ? dagAdvice : []"-->
+        <!--            :loading-state="dagState"-->
+        <!--            :row-count="1"-->
+        <!--            :col-count="3"-->
+        <!--            :section-type="'advice'"-->
+        <!--            :advice-type="'DAG'"-->
+        <!--        />-->
+        <CarouselGenerator
+            :show-count="3"
+            data-type="advice"
+            :data-array="dagAdvice ? dagAdvice : []"
         />
     </div>
     <EducatorHero />
@@ -69,13 +75,18 @@ const handleBrowseAllAdvice = () => {
     </div>
 
     <PartnerHero />
-    <CardCarouselWrapper
-        :key="partnerState"
-        :card-data="partnerAdvice ? partnerAdvice : []"
-        :loading-state="partnerState"
-        :row-count="1"
-        :col-count="3"
-        :section-type="'advice'"
-        :advice-type="'Partner'"
+    <!--    <CardCarouselWrapper-->
+    <!--        :key="partnerState"-->
+    <!--        :card-data="partnerAdvice ? partnerAdvice : []"-->
+    <!--        :loading-state="partnerState"-->
+    <!--        :row-count="1"-->
+    <!--        :col-count="3"-->
+    <!--        :section-type="'advice'"-->
+    <!--        :advice-type="'Partner'"-->
+    <!--    />-->
+    <CarouselGenerator
+        :show-count="3"
+        data-type="advice"
+        :data-array="partnerAdvice ? partnerAdvice : []"
     />
 </template>

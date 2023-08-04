@@ -35,10 +35,10 @@ const router = useRouter()
             <div class="col-span-3 flex justify-start items-start relative md:!col-span-3 md:!items-end md:!justify-end">
                 <AdviceRobot
                     class="absolute
-                        -right-24
-                        bottom-0
+                        -right-28
+                        bottom-10
                         h-[250px]
-                        scale-75
+                        scale-50
                         
                         
                         md:!block

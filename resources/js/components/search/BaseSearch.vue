@@ -240,7 +240,7 @@ const formattedSearchTitle = computed(() =>{
                         class="group h-[470px] max-w-[300px] my-4 transition-all w-full hover:shadow-2xl lg:!max-w-[400px]]"
                     >
                         <SchoolCard
-                            class="mx-auto w-1/3"
+                            class="mx-auto"
                             :school-data="data"
                         />
                     </div>

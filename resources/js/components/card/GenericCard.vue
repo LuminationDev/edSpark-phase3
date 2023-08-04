@@ -245,7 +245,9 @@ const handleEmitClick = () => {
             <!-- </div> -->
         </template>
         <template v-else>
-            <slot name="overiddenContent" />
+            <div class="schoolCardContentOverridding w-full">
+                <slot name="overiddenContent" />
+            </div>
         </template>
         <div class="flex flex-row gap-4 generic-card__footer h-18 mt-auto pl-4 place-items-end">
             <div class="p-2">

@@ -37,7 +37,7 @@ const allEventsWithKeys = computed(() =>{
         :button-callback="() => router.push('/browse/events')"
     />
     <div class="EventContentContainer flex flex-col h-full px-5 lg:!px-20">
-        <div class="EventCardListContainer grid grid-cols-1 gap-6 heading text-xl  md:!grid-cols-2 xl:!grid-cols-3">
+        <div class="EventCardListContainer grid grid-cols-1 gap-6 place-items-center heading text-xl  md:!grid-cols-2 xl:!grid-cols-3">
             <template v-if="allEventsWithKeys.length > 0">
                 <EventCard
                     v-for="event in allEventsWithKeys.filter((event,index) => index < 3)"

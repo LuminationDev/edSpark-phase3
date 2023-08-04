@@ -140,6 +140,7 @@ const handleClickCard = (item) => {
         sectionId = 'id'
         break;
 
+
     default:
         break;
     }

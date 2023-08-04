@@ -51,6 +51,7 @@ import { storeToRefs } from "pinia";
 import axios from 'axios';
 import { swrvOptions } from "@/js/constants/swrvConstants";
 import SoftwareCard from "@/js/components/software/SoftwareCard.vue";
+import CarouselGenerator from "@/js/components/card/CarouselGenerator.vue";
 
 const router = useRouter()
 
@@ -307,9 +308,6 @@ onMounted(async () => {
                 />
             </div>
         </template>
-
-        <!--        Individual Sections -->
-
         <SectionHeader
             :classes="'bg-main-teal'"
             :section="'events'"
@@ -319,14 +317,19 @@ onMounted(async () => {
         />
 
         <!-- Events Cards Here -->
-        <CardCarouselWrapper
-            :key="eventsLoading"
-            :card-data="eventsData ? eventsData : []"
-            :loading="eventsLoading"
-            :row-count="1"
-            :col-count="3"
-            :section-type="'events'"
-            :type-tag-color="'bg-secondary-red'"
+        <!--        <CardCarouselWrapper-->
+        <!--            :key="eventsLoading"-->
+        <!--            :card-data="eventsData ? eventsData : []"-->
+        <!--            :loading="eventsLoading"-->
+        <!--            :row-count="1"-->
+        <!--            :col-count="3"-->
+        <!--            :section-type="'events'"-->
+        <!--            :type-tag-color="'bg-secondary-red'"-->
+        <!--        />-->
+        <CarouselGenerator
+            :show-count="1"
+            data-type="events"
+            :data-array="eventsData? eventsData : []"
         />
 
         <SectionHeader
@@ -529,20 +532,9 @@ onMounted(async () => {
             :button-text="'View all resources'"
             :button-callback="() => router.push('/browse/advices')"
         />
-
-        <CardCarouselWrapper
-            :key="adviceLoading"
-            :card-data="reversedAdviceData ? reversedAdviceData : []"
-            :loading="adviceLoading"
-            :row-count="1"
-            :col-count="2"
-            :additional-classes="'w-full lg:!w-[66.66%]'"
-            :section-type="'advice'"
-            :advice-type="'Dashboard'"
-            :loading-classes="'w-full lg:!w-[66.66%]'"
-        >
-            <template #cardInfoSection>
-                <div class="grid gap-6 h-full px-4 w-full lg:!w-[33.33%]">
+        <div class="flex flex-col w-full lg:!flex-row lg:!px-huge">
+            <div class="DAGInfoSection w-full lg:!w-1/4">
+                <div class="grid gap-6 h-full px-4 w-full">
                     <div class="grid grid-cols-3 py-4 row-span-4">
                         <div class="col-span-1 row-span-1">
                             <img
@@ -572,8 +564,27 @@ onMounted(async () => {
                         </div>
                     </div>
                 </div>
-            </template>
-        </CardCarouselWrapper>
+            </div>
+            <div class="DAGAdviceCarousel w-full lg:!w-3/4">
+                <!--                <CardCarouselWrapper-->
+                <!--                    :key="adviceLoading"-->
+                <!--                    :card-data="reversedAdviceData ? reversedAdviceData : []"-->
+                <!--                    :loading="adviceLoading"-->
+                <!--                    :row-count="1"-->
+                <!--                    :col-count="2"-->
+                <!--                    :additional-classes="'w-full lg:!w-[66.66%]'"-->
+                <!--                    :section-type="'advice'"-->
+                <!--                    :advice-type="'Dashboard'"-->
+                <!--                    :loading-classes="'w-full lg:!w-[66.66%]'"-->
+                <!--                />-->
+                <CarouselGenerator
+                    :show-count="2"
+                    data-type="advice"
+                    :data-array="reversedAdviceData"
+                    special-attribute="twoThirdWide"
+                />
+            </div>
+        </div>
 
         <SectionHeader
             :classes="'bg-main-navy'"
@@ -584,13 +595,18 @@ onMounted(async () => {
         />
 
 
-        <CardCarouselWrapper
-            :key="schoolsLoading"
-            :card-data="schoolsData ? schoolsData : []"
-            :loading="schoolsLoading"
-            :row-count="1"
-            :col-count="3"
-            :section-type="'schools'"
+        <!--        <CardCarouselWrapper-->
+        <!--            :key="schoolsLoading"-->
+        <!--            :card-data="schoolsData ? schoolsData : []"-->
+        <!--            :loading="schoolsLoading"-->
+        <!--            :row-count="1"-->
+        <!--            :col-count="3"-->
+        <!--            :section-type="'schools'"-->
+        <!--        />-->
+        <CarouselGenerator
+            :show-count="3"
+            data-type="school"
+            :data-array="schoolsData ? schoolsData : []"
         />
     </div>
 </template>
