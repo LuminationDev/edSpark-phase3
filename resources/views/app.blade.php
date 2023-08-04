@@ -17,7 +17,7 @@
     @vite(['resources/js/app.js'])
 
 </head>
-<body class="relative">
+<body class="relative w-full lg:w-auto">
     <div id="app" class="flex flex-col container mx-auto shadow-lg min-h-screen font-['Poppins']"></div>
 {{--    <script src="{{ mix('resources/js/app.js') }}" type="text/javascript"></script>--}}
 </body>

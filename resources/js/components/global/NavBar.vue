@@ -26,10 +26,13 @@ import NavItems from './NavItems.vue';
 import { isObjectEmpty } from "@/js/helpers/objectHelpers";
 import axios from 'axios';
 import {appURL, serverURL, imageURL} from "@/js/constants/serverUrl";
+import NavbarMobileMenu from "@/js/components/global/NavbarMobileMenu.vue";
+import {storeToRefs} from "pinia";
+import {useWindowStore} from "@/js/stores/useWindowStore";
 
 const router = useRouter();
 const userStore = useUserStore();
-const navDropdownToggle = ref(false);
+const navDropdownToggle = ref(false); 
 const profileDropdown = ref(false);
 const currentUser = ref({});
 const navLinks = ref([]);
@@ -81,22 +84,41 @@ const setupRoutes = () => {
 };
 
 setupRoutes();
+
+const {isMobile, isTablet}  = storeToRefs(useWindowStore)
 </script>
 
 <template>
-    <div class="w-full h-[240px] relative z-40">
+    <div class="h-32 relative w-full z-50 md:!h-40 lg:!h-56">
         <div
-            class="nav-background w-full h-full pt-7 bg-no-repeat bg-cover"
-            :style="`background-image: url(${imageURL}/uploads/image/navbar.png) `"
+            class="bg-cover bg-no-repeat h-full nav-background overflow-auto pt-7 w-full z-50"
+            :style="`background-image: url(${imageURL}/uploads/image/navbar.png)`"
         >
+            <!--            <img-->
+            <!--                src="../../../assets/images/navbar.png"-->
+            <!--                class="-z-10 absolute -top-7 h-full object-cover pointer-events-none w-full"-->
+            <!--            >-->
             <!--            <nav-->
             <!--                v-if="isAuthenticated"-->
             <!--                class="bg-[#002856]/50 py-2 px-12 w-full"-->
             <!--            >-->
             <nav
-                class="bg-[#002856]/50 py-2 px-12 w-full"
+                class="bg-[#002856]/50 hidden px-12 py-2 w-full lg:block"
             >
-                <ul class="flex flex-row flex-wrap gap-8 text-white text-[24px] font-semibold font-['Poppins']">
+                <ul
+                    class="2xl:gap-8
+                        2xl:text-2xl
+                        font-['Poppins']
+                        font-semibold
+                        hidden
+                        text-white
+                        xl:text-xl
+                        
+                        
+                        gap-4
+                        lg:flex
+                        lg:flex-row"
+                >
                     <NavItems
                         v-for="(route, i) in navLinks"
                         :key="i"
@@ -123,17 +145,51 @@ setupRoutes();
         />
 
         <!--        <Logo-->
-        <!--            class="absolute right-20 top-36 z-30 md:w-44 md:h-44 md:top-24 sm:w-36 sm:h-36 sm:top-32 w-36 h-36 lg:top-24" />-->
+        <!--            class="absolute top-36 right-20 z-30 h-36 w-36 sm:top-32 sm:h-36 sm:w-36 md:top-24 md:h-44 md:w-44 lg:top-24" />-->
         <!-- Just rempving for demo purposes TODO: fix for mobile screen etc. -->
-        <!-- class="absolute right-20 top-36 z-30 md:w-56 md:h-56 md:top-24 sm:w-36 sm:h-36 sm:top-32 w-36 h-36 lg:top-24" -->
+        <!-- class="absolute top-36 right-20 z-30 h-36 w-36 sm:top-32 sm:h-36 sm:w-36 md:top-24 md:h-56 md:w-56 lg:top-24" -->
         <button>
             <router-link :to="{name: 'dashboard'}">
                 <Logo
-                    class="absolute right-20 top-8 z-30 w-56 h-56 nav-logo transition-all"
+                    class="absolute
+                        top-4
+                        right-2
+                        h-32
+                        nav-logo
+                        transition-all
+                        w-40
+                        z-30
+                        
+                        
+                        md:!h-44
+                        md:!right-12
+                        md:!top-6
+                        md:!w-44
+                        lg:!right-10
+                        lg:!top-12
+                        xl:!h-56
+                        xl:!right-20
+                        xl:!top-8
+                        xl:!w-56"
                 />
             </router-link>
         </button>
-        <NavSwoosh class="w-full absolute -bottom-6 left-0 right-0 pointer-events-none" />
+        <NavSwoosh
+            class="
+                2xl:!top-0
+                absolute
+                top-12
+                -bottom-6
+                left-0
+                pointer-events-none
+                scale-y-150
+                w-full
+                md:!scale-y-100
+                md:!top-12
+                lg:!top-14
+                xl:!top-4
+                "
+        />
     </div>
 </template>
 

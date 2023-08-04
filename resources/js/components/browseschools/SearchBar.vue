@@ -16,11 +16,11 @@ const handleSearchChange = () =>{
 const emits = defineEmits(['emitSearchTerm'])
 </script>
 <template>
-    <div class="searchbar w-[80%] flex justify-center items-center ">
+    <div class="flex justify-center items-center searchbar w-full lg:!w-4/5">
         <input
             id="searchbar-text-input"
             v-model="searchTerm"
-            class="!w-[50%] h-12 border-2 !border-black  text-black text-lg rounded mt-4 px-4"
+            class="!border-black !w-[50%] border-2 h-12 mt-4 px-4 rounded text-black text-lg"
             type="text"
             :placeholder="props.placeholder"
             @input="handleSearchChange"

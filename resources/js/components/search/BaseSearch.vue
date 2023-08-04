@@ -175,7 +175,7 @@ const formattedSearchTitle = computed(() =>{
 
 <template>
     <div
-        class="browse-schools-container mt-16 flex flex-col items-center"
+        class="browse-schools-container flex items-center flex-col mt-16"
     >
         <h3 class="font-semibold text-2xl">
             Browse all {{ formattedSearchTitle }}
@@ -184,12 +184,12 @@ const formattedSearchTitle = computed(() =>{
             :placeholder="`Type in ${searchType} name`"
             @emit-search-term="handleSearchTerm"
         />
-        <div class="flex flex-row w-full filterBarSearch">
+        <div class="filterBarSearch flex justify-center items-center flex-col w-full md:!flex-row">
             <slot name="filterBar" />
         </div>
         <div
-            v-if="resourceList"
-            class="resourceResult pt-10 grid grid-cols-3 place-items-center gap-6"
+            v-if="resourceList" 
+            class="grid grid-cols-1 gap-6 place-items-center pt-10 resourceResult md:!grid-cols-2 xl:!grid-cols-3"
         >
             <template
                 v-for="(data) in paginatedFilteredData"
@@ -200,7 +200,7 @@ const formattedSearchTitle = computed(() =>{
                 >
                     <div
                         :key="data.id"
-                        class="w-full max-w-[400px] my-4 h-[470px] transition-all group hover:shadow-2xl"
+                        class="group h-[470px] max-w-[300px] my-4 transition-all w-full  hover:shadow-2xl lg:!max-w-[400px]"
                     >
                         <AdviceCard
                             :key="data.post_id"
@@ -213,7 +213,7 @@ const formattedSearchTitle = computed(() =>{
                 <template v-else-if="searchType === 'software'">
                     <div
                         :key="data.id"
-                        class="w-full max-w-[400px] my-4 h-[470px] transition-all group hover:shadow-2xl"
+                        class="group h-[470px] max-w-[300px] my-4 transition-all w-full hover:shadow-2xl lg:!max-w-[400px]"
                     >
                         <SoftwareCard
                             :key="data.post_id"
@@ -225,7 +225,7 @@ const formattedSearchTitle = computed(() =>{
                 <template v-else-if="searchType === 'hardware'">
                     <div
                         :key="data.id"
-                        class="w-full max-w-[400px] my-4 h-[470px] transition-all group hover:shadow-2xl"
+                        class="group h-[470px] max-w-[300px] my-4 transition-all w-full hover:shadow-2xl lg:!max-w-[400px]"
                     >
                         <HardwareCard
                             :key="data.id"
@@ -237,7 +237,7 @@ const formattedSearchTitle = computed(() =>{
                 <template v-else-if="searchType === 'school'">
                     <div
                         :key="data.id"
-                        class="w-full max-w-[400px] my-4 h-[470px] transition-all group hover:shadow-2xl"
+                        class="group h-[470px] max-w-[300px] my-4 transition-all w-full hover:shadow-2xl lg:!max-w-[400px]]"
                     >
                         <SchoolCard
                             class="mx-auto w-1/3"
@@ -248,7 +248,17 @@ const formattedSearchTitle = computed(() =>{
                 <template v-else-if="searchType === 'partner'">
                     <div
                         :key="data.id"
-                        class="w-full max-w-[400px] my-4 h-[470px] border-black transition-all group hover:shadow-2xl"
+                        class="
+                            border-black
+                            group
+                            h-[470px]
+                            max-w-[300px]
+                            my-4
+                            transition-all
+                            w-full
+                            hover:shadow-2xl
+                            lg:!max-w-[400px]
+                            "
                     >
                         <PartnerCard
                             :partner-content="data"
@@ -258,7 +268,17 @@ const formattedSearchTitle = computed(() =>{
                 <template v-else-if="searchType === 'event'">
                     <div
                         :key="data.id"
-                        class="w-full max-w-[400px] my-4 h-[470px] border-black transition-all group hover:shadow-2xl"
+                        class="
+                            border-black
+                            group
+                            h-[470px]
+                            max-w-[300px]
+                            my-4
+                            transition-all
+                            w-full
+                            hover:shadow-2xl
+                            lg:!max-w-[400px]
+                            "
                     >
                         <EventsCard
                             :event-content="data"
@@ -270,13 +290,13 @@ const formattedSearchTitle = computed(() =>{
 
             <div
                 v-if="filteredData.length <= 0"
-                class="text-xl font-semibold"
+                class="font-semibold text-xl"
             >
                 No search result
             </div>
         </div>
     </div>
-    <div class="BaseSearchPaginationContainer flex justify-center text-lg mt-12">
+    <div class="BaseSearchPaginationContainer flex justify-center mt-12 text-lg">
         <v-pagination
             v-model="page"
             :range-size="1"

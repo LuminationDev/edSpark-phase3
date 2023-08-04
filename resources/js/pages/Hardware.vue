@@ -14,6 +14,8 @@ import {axiosFetcher} from "@/js/helpers/fetcher";
 import {useRouter} from "vue-router";
 import {guid} from "@/js/helpers/guidGenerator";
 import CardLoading from "@/js/components/card/CardLoading.vue";
+import {useWindowStore} from "@/js/stores/useWindowStore";
+import {storeToRefs} from "pinia";
 
 
 const router = useRouter()
@@ -42,6 +44,27 @@ const emergingTech = computed(() => {
     }
 })
 
+const windowStore = useWindowStore()
+const {isMobile, isTablet, windowWidth} = storeToRefs(windowStore)
+
+// const responsiveDisplayLaptop = computed(() => {
+//     if(isMobile.value){
+//         return laptops.value.slice(0,2) || []
+//     }else if(isTablet.value){
+//
+//     }
+//     else{
+//         return laptops.value
+//     }
+// })
+
+const getResponsiveDisplayData = (itemArray) => {
+    if(itemArray.length === 0) return []
+    if(isMobile.value) return itemArray.slice(0,2)
+    if(isTablet.value) return itemArray.slice(0,4)
+    else return itemArray
+}
+
 
 </script>
 
@@ -59,20 +82,22 @@ const emergingTech = computed(() => {
             :button-text="'View all hardware'"
             :button-callback="() => router.push('/browse/hardwares')"
         />
-        <div class="px-huge flex flex-row flex-1 gap-6 flex-wrap h-full justify-between">
+        <div class="grid grid-cols-1 gap-4 place-items-center h-full px-5 md:!grid-cols-2 lg:!px-10 xl:!grid-cols-3 xl:!px-huge">
             <template v-if="laptops && laptops.length > 0">
                 <HardwareCard
-                    v-for="(laptop, index) in laptops.slice(0,3)"
+                    v-for="(laptop, index) in getResponsiveDisplayData(laptops)"
                     :key="index"
                     :hardware-content="laptop"
                     :number-per-row="4"
                 />
             </template>
             <template v-else>
-                <CardLoading
-                    :number-of-rows="1"
-                    :number-per-row="3"
-                />
+                <div class="col-span-1 grid md:!col-span-2 xl:!col-span-3">
+                    <CardLoading
+                        :number-of-rows="1"
+                        :number-per-row="windowStore.getNumberOfCardLoading"
+                    />
+                </div>
             </template>
         </div>
 
@@ -85,29 +110,32 @@ const emergingTech = computed(() => {
             :button-text="'View all hardware'"
             :button-callback="() => router.push('/browse/hardwares')"
         />
-        <div class="px-huge grid grid-cols-12">
-            <div class="col-span-3 flex flex-col gap-6">
-                <h5 class="text-[18px] font-bold">
-                    A Variety of AV equipment
-                </h5>
-                <p>
-                    Obtain a quote for audio and visual devices purchased for department use.
-                </p>
-
-                <div class="flex flex-row gap-4 place-items-center mt-3">
-                    <MonitorDisplay />
-                    <h5 class="text-[18px] font-bold">
-                        Interactive Displays
+        <div class="grid grid-cols-12 px-5 lg:!px-20 xl:!px-huge">
+            <div class="col-span-12 flex flex-row gap-6 mb-6 xl:!col-span-4 xl:!flex-col">
+                <div class="flex items-start flex-col">
+                    <h5 class="font-bold text-[18px]">
+                        A Variety of AV equipment
                     </h5>
+                    <p>
+                        Obtain a quote for audio and visual devices purchased for department use.
+                    </p>
                 </div>
-                <div class="flex flex-row gap-4 place-items-center mt-3">
-                    <VideoConferencing />
-                    <h5 class="text-[18px] font-bold">
-                        Video Conferencing
-                    </h5>
+                <div class="flex xl:flex-row flex-col">
+                    <div class="flex flex-row gap-4 mt-3 place-items-center">
+                        <MonitorDisplay />
+                        <h5 class="font-bold text-[18px]">
+                            Interactive Displays
+                        </h5>
+                    </div>
+                    <div class="flex flex-row gap-4 mt-3 place-items-center">
+                        <VideoConferencing />
+                        <h5 class="font-bold text-[18px]">
+                            Video Conferencing
+                        </h5>
+                    </div>
                 </div>
             </div>
-            <div class="col-span-9 flex flex-row gap-6 justify-between">
+            <div class="col-span-12 grid grid-cols-1 gap-6 md:!grid-cols-2 xl:!col-span-8 xl:!grid-cols-3">
                 <template v-if="audioVisual && audioVisual.length > 0">
                     <HardwareCard
                         v-for="(item, index) in audioVisual.slice(0,4)"
@@ -117,10 +145,12 @@ const emergingTech = computed(() => {
                     />
                 </template>
                 <template v-else>
-                    <CardLoading
-                        :number-of-rows="1"
-                        :number-per-row="2"
-                    />
+                    <div class="col-span-1 md:!col-span-2">
+                        <CardLoading
+                            :number-of-rows="1"
+                            :number-per-row="2"
+                        />
+                    </div>
                 </template>
             </div>
         </div>
@@ -134,9 +164,9 @@ const emergingTech = computed(() => {
             :button-text="'View all hardware'"
             :button-callback="() => router.push('/browse/hardwares')"
         />
-        <div class="px-huge grid grid-cols-12">
-            <div class="col-span-5 flex flex-col gap-6 overflow-clip">
-                <h5 class="text-[18px] font-bold">
+        <div class="grid grid-cols-12 px-5 lg:!px-20 xl:!px-huge">
+            <div class="col-span-12 xl:col-span-5 flex flex-col gap-4 overflow-clip py-10 xl:!py-2">
+                <h5 class="font-bold text-[18px]">
                     Emerging Technology Buzzwords
                 </h5>
                 <p>
@@ -147,7 +177,7 @@ const emergingTech = computed(() => {
                     Proin euismod mi ac ligula volutpat, sed facilisis leo laoreet.
                 </p>
             </div>
-            <div class="col-span-7 ml-2 flex flex-row gap-4 justify-between">
+            <div class="col-span-12 grid grid-cols-1 gap-4 ml-2 md:!grid-cols-2 xl:!col-span-7">
                 <template v-if="emergingTech && emergingTech.length > 0">
                     <HardwareCard
                         v-for="(item, index) in emergingTech.slice(0,4)"
@@ -157,10 +187,12 @@ const emergingTech = computed(() => {
                     />
                 </template>
                 <template v-else>
-                    <CardLoading
-                        :number-of-rows="1"
-                        :number-per-row="2"
-                    />
+                    <div class="col-span-1 md:!col-span-2">
+                        <CardLoading
+                            :number-of-rows="1"
+                            :number-per-row="2"
+                        />
+                    </div>
                 </template>
             </div>
         </div>

@@ -1,17 +1,19 @@
 <script setup>
 
 import NavBar from './components/global/NavBar.vue';
-import Footer from './components/global/Footer.vue';
+import Footer from './components/global/Footer/Footer.vue';
 import {useUserStore} from "@/js/stores/useUserStore";
 import {storeToRefs} from "pinia";
 import axios from "axios";
 import {serverURL} from "@/js/constants/serverUrl";
 import {useRouter} from 'vue-router';
 import oktaAuth from "@/js/constants/oktaAuth";
-import {onBeforeMount, onMounted, reactive, ref} from "vue";
+import {onBeforeMount, onBeforeUnmount, onMounted, reactive, ref} from "vue";
 import recommenderEdsparkSingletonFactory from "@/js/recommender/recommenderEdspark";
 import {useSessionStorage, useStorage} from "@vueuse/core";
 import {isObjectEmpty} from "@/js/helpers/objectHelpers";
+import {useWindowStore} from "@/js/stores/useWindowStore";
+import NavbarMobileMenu from "@/js/components/global/NavbarMobileMenu.vue";
 
 
 const router = useRouter();
@@ -59,6 +61,17 @@ const router = useRouter();
 let recommender
 const userStore = useUserStore()
 const {currentUser} = storeToRefs(userStore)
+const windowStore = useWindowStore()
+const {isMobile, isTablet,windowWidth, showMobileNavbar} = storeToRefs(windowStore)
+
+
+const setWindowWidth = () => {
+    windowWidth.value = window.innerWidth
+    windowStore.updateIsMobile()
+    windowStore.updateIsTablet()
+    console.log(isTablet.value)
+}
+
 
 
 onMounted(() => {
@@ -69,14 +82,29 @@ onMounted(() => {
     if(currentUser.value?.id){
         recommender = recommenderEdsparkSingletonFactory().getInstance(currentUser.value.id,'Partner', 100)
     }
+    setWindowWidth()
+    window.addEventListener('resize', setWindowWidth)
 
 })
+
+onBeforeUnmount(() => {
+    window.removeEventListener('resize', setWindowWidth);
+})
+
+
 </script>
 
 <template>
-    <NavBar
-        :key="router.currentRoute.value"
-    />
+    <div class="relative w-full z-50">
+        <NavBar
+            :key="router.currentRoute.value"
+        />
+        <NavbarMobileMenu
+            v-if="isMobile"
+            class="absolute top-2 left-2 lg:hidden"
+        />
+    </div>
+
 
     <div class="pageBodyContentContainer">
         <router-view />

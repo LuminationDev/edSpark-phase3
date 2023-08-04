@@ -20,9 +20,9 @@ const dateItemContent = computed(() => {
 console.log(dateItemContent)
 </script>
 <template>
-    <div class="extraContent relative ">
+    <div class="extraContent relative">
         <div
-            class="connectingLine absolute w-1 h-[69%] bg-black z-10 top-[18%] left-[16.5%]"
+            class="absolute top-[18%] left-[16.5%] bg-black connectingLine h-[69%] hidden w-1 z-10 md:!block"
         />
         <div
             v-for="(item,index) in dateItemContent"
@@ -30,16 +30,35 @@ console.log(dateItemContent)
             class="eachContent py-2"
         >
             <div class="flex flex-row w-full">
-                <div class="extraContentIcon w-1/3 flex justify-center items-center relative">
-                    <div class="numberListcontainer font-bold text-2xl border-4 bg-white border-black p-4 w-24 h-24 rounded-[50%] flex justify-center items-center absolute z-20">
+                <div class="extraContentIcon hidden items-center justify-center relative w-1/3 md:!flex">
+                    <div
+                        class="
+                            absolute
+                            bg-white
+                            border-4
+                            border-black
+                            font-bold
+                            h-24
+                            hidden
+                            numberListcontainer
+                            p-4
+                            rounded-[50%]
+                            text-2xl
+                            w-24
+                            z-20
+                            items-center
+                            justify-center
+                            md:!flex
+                            "
+                    >
                         {{ index + 1 }}
                         <!-- {{ dateTime(item.start_date) }} -->
                     </div>
                 </div>
                 <div
-                    class="w-2/3 flex flex-col"
+                    class="flex flex-col w-2/3"
                 >
-                    <div class="heading font-semibold mt-6 text-xl mb-2">
+                    <div class="font-semibold heading mb-2 mt-6 text-xl">
                         {{ `${index + 1}. ` + item.heading }}
                     </div>
 

@@ -25,9 +25,9 @@ const handleEmitSelectedFilters = () =>{
 </script>
 
 <template>
-    <div class="multiselectContainer w-full mx-10 mt-4 p-2 text-lg">
+    <div class="mt-4 multiselectContainer mx-2 p-2 text-lg w-4/5 lg:!mx-10 lg:!w-full">
         <div
-            class="multiselectOutsideTitle pb-2 transition-opacity text-gray-200"
+            class="multiselectOutsideTitle pb-2 text-gray-200 transition-opacity"
             :class="{'!opacity-0 ' : selectedValue.length < 1}"
         >
             {{ placeholder }}

@@ -16,29 +16,29 @@ const handleBrowseAllSoftware = () => {
 <template>
     <SoftwareHero />
     <div class="SoftwareContentContainer">
-        <div class="HowItWorksContainer flex flex-col px-20 pt-16">
-            <div class="flex flex-row justify-around mt-6">
-                <div class="flex flex-col basis-1">
+        <div class="HowItWorksContainer flex flex-col pt-4 px-5 lg:!pt-16 lg:!px-10 xl:!px-20">
+            <div class="grid grid-cols-6 mt-6 lg:!flex lg:!flex-row lg:!justify-around">
+                <div class="col-span-6 grid gap-2 place-items-center md:!col-span-3 lg:!basis-1 lg:!flex lg:!flex-col lg:!gap-0">
                     <DeptProvidedIcon />
-                    <div class="font-semibold mt-10 mb-4 text-center">
+                    <div class="font-semibold mb-4 mt-10 text-center">
                         Department Provided
                     </div>
                     <div class="text-center">
                         These applications are provided by the department at no cost to schools
                     </div>
                 </div>
-                <div class="flex flex-col basis-1">
+                <div class="col-span-6 grid place-items-center md:!col-span-3 lg:!basis-1 lg:!flex lg:!flex-col">
                     <DeptApprovedIcon />
-                    <div class="font-semibold mt-10 mb-4 text-center">
+                    <div class="font-semibold mb-4 mt-10 text-center">
                         Department Approved
                     </div>
                     <div class="text-center">
                         These applications have been risk assessed and can be safely used in schools.
                     </div>
                 </div>
-                <div class="flex flex-col basis-1">
+                <div class="col-span-6 grid place-items-center lg:!basis-1 lg:!flex lg:!flex-col">
                     <DeptNegotiatedIcon />
-                    <div class="font-semibold mt-10 mb-4 text-center">
+                    <div class="font-semibold mb-4 mt-10 text-center">
                         Approved and Negotiatied
                     </div>
                     <div class="text-center">

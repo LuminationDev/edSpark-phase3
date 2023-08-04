@@ -56,21 +56,21 @@ const setTheBackground = computed(() => {
 </script>
 
 <template>
-    <div class="BaseHeroContainer h-[720px] -mt-28 relative z-10">
+    <div class="-mt-28 lg:!h-[720px] BaseHeroContainer h-full relative z-10">
         <div
-            :class="`BaseHeroClipThisPath pb-[36px] pt-[190px] px-[48px] grid grid-cols-8 bg-cover h-full relative bg-[url(${imageURL}/${setTheBackground}) `+ heroBackground"
+            :class="`BaseHeroClipThisPath pb-[36px] pt-[190px] px-3 lg:!px-12 grid grid-cols-8 bg-cover h-full relative bg-[url(${imageURL}/${setTheBackground}) `+ heroBackground"
             :style="'background-image: url(' + heroBackgroundLinkOnly +')'"
         >
             <div
-                class="BaseHeroBgOverlay absolute w-full h-full bg-gradient-to-r from-black via-black/75 via-40% z-10"
+                class="BaseHeroBgOverlay absolute bg-gradient-to-r from-black via-40% via-black/75 h-full w-full z-10"
             />
             <div
                 v-if="$slots.titleText || $slots.subtitleText1 || $slots.subtitleText2"
-                class="col-span-5 p-2 relative z-20"
+                class="col-span-8 p-2 relative z-20 lg:!col-span-5"
             >
                 <slot name="smallTitle" />
                 <h1
-                    class="text-white text-[36px] font-semibold pb-8 uppercase"
+                    class="font-semibold pb-8 text-lg text-white uppercase md:!text-3xl lg:!text-4xl xl:!text-5xl"
                 >
                     <slot name="titleText" />
                 </h1>
@@ -84,14 +84,14 @@ const setTheBackground = computed(() => {
 
                 <p
                     v-if="$slots.authorName"
-                    class="text-white flex flex-col gap-4 text-[18px] font-semibold"
+                    class="flex flex-col font-semibold gap-4 text-[18px] text-white"
                 >
                     <slot name="authorName" />
                 </p>
 
                 <p
                     v-if="$slots.contentDate"
-                    class="text-white flex flex-col gap-4 text-[16px] font-thin pb-4"
+                    class="flex flex-col font-thin gap-4 pb-4 text-[16px] text-white"
                 >
                     <!-- <slot name="authorName" /> -->
                     <slot name="contentDate" />
@@ -100,7 +100,7 @@ const setTheBackground = computed(() => {
 
                 <p
                     v-if="$slots.subtitleText1"
-                    class="text-white flex flex-col gap-4 text-[16px] font-thin pb-4"
+                    class="flex flex-col font-thin gap-4 pb-4 text-[16px] text-white"
                 >
                     <!-- <slot name="authorName" /> -->
                     <slot name="subtitleText1" />
@@ -109,14 +109,14 @@ const setTheBackground = computed(() => {
 
                 <p
                     v-if="$slots.hardwareProvider"
-                    class="text-white flex flex-col gap-4 text-[14px] font-normal pb-4"
+                    class="flex flex-col font-normal gap-4 pb-4 text-[14px] text-white"
                 >
                     <slot name="hardwareProvider" />
                 </p>
 
                 <p
                     v-if="$slots.subtitleText2"
-                    class="text-white text-[18px] font-normal"
+                    class="font-normal text-[18px] text-white"
                     :class="$slots.subtitleText2 ? 'mt-[36px]' : ''"
                 >
                     <slot name="subtitleText2" />
@@ -134,8 +134,9 @@ const setTheBackground = computed(() => {
         <div class="articleSwooshContainer relative w-full z-50">
             <ArticleSingleSwoosh
                 :color-theme="swooshColorTheme"
+                class="scale-y-[300%] md:!scale-y-[200%] lg:!scale-y-[150%] xl:!scale-y-100"
             />
-            <div class=" absolute mt-1 pt-2 pl-12 -top-9 w-full h-16 text-white font-base text-2xl">
+            <div class="absolute -top-9 font-base h-16 mt-1 pl-4 pt-2 text-base text-white w-full z-50 md:!pl-12 md:!text-2xl">
                 <slot
                     name="submenu"
                 />
