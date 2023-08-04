@@ -38,7 +38,7 @@
 <style scoped>
 .cls-1 {
     fill: none !important;
-    stroke: #414042;
+    stroke: #FFFFFF;
     stroke-linecap: round;
     stroke-linejoin: round;
     stroke-width: 2px;
