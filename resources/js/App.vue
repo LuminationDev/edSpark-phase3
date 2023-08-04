@@ -4,7 +4,7 @@ import NavBar from './components/global/NavBar.vue';
 import Footer from './components/global/Footer/Footer.vue';
 import {useUserStore} from "@/js/stores/useUserStore";
 import {storeToRefs} from "pinia";
-import {useRouter} from 'vue-router';
+import {useRoute, useRouter} from 'vue-router';
 import {onBeforeMount, onBeforeUnmount, onMounted, reactive, ref} from "vue";
 import recommenderEdsparkSingletonFactory from "@/js/recommender/recommenderEdspark";
 import {isObjectEmpty} from "@/js/helpers/objectHelpers";
@@ -14,6 +14,7 @@ import {useAuthStore} from "@/js/stores/useAuthStore";
 
 
 const router = useRouter();
+const route = useRoute();
 let recommender
 
 const userStore = useUserStore()
@@ -34,7 +35,7 @@ const setWindowWidth = () => {
 
 
 
-onMounted(async () => {
+onBeforeMount(async () => {
 
     // if currentUser / local storage is not empty check auth status
     if(!isObjectEmpty(currentUser.value)){
@@ -46,7 +47,9 @@ onMounted(async () => {
             console.log('taking you to login because you are recognised')
             window.location= '/login'
         } else{
-            await router.push('/dashboard')
+            if(route.name === 'home'){
+                await router.push('/dashboard')
+            }
         }
     }else{
         /*

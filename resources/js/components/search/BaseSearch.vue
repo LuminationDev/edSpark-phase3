@@ -14,6 +14,7 @@ import SchoolCard from "@/js/components/schools/SchoolCard.vue";
 import PartnerCard from "@/js/components/partners/PartnerCard.vue";
 import EventsCard from "@/js/components/events/EventsCard.vue";
 import {guid} from "@/js/helpers/guidGenerator";
+import CardLoading from "@/js/components/card/CardLoading.vue";
 const props = defineProps({
     resourceList:{
         type: Array,
@@ -295,7 +296,17 @@ const formattedSearchTitle = computed(() =>{
                 No search result
             </div>
         </div>
+        <div
+            v-else
+            class="w-full"
+        >
+            <CardLoading
+                :number-per-row="3"
+                :number-of-rows="2"
+            />
+        </div>
     </div>
+
     <div class="BaseSearchPaginationContainer flex justify-center mt-12 text-lg">
         <v-pagination
             v-model="page"
