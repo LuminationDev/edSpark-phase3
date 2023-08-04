@@ -516,7 +516,6 @@ class SchoolController extends Controller
             $user_record = User::find($user_id);
 
             if ($user_record && $user_record->site_id == $site_id && $user_record->role->role_name === 'SCHLDR') {
-                OutputHelper::print('User is the school principal hehe');
                 return response()->json([
                     "status" => 200,
                     "result" => true,
@@ -531,7 +530,6 @@ class SchoolController extends Controller
                 ->first();
 
             if ($schoolmeta_record) {
-                OutputHelper::print('User is nominated in school meta.');
                 return response()->json([
                     "status" => 200,
                     "result" => true,
@@ -539,7 +537,6 @@ class SchoolController extends Controller
                 ]);
             }
 
-            OutputHelper::print('User is not authorized');
             return response()->json([
                 "status" => 401,
                 "result" => False
