@@ -112,8 +112,6 @@ class UserController extends Controller
 
             $error = '';
             if ($data) {
-                // Handle Main Data
-                OutputHelper::print($data['site_id']);
                 try {
                     $dataToInsert = [
                         'full_name' => $data['full_name'],
