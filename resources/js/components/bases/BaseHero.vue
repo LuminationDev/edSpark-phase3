@@ -70,17 +70,17 @@ const setTheBackground = computed(() => {
             >
                 <slot name="smallTitle" />
                 <h1
-                    class="font-semibold pb-8 text-lg text-white uppercase md:!text-3xl lg:!text-4xl xl:!text-5xl"
+                    class="font-semibold pb-8 text-2xl text-white uppercase md:!text-3xl lg:!text-4xl xl:!text-5xl"
                 >
                     <slot name="titleText" />
                 </h1>
 
-                <p
+                <div
                     v-if="$slots.additionalTags"
-                    class="flex-row gap-4"
+                    class="flex flex-row flex-wrap gap-4 max-w-full w-full"
                 >
                     <slot name="additionalTags" />
-                </p>
+                </div>
 
                 <p
                     v-if="$slots.authorName"

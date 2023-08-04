@@ -28,14 +28,52 @@ const handleClickViewProfile = (author_id, author_type) => {
                 </template>
 
                 <template #additionalTags>
-                    <div class="flex flex-row text-white typeAndTags">
-                        <div class="EventTypeTag bg-rose-700 font-semibold mr-2 px-8 py-2 rounded-2xl">
+                    <div
+                        class="
+                            grid
+                            grid-cols-3
+                            gap-2
+                            place-items-center
+                            max-w-full
+                            text-white
+                            typeAndTags
+                            w-full
+                            md:!grid-cols-4
+                            lg:!grid-cols-5
+                            xl:!grid-cols-6
+                            ">
+                        <div
+                            class="
+                                EventTypeTag
+                                bg-rose-700
+                                font-semibold
+                                grid
+                                place-items-center
+                                mb-2
+                                mr-2
+                                py-2
+                                rounded-2xl
+                                w-full
+                                "
+                        >
                             {{ contentFromBase['event_type'] }}
                         </div>
                         <div
-                            v-for="(tag, index) in ['Advice', 'AR', 'VR']"
+                            v-for="(tag, index) in ['Advice', 'AR', 'VR', 'Robotics','3D', 'AI']"
                             :key="index"
-                            class="EventTags bg-gray-50 font-semibold mr-2 px-8 py-2 rounded-2xl text-black"
+                            class="
+                                EventTags
+                                bg-gray-50
+                                font-semibold
+                                grid
+                                place-items-center
+                                mb-2
+                                mr-2
+                                py-2
+                                rounded-2xl
+                                text-black
+                                w-full
+                                "
                         >
                             {{ tag }}
                         </div>
