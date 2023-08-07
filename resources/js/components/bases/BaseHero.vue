@@ -91,36 +91,35 @@ const setTheBackground = computed(() => {
 
                 <p
                     v-if="$slots.contentDate"
-                    class="flex flex-col font-thin gap-4 pb-4 text-[16px] text-white"
+                    class="flex flex-col font-thin gap-4 pb-4 text-base text-white"
                 >
-                    <!-- <slot name="authorName" /> -->
                     <slot name="contentDate" />
-                    <!-- <slot name="hardwareProvider" /> -->
                 </p>
 
                 <p
                     v-if="$slots.subtitleText1"
-                    class="flex flex-col font-thin gap-4 pb-4 text-[16px] text-white"
+                    class="flex flex-col font-thin gap-4 pb-4 text-base text-white"
                 >
-                    <!-- <slot name="authorName" /> -->
                     <slot name="subtitleText1" />
-                    <!-- <slot name="hardwareProvider" /> -->
                 </p>
 
                 <p
                     v-if="$slots.hardwareProvider"
-                    class="flex flex-col font-normal gap-4 pb-4 text-[14px] text-white"
+                    class="flex flex-col font-normal gap-4 pb-4 text-base text-white"
                 >
                     <slot name="hardwareProvider" />
                 </p>
 
-                <p
+                <div
                     v-if="$slots.subtitleText2"
-                    class="font-normal text-[18px] text-white"
-                    :class="$slots.subtitleText2 ? 'mt-[36px]' : ''"
+                    class="font-normal h-auto text-base text-white"
+                    :class="$slots.subtitleText2 ? 'mt-6' : ''"
                 >
-                    <slot name="subtitleText2" />
-                </p>
+                    <p class="line-clamp-3">
+                        <slot name="subtitleText2" />
+                    </p>
+                    <slot name="subtitleContent" />
+                </div>
             </div>
             <div
                 v-if="$slots.icon"

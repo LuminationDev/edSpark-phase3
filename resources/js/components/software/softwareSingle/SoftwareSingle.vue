@@ -6,6 +6,9 @@ import BaseSingleSubmenu from "@/js/components/bases/BaseSingleSubmenu.vue";
 import {ref} from 'vue'
 import {findNestedKeyValue} from "@/js/helpers/objectHelpers";
 import {formatDateToDayTime} from "@/js/helpers/dateHelper";
+import {imageURL} from "@/js/constants/serverUrl";
+import {useRouter} from "vue-router";
+import SoftwareIconGenerator from "@/js/components/software/SoftwareIconGenerator.vue";
 /**
  *  type softwareSingleContent = {
  *      post_id: number
@@ -36,13 +39,19 @@ const softwareSubmenu = [
         value: 'access'
     }]
 const activeSubmenu = ref(softwareSubmenu[0]['value'])
+const router = useRouter()
 
 // handleChangeSubmenu will be triggered by emit from BaseSingle
 const handleChangeSubmenu = (value) => {
     activeSubmenu.value = value
     console.log('active submenu has been changed to ', value)
 }
-
+/**
+ *  Visit profile from sinle page
+ */
+const handleClickViewProfile = (author_id, author_type) => {
+    router.push(`/${author_type}/${author_id}` )
+}
 /**
  * End of submenu specific code  plus @emit-active-tab-to-specific-page in BaseSingle
  * */
@@ -60,17 +69,58 @@ const handleChangeSubmenu = (value) => {
                 <template #titleText>
                     {{ contentFromBase['post_title'] }}
                 </template>
-                <template #subtitleText1>
-                    <div class="font-semibold">
-                        {{ contentFromBase['author']['author_name'] }}
+                <template #authorName>
+                    <div
+                        v-if="contentFromBase['author'] && contentFromBase['author']"
+                        class="EventHeroAuthorContainer flex flex-col"
+                    >
+                        <div class="flex items-center flex-row">
+                            <div class="flex items-center h-20 mx-4 smallPartnerLogo w-24">
+                                <img
+                                    :src="`${imageURL}/${String(contentFromBase['author']['author_logo'])}`"
+                                    :alt=" contentFromBase['author']['author_name'] + ' logo'"
+                                    class="bg-center h-24 object-contain rounded-full w-24"
+                                >
+                            </div>
+                            <div class="authorName flex flex-col pt-6">
+                                <div class="mb-2 text-2xl">
+                                    {{ contentFromBase['author']['author_name'] }}
+                                </div>
+                                <!--   For now, Only non-user (partners only) can be viewed. Still working on Partner Profile   -->
+                                <div
+                                    v-if="!(contentFromBase['author']['author_type'] === 'user')"
+                                    class="hover:cursor-pointer hover:text-red-200"
+                                >
+                                    <button @click="() => handleClickViewProfile(contentFromBase['author']['author_id'],contentFromBase['author']['author_type'])">
+                                        View Profile
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    <div class="font-semibold">
+                </template>
+
+
+                <template #subtitleText1>
+                    <div class="font-semibold pt-2">
                         {{ formatDateToDayTime(contentFromBase['post_date'] ) }}
                     </div>
                 </template>
                 <template #subtitleText2>
                     <div v-html="contentFromBase['post_excerpt']" />
                 </template>
+                <template #subtitleContent>
+                    <div class="SoftwareTypeInfoInHero flex flex-row gap-4 mt-4">
+                        <SoftwareIconGenerator
+                            :icon-name="contentFromBase['software_type'][0]"
+                            class="h-14 w-14"
+                        />
+                        <p class="flex justify-center items-center font-light">
+                            {{ contentFromBase['software_type'][0] }}
+                        </p>
+                    </div>
+                </template>
+
                 <!--  Selectable sub menu    -->
                 <template #submenu>
                     <div class="cursor-pointer flex flex-row gap-4 softwareSubmenu z-40">
@@ -88,7 +138,7 @@ const handleChangeSubmenu = (value) => {
                 class="flex flex-col mt-10 overflow-hidden pt-0 px-5 softwareSingleContent w-full lg:!px-10 xl:!flex-row"
             >
                 <template
-                    v-if="activeSubmenu == 'detail'"
+                    v-if="activeSubmenu === 'detail'"
                 >
                     <div class="flex flex-col flex-wrap px-2 py-4 w-full xl:!w-2/3">
                         <div class="flex font-bold py-4 text-2xl uppercase">
