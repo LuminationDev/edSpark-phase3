@@ -32,21 +32,10 @@ const {
             :classes="'bg-secondary-darkBlue'"
             section="laptops"
             button-text="View all partners"
-            :button-callback="() => router.push('/browse/partners')"
+            :button-callback="() => router.push('/browse/partner')"
         />
         <div
-            class="
-                PartnerListGalleryContainer
-                flex-row
-                justify-between
-                grid
-                grid-cols-1
-                gap-4
-                px-5
-                md:!grid-cols-2
-                lg:!px-huge
-                xl:!grid-cols-3
-                "
+            class="PartnerListGalleryContainer grid grid-cols-1 gap-4 place-items-center px-5 md:!grid-cols-2 lg:!px-huge xl:!grid-cols-3"
         >
             <template v-if="partnerList?.partners">
                 <template
@@ -59,10 +48,12 @@ const {
                 </template>
             </template>
             <template v-else>
-                <CardLoading
-                    :number-of-rows="1"
-                    :number-per-row="3"
-                />
+                <div class="col-span-1 md:!col-span-2 xl:!col-span-3">
+                    <CardLoading
+                        :number-of-rows="1"
+                        :number-per-row="3"
+                    />
+                </div>
             </template>
         </div>
     </div>

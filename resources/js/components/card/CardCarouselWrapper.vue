@@ -264,7 +264,6 @@ const breakpointChoser = () =>{
     }
 }
 
-console.log(computedCardData.value);
 
 const windowStore = useWindowStore()
 
@@ -589,7 +588,6 @@ const windowStore = useWindowStore()
                         </template>
                     </GenericCard>
                 </Slide>
-
                 <template #addons>
                     <navigation />
                     <pagination />

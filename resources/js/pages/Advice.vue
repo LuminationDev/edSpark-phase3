@@ -11,8 +11,7 @@ import { useRouter } from "vue-router";
 import { swrvOptions } from "@/js/constants/swrvConstants";
 import CardLoading from '../components/card/CardLoading.vue';
 
-import CardCarouselWrapper from '../components/card/CardCarouselWrapper.vue';
-import CardWrapper from '../components/card/CardWrapper.vue';
+import CarouselGenerator from "@/js/components/card/CarouselGenerator.vue";
 
 const router = useRouter();
 
@@ -36,46 +35,45 @@ const { state: partnerState, STATES: PARTNERSTATES } = useSwrvState(partnerAdvic
 const { data: generalAdvice, error: generalError, isValidating: generalValidating } = useSWRV(`${serverURL}/fetchAdvicePostByType/${['Your Classroom', 'Your Work', 'Your Learning']}`, axiosFetcher, swrvOptions);
 const { state: generalState, STATES: GENERALSTATE } = useSwrvState(generalAdvice, generalError, generalValidating);
 
-const handleBrowseAllAdvice = () => {
-    router.push('/browse/advice')
-}
 
 </script>
 
 <template>
     <AdviceHero />
     <div class="AdviceContentContainer DAGAdviceRow flex flex-col h-full">
-        <CardCarouselWrapper
-            :key="dagState"
-            :card-data="dagAdvice ? dagAdvice : []"
-            :loading-state="dagState"
-            :row-count="1"
-            :col-count="3"
-            :section-type="'advice'"
-            :advice-type="'DAG'"
+        <CarouselGenerator
+            :show-count="3"
+            data-type="advice"
+            :data-array="dagAdvice ? dagAdvice : []"
         />
     </div>
     <EducatorHero />
-    <div class="mt-14 px-5 lg:!px-huge">
-        <CardWrapper
-            :key="generalState"
-            :card-data="generalAdvice ? generalAdvice : []"
-            :loading-state="generalState"
-            :row-count="2"
-            :col-count="3"
-            :section-type="'advice'"
-            :advice-type="'General'"
-        />
+    <div class="grid grid-cols-1 gap-4 place-items-center mt-10 px-5 md:!grid-cols-2 lg:!grid-cols-3 lg:!px-huge">
+        <template v-if="generalAdvice && generalAdvice.length">
+            <AdviceCard
+                v-for="(advice, index) in generalAdvice"
+                :key="index"
+                :advice-content="advice"
+                :show-icon="true"
+            />
+        </template>
+        <template v-else>
+            <div
+                class="col-span-1 md:!col-span-2 lg:!col-span-3"
+            >
+                <CardLoading
+                    :number-of-rows="1"
+                    :number-per-row="3"
+                />
+            </div>
+        </template>
     </div>
 
     <PartnerHero />
-    <CardCarouselWrapper
-        :key="partnerState"
-        :card-data="partnerAdvice ? partnerAdvice : []"
-        :loading-state="partnerState"
-        :row-count="1"
-        :col-count="3"
-        :section-type="'advice'"
-        :advice-type="'Partner'"
+
+    <CarouselGenerator
+        :show-count="3"
+        data-type="advice"
+        :data-array="partnerAdvice ? partnerAdvice : []"
     />
 </template>

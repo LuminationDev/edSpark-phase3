@@ -10,8 +10,6 @@ import SectionHeader from '../components/global/SectionHeader.vue';
 /**
  * Import Card wrapper
  */
-import CardCarouselWrapper from '../components/card/CardCarouselWrapper.vue';
-import CardWrapper from '../components/card/CardWrapper.vue';
 import SoftwareRobot from '../components/svg/SoftwareRobot.vue';
 
 import DeptNegotiatedIcon from "@/js/components/svg/software/DeptNegotiatedIcon.vue";
@@ -51,6 +49,7 @@ import { storeToRefs } from "pinia";
 import axios from 'axios';
 import { swrvOptions } from "@/js/constants/swrvConstants";
 import SoftwareCard from "@/js/components/software/SoftwareCard.vue";
+import CarouselGenerator from "@/js/components/card/CarouselGenerator.vue";
 
 const router = useRouter()
 
@@ -307,26 +306,17 @@ onMounted(async () => {
                 />
             </div>
         </template>
-
-        <!--        Individual Sections -->
-
         <SectionHeader
             :classes="'bg-main-teal'"
             :section="'events'"
             :title="'New Events'"
             :button-text="'View all events'"
-            :button-callback="() => router.push('/browse/events')"
+            :button-callback="() => router.push('/browse/event')"
         />
-
-        <!-- Events Cards Here -->
-        <CardCarouselWrapper
-            :key="eventsLoading"
-            :card-data="eventsData ? eventsData : []"
-            :loading="eventsLoading"
-            :row-count="1"
-            :col-count="3"
-            :section-type="'events'"
-            :type-tag-color="'bg-secondary-red'"
+        <CarouselGenerator
+            :show-count="1"
+            data-type="events"
+            :data-array="eventsData? eventsData : []"
         />
 
         <SectionHeader
@@ -334,7 +324,7 @@ onMounted(async () => {
             :section="'software'"
             :title="'Top Software'"
             :button-text="'View all software'"
-            :button-callback="() => router.push('/browse/softwares')"
+            :button-callback="() => router.push('/browse/software')"
         />
 
         <!-- Software Cards Here -->
@@ -513,36 +503,16 @@ onMounted(async () => {
             </template>
         </div>
 
-        <!-- <SoftwareDashboard
-            :softwares="softwaresData ? softwaresData : []"
-            :software-loading="softwareLoading"
-        /> -->
-        <!-- <CardLoading class="px-huge" :number-per-row="2" :additional-classes="'!justify-end'" /> -->
-
-        <!-- <SoftwareDashboard v-if="!softwareLoading" :softwares="softwaresData" :software-loading="softwareLoading" />
-        <CardLoading v-else class="px-huge" :number-per-row="2" :additional-classes="'!justify-end'" /> -->
-
         <SectionHeader
             :classes="'bg-main-darkTeal'"
             :section="'advice'"
             :title="'Advice'"
             :button-text="'View all resources'"
-            :button-callback="() => router.push('/browse/advices')"
+            :button-callback="() => router.push('/browse/advice')"
         />
-
-        <CardCarouselWrapper
-            :key="adviceLoading"
-            :card-data="reversedAdviceData ? reversedAdviceData : []"
-            :loading="adviceLoading"
-            :row-count="1"
-            :col-count="2"
-            :additional-classes="'w-full lg:!w-[66.66%]'"
-            :section-type="'advice'"
-            :advice-type="'Dashboard'"
-            :loading-classes="'w-full lg:!w-[66.66%]'"
-        >
-            <template #cardInfoSection>
-                <div class="grid gap-6 h-full px-4 w-full lg:!w-[33.33%]">
+        <div class="flex flex-col w-full lg:!flex-row lg:!px-huge">
+            <div class="DAGInfoSection w-full lg:!w-1/4">
+                <div class="grid gap-6 h-full px-4 w-full">
                     <div class="grid grid-cols-3 py-4 row-span-4">
                         <div class="col-span-1 row-span-1">
                             <img
@@ -572,42 +542,39 @@ onMounted(async () => {
                         </div>
                     </div>
                 </div>
-            </template>
-        </CardCarouselWrapper>
+            </div>
+            <div class="DAGAdviceCarousel w-full lg:!w-3/4">
+                <CarouselGenerator
+                    :show-count="2"
+                    data-type="advice"
+                    :data-array="reversedAdviceData"
+                    special-attribute="twoThirdWide"
+                />
+            </div>
+        </div>
 
         <SectionHeader
             :classes="'bg-main-navy'"
             :section="'schools'"
             :title="'Latest School Profiles'"
             :button-text="'View all schools'"
-            :button-callback="() => router.push('/browse/schools')"
+            :button-callback="() => router.push('/browse/school')"
         />
 
-
-        <CardCarouselWrapper
-            :key="schoolsLoading"
-            :card-data="schoolsData ? schoolsData : []"
-            :loading="schoolsLoading"
-            :row-count="1"
-            :col-count="3"
-            :section-type="'schools'"
+        <CarouselGenerator
+            :show-count="3"
+            data-type="school"
+            :data-array="schoolsData ? schoolsData : []"
         />
     </div>
 </template>
 
 <style scoped lang="scss">
-// .negotiatedDealsLine {
-//     border-image: linear-gradient(rgba(0,0,0,0), #000) 30;
-//     // border-width: 1px;
-//     // border-style: dashed;
-//     border: #000 dashed 1px;
-// }
+
 
 
 .negotiatedDealsLine {
-    // position: relative;
     width: 2px;
-    // height: 200px; /* Set the desired height of the vertical line */
     background: linear-gradient(to top, transparent, #000);
     /* Fading effect to transparent */
 }
@@ -615,12 +582,6 @@ onMounted(async () => {
 .negotiatedDealsLine::before {
     content: "";
     position: absolute;
-    // top: 0;
-    // left: 50%;
-    // transform: translateX(-50%);
-    // width: 100%;
-    // height: 1px;
-    // background-color: #000;
-    // background-image: repeating-linear-gradient(0deg, #000, #000 5px, transparent 5px, transparent 10px);
+
 }
 </style>

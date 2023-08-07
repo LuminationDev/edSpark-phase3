@@ -9,8 +9,10 @@ import {useRouter} from "vue-router";
 
 const router = useRouter()
 const handleBrowseAllSoftware = () => {
-    router.push('/browse/softwares')
+    router.push('/browse/software')
 }
+
+
 </script>
 
 <template>
@@ -18,7 +20,21 @@ const handleBrowseAllSoftware = () => {
     <div class="SoftwareContentContainer">
         <div class="HowItWorksContainer flex flex-col pt-4 px-5 lg:!pt-16 lg:!px-10 xl:!px-20">
             <div class="grid grid-cols-6 mt-6 lg:!flex lg:!flex-row lg:!justify-around">
-                <div class="col-span-6 grid gap-2 place-items-center md:!col-span-3 lg:!basis-1 lg:!flex lg:!flex-col lg:!gap-0">
+                <div
+                    class="
+                        col-span-6
+                        grid
+                        gap-2
+                        place-items-center
+                        hover:cursor-pointer
+                        md:!col-span-3
+                        lg:!basis-1
+                        lg:!flex
+                        lg:!flex-col
+                        lg:!gap-0
+                        "
+                    @click="router.push('/browse/software/provided')"
+                >
                     <DeptProvidedIcon />
                     <div class="font-semibold mb-4 mt-10 text-center">
                         Department Provided
@@ -27,7 +43,19 @@ const handleBrowseAllSoftware = () => {
                         These applications are provided by the department at no cost to schools
                     </div>
                 </div>
-                <div class="col-span-6 grid place-items-center md:!col-span-3 lg:!basis-1 lg:!flex lg:!flex-col">
+                <div
+                    class="
+                        col-span-6
+                        grid
+                        place-items-center
+                        hover:cursor-pointer
+                        md:!col-span-3
+                        lg:!basis-1
+                        lg:!flex
+                        lg:!flex-col
+                        "
+                    @click="router.push('/browse/software/approved')"
+                >
                     <DeptApprovedIcon />
                     <div class="font-semibold mb-4 mt-10 text-center">
                         Department Approved
@@ -36,7 +64,10 @@ const handleBrowseAllSoftware = () => {
                         These applications have been risk assessed and can be safely used in schools.
                     </div>
                 </div>
-                <div class="col-span-6 grid place-items-center lg:!basis-1 lg:!flex lg:!flex-col">
+                <div
+                    class="col-span-6 grid place-items-center hover:cursor-pointer lg:!basis-1 lg:!flex lg:!flex-col"
+                    @click="router.push('/browse/software/negotiated')"
+                >
                     <DeptNegotiatedIcon />
                     <div class="font-semibold mb-4 mt-10 text-center">
                         Approved and Negotiatied

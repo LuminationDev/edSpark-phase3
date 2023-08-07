@@ -14,6 +14,7 @@ import SchoolCard from "@/js/components/schools/SchoolCard.vue";
 import PartnerCard from "@/js/components/partners/PartnerCard.vue";
 import EventsCard from "@/js/components/events/EventsCard.vue";
 import {guid} from "@/js/helpers/guidGenerator";
+import CardLoading from "@/js/components/card/CardLoading.vue";
 const props = defineProps({
     resourceList:{
         type: Array,
@@ -89,7 +90,6 @@ function filterProducts(products, filterBy) {
         totalValuesCount += eachValue.length
     }
     if (totalValuesCount === 0) {
-        console.log('returned al products bcs no filterin hehe')
         return products; // Return all products if filterBy object is empty
     }
     return products.filter(product => {
@@ -115,18 +115,6 @@ function filterProducts(products, filterBy) {
                     filterResult[key] = result
                 }
             }
-
-            // below is original version-- above is refactored with findNestedKeyValue
-            // keeping this code might come in handy as we add more filtering - Erick
-
-            // if (filterBy.hasOwnProperty(key)) {
-            //     let filterValues = filterBy[key];
-            //     if(filterValues.length === 0){
-            //         filterResult[key] = true
-            //     } else{
-            //         filterResult[key] = checkNested(product, key, filterValues)
-            //     }
-            // }
         }
         for(let eachResult of Object.values(filterResult)){
             if(!eachResult) return false
@@ -240,7 +228,7 @@ const formattedSearchTitle = computed(() =>{
                         class="group h-[470px] max-w-[300px] my-4 transition-all w-full hover:shadow-2xl lg:!max-w-[400px]]"
                     >
                         <SchoolCard
-                            class="mx-auto w-1/3"
+                            class="mx-auto"
                             :school-data="data"
                         />
                     </div>
@@ -295,7 +283,17 @@ const formattedSearchTitle = computed(() =>{
                 No search result
             </div>
         </div>
+        <div
+            v-else
+            class="w-full"
+        >
+            <CardLoading
+                :number-per-row="3"
+                :number-of-rows="2"
+            />
+        </div>
     </div>
+
     <div class="BaseSearchPaginationContainer flex justify-center mt-12 text-lg">
         <v-pagination
             v-model="page"

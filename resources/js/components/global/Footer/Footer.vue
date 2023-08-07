@@ -3,6 +3,7 @@ import FooterSwoosh from '../../svg/FooterSwoosh.vue';
 import FooterSocialMediaIcon from "@/js/components/global/FooterSocialMediaIcon.vue";
 import FooterCollectionLogos from "@/js/components/global/Footer/FooterCollectionLogos.vue";
 import FooterBottomLinks from "@/js/components/global/Footer/FooterBottomLinks.vue";
+import ExternalLink from "@/js/components/svg/externalLink.vue";
 
 
 </script>
@@ -21,7 +22,9 @@ import FooterBottomLinks from "@/js/components/global/Footer/FooterBottomLinks.v
                     1800 088 158
                 </p>
                 <p class="break-words email font-base text-sm underline">
-                    Education.Customers@sa.gov.au
+                    <a href="mailto:Education.Customers@sa.gov.au">
+                        Education.Customers@sa.gov.au
+                    </a>
                 </p>
             </div>
 
@@ -30,20 +33,29 @@ import FooterBottomLinks from "@/js/components/global/Footer/FooterBottomLinks.v
                     Feedback and complaints
                 </div>
                 <p class="font-base number phone text-sm underline">
-                    Schools and preschools
+                    <a href="https://www.education.sa.gov.au/department/feedback-and-complaints/make-complaint-about-school-or-preschool">
+                        Schools and preschools
+                    </a>
                 </p>
                 <p class="font-base number phone text-sm underline">
-                    Other department services
+                    <a href="https://www.education.sa.gov.au/department/feedback-and-complaints/feedback-department">
+                        Other department services
+                    </a>
                 </p>
             </div>
             <div class="basis-full breaker h-0 lg:!hidden" />
 
             <div class="EDi Intranet Staff flex flex-col mt-4 w-1/2 lg:!w-auto">
                 <p class="font-base number phone text-sm underline">
-                    EDi - staff intranet
-                </p>
-                <p class="flex flex-wrap font-base number phone text-sm underline">
-                    Site map
+                    <a
+                        href="https://edi.sa.edu.au/"
+                        target="_blank"
+                        class="flex flex-row gap-1"
+                    >
+                        EDi - staff intranet <ExternalLink
+                            class="bg-transparent fill-current h-4 pt-1 w-4"
+                        />
+                    </a>
                 </p>
             </div>
             
@@ -52,7 +64,11 @@ import FooterBottomLinks from "@/js/components/global/Footer/FooterBottomLinks.v
                     Talk to us
                 </div>
                 <div class="FooterSocialMedia flex flex-row gap-2">
-                    <FooterSocialMediaIcon fill-color="white">
+                    <FooterSocialMediaIcon
+                        fill-color="white"
+                        target-url="https://www.linkedin.com/company/department-for-education-sa"
+                        icon-name="linkedin"
+                    >
                         <template #iconSVG>
                             <svg
                                 xmlns="http://www.w3.org/2000/svg"
@@ -66,7 +82,11 @@ import FooterBottomLinks from "@/js/components/global/Footer/FooterBottomLinks.v
                             </svg>
                         </template>
                     </FooterSocialMediaIcon>
-                    <FooterSocialMediaIcon fill-color="white">
+                    <FooterSocialMediaIcon
+                        icon-name="twitter"
+                        fill-color="white"
+                        target-url="https://twitter.com/edu_sagov"
+                    >
                         <template #iconSVG>
                             <svg
                                 xmlns="http://www.w3.org/2000/svg"
@@ -80,7 +100,11 @@ import FooterBottomLinks from "@/js/components/global/Footer/FooterBottomLinks.v
                             </svg>
                         </template>
                     </FooterSocialMediaIcon>
-                    <FooterSocialMediaIcon fill-color="white">
+                    <FooterSocialMediaIcon
+                        icon-name="facebook"
+                        fill-color="white"
+                        target-url="https://www.facebook.com/edu.sagov/"
+                    >
                         <template #iconSVG>
                             <svg
                                 xmlns="http://www.w3.org/2000/svg"
@@ -94,7 +118,11 @@ import FooterBottomLinks from "@/js/components/global/Footer/FooterBottomLinks.v
                             </svg>
                         </template>
                     </FooterSocialMediaIcon>
-                    <FooterSocialMediaIcon fill-color="white">
+                    <FooterSocialMediaIcon
+                        icon-name="instagram"
+                        fill-color="white"
+                        target-url="https://www.instagram.com/edu_sagov/"
+                    >
                         <template #iconSVG>
                             <svg
                                 xmlns="http://www.w3.org/2000/svg"

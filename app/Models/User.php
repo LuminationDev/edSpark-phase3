@@ -56,7 +56,7 @@ class User extends Authenticatable implements FilamentUser, HasName
 
     public function site()
     {
-        return $this->belongsTo(Site::class);
+        return $this->belongsTo(Site::class,'site_id', 'site_id');
     }
 
     public function usertype()
@@ -68,12 +68,6 @@ class User extends Authenticatable implements FilamentUser, HasName
         $role = Role::where('role_name', $roleName)->first();
         return User::where('role_id', $role->id)->get();
     }
-
-    // public function hasPermissions($roleName){
-    //     $role = Role::where('role_name', $roleName)->first();
-    //     $permissions = $role->permissions;
-    //     return $permissions;
-    // }
 
     public function bookmarks()
     {

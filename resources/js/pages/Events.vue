@@ -34,10 +34,10 @@ const allEventsWithKeys = computed(() =>{
         :section="'events'"
         :title="'Upcoming Events'"
         :button-text="'View all events'"
-        :button-callback="() => router.push('/browse/events')"
+        :button-callback="() => router.push('/browse/event')"
     />
     <div class="EventContentContainer flex flex-col h-full px-5 lg:!px-20">
-        <div class="EventCardListContainer grid grid-cols-1 gap-6 heading text-xl  md:!grid-cols-2 xl:!grid-cols-3">
+        <div class="EventCardListContainer grid grid-cols-1 gap-6 place-items-center heading text-xl  md:!grid-cols-2 xl:!grid-cols-3">
             <template v-if="allEventsWithKeys.length > 0">
                 <EventCard
                     v-for="event in allEventsWithKeys.filter((event,index) => index < 3)"
@@ -47,10 +47,14 @@ const allEventsWithKeys = computed(() =>{
                 />
             </template>
             <template v-else>
-                <CardLoading
-                    :number-of-rows="1"
-                    :number-per-row="3"
-                />
+                <div
+                    class="col-span-1 md:!col-span-2 lg:!col-span-3"
+                >
+                    <CardLoading
+                        :number-of-rows="1"
+                        :number-per-row="3"
+                    />
+                </div>
             </template>
         </div>
     </div>
@@ -60,7 +64,7 @@ const allEventsWithKeys = computed(() =>{
         :section="'events'"
         :title="'Calendar'"
         :button-text="'View all events'"
-        :button-callback="() => router.push('/browse/events')"
+        :button-callback="() => router.push('/browse/event')"
     />
 
     <div class="eventCalendarContainer flex flex-col h-full px-5 lg:!px-20">

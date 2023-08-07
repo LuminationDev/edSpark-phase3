@@ -35,10 +35,10 @@ const router = useRouter()
             <div class="col-span-3 flex justify-start items-start relative md:!col-span-3 md:!items-end md:!justify-end">
                 <AdviceRobot
                     class="absolute
-                        -right-24
-                        bottom-0
+                        -right-28
+                        bottom-10
                         h-[250px]
-                        scale-75
+                        scale-50
                         
                         
                         md:!block
@@ -53,12 +53,12 @@ const router = useRouter()
                     :callback="() => router.push('browse/advices')"
                     class="
                         !rounded-none
-                        !text-adviceGreen
+                        !text-main-navy
                         bg-white
                         hover:bg-slate-50
                         border-2
-                        border-adviceGreen
-                        font-semibold
+                        border-secondary-darkBlue
+                        font-medium
                         hidden
                         px-12
                         text-lg
@@ -79,15 +79,17 @@ const router = useRouter()
                     :callback="() => router.push('browse/advices')"
                     class="
                         !rounded-none
-                        !text-adviceGreen
+                        !text-main-navy
                         bg-white
                         hover:bg-slate-50
                         border-2
-                        border-adviceGreen
-                        font-semibold
+                        border-secondary-darkBlue
+                        font-medium
+                        hidden
                         px-12
                         text-lg
                         z-30
+                        md:!block
                         "
                 >
                     View all advice

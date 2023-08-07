@@ -38,6 +38,9 @@ class UserController extends Controller
             'role' => ($user->role) ? $user->role->role_name : NULL,
             'permissions' => ($user->role) ? $user->role->permissions->pluck('permission_name') : NULL,
             'metadata' => ($userMetaDataToSend) ? $userMetaDataToSend : NULL,
+            'site'=>[
+                'site_name' => $user->site->site_name
+            ]
         ];
 
         return response()->json($data);
@@ -76,6 +79,9 @@ class UserController extends Controller
                     'role' => ($user->role) ? $user->role->role_name : NULL,
                     'permissions' => ($user->role) ? $user->role->permissions->pluck('permission_name') : NULL,
                     'metadata' => ($userMetaDataToSend) ? $userMetaDataToSend : NULL,
+                    'site'=>[
+                        'site_name' => $user->site->site_name
+                    ]
                 ];
 
                 $isFirstVisit = false;
@@ -112,8 +118,6 @@ class UserController extends Controller
 
             $error = '';
             if ($data) {
-                // Handle Main Data
-                OutputHelper::print($data['site_id']);
                 try {
                     $dataToInsert = [
                         'full_name' => $data['full_name'],
@@ -382,25 +386,6 @@ class UserController extends Controller
             $userEmailDetails = User::where('email', '=', $email)
                                         ->where('isFirstTimeVisit', '=', 1)
                                         ->first();
-            // if ($userEmailDetails === null) {
-            //     dd('aa');
-            //     return response()->json([
-            //         "message" => "The email is not registered/activated",
-            //         "status" => FALSE,
-
-            //     ]);
-            // } else {
-            //     dd('bb');
-            //     return response()->json([
-            //         "message" => "The email already exists",
-            //         "status" => TRUE,
-            //         "userdata" => [
-            //             'user_id' => $userEmailDetails->id,
-            //             'user_name' => $userEmailDetails->full_name,
-            //             'user_status' => $userEmailDetails->status
-            //         ],
-            //     ]);
-            // }
 
             if ($userEmailDetails) {
                 return response()->json([

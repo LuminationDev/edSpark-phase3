@@ -39,10 +39,10 @@ const router = useRouter()
                 <AdviceEducatorsIcon
                     class="
                         absolute
-                        -right-24
+                        -right-28
                         -bottom-6
                         h-[250px]
-                        scale-75
+                        scale-50
                         md:!block
                         md:!bottom-4
                         md:!right-0
@@ -56,12 +56,12 @@ const router = useRouter()
                     :callback="() => router.push('browse/advices')"
                     class="
                         !rounded-none
-                        !text-adviceGreen
+                        !text-main-navy
                         bg-white
                         hover:bg-slate-50
                         border-2
-                        border-adviceGreen
-                        font-semibold
+                        border-secondary-darkBlue
+                        font-medium
                         hidden
                         px-12
                         text-lg
@@ -83,11 +83,11 @@ const router = useRouter()
                     :callback="() => router.push('browse/advices')"
                     class="
                         !rounded-none
-                        !text-adviceGreen
+                        !text-main-navy
                         bg-white
                         hover:bg-slate-50
                         border-2
-                        border-adviceGreen
+                        border-secondary-darkBlue
                         font-semibold
                         px-12
                         text-lg

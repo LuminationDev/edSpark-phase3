@@ -64,28 +64,46 @@ const router = createRouter({
             children: [
                 {
                     name: 'browseSchools',
-                    path: 'schools',
-                    component: SchoolSearch
+                    path: 'school',
+                    component: SchoolSearch,
+                    meta: {
+                        requiresAuth: true,
+                    }
                 }, {
                     name: 'browseAdvices',
-                    path: 'advices',
-                    component: AdviceSearch
+                    path: 'advice',
+                    component: AdviceSearch,
+                    meta: {
+                        requiresAuth: true,
+                    }
                 }, {
                     name: 'browseSoftwares',
-                    path: 'softwares',
-                    component: SoftwareSearch
+                    path: 'software/:filter?',
+                    component: SoftwareSearch,
+                    meta: {
+                        requiresAuth: true,
+                    }
                 }, {
                     name: 'browseHardwares',
-                    path: 'hardwares',
-                    component: HardwareSearch
+                    path: 'hardware',
+                    component: HardwareSearch,
+                    meta: {
+                        requiresAuth: true,
+                    }
                 }, {
                     name: 'browsePartners',
-                    path: 'partners',
-                    component: PartnerSearch
+                    path: 'partner',
+                    component: PartnerSearch,
+                    meta: {
+                        requiresAuth: true,
+                    }
                 }, {
                     name: 'browseEvents',
-                    path: 'events',
-                    component: EventSearch
+                    path: 'event',
+                    component: EventSearch,
+                    meta: {
+                        requiresAuth: true,
+                    }
                 },
             ]
         },
@@ -267,47 +285,21 @@ const router = createRouter({
 //     }
 // })
 
-//TODO using auth store
-// router.beforeEach(async (to, from, next) => {
-//     const authStore = useAuthStore();
-//     if (to.meta.requiresAuth) {
-//         if (!authStore.isAuthenticated) {
-//             await authStore.checkAuthenticationStatus();
-//         }
-//
-//         if (authStore.isAuthenticated) {
-//             next();
-//         } else {
-//             next('/forbidden');
-//         }
-//     } else {
-//         next();
-//     }
-// });
+router.beforeEach(async (to, from, next) => {
+    const authStore = useAuthStore();
+    if (to.meta.requiresAuth) {
+        if (!authStore.isAuthenticated) {
+            await authStore.checkAuthenticationStatus();
+        }
 
-//working code
-// router.beforeEach((to, from, next) => {
-//     if(to.meta.requiresAuth) {
-//         // console.log('REQUIRES AUTHENTICATION');
-//         try {
-//             // Make a request to laravel backend for authentication check
-//             const response = axios.get(`${appURL}/auth/check`, { async: false });
-//             if (response.data.authenticated) {
-//                 next();
-//             } else {
-//                 // Redirect to the 403 forbidden page
-//                 next('/forbidden');
-//             }
-//         } catch (error) {
-//             // Handle error
-//             //TODO show an error page
-//             console.log(error);
-//         }
-
-//     } else {
-//         // console.log("DOESNOT REQUIRES AUTHENTICATION");
-//         next();
-//     }
-// });
+        if (authStore.isAuthenticated) {
+            next();
+        } else {
+            next('/forbidden');
+        }
+    } else {
+        next();
+    }
+});
 
 export default router;
