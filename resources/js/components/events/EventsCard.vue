@@ -65,6 +65,7 @@ const likeBookmarkData = {
         :display-content="event_excerpt"
         :display-author="author"
         :display-date="start_date"
+        :end-date="end_date"
         :number-per-row="numberPerRow"
         :cover-image="cover_image"
         :like-bookmark-data="likeBookmarkData"
@@ -76,7 +77,7 @@ const likeBookmarkData = {
                     TypeTag
                     absolute
                     top-4
-                    -right-6
+                    right-0
                     bg-secondary-red
                     flex
                     h-[39px]
@@ -87,6 +88,8 @@ const likeBookmarkData = {
                     text-base
                     text-white
                     gap-4
+                    sm:!-right-4
+                    md:!-right-6
                     "
             >
                 <template

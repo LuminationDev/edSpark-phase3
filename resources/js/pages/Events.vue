@@ -47,10 +47,14 @@ const allEventsWithKeys = computed(() =>{
                 />
             </template>
             <template v-else>
-                <CardLoading
-                    :number-of-rows="1"
-                    :number-per-row="3"
-                />
+                <div
+                    class="col-span-1 md:!col-span-2 lg:!col-span-3"
+                >
+                    <CardLoading
+                        :number-of-rows="1"
+                        :number-per-row="3"
+                    />
+                </div>
             </template>
         </div>
     </div>

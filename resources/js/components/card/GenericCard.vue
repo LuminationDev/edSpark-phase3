@@ -23,11 +23,17 @@ const props = defineProps({
         default: 3
     },
     displayAuthor: {
-        type: [Object,String],
+        type: [Object, String],
         required: false,
-        default: () => {}
+        default: () => {
+        }
     },
     displayDate: {
+        type: String,
+        required: false,
+        default: ''
+    },
+    endDate: {
         type: String,
         required: false,
         default: ''
@@ -59,18 +65,16 @@ const props = defineProps({
         required: false,
         default: false
     },
-    extraClasses: {
-        type: String,
-        required: false
-    },
     sectionType: {
         type: String,
-        required: false
+        required: false,
+        default: ""
     },
     item: {
         type: Object,
         required: false,
-        default: () => {}
+        default: () => {
+        }
     }
 });
 
@@ -99,9 +103,24 @@ const currentUserBookmarked = computed(() => {
 })
 
 const formattedDate = computed(() => {
-    const date = new Date(Date.parse(props.displayDate))
-    return date.toDateString()
+    if (props.displayDate && props.endDate) {
+        const startDate = new Date(Date.parse(props.displayDate)).toDateString()
+        const endDate = new Date(Date.parse(props.endDate)).toDateString()
+
+        // simple comparison for one day event
+        if (startDate === endDate) {
+            return startDate
+        } else {
+            return `${startDate} - ${endDate}`
+
+        }
+    } else if (props.displayDate) {
+        return new Date(Date.parse(props.displayDate)).toDateString()
+    } else {
+        return ""
+    }
 })
+
 
 const handleDefaultLike = async (data) => {
     const {post_type} = props.likeBookmarkData
@@ -170,7 +189,6 @@ const handleEmitClick = () => {
 <template>
     <div
         class="GenericCardContainer card_parent generic-card__wrapper group"
-        :class="extraClasses"
         @mouseenter="cardHoverToggle = true"
         @click="handleEmitClick"
     >
@@ -205,12 +223,10 @@ const handleEmitClick = () => {
                     <slot name="icon" />
                 </div>
             </div>
-            <!-- <div class="cardContentOuter"> -->
             <div
                 class="cardContent transition-all"
                 @click="clickCallback"
             >
-                <!-- :class="(sectionType === 'events' || sectionType === 'advice') ? 'group-hover:w-3/5' : ''" -->
                 <div class="cardContentWrapper">
                     <div
                         v-if="props.title"
@@ -292,9 +308,9 @@ const handleEmitClick = () => {
 
 .generic-card__footer {
     background-color: #FFF;
-    box-shadow: 0px -23px 7px -15px rgba(255,255,255,1);
-    -webkit-box-shadow: 0px -23px 7px -15px rgba(255,255,255,1);
-    -moz-box-shadow: 0px -23px 7px -15px rgba(255,255,255,1);
+    box-shadow: 0px -23px 7px -15px rgba(255, 255, 255, 1);
+    -webkit-box-shadow: 0px -23px 7px -15px rgba(255, 255, 255, 1);
+    -moz-box-shadow: 0px -23px 7px -15px rgba(255, 255, 255, 1);
 }
 
 .cardContentWrapper {
@@ -302,6 +318,7 @@ const handleEmitClick = () => {
     -webkit-box-shadow: inset 0 -10px 10px -10px #000000;
     box-shadow: inset 0 -10px 10px -10px #000000; */
 }
+
 .card-content_body {
     /* overflow: hidden;
     text-overflow: ellipsis;
