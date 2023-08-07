@@ -10,8 +10,6 @@ import SectionHeader from '../components/global/SectionHeader.vue';
 /**
  * Import Card wrapper
  */
-import CardCarouselWrapper from '../components/card/CardCarouselWrapper.vue';
-import CardWrapper from '../components/card/CardWrapper.vue';
 import SoftwareRobot from '../components/svg/SoftwareRobot.vue';
 
 import DeptNegotiatedIcon from "@/js/components/svg/software/DeptNegotiatedIcon.vue";
@@ -315,17 +313,6 @@ onMounted(async () => {
             :button-text="'View all events'"
             :button-callback="() => router.push('/browse/event')"
         />
-
-        <!-- Events Cards Here -->
-        <!--        <CardCarouselWrapper-->
-        <!--            :key="eventsLoading"-->
-        <!--            :card-data="eventsData ? eventsData : []"-->
-        <!--            :loading="eventsLoading"-->
-        <!--            :row-count="1"-->
-        <!--            :col-count="3"-->
-        <!--            :section-type="'events'"-->
-        <!--            :type-tag-color="'bg-secondary-red'"-->
-        <!--        />-->
         <CarouselGenerator
             :show-count="1"
             data-type="events"
@@ -516,15 +503,6 @@ onMounted(async () => {
             </template>
         </div>
 
-        <!-- <SoftwareDashboard
-            :softwares="softwaresData ? softwaresData : []"
-            :software-loading="softwareLoading"
-        /> -->
-        <!-- <CardLoading class="px-huge" :number-per-row="2" :additional-classes="'!justify-end'" /> -->
-
-        <!-- <SoftwareDashboard v-if="!softwareLoading" :softwares="softwaresData" :software-loading="softwareLoading" />
-        <CardLoading v-else class="px-huge" :number-per-row="2" :additional-classes="'!justify-end'" /> -->
-
         <SectionHeader
             :classes="'bg-main-darkTeal'"
             :section="'advice'"
@@ -566,17 +544,6 @@ onMounted(async () => {
                 </div>
             </div>
             <div class="DAGAdviceCarousel w-full lg:!w-3/4">
-                <!--                <CardCarouselWrapper-->
-                <!--                    :key="adviceLoading"-->
-                <!--                    :card-data="reversedAdviceData ? reversedAdviceData : []"-->
-                <!--                    :loading="adviceLoading"-->
-                <!--                    :row-count="1"-->
-                <!--                    :col-count="2"-->
-                <!--                    :additional-classes="'w-full lg:!w-[66.66%]'"-->
-                <!--                    :section-type="'advice'"-->
-                <!--                    :advice-type="'Dashboard'"-->
-                <!--                    :loading-classes="'w-full lg:!w-[66.66%]'"-->
-                <!--                />-->
                 <CarouselGenerator
                     :show-count="2"
                     data-type="advice"
@@ -594,15 +561,6 @@ onMounted(async () => {
             :button-callback="() => router.push('/browse/school')"
         />
 
-
-        <!--        <CardCarouselWrapper-->
-        <!--            :key="schoolsLoading"-->
-        <!--            :card-data="schoolsData ? schoolsData : []"-->
-        <!--            :loading="schoolsLoading"-->
-        <!--            :row-count="1"-->
-        <!--            :col-count="3"-->
-        <!--            :section-type="'schools'"-->
-        <!--        />-->
         <CarouselGenerator
             :show-count="3"
             data-type="school"
@@ -612,18 +570,11 @@ onMounted(async () => {
 </template>
 
 <style scoped lang="scss">
-// .negotiatedDealsLine {
-//     border-image: linear-gradient(rgba(0,0,0,0), #000) 30;
-//     // border-width: 1px;
-//     // border-style: dashed;
-//     border: #000 dashed 1px;
-// }
+
 
 
 .negotiatedDealsLine {
-    // position: relative;
     width: 2px;
-    // height: 200px; /* Set the desired height of the vertical line */
     background: linear-gradient(to top, transparent, #000);
     /* Fading effect to transparent */
 }
@@ -631,12 +582,6 @@ onMounted(async () => {
 .negotiatedDealsLine::before {
     content: "";
     position: absolute;
-    // top: 0;
-    // left: 50%;
-    // transform: translateX(-50%);
-    // width: 100%;
-    // height: 1px;
-    // background-color: #000;
-    // background-image: repeating-linear-gradient(0deg, #000, #000 5px, transparent 5px, transparent 10px);
+
 }
 </style>

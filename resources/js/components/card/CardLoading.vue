@@ -27,7 +27,6 @@ const props = defineProps({
         <div
             v-for="(count,index) in numberPerRow"
             :key="index"
-
             class="
                 GenericCardContainer
                 border-[0.5px]
@@ -73,24 +72,24 @@ const props = defineProps({
             </div>
         </div>
     </div>
-<!--    </div>-->
+    <!--    </div>-->
 </template>
 
 <style scoped lang="scss">
-    .loadingCard {
-        .loadingCard-image,
-        .loadingCard-title,
-        .loadingCard-description {
-            background: #eee;
-            background: linear-gradient(110deg, #ececec 8%, #f5f5f5 18%, #ececec 33%);
-            background-size: 200% 100%;
-            animation: 1.5s shine linear infinite;
-        }
+.loadingCard {
+    .loadingCard-image,
+    .loadingCard-title,
+    .loadingCard-description {
+        background: #eee;
+        background: linear-gradient(110deg, #ececec 8%, #f5f5f5 18%, #ececec 33%);
+        background-size: 200% 100%;
+        animation: 1.5s shine linear infinite;
     }
+}
 
-    @keyframes shine {
-        to {
-            background-position-x: -200%;
-        }
+@keyframes shine {
+    to {
+        background-position-x: -200%;
     }
+}
 </style>

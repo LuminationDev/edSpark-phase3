@@ -17,8 +17,7 @@ export const useAuthStore = defineStore('auth', {
                 const response = await axios.get(`${appURL}/auth/check`);
                 this.isAuthenticated = response.data.authenticated;
             } catch (error) {
-                console.log(error);
-                // Handle error
+                this.isAuthenticated = false
             }
         },
     },

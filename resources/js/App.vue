@@ -21,7 +21,7 @@ const userStore = useUserStore()
 const {currentUser} = storeToRefs(userStore)
 
 const windowStore = useWindowStore()
-const {isMobile, isTablet,windowWidth, showMobileNavbar} = storeToRefs(windowStore)
+const {isMobile, windowWidth} = storeToRefs(windowStore)
 
 const authStore = useAuthStore()
 const {isAuthenticated} = storeToRefs(authStore)
@@ -34,41 +34,36 @@ const setWindowWidth = () => {
 }
 
 
-
 onBeforeMount(async () => {
-
     // if currentUser / local storage is not empty check auth status
-    if(!isObjectEmpty(currentUser.value)){
+    if (!isObjectEmpty(currentUser.value)) {
         await authStore.checkAuthenticationStatus()
-        /* here means there is data inside localStorage but not logged in
+        /**
+         * here means there is data inside localStorage but not logged in
          * auto redirect to login and should automatically login if okta still recognize
          */
-        if(!isAuthenticated.value){
-            console.log('taking you to login because you are recognised')
-            window.location= '/login'
-        } else{
-            if(route.name === 'home'){
+        if (!isAuthenticated.value) {
+            window.location = '/login'
+        } else {
+            if (route.name === 'home') {
                 await router.push('/dashboard')
             }
         }
-    }else{
+    } else {
         /*
         Here means local storage is empty, potentially new user. expect user to click login with okta
          */
     }
-    if(currentUser.value?.id){
-        recommender = recommenderEdsparkSingletonFactory().getInstance(currentUser.value.id,'Partner', 100)
+    if (currentUser.value?.id) {
+        recommender = recommenderEdsparkSingletonFactory().getInstance(currentUser.value.id, 'Partner', 100)
     }
-    console.log('user auth status is: ' + isAuthenticated.value)
     setWindowWidth()
     window.addEventListener('resize', setWindowWidth)
-
 })
 
 onBeforeUnmount(() => {
     window.removeEventListener('resize', setWindowWidth);
 })
-
 
 </script>
 

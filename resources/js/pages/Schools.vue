@@ -26,8 +26,6 @@ import {useSchoolsStore} from "@/js/stores/useSchoolsStore";
 /**
  * Import Card wrapper
  */
-import CardCarouselWrapper from '../components/card/CardCarouselWrapper.vue';
-import CardWrapper from '../components/card/CardWrapper.vue';
 import CarouselGenerator from "@/js/components/card/CarouselGenerator.vue";
 
 const createSchool = ref(false)
@@ -163,15 +161,6 @@ const handleSaveWelcomePopup = (data) => {
                 :button-text="'View all schools'"
                 :button-callback="handleBrowseAllSchool"
             />
-
-            <!--            <CardCarouselWrapper-->
-            <!--                :key="cardsLoading"-->
-            <!--                :card-data="featuredSites ? featuredSites : []"-->
-            <!--                :loading="cardsLoading"-->
-            <!--                :row-count="1"-->
-            <!--                :col-count="4"-->
-            <!--                :section-type="'schools'"-->
-            <!--            />-->
             <CarouselGenerator
                 :show-count="3"
                 data-type="school"
@@ -184,7 +173,6 @@ const handleSaveWelcomePopup = (data) => {
             v-if="schoolsAvailable"
             class="px-5 py-5 xl:!px-20 xl:!py-20"
         >
-            <!-- <SearchableMap /> -->
             <SchoolsSearchableMap
                 :key="schoolsAvailable"
                 :schools="schools"
