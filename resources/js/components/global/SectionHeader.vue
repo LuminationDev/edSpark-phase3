@@ -81,18 +81,16 @@ const props = defineProps({
             <button
                 class="
                     bg-white
-                    border-2
-                    hover:border-2
-                    hover:border-[#339999]
-                    border-[#307474]
+                    hover:bg-slate-100
+                    border-[1px]
+                    border-main-navy
                     cursor-pointer
                     font-medium
                     h-fit
                     px-4
                     py-2
-                    text-[#307474]
-                    hover:text-[#339999]
                     text-base
+                    text-main-navy
                     z-20
                     "
                 @click="props.buttonCallback"

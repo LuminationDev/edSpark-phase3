@@ -52,7 +52,6 @@ const breakpointChoser = () =>{
 }
 // currently not uniform yet. still depending on each card (each card is adapted to responses from backend)
 // TODO: Configure backend responses and Card data at the same time to prevent breaking changes
-
 const formattedData = computed(() => {
     return cardDataWithGuid(props.dataArray)
 })
@@ -84,6 +83,7 @@ const numberOfLoadingPlaceholder = computed(() =>{
                 <Slide
                     v-for="cardData in formattedData"
                     :key="cardData.guid"
+                    class="overflow-visible"
                 >
                     <template v-if="props.dataType === 'school'">
                         <SchoolCard :school-data="cardData" />
@@ -152,6 +152,11 @@ const numberOfLoadingPlaceholder = computed(() =>{
 
     .carousel__prev {
         left: -20px !important;
+    }
+
+    :deep(.carousel__pagination-button::after) {
+        height: 12px;
+        border-radius: 50%;
     }
 }
 </style>

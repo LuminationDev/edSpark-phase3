@@ -56,7 +56,7 @@ const responsiveDisplaySoftware = computed(() => {
 })
 
 const handleClickSeeMore = () => {
-    router.push('/browse/softwares')
+    router.push('/browse/software')
 }
 </script>
 <template>

@@ -41,12 +41,12 @@ const router = useRouter()
                     :callback="() => router.push('browse/advices')"
                     class="
                         !rounded-none
-                        !text-secondary-darkBlue
+                        !text-main-navy
                         bg-white
                         hover:bg-slate-50
                         border-2
                         border-secondary-darkBlue
-                        font-semibold
+                        font-medium
                         my-2
                         px-12
                         text-lg

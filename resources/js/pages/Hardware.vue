@@ -80,7 +80,7 @@ const getResponsiveDisplayData = (itemArray) => {
             :section="'hardware-laptops'"
             :title="'Laptops'"
             :button-text="'View all hardware'"
-            :button-callback="() => router.push('/browse/hardwares')"
+            :button-callback="() => router.push('/browse/hardware')"
         />
         <div class="grid grid-cols-1 gap-4 place-items-center h-full px-5 md:!grid-cols-2 lg:!px-10 xl:!grid-cols-3 xl:!px-huge">
             <template v-if="laptops && laptops.length > 0">
@@ -108,7 +108,7 @@ const getResponsiveDisplayData = (itemArray) => {
             :section="'hardware-av'"
             :title="'Audio and Visual'"
             :button-text="'View all hardware'"
-            :button-callback="() => router.push('/browse/hardwares')"
+            :button-callback="() => router.push('/browse/hardware')"
         />
         <div class="grid grid-cols-12 px-5 lg:!px-20 xl:!px-huge">
             <div class="col-span-12 flex flex-row gap-6 mb-6 xl:!col-span-4 xl:!flex-col">
@@ -162,7 +162,7 @@ const getResponsiveDisplayData = (itemArray) => {
             :section="'hardware-emerging'"
             :title="'Emerging Technology'"
             :button-text="'View all hardware'"
-            :button-callback="() => router.push('/browse/hardwares')"
+            :button-callback="() => router.push('/browse/hardware')"
         />
         <div class="grid grid-cols-12 px-5 lg:!px-20 xl:!px-huge">
             <div class="col-span-12 xl:col-span-5 flex flex-col gap-4 overflow-clip py-10 xl:!py-2">

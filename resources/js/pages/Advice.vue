@@ -46,15 +46,6 @@ const handleBrowseAllAdvice = () => {
 <template>
     <AdviceHero />
     <div class="AdviceContentContainer DAGAdviceRow flex flex-col h-full">
-        <!--        <CardCarouselWrapper-->
-        <!--            :key="dagState"-->
-        <!--            :card-data="dagAdvice ? dagAdvice : []"-->
-        <!--            :loading-state="dagState"-->
-        <!--            :row-count="1"-->
-        <!--            :col-count="3"-->
-        <!--            :section-type="'advice'"-->
-        <!--            :advice-type="'DAG'"-->
-        <!--        />-->
         <CarouselGenerator
             :show-count="3"
             data-type="advice"
@@ -75,15 +66,7 @@ const handleBrowseAllAdvice = () => {
     </div>
 
     <PartnerHero />
-    <!--    <CardCarouselWrapper-->
-    <!--        :key="partnerState"-->
-    <!--        :card-data="partnerAdvice ? partnerAdvice : []"-->
-    <!--        :loading-state="partnerState"-->
-    <!--        :row-count="1"-->
-    <!--        :col-count="3"-->
-    <!--        :section-type="'advice'"-->
-    <!--        :advice-type="'Partner'"-->
-    <!--    />-->
+
     <CarouselGenerator
         :show-count="3"
         data-type="advice"

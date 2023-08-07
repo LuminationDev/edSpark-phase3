@@ -313,7 +313,7 @@ onMounted(async () => {
             :section="'events'"
             :title="'New Events'"
             :button-text="'View all events'"
-            :button-callback="() => router.push('/browse/events')"
+            :button-callback="() => router.push('/browse/event')"
         />
 
         <!-- Events Cards Here -->
@@ -337,7 +337,7 @@ onMounted(async () => {
             :section="'software'"
             :title="'Top Software'"
             :button-text="'View all software'"
-            :button-callback="() => router.push('/browse/softwares')"
+            :button-callback="() => router.push('/browse/software')"
         />
 
         <!-- Software Cards Here -->
@@ -530,7 +530,7 @@ onMounted(async () => {
             :section="'advice'"
             :title="'Advice'"
             :button-text="'View all resources'"
-            :button-callback="() => router.push('/browse/advices')"
+            :button-callback="() => router.push('/browse/advice')"
         />
         <div class="flex flex-col w-full lg:!flex-row lg:!px-huge">
             <div class="DAGInfoSection w-full lg:!w-1/4">
@@ -591,7 +591,7 @@ onMounted(async () => {
             :section="'schools'"
             :title="'Latest School Profiles'"
             :button-text="'View all schools'"
-            :button-callback="() => router.push('/browse/schools')"
+            :button-callback="() => router.push('/browse/school')"
         />
 
 

@@ -184,19 +184,20 @@ const handleEmitClick = () => {
                     group-hover:h-0
                     group-hover:min-h-[0%]
                     min-h-[35%]
+                    overflow-visible
                     relative
                     transition-all
                     "
                 :class="`bg-[url('${imageURL}/${coverImage}')]`"
                 :style="`background-image: url('${imageURL}/${coverImage}')`"
             >
-                <template
+                <div
                     v-if="$slots.typeTag"
                 >
                     <slot
                         name="typeTag"
                     />
-                </template>
+                </div>
 
                 <div
                     v-if="$slots.icon"

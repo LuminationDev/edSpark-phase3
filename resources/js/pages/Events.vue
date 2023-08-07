@@ -34,7 +34,7 @@ const allEventsWithKeys = computed(() =>{
         :section="'events'"
         :title="'Upcoming Events'"
         :button-text="'View all events'"
-        :button-callback="() => router.push('/browse/events')"
+        :button-callback="() => router.push('/browse/event')"
     />
     <div class="EventContentContainer flex flex-col h-full px-5 lg:!px-20">
         <div class="EventCardListContainer grid grid-cols-1 gap-6 place-items-center heading text-xl  md:!grid-cols-2 xl:!grid-cols-3">
@@ -60,7 +60,7 @@ const allEventsWithKeys = computed(() =>{
         :section="'events'"
         :title="'Calendar'"
         :button-text="'View all events'"
-        :button-callback="() => router.push('/browse/events')"
+        :button-callback="() => router.push('/browse/event')"
     />
 
     <div class="eventCalendarContainer flex flex-col h-full px-5 lg:!px-20">

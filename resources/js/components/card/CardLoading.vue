@@ -20,11 +20,14 @@ const props = defineProps({
 <template>
     <!--    <div class="w-full">-->
     <div
-        v-for="row in numberOfRows"
+        v-for="(row,index) in numberOfRows"
+        :key="index"
         class="flex justify-center flex-row overflow-hidden w-full"
     >
         <div
-            v-for="count in numberPerRow"
+            v-for="(count,index) in numberPerRow"
+            :key="index"
+
             class="
                 GenericCardContainer
                 border-[0.5px]

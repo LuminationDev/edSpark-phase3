@@ -123,7 +123,7 @@ const handleFinishCreateSchool = () => {
 }
 
 const handleBrowseAllSchool = () => {
-    router.push('/browse/schools')
+    router.push('/browse/school')
 }
 
 const handleCloseWelcomePopup = () => {

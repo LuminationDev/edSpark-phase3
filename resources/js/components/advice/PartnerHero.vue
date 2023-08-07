@@ -53,12 +53,12 @@ const router = useRouter()
                     :callback="() => router.push('browse/advices')"
                     class="
                         !rounded-none
-                        !text-adviceGreen
+                        !text-main-navy
                         bg-white
                         hover:bg-slate-50
                         border-2
-                        border-adviceGreen
-                        font-semibold
+                        border-secondary-darkBlue
+                        font-medium
                         hidden
                         px-12
                         text-lg
@@ -79,15 +79,17 @@ const router = useRouter()
                     :callback="() => router.push('browse/advices')"
                     class="
                         !rounded-none
-                        !text-adviceGreen
+                        !text-main-navy
                         bg-white
                         hover:bg-slate-50
                         border-2
-                        border-adviceGreen
-                        font-semibold
+                        border-secondary-darkBlue
+                        font-medium
+                        hidden
                         px-12
                         text-lg
                         z-30
+                        md:!block
                         "
                 >
                     View all advice

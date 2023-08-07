@@ -64,42 +64,42 @@ const router = createRouter({
             children: [
                 {
                     name: 'browseSchools',
-                    path: 'schools',
+                    path: 'school',
                     component: SchoolSearch,
                     meta: {
                         requiresAuth: true,
                     }
                 }, {
                     name: 'browseAdvices',
-                    path: 'advices',
+                    path: 'advice',
                     component: AdviceSearch,
                     meta: {
                         requiresAuth: true,
                     }
                 }, {
                     name: 'browseSoftwares',
-                    path: 'softwares',
+                    path: 'software/:filter?',
                     component: SoftwareSearch,
                     meta: {
                         requiresAuth: true,
                     }
                 }, {
                     name: 'browseHardwares',
-                    path: 'hardwares',
+                    path: 'hardware',
                     component: HardwareSearch,
                     meta: {
                         requiresAuth: true,
                     }
                 }, {
                     name: 'browsePartners',
-                    path: 'partners',
+                    path: 'partner',
                     component: PartnerSearch,
                     meta: {
                         requiresAuth: true,
                     }
                 }, {
                     name: 'browseEvents',
-                    path: 'events',
+                    path: 'event',
                     component: EventSearch,
                     meta: {
                         requiresAuth: true,

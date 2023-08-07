@@ -90,7 +90,6 @@ function filterProducts(products, filterBy) {
         totalValuesCount += eachValue.length
     }
     if (totalValuesCount === 0) {
-        console.log('returned al products bcs no filterin hehe')
         return products; // Return all products if filterBy object is empty
     }
     return products.filter(product => {
@@ -116,18 +115,6 @@ function filterProducts(products, filterBy) {
                     filterResult[key] = result
                 }
             }
-
-            // below is original version-- above is refactored with findNestedKeyValue
-            // keeping this code might come in handy as we add more filtering - Erick
-
-            // if (filterBy.hasOwnProperty(key)) {
-            //     let filterValues = filterBy[key];
-            //     if(filterValues.length === 0){
-            //         filterResult[key] = true
-            //     } else{
-            //         filterResult[key] = checkNested(product, key, filterValues)
-            //     }
-            // }
         }
         for(let eachResult of Object.values(filterResult)){
             if(!eachResult) return false
