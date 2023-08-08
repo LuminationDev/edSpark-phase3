@@ -39,7 +39,7 @@ class UserController extends Controller
             'permissions' => ($user->role) ? $user->role->permissions->pluck('permission_name') : NULL,
             'metadata' => ($userMetaDataToSend) ? $userMetaDataToSend : NULL,
             'site'=>[
-                'site_name' => $user->site->site_name
+                'site_name' => isset($user->site) ? $user->site->site_name : ''
             ]
         ];
 
