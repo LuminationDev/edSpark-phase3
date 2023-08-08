@@ -6,7 +6,7 @@ import {axiosFetcher} from "@/js/helpers/fetcher";
 import useSWRV from "swrv";
 
 
-const {data : allCuratedSoftware, error: curatedSoftwareError} = useSWRV(`${serverURL}/fetchSoftwarePosts`, axiosFetcher)
+const {data : allCuratedSoftware, error: curatedSoftwareError} = useSWRV(API_ENDPOINTS.SOFTWARE_FETCH_SOFTWARE_POSTS, axiosFetcher)
 
 const twoRecommendation  = computed( () => {
     let temp = []

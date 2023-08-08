@@ -1,4 +1,5 @@
 <script setup>
+import {API_ENDPOINTS} from "@/js/constants/API_ENDPOINTS";
 import EventsHero from '../components/events/EventsHero.vue';
 import EventsCalendar from '../components/events/EventsCalendar.vue';
 import EventsView from '../components/events/EventsView.vue';
@@ -16,7 +17,7 @@ import {guid} from "@/js/helpers/guidGenerator";
 import CardLoading from "@/js/components/card/CardLoading.vue";
 
 const router = useRouter()
-const { data: allEvents, error: eventError } = useSWRV(`${serverURL}/fetchEventPosts`, axiosFetcher)
+const { data: allEvents, error: eventError } = useSWRV(API_ENDPOINTS.EVENT.FETCH_EVENT_POSTS, axiosFetcher)
 
 const allEventsWithKeys = computed(() =>{
     if(!allEvents.value) return []

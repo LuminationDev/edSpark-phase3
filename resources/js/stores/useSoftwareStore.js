@@ -16,7 +16,7 @@ export const useSoftwareStore = defineStore('software', {
     actions: {
         async loadArticles() {
             return new Promise(async (resolve, reject) => {
-                await axios.get(`${serverURL}/fetchSoftwarePosts`).then(response => {
+                await axios.get(API_ENDPOINTS.SOFTWARE_FETCH_SOFTWARE_POSTS).then(response => {
                     const dashboardSoftware = [];
                     response.data.forEach(software => {
                         dashboardSoftware.push(software);

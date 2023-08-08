@@ -1,4 +1,5 @@
 <script setup>
+import {API_ENDPOINTS} from "@/js/constants/API_ENDPOINTS";
 import {ref} from "vue";
 import {serverURL} from "@/js/constants/serverUrl";
 import BaseSearch from "@/js/components/search/BaseSearch.vue";
@@ -10,7 +11,7 @@ const swrvOptions = {
     refreshInterval: 30000 // refresh or revalidate data every 30 secs
 }
 
-const {data: eventList, error: eventError} = useSWRV(`${serverURL}/fetchEventPosts`, axiosFetcher, swrvOptions)
+const {data: eventList, error: eventError} = useSWRV(API_ENDPOINTS.EVENT.FETCH_EVENT_POSTS, axiosFetcher, swrvOptions)
 
 const filterObject = ref({})
 

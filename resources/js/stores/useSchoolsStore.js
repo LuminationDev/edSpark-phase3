@@ -38,7 +38,7 @@ export const useSchoolsStore = defineStore('schools', {
 
     actions: {
         async loadSchools() {
-            return await axios.get(`${serverURL}/fetchAllSchools`).then(res => {
+            return await axios.get(API_ENDPOINTS.SCHOOL.FETCH_ALL_SCHOOLS).then(res => {
                 const parsedRes = schoolContentArrParser(res.data)
                 this.schools = parsedRes;
                 return parsedRes;

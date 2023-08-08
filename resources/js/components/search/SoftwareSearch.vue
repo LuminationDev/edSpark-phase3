@@ -1,4 +1,5 @@
 <script setup>
+import {API_ENDPOINTS} from "@/js/constants/API_ENDPOINTS";
 import {onMounted, ref} from "vue";
 
 import {serverURL} from "@/js/constants/serverUrl";
@@ -15,7 +16,7 @@ const swrvOptions = {
     refreshInterval: 30000 // refresh or revalidate data every 30 secs
 }
 
-const {data: softwareList, error: softwareError} = useSWRV(`${serverURL}/fetchSoftwarePosts`, axiosFetcher, swrvOptions)
+const {data: softwareList, error: softwareError} = useSWRV(API_ENDPOINTS.SOFTWARE.FETCH_SOFTWARE_POSTS, axiosFetcher, swrvOptions)
 
 let softwareFilterList = [
     {name: "Department Provided", value:"Department Provided"},

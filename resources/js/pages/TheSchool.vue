@@ -1,4 +1,5 @@
 <script setup>
+import {API_ENDPOINTS} from "@/js/constants/API_ENDPOINTS";
 import {computed, onBeforeMount, onMounted, ref, watch} from 'vue'
 import axios from 'axios'
 import {useRouter} from "vue-router";
@@ -47,7 +48,7 @@ const {
     data: featuredSites,
     error: featuredSitesError,
     isValidating: isValidatingFeatured
-} = useSWRV(`${serverURL}/fetchFeaturedSchools`, axiosSchoolFetcher, swrvOptions)
+} = useSWRV(API_ENDPOINTS.SCHOOL.FETCH_FEATURED_SCHOOL, axiosSchoolFetcher, swrvOptions)
 
 const {state, STATES} = useSwrvState(featuredSites, featuredSitesError, isValidatingFeatured)
 
@@ -68,7 +69,7 @@ const schoolsAvailable = ref(false);
 const fetchAllSchools = () => {
     if (schools.value.length === 0) {
         console.log('fetch all school called')
-        axios.get(`${serverURL}/fetchAllSchools`).then(res => {
+        axios.get(API_ENDPOINTS.SCHOOL.FETCH_ALL_SCHOOLS).then(res => {
             schools.value = schoolContentArrParser(res.data)
             schoolsAvailable.value = true;
         })

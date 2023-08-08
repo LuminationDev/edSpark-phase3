@@ -1,4 +1,5 @@
 <script setup>
+import {API_ENDPOINTS} from "@/js/constants/API_ENDPOINTS";
 import {onBeforeMount, ref, reactive} from "vue";
 import axios from "axios";
 import SearchDropdown from 'search-dropdown-vue'
@@ -32,7 +33,7 @@ const state = reactive({
 })
 
 onBeforeMount(async () => {
-    await axios.get(`${serverURL}/fetchAllSites`).then((res) => {
+    await axios.get(API_ENDPOINTS.SCHOOL.FETCH_ALL_SITES).then((res) => {
         res.data.map(site => {
             const tempObject = {
                 id: site.id,
@@ -59,7 +60,7 @@ const handleSubmitButton = async () => {
 
     await axios({
         method: "post",
-        url: `${serverURL}/createSchool`,
+        url: API_ENDPOINTS.SCHOOL.CREATE_SCHOOL,
         data: schoolData,
         headers: { "Content-Type": "multipart/form-data" },
     }).then(res => {
@@ -83,8 +84,8 @@ const handleCoverImageUpload = (event) => {
 
 </script>
 <template>
-    <div class="createSchoolContainer px-4 mx-4 py-2 my-2 border-2 rounded-lg">
-        <div class="text-center font-semibold text-xl">
+    <div class="border-2 createSchoolContainer mx-4 my-2 px-4 py-2 rounded-lg">
+        <div class="font-semibold text-center text-xl">
             Create School Form
         </div>
         <div class="mb-5">

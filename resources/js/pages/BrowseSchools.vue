@@ -9,7 +9,7 @@ const serverURL = import.meta.env.VITE_SERVER_URL_API
 const axiosFetcher = (url) => {
     return axios.get(url).then(res => res.data)
 }
-const {data: allSchoolsArray, error: schoolsError} = useSWRV(`${serverURL}/fetchAllSchools`, axiosFetcher)
+const {data: allSchoolsArray, error: schoolsError} = useSWRV(API_ENDPOINTS.SCHOOL.FETCH_ALL_SCHOOLS, axiosFetcher)
 
 const allSchoolsData = computed(() => {
     return schoolContentArrParser(allSchoolsArray.value)
@@ -30,7 +30,7 @@ const filteredSchool = computed(() =>{
 
 </script>
 <template>
-    <div class="browse-schools-container mt-16 flex flex-col justify-center items-center">
+    <div class="browse-schools-container flex justify-center items-center flex-col mt-16">
         <h3 class="font-semibold text-2xl">
             Browse all schools
         </h3>
@@ -39,12 +39,24 @@ const filteredSchool = computed(() =>{
         />
         <div
             v-if="allSchoolsArray"
-            class="card-iterator-container w-full flex flex-row flex-wrap my-4 items-center justify-evenly"
+            class="card-iterator-container flex justify-evenly items-center flex-row flex-wrap my-4 w-full"
         >
             <div
                 v-for="(school, index) in filteredSchool"
                 :key="index"
-                class="border-2 mx-4 my-4 basis-1/4 max-w-[320px] h-[470px] border-[0.5px] border-black transition-all group hover:shadow-2xl"
+                class="
+                    basis-1/4
+                    border-2
+                    border-[0.5px]
+                    border-black
+                    group
+                    h-[470px]
+                    max-w-[320px]
+                    mx-4
+                    my-4
+                    transition-all
+                    hover:shadow-2xl
+                    "
             >
                 <SchoolCard
                     :school-data="school"
@@ -53,7 +65,7 @@ const filteredSchool = computed(() =>{
             </div>
             <div
                 v-if="filteredSchool.length <= 0"
-                class="text-xl font-semibold"
+                class="font-semibold text-xl"
             >
                 No search result
             </div>

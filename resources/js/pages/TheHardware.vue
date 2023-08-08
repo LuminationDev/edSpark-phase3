@@ -1,4 +1,5 @@
 <script setup>
+import {API_ENDPOINTS} from "@/js/constants/API_ENDPOINTS";
 import HardwareHero from '../components/hardware/HardwareHero.vue';
 import HardwareInformation from '../components/hardware/HardwareInformation.vue';
 import SectionHeader from '../components/global/SectionHeader.vue';
@@ -19,7 +20,7 @@ import {storeToRefs} from "pinia";
 
 
 const router = useRouter()
-const {data: hardware, error} = useSWRV(`${serverURL}/fetchAllProducts`, axiosFetcher)
+const {data: hardware, error} = useSWRV(API_ENDPOINTS.HARDWARE.FETCH_HARDWARE_POSTS, axiosFetcher)
 
 
 const laptops = computed(() => {

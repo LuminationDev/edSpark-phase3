@@ -1,4 +1,5 @@
 <script setup>
+import {API_ENDPOINTS} from "@/js/constants/API_ENDPOINTS";
 import {computed, ref} from "vue";
 import axios from 'axios'
 
@@ -17,7 +18,7 @@ const swrvOptions = {
 const combinedSchoolTech = [...schoolTech,...schoolPartnerTech];
 console.log(combinedSchoolTech)
 
-const {data: schoolList, error: schoolError} = useSWRV(`${serverURL}/fetchAllSchools`, axiosSchoolFetcher, swrvOptions)
+const {data: schoolList, error: schoolError} = useSWRV(API_ENDPOINTS.SCHOOL.FETCH_ALL_SCHOOLS, axiosSchoolFetcher, swrvOptions)
 
 let schoolFilterList = [
     {name: "Preschool", value:"PRE"},

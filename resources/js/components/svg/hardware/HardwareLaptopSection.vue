@@ -1,11 +1,12 @@
 <script setup>
+import {API_ENDPOINTS} from "@/js/constants/API_ENDPOINTS";
 import {computed} from 'vue'
 import useSWRV from "swrv"
 import {serverURL} from "@/js/constants/serverUrl"
 import {axiosFetcher} from "@/js/helpers/fetcher"
 import HardwareCard from "@/js/components/hardware/HardwareCard.vue";
 
-const {data: softwareList , error} = useSWRV(`${serverURL}/fetchAllProducts`, axiosFetcher)
+const {data: softwareList , error} = useSWRV(API_ENDPOINTS.HARDWARE.FETCH_HARDWARE_POSTS, axiosFetcher)
 
 const laptopData = computed(() => {
     return softwareList.value?.filter(item =>  item.category['categoryName'] == "Laptop") || []
@@ -15,7 +16,7 @@ const laptopData = computed(() => {
 <template>
     <div
         v-if="laptopData"
-        class="HardwareLaptopSectionCantainer Card gallery flex flex-row gap-6"
+        class="Card HardwareLaptopSectionCantainer flex flex-row gallery gap-6"
     >
         <div
             v-for="(hardware,index) in laptopData"

@@ -1,4 +1,6 @@
 <script setup>
+import {API_ENDPOINTS} from "@/js/constants/API_ENDPOINTS";
+
 /**
  * IMPORT DEPENDENCIES
  */
@@ -82,7 +84,7 @@ onBeforeMount(async () => {
 
 
 const fetchSchoolByNameAsync = (schoolName) => {
-    return axios.get(`${serverURL}/fetchSchoolByName/${schoolName}`).then(res => {
+    return axios.get(`${API_ENDPOINTS.SCHOOL.FETCH_SCHOOL_BY_NAME}${schoolName}`).then(res => {
         console.log('Found the school. populating data now inside SchoolSingle')
         const filteredSchool = res.data
         schoolContent.value = parseToJsonIfString(filteredSchool)
@@ -120,7 +122,7 @@ const triggerCreateNewSchoolFromSchoolStore = () => {
     schoolFormData.append('cover_image', newSchool.value.coverImageUrl)
     return axios({
         method: "post",
-        url: `${serverURL}/createSchool`,
+        url: API_ENDPOINTS.SCHOOL.CREATE_SCHOOL,
         data: schoolFormData,
         headers: {"Content-Type": "multipart/form-data"},
     }).then(res => {
@@ -157,7 +159,7 @@ const handleSaveNewSchoolInfo = async (content_blocks, tech_used) => {
     newUpdatedSchoolFormData.append('metadata', JSON.stringify(schoolMetadata))
     console.log(schoolMetadata)
     await axios({
-        url: `${serverURL}/updateSchool`,
+        url: API_ENDPOINTS.SCHOOL.UPDATE_SCHOOL,
         method: 'post',
         data: newUpdatedSchoolFormData,
         headers: {"Content-Type": "multipart/form-data"}

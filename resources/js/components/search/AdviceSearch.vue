@@ -1,4 +1,5 @@
 <script setup>
+import {API_ENDPOINTS} from "@/js/constants/API_ENDPOINTS";
 import { ref } from "vue";
 
 import { serverURL } from "@/js/constants/serverUrl";
@@ -12,7 +13,7 @@ const swrvOptions = {
     refreshInterval: 30000 // refresh or revalidate data every 30 secs
 }
 
-const { data: adviceList, error: adviceError } = useSWRV(`${serverURL}/fetchAdvicePosts`, axiosFetcher, swrvOptions)
+const { data: adviceList, error: adviceError } = useSWRV(API_ENDPOINTS.ADVICE.FETCH_ADVICE_POSTS, axiosFetcher, swrvOptions)
 
 let adviceFilterList = [
     { name: "Digital Adoption Group", value: "DAG advice" },
@@ -29,10 +30,18 @@ const handleFilter = (filters, dataPath) => {
 </script>
 
 <template>
-    <BaseSearch search-type="advice" :resource-list="adviceList" :live-filter-object="filterObject">
+    <BaseSearch
+        search-type="advice"
+        :resource-list="adviceList"
+        :live-filter-object="filterObject"
+    >
         <template #filterBar>
-            <GenericMultiSelectFilter placeholder="Filter by advice type" :filter-list="adviceFilterList"
-                data-path="advice_type" @transmit-selected-filters="handleFilter" />
+            <GenericMultiSelectFilter
+                placeholder="Filter by advice type"
+                :filter-list="adviceFilterList"
+                data-path="advice_type"
+                @transmit-selected-filters="handleFilter"
+            />
         </template>
     </BaseSearch>
 </template>

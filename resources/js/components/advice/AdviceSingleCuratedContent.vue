@@ -1,4 +1,5 @@
 <script setup>
+import {API_ENDPOINTS} from "@/js/constants/API_ENDPOINTS";
 import { ref, computed, onMounted} from "vue";
 import {serverURL} from "@/js/constants/serverUrl";
 import AdviceCard from "@/js/components/advice/AdviceCard.vue";
@@ -7,7 +8,7 @@ import useSWRV from "swrv";
 import {guid} from "@/js/helpers/guidGenerator";
 
 
-const {data : allCuratedAdvice, error: curatedAdviceError} = useSWRV(`${serverURL}/fetchAdvicePosts`, axiosFetcher)
+const {data : allCuratedAdvice, error: curatedAdviceError} = useSWRV(API_ENDPOINTS.ADVICE.FETCH_ADVICE_POSTS, axiosFetcher)
 
 const twoRecommendation  = computed( () => {
     let temp = []

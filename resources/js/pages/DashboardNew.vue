@@ -1,4 +1,6 @@
 <script setup>
+import {API_ENDPOINTS} from "@/js/constants/API_ENDPOINTS";
+
 /**
  * Components
  */
@@ -110,22 +112,22 @@ const {
     data: eventsData,
     error: eventsError,
     isValidating: eventsIsValidating
-} = useSWRV(() => currentUser.value.id ? `${serverURL}/fetchEventPosts` : null, axiosFetcher, swrvOptions)
+} = useSWRV(() => currentUser.value.id ? API_ENDPOINTS.EVENT.FETCH_EVENT_POSTS : null, axiosFetcher, swrvOptions)
 const {
     data: softwaresData,
     error: softwaresError,
     isValidating: softwaresIsValidating
-} = useSWRV(() => currentUser.value.id ? `${serverURL}/fetchSoftwarePosts` : null, axiosFetcher, swrvOptions)
+} = useSWRV(() => currentUser.value.id ? API_ENDPOINTS.SOFTWARE.FETCH_SOFTWARE_POSTS : null, axiosFetcher, swrvOptions)
 const {
     data: advicesData,
     error: advicesError,
     isValidating: advicesIsValidating
-} = useSWRV(() => currentUser.value.id ? `${serverURL}/fetchAdvicePosts` : null, axiosFetcher, swrvOptions)
+} = useSWRV(() => currentUser.value.id ? API_ENDPOINTS.ADVICE.FETCH_ADVICE_POSTS : null, axiosFetcher, swrvOptions)
 const {
     data: schoolsData,
     error: schoolsError,
     isValidating: schoolsIsValidating
-} = useSWRV(() => currentUser.value.id ? `${serverURL}/fetchFeaturedSchools` : null, axiosSchoolFetcher, swrvOptions)
+} = useSWRV(() => currentUser.value.id ? API_ENDPOINTS.SCHOOL.FETCH_FEATURED_SCHOOL : null, axiosSchoolFetcher, swrvOptions)
 
 const { state: eventsState, STATES: ALLSTATES } = useSwrvState(eventsData, eventsError, eventsIsValidating)
 const { state: softwaresState } = useSwrvState(softwaresData, softwaresError, softwaresIsValidating)

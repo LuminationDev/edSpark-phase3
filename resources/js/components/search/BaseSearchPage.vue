@@ -1,6 +1,7 @@
 <script setup>
 
 import SearchBar from "@/js/components/browseschools/SearchBar.vue";
+import {API_ENDPOINTS} from "@/js/constants/API_ENDPOINTS";
 import {useRoute} from "vue-router";
 import {serverURL} from "@/js/constants/serverUrl";
 import {computed, onBeforeMount, ref} from "vue";
@@ -18,11 +19,11 @@ const searchType = route.params.type
 switch (searchType) {
 case 'advice':
     console.log('advice')
-    resourceUrl = `${serverURL}/fetchAdvicePosts`
+    resourceUrl = API_ENDPOINTS.ADVICE.FETCH_ADVICE_POSTS
     break;
 case 'software':
     console.log('software')
-    resourceUrl = `${serverURL}/fetchSoftwarePosts`
+    resourceUrl = API_ENDPOINTS.ADVICE.FETCH_SOFTWARE_POSTS
     break;
 default:
     console.log('hmm')
@@ -48,7 +49,7 @@ const handleSearchTerm = (term) => {
 <template>
     <div
         v-if="!resourceError"
-        class="browse-schools-container mt-16 flex flex-col justify-center items-center"
+        class="browse-schools-container flex justify-center items-center flex-col mt-16"
     >
         <h3 class="font-semibold text-2xl">
             Browse all {{ searchType }}
@@ -59,7 +60,7 @@ const handleSearchTerm = (term) => {
         />
         <div
             v-if="resourceList"
-            class="resourceResult pt-10 flex flex-row flex-wrap justify-around gap-2 flex-1 w-full px-20"
+            class="flex justify-around flex-1 flex-row flex-wrap gap-2 pt-10 px-20 resourceResult w-full"
         >
             <template
                 v-for="(data, index) in filteredData"
@@ -83,7 +84,7 @@ const handleSearchTerm = (term) => {
             </template>
             <div
                 v-if="filteredData.length <= 0"
-                class="text-xl font-semibold"
+                class="font-semibold text-xl"
             >
                 No search result
             </div>

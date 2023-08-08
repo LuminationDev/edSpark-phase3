@@ -1,4 +1,5 @@
 <script setup>
+import {API_ENDPOINTS} from "@/js/constants/API_ENDPOINTS";
 import AdviceHero from '../components/advice/AdviceHero.vue'
 import useSWRV from "swrv";
 import useSwrvState from '@/js/helpers/useSwrvState';
@@ -19,20 +20,20 @@ const router = useRouter();
  * Get the DAG Advice articles
  * and states
  */
-const { data: dagAdvice, error: dagError, isValidating: dagValidating } = useSWRV(`${serverURL}/fetchAdvicePostByType/DAG advice`, axiosFetcher, swrvOptions);
+const { data: dagAdvice, error: dagError, isValidating: dagValidating } = useSWRV(API_ENDPOINTS.ADVICE.FETCH_ADVICE_POSTS_BY_TYPE_DAG, axiosFetcher, swrvOptions);
 const { state: dagState, STATES: DAGSTATES } = useSwrvState(dagAdvice, dagError, dagValidating);
 /**
  * Get the Partner advice
  * and states
  */
-const { data: partnerAdvice, error: partnerError, isValidating: partnerValidating } = useSWRV(`${serverURL}/fetchAdvicePostByType/Partner`, axiosFetcher, swrvOptions);
+const { data: partnerAdvice, error: partnerError, isValidating: partnerValidating } = useSWRV(API_ENDPOINTS.ADVICE.FETCH_ADVICE_POSTS_BY_TYPE_PARTNER, axiosFetcher, swrvOptions);
 const { state: partnerState, STATES: PARTNERSTATES } = useSwrvState(partnerAdvice, partnerError, partnerValidating);
 
 /**
  * Get General Advice articles (your work, classroom, learning)
  * and states
  */
-const { data: generalAdvice, error: generalError, isValidating: generalValidating } = useSWRV(`${serverURL}/fetchAdvicePostByType/${['Your Classroom', 'Your Work', 'Your Learning']}`, axiosFetcher, swrvOptions);
+const { data: generalAdvice, error: generalError, isValidating: generalValidating } = useSWRV(API_ENDPOINTS.ADVICE.FETCH_ADVICE_POSTS_BY_TYPE_YOUR, axiosFetcher, swrvOptions);
 const { state: generalState, STATES: GENERALSTATE } = useSwrvState(generalAdvice, generalError, generalValidating);
 
 

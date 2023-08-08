@@ -1,4 +1,5 @@
 <script setup>
+import {API_ENDPOINTS} from "@/js/constants/API_ENDPOINTS";
 import {ref, computed, onBeforeMount} from 'vue';
 import {useUserStore} from '../../stores/useUserStore';
 import {useSiteStore} from '../../stores/useSiteStore';
@@ -77,7 +78,7 @@ onBeforeMount(() => {
     let userData = {
         user_id: currentUser.value.id
     }
-    axios.post(`${serverURL}/fetchAllBookmarksWithTitle`, userData).then(res => {
+    axios.post(API_ENDPOINTS.USER.FETCH_ALL_BOOKMARKS_WITH_TITLE, userData).then(res => {
         console.log(res.data)
         userBookmarks.value = res.data
     }).catch(err => {
