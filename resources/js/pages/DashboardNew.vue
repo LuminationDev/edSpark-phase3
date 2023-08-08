@@ -52,7 +52,6 @@ import SoftwareCard from "@/js/components/software/SoftwareCard.vue";
 import CarouselGenerator from "@/js/components/card/CarouselGenerator.vue";
 
 const router = useRouter()
-
 const userStore = useUserStore();
 const { currentUser, isAdminAuthenticated } = storeToRefs(userStore)
 /**
@@ -200,52 +199,6 @@ const onClosePopup = () => {
     isFirstVisit.value = false;
 };
 
-// const handleAuthentication = async () => {
-//     // alert('Handle authentication function called');
-//     /**
-//      * Retireve id token from local storage
-//      * send it to laravel authentication api
-//      * bypass the laravel authentication
-//      *
-//      */
-//     console.log('###############################');
-//     let token = localStorage.getItem('okta-token-storage');
-//     token = JSON.parse(token);
-//     token = token.accessToken.accessToken;
-//     console.log("TOKEN", token);
-
-//     // check if user role requires admin access if yes do\fire this
-
-//     await axios({
-//         method: 'POST',
-//         url: 'http://localhost:8000/api/authenticate',
-//         data: {
-//             accessToken: token,
-//             id: 33
-//         },
-//         headers: {
-//             'Authorization': `Bearer ${token}`
-//         }
-//     }).then(response => {
-//         console.log("RESPONSE", response);
-//         if (response.status === 302 || response.data.status === 'success') {
-//             localStorage.setItem('authenticatedToken', JSON.stringify(response.data));
-//             console.log('auth remote success');
-//             // window.open("http://localhost:8000/admin",'_blank')
-//             window.location.href = 'http://localhost:8000/admin/autologin';
-//         }
-//     }).catch(err => {
-//         console.log(err.message)
-//         throw new Error(err);
-//     })
-//     console.log('###############################');
-// }
-
-// console.log(router.currentRoute.value.query);
-// const params = new URLSearchParams(router.currentRoute.value.query);
-// console.log("PARAMS", params);
-// const email = params.get('email');
-// console.log('EMAIL ID:', email);
 const email = ref(null);
 
 
@@ -288,7 +241,6 @@ const getDistanceBetweenElements = (a, b) => {
 onMounted(async () => {
     window.addEventListener('resize', () => getConnectingLinePositions());
     getConnectingLinePositions();
-
 });
 
 </script>

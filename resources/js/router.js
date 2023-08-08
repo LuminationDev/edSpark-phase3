@@ -277,13 +277,13 @@ const router = createRouter({
         }
     },
 });
-// router.afterEach((to,from) =>{
-//     if(!['home','login'].includes(to.name)){
-//         const userStore= useUserStore()
-//         console.log('inside if inside router aftereach')
-//         userStore.populateUserLikesAndBookmark()
-//     }
-// })
+
+router.afterEach((to,from) =>{
+    if(!['home','login', 'forbidden'].includes(to.name)){
+        const userStore= useUserStore()
+        userStore.populateUserLikesAndBookmark()
+    }
+})
 
 router.beforeEach(async (to, from, next) => {
     const authStore = useAuthStore();
