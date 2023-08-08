@@ -1,5 +1,5 @@
 <script setup>
-import {ref, computed} from 'vue'
+import {ref, computed, watch} from 'vue'
 import {useRoute} from "vue-router";
 import VPagination from "@hennge/vue3-pagination";
 import "@hennge/vue3-pagination/dist/vue3-pagination.css";
@@ -98,6 +98,7 @@ function filterProducts(products, filterBy) {
             // using findNestedKeyValue helper function
             let productValue = findNestedKeyValue(product, key).flat(1)
             let filterValues = filterBy[key];
+            // filterValues: {0: '3D Printing', 1: 'Microsoft Teams'}
             if(filterValues.length === 0){
                 filterResult[key] = true
             } else{
@@ -108,7 +109,8 @@ function filterProducts(products, filterBy) {
                 }else {
                     let result = false
                     productValue.forEach(item => {
-                        if(filterValues.includes(item)){
+                        // added check for item.name to handle tech_used filter
+                        if(filterValues.includes(item) ||filterValues.includes(item.name)){
                             result = true
                         }
                     })
@@ -123,7 +125,10 @@ function filterProducts(products, filterBy) {
 
     });
 }
-
+// set a watcher to reset page to the first page when filters are changed
+watch(props.liveFilterObject, () =>{
+    page.value = 1
+})
 
 const filteredData = computed(()=>{
     if(Object.values(props.liveFilterObject).length === 0) return filteredTermData.value
@@ -135,8 +140,8 @@ const page = ref(1)
 const numberOfItemsPerPage = 9
 
 const handleChangePageNumber = (newPageNumber) => {
-    console.log('handleChangePage number is called')
     page.value= newPageNumber
+
 }
 
 const numberOfAvailablePages = computed(() =>{
@@ -152,7 +157,11 @@ const paginatedFilteredData = computed(() =>{
         return filteredData.value.slice((page.value - 1)  * numberOfItemsPerPage, page.value * numberOfItemsPerPage)
     }
 })
-// schools,
+
+
+const showPagination = computed(() =>{
+    return filteredData.value.length > numberOfItemsPerPage
+})
 
 const formattedSearchTitle = computed(() =>{
     if(['school','event','partner'].includes(props.searchType)) return props.searchType + 's'
@@ -175,9 +184,12 @@ const formattedSearchTitle = computed(() =>{
         <div class="filterBarSearch flex justify-center items-center flex-col w-full md:!flex-row">
             <slot name="filterBar" />
         </div>
+        <div class="my-4 searchResults text-base">
+            {{ String(filteredData.length) + " search " + (filteredData.length > 1 ? "results" : "result") }}
+        </div>
         <div
             v-if="resourceList" 
-            class="grid grid-cols-1 gap-6 place-items-center pt-10 resourceResult md:!grid-cols-2 xl:!grid-cols-3"
+            class="grid grid-cols-1 gap-6 place-items-center pt-10 resourceResult md:!grid-cols-2 xl:!gap-12 xl:!grid-cols-3"
         >
             <template
                 v-for="(data) in paginatedFilteredData"
@@ -188,7 +200,7 @@ const formattedSearchTitle = computed(() =>{
                 >
                     <div
                         :key="data.id"
-                        class="group h-[470px] max-w-[300px] my-4 transition-all w-full  hover:shadow-2xl lg:!max-w-[400px]"
+                        class="group h-[470px] max-w-[300px] transition-all w-full  hover:shadow-2xl lg:!max-w-[400px]"
                     >
                         <AdviceCard
                             :key="data.post_id"
@@ -201,7 +213,7 @@ const formattedSearchTitle = computed(() =>{
                 <template v-else-if="searchType === 'software'">
                     <div
                         :key="data.id"
-                        class="group h-[470px] max-w-[300px] my-4 transition-all w-full hover:shadow-2xl lg:!max-w-[400px]"
+                        class="group h-[470px] max-w-[300px] transition-all w-full hover:shadow-2xl lg:!max-w-[400px]"
                     >
                         <SoftwareCard
                             :key="data.post_id"
@@ -213,7 +225,7 @@ const formattedSearchTitle = computed(() =>{
                 <template v-else-if="searchType === 'hardware'">
                     <div
                         :key="data.id"
-                        class="group h-[470px] max-w-[300px] my-4 transition-all w-full hover:shadow-2xl lg:!max-w-[400px]"
+                        class="group h-[470px] max-w-[300px] transition-all w-full hover:shadow-2xl lg:!max-w-[400px]"
                     >
                         <HardwareCard
                             :key="data.id"
@@ -225,7 +237,7 @@ const formattedSearchTitle = computed(() =>{
                 <template v-else-if="searchType === 'school'">
                     <div
                         :key="data.id"
-                        class="group h-[470px] max-w-[300px] my-4 transition-all w-full hover:shadow-2xl lg:!max-w-[400px]]"
+                        class="group h-[470px] max-w-[300px] transition-all w-full hover:shadow-2xl lg:!max-w-[400px]]"
                     >
                         <SchoolCard
                             class="mx-auto"
@@ -241,7 +253,6 @@ const formattedSearchTitle = computed(() =>{
                             group
                             h-[470px]
                             max-w-[300px]
-                            my-4
                             transition-all
                             w-full
                             hover:shadow-2xl
@@ -261,7 +272,6 @@ const formattedSearchTitle = computed(() =>{
                             group
                             h-[470px]
                             max-w-[300px]
-                            my-4
                             transition-all
                             w-full
                             hover:shadow-2xl
@@ -278,7 +288,7 @@ const formattedSearchTitle = computed(() =>{
 
             <div
                 v-if="filteredData.length <= 0"
-                class="font-semibold text-xl"
+                class="col-span-1 font-semibold text-xl md:!col-span-2 lg:!col-span-3"
             >
                 No search result
             </div>
@@ -294,7 +304,10 @@ const formattedSearchTitle = computed(() =>{
         </div>
     </div>
 
-    <div class="BaseSearchPaginationContainer flex justify-center mt-12 text-lg">
+    <div
+        v-if="showPagination"
+        class="BaseSearchPaginationContainer flex justify-center mt-12 text-lg"
+    >
         <v-pagination
             v-model="page"
             :range-size="1"
