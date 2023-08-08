@@ -87,32 +87,63 @@ onBeforeMount(() => {
 
 </script>
 <template>
-    <div class="UserProfilePage h-full w-full ">
+    <div class="UserProfilePage h-full w-full">
         <div
-            class="profileCoverImage h-[19vh] w-full top-0 left-0 bg-cover bg-bottom"
-            :style="`background-image: url(https://i.imgur.com/TBgEy0n.jpeg)`"
-        />
-
-        <div class="profileBodyContainer w-full flex flex-col ">
-            <div class="ProfilePictureAndDataRow flex flex-row gap-8 px-24">
-                <div class="roundProfilePicContainer basis-1/4 flex justify-end">
+            class="bg-bottom bg-cover h-[19vh] profileCoverImage relative top-0 left-0 w-full"
+        >
+            <img
+                src="@/assets/images/profile_background.jpeg"
+                class="absolute -top-10 left-0 h-full object-cover scale-y-125 w-full"
+                alt="static art consist of lines"
+            >
+        </div>
+        <div class="flex flex-col profileBodyContainer w-full">
+            <div class="ProfilePictureAndDataRow flex flex-col gap-8 px-8 md:!flex-row lg:!px-24">
+                <div class="flex justify-center roundProfilePicContainer w-full md:!basis-1/4 md:!justify-end">
                     <div
-                        class="avatarContainerOverlap -mt-[100px] relative"
+                        class="-mt-[100px] avatarContainerOverlap relative"
                         @mouseenter="isEditAvatar = !isEditAvatar"
                         @mouseleave="isEditAvatar = !isEditAvatar"
                     >
                         <img
-                            class="userAvatar cursor-pointer h-[300px] w-[300px] rounded-full border-8 border-white"
+                            class="
+                                border-8
+                                border-white
+                                cursor-pointer
+                                h-[200px]
+                                min-w-[200px]
+                                rounded-full
+                                userAvatar
+                                w-[200px]
+                                lg:!h-[300px]
+                                lg:!min-w-[300px]
+                                lg:!w-[300px]
+                                "
                             :class="!avatarUrl.length <= 0 ? `bg-[url(${imageURL}/${avatarUrl})]` : ''"
                             :src="`${imageURL}/${avatarUrl}`"
                             alt="user profile picture"
                         >
                         <div
                             v-show="isEditAvatar"
-                            class="absolute w-[48px] h-[48px] rounded-full bg-white flex justify-center items-center top-6 right-[24px] border-black border-2 cursor-pointer hover:bg-slate-200"
+                            class="
+                                absolute
+                                top-6
+                                right-[24px]
+                                bg-white
+                                hover:bg-slate-200
+                                border-2
+                                border-black
+                                cursor-pointer
+                                flex
+                                justify-center
+                                items-center
+                                h-[48px]
+                                rounded-full
+                                w-[48px]
+                                "
                             @click="handleClickEditAvatar"
                         >
-                            <Edit class="w-[24px] h-[24px]" />
+                            <Edit class="h-[24px] w-[24px]" />
                             <input
                                 ref="uploadAvatar"
                                 type="file"
@@ -121,25 +152,25 @@ onBeforeMount(() => {
                         </div>
                     </div>
                 </div>
-                <div class="userInfoContainer basis-3/4 flex flex-col justify-center items-start bg-white">
-                    <div class="UserDisplayName font-semibold text-3xl my-2">
+                <div class="bg-white flex justify-center items-start flex-col userInfoContainer w-full md:!basis-3/4">
+                    <div class="UserDisplayName font-semibold my-2 text-3xl">
                         {{ currentUser.full_name }}
                     </div>
 
-                    <div class="UserDisplayRole font-base text-lg mb-2">
+                    <div class="UserDisplayRole font-base mb-2 text-lg">
                         {{ displayUserRole }}
                     </div>
-                    <div class="informationRow flex flex-row gap-6">
-                        <div class="flex flex-row mb-2 items-center">
-                            <div class="text-xl flex justify-center items-center mr-4 pb-2">
+                    <div class="flex flex-col informationRow">
+                        <div class="flex items-center flex-row mb-2">
+                            <div class="flex justify-center items-center mr-4 pb-2 text-xl">
                                 {{ '🏫' }}
                             </div>
                             <div class="UserDisplaySite font-base text-lg">
-                                {{ currentUser.site_id }}
+                                {{ currentUser.site.site_name }}
                             </div>
                         </div>
-                        <div class="flex flex-row mb-2 items-center">
-                            <div class="text-xl flex justify-center items-center mr-4">
+                        <div class="flex items-center flex-row mb-2">
+                            <div class="flex justify-center items-center mr-4 text-xl">
                                 {{ ' 📧' }}
                             </div>
                             <div class="UserDisplayRole font-base text-lg">
@@ -148,158 +179,13 @@ onBeforeMount(() => {
                         </div>
                     </div>
                 </div>
-                <!--                                <div class="col-span-12 row-span-2 grid grid-cols-6 justify-center ">-->
-                <!--                                    <div-->
-                <!--                                        class="userAvatar col-span-1 cursor-pointer h-[200px] w-[200px] bg-orange-500 rounded-full flex justify-center place-items-center relative"-->
-                <!--                                        :class="!avatarUrl.length <= 0 ? `bg-[url(${imageURL}/${avatarUrl})]` : ''"-->
-                <!--                                        @mouseenter="isEditAvatar = !isEditAvatar"-->
-                <!--                                        @mouseleave="isEditAvatar = !isEditAvatar"-->
-                <!--                                    >-->
-                <!--                                        <h1-->
-                <!--                                            v-if="!avatarUrl.length > 0"-->
-                <!--                                            class="text-[72px] text-white font-bold"-->
-                <!--                                        >-->
-                <!--                                            {{ currentUser.display_name }}-->
-                <!--                                        </h1>-->
-                <!--                                                        <div-->
-                <!--                                                            v-if="isEditAvatar"-->
-                <!--                                                            class="absolute w-[48px] h-[48px] rounded-full bg-white flex justify-center place-items-center top-0 right-[24px] border border-black border-2"-->
-                <!--                                                        >-->
-                <!--                                                            <Edit class="w-[24px] h-[24px]" />-->
-                <!--                                                        </div>-->
-                <!--                                    </div>-->
-
-                <!--                                    <div class="col-span-5 grid grid-rows-4 grid-cols-1">-->
-                <!--                                        <div>-->
-                <!--                                            &lt;!&ndash;updateField&ndash;&gt;-->
-                <!--                                            <div class="col-span-1 row-span-1 flex flex-row gap-4 relative place-items-center">-->
-                <!--                                                <input-->
-                <!--                                                    v-if="editingField"-->
-                <!--                                                    ref="editName"-->
-                <!--                                                    v-model="updatedName"-->
-                <!--                                                    class="!w-[320px]"-->
-                <!--                                                    type="text"-->
-                <!--                                                    :placeholder="currentUser.full_name"-->
-                <!--                                                >-->
-                <!--                                            </div>-->
-                <!--                                            &lt;!&ndash;fieldName&ndash;&gt;-->
-                <!--                                            <div class="col-span-1 row-span-1 flex flex-row gap-4 relative place-items-center">-->
-                <!--                                                <p-->
-                <!--                                                    ref="beforeRenderInput"-->
-                <!--                                                    class="text-[24px] font-semibold"-->
-                <!--                                                    for="name"-->
-                <!--                                                >-->
-                <!--                                                    Name:-->
-                <!--                                                </p>-->
-                <!--                                            </div>-->
-                <!--                                            &lt;!&ndash;currentDetails&ndash;&gt;-->
-                <!--                                            <div class="col-span-1 row-span-1 flex flex-row gap-4 relative place-items-center">-->
-                <!--                                                <div-->
-                <!--                                                    v-if="!editingField"-->
-                <!--                                                    class="group"-->
-                <!--                                                >-->
-                <!--                                                    <button-->
-                <!--                                                        class="flex flex-row gap-4 place-items-center"-->
-                <!--                                                        @click.prevent="editField"-->
-                <!--                                                    >-->
-                <!--                                                        <p-->
-                <!--                                                            v-if="!editingField"-->
-                <!--                                                            class="text-[24px] font-normal group-hover:underline"-->
-                <!--                                                        >-->
-                <!--                                                            {{ currentUser['full_name'] }}-->
-                <!--                                                        </p>-->
-                <!--                                                        <Edit-->
-                <!--                                                            v-if="!editingField"-->
-                <!--                                                            class="h-[18px] group-hover:scale-110"-->
-                <!--                                                        />-->
-                <!--                                                    </button>-->
-                <!--                                                </div>-->
-                <!--                                            </div>-->
-                <!--                                            &lt;!&ndash;saveChanges&ndash;&gt;-->
-                <!--                                            <div class="col-span-1 row-span-1 flex flex-row gap-4 relative place-items-center">-->
-                <!--                                                <button-->
-                <!--                                                    class="w-fit p-2 hover:bg-gray-200"-->
-                <!--                                                    @click.prevent="handleSaveChange"-->
-                <!--                                                >-->
-                <!--                                                    <Save-->
-                <!--                                                        v-if="editingField"-->
-
-                <!--                                                        class="h-[24px] w-[24px]"-->
-                <!--                                                    />-->
-                <!--                                                </button>-->
-                <!--                                            </div>-->
-                <!--                                            &lt;!&ndash;cancelUpdate&ndash;&gt;-->
-                <!--                                            <div class="col-span-1 row-span-1 flex flex-row gap-4 relative place-items-center">-->
-                <!--                                                <button-->
-                <!--                                                    class="w-fit p-2 hover:bg-gray-200"-->
-                <!--                                                    @click.prevent="handleCancelEdit"-->
-                <!--                                                >-->
-                <!--                                                    <Close-->
-                <!--                                                        v-if="editingField"-->
-                <!--                                                        class="h-[24px] w-[24px]"-->
-                <!--                                                    />-->
-                <!--                                                </button>-->
-                <!--                                            </div>-->
-                <!--                                        </div>-->
-
-                <!--                                        <div>-->
-                <!--                                            <div class="col-span-1 row-span-1 flex flex-row gap-4 relative place-items-center">-->
-                <!--                                                <p-->
-                <!--                                                    ref="beforeRenderInput"-->
-                <!--                                                    class="text-[24px] font-semibold"-->
-                <!--                                                    for="name"-->
-                <!--                                                >-->
-                <!--                                                    Email:-->
-                <!--                                                </p>-->
-                <!--                                                <p class="text-[24px] font-normal group-hover:underline">-->
-                <!--                                                    {{ currentUser.email }}-->
-                <!--                                                </p>-->
-                <!--                                            </div>-->
-                <!--                                        </div>-->
-
-                <!--                                        <div>-->
-                <!--                                            <div class="col-span-1 row-span-1 flex flex-row gap-4 relative place-items-center">-->
-                <!--                                                <p-->
-                <!--                                                    ref="beforeRenderInput"-->
-                <!--                                                    class="text-[24px] font-semibold"-->
-                <!--                                                    for="name"-->
-                <!--                                                >-->
-                <!--                                                    Role:-->
-                <!--                                                </p>-->
-                <!--                                                <p class="text-[24px] font-normal group-hover:underline">-->
-                <!--                                                    {{ currentUser.role }}-->
-                <!--                                                </p>-->
-                <!--                                            </div>-->
-                <!--                                        </div>-->
-
-                <!--                                        <div>-->
-                <!--                                            <div class="col-span-1 row-span-1 flex flex-row gap-4 relative place-items-center">-->
-                <!--                                                <p-->
-                <!--                                                    ref="beforeRenderInput"-->
-                <!--                                                    class="text-[24px] font-semibold"-->
-                <!--                                                    for="name"-->
-                <!--                                                >-->
-                <!--                                                    Site:-->
-                <!--                                                </p>-->
-                <!--                                                <p class="text-[24px] font-normal group-hover:underline">-->
-                <!--                                                    {{ fetchUserSite(currentUser.site_id) }}-->
-                <!--                                                </p>-->
-                <!--                                            </div>-->
-                <!--                                        </div>-->
-                <!--                                    </div>-->
-                <!--                                </div>-->
-
-                <!--                                <div class="col-span-12 row-sapn-4 mx-20">-->
-                <!--                                    <UserProfileSubmenu :submenu-items="subMenuItems" />-->
-                <!--                                    <router-view />-->
-                <!--                                </div>-->
             </div>
-            <div class="flex flex-col  min-h-[70vh] mt-10 bg-slate-50">
-                <div class="profileSubmenuContainer flex flex-col mt-20 px-24">
+            <div class="bg-slate-50 flex flex-col min-h-[70vh] mt-10 pb-10">
+                <div class="flex flex-col mt-20 profileSubmenuContainer px-4  md:!px-8 lg:!px-24">
                     <UserProfileSubmenu :submenu-items="subMenuItems" />
                     <router-view />
                 </div>
-                <div class="UserBookmarkListContainer flex flex-col px-24 pt-12">
+                <div class="UserBookmarkListContainer flex flex-col pt-12 px-4 md:!px-8 lg:!px-24">
                     <UserBookmark :bookmark-data="userBookmarks.data" />
                 </div>
             </div>

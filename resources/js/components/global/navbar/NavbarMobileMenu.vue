@@ -4,7 +4,7 @@ import {storeToRefs} from "pinia";
 import {useWindowStore} from "@/js/stores/useWindowStore";
 import {ref} from "vue";
 import {useRouter} from "vue-router";
-import NavItems from "@/js/components/global/NavItems.vue";
+import NavItems from "@/js/components/global/navbar/NavItems.vue";
 import Close from "@/js/components/svg/Close.vue";
 import {useAuthStore} from "@/js/stores/useAuthStore";
 

@@ -36,15 +36,32 @@ onMounted( () => {
 
 </script>
 <template>
-    <div class="UserProfileSubmenuContainer flex flex-row w-full h-16 bg-main-darkTeal rounded-t-xl items-center text-white text-lg uppercase font-semibold">
+    <div
+        class="
+            UserProfileSubmenuContainer
+            bg-main-darkTeal
+            flex
+            justify-center
+            items-center
+            flex-row
+            font-semibold
+            h-16
+            rounded-t-xl
+            text-lg
+            text-white
+            uppercase
+            w-full
+            md:!justify-start
+            "
+    >
         <div
             v-for="(item,index) in props.submenuItems"
             :key="index"
-            class="submenuItems mx-4 hover:text-primary-lightTeal hover:cursor-pointer"
+            class="mx-4 submenuItems hover:cursor-pointer hover:text-primary-lightTeal"
             @click="() => handleClickSubmenu(item)"
         >
             {{ item }}
-            <span v-if="item === 'Messages'">
+            <span v-show="item === 'Messages'">
                 ({{ notifications.count }})
             </span>
         </div>

@@ -73,7 +73,7 @@ const likeBookmarkData = {
             #icon
         >
             <AdviceCardIcon
-                class="icon absolute right-4 bottom-2 group-hover:-bottom-32 transition-all"
+                class="absolute right-4 bottom-2 group-hover:-bottom-32 icon transition-all"
                 :advice-icon-name="randomIconName"
             />
         </template>

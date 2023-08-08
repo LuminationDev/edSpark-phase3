@@ -50,13 +50,40 @@ const handleClickProfileInfoMenu = (menuName) => {
 
 </script>
 <template>
-    <div class="profileInfoContainer flex flex-col pt-4 px-6 py-6 bg-main-teal/80 text-white text-lg rounded-b-xl">
-        <div class="flex flex-row">
-            <div class="profileInfoMenu flex flex-col pl-4 basis-1/4 col-span-1 border-r border-slate-300 pr-12">
+    <div class="bg-main-teal/80 flex flex-col profileInfoContainer pt-4 px-1 py-6 rounded-b-xl text-lg text-white md:!px-6">
+        <div class="flex justify-center flex-col md:!flex-row">
+            <div
+                class="
+                    flex
+                    flex-row
+                    profileInfoMenu
+                    text-sm
+                    w-full
+                    md:!basis-1/4
+                    md:!border-r
+                    md:!border-slate-300
+                    md:!flex-col
+                    md:!pl-4
+                    md:!text-lg
+                    ">
                 <div
                     v-for="(item,index) in userInfoMenu"
                     :key="index"
-                    class="profileInfoMenuItem hover:cursor-pointer w-full text-left px-4 py-4 hover:underline decoration-white decoration-4 underline-offset-8 transition-all"
+                    class="
+                        decoration-4
+                        decoration-white
+                        profileInfoMenuItem
+                        px-1
+                        py-4
+                        text-center
+                        transition-all
+                        underline-offset-8
+                        hover:underline
+                        w-full
+                        hover:cursor-pointer
+                        md:!px-4
+                        md:!text-left
+                        "
                     :class="{'font-bold underline' : item === currentActiveUserInfoMenu ,
                     }"
                     @click=" () => handleClickProfileInfoMenu(item)"
@@ -64,7 +91,7 @@ const handleClickProfileInfoMenu = (menuName) => {
                     {{ item }}
                 </div>
             </div>
-            <div class="profileInfoContent basis-3/4 bg-white">
+            <div class="basis-3/4 bg-white profileInfoContent">
                 <ProfileInfoContent :content-type="currentActiveUserInfoMenu" />
             </div>
         </div>

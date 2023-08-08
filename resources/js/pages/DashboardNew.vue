@@ -12,22 +12,13 @@ import SectionHeader from '../components/global/SectionHeader.vue';
  */
 import SoftwareRobot from '../components/svg/SoftwareRobot.vue';
 
-import DeptNegotiatedIcon from "@/js/components/svg/software/DeptNegotiatedIcon.vue";
 import DeptApprovedIcon from "@/js/components/svg/software/DeptApprovedIcon.vue";
 import DeptProvidedIcon from "@/js/components/svg/software/DeptProvidedIcon.vue";
-import DepartmentApprovedSolo from '../components/svg/DepartmentApprovedSolo.vue';
-/**
- * Card Components /sections
- */
-import SoftwareDashboard from '../components/dashboard/SoftwareDashboard.vue';
-import AdviceDashboard from '../components/dashboard/AdviceDashboard.vue';
-import EventsDashboard from '../components/dashboard/EventsDashboard.vue';
-import SchoolsDashboard from '../components/dashboard/SchoolsDashboard.vue';
-
+import DepartmentApprovedSolo from '@/js/components/svg/DepartmentApprovedSolo.vue';
 /**
  * Loading Cards
  */
-import CardLoading from '../components/card/CardLoading.vue';
+import CardLoading from '@/js/components/card/CardLoading.vue';
 
 /**
  * Depends on
@@ -357,7 +348,7 @@ onMounted(async () => {
                                     softwareDashboardContentContainer
                                     "
                             >
-                                <h5 class="font-semibold pt-4 text-[21px]">
+                                <h5 class="font-semibold pt-4 text-xl">
                                     Department Provided
                                 </h5>
                                 <p class="w-9/12">
@@ -376,7 +367,7 @@ onMounted(async () => {
                                     softwareDashboardContentContainer
                                     "
                             >
-                                <h5 class="font-semibold text-[21px]">
+                                <h5 class="font-semibold text-xl">
                                     Department Approved
                                 </h5>
                                 <p class="pb-4 w-9/12">
@@ -418,10 +409,10 @@ onMounted(async () => {
                         </div>
                     </div>
 
-                    <div class="w-3/4">
+                    <div class="ml-4 w-3/4">
                         <div class="flex flex-col h-full">
                             <div class="flex justify-center flex-col h-3/4 min-h-[200px] my-auto">
-                                <h5 class="font-semibold text-[18px]">
+                                <h5 class="font-semibold text-xl">
                                     Negotiated Deals
                                 </h5>
                                 <p class="pb-4 w-[85%]">

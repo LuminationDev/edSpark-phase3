@@ -1,8 +1,8 @@
 <script setup>
 </script>
 <template>
-    <div class="profileWorkContainer flex flex-col pt-4 px-6 py-6 bg-main-teal/80">
-        <h3 class="text-[24px] font-normal py-2 bg-green-100">
+    <div class="bg-main-teal/80 flex flex-col h-44 profileWorkContainer pt-4 px-6 py-6">
+        <h3 class="font-normal py-2 text-[24px] text-white">
             Work temporarily disabled
         </h3>
     </div>
