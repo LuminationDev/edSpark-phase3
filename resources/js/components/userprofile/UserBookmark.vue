@@ -38,11 +38,11 @@ const handleClickBookmark = (postType, postId, postTitle) => {
 </script>
 
 <template>
-    <div class="userBookmarkOuterContainer flex flex-col  ">
-        <div class="bookmarksectiontitle flex px-4 h-16 bg-main-darkTeal rounded-t-xl items-center text-white text-lg uppercase font-semibold">
+    <div class="flex flex-col userBookmarkOuterContainer">
+        <div class="bg-main-darkTeal bookmarksectiontitle flex items-center font-semibold h-16 px-4 rounded-t-xl text-lg text-white uppercase">
             Your Bookmarks
         </div>
-        <div class="userBookmarkContentSection h-[30vh] bg-main-teal/80 px-10 pt-6 text-white overflow-scroll rounded-b-lg">
+        <div class="bg-main-teal/80 h-72 overflow-scroll pt-4 px-4 rounded-b-lg text-white userBookmarkContentSection md:!pt-6 md:!px-10">
             <template
                 v-for="(singleBookmark, index) in bookmarkData"
                 :key="index"
@@ -52,7 +52,7 @@ const handleClickBookmark = (postType, postId, postTitle) => {
                     :title="singleBookmark.post_title"
                     :display-content="singleBookmark.post_type"
                     :image-preview="singleBookmark.cover_image"
-                    class="py-4 px-8 my-4  text-primary-teal"
+                    class="my-2 px-4 py-4 text-main-teal md:!my-4 md:!px-8"
                     :click-callback="() => handleClickBookmark(singleBookmark.post_type, singleBookmark.post_id,singleBookmark.post_title)"
                 />
             </template>
