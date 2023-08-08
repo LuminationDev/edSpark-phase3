@@ -8,9 +8,9 @@ import { useRouter } from 'vue-router';
 /**
  * Import SVG's
  */
-import NavSwoosh from '../svg/NavSwoosh.vue';
-import Logo from '../svg/Logo.vue';
-import Profile from '../svg/Profile.vue';
+import NavSwoosh from '../../svg/NavSwoosh.vue';
+import Logo from '../../svg/Logo.vue';
+import Profile from '../../svg/Profile.vue';
 
 /**
  * Import Stores
@@ -21,12 +21,12 @@ import { useAuthStore } from '@/js/stores/useAuthStore';
 /**
  * Import Components
  */
-import ProfileDropdown from './ProfileDropdown.vue';
+import ProfileDropdown from '../ProfileDropdown.vue';
 import NavItems from './NavItems.vue';
 import { isObjectEmpty } from "@/js/helpers/objectHelpers";
 import axios from 'axios';
 import {appURL, serverURL, imageURL} from "@/js/constants/serverUrl";
-import NavbarMobileMenu from "@/js/components/global/NavbarMobileMenu.vue";
+import NavbarMobileMenu from "@/js/components/global/navbar/NavbarMobileMenu.vue";
 import {storeToRefs} from "pinia";
 import {useWindowStore} from "@/js/stores/useWindowStore";
 

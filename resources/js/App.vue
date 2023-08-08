@@ -1,6 +1,6 @@
 <script setup>
 
-import NavBar from './components/global/NavBar.vue';
+import NavBar from './components/global/navbar/NavBar.vue';
 import Footer from './components/global/Footer/Footer.vue';
 import {useUserStore} from "@/js/stores/useUserStore";
 import {storeToRefs} from "pinia";
@@ -9,7 +9,7 @@ import {onBeforeMount, onBeforeUnmount, onMounted, reactive, ref} from "vue";
 import recommenderEdsparkSingletonFactory from "@/js/recommender/recommenderEdspark";
 import {isObjectEmpty} from "@/js/helpers/objectHelpers";
 import {useWindowStore} from "@/js/stores/useWindowStore";
-import NavbarMobileMenu from "@/js/components/global/NavbarMobileMenu.vue";
+import NavbarMobileMenu from "@/js/components/global/navbar/NavbarMobileMenu.vue";
 import {useAuthStore} from "@/js/stores/useAuthStore";
 
 
