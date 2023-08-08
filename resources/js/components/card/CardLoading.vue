@@ -3,7 +3,8 @@
 const props = defineProps({
     numberPerRow: {
         type: Number,
-        required: false
+        required: false,
+        default: 3
     },
     numberOfRows: {
         type: Number,
@@ -12,7 +13,8 @@ const props = defineProps({
     },
     additionalClasses: {
         type: String,
-        required: false
+        required: false,
+        default: ''
     }
 });
 </script>
@@ -25,8 +27,8 @@ const props = defineProps({
         class="flex justify-center flex-row overflow-hidden w-full"
     >
         <div
-            v-for="(count,index) in numberPerRow"
-            :key="index"
+            v-for="(count,colIndex) in numberPerRow"
+            :key="colIndex"
             class="
                 GenericCardContainer
                 border-[0.5px]

@@ -77,7 +77,7 @@ const numberOfLoadingPlaceholder = computed(() =>{
             <Carousel
                 :items-to-show="props.showCount"
                 :snap-align="'start'"
-                :wrap-around="false"
+                :wrap-around="true"
                 :breakpoints="breakpointChoser()"
             >
                 <Slide
@@ -157,6 +157,40 @@ const numberOfLoadingPlaceholder = computed(() =>{
     :deep(.carousel__pagination-button::after) {
         height: 12px;
         border-radius: 50%;
+    }
+    :deep(.carousel__pagination){
+        margin-top:20px
+    }
+}
+
+@media only screen and (min-width: 350px) {
+    .carousel__wrapper {
+        :deep(.carousel__next){
+            right: -40px ;
+        }
+        :deep(.carousel__prev){
+            left: -40px ;
+        }
+    }
+}
+@media only screen and (min-width: 768px) {
+    .carousel__wrapper {
+        :deep(.carousel__next){
+            right: 0 ;
+        }
+        :deep(.carousel__prev){
+            left: 0 ;
+        }
+    }
+}
+@media only screen and (min-width: 1024px) {
+    .carousel__wrapper {
+        :deep(.carousel__next){
+            right: -20px ;
+        }
+        :deep(.carousel__prev){
+            left: -20px ;
+        }
     }
 }
 </style>

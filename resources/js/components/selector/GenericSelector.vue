@@ -62,7 +62,7 @@ const customBackground = computed(() => {
         <div
             v-for="(item,index) in listData"
             :key="index"
-            class=" h-28 p-2 my-2 bg-blue-300 text-white rounded-xl grayscale opacity-60 cursor-pointer group hover:shadow-xl"
+            class="bg-blue-300 cursor-pointer grayscale group h-28 my-2 opacity-60 p-2 rounded-xl text-white hover:shadow-xl"
             :class="[{'bg-blue-300 !grayscale-0 !opacity-100' : checkIfObjectIsSelected(item)}, customBackground]"
 
 
@@ -75,15 +75,3 @@ const customBackground = computed(() => {
         </div>
     </div>
 </template>
-
-
-
-
-<!--
-Piping
-let check = [{name: 'trent'}, {name: 'jason'}]
-  .map(item => item.name)
-  .includes('trent');
-
-Simple & fast
-let check = [{name: 'trent'}, {name: 'jason'}].some(el => el.name === 'trent')-->

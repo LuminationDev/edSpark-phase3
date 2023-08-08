@@ -76,15 +76,15 @@ const handleMouseExitCard = () =>{
                     </div>
                     <div class="px-6 py-4 relative transition-all">
                         <!-- CARD CONTENT -->
-                        <div class="card-content_title group-hover:mr-24 min-h-[72px] transition-all">
+                        <div class="card-content_title group-hover:mr-0 min-h-[72px] transition-all">
                             <!-- CARD CONTENT HEADER -->
                             <h5
                                 class="
                                     flex
-                                    justify-between
+                                    justify-start
                                     font-medium
-                                    group-hover:mr-8
-                                    place-items-center
+                                    group-hover:mr-0
+                                    text-left
                                     text-xl
                                     transition-all
                                     "
