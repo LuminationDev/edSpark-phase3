@@ -1,6 +1,5 @@
 <script setup>
-import FooterSwoosh from '../../svg/FooterSwoosh.vue';
-import FooterSocialMediaIcon from "@/js/components/global/FooterSocialMediaIcon.vue";
+import FooterSocialMediaIcon from "@/js/components/global/Footer/FooterSocialMediaIcon.vue";
 import FooterCollectionLogos from "@/js/components/global/Footer/FooterCollectionLogos.vue";
 import FooterBottomLinks from "@/js/components/global/Footer/FooterBottomLinks.vue";
 import ExternalLink from "@/js/components/svg/externalLink.vue";
@@ -140,15 +139,9 @@ import ExternalLink from "@/js/components/svg/externalLink.vue";
             </div>
         </div>
         <FooterCollectionLogos />
-
-
-        <!-- <FooterSwoosh class="w-full pointer-events-none" /> -->
     </div>
     <FooterBottomLinks />
 </template>
 
 <style>
-    .footer-background {
-        clip-path: inset(0 0 round 0 0 75%);
-    }
 </style>

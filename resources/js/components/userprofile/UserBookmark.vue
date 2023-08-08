@@ -10,7 +10,6 @@ const props = defineProps({
     }
 })
 const router = useRouter()
-
 const handleClickBookmark = (postType, postId, postTitle) => {
     let targetUrl = ''
     switch(postType){

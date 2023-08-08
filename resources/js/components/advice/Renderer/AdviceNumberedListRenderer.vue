@@ -65,7 +65,7 @@ const getDistanceBetweenElements = (a, b) => {
 <template>
     <div class="extraContent relative">
         <div
-            class="absolute left-[12.4%] bg-black connectingLine hidden w-1 z-10 md:!block"
+            class="absolute left-[12.4%] bg-black connectingLine hidden w-1 z-10 md:!flex"
             :style="`height: ${distanceBetweenEls}px; top: ${top}px;`"
         />
         <div
@@ -74,7 +74,7 @@ const getDistanceBetweenElements = (a, b) => {
             class="eachContent py-2"
         >
             <div class="flex flex-row w-full">
-                <div class="extraContentIcon flex justify-center items-center hidden relative w-1/4 md:!block">
+                <div class="extraContentIcon hidden relative w-1/4  items-center justify-center md:!flex">
                     <div
                         class="
                             absolute
