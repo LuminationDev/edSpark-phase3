@@ -1,4 +1,5 @@
 <script setup>
+import {API_ENDPOINTS} from "@/js/constants/API_ENDPOINTS";
 import {computed} from "vue";
 import {useRouter} from "vue-router";
 import {storeToRefs} from "pinia";
@@ -36,7 +37,7 @@ const {
     data: softwaresData,
     error: softwaresError,
     isValidating: softwaresIsValidating
-} = useSWRV(() => currentUser.value.id ? API_ENDPOINTS.SOFTWARE_FETCH_SOFTWARE_POSTS : null, axiosFetcher, swrvOptions);
+} = useSWRV(() => currentUser.value.id ? API_ENDPOINTS.SOFTWARE.FETCH_SOFTWARE_POSTS : null, axiosFetcher, swrvOptions);
 
 const {state: softwaresState, STATES: ALLSTATES} = useSwrvState(softwaresData, softwaresError, softwaresIsValidating);
 

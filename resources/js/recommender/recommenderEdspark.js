@@ -1,3 +1,4 @@
+import {API_ENDPOINTS} from "@/js/constants/API_ENDPOINTS";
 import {serverURL} from "@/js/constants/serverUrl";
 import axios from "axios";
 import {schoolContentArrParser} from "@/js/helpers/jsonHelpers";
@@ -37,7 +38,7 @@ const recommenderEdsparkSingletonFactory = (function(){
                 )
             }
             _fetchAllSoftwareAsync(){
-                return axios.get(API_ENDPOINTS.SOFTWARE_FETCH_SOFTWARE_POSTS).then(res => {
+                return axios.get(API_ENDPOINTS.SOFTWARE.FETCH_SOFTWARE_POSTS).then(res => {
                         return res.data
                     }
                 )

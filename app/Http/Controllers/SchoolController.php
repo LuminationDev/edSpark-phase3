@@ -15,6 +15,75 @@ use function PHPUnit\Framework\isNull;
 
 class SchoolController extends Controller
 {
+    private function formatSchoolMetadata($schoolMetadata)
+    {
+        $tempMetadata = [];
+        if ($schoolMetadata) {
+            foreach ($schoolMetadata as $key => $value) {
+                $res = [
+                    'schoolmeta_key' => $value->schoolmeta_key,
+                    'schoolmeta_value' => $value->schoolmeta_value
+                ];
+                $tempMetadata[] = $res;
+            }
+            return $tempMetadata;
+        }
+        return [];
+    }
+
+    private function schoolModelToJson($school, $schoolMetadata = NULL, $request = NULL)
+    {
+        // School likes and bookmarks
+        $userId = 0;
+        $isLikedByUser = false;
+        $isBookmarkedByUser = false;
+
+        if(isset($request) && $request->has('usid')){
+            $userId = $request->input('usid');
+            $isLikedByUser = $school->likes()->where('user_id', $userId)->exists();
+            $isBookmarkedByUser = $school->bookmarks()->where('user_id', $userId)->exists();
+
+        }
+
+        // school specific information
+        // location and meta
+        $site = Site::where('site_id', $school->site_id)->first();
+        $siteLocation = (object) [
+            'lat' => $site ? (float) $site->site_latitude : 0.0,
+            'lng' => $site ? (float) $site->site_longitude : 0.0
+        ];
+
+        // adding schoolType into meta
+        $schoolType = [
+            'schoolmeta_key' => 'school_type',
+            'schoolmeta_value' => $school->site->site_sub_type_desc ?? ""
+        ];
+        $schoolMetadata[] = $schoolType;
+        return [
+            'id' => $school->id,
+            'site' => [
+                'site_id' => $school->site->site_id,
+                'site_name' => ($school->site->site_id) ? $school->site->site_name : NULL
+            ],
+            'owner' => [
+                'owner_id' => $school->owner_id,
+                'owner_name' => ($school->owner_id) ? $school->owner->full_name : NULL
+            ],
+            'name' => $school->name,
+            'content_blocks' => ($school->content_blocks) ? json_decode($school->content_blocks) : NULL,
+            'logo' => ($school->logo) ? $school->logo : NULL,
+            'cover_image' => ($school->cover_image) ? $school->cover_image : NULL,
+            'tech_used' => ($school->tech_used) ? json_decode($school->tech_used) : NULL,
+            'pedagogical_approaches' => ($school->pedagogical_approaches) ? json_decode($school->pedagogical_approaches) : NULL,
+            'tech_landscape' => ($school->tech_landscape) ? json_decode($school->tech_landscape) : NULL,
+            'metadata' => ($schoolMetadata) ?: NULL,
+            'location' => $siteLocation,
+            'isLikedByUser' => $isLikedByUser,
+            'isBookmarkedByUser' => $isBookmarkedByUser,
+            'fetchingUserId' => $userId
+
+        ];
+    }
     public function createSchool(Request $request)
     {
         if ($request->isMethod('post')) {
@@ -113,11 +182,8 @@ class SchoolController extends Controller
                     $dataToUpdate = [
                         'name' => $data['name'],
                         'content_blocks' => json_encode($data['content_blocks']),
-                        // if logo or coverImage is not string, schoolLogoURL and coverImageUrl will be set
-                        // and will be used as new value
-                        // if not set, old value will be used instead
-                        'logo' => isset($schoolLogoUrl) ? $schoolLogoUrl : $data['logo'],
-                        'cover_image' => isset($coverImageUrl) ? $coverImageUrl : $data['cover_image'],
+                        'logo' => $schoolLogoUrl ?? $data['logo'],
+                        'cover_image' => $coverImageUrl ?? $data['cover_image'],
                         'tech_used' => json_encode($data['tech_used']),
                         'pedagogical_approaches' => json_encode($data['pedagogical_approaches']),
                         'tech_landscape' => json_encode($data['tech_landscape']),
@@ -132,11 +198,11 @@ class SchoolController extends Controller
             }
             $metadata = json_decode($data['metadata']);
             if (!empty($metadata)) {
-                if(gettype($metadata) != 'array'){
+                if (gettype($metadata) != 'array') {
                     $metadata = [$metadata]; // cast it to an array containing one object
                 }
                 foreach ($metadata as $meta) {
-                    foreach ($meta as $key => $value){
+                    foreach ($meta as $key => $value) {
                         try {
                             $existingMeta = Schoolmeta::where('school_id', $data['id'])
                                 ->where('schoolmeta_key', $key)
@@ -167,37 +233,8 @@ class SchoolController extends Controller
 
             // get metadata
             $schoolMetadata = Schoolmeta::where('school_id', $school->id)->get();
-            $schoolMetadataToSend = [];
-            if ($schoolMetadata) {
-                foreach ($schoolMetadata as $key => $value) {
-                    $res = [
-                        'schoolmeta_key' => $value->schoolmeta_key,
-                        'schoolmeta_value' => $value->schoolmeta_value
-                    ];
-                    $schoolMetadataToSend[] = $res;
-                }
-            }
-
-            $returningResult = [
-                'id' => $school->id,
-                'site' => [
-                    'site_id' => $school->site_id,
-                    'site_name' => ($school->site_id) ? $school->site->site_name : NULL
-                ],
-                'owner' => [
-                    'owner_id' => $school->owner_id,
-                    'owner_name' => ($school->owner_id) ? $school->owner->full_name : NULL
-                ],
-                'name' => $school->name,
-                'content_blocks' => ($school->content_blocks) ? json_decode($school->content_blocks) : NULL,
-                'logo' => ($school->logo) ? $school->logo : NULL,
-                'cover_image' => ($school->cover_image) ? $school->cover_image : NULL,
-                'tech_used' => ($school->tech_used) ? json_decode($school->tech_used) : NULL,
-                'pedagogical_approaches' => ($school->pedagogical_approaches) ? json_decode($school->pedagogical_approaches) : NULL,
-                'tech_landscape' => ($school->tech_landscape) ? json_decode($school->tech_landscape) : NULL,
-                'metadata' => isset($schoolMetadataToSend) ? $schoolMetadataToSend : NULL
-            ];
-
+            $schoolMetadataToSend = $this->formatSchoolMetadata($schoolMetadata);
+            $returningResult = $this->schoolModelToJson($school, $schoolMetadataToSend);
             return response()->json([
                 'message' => "School updated successfully",
                 'error' => $error,
@@ -207,54 +244,14 @@ class SchoolController extends Controller
         }
     }
 
-    public function fetchAllSchools()
+    public function fetchAllSchools(Request $request)
     {
         $schools = School::get();
         $data = [];
         foreach ($schools as $school) {
             $schoolMetadata = Schoolmeta::where('school_id', $school->id)->get();
-            $site = Site::where('site_id',$school->site_id)->first();
-            $siteLocation = (object)[
-                'lat' => (float)($site->site_latitude ?: 0),
-                'lng' => (float)($site->site_longitude ?: 0)
-            ];
-            $site_type = $site->site_type_code;
-            $schoolMetadataToSend = Metahelper::getMeta(Schoolmeta::class, $school, 'school_id','schoolmeta_key','schoolmeta_value' );
-//            if ($schoolMetadata) {
-//                foreach ($schoolMetadata as $key => $value) {
-//                    $res = [`
-//                        'schoolmeta_value' => $value->schoolmeta_value
-//                    ];
-//                    $schoolMetadataToSend[] = $res;
-//                }
-//            }
-            //adding school_type into metadata
-            $schoolType = [
-                'schoolmeta_key' => 'school_type',
-                'schoolmeta_value' => $school->site->site_sub_type_desc
-            ];
-            $schoolMetadataToSend[] = $schoolType;
-            $result = [
-                'id' => $school->id,
-                'site' => [
-                    'site_id' => $school->site->site_id,
-                    'site_name' => ($school->site_id) ? $school->site->site_name : NULL,
-                    'site_type' => ($site_type) ?: NULL,
-                ],
-                'owner' => [
-                    'owner_id' => $school->owner_id,
-                    'owner_name' => ($school->owner_id) ? $school->owner->full_name : NULL
-                ],
-                'name' => $school->name,
-                'content_blocks' => ($school->content_blocks) ? json_decode($school->content_blocks) : NULL,
-                'logo' => ($school->logo) ?: NULL,
-                'cover_image' => ($school->cover_image) ? $school->cover_image : NULL,
-                'tech_used' => ($school->tech_used) ? json_decode($school->tech_used) : NULL,
-                'pedagogical_approaches' => ($school->pedagogical_approaches) ? json_decode($school->pedagogical_approaches) : NULL,
-                'tech_landscape' => ($school->tech_landscape) ? json_decode($school->tech_landscape) : NULL,
-                'metadata' => ($schoolMetadataToSend) ?: NULL,
-                'location' => $siteLocation
-            ];
+            $schoolMetadataToSend =  $this->formatSchoolMetadata($schoolMetadata);
+            $result = $this->schoolModelToJson($school, $schoolMetadataToSend, $request);
             $data[] = $result;
         }
 
@@ -262,7 +259,9 @@ class SchoolController extends Controller
 
     }
 
-    public function fetchSchoolByName($schoolName)
+
+
+    public function fetchSchoolByName(Request $request, $schoolName)
     {
         $schoolName = str_replace('%20', ' ', $schoolName);
         $school = School::where('name', $schoolName)->first();
@@ -270,43 +269,8 @@ class SchoolController extends Controller
             return response('School Not found', 404);
         } else {
             $schoolMetadata = Schoolmeta::where('school_id', $school->id)->get();
-            $site = Site::where('site_id',$school->site_id)->first();
-            $siteLocation = (object)[
-                'lat' => (float)$site->site_latitude,
-                'lng' => (float)$site->site_longitude
-            ];
-            $schoolMetadataToSend = [];
-            if ($schoolMetadata) {
-                foreach ($schoolMetadata as $key => $value) {
-                    $res = [
-                        'schoolmeta_key' => $value->schoolmeta_key,
-                        'schoolmeta_value' => $value->schoolmeta_value
-                    ];
-                    $schoolMetadataToSend[] = $res;
-                }
-            }
-
-
-            $result = [
-                'id' => $school->id,
-                'site' => [
-                    'site_id' => $school->site->site_id,
-                    'site_name' => ($school->site->site_id) ? $school->site->site_name : NULL
-                ],
-                'owner' => [
-                    'owner_id' => $school->owner_id,
-                    'owner_name' => ($school->owner_id) ? $school->owner->full_name : NULL
-                ],
-                'name' => $school->name,
-                'content_blocks' => ($school->content_blocks) ? json_decode($school->content_blocks) : NULL,
-                'logo' => ($school->logo) ? $school->logo : NULL,
-                'cover_image' => ($school->cover_image) ? $school->cover_image : NULL,
-                'tech_used' => ($school->tech_used) ? json_decode($school->tech_used) : NULL,
-                'pedagogical_approaches' => ($school->pedagogical_approaches) ? json_decode($school->pedagogical_approaches) : NULL,
-                'tech_landscape' => ($school->tech_landscape) ? json_decode($school->tech_landscape) : NULL,
-                'metadata' => ($schoolMetadataToSend) ?: NULL,
-                'location' => $siteLocation
-            ];
+            $schoolMetadataToSend = $this->formatSchoolMetadata($schoolMetadata);
+            $result = $this->schoolModelToJson($school, $schoolMetadataToSend, $request);
             return response()->json($result, 200);
 
         }
@@ -314,30 +278,15 @@ class SchoolController extends Controller
     }
 
     //TODO: fetch featured schools only 4
-    public function fetchFeaturedSchools()
+    public function fetchFeaturedSchools(Request $request)
     {
         $schools = School::where('isFeatured', 1)->get();
         $data = [];
 
         foreach ($schools as $school) {
-            $result = [
-                'id' => $school->id,
-                'site' => [
-                    'site_id' => $school->site->site_id,
-                    'site_name' => ($school->site->site_id) ? $school->site->site_name : NULL
-                ],
-                'owner' => [
-                    'owner_id' => $school->owner_id,
-                    'owner_name' => ($school->owner_id) ? $school->owner->full_name : NULL
-                ],
-                'name' => $school->name,
-                'content_blocks' => ($school->content_blocks) ? json_decode($school->content_blocks) : NULL,
-                'logo' => ($school->logo) ? $school->logo : NULL,
-                'cover_image' => ($school->cover_image) ? $school->cover_image : NULL,
-                'tech_used' => ($school->tech_used) ? json_decode($school->tech_used) : NULL,
-                'pedagogical_approaches' => ($school->pedagogical_approaches) ? json_decode($school->pedagogical_approaches) : NULL,
-                'tech_landscape' => ($school->tech_landscape) ? json_decode($school->tech_landscape) : NULL
-            ];
+            $schoolMetadata = Schoolmeta::where('school_id', $school->id)->get();
+            $schoolMetadataToSend = $this->formatSchoolMetadata($schoolMetadata);
+            $result = $this->schoolModelToJson($school, $schoolMetadataToSend, $request);
             $data[] = $result;
         }
 
@@ -452,6 +401,7 @@ class SchoolController extends Controller
             ]);
         }
     }
+
     public function getNominatedUsersFromSchool(Request $request): \Illuminate\Http\JsonResponse
     {
         if ($request->isMethod('post')) {
@@ -631,7 +581,6 @@ class SchoolController extends Controller
             'message' => 'Unauthorized'
         ]);
     }
-
 
 
     /**

@@ -19,7 +19,8 @@ const props = defineProps({
     }
 });
 
-const {post_id, post_title, cover_image, advice_type, created_at, post_excerpt, author} = props.adviceContent
+// eslint-disable-next-line vue/no-setup-props-destructure
+const {post_id, post_title, cover_image, advice_type, created_at, post_excerpt, author, isLikedByUser,isBookmarkedByUser} = props.adviceContent
 const router = useRouter()
 const {currentUser} = storeToRefs(useUserStore())
 
@@ -41,16 +42,11 @@ const handleClickAdviceCard = () => {
 
 }
 
-const likeBookmarkData = {
-    post_id: props.adviceContent.post_id,
-    user_id: currentUser.value.id || 9999,
-    post_type: 'advice'
-}
-
 </script>
 
 <template>
     <GenericCard
+        :id="post_id"
         :key="post_id"
         :title="post_title"
         :display-content="post_excerpt"
@@ -59,8 +55,9 @@ const likeBookmarkData = {
         :number-per-row="numberPerRow"
         :cover-image="cover_image"
         :click-callback="handleClickAdviceCard"
-        :like-bookmark-data="likeBookmarkData"
         :section-type="'advice'"
+        :is-liked-by-user="isLikedByUser"
+        :is-bookmarked-by-user="isBookmarkedByUser"
     >
         <template
             v-if="advice_type.length > 0"

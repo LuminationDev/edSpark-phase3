@@ -1,4 +1,5 @@
 <script setup>
+import {debounce} from "lodash";
 import {computed, ref} from "vue";
 import {bookmarkURL, imageURL, likeURL} from "@/js/constants/serverUrl";
 import Tooltip from "@/js/components/global/Tooltip/Tooltip.vue";
@@ -6,21 +7,23 @@ import Tooltip from "@/js/components/global/Tooltip/Tooltip.vue";
 import Like from "@/js/components/svg/Like.vue";
 import LikeFull from "@/js/components/svg/LikeFull.vue";
 import BookMark from "@/js/components/svg/BookMark.vue";
-import {storeToRefs} from "pinia";
-import {useUserStore} from "@/js/stores/useUserStore";
 import BookmarkFull from "@/js/components/svg/BookmarkFull.vue";
 
-const {userLikeList, userBookmarkList} = storeToRefs(useUserStore())
+import {storeToRefs} from "pinia";
+import {useUserStore} from "@/js/stores/useUserStore";
+
+const {currentUser, userLikeList, userBookmarkList} = storeToRefs(useUserStore())
+
 
 const props = defineProps({
+    id: {
+        type: [String, Number],
+        required: false,
+        default: ''
+    },
     title: {
         type: String,
         required: true
-    },
-    numberPerRow: {
-        type: Number,
-        required: false,
-        default: 3
     },
     displayAuthor: {
         type: [Object, String],
@@ -54,12 +57,6 @@ const props = defineProps({
         default: () => {
         }
     },
-    likeBookmarkData: {
-        type: Object,
-        required: false,
-        default: () => {
-        }
-    },
     overrideContent: {
         type: Boolean,
         required: false,
@@ -70,38 +67,28 @@ const props = defineProps({
         required: false,
         default: ""
     },
-    item: {
-        type: Object,
+    isLikedByUser: {
+        type: Boolean,
         required: false,
-        default: () => {
-        }
+        default: false
+    },
+    isBookmarkedByUser: {
+        type: Boolean,
+        required: false,
+        default: false
     }
+
 });
+const currentUserLiked = ref(props.isLikedByUser)
+const currentUserBookmarked = ref(props.isBookmarkedByUser)
 
-const currentUserLiked = computed(() => {
-    if (userLikeList.value[props.likeBookmarkData.post_type] &&
-        userLikeList.value[props.likeBookmarkData.post_type].length > 0 &&
-        userLikeList.value[props.likeBookmarkData.post_type].filter(eachItem => {
-            if (eachItem == props.likeBookmarkData.post_id) return true
-        }).length > 0) {
-        return true
-    } else {
-        return false
-    }
-})
-
-const currentUserBookmarked = computed(() => {
-    if (userBookmarkList.value[props.likeBookmarkData.post_type] &&
-        userBookmarkList.value[props.likeBookmarkData.post_type].length > 0 &&
-        userBookmarkList.value[props.likeBookmarkData.post_type].filter(eachItem => {
-            if (eachItem == props.likeBookmarkData.post_id) return true
-        }).length > 0) {
-        return true
-    } else {
-        return false
-    }
-})
-
+/**
+ * Check if both start and end date are provided.
+ * return both date with "-" if true
+ * else if just return start date
+ * else return empty string if invalid
+ * @type {ComputedRef<unknown>}
+ */
 const formattedDate = computed(() => {
     if (props.displayDate && props.endDate) {
         const startDate = new Date(Date.parse(props.displayDate)).toDateString()
@@ -121,76 +108,53 @@ const formattedDate = computed(() => {
     }
 })
 
-
-const handleDefaultLike = async (data) => {
-    const {post_type} = props.likeBookmarkData
-    await axios.post(likeURL, data)
-        .then(res => {
-            if (res.data.isLiked) {
-                if (!userLikeList.value[post_type]) {
-                    userLikeList.value[post_type] = []
-                }
-                userLikeList.value[post_type].push(data.post_id)
-            } else {
-                if (userLikeList.value[post_type]) {
-                    const indexRemoval = userLikeList.value[post_type].indexOf(data.post_id)
-                    if (indexRemoval !== -1) {
-                        userLikeList.value[post_type].splice(indexRemoval, 1)
-                    } else {
-                        console.log('tried to unlike something that doesnt exist in the database')
-                    }
-                }
-            }
-        })
-        .catch(err => {
-            console.log(err);
-        })
+let likeOrBookmarkPayload = {
+    post_id: props.id,
+    user_id: currentUser.value.id || 9999,
+    post_type: props.sectionType
 }
 
-const handleDefaultBookmark = async (data) => {
-    const {post_type} = props.likeBookmarkData
-    await axios.post(bookmarkURL, data)
-        .then(res => {
-            if (res.data.isBookmarked) {
-                if (!userBookmarkList.value[post_type]) {
-                    userBookmarkList.value[post_type] = []
-                }
-                userBookmarkList.value[post_type].push(data.post_id)
-            } else {
-                if (userBookmarkList.value[post_type]) {
-                    const indexRemoval = userBookmarkList.value[post_type].indexOf(data.post_id)
-                    if (indexRemoval !== -1) {
-                        userBookmarkList.value[post_type].splice(indexRemoval, 1)
-                    } else {
-                        console.log('tried to unbookmark something that doesnt exist in the database')
-                    }
-                }
-            }
-        })
-        .catch(err => {
-            console.log(err)
-        })
+const handleDefaultLike = async () => {
+    currentUserLiked.value = !currentUserLiked.value
+    await axios.post(likeURL, likeOrBookmarkPayload).then(res => {
+        if (res.data?.status === 200) {
+            currentUserLiked.value = res.data.isLiked
+        }
+    }).catch(err => {
+        console.log(err.message)
+    })
 }
 
+const handleDefaultBookmark = async () => {
+    currentUserBookmarked.value = !currentUserBookmarked.value
+    await axios.post(bookmarkURL, likeOrBookmarkPayload).then(res => {
+        if (res.data?.status === 200) {
+            console.log(res.data)
+            currentUserBookmarked.value = res.data.isBookmarked
+        }
+    }).catch(err => {
+        console.log(err.message)
+    })
+}
+
+const debouncedDefaultLike = debounce(() => {
+    handleDefaultLike()
+}, 150)
+
+const debouncedDefaultBookmark = debounce(() => {
+    handleDefaultBookmark()
+}, 150)
 
 const cardHoverToggle = ref(false);
 
-const setTheBackground = computed(() => {
-    return `${imageURL}/${props.coverImage}`;
-});
-
 const emits = defineEmits(['emitCardClick']);
 
-const handleEmitClick = () => {
-    emits('emitCardClick', props.item);
-}
 </script>
 
 <template>
     <div
         class="GenericCardContainer card_parent generic-card__wrapper group"
         @mouseenter="cardHoverToggle = true"
-        @click="handleEmitClick"
     >
         <template v-if="!props.overrideContent">
             <div
@@ -262,7 +226,10 @@ const handleEmitClick = () => {
             <!-- </div> -->
         </template>
         <template v-else>
-            <div class="schoolCardContentOverridding w-full">
+            <div
+                class="schoolCardContentOverridding w-full"
+                @click="props.clickCallback"
+            >
                 <slot name="overiddenContent" />
             </div>
         </template>
@@ -271,11 +238,11 @@ const handleEmitClick = () => {
                 <span class="has-tooltip relative">
                     <LikeFull
                         v-if="currentUserLiked"
-                        @click="() => handleDefaultLike(props.likeBookmarkData)"
+                        @click="debouncedDefaultLike"
                     />
                     <Like
                         v-else
-                        @click="() => handleDefaultLike(props.likeBookmarkData)"
+                        @click="debouncedDefaultLike"
                     />
                     <Tooltip
                         tip="Like post"
@@ -287,11 +254,11 @@ const handleEmitClick = () => {
                 <span class="has-tooltip">
                     <BookmarkFull
                         v-if="currentUserBookmarked"
-                        @click="() => handleDefaultBookmark(props.likeBookmarkData)"
+                        @click="debouncedDefaultBookmark"
                     />
                     <BookMark
                         v-else
-                        @click="() => handleDefaultBookmark(props.likeBookmarkData)"
+                        @click="debouncedDefaultBookmark"
                     />
                     <Tooltip
                         tip="Bookmark post"

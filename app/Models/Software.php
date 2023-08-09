@@ -50,6 +50,16 @@ class Software extends Model
         return $this->belongsToMany(Softwaretype::class);
     }
 
+    public function likes(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(Like::class, 'post_id', 'id')->where('post_type', 'software');
+    }
+
+    public function bookmarks(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(Bookmark::class, 'post_id', 'id')->where('post_type', 'software');
+    }
+
     protected $casts = [
         'cover_image' => 'array',
         'extra_content' => 'array'

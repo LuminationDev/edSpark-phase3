@@ -26,14 +26,8 @@ const handleClickPartnerCard = () => {
         params: {id: props.partnerContent.user_id},
         state: {content: JSON.stringify(props.partnerContent)}
     })
-
 }
 
-const likeBookmarkData = {
-    post_id: props.partnerContent.post_id,
-    user_id: currentUser.value.id || 9999,
-    post_type: 'partner'
-}
 </script>
 
 <template>
@@ -44,8 +38,8 @@ const likeBookmarkData = {
         :display-content="props.partnerContent.introduction"
         :cover-image="props.partnerContent.cover_image"
         :display-author="props.partnerContent.name"
-        :number-per-row="4"
-        :like-bookmark-data="likeBookmarkData"
         :click-callback="handleClickPartnerCard"
+        :is-liked-by-user="props.partnerContent.isLikedByUser"
+        :is-bookmarked-by-user="props.partnerContent.isBookmarkedByUser"
     />
 </template>

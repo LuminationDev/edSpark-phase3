@@ -1,4 +1,5 @@
 *-<script setup>
+import {API_ENDPOINTS} from "@/js/constants/API_ENDPOINTS";
 import { computed} from "vue";
 import {serverURL} from "@/js/constants/serverUrl";
 import SoftwareCard from "@/js/components/software/SoftwareCard.vue";
@@ -6,7 +7,7 @@ import {axiosFetcher} from "@/js/helpers/fetcher";
 import useSWRV from "swrv";
 
 
-const {data : allCuratedSoftware, error: curatedSoftwareError} = useSWRV(API_ENDPOINTS.SOFTWARE_FETCH_SOFTWARE_POSTS, axiosFetcher)
+const {data : allCuratedSoftware, error: curatedSoftwareError} = useSWRV(API_ENDPOINTS.SOFTWARE.FETCH_SOFTWARE_POSTS, axiosFetcher)
 
 const twoRecommendation  = computed( () => {
     let temp = []

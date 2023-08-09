@@ -1,3 +1,4 @@
+import {API_ENDPOINTS} from "@/js/constants/API_ENDPOINTS";
 import {defineStore} from "pinia";
 import {useSessionStorage, useStorage} from "@vueuse/core";
 import axios from "axios";
@@ -41,6 +42,14 @@ export const useUserStore = defineStore('user', {
             console.log(this.currentUser?.site?.site_name)
             return this.currentUser?.site?.site_name || ""
         },
+        getUserRequestParam() {
+            return {
+                params:{
+                    usid: this.currentUser.id
+                }
+            }
+        },
+
         getNotifications() {
             return this.notifications;
         }
@@ -248,11 +257,10 @@ export const useUserStore = defineStore('user', {
         },
         populateUserLikesAndBookmark() {
             if (this.currentUser.id) {
-                console.log('called populate like and bookmark')
                 let data = {
                     user_id: this.currentUser.id
                 }
-                axios.post(`${serverURL}/fetchAllLikes`, data).then(res => {
+                axios.post(API_ENDPOINTS.LIKE.FETCH_ALL_LIKES, data).then(res => {
                     res.data.data.forEach(like => {
                         if (!this.userLikeList[like.post_type]) {
                             this.userLikeList[like.post_type] = []
@@ -262,7 +270,7 @@ export const useUserStore = defineStore('user', {
                         }
                     })
                 })
-                axios.post(`${serverURL}/fetchAllBookmarks`, data).then(res => {
+                axios.post(API_ENDPOINTS.BOOKMARK.FETCH_ALL_BOOKMARKS, data).then(res => {
                     res.data.data.forEach(bookmark => {
                         if (!this.userBookmarkList[bookmark.post_type]) {
                             this.userBookmarkList[bookmark.post_type] = []

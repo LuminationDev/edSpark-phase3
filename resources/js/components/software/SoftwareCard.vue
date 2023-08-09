@@ -32,13 +32,6 @@ const handleClickCard = () => {
         params: {id: props.software.post_id, content: JSON.stringify(props.software)}
     })
 }
-
-const likeBookmarkData = {
-    post_id: props.software.post_id,
-    user_id: currentUser.value.id,
-    post_type: 'software'
-}
-
 </script>
 <template>
     <GenericCard
@@ -49,12 +42,14 @@ const likeBookmarkData = {
         :cover-image="software['cover_image']"
         :number-per-row="props.numberPerRow"
         :click-callback="handleClickCard"
-        :like-bookmark-data="likeBookmarkData"
+        :section-type="'software'"
+        :is-liked-by-user="software['isLikedByUser']"
+        :is-bookmarked-by-user="software['isBookmarkedByUser']"
         class="mt-8"
     >
         <template #icon>
             <SoftwareCardIcon
-                class="icon absolute -top-6 -right-6 "
+                class="absolute -top-6 -right-6 icon"
                 :software-icon-name="software['software_type'][0]"
             />
         </template>

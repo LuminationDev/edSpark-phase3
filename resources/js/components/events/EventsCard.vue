@@ -31,7 +31,9 @@ const {
     event_title,
     event_type,
     start_date,
-    updated_at
+    updated_at,
+    isLikedByUser,
+    isBookmarkedByUser
 } = props.eventContent;
 
 const router = useRouter();

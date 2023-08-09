@@ -30,14 +30,10 @@ const {
     created_at,
     product_excerpt,
     product_content,
-    author
+    author,
+    isLikedByUser,
+    isBookmarkedByUser
 } = props.hardwareContent;
-
-const likeBookmarkData = {
-    post_id: props.hardwareContent.id,
-    user_id: currentUser.value.id,
-    post_type: 'hardware'
-};
 
 const handleClickHardwareCard = () => {
     router.push({
@@ -61,6 +57,7 @@ const handleClickHardwareCard = () => {
         :number-per-row="numberPerRow"
         :cover-image="cover_image"
         :click-callback="handleClickHardwareCard"
-        :like-bookmark-data="likeBookmarkData"
+        :is-liked-by-user="isLikedByUser"
+        :is-bookmarked-by-user="isBookmarkedByUser"
     />
 </template>
