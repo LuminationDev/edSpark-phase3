@@ -26,8 +26,7 @@ import {useSchoolsStore} from "@/js/stores/useSchoolsStore";
 /**
  * Import Card wrapper
  */
-import CardCarouselWrapper from '../components/card/CardCarouselWrapper.vue';
-import CardWrapper from '../components/card/CardWrapper.vue';
+import CarouselGenerator from "@/js/components/card/CarouselGenerator.vue";
 
 const createSchool = ref(false)
 const showWelcomePopup = ref(false)
@@ -122,7 +121,7 @@ const handleFinishCreateSchool = () => {
 }
 
 const handleBrowseAllSchool = () => {
-    router.push('/browse/schools')
+    router.push('/browse/school')
 }
 
 const handleCloseWelcomePopup = () => {
@@ -154,7 +153,7 @@ const handleSaveWelcomePopup = (data) => {
             @send-save-popup="handleSaveWelcomePopup"
         />
         <SchoolsHero />
-        <div class="featuredClassContainer py-20 ">
+        <div class="featuredClassContainer py-5 lg:!py-20">
             <SectionHeader
                 :classes="'bg-[#002858]'"
                 :section="'schools'"
@@ -162,44 +161,18 @@ const handleSaveWelcomePopup = (data) => {
                 :button-text="'View all schools'"
                 :button-callback="handleBrowseAllSchool"
             />
-
-            <CardCarouselWrapper
-                :key="cardsLoading"
-                :card-data="featuredSites ? featuredSites : []"
-                :loading="cardsLoading"
-                :row-count="1"
-                :col-count="4"
-                :section-type="'schools'"
+            <CarouselGenerator
+                :show-count="3"
+                data-type="school"
+                :data-array="featuredSites ? featuredSites : []"
             />
-
-            <!-- <div
-                v-if="cardsLoading"
-            >
-                <CardLoading
-                    :number-per-row="4"
-                />
-            </div>
-            <div
-                v-else
-                class="grid grid-cols-4 gap-[24px] w-full px-20 pt-8 "
-            >
-                <div
-                    v-for="(school,index) in featuredSites"
-                    :key="index"
-                >
-                    <SchoolCard
-                        :school-data="school"
-                    />
-                </div>
-            </div> -->
         </div>
 
 
         <div
             v-if="schoolsAvailable"
-            class="py-20 px-20"
+            class="px-5 py-5 xl:!px-20 xl:!py-20"
         >
-            <!-- <SearchableMap /> -->
             <SchoolsSearchableMap
                 :key="schoolsAvailable"
                 :schools="schools"
@@ -209,11 +182,11 @@ const handleSaveWelcomePopup = (data) => {
 
         <div
             v-else
-            class="w-full flex"
+            class="flex w-full"
         >
             <Loader
                 :loader-color="'#0072DA'"
-                :loader-message="'Map Loading'"
+                :loader-message="'Map loading'"
             />
         </div>
     </div>

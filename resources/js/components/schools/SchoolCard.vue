@@ -62,32 +62,55 @@ const handleMouseExitCard = () =>{
     >
         <template #overiddenContent>
             <div
-                class="h-full flex flex-col "
+                class="flex flex-col h-full"
                 @mouseenter="handleMouseEnterCard"
                 @mouseleave="handleMouseExitCard"
             >
                 <router-link :to="`/schools/${props.schoolData.name}`">
-                    <div class="relative h-36 group-hover:h-0 transition-all">
+                    <div class="group-hover:h-0 h-36 relative transition-all">
                         <div
                             :class="`bg-[url('${imageURL}/${props.schoolData.cover_image}')] bg-cover`"
                             :style="`background-image: url(${imageURL}/${props.schoolData.cover_image}) `"
-                            class="h-36 group-hover:h-0 transition-all"
+                            class="group-hover:h-0 h-36 transition-all"
                         />
                     </div>
                     <div class="px-6 py-4 relative transition-all">
                         <!-- CARD CONTENT -->
-                        <div class="card-content_title min-h-[72px] transition-all group-hover:mr-24">
+                        <div class="card-content_title group-hover:mr-0 min-h-[72px] transition-all">
                             <!-- CARD CONTENT HEADER -->
-                            <h5 class="text-xl font-medium transition-all flex justify-between place-items-center group-hover:mr-8">
+                            <h5
+                                class="
+                                    flex
+                                    justify-start
+                                    font-medium
+                                    group-hover:mr-0
+                                    text-left
+                                    text-xl
+                                    transition-all
+                                    "
+                            >
                                 {{ props.schoolData.name }}
                             </h5>
                         </div>
                         <div class="card-content_body transition-all">
-                            <p class="pt-6 text-black text-[18px] font-medium">
+                            <p class="font-medium pt-6 text-[18px] text-black">
                                 Tech used:
                             </p>
                             <div
-                                class="iconListContainer pt-4 flex flex-row w-full justify-between overflow-scroll gap-4 overflow-x-auto items-center pb-6 cursor-grab"
+                                class="
+                                    cursor-grab
+                                    flex
+                                    justify-start
+                                    items-center
+                                    flex-row
+                                    iconListContainer
+                                    overflow-scroll
+                                    overflow-x-auto
+                                    pb-6
+                                    pt-4
+                                    w-full
+                                    gap-4
+                                    "
                             >
                                 <span />
                                 <SchoolCardIconList

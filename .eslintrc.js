@@ -1,4 +1,5 @@
 module.exports = {
+    "plugins": ["@kalimahapps/eslint-plugin-tailwind"],
     extends: [
         // add more generic rulesets here, such as:
         'plugin:vue/vue3-recommended',
@@ -12,7 +13,15 @@ module.exports = {
             "closeBracket": 0,
             "alignAttributesVertically": false,
             "ignores": []
-        }]
+        }],
+        "@kalimahapps/tailwind/sort": "warn",
+        "@kalimahapps/tailwind/multiline": [
+            "warn",
+            {
+                "maxLen": 150,
+                "quotesOnNewLine": true
+            }
+        ]
     },
     parserOptions: {
         ecmaVersion: 'latest',

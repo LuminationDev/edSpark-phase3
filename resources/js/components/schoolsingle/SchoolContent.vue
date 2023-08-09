@@ -103,14 +103,14 @@ console.log(props.activeSubmenu)
         <template v-if="props.activeSubmenu === 'detail'">
             <div
                 v-if="Object.keys(schoolContent).length > 1"
-                class="school-content py-2 px-10 flex w-full"
+                class="flex px-5 py-2 school-content w-full lg:!px-10"
             >
                 <div class="flex flex-row w-full">
                     <div
                         v-if="editMode"
-                        class="schoolContent contentEditor flex flex-row justify-between w-full"
+                        class="contentEditor flex justify-between flex-col schoolContent w-full lg:!flex-row"
                     >
-                        <div class="flex flex-col basis-2/3">
+                        <div class="flex flex-col w-full lg:!basis-2/3">
                             Curate your school content by adding blocks here with desired contents.
                             <SchoolEditorJs
                                 ref="schoolEditorRef"
@@ -118,16 +118,16 @@ console.log(props.activeSubmenu)
                                 @send-school-data="handleSchoolData"
                             />
                         </div>
-                        <div class="flex flex-col basis-1/3">
+                        <div class="flex flex-col w-full lg:!basis-1/3">
                             <button
-                                class="px-6 py-2 bg-blue-600 text-white rounded w-48 mb-2"
+                                class="bg-blue-600 mb-2 px-6 py-2 rounded text-white w-48"
                                 @click="handleAllSaveButton"
                             >
                                 Save Content
                             </button>
                             <SchoolImageChange @send-uploaded-photo-to-content="handleReceivePhotoFromImageChange" />
                             <SchoolColorPicker
-                                class="self-center mb-5"
+                                class="mb-5 self-center"
                                 @color-selected="handleColorSelected"
                             />
                             <p class="font-semibold text-xl">
@@ -140,24 +140,25 @@ console.log(props.activeSubmenu)
                             />
                         </div>
                     </div>
+                    <!--    Display Content     -->
                     <div
                         v-else
-                        class="schoolContent contentDisplay flex flex-row justify-between w-full gap-4"
+                        class="contentDisplay flex lg:flex-row justify-between flex-col gap-4 schoolContent w-full"
                     >
                         <div class="basis-2/3">
                             <SchoolContentDisplay :school-content-blocks="schoolContent.content_blocks" />
                         </div>
-                        <div class="school-tech basis-1/3">
+                        <div class="basis-1/3 school-tech">
                             <div
                                 v-if="currentUserCanEdit"
-                                class="schoolAdminSection border-[1px] border-black flex flex-col px-4 py-4 mb-2"
+                                class="border-[1px] border-black flex flex-col mb-2 px-4 py-4 schoolAdminSection"
                             >
-                                <h2 class="mb-2 text-genericDark font-semibold text-lg">
+                                <h2 class="font-semibold mb-2 text-genericDark text-lg">
                                     Admin Sections
                                 </h2>
                                 <button
                                     v-if="!editMode "
-                                    class="px-6 py-2 bg-blue-600 text-white rounded w-48 hover:bg-blue-400"
+                                    class="bg-blue-600 hover:bg-blue-400 px-6 py-2 rounded text-white w-48"
                                     @click="handleEditButton"
                                 >
                                     Edit this page

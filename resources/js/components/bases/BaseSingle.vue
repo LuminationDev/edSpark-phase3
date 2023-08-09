@@ -98,6 +98,7 @@ onBeforeMount(async () => {
     /**
      * Get content from history state or fetch from recommender
      */
+    console.log(route)
     await checkToReadOrFetchContent()
 
     // code to emit available submenus - to be used in all baseSingle pages. remove hardcoded
@@ -179,7 +180,7 @@ const handleEmitFromSubmenu = (value) => {
     </div>
     <div
         v-else-if="!isObjectEmpty(singleContent) || props.contentType === 'school'"
-        class="singleContainer flex flex-col"
+        class="flex flex-col singleContainer"
     >
         <slot
             name="hero"

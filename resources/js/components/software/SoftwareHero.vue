@@ -4,39 +4,40 @@ import BaseHero from "@/js/components/bases/BaseHero.vue";
 import SoftwareRobot from "@/js/components/svg/software/SoftwareRobot.vue";
 </script>
 <template>
-    <!--    <BaseHero-->
-    <!--        :color1="'#002858'"-->
-    <!--        :color2="'#4F2D8D'"-->
-    <!--        :color3="'#C7B2EA'"-->
-    <!--        class="!h-[500px] mb-16"-->
-    <!--    >-->
-    <!--        <template #titleText>-->
-    <!--            {{ `Software` }}-->
-    <!--        </template>-->
-    <!--        <template #subtitleText1>-->
-    <!--            {{ `Find out what software is available to you as an employee and how to access them` }}-->
-    <!--        </template>-->
-    <!--        <template #icon>-->
-    <!--            <SoftwareRobot />-->
-    <!--        </template>-->
-    <!--    </BaseHero>-->
-    <div class="bg-gradient-to-l from-[#C7B2EA] via-[#4F2D8D] to-[#002858] mt-24 py-[36px] px-[48px] grid grid-cols-8 mx-20">
-        <div class="col-span-6">
-            <h1 class="text-white text-[36px] font-semibold pb-8 uppercase">
+    <div
+        class="
+            -mt-12
+            lg:!mt-24
+            lg:!mx-10
+            lg:!pt-12
+            xl:!mx-huge
+            bg-gradient-to-l
+            from-[#C7B2EA]
+            via-[#4F2D8D]
+            to-[#002858]
+            grid
+            grid-cols-8
+            pb-8
+            pt-24
+            px-10
+            "
+    >
+        <div class="col-span-8 md:!col-span-5 lg:!col-span-6">
+            <h1 class="font-semibold pb-8 text-[36px] text-white uppercase">
                 Software
             </h1>
-            <p class="text-white text-[16px] font-normal pb-2">
+            <p class="font-normal pb-2 text-[16px] text-white">
                 Find out what software is available to you to use as an employee and how to access it.
             </p>
-            <p class="text-white text-[16px] font-normal">
+            <p class="font-normal text-[16px] text-white">
                 Use this page to explore software which has the Department for Education tick of approval.
                 <br>
                 Find out more information,
                 see use cases, steps to purchase and possible costs.
             </p>
         </div>
-        <div class="col-span-2 relative">
-            <SoftwareRobot class="absolute right-12 -top-16" />
+        <div class="col-span-3 hidden relative md:!block lg:!col-span-2">
+            <SoftwareRobot class="absolute  md:!bottom-4 md:!scale-75 lg:!bottom-6 lg:!scale-100 xl:!-bottom-4 xl:!right-12" />
         </div>
     </div>
 </template>

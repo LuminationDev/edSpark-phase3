@@ -3,10 +3,6 @@
     "file": "assets/CommunityIllustration-a28447f8.png",
     "src": "resources/assets/images/CommunityIllustration.png"
   },
-  "resources/assets/images/FooterSwoosh.png": {
-    "file": "assets/FooterSwoosh-74226902.png",
-    "src": "resources/assets/images/FooterSwoosh.png"
-  },
   "resources/assets/images/PartnersPuzzle.png": {
     "file": "assets/PartnersPuzzle-f8ea4960.png",
     "src": "resources/assets/images/PartnersPuzzle.png"
@@ -23,6 +19,26 @@
     "file": "assets/eventsCalendar-39cdf35b.png",
     "src": "resources/assets/images/eventsCalendar.png"
   },
+  "resources/assets/images/footer/cc.png": {
+    "file": "assets/cc-286aeef7.png",
+    "src": "resources/assets/images/footer/cc.png"
+  },
+  "resources/assets/images/footer/dfe.svg": {
+    "file": "assets/dfe-42a1625e.svg",
+    "src": "resources/assets/images/footer/dfe.svg"
+  },
+  "resources/assets/images/footer/sagovau_rev.png": {
+    "file": "assets/sagovau_rev-19524a3e.png",
+    "src": "resources/assets/images/footer/sagovau_rev.png"
+  },
+  "resources/assets/images/footer/south-australia.png": {
+    "file": "assets/south-australia-eaa8c844.png",
+    "src": "resources/assets/images/footer/south-australia.png"
+  },
+  "resources/assets/images/footer/white-ribbon.svg": {
+    "file": "assets/white-ribbon-6ba8cd1c.svg",
+    "src": "resources/assets/images/footer/white-ribbon.svg"
+  },
   "resources/assets/images/hardwareInfoImage.png": {
     "file": "assets/hardwareInfoImage-e7b190a8.png",
     "src": "resources/assets/images/hardwareInfoImage.png"
@@ -31,33 +47,32 @@
     "file": "assets/negotiatedDeals-0e67ab26.png",
     "src": "resources/assets/images/negotiatedDeals.png"
   },
-  "resources/assets/svg/Logo.svg": {
-    "file": "assets/Logo-4ed993c7.js",
-    "isEntry": true,
-    "src": "resources/assets/svg/Logo.svg"
-  },
   "resources/css/app.css": {
-    "file": "assets/app-021c1a16.css",
+    "file": "assets/app-bc5ac936.css",
     "isEntry": true,
     "src": "resources/css/app.css"
   },
   "resources/css/filament.css": {
-    "file": "assets/filament-d61d58b3.css",
+    "file": "assets/filament-ea76ed15.css",
     "isEntry": true,
     "src": "resources/css/filament.css"
   },
   "resources/css/output.css": {
-    "file": "assets/output-de5e8ffa.css",
+    "file": "assets/output-f918ad58.css",
     "isEntry": true,
     "src": "resources/css/output.css"
   },
   "resources/js/app.css": {
-    "file": "assets/app-72a370b1.css",
+    "file": "assets/app-a78db5e7.css",
     "src": "resources/js/app.css"
   },
   "resources/js/app.js": {
     "assets": [
-      "assets/FooterSwoosh-74226902.png",
+      "assets/cc-286aeef7.png",
+      "assets/south-australia-eaa8c844.png",
+      "assets/sagovau_rev-19524a3e.png",
+      "assets/white-ribbon-6ba8cd1c.svg",
+      "assets/dfe-42a1625e.svg",
       "assets/CommunityIllustration-a28447f8.png",
       "assets/PartnersPuzzle-f8ea4960.png",
       "assets/eventsCalendar-39cdf35b.png",
@@ -65,11 +80,11 @@
       "assets/hardwareInfoImage-e7b190a8.png"
     ],
     "css": [
-      "assets/app-72a370b1.css",
-      "assets/app-021c1a16.css",
-      "assets/output-de5e8ffa.css"
+      "assets/app-a78db5e7.css",
+      "assets/app-bc5ac936.css",
+      "assets/output-f918ad58.css"
     ],
-    "file": "assets/app-f3389a9a.js",
+    "file": "assets/app-55bf09e9.js",
     "isEntry": true,
     "src": "resources/js/app.js"
   }

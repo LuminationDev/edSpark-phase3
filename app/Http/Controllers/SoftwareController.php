@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Helpers\Metahelper;
+use App\Models\Partner;
+use App\Models\Usermeta;
 use Illuminate\Http\Response;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
@@ -21,24 +23,34 @@ class SoftwareController extends Controller
             $data = [];
 
             foreach ($softwares as $software) {
-//                $softwareMetadata = Softwaremeta::where('software_id', $software->id)->get();
-//                $softwareMetadataToSend = $softwareMetadata->map(function ($item) {
-//                    return [
-//                        'softwaremeta_key' => $item->software_meta_key,
-//                        'softwaremeta_value' => $item->sofware_meta_value
-//                    ];
-//                })->toArray();
-                $softwareMetadataToSend = Metahelper::getMeta(Softwaremeta::class, $software, 'software_id','software_meta_key', 'software_meta_value');
+                $softwareMetadataToSend = Metahelper::getMeta(Softwaremeta::class, $software, 'software_id', 'software_meta_key', 'software_meta_value');
+                $author_type = $software->author->usertype->user_type_name;
+                $author_id = $software->author->id;
+                if ($author_type == 'user') {
+                    $avatar = Usermeta::where('user_id', $author_id)->where('user_meta_key', 'userAvatar')->first();
+                    if (isset($avatar)) {
+                        $author_logo = $avatar->user_meta_value;
+                    } else {
+                        $author_logo = '';
+                    }
+
+                } elseif ($author_type == 'partner') {
+                    $author_logo = json_decode(Partner::where('user_id', $author_id)->first()->logo);
+                } else {
+                    $author_logo = '';
+                }
 
                 $result = [
                     'post_id' => $software->id,
                     'post_title' => $software->post_title,
                     'post_content' => $software->post_content,
                     'post_excerpt' => $software->post_excerpt,
-//                    'author' => ($software->author) ? $software->author->full_name : null,
                     'author' => [
                         'author_id' => $software->author->id,
-                        'author_name' => ($software->author->id) ? $software->author->full_name : NULL
+                        'author_name' => $software->author->full_name,
+                        'author_email' => $software->author->email,
+                        'author_type' => $software->author->usertype->user_type_name,
+                        'author_logo' => $author_logo
                     ],
                     'cover_image' => ($software->cover_image) ? $software->cover_image : null,
                     'post_date' => $software->post_date,
@@ -61,16 +73,38 @@ class SoftwareController extends Controller
         }
     }
 
-    public function fetchSoftwarePostById($id)
+    public function fetchSoftwarePostById($id): JsonResponse
     {
         $software = Software::find($id);
+
+        $author_type = $software->author->usertype->user_type_name;
+        $author_id = $software->author->id;
+        if ($author_type == 'user') {
+            $avatar = Usermeta::where('user_id', $author_id)->where('user_meta_key', 'userAvatar')->first();
+            if (isset($avatar)) {
+                $author_logo = $avatar->user_meta_value;
+            } else {
+                $author_logo = '';
+            }
+
+        } elseif ($author_type == 'partner') {
+            $author_logo = json_decode(Partner::where('user_id', $author_id)->first()->logo);
+        } else {
+            $author_logo = '';
+        }
 
         $data = [
             'post_id' => $software->id,
             'post_title' => $software->post_title,
             'post_content' => $software->post_content,
             'post_excerpt' => $software->post_excerpt,
-            'author' => ($software->author) ? $software->author->full_name : NULL,
+            'author' => [
+                'author_id' => $software->author->id,
+                'author_name' => $software->author->full_name,
+                'author_email' => $software->author->email,
+                'author_type' => $software->author->usertype->user_type_name,
+                'author_logo' => $author_logo
+            ],
             'cover_image' => ($software->cover_image) ? $software->cover_image : NULL,
             'post_date' => $software->post_date,
             'post_modified' => $software->post_modified,

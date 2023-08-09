@@ -23,19 +23,21 @@ const twoRecommendation  = computed( () => {
 <template>
     <div
         v-if="allCuratedAdvice"
-        class="adviceSingleCuratedContentContainer flex flex-col justify-center items-center ml-4 px-10 rounded bg-orange-50"
+        class="adviceSingleCuratedContentContainer bg-orange-50 flex justify-center items-center flex-col px-5 rounded xl:!ml-4 xl:!px-10"
     >
-        <div class="curatedResourcesTitle uppercase font-bold text-2xl text-center py-8 my-2">
+        <div class="curatedResourcesTitle font-bold my-2 py-8 text-2xl text-center uppercase">
             Other Curated Resources
         </div>
-        <AdviceCard
-            v-for="(advice,index) in twoRecommendation"
-            :key="index + guid()"
-            :advice-content="advice"
-            :show-icon="true"
-            :number-per-row="1"
-            class="mb-extraLarge"
-        />
+        <div class="flex-col lg:!flex-row xl:!flex-col">
+            <AdviceCard
+                v-for="(advice,index) in twoRecommendation"
+                :key="index + guid()"
+                :advice-content="advice"
+                :show-icon="true"
+                :number-per-row="1"
+                class="mb-extraLarge"
+            />
+        </div>
     </div>
     <div v-else>
         Loading

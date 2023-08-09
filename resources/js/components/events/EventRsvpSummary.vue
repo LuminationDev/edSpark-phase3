@@ -1,5 +1,6 @@
 <script setup>
 import {ref, computed} from 'vue'
+import GenericButton from "@/js/components/button/GenericButton.vue";
 
 const props = defineProps({
     rsvpInfo:{
@@ -7,14 +8,18 @@ const props = defineProps({
         required: true
     }
 })
+const emits = defineEmits(['startEditRsvp'])
 
+const handleClickEditRsvp = () =>{
+    emits('startEditRsvp')
+}
 
 
 </script>
 
 <template>
     <div class="EventRsvpSummaryContainer">
-        <div class="rsvpSubheader  flex flex-col py-2 text-lg border-b-2 border-b-white border-dashed">
+        <div class="border-b-2 border-b-white border-dashed flex flex-col py-2 rsvpSubheader text-lg">
             <div class="eventRsvp form-cta pb-4">
                 You have <strong> registered </strong> for this event. We are looking forward to your attendance.
             </div>
@@ -22,7 +27,7 @@ const props = defineProps({
                 Your registered details are:
                 <ul
                     v-if="props.rsvpInfo"
-                    class="list-none RsvpdetailListContainer ml-4 "
+                    class="RsvpdetailListContainer list-none ml-4"
                 >
                     <li v-if="props.rsvpInfo['full_name']">
                         Full name: <strong>{{ ' ' + props.rsvpInfo['full_name'] }} </strong>
@@ -38,6 +43,14 @@ const props = defineProps({
             <div class="eventRsvp form-cta pb-4">
                 Please contact the organiser with the information below if there are any changes.
             </div>
+            <GenericButton
+                :callback="handleClickEditRsvp"
+                class="!bg-rose-400 font-semibold mt-4 px-6 rounded-sm w-fit"
+            >
+                <template #default>
+                    Edit RSVP
+                </template>
+            </GenericButton>
         </div>
     </div>
 </template>

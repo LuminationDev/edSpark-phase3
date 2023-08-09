@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Helpers\OutputHelper;
 use App\Models\User;
 use Illuminate\Http\Request;
 use App\Models\School;
@@ -380,7 +379,6 @@ class SchoolController extends Controller
             $user_record = User::find($user_id);
 
             if ($user_record && $user_record->site_id == $site_id && $user_record->role->role_name === 'SCHLDR') {
-                OutputHelper::print('User is the school principal.');
                 $meta_to_insert = [
                     "school_id" => $school_id,
                     "schoolmeta_key" => 'nominated_user',
@@ -424,7 +422,6 @@ class SchoolController extends Controller
             $user_record = User::find($user_id);
 
             if ($user_record && $user_record->site_id == $site_id && $user_record->role->role_name === 'SCHLDR') {
-                OutputHelper::print('User is the school principal.');
 
                 $deleted = Schoolmeta::where('school_id', $school_id)
                     ->where('schoolmeta_key', 'nominated_user')
@@ -471,7 +468,6 @@ class SchoolController extends Controller
             $user_record = User::find($user_id);
 
             if ($user_record && $user_record->site_id == $site_id && $user_record->role->role_name === 'SCHLDR') {
-                OutputHelper::print('User is the school principal.');
 
                 $nominated_users = Schoolmeta::where('school_id', $school_id)
                     ->where('schoolmeta_key', 'nominated_user')
@@ -516,7 +512,6 @@ class SchoolController extends Controller
             $user_record = User::find($user_id);
 
             if ($user_record && $user_record->site_id == $site_id && $user_record->role->role_name === 'SCHLDR') {
-                OutputHelper::print('User is the school principal hehe');
                 return response()->json([
                     "status" => 200,
                     "result" => true,
@@ -531,7 +526,6 @@ class SchoolController extends Controller
                 ->first();
 
             if ($schoolmeta_record) {
-                OutputHelper::print('User is nominated in school meta.');
                 return response()->json([
                     "status" => 200,
                     "result" => true,
@@ -539,7 +533,6 @@ class SchoolController extends Controller
                 ]);
             }
 
-            OutputHelper::print('User is not authorized');
             return response()->json([
                 "status" => 401,
                 "result" => False
@@ -576,7 +569,6 @@ class SchoolController extends Controller
                 $schoolmeta_record->schoolmeta_value = $school_contact;
                 $schoolmeta_record->save();
 
-                OutputHelper::print('School contact updated successfully.');
                 return response()->json([
                     "status" => 200,
                     "result" => true,
@@ -590,7 +582,6 @@ class SchoolController extends Controller
                 $schoolmeta->schoolmeta_value = $school_contact;
                 $schoolmeta->save();
 
-                OutputHelper::print('School contact created successfully.');
                 return response()->json([
                     "status" => 200,
                     "result" => true,
@@ -627,7 +618,6 @@ class SchoolController extends Controller
                 ]);
             }
 
-            OutputHelper::print('School contact not found.');
             return response()->json([
                 "status" => 404,
                 "result" => false,

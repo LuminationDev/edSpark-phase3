@@ -181,7 +181,6 @@ class LikeBookmarkController extends Controller
                 $count += count($bookmarks);
                 foreach ($bookmarks as $bookmark) {
                     $post_info = PostHelper::getPostTitle($bookmark->post_id,$bookmark->post_type);
-                    OutputHelper::print(serialize($post_info));
                     $result = [
                         'post_id' => $bookmark->post_id,
                         'post_type' => $bookmark->post_type,

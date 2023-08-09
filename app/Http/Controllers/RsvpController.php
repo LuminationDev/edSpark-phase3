@@ -38,53 +38,6 @@ class RsvpController extends Controller
         return response()->json($data);
     }
 
-    // public function addRsvpToEvent(Request $request)
-    // {
-    //     try {
-    //         $data = $request->all();
-
-    //         // Validate the request data as needed
-    //         // Example validation rules:
-    //         $rules = [
-    //             'user_id' => 'required|integer',
-    //             'event_id' => 'required|integer',
-    //             'full_name' => 'required|string',
-    //             'school_name' => 'required|string',
-    //             'number_of_guests' => 'required|integer',
-    //         ];
-
-    //         $validator = Validator::make($data, $rules);
-
-    //         if ($validator->fails()) {
-    //             return response()->json(['error' => $validator->errors()], 400);
-    //         }
-
-
-    //         $existingRsvp = RSVP::where('event_id', $data['event_id'])
-    //             ->where('user_id', $data['user_id'])
-    //             ->first();
-
-    //         if ($existingRsvp) {
-    //             return response()->json(['error' => 'RSVP already exists for the user and event.'], 400);
-    //         }
-    //         $event = Event::find($data['event_id']);
-    //         // Create a new RSVP entry
-    //         $rsvp = new RSVP();
-    //         $rsvp->user_id = $data['user_id'];
-    //         $rsvp->event_type = $event->eventtype->event_type_name;
-    //         $rsvp->event_id = $data['event_id'];
-    //         $rsvp->full_name = $data['full_name'];
-    //         $rsvp->school_name = $data['school_name'];
-    //         $rsvp->number_of_guests = $data['number_of_guests'];
-    //         $rsvp->save();
-
-    //         return response()->json(['message' => 'RSVP added successfully'], 200);
-    //     } catch (\Exception $e) {
-    //         // Handle any exceptions that occur during RSVP creation
-    //         return response()->json(['error' => $e], 500);
-    //     }
-    // }
-
     public function addRsvpToEvent(Request $request)
 {
     try {

@@ -208,15 +208,15 @@ const handleChangeInfoWindows = () => {
 <template>
     <div
         ref="gMapParent"
-        class="w-full relative border border-[#0072DA]"
+        class="border border-[#0072DA] relative w-full"
     >
-        <div class="bg-[#0072DA] h-[72px] flex flex-row place-items-center justify-between px-[48px] relative z-50">
-            <h1 class="text-[30px] font-bold text-white">
+        <div class="bg-[#0072DA] flex justify-between flex-row h-[72px] place-items-center px-[48px] relative z-50">
+            <h1 class="font-bold text-white text-xl md:!text-3xl">
                 Search for Schools
             </h1>
 
             <button
-                class="bg-white text-[#0072DA] px-8 py-3 w-[120px]"
+                class="bg-white px-8 py-3 text-[#0072DA] w-[120px]"
                 @click="handleFilterBarClick"
             >
                 {{ (showFilters ? 'Close' : 'Filters') }}
@@ -224,10 +224,10 @@ const handleChangeInfoWindows = () => {
         </div>
 
         <div
-            class="absolute p-6 transition-all top-0 bottom-0 w-full bg-[#0072DA] z-40"
+            class="absolute top-0 bottom-0 bg-[#0072DA] p-6 transition-all w-full z-40"
             :class="showFilters ? 'h-[200px]' : '!h-0 opacity-0 pointer-events-none' "
         >
-            <div class="mt-12 flex flex-row flex-wrap gap-6">
+            <div class="flex flex-row flex-wrap gap-6 mt-12">
                 <SchoolsMapFilterName
                     v-model="schoolNameFilter"
                 />

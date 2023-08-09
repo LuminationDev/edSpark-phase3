@@ -8,19 +8,12 @@ import { storeToRefs } from 'pinia';
 /**
  * Import Stores
  */
-import { useUserStore } from '../../stores/useUserStore';
-import { useSiteStore } from '../../stores/useSiteStore';
-
-/**
- * Import Components
- */
-import UserInfoProfileFields from '../../components/global/UserInfoProfileFields.vue';
+import { useUserStore } from '@/js/stores/useUserStore';
+import { useSiteStore } from '@/js/stores/useSiteStore';
 
 /**
  * SVG's
  */
-import Save from '../../components/svg/Save.vue';
-import Close from '../../components/svg/Close.vue';
 import Edit from '../../components/svg/Edit.vue';
 
 
@@ -28,11 +21,6 @@ const userStore = useUserStore();
 const siteStore = useSiteStore();
 const isEditAvatar = ref(false);
 const updatedName = ref('');
-
-const handleSaveChange = () => {
-    console.log('Handle save values here');
-    // userStore.updateUser(updatedName.value);
-};
 
 const { currentUser, notifications } = storeToRefs(userStore)
 
@@ -43,34 +31,59 @@ onMounted(() => {
 
 </script>
 <template>
-    <div class="h-full w-full bg-white">
-        <div class="w-full flex flex-col">
-            <div class="col-span-12 row-span-2 grid grid-cols-6 justify-center mt-[100px] px-[81px]">
+    <div class="bg-white h-full w-full">
+        <div class="flex flex-col w-full">
+            <div class="col-span-12 grid grid-cols-6 justify-center mt-[100px] px-[81px] row-span-2">
                 <div
-                    class="col-span-1 cursor-pointer h-[200px] w-[200px] bg-orange-500 rounded-full flex justify-center place-items-center relative"
+                    class="
+                        bg-orange-500
+                        col-span-1
+                        cursor-pointer
+                        flex
+                        justify-center
+                        h-[200px]
+                        place-items-center
+                        relative
+                        rounded-full
+                        w-[200px]
+                        "
                     @mouseenter="isEditAvatar = !isEditAvatar"
                     @mouseleave="isEditAvatar = !isEditAvatar"
                 >
-                    <h1 class="text-[72px] text-white font-bold" />
+                    <h1 class="font-bold text-[72px] text-white" />
                     <div
                         v-if="isEditAvatar"
-                        class="absolute w-[48px] h-[48px] rounded-full bg-white flex justify-center place-items-center top-0 right-[24px] border border-black border-2"
+                        class="
+                            absolute
+                            top-0
+                            right-[24px]
+                            bg-white
+                            border
+                            border-2
+                            border-black
+                            flex
+                            justify-center
+                            h-[48px]
+                            place-items-center
+                            rounded-full
+                            w-[48px]
+                            "
                     >
-                        <Edit class="w-[24px] h-24px" />
+                        <Edit class="h-24px w-[24px]" />
                     </div>
                 </div>
-
-                <!-- User information component -->
-                <!-- Use slots -->
             </div>
 
-            <div class="col-span-12 row-span-4 mx-20">
+            <div class="col-span-12 mx-20 row-span-4">
                 <!-- Notifications -->
                 <div class="mt-[100px] px-[81px]">
-                    <h3 class="text-[24px] font-normal">
+                    <h3 class="font-normal text-[24px]">
                         Notifications ({{ notifications.count }})
                     </h3>
-                    <div v-for="(item, index) in notifications.result">
+                    <div
+                        v-for="(item, index) in notifications.result"
+                        :key="index"
+                    >
                         {{ item.data }}
                     </div>
                 </div>

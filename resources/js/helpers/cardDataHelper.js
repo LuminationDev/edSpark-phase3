@@ -1,3 +1,5 @@
+import {guid} from "@/js/helpers/guidGenerator";
+
 export const cardDataHelper = (cardData, section) => {
     switch (section) {
         case 'events':
@@ -10,7 +12,8 @@ export const cardDataHelper = (cardData, section) => {
                     created_at: data.start_date,
                     start_date: data.start_date,
                     cover_image: data.cover_image,
-                    type: data.event_type
+                    type: data.event_type,
+                    guid: guid(),
                 }
             })
         case 'advice':
@@ -22,7 +25,9 @@ export const cardDataHelper = (cardData, section) => {
                     author: data.author,
                     created_at: data.created_at,
                     cover_image: data.cover_image,
-                    type: data.advice_type[0]
+                    type: data.advice_type[0],
+                    guid: guid(),
+
                 }
             })
         case 'software':
@@ -34,7 +39,8 @@ export const cardDataHelper = (cardData, section) => {
                     author: data.author,
                     created_at: data.created_at,
                     cover_image: data.cover_image,
-                    type: data.software_type[0]
+                    type: data.software_type[0],
+                    guid: guid(),
                 }
             });
         case 'schools':
@@ -43,10 +49,16 @@ export const cardDataHelper = (cardData, section) => {
                     id: data.id,
                     title: data.name,
                     tech_used: data.tech_used,
-                    cover_image: data.cover_image
+                    cover_image: data.cover_image,
+                    guid: guid(),
                 }
             })
         default:
             break;
     }
+}
+export const  cardDataWithGuid = (cardData) => {
+    return cardData.map(data =>{
+        return {...data, guid: guid()}
+    })
 }

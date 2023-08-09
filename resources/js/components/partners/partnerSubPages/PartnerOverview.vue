@@ -53,8 +53,8 @@ const emits = defineEmits([])
 </script>
 
 <template>
-    <div class="PartnerOverviewContainer px-10">
-        <div class="partnerOverviewRichContentRender w-2/3">
+    <div class="PartnerOverviewContainer">
+        <div class="partnerOverviewRichContentRender w-full lg:!w-2/3">
             <div class="font-semibold text-2xl">
                 {{ parsedOverviewContent['heading'] }}
             </div>
