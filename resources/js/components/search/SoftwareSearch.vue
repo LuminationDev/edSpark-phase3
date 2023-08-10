@@ -1,22 +1,20 @@
 <script setup>
 import {API_ENDPOINTS} from "@/js/constants/API_ENDPOINTS";
+import {swrvOptions} from "@/js/constants/swrvConstants";
+import {useUserStore} from "@/js/stores/useUserStore";
 import {onMounted, ref} from "vue";
 
 import {serverURL} from "@/js/constants/serverUrl";
 import BaseSearch from "@/js/components/search/BaseSearch.vue";
 import GenericMultiSelectFilter from "@/js/components/search/hardware/GenericMultiSelectFilter.vue";
 import useSWRV from "swrv";
-import {axiosFetcher} from "@/js/helpers/fetcher";
+import {axiosFetcher, axiosFetcherParams} from "@/js/helpers/fetcher";
 import {useRoute} from "vue-router";
 import router from "@/js/router";
 const route = useRoute()
 
-const swrvOptions = {
-    revalidateOnFocus: false, // disable refresh on every focus, suspect its too often
-    refreshInterval: 30000 // refresh or revalidate data every 30 secs
-}
 
-const {data: softwareList, error: softwareError} = useSWRV(API_ENDPOINTS.SOFTWARE.FETCH_SOFTWARE_POSTS, axiosFetcher, swrvOptions)
+const {data: softwareList, error: softwareError} = useSWRV(API_ENDPOINTS.SOFTWARE.FETCH_SOFTWARE_POSTS, axiosFetcherParams(useUserStore().getUserRequestParam), swrvOptions)
 
 let softwareFilterList = [
     {name: "Department Provided", value:"Department Provided"},

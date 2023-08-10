@@ -15,11 +15,10 @@ const props = defineProps({
     showIcon: {
         type: Boolean, required: false
     },
-    numberPerRow: {
-        type: Number, required: false, default: 3
-    }
+
 });
 
+// eslint-disable-next-line vue/no-setup-props-destructure
 const {
     event_id,
     author,
@@ -52,26 +51,22 @@ const handleClickEventCard = () => {
 
 const {currentUser} = storeToRefs(useUserStore())
 
-const likeBookmarkData = {
-    post_id: props.eventContent.event_id,
-    user_id: currentUser.value.id, // to be replaced with userId from userStore
-    post_type: 'event'
-}
 
 </script>
 
 <template>
     <GenericCard
-        :key="event_id"
+        :id="event_id"
         :title="event_title"
         :display-content="event_excerpt"
         :display-author="author"
         :display-date="start_date"
         :end-date="end_date"
-        :number-per-row="numberPerRow"
         :cover-image="cover_image"
-        :like-bookmark-data="likeBookmarkData"
         :click-callback="handleClickEventCard"
+        :is-liked-by-user="isLikedByUser"
+        :is-bookmarked-by-user="isBookmarkedByUser"
+        section-type="event"
     >
         <template #typeTag>
             <div

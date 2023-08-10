@@ -11,11 +11,7 @@ const props = defineProps({
         type: Object,
         required: true
     },
-    numberPerRow: {
-        type: Number,
-        required: false,
-        default: 3
-    },
+
 })
 
 const userStore = useUserStore()
@@ -35,12 +31,12 @@ const handleClickCard = () => {
 </script>
 <template>
     <GenericCard
+        :id="software['id']"
         :title="software['post_title']"
         :display-content="software['post_content']"
         :display-author="software['author']"
         :display-date="software['post_modified']"
         :cover-image="software['cover_image']"
-        :number-per-row="props.numberPerRow"
         :click-callback="handleClickCard"
         :section-type="'software'"
         :is-liked-by-user="software['isLikedByUser']"

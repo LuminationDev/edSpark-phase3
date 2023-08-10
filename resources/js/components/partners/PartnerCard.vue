@@ -32,7 +32,7 @@ const handleClickPartnerCard = () => {
 
 <template>
     <GenericCard
-        :key="props.partnerContent.id"
+        :id="props.partnerContent.id"
         :title="props.partnerContent.name"
         :item="props.partnerContent"
         :display-content="props.partnerContent.introduction"
@@ -41,5 +41,6 @@ const handleClickPartnerCard = () => {
         :click-callback="handleClickPartnerCard"
         :is-liked-by-user="props.partnerContent.isLikedByUser"
         :is-bookmarked-by-user="props.partnerContent.isBookmarkedByUser"
+        section-type="partner"
     />
 </template>

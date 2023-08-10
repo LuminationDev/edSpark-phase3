@@ -20,7 +20,6 @@ const props = defineProps({
         default: ''
     }
 })
-console.log(props.schoolData)
 /**
  * SchoolData props: {
  *     content_blocks: Object,

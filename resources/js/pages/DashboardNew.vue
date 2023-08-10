@@ -21,32 +21,22 @@ import DepartmentApprovedSolo from '@/js/components/svg/DepartmentApprovedSolo.v
  * Loading Cards
  */
 import CardLoading from '@/js/components/card/CardLoading.vue';
-
-/**
- * Depends on
- */
-import { ref, reactive, computed, onMounted } from 'vue';
-import oktaAuth from '../constants/oktaAuth';
-
-/**
- * I guess I should pick up some ____ from the store on my way home
- * (import and set up stores)
- */
-import { useUserStore } from '../stores/useUserStore';
-import { useRouter } from "vue-router";
-import { appURL, serverURL } from "@/js/constants/serverUrl";
-import { axiosFetcher, axiosSchoolFetcher } from "@/js/helpers/fetcher";
+import {ref, reactive, computed, onMounted} from 'vue';
+import {useUserStore} from '../stores/useUserStore';
+import {useRouter} from "vue-router";
+import {appURL} from "@/js/constants/serverUrl";
+import {axiosFetcherParams, axiosSchoolFetcher, axiosSchoolFetcherParams} from "@/js/helpers/fetcher";
 import useSwrvState from "@/js/helpers/useSwrvState";
 import useSWRV from "swrv";
-import { storeToRefs } from "pinia";
+import {storeToRefs} from "pinia";
 import axios from 'axios';
-import { swrvOptions } from "@/js/constants/swrvConstants";
+import {swrvOptions} from "@/js/constants/swrvConstants";
 import SoftwareCard from "@/js/components/software/SoftwareCard.vue";
 import CarouselGenerator from "@/js/components/card/CarouselGenerator.vue";
 
 const router = useRouter()
 const userStore = useUserStore();
-const { currentUser, isAdminAuthenticated } = storeToRefs(userStore)
+const {currentUser, isAdminAuthenticated} = storeToRefs(userStore)
 /**
  * First things first. Handle the user details from okta
  */
@@ -112,27 +102,27 @@ const {
     data: eventsData,
     error: eventsError,
     isValidating: eventsIsValidating
-} = useSWRV(() => currentUser.value.id ? API_ENDPOINTS.EVENT.FETCH_EVENT_POSTS : null, axiosFetcher, swrvOptions)
+} = useSWRV(() => currentUser.value.id ? API_ENDPOINTS.EVENT.FETCH_EVENT_POSTS : null, axiosFetcherParams(userStore.getUserRequestParam), swrvOptions)
 const {
     data: softwaresData,
     error: softwaresError,
     isValidating: softwaresIsValidating
-} = useSWRV(() => currentUser.value.id ? API_ENDPOINTS.SOFTWARE.FETCH_SOFTWARE_POSTS : null, axiosFetcher, swrvOptions)
+} = useSWRV(() => currentUser.value.id ? API_ENDPOINTS.SOFTWARE.FETCH_SOFTWARE_POSTS : null, axiosFetcherParams(userStore.getUserRequestParam), swrvOptions)
 const {
     data: advicesData,
     error: advicesError,
     isValidating: advicesIsValidating
-} = useSWRV(() => currentUser.value.id ? API_ENDPOINTS.ADVICE.FETCH_ADVICE_POSTS : null, axiosFetcher, swrvOptions)
+} = useSWRV(() => currentUser.value.id ? API_ENDPOINTS.ADVICE.FETCH_ADVICE_POSTS : null, axiosFetcherParams(userStore.getUserRequestParam), swrvOptions)
 const {
     data: schoolsData,
     error: schoolsError,
     isValidating: schoolsIsValidating
-} = useSWRV(() => currentUser.value.id ? API_ENDPOINTS.SCHOOL.FETCH_FEATURED_SCHOOL : null, axiosSchoolFetcher, swrvOptions)
+} = useSWRV(() => currentUser.value.id ? API_ENDPOINTS.SCHOOL.FETCH_FEATURED_SCHOOL : null, axiosSchoolFetcherParams(userStore.getUserRequestParam), swrvOptions)
 
-const { state: eventsState, STATES: ALLSTATES } = useSwrvState(eventsData, eventsError, eventsIsValidating)
-const { state: softwaresState } = useSwrvState(softwaresData, softwaresError, softwaresIsValidating)
-const { state: advicesState } = useSwrvState(advicesData, advicesError, advicesIsValidating)
-const { state: schoolsState } = useSwrvState(schoolsData, schoolsError, schoolsIsValidating)
+const {state: eventsState, STATES: ALLSTATES} = useSwrvState(eventsData, eventsError, eventsIsValidating)
+const {state: softwaresState} = useSwrvState(softwaresData, softwaresError, softwaresIsValidating)
+const {state: advicesState} = useSwrvState(advicesData, advicesError, advicesIsValidating)
+const {state: schoolsState} = useSwrvState(schoolsData, schoolsError, schoolsIsValidating)
 
 // who needs a one line ref to indicate loading state when you can have 10 lines 😆
 // todo: compile all ref into an array and process with map
@@ -217,7 +207,7 @@ const getConnectingLinePositions = () => {
 };
 
 const getPositionAtCenter = (element) => {
-    const { top, left, width, height } = element.getBoundingClientRect();
+    const {top, left, width, height} = element.getBoundingClientRect();
     return {
         x: left + width / 2,
         y: top + height / 2
@@ -515,7 +505,6 @@ onMounted(async () => {
 </template>
 
 <style scoped lang="scss">
-
 
 
 .negotiatedDealsLine {

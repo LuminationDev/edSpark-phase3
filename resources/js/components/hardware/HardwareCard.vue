@@ -1,5 +1,4 @@
 <script setup>
-import {computed} from 'vue';
 import GenericCard from '../card/GenericCard.vue';
 import {useRouter} from 'vue-router';
 import {useUserStore} from "@/js/stores/useUserStore";
@@ -13,11 +12,7 @@ const props = defineProps({
         type: Object,
         required: true
     },
-    numberPerRow: {
-        type: Number,
-        required: false,
-        default: 3
-    }
+
 });
 
 const router = useRouter();
@@ -50,14 +45,15 @@ const handleClickHardwareCard = () => {
 
 <template>
     <GenericCard
+        :id="id"
         :title="product_name"
         :display-content="product_excerpt"
         :display-author="author ? author['author_name'] : ''"
         :display-date="created_at"
-        :number-per-row="numberPerRow"
         :cover-image="cover_image"
         :click-callback="handleClickHardwareCard"
         :is-liked-by-user="isLikedByUser"
         :is-bookmarked-by-user="isBookmarkedByUser"
+        section-type="hardware"
     />
 </template>

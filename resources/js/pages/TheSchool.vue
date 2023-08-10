@@ -1,54 +1,37 @@
 <script setup>
-import {API_ENDPOINTS} from "@/js/constants/API_ENDPOINTS";
-import {computed, onBeforeMount, onMounted, ref, watch} from 'vue'
-import axios from 'axios'
+import {computed, onBeforeMount, ref} from 'vue'
 import {useRouter} from "vue-router";
 import {storeToRefs} from "pinia";
 import useSWRV from "swrv";
 
-
-import {schoolContentArrParser} from "@/js/helpers/jsonHelpers";
-import {useUserStore} from "@/js/stores/useUserStore";
-import {serverURL} from "@/js/constants/serverUrl";
-
 import SchoolsHero from '../components/schools/SchoolsHero.vue';
-import SearchableMap from '../components/schools/schoolMap/SearchableMap.vue';
-import SchoolCard from "@/js/components/schools/SchoolCard.vue";
 import CreateSchoolForm from "@/js/components/schools/createSchool/CreateSchoolForm.vue";
 import SchoolWelcomePopup from "@/js/components/schools/schoolPopup/SchoolWelcomePopup.vue";
 import SectionHeader from "@/js/components/global/SectionHeader.vue";
 import SchoolsSearchableMap from '../components/schools/schoolMap/SchoolsSearchableMap.vue';
-import Loader from '../components/spinner/Loader.vue';
-import CardLoading from '../components/card/CardLoading.vue';
-import {axiosSchoolFetcher} from "@/js/helpers/fetcher";
-import useSwrvState from "@/js/helpers/useSwrvState";
-import {useSchoolsStore} from "@/js/stores/useSchoolsStore";
-
-/**
- * Import Card wrapper
- */
 import CarouselGenerator from "@/js/components/card/CarouselGenerator.vue";
+import Loader from '../components/spinner/Loader.vue';
+import {useUserStore} from "@/js/stores/useUserStore";
+import {axiosSchoolFetcherParams} from "@/js/helpers/fetcher";
+import {useSchoolsStore} from "@/js/stores/useSchoolsStore";
+import {swrvOptions} from "@/js/constants/swrvConstants";
+import {API_ENDPOINTS} from "@/js/constants/API_ENDPOINTS";
+import useSwrvState from "@/js/helpers/useSwrvState";
 
 const createSchool = ref(false)
 const showWelcomePopup = ref(false)
-
 const router = useRouter();
-
 const userStore = useUserStore()
 const schoolStore = useSchoolsStore()
 const {schools} = storeToRefs(schoolStore)
 const {currentUser} = storeToRefs(userStore)
 
-const swrvOptions = {
-    revalidateOnFocus: false, // disable refresh on every focus, suspect its too often
-    refreshInterval: 30000 // refresh or revalidate data every 30 secs
-}
 
 const {
     data: featuredSites,
     error: featuredSitesError,
     isValidating: isValidatingFeatured
-} = useSWRV(API_ENDPOINTS.SCHOOL.FETCH_FEATURED_SCHOOL, axiosSchoolFetcher, swrvOptions)
+} = useSWRV(API_ENDPOINTS.SCHOOL.FETCH_FEATURED_SCHOOL, axiosSchoolFetcherParams(userStore.getUserRequestParam), swrvOptions)
 
 const {state, STATES} = useSwrvState(featuredSites, featuredSitesError, isValidatingFeatured)
 
@@ -64,26 +47,13 @@ const cardsLoading = computed(() => {
     }
 })
 
-const schoolsAvailable = ref(false);
-
-const fetchAllSchools = () => {
-    if (schools.value.length === 0) {
-        console.log('fetch all school called')
-        axios.get(API_ENDPOINTS.SCHOOL.FETCH_ALL_SCHOOLS).then(res => {
-            schools.value = schoolContentArrParser(res.data)
-            schoolsAvailable.value = true;
-        })
-    } else {
-        console.log('fetchAllSchool not called due to data available inside allSchoolsRef')
-        schoolsAvailable.value = true;
-
-    }
-
-};
+const schoolsAvailable = computed(() => {
+    return Boolean(schools.value.length)
+})
 
 
-onBeforeMount(() => {
-    fetchAllSchools();
+onBeforeMount(async () => {
+    await schoolStore.loadSchools()
 
     /**
      * Perform check for user meta here

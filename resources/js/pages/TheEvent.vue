@@ -1,23 +1,23 @@
 <script setup>
 import {API_ENDPOINTS} from "@/js/constants/API_ENDPOINTS";
+import {swrvOptions} from "@/js/constants/swrvConstants";
+import {useUserStore} from "@/js/stores/useUserStore";
 import EventsHero from '../components/events/EventsHero.vue';
 import EventsCalendar from '../components/events/EventsCalendar.vue';
 import EventsView from '../components/events/EventsView.vue';
 import SectionHeader from '../components/global/SectionHeader.vue';
-import { onBeforeMount , ref, computed } from "vue";
+import { computed } from "vue";
 import useSWRV from "swrv";
 
-import Spinner from "../components/spinner/Spinner.vue";
 import EventCard from "../components/events/EventsCard.vue";
-import {serverURL} from "../constants/serverUrl";
-import {axiosFetcher} from "../helpers/fetcher";
+import {axiosFetcherParams} from "../helpers/fetcher";
 import {useRouter} from "vue-router";
 import Loader from "@/js/components/spinner/Loader.vue";
 import {guid} from "@/js/helpers/guidGenerator";
 import CardLoading from "@/js/components/card/CardLoading.vue";
 
 const router = useRouter()
-const { data: allEvents, error: eventError } = useSWRV(API_ENDPOINTS.EVENT.FETCH_EVENT_POSTS, axiosFetcher)
+const { data: allEvents, error: eventError } = useSWRV(API_ENDPOINTS.EVENT.FETCH_EVENT_POSTS, axiosFetcherParams(useUserStore().getUserRequestParam), swrvOptions)
 
 const allEventsWithKeys = computed(() =>{
     if(!allEvents.value) return []

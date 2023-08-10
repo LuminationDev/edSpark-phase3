@@ -13,7 +13,14 @@ export const axiosSchoolFetcher = (url) => {
     })
 }
 
-export const axiosFetcherParams = (params) =>{
+export const axiosSchoolFetcherParams = (params) => {
+    return (url) => axios.get(url, params).then(res => {
+        return schoolContentArrParser(res.data)
+    })
+}
+
+
+export const axiosFetcherParams = (params) => {
     return (url) => axios.get(url, params).then(res => {
         return res.data
     })

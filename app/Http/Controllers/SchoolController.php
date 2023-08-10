@@ -33,7 +33,7 @@ class SchoolController extends Controller
 
     private function schoolModelToJson($school, $schoolMetadata = NULL, $request = NULL)
     {
-        // School likes and bookmarks
+        // LIKE AND BOOKMARK
         $userId = 0;
         $isLikedByUser = false;
         $isBookmarkedByUser = false;
@@ -45,8 +45,7 @@ class SchoolController extends Controller
 
         }
 
-        // school specific information
-        // location and meta
+        // LOCATION AND META
         $site = Site::where('site_id', $school->site_id)->first();
         $siteLocation = (object) [
             'lat' => $site ? (float) $site->site_latitude : 0.0,
@@ -59,6 +58,7 @@ class SchoolController extends Controller
             'schoolmeta_value' => $school->site->site_sub_type_desc ?? ""
         ];
         $schoolMetadata[] = $schoolType;
+
         return [
             'id' => $school->id,
             'site' => [
@@ -80,16 +80,13 @@ class SchoolController extends Controller
             'location' => $siteLocation,
             'isLikedByUser' => $isLikedByUser,
             'isBookmarkedByUser' => $isBookmarkedByUser,
-            'fetchingUserId' => $userId
 
         ];
     }
     public function createSchool(Request $request)
     {
         if ($request->isMethod('post')) {
-            $data = $request->all(); // if not data key present
-            // $data = $request->data; // if data key present can be used later for metaData
-//             dd(json_decode($data));
+            $data = $request->all();
             $error = '';
 
             if ($data) {
@@ -169,16 +166,13 @@ class SchoolController extends Controller
                         $imgName = $prefix . '-' . md5(Str::random(30) . time() . '_' . $schoolLogo) . '.' . $schoolLogo->getClientOriginalExtension();
                         $schoolLogo->storeAs('public/uploads/school/logo', $imgName);
                         $schoolLogoUrl = "uploads\/school\/logo\/" . $imgName;
-
                     }
-
                     if (isset($data['cover_image']) && is_string($data['cover_image']) === false) {
                         $coverImage = $data['cover_image'];
                         $imgName = $prefix . '-' . md5(Str::random(30) . time() . '_' . $coverImage) . '.' . $coverImage->getClientOriginalExtension();
                         $coverImage->storeAs('public/uploads/school', $imgName);
                         $coverImageUrl = "uploads\/school\/" . $imgName;
                     }
-
                     $dataToUpdate = [
                         'name' => $data['name'],
                         'content_blocks' => json_encode($data['content_blocks']),
@@ -259,8 +253,6 @@ class SchoolController extends Controller
 
     }
 
-
-
     public function fetchSchoolByName(Request $request, $schoolName)
     {
         $schoolName = str_replace('%20', ' ', $schoolName);
@@ -276,11 +268,9 @@ class SchoolController extends Controller
         }
 
     }
-
-    //TODO: fetch featured schools only 4
     public function fetchFeaturedSchools(Request $request)
     {
-        $schools = School::where('isFeatured', 1)->get();
+        $schools = School::where('isFeatured', 1)->inRandomOrder()->limit(4)->get();
         $data = [];
 
         foreach ($schools as $school) {
@@ -496,9 +486,9 @@ class SchoolController extends Controller
 
     }
 
-    /**
-     * School Contact Functions
-     */
+    /************************************
+     * School Contact Functions         *
+     ************************************/
     public function createOrUpdateContact(Request $request): \Illuminate\Http\JsonResponse
     {
         if ($request->isMethod('post')) {
@@ -509,7 +499,6 @@ class SchoolController extends Controller
 
             $school_id = $requestData['school_id'];
             $school_contact = $requestData['school_contact'];
-//            dd($school_contact);
             $schoolmeta_record = Schoolmeta::where('school_id', $school_id)
                 ->where('schoolmeta_key', 'school_contact')
                 ->first();
@@ -581,8 +570,6 @@ class SchoolController extends Controller
             'message' => 'Unauthorized'
         ]);
     }
-
-
     /**
      * End of SchoolContact Function
      */

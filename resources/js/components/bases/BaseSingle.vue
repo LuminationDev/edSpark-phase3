@@ -1,6 +1,7 @@
 -
 <script setup>
 import {API_ENDPOINTS} from "@/js/constants/API_ENDPOINTS";
+import {useUserStore} from "@/js/stores/useUserStore";
 import {useRoute, useRouter} from "vue-router";
 import {onBeforeMount, ref, computed, watch, onUnmounted} from "vue";
 import axios from 'axios'
@@ -76,7 +77,7 @@ const getRecommendationBasedOnContentType = () => {
     switch (props.contentType) {
     case 'hardware':
         if (recommendationAPILink) {
-            return axios.get(`${recommendationAPILink}/${singleContent.value['brand']['brandName']}`).then(res => {
+            return axios.get(`${recommendationAPILink}${singleContent.value['brand']['brandName']}`).then(res => {
                 recommendedContent.value = res.data
             }).catch(e =>{
                 console.log(e.message)
@@ -120,7 +121,7 @@ const checkToReadOrFetchContent = async () =>{
     if (!window.history.state.content) { // doesn't exists
         if(!byIdAPILink) return
         console.log('No content passed in. Will request from server')
-        await axios.get(`${byIdAPILink}/${route.params.id}`).then(res => {
+        await axios.get(`${byIdAPILink}${route.params.id}`, useUserStore().getUserRequestParam).then(res => {
             singleContent.value = res.data
             console.log('set new data haha yes')
             baseIsLoading.value = false

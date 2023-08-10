@@ -1,5 +1,6 @@
 <script setup>
 import {API_ENDPOINTS} from "@/js/constants/API_ENDPOINTS";
+import {useUserStore} from "@/js/stores/useUserStore";
 import HardwareHero from '../components/hardware/HardwareHero.vue';
 import HardwareInformation from '../components/hardware/HardwareInformation.vue';
 import SectionHeader from '../components/global/SectionHeader.vue';
@@ -11,16 +12,16 @@ import MonitorDisplay from '../components/svg/MonitorDisplay.vue';
 import {computed} from 'vue';
 import useSWRV from "swrv";
 import {serverURL} from "@/js/constants/serverUrl";
-import {axiosFetcher} from "@/js/helpers/fetcher";
+import {axiosFetcher, axiosFetcherParams} from "@/js/helpers/fetcher";
 import {useRouter} from "vue-router";
 import {guid} from "@/js/helpers/guidGenerator";
 import CardLoading from "@/js/components/card/CardLoading.vue";
 import {useWindowStore} from "@/js/stores/useWindowStore";
 import {storeToRefs} from "pinia";
 
-
+const userStore = useUserStore()
 const router = useRouter()
-const {data: hardware, error} = useSWRV(API_ENDPOINTS.HARDWARE.FETCH_HARDWARE_POSTS, axiosFetcher)
+const {data: hardware, error} = useSWRV(API_ENDPOINTS.HARDWARE.FETCH_HARDWARE_POSTS, axiosFetcherParams(userStore.getUserRequestParam))
 
 
 const laptops = computed(() => {
@@ -48,16 +49,6 @@ const emergingTech = computed(() => {
 const windowStore = useWindowStore()
 const {isMobile, isTablet, windowWidth} = storeToRefs(windowStore)
 
-// const responsiveDisplayLaptop = computed(() => {
-//     if(isMobile.value){
-//         return laptops.value.slice(0,2) || []
-//     }else if(isTablet.value){
-//
-//     }
-//     else{
-//         return laptops.value
-//     }
-// })
 
 const getResponsiveDisplayData = (itemArray) => {
     if(itemArray.length === 0) return []
