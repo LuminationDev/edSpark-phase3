@@ -71,12 +71,12 @@ const getIdToken = async () => {
 
             await checkFirstVisit(email.value);
         } else {
-            currentUser.value.id = 61
+            // currentUser.value.id = 61
         }
     } catch (error) {
         console.error(error);
         console.warn('Failed to get Auth data. User is not logged in')
-        currentUser.value.id = 61
+        // currentUser.value.id = 61
     }
 };
 
@@ -97,27 +97,31 @@ const checkFirstVisit = async (emailAddress) => {
 
 getIdToken()
 
+const shouldStartSwrv = computed(() => {
+    console.log(Boolean(currentUser.value.id))
+    return Boolean(currentUser.value.id)
+})
 
 const {
     data: eventsData,
     error: eventsError,
     isValidating: eventsIsValidating
-} = useSWRV(() => currentUser.value.id ? API_ENDPOINTS.EVENT.FETCH_EVENT_POSTS : null, axiosFetcherParams(userStore.getUserRequestParam), swrvOptions)
+} = useSWRV(() => shouldStartSwrv.value ? API_ENDPOINTS.EVENT.FETCH_EVENT_POSTS : null, axiosFetcherParams(userStore.getUserRequestParam), swrvOptions)
 const {
     data: softwaresData,
     error: softwaresError,
     isValidating: softwaresIsValidating
-} = useSWRV(() => currentUser.value.id ? API_ENDPOINTS.SOFTWARE.FETCH_SOFTWARE_POSTS : null, axiosFetcherParams(userStore.getUserRequestParam), swrvOptions)
+} = useSWRV(() => shouldStartSwrv.value ? API_ENDPOINTS.SOFTWARE.FETCH_SOFTWARE_POSTS : null, axiosFetcherParams(userStore.getUserRequestParam), swrvOptions)
 const {
     data: advicesData,
     error: advicesError,
     isValidating: advicesIsValidating
-} = useSWRV(() => currentUser.value.id ? API_ENDPOINTS.ADVICE.FETCH_ADVICE_POSTS : null, axiosFetcherParams(userStore.getUserRequestParam), swrvOptions)
+} = useSWRV(() => shouldStartSwrv.value ? API_ENDPOINTS.ADVICE.FETCH_ADVICE_POSTS : null, axiosFetcherParams(userStore.getUserRequestParam), swrvOptions)
 const {
     data: schoolsData,
     error: schoolsError,
     isValidating: schoolsIsValidating
-} = useSWRV(() => currentUser.value.id ? API_ENDPOINTS.SCHOOL.FETCH_FEATURED_SCHOOL : null, axiosSchoolFetcherParams(userStore.getUserRequestParam), swrvOptions)
+} = useSWRV(() => shouldStartSwrv.value ? API_ENDPOINTS.SCHOOL.FETCH_FEATURED_SCHOOL : null, axiosSchoolFetcherParams(userStore.getUserRequestParam), swrvOptions)
 
 const {state: eventsState, STATES: ALLSTATES} = useSwrvState(eventsData, eventsError, eventsIsValidating)
 const {state: softwaresState} = useSwrvState(softwaresData, softwaresError, softwaresIsValidating)

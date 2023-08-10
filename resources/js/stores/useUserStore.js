@@ -24,6 +24,7 @@ export const useUserStore = defineStore('user', {
         userLikeList: {},
         userBookmarkList: {},
         notifications: [],
+        userRequestParam:{}
     }),
 
     getters: {
@@ -42,7 +43,8 @@ export const useUserStore = defineStore('user', {
             console.log(this.currentUser?.site?.site_name)
             return this.currentUser?.site?.site_name || ""
         },
-        getUserRequestParam() {
+        getUserRequestParam(){
+            console.log(this.currentUser)
             return {
                 params:{
                     usid: this.currentUser.id

@@ -142,8 +142,10 @@ const numberOfLoadingPlaceholder = computed(() =>{
 .carousel__wrapper {
     width: 100%;
 
-    .carousel__viewport {
+    :deep(.carousel__viewport) {
         padding-bottom: 36px;
+        overflow-x: hidden;
+        overflow-y: visible;
     }
 
     .carousel__next {
