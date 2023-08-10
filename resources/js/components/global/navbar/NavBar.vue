@@ -81,9 +81,13 @@ const {isMobile, isTablet}  = storeToRefs(useWindowStore)
 
 <template>
     <div class="h-32 relative w-full z-50 md:!h-40 lg:!h-56">
+        <img
+            src="@/assets/images/navbar.png"
+            alt="Image of children writing and playing VR"
+            class="absolute top-0 left-0 h-full nav-background object-cover w-full"
+        >
         <div
             class="bg-cover bg-no-repeat h-full nav-background overflow-auto pt-7 w-full z-50"
-            :style="`background-image: url(${imageURL}/uploads/image/navbar.png)`"
         >
             <nav
                 v-if="isAuthenticated"
