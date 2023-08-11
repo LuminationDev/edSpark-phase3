@@ -120,7 +120,8 @@ const {isMobile, isTablet}  = storeToRefs(useWindowStore)
             :avatar-url="avatarUrl"
             @handle-avatar-click="handleAvatarClick"
         />
-        <button>
+        <!-- MB commented out the button below - what was its purpose? -->
+        <!-- <button>
             <router-link :to="{name: 'dashboard'}">
                 <Logo
                     class="
@@ -145,7 +146,7 @@ const {isMobile, isTablet}  = storeToRefs(useWindowStore)
                         "
                 />
             </router-link>
-        </button>
+        </button> -->
         <NavSwoosh
             class="
                 2xl:!top-0

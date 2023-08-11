@@ -1,5 +1,5 @@
 <script setup>
-import EventsCalendarPopup from './EventsCalendarPopup.vue';
+// import EventsCalendarPopup from './EventsCalendarPopup.vue';
 
 import { Calendar } from 'v-calendar';
 import 'v-calendar/style.css';
@@ -87,7 +87,7 @@ const closePopup = () => {
 
 
 <style scoped>
-    .calendarWrapper >>> .vc-pane{
+    .calendarWrapper >>> .vc-pane {
         background-color: #f8f8f8;
     }
 
@@ -95,7 +95,11 @@ const closePopup = () => {
         margin-bottom: 1.5rem !important;
     }
 
-    .calendarWrapper >>>.vc-day-box-center-center {
+    .calendarWrapper >>> .vc-weeknumber-content {
+        color: #6b7585;
+    }
+
+    .calendarWrapper >>> .vc-day-box-center-center {
         height: 68px;
     }
 
