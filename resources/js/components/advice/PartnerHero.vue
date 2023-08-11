@@ -50,7 +50,8 @@ const router = useRouter()
                         xl:!right-12"
                 />
                 <GenericButton
-                    :callback="() => router.push('browse/advices')"
+                    :callback="() => router.push('browse/advice')"
+                    buttonId="PTRadvice"
                     class="
                         !rounded-none
                         !text-main-navy

@@ -49,6 +49,8 @@ if(props.preselected){
             :close-on-select="false"
             label="name"
             track-by="name"
+            aria-expanded="false"
+            aria-controls="resourceResult"
             @select="handleEmitSelectedFilters"
             @remove="handleEmitSelectedFilters"
         />

@@ -3822,12 +3822,12 @@ select {
 
 .\!bg-main-teal {
   --tw-bg-opacity: 1 !important;
-  background-color: rgb(51 153 153 / var(--tw-bg-opacity)) !important;
+  background-color: rgb(42 130 130 / var(--tw-bg-opacity)) !important;
 }
 
 .\!bg-rose-400 {
   --tw-bg-opacity: 1 !important;
-  background-color: rgb(251 113 133 / var(--tw-bg-opacity)) !important;
+  background-color: rgb(167 71 85 / var(--tw-bg-opacity)) !important;
 }
 
 .\!bg-slate-300 {
