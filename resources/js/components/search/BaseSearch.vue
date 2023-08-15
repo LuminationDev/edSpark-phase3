@@ -229,7 +229,7 @@ const formattedSearchTitle = computed(() =>{
                     >
                         <HardwareCard
                             :key="data.id"
-                            :hardware-content="data"
+                            :hardware-data="data"
                             :number-per-row="4"
                         />
                     </div>
@@ -260,7 +260,7 @@ const formattedSearchTitle = computed(() =>{
                             "
                     >
                         <PartnerCard
-                            :partner-content="data"
+                            :partner-data="data"
                         />
                     </div>
                 </template>
@@ -279,7 +279,7 @@ const formattedSearchTitle = computed(() =>{
                             "
                     >
                         <EventsCard
-                            :event-content="data"
+                            :event-data="data"
                             :show-icon="true"
                         />
                     </div>

@@ -1,4 +1,6 @@
 <script setup>
+import {API_ENDPOINTS} from "@/js/constants/API_ENDPOINTS";
+
 /**
  * Components
  */
@@ -19,32 +21,22 @@ import DepartmentApprovedSolo from '@/js/components/svg/DepartmentApprovedSolo.v
  * Loading Cards
  */
 import CardLoading from '@/js/components/card/CardLoading.vue';
-
-/**
- * Depends on
- */
-import { ref, reactive, computed, onMounted } from 'vue';
-import oktaAuth from '../constants/oktaAuth';
-
-/**
- * I guess I should pick up some ____ from the store on my way home
- * (import and set up stores)
- */
-import { useUserStore } from '../stores/useUserStore';
-import { useRouter } from "vue-router";
-import { appURL, serverURL } from "@/js/constants/serverUrl";
-import { axiosFetcher, axiosSchoolFetcher } from "@/js/helpers/fetcher";
+import {ref, reactive, computed, onMounted} from 'vue';
+import {useUserStore} from '../stores/useUserStore';
+import {useRouter} from "vue-router";
+import {appURL} from "@/js/constants/serverUrl";
+import {axiosFetcherParams, axiosSchoolFetcher, axiosSchoolFetcherParams} from "@/js/helpers/fetcher";
 import useSwrvState from "@/js/helpers/useSwrvState";
 import useSWRV from "swrv";
-import { storeToRefs } from "pinia";
+import {storeToRefs} from "pinia";
 import axios from 'axios';
-import { swrvOptions } from "@/js/constants/swrvConstants";
+import {swrvOptions} from "@/js/constants/swrvConstants";
 import SoftwareCard from "@/js/components/software/SoftwareCard.vue";
 import CarouselGenerator from "@/js/components/card/CarouselGenerator.vue";
 
 const router = useRouter()
 const userStore = useUserStore();
-const { currentUser, isAdminAuthenticated } = storeToRefs(userStore)
+const {currentUser, isAdminAuthenticated} = storeToRefs(userStore)
 /**
  * First things first. Handle the user details from okta
  */
@@ -79,12 +71,12 @@ const getIdToken = async () => {
 
             await checkFirstVisit(email.value);
         } else {
-            currentUser.value.id = 61
+            // currentUser.value.id = 61
         }
     } catch (error) {
         console.error(error);
         console.warn('Failed to get Auth data. User is not logged in')
-        currentUser.value.id = 61
+        // currentUser.value.id = 61
     }
 };
 
@@ -105,32 +97,36 @@ const checkFirstVisit = async (emailAddress) => {
 
 getIdToken()
 
+const shouldStartSwrv = computed(() => {
+    console.log(Boolean(currentUser.value.id))
+    return Boolean(currentUser.value.id)
+})
 
 const {
     data: eventsData,
     error: eventsError,
     isValidating: eventsIsValidating
-} = useSWRV(() => currentUser.value.id ? `${serverURL}/fetchEventPosts` : null, axiosFetcher, swrvOptions)
+} = useSWRV(() => shouldStartSwrv.value ? API_ENDPOINTS.EVENT.FETCH_EVENT_POSTS : null, axiosFetcherParams(userStore.getUserRequestParam), swrvOptions)
 const {
     data: softwaresData,
     error: softwaresError,
     isValidating: softwaresIsValidating
-} = useSWRV(() => currentUser.value.id ? `${serverURL}/fetchSoftwarePosts` : null, axiosFetcher, swrvOptions)
+} = useSWRV(() => shouldStartSwrv.value ? API_ENDPOINTS.SOFTWARE.FETCH_SOFTWARE_POSTS : null, axiosFetcherParams(userStore.getUserRequestParam), swrvOptions)
 const {
     data: advicesData,
     error: advicesError,
     isValidating: advicesIsValidating
-} = useSWRV(() => currentUser.value.id ? `${serverURL}/fetchAdvicePosts` : null, axiosFetcher, swrvOptions)
+} = useSWRV(() => shouldStartSwrv.value ? API_ENDPOINTS.ADVICE.FETCH_ADVICE_POSTS : null, axiosFetcherParams(userStore.getUserRequestParam), swrvOptions)
 const {
     data: schoolsData,
     error: schoolsError,
     isValidating: schoolsIsValidating
-} = useSWRV(() => currentUser.value.id ? `${serverURL}/fetchFeaturedSchools` : null, axiosSchoolFetcher, swrvOptions)
+} = useSWRV(() => shouldStartSwrv.value ? API_ENDPOINTS.SCHOOL.FETCH_FEATURED_SCHOOL : null, axiosSchoolFetcherParams(userStore.getUserRequestParam), swrvOptions)
 
-const { state: eventsState, STATES: ALLSTATES } = useSwrvState(eventsData, eventsError, eventsIsValidating)
-const { state: softwaresState } = useSwrvState(softwaresData, softwaresError, softwaresIsValidating)
-const { state: advicesState } = useSwrvState(advicesData, advicesError, advicesIsValidating)
-const { state: schoolsState } = useSwrvState(schoolsData, schoolsError, schoolsIsValidating)
+const {state: eventsState, STATES: ALLSTATES} = useSwrvState(eventsData, eventsError, eventsIsValidating)
+const {state: softwaresState} = useSwrvState(softwaresData, softwaresError, softwaresIsValidating)
+const {state: advicesState} = useSwrvState(advicesData, advicesError, advicesIsValidating)
+const {state: schoolsState} = useSwrvState(schoolsData, schoolsError, schoolsIsValidating)
 
 // who needs a one line ref to indicate loading state when you can have 10 lines 😆
 // todo: compile all ref into an array and process with map
@@ -179,13 +175,6 @@ const schoolsLoading = computed(() => {
     }
 })
 
-const reversedAdviceData = computed(() => {
-    if (!advicesData.value || advicesData.value.length === 0) return []
-    else {
-        return advicesData.value.slice().reverse()
-    }
-})
-
 const onClosePopup = () => {
     isFirstVisit.value = false;
 };
@@ -215,7 +204,7 @@ const getConnectingLinePositions = () => {
 };
 
 const getPositionAtCenter = (element) => {
-    const { top, left, width, height } = element.getBoundingClientRect();
+    const {top, left, width, height} = element.getBoundingClientRect();
     return {
         x: left + width / 2,
         y: top + height / 2
@@ -429,9 +418,9 @@ onMounted(async () => {
             <template v-if="softwaresData">
                 <div class="grid grid-cols-1 gap-6 place-items-center px-8 lg:!grid-cols-2 xl:!px-20">
                     <SoftwareCard
-                        v-for="(software,index) in softwaresData.slice(0,4)"
-                        :key="index"
-                        :software="software"
+                        v-for="software in softwaresData.slice(0,4)"
+                        :key="software.guid"
+                        :software-data="software"
                         :number-per-row="2"
                     />
                 </div>
@@ -490,7 +479,7 @@ onMounted(async () => {
                 <CarouselGenerator
                     :show-count="2"
                     data-type="advice"
-                    :data-array="reversedAdviceData"
+                    :data-array="advicesData"
                     special-attribute="twoThirdWide"
                 />
             </div>
@@ -513,7 +502,6 @@ onMounted(async () => {
 </template>
 
 <style scoped lang="scss">
-
 
 
 .negotiatedDealsLine {

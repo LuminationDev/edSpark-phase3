@@ -8,7 +8,7 @@ import {storeToRefs} from "pinia";
 import {useUserStore} from "@/js/stores/useUserStore";
 
 const props = defineProps({
-    adviceContent: {
+    adviceData: {
         type: Object, required: true
     },
     showIcon: {
@@ -19,7 +19,20 @@ const props = defineProps({
     }
 });
 
-const {post_id, post_title, cover_image, advice_type, created_at, post_excerpt, author} = props.adviceContent
+// eslint-disable-next-line vue/no-setup-props-destructure
+// const {
+//     post_id,
+//     post_title,
+//     cover_image,
+//     advice_type,
+//     created_at,
+//     post_excerpt,
+//     author,
+//     isLikedByUser,
+//     isBookmarkedByUser,
+//     guid
+// } = props.adviceData
+
 const router = useRouter()
 const {currentUser} = storeToRefs(useUserStore())
 
@@ -35,38 +48,35 @@ const handleClickAdviceCard = () => {
      */
     router.push({
         name: "advice-single",
-        params: {id: props.adviceContent.post_id},
-        state: {content: JSON.stringify(props.adviceContent)}
+        params: {id: props.adviceData.post_id},
+        state: {content: JSON.stringify(props.adviceData)}
     })
 
-}
-
-const likeBookmarkData = {
-    post_id: props.adviceContent.post_id,
-    user_id: currentUser.value.id || 9999,
-    post_type: 'advice'
 }
 
 </script>
 
 <template>
     <GenericCard
-        :key="post_id"
-        :title="post_title"
-        :display-content="post_excerpt"
-        :display-author="author"
-        :display-date="created_at"
+        :id="adviceData.post_id"
+        :key="adviceData.guid"
+        :title="adviceData.post_title"
+        :display-content="adviceData.post_excerpt"
+        :display-author="adviceData.author"
+        :display-date="adviceData.created_at"
         :number-per-row="numberPerRow"
-        :cover-image="cover_image"
+        :cover-image="adviceData.cover_image"
         :click-callback="handleClickAdviceCard"
-        :like-bookmark-data="likeBookmarkData"
         :section-type="'advice'"
+        :is-liked-by-user="adviceData.isLikedByUser"
+        :is-bookmarked-by-user="adviceData.isBookmarkedByUser"
+        :guid="adviceData.guid"
     >
         <template
-            v-if="advice_type.length > 0"
+            v-if="adviceData.advice_type.length > 0"
             #typeTag
         >
-            <AdviceTypeTag :type-tag="advice_type" />
+            <AdviceTypeTag :type-tag="adviceData.advice_type" />
         </template>
         <template
             v-if="showIcon"

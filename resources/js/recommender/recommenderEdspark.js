@@ -1,3 +1,4 @@
+import {API_ENDPOINTS} from "@/js/constants/API_ENDPOINTS";
 import {serverURL} from "@/js/constants/serverUrl";
 import axios from "axios";
 import {schoolContentArrParser} from "@/js/helpers/jsonHelpers";
@@ -31,13 +32,13 @@ const recommenderEdsparkSingletonFactory = (function(){
                 })
             }
             _fetchAllSchoolsAsync() {
-                return axios.get(`${serverURL}/fetchAllSchools`).then(res => {
+                return axios.get(API_ENDPOINTS.SCHOOL.FETCH_ALL_SCHOOLS).then(res => {
                     return res.data
                     }
                 )
             }
             _fetchAllSoftwareAsync(){
-                return axios.get(`${serverURL}/fetchSoftwarePosts`).then(res => {
+                return axios.get(API_ENDPOINTS.SOFTWARE.FETCH_SOFTWARE_POSTS).then(res => {
                         return res.data
                     }
                 )
@@ -61,7 +62,7 @@ const recommenderEdsparkSingletonFactory = (function(){
                 )
             }
             _fetchAllEventsAsync(){
-                // return axios.get(`${serverURL}/fetchAllSchools`).then(res => {
+                // return axios.get(API_ENDPOINTS.SCHOOL.FETCH_ALL_SCHOOLS).then(res => {
                 //         return res.data
                 //     }
                 // )

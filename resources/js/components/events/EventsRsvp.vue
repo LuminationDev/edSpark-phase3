@@ -1,4 +1,5 @@
 <script setup>
+import {API_ENDPOINTS} from "@/js/constants/API_ENDPOINTS";
 import {ref, computed, reactive, onMounted} from 'vue'
 import {email, minLength, numeric, required} from "@vuelidate/validators";
 import useVuelidate from "@vuelidate/core";
@@ -66,7 +67,7 @@ const rules = {
 const v$ = useVuelidate(rules, state)
 
 
-axios.get(`${serverURL}/fetchAllSites`).then(res => {
+axios.get(API_ENDPOINTS.SCHOOL.FETCH_ALL_SITES).then(res => {
     allSites.value = res.data
 }).catch(err => {
     console.error(err);
@@ -81,7 +82,7 @@ onMounted(() => {
     console.log(currentUser)
 
     // check if current user is Rsvped or Owner
-    axios.post(`${serverURL}/checkIfUserRsvped`, checkRsvpData).then(res => {
+    axios.post(API_ENDPOINTS.EVENT.CHECK_IF_USER_RSVPED, checkRsvpData).then(res => {
         console.log(res.data)
         currentUserIsOwner.value = res.data['isOwner'] === 'true'
         if (currentUserIsOwner.value) {
@@ -141,7 +142,7 @@ const handleSubmitRsvp = () => {
             school_name: state.schoolName,
             number_of_guests: state.numOfGuest
         }
-        return axios.post(`${serverURL}/addRsvpToEvent`, rsvpData).then(res => {
+        return axios.post(API_ENDPOINTS.EVENT.ADD_EVENT_RECORDING, rsvpData).then(res => {
             console.log(res.data)
             currentUserRsvped.value = true
             currentRsvpInfo.value = rsvpData

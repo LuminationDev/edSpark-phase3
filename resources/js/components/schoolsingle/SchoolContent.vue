@@ -1,4 +1,5 @@
 <script setup>
+import {API_ENDPOINTS} from "@/js/constants/API_ENDPOINTS";
 import {computed, onBeforeMount, onMounted, ref} from 'vue'
 import SchoolEditorJs from "@/js/components/schoolsingle/SchoolEditorJs.vue";
 import SchoolContentDisplay from "@/js/components/schoolsingle/SchoolContentDisplay.vue";
@@ -73,7 +74,7 @@ onMounted(async () => {
     const checkIfUserCanEdit = async () => {
         await axios({
             method: "POST",
-            url: `${serverURL}/checkUserCanEdit`,
+            url: API_ENDPOINTS.SCHOOL.CHECK_IF_USER_CAN_EDIT_SCHOOL,
             data:{
                 "site_id": props.schoolContent.site.site_id,
                 "user_id": currentUser.value.id,

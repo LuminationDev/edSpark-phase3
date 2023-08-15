@@ -1,4 +1,7 @@
 <script setup>
+import {API_ENDPOINTS} from "@/js/constants/API_ENDPOINTS";
+import {axiosFetcherParams} from "@/js/helpers/fetcher";
+import {useUserStore} from "@/js/stores/useUserStore";
 import PartnersHero from '../components/partners/PartnersHero.vue';
 import recommenderEdsparkSingletonFactory from "@/js/recommender/recommenderEdspark";
 import {onMounted, ref} from "vue";
@@ -20,7 +23,7 @@ const {
     data: partnerList,
     error: partnerListError,
     isValidating: partnerListIsValidating
-} = useSWRV(SWRVKeys.PARTNER_ALL_PARTNERS,() => recommender.getAllPartnersForPartner(), swrvOptions)
+} = useSWRV(API_ENDPOINTS.PARTNER.FETCH_ALL_PARTNERS, axiosFetcherParams(useUserStore().getUserRequestParam), swrvOptions)
 
 </script>
 
@@ -37,13 +40,14 @@ const {
         <div
             class="PartnerListGalleryContainer grid grid-cols-1 gap-4 place-items-center px-5 md:!grid-cols-2 lg:!px-huge xl:!grid-cols-3"
         >
-            <template v-if="partnerList?.partners">
+            <template v-if="partnerList">
                 <template
-                    v-for="(singlePartnerData,index) in partnerList.partners"
+                    v-for="(singlePartnerData,index) in partnerList
+                    "
                     :key="index"
                 >
                     <PartnerCard
-                        :partner-content="singlePartnerData"
+                        :partner-data="singlePartnerData"
                     />
                 </template>
             </template>

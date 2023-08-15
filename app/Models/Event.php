@@ -44,6 +44,15 @@ class Event extends Model
     {
         return $this->belongsTo(Eventtype::class);
     }
+    public function likes(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(Like::class, 'post_id', 'id')->where('post_type', 'event');
+    }
+
+    public function bookmarks(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(Bookmark::class, 'post_id', 'id')->where('post_type', 'event');
+    }
 
     protected $casts = [
         'cover_image' => 'array',

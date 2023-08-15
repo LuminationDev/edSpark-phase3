@@ -52,9 +52,9 @@ const breakpointChoser = () =>{
 }
 // currently not uniform yet. still depending on each card (each card is adapted to responses from backend)
 // TODO: Configure backend responses and Card data at the same time to prevent breaking changes
-const formattedData = computed(() => {
-    return cardDataWithGuid(props.dataArray)
-})
+// const formattedData = computed(() => {
+//     return cardDataWithGuid(props.dataArray)
+// })
 
 const numberOfLoadingPlaceholder = computed(() =>{
     if(props.specialAttribute === 'twoThirdWide'){
@@ -77,39 +77,55 @@ const numberOfLoadingPlaceholder = computed(() =>{
             <Carousel
                 :items-to-show="props.showCount"
                 :snap-align="'start'"
-                :wrap-around="true"
+                :wrap-around="false"
                 :breakpoints="breakpointChoser()"
             >
                 <Slide
-                    v-for="cardData in formattedData"
+                    v-for="cardData in props.dataArray"
                     :key="cardData.guid"
                     class="overflow-visible"
                 >
                     <template v-if="props.dataType === 'school'">
-                        <SchoolCard :school-data="cardData" />
+                        <SchoolCard
+                            :key="cardData.guid"
+                            :school-data="cardData"
+                        />
                     </template>
 
                     <template v-else-if="props.dataType === 'advice'">
                         <AdviceCard
-                            :advice-content="cardData"
+                            :key="cardData.guid"
+                            :advice-data="cardData"
                             :show-icon="true"
                         />
                     </template>
 
-                    <template v-else-if="props.dataType === 'sofware'">
-                        <SoftwareCard :software="cardData" />
+                    <template v-else-if="props.dataType === 'software'">
+                        <SoftwareCard
+                            :key="cardData.guid"
+                            :software-data="cardData"
+                        />
                     </template>
 
                     <template v-else-if="props.dataType === 'hardware'">
-                        <HardwareCard :hardware-content="cardData" />
+                        <HardwareCard
+                            :key="cardData.guid"
+                            :hardware-data="cardData"
+                        />
                     </template>
 
                     <template v-else-if="props.dataType === 'partners'">
-                        <PartnerCard :partner-content="cardData" />
+                        <PartnerCard
+                            :key="cardData.guid"
+                            :partner-data="cardData"
+                        />
                     </template>
 
                     <template v-else-if="props.dataType === 'events'">
-                        <EventsCard :event-content="cardData" />
+                        <EventsCard
+                            :key="cardData.guid"
+                            :event-data="cardData"
+                        />
                     </template>
                 </Slide>
                 <template #addons>
@@ -142,8 +158,10 @@ const numberOfLoadingPlaceholder = computed(() =>{
 .carousel__wrapper {
     width: 100%;
 
-    .carousel__viewport {
+    :deep(.carousel__viewport) {
         padding-bottom: 36px;
+        overflow-x: hidden;
+        overflow-y: visible;
     }
 
     .carousel__next {

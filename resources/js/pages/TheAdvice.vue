@@ -1,12 +1,14 @@
 <script setup>
+import {API_ENDPOINTS} from "@/js/constants/API_ENDPOINTS";
+import {useUserStore} from "@/js/stores/useUserStore";
+import {storeToRefs} from "pinia";
 import AdviceHero from '../components/advice/AdviceHero.vue'
 import useSWRV from "swrv";
 import useSwrvState from '@/js/helpers/useSwrvState';
 import EducatorHero from "@/js/components/advice/EducatorHero.vue";
 import PartnerHero from "@/js/components/advice/PartnerHero.vue";
 import AdviceCard from "@/js/components/advice/AdviceCard.vue";
-import { serverURL } from "@/js/constants/serverUrl";
-import { axiosFetcher } from "@/js/helpers/fetcher";
+import { axiosFetcherParams} from "@/js/helpers/fetcher";
 import { useRouter } from "vue-router";
 import { swrvOptions } from "@/js/constants/swrvConstants";
 import CardLoading from '../components/card/CardLoading.vue';
@@ -14,25 +16,25 @@ import CardLoading from '../components/card/CardLoading.vue';
 import CarouselGenerator from "@/js/components/card/CarouselGenerator.vue";
 
 const router = useRouter();
-
+const userStore = useUserStore()
+const {currentUser} = storeToRefs(userStore)
 /**
  * Get the DAG Advice articles
  * and states
  */
-const { data: dagAdvice, error: dagError, isValidating: dagValidating } = useSWRV(`${serverURL}/fetchAdvicePostByType/DAG advice`, axiosFetcher, swrvOptions);
-const { state: dagState, STATES: DAGSTATES } = useSwrvState(dagAdvice, dagError, dagValidating);
+const { data: dagAdvice, error: dagError, isValidating: dagValidating } = useSWRV(API_ENDPOINTS.ADVICE.FETCH_ADVICE_POSTS_BY_TYPE_DAG, axiosFetcherParams(userStore.getUserRequestParam), swrvOptions);const { state: dagState, STATES: DAGSTATES } = useSwrvState(dagAdvice, dagError, dagValidating);
 /**
  * Get the Partner advice
  * and states
  */
-const { data: partnerAdvice, error: partnerError, isValidating: partnerValidating } = useSWRV(`${serverURL}/fetchAdvicePostByType/Partner`, axiosFetcher, swrvOptions);
+const { data: partnerAdvice, error: partnerError, isValidating: partnerValidating } = useSWRV(API_ENDPOINTS.ADVICE.FETCH_ADVICE_POSTS_BY_TYPE_PARTNER, axiosFetcherParams(userStore.getUserRequestParam), swrvOptions);
 const { state: partnerState, STATES: PARTNERSTATES } = useSwrvState(partnerAdvice, partnerError, partnerValidating);
 
 /**
  * Get General Advice articles (your work, classroom, learning)
  * and states
  */
-const { data: generalAdvice, error: generalError, isValidating: generalValidating } = useSWRV(`${serverURL}/fetchAdvicePostByType/${['Your Classroom', 'Your Work', 'Your Learning']}`, axiosFetcher, swrvOptions);
+const { data: generalAdvice, error: generalError, isValidating: generalValidating } = useSWRV(API_ENDPOINTS.ADVICE.FETCH_ADVICE_POSTS_BY_TYPE_YOUR, axiosFetcherParams(userStore.getUserRequestParam), swrvOptions);
 const { state: generalState, STATES: GENERALSTATE } = useSwrvState(generalAdvice, generalError, generalValidating);
 
 
@@ -51,9 +53,9 @@ const { state: generalState, STATES: GENERALSTATE } = useSwrvState(generalAdvice
     <div class="grid grid-cols-1 gap-4 place-items-center mt-10 px-5 md:!grid-cols-2 lg:!grid-cols-3 lg:!px-huge">
         <template v-if="generalAdvice && generalAdvice.length">
             <AdviceCard
-                v-for="(advice, index) in generalAdvice"
-                :key="index"
-                :advice-content="advice"
+                v-for="advice in generalAdvice"
+                :key="advice.guid"
+                :advice-data="advice"
                 :show-icon="true"
             />
         </template>

@@ -246,7 +246,7 @@ const axiosImageHelper = async (image) => {
     return new Promise(async (resolve, reject) => {
         await axios({
             method: 'POST',
-            url: `${serverURL}/uploadImage`,
+            url: API_ENDPOINTS.IMAGE.UPLOAD_IMAGE,
             data: {
                 type: 'school',
                 image: image
@@ -438,10 +438,10 @@ const closePopup = () => {
         @close-popup="closePopup"
     >
         <template #formHeader>
-            <h3 class="text-[36px] text-black font-bold">
+            <h3 class="font-bold text-[36px] text-black">
                 {{ formStepData.infoWelcomeHeaderText }}
             </h3>
-            <p class="text-[18px] font-medium">
+            <p class="font-medium text-[18px]">
                 {{ formStepData.infoWelcomeHeaderBlurb }}
             </p>
         </template>
@@ -449,7 +449,7 @@ const closePopup = () => {
         <template #step1>
             <div>
                 <label
-                    class="text-[18px] font-bold"
+                    class="font-bold text-[18px]"
                     for="Name"
                 >Your name</label>
                 <input
@@ -462,7 +462,7 @@ const closePopup = () => {
 
             <div>
                 <label
-                    class="text-[18px] font-bold"
+                    class="font-bold text-[18px]"
                     for="Email"
                 >Your email</label>
                 <input
@@ -476,7 +476,7 @@ const closePopup = () => {
 
             <div class="flex flex-col">
                 <label
-                    class="text-[18px] font-bold"
+                    class="font-bold text-[18px]"
                     for="Role"
                 >Your Role</label>
                 <SearchDropdown
@@ -491,7 +491,7 @@ const closePopup = () => {
 
             <div class="flex flex-col">
                 <label
-                    class="text-[18px] font-bold"
+                    class="font-bold text-[18px]"
                     for="site"
                 >Your Site</label>
                 <SearchDropdown
@@ -509,14 +509,14 @@ const closePopup = () => {
             v-if="!isPrincipal"
             #step2
         >
-            <h5 class="text-[18px] font-bold">
+            <h5 class="font-bold text-[18px]">
                 What year levels do you work with?
             </h5>
-            <div class="flex gap-6 flex-wrap">
+            <div class="flex flex-wrap gap-6">
                 <label
                     v-for="(year,index) in formFieldData.years"
                     :key="index"
-                    class="flex gap-2 text-[18px] font-bold"
+                    class="flex font-bold gap-2 text-[18px]"
                     :for="year.value"
                 >
                     <input
@@ -529,10 +529,10 @@ const closePopup = () => {
                 </label>
             </div>
 
-            <h5 class="text-[18px] font-bold">
+            <h5 class="font-bold text-[18px]">
                 What are your subjects?
             </h5>
-            <div class="flex gap-6 flex-row flex-wrap w-full">
+            <div class="flex flex-row flex-wrap gap-6 w-full">
                 <div
                     v-for="(subject,index) in formFieldData.allSubjects"
                     :key="index"
@@ -545,7 +545,7 @@ const closePopup = () => {
                         :value="subject"
                     >
                     <label
-                        class="shrink-0 text-[18px] font-bold"
+                        class="font-bold shrink-0 text-[18px]"
                         :for="subject"
                     >{{ subject }}</label>
                 </div>
@@ -558,7 +558,7 @@ const closePopup = () => {
         >
             <div>
                 <label
-                    class="text-[18px] font-bold"
+                    class="font-bold text-[18px]"
                     for="SchoolName"
                 >School name</label>
                 <input
@@ -570,7 +570,7 @@ const closePopup = () => {
             </div>
 
             <div>
-                <h5 class="text-[18px] font-bold">
+                <h5 class="font-bold text-[18px]">
                     Does your school have a motto?
                 </h5>
                 <textarea
@@ -589,10 +589,10 @@ const closePopup = () => {
             v-if="!isPrincipal"
             #step3
         >
-            <h5 class="text-[18px] font-bold">
+            <h5 class="font-bold text-[18px]">
                 What digital technologies are you interested in
             </h5>
-            <div class="flex gap-6 flex-wrap">
+            <div class="flex flex-wrap gap-6">
                 <div
                     v-for="(tech,index) in formFieldData.digitalTechnologies"
                     :key="index"
@@ -611,7 +611,7 @@ const closePopup = () => {
                 </div>
             </div>
 
-            <h5 class="text-[18px] font-bold">
+            <h5 class="font-bold text-[18px]">
                 Tell us a little bit about yourself
             </h5>
             <div>
@@ -634,7 +634,7 @@ const closePopup = () => {
             v-else
             #step3
         >
-            <h5 class="text-[18px] font-bold">
+            <h5 class="font-bold text-[18px]">
                 Upload your school logo
             </h5>
             <div>
@@ -647,9 +647,9 @@ const closePopup = () => {
 
                 <div
                     v-else
-                    class="w-full flex flex-row gap-6"
+                    class="flex flex-row gap-6 w-full"
                 >
-                    <div class="w-[150px] h-[150px] rounded-full overflow-hidden">
+                    <div class="h-[150px] overflow-hidden rounded-full w-[150px]">
                         <img
                             :src="`${imageURL}/${newSchoolData.logoUrl}`"
                             alt=""
@@ -659,7 +659,7 @@ const closePopup = () => {
                     <!-- <div class=""> -->
 
                     <button
-                        class="h-fit px-7 py-3 ml-auto mb-auto hover:underline"
+                        class="h-fit mb-auto ml-auto px-7 py-3 hover:underline"
                         @click="handleChangeImage('schoolLogo')"
                     >
                         Change
@@ -673,7 +673,7 @@ const closePopup = () => {
                 />
             </div>
 
-            <h5 class="text-[18px] font-bold">
+            <h5 class="font-bold text-[18px]">
                 Add a cover photo
             </h5>
             <div>
@@ -686,9 +686,9 @@ const closePopup = () => {
 
                 <div
                     v-else
-                    class="w-full flex flex-col"
+                    class="flex flex-col w-full"
                 >
-                    <div class="w-full overflow-hidden">
+                    <div class="overflow-hidden w-full">
                         <img
                             :src="`${imageURL}/${newSchoolData.coverImageUrl}`"
                             alt=""
@@ -696,7 +696,7 @@ const closePopup = () => {
                     </div>
 
                     <button
-                        class="h-fit px-7 py-3 ml-auto hover:underline"
+                        class="h-fit ml-auto px-7 py-3 hover:underline"
                         @click="handleChangeImage('schoolCover')"
                     >
                         Change
@@ -707,7 +707,7 @@ const closePopup = () => {
 
         <!-- Step 4: Upload an avatar only works for  -->
         <template #step4>
-            <h5 class="text-[18px] font-bold">
+            <h5 class="font-bold text-[18px]">
                 Upload an avatar
             </h5>
             <div>
@@ -720,9 +720,9 @@ const closePopup = () => {
 
                 <div
                     v-else
-                    class="w-full flex flex-col"
+                    class="flex flex-col w-full"
                 >
-                    <div class="w-[150px] h-[150px] rounded-full">
+                    <div class="h-[150px] rounded-full w-[150px]">
                         <img
                             :src="`${imageURL}/${newUserData.avatarUrl}`"
                             alt=""
@@ -730,7 +730,7 @@ const closePopup = () => {
                     </div>
 
                     <button
-                        class="h-fit px-7 py-3 ml-auto mb-auto hover:underline"
+                        class="h-fit mb-auto ml-auto px-7 py-3 hover:underline"
                         @click="handleChangeImage('userAvatar')"
                     >
                         Change

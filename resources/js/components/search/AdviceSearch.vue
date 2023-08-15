@@ -1,18 +1,15 @@
 <script setup>
+import {API_ENDPOINTS} from "@/js/constants/API_ENDPOINTS";
+import {swrvOptions} from "@/js/constants/swrvConstants";
+import {useUserStore} from "@/js/stores/useUserStore";
 import { ref } from "vue";
 
-import { serverURL } from "@/js/constants/serverUrl";
 import BaseSearch from "@/js/components/search/BaseSearch.vue";
 import GenericMultiSelectFilter from "@/js/components/search/hardware/GenericMultiSelectFilter.vue";
 import useSWRV from "swrv";
-import { axiosFetcher } from "@/js/helpers/fetcher";
+import {axiosFetcherParams} from "@/js/helpers/fetcher";
 
-const swrvOptions = {
-    revalidateOnFocus: false, // disable refresh on every focus, suspect its too often
-    refreshInterval: 30000 // refresh or revalidate data every 30 secs
-}
-
-const { data: adviceList, error: adviceError } = useSWRV(`${serverURL}/fetchAdvicePosts`, axiosFetcher, swrvOptions)
+const { data: adviceList, error: adviceError } = useSWRV(API_ENDPOINTS.ADVICE.FETCH_ADVICE_POSTS, axiosFetcherParams(useUserStore().getUserRequestParam), swrvOptions)
 
 let adviceFilterList = [
     { name: "Digital Adoption Group", value: "DAG advice" },
@@ -29,10 +26,18 @@ const handleFilter = (filters, dataPath) => {
 </script>
 
 <template>
-    <BaseSearch search-type="advice" :resource-list="adviceList" :live-filter-object="filterObject">
+    <BaseSearch
+        search-type="advice"
+        :resource-list="adviceList"
+        :live-filter-object="filterObject"
+    >
         <template #filterBar>
-            <GenericMultiSelectFilter placeholder="Filter by advice type" :filter-list="adviceFilterList"
-                data-path="advice_type" @transmit-selected-filters="handleFilter" />
+            <GenericMultiSelectFilter
+                placeholder="Filter by advice type"
+                :filter-list="adviceFilterList"
+                data-path="advice_type"
+                @transmit-selected-filters="handleFilter"
+            />
         </template>
     </BaseSearch>
 </template>

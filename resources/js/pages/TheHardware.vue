@@ -1,4 +1,6 @@
 <script setup>
+import {API_ENDPOINTS} from "@/js/constants/API_ENDPOINTS";
+import {useUserStore} from "@/js/stores/useUserStore";
 import HardwareHero from '../components/hardware/HardwareHero.vue';
 import HardwareInformation from '../components/hardware/HardwareInformation.vue';
 import SectionHeader from '../components/global/SectionHeader.vue';
@@ -9,17 +11,15 @@ import MonitorDisplay from '../components/svg/MonitorDisplay.vue';
 
 import {computed} from 'vue';
 import useSWRV from "swrv";
-import {serverURL} from "@/js/constants/serverUrl";
-import {axiosFetcher} from "@/js/helpers/fetcher";
+import { axiosFetcherParams} from "@/js/helpers/fetcher";
 import {useRouter} from "vue-router";
-import {guid} from "@/js/helpers/guidGenerator";
 import CardLoading from "@/js/components/card/CardLoading.vue";
 import {useWindowStore} from "@/js/stores/useWindowStore";
 import {storeToRefs} from "pinia";
 
-
+const userStore = useUserStore()
 const router = useRouter()
-const {data: hardware, error} = useSWRV(`${serverURL}/fetchAllProducts`, axiosFetcher)
+const {data: hardware, error} = useSWRV(API_ENDPOINTS.HARDWARE.FETCH_HARDWARE_POSTS, axiosFetcherParams(userStore.getUserRequestParam))
 
 
 const laptops = computed(() => {
@@ -47,16 +47,6 @@ const emergingTech = computed(() => {
 const windowStore = useWindowStore()
 const {isMobile, isTablet, windowWidth} = storeToRefs(windowStore)
 
-// const responsiveDisplayLaptop = computed(() => {
-//     if(isMobile.value){
-//         return laptops.value.slice(0,2) || []
-//     }else if(isTablet.value){
-//
-//     }
-//     else{
-//         return laptops.value
-//     }
-// })
 
 const getResponsiveDisplayData = (itemArray) => {
     if(itemArray.length === 0) return []
@@ -87,7 +77,7 @@ const getResponsiveDisplayData = (itemArray) => {
                 <HardwareCard
                     v-for="(laptop, index) in getResponsiveDisplayData(laptops)"
                     :key="index"
-                    :hardware-content="laptop"
+                    :hardware-data="laptop"
                     :number-per-row="4"
                 />
             </template>
@@ -140,7 +130,7 @@ const getResponsiveDisplayData = (itemArray) => {
                     <HardwareCard
                         v-for="(item, index) in audioVisual.slice(0,4)"
                         :key="index"
-                        :hardware-content="item"
+                        :hardware-data="item"
                         :number-per-row="3"
                     />
                 </template>
@@ -181,8 +171,8 @@ const getResponsiveDisplayData = (itemArray) => {
                 <template v-if="emergingTech && emergingTech.length > 0">
                     <HardwareCard
                         v-for="(item, index) in emergingTech.slice(0,4)"
-                        :key="index + guid()"
-                        :hardware-content="item"
+                        :key="item.guid"
+                        :hardware-data="item"
                         :number-per-row="2"
                     />
                 </template>

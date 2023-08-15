@@ -1,5 +1,6 @@
 <script setup>
 
+import {API_ENDPOINTS} from "@/js/constants/API_ENDPOINTS";
 import { ref, reactive, onMounted } from "vue";
 import { required, minLength, email, numeric } from '@vuelidate/validators'
 import axios from "axios";
@@ -58,9 +59,7 @@ const handleSaveContactForm = () => {
             school_id: props.schoolId,
             school_contact: JSON.stringify(state)
         }
-        axios.post(`${serverURL}/createOrUpdateSchoolContact`, sendContactDataBody).then(res => {
-            console.log('hahaha ok from server')
-            console.log(res.data)
+        axios.post(API_ENDPOINTS.SCHOOL.CREATE_OR_UPDATE_SCHOOL_CONTACT, sendContactDataBody).then(res => {
             editMode.value = false
         })
 
@@ -76,7 +75,7 @@ const handleToggleEditContactForm = () => {
 let contactRequestBody = {
     school_id: props.schoolId
 }
-axios.post(`${serverURL}/fetchSchoolContact`, contactRequestBody).then(res => {
+axios.post(API_ENDPOINTS.SCHOOL.FETCH_SCHOOL_CONTACT, contactRequestBody).then(res => {
     console.log(res.data)
     if (res.data.result) {
         const parsedData = typeof res.data.school_contact == 'string' ? JSON.parse(res.data.school_contact) : res.data.school_contact

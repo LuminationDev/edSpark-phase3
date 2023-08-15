@@ -85,6 +85,7 @@ class LikeBookmarkController extends Controller
                 // Check whether the post id exists in Bookmark table
                 $checkBookmark = Bookmark::where('post_id', '=', $postId)
                                             ->where('user_id', '=', $userId)
+                                            ->where('post_type', $postType)
                                             ->first();
 
                 if ($checkBookmark) {
