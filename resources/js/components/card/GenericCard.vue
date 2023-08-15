@@ -1,4 +1,5 @@
 <script setup>
+import {guid} from "@/js/helpers/guidGenerator";
 import {debounce} from "lodash";
 import {computed, ref} from "vue";
 import {bookmarkURL, imageURL, likeURL} from "@/js/constants/serverUrl";
@@ -69,13 +70,16 @@ const props = defineProps({
     },
     isLikedByUser: {
         type: Boolean,
-        required: false,
-        default: false
+        required: true,
     },
     isBookmarkedByUser: {
         type: Boolean,
+        required: true,
+    },
+    guid:{
+        type: String,
         required: false,
-        default: false
+        default: guid()
     }
 
 });
@@ -116,6 +120,7 @@ let likeOrBookmarkPayload = {
 
 const handleDefaultLike = async () => {
     currentUserLiked.value = !currentUserLiked.value
+    console.log(likeOrBookmarkPayload)
     await axios.post(likeURL, likeOrBookmarkPayload).then(res => {
         if (res.data?.status === 200) {
             currentUserLiked.value = res.data.isLiked
@@ -127,6 +132,7 @@ const handleDefaultLike = async () => {
 
 const handleDefaultBookmark = async () => {
     currentUserBookmarked.value = !currentUserBookmarked.value
+    console.log(likeOrBookmarkPayload)
     await axios.post(bookmarkURL, likeOrBookmarkPayload).then(res => {
         if (res.data?.status === 200) {
             console.log(res.data)
@@ -238,10 +244,12 @@ const emits = defineEmits(['emitCardClick']);
                 <span class="has-tooltip relative">
                     <LikeFull
                         v-if="currentUserLiked"
+                        :key="props.guid"
                         @click="debouncedDefaultLike"
                     />
                     <Like
                         v-else
+                        :key="props.guid"
                         @click="debouncedDefaultLike"
                     />
                     <Tooltip
@@ -254,10 +262,13 @@ const emits = defineEmits(['emitCardClick']);
                 <span class="has-tooltip">
                     <BookmarkFull
                         v-if="currentUserBookmarked"
+                        :key="props.guid"
                         @click="debouncedDefaultBookmark"
                     />
                     <BookMark
                         v-else
+                        :key="props.guid"
+
                         @click="debouncedDefaultBookmark"
                     />
                     <Tooltip

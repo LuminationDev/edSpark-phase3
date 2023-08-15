@@ -11,10 +11,8 @@ import MonitorDisplay from '../components/svg/MonitorDisplay.vue';
 
 import {computed} from 'vue';
 import useSWRV from "swrv";
-import {serverURL} from "@/js/constants/serverUrl";
-import {axiosFetcher, axiosFetcherParams} from "@/js/helpers/fetcher";
+import { axiosFetcherParams} from "@/js/helpers/fetcher";
 import {useRouter} from "vue-router";
-import {guid} from "@/js/helpers/guidGenerator";
 import CardLoading from "@/js/components/card/CardLoading.vue";
 import {useWindowStore} from "@/js/stores/useWindowStore";
 import {storeToRefs} from "pinia";
@@ -79,7 +77,7 @@ const getResponsiveDisplayData = (itemArray) => {
                 <HardwareCard
                     v-for="(laptop, index) in getResponsiveDisplayData(laptops)"
                     :key="index"
-                    :hardware-content="laptop"
+                    :hardware-data="laptop"
                     :number-per-row="4"
                 />
             </template>
@@ -132,7 +130,7 @@ const getResponsiveDisplayData = (itemArray) => {
                     <HardwareCard
                         v-for="(item, index) in audioVisual.slice(0,4)"
                         :key="index"
-                        :hardware-content="item"
+                        :hardware-data="item"
                         :number-per-row="3"
                     />
                 </template>
@@ -173,8 +171,8 @@ const getResponsiveDisplayData = (itemArray) => {
                 <template v-if="emergingTech && emergingTech.length > 0">
                     <HardwareCard
                         v-for="(item, index) in emergingTech.slice(0,4)"
-                        :key="index + guid()"
-                        :hardware-content="item"
+                        :key="item.guid"
+                        :hardware-data="item"
                         :number-per-row="2"
                     />
                 </template>

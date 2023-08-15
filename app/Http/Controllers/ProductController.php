@@ -49,7 +49,6 @@ class ProductController extends Controller
 
     private function hardwareModelToJson($hardware,Request $request = NULL)
     {
-        $userId = 0;
         $isLikedByUser = false;
         $isBookmarkedByUser = false;
 

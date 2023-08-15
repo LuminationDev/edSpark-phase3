@@ -1,4 +1,5 @@
 import {schoolContentArrParser} from "@/js/helpers/jsonHelpers";
+import {cardDataWithGuid} from "@/js/helpers/cardDataHelper";
 import axios from "axios";
 
 export const axiosFetcher = (url) => {
@@ -24,6 +25,6 @@ export const axiosFetcherParams = (params) => {
     console.log('Soy axios fetcher params')
     console.log(params)
     return (url) => axios.get(url, params).then(res => {
-        return res.data
+        return cardDataWithGuid(res.data)
     })
 }

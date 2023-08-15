@@ -8,8 +8,7 @@ import useSwrvState from '@/js/helpers/useSwrvState';
 import EducatorHero from "@/js/components/advice/EducatorHero.vue";
 import PartnerHero from "@/js/components/advice/PartnerHero.vue";
 import AdviceCard from "@/js/components/advice/AdviceCard.vue";
-import { serverURL } from "@/js/constants/serverUrl";
-import {axiosFetcher, axiosFetcherParams} from "@/js/helpers/fetcher";
+import { axiosFetcherParams} from "@/js/helpers/fetcher";
 import { useRouter } from "vue-router";
 import { swrvOptions } from "@/js/constants/swrvConstants";
 import CardLoading from '../components/card/CardLoading.vue';
@@ -54,9 +53,9 @@ const { state: generalState, STATES: GENERALSTATE } = useSwrvState(generalAdvice
     <div class="grid grid-cols-1 gap-4 place-items-center mt-10 px-5 md:!grid-cols-2 lg:!grid-cols-3 lg:!px-huge">
         <template v-if="generalAdvice && generalAdvice.length">
             <AdviceCard
-                v-for="(advice, index) in generalAdvice"
-                :key="index"
-                :advice-content="advice"
+                v-for="advice in generalAdvice"
+                :key="advice.guid"
+                :advice-data="advice"
                 :show-icon="true"
             />
         </template>

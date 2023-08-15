@@ -175,13 +175,6 @@ const schoolsLoading = computed(() => {
     }
 })
 
-const reversedAdviceData = computed(() => {
-    if (!advicesData.value || advicesData.value.length === 0) return []
-    else {
-        return advicesData.value.slice().reverse()
-    }
-})
-
 const onClosePopup = () => {
     isFirstVisit.value = false;
 };
@@ -425,9 +418,9 @@ onMounted(async () => {
             <template v-if="softwaresData">
                 <div class="grid grid-cols-1 gap-6 place-items-center px-8 lg:!grid-cols-2 xl:!px-20">
                     <SoftwareCard
-                        v-for="(software,index) in softwaresData.slice(0,4)"
-                        :key="index"
-                        :software="software"
+                        v-for="software in softwaresData.slice(0,4)"
+                        :key="software.guid"
+                        :software-data="software"
                         :number-per-row="2"
                     />
                 </div>
@@ -486,7 +479,7 @@ onMounted(async () => {
                 <CarouselGenerator
                     :show-count="2"
                     data-type="advice"
-                    :data-array="reversedAdviceData"
+                    :data-array="advicesData"
                     special-attribute="twoThirdWide"
                 />
             </div>

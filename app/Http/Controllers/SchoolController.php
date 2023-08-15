@@ -34,7 +34,6 @@ class SchoolController extends Controller
     private function schoolModelToJson($school, $schoolMetadata = NULL, $request = NULL)
     {
         // LIKE AND BOOKMARK
-        $userId = 0;
         $isLikedByUser = false;
         $isBookmarkedByUser = false;
 

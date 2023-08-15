@@ -25,7 +25,7 @@ const fulfilledData = await props.data
             <HardwareCard
                 v-for="(item, index) in fulfilledData"
                 :key="index"
-                :hardware-content="item"
+                :hardware-data="item"
                 :number-per-row="3"
             />
         </div>

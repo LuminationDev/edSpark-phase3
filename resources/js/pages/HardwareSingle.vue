@@ -154,8 +154,9 @@ const handleChangeSubmenu = (value) => {
                                         class="flex justify-between"
                                     >
                                         <HardwareCard
+                                            :key="index.guid"
                                             class="bg-white mx-auto"
-                                            :hardware-content="item"
+                                            :hardware-data="item"
                                             :number-per-row="1"
                                         />
                                     </div>

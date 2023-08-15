@@ -5,7 +5,7 @@ import {useRouter} from "vue-router";
 import {storeToRefs} from "pinia";
 import useSWRV from "swrv";
 
-import {axiosFetcher, axiosFetcherParams} from "@/js/helpers/fetcher";
+import {axiosFetcherParams} from "@/js/helpers/fetcher";
 import useSwrvState from "@/js/helpers/useSwrvState";
 import {useUserStore} from "@/js/stores/useUserStore";
 import {useWindowStore} from "@/js/stores/useWindowStore";

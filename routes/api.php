@@ -67,12 +67,12 @@ Route::middleware('api')->group(function() {
     Route::get('fetchProductByBrand/{brand}', [ProductController::class, 'fetchProductByBrand']);
 
     // School APIs
-    Route::post('createSchool', [SchoolController::class, 'createSchool']);
-    Route::post('updateSchool', [SchoolController::class, 'updateSchool']);
     Route::get('fetchAllSchools', [SchoolController::class, 'fetchAllSchools']);
     Route::get('fetchFeaturedSchools', [SchoolController::class, 'fetchFeaturedSchools']);
     Route::get('fetchSchoolByName/{schoolName}', [SchoolController::class, 'fetchSchoolByName']);
     Route::get('fetchStaffFromSite/{site_id}',[SchoolController::class, 'fetchAllStaffFromSite']);
+    Route::post('createSchool', [SchoolController::class, 'createSchool']);
+    Route::post('updateSchool', [SchoolController::class, 'updateSchool']);
     Route::post('checkUserCanEdit',[SchoolController::class, 'checkUserCanEdit']);
     Route::post('nominateUserForSchool',[SchoolController::class, 'nominateUserForSchool']);
     Route::post('deleteNominatedUser',[SchoolController::class, 'deleteNominatedUserSchool']);

@@ -25,7 +25,6 @@ class PartnerController extends Controller
 
     private function partnerModelToJson($partner, $request = NULL)
     {
-        $userId = 0;
         $isLikedByUser = false;
         $isBookmarkedByUser = false;
 

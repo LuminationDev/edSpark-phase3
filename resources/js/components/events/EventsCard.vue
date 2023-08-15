@@ -9,7 +9,7 @@ import {useRouter} from "vue-router";
 import Hybrid from "@/js/components/svg/event/Hybrid.vue";
 
 const props = defineProps({
-    eventContent: {
+    eventData: {
         type: Object, required: true
     },
     showIcon: {
@@ -19,21 +19,22 @@ const props = defineProps({
 });
 
 // eslint-disable-next-line vue/no-setup-props-destructure
-const {
-    event_id,
-    author,
-    cover_image,
-    created_at,
-    end_date,
-    event_excerpt,
-    event_status,
-    event_title,
-    event_type,
-    start_date,
-    updated_at,
-    isLikedByUser,
-    isBookmarkedByUser
-} = props.eventContent;
+// const {
+//     event_id,
+//     author,
+//     cover_image,
+//     created_at,
+//     end_date,
+//     event_excerpt,
+//     event_status,
+//     event_title,
+//     event_type,
+//     start_date,
+//     updated_at,
+//     isLikedByUser,
+//     isBookmarkedByUser,
+//     guid
+// } = props.eventData;
 
 const router = useRouter();
 
@@ -44,8 +45,8 @@ const handleClickEventCard = () => {
      */
     router.push({
         name: "event-single",
-        params: {id: props.eventContent.event_id},
-        state: {content: JSON.stringify(props.eventContent)},
+        params: {id: props.eventData.event_id},
+        state: {content: JSON.stringify(props.eventData)},
     })
 }
 
@@ -56,17 +57,19 @@ const {currentUser} = storeToRefs(useUserStore())
 
 <template>
     <GenericCard
-        :id="event_id"
-        :title="event_title"
-        :display-content="event_excerpt"
-        :display-author="author"
-        :display-date="start_date"
-        :end-date="end_date"
-        :cover-image="cover_image"
+        :id="eventData.event_id"
+        :key="eventData.guid"
+        :title="eventData.event_title"
+        :display-content="eventData.event_excerpt"
+        :display-author="eventData.author"
+        :display-date="eventData.start_date"
+        :end-date="eventData.end_date"
+        :cover-image="eventData.cover_image"
         :click-callback="handleClickEventCard"
-        :is-liked-by-user="isLikedByUser"
-        :is-bookmarked-by-user="isBookmarkedByUser"
+        :is-liked-by-user="eventData.isLikedByUser"
+        :is-bookmarked-by-user="eventData.isBookmarkedByUser"
         section-type="event"
+        :guid="eventData.guid"
     >
         <template #typeTag>
             <div
@@ -90,21 +93,21 @@ const {currentUser} = storeToRefs(useUserStore())
                     "
             >
                 <template
-                    v-if="event_type === 'In Person'"
+                    v-if="eventData.event_type === 'In Person'"
                 >
                     <InPerson />
                 </template>
                 <template
-                    v-else-if="event_type === 'Virtual'"
+                    v-else-if="eventData.event_type === 'Virtual'"
                 >
                     <Virtual />
                 </template>
                 <template
-                    v-else-if="event_type === 'Hybrid'"
+                    v-else-if="eventData.event_type === 'Hybrid'"
                 >
                     <Hybrid />
                 </template>
-                {{ event_type }}
+                {{ eventData.event_type }}
             </div>
         </template>
     </GenericCard>

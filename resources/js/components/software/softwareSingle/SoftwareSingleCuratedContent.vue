@@ -1,13 +1,13 @@
 *-<script setup>
 import {API_ENDPOINTS} from "@/js/constants/API_ENDPOINTS";
+import {useUserStore} from "@/js/stores/useUserStore";
 import { computed} from "vue";
-import {serverURL} from "@/js/constants/serverUrl";
 import SoftwareCard from "@/js/components/software/SoftwareCard.vue";
-import {axiosFetcher} from "@/js/helpers/fetcher";
+import {axiosFetcherParams} from "@/js/helpers/fetcher";
 import useSWRV from "swrv";
 
 
-const {data : allCuratedSoftware, error: curatedSoftwareError} = useSWRV(API_ENDPOINTS.SOFTWARE.FETCH_SOFTWARE_POSTS, axiosFetcher)
+const {data : allCuratedSoftware, error: curatedSoftwareError} = useSWRV(API_ENDPOINTS.SOFTWARE.FETCH_SOFTWARE_POSTS, axiosFetcherParams(useUserStore().getUserRequestParam))
 
 const twoRecommendation  = computed( () => {
     let temp = []
@@ -30,9 +30,9 @@ const twoRecommendation  = computed( () => {
         </div>
         <div class="flex-col lg:!flex-row xl:!flex-col">
             <SoftwareCard
-                v-for="(software,index) in twoRecommendation"
-                :key="index"
-                :software="software"
+                v-for="software in twoRecommendation"
+                :key="software.guid"
+                :software-data="software"
                 :show-icon="true"
                 :number-per-row="2"
                 class="mb-4"

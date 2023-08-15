@@ -12,9 +12,8 @@ use Illuminate\Support\Facades\Auth;
 
 class AdviceController extends Controller
 {
-    private function adviceModelToJson($advice, $request = NULL): array
+    private function adviceModelToJson($advice, $request): array
     {
-        $userId = 0;
         $isLikedByUser = false;
         $isBookmarkedByUser = false;
 
@@ -44,11 +43,9 @@ class AdviceController extends Controller
             'updated_at' => $advice->updated_at,
             'isLikedByUser' => $isLikedByUser,
             'isBookmarkedByUser' => $isBookmarkedByUser,
-            'fetchingUserId' => $userId
-
         ];
     }
-    public function fetchAdvicePosts(Request $request = NULL)
+    public function fetchAdvicePosts(Request $request): \Illuminate\Http\JsonResponse
     {
 
         $advices = Advice::where('post_status', 'Published')->orderBy('created_at', 'DESC')->get();

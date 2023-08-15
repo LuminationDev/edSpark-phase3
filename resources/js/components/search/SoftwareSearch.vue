@@ -2,13 +2,12 @@
 import {API_ENDPOINTS} from "@/js/constants/API_ENDPOINTS";
 import {swrvOptions} from "@/js/constants/swrvConstants";
 import {useUserStore} from "@/js/stores/useUserStore";
-import {onMounted, ref} from "vue";
+import { ref} from "vue";
 
-import {serverURL} from "@/js/constants/serverUrl";
 import BaseSearch from "@/js/components/search/BaseSearch.vue";
 import GenericMultiSelectFilter from "@/js/components/search/hardware/GenericMultiSelectFilter.vue";
 import useSWRV from "swrv";
-import {axiosFetcher, axiosFetcherParams} from "@/js/helpers/fetcher";
+import { axiosFetcherParams} from "@/js/helpers/fetcher";
 import {useRoute} from "vue-router";
 import router from "@/js/router";
 const route = useRoute()

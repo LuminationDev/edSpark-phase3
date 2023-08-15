@@ -6,9 +6,7 @@ import {useUserStore} from "@/js/stores/useUserStore";
 import useSWRV from "swrv";
 import {onMounted,ref} from "vue";
 import axios from 'axios'
-
-import {serverURL} from "@/js/constants/serverUrl";
-import {axiosFetcher, axiosFetcherParams} from "@/js/helpers/fetcher";
+import { axiosFetcherParams} from "@/js/helpers/fetcher";
 import BaseSearch from "@/js/components/search/BaseSearch.vue";
 import GenericMultiSelectFilter from "@/js/components/search/hardware/GenericMultiSelectFilter.vue";
 

@@ -28,8 +28,6 @@ import ChevronRight from '../components/svg/ChevronRight.vue';
 import {isObjectEmpty} from "@/js/helpers/objectHelpers";
 import {useUserStore} from "@/js/stores/useUserStore";
 import SchoolNominationButton from "@/js/components/schools/SchoolNominationButton.vue";
-import SchoolContact from "@/js/components/schoolsingle/SchoolContact.vue";
-import SchoolWhatsNew from "@/js/components/schoolsingle/SchoolWhatsNew.vue";
 import Loader from "@/js/components/spinner/Loader.vue";
 
 const route = useRoute();
@@ -214,16 +212,6 @@ const coverImageLink = computed(() => {
         console.log('noloaddddd');
         return;
     }
-
-
-    // console.log(schoolContent.value['cover_image']);
-    // if (!isCoverImageLoaded.value) {
-    //     console.log('hasnt loaded');
-    //     return 'https://placehold.co/600x400'
-    // } else {
-    //     console.log('LOADEEEEDDDD');
-    //     return schoolContent.value['cover_image']
-    // }
 });
 
 const handleCoverImageLoaded = () => {

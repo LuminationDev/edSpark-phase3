@@ -22,15 +22,15 @@ const props = defineProps({
 </script>
 
 <template>
-    <div class="py-8 px-huge">
+    <div class="px-huge py-8">
         <div
             v-if="!eventsLoading"
-            class="flex flex-row flex-1 flex-wrap justify-between"
+            class="flex justify-between flex-1 flex-row flex-wrap"
         >
             <EventsCard
                 v-for="(event, index) in events.slice(0,colCount)"
                 :key="index"
-                :event-content="event"
+                :event-data="event"
                 :number-per-row="3"
             />
         </div>

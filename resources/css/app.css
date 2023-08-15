@@ -160,7 +160,7 @@ input, textarea, select {
 }
 
 /* Video Controls Container */
-.cusomt_block-controls_container {
+.custom_block-controls_container {
     position: absolute;
     bottom: 0;
     left: 50%;
@@ -204,7 +204,7 @@ input, textarea, select {
     font-size: 33px;
 }
 
-.cusomt_block-progress_bar {
+.custom_block-progress_bar {
     width: 450px;
     max-width: 450px;
     height: 6px;
