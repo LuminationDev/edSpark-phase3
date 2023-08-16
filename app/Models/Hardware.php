@@ -57,6 +57,15 @@ class Hardware extends Model
     // {
     //     return $this->belongsTo(Productinventory::class);
     // }
+    public function likes(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(Like::class, 'post_id', 'id')->where('post_type', 'hardware');
+    }
+
+    public function bookmarks(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(Bookmark::class, 'post_id', 'id')->where('post_type', 'hardware');
+    }
 
     protected $casts = [
         'cover_image' => 'array',

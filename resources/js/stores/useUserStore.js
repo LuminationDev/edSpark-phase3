@@ -1,4 +1,5 @@
-import { defineStore } from "pinia";
+import {API_ENDPOINTS} from "@/js/constants/API_ENDPOINTS";
+import {defineStore} from "pinia";
 import {useSessionStorage, useStorage} from "@vueuse/core";
 import axios from "axios";
 import {serverURL} from "@/js/constants/serverUrl";
@@ -18,11 +19,12 @@ export const useUserStore = defineStore('user', {
      * }
      */
     state: () => ({
-        currentUser: useStorage('currentUser', {}, localStorage, { mergeDefaults: true }),
+        currentUser: useStorage('currentUser', {}, localStorage, {mergeDefaults: true}),
         userAvatar: useSessionStorage('userAvatar', ''),
         userLikeList: {},
         userBookmarkList: {},
         notifications: [],
+        userRequestParam:{}
     }),
 
     getters: {
@@ -30,6 +32,26 @@ export const useUserStore = defineStore('user', {
         getUser() {
             return this.currentUser;
         },
+        getUserFullName() {
+            if (this.currentUser && this.currentUser.full_name) {
+                return this.currentUser.full_name
+            } else {
+                return ""
+            }
+        },
+        getUserSiteName() {
+            console.log(this.currentUser?.site?.site_name)
+            return this.currentUser?.site?.site_name || ""
+        },
+        getUserRequestParam(){
+            console.log(this.currentUser)
+            return {
+                params:{
+                    usid: this.currentUser.id
+                }
+            }
+        },
+
         getNotifications() {
             return this.notifications;
         }
@@ -170,7 +192,7 @@ export const useUserStore = defineStore('user', {
                 method: 'POST',
                 url: `${serverURL}/createUser`,
                 data: userData,
-                headers: { "Content-Type" : "multipart/form-data" }
+                headers: {"Content-Type": "multipart/form-data"}
             }).then(async response => {
                 console.log(response);
                 // TODO: Maybe populate user data from here instead?
@@ -178,7 +200,7 @@ export const useUserStore = defineStore('user', {
                 await this.fetchCurrentUserAndLoadIntoStore(response.data.uid);
                 this.userAvatar = response.data.avatarUrl;
             }).catch(error => {
-                if(error.status === 403){
+                if (error.status === 403) {
                     console.log('Forbidden. User Email has been registered')
                 }
                 console.log(error.message)
@@ -220,7 +242,7 @@ export const useUserStore = defineStore('user', {
                 method: 'POST',
                 url: `${serverURL}/updateFirstTimeVisitUser`,
                 data: userData,
-                headers: { "Content-Type" : "multipart/form-data" }
+                headers: {"Content-Type": "multipart/form-data"}
             }).then(async response => {
                 console.log(response);
                 // TODO: Maybe populate user data from here instead?
@@ -228,35 +250,34 @@ export const useUserStore = defineStore('user', {
                 await this.fetchCurrentUserAndLoadIntoStore(response.data.uid);
                 this.userAvatar = response.data.avatarUrl;
             }).catch(error => {
-                if(error.status === 403){
+                if (error.status === 403) {
                     console.log('Forbidden. User Email has been registered')
                 }
                 console.log(error.message)
 
             })
         },
-        populateUserLikesAndBookmark(){
-            if(this.currentUser.id){
-                console.log('called populate like and bookmark')
+        populateUserLikesAndBookmark() {
+            if (this.currentUser.id) {
                 let data = {
                     user_id: this.currentUser.id
                 }
-                axios.post(`${serverURL}/fetchAllLikes`, data).then(res => {
-                    res.data.data.forEach(like =>{
-                        if(!this.userLikeList[like.post_type]){
+                axios.post(API_ENDPOINTS.LIKE.FETCH_ALL_LIKES, data).then(res => {
+                    res.data.data.forEach(like => {
+                        if (!this.userLikeList[like.post_type]) {
                             this.userLikeList[like.post_type] = []
                         }
-                        if(!this.userLikeList[like.post_type].includes(like.post_id)){
+                        if (!this.userLikeList[like.post_type].includes(like.post_id)) {
                             this.userLikeList[like.post_type].push(like.post_id)
                         }
                     })
                 })
-                axios.post(`${serverURL}/fetchAllBookmarks`, data).then(res => {
-                    res.data.data.forEach(bookmark =>{
-                        if(!this.userBookmarkList[bookmark.post_type]){
+                axios.post(API_ENDPOINTS.BOOKMARK.FETCH_ALL_BOOKMARKS, data).then(res => {
+                    res.data.data.forEach(bookmark => {
+                        if (!this.userBookmarkList[bookmark.post_type]) {
                             this.userBookmarkList[bookmark.post_type] = []
                         }
-                        if(!this.userBookmarkList[bookmark.post_type].includes(bookmark.post_id)){
+                        if (!this.userBookmarkList[bookmark.post_type].includes(bookmark.post_id)) {
                             this.userBookmarkList[bookmark.post_type].push(bookmark.post_id)
                         }
                     })
@@ -297,8 +318,8 @@ export const useUserStore = defineStore('user', {
 
         clearStore() {
             this.currentUser = {};
-            if (sessionStorage.getItem('currentUser') === null) return;
-            sessionStorage.removeItem('currentUser');
+            if (localStorage.getItem('currentUser') === null) return;
+            localStorage.removeItem('currentUser');
         }
     }
 })

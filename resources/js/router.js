@@ -1,19 +1,18 @@
 // Import router dependencies
-import { createRouter, createWebHistory } from 'vue-router';
-// Import pages
-import {
-    Home,
-    Schools,
-    Advice,
-    Software,
-    Community,
-    Partners,
-    Events,
-    SchoolSingle,
-    UserMessage,
-    Forbidden,
-    EdsparkPageNotFound,
-} from './pages';
+import EdsparkPageNotFound from "@/js/pages/EdsparkPageNotFound.vue";
+import SchoolSingle from "@/js/pages/SchoolSingle.vue";
+import TheAdvice from "@/js/pages/TheAdvice.vue";
+import TheCommunity from "@/js/pages/TheCommunity.vue";
+import TheEvent from "@/js/pages/TheEvent.vue";
+import TheForbidden from "@/js/pages/TheForbidden.vue";
+import TheHardware from "@/js/pages/TheHardware.vue";
+import TheHome from "@/js/pages/TheHome.vue";
+import ThePartner from "@/js/pages/ThePartner.vue";
+import TheSchool from "@/js/pages/TheSchool.vue";
+import TheSoftware from "@/js/pages/TheSoftware.vue";
+import {createRouter, createWebHistory} from 'vue-router';
+
+
 import DashboardNew from './pages/DashboardNew.vue';
 import AdviceSingle from "@/js/pages/AdviceSingle.vue";
 import SoftwareSingle from "@/js/components/software/softwareSingle/SoftwareSingle.vue";
@@ -24,19 +23,16 @@ import EventSingle from "@/js/pages/EventSingle.vue";
 import ProfileWork from '@/js/components/userprofile/ProfileWork.vue'
 import ProfileInfo from '@/js/components/userprofile/ProfileInfo.vue'
 import ProfileMessages from '@/js/components/userprofile/ProfileMessages.vue'
-import Hardware from "@/js/pages/Hardware.vue";
 import SchoolSearch from "@/js/components/search/SchoolSearch.vue";
 import SoftwareSearch from "@/js/components/search/SoftwareSearch.vue";
 import AdviceSearch from "@/js/components/search/AdviceSearch.vue";
 import HardwareSearch from "@/js/components/search/HardwareSearch.vue";
-import { useUserStore } from "@/js/stores/useUserStore";
-import axios from 'axios';
-import { appURL, serverURL } from "@/js/constants/serverUrl";
-import { useAuthStore } from './stores/useAuthStore';
 import PartnerSingle from "@/js/pages/PartnerSingle.vue";
 import PartnerSearch from "@/js/components/search/PartnerSearch.vue";
 import EventSearch from "@/js/components/search/EventSearch.vue";
 
+import {useUserStore} from "@/js/stores/useUserStore";
+import {useAuthStore} from './stores/useAuthStore';
 
 const router = createRouter({
     history: createWebHistory(),
@@ -44,7 +40,7 @@ const router = createRouter({
         {
             name: 'home',
             path: '/',
-            component: Home,
+            component: TheHome,
             meta: {
                 requiresAuth: false, //guard the home route
             }
@@ -64,35 +60,53 @@ const router = createRouter({
             children: [
                 {
                     name: 'browseSchools',
-                    path: 'schools',
-                    component: SchoolSearch
+                    path: 'school',
+                    component: SchoolSearch,
+                    meta: {
+                        requiresAuth: true,
+                    }
                 }, {
                     name: 'browseAdvices',
-                    path: 'advices',
-                    component: AdviceSearch
+                    path: 'advice',
+                    component: AdviceSearch,
+                    meta: {
+                        requiresAuth: true,
+                    }
                 }, {
                     name: 'browseSoftwares',
-                    path: 'softwares',
-                    component: SoftwareSearch
+                    path: 'software/:filter?',
+                    component: SoftwareSearch,
+                    meta: {
+                        requiresAuth: true,
+                    }
                 }, {
                     name: 'browseHardwares',
-                    path: 'hardwares',
-                    component: HardwareSearch
+                    path: 'hardware',
+                    component: HardwareSearch,
+                    meta: {
+                        requiresAuth: true,
+                    }
                 }, {
                     name: 'browsePartners',
-                    path: 'partners',
-                    component: PartnerSearch
+                    path: 'partner',
+                    component: PartnerSearch,
+                    meta: {
+                        requiresAuth: true,
+                    }
                 }, {
                     name: 'browseEvents',
-                    path: 'events',
-                    component: EventSearch
+                    path: 'event',
+                    component: EventSearch,
+                    meta: {
+                        requiresAuth: true,
+                    }
                 },
             ]
         },
         {
             name: 'schools',
             path: '/schools',
-            component: Schools,
+            component: TheSchool,
             meta: {
                 navigation: true,
                 requiresAuth: true,
@@ -109,7 +123,7 @@ const router = createRouter({
         {
             name: 'advice',
             path: '/advice',
-            component: Advice,
+            component: TheAdvice,
             meta: {
                 navigation: true,
                 requiresAuth: true,
@@ -127,7 +141,7 @@ const router = createRouter({
         {
             name: 'software',
             path: '/software',
-            component: Software,
+            component: TheSoftware,
             meta: {
                 navigation: true,
                 dropdownItem: true,
@@ -147,7 +161,7 @@ const router = createRouter({
         {
             name: 'hardware',
             path: '/hardware',
-            component: Hardware,
+            component: TheHardware,
             meta: {
                 navigation: true,
                 dropdownItem: true,
@@ -166,7 +180,7 @@ const router = createRouter({
         {
             name: 'community',
             path: '/community',
-            component: Community,
+            component: TheCommunity,
             meta: {
                 navigation: false,
                 requiresAuth: true,
@@ -175,7 +189,7 @@ const router = createRouter({
         {
             name: 'partners',
             path: '/partners',
-            component: Partners,
+            component: ThePartner,
             meta: {
                 navigation: true,
                 requiresAuth: true,
@@ -192,7 +206,7 @@ const router = createRouter({
         {
             name: 'events',
             path: '/events',
-            component: Events,
+            component: TheEvent,
             meta: {
                 navigation: true,
                 requiresAuth: true,
@@ -215,17 +229,26 @@ const router = createRouter({
                 {
                     path: '',
                     name: 'userProfileInfo',
-                    component: ProfileInfo
+                    component: ProfileInfo,
+                    meta: {
+                        skipScrollTop: true
+                    }
                 },
                 {
                     path: 'work',
                     name: 'userProfileWork',
-                    component: ProfileWork
+                    component: ProfileWork,
+                    meta: {
+                        skipScrollTop: true
+                    }
                 },
                 {
                     path: 'messages',
                     name: 'userProfileMessages',
-                    component: ProfileMessages
+                    component: ProfileMessages,
+                    meta: {
+                        skipScrollTop: true
+                    }
                 }
             ],
             meta: {
@@ -233,17 +256,9 @@ const router = createRouter({
             }
         },
         {
-            name: 'userMessage',
-            path: '/message/:userId',
-            component: UserMessage,
-            meta: {
-                requiresAuth: true,
-            }
-        },
-        {
             name: 'forbidden',
             path: '/forbidden',
-            component: Forbidden,
+            component: TheForbidden,
         },
         {
             path: '/:pathMatch(.*)*',
@@ -254,60 +269,28 @@ const router = createRouter({
     scrollBehavior(to, from, savedPosition) {
         if (savedPosition) {
             return savedPosition
+        } else if (to.meta.skipScrollTop) {
+
         } else {
-            return { top: 0 }
+            return {top: 0}
         }
     },
 });
-// router.afterEach((to,from) =>{
-//     if(!['home','login'].includes(to.name)){
-//         const userStore= useUserStore()
-//         console.log('inside if inside router aftereach')
-//         userStore.populateUserLikesAndBookmark()
-//     }
-// })
+router.beforeEach(async (to, from, next) => {
+    const authStore = useAuthStore();
+    if (to.meta.requiresAuth) {
+        if (!authStore.isAuthenticated) {
+            await authStore.checkAuthenticationStatus();
+        }
 
-//TODO using auth store
-// router.beforeEach(async (to, from, next) => {
-//     const authStore = useAuthStore();
-//     if (to.meta.requiresAuth) {
-//         if (!authStore.isAuthenticated) {
-//             await authStore.checkAuthenticationStatus();
-//         }
-//
-//         if (authStore.isAuthenticated) {
-//             next();
-//         } else {
-//             next('/forbidden');
-//         }
-//     } else {
-//         next();
-//     }
-// });
-
-//working code
-// router.beforeEach((to, from, next) => {
-//     if(to.meta.requiresAuth) {
-//         // console.log('REQUIRES AUTHENTICATION');
-//         try {
-//             // Make a request to laravel backend for authentication check
-//             const response = axios.get(`${appURL}/auth/check`, { async: false });
-//             if (response.data.authenticated) {
-//                 next();
-//             } else {
-//                 // Redirect to the 403 forbidden page
-//                 next('/forbidden');
-//             }
-//         } catch (error) {
-//             // Handle error
-//             //TODO show an error page
-//             console.log(error);
-//         }
-
-//     } else {
-//         // console.log("DOESNOT REQUIRES AUTHENTICATION");
-//         next();
-//     }
-// });
+        if (authStore.isAuthenticated) {
+            next();
+        } else {
+            next('/forbidden');
+        }
+    } else {
+        next();
+    }
+});
 
 export default router;

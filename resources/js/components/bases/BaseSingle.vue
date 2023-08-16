@@ -1,11 +1,13 @@
 -
 <script setup>
+import {API_ENDPOINTS} from "@/js/constants/API_ENDPOINTS";
+import {useUserStore} from "@/js/stores/useUserStore";
 import {useRoute, useRouter} from "vue-router";
 import {onBeforeMount, ref, computed, watch, onUnmounted} from "vue";
 import axios from 'axios'
 import {isEqual} from "lodash";
 
-import {imageURL, serverURL} from "@/js/constants/serverUrl";
+import { serverURL} from "@/js/constants/serverUrl";
 import BaseHero from "@/js/components/bases/BaseHero.vue";
 import recommenderEdsparkSingletonFactory from "@/js/recommender/recommenderEdspark";
 import {isObjectEmpty} from "@/js/helpers/objectHelpers";
@@ -44,20 +46,20 @@ let recommendationAPILink;
 
 switch (props.contentType) {
 case 'software':
-    byIdAPILink = 'fetchSoftwarePostById'
+    byIdAPILink = API_ENDPOINTS.SOFTWARE.FETCH_SOFTWARE_POST_BY_ID
     break;
 case 'advice':
-    byIdAPILink = 'fetchAdvicePostById'
+    byIdAPILink = API_ENDPOINTS.ADVICE.FETCH_ADVICE_POST_BY_ID
     break;
 case 'hardware':
-    byIdAPILink = 'fetchProductById'
-    recommendationAPILink = 'fetchProductByBrand'
+    byIdAPILink = API_ENDPOINTS.HARDWARE.FETCH_HARDWARE_BY_ID
+    recommendationAPILink = API_ENDPOINTS.HARDWARE.FETCH_HARDWARE_BY_BRAND
     break;
 case 'event':
-    byIdAPILink = 'fetchEventPostById'
+    byIdAPILink = API_ENDPOINTS.EVENT.FETCH_EVENT_POST_BY_ID
     break;
 case 'partner':
-    byIdAPILink ='fetchPartnerById'
+    byIdAPILink =API_ENDPOINTS.PARTNER.FETCH_PARTNER_BY_ID
     break;
 
 }
@@ -74,9 +76,8 @@ const currentId = computed(() => {
 const getRecommendationBasedOnContentType = () => {
     switch (props.contentType) {
     case 'hardware':
-        console.log('called recommendation for hardware')
         if (recommendationAPILink) {
-            return axios.get(`${serverURL}/${recommendationAPILink}/${singleContent.value['brand']['brandName']}`).then(res => {
+            return axios.get(`${recommendationAPILink}${singleContent.value['brand']['brandName']}`).then(res => {
                 recommendedContent.value = res.data
             }).catch(e =>{
                 console.log(e.message)
@@ -98,6 +99,7 @@ onBeforeMount(async () => {
     /**
      * Get content from history state or fetch from recommender
      */
+    console.log(route)
     await checkToReadOrFetchContent()
 
     // code to emit available submenus - to be used in all baseSingle pages. remove hardcoded
@@ -119,7 +121,7 @@ const checkToReadOrFetchContent = async () =>{
     if (!window.history.state.content) { // doesn't exists
         if(!byIdAPILink) return
         console.log('No content passed in. Will request from server')
-        await axios.get(`${serverURL}/${byIdAPILink}/${route.params.id}`).then(res => {
+        await axios.get(`${byIdAPILink}${route.params.id}`, useUserStore().getUserRequestParam).then(res => {
             singleContent.value = res.data
             console.log('set new data haha yes')
             baseIsLoading.value = false
@@ -136,7 +138,7 @@ const checkToReadOrFetchContent = async () =>{
             baseIsLoading.value = false
 
         } else{
-            await axios.get(`${serverURL}/${byIdAPILink}/${route.params.id}`).then(res => {
+            await axios.get(`${byIdAPILink}${route.params.id}`).then(res => {
                 singleContent.value = res.data
                 baseIsLoading.value = false
 
@@ -179,7 +181,7 @@ const handleEmitFromSubmenu = (value) => {
     </div>
     <div
         v-else-if="!isObjectEmpty(singleContent) || props.contentType === 'school'"
-        class="singleContainer flex flex-col"
+        class="flex flex-col singleContainer"
     >
         <slot
             name="hero"

@@ -16,16 +16,16 @@ const fulfilledData = await props.data
 
 <template>
     <div class="adviceSubPageContainer flex flex-col px-10">
-        <div class="adviceSubpage Title">
-            <div class="font-semibold text-2xl text-center pb-6">
+        <div class="Title adviceSubpage">
+            <div class="font-semibold pb-6 text-2xl text-center">
                 Here is your listed advice
             </div>
         </div>
-        <div class="flex flex-row flex-wrap gap-6">
+        <div class="flex justify-center lg:justify-start flex-row flex-wrap gap-6">
             <AdviceCard
                 v-for="(item, index) in fulfilledData"
                 :key="index"
-                :advice-content="item"
+                :advice-data="item"
                 :number-per-row="3"
             />
         </div>

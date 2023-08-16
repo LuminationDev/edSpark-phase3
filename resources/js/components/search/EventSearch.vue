@@ -1,16 +1,13 @@
 <script setup>
+import {API_ENDPOINTS} from "@/js/constants/API_ENDPOINTS";
+import {swrvOptions} from "@/js/constants/swrvConstants";
+import {useUserStore} from "@/js/stores/useUserStore";
 import {ref} from "vue";
-import {serverURL} from "@/js/constants/serverUrl";
 import BaseSearch from "@/js/components/search/BaseSearch.vue";
 import useSWRV from "swrv";
-import {axiosFetcher} from "@/js/helpers/fetcher";
+import {axiosSchoolFetcherParams} from "@/js/helpers/fetcher";
 
-const swrvOptions = {
-    revalidateOnFocus: false, // disable refresh on every focus, suspect its too often
-    refreshInterval: 30000 // refresh or revalidate data every 30 secs
-}
-
-const {data: eventList, error: eventError} = useSWRV(`${serverURL}/fetchEventPosts`, axiosFetcher, swrvOptions)
+const {data: eventList, error: eventError} = useSWRV(API_ENDPOINTS.EVENT.FETCH_EVENT_POSTS, axiosSchoolFetcherParams(useUserStore().getUserRequestParam), swrvOptions)
 
 const filterObject = ref({})
 

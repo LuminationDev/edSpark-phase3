@@ -1,4 +1,6 @@
 <script setup>
+import {API_ENDPOINTS} from "@/js/constants/API_ENDPOINTS";
+
 /**
  * IMPORT DEPENDENCIES
  */
@@ -26,8 +28,7 @@ import ChevronRight from '../components/svg/ChevronRight.vue';
 import {isObjectEmpty} from "@/js/helpers/objectHelpers";
 import {useUserStore} from "@/js/stores/useUserStore";
 import SchoolNominationButton from "@/js/components/schools/SchoolNominationButton.vue";
-import SchoolContact from "@/js/components/schoolsingle/SchoolContact.vue";
-import SchoolWhatsNew from "@/js/components/schoolsingle/SchoolWhatsNew.vue";
+import Loader from "@/js/components/spinner/Loader.vue";
 
 const route = useRoute();
 const router = useRouter();
@@ -81,7 +82,7 @@ onBeforeMount(async () => {
 
 
 const fetchSchoolByNameAsync = (schoolName) => {
-    return axios.get(`${serverURL}/fetchSchoolByName/${schoolName}`).then(res => {
+    return axios.get(`${API_ENDPOINTS.SCHOOL.FETCH_SCHOOL_BY_NAME}${schoolName}`).then(res => {
         console.log('Found the school. populating data now inside SchoolSingle')
         const filteredSchool = res.data
         schoolContent.value = parseToJsonIfString(filteredSchool)
@@ -119,7 +120,7 @@ const triggerCreateNewSchoolFromSchoolStore = () => {
     schoolFormData.append('cover_image', newSchool.value.coverImageUrl)
     return axios({
         method: "post",
-        url: `${serverURL}/createSchool`,
+        url: API_ENDPOINTS.SCHOOL.CREATE_SCHOOL,
         data: schoolFormData,
         headers: {"Content-Type": "multipart/form-data"},
     }).then(res => {
@@ -156,7 +157,7 @@ const handleSaveNewSchoolInfo = async (content_blocks, tech_used) => {
     newUpdatedSchoolFormData.append('metadata', JSON.stringify(schoolMetadata))
     console.log(schoolMetadata)
     await axios({
-        url: `${serverURL}/updateSchool`,
+        url: API_ENDPOINTS.SCHOOL.UPDATE_SCHOOL,
         method: 'post',
         data: newUpdatedSchoolFormData,
         headers: {"Content-Type": "multipart/form-data"}
@@ -211,16 +212,6 @@ const coverImageLink = computed(() => {
         console.log('noloaddddd');
         return;
     }
-
-
-    // console.log(schoolContent.value['cover_image']);
-    // if (!isCoverImageLoaded.value) {
-    //     console.log('hasnt loaded');
-    //     return 'https://placehold.co/600x400'
-    // } else {
-    //     console.log('LOADEEEEDDDD');
-    //     return schoolContent.value['cover_image']
-    // }
 });
 
 const handleCoverImageLoaded = () => {
@@ -256,7 +247,7 @@ const isSchoolContentPopulated = computed(() => {
 </script>
 <template>
     <div v-if="isSchoolContentPopulated">
-        <div class="-mt-[140px] flex flex-col ">
+        <div class="-mt-[140px] flex flex-col">
             <img
                 class="hidden"
                 aria-hidden="true"
@@ -275,39 +266,48 @@ const isSchoolContentPopulated = computed(() => {
                     >
                         <template #smallTitle>
                             <!--   breadcrumb top only  -->
-                            <div class=" flex mt-[100px]">
-                                <div class="flex flex-row gap-2 h-[24px] place-items-center">
+                            <div class="flex mt-[100px]">
+                                <div class="flex flex-row gap-2 h-[24px] place-items-center text-[10px] md:!text-sm">
                                     <router-link to="/">
-                                        <p class="text-[14px] text-white hover:text-[#44B8F3]">
+                                        <p class="text-white hover:text-[#44B8F3]">
                                             Home
                                         </p>
                                     </router-link>
                                     <!-- TODO: Breadcrumb builder -- gotta be smart -->
                                     <ChevronRight />
                                     <router-link to="/schools">
-                                        <p class="text-[14px] text-white hover:text-[#44B8F3]">
+                                        <p class="text-white hover:text-[#44B8F3]">
                                             {{ breadCrumbPrev }}
                                         </p>
                                     </router-link>
                                     <ChevronRight />
-                                    <p class="text-[14px] text-[#44B8F3]">
+                                    <p class="text-[#44B8F3] w-full">
                                         {{ breadCrumbName }}
                                     </p>
                                 </div>
                             </div>
                         </template>
                         <template #titleText>
-                            <div class="SchoolHeroContentContainer w-full flex flex-row">
-                                <div class="w-full flex flex-row">
+                            <div class="SchoolHeroContentContainer flex flex-row w-full">
+                                <div class="flex flex-row w-full">
                                     <div class="flex flex-col">
-                                        <h1 class="text-white text-[48px] font-bold">
+                                        <h1 class="font-bold text-white">
                                             {{ schoolContent.name }}
                                         </h1>
-                                        <div class="flex flex-row gap-4 place-items-center">
+                                        <div
+                                            class="flex flex-row gap-4 mb-4 place-items-center"
+                                        >
                                             <div
                                                 v-for="(tech, index) in schoolContent.tech_used"
                                                 :key="index"
-                                                class="w-[60px] relative cursor-pointer"
+                                                class="
+                                                    cursor-pointer
+                                                    hidden
+                                                    relative
+                                                    w-6
+                                                    md:!w-14
+                                                    lg:!block
+                                                    "
                                             >
                                                 <div
                                                     @mouseenter="handleToggleTooltip(index)"
@@ -315,28 +315,58 @@ const isSchoolContentPopulated = computed(() => {
                                                 >
                                                     <SchoolTechIconGenerator
                                                         :tech-name="tech.name"
-                                                        class="min-w-[60px] pr-4 m-2 cursor-pointer relative"
+                                                        class="
+                                                            cursor-pointer
+                                                            m-2
+                                                            min-w-[30px]
+                                                            pr-1
+                                                            relative
+                                                            w-8
+                                                            md:!min-w-[60px]
+                                                            md:!pr-4
+                                                            "
                                                     />
-                                                    <!-- :class="`bg-${colorTheme}-600`" -->
                                                     <div
                                                         v-if="toggleTooltip && tooltipIndex === index"
-                                                        class="absolute shadow-xl w-[450px] px-[24px] py-[18px] border-l-[3px] border-white bg-main-navy"
+                                                        class="
+                                                            absolute
+                                                            bg-main-navy
+                                                            border-l-[3px]
+                                                            border-white
+                                                            px-[24px]
+                                                            py-[18px]
+                                                            shadow-xl
+                                                            w-[450px]
+                                                            "
                                                     >
-                                                        <h3 class="text-[24px] font-semibold text-white">
+                                                        <h3
+                                                            class="
+                                                                font-semibold
+                                                                text-[20px]
+                                                                text-white
+                                                                "
+                                                        >
                                                             {{ tech.name }}
                                                         </h3>
-                                                        <p class="text-white text-base font-normal">
+                                                        <p
+                                                            class="
+                                                                font-normal
+                                                                text-sm
+                                                                text-white
+                                                                xl:!text-base
+                                                                "
+                                                        >
                                                             {{ tech.description }}
                                                         </p>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="w-[180px] py-6">
+                                        <div class="flex justify-center items-center h-40 w-40">
                                             <img
                                                 :src="`${imageURL}/${schoolContent.logo}`"
                                                 :alt="`${schoolContent.name} logo`"
-                                                class="w-40 h-40"
+                                                class="max-h-full object-contain w-full"
                                             >
                                         </div>
                                     </div>
@@ -344,7 +374,7 @@ const isSchoolContentPopulated = computed(() => {
                             </div>
                         </template>
                         <template #submenu>
-                            <div class="SchoolSubmenu flex flex-row gap-4 z-40 cursor-pointer">
+                            <div class="SchoolSubmenu cursor-pointer flex flex-row gap-2 z-40 md:!gap-4">
                                 <BaseSingleSubmenu
                                     :emit-to-base="emitFromSubmenu"
                                     :menu-array="schoolSubmenu"
@@ -355,7 +385,7 @@ const isSchoolContentPopulated = computed(() => {
                     </BaseHero>
                 </template>
                 <template #content>
-                    <div class="flex flex-col w-full mt-20">
+                    <div class="flex flex-col mt-10 w-full xl:!mt-20">
                         <SchoolContent
                             :school-content="schoolContent"
                             :color-theme="colorTheme"
@@ -379,19 +409,19 @@ const isSchoolContentPopulated = computed(() => {
     </div>
     <div
         v-else-if="!isSchoolContentPopulated && showSchoolNotAvailable"
-        class="mt-[10vh] flex flex-col justify-center items-center h-36"
+        class="flex justify-center items-center flex-col h-36 mt-[10vh]"
     >
         <SchoolNotAvailable />
     </div>
     <div
         v-else-if="!isSchoolContentPopulated && showRetryCreateSchool"
-        class="mt-[10vh] flex flex-col justify-center items-center h-36"
+        class="flex justify-center items-center flex-col h-36 mt-[10vh]"
     >
         <GenericButton
             :callback="triggerCreateNewSchoolFromSchoolStore"
             type="school"
         >
-            <div class="font-bold py-2 px-2 text-md">
+            <div class="font-bold px-2 py-2 text-md">
                 Retry create school
             </div>
         </GenericButton>
@@ -399,10 +429,11 @@ const isSchoolContentPopulated = computed(() => {
 
     <div
         v-else
-        class="mt-[10vh] flex flex-col justify-center items-center h-36"
+        class="mt-20"
     >
-        <div class="font-bold text-lg">
-            Please wait. Loading data...
-        </div>
+        <Loader
+            :loader-color="'#0072DA'"
+            :loader-message="'School loading'"
+        />
     </div>
 </template>

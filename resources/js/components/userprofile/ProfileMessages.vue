@@ -19,11 +19,11 @@ onMounted(() => {
 })
 </script>
 <template>
-    <div class="profileMessageContainer flex flex-col pt-4 px-6 py-6 bg-main-teal/80">
+    <div class="bg-main-teal/80 flex flex-col h-44 min-h-44 profileMessageContainer pt-4 px-6 py-6">
         <div
             v-for="(item, index) in notifications.result"
             :key="index"
-            class="py-2 bg-green-100"
+            class="bg-green-100 py-2"
         >
             <p class="font-semibold mx-4">
                 {{ item.data }}

@@ -15,17 +15,17 @@ const fulfilledData = await props.data
 </script>
 
 <template>
-    <div class="hardwareSubPageContainer flex flex-col px-10">
-        <div class="hardwareSubpage Title">
-            <div class="font-semibold text-2xl text-center pb-6">
+    <div class="flex flex-col hardwareSubPageContainer px-10">
+        <div class="Title hardwareSubpage">
+            <div class="font-semibold pb-6 text-2xl text-center">
                 Here is your listed hardware
             </div>
         </div>
-        <div class="flex flex-row flex-wrap gap-4">
+        <div class="flex justify-center lg:justify-start flex-row flex-wrap  gap-4">
             <HardwareCard
                 v-for="(item, index) in fulfilledData"
                 :key="index"
-                :hardware-content="item"
+                :hardware-data="item"
                 :number-per-row="3"
             />
         </div>

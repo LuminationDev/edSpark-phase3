@@ -110,29 +110,51 @@ const handleClickAdmin = () =>{
 </script>
 
 <template>
-    <div class="w-[48px] h-[48px] absolute top-56 right-72">
-        <div class="z-50 relative h-full w-full bg-slate-200 flex rounded-full cursor-pointer hover:shadow-2xl overflow-hidden"
-            @click.prevent="handleAvatar">
-            <img v-if="!avatarUrl.length <= 0" class="w-full m-auto" :src="`${imageURL}/${avatarUrl}`" alt="" />
-            <p v-else class="text-[1.25rem] text-white font-bold m-auto">
-
+    <div class="absolute h-12 hidden w-12  lg:!right-48 lg:!top-50 lg:block xl:!right-72 xl:!top-56">
+        <div
+            class="bg-slate-200 cursor-pointer flex h-full overflow-hidden relative rounded-full w-full z-50 hover:shadow-2xl"
+            @click.prevent="handleAvatar"
+        >
+            <img
+                v-if="!avatarUrl.length <= 0"
+                class="m-auto w-full"
+                :src="`${imageURL}/${avatarUrl}`"
+                alt=""
+            >
+            <p
+                v-else
+                class="font-bold m-auto text-[1.25rem] text-white"
+            >
                 {{ currentUser.display_name }}
             </p>
         </div>
 
         <div
             v-show="profileDropdown"
-            class="relative w-full h-full z-50"
+            class="h-full relative w-full z-50"
             @mouseleave="handleAvatar"
         >
-            <div class="z-50 absolute py-6 px-4 -top-6 left-[24px] z-50 w-[240px] bg-[#637D99] flex flex-col shadow-lg">
-                <div class="w-full h-fit text-white text-[24px] font-bold text-center border-b border-white pb-3">
+            <div class="absolute -top-6 left-[24px] bg-[#637D99] flex flex-col px-4 py-6 shadow-lg w-[240px] z-50 z-50">
+                <div class="border-b border-white font-bold h-fit pb-3 text-[24px] text-center text-white w-full">
                     <h5>{{ currentUser.full_name }}</h5>
                 </div>
-                <div class="flex flex-col gap-3 py-3 border-b border-white">
+                <div class="border-b border-white flex flex-col gap-3 py-3">
                     <router-link :to="`/profile/${currentUser.id}`">
                         <button
-                            class="flex flex-row gap-4 justify-start py-3 px-2 text-white text-[18px] font-medium place-items-center hover:bg-[#405974] w-full"
+                            class="
+                                flex
+                                justify-start
+                                flex-row
+                                font-medium
+                                place-items-center
+                                px-2
+                                py-3
+                                text-[18px]
+                                text-white
+                                w-full
+                                gap-4
+                                hover:bg-[#405974]
+                                "
                         >
                             <Profile />
                             Profile
@@ -140,7 +162,20 @@ const handleClickAdmin = () =>{
                     </router-link>
                     <router-link :to="`/message/${currentUser.id}`">
                         <button
-                            class="flex flex-row gap-4 justify-start py-3 px-2 text-white text-[18px] font-medium place-items-center hover:bg-[#405974] w-full"
+                            class="
+                                flex
+                                justify-start
+                                flex-row
+                                font-medium
+                                place-items-center
+                                px-2
+                                py-3
+                                text-[18px]
+                                text-white
+                                w-full
+                                gap-4
+                                hover:bg-[#405974]
+                                "
                         >
                             <Profile />
                             Messages
@@ -148,7 +183,20 @@ const handleClickAdmin = () =>{
                     </router-link>
 
                     <button
-                        class="flex flex-row gap-4 justify-start py-3 px-2 text-white text-[18px] font-medium place-items-center hover:bg-[#405974] w-full"
+                        class="
+                            flex
+                            justify-start
+                            flex-row
+                            font-medium
+                            place-items-center
+                            px-2
+                            py-3
+                            text-[18px]
+                            text-white
+                            w-full
+                            gap-4
+                            hover:bg-[#405974]
+                            "
                     >
                         <Profile />
                         Help
@@ -157,7 +205,20 @@ const handleClickAdmin = () =>{
                         v-if="isAdmin"
                     >
                         <button
-                            class="flex flex-row gap-4 justify-start py-3 px-2 text-white text-[18px] font-medium place-items-center hover:bg-[#405974] w-full"
+                            class="
+                                flex
+                                justify-start
+                                flex-row
+                                font-medium
+                                place-items-center
+                                px-2
+                                py-3
+                                text-[18px]
+                                text-white
+                                w-full
+                                gap-4
+                                hover:bg-[#405974]
+                                "
                             @click="handleClickAdmin"
                         >
                             <Profile />
@@ -167,7 +228,7 @@ const handleClickAdmin = () =>{
                 </div>
                 <div class="pt-3">
                     <button
-                        class="py-3 px-2 text-white text-[18px] font-medium w-full hover:underline"
+                        class="font-medium px-2 py-3 text-[18px] text-white w-full hover:underline"
                         @click.prevent="handleLogoutUser"
                     >
                         Sign out

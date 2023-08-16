@@ -55,5 +55,17 @@ class Advice extends Model
         'extra_content' => 'array',
     ];
 
+    public function likes(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(Like::class, 'post_id', 'id')->where('post_type', 'advice');
+    }
+
+    public function bookmarks(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(Bookmark::class, 'post_id', 'id')->where('post_type', 'advice');
+    }
+
+
+
 
 }

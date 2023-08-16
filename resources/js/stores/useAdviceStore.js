@@ -14,7 +14,7 @@ export const useAdviceStore = defineStore('advice', {
     },
 
     actions: {
-        async loadDashboardResources() {
+        asyncloadDashboardResources() {
             return new Promise(async (resolve, reject) => {
                 await axios.get(`${serverURL}/fetchAdvicePosts`).then(response => {
                     const dashboardAdvice = [];

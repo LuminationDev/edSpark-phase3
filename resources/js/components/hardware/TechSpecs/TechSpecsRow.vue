@@ -23,19 +23,19 @@ const emits = defineEmits([])
 </script>
 
 <template>
-    <div class="techSpecsRow flex flex-row border-b-2 py-4">
-        <div class="techSpecsLabel w-1/2 font-semibold">
+    <div class="border-b-2 flex flex-row py-4 techSpecsRow">
+        <div class="font-semibold techSpecsLabel w-1/2">
             {{ props.label }}
         </div>
         <div
             v-if="props.isList"
-            class="techSpecsValue w-1/2 font-base"
+            class="font-sm techSpecsValue w-1/2 md:!font-base"
         >
-            <ul class="valueList pl-6">
+            <ul class="pl-6 valueList">
                 <li
                     v-for="(feature, index) in value.split(',')"
                     :key="index"
-                    class="list-disc capitalize"
+                    class="capitalize list-disc"
                 >
                     {{ feature }}
                 </li>
@@ -44,7 +44,7 @@ const emits = defineEmits([])
         <!--   or   -->
         <div
             v-else
-            class="techSpecsValue w-1/2 font-base"
+            class="font-sm techSpecsValue w-1/2 md:!font-base"
         >
             {{ props.value }}
         </div>

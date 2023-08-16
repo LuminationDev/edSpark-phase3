@@ -44,24 +44,24 @@ const props = defineProps({
 
 <template>
     <div
-        class="longCardContainer bg-white rounded-lg flex flex-row w-full h-32 cursor-pointer "
+        class="bg-white cursor-pointer flex flex-row gap-4 md:gap-6 h-32 longCardContainer rounded-lg w-full"
         :style="`background-color : ${backgroundColor} !important`"
         @click="props.clickCallback"
     >
-        <div class="flex basis-1/4 justify-center">
-            <div class="longCardImagePreview flex justify-center items-center">
+        <div class="basis-1/4 flex justify-center">
+            <div class="flex justify-center items-center longCardImagePreview">
                 <img
                     :src="`${imageURL}/${props.imagePreview}`"
                     :alt="props.imageAlt"
-                    class="h-full"
+                    class="h-full object-cover w-full"
                 >
             </div>
         </div>
-        <div class="flex flex-col basis-3/4">
-            <div class="longCardTitle h-1/3 font-semibold text-lg overflow-hidden">
+        <div class="basis-3/4 flex flex-col">
+            <div class="font-semibold h-1/3 longCardTitle overflow-hidden text-sm md:!text-lg">
                 {{ props.title }}
             </div>
-            <div class="longCardContent h-1/4">
+            <div class="capitalize h-1/4 longCardContent text-sm md:!text-base">
                 {{ props.displayContent }}
             </div>
         </div>

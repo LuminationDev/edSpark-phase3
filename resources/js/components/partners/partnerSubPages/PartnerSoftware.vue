@@ -14,17 +14,17 @@ console.log(props.data)
 </script>
 
 <template>
-    <div class="softwareSubPageContainer flex flex-col px-10">
-        <div class="softwareSubpage Title">
-            <div class="font-semibold text-2xl text-center pb-6">
+    <div class="flex flex-col px-10 softwareSubPageContainer">
+        <div class="Title softwareSubpage">
+            <div class="font-semibold pb-6 text-2xl text-center">
                 Here is your listed software
             </div>
         </div>
-        <div class="flex flex-row flex-wrap gap-6">
+        <div class="flex justify-center lg:justify-start flex-row flex-wrap gap-6">
             <SoftwareCard
                 v-for="(item, index) in fulfilledData"
                 :key="index"
-                :software="item"
+                :software-data="item"
                 :number-per-row="3"
             />
         </div>

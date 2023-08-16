@@ -1,4 +1,5 @@
 <script setup>
+import {API_ENDPOINTS} from "@/js/constants/API_ENDPOINTS";
 import EditorJS from '@editorjs/editorjs';
 /**
  * EditorJS Plugins
@@ -64,7 +65,7 @@ const editorJsTools = {
         class: ImageTool,
         config:{
             endpoints:{
-                byFile: `${serverURL}/imageUploadEditorjs`
+                byFile: API_ENDPOINTS.IMAGE.IMAGE_UPLOAD_EDITOR_JS
             }
             // uploader: {
             //     async uploadByFile(file) {
@@ -82,7 +83,7 @@ const editorJsTools = {
     video: {
         class: CustomAttachesTool,
         config: {
-            endpoint: `${serverURL}/imageUploadEditorjs`
+            endpoint: API_ENDPOINTS.IMAGE.IMAGE_UPLOAD_EDITOR_JS
             // {
             //     uploadByFile: `${serverURL}/imageUploadEditorjs`
             // }
@@ -139,7 +140,7 @@ defineExpose({
 <template>
     <div
         id="editorJs"
-        class="text-genericDark mt-8 rounded-lg editor flex-col"
+        class="editor flex-col mt-8 rounded-lg text-genericDark"
     />
 </template>
 

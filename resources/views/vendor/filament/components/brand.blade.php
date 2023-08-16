@@ -1,2 +1,3 @@
-<img src="{{ Vite::asset('resources/assets/svg/Logo.svg') }}" alt="Logo" class="h-24">
+<img src="{{ env('VITE_SERVER_IMAGE_API').'/uploads/image/edsparkLogo.png' }}" alt="Logo" class="h-12">
+
 

@@ -28,14 +28,52 @@ const handleClickViewProfile = (author_id, author_type) => {
                 </template>
 
                 <template #additionalTags>
-                    <div class=" flex flex-row typeAndTags text-white">
-                        <div class="EventTypeTag bg-rose-700 py-2 px-8 rounded-2xl mr-2 font-semibold">
+                    <div
+                        class="
+                            grid
+                            grid-cols-3
+                            gap-2
+                            place-items-center
+                            max-w-full
+                            text-white
+                            typeAndTags
+                            w-full
+                            md:!grid-cols-4
+                            lg:!grid-cols-5
+                            xl:!grid-cols-6
+                            ">
+                        <div
+                            class="
+                                EventTypeTag
+                                bg-rose-700
+                                font-semibold
+                                grid
+                                place-items-center
+                                mb-2
+                                mr-2
+                                py-2
+                                rounded-2xl
+                                w-full
+                                "
+                        >
                             {{ contentFromBase['event_type'] }}
                         </div>
                         <div
-                            v-for="(tag, index) in ['Advice', 'AR', 'VR']"
+                            v-for="(tag, index) in ['Advice', 'AR', 'VR', 'Robotics','3D', 'AI']"
                             :key="index"
-                            class="EventTags bg-gray-50 text-black py-2 px-8 rounded-2xl mr-2 font-semibold"
+                            class="
+                                EventTags
+                                bg-gray-50
+                                font-semibold
+                                grid
+                                place-items-center
+                                mb-2
+                                mr-2
+                                py-2
+                                rounded-2xl
+                                text-black
+                                w-full
+                                "
                         >
                             {{ tag }}
                         </div>
@@ -45,14 +83,14 @@ const handleClickViewProfile = (author_id, author_type) => {
                 <template #authorName>
                     <div
                         v-if="contentFromBase['author'] && contentFromBase['author']"
-                        class="EventHeroAuthorContainer flex flex-col "
+                        class="EventHeroAuthorContainer flex flex-col"
                     >
-                        <div class="flex flex-row items-center">
-                            <div class="smallPartnerLogo w-24 h-20 flex items-center mx-4">
+                        <div class="flex items-center flex-row">
+                            <div class="flex items-center h-20 mx-4 smallPartnerLogo w-24">
                                 <img
                                     :src="`${imageURL}/${String(contentFromBase['author']['author_logo'])}`"
                                     alt="logo"
-                                    class="w-24 h-24 object-contain bg-center rounded-full"
+                                    class="bg-center h-24 object-contain rounded-full w-24"
                                 >
                             </div>
                             <div class="authorName flex flex-col pt-6">
@@ -61,7 +99,7 @@ const handleClickViewProfile = (author_id, author_type) => {
                                 </div>
                                 <div
                                     v-if="!(contentFromBase['author']['author_type'] === 'user')"
-                                    class="hover:text-red-200 hover:cursor-pointer "
+                                    class="hover:cursor-pointer hover:text-red-200"
                                 >
                                     <button @click="() => handleClickViewProfile(contentFromBase['author']['author_id'],contentFromBase['author']['author_type'])">
                                         View Profile
@@ -73,20 +111,20 @@ const handleClickViewProfile = (author_id, author_type) => {
                 </template>
 
                 <template #subtitleText2>
-                    <div class="eventDetails here flex gap-2 flex-col">
-                        <div class="flex flex-row items-center">
+                    <div class="eventDetails flex flex-col gap-2 here">
+                        <div class="flex items-center flex-row">
                             <CalendarIcon class="mr-2" />
                             {{ new Date(Date.parse(contentFromBase['start_date'])).toLocaleDateString('en-GB', {
                                 day: '2-digit', month: 'long', year: 'numeric'
                             }) }}
                         </div>
-                        <div class="flex flex-row items-center">
-                            <TimeIcon class="mr-2 flex justify-center items-center " />
+                        <div class="flex items-center flex-row">
+                            <TimeIcon class="flex justify-center items-center mr-2" />
                             {{ new Date(Date.parse(contentFromBase['start_date'])).toLocaleString('en-US',{ hour: 'numeric', minute: 'numeric', hour12: true } ) }}
                             {{ "-" }}
                             {{ new Date(Date.parse(contentFromBase['end_date'])).toLocaleString('en-US',{ hour: 'numeric', minute: 'numeric', hour12: true } ) }}
                         </div>
-                        <div class="flex flex-row items-center">
+                        <div class="flex items-center flex-row">
                             <LocationIcon class="mr-2" />
                             <!--                            {{ contentFromBase['event_type'] === 'in person' ? contentFromBase['event_location']['address'] : contentFromBase['event_type'] }}-->
                             {{ contentFromBase['event_location']['address'] ? contentFromBase['event_location']['address'] : 'Online' }}
@@ -99,15 +137,15 @@ const handleClickViewProfile = (author_id, author_type) => {
 
         <template #content="{contentFromBase}">
             <div
-                class="eventSingleContent py-20 px-8 flex flex-row w-full overflow-hidden"
+                class="eventSingleContent flex flex-col overflow-hidden px-8 py-20 w-full lg:!flex-row"
             >
                 <!--    Content of the Advice    -->
-                <div class="w-2/3 flex flex-col flex-wrap px-2">
-                    <div class="text-2xl flex border-b-4 border-black border-dashed font-semibold uppercase">
+                <div class="flex flex-col flex-wrap px-2 w-full lg:!w-2/3">
+                    <div class="border-b-4 border-black border-dashed flex font-semibold text-2xl uppercase">
                         Details
                     </div>
                     <div
-                        class="text-lg flex flex-col content-paragraph overflow-hidden max-w-full"
+                        class="flex content-paragraph flex-col max-w-full overflow-hidden text-lg"
                         v-html="purify.sanitize(contentFromBase['event_content'])"
                     />
                     <template
@@ -118,7 +156,7 @@ const handleClickViewProfile = (author_id, author_type) => {
                     </template>
                 </div>
                 <!--      Curated Content      -->
-                <div class="w-1/3 flex flex-col p-4">
+                <div class="flex flex-col p-4 w-full lg:!w-1/3">
                     <EventsLocation
                         :location-type="contentFromBase['event_type']"
                         :location-info="contentFromBase['event_location']"
@@ -132,7 +170,7 @@ const handleClickViewProfile = (author_id, author_type) => {
                     />
                 </div>
             </div>
-            <div class="overflow-scroll flex" />
+            <div class="flex overflow-scroll" />
         </template>
     </BaseSingle>
 </template>

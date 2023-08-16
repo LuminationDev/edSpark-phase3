@@ -1,13 +1,13 @@
 <script setup>
-import ContentSection from "@/js/components/global/ContentSection.vue";
 import SchoolCardIconList from "@/js/components/schools/SchoolCardIconList.vue";
 import GenericCard from "@/js/components/card/GenericCard.vue";
 import {storeToRefs} from "pinia";
 import {useUserStore} from "@/js/stores/useUserStore";
 import {ref} from "vue";
+import {useRouter} from "vue-router";
 
 const {currentUser} = storeToRefs(useUserStore())
-
+const router = useRouter()
 const imageURL = import.meta.env.VITE_SERVER_IMAGE_API
 const props = defineProps({
     schoolData: {
@@ -20,11 +20,6 @@ const props = defineProps({
         default: ''
     }
 })
-const likeBookmarkData = {
-    post_id: props.schoolData.id,
-    user_id: currentUser.value.id,
-    post_type: 'school'
-}
 /**
  * SchoolData props: {
  *     content_blocks: Object,
@@ -44,60 +39,105 @@ const likeBookmarkData = {
  *
  * }
  */
+
+// eslint-disable-next-line vue/no-setup-props-destructure
+// const {
+//     id,
+//     site,
+//     owner,
+//     name,
+//     content_blocks,
+//     logo,
+//     cover_image,
+//     tech_used,
+//     pedagogical_approaches,
+//     tech_landscape,
+//     metadata,
+//     location,
+//     isLikedByUser,
+//     isBookmarkedByUser,
+//     guid
+// } = props.schoolData
+
 const showFirstTech = ref(false)
 const handleMouseEnterCard = () => {
     showFirstTech.value = true
 }
 
-const handleMouseExitCard = () =>{
+const handleMouseExitCard = () => {
     showFirstTech.value = false
 }
+const handleClickSchoolCard = () => {
+    router.push({
+        path: `/schools/${props.schoolData.name}`
+    })
+}
+
 </script>
 <template>
     <GenericCard
-        :title="props.schoolData.name"
-        :like-bookmark-data="likeBookmarkData"
+        :id="schoolData.id"
+        :key="schoolData.guid"
+        :title="schoolData.name"
         :number-per-row="1"
         :override-content="true"
+        :click-callback="handleClickSchoolCard"
+        :is-liked-by-user="schoolData.isLikedByUser"
+        :is-bookmarked-by-user="schoolData.isBookmarkedByUser"
+        :section-type="'school'"
+        :guid="schoolData.guid"
     >
         <template #overiddenContent>
             <div
-                class="h-full flex flex-col "
+                class="flex flex-col h-full"
                 @mouseenter="handleMouseEnterCard"
                 @mouseleave="handleMouseExitCard"
             >
-                <router-link :to="`/schools/${props.schoolData.name}`">
-                    <div class="relative h-36 group-hover:h-0 transition-all">
+                <div class="group-hover:h-0 h-36 relative transition-all">
+                    <div
+                        :class="`bg-[url('${imageURL}/${schoolData.cover_image}')] bg-cover`"
+                        :style="`background-image: url(${imageURL}/${schoolData.cover_image}) `"
+                        class="group-hover:h-0 h-36 transition-all"
+                    />
+                </div>
+                <div class="px-6 py-4 relative transition-all">
+                    <!-- CARD CONTENT -->
+                    <div class="card-content_title group-hover:mr-0 min-h-[72px] transition-all">
+                        <!-- CARD CONTENT HEADER -->
+                        <h5
+                            class="flex justify-start font-medium group-hover:mr-0 text-left text-xl transition-all"
+                        >
+                            {{ schoolData.name }}
+                        </h5>
+                    </div>
+                    <div class="card-content_body transition-all">
+                        <p class="font-medium pt-6 text-[18px] text-black">
+                            Tech used:
+                        </p>
                         <div
-                            :class="`bg-[url('${imageURL}/${props.schoolData.cover_image}')] bg-cover`"
-                            :style="`background-image: url(${imageURL}/${props.schoolData.cover_image}) `"
-                            class="h-36 group-hover:h-0 transition-all"
-                        />
-                    </div>
-                    <div class="px-6 py-4 relative transition-all">
-                        <!-- CARD CONTENT -->
-                        <div class="card-content_title min-h-[72px] transition-all group-hover:mr-24">
-                            <!-- CARD CONTENT HEADER -->
-                            <h5 class="text-xl font-medium transition-all flex justify-between place-items-center group-hover:mr-8">
-                                {{ props.schoolData.name }}
-                            </h5>
-                        </div>
-                        <div class="card-content_body transition-all">
-                            <p class="pt-6 text-black text-[18px] font-medium">
-                                Tech used:
-                            </p>
-                            <div
-                                class="iconListContainer pt-4 flex flex-row w-full justify-between overflow-scroll gap-4 overflow-x-auto items-center pb-6 cursor-grab"
-                            >
-                                <span />
-                                <SchoolCardIconList
-                                    :tech-list="props.schoolData.tech_used"
-                                    :show-first-tech="showFirstTech"
-                                />
-                            </div>
+                            class="
+                                cursor-grab
+                                flex
+                                justify-start
+                                items-center
+                                flex-row
+                                iconListContainer
+                                overflow-scroll
+                                overflow-x-auto
+                                pb-6
+                                pt-4
+                                w-full
+                                gap-4
+                                "
+                        >
+                            <span />
+                            <SchoolCardIconList
+                                :tech-list="schoolData.tech_used"
+                                :show-first-tech="showFirstTech"
+                            />
                         </div>
                     </div>
-                </router-link>
+                </div>
             </div>
         </template>
     </GenericCard>

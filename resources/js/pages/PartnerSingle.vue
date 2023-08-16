@@ -138,8 +138,8 @@ const dynamicProps = computed(() => {
                 :background-url="contentFromBase['cover_image']"
             >
                 <template #titleText>
-                    <div class="flex flex-row items-center">
-                        <div class="smallPartnerLogo w-24 h-20 flex justify-center items-center mx-4">
+                    <div class="flex items-center flex-row">
+                        <div class="flex justify-center items-center h-20 mx-4 smallPartnerLogo w-24">
                             <img
                                 :src="`${imageURL}/${contentFromBase['logo']}`"
                                 alt="logo"
@@ -170,7 +170,7 @@ const dynamicProps = computed(() => {
             </BaseHero>
         </template>
         <template #content="{contentFromBase,recommendationFromBase}">
-            <div class="partnerSingleContentContainer px-10 mt-20">
+            <div class="mt-20 partnerSingleContentContainer px-5 lg:!px-10">
                 <Suspense timeout="0">
                     <component
                         :is="partnerSubPageComponent"

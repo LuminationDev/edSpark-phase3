@@ -53,7 +53,7 @@ const itemArray = computed(()=> {
 </script>
 
 <template>
-    <div class="extraContentRendererContainer flex flex-col py-2 my-2 px-4">
+    <div class="extraContentRendererContainer flex flex-col my-2 py-2">
         <template v-if="contentType == 'numbereditems'">
             <AdviceNumberedListRenderer :item-array="itemArray" />
         </template>

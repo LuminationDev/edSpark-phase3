@@ -23,4 +23,6 @@ class Like extends Model
         'post_type',
         'user_id'
     ];
+
+
 }

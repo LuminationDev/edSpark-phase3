@@ -7,16 +7,26 @@ import {useUserStore} from "@/js/stores/useUserStore";
 import {storeToRefs} from "pinia";
 
 const props = defineProps({
-    software: {
+    softwareData: {
         type: Object,
         required: true
     },
-    numberPerRow: {
-        type: Number,
-        required: false,
-        default: 3
-    },
+
 })
+
+// eslint-disable-next-line vue/no-setup-props-destructure
+// const {
+//     post_id,
+//     post_title,
+//     post_content,
+//     author,
+//     post_modified,
+//     cover_image,
+//     isLikedByUser,
+//     isBookmarkedByUser,
+//     software_type,
+//     guid
+// } = props.softwareData
 
 const userStore = useUserStore()
 const {currentUser} = storeToRefs(userStore)
@@ -29,32 +39,30 @@ const handleClickCard = () => {
      */
     router.push({
         name: "software-single",
-        params: {id: props.software.post_id, content: JSON.stringify(props.software)}
+        params: {id: props.softwareData.post_id, content: JSON.stringify(props.softwareData)}
     })
 }
-
-const likeBookmarkData = {
-    post_id: props.software.post_id,
-    user_id: currentUser.value.id,
-    post_type: 'software'
-}
-
 </script>
 <template>
     <GenericCard
-        :title="software['post_title']"
-        :display-content="software['post_content']"
-        :display-author="software['post_author']"
-        :cover-image="software['cover_image']"
-        :number-per-row="props.numberPerRow"
+        :id="softwareData.post_id"
+        :key="softwareData.guid"
+        :title="softwareData.post_title"
+        :display-content="softwareData.post_content"
+        :display-author="softwareData.author"
+        :display-date="softwareData.post_modified"
+        :cover-image="softwareData.cover_image"
         :click-callback="handleClickCard"
-        :like-bookmark-data="likeBookmarkData"
+        :section-type="'software'"
+        :is-liked-by-user="softwareData.isLikedByUser"
+        :is-bookmarked-by-user="softwareData.isBookmarkedByUser"
         class="mt-8"
+        :guid="softwareData.guid"
     >
         <template #icon>
             <SoftwareCardIcon
-                class="icon absolute -top-6 -right-6 "
-                :software-icon-name="software['software_type'][0]"
+                class="absolute -top-6 -right-6 icon"
+                :software-icon-name="softwareData.software_type[0]"
             />
         </template>
     </GenericCard>

@@ -34,7 +34,10 @@ const timeFormatter = (originalFormat) => {
 <template>
     <BaseSingle content-type="advice">
         <template #hero="{ contentFromBase }">
-            <BaseHero :background-url="contentFromBase['cover_image']">
+            <BaseHero
+                class="h-[800px]"
+                :background-url="contentFromBase['cover_image']"
+            >
                 <template #titleText>
                     {{ contentFromBase['post_title'] }}
                 </template>
@@ -43,7 +46,7 @@ const timeFormatter = (originalFormat) => {
                         contentFromBase['author'] }}
                 </template>
                 <template #contentDate>
-                    {{ timeFormatter(contentFromBase['post_date']) }}
+                    {{ timeFormatter(contentFromBase['post_modified']) }}
                 </template>
                 <!-- <template #subtitleText1>
                     {{ timeFormatter(contentFromBase['post_date']) }}
@@ -55,20 +58,25 @@ const timeFormatter = (originalFormat) => {
         </template>
 
         <template #content="{ contentFromBase, recommendationFromBase }">
-            <div class="adviceSingleContent p-4 px-8 flex flex-row w-full overflow-hidden mt-14">
+            <div class="adviceSingleContent flex flex-col mt-14 overflow-hidden p-4 px-8 w-full xl:!flex-row">
                 <!--    Content of the Advice    -->
-                <div class="w-2/3 flex flex-col flex-wrap py-4 px-2">
-                    <div class="text-2xl flex font-bold uppercase">
+                <div class="flex flex-col flex-wrap px-2 py-4 w-full xl:!w-2/3">
+                    <div class="flex font-bold text-2xl uppercase">
                         Getting started
                     </div>
-                    <div class="text-lg flex flex-col content-paragraph overflow-hidden max-w-full"
-                        v-html="contentFromBase['post_content']" />
-                    <template v-for="(content, index) in contentFromBase['extra_content']" :key="index">
+                    <div
+                        class="flex content-paragraph flex-col max-w-full overflow-hidden text-lg"
+                        v-html="contentFromBase['post_content']"
+                    />
+                    <template
+                        v-for="(content, index) in contentFromBase['extra_content']"
+                        :key="index"
+                    >
                         <AdviceSingleExtraContentRenderer :content="content" />
                     </template>
                 </div>
                 <!--      Curated Content      -->
-                <div class="w-1/3 flex flex-col">
+                <div class="flex flex-col w-full xl:!w-1/3">
                     <AdviceSingleCuratedContent :recommendation-from-base="recommendationFromBase" />
                 </div>
             </div>

@@ -1,4 +1,6 @@
 <script setup>
+import {guid} from "@/js/helpers/guidGenerator";
+import {debounce} from "lodash";
 import {computed, ref} from "vue";
 import {bookmarkURL, imageURL, likeURL} from "@/js/constants/serverUrl";
 import Tooltip from "@/js/components/global/Tooltip/Tooltip.vue";
@@ -6,28 +8,36 @@ import Tooltip from "@/js/components/global/Tooltip/Tooltip.vue";
 import Like from "@/js/components/svg/Like.vue";
 import LikeFull from "@/js/components/svg/LikeFull.vue";
 import BookMark from "@/js/components/svg/BookMark.vue";
-import {storeToRefs} from "pinia";
-import {useUserStore} from "@/js/stores/useUserStore";
 import BookmarkFull from "@/js/components/svg/BookmarkFull.vue";
 
-const {userLikeList, userBookmarkList} = storeToRefs(useUserStore())
+import {storeToRefs} from "pinia";
+import {useUserStore} from "@/js/stores/useUserStore";
+
+const {currentUser, userLikeList, userBookmarkList} = storeToRefs(useUserStore())
+
 
 const props = defineProps({
+    id: {
+        type: [String, Number],
+        required: false,
+        default: ''
+    },
     title: {
         type: String,
         required: true
     },
-    numberPerRow: {
-        type: Number,
-        required: false,
-        default: 3
-    },
     displayAuthor: {
-        type: [Object,String],
+        type: [Object, String],
         required: false,
-        default: () => {}
+        default: () => {
+        }
     },
     displayDate: {
+        type: String,
+        required: false,
+        default: ''
+    },
+    endDate: {
         type: String,
         required: false,
         default: ''
@@ -48,145 +58,134 @@ const props = defineProps({
         default: () => {
         }
     },
-    likeBookmarkData: {
-        type: Object,
-        required: false,
-        default: () => {
-        }
-    },
     overrideContent: {
         type: Boolean,
         required: false,
         default: false
     },
-    extraClasses: {
-        type: String,
-        required: false
-    },
     sectionType: {
         type: String,
-        required: false
-    },
-    item: {
-        type: Object,
         required: false,
-        default: () => {}
+        default: ""
+    },
+    isLikedByUser: {
+        type: Boolean,
+        required: true,
+    },
+    isBookmarkedByUser: {
+        type: Boolean,
+        required: true,
+    },
+    guid:{
+        type: String,
+        required: false,
+        default: guid()
     }
+
 });
+const currentUserLiked = ref(props.isLikedByUser)
+const currentUserBookmarked = ref(props.isBookmarkedByUser)
 
-const currentUserLiked = computed(() => {
-    if (userLikeList.value[props.likeBookmarkData.post_type] &&
-        userLikeList.value[props.likeBookmarkData.post_type].length > 0 &&
-        userLikeList.value[props.likeBookmarkData.post_type].filter(eachItem => {
-            if (eachItem == props.likeBookmarkData.post_id) return true
-        }).length > 0) {
-        return true
-    } else {
-        return false
-    }
-})
-
-const currentUserBookmarked = computed(() => {
-    if (userBookmarkList.value[props.likeBookmarkData.post_type] &&
-        userBookmarkList.value[props.likeBookmarkData.post_type].length > 0 &&
-        userBookmarkList.value[props.likeBookmarkData.post_type].filter(eachItem => {
-            if (eachItem == props.likeBookmarkData.post_id) return true
-        }).length > 0) {
-        return true
-    } else {
-        return false
-    }
-})
-
+/**
+ * Check if both start and end date are provided.
+ * return both date with "-" if true
+ * else if just return start date
+ * else return empty string if invalid
+ * @type {ComputedRef<unknown>}
+ */
 const formattedDate = computed(() => {
-    const date = new Date(Date.parse(props.displayDate))
-    return date.toDateString()
+    if (props.displayDate && props.endDate) {
+        const startDate = new Date(Date.parse(props.displayDate)).toDateString()
+        const endDate = new Date(Date.parse(props.endDate)).toDateString()
+
+        // simple comparison for one day event
+        if (startDate === endDate) {
+            return startDate
+        } else {
+            return `${startDate} - ${endDate}`
+
+        }
+    } else if (props.displayDate) {
+        return new Date(Date.parse(props.displayDate)).toDateString()
+    } else {
+        return ""
+    }
 })
 
-const handleDefaultLike = async (data) => {
-    const {post_type} = props.likeBookmarkData
-    await axios.post(likeURL, data)
-        .then(res => {
-            if (res.data.isLiked) {
-                if (!userLikeList.value[post_type]) {
-                    userLikeList.value[post_type] = []
-                }
-                userLikeList.value[post_type].push(data.post_id)
-            } else {
-                if (userLikeList.value[post_type]) {
-                    const indexRemoval = userLikeList.value[post_type].indexOf(data.post_id)
-                    if (indexRemoval !== -1) {
-                        userLikeList.value[post_type].splice(indexRemoval, 1)
-                    } else {
-                        console.log('tried to unlike something that doesnt exist in the database')
-                    }
-                }
-            }
-        })
-        .catch(err => {
-            console.log(err);
-        })
+let likeOrBookmarkPayload = {
+    post_id: props.id,
+    user_id: currentUser.value.id || 9999,
+    post_type: props.sectionType
 }
 
-const handleDefaultBookmark = async (data) => {
-    const {post_type} = props.likeBookmarkData
-    await axios.post(bookmarkURL, data)
-        .then(res => {
-            if (res.data.isBookmarked) {
-                if (!userBookmarkList.value[post_type]) {
-                    userBookmarkList.value[post_type] = []
-                }
-                userBookmarkList.value[post_type].push(data.post_id)
-            } else {
-                if (userBookmarkList.value[post_type]) {
-                    const indexRemoval = userBookmarkList.value[post_type].indexOf(data.post_id)
-                    if (indexRemoval !== -1) {
-                        userBookmarkList.value[post_type].splice(indexRemoval, 1)
-                    } else {
-                        console.log('tried to unbookmark something that doesnt exist in the database')
-                    }
-                }
-            }
-        })
-        .catch(err => {
-            console.log(err)
-        })
+const handleDefaultLike = async () => {
+    currentUserLiked.value = !currentUserLiked.value
+    console.log(likeOrBookmarkPayload)
+    await axios.post(likeURL, likeOrBookmarkPayload).then(res => {
+        if (res.data?.status === 200) {
+            currentUserLiked.value = res.data.isLiked
+        }
+    }).catch(err => {
+        console.log(err.message)
+    })
 }
 
+const handleDefaultBookmark = async () => {
+    currentUserBookmarked.value = !currentUserBookmarked.value
+    console.log(likeOrBookmarkPayload)
+    await axios.post(bookmarkURL, likeOrBookmarkPayload).then(res => {
+        if (res.data?.status === 200) {
+            console.log(res.data)
+            currentUserBookmarked.value = res.data.isBookmarked
+        }
+    }).catch(err => {
+        console.log(err.message)
+    })
+}
+
+const debouncedDefaultLike = debounce(() => {
+    handleDefaultLike()
+}, 150)
+
+const debouncedDefaultBookmark = debounce(() => {
+    handleDefaultBookmark()
+}, 150)
 
 const cardHoverToggle = ref(false);
 
-const setTheBackground = computed(() => {
-    return `${imageURL}/${props.coverImage}`;
-});
-
 const emits = defineEmits(['emitCardClick']);
 
-const handleEmitClick = () => {
-    emits('emitCardClick', props.item);
-}
 </script>
 
 <template>
     <div
-        class="GenericCardContainer w-full card_parent generic-card__wrapper group"
-        :class="extraClasses"
+        class="GenericCardContainer card_parent generic-card__wrapper group"
         @mouseenter="cardHoverToggle = true"
-        @click="handleEmitClick"
     >
         <template v-if="!props.overrideContent">
             <div
-                class="cardTopCoverImage relative min-h-[35%] bg-slate-50 bg-cover bg-center transition-all group-hover:min-h-[0%] group-hover:h-0"
+                class="
+                    bg-center
+                    bg-cover
+                    bg-slate-50
+                    cardTopCoverImage
+                    group-hover:h-0
+                    group-hover:min-h-[0%]
+                    min-h-[35%]
+                    overflow-visible
+                    relative
+                    transition-all
+                    "
                 :class="`bg-[url('${imageURL}/${coverImage}')]`"
                 :style="`background-image: url('${imageURL}/${coverImage}')`"
             >
-                <template
+                <div
                     v-if="$slots.typeTag"
                 >
                     <slot
                         name="typeTag"
                     />
-                </template>
+                </div>
 
                 <div
                     v-if="$slots.icon"
@@ -194,12 +193,10 @@ const handleEmitClick = () => {
                     <slot name="icon" />
                 </div>
             </div>
-            <!-- <div class="cardContentOuter"> -->
             <div
                 class="cardContent transition-all"
                 @click="clickCallback"
             >
-                <!-- :class="(sectionType === 'events' || sectionType === 'advice') ? 'group-hover:w-3/5' : ''" -->
                 <div class="cardContentWrapper">
                     <div
                         v-if="props.title"
@@ -235,22 +232,29 @@ const handleEmitClick = () => {
             <!-- </div> -->
         </template>
         <template v-else>
-            <slot name="overiddenContent" />
+            <div
+                class="schoolCardContentOverridding w-full"
+                @click="props.clickCallback"
+            >
+                <slot name="overiddenContent" />
+            </div>
         </template>
-        <div class="generic-card__footer flex flex-row h-18 place-items-end pl-4 gap-4 mt-auto">
+        <div class="flex flex-row gap-4 generic-card__footer h-18 mt-auto pl-4 place-items-end">
             <div class="p-2">
-                <span class="has-tooltip">
+                <span class="has-tooltip relative">
                     <LikeFull
                         v-if="currentUserLiked"
-                        @click="() => handleDefaultLike(props.likeBookmarkData)"
+                        :key="props.guid"
+                        @click="debouncedDefaultLike"
                     />
                     <Like
                         v-else
-                        @click="() => handleDefaultLike(props.likeBookmarkData)"
+                        :key="props.guid"
+                        @click="debouncedDefaultLike"
                     />
                     <Tooltip
-                        tip="Like this post"
-                        :tool-tip-margin="{'!-ml-28' : numberPerRow > 3, '-ml-36' : true}"
+                        tip="Like post"
+                        class="absolute w-24"
                     />
                 </span>
             </div>
@@ -258,15 +262,18 @@ const handleEmitClick = () => {
                 <span class="has-tooltip">
                     <BookmarkFull
                         v-if="currentUserBookmarked"
-                        @click="() => handleDefaultBookmark(props.likeBookmarkData)"
+                        :key="props.guid"
+                        @click="debouncedDefaultBookmark"
                     />
                     <BookMark
                         v-else
-                        @click="() => handleDefaultBookmark(props.likeBookmarkData)"
+                        :key="props.guid"
+
+                        @click="debouncedDefaultBookmark"
                     />
                     <Tooltip
-                        tip="Bookmark this post"
-                        tool-tip-margin="ml-8"
+                        tip="Bookmark post"
+                        class="absolute w-36"
                     />
                 </span>
             </div>
@@ -279,9 +286,9 @@ const handleEmitClick = () => {
 
 .generic-card__footer {
     background-color: #FFF;
-    box-shadow: 0px -23px 7px -15px rgba(255,255,255,1);
-    -webkit-box-shadow: 0px -23px 7px -15px rgba(255,255,255,1);
-    -moz-box-shadow: 0px -23px 7px -15px rgba(255,255,255,1);
+    box-shadow: 0px -23px 7px -15px rgba(255, 255, 255, 1);
+    -webkit-box-shadow: 0px -23px 7px -15px rgba(255, 255, 255, 1);
+    -moz-box-shadow: 0px -23px 7px -15px rgba(255, 255, 255, 1);
 }
 
 .cardContentWrapper {
@@ -289,6 +296,7 @@ const handleEmitClick = () => {
     -webkit-box-shadow: inset 0 -10px 10px -10px #000000;
     box-shadow: inset 0 -10px 10px -10px #000000; */
 }
+
 .card-content_body {
     /* overflow: hidden;
     text-overflow: ellipsis;
@@ -321,16 +329,3 @@ const handleEmitClick = () => {
     -webkit-line-clamp: 4 !important;
 }
 </style>
-
-<!-- <style>
-    .generic-card__footer {
-        background: rgb(255,255,255);
-        /* background: linear-gradient(0deg, rgba(255,255,255,1) 0%, rgba(255,255,255,1) 70%, rgba(255,255,255,0.8491771708683473) 84%, rgba(255,255,255,0.7511379551820728) 92%, rgba(255,255,255,0.40948879551820727) 100%, rgba(255,255,255,0) 100%); */
-    }
-
-    .cardContent {
-        box-shadow: 0px -109px 54px -65px rgba(255,255,255,0.87) inset;
-        -webkit-box-shadow: 0px -109px 54px -65px rgba(255,255,255,0.87) inset;
-        -moz-box-shadow: 0px -109px 54px -65px rgba(255,255,255,0.87) inset;
-    }
-</style> -->

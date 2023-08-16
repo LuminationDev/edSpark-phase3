@@ -4,29 +4,25 @@ defineProps({
         type: String,
         required: true
     },
-
-    toolTipMargin: {
-        type: [String, Object],
-        default: '-ml-1.5'
-    }
 })
 </script>
 
 <template>
     <span
-        :class="toolTipMargin"
-        class="tooltip rounded shadow-lg px-3 py-1 bg-gray-700 rounded-xl text-white -mt-8"
+        class="bg-gray-700 px-3 py-1 rounded rounded-xl shadow-lg text-white tooltip"
     >{{ tip }}</span>
 </template>
 
 <style scoped>
 .tooltip {
-    @apply invisible absolute;
+    @apply invisible fixed;
 }
 
 .has-tooltip:hover .tooltip {
     visibility: visible;
     animation: appear 1s;
+    position: fixed;
+    z-index: 999;
 }
 
 @keyframes appear {
@@ -36,7 +32,7 @@ defineProps({
 
     100% {
         opacity: 1;
-        z-index: 50;
+        z-index: 99;
     }
 }
 </style>

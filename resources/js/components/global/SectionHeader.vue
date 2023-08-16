@@ -32,37 +32,67 @@ const props = defineProps({
 </script>
 
 <template>
-    <div class="mt-20 mb-6 px-20">
+    <div class="mb-6 mt-5 px-1 lg:!mt-20 lg:!px-20">
         <div
             :class="[classes]"
-            class="flex flex-row justify-between h-[72px] w-full px-12 relative group/headerbg place-items-center"
+            class="
+                flex
+                justify-start
+                items-start
+                flex-col
+                group/headerbg
+                h-auto
+                pb-4
+                pt-2
+                px-6
+                relative
+                w-full
+                md:!flex-row
+                md:!h-20
+                md:!justify-between
+                md:!place-items-center
+                md:!px-12
+                "
         >
             <EventsCollection
                 v-if="section === 'events'"
-                class="absolute top-1/2 -translate-y-1/2 right-16 group-hover/headerbg:scale-125 transition-all duration-500"
+                class="-translate-y-1/2 absolute top-1/2 right-16 duration-500 group-hover/headerbg:scale-125 transition-all"
             />
             <SoftwareCollection
                 v-if="section === 'software' || section === 'hardware-laptops'"
-                class="absolute top-1/2 -translate-y-1/2 right-16 group-hover/headerbg:scale-125 transition-all duration-500"
+                class="-translate-y-1/2 absolute top-1/2 right-16 duration-500 group-hover/headerbg:scale-125 transition-all"
             />
             <AdviceCollection
                 v-if="section === 'advice' || section === 'hardware-emerging'"
-                class="absolute top-1/2 -translate-y-1/2 right-16 group-hover/headerbg:scale-125 transition-all duration-500"
+                class="-translate-y-1/2 absolute top-1/2 right-16 duration-500 group-hover/headerbg:scale-125 transition-all"
             />
             <SchoolsCollection
                 v-if="section === 'schools'"
-                class="absolute top-1/2 -translate-y-1/2 right-16 group-hover/headerbg:scale-125 transition-all duration-500"
+                class="-translate-y-1/2 absolute top-1/2 right-16 duration-500 group-hover/headerbg:scale-125 transition-all"
             />
             <LaptopCollection
                 v-if="section === 'laptops'"
-                class="absolute top-1/2 -translate-y-1/2 right-16 group-hover/headerbg:scale-125 transition-all duration-500"
+                class="-translate-y-1/2 absolute top-1/2 right-16 duration-500 group-hover/headerbg:scale-125 transition-all"
             />
 
-            <h3 class="text-white text-4xl font-semibold self-center section-header uppercase">
+            <h3 class="font-semibold py-2 section-header text-3xl text-white uppercase  lg:!text-4xl">
                 {{ title }}
             </h3>
             <button
-                class="bg-white px-4 h-fit py-2 rounded-sm border-2 z-20 border-[#307474] text-[#307474] text-base font-medium cursor-pointer hover:text-[#339999] hover:border-2 hover:border-[#339999]"
+                class="
+                    bg-white
+                    hover:bg-slate-100
+                    border-[1px]
+                    border-main-navy
+                    cursor-pointer
+                    font-medium
+                    h-fit
+                    px-4
+                    py-2
+                    text-base
+                    text-main-navy
+                    z-20
+                    "
                 @click="props.buttonCallback"
             >
                 {{ buttonText }}

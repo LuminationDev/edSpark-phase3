@@ -72,6 +72,9 @@ module.exports = {
                 huge: '81px',
                 extraHuge: '140px'
             },
+            screens:{
+                'ml': '860px',
+            }
         },
     },
     plugins: [

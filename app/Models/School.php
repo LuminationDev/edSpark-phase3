@@ -43,6 +43,15 @@ class School extends Model
 
     public function site()
     {
-        return $this->belongsTo(Site::class);
+        return $this->belongsTo(Site::class,'site_id', 'site_id');
+    }
+    public function likes(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(Like::class, 'post_id', 'id')->where('post_type', 'school');
+    }
+
+    public function bookmarks(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(Bookmark::class, 'post_id', 'id')->where('post_type', 'school');
     }
 }

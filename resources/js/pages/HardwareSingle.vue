@@ -76,7 +76,7 @@ const handleChangeSubmenu = (value) => {
                     #hardwareProvider
                 >
                     <div>
-                        <p class="text-[15px] font-medium">
+                        <p class="font-medium text-[15px]">
                             {{ contentFromBase['brand']['brandName'] }}
                         </p>
                     </div>
@@ -85,7 +85,7 @@ const handleChangeSubmenu = (value) => {
                     <div v-html="contentFromBase['product_excerpt']" />
                 </template>
                 <template #submenu>
-                    <div class="hardwareSubmenu flex flex-row gap-4 z-40 cursor-pointer">
+                    <div class="cursor-pointer flex flex-row gap-4 hardwareSubmenu z-40">
                         <BaseSingleSubmenu
                             :emit-to-base="emitFromSubmenu"
                             :menu-array="hardwareSubmenu"
@@ -97,28 +97,36 @@ const handleChangeSubmenu = (value) => {
         </template>
 
         <template #content="{ contentFromBase,recommendationFromBase }">
-            <div class="flex flex-row w-full mt-20">
+            <div class="flex flex-row mt-20 w-full">
                 <template v-if="activeSubmenu === hardwareSubmenu[0]['value']">
                     <div
                         :id="contentFromBase['id']"
                         ref="baseContentRef"
-                        class="py-4 px-20 flex flex-col w-full overflow-hidden"
+                        class="flex flex-col overflow-hidden px-5 py-4 w-full lg:!px-20"
                     >
                         <!-- Carousel here -->
                         <HardwareCarousel
                             :slide-items="contentFromBase"
                         />
-                        <div class="flex flex-row mt-[64px] gap-12">
-                            <div class="w-2/3 flex flex-col py-4">
+                        <div class="flex flex-col gap-6 mt-[64px] lg:!flex-row">
+                            <div class="flex flex-col py-4 w-full lg:!w-2/3">
                                 <div>
                                     <h1
-                                        class="text-2xl flex font-bold uppercase"
+                                        class="flex font-bold text-2xl uppercase"
                                     >
                                         {{ contentFromBase['product_name'] }}
                                     </h1>
                                 </div>
                                 <div
-                                    class="pt-8 text-lg flex flex-col content-paragraph overflow-hidden max-w-full"
+                                    class="
+                                        flex
+                                        content-paragraph
+                                        flex-col
+                                        max-w-full
+                                        overflow-hidden
+                                        pt-8
+                                        text-lg
+                                        "
                                     v-html="contentFromBase['product_content']"
                                 />
                                 <template
@@ -131,13 +139,13 @@ const handleChangeSubmenu = (value) => {
 
                             <div
                                 v-if="contentFromBase['brand']"
-                                class="w-1/3"
+                                class="w-full lg:!w-1/3"
                             >
                                 <div
                                     v-if="recommendationFromBase && recommendationFromBase.length > 0"
-                                    class="bg-[#048246]/5 flex flex-col px-6 py-6 gap-6"
+                                    class="bg-[#048246]/5 flex flex-col gap-6 px-6 py-6"
                                 >
-                                    <h3 class="text-[24px] font-bold mx-auto pb-8">
+                                    <h3 class="font-bold mx-auto pb-8 text-[24px]">
                                         More from {{ contentFromBase['brand']['brandName'] }}
                                     </h3>
                                     <div
@@ -146,8 +154,9 @@ const handleChangeSubmenu = (value) => {
                                         class="flex justify-between"
                                     >
                                         <HardwareCard
-                                            class="mx-auto bg-white"
-                                            :hardware-content="item"
+                                            :key="index.guid"
+                                            class="bg-white mx-auto"
+                                            :hardware-data="item"
                                             :number-per-row="1"
                                         />
                                     </div>
@@ -157,7 +166,7 @@ const handleChangeSubmenu = (value) => {
                     </div>
                 </template>
                 <template v-if="activeSubmenu === hardwareSubmenu[1]['value']">
-                    <div class="text-black py-4 px-20 w-full">
+                    <div class="px-5 py-4 text-black w-full lg:!px-20">
                         <template v-if="contentFromBase['category']['categoryName'] === 'Laptop'">
                             <HardwareLaptopTechSpecs :extra-content="contentFromBase['extra_content']" />
                         </template>
@@ -168,7 +177,7 @@ const handleChangeSubmenu = (value) => {
                             <HardwareAudioVisualTechSpecs :extra-content="contentFromBase['extra_content']" />
                         </template>
                         <template v-else>
-                            <div class="text-black w-full flex justify-center text-2xl">
+                            <div class="flex justify-center text-2xl text-black w-full">
                                 Sorry technical specification is not available for this item
                             </div>
                         </template>

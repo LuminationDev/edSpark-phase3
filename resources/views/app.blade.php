@@ -13,11 +13,11 @@
     {{-- <script src="https://cdn.tailwindcss.com"></script> --}}
     {{-- <link rel="stylesheet" href="{{ mix('resources/css/app.css')}}" type="text/css"> --}}
     {{-- <link rel="stylesheet" href="{{ asset('css/app.css') }}" type="text/css"> --}}
-    {{--<link rel="icon" type="image/x-icon" href="{{ asset('build/assets/Logo.svg') }}">--}}
+    <link rel="icon" type="image/x-icon" href="{{ env('VITE_SERVER_IMAGE_API').'/uploads/image/edsparkLogo.png' }}">
     @vite(['resources/js/app.js'])
 
 </head>
-<body class="relative">
+<body class="relative w-full lg:w-auto">
     <div id="app" class="flex flex-col container mx-auto shadow-lg min-h-screen font-['Poppins']"></div>
 {{--    <script src="{{ mix('resources/js/app.js') }}" type="text/javascript"></script>--}}
 </body>
