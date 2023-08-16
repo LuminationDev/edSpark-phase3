@@ -131,7 +131,8 @@ const router = createRouter({
         },
         {
             name: 'advice-single',
-            path: '/advice/resources/:id',
+            path: '/advice/resources/:id/:slug?',
+            alias: '/advice/resources/:id',
             component: AdviceSingle,
             params: true,
             meta: {
@@ -150,7 +151,8 @@ const router = createRouter({
         },
         {
             name: "software-single",
-            path: "/software/resources/:id",
+            path: "/software/resources/:id/:slug?",
+            alias: "/software/resources/:id",
             component: SoftwareSingle,
             params: true,
             meta: {
@@ -170,7 +172,8 @@ const router = createRouter({
         },
         {
             name: 'hardware-single',
-            path: '/hardware/resources/:id',
+            path: '/hardware/resources/:id/:slug?',
+            alias: '/hardware/resources/:id',
             component: HardwareSingle,
             params: true,
             meta: {
@@ -197,7 +200,8 @@ const router = createRouter({
         },
         {
             name: 'partner-single',
-            path: '/partner/:id',
+            path: '/partner/:id/:slug?',
+            alias: '/partner/:id',
             component: PartnerSingle,
             meta: {
                 navigation: false
@@ -214,7 +218,8 @@ const router = createRouter({
         },
         {
             name: 'event-single',
-            path: '/event/resources/:id',
+            path: '/event/resources/:id/:slug?',
+            alias: '/event/resources/:id',
             component: EventSingle,
             params: true,
             meta: {

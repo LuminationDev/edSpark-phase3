@@ -1,4 +1,5 @@
 <script setup>
+import lowerSlugify from "@/js/helpers/slugifyHelper";
 import {computed} from "vue";
 import GenericCard from "@/js/components/card/GenericCard.vue";
 import AdviceTypeTag from "@/js/components/advice/AdviceTypeTag.vue";
@@ -48,7 +49,7 @@ const handleClickAdviceCard = () => {
      */
     router.push({
         name: "advice-single",
-        params: {id: props.adviceData.post_id},
+        params: {id: props.adviceData.post_id, slug: lowerSlugify(props.adviceData.post_title)},
         state: {content: JSON.stringify(props.adviceData)}
     })
 

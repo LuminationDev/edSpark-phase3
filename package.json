@@ -54,6 +54,7 @@
         "sanitize-html": "^2.10.0",
         "sass": "^1.63.4",
         "search-dropdown-vue": "^1.0.3",
+        "slugify": "^1.6.6",
         "swrv": "^1.0.4",
         "tailwind-scrollbar": "^3.0.4",
         "v-calendar": "^3.0.3",

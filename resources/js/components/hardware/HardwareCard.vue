@@ -1,4 +1,5 @@
 <script setup>
+import lowerSlugify from "@/js/helpers/slugifyHelper";
 import GenericCard from '../card/GenericCard.vue';
 import {useRouter} from 'vue-router';
 import {useUserStore} from "@/js/stores/useUserStore";
@@ -37,6 +38,7 @@ const handleClickHardwareCard = () => {
         name: 'hardware-single',
         params: {
             id: props.hardwareData.id,
+            slug: lowerSlugify(props.hardwareData.product_name)
         },
         state:{
             content: JSON.stringify(props.hardwareData)

@@ -1,4 +1,5 @@
 <script setup>
+import lowerSlugify from "@/js/helpers/slugifyHelper";
 import GenericCard from '../card/GenericCard.vue';
 import InPerson from '../svg/InPerson.vue';
 import Virtual from '../svg/Virtual.vue';
@@ -45,7 +46,7 @@ const handleClickEventCard = () => {
      */
     router.push({
         name: "event-single",
-        params: {id: props.eventData.event_id},
+        params: {id: props.eventData.event_id, slug: lowerSlugify(props.eventData.event_title)},
         state: {content: JSON.stringify(props.eventData)},
     })
 }

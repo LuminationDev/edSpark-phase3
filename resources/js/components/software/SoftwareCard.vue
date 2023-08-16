@@ -1,6 +1,7 @@
 <script setup>
 import GenericCard from "@/js/components/card/GenericCard.vue";
 import SoftwareCardIcon from "@/js/components/software/SoftwareCardIcon.vue";
+import lowerSlugify from "@/js/helpers/slugifyHelper";
 import {useRouter} from "vue-router";
 import {likeURL, bookmarkURL} from "@/js/constants/serverUrl";
 import {useUserStore} from "@/js/stores/useUserStore";
@@ -39,7 +40,10 @@ const handleClickCard = () => {
      */
     router.push({
         name: "software-single",
-        params: {id: props.softwareData.post_id, content: JSON.stringify(props.softwareData)}
+        params: {id: props.softwareData.post_id, slug : lowerSlugify(props.softwareData.post_title) },
+        state:{
+            content: JSON.stringify(props.softwareData)
+        }
     })
 }
 </script>

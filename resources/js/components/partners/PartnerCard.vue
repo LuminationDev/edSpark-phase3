@@ -1,4 +1,5 @@
 <script setup>
+import lowerSlugify from "@/js/helpers/slugifyHelper";
 import {ref, computed} from 'vue'
 import GenericCard from "@/js/components/card/GenericCard.vue";
 import {useUserStore} from "@/js/stores/useUserStore";
@@ -24,7 +25,7 @@ const router = useRouter()
 const handleClickPartnerCard = () => {
     router.push({
         name: "partner-single",
-        params: {id: props.partnerData.user_id},
+        params: {id: props.partnerData.user_id, slug: lowerSlugify(props.partnerData.name)},
         state: {content: JSON.stringify(props.partnerData)}
     })
 }

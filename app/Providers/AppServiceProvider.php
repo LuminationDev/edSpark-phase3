@@ -36,7 +36,7 @@ class AppServiceProvider extends ServiceProvider
                 'Content Management',
                 'Product Management',
                 'School Management',
-                'Settings',
+                'System',
             ]);
         });
 
