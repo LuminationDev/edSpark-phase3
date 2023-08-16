@@ -204,7 +204,7 @@ const formattedSearchTitle = computed(() =>{
                     >
                         <AdviceCard
                             :key="data.post_id"
-                            :advice-content="data"
+                            :advice-data="data"
                             :number-per-row="2"
                             :show-icon="true"
                         />
@@ -217,7 +217,7 @@ const formattedSearchTitle = computed(() =>{
                     >
                         <SoftwareCard
                             :key="data.post_id"
-                            :software="data"
+                            :software-data="data"
                             :number-per-row="2"
                         />
                     </div>
