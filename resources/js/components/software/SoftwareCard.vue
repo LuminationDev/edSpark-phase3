@@ -28,7 +28,6 @@ const props = defineProps({
 //     guid
 // } = props.softwareData
 
-console.log(props.softwareData)
 const userStore = useUserStore()
 const {currentUser} = storeToRefs(userStore)
 const router = useRouter()

@@ -25,7 +25,7 @@ const fulfilledData = await props.data
             <AdviceCard
                 v-for="(item, index) in fulfilledData"
                 :key="index"
-                :advice-content="item"
+                :advice-data="item"
                 :number-per-row="3"
             />
         </div>

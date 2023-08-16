@@ -1,4 +1,5 @@
 <script setup>
+import CarouselGenerator from "@/js/components/card/CarouselGenerator.vue";
 import {API_ENDPOINTS} from "@/js/constants/API_ENDPOINTS";
 import {computed} from "vue";
 import {useRouter} from "vue-router";
@@ -56,7 +57,7 @@ const softwareLoading = computed(() => {
 
 const responsiveDisplaySoftware = computed(() => {
     if (isMobile.value) {
-        return softwaresData.value.slice(0, 4) || []
+        return softwaresData.value ? softwaresData.value.slice(0, 4) : []
     } else {
         return softwaresData.value
     }
@@ -141,17 +142,35 @@ const handleClickSeeMore = () => {
             />
         </div>
         <!--    Software Card Gallery    -->
-        <div class="grid md:grid-cols-2 grid-cols-1 gap-6 place-items-center px-10 xl:!grid-cols-3 xl:!px-20">
+        <div class="grid grid-cols-1 gap-6 place-items-center px-5 w-full md:!grid-cols-2 xl:!grid-cols-3 xl:!px-20">
             <template v-if="responsiveDisplaySoftware">
-                <SoftwareCard
-                    v-for="(software,index) in responsiveDisplaySoftware"
-                    :key="index"
-                    :software="software"
+                <div
+                    class="
+                        col-span-1
+                        grid-cols-1
+                        gap-6
+                        hidden
+                        md:!col-span-2
+                        md:!grid
+                        md:!grid-cols-2
+                        xl:!col-span-3
+                        xl:!grid-cols-3
+                        ">
+                    <SoftwareCard
+                        v-for="(software,index) in responsiveDisplaySoftware"
+                        :key="index"
+                        :software-data="software"
+                    />
+                </div>
+                <CarouselGenerator
+                    show-count="2"
+                    data-type="software"
+                    :data-array="responsiveDisplaySoftware"
+                    class="flex md:!hidden"
                 />
                 <GenericButton
                     v-show="isMobile"
                     :callback="handleClickSeeMore"
-                    s
                     class="
                         !bg-white
                         hover:!bg-main-darkTeal

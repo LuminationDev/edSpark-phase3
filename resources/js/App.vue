@@ -36,7 +36,7 @@ const setWindowWidth = () => {
 
 onBeforeMount(async () => {
     // if currentUser / local storage is not empty check auth status
-    if (!isObjectEmpty(currentUser.value)) {
+    if (!isObjectEmpty(currentUser.value) && !window.location.origin.includes('test.edspark.sa.edu.au')) {
         await authStore.checkAuthenticationStatus()
         /**
          * here means there is data inside localStorage but not logged in
