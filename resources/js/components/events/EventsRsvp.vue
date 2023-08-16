@@ -137,12 +137,12 @@ const handleSubmitRsvp = () => {
         rsvpError.value = ''
         const rsvpData = {
             user_id: currentUser.value.id,
-            id: props.eventId,
+            event_id: props.eventId,
             full_name: state.fullName,
             school_name: state.schoolName,
             number_of_guests: state.numOfGuest
         }
-        return axios.post(API_ENDPOINTS.EVENT.ADD_RECORDING, rsvpData).then(res => {
+        return axios.post(API_ENDPOINTS.EVENT.ADD_RSVP_TO_EVENT, rsvpData).then(res => {
             console.log(res.data)
             currentUserRsvped.value = true
             currentRsvpInfo.value = rsvpData

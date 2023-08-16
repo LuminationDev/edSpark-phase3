@@ -29,10 +29,10 @@ const handleSubmitLinkButton = async () => {
     console.log(linkInput.value)
     let recordingData = {
         user_id: currentUser.value.id,
-        id: props.eventId,
+        event_id: props.eventId,
         recording_link: linkInput.value
     }
-    axios.post(API_ENDPOINTS.EVENT.ADD_RECORDING,recordingData).then(res => {
+    axios.post(API_ENDPOINTS.EVENT.ADD_EVENT_RECORDING,recordingData).then(res => {
         console.log(res.data)
         recordingLink.value = linkInput.value
         tempLink.value = ''
@@ -43,7 +43,7 @@ const handleSubmitLinkButton = async () => {
 }
 
 onMounted(() => {
-    axios.get(`${API_ENDPOINTS.EVENT.CHECK_RECORDING}${props.eventId}`).then(res => {
+    axios.get(`${API_ENDPOINTS.EVENT.CHECK_EVENT_RECORDING}${props.eventId}`).then(res => {
         if (res.data['recording']) {
             recordingLink.value = res.data['recording']
         }
