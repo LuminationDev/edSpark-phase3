@@ -29,6 +29,7 @@ use Guava\FilamentIconPicker\Tables\IconColumn;
 class AdviceResource extends Resource
 {
     protected static ?string $model = Advice::class;
+    protected static ?string $modelLabel = 'Advice';
 
     protected static ?string $navigationGroup = 'Content Management';
     protected static ?string $navigationGroupIcon = 'heroicon-o-collection';
@@ -240,13 +241,10 @@ class AdviceResource extends Resource
 
     public static function shouldRegisterNavigation(): bool
     {
-        // use Illuminate\Support\Facades\Auth;
-
-        // Moderator check
-        if(Auth::user()->role->role_name == 'Moderator') {
-            return false;
+        $allowed_array = ['Superadmin', 'Administrator','Moderator'];
+        if (in_array(Auth::user()->role->role_name, $allowed_array)) {
+            return true;
         }
-
-        return true;
+        return false;
     }
 }

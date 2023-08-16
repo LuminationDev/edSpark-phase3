@@ -24,6 +24,7 @@ use SplFileInfo;
 class PartnerprofileResource extends Resource
 {
     protected static ?string $model = Partnerprofile::class;
+    protected static ?string $modelLabel= "Partner Profile";
 
     protected static ?string $navigationIcon = 'heroicon-o-collection';
 
@@ -147,5 +148,14 @@ class PartnerprofileResource extends Resource
             'create' => Pages\CreatePartnerprofile::route('/create'),
             'edit' => Pages\EditPartnerprofile::route('/{record}/edit'),
         ];
+    }
+
+    public static function shouldRegisterNavigation(): bool
+    {
+        $allowed_array = ['Superadmin', 'Administrator','Moderator'];
+        if (in_array(Auth::user()->role->role_name, $allowed_array)) {
+            return true;
+        }
+        return false;
     }
 }

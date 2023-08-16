@@ -22,8 +22,6 @@ export const axiosSchoolFetcherParams = (params) => {
 
 
 export const axiosFetcherParams = (params) => {
-    console.log('Soy axios fetcher params')
-    console.log(params)
     return (url) => axios.get(url, params).then(res => {
         return cardDataWithGuid(res.data)
     })

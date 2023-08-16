@@ -28,6 +28,7 @@ use Closure;
 class EventResource extends Resource
 {
     protected static ?string $model = Event::class;
+    protected static ?string $modelLabel= "Event";
 
     protected static ?string $navigationIcon = 'heroicon-o-calendar';
 
@@ -226,13 +227,10 @@ class EventResource extends Resource
 
     public static function shouldRegisterNavigation(): bool
     {
-        // use Illuminate\Support\Facades\Auth;
-
-        // Moderator check
-        if(Auth::user()->role->role_name == 'Moderator') {
-            return false;
+        $allowed_array = ['Superadmin', 'Administrator','Moderator'];
+        if (in_array(Auth::user()->role->role_name, $allowed_array)) {
+            return true;
         }
-
-        return true;
+        return false;
     }
 }

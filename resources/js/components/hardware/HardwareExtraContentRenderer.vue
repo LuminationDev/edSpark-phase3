@@ -35,10 +35,8 @@ const shouldRenderResources  = computed(() => {
     if(Object.keys(itemArray.value).length === 0 ) return false
     else {
         let extraResourceKey = Object.keys(itemArray.value)[0] // should get a hash of the first item, only one item
-        console.log(extraResourceKey)
         let innerItemKeysArr = Object.keys(itemArray.value[extraResourceKey])
         for(const eachKey of innerItemKeysArr){
-            console.log(itemArray.value[extraResourceKey][eachKey])
             if(itemArray.value[extraResourceKey][eachKey] === null){
                 return false
             }
@@ -55,7 +53,7 @@ const shouldRenderResources  = computed(() => {
 <template>
     <div
         v-if="shouldRenderResources"
-        class="extraContentRendererContainer flex flex-col py-2 my-2 px-4"
+        class="extraContentRendererContainer flex flex-col my-2 px-4 py-2"
     >
         <template v-if="contentType === 'numbereditems'">
             <AdviceNumberedListRenderer :item-array="itemArray" />

@@ -19,6 +19,7 @@ use Illuminate\Support\Facades\Auth;
 class CommunitymoderationResource extends Resource
 {
     protected static ?string $model = Communitymoderation::class;
+    protected static ?string $modelLabel = 'Community Moderation';
 
     protected static ?string $navigationIcon = 'heroicon-o-collection';
 
@@ -129,5 +130,14 @@ class CommunitymoderationResource extends Resource
         }else{
             return '';
         }
+    }
+
+    public static function shouldRegisterNavigation(): bool
+    {
+        $allowed_array = ['Superadmin', 'Administrator','Moderator'];
+        if (in_array(Auth::user()->role->role_name, $allowed_array)) {
+            return true;
+        }
+        return false;
     }
 }

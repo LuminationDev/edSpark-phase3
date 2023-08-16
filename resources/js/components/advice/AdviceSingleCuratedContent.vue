@@ -7,7 +7,7 @@ import {axiosFetcherParams} from "@/js/helpers/fetcher";
 import useSWRV from "swrv";
 
 const userStore = useUserStore()
-const {data : allCuratedAdvice, error: curatedAdviceError} = useSWRV(API_ENDPOINTS.ADVICE.FETCH_ADVICE_POSTS, axiosFetcherParams(userStore.getUserRequestParam()))
+const {data : allCuratedAdvice, error: curatedAdviceError} = useSWRV(API_ENDPOINTS.ADVICE.FETCH_ADVICE_POSTS, axiosFetcherParams(userStore.getUserRequestParam))
 const twoRecommendation  = computed( () => {
     let temp = []
     if(allCuratedAdvice.value){
