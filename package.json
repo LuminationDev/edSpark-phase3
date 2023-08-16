@@ -3,8 +3,8 @@
     "scripts": {
         "dev": "vite",
         "build": "vite build && npx tailwindcss build -i ./resources/css/app.css -o ./resources/css/output.css && cp -r ./public/* ./web",
-        "prod": "vite build && composer update && cp -r ./public/* ./web",
-        "buildtest": "vite build && composer update"
+        "prod": "vite build && composer install && cp -r ./public/* ./web",
+        "buildtest": "vite build && composer install"
     },
     "devDependencies": {
         "@kalimahapps/eslint-plugin-tailwind": "^1.0.8",

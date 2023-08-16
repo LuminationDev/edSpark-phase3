@@ -15,10 +15,12 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 use Guava\FilamentIconPicker\Forms\IconPicker;
 use Guava\FilamentIconPicker\Tables\IconColumn;
+use Illuminate\Support\Facades\Auth;
 
 class TechnologyResource extends Resource
 {
     protected static ?string $model = Technology::class;
+    protected static ?string $modelLabel = 'Technology';
 
     protected static ?string $navigationIcon = 'heroicon-o-collection';
 
@@ -84,5 +86,9 @@ class TechnologyResource extends Resource
             'create' => Pages\CreateTechnology::route('/create'),
             'edit' => Pages\EditTechnology::route('/{record}/edit'),
         ];
+    }
+    public static function shouldRegisterNavigation(): bool
+    {
+        return false;
     }
 }
