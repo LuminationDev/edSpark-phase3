@@ -24,7 +24,7 @@ const handleClickViewProfile = (author_id, author_type) => {
                 :swoosh-color-theme="'red'"
             >
                 <template #titleText>
-                    {{ contentFromBase['event_title'] }}
+                    {{ contentFromBase['title'] }}
                 </template>
 
                 <template #additionalTags>
@@ -56,7 +56,7 @@ const handleClickViewProfile = (author_id, author_type) => {
                                 w-full
                                 "
                         >
-                            {{ contentFromBase['event_type'] }}
+                            {{ contentFromBase['type'] }}
                         </div>
                         <div
                             v-for="(tag, index) in ['Advice', 'AR', 'VR', 'Robotics','3D', 'AI']"
@@ -126,11 +126,11 @@ const handleClickViewProfile = (author_id, author_type) => {
                         </div>
                         <div class="flex items-center flex-row">
                             <LocationIcon class="mr-2" />
-                            <!--                            {{ contentFromBase['event_type'] === 'in person' ? contentFromBase['event_location']['address'] : contentFromBase['event_type'] }}-->
-                            {{ contentFromBase['event_location']['address'] ? contentFromBase['event_location']['address'] : 'Online' }}
+                            <!--                            {{ contentFromBase['type'] === 'in person' ? contentFromBase['location']['address'] : contentFromBase['type'] }}-->
+                            {{ contentFromBase['location']['address'] ? contentFromBase['location']['address'] : 'Online' }}
                         </div>
                     </div>
-                    <!--                    <div v-html="purify.sanitize(contentFromBase['event_excerpt'])" />-->
+                    <!--                    <div v-html="purify.sanitize(contentFromBase['excerpt'])" />-->
                 </template>
             </BaseHero>
         </template>
@@ -146,7 +146,7 @@ const handleClickViewProfile = (author_id, author_type) => {
                     </div>
                     <div
                         class="flex content-paragraph flex-col max-w-full overflow-hidden text-lg"
-                        v-html="purify.sanitize(contentFromBase['event_content'])"
+                        v-html="purify.sanitize(contentFromBase['content'])"
                     />
                     <template
                         v-for="(content,index) in contentFromBase['extra_content']"
@@ -158,13 +158,13 @@ const handleClickViewProfile = (author_id, author_type) => {
                 <!--      Curated Content      -->
                 <div class="flex flex-col p-4 w-full lg:!w-1/3">
                     <EventsLocation
-                        :location-type="contentFromBase['event_type']"
-                        :location-info="contentFromBase['event_location']"
+                        :location-type="contentFromBase['type']"
+                        :location-info="contentFromBase['location']"
                     />
                     <EventsRsvp
                         :author-info="contentFromBase['author']"
-                        :event-id="contentFromBase['event_id']"
-                        :location-type="contentFromBase['event_type']"
+                        :event-id="contentFromBase['id']"
+                        :location-type="contentFromBase['type']"
                         :event-start-date="contentFromBase['start_date']"
                         :event-end-date="contentFromBase['end_date']"
                     />

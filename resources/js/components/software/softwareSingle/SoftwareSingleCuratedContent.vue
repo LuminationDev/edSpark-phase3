@@ -32,7 +32,7 @@ const twoRecommendation  = computed( () => {
             <SoftwareCard
                 v-for="software in twoRecommendation"
                 :key="software.guid"
-                :software-data="software"
+                :data="software"
                 :show-icon="true"
                 :number-per-row="2"
                 class="mb-4"

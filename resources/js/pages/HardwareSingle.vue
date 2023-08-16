@@ -156,7 +156,7 @@ const handleChangeSubmenu = (value) => {
                                         <HardwareCard
                                             :key="index.guid"
                                             class="bg-white mx-auto"
-                                            :hardware-data="item"
+                                            :data="item"
                                             :number-per-row="1"
                                         />
                                     </div>

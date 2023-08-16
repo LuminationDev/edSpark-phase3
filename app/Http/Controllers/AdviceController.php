@@ -24,10 +24,10 @@ class AdviceController extends Controller
 
         }
         return [
-            'post_id' => $advice->id,
-            'post_title' => $advice->post_title,
-            'post_content' => $advice->post_content,
-            'post_excerpt' => $advice->post_excerpt,
+            'id' => $advice->id,
+            'title' => $advice->post_title,
+            'content' => $advice->post_content,
+            'excerpt' => $advice->post_excerpt,
             'author'=> [
                 'author_id' => $advice->author->id,
                 'author_name'=> $advice->author->full_name
@@ -35,12 +35,10 @@ class AdviceController extends Controller
             'cover_image' => ($advice->cover_image) ? $advice->cover_image : NULL ,
             'template' => ($advice->template) ? $advice->template : NULL,
             'extra_content' => ($advice->extra_content) ? $advice->extra_content : NULL,
-            'post_date' => $advice->post_date,
-            'post_modified' => $advice->post_modified,
-            'post_status' => $advice->post_status,
-            'advice_type' => ($advice->advicetypes) ? $advice->advicetypes->pluck('advice_type_name') : NULL ,
-            'created_at' => $advice->created_at,
-            'updated_at' => $advice->updated_at,
+            'created_at' => $advice->post_date,
+            'modified_at' => $advice->post_modified,
+            'status' => $advice->post_status,
+            'type' => ($advice->advicetypes) ? $advice->advicetypes->pluck('advice_type_name') : NULL ,
             'isLikedByUser' => $isLikedByUser,
             'isBookmarkedByUser' => $isBookmarkedByUser,
         ];

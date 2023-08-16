@@ -261,7 +261,7 @@ const handleChangeInfoWindows = () => {
                         >
                             <InfoWindow ref="infoWindow">
                                 <SchoolsMapPopup
-                                    :school-data="school"
+                                    :data="school"
                                     :map-popup-name="mapPopupName"
                                     :map-popup-info="mapPopupInfo"
                                     @handle-toggle="handleTogglePopupEmit"

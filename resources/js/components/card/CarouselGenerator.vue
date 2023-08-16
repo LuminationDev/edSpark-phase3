@@ -88,14 +88,14 @@ const numberOfLoadingPlaceholder = computed(() =>{
                     <template v-if="props.dataType === 'school'">
                         <SchoolCard
                             :key="cardData.guid"
-                            :school-data="cardData"
+                            :data="cardData"
                         />
                     </template>
 
                     <template v-else-if="props.dataType === 'advice'">
                         <AdviceCard
                             :key="cardData.guid"
-                            :advice-data="cardData"
+                            :data="cardData"
                             :show-icon="true"
                         />
                     </template>
@@ -103,28 +103,28 @@ const numberOfLoadingPlaceholder = computed(() =>{
                     <template v-else-if="props.dataType === 'software'">
                         <SoftwareCard
                             :key="cardData.guid"
-                            :software-data="cardData"
+                            :data="cardData"
                         />
                     </template>
 
                     <template v-else-if="props.dataType === 'hardware'">
                         <HardwareCard
                             :key="cardData.guid"
-                            :hardware-data="cardData"
+                            :data="cardData"
                         />
                     </template>
 
                     <template v-else-if="props.dataType === 'partners'">
                         <PartnerCard
                             :key="cardData.guid"
-                            :partner-data="cardData"
+                            :data="cardData"
                         />
                     </template>
 
                     <template v-else-if="props.dataType === 'events'">
                         <EventsCard
                             :key="cardData.guid"
-                            :event-data="cardData"
+                            :data="cardData"
                         />
                     </template>
                 </Slide>

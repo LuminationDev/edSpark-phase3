@@ -77,7 +77,7 @@ const getResponsiveDisplayData = (itemArray) => {
                 <HardwareCard
                     v-for="(laptop, index) in getResponsiveDisplayData(laptops)"
                     :key="index"
-                    :hardware-data="laptop"
+                    :data="laptop"
                     :number-per-row="4"
                 />
             </template>
@@ -130,7 +130,7 @@ const getResponsiveDisplayData = (itemArray) => {
                     <HardwareCard
                         v-for="(item, index) in audioVisual.slice(0,4)"
                         :key="index"
-                        :hardware-data="item"
+                        :data="item"
                         :number-per-row="3"
                     />
                 </template>
@@ -172,7 +172,7 @@ const getResponsiveDisplayData = (itemArray) => {
                     <HardwareCard
                         v-for="(item, index) in emergingTech.slice(0,4)"
                         :key="item.guid"
-                        :hardware-data="item"
+                        :data="item"
                         :number-per-row="2"
                     />
                 </template>

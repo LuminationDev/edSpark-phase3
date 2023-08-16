@@ -159,7 +159,7 @@ const handleClickSeeMore = () => {
                     <SoftwareCard
                         v-for="(software,index) in responsiveDisplaySoftware"
                         :key="index"
-                        :software-data="software"
+                        :data="software"
                     />
                 </div>
                 <CarouselGenerator

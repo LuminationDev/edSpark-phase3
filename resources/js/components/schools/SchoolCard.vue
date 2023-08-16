@@ -10,7 +10,7 @@ const {currentUser} = storeToRefs(useUserStore())
 const router = useRouter()
 const imageURL = import.meta.env.VITE_SERVER_IMAGE_API
 const props = defineProps({
-    schoolData: {
+    data: {
         type: Object,
         required: true
     },
@@ -21,7 +21,7 @@ const props = defineProps({
     }
 })
 /**
- * SchoolData props: {
+ * data props: {
  *     content_blocks: Object,
  *     cover_image: string (link),
  *     id: number,
@@ -40,25 +40,6 @@ const props = defineProps({
  * }
  */
 
-// eslint-disable-next-line vue/no-setup-props-destructure
-// const {
-//     id,
-//     site,
-//     owner,
-//     name,
-//     content_blocks,
-//     logo,
-//     cover_image,
-//     tech_used,
-//     pedagogical_approaches,
-//     tech_landscape,
-//     metadata,
-//     location,
-//     isLikedByUser,
-//     isBookmarkedByUser,
-//     guid
-// } = props.schoolData
-
 const showFirstTech = ref(false)
 const handleMouseEnterCard = () => {
     showFirstTech.value = true
@@ -69,23 +50,23 @@ const handleMouseExitCard = () => {
 }
 const handleClickSchoolCard = () => {
     router.push({
-        path: `/schools/${props.schoolData.name}`
+        path: `/schools/${props.data.name}`
     })
 }
 
 </script>
 <template>
     <GenericCard
-        :id="schoolData.id"
-        :key="schoolData.guid"
-        :title="schoolData.name"
+        :id="data.id"
+        :key="data.guid"
+        :title="data.name"
         :number-per-row="1"
         :override-content="true"
         :click-callback="handleClickSchoolCard"
-        :is-liked-by-user="schoolData.isLikedByUser"
-        :is-bookmarked-by-user="schoolData.isBookmarkedByUser"
+        :is-liked-by-user="data.isLikedByUser"
+        :is-bookmarked-by-user="data.isBookmarkedByUser"
         :section-type="'school'"
-        :guid="schoolData.guid"
+        :guid="data.guid"
     >
         <template #overiddenContent>
             <div
@@ -95,8 +76,8 @@ const handleClickSchoolCard = () => {
             >
                 <div class="group-hover:h-0 h-36 relative transition-all">
                     <div
-                        :class="`bg-[url('${imageURL}/${schoolData.cover_image}')] bg-cover`"
-                        :style="`background-image: url(${imageURL}/${schoolData.cover_image}) `"
+                        :class="`bg-[url('${imageURL}/${data.cover_image}')] bg-cover`"
+                        :style="`background-image: url(${imageURL}/${data.cover_image}) `"
                         class="group-hover:h-0 h-36 transition-all"
                     />
                 </div>
@@ -107,7 +88,7 @@ const handleClickSchoolCard = () => {
                         <h5
                             class="flex justify-start font-medium group-hover:mr-0 text-left text-xl transition-all"
                         >
-                            {{ schoolData.name }}
+                            {{ data.name }}
                         </h5>
                     </div>
                     <div class="card-content_body transition-all">
@@ -132,7 +113,7 @@ const handleClickSchoolCard = () => {
                         >
                             <span />
                             <SchoolCardIconList
-                                :tech-list="schoolData.tech_used"
+                                :tech-list="data.tech_used"
                                 :show-first-tech="showFirstTech"
                             />
                         </div>

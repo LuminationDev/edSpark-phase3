@@ -56,14 +56,28 @@ const eventTypeColorClass = (eventType) => {
 </script>
 
 <template>
-    <div class="mt-10 px-6 pb-6 w-full h-[700px] overflow-y-scroll scrollbar-thin scrollbar-thumb-custom scrollbar-thumb-custom-genericScrollbarDark scrollbar-thumb-rounded-full mr-2">
+    <div
+        class="
+            h-[700px]
+            mr-2
+            mt-10
+            overflow-y-scroll
+            pb-6
+            px-6
+            scrollbar-thin
+            scrollbar-thumb-custom
+            scrollbar-thumb-custom-genericScrollbarDark
+            scrollbar-thumb-rounded-full
+            w-full
+            "
+    >
         <div
             v-for="(eventArr, date) in sortedEvents"
             :key="date"
             class="flex flex-col gap-4 mb-4"
         >
             <div class="bg-[#F8F8F8] px-10 py-3">
-                <h2 class="text-[24px] font-medium">
+                <h2 class="font-medium text-[24px]">
                     {{ date }}
                 </h2>
             </div>
@@ -71,21 +85,21 @@ const eventTypeColorClass = (eventType) => {
             <div
                 v-for="(event, index) in eventArr"
                 :key="index"
-                class="flex flex-row gap-4 p-4 h-[150px] cursor-pointer rounded hover:bg-slate-50"
-                @click="handleClickSingleEvent(event.event_id)"
+                class="cursor-pointer flex flex-row gap-4 h-[150px] p-4 rounded hover:bg-slate-50"
+                @click="handleClickSingleEvent(event.id)"
             >
                 <div
-                    :class="eventTypeColorClass(event.event_type)"
-                    class="min-w-[8px] min-h-full rounded-sm"
+                    :class="eventTypeColorClass(event.type)"
+                    class="min-h-full min-w-[8px] rounded-sm"
                 />
                 <div class="flex flex-col gap-4 overflow-hidden">
                     <h5 class="font-semibold text-[18px]">
-                        {{ event.event_title }}
+                        {{ event.title }}
                     </h5>
 
                     <div
                         class="eventEvcerptTextInline"
-                        v-html="event.event_excerpt"
+                        v-html="event.excerpt"
                     />
                 </div>
             </div>
