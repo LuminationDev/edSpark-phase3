@@ -3,6 +3,7 @@
 namespace App\Filament\Resources\AdviceResource\Pages;
 
 use App\Filament\Resources\AdviceResource;
+use App\Models\Advice;
 use Filament\Pages\Actions;
 use Filament\Resources\Pages\EditRecord;
 
@@ -24,18 +25,26 @@ class EditAdvice extends EditRecord
 
     protected function mutateFormDatabeforeFill(array $data): array
     {
-        // $data['content'] = $data['extra_content'][static::getTemplateName($data['template'])];
-        // unset($data['content']);
-        // dd($data);
         $data['Author'] = Auth::user()->full_name;
 
+        $record = parent::getRecord();
+        $targetData = Advice::find($record->id);
+        $data['tags'] = $targetData->tags;
+
+        if (isset($data['tags'])) {
+            $tagNames = $data['tags']->pluck('name');
+            $data['tags'] = $tagNames;
+        }
         return $data;
     }
 
     protected function mutateFormDataBeforeSave(array $data): array
     {
-        // $data['content'] = $data['temp_content'][static::getTemplateName($data['template'])];
-        // unset($data['temp_content']);
+        $record = parent::getRecord();
+        $targetData = Advice::find($record->id);
+        if(isset($data['tags'])){
+            $targetData->syncTags($data['tags']);
+        }
 
         $data['post_modified'] = Carbon::now();
         return $data;

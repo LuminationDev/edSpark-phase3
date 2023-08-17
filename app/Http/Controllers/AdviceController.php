@@ -41,6 +41,7 @@ class AdviceController extends Controller
             'type' => ($advice->advicetypes) ? $advice->advicetypes->pluck('advice_type_name') : NULL ,
             'isLikedByUser' => $isLikedByUser,
             'isBookmarkedByUser' => $isBookmarkedByUser,
+            'tags' => $advice->tags->pluck('name')
         ];
     }
     public function fetchAdvicePosts(Request $request): \Illuminate\Http\JsonResponse

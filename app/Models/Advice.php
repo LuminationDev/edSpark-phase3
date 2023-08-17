@@ -4,10 +4,11 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Spatie\Tags\HasTags;
 
 class Advice extends Model
 {
-    use HasFactory;
+    use HasFactory, HasTags;
 
     /**
      * The table associated with the model.
@@ -50,10 +51,6 @@ class Advice extends Model
         return $this->belongsToMany(Advicetype::class);
     }
 
-    protected $casts = [
-        'cover_image' => 'array',
-        'extra_content' => 'array',
-    ];
 
     public function likes(): \Illuminate\Database\Eloquent\Relations\HasMany
     {
@@ -64,8 +61,10 @@ class Advice extends Model
     {
         return $this->hasMany(Bookmark::class, 'post_id', 'id')->where('post_type', 'advice');
     }
-
-
-
+    protected $with = ['tags'];
+    protected $casts = [
+        'cover_image' => 'array',
+        'extra_content' => 'array',
+    ];
 
 }

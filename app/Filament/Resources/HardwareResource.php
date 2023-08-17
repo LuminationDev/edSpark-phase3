@@ -75,9 +75,9 @@ class HardwareResource extends Resource
                             ->relationship('brand', 'product_brand_name'),
                         Forms\Components\BelongsToSelect::make('category')
                             ->relationship('category', 'product_category_name'),
-                        // Forms\Components\Toggle::make('product_isLoan'),
-
-
+                        Forms\Components\TagsInput::make('tags')
+                            ->placeholder('Add or create tags')
+                            ->helperText('Separate tags with commas')
                     ]),
                 Forms\Components\Card::make()
                     ->schema([

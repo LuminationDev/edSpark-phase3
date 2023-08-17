@@ -69,7 +69,7 @@ const handleChangeSubmenu = (value) => {
                 :background-url="contentFromBase['cover_image']"
             >
                 <template #titleText>
-                    {{ contentFromBase['product_name'] }}
+                    {{ contentFromBase['title'] }}
                 </template>
                 <template
                     v-if="contentFromBase['brand']"
@@ -82,7 +82,7 @@ const handleChangeSubmenu = (value) => {
                     </div>
                 </template>
                 <template #subtitleText2>
-                    <div v-html="contentFromBase['product_excerpt']" />
+                    <div v-html="contentFromBase['excerpt']" />
                 </template>
                 <template #submenu>
                     <div class="cursor-pointer flex flex-row gap-4 hardwareSubmenu z-40">
@@ -114,7 +114,7 @@ const handleChangeSubmenu = (value) => {
                                     <h1
                                         class="flex font-bold text-2xl uppercase"
                                     >
-                                        {{ contentFromBase['product_name'] }}
+                                        {{ contentFromBase['name'] }}
                                     </h1>
                                 </div>
                                 <div
@@ -127,7 +127,7 @@ const handleChangeSubmenu = (value) => {
                                         pt-8
                                         text-lg
                                         "
-                                    v-html="contentFromBase['product_content']"
+                                    v-html="contentFromBase['content']"
                                 />
                                 <template
                                     v-for="(content,index) in contentFromBase['extra_content']"
