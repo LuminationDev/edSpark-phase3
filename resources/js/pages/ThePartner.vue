@@ -47,7 +47,7 @@ const {
                     :key="index"
                 >
                     <PartnerCard
-                        :partner-data="singlePartnerData"
+                        :data="singlePartnerData"
                     />
                 </template>
             </template>

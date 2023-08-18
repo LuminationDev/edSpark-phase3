@@ -26,7 +26,7 @@ const laptopData = computed(() => {
             class="hardwareCard"
         >
             <HardwareCard
-                :hardware-data="hardware"
+                :data="hardware"
                 number-per-row="4"
             />
         </div>

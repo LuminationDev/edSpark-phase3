@@ -31,7 +31,7 @@ const twoRecommendation  = computed( () => {
             <AdviceCard
                 v-for="advice in twoRecommendation"
                 :key="advice.guid"
-                :advice-data="advice"
+                :data="advice"
                 :show-icon="true"
                 :number-per-row="1"
                 class="mb-extraLarge"

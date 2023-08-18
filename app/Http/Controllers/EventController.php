@@ -49,11 +49,11 @@ class EventController extends Controller
             $isBookmarkedByUser = $event->bookmarks()->where('user_id', $userId)->exists();
         }
         return [
-            'event_id' => $event->id,
-            'event_title' => $event->event_title,
-            'event_content' => $event->event_content,
-            'event_excerpt' => $event->event_excerpt,
-            'event_location' => json_decode($event->event_location),
+            'id' => $event->id,
+            'title' => $event->event_title,
+            'content' => $event->event_content,
+            'excerpt' => $event->event_excerpt,
+            'location' => json_decode($event->event_location),
             'author' => [
                 'author_id' => $event->author->id,
                 'author_name' => $event->author->full_name,
@@ -64,8 +64,8 @@ class EventController extends Controller
             'cover_image' => ($event->cover_image) ?? NULL,
             'start_date' => $event->start_date,
             'end_date' => $event->end_date,
-            'event_status' => $event->event_status,
-            'event_type' => ($event->eventtype) ? $event->eventtype->event_type_name : NULL,
+            'status' => $event->event_status,
+            'type' => ($event->eventtype) ? $event->eventtype->event_type_name : NULL,
             'created_at' => $event->created_at,
             'updated_at' => $event->updated_at,
             'extra_content' => ($event->extra_content)?? NULL,

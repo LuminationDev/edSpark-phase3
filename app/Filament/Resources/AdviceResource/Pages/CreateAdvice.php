@@ -3,6 +3,8 @@
 namespace App\Filament\Resources\AdviceResource\Pages;
 
 use App\Filament\Resources\AdviceResource;
+use App\Models\Advice;
+use App\Models\Event;
 use Filament\Pages\Actions;
 use Filament\Resources\Pages\CreateRecord;
 
@@ -18,56 +20,23 @@ class CreateAdvice extends CreateRecord
 
     protected function mutateFormDataBeforeCreate(array $data): array
     {
-//         dd($data);
         $data['author_id'] = Auth::user()->id;
         $data['post_date'] = Carbon::now();
         $data['post_modified'] = Carbon::now();
-        // dd($data);
         return $data;
     }
 
-    // protected function handleRecordCreation(array $data): Model
-    // {
-    //     // dd($data);
-    //     //if no temp content
-    //     // $dataToInsert = [
-    //     //     "author_id" => $data['author_id'],
-    //     //     "post_title" => $data['post_title'],
-    //     //     "post_content" => $data['post_content'],
-    //     //     "post_excerpt" => $data['post_excerpt'],
-    //     //     "cover_image" => $data['cover_image'],
-    //     //     "post_date" => $data['post_date'],
-    //     //     "post_modified" => $data['post_modified'],
-    //     //     "post_status" => $data['post_status'],
-    //     //     "advicetype_id" => $data['advice_type']
-    //     // ];
+    protected function handleRecordCreation(array $data): Model
+    {
+        $record =  parent::handleRecordCreation($data);
 
-    //     // $lastInsertId = static::getModel()::insertGetId($data);
-
-    //     // if temp content
-    //     if (isset($data['template']) && !empty($data['temp_content'])){
-    //         // dd('template exists');
-    //         $dataToInsertIntoMetaTable = [];
-
-    //         foreach ($data['temp_content']['numbered_items']['item'] as $key => $value) {
-    //             // dd($value);
-    //             // dd($value);
-    //             $result = [
-    //                 // 'advice_id' => $lastInsertId,
-    //                 'advice_id' => 1,
-    //                 'advice_meta_key' => 'extra_content',
-    //                 'advice_meta_value' > implode(',', $value),
-    //                 'created_at' => Carbon::now(),
-    //                 'updated_at' => Carbon::now()
-    //             ];
-    //             $dataToInsertIntoMetaTable[] = $result;
-    //         }
-    //         dd($dataToInsertIntoMetaTable);
-    //         // Advicemeta::insert($dataToInsertIntoMetaTable);
-    //     }
-
-    //     // return true;
-    // }
+        //handle tags
+        if (isset($data['tags'])) {
+            $thatEvent = Advice::find($record->id);
+            $thatEvent->attachTags($data['tags']);
+        }
+        return $record;
+    }
 
     protected function getRedirectUrl(): string
     {

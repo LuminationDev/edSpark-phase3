@@ -30,7 +30,7 @@ const props = defineProps({
             <EventsCard
                 v-for="(event, index) in events.slice(0,colCount)"
                 :key="index"
-                :event-data="event"
+                :data="event"
                 :number-per-row="3"
             />
         </div>

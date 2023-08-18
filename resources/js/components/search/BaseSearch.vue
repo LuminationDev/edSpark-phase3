@@ -48,8 +48,8 @@ const filteredTermData = computed(() => {
             if (data.product_name.toLowerCase().includes(filterTerm.value)) return true
         } else if(data.name){ // for partners
             if(data.name.toLowerCase().includes(filterTerm.value)) return true
-        } else if(data.event_title) { // very straight forward for event
-            if(data.event_title.toLowerCase().includes(filterTerm.value)) return true
+        } else if(data.title) { // very straight forward for event
+            if(data.title.toLowerCase().includes(filterTerm.value)) return true
 
         }
         return false
@@ -204,7 +204,7 @@ const formattedSearchTitle = computed(() =>{
                     >
                         <AdviceCard
                             :key="data.post_id"
-                            :advice-data="data"
+                            :data="data"
                             :number-per-row="2"
                             :show-icon="true"
                         />
@@ -217,7 +217,7 @@ const formattedSearchTitle = computed(() =>{
                     >
                         <SoftwareCard
                             :key="data.post_id"
-                            :software-data="data"
+                            :data="data"
                             :number-per-row="2"
                         />
                     </div>
@@ -229,7 +229,7 @@ const formattedSearchTitle = computed(() =>{
                     >
                         <HardwareCard
                             :key="data.id"
-                            :hardware-data="data"
+                            :data="data"
                             :number-per-row="4"
                         />
                     </div>
@@ -241,7 +241,7 @@ const formattedSearchTitle = computed(() =>{
                     >
                         <SchoolCard
                             class="mx-auto"
-                            :school-data="data"
+                            :data="data"
                         />
                     </div>
                 </template>
@@ -260,7 +260,7 @@ const formattedSearchTitle = computed(() =>{
                             "
                     >
                         <PartnerCard
-                            :partner-data="data"
+                            :data="data"
                         />
                     </div>
                 </template>
@@ -279,7 +279,7 @@ const formattedSearchTitle = computed(() =>{
                             "
                     >
                         <EventsCard
-                            :event-data="data"
+                            :data="data"
                             :show-icon="true"
                         />
                     </div>

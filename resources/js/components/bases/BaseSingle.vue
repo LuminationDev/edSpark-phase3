@@ -24,23 +24,7 @@ const props = defineProps({
 const emits = defineEmits(['emitAvailableSubmenu', 'emitActiveTabToSpecificPage'])
 const singleContent = ref({})
 const baseIsLoading = ref(!(props.contentType.toLowerCase() === 'school'))
-/**
- * type can be advice, software, hardware etc
- *  type singleContent = {
- *      post_id: number
- *      ${type}_type: string,
- *      author: string,
- *      post_title: string
- *      post_excerpt
- *      cover_image: string (link)
- *      extra_content: Object / Array
- *      post_status: string
- *      template: object/array
- *      post_date: string-date
- *      post_modified: string-date
- *      updated_at: string-date
- *  }
- */
+
 const recommendedContent = ref({})
 let byIdAPILink;
 let recommendationAPILink;

@@ -420,7 +420,7 @@ onMounted(async () => {
                     <SoftwareCard
                         v-for="software in softwaresData.slice(0,4)"
                         :key="software.guid"
-                        :software-data="software"
+                        :data="software"
                         :number-per-row="2"
                     />
                 </div>

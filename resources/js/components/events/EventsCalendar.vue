@@ -24,16 +24,16 @@ const props = defineProps({
 const attributes = computed(() => [
     ...props.events.map(event => ({
         dates: [[event.start_date, event.end_date]],
-        key: event.event_id,
+        key: event.id,
         popover: {
-            label: event.event_title
+            label: event.title
         },
         dot: {
             style: {
-                backgroundColor: event.event_type === 'Virtual' ? 'red' : 'blue',
+                backgroundColor: event.type === 'Virtual' ? 'red' : 'blue',
             }
         },
-        highlight: event.event_type === 'Virtual' ? 'red' : 'blue',
+        highlight: event.type === 'Virtual' ? 'red' : 'blue',
         customData: event
     }))
 ]);

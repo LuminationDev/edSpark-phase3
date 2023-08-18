@@ -55,7 +55,7 @@ const { state: generalState, STATES: GENERALSTATE } = useSwrvState(generalAdvice
             <AdviceCard
                 v-for="advice in generalAdvice"
                 :key="advice.guid"
-                :advice-data="advice"
+                :data="advice"
                 :show-icon="true"
             />
         </template>

@@ -52,10 +52,10 @@ class SoftwareController extends Controller
         $author = $software->author;
         $authorLogo = $this->getAuthorLogo($author);
         return [
-            'post_id' => $software->id,
-            'post_title' => $software->post_title,
-            'post_content' => $software->post_content,
-            'post_excerpt' => $software->post_excerpt,
+            'id' => $software->id,
+            'title' => $software->post_title,
+            'content' => $software->post_content,
+            'excerpt' => $software->post_excerpt,
             'author' => [
                 'author_id' => $author->id ?? '',
                 'author_name' => $author->full_name ?? '',
@@ -64,17 +64,15 @@ class SoftwareController extends Controller
                 'author_logo' => $authorLogo
             ],
             'cover_image' => $software->cover_image ?? null,
-            'post_date' => $software->post_date ?? null,
-            'post_modified' => $software->post_modified ?? null,
+            'created_at' => $software->post_date ?? null,
+            'modified_at' => $software->post_modified ?? null,
             'post_status' => $software->post_status ?? null,
-            'software_type' => ($software->softwaretypes)
+            'type' => ($software->softwaretypes)
                 ? $software->softwaretypes->pluck('software_type_name')
                 : null,
             'template' => $software->template ?? null,
             'extra_content' => $software->extra_content ?? null,
             'metadata' => $softwareMetadataToSend ?? null,
-            'created_at' => $software->created_at ?? null,
-            'updated_at' => $software->updated_at ?? null,
             'isLikedByUser' => $isLikedByUser,
             'isBookmarkedByUser' => $isBookmarkedByUser,
         ];

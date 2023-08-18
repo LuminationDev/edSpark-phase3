@@ -67,7 +67,7 @@ const handleClickViewProfile = (author_id, author_type) => {
                 :background-url="contentFromBase['cover_image']"
             >
                 <template #titleText>
-                    {{ contentFromBase['post_title'] }}
+                    {{ contentFromBase['title'] }}
                 </template>
                 <template #authorName>
                     <div
@@ -103,20 +103,20 @@ const handleClickViewProfile = (author_id, author_type) => {
 
                 <template #subtitleText1>
                     <div class="font-semibold pt-2">
-                        {{ formatDateToDayTime(contentFromBase['post_date'] ) }}
+                        {{ formatDateToDayTime(contentFromBase['modified_at'] ) }}
                     </div>
                 </template>
                 <template #subtitleText2>
-                    <div v-html="contentFromBase['post_excerpt']" />
+                    <div v-html="contentFromBase['excerpt']" />
                 </template>
                 <template #subtitleContent>
                     <div class="SoftwareTypeInfoInHero flex flex-row gap-4 mt-4">
                         <SoftwareIconGenerator
-                            :icon-name="contentFromBase['software_type'][0]"
+                            :icon-name="contentFromBase['type'][0]"
                             class="h-14 w-14"
                         />
                         <p class="flex justify-center items-center font-light">
-                            {{ contentFromBase['software_type'][0] }}
+                            {{ contentFromBase['type'][0] }}
                         </p>
                     </div>
                 </template>
@@ -146,7 +146,7 @@ const handleClickViewProfile = (author_id, author_type) => {
                         </div>
                         <div
                             class="flex content-paragraph flex-col max-w-full overflow-hidden text-lg"
-                            v-html="contentFromBase['post_content']"
+                            v-html="contentFromBase['content']"
                         />
                         <div
                             v-if="contentFromBase['extra_content'] && contentFromBase['extra_content'].length"

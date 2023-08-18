@@ -9,7 +9,7 @@ const userStore = useUserStore()
 const {currentUser} = storeToRefs(userStore)
 
 const props = defineProps({
-    hardwareData: {
+    data: {
         type: Object,
         required: true
     },
@@ -18,30 +18,15 @@ const props = defineProps({
 
 const router = useRouter();
 
-// eslint-disable-next-line vue/no-setup-props-destructure
-// const {
-//     id,
-//     product_name,
-//     cover_image,
-//     category,
-//     created_at,
-//     product_excerpt,
-//     product_content,
-//     author,
-//     isLikedByUser,
-//     isBookmarkedByUser,
-//     guid
-// } = props.hardwareData;
-
 const handleClickHardwareCard = () => {
     router.push({
         name: 'hardware-single',
         params: {
-            id: props.hardwareData.id,
-            slug: lowerSlugify(props.hardwareData.product_name)
+            id: props.data.id,
+            slug: lowerSlugify(props.data.title)
         },
         state:{
-            content: JSON.stringify(props.hardwareData)
+            content: JSON.stringify(props.data)
         }
     })
 }
@@ -49,17 +34,17 @@ const handleClickHardwareCard = () => {
 
 <template>
     <GenericCard
-        :id="hardwareData.id"
-        :key="hardwareData.guid"
-        :title="hardwareData.product_name"
-        :display-content="hardwareData.product_excerpt"
-        :display-author="hardwareData.author ? hardwareData.author['author_name'] : ''"
-        :display-date="hardwareData.created_at"
-        :cover-image="hardwareData.cover_image"
+        :id="data.id"
+        :key="data.guid"
+        :title="data.title"
+        :display-content="data.excerpt"
+        :display-author="data.author ? data.author['author_name'] : ''"
+        :display-date="data.modified_at"
+        :cover-image="data.cover_image"
         :click-callback="handleClickHardwareCard"
-        :is-liked-by-user="hardwareData.isLikedByUser"
-        :is-bookmarked-by-user="hardwareData.isBookmarkedByUser"
-        :guid="hardwareData.guid"
+        :is-liked-by-user="data.isLikedByUser"
+        :is-bookmarked-by-user="data.isBookmarkedByUser"
+        :guid="data.guid"
         section-type="hardware"
     />
 </template>
