@@ -53,12 +53,14 @@ const handleFilter = (filters, dataPath) => {
             <GenericMultiSelectFilter
                 placeholder="Filter by school type"
                 :filter-list="schoolFilterList"
+                id="schoolType"
                 data-path="site_type"
                 @transmit-selected-filters="handleFilter"
             />
             <GenericMultiSelectFilter
                 placeholder="Filter by tech"
                 :filter-list="schoolTechFilterList"
+                id="techType"
                 data-path="tech_used"
                 @transmit-selected-filters="handleFilter"
             />

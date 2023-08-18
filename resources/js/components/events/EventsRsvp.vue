@@ -255,7 +255,7 @@ onMounted(() => {
                 <GenericButton
                     :callback="handleSubmitRsvp"
                     id="rsvpBtn"
-                    class="!bg-rose-400 font-semibold mt-4 px-6 rounded-sm w-fit"
+                    class="!bg-secondary-mbRose font-semibold mt-4 px-6 rounded-sm w-fit"
                 >
                     <template #default>
                         RSVP

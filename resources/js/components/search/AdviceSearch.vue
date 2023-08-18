@@ -31,7 +31,7 @@ const handleFilter = (filters, dataPath) => {
 <template>
     <BaseSearch search-type="advice" :resource-list="adviceList" :live-filter-object="filterObject">
         <template #filterBar>
-            <GenericMultiSelectFilter placeholder="Filter by advice type" :filter-list="adviceFilterList"
+            <GenericMultiSelectFilter placeholder="Filter by advice type" :filter-list="adviceFilterList" id="adviceFilter"
                 data-path="advice_type" @transmit-selected-filters="handleFilter" />
         </template>
     </BaseSearch>

@@ -32,7 +32,7 @@ module.exports = {
                 main: {
                     navy: 'rgba(0, 40, 88, 1)',
                     darkTeal: '#0A7982',
-                    teal: '#339999',
+                    teal: '#097982', //was '#339999',
                     lightTeal: '#28D5CB',
                 },
                 secondary: {
@@ -47,6 +47,7 @@ module.exports = {
                     lightYellow: '#F5E1AD',
                     red: '#C73E5D', //was #de4668
                     lightRed: '#F7C1C5',
+                    mbRose: 'rgba(190 18 60)',
 
                 },
                 custom: {
@@ -57,7 +58,7 @@ module.exports = {
 
                 adviceYellow: '#FFC836',
                 adviceGreen: '#048246',
-                adminTeal: '#339999',
+                adminTeal: '#2a8282', //was '#339999',
                 danger: colors.rose,
                 primary: colors.teal,
                 success: colors.green,
