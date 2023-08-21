@@ -2,6 +2,8 @@
 <script setup>
 import {API_ENDPOINTS} from "@/js/constants/API_ENDPOINTS";
 import lowerSlugify from "@/js/helpers/slugifyHelper";
+import {useHardwareStore} from "@/js/stores/useHardwareStore";
+import {useSoftwareStore} from "@/js/stores/useSoftwareStore";
 import {useUserStore} from "@/js/stores/useUserStore";
 import {useRoute, useRouter} from "vue-router";
 import {onBeforeMount, ref, computed, watch, onUnmounted} from "vue";
@@ -58,19 +60,18 @@ const currentId = computed(() => {
     } else return 0
 })
 
+const softwareStore = useSoftwareStore()
+const hardwareStore = useHardwareStore()
+
 const getRecommendationBasedOnContentType = () => {
     switch (props.contentType) {
     case 'hardware':
-        if (recommendationAPILink) {
-            return axios.get(`${recommendationAPILink}${singleContent.value['brand']['brandName']}`).then(res => {
-                recommendedContent.value = res.data
-            }).catch(e => {
-                console.log(e.message)
-            })
+        if (singleContent.value.brand?.brandName){
+            hardwareStore.loadProductsByBrand(singleContent.value.brand?.brandName)
         }
         break;
     case 'software':
-        console.log('called recommendation for software -- not complete TODO')
+        softwareStore.loadRecommendedSoftware(currentId.value)
         break;
     case 'advice':
         console.log('called recommendation for advice -- not complete TODO')
@@ -155,6 +156,7 @@ watch(currentId, () => {
     } else {
         checkToReadOrFetchContent()
     }
+    getRecommendationBasedOnContentType()
 
 })
 const handleEmitFromSubmenu = (value) => {

@@ -42,15 +42,16 @@ const props = defineProps({
                 flex-col
                 group/headerbg
                 h-auto
-                pb-4
-                pt-2
+                h-full
+                pt-3
                 px-6
+                py-4
                 relative
                 w-full
                 md:!flex-row
                 md:!h-20
+                md:!items-center
                 md:!justify-between
-                md:!place-items-center
                 md:!px-12
                 "
         >
@@ -75,7 +76,9 @@ const props = defineProps({
                 class="-translate-y-1/2 absolute top-1/2 right-16 duration-500 group-hover/headerbg:scale-125 transition-all"
             />
 
-            <h3 class="font-semibold py-2 section-header text-3xl text-white uppercase  lg:!text-4xl">
+            <h3
+                class="font-semibold h-full py-2 section-header text-3xl text-white uppercase lg:!text-4xl"
+            >
                 {{ title }}
             </h3>
             <button

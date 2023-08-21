@@ -1,0 +1,32 @@
+<script setup>
+import HardwareCard from "@/js/components/hardware/HardwareCard.vue";
+import {useHardwareStore} from "@/js/stores/useHardwareStore";
+import {storeToRefs} from "pinia";
+
+const hardwareStore = useHardwareStore()
+const {relatedBrandHardware} = storeToRefs(hardwareStore)
+
+
+</script>
+<template>
+    <div
+        v-if="relatedBrandHardware && relatedBrandHardware.length > 0"
+        class="bg-[#048246]/5 flex flex-col gap-6 px-6 py-6"
+    >
+        <h3 class="font-bold mx-auto pb-8 text-[24px]">
+            More from the same brand
+        </h3>
+        <div
+            v-for="(item,index) in relatedBrandHardware.slice(0,2)"
+            :key="index"
+            class="flex justify-between"
+        >
+            <HardwareCard
+                :key="index.guid"
+                class="bg-white mx-auto"
+                :data="item"
+                :number-per-row="1"
+            />
+        </div>
+    </div>
+</template>

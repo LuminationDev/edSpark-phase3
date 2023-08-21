@@ -142,13 +142,14 @@ const handleClickSeeMore = () => {
             />
         </div>
         <!--    Software Card Gallery    -->
-        <div class="grid grid-cols-1 gap-6 place-items-center px-5 w-full md:!grid-cols-2 xl:!grid-cols-3 xl:!px-20">
+        <div class="grid grid-cols-1 px-5 w-full md:!grid-cols-2 xl:!grid-cols-3 xl:!px-20">
             <template v-if="responsiveDisplaySoftware">
                 <div
                     class="
                         col-span-1
                         grid-cols-1
                         gap-6
+                        place-items-center
                         hidden
                         md:!col-span-2
                         md:!grid

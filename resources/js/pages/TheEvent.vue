@@ -24,7 +24,7 @@ const { data: allEvents, error: eventError } = useSWRV(API_ENDPOINTS.EVENT.FETCH
 <template>
     <EventsHero />
     <SectionHeader
-        :classes="'bg-[#C73858]'"
+        :classes="'bg-event-virtual '"
         :section="'events'"
         :title="'Upcoming Events'"
         :button-text="'View all events'"
@@ -54,7 +54,7 @@ const { data: allEvents, error: eventError } = useSWRV(API_ENDPOINTS.EVENT.FETCH
     </div>
 
     <SectionHeader
-        :classes="'bg-[#C73858]'"
+        :classes="'bg-event-virtual'"
         :section="'events'"
         :title="'Calendar'"
         :button-text="'View all events'"
@@ -70,6 +70,24 @@ const { data: allEvents, error: eventError } = useSWRV(API_ENDPOINTS.EVENT.FETCH
                 <EventsCalendar
                     :events="allEvents"
                 />
+                <div class="calendarColorLegend flex shrink flex-col gap-2 pt-5">
+                    <div class="colorLegendTitle font-semibold">
+                        Calendar Colors Legend
+                    </div>
+                    <div class="flex items-center flex-row virtualLegend">
+                        <div class="bg-event-virtual colorDot h-4 mx-4 rounded-full w-4" />
+                        <p>Virtual </p>
+                    </div>
+                    <div class="flex items-center flex-row hybridLegend">
+                        <div class="bg-event-hybrid colorDot h-4 mx-4 rounded-full w-4" />
+
+                        <p>Hybrid</p>
+                    </div>
+                    <div class="flex items-center flex-row inPersonLegend">
+                        <div class="bg-event-inPerson colorDot h-4 mx-4 rounded-full w-4" />
+                        <p>In Person</p>
+                    </div>
+                </div>
             </div>
             <div class="w-full lg:!w-1/3">
                 <EventsView

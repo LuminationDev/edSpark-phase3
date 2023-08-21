@@ -5,33 +5,24 @@ import {serverURL} from "@/js/constants/serverUrl";
 
 export const useSoftwareStore = defineStore('software', {
     state: () => ({
-        articles: []
+        recommendedSoftware: []
     }),
 
     getters: {
         getArticles() {
-            return this.articles;
+            return this.recommendedSoftware;
         }
     },
 
     actions: {
-        async loadArticles() {
-            return new Promise(async (resolve, reject) => {
-                await axios.get(API_ENDPOINTS.SOFTWARE.FETCH_SOFTWARE_POSTS).then(response => {
-                    const dashboardSoftware = [];
-                    response.data.forEach(software => {
-                        dashboardSoftware.push(software);
-                    });
-
-                    this.articles = dashboardSoftware;
-
-                    resolve(dashboardSoftware);
-                }).catch(error => {
-                    console.log('Sorry, there was a problem retrieving the Advice Articles');
-                    console.error(error);
-                    reject(error.code);
-                });
-            });
+        async loadRecommendedSoftware(id){
+            const payload = {
+                currentId: id,
+            }
+            axios.post(API_ENDPOINTS.SOFTWARE.FETCH_RELATED_SOFTWARE, payload).then(res =>{
+                console.log(res.data)
+                this.recommendedSoftware = res.data
+            } )
         }
     }
 })
