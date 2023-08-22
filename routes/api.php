@@ -65,7 +65,7 @@ Route::middleware('api')->group(function() {
     Route::get('fetchAllCategories', [ProductController::class, 'fetchAllCategories']);
     Route::get('fetchAllProducts', [ProductController::class, 'fetchAllProducts']);
     Route::get('fetchProductById/{id}', [ProductController::class, 'fetchProductById']);
-    Route::get('fetchProductByBrand/{brand}', [ProductController::class, 'fetchProductByBrand']);
+    Route::post('fetchProductByBrand', [ProductController::class, 'fetchProductByBrand']);
 
     // School APIs
     Route::get('fetchAllSchools', [SchoolController::class, 'fetchAllSchools']);

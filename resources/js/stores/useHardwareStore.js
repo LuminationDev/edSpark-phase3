@@ -6,7 +6,7 @@ import {serverURL} from "@/js/constants/serverUrl";
 export const useHardwareStore = defineStore('hardware', {
     state: () => ({
         allHardware: [],
-        recommendedHardware: [],
+        relatedHardware: [],
         relatedBrandHardware: []
     }),
 
@@ -18,20 +18,23 @@ export const useHardwareStore = defineStore('hardware', {
 
     actions: {
 
-        async loadProductsByBrand(brand) {
-                axios.get(`${API_ENDPOINTS.HARDWARE.FETCH_HARDWARE_BY_BRAND}${brand}`).then(response => {
+        async loadProductsByBrand(id) {
+            const payload ={
+                currentId: id,
+            }
+                axios.post(API_ENDPOINTS.HARDWARE.FETCH_HARDWARE_BY_BRAND, payload).then(response => {
                     this.relatedBrandHardware = response.data
                 }).catch(error => {
                     console.log('Error!!');
                     console.error(error);
                 })
         },
-        async loadRecommendedHardware(id){
+        async loadRelatedHardware(id){
             const payload = {
                 currentId : id
             }
-            axios.get(`${API_ENDPOINTS.HARDWARE.FETCH_RELATED_HARDWARE}`,payload).then(response => {
-                this.recommendedHardware = response.data
+            axios.post(`${API_ENDPOINTS.HARDWARE.FETCH_RELATED_HARDWARE}`,payload).then(response => {
+                this.relatedHardware = response.data
             }).catch(error => {
                 console.log('Error!!');
                 console.error(error);

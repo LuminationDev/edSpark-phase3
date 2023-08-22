@@ -17,7 +17,7 @@ const {relatedBrandHardware} = storeToRefs(hardwareStore)
             More from the same brand
         </h3>
         <div
-            v-for="(item,index) in relatedBrandHardware.slice(0,2)"
+            v-for="(item,index) in relatedBrandHardware"
             :key="index"
             class="flex justify-between"
         >

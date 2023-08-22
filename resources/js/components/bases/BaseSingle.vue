@@ -67,11 +67,11 @@ const getRecommendationBasedOnContentType = () => {
     switch (props.contentType) {
     case 'hardware':
         if (singleContent.value.brand?.brandName){
-            hardwareStore.loadProductsByBrand(singleContent.value.brand?.brandName)
+            hardwareStore.loadProductsByBrand(currentId.value)
         }
         break;
     case 'software':
-        softwareStore.loadRecommendedSoftware(currentId.value)
+        softwareStore.loadRelatedSoftware(currentId.value)
         break;
     case 'advice':
         console.log('called recommendation for advice -- not complete TODO')

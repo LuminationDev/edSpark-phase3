@@ -111,18 +111,31 @@ class ProductController extends Controller
         return response()->json($data);
     }
 
-    public function fetchProductByBrand(Request $request, $brand)
+    public function fetchProductByBrand(Request $request)
     {
-        $hardwareBrand = Productbrand::where('product_brand_name', $brand)->get();
-        $hardwareBrandIdInEdspark = $hardwareBrand[0]->id;
-        $hardwares = Product::where('brand_id', $hardwareBrandIdInEdspark)->get();
-        $data = [];
+        // Get currentId from the request body
+        $currentId = $request->input('currentId');
 
-        if ($hardwares) {
-            foreach ($hardwares as $hardware) {
-                $result = $this->hardwareModelToJson($hardware,$request);
-                $data[] = $result;
-            }
+        // Find the product with the given currentId
+        $currentProduct = Product::find($currentId);
+        if (!$currentProduct) {
+            return response()->json([]); // Return empty array if product not found
+        }
+
+        // Get the brand of the current product
+        $currentBrandId = $currentProduct->brand_id;
+
+        // Fetch two other products of the same brand excluding the current product
+        $relatedProducts = Product::where('brand_id', $currentBrandId)
+            ->where('id', '!=', $currentId)
+            ->inRandomOrder()
+            ->take(2)
+            ->get();
+
+        $data = [];
+        foreach ($relatedProducts as $product) {
+            $result = $this->hardwareModelToJson($product, $request);
+            $data[] = $result;
         }
 
         return response()->json($data);

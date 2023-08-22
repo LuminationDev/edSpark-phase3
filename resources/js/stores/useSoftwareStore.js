@@ -5,23 +5,23 @@ import {serverURL} from "@/js/constants/serverUrl";
 
 export const useSoftwareStore = defineStore('software', {
     state: () => ({
-        recommendedSoftware: []
+        relatedSoftware: []
     }),
 
     getters: {
         getArticles() {
-            return this.recommendedSoftware;
+            return this.relatedSoftware;
         }
     },
 
     actions: {
-        async loadRecommendedSoftware(id){
+        async loadRelatedSoftware(id){
             const payload = {
                 currentId: id,
             }
             axios.post(API_ENDPOINTS.SOFTWARE.FETCH_RELATED_SOFTWARE, payload).then(res =>{
                 console.log(res.data)
-                this.recommendedSoftware = res.data
+                this.relatedSoftware = res.data
             } )
         }
     }
