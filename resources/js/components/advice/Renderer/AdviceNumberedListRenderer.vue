@@ -25,15 +25,18 @@ const getConnectingLinePositions = () => {
     let listContainers = document.querySelectorAll('.numberListcontainer');
     let firstContainer = listContainers[0];
     let lastContainer = listContainers[listContainers.length -1];
+    if(firstContainer && lastContainer){
+        distanceBetweenEls.value = getDistanceBetweenElements(
+            firstContainer,
+            lastContainer
+        );
 
-    distanceBetweenEls.value = getDistanceBetweenElements(
-        firstContainer,
-        lastContainer
-    );
+        let firstElHeight = firstContainer.offsetHeight
+        top.value = firstContainer.offsetTop + firstElHeight / 2;
+        floatingLineClasses.value = `top-[${top.value}] h-[${distanceBetweenEls.value}px]`
 
-    let firstElHeight = firstContainer.offsetHeight
-    top.value = firstContainer.offsetTop + firstElHeight / 2;
-    floatingLineClasses.value = `top-[${top.value}] h-[${distanceBetweenEls.value}px]`
+    }
+
 }
 
 onMounted(() => {
@@ -44,11 +47,19 @@ onMounted(() => {
 })
 
 const getPositionAtCenter = (element) => {
-    const {top, left, width, height} = element.getBoundingClientRect();
-    return {
-        x: left + width / 2,
-        y: top + height / 2
-    };
+    if(element) {
+        const {top, left, width, height} = element.getBoundingClientRect();
+        return {
+            x: left + width / 2,
+            y: top + height / 2
+        }
+
+    }else{
+        return {
+            x: 0,
+            y: 0
+        }
+    }
 }
 
 const getDistanceBetweenElements = (a, b) => {

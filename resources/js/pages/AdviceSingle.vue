@@ -77,7 +77,7 @@ const timeFormatter = (originalFormat) => {
                 </div>
                 <!--      Curated Content      -->
                 <div class="flex flex-col w-full xl:!w-1/3">
-                    <AdviceSingleCuratedContent :recommendation-from-base="recommendationFromBase" />
+                    <AdviceSingleCuratedContent />
                 </div>
             </div>
         </template>
