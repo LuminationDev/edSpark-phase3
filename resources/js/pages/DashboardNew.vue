@@ -204,11 +204,18 @@ const getConnectingLinePositions = () => {
 };
 
 const getPositionAtCenter = (element) => {
-    const {top, left, width, height} = element.getBoundingClientRect();
-    return {
-        x: left + width / 2,
-        y: top + height / 2
-    };
+    if (element) {
+        const {top, left, width, height} = element.getBoundingClientRect();
+        return {
+            x: left + width / 2,
+            y: top + height / 2
+        };
+    } else {
+        return {
+            x: 0,
+            y: 0
+        }
+    }
 }
 
 const getDistanceBetweenElements = (a, b) => {

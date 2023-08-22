@@ -27,6 +27,7 @@ export const API_ENDPOINTS = {
     SOFTWARE: {
         FETCH_SOFTWARE_POSTS: `${serverURL}/fetchSoftwarePosts`,
         FETCH_SOFTWARE_POST_BY_ID: `${serverURL}/fetchSoftwarePostById/`,
+        FETCH_RELATED_SOFTWARE: `${serverURL}/fetchRelatedSoftware`
 
     },
     HARDWARE: {
@@ -35,6 +36,7 @@ export const API_ENDPOINTS = {
         FETCH_ALL_CATEGORIES: `${serverURL}/fetchAllCategories`,
         FETCH_HARDWARE_BY_ID: `${serverURL}/fetchProductById/`,
         FETCH_HARDWARE_BY_BRAND: `${serverURL}/fetchProductByBrand/`,
+        FETCH_RELATED_HARDWARE : `${serverURL}/fetchRelatedProduct`
     },
     PARTNER: {
         FETCH_ALL_PARTNERS: `${serverURL}/fetchAllPartners`,

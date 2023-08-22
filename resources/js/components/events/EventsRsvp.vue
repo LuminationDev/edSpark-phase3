@@ -193,7 +193,7 @@ onMounted(() => {
         <div class="border-b-2 border-b-white border-dashed flex flex-col py-2 rsvpSubheader text-lg">
             <div class="eventTypeDescriptor pb-4">
                 This event is <strong> {{ props.locationType }} </strong>
-                {{ props.locationType.toLowerCase() !== "hybrid" ? "only" : '' }}
+                {{ props.locationType ? (props.locationType.toLowerCase() !== "hybrid" ? "only" : '') : "" }}
             </div>
             <div class="eventRsvp form-cta pb-4">
                 Please register your interest below to reserve your spot!

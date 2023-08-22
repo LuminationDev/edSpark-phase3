@@ -2,22 +2,30 @@
 
 import {storeToRefs} from "pinia";
 import {useWindowStore} from "@/js/stores/useWindowStore";
-import {ref} from "vue";
+import {onMounted, ref} from "vue";
 import {useRouter} from "vue-router";
 import NavItems from "@/js/components/global/navbar/NavItems.vue";
 import Close from "@/js/components/svg/Close.vue";
 import {useAuthStore} from "@/js/stores/useAuthStore";
+const router = useRouter()
+const authStore = useAuthStore();
 
 const {showMobileNavbar} = storeToRefs(useWindowStore())
+const { isAuthenticated } = storeToRefs(authStore)
+
 const navLinks = ref([]);
-const router = useRouter()
+const navScrolled = ref(false);
+
+onMounted(() =>{
+    window.document.onscroll = () => {
+        let navbar = document.getElementById('navbarFullsize')
+        navScrolled.value = window.scrollY > navbar.offsetTop;
+    }
+})
+
 const handleToggleNavbar = () => {
     showMobileNavbar.value = !showMobileNavbar.value
 }
-
-const authStore = useAuthStore();
-const { isAuthenticated } = storeToRefs(authStore)
-
 
 const setupRoutes = () => {
     const tempNavArray = [];
@@ -30,6 +38,8 @@ const setupRoutes = () => {
     navLinks.value = tempNavArray;
 };
 
+
+
 setupRoutes();
 
 </script>
@@ -37,7 +47,9 @@ setupRoutes();
 <template>
     <div
         v-if="isAuthenticated"
+        id="navbarMobileBurger"
         class="HAMBURGER-ICON absolute top-2 left-2 bg-[#002856]/50 p-4 rounded space-y-2 z-50 hover:cursor-pointer"
+        :class="{navbarScrolled : navScrolled}"
         @click="handleToggleNavbar"
     >
         <span class="bg-white block h-1 w-10" />
@@ -106,4 +118,37 @@ setupRoutes();
     transform: translateX(-20px);
     opacity: 0;
 }
+@media screen and (min-width: 375px){
+    #navbarMobileBurger{
+        left: 0;
+    }
+}
+@media screen and (min-width: 640px){
+    #navbarMobileBurger{
+        left: 4vw !important;
+    }
+}
+@media screen and (min-width: 700px){
+    #navbarMobileBurger{
+        left: 8vw !important;
+    }
+}
+@media screen and (min-width: 900px){
+    #navbarMobileBurger{
+        left: 12vw !important;
+    }
+}
+#navbarMobileBurger{
+    position: fixed;
+    top: 20px;
+    left: 0;
+
+}
+.navbarScrolled {
+    transition: 150ms;
+    top: 0 !important;
+    background-color: #002856 !important;
+}
+
+
 </style>

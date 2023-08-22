@@ -39,6 +39,7 @@ Route::middleware('api')->group(function() {
     Route::get('fetchAdvicePostById/{id}', [AdviceController::class, 'fetchAdvicePostById']);
     Route::get('fetchAdvicePostByType/{type}', [AdviceController::class, 'fetchAdvicePostByType']);
     Route::get('fetchSoftwarePosts', [SoftwareController::class, 'fetchSoftwarePosts']);
+    Route::post('fetchRelatedSoftware', [SoftwareController::class, 'fetchRelatedSoftware']);
     Route::get('fetchSoftwarePostById/{id}', [SoftwareController::class, 'fetchSoftwarePostById']);
     Route::get('fetchEventPosts', [EventController::class, 'fetchEventPosts']);
     Route::get('fetchEventPostById/{id}', [EventController::class, 'fetchEventPostById']);
@@ -64,7 +65,7 @@ Route::middleware('api')->group(function() {
     Route::get('fetchAllCategories', [ProductController::class, 'fetchAllCategories']);
     Route::get('fetchAllProducts', [ProductController::class, 'fetchAllProducts']);
     Route::get('fetchProductById/{id}', [ProductController::class, 'fetchProductById']);
-    Route::get('fetchProductByBrand/{brand}', [ProductController::class, 'fetchProductByBrand']);
+    Route::post('fetchProductByBrand', [ProductController::class, 'fetchProductByBrand']);
 
     // School APIs
     Route::get('fetchAllSchools', [SchoolController::class, 'fetchAllSchools']);
