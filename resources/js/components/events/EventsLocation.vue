@@ -73,10 +73,6 @@ const formattedUrl = computed(() => {
                 {{ props.locationInfo.address }}
             </div>
         </div>
-        <div class="flex w-full h-96 bg-slate-200">
-            <GoogleMap ref="eventMapRef" api-key="AIzaSyAFbqxGQntzgzfzKFh6bArwU14MJhcV1Wc" style="width: 100%; height: 100%"
-                :options="mapOptions.options" :center="mapOptions.center" :zoom="mapOptions.zoom">
-                <Marker class="relative" :options="{ position: markerCenter, title: props.locationInfo.address }" />
         <div class="bg-slate-200 flex h-96 w-full">
             <GoogleMap
                 ref="eventMapRef"

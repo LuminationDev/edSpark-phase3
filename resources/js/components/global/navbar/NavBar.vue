@@ -114,7 +114,8 @@ const {isMobile, isTablet} = storeToRefs(useWindowStore)
             @handle-avatar-click="handleAvatarClick"
         />
         <!-- MB commented out the button below - what was its purpose? -->
-        <!-- <button>
+        <!-- EH uncommented - it's the edspark logo to take user back to dashboard, using button so it can be "tabbed" through -->
+        <button id="edSparkLogo to dashboard">
             <router-link :to="{name: 'dashboard'}">
                 <Logo
                     class="
@@ -139,7 +140,7 @@ const {isMobile, isTablet} = storeToRefs(useWindowStore)
                         "
                 />
             </router-link>
-        </button> -->
+        </button>
         <NavSwoosh
             class="
                 2xl:!top-0
