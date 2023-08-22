@@ -120,23 +120,28 @@ setupRoutes();
 }
 @media screen and (min-width: 375px){
     #navbarMobileBurger{
-        left: 2vw;
+        left: 0;
     }
 }
-@media screen and (min-width: 670px){
+@media screen and (min-width: 640px){
     #navbarMobileBurger{
-        left: 6vw;
+        left: 4vw !important;
     }
 }
-@media screen and (min-width: 720px){
+@media screen and (min-width: 700px){
     #navbarMobileBurger{
-        left: 8vw;
+        left: 8vw !important;
+    }
+}
+@media screen and (min-width: 900px){
+    #navbarMobileBurger{
+        left: 12vw !important;
     }
 }
 #navbarMobileBurger{
     position: fixed;
     top: 20px;
-    left: 10vw;
+    left: 0;
 
 }
 .navbarScrolled {
