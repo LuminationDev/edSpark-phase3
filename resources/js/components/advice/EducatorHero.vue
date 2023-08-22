@@ -54,6 +54,7 @@ const router = useRouter()
                 />
                 <GenericButton
                     :callback="() => router.push('browse/advice')"
+                    buttonId="EDUadvice"
                     class="
                         !rounded-none
                         !text-main-navy

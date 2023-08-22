@@ -110,7 +110,7 @@ const handleClickAdmin = () =>{
 </script>
 
 <template>
-    <div class="absolute h-12 hidden w-12  lg:!right-48 lg:!top-50 lg:block xl:!right-72 xl:!top-56">
+    <div class="absolute h-12 hidden w-12  lg:!right-48 lg:!top-52 lg:block xl:!right-72 xl:!top-56">
         <div
             class="bg-slate-200 cursor-pointer flex h-full overflow-hidden relative rounded-full w-full z-50 hover:shadow-2xl"
             @click.prevent="handleAvatar"

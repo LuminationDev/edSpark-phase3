@@ -3,6 +3,7 @@ import BaseHero from '@/js/components/bases/BaseHero.vue';
 import BaseSingle from '@/js/components/bases/BaseSingle.vue';
 import BaseSingleSubmenu from "@/js/components/bases/BaseSingleSubmenu.vue";
 import HardwareCarousel from '@/js/components/hardware/HardwareCarousel.vue';
+import HardwareSingleBrandContent from "@/js/components/hardware/HardwareSingleBrandContent.vue";
 import GenericCard from '../components/card/GenericCard.vue';
 import HardwareExtraContentRenderer from "@/js/components/hardware/HardwareExtraContentRenderer.vue";
 
@@ -141,26 +142,7 @@ const handleChangeSubmenu = (value) => {
                                 v-if="contentFromBase['brand']"
                                 class="w-full lg:!w-1/3"
                             >
-                                <div
-                                    v-if="recommendationFromBase && recommendationFromBase.length > 0"
-                                    class="bg-[#048246]/5 flex flex-col gap-6 px-6 py-6"
-                                >
-                                    <h3 class="font-bold mx-auto pb-8 text-[24px]">
-                                        More from {{ contentFromBase['brand']['brandName'] }}
-                                    </h3>
-                                    <div
-                                        v-for="(item,index) in recommendationFromBase.slice(0,2)"
-                                        :key="index"
-                                        class="flex justify-between"
-                                    >
-                                        <HardwareCard
-                                            :key="index.guid"
-                                            class="bg-white mx-auto"
-                                            :data="item"
-                                            :number-per-row="1"
-                                        />
-                                    </div>
-                                </div>
+                                <HardwareSingleBrandContent />
                             </div>
                         </div>
                     </div>

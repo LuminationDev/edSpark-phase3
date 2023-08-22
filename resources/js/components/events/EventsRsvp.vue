@@ -193,7 +193,7 @@ onMounted(() => {
         <div class="border-b-2 border-b-white border-dashed flex flex-col py-2 rsvpSubheader text-lg">
             <div class="eventTypeDescriptor pb-4">
                 This event is <strong> {{ props.locationType }} </strong>
-                {{ props.locationType.toLowerCase() !== "hybrid" ? "only" : '' }}
+                {{ props.locationType ? (props.locationType.toLowerCase() !== "hybrid" ? "only" : '') : "" }}
             </div>
             <div class="eventRsvp form-cta pb-4">
                 Please register your interest below to reserve your spot!
@@ -255,7 +255,8 @@ onMounted(() => {
             <div class="flex items-center flex-row">
                 <GenericButton
                     :callback="handleSubmitRsvp"
-                    class="!bg-rose-400 font-semibold mt-4 px-6 rounded-sm w-fit"
+                    id="rsvpBtn"
+                    class="!bg-secondary-mbRose font-semibold mt-4 px-6 rounded-sm w-fit"
                 >
                     <template #default>
                         RSVP
@@ -309,6 +310,7 @@ onMounted(() => {
             >
                 <GenericButton
                     :callback="handleClickContactOrganiser"
+                    id="contactBtn"
                     class="!bg-main-teal font-semibold mt-4 px-6 rounded-sm w-fit"
                 >
                     <template #default>
@@ -325,5 +327,6 @@ onMounted(() => {
 .searchable_dropdown :deep(.dropdown-toggle input) {
     padding: 8px !important;
     border-radius: 0.25rem;
+    color: #727272;
 }
 </style>

@@ -1,22 +1,23 @@
 <script setup> </script>
 <template>
     <svg
-        id="Layer_1"
-        xml:space="preserve"
-        viewBox="0 0 100 100"
-        y="0"
-        x="0"
+        class="bookmark"
+        width="36"
+        height="36"
+        viewBox="0 0 36 36"
+        fill="none"
         xmlns="http://www.w3.org/2000/svg"
-        width="36px"
-        height="36px"
-        style="width:100%;height:100%;background-size:initial;background-repeat-y:initial;background-repeat-x:initial;background-position-y:initial;background-position-x:initial;background-origin:initial;background-image:initial;background-color:rgb(255, 255, 255);background-clip:initial;background-attachment:initial;animation-play-state:paused"
-    ><g
-        class="ldl-scale"
-        style="transform-origin:50% 50%;transform:rotate(0deg) scale(0.8, 0.8);animation-play-state:paused"
-    ><path
-        d="M78.2 90L50 61.8 21.8 90V10h56.4v40z"
-        fill="#e15c64"
-        style="fill:rgb(57, 122, 128)"
-    />
-    </g></svg>
+    >
+        <rect
+            width="36"
+            height="36"
+            fill="transparent"
+        />
+        <path
+            d="M18.5077 24.8578L18 24.6321L17.4923 24.8578L10.25 28.0766V8.66666C10.25 7.84712 10.89 7.25 11.5714 7.25H24.4286C25.11 7.25 25.75 7.84712 25.75 8.66666V28.0766L18.5077 24.8578Z"
+            fill="#397A80"
+            stroke="#397A80"
+            stroke-width="2.5"
+        />
+    </svg>
 </template>

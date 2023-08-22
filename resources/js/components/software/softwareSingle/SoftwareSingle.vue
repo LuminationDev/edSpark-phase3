@@ -1,4 +1,5 @@
-+<script setup>
++
+<script setup>
 import BaseSingle from "@/js/components/bases/BaseSingle.vue";
 import BaseHero from "@/js/components/bases/BaseHero.vue";
 import SoftwareSingleCuratedContent from "@/js/components/software/softwareSingle/SoftwareSingleCuratedContent.vue";
@@ -50,7 +51,7 @@ const handleChangeSubmenu = (value) => {
  *  Visit profile from sinle page
  */
 const handleClickViewProfile = (author_id, author_type) => {
-    router.push(`/${author_type}/${author_id}` )
+    router.push(`/${author_type}/${author_id}`)
 }
 /**
  * End of submenu specific code  plus @emit-active-tab-to-specific-page in BaseSingle
@@ -91,7 +92,9 @@ const handleClickViewProfile = (author_id, author_type) => {
                                     v-if="!(contentFromBase['author']['author_type'] === 'user')"
                                     class="hover:cursor-pointer hover:text-red-200"
                                 >
-                                    <button @click="() => handleClickViewProfile(contentFromBase['author']['author_id'],contentFromBase['author']['author_type'])">
+                                    <button
+                                        @click="() => handleClickViewProfile(contentFromBase['author']['author_id'],contentFromBase['author']['author_type'])"
+                                    >
                                         View Profile
                                     </button>
                                 </div>
@@ -103,7 +106,7 @@ const handleClickViewProfile = (author_id, author_type) => {
 
                 <template #subtitleText1>
                     <div class="font-semibold pt-2">
-                        {{ formatDateToDayTime(contentFromBase['modified_at'] ) }}
+                        {{ formatDateToDayTime(contentFromBase['modified_at']) }}
                     </div>
                 </template>
                 <template #subtitleText2>
@@ -187,7 +190,10 @@ const handleClickViewProfile = (author_id, author_type) => {
                     </div>
                 </template>
                 <template v-else-if="activeSubmenu === 'access'">
-                    <div> Welcome to how to access sub page</div>
+                    <div class="flex flex-col mt-10 overflow-hidden pt-0 px-5 softwareSingleHowToAccess">
+                        Welcome to how to
+                        access sub page
+                    </div>
                 </template>
             </div>
         </template>
@@ -214,12 +220,14 @@ const handleClickViewProfile = (author_id, author_type) => {
     p {
         padding-bottom: 12px;
     }
-    ul{
+
+    ul {
         list-style: disc;
     }
 }
-.extraContentEachContainer{
-    ul{
+
+.extraContentEachContainer {
+    ul {
         list-style: disc;
         margin-left: 12px
     }

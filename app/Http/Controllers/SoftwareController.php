@@ -105,6 +105,56 @@ class SoftwareController extends Controller
         }
     }
 
+    public function fetchRelatedSoftware(Request $request): JsonResponse
+    {
+        try {
+            $currentSoftwareId = $request->input('currentId');
+
+            // Fetch the software associated with the currentSoftwareId
+            $currentSoftware = Software::find($currentSoftwareId);
+            if (!$currentSoftware) {
+                return response()->json(['error' => 'Software not found'], Response::HTTP_NOT_FOUND);
+            }
+
+            // Retrieve the tags from the current software
+            $tags = $currentSoftware->tags->pluck('name')->toArray();
+
+            // Fetch software posts that have at least one of the current software's tags and don't have the currentSoftwareId
+            $relatedSoftwares = Software::withAnyTags($tags)
+                ->where('id', '!=', $currentSoftwareId)
+                ->where('post_status', 'Published')
+                ->orderBy('created_at', 'DESC')
+                ->get();
+
+            if ($relatedSoftwares->isEmpty()) {
+                // Fetch two random software posts excluding the currentSoftwareId
+                $relatedSoftwares = Software::where('id', '!=', $currentSoftwareId)
+                    ->where('post_status', 'Published')
+                    ->inRandomOrder()
+                    ->limit(2)
+                    ->get();
+            }
+
+            $data = [];
+
+            foreach ($relatedSoftwares as $software) {
+                $softwareMetadataToSend = Metahelper::getMeta(
+                    Softwaremeta::class,
+                    $software,
+                    'software_id',
+                    'software_meta_key',
+                    'software_meta_value'
+                );
+                $result = $this->softwareModelToJson($software, $softwareMetadataToSend, $request);
+                $data[] = $result;
+            }
+
+            return response()->json($data);
+        } catch (\Exception $e) {
+            return response()->json(['error' => "$e"], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
+
     public function fetchSoftwarePostById(Request $request, $id): JsonResponse
     {
         $software = Software::find($id);

@@ -172,6 +172,10 @@ const numberOfLoadingPlaceholder = computed(() =>{
         left: -20px !important;
     }
 
+    .carousel__slide[aria-hidden="true"] {
+        visibility: hidden;
+    }
+
     :deep(.carousel__pagination-button::after) {
         height: 12px;
         border-radius: 50%;

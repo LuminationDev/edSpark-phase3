@@ -256,7 +256,7 @@ const handleChangeInfoWindows = () => {
                         <Marker
                             v-for="(school, i) in filteredList"
                             :key="i"
-                            :options="{ position: school.location }"
+                            :options="{ position: school.location, title: school.name }"
                             @click="handleOnClusterClick(school, i)"
                         >
                             <InfoWindow ref="infoWindow">

@@ -51,6 +51,7 @@ const router = useRouter()
                 />
                 <GenericButton
                     :callback="() => router.push('browse/advice')"
+                    buttonId="PTRadvice"
                     class="
                         !rounded-none
                         !text-main-navy
