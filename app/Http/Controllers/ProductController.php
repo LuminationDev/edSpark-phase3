@@ -88,7 +88,7 @@ class ProductController extends Controller
     }
 
 
-    public function fetchAllProducts(Request $request)
+    public function fetchAllProducts(Request $request): \Illuminate\Http\JsonResponse
     {
         $hardwares = Product::all();
         $data = [];
@@ -111,23 +111,25 @@ class ProductController extends Controller
         return response()->json($data);
     }
 
-    public function fetchProductByBrand(Request $request)
+    public function fetchProductByBrand(Request $request): \Illuminate\Http\JsonResponse
     {
-        // Get currentId from the request body
-        $currentId = $request->input('currentId');
+        // Validate the request data
+        $validatedData = $request->validate([
+            'currentId' => 'required|integer|exists:hardwares,id',
+        ]);
 
-        // Find the product with the given currentId
-        $currentProduct = Product::find($currentId);
-        if (!$currentProduct) {
-            return response()->json([]); // Return empty array if product not found
-        }
+        // The validation will automatically return a 422 Unprocessable Entity
+        // response if the validation fails, so there's no need for additional
+        // error handling for that.
+
+        $currentProduct = Product::find($validatedData['currentId']);
 
         // Get the brand of the current product
         $currentBrandId = $currentProduct->brand_id;
 
         // Fetch two other products of the same brand excluding the current product
         $relatedProducts = Product::where('brand_id', $currentBrandId)
-            ->where('id', '!=', $currentId)
+            ->where('id', '!=', $validatedData['currentId'])
             ->inRandomOrder()
             ->take(2)
             ->get();
