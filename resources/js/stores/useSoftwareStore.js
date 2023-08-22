@@ -1,36 +1,28 @@
+import {API_ENDPOINTS} from "@/js/constants/API_ENDPOINTS";
 import { defineStore } from "pinia";
 import axios from 'axios';
 import {serverURL} from "@/js/constants/serverUrl";
 
 export const useSoftwareStore = defineStore('software', {
     state: () => ({
-        articles: []
+        relatedSoftware: []
     }),
 
     getters: {
         getArticles() {
-            return this.articles;
+            return this.relatedSoftware;
         }
     },
 
     actions: {
-        async loadArticles() {
-            return new Promise(async (resolve, reject) => {
-                await axios.get(`${serverURL}/fetchSoftwarePosts`).then(response => {
-                    const dashboardSoftware = [];
-                    response.data.forEach(software => {
-                        dashboardSoftware.push(software);
-                    });
-
-                    this.articles = dashboardSoftware;
-
-                    resolve(dashboardSoftware);
-                }).catch(error => {
-                    console.log('Sorry, there was a problem retrieving the Advice Articles');
-                    console.error(error);
-                    reject(error.code);
-                });
-            });
+        async loadRelatedSoftware(id){
+            const payload = {
+                currentId: id,
+            }
+            axios.post(API_ENDPOINTS.SOFTWARE.FETCH_RELATED_SOFTWARE, payload).then(res =>{
+                console.log(res.data)
+                this.relatedSoftware = res.data
+            } )
         }
     }
 })

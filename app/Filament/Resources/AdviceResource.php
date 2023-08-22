@@ -29,6 +29,7 @@ use Guava\FilamentIconPicker\Tables\IconColumn;
 class AdviceResource extends Resource
 {
     protected static ?string $model = Advice::class;
+    protected static ?string $modelLabel = 'Advice';
 
     protected static ?string $navigationGroup = 'Content Management';
     protected static ?string $navigationGroupIcon = 'heroicon-o-collection';
@@ -61,7 +62,7 @@ class AdviceResource extends Resource
                     ->directory('uploads/advice')
                     ->acceptedFileTypes(['image/jpeg', 'image/jpg', 'image/png'])
                     ->getUploadedFileNameForStorageUsing(function (TemporaryUploadedFile $file): string {
-                        return (string) str($file->getClientOriginalName())->prepend('edSpark-advice-');
+                        return (string)str($file->getClientOriginalName())->prepend('edSpark-advice-');
                     }),
 
                 Forms\Components\Card::make()
@@ -91,19 +92,10 @@ class AdviceResource extends Resource
                         ->label('Status')
                         ->required(),
                 ]),
-
+                Forms\Components\TagsInput::make('tags')
+                    ->placeholder('Add or create tags')
+                    ->helperText('Separate tags with commas')
             ]),
-
-//            Forms\Components\Card::make()
-//                ->schema([
-//                    Forms\Components\Select::make('template')
-//                        ->label('Choose a Template')
-//                        ->reactive()
-//                        ->options(static::getTemplates()),
-//
-//                        ...static::getTemplateSchemas(),
-//                ]),
-
             Forms\Components\Card::make()
                 ->schema([
                     Forms\Components\Builder::make('extra_content')
@@ -144,7 +136,7 @@ class AdviceResource extends Resource
 
     public static function getTemplates(): Collection
     {
-        return static::getTemplateClasses()->mapWithKeys(fn ($class) => [$class => $class::title()]);
+        return static::getTemplateClasses()->mapWithKeys(fn($class) => [$class => $class::title()]);
     }
 
     public static function getTemplateClasses(): Collection
@@ -153,7 +145,7 @@ class AdviceResource extends Resource
 
         return collect($filesystem->allFiles(app_path('Filament/PageTemplates/Advice')))
             ->map(function (SplFileInfo $file): string {
-                return (string) Str::of('App\\Filament\\PageTemplates\\Advice')
+                return (string)Str::of('App\\Filament\\PageTemplates\\Advice')
                     ->append('\\', $file->getRelativePathname())
                     ->replace(['/', '.php'], ['\\', '']);
             });
@@ -162,13 +154,12 @@ class AdviceResource extends Resource
     public static function getTemplateSchemas(): array
     {
         return static::getTemplateClasses()
-            ->map(fn ($class) =>
-                Forms\Components\Group::make($class::schema())
-                    ->columnSpan(2)
-                    ->afterStateHydrated(fn ($component, $state) => $component->getChildComponentContainer()->fill($state))
-                    ->statePath('extra_content.' . static::getTemplateName($class))
-                    // ->statePath(static::getTemplateName($class))
-                    ->visible(fn ($get) => $get('template') == $class)
+            ->map(fn($class) => Forms\Components\Group::make($class::schema())
+                ->columnSpan(2)
+                ->afterStateHydrated(fn($component, $state) => $component->getChildComponentContainer()->fill($state))
+                ->statePath('extra_content.' . static::getTemplateName($class))
+                // ->statePath(static::getTemplateName($class))
+                ->visible(fn($get) => $get('template') == $class)
             )
             ->toArray();
 
@@ -219,8 +210,8 @@ class AdviceResource extends Resource
     public static function getRelations(): array
     {
         return [
-                //
-            ];
+            //
+        ];
     }
 
     public static function getPages(): array
@@ -240,13 +231,10 @@ class AdviceResource extends Resource
 
     public static function shouldRegisterNavigation(): bool
     {
-        // use Illuminate\Support\Facades\Auth;
-
-        // Moderator check
-        if(Auth::user()->role->role_name == 'Moderator') {
-            return false;
+        $allowed_array = ['Superadmin', 'Administrator', 'Moderator'];
+        if (in_array(Auth::user()->role->role_name, $allowed_array)) {
+            return true;
         }
-
-        return true;
+        return false;
     }
 }

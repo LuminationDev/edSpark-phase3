@@ -1,5 +1,5 @@
 <script setup>
-import {computed} from 'vue';
+import lowerSlugify from "@/js/helpers/slugifyHelper";
 import GenericCard from '../card/GenericCard.vue';
 import {useRouter} from 'vue-router';
 import {useUserStore} from "@/js/stores/useUserStore";
@@ -9,44 +9,24 @@ const userStore = useUserStore()
 const {currentUser} = storeToRefs(userStore)
 
 const props = defineProps({
-    hardwareContent: {
+    data: {
         type: Object,
         required: true
     },
-    numberPerRow: {
-        type: Number,
-        required: false,
-        default: 3
-    }
+
 });
 
 const router = useRouter();
-
-const {
-    id,
-    product_name,
-    cover_image,
-    category,
-    created_at,
-    product_excerpt,
-    product_content,
-    author
-} = props.hardwareContent;
-
-const likeBookmarkData = {
-    post_id: props.hardwareContent.id,
-    user_id: currentUser.value.id,
-    post_type: 'hardware'
-};
 
 const handleClickHardwareCard = () => {
     router.push({
         name: 'hardware-single',
         params: {
-            id: props.hardwareContent.id,
+            id: props.data.id,
+            slug: lowerSlugify(props.data.title)
         },
         state:{
-            content: JSON.stringify(props.hardwareContent)
+            content: JSON.stringify(props.data)
         }
     })
 }
@@ -54,13 +34,17 @@ const handleClickHardwareCard = () => {
 
 <template>
     <GenericCard
-        :title="product_name"
-        :display-content="product_excerpt"
-        :display-author="author ? author['author_name'] : ''"
-        :display-date="created_at"
-        :number-per-row="numberPerRow"
-        :cover-image="cover_image"
+        :id="data.id"
+        :key="data.guid"
+        :title="data.title"
+        :display-content="data.excerpt"
+        :display-author="data.author ? data.author['author_name'] : ''"
+        :display-date="data.modified_at"
+        :cover-image="data.cover_image"
         :click-callback="handleClickHardwareCard"
-        :like-bookmark-data="likeBookmarkData"
+        :is-liked-by-user="data.isLikedByUser"
+        :is-bookmarked-by-user="data.isBookmarkedByUser"
+        :guid="data.guid"
+        section-type="hardware"
     />
 </template>

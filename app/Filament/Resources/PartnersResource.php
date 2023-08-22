@@ -12,10 +12,12 @@ use Filament\Resources\Table;
 use Filament\Tables;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Illuminate\Support\Facades\Auth;
 
 class PartnersResource extends Resource
 {
     protected static ?string $model = Partner::class;
+    protected static ?string $modelLabel= "Partner";
 
     protected static ?string $navigationGroup = 'User Management';
 
@@ -75,5 +77,14 @@ class PartnersResource extends Resource
             'create' => Pages\CreatePartners::route('/create'),
             'edit' => Pages\EditPartners::route('/{record}/edit'),
         ];
+    }
+
+    public static function shouldRegisterNavigation(): bool
+    {
+        $allowed_array = ['Superadmin', 'Administrator','Moderator'];
+        if (in_array(Auth::user()->role->role_name, $allowed_array)) {
+            return true;
+        }
+        return false;
     }
 }

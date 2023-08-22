@@ -4,16 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Laravel\Socialite\Facades\Socialite;
-use Http\Discovery\HttpClientDiscovery;
-use Http\Discovery\MessageFactoryDiscovery;
-use Http\Adapter\Guzzle7\Client as GuzzleAdapter;
-use Okta\JwtVerifier\JwtVerifierBuilder;
-use Firebase\JWT\JWT;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
-use Illuminate\Support\Facades\Session;
-use Illuminate\Support\Facades\Redirect;
 use Config;
 
 

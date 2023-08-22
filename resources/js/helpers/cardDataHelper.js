@@ -57,6 +57,11 @@ export const cardDataHelper = (cardData, section) => {
             break;
     }
 }
+/*
+ * Takes an array of object and add guid field to each object
+ * @params Array of Objects
+ * @returns Array of object with each array item appended with guid()
+ */
 export const  cardDataWithGuid = (cardData) => {
     return cardData.map(data =>{
         return {...data, guid: guid()}

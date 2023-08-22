@@ -3,8 +3,8 @@
     "scripts": {
         "dev": "vite",
         "build": "vite build && npx tailwindcss build -i ./resources/css/app.css -o ./resources/css/output.css && cp -r ./public/* ./web",
-        "prod": "vite build && composer update && cp -r ./public/* ./web",
-        "buildtest": "vite build && composer update"
+        "prod": "vite build && composer install && cp -r ./public/* ./web",
+        "buildtest": "vite build && composer install"
     },
     "devDependencies": {
         "@kalimahapps/eslint-plugin-tailwind": "^1.0.8",
@@ -50,10 +50,11 @@
         "epic-spinners": "^2.0.0",
         "font-awesome": "^4.7.0",
         "http-proxy-middleware": "^2.0.6",
-        "pinia": "^2.1.3",
+        "pinia": "^2.1.6",
         "sanitize-html": "^2.10.0",
         "sass": "^1.63.4",
         "search-dropdown-vue": "^1.0.3",
+        "slugify": "^1.6.6",
         "swrv": "^1.0.4",
         "tailwind-scrollbar": "^3.0.4",
         "v-calendar": "^3.0.3",

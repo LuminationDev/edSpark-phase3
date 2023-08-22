@@ -81,7 +81,7 @@ const router = useRouter()
             </div>
             <div class="block col-span-8 md:hidden">
                 <GenericButton
-                    :callback="() => router.push('browse/advices')"
+                    :callback="() => router.push('browse/advice')"
                     class="
                         !rounded-none
                         !text-main-navy

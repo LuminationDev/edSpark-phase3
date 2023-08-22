@@ -22,11 +22,10 @@ use Illuminate\Support\Str;
 use SplFileInfo;
 
 
-
-
 class SoftwareResource extends Resource
 {
     protected static ?string $model = Software::class;
+    protected static ?string $modelLabel = "Software";
 
     protected static ?string $navigationGroup = 'Content Management';
     protected static ?string $navigationGroupIcon = 'heroicon-o-collection';
@@ -61,7 +60,7 @@ class SoftwareResource extends Resource
                             ->directory('uploads/software')
                             ->acceptedFileTypes(['image/jpeg', 'image/jpg', 'image/png'])
                             ->getUploadedFileNameForStorageUsing(function (TemporaryUploadedFile $file): string {
-                                return (string) str($file->getClientOriginalName())->prepend('edSpark-software-');
+                                return (string)str($file->getClientOriginalName())->prepend('edSpark-software-');
                             }),
 
                         Forms\Components\Card::make()
@@ -91,6 +90,9 @@ class SoftwareResource extends Resource
                                     ->label('Status')
                                     ->required(),
                             ]),
+                        Forms\Components\TagsInput::make('tags')
+                            ->placeholder('Add or create tags')
+                            ->helperText('Separate tags with commas')
                     ]),
 
                 Forms\Components\Card::make()
@@ -149,12 +151,13 @@ class SoftwareResource extends Resource
                             ->label('Extra content')
 
                     ])
+
             ]);
     }
 
     public static function getTemplates(): Collection
     {
-        return static::getTemplateClasses()->mapWithKeys(fn ($class) => [$class => $class::title()]);
+        return static::getTemplateClasses()->mapWithKeys(fn($class) => [$class => $class::title()]);
     }
 
     public static function getTemplateClasses(): Collection
@@ -163,7 +166,7 @@ class SoftwareResource extends Resource
 
         return collect($filesystem->allFiles(app_path('Filament/PageTemplates/Software')))
             ->map(function (SplFileInfo $file): string {
-                return (string) Str::of('App\\Filament\\PageTemplates\\Software')
+                return (string)Str::of('App\\Filament\\PageTemplates\\Software')
                     ->append('\\', $file->getRelativePathname())
                     ->replace(['/', '.php'], ['\\', '']);
             });
@@ -172,12 +175,11 @@ class SoftwareResource extends Resource
     public static function getTemplateSchemas(): array
     {
         return static::getTemplateClasses()
-            ->map(fn ($class) =>
-                Forms\Components\Group::make($class::schema())
-                    ->columnSpan(2)
-                    ->afterStateHydrated(fn ($component, $state) => $component->getChildComponentContainer()->fill($state))
-                    ->statePath('extra_content.' . static::getTemplateName($class))
-                    ->visible(fn ($get) => $get('template') == $class)
+            ->map(fn($class) => Forms\Components\Group::make($class::schema())
+                ->columnSpan(2)
+                ->afterStateHydrated(fn($component, $state) => $component->getChildComponentContainer()->fill($state))
+                ->statePath('extra_content.' . static::getTemplateName($class))
+                ->visible(fn($get) => $get('template') == $class)
             )
             ->toArray();
     }
@@ -192,9 +194,9 @@ class SoftwareResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('post_title')
-                ->label('Title')
-                ->searchable()
-                ->sortable(),
+                    ->label('Title')
+                    ->searchable()
+                    ->sortable(),
 //                Tables\Columns\TextColumn::make('post_content')
 //                ->limit(50)
 //                ->label('Content'),
@@ -251,15 +253,11 @@ class SoftwareResource extends Resource
 
     public static function shouldRegisterNavigation(): bool
     {
-        // use Illuminate\Support\Facades\Auth;
-
-        // Moderator check
-        if(Auth::user()->role->role_name == 'Moderator') {
-            return false;
+        $allowed_array = ['Superadmin', 'Administrator', 'Moderator'];
+        if (in_array(Auth::user()->role->role_name, $allowed_array)) {
+            return true;
         }
-
-        return true;
+        return false;
     }
-
 
 }

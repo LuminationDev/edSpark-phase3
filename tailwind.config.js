@@ -55,6 +55,12 @@ module.exports = {
                     genericLighterBlue: 'rgba(180, 216, 241, 0.19)', // Even lighter blue
                     genericScrollbarDark: '#0A0045', // only repeated coz i screwed something up with scrollbar customisation
                 },
+                event:{
+                    virtual: '#BF123D',
+                    hybrid: '#A855F7',
+                    inPerson: '#3B82F6'
+
+                },
 
                 adviceYellow: '#FFC836',
                 adviceGreen: '#048246',

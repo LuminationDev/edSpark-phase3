@@ -1,3 +1,5 @@
+import {API_ENDPOINTS} from "@/js/constants/API_ENDPOINTS";
+import {useUserStore} from "@/js/stores/useUserStore";
 import { defineStore } from "pinia";
 import axios from 'axios';
 import {schoolContentArrParser} from "@/js/helpers/jsonHelpers";
@@ -38,7 +40,8 @@ export const useSchoolsStore = defineStore('schools', {
 
     actions: {
         async loadSchools() {
-            return await axios.get(`${serverURL}/fetchAllSchools`).then(res => {
+            const userStore = useUserStore()
+            return await axios.get(API_ENDPOINTS.SCHOOL.FETCH_ALL_SCHOOLS, userStore.getUserRequestParam).then(res => {
                 const parsedRes = schoolContentArrParser(res.data)
                 this.schools = parsedRes;
                 return parsedRes;

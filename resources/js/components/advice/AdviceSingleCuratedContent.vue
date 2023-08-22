@@ -1,14 +1,13 @@
 <script setup>
-import { ref, computed, onMounted} from "vue";
-import {serverURL} from "@/js/constants/serverUrl";
+import {API_ENDPOINTS} from "@/js/constants/API_ENDPOINTS";
+import {useUserStore} from "@/js/stores/useUserStore";
+import {  computed } from "vue";
 import AdviceCard from "@/js/components/advice/AdviceCard.vue";
-import {axiosFetcher} from "@/js/helpers/fetcher";
+import {axiosFetcherParams} from "@/js/helpers/fetcher";
 import useSWRV from "swrv";
-import {guid} from "@/js/helpers/guidGenerator";
 
-
-const {data : allCuratedAdvice, error: curatedAdviceError} = useSWRV(`${serverURL}/fetchAdvicePosts`, axiosFetcher)
-
+const userStore = useUserStore()
+const {data : allCuratedAdvice, error: curatedAdviceError} = useSWRV(API_ENDPOINTS.ADVICE.FETCH_ADVICE_POSTS, axiosFetcherParams(userStore.getUserRequestParam))
 const twoRecommendation  = computed( () => {
     let temp = []
     if(allCuratedAdvice.value){
@@ -30,9 +29,9 @@ const twoRecommendation  = computed( () => {
         </div>
         <div class="flex-col lg:!flex-row xl:!flex-col">
             <AdviceCard
-                v-for="(advice,index) in twoRecommendation"
-                :key="index + guid()"
-                :advice-content="advice"
+                v-for="advice in twoRecommendation"
+                :key="advice.guid"
+                :data="advice"
                 :show-icon="true"
                 :number-per-row="1"
                 class="mb-extraLarge"

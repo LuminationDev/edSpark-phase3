@@ -17,6 +17,7 @@ use Illuminate\Support\Facades\Auth;
 class AdvicemoderationResource extends Resource
 {
     protected static ?string $model = Advicemoderation::class;
+    protected static ?string $modelLabel = 'Advice Moderation';
 
     protected static ?string $navigationIcon = 'heroicon-o-collection';
 
@@ -63,7 +64,7 @@ class AdvicemoderationResource extends Resource
                                     ])
                                     ->label('Status')
                                     ->required(),
-                                    ]),
+                            ]),
                     ]),
             ]);
     }
@@ -130,22 +131,18 @@ class AdvicemoderationResource extends Resource
         $count = static::getModel()::query()->where('post_status', 'pending')->count();
         if ($count > 0) {
             return $count;
-        }else {
+        } else {
             return '';
         }
     }
 
-    // public static function shouldRegisterNavigation(): bool
-    // {
-    //     // use Illuminate\Support\Facades\Auth;
-
-    //     // Moderator check
-    //     // if(Auth::user()->role->role_name == 'Moderator') {
-    //     //     return false;
-    //     // }
-
-    //     // return true;
-    //     dd(Auth::user()->hasPermissions('Moderator'));
-    // }
+    public static function shouldRegisterNavigation(): bool
+    {
+        $allowed_array = ['Superadmin', 'Administrator','Moderator'];
+        if (in_array(Auth::user()->role->role_name, $allowed_array)) {
+            return true;
+        }
+        return false;
+    }
 
 }

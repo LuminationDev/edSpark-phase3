@@ -39,20 +39,20 @@ const timeFormatter = (originalFormat) => {
                 :background-url="contentFromBase['cover_image']"
             >
                 <template #titleText>
-                    {{ contentFromBase['post_title'] }}
+                    {{ contentFromBase['title'] }}
                 </template>
                 <template #authorName>
                     {{ contentFromBase['author']['author_name'] ? contentFromBase['author']['author_name'] :
                         contentFromBase['author'] }}
                 </template>
                 <template #contentDate>
-                    {{ timeFormatter(contentFromBase['post_modified']) }}
+                    {{ timeFormatter(contentFromBase['modified_at']) }}
                 </template>
                 <!-- <template #subtitleText1>
                     {{ timeFormatter(contentFromBase['post_date']) }}
                 </template> -->
                 <template #subtitleText2>
-                    <div v-html="contentFromBase['post_excerpt']" />
+                    <div v-html="contentFromBase['excerpt']" />
                 </template>
             </BaseHero>
         </template>
@@ -66,7 +66,7 @@ const timeFormatter = (originalFormat) => {
                     </div>
                     <div
                         class="flex content-paragraph flex-col max-w-full overflow-hidden text-lg"
-                        v-html="contentFromBase['post_content']"
+                        v-html="contentFromBase['content']"
                     />
                     <template
                         v-for="(content, index) in contentFromBase['extra_content']"

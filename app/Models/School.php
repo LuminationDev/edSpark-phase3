@@ -4,10 +4,11 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Spatie\Tags\HasTags;
 
 class School extends Model
 {
-    use HasFactory;
+    use HasFactory, HasTags;
 
     /**
      * The table associated with the model.
@@ -44,5 +45,14 @@ class School extends Model
     public function site()
     {
         return $this->belongsTo(Site::class,'site_id', 'site_id');
+    }
+    public function likes(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(Like::class, 'post_id', 'id')->where('post_type', 'school');
+    }
+
+    public function bookmarks(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(Bookmark::class, 'post_id', 'id')->where('post_type', 'school');
     }
 }

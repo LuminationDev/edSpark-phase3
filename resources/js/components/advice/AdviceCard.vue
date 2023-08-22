@@ -1,4 +1,5 @@
 <script setup>
+import lowerSlugify from "@/js/helpers/slugifyHelper";
 import {computed} from "vue";
 import GenericCard from "@/js/components/card/GenericCard.vue";
 import AdviceTypeTag from "@/js/components/advice/AdviceTypeTag.vue";
@@ -8,7 +9,7 @@ import {storeToRefs} from "pinia";
 import {useUserStore} from "@/js/stores/useUserStore";
 
 const props = defineProps({
-    adviceContent: {
+    data: {
         type: Object, required: true
     },
     showIcon: {
@@ -19,7 +20,6 @@ const props = defineProps({
     }
 });
 
-const {post_id, post_title, cover_image, advice_type, created_at, post_excerpt, author} = props.adviceContent
 const router = useRouter()
 const {currentUser} = storeToRefs(useUserStore())
 
@@ -35,38 +35,35 @@ const handleClickAdviceCard = () => {
      */
     router.push({
         name: "advice-single",
-        params: {id: props.adviceContent.post_id},
-        state: {content: JSON.stringify(props.adviceContent)}
+        params: {id: props.data.id, slug: lowerSlugify(props.data.title)},
+        state: {content: JSON.stringify(props.data)}
     })
 
-}
-
-const likeBookmarkData = {
-    post_id: props.adviceContent.post_id,
-    user_id: currentUser.value.id || 9999,
-    post_type: 'advice'
 }
 
 </script>
 
 <template>
     <GenericCard
-        :key="post_id"
-        :title="post_title"
-        :display-content="post_excerpt"
-        :display-author="author"
-        :display-date="created_at"
+        :id="data.id"
+        :key="data.guid"
+        :title="data.title"
+        :display-content="data.excerpt"
+        :display-author="data.author"
+        :display-date="data.created_at"
         :number-per-row="numberPerRow"
-        :cover-image="cover_image"
+        :cover-image="data.cover_image"
         :click-callback="handleClickAdviceCard"
-        :like-bookmark-data="likeBookmarkData"
         :section-type="'advice'"
+        :is-liked-by-user="data.isLikedByUser"
+        :is-bookmarked-by-user="data.isBookmarkedByUser"
+        :guid="data.guid"
     >
         <template
-            v-if="advice_type.length > 0"
+            v-if="data.type.length > 0"
             #typeTag
         >
-            <AdviceTypeTag :type-tag="advice_type" />
+            <AdviceTypeTag :type-tag="data.type" />
         </template>
         <template
             v-if="showIcon"

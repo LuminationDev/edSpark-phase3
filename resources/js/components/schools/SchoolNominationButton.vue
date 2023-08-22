@@ -1,4 +1,5 @@
 <script setup>
+import {API_ENDPOINTS} from "@/js/constants/API_ENDPOINTS";
 import {ref, computed, onMounted} from 'vue'
 import GenericButton from "@/js/components/button/GenericButton.vue";
 import SearchDropdown from 'search-dropdown-vue';
@@ -25,7 +26,7 @@ const selectedStaff = ref({})
 const nominatedStaffList = ref([])
 
 onMounted(() => {
-    axios.get(`${serverURL}/fetchStaffFromSite/${props.siteId}`).then(res => {
+    axios.get(`${API_ENDPOINTS.SCHOOL.FETCH_STAFF_FROM_SITE}${props.siteId}`).then(res => {
         siteStaffList.value = res.data.filter(staff => staff.id !== currentUser.value.id).map(staff => {
             return {id: staff.id, name: staff.name}
         })
@@ -34,7 +35,7 @@ onMounted(() => {
     const getAllNominatedUsers = async () => {
         await axios({
             method: "POST",
-            url: `${serverURL}/getNominatedUsersFromSchool`,
+            url: API_ENDPOINTS.SCHOOL.GET_NOMINATED_USER_FROM_SCHOOL,
             data: {
                 "site_id": props.siteId,
                 "school_id": props.schoolId,
@@ -70,7 +71,7 @@ const handleSelectedStaffDropdown = (payload) => {
     if (payload.id) {
         axios({
             method: "POST",
-            url: `${serverURL}/nominateUserForSchool`,
+            url: API_ENDPOINTS.SCHOOL.NOMINATE_USER_FOR_SCHOOL,
             data: {
                 "site_id": props.siteId,
                 "school_id": props.schoolId,
@@ -100,7 +101,7 @@ const handleDeleteNominatedUser = async (staffId) => {
     if (staffId) {
         await axios({
             method: "POST",
-            url: `${serverURL}/deleteNominatedUser`,
+            url: API_ENDPOINTS.SCHOOL.DELETE_NOMINATED_USER,
             data: {
                 "site_id": props.siteId,
                 "school_id": props.schoolId,
@@ -122,12 +123,12 @@ const handleDeleteNominatedUser = async (staffId) => {
 </script>
 
 <template>
-    <div class="relative flex flex-row justify-around w-full items-center justify-center">
-        <div class="w-1/2 h-full flex items-center">
+    <div class="flex justify-around justify-center items-center flex-row relative w-full">
+        <div class="flex items-center h-full w-1/2">
             <GenericButton
                 :callback="handleClickNominationButton"
                 type="school"
-                class="w-48 !rounded px-2"
+                class="!rounded px-2 w-48"
                 :disabled="!doesSiteStaffListExists"
             >
                 <div class="">
@@ -135,7 +136,7 @@ const handleDeleteNominatedUser = async (staffId) => {
                 </div>
             </GenericButton>
         </div>
-        <div class="my-3 px-1 py-2 w-1/2 searchDropdown form">
+        <div class="form my-3 px-1 py-2 searchDropdown w-1/2">
             <form
                 v-if="doesSiteStaffListExists"
                 autocomplete="off"
@@ -151,25 +152,25 @@ const handleDeleteNominatedUser = async (staffId) => {
             </div>
         </div>
     </div>
-    <div class="nominatedUsers flex flex-col px-6 text-lg">
+    <div class="flex flex-col nominatedUsers px-6 text-lg">
         <p>Nominated Staff:</p>
         <p class="text-sm">
             Click on the name to remove nomination
         </p>
-        <ul class="unorderedListOfNominatedUsers list-disc ">
+        <ul class="list-disc unorderedListOfNominatedUsers">
             <div
                 v-for="(staff,index) in nominatedStaffList"
                 :key="index"
                 class="flex flex-row"
             >
                 <li
-                    class="hover:font-semibold hover:cursor-pointer "
+                    class="hover:cursor-pointer hover:font-semibold"
                 >
                     {{ staff.name }} {{ `(${staff.id})` }}
                 </li>
                 <GenericButton
                     type="plain"
-                    class="ml-4 text-sm items-center flex hover:!text-red-600 hover:cursor-pointer"
+                    class="flex items-center ml-4 text-sm hover:!text-red-600 hover:cursor-pointer"
                     :callback="() => handleDeleteNominatedUser(staff.id)"
                 >
                     Delete

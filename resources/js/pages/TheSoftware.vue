@@ -1,10 +1,12 @@
 <script setup>
+import CarouselGenerator from "@/js/components/card/CarouselGenerator.vue";
+import {API_ENDPOINTS} from "@/js/constants/API_ENDPOINTS";
 import {computed} from "vue";
 import {useRouter} from "vue-router";
 import {storeToRefs} from "pinia";
 import useSWRV from "swrv";
 
-import {axiosFetcher} from "@/js/helpers/fetcher";
+import {axiosFetcherParams} from "@/js/helpers/fetcher";
 import useSwrvState from "@/js/helpers/useSwrvState";
 import {useUserStore} from "@/js/stores/useUserStore";
 import {useWindowStore} from "@/js/stores/useWindowStore";
@@ -36,7 +38,7 @@ const {
     data: softwaresData,
     error: softwaresError,
     isValidating: softwaresIsValidating
-} = useSWRV(() => currentUser.value.id ? `${serverURL}/fetchSoftwarePosts` : null, axiosFetcher, swrvOptions);
+} = useSWRV(() => currentUser.value.id ? API_ENDPOINTS.SOFTWARE.FETCH_SOFTWARE_POSTS : null, axiosFetcherParams(userStore.getUserRequestParam), swrvOptions);
 
 const {state: softwaresState, STATES: ALLSTATES} = useSwrvState(softwaresData, softwaresError, softwaresIsValidating);
 
@@ -55,7 +57,7 @@ const softwareLoading = computed(() => {
 
 const responsiveDisplaySoftware = computed(() => {
     if (isMobile.value) {
-        return softwaresData.value.slice(0, 4) || []
+        return softwaresData.value ? softwaresData.value.slice(0, 4) : []
     } else {
         return softwaresData.value
     }
@@ -140,18 +142,36 @@ const handleClickSeeMore = () => {
             />
         </div>
         <!--    Software Card Gallery    -->
-        <div class="grid md:grid-cols-2 grid-cols-1 gap-6 place-items-center px-10 xl:!grid-cols-3 xl:!px-20">
+        <div class="grid grid-cols-1 px-5 w-full md:!grid-cols-2 xl:!grid-cols-3 xl:!px-20">
             <template v-if="responsiveDisplaySoftware">
-                <SoftwareCard
-                    v-for="(software,index) in responsiveDisplaySoftware"
-                    :key="index"
-                    :software="software"
-                    :number-per-row="4"
+                <div
+                    class="
+                        col-span-1
+                        grid-cols-1
+                        gap-6
+                        place-items-center
+                        hidden
+                        md:!col-span-2
+                        md:!grid
+                        md:!grid-cols-2
+                        xl:!col-span-3
+                        xl:!grid-cols-3
+                        ">
+                    <SoftwareCard
+                        v-for="(software,index) in responsiveDisplaySoftware"
+                        :key="index"
+                        :data="software"
+                    />
+                </div>
+                <CarouselGenerator
+                    show-count="2"
+                    data-type="software"
+                    :data-array="responsiveDisplaySoftware"
+                    class="flex md:!hidden"
                 />
                 <GenericButton
                     v-show="isMobile"
                     :callback="handleClickSeeMore"
-                    s
                     class="
                         !bg-white
                         hover:!bg-main-darkTeal

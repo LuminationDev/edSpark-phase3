@@ -18,6 +18,7 @@ use Illuminate\Support\Facades\Auth;
 class EventmoderationResource extends Resource
 {
     protected static ?string $model = Eventmoderation::class;
+    protected static ?string $modelLabel= "Event Moderation";
 
     protected static ?string $navigationIcon = 'heroicon-o-collection';
 
@@ -133,5 +134,13 @@ class EventmoderationResource extends Resource
         }else{
             return '';
         }
+    }
+    public static function shouldRegisterNavigation(): bool
+    {
+        $allowed_array = ['Superadmin', 'Administrator','Moderator'];
+        if (in_array(Auth::user()->role->role_name, $allowed_array)) {
+            return true;
+        }
+        return false;
     }
 }

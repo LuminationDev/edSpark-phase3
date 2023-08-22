@@ -3,6 +3,7 @@
 namespace App\Filament\Resources\EventResource\Pages;
 
 use App\Filament\Resources\EventResource;
+use App\Models\Event;
 use Filament\Pages\Actions;
 use Filament\Resources\Pages\CreateRecord;
 
@@ -15,7 +16,6 @@ class CreateEvent extends CreateRecord
 
     protected function mutateFormDataBeforeCreate(array $data): array
     {
-        $data['event_location'] = [];
         if(isset($data['url'])){
             $data['event_location']['url'] = $data['url'];
         }
@@ -28,6 +28,22 @@ class CreateEvent extends CreateRecord
         $data['post_modified'] = Carbon::now();
         return $data;
     }
+
+    protected function handleRecordCreation(array $data): \Illuminate\Database\Eloquent\Model
+    {
+        // Create the main record.
+        $record = parent::handleRecordCreation($data);
+
+        // Handle tags.
+        if (isset($data['tags'])) {
+            $thatEvent = Event::find($record->id);
+            $thatEvent->attachTags($data['tags']);
+        }
+
+        return $record;
+    }
+
+
 
     protected function getRedirectUrl(): string
     {

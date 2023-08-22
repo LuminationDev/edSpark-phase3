@@ -18,6 +18,8 @@ use Illuminate\Support\Facades\Auth;
 class SiteResource extends Resource
 {
     protected static ?string $model = Site::class;
+    protected static ?string $modelLabel= "Site";
+
 
     protected static ?string $navigationGroup = 'User Management';
 
@@ -100,13 +102,10 @@ class SiteResource extends Resource
 
     public static function shouldRegisterNavigation(): bool
     {
-        // use Illuminate\Support\Facades\Auth;
-
-        // Moderator check
-        if(Auth::user()->role->role_name == 'Moderator') {
-            return false;
+        $allowed_array = ['Superadmin', 'Administrator','Moderator'];
+        if (in_array(Auth::user()->role->role_name, $allowed_array)) {
+            return true;
         }
-
-        return true;
+        return false;
     }
 }

@@ -23,6 +23,8 @@ use SplFileInfo;
 class HardwareResource extends Resource
 {
     protected static ?string $model = Hardware::class;
+    protected static ?string $modelLabel= "Hardware";
+
 
     protected static ?string $navigationGroup = 'Product Management';
     protected static ?string $navigationGroupIcon = 'heroicon-o-collection';
@@ -73,9 +75,9 @@ class HardwareResource extends Resource
                             ->relationship('brand', 'product_brand_name'),
                         Forms\Components\BelongsToSelect::make('category')
                             ->relationship('category', 'product_category_name'),
-                        // Forms\Components\Toggle::make('product_isLoan'),
-
-
+                        Forms\Components\TagsInput::make('tags')
+                            ->placeholder('Add or create tags')
+                            ->helperText('Separate tags with commas')
                     ]),
                 Forms\Components\Card::make()
                     ->schema([
@@ -208,13 +210,10 @@ class HardwareResource extends Resource
 
     public static function shouldRegisterNavigation(): bool
     {
-        // use Illuminate\Support\Facades\Auth;
-
-        // Moderator check
-        if (Auth::user()->role->role_name == 'Moderator') {
-            return false;
+        $allowed_array = ['Superadmin', 'Administrator','Moderator'];
+        if (in_array(Auth::user()->role->role_name, $allowed_array)) {
+            return true;
         }
-
-        return true;
+        return false;
     }
 }

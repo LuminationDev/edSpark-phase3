@@ -1,18 +1,19 @@
 <script setup>
 
+import {API_ENDPOINTS} from "@/js/constants/API_ENDPOINTS";
+import {swrvOptions} from "@/js/constants/swrvConstants";
+import {useUserStore} from "@/js/stores/useUserStore";
 import useSWRV from "swrv";
 import {onMounted,ref} from "vue";
 import axios from 'axios'
-
-import {serverURL} from "@/js/constants/serverUrl";
-import {axiosFetcher} from "@/js/helpers/fetcher";
+import { axiosFetcherParams} from "@/js/helpers/fetcher";
 import BaseSearch from "@/js/components/search/BaseSearch.vue";
 import GenericMultiSelectFilter from "@/js/components/search/hardware/GenericMultiSelectFilter.vue";
 
 console.log('inside hardware search')
 
-const resourceUrl = `${serverURL}/fetchAllProducts`
-const {data: hardwareList, error } = useSWRV(resourceUrl, axiosFetcher)
+const resourceUrl = API_ENDPOINTS.HARDWARE.FETCH_HARDWARE_POSTS
+const {data: hardwareList, error } = useSWRV(resourceUrl, axiosFetcherParams(useUserStore().getUserRequestParam), swrvOptions)
 
 const brandList = ref([])
 const categoryList = ref([])
@@ -20,7 +21,7 @@ const categoryList = ref([])
 onMounted(()=>{
     axios({
         method: "GET",
-        url: `${serverURL}/fetchAllBrands`
+        url: API_ENDPOINTS.HARDWARE.FETCH_ALL_BRANDS
     }).then(res => {
         console.log(res.data)
         brandList.value =  res.data.map(filter => {
@@ -30,7 +31,7 @@ onMounted(()=>{
 
     axios({
         method: "GET",
-        url: `${serverURL}/fetchAllCategories`
+        url: API_ENDPOINTS.HARDWARE.FETCH_ALL_CATEGORIES
     }).then(res => {
         console.log(res.data)
         categoryList.value = res.data.map(filter => {

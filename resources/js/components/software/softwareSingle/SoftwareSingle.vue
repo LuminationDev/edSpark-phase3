@@ -1,4 +1,5 @@
-+<script setup>
++
+<script setup>
 import BaseSingle from "@/js/components/bases/BaseSingle.vue";
 import BaseHero from "@/js/components/bases/BaseHero.vue";
 import SoftwareSingleCuratedContent from "@/js/components/software/softwareSingle/SoftwareSingleCuratedContent.vue";
@@ -50,7 +51,7 @@ const handleChangeSubmenu = (value) => {
  *  Visit profile from sinle page
  */
 const handleClickViewProfile = (author_id, author_type) => {
-    router.push(`/${author_type}/${author_id}` )
+    router.push(`/${author_type}/${author_id}`)
 }
 /**
  * End of submenu specific code  plus @emit-active-tab-to-specific-page in BaseSingle
@@ -67,7 +68,7 @@ const handleClickViewProfile = (author_id, author_type) => {
                 :background-url="contentFromBase['cover_image']"
             >
                 <template #titleText>
-                    {{ contentFromBase['post_title'] }}
+                    {{ contentFromBase['title'] }}
                 </template>
                 <template #authorName>
                     <div
@@ -91,7 +92,9 @@ const handleClickViewProfile = (author_id, author_type) => {
                                     v-if="!(contentFromBase['author']['author_type'] === 'user')"
                                     class="hover:cursor-pointer hover:text-red-200"
                                 >
-                                    <button @click="() => handleClickViewProfile(contentFromBase['author']['author_id'],contentFromBase['author']['author_type'])">
+                                    <button
+                                        @click="() => handleClickViewProfile(contentFromBase['author']['author_id'],contentFromBase['author']['author_type'])"
+                                    >
                                         View Profile
                                     </button>
                                 </div>
@@ -103,20 +106,20 @@ const handleClickViewProfile = (author_id, author_type) => {
 
                 <template #subtitleText1>
                     <div class="font-semibold pt-2">
-                        {{ formatDateToDayTime(contentFromBase['post_date'] ) }}
+                        {{ formatDateToDayTime(contentFromBase['modified_at']) }}
                     </div>
                 </template>
                 <template #subtitleText2>
-                    <div v-html="contentFromBase['post_excerpt']" />
+                    <div v-html="contentFromBase['excerpt']" />
                 </template>
                 <template #subtitleContent>
                     <div class="SoftwareTypeInfoInHero flex flex-row gap-4 mt-4">
                         <SoftwareIconGenerator
-                            :icon-name="contentFromBase['software_type'][0]"
+                            :icon-name="contentFromBase['type'][0]"
                             class="h-14 w-14"
                         />
                         <p class="flex justify-center items-center font-light">
-                            {{ contentFromBase['software_type'][0] }}
+                            {{ contentFromBase['type'][0] }}
                         </p>
                     </div>
                 </template>
@@ -146,7 +149,7 @@ const handleClickViewProfile = (author_id, author_type) => {
                         </div>
                         <div
                             class="flex content-paragraph flex-col max-w-full overflow-hidden text-lg"
-                            v-html="contentFromBase['post_content']"
+                            v-html="contentFromBase['content']"
                         />
                         <div
                             v-if="contentFromBase['extra_content'] && contentFromBase['extra_content'].length"
@@ -187,7 +190,10 @@ const handleClickViewProfile = (author_id, author_type) => {
                     </div>
                 </template>
                 <template v-else-if="activeSubmenu === 'access'">
-                    <div> Welcome to how to access sub page</div>
+                    <div class="flex flex-col mt-10 overflow-hidden pt-0 px-5 softwareSingleHowToAccess">
+                        Welcome to how to
+                        access sub page
+                    </div>
                 </template>
             </div>
         </template>
@@ -214,12 +220,14 @@ const handleClickViewProfile = (author_id, author_type) => {
     p {
         padding-bottom: 12px;
     }
-    ul{
+
+    ul {
         list-style: disc;
     }
 }
-.extraContentEachContainer{
-    ul{
+
+.extraContentEachContainer {
+    ul {
         list-style: disc;
         margin-left: 12px
     }

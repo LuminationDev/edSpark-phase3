@@ -3,6 +3,7 @@
 namespace App\Filament\Resources\EventResource\Pages;
 
 use App\Filament\Resources\EventResource;
+use App\Models\Event;
 use Filament\Pages\Actions;
 use Filament\Resources\Pages\EditRecord;
 
@@ -23,7 +24,17 @@ class EditEvent extends EditRecord
 
     protected function mutateFormDatabeforeFill(array $data): array
     {
-        $data['Author'] = Auth::user()->full_name;
+        // tags
+        $record = parent::getRecord();
+        $targetData = Event::find($record->id);
+        $data['tags'] = $targetData->tags;
+        if (isset($data['tags'])) {
+            $tagNames = $data['tags']->pluck('name');
+            $data['tags'] = $tagNames;
+        }
+
+        //others
+        $data['author'] = Auth::user()->full_name;
         $location = json_decode($data['event_location']);
         $data['url'] = $location && isset($location->url) ? $location->url : '';
         $data['address'] = $location && isset($location->address) ? $location->address : '';
@@ -32,12 +43,19 @@ class EditEvent extends EditRecord
 
     protected function mutateFormDataBeforeSave(array $data): array
     {
+        // tags
+        $record = parent::getRecord();
+        $targetData = Event::find($record->id);
+        if(isset($data['tags'])){
+            $targetData->syncTags($data['tags']);
+        }
+        //others
         $data['post_modified'] = Carbon::now();
         $data['event_location'] = [];
-        if(isset($data['url'])){
+        if (isset($data['url'])) {
             $data['event_location']['url'] = $data['url'];
         }
-        if(isset($data['address'])){
+        if (isset($data['address'])) {
             $data['event_location']['address'] = $data['address'];
         }
         $data['event_location'] = json_encode($data['event_location']);

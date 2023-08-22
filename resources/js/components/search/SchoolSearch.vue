@@ -1,4 +1,6 @@
 <script setup>
+import {API_ENDPOINTS} from "@/js/constants/API_ENDPOINTS";
+import {useUserStore} from "@/js/stores/useUserStore";
 import {computed, ref} from "vue";
 import axios from 'axios'
 
@@ -6,7 +8,7 @@ import {serverURL} from "@/js/constants/serverUrl";
 import BaseSearch from "@/js/components/search/BaseSearch.vue";
 import GenericMultiSelectFilter from "@/js/components/search/hardware/GenericMultiSelectFilter.vue";
 import useSWRV from "swrv";
-import {axiosSchoolFetcher} from "@/js/helpers/fetcher";
+import {axiosSchoolFetcher, axiosSchoolFetcherParams} from "@/js/helpers/fetcher";
 
 import {schoolTech, schoolPartnerTech} from "@/js/constants/schoolTech";
 
@@ -17,7 +19,7 @@ const swrvOptions = {
 const combinedSchoolTech = [...schoolTech,...schoolPartnerTech];
 console.log(combinedSchoolTech)
 
-const {data: schoolList, error: schoolError} = useSWRV(`${serverURL}/fetchAllSchools`, axiosSchoolFetcher, swrvOptions)
+const {data: schoolList, error: schoolError} = useSWRV(API_ENDPOINTS.SCHOOL.FETCH_ALL_SCHOOLS, axiosSchoolFetcherParams(useUserStore().getUserRequestParam), swrvOptions)
 
 let schoolFilterList = [
     {name: "Preschool", value:"PRE"},
