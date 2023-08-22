@@ -39,6 +39,7 @@ const router = useRouter()
                 <AdviceRobot class="absolute lg:right-6 h-[250px] hidden md:!block md:!bottom-4 xl:!-bottom-4 xl:!right-12" />
                 <GenericButton
                     :callback="() => router.push('browse/advice')"
+                    buttonId="DAGadvice"
                     class="
                         !rounded-none
                         !text-main-navy

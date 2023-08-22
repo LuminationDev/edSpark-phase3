@@ -45,7 +45,7 @@ const handleClickViewProfile = (author_id, author_type) => {
                         <div
                             class="
                                 EventTypeTag
-                                bg-rose-700
+                                bg-secondary-mbRose
                                 font-semibold
                                 grid
                                 place-items-center

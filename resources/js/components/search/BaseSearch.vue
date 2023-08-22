@@ -189,6 +189,7 @@ const formattedSearchTitle = computed(() =>{
         </div>
         <div
             v-if="resourceList" 
+            id="resourceResult"
             class="grid grid-cols-1 gap-6 place-items-center pt-10 resourceResult md:!grid-cols-2 xl:!gap-12 xl:!grid-cols-3"
         >
             <template

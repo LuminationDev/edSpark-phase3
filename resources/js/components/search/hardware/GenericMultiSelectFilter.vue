@@ -13,6 +13,10 @@ const props = defineProps({
         type: String,
         required: true
     },
+    id:{
+        type: String,
+        required: true
+    },
     preselected:{
         type: Object,
         required: false,
@@ -47,8 +51,11 @@ if(props.preselected){
             :multiple="true"
             :placeholder="props.placeholder"
             :close-on-select="false"
+            :id="props.id"
             label="name"
             track-by="name"
+            aria-expanded="false"
+            aria-controls="resourceResult"
             @select="handleEmitSelectedFilters"
             @remove="handleEmitSelectedFilters"
         />

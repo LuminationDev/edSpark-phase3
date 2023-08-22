@@ -255,7 +255,8 @@ onMounted(() => {
             <div class="flex items-center flex-row">
                 <GenericButton
                     :callback="handleSubmitRsvp"
-                    class="!bg-rose-400 font-semibold mt-4 px-6 rounded-sm w-fit"
+                    id="rsvpBtn"
+                    class="!bg-secondary-mbRose font-semibold mt-4 px-6 rounded-sm w-fit"
                 >
                     <template #default>
                         RSVP
@@ -309,6 +310,7 @@ onMounted(() => {
             >
                 <GenericButton
                     :callback="handleClickContactOrganiser"
+                    id="contactBtn"
                     class="!bg-main-teal font-semibold mt-4 px-6 rounded-sm w-fit"
                 >
                     <template #default>
@@ -325,5 +327,6 @@ onMounted(() => {
 .searchable_dropdown :deep(.dropdown-toggle input) {
     padding: 8px !important;
     border-radius: 0.25rem;
+    color: #727272;
 }
 </style>

@@ -32,6 +32,8 @@ const handleFilter = (filters, dataPath) => {
         :live-filter-object="filterObject"
     >
         <template #filterBar>
+            <GenericMultiSelectFilter placeholder="Filter by advice type" :filter-list="adviceFilterList" id="adviceFilter"
+                data-path="advice_type" @transmit-selected-filters="handleFilter" />
             <GenericMultiSelectFilter
                 placeholder="Filter by advice type"
                 :filter-list="adviceFilterList"

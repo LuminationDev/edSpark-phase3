@@ -45,7 +45,7 @@ const handleClickEditRsvp = () =>{
             </div>
             <GenericButton
                 :callback="handleClickEditRsvp"
-                class="!bg-rose-400 font-semibold mt-4 px-6 rounded-sm w-fit"
+                class="!bg-secondary-mbRose font-semibold mt-4 px-6 rounded-sm w-fit"
             >
                 <template #default>
                     Edit RSVP

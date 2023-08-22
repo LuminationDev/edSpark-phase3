@@ -17,9 +17,7 @@ const navDropdownToggle = ref(false);
 </script>
 
 <template>
-    <router-link
-        :to="{ name: route.name }"
-    >
+    
         <li
             class="
                 cursor-pointer
@@ -34,9 +32,13 @@ const navDropdownToggle = ref(false);
                 "
             @click="props.clickCallback"
         >
+        
+        <router-link
+        :to="{ name: route.name }">
             {{ route.name }}
+
+        </router-link>
         </li>
-    </router-link>
 
     <li
         v-if="route.meta.dropdownItems"

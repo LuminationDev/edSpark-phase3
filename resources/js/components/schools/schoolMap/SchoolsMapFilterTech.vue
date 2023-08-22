@@ -15,11 +15,11 @@ const handleEmitTech = () => {
 <template>
     <div class="flex-1 w-[25%] flex flex-col">
         <label
-            for="filterType"
+            for="filterTypeTech"
             class="font-normal text-[18px] text-white"
         >Filter by tech:</label>
         <select
-            id="filterType"
+            id="filterTypeTech"
             v-model="schoolTechFilter"
             @change="handleEmitTech"
         >
