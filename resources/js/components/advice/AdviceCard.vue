@@ -40,7 +40,6 @@ const handleClickAdviceCard = () => {
     })
 
 }
-console.log(props.data)
 
 </script>
 
