@@ -95,6 +95,7 @@ class HardwareResource extends Resource
                                     ->schema([
                                         Forms\Components\Repeater::make('item')
                                             ->schema([
+                                                Forms\Components\TextInput::make('title'),
                                                 Forms\Components\TextInput::make('heading'),
                                                 Forms\Components\RichEditor::make('content')
                                                     ->disableToolbarButtons([

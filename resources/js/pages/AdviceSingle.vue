@@ -1,9 +1,9 @@
 <script setup>
 
 import BaseHero from "@/js/components/bases/BaseHero.vue";
-import AdviceSingleExtraContentRenderer from "@/js/components/advice/AdviceSingleExtraContentRenderer.vue";
 import AdviceSingleCuratedContent from "@/js/components/advice/AdviceSingleCuratedContent.vue";
 import BaseSingle from "@/js/components/bases/BaseSingle.vue";
+import ExtraResourceTemplateDisplay from "@/js/components/renderer/ExtraResourceTemplateDisplay.vue";
 
 /**
  *  type AdviceSingleContent = {
@@ -24,7 +24,7 @@ import BaseSingle from "@/js/components/bases/BaseSingle.vue";
 
 const timeFormatter = (originalFormat) => {
     const dateObj = new Date(originalFormat);
-    const options = { year: 'numeric', month: 'short', day: 'numeric' };
+    const options = {year: 'numeric', month: 'short', day: 'numeric'};
     const formattedDate = dateObj.toLocaleDateString(undefined, options);
 
     return formattedDate !== 'Invalid Date' ? formattedDate : '';
@@ -42,8 +42,10 @@ const timeFormatter = (originalFormat) => {
                     {{ contentFromBase['title'] }}
                 </template>
                 <template #authorName>
-                    {{ contentFromBase['author']['author_name'] ? contentFromBase['author']['author_name'] :
-                        contentFromBase['author'] }}
+                    {{
+                        contentFromBase['author']['author_name'] ? contentFromBase['author']['author_name'] :
+                        contentFromBase['author']
+                    }}
                 </template>
                 <template #contentDate>
                     {{ timeFormatter(contentFromBase['modified_at']) }}
@@ -57,7 +59,7 @@ const timeFormatter = (originalFormat) => {
             </BaseHero>
         </template>
 
-        <template #content="{ contentFromBase, recommendationFromBase }">
+        <template #content="{ contentFromBase }">
             <div class="adviceSingleContent flex flex-col mt-14 overflow-hidden p-4 px-8 w-full xl:!flex-row">
                 <!--    Content of the Advice    -->
                 <div class="flex flex-col flex-wrap px-2 py-4 w-full xl:!w-2/3">
@@ -68,12 +70,12 @@ const timeFormatter = (originalFormat) => {
                         class="flex content-paragraph flex-col max-w-full overflow-hidden text-lg"
                         v-html="contentFromBase['content']"
                     />
-                    <template
-                        v-for="(content, index) in contentFromBase['extra_content']"
-                        :key="index"
+                    <div
+                        v-if="contentFromBase['extra_content'] && contentFromBase['extra_content'].length"
+                        class="extraResourcesContainer"
                     >
-                        <AdviceSingleExtraContentRenderer :content="content" />
-                    </template>
+                        <ExtraResourceTemplateDisplay :content="contentFromBase['extra_content']" />
+                    </div>
                 </div>
                 <!--      Curated Content      -->
                 <div class="flex flex-col w-full xl:!w-1/3">

@@ -3,22 +3,19 @@ import BaseHero from '@/js/components/bases/BaseHero.vue';
 import BaseSingle from '@/js/components/bases/BaseSingle.vue';
 import BaseSingleSubmenu from "@/js/components/bases/BaseSingleSubmenu.vue";
 import HardwareCarousel from '@/js/components/hardware/HardwareCarousel.vue';
+import HardwareExtraContent from "@/js/components/hardware/HardwareExtraContent.vue";
 import HardwareSingleBrandContent from "@/js/components/hardware/HardwareSingleBrandContent.vue";
-import GenericCard from '../components/card/GenericCard.vue';
-import HardwareExtraContentRenderer from "@/js/components/hardware/HardwareExtraContentRenderer.vue";
+import ExtraResourceTemplateDisplay from "@/js/components/renderer/ExtraResourceTemplateDisplay.vue";
 
 import {ref, onBeforeMount, onMounted, computed} from 'vue';
 import {useRoute, useRouter} from 'vue-router';
 import {useHardwareStore} from '../stores/useHardwareStore.js';
 import {useUserStore} from "@/js/stores/useUserStore";
 import {storeToRefs} from "pinia";
-import HardwareCard from "@/js/components/hardware/HardwareCard.vue";
 import HardwareLaptopTechSpecs from "@/js/components/hardware/HardwareLaptopTechSpecs.vue";
 import HardwareEmergingTechSpecs from "@/js/components/hardware/HardwareEmergingTechSpecs.vue";
 import HardwareAudioVisualTechSpecs from "@/js/components/hardware/HardwareAudioVisualTechSpecs.vue";
 
-const hardwareStore = useHardwareStore();
-const recommendedResources = ref([]);
 const baseContentRef = ref(null);
 const route = useRoute();
 const router = useRouter();
@@ -97,7 +94,7 @@ const handleChangeSubmenu = (value) => {
             </BaseHero>
         </template>
 
-        <template #content="{ contentFromBase,recommendationFromBase }">
+        <template #content="{ contentFromBase }">
             <div class="flex flex-row mt-20 w-full">
                 <template v-if="activeSubmenu === hardwareSubmenu[0]['value']">
                     <div
@@ -105,7 +102,6 @@ const handleChangeSubmenu = (value) => {
                         ref="baseContentRef"
                         class="flex flex-col overflow-hidden px-5 py-4 w-full lg:!px-20"
                     >
-                        <!-- Carousel here -->
                         <HardwareCarousel
                             :slide-items="contentFromBase"
                         />
@@ -130,12 +126,12 @@ const handleChangeSubmenu = (value) => {
                                         "
                                     v-html="contentFromBase['content']"
                                 />
-                                <template
-                                    v-for="(content,index) in contentFromBase['extra_content']"
-                                    :key="index"
+                                <div
+                                    v-if="contentFromBase['extra_content'] && contentFromBase['extra_content'].length"
+                                    class="extraResourcesContainer"
                                 >
-                                    <HardwareExtraContentRenderer :content="content" />
-                                </template>
+                                    <ExtraResourceTemplateDisplay :content="contentFromBase['extra_content']" />
+                                </div>
                             </div>
 
                             <div

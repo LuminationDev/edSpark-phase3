@@ -2,6 +2,7 @@
 <script setup>
 import BaseSingle from "@/js/components/bases/BaseSingle.vue";
 import BaseHero from "@/js/components/bases/BaseHero.vue";
+import ExtraResourceTemplateDisplay from "@/js/components/renderer/ExtraResourceTemplateDisplay.vue";
 import SoftwareSingleCuratedContent from "@/js/components/software/softwareSingle/SoftwareSingleCuratedContent.vue";
 import BaseSingleSubmenu from "@/js/components/bases/BaseSingleSubmenu.vue";
 import {ref} from 'vue'
@@ -155,34 +156,7 @@ const handleClickViewProfile = (author_id, author_type) => {
                             v-if="contentFromBase['extra_content'] && contentFromBase['extra_content'].length"
                             class="extraResourcesContainer"
                         >
-                            <div class="extraContentHeading flex font-bold py-4 text-2xl uppercase w-full">
-                                Extra resources
-                            </div>
-                            <div class="bg-indigo-800 flex flex-col px-6 py-2 text-white">
-                                <div
-                                    v-for="(extra_content,index) in contentFromBase['extra_content']"
-                                    :key="index"
-                                    class="py-2"
-                                >
-                                    <template v-if="findNestedKeyValue(extra_content,'item')">
-                                        <div
-                                            v-for="(item, index) in findNestedKeyValue(extra_content,'item')"
-                                            :key="index"
-                                            class="extraContentEachContainer mb-6"
-                                        >
-                                            <div
-                                                v-for="(innerItem, innerIndex) in item"
-                                                :key="innerIndex"
-                                            >
-                                                <p class="font-semibold text-white text-xl">
-                                                    {{ innerItem.heading }}
-                                                </p>
-                                                <div v-html="innerItem.content" />
-                                            </div>
-                                        </div>
-                                    </template>
-                                </div>
-                            </div>
+                            <ExtraResourceTemplateDisplay :content="contentFromBase['extra_content']" />
                         </div>
                     </div>
                     <div class="flex flex-col w-full xl:!w-1/3">
