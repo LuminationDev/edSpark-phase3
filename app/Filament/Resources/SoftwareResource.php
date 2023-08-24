@@ -139,6 +139,9 @@ class SoftwareResource extends Resource
                                         ]),
                                     Forms\Components\Builder\Block::make('extra_resources')
                                         ->schema([
+                                            Forms\Components\TextInput::make('resource_title')
+                                                ->label('Extra resources title')
+                                                ->maxLength(255),
                                             Forms\Components\Repeater::make('item')
                                                 ->schema([
                                                     Forms\Components\TextInput::make('heading'),

@@ -4,11 +4,12 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Laravel\Scout\Searchable;
 use Spatie\Tags\HasTags;
 
 class Event extends Model
 {
-    use HasFactory,HasTags;
+    use HasFactory,HasTags, Searchable;
 
     /**
      * The table associated with the model.
@@ -53,6 +54,30 @@ class Event extends Model
     public function bookmarks(): \Illuminate\Database\Eloquent\Relations\HasMany
     {
         return $this->hasMany(Bookmark::class, 'post_id', 'id')->where('post_type', 'event');
+    }
+    public function getSearchResult() {
+        return [
+            'title' => $this->event_title,
+            'content' => strip_tags($this->event_content),
+            'tags' => $this->tags,
+            'author' =>[
+                'author_id' => $this->author->id ?? '',
+                'author_name' => $this->author->full_name ?? '',
+                'author_type' => $this->author->usertype->user_type_name ?? '',
+            ],
+        ];
+    }
+    public function searchable(): bool
+    {
+        return true;
+    }
+    public function toSearchableArray(): array
+    {
+        return [
+            'title' => $this->event_title,
+            'slug' => $this->event_title,
+            'content' => $this->event_content,
+        ];
     }
 
     protected $with = ['tags'];

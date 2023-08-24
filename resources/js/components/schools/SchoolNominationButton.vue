@@ -152,7 +152,10 @@ const handleDeleteNominatedUser = async (staffId) => {
             </div>
         </div>
     </div>
-    <div class="flex flex-col nominatedUsers px-6 text-lg">
+    <div
+        v-if="doesSiteStaffListExists"
+        class="flex flex-col nominatedUsers px-6 text-lg"
+    >
         <p>Nominated Staff:</p>
         <p class="text-sm">
             Click on the name to remove nomination
