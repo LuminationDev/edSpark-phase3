@@ -67,10 +67,6 @@ class Event extends Model
             ],
         ];
     }
-    public function searchable(): bool
-    {
-        return true;
-    }
     public function toSearchableArray(): array
     {
         return [

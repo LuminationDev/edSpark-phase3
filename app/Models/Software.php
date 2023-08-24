@@ -9,7 +9,9 @@ use Spatie\Tags\HasTags;
 
 class Software extends Model
 {
-    use HasFactory, HasTags, Searchable;
+    use
+        HasFactory, HasTags;
+    use Searchable;
 
     /**
      * The table associated with the model.
@@ -67,11 +69,6 @@ class Software extends Model
                 'author_type' => $this->author->usertype->user_type_name ?? '',
             ],
         ];
-    }
-
-    public function searchable(): bool
-    {
-        return true;
     }
 
     public function toSearchableArray(): array

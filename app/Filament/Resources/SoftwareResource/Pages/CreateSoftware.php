@@ -26,7 +26,7 @@ class CreateSoftware extends CreateRecord
     protected function handleRecordCreation(array $data): Model
     {
         $record =  parent::handleRecordCreation($data);
-
+        $record->save();
         //handle tags
         if (isset($data['tags'])) {
             $thatEvent = Software::find($record->id);

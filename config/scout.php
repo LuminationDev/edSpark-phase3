@@ -20,7 +20,7 @@ return [
     /*
     |--------------------------------------------------------------------------
     | Index Prefix
-    |--------------------------------------------------------------------------
+    |---------------------------------------------------------------------------
     |
     | Here you may specify a prefix that will be applied to all search index
     | names used by Scout. This prefix may be useful if you have multiple
