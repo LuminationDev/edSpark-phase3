@@ -2,361 +2,262 @@
 
 namespace App\Http\Controllers;
 
+use Exception;
 use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Usermeta;
 use Carbon\Carbon;
 use Illuminate\Support\Str;
 use App\Helpers\OutputHelper;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Http\JsonResponse;
 
 class UserController extends Controller
 {
-    public function fetchUser($id)
+    public function fetchUser($id): JsonResponse
     {
+        try {
+            $user = User::find($id);
 
-        $user = User::find($id);
-
-        $userMetaData = Usermeta::where('user_id', $id)->get();
-        $userMetaDataToSend = [];
-        if ($userMetaData) {
-            foreach ($userMetaData as $key => $value) {
-                $result = [
-                    'user_meta_key' => $value->user_meta_key,
-                    'user_meta_value' => explode(', ', $value->user_meta_value)
-                ];
-                $userMetaDataToSend[] = $result;
+            if (!$user) {
+                return response()->json(['message' => 'User not found'], 404);
             }
-        }
 
-        $data = [
+            $userData = $this->getUserData($user);
+            $userMetaData = $this->getUserMetadataById($user->id);
+
+            $response = array_merge($userData, ['metadata' => $userMetaData]);
+
+            return response()->json($response);
+
+        } catch (Exception $e) {
+            return response()->json(['message' => 'Error fetching user data', 'error' => $e->getMessage()], 500);
+        }
+    }
+
+    public function fetchUserByEmail($email): JsonResponse
+    {
+        try {
+            $user = User::where('email', $email)->first();
+
+            if (!$user) {
+                return response()->json([
+                    'message' => "User does not exist",
+                    'status' => 404
+                ]);
+            }
+
+            $userData = $this->getUserData($user);
+            $userMetaData = $this->getUserMetadataById($user->id);
+
+            return response()->json([
+                'message' => "User exists",
+                'user' => array_merge($userData, ['metadata' => $userMetaData]),
+                'isFirstVisit' => false, // Always false in current logic
+                'status' => 200
+            ]);
+
+        } catch (Exception $e) {
+            return response()->json([
+                'message' => "Error fetching the user",
+                'error' => $e->getMessage(),
+                'status' => 500
+            ]);
+        }
+    }
+
+    private function getUserData($user): array
+    {
+        return [
             'id' => $user->id,
             'full_name' => $user->full_name,
-            'display_name' => ($user->display_name) ? $user->display_name : NULL,
+            'display_name' => $user->display_name ?: NULL,
             'email' => $user->email,
-            'site_id' => ($user->site_id) ?:NULL,
+            'site_id' => $user->site_id ?: NULL,
             'status' => $user->status,
-            'role' => ($user->role) ? $user->role->role_name : NULL,
-            'permissions' => ($user->role) ? $user->role->permissions->pluck('permission_name') : NULL,
-            'metadata' => ($userMetaDataToSend) ? $userMetaDataToSend : NULL,
-            'site'=>[
-                'site_name' => isset($user->site) ? $user->site->site_name : ''
-            ]
+            'role' => $user->role ? $user->role->role_name : NULL,
+            'permissions' => $user->role ? $user->role->permissions->pluck('permission_name') : NULL,
+            'site' => ['site_name' => $user->site->site_name]
+        ];
+    }
+
+    private function getUserMetadataById($userId): array
+    {
+        $userMetaData = Usermeta::where('user_id', $userId)->get();
+        $metaDataArray = [];
+
+        foreach ($userMetaData as $meta) {
+            $metaDataArray[] = [
+                'user_meta_key' => $meta->user_meta_key,
+                'user_meta_value' => explode(', ', $meta->user_meta_value)
+            ];
+        }
+
+        return $metaDataArray;
+    }
+
+    public function createUser(Request $request): \Illuminate\Http\Response|JsonResponse|\Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\Routing\ResponseFactory
+    {
+        if ($request->isMethod('post')) {
+            try {
+                $user = User::where('email', $request->email)->first();
+
+                if ($user) {
+                    return response('User Already exist', 403);
+                }
+
+                $userId = $this->handleMainDataCreation($request->all());
+                $this->handleMetadata($request->metadata, $userId);
+                $imageUrl = $this->handleUserAvatar($request->userAvatar, $userId);
+
+                return response()->json([
+                    'message' => "User added successfully",
+                    'uid' => $userId,
+                    'avatarUrl' => $imageUrl,
+                    'status' => 200
+                ]);
+            } catch (Exception $e) {
+                return response()->json([
+                    'message' => "Error creating the user",
+                    'error' => $e->getMessage(),
+                    'status' => 500
+                ]);
+            }
+        }
+
+        return response()->json(['message' => 'Invalid request method', 'status' => 400]);
+    }
+
+    private function handleMainDataCreation($data)
+    {
+        $dataToInsert = [
+            'full_name' => $data['full_name'],
+            'email' => $data['email'],
+            'display_name' => $data['display_name'],
+            'status' => 'Active',
+            'role_id' => $data['role_id'],
+            'site_id' => intval($data['site_id']),
+            'created_at' => Carbon::now(),
+            'updated_at' => Carbon::now()
         ];
 
-        return response()->json($data);
+        return User::insertGetId($dataToInsert);
     }
 
-    public function fetchUserByEmail($email)
+    public function updateFirstTimeVisitUser(Request $request): \Illuminate\Http\JsonResponse
     {
-
-        $user = User::where('email', $email)->get();
-        $error = '';
-        $data = [];
-        $isFirstVisit = false;
-
-        try {
-            if (isset($user)) {
-                $user_id = $user['id'];
-
-                $userMetaData = Usermeta::where('user_id', $user_id)->get();
-                $userMetaDataToSend = [];
-                if ($userMetaData) {
-                    foreach ($userMetaData as $key => $value) {
-                        $result = [
-                            'user_meta_key' => $value->user_meta_key,
-                            'user_meta_value' => explode(', ', $value->user_meta_value)
-                        ];
-                        $userMetaDataToSend[] = $result;
-                    }
-                }
-
-                $data[] = [
-                    'id' => $user->id,
-                    'full_name' => $user->full_name,
-                    'display_name' => ($user->display_name) ? $user->display_name : NULL,
-                    'email' => $user->email,
-                    'status' => $user->status,
-                    'role' => ($user->role) ? $user->role->role_name : NULL,
-                    'permissions' => ($user->role) ? $user->role->permissions->pluck('permission_name') : NULL,
-                    'metadata' => ($userMetaDataToSend) ? $userMetaDataToSend : NULL,
-                    'site'=>[
-                        'site_name' => $user->site->site_name
-                    ]
-                ];
-
-                $isFirstVisit = false;
-
-                // return response()->json($data);
-            } else {
-                $isFirstVisit = false;
-            }
-
-            return response()->json([
-                'message' => isset($data) ? "User exists" : "User does not exist",
-                'user' => isset($data) ? $data : NULL,
-                'isFirstVisit' => $isFirstVisit,
-                'error' => $error,
-                'status' => 200
-            ]);
-        } catch (Exception $e) {
-            $error = $e->getMessage();
-        }
-
-
-    }
-
-    public function createUser(Request $request)
-    {
-        $data = $request->all();
-
         if ($request->isMethod('post')) {
-            $user = User::where('email', $data['email'])->get();
-            // user already exists
-            if (count($user) > 0) {
-                return response('User Already exist', 403);
-            }
 
-            $error = '';
-            if ($data) {
-                try {
-                    $dataToInsert = [
-                        'full_name' => $data['full_name'],
-                        'email' => $data['email'],
-                        'display_name' => $data['display_name'],
-                        'status' => 'Active',
-                        'role_id' => $data['role_id'],
-                        'site_id' => intval($data['site_id']),
-                        'created_at' => Carbon::now(),
-                        'updated_at' => Carbon::now()
-                    ];
-                    $userId = User::insertGetId($dataToInsert);
-                } catch (Exception $e) {
-                    $error = $e->getMessage();
-                }
+            try {
+                $user = User::where('email', $request->email)->firstOrFail();
 
-                // Handle Metadata
-                try {
-                    $metadata = json_decode($data['metadata']);
-                    try {
-                        foreach ($metadata as $metakey => $metavalue) {
-                            $checkMetaData = Usermeta::where('user_id', '=', $userId)
-                                ->where('user_meta_key', '=', $metakey)
-                                ->first();
-
-                            if ($checkMetaData) { // IF EXISTS UPDATE
-                                $checkMetaData->update([
-                                    'user_meta_key' => $metakey,
-                                    'user_meta_value' => (is_string($metavalue)) ? $metavalue : implode(', ', $metavalue),
-                                ]);
-                            } else { // IF NOT CREATE A NEW USER META
-                                Usermeta::create([
-                                    'user_id' => $userId,
-                                    'user_meta_key' => $metakey,
-                                    'user_meta_value' => (is_string($metavalue)) ? $metavalue : implode(', ', $metavalue)
-                                ]);
-                            }
-                        }
-                        // CHECK IN USER META TABLE
-
-                    } catch (Exception $e) {
-                        $error = $e->getMessage();
-                    }
-
-                } catch (Exception $e) {
-                    $error = $e->getMessage();
-                }
-
-                // Handle User Avatar
-                try {
-                    if ($data['userAvatar']) {
-                        $userAvatar = $data['userAvatar'];
-                        $prefix = "edpsark-user";
-                        $imgName = $prefix . '-' . md5(Str::random(30) . time() . '_' . $userAvatar) . '.' . $userAvatar->getClientOriginalExtension();
-                        $userAvatar->storeAs('public/uploads/user', $imgName);
-                        $imageUrl = "uploads\/user\/" . $imgName;
-
-                        $result = [
-                            'user_id' => $userId,
-                            'user_meta_key' => 'userAvatar',
-                            'user_meta_value' => $imageUrl,
-                            'created_at' => Carbon::now(),
-                            'updated_at' => Carbon::now(),
-                        ];
-                        Usermeta::insert($result);
-                    }
-                } catch (Exception $e) {
-                    $error = $e->getMessage();
-                }
-
-            }
-
-            return response()->json([
-                'message' => "User added successfully",
-                'uid' => $userId,
-                'avatarUrl' => $imageUrl,
-                'error' => $error,
-                'status' => 200
-            ]);
-        }
-    }
-
-    public function updateFirstTimeVisitUser(Request $request)
-    {
-        $data = $request->all();
-        // dd($data);
-        if ($request->isMethod('post')) {
-            $user = User::where('email', $data['email'])->first();
-            $error = '';
-            if ($data) {
-                // Handle Main Data
-                try {
-                    $dataToUpdate = [
-                        'full_name' => $data['full_name'],
-                        'display_name' => $data['display_name'],
-                        'status' => 'Active',
-                        'role_id' => $data['role_id'],
-                        'site_id' => intval($data['site_id']),
-                        'isFirstTimeVisit' => FALSE,
-                        'updated_at' => Carbon::now()
-                    ];
-                    $user->update($dataToUpdate);
-                } catch (Exception $e){
-                    $error = $e->getMessage();
-                }
-
-                // Handle Metadata
-                try {
-                    $metadata = json_decode($data['metadata']);
-                    try {
-                        foreach ($metadata as $metakey => $metavalue) {
-                            $checkMetaData = Usermeta::where('user_id', '=', $user->id)
-                                ->where('user_meta_key', '=', $metakey)
-                                ->first();
-
-                            if ($checkMetaData) { // IF EXISTS UPDATE
-                                $checkMetaData->update([
-                                    'user_meta_key' => $metakey,
-                                    'user_meta_value' => (is_string($metavalue)) ? $metavalue : implode(', ', $metavalue),
-                                ]);
-                            } else { // IF NOT CREATE A NEW USER META
-                                Usermeta::create([
-                                    'user_id' => $user->id,
-                                    'user_meta_key' => $metakey,
-                                    'user_meta_value' => (is_string($metavalue)) ? $metavalue : implode(', ', $metavalue)
-                                ]);
-                            }
-                        }
-
-                    } catch (Exception $e) {
-                        $error = $e->getMessage();
-                    }
-                } catch (Exception $e) {
-                    $error = $e->getMessage();
-                }
-
-                // Handle User Avatar
-                try {
-                    if ($data['userAvatar']) {
-                        $userAvatar = $data['userAvatar'];
-                        $prefix = "edpsark-user";
-                        $imgName = $prefix . '-' . md5(Str::random(30) . time() . '_' . $userAvatar) . '.' . $userAvatar->getClientOriginalExtension();
-                        $userAvatar->storeAs('public/uploads/user', $imgName);
-                        $imageUrl = "uploads\/user\/" . $imgName;
-
-                        $result = [
-                            'user_id' => $user->id,
-                            'user_meta_key' => 'userAvatar',
-                            'user_meta_value' => $imageUrl,
-                            'created_at' => Carbon::now(),
-                            'updated_at' => Carbon::now(),
-                        ];
-                        Usermeta::insert($result);
-                    }
-                } catch (Exception $e){
-                    $error =  $e->getMessage();
-                }
+                $this->handleMainData($request->all(), $user);
+                $this->handleMetadata($request->metadata, $user);
+                $imageUrl = $this->handleUserAvatar($request->userAvatar, $user);
 
                 return response()->json([
                     'message' => "First time user updated successfully",
                     'uid' => $user->id,
                     'avatarUrl' => $imageUrl,
-                    'error' => $error,
                     'status' => 200
                 ]);
-
-
-
+            } catch (Exception $e) {
+                return response()->json([
+                    'message' => "Error updating the user",
+                    'error' => $e->getMessage(),
+                    'status' => 500
+                ]);
             }
+        }
+
+        return response()->json(['message' => 'Invalid request method', 'status' => 400]);
+    }
+
+    private function handleMainData($data, $user)
+    {
+        $dataToUpdate = [
+            'full_name' => $data['full_name'],
+            'display_name' => $data['display_name'],
+            'status' => 'Active',
+            'role_id' => $data['role_id'],
+            'site_id' => intval($data['site_id']),
+            'isFirstTimeVisit' => FALSE,
+            'updated_at' => Carbon::now()
+        ];
+        $user->update($dataToUpdate);
+    }
+
+    private function handleMetadata($metadata, $user)
+    {
+        $metadata = json_decode($metadata);
+        foreach ($metadata as $metakey => $metavalue) {
+            $meta = Usermeta::firstOrNew(['user_id' => $user->id, 'user_meta_key' => $metakey]);
+            $meta->user_meta_value = (is_string($metavalue)) ? $metavalue : implode(', ', $metavalue);
+            $meta->save();
         }
     }
 
+    private function handleUserAvatar($userAvatar, $user): ?string
+    {
+        if ($userAvatar) {
+            $prefix = "edpsark-user";
+            $imgName = $prefix . '-' . md5(Str::random(30) . time() . '_' . $userAvatar) . '.' . $userAvatar->getClientOriginalExtension();
+            $userAvatar->storeAs('public/uploads/user', $imgName);
+            $imageUrl = "uploads\/user\/" . $imgName;
+
+            Usermeta::updateOrCreate(
+                ['user_id' => $user->id, 'user_meta_key' => 'userAvatar'],
+                ['user_meta_value' => $imageUrl]
+            );
+
+            return $imageUrl;
+        }
+        return null;
+    }
 
 
-    public function updateUser(Request $request)
+    public function updateUser(Request $request): JsonResponse
     {
         if ($request->isMethod('post')) {
+            try {
+                $userId = $request->id;
 
-            $userId = $request->id;
-            $data = $request->data;
-            $metaData = $request->metaData;
-            $updatedData = [];
-            $updatedMetaData = [];
-
-            $error = '';
-            /**
-             * If Data exists
-             */
-            if ($data) {
-
-                try {
-                    User::where('id', '=', $userId)
-                        ->update([$data['updateField'] => $data['updateValue']]);
-
-                    $updatedUser = User::find($userId);
-                } catch (Exception $e) {
-                    $error = $e->getMessage();
+                if ($request->data) {
+                    $this->handleUserDataUpdate($request->data, $userId);
                 }
-            }
 
-            /*
-             * If MetaData exists
-             */
-            if ($metaData) {
-
-                try {
-                    // CHECK IN USER META TABLE
-                    $checkMetaData = Usermeta::where('user_id', '=', $userId)
-                        ->where('user_meta_key', '=', $metaData['updateField'])
-                        ->first();
-
-                    if ($checkMetaData) { // IF EXISTS UPDATE
-                        $checkMetaData->update([
-                            'user_meta_key' => $metaData['updateField'],
-                            'user_meta_value' => (is_string($metaData['updateValue'])) ? $metaData['updateValue'] : implode(', ', $metaData['updateValue']),
-                        ]);
-                    } else { // IF NOT CREATE A NEW USER META
-                        Usermeta::create([
-                            'user_id' => $userId,
-                            'user_meta_key' => $metaData['updateField'],
-                            'user_meta_value' => $metaData['updateValue']
-                        ]);
-                    }
-                } catch (Exception $e) {
-                    $error = $e->getMessage();
+                if ($request->metaData) {
+                    $this->handleUserMetaDataUpdate($request->metaData, $userId);
                 }
+
+                return response()->json([
+                    'message' => "User updated successfully",
+                    'uid' => $userId,
+                    'status' => 200
+                ]);
+            } catch (Exception $e) {
+                return response()->json([
+                    'message' => "Error updating the user",
+                    'error' => $e->getMessage(),
+                    'status' => 500
+                ]);
             }
-
-            return response()->json([
-                'message' => "User updated successfully",
-                'uid' => $userId,
-
-                // 'data' => $updatedData,
-                // 'metaData' => $updatedMetaData,
-                'error' => $error,
-                'status' => 200
-            ]);
-
         }
+
+        return response()->json(['message' => 'Invalid request method', 'status' => 400]);
+    }
+
+    private function handleUserDataUpdate($data, $userId)
+    {
+        User::where('id', '=', $userId)
+            ->update([$data['updateField'] => $data['updateValue']]);
+    }
+
+    private function handleUserMetaDataUpdate($metaData, $userId)
+    {
+        $meta = Usermeta::firstOrNew(['user_id' => $userId, 'user_meta_key' => $metaData['updateField']]);
+        $meta->user_meta_value = (is_string($metaData['updateValue'])) ? $metaData['updateValue'] : implode(', ', $metaData['updateValue']);
+        $meta->save();
     }
 
     public function getUserMetadata(Request $request)
@@ -381,38 +282,54 @@ class UserController extends Controller
 
     public function checkEmail(Request $request)
     {
-        if ($request->isMethod('post')) {
-            $email = $request->email;
-            $userEmailDetails = User::where('email', '=', $email)
-                                        ->where('isFirstTimeVisit', '=', 1)
-                                        ->first();
+        if (!$request->isMethod('post')) {
+            return response()->json([
+                "message" => "Invalid request method.",
+                "status" => FALSE,
+            ], 400);
+        }
 
-            if ($userEmailDetails) {
-                return response()->json([
-                    "message" => "The email exists but not activated",
-                    "status" => TRUE,
-                    "isFirstTimeVisit" => TRUE,
-                    "userdata" => [
-                        'user_id' => $userEmailDetails->id,
-                        'user_name' => $userEmailDetails->full_name,
-                        'user_status' => $userEmailDetails->status
-                    ],
-                ]);
-            }else{
-                $existingEmailDetails = User::where('email', '=', $email)
-                                            ->where('isFirstTimeVisit', '=', 0)
-                                            ->first();
-                return response()->json([
-                    "message" => "The email is activated",
-                    "status" => TRUE,
-                    "isFirstTimeVisit" => FALSE,
-                    "userdata" => [
-                        'user_id' => $existingEmailDetails->id,
-                        'user_name' => $existingEmailDetails->full_name,
-                        'user_status' => $existingEmailDetails->status
-                    ],
-                ]);
-            }
+        $email = $request->email;
+
+        if (empty($email)) {
+            return response()->json([
+                "message" => "Email is required.",
+                "status" => FALSE,
+            ], 400);
+        }
+
+        $userEmailDetails = User::where('email', '=', $email)
+            ->first();
+
+        if (!$userEmailDetails) {
+            return response()->json([
+                "message" => "Email not found.",
+                "status" => FALSE,
+            ], 404);
+        }
+
+        if ($userEmailDetails->isFirstTimeVisit == 1) {
+            return response()->json([
+                "message" => "The email exists but not activated",
+                "status" => TRUE,
+                "isFirstTimeVisit" => TRUE,
+                "userdata" => [
+                    'user_id' => $userEmailDetails->id,
+                    'user_name' => $userEmailDetails->full_name,
+                    'user_status' => $userEmailDetails->status
+                ],
+            ]);
+        } else {
+            return response()->json([
+                "message" => "The email is activated",
+                "status" => TRUE,
+                "isFirstTimeVisit" => FALSE,
+                "userdata" => [
+                    'user_id' => $userEmailDetails->id,
+                    'user_name' => $userEmailDetails->full_name,
+                    'user_status' => $userEmailDetails->status
+                ],
+            ]);
         }
     }
 }
