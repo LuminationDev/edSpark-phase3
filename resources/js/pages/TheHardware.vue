@@ -1,6 +1,7 @@
 
 <script setup>
 import {API_ENDPOINTS} from "@/js/constants/API_ENDPOINTS";
+import {swrvOptions} from "@/js/constants/swrvConstants";
 import {useUserStore} from "@/js/stores/useUserStore";
 import HardwareHero from '../components/hardware/HardwareHero.vue';
 import HardwareInformation from '../components/hardware/HardwareInformation.vue';
@@ -10,7 +11,7 @@ import HardwareCard from '../components/hardware/HardwareCard.vue';
 import VideoConferencing from '../components/svg/VideoConferencing.vue';
 import MonitorDisplay from '../components/svg/MonitorDisplay.vue';
 
-import {computed} from 'vue';
+import {computed, ref, watch} from 'vue';
 import useSWRV from "swrv";
 import { axiosFetcherParams} from "@/js/helpers/fetcher";
 import {useRouter} from "vue-router";
@@ -20,30 +21,17 @@ import {storeToRefs} from "pinia";
 
 const userStore = useUserStore()
 const router = useRouter()
-const {data: hardware, error} = useSWRV(API_ENDPOINTS.HARDWARE.FETCH_HARDWARE_POSTS, axiosFetcherParams(userStore.getUserRequestParam))
+const laptops = ref([])
+const audioVisual = ref([])
+const emergingTech = ref([])
 
+const {data: hardware, error} = useSWRV(API_ENDPOINTS.HARDWARE.FETCH_HARDWARE_POSTS, axiosFetcherParams(userStore.getUserRequestParam),swrvOptions)
 
-const laptops = computed(() => {
-    if (hardware.value) {
-        return hardware.value.filter(item => item.category['categoryName'] === 'Laptop');
-    } else {
-        return []
-    }
-})
-const audioVisual = computed(() => {
-    if (hardware.value) {
-        return hardware.value.filter(item => item.category['categoryName'] === 'Audio Visual');
-    } else {
-        return []
-    }
-})
-const emergingTech = computed(() => {
-    if (hardware.value) {
-        return hardware.value.filter(item => item.category['categoryName'] === 'Emerging Technology');
-    } else {
-        return []
-    }
-})
+watch(hardware, () =>{
+    laptops.value =hardware.value.filter(item => item.category['categoryName'] === 'Laptop');
+    audioVisual.value =  hardware.value.filter(item => item.category['categoryName'] === 'Audio Visual');
+    emergingTech.value = hardware.value.filter(item => item.category['categoryName'] === 'Emerging Technology')
+}, {deep:true})
 
 const windowStore = useWindowStore()
 const {isMobile, isTablet, windowWidth} = storeToRefs(windowStore)
@@ -171,7 +159,7 @@ const getResponsiveDisplayData = (itemArray) => {
             <div class="col-span-12 grid grid-cols-1 gap-4 ml-2 md:!grid-cols-2 xl:!col-span-7">
                 <template v-if="emergingTech && emergingTech.length > 0">
                     <HardwareCard
-                        v-for="(item, index) in emergingTech.slice(0,4)"
+                        v-for="(item, index) in emergingTech.slice(0,2)"
                         :key="item.guid"
                         :data="item"
                         :number-per-row="2"

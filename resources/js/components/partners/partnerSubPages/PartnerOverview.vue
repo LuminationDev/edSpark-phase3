@@ -5,51 +5,58 @@ import purify from 'dompurify';
 
 
 const props = defineProps({
-    data:{
+    data: {
         type: Object,
         required: false,
-        default: () => {}
+        default: () => {
+        }
     },
-    contentFromBase:{
+    contentFromBase: {
         type: Object,
         required: true,
     },
-    recommendationFromBase:{
+    recommendationFromBase: {
         type: Object,
         required: true
     }
 })
 
-const parsedOverviewContent = computed(()=> {
-    if(props.contentFromBase?.content){
+const parsedOverviewContent = computed(() => {
+    if (props.contentFromBase?.content) {
         const allContent = JSON.parse(props.contentFromBase.content)
         let overviewContent = findNestedKeyValue(allContent, 'content').filter(content => typeof content === 'string')
         try {
             overviewContent = safelyExtractFirstObjectFromArray(overviewContent)
-            if(!overviewContent) {
+            if (!overviewContent) {
                 console.log('overview content is not formatted properly')
             }
-        } catch(e){
+        } catch (e) {
             console.log(e.message)
         }
 
         let overviewHeading = findNestedKeyValue(allContent, 'heading')
         try {
             overviewHeading = safelyExtractFirstObjectFromArray(overviewHeading)
-            if(!overviewHeading) {
+            if (!overviewHeading) {
                 console.log('overview content is not formatted properly')
             }
-        } catch(e){
+        } catch (e) {
             console.log(e.message)
         }
 
         return {heading: overviewHeading, content: overviewContent}
-    } else{
-        return { content : '', heading: ''}
+    } else {
+        return {content: '', heading: ''}
     }
 })
 
 const emits = defineEmits([])
+
+
+
+
+
+
 </script>
 
 <template>
@@ -67,7 +74,7 @@ const emits = defineEmits([])
 </template>
 <style scoped>
 
-:deep(p){
+:deep(p) {
     margin-top: 16px;
     text-align: justify;
 }

@@ -53,8 +53,8 @@
 </template>
 
 <style>
-    .like:hover > path {
-        stroke-width: 1px !important;
+    .like:hover :deep(path) {
+        stroke-width: 2px !important;
         stroke: #397A80;
     }
 </style>

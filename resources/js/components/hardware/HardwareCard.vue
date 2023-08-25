@@ -45,6 +45,6 @@ const handleClickHardwareCard = () => {
         :is-liked-by-user="data.isLikedByUser"
         :is-bookmarked-by-user="data.isBookmarkedByUser"
         :guid="data.guid"
-        section-type="hardware"
+        :section-type="'hardware'"
     />
 </template>

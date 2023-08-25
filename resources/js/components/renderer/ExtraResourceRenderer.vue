@@ -7,7 +7,6 @@ const props = defineProps({
     }
 });
 
-console.log(props.itemArray);
 </script>
 
 <template>
@@ -34,53 +33,53 @@ console.log(props.itemArray);
 </template>
 
 <style lang="scss">
-    .extraResourcesRenderer {
-        ul {
-            list-style: disc;
-            margin: 0;
-            padding: 0 0 0 36px;
+.extraResourcesRenderer {
+    ul {
+        list-style: disc;
+        margin: 0;
+        padding: 0 0 0 36px;
 
-            li {
-                margin-bottom: 6px;
-            }
-        }
-
-        ol {
-            list-style: decimal;
-            margin: 0;
-            padding: 0 0 0 36px;
-
-            li {
-                margin-bottom: 6px;
-
-                &::marker {
-                    margin-right: 6px !important;
-                }
-            }
-        }
-
-        a {
-            color: #FCFCFD;
-            opacity: .75;
-
-            &:hover {
-                text-decoration: underline !important;
-            }
-        }
-
-        p {
-            margin-bottom: 21px;
-
-            &:nth-of-type(1) {
-                margin-bottom: 0;
-            }
-        }
-
-        pre {
-            background: #2a2a2a;
-            padding: 12px 18px;
+        li {
+            margin-bottom: 6px;
         }
     }
+
+    ol {
+        list-style: decimal;
+        margin: 0;
+        padding: 0 0 0 36px;
+
+        li {
+            margin-bottom: 6px;
+
+            &::marker {
+                margin-right: 6px !important;
+            }
+        }
+    }
+
+    a {
+        color: #FCFCFD;
+        opacity: .75;
+
+        &:hover {
+            text-decoration: underline !important;
+        }
+    }
+
+    p {
+        margin-bottom: 21px;
+
+        &:nth-of-type(1) {
+            margin-bottom: 0;
+        }
+    }
+
+    pre {
+        background: #2a2a2a;
+        padding: 12px 18px;
+    }
+}
 </style>
 
 
