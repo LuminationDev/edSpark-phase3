@@ -46,7 +46,8 @@ class SearchController extends Controller
                         ?? (isset($result->softwaretypes) ? 'software' : NULL)
                         ?? (isset($result->product_name) ? 'hardware' : NULL)
                         ?? (isset($result->event_title) ? 'event' : NULL),
-                    'tags' => $result->tags->pluck('name')
+                    'tags' => $result->tags->pluck('name'),
+                    'cover_image' => $result->cover_image
 
                 ];
                 $results[] = $stdResult;

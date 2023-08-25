@@ -1,5 +1,6 @@
 <script setup>
 
+import GlobalSearch from "@/js/components/search/GlobalSearch.vue";
 import NavBar from './components/global/navbar/NavBar.vue';
 import Footer from './components/global/Footer/Footer.vue';
 import {useUserStore} from "@/js/stores/useUserStore";
@@ -77,6 +78,7 @@ onBeforeUnmount(() => {
             class="absolute top-2 left-2 lg:hidden"
         />
     </div>
+    <GlobalSearch />
 
 
     <div class="pageBodyContentContainer">
