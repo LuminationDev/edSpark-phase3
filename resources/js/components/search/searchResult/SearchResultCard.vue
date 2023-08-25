@@ -1,7 +1,11 @@
 <script setup>
 
 import {imageURL} from "@/js/constants/serverUrl";
+import lowerSlugify from "@/js/helpers/slugifyHelper";
+import {useWindowStore} from "@/js/stores/useWindowStore";
+import {storeToRefs} from "pinia";
 import {computed} from "vue";
+import {useRouter} from "vue-router";
 
 const props = defineProps({
     data:{
@@ -9,6 +13,9 @@ const props = defineProps({
         required: true
     }
 })
+const router = useRouter()
+const windowStore = useWindowStore()
+const {showGlobalSearch} = storeToRefs(windowStore)
 
 const colorTheme = computed(() =>{
     switch(props.data.type){
@@ -32,14 +39,40 @@ const hoverClass = computed(() =>{
 })
 
 const handleClickSearchResultCard = () => {
+    let componentName = ''
+    switch(props.data.type) {
+    case"advice":
+        componentName = 'advice-single'
+        break;
+    case"software":
+        componentName = 'software-single'
+        break;
+    case"hardware":
+        componentName = 'hardware-single'
+        break;
+    case"event":
+        componentName = 'event-single'
+        break;
+    default:
+        return ''
+    }
+    if(componentName){
+        showGlobalSearch.value = false
+        let targetId = props.data.id
+        let slug = lowerSlugify(props.data.title)
 
+        router.push({name: componentName, params:{id: targetId , slug: slug}})
+    }
 }
+
+
 </script>
 
 <template>
     <div
         class="cursor-pointer flex flex-row gap-2 h-24 my-6 px-4 py-2 searchResultCardContainer hover:bg-slate-50"
         :class="hoverClass"
+        @click="handleClickSearchResultCard"
     >
         <div class="flex justify-center items-center rounded-2xl searchCardResultThumbnail w-1/6">
             <div class="bg-slate-100 border border-[1px] border-gray-300 h-16 overflow-hidden rounded-2xl w-16">

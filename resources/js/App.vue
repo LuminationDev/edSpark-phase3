@@ -6,7 +6,7 @@ import Footer from './components/global/Footer/Footer.vue';
 import {useUserStore} from "@/js/stores/useUserStore";
 import {storeToRefs} from "pinia";
 import {useRoute, useRouter} from 'vue-router';
-import {onBeforeMount, onBeforeUnmount, onMounted, reactive, ref} from "vue";
+import {onBeforeMount, onBeforeUnmount} from "vue";
 import recommenderEdsparkSingletonFactory from "@/js/recommender/recommenderEdspark";
 import {isObjectEmpty} from "@/js/helpers/objectHelpers";
 import {useWindowStore} from "@/js/stores/useWindowStore";
@@ -22,7 +22,7 @@ const userStore = useUserStore()
 const {currentUser} = storeToRefs(userStore)
 
 const windowStore = useWindowStore()
-const {isMobile, windowWidth} = storeToRefs(windowStore)
+const {isMobile, windowWidth,showGlobalSearch} = storeToRefs(windowStore)
 
 const authStore = useAuthStore()
 const {isAuthenticated} = storeToRefs(authStore)
@@ -78,7 +78,9 @@ onBeforeUnmount(() => {
             class="absolute top-2 left-2 lg:hidden"
         />
     </div>
-    <GlobalSearch />
+    <template v-if="showGlobalSearch">
+        <GlobalSearch />
+    </template>
 
 
     <div class="pageBodyContentContainer">
