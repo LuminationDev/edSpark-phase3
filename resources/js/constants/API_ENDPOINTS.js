@@ -79,12 +79,8 @@ export const API_ENDPOINTS = {
         IMAGE_UPLOAD_EDITOR_JS: `${serverURL}/imageUploadEditorjs`
 
     },
-    RSVP: {
-        FETCH_RSVP_BY_EVENT_ID: '/fetchRsvpByEventId/',
-        ADD_RSVP_TO_EVENT: '/addRsvpToEvent',
-        REMOVE_RSVP_FROM_EVENT: '/removeRsvpFromEvent',
-        CHECK_IF_USER_RSVPED: '/checkIfUserRsvped',
-        ADD_EVENT_RECORDING: '/addEventRecording',
-        CHECK_EVENT_RECORDING: '/checkEventRecording/',
+    SEARCH:{
+        SEARCH_ALL: `${serverURL}/search/`
     }
+
 }

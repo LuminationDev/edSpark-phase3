@@ -4,11 +4,12 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Laravel\Scout\Searchable;
 use Spatie\Tags\HasTags;
 
 class Advice extends Model
 {
-    use HasFactory, HasTags;
+    use HasFactory, HasTags, Searchable;
 
     /**
      * The table associated with the model.
@@ -60,6 +61,28 @@ class Advice extends Model
     public function bookmarks(): \Illuminate\Database\Eloquent\Relations\HasMany
     {
         return $this->hasMany(Bookmark::class, 'post_id', 'id')->where('post_type', 'advice');
+    }
+
+    public function getSearchResult() {
+        return [
+            'title' => $this->post_title,
+            'content' => strip_tags($this->post_content),
+            'tags' => $this->tags,
+            'author' =>[
+                'author_id' => $this->author->id ?? '',
+                'author_name' => $this->author->full_name ?? '',
+                'author_type' => $this->author->usertype->user_type_name ?? '',
+            ],
+        ];
+    }
+
+    public function toSearchableArray(): array
+    {
+        return [
+            'title' => $this->post_title,
+            'slug' => $this->post_title,
+            'content' => $this->post_content,
+        ];
     }
     protected $with = ['tags'];
     protected $casts = [

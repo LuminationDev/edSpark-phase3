@@ -36,6 +36,8 @@ const navLinks = ref([]);
 
 const authStore = useAuthStore();
 const {isAuthenticated} = storeToRefs(authStore)
+const windowStore = useWindowStore()
+const {showGlobalSearch} = storeToRefs(windowStore)
 
 onMounted(() => {
     if (!Object.keys(userStore.getUser).length <= 0) {
@@ -64,6 +66,11 @@ const avatarUrl = computed(() => {
 const handleAvatarClick = () => {
     profileDropdown.value = !profileDropdown.value;
 };
+
+const handleGlobalsearchClick = () =>{
+    showGlobalSearch.value = true
+}
+
 
 const setupRoutes = () => {
     const tempNavArray = [];
@@ -102,6 +109,12 @@ const {isMobile, isTablet} = storeToRefs(useWindowStore)
                     :key="i"
                     :route="route"
                 />
+                <li
+                    class="cursor-pointer uppercase"
+                    @click="handleGlobalsearchClick"
+                >
+                    Search
+                </li>
             </ul>
         </nav>
 

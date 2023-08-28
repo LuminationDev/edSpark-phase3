@@ -62,16 +62,24 @@ const hardwareExtraResourceArray = computed(()=>{
     } else return []
 })
 
-
-// implement other typeif templates here
-// Plain extra resources
+/*
+ * Extract "item" array from each extra resources to be passed into the renderer component
+ * <ExtraResourceRenderer>
+ */
 const extraResourcesArray = computed(() => {
     let key = 'item'
-    const arrayOfExtraResourcesForRenderer = findNestedKeyValue(extraResourceItems.value,key)
-    if(arrayOfExtraResourcesForRenderer &&  arrayOfExtraResourcesForRenderer.length){
-        return arrayOfExtraResourcesForRenderer
+    const arrayOfItemsWithTitle = extraResourceItems.value.map(item =>{
+        return {
+            items: findNestedKeyValue(item, 'item')[0],
+            title: findNestedKeyValue(item, 'resource_title')[0] || ""
+        }
+    })
+    if(arrayOfItemsWithTitle && arrayOfItemsWithTitle.length){
+        return arrayOfItemsWithTitle
     } else return []
 })
+
+
 </script>
 
 <template>

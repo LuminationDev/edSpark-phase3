@@ -121,4 +121,9 @@ Route::middleware('api')->group(function() {
     Route::post('addEventRecording',[EventController::class,'addEventRecording']);
     Route::get('checkEventRecording/{event_id}',[EventController::class,'checkEventRecording']);
 
+    //Search
+    Route::get(
+        'search',
+        App\Http\Controllers\SearchController::class
+    )->name('search');
 });

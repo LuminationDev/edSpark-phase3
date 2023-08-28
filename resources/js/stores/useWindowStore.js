@@ -6,7 +6,8 @@ export const useWindowStore = defineStore('window',{
         windowWidth: 0,
         isMobile: false,
         isTablet: false,
-        showMobileNavbar: false
+        showMobileNavbar: false,
+        showGlobalSearch: false
     }),
     getters: {
         getWindowWidth() {

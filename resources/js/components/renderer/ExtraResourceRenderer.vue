@@ -13,14 +13,14 @@ const props = defineProps({
     <div class="extraResourcesRenderer mb-20 w-full">
         <div class="flex flex-row gap-4 mb-2 place-items-baseline">
             <h1 class="font-bold text-[24px] text-black uppercase whitespace-nowrap">
-                Extra Resources
+                {{ itemArray.title || "Extra Resources" }}
             </h1>
             <div class="bg-black h-[3px] w-full" />
         </div>
 
         <div class="bg-main-navy px-6 py-12 text-white">
             <template
-                v-for="(res,index) in itemArray"
+                v-for="(res,index) in itemArray.items"
                 :key="index"
             >
                 <h3 class="font-bold mb-3 text-[21px]">

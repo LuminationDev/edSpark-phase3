@@ -11,6 +11,11 @@ const props = defineProps({
         type: String,
         required: false,
         default: 'Loading'
+    },
+    loaderMessageClass:{
+        type: String,
+        required: false,
+        default: 'text-2xl font-bold'
     }
 });
 </script>
@@ -18,7 +23,9 @@ const props = defineProps({
 <template>
     <div class="flex flex-col min-h-[80vh] mx-auto place-items-center">
         <div class="mb-8 text-center">
-            <h3 class="font-bold text-[24px]">
+            <h3
+                :class="props.loaderMessageSize"
+            >
                 {{ loaderMessage }}
             </h3>
         </div>
