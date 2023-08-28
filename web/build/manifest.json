@@ -11,10 +11,6 @@
     "file": "assets/WhatIsDag-10bb387b.png",
     "src": "resources/assets/images/WhatIsDag.png"
   },
-  "resources/assets/images/departmentProvidedAndApproved.png": {
-    "file": "assets/departmentProvidedAndApproved-45068dc9.png",
-    "src": "resources/assets/images/departmentProvidedAndApproved.png"
-  },
   "resources/assets/images/eventsCalendar.png": {
     "file": "assets/eventsCalendar-39cdf35b.png",
     "src": "resources/assets/images/eventsCalendar.png"
@@ -43,17 +39,21 @@
     "file": "assets/hardwareInfoImage-e7b190a8.png",
     "src": "resources/assets/images/hardwareInfoImage.png"
   },
-  "resources/assets/images/negotiatedDeals.png": {
-    "file": "assets/negotiatedDeals-0e67ab26.png",
-    "src": "resources/assets/images/negotiatedDeals.png"
+  "resources/assets/images/navbar.png": {
+    "file": "assets/navbar-514ca0d3.png",
+    "src": "resources/assets/images/navbar.png"
+  },
+  "resources/assets/images/profile_background.jpeg": {
+    "file": "assets/profile_background-84005a5c.jpeg",
+    "src": "resources/assets/images/profile_background.jpeg"
   },
   "resources/css/app.css": {
-    "file": "assets/app-bc5ac936.css",
+    "file": "assets/app-da100c0c.css",
     "isEntry": true,
     "src": "resources/css/app.css"
   },
   "resources/css/filament.css": {
-    "file": "assets/filament-ea76ed15.css",
+    "file": "assets/filament-49c24dfb.css",
     "isEntry": true,
     "src": "resources/css/filament.css"
   },
@@ -63,28 +63,30 @@
     "src": "resources/css/output.css"
   },
   "resources/js/app.css": {
-    "file": "assets/app-a78db5e7.css",
+    "file": "assets/app-c8b22ed0.css",
     "src": "resources/js/app.css"
   },
   "resources/js/app.js": {
     "assets": [
+      "assets/navbar-514ca0d3.png",
       "assets/cc-286aeef7.png",
       "assets/south-australia-eaa8c844.png",
       "assets/sagovau_rev-19524a3e.png",
       "assets/white-ribbon-6ba8cd1c.svg",
       "assets/dfe-42a1625e.svg",
       "assets/CommunityIllustration-a28447f8.png",
-      "assets/PartnersPuzzle-f8ea4960.png",
       "assets/eventsCalendar-39cdf35b.png",
+      "assets/hardwareInfoImage-e7b190a8.png",
+      "assets/PartnersPuzzle-f8ea4960.png",
       "assets/WhatIsDag-10bb387b.png",
-      "assets/hardwareInfoImage-e7b190a8.png"
+      "assets/profile_background-84005a5c.jpeg"
     ],
     "css": [
-      "assets/app-a78db5e7.css",
-      "assets/app-bc5ac936.css",
+      "assets/app-c8b22ed0.css",
+      "assets/app-da100c0c.css",
       "assets/output-f918ad58.css"
     ],
-    "file": "assets/app-55bf09e9.js",
+    "file": "assets/app-f6d5f943.js",
     "isEntry": true,
     "src": "resources/js/app.js"
   }
