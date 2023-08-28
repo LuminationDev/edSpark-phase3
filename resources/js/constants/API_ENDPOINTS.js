@@ -22,6 +22,7 @@ export const API_ENDPOINTS = {
         FETCH_ADVICE_POSTS_BY_TYPE_PARTNER: `${serverURL}/fetchAdvicePostByType/Partner`,
         FETCH_ADVICE_POSTS_BY_TYPE_YOUR: `${serverURL}/fetchAdvicePostByType/${['Your Classroom', 'Your Work', 'Your Learning']}`,
         FETCH_ADVICE_POST_BY_ID: `${serverURL}/fetchAdvicePostById/`,
+        FETCH_RELATED_ADVICE: `${serverURL}/fetchRelatedAdvice`
 
     },
     SOFTWARE: {

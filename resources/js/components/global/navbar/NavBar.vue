@@ -91,7 +91,7 @@ const {isMobile, isTablet} = storeToRefs(useWindowStore)
         <nav
             v-if="isAuthenticated"
             id="navbarFullsize"
-            class="bg-[#002856]/50 container hidden navbarFullsize px-12 py-2 lg:!z-20 lg:block"
+            class="bg-[#002856]/50 container hidden navbarFullsize px-12 py-2 lg:block lg:z-20"
             :class="{navbarScrolled : navScrolled}"
         >
             <ul
@@ -185,6 +185,7 @@ const {isMobile, isTablet} = storeToRefs(useWindowStore)
         transition: 150ms;
         top: 0 !important;
         background-color: #002856 !important;
+        z-index: 60 !important;
     }
 }
 

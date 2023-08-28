@@ -20,9 +20,10 @@ const numberedListContent = computed(() => {
 const top = ref('');
 const distanceBetweenEls = ref('');
 const floatingLineClasses = ref('');
+const uniqueContainerClass = ref(`numberListcontainer${Math.floor(Math.random() * 100000)}`)
 
 const getConnectingLinePositions = () => {
-    let listContainers = document.querySelectorAll('.numberListcontainer');
+    let listContainers = document.querySelectorAll(`.${uniqueContainerClass.value}`);
     let firstContainer = listContainers[0];
     let lastContainer = listContainers[listContainers.length -1];
     if(firstContainer && lastContainer){
@@ -97,7 +98,6 @@ const getDistanceBetweenElements = (a, b) => {
                             items-center
                             font-bold
                             h-16
-                            numberListcontainer
                             p-4
                             rounded-[50%]
                             text-2xl
@@ -106,6 +106,7 @@ const getDistanceBetweenElements = (a, b) => {
                             md:!h-24
                             md:!w-24
                             "
+                        :class="uniqueContainerClass"
                     >
                         {{ index + 1 }}
                     </div>
@@ -114,7 +115,6 @@ const getDistanceBetweenElements = (a, b) => {
                     class="flex flex-col w-full md:!w-3/4"
                 >
                     <div class="font-semibold heading mb-2 mt-6 text-xl">
-                        <span class="font-bold text-2xl">{{ `${index + 1}. ` }}</span>
                         {{ item.heading }}
                     </div>
 
@@ -129,8 +129,8 @@ const getDistanceBetweenElements = (a, b) => {
 </template>
 
 <style>
-    .htmlRenderer ul {
-        list-style: disc !important;
-        padding-left: 36px !important;
-    }
+.htmlRenderer ul {
+    list-style: disc !important;
+    padding-left: 36px !important;
+}
 </style>

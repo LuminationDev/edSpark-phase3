@@ -1,4 +1,6 @@
 <script setup>
+import ExtraResourceTemplateDisplay from "@/js/components/renderer/ExtraResourceTemplateDisplay.vue";
+import NumberedListRenderer from "@/js/components/renderer/NumberedListRenderer.vue";
 import {computed} from 'vue'
 import AdviceNumberedListRenderer from "@/js/components/advice/Renderer/AdviceNumberedListRenderer.vue";
 import AdviceIconListRenderer from "@/js/components/advice/Renderer/AdviceIconListRenderer.vue";
@@ -56,7 +58,7 @@ const shouldRenderResources  = computed(() => {
         class="extraContentRendererContainer flex flex-col my-2 px-4 py-2"
     >
         <template v-if="contentType === 'numbereditems'">
-            <AdviceNumberedListRenderer :item-array="itemArray" />
+            <NumberedListRenderer :item-array="itemArray" />
         </template>
         <template v-else-if="contentType === 'iconitems'">
             <AdviceIconListRenderer :item-array="itemArray" />

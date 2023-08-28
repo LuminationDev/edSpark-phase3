@@ -121,7 +121,7 @@ let likeOrBookmarkPayload = {
 const handleDefaultLike = async () => {
     currentUserLiked.value = !currentUserLiked.value
     console.log(likeOrBookmarkPayload)
-    await axios.post(likeURL, likeOrBookmarkPayload).then(res => {
+    axios.post(likeURL, likeOrBookmarkPayload).then(res => {
         if (res.data?.status === 200) {
             currentUserLiked.value = res.data.isLiked
         }
@@ -133,7 +133,7 @@ const handleDefaultLike = async () => {
 const handleDefaultBookmark = async () => {
     currentUserBookmarked.value = !currentUserBookmarked.value
     console.log(likeOrBookmarkPayload)
-    await axios.post(bookmarkURL, likeOrBookmarkPayload).then(res => {
+    axios.post(bookmarkURL, likeOrBookmarkPayload).then(res => {
         if (res.data?.status === 200) {
             console.log(res.data)
             currentUserBookmarked.value = res.data.isBookmarked

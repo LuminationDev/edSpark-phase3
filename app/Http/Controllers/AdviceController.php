@@ -99,8 +99,6 @@ class AdviceController extends Controller
             }
 
         } else {
-            // var_dump($type);
-            // var_dump('bb'); exit;
             $adviceTypes = Advicetype::where('advice_type_name', $type)->first();
             $adviceArticles = Advice::where('advicetype_id', $adviceTypes->id)->get();
 
@@ -115,6 +113,51 @@ class AdviceController extends Controller
         return response()->json($data);
 
 
+    }
+
+    public function fetchRelatedAdvice(Request $request): \Illuminate\Http\JsonResponse
+    {
+        try {
+            // Get currentId from the request body
+            $currentAdviceId = $request->input('currentId');
+
+            // Fetch the advice post associated with the currentAdviceId
+            $currentAdvice = Advice::find($currentAdviceId);
+            if (!$currentAdvice) {
+                return response()->json(['error' => 'Advice not found'], Response::HTTP_NOT_FOUND);
+            }
+
+            // Retrieve the tags from the current advice
+            $tags = $currentAdvice->tags->pluck('name')->toArray();
+
+            // Fetch advice posts that have at least one of the current advice's tags and don't have the currentAdviceId
+            $relatedAdvices = Advice::withAnyTags($tags)
+                ->where('id', '!=', $currentAdviceId)
+                ->where('post_status', 'Published')
+                ->orderBy('created_at', 'DESC')
+                ->limit(2)
+                ->get();
+
+            // If no related advices are found, fetch two random advice posts
+            if ($relatedAdvices->isEmpty()) {
+                $relatedAdvices = Advice::where('id', '!=', $currentAdviceId)
+                    ->where('post_status', 'Published')
+                    ->inRandomOrder()
+                    ->limit(2)
+                    ->get();
+            }
+
+            // Convert each related advice to JSON format
+            $data = [];
+            foreach ($relatedAdvices as $advice) {
+                $result = $this->adviceModelToJson($advice, $request);
+                $data[] = $result;
+            }
+
+            return response()->json($data);
+        } catch (\Exception $e) {
+            return response()->json(['error' => $e->getMessage()], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
     }
 }
 

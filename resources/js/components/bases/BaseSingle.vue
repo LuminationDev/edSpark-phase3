@@ -2,6 +2,7 @@
 <script setup>
 import {API_ENDPOINTS} from "@/js/constants/API_ENDPOINTS";
 import lowerSlugify from "@/js/helpers/slugifyHelper";
+import {useAdviceStore} from "@/js/stores/useAdviceStore";
 import {useHardwareStore} from "@/js/stores/useHardwareStore";
 import {useSoftwareStore} from "@/js/stores/useSoftwareStore";
 import {useUserStore} from "@/js/stores/useUserStore";
@@ -62,6 +63,7 @@ const currentId = computed(() => {
 
 const softwareStore = useSoftwareStore()
 const hardwareStore = useHardwareStore()
+const adviceStore = useAdviceStore()
 
 const getRecommendationBasedOnContentType = () => {
     switch (props.contentType) {
@@ -74,7 +76,7 @@ const getRecommendationBasedOnContentType = () => {
         softwareStore.loadRelatedSoftware(currentId.value)
         break;
     case 'advice':
-        console.log('called recommendation for advice -- not complete TODO')
+        adviceStore.loadRelatedAdvice(currentId.value)
         break;
     default:
         console.log('no recommendation request was sent')
