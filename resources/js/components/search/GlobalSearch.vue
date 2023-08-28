@@ -35,7 +35,7 @@ const fetchSearchResults = () => {
 
 const debouncedfetchSearchResults = debounce(() => {
     fetchSearchResults()
-}, 200)
+}, 400)
 
 watch(searchTerms, debouncedfetchSearchResults);
 
@@ -124,5 +124,4 @@ const handleClearSearchbar = () => {
     </div>
 </template>
 <style scoped>
-
 </style>
