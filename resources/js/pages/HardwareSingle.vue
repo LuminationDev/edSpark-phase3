@@ -1,4 +1,5 @@
 <script setup>
+import BaseBreadcrumb from "@/js/components/bases/BaseBreadcrumb.vue";
 import BaseHero from '@/js/components/bases/BaseHero.vue';
 import BaseSingle from '@/js/components/bases/BaseSingle.vue';
 import BaseSingleSubmenu from "@/js/components/bases/BaseSingleSubmenu.vue";
@@ -53,7 +54,7 @@ const handleChangeSubmenu = (value) => {
  * End of submenu specific code  plus @emit-active-tab-to-specific-page in BaseSingle
  * */
 
-
+const colorTheme = ref('green')
 </script>
 
 <template>
@@ -65,7 +66,15 @@ const handleChangeSubmenu = (value) => {
         <template #hero="{contentFromBase, emitFromSubmenu}">
             <BaseHero
                 :background-url="contentFromBase['cover_image']"
+                :swoosh-color-theme="colorTheme"
             >
+                <template #breadcrumb>
+                    <BaseBreadcrumb
+                        :child-page="contentFromBase.title"
+                        parent-page="software"
+                        :color-theme="colorTheme"
+                    />
+                </template>
                 <template #titleText>
                     {{ contentFromBase['title'] }}
                 </template>

@@ -101,7 +101,7 @@ onBeforeMount(async () => {
     }
     /// end of emiiting submenu
 
-    if (singleContent.value) {
+    if (singleContent.value && props.contentType !== 'school') {
         console.log(lowerSlugify(getObjectTitleValue(singleContent.value)))
         await router.replace({params: {slug: lowerSlugify(getObjectTitleValue(singleContent.value))}});
     }

@@ -192,15 +192,17 @@ const getConnectingLinePositions = () => {
     let listContainers = document.querySelectorAll('.softwareDashboardContentContainer');
     let firstContainer = listContainers[0];
     let lastContainer = listContainers[listContainers.length - 1];
+    if(firstContainer && lastContainer) {
 
-    distanceBetweenEls.value = getDistanceBetweenElements(
-        firstContainer,
-        lastContainer
-    );
+        distanceBetweenEls.value = getDistanceBetweenElements(
+            firstContainer,
+            lastContainer
+        );
 
-    let firstElHeight = firstContainer.offsetHeight;
-    top.value = firstContainer.offsetTop + firstElHeight / 2;
-    floatingLineClasses.value = `top-[${top.value}] h-[${distanceBetweenEls.value}px]`
+        let firstElHeight = firstContainer.offsetHeight;
+        top.value = firstContainer.offsetTop + firstElHeight / 2;
+        floatingLineClasses.value = `top-[${top.value}] h-[${distanceBetweenEls.value}px]`
+    }
 };
 
 const getPositionAtCenter = (element) => {

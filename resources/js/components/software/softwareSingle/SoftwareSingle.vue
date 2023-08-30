@@ -1,5 +1,6 @@
 +
 <script setup>
+import BaseBreadcrumb from "@/js/components/bases/BaseBreadcrumb.vue";
 import BaseSingle from "@/js/components/bases/BaseSingle.vue";
 import BaseHero from "@/js/components/bases/BaseHero.vue";
 import ExtraResourceTemplateDisplay from "@/js/components/renderer/ExtraResourceTemplateDisplay.vue";
@@ -57,6 +58,8 @@ const handleClickViewProfile = (author_id, author_type) => {
 /**
  * End of submenu specific code  plus @emit-active-tab-to-specific-page in BaseSingle
  * */
+const colorTheme = ref('deepPurple')
+
 </script>
 
 <template>
@@ -67,7 +70,15 @@ const handleClickViewProfile = (author_id, author_type) => {
         <template #hero="{contentFromBase, emitFromSubmenu}">
             <BaseHero
                 :background-url="contentFromBase['cover_image']"
+                :swoosh-color-theme="colorTheme"
             >
+                <template #breadcrumb>
+                    <BaseBreadcrumb
+                        :child-page="contentFromBase.title"
+                        parent-page="software"
+                        :color-theme="colorTheme"
+                    />
+                </template>
                 <template #titleText>
                     {{ contentFromBase['title'] }}
                 </template>

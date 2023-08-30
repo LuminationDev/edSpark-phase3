@@ -6,7 +6,7 @@ export const schoolColorTheme = {
     },
     red: {
         light: '#e57373',
-        med: '#e53935',
+        med: '#be123c',
         dark: '#b71c1c',
     },
     orange: {

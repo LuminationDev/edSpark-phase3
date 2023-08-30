@@ -58,7 +58,7 @@ const setTheBackground = computed(() => {
 <template>
     <div class="-mt-28 lg:!h-[720px] BaseHeroContainer h-full relative z-10">
         <div
-            :class="`BaseHeroClipThisPath pb-[36px] pt-[190px] px-3 lg:!px-12 grid grid-cols-8 bg-cover h-full relative bg-[url(${imageURL}/${setTheBackground}) `+ heroBackground"
+            :class="`BaseHeroClipThisPath pb-[36px] pt-[170px] px-3 lg:!px-12 grid grid-cols-8 bg-cover h-full relative bg-[url(${imageURL}/${setTheBackground}) `+ heroBackground"
             :style="'background-image: url(' + heroBackgroundLinkOnly +')'"
         >
             <div
@@ -68,7 +68,7 @@ const setTheBackground = computed(() => {
                 v-if="$slots.titleText || $slots.subtitleText1 || $slots.subtitleText2"
                 class="col-span-8 p-2 relative z-20 lg:!col-span-5"
             >
-                <slot name="smallTitle" />
+                <slot name="breadcrumb" />
                 <h1
                     class="font-semibold pb-8 text-2xl text-white uppercase md:!text-3xl lg:!text-4xl xl:!text-5xl"
                 >

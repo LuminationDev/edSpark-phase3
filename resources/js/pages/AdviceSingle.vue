@@ -1,5 +1,6 @@
 <script setup>
 
+import BaseBreadcrumb from "@/js/components/bases/BaseBreadcrumb.vue";
 import BaseHero from "@/js/components/bases/BaseHero.vue";
 import AdviceSingleCuratedContent from "@/js/components/advice/AdviceSingleCuratedContent.vue";
 import BaseSingle from "@/js/components/bases/BaseSingle.vue";
@@ -38,6 +39,12 @@ const timeFormatter = (originalFormat) => {
                 class="h-[800px]"
                 :background-url="contentFromBase['cover_image']"
             >
+                <template #breadcrumb>
+                    <BaseBreadcrumb
+                        :child-page="contentFromBase.title"
+                        parent-page="advice"
+                    />
+                </template>
                 <template #titleText>
                     {{ contentFromBase['title'] }}
                 </template>
