@@ -58,7 +58,7 @@ const setTheBackground = computed(() => {
 <template>
     <div class="-mt-28 lg:!h-[720px] BaseHeroContainer h-full relative z-10">
         <div
-            :class="`BaseHeroClipThisPath pb-[36px] pt-[170px] px-3 lg:!px-12 grid grid-cols-8 bg-cover h-full relative bg-[url(${imageURL}/${setTheBackground}) `+ heroBackground"
+            :class="`BaseHeroClipThisPath pb-[36px] pt-[190px] px-3 lg:!px-12 grid grid-cols-8 bg-cover h-full relative bg-[url(${imageURL}/${setTheBackground}) `+ heroBackground"
             :style="'background-image: url(' + heroBackgroundLinkOnly +')'"
         >
             <div

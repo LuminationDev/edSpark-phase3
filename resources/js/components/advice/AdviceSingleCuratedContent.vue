@@ -22,7 +22,7 @@ const {relatedAdvice} = storeToRefs(adviceStore)
                 :data="advice"
                 :show-icon="true"
                 :number-per-row="1"
-                class="mb-extraLarge"
+                class="mb-8"
             />
         </div>
     </div>
