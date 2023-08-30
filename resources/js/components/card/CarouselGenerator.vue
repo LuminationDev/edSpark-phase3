@@ -36,7 +36,6 @@ const props = defineProps({
 const windowStore = useWindowStore()
 
 const breakpointChoser = () =>{
-    console.log('computed called')
     if(props.specialAttribute === 'twoThirdWide'){
         return twoThirdCarouselBreakpoints
     } else if(props.dataType === 'school'){
@@ -162,9 +161,9 @@ const numberOfLoadingPlaceholder = computed(() =>{
         left: -20px !important;
     }
 
-    .carousel__slide[aria-hidden="true"] {
-        visibility: hidden;
-    }
+    //.carousel__slide[aria-hidden="true"] {
+    //    visibility: hidden;
+    //}
 
     :deep(.carousel__pagination-button::after) {
         height: 12px;

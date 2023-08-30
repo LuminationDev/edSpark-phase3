@@ -17,12 +17,6 @@ const props = defineProps({
         default: false
     }
 });
-const computedProps = computed(() => {
-    console.log('here is computed called')
-    console.log(props.showFirstTech)
-    return props.showFirstTech
-
-})
 
 </script>
 
