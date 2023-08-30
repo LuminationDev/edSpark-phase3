@@ -16,7 +16,8 @@ const edsparkColor = [
     '#4338CA',
     '#D53F8C',
     '#ffa000',
-    '#C7B2EA'
+    '#C7B2EA',
+    '#be123c' // mbRose - Better accessibility
 ];
 
 const generateSafeList = (colors) => {
