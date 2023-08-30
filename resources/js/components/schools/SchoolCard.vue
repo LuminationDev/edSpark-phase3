@@ -115,6 +115,7 @@ const handleClickSchoolCard = () => {
                             <SchoolCardIconList
                                 :tech-list="data.tech_used"
                                 :show-first-tech="showFirstTech"
+                                :guid="data.guid"
                             />
                         </div>
                     </div>
@@ -123,7 +124,7 @@ const handleClickSchoolCard = () => {
         </template>
     </GenericCard>
 </template>
-<style>
+<style scoped>
 .iconListContainer::-webkit-scrollbar {
     display: none;
 }

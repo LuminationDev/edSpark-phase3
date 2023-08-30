@@ -253,7 +253,6 @@ onMounted(async () => {
             :button-callback="() => router.push('/browse/event')"
         />
         <CarouselGenerator
-            :show-count="1"
             data-type="events"
             :data-array="eventsData? eventsData : []"
         />
@@ -484,9 +483,8 @@ onMounted(async () => {
             </div>
             <div class="DAGAdviceCarousel w-full lg:!w-3/4">
                 <CarouselGenerator
-                    :show-count="2"
                     data-type="advice"
-                    :data-array="advicesData"
+                    :data-array="advicesData ? advicesData : []"
                     special-attribute="twoThirdWide"
                 />
             </div>
@@ -501,7 +499,6 @@ onMounted(async () => {
         />
 
         <CarouselGenerator
-            :show-count="3"
             data-type="school"
             :data-array="schoolsData ? schoolsData : []"
         />

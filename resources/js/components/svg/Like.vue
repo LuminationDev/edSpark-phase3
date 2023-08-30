@@ -52,7 +52,7 @@
     </svg>
 </template>
 
-<style>
+<style scoped>
     .like:hover :deep(path) {
         stroke-width: 2px !important;
         stroke: #397A80;

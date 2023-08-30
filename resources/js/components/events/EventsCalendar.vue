@@ -101,19 +101,19 @@ const initialCalendarPage = computed(() =>{
 
 <style scoped>
 
-    .calendarWrapper >>> .vc-pane {
+    .calendarWrappe :deep(.vc-pane) {
         background-color: #f8f8f8;
     }
 
-.calendarWrapper >>> .vc-header {
+.calendarWrapper :deep(.vc-header) {
     margin-bottom: 1.5rem !important;
 }
 
-    .calendarWrapper >>> .vc-weeknumber-content {
+    .calendarWrapper :deep(.vc-weeknumber-content) {
         color: #6b7585;
     }
 
-    .calendarWrapper >>> .vc-day-box-center-center {
+    .calendarWrapper :deep(.vc-day-box-center-center) {
         height: 68px;
     }
 

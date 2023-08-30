@@ -27,21 +27,21 @@ const computedProps = computed(() => {
 </script>
 
 <template>
-    <div class="schoolTechContent absolute left-0 px-[24px] pt-[18px]">
-        <h5 class="hidden group-hover/tech:inline-block text-[16px] font-bold">
+    <div class="absolute left-0 pt-[18px] px-[24px] schoolTechContent">
+        <h5 class="font-bold group-hover/tech:inline-block hidden text-[16px]">
             {{ techHover.category }}
         </h5>
         <div
-            class="schools-tech_description schoolTechDescription"
+            class="schoolTechDescription schools-tech_description"
         >
             <p><strong>{{ techHover.name }}</strong> {{ techHover.description }}</p>
         </div>
     </div>
     <div
         v-if="props.showFirstTech && props.techIndex === 0"
-        class="firstTimerContainer absolute flex flex-col left-0 px-[24px] pt-[18px]"
+        class="absolute left-0 firstTimerContainer flex flex-col pt-[18px] px-[24px]"
     >
-        <h5 class="text-[16px] font-bold">
+        <h5 class="font-bold text-[16px]">
             {{ techHover.category }}
         </h5>
         <div
@@ -52,7 +52,7 @@ const computedProps = computed(() => {
     </div>
 </template>
 
-<style>
+<style scoped>
 .schools-tech_description {
     display: none;
 }
