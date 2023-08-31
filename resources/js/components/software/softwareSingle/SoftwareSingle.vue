@@ -3,6 +3,7 @@
 import BaseBreadcrumb from "@/js/components/bases/BaseBreadcrumb.vue";
 import BaseSingle from "@/js/components/bases/BaseSingle.vue";
 import BaseHero from "@/js/components/bases/BaseHero.vue";
+import BaseSingleProfilePicture from "@/js/components/bases/BaseSingleProfilePicture.vue";
 import ExtraResourceTemplateDisplay from "@/js/components/renderer/ExtraResourceTemplateDisplay.vue";
 import SoftwareSingleCuratedContent from "@/js/components/software/softwareSingle/SoftwareSingleCuratedContent.vue";
 import BaseSingleSubmenu from "@/js/components/bases/BaseSingleSubmenu.vue";
@@ -88,13 +89,10 @@ const colorTheme = ref('deepPurple')
                         class="EventHeroAuthorContainer flex flex-col"
                     >
                         <div class="flex items-center flex-row">
-                            <div class="flex items-center h-20 mx-4 smallPartnerLogo w-24">
-                                <img
-                                    :src="`${imageURL}/${String(contentFromBase['author']['author_logo'])}`"
-                                    :alt=" contentFromBase['author']['author_name'] + ' logo'"
-                                    class="bg-center h-24 object-contain rounded-full w-24"
-                                >
-                            </div>
+                            <BaseSingleProfilePicture
+                                :author-name="contentFromBase['author']['author_name']"
+                                :author-logo-url="String(contentFromBase['author']['author_logo'])"
+                            />
                             <div class="authorName flex flex-col pt-6">
                                 <div class="mb-2 text-2xl">
                                     {{ contentFromBase['author']['author_name'] }}

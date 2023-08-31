@@ -193,7 +193,6 @@ const getConnectingLinePositions = () => {
     let firstContainer = listContainers[0];
     let lastContainer = listContainers[listContainers.length - 1];
     if(firstContainer && lastContainer) {
-
         distanceBetweenEls.value = getDistanceBetweenElements(
             firstContainer,
             lastContainer
@@ -276,7 +275,7 @@ onMounted(async () => {
                     -z-10
                     absolute
                     top-1/2
-                    left-1/3
+                    left-1/4
                     duration-700
                     group-hover/bg:left-[15%]
                     group-hover/bg:scale-125

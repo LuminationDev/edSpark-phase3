@@ -18,7 +18,7 @@ const props = defineProps({
 </script>
 
 <template>
-    <div class="flex flex-row overflow-x-scroll">
+    <div class="flex flex-row overflow-x-scroll md:!overflow-x-hidden">
         <button
             v-for="(menu, index) in menuArray"
             :key="index"
