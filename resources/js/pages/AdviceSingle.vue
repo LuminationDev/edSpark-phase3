@@ -79,7 +79,7 @@ const timeFormatter = (originalFormat) => {
                     />
                     <div
                         v-if="contentFromBase['extra_content'] && contentFromBase['extra_content'].length"
-                        class="extraResourcesContainer"
+                        class="extraResourcesContainer w-full"
                     >
                         <ExtraResourceTemplateDisplay :content="contentFromBase['extra_content']" />
                     </div>

@@ -1,5 +1,6 @@
 <script setup>
 import {API_ENDPOINTS} from "@/js/constants/API_ENDPOINTS";
+import {useWindowStore} from "@/js/stores/useWindowStore";
 
 /**
  * Components
@@ -231,6 +232,18 @@ onMounted(async () => {
     getConnectingLinePositions();
 });
 
+const {isMobile} = storeToRefs(useWindowStore())
+
+const softwareResponsiveData = computed(() =>{
+    if(!softwaresData.value.length) {
+        return []
+    }else if(isMobile.value){
+        return softwaresData.value.slice(0,2)
+    } else{
+        return softwaresData.value.slice(0,4)
+    }
+})
+
 </script>
 
 <template>
@@ -425,7 +438,7 @@ onMounted(async () => {
             <template v-if="softwaresData">
                 <div class="grid grid-cols-1 gap-10 place-items-center px-8 lg:!grid-cols-2 xl:!px-20">
                     <SoftwareCard
-                        v-for="software in softwaresData.slice(0,4)"
+                        v-for="software in softwareResponsiveData"
                         :key="software.guid"
                         :data="software"
                     />
