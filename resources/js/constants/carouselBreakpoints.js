@@ -1,5 +1,5 @@
 export const generalCarouselBreakpoints = {
-    100: {
+    0: {
         itemsToShow: 1,
         snapAlign: 'start',
     },
@@ -26,7 +26,7 @@ export const generalCarouselBreakpoints = {
 }
 
 export const twoThirdCarouselBreakpoints = {
-    100: {
+    0: {
         itemsToShow: 1,
         snapAlign: 'start',
     },
@@ -53,7 +53,7 @@ export const twoThirdCarouselBreakpoints = {
 }
 
 export const schoolCarouselBreakpoints = {
-    100: {
+    0: {
         itemsToShow: 1,
         snapAlign: 'start',
     }, 350: {

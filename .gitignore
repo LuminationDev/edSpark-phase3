@@ -34,3 +34,5 @@ package-lock.json
 resources/css/output.css
 package-lock.json
 resources/css/output.css
+composer.lock
+resources/css/output.css

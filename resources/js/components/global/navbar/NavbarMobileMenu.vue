@@ -14,7 +14,7 @@ const { showMobileNavbar } = storeToRefs(useWindowStore())
 const { isAuthenticated } = storeToRefs(authStore)
 
 const navLinks = ref([]);
-const navScrolled = ref(false);
+// const navScrolled = ref(false);
 
 const handleToggleNavbar = () => {
     showMobileNavbar.value = !showMobileNavbar.value
@@ -31,19 +31,19 @@ const setupRoutes = () => {
     navLinks.value = tempNavArray;
 };
 
-onMounted(() => {
-     window.document.onscroll = () => {
+// onMounted(() => {
+//      window.document.onscroll = () => {
         
-        let navbar = document.getElementById('navbarFullsize');
+//         let navbar = document.getElementById('navbarFullsize');
 
-        if(navbar == null){
-            navbar = document.getElementById('navbarMobileBurger');
-        }
+//         if(navbar == null){
+//             navbar = document.getElementById('navbarMobileBurger');
+//         }
 
-        navScrolled.value = window.scrollY > navbar.offsetTop;
-        //console.log(navScrolled.value +" vs "+window.scrollY+" vs "+navbar.offsetTop);
-    }
-});
+//         navScrolled.value = window.scrollY > navbar.offsetTop;
+//         //console.log(navScrolled.value +" vs "+window.scrollY+" vs "+navbar.offsetTop);
+//     }
+// });
 
 
 setupRoutes();

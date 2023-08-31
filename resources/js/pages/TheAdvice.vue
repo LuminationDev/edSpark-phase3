@@ -49,6 +49,8 @@ const { state: generalState, STATES: GENERALSTATE } = useSwrvState(generalAdvice
             :data-array="dagAdvice ? dagAdvice : []"
         />
     </div>
+
+
     <EducatorHero />
     <div class="grid grid-cols-1 gap-4 place-items-center mt-10 px-5 md:!grid-cols-2 lg:!grid-cols-3 lg:!px-huge">
         <template v-if="generalAdvice && generalAdvice.length">
@@ -71,8 +73,8 @@ const { state: generalState, STATES: GENERALSTATE } = useSwrvState(generalAdvice
         </template>
     </div>
 
+    
     <PartnerHero />
-
     <CarouselGenerator
         :show-count="3"
         data-type="advice"

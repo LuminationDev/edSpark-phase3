@@ -10,7 +10,7 @@ const router = useRouter()
     <div class="AdviceHeroContainer">
         <div
             class="
-                -mt-12
+                -mt-[90px]
                 lg:!mt-24
                 lg:!mx-10
                 lg:!pt-12
@@ -22,8 +22,9 @@ const router = useRouter()
                 grid
                 grid-cols-8
                 pb-8
-                pt-24
+                pt-[160px]
                 px-10
+                mb-4 
                 "
         >
             <div class="col-span-8 md:!col-span-5">

@@ -28,8 +28,6 @@ import {storeToRefs} from "pinia";
 import {useWindowStore} from "@/js/stores/useWindowStore";
 
 const router = useRouter();
-const userStore = useUserStore();
-const navScrolled = ref(false);
 const profileDropdown = ref(false);
 const currentUser = ref({});
 const navLinks = ref([]);
@@ -40,23 +38,28 @@ const {isAuthenticated} = storeToRefs(authStore);
 const windowStore = useWindowStore();
 const {showGlobalSearch} = storeToRefs(windowStore);
 
-onMounted(() => {
-    if (!Object.keys(userStore.getUser).length <= 0) {
-        currentUser.value = userStore.getUser;
-    }
+// const userStore = useUserStore();
+// const navScrolled = ref(false);
+// onMounted(() => {
+//     if (!Object.keys(userStore.getUser).length <= 0) {
+//         currentUser.value = userStore.getUser;
+//     }
     
-    window.document.onscroll = () => {
+//     window.document.onscroll = () => {
         
-        let navbar = document.getElementById('navbarFullsize');
+//         let navbar = document.getElementById('navbarMobileBurger');
 
-        if(navbar == null){
-            navbar = document.getElementById('navbarMobileBurger');
-        }
+//         if(navbar == null){
+//             navbar = document.getElementById('navbarFullsize');
+//         }
 
-        navScrolled.value = window.scrollY > navbar.offsetTop;
-        //console.log(navScrolled.value +" vs "+window.scrollY+" vs "+navbar.offsetTop);
-    }
-});
+//         if(navbar != null) {
+//             navScrolled.value = window.scrollY > navbar.offsetTop;
+//         }
+//         //console.log(navScrolled.value +" vs "+window.scrollY+" vs "+navbar.offsetTop);
+//         console.log("Scrolllll " + navbar.id +", "+navScrolled.value);
+//     }
+// });
 
 
 
@@ -111,8 +114,7 @@ const {isMobile, isTablet} = storeToRefs(useWindowStore)
             v-if="isAuthenticated"
             id="navbarFullsize"
             class="bg-[#002856]/50 container hidden navbarFullsize px-12 py-2 lg:block lg:z-20"
-            :class="{navbarScrolled : navScrolled}"
-        >
+                    >
             <ul
                 class="2xl:gap-8 2xl:text-2xl font-['Poppins'] font-semibold gap-4 hidden text-white xl:text-xl lg:flex lg:flex-row"
             >
@@ -218,6 +220,7 @@ const {isMobile, isTablet} = storeToRefs(useWindowStore)
 /* MB added the below to tidy up responsive nav bars */
 @media screen and (max-width: 1024px) {
     #app, #app .container {
+        min-width: 320px;
         max-width: 1024px;
         width: 100%;
         margin: auto;
