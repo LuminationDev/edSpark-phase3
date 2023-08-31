@@ -71,6 +71,7 @@ class EventController extends Controller
             'extra_content' => ($event->extra_content)?? NULL,
             'isLikedByUser' => $isLikedByUser,
             'isBookmarkedByUser' => $isBookmarkedByUser,
+            'tags' => $event->tags->pluck('name')
         ];
     }
 

@@ -10,19 +10,17 @@ const {relatedAdvice} = storeToRefs(adviceStore)
 <template>
     <div
         v-if="relatedAdvice && relatedAdvice.length > 0"
-        class="adviceSingleCuratedContentContainer bg-orange-50 flex justify-center items-center flex-col px-5 rounded xl:!ml-4 xl:!px-10"
+        class="adviceSingleCuratedContentContainer bg-orange-50 flex justify-center items-center flex-col p-4 rounded xl:!ml-4 xl:!px-10"
     >
         <div class="curatedResourcesTitle font-bold my-2 py-8 text-2xl text-center uppercase">
             Other Curated Resources
         </div>
-        <div class="flex-col lg:!flex-row xl:!flex-col">
+        <div class="flex flex-col gap-10 lg:!flex-row xl:!flex-col">
             <AdviceCard
                 v-for="advice in relatedAdvice"
                 :key="advice.guid"
                 :data="advice"
                 :show-icon="true"
-                :number-per-row="1"
-                class="mb-extraLarge"
             />
         </div>
     </div>

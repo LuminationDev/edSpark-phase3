@@ -1,7 +1,10 @@
 <script setup>
+import BaseBreadcrumb from "@/js/components/bases/BaseBreadcrumb.vue";
 import BaseSingle from "@/js/components/bases/BaseSingle.vue";
 import BaseHero from "@/js/components/bases/BaseHero.vue";
+import BaseSingleProfilePicture from "@/js/components/bases/BaseSingleProfilePicture.vue";
 import EventSingleExtraContentRenderer from "@/js/components/events/EventSingleExtraContentRenderer.vue";
+import {schoolColorKeys, schoolColorTheme} from "@/js/constants/schoolColorTheme";
 import purify from "dompurify";
 import {imageURL} from "@/js/constants/serverUrl";
 import TimeIcon from "@/js/components/svg/event/TimeIcon.vue";
@@ -15,14 +18,37 @@ const router = useRouter()
 const handleClickViewProfile = (author_id, author_type) => {
     router.push(`/${author_type}/${author_id}` )
 }
+const getEventColorTheme = (eventType) => {
+    if(eventType === 'Virtual'){
+        return 'red'
+    } else if(eventType === 'Hybrid'){
+        return 'purple'
+    } else{
+        return 'blue'
+    }
+}
+
+const getEventBackgroundColorTheme = (eventType) => {
+    let colorKey = getEventColorTheme(eventType)
+    return "bg-[" + schoolColorTheme[colorKey]['med'] + "]"
+}
+
+
 </script>
 <template>
     <BaseSingle content-type="event">
         <template #hero="{contentFromBase}">
             <BaseHero
                 :background-url="contentFromBase['cover_image']"
-                :swoosh-color-theme="'red'"
+                :swoosh-color-theme="getEventColorTheme(contentFromBase.type)"
             >
+                <template #breadcrumb>
+                    <BaseBreadcrumb
+                        :child-page="contentFromBase.title"
+                        parent-page="events"
+                        :color-theme="getEventColorTheme(contentFromBase.type)"
+                    />
+                </template>
                 <template #titleText>
                     {{ contentFromBase['title'] }}
                 </template>
@@ -43,23 +69,13 @@ const handleClickViewProfile = (author_id, author_type) => {
                             xl:!grid-cols-6
                             ">
                         <div
-                            class="
-                                EventTypeTag
-                                bg-secondary-mbRose
-                                font-semibold
-                                grid
-                                place-items-center
-                                mb-2
-                                mr-2
-                                py-2
-                                rounded-2xl
-                                w-full
-                                "
+                            class="EventTypeTag font-semibold grid place-items-center mb-2 mr-2 py-2 rounded-2xl w-full"
+                            :class="getEventBackgroundColorTheme(contentFromBase['type'])"
                         >
                             {{ contentFromBase['type'] }}
                         </div>
                         <div
-                            v-for="(tag, index) in ['Advice', 'AR', 'VR', 'Robotics','3D', 'AI']"
+                            v-for="(tag, index) in contentFromBase['tags']"
                             :key="index"
                             class="
                                 EventTags
@@ -86,13 +102,10 @@ const handleClickViewProfile = (author_id, author_type) => {
                         class="EventHeroAuthorContainer flex flex-col"
                     >
                         <div class="flex items-center flex-row">
-                            <div class="flex items-center h-20 mx-4 smallPartnerLogo w-24">
-                                <img
-                                    :src="`${imageURL}/${String(contentFromBase['author']['author_logo'])}`"
-                                    alt="logo"
-                                    class="bg-center h-24 object-contain rounded-full w-24"
-                                >
-                            </div>
+                            <BaseSingleProfilePicture
+                                :author-name="contentFromBase['author']['author_name']"
+                                :author-logo-url="String(contentFromBase['author']['author_logo'])"
+                            />
                             <div class="authorName flex flex-col pt-6">
                                 <div class="mb-2 text-2xl">
                                     {{ contentFromBase['author']['author_name'] }}
@@ -177,7 +190,7 @@ const handleClickViewProfile = (author_id, author_type) => {
 
 
 <style scoped>
-:deep(p){
+.eventSingleContent :deep(p){
     margin-top: 16px;
     text-align: justify;
 }

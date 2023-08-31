@@ -83,7 +83,7 @@ const getDistanceBetweenElements = (a, b) => {
         <div
             v-for="(item,index) in numberedListContent"
             :key="index"
-            class="eachContent py-2"
+            class="eachContent py-2 w-full"
         >
             <div class="flex flex-row w-full">
                 <div class="extraContentIcon hidden relative w-1/4  items-center justify-center md:!flex">
@@ -119,7 +119,7 @@ const getDistanceBetweenElements = (a, b) => {
                     </div>
 
                     <div
-                        class="htmlRenderer"
+                        class="flex flex-wrap htmlRenderer"
                         v-html="item.content"
                     />
                 </div>
@@ -128,9 +128,13 @@ const getDistanceBetweenElements = (a, b) => {
     </div>
 </template>
 
-<style>
+<style scoped>
 .htmlRenderer ul {
     list-style: disc !important;
     padding-left: 36px !important;
 }
+.htmlRenderer :deep(p){
+    word-wrap: break-word;
+}
+
 </style>

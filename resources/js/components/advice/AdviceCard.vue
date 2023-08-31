@@ -15,9 +15,6 @@ const props = defineProps({
     showIcon: {
         type: Boolean, required: false
     },
-    numberPerRow: {
-        type: Number, required: false, default: 3
-    }
 });
 
 const router = useRouter()
@@ -51,7 +48,6 @@ const handleClickAdviceCard = () => {
         :display-content="data.excerpt"
         :display-author="data.author"
         :display-date="data.created_at"
-        :number-per-row="numberPerRow"
         :cover-image="data.cover_image"
         :click-callback="handleClickAdviceCard"
         :section-type="'advice'"

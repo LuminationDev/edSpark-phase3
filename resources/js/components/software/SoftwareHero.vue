@@ -23,7 +23,7 @@ import SoftwareRobot from "@/js/components/svg/software/SoftwareRobot.vue";
             "
     >
         <div class="col-span-8 md:!col-span-5 lg:!col-span-6">
-            <h1 class="font-semibold pb-8 text-[36px] text-white uppercase">
+            <h1 class="capitalize font-semibold pb-8 text-[36px] text-white">
                 Software
             </h1>
             <p class="font-normal pb-2 text-[16px] text-white">
@@ -37,7 +37,7 @@ import SoftwareRobot from "@/js/components/svg/software/SoftwareRobot.vue";
             </p>
         </div>
         <div class="col-span-3 hidden relative md:!block lg:!col-span-2">
-            <SoftwareRobot class="absolute  md:!bottom-4 md:!scale-75 lg:!bottom-6 lg:!scale-100 xl:!-bottom-4 xl:!right-12" />
+            <SoftwareRobot class="absolute  md:!bottom-0 md:!scale-75 lg:!bottom-6 lg:!scale-100 xl:!-bottom-4 xl:!right-12" />
         </div>
     </div>
 </template>

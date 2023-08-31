@@ -90,7 +90,7 @@ class ProductController extends Controller
 
     public function fetchAllProducts(Request $request): \Illuminate\Http\JsonResponse
     {
-        $hardwares = Product::all();
+        $hardwares = Product::inRandomOrder()->get();
         $data = [];
 
         if ($hardwares) {

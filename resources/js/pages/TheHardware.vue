@@ -1,4 +1,3 @@
-
 <script setup>
 import {API_ENDPOINTS} from "@/js/constants/API_ENDPOINTS";
 import {swrvOptions} from "@/js/constants/swrvConstants";
@@ -13,7 +12,7 @@ import MonitorDisplay from '../components/svg/MonitorDisplay.vue';
 
 import {computed, ref, watch} from 'vue';
 import useSWRV from "swrv";
-import { axiosFetcherParams} from "@/js/helpers/fetcher";
+import {axiosFetcherParams} from "@/js/helpers/fetcher";
 import {useRouter} from "vue-router";
 import CardLoading from "@/js/components/card/CardLoading.vue";
 import {useWindowStore} from "@/js/stores/useWindowStore";
@@ -25,22 +24,26 @@ const laptops = ref([])
 const audioVisual = ref([])
 const emergingTech = ref([])
 
-const {data: hardware, error} = useSWRV(API_ENDPOINTS.HARDWARE.FETCH_HARDWARE_POSTS, axiosFetcherParams(userStore.getUserRequestParam),swrvOptions)
+const {
+    data: hardware,
+    error
+} = useSWRV(API_ENDPOINTS.HARDWARE.FETCH_HARDWARE_POSTS, axiosFetcherParams(userStore.getUserRequestParam), swrvOptions)
 
-watch(hardware, () =>{
-    laptops.value =hardware.value.filter(item => item.category['categoryName'] === 'Laptop');
-    audioVisual.value =  hardware.value.filter(item => item.category['categoryName'] === 'Audio Visual');
+watch(hardware, () => {
+    laptops.value = hardware.value.filter(item => item.category['categoryName'] === 'Laptop');
+    audioVisual.value = hardware.value.filter(item => item.category['categoryName'] === 'Audio Visual');
     emergingTech.value = hardware.value.filter(item => item.category['categoryName'] === 'Emerging Technology')
-}, {deep:true})
+}, {deep: true})
 
 const windowStore = useWindowStore()
 const {isMobile, isTablet, windowWidth} = storeToRefs(windowStore)
 
 
 const getResponsiveDisplayData = (itemArray) => {
-    if(itemArray.length === 0) return []
-    if(isMobile.value) return itemArray.slice(0,2)
-    if(isTablet.value) return itemArray.slice(0,4)
+    if (itemArray.length === 0) return []
+    if (isMobile.value || isTablet.value) return itemArray.slice(0, 2)
+
+    else if(itemArray.length >= 3) return itemArray.slice(0,3)
     else return itemArray
 }
 
@@ -61,17 +64,18 @@ const getResponsiveDisplayData = (itemArray) => {
             :button-text="'View all hardware'"
             :button-callback="() => router.push('/browse/hardware')"
         />
-        <div class="grid grid-cols-1 gap-4 place-items-center h-full px-5 md:!grid-cols-2 lg:!px-10 xl:!grid-cols-3 xl:!px-huge">
+        <div
+            class="grid grid-cols-1 gap-4 place-items-center h-full px-5 md:!grid-cols-2 lg:!px-10 xl:!grid-cols-3 xl:!px-huge"
+        >
             <template v-if="laptops && laptops.length > 0">
                 <HardwareCard
                     v-for="(laptop, index) in getResponsiveDisplayData(laptops)"
                     :key="index"
                     :data="laptop"
-                    :number-per-row="4"
                 />
             </template>
             <template v-else>
-                <div class="col-span-1 grid md:!col-span-2 xl:!col-span-3">
+                <div class="col-span-1 grid w-full md:!col-span-2 xl:!col-span-3">
                     <CardLoading
                         :number-of-rows="1"
                         :number-per-row="windowStore.getNumberOfCardLoading"
@@ -93,23 +97,23 @@ const getResponsiveDisplayData = (itemArray) => {
             <div class="col-span-12 flex flex-row gap-6 mb-6 xl:!col-span-4 xl:!flex-col">
                 <div class="flex items-start flex-col">
                     <h5 class="font-bold text-[18px]">
-                        A Variety of AV equipment
+                        A variety of AV equipment
                     </h5>
                     <p>
                         Obtain a quote for audio and visual devices purchased for department use.
                     </p>
                 </div>
-                <div class="flex xl:flex-row flex-col">
+                <div class="flex flex-col gap-4">
                     <div class="flex flex-row gap-4 mt-3 place-items-center">
                         <MonitorDisplay />
                         <h5 class="font-bold text-[18px]">
-                            Interactive Displays
+                            Interactive displays
                         </h5>
                     </div>
                     <div class="flex flex-row gap-4 mt-3 place-items-center">
                         <VideoConferencing />
                         <h5 class="font-bold text-[18px]">
-                            Video Conferencing
+                            Video conferencing
                         </h5>
                     </div>
                 </div>
@@ -144,16 +148,16 @@ const getResponsiveDisplayData = (itemArray) => {
             :button-callback="() => router.push('/browse/hardware')"
         />
         <div class="grid grid-cols-12 px-5 lg:!px-20 xl:!px-huge">
-            <div class="col-span-12 xl:col-span-5 flex flex-col gap-4 overflow-clip py-10 xl:!py-2">
+            <div class="col-span-12 xl:col-span-5 flex flex-col gap-6 mb-6 overflow-clip xl:!py-2">
                 <h5 class="font-bold text-[18px]">
-                    Emerging Technology Buzzwords
+                    Emerging technology buzzwords
                 </h5>
                 <p>
-                    Nam sit amet fermentum mauris. Nullam ultrices augue a turpis aliquam dapibus.
-                    Vestibulum laoreet at nisl in ultrices. Quisque tempus turpis id tempus
-                    finibus. Integer lacus felis, ulztrices sit amet libero nec, pulvinar dictum metus.
-                    Curabitur sapien odio, scelerisque sit amet tincidunt ac, ullamcorper in quam.
-                    Proin euismod mi ac ligula volutpat, sed facilisis leo laoreet.
+                    Ready to turbocharge your classroom? Dive into the digital age with Augmented Reality (AR), Virtual
+                    Reality (VR), drones, and 3D printing. These aren’t just cool gadgets—they’re transforming
+                    education. From VR trips inside a cell to drones mapping the schoolyard or 3D printing historical
+                    artifacts, the possibilities are boundless. The future of teaching is here, and it's thrilling! Grab
+                    these tools and watch your lessons come alive.
                 </p>
             </div>
             <div class="col-span-12 grid grid-cols-1 gap-4 ml-2 md:!grid-cols-2 xl:!col-span-7">

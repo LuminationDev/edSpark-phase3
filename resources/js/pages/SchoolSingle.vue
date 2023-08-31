@@ -1,4 +1,5 @@
 <script setup>
+import BaseBreadcrumb from "@/js/components/bases/BaseBreadcrumb.vue";
 import {API_ENDPOINTS} from "@/js/constants/API_ENDPOINTS";
 
 /**
@@ -34,11 +35,6 @@ const route = useRoute();
 const router = useRouter();
 const serverURL = import.meta.env.VITE_SERVER_URL_API
 const imageURL = import.meta.env.VITE_SERVER_IMAGE_API
-
-
-const urlOrigin = window.location.origin
-const breadCrumbPrev = 'Schools'
-const breadCrumbName = route.params.name
 
 const schoolContent = ref({})
 const colorTheme = ref('teal') // default color theme
@@ -264,28 +260,13 @@ const isSchoolContentPopulated = computed(() => {
                         :background-url="coverImageLink"
                         :swoosh-color-theme="colorTheme"
                     >
-                        <template #smallTitle>
-                            <!--   breadcrumb top only  -->
-                            <div class="flex mt-[100px]">
-                                <div class="flex flex-row gap-2 h-[24px] place-items-center text-[10px] md:!text-sm">
-                                    <router-link to="/">
-                                        <p class="text-white hover:text-[#44B8F3]">
-                                            Home
-                                        </p>
-                                    </router-link>
-                                    <!-- TODO: Breadcrumb builder -- gotta be smart -->
-                                    <ChevronRight />
-                                    <router-link to="/schools">
-                                        <p class="text-white hover:text-[#44B8F3]">
-                                            {{ breadCrumbPrev }}
-                                        </p>
-                                    </router-link>
-                                    <ChevronRight />
-                                    <p class="text-[#44B8F3] w-full">
-                                        {{ breadCrumbName }}
-                                    </p>
-                                </div>
-                            </div>
+                        <template #breadcrumb>
+                            <BaseBreadcrumb
+                                :child-page="schoolContent.name"
+                                parent-page="schools"
+                                :color-theme="colorTheme"
+                                class="mt-[100px]"
+                            />
                         </template>
                         <template #titleText>
                             <div class="SchoolHeroContentContainer flex flex-row w-full">

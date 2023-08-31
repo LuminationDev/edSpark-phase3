@@ -136,7 +136,7 @@ const print = (thing) => {
         width: 588px;
     }
 
-    .eventEvcerptText >>> p {
+    .eventEvcerptText :deep(p) {
         max-width: 588px;
         width: 588px;
         overflow: hidden;
