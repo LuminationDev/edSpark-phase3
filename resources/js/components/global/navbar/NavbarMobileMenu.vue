@@ -10,18 +10,11 @@ import {useAuthStore} from "@/js/stores/useAuthStore";
 const router = useRouter()
 const authStore = useAuthStore();
 
-const {showMobileNavbar} = storeToRefs(useWindowStore())
+const { showMobileNavbar } = storeToRefs(useWindowStore())
 const { isAuthenticated } = storeToRefs(authStore)
 
 const navLinks = ref([]);
 const navScrolled = ref(false);
-
-onMounted(() =>{
-    window.document.onscroll = () => {
-        let navbar = document.getElementById('navbarFullsize')
-        navScrolled.value = window.scrollY > navbar.offsetTop;
-    }
-})
 
 const handleToggleNavbar = () => {
     showMobileNavbar.value = !showMobileNavbar.value
@@ -38,6 +31,19 @@ const setupRoutes = () => {
     navLinks.value = tempNavArray;
 };
 
+onMounted(() => {
+     window.document.onscroll = () => {
+        
+        let navbar = document.getElementById('navbarFullsize');
+
+        if(navbar == null){
+            navbar = document.getElementById('navbarMobileBurger');
+        }
+
+        navScrolled.value = window.scrollY > navbar.offsetTop;
+        //console.log(navScrolled.value +" vs "+window.scrollY+" vs "+navbar.offsetTop);
+    }
+});
 
 
 setupRoutes();
@@ -45,7 +51,7 @@ setupRoutes();
 </script>
 
 <template>
-    <div
+    <nav
         v-if="isAuthenticated"
         id="navbarMobileBurger"
         class="HAMBURGER-ICON absolute top-2 left-2 bg-[#002856]/50 p-4 rounded space-y-2 z-50 hover:cursor-pointer"
@@ -55,7 +61,7 @@ setupRoutes();
         <span class="bg-white block h-1 w-10" />
         <span class="bg-white block h-1 w-10" />
         <span class="bg-white block h-1 w-10" />
-    </div>
+    </nav>
     <Transition name="slide-fade">
         <div
             v-if="showMobileNavbar"
@@ -119,11 +125,13 @@ setupRoutes();
     opacity: 0;
 }
 @media screen and (min-width: 375px){
+    
+
     #navbarMobileBurger{
-        left: 0;
+        left: 10px;
     }
 }
-@media screen and (min-width: 640px){
+/* @media screen and (min-width: 640px){
     #navbarMobileBurger{
         left: 4vw !important;
     }
@@ -137,16 +145,17 @@ setupRoutes();
     #navbarMobileBurger{
         left: 12vw !important;
     }
-}
+} */
+
 #navbarMobileBurger{
+    transition: 300ms;
     position: fixed;
-    top: 20px;
-    left: 0;
+    top: 10px;
+    left: 10px;
 
 }
 .navbarScrolled {
-    transition: 150ms;
-    top: 0 !important;
+    /* top: 10px !important; */
     background-color: #002856 !important;
 }
 

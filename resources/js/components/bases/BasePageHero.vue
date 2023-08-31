@@ -19,7 +19,7 @@ const props = defineProps({
     <div
         class="-mt-12 lg:!mt-24 lg:!mx-10 lg:!pt-12 xl:!mx-huge bg-main-teal grid grid-cols-8 pb-8 pt-24 px-10"
     >
-        <div class="col-span-8 md:!col-span-5 lg:!col-span-6">
+        <div class="col-span-8 md:!col-span-5 lg:!col-span-5">
             <h1 class="font-semibold pb-8 text-[36px] text-white uppercase">
                 <slot name="title" />
                 {{ props.title }}
@@ -33,7 +33,7 @@ const props = defineProps({
                 {{ props.subtitle2 }}
             </p>
         </div>
-        <div class="col-span-3 hidden relative md:!block lg:!col-span-2">
+        <div class="col-span-3 hidden relative md:!block lg:!col-span-3">
             <slot name="pageIconSVG" />
         </div>
     </div>
