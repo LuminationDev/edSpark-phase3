@@ -47,7 +47,7 @@ export const schoolColorTheme = {
     deepPurple: {
         light: "#9F7AEA",
         med:"#4338CA",
-        drk:"#2D1E91",
+        dark:"#2D1E91",
     },
     pink: {
         light: '#FECDD3',

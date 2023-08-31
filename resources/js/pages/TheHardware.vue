@@ -41,8 +41,9 @@ const {isMobile, isTablet, windowWidth} = storeToRefs(windowStore)
 
 const getResponsiveDisplayData = (itemArray) => {
     if (itemArray.length === 0) return []
-    if (isMobile.value) return itemArray.slice(0, 2)
-    if (isTablet.value) return itemArray.slice(0, 4)
+    if (isMobile.value || isTablet.value) return itemArray.slice(0, 2)
+
+    else if(itemArray.length >= 3) return itemArray.slice(0,3)
     else return itemArray
 }
 
@@ -71,11 +72,10 @@ const getResponsiveDisplayData = (itemArray) => {
                     v-for="(laptop, index) in getResponsiveDisplayData(laptops)"
                     :key="index"
                     :data="laptop"
-                    :number-per-row="4"
                 />
             </template>
             <template v-else>
-                <div class="col-span-1 grid md:!col-span-2 xl:!col-span-3">
+                <div class="col-span-1 grid w-full md:!col-span-2 xl:!col-span-3">
                     <CardLoading
                         :number-of-rows="1"
                         :number-per-row="windowStore.getNumberOfCardLoading"

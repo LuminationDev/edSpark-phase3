@@ -93,7 +93,7 @@ const colorTheme = ref('deepPurple')
                                 :author-name="contentFromBase['author']['author_name']"
                                 :author-logo-url="String(contentFromBase['author']['author_logo'])"
                             />
-                            <div class="authorName flex flex-col pt-6">
+                            <div class="authorName flex justify-center flex-col">
                                 <div class="mb-2 text-2xl">
                                     {{ contentFromBase['author']['author_name'] }}
                                 </div>
@@ -114,8 +114,8 @@ const colorTheme = ref('deepPurple')
                 </template>
 
 
-                <template #subtitleText1>
-                    <div class="font-semibold pt-2">
+                <template #contentDate>
+                    <div class="font-semibold">
                         {{ formatDateToDayTime(contentFromBase['modified_at']) }}
                     </div>
                 </template>
@@ -123,7 +123,7 @@ const colorTheme = ref('deepPurple')
                     <div v-html="contentFromBase['excerpt']" />
                 </template>
                 <template #subtitleContent>
-                    <div class="SoftwareTypeInfoInHero flex flex-row gap-4 mt-4">
+                    <div class="SoftwareTypeInfoInHero flex flex-row gap-4 my-8">
                         <SoftwareIconGenerator
                             :icon-name="contentFromBase['type'][0]"
                             class="h-14 w-14"

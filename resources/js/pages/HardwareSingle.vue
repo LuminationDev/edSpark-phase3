@@ -71,7 +71,7 @@ const colorTheme = ref('green')
                 <template #breadcrumb>
                     <BaseBreadcrumb
                         :child-page="contentFromBase.title"
-                        parent-page="software"
+                        parent-page="hardware"
                         :color-theme="colorTheme"
                     />
                 </template>

@@ -58,7 +58,22 @@ const setTheBackground = computed(() => {
 <template>
     <div class="-mt-28 lg:!h-[720px] BaseHeroContainer h-full relative z-10">
         <div
-            :class="`BaseHeroClipThisPath pb-[36px] pt-[190px] px-3 lg:!px-12 grid grid-cols-8 bg-cover h-full relative bg-[url(${imageURL}/${setTheBackground}) `+ heroBackground"
+            class="
+                2xl:!pt-44
+                BaseHeroClipThisPath
+                bg-cover
+                grid
+                grid-cols-8
+                h-full
+                pb-[36px]
+                pt-40
+                px-3
+                relative
+                md:!pt-36
+                lg:!pt-38
+                lg:!px-12
+                xl:!pt-40
+                "
             :style="'background-image: url(' + heroBackgroundLinkOnly +')'"
         >
             <div
@@ -91,14 +106,14 @@ const setTheBackground = computed(() => {
 
                 <p
                     v-if="$slots.contentDate"
-                    class="flex flex-col font-thin gap-4 pb-4 text-base text-white"
+                    class="flex flex-col font-thin gap-4 my-4 text-base text-white"
                 >
                     <slot name="contentDate" />
                 </p>
 
                 <p
                     v-if="$slots.subtitleText1"
-                    class="flex flex-col font-thin gap-4 pb-4 text-base text-white"
+                    class="flex flex-col font-thin gap-4 my-4 pb-4 text-base text-white"
                 >
                     <slot name="subtitleText1" />
                 </p>
@@ -112,8 +127,7 @@ const setTheBackground = computed(() => {
 
                 <div
                     v-if="$slots.subtitleText2"
-                    class="font-normal h-auto text-base text-white"
-                    :class="$slots.subtitleText2 ? 'mt-6' : ''"
+                    class="font-normal h-auto mt-6 text-base text-white"
                 >
                     <p class="line-clamp-3">
                         <slot name="subtitleText2" />
