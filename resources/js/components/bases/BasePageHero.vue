@@ -24,7 +24,7 @@ const props = defineProps({
         pb-8 pt-[160px] px-10"
     >
         <div class="col-span-8 md:!col-span-5 lg:!col-span-5">
-            <h1 class="font-semibold pb-8 text-[36px] text-white uppercase">
+            <h1 class="font-semibold pb-8 text-[36px] text-white lowercase first-letter:uppercase">
                 <slot name="title" />
                 {{ props.title }}
             </h1>

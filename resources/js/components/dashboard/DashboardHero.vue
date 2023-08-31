@@ -93,7 +93,7 @@ export default {
                 </div>
             </div>
         </div>
-        <div class="-mt-8 lg:!-mt-24 min-h-24 swooshContainer relative !mt-0" style="margin-top: 0 !important">
+        <div class="min-h-24 swooshContainer relative !mt-0">
             <Swoosh style="transform: translate(0, -60%);"/>
         </div>
     </div>

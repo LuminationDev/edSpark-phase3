@@ -24,7 +24,7 @@ const router = useRouter()
                 lg:!mx-huge
                 lg:!pt-12">
             <div class="col-span-5">
-                <h1 class="font-semibold pb-8 text-[36px] text-white uppercase">
+                <h1 class="font-semibold pb-8 text-[36px] text-white lowercase first-letter:uppercase">
                     Partner Published Resources
                 </h1>
 

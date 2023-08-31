@@ -27,7 +27,7 @@ import SoftwareRobot from "@/js/components/svg/software/SoftwareRobot.vue";
 
 
         <div class="col-span-8 md:!col-span-5 lg:!col-span-6 pr-8">
-            <h1 class="font-semibold pb-8 text-[36px] text-white uppercase">
+            <h1 class="font-semibold pb-8 text-[36px] text-white lowercase first-letter:uppercase">
                 Software
             </h1>
             <p class="font-normal pb-2 text-[16px] text-white">

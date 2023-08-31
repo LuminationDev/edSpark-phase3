@@ -28,7 +28,7 @@ const router = useRouter()
                 "
         >
             <div class="col-span-8 md:!col-span-5">
-                <h1 class="font-semibold pb-8 text-[36px] text-white uppercase">
+                <h1 class="font-semibold pb-8 text-[36px] text-white capitalize">
                     Digital Adoption Group 
                 </h1>
 
