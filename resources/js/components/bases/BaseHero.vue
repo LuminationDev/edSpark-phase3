@@ -65,11 +65,12 @@ const setTheBackground = computed(() => {
                 grid
                 grid-cols-8
                 h-full
-                pb-[36px]
-                pt-40
+                pb-20
+                pt-32
                 px-3
                 relative
                 md:!pt-36
+                lg:!pb-0
                 lg:!pt-38
                 lg:!px-12
                 xl:!pt-40
