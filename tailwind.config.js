@@ -73,7 +73,7 @@ module.exports = {
                     genericScrollbarDark: '#0A0045', // only repeated coz i screwed something up with scrollbar customisation
                 },
                 event:{
-                    virtual: '#BF123D',
+                    virtual: '#BE123C',
                     hybrid: '#A855F7',
                     inPerson: '#3B82F6'
 

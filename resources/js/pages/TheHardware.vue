@@ -148,7 +148,7 @@ const getResponsiveDisplayData = (itemArray) => {
             :button-callback="() => router.push('/browse/hardware')"
         />
         <div class="grid grid-cols-12 px-5 lg:!px-20 xl:!px-huge">
-            <div class="col-span-12 xl:col-span-5 flex flex-col gap-4 overflow-clip py-10 xl:!py-2">
+            <div class="col-span-12 xl:col-span-5 flex flex-col gap-6 mb-6 overflow-clip xl:!py-2">
                 <h5 class="font-bold text-[18px]">
                     Emerging technology buzzwords
                 </h5>

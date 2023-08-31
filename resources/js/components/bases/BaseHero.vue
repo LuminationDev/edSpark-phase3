@@ -71,7 +71,7 @@ const setTheBackground = computed(() => {
                 relative
                 md:!pt-36
                 lg:!pb-0
-                lg:!pt-38
+                lg:!pt-40
                 lg:!px-12
                 xl:!pt-40
                 "

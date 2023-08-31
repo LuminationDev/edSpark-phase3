@@ -1,6 +1,7 @@
 <script setup>
 // import EventsCalendarPopup from './EventsCalendarPopup.vue';
 
+import EventsCalendarPopup from "@/js/components/events/EventsCalendarPopup.vue";
 import {Calendar} from 'v-calendar';
 import 'v-calendar/style.css';
 
@@ -23,7 +24,8 @@ const props = defineProps({
  */
 const attributes = computed(() =>
     props.events.map(event => {
-        const backgroundColor = event.type === 'Virtual' ? '#BF123D' : event.type === 'Hybrid' ? '#A855F7' : '#3B82F6';
+        // const backgroundColor = event.type === 'Virtual' ? '#BF123D' : event.type === 'Hybrid' ? '#A855F7' : '#3B82F6';
+        const backgroundColor = event.type === 'Virtual' ? 'mbRose' : event.type === 'Hybrid' ? 'purple' : 'blue';
         return {
             dates: [[event.start_date, event.end_date]],
             key: event.id,
@@ -36,7 +38,18 @@ const attributes = computed(() =>
                 }
             },
             highlight: {
-                base: { fillMode: 'light', backgroundColor: backgroundColor },
+                start: {
+                    fillMode: 'outline',
+                    color: backgroundColor
+                },
+                base: {
+                    fillMode: 'solid',
+                    color: backgroundColor
+                },
+                end: {
+                    fillMode: 'outline',
+                    color: backgroundColor
+                },
             },
             customData: event
         };
@@ -63,9 +76,9 @@ const closePopup = () => {
     dateForPopup.value = '';
 }
 
-const initialCalendarPage = computed(() =>{
+const initialCalendarPage = computed(() => {
     const currentDate = new Date();
-    return{
+    return {
         month: currentDate.getMonth() + 1,
         year: currentDate.getFullYear()
     }
@@ -101,21 +114,21 @@ const initialCalendarPage = computed(() =>{
 
 <style scoped>
 
-    .calendarWrappe :deep(.vc-pane) {
-        background-color: #f8f8f8;
-    }
+.calendarWrappe :deep(.vc-pane) {
+    background-color: #f8f8f8;
+}
 
 .calendarWrapper :deep(.vc-header) {
     margin-bottom: 1.5rem !important;
 }
 
-    .calendarWrapper :deep(.vc-weeknumber-content) {
-        color: #6b7585;
-    }
+.calendarWrapper :deep(.vc-weeknumber-content) {
+    color: #6b7585;
+}
 
-    .calendarWrapper :deep(.vc-day-box-center-center) {
-        height: 68px;
-    }
+.calendarWrapper :deep(.vc-day-box-center-center) {
+    height: 68px;
+}
 
 :deep(.vc-dfeteal) {
     --vc-accent-50: #e7fcfd;
@@ -167,5 +180,18 @@ const initialCalendarPage = computed(() =>{
     --vc-accent-700: #1D8F59;
     --vc-accent-800: #047C43;
     --vc-accent-900: #036F3C;
+}
+
+:deep(.vc-mbRose) {
+    --vc-accent-50: #F5CDD4;
+    --vc-accent-100: #EB9CA2;
+    --vc-accent-200: #E07588;
+    --vc-accent-300: #D54E6E;
+    --vc-accent-400: #CA2854;
+    --vc-accent-500: #BE123C;
+    --vc-accent-600: #BE123C;
+    --vc-accent-700: #8E0E28;
+    --vc-accent-800: #760B1E;
+    --vc-accent-900: #5E0914;
 }
 </style>
