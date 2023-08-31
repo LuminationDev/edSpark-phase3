@@ -423,12 +423,11 @@ onMounted(async () => {
                 </div>
             </div>
             <template v-if="softwaresData">
-                <div class="grid grid-cols-1 gap-6 place-items-center px-8 lg:!grid-cols-2 xl:!px-20">
+                <div class="grid grid-cols-1 gap-10 place-items-center px-8 lg:!grid-cols-2 xl:!px-20">
                     <SoftwareCard
                         v-for="software in softwaresData.slice(0,4)"
                         :key="software.guid"
                         :data="software"
-                        :number-per-row="2"
                     />
                 </div>
             </template>
@@ -460,7 +459,7 @@ onMounted(async () => {
                                 alt="Digital Adoption Group Icon"
                             >
                         </div>
-                        <div class="col-span-2 flex place-items-center row-span-1">
+                        <div class="col-span-2 flex ml-2 place-items-center row-span-1">
                             <h4 class="font-semibold text-[24px]">
                                 What is the DAG?
                             </h4>

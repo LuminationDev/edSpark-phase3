@@ -11,7 +11,7 @@ const {relatedBrandHardware} = storeToRefs(hardwareStore)
 <template>
     <div
         v-if="relatedBrandHardware && relatedBrandHardware.length > 0"
-        class="bg-[#048246]/5 flex flex-col gap-6 px-6 py-6"
+        class="bg-[#048246]/5 flex flex-col gap-6 p-4"
     >
         <h3 class="font-bold mx-auto pb-8 text-[24px]">
             More from the same brand
@@ -19,13 +19,12 @@ const {relatedBrandHardware} = storeToRefs(hardwareStore)
         <div
             v-for="(item,index) in relatedBrandHardware"
             :key="index"
-            class="flex justify-between"
+            class="flex justify-between flex-col gap-10"
         >
             <HardwareCard
                 :key="index.guid"
                 class="bg-white mx-auto"
                 :data="item"
-                :number-per-row="1"
             />
         </div>
     </div>

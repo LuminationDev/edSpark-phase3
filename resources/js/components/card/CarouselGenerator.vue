@@ -93,6 +93,7 @@ const numberOfLoadingPlaceholder = computed(() =>{
                         <SoftwareCard
                             :key="cardData.guid"
                             :data="cardData"
+                            :show-icon="false"
                         />
                     </template>
 

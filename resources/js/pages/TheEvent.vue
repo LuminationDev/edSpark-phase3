@@ -31,7 +31,7 @@ const { data: allEvents, error: eventError } = useSWRV(API_ENDPOINTS.EVENT.FETCH
         :button-callback="() => router.push('/browse/event')"
     />
     <div class="EventContentContainer flex flex-col h-full px-5 lg:!px-20">
-        <div class="EventCardListContainer grid grid-cols-1 gap-6 place-items-center heading text-xl  md:!grid-cols-2 xl:!grid-cols-3">
+        <div class="EventCardListContainer grid grid-cols-1 gap-10 place-items-center heading text-xl  md:!grid-cols-2 xl:!grid-cols-3">
             <template v-if="allEvents && allEvents.length > 0">
                 <EventCard
                     v-for="event in allEvents.filter((event,index) => index < 3)"
