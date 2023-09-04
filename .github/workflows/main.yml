@@ -2,10 +2,10 @@ name: Deploy
 
 on:
   pull_request:
-    branches: ['test', 'release']
+    branches: ['test', 'production']
     types: [closed]
   push:
-    branches: ['test', 'release']
+    branches: ['test', 'production']
   workflow_dispatch:
 
 jobs:
@@ -38,7 +38,7 @@ jobs:
           echo $GITHUB_REF_NAME
 
   deploy_to_production:
-    if: github.ref == 'refs/heads/release'
+    if: github.ref == 'refs/heads/production'
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
