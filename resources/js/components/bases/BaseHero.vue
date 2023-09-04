@@ -58,7 +58,23 @@ const setTheBackground = computed(() => {
 <template>
     <div class="-mt-28 lg:!h-[720px] BaseHeroContainer h-full relative z-10">
         <div
-            :class="`BaseHeroClipThisPath pb-[36px] pt-[190px] px-3 lg:!px-12 grid grid-cols-8 bg-cover h-full relative bg-[url(${imageURL}/${setTheBackground}) `+ heroBackground"
+            class="
+                2xl:!pt-44
+                BaseHeroClipThisPath
+                bg-cover
+                grid
+                grid-cols-8
+                h-full
+                pb-20
+                pt-32
+                px-3
+                relative
+                md:!pt-36
+                lg:!pb-0
+                lg:!pt-40
+                lg:!px-12
+                xl:!pt-40
+                "
             :style="'background-image: url(' + heroBackgroundLinkOnly +')'"
         >
             <div
@@ -68,19 +84,19 @@ const setTheBackground = computed(() => {
                 v-if="$slots.titleText || $slots.subtitleText1 || $slots.subtitleText2"
                 class="col-span-8 p-2 relative z-20 lg:!col-span-5"
             >
-                <slot name="smallTitle" />
+                <slot name="breadcrumb" />
                 <h1
-                    class="font-semibold pb-8 text-lg text-white uppercase md:!text-3xl lg:!text-4xl xl:!text-5xl"
+                    class="font-semibold pb-8 text-2xl text-white uppercase md:!text-3xl lg:!text-4xl xl:!text-5xl"
                 >
                     <slot name="titleText" />
                 </h1>
 
-                <p
+                <div
                     v-if="$slots.additionalTags"
-                    class="flex-row gap-4"
+                    class="flex flex-row flex-wrap gap-4 max-w-full w-full"
                 >
                     <slot name="additionalTags" />
-                </p>
+                </div>
 
                 <p
                     v-if="$slots.authorName"
@@ -91,36 +107,34 @@ const setTheBackground = computed(() => {
 
                 <p
                     v-if="$slots.contentDate"
-                    class="flex flex-col font-thin gap-4 pb-4 text-[16px] text-white"
+                    class="flex flex-col font-thin gap-4 my-4 text-base text-white"
                 >
-                    <!-- <slot name="authorName" /> -->
                     <slot name="contentDate" />
-                    <!-- <slot name="hardwareProvider" /> -->
                 </p>
 
                 <p
                     v-if="$slots.subtitleText1"
-                    class="flex flex-col font-thin gap-4 pb-4 text-[16px] text-white"
+                    class="flex flex-col font-thin gap-4 my-4 pb-4 text-base text-white"
                 >
-                    <!-- <slot name="authorName" /> -->
                     <slot name="subtitleText1" />
-                    <!-- <slot name="hardwareProvider" /> -->
                 </p>
 
                 <p
                     v-if="$slots.hardwareProvider"
-                    class="flex flex-col font-normal gap-4 pb-4 text-[14px] text-white"
+                    class="flex flex-col font-normal gap-4 pb-4 text-base text-white"
                 >
                     <slot name="hardwareProvider" />
                 </p>
 
-                <p
+                <div
                     v-if="$slots.subtitleText2"
-                    class="font-normal text-[18px] text-white"
-                    :class="$slots.subtitleText2 ? 'mt-[36px]' : ''"
+                    class="font-normal h-auto mt-6 text-base text-white"
                 >
-                    <slot name="subtitleText2" />
-                </p>
+                    <p class="line-clamp-3">
+                        <slot name="subtitleText2" />
+                    </p>
+                    <slot name="subtitleContent" />
+                </div>
             </div>
             <div
                 v-if="$slots.icon"

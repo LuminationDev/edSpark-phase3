@@ -17,6 +17,7 @@ use Illuminate\Support\Facades\Auth;
 class ProductcategoryResource extends Resource
 {
     protected static ?string $model = Productcategory::class;
+    protected static ?string $modelLabel= "Hardware Category";
 
     protected static ?string $navigationGroup = 'Product Management';
     protected static ?string $navigationGroupIcon = 'heroicon-o-collection';
@@ -95,13 +96,10 @@ class ProductcategoryResource extends Resource
 
     public static function shouldRegisterNavigation(): bool
     {
-        // use Illuminate\Support\Facades\Auth;
-
-        // Moderator check
-        if(Auth::user()->role->role_name == 'Moderator') {
-            return false;
+        $allowed_array = ['Superadmin', 'Administrator'];
+        if (in_array(Auth::user()->role->role_name, $allowed_array)) {
+            return true;
         }
-
-        return true;
+        return false;
     }
 }

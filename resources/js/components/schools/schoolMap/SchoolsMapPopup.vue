@@ -20,7 +20,6 @@ const props = defineProps({
     }
 });
 
-console.log(props.schoolData)
 
 const emits = defineEmits(['handleLinkToSchool', 'handleToggle']);
 
@@ -43,17 +42,17 @@ const showFirstTech = ref(true)
 
 <template>
     <div
-        class=" mapOuterContainer flex flex-col"
-        :style="`background-color: rgba(255,255,255,0.85); background-image: url('${imageURL}/${props.schoolData['cover_image']}'); background-size: cover ;background-blend-mode: screen; `"
+        class="flex flex-col mapOuterContainer"
+        :style="`background-color: rgba(255,255,255,0.85); background-image: url('${imageURL}/${props.schoolData?.cover_image ?? ''}'); background-size: cover ;background-blend-mode: screen; `"
     >
-        <div class="relative flex p-4 flex-row justify-between place-items-center">
-            <h3 class="text-xl font-medium">
+        <div class="flex justify-between flex-row p-4 place-items-center relative">
+            <h3 class="font-medium text-xl">
                 {{ mapPopupName }}
             </h3>
         </div>
         <div
             ref="mapPopup"
-            class="mapPopupContent p-4  w-[340px] flex flex-col gap-6 overflow-scroll"
+            class="flex flex-col mapPopupContent overflow-scroll p-4 w-[340px]  gap-6"
         >
             <div class="flex flex-row gap-6 h-[180px]">
                 <SchoolCardIconList
@@ -62,9 +61,9 @@ const showFirstTech = ref(true)
                 />
             </div>
         </div>
-        <div class="flex flex-row justify-end mb-4 mr-4">
+        <div class="flex justify-end flex-row mb-4 mr-4">
             <button
-                class="bg-[#0072DA] text-white px-8 py-3 hover:bg-[#0359a9]"
+                class="bg-[#0072DA] hover:bg-[#0359a9] px-8 py-3 text-white"
                 @click="handleEmit"
             >
                 Visit

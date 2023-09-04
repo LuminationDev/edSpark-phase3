@@ -85,6 +85,7 @@ class LikeBookmarkController extends Controller
                 // Check whether the post id exists in Bookmark table
                 $checkBookmark = Bookmark::where('post_id', '=', $postId)
                                             ->where('user_id', '=', $userId)
+                                            ->where('post_type', $postType)
                                             ->first();
 
                 if ($checkBookmark) {
@@ -181,7 +182,6 @@ class LikeBookmarkController extends Controller
                 $count += count($bookmarks);
                 foreach ($bookmarks as $bookmark) {
                     $post_info = PostHelper::getPostTitle($bookmark->post_id,$bookmark->post_type);
-                    OutputHelper::print(serialize($post_info));
                     $result = [
                         'post_id' => $bookmark->post_id,
                         'post_type' => $bookmark->post_type,

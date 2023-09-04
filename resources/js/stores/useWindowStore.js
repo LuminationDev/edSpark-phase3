@@ -6,7 +6,8 @@ export const useWindowStore = defineStore('window',{
         windowWidth: 0,
         isMobile: false,
         isTablet: false,
-        showMobileNavbar: false
+        showMobileNavbar: false,
+        showGlobalSearch: false
     }),
     getters: {
         getWindowWidth() {
@@ -28,12 +29,10 @@ export const useWindowStore = defineStore('window',{
     actions:{
         updateIsMobile(){
             this.isMobile = this.windowWidth < 1024
-            console.log('inside updateismobnile')
 
         },
         updateIsTablet(){
             this.isTablet = this.windowWidth >= 1024 && this.windowWidth < 1440
-            console.log('inside updateistablet')
         }
 
     }

@@ -10,7 +10,13 @@ import BasePageHero from "@/js/components/bases/BasePageHero.vue";
         subtitle="Get inspiration and find out how other schools are enhancing their teaching and learning through digital Technology. Make connections with schools on the same pathway, share learnings and expand your PLC."
     >
         <template #pageIconSVG>
-            <SchoolsRobot class="absolute -top-16 hidden md:!block md:scale-75 lg:!right-12 lg:!scale-100" />
+            <SchoolsRobot class="absolute -top-16 hidden md:!block md:scale-75 
+            lg:!right-12 lg:!scale-100" />
         </template>
     </BasePageHero>
 </template>
+
+
+     
+    <!-- max-width: -webkit-fill-available;
+    right: 0 !important; -->

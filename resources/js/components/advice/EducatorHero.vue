@@ -26,7 +26,7 @@ const router = useRouter()
                 "
         >
             <div class="col-span-5">
-                <h1 class="font-semibold pb-8 text-2xl text-white uppercase md:!text-3xl lg:!text-4xl">
+                <h1 class="font-semibold pb-8 text-2xl text-white lowercase first-letter:uppercase md:!text-3xl lg:!text-4xl">
                     Advice for Educators
                 </h1>
 
@@ -39,10 +39,10 @@ const router = useRouter()
                 <AdviceEducatorsIcon
                     class="
                         absolute
-                        -right-24
+                        -right-28
                         -bottom-6
                         h-[250px]
-                        scale-75
+                        scale-50
                         md:!block
                         md:!bottom-4
                         md:!right-0
@@ -53,15 +53,16 @@ const router = useRouter()
                         "
                 />
                 <GenericButton
-                    :callback="() => router.push('browse/advices')"
+                    :callback="() => router.push('browse/advice')"
+                    button-id="EDUadvice"
                     class="
                         !rounded-none
-                        !text-adviceGreen
+                        !text-main-navy
                         bg-white
                         hover:bg-slate-50
                         border-2
-                        border-adviceGreen
-                        font-semibold
+                        border-secondary-darkBlue
+                        font-medium
                         hidden
                         px-12
                         text-lg
@@ -80,14 +81,14 @@ const router = useRouter()
             </div>
             <div class="block col-span-8 md:hidden">
                 <GenericButton
-                    :callback="() => router.push('browse/advices')"
+                    :callback="() => router.push('browse/advice')"
                     class="
                         !rounded-none
-                        !text-adviceGreen
+                        !text-main-navy
                         bg-white
                         hover:bg-slate-50
                         border-2
-                        border-adviceGreen
+                        border-secondary-darkBlue
                         font-semibold
                         px-12
                         text-lg

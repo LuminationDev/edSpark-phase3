@@ -21,10 +21,6 @@
                 loan items and generate a quote for purchases which can then be processed
                 by your school business manager.
             </p>
-
-            <button class="font-medium text-[#048246] hover:text-[#0EBE6A] text-[18px] underline w-fit">
-                Learn more
-            </button>
         </div>
     </div>
 </template>

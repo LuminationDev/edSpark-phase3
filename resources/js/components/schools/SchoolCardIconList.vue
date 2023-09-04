@@ -16,6 +16,11 @@ const props = defineProps({
         type: Boolean,
         required: false,
         default: false
+    },
+    guid:{
+        type:String,
+        required:false,
+        default:''
     }
 })
 const showFirstItem = ref(true)
@@ -30,7 +35,7 @@ const showFirstComputed = computed(() => {
 <template>
     <div
         v-for="(tech,index) in props.techList"
-        :key="index"
+        :key="props.guid + '' + index"
         class="card_inner_parent cursor-pointer"
         @mouseenter="showFirstItem = false"
         @mouseleave="showFirstItem = true"

@@ -1,4 +1,5 @@
 <script setup>
+import {API_ENDPOINTS} from "@/js/constants/API_ENDPOINTS";
 import {ref, computed, reactive, onMounted} from 'vue'
 import {email, minLength, numeric, required} from "@vuelidate/validators";
 import useVuelidate from "@vuelidate/core";
@@ -39,33 +40,34 @@ const props = defineProps({
     }
 })
 
+
 const allSites = ref([])
 const currentUserIsOwner = ref(false)
 const currentOwnerInfo = ref({})
 const currentUserRsvped = ref(false)
 const currentRsvpInfo = ref({})
+const editingRsvp = ref(false)
 const rsvpError = ref('')
+const schoolDropdownDisplay = ref('')
 
-
-const {currentUser} = storeToRefs(useUserStore())
+const userStore = useUserStore()
+const {currentUser} = storeToRefs(userStore)
 
 const state = reactive({
-    firstName: "",
-    lastName: "",
-    schoolName: '',
+    fullName: userStore.getUserFullName,
+    schoolName: userStore.getUserSiteName,
     numOfGuest: "",
 })
 
 const rules = {
-    firstName: {required},
-    lastName: {required},
+    fullName: {required},
     schoolName: {required},
     numOfGuest: {required, numeric},
 }
 const v$ = useVuelidate(rules, state)
 
 
-axios.get(`${serverURL}/fetchAllSites`).then(res => {
+axios.get(API_ENDPOINTS.SCHOOL.FETCH_ALL_SITES).then(res => {
     allSites.value = res.data
 }).catch(err => {
     console.error(err);
@@ -80,7 +82,7 @@ onMounted(() => {
     console.log(currentUser)
 
     // check if current user is Rsvped or Owner
-    axios.post(`${serverURL}/checkIfUserRsvped`, checkRsvpData).then(res => {
+    axios.post(API_ENDPOINTS.EVENT.CHECK_IF_USER_RSVPED, checkRsvpData).then(res => {
         console.log(res.data)
         currentUserIsOwner.value = res.data['isOwner'] === 'true'
         if (currentUserIsOwner.value) {
@@ -95,17 +97,17 @@ onMounted(() => {
 })
 
 // ENDED, RUNNING, SCHEDULED
-const eventStatus = computed(() =>{
+const eventStatus = computed(() => {
     const currentDate = Date.now()
     const eventStartDate = Date.parse(props.eventStartDate)
     const eventEndDate = Date.parse(props.eventEndDate)
-    if(currentDate > eventEndDate){
+    if (currentDate > eventEndDate) {
         return "ENDED"
-    } else if (eventStartDate < currentDate  && currentDate < eventEndDate){
+    } else if (eventStartDate < currentDate && currentDate < eventEndDate) {
         return "RUNNING"
-    } else if (currentDate < eventStartDate){
+    } else if (currentDate < eventStartDate) {
         return "SCHEDULED"
-    } else{
+    } else {
         return "UNKNOWN"
     }
 
@@ -121,7 +123,11 @@ const dropdownSites = computed(() => {
 })
 
 const onSelectedSchoolDropdown = (data) => {
-    v$.value.schoolName.$model = data.name
+    // if statement to prevent SearchDropdown to init name to empty object upon creation
+    if (data.name) {
+        v$.value.schoolName.$model = data.name
+
+    }
 }
 
 const handleSubmitRsvp = () => {
@@ -132,14 +138,15 @@ const handleSubmitRsvp = () => {
         const rsvpData = {
             user_id: currentUser.value.id,
             event_id: props.eventId,
-            full_name: state.firstName + " " + state.lastName,
+            full_name: state.fullName,
             school_name: state.schoolName,
             number_of_guests: state.numOfGuest
         }
-        return axios.post(`${serverURL}/addRsvpToEvent`, rsvpData).then(res => {
+        return axios.post(API_ENDPOINTS.EVENT.ADD_RSVP_TO_EVENT, rsvpData).then(res => {
             console.log(res.data)
             currentUserRsvped.value = true
             currentRsvpInfo.value = rsvpData
+            editingRsvp.value = false
         }).catch(err => {
             console.log(err)
             currentUserRsvped.value = false
@@ -154,20 +161,39 @@ const handleSubmitRsvp = () => {
     }
 }
 
+const handleStartEditRsvp = () => {
+    editingRsvp.value = true
+    console.log(currentRsvpInfo.value['school_name'])
+    v$.value.fullName.$model = currentRsvpInfo.value['full_name']
+    v$.value.schoolName.$model = currentRsvpInfo.value['school_name']
+    v$.value.numOfGuest.$model = currentRsvpInfo.value['number_of_guests']
+    schoolDropdownDisplay.value = currentRsvpInfo.value['school_name']
+}
+
 const handleClickContactOrganiser = () => {
     console.log('Contacting Organiser!')
+
 }
+
+onMounted(() => {
+    if (userStore.getUserSiteName) {
+        console.log(userStore.getUserSiteName)
+        v$.value.schoolName.$model = userStore.getUserSiteName
+        schoolDropdownDisplay.value = userStore.getUserSiteName
+    }
+})
 </script>
 
 <template>
     <div class="EventRsvpFormContainer bg-blue-900 mt-5 px-4 py-4 text-white">
-        <div class="rsvpHeader font-bold uppercase text-2xl">
+        <div class="font-bold rsvpHeader text-2xl uppercase">
             Register for this event
         </div>
 
-        <div class="rsvpSubheader  flex flex-col py-2 text-lg border-b-2 border-b-white border-dashed">
+        <div class="border-b-2 border-b-white border-dashed flex flex-col py-2 rsvpSubheader text-lg">
             <div class="eventTypeDescriptor pb-4">
-                This event is <strong> {{ props.locationType }} </strong> {{ props.locationType.toLowerCase() !== "hybrid" ? "only" : '' }}
+                This event is <strong> {{ props.locationType }} </strong>
+                {{ props.locationType ? (props.locationType.toLowerCase() !== "hybrid" ? "only" : '') : "" }}
             </div>
             <div class="eventRsvp form-cta pb-4">
                 Please register your interest below to reserve your spot!
@@ -175,9 +201,9 @@ const handleClickContactOrganiser = () => {
         </div>
         <div
             v-if="currentUserIsOwner"
-            class="flex flex-col gap-2 py-4 border-b-2 border-white border-dashed"
+            class="border-b-2 border-dashed border-white flex flex-col gap-2 py-4"
         >
-            <div class="rsvpHeader font-bold uppercase text-xl">
+            <div class="font-bold rsvpHeader text-xl uppercase">
                 You are the owner of this event
             </div>
             <div>
@@ -185,29 +211,19 @@ const handleClickContactOrganiser = () => {
             </div>
         </div>
         <form
-            v-else-if="!currentUserIsOwner && !currentUserRsvped && eventStatus !== 'ENDED'"
-            class="rsvpFormInputs flex flex-col gap-2 py-4 border-b-2 border-white border-dashed "
+            v-else-if="(!currentUserIsOwner && !currentUserRsvped && eventStatus !== 'ENDED') || editingRsvp"
+            class="border-b-2 border-dashed border-white flex flex-col gap-2 py-4 rsvpFormInputs"
             autocomplete="off"
             @submit.prevent=""
         >
             <TextInput
-                v-model="v$.firstName.$model"
-                field-id="firstName"
-                :v$="v$.firstName"
-                placeholder="First name"
+                v-model="v$.fullName.$model"
+                field-id="fullName"
+                :v$="v$.fullName"
+                placeholder="Full name"
             >
                 <template #label>
-                    First name
-                </template>
-            </TextInput>
-            <TextInput
-                v-model="v$.lastName.$model"
-                field-id="lastName"
-                :v$="v$.lastName"
-                placeholder="Last name"
-            >
-                <template #label>
-                    Last name
+                    Full name
                 </template>
             </TextInput>
 
@@ -222,12 +238,12 @@ const handleClickContactOrganiser = () => {
                 </template>
             </TextInput>
 
-            <div class="school dropdown Selector flex flex-col -mt-1">
+            <div class="-mt-1 Selector dropdown flex flex-col school">
                 <label class="-mb-2 ml-2"> School name (start typing your school name and click on the result)</label>
                 <SearchDropdown
-                    class="searchable_dropdown -mt-2"
+                    class="-mt-2 searchable_dropdown"
                     :options="dropdownSites"
-                    placeholder="Type and select your school"
+                    :placeholder=" schoolDropdownDisplay ||'Type and select your school'"
                     name="site"
                     :close-on-outside-click="true"
                     @selected="onSelectedSchoolDropdown"
@@ -236,10 +252,11 @@ const handleClickContactOrganiser = () => {
                     :v$="v$.schoolName"
                 />
             </div>
-            <div class="flex flex-row items-center">
+            <div class="flex items-center flex-row">
                 <GenericButton
                     :callback="handleSubmitRsvp"
-                    class="mt-4 rounded-sm !bg-rose-400 w-fit px-6 font-semibold"
+                    id="rsvpBtn"
+                    class="!bg-secondary-mbRose font-semibold mt-4 px-6 rounded-sm w-fit"
                 >
                     <template #default>
                         RSVP
@@ -247,7 +264,7 @@ const handleClickContactOrganiser = () => {
                 </GenericButton>
                 <span
                     v-if="rsvpError"
-                    class="text-red-500 font-semibold mt-4 px-4 cursor-pointer"
+                    class="cursor-pointer font-semibold mt-4 px-4 text-red-500"
                     @click="rsvpError = ''"
                 > {{ rsvpError }}</span>
             </div>
@@ -256,19 +273,20 @@ const handleClickContactOrganiser = () => {
         <EventRsvpSummary
             v-else-if="!currentUserIsOwner && eventStatus !== 'ENDED'"
             :rsvp-info="currentRsvpInfo"
+            @start-edit-rsvp="handleStartEditRsvp"
         />
         <div
             v-else
             class="eventRsvpClosed"
         >
-            <div class="rsvpHeader font-bold uppercase text-xl mt-4">
+            <div class="font-bold mt-4 rsvpHeader text-xl uppercase">
                 This event has ended and registration has closed. Thank you
             </div>
         </div>
         <!--   Event Contact Form     -->
         <div
             v-if="(eventStatus === 'ENDED') "
-            class="flex flex-col py-4 text-lg border-b-2 border-b-white border-dashed"
+            class="border-b-2 border-b-white border-dashed flex flex-col py-4 text-lg"
         >
             <EventSubmitRecording
                 :event-id="props.eventId"
@@ -277,9 +295,9 @@ const handleClickContactOrganiser = () => {
         </div>
         <div
             v-else
-            class="eventContactForm contactHeader  flex flex-col py-4 text-lg border-b-2 border-b-white border-dashed"
+            class="border-b-2 border-b-white border-dashed contactHeader eventContactForm flex flex-col py-4 text-lg"
         >
-            <div class="rsvpHeader font-bold uppercase text-xl">
+            <div class="font-bold rsvpHeader text-xl uppercase">
                 Contact the organiser
             </div>
             <div class="eventRsvp form-cta pb-4">
@@ -292,7 +310,8 @@ const handleClickContactOrganiser = () => {
             >
                 <GenericButton
                     :callback="handleClickContactOrganiser"
-                    class="mt-4 rounded-sm !bg-main-teal w-fit px-6 font-semibold"
+                    id="contactBtn"
+                    class="!bg-main-teal font-semibold mt-4 px-6 rounded-sm w-fit"
                 >
                     <template #default>
                         Email organiser
@@ -308,5 +327,6 @@ const handleClickContactOrganiser = () => {
 .searchable_dropdown :deep(.dropdown-toggle input) {
     padding: 8px !important;
     border-radius: 0.25rem;
+    color: #727272;
 }
 </style>

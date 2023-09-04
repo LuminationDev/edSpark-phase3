@@ -1,18 +1,19 @@
 <script setup>
-import {ref} from "vue";
+import {API_ENDPOINTS} from "@/js/constants/API_ENDPOINTS";
+import {swrvOptions} from "@/js/constants/swrvConstants";
+import {useUserStore} from "@/js/stores/useUserStore";
+import { ref} from "vue";
 
-import {serverURL} from "@/js/constants/serverUrl";
 import BaseSearch from "@/js/components/search/BaseSearch.vue";
 import GenericMultiSelectFilter from "@/js/components/search/hardware/GenericMultiSelectFilter.vue";
 import useSWRV from "swrv";
-import {axiosFetcher} from "@/js/helpers/fetcher";
+import { axiosFetcherParams} from "@/js/helpers/fetcher";
+import {useRoute} from "vue-router";
+import router from "@/js/router";
+const route = useRoute()
 
-const swrvOptions = {
-    revalidateOnFocus: false, // disable refresh on every focus, suspect its too often
-    refreshInterval: 30000 // refresh or revalidate data every 30 secs
-}
 
-const {data: softwareList, error: softwareError} = useSWRV(`${serverURL}/fetchSoftwarePosts`, axiosFetcher, swrvOptions)
+const {data: softwareList, error: softwareError} = useSWRV(API_ENDPOINTS.SOFTWARE.FETCH_SOFTWARE_POSTS, axiosFetcherParams(useUserStore().getUserRequestParam), swrvOptions)
 
 let softwareFilterList = [
     {name: "Department Provided", value:"Department Provided"},
@@ -22,8 +23,28 @@ let softwareFilterList = [
 
 const filterObject = ref({})
 
+
+// Handle Emit that is emitted by GenericMultiSelectFilter
 const handleFilter = (filters, dataPath) => {
     filterObject.value[dataPath] = filters.map(filter =>filter.value).flat(1)
+}
+
+const preselectedFilterObject = ref('');
+
+if(route.params || route.params.filter){
+    switch(route.params.filter){
+    case "provided":
+        preselectedFilterObject.value = {name: "Department Provided", value:"Department Provided"}
+        break;
+    case "approved":
+        preselectedFilterObject.value = {name: "Department Approved", value:"Department Approved"}
+        break;
+    case "negotiated":
+        preselectedFilterObject.value = {name: "Department Approved and Negotiated", value:"Approved and Negotiated"}
+        break;
+    default:
+        router.push('/browse/software')
+    }
 }
 
 </script>
@@ -39,6 +60,8 @@ const handleFilter = (filters, dataPath) => {
                 placeholder="Filter by software type"
                 :filter-list="softwareFilterList"
                 data-path="software_type"
+                id="softwareType"
+                :preselected="preselectedFilterObject"
                 @transmit-selected-filters="handleFilter"
             />
         </template>

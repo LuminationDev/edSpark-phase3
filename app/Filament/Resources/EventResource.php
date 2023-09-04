@@ -3,7 +3,6 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\EventResource\Pages;
-use App\Filament\Resources\EventResource\RelationManagers;
 use App\Models\Event;
 use Filament\Forms;
 use Filament\Resources\Form;
@@ -20,6 +19,7 @@ use Livewire\TemporaryUploadedFile;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
+use Spatie\Tags\Tag;
 use SplFileInfo;
 
 use Closure;
@@ -28,6 +28,7 @@ use Closure;
 class EventResource extends Resource
 {
     protected static ?string $model = Event::class;
+    protected static ?string $modelLabel= "Event";
 
     protected static ?string $navigationIcon = 'heroicon-o-calendar';
 
@@ -43,9 +44,6 @@ class EventResource extends Resource
             ->schema([
                 Forms\Components\Card::make()
                     ->schema([
-                        // Forms\Components\TextInput::make('attendees_id'),
-                        // Forms\Components\TextInput::make('location_id'),
-                        // Forms\Components\TextInput::make('capacity_id'),
                         Forms\Components\TextInput::make('event_title')
                             ->required()
                             ->maxLength(255),
@@ -76,14 +74,6 @@ class EventResource extends Resource
                             ]),
                         Forms\Components\Grid::make(3)
                             ->schema([
-//                                Forms\Components\Select::make('event_location')
-//                                    // ->label('Location Selector')
-//                                    ->reactive()
-//                                    ->options([
-//                                        'in_person' => 'In Person',
-//                                        'remote' => 'Remote',
-//                                        'hybrid' => 'Hybrid'
-//                                    ]),
                                 Forms\Components\BelongsToSelect::make('event_type')
                                     ->label('Event type')
                                     ->reactive()
@@ -105,7 +95,9 @@ class EventResource extends Resource
                                     ])
                                     ->required(),
                             ]),
-
+                        Forms\Components\TagsInput::make('tags')
+                            ->placeholder('Add or create tags')
+                            ->helperText('Separate tags with commas'),
                         Forms\Components\Card::make()
                             ->schema([
                                 Forms\Components\Builder::make('extra_content')
@@ -167,11 +159,6 @@ class EventResource extends Resource
     {
         return $table
             ->columns([
-                // Tables\Columns\TextColumn::make('author_id'),
-                // Tables\Columns\TextColumn::make('eventtype_id'),
-                // Tables\Columns\TextColumn::make('attendees_id'),
-                // Tables\Columns\TextColumn::make('location_id'),
-                // Tables\Columns\TextColumn::make('capacity_id'),
                 Tables\Columns\TextColumn::make('event_title')
                     ->label('Title')
                     ->limit(20)
@@ -181,12 +168,6 @@ class EventResource extends Resource
                     ->label('Content')
                     ->limit(20),
                 Tables\Columns\ImageColumn::make('cover_image'),
-                // Tables\Columns\TextColumn::make('event_excerpt'),
-                // Tables\Columns\TextColumn::make('cover_image'),
-                // Tables\Columns\TextColumn::make('start_date')
-                    // ->dateTime(),
-                // Tables\Columns\TextColumn::make('end_date')
-                    // ->dateTime(),
                 Tables\Columns\TextColumn::make('event_status')
                     ->label('status')
                     ->sortable()
@@ -211,7 +192,6 @@ class EventResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
         ];
     }
 
@@ -226,13 +206,10 @@ class EventResource extends Resource
 
     public static function shouldRegisterNavigation(): bool
     {
-        // use Illuminate\Support\Facades\Auth;
-
-        // Moderator check
-        if(Auth::user()->role->role_name == 'Moderator') {
-            return false;
+        $allowed_array = ['Superadmin', 'Administrator','Moderator'];
+        if (in_array(Auth::user()->role->role_name, $allowed_array)) {
+            return true;
         }
-
-        return true;
+        return false;
     }
 }

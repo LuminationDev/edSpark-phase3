@@ -34,45 +34,13 @@ use App\Http\Controllers\LoginController;
 |
 */
 Route::middleware('api')->group(function() {
-    // Content Management
-    Route::get('fetchAdvicePosts', [AdviceController::class, 'fetchAdvicePosts']);
-    Route::get('fetchAdvicePostById/{id}', [AdviceController::class, 'fetchAdvicePostById']);
-    Route::get('fetchAdvicePostByType/{type}', [AdviceController::class, 'fetchAdvicePostByType']);
-    Route::get('fetchSoftwarePosts', [SoftwareController::class, 'fetchSoftwarePosts']);
-    Route::get('fetchSoftwarePostById/{id}', [SoftwareController::class, 'fetchSoftwarePostById']);
-    Route::get('fetchEventPosts', [EventController::class, 'fetchEventPosts']);
-    Route::get('fetchEventPostById/{id}', [EventController::class, 'fetchEventPostById']);
-    Route::get('fetchCommunityPosts', [CommunityController::class, 'fetchCommunityPosts']);
-
-    // User Management
-    Route::get('fetchUser/{id}', [UserController::class, 'fetchUser']);
-    Route::get('fetchUserByEmail/{email}', [UserController::class, 'fetchUserByEmail']);
-    Route::post('createUser', [UserController::class, 'createUser']);
-    Route::post('updateFirstTimeVisitUser', [UserController::class, 'updateFirstTimeVisitUser']);
-    Route::post('updateUser', [UserController::class, 'updateUser']);
-    Route::post('checkEmail', [UserController::class, 'checkEmail']);
-    Route::get('fetchAllSites', [SiteController::class, 'fetchAllSites']);
-    Route::get('fetchSiteById/{id}', [SiteController::class, 'fetchSiteById']);
-    Route::get('fetchSiteByCode/{siteCode}', [SiteController::class, 'fetchSiteByCode']);
-    Route::post('getUserMetadata',[UserController::class, 'getUserMetadata'] );
-
-    Route::get('fetchRoleByCode/{roleCode}', [RoleController::class, 'fetchRoleByCode']);
-    Route::get('fetchAllRoles', [RoleController::class, 'fetchAllRoles']);
-
-    // Product Management
-    Route::get('fetchAllBrands', [ProductController::class, 'fetchAllBrands']);
-    Route::get('fetchAllCategories', [ProductController::class, 'fetchAllCategories']);
-    Route::get('fetchAllProducts', [ProductController::class, 'fetchAllProducts']);
-    Route::get('fetchProductById/{id}', [ProductController::class, 'fetchProductById']);
-    Route::get('fetchProductByBrand/{brand}', [ProductController::class, 'fetchProductByBrand']);
-
     // School APIs
-    Route::post('createSchool', [SchoolController::class, 'createSchool']);
-    Route::post('updateSchool', [SchoolController::class, 'updateSchool']);
     Route::get('fetchAllSchools', [SchoolController::class, 'fetchAllSchools']);
     Route::get('fetchFeaturedSchools', [SchoolController::class, 'fetchFeaturedSchools']);
     Route::get('fetchSchoolByName/{schoolName}', [SchoolController::class, 'fetchSchoolByName']);
     Route::get('fetchStaffFromSite/{site_id}',[SchoolController::class, 'fetchAllStaffFromSite']);
+    Route::post('createSchool', [SchoolController::class, 'createSchool']);
+    Route::post('updateSchool', [SchoolController::class, 'updateSchool']);
     Route::post('checkUserCanEdit',[SchoolController::class, 'checkUserCanEdit']);
     Route::post('nominateUserForSchool',[SchoolController::class, 'nominateUserForSchool']);
     Route::post('deleteNominatedUser',[SchoolController::class, 'deleteNominatedUserSchool']);
@@ -80,7 +48,46 @@ Route::middleware('api')->group(function() {
     Route::post('createOrUpdateSchoolContact', [SchoolController::class , 'createOrUpdateContact']);
     Route::post('fetchSchoolContact', [SchoolController::class, 'fetchSchoolContact']);
 
-    Route::get('fetchAllTechs', [TechController::class, 'fetchAllTechs']);
+    // Advice APIs
+    Route::get('fetchAdvicePosts', [AdviceController::class, 'fetchAdvicePosts']);
+    Route::get('fetchAdvicePostById/{id}', [AdviceController::class, 'fetchAdvicePostById']);
+    Route::get('fetchAdvicePostByType/{type}', [AdviceController::class, 'fetchAdvicePostByType']);
+    Route::post('fetchRelatedAdvice',[AdviceController::class, 'fetchRelatedAdvice']);
+
+    // Software APIs
+    Route::get('fetchSoftwarePosts', [SoftwareController::class, 'fetchSoftwarePosts']);
+    Route::get('fetchSoftwarePostById/{id}', [SoftwareController::class, 'fetchSoftwarePostById']);
+    Route::post('fetchRelatedSoftware', [SoftwareController::class, 'fetchRelatedSoftware']);
+
+    // Event APIs
+    Route::get('fetchEventPosts', [EventController::class, 'fetchEventPosts']);
+    Route::get('fetchEventPostById/{id}', [EventController::class, 'fetchEventPostById']);
+
+    // Community APIs
+    Route::get('fetchCommunityPosts', [CommunityController::class, 'fetchCommunityPosts']);
+
+    // Product/Hardware Management
+    Route::get('fetchAllBrands', [ProductController::class, 'fetchAllBrands']);
+    Route::get('fetchAllCategories', [ProductController::class, 'fetchAllCategories']);
+    Route::get('fetchAllProducts', [ProductController::class, 'fetchAllProducts']);
+    Route::get('fetchProductById/{id}', [ProductController::class, 'fetchProductById']);
+    Route::post('fetchProductByBrand', [ProductController::class, 'fetchProductByBrand']);
+
+    // User Management
+    Route::get('fetchUser/{id}', [UserController::class, 'fetchUser']);
+    Route::get('fetchUserByEmail/{email}', [UserController::class, 'fetchUserByEmail']);
+    Route::get('fetchAllSites', [SiteController::class, 'fetchAllSites']);
+    Route::get('fetchSiteById/{id}', [SiteController::class, 'fetchSiteById']);
+    Route::get('fetchSiteByCode/{siteCode}', [SiteController::class, 'fetchSiteByCode']);
+    Route::get('fetchAllRoles', [RoleController::class, 'fetchAllRoles']);
+    Route::get('fetchRoleByCode/{roleCode}', [RoleController::class, 'fetchRoleByCode']);
+    Route::post('getUserMetadata',[UserController::class, 'getUserMetadata'] );
+    Route::post('createUser', [UserController::class, 'createUser']);
+    Route::post('updateFirstTimeVisitUser', [UserController::class, 'updateFirstTimeVisitUser']);
+    Route::post('updateUser', [UserController::class, 'updateUser']);
+    Route::post('checkEmail', [UserController::class, 'checkEmail']);
+
+
 
     // Image upload
     Route::post('imageUpload', [ImageController::class, 'imageUpload']);
@@ -114,4 +121,9 @@ Route::middleware('api')->group(function() {
     Route::post('addEventRecording',[EventController::class,'addEventRecording']);
     Route::get('checkEventRecording/{event_id}',[EventController::class,'checkEventRecording']);
 
+    //Search
+    Route::get(
+        'search',
+        App\Http\Controllers\SearchController::class
+    )->name('search');
 });

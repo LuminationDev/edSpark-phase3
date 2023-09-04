@@ -1,10 +1,7 @@
 <script setup>
 import { ref } from 'vue';
 
-import { useAuthStore } from '@/js/stores/auth';
-import { generateCodeChallenge, generateCodeVerifier } from '../helpers/pkce';
 
-// const store = useAuthStore();
 const redirectToOkta = () => {
     console.log("Redirect to okta");
     loginWithOktaButtonPressed.value = true;
@@ -17,37 +14,6 @@ const email = ref('');
 const password = ref('');
 const loginWithOktaButtonPressed = ref(false);
 
-function login() {
-    // Implement your login logic here
-}
-
-// const loginWithOkta = async () => {
-//     try {
-//         const codeVerifier = generateCodeVerifier();
-//         const codeChallenge = generateCodeChallenge(codeVerifier);
-//         const state = Math.random().toString(36).substring(7);
-
-//         // Save the code verifier and state in local storage for later use
-//         localStorage.setItem('codeVerifier', codeVerifier);
-//         localStorage.setItem('state', state);
-
-//         const oktaParams = {
-//             clientId: '0oa2jr6t74AkegzRD3l7',
-//             redirectUri: 'http://localhost:8000/login/callback',
-//             responseType: 'code',
-//             responseMode: 'query',
-//             scope: 'openid profile email',
-//             state,
-//             codeChallenge,
-//             codeChallengeMethod: 'S256',
-//         };
-
-//         const queryParams = new URLSearchParams(oktaParams).toString();
-//         window.location.href = `https://portal-test.edpass.sa.edu.au/oauth2/default/v1/authorize?${queryParams}`;
-//     } catch (error) {
-//         console.error(error);
-//     }
-// };
 </script>
 <template>
     <div

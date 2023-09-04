@@ -69,7 +69,6 @@ function handleMetaData() {
                 yearLevels.value = null;
                 interests.value = null;
                 subjects.value = null;
-                // userAvatar = null;
                 break;
             }
         })
@@ -84,15 +83,15 @@ onMounted(() => {
 </script>
 
 <template>
-    <div class="profileContent col-span-5">
+    <div class="h-40 min-h-44 profileContent">
         <!--        Biography-->
         <div v-if="contentType === 'Biography'">
-            <div v-if="biography !== NULL">
+            <div v-if="biography">
                 <div
                     v-if="!editBio"
                     @click.prevent="editBio = !editBio"
                 >
-                    <p class="text-[18px] font-medium text-black col-span-3 mx-6 my-6">
+                    <p class="col-span-3 font-medium mx-6 my-6 text-[18px] text-black">
                         {{ biography }}
                     </p>
                 </div>
@@ -111,13 +110,35 @@ onMounted(() => {
 
                     <div class="flex justify-self-end flex-row gap-4 ml-auto">
                         <button
-                            class="px-4 py-2 bg-transparent border-2 border-[#1C5CA9] text-[#1C5CA9] rounded-lg hover:bg-[#1C5CA9] hover:text-white"
+                            class="
+                                bg-transparent
+                                hover:bg-[#1C5CA9]
+                                border-2
+                                border-[#1C5CA9]
+                                px-4
+                                py-2
+                                rounded-lg
+                                text-[#1C5CA9]
+                                hover:text-white
+                                "
                             @click.prevent="editBio = !editBio"
                         >
                             Cancel
                         </button>
 
-                        <button class="px-4 py-2 bg-[#1C5CA9] border-2 border-[#1C5CA9] text-white rounded-lg hover:bg-[#143965] hover:border-[#143965]">
+                        <button
+                            class="
+                                bg-[#1C5CA9]
+                                hover:bg-[#143965]
+                                border-2
+                                hover:border-[#143965]
+                                border-[#1C5CA9]
+                                px-4
+                                py-2
+                                rounded-lg
+                                text-white
+                                "
+                        >
                             Save
                         </button>
                     </div>
@@ -126,14 +147,15 @@ onMounted(() => {
         </div>
         <!--        year Levels -->
         <div v-else-if="contentType === 'Year levels'">
-            <div v-if="yearLevels !== NULL">
+            <div v-if="yearLevels">
                 <div
                     v-if="!editYearLevels"
                     @click.prevent="editYearLevels = !editYearLevels"
                 >
                     <p
-                        v-for="year in yearLevels"
-                        class="h-[24px] w-[24px] bg-gray-100 rounded-full flex place-items-center justify-center mx-6 my-6"
+                        v-for="(year,index) in yearLevels"
+                        :key="index"
+                        class="bg-gray-100 flex justify-center h-[24px] mx-6 my-6 place-items-center rounded-full w-[24px]"
                     >
                         {{ year }}
                     </p>
@@ -145,7 +167,10 @@ onMounted(() => {
                     <label for="yearLevels">What year levels do you teach?</label>
                     <div class="flex flex-col gap-6">
                         <div class="flex flex-row gap-3 w-full">
-                            <div v-for="(year, index) in theYearLevels">
+                            <div
+                                v-for="(year, index) in yearLevels"
+                                :key="index"
+                            >
                                 <label :for="year">{{ year }}</label>
                                 <input
                                     :id="year"
@@ -157,14 +182,34 @@ onMounted(() => {
 
                         <div class="flex justify-self-end flex-row gap-4 ml-auto">
                             <button
-                                class="px-4 py-2 bg-transparent border-2 border-[#1C5CA9] text-[#1C5CA9] rounded-lg hover:bg-[#1C5CA9] hover:text-white"
+                                class="
+                                    bg-transparent
+                                    hover:bg-[#1C5CA9]
+                                    border-2
+                                    border-[#1C5CA9]
+                                    px-4
+                                    py-2
+                                    rounded-lg
+                                    text-[#1C5CA9]
+                                    hover:text-white
+                                    "
                                 @click.prevent="editYearLevels = !editYearLevels"
                             >
                                 Cancel
                             </button>
 
                             <button
-                                class="px-4 py-2 bg-[#1C5CA9] border-2 border-[#1C5CA9] text-white rounded-lg hover:bg-[#143965] hover:border-[#143965]"
+                                class="
+                                    bg-[#1C5CA9]
+                                    hover:bg-[#143965]
+                                    border-2
+                                    hover:border-[#143965]
+                                    border-[#1C5CA9]
+                                    px-4
+                                    py-2
+                                    rounded-lg
+                                    text-white
+                                    "
                                 @click="updateYearLevels(year)"
                             >
                                 Save
@@ -176,10 +221,11 @@ onMounted(() => {
         </div>
         <!--        subjects-->
         <div v-else-if="contentType === 'Subjects'">
-            <div v-if="subjects !== NULL">
+            <div v-if="subjects">
                 <p
-                    v-for="subject in subjects"
-                    class="h-[24px] w-[24px] bg-gray-100 rounded-full flex place-items-center justify-center mx-6 my-6"
+                    v-for="(subject,index) in subjects"
+                    :key="index"
+                    class="bg-gray-100 flex justify-center h-[24px] mx-6 my-6 place-items-center rounded-full w-[24px]"
                 >
                     {{ subject }}
                 </p>
@@ -187,7 +233,7 @@ onMounted(() => {
         </div>
         <!--interests-->
         <div v-else-if="contentType === 'Interests'">
-            <div v-if="interests !== NULL">
+            <div v-if="interests">
                 <p
                     class="mx-6 my-6"
                 >

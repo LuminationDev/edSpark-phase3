@@ -17,6 +17,7 @@ use Illuminate\Support\Facades\Auth;
 class EventtypeResource extends Resource
 {
     protected static ?string $model = Eventtype::class;
+    protected static ?string $modelLabel= "Event Type";
 
     protected static ?string $navigationIcon = 'heroicon-o-collection';
 
@@ -87,13 +88,10 @@ class EventtypeResource extends Resource
 
     public static function shouldRegisterNavigation(): bool
     {
-        // use Illuminate\Support\Facades\Auth;
-
-        // Moderator check
-        if(Auth::user()->role->role_name == 'Moderator') {
-            return false;
+        $allowed_array = ['Superadmin', 'Administrator'];
+        if (in_array(Auth::user()->role->role_name, $allowed_array)) {
+            return true;
         }
-
-        return true;
+        return false;
     }
 }

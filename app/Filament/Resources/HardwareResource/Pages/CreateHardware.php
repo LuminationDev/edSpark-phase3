@@ -3,9 +3,11 @@
 namespace App\Filament\Resources\HardwareResource\Pages;
 
 use App\Filament\Resources\HardwareResource;
+use App\Models\Hardware;
 use Filament\Pages\Actions;
 use Filament\Resources\Pages\CreateRecord;
 
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
 
@@ -23,6 +25,18 @@ class CreateHardware extends CreateRecord
 
         return $data;
 
+    }
+
+    protected function handleRecordCreation(array $data): Model
+    {
+        $record =  parent::handleRecordCreation($data);
+
+        //handle tags
+        if (isset($data['tags'])) {
+            $thatEvent = Hardware::find($record->id);
+            $thatEvent->attachTags($data['tags']);
+        }
+        return $record;
     }
 
     protected function getRedirectUrl(): string

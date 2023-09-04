@@ -17,6 +17,8 @@ use Illuminate\Support\Facades\Auth;
 class SoftwaremoderationResource extends Resource
 {
     protected static ?string $model = Softwaremoderation::class;
+    protected static ?string $modelLabel= "Software Moderation";
+
 
     protected static ?string $navigationIcon = 'heroicon-o-collection';
 
@@ -131,5 +133,14 @@ class SoftwaremoderationResource extends Resource
         }else{
             return '';
         }
+    }
+
+    public static function shouldRegisterNavigation(): bool
+    {
+        $allowed_array = ['Superadmin', 'Administrator','Moderator'];
+        if (in_array(Auth::user()->role->role_name, $allowed_array)) {
+            return true;
+        }
+        return false;
     }
 }

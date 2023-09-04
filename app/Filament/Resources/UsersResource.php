@@ -19,6 +19,7 @@ use Illuminate\Support\Facades\Auth;
 class UsersResource extends Resource
 {
     protected static ?string $model = User::class;
+    protected static ?string $modelLabel = 'User';
 
     protected static ?string $navigationGroup = 'User Management';
     protected static ?string $navigationGroupIcon = 'heroicon-o-collection';
@@ -107,12 +108,10 @@ class UsersResource extends Resource
 
     public static function shouldRegisterNavigation(): bool
     {
-
-        // Moderator check
-        if(Auth::user()->role->role_name == 'Moderator') {
-            return false;
+        $allowed_array = ['Superadmin', 'Administrator'];
+        if (in_array(Auth::user()->role->role_name, $allowed_array)) {
+            return true;
         }
-
-        return true;
+        return false;
     }
 }

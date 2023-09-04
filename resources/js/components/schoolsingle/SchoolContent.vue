@@ -1,4 +1,5 @@
 <script setup>
+import {API_ENDPOINTS} from "@/js/constants/API_ENDPOINTS";
 import {computed, onBeforeMount, onMounted, ref} from 'vue'
 import SchoolEditorJs from "@/js/components/schoolsingle/SchoolEditorJs.vue";
 import SchoolContentDisplay from "@/js/components/schoolsingle/SchoolContentDisplay.vue";
@@ -73,7 +74,7 @@ onMounted(async () => {
     const checkIfUserCanEdit = async () => {
         await axios({
             method: "POST",
-            url: `${serverURL}/checkUserCanEdit`,
+            url: API_ENDPOINTS.SCHOOL.CHECK_IF_USER_CAN_EDIT_SCHOOL,
             data:{
                 "site_id": props.schoolContent.site.site_id,
                 "user_id": currentUser.value.id,
@@ -108,9 +109,9 @@ console.log(props.activeSubmenu)
                 <div class="flex flex-row w-full">
                     <div
                         v-if="editMode"
-                        class="contentEditor flex justify-between flex-row schoolContent w-full"
+                        class="contentEditor flex justify-between flex-col schoolContent w-full lg:!flex-row"
                     >
-                        <div class="basis-2/3 flex flex-col">
+                        <div class="flex flex-col w-full lg:!basis-2/3">
                             Curate your school content by adding blocks here with desired contents.
                             <SchoolEditorJs
                                 ref="schoolEditorRef"
@@ -118,7 +119,7 @@ console.log(props.activeSubmenu)
                                 @send-school-data="handleSchoolData"
                             />
                         </div>
-                        <div class="basis-1/3 flex flex-col">
+                        <div class="flex flex-col w-full lg:!basis-1/3">
                             <button
                                 class="bg-blue-600 mb-2 px-6 py-2 rounded text-white w-48"
                                 @click="handleAllSaveButton"

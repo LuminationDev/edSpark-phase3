@@ -1,5 +1,5 @@
 <script setup>
-import {ref, computed} from 'vue'
+import {ref, computed, onMounted} from 'vue'
 import Multiselect from "vue-multiselect";
 const props = defineProps({
     filterList:{
@@ -12,6 +12,15 @@ const props = defineProps({
     placeholder:{
         type: String,
         required: true
+    },
+    id:{
+        type: String,
+        required: true
+    },
+    preselected:{
+        type: Object,
+        required: false,
+        default: () => {}
     }
 })
 const selectedValue = ref([])
@@ -20,6 +29,10 @@ const emits = defineEmits(['transmitSelectedFilters'])
 
 const handleEmitSelectedFilters = () =>{
     emits('transmitSelectedFilters', selectedValue.value, props.dataPath)
+}
+if(props.preselected){
+    selectedValue.value.push(props.preselected)
+    handleEmitSelectedFilters()
 }
 
 </script>
@@ -38,8 +51,11 @@ const handleEmitSelectedFilters = () =>{
             :multiple="true"
             :placeholder="props.placeholder"
             :close-on-select="false"
+            :id="props.id"
             label="name"
             track-by="name"
+            aria-expanded="false"
+            aria-controls="resourceResult"
             @select="handleEmitSelectedFilters"
             @remove="handleEmitSelectedFilters"
         />

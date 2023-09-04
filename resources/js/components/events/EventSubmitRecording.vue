@@ -1,5 +1,6 @@
 <script setup>
 
+import {API_ENDPOINTS} from "@/js/constants/API_ENDPOINTS";
 import {computed, onMounted, ref} from "vue";
 import {storeToRefs} from "pinia";
 import {useUserStore} from "@/js/stores/useUserStore";
@@ -31,7 +32,7 @@ const handleSubmitLinkButton = async () => {
         event_id: props.eventId,
         recording_link: linkInput.value
     }
-    axios.post(`${serverURL}/addEventRecording`,recordingData).then(res => {
+    axios.post(API_ENDPOINTS.EVENT.ADD_EVENT_RECORDING,recordingData).then(res => {
         console.log(res.data)
         recordingLink.value = linkInput.value
         tempLink.value = ''
@@ -42,9 +43,9 @@ const handleSubmitLinkButton = async () => {
 }
 
 onMounted(() => {
-    axios.get(`${serverURL}/checkEventRecording/${props.eventId}`).then(res => {
-        if (res.data['event_recording']) {
-            recordingLink.value = res.data['event_recording']
+    axios.get(`${API_ENDPOINTS.EVENT.CHECK_EVENT_RECORDING}${props.eventId}`).then(res => {
+        if (res.data['recording']) {
+            recordingLink.value = res.data['recording']
         }
     }).catch(err =>{
         console.log(err.message)
@@ -71,11 +72,11 @@ const handleCancelEditLink = () => {
 </script>
 
 <template>
-    <div class="submitLink font-bold uppercase text-xl">
+    <div class="font-bold submitLink text-xl uppercase">
         The event has ended. We hoped it was a success.
     </div>
     <template v-if="!recordingLink && props.currentUserIsOwner">
-        <div class="submitLinkbody text-base mt-4">
+        <div class="mt-4 submitLinkbody text-base">
             You can share the link to the recording for others to watch
         </div>
         <label
@@ -86,33 +87,33 @@ const handleCancelEditLink = () => {
             v-model="linkInput"
             name="eventRecordingLink"
             type="text"
-            class="py-2 px-4 mt-2 text-black"
+            class="mt-2 px-4 py-2 text-black"
             placeholder="Paste the link to the recording to share with other visitors"
         >
         <div class="flex flex-row mt-4">
             <button
-                class="bg-main-teal flex w-fit  py-2 px-6 rounded-sm"
+                class="bg-main-teal flex px-6 py-2 rounded-sm w-fit"
                 @click="handleSubmitLinkButton"
             >
                 Submit Link
             </button>
             <button
                 v-if="currentUserIsOwner"
-                class="bg-red-500 flex w-fit ml-4 py-2 px-6 rounded-sm"
+                class="bg-red-500 flex ml-4 px-6 py-2 rounded-sm w-fit"
                 @click="handleCancelEditLink"
             >
                 Cancel Edit
             </button>
             <div
                 v-if="linkError"
-                class="error-message flex text-base ml-6 text-red-500 text-center items-center justify-center"
+                class="error-message flex justify-center items-center ml-6 text-base text-center text-red-500"
             >
                 {{ linkError }}
             </div>
         </div>
     </template>
     <template v-else-if="!!recordingLink">
-        <div class="submitLinkbody text-base mt-4">
+        <div class="mt-4 submitLinkbody text-base">
             Here is the recording link of the event shared by the organizer
         </div>
         <a
@@ -124,7 +125,7 @@ const handleCancelEditLink = () => {
         <div class="flex flex-row">
             <button
                 v-if="currentUserIsOwner"
-                class="bg-main-teal flex w-fit mt-2 py-2 px-6 rounded-sm"
+                class="bg-main-teal flex mt-2 px-6 py-2 rounded-sm w-fit"
                 @click="toggleEditLink"
             >
                 Edit Link
@@ -132,7 +133,7 @@ const handleCancelEditLink = () => {
         </div>
     </template>
     <template v-else>
-        <div class="submitLinkbody text-base mt-4">
+        <div class="mt-4 submitLinkbody text-base">
             There is no event recording shared. stay tuned
         </div>
     </template>

@@ -15,7 +15,7 @@ class ProductController extends Controller
         $brands = Brand::all();
         $data = [];
 
-        if($brands) {
+        if ($brands) {
             foreach ($brands as $brand) {
                 $result = [
                     'brandName' => $brand->product_brand_name,
@@ -34,7 +34,7 @@ class ProductController extends Controller
         $categories = Category::all();
         $data = [];
 
-        if($categories) {
+        if ($categories) {
             foreach ($categories as $category) {
                 $result = [
                     'categoryName' => $category->product_category_name,
@@ -47,39 +47,55 @@ class ProductController extends Controller
         return response()->json($data);
     }
 
-    public function fetchAllProducts()
+    private function hardwareModelToJson($hardware,Request $request = NULL)
     {
-        $products = Product::all();
+        $isLikedByUser = false;
+        $isBookmarkedByUser = false;
+
+        if (isset($request) && $request->has('usid')) {
+            $userId = $request->input('usid');
+            $isLikedByUser = $hardware->likes()->where('user_id', $userId)->exists();
+            $isBookmarkedByUser = $hardware->bookmarks()->where('user_id', $userId)->exists();
+
+        }
+        return [
+            'id' => $hardware->id,
+            'author' => [
+                'author_id' => $hardware->owner_id,
+                'author_name' => $hardware->owner->full_name ?? NULL,
+            ],
+            'title' => $hardware->product_name,
+            'content' => $hardware->product_content,
+            'excerpt' => $hardware->product_excerpt,
+            'price' => $hardware->price,
+            'cover_image' => $hardware->cover_image ?? NULL,
+            'gallery' => $hardware->gallery ?? NULL,
+            'SKU' => $hardware->product_SKU,
+            'category' => [
+                'categoryId' => $hardware->category_id ?? NULL,
+                'categoryName' => $hardware->category->product_category_name ?? NULL,
+            ],
+            'brand' => [
+                'brandId' => $hardware->brand_id ?? NULL,
+                'brandName' => $hardware->brand->product_brand_name ?? NULL,
+            ],
+            'modified_at' => $hardware->modified,
+            'isLoan' => $hardware->product_isLoan ?? NULL,
+            'extra_content' => $hardware->extra_content ?? NULL,
+            'isLikedByUser' => $isLikedByUser,
+            'isBookmarkedByUser' => $isBookmarkedByUser,
+        ];
+    }
+
+
+    public function fetchAllProducts(Request $request): \Illuminate\Http\JsonResponse
+    {
+        $hardwares = Product::inRandomOrder()->get();
         $data = [];
 
-        if($products) {
-            foreach ($products as $product) {
-
-                $result = [
-                    'id' => $product->id,
-                    'author'=> [
-                        'author_id' => $product->owner_id,
-                        'author_name' => ($product->owner_id) ? $product->owner->full_name : NULL
-                    ],
-                    'product_name' => $product->product_name,
-                    'product_content' => $product->product_content,
-                    'product_excerpt' => $product->product_excerpt,
-                    'price' => $product->price,
-                    'cover_image' => ($product->cover_image) ? $product->cover_image : NULL,
-                    'gallery' => ($product->gallery) ? $product->gallery : NULL,
-                    'product_SKU' => $product->product_SKU,
-                    'category' => [
-                        'categoryId' => ($product->category_id) ? $product->category_id : NULL,
-                        'categoryName' => ($product->category) ? $product->category->product_category_name : NULL,
-                    ],
-                    'brand' => [
-                        'brandId' => ($product->brand_id) ? $product->brand_id : NULL,
-                        'brandName' => ($product->brand) ? $product->brand->product_brand_name : NULL,
-                    ],
-                    'product_isLoan' => ($product->product_isLoan) ? $product->product_isLoan : NULL,
-                    'extra_content' => ($product->extra_content) ?: NULL
-
-                ];
+        if ($hardwares) {
+            foreach ($hardwares as $hardware) {
+                $result = $this->hardwareModelToJson($hardware, $request);
                 $data[] = $result;
             }
         }
@@ -87,74 +103,41 @@ class ProductController extends Controller
         return response()->json($data);
     }
 
-    public function fetchProductById($id)
+    public function fetchProductById(Request $request,$id)
     {
-        $product = Product::find($id);
-        $data = [
-            'id' => $product->id,
-            'product_name' => $product->product_name,
-            'author'=> [
-                'author_id' => $product->owner_id,
-                'author_name' => ($product->owner_id) ? $product->owner->full_name : NULL
-            ],
-            'product_content' => $product->product_content,
-            'product_excerpt' => $product->product_excerpt,
-            'price' => $product->price,
-            'cover_image' => ($product->cover_image) ?: NULL,
-            'gallery' => ($product->gallery) ?: NULL,
-            'product_SKU' => $product->product_SKU,
-            'category' => [
-                'categoryId' => ($product->category_id) ?: NULL,
-                'categoryName' => ($product->category) ? $product->category->product_category_name : NULL,
-            ],
-            'brand' => [
-                'brandId' => ($product->brand_id) ? $product->brand_id : NULL,
-                'brandName' => ($product->brand) ? $product->brand->product_brand_name : NULL,
-            ],
-            'product_isLoan' => ($product->product_isLoan) ? $product->product_isLoan : NULL,
-            'extra_content' => ($product->extra_content) ?: NULL
-
-        ];
+        $hardware = Product::find($id);
+        $data = $this->hardwareModelToJson($hardware, $request);
 
         return response()->json($data);
     }
 
-    public function fetchProductByBrand($brand)
+    public function fetchProductByBrand(Request $request): \Illuminate\Http\JsonResponse
     {
-        $productBrand = Productbrand::where('product_brand_name', $brand)->get();
-        $productBrandIdInEdspark = $productBrand[0]->id;
-        $products = Product::where('brand_id', $productBrandIdInEdspark)->get();
+        // Validate the request data
+        $validatedData = $request->validate([
+            'currentId' => 'required|integer|exists:hardwares,id',
+        ]);
+
+        // The validation will automatically return a 422 Unprocessable Entity
+        // response if the validation fails, so there's no need for additional
+        // error handling for that.
+
+        $currentProduct = Product::find($validatedData['currentId']);
+
+        // Get the brand of the current product
+        $currentBrandId = $currentProduct->brand_id;
+
+        // Fetch two other products of the same brand excluding the current product
+        $relatedProducts = Product::where('brand_id', $currentBrandId)
+            ->where('id', '!=', $validatedData['currentId'])
+            ->inRandomOrder()
+            ->take(2)
+            ->get();
+
         $data = [];
-
-        if ($products) {
-            forEach($products as $product) {
-                $result = [
-                    'id' => $product->id,
-                    'product_name' => $product->product_name,
-                    'author'=> [
-                        'author_id' => $product->owner_id,
-                        'author_name' => ($product->owner_id) ? $product->owner->full_name : NULL
-                    ],
-                    'product_content' => $product->product_content,
-                    'product_excerpt' => $product->product_excerpAt,
-                    'price' => $product->price,
-                    'cover_image' => ($product->cover_image) ? $product->cover_image : NULL,
-                    'gallery' => ($product->gallery) ? $product->gallery : NULL,
-                    'product_SKU' => $product->product_SKU,
-                    'category' => [
-                        'categoryId' => ($product->category_id) ? $product->category_id : NULL,
-                        'categoryName' => ($product->category) ? $product->category->product_category_name : NULL,
-                    ],
-                    'brand' => [
-                        'brandId' => ($product->brand_id) ? $product->brand_id : NULL,
-                        'brandName' => ($product->brand) ? $product->brand->product_brand_name : NULL,
-                    ],
-                    'product_isLoan' => ($product->product_isLoan) ? $product->product_isLoan : NULL,
-                    'extra_content' => ($product->extra_content) ?: NULL
-                ];
-
-                $data[] = $result;
-            }
+        foreach ($relatedProducts as $product) {
+            $result = $this->hardwareModelToJson($product, $request);
+            $data[] = $result;
         }
 
         return response()->json($data);

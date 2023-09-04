@@ -1,40 +1,29 @@
-*-<script setup>
-import { computed} from "vue";
-import {serverURL} from "@/js/constants/serverUrl";
+<script setup>
+import {useSoftwareStore} from "@/js/stores/useSoftwareStore";
+import {storeToRefs} from "pinia";
+import {computed, onMounted} from "vue";
 import SoftwareCard from "@/js/components/software/SoftwareCard.vue";
-import {axiosFetcher} from "@/js/helpers/fetcher";
-import useSWRV from "swrv";
+import {useRoute} from "vue-router";
 
-
-const {data : allCuratedSoftware, error: curatedSoftwareError} = useSWRV(`${serverURL}/fetchSoftwarePosts`, axiosFetcher)
-
-const twoRecommendation  = computed( () => {
-    let temp = []
-    if(allCuratedSoftware.value){
-        for(let i= 0; i < 2 ; i++){
-            temp.push(allCuratedSoftware.value[Math.floor(Math.random() * allCuratedSoftware.value.length)])
-        }
-    }
-    return temp
-})
+const route = useRoute()
+const softwareStore = useSoftwareStore()
+const { relatedSoftware } = storeToRefs(softwareStore)
 
 </script>
 <template>
     <div
-        v-if="allCuratedSoftware && allCuratedSoftware.length > 0"
-        class="bg-purple-50 flex justify-center items-center flex-col px-5 rounded softwareSingleCuratedContentContainer xl:!ml-4 xl:!px-10"
+        v-if="relatedSoftware && relatedSoftware.length > 0"
+        class="bg-purple-50 flex justify-center items-center flex-col p-4 rounded softwareSingleCuratedContentContainer xl:!ml-4 xl:!px-10"
     >
         <div class="curatedResourcesTitle font-bold my-2 py-4 text-2xl text-center uppercase">
             RELATED
         </div>
-        <div class="flex-col lg:!flex-row xl:!flex-col">
+        <div class="flex flex-col gap-10 lg:!flex-row xl:!flex-col">
             <SoftwareCard
-                v-for="(software,index) in twoRecommendation"
-                :key="index"
-                :software="software"
+                v-for="software in relatedSoftware"
+                :key="software.guid"
+                :data="software"
                 :show-icon="true"
-                :number-per-row="2"
-                class="mb-4"
             />
         </div>
     </div>

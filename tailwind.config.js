@@ -3,6 +3,36 @@ import colors from 'tailwindcss/colors'
 import forms from '@tailwindcss/forms'
 import typography from '@tailwindcss/typography'
 
+const edsparkColor = [
+    '#4A5568',
+    '#e53935',
+    '#DD6B20',
+    '#D69E2E',
+    '#38A169',
+    '#319795',
+    '#3182CE',
+    '#5A67D8',
+    '#6B46C1',
+    '#4338CA',
+    '#D53F8C',
+    '#ffa000',
+    '#C7B2EA',
+    '#be123c' // mbRose - Better accessibility
+];
+
+const generateSafeList = (colors) => {
+    let safeList = [];
+    ['text', 'bg', 'hover:text'].forEach((prefix) => {
+        colors.forEach((color) => {
+            safeList.push(`${prefix}-[${color}]`);
+        });
+    });
+    return safeList;
+}
+
+
+
+
 module.exports = {
     content: [
         './resources/**/*.blade.php',
@@ -11,20 +41,7 @@ module.exports = {
         './vendor/filament/**/*.blade.php',
     ],
     safelist: [
-        'bg-[url(*)]',
-        'bg-[#4A5568]',
-        'bg-[#e53935]',
-        'bg-[#DD6B20]',
-        'bg-[#D69E2E]',
-        'bg-[#38A169]',
-        'bg-[#319795]',
-        'bg-[#3182CE]',
-        'bg-[#5A67D8]',
-        'bg-[#6B46C1]',
-        'bg-[#4338CA]',
-        'bg-[#D53F8C]',
-        'bg-[#ffa000]',
-        'bg-[#C7B2EA]'
+        ...generateSafeList(edsparkColor)
     ],
     theme: {
         extend: {
@@ -32,7 +49,7 @@ module.exports = {
                 main: {
                     navy: 'rgba(0, 40, 88, 1)',
                     darkTeal: '#0A7982',
-                    teal: '#339999',
+                    teal: '#097982', //was '#339999',
                     lightTeal: '#28D5CB',
                 },
                 secondary: {
@@ -45,8 +62,9 @@ module.exports = {
                     lightPurple: '#8866C5',
                     yellow: '#FFC836',
                     lightYellow: '#F5E1AD',
-                    red: '#DE4668',
+                    red: '#C73E5D', //was #de4668
                     lightRed: '#F7C1C5',
+                    mbRose: '#be123c',
 
                 },
                 custom: {
@@ -54,10 +72,16 @@ module.exports = {
                     genericLighterBlue: 'rgba(180, 216, 241, 0.19)', // Even lighter blue
                     genericScrollbarDark: '#0A0045', // only repeated coz i screwed something up with scrollbar customisation
                 },
+                event:{
+                    virtual: '#BE123C',
+                    hybrid: '#A855F7',
+                    inPerson: '#3B82F6'
+
+                },
 
                 adviceYellow: '#FFC836',
                 adviceGreen: '#048246',
-                adminTeal: '#339999',
+                adminTeal: '#2a8282', //was '#339999',
                 danger: colors.rose,
                 primary: colors.teal,
                 success: colors.green,
@@ -74,6 +98,9 @@ module.exports = {
             },
             screens:{
                 'ml': '860px',
+            },
+            scale:{
+                '90': '0.9',
             }
         },
     },

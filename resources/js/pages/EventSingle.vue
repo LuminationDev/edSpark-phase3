@@ -1,7 +1,10 @@
 <script setup>
+import BaseBreadcrumb from "@/js/components/bases/BaseBreadcrumb.vue";
 import BaseSingle from "@/js/components/bases/BaseSingle.vue";
 import BaseHero from "@/js/components/bases/BaseHero.vue";
+import BaseSingleProfilePicture from "@/js/components/bases/BaseSingleProfilePicture.vue";
 import EventSingleExtraContentRenderer from "@/js/components/events/EventSingleExtraContentRenderer.vue";
+import {schoolColorKeys, schoolColorTheme} from "@/js/constants/schoolColorTheme";
 import purify from "dompurify";
 import {imageURL} from "@/js/constants/serverUrl";
 import TimeIcon from "@/js/components/svg/event/TimeIcon.vue";
@@ -15,27 +18,78 @@ const router = useRouter()
 const handleClickViewProfile = (author_id, author_type) => {
     router.push(`/${author_type}/${author_id}` )
 }
+const getEventColorTheme = (eventType) => {
+    if(eventType === 'Virtual'){
+        return 'red'
+    } else if(eventType === 'Hybrid'){
+        return 'purple'
+    } else{
+        return 'blue'
+    }
+}
+
+const getEventBackgroundColorTheme = (eventType) => {
+    let colorKey = getEventColorTheme(eventType)
+    return "bg-[" + schoolColorTheme[colorKey]['med'] + "]"
+}
+
+
 </script>
 <template>
     <BaseSingle content-type="event">
         <template #hero="{contentFromBase}">
             <BaseHero
                 :background-url="contentFromBase['cover_image']"
-                :swoosh-color-theme="'red'"
+                :swoosh-color-theme="getEventColorTheme(contentFromBase.type)"
             >
+                <template #breadcrumb>
+                    <BaseBreadcrumb
+                        :child-page="contentFromBase.title"
+                        parent-page="events"
+                        :color-theme="getEventColorTheme(contentFromBase.type)"
+                    />
+                </template>
                 <template #titleText>
-                    {{ contentFromBase['event_title'] }}
+                    {{ contentFromBase['title'] }}
                 </template>
 
                 <template #additionalTags>
-                    <div class="flex flex-row text-white typeAndTags">
-                        <div class="EventTypeTag bg-rose-700 font-semibold mr-2 px-8 py-2 rounded-2xl">
-                            {{ contentFromBase['event_type'] }}
+                    <div
+                        class="
+                            grid
+                            grid-cols-3
+                            gap-2
+                            place-items-center
+                            max-w-full
+                            text-white
+                            typeAndTags
+                            w-full
+                            md:!grid-cols-4
+                            lg:!grid-cols-5
+                            xl:!grid-cols-6
+                            ">
+                        <div
+                            class="EventTypeTag font-semibold grid place-items-center mb-2 mr-2 py-2 rounded-2xl w-full"
+                            :class="getEventBackgroundColorTheme(contentFromBase['type'])"
+                        >
+                            {{ contentFromBase['type'] }}
                         </div>
                         <div
-                            v-for="(tag, index) in ['Advice', 'AR', 'VR']"
+                            v-for="(tag, index) in contentFromBase['tags']"
                             :key="index"
-                            class="EventTags bg-gray-50 font-semibold mr-2 px-8 py-2 rounded-2xl text-black"
+                            class="
+                                EventTags
+                                bg-gray-50
+                                font-semibold
+                                grid
+                                place-items-center
+                                mb-2
+                                mr-2
+                                py-2
+                                rounded-2xl
+                                text-black
+                                w-full
+                                "
                         >
                             {{ tag }}
                         </div>
@@ -48,13 +102,10 @@ const handleClickViewProfile = (author_id, author_type) => {
                         class="EventHeroAuthorContainer flex flex-col"
                     >
                         <div class="flex items-center flex-row">
-                            <div class="flex items-center h-20 mx-4 smallPartnerLogo w-24">
-                                <img
-                                    :src="`${imageURL}/${String(contentFromBase['author']['author_logo'])}`"
-                                    alt="logo"
-                                    class="bg-center h-24 object-contain rounded-full w-24"
-                                >
-                            </div>
+                            <BaseSingleProfilePicture
+                                :author-name="contentFromBase['author']['author_name']"
+                                :author-logo-url="String(contentFromBase['author']['author_logo'])"
+                            />
                             <div class="authorName flex flex-col pt-6">
                                 <div class="mb-2 text-2xl">
                                     {{ contentFromBase['author']['author_name'] }}
@@ -88,11 +139,11 @@ const handleClickViewProfile = (author_id, author_type) => {
                         </div>
                         <div class="flex items-center flex-row">
                             <LocationIcon class="mr-2" />
-                            <!--                            {{ contentFromBase['event_type'] === 'in person' ? contentFromBase['event_location']['address'] : contentFromBase['event_type'] }}-->
-                            {{ contentFromBase['event_location']['address'] ? contentFromBase['event_location']['address'] : 'Online' }}
+                            <!--                            {{ contentFromBase['type'] === 'in person' ? contentFromBase['location']['address'] : contentFromBase['type'] }}-->
+                            {{ contentFromBase['location']['address'] ? contentFromBase['location']['address'] : 'Online' }}
                         </div>
                     </div>
-                    <!--                    <div v-html="purify.sanitize(contentFromBase['event_excerpt'])" />-->
+                    <!--                    <div v-html="purify.sanitize(contentFromBase['excerpt'])" />-->
                 </template>
             </BaseHero>
         </template>
@@ -108,7 +159,7 @@ const handleClickViewProfile = (author_id, author_type) => {
                     </div>
                     <div
                         class="flex content-paragraph flex-col max-w-full overflow-hidden text-lg"
-                        v-html="purify.sanitize(contentFromBase['event_content'])"
+                        v-html="purify.sanitize(contentFromBase['content'])"
                     />
                     <template
                         v-for="(content,index) in contentFromBase['extra_content']"
@@ -120,13 +171,13 @@ const handleClickViewProfile = (author_id, author_type) => {
                 <!--      Curated Content      -->
                 <div class="flex flex-col p-4 w-full lg:!w-1/3">
                     <EventsLocation
-                        :location-type="contentFromBase['event_type']"
-                        :location-info="contentFromBase['event_location']"
+                        :location-type="contentFromBase['type']"
+                        :location-info="contentFromBase['location']"
                     />
                     <EventsRsvp
                         :author-info="contentFromBase['author']"
-                        :event-id="contentFromBase['event_id']"
-                        :location-type="contentFromBase['event_type']"
+                        :event-id="contentFromBase['id']"
+                        :location-type="contentFromBase['type']"
                         :event-start-date="contentFromBase['start_date']"
                         :event-end-date="contentFromBase['end_date']"
                     />
@@ -139,7 +190,7 @@ const handleClickViewProfile = (author_id, author_type) => {
 
 
 <style scoped>
-:deep(p){
+.eventSingleContent :deep(p){
     margin-top: 16px;
     text-align: justify;
 }
