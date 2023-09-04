@@ -26,7 +26,7 @@ const router = useRouter()
                 "
         >
             <div class="col-span-5">
-                <h1 class="capitalize font-semibold pb-8 text-2xl text-white md:!text-3xl lg:!text-4xl">
+                <h1 class="font-semibold pb-8 text-2xl text-white lowercase first-letter:uppercase md:!text-3xl lg:!text-4xl">
                     Advice for Educators
                 </h1>
 

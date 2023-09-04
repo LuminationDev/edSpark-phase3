@@ -98,6 +98,9 @@ module.exports = {
             },
             screens:{
                 'ml': '860px',
+            },
+            scale:{
+                '90': '0.9',
             }
         },
     },

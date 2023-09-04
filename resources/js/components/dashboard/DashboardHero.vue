@@ -36,7 +36,7 @@ export default {
 </script>
 
 <template>
-    <div class="bg-clip-content">
+    <div class="bg-clip-content overflow-hidden">
         <div
             class="
                 bg-clip-content
@@ -44,14 +44,12 @@ export default {
                 from-[#002856]
                 via-[#309A9A]
                 to-[#B8E2DC]
-                h-[650px]
+                h-auto
                 w-full
-                md:!h-[620px]
-                lg:!h-[650px]
-                xl:!h-[600px]
+
                 ">
-            <div class="2xl:!px-40 grid grid-cols-6 px-5 xl:!px-10">
-                <div class="col-span-6 pt-[240px]  md:!col-span-3">
+            <div class="2xl:!px-40 grid grid-cols-6 px-5 xl:!px-10 pb-[3rem]">
+                <div class="col-span-6 pt-[220px]  md:!col-span-3">
                     <h1 class="font-semibold pb-8 text-3xl text-white  md:!text-[2.5rem] lg:!text-5xl lg:!text-[48px]">
                         {{ welcomeMessage }}
                     </h1>
@@ -60,7 +58,7 @@ export default {
                         {{ welcomeDescription }}
                     </p>
                 </div>
-                <div class="hidden relative welcomeRobot   md:!col-span-2 md:!scale-75 md:block lg:!ml-0 lg:!scale-100">
+                <div class="hidden relative welcomeRobot  md:!col-span-2 md:!scale-75 md:block lg:!ml-0 lg:!scale-90 z-10">
                     <!-- Gear and dots -->
                     <div class="">
                         <Gear class="absolute top-48 left-12 gear z-10" />
@@ -95,8 +93,8 @@ export default {
                 </div>
             </div>
         </div>
-        <div class="-mt-16 lg:!-mt-24 min-h-24 swooshContainer">
-            <Swoosh />
+        <div class="min-h-24 swooshContainer relative !mt-0">
+            <Swoosh style="transform: translate(0, -60%);"/>
         </div>
     </div>
 </template>

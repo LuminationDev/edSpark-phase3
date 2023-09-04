@@ -77,7 +77,7 @@ const props = defineProps({
             />
 
             <h3
-                class="font-semibold h-full py-2 section-header text-3xl text-white uppercase lg:!text-4xl"
+                class="font-semibold h-full py-2 section-header text-3xl text-white lowercase first-letter:uppercase lg:!text-4xl"
             >
                 {{ title }}
             </h3>
