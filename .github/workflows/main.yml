@@ -1,42 +1,66 @@
-# Test workflow to setup automatic deployment
-name: Deploy to test site
+name: Deploy
 
-
-# Controls when the workflow will run
 on:
-    # Triggers the workflow on push or pull request events but only for the "development" branch
-    pull_request:
-        branches: ['test']
-        types: [closed]
-    push:
-        branches: ['test']
-
-    # Allows you to run this workflow manually from the Actions tab
-    workflow_dispatch:
+  pull_request:
+    branches: ['test', 'release']
+    types: [closed]
+  push:
+    branches: ['test', 'release']
+  workflow_dispatch:
 
 jobs:
-    merge_job:
-        # this job will only run if the PR has been merged
-        # if: github.event.pull_request.merged == true
-        runs-on: ubuntu-latest
-        steps:
-            - name: SSH Remote Commands
-              uses: appleboy/ssh-action@v0.1.4
-              with:
-                script: |
-                    cd public_html/test
-                    git checkout main -f
-                    git pull
-                    git branch -D ${{github.ref_name}}
-                    git checkout ${{github.ref_name}}
-                    composer update
-                    npm install
-                    npm run buildtest
-                host: 'edspark.sa.edu.au'
-                username: 'luminationdev'
-                password: ${{ secrets.EDSPARK_DIGITAL_HUB }}
+  deploy_to_test:
+    if: github.ref == 'refs/heads/test'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
 
-            - run: |
-                    echo $GITHUB_REF
-                    echo $GITHUB_PATH
-                    echo $GITHUB_REF_NAME
+      - name: SSH Remote Commands (Test Site)
+        uses: appleboy/ssh-action@v0.1.4
+        with:
+          script: |
+            cd public_html/test
+            git checkout main -f
+            git pull
+            git branch -D ${{github.ref_name}}
+            git checkout ${{github.ref_name}}
+            composer update
+            npm install
+            npm run buildtest
+          host: 'edspark.sa.edu.au'
+          username: 'luminationdev'
+          password: ${{ secrets.EDSPARK_DIGITAL_HUB }}
+
+      - run: |
+          echo $GITHUB_REF
+          echo $GITHUB_PATH
+          echo $GITHUB_REF_NAME
+
+  deploy_to_production:
+    if: github.ref == 'refs/heads/release'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: SSH Remote Commands (Production Site)
+        uses: appleboy/ssh-action@v0.1.4
+        with:
+          script: |
+            cd public_html/futureSchools/web
+            git checkout main -f
+            git pull
+            git branch -D ${{github.ref_name}}
+            git checkout ${{github.ref_name}}
+            composer update
+            npm install
+            npm run prod
+          host: 'edspark.sa.edu.au'
+          username: 'luminationdev'
+          password: ${{ secrets.EDSPARK_DIGITAL_HUB }}
+
+      - run: |
+          echo $GITHUB_REF
+          echo $GITHUB_PATH
+          echo $GITHUB_REF_NAME
