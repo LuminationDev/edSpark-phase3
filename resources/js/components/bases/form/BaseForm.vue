@@ -82,15 +82,27 @@ const handleTrixInputContent = (data) =>{
                 Excerpt
             </template>
         </TextInput>
-        <div class="ContainerTemp richContent">
+        <div class="ContainerTemp my-2 richContent">
             <label> Content</label>
             <TrixRichEditor
                 :src-content="v$.content.$model"
                 @input="handleTrixInputContent"
             />
         </div>
-        <div class="containerTempImageUploader">
+        <div class="containerTempImageUploader my-2">
+            <label> Cover image (1 image file)</label>
             <ImageUploaderForm />
         </div>
+        <TextInput
+            v-model="v$.authorName.$model"
+            :v$="v$.authorName"
+            field-id="excerpt input"
+            class="my-2"
+            placeholder="Author name"
+        >
+            <template #label>
+                Author's name
+            </template>
+        </TextInput>
     </div>
 </template>
