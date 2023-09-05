@@ -45,6 +45,7 @@ const isActive = ref(null)
 const isInitalized = ref(false)
 const initalizeQueue = ref([])
 const emits = defineEmits(['input', 'update', 'update:srcContent', 'trix-file-accept', 'trix-attachment-add', 'trix-attachment-remove', 'trix-selection-change', 'trix-initialize', 'trix-before-initialize', 'trix-focus', 'trix-blur'])
+
 const handleContentChange = (event) => {
     editorContent.value = event.srcElement ? event.srcElement.value : event.target.value
     emits('input', editorContent.value)
@@ -237,18 +238,18 @@ const h2ButtonConfig = {
 addToolbarButton('foreground', foregroundColor, fgBgColorFunc)
 addToolbarButton('background', backgroundColor, fgBgColorFunc)
 /* Text align center button - No function needed for this button */
-addToolbarButton('textAlignCenter', {
-    icon: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Pro 6.2.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. --><path d="M352 64c0-17.7-14.3-32-32-32H128c-17.7 0-32 14.3-32 32s14.3 32 32 32H320c17.7 0 32-14.3 32-32zm96 128c0-17.7-14.3-32-32-32H32c-17.7 0-32 14.3-32 32s14.3 32 32 32H416c17.7 0 32-14.3 32-32zM0 448c0 17.7 14.3 32 32 32H416c17.7 0 32-14.3 32-32s-14.3-32-32-32H32c-17.7 0-32 14.3-32 32zM352 320c0-17.7-14.3-32-32-32H128c-17.7 0-32 14.3-32 32s14.3 32 32 32H320c17.7 0 32-14.3 32-32z"/></svg>',
-    group: 'block',
-    position: 'beforeend',
-    title: 'Align text center',
-    trixAttribute: {
-        type: 'block',
-        data: {
-            tagName: 'centered',
-        }
-    }
-})
+// addToolbarButton('textAlignCenter', {
+//     icon: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Pro 6.2.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. --><path d="M352 64c0-17.7-14.3-32-32-32H128c-17.7 0-32 14.3-32 32s14.3 32 32 32H320c17.7 0 32-14.3 32-32zm96 128c0-17.7-14.3-32-32-32H32c-17.7 0-32 14.3-32 32s14.3 32 32 32H416c17.7 0 32-14.3 32-32zM0 448c0 17.7 14.3 32 32 32H416c17.7 0 32-14.3 32-32s-14.3-32-32-32H32c-17.7 0-32 14.3-32 32zM352 320c0-17.7-14.3-32-32-32H128c-17.7 0-32 14.3-32 32s14.3 32 32 32H320c17.7 0 32-14.3 32-32z"/></svg>',
+//     group: 'block',
+//     position: 'beforeend',
+//     title: 'Align text center',
+//     trixAttribute: {
+//         type: 'block',
+//         data: {
+//             tagName: 'centered',
+//         }
+//     }
+// })
 addToolbarButton('h1', h1ButtonConfig);
 addToolbarButton('h2', h2ButtonConfig);
 
@@ -286,11 +287,6 @@ addToolbarButton('h2', h2ButtonConfig);
 
 
 <style lang="scss">
-/* For the added button above */
-centered {
-    display: block;
-    text-align: center;
-}
 
 /* Extra Trix Styles to support the above code*/
 .trix-button-group {
@@ -301,8 +297,9 @@ centered {
         svg {
             height: 20px;
             width: 20px;
-            opacity: 0.6;
+            opacity: 0.8;
             display: block;
+
         }
 
         /* For buttons inside divWrap option */
@@ -319,35 +316,31 @@ centered {
 /* My own theme */
 .editor {
     width: 100%;
-    //trix-editor {
-    //    border-radius: 12px;
-    //    border-color: $border-color;
-    //    min-height: 20rem;
-    //    padding: map-get($spacer, 3) map-get($spacer, 2);
-    //    background-color: #fff;
-    //}
-    //.trix-button-group {
-    //    border-radius: 10px;
-    //    border-color: $border-color;
-    //    background-color: #fff;
-    //    .trix-button {
-    //        border-bottom: 0;
-    //        border-color: $border-color;
-    //        &::before {
-    //            background-size: 50%;
-    //        }
-    //        &:first-child {
-    //            border-top-left-radius: 10px;
-    //            border-bottom-left-radius: 10px;
-    //        }
-    //        &:last-child {
-    //            border-top-right-radius: 10px;
-    //            border-bottom-right-radius: 10px;
-    //        }
-    //        &:hover:not(:disabled) {
-    //            background-color: rgba(0,0,0,0.1);
-    //        }
-    //    }
-    //}
+    trix-editor {
+        border-radius: 12px;
+        border-color: black;
+        min-height: 20rem;
+        padding: 6px 12px;
+        background-color: #fff;
+    }
+    .trix-button-group {
+        border-radius: 10px;
+        border: 0;
+        background-color: #fff;
+        .trix-button {
+            border: 1px solid gray;
+            margin-right: 4px;
+            margin-left: 4px;
+            border-radius: 8px;
+            min-height: 30px;
+            min-width: 40px;
+            &::before {
+                background-size: 50%;
+            }
+            &:hover:not(:disabled) {
+                background-color: rgba(0,0,0,0.1);
+            }
+        }
+    }
 }
 </style>

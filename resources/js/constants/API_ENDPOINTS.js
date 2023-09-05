@@ -75,7 +75,7 @@ export const API_ENDPOINTS = {
 
     },
     IMAGE: {
-        UPLOAD_IMAGE: `${serverURL}/uploadImage`,
+        UPLOAD_IMAGE: `${serverURL}/imageUpload`,
         IMAGE_UPLOAD_EDITOR_JS: `${serverURL}/imageUploadEditorjs`
 
     },
