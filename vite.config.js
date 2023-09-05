@@ -1,3 +1,4 @@
+import * as path from "path";
 import { defineConfig } from 'vite';
 import { fileURLToPath, URL } from 'url';
 import laravel from 'laravel-vite-plugin';
@@ -22,7 +23,8 @@ export default defineConfig({
     ],
     resolve: {
         alias: {
-            '@': fileURLToPath(new URL('./resources', import.meta.url))
+            '@': fileURLToPath(new URL('./resources', import.meta.url)),
+            '~trix': path.resolve(__dirname, 'node_modules/trix'),
         }
     },
     optimizeDeps: {
