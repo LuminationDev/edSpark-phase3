@@ -1,5 +1,6 @@
 <script setup>
 import ImageUploaderForm from "@/js/components/bases/form/ImageUploaderForm.vue";
+import TagsInput from "@/js/components/bases/form/TagsInput.vue";
 import TrixRichEditor from "@/js/components/bases/form/TrixRichEditor.vue";
 import TextInput from "@/js/components/bases/TextInput.vue";
 import useVuelidate from "@vuelidate/core";
@@ -44,6 +45,7 @@ const rules = {
     content: {required},
     coverImage: {required},
     authorName: {required},
+    tags:{}
 }
 
 const v$ = useVuelidate(rules,state)
@@ -104,5 +106,14 @@ const handleTrixInputContent = (data) =>{
                 Author's name
             </template>
         </TextInput>
+        <TagsInput
+            v-model="v$.tags.$model"
+            :field-id="'tag-selector'"
+            :v$="v$.tags"
+        >
+            <template #label>
+                Tag
+            </template>
+        </TagsInput>
     </div>
 </template>

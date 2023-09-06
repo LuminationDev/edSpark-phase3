@@ -18,3 +18,9 @@ const handleChangeMedia = (media) =>{
         @change="handleChangeMedia"
     />
 </template>
+<style scoped>
+:deep(.mu-elements-wraper){
+    justify-content: center;
+    gap: 4rem;
+}
+</style>

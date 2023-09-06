@@ -8,7 +8,7 @@ use Illuminate\Support\Str;
 
 class ImageController extends Controller
 {
-    public function imageUpload(Request $request, $type = null)
+    public function imageUpload(Request $request, $type = null): \Illuminate\Http\JsonResponse
     {
         if ($request->isMethod('post')) {
             $data = $request->all();
