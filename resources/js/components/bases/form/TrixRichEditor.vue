@@ -258,12 +258,13 @@ addToolbarButton('h2', h2ButtonConfig);
     <div class="editor">
         <label
             v-if="label"
+            class="ml-2"
             :class="{required: required}"
         >{{ label }}</label>
         <trix-editor
             ref="trix"
             :contenteditable="!disabledEditor"
-            :class="['trix-content']"
+            :class="['trix-content'] "
             :placeholder="placeholder"
             :input="computedId"
             @trix-change="handleContentChange"
@@ -318,8 +319,8 @@ addToolbarButton('h2', h2ButtonConfig);
     width: 100%;
     trix-editor {
         border-radius: 12px;
-        border-color: black;
-        min-height: 20rem;
+        border-color: #D4D4D8;
+        min-height: 6rem;
         padding: 6px 12px;
         background-color: #fff;
     }
@@ -328,7 +329,7 @@ addToolbarButton('h2', h2ButtonConfig);
         border: 0;
         background-color: #fff;
         .trix-button {
-            border: 1px solid gray;
+            border: 1px solid #D4D4D8;
             margin-right: 4px;
             margin-left: 4px;
             border-radius: 8px;

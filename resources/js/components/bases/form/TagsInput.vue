@@ -47,8 +47,8 @@ const handleChangeTag = (newtags) => {
         <Vue3TagsInput
             :id="fieldId"
             :tags="tags"
-            placeholder="Enter some relevant tags (we recommend 3 or 4 tags)"
-            class="!border-black border-2 py-1 rounded text-black"
+            placeholder="Add or create tags"
+            class="!border-gray-300 border-2 py-1 rounded text-black"
             @on-tags-changed="handleChangeTag"
         />
     </div>

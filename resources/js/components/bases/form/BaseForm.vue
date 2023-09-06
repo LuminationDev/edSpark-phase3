@@ -15,6 +15,9 @@ const props = defineProps({
     additionalValidation: {
         type: Object, required: false, default: () => {
         }
+    },
+    itemType: {
+        type: String, required: true
     }
 })
 
@@ -33,7 +36,7 @@ extra resources
 const state = reactive({
     title: '',
     excerpt: '',
-    content: '<strong> HAHA </strong>',
+    content: '',
     coverImage: '',
     authorName: '',
     tags: [],
@@ -53,6 +56,10 @@ const v$ = useVuelidate(rules,state)
 const handleTrixInputContent = (data) =>{
     v$.value.content.$model = data
 }
+
+const handleTrixInputExcerpt = (data) =>{
+    v$.value.excerpt.$model = data
+}
 </script>
 
 <template>
@@ -67,40 +74,37 @@ const handleTrixInputContent = (data) =>{
             :v$="v$.title"
             field-id="titleInput"
             class="my-2"
-            placeholder="Item title"
+            placeholder=""
         >
             <template #label>
                 Title
             </template>
         </TextInput>
-        <TextInput
-            v-model="v$.excerpt.$model"
-            :v$="v$.excerpt"
-            field-id="excerpt input"
-            class="my-2"
-            placeholder="Item excerpt"
-        >
-            <template #label>
-                Excerpt
-            </template>
-        </TextInput>
+        <div class="ContainerTemp my-2 richContent">
+            <label> Excerpt</label>
+            <TrixRichEditor
+                :src-content="v$.excerpt.$model"
+                @input="handleTrixInputExcerpt"
+            />
+        </div>
         <div class="ContainerTemp my-2 richContent">
             <label> Content</label>
             <TrixRichEditor
                 :src-content="v$.content.$model"
+                class="border-gray-300"
                 @input="handleTrixInputContent"
             />
         </div>
         <div class="containerTempImageUploader my-2">
             <label> Cover image (1 image file)</label>
-            <ImageUploaderForm />
+            <ImageUploaderForm :item-type="props.itemType" />
         </div>
         <TextInput
             v-model="v$.authorName.$model"
             :v$="v$.authorName"
             field-id="excerpt input"
             class="my-2"
-            placeholder="Author name"
+            placeholder=""
         >
             <template #label>
                 Author's name
@@ -115,5 +119,8 @@ const handleTrixInputContent = (data) =>{
                 Tag
             </template>
         </TagsInput>
+        <div class="extraContentSection">
+            <slot name="extraContent" />
+        </div>
     </div>
 </template>
