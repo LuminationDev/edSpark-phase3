@@ -19,7 +19,7 @@ const handleChangeMedia = (media) =>{
 <template>
     <Uploader
         :server="API_ENDPOINTS.IMAGE.UPLOAD_IMAGE + '/' + props.itemType"
-        max="1"
+        :max="1"
         @change="handleChangeMedia"
     />
 </template>

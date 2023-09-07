@@ -1,6 +1,6 @@
 import * as path from "path";
-import { defineConfig } from 'vite';
-import { fileURLToPath, URL } from 'url';
+import {defineConfig} from 'vite';
+import {fileURLToPath, URL} from 'url';
 import laravel from 'laravel-vite-plugin';
 import vue from '@vitejs/plugin-vue';
 
@@ -10,16 +10,22 @@ export default defineConfig({
         outDir: './public/build',
     },
     plugins: [
-        vue(),
-        laravel({
-            input: [
-                'resources/css/app.css',
-                'resources/css/output.css',
-                'resources/js/app.js',
-                'resources/css/filament.css',
-            ],
-            refresh: true,
-        }),
+        vue({
+                template: {
+                    compilerOptions: {
+                        isCustomElement: tag => tag === 'trix-editor'
+                    }
+                }
+            }),
+            laravel({
+                input: [
+                    'resources/css/app.css',
+                    'resources/css/output.css',
+                    'resources/js/app.js',
+                    'resources/css/filament.css',
+                ],
+                refresh: true,
+            }),
     ],
     resolve: {
         alias: {

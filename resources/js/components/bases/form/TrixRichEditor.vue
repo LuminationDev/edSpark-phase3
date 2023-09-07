@@ -152,26 +152,32 @@ const addToolbarButton = async (name, options, func) => {
         options.group = options.group || 'text'
         options.position = options.position || 'beforeend'
         options.id = options.id || randomId()
+
         if (options.trixAttribute && options.trixAttribute.type && options.trixAttribute.data && Trix.config[options.trixAttribute.type + 'Attributes']) {
             Trix.config[options.trixAttribute.type + 'Attributes'][name] = options.trixAttribute.data
         }
+
         if (options.html) {
             options.html = options.html.replace(/%id%/ig, options.id)
+
             if (func) {
                 options.html = options.html.replace(/%func\((.*?)\)%/ig, `Trix.$extensions.${name}(event, '${name}', '${options.id}', $1)`)
             }
         }
+
         let toolbarId = trix.value.getAttribute('toolbar')
 
         if (func) {
-            if (Trix.$extensions === undefined) Trix.$extensions = {}
+            if (Trix?.$extensions === undefined) Trix.$extensions = {}
             Trix.$extensions[name] = func
         }
+
         document.getElementById(toolbarId)
             .querySelector(`.trix-button-group.trix-button-group--${options.group}-tools`)
             .insertAdjacentHTML(options.position, `${options.divWrap ? '<div style="position:relative" class="trix-button trix-button--icon">' : ''}<button type="button" ${options.divWrap ? '' : 'class="trix-button trix-button--icon"'} data-trix-attribute="${name}" ${func ? `onClick="Trix.$extensions.${name}(event, '${name}', '${options.id}', 'click')"` : ''} ${options.title ? `title="${options.title}"` : ''}>${options.icon}</button>${options.html ? `${options.html}` : ''}${options.divWrap ? '</div>' : ''}`)
     })
 }
+
 /* Foreground and Background Colors - Based on https://github.com/basecamp/trix/issues/985 */
 const foregroundColor = {
     icon: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Pro 6.2.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. --><path d="M512 256c0 .9 0 1.8 0 2.7c-.4 36.5-33.6 61.3-70.1 61.3H344c-26.5 0-48 21.5-48 48c0 3.4 .4 6.7 1 9.9c2.1 10.2 6.5 20 10.8 29.9c6.1 13.8 12.1 27.5 12.1 42c0 31.8-21.6 60.7-53.4 62c-3.5 .1-7 .2-10.6 .2C114.6 512 0 397.4 0 256S114.6 0 256 0S512 114.6 512 256zM128 288c0-17.7-14.3-32-32-32s-32 14.3-32 32s14.3 32 32 32s32-14.3 32-32zm0-96c17.7 0 32-14.3 32-32s-14.3-32-32-32s-32 14.3-32 32s14.3 32 32 32zM288 96c0-17.7-14.3-32-32-32s-32 14.3-32 32s14.3 32 32 32s32-14.3 32-32zm96 96c17.7 0 32-14.3 32-32s-14.3-32-32-32s-32 14.3-32 32s14.3 32 32 32z"/></svg>',
@@ -211,8 +217,8 @@ const fgBgColorFunc = (event, name, id, data) => {
 }
 
 const h1ButtonConfig = {
-    icon: 'H1',  // Or replace with an SVG or another representation
-    group: 'block',
+    icon: 'Heading',  // Or replace with an SVG or another representation
+    group: 'text',
     position: 'beforeend',
     title: 'Heading 1',
     trixAttribute: {
@@ -224,8 +230,8 @@ const h1ButtonConfig = {
 };
 
 const h2ButtonConfig = {
-    icon: 'H2',  // Or replace with an SVG or another representation
-    group: 'block',
+    icon: 'Subheading',  // Or replace with an SVG or another representation
+    group: 'text',
     position: 'beforeend',
     title: 'Heading 2',
     trixAttribute: {
@@ -317,6 +323,7 @@ addToolbarButton('h2', h2ButtonConfig);
 /* My own theme */
 .editor {
     width: 100%;
+
     trix-editor {
         border-radius: 12px;
         border-color: #D4D4D8;
@@ -324,10 +331,12 @@ addToolbarButton('h2', h2ButtonConfig);
         padding: 6px 12px;
         background-color: #fff;
     }
+
     .trix-button-group {
         border-radius: 10px;
         border: 0;
         background-color: #fff;
+
         .trix-button {
             border: 1px solid #D4D4D8;
             margin-right: 4px;
@@ -335,11 +344,13 @@ addToolbarButton('h2', h2ButtonConfig);
             border-radius: 8px;
             min-height: 30px;
             min-width: 40px;
+
             &::before {
                 background-size: 50%;
             }
+
             &:hover:not(:disabled) {
-                background-color: rgba(0,0,0,0.1);
+                background-color: rgba(0, 0, 0, 0.1);
             }
         }
     }

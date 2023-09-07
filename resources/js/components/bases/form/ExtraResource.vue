@@ -1,9 +1,11 @@
 <script setup>
+import ExtraContentHeader from "@/js/components/bases/form/ExtraContentHeader.vue";
 import TrixRichEditor from "@/js/components/bases/form/TrixRichEditor.vue";
 import TextInput from "@/js/components/bases/TextInput.vue";
-import useVuelidate from "@vuelidate/core";
-import {required} from "@vuelidate/validators";
-import {ref, computed, reactive, onMounted} from 'vue'
+import GenericButton from "@/js/components/button/GenericButton.vue";
+import Add from "@/js/components/svg/Add.vue";
+import {number} from "@noble/hashes/_assert";
+import {ref, computed, reactive, onMounted, onBeforeMount} from 'vue'
 
 const extraResourceItem = {
     heading: 'test',
@@ -12,72 +14,87 @@ const extraResourceItem = {
 
 const props = defineProps({
     data: {
-        type: Object,
+        type: Array,
         required: true
     }
 })
 
-const emits = defineEmits([])
+const emits = defineEmits(['addNewItem','addNewResource'])
 
 const state = reactive({
-    resourceTitle: null,
-    resourceDataArray: null
+    resourceArray: []
 })
 
-const rules = {
-    resourceTitle: required,
-    resourceDataArray: []
-}
-onMounted(() => {
-    state.resourceTitle = props.data.title
-    state.resourceDataArray = props.data.content
+onBeforeMount(()=>{
+    state.resourceArray = props.data
 })
-const v$ = useVuelidate(rules, state)
 
 
-const handleClickAddItem = () => {
-    console.log('clicked add')
-    state.resourceDataArray.push(extraResourceItem)
+const handleClickAddItem = (resourceIndex) => {
+    emits('addNewItem', resourceIndex)
 }
 </script>
 
 <template>
-    <div class="FormExtraResourceContainer flex flex-col p-4">
-        <TextInput
-            field-id="resourceTitle"
-            :model-value="v$.resourceTitle.$model"
-            :v$="v$.resourceTitle"
-        >
-            <template #label>
-                Resource Title
+    <div
+        v-for="(resource, resourceIndex) in state.resourceArray"
+        :key="resourceIndex"
+        class="FormExtraResourceContainer border-[1px] border-gray-300 flex flex-col mb-2 pb-4 rounded-2xl"
+    >
+        <ExtraContentHeader click-callback="handleDeleteResource">
+            <template #headingLeft>
+                Extra Resource
             </template>
-        </TextInput>
-        <div class="FormExtraResourceArrayContainer">
-            <div
-                v-for="(item, index) in state.resourceDataArray"
-                :key="index"
-                class="FormExtraResourceArrayItem border-2 border-gray-300 my-8 p-4 rounded-2xl"
+        </ExtraContentHeader>
+        <div class="formBody px-4">
+            <TextInput
+                v-model="resource.title"
+                field-id="resourceTitle"
+                :v$="{}"
             >
-                <TextInput
-                    v-model="item.heading"
-                    :field-id="'textInputHeading' + index"
-                    :v$="v$"
+                <template #label>
+                    Title
+                </template>
+            </TextInput>
+            <div class="FormExtraResourceArrayContainer">
+                <div
+                    v-for="(item, itemIndex) in resource.content"
+                    :key="itemIndex"
+                    class="FormExtraResourceArrayItem border-[1px] border-gray-300 mb-8 rounded-2xl"
                 >
-                    <template #label>
-                        Heading {{ index }}
-                    </template>
-                </TextInput>
-                <div class="ContainerTemp my-2 richContent">
-                    <TrixRichEditor
-                        label="Content"
-                        :src-content="item.content"
-                        class="border-gray-300"
-                        @input="(contentData) => item.content = contentData"
-                    />
+                    <ExtraContentHeader click-callback="handleDeleteResource">
+                        <template #headingLeft>
+                            {{ "item " + (+itemIndex + 1) }}
+                        </template>
+                    </ExtraContentHeader>
+                    <div class="formItemBody px-2">
+                        <TextInput
+                            v-model="item.heading"
+                            :field-id="'textInputHeading' + itemIndex"
+                            :v$="{}"
+                        >
+                            <template #label>
+                                Heading
+                            </template>
+                        </TextInput>
+                        <div class="ContainerTemp my-2 richContent">
+                            <TrixRichEditor
+                                label="Content"
+                                :src-content="item.content"
+                                class="border-gray-300"
+                                @input="(contentData) => item.content = contentData"
+                            />
+                        </div>
+                    </div>
                 </div>
-            </div>
-            <div @click="handleClickAddItem">
-                add more item
+                <div class="flex justify-center flex-row">
+                    <GenericButton
+                        class="bg-main-teal flex flex-row px-4 py-2"
+                        :callback="() => handleClickAddItem(resourceIndex)"
+                    >
+                        <Add class="h-6 mr-2 w-6" />  Add item to resource
+                    </GenericButton>
+                </div>
             </div>
         </div>
     </div>
