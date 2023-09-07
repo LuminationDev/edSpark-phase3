@@ -9,12 +9,10 @@ import {ref, computed, reactive} from 'vue'
 
 const props = defineProps({
     resourceData: {
-        type: Object, required: false, default: () => {
-        }
+        type: Array, required: false, default: () => []
     },
     templateData: {
-        type: Object, required: false, default: () => {
-        }
+        type: Array, required: false, default: () => []
     }
 
 })
@@ -23,8 +21,9 @@ const showSelectorPopup = ref(false)
 
 const extraContentType = [{key: 'resource', value: 'New extra resource'}, {key: 'template', value: 'New template'}]
 const resourceItem = {heading: '', content: ''}
+const resource = {title: "", content: [Object.assign({},resourceItem)]}
 const templateItem = {icon: '', heading: '', content: ''}
-
+const template = {template: 'numbered items', content: [Object.assign({},templateItem)]}
 const state = reactive({
     resourceData: props.resourceData,
     templateData: props.templateData
@@ -37,6 +36,12 @@ const handleClickAddItem = () => {
 }
 const handleClickSelectedPopupItem = (item) => {
     console.log(item)
+    if(item === 'resource'){
+        handleAddNewResource()
+    } else if(item === 'template'){
+        handleAddNewTemplate()
+    }
+
     showSelectorPopup.value = false
 }
 
@@ -46,10 +51,10 @@ const availableAddContent = computed(() => {
 
 
 const handleAddNewResource = () => {
-    console.log('new res')
+    state.resourceData.push(resource)
 }
 const handleAddNewTemplate = () => {
-    console.log('new temp')
+    state.templateData.push(template)
 }
 const handleAddItemResource = (index) => {
     console.log('item res')
@@ -64,10 +69,20 @@ const handleAddItemTemplate = (index) => {
 
 }
 
-const handleDeleteResource = (index) =>{
+const handleDeleteResource = (index) => {
+    state.resourceData.splice(index, 1)
+}
+const handleDeleteResourceItem = (resIndex, itemIndex) => {
+    state.resourceData[resIndex].content.splice(itemIndex, 1)
+
 
 }
-const handleDeleteTemplate = (index) =>{
+const handleDeleteTemplate = (index) => {
+    state.templateData.splice(index, 1)
+
+}
+const handleDeleteTemplateItem = (templateIndex, itemIndex) => {
+    state.templateData[templateIndex].content.splice(itemIndex, 1)
 
 }
 
@@ -86,12 +101,16 @@ const handleDeleteTemplate = (index) =>{
             <ExtraResource
                 :data="state.resourceData"
                 @add-new-item="handleAddItemResource"
+                @delete-item-at="handleDeleteResourceItem"
                 @add-new-resource="handleAddNewResource"
+                @delete-resource-at="handleDeleteResource"
             />
             <ExtraTemplate
                 :data="state.templateData"
                 @add-new-item="handleAddItemTemplate"
+                @delete-item-at="handleDeleteTemplateItem"
                 @add-new-template="handleAddNewTemplate"
+                @delete-template-at="handleDeleteTemplate"
             />
         </div>
         <div

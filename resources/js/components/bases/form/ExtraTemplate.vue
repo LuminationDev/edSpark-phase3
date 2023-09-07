@@ -13,7 +13,7 @@ const props = defineProps({
     }
 })
 
-const emits = defineEmits(['addNewItem', 'addNewTemplate'])
+const emits = defineEmits(['addNewItem', 'addNewTemplate','deleteTemplateAt', 'deleteItemAt'])
 
 const state = reactive({
     templateArray: []
@@ -26,6 +26,14 @@ onBeforeMount(() => {
 const handleClickAddItem = (templateIndex) => {
     emits('addNewItem', templateIndex)
 }
+
+const handleClickDeleteTemplate = (templateIndex) =>{
+    emits('deleteTemplateAt', templateIndex)
+}
+
+const handleClickDeleteItem = (templateIndex, itemIndex) =>{
+    emits('deleteItemAt', templateIndex, itemIndex)
+}
 </script>
 
 <template>
@@ -35,7 +43,7 @@ const handleClickAddItem = (templateIndex) => {
         class="FormExtratemplateContainer border-[1px] flex flex-col mb-2 pb-4 rounded-2xl"
     >
         <div class="FormExtratemplateArrayContainer">
-            <ExtraContentHeader click-callback="handleDeleteResource">
+            <ExtraContentHeader :click-callback="() => handleClickDeleteTemplate(templateIndex)">
                 <template #headingLeft>
                     Template
                 </template>
@@ -44,9 +52,9 @@ const handleClickAddItem = (templateIndex) => {
                 <div
                     v-for="(item, itemIndex) in template.content"
                     :key="itemIndex"
-                    class="FormExtraTemplateArrayItem border-[1px] border-gray-300 mb-8 pb-4 rounded-2xl"
+                    class="FormExtraTemplateArrayItem border-[1px] border-gray-300 mb-4 pb-4 rounded-2xl"
                 >
-                    <ExtraContentHeader click-callback="handleDeleteResource">
+                    <ExtraContentHeader :click-callback="() =>handleClickDeleteItem(templateIndex,itemIndex)">
                         <template #headingLeft>
                             {{ "item " + itemIndex }}
                         </template>
@@ -79,15 +87,15 @@ const handleClickAddItem = (templateIndex) => {
                             />
                         </div>
                     </div>
-                    <div class="flex justify-center flex-row">
-                        <GenericButton
-                            class="bg-main-teal flex flex-row px-4 py-2"
-                            :callback="() => handleClickAddItem(templateIndex)"
-                        >
-                            <Add class="h-6 mr-2 w-6" />
-                            Add item to template
-                        </GenericButton>
-                    </div>
+                </div>
+                <div class="flex justify-center flex-row">
+                    <GenericButton
+                        class="bg-main-teal flex flex-row px-4 py-2"
+                        :callback="() => handleClickAddItem(templateIndex)"
+                    >
+                        <Add class="h-6 mr-2 w-6" />
+                        Add item to template
+                    </GenericButton>
                 </div>
             </div>
         </div>

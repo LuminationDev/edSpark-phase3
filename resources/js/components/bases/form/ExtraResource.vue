@@ -19,7 +19,7 @@ const props = defineProps({
     }
 })
 
-const emits = defineEmits(['addNewItem','addNewResource'])
+const emits = defineEmits(['addNewItem','addNewResource', 'deleteResourceAt', 'deleteItemAt'])
 
 const state = reactive({
     resourceArray: []
@@ -33,6 +33,14 @@ onBeforeMount(()=>{
 const handleClickAddItem = (resourceIndex) => {
     emits('addNewItem', resourceIndex)
 }
+
+const handleClickDeleteResource = (resourceIndex) =>{
+    emits('deleteResourceAt', resourceIndex)
+}
+
+const handleClickDeleteItem = (resourceIndex, itemIndex) =>{
+    emits('deleteItemAt', resourceIndex, itemIndex)
+}
 </script>
 
 <template>
@@ -41,7 +49,7 @@ const handleClickAddItem = (resourceIndex) => {
         :key="resourceIndex"
         class="FormExtraResourceContainer border-[1px] border-gray-300 flex flex-col mb-2 pb-4 rounded-2xl"
     >
-        <ExtraContentHeader click-callback="handleDeleteResource">
+        <ExtraContentHeader :click-callback="() => handleClickDeleteResource(resourceIndex)">
             <template #headingLeft>
                 Extra Resource
             </template>
@@ -60,9 +68,9 @@ const handleClickAddItem = (resourceIndex) => {
                 <div
                     v-for="(item, itemIndex) in resource.content"
                     :key="itemIndex"
-                    class="FormExtraResourceArrayItem border-[1px] border-gray-300 mb-8 rounded-2xl"
+                    class="FormExtraResourceArrayItem border-[1px] border-gray-300 mb-4 rounded-2xl"
                 >
-                    <ExtraContentHeader click-callback="handleDeleteResource">
+                    <ExtraContentHeader :click-callback="() => handleClickDeleteItem(resourceIndex,itemIndex)">
                         <template #headingLeft>
                             {{ "item " + (+itemIndex + 1) }}
                         </template>
