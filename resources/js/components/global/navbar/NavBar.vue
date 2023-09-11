@@ -28,31 +28,18 @@ import {storeToRefs} from "pinia";
 import {useWindowStore} from "@/js/stores/useWindowStore";
 
 const router = useRouter();
-const userStore = useUserStore();
-const navScrolled = ref(false);
 const profileDropdown = ref(false);
 const currentUser = ref({});
 const navLinks = ref([]);
 
 const authStore = useAuthStore();
-const {isAuthenticated} = storeToRefs(authStore)
-const windowStore = useWindowStore()
-const {showGlobalSearch} = storeToRefs(windowStore)
+const {isAuthenticated} = storeToRefs(authStore);
 
-onMounted(() => {
-    if (!Object.keys(userStore.getUser).length <= 0) {
-        currentUser.value = userStore.getUser;
-    }
-
-    window.document.onscroll = () => {
-        let navbar = document.getElementById('navbarFullsize')
-        navScrolled.value = window.scrollY > navbar.offsetTop;
-    }
-});
+const windowStore = useWindowStore();
+const {showGlobalSearch} = storeToRefs(windowStore);
 
 const avatarUrl = computed(() => {
     let url = ''
-
     if (Object.keys(currentUser.value).length < 0 && !isObjectEmpty(currentUser.value) && !isObjectEmpty(currentUser.value['metadata'])) {
         currentUser.value['metadata'].forEach(meta => {
             if (meta['user_meta_key'] === 'userAvatar') {
@@ -99,8 +86,7 @@ const {isMobile, isTablet} = storeToRefs(useWindowStore)
             v-if="isAuthenticated"
             id="navbarFullsize"
             class="bg-[#002856]/50 container hidden navbarFullsize px-12 py-2 lg:block lg:z-20"
-            :class="{navbarScrolled : navScrolled}"
-        >
+                    >
             <ul
                 class="2xl:gap-8 2xl:text-2xl font-['Poppins'] font-semibold gap-4 hidden text-white xl:text-xl lg:flex lg:flex-row"
             >
@@ -128,8 +114,9 @@ const {isMobile, isTablet} = storeToRefs(useWindowStore)
         />
         <!-- MB commented out the button below - what was its purpose? -->
         <!-- EH uncommented - it's the edspark logo to take user back to dashboard, using button so it can be "tabbed" through -->
-        <button id="edSparkLogo to dashboard">
-            <router-link :to="{name: 'dashboard'}">
+        <!-- MB thank you! Have changed from button to div (is this OK?) and added title tags for accessibility -->
+        <div id="edSparkLogo" title="edSpark logo">
+            <router-link :to="{name: 'dashboard'}" title="Go to dashboard">
                 <Logo
                     class="
                         absolute
@@ -153,21 +140,15 @@ const {isMobile, isTablet} = storeToRefs(useWindowStore)
                         "
                 />
             </router-link>
-        </button>
+        </div>
         <NavSwoosh
             class="
-                2xl:!top-0
                 absolute
-                top-12
-                -bottom-6
+                -bottom-0
                 left-0
                 pointer-events-none
-                scale-y-150
+                scale-y-[1.2]
                 w-full
-                md:!scale-y-100
-                md:!top-12
-                lg:!top-14
-                xl:!top-4
                 "
         />
     </div>
@@ -176,6 +157,7 @@ const {isMobile, isTablet} = storeToRefs(useWindowStore)
 <style>
 .nav-background {
     clip-path: inset(0 0 round 0 0 75%);
+    height: 95%;
 }
 
 .navDropdown {
@@ -188,17 +170,32 @@ const {isMobile, isTablet} = storeToRefs(useWindowStore)
     filter: drop-shadow(0px 0px 15px rgba(0, 0, 0, 0.5));
 }
 
+.navbarFullsize {
+    font-size: 1.1rem;
+}
+
 @media screen and (min-width: 1024px) {
     .navbarFullsize {
+        transition: 300ms;
         position: fixed;
         top: 20px;
     }
 
     .navbarScrolled {
-        transition: 150ms;
         top: 0 !important;
         background-color: #002856 !important;
         z-index: 60 !important;
+        position: fixed;
+    }
+}
+
+/* MB added the below to tidy up responsive nav bars */
+@media screen and (max-width: 1024px) {
+    #app, #app .container {
+        min-width: 320px;
+        max-width: 1024px;
+        width: 100%;
+        margin: auto;
     }
 }
 

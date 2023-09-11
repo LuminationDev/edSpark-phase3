@@ -196,7 +196,10 @@ const mapOptions = {
                     v-for="(value, key) in state"
                     :key="key"
                 >
-                    <div class="flex flex-row my-4">
+                    <div
+                        v-if="state[key]"
+                        class="flex flex-row my-4"
+                    >
                         <div class="flex justify-end font-semibold mr-4 text-base w-1/4 md:!text-xl">
                             {{ key.toUpperCase() }}
                         </div>

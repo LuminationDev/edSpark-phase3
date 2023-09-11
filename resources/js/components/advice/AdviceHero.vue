@@ -10,7 +10,7 @@ const router = useRouter()
     <div class="AdviceHeroContainer">
         <div
             class="
-                -mt-12
+                -mt-[90px]
                 lg:!mt-24
                 lg:!mx-10
                 lg:!pt-12
@@ -22,12 +22,13 @@ const router = useRouter()
                 grid
                 grid-cols-8
                 pb-8
-                pt-24
+                pt-[160px]
                 px-10
+                mb-4
                 "
         >
             <div class="col-span-8 md:!col-span-5">
-                <h1 class="font-semibold pb-8 text-[36px] text-white uppercase">
+                <h1 class="font-semibold pb-8 text-[36px] text-white capitalize">
                     Digital Adoption Group 
                 </h1>
 
@@ -39,7 +40,7 @@ const router = useRouter()
                 <AdviceRobot class="absolute lg:right-6 h-[250px] hidden md:!block md:!bottom-4 xl:!-bottom-4 xl:!right-12" />
                 <GenericButton
                     :callback="() => router.push('browse/advice')"
-                    buttonId="DAGadvice"
+                    button-id="DAGadvice"
                     class="
                         !rounded-none
                         !text-main-navy

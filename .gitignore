@@ -28,5 +28,3 @@ web/
 .env.orig-10-8-23
 composer.lock
 package-lock.json
-.env.orig-10-8-23
-resources/css/output.css

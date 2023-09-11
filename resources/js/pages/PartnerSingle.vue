@@ -1,4 +1,5 @@
 <script setup>
+import BaseBreadcrumb from "@/js/components/bases/BaseBreadcrumb.vue";
 import {ref, computed,  reactive} from 'vue'
 import BaseSingle from "@/js/components/bases/BaseSingle.vue";
 import BaseHero from "@/js/components/bases/BaseHero.vue";
@@ -126,6 +127,8 @@ const dynamicProps = computed(() => {
         return partnerData.overview
     }
 })
+
+const colorTheme = ref('blue')
 </script>
 
 <template>
@@ -136,7 +139,16 @@ const dynamicProps = computed(() => {
         <template #hero="{contentFromBase}">
             <BaseHero
                 :background-url="contentFromBase['cover_image']"
+                :swoosh-color-theme="colorTheme"
             >
+                <template #breadcrumb>
+                    <BaseBreadcrumb
+                        :child-page="contentFromBase.name"
+                        parent-page="partners"
+                        :color-theme="colorTheme"
+                    />
+                </template>
+
                 <template #titleText>
                     <div class="flex items-center flex-row">
                         <div class="flex justify-center items-center h-20 mx-4 smallPartnerLogo w-24">

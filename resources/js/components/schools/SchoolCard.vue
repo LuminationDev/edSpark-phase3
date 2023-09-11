@@ -86,7 +86,7 @@ const handleClickSchoolCard = () => {
                     <div class="card-content_title group-hover:mr-0 min-h-[72px] transition-all">
                         <!-- CARD CONTENT HEADER -->
                         <h5
-                            class="flex justify-start font-medium group-hover:mr-0 text-left text-xl transition-all"
+                            class="flex justify-start font-semibold group-hover:mr-0 text-2xl text-left transition-all"
                         >
                             {{ data.name }}
                         </h5>
@@ -115,6 +115,7 @@ const handleClickSchoolCard = () => {
                             <SchoolCardIconList
                                 :tech-list="data.tech_used"
                                 :show-first-tech="showFirstTech"
+                                :guid="data.guid"
                             />
                         </div>
                     </div>
@@ -123,7 +124,7 @@ const handleClickSchoolCard = () => {
         </template>
     </GenericCard>
 </template>
-<style>
+<style scoped>
 .iconListContainer::-webkit-scrollbar {
     display: none;
 }

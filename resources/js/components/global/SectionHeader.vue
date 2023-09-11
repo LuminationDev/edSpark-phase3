@@ -32,7 +32,7 @@ const props = defineProps({
 </script>
 
 <template>
-    <div class="mb-6 mt-5 px-1 lg:!mt-20 lg:!px-20">
+    <div class="my-10 px-1 lg:!mt-20 lg:!px-20">
         <div
             :class="[classes]"
             class="
@@ -77,7 +77,7 @@ const props = defineProps({
             />
 
             <h3
-                class="font-semibold h-full py-2 section-header text-3xl text-white uppercase lg:!text-4xl"
+                class="font-semibold h-full py-2 section-header text-3xl text-white lowercase first-letter:uppercase lg:!text-4xl"
             >
                 {{ title }}
             </h3>

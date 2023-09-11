@@ -112,7 +112,7 @@ const eventTypeColorClass = (eventType) => {
         max-width: 354px;
     }
 
-    .eventEvcerptTextInline >>> p {
+    .eventEvcerptTextInline :deep(p) {
         max-width: 354px;
         width: 354px;
         overflow: hidden;

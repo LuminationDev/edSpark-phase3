@@ -1,5 +1,6 @@
 <script setup>
 import {API_ENDPOINTS} from "@/js/constants/API_ENDPOINTS";
+import {useWindowStore} from "@/js/stores/useWindowStore";
 
 /**
  * Components
@@ -192,15 +193,16 @@ const getConnectingLinePositions = () => {
     let listContainers = document.querySelectorAll('.softwareDashboardContentContainer');
     let firstContainer = listContainers[0];
     let lastContainer = listContainers[listContainers.length - 1];
+    if(firstContainer && lastContainer) {
+        distanceBetweenEls.value = getDistanceBetweenElements(
+            firstContainer,
+            lastContainer
+        );
 
-    distanceBetweenEls.value = getDistanceBetweenElements(
-        firstContainer,
-        lastContainer
-    );
-
-    let firstElHeight = firstContainer.offsetHeight;
-    top.value = firstContainer.offsetTop + firstElHeight / 2;
-    floatingLineClasses.value = `top-[${top.value}] h-[${distanceBetweenEls.value}px]`
+        let firstElHeight = firstContainer.offsetHeight;
+        top.value = firstContainer.offsetTop + firstElHeight / 2;
+        floatingLineClasses.value = `top-[${top.value}] h-[${distanceBetweenEls.value}px]`
+    }
 };
 
 const getPositionAtCenter = (element) => {
@@ -230,6 +232,18 @@ onMounted(async () => {
     getConnectingLinePositions();
 });
 
+const {isMobile} = storeToRefs(useWindowStore())
+
+const softwareResponsiveData = computed(() =>{
+    if(!softwaresData.value.length) {
+        return []
+    }else if(isMobile.value){
+        return softwaresData.value.slice(0,2)
+    } else{
+        return softwaresData.value.slice(0,4)
+    }
+})
+
 </script>
 
 <template>
@@ -253,7 +267,6 @@ onMounted(async () => {
             :button-callback="() => router.push('/browse/event')"
         />
         <CarouselGenerator
-            :show-count="1"
             data-type="events"
             :data-array="eventsData? eventsData : []"
         />
@@ -275,7 +288,7 @@ onMounted(async () => {
                     -z-10
                     absolute
                     top-1/2
-                    left-1/3
+                    left-1/4
                     duration-700
                     group-hover/bg:left-[15%]
                     group-hover/bg:scale-125
@@ -423,12 +436,11 @@ onMounted(async () => {
                 </div>
             </div>
             <template v-if="softwaresData">
-                <div class="grid grid-cols-1 gap-6 place-items-center px-8 lg:!grid-cols-2 xl:!px-20">
+                <div class="grid grid-cols-1 gap-10 place-items-center px-8 lg:!grid-cols-2 xl:!px-20">
                     <SoftwareCard
-                        v-for="software in softwaresData.slice(0,4)"
+                        v-for="software in softwareResponsiveData"
                         :key="software.guid"
                         :data="software"
-                        :number-per-row="2"
                     />
                 </div>
             </template>
@@ -460,7 +472,7 @@ onMounted(async () => {
                                 alt="Digital Adoption Group Icon"
                             >
                         </div>
-                        <div class="col-span-2 flex place-items-center row-span-1">
+                        <div class="col-span-2 flex ml-2 place-items-center row-span-1">
                             <h4 class="font-semibold text-[24px]">
                                 What is the DAG?
                             </h4>
@@ -484,9 +496,8 @@ onMounted(async () => {
             </div>
             <div class="DAGAdviceCarousel w-full lg:!w-3/4">
                 <CarouselGenerator
-                    :show-count="2"
                     data-type="advice"
-                    :data-array="advicesData"
+                    :data-array="advicesData ? advicesData : []"
                     special-attribute="twoThirdWide"
                 />
             </div>
@@ -501,7 +512,6 @@ onMounted(async () => {
         />
 
         <CarouselGenerator
-            :show-count="3"
             data-type="school"
             :data-array="schoolsData ? schoolsData : []"
         />

@@ -79,8 +79,10 @@ const handleClickSeeMore = () => {
                         grid
                         gap-2
                         place-items-center
+                        mb-4
                         hover:cursor-pointer
                         md:!col-span-3
+                        md:!mb-6
                         lg:!basis-1
                         lg:!flex
                         lg:!flex-col
@@ -101,8 +103,10 @@ const handleClickSeeMore = () => {
                         col-span-6
                         grid
                         place-items-center
+                        mb-4
                         hover:cursor-pointer
                         md:!col-span-3
+                        md:!mb-6
                         lg:!basis-1
                         lg:!flex
                         lg:!flex-col
@@ -118,7 +122,17 @@ const handleClickSeeMore = () => {
                     </div>
                 </div>
                 <div
-                    class="col-span-6 grid place-items-center hover:cursor-pointer lg:!basis-1 lg:!flex lg:!flex-col"
+                    class="
+                        col-span-6
+                        grid
+                        place-items-center
+                        mb-8
+                        hover:cursor-pointer
+                        md:!mb-6
+                        lg:!basis-1
+                        lg:!flex
+                        lg:!flex-col
+                        "
                     @click="router.push('/browse/software/negotiated')"
                 >
                     <DeptNegotiatedIcon />
@@ -148,7 +162,7 @@ const handleClickSeeMore = () => {
                     class="
                         col-span-1
                         grid-cols-1
-                        gap-6
+                        gap-10
                         place-items-center
                         hidden
                         md:!col-span-2
@@ -180,6 +194,7 @@ const handleClickSeeMore = () => {
                         hover:!text-white
                         border-2
                         border-main-darkTeal
+                        my-4
                         place-self-center
                         md:!col-span-2
                         "

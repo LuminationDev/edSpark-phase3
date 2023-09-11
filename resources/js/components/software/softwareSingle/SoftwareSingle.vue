@@ -1,7 +1,9 @@
 +
 <script setup>
+import BaseBreadcrumb from "@/js/components/bases/BaseBreadcrumb.vue";
 import BaseSingle from "@/js/components/bases/BaseSingle.vue";
 import BaseHero from "@/js/components/bases/BaseHero.vue";
+import BaseSingleProfilePicture from "@/js/components/bases/BaseSingleProfilePicture.vue";
 import ExtraResourceTemplateDisplay from "@/js/components/renderer/ExtraResourceTemplateDisplay.vue";
 import SoftwareSingleCuratedContent from "@/js/components/software/softwareSingle/SoftwareSingleCuratedContent.vue";
 import BaseSingleSubmenu from "@/js/components/bases/BaseSingleSubmenu.vue";
@@ -57,6 +59,8 @@ const handleClickViewProfile = (author_id, author_type) => {
 /**
  * End of submenu specific code  plus @emit-active-tab-to-specific-page in BaseSingle
  * */
+const colorTheme = ref('deepPurple')
+
 </script>
 
 <template>
@@ -67,7 +71,15 @@ const handleClickViewProfile = (author_id, author_type) => {
         <template #hero="{contentFromBase, emitFromSubmenu}">
             <BaseHero
                 :background-url="contentFromBase['cover_image']"
+                :swoosh-color-theme="colorTheme"
             >
+                <template #breadcrumb>
+                    <BaseBreadcrumb
+                        :child-page="contentFromBase.title"
+                        parent-page="software"
+                        :color-theme="colorTheme"
+                    />
+                </template>
                 <template #titleText>
                     {{ contentFromBase['title'] }}
                 </template>
@@ -77,14 +89,11 @@ const handleClickViewProfile = (author_id, author_type) => {
                         class="EventHeroAuthorContainer flex flex-col"
                     >
                         <div class="flex items-center flex-row">
-                            <div class="flex items-center h-20 mx-4 smallPartnerLogo w-24">
-                                <img
-                                    :src="`${imageURL}/${String(contentFromBase['author']['author_logo'])}`"
-                                    :alt=" contentFromBase['author']['author_name'] + ' logo'"
-                                    class="bg-center h-24 object-contain rounded-full w-24"
-                                >
-                            </div>
-                            <div class="authorName flex flex-col pt-6">
+                            <BaseSingleProfilePicture
+                                :author-name="contentFromBase['author']['author_name']"
+                                :author-logo-url="String(contentFromBase['author']['author_logo'])"
+                            />
+                            <div class="authorName flex justify-center flex-col">
                                 <div class="mb-2 text-2xl">
                                     {{ contentFromBase['author']['author_name'] }}
                                 </div>
@@ -105,8 +114,8 @@ const handleClickViewProfile = (author_id, author_type) => {
                 </template>
 
 
-                <template #subtitleText1>
-                    <div class="font-semibold pt-2">
+                <template #contentDate>
+                    <div class="font-semibold">
                         {{ formatDateToDayTime(contentFromBase['modified_at']) }}
                     </div>
                 </template>
@@ -114,7 +123,7 @@ const handleClickViewProfile = (author_id, author_type) => {
                     <div v-html="contentFromBase['excerpt']" />
                 </template>
                 <template #subtitleContent>
-                    <div class="SoftwareTypeInfoInHero flex flex-row gap-4 mt-4">
+                    <div class="SoftwareTypeInfoInHero flex flex-row gap-4 my-8">
                         <SoftwareIconGenerator
                             :icon-name="contentFromBase['type'][0]"
                             class="h-14 w-14"

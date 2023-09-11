@@ -8,28 +8,71 @@ use Illuminate\Support\Str;
 
 class ImageController extends Controller
 {
-    public function imageUpload(Request $request)
+    public function imageUpload(Request $request, $type = null): \Illuminate\Http\JsonResponse
     {
         if ($request->isMethod('post')) {
             $data = $request->all();
             $imagePath = "";
-            if ($data) {
-                $type = $data['type'];
-                $image = $data['image'];
 
-                $prefix = "edspark-".$type;
-                $imgName = $prefix.'-'.md5(Str::random(30).time().'_'.$image).'.'.$image->getClientOriginalExtension();
-                $image->storeAs('public/uploads/'.$type, $imgName);
-                $imagePath .= "uploads/".$type."/".$imgName;
+            // If type isn't present in URL, check the request body
+            if (!$type && isset($data['type'])) {
+                $type = $data['type'];
+            }
+
+            // Ensure type is available before proceeding
+            if (!$type) {
+                return response()->json([
+                    "success" => 0,
+                    "file" => [
+                        "url" => "",
+                        "message" => "Type is required."
+                    ]
+                ]);
+            }
+
+            // Ensure an image is provided in the request body
+            if (!isset($data['image']) || !$data['image']->isValid()) {
+                return response()->json([
+                    "success" => 0,
+                    "file" => [
+                        "url" => "",
+                        "message" => "Image is required or is invalid."
+                    ]
+                ]);
+            }
+
+            try {
+                $image = $data['image'];
+                $prefix = "edspark-" . $type;
+                $imgName = $prefix . '-' . md5(Str::random(30) . time() . '_' . $image) . '.' . $image->getClientOriginalExtension();
+                $image->storeAs('public/uploads/' . $type, $imgName);
+                $imagePath .= "uploads/" . $type . "/" . $imgName;
+            } catch (\Exception $e) {
+                return response()->json([
+                    "success" => 0,
+                    "file" => [
+                        "url" => "",
+                        "message" => "Error uploading the image: " . $e->getMessage()
+                    ]
+                ]);
             }
 
             return response()->json([
                 "success" => 1,
                 "file" => [
-                    "url" =>  $imagePath
+                    "url" => $imagePath
                 ]
             ]);
         }
+
+        // If the method is not POST
+        return response()->json([
+            "success" => 0,
+            "file" => [
+                "url" => "",
+                "message" => "Invalid request method."
+            ]
+        ]);
     }
 
     public function imageUploadEditorjs(Request $request)

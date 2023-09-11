@@ -27,16 +27,11 @@ const props = defineProps({
         type: String,
         required: true
     },
-    showCount:{
-        type: Number,
-        required: true
-    },
     specialAttribute:{
         type: String,
         required: false,
         default: ''
     }
-
 })
 const windowStore = useWindowStore()
 
@@ -50,11 +45,6 @@ const breakpointChoser = () =>{
         return generalCarouselBreakpoints
     }
 }
-// currently not uniform yet. still depending on each card (each card is adapted to responses from backend)
-// TODO: Configure backend responses and Card data at the same time to prevent breaking changes
-// const formattedData = computed(() => {
-//     return cardDataWithGuid(props.dataArray)
-// })
 
 const numberOfLoadingPlaceholder = computed(() =>{
     if(props.specialAttribute === 'twoThirdWide'){
@@ -75,7 +65,6 @@ const numberOfLoadingPlaceholder = computed(() =>{
             class="carousel__wrapper"
         >
             <Carousel
-                :items-to-show="props.showCount"
                 :snap-align="'start'"
                 :wrap-around="false"
                 :breakpoints="breakpointChoser()"
@@ -104,6 +93,7 @@ const numberOfLoadingPlaceholder = computed(() =>{
                         <SoftwareCard
                             :key="cardData.guid"
                             :data="cardData"
+                            :show-icon="false"
                         />
                     </template>
 
@@ -172,9 +162,9 @@ const numberOfLoadingPlaceholder = computed(() =>{
         left: -20px !important;
     }
 
-    .carousel__slide[aria-hidden="true"] {
-        visibility: hidden;
-    }
+    //.carousel__slide[aria-hidden="true"] {
+    //    visibility: hidden;
+    //}
 
     :deep(.carousel__pagination-button::after) {
         height: 12px;

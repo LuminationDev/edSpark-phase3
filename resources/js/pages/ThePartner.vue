@@ -38,7 +38,17 @@ const {
             :button-callback="() => router.push('/browse/partner')"
         />
         <div
-            class="PartnerListGalleryContainer grid grid-cols-1 gap-4 place-items-center px-5 md:!grid-cols-2 lg:!px-huge xl:!grid-cols-3"
+            class="PartnerListGalleryContainer
+                grid
+                grid-cols-1
+                gap-10
+                place-items-center
+                px-5
+                
+                
+                md:!grid-cols-2
+                lg:!px-huge
+                xl:!grid-cols-3"
         >
             <template v-if="partnerList">
                 <template

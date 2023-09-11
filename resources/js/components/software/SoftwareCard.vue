@@ -12,6 +12,11 @@ const props = defineProps({
         type: Object,
         required: true
     },
+    showIcon:{
+        type: Boolean,
+        required: false,
+        default: true
+    }
 
 })
 
@@ -47,10 +52,12 @@ const handleClickCard = () => {
         :section-type="'software'"
         :is-liked-by-user="data.isLikedByUser"
         :is-bookmarked-by-user="data.isBookmarkedByUser"
-        class="mt-8"
         :guid="data.guid"
     >
-        <template #icon>
+        <template
+            v-if="showIcon"
+            #icon
+        >
             <SoftwareCardIcon
                 class="absolute -top-6 -right-6 icon"
                 :software-icon-name="data.type[0]"

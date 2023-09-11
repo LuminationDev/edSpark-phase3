@@ -19,15 +19,16 @@ final class HardwareExtraResource
 {
     public static function title()
     {
-        return 'Hardware Numbered Template';
+        return 'Extra Resource';
     }
 
     public static function schema()
     {
         return [
+            Forms\Components\TextInput::make('resource_title')
+                ->label('Resource title')
+                ->maxLength(255),
             Repeater::make('item')->schema([
-                IconPicker::make('icon')
-                    ->columns(4),
                 TextInput::make('heading'),
                 RichEditor::make('content')
             ])

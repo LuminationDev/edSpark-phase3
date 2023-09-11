@@ -190,7 +190,7 @@ const formattedSearchTitle = computed(() =>{
         <div
             v-if="resourceList" 
             id="resourceResult"
-            class="grid grid-cols-1 gap-6 place-items-center pt-10 resourceResult md:!grid-cols-2 xl:!gap-12 xl:!grid-cols-3"
+            class="grid grid-cols-1 gap-10 place-items-center pt-10 resourceResult md:!grid-cols-2 xl:!gap-12 xl:!grid-cols-3"
         >
             <template
                 v-for="(data) in paginatedFilteredData"
@@ -204,9 +204,8 @@ const formattedSearchTitle = computed(() =>{
                         class="group h-[470px] max-w-[300px] transition-all w-full  hover:shadow-2xl lg:!max-w-[400px]"
                     >
                         <AdviceCard
-                            :key="data.post_id"
+                            :key="data.id"
                             :data="data"
-                            :number-per-row="2"
                             :show-icon="true"
                         />
                     </div>
@@ -217,9 +216,8 @@ const formattedSearchTitle = computed(() =>{
                         class="group h-[470px] max-w-[300px] transition-all w-full hover:shadow-2xl lg:!max-w-[400px]"
                     >
                         <SoftwareCard
-                            :key="data.post_id"
+                            :key="data.id"
                             :data="data"
-                            :number-per-row="2"
                         />
                     </div>
                 </template>
@@ -231,7 +229,6 @@ const formattedSearchTitle = computed(() =>{
                         <HardwareCard
                             :key="data.id"
                             :data="data"
-                            :number-per-row="4"
                         />
                     </div>
                 </template>
@@ -249,16 +246,7 @@ const formattedSearchTitle = computed(() =>{
                 <template v-else-if="searchType === 'partner'">
                     <div
                         :key="data.id"
-                        class="
-                            border-black
-                            group
-                            h-[470px]
-                            max-w-[300px]
-                            transition-all
-                            w-full
-                            hover:shadow-2xl
-                            lg:!max-w-[400px]
-                            "
+                        class="group h-[470px] max-w-[300px] transition-all w-full hover:shadow-2xl lg:!max-w-[400px]"
                     >
                         <PartnerCard
                             :data="data"

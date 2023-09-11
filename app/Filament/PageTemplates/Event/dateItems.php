@@ -18,7 +18,7 @@ final class dateItems
 {
     public static function title()
     {
-        return 'Date Template';
+        return 'Date and Time Template';
     }
 
     public static function schema()
@@ -27,16 +27,11 @@ final class dateItems
             Repeater::make('item')->schema([
                 TextInput::make('heading'),
                 RichEditor::make('content'),
-//                Forms\Components\Grid::make(2)
-//                    ->schema([
-                        Forms\Components\DateTimePicker::make('start_date')
-                            ->required(),
-//                        Forms\Components\DateTimePicker::make('end_date')
-//                            ->required()
-//                    ]),
+                Forms\Components\DateTimePicker::make('start_date')
+                    ->required(),
             ])
-            ->label('Item')
-            ->collapsible()
+                ->label('Item')
+                ->collapsible()
         ];
     }
 }

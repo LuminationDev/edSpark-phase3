@@ -43,7 +43,7 @@ const showFirstTech = ref(true)
 <template>
     <div
         class="flex flex-col mapOuterContainer"
-        :style="`background-color: rgba(255,255,255,0.85); background-image: url('${imageURL}/${props.schoolData['cover_image']}'); background-size: cover ;background-blend-mode: screen; `"
+        :style="`background-color: rgba(255,255,255,0.85); background-image: url('${imageURL}/${props.schoolData?.cover_image ?? ''}'); background-size: cover ;background-blend-mode: screen; `"
     >
         <div class="flex justify-between flex-row p-4 place-items-center relative">
             <h3 class="font-medium text-xl">

@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use App\Models\Software;
 use App\Models\Softwaremeta;
+use Illuminate\Support\Facades\Validator;
 
 class SoftwareController extends Controller
 {
@@ -78,6 +79,26 @@ class SoftwareController extends Controller
         ];
     }
 
+    public function createSoftwarePost(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'post_title' => 'required|string',
+            'post_content' => 'required|string',
+            'post_excerpt' => 'sometimes|string',
+            'post_status' => 'required|string',
+            'author_id' => 'required|integer|exists:users,id',
+//            'cover_image' => 'sometimes|string',
+//            'softwaretype_id' => 'required|integer|exists:softwaretypes,id',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(['errors' => $validator->errors()], 400);
+        }
+
+        $software = Software::create($request->all());
+
+        return response()->json(['message' => 'Software created successfully!', 'software' => $software], 201);
+    }
     public function fetchSoftwarePosts(Request $request): JsonResponse
     {
         try {

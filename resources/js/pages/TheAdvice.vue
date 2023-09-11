@@ -24,7 +24,7 @@ const {currentUser} = storeToRefs(userStore)
  */
 const { data: dagAdvice, error: dagError, isValidating: dagValidating } = useSWRV(API_ENDPOINTS.ADVICE.FETCH_ADVICE_POSTS_BY_TYPE_DAG, axiosFetcherParams(userStore.getUserRequestParam), swrvOptions);const { state: dagState, STATES: DAGSTATES } = useSwrvState(dagAdvice, dagError, dagValidating);
 /**
- * Get the Partner advice
+ * Get the Partner adviceA
  * and states
  */
 const { data: partnerAdvice, error: partnerError, isValidating: partnerValidating } = useSWRV(API_ENDPOINTS.ADVICE.FETCH_ADVICE_POSTS_BY_TYPE_PARTNER, axiosFetcherParams(userStore.getUserRequestParam), swrvOptions);
@@ -49,8 +49,10 @@ const { state: generalState, STATES: GENERALSTATE } = useSwrvState(generalAdvice
             :data-array="dagAdvice ? dagAdvice : []"
         />
     </div>
+
+
     <EducatorHero />
-    <div class="grid grid-cols-1 gap-4 place-items-center mt-10 px-5 md:!grid-cols-2 lg:!grid-cols-3 lg:!px-huge">
+    <div class="grid grid-cols-1 gap-10 place-items-center mt-10 px-5 md:!grid-cols-2 lg:!grid-cols-3 lg:!px-huge">
         <template v-if="generalAdvice && generalAdvice.length">
             <AdviceCard
                 v-for="advice in generalAdvice"
@@ -71,8 +73,8 @@ const { state: generalState, STATES: GENERALSTATE } = useSwrvState(generalAdvice
         </template>
     </div>
 
+    
     <PartnerHero />
-
     <CarouselGenerator
         :show-count="3"
         data-type="advice"
