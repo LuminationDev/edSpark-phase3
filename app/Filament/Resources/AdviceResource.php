@@ -108,24 +108,7 @@ class AdviceResource extends Resource
                                         ->options(static::getTemplates()),
                                     ...static::getTemplateSchemas()
                                 ]),
-                            Forms\Components\Builder\Block::make('extra_resources')
-                                ->schema([
-                                    Forms\Components\Repeater::make('item')
-                                        ->schema([
-                                            Forms\Components\TextInput::make('heading'),
-                                            Forms\Components\RichEditor::make('content')
-                                                ->disableToolbarButtons([
-                                                    'attachFiles',
-                                                    'blockquote',
-                                                    // 'codeBlock',
-                                                    'h2',
-                                                    'h3',
-                                                    'redo',
-                                                    'undo',
-                                                ])
-                                        ])
-                                ])
-                                ->label('Extra Resources'),
+
                         ])
                         ->label('Extra content')
                 ])

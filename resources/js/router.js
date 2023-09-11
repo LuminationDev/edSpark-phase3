@@ -1,4 +1,6 @@
 // Import router dependencies
+import BaseForm from "@/js/components/bases/form/BaseForm.vue";
+import SoftwareCreateForm from "@/js/components/software/SoftwareCreateForm.vue";
 import EdsparkPageNotFound from "@/js/pages/EdsparkPageNotFound.vue";
 import SchoolSingle from "@/js/pages/SchoolSingle.vue";
 import TheAdvice from "@/js/pages/TheAdvice.vue";
@@ -53,6 +55,28 @@ const router = createRouter({
                 navigation: true,
                 requiresAuth: true, //guard the dashboard route
             }
+        },
+        {
+            name: 'create-pages',
+            path: '/create',
+            children: [
+                {
+                    name: 'createAdvice',
+                    path: 'advice',
+                    component: BaseForm,
+                    meta: {
+                        requiresAuth: true,
+                    }
+                },
+                {
+                    name: 'createSoftware',
+                    path: 'software',
+                    component: SoftwareCreateForm,
+                    meta: {
+                        requiresAuth: true,
+                    }
+                }
+            ]
         },
         {
             name: 'browse-pages',
