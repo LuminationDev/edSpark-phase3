@@ -3,6 +3,7 @@ import ImageUploaderForm from "@/js/components/bases/form/ImageUploaderForm.vue"
 import TagsInput from "@/js/components/bases/form/TagsInput.vue";
 import TrixRichEditor from "@/js/components/bases/form/TrixRichEditor.vue";
 import TextInput from "@/js/components/bases/TextInput.vue";
+import {watchDebounced} from "@vueuse/core";
 import {capitalize} from "vue";
 import useVuelidate from "@vuelidate/core";
 import {required} from "@vuelidate/validators";
@@ -37,7 +38,7 @@ const FormStatus = {
 }
 
 
-const emits = defineEmits([])
+const emits = defineEmits(['updateParentBaseData'])
 /*
 Base form will have
 title: text input
@@ -75,6 +76,11 @@ onBeforeMount(() =>{
     state.authorName = props.baseData?. authorName || ''
     state.tags = props.baseData?.tags || []
 })
+
+watchDebounced(state, () =>{
+    console.log('watchDebounced is called')
+    emits('updateParentBaseData', state)
+}, {debounce: 1000 , maxWait: 2000})
 
 const handleTrixInputContent = (data) =>{
     v$.value.content.$model = data

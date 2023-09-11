@@ -35,6 +35,7 @@ const handleClickAddItem = () => {
     console.log('clicked add')
     showSelectorPopup.value = true
 }
+
 const handleClickSelectedPopupItem = (item) => {
     console.log(item)
     if(item === 'resource'){
@@ -42,14 +43,12 @@ const handleClickSelectedPopupItem = (item) => {
     } else if(item === 'template'){
         handleAddNewTemplate()
     }
-
     showSelectorPopup.value = false
 }
 
 const availableAddContent = computed(() => {
     return [{key: 'resource', value: 'New extra resource'}, {key: 'template', value: 'New template'}]
 })
-
 
 const handleAddNewResource = () => {
     state.resourceData.push(createResource());
@@ -72,18 +71,17 @@ const handleAddItemTemplate = (index) => {
 const handleDeleteResource = (index) => {
     state.resourceData.splice(index, 1)
 }
+
 const handleDeleteResourceItem = (resIndex, itemIndex) => {
     state.resourceData[resIndex].content.splice(itemIndex, 1)
-
-
 }
+
 const handleDeleteTemplate = (index) => {
     state.templateData.splice(index, 1)
-
 }
+
 const handleDeleteTemplateItem = (templateIndex, itemIndex) => {
     state.templateData[templateIndex].content.splice(itemIndex, 1)
-
 }
 
 
