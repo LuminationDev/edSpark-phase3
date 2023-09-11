@@ -1,4 +1,5 @@
 <script setup>
+import TrixRichEditor from "@/js/components/bases/form/TrixRichEditor.vue";
 import {API_ENDPOINTS} from "@/js/constants/API_ENDPOINTS";
 import {ref, computed, onBeforeMount} from 'vue';
 import {useUserStore} from '../../stores/useUserStore';
@@ -12,7 +13,6 @@ import {serverURL} from "@/js/constants/serverUrl";
 import BaseHero from "@/js/components/bases/BaseHero.vue";
 import UserBookmark from "@/js/components/userprofile/UserBookmark.vue";
 
-console.log('nside useprofile new')
 const userStore = useUserStore();
 const siteStore = useSiteStore();
 
@@ -36,7 +36,7 @@ const subMenuItems = ref(['Info', 'Work', 'Messages'])
 const editingField = ref(false)
 const editName = ref(null);
 const uploadAvatar = ref(null)
-
+const contentTemp = ref('')
 
 const handleSelectSubmenu = () => {
     console.log('submenu selected')
@@ -192,6 +192,7 @@ onBeforeMount(() => {
             </div>
         </div>
     </div>
+    <TrixRichEditor v-model="contentTemp" />
 </template>
 
 <style scoped>
