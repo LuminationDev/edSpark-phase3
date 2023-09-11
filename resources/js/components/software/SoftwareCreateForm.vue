@@ -3,6 +3,8 @@ import BaseForm from "@/js/components/bases/form/BaseForm.vue";
 import ExtraContent from "@/js/components/bases/form/ExtraContent.vue";
 import GenericButton from "@/js/components/button/GenericButton.vue";
 import {API_ENDPOINTS} from "@/js/constants/API_ENDPOINTS";
+import {useUserStore} from "@/js/stores/useUserStore";
+import {storeToRefs} from "pinia";
 import {reactive, ref} from "vue";
 
 // this will be passed in later -- instead of hardcoding here only temp
@@ -14,6 +16,22 @@ import {reactive, ref} from "vue";
 //     template: "numbered items",
 //     content: [{icon: "1", heading: 'haha', content: ''}, {icon: "2",heading: 'hehe', content: ''}]
 // }])
+const userStore = useUserStore()
+const {currentUser} = storeToRefs(userStore)
+
+const templates = [
+    {
+        type: "Extraresource",
+        value: "App\\Filament\\PageTemplates\\Software\\Extraresource"
+    },
+    {
+        type: 'Numbereditems',
+        value: "App\\Filament\\PageTemplates\\Software\\Numbereditems"
+    },
+    {
+        type: ""
+    }
+]
 
 const createNewBaseData = () => {
     return {
@@ -25,6 +43,10 @@ const createNewBaseData = () => {
         tags: []
     }
 }
+
+/*
+ * Transform data into Filament friendly's format to ensure editability from backend before saving
+ */
 const transformData = (simpleData) => {
     return simpleData.map(item => {
         return {
@@ -54,7 +76,7 @@ const softwareDataToDatabaseFields = () =>
         post_excerpt: baseData.excerpt,
         post_content: baseData.content,
         post_status: 'Published',
-        author_id: 61,
+        author_id: currentUser.value.id,
         cover_image: '',
         softwaretype_id: 7,
         template: '',
