@@ -55,6 +55,7 @@ Route::middleware('api')->group(function() {
     Route::post('fetchRelatedAdvice',[AdviceController::class, 'fetchRelatedAdvice']);
 
     // Software APIs
+    Route::post('createSoftwarePost', [SoftwareController::class,'createSoftwarePost']);
     Route::get('fetchSoftwarePosts', [SoftwareController::class, 'fetchSoftwarePosts']);
     Route::get('fetchSoftwarePostById/{id}', [SoftwareController::class, 'fetchSoftwarePostById']);
     Route::post('fetchRelatedSoftware', [SoftwareController::class, 'fetchRelatedSoftware']);
@@ -90,7 +91,7 @@ Route::middleware('api')->group(function() {
 
 
     // Image upload
-    Route::post('imageUpload', [ImageController::class, 'imageUpload']);
+    Route::post('imageUpload/{type?}', [ImageController::class, 'imageUpload']);
     Route::post('imageUploadEditorjs', [ImageController::class, 'imageUploadEditorjs']);
 
     // Like and Bookmark

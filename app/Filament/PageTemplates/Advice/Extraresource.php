@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Filament\PageTemplates\Hardware;
+namespace App\Filament\PageTemplates\Advice;
 
 use Filament\Forms;
 use Filament\Forms\Components\TextInput;
@@ -14,12 +14,11 @@ use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\MarkdownEditor;
 use Filament\Forms\Components\Select;
 
-
-final class HardwareExtraResource
+final class Extraresource
 {
     public static function title()
     {
-        return 'Extra Resource';
+        return 'Extra Resources';
     }
 
     public static function schema()

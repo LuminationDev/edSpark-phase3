@@ -91,27 +91,6 @@ class HardwareResource extends Resource
                                             ->options(static::getTemplates()),
                                         ...static::getTemplateSchemas()
                                     ]),
-                                Forms\Components\Builder\Block::make('extra_resources')
-                                    ->schema([
-                                        Forms\Components\Repeater::make('item')
-                                            ->schema([
-                                                Forms\Components\TextInput::make('title'),
-                                                Forms\Components\TextInput::make('heading'),
-                                                Forms\Components\RichEditor::make('content')
-                                                    ->disableToolbarButtons([
-                                                        'attachFiles',
-                                                        'blockquote',
-                                                        'bulletList',
-                                                        'codeBlock',
-                                                        'h2',
-                                                        'h3',
-                                                        'orderedList',
-                                                        'redo',
-                                                        'undo',
-                                                    ]),
-                                            ])
-                                    ])
-                                    ->label('Extra Resources')
                             ])
                             ->label('Extra content')
                     ])
