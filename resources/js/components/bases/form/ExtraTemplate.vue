@@ -45,10 +45,19 @@ const handleClickDeleteItem = (templateIndex, itemIndex) =>{
         <div class="FormExtratemplateArrayContainer">
             <ExtraContentHeader :click-callback="() => handleClickDeleteTemplate(templateIndex)">
                 <template #headingLeft>
-                    Template
+                    Template {{ " " + (+templateIndex + 1) }}
                 </template>
             </ExtraContentHeader>
             <div class="formBody px-4">
+                <TextInput
+                    v-model="template.template"
+                    field-id="templateType"
+                    :v$="{}"
+                >
+                    <template #label>
+                        Template Type
+                    </template>
+                </TextInput>
                 <div
                     v-for="(item, itemIndex) in template.content"
                     :key="itemIndex"
@@ -59,7 +68,7 @@ const handleClickDeleteItem = (templateIndex, itemIndex) =>{
                             {{ "item " + itemIndex }}
                         </template>
                     </ExtraContentHeader>
-                    <div class="formItemBody px-2">
+                    <div class="formItemBody px-4">
                         <TextInput
                             v-model="item.icon"
                             :field-id="'IconField_' + itemIndex"

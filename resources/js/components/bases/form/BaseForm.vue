@@ -3,11 +3,15 @@ import ImageUploaderForm from "@/js/components/bases/form/ImageUploaderForm.vue"
 import TagsInput from "@/js/components/bases/form/TagsInput.vue";
 import TrixRichEditor from "@/js/components/bases/form/TrixRichEditor.vue";
 import TextInput from "@/js/components/bases/TextInput.vue";
+import {capitalize} from "vue";
 import useVuelidate from "@vuelidate/core";
 import {required} from "@vuelidate/validators";
-import {ref, computed, reactive} from 'vue'
+import {ref, computed, reactive, onBeforeMount} from 'vue'
 
 const props = defineProps({
+    baseData:{
+        type: Object, required: true
+    },
     additionalData: {
         type: Object, required: false, default: () => {
         }
@@ -20,6 +24,18 @@ const props = defineProps({
         type: String, required: true
     }
 })
+const FormAction = {
+    CREATE: 'CREATE',
+    EDIT: 'EDIT'
+
+}
+const FormStatus = {
+    UNSAVED: 'UNSAVED',
+    AUTOSAVED: 'AUTOSAVED',
+    DRAFT: 'DRAFT',
+    SAVED: 'SAVED'
+}
+
 
 const emits = defineEmits([])
 /*
@@ -30,8 +46,6 @@ content: rich text editor
 cover image: upload
 author name:
 tags:
-extra resources
-
  */
 const state = reactive({
     title: '',
@@ -53,6 +67,15 @@ const rules = {
 
 const v$ = useVuelidate(rules,state)
 
+onBeforeMount(() =>{
+    state.title = props.baseData?.title || ''
+    state.excerpt = props.baseData?.excerpt || ''
+    state.content = props.baseData?.content || ''
+    state.coverImage = props.baseData?.cover_image || ''
+    state.authorName = props.baseData?. authorName || ''
+    state.tags = props.baseData?.tags || []
+})
+
 const handleTrixInputContent = (data) =>{
     v$.value.content.$model = data
 }
@@ -63,9 +86,9 @@ const handleTrixInputExcerpt = (data) =>{
 </script>
 
 <template>
-    <div class="BaseFormContainer border-[1px] flex flex-col mt-12 mx-5 p-4 text-black md:!mx-10 lg:!mx-20">
+    <div class="BaseFormContainer border-[1px] flex flex-col mt-12 mx-5 p-4 rounded-2xl text-black md:!mx-10 lg:!mx-20">
         <div class="Introduction formHeader my-4">
-            This is a form
+            {{ capitalize(props.itemType) }} Form
             <slot name="formHeader" />
         </div>
         <TextInput

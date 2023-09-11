@@ -4,31 +4,32 @@ import ExtraResource from "@/js/components/bases/form/ExtraResource.vue";
 import ExtraTemplate from "@/js/components/bases/form/ExtraTemplate.vue";
 import GenericButton from "@/js/components/button/GenericButton.vue";
 import Add from "@/js/components/svg/Add.vue";
-import Trash from "@/js/components/svg/Trash.vue";
+import {watchDebounced} from "@vueuse/core";
 import {ref, computed, reactive} from 'vue'
 
 const props = defineProps({
-    resourceData: {
-        type: Array, required: false, default: () => []
+    extraContentData:{
+        type: Object, required: true
     },
-    templateData: {
-        type: Array, required: false, default: () => []
-    }
-
 })
+const emits = defineEmits(['updateParentExtraContent'])
 
 const showSelectorPopup = ref(false)
 
 const extraContentType = [{key: 'resource', value: 'New extra resource'}, {key: 'template', value: 'New template'}]
-const resourceItem = {heading: '', content: ''}
-const resource = {title: "", content: [Object.assign({},resourceItem)]}
-const templateItem = {icon: '', heading: '', content: ''}
-const template = {template: 'numbered items', content: [Object.assign({},templateItem)]}
-const state = reactive({
-    resourceData: props.resourceData,
-    templateData: props.templateData
-})
+const createResourceItem = () => ({ heading: '', content: '' });
+const createResource = () => ({ title: "", content: [createResourceItem()] });
+const createTemplateItem = () => ({ icon: '', heading: '', content: '' });
+const createTemplate = () => ({ template: 'numbered items', content: [createTemplateItem()] });
 
+const state = reactive({
+    resourceData: props.extraContentData?.resourceData,
+    templateData: props.extraContentData?.templateData
+})
+watchDebounced(state, () =>{
+    console.log('watchDebounced is called')
+    emits('updateParentExtraContent', state)
+}, {debounce: 1000 , maxWait: 2000})
 
 const handleClickAddItem = () => {
     console.log('clicked add')
@@ -51,22 +52,21 @@ const availableAddContent = computed(() => {
 
 
 const handleAddNewResource = () => {
-    state.resourceData.push(resource)
+    state.resourceData.push(createResource());
 }
+
 const handleAddNewTemplate = () => {
-    state.templateData.push(template)
+    state.templateData.push(createTemplate());
 }
+
 const handleAddItemResource = (index) => {
-    console.log('item res')
-    console.log(index)
-    console.log(state.resourceData[index])
-    state.resourceData[index].content.push(resourceItem)
-
+    console.log('item res', index, state.resourceData[index]);
+    state.resourceData[index].content.push(createResourceItem());
 }
-const handleAddItemTemplate = (index) => {
-    console.log('item template')
-    state.templateData[index].content.push(templateItem)
 
+const handleAddItemTemplate = (index) => {
+    console.log('item template', state.templateData[index]);
+    state.templateData[index].content.push(createTemplateItem());
 }
 
 const handleDeleteResource = (index) => {
@@ -90,14 +90,14 @@ const handleDeleteTemplateItem = (templateIndex, itemIndex) => {
 </script>
 
 <template>
-    <div class="border-[1px] border-gray-300 formExtraContentContainer p-2">
-        <ExtraContentHeader click-callback="handleDeleteResource">
+    <div class="border-[1px] border-gray-300 formExtraContentContainer pb-4 rounded-2xl">
+        <ExtraContentHeader :click-callback="handleDeleteResource">
             <template #headingLeft>
                 Extra Content
             </template>
         </ExtraContentHeader>
 
-        <div class="formExtraContentBody">
+        <div class="formExtraContentBody px-4">
             <ExtraResource
                 :data="state.resourceData"
                 @add-new-item="handleAddItemResource"

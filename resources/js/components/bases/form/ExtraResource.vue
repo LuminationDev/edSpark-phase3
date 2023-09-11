@@ -51,7 +51,7 @@ const handleClickDeleteItem = (resourceIndex, itemIndex) =>{
     >
         <ExtraContentHeader :click-callback="() => handleClickDeleteResource(resourceIndex)">
             <template #headingLeft>
-                Extra Resource
+                Extra Resource {{ " " + (+resourceIndex + 1) }}
             </template>
         </ExtraContentHeader>
         <div class="formBody px-4">
@@ -75,7 +75,7 @@ const handleClickDeleteItem = (resourceIndex, itemIndex) =>{
                             {{ "item " + (+itemIndex + 1) }}
                         </template>
                     </ExtraContentHeader>
-                    <div class="formItemBody px-2">
+                    <div class="formItemBody px-4">
                         <TextInput
                             v-model="item.heading"
                             :field-id="'textInputHeading' + itemIndex"
