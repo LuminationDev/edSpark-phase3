@@ -10,21 +10,17 @@ const props = defineProps({
     data: {
         type: Array,
         required: true
+    },
+    availableTemplates:{
+        type: Object, required: false, default: () => {}
     }
 })
 
-const emits = defineEmits(['addNewItem', 'addNewTemplate','deleteTemplateAt', 'deleteItemAt'])
+const emits = defineEmits(['addNewItem', 'addNewTemplate','deleteTemplateAt', 'deleteItemAt','changeTemplateType'])
 
-const state = reactive({
-    templateArray: []
-})
 
-onBeforeMount(() => {
-    state.templateArray = props.data
-})
-
-const handleClickAddItem = (templateIndex) => {
-    emits('addNewItem', templateIndex)
+const handleClickAddItem = (templateIndex, templateType) => {
+    emits('addNewItem', templateIndex, templateType)
 }
 
 const handleClickDeleteTemplate = (templateIndex) =>{
@@ -34,11 +30,18 @@ const handleClickDeleteTemplate = (templateIndex) =>{
 const handleClickDeleteItem = (templateIndex, itemIndex) =>{
     emits('deleteItemAt', templateIndex, itemIndex)
 }
+
+const handleTemplateTypeChange = (template,templateIndex) =>{
+    console.log('inside template type change')
+    const templateType = event.target.value
+    emits('changeTemplateType',templateIndex,templateType)
+}
+
 </script>
 
 <template>
     <div
-        v-for="(template, templateIndex) in state.templateArray"
+        v-for="(template, templateIndex) in props.data"
         :key="templateIndex"
         class="FormExtratemplateContainer border-[1px] flex flex-col mb-2 pb-4 rounded-2xl"
     >
@@ -49,15 +52,29 @@ const handleClickDeleteItem = (templateIndex, itemIndex) =>{
                 </template>
             </ExtraContentHeader>
             <div class="formBody px-4">
-                <TextInput
-                    v-model="template.template"
-                    field-id="templateType"
-                    :v$="{}"
+                <label for="templateDropdown">
+                    Choose template type
+                </label>
+                <select
+                    :id="`templateSelector` + templateIndex"
+                    class="border-[1px] border-gray-300 mb-4 mr-1 p-2 rounded templateDropdown"
+                    @change="() =>handleTemplateTypeChange(template, templateIndex)"
                 >
-                    <template #label>
-                        Template Type
-                    </template>
-                </TextInput>
+                    <option
+                        value=""
+                        disabled
+                        selected
+                    >
+                        Please select
+                    </option>
+                    <option
+                        v-for="(templateOpt,index) in availableTemplates"
+                        :key="index + templateIndex"
+                        :value="templateOpt.type"
+                    >
+                        {{ templateOpt.displayText }}
+                    </option>
+                </select>
                 <div
                     v-for="(item, itemIndex) in template.content"
                     :key="itemIndex"
@@ -70,6 +87,7 @@ const handleClickDeleteItem = (templateIndex, itemIndex) =>{
                     </ExtraContentHeader>
                     <div class="formItemBody px-4">
                         <TextInput
+                            v-if="item?.icon !== undefined"
                             v-model="item.icon"
                             :field-id="'IconField_' + itemIndex"
                             :v$="{}"
@@ -79,6 +97,7 @@ const handleClickDeleteItem = (templateIndex, itemIndex) =>{
                             </template>
                         </TextInput>
                         <TextInput
+                            v-if="item?.heading !== undefined"
                             v-model="item.heading"
                             :field-id="'textInputHeading_' + itemIndex"
                             :v$="{}"
@@ -87,7 +106,10 @@ const handleClickDeleteItem = (templateIndex, itemIndex) =>{
                                 Heading
                             </template>
                         </TextInput>
-                        <div class="ContainerTemp my-2 richContent">
+                        <div
+                            v-if="item?.content !== undefined"
+                            class="ContainerTemp my-2 richContent"
+                        >
                             <TrixRichEditor
                                 label="Content"
                                 :src-content="item.content"
@@ -100,7 +122,7 @@ const handleClickDeleteItem = (templateIndex, itemIndex) =>{
                 <div class="flex justify-center flex-row">
                     <GenericButton
                         class="bg-main-teal flex flex-row px-4 py-2"
-                        :callback="() => handleClickAddItem(templateIndex)"
+                        :callback="() => handleClickAddItem(templateIndex, template.template)"
                     >
                         <Add class="h-6 mr-2 w-6" />
                         Add item to template

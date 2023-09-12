@@ -22,14 +22,17 @@ const {currentUser} = storeToRefs(userStore)
 const templates = [
     {
         type: "Extraresource",
+        displayText: "Extra Resources",
         value: "App\\Filament\\PageTemplates\\Extraresource"
     },
     {
         type: 'Numbereditems',
+        displayText: "Numbered Items",
         value: "App\\Filament\\PageTemplates\\Numbereditems"
     },
     {
         type: "Dateitems",
+        displayText: "Date and Time Items",
         value: "App\\Filament\\PageTemplates\\dateItems"
     }
 ]
@@ -97,7 +100,6 @@ const updateParentExtraContent = (content) => {
     if (content.templateData) {
         extraContentData.templateData = content.templateData
     }
-    console.log({baseData, extraContentData})
 }
 
 const updateParentBaseData = (content) => {
@@ -128,6 +130,7 @@ const printTransformedData = () => {
         <template #extraContent>
             <ExtraContent
                 :extra-content-data="extraContentData"
+                :available-templates="templates"
                 @update-parent-extra-content="updateParentExtraContent"
             />
         </template>
