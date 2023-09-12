@@ -22,14 +22,15 @@ const {currentUser} = storeToRefs(userStore)
 const templates = [
     {
         type: "Extraresource",
-        value: "App\\Filament\\PageTemplates\\Software\\Extraresource"
+        value: "App\\Filament\\PageTemplates\\Extraresource"
     },
     {
         type: 'Numbereditems',
-        value: "App\\Filament\\PageTemplates\\Software\\Numbereditems"
+        value: "App\\Filament\\PageTemplates\\Numbereditems"
     },
     {
-        type: ""
+        type: "Dateitems",
+        value: "App\\Filament\\PageTemplates\\dateItems"
     }
 ]
 
@@ -51,7 +52,7 @@ const transformData = (simpleData) => {
     return simpleData.map(item => {
         return {
             "data": {
-                "template": "App\\Filament\\PageTemplates\\Software\\Extraresource",
+                "template": "App\\Filament\\PageTemplates\\Extraresource",
                 "extra_content": {
                     "extraresource": {
                         "item": item.content.map(contentItem => {
