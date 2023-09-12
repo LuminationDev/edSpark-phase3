@@ -6,30 +6,13 @@ import ItemTypeCheckboxes from "@/js/components/selector/ItemTypeCheckboxes.vue"
 import {API_ENDPOINTS} from "@/js/constants/API_ENDPOINTS";
 import {useUserStore} from "@/js/stores/useUserStore";
 import {storeToRefs} from "pinia";
-import {onBeforeMount, reactive, ref} from "vue";
-
-// this will be passed in later -- instead of hardcoding here only temp
-// const extraResourceData = reactive([{
-//     title: 'extra resource',
-//     content: [{heading: 'This is the heading number 1 of the extra resource', content: ''}, {heading: 'dis tha heading number 2', content: ''}]
-// }])
-// const extraTemplateData = reactive([{
-//     template: "numbered items",
-//     content: [{icon: "1", heading: 'haha', content: ''}, {icon: "2",heading: 'hehe', content: ''}]
-// }])
+import {reactive, ref} from "vue";
 const userStore = useUserStore()
 const {currentUser} = storeToRefs(userStore)
-const softwareType = ref([])
 const selectedSoftwareTypes = ref([])
 
 // fetch software types
-onBeforeMount(() =>{
-    axios.get(API_ENDPOINTS.SOFTWARE.FETCH_SOFTWARE_TYPES).then(res =>{
-        softwareType.value = res.data
-    }).catch(err =>{
-        console.log(err)
-    })
-})
+
 const templates = [
     {
         type: "Extraresource",
@@ -58,7 +41,6 @@ const createNewBaseData = () => {
         tags: []
     }
 }
-
 /*
  * Transform data into Filament friendly's format to ensure editability from backend before saving
  */
@@ -83,7 +65,7 @@ const transformData = (simpleData) => {
                     [itemDirectory]: {
                         "item": item.content.map(contentItem => {
                             return {
-                                "icon": null,
+                                "icon": contentItem?.icon || null,
                                 "content": contentItem.content,
                                 "heading": contentItem.heading
                             };
@@ -156,9 +138,9 @@ const handleReceiveTypes = (typeArray) => {
     >
         <template #itemType>
             <ItemTypeCheckboxes
-                :data="softwareType"
+                :type-api-link="API_ENDPOINTS.SOFTWARE.FETCH_SOFTWARE_TYPES"
                 label="Select software type"
-                @sendSelectedTypesAsArray="handleReceiveTypes"
+                @send-selected-types-as-array="handleReceiveTypes"
             />
         </template>
         <template #extraContent>

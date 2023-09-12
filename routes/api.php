@@ -1,6 +1,7 @@
 
 <?php
 
+use App\Http\Controllers\AutoSaveController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 //use App\Http\Controllers\CategoryController;
@@ -128,4 +129,7 @@ Route::middleware('api')->group(function() {
         'search',
         App\Http\Controllers\SearchController::class
     )->name('search');
+
+    //Auto-save
+    Route::match(['get', 'post'], '/auto-save', [AutoSaveController::class, 'handleAutoSave']);
 });

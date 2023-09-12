@@ -83,6 +83,9 @@ export const API_ENDPOINTS = {
     },
     SEARCH:{
         SEARCH_ALL: `${serverURL}/search/`
+    },
+    AUTOSAVE:{
+        AUTOSAVE: `${serverURL}/auto-save`
     }
 
 }

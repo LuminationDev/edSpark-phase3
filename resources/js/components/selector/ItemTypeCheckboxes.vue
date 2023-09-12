@@ -1,5 +1,7 @@
 <script setup>
-import {ref, computed, watch} from 'vue'
+import {formService} from "@/js/service/formService";
+import {ref, computed, watch, onBeforeMount} from 'vue'
+
 
 const props = defineProps({
     label: {
@@ -7,13 +9,23 @@ const props = defineProps({
         required: false,
         default: "Select type"
     },
-    data: {
-        type: Object,
+    typeApiLink: {
+        type: String,
         required: true
     }
 })
 
+const availableTypes = ref([])
 const selectedTypes = ref([])
+
+
+onBeforeMount(() =>{
+    formService.getTypes(props.typeApiLink).then(res =>{
+        availableTypes.value = res.data
+    }).catch(err =>{
+        console.log(err)
+    })
+})
 
 const emits = defineEmits(['sendSelectedTypesAsArray'])
 
@@ -36,7 +48,7 @@ watch(selectedTypes, () =>{
         </div>
         <div class="TypeCheckboxList flex justify-around flex-row">
             <div
-                v-for="(type,index) in props.data"
+                v-for="(type,index) in availableTypes"
                 :key="index + type.id"
                 class="TypeCheckboxContainer flex items-center flex-row gap-4 p-4"
             >
