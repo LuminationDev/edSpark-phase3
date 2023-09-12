@@ -148,6 +148,9 @@ const handleTrixInputExcerpt = (data) =>{
                 Tag
             </template>
         </TagsInput>
+        <div class="itemType">
+            <slot name="itemType" />
+        </div>
         <div class="extraContentSection">
             <slot name="extraContent" />
         </div>

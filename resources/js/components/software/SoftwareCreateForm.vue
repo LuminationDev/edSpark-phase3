@@ -2,10 +2,11 @@
 import BaseForm from "@/js/components/bases/form/BaseForm.vue";
 import ExtraContent from "@/js/components/bases/form/ExtraContent.vue";
 import GenericButton from "@/js/components/button/GenericButton.vue";
+import ItemTypeCheckboxes from "@/js/components/selector/ItemTypeCheckboxes.vue";
 import {API_ENDPOINTS} from "@/js/constants/API_ENDPOINTS";
 import {useUserStore} from "@/js/stores/useUserStore";
 import {storeToRefs} from "pinia";
-import {reactive, ref} from "vue";
+import {onBeforeMount, reactive, ref} from "vue";
 
 // this will be passed in later -- instead of hardcoding here only temp
 // const extraResourceData = reactive([{
@@ -18,7 +19,17 @@ import {reactive, ref} from "vue";
 // }])
 const userStore = useUserStore()
 const {currentUser} = storeToRefs(userStore)
+const softwareType = ref([])
+const selectedSoftwareTypes = ref([])
 
+// fetch software types
+onBeforeMount(() =>{
+    axios.get(API_ENDPOINTS.SOFTWARE.FETCH_SOFTWARE_TYPES).then(res =>{
+        softwareType.value = res.data
+    }).catch(err =>{
+        console.log(err)
+    })
+})
 const templates = [
     {
         type: "Extraresource",
@@ -53,11 +64,23 @@ const createNewBaseData = () => {
  */
 const transformData = (simpleData) => {
     return simpleData.map(item => {
+        let templatePath = ''
+        let itemDirectory = ''
+        if (item.template === 'Numbereditems') {
+            templatePath = "App\\Filament\\PageTemplates\\Numbereditems"
+            itemDirectory = "numbereditems"
+        } else if (item.template === 'Dateitems') {
+            templatePath = "App\\Filament\\PageTemplates\\Dateitems"
+            itemDirectory = "date_items"
+        } else if (item.template === 'Extraresource') {
+            templatePath = "App\\Filament\\PageTemplates\\Extraresource"
+            itemDirectory = "extraresource"
+        }
         return {
             "data": {
-                "template": "App\\Filament\\PageTemplates\\Extraresource",
+                "template": templatePath,
                 "extra_content": {
-                    "extraresource": {
+                    [itemDirectory]: {
                         "item": item.content.map(contentItem => {
                             return {
                                 "icon": null,
@@ -79,10 +102,10 @@ const softwareDataToDatabaseFields = () =>
         post_title: baseData.title,
         post_excerpt: baseData.excerpt,
         post_content: baseData.content,
-        post_status: 'Published',
+        post_status: 'Pending',
         author_id: currentUser.value.id,
         cover_image: '',
-        softwaretype_id: 7,
+        softwaretype_id: selectedSoftwareTypes.value,
         template: '',
         extra_content: transformData([...extraContentData.templateData, ...extraContentData.resourceData])
     })
@@ -118,6 +141,10 @@ const printTransformedData = () => {
         console.log(res)
     })
 }
+
+const handleReceiveTypes = (typeArray) => {
+    selectedSoftwareTypes.value = typeArray
+}
 </script>
 
 
@@ -127,6 +154,13 @@ const printTransformedData = () => {
         item-type="software"
         @update-parent-base-data="updateParentBaseData"
     >
+        <template #itemType>
+            <ItemTypeCheckboxes
+                :data="softwareType"
+                label="Select software type"
+                @sendSelectedTypesAsArray="handleReceiveTypes"
+            />
+        </template>
         <template #extraContent>
             <ExtraContent
                 :extra-content-data="extraContentData"

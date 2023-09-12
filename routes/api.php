@@ -59,6 +59,7 @@ Route::middleware('api')->group(function() {
     Route::get('fetchSoftwarePosts', [SoftwareController::class, 'fetchSoftwarePosts']);
     Route::get('fetchSoftwarePostById/{id}', [SoftwareController::class, 'fetchSoftwarePostById']);
     Route::post('fetchRelatedSoftware', [SoftwareController::class, 'fetchRelatedSoftware']);
+    Route::get('fetchSoftwareTypes', [SoftwareController::class,'fetchAllSoftwareTypes']);
 
     // Event APIs
     Route::get('fetchEventPosts', [EventController::class, 'fetchEventPosts']);

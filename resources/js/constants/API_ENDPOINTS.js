@@ -29,7 +29,8 @@ export const API_ENDPOINTS = {
         CREATE_SOFTWARE_POST: `${serverURL}/createSoftwarePost`,
         FETCH_SOFTWARE_POSTS: `${serverURL}/fetchSoftwarePosts`,
         FETCH_SOFTWARE_POST_BY_ID: `${serverURL}/fetchSoftwarePostById/`,
-        FETCH_RELATED_SOFTWARE: `${serverURL}/fetchRelatedSoftware`
+        FETCH_RELATED_SOFTWARE: `${serverURL}/fetchRelatedSoftware`,
+        FETCH_SOFTWARE_TYPES: `${serverURL}/fetchSoftwareTypes`
 
     },
     HARDWARE: {

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Helpers\Metahelper;
 use App\Models\Partner;
+use App\Models\Softwaretype;
 use App\Models\Usermeta;
 use Illuminate\Http\Response;
 use Illuminate\Http\Request;
@@ -87,15 +88,21 @@ class SoftwareController extends Controller
             'post_excerpt' => 'sometimes|string',
             'post_status' => 'required|string',
             'author_id' => 'required|integer|exists:users,id',
-//            'cover_image' => 'sometimes|string',
-//            'softwaretype_id' => 'required|integer|exists:softwaretypes,id',
+            'softwaretype_id' => 'required|array',
+            'softwaretype_id.*' => 'integer|exists:software_types,id',
         ]);
 
         if ($validator->fails()) {
             return response()->json(['errors' => $validator->errors()], 400);
         }
 
-        $software = Software::create($request->all());
+        $softwareData = $request->except('softwaretype_id'); // Exclude the softwaretype_id from the data to be directly used in the creation
+        $software = Software::create($softwareData);
+
+        // Attach the software types to the created software
+        if ($request->has('softwaretype_id')) {
+            $software->softwaretypes()->sync($request->input('softwaretype_id'));
+        }
 
         return response()->json(['message' => 'Software created successfully!', 'software' => $software], 201);
     }
@@ -190,4 +197,20 @@ class SoftwareController extends Controller
         return response()->json($data);
 
     }
+
+    public function fetchAllSoftwareTypes(Request $request): JsonResponse
+    {
+        $softwareTypes = Softwaretype::all()
+            ->map(function ($softwaretype) {
+                return [
+                    'id'   => $softwaretype->id,
+                    'name' => $softwaretype->software_type_name,
+                    'value' => $softwaretype->software_type_value
+                ];
+            })
+            ->toArray();
+
+        return response()->json($softwareTypes);
+    }
+
 }
