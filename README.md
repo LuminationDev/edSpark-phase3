@@ -11,5 +11,8 @@ Migrating logic and functions into ServiceFiles, checkout softwareService, autos
 Vue only for rendering UI and simple UI logic<br>
 Store for states. getter and actions focus on state manipulation <br>
 
+SWRV are used only for simple and quick fetching <br>
+Ignore recommender class. not sure if it's the right approach <br>
+
 Refer to this link below to start using meilisearch locally
 https://laravel-news.com/getting-started-laravel-scout-meilisearch
