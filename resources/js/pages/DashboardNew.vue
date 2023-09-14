@@ -86,7 +86,7 @@ const getIdToken = async () => {
  */
 const checkFirstVisit = async (emailAddress) => {
     console.log(emailAddress);
-    let emailCheck = await userStore.checkUser(emailAddress);
+    const emailCheck = await userStore.checkUser(emailAddress);
     if (emailCheck.isFirstTimeVisit === false) {
         isFirstVisit.value = false;
         await userStore.fetchCurrentUserAndLoadIntoStore(emailCheck.userdata.user_id);
@@ -190,16 +190,16 @@ const top = ref('');
 const distanceBetweenEls = ref('');
 const floatingLineClasses = ref('');
 const getConnectingLinePositions = () => {
-    let listContainers = document.querySelectorAll('.softwareDashboardContentContainer');
-    let firstContainer = listContainers[0];
-    let lastContainer = listContainers[listContainers.length - 1];
+    const listContainers = document.querySelectorAll('.softwareDashboardContentContainer');
+    const firstContainer = listContainers[0];
+    const lastContainer = listContainers[listContainers.length - 1];
     if(firstContainer && lastContainer) {
         distanceBetweenEls.value = getDistanceBetweenElements(
             firstContainer,
             lastContainer
         );
 
-        let firstElHeight = firstContainer.offsetHeight;
+        const firstElHeight = firstContainer.offsetHeight;
         top.value = firstContainer.offsetTop + firstElHeight / 2;
         floatingLineClasses.value = `top-[${top.value}] h-[${distanceBetweenEls.value}px]`
     }

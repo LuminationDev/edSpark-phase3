@@ -11,9 +11,7 @@ import TheHome from "@/js/pages/TheHome.vue";
 import ThePartner from "@/js/pages/ThePartner.vue";
 import TheSchool from "@/js/pages/TheSchool.vue";
 import TheSoftware from "@/js/pages/TheSoftware.vue";
-import {RouteRecordRaw, createRouter, createWebHistory} from 'vue-router';
-
-
+import {createRouter, createWebHistory} from 'vue-router';
 import DashboardNew from './pages/DashboardNew.vue';
 import AdviceSingle from "@/js/pages/AdviceSingle.vue";
 import SoftwareSingle from "@/js/components/software/softwareSingle/SoftwareSingle.vue";
