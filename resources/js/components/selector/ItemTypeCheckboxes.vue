@@ -34,7 +34,6 @@ watch(selectedTypes, () =>{
         if(!Array.isArray(selectedTypes.value)){
             selectedTypes.value = [selectedTypes.value]
         }
-        console.log(selectedTypes.value)
         emits('sendSelectedTypesAsArray', selectedTypes.value)
     }
 })

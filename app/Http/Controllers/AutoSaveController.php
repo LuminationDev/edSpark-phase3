@@ -11,7 +11,7 @@ class AutoSaveController extends Controller
     /**
      * Handle creating or retrieving an auto-save.
      *
-     * @param  Request  $request
+     * @param Request $request
      * @return \Illuminate\Http\Response
      */
     public function handleAutoSave(Request $request)
@@ -28,7 +28,7 @@ class AutoSaveController extends Controller
         try {
             $validated = $request->validate([
                 'user_id' => 'required|integer|exists:users,id',
-                'post_id' => 'required|integer',
+                'post_id' => 'nullable|integer',
                 'post_type' => 'required|string',
                 'content' => 'required|string',
                 'exp_date' => 'nullable|date',
@@ -63,10 +63,26 @@ class AutoSaveController extends Controller
             return response()->json(['message' => 'User ID and Post Type are required.'], 400);
         }
 
-        $autoSave = AutoSave::where('user_id', $userId)
-            ->where('post_type', $postType)
-            ->where('is_active', true)
-            ->first();
+        while (true) {
+            $autoSave = AutoSave::where('user_id', $userId)
+                ->where('post_type', $postType)
+                ->where('is_active', true)
+                ->first();
+
+            // If there's no active auto-save found, break the loop
+            if (!$autoSave) {
+                break;
+            }
+
+            // If the exp_date is not in the past, break the loop (we found a valid auto-save)
+            if (new \DateTime($autoSave->exp_date) >= new \DateTime()) {
+                break;
+            }
+
+            // Deactivate the expired auto-save
+            $autoSave->is_active = false;
+            $autoSave->save();
+        }
 
         if (!$autoSave) {
             return response()->json(['message' => 'No active auto-save found.'], 404);
@@ -74,4 +90,5 @@ class AutoSaveController extends Controller
 
         return response()->json($autoSave);
     }
+
 }
