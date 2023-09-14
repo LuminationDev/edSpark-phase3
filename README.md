@@ -7,6 +7,7 @@ Additional services to run
 Meilisearch is running off Azure free tier and will host locally once we moved to DfE's managed hosting
 Queue worker should be running on production server (Apache - need to double check when migrating)
 
+Still migrating to Typescript, doing it slowly and as we go <br>
 Migrating logic and functions into ServiceFiles, checkout softwareService, autosaveService etc <br>
 Vue only for rendering UI and simple UI logic<br>
 Store for states. getter and actions focus on state manipulation <br>
