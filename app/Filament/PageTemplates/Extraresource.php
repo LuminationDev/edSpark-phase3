@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Filament\PageTemplates\Advice;
+namespace App\Filament\PageTemplates;
 
 use Filament\Forms;
 use Filament\Forms\Components\TextInput;
@@ -14,25 +14,25 @@ use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\MarkdownEditor;
 use Filament\Forms\Components\Select;
 
-
-final class Numbereditems
+final class Extraresource
 {
     public static function title()
     {
-        return 'Numbered Items';
+        return 'Extra Resources';
     }
 
     public static function schema()
     {
         return [
+            Forms\Components\TextInput::make('resource_title')
+                ->label('Resource title')
+                ->maxLength(255),
             Repeater::make('item')->schema([
-                IconPicker::make('icon')
-                    ->columns(4),
                 TextInput::make('heading'),
                 RichEditor::make('content')
             ])
-            ->label('Item')
-            ->collapsible()
+                ->label('Item')
+                ->collapsible()
         ];
     }
 }

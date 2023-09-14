@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('auto_saves', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('post_id');
+            $table->unsignedBigInteger('post_id')->nullable();
             $table->unsignedBigInteger('user_id');
             $table->string('post_type');
             $table->string('status')->default('auto-saved');

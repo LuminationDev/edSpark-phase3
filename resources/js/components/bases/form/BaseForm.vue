@@ -3,14 +3,17 @@ import ImageUploaderForm from "@/js/components/bases/form/ImageUploaderForm.vue"
 import TagsInput from "@/js/components/bases/form/TagsInput.vue";
 import TrixRichEditor from "@/js/components/bases/form/TrixRichEditor.vue";
 import TextInput from "@/js/components/bases/TextInput.vue";
+import {autosaveService} from "@/js/service/autosaveService";
+import {useUserStore} from "@/js/stores/useUserStore";
 import {watchDebounced} from "@vueuse/core";
-import {capitalize} from "vue";
+import {storeToRefs} from "pinia";
+import {capitalize, onMounted, onUnmounted} from "vue";
 import useVuelidate from "@vuelidate/core";
 import {required} from "@vuelidate/validators";
 import {ref, computed, reactive, onBeforeMount} from 'vue'
 
 const props = defineProps({
-    baseData:{
+    baseData: {
         type: Object, required: true
     },
     additionalData: {
@@ -25,28 +28,36 @@ const props = defineProps({
         type: String, required: true
     }
 })
+
+/**
+ * If form is creating, post_id will be set as 0
+ * If form is editing, post_id will be set to the edited post's id
+ * @type {{CREATE: string, EDIT: string}}
+ */
 const FormAction = {
     CREATE: 'CREATE',
     EDIT: 'EDIT'
 
 }
 const FormStatus = {
-    UNSAVED: 'UNSAVED',
-    AUTOSAVED: 'AUTOSAVED',
-    DRAFT: 'DRAFT',
-    SAVED: 'SAVED'
+    NEW: 'New',
+    UNSAVED: 'Unsaved',
+    AUTOSAVED: 'Autosaved',
+    DRAFT: 'Draft',
+    SAVED: 'Saved',
+    LOADED_AUTOSAVE: 'Autosave loaded'
 }
 
 
 const emits = defineEmits(['updateParentBaseData'])
 /*
-Base form will have
-title: text input
-excerpt: text input
-content: rich text editor
-cover image: upload
-author name:
-tags:
+ * Base form will have
+ * title: text input
+ * excerpt: text input
+ * content: rich text editor
+ * cover image: upload
+ * author name:
+ * tags:
  */
 const state = reactive({
     title: '',
@@ -63,30 +74,87 @@ const rules = {
     content: {required},
     coverImage: {required},
     authorName: {required},
-    tags:{}
+    tags: {}
 }
 
-const v$ = useVuelidate(rules,state)
+const v$ = useVuelidate(rules, state)
 
-onBeforeMount(() =>{
+const autosaveTimer = ref(null);
+const isSaving = ref(false);
+const formStatusDisplay = ref('')
+const userStore = useUserStore()
+const {currentUser} = storeToRefs(userStore)
+
+onBeforeMount(() => {
     state.title = props.baseData?.title || ''
     state.excerpt = props.baseData?.excerpt || ''
     state.content = props.baseData?.content || ''
     state.coverImage = props.baseData?.cover_image || ''
-    state.authorName = props.baseData?. authorName || ''
+    state.authorName = props.baseData?.authorName || ''
     state.tags = props.baseData?.tags || []
 })
 
-watchDebounced(state, () =>{
+watchDebounced(state, () => {
     console.log('watchDebounced is called')
     emits('updateParentBaseData', state)
-}, {debounce: 1000 , maxWait: 2000})
+}, {debounce: 1000, maxWait: 2000})
 
-const handleTrixInputContent = (data) =>{
+const autosave = () => {
+    let data = {
+        ...state,
+        ...props.additionalData
+    }
+    autosaveService.savePost(currentUser.value.id, props.itemType, data).then(res => {
+        isSaving.value = false
+        formStatusDisplay.value = FormStatus.AUTOSAVED
+    }).catch(err => {
+        formStatusDisplay.value = FormStatus.UNSAVED
+    })
+}
+const startAutosaveTimer = () => {
+    // If there's already a timer running, clear it
+    if (autosaveTimer.value) {
+        clearTimeout(autosaveTimer.value);
+    }
+
+    // Start a new timer
+    autosaveTimer.value = setTimeout(() => {
+        isSaving.value = true;
+        autosave();
+    }, 5000);
+}
+
+const handleActivity = () => {
+    formStatusDisplay.value = FormStatus.UNSAVED
+    if (isSaving.value) return;
+    startAutosaveTimer();
+}
+
+onMounted(() => {
+    document.addEventListener('input', handleActivity);
+    document.addEventListener('click', handleActivity);
+
+    try {
+        autosaveService.getAutosave(currentUser.value.id, props.itemType).then(res => {
+            formStatusDisplay.value = FormStatus.DRAFT
+        }).catch(err => {
+            formStatusDisplay.value = FormStatus.NEW
+        })
+    } catch {
+        console.log('error occured')
+    }
+});
+
+onUnmounted(() => {
+    document.removeEventListener('input', handleActivity);
+    document.removeEventListener('click', handleActivity);
+});
+
+const handleTrixInputContent = (data) => {
     v$.value.content.$model = data
 }
 
-const handleTrixInputExcerpt = (data) =>{
+const handleTrixInputExcerpt = (data) => {
     v$.value.excerpt.$model = data
 }
 </script>
@@ -94,7 +162,7 @@ const handleTrixInputExcerpt = (data) =>{
 <template>
     <div class="BaseFormContainer border-[1px] flex flex-col mt-12 mx-5 p-4 rounded-2xl text-black md:!mx-10 lg:!mx-20">
         <div class="Introduction formHeader my-4">
-            {{ capitalize(props.itemType) }} Form
+            {{ capitalize(props.itemType) }} Form {{ isSaving ? "Saving..." : (formStatusDisplay || '') }}
             <slot name="formHeader" />
         </div>
         <TextInput
@@ -148,6 +216,9 @@ const handleTrixInputExcerpt = (data) =>{
                 Tag
             </template>
         </TagsInput>
+        <div class="itemType">
+            <slot name="itemType" />
+        </div>
         <div class="extraContentSection">
             <slot name="extraContent" />
         </div>

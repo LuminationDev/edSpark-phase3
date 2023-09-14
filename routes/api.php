@@ -1,6 +1,7 @@
 
 <?php
 
+use App\Http\Controllers\AutoSaveController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 //use App\Http\Controllers\CategoryController;
@@ -59,6 +60,7 @@ Route::middleware('api')->group(function() {
     Route::get('fetchSoftwarePosts', [SoftwareController::class, 'fetchSoftwarePosts']);
     Route::get('fetchSoftwarePostById/{id}', [SoftwareController::class, 'fetchSoftwarePostById']);
     Route::post('fetchRelatedSoftware', [SoftwareController::class, 'fetchRelatedSoftware']);
+    Route::get('fetchSoftwareTypes', [SoftwareController::class,'fetchAllSoftwareTypes']);
 
     // Event APIs
     Route::get('fetchEventPosts', [EventController::class, 'fetchEventPosts']);
@@ -127,4 +129,7 @@ Route::middleware('api')->group(function() {
         'search',
         App\Http\Controllers\SearchController::class
     )->name('search');
+
+    //Auto-save
+    Route::match(['get', 'post'], '/auto-save', [AutoSaveController::class, 'handleAutoSave']);
 });

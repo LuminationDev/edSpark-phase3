@@ -1,19 +1,9 @@
 <?php
 
-namespace App\Filament\PageTemplates\Hardware;
+namespace App\Filament\atemp\Hardware;
 
-use Faker\Provider\Text;
-use Filament\Forms;
-use Filament\Forms\Components\TextInput;
-use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\Repeater;
-use Guava\FilamentIconPicker\Forms\IconPicker;
-use Guava\FilamentIconPicker\Tables\IconColumn;
-
-use Filament\Forms\Components\Builder;
-use Filament\Forms\Components\FileUpload;
-use Filament\Forms\Components\MarkdownEditor;
-use Filament\Forms\Components\Select;
+use Filament\Forms\Components\TextInput;
 
 
 final class HardwareAudioVisualTechSpecs

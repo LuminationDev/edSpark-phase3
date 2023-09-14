@@ -125,9 +125,9 @@ class SoftwareResource extends Resource
     {
         $filesystem = app(Filesystem::class);
 
-        return collect($filesystem->allFiles(app_path('Filament/PageTemplates/Software')))
+        return collect($filesystem->allFiles(app_path('Filament/PageTemplates')))
             ->map(function (SplFileInfo $file): string {
-                return (string)Str::of('App\\Filament\\PageTemplates\\Software')
+                return (string)Str::of('App\\Filament\\PageTemplates')
                     ->append('\\', $file->getRelativePathname())
                     ->replace(['/', '.php'], ['\\', '']);
             });
@@ -143,7 +143,9 @@ class SoftwareResource extends Resource
                 ->visible(fn($get) => $get('template') == $class)
             )
             ->toArray();
+
     }
+
 
     public static function getTemplateName($class)
     {

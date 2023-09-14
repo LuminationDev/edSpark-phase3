@@ -2,18 +2,35 @@
 import BaseForm from "@/js/components/bases/form/BaseForm.vue";
 import ExtraContent from "@/js/components/bases/form/ExtraContent.vue";
 import GenericButton from "@/js/components/button/GenericButton.vue";
+import ItemTypeCheckboxes from "@/js/components/selector/ItemTypeCheckboxes.vue";
 import {API_ENDPOINTS} from "@/js/constants/API_ENDPOINTS";
-import {reactive, ref} from "vue";
+import {softwareService} from "@/js/service/softwareService";
+import {useUserStore} from "@/js/stores/useUserStore";
+import {storeToRefs} from "pinia";
+import {computed, reactive, ref} from "vue";
+const userStore = useUserStore()
+const {currentUser} = storeToRefs(userStore)
+const selectedSoftwareTypes = ref([])
 
-// this will be passed in later -- instead of hardcoding here only temp
-// const extraResourceData = reactive([{
-//     title: 'extra resource',
-//     content: [{heading: 'This is the heading number 1 of the extra resource', content: ''}, {heading: 'dis tha heading number 2', content: ''}]
-// }])
-// const extraTemplateData = reactive([{
-//     template: "numbered items",
-//     content: [{icon: "1", heading: 'haha', content: ''}, {icon: "2",heading: 'hehe', content: ''}]
-// }])
+// fetch software types
+
+const templates = [
+    {
+        type: "Extraresource",
+        displayText: "Extra Resources",
+        value: "App\\Filament\\PageTemplates\\Extraresource"
+    },
+    {
+        type: 'Numbereditems',
+        displayText: "Numbered Items",
+        value: "App\\Filament\\PageTemplates\\Numbereditems"
+    },
+    {
+        type: "Dateitems",
+        displayText: "Date and Time Items",
+        value: "App\\Filament\\PageTemplates\\Dateitems"
+    }
+]
 
 const createNewBaseData = () => {
     return {
@@ -25,46 +42,31 @@ const createNewBaseData = () => {
         tags: []
     }
 }
-const transformData = (simpleData) => {
-    return simpleData.map(item => {
-        return {
-            "data": {
-                "template": "App\\Filament\\PageTemplates\\Software\\Extraresource",
-                "extra_content": {
-                    "extraresource": {
-                        "item": item.content.map(contentItem => {
-                            return {
-                                "icon": null,
-                                "content": contentItem.content,
-                                "heading": contentItem.heading
-                            };
-                        })
-                    }
-                }
-            },
-            "type": "templates"
-        };
-    });
-};
-
 
 const softwareDataToDatabaseFields = () =>
     ({
         post_title: baseData.title,
         post_excerpt: baseData.excerpt,
         post_content: baseData.content,
-        post_status: 'Published',
-        author_id: 61,
+        post_status: 'Pending',
+        author_id: currentUser.value.id,
         cover_image: '',
-        softwaretype_id: 7,
+        softwaretype_id: selectedSoftwareTypes.value,
         template: '',
-        extra_content: transformData([...extraContentData.templateData, ...extraContentData.resourceData])
+        extra_content: softwareService.transformSimpleDataToFilamentFormat([...extraContentData.templateData, ...extraContentData.resourceData])
     })
 
 const baseData = reactive(createNewBaseData())
 const extraContentData = reactive({
     resourceData: [],
     templateData: []
+})
+const additionalSoftwareData = computed(() =>{
+    return {
+        extra_content: softwareService.transformSimpleDataToFilamentFormat([...extraContentData.templateData, ...extraContentData.resourceData]),
+        softwaretype_id: selectedSoftwareTypes.value,
+
+    }
 })
 
 const updateParentExtraContent = (content) => {
@@ -74,7 +76,6 @@ const updateParentExtraContent = (content) => {
     if (content.templateData) {
         extraContentData.templateData = content.templateData
     }
-    console.log({baseData, extraContentData})
 }
 
 const updateParentBaseData = (content) => {
@@ -93,6 +94,10 @@ const printTransformedData = () => {
         console.log(res)
     })
 }
+
+const handleReceiveTypes = (typeArray) => {
+    selectedSoftwareTypes.value = typeArray
+}
 </script>
 
 
@@ -100,11 +105,20 @@ const printTransformedData = () => {
     <BaseForm
         :base-data="baseData"
         item-type="software"
+        :additional-data="additionalSoftwareData"
         @update-parent-base-data="updateParentBaseData"
     >
+        <template #itemType>
+            <ItemTypeCheckboxes
+                :type-api-link="API_ENDPOINTS.SOFTWARE.FETCH_SOFTWARE_TYPES"
+                label="Select software type"
+                @send-selected-types-as-array="handleReceiveTypes"
+            />
+        </template>
         <template #extraContent>
             <ExtraContent
                 :extra-content-data="extraContentData"
+                :available-templates="templates"
                 @update-parent-extra-content="updateParentExtraContent"
             />
         </template>

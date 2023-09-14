@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Helpers\ExtraContentCleaner;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Laravel\Scout\Searchable;
@@ -89,5 +90,19 @@ class Advice extends Model
         'cover_image' => 'array',
         'extra_content' => 'array',
     ];
+    protected static function boot()
+    {
+        parent::boot();
+        static::creating(function ($advice) {
+            if ($advice->extra_content) {
+                $advice->extra_content = ExtraContentCleaner::cleanExtraContent($advice->extra_content);
+            }
+        });
+        static::updating(function ($advice) {
+            if ($advice->isDirty('extra_content')) {
+                $advice->extra_content = ExtraContentCleaner::cleanExtraContent($advice->extra_content);
+            }
+        });
+    }
 
 }

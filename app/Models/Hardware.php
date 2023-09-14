@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Helpers\ExtraContentCleaner;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Laravel\Scout\Searchable;
@@ -94,5 +95,19 @@ class Hardware extends Model
         'gallery' => 'array',
         'extra_content' => 'array'
     ];
+    protected static function boot()
+    {
+        parent::boot();
+        static::creating(function ($hardware) {
+            if ($hardware->extra_content) {
+                $hardware->extra_content = ExtraContentCleaner::cleanExtraContent($hardware->extra_content);
+            }
+        });
+        static::updating(function ($hardware) {
+            if ($hardware->isDirty('extra_content')) {
+                $hardware->extra_content = ExtraContentCleaner::cleanExtraContent($hardware->extra_content);
+            }
+        });
+    }
 
 }

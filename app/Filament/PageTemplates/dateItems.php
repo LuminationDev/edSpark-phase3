@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Filament\PageTemplates\Event;
+namespace App\Filament\PageTemplates;
 
 use Filament\Forms;
 use Filament\Forms\Components\TextInput;

@@ -8,28 +8,43 @@ import {watchDebounced} from "@vueuse/core";
 import {ref, computed, reactive} from 'vue'
 
 const props = defineProps({
-    extraContentData:{
+    extraContentData: {
         type: Object, required: true
     },
+    availableTemplates: {
+        type: Object, required: false, default: () => {
+        }
+    }
 })
 const emits = defineEmits(['updateParentExtraContent'])
 
 const showSelectorPopup = ref(false)
 
-const extraContentType = [{key: 'resource', value: 'New extra resource'}, {key: 'template', value: 'New template'}]
-const createResourceItem = () => ({ heading: '', content: '' });
-const createResource = () => ({ title: "", content: [createResourceItem()] });
-const createTemplateItem = () => ({ icon: '', heading: '', content: '' });
-const createTemplate = () => ({ template: 'numbered items', content: [createTemplateItem()] });
+const createResourceItem = () => ({heading: '', content: ''});
+
+const createResource = () => ({title: "", content: [createResourceItem()]});
+
+
+const createTemplate = () => ({template: '', content: []});
+
+
+const createTemplateItem = (templateType) => {
+    if (templateType === 'Numbereditems') {
+        return {icon: '', heading: '', content: ''}
+    } else if (templateType === 'Dateitems') {
+        return {icon: '', heading: '', content: ''}
+    } else if (templateType === 'Extraresource') {
+        return {heading: '', content: ''}
+    }
+}
 
 const state = reactive({
     resourceData: props.extraContentData?.resourceData,
     templateData: props.extraContentData?.templateData
 })
-watchDebounced(state, () =>{
-    console.log('watchDebounced is called')
+watchDebounced(state, () => {
     emits('updateParentExtraContent', state)
-}, {debounce: 1000 , maxWait: 2000})
+}, {debounce: 1000, maxWait: 2000})
 
 const handleClickAddItem = () => {
     console.log('clicked add')
@@ -38,9 +53,9 @@ const handleClickAddItem = () => {
 
 const handleClickSelectedPopupItem = (item) => {
     console.log(item)
-    if(item === 'resource'){
+    if (item === 'resource') {
         handleAddNewResource()
-    } else if(item === 'template'){
+    } else if (item === 'template') {
         handleAddNewTemplate()
     }
     showSelectorPopup.value = false
@@ -63,9 +78,9 @@ const handleAddItemResource = (index) => {
     state.resourceData[index].content.push(createResourceItem());
 }
 
-const handleAddItemTemplate = (index) => {
+const handleAddItemTemplate = (index, templateType) => {
     console.log('item template', state.templateData[index]);
-    state.templateData[index].content.push(createTemplateItem());
+    state.templateData[index].content.push(createTemplateItem(templateType));
 }
 
 const handleDeleteResource = (index) => {
@@ -83,7 +98,12 @@ const handleDeleteTemplate = (index) => {
 const handleDeleteTemplateItem = (templateIndex, itemIndex) => {
     state.templateData[templateIndex].content.splice(itemIndex, 1)
 }
-
+const handleChangeTemplateType = (templateIndex, templateNewType) =>{
+    state.templateData[templateIndex].template = templateNewType
+    state.templateData[templateIndex].content = [createTemplateItem(templateNewType)]
+    console.log(state.templateData[templateIndex])
+    
+}
 
 </script>
 
@@ -105,6 +125,8 @@ const handleDeleteTemplateItem = (templateIndex, itemIndex) => {
             />
             <ExtraTemplate
                 :data="state.templateData"
+                :available-templates="props.availableTemplates"
+                @change-template-type="handleChangeTemplateType"
                 @add-new-item="handleAddItemTemplate"
                 @delete-item-at="handleDeleteTemplateItem"
                 @add-new-template="handleAddNewTemplate"
