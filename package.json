@@ -1,6 +1,7 @@
 {
     "private": true,
     "scripts": {
+        "typecheck": "tsc --noEmit",
         "dev": "vite",
         "build": "vite build && npx tailwindcss build -i ./resources/css/app.css -o ./resources/css/output.css && cp -r ./public/* ./web",
         "prod": "vite build && composer install && cp -r ./public/* ./web",
@@ -12,6 +13,10 @@
         "@tailwindcss/forms": "^0.5.3",
         "@tailwindcss/line-clamp": "^0.4.2",
         "@tailwindcss/typography": "^0.5.9",
+        "@types/lodash": "^4.14.198",
+        "@types/node": "^20.6.0",
+        "@types/vuelidate": "^0.7.18",
+        "@vue/eslint-config-typescript": "^12.0.0",
         "autoprefixer": "^10.4.14",
         "axios": "^1.1.2",
         "eslint": "^8.45.0",
@@ -22,6 +27,8 @@
         "postcss": "^8.4.23",
         "tailwindcss": "^3.3.2",
         "tippy.js": "^6.3.7",
+        "ts-node": "^10.9.1",
+        "typescript": "^5.2.2",
         "vite": "^4.0.0"
     },
     "dependencies": {
@@ -66,7 +73,7 @@
         "vue-multiselect": "^3.0.0-beta.2",
         "vue-router": "^4.2.4",
         "vue3-carousel": "^0.3.1",
-        "vue3-google-map": "^0.16.0"
+        "vue3-google-map": "^0.16.0",
         "vue3-tags-input": "^1.0.12"
     }
 }

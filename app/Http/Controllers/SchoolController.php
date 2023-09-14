@@ -451,7 +451,7 @@ class SchoolController extends Controller
             //check user site id == school Id && user role === school principal
             $user_record = User::find($user_id);
 
-            if ($user_record && $user_record->site_id == $site_id && $user_record->role->role_name === 'SCHLDR') {
+            if ($user_record && $user_record->site_id == $site_id && ($user_record->role->role_name === 'SCHLDR' || $user_record->role->role_name === 'Superadmin')) {
                 return response()->json([
                     "status" => 200,
                     "result" => true,

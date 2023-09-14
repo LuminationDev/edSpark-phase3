@@ -3,6 +3,7 @@ module.exports = {
     extends: [
         // add more generic rulesets here, such as:
         'plugin:vue/vue3-recommended',
+        '@vue/eslint-config-typescript/recommended',
     ],
     rules: {
         // override/add rules settings here, such as:
@@ -21,7 +22,14 @@ module.exports = {
                 "maxLen": 150,
                 "quotesOnNewLine": true
             }
-        ]
+        ],
+        '@typescript-eslint/ban-ts-comment': ['warn', {'ts-ignore': 'allow-with-description'}],
+        '@typescript-eslint/explicit-function-return-type': 'error',
+        '@typescript-eslint/explicit-module-boundary-types': 'off',
+        '@typescript-eslint/no-empty-function': ['warn', {allow: ['arrowFunctions']}],
+        '@typescript-eslint/no-explicit-any': 'off',
+        '@typescript-eslint/no-non-null-assertion': 'warn',
+        '@typescript-eslint/no-var-requires': 'warn',
     },
     parserOptions: {
         ecmaVersion: 'latest',

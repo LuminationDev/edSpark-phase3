@@ -48,25 +48,25 @@
     "src": "resources/assets/images/profile_background.jpeg"
   },
   "resources/css/app.css": {
-    "file": "assets/app-da100c0c.css",
+    "file": "assets/app-4fef7ac3.css",
     "isEntry": true,
     "src": "resources/css/app.css"
   },
   "resources/css/filament.css": {
-    "file": "assets/filament-49c24dfb.css",
+    "file": "assets/filament-c8743f2a.css",
     "isEntry": true,
     "src": "resources/css/filament.css"
   },
   "resources/css/output.css": {
-    "file": "assets/output-f918ad58.css",
+    "file": "assets/output-4fa70136.css",
     "isEntry": true,
     "src": "resources/css/output.css"
   },
   "resources/js/app.css": {
-    "file": "assets/app-c8b22ed0.css",
+    "file": "assets/app-bd16bfdb.css",
     "src": "resources/js/app.css"
   },
-  "resources/js/app.js": {
+  "resources/js/app.ts": {
     "assets": [
       "assets/navbar-514ca0d3.png",
       "assets/cc-286aeef7.png",
@@ -82,12 +82,12 @@
       "assets/profile_background-84005a5c.jpeg"
     ],
     "css": [
-      "assets/app-c8b22ed0.css",
-      "assets/app-da100c0c.css",
-      "assets/output-f918ad58.css"
+      "assets/app-bd16bfdb.css",
+      "assets/app-4fef7ac3.css",
+      "assets/output-4fa70136.css"
     ],
-    "file": "assets/app-f6d5f943.js",
+    "file": "assets/app-8c2a1000.js",
     "isEntry": true,
-    "src": "resources/js/app.js"
+    "src": "resources/js/app.ts"
   }
 }

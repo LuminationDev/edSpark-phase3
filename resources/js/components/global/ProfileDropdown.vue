@@ -56,15 +56,6 @@ const handleAvatar = () => {
 };
 
 const handleLogoutUser = async () => {
-    // console.log("clicked the button");
-    // // await oktaAuth.signOut(); //old but working code if okta is done on vue end
-
-    // // Send a request to laravel logout route
-    // await axios.post('/logout');
-    // this.userStore.clearStore();
-
-    // // Redirect the user to the login page or perform any other necessary actions
-    // window.location.href = '/';
 
     // Call a logout API endpoint in laravel backend
     try {
@@ -87,7 +78,7 @@ const handleLogoutUser = async () => {
 
 const isAdmin = ref(false);
 const checkUserRole = () => {
-    let userRole = userStore.getUser.role;
+    const userRole = userStore.getUser.role;
     switch (userRole) {
     case "Administrator":
     case "Moderator":
