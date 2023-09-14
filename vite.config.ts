@@ -21,7 +21,7 @@ export default defineConfig({
                 input: [
                     'resources/css/app.css',
                     'resources/css/output.css',
-                    'resources/js/app.js',
+                    'resources/js/app.ts',
                     'resources/css/filament.css',
                 ],
                 refresh: true,

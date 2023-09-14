@@ -1,40 +1,27 @@
-<script setup>
+<script setup lang="ts">
 import BaseBreadcrumb from "@/js/components/bases/BaseBreadcrumb.vue";
 import BaseHero from '@/js/components/bases/BaseHero.vue';
 import BaseSingle from '@/js/components/bases/BaseSingle.vue';
 import BaseSingleSubmenu from "@/js/components/bases/BaseSingleSubmenu.vue";
 import HardwareCarousel from '@/js/components/hardware/HardwareCarousel.vue';
-import HardwareExtraContent from "@/js/components/hardware/HardwareExtraContent.vue";
 import HardwareSingleBrandContent from "@/js/components/hardware/HardwareSingleBrandContent.vue";
 import ExtraResourceTemplateDisplay from "@/js/components/renderer/ExtraResourceTemplateDisplay.vue";
 
-import {ref, onBeforeMount, onMounted, computed} from 'vue';
-import {useRoute, useRouter} from 'vue-router';
-import {useHardwareStore} from '../stores/useHardwareStore.js';
-import {useUserStore} from "@/js/stores/useUserStore";
-import {storeToRefs} from "pinia";
+import {ref} from 'vue';
 import HardwareLaptopTechSpecs from "@/js/components/hardware/HardwareLaptopTechSpecs.vue";
 import HardwareEmergingTechSpecs from "@/js/components/hardware/HardwareEmergingTechSpecs.vue";
 import HardwareAudioVisualTechSpecs from "@/js/components/hardware/HardwareAudioVisualTechSpecs.vue";
 
 const baseContentRef = ref(null);
-const route = useRoute();
-const router = useRouter();
-
-const userStore = useUserStore()
-const {currentUser } = storeToRefs(userStore)
-
-const likeBookmarkData = {
-    post_id: route.params.id,
-    user_id: currentUser.value.id,
-    post_type: 'hardware'
-};
-
-
 /**
  * Submenu specific codes
  */
-const hardwareSubmenu = [
+
+type SubmenuObjectType = {
+    displayText: string,
+    value: string
+}
+const hardwareSubmenu : Array<SubmenuObjectType> = [
     {
         displayText: 'Overview',
         value: 'overview'
@@ -46,7 +33,7 @@ const hardwareSubmenu = [
 const activeSubmenu = ref(hardwareSubmenu[0]['value'])
 
 // handleChangeSubmenu will be triggered by emit from BaseSingle
-const handleChangeSubmenu = (value) => {
+const handleChangeSubmenu = (value): void => {
     activeSubmenu.value = value
     console.log('active submenu has been changed to ', value)
 }
