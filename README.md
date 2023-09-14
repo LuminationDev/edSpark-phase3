@@ -7,9 +7,9 @@ Additional services to run
 Meilisearch is running off Azure free tier and will host locally once we moved to DfE's managed hosting
 Queue worker should be running on production server (Apache - need to double check when migrating)
 
-Migrating logic and functions into ServiceFiles, checkout softwareService, autosaveService etc
-Vue only for rendering UI and simple UI logic
-Store for states. getter and actions focus on state manipulation
+Migrating logic and functions into ServiceFiles, checkout softwareService, autosaveService etc <br>
+Vue only for rendering UI and simple UI logic<br>
+Store for states. getter and actions focus on state manipulation <br>
 
 Refer to this link below to start using meilisearch locally
 https://laravel-news.com/getting-started-laravel-scout-meilisearch
