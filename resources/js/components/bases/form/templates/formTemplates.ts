@@ -22,6 +22,7 @@ export const templates = [
         type: "Extraresource",
         displayText: "Extra Resources",
         filamentType: "App\\Filament\\PageTemplates\\Extraresource",
+        itemDirectory: "extraresource",
         content:{
             title: templateFields.TEXT_FIELD,
             itemRepeat: {
@@ -34,6 +35,7 @@ export const templates = [
         type: 'Numbereditems',
         displayText: "Numbered Items",
         filamentType: "App\\Filament\\PageTemplates\\Numbereditems",
+        itemDirectory: "numbereditems",
         content:{
             title: templateFields.TEXT_FIELD,
             itemRepeat:{
@@ -47,6 +49,7 @@ export const templates = [
         type: "Dateitems",
         displayText: "Date and Time Items",
         filamentType: "App\\Filament\\PageTemplates\\Dateitems",
+        itemDirectory: "date_items",
         content:{
             title: templateFields.TEXT_FIELD,
             itemRepeat: {

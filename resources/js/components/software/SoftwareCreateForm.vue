@@ -36,28 +36,26 @@ const softwareDataToDatabaseFields = () =>
         cover_image: '',
         softwaretype_id: selectedSoftwareTypes.value,
         template: '',
-        extra_content: formService.transformSimpleDataToFilamentFormat([...extraContentData.templateData])
+        extra_content: formService.transformSimpleDataToFilamentFormat(extraContentData.templateData)
     })
 
 const baseData = reactive(createNewBaseData())
 const extraContentData = reactive({
-    resourceData: [],
     templateData: []
 })
 const additionalSoftwareData = computed(() =>{
     return {
-        extra_content: formService.transformSimpleDataToFilamentFormat([...extraContentData.templateData]),
+        extra_content: formService.transformSimpleDataToFilamentFormat(extraContentData.templateData),
         softwaretype_id: selectedSoftwareTypes.value,
 
     }
 })
 
-const updateParentExtraContent = (content) => {
-    if (content.resourceData) {
-        extraContentData.resourceData = content.resourceData
-    }
-    if (content.templateData) {
-        extraContentData.templateData = content.templateData
+const updateExtraContent = (content) => {
+    console.log('content inside softwareForm from children')
+    console.dir(content)
+    if (content) {
+        extraContentData.templateData = content
     }
 }
 
@@ -102,7 +100,7 @@ const handleReceiveTypes = (typeArray) => {
             <ExtraContent
                 :extra-content-data="extraContentData"
                 :available-templates="templates"
-                @update-parent-extra-content="updateParentExtraContent"
+                @update-parent-extra-content="updateExtraContent"
             />
         </template>
     </BaseForm>

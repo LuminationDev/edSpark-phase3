@@ -50,15 +50,7 @@ const FormStatus = {
 
 
 const emits = defineEmits(['updateParentBaseData'])
-/*
- * Base form will have
- * title: text input
- * excerpt: text input
- * content: rich text editor
- * cover image: upload
- * author name:
- * tags:
- */
+
 const state = reactive({
     title: '',
     excerpt: '',
@@ -100,10 +92,12 @@ watchDebounced(state, () => {
 }, {debounce: 1000, maxWait: 2000})
 
 const autosave = () => {
-    let data = {
+    const data = {
         ...state,
         ...props.additionalData
     }
+    console.log('data for autosave')
+    console.dir(data)
     autosaveService.savePost(currentUser.value.id, props.itemType, data).then(res => {
         isSaving.value = false
         formStatusDisplay.value = FormStatus.AUTOSAVED

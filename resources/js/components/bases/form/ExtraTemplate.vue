@@ -7,6 +7,8 @@ import Add from "@/js/components/svg/Add.vue";
 import {watch} from "vue";
 import {formService} from "@/js/service/formService";
 import {templateFields} from "@/js/components/bases/form/templates/formTemplates";
+import NumberInput from "@/js/components/bases/NumberInput.vue";
+import DateTimeInput from "@/js/components/bases/DateTimeInput.vue";
 
 const props = defineProps({
     data: {
@@ -48,7 +50,7 @@ const handleTemplateTypeChange = (
     emits('changeTemplateType', templateIndex, templateType);
 }
 
-watch(props.data, () =>{
+watch(props.data, () => {
     console.log(props.data)
 })
 </script>
@@ -81,20 +83,22 @@ watch(props.data, () =>{
                     >
                         {{ template.template.split("\\").slice(-1)[0] }}
                     </option>
-                    <!--                    <option-->
-                    <!--                        v-for="(templateOpt,index) in availableTemplates"-->
-                    <!--                        :key="index + templateIndex"-->
-                    <!--                        :value="templateOpt.type"-->
-                    <!--                    >-->
-                    <!--                        {{ templateOpt.displayText }}-->
-                    <!--                    </option>-->
                 </select>
+                <TextInput
+                    v-if="template.title !== undefined"
+                    v-model="template.title"
+                    field-id="title"
+                    :v$="{}"
+                >
+                    <template #label>
+                        Title
+                    </template>
+                </TextInput>
                 <div
                     v-for="(item, itemIndex) in template.content"
                     :key="itemIndex"
                     class="FormExtraTemplateArrayItem border-[1px] border-gray-300 mb-4 pb-4 rounded-2xl"
                 >
-                    <pre>{{ item }}</pre>
                     <ExtraContentHeader :click-callback="() => handleClickDeleteItem(templateIndex,itemIndex)">
                         <template #headingLeft>
                             {{ "item " + itemIndex }}
@@ -103,7 +107,6 @@ watch(props.data, () =>{
                     <div class="formItemBody px-4">
                         <!--  Need to loop Object.keys(item) for v-for="key in item")                      -->
                         <template v-for="(key,index) in Object.keys(item)">
-                            <!--                             we have item[key] probably-->
                             <template v-if="formService.getFieldTypeByKey(key) === templateFields.TEXT_FIELD">
                                 <TextInput
                                     :key="itemIndex + index"
@@ -116,42 +119,44 @@ watch(props.data, () =>{
                                     </template>
                                 </TextInput>
                             </template>
+                            <template v-if="formService.getFieldTypeByKey(key) === templateFields.NUMBER_FIELD">
+                                <NumberInput
+                                    :key="itemIndex + index"
+                                    v-model="item[key]"
+                                    :field-id="'key' + itemIndex"
+                                    :v$="{}"
+                                >
+                                    <template #label>
+                                        <span class="capitalize">{{ key }}</span>
+                                    </template>
+                                </NumberInput>
+                            </template>
+                            <template v-if="formService.getFieldTypeByKey(key) === templateFields.DATE_TIME_FIELD">
+                                <DateTimeInput
+                                    :key="itemIndex + index"
+                                    v-model="item[key]"
+                                    :field-id="'key' + itemIndex"
+                                    :v$="{}"
+                                >
+                                    <template #label>
+                                        <span class="capitalize">{{ key }}</span>
+                                    </template>
+                                </DateTimeInput>
+                            </template>
+                            <template v-if="formService.getFieldTypeByKey(key) === templateFields.RICH_TEXT">
+                                <div
+                                    :key="itemIndex + index"
+                                    class="ContainerTemp my-2 richContent"
+                                >
+                                    <TrixRichEditor
+                                        label="Content"
+                                        :src-content="item.content"
+                                        class="border-gray-300"
+                                        @input="(contentData) => item.content = contentData"
+                                    />
+                                </div>
+                            </template>
                         </template>
-
-
-
-                        <!--                        <TextInput-->
-                        <!--                            v-if="item?.icon !== undefined"-->
-                        <!--                            v-model="item.icon"-->
-                        <!--                            :field-id="'IconField_' + itemIndex"-->
-                        <!--                            :v$="{}"-->
-                        <!--                        >-->
-                        <!--                            <template #label>-->
-                        <!--                                {{ key }}-->
-                        <!--                            </template>-->
-                        <!--                        </TextInput>-->
-                        <!--                        <TextInput-->
-                        <!--                            v-if="item?.heading !== undefined"-->
-                        <!--                            v-model="item.heading"-->
-                        <!--                            :field-id="'textInputHeading_' + itemIndex"-->
-                        <!--                            :v$="{}"-->
-                        <!--                        >-->
-                        <!--                            <template #label>-->
-                        <!--                                Heading-->
-                        <!--                            </template>-->
-                        <!--                        </TextInput>-->
-                        <!--                        <div-->
-                        <!--                            v-if="item?.content !== undefined"-->
-                        <!--                            class="ContainerTemp my-2 richContent"-->
-                        <!--                        >-->
-                        <!--                            <TrixRichEditor-->
-                        <!--                                label="Content"-->
-                        <!--                                :src-content="item.content"-->
-                        <!--                                class="border-gray-300"-->
-                        <!--                                @input="(contentData) => item.content = contentData"-->
-                        <!--                            />-->
-                        <!--                        </div>-->
-                        <!--                    </div>-->
                     </div>
                     <div class="flex justify-center flex-row">
                         <GenericButton

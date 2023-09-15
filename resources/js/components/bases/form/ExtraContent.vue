@@ -35,7 +35,7 @@ const state = reactive({
     templateData: props.extraContentData?.templateData
 })
 watchDebounced(state, () => {
-    emits('updateParentExtraContent', state)
+    emits('updateParentExtraContent', state.templateData)
 }, {debounce: 1000, maxWait: 2000})
 
 const handleClickAddItem = (): void => {

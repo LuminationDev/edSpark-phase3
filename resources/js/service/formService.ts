@@ -26,6 +26,7 @@ interface TransformedData {
 // Assuming your simpleData is of this format:
 interface SimpleDataItem {
     template: TemplateType;
+    title?: string;
     content: ContentItem[];
 }
 
@@ -47,8 +48,9 @@ export const formService = {
         return axios.get(url)
     },
     transformSimpleDataToFilamentFormat: (simpleData: SimpleDataItem[]): TransformedData[] => {
+        console.error(simpleData)
         return simpleData.map(item => {
-            const matchedTemplate = templates.find(t => t.type === item.template);
+            const matchedTemplate = templates.find(t => t.type === item.template || t.filamentType === item.template);
 
             if (!matchedTemplate) {
                 // Handle the case where a matching template isn't found if necessary.
@@ -56,16 +58,7 @@ export const formService = {
             }
 
             const templateFilamentType = matchedTemplate.filamentType;
-            let itemDirectory = '';
-
-            if (item.template === 'Numbereditems') {
-                itemDirectory = "numbereditems";
-            } else if (item.template === 'Dateitems') {
-                itemDirectory = "date_items";
-            } else if (item.template === 'Extraresource') {
-                itemDirectory = "extraresource";
-            }
-
+            const itemDirectory = matchedTemplate.itemDirectory
             return {
                 "data": {
                     "template": templateFilamentType,
