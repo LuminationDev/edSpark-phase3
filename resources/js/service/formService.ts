@@ -18,8 +18,8 @@ interface TransformedData {
         extra_content: {
             [key: string]: {
                 item: ContentItem[];
+                title?: string;
             };
-            title?: string;
         };
     };
     type: string;
@@ -55,7 +55,6 @@ export const formService = {
             const matchedTemplate = templates.find(t => t.type === item.template || t.filamentType === item.template);
 
             if (!matchedTemplate) {
-                // Handle the case where a matching template isn't found if necessary.
                 return;
             }
 
@@ -73,8 +72,8 @@ export const formService = {
                                     "heading": contentItem?.heading || null
                                 };
                             }),
-                            "title": item.title,
-                        }
+                            "title": item.title
+                        },
                     }
                 },
                 "type": "templates"
