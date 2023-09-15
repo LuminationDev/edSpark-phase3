@@ -1,11 +1,11 @@
-<script setup>
+<script setup lang="ts">
 import ExtraContentHeader from "@/js/components/bases/form/ExtraContentHeader.vue";
-import ExtraResource from "@/js/components/bases/form/ExtraResource.vue";
 import ExtraTemplate from "@/js/components/bases/form/ExtraTemplate.vue";
 import GenericButton from "@/js/components/button/GenericButton.vue";
 import Add from "@/js/components/svg/Add.vue";
 import {watchDebounced} from "@vueuse/core";
-import {ref, computed, reactive} from 'vue'
+import {ref,  reactive} from 'vue'
+import {formService, TemplateType} from "@/js/service/formService";
 
 const props = defineProps({
     extraContentData: {
@@ -18,77 +18,45 @@ const props = defineProps({
 })
 const emits = defineEmits(['updateParentExtraContent'])
 
-const showSelectorPopup = ref(false)
-
-const createResourceItem = () => ({heading: '', content: ''});
-
-const createResource = () => ({title: "", content: [createResourceItem()]});
+const showSelectorPopup = ref<boolean>(false)
 
 
-const createTemplate = () => ({template: '', content: []});
+const createTemplate = (): object => ({template: '', content: []});
 
 
-const createTemplateItem = (templateType) => {
-    if (templateType === 'Numbereditems') {
-        return {icon: '', heading: '', content: ''}
-    } else if (templateType === 'Dateitems') {
-        return {icon: '', heading: '', content: ''}
-    } else if (templateType === 'Extraresource') {
-        return {heading: '', content: ''}
-    }
+const createTemplateItem = (templateType: TemplateType): object => {
+    const generatedItem = formService.generateEmptyItem(templateType)
+    console.log(generatedItem)
+    return generatedItem
 }
 
+
 const state = reactive({
-    resourceData: props.extraContentData?.resourceData,
     templateData: props.extraContentData?.templateData
 })
 watchDebounced(state, () => {
     emits('updateParentExtraContent', state)
 }, {debounce: 1000, maxWait: 2000})
 
-const handleClickAddItem = () => {
+const handleClickAddItem = (): void => {
     console.log('clicked add')
     showSelectorPopup.value = true
 }
 
-const handleClickSelectedPopupItem = (item) => {
-    console.log(item)
-    if (item === 'resource') {
-        handleAddNewResource()
-    } else if (item === 'template') {
-        handleAddNewTemplate()
-    }
+const handleClickSelectedPopupItem = (templateType: TemplateType) => {
+    const generatedTemplate = formService.generateEmptyTemplate(templateType)
+    state.templateData.push(generatedTemplate)
+
     showSelectorPopup.value = false
-}
-
-const availableAddContent = computed(() => {
-    return [{key: 'resource', value: 'New extra resource'}, {key: 'template', value: 'New template'}]
-})
-
-const handleAddNewResource = () => {
-    state.resourceData.push(createResource());
 }
 
 const handleAddNewTemplate = () => {
     state.templateData.push(createTemplate());
 }
 
-const handleAddItemResource = (index) => {
-    console.log('item res', index, state.resourceData[index]);
-    state.resourceData[index].content.push(createResourceItem());
-}
-
 const handleAddItemTemplate = (index, templateType) => {
-    console.log('item template', state.templateData[index]);
-    state.templateData[index].content.push(createTemplateItem(templateType));
-}
-
-const handleDeleteResource = (index) => {
-    state.resourceData.splice(index, 1)
-}
-
-const handleDeleteResourceItem = (resIndex, itemIndex) => {
-    state.resourceData[resIndex].content.splice(itemIndex, 1)
+    const newTemplateItem = createTemplateItem(templateType)
+    state.templateData[index].content.push(newTemplateItem);
 }
 
 const handleDeleteTemplate = (index) => {
@@ -98,31 +66,23 @@ const handleDeleteTemplate = (index) => {
 const handleDeleteTemplateItem = (templateIndex, itemIndex) => {
     state.templateData[templateIndex].content.splice(itemIndex, 1)
 }
-const handleChangeTemplateType = (templateIndex, templateNewType) =>{
+const handleChangeTemplateType = (templateIndex, templateNewType) => {
     state.templateData[templateIndex].template = templateNewType
     state.templateData[templateIndex].content = [createTemplateItem(templateNewType)]
-    console.log(state.templateData[templateIndex])
-    
+
 }
 
 </script>
 
 <template>
     <div class="border-[1px] border-gray-300 formExtraContentContainer pb-4 rounded-2xl">
-        <ExtraContentHeader :click-callback="handleDeleteResource">
+        <ExtraContentHeader>
             <template #headingLeft>
                 Extra Content
             </template>
         </ExtraContentHeader>
 
         <div class="formExtraContentBody px-4">
-            <ExtraResource
-                :data="state.resourceData"
-                @add-new-item="handleAddItemResource"
-                @delete-item-at="handleDeleteResourceItem"
-                @add-new-resource="handleAddNewResource"
-                @delete-resource-at="handleDeleteResource"
-            />
             <ExtraTemplate
                 :data="state.templateData"
                 :available-templates="props.availableTemplates"
@@ -153,7 +113,7 @@ const handleChangeTemplateType = (templateIndex, templateNewType) =>{
                 >
                     <ul class="availableAddItemList border-[1px] border-main-darkTeal flex flex-col rounded-xl">
                         <li
-                            v-for="(item,index) in availableAddContent"
+                            v-for="(item,index) in props.availableTemplates"
                             :key="index"
                             class="
                                 px-4
@@ -164,9 +124,9 @@ const handleChangeTemplateType = (templateIndex, templateNewType) =>{
                                 hover:text-white
                                 last:rounded-b-xl
                                 "
-                            @click="() => handleClickSelectedPopupItem(item.key)"
+                            @click="() => handleClickSelectedPopupItem(item.type)"
                         >
-                            {{ item.value }}
+                            {{ item.displayText }}
                         </li>
                     </ul>
                 </div>

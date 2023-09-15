@@ -34,13 +34,10 @@ export const safelyExtractFirstObjectFromArray = (array) =>{
         return array[0]
     }
 }
-//
-// {
-//     "Graphics": "RTX 4090Ti",
-//     "Processor": "Intel i7 - 13950KX",
-//     "Screen Size": "14\"",
-//     "Memory capacity": "64GB",
-//     "Operating System": "Windows 11",
-//     "Storage capacity": "16TB",
-//     "Feature highlights (separate each feature with a comma)": "Most powerful laptop in the world, Passive Cooling, ultra compatibility, 5 mins charge for 12 hours of heavy use"
-// }
+
+export const isEmptyFunction = (func):boolean =>{
+    const functionAsString = func.toString();
+
+    // Remove whitespace and check if it matches the pattern of an empty function
+    return /^(function\s?\(\)\s?\{\s?\}|^\(\s?\)\s?=>\s?\{\s?\})$/.test(functionAsString);
+}

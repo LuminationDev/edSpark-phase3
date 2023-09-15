@@ -4,35 +4,18 @@ import ExtraContent from "@/js/components/bases/form/ExtraContent.vue";
 import GenericButton from "@/js/components/button/GenericButton.vue";
 import ItemTypeCheckboxes from "@/js/components/selector/ItemTypeCheckboxes.vue";
 import {API_ENDPOINTS} from "@/js/constants/API_ENDPOINTS";
-import {softwareService} from "@/js/service/softwareService";
+import {formService} from "@/js/service/formService";
 import {useUserStore} from "@/js/stores/useUserStore";
 import {storeToRefs} from "pinia";
 import {computed, reactive, ref} from "vue";
+import {templates} from "@/js/components/bases/form/templates/formTemplates";
+
+
 const userStore = useUserStore()
 const {currentUser} = storeToRefs(userStore)
 const selectedSoftwareTypes = ref([])
 
-// fetch software types
-
-const templates = [
-    {
-        type: "Extraresource",
-        displayText: "Extra Resources",
-        value: "App\\Filament\\PageTemplates\\Extraresource"
-    },
-    {
-        type: 'Numbereditems',
-        displayText: "Numbered Items",
-        value: "App\\Filament\\PageTemplates\\Numbereditems"
-    },
-    {
-        type: "Dateitems",
-        displayText: "Date and Time Items",
-        value: "App\\Filament\\PageTemplates\\Dateitems"
-    }
-]
-
-const createNewBaseData = () => {
+const createNewBaseData = ()  => {
     return {
         title: '',
         excerpt: '',
@@ -53,7 +36,7 @@ const softwareDataToDatabaseFields = () =>
         cover_image: '',
         softwaretype_id: selectedSoftwareTypes.value,
         template: '',
-        extra_content: softwareService.transformSimpleDataToFilamentFormat([...extraContentData.templateData, ...extraContentData.resourceData])
+        extra_content: formService.transformSimpleDataToFilamentFormat([...extraContentData.templateData])
     })
 
 const baseData = reactive(createNewBaseData())
@@ -63,7 +46,7 @@ const extraContentData = reactive({
 })
 const additionalSoftwareData = computed(() =>{
     return {
-        extra_content: softwareService.transformSimpleDataToFilamentFormat([...extraContentData.templateData, ...extraContentData.resourceData]),
+        extra_content: formService.transformSimpleDataToFilamentFormat([...extraContentData.templateData]),
         softwaretype_id: selectedSoftwareTypes.value,
 
     }

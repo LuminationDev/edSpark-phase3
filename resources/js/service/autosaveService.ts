@@ -2,7 +2,7 @@ import {API_ENDPOINTS} from "@/js/constants/API_ENDPOINTS";
 import axios from 'axios'
 
 export const autosaveService = {
-    getExpiryDateMonth: () => {
+    getExpiryDateMonth: () :string => {
         // Get the current date
         const currentDate = new Date();
         currentDate.setDate(currentDate.getDate() + 30);
@@ -13,7 +13,7 @@ export const autosaveService = {
 
         return `${year}-${month}-${day}`;
     },
-    savePost : (user_id,type,data) => {
+    savePost : (user_id,type,data)  => {
         console.log(data)
         if(type === 'software'){
             /**
@@ -27,7 +27,7 @@ export const autosaveService = {
              * tags
              * title
              */
-            let expiryDate = autosaveService.getExpiryDateMonth()
+            const expiryDate = autosaveService.getExpiryDateMonth()
             console.log(expiryDate)
             const requestPayload = {
                 user_id: user_id,

@@ -1,4 +1,4 @@
-import {serverURL} from "@/js/constants/serverUrl";
+import {appURL, serverURL} from "@/js/constants/serverUrl";
 
 export const API_ENDPOINTS = {
     SCHOOL: {
@@ -61,6 +61,7 @@ export const API_ENDPOINTS = {
         UPDATE_USER: '/updateUser',
         CHECK_EMAIL: `${serverURL}/checkEmail`,
         GET_USER_METADATA: `${serverURL}/getUserMetadata`,
+        LOGOUT: `${appURL}/logout`
 
 
     },
