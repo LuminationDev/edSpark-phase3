@@ -1,6 +1,7 @@
 import {API_ENDPOINTS} from "@/js/constants/API_ENDPOINTS";
 import axios, {AxiosResponse} from 'axios'
 import {templates, keyToFieldTypes} from "@/js/components/bases/form/templates/formTemplates";
+import {addStateToken} from "@okta/okta-auth-js/types/lib/authn/util/stateToken";
 
 
 export type TemplateType = 'Extraresource' | 'Numbereditems' | 'Dateitems';
@@ -18,6 +19,7 @@ interface TransformedData {
             [key: string]: {
                 item: ContentItem[];
             };
+            title?: string;
         };
     };
     type: string;
@@ -70,7 +72,8 @@ export const formService = {
                                     "content": contentItem?.content || null,
                                     "heading": contentItem?.heading || null
                                 };
-                            })
+                            }),
+                            "title": item.title,
                         }
                     }
                 },
@@ -117,12 +120,34 @@ export const formService = {
         return result;
     },
 
-
     getFieldTypeByKey: (key: string): string => {
         if (keyToFieldTypes[key]) {
             return keyToFieldTypes[key]
         } else {
             return keyToFieldTypes['other']
         }
+    },
+    handleSaveForm: (state: any, user_id: number, additionalData: any, itemType: string): Promise<void | AxiosResponse<any>> => {
+        if (itemType === 'software') {
+            const data = {
+                post_title: state.title,
+                post_excerpt: state.excerpt,
+                post_content: state.content,
+                post_status: 'Pending',
+                author_id: user_id,
+                cover_image: state.cover_image,
+                template: ''
+            }
+            const formattedAddtionalData = {
+                extra_content: formService.transformSimpleDataToFilamentFormat(additionalData['extraContentData']),
+                softwaretype_id: additionalData['selectedSoftwareTypes']
+            }
+            const combinedData = {...data, ...formattedAddtionalData}
+            console.log(combinedData)
+            return axios.post(API_ENDPOINTS.SOFTWARE.CREATE_SOFTWARE_POST, combinedData).then(res => {
+                console.log(res)
+            })
+        }
+
     }
 }

@@ -1,16 +1,10 @@
-<script setup>
+<script setup lang="ts">
 import ExtraContentHeader from "@/js/components/bases/form/ExtraContentHeader.vue";
 import TrixRichEditor from "@/js/components/bases/form/TrixRichEditor.vue";
 import TextInput from "@/js/components/bases/TextInput.vue";
 import GenericButton from "@/js/components/button/GenericButton.vue";
 import Add from "@/js/components/svg/Add.vue";
-import {number} from "@noble/hashes/_assert";
-import {ref, computed, reactive, onMounted, onBeforeMount} from 'vue'
-
-const extraResourceItem = {
-    heading: 'test',
-    content: ''
-}
+import {reactive, onBeforeMount} from 'vue'
 
 const props = defineProps({
     data: {
@@ -19,26 +13,25 @@ const props = defineProps({
     }
 })
 
-const emits = defineEmits(['addNewItem','addNewResource', 'deleteResourceAt', 'deleteItemAt'])
+const emits = defineEmits(['addNewItem', 'addNewResource', 'deleteResourceAt', 'deleteItemAt'])
 
 const state = reactive({
     resourceArray: []
 })
 
-onBeforeMount(()=>{
+onBeforeMount(() => {
     state.resourceArray = props.data
 })
 
-
-const handleClickAddItem = (resourceIndex) => {
+const handleClickAddItem = (resourceIndex: number): void => {
     emits('addNewItem', resourceIndex)
 }
 
-const handleClickDeleteResource = (resourceIndex) =>{
+const handleClickDeleteResource = (resourceIndex: number): void => {
     emits('deleteResourceAt', resourceIndex)
 }
 
-const handleClickDeleteItem = (resourceIndex, itemIndex) =>{
+const handleClickDeleteItem = (resourceIndex: number, itemIndex: number): void => {
     emits('deleteItemAt', resourceIndex, itemIndex)
 }
 </script>
@@ -100,7 +93,8 @@ const handleClickDeleteItem = (resourceIndex, itemIndex) =>{
                         class="bg-main-teal flex flex-row px-4 py-2"
                         :callback="() => handleClickAddItem(resourceIndex)"
                     >
-                        <Add class="h-6 mr-2 w-6" />  Add item to resource
+                        <Add class="h-6 mr-2 w-6" />
+                        Add item to resource
                     </GenericButton>
                 </div>
             </div>

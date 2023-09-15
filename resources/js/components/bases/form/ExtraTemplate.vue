@@ -50,9 +50,6 @@ const handleTemplateTypeChange = (
     emits('changeTemplateType', templateIndex, templateType);
 }
 
-watch(props.data, () => {
-    console.log(props.data)
-})
 </script>
 
 <template>

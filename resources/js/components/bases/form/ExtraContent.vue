@@ -32,7 +32,7 @@ const createTemplateItem = (templateType: TemplateType): object => {
 
 
 const state = reactive({
-    templateData: props.extraContentData?.templateData
+    templateData: props.extraContentData
 })
 watchDebounced(state, () => {
     emits('updateParentExtraContent', state.templateData)
