@@ -50,7 +50,7 @@
         "@vite/vitejs": "^2.3.19",
         "@vitejs/plugin-vue": "^4.3.1",
         "@vuelidate/core": "^2.0.2",
-        "@vuelidate/validators": "^2.0.2",
+        "@vuelidate/validators": "^2.0.4",
         "@vueuse/core": "^9.13.0",
         "dompurify": "^3.0.5",
         "editorjs-inline-font-size-tool": "^1.0.1",
