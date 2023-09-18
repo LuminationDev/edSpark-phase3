@@ -18,16 +18,16 @@ const props = defineProps({
     placeholder: {
         type: String,
         required: false,
-        default: 'Insert value here'
+        default: 'Select date and time'
     }
 })
 const emit = defineEmits(['update:modelValue','inputUpdate'])
 
-const inputRef = ref(null)
+const dateTimeInputRef = ref(null)
 
 const focus = () => {
-    if (inputRef.value !== null) {
-        inputRef.value.focus()
+    if (dateTimeInputRef.value !== null) {
+        dateTimeInputRef.value.focus()
     }
 }
 const handleInput = (e) => {
@@ -51,10 +51,10 @@ defineExpose({
         </label>
         <input
             :id="fieldId"
-            ref="inputRef"
+            ref="dateTimeInputRef"
             :value="modelValue"
             :placeholder="placeholder"
-            type="text"
+            type="datetime-local"
             class="border-[1px] border-gray-300 mr-1 p-2 rounded text-black"
             :class="{
                 '!border-red-500': v$ && v$.$error

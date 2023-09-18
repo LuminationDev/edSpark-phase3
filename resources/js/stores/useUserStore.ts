@@ -3,56 +3,74 @@ import {defineStore} from "pinia";
 import {useSessionStorage, useStorage} from "@vueuse/core";
 import axios from "axios";
 import {serverURL} from "@/js/constants/serverUrl";
+import {Ref} from 'vue'
+
+// Define the types for the currentUser
+interface UserMetaData {
+    user_meta_key: string;
+    user_meta_value: string;
+}
+interface Site {
+    site_name: string;
+}
+
+interface CurrentUser {
+    full_name: string;
+    display_name: string;
+    email: string;
+    id: number;
+    metadata: UserMetaData[];
+    permissions: string[];
+    role: string;
+    status: 'Active' | 'Inactive';
+    site?: Site;
+}
+
+// Define the type for the state
+interface UserState {
+    currentUser: Ref<CurrentUser | any>;
+    userAvatar: Ref<string>;
+    userLikeList: Record<string, any>;
+    userBookmarkList: Record<string, any>;
+    notifications: any[];
+    userRequestParam: Record<string, any>;
+}
+
 
 export const useUserStore = defineStore('user', {
-    /**
-     * currentUser from server
-     * has {
-     *     full_name : string,
-     *     display_name: string,
-     *     email: string
-     *     id: number
-     *     metadata: Array<{user_meta_key: string, user_meta_value: string}>
-     *     permissions: Array<string>
-     *     role: string,
-     *     status: string {Active, Inactive}
-     * }
-     */
-    state: () => ({
+    state: (): UserState => <UserState>({
         currentUser: useStorage('currentUser', {}, localStorage, {mergeDefaults: true}),
         userAvatar: useSessionStorage('userAvatar', ''),
-        userLikeList: {},
-        userBookmarkList: {},
+        userLikeList: {}, // kinda deprecated TODO: Remove
+        userBookmarkList: {}, // kinda deprecated TODO: Remove
         notifications: [],
-        userRequestParam:{}
+        userRequestParam: {}
     }),
 
     getters: {
-
-        getUser() {
+        getUser(): CurrentUser | any {
             return this.currentUser;
         },
-        getUserFullName() {
+        getUserFullName(): string {
             if (this.currentUser && this.currentUser.full_name) {
-                return this.currentUser.full_name
+                return this.currentUser.full_name;
             } else {
-                return ""
+                return "";
             }
         },
-        getUserSiteName() {
-            console.log(this.currentUser?.site?.site_name)
-            return this.currentUser?.site?.site_name || ""
+        getUserSiteName(): string {
+            console.log(this.currentUser?.site?.site_name);
+            return this.currentUser?.site?.site_name || "";
         },
-        getUserRequestParam(){
-            console.log(this.currentUser)
+        getUserRequestParam(): { params: { usid: number } } {
+            console.log(this.currentUser);
             return {
-                params:{
+                params: {
                     usid: this.currentUser.id
                 }
-            }
+            };
         },
-
-        getNotifications() {
+        getNotifications(): any[] {
             return this.notifications;
         }
     },
@@ -124,9 +142,9 @@ export const useUserStore = defineStore('user', {
                         'STAFF'
                     ];
 
-                    let allowedList = response.data.filter((item) => allowedValues.indexOf(item.role_name) !== -1);
+                    const allowedList = response.data.filter((item) => allowedValues.indexOf(item.role_name) !== -1);
 
-                    let mutatedArray = [];
+                    const mutatedArray = [];
 
                     allowedList.forEach(item => {
                         mutatedArray.push({
@@ -160,11 +178,11 @@ export const useUserStore = defineStore('user', {
             /**
              * Set the users initials - save as display_name
              */
-            let str = user.name;
-            let matches = str.match(/\b(\w)/g);
-            let initials = matches.join('');
+            const str = user.name;
+            const matches = str.match(/\b(\w)/g);
+            const initials = matches.join('');
 
-            let userData = new FormData();
+            const userData = new FormData();
             // let metaData = new FormData();
             // let formAvatar = new FormData();
 
@@ -177,7 +195,7 @@ export const useUserStore = defineStore('user', {
             userData.append('display_name', JSON.stringify(initials));
             userData.append('site_id', JSON.stringify(user.site.id)); // Use the id to store as foreign key
             userData.append('role_id', JSON.stringify(user.role.id)); // Use the id to store as foreign key
-            let userMetadata = {
+            const userMetadata = {
                 yearLevels: user.yearLevels,
                 interests: user.interests,
                 subjects: user.subjects,
@@ -212,11 +230,11 @@ export const useUserStore = defineStore('user', {
             /**
              * Set the users initials - save as display_name
              */
-            let str = user.name;
-            let matches = str.match(/\b(\w)/g);
-            let initials = matches.join('');
+            const str = user.name;
+            const matches = str.match(/\b(\w)/g);
+            const initials = matches.join('');
 
-            let userData = new FormData();
+            const userData = new FormData();
             userData.append('userAvatar', user.avatar ? user.avatar : user.avatarUrl);
             /**
              * Populate formData Object
@@ -226,7 +244,7 @@ export const useUserStore = defineStore('user', {
             userData.append('display_name', JSON.stringify(initials));
             userData.append('site_id', JSON.stringify(user.site.id)); // Use the id to store as foreign key
             userData.append('role_id', JSON.stringify(user.role.id)); // Use the id to store as foreign key
-            let userMetadata = {
+            const userMetadata = {
                 yearLevels: user.yearLevels,
                 interests: user.interests,
                 subjects: user.subjects,
@@ -259,7 +277,7 @@ export const useUserStore = defineStore('user', {
         },
         populateUserLikesAndBookmark() {
             if (this.currentUser.id) {
-                let data = {
+                const data = {
                     user_id: this.currentUser.id
                 }
                 axios.post(API_ENDPOINTS.LIKE.FETCH_ALL_LIKES, data).then(res => {
@@ -290,7 +308,7 @@ export const useUserStore = defineStore('user', {
         },
 
         async updateSingleUserItem(change) {
-            let data = {
+            const data = {
                 data: {
                     updateField: 'full_name',
                     updateValue: 'new name'

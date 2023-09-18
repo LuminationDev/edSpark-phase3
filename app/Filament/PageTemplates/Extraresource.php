@@ -24,7 +24,7 @@ final class Extraresource
     public static function schema()
     {
         return [
-            Forms\Components\TextInput::make('resource_title')
+            Forms\Components\TextInput::make('title')
                 ->label('Resource title')
                 ->maxLength(255),
             Repeater::make('item')->schema([

@@ -1,4 +1,6 @@
-<script setup>
+<script setup lang="ts">
+import {API_ENDPOINTS} from "@/js/constants/API_ENDPOINTS";
+
 /**
  * Import Dependencies
  */
@@ -51,7 +53,7 @@ import { appURL } from "@/js/constants/serverUrl";
 
 const notificationCount = userStore.getNotifications;
 
-const handleAvatar = () => {
+const handleAvatar = () :void  => {
     emits("handleAvatarClick");
 };
 
@@ -59,7 +61,7 @@ const handleLogoutUser = async () => {
 
     // Call a logout API endpoint in laravel backend
     try {
-        const response = await fetch(`${appURL}/logout`, {
+        const response = await fetch(API_ENDPOINTS.USER.LOGOUT, {
             method: 'POST',
         });
 
@@ -80,6 +82,7 @@ const isAdmin = ref(false);
 const checkUserRole = () => {
     const userRole = userStore.getUser.role;
     switch (userRole) {
+    case "Superadmin":
     case "Administrator":
     case "Moderator":
     case "PSACT":
