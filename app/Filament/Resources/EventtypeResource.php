@@ -6,9 +6,9 @@ use App\Filament\Resources\EventtypeResource\Pages;
 use App\Filament\Resources\EventtypeResource\RelationManagers;
 use App\Models\Eventtype;
 use Filament\Forms;
-use Filament\Resources\Form;
+use Filament\Forms\Form;
 use Filament\Resources\Resource;
-use Filament\Resources\Table;
+use Filament\Tables\Table;
 use Filament\Tables;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
@@ -19,10 +19,10 @@ class EventtypeResource extends Resource
     protected static ?string $model = Eventtype::class;
     protected static ?string $modelLabel= "Event Type";
 
-    protected static ?string $navigationIcon = 'heroicon-o-collection';
+    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
     protected static ?string $navigationGroup = 'Content Management';
-    protected static ?string $navigationGroupIcon = 'heroicon-o-collection';
+    protected static ?string $navigationGroupIcon = 'heroicon-o-rectangle-stack';
 
     protected static ?int $navigationSort = 4;
 

@@ -6,9 +6,9 @@ use App\Filament\Resources\HardwareResource\Pages;
 use App\Filament\Resources\HardwareResource\RelationManagers;
 use App\Models\Hardware;
 use Filament\Forms;
-use Filament\Resources\Form;
+use Filament\Forms\Form;
 use Filament\Resources\Resource;
-use Filament\Resources\Table;
+use Filament\Tables\Table;
 use Filament\Tables;
 
 
@@ -27,11 +27,11 @@ class HardwareResource extends Resource
 
 
     protected static ?string $navigationGroup = 'Product Management';
-    protected static ?string $navigationGroupIcon = 'heroicon-o-collection';
+    protected static ?string $navigationGroupIcon = 'heroicon-o-rectangle-stack';
 
     protected static ?int $navigationSort = 2;
 
-    protected static ?string $navigationIcon = 'heroicon-o-collection';
+    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
     public static function form(Form $form): Form
     {

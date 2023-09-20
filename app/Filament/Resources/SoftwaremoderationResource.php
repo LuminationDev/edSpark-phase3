@@ -6,9 +6,9 @@ use App\Filament\Resources\SoftwaremoderationResource\Pages;
 use App\Filament\Resources\SoftwaremoderationResource\RelationManagers;
 use App\Models\Softwaremoderation;
 use Filament\Forms;
-use Filament\Resources\Form;
+use Filament\Forms\Form;
 use Filament\Resources\Resource;
-use Filament\Resources\Table;
+use Filament\Tables\Table;
 use Filament\Tables;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
@@ -20,7 +20,7 @@ class SoftwaremoderationResource extends Resource
     protected static ?string $modelLabel= "Software Moderation";
 
 
-    protected static ?string $navigationIcon = 'heroicon-o-collection';
+    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
     protected static ?string $navigationGroup = 'Moderation';
     protected static ?string $navigationLabel = 'Software Moderation';
@@ -125,7 +125,7 @@ class SoftwaremoderationResource extends Resource
         return parent::getEloquentQuery()->where('post_status', 'Pending');
     }
 
-    protected static function getNavigationBadge(): ?string
+    public static function getNavigationBadge(): ?string
     {
         $count = static::getModel()::query()->where('post_status', 'pending')->count();
         if ($count > 0){

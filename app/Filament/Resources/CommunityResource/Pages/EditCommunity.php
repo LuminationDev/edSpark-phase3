@@ -13,7 +13,7 @@ class EditCommunity extends EditRecord
 {
     protected static string $resource = CommunityResource::class;
 
-    protected function getActions(): array
+    protected function getHeaderActions(): array
     {
         return [
             Actions\DeleteAction::make(),

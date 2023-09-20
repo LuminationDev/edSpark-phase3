@@ -6,9 +6,9 @@ use App\Filament\Resources\PartnerprofileResource\Pages;
 use App\Filament\Resources\PartnerprofileResource\RelationManagers;
 use App\Models\Partnerprofile;
 use Filament\Forms;
-use Filament\Resources\Form;
+use Filament\Forms\Form;
 use Filament\Resources\Resource;
-use Filament\Resources\Table;
+use Filament\Tables\Table;
 use Filament\Tables;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
@@ -26,7 +26,7 @@ class PartnerprofileResource extends Resource
     protected static ?string $model = Partnerprofile::class;
     protected static ?string $modelLabel= "Partner Profile";
 
-    protected static ?string $navigationIcon = 'heroicon-o-collection';
+    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
     protected static ?string $navigationGroup = "User Management";
     protected static ?string $navigationLabel = "Partner Profile";
