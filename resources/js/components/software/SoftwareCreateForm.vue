@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import BaseForm from "@/js/components/bases/form/BaseForm.vue";
 import ExtraContent from "@/js/components/bases/form/ExtraContent.vue";
-import GenericButton from "@/js/components/button/GenericButton.vue";
 import ItemTypeCheckboxes from "@/js/components/selector/ItemTypeCheckboxes.vue";
 import {API_ENDPOINTS} from "@/js/constants/API_ENDPOINTS";
 import {reactive} from "vue";
