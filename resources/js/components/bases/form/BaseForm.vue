@@ -9,7 +9,7 @@ import {storeToRefs} from "pinia";
 import {capitalize, onMounted, onUnmounted} from "vue";
 import useVuelidate from "@vuelidate/core";
 import {required} from "@vuelidate/validators";
-import {ref, computed, reactive, onBeforeMount} from 'vue'
+import {ref, reactive} from 'vue'
 import GenericButton from "@/js/components/button/GenericButton.vue";
 import {formService} from "@/js/service/formService";
 
@@ -62,7 +62,6 @@ const rules = {
     excerpt: {required},
     content: {required},
     coverImage: {required},
-    authorName: {required},
     tags: {}
 }
 
@@ -135,11 +134,16 @@ const handleTrixInputExcerpt = (data) => {
 }
 
 
-const handleClickSave = () =>{
+const handleClickSave = () => {
     console.log("Clicked save")
-    formService.handleSaveForm(state, currentUser.value.id, props.additionalData,props.itemType ).then(() =>{
-        console.log('kinda succedd from base form')
-    })
+    try{
+        formService.handleSaveForm(state, currentUser.value.id, props.additionalData, props.itemType).then(() => {
+            console.log('kinda succedd from base form')
+        })
+    } catch (e){
+        console.log('failed to create ')
+    }
+
 }
 </script>
 
@@ -180,17 +184,17 @@ const handleClickSave = () =>{
             <label> Cover image (1 image file)</label>
             <ImageUploaderForm :item-type="props.itemType" />
         </div>
-        <TextInput
-            v-model="v$.authorName.$model"
-            :v$="v$.authorName"
-            field-id="excerpt input"
-            class="my-2"
-            placeholder=""
-        >
-            <template #label>
-                Author's name
-            </template>
-        </TextInput>
+        <!--        <TextInput-->
+        <!--            v-model="v$.authorName.$model"-->
+        <!--            :v$="v$.authorName"-->
+        <!--            field-id="excerpt input"-->
+        <!--            class="my-2"-->
+        <!--            placeholder=""-->
+        <!--        >-->
+        <!--            <template #label>-->
+        <!--                Author's name-->
+        <!--            </template>-->
+        <!--        </TextInput>-->
         <TagsInput
             v-model="v$.tags.$model"
             :field-id="'tag-selector'"

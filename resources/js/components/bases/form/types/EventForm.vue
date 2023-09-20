@@ -1,52 +1,59 @@
-<script setup>
+<script setup lang="ts">
 import BaseForm from "@/js/components/bases/form/BaseForm.vue";
 import ExtraContent from "@/js/components/bases/form/ExtraContent.vue";
-import {reactive, ref} from "vue";
+import {reactive} from "vue";
+import {templates} from "@/js/components/bases/form/templates/formTemplates";
+import EventTypeLocation from "@/js/components/selector/EventTypeLocation.vue";
 
-const props = defineProps({
+interface EventLocationType {
+    url? : string,
+    address?: string
+}
+
+type EventAdditionalData = {
+    extraContentData : Array<any>,
+    eventType: number,
+    eventLocation: EventLocationType
+    startTime: Date,
+    endTime : Date
+}
+
+const addtEventData = reactive<EventAdditionalData>({
+    extraContentData: [],
+    eventType : 0,
+    eventLocation: {},
+    startTime: new Date(),
+    endTime: new Date()
 
 })
 
-const createNewBaseData = () => {
-    return {
-        title: '',
-        excerpt: '',
-        content: '',
-        coverImage: '',
-        authorName: '',
-        tags: []
+const updateExtraContent = (content) : void => {
+    if (content) {
+        addtEventData.extraContentData = content
     }
 }
-const baseData = reactive(createNewBaseData())
 
-const extraContentData = reactive({
-    resourceData: [],
-    templateData: []
-})
-
-const updateParentExtraContent = (content) => {
-    console.log('updating highest level tempalte and Resource')
-    if (content.resourceData) {
-        extraContentData.resourceData = content.resourceData
-    }
-    if (content.templateData) {
-        extraContentData.templateData = content.templateData
-    }
-    console.log(extraContentData)
+const handleReceiveTypes = (typeId : number) : void => {
+    addtEventData.eventType = typeId
 }
-
 </script>
 
 
 <template>
     <BaseForm
-        :base-data="baseData"
-        item-type="software"
+        item-type="event"
+        :additional-data="addtEventData"
     >
+        <template #itemType>
+            <EventTypeLocation
+                label="Select Event type"
+            />
+        </template>
         <template #extraContent>
             <ExtraContent
-                :extra-content-data="extraContentData"
-                @update-parent-extra-content="updateParentExtraContent"
+                :extra-content-data="addtEventData.extraContentData"
+                :available-templates="templates"
+                @update-parent-extra-content="updateExtraContent"
             />
         </template>
     </BaseForm>

@@ -1,8 +1,12 @@
 import Post from "@/js/models/post";
 
+export interface EventLocationType {
+    url? : string,
+    address?: string
+}
 export default class Event extends Post {
     eventtype_id: number
-    eventLocation: string
+    eventLocation: EventLocationType
     startDate: string
     endDate: string
 
@@ -13,7 +17,7 @@ export default class Event extends Post {
                 authorName: string,
                 tags: Array<string>,
                 extra_content: string,
-                eventLocation: string,
+                eventLocation: EventLocationType,
                 eventtype_id: number,
                 startDate: string,
                 endDate: string) {

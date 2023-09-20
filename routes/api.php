@@ -50,21 +50,24 @@ Route::middleware('api')->group(function() {
     Route::post('fetchSchoolContact', [SchoolController::class, 'fetchSchoolContact']);
 
     // Advice APIs
+    Route::post('createAdvicePost',[AdviceController::class, 'createAdvicePost']);
     Route::get('fetchAdvicePosts', [AdviceController::class, 'fetchAdvicePosts']);
     Route::get('fetchAdvicePostById/{id}', [AdviceController::class, 'fetchAdvicePostById']);
     Route::get('fetchAdvicePostByType/{type}', [AdviceController::class, 'fetchAdvicePostByType']);
     Route::post('fetchRelatedAdvice',[AdviceController::class, 'fetchRelatedAdvice']);
+    Route::get('fetchAdviceTypes', [AdviceController::class,'fetchAdviceTypes']);
 
     // Software APIs
     Route::post('createSoftwarePost', [SoftwareController::class,'createSoftwarePost']);
     Route::get('fetchSoftwarePosts', [SoftwareController::class, 'fetchSoftwarePosts']);
     Route::get('fetchSoftwarePostById/{id}', [SoftwareController::class, 'fetchSoftwarePostById']);
     Route::post('fetchRelatedSoftware', [SoftwareController::class, 'fetchRelatedSoftware']);
-    Route::get('fetchSoftwareTypes', [SoftwareController::class,'fetchAllSoftwareTypes']);
+    Route::get('fetchSoftwareTypes', [SoftwareController::class,'fetchSoftwareTypes']);
 
     // Event APIs
     Route::get('fetchEventPosts', [EventController::class, 'fetchEventPosts']);
     Route::get('fetchEventPostById/{id}', [EventController::class, 'fetchEventPostById']);
+    Route::get('fetchEventTypes',[EventController::class, 'fetchEventTypes']);
 
     // Community APIs
     Route::get('fetchCommunityPosts', [CommunityController::class, 'fetchCommunityPosts']);
@@ -90,8 +93,6 @@ Route::middleware('api')->group(function() {
     Route::post('updateUser', [UserController::class, 'updateUser']);
     Route::post('checkEmail', [UserController::class, 'checkEmail']);
 
-
-
     // Image upload
     Route::post('imageUpload/{type?}', [ImageController::class, 'imageUpload']);
     Route::post('imageUploadEditorjs', [ImageController::class, 'imageUploadEditorjs']);
@@ -109,7 +110,6 @@ Route::middleware('api')->group(function() {
     Route::get('fetchAllNotifications/{userId}', [NotificationController::class, 'getAllNotifications']);
     Route::get('fetchSingleNotification', [NotificationController::class, 'getSingleNotification']);
     Route::get('fetchNotificationByType', [NotificationController::class, 'getNotificationByType']);
-
     Route::post('authenticate', [OktaAuthController::class, 'authenticate']);
 
     // Partners API

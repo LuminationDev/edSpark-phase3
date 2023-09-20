@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Eventmeta;
+use App\Models\Eventtype;
 use App\Models\Partner;
 use App\Models\Usermeta;
 use Illuminate\Http\Request;
@@ -147,5 +148,20 @@ class EventController extends Controller
         } else {
             return response()->json(['error' => 'Event recording not found.'], 404);
         }
+    }
+
+    public function fetchEventTypes(Request $request): \Illuminate\Http\JsonResponse
+    {
+        $eventTypes = Eventtype::all()
+            ->map(function ($eventType) {
+                return [
+                    'id'    => $eventType->id,
+                    'name'  => $eventType->event_type_name,
+                    'value' => $eventType->event_type_value
+                ];
+            })
+            ->toArray();
+
+        return response()->json($eventTypes);
     }
 }

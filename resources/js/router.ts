@@ -1,6 +1,5 @@
 // Import router dependencies
 import BaseForm from "@/js/components/bases/form/BaseForm.vue";
-import SoftwareCreateForm from "@/js/components/software/SoftwareCreateForm.vue";
 import EdsparkPageNotFound from "@/js/pages/EdsparkPageNotFound.vue";
 import SchoolSingle from "@/js/pages/SchoolSingle.vue";
 import TheAdvice from "@/js/pages/TheAdvice.vue";
@@ -31,6 +30,9 @@ import PartnerSearch from "@/js/components/search/PartnerSearch.vue";
 import EventSearch from "@/js/components/search/EventSearch.vue";
 
 import {useAuthStore} from '@/js/stores/useAuthStore';
+import SoftwareForm from "@/js/components/bases/form/types/SoftwareForm.vue";
+import AdviceForm from "@/js/components/bases/form/types/AdviceForm.vue";
+import EventForm from "@/js/components/bases/form/types/EventForm.vue";
 
 
 type RouteMeta = {
@@ -73,7 +75,21 @@ const routes : any = [
             {
                 name: 'createSoftware',
                 path: 'software',
-                component: SoftwareCreateForm,
+                component: SoftwareForm,
+                meta: {
+                    requiresAuth: true,
+                } as RouteMeta
+            },{
+                name: 'createAdvice',
+                path: 'advice',
+                component: AdviceForm,
+                meta: {
+                    requiresAuth: true,
+                } as RouteMeta
+            },{
+                name: 'createEvent',
+                path: 'event',
+                component: EventForm,
                 meta: {
                     requiresAuth: true,
                 } as RouteMeta

@@ -198,7 +198,7 @@ class SoftwareController extends Controller
 
     }
 
-    public function fetchAllSoftwareTypes(Request $request): JsonResponse
+    public function fetchSoftwareTypes(Request $request): JsonResponse
     {
         $softwareTypes = Softwaretype::all()
             ->map(function ($softwaretype) {

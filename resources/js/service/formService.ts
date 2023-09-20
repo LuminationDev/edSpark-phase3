@@ -127,26 +127,36 @@ export const formService = {
         }
     },
     handleSaveForm: (state: any, user_id: number, additionalData: any, itemType: string): Promise<void | AxiosResponse<any>> => {
+        let createURL =''
+        let combinedData
+        const data = {
+            post_title: state.title,
+            post_excerpt: state.excerpt,
+            post_content: state.content,
+            post_status: 'Pending',
+            author_id: user_id,
+            cover_image: state.cover_image,
+            template: ''
+        }
         if (itemType === 'software') {
-            const data = {
-                post_title: state.title,
-                post_excerpt: state.excerpt,
-                post_content: state.content,
-                post_status: 'Pending',
-                author_id: user_id,
-                cover_image: state.cover_image,
-                template: ''
-            }
             const formattedAddtionalData = {
                 extra_content: formService.transformSimpleDataToFilamentFormat(additionalData['extraContentData']),
-                softwaretype_id: additionalData['selectedSoftwareTypes']
+                softwaretype_id: additionalData['softwareTypes']
             }
-            const combinedData = {...data, ...formattedAddtionalData}
-            console.log(combinedData)
-            return axios.post(API_ENDPOINTS.SOFTWARE.CREATE_SOFTWARE_POST, combinedData).then(res => {
-                console.log(res)
-            })
+            combinedData = {...data, ...formattedAddtionalData}
+            createURL = API_ENDPOINTS.SOFTWARE.CREATE_SOFTWARE_POST
+        } else if (itemType === 'advice') {
+            const formattedAddtionalData = {
+                extra_content: formService.transformSimpleDataToFilamentFormat(additionalData['extraContentData']),
+                advicetype_id: additionalData['adviceTypes']
+            }
+            combinedData = {...data, ...formattedAddtionalData}
+            createURL = API_ENDPOINTS.ADVICE.CREATE_ADVICE_POST
+
         }
+        return axios.post(createURL, combinedData).then(res => {
+            console.log(res)
+        })
 
     }
 }

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import {API_ENDPOINTS} from "@/js/constants/API_ENDPOINTS";
+import { APP_ENDPOINTS} from "@/js/constants/API_ENDPOINTS";
 
 /**
  * Import Dependencies
@@ -15,16 +15,12 @@ import Profile from "../svg/Profile.vue";
  */
 import { useUserStore } from "@/js/stores/useUserStore";
 import { storeToRefs } from "pinia";
-import axios from "axios";
 /**
  * Import components
  */
 
 const props = defineProps({
-    // currentUser: {
-    //     type: Object,
-    //     required: true,
-    // },
+
     profileDropdown: {
         type: Boolean,
         required: true,
@@ -41,7 +37,6 @@ const userStore = useUserStore();
 const { currentUser } = storeToRefs(userStore);
 const imageURL = import.meta.env.VITE_SERVER_IMAGE_API;
 const userMetadata = userStore.getUser.metadata;
-import { appURL } from "@/js/constants/serverUrl";
 
 
 //commented for now
@@ -61,7 +56,7 @@ const handleLogoutUser = async () => {
 
     // Call a logout API endpoint in laravel backend
     try {
-        const response = await fetch(API_ENDPOINTS.USER.LOGOUT, {
+        const response = await fetch(APP_ENDPOINTS.LOGOUT, {
             method: 'POST',
         });
 
