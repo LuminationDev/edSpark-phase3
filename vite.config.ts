@@ -22,7 +22,7 @@ export default defineConfig({
                     'resources/css/app.css',
                     'resources/css/output.css',
                     'resources/js/app.ts',
-                    'resources/css/filament.css',
+                    'resources/css/filament/admin/theme.css'
                 ],
                 refresh: [
                     ...refreshPaths,

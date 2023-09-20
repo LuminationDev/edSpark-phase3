@@ -1,7 +1,6 @@
-@import '../../vendor/filament/filament/resources/css/theme.css';
+@import '../../../../vendor/filament/filament/resources/css/theme.css';
 
-
-
+@config './tailwind.config.js';
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -230,7 +229,7 @@ input, textarea, select {
 }
 
 .fi-btn:hover {
-    background-color: blue !important;
+    background-color: lightseagreen !important;
 
 }
 

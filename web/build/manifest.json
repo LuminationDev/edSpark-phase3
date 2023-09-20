@@ -44,14 +44,19 @@
     "src": "resources/assets/images/profile_background.jpeg"
   },
   "resources/css/app.css": {
-    "file": "assets/app-928bda9c.css",
+    "file": "assets/app-0cd51d90.css",
     "isEntry": true,
     "src": "resources/css/app.css"
   },
   "resources/css/filament.css": {
-    "file": "assets/filament-e1bbfc0c.css",
+    "file": "assets/filament-26d5344b.css",
     "isEntry": true,
     "src": "resources/css/filament.css"
+  },
+  "resources/css/filament/admin/theme.css": {
+    "file": "assets/theme-106ac8c2.css",
+    "isEntry": true,
+    "src": "resources/css/filament/admin/theme.css"
   },
   "resources/css/output.css": {
     "file": "assets/output-4fef7ac3.css",
@@ -78,10 +83,10 @@
     ],
     "css": [
       "assets/app-b996322a.css",
-      "assets/app-928bda9c.css",
+      "assets/app-0cd51d90.css",
       "assets/output-4fef7ac3.css"
     ],
-    "file": "assets/app-982dc284.js",
+    "file": "assets/app-036f7534.js",
     "isEntry": true,
     "src": "resources/js/app.ts"
   }
