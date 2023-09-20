@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Filament\Panel;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -39,7 +40,7 @@ class User extends Authenticatable implements FilamentUser, HasName
 
     ];
 
-    public function canAccessFilament(): bool {
+    public function canAccessPanel(Panel $panel): bool {
         return true;
         // return str_ends_with($this->email, 'edspark.sa.gov.au') && $this->hasVerifiedEmail();
     }

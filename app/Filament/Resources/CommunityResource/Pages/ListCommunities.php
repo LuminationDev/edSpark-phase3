@@ -10,7 +10,7 @@ class ListCommunities extends ListRecords
 {
     protected static string $resource = CommunityResource::class;
 
-    protected function getActions(): array
+    protected function getHeaderActions(): array
     {
         return [
             Actions\CreateAction::make(),

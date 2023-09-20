@@ -6,9 +6,9 @@ use App\Filament\Resources\CommunitytypeResource\Pages;
 use App\Filament\Resources\CommunitytypeResource\RelationManagers;
 use App\Models\Communitytype;
 use Filament\Forms;
-use Filament\Resources\Form;
+use Filament\Forms\Form;
 use Filament\Resources\Resource;
-use Filament\Resources\Table;
+use Filament\Tables\Table;
 use Filament\Tables;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
@@ -20,10 +20,10 @@ class CommunitytypeResource extends Resource
     protected static ?string $model = Communitytype::class;
     protected static ?string $modelLabel= "Community Type";
 
-    protected static ?string $navigationIcon = 'heroicon-o-collection';
+    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
     protected static ?string $navigationGroup = 'Content Management';
-    protected static ?string $navigationGroupIcon = 'heroicon-o-collection';
+    protected static ?string $navigationGroupIcon = 'heroicon-o-rectangle-stack';
 
     protected static ?int $navigationSort = 6;
     protected static ?string $navigationLabel = 'Community types';

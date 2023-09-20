@@ -42,7 +42,7 @@ class EditHardware extends EditRecord
         return $this->previousUrl ?? $this->getResource()::getUrl('index');
     }
 
-    protected function getActions(): array
+    protected function getHeaderActions(): array
     {
         return [
             Actions\DeleteAction::make(),

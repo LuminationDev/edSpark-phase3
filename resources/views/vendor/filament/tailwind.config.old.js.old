@@ -13,10 +13,11 @@ module.exports = {
     theme: {
         extend: {
             colors: {
-                danger: colors.rose,
+                danger: '#e11d48',
                 primary: '#339999',
-                success: colors.green,
+                success: '#15803d',
                 warning: '#339999',
+
             },
             fontFamily: {
                 sans: ['DM Sans', ...defaultTheme.fontFamily.sans],
@@ -28,3 +29,4 @@ module.exports = {
         require('@tailwindcss/typography'),
     ],
 }
+

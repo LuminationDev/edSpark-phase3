@@ -1,7 +1,7 @@
 import * as path from "path";
 import {defineConfig} from 'vite';
 import {fileURLToPath, URL} from 'url';
-import laravel from 'laravel-vite-plugin';
+import laravel, {refreshPaths} from 'laravel-vite-plugin';
 import vue from '@vitejs/plugin-vue';
 
 
@@ -22,9 +22,12 @@ export default defineConfig({
                     'resources/css/app.css',
                     'resources/css/output.css',
                     'resources/js/app.ts',
-                    'resources/css/filament.css',
+                    'resources/css/filament/admin/theme.css'
                 ],
-                refresh: true,
+                refresh: [
+                    ...refreshPaths,
+                    'app/Livewire/**',
+                ],
             }),
     ],
     resolve: {

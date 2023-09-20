@@ -7,9 +7,9 @@ use App\Filament\Resources\AdviceResource\RelationManagers;
 use App\Models\Advice;
 use Filament\Forms;
 use Filament\Forms\Components\FileUpload;
-use Filament\Resources\Form;
+use Filament\Forms\Form;
 use Filament\Resources\Resource;
-use Filament\Resources\Table;
+use Filament\Tables\Table;
 use Filament\Tables;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
@@ -32,7 +32,7 @@ class AdviceResource extends Resource
     protected static ?string $modelLabel = 'Advice';
 
     protected static ?string $navigationGroup = 'Content Management';
-    protected static ?string $navigationGroupIcon = 'heroicon-o-collection';
+    protected static ?string $navigationGroupIcon = 'heroicon-o-rectangle-stack';
 
     protected static ?int $navigationSort = 1;
 
@@ -126,9 +126,9 @@ class AdviceResource extends Resource
     {
         $filesystem = app(Filesystem::class);
 
-        return collect($filesystem->allFiles(app_path('Filament/PageTemplates/Advice')))
+        return collect($filesystem->allFiles(app_path('Filament/PageTemplates')))
             ->map(function (SplFileInfo $file): string {
-                return (string)Str::of('App\\Filament\\PageTemplates\\Advice')
+                return (string)Str::of('App\\Filament\\PageTemplates')
                     ->append('\\', $file->getRelativePathname())
                     ->replace(['/', '.php'], ['\\', '']);
             });
