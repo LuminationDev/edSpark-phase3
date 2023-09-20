@@ -21,7 +21,7 @@ const edsparkColor = [
 ];
 
 const generateSafeList = (colors) => {
-    let safeList = [];
+    const safeList = [];
     ['text', 'bg', 'hover:text'].forEach((prefix) => {
         colors.forEach((color) => {
             safeList.push(`${prefix}-[${color}]`);
@@ -34,6 +34,7 @@ const generateSafeList = (colors) => {
 
 
 module.exports = {
+    darkMode: 'class',
     content: [
         './resources/**/*.blade.php',
         './resources/**/*.js',

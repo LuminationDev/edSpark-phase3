@@ -1,8 +1,4 @@
 {
-  "resources/assets/images/CommunityIllustration.png": {
-    "file": "assets/CommunityIllustration-a28447f8.png",
-    "src": "resources/assets/images/CommunityIllustration.png"
-  },
   "resources/assets/images/PartnersPuzzle.png": {
     "file": "assets/PartnersPuzzle-f8ea4960.png",
     "src": "resources/assets/images/PartnersPuzzle.png"
@@ -48,22 +44,22 @@
     "src": "resources/assets/images/profile_background.jpeg"
   },
   "resources/css/app.css": {
-    "file": "assets/app-4fef7ac3.css",
+    "file": "assets/app-928bda9c.css",
     "isEntry": true,
     "src": "resources/css/app.css"
   },
   "resources/css/filament.css": {
-    "file": "assets/filament-c8743f2a.css",
+    "file": "assets/filament-e1bbfc0c.css",
     "isEntry": true,
     "src": "resources/css/filament.css"
   },
   "resources/css/output.css": {
-    "file": "assets/output-4fa70136.css",
+    "file": "assets/output-4fef7ac3.css",
     "isEntry": true,
     "src": "resources/css/output.css"
   },
   "resources/js/app.css": {
-    "file": "assets/app-bd16bfdb.css",
+    "file": "assets/app-b996322a.css",
     "src": "resources/js/app.css"
   },
   "resources/js/app.ts": {
@@ -74,7 +70,6 @@
       "assets/sagovau_rev-19524a3e.png",
       "assets/white-ribbon-6ba8cd1c.svg",
       "assets/dfe-42a1625e.svg",
-      "assets/CommunityIllustration-a28447f8.png",
       "assets/eventsCalendar-39cdf35b.png",
       "assets/hardwareInfoImage-e7b190a8.png",
       "assets/PartnersPuzzle-f8ea4960.png",
@@ -82,11 +77,11 @@
       "assets/profile_background-84005a5c.jpeg"
     ],
     "css": [
-      "assets/app-bd16bfdb.css",
-      "assets/app-4fef7ac3.css",
-      "assets/output-4fa70136.css"
+      "assets/app-b996322a.css",
+      "assets/app-928bda9c.css",
+      "assets/output-4fef7ac3.css"
     ],
-    "file": "assets/app-8c2a1000.js",
+    "file": "assets/app-982dc284.js",
     "isEntry": true,
     "src": "resources/js/app.ts"
   }
