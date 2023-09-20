@@ -69,7 +69,6 @@ class AdminPanelProvider extends PanelProvider
                     950 => '5, 15, 15',
                 ],
             ])
-            ->viteTheme('resources/css/filament/admin/theme.css')
-            ->spa();
+            ->viteTheme('resources/css/filament/admin/theme.css');
     }
 }
