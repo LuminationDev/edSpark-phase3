@@ -75,7 +75,8 @@ export const API_ENDPOINTS : Endpoints =  appendServerURL({
         ADD_RSVP_TO_EVENT: `/addRsvpToEvent`,
         FETCH_EVENT_POSTS: `/fetchEventPosts`,
         FETCH_EVENT_POST_BY_ID: `/fetchEventPostById/`,
-        FETCH_EVENT_TYPES: `/fetchEventTypes`
+        FETCH_EVENT_TYPES: `/fetchEventTypes`,
+        CREATE_EVENT_POST: `/createEventPost`
     },
     USER: {
         FETCH_USER_BY_ID: `/fetchUser/`,

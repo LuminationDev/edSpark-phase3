@@ -6,7 +6,7 @@ import {storeToRefs} from "pinia";
 import {capitalize, ref, watch} from "vue";
 import {reactive} from 'vue'
 
-import ImageUploaderForm from "@/js/components/bases/form/ImageUploaderForm.vue";
+import ImageUploaderForm, {MediaType} from "@/js/components/bases/form/ImageUploaderForm.vue";
 import TagsInput from "@/js/components/bases/form/TagsInput.vue";
 import TrixRichEditor from "@/js/components/bases/form/TrixRichEditor.vue";
 import TextInput from "@/js/components/bases/TextInput.vue";
@@ -108,6 +108,12 @@ watchOnce(autoSaveContent, () => {
     }
 })
 
+const handleReceiveMediaFromUploader = (media : MediaType[]): void =>{
+    console.log(media)
+    if(media.length === 1){
+        state.coverImage = media[0].remoteUrl
+    }
+}
 
 const handleClickSave = () => {
     console.log("Clicked save")
@@ -160,7 +166,12 @@ const handleClickSave = () => {
         </div>
         <div class="containerTempImageUploader my-2">
             <label> Cover image (1 image file)</label>
-            <ImageUploaderForm :item-type="props.itemType" />
+            <ImageUploaderForm
+                :item-type="props.itemType"
+                :current-media="state.coverImage"
+                :max="1"
+                @emit-uploaded-media="handleReceiveMediaFromUploader"
+            />
         </div>
         <!--        <TextInput-->
         <!--            v-model="v$.authorName.$model"-->

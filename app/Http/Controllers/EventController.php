@@ -8,6 +8,7 @@ use App\Models\Partner;
 use App\Models\Usermeta;
 use Illuminate\Http\Request;
 use App\Models\Event;
+use Illuminate\Support\Facades\Validator;
 
 class EventController extends Controller
 {
@@ -74,6 +75,37 @@ class EventController extends Controller
             'isBookmarkedByUser' => $isBookmarkedByUser,
             'tags' => $event->tags->pluck('name')
         ];
+    }
+
+    public function createEventPost(Request $request){
+            $validator = Validator::make($request->all(), [
+                'event_title' => 'required|string',
+                'event_content' => 'required|string',
+                'event_excerpt' => 'sometimes|string',
+                'event_location' => 'required|string',
+                'start_date' => 'required|date',
+                'end_date' => 'required|date|after_or_equal:start_date',
+                'event_status' => 'required|string',
+                'author_id' => 'required|integer|exists:users,id',
+                'eventtype_id' => 'required|integer|exists:event_types,id', // Assuming you have a table named event_types
+                'cover_image' => 'sometimes|array',
+                'extra_content' => 'sometimes|array'
+            ]);
+
+            if ($validator->fails()) {
+                return response()->json(['errors' => $validator->errors()], 400);
+            }
+
+            $eventData = $request->except('eventtype_id');
+            $event = Event::create($eventData);
+
+            // Attach the event type to the created event
+            if ($request->has('eventtype_id')) {
+                $event->eventtype()->associate($request->input('eventtype_id'))->save();
+            }
+
+            return response()->json(['message' => 'Event created successfully!', 'event' => $event], 201);
+
     }
 
 

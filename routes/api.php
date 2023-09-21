@@ -65,6 +65,7 @@ Route::middleware('api')->group(function() {
     Route::get('fetchSoftwareTypes', [SoftwareController::class,'fetchSoftwareTypes']);
 
     // Event APIs
+    Route::post('createEventPost',[EventController::class,'createEventPost']);
     Route::get('fetchEventPosts', [EventController::class, 'fetchEventPosts']);
     Route::get('fetchEventPostById/{id}', [EventController::class, 'fetchEventPostById']);
     Route::get('fetchEventTypes',[EventController::class, 'fetchEventTypes']);
