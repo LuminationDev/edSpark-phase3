@@ -1,4 +1,5 @@
 <script setup>
+import {watchOnce} from "@vueuse/core";
 import {ref} from "vue";
 import Vue3TagsInput from 'vue3-tags-input';
 
@@ -34,6 +35,9 @@ const handleChangeTag = (newtags) => {
     emit('update:modelValue', newtags)
 
 }
+watchOnce(props,() =>{
+    tags.value = props.modelValue
+})
 </script>
 
 <template>
