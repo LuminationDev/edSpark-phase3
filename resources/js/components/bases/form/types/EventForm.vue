@@ -1,40 +1,47 @@
 <script setup lang="ts">
+import {reactive} from "vue";
+
 import BaseForm from "@/js/components/bases/form/BaseForm.vue";
 import ExtraContent from "@/js/components/bases/form/ExtraContent.vue";
-import {reactive} from "vue";
 import {templates} from "@/js/components/bases/form/templates/formTemplates";
-import EventTypeLocation from "@/js/components/selector/EventTypeLocation.vue";
+import EventTypeLocationTime from "@/js/components/selector/EventTypeLocationTime.vue";
 
 interface EventLocationType {
-    url? : string,
+    url?: string,
     address?: string
 }
 
 type EventAdditionalData = {
-    extraContentData : Array<any>,
+    extraContentData: Array<any>,
     eventType: number,
     eventLocation: EventLocationType
     startTime: Date,
-    endTime : Date
+    endTime: Date
 }
 
 const addtEventData = reactive<EventAdditionalData>({
     extraContentData: [],
-    eventType : 0,
+    eventType: 0,
     eventLocation: {},
     startTime: new Date(),
     endTime: new Date()
 
 })
 
-const updateExtraContent = (content) : void => {
+const updateExtraContent = (content): void => {
     if (content) {
         addtEventData.extraContentData = content
     }
 }
 
-const handleReceiveTypes = (typeId : number) : void => {
-    addtEventData.eventType = typeId
+const handleReceiveTypesLocationTime = (data: object): void => {
+    addtEventData.eventType = data.eventType
+    addtEventData.eventLocation = data.eventLocation
+    addtEventData.startTime = data.startTime
+    addtEventData.endTime = data.endTime
+    if (data.extraContentData) {
+        addtEventData.extraContentData = data.extraContentData
+    }
 }
 </script>
 
@@ -43,10 +50,13 @@ const handleReceiveTypes = (typeId : number) : void => {
     <BaseForm
         item-type="event"
         :additional-data="addtEventData"
+        @base-emits-addt-content="handleReceiveTypesLocationTime"
     >
         <template #itemType>
-            <EventTypeLocation
+            <EventTypeLocationTime
+                :type-location-time="addtEventData"
                 label="Select Event type"
+                @emit-event-type-location-time="handleReceiveTypesLocationTime"
             />
         </template>
         <template #extraContent>

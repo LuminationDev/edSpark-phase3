@@ -88,7 +88,8 @@ class AutoSaveController extends Controller
             return response()->json(['message' => 'No active auto-save found.'], 404);
         }
 
-        return response()->json($autoSave);
+//        return response()->json($autoSave);
+        return response()->json(['message' => 'Auto-save found!', 'data' => $autoSave], 200);
     }
 
 }

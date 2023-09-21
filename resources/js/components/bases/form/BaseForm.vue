@@ -1,17 +1,21 @@
 <script setup lang="ts">
+import useVuelidate from "@vuelidate/core";
+import {required} from "@vuelidate/validators";
+import {watchOnce} from "@vueuse/core";
+import {storeToRefs} from "pinia";
+import {capitalize, ref, watch} from "vue";
+import {reactive} from 'vue'
+
 import ImageUploaderForm from "@/js/components/bases/form/ImageUploaderForm.vue";
 import TagsInput from "@/js/components/bases/form/TagsInput.vue";
 import TrixRichEditor from "@/js/components/bases/form/TrixRichEditor.vue";
 import TextInput from "@/js/components/bases/TextInput.vue";
-import {autosaveService} from "@/js/service/autosaveService";
-import {useUserStore} from "@/js/stores/useUserStore";
-import {storeToRefs} from "pinia";
-import {capitalize, onMounted, onUnmounted} from "vue";
-import useVuelidate from "@vuelidate/core";
-import {required} from "@vuelidate/validators";
-import {ref, reactive} from 'vue'
 import GenericButton from "@/js/components/button/GenericButton.vue";
+import {useAutoSave} from "@/js/composables/useAutoSave";
+import {differenceObjects} from "@/js/helpers/jsonHelpers";
+import {autoSaveService} from "@/js/service/autoSaveService";
 import {formService} from "@/js/service/formService";
+import {useUserStore} from "@/js/stores/useUserStore";
 
 
 const props = defineProps({
@@ -33,20 +37,16 @@ const props = defineProps({
  * If form is editing, post_id will be set to the edited post's id
  * @type {{CREATE: string, EDIT: string}}
  */
-// const FormAction = {
-//     CREATE: 'CREATE',
-//     EDIT: 'EDIT'
-// }
-
-
-const FormStatus = {
-    NEW: 'New',
-    UNSAVED: 'Unsaved',
-    AUTOSAVED: 'Autosaved',
-    DRAFT: 'Draft',
-    SAVED: 'Saved',
-    LOADED_AUTOSAVE: 'Autosave loaded'
+enum FormAction {
+    CREATE = 'CREATE',
+    EDIT = 'EDIT'
 }
+
+
+const emits = defineEmits<{
+    (e: 'baseEmitsAddtContent', content): void
+}>()
+
 
 const state = reactive({
     title: '',
@@ -65,65 +65,18 @@ const rules = {
     tags: {}
 }
 
-const v$ = useVuelidate(rules, state)
+const v$: any = useVuelidate(rules, state)
 
-const autosaveTimer = ref(null);
-const isSaving = ref(false);
-const formStatusDisplay = ref('')
+const currentAction = ref<FormAction>(FormAction.CREATE)
+
 const userStore = useUserStore()
 const {currentUser} = storeToRefs(userStore)
 
-
-const autosave = () => {
-    const data = {
-        ...state,
-        ...props.additionalData
-    }
-    autosaveService.savePost(currentUser.value.id, props.itemType, data).then(res => {
-        isSaving.value = false
-        formStatusDisplay.value = FormStatus.AUTOSAVED
-    }).catch(() => {
-        formStatusDisplay.value = FormStatus.UNSAVED
-    })
-}
-const startAutosaveTimer = (): void => {
-    // If there's already a timer running, clear it
-    if (autosaveTimer.value) {
-        clearTimeout(autosaveTimer.value);
-    }
-
-    // Start a new timer
-    autosaveTimer.value = setTimeout(() => {
-        isSaving.value = true;
-        autosave();
-    }, 5000);
-}
-
-const handleActivity = () => {
-    formStatusDisplay.value = FormStatus.UNSAVED
-    if (isSaving.value) return;
-    startAutosaveTimer();
-}
-
-onMounted(() => {
-    document.addEventListener('input', handleActivity);
-    document.addEventListener('click', handleActivity);
-
-    try {
-        autosaveService.getAutosave(currentUser.value.id, props.itemType).then(res => {
-            formStatusDisplay.value = FormStatus.DRAFT
-        }).catch(err => {
-            formStatusDisplay.value = FormStatus.NEW
-        })
-    } catch {
-        console.log('error occured')
-    }
-});
-
-onUnmounted(() => {
-    document.removeEventListener('input', handleActivity);
-    document.removeEventListener('click', handleActivity);
-});
+const {
+    formStatusDisplay,
+    isSaving,
+    autoSaveContent
+} = useAutoSave(autoSaveService, currentUser, props.itemType, () => ({...state, ...props.additionalData}), 'BaseFormParent')
 
 const handleTrixInputContent = (data) => {
     v$.value.content.$model = data
@@ -133,14 +86,36 @@ const handleTrixInputExcerpt = (data) => {
     v$.value.excerpt.$model = data
 }
 
+const baseEmitsExtraContent = (): void => {
+    const addtContent = differenceObjects(autoSaveContent.value.content,state)
+    emits('baseEmitsAddtContent', addtContent)
+}
+
+// copy data from autosave to localState. will only run once under watchOnce
+const populateLocalStateFromAutoSave = (): void => {
+    state.title = autoSaveContent.value.content?.title || ""
+    state.excerpt = autoSaveContent.value.content?.excerpt || ""
+    state.content = autoSaveContent.value.content?.content || ""
+    state.coverImage = autoSaveContent.value.content?.coverImage || ""
+    state.authorName = autoSaveContent.value.content?.authorName || ""
+    state.tags = autoSaveContent.value.content?.tags || []
+}
+
+watchOnce(autoSaveContent, () => {
+    if (currentAction.value === FormAction.CREATE) {
+        populateLocalStateFromAutoSave()
+        baseEmitsExtraContent()
+    }
+})
+
 
 const handleClickSave = () => {
     console.log("Clicked save")
-    try{
+    try {
         formService.handleSaveForm(state, currentUser.value.id, props.additionalData, props.itemType).then(() => {
             console.log('kinda succedd from base form')
         })
-    } catch (e){
+    } catch (e) {
         console.log('failed to create ')
     }
 
@@ -148,7 +123,10 @@ const handleClickSave = () => {
 </script>
 
 <template>
-    <div class="BaseFormContainer border-[1px] flex flex-col mt-12 mx-5 p-4 rounded-2xl text-black md:!mx-10 lg:!mx-20">
+    <div
+        id="BaseFormParent"
+        class="BaseFormContainer border-[1px] flex flex-col mt-12 mx-5 p-4 rounded-2xl text-black md:!mx-10 lg:!mx-20"
+    >
         <div class="Introduction formHeader my-4">
             {{ capitalize(props.itemType) }} Form {{ isSaving ? "Saving..." : (formStatusDisplay || '') }}
             <slot name="formHeader" />
@@ -213,5 +191,6 @@ const handleClickSave = () => {
         <GenericButton :callback="handleClickSave">
             Save
         </GenericButton>
+        <pre> {{ autoSaveContent }}</pre>
     </div>
 </template>

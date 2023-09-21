@@ -9,7 +9,7 @@ import {templates} from "@/js/components/bases/form/templates/formTemplates";
 
 const addtAdviceData = reactive({
     extraContentData: [],
-    adviceTypes : []
+    adviceTypes : [],
 
 })
 

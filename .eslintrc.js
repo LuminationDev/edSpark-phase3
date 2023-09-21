@@ -1,5 +1,5 @@
 module.exports = {
-    "plugins": ["@kalimahapps/eslint-plugin-tailwind"],
+    "plugins": ["@kalimahapps/eslint-plugin-tailwind","simple-import-sort"],
     extends: [
         // add more generic rulesets here, such as:
         'plugin:vue/vue3-recommended',
@@ -12,7 +12,7 @@ module.exports = {
             "attribute": 1,
             "baseIndent": 1,
             "closeBracket": 0,
-            "alignAttributesVertically": false,
+            "alignAttributesVertically": true,
             "ignores": []
         }],
         "@kalimahapps/tailwind/sort": "warn",
@@ -30,6 +30,7 @@ module.exports = {
         '@typescript-eslint/no-explicit-any': 'off',
         '@typescript-eslint/no-non-null-assertion': 'warn',
         '@typescript-eslint/no-var-requires': 'warn',
+        "simple-import-sort/imports": "warn"
     },
     parserOptions: {
         ecmaVersion: 'latest',
