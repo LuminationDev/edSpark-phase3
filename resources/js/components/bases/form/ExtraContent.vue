@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import {watchDebounced, watchOnce} from "@vueuse/core";
-import {reactive, ref} from 'vue'
+import {onClickOutside, watchDebounced, watchOnce} from "@vueuse/core";
+import {reactive, Ref, ref} from 'vue'
 
 import ExtraContentHeader from "@/js/components/bases/form/ExtraContentHeader.vue";
 import ExtraTemplate from "@/js/components/bases/form/ExtraTemplate.vue";
@@ -27,6 +27,7 @@ const emits = defineEmits(['updateParentExtraContent'])
 
 
 const showSelectorPopup = ref<boolean>(false)
+const addExtraContentItemSelector: Ref<HTMLDivElement | null> = ref(null);
 
 const populateLocalStateFromBaseProps = (): void => {
     state.templateData = props.extraContentData
@@ -35,12 +36,15 @@ const populateLocalStateFromBaseProps = (): void => {
 watchOnce(props, () => {
     console.log('inside extraContet watcher once')
     populateLocalStateFromBaseProps()
-}, {deep : true})
+}, {deep: true})
 
 watchDebounced(state, () => {
     emits('updateParentExtraContent', state.templateData)
 }, {debounce: 1000, maxWait: 2000})
-//
+
+onClickOutside(addExtraContentItemSelector, () => {
+    showSelectorPopup.value = false
+})
 
 
 const handleClickAddItem = (): void => {
@@ -113,6 +117,7 @@ const handleChangeTemplateType = (templateIndex, templateNewType) => {
                 </GenericButton>
                 <div
                     v-if="showSelectorPopup"
+                    ref="addExtraContentItemSelector"
                     class="absolute top-full left-0 addItemSelectorPopup bg-white rounded-2xl w-48"
                 >
                     <ul class="availableAddItemList border-[1px] border-main-darkTeal flex flex-col rounded-xl">

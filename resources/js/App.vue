@@ -1,23 +1,25 @@
 <script setup>
 
-import GlobalSearch from "@/js/components/search/GlobalSearch.vue";
-import NavBar from './components/global/navbar/NavBar.vue';
-import Footer from './components/global/Footer/Footer.vue';
-import {useUserStore} from "@/js/stores/useUserStore";
 import {storeToRefs} from "pinia";
-import {useRoute, useRouter} from 'vue-router';
 import {onBeforeMount, onBeforeUnmount} from "vue";
-import recommenderEdsparkSingletonFactory from "@/js/recommender/recommenderEdspark";
-import {isObjectEmpty} from "@/js/helpers/objectHelpers";
-import {useWindowStore} from "@/js/stores/useWindowStore";
-import NavbarMobileMenu from "@/js/components/global/navbar/NavbarMobileMenu.vue";
-import {useAuthStore} from "@/js/stores/useAuthStore";
 import {onMounted, ref} from "vue";
+import {useRoute, useRouter} from 'vue-router';
+
+import NavbarMobileMenu from "@/js/components/global/navbar/NavbarMobileMenu.vue";
+import GlobalSearch from "@/js/components/search/GlobalSearch.vue";
+import {isObjectEmpty} from "@/js/helpers/objectHelpers";
+import recommenderEdsparkSingletonFactory from "@/js/recommender/recommenderEdspark";
+import {useAuthStore} from "@/js/stores/useAuthStore";
+import {useUserStore} from "@/js/stores/useUserStore";
+import {useWindowStore} from "@/js/stores/useWindowStore";
+
+import Footer from './components/global/Footer/Footer.vue';
+import NavBar from './components/global/navbar/NavBar.vue';
 
 
 const router = useRouter();
 const route = useRoute();
-let recommender
+let recommender;
 
 const userStore = useUserStore()
 const {currentUser} = storeToRefs(userStore)
