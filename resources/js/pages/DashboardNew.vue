@@ -82,8 +82,6 @@ const getIdToken = (async () => {
     }
 })();
 
-
-
 /**
  * Check if user has an exisitng account
  */
@@ -101,7 +99,6 @@ const checkFirstVisit = async (emailAddress) => {
 
 
 const shouldStartSwrv = computed(() => {
-    console.log(Boolean(currentUser.value.id))
     return Boolean(currentUser.value.id)
 })
 
@@ -261,7 +258,7 @@ const softwareResponsiveData = computed(() => {
         />
 
         <!-- Software Cards Here -->
-        <div class="flex flex-col gap-[24px] group/bg h-full py-8 relative lg:!flex-row lg:!px-huge">
+        <div class="flex flex-col gap-6 group/bg h-full py-8 relative lg:!flex-row lg:!px-huge">
             <div
                 class="
                     -translate-y-1/2

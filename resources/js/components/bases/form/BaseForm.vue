@@ -3,7 +3,7 @@ import useVuelidate from "@vuelidate/core";
 import {required} from "@vuelidate/validators";
 import {watchOnce} from "@vueuse/core";
 import {storeToRefs} from "pinia";
-import {capitalize, ref, watch} from "vue";
+import {capitalize, computed, ref} from "vue";
 import {reactive} from 'vue'
 
 import ImageUploaderForm, {MediaType} from "@/js/components/bases/form/ImageUploaderForm.vue";
@@ -11,7 +11,7 @@ import TagsInput from "@/js/components/bases/form/TagsInput.vue";
 import TrixRichEditor from "@/js/components/bases/form/TrixRichEditor.vue";
 import TextInput from "@/js/components/bases/TextInput.vue";
 import GenericButton from "@/js/components/button/GenericButton.vue";
-import {useAutoSave} from "@/js/composables/useAutoSave";
+import {FormStatus, useAutoSave} from "@/js/composables/useAutoSave";
 import {differenceObjects} from "@/js/helpers/jsonHelpers";
 import {autoSaveService} from "@/js/service/autoSaveService";
 import {formService} from "@/js/service/formService";
@@ -75,7 +75,7 @@ const {currentUser} = storeToRefs(userStore)
 const {
     formStatusDisplay,
     isSaving,
-    autoSaveContent
+    autoSaveContent, loadAutoSaveData
 } = useAutoSave(autoSaveService, currentUser, props.itemType, () => ({...state, ...props.additionalData}), 'BaseFormParent')
 
 const handleTrixInputContent = (data) => {
@@ -87,7 +87,7 @@ const handleTrixInputExcerpt = (data) => {
 }
 
 const baseEmitsExtraContent = (): void => {
-    const addtContent = differenceObjects(autoSaveContent.value.content,state)
+    const addtContent = differenceObjects(autoSaveContent.value.content, state)
     emits('baseEmitsAddtContent', addtContent)
 }
 
@@ -108,9 +108,9 @@ watchOnce(autoSaveContent, () => {
     }
 })
 
-const handleReceiveMediaFromUploader = (media : MediaType[]): void =>{
+const handleReceiveMediaFromUploader = (media: MediaType[]): void => {
     console.log(media)
-    if(media.length === 1){
+    if (media.length === 1) {
         state.coverImage = media[0].remoteUrl
     }
 }
@@ -126,6 +126,26 @@ const handleClickSave = () => {
     }
 
 }
+
+const titleGenerator = computed(() => {
+    if (currentAction.value === FormAction.CREATE) {
+        return "Create " + capitalize(props.itemType)
+
+    } else if (currentAction.value === FormAction.EDIT) {
+        return "Edit " + capitalize(props.itemType)
+    }
+})
+
+const statusGenerator = computed(() => {
+    if (isSaving.value) {
+        return "Saving data"
+    } else if (formStatusDisplay.value) {
+        return formStatusDisplay.value
+    } else {
+        return ''
+    }
+
+})
 </script>
 
 <template>
@@ -134,7 +154,30 @@ const handleClickSave = () => {
         class="BaseFormContainer border-[1px] flex flex-col mt-12 mx-5 p-4 rounded-2xl text-black md:!mx-10 lg:!mx-20"
     >
         <div class="Introduction formHeader my-4">
-            {{ capitalize(props.itemType) }} Form {{ isSaving ? "Saving..." : (formStatusDisplay || '') }}
+            <div class="flex justify-between flex-row">
+                <div class="font-semibold text-xl">
+                    {{ titleGenerator }}
+                </div>
+                <div class="flex flex-col smallAutoSaveHeaderSection">
+                    <div class="statusDisplay text-md">
+                        {{ statusGenerator }}
+                    </div>
+                    <div
+                        v-if="formStatusDisplay === FormStatus.FOUND_AUTOSAVE"
+                        class="
+                            font-semibold
+                            loadAutoSaveText
+                            text-green-600
+                            hover:text-green-800
+                            text-sm
+                            hover:cursor-pointer
+                            "
+                        @click="loadAutoSaveData"
+                    >
+                        Load autosave
+                    </div>
+                </div>
+            </div>
             <slot name="formHeader" />
         </div>
         <TextInput
@@ -173,17 +216,6 @@ const handleClickSave = () => {
                 @emit-uploaded-media="handleReceiveMediaFromUploader"
             />
         </div>
-        <!--        <TextInput-->
-        <!--            v-model="v$.authorName.$model"-->
-        <!--            :v$="v$.authorName"-->
-        <!--            field-id="excerpt input"-->
-        <!--            class="my-2"-->
-        <!--            placeholder=""-->
-        <!--        >-->
-        <!--            <template #label>-->
-        <!--                Author's name-->
-        <!--            </template>-->
-        <!--        </TextInput>-->
         <TagsInput
             v-model="v$.tags.$model"
             :field-id="'tag-selector'"
@@ -196,12 +228,23 @@ const handleClickSave = () => {
         <div class="itemType">
             <slot name="itemType" />
         </div>
-        <div class="extraContentSection">
+        <div class="extraContentSection mb-4">
             <slot name="extraContent" />
         </div>
-        <GenericButton :callback="handleClickSave">
-            Save
-        </GenericButton>
+        <div class="flex justify-center gap-6 saveButtonContainer">
+            <GenericButton
+                class="px-6 py-2"
+                :callback="handleClickSave"
+            >
+                Save as draft
+            </GenericButton>
+            <GenericButton
+                class="px-6 py-2"
+                :callback="handleClickSave"
+            >
+                Submit for moderation
+            </GenericButton>
+        </div>
         <pre> {{ autoSaveContent }}</pre>
     </div>
 </template>
