@@ -1,7 +1,11 @@
 <script setup>
 // https://gist.github.com/nomadjimbob/db6d3cdb630a931722595f9adf75ca53ss - taken from this link by nomadjimbob
 import Trix from 'trix'
-import {ref, watch, computed, onMounted} from 'vue';
+import {computed,  ref, watch} from 'vue';
+
+import {headingButton, subheadingButton, underlineButton} from "@/js/components/bases/form/EditorButtonIcon";
+import Profile from "@/js/components/svg/Profile.vue";
+import {API_ENDPOINTS} from "@/js/constants/API_ENDPOINTS";
 
 const props = defineProps({
     disabledEditor: {
@@ -72,8 +76,43 @@ const emitEditorState = (value) => {
 const emitFileAccept = (file) => {
     emits('trix-file-accept', file)
 }
-const emitAttachmentAdd = (file) => {
-    emits('trix-attachment-add', file)
+const emitAttachmentAdd = async (event) => {
+    const attachment = event.attachment;
+
+    if (!attachment.file && attachment.getURL()) {
+        try {
+            const response = await fetch(attachment.getURL());
+            const blob = await response.blob();
+
+            // Form data for uploading image
+            const formData = new FormData();
+            formData.append('image', blob, `${randomId()}.jpg`);
+
+            // Upload the image to your endpoint
+            const uploadResponse = await fetch(API_ENDPOINTS.IMAGE.IMAGE_UPLOAD_EDITOR_JS, {
+                method: 'POST',
+                body: formData
+            });
+
+            if (!uploadResponse.ok) {
+                throw new Error('Failed to upload image');
+            }
+
+            const data = await uploadResponse.json();
+            const imageUrl = data.file.url;
+
+            // Set the new image URL as the attachment attributes
+            attachment.setAttributes({
+                url: imageUrl,
+                href: imageUrl
+            });
+            console.log(imageUrl)
+
+        } catch (error) {
+            console.error('Error processing the image:', error);
+            // Handle the error further if needed
+        }
+    }
 }
 const emitAttachmentRemove = (file) => {
     emits('trix-attachment-remove', file)
@@ -146,80 +185,72 @@ watch(editorContent, emitEditorState)
 watch(initialContent, handleInitialContentChange)
 watch(isDisabled, decorateDisabledEditor)
 /** Extra Toolbar Buttons **/
+const buildButtonHtml = (options, name, func) => {
+    const style = options.customStyle ? `style="${options.customStyle}"` : '';
+    const buttonClass = options.divWrap ? '' : `class="trix-button trix-button--icon"`;
+    const onClickAttr = func ? `onClick="Trix.$extensions.${name}(event, '${name}', '${options.id}', 'click')"` : '';
+    const titleAttr = options.title ? `title="${options.title}"` : '';
+
+    return `
+        ${options.divWrap ? '<div style="position:relative" class="trix-button trix-button--icon">' : ''}
+            <button type="button" ${style} ${buttonClass} data-trix-attribute="${name}" ${onClickAttr} ${titleAttr}>
+                ${options.icon}
+            </button>
+            ${options.html || ''}
+        ${options.divWrap ? '</div>' : ''}
+    `;
+}
+
 const addToolbarButton = async (name, options, func) => {
+    const {
+        icon = '?',
+        group = 'text',
+        position = 'beforeend',
+        id = randomId(),
+        trixAttribute,
+        html,
+        ...otherOptions
+    } = options;
+
     whenInitalized(() => {
-        options.icon = options.icon || '?'
-        options.group = options.group || 'text'
-        options.position = options.position || 'beforeend'
-        options.id = options.id || randomId()
-
-        if (options.trixAttribute && options.trixAttribute.type && options.trixAttribute.data && Trix.config[options.trixAttribute.type + 'Attributes']) {
-            Trix.config[options.trixAttribute.type + 'Attributes'][name] = options.trixAttribute.data
+        if (trixAttribute?.type && trixAttribute?.data && Trix.config[trixAttribute.type + 'Attributes']) {
+            Trix.config[trixAttribute.type + 'Attributes'][name] = trixAttribute.data;
         }
 
-        if (options.html) {
-            options.html = options.html.replace(/%id%/ig, options.id)
-
-            if (func) {
-                options.html = options.html.replace(/%func\((.*?)\)%/ig, `Trix.$extensions.${name}(event, '${name}', '${options.id}', $1)`)
-            }
-        }
-
-        let toolbarId = trix.value.getAttribute('toolbar')
-
+        let processedHtml = html?.replace(/%id%/ig, id);
         if (func) {
-            if (Trix?.$extensions === undefined) Trix.$extensions = {}
-            Trix.$extensions[name] = func
+            processedHtml = processedHtml?.replace(/%func\((.*?)\)%/ig, `Trix.$extensions.${name}(event, '${name}', '${id}', $1)`);
+            if (!Trix.$extensions) Trix.$extensions = {};
+            Trix.$extensions[name] = func;
         }
 
+        const toolbarId = trix.value.getAttribute('toolbar');
         document.getElementById(toolbarId)
-            .querySelector(`.trix-button-group.trix-button-group--${options.group}-tools`)
-            .insertAdjacentHTML(options.position, `${options.divWrap ? '<div style="position:relative" class="trix-button trix-button--icon">' : ''}<button type="button" ${options.divWrap ? '' : 'class="trix-button trix-button--icon"'} data-trix-attribute="${name}" ${func ? `onClick="Trix.$extensions.${name}(event, '${name}', '${options.id}', 'click')"` : ''} ${options.title ? `title="${options.title}"` : ''}>${options.icon}</button>${options.html ? `${options.html}` : ''}${options.divWrap ? '</div>' : ''}`)
-    })
+            .querySelector(`.trix-button-group.trix-button-group--${group}-tools`)
+            .insertAdjacentHTML(position, buildButtonHtml({...otherOptions, icon, html: processedHtml}, name, func));
+    });
 }
 
-/* Foreground and Background Colors - Based on https://github.com/basecamp/trix/issues/985 */
-const foregroundColor = {
-    icon: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Pro 6.2.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. --><path d="M512 256c0 .9 0 1.8 0 2.7c-.4 36.5-33.6 61.3-70.1 61.3H344c-26.5 0-48 21.5-48 48c0 3.4 .4 6.7 1 9.9c2.1 10.2 6.5 20 10.8 29.9c6.1 13.8 12.1 27.5 12.1 42c0 31.8-21.6 60.7-53.4 62c-3.5 .1-7 .2-10.6 .2C114.6 512 0 397.4 0 256S114.6 0 256 0S512 114.6 512 256zM128 288c0-17.7-14.3-32-32-32s-32 14.3-32 32s14.3 32 32 32s32-14.3 32-32zm0-96c17.7 0 32-14.3 32-32s-14.3-32-32-32s-32 14.3-32 32s14.3 32 32 32zM288 96c0-17.7-14.3-32-32-32s-32 14.3-32 32s14.3 32 32 32s32-14.3 32-32zm96 96c17.7 0 32-14.3 32-32s-14.3-32-32-32s-32 14.3-32 32s14.3 32 32 32z"/></svg>',
+
+const underlineButtonConfig = {
+    icon: underlineButton,
     group: 'text',
     position: 'beforeend',
-    title: 'Text colour',
-    html: '<input type="color" style="position:absolute;top:0;left:0;height:100%;width:100%;opacity:0" id="%ID%-picker" onchange="%func(\'colorChanged\')%" />',
-    divWrap: true,
+    title: 'Underline',
     trixAttribute: {
         type: 'text',
         data: {
-            styleProperty: 'color',
+            styleProperty: 'textDecoration',
+            value: 'underline',
             inheritable: true
         }
-    },
-}
-const backgroundColor = {
-    icon: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Pro 6.2.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 9.4C53.9-3.1 74.1-3.1 86.6 9.4L168 90.7l53.1-53.1c28.1-28.1 73.7-28.1 101.8 0L474.3 189.1c28.1 28.1 28.1 73.7 0 101.8L283.9 481.4c-37.5 37.5-98.3 37.5-135.8 0L30.6 363.9c-37.5-37.5-37.5-98.3 0-135.8L122.7 136 41.4 54.6c-12.5-12.5-12.5-32.8 0-45.3zm176 221.3L168 181.3 75.9 273.4c-4.2 4.2-7 9.3-8.4 14.6H386.7l42.3-42.3c3.1-3.1 3.1-8.2 0-11.3L277.7 82.9c-3.1-3.1-8.2-3.1-11.3 0L213.3 136l49.4 49.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0zM512 512c-35.3 0-64-28.7-64-64c0-25.2 32.6-79.6 51.2-108.7c6-9.4 19.5-9.4 25.5 0C543.4 368.4 576 422.8 576 448c0 35.3-28.7 64-64 64z"/></svg>',
-    group: 'text',
-    position: 'beforeend',
-    title: 'Background colour',
-    html: '<input type="color" style="position:absolute;top:0;left:0;height:100%;width:100%;opacity:0" id="%ID%-picker" onchange="%func(\'colorChanged\')%" />',
-    divWrap: true,
-    trixAttribute: {
-        type: 'text',
-        data: {
-            styleProperty: 'backgroundColor',
-            inheritable: true
-        }
-    },
-}
-const fgBgColorFunc = (event, name, id, data) => {
-    var picker = document.getElementById(id + '-picker')
-    if (data == 'colorChanged') {
-        trix.value.editor.activateAttribute(name, picker.value)
     }
-}
-
+};
 const h1ButtonConfig = {
-    icon: 'Heading',  // Or replace with an SVG or another representation
+    icon: headingButton,
     group: 'text',
     position: 'beforeend',
+    customStyle: "width:80px",
     title: 'Heading 1',
     trixAttribute: {
         type: 'block',
@@ -230,9 +261,10 @@ const h1ButtonConfig = {
 };
 
 const h2ButtonConfig = {
-    icon: 'Subheading',  // Or replace with an SVG or another representation
+    icon: subheadingButton,
     group: 'text',
     position: 'beforeend',
+    customStyle: "width:100px",
     title: 'Heading 2',
     trixAttribute: {
         type: 'block',
@@ -241,21 +273,7 @@ const h2ButtonConfig = {
         }
     }
 };
-addToolbarButton('foreground', foregroundColor, fgBgColorFunc)
-addToolbarButton('background', backgroundColor, fgBgColorFunc)
-/* Text align center button - No function needed for this button */
-// addToolbarButton('textAlignCenter', {
-//     icon: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Pro 6.2.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. --><path d="M352 64c0-17.7-14.3-32-32-32H128c-17.7 0-32 14.3-32 32s14.3 32 32 32H320c17.7 0 32-14.3 32-32zm96 128c0-17.7-14.3-32-32-32H32c-17.7 0-32 14.3-32 32s14.3 32 32 32H416c17.7 0 32-14.3 32-32zM0 448c0 17.7 14.3 32 32 32H416c17.7 0 32-14.3 32-32s-14.3-32-32-32H32c-17.7 0-32 14.3-32 32zM352 320c0-17.7-14.3-32-32-32H128c-17.7 0-32 14.3-32 32s14.3 32 32 32H320c17.7 0 32-14.3 32-32z"/></svg>',
-//     group: 'block',
-//     position: 'beforeend',
-//     title: 'Align text center',
-//     trixAttribute: {
-//         type: 'block',
-//         data: {
-//             tagName: 'centered',
-//         }
-//     }
-// })
+addToolbarButton('underline', underlineButtonConfig)
 addToolbarButton('h1', h1ButtonConfig);
 addToolbarButton('h2', h2ButtonConfig);
 
@@ -295,6 +313,7 @@ addToolbarButton('h2', h2ButtonConfig);
 
 <style lang="scss">
 
+
 /* Extra Trix Styles to support the above code*/
 .trix-button-group {
     .trix-button {
@@ -325,25 +344,30 @@ addToolbarButton('h2', h2ButtonConfig);
     width: 100%;
 
     trix-editor {
-        border-radius: 12px;
-        border-color: #D4D4D8;
+        border-radius: 0 0 10px 10px;
+        border-color: gray;
         min-height: 6rem;
         padding: 6px 12px;
         background-color: #fff;
+
     }
 
+
+
     .trix-button-group {
+        margin-top: 5px;
+        margin-bottom: 5px;
+        margin-right: 10px;
         border-radius: 10px;
         border: 0;
         background-color: #fff;
 
         .trix-button {
-            border: 1px solid #D4D4D8;
             margin-right: 4px;
             margin-left: 4px;
-            border-radius: 8px;
             min-height: 30px;
             min-width: 40px;
+            border: 0;
 
             &::before {
                 background-size: 50%;
@@ -351,8 +375,32 @@ addToolbarButton('h2', h2ButtonConfig);
 
             &:hover:not(:disabled) {
                 background-color: rgba(0, 0, 0, 0.1);
+                border-radius: 10px;
             }
         }
     }
+    trix-toolbar .trix-button--icon{
+        max-width: 100% !important;
+    }
+    trix-toolbar .trix-button.trix-active {
+        border-radius: 10px !important;
+    }
+    .trix-button-row {
+        border: 1px solid gray;
+        border-top-left-radius: 10px;
+        border-top-right-radius: 10px;
+    }
+
+
+    .trix-button--icon-increase-nesting-level,
+    .trix-button--icon-decrease-nesting-level,
+    .trix-button--icon-heading-1,
+    .trix-button--icon-attach,
+    { display: none; }
 }
+trix-editor .attachment__toolbar .trix-button-row{
+    border: 0 !important
+}
+
 </style>
+

@@ -12,6 +12,8 @@ import CardLoading from '../components/card/CardLoading.vue';
 
 import CarouselGenerator from "@/js/components/card/CarouselGenerator.vue";
 
+import {useUserStore} from "@/js/stores/useUserStore";
+const userStore = useUserStore()
 /**
  * Get the DAG Advice articles
  * and states

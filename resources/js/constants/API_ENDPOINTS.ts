@@ -1,92 +1,118 @@
 import {appURL, serverURL} from "@/js/constants/serverUrl";
 
-export const API_ENDPOINTS = {
+type EndpointGroup = {
+    [key: string]: string;
+};
+
+type Endpoints = {
+    [key: string]: EndpointGroup;
+};
+
+const appendServerURL = (endpoints: Endpoints): Endpoints => {
+    const result: Endpoints = {};
+
+    for (const [group, paths] of Object.entries(endpoints)) {
+        result[group] = {};
+
+        for (const [key, path] of Object.entries(paths)) {
+            result[group][key] = `${serverURL}${path}`;
+        }
+    }
+
+    return result;
+};
+export const API_ENDPOINTS : Endpoints =  appendServerURL({
     SCHOOL: {
-        FETCH_ALL_SITES: `${serverURL}/fetchAllSites`,
-        FETCH_STAFF_FROM_SITE: `${serverURL}/fetchStaffFromSite/`,
-        GET_NOMINATED_USER_FROM_SCHOOL: `${serverURL}/getNominatedUsersFromSchool`,
-        NOMINATE_USER_FOR_SCHOOL: `${serverURL}/nominateUserForSchool`,
-        DELETE_NOMINATED_USER: `${serverURL}/deleteNominatedUser`,
-        CREATE_SCHOOL: `${serverURL}/createSchool`,
-        UPDATE_SCHOOL: `${serverURL}/updateSchool`,
-        CREATE_OR_UPDATE_SCHOOL_CONTACT: `${serverURL}/createOrUpdateSchoolContact`,
-        FETCH_SCHOOL_CONTACT: `${serverURL}/fetchSchoolContact`,
-        CHECK_IF_USER_CAN_EDIT_SCHOOL: `${serverURL}/checkUserCanEdit`,
-        FETCH_ALL_SCHOOLS: `${serverURL}/fetchAllSchools`,
-        FETCH_SCHOOL_BY_NAME: `${serverURL}/fetchSchoolByName/`,
-        FETCH_FEATURED_SCHOOL: `${serverURL}/fetchFeaturedSchools`
+        FETCH_ALL_SITES: `/fetchAllSites`,
+        FETCH_STAFF_FROM_SITE: `/fetchStaffFromSite/`,
+        GET_NOMINATED_USER_FROM_SCHOOL: `/getNominatedUsersFromSchool`,
+        NOMINATE_USER_FOR_SCHOOL: `/nominateUserForSchool`,
+        DELETE_NOMINATED_USER: `/deleteNominatedUser`,
+        CREATE_SCHOOL: `/createSchool`,
+        UPDATE_SCHOOL: `/updateSchool`,
+        CREATE_OR_UPDATE_SCHOOL_CONTACT: `/createOrUpdateSchoolContact`,
+        FETCH_SCHOOL_CONTACT: `/fetchSchoolContact`,
+        CHECK_IF_USER_CAN_EDIT_SCHOOL: `/checkUserCanEdit`,
+        FETCH_ALL_SCHOOLS: `/fetchAllSchools`,
+        FETCH_SCHOOL_BY_NAME: `/fetchSchoolByName/`,
+        FETCH_FEATURED_SCHOOL: `/fetchFeaturedSchools`
     },
     ADVICE: {
-        FETCH_ADVICE_POSTS: `${serverURL}/fetchAdvicePosts`,
-        FETCH_ADVICE_POSTS_BY_TYPE_DAG: `${serverURL}/fetchAdvicePostByType/DAG advice`,
-        FETCH_ADVICE_POSTS_BY_TYPE_PARTNER: `${serverURL}/fetchAdvicePostByType/Partner`,
-        FETCH_ADVICE_POSTS_BY_TYPE_YOUR: `${serverURL}/fetchAdvicePostByType/${['Your Classroom', 'Your Work', 'Your Learning']}`,
-        FETCH_ADVICE_POST_BY_ID: `${serverURL}/fetchAdvicePostById/`,
-        FETCH_RELATED_ADVICE: `${serverURL}/fetchRelatedAdvice`
+        CREATE_ADVICE_POST: `/createAdvicePost`,
+        FETCH_ADVICE_POSTS: `/fetchAdvicePosts`,
+        FETCH_ADVICE_POSTS_BY_TYPE_DAG: `/fetchAdvicePostByType/DAG advice`,
+        FETCH_ADVICE_POSTS_BY_TYPE_PARTNER: `/fetchAdvicePostByType/Partner`,
+        FETCH_ADVICE_POSTS_BY_TYPE_YOUR: `/fetchAdvicePostByType/${['Your Classroom', 'Your Work', 'Your Learning']}`,
+        FETCH_ADVICE_POST_BY_ID: `/fetchAdvicePostById/`,
+        FETCH_RELATED_ADVICE: `/fetchRelatedAdvice`,
+        FETCH_ADVICE_TYPES: `/fetchAdviceTypes`
 
     },
     SOFTWARE: {
-        CREATE_SOFTWARE_POST: `${serverURL}/createSoftwarePost`,
-        FETCH_SOFTWARE_POSTS: `${serverURL}/fetchSoftwarePosts`,
-        FETCH_SOFTWARE_POST_BY_ID: `${serverURL}/fetchSoftwarePostById/`,
-        FETCH_RELATED_SOFTWARE: `${serverURL}/fetchRelatedSoftware`,
-        FETCH_SOFTWARE_TYPES: `${serverURL}/fetchSoftwareTypes`
+        CREATE_SOFTWARE_POST: `/createSoftwarePost`,
+        FETCH_SOFTWARE_POSTS: `/fetchSoftwarePosts`,
+        FETCH_SOFTWARE_POST_BY_ID: `/fetchSoftwarePostById/`,
+        FETCH_RELATED_SOFTWARE: `/fetchRelatedSoftware`,
+        FETCH_SOFTWARE_TYPES: `/fetchSoftwareTypes`
 
     },
     HARDWARE: {
-        FETCH_HARDWARE_POSTS: `${serverURL}/fetchAllProducts`,
-        FETCH_ALL_BRANDS: `${serverURL}/fetchAllBrands`,
-        FETCH_ALL_CATEGORIES: `${serverURL}/fetchAllCategories`,
-        FETCH_HARDWARE_BY_ID: `${serverURL}/fetchProductById/`,
-        FETCH_HARDWARE_BY_BRAND: `${serverURL}/fetchProductByBrand/`,
-        FETCH_RELATED_HARDWARE : `${serverURL}/fetchRelatedProduct`
+        FETCH_HARDWARE_POSTS: `/fetchAllProducts`,
+        FETCH_ALL_BRANDS: `/fetchAllBrands`,
+        FETCH_ALL_CATEGORIES: `/fetchAllCategories`,
+        FETCH_HARDWARE_BY_ID: `/fetchProductById/`,
+        FETCH_HARDWARE_BY_BRAND: `/fetchProductByBrand/`,
+        FETCH_RELATED_HARDWARE : `/fetchRelatedProduct`
     },
     PARTNER: {
-        FETCH_ALL_PARTNERS: `${serverURL}/fetchAllPartners`,
-        FETCH_PARTNER_BY_ID: `${serverURL}/fetchPartnerById/`,
+        FETCH_ALL_PARTNERS: `/fetchAllPartners`,
+        FETCH_PARTNER_BY_ID: `/fetchPartnerById/`,
     },
     EVENT: {
-        ADD_EVENT_RECORDING: `${serverURL}/addEventRecording`,
-        CHECK_EVENT_RECORDING: `${serverURL}/checkEventRecording/`,
-        CHECK_IF_USER_RSVPED: `${serverURL}/checkIfUserRsvped`,
-        ADD_RSVP_TO_EVENT: `${serverURL}/addRsvpToEvent`,
-        FETCH_EVENT_POSTS: `${serverURL}/fetchEventPosts`,
-        FETCH_EVENT_POST_BY_ID: `${serverURL}/fetchEventPostById/`,
+        ADD_EVENT_RECORDING: `/addEventRecording`,
+        CHECK_EVENT_RECORDING: `/checkEventRecording/`,
+        CHECK_IF_USER_RSVPED: `/checkIfUserRsvped`,
+        ADD_RSVP_TO_EVENT: `/addRsvpToEvent`,
+        FETCH_EVENT_POSTS: `/fetchEventPosts`,
+        FETCH_EVENT_POST_BY_ID: `/fetchEventPostById/`,
+        FETCH_EVENT_TYPES: `/fetchEventTypes`,
+        CREATE_EVENT_POST: `/createEventPost`
     },
     USER: {
-        FETCH_USER_BY_ID: `${serverURL}/fetchUser/`,
-        FETCH_USER_BY_EMAIL: `${serverURL}/fetchUserByEmail/`,
-        CREATE_USER: `${serverURL}/createUser`,
+        FETCH_USER_BY_ID: `/fetchUser/`,
+        FETCH_USER_BY_EMAIL: `/fetchUserByEmail/`,
+        CREATE_USER: `/createUser`,
         UPDATE_FIRST_TIME_VISIT_USER: '/updateFirstTimeVisitUser',
         UPDATE_USER: '/updateUser',
-        CHECK_EMAIL: `${serverURL}/checkEmail`,
-        GET_USER_METADATA: `${serverURL}/getUserMetadata`,
-        LOGOUT: `${appURL}/logout`
-
+        CHECK_EMAIL: `/checkEmail`,
+        GET_USER_METADATA: `/getUserMetadata`,
 
     },
     LIKE: {
-        LIKE: `${serverURL}/like`,
-        FETCH_ALL_LIKES: `${serverURL}/fetchAllLikes`,
-        FETCH_ALL_LIKES_BY_TYPE: `${serverURL}/fetchAllLikesByType`,
+        LIKE: `/like`,
+        FETCH_ALL_LIKES: `/fetchAllLikes`,
+        FETCH_ALL_LIKES_BY_TYPE: `/fetchAllLikesByType`,
     },
     BOOKMARK:{
-        BOOKMARK: `${serverURL}/bookmark`,
-        FETCH_ALL_BOOKMARKS: `${serverURL}/fetchAllBookmarks`,
-        FETCH_ALL_BOOKMARKS_WITH_TITLE: `${serverURL}/fetchAllBookmarksWithTitle`,
-        FETCH_ALL_BOOKMARKS_BY_TYPE: `${serverURL}/fetchAllBookmarksByType`,
+        BOOKMARK: `/bookmark`,
+        FETCH_ALL_BOOKMARKS: `/fetchAllBookmarks`,
+        FETCH_ALL_BOOKMARKS_WITH_TITLE: `/fetchAllBookmarksWithTitle`,
+        FETCH_ALL_BOOKMARKS_BY_TYPE: `/fetchAllBookmarksByType`,
 
     },
     IMAGE: {
-        UPLOAD_IMAGE: `${serverURL}/imageUpload`,
-        IMAGE_UPLOAD_EDITOR_JS: `${serverURL}/imageUploadEditorjs`
+        UPLOAD_IMAGE: `/imageUpload`,
+        IMAGE_UPLOAD_EDITOR_JS: `/imageUploadEditorjs`
 
     },
     SEARCH:{
-        SEARCH_ALL: `${serverURL}/search/`
+        SEARCH_ALL: `/search/`
     },
     AUTOSAVE:{
-        AUTOSAVE: `${serverURL}/auto-save`
+        AUTOSAVE: `/auto-save`
     }
+})
 
+export const APP_ENDPOINTS = {
+    LOGOUT: `${appURL}/logout`
 }

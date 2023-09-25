@@ -1,39 +1,39 @@
 <script setup>
-import {API_ENDPOINTS} from "@/js/constants/API_ENDPOINTS";
-import {useWindowStore} from "@/js/stores/useWindowStore";
+import axios from 'axios';
+import {storeToRefs} from "pinia";
+import useSWRV from "swrv";
+import {computed, onMounted, reactive, ref} from 'vue';
+import {useRouter} from "vue-router";
 
-/**
- * Components
- */
-import DashboardHero from '../components/dashboard/DashboardHero.vue';
-import BlackOverlay from '../components/dashboard/BlackOverlay.vue';
-import FirstVisitForm from '../components/dashboard/FirstVisitForm.vue';
-import SectionHeader from '../components/global/SectionHeader.vue';
-
-/**
- * Import Card wrapper
- */
-import SoftwareRobot from '../components/svg/SoftwareRobot.vue';
-
-import DeptApprovedIcon from "@/js/components/svg/software/DeptApprovedIcon.vue";
-import DeptProvidedIcon from "@/js/components/svg/software/DeptProvidedIcon.vue";
-import DepartmentApprovedSolo from '@/js/components/svg/DepartmentApprovedSolo.vue';
 /**
  * Loading Cards
  */
 import CardLoading from '@/js/components/card/CardLoading.vue';
-import {ref, reactive, computed, onMounted} from 'vue';
-import {useUserStore} from '../stores/useUserStore';
-import {useRouter} from "vue-router";
+import CarouselGenerator from "@/js/components/card/CarouselGenerator.vue";
+import SoftwareCard from "@/js/components/software/SoftwareCard.vue";
+import DepartmentApprovedSolo from '@/js/components/svg/DepartmentApprovedSolo.vue';
+import DeptApprovedIcon from "@/js/components/svg/software/DeptApprovedIcon.vue";
+import DeptProvidedIcon from "@/js/components/svg/software/DeptProvidedIcon.vue";
+import {API_ENDPOINTS} from "@/js/constants/API_ENDPOINTS";
 import {appURL} from "@/js/constants/serverUrl";
+import {swrvOptions} from "@/js/constants/swrvConstants";
+import {getDistanceBetweenElements} from "@/js/helpers/drawingHelpers";
 import {axiosFetcherParams, axiosSchoolFetcher, axiosSchoolFetcherParams} from "@/js/helpers/fetcher";
 import useSwrvState from "@/js/helpers/useSwrvState";
-import useSWRV from "swrv";
-import {storeToRefs} from "pinia";
-import axios from 'axios';
-import {swrvOptions} from "@/js/constants/swrvConstants";
-import SoftwareCard from "@/js/components/software/SoftwareCard.vue";
-import CarouselGenerator from "@/js/components/card/CarouselGenerator.vue";
+import {useWindowStore} from "@/js/stores/useWindowStore";
+
+import BlackOverlay from '../components/dashboard/BlackOverlay.vue';
+/**
+ * Components
+ */
+import DashboardHero from '../components/dashboard/DashboardHero.vue';
+import FirstVisitForm from '../components/dashboard/FirstVisitForm.vue';
+import SectionHeader from '../components/global/SectionHeader.vue';
+/**
+ * Import Card wrapper
+ */
+import SoftwareRobot from '../components/svg/SoftwareRobot.vue';
+import {useUserStore} from '../stores/useUserStore';
 
 const router = useRouter()
 const userStore = useUserStore();
@@ -44,6 +44,8 @@ const {currentUser, isAdminAuthenticated} = storeToRefs(userStore)
 const idToken = ref('');
 const claims = ref({});
 const isFirstVisit = ref(false);
+const {isMobile} = storeToRefs(useWindowStore())
+
 
 const userDetails = reactive({
     name: '',
@@ -56,8 +58,7 @@ const userDetails = reactive({
  * Get the idToken from Okta and set up the claims
  * TODO: Push to the top of the app (where appropriate-considering in App.vue but the redirect from okta login might fail it)
  */
-const getIdToken = async () => {
-
+const getIdToken = (async () => {
     try {
         const response = await axios.get(`${appURL}/okta-data`);
         // console.log("RESPONSE", response);
@@ -79,7 +80,7 @@ const getIdToken = async () => {
         console.warn('Failed to get Auth data. User is not logged in')
         // currentUser.value.id = 61
     }
-};
+})();
 
 /**
  * Check if user has an exisitng account
@@ -96,10 +97,8 @@ const checkFirstVisit = async (emailAddress) => {
 
 }
 
-getIdToken()
 
 const shouldStartSwrv = computed(() => {
-    console.log(Boolean(currentUser.value.id))
     return Boolean(currentUser.value.id)
 })
 
@@ -176,7 +175,7 @@ const schoolsLoading = computed(() => {
     }
 })
 
-const onClosePopup = () => {
+const onCloseFirstVisitPopup = () => {
     isFirstVisit.value = false;
 };
 
@@ -189,11 +188,13 @@ const email = ref(null);
 const top = ref('');
 const distanceBetweenEls = ref('');
 const floatingLineClasses = ref('');
+
+
 const getConnectingLinePositions = () => {
     const listContainers = document.querySelectorAll('.softwareDashboardContentContainer');
     const firstContainer = listContainers[0];
     const lastContainer = listContainers[listContainers.length - 1];
-    if(firstContainer && lastContainer) {
+    if (firstContainer && lastContainer) {
         distanceBetweenEls.value = getDistanceBetweenElements(
             firstContainer,
             lastContainer
@@ -205,42 +206,19 @@ const getConnectingLinePositions = () => {
     }
 };
 
-const getPositionAtCenter = (element) => {
-    if (element) {
-        const {top, left, width, height} = element.getBoundingClientRect();
-        return {
-            x: left + width / 2,
-            y: top + height / 2
-        };
-    } else {
-        return {
-            x: 0,
-            y: 0
-        }
-    }
-}
-
-const getDistanceBetweenElements = (a, b) => {
-    const aPosition = getPositionAtCenter(a);
-    const bPosition = getPositionAtCenter(b);
-
-    return Math.hypot(aPosition.x - bPosition.x, aPosition.y - bPosition.y);
-}
-
 onMounted(async () => {
     window.addEventListener('resize', () => getConnectingLinePositions());
     getConnectingLinePositions();
 });
 
-const {isMobile} = storeToRefs(useWindowStore())
 
-const softwareResponsiveData = computed(() =>{
-    if(!softwaresData.value.length) {
+const softwareResponsiveData = computed(() => {
+    if (!softwaresData.value.length) {
         return []
-    }else if(isMobile.value){
-        return softwaresData.value.slice(0,2)
-    } else{
-        return softwaresData.value.slice(0,4)
+    } else if (isMobile.value) {
+        return softwaresData.value.slice(0, 2)
+    } else {
+        return softwaresData.value.slice(0, 4)
     }
 })
 
@@ -255,7 +233,7 @@ const softwareResponsiveData = computed(() =>{
             <div class="relative">
                 <FirstVisitForm
                     :user-details="userDetails"
-                    @on-close-popup="onClosePopup"
+                    @on-close-popup="onCloseFirstVisitPopup"
                 />
             </div>
         </template>
@@ -280,7 +258,7 @@ const softwareResponsiveData = computed(() =>{
         />
 
         <!-- Software Cards Here -->
-        <div class="flex flex-col gap-[24px] group/bg h-full py-8 relative lg:!flex-row lg:!px-huge">
+        <div class="flex flex-col gap-6 group/bg h-full py-8 relative lg:!flex-row lg:!px-huge">
             <div
                 class="
                     -translate-y-1/2

@@ -1,6 +1,6 @@
 <script setup>
 import {formService} from "@/js/service/formService";
-import {ref, computed, watch, onBeforeMount} from 'vue'
+import {ref, watch, onBeforeMount} from 'vue'
 
 
 const props = defineProps({
@@ -19,19 +19,19 @@ const availableTypes = ref([])
 const selectedTypes = ref([])
 
 
-onBeforeMount(() =>{
-    formService.getTypes(props.typeApiLink).then(res =>{
+onBeforeMount(() => {
+    formService.getTypes(props.typeApiLink).then(res => {
         availableTypes.value = res.data
-    }).catch(err =>{
+    }).catch(err => {
         console.log(err)
     })
 })
 
 const emits = defineEmits(['sendSelectedTypesAsArray'])
 
-watch(selectedTypes, () =>{
-    if(selectedTypes.value){
-        if(!Array.isArray(selectedTypes.value)){
+watch(selectedTypes, () => {
+    if (selectedTypes.value) {
+        if (!Array.isArray(selectedTypes.value)) {
             selectedTypes.value = [selectedTypes.value]
         }
         emits('sendSelectedTypesAsArray', selectedTypes.value)

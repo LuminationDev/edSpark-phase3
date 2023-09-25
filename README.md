@@ -17,3 +17,8 @@ Ignore recommender class. not sure if it's the right approach <br>
 
 Refer to this link below to start using meilisearch locally
 https://laravel-news.com/getting-started-laravel-scout-meilisearch
+
+
+Site-wide works (in queue)
+1. Harden Authentication. Currently a little patchy and API are not protected. Some user related API are not safe (Will need to be overhauled - will allocate some focus time)
+2. Pagination on fetch all requests

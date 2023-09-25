@@ -107,9 +107,9 @@ class HardwareResource extends Resource
     {
         $filesystem = app(Filesystem::class);
 
-        return collect($filesystem->allFiles(app_path('Filament/PageTemplates/Hardware')))
+        return collect($filesystem->allFiles(app_path('Filament/PageTemplates')))
             ->map(function (SplFileInfo $file): string {
-                return (string)Str::of('App\\Filament\\PageTemplates\\Hardware')
+                return (string)Str::of('App\\Filament\\PageTemplates')
                     ->append('\\', $file->getRelativePathname())
                     ->replace(['/', '.php'], ['\\', '']);
             });

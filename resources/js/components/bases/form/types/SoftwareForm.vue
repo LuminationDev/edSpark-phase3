@@ -1,83 +1,47 @@
-<script setup>
+<script setup lang="ts">
 import BaseForm from "@/js/components/bases/form/BaseForm.vue";
 import ExtraContent from "@/js/components/bases/form/ExtraContent.vue";
+import ItemTypeCheckboxes from "@/js/components/selector/ItemTypeCheckboxes.vue";
 import {API_ENDPOINTS} from "@/js/constants/API_ENDPOINTS";
-import {reactive, ref} from "vue";
+import {reactive} from "vue";
+import {templates} from "@/js/components/bases/form/templates/formTemplates";
 
-const props = defineProps({
+
+const addtSoftwareData = reactive({
+    extraContentData: [],
+    softwareTypes : []
 
 })
 
-const createNewBaseData = () => {
-    return {
-        title: '',
-        excerpt: '',
-        content: '',
-        coverImage: '',
-        authorName: '',
-        tags: []
+const updateExtraContent = (content) : void => {
+    if (content) {
+        addtSoftwareData.extraContentData = content
     }
 }
-const baseData = reactive(createNewBaseData())
 
-const extraContentData = reactive({
-    resourceData: [],
-    templateData: []
-})
-
-const softwareDataToDatabaseFields = () =>
-    ({
-        post_title: baseData.title,
-        post_excerpt: baseData.excerpt,
-        post_content: baseData.content,
-        post_status: 'Published',
-        author_id: 61,
-        cover_image: '',
-        softwaretype_id: [2],
-        template: '',
-        extra_content: transformData([...extraContentData.templateData, ...extraContentData.resourceData])
-    })
-
-const updateParentExtraContent = (content) => {
-    if (content.resourceData) {
-        extraContentData.resourceData = content.resourceData
-    }
-    if (content.templateData) {
-        extraContentData.templateData = content.templateData
-    }
-    console.log({baseData,extraContentData})
+const handleReceiveTypes = (typeArray): void => {
+    addtSoftwareData.softwareTypes = typeArray
 }
-
-const updateParentBaseData = (content) => {
-    baseData.title = content.title
-    baseData.excerpt = content.excerpt
-    baseData.content = content.content
-    baseData.coverImage = content.coverImage
-    baseData.authorName = content.authorName
-    baseData.tags = content.tags
-}
-
-const printTransformedData = () => {
-    const transformedData = softwareDataToDatabaseFields()
-    console.log(transformedData)
-    axios.post(API_ENDPOINTS.SOFTWARE.CREATE_SOFTWARE_POST, transformedData).then(res => {
-        console.log(res)
-    })
-}
-
 </script>
 
 
 <template>
     <BaseForm
-        :base-data="baseData"
         item-type="software"
-        @update-parent-base-data="updateParentBaseData"
+        :additional-data="addtSoftwareData"
     >
+        <template #itemType>
+            <ItemTypeCheckboxes
+                :type-api-link="API_ENDPOINTS.SOFTWARE.FETCH_SOFTWARE_TYPES"
+                label="Select software type"
+                @send-selected-types-as-array="handleReceiveTypes"
+            />
+        </template>
         <template #extraContent>
             <ExtraContent
-                :extra-content-data="extraContentData"
-                @update-parent-extra-content="updateParentExtraContent"
+                :extra-content-data="addtSoftwareData.extraContentData"
+                :available-templates="templates"
+                @update-parent-extra-content="updateExtraContent"
             />
         </template>
     </BaseForm>

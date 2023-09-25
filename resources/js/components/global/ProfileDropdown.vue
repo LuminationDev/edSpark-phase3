@@ -1,30 +1,31 @@
 <script setup lang="ts">
-import {API_ENDPOINTS} from "@/js/constants/API_ENDPOINTS";
-
+import {storeToRefs} from "pinia";
 /**
  * Import Dependencies
  */
-import {ref, onMounted} from "vue";
+import {onMounted, ref} from "vue";
+
+import AdminIcon from "@/js/components/svg/profileDropdown/AdminIcon.vue";
+import CreateIcon from "@/js/components/svg/profileDropdown/CreateIcon.vue";
+import DashedHelpIcon from "@/js/components/svg/profileDropdown/DashedHelpIcon.vue";
+import MessageIcon from "@/js/components/svg/profileDropdown/MessageIcon.vue";
+import {APP_ENDPOINTS} from "@/js/constants/API_ENDPOINTS";
+/**
+ * Import stores
+ */
+import {useUserStore} from "@/js/stores/useUserStore";
+
 /**
  * Import SVG's
  */
 import Profile from "../svg/Profile.vue";
 
 /**
- * Import stores
- */
-import { useUserStore } from "@/js/stores/useUserStore";
-import { storeToRefs } from "pinia";
-import axios from "axios";
-/**
  * Import components
  */
 
 const props = defineProps({
-    // currentUser: {
-    //     type: Object,
-    //     required: true,
-    // },
+
     profileDropdown: {
         type: Boolean,
         required: true,
@@ -38,10 +39,9 @@ const props = defineProps({
 const emits = defineEmits(["handleAvatarClick"]);
 
 const userStore = useUserStore();
-const { currentUser } = storeToRefs(userStore);
+const {currentUser} = storeToRefs(userStore);
 const imageURL = import.meta.env.VITE_SERVER_IMAGE_API;
 const userMetadata = userStore.getUser.metadata;
-import { appURL } from "@/js/constants/serverUrl";
 
 
 //commented for now
@@ -53,7 +53,7 @@ import { appURL } from "@/js/constants/serverUrl";
 
 const notificationCount = userStore.getNotifications;
 
-const handleAvatar = () :void  => {
+const handleAvatar = (): void => {
     emits("handleAvatarClick");
 };
 
@@ -61,7 +61,7 @@ const handleLogoutUser = async () => {
 
     // Call a logout API endpoint in laravel backend
     try {
-        const response = await fetch(API_ENDPOINTS.USER.LOGOUT, {
+        const response = await fetch(APP_ENDPOINTS.LOGOUT, {
             method: 'POST',
         });
 
@@ -98,8 +98,8 @@ onMounted(() => {
     checkUserRole();
 })
 
-const handleClickAdmin = () =>{
-    window.open(window.location.origin + '/admin','_self')
+const handleClickAdmin = () => {
+    window.open(window.location.origin + '/admin', '_self')
 }
 </script>
 
@@ -171,11 +171,31 @@ const handleClickAdmin = () =>{
                                 hover:bg-[#405974]
                                 "
                         >
-                            <Profile />
+                            <MessageIcon />
                             Messages
                         </button>
                     </router-link>
-
+                    <router-link :to="`/create`">
+                        <button
+                            class="
+                                flex
+                                justify-start
+                                flex-row
+                                font-medium
+                                place-items-center
+                                px-2
+                                py-3
+                                text-[18px]
+                                text-white
+                                w-full
+                                gap-4
+                                hover:bg-[#405974]
+                                "
+                        >
+                            <CreateIcon />
+                            Create
+                        </button>
+                    </router-link>
                     <button
                         class="
                             flex
@@ -192,7 +212,7 @@ const handleClickAdmin = () =>{
                             hover:bg-[#405974]
                             "
                     >
-                        <Profile />
+                        <DashedHelpIcon />
                         Help
                     </button>
                     <template
@@ -215,7 +235,7 @@ const handleClickAdmin = () =>{
                                 "
                             @click="handleClickAdmin"
                         >
-                            <Profile />
+                            <AdminIcon />
                             Admin
                         </button>
                     </template>

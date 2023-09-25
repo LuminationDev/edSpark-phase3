@@ -99,7 +99,7 @@ class ImageController extends Controller
                     $imgName = $prefix.'-'.md5(Str::random(30).time().'_'.$image).'.'.$image->getClientOriginalExtension();
                 }
                 $image->storeAs('public/uploads/'.$type, $imgName);
-                $imagePath .= "uploads/".$type."/".$imgName;
+                $imagePath .= "/uploads/".$type."/".$imgName;
             }
 
             return response()->json([

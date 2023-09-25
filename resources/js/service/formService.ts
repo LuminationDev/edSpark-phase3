@@ -1,7 +1,8 @@
-import {API_ENDPOINTS} from "@/js/constants/API_ENDPOINTS";
-import axios, {AxiosResponse} from 'axios'
-import {templates, keyToFieldTypes} from "@/js/components/bases/form/templates/formTemplates";
 import {addStateToken} from "@okta/okta-auth-js/types/lib/authn/util/stateToken";
+import axios, {AxiosResponse} from 'axios'
+
+import {keyToFieldTypes,templates} from "@/js/components/bases/form/templates/formTemplates";
+import {API_ENDPOINTS} from "@/js/constants/API_ENDPOINTS";
 
 
 export type TemplateType = 'Extraresource' | 'Numbereditems' | 'Dateitems';
@@ -127,26 +128,56 @@ export const formService = {
         }
     },
     handleSaveForm: (state: any, user_id: number, additionalData: any, itemType: string): Promise<void | AxiosResponse<any>> => {
+        let createURL =''
+        let combinedData
+        const data = {
+            post_title: state.title,
+            post_excerpt: state.excerpt,
+            post_content: state.content,
+            post_status: 'Pending',
+            author_id: user_id,
+            cover_image: state.cover_image,
+            template: ''
+        }
         if (itemType === 'software') {
-            const data = {
-                post_title: state.title,
-                post_excerpt: state.excerpt,
-                post_content: state.content,
-                post_status: 'Pending',
+            const formattedAddtionalData = {
+                extra_content: formService.transformSimpleDataToFilamentFormat(additionalData['extraContentData']),
+                softwaretype_id: additionalData['softwareTypes']
+            }
+            combinedData = {...data, ...formattedAddtionalData}
+            createURL = API_ENDPOINTS.SOFTWARE.CREATE_SOFTWARE_POST
+        } else if (itemType === 'advice') {
+            const formattedAddtionalData = {
+                extra_content: formService.transformSimpleDataToFilamentFormat(additionalData['extraContentData']),
+                advicetype_id: additionalData['adviceTypes']
+            }
+            combinedData = {...data, ...formattedAddtionalData}
+            createURL = API_ENDPOINTS.ADVICE.CREATE_ADVICE_POST
+
+        } else if(itemType === 'event'){
+            const eventData = {
+                event_title: state.title,
+                event_excerpt: state.excerpt,
+                event_content: state.content,
+                event_status: 'Pending',
                 author_id: user_id,
                 cover_image: state.cover_image,
                 template: ''
             }
             const formattedAddtionalData = {
                 extra_content: formService.transformSimpleDataToFilamentFormat(additionalData['extraContentData']),
-                softwaretype_id: additionalData['selectedSoftwareTypes']
+                eventtype_id: additionalData['eventType'],
+                start_date : additionalData['startTime'],
+                end_date : additionalData['endTime'],
+                event_location: JSON.stringify(additionalData['eventLocation'])
             }
-            const combinedData = {...data, ...formattedAddtionalData}
-            console.log(combinedData)
-            return axios.post(API_ENDPOINTS.SOFTWARE.CREATE_SOFTWARE_POST, combinedData).then(res => {
-                console.log(res)
-            })
+            combinedData = {...eventData, ...formattedAddtionalData}
+            createURL = API_ENDPOINTS.EVENT.CREATE_EVENT_POST
         }
+
+        return axios.post(createURL, combinedData).then(res => {
+            console.log(res)
+        })
 
     }
 }

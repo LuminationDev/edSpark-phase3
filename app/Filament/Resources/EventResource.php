@@ -127,9 +127,9 @@ class EventResource extends Resource
     {
         $filesystem = app(Filesystem::class);
 
-        return collect($filesystem->allFiles(app_path('Filament/PageTemplates/Event')))
+        return collect($filesystem->allFiles(app_path('Filament/PageTemplates')))
             ->map(function (SplFileInfo $file): string {
-                return (string) Str::of('App\\Filament\\PageTemplates\\Event')
+                return (string) Str::of('App\\Filament\\PageTemplates')
                     ->append('\\', $file->getRelativePathname())
                     ->replace(['/', '.php'],['\\', '']);
             });

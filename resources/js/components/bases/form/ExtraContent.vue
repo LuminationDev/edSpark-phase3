@@ -1,10 +1,11 @@
 <script setup lang="ts">
+import {onClickOutside, watchDebounced, watchOnce} from "@vueuse/core";
+import {reactive, Ref, ref} from 'vue'
+
 import ExtraContentHeader from "@/js/components/bases/form/ExtraContentHeader.vue";
 import ExtraTemplate from "@/js/components/bases/form/ExtraTemplate.vue";
 import GenericButton from "@/js/components/button/GenericButton.vue";
 import Add from "@/js/components/svg/Add.vue";
-import {watchDebounced} from "@vueuse/core";
-import {ref,  reactive} from 'vue'
 import {formService, TemplateType} from "@/js/service/formService";
 
 const props = defineProps({
@@ -16,30 +17,37 @@ const props = defineProps({
         }
     }
 })
-const emits = defineEmits(['updateParentExtraContent'])
-
-const showSelectorPopup = ref<boolean>(false)
-
-
-const createTemplate = (): object => ({template: '', content: []});
-
-
-const createTemplateItem = (templateType: TemplateType): object => {
-    const generatedItem = formService.generateEmptyItem(templateType)
-    console.log(generatedItem)
-    return generatedItem
-}
-
+console.log(props.extraContentData)
 
 const state = reactive({
     templateData: props.extraContentData
 })
+
+const emits = defineEmits(['updateParentExtraContent'])
+
+
+const showSelectorPopup = ref<boolean>(false)
+const addExtraContentItemSelector: Ref<HTMLDivElement | null> = ref(null);
+
+const populateLocalStateFromBaseProps = (): void => {
+    state.templateData = props.extraContentData
+}
+
+watchOnce(props, () => {
+    console.log('inside extraContet watcher once')
+    populateLocalStateFromBaseProps()
+}, {deep: true})
+
 watchDebounced(state, () => {
     emits('updateParentExtraContent', state.templateData)
 }, {debounce: 1000, maxWait: 2000})
 
+onClickOutside(addExtraContentItemSelector, () => {
+    showSelectorPopup.value = false
+})
+
+
 const handleClickAddItem = (): void => {
-    console.log('clicked add')
     showSelectorPopup.value = true
 }
 
@@ -51,11 +59,11 @@ const handleClickSelectedPopupItem = (templateType: TemplateType) => {
 }
 
 const handleAddNewTemplate = () => {
-    state.templateData.push(createTemplate());
+    state.templateData.push({template: '', content: []});
 }
 
 const handleAddItemTemplate = (index, templateType) => {
-    const newTemplateItem = createTemplateItem(templateType)
+    const newTemplateItem = formService.generateEmptyItem(templateType)
     state.templateData[index].content.push(newTemplateItem);
 }
 
@@ -68,7 +76,7 @@ const handleDeleteTemplateItem = (templateIndex, itemIndex) => {
 }
 const handleChangeTemplateType = (templateIndex, templateNewType) => {
     state.templateData[templateIndex].template = templateNewType
-    state.templateData[templateIndex].content = [createTemplateItem(templateNewType)]
+    state.templateData[templateIndex].content = [formService.generateEmptyItem(templateNewType)]
 
 }
 
@@ -109,6 +117,7 @@ const handleChangeTemplateType = (templateIndex, templateNewType) => {
                 </GenericButton>
                 <div
                     v-if="showSelectorPopup"
+                    ref="addExtraContentItemSelector"
                     class="absolute top-full left-0 addItemSelectorPopup bg-white rounded-2xl w-48"
                 >
                     <ul class="availableAddItemList border-[1px] border-main-darkTeal flex flex-col rounded-xl">

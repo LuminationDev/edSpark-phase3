@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import {  ref } from 'vue'
+import {ref} from 'vue'
+
 import ErrorMessages from './ErrorMessages.vue'
 
 const props = defineProps({
@@ -8,7 +9,7 @@ const props = defineProps({
         required: true
     },
     modelValue: {
-        type: String,
+        type: [Date, String, null],
         required: true
     },
     fieldId: {
@@ -21,7 +22,7 @@ const props = defineProps({
         default: 'Select date and time'
     }
 })
-const emit = defineEmits(['update:modelValue','inputUpdate'])
+const emit = defineEmits(['update:modelValue', 'inputUpdate'])
 
 const dateTimeInputRef = ref(null)
 
@@ -45,7 +46,7 @@ defineExpose({
     <div class="flex-col mb-4">
         <label
             class="h-8 ml-2"
-            :for="fieldId"
+            :for="props.fieldId"
         >
             <slot name="label" />
         </label>

@@ -1,9 +1,10 @@
-import {API_ENDPOINTS} from "@/js/constants/API_ENDPOINTS";
-import {defineStore} from "pinia";
 import {useSessionStorage, useStorage} from "@vueuse/core";
 import axios from "axios";
-import {serverURL} from "@/js/constants/serverUrl";
+import {defineStore} from "pinia";
 import {Ref} from 'vue'
+
+import {API_ENDPOINTS} from "@/js/constants/API_ENDPOINTS";
+import {serverURL} from "@/js/constants/serverUrl";
 
 // Define the types for the currentUser
 interface UserMetaData {
@@ -30,8 +31,8 @@ interface CurrentUser {
 interface UserState {
     currentUser: Ref<CurrentUser | any>;
     userAvatar: Ref<string>;
-    userLikeList: Record<string, any>;
-    userBookmarkList: Record<string, any>;
+    userLikeList?: Record<string, any>;
+    userBookmarkList?: Record<string, any>;
     notifications: any[];
     userRequestParam: Record<string, any>;
 }

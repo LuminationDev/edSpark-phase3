@@ -1,9 +1,28 @@
 // Import router dependencies
-import BaseForm from "@/js/components/bases/form/BaseForm.vue";
-import SoftwareCreateForm from "@/js/components/software/SoftwareCreateForm.vue";
+import {createRouter, createWebHistory} from 'vue-router';
+
+import AdviceForm from "@/js/components/bases/form/types/AdviceForm.vue";
+import EventForm from "@/js/components/bases/form/types/EventForm.vue";
+import SoftwareForm from "@/js/components/bases/form/types/SoftwareForm.vue";
+import AdviceSearch from "@/js/components/search/AdviceSearch.vue";
+import EventSearch from "@/js/components/search/EventSearch.vue";
+import HardwareSearch from "@/js/components/search/HardwareSearch.vue";
+import PartnerSearch from "@/js/components/search/PartnerSearch.vue";
+import SchoolSearch from "@/js/components/search/SchoolSearch.vue";
+import SoftwareSearch from "@/js/components/search/SoftwareSearch.vue";
+import SoftwareSingle from "@/js/components/software/softwareSingle/SoftwareSingle.vue";
+import ProfileInfo from '@/js/components/userprofile/ProfileInfo.vue'
+import ProfileMessages from '@/js/components/userprofile/ProfileMessages.vue'
+import ProfileWork from '@/js/components/userprofile/ProfileWork.vue'
+import UserProfile from '@/js/components/userprofile/UserProfile.vue';
+import AdviceSingle from "@/js/pages/AdviceSingle.vue";
 import EdsparkPageNotFound from "@/js/pages/EdsparkPageNotFound.vue";
+import EventSingle from "@/js/pages/EventSingle.vue";
+import HardwareSingle from '@/js/pages/HardwareSingle.vue';
+import PartnerSingle from "@/js/pages/PartnerSingle.vue";
 import SchoolSingle from "@/js/pages/SchoolSingle.vue";
 import TheAdvice from "@/js/pages/TheAdvice.vue";
+import TheCreator from "@/js/pages/TheCreator.vue";
 import TheEvent from "@/js/pages/TheEvent.vue";
 import TheForbidden from "@/js/pages/TheForbidden.vue";
 import TheHardware from "@/js/pages/TheHardware.vue";
@@ -11,26 +30,10 @@ import TheHome from "@/js/pages/TheHome.vue";
 import ThePartner from "@/js/pages/ThePartner.vue";
 import TheSchool from "@/js/pages/TheSchool.vue";
 import TheSoftware from "@/js/pages/TheSoftware.vue";
-import {createRouter, createWebHistory} from 'vue-router';
-import DashboardNew from './pages/DashboardNew.vue';
-import AdviceSingle from "@/js/pages/AdviceSingle.vue";
-import SoftwareSingle from "@/js/components/software/softwareSingle/SoftwareSingle.vue";
-import UserProfile from '@/js/components/userprofile/UserProfile.vue';
-import HardwareSingle from '@/js/pages/HardwareSingle.vue';
-import EventSingle from "@/js/pages/EventSingle.vue";
-
-import ProfileWork from '@/js/components/userprofile/ProfileWork.vue'
-import ProfileInfo from '@/js/components/userprofile/ProfileInfo.vue'
-import ProfileMessages from '@/js/components/userprofile/ProfileMessages.vue'
-import SchoolSearch from "@/js/components/search/SchoolSearch.vue";
-import SoftwareSearch from "@/js/components/search/SoftwareSearch.vue";
-import AdviceSearch from "@/js/components/search/AdviceSearch.vue";
-import HardwareSearch from "@/js/components/search/HardwareSearch.vue";
-import PartnerSingle from "@/js/pages/PartnerSingle.vue";
-import PartnerSearch from "@/js/components/search/PartnerSearch.vue";
-import EventSearch from "@/js/components/search/EventSearch.vue";
-
+import UserPosts from "@/js/pages/UserPosts.vue";
 import {useAuthStore} from '@/js/stores/useAuthStore';
+
+import DashboardNew from './pages/DashboardNew.vue';
 
 
 type RouteMeta = {
@@ -40,7 +43,7 @@ type RouteMeta = {
     skipScrollTop?: boolean;
 };
 
-const routes : any = [
+const routes: any = [
     {
         name: 'home',
         path: '/',
@@ -61,11 +64,12 @@ const routes : any = [
     {
         name: 'create-pages',
         path: '/create',
+        component: TheCreator,
         children: [
             {
-                name: 'createAdvice',
-                path: 'advice',
-                component: BaseForm,
+                name: "userPosts",
+                path: "",
+                component: UserPosts,
                 meta: {
                     requiresAuth: true,
                 } as RouteMeta
@@ -73,7 +77,21 @@ const routes : any = [
             {
                 name: 'createSoftware',
                 path: 'software',
-                component: SoftwareCreateForm,
+                component: SoftwareForm,
+                meta: {
+                    requiresAuth: true,
+                } as RouteMeta
+            }, {
+                name: 'createAdvice',
+                path: 'advice',
+                component: AdviceForm,
+                meta: {
+                    requiresAuth: true,
+                } as RouteMeta
+            }, {
+                name: 'createEvent',
+                path: 'event',
+                component: EventForm,
                 meta: {
                     requiresAuth: true,
                 } as RouteMeta
@@ -90,21 +108,21 @@ const routes : any = [
                 component: SchoolSearch,
                 meta: {
                     requiresAuth: true,
-                }as RouteMeta
+                } as RouteMeta
             }, {
                 name: 'browseAdvices',
                 path: 'advice',
                 component: AdviceSearch,
                 meta: {
                     requiresAuth: true,
-                }as RouteMeta
+                } as RouteMeta
             }, {
                 name: 'browseSoftwares',
                 path: 'software/:filter?',
                 component: SoftwareSearch,
                 meta: {
                     requiresAuth: true,
-                }as RouteMeta
+                } as RouteMeta
             }, {
                 name: 'browseHardwares',
                 path: 'hardware',

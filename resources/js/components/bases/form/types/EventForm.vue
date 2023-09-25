@@ -1,52 +1,69 @@
-<script setup>
+<script setup lang="ts">
+import {reactive} from "vue";
+
 import BaseForm from "@/js/components/bases/form/BaseForm.vue";
 import ExtraContent from "@/js/components/bases/form/ExtraContent.vue";
-import {reactive, ref} from "vue";
+import {templates} from "@/js/components/bases/form/templates/formTemplates";
+import EventTypeLocationTime from "@/js/components/selector/EventTypeLocationTime.vue";
 
-const props = defineProps({
+interface EventLocationType {
+    url?: string,
+    address?: string
+}
+
+type EventAdditionalData = {
+    extraContentData: Array<any>,
+    eventType: number,
+    eventLocation: EventLocationType
+    startTime: Date,
+    endTime: Date
+}
+
+const addtEventData = reactive<EventAdditionalData>({
+    extraContentData: [],
+    eventType: 0,
+    eventLocation: {},
+    startTime: new Date(),
+    endTime: new Date()
 
 })
 
-const createNewBaseData = () => {
-    return {
-        title: '',
-        excerpt: '',
-        content: '',
-        coverImage: '',
-        authorName: '',
-        tags: []
+const updateExtraContent = (content): void => {
+    if (content) {
+        addtEventData.extraContentData = content
     }
 }
-const baseData = reactive(createNewBaseData())
 
-const extraContentData = reactive({
-    resourceData: [],
-    templateData: []
-})
-
-const updateParentExtraContent = (content) => {
-    console.log('updating highest level tempalte and Resource')
-    if (content.resourceData) {
-        extraContentData.resourceData = content.resourceData
+const handleReceiveTypesLocationTime = (data: object): void => {
+    addtEventData.eventType = data.eventType
+    addtEventData.eventLocation = data.eventLocation
+    addtEventData.startTime = data.startTime
+    addtEventData.endTime = data.endTime
+    if (data.extraContentData) {
+        addtEventData.extraContentData = data.extraContentData
     }
-    if (content.templateData) {
-        extraContentData.templateData = content.templateData
-    }
-    console.log(extraContentData)
 }
-
 </script>
 
 
 <template>
     <BaseForm
-        :base-data="baseData"
-        item-type="software"
+        item-type="event"
+        :additional-data="addtEventData"
+        @base-emits-addt-content="handleReceiveTypesLocationTime"
     >
+        <template #itemType>
+            <EventTypeLocationTime
+                :type-location-time="addtEventData"
+                label="Select Event type"
+                @emit-event-type-location-time="handleReceiveTypesLocationTime"
+            />
+        </template>
         <template #extraContent>
             <ExtraContent
-                :extra-content-data="extraContentData"
-                @update-parent-extra-content="updateParentExtraContent"
+                :extra-content-data="addtEventData.extraContentData"
+                :available-templates="templates"
+                @update-parent-extra-content="updateExtraContent"
             />
         </template>
     </BaseForm>

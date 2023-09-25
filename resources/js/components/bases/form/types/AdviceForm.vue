@@ -1,52 +1,48 @@
-<script setup>
+<script setup lang="ts">
 import BaseForm from "@/js/components/bases/form/BaseForm.vue";
 import ExtraContent from "@/js/components/bases/form/ExtraContent.vue";
-import {reactive, ref} from "vue";
+import ItemTypeCheckboxes from "@/js/components/selector/ItemTypeCheckboxes.vue";
+import {API_ENDPOINTS} from "@/js/constants/API_ENDPOINTS";
+import {reactive} from "vue";
+import {templates} from "@/js/components/bases/form/templates/formTemplates";
 
-const props = defineProps({
+
+const addtAdviceData = reactive({
+    extraContentData: [],
+    adviceTypes : [],
 
 })
 
-const createNewBaseData = () => {
-    return {
-        title: '',
-        excerpt: '',
-        content: '',
-        coverImage: '',
-        authorName: '',
-        tags: []
+const updateExtraContent = (content) : void => {
+    if (content) {
+        addtAdviceData.extraContentData = content
     }
 }
-const baseData = reactive(createNewBaseData())
 
-const extraContentData = reactive({
-    resourceData: [],
-    templateData: []
-})
-
-const updateParentExtraContent = (content) => {
-    console.log('updating highest level tempalte and Resource')
-    if (content.resourceData) {
-        extraContentData.resourceData = content.resourceData
-    }
-    if (content.templateData) {
-        extraContentData.templateData = content.templateData
-    }
-    console.log(extraContentData)
+const handleReceiveTypes = (typeArray): void => {
+    console.log('received types insdie base aform ')
+    addtAdviceData.adviceTypes = typeArray
 }
-
 </script>
 
 
 <template>
     <BaseForm
-        :base-data="baseData"
-        item-type="software"
+        item-type="advice"
+        :additional-data="addtAdviceData"
     >
+        <template #itemType>
+            <ItemTypeCheckboxes
+                :type-api-link="API_ENDPOINTS.ADVICE.FETCH_ADVICE_TYPES"
+                label="Select advice type"
+                @send-selected-types-as-array="handleReceiveTypes"
+            />
+        </template>
         <template #extraContent>
             <ExtraContent
-                :extra-content-data="extraContentData"
-                @update-parent-extra-content="updateParentExtraContent"
+                :extra-content-data="addtAdviceData.extraContentData"
+                :available-templates="templates"
+                @update-parent-extra-content="updateExtraContent"
             />
         </template>
     </BaseForm>

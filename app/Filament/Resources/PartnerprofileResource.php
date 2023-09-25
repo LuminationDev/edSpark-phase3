@@ -91,9 +91,9 @@ class PartnerprofileResource extends Resource
     {
         $filesystem = app(Filesystem::class);
 
-        return collect($filesystem->allFiles(app_path('Filament/PageTemplates/Partner')))
+        return collect($filesystem->allFiles(app_path('Filament/PageTemplates')))
             ->map(function (SplFileInfo $file): string {
-                return (string) Str::of('App\\Filament\\PageTemplates\\Partner')
+                return (string) Str::of('App\\Filament\\PageTemplates')
                     ->append('\\', $file->getRelativePathName())
                     ->replace(['/', '.php'], ['\\', '']);
             });
