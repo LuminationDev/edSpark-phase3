@@ -17,28 +17,16 @@ const navDropdownToggle = ref(false);
 </script>
 
 <template>
-    
-        <li
-            class="
-                cursor-pointer
-                decoration-4
-                decoration-[#B8E2DC]
-                py-4
-                transition-all
-                underline-offset-8
-                hover:underline
-                uppercase
-                lg:!py-0
-                "
-            @click="props.clickCallback"
-        >
-        
+    <li
+        class="cursor-pointer decoration-4 decoration-[#B8E2DC] py-4 transition-all underline-offset-8 hover:underline uppercase lg:!py-0"
+        @click="props.clickCallback"
+    >
         <router-link
-        :to="{ name: route.name }">
-            {{ route.name }}
-
+            :to="{ name: route.name }"
+        >
+            {{ route.meta.customText ?? route.name }}
         </router-link>
-        </li>
+    </li>
 
     <li
         v-if="route.meta.dropdownItems"

@@ -41,6 +41,7 @@ type RouteMeta = {
     navigation?: boolean;
     dropdownItem?: boolean;
     skipScrollTop?: boolean;
+    customText? : string
 };
 
 const routes: any = [
@@ -59,6 +60,7 @@ const routes: any = [
         meta: {
             navigation: true,
             requiresAuth: true, //guard the dashboard route
+            customText: "Dash"
         } as RouteMeta
     },
     {
@@ -223,6 +225,7 @@ const routes: any = [
         meta: {
             navigation: true,
             requiresAuth: true,
+            customText: 'Engage'
         }
     },
     {
