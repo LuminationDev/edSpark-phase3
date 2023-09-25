@@ -1,58 +1,64 @@
-<script setup>
-import {computed, ref} from 'vue';
+<script setup lang="ts">
+import {computed} from 'vue';
 import {useRouter} from "vue-router";
+
+import {EventType} from "@/js/types/EventTypes";
 
 const props = defineProps({
     events: {
-        type: Array,
+        type: Array as () => EventType[],
         required: true
     }
 });
 
-const router = useRouter()
-const sortedEvents = ref({});
+const router = useRouter();
 
-const arraySorter = () => {
-    let sorted = props.events.sort((a, b) => {
-        return new Date(a.start_date) - new Date(b.start_date);
+// Function to sort events by start_date
+const sortEventsByDate = (events: EventType[]): EventType[] => {
+    return [...events].sort((a, b) => {
+        return new Date(a.start_date).getTime() - new Date(b.start_date).getTime();
     });
+};
 
-    let sortedData = {};
+// group sorted events by date
+const groupEventsByDate = (sorted: EventType[]): Record<string, EventType[]> => {
+    const sortedData: Record<string, EventType[]> = {};
 
-    sorted.forEach(obj => {
-        const date = obj.start_date.split(' ')[0];
-
-        if (sortedData.hasOwnProperty(date)) {
-            sortedData[date].push(obj);
+    sorted.forEach(event => {
+        const date = event.start_date.split(' ')[0];
+        if (sortedData[date]) {
+            sortedData[date].push(event);
         } else {
-            sortedData[date] = [obj];
+            sortedData[date] = [event];
         }
     });
 
-    sortedEvents.value = sortedData
+    return sortedData;
 };
 
-arraySorter();
+const sortedEvents = computed(() => {
+    return groupEventsByDate(sortEventsByDate(props.events));
+});
 
-const handleClickSingleEvent = (eventId) => {
-    console.log('Clicked the event with id: ', eventId);
+const handleClickSingleEvent = (eventId: number): void => {
     router.push({
-        name:"event-single",
-        params: { id: eventId},
-    })
-}
-const eventTypeColorClass = (eventType) => {
-    switch (eventType){
+        name: "event-single",
+        params: {id: eventId},
+    });
+};
+
+const eventTypeColorClass = (eventType: string): string => {
+    switch (eventType) {
     case 'Virtual':
-        return "bg-[#C73858]"
-        break;
+        return "bg-[#C73858]";
     case "In Person":
-        return "bg-blue-500"
-        break;
+        return "bg-blue-500";
     case "Hybrid":
-        return "bg-purple-500"
+        return "bg-purple-500";
+    default:
+        return "";
     }
-}
+};
 </script>
 
 <template>
@@ -74,7 +80,7 @@ const eventTypeColorClass = (eventType) => {
         <div
             v-for="(eventArr, date) in sortedEvents"
             :key="date"
-            class="flex flex-col gap-4 mb-4"
+            class="eventCalenderSide flex flex-col gap-4 mb-4"
         >
             <div class="bg-[#F8F8F8] px-10 py-3">
                 <h2 class="font-medium text-[24px]">
@@ -108,23 +114,23 @@ const eventTypeColorClass = (eventType) => {
 </template>
 
 <style scoped>
-    .eventEvcerptTextInline {
-        max-width: 354px;
-    }
+.eventEvcerptTextInline {
+    max-width: 354px;
+}
 
-    .eventEvcerptTextInline :deep(p) {
-        max-width: 354px;
-        width: 354px;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        height: 100px;
-    }
+.eventEvcerptTextInline :deep(p) {
+    max-width: 354px;
+    width: 354px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    height: 100px;
+}
 </style>
 
 <style>
-    ::-webkit-scrollbar-track {
-        margin-top: 1rem !important;
-        margin-bottom: 1rem !important;
-        margin-right: 1rem !important;
-    }
+::-webkit-scrollbar-track {
+    margin-top: 1rem !important;
+    margin-bottom: 1rem !important;
+    margin-right: 1rem !important;
+}
 </style>

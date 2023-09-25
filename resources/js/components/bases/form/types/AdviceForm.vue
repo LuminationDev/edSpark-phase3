@@ -1,26 +1,27 @@
 <script setup lang="ts">
+import {reactive} from "vue";
+
 import BaseForm from "@/js/components/bases/form/BaseForm.vue";
 import ExtraContent from "@/js/components/bases/form/ExtraContent.vue";
+import {templates} from "@/js/components/bases/form/templates/formTemplates";
 import ItemTypeCheckboxes from "@/js/components/selector/ItemTypeCheckboxes.vue";
 import {API_ENDPOINTS} from "@/js/constants/API_ENDPOINTS";
-import {reactive} from "vue";
-import {templates} from "@/js/components/bases/form/templates/formTemplates";
+import {AdviceAdditionalData} from "@/js/types/AdviceTypes";
 
 
-const addtAdviceData = reactive({
-    extraContentData: [],
-    adviceTypes : [],
+const addtAdviceData = reactive<AdviceAdditionalData>({
+    extraContentData: [], 
+    adviceTypes: [],
 
 })
 
-const updateExtraContent = (content) : void => {
+const updateExtraContent = (content): void => {
     if (content) {
         addtAdviceData.extraContentData = content
     }
 }
 
 const handleReceiveTypes = (typeArray): void => {
-    console.log('received types insdie base aform ')
     addtAdviceData.adviceTypes = typeArray
 }
 </script>

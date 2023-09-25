@@ -1,11 +1,11 @@
-<script setup>
-// import EventsCalendarPopup from './EventsCalendarPopup.vue';
-
-import EventsCalendarPopup from "@/js/components/events/EventsCalendarPopup.vue";
-import {Calendar} from 'v-calendar';
+<script setup lang="ts">
 import 'v-calendar/style.css';
 
-import {ref, computed} from 'vue';
+import {Calendar} from 'v-calendar';
+import {computed,ref} from 'vue';
+
+import EventsCalendarPopup from "@/js/components/events/EventsCalendarPopup.vue";
+import {EventType} from "@/js/types/EventTypes";
 
 const eventCalendar = ref(null);
 const showPopup = ref(false);
@@ -14,7 +14,7 @@ const dateForPopup = ref('');
 
 const props = defineProps({
     events: {
-        type: Array,
+        type: Array as () => EventType[],
         required: true
     }
 });

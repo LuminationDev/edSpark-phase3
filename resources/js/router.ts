@@ -235,15 +235,6 @@ const routes: any = [
         }
     },
     {
-        name: 'events',
-        path: '/events',
-        component: TheEvent,
-        meta: {
-            navigation: true,
-            requiresAuth: true,
-        }
-    },
-    {
         name: 'event-single',
         path: '/event/resources/:id/:slug?',
         alias: '/event/resources/:id',

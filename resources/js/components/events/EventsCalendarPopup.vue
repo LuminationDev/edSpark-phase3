@@ -1,10 +1,14 @@
-<script setup>
-import { imageURL } from '../../constants/serverUrl';
+<script setup lang="ts">
+import {onClickOutside} from "@vueuse/core";
+import {Ref,ref} from "vue";
 import {useRouter} from "vue-router";
+
+import { imageURL } from '@/js/constants/serverUrl';
+import {EventType} from "@/js/types/EventTypes";
 
 const props = defineProps({
     dayEvents: {
-        type: Array,
+        type: Array as () => EventType[],
         required: true
     },
     date: {
@@ -14,47 +18,48 @@ const props = defineProps({
 });
 
 const emits = defineEmits(['emitClosePopup']);
-const router = useRouter()
+const calendarPopupBox: Ref<HTMLDivElement | null> = ref(null);
 
-const formatDate = (theDate) => {
-    return new Date(theDate).toLocaleDateString('en-us', { weekday:"long", year:"numeric", month:"short", day:"numeric"})
+const router = useRouter();
+
+const formatDate = (theDate: string): string => {
+    return new Date(theDate).toLocaleDateString('en-us', { weekday:"long", year:"numeric", month:"short", day:"numeric"});
 }
 
-const formatTime = (theDate) => {
+const formatTime = (theDate: string): string => {
     return new Date(theDate).toLocaleTimeString('en-us', { hour: 'numeric', minute: 'numeric', hour12: true });
 }
 
-const checkIfMultiDay = (startDate, endDate) => {
-    let start = new Date(startDate);
-    let end = new Date(endDate);
+const checkIfMultiDay = (startDate: string, endDate: string): string | undefined => {
+    const start = new Date(startDate);
+    const end = new Date(endDate);
 
-    if (start.getDate() === end.getDate()) {
-        return;
-    } else {
-        return ' | Multi-day'
+    if (start.getDate() !== end.getDate()) {
+        return ' | Multi-day';
     }
 }
 
-const handleEmitClosePopup = () => {
+const handleEmitClosePopup = (): void => {
     emits('emitClosePopup');
 }
 
-const handleClickEventFromPopup = (eventId) => {
+const handleClickEventFromPopup = (eventId: number): void => {
     console.log('Clicked the event with id: ', eventId);
     document.body.style.overflow = 'auto';
     router.push({
         name:"event-single",
-        params: { id: eventId},
-    })
+        params: { id: eventId },
+    });
 }
 
-const print = (thing) => {
-    console.log(thing.customData.cover_image);
-}
+onClickOutside(calendarPopupBox,() => {
+    emits('emitClosePopup');
+});
 </script>
 
 <template>
     <div
+        ref="calendarPopupBox"
         class="
             -translate-x-1/2
             -translate-y-1/2
@@ -87,7 +92,6 @@ const print = (thing) => {
                     v-for="(event, index) in dayEvents"
                     :key="index"
                 >
-                    {{ print(event) }}
                     <div
                         class="
                             cursor-pointer
