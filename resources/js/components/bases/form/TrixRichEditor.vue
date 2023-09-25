@@ -4,6 +4,8 @@ import Trix from 'trix'
 import {computed,  ref, watch} from 'vue';
 
 import {headingButton, subheadingButton, underlineButton} from "@/js/components/bases/form/EditorButtonIcon";
+import Profile from "@/js/components/svg/Profile.vue";
+import {API_ENDPOINTS} from "@/js/constants/API_ENDPOINTS";
 
 const props = defineProps({
     disabledEditor: {
@@ -74,8 +76,43 @@ const emitEditorState = (value) => {
 const emitFileAccept = (file) => {
     emits('trix-file-accept', file)
 }
-const emitAttachmentAdd = (file) => {
-    emits('trix-attachment-add', file)
+const emitAttachmentAdd = async (event) => {
+    const attachment = event.attachment;
+
+    if (!attachment.file && attachment.getURL()) {
+        try {
+            const response = await fetch(attachment.getURL());
+            const blob = await response.blob();
+
+            // Form data for uploading image
+            const formData = new FormData();
+            formData.append('image', blob, `${randomId()}.jpg`);
+
+            // Upload the image to your endpoint
+            const uploadResponse = await fetch(API_ENDPOINTS.IMAGE.IMAGE_UPLOAD_EDITOR_JS, {
+                method: 'POST',
+                body: formData
+            });
+
+            if (!uploadResponse.ok) {
+                throw new Error('Failed to upload image');
+            }
+
+            const data = await uploadResponse.json();
+            const imageUrl = data.file.url;
+
+            // Set the new image URL as the attachment attributes
+            attachment.setAttributes({
+                url: imageUrl,
+                href: imageUrl
+            });
+            console.log(imageUrl)
+
+        } catch (error) {
+            console.error('Error processing the image:', error);
+            // Handle the error further if needed
+        }
+    }
 }
 const emitAttachmentRemove = (file) => {
     emits('trix-attachment-remove', file)
@@ -315,11 +352,7 @@ addToolbarButton('h2', h2ButtonConfig);
 
     }
 
-    .trix-button-row {
-        border: 1px solid gray;
-        border-top-left-radius: 10px;
-        border-top-right-radius: 10px;
-    }
+
 
     .trix-button-group {
         margin-top: 5px;
@@ -352,12 +385,21 @@ addToolbarButton('h2', h2ButtonConfig);
     trix-toolbar .trix-button.trix-active {
         border-radius: 10px !important;
     }
+    .trix-button-row {
+        border: 1px solid gray;
+        border-top-left-radius: 10px;
+        border-top-right-radius: 10px;
+    }
+
 
     .trix-button--icon-increase-nesting-level,
     .trix-button--icon-decrease-nesting-level,
     .trix-button--icon-heading-1,
     .trix-button--icon-attach,
     { display: none; }
+}
+trix-editor .attachment__toolbar .trix-button-row{
+    border: 0 !important
 }
 
 </style>
