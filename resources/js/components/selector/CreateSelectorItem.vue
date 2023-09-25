@@ -19,7 +19,19 @@ const props = defineProps({
 
 <template>
     <div
-        class="flex justify-center items-center font-semibold h-32 rounded-2xl text-white text-xl w-40 hover:cursor-pointer"
+        class="
+            flex
+            justify-center
+            items-center
+            font-semibold
+            h-32
+            rounded-2xl
+            text-white
+            text-xl
+            w-40
+            hover:!grayscale-0
+            hover:cursor-pointer
+            "
         :class="{
             [props.bgColorClass]: true,
             'grayscale ': props.disabled

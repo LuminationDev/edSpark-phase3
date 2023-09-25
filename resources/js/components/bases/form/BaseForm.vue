@@ -149,9 +149,10 @@ const statusGenerator = computed(() => {
 </script>
 
 <template>
+    `
     <div
         id="BaseFormParent"
-        class="BaseFormContainer border-[1px] flex flex-col mt-12 mx-5 p-4 rounded-2xl text-black md:!mx-10 lg:!mx-20"
+        class="BaseFormContainer border-[1px] flex flex-col mt-12 mx-5 p-8 rounded-2xl text-black md:!mx-10"
     >
         <div class="Introduction formHeader my-4">
             <div class="flex justify-between flex-row">
@@ -245,6 +246,5 @@ const statusGenerator = computed(() => {
                 Submit for moderation
             </GenericButton>
         </div>
-        <pre> {{ autoSaveContent }}</pre>
     </div>
 </template>

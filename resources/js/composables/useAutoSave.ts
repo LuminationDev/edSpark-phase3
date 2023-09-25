@@ -10,7 +10,7 @@ export enum FormStatus {
     DRAFT = 'Draft',
     SAVED = 'Saved',
     LOADED_AUTOSAVE = 'Autosave loaded',
-    CHECKING_AUTOSAVE = "Checking autosave",
+    CHECKING_AUTOSAVE = "Checking for autosave",
     FOUND_AUTOSAVE = "Autosave Found!"
 }
 

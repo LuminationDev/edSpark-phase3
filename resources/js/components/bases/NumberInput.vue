@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
+
 import ErrorMessages from './ErrorMessages.vue'
 
 
@@ -50,7 +51,7 @@ defineExpose({
             ref="inputRef"
             :value="modelValue"
             type="number"
-            class="border-2 border-black mr-1 p-2 rounded text-black"
+            class="border-[1px] border-gray-300 mr-1 p-2 rounded text-black"
             :class="{
                 '!border-red-500': v$ && v$.$error
             }"
