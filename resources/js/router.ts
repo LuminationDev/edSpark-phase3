@@ -148,15 +148,6 @@ const routes: any = [
         ]
     },
     {
-        name: 'schools',
-        path: '/schools',
-        component: TheSchool,
-        meta: {
-            navigation: true,
-            requiresAuth: true,
-        }
-    },
-    {
         name: 'school-single',
         path: '/schools/:name',
         component: SchoolSingle,

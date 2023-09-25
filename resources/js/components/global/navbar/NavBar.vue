@@ -2,30 +2,29 @@
 /**
  * Import Dependencies
  */
-import {ref, onMounted, computed} from 'vue';
+import {storeToRefs} from "pinia";
+import {computed,onMounted, ref} from 'vue';
 import {useRouter} from 'vue-router';
 
-/**
- * Import SVG's
- */
-import NavSwoosh from '../../svg/NavSwoosh.vue';
-import Logo from '../../svg/Logo.vue';
-import Profile from '../../svg/Profile.vue';
-
+import {isObjectEmpty} from "@/js/helpers/objectHelpers";
+import {useAuthStore} from '@/js/stores/useAuthStore';
 /**
  * Import Stores
  */
 import {useUserStore} from '@/js/stores/useUserStore';
-import {useAuthStore} from '@/js/stores/useAuthStore';
+import {useWindowStore} from "@/js/stores/useWindowStore";
 
+import Logo from '../../svg/Logo.vue';
+/**
+ * Import SVG's
+ */
+import NavSwoosh from '../../svg/NavSwoosh.vue';
+import Profile from '../../svg/Profile.vue';
 /**
  * Import Components
  */
 import ProfileDropdown from '../ProfileDropdown.vue';
 import NavItems from './NavItems.vue';
-import {isObjectEmpty} from "@/js/helpers/objectHelpers";
-import {storeToRefs} from "pinia";
-import {useWindowStore} from "@/js/stores/useWindowStore";
 
 const router = useRouter();
 const profileDropdown = ref(false);
@@ -86,7 +85,7 @@ const {isMobile, isTablet} = storeToRefs(useWindowStore)
             v-if="isAuthenticated"
             id="navbarFullsize"
             class="bg-[#002856]/50 container hidden navbarFullsize px-12 py-2 lg:block lg:z-20"
-                    >
+        >
             <ul
                 class="2xl:gap-8 2xl:text-2xl font-['Poppins'] font-semibold gap-4 hidden text-white xl:text-xl lg:flex lg:flex-row"
             >
@@ -112,11 +111,14 @@ const {isMobile, isTablet} = storeToRefs(useWindowStore)
             :avatar-url="avatarUrl"
             @handle-avatar-click="handleAvatarClick"
         />
-        <!-- MB commented out the button below - what was its purpose? -->
-        <!-- EH uncommented - it's the edspark logo to take user back to dashboard, using button so it can be "tabbed" through -->
-        <!-- MB thank you! Have changed from button to div (is this OK?) and added title tags for accessibility -->
-        <div id="edSparkLogo" title="edSpark logo">
-            <router-link :to="{name: 'dashboard'}" title="Go to dashboard">
+        <div
+            id="edSparkLogo"
+            title="edSpark logo"
+        >
+            <router-link
+                :to="{name: 'dashboard'}"
+                title="Go to dashboard"
+            >
                 <Logo
                     class="
                         absolute
@@ -142,14 +144,7 @@ const {isMobile, isTablet} = storeToRefs(useWindowStore)
             </router-link>
         </div>
         <NavSwoosh
-            class="
-                absolute
-                -bottom-0
-                left-0
-                pointer-events-none
-                scale-y-[1.2]
-                w-full
-                "
+            class="absolute -bottom-0 left-0 pointer-events-none scale-y-[1.2] w-full"
         />
     </div>
 </template>

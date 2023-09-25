@@ -1,9 +1,10 @@
-import {API_ENDPOINTS} from "@/js/constants/API_ENDPOINTS";
-import {useUserStore} from "@/js/stores/useUserStore";
-import { defineStore } from "pinia";
 import axios from 'axios';
-import {schoolContentArrParser} from "@/js/helpers/jsonHelpers";
+import { defineStore } from "pinia";
+
+import {API_ENDPOINTS} from "@/js/constants/API_ENDPOINTS";
 import {serverURL} from "@/js/constants/serverUrl";
+import {schoolContentArrParser} from "@/js/helpers/jsonHelpers";
+import {useUserStore} from "@/js/stores/useUserStore";
 
 export const useSchoolsStore = defineStore('schools', {
     /** newSchool (reside inside schoolsStore from FirstVisitForm):{
@@ -41,7 +42,7 @@ export const useSchoolsStore = defineStore('schools', {
     actions: {
         async loadSchools() {
             const userStore = useUserStore()
-            return await axios.get(API_ENDPOINTS.SCHOOL.FETCH_ALL_SCHOOLS, userStore.getUserRequestParam).then(res => {
+            return axios.get(API_ENDPOINTS.SCHOOL.FETCH_ALL_SCHOOLS, userStore.getUserRequestParam).then(res => {
                 const parsedRes = schoolContentArrParser(res.data)
                 this.schools = parsedRes;
                 return parsedRes;

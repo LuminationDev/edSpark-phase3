@@ -1,4 +1,8 @@
 <script setup>
+
+/**
+ * NOT BEING USED ATM
+ */
 import {storeToRefs} from "pinia";
 import useSWRV from "swrv"; 
 import {computed, onBeforeMount, ref} from 'vue'
@@ -106,7 +110,6 @@ const handleSaveWelcomePopup = (data) => {
     showWelcomePopup.value = false
 
 }
-
 </script>
 <template>
     <div

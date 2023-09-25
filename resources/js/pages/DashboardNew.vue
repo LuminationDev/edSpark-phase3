@@ -10,6 +10,7 @@ import {useRouter} from "vue-router";
  */
 import CardLoading from '@/js/components/card/CardLoading.vue';
 import CarouselGenerator from "@/js/components/card/CarouselGenerator.vue";
+import SchoolSectionDashboard from "@/js/components/schools/SchoolSectionDashboard.vue";
 import SoftwareCard from "@/js/components/software/SoftwareCard.vue";
 import DepartmentApprovedSolo from '@/js/components/svg/DepartmentApprovedSolo.vue';
 import DeptApprovedIcon from "@/js/components/svg/software/DeptApprovedIcon.vue";
@@ -97,7 +98,6 @@ const checkFirstVisit = async (emailAddress) => {
 
 }
 
-
 const shouldStartSwrv = computed(() => {
     return Boolean(currentUser.value.id)
 })
@@ -117,63 +117,8 @@ const {
     error: advicesError,
     isValidating: advicesIsValidating
 } = useSWRV(() => shouldStartSwrv.value ? API_ENDPOINTS.ADVICE.FETCH_ADVICE_POSTS : null, axiosFetcherParams(userStore.getUserRequestParam), swrvOptions)
-const {
-    data: schoolsData,
-    error: schoolsError,
-    isValidating: schoolsIsValidating
-} = useSWRV(() => shouldStartSwrv.value ? API_ENDPOINTS.SCHOOL.FETCH_FEATURED_SCHOOL : null, axiosSchoolFetcherParams(userStore.getUserRequestParam), swrvOptions)
 
-const {state: eventsState, STATES: ALLSTATES} = useSwrvState(eventsData, eventsError, eventsIsValidating)
-const {state: softwaresState} = useSwrvState(softwaresData, softwaresError, softwaresIsValidating)
-const {state: advicesState} = useSwrvState(advicesData, advicesError, advicesIsValidating)
-const {state: schoolsState} = useSwrvState(schoolsData, schoolsError, schoolsIsValidating)
 
-// who needs a one line ref to indicate loading state when you can have 10 lines 😆
-// todo: compile all ref into an array and process with map
-const eventsLoading = computed(() => {
-    if ([ALLSTATES.ERROR, ALLSTATES.STALE_IF_ERROR].includes(eventsState.value)) {
-        return false
-    } else if ([ALLSTATES.PENDING].includes(eventsState.value)) {
-        return true
-    } else if ([ALLSTATES.VALIDATING].includes(eventsState.value)) {
-        return false
-    } else {
-        return ![ALLSTATES.SUCCESS, ALLSTATES.VALIDATING, ALLSTATES.STALE_IF_ERROR].includes(eventsState.value)
-    }
-})
-const softwareLoading = computed(() => {
-    if ([ALLSTATES.ERROR, ALLSTATES.STALE_IF_ERROR].includes(softwaresState.value)) {
-        return false
-    } else if ([ALLSTATES.PENDING].includes(softwaresState.value)) {
-        return true
-    } else if ([ALLSTATES.VALIDATING].includes(softwaresState.value)) {
-        return false
-    } else {
-        return ![ALLSTATES.SUCCESS, ALLSTATES.VALIDATING, ALLSTATES.STALE_IF_ERROR].includes(softwaresState.value)
-    }
-})
-const adviceLoading = computed(() => {
-    if ([ALLSTATES.ERROR, ALLSTATES.STALE_IF_ERROR].includes(advicesState.value)) {
-        return false
-    } else if ([ALLSTATES.PENDING].includes(advicesState.value)) {
-        return true
-    } else if ([ALLSTATES.VALIDATING].includes(advicesState.value)) {
-        return false
-    } else {
-        return ![ALLSTATES.SUCCESS, ALLSTATES.VALIDATING, ALLSTATES.STALE_IF_ERROR].includes(advicesState.value)
-    }
-})
-const schoolsLoading = computed(() => {
-    if ([ALLSTATES.ERROR, ALLSTATES.STALE_IF_ERROR].includes(schoolsState.value)) {
-        return false
-    } else if ([ALLSTATES.PENDING].includes(schoolsState.value)) {
-        return true
-    } else if ([ALLSTATES.VALIDATING].includes(schoolsState.value)) {
-        return false
-    } else {
-        return ![ALLSTATES.SUCCESS, ALLSTATES.VALIDATING, ALLSTATES.STALE_IF_ERROR].includes(schoolsState.value)
-    }
-})
 
 const onCloseFirstVisitPopup = () => {
     isFirstVisit.value = false;
@@ -488,11 +433,7 @@ const softwareResponsiveData = computed(() => {
             :button-text="'View all schools'"
             :button-callback="() => router.push('/browse/school')"
         />
-
-        <CarouselGenerator
-            data-type="school"
-            :data-array="schoolsData ? schoolsData : []"
-        />
+        <SchoolSectionDashboard />
     </div>
 </template>
 
