@@ -1,22 +1,20 @@
 <script setup>
+import useSWRV from "swrv";
+import {useRouter} from "vue-router";
+
+import CardLoading from "@/js/components/card/CardLoading.vue";
+import SectionHeader from "@/js/components/global/SectionHeader.vue";
+import EventSectionPartner from "@/js/components/partners/EventSectionPartner.vue";
+import PartnerCard from "@/js/components/partners/PartnerCard.vue";
 import {API_ENDPOINTS} from "@/js/constants/API_ENDPOINTS";
+import {swrvOptions} from "@/js/constants/swrvConstants";
 import {axiosFetcherParams} from "@/js/helpers/fetcher";
 import {useUserStore} from "@/js/stores/useUserStore";
+
 import PartnersHero from '../components/partners/PartnersHero.vue';
-import recommenderEdsparkSingletonFactory from "@/js/recommender/recommenderEdspark";
-import {onMounted, ref} from "vue";
-import useSWRV from "swrv";
-import {swrvOptions} from "@/js/constants/swrvConstants";
-import {SWRVKeys} from "@/js/constants/swrvKeys";
-import SectionHeader from "@/js/components/global/SectionHeader.vue";
-import {useRouter} from "vue-router";
-import PartnerCard from "@/js/components/partners/PartnerCard.vue";
-import CardLoading from "@/js/components/card/CardLoading.vue";
 
 
-let recommender = recommenderEdsparkSingletonFactory().getInstance()
 const router = useRouter()
-const techList = ref({})
 
 
 const {
@@ -70,5 +68,13 @@ const {
                 </div>
             </template>
         </div>
+        <SectionHeader
+            :classes="'bg-secondary-darkBlue'"
+            :section="'events'"
+            :title="'Event Calendar'"
+            :button-text="'View all events'"
+            :button-callback="() => router.push('/browse/event')"
+        />
+        <EventSectionPartner />
     </div>
 </template>

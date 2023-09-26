@@ -5,19 +5,9 @@ import BaseForm from "@/js/components/bases/form/BaseForm.vue";
 import ExtraContent from "@/js/components/bases/form/ExtraContent.vue";
 import {templates} from "@/js/components/bases/form/templates/formTemplates";
 import EventTypeLocationTime from "@/js/components/selector/EventTypeLocationTime.vue";
+import {EventAdditionalData} from "@/js/types/EventTypes";
 
-interface EventLocationType {
-    url?: string,
-    address?: string
-}
 
-type EventAdditionalData = {
-    extraContentData: Array<any>,
-    eventType: number,
-    eventLocation: EventLocationType
-    startTime: Date,
-    endTime: Date
-}
 
 const addtEventData = reactive<EventAdditionalData>({
     extraContentData: [],

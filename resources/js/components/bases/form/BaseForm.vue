@@ -16,12 +16,16 @@ import {differenceObjects} from "@/js/helpers/jsonHelpers";
 import {autoSaveService} from "@/js/service/autoSaveService";
 import {formService} from "@/js/service/formService";
 import {useUserStore} from "@/js/stores/useUserStore";
+import {AdviceAdditionalData} from "@/js/types/AdviceTypes";
+import {EventAdditionalData} from "@/js/types/EventTypes";
+import {SoftwareAdditionalData} from "@/js/types/SoftwareTypes";
 
 
 const props = defineProps({
     additionalData: {
-        type: Object, required: false, default: () => {
-        }
+        type: Object as () => SoftwareAdditionalData | AdviceAdditionalData | EventAdditionalData,
+        required: false,
+        default: () => {}
     },
     additionalValidation: {
         type: Object, required: false, default: () => {

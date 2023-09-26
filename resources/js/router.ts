@@ -41,6 +41,7 @@ type RouteMeta = {
     navigation?: boolean;
     dropdownItem?: boolean;
     skipScrollTop?: boolean;
+    customText? : string
 };
 
 const routes: any = [
@@ -59,6 +60,7 @@ const routes: any = [
         meta: {
             navigation: true,
             requiresAuth: true, //guard the dashboard route
+            customText: "Dash"
         } as RouteMeta
     },
     {
@@ -148,15 +150,6 @@ const routes: any = [
         ]
     },
     {
-        name: 'schools',
-        path: '/schools',
-        component: TheSchool,
-        meta: {
-            navigation: true,
-            requiresAuth: true,
-        }
-    },
-    {
         name: 'school-single',
         path: '/schools/:name',
         component: SchoolSingle,
@@ -232,6 +225,7 @@ const routes: any = [
         meta: {
             navigation: true,
             requiresAuth: true,
+            customText: 'Engage'
         }
     },
     {
@@ -241,15 +235,6 @@ const routes: any = [
         component: PartnerSingle,
         meta: {
             navigation: false
-        }
-    },
-    {
-        name: 'events',
-        path: '/events',
-        component: TheEvent,
-        meta: {
-            navigation: true,
-            requiresAuth: true,
         }
     },
     {

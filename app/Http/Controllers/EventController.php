@@ -111,20 +111,23 @@ class EventController extends Controller
 
     public function fetchEventPosts(Request $request): \Illuminate\Http\JsonResponse
     {
-        $events = Event::where('event_status', 'Published')->get();
+        // Get the current date without the time component
+        $currentDate = now()->startOfDay();
+
+        $events = Event::where('event_status', 'Published')
+            ->where('end_date', '>=', $currentDate)
+            ->get();
 
         $data = [];
 
         foreach ($events as $event) {
-
             $result = $this->eventModelToJson($event, $request);
-
             $data[] = $result;
         }
 
         return response()->json($data);
-
     }
+
 
     public function fetchEventPostById(Request $request, $id): \Illuminate\Http\JsonResponse
     {

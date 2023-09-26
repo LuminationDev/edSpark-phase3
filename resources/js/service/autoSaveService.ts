@@ -1,5 +1,6 @@
-import {API_ENDPOINTS} from "@/js/constants/API_ENDPOINTS";
 import axios, {AxiosResponse} from 'axios'
+
+import {API_ENDPOINTS} from "@/js/constants/API_ENDPOINTS";
 
 export const autoSaveService = {
     getExpiryDateMonth: (): string => {
@@ -10,7 +11,6 @@ export const autoSaveService = {
         const year = currentDate.getFullYear();
         const month = String(currentDate.getMonth() + 1).padStart(2, '0');
         const day = String(currentDate.getDate()).padStart(2, '0');
-
         return `${year}-${month}-${day}`;
     },
     savePost: (user_id: number, type: string, data: Record<string, any>): Promise<void> => {
