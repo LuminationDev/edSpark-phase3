@@ -18,7 +18,6 @@ use App\Http\Controllers\ImageController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\LikeBookmarkController;
 use App\Http\Controllers\NotificationController;
-use App\Http\Controllers\OktaAuthController;
 use App\Http\Controllers\PartnerController;
 use App\Http\Controllers\RsvpController;
 use Illuminate\Support\Facades\Session;
@@ -34,7 +33,7 @@ use App\Http\Controllers\LoginController;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
-Route::middleware('api')->group(function() {
+Route::middleware('auth:sanctum')->group(function() {
     // School APIs
     Route::get('fetchAllSchools', [SchoolController::class, 'fetchAllSchools']);
     Route::get('fetchFeaturedSchools', [SchoolController::class, 'fetchFeaturedSchools']);
@@ -111,7 +110,6 @@ Route::middleware('api')->group(function() {
     Route::get('fetchAllNotifications/{userId}', [NotificationController::class, 'getAllNotifications']);
     Route::get('fetchSingleNotification', [NotificationController::class, 'getSingleNotification']);
     Route::get('fetchNotificationByType', [NotificationController::class, 'getNotificationByType']);
-    Route::post('authenticate', [OktaAuthController::class, 'authenticate']);
 
     // Partners API
     Route::get('fetchAllPartners', [PartnerController::class, 'fetchAllPartners']);

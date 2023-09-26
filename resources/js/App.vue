@@ -7,6 +7,7 @@ import {useRoute, useRouter} from 'vue-router';
 
 import NavbarMobileMenu from "@/js/components/global/navbar/NavbarMobileMenu.vue";
 import GlobalSearch from "@/js/components/search/GlobalSearch.vue";
+import {appURL} from "@/js/constants/serverUrl";
 import {isObjectEmpty} from "@/js/helpers/objectHelpers";
 import recommenderEdsparkSingletonFactory from "@/js/recommender/recommenderEdspark";
 import {useAuthStore} from "@/js/stores/useAuthStore";
@@ -50,12 +51,14 @@ onBeforeMount(async () => {
             window.location = '/login'
         } else {
             if (route.name === 'home') {
-                await router.push('/dashboard')
+                axios.get(`${appURL}/sanctum/csrf-cookie`).then(response => {
+                    router.push('/dashboard')
+                })
             }
         }
     } else {
-        /*
-        Here means local storage is empty, potentially new user. expect user to click login with okta
+        /**
+         * Here means local storage is empty, potentially new user. expect user to click login with okta
          */
     }
     if (currentUser.value?.id) {

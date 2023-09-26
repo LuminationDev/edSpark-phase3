@@ -8,6 +8,8 @@ use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 use Config;
+use Illuminate\Support\Facades\Log;
+
 
 
 class LoginController extends Controller
@@ -35,6 +37,7 @@ class LoginController extends Controller
         // Do something with the claims
         // Access custom claims (e.g., role_id and site_id)
         // $roleId = $claims['role_id'];
+
         // $siteId = $claims['site_id'];
         // var_dump($roleId);
         // var_dump($siteId);
@@ -99,28 +102,19 @@ class LoginController extends Controller
         // $role_id = 3; //$claims->role_id;
         // $site_id = 106; //$claims->site_id;
 
-        $localUser = User::where('email', $user->email)->first();
-
-        // create a local user with the email and token from Okta
-        if (! $localUser) {
-            $localUser = User::create([
+        $localUser = User::updateOrCreate(
+            ['email' => $user->email],  // columns for finding the existing model
+            [
                 'full_name' => $user->name,
-                'email' => $user->email,
                 'name'  => $user->name,
                 // 'role_id' => $role_id, //TODO
                 // 'site_id' => $site_id, //TODO
                 'remember_token' => Str::random(15),
-                'token' => $idToken,
-                'isFirstTimeVisit' => True,
+                'token' => $idToken ?? $user->token,  // Adjusted to fall back to `$user->token` if `$idToken` is not set
+                'isFirstTimeVisit' => false,
                 'status' => 'Inactive',
-            ]);
-        } else {
-            // if the user already exists, just update the token:
-            $localUser->remember_token = Str::random(15);
-            $localUser->token = $user->token;
-            // $localUser->isFirstTimeVisit = FALSE; //TODO
-            $localUser->save();
-        }
+            ]
+        );
 
         try {
             Auth::login($localUser);
@@ -130,15 +124,6 @@ class LoginController extends Controller
 
         return redirect('/dashboard'); //working code
 
-        // Redirect to the dashboard with the email as a query parameter
-        // return redirect('/dashboard?email=', urlencode($user->email));
-        // return Redirect::to('/dashboard')->with('email', $user->email);
-
-        // Flash the email to the session
-        // Session::flash('email', $user->email);
-        // $request->session()->put('email', $user->email);
-        // Redirect to the intended dashboard route
-        // return redirect()->intended('/dashboard');
     }
 
     private function decodeIdToken($idToken)
@@ -215,7 +200,6 @@ class LoginController extends Controller
                 'name' => Auth::user()->full_name,
             ]);
         }
-
         return response()->json([
             'success' => false,
             'email' => NULL,
