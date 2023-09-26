@@ -6,7 +6,6 @@ import {appURL} from "@/js/constants/serverUrl";
 
 const redirectToOkta = () => {
     axios.get(`${appURL}/sanctum/csrf-cookie`).then(response => {
-        console.log("Redirect to okta");
         loginWithOktaButtonPressed.value = true;
         window.location = '/login';
     });
