@@ -57,8 +57,8 @@ onBeforeMount(async () => {
             }
         }
     } else {
-        /*
-        Here means local storage is empty, potentially new user. expect user to click login with okta
+        /**
+         * Here means local storage is empty, potentially new user. expect user to click login with okta
          */
     }
     if (currentUser.value?.id) {

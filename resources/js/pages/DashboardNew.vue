@@ -62,7 +62,6 @@ const userDetails = reactive({
 const getIdToken = (async () => {
     try {
         const response = await axios.get(`${appURL}/okta-data`);
-        // console.log("RESPONSE", response);
         if (response.data.success === true) {
             userDetails.name = response.data.name;
             userDetails.email = response.data.email;
@@ -79,7 +78,6 @@ const getIdToken = (async () => {
     } catch (error) {
         console.error(error);
         console.warn('Failed to get Auth data. User is not logged in')
-        // currentUser.value.id = 61
     }
 })();
 
