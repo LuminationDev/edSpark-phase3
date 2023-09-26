@@ -2,7 +2,6 @@ import axios from 'axios';
 import { defineStore } from "pinia";
 
 import {API_ENDPOINTS} from "@/js/constants/API_ENDPOINTS";
-import {serverURL} from "@/js/constants/serverUrl";
 import {schoolContentArrParser} from "@/js/helpers/jsonHelpers";
 import {useUserStore} from "@/js/stores/useUserStore";
 

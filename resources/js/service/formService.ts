@@ -1,4 +1,3 @@
-import {addStateToken} from "@okta/okta-auth-js/types/lib/authn/util/stateToken";
 import axios, {AxiosResponse} from 'axios'
 
 import {keyToFieldTypes,templates} from "@/js/components/bases/form/templates/formTemplates";
@@ -8,7 +7,7 @@ import {API_ENDPOINTS} from "@/js/constants/API_ENDPOINTS";
 export type TemplateType = 'Extraresource' | 'Numbereditems' | 'Dateitems';
 
 interface ContentItem {
-    icon?: string; // Assuming icons are strings, change the type if not
+    icon?: string;
     content: string;
     heading: string;
 }
@@ -26,7 +25,6 @@ interface TransformedData {
     type: string;
 }
 
-// Assuming your simpleData is of this format:
 interface SimpleDataItem {
     template: TemplateType;
     title?: string;

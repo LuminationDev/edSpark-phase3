@@ -1,7 +1,7 @@
 import axios from 'axios'
 
 interface ContentItem {
-    icon?: string; // Assuming icons are strings, change the type if not
+    icon?: string;
     content: string;
     heading: string;
 }
@@ -18,7 +18,6 @@ interface TransformedData {
     type: string;
 }
 
-// Assuming your simpleData is of this format:
 interface SimpleDataItem {
     template: 'Numbereditems' | 'Dateitems' | 'Extraresource';
     content: ContentItem[];

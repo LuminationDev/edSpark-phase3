@@ -2,9 +2,7 @@
 <?php
 
 use App\Http\Controllers\AutoSaveController;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-//use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\AdviceController;
 use App\Http\Controllers\SoftwareController;
 use App\Http\Controllers\UserController;
@@ -13,15 +11,12 @@ use App\Http\Controllers\SiteController;
 use App\Http\Controllers\EventController;
 use App\Http\Controllers\CommunityController;
 use App\Http\Controllers\SchoolController;
-use App\Http\Controllers\TechController;
 use App\Http\Controllers\ImageController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\LikeBookmarkController;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\PartnerController;
 use App\Http\Controllers\RsvpController;
-use Illuminate\Support\Facades\Session;
-use App\Http\Controllers\LoginController;
 
 /*
 |--------------------------------------------------------------------------
@@ -34,6 +29,7 @@ use App\Http\Controllers\LoginController;
 |
 */
 Route::middleware('auth:sanctum')->group(function() {
+
     // School APIs
     Route::get('fetchAllSchools', [SchoolController::class, 'fetchAllSchools']);
     Route::get('fetchFeaturedSchools', [SchoolController::class, 'fetchFeaturedSchools']);
