@@ -2,6 +2,9 @@
 import {computed} from 'vue';
 import {useRouter} from "vue-router";
 
+import EventTypeTag from "@/js/components/events/EventTypeTag.vue";
+import {imageURL} from "@/js/constants/serverUrl";
+import {formatDateToTimeOnly} from "@/js/helpers/dateHelper";
 import {EventType} from "@/js/types/EventTypes";
 
 const props = defineProps({
@@ -80,9 +83,9 @@ const eventTypeColorClass = (eventType: string): string => {
         <div
             v-for="(eventArr, date) in sortedEvents"
             :key="date"
-            class="eventCalenderSide flex flex-col gap-4 mb-4"
+            class="eventCalenderSide flex flex-col gap-2"
         >
-            <div class="bg-[#F8F8F8] px-10 py-3">
+            <div class="bg-[#F8F8F8] px-5 py-2">
                 <h2 class="font-medium text-[24px]">
                     {{ date }}
                 </h2>
@@ -91,22 +94,38 @@ const eventTypeColorClass = (eventType: string): string => {
             <div
                 v-for="(event, index) in eventArr"
                 :key="index"
-                class="cursor-pointer flex flex-row gap-4 h-[150px] p-4 rounded hover:bg-slate-50"
+                class="cursor-pointer flex flex-col gap-2 mb-4 overflow-hidden pb-4 px-4 relative rounded hover:bg-slate-50"
                 @click="handleClickSingleEvent(event.id)"
             >
-                <div
-                    :class="eventTypeColorClass(event.type)"
-                    class="min-h-full min-w-[8px] rounded-sm"
+                <EventTypeTag
+                    class="!scale-100 lg:!scale-75 xl:!scale-100  !right-0 lg:!-right-2 lg:!top-2 xl:!right-0 xl:!top-4"
+                    :event-type="event.type"
                 />
-                <div class="flex flex-col gap-4 overflow-hidden">
-                    <h5 class="font-semibold text-[18px]">
-                        {{ event.title }}
-                    </h5>
-
+                <div class="flex previewImage">
+                    <img
+                        :src="imageURL+ '/' + event.cover_image"
+                        :alt="event.title"
+                        class="h-24 object-cover object-top w-full"
+                    >
+                </div>
+                <div class="flex flex-row gap-4">
                     <div
-                        class="eventEvcerptTextInline"
-                        v-html="event.excerpt"
+                        :class="eventTypeColorClass(event.type)"
+                        class="min-h-full min-w-[8px] rounded-sm"
                     />
+                    <div class="flex flex-col gap-4 overflow-hidden">
+                        <h5 class="font-semibold text-[18px]">
+                            {{ event.title }}
+                        </h5>
+                        <div class="">
+                            {{ `${formatDateToTimeOnly(event.start_date)}-${formatDateToTimeOnly(event.end_date)}` }}
+                        </div>
+
+                        <div
+                            class="eventEvcerptTextInline"
+                            v-html="event.excerpt"
+                        />
+                    </div>
                 </div>
             </div>
         </div>

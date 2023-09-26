@@ -1,12 +1,15 @@
 <script setup>
+import {storeToRefs} from "pinia";
+import {useRouter} from "vue-router";
+
+import EventTypeTag from "@/js/components/events/EventTypeTag.vue";
+import Hybrid from "@/js/components/svg/event/Hybrid.vue";
 import lowerSlugify from "@/js/helpers/slugifyHelper";
+import {useUserStore} from "@/js/stores/useUserStore";
+
 import GenericCard from '../card/GenericCard.vue';
 import InPerson from '../svg/InPerson.vue';
 import Virtual from '../svg/Virtual.vue';
-import {storeToRefs} from "pinia";
-import {useUserStore} from "@/js/stores/useUserStore";
-import {useRouter} from "vue-router";
-import Hybrid from "@/js/components/svg/event/Hybrid.vue";
 
 const props = defineProps({
     data: {
@@ -55,43 +58,10 @@ const {currentUser} = storeToRefs(useUserStore())
         :guid="data.guid"
     >
         <template #typeTag>
-            <div
-                class="
-                    TypeTag
-                    absolute
-                    top-4
-                    right-0
-                    bg-secondary-red
-                    flex
-                    h-[39px]
-                    p-1
-                    place-items-center
-                    px-6
-                    rounded
-                    text-base
-                    text-white
-                    gap-4
-                    sm:!-right-4
-                    md:!-right-6
-                    "
-            >
-                <template
-                    v-if="data.type === 'In Person'"
-                >
-                    <InPerson />
-                </template>
-                <template
-                    v-else-if="data.type === 'Virtual'"
-                >
-                    <Virtual />
-                </template>
-                <template
-                    v-else-if="data.type === 'Hybrid'"
-                >
-                    <Hybrid />
-                </template>
-                {{ data.type }}
-            </div>
+            <EventTypeTag
+                class="sm:!-right-4 md:!-right-6"
+                :event-type="data.type"
+            />
         </template>
     </GenericCard>
 </template>

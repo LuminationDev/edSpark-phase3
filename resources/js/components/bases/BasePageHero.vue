@@ -17,7 +17,7 @@ const props = defineProps({
 </script>
 <template>
     <div
-        class="-mt-[90px] lg:!mt-24 lg:!mx-10 lg:!pt-12 xl:!mx-huge bg-main-teal grid grid-cols-8 pb-8 px-10"
+        class="-mt-[90px] lg:!mt-24 lg:!mx-10 lg:!pt-12 xl:!mx-huge bg-main-teal grid grid-cols-8 pb-8 pt-[160px] px-10"
     >
         <div class="col-span-8 md:!col-span-5 lg:!col-span-5">
             <h1 class="first-letter:uppercase font-semibold lowercase pb-8 text-[36px] text-white">
