@@ -1,41 +1,62 @@
-<script setup>
-import {API_ENDPOINTS} from "@/js/constants/API_ENDPOINTS";
-import {computed, onBeforeMount, onMounted, ref} from 'vue'
-import SchoolEditorJs from "@/js/components/schoolsingle/SchoolEditorJs.vue";
-import SchoolContentDisplay from "@/js/components/schoolsingle/SchoolContentDisplay.vue";
-import SchoolTech from "@/js/components/schoolsingle/SchoolTech.vue";
-import TechSelector from "@/js/components/selector/TechSelector.vue";
-import SchoolColorPicker from "@/js/components/schoolsingle/schoolContent/SchoolColorPicker.vue";
-import SchoolImageChange from "@/js/components/schoolsingle/schoolContent/SchoolImageChange.vue";
+<script setup lang="ts">
 import axios from "axios";
 import {storeToRefs} from "pinia";
-import {useUserStore} from "@/js/stores/useUserStore";
-import {serverURL} from "@/js/constants/serverUrl";
-import SchoolWhatsNew from "@/js/components/schoolsingle/SchoolWhatsNew.vue";
+import {computed, onBeforeMount, onMounted, ref} from 'vue'
+import {useRoute} from "vue-router";
+
 import SchoolContact from "@/js/components/schoolsingle/SchoolContact.vue";
+import SchoolColorPicker from "@/js/components/schoolsingle/schoolContent/SchoolColorPicker.vue";
+import SchoolImageChange from "@/js/components/schoolsingle/schoolContent/SchoolImageChange.vue";
+import SchoolContentDisplay from "@/js/components/schoolsingle/SchoolContentDisplay.vue";
+import SchoolEditorJs from "@/js/components/schoolsingle/SchoolEditorJs.vue";
+import SchoolTech from "@/js/components/schoolsingle/SchoolTech.vue";
+import SchoolWhatsNew from "@/js/components/schoolsingle/SchoolWhatsNew.vue";
+import TechSelector from "@/js/components/selector/TechSelector.vue";
+import {API_ENDPOINTS} from "@/js/constants/API_ENDPOINTS";
+import {serverURL} from "@/js/constants/serverUrl";
+import {schoolService} from "@/js/service/schoolService";
+import {useUserStore} from "@/js/stores/useUserStore";
+
+
+const schoolContentStateDescription = {
+    new: "",
+    pending_available: "You have a pending content available. Submitting new content will replace your current pending content",
+    pending_loaded: "You are editing your pending content",
+}
+const buttonDescriptionByState = {
+    new: "Submit content",
+    pending_available: "Submit & replace pending content",
+    pending_loaded: "Submit modified pending content",
+}
 
 const props = defineProps({
     schoolContent: {
         type: Object,
         required: true
     },
-    // eslint-disable-next-line vue/require-default-prop
     colorTheme: {
         type: String, required: false
     },
-    activeSubmenu:{
+    activeSubmenu: {
         type: String,
         required: true
     }
 })
+const route = useRoute()
+
+
 const emits = defineEmits(['sendInfoToSchoolSingle', 'sendColorToSchoolSingle', 'sendPhotoToSchoolSingle'])
 const {currentUser} = storeToRefs(useUserStore())
+const currentSchoolName = route.params.name
 const editMode = ref(false)
 const newSchoolContent = ref({})
 const newTechUsed = ref([])
-const schoolEditorRef = ref() // for the sake of triggering save inside editorjs component
+const pendingSchoolContent = ref({})
+const schoolContentState = ref('new')
 
-const currentUserCanEdit = ref(false)
+const schoolEditorRef = ref() // for triggering save inside editorjs component
+
+const currentUserCanEdit = ref<boolean>(false)
 const currentUserCanNominate = ref(false)
 
 onBeforeMount(() => {
@@ -44,7 +65,14 @@ onBeforeMount(() => {
 })
 
 const handleEditButton = () => {
+    newSchoolContent.value = props.schoolContent.content_blocks
+    newTechUsed.value = props.schoolContent.tech_used
     editMode.value = true
+    if (schoolContentState.value === 'pending_loaded') {
+        schoolEditorRef.value.handleEditorRerender(newSchoolContent.value)
+        schoolContentState.value = 'pending_available'
+    }
+
 }
 
 const handleSchoolData = (data) => {
@@ -60,6 +88,7 @@ const handleAllSaveButton = () => {
     schoolEditorRef.value.handleEditorSave().then(res => {
         emits('sendInfoToSchoolSingle', newSchoolContent.value, newTechUsed.value)
         editMode.value = false
+        schoolContentState.value = 'new'
 
     })
 }
@@ -71,31 +100,29 @@ const handleReceivePhotoFromImageChange = (type, file) => {
 }
 
 onMounted(async () => {
-    const checkIfUserCanEdit = async () => {
-        await axios({
-            method: "POST",
-            url: API_ENDPOINTS.SCHOOL.CHECK_IF_USER_CAN_EDIT_SCHOOL,
-            data:{
-                "site_id": props.schoolContent.site.site_id,
-                "user_id": currentUser.value.id,
-                "school_id" : props.schoolContent.id
-            }
-        }).then(res => {
-            console.log(res.data)
-            if(res.data.status){
-                if( res.data.result){
-                    currentUserCanEdit.value = true
-                }
-                if(res.data.canNominate){
-                    currentUserCanNominate.value = true
-                }
+    await schoolService.checkIfUserCanEdit(props.schoolContent.site.site_id, currentUser.value.id, props.schoolContent.school_id).then(res => {
+        currentUserCanEdit.value = Boolean(res.data.status && res.data.result)
+        currentUserCanNominate.value = Boolean(res.data.status && res.data.canNominate)
+
+    })
+    if (currentUserCanEdit.value) {
+        await schoolService.fetchPendingSchoolByName(currentSchoolName, props.schoolContent.site.site_id, currentUser.value.id, props.schoolContent.school_id).then(res => {
+            if (res.data.pending_available) {
+                schoolContentState.value = 'pending_available'
+                pendingSchoolContent.value = res.data.result
             }
         })
     }
-    await checkIfUserCanEdit()
-
-
 })
+
+const handleClickEditPendingContent = () => {
+    console.log('handleEditPendingContent CLicked')
+    console.log(pendingSchoolContent.value.content_blocks)
+    newSchoolContent.value = pendingSchoolContent.value.content_blocks
+    newTechUsed.value = pendingSchoolContent.value.tech_used
+    schoolContentState.value = 'pending_loaded'
+    schoolEditorRef.value.handleEditorRerender(newSchoolContent.value)
+}
 
 console.log(props.activeSubmenu)
 </script>
@@ -119,12 +146,31 @@ console.log(props.activeSubmenu)
                                 @send-school-data="handleSchoolData"
                             />
                         </div>
-                        <div class="flex flex-col w-full lg:!basis-1/3">
+                        <div class="flex items-center flex-col w-full lg:!basis-1/3">
+                            <div
+                                class="flex font-semibold mb-4 text-center"
+                            >
+                                {{ schoolContentStateDescription[schoolContentState] }}
+                            </div>
                             <button
-                                class="bg-blue-600 mb-2 px-6 py-2 rounded text-white w-48"
+                                v-if="schoolContentState === 'pending_available'"
+                                class="bg-blue-500 hover:bg-blue-600 mb-4 px-6 py-2 rounded text-white w-48"
+                                @click="handleClickEditPendingContent"
+                            >
+                                Edit pending content
+                            </button>
+                            <button
+                                class="bg-blue-500 hover:bg-blue-600 mb-4 px-6 py-2 rounded text-white w-48"
                                 @click="handleAllSaveButton"
                             >
-                                Save Content
+                                {{ buttonDescriptionByState[schoolContentState] }}
+                            </button>
+                            <button
+                                v-if="schoolContentState === 'pending_loaded'"
+                                class="bg-blue-500 hover:bg-blue-600 mb-4 px-6 py-2 rounded text-white w-48"
+                                @click="handleEditButton"
+                            >
+                                Revert
                             </button>
                             <SchoolImageChange @send-uploaded-photo-to-content="handleReceivePhotoFromImageChange" />
                             <SchoolColorPicker

@@ -43,6 +43,7 @@ Route::middleware('auth:sanctum')->group(function() {
     Route::post('getNominatedUsersFromSchool',[SchoolController::class, 'getNominatedUsersFromSchool']);
     Route::post('createOrUpdateSchoolContact', [SchoolController::class , 'createOrUpdateContact']);
     Route::post('fetchSchoolContact', [SchoolController::class, 'fetchSchoolContact']);
+    Route::post('fetchPendingSchoolByName/{schoolName}', [SchoolController::class, 'fetchPendingSchoolByName']);
 
     // Advice APIs
     Route::post('createAdvicePost',[AdviceController::class, 'createAdvicePost']);

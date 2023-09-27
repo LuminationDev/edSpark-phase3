@@ -3,32 +3,31 @@
  * Imports and other things necessary for the sign on for the first time form.
  * In this form we are handling user checks etc
  */
-import ConfirmInfo from './ConfirmInfo.vue';
-
-import {reactive, ref, computed, onMounted} from 'vue';
 import axios from 'axios';
-import {serverURL} from "@/js/constants/serverUrl";
-
 /**
  * Consider setting up all imports at the top, in one place for consistency.
  * Not like this weird, import and declare situation I have here...
  * Any input would be greatly appreciated!!
  */
 import SearchDropdown from 'search-dropdown-vue';
-import ErrorHandler from '../global/ErrorHandler.vue';
-import GenericSelector from '../selector/GenericSelector.vue';
-
+import {computed, onMounted,reactive, ref} from 'vue';
 /**
  * Import and initialise stores
  * Import and initialise vue router
  */
 import {useRouter} from 'vue-router';
 
+import {serverURL} from "@/js/constants/serverUrl";
+
+import ErrorHandler from '../global/ErrorHandler.vue';
+import GenericSelector from '../selector/GenericSelector.vue';
+import ConfirmInfo from './ConfirmInfo.vue';
+
 const router = useRouter();
 
+import {useSchoolsStore} from '@/js/stores/useSchoolsStore';
 import {useSiteStore} from '@/js/stores/useSiteStore';
 import {useUserStore} from '@/js/stores/useUserStore';
-import {useSchoolsStore} from '@/js/stores/useSchoolsStore';
 
 const siteStore = useSiteStore();
 const userStore = useUserStore();
@@ -161,13 +160,7 @@ const newSchoolData = reactive({
     techUsed: []
 });
 
-/**
- * Handle submit on searchable dropdowns
- *
- * Site
- *
- * Role
- */
+
 const onSelectedOptionSites = (payload) => {
     newUserData.site = payload;
     newSchoolData.site = payload;

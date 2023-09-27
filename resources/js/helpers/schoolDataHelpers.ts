@@ -21,8 +21,8 @@ import {
  * @return FormData()
  */
 export const schoolDataFormDataBuilder = (schoolData) =>{
-    let schoolFormData = new FormData()
-    schoolFormData.append('id',schoolData.id)
+    const schoolFormData = new FormData()
+    schoolFormData.append('school_id',schoolData.school_id)
     schoolFormData.append('site_id',schoolData.site.site_id)
     schoolFormData.append('owner_id', schoolData.owner.owner_id)
     schoolFormData.append('name', schoolData.name)
@@ -57,3 +57,5 @@ export const printOutFormData = (inputFormData) => {
         console.log(`${pair[0]}, ${pair[1]}`)
     }
 }
+
+
