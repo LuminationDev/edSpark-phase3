@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\Tags\HasTags;
 
-class School extends Model
+class Schoolmoderation extends Model
 {
     use HasFactory, HasTags;
 
@@ -23,7 +23,6 @@ class School extends Model
      * @var array
      */
     protected $fillable = [
-        'school_id',
         'site_id',
         'owner_id',
         'allowEditIds',
@@ -47,14 +46,5 @@ class School extends Model
     public function site()
     {
         return $this->belongsTo(Site::class,'site_id', 'site_id');
-    }
-    public function likes(): \Illuminate\Database\Eloquent\Relations\HasMany
-    {
-        return $this->hasMany(Like::class, 'post_id', 'id')->where('post_type', 'school');
-    }
-
-    public function bookmarks(): \Illuminate\Database\Eloquent\Relations\HasMany
-    {
-        return $this->hasMany(Bookmark::class, 'post_id', 'id')->where('post_type', 'school');
     }
 }

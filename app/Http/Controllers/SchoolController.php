@@ -110,6 +110,13 @@ class SchoolController extends Controller
             );
         }
     }
+    private function safelyEncode($data) {
+        // Check if data is already a JSON string
+        if (is_string($data) && json_decode($data) && json_last_error() == JSON_ERROR_NONE) {
+            return $data;  // It's already a JSON string, so return it as is
+        }
+        return json_encode($data);
+    }
 
 
     public function createSchool(Request $request)
@@ -128,12 +135,12 @@ class SchoolController extends Controller
                         'site_id' => $data['site_id'],
                         'owner_id' => $data['owner_id'],
                         'name' => $data['name'],
-                        'content_blocks' => json_encode($data['content_blocks']),
+                        'content_blocks' => $this->safelyEncode($data['content_blocks']),
                         'logo' => $schoolLogoUrl ?? ($data['logo'] ?: NULL),
                         'cover_image' => $coverImageUrl ?? ($data['cover_image'] ?: NULL),
-                        'tech_used' => json_encode($data['tech_used']),
-                        'pedagogical_approaches' => json_encode($data['pedagogical_approaches']),
-                        'tech_landscape' => json_encode($data['tech_landscape']),
+                        'tech_used' => $this->safelyEncode($data['tech_used']),
+                        'pedagogical_approaches' => $this->safelyEncode($data['pedagogical_approaches']),
+                        'tech_landscape' => $this->safelyEncode($data['tech_landscape']),
                         'created_at' => Carbon::now(),
                         'updated_at' => Carbon::now()
                     ];
@@ -144,23 +151,6 @@ class SchoolController extends Controller
             }
             if (isset($request->schoolMetadata)) {
                 $this->handleMetadata($schoolId, $request->schoolMetadata);
-//                try {
-//                    foreach ($schoolMeta as $key => $value) {
-//                        $res =
-//                            [
-//                                'school_id' => $schoolId,
-//                                'schoolmeta_key' => $key,
-//                                'schoolmeta_value' => (is_string($value)) ? $value : implode(', ', $value),
-//                                'created_at' => Carbon::now(),
-//                                'updated_at' => Carbon::now()
-//                            ];
-//                        $metadataToInsert[] = $res;
-//                    }
-//                    Schoolmeta::insert($metadataToInsert);
-//
-//                } catch (Exception $e) {
-//                    $error = $e->getMessage();
-//                }
             }
 
             return response()->json([
@@ -185,14 +175,13 @@ class SchoolController extends Controller
 
                     $dataToUpdate = [
                         'name' => $data['name'],
-                        'content_blocks' => json_encode($data['content_blocks']),
+                        'content_blocks' => $this->safelyEncode($data['content_blocks']),
                         'logo' => $schoolLogoUrl ?? $data['logo'],
                         'cover_image' => $coverImageUrl ?? $data['cover_image'],
-                        'tech_used' => json_encode($data['tech_used']),
-                        'pedagogical_approaches' => json_encode($data['pedagogical_approaches']),
-                        'tech_landscape' => json_encode($data['tech_landscape']),
+                        'tech_used' => $this->safelyEncode($data['tech_used']),
+                        'pedagogical_approaches' => $this->safelyEncode($data['pedagogical_approaches']),
+                        'tech_landscape' => $this->safelyEncode($data['tech_landscape']),
                         'updated_at' => Carbon::now()
-
                     ];
                     School::where('id', '=', $data['id'])
                         ->update($dataToUpdate);
@@ -203,37 +192,6 @@ class SchoolController extends Controller
             $metadata = json_decode($data['metadata']);
             $this->handleMetadata($data['id'], $metadata);
 
-//            if (!empty($metadata)) {
-//                if (gettype($metadata) != 'array') {
-//                    $metadata = [$metadata]; // cast it to an array containing one object
-//                }
-//                foreach ($metadata as $meta) {
-//                    foreach ($meta as $key => $value) {
-//                        try {
-//                            $existingMeta = Schoolmeta::where('school_id', $data['id'])
-//                                ->where('schoolmeta_key', $key)
-//                                ->first();
-//
-//                            if ($existingMeta) {
-//                                $existingMeta->schoolmeta_value = $value;
-//                                $existingMeta->save();
-//                            } else {
-//                                Schoolmeta::create([
-//                                    'school_id' => $data['id'],
-//                                    'schoolmeta_key' => $key,
-//                                    'schoolmeta_value' => $value,
-//                                    'created_at' => now(),
-//                                    'updated_at' => now(),
-//                                ]);
-//                            }
-//                        } catch (Exception $e) {
-//                            $error = $e->getMessage();
-//                            // Handle the error as needed
-//                        }
-//                    }
-//
-//                }
-//            }
             // get the latest data with the correct/expected form and return with res()
             $school = School::where('id', $data['id'])->first();
 
@@ -505,50 +463,39 @@ class SchoolController extends Controller
      ************************************/
     public function createOrUpdateContact(Request $request): \Illuminate\Http\JsonResponse
     {
-        if ($request->isMethod('post')) {
-            $requestData = $request->validate([
-                'school_id' => 'required',
-                'school_contact' => 'required'
+        if (!$request->isMethod('post')) {
+            return response()->json([
+                "status" => 401,
+                "result" => false,
+                'message' => 'Unauthorized'
             ]);
-
-            $school_id = $requestData['school_id'];
-            $school_contact = $requestData['school_contact'];
-            $schoolmeta_record = Schoolmeta::where('school_id', $school_id)
-                ->where('schoolmeta_key', 'school_contact')
-                ->first();
-
-            if ($schoolmeta_record) {
-                // Update existing school contact
-                $schoolmeta_record->schoolmeta_value = $school_contact;
-                $schoolmeta_record->save();
-
-                return response()->json([
-                    "status" => 200,
-                    "result" => true,
-                    'message' => 'School contact updated successfully.'
-                ]);
-            } else {
-                // Create new school contact
-                $schoolmeta = new Schoolmeta();
-                $schoolmeta->school_id = $school_id;
-                $schoolmeta->schoolmeta_key = 'school_contact';
-                $schoolmeta->schoolmeta_value = $school_contact;
-                $schoolmeta->save();
-
-                return response()->json([
-                    "status" => 200,
-                    "result" => true,
-                    'message' => 'School contact created successfully.'
-                ]);
-            }
         }
 
+        $requestData = $request->validate([
+            'school_id' => 'required',
+            'school_contact' => 'required'
+        ]);
+
+        $school_id = $requestData['school_id'];
+        $school_contact = $requestData['school_contact'];
+
+        Schoolmeta::updateOrCreate(
+            [
+                'school_id' => $school_id,
+                'schoolmeta_key' => 'school_contact'
+            ],
+            [
+                'schoolmeta_value' => $school_contact
+            ]
+        );
+
         return response()->json([
-            "status" => 401,
-            "result" => false,
-            'message' => 'Unauthorized'
+            "status" => 200,
+            "result" => true,
+            'message' => 'School contact saved successfully.'
         ]);
     }
+
 
     public function fetchSchoolContact(Request $request): \Illuminate\Http\JsonResponse
     {
