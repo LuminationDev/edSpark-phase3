@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import axios from "axios";
 import {storeToRefs} from "pinia";
-import {computed, onBeforeMount, onMounted, ref} from 'vue'
+import {onBeforeMount, onMounted, Ref, ref} from 'vue'
 import {useRoute} from "vue-router";
 
+import EditorJsInput from "@/js/components/bases/EditorJsInput.vue";
 import SchoolContact from "@/js/components/schoolsingle/SchoolContact.vue";
 import SchoolColorPicker from "@/js/components/schoolsingle/schoolContent/SchoolColorPicker.vue";
 import SchoolImageChange from "@/js/components/schoolsingle/schoolContent/SchoolImageChange.vue";
@@ -12,10 +12,10 @@ import SchoolEditorJs from "@/js/components/schoolsingle/SchoolEditorJs.vue";
 import SchoolTech from "@/js/components/schoolsingle/SchoolTech.vue";
 import SchoolWhatsNew from "@/js/components/schoolsingle/SchoolWhatsNew.vue";
 import TechSelector from "@/js/components/selector/TechSelector.vue";
-import {API_ENDPOINTS} from "@/js/constants/API_ENDPOINTS";
-import {serverURL} from "@/js/constants/serverUrl";
 import {schoolService} from "@/js/service/schoolService";
 import {useUserStore} from "@/js/stores/useUserStore";
+import {EditorJSData} from "@/js/types/EditorJsTypes";
+import {SchoolDataType, TechUsed} from "@/js/types/SchoolTypes";
 
 
 const schoolContentStateDescription = {
@@ -31,11 +31,13 @@ const buttonDescriptionByState = {
 
 const props = defineProps({
     schoolContent: {
-        type: Object,
+        type: Object as () => SchoolDataType,
         required: true
     },
     colorTheme: {
-        type: String, required: false
+        type: String,
+        required: false,
+        default: 'teal',
     },
     activeSubmenu: {
         type: String,
@@ -48,16 +50,16 @@ const route = useRoute()
 const emits = defineEmits(['sendInfoToSchoolSingle', 'sendColorToSchoolSingle', 'sendPhotoToSchoolSingle'])
 const {currentUser} = storeToRefs(useUserStore())
 const currentSchoolName = route.params.name
-const editMode = ref(false)
-const newSchoolContent = ref({})
-const newTechUsed = ref([])
-const pendingSchoolContent = ref({})
+const editMode = ref<boolean>(false)
+const newSchoolContent: Ref<EditorJSData | null> = ref(null)
+const newTechUsed : Ref<TechUsed[] | null> = ref(null)
+const pendingSchoolContent: Ref<SchoolDataType | null> = ref(null)
 const schoolContentState = ref('new')
 
 const schoolEditorRef = ref() // for triggering save inside editorjs component
 
 const currentUserCanEdit = ref<boolean>(false)
-const currentUserCanNominate = ref(false)
+const currentUserCanNominate = ref<boolean>(false)
 
 onBeforeMount(() => {
     newSchoolContent.value = props.schoolContent.content_blocks
@@ -70,7 +72,7 @@ const handleEditButton = () => {
     editMode.value = true
     if (schoolContentState.value === 'pending_loaded') {
         schoolEditorRef.value.handleEditorRerender(newSchoolContent.value)
-        schoolContentState.value = 'pending_available'
+        schoolContentState.value = 'pending_availabl\e'
     }
 
 }
@@ -140,10 +142,10 @@ console.log(props.activeSubmenu)
                     >
                         <div class="flex flex-col w-full lg:!basis-2/3">
                             Curate your school content by adding blocks here with desired contents.
-                            <SchoolEditorJs
+                            <EditorJsInput
                                 ref="schoolEditorRef"
                                 :existing-data="newSchoolContent"
-                                @send-school-data="handleSchoolData"
+                                @send-editorjs-data="handleSchoolData"
                             />
                         </div>
                         <div class="flex items-center flex-col w-full lg:!basis-1/3">
