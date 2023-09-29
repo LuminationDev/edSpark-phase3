@@ -158,7 +158,9 @@ const checkToReadOrFetchContent = async () => {
             // state has content but ID different, send fetch
             await axios.get(`${byIdAPILink}${route.params.id}`).then(res => {
                 singleContent.value = res.data
-                singleContent.value.content = convertLinksToEmbeds(singleContent.value.content)
+                if(singleContent.value.content && typeof singleContent.value.content === 'string'){
+                    singleContent.value.content = convertLinksToEmbeds(singleContent.value.content)
+                }
                 baseIsLoading.value = false
 
             }).catch(err => {

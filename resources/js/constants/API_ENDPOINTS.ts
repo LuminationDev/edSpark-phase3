@@ -46,7 +46,8 @@ export const API_ENDPOINTS : Endpoints =  appendServerURL({
         FETCH_ADVICE_POSTS_BY_TYPE_YOUR: `/fetchAdvicePostByType/${['Your Classroom', 'Your Work', 'Your Learning']}`,
         FETCH_ADVICE_POST_BY_ID: `/fetchAdvicePostById/`,
         FETCH_RELATED_ADVICE: `/fetchRelatedAdvice`,
-        FETCH_ADVICE_TYPES: `/fetchAdviceTypes`
+        FETCH_ADVICE_TYPES: `/fetchAdviceTypes`,
+        FETCH_USER_ADVICE:`/fetchUserAdvice`
 
     },
     SOFTWARE: {
@@ -54,7 +55,8 @@ export const API_ENDPOINTS : Endpoints =  appendServerURL({
         FETCH_SOFTWARE_POSTS: `/fetchSoftwarePosts`,
         FETCH_SOFTWARE_POST_BY_ID: `/fetchSoftwarePostById/`,
         FETCH_RELATED_SOFTWARE: `/fetchRelatedSoftware`,
-        FETCH_SOFTWARE_TYPES: `/fetchSoftwareTypes`
+        FETCH_SOFTWARE_TYPES: `/fetchSoftwareTypes`,
+        FETCH_USER_SOFTWARE: '/fetchUserSoftware'
 
     },
     HARDWARE: {
@@ -63,7 +65,8 @@ export const API_ENDPOINTS : Endpoints =  appendServerURL({
         FETCH_ALL_CATEGORIES: `/fetchAllCategories`,
         FETCH_HARDWARE_BY_ID: `/fetchProductById/`,
         FETCH_HARDWARE_BY_BRAND: `/fetchProductByBrand/`,
-        FETCH_RELATED_HARDWARE : `/fetchRelatedProduct`
+        FETCH_RELATED_HARDWARE : `/fetchRelatedProduct`,
+        FETCH_USER_HARDWARE : '/fetchUserProduct'
     },
     PARTNER: {
         FETCH_ALL_PARTNERS: `/fetchAllPartners`,

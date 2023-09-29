@@ -110,71 +110,33 @@ class PartnerController extends Controller
         }
     }
 
-    public function fetchPartnerResource(Request $request)
-    {
-        try {
-            // Validate the request data
-            $validatedData = $request->validate([
-                'resource_type' => 'required|string|in:software,hardware,advice',
-                'partner_id' => 'required|integer',
-            ]);
-
-            // Fetch the resources based on the provided partner_id and resource type
-            $resources = [];
-            switch ($validatedData['resource_type']) {
-                case 'software':
-                    $resources = Software::where('author_id', $validatedData['partner_id'])->get();
-                    break;
-                case 'hardware':
-                    $resources = Hardware::where('owner_id', $validatedData['partner_id'])->get();
-                    break;
-                case 'advice':
-                    $resources = Advice::where('author_id', $validatedData['partner_id'])->get();
-                    break;
-            }
-
-            if (is_array($resources) ? empty($resources) : $resources->isEmpty()) {
-                return response()->json(['message' => 'No resources found for the specified partner and resource type'], Response::HTTP_NOT_FOUND);
-            }
-
-            return response()->json(['resources' => $resources]);
-
-        } catch (\Exception $e) {
-            return response()->json(['error' => "An error occurred: " . $e->getMessage()], Response::HTTP_INTERNAL_SERVER_ERROR);
-        }
-    }
-
 
     public function updatePartnerContent(Request $request)
     {
         try {
             // Validate the request data
             $validatedData = $request->validate([
-                'content' => 'required', // Validate that content is provided in the request.
+                'content' => 'required',
                 'partner_id' => 'required'
-                // Add more validation rules if necessary
             ]);
 
             // Fetch the partner based on the provided ID
             $partner = Partner::where('user_id', $request->partner_id)->first();
 
-            // If partner does not exist, return an error
             if (!$partner) {
                 return response()->json(['error' => 'Partner not found'], Response::HTTP_NOT_FOUND);
             }
 
-            // Archive all previous entries for that partner
-            $partner->profiles()->update(['status' => 'Archived']);
 
             // Create a new PartnerProfile entry with the content and status as "Pending"
             PartnerProfile::create([
                 'partner_id' => $partner->id,
                 'user_id' => $partner->user_id,
-                'content' => json_encode($validatedData['content']), // Assuming you want to store it as JSON.
+                'content' => json_encode($validatedData['content']),
                 'status' => 'Pending'
             ]);
 
-            return response()->json(['message' => 'Content added successfully and previous content archived']);
+            return response()->json(['message' => 'Content added successfully']);
 
         } catch (\Exception $e) {
             return response()->json(['error' => "An error occurred: " . $e->getMessage()], Response::HTTP_INTERNAL_SERVER_ERROR);

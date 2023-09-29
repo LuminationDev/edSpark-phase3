@@ -59,13 +59,13 @@ const fetchSubmenuData = async() => {
             partnerData[submenu] = {data: 'this is temporary string for partner overview'}
             break;
         case 'software':
-            partnerData[submenu] = partnerService.fetchPartnerResource('software', partnerId)
+            partnerData[submenu] = partnerService.fetchPartnerSoftware(partnerId).then(res => res)
             break;
         case 'hardware':
-            partnerData[submenu] = partnerService.fetchPartnerResource('hardware', partnerId)
+            partnerData[submenu] = partnerService.fetchPartnerHardware(partnerId).then(res => res)
             break;
         case 'curriculum':
-            partnerData[submenu] = partnerService.fetchPartnerResource('advice', partnerId)
+            partnerData[submenu] = partnerService.fetchPartnerAdvice(partnerId).then(res => res)
             break;
         case 'access':
             partnerData[submenu] = {overview: 'access here'}

@@ -2,13 +2,17 @@
 
 namespace App\Http\Controllers;
 
+use App\Helpers\Metahelper;
 use App\Models\Advicemeta;
 use App\Models\Advicetype;
 use App\Models\Bookmark;
 use App\Models\Like;
+use App\Models\Software;
+use App\Models\Softwaremeta;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use App\Models\Advice;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 
@@ -89,6 +93,29 @@ class AdviceController extends Controller
 
         return response()->json($data);
 
+    }
+
+    public function fetchUserAdvicePosts(Request $request): JsonResponse
+    {
+        try {
+            $userId = $request->user_id;
+            $advices = Advice::where('post_status', 'Published')
+                ->where('author_id', $userId)  // Filter by partner (author) ID
+                ->orderBy('created_at', 'DESC')
+                ->get();
+
+            $data = [];
+
+            foreach ($advices as $advice) {
+
+                $result = $this->adviceModelToJson($advice, $request);
+                $data[] = $result;
+            }
+
+            return response()->json($data);
+        } catch (\Exception $e) {
+            return response()->json(['error' => "An error occurred: " . $e->getMessage()], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
     }
 
     public function fetchAdvicePostById(Request $request, $id)

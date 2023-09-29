@@ -2,11 +2,17 @@
 
 namespace App\Http\Controllers;
 
+use App\Helpers\Metahelper;
+use App\Models\Hardware;
 use App\Models\Productbrand;
+use App\Models\Software;
+use App\Models\Softwaremeta;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use App\Models\Productbrand as Brand;
 use App\Models\Productcategory as Category;
 use App\Models\Hardware as Product;
+use Illuminate\Http\Response;
 
 class ProductController extends Controller
 {
@@ -102,6 +108,28 @@ class ProductController extends Controller
 
         return response()->json($data);
     }
+    public function fetchUserProductPosts(Request $request): JsonResponse
+    {
+        try {
+            $userId = $request->user_id;
+
+            $hardwares = Hardware::where('owner_id', $userId)  // Filter by partner (author) ID
+                ->orderBy('created_at', 'DESC')
+                ->get();
+
+            $data = [];
+
+            foreach ($hardwares as $hardware) {
+                $result = $this->hardwareModelToJson($hardware, $request);
+                $data[] = $result;
+            }
+
+            return response()->json($data);
+        } catch (\Exception $e) {
+            return response()->json(['error' => "An error occurred: " . $e->getMessage()], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
+
 
     public function fetchProductById(Request $request,$id)
     {

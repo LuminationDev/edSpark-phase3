@@ -52,6 +52,7 @@ Route::middleware('auth:sanctum')->group(function() {
     Route::get('fetchAdvicePostByType/{type}', [AdviceController::class, 'fetchAdvicePostByType']);
     Route::post('fetchRelatedAdvice',[AdviceController::class, 'fetchRelatedAdvice']);
     Route::get('fetchAdviceTypes', [AdviceController::class,'fetchAdviceTypes']);
+    Route::get('fetchUserAdvice', [AdviceController::class, 'fetchUserAdvicePosts']);
 
     // Software APIs
     Route::post('createSoftwarePost', [SoftwareController::class,'createSoftwarePost']);
@@ -59,6 +60,7 @@ Route::middleware('auth:sanctum')->group(function() {
     Route::get('fetchSoftwarePostById/{id}', [SoftwareController::class, 'fetchSoftwarePostById']);
     Route::post('fetchRelatedSoftware', [SoftwareController::class, 'fetchRelatedSoftware']);
     Route::get('fetchSoftwareTypes', [SoftwareController::class,'fetchSoftwareTypes']);
+    Route::get('fetchUserSoftware',[SoftwareController::class, 'fetchUserSoftwarePosts']);
 
     // Event APIs
     Route::post('createEventPost',[EventController::class,'createEventPost']);
@@ -75,6 +77,7 @@ Route::middleware('auth:sanctum')->group(function() {
     Route::get('fetchAllProducts', [ProductController::class, 'fetchAllProducts']);
     Route::get('fetchProductById/{id}', [ProductController::class, 'fetchProductById']);
     Route::post('fetchProductByBrand', [ProductController::class, 'fetchProductByBrand']);
+    Route::get('fetchUserProduct', [ProductController::class, 'fetchUserProductPosts']);
 
     // User Management
     Route::get('fetchUser/{id}', [UserController::class, 'fetchUser']);
@@ -111,7 +114,6 @@ Route::middleware('auth:sanctum')->group(function() {
     // Partners API
     Route::get('fetchAllPartners', [PartnerController::class, 'fetchAllPartners']);
     Route::get('fetchPartnerById/{id}', [PartnerController::class, 'fetchPartnerById']);
-    Route::get('fetchPartnerResource', [PartnerController::class, 'fetchPartnerResource']);
     Route::post('updatePartnerContent', [PartnerController::class, 'updatePartnerContent']);
 
 
