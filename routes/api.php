@@ -111,6 +111,9 @@ Route::middleware('auth:sanctum')->group(function() {
     // Partners API
     Route::get('fetchAllPartners', [PartnerController::class, 'fetchAllPartners']);
     Route::get('fetchPartnerById/{id}', [PartnerController::class, 'fetchPartnerById']);
+    Route::get('fetchPartnerResource', [PartnerController::class, 'fetchPartnerResource']);
+    Route::post('updatePartnerContent', [PartnerController::class, 'updatePartnerContent']);
+
 
     // Event Rsvp
     Route::get('fetchRsvpByEventId/{event_id}',[RsvpController::class,'fetchRsvpByEventId']);

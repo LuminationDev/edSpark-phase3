@@ -1,11 +1,11 @@
-import {EditorJSData} from "@/js/types/EditorJsTypes";
+import {EditorJSDataType} from "@/js/types/EditorJsTypes";
 
 export type SchoolDataType = {
     school_id: number;
     site: Site;
     owner: Owner;
     name: string;
-    content_blocks: EditorJSData;
+    content_blocks: EditorJSDataType;
     logo: string;
     cover_image: string;
     tech_used: TechUsed[];

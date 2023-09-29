@@ -2,11 +2,11 @@
 import EditorJS from '@editorjs/editorjs';
 
 import {editorJsTools} from "@/js/constants/editorJsTools";
-import {EditorJSData} from "@/js/types/EditorJsTypes";
+import {EditorJSDataType} from "@/js/types/EditorJsTypes";
 
 const props = defineProps({
     existingData: {
-        type: Object as () => EditorJSData ,
+        type: Object as () => EditorJSDataType ,
         required: false,
         default: () => ({})
     },
@@ -24,7 +24,6 @@ const editor = new EditorJS({
     tools: editorJsTools,
     autofocus: true,
     onReady: () :void => {
-        console.log('EditorJs in the chamber and ready to be emptied 🔫')
         if (props.existingData) {
             for (const block of props.existingData.blocks) {
                 editor.blocks.insert(block.type, block.data)
@@ -42,7 +41,7 @@ const handleEditorSave = async () : Promise<void> => {
     })
 }
 
-const handleEditorRerender = async (newEditorJsData : EditorJSData) : Promise<void> => {
+const handleEditorRerender = async (newEditorJsData : EditorJSDataType) : Promise<void> => {
     await editor.render(newEditorJsData)
 }
 

@@ -14,7 +14,7 @@ import SchoolWhatsNew from "@/js/components/schoolsingle/SchoolWhatsNew.vue";
 import TechSelector from "@/js/components/selector/TechSelector.vue";
 import {schoolService} from "@/js/service/schoolService";
 import {useUserStore} from "@/js/stores/useUserStore";
-import {EditorJSData} from "@/js/types/EditorJsTypes";
+import {EditorJSDataType} from "@/js/types/EditorJsTypes";
 import {SchoolDataType, TechUsed} from "@/js/types/SchoolTypes";
 
 
@@ -51,7 +51,7 @@ const emits = defineEmits(['sendInfoToSchoolSingle', 'sendColorToSchoolSingle', 
 const {currentUser} = storeToRefs(useUserStore())
 const currentSchoolName = route.params.name
 const editMode = ref<boolean>(false)
-const newSchoolContent: Ref<EditorJSData | null> = ref(null)
+const newSchoolContent: Ref<EditorJSDataType | null> = ref(null)
 const newTechUsed : Ref<TechUsed[] | null> = ref(null)
 const pendingSchoolContent: Ref<SchoolDataType | null> = ref(null)
 const schoolContentState = ref('new')

@@ -1,21 +1,21 @@
 -
 <script setup>
+import axios from 'axios'
+import {isEqual} from "lodash";
+import {computed, onBeforeMount, onUnmounted, ref, watch} from "vue";
+import {useRoute, useRouter} from "vue-router";
+
+import BaseHero from "@/js/components/bases/BaseHero.vue";
+import Loader from "@/js/components/spinner/Loader.vue";
 import {API_ENDPOINTS} from "@/js/constants/API_ENDPOINTS";
+import {serverURL} from "@/js/constants/serverUrl";
+import {isObjectEmpty} from "@/js/helpers/objectHelpers";
 import lowerSlugify from "@/js/helpers/slugifyHelper";
+import recommenderEdsparkSingletonFactory from "@/js/recommender/recommenderEdspark";
 import {useAdviceStore} from "@/js/stores/useAdviceStore";
 import {useHardwareStore} from "@/js/stores/useHardwareStore";
 import {useSoftwareStore} from "@/js/stores/useSoftwareStore";
 import {useUserStore} from "@/js/stores/useUserStore";
-import {useRoute, useRouter} from "vue-router";
-import {onBeforeMount, ref, computed, watch, onUnmounted} from "vue";
-import axios from 'axios'
-import {isEqual} from "lodash";
-
-import {serverURL} from "@/js/constants/serverUrl";
-import BaseHero from "@/js/components/bases/BaseHero.vue";
-import recommenderEdsparkSingletonFactory from "@/js/recommender/recommenderEdspark";
-import {isObjectEmpty} from "@/js/helpers/objectHelpers";
-import Loader from "@/js/components/spinner/Loader.vue";
 
 const props = defineProps({
     // to be advice, software, hardware etc
@@ -66,7 +66,7 @@ const adviceStore = useAdviceStore()
 const getRecommendationBasedOnContentType = () => {
     switch (props.contentType) {
     case 'hardware':
-        if (singleContent.value.brand?.brandName){
+        if (singleContent.value.brand?.brandName) {
             hardwareStore.loadProductsByBrand(currentId.value)
         }
         break;
@@ -83,7 +83,7 @@ const getRecommendationBasedOnContentType = () => {
 
 onBeforeMount(async () => {
     /**
-     * Get content from history state or fetch from recommender
+     * Get content from history state or fetch
      */
     await checkToReadOrFetchContent()
 
@@ -109,19 +109,19 @@ onBeforeMount(async () => {
 
 const convertLinksToEmbeds = (content) => {
     // YouTube
-    let regexYoutube = /(?:https?:\/\/)?(?:www\.)?(?:youtube\.com|youtu\.be)\/(?:watch\?v=)?([\w\-]{11})/g;
+    const regexYoutube = /(?:https?:\/\/)?(?:www\.)?(?:youtube\.com|youtu\.be)\/(?:watch\?v=)?([\w\-]{11})/g;
     content = content.replace(regexYoutube, (match, p1) => {
         return `<iframe width="560" height="315" src="https://www.youtube.com/embed/${p1}" frameborder="0" allowfullscreen></iframe>`;
     });
 
     // Vimeo
-    let regexVimeo = /https?:\/\/(?:www\.)?vimeo\.com\/(\d+)/g;
+    const regexVimeo = /https?:\/\/(?:www\.)?vimeo\.com\/(\d+)/g;
     content = content.replace(regexVimeo, (match, p1) => {
         return `<iframe src="https://player.vimeo.com/video/${p1}" width="560" height="315" frameborder="0" allowfullscreen></iframe>`;
     });
 
     // Twitter
-    let regexTwitter = /https?:\/\/twitter\.com\/(?:\w+)\/status\/(\d+)/g;
+    const regexTwitter = /https?:\/\/twitter\.com\/(?:\w+)\/status\/(\d+)/g;
     content = content.replace(regexTwitter, (match, p1) => {
         return `<blockquote class="twitter-tweet"><a href="${match}"></a></blockquote><script async src="https://platform.twitter.com/widgets.js" charset="utf-8" />`;
     });
@@ -144,10 +144,10 @@ const checkToReadOrFetchContent = async () => {
             baseIsLoading.value = false
         })
     } else {
-        //content exists in window.history.state. NO FETCH JUST PARSE from state
+        // content exists in window.history.state. NO FETCH JUST PARSE from state
         // then check if ID matches between the data inside state and current url
         // if it matches, set the single content value. if not, go to else
-        if ((JSON.parse(window.history.state.content).post_id || JSON.parse(window.history.state.content).id) == route.params.id) {
+        if ((JSON.parse(window.history.state.content).post_id || JSON.parse(window.history.state.content).id) === route.params.id) {
             console.log('same id inside window history id compated to params id ')
             console.info('Advice content received from parent. No request will be sent to server')
             singleContent.value = JSON.parse(window.history.state.content)

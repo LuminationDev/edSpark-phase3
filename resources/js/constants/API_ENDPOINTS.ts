@@ -68,6 +68,8 @@ export const API_ENDPOINTS : Endpoints =  appendServerURL({
     PARTNER: {
         FETCH_ALL_PARTNERS: `/fetchAllPartners`,
         FETCH_PARTNER_BY_ID: `/fetchPartnerById/`,
+        UPDATE_PARTNER_CONTENT: `/updatePartnerContent`,
+        FETCH_PARTNER_RESOURCE: '/fetchPartnerResource',
     },
     EVENT: {
         ADD_EVENT_RECORDING: `/addEventRecording`,

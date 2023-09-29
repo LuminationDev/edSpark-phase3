@@ -1,4 +1,4 @@
-export type EditorJSData = {
+export type EditorJSDataType = {
     time: number;
     blocks: Block[];
     version: string;
