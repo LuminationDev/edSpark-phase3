@@ -103,8 +103,7 @@ const handleEditButton = async (): Promise<void> => {
 
 const handleAllSaveButton = async (): Promise<void> => {
     await partnerEditorRef.value.handleEditorSave()
-    // await partnerService.updatePartnerContent(partnerId, currentUser.value.id, newPartnerContent.value)
-    partnerService.updatePartnerContent(+partnerId, +'65', newPartnerContent.value).then(res => {
+    partnerService.updatePartnerContent(+partnerId, currentUser.value.id, newPartnerContent.value).then(res => {
         if (res.status === 200) {
             partnerContentState.value = 'submitted_pending'
             editMode.value = false
