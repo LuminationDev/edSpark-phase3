@@ -11,27 +11,38 @@ export const partnerService = {
     testFunction: (): void => {
         console.log('testing')
     },
-    checkIfUserCanEdit: async (site_id, user_id, school_id): Promise<AxiosResponse<CheckCanEditResponseType>> => {
+    checkIfUserCanEditPartner: async (currentUserId, partnerId): Promise<AxiosResponse<CheckCanEditResponseType>> => {
         const data = {
-            "site_id": site_id,
-            "user_id": user_id,
-            "school_id": school_id
+            "user_id": currentUserId,
+            "partner_id": partnerId,
         }
         return axios.post(
-            API_ENDPOINTS.SCHOOL.CHECK_IF_USER_CAN_EDIT_SCHOOL,
+            API_ENDPOINTS.PARTNER.CHECK_IF_USER_CAN_EDIT_PARTNER,
             data
         )
     },
-    updatePartnerContent: async (partnerId, currentUserId, content): Promise<AxiosResponse<any>> => {
+    updatePartnerContent: async (partnerId: number, currentUserId: number, content): Promise<AxiosResponse<any>> => {
         if (partnerId === currentUserId) {
             const data = {
                 content: content,
                 partner_id: partnerId
             }
             return axios.post(API_ENDPOINTS.PARTNER.UPDATE_PARTNER_CONTENT, data)
+        } else {
+            throw(new Error('Not authorized to edit this user'))
         }
 
 
+    },
+    fetchPendingPartnerProfile: async (partnerId: number, currentUserId: number): Promise<AxiosResponse<any>> => {
+        const data = {
+            "user_id": currentUserId,
+            "partner_id": partnerId,
+        }
+        return axios.post(
+            API_ENDPOINTS.PARTNER.FETCH_PARTNER_PENDING_PROFILE,
+            data
+        )
     },
     fetchPartnerSoftware: async (partnerId): Promise<any> => {
         const data = {

@@ -4,11 +4,11 @@ import {onBeforeMount, onMounted, Ref, ref} from 'vue'
 import {useRoute} from "vue-router";
 
 import EditorJsInput from "@/js/components/bases/EditorJsInput.vue";
+import EditorJsContentDisplay from "@/js/components/schoolsingle/EditorJsContentDisplay.vue";
 import SchoolContact from "@/js/components/schoolsingle/SchoolContact.vue";
 import SchoolColorPicker from "@/js/components/schoolsingle/schoolContent/SchoolColorPicker.vue";
 import SchoolImageChange from "@/js/components/schoolsingle/schoolContent/SchoolImageChange.vue";
 import SchoolContentDisplay from "@/js/components/schoolsingle/SchoolContentDisplay.vue";
-import SchoolEditorJs from "@/js/components/schoolsingle/SchoolEditorJs.vue";
 import SchoolTech from "@/js/components/schoolsingle/SchoolTech.vue";
 import SchoolWhatsNew from "@/js/components/schoolsingle/SchoolWhatsNew.vue";
 import TechSelector from "@/js/components/selector/TechSelector.vue";
@@ -52,9 +52,9 @@ const {currentUser} = storeToRefs(useUserStore())
 const currentSchoolName = route.params.name
 const editMode = ref<boolean>(false)
 const newSchoolContent: Ref<EditorJSDataType | null> = ref(null)
-const newTechUsed : Ref<TechUsed[] | null> = ref(null)
 const pendingSchoolContent: Ref<SchoolDataType | null> = ref(null)
 const schoolContentState = ref('new')
+const newTechUsed: Ref<TechUsed[] | null> = ref(null)
 
 const schoolEditorRef = ref() // for triggering save inside editorjs component
 
@@ -195,7 +195,7 @@ console.log(props.activeSubmenu)
                         class="contentDisplay flex lg:flex-row justify-between flex-col gap-4 schoolContent w-full"
                     >
                         <div class="basis-2/3">
-                            <SchoolContentDisplay :school-content-blocks="schoolContent.content_blocks" />
+                            <EditorJsContentDisplay :content-blocks="schoolContent.content_blocks" />
                         </div>
                         <div class="basis-1/3 school-tech">
                             <div

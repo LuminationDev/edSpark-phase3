@@ -11,6 +11,8 @@ use App\Models\PartnerProfile;
 use App\Models\Software;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Validation\ValidationException;
 
 class PartnerController extends Controller
 {
@@ -26,6 +28,7 @@ class PartnerController extends Controller
             Metahelper::insert($partner->id, ['contact_info' => '{}'], 'partner_id', 'partner_meta_key', 'partner_meta_value', Partnermeta::class);
         }
     }
+
     private function getOrCreatePartnerProfile($partner)
     {
         // Fetch the 'Published' status profile for the partner.
@@ -36,7 +39,11 @@ class PartnerController extends Controller
             $partnerProfile = PartnerProfile::create([
                 'partner_id' => $partner->id,
                 'user_id' => $partner->user_id,
-                'content' => json_encode(new \stdClass()), // Empty object.
+                'content' => json_encode([
+                    "time" => time() * 1000,
+                    "blocks" => [],
+                    'version' => 1
+                ]),
                 'status' => 'Published',
             ]);
         }
@@ -110,13 +117,67 @@ class PartnerController extends Controller
         }
     }
 
+    public function fetchPendingPartnerProfile(Request $request)
+    {
+        try {
+            $validatedData = $request->validate([
+                'user_id' => 'required|integer|exists:users,id',
+                'partner_id' => 'required|integer|exists:partner_profiles,user_id',
+            ]);
+
+            $currentUserId = $validatedData['user_id'];
+            $partnerId = $validatedData['partner_id'];
+
+            $partner = Partner::where('user_id', $partnerId)->first();
+
+            if (!$partner) {
+                return response()->json(['error' => 'Partner not found'], Response::HTTP_NOT_FOUND);
+            }
+
+            $partnerProfile = $partner->profiles()->where('status', 'Pending')->latest()->first();
+
+            // If there's no pending profile, return a message
+            if (!$partnerProfile) {
+                return response()->json([
+                    'message' => 'No pending profile found for this partner.',
+                    'pending_available' => false,
+                    'result' => null], Response::HTTP_NOT_FOUND);
+            }
+
+            $partnerData = $this->partnerModelToJson($partner);
+            $partnerData['profile'] = json_decode($partnerProfile->content);
+
+            // Update all other profiles with the same partner_id to "Archived"
+            PartnerProfile::where('user_id', $partnerId)
+                ->where('id', '!=', $partnerProfile->id)
+                ->update(['status' => 'Archived']);
+
+            return response()->json([
+                'message' => 'Pending profile found',
+                'pending_available' => true,
+                "result" => $partnerData
+            ]);
+
+        } catch (ValidationException $e) {
+            // Handle validation errors
+            return response()->json(['error' => $e->errors()], Response::HTTP_BAD_REQUEST);
+
+        } catch (\Exception $e) {
+            // Handle other general errors
+            return response()->json(['error' => $e->getMessage()], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
+
 
     public function updatePartnerContent(Request $request)
     {
         try {
             // Validate the request data
             $validatedData = $request->validate([
-                'content' => 'required',
+                'content' => 'required|array',
+                'content.time' => 'required',
+                'content.version' => 'required',
+                'content.blocks' => 'required|array',
                 'partner_id' => 'required'
             ]);
 
@@ -126,8 +187,9 @@ class PartnerController extends Controller
             if (!$partner) {
                 return response()->json(['error' => 'Partner not found'], Response::HTTP_NOT_FOUND);
             }
-
-
+            if (empty($validatedData['content']['blocks'])) {
+                return response()->json(['error' => 'Blocks content is empty. Not saved.'], Response::HTTP_BAD_REQUEST);
+            }
             // Create a new PartnerProfile entry with the content and status as "Pending"
             PartnerProfile::create([
                 'partner_id' => $partner->id,
@@ -141,6 +203,33 @@ class PartnerController extends Controller
         } catch (\Exception $e) {
             return response()->json(['error' => "An error occurred: " . $e->getMessage()], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
+    }
+
+    public function checkIfUserCanEditPartner(Request $request)
+    {
+        try {
+            $validatedData = $request->validate([
+                'user_id' => 'required',
+                'partner_id' => 'required'
+            ]);
+
+            if (Auth()->id() == $validatedData['partner_id']) {
+                return response()->json([
+                    "status" => 200,
+                    "result" => true,
+                    "canNominate" => false
+                ]);
+            } else {
+                return response()->json([
+                    "status" => 401,
+                    "result" => true,
+                    "canNominate" => false
+                ]);
+            }
+        } catch (\Exception $e) {
+            return response()->json(['error' => "$e"], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+
     }
 
 

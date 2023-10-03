@@ -14,15 +14,13 @@ import PartnerOverview from "@/js/components/partners/partnerSubPages/PartnerOve
 import PartnerSoftware from "@/js/components/partners/partnerSubPages/PartnerSoftware.vue";
 import Loader from "@/js/components/spinner/Loader.vue";
 import {imageURL} from "@/js/constants/serverUrl";
-import recommenderEdsparkSingletonFactory from "@/js/recommender/recommenderEdspark";
 import {partnerService} from "@/js/service/partnerService";
 import {useUserStore} from "@/js/stores/useUserStore";
 
-const props = defineProps({})
-const {currentUser} = storeToRefs(useUserStore())
 
-const emits = defineEmits([])
+const {currentUser} = storeToRefs(useUserStore())
 const availableSubmenu = ref(['overview', 'access'])
+const route = useRoute()
 
 const formattedSubmenuData = computed(() => {
     if (!availableSubmenu.value || availableSubmenu.value.length === 0) {
@@ -37,8 +35,6 @@ const formattedSubmenuData = computed(() => {
 
     }
 })
-//TODO: Replace site_id
-const recommender = recommenderEdsparkSingletonFactory().getInstance(currentUser.value.id, currentUser.value.role, currentUser.value.site_id || 123)
 
 const partnerData = reactive({
     overview: {},
@@ -47,9 +43,6 @@ const partnerData = reactive({
     hardware: {},
     curriculum: {}
 })
-const route = useRoute()
-
-
 const fetchSubmenuData = async() => {
     // perform fetches here and assign value/data into parterData(reactive)
     const partnerId  = route.params.id
@@ -70,10 +63,7 @@ const fetchSubmenuData = async() => {
         case 'access':
             partnerData[submenu] = {overview: 'access here'}
             break;
-
         }
-
-
     }
 }
 

@@ -6,7 +6,7 @@ import {EditorJSDataType} from "@/js/types/EditorJsTypes";
 
 const props = defineProps({
     existingData: {
-        type: Object as () => EditorJSDataType ,
+        type: Object as () => EditorJSDataType,
         required: false,
         default: () => ({})
     },
@@ -23,17 +23,17 @@ const editor = new EditorJS({
     holder: 'editorJs',
     tools: editorJsTools,
     autofocus: true,
-    onReady: () :void => {
+    onReady: (): void => {
         if (props.existingData) {
             for (const block of props.existingData.blocks) {
                 editor.blocks.insert(block.type, block.data)
             }
-            editor.blocks.delete(0);
+            // editor.blocks.delete(0);
         }
     },
 });
 
-const handleEditorSave = async () : Promise<void> => {
+const handleEditorSave = async (): Promise<void> => {
     await editor.save().then(outputData => {
         emits('sendEditorjsData', outputData)
     }).catch(err => {
@@ -41,7 +41,7 @@ const handleEditorSave = async () : Promise<void> => {
     })
 }
 
-const handleEditorRerender = async (newEditorJsData : EditorJSDataType) : Promise<void> => {
+const handleEditorRerender = async (newEditorJsData: EditorJSDataType): Promise<void> => {
     await editor.render(newEditorJsData)
 }
 
@@ -52,8 +52,14 @@ defineExpose({
 
 </script>
 <template>
-    <div class="Center control editorjs">
-        EditorJS Control center
+    <div
+        v-if="$slots.editorjsControl"
+        class="editorjsTitle font-semibold mb-4 text-xl"
+    >
+        EditorJs Control Center
+    </div>
+    <div class="editorJsCoontrolCentre">
+        <slot name="editorjsControl" />
     </div>
     <div
         id="editorJs"

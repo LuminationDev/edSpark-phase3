@@ -1,10 +1,10 @@
 export type EditorJSDataType = {
     time: number;
-    blocks: Block[];
+    blocks: EditorJsBlock[];
     version: string;
 };
 
-type Block =
+export type EditorJsBlock =
     | HeaderBlock
     | ParagraphBlock
     | ImageBlock
@@ -61,3 +61,9 @@ type ListBlock = {
         items: string[];
     };
 };
+
+export type StateDescriptionType = {
+    new: string;
+    pending_available: string;
+    pending_loaded: string;
+}
