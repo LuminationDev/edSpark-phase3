@@ -1,35 +1,36 @@
 <script setup>
-import BaseBreadcrumb from "@/js/components/bases/BaseBreadcrumb.vue";
-import {API_ENDPOINTS} from "@/js/constants/API_ENDPOINTS";
-
 /**
  * IMPORT DEPENDENCIES
  */
 import axios from 'axios'
-import {useRouter, useRoute} from 'vue-router';
-import {onBeforeMount, computed, ref} from 'vue'
 import {storeToRefs} from "pinia";
-import {parseToJsonIfString, schoolContentArrParser} from "@/js/helpers/jsonHelpers";
-import {schoolDataFormDataBuilder, printOutFormData} from "@/js/helpers/schoolDataHelpers";
+import {computed, onBeforeMount, ref} from 'vue'
+import {useRoute,useRouter} from 'vue-router';
+
+import BaseBreadcrumb from "@/js/components/bases/BaseBreadcrumb.vue";
+import BaseHero from "@/js/components/bases/BaseHero.vue";
+import BaseSingle from "@/js/components/bases/BaseSingle.vue";
+import BaseSingleSubmenu from "@/js/components/bases/BaseSingleSubmenu.vue";
+import GenericButton from "@/js/components/button/GenericButton.vue";
+import SchoolTechIconGenerator from "@/js/components/global/SchoolTechIconGenerator.vue";
+import SchoolNominationButton from "@/js/components/schools/SchoolNominationButton.vue";
+import SchoolNotAvailable from "@/js/components/schools/SchoolNotAvailable.vue";
 /**
  * IMPORT COMPONENTS
  */
 import SchoolContent from "@/js/components/schoolsingle/SchoolContent.vue";
-import BaseSingleSubmenu from "@/js/components/bases/BaseSingleSubmenu.vue";
-import SchoolTechIconGenerator from "@/js/components/global/SchoolTechIconGenerator.vue";
-import BaseHero from "@/js/components/bases/BaseHero.vue";
-import BaseSingle from "@/js/components/bases/BaseSingle.vue";
-import SchoolNotAvailable from "@/js/components/schools/SchoolNotAvailable.vue";
-import GenericButton from "@/js/components/button/GenericButton.vue";
+import Loader from "@/js/components/spinner/Loader.vue";
+import {API_ENDPOINTS} from "@/js/constants/API_ENDPOINTS";
+import {parseToJsonIfString, schoolContentArrParser} from "@/js/helpers/jsonHelpers";
+import {isObjectEmpty} from "@/js/helpers/objectHelpers";
+import {printOutFormData,schoolDataFormDataBuilder} from "@/js/helpers/schoolDataHelpers";
 /**
  * IMPORT SVGS
  */
 import {useSchoolsStore} from "@/js/stores/useSchoolsStore";
-import ChevronRight from '../components/svg/ChevronRight.vue';
-import {isObjectEmpty} from "@/js/helpers/objectHelpers";
 import {useUserStore} from "@/js/stores/useUserStore";
-import SchoolNominationButton from "@/js/components/schools/SchoolNominationButton.vue";
-import Loader from "@/js/components/spinner/Loader.vue";
+
+import ChevronRight from '../components/svg/ChevronRight.vue';
 
 const route = useRoute();
 const router = useRouter();
@@ -104,7 +105,7 @@ const triggerCreateNewSchoolFromSchoolStore = () => {
     console.log('TriggeredCreateNewSchoolFromSchoolStore')
     // create a site_id field inside site in order for the helper function to work
     newSchool.value.site['site_id'] = newSchool.value.site['site_id'] || newSchool.value.site.id
-    let processedSchoolData = {
+    const processedSchoolData = {
         site: newSchool.value.site,
         owner: {
             owner_id: currentUser.value.id
@@ -158,11 +159,13 @@ const handleSaveNewSchoolInfo = async (content_blocks, tech_used) => {
         data: newUpdatedSchoolFormData,
         headers: {"Content-Type": "multipart/form-data"}
     }).then(res => {
+        // if the created post status is published,
         // assign school info with newest data that has been saved succesfully to trigger update
-        console.log(res.data.data)
-        schoolContent.value = res.data.data
-        schoolContent.value.content_blocks = parseToJsonIfString(schoolContent.value.content_blocks)
-        schoolContent.value.tech_used = parseToJsonIfString(schoolContent.value.tech_used)
+        if(res.data.data.status === 'Published'){
+            schoolContent.value = res.data.data
+            schoolContent.value.content_blocks = parseToJsonIfString(schoolContent.value.content_blocks)
+            schoolContent.value.tech_used = parseToJsonIfString(schoolContent.value.tech_used)
+        }
     }).catch(err => {
         console.log(err)
         console.log('Something wrong while attempting to post ')
@@ -379,7 +382,7 @@ const isSchoolContentPopulated = computed(() => {
                                 <SchoolNominationButton
                                     v-if="schoolContent['site']['site_id']"
                                     :site-id="schoolContent['site']['site_id']"
-                                    :school-id="schoolContent['id']"
+                                    :school-id="schoolContent['school_id']"
                                 />
                             </template>
                         </SchoolContent>

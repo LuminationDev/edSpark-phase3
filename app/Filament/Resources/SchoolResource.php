@@ -31,24 +31,24 @@ class SchoolResource extends Resource
     {
         return $form
             ->schema([
-                // Forms\Components\Card::make()
-                //     ->schema([
-                //         Forms\Components\TextInput::make('site_id'),
-                //         Forms\Components\TextInput::make('owner_id'),
-                //         // Forms\Components\TextInput::make('allowEditIds')
-                //         //     ->maxLength(255),
-                //         Forms\Components\TextInput::make('name')
-                //             ->required()
-                //             ->maxLength(255),
-                //         Forms\Components\Textarea::make('content_blocks'),
-                //         Forms\Components\TextInput::make('logo')
-                //             ->maxLength(255),
-                //         Forms\Components\TextInput::make('cover_image')
-                //             ->maxLength(255),
-                //         Forms\Components\Textarea::make('tech_used'),
-                //         Forms\Components\Textarea::make('pedagogical_approaches'),
-                //         Forms\Components\Textarea::make('tech_landscape'),
-                //     ])
+//                Forms\Components\Card::make()
+//                    ->schema([
+//                        Forms\Components\TextInput::make('site_id'),
+//                        Forms\Components\TextInput::make('owner_id'),
+//                        // Forms\Components\TextInput::make('allowEditIds')
+//                        //     ->maxLength(255),
+//                        Forms\Components\TextInput::make('name')
+//                            ->required()
+//                            ->maxLength(255),
+//                        Forms\Components\Textarea::make('content_blocks'),
+//                        Forms\Components\TextInput::make('logo')
+//                            ->maxLength(255),
+//                        Forms\Components\TextInput::make('cover_image')
+//                            ->maxLength(255),
+//                        Forms\Components\Textarea::make('tech_used'),
+//                        Forms\Components\Textarea::make('pedagogical_approaches'),
+//                        Forms\Components\Textarea::make('tech_landscape'),
+//                    ])
             ]);
     }
 
@@ -57,15 +57,7 @@ class SchoolResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('site_id'),
-                // Tables\Columns\TextColumn::make('allowEditIds'),
                 Tables\Columns\TextColumn::make('name'),
-                // Tables\Columns\TextColumn::make('content_blocks')
-                    // ->limit(20),
-                // Tables\Columns\TextColumn::make('logo'),
-                // Tables\Columns\TextColumn::make('cover_image'),
-                // Tables\Columns\TextColumn::make('tech_used'),
-                // Tables\Columns\TextColumn::make('pedagogical_approaches'),
-                // Tables\Columns\TextColumn::make('tech_landscape'),
                 Tables\Columns\TextColumn::make('owner.full_name')->label('Owner'),
                 Tables\Columns\ToggleColumn::make('isFeatured'),
                 Tables\Columns\TextColumn::make('created_at')

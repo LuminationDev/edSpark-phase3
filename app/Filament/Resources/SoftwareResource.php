@@ -11,7 +11,6 @@ use Filament\Resources\Resource;
 use Filament\Tables\Table;
 use Filament\Tables;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Illuminate\Support\Facades\Auth;
 use Livewire\TemporaryUploadedFile;
 

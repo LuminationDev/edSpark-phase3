@@ -133,6 +133,36 @@ class SoftwareController extends Controller
         }
     }
 
+    public function fetchUserSoftwarePosts(Request $request): JsonResponse
+    {
+        try {
+            $userId = $request->user_id;
+            $softwares = Software::where('post_status', 'Published')
+                ->where('author_id', $userId)  // Filter by partner (author) ID
+                ->orderBy('created_at', 'DESC')
+                ->get();
+
+            $data = [];
+
+            foreach ($softwares as $software) {
+                $softwareMetadataToSend = Metahelper::getMeta(
+                    Softwaremeta::class,
+                    $software,
+                    'software_id',
+                    'software_meta_key',
+                    'software_meta_value'
+                );
+                $result = $this->softwareModelToJson($software, $softwareMetadataToSend, $request);
+                $data[] = $result;
+            }
+
+            return response()->json($data);
+        } catch (\Exception $e) {
+            return response()->json(['error' => "An error occurred: " . $e->getMessage()], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
+
+
     public function fetchRelatedSoftware(Request $request): JsonResponse
     {
         try {

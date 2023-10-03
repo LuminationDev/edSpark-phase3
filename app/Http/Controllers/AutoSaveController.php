@@ -63,32 +63,26 @@ class AutoSaveController extends Controller
             return response()->json(['message' => 'User ID and Post Type are required.'], 400);
         }
 
-        while (true) {
-            $autoSave = AutoSave::where('user_id', $userId)
-                ->where('post_type', $postType)
-                ->where('is_active', true)
-                ->first();
+        $activeAutoSaves = AutoSave::where('user_id', $userId)
+            ->where('post_type', $postType)
+            ->where('is_active', true)
+            ->get();
 
-            // If there's no active auto-save found, break the loop
-            if (!$autoSave) {
-                break;
-            }
-
-            // If the exp_date is not in the past, break the loop (we found a valid auto-save)
+        $validAutoSave = null;
+        foreach ($activeAutoSaves as $autoSave) {
             if (new \DateTime($autoSave->exp_date) >= new \DateTime()) {
+                $validAutoSave = $autoSave;
                 break;
             }
 
-            // Deactivate the expired auto-save
             $autoSave->is_active = false;
             $autoSave->save();
         }
 
-        if (!$autoSave) {
+        if (!$validAutoSave) {
             return response()->json(['message' => 'No active auto-save found.'], 404);
         }
 
-        return response()->json(['message' => 'Auto-save found!', 'data' => $autoSave], 200);
+        return response()->json(['message' => 'Auto-save found!', 'data' => $validAutoSave], 200);
     }
-
 }

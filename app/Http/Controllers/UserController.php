@@ -77,7 +77,7 @@ class UserController extends Controller
             'status' => $user->status,
             'role' => $user->role ? $user->role->role_name : NULL,
             'permissions' => $user->role ? $user->role->permissions->pluck('permission_name') : NULL,
-            'site' => ['site_name' => $user->site->site_name]
+            'site' => ['site_name' => $user->site ? $user->site->site_name : null]
         ];
     }
 

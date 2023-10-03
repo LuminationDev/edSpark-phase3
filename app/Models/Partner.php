@@ -36,6 +36,10 @@ class Partner extends Authenticatable
     {
         return $this->belongsTo(User::class);
     }
+    public function profiles()
+    {
+        return $this->hasMany('App\Models\PartnerProfile', 'partner_id');
+    }
     public function likes(): \Illuminate\Database\Eloquent\Relations\HasMany
     {
         return $this->hasMany(Like::class, 'post_id', 'id')->where('post_type', 'partner');

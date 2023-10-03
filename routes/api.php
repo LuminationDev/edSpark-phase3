@@ -2,9 +2,7 @@
 <?php
 
 use App\Http\Controllers\AutoSaveController;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-//use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\AdviceController;
 use App\Http\Controllers\SoftwareController;
 use App\Http\Controllers\UserController;
@@ -13,15 +11,12 @@ use App\Http\Controllers\SiteController;
 use App\Http\Controllers\EventController;
 use App\Http\Controllers\CommunityController;
 use App\Http\Controllers\SchoolController;
-use App\Http\Controllers\TechController;
 use App\Http\Controllers\ImageController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\LikeBookmarkController;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\PartnerController;
 use App\Http\Controllers\RsvpController;
-use Illuminate\Support\Facades\Session;
-use App\Http\Controllers\LoginController;
 
 /*
 |--------------------------------------------------------------------------
@@ -34,6 +29,7 @@ use App\Http\Controllers\LoginController;
 |
 */
 Route::middleware('auth:sanctum')->group(function() {
+
     // School APIs
     Route::get('fetchAllSchools', [SchoolController::class, 'fetchAllSchools']);
     Route::get('fetchFeaturedSchools', [SchoolController::class, 'fetchFeaturedSchools']);
@@ -47,6 +43,7 @@ Route::middleware('auth:sanctum')->group(function() {
     Route::post('getNominatedUsersFromSchool',[SchoolController::class, 'getNominatedUsersFromSchool']);
     Route::post('createOrUpdateSchoolContact', [SchoolController::class , 'createOrUpdateContact']);
     Route::post('fetchSchoolContact', [SchoolController::class, 'fetchSchoolContact']);
+    Route::post('fetchPendingSchoolByName/{schoolName}', [SchoolController::class, 'fetchPendingSchoolByName']);
 
     // Advice APIs
     Route::post('createAdvicePost',[AdviceController::class, 'createAdvicePost']);
@@ -55,6 +52,7 @@ Route::middleware('auth:sanctum')->group(function() {
     Route::get('fetchAdvicePostByType/{type}', [AdviceController::class, 'fetchAdvicePostByType']);
     Route::post('fetchRelatedAdvice',[AdviceController::class, 'fetchRelatedAdvice']);
     Route::get('fetchAdviceTypes', [AdviceController::class,'fetchAdviceTypes']);
+    Route::get('fetchUserAdvice', [AdviceController::class, 'fetchUserAdvicePosts']);
 
     // Software APIs
     Route::post('createSoftwarePost', [SoftwareController::class,'createSoftwarePost']);
@@ -62,6 +60,7 @@ Route::middleware('auth:sanctum')->group(function() {
     Route::get('fetchSoftwarePostById/{id}', [SoftwareController::class, 'fetchSoftwarePostById']);
     Route::post('fetchRelatedSoftware', [SoftwareController::class, 'fetchRelatedSoftware']);
     Route::get('fetchSoftwareTypes', [SoftwareController::class,'fetchSoftwareTypes']);
+    Route::get('fetchUserSoftware',[SoftwareController::class, 'fetchUserSoftwarePosts']);
 
     // Event APIs
     Route::post('createEventPost',[EventController::class,'createEventPost']);
@@ -78,6 +77,7 @@ Route::middleware('auth:sanctum')->group(function() {
     Route::get('fetchAllProducts', [ProductController::class, 'fetchAllProducts']);
     Route::get('fetchProductById/{id}', [ProductController::class, 'fetchProductById']);
     Route::post('fetchProductByBrand', [ProductController::class, 'fetchProductByBrand']);
+    Route::get('fetchUserProduct', [ProductController::class, 'fetchUserProductPosts']);
 
     // User Management
     Route::get('fetchUser/{id}', [UserController::class, 'fetchUser']);
@@ -114,6 +114,9 @@ Route::middleware('auth:sanctum')->group(function() {
     // Partners API
     Route::get('fetchAllPartners', [PartnerController::class, 'fetchAllPartners']);
     Route::get('fetchPartnerById/{id}', [PartnerController::class, 'fetchPartnerById']);
+    Route::post('updatePartnerContent', [PartnerController::class, 'updatePartnerContent']);
+    Route::post('checkIfUserCanEditPartner',[PartnerController::class, 'checkIfUserCanEditPartner']);
+    Route::post('fetchPartnerPendingProfile', [PartnerController::class, 'fetchPendingPartnerProfile']);
 
     // Event Rsvp
     Route::get('fetchRsvpByEventId/{event_id}',[RsvpController::class,'fetchRsvpByEventId']);
