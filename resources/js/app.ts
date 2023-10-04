@@ -1,17 +1,26 @@
-import { createApp } from 'vue';
-import App from './App.vue';
-import router from './router';
-import { createPinia } from 'pinia';
 import '../css/app.css';
 import '../css/output.css';
 import './bootstrap';
-import VueGoogleMaps from 'vue-google-maps-community-fork';
 
-import { setupCalendar } from 'v-calendar';
+import {createPinia} from 'pinia';
+import {setupCalendar} from 'v-calendar';
+import {createApp} from 'vue';
+import VueGoogleMaps from 'vue-google-maps-community-fork';
+import VueTippy from 'vue-tippy'
+
+import App from './App.vue';
+import router from './router';
 
 
 const pinia = createPinia();
 // const authStore = useAuthStore(pinia);
+const tippyOptions : any = {
+    directive: 'tippy',
+    component: 'tippy',
+    defaultProps: { placement: 'top' }
+
+}
+
 
 createApp(App)
     .use(pinia)
@@ -23,4 +32,6 @@ createApp(App)
         autobindAllEvents: true,
     })
     .use(setupCalendar, {})
+    .use(VueTippy,tippyOptions
+        )
     .mount('#app');

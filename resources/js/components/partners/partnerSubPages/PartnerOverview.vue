@@ -59,7 +59,7 @@ onBeforeMount(() => {
 })
 
 onMounted(async () => {
-    await partnerService.checkIfUserCanEditPartner(currentUser.value.id, partnerId).then(res => {
+    await partnerService.checkIfUserCanEditPartner(currentUser.value.id, +partnerId).then(res => {
         currentUserCanEdit.value = Boolean(res.data.result)
     })
     if (currentUserCanEdit.value) {

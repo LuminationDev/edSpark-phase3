@@ -1,4 +1,4 @@
-import {appURL, serverURL} from "@/js/constants/serverUrl";
+import {appURL, imageUploadURL, serverURL} from "@/js/constants/serverUrl";
 
 type EndpointGroup = {
     [key: string]: string;
@@ -108,11 +108,7 @@ export const API_ENDPOINTS : Endpoints =  appendServerURL({
         FETCH_ALL_BOOKMARKS_BY_TYPE: `/fetchAllBookmarksByType`,
 
     },
-    IMAGE: {
-        UPLOAD_IMAGE: `/imageUpload`,
-        IMAGE_UPLOAD_EDITOR_JS: `/imageUploadEditorjs`
 
-    },
     SEARCH:{
         SEARCH_ALL: `/search/`
     },
@@ -123,4 +119,12 @@ export const API_ENDPOINTS : Endpoints =  appendServerURL({
 
 export const APP_ENDPOINTS = {
     LOGOUT: `${appURL}/logout`
+}
+
+export const IMAGE_ENDPOINTS ={
+    IMAGE: {
+        UPLOAD_IMAGE: `${imageUploadURL}/imageUpload`,
+        IMAGE_UPLOAD_EDITOR_JS: `${imageUploadURL}/imageUploadEditorjs`
+
+    }
 }

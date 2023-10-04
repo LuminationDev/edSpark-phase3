@@ -1,11 +1,11 @@
-<script setup>
+<script setup lang="ts">
 /**
  * IMPORT DEPENDENCIES
  */
 import axios from 'axios'
 import {storeToRefs} from "pinia";
-import {computed, onBeforeMount, ref} from 'vue'
-import {useRoute,useRouter} from 'vue-router';
+import {computed, onBeforeMount, Ref, ref} from 'vue'
+import {useRoute} from 'vue-router';
 
 import BaseBreadcrumb from "@/js/components/bases/BaseBreadcrumb.vue";
 import BaseHero from "@/js/components/bases/BaseHero.vue";
@@ -15,29 +15,21 @@ import GenericButton from "@/js/components/button/GenericButton.vue";
 import SchoolTechIconGenerator from "@/js/components/global/SchoolTechIconGenerator.vue";
 import SchoolNominationButton from "@/js/components/schools/SchoolNominationButton.vue";
 import SchoolNotAvailable from "@/js/components/schools/SchoolNotAvailable.vue";
-/**
- * IMPORT COMPONENTS
- */
 import SchoolContent from "@/js/components/schoolsingle/SchoolContent.vue";
 import Loader from "@/js/components/spinner/Loader.vue";
 import {API_ENDPOINTS} from "@/js/constants/API_ENDPOINTS";
-import {parseToJsonIfString, schoolContentArrParser} from "@/js/helpers/jsonHelpers";
+import {parseToJsonIfString} from "@/js/helpers/jsonHelpers";
 import {isObjectEmpty} from "@/js/helpers/objectHelpers";
-import {printOutFormData,schoolDataFormDataBuilder} from "@/js/helpers/schoolDataHelpers";
-/**
- * IMPORT SVGS
- */
+import {schoolDataFormDataBuilder} from "@/js/helpers/schoolDataHelpers";
 import {useSchoolsStore} from "@/js/stores/useSchoolsStore";
 import {useUserStore} from "@/js/stores/useUserStore";
+import {SchoolDataType} from "@/js/types/SchoolTypes";
 
-import ChevronRight from '../components/svg/ChevronRight.vue';
 
 const route = useRoute();
-const router = useRouter();
-const serverURL = import.meta.env.VITE_SERVER_URL_API
 const imageURL = import.meta.env.VITE_SERVER_IMAGE_API
 
-const schoolContent = ref({})
+const schoolContent: Ref<SchoolDataType | null> = ref(null)
 const colorTheme = ref('teal') // default color theme
 const showSchoolNotAvailable = ref(false)
 const showRetryCreateSchool = ref(false)
@@ -55,7 +47,7 @@ const handleToggleTooltip = (index) => {
     tooltipIndex.value = index;
 }
 
-const {newSchool} = storeToRefs(useSchoolsStore())
+const {newSchool}: { newSchool: Ref<SchoolDataType> } = storeToRefs(useSchoolsStore())
 const {currentUser} = storeToRefs(useUserStore())
 
 onBeforeMount(async () => {
@@ -161,7 +153,7 @@ const handleSaveNewSchoolInfo = async (content_blocks, tech_used) => {
     }).then(res => {
         // if the created post status is published,
         // assign school info with newest data that has been saved succesfully to trigger update
-        if(res.data.data.status === 'Published'){
+        if (res.data.data.status === 'Published') {
             schoolContent.value = res.data.data
             schoolContent.value.content_blocks = parseToJsonIfString(schoolContent.value.content_blocks)
             schoolContent.value.tech_used = parseToJsonIfString(schoolContent.value.tech_used)
@@ -238,7 +230,7 @@ const handleChangeSubmenu = (value) => {
     activeSubmenu.value = value
 }
 const isSchoolContentPopulated = computed(() => {
-    return !isObjectEmpty(schoolContent.value)
+    return !!schoolContent.value && !isObjectEmpty(schoolContent.value)
 })
 
 // End of submenu specific code  plus @emit-active-tab-to-specific-page in BaseSingle

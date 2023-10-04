@@ -1,17 +1,13 @@
--
 <script setup>
 import axios from 'axios'
 import {isEqual} from "lodash";
-import {computed, onBeforeMount, onUnmounted, ref, watch} from "vue";
+import {computed, onBeforeMount, ref, watch} from "vue";
 import {useRoute, useRouter} from "vue-router";
 
-import BaseHero from "@/js/components/bases/BaseHero.vue";
 import Loader from "@/js/components/spinner/Loader.vue";
 import {API_ENDPOINTS} from "@/js/constants/API_ENDPOINTS";
-import {serverURL} from "@/js/constants/serverUrl";
 import {isObjectEmpty} from "@/js/helpers/objectHelpers";
 import lowerSlugify from "@/js/helpers/slugifyHelper";
-import recommenderEdsparkSingletonFactory from "@/js/recommender/recommenderEdspark";
 import {useAdviceStore} from "@/js/stores/useAdviceStore";
 import {useHardwareStore} from "@/js/stores/useHardwareStore";
 import {useSoftwareStore} from "@/js/stores/useSoftwareStore";
@@ -77,7 +73,7 @@ const getRecommendationBasedOnContentType = () => {
         adviceStore.loadRelatedAdvice(currentId.value)
         break;
     default:
-        console.log('no recommendation request was sent')
+        break;
     }
 }
 

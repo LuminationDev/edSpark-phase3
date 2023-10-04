@@ -159,6 +159,7 @@ console.log(props.activeSubmenu)
                                 class="bg-blue-500 hover:bg-blue-600 mb-4 px-6 py-2 rounded text-white w-48"
                                 @click="handleClickEditPendingContent"
                             >
+                                D
                                 Edit pending content
                             </button>
                             <button
@@ -174,7 +175,11 @@ console.log(props.activeSubmenu)
                             >
                                 Revert
                             </button>
-                            <SchoolImageChange @send-uploaded-photo-to-content="handleReceivePhotoFromImageChange" />
+                            <SchoolImageChange
+                                :current-logo="props.schoolContent.logo"
+                                :current-cover-image="props.schoolContent.cover_image"
+                                @send-uploaded-photo-to-content="handleReceivePhotoFromImageChange"
+                            />
                             <SchoolColorPicker
                                 class="mb-5 self-center"
                                 @color-selected="handleColorSelected"

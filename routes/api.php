@@ -29,7 +29,6 @@ use App\Http\Controllers\RsvpController;
 |
 */
 Route::middleware('auth:sanctum')->group(function() {
-
     // School APIs
     Route::get('fetchAllSchools', [SchoolController::class, 'fetchAllSchools']);
     Route::get('fetchFeaturedSchools', [SchoolController::class, 'fetchFeaturedSchools']);
@@ -94,8 +93,7 @@ Route::middleware('auth:sanctum')->group(function() {
     Route::post('checkEmail', [UserController::class, 'checkEmail']);
 
     // Image upload
-    Route::post('imageUpload/{type?}', [ImageController::class, 'imageUpload']);
-    Route::post('imageUploadEditorjs', [ImageController::class, 'imageUploadEditorjs']);
+
 
     // Like and Bookmark
     Route::post('like', [LikeBookmarkController::class, 'like']);
@@ -135,3 +133,4 @@ Route::middleware('auth:sanctum')->group(function() {
     //Auto-save
     Route::match(['get', 'post'], '/auto-save', [AutoSaveController::class, 'handleAutoSave']);
 });
+

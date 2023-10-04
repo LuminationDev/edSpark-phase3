@@ -25,7 +25,8 @@ const props = defineProps({
     additionalData: {
         type: Object as () => SoftwareAdditionalData | AdviceAdditionalData | EventAdditionalData,
         required: false,
-        default: () => {}
+        default: () => {
+        }
     },
     additionalValidation: {
         type: Object, required: false, default: () => {
@@ -120,14 +121,12 @@ const handleReceiveMediaFromUploader = (media: MediaType[]): void => {
 }
 
 const handleClickSave = () => {
-    console.log("Clicked save")
-    try {
-        formService.handleSaveForm(state, currentUser.value.id, props.additionalData, props.itemType).then(() => {
-            console.log('kinda succedd from base form')
-        })
-    } catch (e) {
-        console.log('failed to create ')
-    }
+    formService.handleSaveForm(state, currentUser.value.id, props.additionalData, props.itemType).then(() => {
+        console.log('kinda succedd from base form')
+    }).catch(e => {
+        console.error('Error during saving')
+    })
+
 
 }
 
