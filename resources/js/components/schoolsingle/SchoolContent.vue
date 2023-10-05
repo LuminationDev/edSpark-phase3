@@ -8,7 +8,6 @@ import EditorJsContentDisplay from "@/js/components/schoolsingle/EditorJsContent
 import SchoolContact from "@/js/components/schoolsingle/SchoolContact.vue";
 import SchoolColorPicker from "@/js/components/schoolsingle/schoolContent/SchoolColorPicker.vue";
 import SchoolImageChange from "@/js/components/schoolsingle/schoolContent/SchoolImageChange.vue";
-import SchoolContentDisplay from "@/js/components/schoolsingle/SchoolContentDisplay.vue";
 import SchoolTech from "@/js/components/schoolsingle/SchoolTech.vue";
 import SchoolWhatsNew from "@/js/components/schoolsingle/SchoolWhatsNew.vue";
 import TechSelector from "@/js/components/selector/TechSelector.vue";
@@ -56,10 +55,9 @@ const pendingSchoolContent: Ref<SchoolDataType | null> = ref(null)
 const schoolContentState = ref('new')
 const newTechUsed: Ref<TechUsed[] | null> = ref(null)
 
-const schoolEditorRef = ref() // for triggering save inside editorjs component
-
 const currentUserCanEdit = ref<boolean>(false)
 const currentUserCanNominate = ref<boolean>(false)
+const schoolEditorRef = ref() // for triggering save inside editorjs component
 
 onBeforeMount(() => {
     newSchoolContent.value = props.schoolContent.content_blocks
@@ -159,7 +157,6 @@ console.log(props.activeSubmenu)
                                 class="bg-blue-500 hover:bg-blue-600 mb-4 px-6 py-2 rounded text-white w-48"
                                 @click="handleClickEditPendingContent"
                             >
-                                D
                                 Edit pending content
                             </button>
                             <button

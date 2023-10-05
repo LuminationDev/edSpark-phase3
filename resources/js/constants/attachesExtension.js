@@ -1,36 +1,8 @@
-// import AttachesTool from '@editorjs/attaches';
 
-// class AudioAttachesTool extends AttachesTool {
-//     static get toolbox() {
-//         return {
-//             title: 'Audio Uploader',
-//             icon: 'YA'
-//         };
-//     }
-
-//     constructor({ data, config, api }) {
-//         super({ data, config, api});
-//     }
-
-//     render() {
-        
-//     }
-
-//     save() {
-//         const savedData = super.save();
-
-//         console.log(savedData);
-//     }
-// }
-
-// export default AudioAttachesTool;
-
-// import './index.pcss';
 
 import Uploader from './uploader';
 import { make, moveCaretToTheEnd, isEmpty } from './utils/dom';
 import { getExtensionFromFileName } from './utils/file';
-// import { IconChevronDown, IconFile } from '@codexteam/icons';
 
 const LOADER_TIMEOUT = 500;
 

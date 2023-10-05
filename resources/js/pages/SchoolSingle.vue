@@ -21,6 +21,7 @@ import {API_ENDPOINTS} from "@/js/constants/API_ENDPOINTS";
 import {parseToJsonIfString} from "@/js/helpers/jsonHelpers";
 import {isObjectEmpty} from "@/js/helpers/objectHelpers";
 import {schoolDataFormDataBuilder} from "@/js/helpers/schoolDataHelpers";
+import {schoolService} from "@/js/service/schoolService";
 import {useSchoolsStore} from "@/js/stores/useSchoolsStore";
 import {useUserStore} from "@/js/stores/useUserStore";
 import {SchoolDataType} from "@/js/types/SchoolTypes";
@@ -52,26 +53,42 @@ const {currentUser} = storeToRefs(useUserStore())
 
 onBeforeMount(async () => {
     const currentSchoolName = route.params.name
-    await fetchSchoolByNameAsync(currentSchoolName)
+    schoolService.getSchoolDataForDash(currentUser.value.id, currentUser.value.site_id).then(res =>{
+        console.log(res)
+    }).catch(err =>{
+        if(err.includes('403')){
+            console.log()
+        }
+        console.error('cause of error is ' + err)
+    })
+    fetchSchoolByNameAsync(currentSchoolName).then( () =>{
+
+    }).catch(err => {
+        if(err.toString().includes('404')){
+            // school not found here
+            // bit this is schoolSingle, how can you go inside school single but school not found? directly from URL
+
+        }
+    })
     //scenario where school is not created but Principal has entered school information in the firstVisitForm
 
-    if (newSchool.value.schoolName &&
-        Object.keys(schoolContent.value).length <= 0 &&
-        (currentUser.value.role === "Principal" || currentUser.value.role === "SCHLDR")) {
-        // TODO: check if newSchool.schoolName is valid inside site databasr
-        triggerCreateNewSchoolFromSchoolStore().then(res => {
-            console.log('fetching school after triggeringCreation')
-            fetchSchoolByNameAsync(currentSchoolName)
-        })
-    } else {
-        console.log('No new school will be created')
-        showSchoolNotAvailable.value = true
-    }
+    // if (newSchool.value.schoolName &&
+    //     Object.keys(schoolContent.value).length <= 0 &&
+    //     (currentUser.value.role === "Principal" || currentUser.value.role === "SCHLDR")) {
+    //     // TODO: check if newSchool.schoolName is valid inside site databasr
+    //     triggerCreateNewSchoolFromSchoolStore().then(res => {
+    //         console.log('fetching school after triggeringCreation')
+    //         fetchSchoolByNameAsync(currentSchoolName)
+    //     })
+    // } else {
+    //     console.log('No new school will be created')
+    //     showSchoolNotAvailable.value = true
+    // }
 })
 
 
 const fetchSchoolByNameAsync = (schoolName) => {
-    return axios.get(`${API_ENDPOINTS.SCHOOL.FETCH_SCHOOL_BY_NAME}${schoolName}`).then(res => {
+    return schoolService.fetchSchoolByName(schoolName).then(res => {
         console.log('Found the school. populating data now inside SchoolSingle')
         const filteredSchool = res.data
         schoolContent.value = parseToJsonIfString(filteredSchool)
@@ -94,6 +111,7 @@ const fetchSchoolByNameAsync = (schoolName) => {
 }
 
 const triggerCreateNewSchoolFromSchoolStore = () => {
+
     console.log('TriggeredCreateNewSchoolFromSchoolStore')
     // create a site_id field inside site in order for the helper function to work
     newSchool.value.site['site_id'] = newSchool.value.site['site_id'] || newSchool.value.site.id

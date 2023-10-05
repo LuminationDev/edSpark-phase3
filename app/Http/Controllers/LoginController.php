@@ -14,17 +14,19 @@ class LoginController extends Controller
 {
     public function redirectToOkta()
     {
-        return Socialite::driver('okta')->redirect();
+        // TODO: SCOPE ONCE WE MIGRATE TO REAL OKTA
+        return Socialite::driver('okta')->scopes(['email','address','phone'])->redirect();
+
     }
 
     public function handleOktaCallback(Request $request): \Illuminate\Foundation\Application|\Illuminate\Routing\Redirector|\Illuminate\Http\RedirectResponse|\Illuminate\Contracts\Foundation\Application
     {
         $state = $request->get('state');
         $request->session()->put('state',$state);
+//        dd($request);
 
         $user = Socialite::driver('okta')->user();
         $idToken = $user->token;
-
         //TODO
         // $idToken = $user->attributes['id_token'];
         // $scopes = $user->accessTokenResponseBody['scope'];

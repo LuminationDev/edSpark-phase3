@@ -36,7 +36,8 @@ export const API_ENDPOINTS : Endpoints =  appendServerURL({
         FETCH_ALL_SCHOOLS: `/fetchAllSchools`,
         FETCH_SCHOOL_BY_NAME: `/fetchSchoolByName/`,
         FETCH_FEATURED_SCHOOL: `/fetchFeaturedSchools`,
-        FETCH_PENDING_SCHOOL_BY_NAME: '/fetchPendingSchoolByName/'
+        FETCH_PENDING_SCHOOL_BY_NAME: '/fetchPendingSchoolByName/',
+        FETCH_USER_SCHOOL: '/fetchUserSchool'
     },
     ADVICE: {
         CREATE_ADVICE_POST: `/createAdvicePost`,

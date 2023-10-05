@@ -154,6 +154,49 @@ class SchoolController extends Controller
         ]);
     }
 
+    public function fetchUserSchool(Request $request)
+    {
+        // Step 1: Validate the request
+        $request->validate([
+            'user_id' => 'required|integer',
+            'site_id' => 'required|integer'
+        ]);
+
+        $userId = $request->input('user_id');
+        $siteId = $request->input('site_id');
+
+        // Step 2: Check if the user has the role "SCHLDR"
+        $user = User::find($userId);
+
+        if (!$user || $user->role->role_name !== 'SCHLDR' || $user->role->role_name !== 'Superadmin' ) {
+            return response()->json(['message' => 'Invalid user or role', 'status' => 403], 403);
+        }
+        $site = Site::find($siteId);
+
+        if (!$site) {
+            return response()->json(['message' => 'Site not found', 'status' => 404], 404);
+        }
+
+        // Step 3 & 4: Check if a school entry exists for the provided site_id or create one with default content
+        $school = School::firstOrCreate(
+            ['site_id' => $siteId],
+            [
+                'owner_id' => $userId,
+                'name' => $site->site_name,
+                'content_blocks' => '',
+                'logo' => '',
+                'cover_image' => '',
+                'tech_used' => '',
+                'pedagogical_approaches' => '',
+                'tech_landscape' => '',
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now()
+            ]
+        );
+
+        return response()->json($school);
+    }
+
 
     public function createSchool(Request $request)
     {

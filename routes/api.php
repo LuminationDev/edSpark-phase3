@@ -44,6 +44,10 @@ Route::middleware('auth:sanctum')->group(function() {
     Route::post('fetchSchoolContact', [SchoolController::class, 'fetchSchoolContact']);
     Route::post('fetchPendingSchoolByName/{schoolName}', [SchoolController::class, 'fetchPendingSchoolByName']);
 
+    // Return School based on the User's site (source Okta)
+    // return existing school profile or create one with default template if not exists yet
+    Route::post('fetchUserSchool', [SchoolController::class, 'fetchUserSchool']);
+
     // Advice APIs
     Route::post('createAdvicePost',[AdviceController::class, 'createAdvicePost']);
     Route::get('fetchAdvicePosts', [AdviceController::class, 'fetchAdvicePosts']);
