@@ -10,6 +10,7 @@ import AdminIcon from "@/js/components/svg/profileDropdown/AdminIcon.vue";
 import CreateIcon from "@/js/components/svg/profileDropdown/CreateIcon.vue";
 import DashedHelpIcon from "@/js/components/svg/profileDropdown/DashedHelpIcon.vue";
 import MessageIcon from "@/js/components/svg/profileDropdown/MessageIcon.vue";
+import SchoolGradHat from "@/js/components/svg/SchoolGradHat.vue";
 import {APP_ENDPOINTS} from "@/js/constants/API_ENDPOINTS";
 /**
  * Import stores
@@ -42,7 +43,6 @@ const emits = defineEmits(["handleAvatarClick"]);
 const userStore = useUserStore();
 const {currentUser} = storeToRefs(userStore);
 const imageURL = import.meta.env.VITE_SERVER_IMAGE_API;
-const userMetadata = userStore.getUser.metadata;
 
 
 //commented for now
@@ -52,7 +52,6 @@ const userMetadata = userStore.getUser.metadata;
 //     avatarUrl.value = userAvatarMeta[0].user_meta_value[0].replace(/\\\//g, "/");
 // };
 
-const notificationCount = userStore.getNotifications;
 
 const handleAvatar = (): void => {
     emits("handleAvatarClick");
@@ -157,10 +156,10 @@ const handleClickAdmin = () => {
                     </ProfileDropdownItem>
                     <ProfileDropdownItem
                         :is-router-link="true"
-                        target-path="/"
+                        :target-path="`/schools/${currentUser.site.site_name}`"
                     >
-                        <DashedHelpIcon />
-                        Help
+                        <SchoolGradHat />
+                        My School
                     </ProfileDropdownItem>
                     <template
                         v-if="isAdmin"
