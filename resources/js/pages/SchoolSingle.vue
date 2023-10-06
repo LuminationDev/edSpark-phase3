@@ -13,6 +13,7 @@ import BaseSingle from "@/js/components/bases/BaseSingle.vue";
 import BaseSingleSubmenu from "@/js/components/bases/BaseSingleSubmenu.vue";
 import GenericButton from "@/js/components/button/GenericButton.vue";
 import SchoolTechIconGenerator from "@/js/components/global/SchoolTechIconGenerator.vue";
+import SchoolTechHoverableRow from "@/js/components/schools/schoolMap/SchoolTechHoverableRow.vue";
 import SchoolNominationButton from "@/js/components/schools/SchoolNominationButton.vue";
 import SchoolNotAvailable from "@/js/components/schools/SchoolNotAvailable.vue";
 import SchoolContent from "@/js/components/schoolsingle/SchoolContent.vue";
@@ -33,22 +34,14 @@ const imageURL = import.meta.env.VITE_SERVER_IMAGE_API
 const schoolContent: Ref<SchoolDataType | null> = ref(null)
 const colorTheme = ref('teal') // default color theme
 const showSchoolNotAvailable = ref(false)
-const showRetryCreateSchool = ref(false)
 
 // ref to hold images from editing
 const logoStorage = ref(null)
 const coverImageStorage = ref(null)
 
 // ref to handle tooltip
-const toggleTooltip = ref(false);
-const tooltipIndex = ref(null);
 
-const handleToggleTooltip = (index) => {
-    toggleTooltip.value = !toggleTooltip.value;
-    tooltipIndex.value = index;
-}
 
-const {newSchool}: { newSchool: Ref<SchoolDataType> } = storeToRefs(useSchoolsStore())
 const {currentUser} = storeToRefs(useUserStore())
 
 onBeforeMount(async () => {
@@ -61,69 +54,21 @@ onBeforeMount(async () => {
 })
 
 
-const fetchSchoolByNameAsync = async (schoolName) => {
+const fetchSchoolByNameAsync = async (schoolName) : Promise<void> => {
     try {
-        const res = await schoolService.fetchSchoolByName(schoolName);
-        console.log('Found the school. populating data now inside SchoolSingle');
-
-        const {data} = res;
-        const {content_blocks, tech_used, cover_image, logo, metadata} = parseToJsonIfString(data);
-
-        schoolContent.value = {
-            ...data,
-            content_blocks: content_blocks ? parseToJsonIfString(content_blocks) : {},
-            tech_used: tech_used ? parseToJsonIfString(tech_used) : [],
-            cover_image: cover_image ? cover_image.replace("/\\/g", "") : '',
-            logo: logo ? logo.replace("/\\/g", "") : ''
-        };
-
-        if (metadata) {
-            console.log(metadata);
-            const colorThemeMeta = metadata.filter(meta => meta['schoolmeta_key'] === 'school_color_theme');
+        schoolContent.value = await schoolService.fetchSchoolByName(schoolName)
+        if (schoolContent.value['metadata']) {
+            const colorThemeMeta = schoolContent.value['metadata'].filter(meta => meta['schoolmeta_key'] === 'school_color_theme');
             if (colorThemeMeta.length > 0) {
                 colorTheme.value = colorThemeMeta[0]['schoolmeta_value'];
             }
         }
-
-
     } catch (err) {
         console.log(`${err.message} Inside fetchSchoolByName`);
-        schoolContent.value = {};
+        schoolContent.value = null;
     }
 }
 
-
-const triggerCreateNewSchoolFromSchoolStore = () => {
-
-    console.log('TriggeredCreateNewSchoolFromSchoolStore')
-    // create a site_id field inside site in order for the helper function to work
-    newSchool.value.site['site_id'] = newSchool.value.site['site_id'] || newSchool.value.site.id
-    const processedSchoolData = {
-        site: newSchool.value.site,
-        owner: {
-            owner_id: currentUser.value.id
-        },
-        name: newSchool.value.schoolName,
-    }
-    const schoolFormData = schoolDataFormDataBuilder(processedSchoolData)
-    schoolFormData.append('logo', newSchool.value.logoUrl)
-    schoolFormData.append('cover_image', newSchool.value.coverImageUrl)
-    return axios({
-        method: "post",
-        url: API_ENDPOINTS.SCHOOL.CREATE_SCHOOL,
-        data: schoolFormData,
-        headers: {"Content-Type": "multipart/form-data"},
-    }).then(res => {
-        console.log(res.data)
-        console.log('School Created with FirstVisitData')
-        // need to populate schoolContent.value
-        showRetryCreateSchool.value = false
-    }).catch(e => {
-        console.log('there has been an issue while trying to create school from newSchool from schoolstore')
-        showSchoolNotAvailable.value = true
-        showRetryCreateSchool.value = true
-    })
-}
 
 const handleSaveNewSchoolInfo = async (content_blocks, tech_used) => {
     // Copy current schoolData and replace content_blocks and tech_used
@@ -193,9 +138,6 @@ const handleReceivePhotoFromContent = (type, file) => {
     }
 }
 
-// Cover image loading workaround
-const isCoverImageLoaded = ref(false)
-
 const coverImageLink = computed(() => {
     if (schoolContent.value['cover_image']) {
         console.log('loaded');
@@ -205,10 +147,6 @@ const coverImageLink = computed(() => {
         return;
     }
 });
-
-const handleCoverImageLoaded = () => {
-    isCoverImageLoaded.value = true
-}
 
 
 // Submenu specific codes
@@ -272,77 +210,21 @@ const isSchoolContentPopulated = computed(() => {
                                             {{ schoolContent.name }}
                                         </h1>
                                         <div
-                                            class="flex flex-row gap-4 mb-4 place-items-center"
+                                            class="flex
+                                                flex-row
+                                                mb-4
+                                                place-items-center
+                                                schoolTechHoverableRow
+                                                
+                                                
+                                                gap-4"
                                         >
-                                            <div
-                                                v-for="(tech, index) in schoolContent.tech_used"
-                                                :key="index"
-                                                class="
-                                                    cursor-pointer
-                                                    hidden
-                                                    relative
-                                                    w-6
-                                                    md:!w-14
-                                                    lg:!block
-                                                    "
-                                            >
-                                                <div
-                                                    @mouseenter="handleToggleTooltip(index)"
-                                                    @mouseleave="handleToggleTooltip(index)"
-                                                >
-                                                    <SchoolTechIconGenerator
-                                                        :tech-name="tech.name"
-                                                        class="
-                                                            cursor-pointer
-                                                            m-2
-                                                            min-w-[30px]
-                                                            pr-1
-                                                            relative
-                                                            w-8
-                                                            md:!min-w-[60px]
-                                                            md:!pr-4
-                                                            "
-                                                    />
-                                                    <div
-                                                        v-if="toggleTooltip && tooltipIndex === index"
-                                                        class="
-                                                            absolute
-                                                            bg-main-navy
-                                                            border-l-[3px]
-                                                            border-white
-                                                            px-[24px]
-                                                            py-[18px]
-                                                            shadow-xl
-                                                            w-[450px]
-                                                            "
-                                                    >
-                                                        <h3
-                                                            class="
-                                                                font-semibold
-                                                                text-[20px]
-                                                                text-white
-                                                                "
-                                                        >
-                                                            {{ tech.name }}
-                                                        </h3>
-                                                        <p
-                                                            class="
-                                                                font-normal
-                                                                text-sm
-                                                                text-white
-                                                                xl:!text-base
-                                                                "
-                                                        >
-                                                            {{ tech.description }}
-                                                        </p>
-                                                    </div>
-                                                </div>
-                                            </div>
+                                            <SchoolTechHoverableRow :tech-used-list="schoolContent.tech_used" />
                                         </div>
-                                        <div class="flex justify-center items-center h-40 w-40">
+                                        <div class="flex justify-center items-center h-40 text-md w-40">
                                             <img
                                                 :src="`${imageURL}/${schoolContent.logo}`"
-                                                :alt="`${schoolContent.name} logo`"
+                                                :alt="`school logo`"
                                                 class="max-h-full object-contain w-full"
                                             >
                                         </div>
@@ -389,19 +271,6 @@ const isSchoolContentPopulated = computed(() => {
         class="flex justify-center items-center flex-col h-36 mt-[10vh]"
     >
         <SchoolNotAvailable />
-    </div>
-    <div
-        v-else-if="!isSchoolContentPopulated && showRetryCreateSchool"
-        class="flex justify-center items-center flex-col h-36 mt-[10vh]"
-    >
-        <GenericButton
-            :callback="triggerCreateNewSchoolFromSchoolStore"
-            type="school"
-        >
-            <div class="font-bold px-2 py-2 text-md">
-                Retry create school
-            </div>
-        </GenericButton>
     </div>
 
     <div

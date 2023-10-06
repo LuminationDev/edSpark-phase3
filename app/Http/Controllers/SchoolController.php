@@ -287,7 +287,7 @@ class SchoolController extends Controller
                 $newSchool = $this->insertNewSchoolVersion($data, $schoolLogoUrl, $coverImageUrl);
 
                 $metadata = json_decode($data['metadata']);
-                $this->handleMetadata($newSchool->id, $metadata);  // Use the new school's ID for metadata
+                $this->handleMetadata($newSchool->school_id, $metadata);  // Use the new school's ID for metadata
 
                 // get metadata
                 $schoolMetadata = Schoolmeta::where('school_id', $newSchool->school_id)->get();

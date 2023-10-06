@@ -19,8 +19,7 @@ import {API_ENDPOINTS} from "@/js/constants/API_ENDPOINTS";
 import {appURL} from "@/js/constants/serverUrl";
 import {swrvOptions} from "@/js/constants/swrvConstants";
 import {getDistanceBetweenElements} from "@/js/helpers/drawingHelpers";
-import {axiosFetcherParams, axiosSchoolFetcher, axiosSchoolFetcherParams} from "@/js/helpers/fetcher";
-import useSwrvState from "@/js/helpers/useSwrvState";
+import {axiosFetcherParams} from "@/js/helpers/fetcher";
 import {useWindowStore} from "@/js/stores/useWindowStore";
 
 import BlackOverlay from '../components/dashboard/BlackOverlay.vue';

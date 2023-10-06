@@ -1,6 +1,8 @@
 import axios, {Axios, AxiosResponse} from "axios";
 
 import {API_ENDPOINTS} from "@/js/constants/API_ENDPOINTS";
+import {parseToJsonIfString} from "@/js/helpers/jsonHelpers";
+import {SchoolDataType} from "@/js/types/SchoolTypes";
 
 type CheckCanEditResponseType = {
     status: string;
@@ -11,8 +13,18 @@ export const schoolService = {
     testFunction: (): void => {
         console.log('testing')
     },
-    fetchSchoolByName: async (schoolName : string) : Promise<AxiosResponse<any>> =>{
-        return axios.get(`${API_ENDPOINTS.SCHOOL.FETCH_SCHOOL_BY_NAME}${schoolName}`)
+    fetchSchoolByName: async (schoolName: string): Promise<any> => {
+        return axios.get(`${API_ENDPOINTS.SCHOOL.FETCH_SCHOOL_BY_NAME}${schoolName}`).then(res => {
+            const {data} = res;
+            const {content_blocks, tech_used, cover_image, logo, metadata} = parseToJsonIfString(data);
+            return ({
+                ...data,
+                content_blocks: content_blocks ? parseToJsonIfString(content_blocks) : {},
+                tech_used: tech_used ? parseToJsonIfString(tech_used) : [],
+                cover_image: cover_image ? cover_image.replace("/\\/g", "") : '',
+                logo: logo ? logo.replace("/\\/g", "") : ''
+            })
+        })
     },
     checkIfUserCanEdit: async (site_id, user_id, school_id): Promise<AxiosResponse<CheckCanEditResponseType>> => {
         const data = {
@@ -25,7 +37,7 @@ export const schoolService = {
             data
         )
     },
-    fetchPendingSchoolByName: async(schoolName, site_id, user_id, school_id) : Promise<AxiosResponse<any>> =>{
+    fetchPendingSchoolByName: async (schoolName, site_id, user_id, school_id): Promise<AxiosResponse<any>> => {
         const data = {
             "site_id": site_id,
             "user_id": user_id,
@@ -42,17 +54,17 @@ export const schoolService = {
      * @param user_id
      * @param site_id
      */
-    getUserSchoolByUserSiteId: async (user_id :number, site_id:number) : Promise<AxiosResponse<any>> =>{
+    getUserSchoolByUserSiteId: async (user_id: number, site_id: number): Promise<AxiosResponse<any>> => {
         const payload = {
             site_id: site_id,
             user_id: user_id
         }
         return axios.post(`${API_ENDPOINTS.SCHOOL.FETCH_USER_SCHOOL}`, payload)
     },
-    createSchool: async (data) : Promise<AxiosResponse<any>> => {
+    createSchool: async (data): Promise<AxiosResponse<any>> => {
         return 'schoo nam'
     },
-    updateSchool: async (data) : Promise<AxiosResponse<any>> =>{
+    updateSchool: async (data): Promise<AxiosResponse<any>> => {
         return ''
     }
 }
