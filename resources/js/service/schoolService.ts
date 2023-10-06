@@ -42,11 +42,17 @@ export const schoolService = {
      * @param user_id
      * @param site_id
      */
-    getUserSchoolByUserSiteId: async (user_id :number, site_id:number) =>{
+    getUserSchoolByUserSiteId: async (user_id :number, site_id:number) : Promise<AxiosResponse<any>> =>{
         const payload = {
             site_id: site_id,
             user_id: user_id
         }
         return axios.post(`${API_ENDPOINTS.SCHOOL.FETCH_USER_SCHOOL}`, payload)
+    },
+    createSchool: async (data) : Promise<AxiosResponse<any>> => {
+        return 'schoo nam'
+    },
+    updateSchool: async (data) : Promise<AxiosResponse<any>> =>{
+        return ''
     }
 }

@@ -1,13 +1,14 @@
 <script setup>
+import {debounce} from "lodash";
+import {storeToRefs} from "pinia";
+import {nextTick, onMounted, ref, watch} from 'vue'
+
 import SearchBar from "@/js/components/browseschools/SearchBar.vue";
 import SearchResultCard from "@/js/components/search/searchResult/SearchResultCard.vue";
 import Loader from "@/js/components/spinner/Loader.vue";
 import Close from "@/js/components/svg/Close.vue";
 import {API_ENDPOINTS} from "@/js/constants/API_ENDPOINTS";
 import {useWindowStore} from "@/js/stores/useWindowStore";
-import {debounce} from "lodash";
-import {storeToRefs} from "pinia";
-import {nextTick, onMounted, ref, watch} from 'vue'
 
 const props = defineProps({})
 
@@ -68,14 +69,14 @@ const handleClearSearchbar = () => {
             class="bg-main-teal/50 fixed top-0 left-0 grayoverlay h-full w-full z-40"
             @click="handleClickOverlay"
         />
-        <div class="bg-white drop-shadow-xl flex flex-col h-1/2 overflow-y-auto relative rounded-2xl searchBox w-1/2 z-50">
+        <div class="bg-white drop-shadow-xl flex flex-col h-1/2 overflow-y-auto relative rounded-xl searchBox w-1/2 z-50">
             <input
                 ref="globalSearchInputBox"
                 v-model="searchTerms"
                 type="text"
                 class="
                     !border-b-[1px]
-                    !rounded-t-2xl
+                    !rounded-t-xl
                     border-0
                     border-gray-300
                     globalSearchInputBox

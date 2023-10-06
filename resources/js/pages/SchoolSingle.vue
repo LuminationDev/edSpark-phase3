@@ -53,6 +53,8 @@ const {currentUser} = storeToRefs(useUserStore())
 
 onBeforeMount(async () => {
     const currentSchoolName = route.params.name
+    console.log(currentSchoolName)
+    
     await schoolService.getUserSchoolByUserSiteId(currentUser.value.id, currentUser.value.site_id)
     await fetchSchoolByNameAsync(currentSchoolName)
 

@@ -1,16 +1,16 @@
 <script>
-import { ref, computed } from 'vue';
 import axios from 'axios';
-import { GoogleMap, Marker, MarkerCluster, } from 'vue3-google-map'
+import { computed,ref } from 'vue';
 import { useRouter } from 'vue-router';
+import { GoogleMap, Marker, MarkerCluster, } from 'vue3-google-map'
 
+import SchoolsMapFilterName from './SchoolsMapFilterName.vue';
+import SchoolsMapFilterTech from './SchoolsMapFilterTech.vue';
+import SchoolsMapFilterType from './SchoolsMapFilterType.vue';
 /**
  * Import Components
  */
 import SchoolsMapPopup from './SchoolsMapPopup.vue';
-import SchoolsMapFilterName from './SchoolsMapFilterName.vue';
-import SchoolsMapFilterType from './SchoolsMapFilterType.vue';
-import SchoolsMapFilterTech from './SchoolsMapFilterTech.vue';
 
 export default {
 
@@ -201,9 +201,9 @@ export default {
             this.schools.forEach(school => {
                 const idMatch = school.id;
                 if (idMatch.includes(this.mapPopupIndex)) {
-                    let schoolUrlFriendly = school.name.replace(/\s+/g, '-').toLowerCase();
+                    const schoolUrlFriendly = school.name.replace(/\s+/g, '-').toLowerCase();
                     this.router.push({
-                        name: 'schoolSingle',
+                        name: 'school-single',
                         params: { name: school.name }
                     })
                 }
@@ -216,15 +216,15 @@ export default {
 <template>
     <div
         ref="gMapParent"
-        class="w-full relative border border-[#0072DA]"
+        class="border border-[#0072DA] relative w-full"
     >
-        <div class="bg-[#0072DA] h-[72px] flex flex-row place-items-center justify-between px-[48px] relative z-50">
-            <h1 class="text-[30px] font-bold text-white">
+        <div class="bg-[#0072DA] flex justify-between flex-row h-[72px] place-items-center px-[48px] relative z-50">
+            <h1 class="font-bold text-[30px] text-white">
                 Search for Schools
             </h1>
 
             <button
-                class="bg-white text-[#0072DA] px-8 py-3 w-[120px]"
+                class="bg-white px-8 py-3 text-[#0072DA] w-[120px]"
                 @click="handleFilterBarClick"
             >
                 {{ (showFilters ? 'Close' : 'Filters') }}
@@ -232,10 +232,10 @@ export default {
         </div>
 
         <div
-            class="absolute p-6 transition-all top-0 bottom-0 w-full bg-[#0072DA] z-40"
+            class="absolute top-0 bottom-0 bg-[#0072DA] p-6 transition-all w-full z-40"
             :class="showFilters ? 'h-[350px]' : '!h-0 opacity-0' "
         >
-            <div class="mt-12 flex flex-row flex-wrap gap-6">
+            <div class="flex flex-row flex-wrap gap-6 mt-12">
                 <SchoolsMapFilterName
                     v-model="schoolNameFilter"
                 />
