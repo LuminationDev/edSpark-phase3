@@ -53,62 +53,43 @@ const {currentUser} = storeToRefs(useUserStore())
 
 onBeforeMount(async () => {
     const currentSchoolName = route.params.name
-    schoolService.getSchoolDataForDash(currentUser.value.id, currentUser.value.site_id).then(res =>{
-        console.log(res)
-    }).catch(err =>{
-        if(err.includes('403')){
-            console.log()
-        }
-        console.error('cause of error is ' + err)
-    })
-    fetchSchoolByNameAsync(currentSchoolName).then( () =>{
+    await schoolService.getUserSchoolByUserSiteId(currentUser.value.id, currentUser.value.site_id)
+    await fetchSchoolByNameAsync(currentSchoolName)
 
-    }).catch(err => {
-        if(err.toString().includes('404')){
-            // school not found here
-            // bit this is schoolSingle, how can you go inside school single but school not found? directly from URL
-
-        }
-    })
-    //scenario where school is not created but Principal has entered school information in the firstVisitForm
-
-    // if (newSchool.value.schoolName &&
-    //     Object.keys(schoolContent.value).length <= 0 &&
-    //     (currentUser.value.role === "Principal" || currentUser.value.role === "SCHLDR")) {
-    //     // TODO: check if newSchool.schoolName is valid inside site databasr
-    //     triggerCreateNewSchoolFromSchoolStore().then(res => {
-    //         console.log('fetching school after triggeringCreation')
-    //         fetchSchoolByNameAsync(currentSchoolName)
-    //     })
-    // } else {
-    //     console.log('No new school will be created')
-    //     showSchoolNotAvailable.value = true
-    // }
 })
 
 
-const fetchSchoolByNameAsync = (schoolName) => {
-    return schoolService.fetchSchoolByName(schoolName).then(res => {
-        console.log('Found the school. populating data now inside SchoolSingle')
-        const filteredSchool = res.data
-        schoolContent.value = parseToJsonIfString(filteredSchool)
-        schoolContent.value.content_blocks = parseToJsonIfString(schoolContent.value.content_blocks)
-        schoolContent.value.tech_used = parseToJsonIfString(schoolContent.value.tech_used)
-        schoolContent.value.cover_image = schoolContent.value.cover_image.replace("/\\/g", "")
-        schoolContent.value.logo = schoolContent.value.logo.replace("/\\/g", "")
-        if (filteredSchool.metadata) {
-            console.log(filteredSchool.metadata)
-            // here is some meta filtering coded
-            const colorThemeMeta = schoolContent.value['metadata'].filter(meta => meta['schoolmeta_key'] === 'school_color_theme')
+const fetchSchoolByNameAsync = async (schoolName) => {
+    try {
+        const res = await schoolService.fetchSchoolByName(schoolName);
+        console.log('Found the school. populating data now inside SchoolSingle');
+
+        const {data} = res;
+        const {content_blocks, tech_used, cover_image, logo, metadata} = parseToJsonIfString(data);
+
+        schoolContent.value = {
+            ...data,
+            content_blocks: content_blocks ? parseToJsonIfString(content_blocks) : {},
+            tech_used: tech_used ? parseToJsonIfString(tech_used) : [],
+            cover_image: cover_image ? cover_image.replace("/\\/g", "") : '',
+            logo: logo ? logo.replace("/\\/g", "") : ''
+        };
+
+        if (metadata) {
+            console.log(metadata);
+            const colorThemeMeta = metadata.filter(meta => meta['schoolmeta_key'] === 'school_color_theme');
             if (colorThemeMeta.length > 0) {
-                colorTheme.value = colorThemeMeta[0]['schoolmeta_value']
+                colorTheme.value = colorThemeMeta[0]['schoolmeta_value'];
             }
         }
-    }).catch(async err => {
-        console.log(err.message + ' Inside fetchSchoolByName')
-        schoolContent.value = {}
-    });
+
+
+    } catch (err) {
+        console.log(`${err.message} Inside fetchSchoolByName`);
+        schoolContent.value = {};
+    }
 }
+
 
 const triggerCreateNewSchoolFromSchoolStore = () => {
 

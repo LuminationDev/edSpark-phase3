@@ -11,9 +11,9 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 use App\Helpers\Metahelper;
+use stdClass;
 use function PHPUnit\Framework\isEmpty;
 use function PHPUnit\Framework\isNull;
-
 class SchoolController extends Controller
 {
     private function formatSchoolMetadata($schoolMetadata)
@@ -153,10 +153,12 @@ class SchoolController extends Controller
             'updated_at' => Carbon::now()
         ]);
     }
+    /*  fetchUser's school based on their site id
+        if user is principal, can create the school based on the name and default templates
+    */
 
     public function fetchUserSchool(Request $request)
     {
-        // Step 1: Validate the request
         $request->validate([
             'user_id' => 'required|integer',
             'site_id' => 'required|integer'
@@ -165,37 +167,64 @@ class SchoolController extends Controller
         $userId = $request->input('user_id');
         $siteId = $request->input('site_id');
 
-        // Step 2: Check if the user has the role "SCHLDR"
         $user = User::find($userId);
 
-        if (!$user || $user->role->role_name !== 'SCHLDR' || $user->role->role_name !== 'Superadmin' ) {
-            return response()->json(['message' => 'Invalid user or role', 'status' => 403], 403);
+        if (!$user) {
+            return response()->json(['message' => 'Invalid user', 'status' => 403], 403);
         }
-        $site = Site::find($siteId);
+
+        $site = Site::where('site_id',$siteId) ->first();
+
 
         if (!$site) {
             return response()->json(['message' => 'Site not found', 'status' => 404], 404);
         }
 
-        // Step 3 & 4: Check if a school entry exists for the provided site_id or create one with default content
+        // If user is not 'SCHLDR' or 'Superadmin', just fetch the school
+        if ($user->role->role_name !== 'SCHLDR' && $user->role->role_name !== 'Superadmin') {
+            $school = School::where('site_id', $siteId)->where('status', 'Published')->first();
+
+            if (!$school) {
+                return response()->json(['message' => 'School not found based on the provided site id', 'status' => 404], 404);
+            }
+            $schoolMetadata = Schoolmeta::where('school_id', $school->school_id)->get();
+            $schoolMetadataToSend = $this->formatSchoolMetadata($schoolMetadata);
+            $result = $this->schoolModelToJson($school,$schoolMetadataToSend, $request);
+
+            return response()->json($result);
+        }
+
+        // For 'SCHLDR' or 'Superadmin', use the firstOrCreate logic
+        try {
+            $latestSchool = School::orderBy('school_id', 'desc')->first();
+            $nextSchoolId = ($latestSchool ? $latestSchool->school_id + 1 : 1);
         $school = School::firstOrCreate(
-            ['site_id' => $siteId],
+            ['site_id' => $siteId, 'status' => "Published"],
             [
                 'owner_id' => $userId,
+                'school_id' => $nextSchoolId,
                 'name' => $site->site_name,
-                'content_blocks' => '',
+                'content_blocks' => null,
                 'logo' => '',
                 'cover_image' => '',
                 'tech_used' => '',
                 'pedagogical_approaches' => '',
                 'tech_landscape' => '',
+                'status' => 'Published',
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now()
             ]
         );
-
-        return response()->json($school);
+//        $schoolMetadata = Schoolmeta::where('school_id', $school->school_id)->get();
+//        $schoolMetadataToSend = $this->formatSchoolMetadata($schoolMetadata);
+//        $result = $this->schoolModelToJson($school,$schoolMetadataToSend, $request);
+        $result = $this->schoolModelToJson($school);
+        return response()->json($result);
+        } catch (\Illuminate\Database\QueryException $e){
+            dd($e);
+        }
     }
+
 
 
     public function createSchool(Request $request)

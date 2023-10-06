@@ -1,19 +1,18 @@
 <script setup>
-import {guid} from "@/js/helpers/guidGenerator";
 import {debounce} from "lodash";
+import {storeToRefs} from "pinia";
 import {computed, ref} from "vue";
-import {bookmarkURL, imageURL, likeURL} from "@/js/constants/serverUrl";
-import Tooltip from "@/js/components/global/Tooltip/Tooltip.vue";
 
-import Like from "@/js/components/svg/Like.vue";
-import LikeFull from "@/js/components/svg/LikeFull.vue";
+import Tooltip from "@/js/components/global/Tooltip/Tooltip.vue";
 import BookMark from "@/js/components/svg/BookMark.vue";
 import BookmarkFull from "@/js/components/svg/BookmarkFull.vue";
-
-import {storeToRefs} from "pinia";
+import Like from "@/js/components/svg/Like.vue";
+import LikeFull from "@/js/components/svg/LikeFull.vue";
+import {bookmarkURL, imageURL, likeURL} from "@/js/constants/serverUrl";
 import {useUserStore} from "@/js/stores/useUserStore";
 
-const {currentUser, userLikeList, userBookmarkList} = storeToRefs(useUserStore())
+const {currentUser} = storeToRefs(useUserStore())
+import {guid as genGuid} from "@/js/helpers/guidGenerator";
 
 
 const props = defineProps({
@@ -76,10 +75,10 @@ const props = defineProps({
         type: Boolean,
         required: true,
     },
-    guid:{
+    guid: {
         type: String,
         required: false,
-        default: guid()
+        default: genGuid()
     }
 
 });
@@ -112,7 +111,7 @@ const formattedDate = computed(() => {
     }
 })
 
-let likeOrBookmarkPayload = {
+const likeOrBookmarkPayload = {
     post_id: props.id,
     user_id: currentUser.value.id || 9999,
     post_type: props.sectionType
@@ -153,7 +152,6 @@ const debouncedDefaultBookmark = debounce(() => {
 
 const cardHoverToggle = ref(false);
 
-const emits = defineEmits(['emitCardClick']);
 
 </script>
 

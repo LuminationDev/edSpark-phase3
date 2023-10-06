@@ -150,7 +150,7 @@ const handleCoverImageUpload = (event) => {
                 <!--                >-->
                 <div class="flex justify-center items-center flex flex-col gap-2 w-full">
                     <label
-                        for="dropzone-file"
+                        for="dropzone-file-1"
                         class="
                             bg-gray-50
                             dark:bg-gray-700
@@ -194,7 +194,7 @@ const handleCoverImageUpload = (event) => {
                             <p class="text-center dark:text-gray-400 text-gray-500 text-xs">SVG, PNG, JPG or GIF</p>
                         </div>
                         <input
-                            id="dropzone-file"
+                            id="dropzone-file-1"
                             ref="coverImageEditFile"
                             type="file"
                             class="hidden"

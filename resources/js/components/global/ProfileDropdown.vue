@@ -5,6 +5,7 @@ import {storeToRefs} from "pinia";
  */
 import {onMounted, ref} from "vue";
 
+import ProfileDropdownItem from "@/js/components/global/ProfileDropdownItem.vue";
 import AdminIcon from "@/js/components/svg/profileDropdown/AdminIcon.vue";
 import CreateIcon from "@/js/components/svg/profileDropdown/CreateIcon.vue";
 import DashedHelpIcon from "@/js/components/svg/profileDropdown/DashedHelpIcon.vue";
@@ -133,111 +134,44 @@ const handleClickAdmin = () => {
                     <h5>{{ currentUser.full_name }}</h5>
                 </div>
                 <div class="border-b border-white flex flex-col gap-3 py-3">
-                    <router-link :to="`/profile/${currentUser.id}`">
-                        <button
-                            class="
-                                flex
-                                justify-start
-                                flex-row
-                                font-medium
-                                place-items-center
-                                px-2
-                                py-3
-                                text-[18px]
-                                text-white
-                                w-full
-                                gap-4
-                                hover:bg-[#405974]
-                                "
-                        >
-                            <Profile />
-                            Profile
-                        </button>
-                    </router-link>
-                    <router-link :to="`/message/${currentUser.id}`">
-                        <button
-                            class="
-                                flex
-                                justify-start
-                                flex-row
-                                font-medium
-                                place-items-center
-                                px-2
-                                py-3
-                                text-[18px]
-                                text-white
-                                w-full
-                                gap-4
-                                hover:bg-[#405974]
-                                "
-                        >
-                            <MessageIcon />
-                            Messages
-                        </button>
-                    </router-link>
-                    <router-link :to="`/create`">
-                        <button
-                            class="
-                                flex
-                                justify-start
-                                flex-row
-                                font-medium
-                                place-items-center
-                                px-2
-                                py-3
-                                text-[18px]
-                                text-white
-                                w-full
-                                gap-4
-                                hover:bg-[#405974]
-                                "
-                        >
-                            <CreateIcon />
-                            Create
-                        </button>
-                    </router-link>
-                    <button
-                        class="
-                            flex
-                            justify-start
-                            flex-row
-                            font-medium
-                            place-items-center
-                            px-2
-                            py-3
-                            text-[18px]
-                            text-white
-                            w-full
-                            gap-4
-                            hover:bg-[#405974]
-                            "
+                    <ProfileDropdownItem
+                        :is-router-link="true"
+                        :target-path="`/profile/${currentUser.id}`"
+                    >
+                        <Profile />
+                        Profile
+                    </ProfileDropdownItem>
+                    <ProfileDropdownItem
+                        :is-router-link="true"
+                        :target-path="`/message/${currentUser.id}`"
+                    >
+                        <MessageIcon />
+                        Messages
+                    </ProfileDropdownItem>
+                    <ProfileDropdownItem
+                        :is-router-link="true"
+                        target-path="/create"
+                    >
+                        <CreateIcon />
+                        Create
+                    </ProfileDropdownItem>
+                    <ProfileDropdownItem
+                        :is-router-link="true"
+                        target-path="/"
                     >
                         <DashedHelpIcon />
                         Help
-                    </button>
+                    </ProfileDropdownItem>
                     <template
                         v-if="isAdmin"
                     >
-                        <button
-                            class="
-                                flex
-                                justify-start
-                                flex-row
-                                font-medium
-                                place-items-center
-                                px-2
-                                py-3
-                                text-[18px]
-                                text-white
-                                w-full
-                                gap-4
-                                hover:bg-[#405974]
-                                "
-                            @click="handleClickAdmin"
+                        <ProfileDropdownItem
+                            :is-router-link="false"
+                            :click-callback="handleClickAdmin"
                         >
                             <AdminIcon />
                             Admin
-                        </button>
+                        </ProfileDropdownItem>
                     </template>
                 </div>
                 <div class="pt-3">

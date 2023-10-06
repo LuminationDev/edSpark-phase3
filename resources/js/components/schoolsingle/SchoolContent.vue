@@ -11,6 +11,7 @@ import SchoolImageChange from "@/js/components/schoolsingle/schoolContent/School
 import SchoolTech from "@/js/components/schoolsingle/SchoolTech.vue";
 import SchoolWhatsNew from "@/js/components/schoolsingle/SchoolWhatsNew.vue";
 import TechSelector from "@/js/components/selector/TechSelector.vue";
+import {defaultSchoolContent} from "@/js/constants/schoolContentDefault";
 import {schoolService} from "@/js/service/schoolService";
 import {useUserStore} from "@/js/stores/useUserStore";
 import {EditorJSDataType} from "@/js/types/EditorJsTypes";
@@ -124,6 +125,8 @@ const handleClickEditPendingContent = () => {
     schoolEditorRef.value.handleEditorRerender(newSchoolContent.value)
 }
 
+
+
 console.log(props.activeSubmenu)
 </script>
 <template>
@@ -197,7 +200,10 @@ console.log(props.activeSubmenu)
                         class="contentDisplay flex lg:flex-row justify-between flex-col gap-4 schoolContent w-full"
                     >
                         <div class="basis-2/3">
-                            <EditorJsContentDisplay :content-blocks="schoolContent.content_blocks" />
+                            <EditorJsContentDisplay
+                                :content-blocks="schoolContent.content_blocks"
+                                :default-content="defaultSchoolContent"
+                            />
                         </div>
                         <div class="basis-1/3 school-tech">
                             <div
@@ -231,7 +237,7 @@ console.log(props.activeSubmenu)
         <template v-if="props.activeSubmenu === 'contact'">
             <SchoolContact
                 :current-user-can-edit="currentUserCanEdit"
-                :school-id="props.schoolContent['id'] || 9999"
+                :school-id="props.schoolContent['school_id']"
                 :school-location="props.schoolContent['location']"
             />
         </template>

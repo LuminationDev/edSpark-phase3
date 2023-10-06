@@ -36,7 +36,13 @@ export const schoolService = {
             data
         )
     },
-    getSchoolDataForDash: async (user_id :number, site_id:number) =>{
+    /**
+     * Get school info based on user's site id
+     * if user is principal or has `SCHLDR` role, it will also automatically create schoolProfile from the sites
+     * @param user_id
+     * @param site_id
+     */
+    getUserSchoolByUserSiteId: async (user_id :number, site_id:number) =>{
         const payload = {
             site_id: site_id,
             user_id: user_id

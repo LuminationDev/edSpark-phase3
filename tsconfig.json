@@ -12,7 +12,10 @@
         "baseUrl": ".",
         "paths": {
             "@/*": ["resources/*"]
-        }
+        },
+        "types": [
+            "vue3-toastify/global"
+        ]
     },
     "include": ["./resources/**/*.ts", "./resources/**/*.d.ts", "./resources/**/*.tsx", "./resources/**/*.vue"],
     "exclude": ["./node_modules"]
