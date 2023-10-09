@@ -42,6 +42,11 @@ const props = defineProps({
     activeSubmenu: {
         type: String,
         required: true
+    },
+    isPreviewMode:{
+        type: Boolean,
+        required: false,
+        default: false
     }
 })
 const route = useRoute()
@@ -101,18 +106,21 @@ const handleReceivePhotoFromImageChange = (type, file) => {
 }
 
 onMounted(async () => {
-    await schoolService.checkIfUserCanEdit(props.schoolContent.site.site_id, currentUser.value.id, props.schoolContent.school_id).then(res => {
-        currentUserCanEdit.value = Boolean(res.data.status && res.data.result)
-        currentUserCanNominate.value = Boolean(res.data.status && res.data.canNominate)
+    if(!props.isPreviewMode){
+        await schoolService.checkIfUserCanEdit(props.schoolContent.site.site_id, currentUser.value.id, props.schoolContent.school_id).then(res => {
+            currentUserCanEdit.value = Boolean(res.data.status && res.data.result)
+            currentUserCanNominate.value = Boolean(res.data.status && res.data.canNominate)
 
-    })
-    if (currentUserCanEdit.value) {
-        await schoolService.fetchPendingSchoolByName(currentSchoolName, props.schoolContent.site.site_id, currentUser.value.id, props.schoolContent.school_id).then(res => {
-            if (res.data.pending_available) {
-                schoolContentState.value = 'pending_available'
-                pendingSchoolContent.value = res.data.result
-            }
         })
+        if (currentUserCanEdit.value) {
+            await schoolService.fetchPendingSchoolByName(currentSchoolName, props.schoolContent.site.site_id, currentUser.value.id, props.schoolContent.school_id).then(res => {
+                if (res.data.pending_available) {
+                    schoolContentState.value = 'pending_available'
+                    pendingSchoolContent.value = res.data.result
+                }
+            })
+        }
+
     }
 })
 

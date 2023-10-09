@@ -52,7 +52,7 @@ export const useSchoolsStore = defineStore('schools', {
         async loadCurrentUserSchool(){
             const userStore = useUserStore()
             const { currentUser } = storeToRefs(userStore)
-            this.currentUserSchool = await schoolService.getUserSchoolByUserSiteId(currentUser.value.id, currentUser.value.site_id)
+            this.currentUserSchool = await schoolService.getUserSchoolByUserSiteId(currentUser.value.id, currentUser.value.site_id).then(res => res.data)
         },
 
         // not being used

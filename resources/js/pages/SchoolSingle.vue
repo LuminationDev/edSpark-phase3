@@ -15,10 +15,7 @@ import SchoolTechHoverableRow from "@/js/components/schools/schoolMap/SchoolTech
 import SchoolNominationButton from "@/js/components/schools/SchoolNominationButton.vue";
 import SchoolContent from "@/js/components/schoolsingle/SchoolContent.vue";
 import Loader from "@/js/components/spinner/Loader.vue";
-import {API_ENDPOINTS} from "@/js/constants/API_ENDPOINTS";
-import {parseToJsonIfString} from "@/js/helpers/jsonHelpers";
 import {isObjectEmpty} from "@/js/helpers/objectHelpers";
-import {schoolDataFormDataBuilder} from "@/js/helpers/schoolDataHelpers";
 import EdsparkPageNotFound from "@/js/pages/EdsparkPageNotFound.vue";
 import {schoolService} from "@/js/service/schoolService";
 import {useUserStore} from "@/js/stores/useUserStore";
@@ -31,83 +28,84 @@ const imageURL = import.meta.env.VITE_SERVER_IMAGE_API
 const schoolContent: Ref<SchoolDataType | null> = ref(null)
 const colorTheme = ref('teal') // default color theme
 const showSchoolNotAvailable = ref(false)
+const schoolNotAvailableMessage= ref('')
 
 // ref to hold images from editing
 const logoStorage = ref(null)
 const coverImageStorage = ref(null)
 
-// ref to handle tooltip
+const userStore = useUserStore()
+const {currentUser} = storeToRefs(userStore)
 
-
-const {currentUser} = storeToRefs(useUserStore())
+const isPreviewMode = computed(() => {
+    console.log(route.query.preview)
+    return route.query.preview && (userStore.getIfUserIsModerator || currentUser.value.site_id === schoolContent.value?.site?.site_id)
+})
 
 onBeforeMount(async () => {
     const currentSchoolName = route.params.name
     console.log(currentSchoolName)
-    
+    // will automatically create school if user is principal and school has not been created
     await schoolService.getUserSchoolByUserSiteId(currentUser.value.id, currentUser.value.site_id)
     await fetchSchoolByNameAsync(currentSchoolName)
 
 })
 
 
-const fetchSchoolByNameAsync = async (schoolName) : Promise<void> => {
-    try {
-        schoolContent.value = await schoolService.fetchSchoolByName(schoolName)
-        if (schoolContent.value['metadata']) {
-            const colorThemeMeta = schoolContent.value['metadata'].filter(meta => meta['schoolmeta_key'] === 'school_color_theme');
-            if (colorThemeMeta.length > 0) {
-                colorTheme.value = colorThemeMeta[0]['schoolmeta_value'];
+const fetchSchoolByNameAsync = async (schoolName): Promise<void> => {
+    if (isPreviewMode.value) {
+        try {
+            const {data} = await schoolService.fetchPendingSchoolByName(schoolName, null, currentUser.value.id, null)
+            if(data.result){
+                schoolContent.value = data.result
+                if (schoolContent.value['metadata']) {
+                    const colorThemeMeta = schoolContent.value['metadata'].filter(meta => meta['schoolmeta_key'] === 'school_color_theme');
+                    if (colorThemeMeta.length > 0) {
+                        colorTheme.value = colorThemeMeta[0]['schoolmeta_value'];
+                    }
+                }
+            } else{
+                showSchoolNotAvailable.value = true
+                schoolNotAvailableMessage.value = "No pending content available"
+                schoolContent.value = null;
             }
+        } catch (err) {
+            console.log(`${err.message} Inside fetchSchoolByName`);
+            showSchoolNotAvailable.value = true
+            schoolContent.value = null;
         }
-    } catch (err) {
-        console.log(`${err.message} Inside fetchSchoolByName`);
-        showSchoolNotAvailable.value = true
-        schoolContent.value = null;
-        
+    } else {
+        try {
+            schoolContent.value = await schoolService.fetchSchoolByName(schoolName)
+            if (schoolContent.value['metadata']) {
+                const colorThemeMeta = schoolContent.value['metadata'].filter(meta => meta['schoolmeta_key'] === 'school_color_theme');
+                if (colorThemeMeta.length > 0) {
+                    colorTheme.value = colorThemeMeta[0]['schoolmeta_value'];
+                }
+            }
+        } catch (err) {
+            console.log(`${err.message} Inside fetchSchoolByName`);
+            showSchoolNotAvailable.value = true
+            schoolContent.value = null;
+
+        }
     }
+
 }
 
 
-const handleSaveNewSchoolInfo = async (content_blocks, tech_used) => {
-    // Copy current schoolData and replace content_blocks and tech_used
-    const schoolData = _.cloneDeep(schoolContent.value)
-    schoolData.content_blocks = content_blocks
-    schoolData.tech_used = tech_used
-    const newUpdatedSchoolFormData = schoolDataFormDataBuilder(schoolData)
+const handleSaveNewSchoolInfo = async (contentBlocks, techUsed) => {
+    try {
+        const updatedSchoolContent = await schoolService.updateSchool(
+            schoolContent.value, contentBlocks, techUsed, logoStorage.value, coverImageStorage.value, colorTheme.value
+        );
 
-    if (logoStorage.value) {
-        newUpdatedSchoolFormData.append('logo', logoStorage.value)
-    } else {
-        newUpdatedSchoolFormData.append('logo', schoolData.logo)
-    }
-    if (coverImageStorage.value) {
-        newUpdatedSchoolFormData.append('cover_image', coverImageStorage.value)
-    } else {
-        newUpdatedSchoolFormData.append('cover_image', schoolData.cover_image)
-    }
-
-    const schoolMetadata = {school_color_theme: colorTheme.value}
-    newUpdatedSchoolFormData.append('metadata', JSON.stringify(schoolMetadata))
-    console.log(schoolMetadata)
-    await axios({
-        url: API_ENDPOINTS.SCHOOL.UPDATE_SCHOOL,
-        method: 'post',
-        data: newUpdatedSchoolFormData,
-        headers: {"Content-Type": "multipart/form-data"}
-    }).then(res => {
-        // if the created post status is published,
-        // assign school info with newest data that has been saved succesfully to trigger update
-        if (res.data.data.status === 'Published') {
-            schoolContent.value = res.data.data
-            schoolContent.value.content_blocks = parseToJsonIfString(schoolContent.value.content_blocks)
-            schoolContent.value.tech_used = parseToJsonIfString(schoolContent.value.tech_used)
+        if (updatedSchoolContent) {
+            schoolContent.value = updatedSchoolContent;
         }
-    }).catch(err => {
-        console.log(err)
-        console.log('Something wrong while attempting to post ')
-
-    })
+    } catch (err) {
+        console.log('Something wrong while attempting to post');
+    }
 }
 
 const handleChangeColorTheme = (newColor) => {
@@ -244,15 +242,30 @@ const isSchoolContentPopulated = computed(() => {
                 </template>
                 <template #content>
                     <div class="flex flex-col mt-10 w-full xl:!mt-20">
+                        <div
+                            v-if="isPreviewMode && schoolContent.name"
+                            class="font-semibold mb-4 previewLabel text-center text-xl"
+                        >
+                            PREVIEWING CONTENT (MODERATION)
+                        </div>
                         <SchoolContent
                             :school-content="schoolContent"
                             :color-theme="colorTheme"
                             :active-submenu="activeSubmenu"
+                            :is-preview-mode="isPreviewMode"
                             @send-info-to-school-single="handleSaveNewSchoolInfo"
                             @send-color-to-school-single="handleChangeColorTheme"
                             @send-photo-to-school-single="handleReceivePhotoFromContent"
                         >
                             <template #additionalContentActions>
+                                <div
+                                    v-if="isPreviewMode"
+                                    class="font-semibold"
+                                >
+                                    Preview Content
+                                </div>
+                                <div>Click to go back</div>
+
                                 <SchoolNominationButton
                                     v-if="schoolContent['site']['site_id']"
                                     :site-id="schoolContent['site']['site_id']"
@@ -269,7 +282,7 @@ const isSchoolContentPopulated = computed(() => {
         v-else-if="!isSchoolContentPopulated && showSchoolNotAvailable"
         class="flex justify-center items-center flex-col h-36 mt-[10vh]"
     >
-        <EdsparkPageNotFound error-message="School not found or has no public profile yet. Please check again later" />
+        <EdsparkPageNotFound :error-message="schoolNotAvailableMessage ? schoolNotAvailableMessage : 'School not found or has no public profile yet. Please check again later'" />
     </div>
 
     <div

@@ -70,6 +70,26 @@ export const useUserStore = defineStore('user', {
         },
         getNotifications(): any[] {
             return this.notifications;
+        },
+        getIfUserIsAdmin(): boolean{
+            const userRole = this.currentUser.role
+            const rolesWithAdminRights = [
+                "Superadmin",
+                "Administrator",
+                "Moderator",
+                "PSACT",
+                "SCHLDR"
+            ];
+            return rolesWithAdminRights.includes(userRole)
+        },
+        getIfUserIsModerator(): boolean{
+            const userRole = this.currentUser.role
+            const rolesWithAdminRights = [
+                "Superadmin",
+                "Administrator",
+                "Moderator",
+            ];
+            return rolesWithAdminRights.includes(userRole)
         }
     },
 
@@ -106,7 +126,6 @@ export const useUserStore = defineStore('user', {
 
         async checkUser(email) {
             return new Promise(async resolve => {
-                console.log('HERE YOU ARE!!!!!');
                 await axios({
                     method: 'POST',
                     url: `${serverURL}/checkEmail`,

@@ -2,50 +2,40 @@
 import axios from 'axios';
 import {storeToRefs} from "pinia";
 import useSWRV from "swrv";
-import {computed, onMounted, reactive, ref} from 'vue';
+import {computed, onMounted, onUnmounted, reactive, ref} from 'vue';
 import {useRouter} from "vue-router";
 
-/**
- * Loading Cards
- */
 import CardLoading from '@/js/components/card/CardLoading.vue';
 import CarouselGenerator from "@/js/components/card/CarouselGenerator.vue";
+import BlackOverlay from '@/js/components/dashboard/BlackOverlay.vue';
+import DashboardHero from '@/js/components/dashboard/DashboardHero.vue';
+import FirstVisitForm from '@/js/components/dashboard/FirstVisitForm.vue';
+import SectionHeader from '@/js/components/global/SectionHeader.vue';
 import SchoolSectionDashboard from "@/js/components/schools/SchoolSectionDashboard.vue";
 import SoftwareCard from "@/js/components/software/SoftwareCard.vue";
 import DepartmentApprovedSolo from '@/js/components/svg/DepartmentApprovedSolo.vue';
 import DeptApprovedIcon from "@/js/components/svg/software/DeptApprovedIcon.vue";
 import DeptProvidedIcon from "@/js/components/svg/software/DeptProvidedIcon.vue";
+import SoftwareRobot from '@/js/components/svg/SoftwareRobot.vue';
 import {API_ENDPOINTS} from "@/js/constants/API_ENDPOINTS";
 import {appURL} from "@/js/constants/serverUrl";
 import {swrvOptions} from "@/js/constants/swrvConstants";
 import {getDistanceBetweenElements} from "@/js/helpers/drawingHelpers";
 import {axiosFetcherParams} from "@/js/helpers/fetcher";
+import {useSchoolsStore} from "@/js/stores/useSchoolsStore";
+import {useUserStore} from '@/js/stores/useUserStore';
 import {useWindowStore} from "@/js/stores/useWindowStore";
-
-import BlackOverlay from '../components/dashboard/BlackOverlay.vue';
-/**
- * Components
- */
-import DashboardHero from '../components/dashboard/DashboardHero.vue';
-import FirstVisitForm from '../components/dashboard/FirstVisitForm.vue';
-import SectionHeader from '../components/global/SectionHeader.vue';
-/**
- * Import Card wrapper
- */
-import SoftwareRobot from '../components/svg/SoftwareRobot.vue';
-import {useUserStore} from '../stores/useUserStore';
 
 const router = useRouter()
 const userStore = useUserStore();
-const {currentUser, isAdminAuthenticated} = storeToRefs(userStore)
-/**
- * First things first. Handle the user details from okta
- */
+const {currentUser} = storeToRefs(userStore)
+const {isMobile} = storeToRefs(useWindowStore())
+
+
 const idToken = ref('');
 const claims = ref({});
 const isFirstVisit = ref(false);
-const {isMobile} = storeToRefs(useWindowStore())
-
+const email = ref(null);
 
 const userDetails = reactive({
     name: '',
@@ -61,7 +51,7 @@ const userDetails = reactive({
 const getIdToken = (async () => {
     try {
         const response = await axios.get(`${appURL}/okta-data`);
-        if (response.data.success === true) {
+        if (response.data.success) {
             userDetails.name = response.data.name;
             userDetails.email = response.data.email;
             // userDetails.siteId = 106;
@@ -92,8 +82,8 @@ const checkFirstVisit = async (emailAddress) => {
     } else {
         isFirstVisit.value = true;
     }
-
 }
+
 
 const shouldStartSwrv = computed(() => {
     return Boolean(currentUser.value.id)
@@ -101,27 +91,18 @@ const shouldStartSwrv = computed(() => {
 
 const {
     data: eventsData,
-    error: eventsError,
-    isValidating: eventsIsValidating
 } = useSWRV(() => shouldStartSwrv.value ? API_ENDPOINTS.EVENT.FETCH_EVENT_POSTS : null, axiosFetcherParams(userStore.getUserRequestParam), swrvOptions)
 const {
     data: softwaresData,
-    error: softwaresError,
-    isValidating: softwaresIsValidating
 } = useSWRV(() => shouldStartSwrv.value ? API_ENDPOINTS.SOFTWARE.FETCH_SOFTWARE_POSTS : null, axiosFetcherParams(userStore.getUserRequestParam), swrvOptions)
 const {
     data: advicesData,
-    error: advicesError,
-    isValidating: advicesIsValidating
 } = useSWRV(() => shouldStartSwrv.value ? API_ENDPOINTS.ADVICE.FETCH_ADVICE_POSTS : null, axiosFetcherParams(userStore.getUserRequestParam), swrvOptions)
-
 
 
 const onCloseFirstVisitPopup = () => {
     isFirstVisit.value = false;
 };
-
-const email = ref(null);
 
 
 /**
@@ -132,25 +113,33 @@ const distanceBetweenEls = ref('');
 const floatingLineClasses = ref('');
 
 
-const getConnectingLinePositions = () => {
+const adjustConnectingLinePositions = () => {
     const listContainers = document.querySelectorAll('.softwareDashboardContentContainer');
-    const firstContainer = listContainers[0];
-    const lastContainer = listContainers[listContainers.length - 1];
-    if (firstContainer && lastContainer) {
-        distanceBetweenEls.value = getDistanceBetweenElements(
-            firstContainer,
-            lastContainer
-        );
 
-        const firstElHeight = firstContainer.offsetHeight;
-        top.value = firstContainer.offsetTop + firstElHeight / 2;
-        floatingLineClasses.value = `top-[${top.value}] h-[${distanceBetweenEls.value}px]`
-    }
+    if (listContainers.length === 0) return; // Exit early if no containers found
+
+    const [firstContainer] = listContainers;
+    const lastContainer = listContainers[listContainers.length - 1];
+
+    distanceBetweenEls.value = getDistanceBetweenElements(
+        firstContainer,
+        lastContainer
+    );
+
+    const firstElHeight = firstContainer.offsetHeight;
+    top.value = firstContainer.offsetTop + firstElHeight / 2;
+    floatingLineClasses.value = `top-[${top.value}] h-[${distanceBetweenEls.value}px]`;
 };
 
+const handleResize = () => adjustConnectingLinePositions()
+
 onMounted(async () => {
-    window.addEventListener('resize', () => getConnectingLinePositions());
-    getConnectingLinePositions();
+    window.addEventListener('resize', handleResize);
+    handleResize();
+});
+
+onUnmounted(() => {
+    window.removeEventListener('resize', handleResize);
 });
 
 

@@ -1,9 +1,10 @@
 <script setup lang="ts">
 
 import {storeToRefs} from "pinia";
-import {onMounted, ref} from "vue";
+import {ref} from "vue";
 
 import ProfileDropdownItem from "@/js/components/global/ProfileDropdownItem.vue";
+import Profile from "@/js/components/svg/Profile.vue";
 import AdminIcon from "@/js/components/svg/profileDropdown/AdminIcon.vue";
 import CreateIcon from "@/js/components/svg/profileDropdown/CreateIcon.vue";
 import MessageIcon from "@/js/components/svg/profileDropdown/MessageIcon.vue";
@@ -11,28 +12,23 @@ import SchoolGradHat from "@/js/components/svg/SchoolGradHat.vue";
 import {APP_ENDPOINTS} from "@/js/constants/API_ENDPOINTS";
 import {useUserStore} from "@/js/stores/useUserStore";
 
-import Profile from "../svg/Profile.vue";
-
 const props = defineProps({
-    profileDropdown: {
-        type: Boolean,
-        required: true,
-    },
     avatarUrl: {
         type: String,
         required: true,
     },
 });
 
-const emits = defineEmits(["handleAvatarClick"]);
 
 const userStore = useUserStore();
 const {currentUser} = storeToRefs(userStore);
+const showDropdownMenu = ref(false)
+
 const imageURL = import.meta.env.VITE_SERVER_IMAGE_API;
 
-const handleAvatar = (): void => {
-    emits("handleAvatarClick");
-};
+const toggleDropdownMenu = () : void => {
+    showDropdownMenu.value = !showDropdownMenu.value
+}
 
 const handleLogoutUser = async () => {
     try {
@@ -52,26 +48,6 @@ const handleLogoutUser = async () => {
     }
 };
 
-const isAdmin = ref(false);
-const checkUserRole = () => {
-    const userRole = userStore.getUser.role;
-    switch (userRole) {
-    case "Superadmin":
-    case "Administrator":
-    case "Moderator":
-    case "PSACT":
-    case "SCHLDR":
-        isAdmin.value = true;
-        break;
-    default:
-        isAdmin.value = false;
-        break;
-    }
-};
-onMounted(() => {
-    checkUserRole();
-})
-
 const handleClickAdmin = () => {
     window.open(window.location.origin + '/admin', '_self')
 }
@@ -81,7 +57,7 @@ const handleClickAdmin = () => {
     <div class="absolute h-12 hidden w-12  lg:!right-48 lg:!top-52 lg:block xl:!right-72 xl:!top-56">
         <div
             class="bg-slate-200 cursor-pointer flex h-full overflow-hidden relative rounded-full w-full z-50 hover:shadow-2xl"
-            @click.prevent="handleAvatar"
+            @click="toggleDropdownMenu"
         >
             <img
                 v-if="avatarUrl"
@@ -98,9 +74,9 @@ const handleClickAdmin = () => {
         </div>
 
         <div
-            v-show="profileDropdown"
+            v-show="showDropdownMenu"
             class="h-full relative w-full z-50"
-            @mouseleave="handleAvatar"
+            @mouseleave="toggleDropdownMenu"
         >
             <div class="absolute -top-6 left-[24px] bg-[#637D99] flex flex-col px-4 py-6 shadow-lg w-[240px] z-50 z-50">
                 <div class="border-b border-white font-bold h-fit pb-3 text-[24px] text-center text-white w-full">
@@ -128,15 +104,15 @@ const handleClickAdmin = () => {
                         <CreateIcon />
                         Create
                     </ProfileDropdownItem>
-                    <ProfileDropdownItem
-                        :is-router-link="true"
-                        :target-path="`/schools/${currentUser.site.site_name}`"
-                    >
-                        <SchoolGradHat />
-                        My School
-                    </ProfileDropdownItem>
+                    <!--                    <ProfileDropdownItem-->
+                    <!--                        :is-router-link="true"-->
+                    <!--                        :target-path="`/schools/${currentUser.site.site_name}`"-->
+                    <!--                    >-->
+                    <!--                        <SchoolGradHat />-->
+                    <!--                        My School-->
+                    <!--                    </ProfileDropdownItem>-->
                     <template
-                        v-if="isAdmin"
+                        v-if="userStore.getIfUserIsAdmin"
                     >
                         <ProfileDropdownItem
                             :is-router-link="false"

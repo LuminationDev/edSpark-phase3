@@ -1,7 +1,9 @@
-import axios, {Axios, AxiosResponse} from "axios";
+import axios, { AxiosResponse} from "axios";
+import _ from "lodash";
 
 import {API_ENDPOINTS} from "@/js/constants/API_ENDPOINTS";
 import {parseToJsonIfString} from "@/js/helpers/jsonHelpers";
+import {schoolDataFormDataBuilder} from "@/js/helpers/schoolDataHelpers";
 import {SchoolDataType} from "@/js/types/SchoolTypes";
 
 type CheckCanEditResponseType = {
@@ -58,10 +60,38 @@ export const schoolService = {
         }
         return axios.post(`${API_ENDPOINTS.SCHOOL.FETCH_USER_SCHOOL}`, payload)
     },
-    createSchool: async (data): Promise<AxiosResponse<any>> => {
-        return 'schoo nam'
-    },
-    updateSchool: async (data): Promise<AxiosResponse<any>> => {
-        return ''
+    updateSchool: async (schoolContent, contentBlocks, techUsed, logoStorage, coverImageStorage, colorTheme): Promise<SchoolDataType | null> => {
+        const schoolData: SchoolDataType = _.cloneDeep(schoolContent)
+        schoolData.content_blocks = contentBlocks
+        schoolData.tech_used = techUsed
+        const newUpdatedSchoolFormData = schoolDataFormDataBuilder(schoolData)
+        newUpdatedSchoolFormData.append('logo', logoStorage ? logoStorage : schoolData.logo)
+        newUpdatedSchoolFormData.append('cover_image', coverImageStorage ? coverImageStorage : schoolData.cover_image)
+
+        const schoolMetadata = {school_color_theme: colorTheme};
+        newUpdatedSchoolFormData.append('metadata', JSON.stringify(schoolMetadata));
+
+        try {
+            const response = await axios({
+                url: API_ENDPOINTS.SCHOOL.UPDATE_SCHOOL,
+                method: 'post',
+                data: newUpdatedSchoolFormData,
+                headers: {"Content-Type": "multipart/form-data"}
+            });
+
+            if (response.data.data.status === 'Published') {
+                const updatedSchoolContent = response.data.data;
+                updatedSchoolContent.content_blocks = parseToJsonIfString(updatedSchoolContent.content_blocks);
+                updatedSchoolContent.tech_used = parseToJsonIfString(updatedSchoolContent.tech_used);
+                return updatedSchoolContent;
+            }
+
+            return null;
+        } catch (err) {
+            console.error('Error while attempting to update school:', err);
+            throw err;
+        }
     }
+
+
 }

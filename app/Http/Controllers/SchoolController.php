@@ -338,10 +338,23 @@ class SchoolController extends Controller
         }
 
     }
+
     public function fetchPendingSchoolByName(Request $request, $schoolName)
     {
+        $currentUser = Auth::user();
+
+        // Check if the user has superadmin role or the same site_id
+        if ($currentUser->role->role_name !== 'Superadmin' && $currentUser->site_id !== $schoolName->site_id) {
+            // Return a forbidden response or any other response to indicate lack of permission
+            return response()->json([
+                "status" => 403,
+                "message" => "Forbidden. You do not have permission to access this resource."
+            ], 403);
+        }
+
         $schoolName = str_replace('%20', ' ', $schoolName);
         $school = School::where('name', $schoolName)->where('status', 'Pending')->first();
+
         if ($school == null) {
             return response()->json([
                 "status" => 200,
@@ -352,15 +365,15 @@ class SchoolController extends Controller
             $schoolMetadata = Schoolmeta::where('school_id', $school->school_id)->get();
             $schoolMetadataToSend = $this->formatSchoolMetadata($schoolMetadata);
             $result = $this->schoolModelToJson($school, $schoolMetadataToSend, $request);
-//            return response()->json($result, 200);
+
             return response()->json([
                 "status" => 200,
                 "pending_available" => true,
                 "result" => $result
             ]);
         }
-
     }
+
 
     public function fetchFeaturedSchools(Request $request)
     {

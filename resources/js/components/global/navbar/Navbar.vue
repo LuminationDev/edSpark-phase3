@@ -21,7 +21,6 @@ const {currentUser} = storeToRefs(userStore)
 const {isAuthenticated} = storeToRefs(authStore);
 const {showGlobalSearch} = storeToRefs(windowStore);
 
-const showProfileDropdown = ref(false);
 const navLinks = ref([]);
 
 
@@ -30,10 +29,6 @@ const avatarUrl = computed(() => {
     return meta ? meta.user_meta_value[0].replace(/\\\//g, "/") : '';
 });
 
-
-const handleAvatarClick = () => {
-    showProfileDropdown.value = !showProfileDropdown.value;
-};
 
 const handleGlobalsearchClick = () => {
     showGlobalSearch.value = true
@@ -89,9 +84,7 @@ const {isMobile, isTablet} = storeToRefs(useWindowStore)
             v-if="isAuthenticated"
             :key="currentUser"
             :current-user="currentUser"
-            :profile-dropdown="profileDropdown"
             :avatar-url="avatarUrl"
-            @handle-avatar-click="handleAvatarClick"
         />
         <div
             id="edSparkLogo"
