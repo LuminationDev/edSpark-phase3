@@ -3,15 +3,17 @@ import axios from "axios";
 import {defineStore} from "pinia";
 import {Ref} from 'vue'
 
-import {API_ENDPOINTS} from "@/js/constants/API_ENDPOINTS";
 import {serverURL} from "@/js/constants/serverUrl";
 import {SchoolDataType} from "@/js/types/SchoolTypes";
+
 interface UserMetaData {
     user_meta_key: string;
     user_meta_value: string;
 }
+
 interface Site {
     site_name: string;
+    site_id: number
 }
 
 interface CurrentUser {
@@ -71,7 +73,7 @@ export const useUserStore = defineStore('user', {
         getNotifications(): any[] {
             return this.notifications;
         },
-        getIfUserIsAdmin(): boolean{
+        getIfUserIsAdmin(): boolean {
             const userRole = this.currentUser.role
             const rolesWithAdminRights = [
                 "Superadmin",
@@ -82,14 +84,14 @@ export const useUserStore = defineStore('user', {
             ];
             return rolesWithAdminRights.includes(userRole)
         },
-        getIfUserIsModerator(): boolean{
+        getIfUserIsModerator(): boolean {
             const userRole = this.currentUser.role
-            const rolesWithAdminRights = [
+            const rolesWithModRights = [
                 "Superadmin",
                 "Administrator",
                 "Moderator",
             ];
-            return rolesWithAdminRights.includes(userRole)
+            return rolesWithModRights.includes(userRole)
         }
     },
 

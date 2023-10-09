@@ -1,7 +1,7 @@
 <script setup lang="ts">
 
 import {storeToRefs} from "pinia";
-import {ref} from "vue";
+import {computed, ref} from "vue";
 
 import ProfileDropdownItem from "@/js/components/global/ProfileDropdownItem.vue";
 import Profile from "@/js/components/svg/Profile.vue";
@@ -51,6 +51,24 @@ const handleLogoutUser = async () => {
 const handleClickAdmin = () => {
     window.open(window.location.origin + '/admin', '_self')
 }
+
+const profileTargetPath = computed(() =>{
+    if(currentUser.value.id){
+        return `/profile/${currentUser.value.id}`
+    } else return ''
+})
+const messageTargetPath = computed(() =>{
+    if(currentUser.value.id){
+        return `/message/${currentUser.value.id}`
+    } else return ''
+})
+const mySchoolTargetPath = computed(() =>{
+    if(currentUser.value?.site?.site_name){
+        return `/schools/${currentUser.value.site.site_name}`
+    }
+    else return ''
+})
+
 </script>
 
 <template>
@@ -84,15 +102,17 @@ const handleClickAdmin = () => {
                 </div>
                 <div class="border-b border-white flex flex-col gap-3 py-3">
                     <ProfileDropdownItem
+                        v-if="profileTargetPath"
                         :is-router-link="true"
-                        :target-path="`/profile/${currentUser.id}`"
+                        :target-path="profileTargetPath"
                     >
                         <Profile />
                         Profile
                     </ProfileDropdownItem>
                     <ProfileDropdownItem
+                        v-if="messageTargetPath"
                         :is-router-link="true"
-                        :target-path="`/message/${currentUser.id}`"
+                        :target-path="messageTargetPath"
                     >
                         <MessageIcon />
                         Messages
@@ -104,13 +124,14 @@ const handleClickAdmin = () => {
                         <CreateIcon />
                         Create
                     </ProfileDropdownItem>
-                    <!--                    <ProfileDropdownItem-->
-                    <!--                        :is-router-link="true"-->
-                    <!--                        :target-path="`/schools/${currentUser.site.site_name}`"-->
-                    <!--                    >-->
-                    <!--                        <SchoolGradHat />-->
-                    <!--                        My School-->
-                    <!--                    </ProfileDropdownItem>-->
+                    <ProfileDropdownItem
+                        v-if="mySchoolTargetPath"
+                        :is-router-link="true"
+                        :target-path="mySchoolTargetPath"
+                    >
+                        <SchoolGradHat />
+                        My School
+                    </ProfileDropdownItem>
                     <template
                         v-if="userStore.getIfUserIsAdmin"
                     >
