@@ -1,33 +1,19 @@
 <script setup lang="ts">
+
 import {storeToRefs} from "pinia";
-/**
- * Import Dependencies
- */
 import {onMounted, ref} from "vue";
 
 import ProfileDropdownItem from "@/js/components/global/ProfileDropdownItem.vue";
 import AdminIcon from "@/js/components/svg/profileDropdown/AdminIcon.vue";
 import CreateIcon from "@/js/components/svg/profileDropdown/CreateIcon.vue";
-import DashedHelpIcon from "@/js/components/svg/profileDropdown/DashedHelpIcon.vue";
 import MessageIcon from "@/js/components/svg/profileDropdown/MessageIcon.vue";
 import SchoolGradHat from "@/js/components/svg/SchoolGradHat.vue";
 import {APP_ENDPOINTS} from "@/js/constants/API_ENDPOINTS";
-/**
- * Import stores
- */
 import {useUserStore} from "@/js/stores/useUserStore";
 
-/**
- * Import SVG's
- */
 import Profile from "../svg/Profile.vue";
 
-/**
- * Import components
- */
-
 const props = defineProps({
-
     profileDropdown: {
         type: Boolean,
         required: true,
@@ -44,27 +30,15 @@ const userStore = useUserStore();
 const {currentUser} = storeToRefs(userStore);
 const imageURL = import.meta.env.VITE_SERVER_IMAGE_API;
 
-
-//commented for now
-// if (userMetadata !== undefined) {
-//     const userAvatarMeta = userMetadata.filter(meta => meta.user_meta_key === 'userAvatar');
-//     console.log(userAvatarMeta);
-//     avatarUrl.value = userAvatarMeta[0].user_meta_value[0].replace(/\\\//g, "/");
-// };
-
-
 const handleAvatar = (): void => {
     emits("handleAvatarClick");
 };
 
 const handleLogoutUser = async () => {
-
-    // Call a logout API endpoint in laravel backend
     try {
         const response = await fetch(APP_ENDPOINTS.LOGOUT, {
             method: 'POST',
         });
-
         // Handle the response from the server
         const data = await response.json();
         console.log(data.message);
@@ -110,8 +84,8 @@ const handleClickAdmin = () => {
             @click.prevent="handleAvatar"
         >
             <img
-                v-if="!avatarUrl.length <= 0"
-                class="m-auto w-full"
+                v-if="avatarUrl"
+                class="object-center object-cover w-full"
                 :src="`${imageURL}/${avatarUrl}`"
                 alt=""
             >

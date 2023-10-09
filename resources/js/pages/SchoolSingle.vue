@@ -11,19 +11,16 @@ import BaseBreadcrumb from "@/js/components/bases/BaseBreadcrumb.vue";
 import BaseHero from "@/js/components/bases/BaseHero.vue";
 import BaseSingle from "@/js/components/bases/BaseSingle.vue";
 import BaseSingleSubmenu from "@/js/components/bases/BaseSingleSubmenu.vue";
-import GenericButton from "@/js/components/button/GenericButton.vue";
-import SchoolTechIconGenerator from "@/js/components/global/SchoolTechIconGenerator.vue";
 import SchoolTechHoverableRow from "@/js/components/schools/schoolMap/SchoolTechHoverableRow.vue";
 import SchoolNominationButton from "@/js/components/schools/SchoolNominationButton.vue";
-import SchoolNotAvailable from "@/js/components/schools/SchoolNotAvailable.vue";
 import SchoolContent from "@/js/components/schoolsingle/SchoolContent.vue";
 import Loader from "@/js/components/spinner/Loader.vue";
 import {API_ENDPOINTS} from "@/js/constants/API_ENDPOINTS";
 import {parseToJsonIfString} from "@/js/helpers/jsonHelpers";
 import {isObjectEmpty} from "@/js/helpers/objectHelpers";
 import {schoolDataFormDataBuilder} from "@/js/helpers/schoolDataHelpers";
+import EdsparkPageNotFound from "@/js/pages/EdsparkPageNotFound.vue";
 import {schoolService} from "@/js/service/schoolService";
-import {useSchoolsStore} from "@/js/stores/useSchoolsStore";
 import {useUserStore} from "@/js/stores/useUserStore";
 import {SchoolDataType} from "@/js/types/SchoolTypes";
 
@@ -65,7 +62,9 @@ const fetchSchoolByNameAsync = async (schoolName) : Promise<void> => {
         }
     } catch (err) {
         console.log(`${err.message} Inside fetchSchoolByName`);
+        showSchoolNotAvailable.value = true
         schoolContent.value = null;
+        
     }
 }
 
@@ -270,7 +269,7 @@ const isSchoolContentPopulated = computed(() => {
         v-else-if="!isSchoolContentPopulated && showSchoolNotAvailable"
         class="flex justify-center items-center flex-col h-36 mt-[10vh]"
     >
-        <SchoolNotAvailable />
+        <EdsparkPageNotFound error-message="School not found or has no public profile yet. Please check again later" />
     </div>
 
     <div

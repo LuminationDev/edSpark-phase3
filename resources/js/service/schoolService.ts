@@ -10,13 +10,10 @@ type CheckCanEditResponseType = {
     canNominate: boolean
 }
 export const schoolService = {
-    testFunction: (): void => {
-        console.log('testing')
-    },
     fetchSchoolByName: async (schoolName: string): Promise<any> => {
         return axios.get(`${API_ENDPOINTS.SCHOOL.FETCH_SCHOOL_BY_NAME}${schoolName}`).then(res => {
             const {data} = res;
-            const {content_blocks, tech_used, cover_image, logo, metadata} = parseToJsonIfString(data);
+            const {content_blocks, tech_used, cover_image, logo} = parseToJsonIfString(data);
             return ({
                 ...data,
                 content_blocks: content_blocks ? parseToJsonIfString(content_blocks) : {},
