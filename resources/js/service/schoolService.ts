@@ -46,7 +46,7 @@ export const schoolService = {
             API_ENDPOINTS.SCHOOL.FETCH_PENDING_SCHOOL_BY_NAME + schoolName,
             data
         ).then(res => {
-            if(res.data.result){
+            if (res.data.result) {
                 const result = res.data.result
                 console.log('result issssss')
                 console.log(result)
@@ -58,7 +58,7 @@ export const schoolService = {
                     cover_image: cover_image ? cover_image.replace("/\\/g", "") : '',
                     logo: logo ? logo.replace("/\\/g", "") : ''
                 })
-            } else{
+            } else {
                 return null
             }
         })
@@ -106,6 +106,46 @@ export const schoolService = {
         } catch (err) {
             console.error('Error while attempting to update school:', err);
             throw err;
+        }
+    },
+    getAllStaffBySiteId: async (siteId: number, currentUserId: number) : Promise<Array<any>> => {
+        try {
+            const res = await axios.get(`${API_ENDPOINTS.SCHOOL.FETCH_STAFF_FROM_SITE}${siteId}`);
+            console.log(res.data);
+            return res.data.data.filter(staff => staff.id !== currentUserId).map(staff => {
+                return {...staff}
+            });
+        } catch (error) {
+            console.error("Error fetching staff:", error);
+            return [];
+        }
+    },
+    getSchoolDelegates: async (siteId: number, schoolId: number, currentUserId: number): Promise<Array<any>> => {
+        try {
+            const response = await axios({
+                method: "POST",
+                url: API_ENDPOINTS.SCHOOL.GET_NOMINATED_USER_FROM_SCHOOL,
+                data: {
+                    "site_id": siteId,
+                    "school_id": schoolId,
+                    "user_id": currentUserId
+                }
+            });
+            if (response.data.status === 200) {
+                const keys = Object.keys(response.data.result);
+                const staffList = []
+                keys.forEach((key) => {
+                    staffList.push({
+                        id: key,
+                        name: response.data.result[key]
+                    });
+                });
+                return staffList
+            }
+            return []
+        } catch (error) {
+            console.error("Error fetching nominated users:", error);
+            return [];
         }
     }
 

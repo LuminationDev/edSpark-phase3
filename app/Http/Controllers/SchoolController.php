@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Models\Usermeta;
+use App\Services\ResponseService;
 use Illuminate\Http\Request;
 use App\Models\School;
 use App\Models\Schoolmeta;
@@ -392,22 +394,42 @@ class SchoolController extends Controller
         return response()->json($data);
 
     }
-
     public function fetchAllStaffFromSite($site_id): \Illuminate\Http\JsonResponse
     {
-        $all_staff = User::where('site_id', $site_id)->get();
+        // Check if the user is authenticated
+        if (!Auth::check()) {
+            return ResponseService::error('User not authenticated.', null, 401);
+        }
+
+        // Check if the authenticated user's site_id matches the given site_id
+        if (Auth::user()->site_id !== intval($site_id)) {
+            return ResponseService::error('Access denied for this site.', null, 403);
+        }
+
+        $all_staff = User::where('site_id', intval($site_id))->get();
+
+        if ($all_staff->isEmpty()) {
+            return ResponseService::error('No staff found for this site.', null, 404);
+        }
+
         $final_result = [];
         foreach ($all_staff as $staff) {
+            $avatarUrl = Usermeta::where('user_id', $staff->id)
+                ->where('user_meta_key', 'userAvatar')
+                ->first();
             $result = [
                 'id' => $staff->id,
                 'name' => $staff->full_name,
                 'email' => $staff->email,
                 'role' => ($staff->role) ? $staff->role->role_name : NULL,
+                'userAvatar' => $avatarUrl ? stripslashes($avatarUrl->user_meta_value) : NULL
             ];
             $final_result[] = $result;
         }
-        return response()->json($final_result);
+
+        return ResponseService::success('Staff fetched successfully.', $final_result);
     }
+
 
     public function nominateUserForSchool(Request $request): \Illuminate\Http\JsonResponse
     {

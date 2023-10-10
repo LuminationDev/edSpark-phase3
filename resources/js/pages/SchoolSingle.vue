@@ -11,6 +11,7 @@ import BaseHero from "@/js/components/bases/BaseHero.vue";
 import BaseSingle from "@/js/components/bases/BaseSingle.vue";
 import BaseSingleSubmenu from "@/js/components/bases/BaseSingleSubmenu.vue";
 import GenericButton from "@/js/components/button/GenericButton.vue";
+import SchoolDelegationPanel from "@/js/components/schools/SchoolDelegationPanel.vue";
 import SchoolTechHoverableRow from "@/js/components/schools/schoolMap/SchoolTechHoverableRow.vue";
 import SchoolNominationButton from "@/js/components/schools/SchoolNominationButton.vue";
 import SchoolContent from "@/js/components/schoolsingle/SchoolContent.vue";
@@ -270,11 +271,17 @@ const handleCloseModerationTab = () : void =>{
                             @send-photo-to-school-single="handleReceivePhotoFromContent"
                         >
                             <template #additionalContentActions>
-                                <SchoolNominationButton
-                                    v-if="schoolContent['site']['site_id']"
-                                    :site-id="schoolContent['site']['site_id']"
-                                    :school-id="schoolContent['school_id']"
-                                />
+                                <!--                                <SchoolNominationButton-->
+                                <!--                                    v-if="schoolContent['site']['site_id']"-->
+                                <!--                                    :site-id="schoolContent['site']['site_id']"-->
+                                <!--                                    :school-id="schoolContent['school_id']"-->
+                                <!--                                />-->
+                                <div class="DelegationPanelOuterContainer flex mt-4 w-full">
+                                    <SchoolDelegationPanel
+                                        :school-id="schoolContent?.school_id"
+                                        :site-id="schoolContent?.site?.site_id"
+                                    />
+                                </div>
                             </template>
                         </SchoolContent>
                     </div>
