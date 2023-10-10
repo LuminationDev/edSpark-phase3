@@ -46,17 +46,21 @@ export const schoolService = {
             API_ENDPOINTS.SCHOOL.FETCH_PENDING_SCHOOL_BY_NAME + schoolName,
             data
         ).then(res => {
-            const result = res.data.result
-            console.log('result issssss')
-            console.log(result)
-            const {content_blocks, tech_used, cover_image, logo} = parseToJsonIfString(result);
-            return ({
-                ...result,
-                content_blocks: content_blocks ? parseToJsonIfString(content_blocks) : {},
-                tech_used: tech_used ? parseToJsonIfString(tech_used) : [],
-                cover_image: cover_image ? cover_image.replace("/\\/g", "") : '',
-                logo: logo ? logo.replace("/\\/g", "") : ''
-            })
+            if(res.data.result){
+                const result = res.data.result
+                console.log('result issssss')
+                console.log(result)
+                const {content_blocks, tech_used, cover_image, logo} = parseToJsonIfString(result);
+                return ({
+                    ...result,
+                    content_blocks: content_blocks ? parseToJsonIfString(content_blocks) : {},
+                    tech_used: tech_used ? parseToJsonIfString(tech_used) : [],
+                    cover_image: cover_image ? cover_image.replace("/\\/g", "") : '',
+                    logo: logo ? logo.replace("/\\/g", "") : ''
+                })
+            } else{
+                return null
+            }
         })
     },
     /**

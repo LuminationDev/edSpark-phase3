@@ -66,23 +66,23 @@ const currentUserCanNominate = ref<boolean>(false)
 const schoolEditorRef = ref() // for triggering save inside editorjs component
 
 onBeforeMount(() => {
-    newSchoolContent.value = props.schoolContent.content_blocks
-    newTechUsed.value = props.schoolContent.tech_used
+    newSchoolContent.value = _.cloneDeep(props.schoolContent.content_blocks)
+    newTechUsed.value = _.cloneDeep(props.schoolContent.tech_used)
 })
 
 const handleEditButton = () => {
-    newSchoolContent.value = props.schoolContent.content_blocks
-    newTechUsed.value = props.schoolContent.tech_used
+    newSchoolContent.value = _.cloneDeep(props.schoolContent.content_blocks)
+    newTechUsed.value = _.cloneDeep(props.schoolContent.tech_used)
     editMode.value = true
+    // pressing the revert button
     if (schoolContentState.value === 'pending_loaded') {
         schoolEditorRef.value.handleEditorRerender(newSchoolContent.value)
-        schoolContentState.value = 'pending_availabl\e'
+        schoolContentState.value = 'pending_available'
     }
 
 }
 
 const handleSchoolData = (data) => {
-    console.log('data from schoolContent' + JSON.stringify(data))
     newSchoolContent.value = data
 }
 
@@ -113,20 +113,17 @@ onMounted(async () => {
 
         })
         if (currentUserCanEdit.value) {
-            await schoolService.fetchPendingSchoolByName(currentSchoolName, props.schoolContent.site.site_id, currentUser.value.id, props.schoolContent.school_id).then(res => {
-                if (res.data.pending_available) {
-                    schoolContentState.value = 'pending_available'
-                    pendingSchoolContent.value = res.data.result
-                }
-            })
+            const result = await schoolService.fetchPendingSchoolByName(currentSchoolName, props.schoolContent.site.site_id, currentUser.value.id, props.schoolContent.school_id)
+            if(result){
+                schoolContentState.value = 'pending_available'
+                pendingSchoolContent.value = result
+            }
         }
 
     }
 })
 
 const handleClickEditPendingContent = () => {
-    console.log('handleEditPendingContent CLicked')
-    console.log(pendingSchoolContent.value.content_blocks)
     newSchoolContent.value = pendingSchoolContent.value.content_blocks
     newTechUsed.value = pendingSchoolContent.value.tech_used
     schoolContentState.value = 'pending_loaded'

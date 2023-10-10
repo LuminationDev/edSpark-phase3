@@ -100,10 +100,6 @@ const handleSaveNewSchoolInfo = async (contentBlocks, techUsed) => {
         const updatedSchoolContent = await schoolService.updateSchool(
             schoolContent.value, contentBlocks, techUsed, logoStorage.value, coverImageStorage.value, colorTheme.value
         );
-
-        if (updatedSchoolContent) {
-            schoolContent.value = updatedSchoolContent;
-        }
     } catch (err) {
         console.log('Something wrong while attempting to post');
     }
