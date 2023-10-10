@@ -29,7 +29,6 @@ use App\Http\Controllers\RsvpController;
 |
 */
 Route::middleware('auth:sanctum')->group(function() {
-
     // School APIs
     Route::get('fetchAllSchools', [SchoolController::class, 'fetchAllSchools']);
     Route::get('fetchFeaturedSchools', [SchoolController::class, 'fetchFeaturedSchools']);
@@ -44,6 +43,10 @@ Route::middleware('auth:sanctum')->group(function() {
     Route::post('createOrUpdateSchoolContact', [SchoolController::class , 'createOrUpdateContact']);
     Route::post('fetchSchoolContact', [SchoolController::class, 'fetchSchoolContact']);
     Route::post('fetchPendingSchoolByName/{schoolName}', [SchoolController::class, 'fetchPendingSchoolByName']);
+
+    // Return School based on the User's site (source Okta)
+    // return existing school profile or create one with default template if not exists yet
+    Route::post('fetchUserSchool', [SchoolController::class, 'fetchUserSchool']);
 
     // Advice APIs
     Route::post('createAdvicePost',[AdviceController::class, 'createAdvicePost']);
@@ -94,8 +97,7 @@ Route::middleware('auth:sanctum')->group(function() {
     Route::post('checkEmail', [UserController::class, 'checkEmail']);
 
     // Image upload
-    Route::post('imageUpload/{type?}', [ImageController::class, 'imageUpload']);
-    Route::post('imageUploadEditorjs', [ImageController::class, 'imageUploadEditorjs']);
+
 
     // Like and Bookmark
     Route::post('like', [LikeBookmarkController::class, 'like']);
@@ -135,3 +137,4 @@ Route::middleware('auth:sanctum')->group(function() {
     //Auto-save
     Route::match(['get', 'post'], '/auto-save', [AutoSaveController::class, 'handleAutoSave']);
 });
+

@@ -1,59 +1,36 @@
 <script setup>
-/**
- * Import Dependencies
- */
 import {storeToRefs} from "pinia";
-import {computed,onMounted, ref} from 'vue';
+import {computed, ref} from 'vue';
 import {useRouter} from 'vue-router';
 
-import {isObjectEmpty} from "@/js/helpers/objectHelpers";
+import ProfileDropdown from "@/js/components/global/ProfileDropdown.vue";
+import Logo from '@/js/components/svg/Logo.vue';
+import NavSwoosh from '@/js/components/svg/NavSwoosh.vue';
 import {useAuthStore} from '@/js/stores/useAuthStore';
-/**
- * Import Stores
- */
 import {useUserStore} from '@/js/stores/useUserStore';
 import {useWindowStore} from "@/js/stores/useWindowStore";
 
-import Logo from '../../svg/Logo.vue';
-/**
- * Import SVG's
- */
-import NavSwoosh from '../../svg/NavSwoosh.vue';
-import Profile from '../../svg/Profile.vue';
-/**
- * Import Components
- */
-import ProfileDropdown from '../ProfileDropdown.vue';
 import NavItems from './NavItems.vue';
 
 const router = useRouter();
-const profileDropdown = ref(false);
-const currentUser = ref({});
-const navLinks = ref([]);
-
+const userStore = useUserStore()
 const authStore = useAuthStore();
-const {isAuthenticated} = storeToRefs(authStore);
-
 const windowStore = useWindowStore();
+
+const {currentUser} = storeToRefs(userStore)
+const {isAuthenticated} = storeToRefs(authStore);
 const {showGlobalSearch} = storeToRefs(windowStore);
 
+const navLinks = ref([]);
+
+
 const avatarUrl = computed(() => {
-    let url = ''
-    if (Object.keys(currentUser.value).length < 0 && !isObjectEmpty(currentUser.value) && !isObjectEmpty(currentUser.value['metadata'])) {
-        currentUser.value['metadata'].forEach(meta => {
-            if (meta['user_meta_key'] === 'userAvatar') {
-                url = meta['user_meta_value'][0].replace(/\\\//g, "/");
-            }
-        })
-    }
-    return url
-})
+    const meta = currentUser.value?.metadata?.find(m => m.user_meta_key === 'userAvatar');
+    return meta ? meta.user_meta_value[0].replace(/\\\//g, "/") : '';
+});
 
-const handleAvatarClick = () => {
-    profileDropdown.value = !profileDropdown.value;
-};
 
-const handleGlobalsearchClick = () =>{
+const handleGlobalsearchClick = () => {
     showGlobalSearch.value = true
 }
 
@@ -107,9 +84,7 @@ const {isMobile, isTablet} = storeToRefs(useWindowStore)
             v-if="isAuthenticated"
             :key="currentUser"
             :current-user="currentUser"
-            :profile-dropdown="profileDropdown"
             :avatar-url="avatarUrl"
-            @handle-avatar-click="handleAvatarClick"
         />
         <div
             id="edSparkLogo"

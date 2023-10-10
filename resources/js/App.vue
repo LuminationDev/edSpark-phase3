@@ -9,7 +9,6 @@ import NavbarMobileMenu from "@/js/components/global/navbar/NavbarMobileMenu.vue
 import GlobalSearch from "@/js/components/search/GlobalSearch.vue";
 import {appURL} from "@/js/constants/serverUrl";
 import {isObjectEmpty} from "@/js/helpers/objectHelpers";
-import recommenderEdsparkSingletonFactory from "@/js/recommender/recommenderEdspark";
 import {useAuthStore} from "@/js/stores/useAuthStore";
 import {useUserStore} from "@/js/stores/useUserStore";
 import {useWindowStore} from "@/js/stores/useWindowStore";
@@ -20,7 +19,6 @@ import NavBar from './components/global/navbar/NavBar.vue';
 
 const router = useRouter();
 const route = useRoute();
-let recommender;
 
 const userStore = useUserStore()
 const {currentUser} = storeToRefs(userStore)
@@ -61,9 +59,7 @@ onBeforeMount(async () => {
          * Here means local storage is empty, potentially new user. expect user to click login with okta
          */
     }
-    if (currentUser.value?.id) {
-        recommender = recommenderEdsparkSingletonFactory().getInstance(currentUser.value.id, 'Partner', 100)
-    }
+
     setWindowWidth()
     window.addEventListener('resize', setWindowWidth)
 })

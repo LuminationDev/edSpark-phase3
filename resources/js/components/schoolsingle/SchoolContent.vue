@@ -4,14 +4,15 @@ import {onBeforeMount, onMounted, Ref, ref} from 'vue'
 import {useRoute} from "vue-router";
 
 import EditorJsInput from "@/js/components/bases/EditorJsInput.vue";
+import GenericButton from "@/js/components/button/GenericButton.vue";
 import EditorJsContentDisplay from "@/js/components/schoolsingle/EditorJsContentDisplay.vue";
 import SchoolContact from "@/js/components/schoolsingle/SchoolContact.vue";
 import SchoolColorPicker from "@/js/components/schoolsingle/schoolContent/SchoolColorPicker.vue";
 import SchoolImageChange from "@/js/components/schoolsingle/schoolContent/SchoolImageChange.vue";
-import SchoolContentDisplay from "@/js/components/schoolsingle/SchoolContentDisplay.vue";
 import SchoolTech from "@/js/components/schoolsingle/SchoolTech.vue";
 import SchoolWhatsNew from "@/js/components/schoolsingle/SchoolWhatsNew.vue";
 import TechSelector from "@/js/components/selector/TechSelector.vue";
+import {defaultSchoolContent} from "@/js/constants/schoolContentDefault";
 import {schoolService} from "@/js/service/schoolService";
 import {useUserStore} from "@/js/stores/useUserStore";
 import {EditorJSDataType} from "@/js/types/EditorJsTypes";
@@ -42,6 +43,11 @@ const props = defineProps({
     activeSubmenu: {
         type: String,
         required: true
+    },
+    isPreviewMode:{
+        type: Boolean,
+        required: false,
+        default: false
     }
 })
 const route = useRoute()
@@ -56,29 +62,34 @@ const pendingSchoolContent: Ref<SchoolDataType | null> = ref(null)
 const schoolContentState = ref('new')
 const newTechUsed: Ref<TechUsed[] | null> = ref(null)
 
-const schoolEditorRef = ref() // for triggering save inside editorjs component
-
 const currentUserCanEdit = ref<boolean>(false)
 const currentUserCanNominate = ref<boolean>(false)
+const schoolEditorRef = ref() // for triggering save inside editorjs component
 
 onBeforeMount(() => {
-    newSchoolContent.value = props.schoolContent.content_blocks
-    newTechUsed.value = props.schoolContent.tech_used
+    newSchoolContent.value = _.cloneDeep(props.schoolContent.content_blocks)
+    newTechUsed.value = _.cloneDeep(props.schoolContent.tech_used)
 })
 
-const handleEditButton = () => {
-    newSchoolContent.value = props.schoolContent.content_blocks
-    newTechUsed.value = props.schoolContent.tech_used
+const handleEditButton = async () => {
+    if(schoolContentState.value === 'new'){
+        checkIfPendingAvailable()
+    }
+    newSchoolContent.value = _.cloneDeep(props.schoolContent.content_blocks)
+    newTechUsed.value = _.cloneDeep(props.schoolContent.tech_used)
     editMode.value = true
+    // pressing the revert button
     if (schoolContentState.value === 'pending_loaded') {
         schoolEditorRef.value.handleEditorRerender(newSchoolContent.value)
-        schoolContentState.value = 'pending_availabl\e'
+        schoolContentState.value = 'pending_available'
     }
+}
 
+const handleCancelEditButton = () => {
+    editMode.value = false
 }
 
 const handleSchoolData = (data) => {
-    console.log('data from schoolContent' + JSON.stringify(data))
     newSchoolContent.value = data
 }
 
@@ -94,6 +105,7 @@ const handleAllSaveButton = () => {
 
     })
 }
+
 const handleColorSelected = (newColor) => {
     emits('sendColorToSchoolSingle', newColor)
 }
@@ -102,29 +114,35 @@ const handleReceivePhotoFromImageChange = (type, file) => {
 }
 
 onMounted(async () => {
-    await schoolService.checkIfUserCanEdit(props.schoolContent.site.site_id, currentUser.value.id, props.schoolContent.school_id).then(res => {
-        currentUserCanEdit.value = Boolean(res.data.status && res.data.result)
-        currentUserCanNominate.value = Boolean(res.data.status && res.data.canNominate)
+    if(!props.isPreviewMode){
+        await schoolService.checkIfUserCanEdit(props.schoolContent.site.site_id, currentUser.value.id, props.schoolContent.school_id).then(res => {
+            currentUserCanEdit.value = Boolean(res.data.status && res.data.result)
+            currentUserCanNominate.value = Boolean(res.data.status && res.data.canNominate)
 
-    })
-    if (currentUserCanEdit.value) {
-        await schoolService.fetchPendingSchoolByName(currentSchoolName, props.schoolContent.site.site_id, currentUser.value.id, props.schoolContent.school_id).then(res => {
-            if (res.data.pending_available) {
-                schoolContentState.value = 'pending_available'
-                pendingSchoolContent.value = res.data.result
-            }
         })
+        if (currentUserCanEdit.value) {
+            await checkIfPendingAvailable()
+        }
+
     }
 })
 
+const checkIfPendingAvailable = async () : Promise<void> => {
+    const result = await schoolService.fetchPendingSchoolByName(currentSchoolName, props.schoolContent.site.site_id, currentUser.value.id, props.schoolContent.school_id)
+    if(result){
+        schoolContentState.value = 'pending_available'
+        pendingSchoolContent.value = result
+    }
+}
+
 const handleClickEditPendingContent = () => {
-    console.log('handleEditPendingContent CLicked')
-    console.log(pendingSchoolContent.value.content_blocks)
     newSchoolContent.value = pendingSchoolContent.value.content_blocks
     newTechUsed.value = pendingSchoolContent.value.tech_used
     schoolContentState.value = 'pending_loaded'
     schoolEditorRef.value.handleEditorRerender(newSchoolContent.value)
 }
+
+
 
 console.log(props.activeSubmenu)
 </script>
@@ -154,19 +172,25 @@ console.log(props.activeSubmenu)
                             >
                                 {{ schoolContentStateDescription[schoolContentState] }}
                             </div>
-                            <button
+                            <GenericButton
                                 v-if="schoolContentState === 'pending_available'"
-                                class="bg-blue-500 hover:bg-blue-600 mb-4 px-6 py-2 rounded text-white w-48"
-                                @click="handleClickEditPendingContent"
+                                class="bg-blue-500 hover:bg-blue-600 mb-2 px-6 py-2 rounded text-white w-48"
+                                :callback="handleClickEditPendingContent"
                             >
                                 Edit pending content
-                            </button>
-                            <button
-                                class="bg-blue-500 hover:bg-blue-600 mb-4 px-6 py-2 rounded text-white w-48"
-                                @click="handleAllSaveButton"
+                            </GenericButton>
+                            <GenericButton
+                                class="bg-blue-500 hover:bg-blue-600 mb-2 px-6 py-2 rounded text-white w-48"
+                                :callback="handleAllSaveButton"
                             >
                                 {{ buttonDescriptionByState[schoolContentState] }}
-                            </button>
+                            </GenericButton>
+                            <GenericButton
+                                class="!bg-secondary-mbRose mb-4 px-6 py-2 rounded text-white w-48"
+                                :callback="handleCancelEditButton"
+                            >
+                                Cancel edit
+                            </GenericButton>
                             <button
                                 v-if="schoolContentState === 'pending_loaded'"
                                 class="bg-blue-500 hover:bg-blue-600 mb-4 px-6 py-2 rounded text-white w-48"
@@ -174,7 +198,11 @@ console.log(props.activeSubmenu)
                             >
                                 Revert
                             </button>
-                            <SchoolImageChange @send-uploaded-photo-to-content="handleReceivePhotoFromImageChange" />
+                            <SchoolImageChange
+                                :current-logo="props.schoolContent.logo"
+                                :current-cover-image="props.schoolContent.cover_image"
+                                @send-uploaded-photo-to-content="handleReceivePhotoFromImageChange"
+                            />
                             <SchoolColorPicker
                                 class="mb-5 self-center"
                                 @color-selected="handleColorSelected"
@@ -195,7 +223,10 @@ console.log(props.activeSubmenu)
                         class="contentDisplay flex lg:flex-row justify-between flex-col gap-4 schoolContent w-full"
                     >
                         <div class="basis-2/3">
-                            <EditorJsContentDisplay :content-blocks="schoolContent.content_blocks" />
+                            <EditorJsContentDisplay
+                                :content-blocks="schoolContent.content_blocks"
+                                :default-content="defaultSchoolContent"
+                            />
                         </div>
                         <div class="basis-1/3 school-tech">
                             <div
@@ -205,13 +236,13 @@ console.log(props.activeSubmenu)
                                 <h2 class="font-semibold mb-2 text-genericDark text-lg">
                                     Admin Sections
                                 </h2>
-                                <button
+                                <GenericButton
                                     v-if="!editMode "
                                     class="bg-blue-600 hover:bg-blue-400 px-6 py-2 rounded text-white w-48"
-                                    @click="handleEditButton"
+                                    :callback="handleEditButton"
                                 >
                                     Edit this page
-                                </button>
+                                </GenericButton>
                                 <slot
                                     v-if="currentUserCanNominate"
                                     name="additionalContentActions"
@@ -229,7 +260,7 @@ console.log(props.activeSubmenu)
         <template v-if="props.activeSubmenu === 'contact'">
             <SchoolContact
                 :current-user-can-edit="currentUserCanEdit"
-                :school-id="props.schoolContent['id'] || 9999"
+                :school-id="props.schoolContent['school_id']"
                 :school-location="props.schoolContent['location']"
             />
         </template>

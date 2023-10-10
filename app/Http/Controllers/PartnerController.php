@@ -222,7 +222,7 @@ class PartnerController extends Controller
             } else {
                 return response()->json([
                     "status" => 401,
-                    "result" => true,
+                    "result" => false,
                     "canNominate" => false
                 ]);
             }

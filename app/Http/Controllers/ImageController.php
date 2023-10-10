@@ -105,7 +105,7 @@ class ImageController extends Controller
             return response()->json([
                 "success" => 1,
                 "file" => [
-                    "url" =>  $_ENV['VITE_SERVER_IMAGE_API'].$imagePath
+                    "url" =>  env('VITE_SERVER_IMAGE_API').$imagePath
                 ]
             ]);
         }

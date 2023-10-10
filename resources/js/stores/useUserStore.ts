@@ -3,16 +3,17 @@ import axios from "axios";
 import {defineStore} from "pinia";
 import {Ref} from 'vue'
 
-import {API_ENDPOINTS} from "@/js/constants/API_ENDPOINTS";
 import {serverURL} from "@/js/constants/serverUrl";
+import {SchoolDataType} from "@/js/types/SchoolTypes";
 
-// Define the types for the currentUser
 interface UserMetaData {
     user_meta_key: string;
     user_meta_value: string;
 }
+
 interface Site {
     site_name: string;
+    site_id: number
 }
 
 interface CurrentUser {
@@ -31,8 +32,7 @@ interface CurrentUser {
 interface UserState {
     currentUser: Ref<CurrentUser | any>;
     userAvatar: Ref<string>;
-    userLikeList?: Record<string, any>;
-    userBookmarkList?: Record<string, any>;
+    userSchool: SchoolDataType | null
     notifications: any[];
     userRequestParam: Record<string, any>;
 }
@@ -42,8 +42,7 @@ export const useUserStore = defineStore('user', {
     state: (): UserState => <UserState>({
         currentUser: useStorage('currentUser', {}, localStorage, {mergeDefaults: true}),
         userAvatar: useSessionStorage('userAvatar', ''),
-        userLikeList: {}, // kinda deprecated TODO: Remove
-        userBookmarkList: {}, // kinda deprecated TODO: Remove
+        userSchool: {},
         notifications: [],
         userRequestParam: {}
     }),
@@ -73,6 +72,26 @@ export const useUserStore = defineStore('user', {
         },
         getNotifications(): any[] {
             return this.notifications;
+        },
+        getIfUserIsAdmin(): boolean {
+            const userRole = this.currentUser.role
+            const rolesWithAdminRights = [
+                "Superadmin",
+                "Administrator",
+                "Moderator",
+                "PSACT",
+                "SCHLDR"
+            ];
+            return rolesWithAdminRights.includes(userRole)
+        },
+        getIfUserIsModerator(): boolean {
+            const userRole = this.currentUser.role
+            const rolesWithModRights = [
+                "Superadmin",
+                "Administrator",
+                "Moderator",
+            ];
+            return rolesWithModRights.includes(userRole)
         }
     },
 
@@ -109,7 +128,6 @@ export const useUserStore = defineStore('user', {
 
         async checkUser(email) {
             return new Promise(async resolve => {
-                console.log('HERE YOU ARE!!!!!');
                 await axios({
                     method: 'POST',
                     url: `${serverURL}/checkEmail`,
@@ -275,37 +293,6 @@ export const useUserStore = defineStore('user', {
                 console.log(error.message)
 
             })
-        },
-        populateUserLikesAndBookmark() {
-            if (this.currentUser.id) {
-                const data = {
-                    user_id: this.currentUser.id
-                }
-                axios.post(API_ENDPOINTS.LIKE.FETCH_ALL_LIKES, data).then(res => {
-                    res.data.data.forEach(like => {
-                        if (!this.userLikeList[like.post_type]) {
-                            this.userLikeList[like.post_type] = []
-                        }
-                        if (!this.userLikeList[like.post_type].includes(like.post_id)) {
-                            this.userLikeList[like.post_type].push(like.post_id)
-                        }
-                    })
-                })
-                axios.post(API_ENDPOINTS.BOOKMARK.FETCH_ALL_BOOKMARKS, data).then(res => {
-                    res.data.data.forEach(bookmark => {
-                        if (!this.userBookmarkList[bookmark.post_type]) {
-                            this.userBookmarkList[bookmark.post_type] = []
-                        }
-                        if (!this.userBookmarkList[bookmark.post_type].includes(bookmark.post_id)) {
-                            this.userBookmarkList[bookmark.post_type].push(bookmark.post_id)
-                        }
-                    })
-                })
-
-            } else {
-                console.log('No currentUser Id. didnt fetch')
-            }
-
         },
 
         async updateSingleUserItem(change) {

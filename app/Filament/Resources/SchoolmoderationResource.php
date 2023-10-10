@@ -52,9 +52,7 @@ class SchoolmoderationResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('site_id'),
-                Tables\Columns\TextColumn::make('name')
-                    ->url(fn ( $record): string =>  env('APP_URL').'/schools/'. $record->name)
-                    ->openUrlInNewTab(),
+                Tables\Columns\TextColumn::make('name'),
                 Tables\Columns\TextColumn::make('owner.full_name')->label('Owner'),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime(),
@@ -66,9 +64,6 @@ class SchoolmoderationResource extends Resource
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
-                Tables\Actions\Action::make('preview')
-                    ->url(fn ( $record): string => 'http://localhost:8000/schools/'. $record->name)
-                    ->openUrlInNewTab()
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

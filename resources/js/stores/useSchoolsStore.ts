@@ -1,8 +1,9 @@
 import axios from 'axios';
-import { defineStore } from "pinia";
+import {defineStore, storeToRefs} from "pinia";
 
 import {API_ENDPOINTS} from "@/js/constants/API_ENDPOINTS";
 import {schoolContentArrParser} from "@/js/helpers/jsonHelpers";
+import {schoolService} from "@/js/service/schoolService";
 import {useUserStore} from "@/js/stores/useUserStore";
 
 export const useSchoolsStore = defineStore('schools', {
@@ -26,7 +27,8 @@ export const useSchoolsStore = defineStore('schools', {
      */
     state: () => ({
         schools: [],
-        newSchool: {}
+        newSchool: {},
+        currentUserSchool: {}
     }),
 
     getters: {
@@ -47,11 +49,13 @@ export const useSchoolsStore = defineStore('schools', {
                 return parsedRes;
             });
         },
+        async loadCurrentUserSchool(){
+            const userStore = useUserStore()
+            const { currentUser } = storeToRefs(userStore)
+            this.currentUserSchool = await schoolService.getUserSchoolByUserSiteId(currentUser.value.id, currentUser.value.site_id).then(res => res.data)
+        },
 
-        /**
-         * Set new school data when a principal
-         * is visiting for the first time
-         */
+        // not being used
         setNewSchoolOnSignIn(data) {
             this.newSchool = data;
         }

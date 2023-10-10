@@ -1,15 +1,14 @@
 <script setup>
 
-import {API_ENDPOINTS} from "@/js/constants/API_ENDPOINTS";
-import { ref, reactive, onMounted } from "vue";
-import { required, minLength, email, numeric } from '@vuelidate/validators'
-import axios from "axios";
-import { GoogleMap, Marker } from 'vue3-google-map'
 import useVuelidate from '@vuelidate/core'
-
+import { email, minLength, numeric,required } from '@vuelidate/validators'
+import axios from "axios";
+import { onMounted,reactive, ref } from "vue";
+import { GoogleMap, Marker } from 'vue3-google-map'
 
 import TextInput from "@/js/components/bases/TextInput.vue";
 import GenericButton from "@/js/components/button/GenericButton.vue";
+import {API_ENDPOINTS} from "@/js/constants/API_ENDPOINTS";
 import { serverURL } from "@/js/constants/serverUrl";
 
 
@@ -55,12 +54,14 @@ const handleSaveContactForm = () => {
     v$.value.$validate();
     if (!v$.$errors) {
         console.log(JSON.stringify(state))
-        let sendContactDataBody = {
+        const sendContactDataBody = {
             school_id: props.schoolId,
             school_contact: JSON.stringify(state)
         }
         axios.post(API_ENDPOINTS.SCHOOL.CREATE_OR_UPDATE_SCHOOL_CONTACT, sendContactDataBody).then(res => {
             editMode.value = false
+            contactInfoAvailable.value = true
+            
         })
 
     } else {
@@ -72,7 +73,7 @@ const handleToggleEditContactForm = () => {
     editMode.value = !editMode.value
 }
 
-let contactRequestBody = {
+const contactRequestBody = {
     school_id: props.schoolId
 }
 axios.post(API_ENDPOINTS.SCHOOL.FETCH_SCHOOL_CONTACT, contactRequestBody).then(res => {

@@ -4,7 +4,7 @@ import List from "@editorjs/list";
 import Paragraph from "@editorjs/paragraph";
 import FontSize from "editorjs-inline-font-size-tool";
 
-import {API_ENDPOINTS} from "@/js/constants/API_ENDPOINTS";
+import { IMAGE_ENDPOINTS} from "@/js/constants/API_ENDPOINTS";
 import CustomAttachesTool from "@/js/constants/attachesExtension";
 
 export const editorJsTools = {
@@ -38,14 +38,14 @@ export const editorJsTools = {
         class: ImageTool,
         config: {
             endpoints: {
-                byFile: API_ENDPOINTS.IMAGE.IMAGE_UPLOAD_EDITOR_JS
+                byFile: IMAGE_ENDPOINTS.IMAGE.IMAGE_UPLOAD_EDITOR_JS
             }
         }
     },
     video: {
         class: CustomAttachesTool,
         config: {
-            endpoint: API_ENDPOINTS.IMAGE.IMAGE_UPLOAD_EDITOR_JS
+            endpoint: IMAGE_ENDPOINTS.IMAGE.IMAGE_UPLOAD_EDITOR_JS
         }
     }
 }
