@@ -2,7 +2,6 @@
 /**
  * IMPORT DEPENDENCIES
  */
-import axios from 'axios'
 import {storeToRefs} from "pinia";
 import {computed, onBeforeMount, Ref, ref} from 'vue'
 import {useRoute} from 'vue-router';
@@ -11,10 +10,12 @@ import BaseBreadcrumb from "@/js/components/bases/BaseBreadcrumb.vue";
 import BaseHero from "@/js/components/bases/BaseHero.vue";
 import BaseSingle from "@/js/components/bases/BaseSingle.vue";
 import BaseSingleSubmenu from "@/js/components/bases/BaseSingleSubmenu.vue";
+import GenericButton from "@/js/components/button/GenericButton.vue";
 import SchoolTechHoverableRow from "@/js/components/schools/schoolMap/SchoolTechHoverableRow.vue";
 import SchoolNominationButton from "@/js/components/schools/SchoolNominationButton.vue";
 import SchoolContent from "@/js/components/schoolsingle/SchoolContent.vue";
 import Loader from "@/js/components/spinner/Loader.vue";
+import {formatDateToDayTime} from "@/js/helpers/dateHelper";
 import {isObjectEmpty} from "@/js/helpers/objectHelpers";
 import EdsparkPageNotFound from "@/js/pages/EdsparkPageNotFound.vue";
 import {schoolService} from "@/js/service/schoolService";
@@ -55,9 +56,9 @@ onBeforeMount(async () => {
 const fetchSchoolByNameAsync = async (schoolName): Promise<void> => {
     if (isPreviewMode.value) {
         try {
-            const {data} = await schoolService.fetchPendingSchoolByName(schoolName, null, currentUser.value.id, null)
-            if(data.result){
-                schoolContent.value = data.result
+            const pendingData = await schoolService.fetchPendingSchoolByName(schoolName, null, currentUser.value.id, null)
+            if(pendingData){
+                schoolContent.value = pendingData
                 if (schoolContent.value['metadata']) {
                     const colorThemeMeta = schoolContent.value['metadata'].filter(meta => meta['schoolmeta_key'] === 'school_color_theme');
                     if (colorThemeMeta.length > 0) {
@@ -165,12 +166,14 @@ const activeSubmenu = ref(schoolSubmenu[0]['value'])
 const handleChangeSubmenu = (value) => {
     activeSubmenu.value = value
 }
+// End of submenu specific code  plus @emit-active-tab-to-specific-page in BaseSingle
 const isSchoolContentPopulated = computed(() => {
     return !!schoolContent.value && !isObjectEmpty(schoolContent.value)
 })
 
-// End of submenu specific code  plus @emit-active-tab-to-specific-page in BaseSingle
-
+const handleCloseModerationTab = () : void =>{
+    window.close();
+}
 </script>
 <template>
     <div v-if="isSchoolContentPopulated">
@@ -244,9 +247,22 @@ const isSchoolContentPopulated = computed(() => {
                     <div class="flex flex-col mt-10 w-full xl:!mt-20">
                         <div
                             v-if="isPreviewMode && schoolContent.name"
-                            class="font-semibold mb-4 previewLabel text-center text-xl"
+                            class="flex justify-center flex-row"
                         >
-                            PREVIEWING CONTENT (MODERATION)
+                            <div
+                                class="basis-4/5 font-semibold mb-4 previewLabel text-center text-xl"
+                            >
+                                PREVIEW CONTENT (MODERATION)
+                                <div class="font-medium text-base text-center">
+                                    Created at: {{ schoolContent['updated_at'] ? formatDateToDayTime(schoolContent['updated_at']) : '' }}
+                                    by <span class="font-semibold"> {{ schoolContent?.owner?.owner_name || "" }} </span>
+                                </div>
+                            </div>
+                            <div class="basis-1/5 flex">
+                                <GenericButton :callback="handleCloseModerationTab">
+                                    Back to moderation
+                                </GenericButton>
+                            </div>
                         </div>
                         <SchoolContent
                             :school-content="schoolContent"
@@ -258,14 +274,6 @@ const isSchoolContentPopulated = computed(() => {
                             @send-photo-to-school-single="handleReceivePhotoFromContent"
                         >
                             <template #additionalContentActions>
-                                <div
-                                    v-if="isPreviewMode"
-                                    class="font-semibold"
-                                >
-                                    Preview Content
-                                </div>
-                                <div>Click to go back</div>
-
                                 <SchoolNominationButton
                                     v-if="schoolContent['site']['site_id']"
                                     :site-id="schoolContent['site']['site_id']"

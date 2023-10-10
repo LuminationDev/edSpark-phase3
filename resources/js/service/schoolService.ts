@@ -1,4 +1,4 @@
-import axios, { AxiosResponse} from "axios";
+import axios, {AxiosResponse} from "axios";
 import _ from "lodash";
 
 import {API_ENDPOINTS} from "@/js/constants/API_ENDPOINTS";
@@ -36,7 +36,7 @@ export const schoolService = {
             data
         )
     },
-    fetchPendingSchoolByName: async (schoolName, site_id, user_id, school_id): Promise<AxiosResponse<any>> => {
+    fetchPendingSchoolByName: async (schoolName, site_id, user_id, school_id): Promise<SchoolDataType | any> => {
         const data = {
             "site_id": site_id,
             "user_id": user_id,
@@ -45,7 +45,19 @@ export const schoolService = {
         return axios.post(
             API_ENDPOINTS.SCHOOL.FETCH_PENDING_SCHOOL_BY_NAME + schoolName,
             data
-        )
+        ).then(res => {
+            const result = res.data.result
+            console.log('result issssss')
+            console.log(result)
+            const {content_blocks, tech_used, cover_image, logo} = parseToJsonIfString(result);
+            return ({
+                ...result,
+                content_blocks: content_blocks ? parseToJsonIfString(content_blocks) : {},
+                tech_used: tech_used ? parseToJsonIfString(tech_used) : [],
+                cover_image: cover_image ? cover_image.replace("/\\/g", "") : '',
+                logo: logo ? logo.replace("/\\/g", "") : ''
+            })
+        })
     },
     /**
      * Get school info based on user's site id

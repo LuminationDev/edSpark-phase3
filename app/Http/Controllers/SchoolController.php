@@ -81,6 +81,7 @@ class SchoolController extends Controller
             'location' => $siteLocation,
             'isLikedByUser' => $isLikedByUser,
             'isBookmarkedByUser' => $isBookmarkedByUser,
+            'updated_at'=> $school->updated_at ?: "",
 
         ];
     }

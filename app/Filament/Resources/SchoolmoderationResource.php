@@ -64,9 +64,6 @@ class SchoolmoderationResource extends Resource
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
-                Tables\Actions\Action::make('preview')
-                    ->url(fn ( $record): string => 'http://localhost:8000/schools/'. $record->name . '?preview=true')
-                    ->openUrlInNewTab()
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

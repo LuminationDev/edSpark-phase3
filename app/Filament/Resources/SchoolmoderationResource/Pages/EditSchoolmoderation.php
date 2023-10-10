@@ -1,10 +1,11 @@
 <?php
 
 namespace App\Filament\Resources\SchoolmoderationResource\Pages;
+
 use App\Models\School;
 use Illuminate\Database\Eloquent\Model;
 use App\Filament\Resources\SchoolmoderationResource;
-use Filament\Actions;
+use Filament\Actions\Action;
 use Filament\Resources\Pages\EditRecord;
 
 class EditSchoolmoderation extends EditRecord
@@ -14,7 +15,9 @@ class EditSchoolmoderation extends EditRecord
     protected function getHeaderActions(): array
     {
         return [
-            Actions\DeleteAction::make(),
+            Action::make('preview')
+                ->url(fn ($record) => 'http://localhost:8000/schools/' . $record->name . '?preview=true')
+                ->openUrlInNewTab()
         ];
     }
 
