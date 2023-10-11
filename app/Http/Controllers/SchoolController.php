@@ -470,18 +470,16 @@ class SchoolController extends Controller
             $requestData = $request->validate([
                 'school_id' => 'required',
                 'site_id' => 'required',
-                'user_id' => 'required',
                 'nominated_id_delete' => 'required',
             ]);
 
             $school_id = $requestData['school_id'];
             $site_id = $requestData['site_id'];
-            $user_id = $requestData['user_id'];
             $nominated_id_delete = $requestData['nominated_id_delete'];
 
-            $user_record = User::find($user_id);
+            $user_record = Auth::user();
 
-            if ($user_record && $user_record->site_id == $site_id && $user_record->role->role_name === 'SCHLDR') {
+            if ($user_record && $user_record->site_id == $site_id && ($user_record->role->role_name === 'SCHLDR' || $user_record->role->role_name === 'Superadmin')) {
 
                 $deleted = Schoolmeta::where('school_id', $school_id)
                     ->where('schoolmeta_key', 'nominated_user')

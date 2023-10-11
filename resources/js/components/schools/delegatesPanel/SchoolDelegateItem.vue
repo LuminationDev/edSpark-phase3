@@ -1,6 +1,6 @@
 <script setup lang="ts">
 
-import {delegatesUser} from "@/js/components/schools/delegatesPanel/SchoolDelegationPanel.vue";
+import {delegatesUser} from "@/js/components/schools/delegatesPanel/SchoolDelegatePanel.vue";
 import {imageURL} from "@/js/constants/serverUrl";
 
 const props = defineProps({
@@ -19,7 +19,7 @@ const props = defineProps({
 <template>
     <div
         class="bg-white hover:bg-gray-200 flex flex-row innerListItem mb-2 px-2 rounded-xl w-24 w-full"
-        @click="() => clickCallback(user.id)"
+        @click="() => clickCallback(user)"
     >
         <div class="basis-1/4 containerPictureProfile">
             <img

@@ -3,7 +3,8 @@ import {storeToRefs} from "pinia";
 import {computed, onMounted, ref} from 'vue'
 
 import SchoolDelegateItem from "@/js/components/schools/delegatesPanel/SchoolDelegateItem.vue";
-import {imageURL} from "@/js/constants/serverUrl";
+import Loader from "@/js/components/spinner/Loader.vue";
+import InfoCircleIcon from "@/js/components/svg/InfoCircleIcon.vue";
 import {schoolService} from "@/js/service/schoolService";
 import {useUserStore} from "@/js/stores/useUserStore";
 
@@ -27,10 +28,9 @@ const props = defineProps({
     }
 })
 const {currentUser} = storeToRefs(useUserStore())
-
 const siteStaffList = ref([])
 const nominatedStaffList = ref([])
-
+const loading = ref(true)
 
 onMounted(async () => {
     try {
@@ -43,12 +43,17 @@ onMounted(async () => {
         nominatedStaffList.value = delegates;
     } catch (error) {
         console.error("Error fetching data:", error);
+    } finally {
+        loading.value = false
     }
 })
 
-const handleClickNominateUser = async (staffId) => {
-    const result = await schoolService.nominateNewDelegates(props.siteId, props.schoolId, staffId)
+const handleClickNominateUser = async (staff) => {
+    const result = await schoolService.nominateNewDelegates(props.siteId, props.schoolId, staff.id)
     console.log(result)
+    if(result.status === 200){
+        nominatedStaffList.value.push(staff)
+    }
 }
 
 // computed variable containing the staff from a site that hasn't been made delegates
@@ -59,8 +64,12 @@ const availableStaffList = computed(() => {
 })
 
 
-const handleClickDeleteDelegates = async (staffId) => {
+const handleClickDeleteDelegates = async (staff) => {
     // remove from nominated list, add back to staffList ensure the server returns correct
+    const result = await schoolService.removeDelegates(props.siteId, props.schoolId,staff.id )
+    if(result.status === 200){
+        nominatedStaffList.value = nominatedStaffList.value.filter(nominatedStaff => nominatedStaff.id !== staff.id)
+    }
 }
 </script>
 
@@ -68,10 +77,21 @@ const handleClickDeleteDelegates = async (staffId) => {
     <div
         class="DelegationPanelInnerContainer flex flex-col rounded-xl w-full"
     >
-        <div class="DelegationPanelAvailableSection bg-gray-100 mb-4 px-2 rounded-xl">
+        <div class="font-semibold mb-2 text-genericDark text-lg">
+            Nominate staff from your site to build this page
+        </div>
+        <div
+            v-if="availableStaffList.length"
+            class="DelegationPanelAvailableSection bg-gray-100 mb-4 px-2 rounded-xl"
+        >
             <div class="font-semibold pt-2 text-gray-400 text-sm uppercase">
-                Available
+                <span class="flex items-center flex-row gap-2">Available
+                    <info-circle-icon
+                        v-tippy="{content: 'Assigned User will be able to edit the page. Click on their name to make them a delegate', arrow: true, theme: 'light'}"
+                        class="hover:stroke-main-lightTeal"
+                    /></span>
                 <div
+                    v-if="!loading"
                     v-dragscroll
                     class="bg-gray-100 flex flex-col innerList max-h-[300px] mt-1 overflow-y-scroll w-full hover:cursor-grab"
                 >
@@ -85,12 +105,25 @@ const handleClickDeleteDelegates = async (staffId) => {
                         />
                     </template>
                 </div>
+                <div
+                    v-else
+                    class="pb-4"
+                >
+                    <Loader
+                        loader-type="inline"
+                        loader-message-class="text-lg font-semibold pb-4"
+                    />
+                </div>
             </div>
         </div>
-        <div class="DelegationPanelAssignedSection bg-gray-100 mb-4 px-2 rounded-xl">
+        <div
+            v-if="nominatedStaffList.length"
+            class="DelegationPanelAssignedSection bg-gray-100 mb-4 px-2 rounded-xl"
+        >
             <div class="font-semibold pt-2 text-gray-400 text-sm uppercase">
                 Assigned
                 <div
+                    v-if="!loading"
                     v-dragscroll
                     class="bg-gray-100 flex flex-col innerList max-h-[300px] mt-1 overflow-y-scroll w-full hover:cursor-grab"
                 >
@@ -99,10 +132,19 @@ const handleClickDeleteDelegates = async (staffId) => {
                         :key="index"
                     >
                         <SchoolDelegateItem
-                            :click-callback="handleClickNominateUser"
+                            :click-callback="handleClickDeleteDelegates"
                             :user="staff"
                         />
                     </template>
+                </div>
+                <div
+                    v-else
+                    class="pb-4"
+                >
+                    <Loader
+                        loader-type="inline"
+                        loader-message-class="text-lg font-semibold pb-4"
+                    />
                 </div>
             </div>
         </div>

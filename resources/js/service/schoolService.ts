@@ -152,6 +152,19 @@ export const schoolService = {
         }).then(res =>{
             return res.data
         })
+    },
+    removeDelegates:(siteId: number, schoolId: number, nominatedUserId: number) : Promise<any> => {
+        return axios({
+            method: "POST",
+            url: API_ENDPOINTS.SCHOOL.DELETE_NOMINATED_USER,
+            data: {
+                "site_id": siteId,
+                "school_id": schoolId,
+                'nominated_id_delete': nominatedUserId
+            }
+        }).then(res =>{
+            return res.data
+        })
     }
 
 
