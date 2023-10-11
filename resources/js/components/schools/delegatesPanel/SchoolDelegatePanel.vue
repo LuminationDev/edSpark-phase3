@@ -52,7 +52,7 @@ onMounted(async () => {
 const handleClickNominateUser = async (staff) => {
     const result = await schoolService.nominateNewDelegates(props.siteId, props.schoolId, staff.id)
     console.log(result)
-    if(result.status === 200){
+    if (result.status === 200) {
         nominatedStaffList.value.push(staff)
         toast('Added ' + staff.name + ' as a delegate')
     }
@@ -68,8 +68,8 @@ const availableStaffList = computed(() => {
 
 const handleClickDeleteDelegates = async (staff) => {
     // remove from nominated list, add back to staffList ensure the server returns correct
-    const result = await schoolService.removeDelegates(props.siteId, props.schoolId,staff.id )
-    if(result.status === 200){
+    const result = await schoolService.removeDelegates(props.siteId, props.schoolId, staff.id)
+    if (result.status === 200) {
         nominatedStaffList.value = nominatedStaffList.value.filter(nominatedStaff => nominatedStaff.id !== staff.id)
         toast('Removed ' + staff.name + ' from delegate list')
 
@@ -82,14 +82,15 @@ const handleClickDeleteDelegates = async (staff) => {
         class="DelegationPanelInnerContainer flex flex-col rounded-xl w-full"
     >
         <div class="font-semibold mb-2 text-genericDark text-lg">
-            Nominate staff from your site to build this page
+            Nominate staff
         </div>
         <div
             v-if="availableStaffList.length"
             class="DelegationPanelAvailableSection bg-gray-100 mb-4 px-2 rounded-xl"
         >
             <div class="font-semibold pt-2 text-gray-400 text-sm uppercase">
-                <span class="flex items-center flex-row gap-2">Available
+                <span class="flex items-center flex-row font-medium gap-2 pl-1">
+                    Available
                     <info-circle-icon
                         v-tippy="{content: 'Assigned User will be able to edit the page. Click on their name to make them a delegate', arrow: true, theme: 'light'}"
                         class="hover:stroke-main-lightTeal"
@@ -125,10 +126,12 @@ const handleClickDeleteDelegates = async (staff) => {
             class="DelegationPanelAssignedSection bg-gray-100 mb-4 px-2 rounded-xl"
         >
             <div class="font-semibold pt-2 text-gray-400 text-sm uppercase">
-                <span class="flex items-center flex-row gap-2">Assigned <info-circle-icon
-                    v-tippy="{content: 'These users can edit the page. Click on their name to remove them from delegate list', arrow: true, theme: 'light'}"
-                    class="hover:stroke-main-lightTeal"
-                /></span>
+                <span class="flex items-center flex-row font-medium gap-2 pl-1">
+                    Assigned
+                    <info-circle-icon
+                        v-tippy="{content: 'These users can edit the page. Click on their name to remove them from delegate list', arrow: true, theme: 'light'}"
+                        class="hover:stroke-main-lightTeal"
+                    /></span>
                 <div
                     v-if="!loading"
                     v-dragscroll

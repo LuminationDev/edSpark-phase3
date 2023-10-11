@@ -30,16 +30,16 @@ const props = defineProps({
             >
             <div
                 v-else
-                class="grid place-items-center h-20 object-center object-cover rounded-full w-20"
+                class="bg-gray-100 grid place-items-center h-16 my-2 object-center object-cover rounded-full text-base w-16"
             >
                 {{ user.display_name }}
             </div>
         </div>
         <div class="basis-3/4 flex justify-center flex-col nameAndTitle">
-            <div class="Name font-semibold">
+            <div class="Name capitalize font-medium text-base text-black">
                 {{ user.name }}
             </div>
-            <div class="font-semibold roleTitle">
+            <div class="capitalize font-normal roleTitle text-base">
                 {{ user.role }}
             </div>
         </div>
