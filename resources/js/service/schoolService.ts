@@ -132,21 +132,26 @@ export const schoolService = {
                 }
             });
             if (response.data.status === 200) {
-                const keys = Object.keys(response.data.result);
-                const staffList = []
-                keys.forEach((key) => {
-                    staffList.push({
-                        id: key,
-                        name: response.data.result[key]
-                    });
-                });
-                return staffList
+                return response.data.data
             }
             return []
         } catch (error) {
             console.error("Error fetching nominated users:", error);
             return [];
         }
+    },
+    nominateNewDelegates: (siteId: number, schoolId: number, nominatedUserId: number) =>{
+        return axios({
+            method: "POST",
+            url: API_ENDPOINTS.SCHOOL.NOMINATE_USER_FOR_SCHOOL,
+            data: {
+                "site_id": siteId,
+                "school_id": schoolId,
+                'nominated_user_id': nominatedUserId
+            }
+        }).then(res =>{
+            return res.data
+        })
     }
 
 

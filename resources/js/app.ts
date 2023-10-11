@@ -6,6 +6,7 @@ import 'vue3-toastify/dist/index.css';
 import {createPinia} from 'pinia';
 import {setupCalendar} from 'v-calendar';
 import {createApp} from 'vue';
+import VueDragsScroll from 'vue-dragscroll'
 import VueGoogleMaps from 'vue-google-maps-community-fork';
 import VueTippy from 'vue-tippy'
 import Vue3Toastify, {ToastContainerOptions} from "vue3-toastify";
@@ -37,4 +38,5 @@ createApp(App)
     .use(VueTippy, tippyOptions
     )
     .use(Vue3Toastify, {autoClose: 5000} as ToastContainerOptions)
+    .use(VueDragsScroll)
     .mount('#app');

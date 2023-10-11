@@ -11,7 +11,7 @@ import BaseHero from "@/js/components/bases/BaseHero.vue";
 import BaseSingle from "@/js/components/bases/BaseSingle.vue";
 import BaseSingleSubmenu from "@/js/components/bases/BaseSingleSubmenu.vue";
 import GenericButton from "@/js/components/button/GenericButton.vue";
-import SchoolDelegationPanel from "@/js/components/schools/SchoolDelegationPanel.vue";
+import SchoolDelegationPanel from "@/js/components/schools/delegatesPanel/SchoolDelegationPanel.vue";
 import SchoolTechHoverableRow from "@/js/components/schools/schoolMap/SchoolTechHoverableRow.vue";
 import SchoolNominationButton from "@/js/components/schools/SchoolNominationButton.vue";
 import SchoolContent from "@/js/components/schoolsingle/SchoolContent.vue";
