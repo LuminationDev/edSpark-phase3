@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import {storeToRefs} from "pinia";
 import {computed, onMounted, ref} from 'vue'
+import {toast} from "vue3-toastify";
 
 import SchoolDelegateItem from "@/js/components/schools/delegatesPanel/SchoolDelegateItem.vue";
 import Loader from "@/js/components/spinner/Loader.vue";
@@ -53,6 +54,7 @@ const handleClickNominateUser = async (staff) => {
     console.log(result)
     if(result.status === 200){
         nominatedStaffList.value.push(staff)
+        toast('Added ' + staff.name + ' as a delegate')
     }
 }
 
@@ -69,6 +71,8 @@ const handleClickDeleteDelegates = async (staff) => {
     const result = await schoolService.removeDelegates(props.siteId, props.schoolId,staff.id )
     if(result.status === 200){
         nominatedStaffList.value = nominatedStaffList.value.filter(nominatedStaff => nominatedStaff.id !== staff.id)
+        toast('Removed ' + staff.name + ' from delegate list')
+
     }
 }
 </script>
@@ -121,7 +125,10 @@ const handleClickDeleteDelegates = async (staff) => {
             class="DelegationPanelAssignedSection bg-gray-100 mb-4 px-2 rounded-xl"
         >
             <div class="font-semibold pt-2 text-gray-400 text-sm uppercase">
-                Assigned
+                <span class="flex items-center flex-row gap-2">Assigned <info-circle-icon
+                    v-tippy="{content: 'These users can edit the page. Click on their name to remove them from delegate list', arrow: true, theme: 'light'}"
+                    class="hover:stroke-main-lightTeal"
+                /></span>
                 <div
                     v-if="!loading"
                     v-dragscroll
