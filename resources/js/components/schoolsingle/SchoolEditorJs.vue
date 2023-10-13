@@ -1,31 +1,30 @@
 <script setup>
-import {API_ENDPOINTS} from "@/js/constants/API_ENDPOINTS";
+import AttachesTool from '@editorjs/attaches';
 import EditorJS from '@editorjs/editorjs';
 /**
  * EditorJS Plugins
  */
 import Header from '@editorjs/header';
-import Paragraph from '@editorjs/paragraph';
-import List from '@editorjs/list';
 import ImageTool from '@editorjs/image'
-import AttachesTool from '@editorjs/attaches';
-import CustomAttachesTool from '../../constants/attachesExtension';
-import {serverURL} from "@/js/constants/serverUrl";
-
+import List from '@editorjs/list';
+import Paragraph from '@editorjs/paragraph';
 import SimpleImage from '@editorjs/simple-image';
 import FontSize from 'editorjs-inline-font-size-tool';
 // import VideoRecorder from '../../constants/customVideoBlock';
 // import VideoRecorder from '../../constants/editorJsCustomVideoRecorder.js';
+import {onMounted} from 'vue';
 
+import {API_ENDPOINTS} from "@/js/constants/API_ENDPOINTS";
+import {serverURL} from "@/js/constants/serverUrl";
 
-import { onMounted } from 'vue';
+import CustomAttachesTool from '../../constants/attachesExtension';
 
 const props = defineProps({
-    existingData:{
+    existingData: {
         type: Object,
         required: false
     },
-    editMode:{
+    editMode: {
         type: Boolean,
         required: false
     }
@@ -34,10 +33,10 @@ const props = defineProps({
 const emits = defineEmits(['sendSchoolData'])
 
 const editorJsTools = {
-    header:{
+    header: {
         class: Header,
         inlineToolbar: true,
-        config:{
+        config: {
             placeholder: "Insert Header"
         }
     },
@@ -51,8 +50,8 @@ const editorJsTools = {
         },
         toolbox: [
             {
-                icon : '<svg width="25" height="19" viewBox="0 0 25 19" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M6.70313 18.5V3.875H0.890625V0.5H16.0031V3.875H10.1906V18.5H6.70313ZM17.1656 18.5V9.5H13.6781V6.125H24.1406V9.5H20.6531V18.5H17.1656Z" fill="white"/></svg>',
-                title : 'Text'
+                icon: '<svg width="25" height="19" viewBox="0 0 25 19" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M6.70313 18.5V3.875H0.890625V0.5H16.0031V3.875H10.1906V18.5H6.70313ZM17.1656 18.5V9.5H13.6781V6.125H24.1406V9.5H20.6531V18.5H17.1656Z" fill="white"/></svg>',
+                title: 'Text'
             }
         ]
     },
@@ -63,30 +62,16 @@ const editorJsTools = {
     // image: SimpleImage
     image: {
         class: ImageTool,
-        config:{
-            endpoints:{
+        config: {
+            endpoints: {
                 byFile: API_ENDPOINTS.IMAGE.IMAGE_UPLOAD_EDITOR_JS
             }
-            // uploader: {
-            //     async uploadByFile(file) {
-
-
-
-            //         const result = await libraryStore.tempFileStore(file, 'image')
-
-            //         console.log(result);
-            //         return result;
-            //     }
-            // }
         }
     },
     video: {
         class: CustomAttachesTool,
         config: {
             endpoint: API_ENDPOINTS.IMAGE.IMAGE_UPLOAD_EDITOR_JS
-            // {
-            //     uploadByFile: `${serverURL}/imageUploadEditorjs`
-            // }
         }
     }
 }
@@ -97,8 +82,8 @@ const editor = new EditorJS({
     autofocus: true,
     onReady: () => {
         console.log('EditorJs in the chamber and ready to be emptied 🔫')
-        if(props.existingData){
-            for(let block of props.existingData.blocks){
+        if (props.existingData) {
+            for (const block of props.existingData.blocks) {
                 editor.blocks.insert(block.type, block.data)
             }
             // Add an auto delete first block due editorjs automatically create 1 empty block on init
@@ -106,14 +91,14 @@ const editor = new EditorJS({
             editor.blocks.delete(0);
         }
     },
-    onChange: async (api, event) =>{
+    onChange: async (api, event) => {
         const blockCount = editor.blocks.getBlocksCount();
     }
 });
 
 const editorJsEvent = (customEvent) => {
     // customEvent.type
-    switch(customEvent.type){
+    switch (customEvent.type) {
     case 'block-added':
         console.log('handler for blockadded')
         break;
@@ -124,16 +109,21 @@ const editorJsEvent = (customEvent) => {
 
 }
 
-const handleEditorSave = async () =>{
+const handleEditorSave = async () => {
     await editor.save().then(outputData => {
         emits('sendSchoolData', outputData)
-    }).catch(err =>{
+    }).catch(err => {
         console.log('error has happened ' + err)
     })
 }
 
+const handleEditorRerender = async (newJsonData) => {
+    await editor.render(newJsonData)
+}
+
 defineExpose({
     handleEditorSave,
+    handleEditorRerender
 })
 
 </script>
@@ -151,94 +141,95 @@ defineExpose({
 }
 
 .codex-editor .codex-editor__redactor {
-	margin-right: 50px !important;
+    margin-right: 50px !important;
 }
 
 .ce-block__content {
-	max-width: 100% !important;
-	padding: 0.5rem 1rem !important;
+    max-width: 100% !important;
+    padding: 0.5rem 1rem !important;
 }
 
 .ce-block {
-	margin-bottom: 2rem !important;
-	overflow: hidden;
+    margin-bottom: 2rem !important;
+    overflow: hidden;
 }
 
 .ce-block--focused {
-	border: 1px solid #d9d9d9 !important;
-	border-radius: 0.75rem !important;
-	margin-right: 0 !important;
-	padding-right: 0 !important;
-	-webkit-box-shadow: 0px 0px 36px -8px rgba(0, 0, 0, 0.15);
-	box-shadow: 0px 0px 36px -8px rgba(0, 0, 0, 0.15);
+    border: 1px solid #d9d9d9 !important;
+    border-radius: 0.75rem !important;
+    margin-right: 0 !important;
+    padding-right: 0 !important;
+    -webkit-box-shadow: 0px 0px 36px -8px rgba(0, 0, 0, 0.15);
+    box-shadow: 0px 0px 36px -8px rgba(0, 0, 0, 0.15);
 }
 
 /* Interaction buttons (add block, edit block, etc) */
 .ce-toolbar__actions {
-	left: 2rem !important;
-	flex-direction: column-reverse;
-	max-width: 26px !important;
+    left: 2rem !important;
+    flex-direction: column-reverse;
+    max-width: 26px !important;
 }
 
 .ce-toolbar__settings-btn {
-	margin-left: 0 !important;
-	width: 26px !important;
+    margin-left: 0 !important;
+    width: 26px !important;
 }
 
 .ce-popover {
-	left: 0 !important;
-	right: unset !important;
-	border: solid 1px #d9d9d9 !important;
+    left: 0 !important;
+    right: unset !important;
+    border: solid 1px #d9d9d9 !important;
 }
 
 .ce-settings .ce-popover {
-	left: 26px !important;
+    left: 26px !important;
 }
 
 .ce-popover--opened {
-	background-color: #ffffff;
+    background-color: #ffffff;
 }
 
 .ce-inline-toolbar {
-	left: 23px !important;
-	/* top: -40px !important; */
+    left: 23px !important;
+    /* top: -40px !important; */
 }
 
 /* New block editor placehoolder override */
 .ce-paragraph[data-placeholder]:empty::before,
 .ce-header[data-placeholder]:empty::before {
-	color: #d9d9d9 !important;
-	opacity: 1 !important;
-	font-weight: 300 !important;
-	font-size: 14px !important;
+    color: #d9d9d9 !important;
+    opacity: 1 !important;
+    font-weight: 300 !important;
+    font-size: 14px !important;
 }
 
 /* Block heading sizes */
 .ce-header {
-	padding-top: 3px !important;
+    padding-top: 3px !important;
 }
+
 /* HEADING 1 */
 .ce-block__content h1 {
-	font-size: 36px;
+    font-size: 36px;
 }
 
 .ce-block__content h2 {
-	font-size: 33px;
+    font-size: 33px;
 }
 
 .ce-block__content h3 {
-	font-size: 30px;
+    font-size: 30px;
 }
 
 .ce-block__content h4 {
-	font-size: 27px;
+    font-size: 27px;
 }
 
 .ce-block__content h5 {
-	font-size: 24px;
+    font-size: 24px;
 }
 
 .ce-block__content h6 {
-	font-size: 21px;
+    font-size: 21px;
 }
 </style>

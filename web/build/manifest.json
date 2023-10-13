@@ -1,8 +1,4 @@
 {
-  "resources/assets/images/CommunityIllustration.png": {
-    "file": "assets/CommunityIllustration-a28447f8.png",
-    "src": "resources/assets/images/CommunityIllustration.png"
-  },
   "resources/assets/images/PartnersPuzzle.png": {
     "file": "assets/PartnersPuzzle-f8ea4960.png",
     "src": "resources/assets/images/PartnersPuzzle.png"
@@ -48,25 +44,30 @@
     "src": "resources/assets/images/profile_background.jpeg"
   },
   "resources/css/app.css": {
-    "file": "assets/app-da100c0c.css",
+    "file": "assets/app-0cd51d90.css",
     "isEntry": true,
     "src": "resources/css/app.css"
   },
   "resources/css/filament.css": {
-    "file": "assets/filament-49c24dfb.css",
+    "file": "assets/filament-26d5344b.css",
     "isEntry": true,
     "src": "resources/css/filament.css"
   },
+  "resources/css/filament/admin/theme.css": {
+    "file": "assets/theme-106ac8c2.css",
+    "isEntry": true,
+    "src": "resources/css/filament/admin/theme.css"
+  },
   "resources/css/output.css": {
-    "file": "assets/output-f918ad58.css",
+    "file": "assets/output-4fef7ac3.css",
     "isEntry": true,
     "src": "resources/css/output.css"
   },
   "resources/js/app.css": {
-    "file": "assets/app-c8b22ed0.css",
+    "file": "assets/app-b996322a.css",
     "src": "resources/js/app.css"
   },
-  "resources/js/app.js": {
+  "resources/js/app.ts": {
     "assets": [
       "assets/navbar-514ca0d3.png",
       "assets/cc-286aeef7.png",
@@ -74,7 +75,6 @@
       "assets/sagovau_rev-19524a3e.png",
       "assets/white-ribbon-6ba8cd1c.svg",
       "assets/dfe-42a1625e.svg",
-      "assets/CommunityIllustration-a28447f8.png",
       "assets/eventsCalendar-39cdf35b.png",
       "assets/hardwareInfoImage-e7b190a8.png",
       "assets/PartnersPuzzle-f8ea4960.png",
@@ -82,12 +82,12 @@
       "assets/profile_background-84005a5c.jpeg"
     ],
     "css": [
-      "assets/app-c8b22ed0.css",
-      "assets/app-da100c0c.css",
-      "assets/output-f918ad58.css"
+      "assets/app-b996322a.css",
+      "assets/app-0cd51d90.css",
+      "assets/output-4fef7ac3.css"
     ],
-    "file": "assets/app-f6d5f943.js",
+    "file": "assets/app-036f7534.js",
     "isEntry": true,
-    "src": "resources/js/app.js"
+    "src": "resources/js/app.ts"
   }
 }

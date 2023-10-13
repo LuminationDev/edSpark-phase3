@@ -6,12 +6,11 @@ use App\Filament\Resources\SoftwareResource\Pages;
 use App\Filament\Resources\SoftwareResource\RelationManagers;
 use App\Models\Software;
 use Filament\Forms;
-use Filament\Resources\Form;
+use Filament\Forms\Form;
 use Filament\Resources\Resource;
-use Filament\Resources\Table;
+use Filament\Tables\Table;
 use Filament\Tables;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Illuminate\Support\Facades\Auth;
 use Livewire\TemporaryUploadedFile;
 
@@ -28,12 +27,12 @@ class SoftwareResource extends Resource
     protected static ?string $modelLabel = "Software";
 
     protected static ?string $navigationGroup = 'Content Management';
-    protected static ?string $navigationGroupIcon = 'heroicon-o-collection';
+    protected static ?string $navigationGroupIcon = 'heroicon-o-rectangle-stack';
 
     protected static ?int $navigationSort = 3;
 
 
-    protected static ?string $navigationIcon = 'heroicon-o-collection';
+    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
     public static function form(Form $form): Form
     {
@@ -97,36 +96,6 @@ class SoftwareResource extends Resource
 
                 Forms\Components\Card::make()
                     ->schema([
-//                        Forms\Components\Select::make('template')
-//                            ->label('Choose a Template')
-//                            ->reactive()
-//                            ->options(static::getTemplates()),
-//                        ...static::getTemplateSchemas(),
-
-//                        Forms\Components\Builder::make('content')
-//                            ->blocks([
-//                                Forms\Components\Builder\Block::make('heading')
-//                                    ->schema([
-//                                        Forms\Components\TextInput::make('content')
-//                                            ->label('Heading')
-//                                            ->required()
-//                                    ]),
-//                                Forms\Components\Builder\Block::make('paragraph')
-//                                    ->schema([
-//                                        Forms\Components\MarkdownEditor::make('content')
-//                                            ->label('Paragraph')
-//                                            ->required()
-//                                    ]),
-//                                Forms\Components\Builder\Block::make('image')
-//                                    ->schema([
-//                                        Forms\Components\FileUpload::make('url')
-//                                            ->label('image')
-//                                            ->image()
-//                                            ->required()
-//                                    ])
-//                            ]),
-
-
                         Forms\Components\Builder::make('extra_content')
                             ->blocks([
                                     Forms\Components\Builder\Block::make('templates')
@@ -137,18 +106,6 @@ class SoftwareResource extends Resource
                                                 ->options(static::getTemplates()),
                                             ...static::getTemplateSchemas()
                                         ]),
-                                    Forms\Components\Builder\Block::make('extra_resources')
-                                        ->schema([
-                                            Forms\Components\TextInput::make('resource_title')
-                                                ->label('Extra resources title')
-                                                ->maxLength(255),
-                                            Forms\Components\Repeater::make('item')
-                                                ->schema([
-                                                    Forms\Components\TextInput::make('heading'),
-                                                    Forms\Components\RichEditor::make('content')
-                                                ])
-                                        ])
-                                        ->label('Extra Resources')
                                 ]
                             )
                             ->label('Extra content')
@@ -167,9 +124,9 @@ class SoftwareResource extends Resource
     {
         $filesystem = app(Filesystem::class);
 
-        return collect($filesystem->allFiles(app_path('Filament/PageTemplates/Software')))
+        return collect($filesystem->allFiles(app_path('Filament/PageTemplates')))
             ->map(function (SplFileInfo $file): string {
-                return (string)Str::of('App\\Filament\\PageTemplates\\Software')
+                return (string)Str::of('App\\Filament\\PageTemplates')
                     ->append('\\', $file->getRelativePathname())
                     ->replace(['/', '.php'], ['\\', '']);
             });
@@ -185,7 +142,9 @@ class SoftwareResource extends Resource
                 ->visible(fn($get) => $get('template') == $class)
             )
             ->toArray();
+
     }
+
 
     public static function getTemplateName($class)
     {

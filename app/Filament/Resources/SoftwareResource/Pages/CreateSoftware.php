@@ -15,6 +15,7 @@ class CreateSoftware extends CreateRecord
 {
     protected static string $resource = SoftwareResource::class;
 
+
     protected function mutateFormDataBeforeCreate(array $data): array
     {
         $data['author_id'] = Auth::user()->id;
@@ -25,7 +26,7 @@ class CreateSoftware extends CreateRecord
 
     protected function handleRecordCreation(array $data): Model
     {
-        $record =  parent::handleRecordCreation($data);
+        $record = parent::handleRecordCreation($data);
         $record->save();
         //handle tags
         if (isset($data['tags'])) {

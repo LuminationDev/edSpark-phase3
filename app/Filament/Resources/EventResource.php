@@ -5,9 +5,9 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\EventResource\Pages;
 use App\Models\Event;
 use Filament\Forms;
-use Filament\Resources\Form;
+use Filament\Forms\Form;
 use Filament\Resources\Resource;
-use Filament\Resources\Table;
+use Filament\Tables\Table;
 use Filament\Tables;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
@@ -33,7 +33,7 @@ class EventResource extends Resource
     protected static ?string $navigationIcon = 'heroicon-o-calendar';
 
     protected static ?string $navigationGroup = 'Content Management';
-    protected static ?string $navigationGroupIcon = 'heroicon-o-collection';
+    protected static ?string $navigationGroupIcon = 'heroicon-o-rectangle-stack';
 
     protected static ?int $navigationSort = 5;
 
@@ -80,10 +80,10 @@ class EventResource extends Resource
                                     ->relationship('eventtype', 'event_type_name'),
                                 Forms\Components\TextInput::make('url')
                                     ->label('URL')
-                                    ->hidden(fn (Closure $get) => $get('event_type') === null || $get('event_type') == '7'),
+                                    ->hidden(fn (\Filament\Forms\Get $get) => $get('event_type') === null || $get('event_type') == '7'),
                                 Forms\Components\TextInput::make('address')
                                     ->label('Address')
-                                    ->hidden(fn (Closure $get) => $get('event_type') === null || $get('event_type') == '6'),                                ]),
+                                    ->hidden(fn (\Filament\Forms\Get $get) => $get('event_type') === null || $get('event_type') == '6'),                                ]),
                         Forms\Components\Grid::make(2)
                             ->schema([
                                 Forms\Components\Select::make('event_status')
@@ -127,9 +127,9 @@ class EventResource extends Resource
     {
         $filesystem = app(Filesystem::class);
 
-        return collect($filesystem->allFiles(app_path('Filament/PageTemplates/Event')))
+        return collect($filesystem->allFiles(app_path('Filament/PageTemplates')))
             ->map(function (SplFileInfo $file): string {
-                return (string) Str::of('App\\Filament\\PageTemplates\\Event')
+                return (string) Str::of('App\\Filament\\PageTemplates')
                     ->append('\\', $file->getRelativePathname())
                     ->replace(['/', '.php'],['\\', '']);
             });

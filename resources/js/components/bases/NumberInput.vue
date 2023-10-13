@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
+
 import ErrorMessages from './ErrorMessages.vue'
 
 
@@ -9,16 +10,12 @@ const props = defineProps({
         required: true
     },
     modelValue: {
-        type: String,
+        type: Number,
         required: true
     },
     fieldId: {
         type: String,
         required: true
-    },
-    placeholder: {
-        type: String,
-        required: false
     }
 })
 const emit = defineEmits(['update:modelValue','inputUpdate'])
@@ -53,9 +50,8 @@ defineExpose({
             :id="fieldId"
             ref="inputRef"
             :value="modelValue"
-            :placeholder="placeholder"
             type="number"
-            class="mr-1 border-2 rounded p-2 border-black text-black"
+            class="border-[1px] border-gray-300 mr-1 p-2 rounded text-black"
             :class="{
                 '!border-red-500': v$ && v$.$error
             }"

@@ -1,7 +1,7 @@
 <script setup>
 import GenericSelector from "@/js/components/selector/GenericSelector.vue";
-import {schoolTech, schoolPartnerTech} from "@/js/constants/schoolTech";
 import TechSelectorItem from "@/js/components/selector/TechSelectorItem.vue";
+import {schoolPartnerTech,schoolTech} from "@/js/constants/schoolTech";
 
 const props = defineProps({
     existingTechUsed :{
@@ -15,12 +15,13 @@ const props = defineProps({
 })
 const emits = defineEmits(['sendSchoolTech'])
 const handleDataFromChildren = (techUsedList) =>{
+    console.log(techUsedList)
     emits('sendSchoolTech', techUsedList)
 }
 
 </script>
 <template>
-    <div class="schoolTechContainer flex flex-col">
+    <div class="flex flex-col schoolTechContainer">
         <GenericSelector
             title="Department Provided Technologies"
             :list-data="schoolTech"

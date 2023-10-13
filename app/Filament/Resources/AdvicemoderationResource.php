@@ -6,9 +6,9 @@ use App\Filament\Resources\AdvicemoderationResource\Pages;
 use App\Filament\Resources\AdvicemoderationResource\RelationManagers;
 use App\Models\Advicemoderation;
 use Filament\Forms;
-use Filament\Resources\Form;
+use Filament\Forms\Form;
 use Filament\Resources\Resource;
-use Filament\Resources\Table;
+use Filament\Tables\Table;
 use Filament\Tables;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
@@ -19,7 +19,7 @@ class AdvicemoderationResource extends Resource
     protected static ?string $model = Advicemoderation::class;
     protected static ?string $modelLabel = 'Advice Moderation';
 
-    protected static ?string $navigationIcon = 'heroicon-o-collection';
+    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
     protected static ?string $navigationGroup = 'Moderation';
     protected static ?string $navigationLabel = 'Advice Moderation';
@@ -126,7 +126,7 @@ class AdvicemoderationResource extends Resource
         return parent::getEloquentQuery()->where('post_status', 'Pending');
     }
 
-    protected static function getNavigationBadge(): ?string
+    public static function getNavigationBadge(): ?string
     {
         $count = static::getModel()::query()->where('post_status', 'pending')->count();
         if ($count > 0) {

@@ -71,7 +71,7 @@ class LikeBookmarkController extends Controller
 
     /**
      * Bookmark Feature
-     * Toggable: Bookmark and Unbookmark
+     * Toggleable: Bookmark and Unbookmark
      */
     public function bookmark(Request $request)
     {

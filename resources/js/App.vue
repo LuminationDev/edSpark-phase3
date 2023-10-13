@@ -1,23 +1,24 @@
 <script setup>
 
-import GlobalSearch from "@/js/components/search/GlobalSearch.vue";
-import NavBar from './components/global/navbar/NavBar.vue';
-import Footer from './components/global/Footer/Footer.vue';
-import {useUserStore} from "@/js/stores/useUserStore";
 import {storeToRefs} from "pinia";
-import {useRoute, useRouter} from 'vue-router';
 import {onBeforeMount, onBeforeUnmount} from "vue";
-import recommenderEdsparkSingletonFactory from "@/js/recommender/recommenderEdspark";
-import {isObjectEmpty} from "@/js/helpers/objectHelpers";
-import {useWindowStore} from "@/js/stores/useWindowStore";
-import NavbarMobileMenu from "@/js/components/global/navbar/NavbarMobileMenu.vue";
-import {useAuthStore} from "@/js/stores/useAuthStore";
 import {onMounted, ref} from "vue";
+import {useRoute, useRouter} from 'vue-router';
+
+import NavbarMobileMenu from "@/js/components/global/navbar/NavbarMobileMenu.vue";
+import GlobalSearch from "@/js/components/search/GlobalSearch.vue";
+import {appURL} from "@/js/constants/serverUrl";
+import {isObjectEmpty} from "@/js/helpers/objectHelpers";
+import {useAuthStore} from "@/js/stores/useAuthStore";
+import {useUserStore} from "@/js/stores/useUserStore";
+import {useWindowStore} from "@/js/stores/useWindowStore";
+
+import Footer from './components/global/Footer/Footer.vue';
+import NavBar from './components/global/navbar/NavBar.vue';
 
 
 const router = useRouter();
 const route = useRoute();
-let recommender
 
 const userStore = useUserStore()
 const {currentUser} = storeToRefs(userStore)
@@ -48,17 +49,17 @@ onBeforeMount(async () => {
             window.location = '/login'
         } else {
             if (route.name === 'home') {
-                await router.push('/dashboard')
+                axios.get(`${appURL}/sanctum/csrf-cookie`).then(response => {
+                    router.push('/dashboard')
+                })
             }
         }
     } else {
-        /*
-        Here means local storage is empty, potentially new user. expect user to click login with okta
+        /**
+         * Here means local storage is empty, potentially new user. expect user to click login with okta
          */
     }
-    if (currentUser.value?.id) {
-        recommender = recommenderEdsparkSingletonFactory().getInstance(currentUser.value.id, 'Partner', 100)
-    }
+
     setWindowWidth()
     window.addEventListener('resize', setWindowWidth)
 })

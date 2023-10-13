@@ -1,7 +1,6 @@
 <script setup lang="ts">
-import { computed, ref } from 'vue'
+import {  ref } from 'vue'
 import ErrorMessages from './ErrorMessages.vue'
-
 
 const props = defineProps({
     v$: {
@@ -18,7 +17,8 @@ const props = defineProps({
     },
     placeholder: {
         type: String,
-        required: false
+        required: false,
+        default: 'Insert value here'
     }
 })
 const emit = defineEmits(['update:modelValue','inputUpdate'])
@@ -55,7 +55,7 @@ defineExpose({
             :value="modelValue"
             :placeholder="placeholder"
             type="text"
-            class="mr-1 border-2 rounded p-2 border-black text-black"
+            class="border-[1px] border-gray-300 mr-1 p-2 rounded text-black"
             :class="{
                 '!border-red-500': v$ && v$.$error
             }"

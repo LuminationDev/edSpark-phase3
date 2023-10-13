@@ -6,9 +6,9 @@ use App\Filament\Resources\CommunitymoderationResource\Pages;
 use App\Filament\Resources\CommunitymoderationResource\RelationManagers;
 use App\Models\Communitymoderation;
 use Filament\Forms;
-use Filament\Resources\Form;
+use Filament\Forms\Form;
 use Filament\Resources\Resource;
-use Filament\Resources\Table;
+use Filament\Tables\Table;
 use Filament\Tables;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
@@ -21,7 +21,7 @@ class CommunitymoderationResource extends Resource
     protected static ?string $model = Communitymoderation::class;
     protected static ?string $modelLabel = 'Community Moderation';
 
-    protected static ?string $navigationIcon = 'heroicon-o-collection';
+    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
     protected static ?string $navigationGroup = 'Moderation';
     protected static ?string $navigationLabel = 'Community Moderation';
@@ -122,7 +122,7 @@ class CommunitymoderationResource extends Resource
         return parent::getEloquentQuery()->where('post_status', 'Pending');
     }
 
-    protected static function getNavigationBadge(): ?string
+    public static function getNavigationBadge(): ?string
     {
         $count = static::getModel()::query()->where('post_status', 'pending')->count();
         if ($count > 0){

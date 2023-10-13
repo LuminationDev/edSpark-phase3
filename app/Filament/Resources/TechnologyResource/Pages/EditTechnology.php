@@ -10,7 +10,7 @@ class EditTechnology extends EditRecord
 {
     protected static string $resource = TechnologyResource::class;
 
-    protected function getActions(): array
+    protected function getHeaderActions(): array
     {
         return [
             Actions\DeleteAction::make(),

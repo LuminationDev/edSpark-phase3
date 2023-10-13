@@ -1,58 +1,67 @@
-<script setup>
-import {computed, ref} from 'vue';
+<script setup lang="ts">
+import {computed} from 'vue';
 import {useRouter} from "vue-router";
+
+import EventTypeTag from "@/js/components/events/EventTypeTag.vue";
+import {imageURL} from "@/js/constants/serverUrl";
+import {formatDateToTimeOnly} from "@/js/helpers/dateHelper";
+import {EventType} from "@/js/types/EventTypes";
 
 const props = defineProps({
     events: {
-        type: Array,
+        type: Array as () => EventType[],
         required: true
     }
 });
 
-const router = useRouter()
-const sortedEvents = ref({});
+const router = useRouter();
 
-const arraySorter = () => {
-    let sorted = props.events.sort((a, b) => {
-        return new Date(a.start_date) - new Date(b.start_date);
+// Function to sort events by start_date
+const sortEventsByDate = (events: EventType[]): EventType[] => {
+    return [...events].sort((a, b) => {
+        return new Date(a.start_date).getTime() - new Date(b.start_date).getTime();
     });
+};
 
-    let sortedData = {};
+// group sorted events by date
+const groupEventsByDate = (sorted: EventType[]): Record<string, EventType[]> => {
+    const sortedData: Record<string, EventType[]> = {};
 
-    sorted.forEach(obj => {
-        const date = obj.start_date.split(' ')[0];
-
-        if (sortedData.hasOwnProperty(date)) {
-            sortedData[date].push(obj);
+    sorted.forEach(event => {
+        const date = event.start_date.split(' ')[0];
+        if (sortedData[date]) {
+            sortedData[date].push(event);
         } else {
-            sortedData[date] = [obj];
+            sortedData[date] = [event];
         }
     });
 
-    sortedEvents.value = sortedData
+    return sortedData;
 };
 
-arraySorter();
+const sortedEvents = computed(() => {
+    return groupEventsByDate(sortEventsByDate(props.events));
+});
 
-const handleClickSingleEvent = (eventId) => {
-    console.log('Clicked the event with id: ', eventId);
+const handleClickSingleEvent = (eventId: number): void => {
     router.push({
-        name:"event-single",
-        params: { id: eventId},
-    })
-}
-const eventTypeColorClass = (eventType) => {
-    switch (eventType){
+        name: "event-single",
+        params: {id: eventId},
+    });
+};
+
+const eventTypeColorClass = (eventType: string): string => {
+    switch (eventType) {
     case 'Virtual':
-        return "bg-[#C73858]"
-        break;
+        return "bg-[#C73858]";
     case "In Person":
-        return "bg-blue-500"
-        break;
+        return "bg-blue-500";
     case "Hybrid":
-        return "bg-purple-500"
+        return "bg-purple-500";
+    default:
+        return "";
     }
-}
+};
 </script>
 
 <template>
@@ -74,9 +83,9 @@ const eventTypeColorClass = (eventType) => {
         <div
             v-for="(eventArr, date) in sortedEvents"
             :key="date"
-            class="flex flex-col gap-4 mb-4"
+            class="eventCalenderSide flex flex-col gap-2"
         >
-            <div class="bg-[#F8F8F8] px-10 py-3">
+            <div class="bg-[#F8F8F8] px-5 py-2">
                 <h2 class="font-medium text-[24px]">
                     {{ date }}
                 </h2>
@@ -85,22 +94,38 @@ const eventTypeColorClass = (eventType) => {
             <div
                 v-for="(event, index) in eventArr"
                 :key="index"
-                class="cursor-pointer flex flex-row gap-4 h-[150px] p-4 rounded hover:bg-slate-50"
+                class="cursor-pointer flex flex-col gap-2 mb-4 overflow-hidden pb-4 px-4 relative rounded hover:bg-slate-50"
                 @click="handleClickSingleEvent(event.id)"
             >
-                <div
-                    :class="eventTypeColorClass(event.type)"
-                    class="min-h-full min-w-[8px] rounded-sm"
+                <EventTypeTag
+                    class="!scale-100 lg:!scale-75 xl:!scale-100  !right-0 lg:!-right-2 lg:!top-2 xl:!right-0 xl:!top-4"
+                    :event-type="event.type"
                 />
-                <div class="flex flex-col gap-4 overflow-hidden">
-                    <h5 class="font-semibold text-[18px]">
-                        {{ event.title }}
-                    </h5>
-
+                <div class="flex previewImage">
+                    <img
+                        :src="imageURL+ '/' + event.cover_image"
+                        :alt="event.title"
+                        class="h-24 object-cover object-top w-full"
+                    >
+                </div>
+                <div class="flex flex-row gap-4">
                     <div
-                        class="eventEvcerptTextInline"
-                        v-html="event.excerpt"
+                        :class="eventTypeColorClass(event.type)"
+                        class="min-h-full min-w-[8px] rounded-sm"
                     />
+                    <div class="flex flex-col gap-4 overflow-hidden">
+                        <h5 class="font-semibold text-[18px]">
+                            {{ event.title }}
+                        </h5>
+                        <div class="">
+                            {{ `${formatDateToTimeOnly(event.start_date)}-${formatDateToTimeOnly(event.end_date)}` }}
+                        </div>
+
+                        <div
+                            class="eventEvcerptTextInline"
+                            v-html="event.excerpt"
+                        />
+                    </div>
                 </div>
             </div>
         </div>
@@ -108,23 +133,23 @@ const eventTypeColorClass = (eventType) => {
 </template>
 
 <style scoped>
-    .eventEvcerptTextInline {
-        max-width: 354px;
-    }
+.eventEvcerptTextInline {
+    max-width: 354px;
+}
 
-    .eventEvcerptTextInline :deep(p) {
-        max-width: 354px;
-        width: 354px;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        height: 100px;
-    }
+.eventEvcerptTextInline :deep(p) {
+    max-width: 354px;
+    width: 354px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    height: 100px;
+}
 </style>
 
 <style>
-    ::-webkit-scrollbar-track {
-        margin-top: 1rem !important;
-        margin-bottom: 1rem !important;
-        margin-right: 1rem !important;
-    }
+::-webkit-scrollbar-track {
+    margin-top: 1rem !important;
+    margin-bottom: 1rem !important;
+    margin-right: 1rem !important;
+}
 </style>

@@ -2,16 +2,18 @@
 
 namespace App\Models;
 
+use Filament\Panel;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 use Filament\Models\Contracts\FilamentUser;
 use Filament\Models\Contracts\HasName;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable implements FilamentUser, HasName
 {
-    use HasFactory;
+    use HasFactory, HasApiTokens;
 
     /**
      * The table associated with the model.
@@ -39,7 +41,7 @@ class User extends Authenticatable implements FilamentUser, HasName
 
     ];
 
-    public function canAccessFilament(): bool {
+    public function canAccessPanel(Panel $panel): bool {
         return true;
         // return str_ends_with($this->email, 'edspark.sa.gov.au') && $this->hasVerifiedEmail();
     }

@@ -10,7 +10,7 @@ class ListProductcategories extends ListRecords
 {
     protected static string $resource = ProductcategoryResource::class;
 
-    protected function getActions(): array
+    protected function getHeaderActions(): array
     {
         return [
             Actions\CreateAction::make(),

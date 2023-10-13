@@ -1,16 +1,13 @@
 <script setup>
-import {API_ENDPOINTS} from "@/js/constants/API_ENDPOINTS";
-import {useUserStore} from "@/js/stores/useUserStore";
+import useSWRV from "swrv";
 import {computed, ref} from "vue";
-import axios from 'axios'
 
-import {serverURL} from "@/js/constants/serverUrl";
 import BaseSearch from "@/js/components/search/BaseSearch.vue";
 import GenericMultiSelectFilter from "@/js/components/search/hardware/GenericMultiSelectFilter.vue";
-import useSWRV from "swrv";
-import {axiosSchoolFetcher, axiosSchoolFetcherParams} from "@/js/helpers/fetcher";
-
-import {schoolTech, schoolPartnerTech} from "@/js/constants/schoolTech";
+import {API_ENDPOINTS} from "@/js/constants/API_ENDPOINTS";
+import {schoolPartnerTech,schoolTech} from "@/js/constants/schoolTech";
+import { axiosSchoolFetcherParams} from "@/js/helpers/fetcher";
+import {useUserStore} from "@/js/stores/useUserStore";
 
 const swrvOptions = {
     revalidateOnFocus: false, // disable refresh on every focus, suspect its too often
@@ -21,7 +18,7 @@ console.log(combinedSchoolTech)
 
 const {data: schoolList, error: schoolError} = useSWRV(API_ENDPOINTS.SCHOOL.FETCH_ALL_SCHOOLS, axiosSchoolFetcherParams(useUserStore().getUserRequestParam), swrvOptions)
 
-let schoolFilterList = [
+const schoolFilterList = [
     {name: "Preschool", value:"PRE"},
     {name: "Primary Education", value:"PRIM"},
     {name: "Primary/Secondary", value:"PRSEC"},
@@ -53,16 +50,16 @@ const handleFilter = (filters, dataPath) => {
     >
         <template #filterBar>
             <GenericMultiSelectFilter
+                id="schoolType"
                 placeholder="Filter by school type"
                 :filter-list="schoolFilterList"
-                id="schoolType"
-                data-path="site_type"
+                data-path="site_type_code"
                 @transmit-selected-filters="handleFilter"
             />
             <GenericMultiSelectFilter
+                id="techType"
                 placeholder="Filter by tech"
                 :filter-list="schoolTechFilterList"
-                id="techType"
                 data-path="tech_used"
                 @transmit-selected-filters="handleFilter"
             />

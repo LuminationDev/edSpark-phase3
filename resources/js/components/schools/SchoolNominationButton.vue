@@ -1,12 +1,12 @@
 <script setup>
-import {API_ENDPOINTS} from "@/js/constants/API_ENDPOINTS";
-import {ref, computed, onMounted} from 'vue'
-import GenericButton from "@/js/components/button/GenericButton.vue";
-import SearchDropdown from 'search-dropdown-vue';
-import {serverURL} from "@/js/constants/serverUrl";
-import {storeToRefs} from "pinia";
-import {useUserStore} from "@/js/stores/useUserStore";
 import axios from "axios";
+import {storeToRefs} from "pinia";
+import SearchDropdown from 'search-dropdown-vue';
+import {computed, onMounted,ref} from 'vue'
+
+import GenericButton from "@/js/components/button/GenericButton.vue";
+import {API_ENDPOINTS} from "@/js/constants/API_ENDPOINTS";
+import {useUserStore} from "@/js/stores/useUserStore";
 
 const props = defineProps({
     siteId: {
@@ -44,7 +44,7 @@ onMounted(() => {
         }).then(res => {
             console.log(res.data)
             if (res.data.status === 200) {
-                let keys = Object.keys(res.data.result)
+                const keys = Object.keys(res.data.result)
                 keys.forEach((key, index) => {
                     nominatedStaffList.value.push({
                         id: key,
@@ -128,7 +128,7 @@ const handleDeleteNominatedUser = async (staffId) => {
             <GenericButton
                 :callback="handleClickNominationButton"
                 type="school"
-                class="!rounded px-2 w-48"
+                class="px-2 w-48"
                 :disabled="!doesSiteStaffListExists"
             >
                 <div class="">

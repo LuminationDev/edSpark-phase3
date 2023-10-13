@@ -1,20 +1,21 @@
 <script setup>
-import {ref, computed, watch} from 'vue'
-import {useRoute} from "vue-router";
-import VPagination from "@hennge/vue3-pagination";
 import "@hennge/vue3-pagination/dist/vue3-pagination.css";
 
+import VPagination from "@hennge/vue3-pagination";
+import {computed, ref, watch} from 'vue'
 
-import HardwareCard from "@/js/components/hardware/HardwareCard.vue";
-import SearchBar from "@/js/components/browseschools/SearchBar.vue";
 import AdviceCard from "@/js/components/advice/AdviceCard.vue";
-import SoftwareCard from "@/js/components/software/SoftwareCard.vue";
-import {findNestedKeyValue} from "@/js/helpers/objectHelpers";
-import SchoolCard from "@/js/components/schools/SchoolCard.vue";
-import PartnerCard from "@/js/components/partners/PartnerCard.vue";
-import EventsCard from "@/js/components/events/EventsCard.vue";
-import {guid} from "@/js/helpers/guidGenerator";
+import SearchBar from "@/js/components/browseschools/SearchBar.vue";
 import CardLoading from "@/js/components/card/CardLoading.vue";
+import EventsCard from "@/js/components/events/EventsCard.vue";
+import HardwareCard from "@/js/components/hardware/HardwareCard.vue";
+import PartnerCard from "@/js/components/partners/PartnerCard.vue";
+import SchoolCard from "@/js/components/schools/SchoolCard.vue";
+import SoftwareCard from "@/js/components/software/SoftwareCard.vue";
+import {guid} from "@/js/helpers/guidGenerator";
+import {findNestedKeyValue} from "@/js/helpers/objectHelpers";
+
+
 const props = defineProps({
     resourceList:{
         type: Array,
@@ -31,100 +32,57 @@ const props = defineProps({
 })
 
 const filterTerm = ref('')
-const route = useRoute()
 
 const filteredTermData = computed(() => {
-    if(!props.resourceList) return []
-    let resourceWithKeys = props.resourceList.map(resource => {
-        resource['key'] = guid()
-        return resource
-    })
-    return resourceWithKeys.filter(data => {
-        if (filterTerm.value.length < 1) return true
-        if(data.post_title){
-            if (data.post_title.toLowerCase().includes(filterTerm.value)) return true
-        } else if(data.product_name){
-            // just to accomodate product_name in hardware
-            if (data.product_name.toLowerCase().includes(filterTerm.value)) return true
-        } else if(data.name){ // for partners
-            if(data.name.toLowerCase().includes(filterTerm.value)) return true
-        } else if(data.title) { // very straight forward for event
-            if(data.title.toLowerCase().includes(filterTerm.value)) return true
+    if (!props.resourceList) return [];
 
+    return props.resourceList.reduce((acc, resource) => {
+
+
+        // List of possible attribute names to check - here because different objects has different field
+        const attributesToCheck = ['name', 'title'];
+
+        // If filterTerm is empty or any attribute matches, add the resource to the accumulated array
+        if (filterTerm.value.length < 1 || attributesToCheck.some(attr => resource[attr] && resource[attr].toLowerCase().includes(filterTerm.value))) {
+            // Generate a key for each resource
+            resource['key'] = guid();
+            acc.push(resource);
         }
-        return false
-    })
-})
+        return acc;
+    }, []);
+});
+
 
 const handleSearchTerm = (term) => {
     filterTerm.value = term.toLowerCase()
 }
 
-// original implementation of the filtering. keeping this code here - Erick
-// Function to recursively check for matches in nested objects
-function checkNested(obj, key, value) {
-    if (obj && typeof obj === 'object') {
-        for (let k in obj) {
-            if (obj.hasOwnProperty(k) && k !== 'extra_content') {
-                if (k === key) {
-                    // if that compared brandName/category is inside value (an array) return true
-                    for(let eachValue of value){
-                        if(obj[k] === eachValue){
-                            return true;
-                        }
-                    }
-                } else if (checkNested(obj[k], key, value)) {
-                    return true;
-                }
-            }
-        }
-    }
-    return false;
 
-}
 // Function to filter the products based on the filterBy object
-function filterProducts(products, filterBy) {
-    const filterValues = Object.values(filterBy)
-    let totalValuesCount = 0
-    for(let eachValue of filterValues){
-        totalValuesCount += eachValue.length
-    }
+const filterProducts = (products, filterBy) => {
+    // Check if filterBy object is empty
+    const totalValuesCount = [].concat(...Object.values(filterBy)).length;
     if (totalValuesCount === 0) {
-        return products; // Return all products if filterBy object is empty
+        return products;
     }
-    return products.filter(product => {
-        let filterResult = {}
-        for (let key in filterBy) {
-            // using findNestedKeyValue helper function
-            let productValue = findNestedKeyValue(product, key).flat(1)
-            let filterValues = filterBy[key];
-            // filterValues: {0: '3D Printing', 1: 'Microsoft Teams'}
-            if(filterValues.length === 0){
-                filterResult[key] = true
-            } else{
-                // Handle if there are more than 1 result inside productValue. should just check
-                // if atleast one of the result match the filter and return true
-                if(productValue.length === 1 ){
-                    filterResult[key] = filterValues.includes(productValue[0])
-                }else {
-                    let result = false
-                    productValue.forEach(item => {
-                        // added check for item.name to handle tech_used filter
-                        if(filterValues.includes(item) ||filterValues.includes(item.name)){
-                            result = true
-                        }
-                    })
-                    filterResult[key] = result
-                }
-            }
-        }
-        for(let eachResult of Object.values(filterResult)){
-            if(!eachResult) return false
-        }
-        return true
 
+    return products.filter(product => {
+        for (const key in filterBy) {
+            const productValue = findNestedKeyValue(product, key).flat();
+            const filterValues = filterBy[key];
+
+            // If filterValues is empty for this key, then move on to next key
+            if (filterValues.length === 0) continue;
+
+            // Check if any product value matches the filter values
+            const isMatch = productValue.some(value => filterValues.includes(value) || filterValues.includes(value.name));
+
+            if (!isMatch) return false;
+        }
+        return true;
     });
 }
+
 // set a watcher to reset page to the first page when filters are changed
 watch(props.liveFilterObject, () =>{
     page.value = 1
@@ -157,7 +115,6 @@ const paginatedFilteredData = computed(() =>{
         return filteredData.value.slice((page.value - 1)  * numberOfItemsPerPage, page.value * numberOfItemsPerPage)
     }
 })
-
 
 const showPagination = computed(() =>{
     return filteredData.value.length > numberOfItemsPerPage

@@ -1,49 +1,41 @@
 <script setup>
-import {API_ENDPOINTS} from "@/js/constants/API_ENDPOINTS";
-import {useWindowStore} from "@/js/stores/useWindowStore";
+import axios from 'axios';
+import {storeToRefs} from "pinia";
+import useSWRV from "swrv";
+import {computed, onMounted, onUnmounted, reactive, ref} from 'vue';
+import {useRouter} from "vue-router";
 
-/**
- * Components
- */
-import DashboardHero from '../components/dashboard/DashboardHero.vue';
-import BlackOverlay from '../components/dashboard/BlackOverlay.vue';
-import FirstVisitForm from '../components/dashboard/FirstVisitForm.vue';
-import SectionHeader from '../components/global/SectionHeader.vue';
-
-/**
- * Import Card wrapper
- */
-import SoftwareRobot from '../components/svg/SoftwareRobot.vue';
-
+import CardLoading from '@/js/components/card/CardLoading.vue';
+import CarouselGenerator from "@/js/components/card/CarouselGenerator.vue";
+import BlackOverlay from '@/js/components/dashboard/BlackOverlay.vue';
+import DashboardHero from '@/js/components/dashboard/DashboardHero.vue';
+import FirstVisitForm from '@/js/components/dashboard/FirstVisitForm.vue';
+import SectionHeader from '@/js/components/global/SectionHeader.vue';
+import SchoolSectionDashboard from "@/js/components/schools/SchoolSectionDashboard.vue";
+import SoftwareCard from "@/js/components/software/SoftwareCard.vue";
+import DepartmentApprovedSolo from '@/js/components/svg/DepartmentApprovedSolo.vue';
 import DeptApprovedIcon from "@/js/components/svg/software/DeptApprovedIcon.vue";
 import DeptProvidedIcon from "@/js/components/svg/software/DeptProvidedIcon.vue";
-import DepartmentApprovedSolo from '@/js/components/svg/DepartmentApprovedSolo.vue';
-/**
- * Loading Cards
- */
-import CardLoading from '@/js/components/card/CardLoading.vue';
-import {ref, reactive, computed, onMounted} from 'vue';
-import {useUserStore} from '../stores/useUserStore';
-import {useRouter} from "vue-router";
+import SoftwareRobot from '@/js/components/svg/SoftwareRobot.vue';
+import {API_ENDPOINTS} from "@/js/constants/API_ENDPOINTS";
 import {appURL} from "@/js/constants/serverUrl";
-import {axiosFetcherParams, axiosSchoolFetcher, axiosSchoolFetcherParams} from "@/js/helpers/fetcher";
-import useSwrvState from "@/js/helpers/useSwrvState";
-import useSWRV from "swrv";
-import {storeToRefs} from "pinia";
-import axios from 'axios';
 import {swrvOptions} from "@/js/constants/swrvConstants";
-import SoftwareCard from "@/js/components/software/SoftwareCard.vue";
-import CarouselGenerator from "@/js/components/card/CarouselGenerator.vue";
+import {getDistanceBetweenElements} from "@/js/helpers/drawingHelpers";
+import {axiosFetcherParams} from "@/js/helpers/fetcher";
+import {useSchoolsStore} from "@/js/stores/useSchoolsStore";
+import {useUserStore} from '@/js/stores/useUserStore';
+import {useWindowStore} from "@/js/stores/useWindowStore";
 
 const router = useRouter()
 const userStore = useUserStore();
-const {currentUser, isAdminAuthenticated} = storeToRefs(userStore)
-/**
- * First things first. Handle the user details from okta
- */
+const {currentUser} = storeToRefs(userStore)
+const {isMobile} = storeToRefs(useWindowStore())
+
+
 const idToken = ref('');
 const claims = ref({});
 const isFirstVisit = ref(false);
+const email = ref(null);
 
 const userDetails = reactive({
     name: '',
@@ -56,12 +48,10 @@ const userDetails = reactive({
  * Get the idToken from Okta and set up the claims
  * TODO: Push to the top of the app (where appropriate-considering in App.vue but the redirect from okta login might fail it)
  */
-const getIdToken = async () => {
-
+const getIdToken = (async () => {
     try {
         const response = await axios.get(`${appURL}/okta-data`);
-        // console.log("RESPONSE", response);
-        if (response.data.success === true) {
+        if (response.data.success) {
             userDetails.name = response.data.name;
             userDetails.email = response.data.email;
             // userDetails.siteId = 106;
@@ -77,110 +67,42 @@ const getIdToken = async () => {
     } catch (error) {
         console.error(error);
         console.warn('Failed to get Auth data. User is not logged in')
-        // currentUser.value.id = 61
     }
-};
+})();
 
 /**
  * Check if user has an exisitng account
  */
 const checkFirstVisit = async (emailAddress) => {
     console.log(emailAddress);
-    let emailCheck = await userStore.checkUser(emailAddress);
+    const emailCheck = await userStore.checkUser(emailAddress);
     if (emailCheck.isFirstTimeVisit === false) {
         isFirstVisit.value = false;
         await userStore.fetchCurrentUserAndLoadIntoStore(emailCheck.userdata.user_id);
     } else {
         isFirstVisit.value = true;
     }
-
 }
 
-getIdToken()
 
 const shouldStartSwrv = computed(() => {
-    console.log(Boolean(currentUser.value.id))
     return Boolean(currentUser.value.id)
 })
 
 const {
     data: eventsData,
-    error: eventsError,
-    isValidating: eventsIsValidating
 } = useSWRV(() => shouldStartSwrv.value ? API_ENDPOINTS.EVENT.FETCH_EVENT_POSTS : null, axiosFetcherParams(userStore.getUserRequestParam), swrvOptions)
 const {
     data: softwaresData,
-    error: softwaresError,
-    isValidating: softwaresIsValidating
 } = useSWRV(() => shouldStartSwrv.value ? API_ENDPOINTS.SOFTWARE.FETCH_SOFTWARE_POSTS : null, axiosFetcherParams(userStore.getUserRequestParam), swrvOptions)
 const {
     data: advicesData,
-    error: advicesError,
-    isValidating: advicesIsValidating
 } = useSWRV(() => shouldStartSwrv.value ? API_ENDPOINTS.ADVICE.FETCH_ADVICE_POSTS : null, axiosFetcherParams(userStore.getUserRequestParam), swrvOptions)
-const {
-    data: schoolsData,
-    error: schoolsError,
-    isValidating: schoolsIsValidating
-} = useSWRV(() => shouldStartSwrv.value ? API_ENDPOINTS.SCHOOL.FETCH_FEATURED_SCHOOL : null, axiosSchoolFetcherParams(userStore.getUserRequestParam), swrvOptions)
 
-const {state: eventsState, STATES: ALLSTATES} = useSwrvState(eventsData, eventsError, eventsIsValidating)
-const {state: softwaresState} = useSwrvState(softwaresData, softwaresError, softwaresIsValidating)
-const {state: advicesState} = useSwrvState(advicesData, advicesError, advicesIsValidating)
-const {state: schoolsState} = useSwrvState(schoolsData, schoolsError, schoolsIsValidating)
 
-// who needs a one line ref to indicate loading state when you can have 10 lines 😆
-// todo: compile all ref into an array and process with map
-const eventsLoading = computed(() => {
-    if ([ALLSTATES.ERROR, ALLSTATES.STALE_IF_ERROR].includes(eventsState.value)) {
-        return false
-    } else if ([ALLSTATES.PENDING].includes(eventsState.value)) {
-        return true
-    } else if ([ALLSTATES.VALIDATING].includes(eventsState.value)) {
-        return false
-    } else {
-        return ![ALLSTATES.SUCCESS, ALLSTATES.VALIDATING, ALLSTATES.STALE_IF_ERROR].includes(eventsState.value)
-    }
-})
-const softwareLoading = computed(() => {
-    if ([ALLSTATES.ERROR, ALLSTATES.STALE_IF_ERROR].includes(softwaresState.value)) {
-        return false
-    } else if ([ALLSTATES.PENDING].includes(softwaresState.value)) {
-        return true
-    } else if ([ALLSTATES.VALIDATING].includes(softwaresState.value)) {
-        return false
-    } else {
-        return ![ALLSTATES.SUCCESS, ALLSTATES.VALIDATING, ALLSTATES.STALE_IF_ERROR].includes(softwaresState.value)
-    }
-})
-const adviceLoading = computed(() => {
-    if ([ALLSTATES.ERROR, ALLSTATES.STALE_IF_ERROR].includes(advicesState.value)) {
-        return false
-    } else if ([ALLSTATES.PENDING].includes(advicesState.value)) {
-        return true
-    } else if ([ALLSTATES.VALIDATING].includes(advicesState.value)) {
-        return false
-    } else {
-        return ![ALLSTATES.SUCCESS, ALLSTATES.VALIDATING, ALLSTATES.STALE_IF_ERROR].includes(advicesState.value)
-    }
-})
-const schoolsLoading = computed(() => {
-    if ([ALLSTATES.ERROR, ALLSTATES.STALE_IF_ERROR].includes(schoolsState.value)) {
-        return false
-    } else if ([ALLSTATES.PENDING].includes(schoolsState.value)) {
-        return true
-    } else if ([ALLSTATES.VALIDATING].includes(schoolsState.value)) {
-        return false
-    } else {
-        return ![ALLSTATES.SUCCESS, ALLSTATES.VALIDATING, ALLSTATES.STALE_IF_ERROR].includes(schoolsState.value)
-    }
-})
-
-const onClosePopup = () => {
+const onCloseFirstVisitPopup = () => {
     isFirstVisit.value = false;
 };
-
-const email = ref(null);
 
 
 /**
@@ -189,58 +111,45 @@ const email = ref(null);
 const top = ref('');
 const distanceBetweenEls = ref('');
 const floatingLineClasses = ref('');
-const getConnectingLinePositions = () => {
-    let listContainers = document.querySelectorAll('.softwareDashboardContentContainer');
-    let firstContainer = listContainers[0];
-    let lastContainer = listContainers[listContainers.length - 1];
-    if(firstContainer && lastContainer) {
-        distanceBetweenEls.value = getDistanceBetweenElements(
-            firstContainer,
-            lastContainer
-        );
 
-        let firstElHeight = firstContainer.offsetHeight;
-        top.value = firstContainer.offsetTop + firstElHeight / 2;
-        floatingLineClasses.value = `top-[${top.value}] h-[${distanceBetweenEls.value}px]`
-    }
+
+const adjustConnectingLinePositions = () => {
+    const listContainers = document.querySelectorAll('.softwareDashboardContentContainer');
+
+    if (listContainers.length === 0) return; // Exit early if no containers found
+
+    const [firstContainer] = listContainers;
+    const lastContainer = listContainers[listContainers.length - 1];
+
+    distanceBetweenEls.value = getDistanceBetweenElements(
+        firstContainer,
+        lastContainer
+    );
+
+    const firstElHeight = firstContainer.offsetHeight;
+    top.value = firstContainer.offsetTop + firstElHeight / 2;
+    floatingLineClasses.value = `top-[${top.value}] h-[${distanceBetweenEls.value}px]`;
 };
 
-const getPositionAtCenter = (element) => {
-    if (element) {
-        const {top, left, width, height} = element.getBoundingClientRect();
-        return {
-            x: left + width / 2,
-            y: top + height / 2
-        };
-    } else {
-        return {
-            x: 0,
-            y: 0
-        }
-    }
-}
-
-const getDistanceBetweenElements = (a, b) => {
-    const aPosition = getPositionAtCenter(a);
-    const bPosition = getPositionAtCenter(b);
-
-    return Math.hypot(aPosition.x - bPosition.x, aPosition.y - bPosition.y);
-}
+const handleResize = () => adjustConnectingLinePositions()
 
 onMounted(async () => {
-    window.addEventListener('resize', () => getConnectingLinePositions());
-    getConnectingLinePositions();
+    window.addEventListener('resize', handleResize);
+    handleResize();
 });
 
-const {isMobile} = storeToRefs(useWindowStore())
+onUnmounted(() => {
+    window.removeEventListener('resize', handleResize);
+});
 
-const softwareResponsiveData = computed(() =>{
-    if(!softwaresData.value.length) {
+
+const softwareResponsiveData = computed(() => {
+    if (!softwaresData.value.length) {
         return []
-    }else if(isMobile.value){
-        return softwaresData.value.slice(0,2)
-    } else{
-        return softwaresData.value.slice(0,4)
+    } else if (isMobile.value) {
+        return softwaresData.value.slice(0, 2)
+    } else {
+        return softwaresData.value.slice(0, 4)
     }
 })
 
@@ -255,7 +164,7 @@ const softwareResponsiveData = computed(() =>{
             <div class="relative">
                 <FirstVisitForm
                     :user-details="userDetails"
-                    @on-close-popup="onClosePopup"
+                    @on-close-popup="onCloseFirstVisitPopup"
                 />
             </div>
         </template>
@@ -280,7 +189,7 @@ const softwareResponsiveData = computed(() =>{
         />
 
         <!-- Software Cards Here -->
-        <div class="flex flex-col gap-[24px] group/bg h-full py-8 relative lg:!flex-row lg:!px-huge">
+        <div class="flex flex-col gap-6 group/bg h-full py-8 relative lg:!flex-row lg:!px-huge">
             <div
                 class="
                     -translate-y-1/2
@@ -510,11 +419,7 @@ const softwareResponsiveData = computed(() =>{
             :button-text="'View all schools'"
             :button-callback="() => router.push('/browse/school')"
         />
-
-        <CarouselGenerator
-            data-type="school"
-            :data-array="schoolsData ? schoolsData : []"
-        />
+        <SchoolSectionDashboard />
     </div>
 </template>
 

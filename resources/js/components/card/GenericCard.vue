@@ -1,19 +1,22 @@
-<script setup>
-import {guid} from "@/js/helpers/guidGenerator";
+<script setup lang="ts">
+import axios from "axios";
 import {debounce} from "lodash";
-import {computed, ref} from "vue";
-import {bookmarkURL, imageURL, likeURL} from "@/js/constants/serverUrl";
-import Tooltip from "@/js/components/global/Tooltip/Tooltip.vue";
+import {storeToRefs} from "pinia";
+import {computed, ComputedRef, defineProps, Ref, ref} from "vue";
 
-import Like from "@/js/components/svg/Like.vue";
-import LikeFull from "@/js/components/svg/LikeFull.vue";
 import BookMark from "@/js/components/svg/BookMark.vue";
 import BookmarkFull from "@/js/components/svg/BookmarkFull.vue";
-
-import {storeToRefs} from "pinia";
+import Like from "@/js/components/svg/Like.vue";
+import LikeFull from "@/js/components/svg/LikeFull.vue";
+import ShareIcon from "@/js/components/svg/ShareIcon.vue";
+import {bookmarkURL, imageURL, likeURL} from "@/js/constants/serverUrl";
+import {cardLinkGenerator} from "@/js/helpers/cardDataHelper";
 import {useUserStore} from "@/js/stores/useUserStore";
 
-const {currentUser, userLikeList, userBookmarkList} = storeToRefs(useUserStore())
+const {currentUser} = storeToRefs(useUserStore())
+import {toast} from "vue3-toastify";
+
+import {guid as genGuid} from "@/js/helpers/guidGenerator";
 
 
 const props = defineProps({
@@ -76,16 +79,16 @@ const props = defineProps({
         type: Boolean,
         required: true,
     },
-    guid:{
+    guid: {
         type: String,
         required: false,
-        default: guid()
+        default: genGuid()
     }
 
 });
-const currentUserLiked = ref(props.isLikedByUser)
-const currentUserBookmarked = ref(props.isBookmarkedByUser)
-
+const currentUserLiked: Ref<boolean> = ref(props.isLikedByUser);
+const currentUserBookmarked: Ref<boolean> = ref(props.isBookmarkedByUser);
+const shareTippyMessage: Ref<string> = ref('Copy link');
 /**
  * Check if both start and end date are provided.
  * return both date with "-" if true
@@ -93,7 +96,7 @@ const currentUserBookmarked = ref(props.isBookmarkedByUser)
  * else return empty string if invalid
  * @type {ComputedRef<unknown>}
  */
-const formattedDate = computed(() => {
+const formattedDate: ComputedRef<string> = computed(() => {
     if (props.displayDate && props.endDate) {
         const startDate = new Date(Date.parse(props.displayDate)).toDateString()
         const endDate = new Date(Date.parse(props.endDate)).toDateString()
@@ -112,7 +115,7 @@ const formattedDate = computed(() => {
     }
 })
 
-let likeOrBookmarkPayload = {
+const likeOrBookmarkPayload = {
     post_id: props.id,
     user_id: currentUser.value.id || 9999,
     post_type: props.sectionType
@@ -143,6 +146,22 @@ const handleDefaultBookmark = async () => {
     })
 }
 
+const handleClickShare = (): void => {
+    const link = cardLinkGenerator(props.sectionType, props.title, +props.id ?? null)
+    console.log(link)
+    if (link) {
+        navigator.clipboard.writeText(link)
+        shareTippyMessage.value = 'Link copied to clipboard!'
+        toast.success('Copied link to clipboard!')
+    } else {
+        toast.error('Failed to copy link. Please try again later')
+    }
+}
+
+const handleResetTippyMessage = (): void => {
+    shareTippyMessage.value = 'Copy Link'
+}
+
 const debouncedDefaultLike = debounce(() => {
     handleDefaultLike()
 }, 150)
@@ -151,9 +170,8 @@ const debouncedDefaultBookmark = debounce(() => {
     handleDefaultBookmark()
 }, 150)
 
-const cardHoverToggle = ref(false);
+const cardHoverToggle: Ref<boolean> = ref(false);
 
-const emits = defineEmits(['emitCardClick']);
 
 </script>
 
@@ -240,42 +258,42 @@ const emits = defineEmits(['emitCardClick']);
             </div>
         </template>
         <div class="flex flex-row gap-4 generic-card__footer h-18 mt-auto pl-4 place-items-end">
-            <div class="p-2">
-                <span class="has-tooltip relative">
-                    <LikeFull
-                        v-if="currentUserLiked"
-                        :key="props.guid"
-                        @click="debouncedDefaultLike"
-                    />
-                    <Like
-                        v-else
-                        :key="props.guid"
-                        @click="debouncedDefaultLike"
-                    />
-                    <Tooltip
-                        tip="Like post"
-                        class="absolute w-24"
-                    />
-                </span>
+            <div class="p-2 hover:cursor-pointer">
+                <LikeFull
+                    v-if="currentUserLiked"
+                    :key="props.guid"
+                    v-tippy="'Unlike this item'"
+                    @click="debouncedDefaultLike"
+                />
+                <Like
+                    v-else
+                    :key="props.guid"
+                    v-tippy="'Like this item'"
+                    @click="debouncedDefaultLike"
+                />
             </div>
-            <div class="p-2">
-                <span class="has-tooltip">
-                    <BookmarkFull
-                        v-if="currentUserBookmarked"
-                        :key="props.guid"
-                        @click="debouncedDefaultBookmark"
-                    />
-                    <BookMark
-                        v-else
-                        :key="props.guid"
-
-                        @click="debouncedDefaultBookmark"
-                    />
-                    <Tooltip
-                        tip="Bookmark post"
-                        class="absolute w-36"
-                    />
-                </span>
+            <div class="p-2 hover:cursor-pointer">
+                <BookmarkFull
+                    v-if="currentUserBookmarked"
+                    :key="props.guid"
+                    v-tippy="'Unbookmark this item'"
+                    @click="debouncedDefaultBookmark"
+                />
+                <BookMark
+                    v-else
+                    :key="props.guid"
+                    v-tippy="'Bookmark this item'"
+                    @click="debouncedDefaultBookmark"
+                />
+            </div>
+            <div
+                class="p-2 hover:cursor-pointer"
+                @mouseleave="handleResetTippyMessage"
+            >
+                <ShareIcon
+                    v-tippy="shareTippyMessage"
+                    @click="handleClickShare"
+                />
             </div>
         </div>
     </div>

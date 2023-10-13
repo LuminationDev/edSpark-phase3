@@ -1,22 +1,27 @@
 <script setup>
+
+/**
+ * NOT BEING USED ATM
+ */
+import {storeToRefs} from "pinia";
+import useSWRV from "swrv"; 
 import {computed, onBeforeMount, ref} from 'vue'
 import {useRouter} from "vue-router";
-import {storeToRefs} from "pinia";
-import useSWRV from "swrv";
 
-import SchoolsHero from '../components/schools/SchoolsHero.vue';
+import CarouselGenerator from "@/js/components/card/CarouselGenerator.vue";
+import SectionHeader from "@/js/components/global/SectionHeader.vue";
 import CreateSchoolForm from "@/js/components/schools/createSchool/CreateSchoolForm.vue";
 import SchoolWelcomePopup from "@/js/components/schools/schoolPopup/SchoolWelcomePopup.vue";
-import SectionHeader from "@/js/components/global/SectionHeader.vue";
-import SchoolsSearchableMap from '../components/schools/schoolMap/SchoolsSearchableMap.vue';
-import CarouselGenerator from "@/js/components/card/CarouselGenerator.vue";
-import Loader from '../components/spinner/Loader.vue';
-import {useUserStore} from "@/js/stores/useUserStore";
-import {axiosSchoolFetcherParams} from "@/js/helpers/fetcher";
-import {useSchoolsStore} from "@/js/stores/useSchoolsStore";
-import {swrvOptions} from "@/js/constants/swrvConstants";
 import {API_ENDPOINTS} from "@/js/constants/API_ENDPOINTS";
+import {swrvOptions} from "@/js/constants/swrvConstants";
+import {axiosSchoolFetcherParams} from "@/js/helpers/fetcher";
 import useSwrvState from "@/js/helpers/useSwrvState";
+import {useSchoolsStore} from "@/js/stores/useSchoolsStore";
+import {useUserStore} from "@/js/stores/useUserStore";
+
+import SchoolsSearchableMap from '../components/schools/schoolMap/SchoolsSearchableMap.vue';
+import SchoolsHero from '../components/schools/SchoolsHero.vue';
+import Loader from '../components/spinner/Loader.vue';
 
 const createSchool = ref(false)
 const showWelcomePopup = ref(false)
@@ -105,7 +110,6 @@ const handleSaveWelcomePopup = (data) => {
     showWelcomePopup.value = false
 
 }
-
 </script>
 <template>
     <div

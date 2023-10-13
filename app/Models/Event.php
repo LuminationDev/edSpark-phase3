@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Helpers\ExtraContentCleaner;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Laravel\Scout\Searchable;
@@ -81,4 +82,18 @@ class Event extends Model
         'cover_image' => 'array',
         'extra_content' => 'array'
     ];
+    protected static function boot()
+    {
+        parent::boot();
+        static::creating(function ($event) {
+            if ($event->extra_content) {
+                $event->extra_content = ExtraContentCleaner::cleanExtraContent($event->extra_content);
+            }
+        });
+        static::updating(function ($event) {
+            if ($event->isDirty('extra_content')) {
+                $event->extra_content = ExtraContentCleaner::cleanExtraContent($event->extra_content);
+            }
+        });
+    }
 }

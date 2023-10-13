@@ -1,4 +1,4 @@
-@config '../../tailwind.config.js';
+@config '../../tailwind.config.ts';
 
 @tailwind base;
 @tailwind components;
@@ -40,7 +40,6 @@
         @apply pt-2 h-full font-light text-lg overflow-hidden mt-auto pb-6 transition-all
     }
 }
-
 
 
 html {
@@ -221,17 +220,17 @@ input, textarea, select {
     height: 100%;
 }
 
-.filament-button {
+.fi-btn {
     background-color: teal !important;
     color: white !important;
     border: none;
     padding: 10px 20px;
-  }
+}
 
-  .filament-button:hover {
+.fi-btn:hover {
     background-color: blue !important;
 
-  }
+}
 
 .time_elapsed-counter {
     width: 50px;
