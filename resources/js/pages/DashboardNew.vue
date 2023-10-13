@@ -1,5 +1,4 @@
 <script setup>
-import axios from 'axios';
 import {storeToRefs} from "pinia";
 import useSWRV from "swrv";
 import {computed, onMounted, onUnmounted, reactive, ref} from 'vue';
@@ -18,11 +17,9 @@ import DeptApprovedIcon from "@/js/components/svg/software/DeptApprovedIcon.vue"
 import DeptProvidedIcon from "@/js/components/svg/software/DeptProvidedIcon.vue";
 import SoftwareRobot from '@/js/components/svg/SoftwareRobot.vue';
 import {API_ENDPOINTS} from "@/js/constants/API_ENDPOINTS";
-import {appURL} from "@/js/constants/serverUrl";
 import {swrvOptions} from "@/js/constants/swrvConstants";
 import {getDistanceBetweenElements} from "@/js/helpers/drawingHelpers";
 import {axiosFetcherParams} from "@/js/helpers/fetcher";
-import {useSchoolsStore} from "@/js/stores/useSchoolsStore";
 import {useUserStore} from '@/js/stores/useUserStore';
 import {useWindowStore} from "@/js/stores/useWindowStore";
 
@@ -32,10 +29,7 @@ const {currentUser} = storeToRefs(userStore)
 const {isMobile} = storeToRefs(useWindowStore())
 
 
-const idToken = ref('');
-const claims = ref({});
 const isFirstVisit = ref(false);
-const email = ref(null);
 
 const userDetails = reactive({
     name: '',
@@ -44,45 +38,7 @@ const userDetails = reactive({
     roleId: ''
 });
 
-/**
- * Get the idToken from Okta and set up the claims
- * TODO: Push to the top of the app (where appropriate-considering in App.vue but the redirect from okta login might fail it)
- */
-const getIdToken = (async () => {
-    try {
-        const response = await axios.get(`${appURL}/okta-data`);
-        if (response.data.success) {
-            userDetails.name = response.data.name;
-            userDetails.email = response.data.email;
-            // userDetails.siteId = 106;
-            // userDetails.roleId = 3;
-            // userDetails.siteId = response.data.siteId; //TODO
-            // userDetails.roleId = response.data.roleId; //TODO
-            email.value = response.data.email;
-
-            await checkFirstVisit(email.value);
-        } else {
-            // currentUser.value.id = 61
-        }
-    } catch (error) {
-        console.error(error);
-        console.warn('Failed to get Auth data. User is not logged in')
-    }
-})();
-
-/**
- * Check if user has an exisitng account
- */
-const checkFirstVisit = async (emailAddress) => {
-    console.log(emailAddress);
-    const emailCheck = await userStore.checkUser(emailAddress);
-    if (emailCheck.isFirstTimeVisit === false) {
-        isFirstVisit.value = false;
-        await userStore.fetchCurrentUserAndLoadIntoStore(emailCheck.userdata.user_id);
-    } else {
-        isFirstVisit.value = true;
-    }
-}
+// userStore.fetchCurrentUserAndLoadIntoStore()
 
 
 const shouldStartSwrv = computed(() => {

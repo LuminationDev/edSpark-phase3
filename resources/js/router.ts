@@ -308,19 +308,23 @@ const router = createRouter({
 });
 router.beforeEach(async (to, from, next) => {
     const authStore = useAuthStore();
-    if (to.meta.requiresAuth) {
-        if (!authStore.isAuthenticated) {
-            await authStore.checkAuthenticationStatus();
-        }
-
-        if (authStore.isAuthenticated) {
-            next();
-        } else {
-            next('/forbidden');
-        }
-    } else {
-        next();
+    // If the route doesn't require authentication, we can immediately continue.
+    if (!to.meta.requiresAuth) {
+        return next();
     }
+
+    // At this point, the route does require authentication.
+
+    // If the user isn't authenticated, then we check their authentication status.
+    if (!authStore.isAuthenticated) {
+        console.log('checking auth status from router function');
+        await authStore.checkAuthenticationStatus();
+        console.log('finished checking auth status');
+        console.log(authStore.isAuthenticated)
+    }
+
+    // After possibly checking authentication, we decide where to direct the user.
+    return authStore.isAuthenticated ? next() : next('/forbidden');
 });
 
 export default router;

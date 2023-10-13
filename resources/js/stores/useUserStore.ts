@@ -116,9 +116,10 @@ export const useUserStore = defineStore('user', {
             });
         },
 
-        async fetchCurrentUserAndLoadIntoStore(userId) {
-            console.log(userId);
-            return axios.get(`${serverURL}/fetchUser/${userId}`).then(response => {
+        async fetchCurrentUserAndLoadIntoStore() {
+            return axios.get(`${serverURL}/fetchUser`).then(response => {
+                console.log('fetch user has been called')
+                console.log(response.data)
                 this.currentUser = response.data;
             }).catch(error => {
                 console.log('There was a problem retrieving that user');
