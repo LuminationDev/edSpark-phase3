@@ -116,6 +116,7 @@ const handleReceivePhotoFromImageChange = (type, file) => {
 onMounted(async () => {
     if(!props.isPreviewMode){
         await schoolService.checkIfUserCanEdit(props.schoolContent.site.site_id, currentUser.value.id, props.schoolContent.school_id).then(res => {
+            console.log(res)
             currentUserCanEdit.value = Boolean(res.data.status && res.data.result)
             currentUserCanNominate.value = Boolean(res.data.status && res.data.canNominate)
 
