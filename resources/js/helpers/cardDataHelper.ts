@@ -1,4 +1,6 @@
+import {appURL} from "@/js/constants/serverUrl";
 import {guid} from "@/js/helpers/guidGenerator";
+import lowerSlugify from "@/js/helpers/slugifyHelper";
 
 export const cardDataHelper = (cardData, section) => {
     switch (section) {
@@ -66,4 +68,12 @@ export const  cardDataWithGuid = (cardData) => {
     return cardData.map(data =>{
         return {...data, guid: guid()}
     })
+}
+
+export const cardLinkGenerator = (type: string, name:string ,id?: number ) => {
+    if(type.toLowerCase() === 'school'){
+        return `${appURL}/schools/${encodeURIComponent(name)}`
+    } else{
+        return `${appURL}/${type}/resources/${id}/${lowerSlugify(name)}`
+    }
 }

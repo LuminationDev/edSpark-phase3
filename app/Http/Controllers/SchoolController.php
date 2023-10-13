@@ -65,7 +65,8 @@ class SchoolController extends Controller
             'school_id' => $school->school_id,
             'site' => [
                 'site_id' => $school->site->site_id,
-                'site_name' => ($school->site->site_id) ? $school->site->site_name : NULL
+                'site_name' => ($school->site->site_id) ? $school->site->site_name : NULL,
+                'site_type_code' => ($school->site) ? $school->site->site_type_code : NULL
             ],
             'owner' => [
                 'owner_id' => $school->owner_id,

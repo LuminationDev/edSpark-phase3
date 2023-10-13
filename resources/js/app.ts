@@ -21,7 +21,8 @@ const pinia = createPinia();
 const tippyOptions: any = {
     directive: 'tippy',
     component: 'tippy',
-    defaultProps: {placement: 'top'}
+    defaultProps: {placement: 'top',hideOnClick: false},
+
 
 }
 
@@ -36,8 +37,7 @@ createApp(App)
         autobindAllEvents: true,
     })
     .use(setupCalendar, {})
-    .use(VueTippy, tippyOptions
-    )
+    .use(VueTippy, tippyOptions)
     .use(Vue3Toastify, {autoClose: 5000} as ToastContainerOptions)
     .use(VueDragsScroll)
     .mount('#app');
