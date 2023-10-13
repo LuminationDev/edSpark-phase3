@@ -72,7 +72,7 @@ export const  cardDataWithGuid = (cardData) => {
 
 export const cardLinkGenerator = (type: string, name:string ,id?: number ) => {
     if(type.toLowerCase() === 'school'){
-        return `${appURL}/${name.replace(/ /g, '%20')}`
+        return `${appURL}/schools/${encodeURIComponent(name)}`
     } else{
         return `${appURL}/${type}/resources/${id}/${lowerSlugify(name)}`
     }
