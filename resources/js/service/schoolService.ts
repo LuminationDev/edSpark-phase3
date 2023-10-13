@@ -46,7 +46,7 @@ export const schoolService = {
             API_ENDPOINTS.SCHOOL.FETCH_PENDING_SCHOOL_BY_NAME + schoolName,
             data
         ).then(res => {
-            if(res.data.result){
+            if (res.data.result) {
                 const result = res.data.result
                 console.log('result issssss')
                 console.log(result)
@@ -58,7 +58,7 @@ export const schoolService = {
                     cover_image: cover_image ? cover_image.replace("/\\/g", "") : '',
                     logo: logo ? logo.replace("/\\/g", "") : ''
                 })
-            } else{
+            } else {
                 return null
             }
         })
@@ -107,6 +107,64 @@ export const schoolService = {
             console.error('Error while attempting to update school:', err);
             throw err;
         }
+    },
+    getAllStaffBySiteId: async (siteId: number, currentUserId: number) : Promise<Array<any>> => {
+        try {
+            const res = await axios.get(`${API_ENDPOINTS.SCHOOL.FETCH_STAFF_FROM_SITE}${siteId}`);
+            console.log(res.data);
+            return res.data.data.filter(staff => staff.id !== currentUserId).map(staff => {
+                return {...staff}
+            });
+        } catch (error) {
+            console.error("Error fetching staff:", error);
+            return [];
+        }
+    },
+    getSchoolDelegates: async (siteId: number, schoolId: number, currentUserId: number): Promise<Array<any>> => {
+        try {
+            const response = await axios({
+                method: "POST",
+                url: API_ENDPOINTS.SCHOOL.GET_NOMINATED_USER_FROM_SCHOOL,
+                data: {
+                    "site_id": siteId,
+                    "school_id": schoolId,
+                    "user_id": currentUserId
+                }
+            });
+            if (response.data.status === 200) {
+                return response.data.data
+            }
+            return []
+        } catch (error) {
+            console.error("Error fetching nominated users:", error);
+            return [];
+        }
+    },
+    nominateNewDelegates: (siteId: number, schoolId: number, nominatedUserId: number) =>{
+        return axios({
+            method: "POST",
+            url: API_ENDPOINTS.SCHOOL.NOMINATE_USER_FOR_SCHOOL,
+            data: {
+                "site_id": siteId,
+                "school_id": schoolId,
+                'nominated_user_id': nominatedUserId
+            }
+        }).then(res =>{
+            return res.data
+        })
+    },
+    removeDelegates:(siteId: number, schoolId: number, nominatedUserId: number) : Promise<any> => {
+        return axios({
+            method: "POST",
+            url: API_ENDPOINTS.SCHOOL.DELETE_NOMINATED_USER,
+            data: {
+                "site_id": siteId,
+                "school_id": schoolId,
+                'nominated_id_delete': nominatedUserId
+            }
+        }).then(res =>{
+            return res.data
+        })
     }
 
 

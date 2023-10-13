@@ -11,8 +11,8 @@ import BaseHero from "@/js/components/bases/BaseHero.vue";
 import BaseSingle from "@/js/components/bases/BaseSingle.vue";
 import BaseSingleSubmenu from "@/js/components/bases/BaseSingleSubmenu.vue";
 import GenericButton from "@/js/components/button/GenericButton.vue";
+import SchoolDelegatePanel from "@/js/components/schools/delegatesPanel/SchoolDelegatePanel.vue";
 import SchoolTechHoverableRow from "@/js/components/schools/schoolMap/SchoolTechHoverableRow.vue";
-import SchoolNominationButton from "@/js/components/schools/SchoolNominationButton.vue";
 import SchoolContent from "@/js/components/schoolsingle/SchoolContent.vue";
 import Loader from "@/js/components/spinner/Loader.vue";
 import {formatDateToDayTime} from "@/js/helpers/dateHelper";
@@ -270,11 +270,12 @@ const handleCloseModerationTab = () : void =>{
                             @send-photo-to-school-single="handleReceivePhotoFromContent"
                         >
                             <template #additionalContentActions>
-                                <SchoolNominationButton
-                                    v-if="schoolContent['site']['site_id']"
-                                    :site-id="schoolContent['site']['site_id']"
-                                    :school-id="schoolContent['school_id']"
-                                />
+                                <div class="DelegationPanelOuterContainer flex flex-col mt-4 w-full">
+                                    <SchoolDelegatePanel
+                                        :school-id="schoolContent?.school_id"
+                                        :site-id="schoolContent?.site?.site_id"
+                                    />
+                                </div>
                             </template>
                         </SchoolContent>
                     </div>
