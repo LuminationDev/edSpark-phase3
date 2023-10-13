@@ -18,7 +18,12 @@
             "node"
         ]
     },
-    "include": ["./resources/**/*.ts", "./resources/**/*.d.ts", "./resources/**/*.tsx", "./resources/**/*.vue"],
+    "include": ["./resources/**/*.ts",
+        "./resources/**/*.d.ts",
+        "./resources/**/*.tsx",
+        "./resources/**/*.vue",
+
+    ],
     "exclude": ["./node_modules"]
 
 }

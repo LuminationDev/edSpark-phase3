@@ -1,5 +1,5 @@
 <script setup>
-import {ref, computed, onMounted} from 'vue'
+import {ref} from 'vue'
 import Multiselect from "vue-multiselect";
 const props = defineProps({
     filterList:{
@@ -46,12 +46,12 @@ if(props.preselected){
             {{ placeholder }}
         </div>
         <Multiselect
+            :id="props.id"
             v-model="selectedValue"
             :options="props.filterList"
             :multiple="true"
             :placeholder="props.placeholder"
-            :close-on-select="false"
-            :id="props.id"
+            :close-on-select="false" 
             label="name"
             track-by="name"
             aria-expanded="false"

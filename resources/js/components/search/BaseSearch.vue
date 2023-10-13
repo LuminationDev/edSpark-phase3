@@ -3,7 +3,6 @@ import "@hennge/vue3-pagination/dist/vue3-pagination.css";
 
 import VPagination from "@hennge/vue3-pagination";
 import {computed, ref, watch} from 'vue'
-import {useRoute} from "vue-router";
 
 import AdviceCard from "@/js/components/advice/AdviceCard.vue";
 import SearchBar from "@/js/components/browseschools/SearchBar.vue";
@@ -38,14 +37,15 @@ const filteredTermData = computed(() => {
     if (!props.resourceList) return [];
 
     return props.resourceList.reduce((acc, resource) => {
-        // Generate a key for each resource
-        resource['key'] = guid();
 
-        // List of possible attribute names to check
-        const attributesToCheck = ['post_title', 'product_name', 'name', 'title'];
+
+        // List of possible attribute names to check - here because different objects has different field
+        const attributesToCheck = ['name', 'title'];
 
         // If filterTerm is empty or any attribute matches, add the resource to the accumulated array
         if (filterTerm.value.length < 1 || attributesToCheck.some(attr => resource[attr] && resource[attr].toLowerCase().includes(filterTerm.value))) {
+            // Generate a key for each resource
+            resource['key'] = guid();
             acc.push(resource);
         }
         return acc;
