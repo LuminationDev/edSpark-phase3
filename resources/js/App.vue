@@ -4,21 +4,19 @@ import {throttle} from "lodash";
 import {storeToRefs} from "pinia";
 import {onBeforeMount, onBeforeUnmount} from "vue";
 import {onMounted, ref} from "vue";
-import {useRoute, useRouter} from 'vue-router';
+import { useRouter} from 'vue-router';
 
 import Footer from '@/js/components/global/Footer/Footer.vue';
 import Navbar from '@/js/components/global/navbar/Navbar.vue';
 import NavbarMobileMenu from "@/js/components/global/navbar/NavbarMobileMenu.vue";
 import GlobalSearch from "@/js/components/search/GlobalSearch.vue";
 import {appURL} from "@/js/constants/serverUrl";
-import {isObjectEmpty} from "@/js/helpers/objectHelpers";
 import {useAuthStore} from "@/js/stores/useAuthStore";
 import {useUserStore} from "@/js/stores/useUserStore";
 import {useWindowStore} from "@/js/stores/useWindowStore";
 
 
 const router = useRouter();
-const route = useRoute();
 
 const userStore = useUserStore()
 const {currentUser, userEntryLink} = storeToRefs(userStore)
@@ -38,43 +36,32 @@ const setWindowWidth = () => {
 
 onBeforeMount(async () => {
     if (!window.location.origin.includes('test.edspark.sa.edu.au')) {
+        // will fill in isAuthenticated with a Promise<boolean>
         authStore.checkAuthenticationStatus();
         console.log(authStore.isAuthenticated)
-        await authStore.isAuthenticated.then(async () => {
-            if (!authStore.isAuthenticated) {
-                window.location = '/login'
-            } else {
-                await axios.get(`${appURL}/sanctum/csrf-cookie`);
-                await userStore.fetchCurrentUserAndLoadIntoStore();
-                if (userStore.userEntryLink) {
-                    let urlObj;
-                    try{
-                        urlObj = new URL(userStore.userEntryLink).pathname
-                    } catch(_){
-                        urlObj = userStore.userEntryLink
-                    }finally {
-                        await router.push(urlObj).then(() => {
-                            userEntryLink.value = ''
-                        })
-                    }
-                    console.log(urlObj + 'pushing path after thisss')
-                } else {
-                    await router.push('/dashboard')
+        await authStore.isAuthenticated
+        if (!authStore.isAuthenticated) {
+            window.location = '/login'
+        } else {
+            await axios.get(`${appURL}/sanctum/csrf-cookie`);
+            await userStore.fetchCurrentUserAndLoadIntoStore();
+            if (userStore.userEntryLink) {
+                let urlObj;
+                try{
+                    urlObj = new URL(userStore.userEntryLink).pathname
+                } catch(_){
+                    urlObj = userStore.userEntryLink
+                }finally {
+                    await router.push(urlObj).then(() => {
+                        userEntryLink.value = ''
+                    })
                 }
-                // if (route.name === 'home') {
-                //     if(userStore.userEntryLink){
-                //         // http://localhost:8000/event/resources/58/celebration
-                //         const urlObj = new URL(userStore.userEntryLink)
-                //         console.log(urlObj + 'pushing path after thisss')
-                //         await router.push(urlObj.pathname)
-                //
-                //     }else {
-                //         await router.push('/dashboard');
-                //
-                //     }
-                // }
+                console.log(urlObj + 'pushing path after thisss')
+            } else {
+                await router.push('/dashboard')
             }
-        })
+        }
+
 
     }
 
