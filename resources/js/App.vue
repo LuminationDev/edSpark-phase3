@@ -37,31 +37,29 @@ const setWindowWidth = () => {
 }
 
 
-onMounted(async () => {
-    console.log('on mounted called')
-    // if currentUser / local storage is not empty check auth status
-    if ( !window.location.origin.includes('test.edspark.sa.edu.au')) {
-        await authStore.checkAuthenticationStatus();
-        if (!isAuthenticated.value) {
-            window.location = '/login'
-        } else {
-            axios.get(`${appURL}/sanctum/csrf-cookie`).then(async () => {
-                await userStore.fetchCurrentUserAndLoadIntoStore()
+onBeforeMount(async () => {
+    if (!window.location.origin.includes('test.edspark.sa.edu.au')) {
+        authStore.checkAuthenticationStatus();
+        console.log(authStore.isAuthenticated)
+        await authStore.isAuthenticated.then(async() =>{
+            if (!authStore.isAuthenticated) {
+                window.location = '/login'
+            } else {
+                await axios.get(`${appURL}/sanctum/csrf-cookie`);
+                await userStore.fetchCurrentUserAndLoadIntoStore();
 
                 if (route.name === 'home') {
-                    await router.push('/dashboard')
+                    console.log('redirect to dashboard ')
+                    await router.push('/dashboard');
                 }
-            })
+            }
+        })
 
-        }
-
-    } else {
-        // LocalStorage is empty, potentially new user. expect user to click login with okta
-        // Do nothing
     }
-    setWindowWidth()
-    window.addEventListener('resize', setWindowWidth)
-})
+
+    setWindowWidth();
+    window.addEventListener('resize', setWindowWidth);
+});
 
 
 // const userStore = useUserStore();

@@ -1,4 +1,5 @@
 // Import router dependencies
+import {storeToRefs} from "pinia";
 import {createRouter, createWebHistory} from 'vue-router';
 
 import AdviceForm from "@/js/components/bases/form/types/AdviceForm.vue";
@@ -308,23 +309,27 @@ const router = createRouter({
 });
 router.beforeEach(async (to, from, next) => {
     const authStore = useAuthStore();
-    // If the route doesn't require authentication, we can immediately continue.
-    if (!to.meta.requiresAuth) {
-        return next();
-    }
-
-    // At this point, the route does require authentication.
-
-    // If the user isn't authenticated, then we check their authentication status.
-    if (!authStore.isAuthenticated) {
-        console.log('checking auth status from router function');
-        await authStore.checkAuthenticationStatus();
-        console.log('finished checking auth status');
+    await authStore.isAuthenticated?.then(() =>{
+        if (!to.meta.requiresAuth) {
+            return next();
+        }
+        // Check authentication status.
+        console.log('isAuthentication inside beforeAEch')
         console.log(authStore.isAuthenticated)
-    }
 
-    // After possibly checking authentication, we decide where to direct the user.
-    return authStore.isAuthenticated ? next() : next('/forbidden');
+        // Make a decision based on the authentication status.
+        // return isAuthenticated ? next() : next('/login');
+        if(authStore.isAuthenticated){
+            console.log('router.ts User is authenticated next()')
+            next();
+        } else{
+            console.log('router.ts user is not authenticated -- redirect ')
+            console.log(authStore.isAuthenticated)
+            next('/forbidden')
+        }
+    })
+    // If the route doesn't require authentication, move on.
+
 });
 
 export default router;

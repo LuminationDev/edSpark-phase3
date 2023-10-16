@@ -16,14 +16,22 @@ function goBack() {
 </script>
 
 <template>
-    <div class="fixed inset-0 flex items-center justify-center z-10 overflow-hidden">
+    <div class="fixed inset-0 flex justify-center items-center overflow-hidden z-10">
         <!-- Modal -->
         <!-- class="bg-gradient-to-b from-[#f9fffe] to-[#f4fefc] w-1/4 p-8 rounded-2xl shadow-xl flex flex-col items-center" -->
         <div
-            class="w-1/4 p-8 rounded-2xl flex flex-col items-center">
-            <h2 class="text-2xl font-bold mb-4">403 - Access Denied</h2>
-            <p class="text-gray-600 mb-8">You do not have permission to access this page.</p>
-            <button @click="goBack" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-lg">
+            class="flex items-center flex-col p-8 rounded-2xl w-1/4"
+        >
+            <h2 class="font-bold mb-4 text-2xl">
+                Access Denied
+            </h2>
+            <p class="mb-8 text-gray-600">
+                You do not have permission to access this page.
+            </p>
+            <button
+                class="bg-blue-500 hover:bg-blue-600 font-bold px-4 py-2 rounded-lg text-white"
+                @click="goBack"
+            >
                 Go Back
             </button>
         </div>

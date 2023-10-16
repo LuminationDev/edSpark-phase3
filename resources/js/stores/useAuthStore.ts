@@ -1,10 +1,13 @@
 import axios from "axios";
 import {defineStore} from 'pinia';
+import {Ref} from "vue";
 
 import {appURL} from "@/js/constants/serverUrl";
-
+interface AuthState {
+    isAuthenticated : Ref<Promise<boolean> | boolean>
+}
 export const useAuthStore = defineStore('auth', {
-    state: () => ({
+    state: (): AuthState => <AuthState>({
         isAuthenticated: false,
     }),
     getters: {
@@ -13,19 +16,19 @@ export const useAuthStore = defineStore('auth', {
         }
     },
     actions: {
-        async checkAuthenticationStatus() {
-            return new Promise(async(res, rej) =>{
-                try {
-                    const response = await axios.get(`${appURL}/auth/check`);
-                    this.isAuthenticated = response.data.authenticated;
-                    res();
-                } catch (error) {
-                    this.isAuthenticated = false
-                    rej()
-                }
+        async init(){
 
-            })
-            // Make a request to the Laravel backend for authentication check
         },
+        checkAuthenticationStatus() {
+            try {
+                this.isAuthenticated = axios.get(`${appURL}/auth/check`).then(res => {
+                    console.log('AUTHSTORE IS AUTHENTICATED IS FULFILLED ')
+                    this.isAuthenticated = res.data?.authenticated
+                })
+            } catch (error) {
+                this.isAuthenticated = false;
+                throw new Error('Failed to check authentication status');
+            }
+        }
     },
 });

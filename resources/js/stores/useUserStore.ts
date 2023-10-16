@@ -63,7 +63,6 @@ export const useUserStore = defineStore('user', {
             return this.currentUser?.site?.site_name || "";
         },
         getUserRequestParam(): { params: { usid: number } } {
-            console.log(this.currentUser);
             return {
                 params: {
                     usid: this.currentUser.id
@@ -108,8 +107,6 @@ export const useUserStore = defineStore('user', {
                     }
                 }
             }).then(response => {
-                console.log(response);
-
                 this.currentUser.full_name = newName;
             }).catch(error => {
                 console.error(error);
@@ -118,8 +115,6 @@ export const useUserStore = defineStore('user', {
 
         async fetchCurrentUserAndLoadIntoStore() {
             return axios.get(`${serverURL}/fetchUser`).then(response => {
-                console.log('fetch user has been called')
-                console.log(response.data)
                 this.currentUser = response.data;
             }).catch(error => {
                 console.log('There was a problem retrieving that user');

@@ -38,9 +38,6 @@ const userDetails = reactive({
     roleId: ''
 });
 
-// userStore.fetchCurrentUserAndLoadIntoStore()
-
-
 const shouldStartSwrv = computed(() => {
     return Boolean(currentUser.value.id)
 })
