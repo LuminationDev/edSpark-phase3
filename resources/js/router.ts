@@ -33,6 +33,7 @@ import TheSchool from "@/js/pages/TheSchool.vue";
 import TheSoftware from "@/js/pages/TheSoftware.vue";
 import UserPosts from "@/js/pages/UserPosts.vue";
 import {useAuthStore} from '@/js/stores/useAuthStore';
+import {useUserStore} from "@/js/stores/useUserStore";
 
 import DashboardNew from './pages/DashboardNew.vue';
 
@@ -42,7 +43,7 @@ type RouteMeta = {
     navigation?: boolean;
     dropdownItem?: boolean;
     skipScrollTop?: boolean;
-    customText? : string
+    customText?: string
 };
 
 const routes: any = [
@@ -309,25 +310,36 @@ const router = createRouter({
 });
 router.beforeEach(async (to, from, next) => {
     const authStore = useAuthStore();
-    await authStore.isAuthenticated?.then(() =>{
-        if (!to.meta.requiresAuth) {
-            return next();
-        }
-        // Check authentication status.
-        console.log('isAuthentication inside beforeAEch')
-        console.log(authStore.isAuthenticated)
+    const userStore = useUserStore();
+    const {userSourceLink} = storeToRefs(userStore)
+    if(!userSourceLink.value){
+        userSourceLink.value = to.fullPath
+    }
 
-        // Make a decision based on the authentication status.
-        // return isAuthenticated ? next() : next('/login');
-        if(authStore.isAuthenticated){
-            console.log('router.ts User is authenticated next()')
+    if (!to.meta.requiresAuth) {
+        return next();
+    }
+    if (authStore.isAuthenticated instanceof Promise) {
+        await authStore.isAuthenticated?.then(() => {
+            if (authStore.isAuthenticated) {
+                next();
+            } else {
+                console.log(authStore.isAuthenticated)
+                window.location = '/login'
+                next();
+            }
+        })
+
+    } else { // authStore.isAuthenticated is boolean
+        if (authStore.isAuthenticated) {
             next();
-        } else{
-            console.log('router.ts user is not authenticated -- redirect ')
+        } else {
             console.log(authStore.isAuthenticated)
-            next('/forbidden')
+            window.location = '/login'
+            next();
+
         }
-    })
+    }
     // If the route doesn't require authentication, move on.
 
 });

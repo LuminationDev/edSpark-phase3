@@ -22,7 +22,7 @@ export const useAuthStore = defineStore('auth', {
         checkAuthenticationStatus() {
             try {
                 this.isAuthenticated = axios.get(`${appURL}/auth/check`).then(res => {
-                    console.log('AUTHSTORE IS AUTHENTICATED IS FULFILLED ')
+                    console.log('AUTHSTORE IS AUTHENTICATED IS FULFILLED ' + res.data.authenticated)
                     this.isAuthenticated = res.data?.authenticated
                 })
             } catch (error) {

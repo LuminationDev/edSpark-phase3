@@ -21,13 +21,12 @@ const router = useRouter();
 const route = useRoute();
 
 const userStore = useUserStore()
-const {currentUser} = storeToRefs(userStore)
+const {currentUser, userSourceLink} = storeToRefs(userStore)
 
 const windowStore = useWindowStore()
 const {isMobile, windowWidth, showGlobalSearch} = storeToRefs(windowStore)
 
 const authStore = useAuthStore()
-const {isAuthenticated} = storeToRefs(authStore)
 
 
 const setWindowWidth = () => {
@@ -41,17 +40,39 @@ onBeforeMount(async () => {
     if (!window.location.origin.includes('test.edspark.sa.edu.au')) {
         authStore.checkAuthenticationStatus();
         console.log(authStore.isAuthenticated)
-        await authStore.isAuthenticated.then(async() =>{
+        await authStore.isAuthenticated.then(async () => {
             if (!authStore.isAuthenticated) {
                 window.location = '/login'
             } else {
                 await axios.get(`${appURL}/sanctum/csrf-cookie`);
                 await userStore.fetchCurrentUserAndLoadIntoStore();
-
-                if (route.name === 'home') {
-                    console.log('redirect to dashboard ')
-                    await router.push('/dashboard');
+                if (userStore.userSourceLink) {
+                    let urlObj;
+                    try{
+                        urlObj = new URL(userStore.userSourceLink).pathname
+                    } catch(_){
+                        urlObj = userStore.userSourceLink
+                    }finally {
+                        await router.push(urlObj).then(() => {
+                            userSourceLink.value = ''
+                        })
+                    }
+                    console.log(urlObj + 'pushing path after thisss')
+                } else {
+                    await router.push('/dashboard')
                 }
+                // if (route.name === 'home') {
+                //     if(userStore.userSourceLink){
+                //         // http://localhost:8000/event/resources/58/celebration
+                //         const urlObj = new URL(userStore.userSourceLink)
+                //         console.log(urlObj + 'pushing path after thisss')
+                //         await router.push(urlObj.pathname)
+                //
+                //     }else {
+                //         await router.push('/dashboard');
+                //
+                //     }
+                // }
             }
         })
 
@@ -70,7 +91,6 @@ onMounted(() => {
     if (Object.keys(userStore.getUser).length > 0) {
         currentUser.value = userStore.getUser;
     }
-
     scrollHandler = throttle(() => {
         const navbar = document.getElementById('navbarMobileBurger') || document.getElementById('navbarFullsize');
 
