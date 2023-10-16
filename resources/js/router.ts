@@ -311,9 +311,9 @@ const router = createRouter({
 router.beforeEach(async (to, from, next) => {
     const authStore = useAuthStore();
     const userStore = useUserStore();
-    const {userSourceLink} = storeToRefs(userStore)
-    if(!userSourceLink.value){
-        userSourceLink.value = to.fullPath
+    const {userEntryLink} = storeToRefs(userStore)
+    if(!userEntryLink.value){
+        userEntryLink.value = to.fullPath
     }
 
     if (!to.meta.requiresAuth) {

@@ -42,7 +42,7 @@ export const useUserStore = defineStore('user', {
     state: (): UserState => <UserState>({
         currentUser: useStorage('currentUser', {}, localStorage, {mergeDefaults: true}),
         userAvatar: useSessionStorage('userAvatar', ''),
-        userSourceLink: useStorage('edspark-source-link', '', localStorage),
+        userEntryLink: useStorage('edspark-source-link', '', localStorage),
         userSchool: {},
         notifications: [],
         userRequestParam: {}

@@ -21,7 +21,7 @@ const router = useRouter();
 const route = useRoute();
 
 const userStore = useUserStore()
-const {currentUser, userSourceLink} = storeToRefs(userStore)
+const {currentUser, userEntryLink} = storeToRefs(userStore)
 
 const windowStore = useWindowStore()
 const {isMobile, windowWidth, showGlobalSearch} = storeToRefs(windowStore)
@@ -46,15 +46,15 @@ onBeforeMount(async () => {
             } else {
                 await axios.get(`${appURL}/sanctum/csrf-cookie`);
                 await userStore.fetchCurrentUserAndLoadIntoStore();
-                if (userStore.userSourceLink) {
+                if (userStore.userEntryLink) {
                     let urlObj;
                     try{
-                        urlObj = new URL(userStore.userSourceLink).pathname
+                        urlObj = new URL(userStore.userEntryLink).pathname
                     } catch(_){
-                        urlObj = userStore.userSourceLink
+                        urlObj = userStore.userEntryLink
                     }finally {
                         await router.push(urlObj).then(() => {
-                            userSourceLink.value = ''
+                            userEntryLink.value = ''
                         })
                     }
                     console.log(urlObj + 'pushing path after thisss')
@@ -62,9 +62,9 @@ onBeforeMount(async () => {
                     await router.push('/dashboard')
                 }
                 // if (route.name === 'home') {
-                //     if(userStore.userSourceLink){
+                //     if(userStore.userEntryLink){
                 //         // http://localhost:8000/event/resources/58/celebration
-                //         const urlObj = new URL(userStore.userSourceLink)
+                //         const urlObj = new URL(userStore.userEntryLink)
                 //         console.log(urlObj + 'pushing path after thisss')
                 //         await router.push(urlObj.pathname)
                 //
