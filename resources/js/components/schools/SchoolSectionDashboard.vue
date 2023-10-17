@@ -29,7 +29,6 @@ const schoolsAvailable = computed(() => {
 
 onBeforeMount(async () => {
     schoolStore.loadSchools().then(() => {
-
     }).catch(() => {
         schools.value = []
     }).finally(() => {

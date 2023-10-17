@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Usermeta;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 use App\Helpers\OutputHelper;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -14,10 +15,10 @@ use Illuminate\Http\JsonResponse;
 
 class UserController extends Controller
 {
-    public function fetchUser($id): JsonResponse
+    public function fetchUser(): JsonResponse
     {
         try {
-            $user = User::find($id);
+            $user = User::find(Auth::user()->id);
 
             if (!$user) {
                 return response()->json(['message' => 'User not found'], 404);

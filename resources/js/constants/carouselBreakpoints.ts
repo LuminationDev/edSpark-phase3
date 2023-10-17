@@ -56,7 +56,8 @@ export const schoolCarouselBreakpoints = {
     0: {
         itemsToShow: 1,
         snapAlign: 'start',
-    }, 350: {
+    },
+    350: {
         itemsToShow: 1,
         snapAlign: 'start',
     },

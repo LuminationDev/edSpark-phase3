@@ -1,4 +1,5 @@
 // Import router dependencies
+import {storeToRefs} from "pinia";
 import {createRouter, createWebHistory} from 'vue-router';
 
 import AdviceForm from "@/js/components/bases/form/types/AdviceForm.vue";
@@ -32,6 +33,7 @@ import TheSchool from "@/js/pages/TheSchool.vue";
 import TheSoftware from "@/js/pages/TheSoftware.vue";
 import UserPosts from "@/js/pages/UserPosts.vue";
 import {useAuthStore} from '@/js/stores/useAuthStore';
+import {useUserStore} from "@/js/stores/useUserStore";
 
 import DashboardNew from './pages/DashboardNew.vue';
 
@@ -41,7 +43,7 @@ type RouteMeta = {
     navigation?: boolean;
     dropdownItem?: boolean;
     skipScrollTop?: boolean;
-    customText? : string
+    customText?: string
 };
 
 const routes: any = [
@@ -308,19 +310,38 @@ const router = createRouter({
 });
 router.beforeEach(async (to, from, next) => {
     const authStore = useAuthStore();
-    if (to.meta.requiresAuth) {
-        if (!authStore.isAuthenticated) {
-            await authStore.checkAuthenticationStatus();
-        }
+    const userStore = useUserStore();
+    const {userEntryLink} = storeToRefs(userStore)
+    if(!userEntryLink.value){
+        userEntryLink.value = to.fullPath
+    }
 
+    if (!to.meta.requiresAuth) {
+        return next();
+    }
+    if (authStore.isAuthenticated instanceof Promise) {
+        await authStore.isAuthenticated?.then(() => {
+            if (authStore.isAuthenticated) {
+                next();
+            } else {
+                console.log(authStore.isAuthenticated)
+                window.location = '/login'
+                next();
+            }
+        })
+
+    } else { // authStore.isAuthenticated is boolean
         if (authStore.isAuthenticated) {
             next();
         } else {
-            next('/forbidden');
+            console.log(authStore.isAuthenticated)
+            window.location = '/login'
+            next();
+
         }
-    } else {
-        next();
     }
+    // If the route doesn't require authentication, move on.
+
 });
 
 export default router;

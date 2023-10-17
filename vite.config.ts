@@ -1,8 +1,8 @@
-import * as path from "path";
-import {defineConfig} from 'vite';
-import {fileURLToPath, URL} from 'url';
-import laravel, {refreshPaths} from 'laravel-vite-plugin';
 import vue from '@vitejs/plugin-vue';
+import laravel, {refreshPaths} from 'laravel-vite-plugin';
+import * as path from "path";
+import {fileURLToPath, URL} from 'url';
+import {defineConfig} from 'vite';
 
 
 export default defineConfig({
@@ -43,6 +43,6 @@ export default defineConfig({
         ],
     },
     esbuild: {
-        drop: ['console', 'debugger'],
+        // drop: ['console', 'debugger'],
     },
 });
