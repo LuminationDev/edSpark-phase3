@@ -145,7 +145,7 @@ const softwareResponsiveData = computed(() => {
             :button-text="'View all schools'"
             :button-callback="() => router.push('/browse/school')"
         />
-        <SchoolSectionDashboard />
+        <SchoolSectionDashboard v-if="shouldStartSwrv" />
     </div>
 </template>
 
