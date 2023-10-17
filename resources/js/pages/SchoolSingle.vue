@@ -6,6 +6,7 @@ import {storeToRefs} from "pinia";
 import {computed, onBeforeMount, Ref, ref} from 'vue'
 import {useRoute} from 'vue-router';
 
+import edSparkLogo from '@/assets/images/edsparkLogo.png'
 import BaseBreadcrumb from "@/js/components/bases/BaseBreadcrumb.vue";
 import BaseHero from "@/js/components/bases/BaseHero.vue";
 import BaseSingle from "@/js/components/bases/BaseSingle.vue";
@@ -167,6 +168,11 @@ const isSchoolContentPopulated = computed(() => {
     return !!schoolContent.value && !isObjectEmpty(schoolContent.value)
 })
 
+// replace logo with edspark logo as a fallback image.
+const handleErrorImage = (e)=>{
+    e.target.src = edSparkLogo
+}
+
 const handleCloseModerationTab = () : void =>{
     window.close();
 }
@@ -222,6 +228,7 @@ const handleCloseModerationTab = () : void =>{
                                                 :src="`${imageURL}/${schoolContent.logo}`"
                                                 :alt="`school logo`"
                                                 class="max-h-full object-contain w-full"
+                                                @error="handleErrorImage"
                                             >
                                         </div>
                                     </div>

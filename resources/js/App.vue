@@ -61,7 +61,7 @@ const handleAuth = async () => {
     // Check if the URL contains the desired origin
     if (window.location.origin.includes('test.edspark.sa.edu.au')) return;
 
-    await authStore.checkAuthenticationStatus();
+    await authStore.checkAuthenticationStatus(); // populate isAuth with promise
 
     if (!authStore.isAuthenticated) {
         window.location = '/login';
@@ -70,7 +70,7 @@ const handleAuth = async () => {
 
     await axios.get(`${appURL}/sanctum/csrf-cookie`);
     await userStore.fetchCurrentUserAndLoadIntoStore();
-
+    console.log(userStore.userEntryLink)
     if (userStore.userEntryLink) {
         let urlObj;
         try {
