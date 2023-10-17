@@ -162,7 +162,7 @@ const {isMobile, isTablet} = storeToRefs(useWindowStore)
 /* MB added the below to tidy up responsive nav bars */
 @media screen and (max-width: 1024px) {
     #app, #app .container {
-        min-width: 320px;
+        min-width: 360px; /*was 320px */
         max-width: 1024px;
         width: 100%;
         margin: auto;

@@ -125,21 +125,46 @@ const formattedSearchTitle = computed(() =>{
     else return props.searchType
 })
 
+
+const formattedSearchBlurb = computed (()=>{
+
+if(['school'].includes(props.searchType)) 
+return "Discover more about how schools in your area are " + 
+        "embracing digital technology, and draw inspiration " +
+        "for your own classroom."
+
+else return "Discover inspiration for your own classroom."
+
+
+})
+
 </script>
 
 <template>
     <div
-        class="browse-schools-container flex items-center flex-col mt-16"
+        class="browse-schools-container flex items-center flex-col mt-16 px-10"
     >
-        <h3 class="font-semibold text-2xl">
-            Browse all {{ formattedSearchTitle }}
-        </h3>
-        <SearchBar
-            :placeholder="`Type in ${searchType} name`"
-            @emit-search-term="handleSearchTerm"
-        />
-        <div class="filterBarSearch flex justify-center items-center flex-col w-full md:!flex-row">
-            <slot name="filterBar" />
+
+    
+        <div class="search-filter-element flex w-full mb-6 ml-10">
+
+            <div class="search-filter-heading basis-1/3 mb-8">
+                <h3 class="font-semibold text-2xl">
+                    Browse all {{ formattedSearchTitle }}
+                </h3>
+                <P class="pt-6 pr-10">
+                    {{ formattedSearchBlurb }}
+                </P>
+            </div>
+
+            <div class="search-filter-components flex-col basis-2/3">
+                <SearchBar 
+                    :placeholder="`Type in ${searchType} name`"
+                    @emit-search-term="handleSearchTerm"
+                />
+
+                    <slot name="filterBar" />
+            </div>
         </div>
         <div class="my-4 searchResults text-base">
             {{ String(filteredData.length) + " search " + (filteredData.length > 1 ? "results" : "result") }}
@@ -264,6 +289,20 @@ const formattedSearchTitle = computed(() =>{
     </div>
 </template>
 <style lang="scss">
+
+.search-filter-element {
+    max-width: 1000px;
+    // min-width: 405px;
+}
+
+/* MB added the below to tidy up responsive nav bars */
+@media screen and (max-width: 767px) {
+    .search-filter-element {
+        flex-direction: column;
+    }
+}
+
+
 .BaseSearchPaginationContainer {
 
     .Pagination{
