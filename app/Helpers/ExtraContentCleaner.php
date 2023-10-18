@@ -6,7 +6,15 @@ class ExtraContentCleaner
 {
     public static function cleanExtraContent($dataArray)
     {
+        if (!is_array($dataArray)) {
+            return $dataArray; // If dataArray is not an array, return it as-is
+        }
+
         foreach ($dataArray as &$data) {
+            if (!isset($data['data']['extra_content']) || !is_array($data['data']['extra_content'])) {
+                continue; // If extra_content doesn't exist or isn't an array, skip to the next data
+            }
+
             $extraContent = $data['data']['extra_content'];
 
             foreach ($extraContent as $key => &$content) {

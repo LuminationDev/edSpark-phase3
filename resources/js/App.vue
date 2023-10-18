@@ -61,7 +61,7 @@ const handleAuth = async () => {
     // Check if the URL contains the desired origin
     if (window.location.origin.includes('test.edspark.sa.edu.au')) return;
 
-    await authStore.checkAuthenticationStatus();
+    await authStore.checkAuthenticationStatus(); // populate isAuth with promise
 
     if (!authStore.isAuthenticated) {
         window.location = '/login';
@@ -70,19 +70,22 @@ const handleAuth = async () => {
 
     await axios.get(`${appURL}/sanctum/csrf-cookie`);
     await userStore.fetchCurrentUserAndLoadIntoStore();
-
-    if (userStore.userEntryLink) {
+    if (userStore.userEntryLink === 'finished') {
+        return;
+    }
+    // only trigger the redirect if entry link exists and not /
+    else if (userStore.userEntryLink && userStore.userEntryLink !== '/') {
         let urlObj;
         try {
             urlObj = new URL(userStore.userEntryLink).pathname
         } catch (_) {
-            urlObj = userStore.userEntryLink
+            urlObj = userStore.userEntryLink + ""
         } finally {
-            router.push(urlObj).then(() => {
-                userEntryLink.value = ''
-            })
+            userEntryLink.value = "finished" // this will stop redirection
+            await router.push(urlObj)
         }
     } else {
+        userEntryLink.value = "finished"
         await router.push('/dashboard')
     }
 };
