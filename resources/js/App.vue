@@ -71,7 +71,8 @@ const handleAuth = async () => {
     await axios.get(`${appURL}/sanctum/csrf-cookie`);
     await userStore.fetchCurrentUserAndLoadIntoStore();
     console.log(userStore.userEntryLink)
-    if (userStore.userEntryLink) {
+    console.log('bellow')
+    if (userStore.userEntryLink && userStore.userEntryLink !== '/') {
         let urlObj;
         try {
             urlObj = new URL(userStore.userEntryLink).pathname
