@@ -312,7 +312,7 @@ router.beforeEach(async (to, from, next) => {
     const authStore = useAuthStore();
     const userStore = useUserStore();
     const {userEntryLink} = storeToRefs(userStore)
-    // it will only fill in userEntryLink if the entry link is null or not /
+    // it will only fill in userEntryLink if the entry link is null or not 'finished
     if(!userEntryLink.value && userEntryLink.value !== 'finished'){
         userEntryLink.value = to.fullPath
     }

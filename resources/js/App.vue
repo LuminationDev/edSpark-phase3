@@ -71,7 +71,10 @@ const handleAuth = async () => {
     await axios.get(`${appURL}/sanctum/csrf-cookie`);
     await userStore.fetchCurrentUserAndLoadIntoStore();
     if (userStore.userEntryLink === 'finished') {
-    } else if (userStore.userEntryLink && userStore.userEntryLink !== '/') {
+        return;
+    }
+    // only trigger the redirect if entry link exists and not /
+    else if (userStore.userEntryLink && userStore.userEntryLink !== '/') {
         let urlObj;
         try {
             urlObj = new URL(userStore.userEntryLink).pathname
