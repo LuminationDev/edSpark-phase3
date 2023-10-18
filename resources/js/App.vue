@@ -70,20 +70,19 @@ const handleAuth = async () => {
 
     await axios.get(`${appURL}/sanctum/csrf-cookie`);
     await userStore.fetchCurrentUserAndLoadIntoStore();
-    console.log(userStore.userEntryLink)
-    console.log('bellow')
-    if (userStore.userEntryLink && userStore.userEntryLink !== '/') {
+    if (userStore.userEntryLink === 'finished') {
+    } else if (userStore.userEntryLink && userStore.userEntryLink !== '/') {
         let urlObj;
         try {
             urlObj = new URL(userStore.userEntryLink).pathname
         } catch (_) {
-            urlObj = userStore.userEntryLink
+            urlObj = userStore.userEntryLink + ""
         } finally {
-            router.push(urlObj).then(() => {
-                userEntryLink.value = ''
-            })
+            userEntryLink.value = "finished" // this will stop redirection
+            await router.push(urlObj)
         }
     } else {
+        userEntryLink.value = "finished"
         await router.push('/dashboard')
     }
 };

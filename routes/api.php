@@ -29,8 +29,8 @@ use App\Http\Controllers\RsvpController;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
-//Route::middleware('auth:sanctum')->group(function() {
-Route::middleware('api')->group(function() {
+Route::middleware('auth:sanctum')->group(function() {
+//Route::middleware('api')->group(function() {
     // School APIs
     Route::get('fetchAllSchools', [SchoolController::class, 'fetchAllSchools']);
     Route::get('fetchFeaturedSchools', [SchoolController::class, 'fetchFeaturedSchools']);
