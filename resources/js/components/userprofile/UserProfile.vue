@@ -1,44 +1,26 @@
 <script setup>
 import {storeToRefs} from 'pinia'
-import {computed, onBeforeMount, ref} from 'vue';
+import {computed,  ref} from 'vue';
 
 import ProfilePlaceholder from '@/assets/images/profilePlaceholder.webp'
-import BaseHero from "@/js/components/bases/BaseHero.vue";
 import TrixRichEditor from "@/js/components/bases/form/TrixRichEditor.vue";
-import Profile from "@/js/components/svg/Profile.vue";
 import UserBookmark from "@/js/components/userprofile/UserBookmark.vue";
-import {API_ENDPOINTS} from "@/js/constants/API_ENDPOINTS";
-import {serverURL} from "@/js/constants/serverUrl";
+import UserInfoEdit from "@/js/components/userprofile/UserInfoEdit.vue";
 
-import {useSiteStore} from '../../stores/useSiteStore';
 import {useUserStore} from '../../stores/useUserStore';
-import Close from '../svg/Close.vue';
 import Edit from '../svg/Edit.vue';
-import Save from '../svg/Save.vue';
 import UserProfileSubmenu from "./UserProfileSubmenu.vue";
 
 const userStore = useUserStore();
-const siteStore = useSiteStore();
 
 const isEditAvatar = ref(false);
 
-const updatedName = ref('');
 
-const handleSaveChange = () => {
-    console.log('Handle save values here');
-    userStore.updateUserName(updatedName.value);
-};
 const {currentUser, notifications} = storeToRefs(userStore)
 
 const userAvatar = ref(null)
-const activeProfileField = ref('Info')
-const activeInfoItem = ref('Biography')
-const updatedYearLevel = ref(0)
 const userBookmarks = ref([])
-const editIndex = ref(null)
 const subMenuItems = ref(['Info', 'Work', 'Messages'])
-const editingField = ref(false)
-const editName = ref(null);
 const uploadAvatar = ref(null)
 const contentTemp = ref('')
 
@@ -65,19 +47,7 @@ const displayUserRole = computed(() => {
 
 })
 
-onBeforeMount(() => {
-    const userData = {
-        user_id: currentUser.value.id
-    }
-    axios.post(API_ENDPOINTS.USER.FETCH_ALL_BOOKMARKS_WITH_TITLE, userData).then(res => {
-        console.log(res.data)
-        userBookmarks.value = res.data
-    }).catch(err => {
-        console.log('not successfully fetch bookmarkdata')
-    })
-})
-
-const userAvatarUrl = computed(() => {
+const userAvatarUrlWithFallback = computed(() => {
     if (avatarUrl.value) {
         return `${imageURL}/${avatarUrl.value}`
     } else {
@@ -115,7 +85,6 @@ const handleErrorAvatarFallback = () => {
                                 border-white
                                 cursor-pointer
                                 h-[200px]
-                                min-w-[200px]
                                 rounded-full
                                 userAvatar
                                 w-[200px]
@@ -123,7 +92,7 @@ const handleErrorAvatarFallback = () => {
                                 lg:!min-w-[300px]
                                 lg:!w-[300px]
                                 "
-                            :src="userAvatarUrl"
+                            :src="userAvatarUrlWithFallback"
                             alt="user profile picture"
                             @error="handleErrorAvatarFallback"
                         >
@@ -184,18 +153,20 @@ const handleErrorAvatarFallback = () => {
                     </div>
                 </div>
             </div>
-            <div class="bg-slate-50 flex flex-col min-h-[70vh] mt-10 pb-10">
-                <div class="flex flex-col mt-20 profileSubmenuContainer px-4  md:!px-8 lg:!px-24">
+            <div class="bg-slate-50 flex flex-col min-h-[70vh] mt-10 pb-10 px-4 md:!px-8 lg:!px-24">
+                <div class="flex flex-col mt-20 profileSubmenuContainer">
                     <UserProfileSubmenu :submenu-items="subMenuItems" />
                     <router-view />
                 </div>
-                <div class="UserBookmarkListContainer flex flex-col pt-12 px-4 md:!px-8 lg:!px-24">
+                <div class="UserInfoEditForm flex my-10">
+                    <UserInfoEdit />
+                </div>
+                <div class="UserBookmarkListContainer flex flex-col pt-12">
                     <UserBookmark :bookmark-data="userBookmarks.data" />
                 </div>
             </div>
         </div>
     </div>
-    <TrixRichEditor v-model="contentTemp" />
 </template>
 
 <style scoped>
