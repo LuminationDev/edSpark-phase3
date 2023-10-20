@@ -1,22 +1,22 @@
 <script setup>
+import {storeToRefs} from "pinia";
+import useSWRV from "swrv";
+import {computed, ref, watch} from 'vue';
+import {useRouter} from "vue-router";
+
+import CardLoading from "@/js/components/card/CardLoading.vue";
 import {API_ENDPOINTS} from "@/js/constants/API_ENDPOINTS";
 import {swrvOptions} from "@/js/constants/swrvConstants";
+import {axiosFetcher} from "@/js/helpers/fetcher";
 import {useUserStore} from "@/js/stores/useUserStore";
-import HardwareHero from '../components/hardware/HardwareHero.vue';
-import HardwareInformation from '../components/hardware/HardwareInformation.vue';
+import {useWindowStore} from "@/js/stores/useWindowStore";
+
 import SectionHeader from '../components/global/SectionHeader.vue';
 import HardwareCard from '../components/hardware/HardwareCard.vue';
-
-import VideoConferencing from '../components/svg/VideoConferencing.vue';
+import HardwareHero from '../components/hardware/HardwareHero.vue';
+import HardwareInformation from '../components/hardware/HardwareInformation.vue';
 import MonitorDisplay from '../components/svg/MonitorDisplay.vue';
-
-import {computed, ref, watch} from 'vue';
-import useSWRV from "swrv";
-import {axiosFetcherParams} from "@/js/helpers/fetcher";
-import {useRouter} from "vue-router";
-import CardLoading from "@/js/components/card/CardLoading.vue";
-import {useWindowStore} from "@/js/stores/useWindowStore";
-import {storeToRefs} from "pinia";
+import VideoConferencing from '../components/svg/VideoConferencing.vue';
 
 const userStore = useUserStore()
 const router = useRouter()
@@ -27,7 +27,7 @@ const emergingTech = ref([])
 const {
     data: hardware,
     error
-} = useSWRV(API_ENDPOINTS.HARDWARE.FETCH_HARDWARE_POSTS, axiosFetcherParams(userStore.getUserRequestParam), swrvOptions)
+} = useSWRV(API_ENDPOINTS.HARDWARE.FETCH_HARDWARE_POSTS, axiosFetcher, swrvOptions)
 
 watch(hardware, () => {
     laptops.value = hardware.value.filter(item => item.category['categoryName'] === 'Laptop');

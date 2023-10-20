@@ -13,6 +13,7 @@ use App\Models\Productbrand as Brand;
 use App\Models\Productcategory as Category;
 use App\Models\Hardware as Product;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Auth;
 
 class ProductController extends Controller
 {
@@ -53,17 +54,11 @@ class ProductController extends Controller
         return response()->json($data);
     }
 
-    private function hardwareModelToJson($hardware,Request $request = NULL)
+    private function hardwareModelToJson($hardware, Request $request = NULL)
     {
-        $isLikedByUser = false;
-        $isBookmarkedByUser = false;
-
-        if (isset($request) && $request->has('usid')) {
-            $userId = $request->input('usid');
-            $isLikedByUser = $hardware->likes()->where('user_id', $userId)->exists();
-            $isBookmarkedByUser = $hardware->bookmarks()->where('user_id', $userId)->exists();
-
-        }
+        $userId = Auth::user()->id;
+        $isLikedByUser = $hardware->likes()->where('user_id', $userId)->exists();
+        $isBookmarkedByUser = $hardware->bookmarks()->where('user_id', $userId)->exists();
         return [
             'id' => $hardware->id,
             'author' => [
@@ -108,13 +103,14 @@ class ProductController extends Controller
 
         return response()->json($data);
     }
+
     public function fetchUserProductPosts(Request $request): JsonResponse
     {
         try {
             $userId = $request->user_id;
 
             $hardwares = Hardware::where('owner_id', $userId)  // Filter by partner (author) ID
-                ->orderBy('created_at', 'DESC')
+            ->orderBy('created_at', 'DESC')
                 ->get();
 
             $data = [];
@@ -131,7 +127,7 @@ class ProductController extends Controller
     }
 
 
-    public function fetchProductById(Request $request,$id)
+    public function fetchProductById(Request $request, $id)
     {
         $hardware = Product::find($id);
         $data = $this->hardwareModelToJson($hardware, $request);

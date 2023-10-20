@@ -20,15 +20,11 @@ class AdviceController extends Controller
 {
     private function adviceModelToJson($advice, $request): array
     {
-        $isLikedByUser = false;
-        $isBookmarkedByUser = false;
 
-        if (isset($request) && $request->has('usid')) {
-            $userId = $request->input('usid');
-            $isLikedByUser = $advice->likes()->where('user_id', $userId)->exists();
-            $isBookmarkedByUser = $advice->bookmarks()->where('user_id', $userId)->exists();
+        $userId = Auth::user()->id;
+        $isLikedByUser = $advice->likes()->where('user_id', $userId)->exists();
+        $isBookmarkedByUser = $advice->bookmarks()->where('user_id', $userId)->exists();
 
-        }
         return [
             'id' => $advice->id,
             'title' => $advice->post_title,
