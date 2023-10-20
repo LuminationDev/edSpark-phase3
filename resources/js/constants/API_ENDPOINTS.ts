@@ -88,7 +88,7 @@ export const API_ENDPOINTS : Endpoints =  appendServerURL({
         CREATE_EVENT_POST: `/createEventPost`
     },
     USER: {
-        FETCH_USER_BY_ID: `/fetchUser/`,
+        FETCH_CURRENT_USER: `/fetchCurrentUser`,
         FETCH_USER_BY_EMAIL: `/fetchUserByEmail/`,
         CREATE_USER: `/createUser`,
         UPDATE_FIRST_TIME_VISIT_USER: '/updateFirstTimeVisitUser',

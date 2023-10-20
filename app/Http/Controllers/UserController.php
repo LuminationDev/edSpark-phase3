@@ -15,7 +15,7 @@ use Illuminate\Http\JsonResponse;
 
 class UserController extends Controller
 {
-    public function fetchUser(): JsonResponse
+    public function fetchCurrentUser(): JsonResponse
     {
         try {
             $user = User::find(Auth::user()->id);

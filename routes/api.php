@@ -85,7 +85,7 @@ Route::middleware('auth:sanctum')->group(function() {
     Route::get('fetchUserProduct', [ProductController::class, 'fetchUserProductPosts']);
 
     // User Management
-    Route::get('fetchUser', [UserController::class, 'fetchUser']);
+    Route::get('fetchCurrentUser', [UserController::class, 'fetchCurrentUser']);
     Route::get('fetchUserByEmail/{email}', [UserController::class, 'fetchUserByEmail']);
     Route::get('fetchAllSites', [SiteController::class, 'fetchAllSites']);
     Route::get('fetchSiteById/{id}', [SiteController::class, 'fetchSiteById']);
