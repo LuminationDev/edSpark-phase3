@@ -95,6 +95,7 @@ export const API_ENDPOINTS : Endpoints =  appendServerURL({
         UPDATE_USER: '/updateUser',
         CHECK_EMAIL: `/checkEmail`,
         GET_USER_METADATA: `/getUserMetadata`,
+        GET_USER_NOTIFICATION: `/fetchUserNotification`
 
     },
     LIKE: {

@@ -1,17 +1,21 @@
 <script setup>
-import TrixRichEditor from "@/js/components/bases/form/TrixRichEditor.vue";
-import {API_ENDPOINTS} from "@/js/constants/API_ENDPOINTS";
-import {ref, computed, onBeforeMount} from 'vue';
-import {useUserStore} from '../../stores/useUserStore';
-import {useSiteStore} from '../../stores/useSiteStore';
 import {storeToRefs} from 'pinia'
-import Save from '../svg/Save.vue';
+import {computed, onBeforeMount, ref} from 'vue';
+
+import ProfilePlaceholder from '@/assets/images/profilePlaceholder.webp'
+import BaseHero from "@/js/components/bases/BaseHero.vue";
+import TrixRichEditor from "@/js/components/bases/form/TrixRichEditor.vue";
+import Profile from "@/js/components/svg/Profile.vue";
+import UserBookmark from "@/js/components/userprofile/UserBookmark.vue";
+import {API_ENDPOINTS} from "@/js/constants/API_ENDPOINTS";
+import {serverURL} from "@/js/constants/serverUrl";
+
+import {useSiteStore} from '../../stores/useSiteStore';
+import {useUserStore} from '../../stores/useUserStore';
 import Close from '../svg/Close.vue';
 import Edit from '../svg/Edit.vue';
+import Save from '../svg/Save.vue';
 import UserProfileSubmenu from "./UserProfileSubmenu.vue";
-import {serverURL} from "@/js/constants/serverUrl";
-import BaseHero from "@/js/components/bases/BaseHero.vue";
-import UserBookmark from "@/js/components/userprofile/UserBookmark.vue";
 
 const userStore = useUserStore();
 const siteStore = useSiteStore();
@@ -38,22 +42,10 @@ const editName = ref(null);
 const uploadAvatar = ref(null)
 const contentTemp = ref('')
 
-const handleSelectSubmenu = () => {
-    console.log('submenu selected')
-}
-
-function handleCancelEdit() {
-    editingField.value = false;
-}
-
-function fetchUserSite(siteId) {
-    return siteStore.getSiteById(siteId)
-}
 
 const handleClickEditAvatar = () => {
     uploadAvatar.value.click()
 }
-
 
 const imageURL = import.meta.env.VITE_SERVER_IMAGE_API;
 const avatarUrl = ref('');
@@ -67,7 +59,6 @@ const displayUserRole = computed(() => {
     switch (currentUser.value.role) {
     case "SCHLDR":
         return "School Principal"
-        break;
     default:
         return "edSpark User"
     }
@@ -75,7 +66,7 @@ const displayUserRole = computed(() => {
 })
 
 onBeforeMount(() => {
-    let userData = {
+    const userData = {
         user_id: currentUser.value.id
     }
     axios.post(API_ENDPOINTS.USER.FETCH_ALL_BOOKMARKS_WITH_TITLE, userData).then(res => {
@@ -85,6 +76,18 @@ onBeforeMount(() => {
         console.log('not successfully fetch bookmarkdata')
     })
 })
+
+const userAvatarUrl = computed(() => {
+    if (avatarUrl.value) {
+        return `${imageURL}/${avatarUrl.value}`
+    } else {
+        return ProfilePlaceholder
+    }
+})
+
+const handleErrorAvatarFallback = () => {
+    avatarUrl.value = ''
+}
 
 </script>
 <template>
@@ -120,9 +123,9 @@ onBeforeMount(() => {
                                 lg:!min-w-[300px]
                                 lg:!w-[300px]
                                 "
-                            :class="!avatarUrl.length <= 0 ? `bg-[url(${imageURL}/${avatarUrl})]` : ''"
-                            :src="`${imageURL}/${avatarUrl}`"
+                            :src="userAvatarUrl"
                             alt="user profile picture"
+                            @error="handleErrorAvatarFallback"
                         >
                         <div
                             v-show="isEditAvatar"

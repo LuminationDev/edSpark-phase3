@@ -127,7 +127,6 @@ export const useUserStore = defineStore('user', {
         async fetchAllRoles() {
             return new Promise(async (resolve, reject) => {
                 await axios.get(`${serverURL}/fetchAllRoles`).then(response => {
-                    // console.log(response);
                     const allowedValues = [
                         'SCHLDR',
                         'PRESCLDR',
@@ -158,10 +157,10 @@ export const useUserStore = defineStore('user', {
                 })
             })
         },
-        
-        async fetchAllNotifications(userId) {
+
+        async fetchAllNotifications() {
             return new Promise(async (resolve, reject) => {
-                await axios.get(`${serverURL}/fetchAllNotifications/${userId}`)
+                await axios.get(API_ENDPOINTS.USER.GET_USER_NOTIFICATION)
                     .then(response => {
                         // console.log(response.data)
                         this.notifications = response.data;
