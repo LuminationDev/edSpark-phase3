@@ -8,6 +8,7 @@ use App\Models\Partner;
 use App\Models\Usermeta;
 use Illuminate\Http\Request;
 use App\Models\Event;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 
 class EventController extends Controller
@@ -38,18 +39,14 @@ class EventController extends Controller
         }
     }
 
-    private function eventModelToJson($event, $request){
+    private function eventModelToJson($event, $request)
+    {
         $author = $event->author;
         $author_logo = $this->getAuthorLogo($author);
 
-        $isLikedByUser = false;
-        $isBookmarkedByUser = false;
-
-        if (isset($request) && $request->has('usid')) {
-            $userId = $request->input('usid');
-            $isLikedByUser = $event->likes()->where('user_id', $userId)->exists();
-            $isBookmarkedByUser = $event->bookmarks()->where('user_id', $userId)->exists();
-        }
+        $userId = Auth::user()->id;
+        $isLikedByUser = $event->likes()->where('user_id', $userId)->exists();
+        $isBookmarkedByUser = $event->bookmarks()->where('user_id', $userId)->exists();
         return [
             'id' => $event->id,
             'title' => $event->event_title,
@@ -70,41 +67,42 @@ class EventController extends Controller
             'type' => ($event->eventtype) ? $event->eventtype->event_type_name : NULL,
             'created_at' => $event->created_at,
             'updated_at' => $event->updated_at,
-            'extra_content' => ($event->extra_content)?? NULL,
+            'extra_content' => ($event->extra_content) ?? NULL,
             'isLikedByUser' => $isLikedByUser,
             'isBookmarkedByUser' => $isBookmarkedByUser,
             'tags' => $event->tags->pluck('name')
         ];
     }
 
-    public function createEventPost(Request $request){
-            $validator = Validator::make($request->all(), [
-                'event_title' => 'required|string',
-                'event_content' => 'required|string',
-                'event_excerpt' => 'sometimes|string',
-                'event_location' => 'required|string',
-                'start_date' => 'required|date',
-                'end_date' => 'required|date|after_or_equal:start_date',
-                'event_status' => 'required|string',
-                'author_id' => 'required|integer|exists:users,id',
-                'eventtype_id' => 'required|integer|exists:event_types,id', // Assuming you have a table named event_types
-                'cover_image' => 'sometimes|array',
-                'extra_content' => 'sometimes|array'
-            ]);
+    public function createEventPost(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'event_title' => 'required|string',
+            'event_content' => 'required|string',
+            'event_excerpt' => 'sometimes|string',
+            'event_location' => 'required|string',
+            'start_date' => 'required|date',
+            'end_date' => 'required|date|after_or_equal:start_date',
+            'event_status' => 'required|string',
+            'author_id' => 'required|integer|exists:users,id',
+            'eventtype_id' => 'required|integer|exists:event_types,id', // Assuming you have a table named event_types
+            'cover_image' => 'sometimes|array',
+            'extra_content' => 'sometimes|array'
+        ]);
 
-            if ($validator->fails()) {
-                return response()->json(['errors' => $validator->errors()], 400);
-            }
+        if ($validator->fails()) {
+            return response()->json(['errors' => $validator->errors()], 400);
+        }
 
-            $eventData = $request->except('eventtype_id');
-            $event = Event::create($eventData);
+        $eventData = $request->except('eventtype_id');
+        $event = Event::create($eventData);
 
-            // Attach the event type to the created event
-            if ($request->has('eventtype_id')) {
-                $event->eventtype()->associate($request->input('eventtype_id'))->save();
-            }
+        // Attach the event type to the created event
+        if ($request->has('eventtype_id')) {
+            $event->eventtype()->associate($request->input('eventtype_id'))->save();
+        }
 
-            return response()->json(['message' => 'Event created successfully!', 'event' => $event], 201);
+        return response()->json(['message' => 'Event created successfully!', 'event' => $event], 201);
 
     }
 
@@ -170,6 +168,7 @@ class EventController extends Controller
         return response()->json(['message' => 'Event recording updated successfully.']);
 
     }
+
     public function checkEventRecording($eventId): \Illuminate\Http\JsonResponse
     {
         // Check if the 'event_recording' meta exists for the given event ID
@@ -190,8 +189,8 @@ class EventController extends Controller
         $eventTypes = Eventtype::all()
             ->map(function ($eventType) {
                 return [
-                    'id'    => $eventType->id,
-                    'name'  => $eventType->event_type_name,
+                    'id' => $eventType->id,
+                    'name' => $eventType->event_type_name,
                     'value' => $eventType->event_type_value
                 ];
             })

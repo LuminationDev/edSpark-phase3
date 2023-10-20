@@ -53,14 +53,10 @@ class PartnerController extends Controller
 
     private function partnerModelToJson($partner, $request = NULL)
     {
-        $isLikedByUser = false;
-        $isBookmarkedByUser = false;
 
-        if (isset($request) && $request->has('usid')) {
-            $userId = $request->input('usid');
-            $isLikedByUser = $partner->likes()->where('user_id', $userId)->exists();
-            $isBookmarkedByUser = $partner->bookmarks()->where('user_id', $userId)->exists();
-        }
+        $userId = Auth::user()->id;
+        $isLikedByUser = $partner->likes()->where('user_id', $userId)->exists();
+        $isBookmarkedByUser = $partner->bookmarks()->where('user_id', $userId)->exists();
         $partnerMeta = Metahelper::getMeta(Partnermeta::class, $partner, 'partner_id', 'partner_meta_key', 'partner_meta_value');
 
         // Fetch or create partner profile.

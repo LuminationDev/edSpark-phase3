@@ -6,14 +6,14 @@ import EventsView from "@/js/components/events/EventsView.vue";
 import Loader from "@/js/components/spinner/Loader.vue";
 import {API_ENDPOINTS} from "@/js/constants/API_ENDPOINTS";
 import {swrvOptions} from "@/js/constants/swrvConstants";
-import {axiosFetcherParams} from "@/js/helpers/fetcher";
+import {axiosFetcher} from "@/js/helpers/fetcher";
 import {useUserStore} from "@/js/stores/useUserStore";
 
 
 
 
 
-const { data: allEvents, error: eventError } = useSWRV<Event[]>(API_ENDPOINTS.EVENT.FETCH_EVENT_POSTS, axiosFetcherParams(useUserStore().getUserRequestParam), swrvOptions)
+const { data: allEvents, error: eventError } = useSWRV<Event[]>(API_ENDPOINTS.EVENT.FETCH_EVENT_POSTS, axiosFetcher, swrvOptions)
 
 </script>
 
