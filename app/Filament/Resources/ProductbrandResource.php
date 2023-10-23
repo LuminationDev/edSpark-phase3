@@ -4,6 +4,7 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\ProductbrandResource\Pages;
 use App\Filament\Resources\ProductbrandResource\RelationManagers;
+use App\Helpers\RoleHelpers;
 use App\Models\Productbrand;
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -94,10 +95,7 @@ class ProductbrandResource extends Resource
 
     public static function shouldRegisterNavigation(): bool
     {
-        $allowed_array = ['Superadmin', 'Administrator'];
-        if (in_array(Auth::user()->role->role_name, $allowed_array)) {
-            return true;
-        }
-        return false;
+        return RoleHelpers::has_minimum_privilege('admin');
     }
+
 }

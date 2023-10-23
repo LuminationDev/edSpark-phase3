@@ -60,7 +60,7 @@ const routes: any = [
         meta: {
             navigation: true,
             requiresAuth: true, //guard the dashboard route
-            customText: "Dash"
+            customText: "Home"
         } as RouteMeta
     },
     {

@@ -4,6 +4,7 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\SoftwareResource\Pages;
 use App\Filament\Resources\SoftwareResource\RelationManagers;
+use App\Helpers\RoleHelpers;
 use App\Models\Software;
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -215,11 +216,7 @@ class SoftwareResource extends Resource
 
     public static function shouldRegisterNavigation(): bool
     {
-        $allowed_array = ['Superadmin', 'Administrator', 'Moderator'];
-        if (in_array(Auth::user()->role->role_name, $allowed_array)) {
-            return true;
-        }
-        return false;
+        return RoleHelpers::has_minimum_privilege('site_leader');
     }
 
 }
