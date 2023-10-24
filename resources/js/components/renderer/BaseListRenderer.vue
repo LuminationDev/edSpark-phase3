@@ -2,19 +2,20 @@
 import {computed, onBeforeUnmount, onMounted, ref} from 'vue';
 
 const props = defineProps({
-    itemArray: {
+    listContent: {
         type: Array,
+        required: true
+    },
+    uniqueContainerClass: {
+        type: String,
         required: true
     }
 });
 
-const numberedListContent = computed(() =>
-    Array.isArray(props.itemArray) ? props.itemArray : Object.values(props.itemArray)
-);
 
 const top = ref('');
 const distanceBetweenEls = ref('');
-const uniqueContainerClass = ref(`numberListcontainer${Math.floor(Math.random() * 100000)}`);
+// const uniqueContainerClass = ref(`numberListcontainer${Math.floor(Math.random() * 100000)}`);
 
 // Encapsulated handlers for better readability
 const updateLinePositions = () => {
@@ -74,28 +75,29 @@ const getPositionAtCenter = (element) => {
         >
             <div class="flex flex-row w-full">
                 <div class="extraContentIcon hidden relative w-1/4  items-center justify-center md:!flex">
-                    <div
-                        class="
-                            absolute
-                            bg-white
-                            border-4
-                            border-black
-                            font-bold
-                            grid
-                            place-items-center
-                            h-16
-                            p-4
-                            rounded-full
-                            text-2xl
-                            w-16
-                            z-20
-                            md:!h-24
-                            md:!w-24
-                            "
-                        :class="uniqueContainerClass"
-                    >
-                        {{ index + 1 }}
-                    </div>
+                    <!--                    <div-->
+                    <!--                        class="-->
+                    <!--                            absolute-->
+                    <!--                            bg-white-->
+                    <!--                            border-4-->
+                    <!--                            border-black-->
+                    <!--                            font-bold-->
+                    <!--                            grid-->
+                    <!--                            place-items-center-->
+                    <!--                            h-16-->
+                    <!--                            p-4-->
+                    <!--                            rounded-full-->
+                    <!--                            text-2xl-->
+                    <!--                            w-16-->
+                    <!--                            z-20-->
+                    <!--                            md:!h-24-->
+                    <!--                            md:!w-24-->
+                    <!--                            "-->
+                    <!--                        :class="uniqueContainerClass"-->
+                    <!--                    >-->
+                    <!--                        {{ index + 1 }}-->
+                    <!--                    </div>-->
+                    <slot name="listVisual" />
                 </div>
                 <div
                     class="flex flex-col w-full md:!w-3/4"

@@ -65,7 +65,7 @@ const fontAwesomeNameFormatter = (nameFromFilament) => {
 }
 
 const fontAwesomeDefaultColor = (itemColor) => {
-    if (!itemColor) return '#28D5CB' // fallback light teal color
+    if (!itemColor) return '#1C5CA9' // fallback light teal color
     else return itemColor
 }
 </script>
@@ -73,7 +73,7 @@ const fontAwesomeDefaultColor = (itemColor) => {
 <template>
     <div class="extraContent relative">
         <div
-            class="absolute left-[12.4%] bg-black connectingLine hidden w-1 z-10 md:!flex"
+            class="absolute left-[12.4%] bg-black connectingLine hidden w-0.5 z-10 md:!flex"
             :style="`height: ${distanceBetweenEls}px; top: ${top}px;`"
         />
         <div
@@ -103,7 +103,7 @@ const fontAwesomeDefaultColor = (itemColor) => {
                     >
                         <FontAwesomeIcon
                             :icon="`${fontAwesomeNameFormatter(item.icon)}`"
-                            class="!fill-blue-200 h-16 stroke-main-teal w-16"
+                            class="h-16 stroke-main-teal w-16"
                             :color="fontAwesomeDefaultColor(item.color)"
                         />
                     </div>

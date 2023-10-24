@@ -68,7 +68,7 @@ const getPositionAtCenter = (element) => {
 <template>
     <div class="extraContent relative">
         <div
-            class="absolute left-[12.4%] bg-black connectingLine hidden w-[2px] z-10 md:!flex"
+            class="absolute left-[12.4%] bg-black connectingLine hidden w-0.5 z-10 md:!flex"
             :style="`height: ${distanceBetweenEls}px; top: ${top}px;`"
         />
         <div
@@ -80,7 +80,7 @@ const getPositionAtCenter = (element) => {
                 <div class="extraContentIcon hidden relative w-1/4  items-center justify-center md:!flex">
                     <div
                         class="
-                            absolute
+                            absolutea
                             bg-white
                             border-b-2
                             border-black
