@@ -3,6 +3,7 @@
 import {computed} from "vue";
 import {useRoute, useRouter} from "vue-router";
 
+import Vue3IconPicker from "@/js/components/bases/form/Vue3IconPicker.vue";
 import CreateSelector from "@/js/components/selector/CreateSelector.vue";
 
 const router = useRouter()
@@ -44,6 +45,7 @@ const showBackToPosts = computed(() => {
                 </div>
             </div>
             <CreateSelector />
+            <Vue3IconPicker />
         </div>
 
         <router-view />

@@ -15,6 +15,8 @@ import VueGoogleMaps from 'vue-google-maps-community-fork';
 import VueTippy from 'vue-tippy'
 import Vue3Toastify, {ToastContainerOptions} from "vue3-toastify";
 
+import Vue3IconPicker from "@/js/components/bases/form/Vue3IconPicker.vue";
+
 import App from './App.vue';
 import router from './router';
 
@@ -43,4 +45,5 @@ createApp(App)
     .use(Vue3Toastify, {autoClose: 3000} as ToastContainerOptions)
     .use(VueDragsScroll)
     .component('font-awesome-icon', FontAwesomeIcon)
+    .component('Vue3IconPicker', Vue3IconPicker)
     .mount('#app');

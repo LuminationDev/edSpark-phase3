@@ -18,10 +18,10 @@ const props = defineProps({
 <template>
     <div class="extraResourcesRenderer mt-4 w-full">
         <div class="flex flex-row gap-4 mb-2 place-items-baseline">
-            <h1 class="font-bold text-[24px] text-black uppercase whitespace-nowrap">
+            <h1 class="font-bold text-2xl text-black uppercase whitespace-nowrap">
                 {{ props.itemTitle || "Extra Resources" }}
             </h1>
-            <div class="bg-black h-[3px] w-full" />
+            <div class="bg-black h-1 w-full" />
         </div>
 
         <div class="bg-main-navy px-6 py-6 text-white">
@@ -29,7 +29,7 @@ const props = defineProps({
                 v-for="(res,index) in itemArray"
                 :key="index"
             >
-                <h3 class="font-bold mb-3 text-[21px]">
+                <h3 class="font-bold mb-3 text-2xl">
                     {{ res.heading }}
                 </h3>
                 <div v-html="purify.sanitize(res.content)" />
