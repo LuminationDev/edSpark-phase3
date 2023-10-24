@@ -13,7 +13,7 @@ use Filament\Tables\Table;
 use Filament\Tables;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Auth;
-use Livewire\TemporaryUploadedFile;
+use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
 
 
 use Illuminate\Filesystem\Filesystem;
@@ -31,7 +31,6 @@ class SoftwareResource extends Resource
     protected static ?string $navigationGroupIcon = 'heroicon-o-rectangle-stack';
 
     protected static ?int $navigationSort = 3;
-
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
@@ -77,9 +76,6 @@ class SoftwareResource extends Resource
                                 Forms\Components\TextInput::make('Author')
                                     ->default($user)
                                     ->disabled(),
-//                                Forms\Components\BelongsToSelect::make('software_type')
-//                                    ->label('Software type')
-//                                    ->relationship('softwaretype', 'software_type_name'),
                                 Forms\Components\Select::make('post_status')
                                     ->options([
                                         'Published' => 'Published',
