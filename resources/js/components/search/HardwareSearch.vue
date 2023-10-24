@@ -1,19 +1,20 @@
 <script setup>
 
-import {API_ENDPOINTS} from "@/js/constants/API_ENDPOINTS";
-import {swrvOptions} from "@/js/constants/swrvConstants";
-import {useUserStore} from "@/js/stores/useUserStore";
+import axios from 'axios'
 import useSWRV from "swrv";
 import {onMounted,ref} from "vue";
-import axios from 'axios'
-import { axiosFetcherParams} from "@/js/helpers/fetcher";
+
 import BaseSearch from "@/js/components/search/BaseSearch.vue";
 import GenericMultiSelectFilter from "@/js/components/search/hardware/GenericMultiSelectFilter.vue";
+import {API_ENDPOINTS} from "@/js/constants/API_ENDPOINTS";
+import {swrvOptions} from "@/js/constants/swrvConstants";
+import { axiosFetcher} from "@/js/helpers/fetcher";
+import {useUserStore} from "@/js/stores/useUserStore";
 
 console.log('inside hardware search')
 
 const resourceUrl = API_ENDPOINTS.HARDWARE.FETCH_HARDWARE_POSTS
-const {data: hardwareList, error } = useSWRV(resourceUrl, axiosFetcherParams(useUserStore().getUserRequestParam), swrvOptions)
+const {data: hardwareList, error } = useSWRV(resourceUrl, axiosFetcher(useUserStore().getUserRequestParam), swrvOptions)
 
 const brandList = ref([])
 const categoryList = ref([])
@@ -64,16 +65,16 @@ const handleCategoryFilter = (filters, dataPath) => {
     >
         <template #filterBar>
             <GenericMultiSelectFilter
+                id="brandName"
                 placeholder="Filter by brand"
                 :filter-list="brandList"
-                id="brandName"
                 data-path="brandName"
                 @transmit-selected-filters="handleBrandFilter"
             />
             <GenericMultiSelectFilter
+                id="categoryName"
                 placeholder="Filter by category"
                 :filter-list="categoryList"
-                id="categoryName"
                 data-path="categoryName"
                 @transmit-selected-filters="handleCategoryFilter"
             />

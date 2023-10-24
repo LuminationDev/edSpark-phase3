@@ -1,28 +1,24 @@
 <script setup>
-import CarouselGenerator from "@/js/components/card/CarouselGenerator.vue";
-import {API_ENDPOINTS} from "@/js/constants/API_ENDPOINTS";
-import {computed} from "vue";
-import {useRouter} from "vue-router";
 import {storeToRefs} from "pinia";
 import useSWRV from "swrv";
+import {computed} from "vue";
+import {useRouter} from "vue-router";
 
-import {axiosFetcherParams} from "@/js/helpers/fetcher";
+import GenericButton from "@/js/components/button/GenericButton.vue";
+import CardLoading from "@/js/components/card/CardLoading.vue";
+import CarouselGenerator from "@/js/components/card/CarouselGenerator.vue";
+import SectionHeader from "@/js/components/global/SectionHeader.vue";
+import SoftwareCard from "@/js/components/software/SoftwareCard.vue";
+import SoftwareHero from "@/js/components/software/SoftwareHero.vue";
+import DeptApprovedIcon from "@/js/components/svg/software/DeptApprovedIcon.vue";
+import DeptNegotiatedIcon from "@/js/components/svg/software/DeptNegotiatedIcon.vue";
+import DeptProvidedIcon from "@/js/components/svg/software/DeptProvidedIcon.vue";
+import {API_ENDPOINTS} from "@/js/constants/API_ENDPOINTS";
+import {swrvOptions} from "@/js/constants/swrvConstants";
+import {axiosFetcher} from "@/js/helpers/fetcher";
 import useSwrvState from "@/js/helpers/useSwrvState";
 import {useUserStore} from "@/js/stores/useUserStore";
 import {useWindowStore} from "@/js/stores/useWindowStore";
-
-import {serverURL} from "@/js/constants/serverUrl";
-import {swrvOptions} from "@/js/constants/swrvConstants";
-
-import SectionHeader from "@/js/components/global/SectionHeader.vue";
-import SoftwareCard from "@/js/components/software/SoftwareCard.vue";
-import GenericButton from "@/js/components/button/GenericButton.vue";
-import CardLoading from "@/js/components/card/CardLoading.vue";
-
-import SoftwareHero from "@/js/components/software/SoftwareHero.vue";
-import DeptNegotiatedIcon from "@/js/components/svg/software/DeptNegotiatedIcon.vue";
-import DeptApprovedIcon from "@/js/components/svg/software/DeptApprovedIcon.vue";
-import DeptProvidedIcon from "@/js/components/svg/software/DeptProvidedIcon.vue";
 
 const router = useRouter()
 const handleBrowseAllSoftware = () => {
@@ -38,7 +34,7 @@ const {
     data: softwaresData,
     error: softwaresError,
     isValidating: softwaresIsValidating
-} = useSWRV(() => currentUser.value.id ? API_ENDPOINTS.SOFTWARE.FETCH_SOFTWARE_POSTS : null, axiosFetcherParams(userStore.getUserRequestParam), swrvOptions);
+} = useSWRV(() => currentUser.value.id ? API_ENDPOINTS.SOFTWARE.FETCH_SOFTWARE_POSTS : null, axiosFetcher, swrvOptions);
 
 const {state: softwaresState, STATES: ALLSTATES} = useSwrvState(softwaresData, softwaresError, softwaresIsValidating);
 
@@ -49,8 +45,8 @@ const softwareLoading = computed(() => {
         return true;
     } else if ([ALLSTATES.VALIDATING].includes(softwaresState.value)) {
         return !softwaresData.value.length;
-    } else {
-        return ![ALLSTATES.SUCCESS, ALLSTATES.VALIDATING, ALLSTATES.STALE_IF_ERROR].includes(softwaresState.value);
+    } else {x
+            return ![ALLSTATES.SUCCESS, ALLSTATES.VALIDATING, ALLSTATES.STALE_IF_ERROR].includes(softwaresState.value);
     }
 });
 

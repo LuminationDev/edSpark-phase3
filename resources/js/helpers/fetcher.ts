@@ -1,10 +1,11 @@
-import {schoolContentArrParser} from "@/js/helpers/jsonHelpers";
-import {cardDataWithGuid} from "@/js/helpers/cardDataHelper";
 import axios from "axios";
+
+import {cardDataWithGuid} from "@/js/helpers/cardDataHelper";
+import {schoolContentArrParser} from "@/js/helpers/jsonHelpers";
 
 export const axiosFetcher = (url) => {
     return axios.get(url).then(res => {
-        return res.data
+        return cardDataWithGuid(res.data)
     })
 }
 

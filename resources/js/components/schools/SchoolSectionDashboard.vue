@@ -1,27 +1,20 @@
 <script setup lang="ts">
 import {storeToRefs} from "pinia";
-import useSWRV from "swrv";
 import {computed, onBeforeMount, ref} from 'vue'
 
 import CarouselGenerator from "@/js/components/card/CarouselGenerator.vue";
 import SchoolsSearchableMap from '@/js/components/schools/schoolMap/SchoolsSearchableMap.vue';
 import Loader from '@/js/components/spinner/Loader.vue';
-import {API_ENDPOINTS} from "@/js/constants/API_ENDPOINTS";
-import {swrvOptions} from "@/js/constants/swrvConstants";
-import {axiosSchoolFetcherParams} from "@/js/helpers/fetcher";
 import {useSchoolsStore} from "@/js/stores/useSchoolsStore";
-import {useUserStore} from "@/js/stores/useUserStore";
 
-const userStore = useUserStore()
 const schoolStore = useSchoolsStore()
 const {schools} = storeToRefs(schoolStore)
 const showLoading = ref(true)
 
-const {
-    data: featuredSites,
-    error: featuredSitesError,
-    isValidating: isValidatingFeatured
-} = useSWRV(API_ENDPOINTS.SCHOOL.FETCH_FEATURED_SCHOOL, axiosSchoolFetcherParams(userStore.getUserRequestParam), swrvOptions)
+const featuredSites = computed(() =>{
+    console.log(schools.value.filter(school => school['isFeatured']))
+    return schools.value.filter(school => school['isFeatured'])
+})
 
 const schoolsAvailable = computed(() => {
     return Boolean(schools.value.length)
@@ -29,7 +22,6 @@ const schoolsAvailable = computed(() => {
 
 onBeforeMount(async () => {
     schoolStore.loadSchools().then(() => {
-
     }).catch(() => {
         schools.value = []
     }).finally(() => {

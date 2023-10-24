@@ -5,14 +5,13 @@ import {appURL} from "@/js/constants/serverUrl";
 
 
 const redirectToOkta = () => {
-    axios.get(`${appURL}/sanctum/csrf-cookie`).then(response => {
+    axios.get(`${appURL}/sanctum/csrf-cookie`).then(() => {
         loginWithOktaButtonPressed.value = true;
         window.location = '/login';
     });
 }
 
-const pageTitle = ref('EdSpark Login');
-const showModal = ref(true); // Set to true to display the modal by default
+const pageTitle = ref('edSpark Login');
 const email = ref('');
 const password = ref('');
 const loginWithOktaButtonPressed = ref(false);
@@ -28,9 +27,8 @@ const loginWithOktaButtonPressed = ref(false);
             <h2 class="font-bold mb-4 text-2xl">
                 {{ pageTitle }}
             </h2>
-            <form
+            <div
                 class="flex items-center flex-col w-full"
-                @submit.prevent="login"
             >
                 <div class="mb-4 w-full">
                     <label
@@ -49,7 +47,6 @@ const loginWithOktaButtonPressed = ref(false);
                         type="email"
                         placeholder="Enter you email address"
                         class="border focus:border-[#8dc9c5] px-3 py-2 rounded-lg w-full focus:outline-none"
-                        :required="!loginWithOktaButtonPressed"
                     >
                 </div>
                 <div class="mb-4 w-full">
@@ -69,7 +66,6 @@ const loginWithOktaButtonPressed = ref(false);
                         type="password"
                         placeholder="Enter your password"
                         class="border focus:border-[#8dc9c5] px-3 py-2 rounded-lg w-full focus:outline-none"
-                        :required="!loginWithOktaButtonPressed"
                     >
                 </div>
                 <div class="flex justify-center w-full">
@@ -99,7 +95,7 @@ const loginWithOktaButtonPressed = ref(false);
                         Login with Okta
                     </button>
                 </div>
-            </form>
+            </div>
         </div>
     </div>
 </template>

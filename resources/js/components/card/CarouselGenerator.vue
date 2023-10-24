@@ -1,20 +1,21 @@
 <script setup>
-import {ref, computed} from 'vue'
 import 'vue3-carousel/dist/carousel.css';
-import {Carousel, Slide, Pagination, Navigation} from 'vue3-carousel';
+
+import { computed} from 'vue'
+import {Carousel, Navigation,Pagination, Slide} from 'vue3-carousel';
+
+import AdviceCard from "@/js/components/advice/AdviceCard.vue";
+import CardLoading from "@/js/components/card/CardLoading.vue";
+import EventsCard from "@/js/components/events/EventsCard.vue";
+import HardwareCard from "@/js/components/hardware/HardwareCard.vue";
+import PartnerCard from "@/js/components/partners/PartnerCard.vue";
+import SchoolCard from "@/js/components/schools/SchoolCard.vue";
+import SoftwareCard from "@/js/components/software/SoftwareCard.vue";
 import {
     generalCarouselBreakpoints,
     schoolCarouselBreakpoints,
     twoThirdCarouselBreakpoints
 } from "@/js/constants/carouselBreakpoints";
-import {cardDataHelper, cardDataWithGuid} from "@/js/helpers/cardDataHelper";
-import SchoolCard from "@/js/components/schools/SchoolCard.vue";
-import AdviceCard from "@/js/components/advice/AdviceCard.vue";
-import SoftwareCard from "@/js/components/software/SoftwareCard.vue";
-import HardwareCard from "@/js/components/hardware/HardwareCard.vue";
-import PartnerCard from "@/js/components/partners/PartnerCard.vue";
-import EventsCard from "@/js/components/events/EventsCard.vue";
-import CardLoading from "@/js/components/card/CardLoading.vue";
 import {useWindowStore} from "@/js/stores/useWindowStore";
 
 
@@ -35,7 +36,7 @@ const props = defineProps({
 })
 const windowStore = useWindowStore()
 
-const breakpointChoser = () =>{
+const breakpointChoser = () => {
     if(props.specialAttribute === 'twoThirdWide'){
         return twoThirdCarouselBreakpoints
     } else if(props.dataType === 'school'){
@@ -118,7 +119,10 @@ const numberOfLoadingPlaceholder = computed(() =>{
                         />
                     </template>
                 </Slide>
-                <template #addons>
+                <template
+                    v-if="props.dataArray.length > 3"
+                    #addons
+                >
                     <navigation />
                     <pagination />
                 </template>

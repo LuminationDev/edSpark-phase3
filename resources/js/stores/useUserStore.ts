@@ -42,6 +42,7 @@ export const useUserStore = defineStore('user', {
     state: (): UserState => <UserState>({
         currentUser: useStorage('currentUser', {}, localStorage, {mergeDefaults: true}),
         userAvatar: useSessionStorage('userAvatar', ''),
+        userEntryLink: useStorage('edspark-entry-link', '', sessionStorage),
         userSchool: {},
         notifications: [],
         userRequestParam: {}
@@ -63,7 +64,6 @@ export const useUserStore = defineStore('user', {
             return this.currentUser?.site?.site_name || "";
         },
         getUserRequestParam(): { params: { usid: number } } {
-            console.log(this.currentUser);
             return {
                 params: {
                     usid: this.currentUser.id
@@ -108,17 +108,14 @@ export const useUserStore = defineStore('user', {
                     }
                 }
             }).then(response => {
-                console.log(response);
-
                 this.currentUser.full_name = newName;
             }).catch(error => {
                 console.error(error);
             });
         },
 
-        async fetchCurrentUserAndLoadIntoStore(userId) {
-            console.log(userId);
-            return axios.get(`${serverURL}/fetchUser/${userId}`).then(response => {
+        async fetchCurrentUserAndLoadIntoStore() {
+            return axios.get(`${serverURL}/fetchUser`).then(response => {
                 this.currentUser = response.data;
             }).catch(error => {
                 console.log('There was a problem retrieving that user');

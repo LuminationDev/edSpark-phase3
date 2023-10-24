@@ -83,7 +83,7 @@ class LoginController extends Controller
     public function checkAuthentication(Request $request)
     {
         return response()->json([
-            'authenticated' => Auth::user() ? true : false,
+            'authenticated' => (bool)Auth::user(),
         ]);
     }
 }

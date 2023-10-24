@@ -1,15 +1,10 @@
 <script setup>
-import {storeToRefs} from "pinia";
 import {useRouter} from "vue-router";
 
 import EventTypeTag from "@/js/components/events/EventTypeTag.vue";
-import Hybrid from "@/js/components/svg/event/Hybrid.vue";
 import lowerSlugify from "@/js/helpers/slugifyHelper";
-import {useUserStore} from "@/js/stores/useUserStore";
 
 import GenericCard from '../card/GenericCard.vue';
-import InPerson from '../svg/InPerson.vue';
-import Virtual from '../svg/Virtual.vue';
 
 const props = defineProps({
     data: {
@@ -36,11 +31,7 @@ const handleClickEventCard = () => {
     })
 }
 
-const {currentUser} = storeToRefs(useUserStore())
-
-
 </script>
-
 <template>
     <GenericCard
         :id="data.id"

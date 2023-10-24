@@ -8,8 +8,7 @@ import EventSectionPartner from "@/js/components/partners/EventSectionPartner.vu
 import PartnerCard from "@/js/components/partners/PartnerCard.vue";
 import {API_ENDPOINTS} from "@/js/constants/API_ENDPOINTS";
 import {swrvOptions} from "@/js/constants/swrvConstants";
-import {axiosFetcherParams} from "@/js/helpers/fetcher";
-import {useUserStore} from "@/js/stores/useUserStore";
+import {axiosFetcher} from "@/js/helpers/fetcher";
 
 import PartnersHero from '../components/partners/PartnersHero.vue';
 
@@ -21,7 +20,7 @@ const {
     data: partnerList,
     error: partnerListError,
     isValidating: partnerListIsValidating
-} = useSWRV(API_ENDPOINTS.PARTNER.FETCH_ALL_PARTNERS, axiosFetcherParams(useUserStore().getUserRequestParam), swrvOptions)
+} = useSWRV(API_ENDPOINTS.PARTNER.FETCH_ALL_PARTNERS, axiosFetcher, swrvOptions)
 
 </script>
 

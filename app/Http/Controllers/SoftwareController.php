@@ -11,6 +11,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use App\Models\Software;
 use App\Models\Softwaremeta;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 
 class SoftwareController extends Controller
@@ -43,14 +44,9 @@ class SoftwareController extends Controller
     private function softwareModelToJson($software, $schoolMetadata = NULL, $request = NULL): array
     {
 
-        $isLikedByUser = false;
-        $isBookmarkedByUser = false;
-
-        if (isset($request) && $request->has('usid')) {
-            $userId = $request->input('usid');
-            $isLikedByUser = $software->likes()->where('user_id', $userId)->exists();
-            $isBookmarkedByUser = $software->bookmarks()->where('user_id', $userId)->exists();
-        }
+        $userId = Auth::user()->id;
+        $isLikedByUser = $software->likes()->where('user_id', $userId)->exists();
+        $isBookmarkedByUser = $software->bookmarks()->where('user_id', $userId)->exists();
         $author = $software->author;
         $authorLogo = $this->getAuthorLogo($author);
         return [
@@ -106,6 +102,7 @@ class SoftwareController extends Controller
 
         return response()->json(['message' => 'Software created successfully!', 'software' => $software], 201);
     }
+
     public function fetchSoftwarePosts(Request $request): JsonResponse
     {
         try {
@@ -123,7 +120,7 @@ class SoftwareController extends Controller
                     'software_meta_key',
                     'software_meta_value'
                 );
-                $result = $this->softwareModelToJson($software,$softwareMetadataToSend, $request);
+                $result = $this->softwareModelToJson($software, $softwareMetadataToSend, $request);
                 $data[] = $result;
             }
 
@@ -223,7 +220,7 @@ class SoftwareController extends Controller
             'software_meta_key',
             'software_meta_value'
         );
-        $data = $this->softwareModelToJson($software,$softwareMetadataToSend, $request);
+        $data = $this->softwareModelToJson($software, $softwareMetadataToSend, $request);
         return response()->json($data);
 
     }
@@ -233,7 +230,7 @@ class SoftwareController extends Controller
         $softwareTypes = Softwaretype::all()
             ->map(function ($softwaretype) {
                 return [
-                    'id'   => $softwaretype->id,
+                    'id' => $softwaretype->id,
                     'name' => $softwaretype->software_type_name,
                     'value' => $softwaretype->software_type_value
                 ];

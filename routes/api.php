@@ -2,6 +2,7 @@
 <?php
 
 use App\Http\Controllers\AutoSaveController;
+use App\Http\Controllers\TagController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AdviceController;
 use App\Http\Controllers\SoftwareController;
@@ -29,6 +30,7 @@ use App\Http\Controllers\RsvpController;
 |
 */
 Route::middleware('auth:sanctum')->group(function() {
+//Route::middleware('api')->group(function() {
     // School APIs
     Route::get('fetchAllSchools', [SchoolController::class, 'fetchAllSchools']);
     Route::get('fetchFeaturedSchools', [SchoolController::class, 'fetchFeaturedSchools']);
@@ -83,7 +85,7 @@ Route::middleware('auth:sanctum')->group(function() {
     Route::get('fetchUserProduct', [ProductController::class, 'fetchUserProductPosts']);
 
     // User Management
-    Route::get('fetchUser/{id}', [UserController::class, 'fetchUser']);
+    Route::get('fetchUser', [UserController::class, 'fetchUser']);
     Route::get('fetchUserByEmail/{email}', [UserController::class, 'fetchUserByEmail']);
     Route::get('fetchAllSites', [SiteController::class, 'fetchAllSites']);
     Route::get('fetchSiteById/{id}', [SiteController::class, 'fetchSiteById']);
@@ -95,9 +97,6 @@ Route::middleware('auth:sanctum')->group(function() {
     Route::post('updateFirstTimeVisitUser', [UserController::class, 'updateFirstTimeVisitUser']);
     Route::post('updateUser', [UserController::class, 'updateUser']);
     Route::post('checkEmail', [UserController::class, 'checkEmail']);
-
-    // Image upload
-
 
     // Like and Bookmark
     Route::post('like', [LikeBookmarkController::class, 'like']);
@@ -136,5 +135,9 @@ Route::middleware('auth:sanctum')->group(function() {
 
     //Auto-save
     Route::match(['get', 'post'], '/auto-save', [AutoSaveController::class, 'handleAutoSave']);
+
+    //Tags
+    Route::post('getTopTags', [TagController::class, 'getTopTagsByModelType']);
 });
+
 
