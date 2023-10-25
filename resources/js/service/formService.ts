@@ -1,6 +1,6 @@
 import axios, {AxiosResponse} from 'axios'
 
-import {keyToFieldTypes,templates} from "@/js/components/bases/form/templates/formTemplates";
+import {keyToFieldTypes, templates} from "@/js/components/bases/frontendform/templates/formTemplates";
 import {API_ENDPOINTS} from "@/js/constants/API_ENDPOINTS";
 
 
@@ -8,8 +8,9 @@ export type TemplateType = 'Extraresource' | 'Numbereditems' | 'Dateitems';
 
 interface ContentItem {
     icon?: string;
-    content: string;
-    heading: string;
+    start_date?: string
+    content?: string;
+    heading?: string;
 }
 
 interface TransformedData {
@@ -49,7 +50,6 @@ export const formService = {
         return axios.get(url)
     },
     transformSimpleDataToFilamentFormat: (simpleData: SimpleDataItem[]): TransformedData[] => {
-        console.error(simpleData)
         return simpleData.map(item => {
             const matchedTemplate = templates.find(t => t.type === item.template || t.filamentType === item.template);
 
@@ -66,9 +66,10 @@ export const formService = {
                         [itemDirectory]: {
                             "item": item.content.map(contentItem => {
                                 return {
-                                    "icon": contentItem?.icon || null,
-                                    "content": contentItem?.content || null,
-                                    "heading": contentItem?.heading || null
+                                    ...(contentItem?.icon ? {"icon": contentItem.icon} : {}),
+                                    ...(contentItem?.start_date ? {"start_date": contentItem.start_date} : {}),
+                                    ...(contentItem?.content ? {"content": contentItem.content} : {}),
+                                    ...(contentItem?.heading ? {"heading": contentItem.heading} : {})
                                 };
                             }),
                             "title": item.title
@@ -126,7 +127,7 @@ export const formService = {
         }
     },
     handleSaveForm: (state: any, user_id: number, additionalData: any, itemType: string): Promise<void | AxiosResponse<any>> => {
-        let createURL =''
+        let createURL = ''
         let combinedData
         const data = {
             post_title: state.title,
@@ -152,7 +153,7 @@ export const formService = {
             combinedData = {...data, ...formattedAddtionalData}
             createURL = API_ENDPOINTS.ADVICE.CREATE_ADVICE_POST
 
-        } else if(itemType === 'event'){
+        } else if (itemType === 'event') {
             const eventData = {
                 event_title: state.title,
                 event_excerpt: state.excerpt,
@@ -165,8 +166,8 @@ export const formService = {
             const formattedAddtionalData = {
                 extra_content: formService.transformSimpleDataToFilamentFormat(additionalData['extraContentData']),
                 eventtype_id: additionalData['eventType'],
-                start_date : additionalData['startTime'],
-                end_date : additionalData['endTime'],
+                start_date: additionalData['startTime'],
+                end_date: additionalData['endTime'],
                 event_location: JSON.stringify(additionalData['eventLocation'])
             }
             combinedData = {...eventData, ...formattedAddtionalData}

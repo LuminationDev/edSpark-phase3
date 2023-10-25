@@ -1,7 +1,8 @@
 <script setup>
+import {computed, onMounted, ref} from 'vue'
+
 import ChevronRight from "@/js/components/svg/ChevronRight.vue";
 import {schoolColorKeys, schoolColorTheme} from "@/js/constants/schoolColorTheme";
-import {ref, computed, onMounted} from 'vue'
 
 const props = defineProps({
     parentPage: {
@@ -22,21 +23,7 @@ const props = defineProps({
 })
 const textColorTheme = ref('')
 const textHoverColorTheme = ref('')
-// const textColorTheme = computed(() => {
-//     if (schoolColorKeys.includes(props.colorTheme)) {
-//         return "text-[" + schoolColorTheme[props.colorTheme]['med'] + "]"
-//     } else {
-//         return 'text-main-teal'
-//     }
-// })
-//
-// const textHoverColorTheme = computed(() => {
-//     if (schoolColorKeys.includes(props.colorTheme)) {
-//         return "hover:text-[" + schoolColorTheme[props.colorTheme]['med'] + "]"
-//     } else {
-//         return 'hover:text-main-teal'
-//     }
-// })
+
 onMounted(() => {
     if (schoolColorKeys.includes(props.colorTheme)) {
         textColorTheme.value = "text-[" + schoolColorTheme[props.colorTheme]['med'] + "]"

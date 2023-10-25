@@ -1,7 +1,7 @@
 <script setup>
 import {computed, ref} from 'vue'
 
-import fontLibrary from './data/iconPickerData'
+import fontLibrary from './frontendform/data/iconPickerData'
 
 const props = defineProps({
     label: {
@@ -12,13 +12,14 @@ const props = defineProps({
     modelValue: {
         type: String,
         required: false,
-        default: 'fas fa-circle'
+        default: 'fas fa-plus'
     }
 })
-
+console.log(props.modelValue)
 const filterText = ref('')
 const activeGlyph = ref(props.modelValue)
-const isVisible = ref(true)
+const isVisible = ref(false)
+const isIconPicked = ref(false)
 
 const tabs = [
     {
@@ -72,6 +73,7 @@ const emit = defineEmits(['update:modelValue'])
 const insert = () => {
     emit('update:modelValue', activeGlyph.value)
     isVisible.value = false
+    isIconPicked.value = true
 }
 
 const togglePicker = () => {
@@ -84,13 +86,19 @@ const closePicker = () => {
 </script>
 <template>
     <span
+        v-tippy="'Click to pick an icon'"
         v-bind="$attrs"
+        class="flex flex-col"
         @click="togglePicker"
     >
         <i
-            class="vue3-icon-picker"
+            class="text-3xl vue3-icon-picker"
             :class="modelValue"
         />
+        <span
+            v-if="!isIconPicked"
+            class="text-base"
+        > Pick an icon</span>
     </span>
 
     <div
@@ -180,5 +188,5 @@ const closePicker = () => {
     </div>
 </template>
 <style scoped>
-@import './css/style.css';
+@import './frontendform/css/style.css';
 </style>

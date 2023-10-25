@@ -73,13 +73,13 @@ const fontAwesomeDefaultColor = (itemColor) => {
 <template>
     <div class="extraContent relative">
         <div
-            class="absolute left-[12.4%] bg-black connectingLine hidden w-0.5 z-10 md:!flex"
+            class="absolute left-[12.4%] bg-black connectingLine hidden w-1 z-10 md:!flex"
             :style="`height: ${distanceBetweenEls}px; top: ${top}px;`"
         />
         <div
             v-for="(item,index) in iconListContent"
             :key="index"
-            class="eachContent py-2 w-full"
+            class="eachContent min-h-[180px] py-2 w-full"
         >
             <div class="flex flex-row w-full">
                 <div class="extraContentIcon hidden relative w-1/4  items-center justify-center md:!flex">
@@ -87,7 +87,7 @@ const fontAwesomeDefaultColor = (itemColor) => {
                         class="
                             absolute
                             bg-white
-                            border-2
+                            border-4
                             border-black
                             flex
                             justify-center
@@ -103,7 +103,7 @@ const fontAwesomeDefaultColor = (itemColor) => {
                     >
                         <FontAwesomeIcon
                             :icon="`${fontAwesomeNameFormatter(item.icon)}`"
-                            class="h-16 stroke-main-teal w-16"
+                            class="h-14 stroke-main-teal w-14"
                             :color="fontAwesomeDefaultColor(item.color)"
                         />
                     </div>

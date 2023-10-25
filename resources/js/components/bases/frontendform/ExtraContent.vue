@@ -2,8 +2,8 @@
 import {onClickOutside, watchDebounced, watchOnce} from "@vueuse/core";
 import {reactive, Ref, ref} from 'vue'
 
-import ExtraContentHeader from "@/js/components/bases/form/ExtraContentHeader.vue";
-import ExtraTemplate from "@/js/components/bases/form/ExtraTemplate.vue";
+import ExtraContentHeader from "@/js/components/bases/frontendform/ExtraContentHeader.vue";
+import ExtraTemplate from "@/js/components/bases/frontendform/ExtraTemplate.vue";
 import GenericButton from "@/js/components/button/GenericButton.vue";
 import Add from "@/js/components/svg/Add.vue";
 import {formService, TemplateType} from "@/js/service/formService";

@@ -1,10 +1,11 @@
 <script setup lang="ts">
-import BaseForm from "@/js/components/bases/form/BaseForm.vue";
-import ExtraContent from "@/js/components/bases/form/ExtraContent.vue";
+import {reactive} from "vue";
+
+import BaseForm from "@/js/components/bases/frontendform/BaseForm.vue";
+import ExtraContent from "@/js/components/bases/frontendform/ExtraContent.vue";
+import {templates} from "@/js/components/bases/frontendform/templates/formTemplates";
 import ItemTypeCheckboxes from "@/js/components/selector/ItemTypeCheckboxes.vue";
 import {API_ENDPOINTS} from "@/js/constants/API_ENDPOINTS";
-import {reactive} from "vue";
-import {templates} from "@/js/components/bases/form/templates/formTemplates";
 
 
 const addtSoftwareData = reactive({

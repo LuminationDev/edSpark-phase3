@@ -1,6 +1,3 @@
-
-
-
 export const templateFields = {
     NUMBER_FIELD: "NUMBER_FIELD",
     TEXT_FIELD: "TEXT_FIELD",
@@ -10,11 +7,12 @@ export const templateFields = {
 }
 
 export const keyToFieldTypes = {
-    heading : templateFields.TEXT_FIELD,
+    heading: templateFields.TEXT_FIELD,
     content: templateFields.RICH_TEXT,
     number: templateFields.NUMBER_FIELD,
-    dateTime: templateFields.DATE_TIME_FIELD,
-    other: templateFields.TEXT_FIELD
+    start_date: templateFields.DATE_TIME_FIELD,
+    other: templateFields.TEXT_FIELD,
+    icon: templateFields.ICON_PICKER
 }
 
 export const templates = [
@@ -23,7 +21,7 @@ export const templates = [
         displayText: "Extra Resources",
         filamentType: "App\\Filament\\PageTemplates\\ExtraResource",
         itemDirectory: "extra_resource",
-        content:{
+        content: {
             title: templateFields.TEXT_FIELD,
             itemRepeat: {
                 heading: templateFields.TEXT_FIELD,
@@ -36,9 +34,9 @@ export const templates = [
         displayText: "Numbered Items",
         filamentType: "App\\Filament\\PageTemplates\\NumberedList",
         itemDirectory: "numbered_list",
-        content:{
+        content: {
             title: templateFields.TEXT_FIELD,
-            itemRepeat:{
+            itemRepeat: {
                 number: templateFields.NUMBER_FIELD,
                 heading: templateFields.TEXT_FIELD,
                 content: templateFields.RICH_TEXT
@@ -50,13 +48,27 @@ export const templates = [
         displayText: "Date and Time Items",
         filamentType: "App\\Filament\\PageTemplates\\DateList",
         itemDirectory: "date_list",
-        content:{
+        content: {
             title: templateFields.TEXT_FIELD,
             itemRepeat: {
-                dateTime: templateFields.DATE_TIME_FIELD,
+                start_date: templateFields.DATE_TIME_FIELD,
                 heading: templateFields.TEXT_FIELD,
                 content: templateFields.RICH_TEXT
             }
         }
-    }
+    }, {
+        type: "Iconlist",
+        displayText: "Icon List",
+        filamentType: "App\\Filament\\PageTemplates\\IconList",
+        itemDirectory: "icon_list",
+        content: {
+            title: templateFields.TEXT_FIELD,
+            itemRepeat: {
+                icon: templateFields.ICON_PICKER,
+                heading: templateFields.TEXT_FIELD,
+                content: templateFields.RICH_TEXT
+            }
+        }
+    },
+
 ]

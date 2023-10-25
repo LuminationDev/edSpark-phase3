@@ -13,15 +13,11 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
           rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
-    {{-- <script src="https://cdn.tailwindcss.com"></script> --}}
-    {{-- <link rel="stylesheet" href="{{ mix('resources/css/app.css')}}" type="text/css"> --}}
-    {{-- <link rel="stylesheet" href="{{ asset('css/app.css') }}" type="text/css"> --}}
     <link rel="icon" type="image/x-icon" href="{{ env('VITE_SERVER_IMAGE_API').'/uploads/image/edsparkLogo.png' }}">
     @vite(['resources/js/app.ts'])
 
 </head>
 <body class="relative w-full lg:w-auto">
 <div id="app" class="flex flex-col container mx-auto shadow-lg min-h-screen font-['Poppins']"></div>
-{{--    <script src="{{ mix('resources/js/app.ts') }}" type="text/javascript"></script>--}}
 </body>
 </html>

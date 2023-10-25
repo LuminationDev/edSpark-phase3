@@ -3,11 +3,11 @@ import {storeToRefs} from 'pinia'
 import {computed,  ref} from 'vue';
 
 import ProfilePlaceholder from '@/assets/images/profilePlaceholder.webp'
-import TrixRichEditor from "@/js/components/bases/form/TrixRichEditor.vue";
+import TrixRichEditorInput from "@/js/components/bases/TrixRichEditorInput.vue";
 import UserBookmark from "@/js/components/userprofile/UserBookmark.vue";
 import UserInfoEdit from "@/js/components/userprofile/UserInfoEdit.vue";
+import {useUserStore} from '@/js/stores/useUserStore';
 
-import {useUserStore} from '../../stores/useUserStore';
 import Edit from '../svg/Edit.vue';
 import UserProfileSubmenu from "./UserProfileSubmenu.vue";
 
