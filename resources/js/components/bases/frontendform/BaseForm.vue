@@ -6,10 +6,10 @@ import {storeToRefs} from "pinia";
 import {capitalize, computed, ref} from "vue";
 import {reactive} from 'vue'
 
-import ImageUploaderForm, {MediaType} from "@/js/components/bases/form/ImageUploaderForm.vue";
-import TagsInput from "@/js/components/bases/form/TagsInput.vue";
-import TrixRichEditor from "@/js/components/bases/form/TrixRichEditor.vue";
+import ImageUploaderInput from "@/js/components/bases/ImageUploaderInput.vue";
+import TagsInput from "@/js/components/bases/TagsInput.vue";
 import TextInput from "@/js/components/bases/TextInput.vue";
+import TrixRichEditorInput from "@/js/components/bases/TrixRichEditorInput.vue";
 import GenericButton from "@/js/components/button/GenericButton.vue";
 import {FormStatus, useAutoSave} from "@/js/composables/useAutoSave";
 import {differenceObjects} from "@/js/helpers/jsonHelpers";
@@ -130,7 +130,7 @@ const handleClickSave = () => {
 
 }
 
-const titleGenerator = computed(() => {
+const titleGenerator = computed((): string => {
     if (currentAction.value === FormAction.CREATE) {
         return "Create " + capitalize(props.itemType)
 
@@ -198,14 +198,14 @@ const statusGenerator = computed(() => {
         </TextInput>
         <div class="ContainerTemp my-2 richContent">
             <label> Excerpt</label>
-            <TrixRichEditor
+            <TrixRichEditorInput
                 :src-content="v$.excerpt.$model"
                 @input="handleTrixInputExcerpt"
             />
         </div>
         <div class="ContainerTemp my-2 richContent">
             <label> Content</label>
-            <TrixRichEditor
+            <TrixRichEditorInput
                 :src-content="v$.content.$model"
                 class="border-gray-300"
                 @input="handleTrixInputContent"
@@ -213,7 +213,7 @@ const statusGenerator = computed(() => {
         </div>
         <div class="containerTempImageUploader my-2">
             <label> Cover image (1 image file)</label>
-            <ImageUploaderForm
+            <ImageUploaderInput
                 :item-type="props.itemType"
                 :current-media="state.coverImage"
                 :max="1"

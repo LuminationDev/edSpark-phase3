@@ -4,6 +4,7 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\PartnersResource\Pages;
 use App\Filament\Resources\PartnersResource\RelationManagers;
+use App\Helpers\RoleHelpers;
 use App\Models\Partner;
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -81,10 +82,7 @@ class PartnersResource extends Resource
 
     public static function shouldRegisterNavigation(): bool
     {
-        $allowed_array = ['Superadmin', 'Administrator','Moderator'];
-        if (in_array(Auth::user()->role->role_name, $allowed_array)) {
-            return true;
-        }
-        return false;
+        return RoleHelpers::has_minimum_privilege('admin');
     }
+
 }

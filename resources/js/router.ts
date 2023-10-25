@@ -2,9 +2,9 @@
 import {storeToRefs} from "pinia";
 import {createRouter, createWebHistory} from 'vue-router';
 
-import AdviceForm from "@/js/components/bases/form/types/AdviceForm.vue";
-import EventForm from "@/js/components/bases/form/types/EventForm.vue";
-import SoftwareForm from "@/js/components/bases/form/types/SoftwareForm.vue";
+import AdviceForm from "@/js/components/bases/frontendform/types/AdviceForm.vue";
+import EventForm from "@/js/components/bases/frontendform/types/EventForm.vue";
+import SoftwareForm from "@/js/components/bases/frontendform/types/SoftwareForm.vue";
 import AdviceSearch from "@/js/components/search/AdviceSearch.vue";
 import EventSearch from "@/js/components/search/EventSearch.vue";
 import HardwareSearch from "@/js/components/search/HardwareSearch.vue";
@@ -60,7 +60,7 @@ const routes: any = [
         meta: {
             navigation: true,
             requiresAuth: true, //guard the dashboard route
-            customText: "Dash"
+            customText: "Home"
         } as RouteMeta
     },
     {

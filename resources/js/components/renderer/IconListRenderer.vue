@@ -1,4 +1,5 @@
 <script setup>
+import {FontAwesomeIcon} from "@fortawesome/vue-fontawesome";
 import {computed, onBeforeUnmount, onMounted, ref} from 'vue';
 
 const props = defineProps({
@@ -8,12 +9,13 @@ const props = defineProps({
     }
 });
 
-const numberedListContent = computed(() =>
+const iconListContent = computed(() =>
     Array.isArray(props.itemArray) ? props.itemArray : Object.values(props.itemArray)
 );
 
 const top = ref('');
 const distanceBetweenEls = ref('');
+const floatingLineClasses = ref('');
 const uniqueContainerClass = ref(`numberListcontainer${Math.floor(Math.random() * 100000)}`);
 
 // Encapsulated handlers for better readability
@@ -58,7 +60,14 @@ const getPositionAtCenter = (element) => {
         y: top + height / 2
     };
 };
+const fontAwesomeNameFormatter = (nameFromFilament) => {
+    return nameFromFilament.replace('fas-', 'fa-')
+}
 
+const fontAwesomeDefaultColor = (itemColor) => {
+    if (!itemColor) return '#1C5CA9' // fallback light teal color
+    else return itemColor
+}
 </script>
 
 <template>
@@ -68,9 +77,9 @@ const getPositionAtCenter = (element) => {
             :style="`height: ${distanceBetweenEls}px; top: ${top}px;`"
         />
         <div
-            v-for="(item,index) in numberedListContent"
+            v-for="(item,index) in iconListContent"
             :key="index"
-            class="eachContent py-2 w-full"
+            class="eachContent min-h-[180px] py-2 w-full"
         >
             <div class="flex flex-row w-full">
                 <div class="extraContentIcon hidden relative w-1/4  items-center justify-center md:!flex">
@@ -80,11 +89,9 @@ const getPositionAtCenter = (element) => {
                             bg-white
                             border-4
                             border-black
-                            font-bold
-                            grid
-                            place-items-center
-                            h-16
-                            p-4
+                            flex
+                            justify-center
+                            items-center
                             rounded-full
                             text-2xl
                             w-16
@@ -94,7 +101,11 @@ const getPositionAtCenter = (element) => {
                             "
                         :class="uniqueContainerClass"
                     >
-                        {{ index + 1 }}
+                        <FontAwesomeIcon
+                            :icon="`${fontAwesomeNameFormatter(item.icon)}`"
+                            class="h-14 stroke-main-teal w-14"
+                            :color="fontAwesomeDefaultColor(item.color)"
+                        />
                     </div>
                 </div>
                 <div

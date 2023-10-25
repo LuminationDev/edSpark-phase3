@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import {reactive} from "vue";
 
-import BaseForm from "@/js/components/bases/form/BaseForm.vue";
-import ExtraContent from "@/js/components/bases/form/ExtraContent.vue";
-import {templates} from "@/js/components/bases/form/templates/formTemplates";
+import BaseForm from "@/js/components/bases/frontendform/BaseForm.vue";
+import ExtraContent from "@/js/components/bases/frontendform/ExtraContent.vue";
+import {templates} from "@/js/components/bases/frontendform/templates/formTemplates";
 import EventTypeLocationTime from "@/js/components/selector/EventTypeLocationTime.vue";
 import {EventAdditionalData} from "@/js/types/EventTypes";
 
