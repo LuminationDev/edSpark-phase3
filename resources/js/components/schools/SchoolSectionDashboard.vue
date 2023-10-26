@@ -42,7 +42,7 @@ onBeforeMount(async () => {
     </div>
     <div
         v-if="schoolsAvailable"
-        class="px-5 xl:!px-20"
+        class="px-5 xl:!px-20 mt-10"
     >
         <SchoolsSearchableMap
             :key="schoolsAvailable"
