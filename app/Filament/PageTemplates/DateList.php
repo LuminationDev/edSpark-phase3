@@ -14,22 +14,21 @@ use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\MarkdownEditor;
 use Filament\Forms\Components\Select;
 
-final class Extraresource
+final class DateList
 {
     public static function title()
     {
-        return 'Extra Resources';
+        return 'Date and Time Template';
     }
 
     public static function schema()
     {
         return [
-            Forms\Components\TextInput::make('title')
-                ->label('Resource title')
-                ->maxLength(255),
             Repeater::make('item')->schema([
                 TextInput::make('heading'),
-                RichEditor::make('content')
+                RichEditor::make('content'),
+                Forms\Components\DateTimePicker::make('start_date')
+                    ->required(),
             ])
                 ->label('Item')
                 ->collapsible()

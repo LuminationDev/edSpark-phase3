@@ -1,6 +1,6 @@
 <script setup>
 import useSWRV from "swrv";
-import { ref } from "vue";
+import {ref} from "vue";
 
 import BaseSearch from "@/js/components/search/BaseSearch.vue";
 import GenericMultiSelectFilter from "@/js/components/search/hardware/GenericMultiSelectFilter.vue";
@@ -9,12 +9,15 @@ import {swrvOptions} from "@/js/constants/swrvConstants";
 import {axiosFetcher} from "@/js/helpers/fetcher";
 import {useUserStore} from "@/js/stores/useUserStore";
 
-const { data: adviceList, error: adviceError } = useSWRV(API_ENDPOINTS.ADVICE.FETCH_ADVICE_POSTS, axiosFetcher(useUserStore().getUserRequestParam), swrvOptions)
+const {
+    data: adviceList,
+    error: adviceError
+} = useSWRV(API_ENDPOINTS.ADVICE.FETCH_ADVICE_POSTS, axiosFetcher, swrvOptions)
 
 const adviceFilterList = [
-    { name: "Digital Adoption Group", value: "DAG advice" },
-    { name: "Educators", value: ["Your Classroom", "Your Work", "Your Learning"] },
-    { name: "Partner", value: "Partner" },
+    {name: "Digital Adoption Group", value: "DAG advice"},
+    {name: "Educators", value: ["Your Classroom", "Your Work", "Your Learning"]},
+    {name: "Partner", value: "Partner"},
 ]
 
 const filterObject = ref({})

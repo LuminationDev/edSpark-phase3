@@ -1,8 +1,8 @@
 <script setup>
 
+import AdviceSingleCuratedContent from "@/js/components/advice/AdviceSingleCuratedContent.vue";
 import BaseBreadcrumb from "@/js/components/bases/BaseBreadcrumb.vue";
 import BaseHero from "@/js/components/bases/BaseHero.vue";
-import AdviceSingleCuratedContent from "@/js/components/advice/AdviceSingleCuratedContent.vue";
 import BaseSingle from "@/js/components/bases/BaseSingle.vue";
 import ExtraResourceTemplateDisplay from "@/js/components/renderer/ExtraResourceTemplateDisplay.vue";
 
@@ -75,11 +75,11 @@ const timeFormatter = (originalFormat) => {
                     </div>
                     <div
                         class="flex content-paragraph flex-col max-w-full overflow-hidden text-lg"
-                        v-html="contentFromBase['content']"
+                        v-html="purify.sanitize(contentFromBase['content'])"
                     />
                     <div
                         v-if="contentFromBase['extra_content'] && contentFromBase['extra_content'].length"
-                        class="extraResourcesContainer w-full"
+                        class="extraResourcesContainer mt-4 w-full"
                     >
                         <ExtraResourceTemplateDisplay :content="contentFromBase['extra_content']" />
                     </div>

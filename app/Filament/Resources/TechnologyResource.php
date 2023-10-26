@@ -35,11 +35,6 @@ class TechnologyResource extends Resource
                             ->maxLength(255),
                         Forms\Components\Textarea::make('value')
                             ->maxLength(65535),
-                        // Forms\Components\TextInput::make('icon')
-                        //     ->maxLength(65535),
-                        // IconPicker::make('icon')
-                        //     ->columns(4)
-                        //     ->itemTemplate(fn($icon) => view('mycustomicon', ['icon' => $icon]))
                         IconPicker::make('icon')
                             ->columns(4)
                     ])

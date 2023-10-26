@@ -1,6 +1,8 @@
 <script setup>
 import {computed, onBeforeUnmount, onMounted, ref} from 'vue';
 
+import {formatDateToTimeOnly} from "@/js/helpers/dateHelper";
+
 const props = defineProps({
     itemArray: {
         type: Array,
@@ -8,12 +10,13 @@ const props = defineProps({
     }
 });
 
-const numberedListContent = computed(() =>
+const dateListContent = computed(() =>
     Array.isArray(props.itemArray) ? props.itemArray : Object.values(props.itemArray)
 );
 
 const top = ref('');
 const distanceBetweenEls = ref('');
+const floatingLineClasses = ref('');
 const uniqueContainerClass = ref(`numberListcontainer${Math.floor(Math.random() * 100000)}`);
 
 // Encapsulated handlers for better readability
@@ -59,16 +62,17 @@ const getPositionAtCenter = (element) => {
     };
 };
 
+
 </script>
 
 <template>
     <div class="extraContent relative">
         <div
-            class="absolute left-[12.4%] bg-black connectingLine hidden w-1 z-10 md:!flex"
+            class="absolute left-[12.4%] bg-black connectingLine hidden w-0.5 z-10 md:!flex"
             :style="`height: ${distanceBetweenEls}px; top: ${top}px;`"
         />
         <div
-            v-for="(item,index) in numberedListContent"
+            v-for="(item,index) in dateListContent"
             :key="index"
             class="eachContent py-2 w-full"
         >
@@ -76,31 +80,31 @@ const getPositionAtCenter = (element) => {
                 <div class="extraContentIcon hidden relative w-1/4  items-center justify-center md:!flex">
                     <div
                         class="
-                            absolute
+                            absolutea
                             bg-white
-                            border-4
+                            border-b-2
                             border-black
-                            font-bold
-                            grid
-                            place-items-center
-                            h-16
-                            p-4
-                            rounded-full
-                            text-2xl
+                            border-t-2
+                            flex
+                            justify-center
+                            items-center
+                            font-medium
+                            h-14
+                            text-xl
                             w-16
                             z-20
-                            md:!h-24
+                            md:!h-18
                             md:!w-24
                             "
                         :class="uniqueContainerClass"
                     >
-                        {{ index + 1 }}
+                        {{ formatDateToTimeOnly(new Date(item.start_date)) }}
                     </div>
                 </div>
                 <div
                     class="flex flex-col w-full md:!w-3/4"
                 >
-                    <div class="font-semibold heading mb-2 mt-6 text-xl">
+                    <div class="font-semibold heading mb-2 mt-4 text-xl">
                         {{ item.heading }}
                     </div>
 

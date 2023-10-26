@@ -2,7 +2,7 @@
 import {computed, ref} from "vue";
 
 import Uploader from "@/js/components/uploader/Uploader.vue";
-import {API_ENDPOINTS} from "@/js/constants/API_ENDPOINTS";
+import {API_ENDPOINTS, IMAGE_ENDPOINTS} from "@/js/constants/API_ENDPOINTS";
 import {imageURL} from "@/js/constants/serverUrl";
 
 export type MediaType = {
@@ -62,7 +62,7 @@ const formatStringMediaToMediaType = computed((): MediaType[] => {
 
 <template>
     <Uploader
-        :server="API_ENDPOINTS.IMAGE.UPLOAD_IMAGE + '/' + props.itemType"
+        :server="IMAGE_ENDPOINTS.IMAGE.UPLOAD_IMAGE + '/' + props.itemType"
         :max="props.max"
         :media="formatStringMediaToMediaType"
         @change="handleChangeMedia"
