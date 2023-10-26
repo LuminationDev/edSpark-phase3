@@ -146,9 +146,9 @@ else return "Discover inspiration for your own classroom."
     >
 
     
-        <div class="search-filter-element flex w-full mb-6 ml-10">
+        <div class="search-filter-element flex max-w-[1000px] w-[80%] mb-6">
 
-            <div class="search-filter-heading basis-1/3 mb-8">
+            <div class="search-filter-heading basis-1/3 mb-8 pr-4">
                 <h3 class="font-semibold text-2xl">
                     Browse all {{ formattedSearchTitle }}
                 </h3>
@@ -290,10 +290,6 @@ else return "Discover inspiration for your own classroom."
 </template>
 <style lang="scss">
 
-.search-filter-element {
-    max-width: 1000px;
-    // min-width: 405px;
-}
 
 /* MB added the below to tidy up responsive nav bars */
 @media screen and (max-width: 767px) {
