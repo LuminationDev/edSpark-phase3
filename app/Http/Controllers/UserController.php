@@ -2,6 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Advice;
+use App\Models\Event;
+use App\Models\Software;
+use App\Services\PostService;
+use App\Services\ResponseService;
+use App\Services\UserPostService;
 use Exception;
 use Illuminate\Http\Request;
 use App\Models\User;
@@ -9,12 +15,37 @@ use App\Models\Usermeta;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
-use App\Helpers\OutputHelper;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Response;
 
 class UserController extends Controller
 {
+    protected PostService $postService;
+
+    public function __construct(PostService $postService)
+    {
+        $this->postService = $postService;
+
+
+    }
+
+    public function getAllUserDraftPosts(Request $request): JsonResponse
+    {
+        try {
+            $adviceData = $this->postService->fetchUserDraftPosts(Advice::class, $request, [$this->postService, 'adviceModelToJson']);
+            $softwareData = $this->postService->fetchUserDraftPosts(Software::class, $request, [$this->postService, 'softwareModelToJson']);
+            $eventData = $this->postService->fetchUserDraftPosts(Event::class, $request, [$this->postService, 'eventModelToJson']);
+            $data = [
+                'advice' => $adviceData,
+                'software' => $softwareData,
+                'event' => $eventData
+            ];
+            return ResponseService::success("Success", $data);
+        } catch (\Exception $e) {
+            return response()->json(['error' => "An error occurred: " . $e->getMessage()], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
+
     public function fetchCurrentUser(): JsonResponse
     {
         try {

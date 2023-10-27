@@ -7,7 +7,7 @@ import {useRoute, useRouter} from "vue-router";
 import Loader from "@/js/components/spinner/Loader.vue";
 import {API_ENDPOINTS} from "@/js/constants/API_ENDPOINTS";
 import {isObjectEmpty} from "@/js/helpers/objectHelpers";
-import lowerSlugify from "@/js/helpers/slugifyHelper";
+import {lowerSlugify} from "@/js/helpers/slugifyHelper";
 import {useAdviceStore} from "@/js/stores/useAdviceStore";
 import {useHardwareStore} from "@/js/stores/useHardwareStore";
 import {useSoftwareStore} from "@/js/stores/useSoftwareStore";
@@ -154,7 +154,7 @@ const checkToReadOrFetchContent = async () => {
             // state has content but ID different, send fetch
             await axios.get(`${byIdAPILink}${route.params.id}`).then(res => {
                 singleContent.value = res.data
-                if(singleContent.value.content && typeof singleContent.value.content === 'string'){
+                if (singleContent.value.content && typeof singleContent.value.content === 'string') {
                     singleContent.value.content = convertLinksToEmbeds(singleContent.value.content)
                 }
                 baseIsLoading.value = false

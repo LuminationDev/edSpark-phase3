@@ -1,11 +1,12 @@
 <script setup>
 
-import {imageURL} from "@/js/constants/serverUrl";
-import lowerSlugify from "@/js/helpers/slugifyHelper";
-import {useWindowStore} from "@/js/stores/useWindowStore";
 import {storeToRefs} from "pinia";
 import {computed} from "vue";
 import {useRouter} from "vue-router";
+
+import {imageURL} from "@/js/constants/serverUrl";
+import {lowerSlugify} from "@/js/helpers/slugifyHelper";
+import {useWindowStore} from "@/js/stores/useWindowStore";
 
 const props = defineProps({
     data:{
@@ -58,8 +59,8 @@ const handleClickSearchResultCard = () => {
     }
     if(componentName){
         showGlobalSearch.value = false
-        let targetId = props.data.id
-        let slug = lowerSlugify(props.data.title)
+        const targetId = props.data.id
+        const slug = lowerSlugify(props.data.title)
 
         router.push({name: componentName, params:{id: targetId , slug: slug}})
     }

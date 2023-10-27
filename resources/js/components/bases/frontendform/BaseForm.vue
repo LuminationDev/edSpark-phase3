@@ -3,10 +3,11 @@ import useVuelidate from "@vuelidate/core";
 import {required} from "@vuelidate/validators";
 import {watchOnce} from "@vueuse/core";
 import {storeToRefs} from "pinia";
+import tippy from "tippy.js";
 import {capitalize, computed, ref} from "vue";
 import {reactive} from 'vue'
 
-import ImageUploaderInput from "@/js/components/bases/ImageUploaderInput.vue";
+import ImageUploaderInput, {MediaType} from "@/js/components/bases/ImageUploaderInput.vue";
 import TagsInput from "@/js/components/bases/TagsInput.vue";
 import TextInput from "@/js/components/bases/TextInput.vue";
 import TrixRichEditorInput from "@/js/components/bases/TrixRichEditorInput.vue";
@@ -121,8 +122,11 @@ const handleReceiveMediaFromUploader = (media: MediaType[]): void => {
 }
 
 const handleClickSave = () => {
-    formService.handleSaveForm(state, currentUser.value.id, props.additionalData, props.itemType).then(() => {
+    formService.handleSaveForm(state, currentUser.value.id, props.additionalData, props.itemType).then((res) => {
         console.log('kinda succedd from base form')
+        //res.data.status [published/pending]
+        // what do do here?
+        tippy('Successfull')
     }).catch(e => {
         console.error('Error during saving')
     })
