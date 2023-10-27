@@ -7,7 +7,6 @@ use App\Models\Event;
 use App\Models\Software;
 use App\Services\PostService;
 use App\Services\ResponseService;
-use App\Services\UserPostService;
 use Exception;
 use Illuminate\Http\Request;
 use App\Models\User;
