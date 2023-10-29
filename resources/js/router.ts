@@ -225,7 +225,7 @@ const routes: any = [
         meta: {
             navigation: true,
             requiresAuth: true,
-            customText: 'Engage'
+            customText: 'Partners'
         }
     },
     {

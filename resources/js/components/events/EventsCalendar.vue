@@ -114,6 +114,14 @@ const initialCalendarPage = computed(() => {
 
 <style scoped>
 
+
+/*
+ vc-highlight-base-middle vc-highlight-bg-solid
+*/
+.vc-highlight.vc-highlight-base-middle.vc-highlight-bg-solid {
+    border-radius: 10px 0 0 10px !important;
+}
+
 .calendarWrappe :deep(.vc-pane) {
     background-color: #f8f8f8;
 }
