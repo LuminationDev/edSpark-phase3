@@ -1,7 +1,8 @@
 <script setup>
 
-import { computed, resolveDynamicComponent } from "vue";
-import { schoolColorTheme } from "@/js/constants/schoolColorTheme";
+import {computed, resolveDynamicComponent} from "vue";
+
+import {schoolColorTheme} from "@/js/constants/schoolColorTheme";
 
 const props = defineProps({
     iconPath: {
@@ -31,7 +32,7 @@ const loadIconComponent = (iconPath) => {
     }
 };
 
-const loadColorTheme = (customFill) => {
+const loadColorTheme = () => {
     try {
         return `fill-[${schoolColorTheme[props.colorTheme]['med']}]`
     } catch (error) {
@@ -51,9 +52,9 @@ const customFill = computed(() => {
 
 </script>
 <template>
-    <component 
-        :is="resolvedComponent" 
-        class="pointer-events-none" 
-        :class="customFill" 
+    <component
+        :is="resolvedComponent"
+        class="pointer-events-none"
+        :class="customFill"
     />
 </template>
