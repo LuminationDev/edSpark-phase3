@@ -19,28 +19,34 @@ const props = defineProps({
         type: String,
         required: true
     },
+    colorTheme: {
+        type: String,
+        required: false,
+        default: 'navy',
+    }
 })
 const iconPath = ref('')
 
-
 const schoolTechIconComponents = {
     "Microsoft Teams": MicrosoftTeamsIcon,
-    "3D Printing": ThreeDPrintingIcon,
+    "Lumination": LuminationIcon,
+    "Makers Empire": MakersEmpireIcon,
     "Apple": AppleIcon,
     "Frog": FrogIcon,
+
+    "3D Printing": ThreeDPrintingIcon,
     "IoT": IoTIcon,
     "Robotics": RoboticsIcon,
     "AR": ARIcon,
-    "VR": VRIcon,
-    "Lumination": LuminationIcon,
-    "Makers Empire": MakersEmpireIcon
+    "VR": VRIcon
 }
 
-
 </script>
+
 <template>
     <BaseIconGenerator
         :icon-path="techName"
         :components-object="schoolTechIconComponents"
+        :color-theme="colorTheme"
     />
 </template>
