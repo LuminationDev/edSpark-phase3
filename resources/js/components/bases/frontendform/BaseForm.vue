@@ -3,9 +3,9 @@ import useVuelidate from "@vuelidate/core";
 import {required} from "@vuelidate/validators";
 import {watchOnce} from "@vueuse/core";
 import {storeToRefs} from "pinia";
-import tippy from "tippy.js";
-import {capitalize, computed, ref} from "vue";
-import {reactive} from 'vue'
+import {capitalize, computed, reactive, ref} from "vue";
+import {useRouter} from "vue-router";
+import {toast} from "vue3-toastify";
 
 import ImageUploaderInput, {MediaType} from "@/js/components/bases/ImageUploaderInput.vue";
 import TagsInput from "@/js/components/bases/TagsInput.vue";
@@ -74,10 +74,9 @@ const rules = {
 const v$: any = useVuelidate(rules, state)
 
 const currentAction = ref<FormAction>(FormAction.CREATE)
-
 const userStore = useUserStore()
 const {currentUser} = storeToRefs(userStore)
-
+const router = useRouter()
 const {
     formStatusDisplay,
     isSaving,
@@ -122,13 +121,16 @@ const handleReceiveMediaFromUploader = (media: MediaType[]): void => {
 }
 
 const handleClickSave = () => {
+    isSaving.value = true
     formService.handleSaveForm(state, currentUser.value.id, props.additionalData, props.itemType).then((res) => {
-        console.log('kinda succedd from base form')
-        //res.data.status [published/pending]
-        // what do do here?
-        tippy('Successfull')
+        formStatusDisplay.value = FormStatus.SAVED
+        router.push('/create').then(() => {
+            toast('Successfully submitted ' + props.itemType + ' for moderation!')
+        })
     }).catch(e => {
         console.error('Error during saving')
+    }).finally(() =>{
+        isSaving.value = false
     })
 
 

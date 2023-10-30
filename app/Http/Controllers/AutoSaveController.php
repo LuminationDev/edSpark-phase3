@@ -53,7 +53,7 @@ class AutoSaveController extends Controller
         }
     }
 
-    private function getActiveAutoSave(Request $request)
+    public function getActiveAutoSave(Request $request)
     {
         $userId = $request->input('user_id');
         $postType = $request->input('post_type');
@@ -90,6 +90,7 @@ class AutoSaveController extends Controller
             ->update(['is_active' => false]);
 
         return response()->json(['message' => 'Auto-save(s) found!', 'data' => $validAutoSaves], 200);
+
     }
 
 

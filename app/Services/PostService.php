@@ -34,7 +34,7 @@ class PostService
         }
     }
 
-    public function fetchUserDraftPosts($model, $request, $callback)
+    public function fetchUserDraftPosts($model, $request, $callback): array
     {
         $userId = $request->user_id ?? Auth::user()->id;
         if ($model === Event::class) {
@@ -123,7 +123,7 @@ class PostService
         ];
     }
 
-    public function eventModelToJson($event, $request)
+    public function eventModelToJson($event, $request): array
     {
         $author = $event->author;
         $author_logo = $this->getAuthorLogo($author);

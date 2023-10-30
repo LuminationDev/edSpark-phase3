@@ -1,5 +1,7 @@
 <script setup>
 
+import purify from "dompurify";
+
 import AdviceSingleCuratedContent from "@/js/components/advice/AdviceSingleCuratedContent.vue";
 import BaseBreadcrumb from "@/js/components/bases/BaseBreadcrumb.vue";
 import BaseHero from "@/js/components/bases/BaseHero.vue";

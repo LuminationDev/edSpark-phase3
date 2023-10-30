@@ -8,29 +8,27 @@ import EventTypeLocationTime from "@/js/components/selector/EventTypeLocationTim
 import {EventAdditionalData} from "@/js/types/EventTypes";
 
 
-
 const addtEventData = reactive<EventAdditionalData>({
-    extraContentData: [],
-    eventType: 0,
-    eventLocation: {},
-    startTime: new Date(),
-    endTime: new Date()
-
+    extra_content: [],
+    type: 0,
+    location: {},
+    start_date: new Date(),
+    end_date: new Date()
 })
 
 const updateExtraContent = (content): void => {
     if (content) {
-        addtEventData.extraContentData = content
+        addtEventData.extra_content = content
     }
 }
 
 const handleReceiveTypesLocationTime = (data: object): void => {
-    addtEventData.eventType = data.eventType
-    addtEventData.eventLocation = data.eventLocation
-    addtEventData.startTime = data.startTime
-    addtEventData.endTime = data.endTime
+    addtEventData.type = data.eventType
+    addtEventData.location = data.eventLocation
+    addtEventData.start_date = data.startTime
+    addtEventData.end_date = data.endTime
     if (data.extraContentData) {
-        addtEventData.extraContentData = data.extraContentData
+        addtEventData.extra_content = data.extraContentData
     }
 }
 </script>
@@ -51,7 +49,7 @@ const handleReceiveTypesLocationTime = (data: object): void => {
         </template>
         <template #extraContent>
             <ExtraContent
-                :extra-content-data="addtEventData.extraContentData"
+                :extra-content-data="addtEventData.extra_content"
                 :available-templates="templates"
                 @update-parent-extra-content="updateExtraContent"
             />
