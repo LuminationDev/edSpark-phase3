@@ -200,6 +200,7 @@ const handleCloseModerationTab = () : void =>{
                             <BaseBreadcrumb
                                 :child-page="schoolContent.name"
                                 parent-page="schools"
+                                parent-page-link="browse/school"
                                 :color-theme="colorTheme"
                                 class="mt-[120px] pt-[10px]"
                             />

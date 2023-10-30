@@ -36,9 +36,9 @@ class TechnologyResource extends Resource
                         Forms\Components\Textarea::make('value')
                             ->maxLength(65535),
                         IconPicker::make('icon')
+                            ->sets(['fontawesome-solid'])
                             ->columns(4)
                     ])
-
             ]);
     }
 
@@ -82,6 +82,7 @@ class TechnologyResource extends Resource
             'edit' => Pages\EditTechnology::route('/{record}/edit'),
         ];
     }
+
     public static function shouldRegisterNavigation(): bool
     {
         return false;

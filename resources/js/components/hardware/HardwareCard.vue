@@ -1,9 +1,11 @@
 <script setup>
-import lowerSlugify from "@/js/helpers/slugifyHelper";
-import GenericCard from '../card/GenericCard.vue';
-import {useRouter} from 'vue-router';
-import {useUserStore} from "@/js/stores/useUserStore";
 import {storeToRefs} from "pinia";
+import {useRouter} from 'vue-router';
+
+import {lowerSlugify} from "@/js/helpers/slugifyHelper";
+import {useUserStore} from "@/js/stores/useUserStore";
+
+import GenericCard from '../card/GenericCard.vue';
 
 const userStore = useUserStore()
 const {currentUser} = storeToRefs(userStore)

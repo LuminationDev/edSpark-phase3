@@ -51,19 +51,19 @@ export const schoolColorTheme = {
     },
     deepPurple: {
         light: "#9F7AEA",
-        med:"#4338CA",
-        dark:"#2D1E91",
+        med: "#4338CA",
+        dark: "#2D1E91",
     },
     pink: {
         light: '#FECDD3',
         med: '#D53F8C',
         dark: '#481D3D',
     },
-    amber:{
+    amber: {
         light: "#ffd54f",
         med: "#ffa000",
         dark: "#ff6f00",
 
     }
 }
-export const schoolColorKeys = ["black","amber","red", "orange", "yellow", "green", "teal", "blue", "indigo", "purple", "deepPurple", "pink"]
+export const schoolColorKeys = ["black", "amber", "red", "orange", "yellow", "green", "teal", "blue", "indigo", "purple", "deepPurple", "pink"]

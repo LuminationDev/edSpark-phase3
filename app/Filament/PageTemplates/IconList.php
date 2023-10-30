@@ -27,7 +27,8 @@ final class IconList
         return [
             Repeater::make('item')->schema([
                 IconPicker::make('icon')
-                    ->columns(4),
+                    ->columns(4)
+                    ->sets(['fontawesome-solid']),
                 TextInput::make('heading'),
                 RichEditor::make('content')
             ])

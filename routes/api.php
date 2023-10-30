@@ -97,6 +97,7 @@ Route::middleware('auth:sanctum')->group(function() {
     Route::post('updateFirstTimeVisitUser', [UserController::class, 'updateFirstTimeVisitUser']);
     Route::post('updateUser', [UserController::class, 'updateUser']);
     Route::post('checkEmail', [UserController::class, 'checkEmail']);
+    Route::get('getUserDraftPosts', [UserController::class, 'getAllUserDraftPosts']);
 
     // Like and Bookmark
     Route::post('like', [LikeBookmarkController::class, 'like']);
