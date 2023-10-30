@@ -129,7 +129,7 @@ const handleLinkToSchool = (schoolName) => {
         ref="gMapParent"
         class="border border-[#0072DA] relative w-full"
     >
-        <div class="bg-[#0072DA] flex justify-between flex-row h-[72px] place-items-center px-[48px] relative z-50">
+        <div class="bg-[#0072DA] flex justify-between flex-row h-[72px] place-items-center px-[48px] relative z-40">
             <h1 class="font-bold text-white text-xl md:!text-3xl">
                 Search for Schools
             </h1>

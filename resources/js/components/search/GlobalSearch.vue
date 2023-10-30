@@ -66,10 +66,10 @@ const handleClearSearchbar = () => {
 <template>
     <div class="absolute top-0 right-0 bottom-0 left-0 globalSearchScreenContainer grid place-items-center h-screen w-screen z-50">
         <div
-            class="bg-main-teal/50 fixed top-0 left-0 grayoverlay h-full w-full z-40"
+            class="bg-main-navy/80 fixed top-0 left-0 grayoverlay h-full w-full z-40"
             @click="handleClickOverlay"
         />
-        <div class="bg-white drop-shadow-xl flex flex-col h-1/2 overflow-y-auto relative rounded-xl searchBox w-1/2 z-50">
+        <div class="bg-white drop-shadow-xl flex flex-col h-1/2 overflow-y-auto relative rounded-xl searchBox z-50 w-10/12 lg:w-1/2">
             <input
                 ref="globalSearchInputBox"
                 v-model="searchTerms"
@@ -89,7 +89,7 @@ const handleClearSearchbar = () => {
                     focus:outline-none
                     focus:ring-gray-300
                     "
-                placeholder="Type in search terms... "
+                placeholder="Type in search terms"
             >
             <div
                 class="absolute top-4 right-4 cursor-pointer emptySearchField"
@@ -117,7 +117,7 @@ const handleClearSearchbar = () => {
                 </template>
                 <template v-else>
                     <div class="mt-10 text-center text-gray-600">
-                        Search results will appear here.
+                        Results will appear here
                     </div>
                 </template>
             </div>

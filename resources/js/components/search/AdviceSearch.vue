@@ -37,17 +37,12 @@ const handleFilter = (filters, dataPath) => {
         <template #filterBar>
             <GenericMultiSelectFilter
                 id="adviceFilter"
-                placeholder="Filter by advice type"
+                placeholder="Filter by type"
                 :filter-list="adviceFilterList"
                 data-path="advice_type"
                 @transmit-selected-filters="handleFilter"
             />
-            <GenericMultiSelectFilter
-                placeholder="Filter by advice type"
-                :filter-list="adviceFilterList"
-                data-path="advice_type"
-                @transmit-selected-filters="handleFilter"
-            />
+           
         </template>
     </BaseSearch>
 </template>

@@ -58,7 +58,7 @@ if(route.params || route.params.filter){
         <template #filterBar>
             <GenericMultiSelectFilter
                 id="softwareType"
-                placeholder="Filter by software type"
+                placeholder="Filter by type"
                 :filter-list="softwareFilterList"
                 data-path="software_type"
                 :preselected="preselectedFilterObject"

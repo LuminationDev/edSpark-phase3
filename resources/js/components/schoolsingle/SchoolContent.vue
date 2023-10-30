@@ -249,7 +249,10 @@ console.log(props.activeSubmenu)
                                     name="additionalContentActions"
                                 />
                             </div>
-                            <SchoolTech :tech-list="schoolContent.tech_used" />
+                            <SchoolTech 
+                                :tech-list="schoolContent.tech_used"                                
+                                :color-theme="colorTheme"
+                                 />
                         </div>
                     </div>
                 </div>

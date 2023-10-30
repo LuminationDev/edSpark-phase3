@@ -22,7 +22,7 @@ const edsparkColor = [
 
 const generateSafeList = (colors) => {
     const safeList = [];
-    ['text', 'bg', 'hover:text'].forEach((prefix) => {
+    ['text', 'bg', 'hover:text', 'fill'].forEach((prefix) => {
         colors.forEach((color) => {
             safeList.push(`${prefix}-[${color}]`);
         });
@@ -48,7 +48,7 @@ module.exports = {
         extend: {
             colors: {
                 main: {
-                    navy: 'rgba(0, 40, 88, 1)',
+                    navy: '#002858', //was rgba(0, 40, 88, 1)',
                     darkTeal: '#0A7982',
                     teal: '#097982', //was '#339999',
                     lightTeal: '#28D5CB',
@@ -66,6 +66,7 @@ module.exports = {
                     red: '#C73E5D', //was #de4668
                     lightRed: '#F7C1C5',
                     mbRose: '#be123c',
+                    mbIcons: 'green',
 
                 },
                 custom: {

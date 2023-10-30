@@ -34,6 +34,11 @@ export const schoolColorTheme = {
         med: '#3182CE',
         dark: '#1C3D5A',
     },
+    navy: {
+        light: '#3d6ba3',
+        med: '#002858',
+        dark: '#021933',
+    },     
     indigo: {
         light: '#C7D2FE',
         med: '#5A67D8',
