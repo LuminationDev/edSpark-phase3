@@ -201,7 +201,7 @@ const handleCloseModerationTab = () : void =>{
                                 :child-page="schoolContent.name"
                                 parent-page="schools"
                                 :color-theme="colorTheme"
-                                class="mt-[100px]"
+                                class="mt-[120px] pt-[10px]"
                             />
                         </template>
                         <template #titleText>
@@ -217,11 +217,11 @@ const handleCloseModerationTab = () : void =>{
                                                 mb-4
                                                 place-items-center
                                                 schoolTechHoverableRow
-                                                
-                                                
                                                 gap-4"
                                         >
-                                            <SchoolTechHoverableRow :tech-used-list="schoolContent.tech_used" />
+                                            <SchoolTechHoverableRow 
+                                                :tech-used-list="schoolContent.tech_used"
+                                                :color-theme="colorTheme" />
                                         </div>
                                         <div class="flex justify-center items-center h-40 text-md w-40">
                                             <img
@@ -307,3 +307,5 @@ const handleCloseModerationTab = () : void =>{
         />
     </div>
 </template>
+
+
