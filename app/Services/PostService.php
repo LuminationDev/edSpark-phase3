@@ -74,13 +74,14 @@ class PostService
                 'author_id' => $advice->author->id,
                 'author_name' => $advice->author->full_name
             ],
-            'cover_image' => ($advice->cover_image) ? $advice->cover_image : NULL,
-            'template' => ($advice->template) ? $advice->template : NULL,
-            'extra_content' => ($advice->extra_content) ? $advice->extra_content : NULL,
+            'cover_image' => ($advice->cover_image) ?: NULL,
+            'template' => ($advice->template) ?: NULL,
+            'extra_content' => ($advice->extra_content) ?: NULL,
             'created_at' => $advice->post_date,
             'modified_at' => $advice->post_modified,
             'status' => $advice->post_status,
             'type' => ($advice->advicetypes) ? $advice->advicetypes->pluck('advice_type_name') : NULL,
+            'post_type' => 'advice',
             'isLikedByUser' => $isLikedByUser,
             'isBookmarkedByUser' => $isBookmarkedByUser,
             'tags' => $advice->tags->pluck('name')
@@ -115,6 +116,7 @@ class PostService
             'type' => ($software->softwaretypes)
                 ? $software->softwaretypes->pluck('software_type_name')
                 : null,
+            'post_type' => 'software',
             'template' => $software->template ?? null,
             'extra_content' => $software->extra_content ?? null,
             'metadata' => $softwareMetadataToSend ?? null,
@@ -149,6 +151,7 @@ class PostService
             'end_date' => $event->end_date,
             'status' => $event->event_status,
             'type' => ($event->eventtype) ? $event->eventtype->event_type_name : NULL,
+            'post_type' => 'event',
             'created_at' => $event->created_at,
             'updated_at' => $event->updated_at,
             'extra_content' => ($event->extra_content) ?? NULL,

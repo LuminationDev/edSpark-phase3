@@ -4,7 +4,7 @@ import {reactive} from "vue";
 import BaseForm from "@/js/components/bases/frontendform/BaseForm.vue";
 import ExtraContent from "@/js/components/bases/frontendform/ExtraContent.vue";
 import {templates} from "@/js/components/bases/frontendform/templates/formTemplates";
-import EventTypeLocationTime from "@/js/components/selector/EventTypeLocationTime.vue";
+import EventTypeLocationTime, {EventTypeLocationTimeType} from "@/js/components/selector/EventTypeLocationTime.vue";
 import {EventAdditionalData} from "@/js/types/EventTypes";
 
 
@@ -17,18 +17,20 @@ const addtEventData = reactive<EventAdditionalData>({
 })
 
 const updateExtraContent = (content): void => {
+    console.log('here is content')
+    console.log(content)
     if (content) {
         addtEventData.extra_content = content
     }
 }
 
-const handleReceiveTypesLocationTime = (data: object): void => {
-    addtEventData.type = data.eventType
-    addtEventData.location = data.eventLocation
-    addtEventData.start_date = data.startTime
-    addtEventData.end_date = data.endTime
-    if (data.extraContentData) {
-        addtEventData.extra_content = data.extraContentData
+const handleReceiveTypesLocationTime = (data: EventTypeLocationTimeType): void => {
+    addtEventData.type = data.type
+    addtEventData.location = data.location
+    addtEventData.start_date = data.start_date
+    addtEventData.end_date = data.end_date
+    if(data.extra_content){
+        addtEventData.extra_content = data.extra_content
     }
 }
 </script>

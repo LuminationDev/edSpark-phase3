@@ -10,19 +10,19 @@ import {AdviceAdditionalData} from "@/js/types/AdviceTypes";
 
 
 const addtAdviceData = reactive<AdviceAdditionalData>({
-    extraContentData: [], 
-    adviceTypes: [],
+    extra_content: [],
+    type: [],
 
 })
 
 const updateExtraContent = (content): void => {
     if (content) {
-        addtAdviceData.extraContentData = content
+        addtAdviceData.extra_content = content
     }
 }
 
 const handleReceiveTypes = (typeArray): void => {
-    addtAdviceData.adviceTypes = typeArray
+    addtAdviceData.type = typeArray
 }
 </script>
 
@@ -41,7 +41,7 @@ const handleReceiveTypes = (typeArray): void => {
         </template>
         <template #extraContent>
             <ExtraContent
-                :extra-content-data="addtAdviceData.extraContentData"
+                :extra-content-data="addtAdviceData.extra_content"
                 :available-templates="templates"
                 @update-parent-extra-content="updateExtraContent"
             />

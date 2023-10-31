@@ -1,6 +1,6 @@
 import {ExtraContentFilamentType} from "@/js/types/SharedTypes";
 
 export type SoftwareAdditionalData = {
-    extraContentData: Array<ExtraContentFilamentType>,
-    softwareTypes: Array<string>
+    extra_content: Array<ExtraContentFilamentType>,
+    type: Array<string>
 }

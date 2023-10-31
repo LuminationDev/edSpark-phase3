@@ -82,7 +82,7 @@ export function useAutoSave(
         }
     }
 
-    const loadAutoSaveData = () =>{
+    const loadAutoSaveData = () => {
         autoSaveContent.value = Object.assign({}, autoSaveContentBuffer.value)
     }
 
@@ -94,7 +94,13 @@ export function useAutoSave(
             formElement.addEventListener('click', handleActivity);
         }
         autoSaveService.getAutoSave(currentUser.value.id, itemType).then(res => {
-            const formattedResponse: AutoSaveDataType = {...res.data.data}
+            const responseArray : AutoSaveDataType[] = res.data.data
+            let formattedResponse;
+            if (responseArray.length >= 1 ) {
+                formattedResponse = responseArray[0]
+            } else{
+                formattedResponse = responseArray
+            }
             if (formattedResponse['content']) {
                 if (typeof formattedResponse['content'] === 'string') {
                     formattedResponse['content'] = JSON.parse(<string>formattedResponse['content'])

@@ -10,19 +10,19 @@ import {SoftwareAdditionalData} from "@/js/types/SoftwareTypes";
 
 
 const addtSoftwareData = reactive<SoftwareAdditionalData>({
-    extraContentData: [],
-    softwareTypes : []
+    extra_content: [],
+    type : []
 
 })
 
 const updateExtraContent = (content) : void => {
     if (content) {
-        addtSoftwareData.extraContentData = content
+        addtSoftwareData.extra_content = content
     }
 }
 
 const handleReceiveTypes = (typeArray): void => {
-    addtSoftwareData.softwareTypes = typeArray
+    addtSoftwareData.type = typeArray
 }
 </script>
 
@@ -41,7 +41,7 @@ const handleReceiveTypes = (typeArray): void => {
         </template>
         <template #extraContent>
             <ExtraContent
-                :extra-content-data="addtSoftwareData.extraContentData"
+                :extra-content-data="addtSoftwareData.extra_content"
                 :available-templates="templates"
                 @update-parent-extra-content="updateExtraContent"
             />

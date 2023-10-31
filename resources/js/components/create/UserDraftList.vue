@@ -1,4 +1,16 @@
-<script setup>
+<script setup lang="ts">
+type DraftFromAutoSave = {
+    content: string,
+    title: string,
+    coverImage: string,
+    excerpt: string,
+    extraContent: string,
+    id: number,
+    updatedAt: string,
+    createdAt: string,
+    type: Array<string> | string,
+    post_type: string
+}
 
 import {capitalize, ref} from "vue";
 
@@ -8,7 +20,7 @@ import {stripHtmlTags} from "@/js/helpers/slugifyHelper";
 
 const props = defineProps({
     draftArray: {
-        type: Array ,
+        type: Array as () => DraftFromAutoSave,
         required: false,
         default: []
     },
@@ -57,11 +69,11 @@ console.log(props.draftArray)
             >
                 <div class="col-span-6">
                     <div class="DraftTitle">
-                        {{ draft.content.title }}
+                        {{ draft.title }}
                     </div>
-                    <div class="DraftExcerpt line-clamp-1 text-gray-400">
-                        {{ stripHtmlTags(draft.content.excerpt) }}
-                    </div>
+                    <!--                    <div class="DraftExcerpt line-clamp-1 text-gray-400">-->
+                    <!--                        {{ stripHtmlTags(draft.excerpt) }}-->
+                    <!--                    </div>-->
                 </div>
                 <div class="col-span-3 createdAtColumn grid place-items-center">
                     {{ formatDateToDayTime(new Date(draft.created_at)) }}
