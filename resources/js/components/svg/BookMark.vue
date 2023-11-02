@@ -5,33 +5,26 @@ export default {
 </script>
 
 <template>
-    <svg
-        class="bookmark"
-        width="36"
-        height="36"
-        viewBox="0 0 36 36"
-        fill="none"
-        xmlns="http://www.w3.org/2000/svg"
-    >
-        <rect
-            width="36"
-            height="36"
-            fill="transparent"
-        />
-        <path
-            d="M18.5077 24.8578L18 24.6321L17.4923 24.8578L10.25 28.0766V8.66666C10.25 7.84712 10.89 7.25 11.5714 7.25H24.4286C25.11 7.25 25.75 7.84712 25.75 8.66666V28.0766L18.5077 24.8578Z"
-            stroke="#397A80"
-            stroke-width="2.5"
-        />
-    </svg>
+<svg
+class="bookmark"
+   viewBox="0 0 17.5 23.365362"
+   fill="none"
+   preserveAspectRatio="xMidYMid">
+  <defs
+     id="defs1" />
+  <path
+     d="M 9.2577,18.6078 8.75,18.3821 8.2423,18.6078 1,21.8266 V 2.41666 C 1,1.59712 1.64,1 2.3214,1 H 15.1786 C 15.86,1 16.5,1.59712 16.5,2.41666 V 21.8266 Z"
+     stroke="#397a80"
+     stroke-width="2"
+     id="path1" />
+</svg>
+
+
 </template>
 
 <style scoped>
-    .bookmark > path {
-        stroke-width: 2.5px;
-    }
 
     .bookmark:hover > path {
-        stroke-width: 3px;
+        stroke-width: 3.5px;
     }
 </style>

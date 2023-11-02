@@ -1,4 +1,15 @@
-<svg xml:space="preserve" viewBox="0 0 100 100" y="0" x="0" xmlns="http://www.w3.org/2000/svg" id="Layer_1"
-     version="1.1" width="36px" height="36px" xmlns:xlink="http://www.w3.org/1999/xlink"
-     style="width:100%;height:100%;background-size:initial;background-repeat-y:initial;background-repeat-x:initial;background-position-y:initial;background-position-x:initial;background-origin:initial;background-image:initial;background-color:rgb(255, 255, 255);background-clip:initial;background-attachment:initial;animation-play-state:paused"><g class="ldl-scale" style="transform-origin:50% 50%;transform:rotate(0deg) scale(0.8, 0.8);animation-play-state:paused" ><path d="M78.2 90L50 61.8 21.8 90V10h56.4v40z" fill="#e15c64" style="fill:rgb(57, 122, 128);animation-play-state:paused" ></path>
-</g></svg>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   viewBox="0 0 17.5 23.365362"
+   fill="none"
+   preserveAspectRatio="xMidYMid"
+   width="17.5"
+   height="23.365362">
+  <defs
+     id="defs1" />
+  <path
+     d="M 9.2577,18.6078 8.75,18.3821 8.2423,18.6078 1,21.8266 V 2.41666 C 1,1.59712 1.64,1 2.3214,1 H 15.1786 C 15.86,1 16.5,1.59712 16.5,2.41666 V 21.8266 Z"
+     stroke="#397a80"
+     stroke-width="2"
+     id="path1" />
+</svg>

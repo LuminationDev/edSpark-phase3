@@ -75,8 +75,9 @@ const timeFormatter = (originalFormat) => {
                     </div>
                     <div
                         class="flex content-paragraph flex-col max-w-full overflow-hidden text-lg"
-                        v-html="purify.sanitize(contentFromBase['content'])"
                     />
+                    
+                    <!-- v-html="purify.sanitize(contentFromBase['content'])" -->
                     <div
                         v-if="contentFromBase['extra_content'] && contentFromBase['extra_content'].length"
                         class="extraResourcesContainer mt-4 w-full"

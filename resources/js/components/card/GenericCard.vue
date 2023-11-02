@@ -177,71 +177,110 @@ const cardHoverToggle: Ref<boolean> = ref(false);
 
 <template>
     <div
-        class="GenericCardContainer card_parent generic-card__wrapper group"
+        class="GenericCardContainer card_parent generic-card__wrapper group !border-slate-300 rounded-lg overflow-hidden"
         @mouseenter="cardHoverToggle = true"
     >
         <template v-if="!props.overrideContent">
             <div
                 class="
+                    rounded-t-lg
                     bg-center
                     bg-cover
                     bg-slate-50
                     cardTopCoverImage
                     group-hover:h-0
-                    group-hover:min-h-[0%]
-                    min-h-[35%]
+                    group-hover:min-h-[15%]
+                    group-hover:bg-black/50
+                    min-h-[40%]
                     overflow-visible
                     relative
                     transition-all
                     "
                 :class="`bg-[url('${imageURL}/${coverImage}')]`"
                 :style="`background-image: url('${imageURL}/${coverImage}')`"
-            >
-                <div
-                    v-if="$slots.typeTag"
                 >
-                    <slot
-                        name="typeTag"
+
+                <div class="flex flex-row generic-card__footer h-18 mt-auto pl-4 justify-items-end justify-end">
+               
+                    <div class="p-3 m-2 rounded bg-white hover:cursor-pointer like-share">
+                    <LikeFull
+                        v-if="currentUserLiked"
+                        :key="props.guid"
+                        v-tippy="'Unlike this item'"
+                        @click="debouncedDefaultLike"
+                    />
+                    <Like
+                        v-else
+                        :key="props.guid"
+                        v-tippy="'Like this item'"
+                        @click="debouncedDefaultLike"
                     />
                 </div>
-
+                <div class="p-3 m-2 rounded bg-white hover:cursor-pointer like-share">
+                    <BookmarkFull
+                        v-if="currentUserBookmarked"
+                        :key="props.guid"
+                        v-tippy="'Unbookmark this item'"
+                        @click="debouncedDefaultBookmark"
+                    />
+                    <BookMark
+                        v-else
+                        :key="props.guid"
+                        v-tippy="'Bookmark this item'"
+                        @click="debouncedDefaultBookmark"
+                    />
+                </div>
                 <div
-                    v-if="$slots.icon"
+                    class="p-3 m-2 rounded  bg-white hover:cursor-pointer like-share"
+                    @mouseleave="handleResetTippyMessage"
                 >
-                    <slot name="icon" />
+                    <ShareIcon
+                        v-tippy="shareTippyMessage"
+                        @click="handleClickShare"
+                    />
                 </div>
             </div>
+
+
+            </div>
             <div
-                class="cardContent transition-all"
+                class="cardContent"
                 @click="clickCallback"
             >
                 <div class="cardContentWrapper">
+                    <div class="flex flex-row relative gap-4 mb-3 items-center">
+                        <div v-if="$slots.icon" >
+                        <slot name="icon" />
+                    </div>
+
                     <div
                         v-if="props.title"
-                        class="cardTitle transition-all"
-                        :class="{
+                        class="cardTitle !mb-0"                        
+                    >
+                    <!-- :class="{
                             'group-hover:w-3/5': ['advice','events','partners'].includes(sectionType),
                             'group-hover:w-4/5': sectionType === 'software'
-                        }"
-                    >
+                        }" -->
+
                         {{ props.title }}
                     </div>
-                    <div class="card-content_body transition-all">
+                    </div>
+                    <div class="card-content_body">
                         <div
                             v-if="props.displayAuthor"
-                            class="cardAuthor transition-all"
+                            class="cardAuthor"
                         >
                             {{ props.displayAuthor['author_name'] || props.displayAuthor }}
                         </div>
                         <div
                             v-if="props.displayDate"
-                            class="cardDate transition-all"
+                            class="cardDate"
                         >
                             {{ formattedDate }}
                         </div>
                         <div
                             v-if="props.displayContent"
-                            class="cardDisplayPreview"
+                            class="cardDisplayPreview line-clamp"
                             v-html="props.displayContent"
                         />
                     </div>
@@ -257,7 +296,7 @@ const cardHoverToggle: Ref<boolean> = ref(false);
                 <slot name="overiddenContent" />
             </div>
         </template>
-        <div class="flex flex-row gap-4 generic-card__footer h-18 mt-auto pl-4 place-items-end">
+        <!-- <div class="flex flex-row gap-4 generic-card__footer h-18 mt-auto pl-4 place-items-end">
             <div class="p-2 hover:cursor-pointer">
                 <LikeFull
                     v-if="currentUserLiked"
@@ -295,6 +334,10 @@ const cardHoverToggle: Ref<boolean> = ref(false);
                     @click="handleClickShare"
                 />
             </div>
+        </div> -->
+
+        <div v-if="$slots.typeTag" class="fadebg">
+            <slot name="typeTag"/>
         </div>
     </div>
 </template>
@@ -302,11 +345,52 @@ const cardHoverToggle: Ref<boolean> = ref(false);
 
 <style scoped>
 
+/* body {
+  background: url('https://images.unsplash.com/photo-1531315630201-bb15abeb1653?w=500') center no-repeat;
+  background-size: cover;
+} */
+
+.fadebg {
+    z-index: 1;
+    background-color: white;
+    box-shadow: 0px -5px 10px 5px rgba(255,255,255,1);
+    -webkit-box-shadow: 0px -5px 10px 5px rgba(255,255,255,1);
+    -moz-box-shadow: 0px -5px 10px 5px rgba(255,255,255,1);
+}
+
+
+
+.cardTitle {
+    height: fit-content;
+}
+.like-share {
+    opacity: 0;
+    transition: 0.3s;
+    z-index: 1;
+}
+
+.like-share svg {
+    width: 25px;
+    height: 25px;
+    overflow: visible;
+}
+
+.GenericCardContainer:hover .like-share {
+    display: block;
+    opacity: 1;
+    transition: 0.3s;
+}
+
 .generic-card__footer {
-    background-color: #FFF;
+    /* background-color: #FFF;
     box-shadow: 0px -23px 7px -15px rgba(255, 255, 255, 1);
     -webkit-box-shadow: 0px -23px 7px -15px rgba(255, 255, 255, 1);
-    -moz-box-shadow: 0px -23px 7px -15px rgba(255, 255, 255, 1);
+    -moz-box-shadow: 0px -23px 7px -15px rgba(255, 255, 255, 1); */
+}
+
+.generic-card__footer div {
+    /* border: 1px solid #cbcaca; */
+    /* transition: all; */
 }
 
 .cardContentWrapper {
@@ -327,6 +411,27 @@ const cardHoverToggle: Ref<boolean> = ref(false);
     -webkit-line-clamp: 14;
 }
 
+.line-clamp {
+  /* width: 400px; */
+  margin:0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: initial;
+  display: -webkit-box;
+  -webkit-line-clamp: 7;
+  -webkit-box-orient: vertical;
+  max-height:210px;
+}
+
+.line-clamp p {
+  display: contents;
+}
+
+p:after {
+  content: "\A";
+  white-space:pre;
+}
+
 .card-content_title {
     overflow: hidden;
     text-overflow: ellipsis;
@@ -335,15 +440,7 @@ const cardHoverToggle: Ref<boolean> = ref(false);
     -webkit-box-orient: vertical;
 }
 
-/* .card-content_body {
-    overflow: hidden;
-    text-overflow: ellipsis;
-    display: -webkit-box;
-    -webkit-line-clamp: 4;
-    -webkit-box-orient: vertical;
-} */
-
-.card_parent:hover .card-content_title {
+/* .card_parent:hover .card-content_title {
     -webkit-line-clamp: 4 !important;
-}
+} */
 </style>

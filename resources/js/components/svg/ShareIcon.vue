@@ -27,3 +27,10 @@
         <path d="M8.7 13.3l6.6 3.4" />
     </svg>
 </template>
+
+
+<style scoped>
+    .icon-tabler-share:hover > path {
+        stroke-width: 3px;
+    }
+</style>

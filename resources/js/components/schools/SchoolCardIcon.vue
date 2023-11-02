@@ -28,14 +28,13 @@ const props = defineProps({
 </script>
 <template>
     <div
-        class="my-auto group/tech schools-tech"
-    >
-        <SchoolTechIconGenerator :tech-name="props.techName" />
-        <SchoolsTech
+        class="my-auto group/tech schools-tech" >
+        <SchoolTechIconGenerator :tech-name="props.techName" style="width: 44px; height: 44px;"/>
+        <!-- <SchoolsTech
             :tech-hover="techInfo"
             :tech-index="props.techIndex"
             :show-first-tech="showFirstTech"
-        />
+        /> -->
     </div>
 </template>
 <style>

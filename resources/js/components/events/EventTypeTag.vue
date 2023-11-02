@@ -15,7 +15,7 @@ const props = defineProps({
 
 <template>
     <div
-        class="TypeTag absolute top-4 right-0 bg-secondary-red flex gap-4 h-[39px] p-1 place-items-center px-6 rounded text-base text-white"
+        class="TypeTag bg-secondary-red flex gap-4 h-[39px] p-1 place-items-center px-6 rounded text-base text-white w-fit mx-3 my-2"
     >
         <template
             v-if="props.eventType === 'In Person'"
