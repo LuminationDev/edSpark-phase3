@@ -25,16 +25,14 @@ const userStore = useUserStore()
 const {currentUser} = storeToRefs(userStore)
 const router = useRouter()
 
-const handleClickCard = () => {
+const handleClickSchoolCard = () => {
     router.push({
-        name: "school-single",
-        params: {id: props.data.id, slug : lowerSlugify(props.data.title) },
-        state:{
-            content: JSON.stringify(props.data)
-        }
+        path: `/schools/${props.data.name}`
     })
 }
+
 </script>
+
 <template>
     <GenericCard
         :id="data.id"
@@ -61,7 +59,7 @@ const handleClickCard = () => {
                     >
                         {{ data.name }}
                     </h5>
-                    <div class="school-card-body cardDisplayPreview line-clamp">
+                    <div class="school-card-body cardDisplayPreview line-clamp text-left">
                         {{ data.content_blocks.blocks[1].data.text }}
                     </div>
             </div>

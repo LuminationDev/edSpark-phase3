@@ -31,6 +31,7 @@ const props = defineProps({
             :tech-name="tech.name"
             :tech-info="tech"
             :tech-index="index"
+            v-tippy="tech.name"
         />
     </div>
 </template>

@@ -1,11 +1,12 @@
 <script setup>
 import {schoolColorKeys, schoolColorTheme} from "@/js/constants/schoolColorTheme";
-import {ref } from 'vue'
+import {ref} from 'vue'
 
 const props = defineProps({
     colorTheme:{
         type: String,
-        required: true
+        required: true,
+        default: 'teal'
     }
 })
 const useCustomColor= ref(false)
@@ -14,7 +15,7 @@ const useCustomColor= ref(false)
  */
 if(schoolColorKeys.includes(props.colorTheme)){
     useCustomColor.value = true
-}
+} 
 </script>
 
 <template>
@@ -41,15 +42,15 @@ if(schoolColorKeys.includes(props.colorTheme)){
             >
                 <stop
                     offset="0.214873"
-                    :stop-color="(useCustomColor ? schoolColorTheme[colorTheme]['dark'] :'#0d47a1')"
+                    :stop-color="(useCustomColor ? schoolColorTheme[colorTheme]['dark'] : schoolColorTheme['teal']['dark'])"
                 />
                 <stop
                     offset="0.460472"
-                    :stop-color="(useCustomColor ? schoolColorTheme[colorTheme]['med'] :'#1e88e5')"
+                    :stop-color="(useCustomColor ? schoolColorTheme[colorTheme]['med'] : schoolColorTheme['teal']['med'])"
                 />
                 <stop
                     offset="1"
-                    :stop-color="(useCustomColor ? schoolColorTheme[colorTheme]['light'] : '#64b5f6')"
+                    :stop-color="(useCustomColor ? schoolColorTheme[colorTheme]['light'] : schoolColorTheme['teal']['light'])"
                 />
             </linearGradient>
         </defs>
