@@ -3224,6 +3224,10 @@ select{
   height: 800px;
 }
 
+.h-\[90px\]{
+  height: 90px;
+}
+
 .h-auto{
   height: auto;
 }
@@ -5342,6 +5346,10 @@ select{
   background-repeat: no-repeat;
 }
 
+.fill-\[\#002858\]{
+  fill: #002858;
+}
+
 .fill-\[\#3182CE\]{
   fill: #3182CE;
 }
@@ -5410,8 +5418,60 @@ select{
   fill: #fff;
 }
 
-.fill-\[\#002858\]{
-  fill: #002858;
+.stroke-\[\#3182CE\]{
+  stroke: #3182CE;
+}
+
+.stroke-\[\#319795\]{
+  stroke: #319795;
+}
+
+.stroke-\[\#38A169\]{
+  stroke: #38A169;
+}
+
+.stroke-\[\#4338CA\]{
+  stroke: #4338CA;
+}
+
+.stroke-\[\#4A5568\]{
+  stroke: #4A5568;
+}
+
+.stroke-\[\#5A67D8\]{
+  stroke: #5A67D8;
+}
+
+.stroke-\[\#6B46C1\]{
+  stroke: #6B46C1;
+}
+
+.stroke-\[\#C7B2EA\]{
+  stroke: #C7B2EA;
+}
+
+.stroke-\[\#D53F8C\]{
+  stroke: #D53F8C;
+}
+
+.stroke-\[\#D69E2E\]{
+  stroke: #D69E2E;
+}
+
+.stroke-\[\#DD6B20\]{
+  stroke: #DD6B20;
+}
+
+.stroke-\[\#be123c\]{
+  stroke: #be123c;
+}
+
+.stroke-\[\#e53935\]{
+  stroke: #e53935;
+}
+
+.stroke-\[\#ffa000\]{
+  stroke: #ffa000;
 }
 
 .stroke-adviceGreen{
@@ -5675,6 +5735,10 @@ select{
   padding-bottom: 18px;
 }
 
+.pb-0{
+  padding-bottom: 0px;
+}
+
 .pb-1{
   padding-bottom: 0.25rem;
 }
@@ -5881,6 +5945,10 @@ select{
 
 .text-end{
   text-align: end;
+}
+
+.align-sub{
+  vertical-align: sub;
 }
 
 .font-\[\'Poppins\'\]{
@@ -7095,6 +7163,11 @@ input, textarea, select {
 .hover\:text-red-200:hover{
   --tw-text-opacity: 1;
   color: rgb(254 202 202 / var(--tw-text-opacity));
+}
+
+.hover\:text-secondary-blue:hover{
+  --tw-text-opacity: 1;
+  color: rgb(0 114 218 / var(--tw-text-opacity));
 }
 
 .hover\:text-white:hover{
@@ -9392,6 +9465,10 @@ input, textarea, select {
 
 .\[\&\>\*\:last-child\]\:mb-0>*:last-child{
   margin-bottom: 0px;
+}
+
+.group:hover .group-hover\:\[\&\>path\]\:stroke-secondary-blue>path{
+  stroke: #0072DA;
 }
 
 .\[\&_optgroup\]\:bg-white optgroup{

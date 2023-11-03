@@ -22,7 +22,7 @@ const edsparkColor = [
 
 const generateSafeList = (colors) => {
     const safeList = [];
-    ['text', 'bg', 'hover:text', 'fill'].forEach((prefix) => {
+    ['text', 'bg', 'hover:text', 'fill', 'stroke'].forEach((prefix) => {
         colors.forEach((color) => {
             safeList.push(`${prefix}-[${color}]`);
         });

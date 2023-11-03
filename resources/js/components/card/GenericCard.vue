@@ -423,14 +423,14 @@ const cardHoverToggle: Ref<boolean> = ref(false);
   max-height:210px;
 }
 
-.line-clamp p {
+/* .line-clamp p {
   display: contents;
-}
+} */
 
-p:after {
+/* p:after {
   content: "\A";
   white-space:pre;
-}
+} */
 
 .card-content_title {
     overflow: hidden;

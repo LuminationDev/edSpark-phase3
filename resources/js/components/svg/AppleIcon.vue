@@ -1,7 +1,7 @@
 <script setup></script>
 
 <template>
-  <svg xmlns="http://www.w3.org/2000/svg" 
+  <svg xmlns="http://www.w3.org/2000/svg" fill="none"
   width="60" height="60" viewBox="0 0 60 60">
   <g clip-path="url(#clip0_531_8668)">
     <circle cx="30" cy="30" r="30" />
