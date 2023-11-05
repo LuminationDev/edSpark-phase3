@@ -21,7 +21,7 @@ const appendServerURL = (endpoints: Endpoints): Endpoints => {
 
     return result;
 };
-export const API_ENDPOINTS : Endpoints =  appendServerURL({
+export const API_ENDPOINTS: Endpoints = appendServerURL({
     SCHOOL: {
         FETCH_ALL_SITES: `/fetchAllSites`,
         FETCH_STAFF_FROM_SITE: `/fetchStaffFromSite/`,
@@ -48,7 +48,7 @@ export const API_ENDPOINTS : Endpoints =  appendServerURL({
         FETCH_ADVICE_POST_BY_ID: `/fetchAdvicePostById/`,
         FETCH_RELATED_ADVICE: `/fetchRelatedAdvice`,
         FETCH_ADVICE_TYPES: `/fetchAdviceTypes`,
-        FETCH_USER_ADVICE:`/fetchUserAdvice`
+        FETCH_USER_ADVICE: `/fetchUserAdvice`
 
     },
     SOFTWARE: {
@@ -66,16 +66,16 @@ export const API_ENDPOINTS : Endpoints =  appendServerURL({
         FETCH_ALL_CATEGORIES: `/fetchAllCategories`,
         FETCH_HARDWARE_BY_ID: `/fetchProductById/`,
         FETCH_HARDWARE_BY_BRAND: `/fetchProductByBrand/`,
-        FETCH_RELATED_HARDWARE : `/fetchRelatedProduct`,
-        FETCH_USER_HARDWARE : '/fetchUserProduct'
+        FETCH_RELATED_HARDWARE: `/fetchRelatedProduct`,
+        FETCH_USER_HARDWARE: '/fetchUserProduct'
     },
     PARTNER: {
         FETCH_ALL_PARTNERS: `/fetchAllPartners`,
         FETCH_PARTNER_BY_ID: `/fetchPartnerById/`,
         UPDATE_PARTNER_CONTENT: `/updatePartnerContent`,
         FETCH_PARTNER_RESOURCE: '/fetchPartnerResource',
-        CHECK_IF_USER_CAN_EDIT_PARTNER:'/checkIfUserCanEditPartner',
-        FETCH_PARTNER_PENDING_PROFILE:'/fetchPartnerPendingProfile'
+        CHECK_IF_USER_CAN_EDIT_PARTNER: '/checkIfUserCanEditPartner',
+        FETCH_PARTNER_PENDING_PROFILE: '/fetchPartnerPendingProfile'
     },
     EVENT: {
         ADD_EVENT_RECORDING: `/addEventRecording`,
@@ -88,13 +88,15 @@ export const API_ENDPOINTS : Endpoints =  appendServerURL({
         CREATE_EVENT_POST: `/createEventPost`
     },
     USER: {
-        FETCH_USER_BY_ID: `/fetchUser/`,
+        FETCH_CURRENT_USER: `/fetchCurrentUser`,
         FETCH_USER_BY_EMAIL: `/fetchUserByEmail/`,
         CREATE_USER: `/createUser`,
         UPDATE_FIRST_TIME_VISIT_USER: '/updateFirstTimeVisitUser',
         UPDATE_USER: '/updateUser',
         CHECK_EMAIL: `/checkEmail`,
         GET_USER_METADATA: `/getUserMetadata`,
+        GET_USER_NOTIFICATION: `/fetchUserNotification`,
+        GET_USER_DRAFT_POSTS: `/getUserDraftPosts`
 
     },
     LIKE: {
@@ -102,18 +104,17 @@ export const API_ENDPOINTS : Endpoints =  appendServerURL({
         FETCH_ALL_LIKES: `/fetchAllLikes`,
         FETCH_ALL_LIKES_BY_TYPE: `/fetchAllLikesByType`,
     },
-    BOOKMARK:{
+    BOOKMARK: {
         BOOKMARK: `/bookmark`,
         FETCH_ALL_BOOKMARKS: `/fetchAllBookmarks`,
         FETCH_ALL_BOOKMARKS_WITH_TITLE: `/fetchAllBookmarksWithTitle`,
         FETCH_ALL_BOOKMARKS_BY_TYPE: `/fetchAllBookmarksByType`,
-
     },
 
-    SEARCH:{
+    SEARCH: {
         SEARCH_ALL: `/search/`
     },
-    AUTOSAVE:{
+    AUTOSAVE: {
         AUTOSAVE: `/auto-save`
     }
 })
@@ -122,7 +123,7 @@ export const APP_ENDPOINTS = {
     LOGOUT: `${appURL}/logout`
 }
 
-export const IMAGE_ENDPOINTS ={
+export const IMAGE_ENDPOINTS = {
     IMAGE: {
         UPLOAD_IMAGE: `${imageUploadURL}/imageUpload`,
         IMAGE_UPLOAD_EDITOR_JS: `${imageUploadURL}/imageUploadEditorjs`

@@ -1,21 +1,24 @@
-<script>
-    export default {
-
-    }
+<script setup>
 </script>
 
 <template>
-    <svg width="45" height="45" viewBox="0 0 45 45" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <g clip-path="url(#clip0_1302_10330)">
-    <path d="M21.4 0H0V21.4955H21.4V0Z" fill="#F35325"/>
-    <path d="M21.4 23.5044H0V44.9999H21.4V23.5044Z" fill="#05A6F0"/>
-    <path d="M44.9996 0H23.5996V21.4955H44.9996V0Z" fill="#81BC06"/>
-    <path d="M44.9996 23.5044H23.5996V44.9999H44.9996V23.5044Z" fill="#FFBA08"/>
+ <svg xmlns="http://www.w3.org/2000/svg" width="60" height="60" viewBox="0 0 60 60" fill="none">
+  <g clip-path="url(#clip0_531_8634)">
+    <circle cx="30" cy="30" r="30"/>
+    <mask id="mask0_531_8634" style="mask-type:luminance" maskUnits="userSpaceOnUse" x="14" y="14" width="32" height="32">
+      <path d="M46 14H14V46H46V14Z" fill="white"/>
+    </mask>
+    <g mask="url(#mask0_531_8634)">
+      <path d="M29.2178 14H14V29.2857H29.2178V14Z" fill="white"/>
+      <path d="M29.2178 30.7139H14V45.9996H29.2178V30.7139Z" fill="white"/>
+      <path d="M46 14H30.7822V29.2857H46V14Z" fill="white"/>
+      <path d="M46 30.7139H30.7822V45.9996H46V30.7139Z" fill="white"/>
     </g>
-    <defs>
-    <clipPath id="clip0_1302_10330">
-    <rect width="45" height="45" fill="white"/>
+  </g>
+  <defs>
+    <clipPath id="clip0_531_8634">
+      <rect width="60" height="60" fill="white"/>
     </clipPath>
-    </defs>
-    </svg>
+  </defs>
+</svg>
 </template>

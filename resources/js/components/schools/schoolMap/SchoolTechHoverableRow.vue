@@ -1,12 +1,17 @@
 <script setup>
 import {ref} from 'vue'
-
 const props = defineProps({
     techUsedList :{
         type: Array,
         required: true
+    },
+    colorTheme: {
+        type: String,
+        required: false,
+        default: 'navy',
     }
 })
+
 
 import SchoolTechIconGenerator from "@/js/components/global/SchoolTechIconGenerator.vue";
 
@@ -23,7 +28,7 @@ const handleToggleTooltip = (index) => {
     <div
         v-for="(tech, index) in props.techUsedList"
         :key="index"
-        class="cursor-pointer hidden relative w-6 md:!w-14 lg:!block"
+        class="cursor-pointer hidden relative w-6 md:!w-14 lg:!block iconColours"
     >
         <div
             @mouseenter="handleToggleTooltip(index)"
@@ -31,6 +36,7 @@ const handleToggleTooltip = (index) => {
         >
             <SchoolTechIconGenerator
                 :tech-name="tech.name"
+                :colorTheme=colorTheme
                 class="cursor-pointer m-2 min-w-[30px] pr-1 relative w-8 md:!min-w-[60px] md:!pr-4"
             />
             <div
@@ -51,3 +57,4 @@ const handleToggleTooltip = (index) => {
         </div>
     </div>
 </template>
+

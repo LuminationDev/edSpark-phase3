@@ -1,10 +1,11 @@
 <script setup>
-import lowerSlugify from "@/js/helpers/slugifyHelper";
-import {ref, computed} from 'vue'
-import GenericCard from "@/js/components/card/GenericCard.vue";
-import {useUserStore} from "@/js/stores/useUserStore";
 import {storeToRefs} from "pinia";
+import {computed,ref} from 'vue'
 import {useRouter} from "vue-router";
+
+import GenericCard from "@/js/components/card/GenericCard.vue";
+import {lowerSlugify} from "@/js/helpers/slugifyHelper";
+import {useUserStore} from "@/js/stores/useUserStore";
 
 const props = defineProps({
     data: {

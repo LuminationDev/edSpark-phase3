@@ -1,7 +1,8 @@
 <script setup>
-import BaseForm from "@/js/components/bases/form/BaseForm.vue";
-import ExtraContent from "@/js/components/bases/form/ExtraContent.vue";
 import {reactive, ref} from "vue";
+
+import BaseForm from "@/js/components/bases/frontendform/BaseForm.vue";
+import ExtraContent from "@/js/components/bases/frontendform/ExtraContent.vue";
 
 const props = defineProps({
 

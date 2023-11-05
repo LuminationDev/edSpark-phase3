@@ -1,12 +1,18 @@
 <script setup>
+import {computed, onMounted, ref} from 'vue'
+
 import ChevronRight from "@/js/components/svg/ChevronRight.vue";
 import {schoolColorKeys, schoolColorTheme} from "@/js/constants/schoolColorTheme";
-import {ref, computed, onMounted} from 'vue'
 
 const props = defineProps({
     parentPage: {
         type: String,
         required: true
+    },
+    parentPageLink: {
+        type: String,
+        required: false,
+        default: ''
     },
     childPage: {
         type: String, required: true
@@ -22,21 +28,7 @@ const props = defineProps({
 })
 const textColorTheme = ref('')
 const textHoverColorTheme = ref('')
-// const textColorTheme = computed(() => {
-//     if (schoolColorKeys.includes(props.colorTheme)) {
-//         return "text-[" + schoolColorTheme[props.colorTheme]['med'] + "]"
-//     } else {
-//         return 'text-main-teal'
-//     }
-// })
-//
-// const textHoverColorTheme = computed(() => {
-//     if (schoolColorKeys.includes(props.colorTheme)) {
-//         return "hover:text-[" + schoolColorTheme[props.colorTheme]['med'] + "]"
-//     } else {
-//         return 'hover:text-main-teal'
-//     }
-// })
+
 onMounted(() => {
     if (schoolColorKeys.includes(props.colorTheme)) {
         textColorTheme.value = "text-[" + schoolColorTheme[props.colorTheme]['med'] + "]"
@@ -67,7 +59,7 @@ onMounted(() => {
                 </p>
             </router-link>
             <ChevronRight class="h-3 w-3" />
-            <router-link :to="`/${props.parentPage}`">
+            <router-link :to="`/${props.parentPageLink ? props.parentPageLink : props.parentPage}`">
                 <p
                     class="capitalize text-white"
                     :class="textHoverColorTheme"

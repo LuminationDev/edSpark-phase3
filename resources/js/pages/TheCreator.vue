@@ -2,7 +2,6 @@
 
 import {computed} from "vue";
 import {useRoute, useRouter} from "vue-router";
-
 import CreateSelector from "@/js/components/selector/CreateSelector.vue";
 
 const router = useRouter()

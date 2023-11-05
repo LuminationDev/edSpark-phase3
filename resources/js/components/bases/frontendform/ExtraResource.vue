@@ -1,10 +1,11 @@
 <script setup lang="ts">
-import ExtraContentHeader from "@/js/components/bases/form/ExtraContentHeader.vue";
-import TrixRichEditor from "@/js/components/bases/form/TrixRichEditor.vue";
+import {onBeforeMount,reactive} from 'vue'
+
+import ExtraContentHeader from "@/js/components/bases/frontendform/ExtraContentHeader.vue";
+import TrixRichEditorInput from "@/js/components/bases/frontendform/TrixRichEditorInput.vue";
 import TextInput from "@/js/components/bases/TextInput.vue";
 import GenericButton from "@/js/components/button/GenericButton.vue";
 import Add from "@/js/components/svg/Add.vue";
-import {reactive, onBeforeMount} from 'vue'
 
 const props = defineProps({
     data: {
@@ -79,7 +80,7 @@ const handleClickDeleteItem = (resourceIndex: number, itemIndex: number): void =
                             </template>
                         </TextInput>
                         <div class="ContainerTemp my-2 richContent">
-                            <TrixRichEditor
+                            <TrixRichEditorInput
                                 label="Content"
                                 :src-content="item.content"
                                 class="border-gray-300"

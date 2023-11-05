@@ -19,13 +19,11 @@ final class Numbereditems
     {
         return [
             Repeater::make('item')->schema([
-                IconPicker::make('icon')
-                    ->columns(4),
                 TextInput::make('heading'),
                 RichEditor::make('content')
             ])
-            ->label('Item')
-            ->collapsible()
+                ->label('Item')
+                ->collapsible()
         ];
     }
 }

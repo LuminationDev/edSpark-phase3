@@ -14,21 +14,23 @@ use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\MarkdownEditor;
 use Filament\Forms\Components\Select;
 
-final class dateItems
+
+final class IconList
 {
     public static function title()
     {
-        return 'Date and Time Template';
+        return 'Icon List Items';
     }
 
     public static function schema()
     {
         return [
             Repeater::make('item')->schema([
+                IconPicker::make('icon')
+                    ->columns(4)
+                    ->sets(['fontawesome-solid']),
                 TextInput::make('heading'),
-                RichEditor::make('content'),
-                Forms\Components\DateTimePicker::make('start_date')
-                    ->required(),
+                RichEditor::make('content')
             ])
                 ->label('Item')
                 ->collapsible()

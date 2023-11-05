@@ -35,9 +35,9 @@ interface EventLocationType {
 }
 
 export type EventAdditionalData = {
-    extraContentData: Array<any>,
-    eventType: number,
-    eventLocation: EventLocationType
-    startTime: Date,
-    endTime: Date
+    extra_content: Array<any>,
+    type: number,
+    location: EventLocationType
+    start_date: Date,
+    end_date: Date
 }
