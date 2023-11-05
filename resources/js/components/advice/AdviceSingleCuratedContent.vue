@@ -10,7 +10,7 @@ const {relatedAdvice} = storeToRefs(adviceStore)
 <template>
     <div
         v-if="relatedAdvice && relatedAdvice.length > 0"
-        class="adviceSingleCuratedContentContainer bg-orange-50 flex justify-center items-center flex-col p-4 rounded xl:!ml-4 xl:!px-10"
+        class="adviceSingleCuratedContentContainer bg-secondary-coolGrey/20 flex justify-center items-center flex-col p-4 rounded xl:!ml-4 xl:!px-10"
     >
         <div class="curatedResourcesTitle font-bold my-2 py-8 text-2xl text-center uppercase">
             Other Curated Resources

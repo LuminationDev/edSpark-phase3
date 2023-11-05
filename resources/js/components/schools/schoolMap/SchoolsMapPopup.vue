@@ -121,7 +121,7 @@ const handleEmit = () => {
     -moz-box-shadow: 0px -5px 10px 5px rgba(255,255,255,1);
 }
 
-.line-clamp {
+.popup-line-clamp {
   /* width: 400px; */
   margin:0;
   overflow: hidden;

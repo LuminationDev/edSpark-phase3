@@ -31,7 +31,6 @@ const props = defineProps({
         class="my-auto group/tech schools-tech" >
         <SchoolTechIconGenerator 
             :tech-name="props.techName"  
-            class="fill-[#002858]"       
             style="width: 44px; height: 44px;"/>
         <!-- <SchoolsTech
             :tech-hover="techInfo"

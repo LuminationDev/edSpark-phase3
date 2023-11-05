@@ -1,7 +1,8 @@
 <script setup>
 import ArticleSingleSwoosh from '../svg/ArticleSingleSwoosh.vue';
-import {computed} from 'vue'
+import {computed, onMounted, resolveDynamicComponent, ref} from 'vue'
 import {imageURL} from "@/js/constants/serverUrl";
+import {schoolColorKeys, schoolColorTheme} from "@/js/constants/schoolColorTheme";
 
 const props = defineProps({
     backgroundUrl: {
@@ -25,10 +26,11 @@ const props = defineProps({
     },
     swooshColorTheme: {
         type: String,
-        required: false,
-        default: 'teal'
+        required: true
     }
 })
+
+
 
 const heroBackground = computed(() => {
     if (!props.backgroundUrl) {
@@ -47,10 +49,29 @@ const heroBackgroundLinkOnly = computed(() => {
     }
 });
 
-const setTheBackground = computed(() => {
-    // console.log(`${imageURL}/${props.backgroundUrl}`);
-    return `${imageURL}/${props.backgroundUrl}`;
-});
+
+
+const gradientBg = ref('')
+
+onMounted(() => {
+    console.log(props.swooshColorTheme);
+    var useCustomColor = false;
+
+    if(schoolColorKeys.includes(props.swooshColorTheme)){
+        console.log(props.swooshColorTheme);
+        useCustomColor = true
+    } 
+
+    gradientBg.value = "linear-gradient(to right, "
+        +(useCustomColor ? schoolColorTheme[props.swooshColorTheme]['light'] : schoolColorTheme['teal']['light'])+","
+        +(useCustomColor ? schoolColorTheme[props.swooshColorTheme]['med'] : schoolColorTheme['teal']['med'])+","
+        +(useCustomColor ? schoolColorTheme[props.swooshColorTheme]['dark'] : schoolColorTheme['teal']['dark'])
+        +")"; 
+})
+
+const customFill = computed(() => {
+    return gradientBg.value;
+})
 
 
 </script>
@@ -145,12 +166,13 @@ const setTheBackground = computed(() => {
                 </div>
             </div>
         </div>
-        <div class="articleSwooshContainer relative w-full z-50">
-            <ArticleSingleSwoosh
-                :color-theme="swooshColorTheme"
+        <div class="articleSwooshContainer relative w-full z-50 ">
+            <!-- <ArticleSingleSwoosh
+                :color-theme="colorTheme"
                 class="scale-y-[300%] md:!scale-y-[200%] lg:!scale-y-[150%] xl:!scale-y-100"
-            />
-            <div class="absolute -top-9 font-base h-16 mt-1 pl-4 pt-2 text-base text-white w-full z-50 md:!pl-12 md:!text-2xl">
+            /> -->
+            <div class="absolute flex items-end -top-9 font-base h-16 mt-1 pl-4 pt-2 text-base text-white w-full z-50 md:!pl-12 md:!text-2xl" 
+            :style="'background-image: ' + gradientBg +';'">
                 <slot
                     name="submenu"
                 />

@@ -17,7 +17,16 @@ const edsparkColor = [
     '#D53F8C',
     '#ffa000',
     '#C7B2EA',
-    '#be123c' // mbRose - Better accessibility
+    '#be123c', // mbRose - Better accessibility
+    '#002858', //navy
+    // light theme colours for breadcrumbs
+    '#9F7AEA',
+    '#C6F6D5',
+    '#BEE3F8',
+    '#e57373',
+    '#BEE3F8',
+    '#DDD6FE',
+    '#B2F5EA'
 ];
 
 const generateSafeList = (colors) => {
@@ -67,6 +76,7 @@ module.exports = {
                     lightRed: '#F7C1C5',
                     mbRose: '#be123c',
                     mbIcons: 'green',
+                    coolGrey: '#D9DAE4',
 
                 },
                 custom: {
@@ -74,7 +84,7 @@ module.exports = {
                     genericLighterBlue: 'rgba(180, 216, 241, 0.19)', // Even lighter blue
                     genericScrollbarDark: '#0A0045', // only repeated coz i screwed something up with scrollbar customisation
                 },
-                event:{
+                event: {
                     virtual: '#BE123C',
                     hybrid: '#A855F7',
                     inPerson: '#3B82F6'
@@ -98,10 +108,10 @@ module.exports = {
                 huge: '81px',
                 extraHuge: '140px'
             },
-            screens:{
+            screens: {
                 'ml': '860px',
             },
-            scale:{
+            scale: {
                 '90': '0.9',
             }
         },

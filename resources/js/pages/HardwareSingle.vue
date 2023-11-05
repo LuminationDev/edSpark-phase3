@@ -41,7 +41,7 @@ const handleChangeSubmenu = (value): void => {
  * End of submenu specific code  plus @emit-active-tab-to-specific-page in BaseSingle
  * */
 
-const colorTheme = ref('green')
+const colorTheme = ref('hardwareGreen')
 </script>
 
 <template>
@@ -79,7 +79,7 @@ const colorTheme = ref('green')
                     <div v-html="contentFromBase['excerpt']" />
                 </template>
                 <template #submenu>
-                    <div class="cursor-pointer flex flex-row gap-4 hardwareSubmenu z-40">
+                    <div class="cursor-pointer flex flex-row gap-4 hardwareSubmenu mb-[-1px] z-40">
                         <BaseSingleSubmenu
                             :emit-to-base="emitFromSubmenu"
                             :menu-array="hardwareSubmenu"

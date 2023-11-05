@@ -120,7 +120,7 @@ const dynamicProps = computed(() => {
     }
 })
 
-const colorTheme = ref('blue')
+const colorTheme = ref('partnerBlue')
 </script>
 
 <template>
@@ -169,6 +169,7 @@ const colorTheme = ref('blue')
                         :active-subpage="activeSubMenu"
                         :emit-to-base="handleChangeSubmenu"
                         :menu-array="formattedSubmenuData"
+                        class="mb-[-1px]"
                     />
                 </template>
             </BaseHero>

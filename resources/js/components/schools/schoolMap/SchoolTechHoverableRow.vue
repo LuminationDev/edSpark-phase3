@@ -8,7 +8,7 @@ const props = defineProps({
     colorTheme: {
         type: String,
         required: false,
-        default: 'navy',
+        default: 'teal',
     }
 })
 
@@ -49,7 +49,7 @@ const handleToggleTooltip = (index) => {
                     {{ tech.name }}
                 </h3>
                 <p
-                    class="font-normal text-sm text-white xl:!text-base"
+                    class="font-normal text-sm text-white xl:!text-base normal-case mt-2"
                 >
                     {{ tech.description }}
                 </p>

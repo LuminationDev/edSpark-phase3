@@ -15,7 +15,8 @@ const props = defineProps({
         required: false
     },
     colorTheme:{
-        type: String, required: false
+        type: String, 
+        required: false
     }
 })
 

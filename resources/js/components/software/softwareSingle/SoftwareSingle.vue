@@ -61,7 +61,7 @@ const handleClickViewProfile = (author_id, author_type) => {
 /**
  * End of submenu specific code  plus @emit-active-tab-to-specific-page in BaseSingle
  * */
-const colorTheme = ref('deepPurple')
+const colorTheme = ref('softwarePurple')
 
 </script>
 
@@ -138,7 +138,7 @@ const colorTheme = ref('deepPurple')
 
                 <!--  Selectable sub menu    -->
                 <template #submenu>
-                    <div class="cursor-pointer flex flex-row gap-4 softwareSubmenu z-40">
+                    <div class="cursor-pointer flex flex-row gap-4 softwareSubmenu mb-[-1px] z-40">
                         <BaseSingleSubmenu
                             :emit-to-base="emitFromSubmenu"
                             :menu-array="softwareSubmenu"

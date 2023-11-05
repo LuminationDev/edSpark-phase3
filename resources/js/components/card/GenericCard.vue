@@ -177,13 +177,13 @@ const cardHoverToggle: Ref<boolean> = ref(false);
 
 <template>
     <div
-        class="GenericCardContainer card_parent generic-card__wrapper group !border-slate-300 rounded-lg overflow-hidden"
+        class="GenericCardContainer card_parent generic-card__wrapper group !border-slate-300 rounded overflow-hidden"
         @mouseenter="cardHoverToggle = true"
     >
         <template v-if="!props.overrideContent">
             <div
                 class="
-                    rounded-t-lg
+                    rounded-t
                     bg-center
                     bg-cover
                     bg-slate-50

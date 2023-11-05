@@ -1,6 +1,6 @@
 <script setup>
 import {schoolColorKeys, schoolColorTheme} from "@/js/constants/schoolColorTheme";
-import {ref} from 'vue'
+import {ref } from 'vue'
 
 const props = defineProps({
     colorTheme:{
@@ -15,20 +15,15 @@ const useCustomColor= ref(false)
  */
 if(schoolColorKeys.includes(props.colorTheme)){
     useCustomColor.value = true
-} 
+} else {
+
+}
 </script>
 
 <template>
-    <svg
-        width="1800"
-        height="180"
-        viewBox="0 0 1800 81"
-        fill="none"
-        xmlns="http://www.w3.org/2000/svg"
-        class="absolute w-full -top-28 left-0 overflow-clip"
-    >
-        <path
-            d="M 1805 -3 V 22 V 40 C 1793 61 1727 101 1716 101 C 1573 101 1583 101 1500 101 H 0 V 26 H 874 C 1065 26 1342 26 1499 27 C 1656 24 1730 21 1805 -74 Z"
+<!-- <svg class="absolute w-full -top-28 left-0 overflow-clip" width="1800" height="180" fill="none" version="1.1" viewBox="0 0 1800 81" xmlns="http://www.w3.org/2000/svg">
+ <path d="m1800.6 25v43c-6.7299 11.807-35.73 38.573-68.027 52.108-11.591 4.8579-11.036 5.3123-35.17 8.1573s-129.49 0.73489-201.06 0.73489h-1496.3v-75h871.86c190.53 0 466.86 
+ 0 623.47 1 156.62-3 230.44 19.476 305.25-75.524z" 
             fill="url(#paint0_linear_1830_23198)"
         />
         <defs>
@@ -54,5 +49,5 @@ if(schoolColorKeys.includes(props.colorTheme)){
                 />
             </linearGradient>
         </defs>
-    </svg>
+    </svg> -->
 </template>

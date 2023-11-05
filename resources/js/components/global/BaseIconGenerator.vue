@@ -21,15 +21,16 @@ const fillColorTheme = ref('')
 
 onMounted(() => {
     if (schoolColorKeys.includes(props.colorTheme)) {
-        fillColorTheme.value = `fill-[${schoolColorTheme[props.colorTheme]['med']}]`;
+        fillColorTheme.value = `fill-[${schoolColorTheme[props.colorTheme]['med']}] stroke-[${schoolColorTheme[props.colorTheme]['med']}]`;
     } else {
-        fillColorTheme.value = `fill-[${schoolColorTheme['teal']['med']}]`;
+        fillColorTheme.value = `fill-[${schoolColorTheme['teal']['med']}] stroke-[${schoolColorTheme['teal']['med']}]`;
     }
 })
 
 const customFill = computed(() => {
     return fillColorTheme.value;
 })
+
 
 const loadIconComponent = (iconPath) => {
     try {
@@ -56,5 +57,6 @@ const resolvedComponent = computed(() => {
         :is="resolvedComponent" 
         class="pointer-events-none" 
         :class="customFill" 
+        style="overflow:visible; stroke-width:0"
     />
 </template>

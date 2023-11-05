@@ -22,7 +22,7 @@ const props = defineProps({
     colorTheme: {
         type: String,
         required: false,
-        default: 'navy',
+        default: 'partnerBlue',
     }
 })
 const iconPath = ref('')

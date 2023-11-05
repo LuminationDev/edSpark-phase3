@@ -24,20 +24,55 @@ const props = defineProps({
 const textColorTheme = ref('')
 const textHoverColorTheme = ref('')
 
-onMounted(() => {
-    if (schoolColorKeys.includes(props.colorTheme)) {
-        textColorTheme.value = "text-[" + schoolColorTheme[props.colorTheme]['med'] + "]"
-    } else {
-        textColorTheme.value = 'text-main-teal'
-    }
+const gradientBg = ref('')
 
-    if (schoolColorKeys.includes(props.colorTheme)) {
-        textHoverColorTheme.value = "hover:text-[" + schoolColorTheme[props.colorTheme]['med'] + "]"
+onMounted(() => {
+    console.log('Pre-calc: '+props.colorTheme);
+    var useCustomColor = false;
+
+    if(schoolColorKeys.includes(props.colorTheme)){
+        useCustomColor = true;
+    } 
+
+    console.log('Calculated: '+useCustomColor);
+
+    if(useCustomColor){
+        textColorTheme.value = "text-[" + schoolColorTheme[props.colorTheme]['light'] + "]";
+        textHoverColorTheme.value = "hover:text-[" + schoolColorTheme[props.colorTheme]['light'] + "]";
     } else {
-        textHoverColorTheme.value = 'hover:text-main-teal'
+        textColorTheme.value = "text-[" + schoolColorTheme['teal']['light'] + "]";
+        textHoverColorTheme.value = "hover:text-[" + schoolColorTheme['teal']['light'] + "]";
     }
 
 })
+
+const customText = computed(() => {
+    return textColorTheme.value;
+})
+
+const customTextHover = computed(() => {
+    return textHoverColorTheme.value;
+})
+
+
+// onMounted(() => {   
+    
+//     if (schoolColorKeys.includes(props.colorTheme)) {
+//         textColorTheme.value = "text-[" + schoolColorTheme[props.colorTheme]['light'] + "]"
+//     } else {
+//         textColorTheme.value = "text-[" + schoolColorTheme['teal']['light'] + "]"
+//         // textColorTheme.value = 'text-main-teal'
+//     }
+
+//     if (schoolColorKeys.includes(props.colorTheme)) {
+//         textHoverColorTheme.value = "hover:text-[" + schoolColorTheme[props.colorTheme]['light'] + "]"
+//     } else {
+//         textHoverColorTheme.value = "hover:text-[" + schoolColorTheme['teal']['light'] + "]"
+//         // textHoverColorTheme.value = 'hover:text-main-teal'
+//     }
+    
+
+// })
 
 
 </script>
