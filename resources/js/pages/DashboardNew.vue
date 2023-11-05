@@ -125,6 +125,7 @@ const softwareResponsiveData = computed(() => {
             :button-text="'View all resources'"
             :button-callback="() => router.push('/browse/advice')"
         />
+
         <div class="flex flex-col w-full lg:!flex-row lg:!px-huge">
             <div class="DAGInfoSection w-full lg:!w-1/4">
                 <DAGInfoSection />

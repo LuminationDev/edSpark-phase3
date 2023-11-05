@@ -2,7 +2,7 @@
 import {useRouter} from "vue-router";
 
 import EventTypeTag from "@/js/components/events/EventTypeTag.vue";
-import lowerSlugify from "@/js/helpers/slugifyHelper";
+import {lowerSlugify} from "@/js/helpers/slugifyHelper";
 
 import GenericCard from '../card/GenericCard.vue';
 

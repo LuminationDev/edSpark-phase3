@@ -1,14 +1,15 @@
 <script setup lang="ts">
-import ExtraContentHeader from "@/js/components/bases/form/ExtraContentHeader.vue";
-import TrixRichEditor from "@/js/components/bases/form/TrixRichEditor.vue";
+
+import DateTimeInput from "@/js/components/bases/DateTimeInput.vue";
+import ExtraContentHeader from "@/js/components/bases/frontendform/ExtraContentHeader.vue";
+import {templateFields} from "@/js/components/bases/frontendform/templates/formTemplates";
+import IconPickerInput from "@/js/components/bases/IconPickerInput.vue";
+import NumberInput from "@/js/components/bases/NumberInput.vue";
 import TextInput from "@/js/components/bases/TextInput.vue";
+import TrixRichEditorInput from "@/js/components/bases/TrixRichEditorInput.vue";
 import GenericButton from "@/js/components/button/GenericButton.vue";
 import Add from "@/js/components/svg/Add.vue";
-import {watch} from "vue";
 import {formService} from "@/js/service/formService";
-import {templateFields} from "@/js/components/bases/form/templates/formTemplates";
-import NumberInput from "@/js/components/bases/NumberInput.vue";
-import DateTimeInput from "@/js/components/bases/DateTimeInput.vue";
 
 const props = defineProps({
     data: {
@@ -116,6 +117,30 @@ const handleTemplateTypeChange = (
                                     </template>
                                 </TextInput>
                             </template>
+                            <template v-if="formService.getFieldTypeByKey(key) === templateFields.ICON_PICKER">
+                                <div
+                                    :key="itemIndex + index"
+                                    class="flex justify-center iconPickerContainer"
+                                >
+                                    <div
+                                        class="
+                                            border-[1px]
+                                            flex
+                                            justify-center
+                                            items-center
+                                            h-24
+                                            iconPickerButton
+                                            rounded-xl
+                                            w-36
+                                            "
+                                    >
+                                        <IconPickerInput
+                                            v-model="item[key]"
+                                            class="grid place-items-center h-full w-full"
+                                        />
+                                    </div>
+                                </div>
+                            </template>
                             <template v-if="formService.getFieldTypeByKey(key) === templateFields.NUMBER_FIELD">
                                 <NumberInput
                                     :key="itemIndex + index"
@@ -145,7 +170,7 @@ const handleTemplateTypeChange = (
                                     :key="itemIndex + index"
                                     class="ContainerTemp my-2 richContent"
                                 >
-                                    <TrixRichEditor
+                                    <TrixRichEditorInput
                                         label="Content"
                                         :src-content="item.content"
                                         class="border-gray-300"

@@ -7,13 +7,22 @@ import {useRouter} from "vue-router";
 import NavItems from "@/js/components/global/navbar/NavItems.vue";
 import Close from "@/js/components/svg/Close.vue";
 import {useAuthStore} from "@/js/stores/useAuthStore";
-const router = useRouter()
-const authStore = useAuthStore();
 
-const { showMobileNavbar } = storeToRefs(useWindowStore())
-const { isAuthenticated } = storeToRefs(authStore)
+const router = useRouter();
+const authStore = useAuthStore();
+const windowStore = useWindowStore();
+
+const { showMobileNavbar } = storeToRefs(useWindowStore());
+const { isAuthenticated } = storeToRefs(authStore);
+const {showGlobalSearch} = storeToRefs(windowStore);
 
 const navLinks = ref([]);
+
+
+const handleGlobalsearchClick = () => {
+    showGlobalSearch.value = true
+}
+
 
 const handleToggleNavbar = () => {
     showMobileNavbar.value = !showMobileNavbar.value
@@ -82,20 +91,81 @@ setupRoutes();
                     :route="route"
                     :click-callback="handleToggleNavbar"
                 />
+                <li id="searchItem"
+                    class="cursor-pointer uppercase mt-6 text-sm font-normal"
+                    style="align-self: center;"
+                    @click="handleGlobalsearchClick"
+                >
+              
+                <div id="searchIconMobile" class="svg-container">
+                    <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        preserveAspectRatio="xMinYMin meet"
+                        class="svg-content"
+                    >
+                        <circle cx="10" cy="10" r="8" 
+                            stroke="#FFF" 
+                            stroke-width="3" 
+                            stroke-linecap="round" 
+                            stroke-linejoin="round" 
+                        />
+
+                        <line x1="15" y1="16" x2="21" y2="22"                
+                            stroke="#FFF" 
+                            stroke-width="3" 
+                            stroke-linecap="round" 
+                            stroke-linejoin="round" 
+                        />
+
+                    </svg>
+                </div>
+                search
+                
+
+                </li>
             </ul>
         </div>
     </Transition>
     <div
         v-if="showMobileNavbar"
-        class="absolute top-0 right-0 bg-slate-100 grey h-screen opacity-50 overlay w-[70vw] z-50"
+        class="absolute top-0 right-0 bg-main-navy/50 h-screen overlay w-[70vw] z-50"
         @click="handleToggleNavbar"
     />
 </template>
 <style scoped>
-/*
-  Enter and leave animations can use different
-  durations and timing functions.
-*/
+
+#searchItem {
+    
+    display: flex;
+    align-self: center;
+    flex-direction: column;
+    align-items: center;
+}
+
+#searchIconMobile { 
+    width: 28px; 
+    margin-top: 16px; 
+    z-index: -1; 
+}
+
+.svg-content { 
+	display: inline-block;
+	position: absolute;
+	top: 0;
+	left: 0;
+}
+
+.svg-container { 
+	display: inline-block;
+	position: relative;
+	width: 100%;
+	padding-bottom: 70%; 
+	vertical-align: middle; 
+	overflow: hidden; 
+}
+
 .slide-fade-enter-active {
     transition: all 0.2s ease-out;
 }

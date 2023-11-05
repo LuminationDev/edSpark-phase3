@@ -65,8 +65,6 @@ class SiteController extends Controller
     public function fetchSiteByCode($siteCode)
     {
         $site = Site::where('site_id', '=', $siteCode)->first();
-    //    dd($siteCode);
-
         if ($site) {
             $result = [
                 'id' => $site->id,

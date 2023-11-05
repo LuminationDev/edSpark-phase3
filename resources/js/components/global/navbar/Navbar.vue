@@ -17,7 +17,7 @@ const userStore = useUserStore()
 const authStore = useAuthStore();
 const windowStore = useWindowStore();
 
-const {currentUser} = storeToRefs(userStore)
+const {currentUser} = storeToRefs(userStore);
 const {isAuthenticated} = storeToRefs(authStore);
 const {showGlobalSearch} = storeToRefs(windowStore);
 
@@ -75,7 +75,33 @@ const {isMobile, isTablet} = storeToRefs(useWindowStore)
                     class="cursor-pointer uppercase"
                     @click="handleGlobalsearchClick"
                 >
-                    Search
+              
+                <div id="searchIconMain" class="svg-container">
+                    <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        width="100%" height="100%"
+                        preserveAspectRatio="xMinYMin meet"
+                        class="svg-content"
+                    >
+                        <circle cx="10" cy="10" r="8" 
+                            stroke="#FFF" 
+                            stroke-width="3" 
+                            stroke-linecap="round" 
+                            stroke-linejoin="round" 
+                        />
+
+                        <line x1="15" y1="16" x2="21" y2="22"                
+                            stroke="#FFF" 
+                            stroke-width="3" 
+                            stroke-linecap="round" 
+                            stroke-linejoin="round" 
+                        />
+
+                    </svg>
+                </div>
+                
+
                 </li>
             </ul>
         </nav>
@@ -125,6 +151,29 @@ const {isMobile, isTablet} = storeToRefs(useWindowStore)
 </template>
 
 <style>
+
+#searchIconMain { 
+    width: 28px; 
+    margin-top: 2px; 
+    z-index: -1; 
+}
+
+.svg-content { 
+	display: inline-block;
+	position: absolute;
+	top: 0;
+	left: 0;
+}
+
+.svg-container { 
+	display: inline-block;
+	position: relative;
+	width: 100%;
+	padding-bottom: 100%; 
+	vertical-align: middle; 
+	overflow: hidden; 
+}
+
 .nav-background {
     clip-path: inset(0 0 round 0 0 75%);
     height: 95%;
@@ -162,7 +211,7 @@ const {isMobile, isTablet} = storeToRefs(useWindowStore)
 /* MB added the below to tidy up responsive nav bars */
 @media screen and (max-width: 1024px) {
     #app, #app .container {
-        min-width: 320px;
+        min-width: 360px; /*was 320px */
         max-width: 1024px;
         width: 100%;
         margin: auto;

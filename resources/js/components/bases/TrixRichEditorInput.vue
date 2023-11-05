@@ -1,9 +1,11 @@
 <script setup>
 // https://gist.github.com/nomadjimbob/db6d3cdb630a931722595f9adf75ca53ss - taken from this link by nomadjimbob
-import Trix from 'trix'
-import {computed,  ref, watch} from 'vue';
 
-import {headingButton, subheadingButton, underlineButton} from "@/js/components/bases/form/EditorButtonIcon";
+
+import Trix from 'trix'
+import {computed, ref, watch} from 'vue';
+
+import {headingButton, subheadingButton, underlineButton} from "@/js/components/bases/frontendform/EditorButtonIcon";
 import Profile from "@/js/components/svg/Profile.vue";
 import {API_ENDPOINTS} from "@/js/constants/API_ENDPOINTS";
 
@@ -312,8 +314,6 @@ addToolbarButton('h2', h2ButtonConfig);
 
 
 <style lang="scss">
-
-
 /* Extra Trix Styles to support the above code*/
 .trix-button-group {
     .trix-button {
@@ -353,7 +353,6 @@ addToolbarButton('h2', h2ButtonConfig);
     }
 
 
-
     .trix-button-group {
         margin-top: 5px;
         margin-bottom: 5px;
@@ -379,12 +378,15 @@ addToolbarButton('h2', h2ButtonConfig);
             }
         }
     }
-    trix-toolbar .trix-button--icon{
+
+    trix-toolbar .trix-button--icon {
         max-width: 100% !important;
     }
+
     trix-toolbar .trix-button.trix-active {
         border-radius: 10px !important;
     }
+
     .trix-button-row {
         border: 1px solid gray;
         border-top-left-radius: 10px;
@@ -396,9 +398,12 @@ addToolbarButton('h2', h2ButtonConfig);
     .trix-button--icon-decrease-nesting-level,
     .trix-button--icon-heading-1,
     .trix-button--icon-attach,
-    { display: none; }
+    {
+        display: none;
+    }
 }
-trix-editor .attachment__toolbar .trix-button-row{
+
+trix-editor .attachment__toolbar .trix-button-row {
     border: 0 !important
 }
 

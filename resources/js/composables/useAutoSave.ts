@@ -36,12 +36,12 @@ type AutoSaveDataType = {
         coverImage: string;
         authorName: string;
         tags: string[];
-        extraContentData: any[]; // You may want to specify a more detailed type here if you know the structure
+        extraContentData: any[];
     } | string;
-    exp_date: string; // This can be further refined to Date if you're going to convert it to a Date object
+    exp_date: string;
     is_active: boolean;
-    created_at: string; // This can be further refined to Date if you're going to convert it to a Date object
-    updated_at: string; // This can be further refined to Date if you're going to convert it to a Date object
+    created_at: string;
+    updated_at: string;
 };
 
 export function useAutoSave(
@@ -63,7 +63,7 @@ export function useAutoSave(
         const data = {
             ...getState(),
         }
-        if (data['title']) {
+        if (data['title'] && formStatusDisplay.value !== FormStatus.SAVED && !isSaving.value) {
             try {
                 await autoSaveService.savePost(currentUser.value.id, itemType, data);
                 isSaving.value = false;

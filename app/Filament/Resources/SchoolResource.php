@@ -4,6 +4,7 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\SchoolResource\Pages;
 use App\Filament\Resources\SchoolResource\RelationManagers;
+use App\Helpers\RoleHelpers;
 use App\Models\School;
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -100,10 +101,7 @@ class SchoolResource extends Resource
 
     public static function shouldRegisterNavigation(): bool
     {
-        $allowed_array = ['Superadmin', 'Administrator','Moderator'];
-        if (in_array(Auth::user()->role->role_name, $allowed_array)) {
-            return true;
-        }
-        return false;
+        return RoleHelpers::has_minimum_privilege('site_leader');
     }
+
 }
