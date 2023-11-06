@@ -60,7 +60,7 @@
         "editorjs-inline-font-size-tool": "^1.0.1",
         "epic-spinners": "^2.0.0",
         "font-awesome": "^4.7.0",
-        "pinia": "^2.1.6",
+        "pinia": "^2.1.7",
         "sanitize-html": "^2.10.0",
         "sass": "^1.68.0",
         "search-dropdown-vue": "^1.0.3",
