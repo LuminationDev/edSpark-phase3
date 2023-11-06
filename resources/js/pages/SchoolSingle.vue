@@ -107,7 +107,7 @@ const handleSaveNewSchoolInfo = async (contentBlocks, techUsed) => {
 }
 
 const handleChangeColorTheme = (newColor) => {
-    console.log('received command to swap color to -> ' + 'newColor')
+    console.log('received command to swap color to -> ' + 'newColor: ' + newColor)
     colorTheme.value = newColor
 }
 
@@ -201,6 +201,7 @@ const handleCloseModerationTab = () : void =>{
                                 :child-page="schoolContent.name"
                                 parent-page="schools"
                                 :color-theme="colorTheme"
+                                @send-color-to-school-single="handleChangeColorTheme"
                                 class="mt-[120px] pt-[10px]"
                             />
                         </template>

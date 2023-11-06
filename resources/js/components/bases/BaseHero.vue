@@ -62,7 +62,7 @@ onMounted(() => {
         useCustomColor = true
     } 
 
-    gradientBg.value = "linear-gradient(to right, "
+    gradientBg.value = "linear-gradient(to left, "
         +(useCustomColor ? schoolColorTheme[props.swooshColorTheme]['light'] : schoolColorTheme['teal']['light'])+","
         +(useCustomColor ? schoolColorTheme[props.swooshColorTheme]['med'] : schoolColorTheme['teal']['med'])+","
         +(useCustomColor ? schoolColorTheme[props.swooshColorTheme]['dark'] : schoolColorTheme['teal']['dark'])
@@ -77,20 +77,18 @@ const customFill = computed(() => {
 </script>
 
 <template>
-    <div class="-mt-28 lg:!h-[720px] BaseHeroContainer h-full relative z-10">
+    <div class="-mt-[9rem] lg:!h-[750px] BaseHeroContainer h-full relative z-10">
         <div
             class="
                 2xl:!pt-44
-                BaseHeroClipThisPath
                 bg-cover
                 grid
                 grid-cols-8
                 h-full
                 pb-20
-                pt-32
+                pt-40
                 px-3
                 relative
-                md:!pt-36
                 lg:!pb-0
                 lg:!pt-40
                 lg:!px-12

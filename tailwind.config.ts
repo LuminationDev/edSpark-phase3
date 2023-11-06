@@ -19,6 +19,7 @@ const edsparkColor = [
     '#C7B2EA',
     '#be123c', // mbRose - Better accessibility
     '#002858', //navy
+
     // light theme colours for breadcrumbs
     '#9F7AEA',
     '#C6F6D5',
@@ -26,7 +27,16 @@ const edsparkColor = [
     '#e57373',
     '#BEE3F8',
     '#DDD6FE',
-    '#B2F5EA'
+    '#B2F5EA',
+    '#FFF1CB',
+    '#FFDECF',
+    '#FECCD0',
+    '#DBCCF5',
+
+    // theme colours for selector on editor page
+    '#DE4668',
+    '#FF8D78',
+    '#8866C5'
 ];
 
 const generateSafeList = (colors) => {
@@ -69,7 +79,6 @@ module.exports = {
                     green: '#048246',
                     lightGreen: '#A5D1BD',
                     purple: '#8866C5',
-                    lightPurple: '#8866C5',
                     yellow: '#FFC836',
                     lightYellow: '#F5E1AD',
                     red: '#C73E5D', //was #de4668

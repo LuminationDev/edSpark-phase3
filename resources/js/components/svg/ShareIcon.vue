@@ -9,7 +9,7 @@
         width="34"
         height="34"
         viewBox="0 0 24 24"
-        stroke-width="2"
+        stroke-width="1.5"
         stroke="#397A80"
         fill="none"
         stroke-linecap="round"

@@ -1,22 +1,22 @@
 <script setup lang="ts">
 import axios from "axios";
-import {debounce} from "lodash";
-import {storeToRefs} from "pinia";
-import {computed, ComputedRef, defineProps, Ref, ref} from "vue";
+import { debounce } from "lodash";
+import { storeToRefs } from "pinia";
+import { computed, ComputedRef, defineProps, Ref, ref } from "vue";
 
 import BookMark from "@/js/components/svg/BookMark.vue";
 import BookmarkFull from "@/js/components/svg/BookmarkFull.vue";
 import Like from "@/js/components/svg/Like.vue";
 import LikeFull from "@/js/components/svg/LikeFull.vue";
 import ShareIcon from "@/js/components/svg/ShareIcon.vue";
-import {bookmarkURL, imageURL, likeURL} from "@/js/constants/serverUrl";
-import {cardLinkGenerator} from "@/js/helpers/cardDataHelper";
-import {useUserStore} from "@/js/stores/useUserStore";
+import { bookmarkURL, imageURL, likeURL } from "@/js/constants/serverUrl";
+import { cardLinkGenerator } from "@/js/helpers/cardDataHelper";
+import { useUserStore } from "@/js/stores/useUserStore";
 
-const {currentUser} = storeToRefs(useUserStore())
-import {toast} from "vue3-toastify";
+const { currentUser } = storeToRefs(useUserStore())
+import { toast } from "vue3-toastify";
 
-import {guid as genGuid} from "@/js/helpers/guidGenerator";
+import { guid as genGuid } from "@/js/helpers/guidGenerator";
 
 
 const props = defineProps({
@@ -176,13 +176,10 @@ const cardHoverToggle: Ref<boolean> = ref(false);
 </script>
 
 <template>
-    <div
-        class="GenericCardContainer card_parent generic-card__wrapper group !border-slate-300 rounded overflow-hidden"
-        @mouseenter="cardHoverToggle = true"
-    >
+    <div class="GenericCardContainer card_parent generic-card__wrapper group !border-slate-300 rounded overflow-hidden"
+        @mouseenter="cardHoverToggle = true">
         <template v-if="!props.overrideContent">
-            <div
-                class="
+            <div class="
                     rounded-t
                     bg-center
                     bg-cover
@@ -195,156 +192,75 @@ const cardHoverToggle: Ref<boolean> = ref(false);
                     overflow-visible
                     relative
                     transition-all
-                    "
-                :class="`bg-[url('${imageURL}/${coverImage}')]`"
-                :style="`background-image: url('${imageURL}/${coverImage}')`"
-                >
+                    " :class="`bg-[url('${imageURL}/${coverImage}')]`"
+                :style="`background-image: url('${imageURL}/${coverImage}')`">
 
-                <div class="flex flex-row generic-card__footer h-18 mt-auto pl-4 justify-items-end justify-end">
-               
-                    <div class="p-3 m-2 rounded bg-white hover:cursor-pointer like-share">
-                    <LikeFull
-                        v-if="currentUserLiked"
-                        :key="props.guid"
-                        v-tippy="'Unlike this item'"
-                        @click="debouncedDefaultLike"
-                    />
-                    <Like
-                        v-else
-                        :key="props.guid"
-                        v-tippy="'Like this item'"
-                        @click="debouncedDefaultLike"
-                    />
-                </div>
-                <div class="p-3 m-2 rounded bg-white hover:cursor-pointer like-share">
-                    <BookmarkFull
-                        v-if="currentUserBookmarked"
-                        :key="props.guid"
-                        v-tippy="'Unbookmark this item'"
-                        @click="debouncedDefaultBookmark"
-                    />
-                    <BookMark
-                        v-else
-                        :key="props.guid"
-                        v-tippy="'Bookmark this item'"
-                        @click="debouncedDefaultBookmark"
-                    />
-                </div>
-                <div
-                    class="p-3 m-2 rounded  bg-white hover:cursor-pointer like-share"
-                    @mouseleave="handleResetTippyMessage"
-                >
-                    <ShareIcon
-                        v-tippy="shareTippyMessage"
-                        @click="handleClickShare"
-                    />
-                </div>
-            </div>
+
 
 
             </div>
-            <div
-                class="cardContent"
-                @click="clickCallback"
-            >
+            <div class="cardContent" @click="clickCallback">
                 <div class="cardContentWrapper">
                     <div class="flex flex-row relative gap-4 mb-3 items-center">
-                        <div v-if="$slots.icon" >
-                        <slot name="icon" />
-                    </div>
+                        <div v-if="$slots.icon">
+                            <slot name="icon" />
+                        </div>
 
-                    <div
-                        v-if="props.title"
-                        class="cardTitle !mb-0"                        
-                    >
-                    <!-- :class="{
-                            'group-hover:w-3/5': ['advice','events','partners'].includes(sectionType),
-                            'group-hover:w-4/5': sectionType === 'software'
-                        }" -->
-
-                        {{ props.title }}
-                    </div>
+                        <div v-if="props.title" class="cardTitle !mb-0">
+                            {{ props.title }}
+                        </div>
                     </div>
                     <div class="card-content_body">
-                        <div
-                            v-if="props.displayAuthor"
-                            class="cardAuthor"
-                        >
+                        <div v-if="props.displayAuthor" class="cardAuthor">
                             {{ props.displayAuthor['author_name'] || props.displayAuthor }}
                         </div>
-                        <div
-                            v-if="props.displayDate"
-                            class="cardDate"
-                        >
+                        <div v-if="props.displayDate" class="cardDate">
                             {{ formattedDate }}
                         </div>
-                        <div
-                            v-if="props.displayContent"
-                            class="cardDisplayPreview line-clamp"
-                            v-html="props.displayContent"
-                        />
+                        <div v-if="props.displayContent" class="cardDisplayPreview line-clamp"
+                            v-html="props.displayContent" />
                     </div>
                 </div>
             </div>
             <!-- </div> -->
         </template>
         <template v-else>
-            <div
-                class="schoolCardContentOverridding w-full"
-                @click="props.clickCallback"
-            >
+            <div class="schoolCardContentOverridding w-full" @click="props.clickCallback">
                 <slot name="overiddenContent" />
             </div>
         </template>
-        <!-- <div class="flex flex-row gap-4 generic-card__footer h-18 mt-auto pl-4 place-items-end">
-            <div class="p-2 hover:cursor-pointer">
-                <LikeFull
-                    v-if="currentUserLiked"
-                    :key="props.guid"
-                    v-tippy="'Unlike this item'"
-                    @click="debouncedDefaultLike"
-                />
-                <Like
-                    v-else
-                    :key="props.guid"
-                    v-tippy="'Like this item'"
-                    @click="debouncedDefaultLike"
-                />
-            </div>
-            <div class="p-2 hover:cursor-pointer">
-                <BookmarkFull
-                    v-if="currentUserBookmarked"
-                    :key="props.guid"
-                    v-tippy="'Unbookmark this item'"
-                    @click="debouncedDefaultBookmark"
-                />
-                <BookMark
-                    v-else
-                    :key="props.guid"
-                    v-tippy="'Bookmark this item'"
-                    @click="debouncedDefaultBookmark"
-                />
-            </div>
-            <div
-                class="p-2 hover:cursor-pointer"
-                @mouseleave="handleResetTippyMessage"
-            >
-                <ShareIcon
-                    v-tippy="shareTippyMessage"
-                    @click="handleClickShare"
-                />
-            </div>
-        </div> -->
 
-        <div v-if="$slots.typeTag" class="fadebg">
-            <slot name="typeTag"/>
+
+        <div class="flex flex-row w-full items-end justify-between left-0 bg-white fadebg">
+            <div v-if="$slots.typeTag">
+                <slot name="typeTag" />
+            </div>
+
+            <div class="flex flex-row generic-card__footer h-18 mt-auto ml-auto pl-4 justify-items-end justify-end">
+
+                <div class="p-2 m-2 rounded bg-white hover:cursor-pointer like-share">
+                    <LikeFull v-if="currentUserLiked" :key="props.guid" v-tippy="'Unlike this item'"
+                        @click="debouncedDefaultLike" />
+                    <Like v-else :key="props.guid" v-tippy="'Like this item'" @click="debouncedDefaultLike" />
+                </div>
+                <div class="p-2 m-2 rounded bg-white hover:cursor-pointer like-share">
+                    <BookmarkFull v-if="currentUserBookmarked" :key="props.guid" v-tippy="'Unbookmark this item'"
+                        @click="debouncedDefaultBookmark" />
+                    <BookMark v-else :key="props.guid" v-tippy="'Bookmark this item'" @click="debouncedDefaultBookmark" />
+                </div>
+                <div class="p-2 m-2 rounded  bg-white hover:cursor-pointer like-share"
+                    @mouseleave="handleResetTippyMessage">
+                    <ShareIcon v-tippy="shareTippyMessage" @click="handleClickShare" />
+                </div>
+            </div>
+
+
         </div>
     </div>
 </template>
 
 
 <style scoped>
-
 /* body {
   background: url('https://images.unsplash.com/photo-1531315630201-bb15abeb1653?w=500') center no-repeat;
   background-size: cover;
@@ -353,9 +269,9 @@ const cardHoverToggle: Ref<boolean> = ref(false);
 .fadebg {
     z-index: 1;
     background-color: white;
-    box-shadow: 0px -5px 10px 5px rgba(255,255,255,1);
-    -webkit-box-shadow: 0px -5px 10px 5px rgba(255,255,255,1);
-    -moz-box-shadow: 0px -5px 10px 5px rgba(255,255,255,1);
+    box-shadow: 0px -5px 10px 5px rgba(255, 255, 255, 1);
+    -webkit-box-shadow: 0px -5px 10px 5px rgba(255, 255, 255, 1);
+    -moz-box-shadow: 0px -5px 10px 5px rgba(255, 255, 255, 1);
 }
 
 
@@ -363,6 +279,7 @@ const cardHoverToggle: Ref<boolean> = ref(false);
 .cardTitle {
     height: fit-content;
 }
+
 .like-share {
     opacity: 0;
     transition: 0.3s;
@@ -412,15 +329,15 @@ const cardHoverToggle: Ref<boolean> = ref(false);
 }
 
 .line-clamp {
-  /* width: 400px; */
-  margin:0;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: initial;
-  display: -webkit-box;
-  -webkit-line-clamp: 7;
-  -webkit-box-orient: vertical;
-  max-height:210px;
+    /* width: 400px; */
+    margin: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: initial;
+    display: -webkit-box;
+    -webkit-line-clamp: 7;
+    -webkit-box-orient: vertical;
+    max-height: 210px;
 }
 
 /* .line-clamp p {

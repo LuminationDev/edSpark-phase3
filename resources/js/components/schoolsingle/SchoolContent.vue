@@ -109,6 +109,7 @@ const handleAllSaveButton = () => {
 const handleColorSelected = (newColor) => {
     emits('sendColorToSchoolSingle', newColor)
 }
+
 const handleReceivePhotoFromImageChange = (type, file) => {
     emits('sendPhotoToSchoolSingle', type, file)
 }

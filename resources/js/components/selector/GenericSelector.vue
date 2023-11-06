@@ -1,5 +1,5 @@
 <script setup>
-import {onBeforeMount, ref, computed} from 'vue'
+import {onBeforeMount, ref, computed, onMounted} from 'vue'
 import { schoolColorTheme, schoolColorKeys} from "@/js/constants/schoolColorTheme";
 
 const props = defineProps({
@@ -49,9 +49,29 @@ const checkIfObjectIsSelected = (itemObj) => {
     return result.value.map(item => item.name).includes(itemObj.name)
 }
 
-const customBackground = computed(() => {
-    return `!bg-[${schoolColorTheme[props.colorTheme]['light']}]`
+
+const fillColorTheme = ref('')
+
+onMounted(() => {
+    if (schoolColorKeys.includes(props.colorTheme)) {
+        fillColorTheme.value = `bg-[${schoolColorTheme[props.colorTheme]['light']}]`;
+    } else {
+        fillColorTheme.value = `bg-[${schoolColorTheme['teal']['light']}]`;
+    }
 })
+
+const customBackground = computed(() => {
+    return fillColorTheme.value;
+})
+
+
+
+
+// const customBackground = computed(() => {
+//     return `!bg-main-teal`
+//     // return `!bg-[${schoolColorTheme[props.colorTheme]['light']}]`
+
+// })
 
 
 </script>

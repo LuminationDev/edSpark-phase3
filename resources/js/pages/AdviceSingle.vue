@@ -69,7 +69,7 @@ const timeFormatter = (originalFormat) => {
         <template #content="{ contentFromBase }">
             <div class="adviceSingleContent flex flex-col mt-14 overflow-hidden p-4 px-8 w-full xl:!flex-row">
                 <!--    Content of the Advice    -->
-                <div class="flex flex-col flex-wrap px-2 py-4 w-full xl:!w-2/3">
+                <div class="flex flex-col flex-wrap px-2 py-4 mr-10 w-full xl:!w-2/3">
                     <div class="flex font-bold text-2xl uppercase">
                         Getting started
                     </div>

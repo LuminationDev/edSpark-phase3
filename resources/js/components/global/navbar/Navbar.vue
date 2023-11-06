@@ -195,7 +195,7 @@ const {isMobile, isTablet} = storeToRefs(useWindowStore)
 
 @media screen and (max-width: 654px) {
     .nav-background {
-        clip-path: inset(0 0 round 0 0 50%) !important;
+        clip-path: inset(0 0 round 0 0 55%) !important;
     }
 }
 

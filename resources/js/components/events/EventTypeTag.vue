@@ -19,7 +19,7 @@ const props = defineProps({
         class="TypeTag 
             border border-solid flex gap-2 h-[28px] py-1 place-items-center 
             px-2 rounded-2xl text-sm w-fit mx-3 my-2
-            text-main-teal border-main-teal bg-main-teal/20 
+            text-main-teal border-main-teal bg-main-teal/10 
             [&>svg]:fill-main-teal [&>svg]:stroke-main-teal"
        >
 
