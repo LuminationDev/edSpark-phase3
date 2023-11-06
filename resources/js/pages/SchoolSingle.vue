@@ -107,7 +107,7 @@ const handleSaveNewSchoolInfo = async (contentBlocks, techUsed) => {
 }
 
 const handleChangeColorTheme = (newColor) => {
-    console.log('received command to swap color to -> ' + 'newColor: ' + newColor)
+    console.log('received command to swap color '+colorTheme.value+' to -> ' + 'newColor: ' + newColor)
     colorTheme.value = newColor
 }
 

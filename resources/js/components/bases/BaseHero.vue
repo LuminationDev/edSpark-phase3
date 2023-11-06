@@ -53,6 +53,7 @@ const heroBackgroundLinkOnly = computed(() => {
 
 const gradientBg = ref('')
 
+// :style="'background-image: ' + gradientBg +';'
 onMounted(() => {
     console.log(props.swooshColorTheme);
     var useCustomColor = false;
@@ -62,11 +63,11 @@ onMounted(() => {
         useCustomColor = true
     } 
 
-    gradientBg.value = "linear-gradient(to left, "
+    gradientBg.value = "background-image: linear-gradient(to left, "
         +(useCustomColor ? schoolColorTheme[props.swooshColorTheme]['light'] : schoolColorTheme['teal']['light'])+","
         +(useCustomColor ? schoolColorTheme[props.swooshColorTheme]['med'] : schoolColorTheme['teal']['med'])+","
         +(useCustomColor ? schoolColorTheme[props.swooshColorTheme]['dark'] : schoolColorTheme['teal']['dark'])
-        +")"; 
+        +");"; 
 })
 
 const customFill = computed(() => {
@@ -165,12 +166,11 @@ const customFill = computed(() => {
             </div>
         </div>
         <div class="articleSwooshContainer relative w-full z-50 ">
-            <!-- <ArticleSingleSwoosh
+            <ArticleSingleSwoosh
                 :color-theme="colorTheme"
                 class="scale-y-[300%] md:!scale-y-[200%] lg:!scale-y-[150%] xl:!scale-y-100"
-            /> -->
-            <div class="absolute flex items-end -top-9 font-base h-16 mt-1 pl-4 pt-2 text-base text-white w-full z-50 md:!pl-12 md:!text-2xl" 
-            :style="'background-image: ' + gradientBg +';'">
+            />
+            <div class="absolute flex items-end -top-9 font-base h-16 mt-1 pl-4 pt-2 text-base text-white w-full z-50 md:!pl-12 md:!text-2xl">
                 <slot
                     name="submenu"
                 />
