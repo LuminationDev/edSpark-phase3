@@ -18,5 +18,7 @@ export type ExtraContentFilamentType = {
 
 export type SWRVResponse<T> = {
     data: T;
-    error: any; // or a more specific error type if you know it
+    error: any;
 };
+
+

@@ -1,15 +1,20 @@
-<script setup>
+<script setup lang="ts">
 
 import {onMounted, ref} from "vue";
 
 import UserDraftList from "@/js/components/create/UserDraftList.vue";
 import {autoSaveService} from "@/js/service/autoSaveService";
 import {useUserStore} from "@/js/stores/useUserStore";
+import {BasePostType} from "@/js/types/PostTypes";
 
 const userStore = useUserStore()
 const draftArray = ref([])
 const autoSaveLoading = ref(true)
 const postLoading = ref(true)
+
+
+
+
 
 onMounted(() => {
     autoSaveService.getAutoSave(userStore.currentUser.id, 'all').then(res => {
@@ -26,7 +31,7 @@ onMounted(() => {
     })
 })
 
-const formatDataFromAutoSaveAndPostToDraft = (dataArray) => {
+const formatDataFromAutoSaveAndPostToDraft = (dataArray) : BasePostType[]  => {
     return dataArray.map(item => {
         if (item["post_status"] === 'Draft' || item["status"] === 'Draft') {
             return ({
@@ -61,6 +66,7 @@ const formatDataFromAutoSaveAndPostToDraft = (dataArray) => {
 }
 
 
+
 </script>
 
 <template>
@@ -73,7 +79,7 @@ const formatDataFromAutoSaveAndPostToDraft = (dataArray) => {
         </div>
         <UserDraftList
             :draft-array="draftArray"
-            :draft-loading="autoSaveLoading && postLoading"
+            :draft-loading="autoSaveLoading || postLoading"
         />
         <div class="YourDraftsTitle font-semibold text-xl">
             Your recent posts

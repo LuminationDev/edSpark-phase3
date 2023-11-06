@@ -1,35 +1,45 @@
 <script setup lang="ts">
-type DraftFromAutoSave = {
-    content: string,
-    title: string,
-    coverImage: string,
-    excerpt: string,
-    extraContent: string,
-    id: number,
-    updatedAt: string,
-    createdAt: string,
-    type: Array<string> | string,
-    post_type: string
-}
 
-import {capitalize, ref} from "vue";
+import {capitalize} from "vue";
+import {useRouter} from "vue-router";
 
 import Loader from "@/js/components/spinner/Loader.vue";
 import {formatDateToDayTime} from "@/js/helpers/dateHelper";
-import {stripHtmlTags} from "@/js/helpers/slugifyHelper";
+import {BasePostType} from "@/js/types/PostTypes";
 
 const props = defineProps({
     draftArray: {
-        type: Array as () => DraftFromAutoSave,
+        type: Array as () => BasePostType,
         required: false,
-        default: []
+        default: () => {
+        }
     },
     draftLoading: {
         type: Boolean,
         required: true
     }
 })
-console.log(props.draftArray)
+const router = useRouter()
+
+const handleClickEditDraft = (postData: BasePostType) : Promise<void> => {
+    let targetForm = ''
+    const lowerCasePostType = postData.post_type.toLowerCase()
+    if (lowerCasePostType === 'advice') {
+        targetForm = 'createAdvice'
+    } else if (lowerCasePostType === 'event') {
+        targetForm = 'createEvent'
+    } else if (lowerCasePostType === 'software') {
+        targetForm = 'createSoftware'
+    }
+    if (targetForm) {
+        router.push({
+            name: targetForm,
+            state: {draftContent: JSON.stringify(postData)}
+        })
+    }
+    return;
+
+}
 </script>
 
 <template>
@@ -66,6 +76,7 @@ console.log(props.draftArray)
                     hover:bg-gray-50
                     hover:cursor-pointer
                     "
+                @click="() => handleClickEditDraft(draft)"
             >
                 <div class="col-span-6">
                     <div class="DraftTitle">

@@ -1,5 +1,4 @@
-<script setup>
-import {storeToRefs} from "pinia";
+<script setup lang="ts">
 import {computed} from "vue";
 import {useRouter} from "vue-router";
 
@@ -7,11 +6,12 @@ import AdviceCardIcon from "@/js/components/advice/AdviceCardIcon.vue";
 import AdviceTypeTag from "@/js/components/advice/AdviceTypeTag.vue";
 import GenericCard from "@/js/components/card/GenericCard.vue";
 import {lowerSlugify} from "@/js/helpers/slugifyHelper";
-import {useUserStore} from "@/js/stores/useUserStore";
+import {BasePostType} from "@/js/types/PostTypes";
 
 const props = defineProps({
     data: {
-        type: Object, required: true
+        type: Object as () => BasePostType,
+        required: true
     },
     showIcon: {
         type: Boolean, required: false
@@ -19,7 +19,6 @@ const props = defineProps({
 });
 
 const router = useRouter()
-const {currentUser} = storeToRefs(useUserStore())
 
 const randomIconName = computed(() => {
     const source = ['iconBookLight', 'iconBookStars', 'iconBookSearch']

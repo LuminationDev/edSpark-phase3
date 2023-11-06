@@ -34,7 +34,7 @@ class AdviceController extends Controller
             'author_id' => 'required|integer|exists:users,id',
             'advicetype_id' => 'required|array',
             'advicetype_id.*' => 'integer|exists:advice_types,id',
-            'cover_image' => 'sometimes|array',
+            'cover_image' => 'sometimes|string',
             'extra_content' => 'sometimes|array'
         ]);
 

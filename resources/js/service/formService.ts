@@ -80,6 +80,27 @@ export const formService = {
             };
         }).filter(Boolean); // This filter will remove any undefined items, which might be introduced if a matching template isn't found.
     },
+    transformFilamentFormatToSimpleData: (filamentData: TransformedData[]): SimpleDataItem[] => {
+        return filamentData.map((item): SimpleDataItem => {
+            const template = item.data.template;
+            const itemDirectory = Object.keys(item.data.extra_content)[0];
+            const content = item.data.extra_content[itemDirectory].item.map((contentItem) => {
+                return {
+                    ...(contentItem?.icon ? {"icon": contentItem.icon} : {}),
+                    ...(contentItem?.start_date ? {"start_date": contentItem.start_date} : {}),
+                    ...(contentItem?.content ? {"content": contentItem.content} : {}),
+                    ...(contentItem?.heading ? {"heading": contentItem.heading} : {})
+                };
+            }).filter(Boolean); // Filter out properties with undefined values
+
+            const title = item.data.extra_content[itemDirectory].title;
+            return {
+                template,
+                content,
+                title,
+            };
+        });
+    },
     generateEmptyTemplate: (type: TemplateType): object => {
         const template = templates.find(t => t.type === type);
         if (!template) return null;
@@ -140,15 +161,15 @@ export const formService = {
         }
         if (itemType === 'software') {
             const formattedAddtionalData = {
-                extra_content: formService.transformSimpleDataToFilamentFormat(additionalData['extraContentData']),
-                softwaretype_id: additionalData['softwareTypes']
+                extra_content: formService.transformSimpleDataToFilamentFormat(additionalData['extra_content']),
+                softwaretype_id: additionalData['type']
             }
             combinedData = {...data, ...formattedAddtionalData}
             createURL = API_ENDPOINTS.SOFTWARE.CREATE_SOFTWARE_POST
         } else if (itemType === 'advice') {
             const formattedAddtionalData = {
-                extra_content: formService.transformSimpleDataToFilamentFormat(additionalData['extraContentData']),
-                advicetype_id: additionalData['adviceTypes']
+                extra_content: formService.transformSimpleDataToFilamentFormat(additionalData['extra_content']),
+                advicetype_id: additionalData['type']
             }
             combinedData = {...data, ...formattedAddtionalData}
             createURL = API_ENDPOINTS.ADVICE.CREATE_ADVICE_POST
@@ -164,8 +185,8 @@ export const formService = {
                 template: ''
             }
             const formattedAddtionalData = {
-                extra_content: formService.transformSimpleDataToFilamentFormat(additionalData['extraContentData']),
-                eventtype_id: additionalData['eventType'],
+                extra_content: formService.transformSimpleDataToFilamentFormat(additionalData['extra_content']),
+                eventtype_id: additionalData['type'],
                 start_date: additionalData['startTime'],
                 end_date: additionalData['endTime'],
                 event_location: JSON.stringify(additionalData['eventLocation'])
