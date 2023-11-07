@@ -43,6 +43,9 @@ class SoftwareController extends Controller
         if ($request->has('softwaretype_id')) {
             $software->softwaretypes()->sync($request->input('softwaretype_id'));
         }
+        if ($request->has('tags')) {
+            $software->attachTags($request->input('tags'));
+        }
 
         return response()->json(['message' => 'Software created successfully!', 'software' => $software], 201);
     }

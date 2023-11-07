@@ -3,7 +3,7 @@ import useVuelidate from "@vuelidate/core";
 import {required, requiredIf} from "@vuelidate/validators";
 import {watchOnce} from "@vueuse/core";
 import {debounce} from "lodash";
-import {computed, onBeforeMount, reactive, ref, watch} from "vue";
+import {computed, onBeforeMount, onMounted, reactive, ref, watch} from "vue";
 
 import DateTimeInput from "@/js/components/bases/DateTimeInput.vue";
 import TextInput from "@/js/components/bases/TextInput.vue";
@@ -15,14 +15,14 @@ type EventType = {
     name: string,
     value: string
 }
-type EventTypeLocationTimeType = {
-    eventType: number
-    eventLocation: {
+export type EventTypeLocationTimeType = {
+    type: number
+    location: {
         url?: string,
         address?: string,
     },
-    startTime: Date,
-    endTime: Date
+    start_date: Date,
+    end_date: Date
 }
 
 const props = defineProps({
@@ -37,6 +37,11 @@ const props = defineProps({
         required: false,
         default: "Select type"
     },
+    selectedType: {
+        type: [Number, String],
+        required: false,
+        default: ""
+    }
 })
 
 const emits = defineEmits<{
@@ -46,10 +51,20 @@ const emits = defineEmits<{
 const selectedEventType = ref(0)
 const availableTypes = ref<EventType[]>([])
 
-
 onBeforeMount(() => {
     formService.getTypes(API_ENDPOINTS.EVENT.FETCH_EVENT_TYPES).then(res => {
         availableTypes.value = res.data
+        /*
+            Check if the selected type is given. if yes, prepopulate the form
+         */
+        if(props.selectedType){
+            availableTypes.value.forEach(item => {
+                if (Object.values(item).includes(props.selectedType)) {
+                    selectedEventType.value = item['id']
+                }
+            })
+
+        }
     }).catch(err => {
         console.log(err)
     })
@@ -80,15 +95,15 @@ const showAddressOrUrlFields = computed((): ref<{ url: boolean, address: boolean
 })
 
 const state = reactive({
-    startTime: null,
-    endTime: null,
+    start_date: null,
+    end_date: null,
     url: '',
     address: ''
 })
 
 const rules = {
-    startTime: {required},
-    endTime: {required},
+    start_date: {required},
+    end_date: {required},
     url: {requiredIf: requiredIf(showAddressOrUrlFields.value.url)},
     address: {requiredIf: requiredIf(showAddressOrUrlFields.value.address)}
 }
@@ -96,13 +111,13 @@ const v$ = useVuelidate(rules, state)
 
 const emitEventTypeLocationTime = (): void => {
     const data: EventTypeLocationTimeType = {
-        eventType: selectedEventType.value,
-        eventLocation: {
+        type: selectedEventType.value,
+        location: {
             url: state.url || '',
             address: state.address || '',
         },
-        startTime: state.startTime,
-        endTime: state.endTime
+        start_date: state.start_date,
+        end_date: state.end_date
     }
     emits('emitEventTypeLocationTime', data)
 }
@@ -113,14 +128,18 @@ watch(state, () => {
     debouncedEmitEventTypeLocationTime()
 })
 
-const populateLocalStateFromBaseProps = () =>{
-    selectedEventType.value = props.typeLocationTime.eventType
-    state.startTime = props.typeLocationTime.startTime
-    state.endTime = props.typeLocationTime.endTime
-    state.url = props.typeLocationTime.eventLocation.url || ''
-    state.address = props.typeLocationTime.eventLocation.address || ''
+const populateLocalStateFromBaseProps = () => {
+    selectedEventType.value = props.typeLocationTime.type
+    state.start_date = props.typeLocationTime.start_date
+    state.end_date = props.typeLocationTime.end_date
+    state.url = props.typeLocationTime.location?.url || ''
+    state.address = props.typeLocationTime.location?.address || ''
 }
-watchOnce(props.typeLocationTime, () =>{
+onMounted(() => {
+    populateLocalStateFromBaseProps()
+})
+
+watchOnce(props.typeLocationTime, () => {
     populateLocalStateFromBaseProps()
 })
 </script>
@@ -182,20 +201,20 @@ watchOnce(props.typeLocationTime, () =>{
         </div>
         <div class="flex flex-row gap-4 timeRow">
             <DateTimeInput
-                v-model="v$.startTime.$model"
+                v-model="v$.start_date.$model"
                 class="grow"
                 field-id="eventStartTime"
-                :v$="v$.startTime"
+                :v$="v$.start_date"
             >
                 <template #label>
                     Start time
                 </template>
             </DateTimeInput>
             <DateTimeInput
-                v-model="v$.endTime.$model"
+                v-model="v$.end_date.$model"
                 class="grow"
                 field-id="eventEndTime"
-                :v$="v$.endTime"
+                :v$="v$.end_date"
             >
                 <template #label>
                     End time
