@@ -14,9 +14,10 @@ class EditSchoolmoderation extends EditRecord
 
     protected function getHeaderActions(): array
     {
+        $baseUrl = env('APP_URL');
         return [
             Action::make('preview')
-                ->url(fn ($record) => 'http://localhost:8000/schools/' . $record->name . '?preview=true')
+                ->url(fn ($record) => rtrim($baseUrl, '/') . '/schools/'. $record->name . '?preview=true')
                 ->openUrlInNewTab()
         ];
     }
