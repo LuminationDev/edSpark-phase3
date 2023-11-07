@@ -34,7 +34,6 @@ const schoolTechIconComponents = {
     "Makers Empire": MakersEmpireIcon,
     "Apple": AppleIcon,
     "Frog": FrogIcon,
-
     "3D Printing": ThreeDPrintingIcon,
     "IoT": IoTIcon,
     "Robotics": RoboticsIcon,

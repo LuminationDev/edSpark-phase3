@@ -1,4 +1,4 @@
-import {ExtraContentFilamentType} from "@/js/types/SharedTypes";
+import {ExtraContentFilamentType} from "@/js/types/PostTypes";
 
 export type EventType = {
     id: number;
