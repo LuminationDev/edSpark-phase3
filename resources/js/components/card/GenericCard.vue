@@ -158,6 +158,15 @@ const handleClickShare = (): void => {
     }
 }
 
+const cardFlexDirection = computed(() => {
+    if(props.sectionType == 'school'){
+        return 'flex-col items-center';
+    } else {
+        return 'flex-row items-end';
+    }
+})
+
+
 const handleResetTippyMessage = (): void => {
     shareTippyMessage.value = 'Copy Link'
 }
@@ -180,6 +189,7 @@ const cardHoverToggle: Ref<boolean> = ref(false);
 
 <template>
     <div class="GenericCardContainer card_parent generic-card__wrapper group !border-slate-300 rounded overflow-hidden"
+    :class="props.sectionType"
         @mouseenter="cardHoverToggle = true">
         <template v-if="!props.overrideContent">
             <div class="
@@ -199,7 +209,7 @@ const cardHoverToggle: Ref<boolean> = ref(false);
 
             </div>
             <div @click="clickCallback" class="cardContent m-0 p-0 group-hover:-mt-[120px] z-10">
-                    <div class="cardContentWrapper p-6 bg-white h-[210px] group-hover:h-[320px]">
+                    <div class="cardContentWrapper p-6 bg-white h-[210px] group-hover:h-[315px]">
 
                     <div class="flex flex-row relative gap-4 mb-3 items-center">
                         <div v-if="$slots.icon">
@@ -232,7 +242,8 @@ const cardHoverToggle: Ref<boolean> = ref(false);
 
 
         <div 
-            class="flex flex-row w-full items-end justify-between left-0 bg-white"
+            class="flex w-full justify-between left-0 bg-white"
+            :class="cardFlexDirection"
         >
             <div v-if="$slots.typeTag">
                 <slot name="typeTag" />
@@ -357,6 +368,11 @@ const cardHoverToggle: Ref<boolean> = ref(false);
     -webkit-line-clamp: 7;
     -webkit-box-orient: vertical;
     max-height: 210px;
+}
+
+.school .line-clamp {
+    -webkit-line-clamp: 6 !important;
+    max-height: 180px !important;
 }
 
 /* .line-clamp p {
