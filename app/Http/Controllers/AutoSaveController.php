@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\AutoSave;
+use App\Services\ResponseService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\ValidationException;
 
 class AutoSaveController extends Controller
@@ -55,7 +57,7 @@ class AutoSaveController extends Controller
 
     public function getActiveAutoSave(Request $request)
     {
-        $userId = $request->input('user_id');
+        $userId = $request->input('user_id') ?? Auth::user()->id;
         $postType = $request->input('post_type');
 
         if (!$userId) {
@@ -89,7 +91,12 @@ class AutoSaveController extends Controller
             })
             ->update(['is_active' => false]);
 
-        return response()->json(['message' => 'Auto-save(s) found!', 'data' => $validAutoSaves], 200);
+        $resultArray = $validAutoSaves->map(function ($item) {
+            return (object) $item->toArray();
+        })->toArray();
+
+//        return response()->json(['message' => 'Auto-save(s) found!', 'data' => $validAutoSaves], 200);
+        return ResponseService::success('Auto-save(s) found', $resultArray);
 
     }
 

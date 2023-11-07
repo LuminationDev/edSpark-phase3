@@ -6,23 +6,38 @@ import ExtraContent from "@/js/components/bases/frontendform/ExtraContent.vue";
 import {templates} from "@/js/components/bases/frontendform/templates/formTemplates";
 import ItemTypeCheckboxes from "@/js/components/selector/ItemTypeCheckboxes.vue";
 import {API_ENDPOINTS} from "@/js/constants/API_ENDPOINTS";
+import {formService} from "@/js/service/formService";
 import {AdviceAdditionalData} from "@/js/types/AdviceTypes";
 
 
 const addtAdviceData = reactive<AdviceAdditionalData>({
-    extraContentData: [], 
-    adviceTypes: [],
+    extra_content: [],
+    type: [],
 
 })
 
 const updateExtraContent = (content): void => {
     if (content) {
-        addtAdviceData.extraContentData = content
+        addtAdviceData.extra_content = content
     }
 }
 
 const handleReceiveTypes = (typeArray): void => {
-    addtAdviceData.adviceTypes = typeArray
+    addtAdviceData.type = typeArray
+}
+
+const handleReceiveAddtContent = (data) => {
+    if (data['extra_content']) {
+        if(data['extra_content'][0] && data['extra_content'][0]['data']){ // if data is in Filament Format, transform to Simple
+            addtAdviceData.extra_content =  formService.transformFilamentFormatToSimpleData(data['extra_content'])
+        } else{ //Data is already in simple format
+            addtAdviceData.extra_content = data['extra_content']
+        }
+        console.log(addtAdviceData.extra_content)
+    }
+    if (data['type']) {
+        addtAdviceData.type = data['type']
+    }
 }
 </script>
 
@@ -31,9 +46,11 @@ const handleReceiveTypes = (typeArray): void => {
     <BaseForm
         item-type="advice"
         :additional-data="addtAdviceData"
+        @base-emits-addt-content="handleReceiveAddtContent"
     >
         <template #itemType>
             <ItemTypeCheckboxes
+                :selected-type="addtAdviceData.type"
                 :type-api-link="API_ENDPOINTS.ADVICE.FETCH_ADVICE_TYPES"
                 label="Select advice type"
                 @send-selected-types-as-array="handleReceiveTypes"
@@ -41,7 +58,7 @@ const handleReceiveTypes = (typeArray): void => {
         </template>
         <template #extraContent>
             <ExtraContent
-                :extra-content-data="addtAdviceData.extraContentData"
+                :extra-content-data="addtAdviceData.extra_content"
                 :available-templates="templates"
                 @update-parent-extra-content="updateExtraContent"
             />
