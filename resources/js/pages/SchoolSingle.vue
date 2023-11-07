@@ -218,6 +218,7 @@ const handleCloseModerationTab = () : void =>{
                                                 mb-4
                                                 place-items-center
                                                 schoolTechHoverableRow
+                                                
                                                 gap-4"
                                         >
                                             <SchoolTechHoverableRow 

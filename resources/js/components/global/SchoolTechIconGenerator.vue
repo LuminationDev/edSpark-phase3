@@ -47,6 +47,5 @@ const schoolTechIconComponents = {
     <BaseIconGenerator
         :icon-path="techName"
         :components-object="schoolTechIconComponents"
-        :color-theme="colorTheme"
     />
 </template>

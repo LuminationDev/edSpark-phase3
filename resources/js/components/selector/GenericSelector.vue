@@ -52,27 +52,15 @@ const checkIfObjectIsSelected = (itemObj) => {
 
 const fillColorTheme = ref('')
 
-onMounted(() => {
-    if (schoolColorKeys.includes(props.colorTheme)) {
-        fillColorTheme.value = `bg-[${schoolColorTheme[props.colorTheme]['light']}]`;
-    } else {
-        fillColorTheme.value = `bg-[${schoolColorTheme['teal']['light']}]`;
-    }
-})
-
 const customBackground = computed(() => {
+    if (schoolColorKeys.includes(props.colorTheme)) {
+        fillColorTheme.value = `bg-[${schoolColorTheme[props.colorTheme]['light']}] fill-[${schoolColorTheme[props.colorTheme]['med']}]`;
+    } else {
+        fillColorTheme.value = `bg-[${schoolColorTheme['teal']['light']}] fill-[${schoolColorTheme['teal']['med']}]`;
+    }
+
     return fillColorTheme.value;
 })
-
-
-
-
-// const customBackground = computed(() => {
-//     return `!bg-main-teal`
-//     // return `!bg-[${schoolColorTheme[props.colorTheme]['light']}]`
-
-// })
-
 
 </script>
 <template>
@@ -83,15 +71,15 @@ const customBackground = computed(() => {
         <div
             v-for="(item,index) in listData"
             :key="index"
-            class="bg-blue-300 cursor-pointer grayscale group h-28 my-2 opacity-60 p-2 rounded-xl text-white hover:shadow-xl"
-            :class="[{'bg-blue-300 !grayscale-0 !opacity-100' : checkIfObjectIsSelected(item)}, customBackground]"
-
+            class="cursor-pointer grayscale group h-28 my-2 opacity-60 p-2 rounded-xl text-white hover:shadow-xl"
+            :class="[{'!grayscale-0 !opacity-100' : checkIfObjectIsSelected(item)}, customBackground]"
 
             @click="() => handleSelectItem(item)"
         >
             <slot
                 :name="'selectorItem_' + index"
                 :item-data="item"
+                :color-theme="colorTheme"
             />
         </div>
     </div>

@@ -32,11 +32,18 @@ const edsparkColor = [
     '#FFDECF',
     '#FECCD0',
     '#DBCCF5',
+    '#6e99ce',
 
     // theme colours for selector on editor page
     '#DE4668',
     '#FF8D78',
-    '#8866C5'
+    '#8866C5',
+
+    // dark theme colours for icons
+    '#185E69',
+    '#FFC836',
+    '#0072DA',
+    '#AEDCF3',
 ];
 
 const generateSafeList = (colors) => {

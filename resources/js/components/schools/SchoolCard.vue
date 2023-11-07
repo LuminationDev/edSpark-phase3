@@ -81,6 +81,7 @@ const handleClickSchoolCard = () => {
                     gap-2
                     min-h-[130px]
                     h-full
+                    fill-secondary-blue
                     "
             >
                 <SchoolCardIconList

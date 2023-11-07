@@ -15,64 +15,35 @@ const props = defineProps({
     colorTheme: {
         type: String,
         required: false,
-        validator: function (value) {
-            return schoolColorKeys.includes(value);
-        },
         default: 'teal'
     }
 })
+
 const textColorTheme = ref('')
 const textHoverColorTheme = ref('')
 
-const gradientBg = ref('')
-
-onMounted(() => {
-    console.log('Pre-calc: '+props.colorTheme);
-    var useCustomColor = false;
-
-    if(schoolColorKeys.includes(props.colorTheme)){
-        useCustomColor = true;
-    } 
-
-    console.log('Calculated: '+useCustomColor);
-
-    if(useCustomColor){
-        textColorTheme.value = "text-[" + schoolColorTheme[props.colorTheme]['light'] + "]";
-        textHoverColorTheme.value = "hover:text-[" + schoolColorTheme[props.colorTheme]['light'] + "]";
-    } else {
-        textColorTheme.value = "text-[" + schoolColorTheme['teal']['light'] + "]";
-        textHoverColorTheme.value = "hover:text-[" + schoolColorTheme['teal']['light'] + "]";
-    }
-
-})
 
 const customText = computed(() => {
+    if(schoolColorKeys.includes(props.colorTheme)){
+        textColorTheme.value = "text-[" + schoolColorTheme[props.colorTheme]['light'] + "]";
+
+    } else {
+        textColorTheme.value = "text-[" + schoolColorTheme['teal']['light'] + "]";
+    }
+
     return textColorTheme.value;
 })
 
 const customTextHover = computed(() => {
+    if(schoolColorKeys.includes(props.colorTheme)){
+        textHoverColorTheme.value = "hover:text-[" + schoolColorTheme[props.colorTheme]['light'] + "]";
+
+    } else {
+        textHoverColorTheme.value = "hover:text-[" + schoolColorTheme['teal']['light'] + "]";
+    }
+
     return textHoverColorTheme.value;
 })
-
-
-// onMounted(() => {   
-    
-//     if (schoolColorKeys.includes(props.colorTheme)) {
-//         textColorTheme.value = "text-[" + schoolColorTheme[props.colorTheme]['light'] + "]"
-//     } else {
-//         textColorTheme.value = "text-[" + schoolColorTheme['teal']['light'] + "]"
-//         // textColorTheme.value = 'text-main-teal'
-//     }
-
-//     if (schoolColorKeys.includes(props.colorTheme)) {
-//         textHoverColorTheme.value = "hover:text-[" + schoolColorTheme[props.colorTheme]['light'] + "]"
-//     } else {
-//         textHoverColorTheme.value = "hover:text-[" + schoolColorTheme['teal']['light'] + "]"
-//         // textHoverColorTheme.value = 'hover:text-main-teal'
-//     }
-    
-
-// })
 
 
 </script>
@@ -83,8 +54,7 @@ const customTextHover = computed(() => {
             <router-link to="/dashboard">
                 <p
                     class="text-white"
-                    :class="textHoverColorTheme"
-                >
+                    :class="customTextHover" >
                     Home
                 </p>
             </router-link>
@@ -92,17 +62,16 @@ const customTextHover = computed(() => {
             <router-link :to="`/${props.parentPage}`">
                 <p
                     class="capitalize text-white"
-                    :class="textHoverColorTheme"
-                >
+                    :class="customTextHover" >
                     {{ props.parentPage }}
                 </p>
             </router-link>
             <ChevronRight class="h-3 w-3" />
 
             <p
-                class="capitalize w-full"
-                :class="textColorTheme"
-            >
+                class="capitalize w-full"                
+                    :class="customText" >
+                 >
                 {{ props.childPage }}
             </p>
         </div>

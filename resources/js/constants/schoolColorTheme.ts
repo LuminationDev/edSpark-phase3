@@ -30,20 +30,23 @@ export const schoolColorTheme = {
         dark: '#185E69',
     },
     navy: {
-        light: '#3d6ba3',
+        light: '#6e99ce', //was #3d6ba3
         med: '#002858',
         dark: '#002858',
     },
+
     softwarePurple: {
         light: "#9F7AEA",
         med:"#4338CA",
         dark:"#2D1E91",
     },
+
     hardwareGreen: {
         light: '#C6F6D5',
         med: '#38A169',
         dark: '#234E52',
     },
+
     partnerBlue: {
         light: '#BEE3F8',
         med: '#3182CE',
@@ -55,11 +58,13 @@ export const schoolColorTheme = {
             med: '#be123c',
             dark: '#b71c1c',
         },
+        
     eventBlue: {
             light: '#BEE3F8',
             med: '#3182CE',
             dark: '#1C3D5A',
         },
+
     eventPurple: {
             light: '#DDD6FE',
             med: '#6B46C1',

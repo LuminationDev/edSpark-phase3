@@ -102,7 +102,8 @@ const customFill = computed(() => {
             />
             <div
                 v-if="$slots.titleText || $slots.subtitleText1 || $slots.subtitleText2"
-                class="col-span-8 p-2 relative z-20 lg:!col-span-5"
+                class="col-span-8 p-2 relative z-20 lg:!col-span-5"                
+                :color-theme="swooshColorTheme"
             >
                 <slot name="breadcrumb" />
                 <h1
@@ -167,10 +168,10 @@ const customFill = computed(() => {
         </div>
         <div class="articleSwooshContainer relative w-full z-50 ">
             <ArticleSingleSwoosh
-                :color-theme="colorTheme"
-                class="scale-y-[300%] md:!scale-y-[200%] lg:!scale-y-[150%] xl:!scale-y-100"
+                :color-theme="swooshColorTheme"
+                class="absolute -top-9 h-16 mt-1 w-full"
             />
-            <div class="absolute flex items-end -top-9 font-base h-16 mt-1 pl-4 pt-2 text-base text-white w-full z-50 md:!pl-12 md:!text-2xl">
+            <div class="absolute -top-9 h-16 mt-1 w-full z-50  flex items-endfont-base pl-4 pt-2 text-base text-white md:!pl-12 md:!text-2xl">
                 <slot
                     name="submenu"
                 />

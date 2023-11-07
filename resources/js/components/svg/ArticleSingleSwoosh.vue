@@ -21,11 +21,8 @@ if(schoolColorKeys.includes(props.colorTheme)){
 </script>
 
 <template>
-<!-- <svg class="absolute w-full -top-28 left-0 overflow-clip" width="1800" height="180" fill="none" version="1.1" viewBox="0 0 1800 81" xmlns="http://www.w3.org/2000/svg">
- <path d="m1800.6 25v43c-6.7299 11.807-35.73 38.573-68.027 52.108-11.591 4.8579-11.036 5.3123-35.17 8.1573s-129.49 0.73489-201.06 0.73489h-1496.3v-75h871.86c190.53 0 466.86 
- 0 623.47 1 156.62-3 230.44 19.476 305.25-75.524z" 
-            fill="url(#paint0_linear_1830_23198)"
-        />
+<svg class="absolute w-full" width="1800" height="180" fill="none" preserveAspectRatio="none" version="1.1" viewBox="0 0 1800 180" xmlns="http://www.w3.org/2000/svg">
+    <rect width="100%" height="100%" fill="url(#paint0_linear_1830_23198)"></rect>
         <defs>
             <linearGradient
                 id="paint0_linear_1830_23198"
@@ -49,5 +46,5 @@ if(schoolColorKeys.includes(props.colorTheme)){
                 />
             </linearGradient>
         </defs>
-    </svg> -->
+    </svg>
 </template>

@@ -50,12 +50,13 @@ const handleEmit = () => {
 // }
 </script>
 
+<!-- :style="`
+background-color: rgba(255,255,255,0.85);
+background-image: url('${imageURL}/${props.schoolData?.cover_image ?? ''}'); 
+background-size: cover ;background-blend-mode: screen; `" -->
+
 <template>
-    <div class="flex flex-col mapOuterContainer "
-        :style="`
-            background-color: rgba(255,255,255,0.85);
-            background-image: url('${imageURL}/${props.schoolData?.cover_image ?? ''}'); 
-            background-size: cover ;background-blend-mode: screen; `">
+    <div class="flex flex-col mapOuterContainer">
 
         <div class="flex justify-between flex-col p-4 pb-0 place-items-center relative  
                     h-[180px] overflow-hidden">
@@ -77,7 +78,7 @@ const handleEmit = () => {
                     flex-col 
                     mapPopupContent 
                     overflow-scroll 
-                    p-4 pt-2 w-[340px]
+                    p-6 pt-2 w-[340px]
                     fadebg">
             <!-- flex flex-row gap-6 h-[180px] -->
             <div class="
@@ -88,7 +89,8 @@ const handleEmit = () => {
                     w-full
                     gap-2
                     h-[90px]
-                    smaller-icons
+                    smaller-icons                    
+                    fill-secondary-blue
             ">
                 <SchoolCardIconList 
                     :tech-list="mapPopupInfo.tech_used" 

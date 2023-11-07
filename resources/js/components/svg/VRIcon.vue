@@ -2,7 +2,7 @@
 </script>
 
 <template>
-    <svg xmlns="http://www.w3.org/2000/svg" width="45" height="45" viewBox="0 0 45 45" fill="none">
+    <svg xmlns="http://www.w3.org/2000/svg" width="60" height="60" viewBox="0 0 45 45" fill="none">
         <g clip-path="url(#clip0_552_9683)">
             <circle cx="22.5" cy="22.5" r="22.5" fill-opacity="1" fill="" />
             <!-- <circle cx="22.5" cy="22.5" r="22.5" fill-opacity="0" stroke-width="1" /> -->
