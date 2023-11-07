@@ -54,11 +54,17 @@ const availableTypes = ref<EventType[]>([])
 onBeforeMount(() => {
     formService.getTypes(API_ENDPOINTS.EVENT.FETCH_EVENT_TYPES).then(res => {
         availableTypes.value = res.data
-        availableTypes.value.forEach(item => {
-            if (Object.values(item).includes(props.selectedType)) {
-                selectedEventType.value = item['id']
-            }
-        })
+        /*
+            Check if the selected type is given. if yes, prepopulate the form
+         */
+        if(props.selectedType){
+            availableTypes.value.forEach(item => {
+                if (Object.values(item).includes(props.selectedType)) {
+                    selectedEventType.value = item['id']
+                }
+            })
+
+        }
     }).catch(err => {
         console.log(err)
     })
@@ -129,12 +135,11 @@ const populateLocalStateFromBaseProps = () => {
     state.url = props.typeLocationTime.location?.url || ''
     state.address = props.typeLocationTime.location?.address || ''
 }
-onMounted(() =>{
+onMounted(() => {
     populateLocalStateFromBaseProps()
 })
 
 watchOnce(props.typeLocationTime, () => {
-    console.log('watchone is called')
     populateLocalStateFromBaseProps()
 })
 </script>
