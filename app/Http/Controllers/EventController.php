@@ -33,8 +33,7 @@ class EventController extends Controller
             'end_date' => 'required|date|after_or_equal:start_date',
             'event_status' => 'required|string',
             'author_id' => 'required|integer|exists:users,id',
-            'eventtype_id' => 'required|integer|exists:event_types,id', // Assuming you have a table named event_types
-            'cover_image' => 'sometimes|array',
+            'eventtype_id' => 'required|integer|exists:event_types,id',
             'extra_content' => 'sometimes|array'
         ]);
 
@@ -48,6 +47,9 @@ class EventController extends Controller
         // Attach the event type to the created event
         if ($request->has('eventtype_id')) {
             $event->eventtype()->associate($request->input('eventtype_id'))->save();
+        }
+        if ($request->has('tags')) {
+            $event->attachTags($request->input('tags'));
         }
 
         return response()->json(['message' => 'Event created successfully!', 'event' => $event], 201);

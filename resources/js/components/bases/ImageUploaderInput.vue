@@ -2,8 +2,9 @@
 import {computed, ref} from "vue";
 
 import Uploader from "@/js/components/uploader/Uploader.vue";
-import {API_ENDPOINTS, IMAGE_ENDPOINTS} from "@/js/constants/API_ENDPOINTS";
+import {IMAGE_ENDPOINTS} from "@/js/constants/API_ENDPOINTS";
 import {imageURL} from "@/js/constants/serverUrl";
+import {guid} from "@/js/helpers/guidGenerator";
 
 export type MediaType = {
     url: string,
@@ -45,16 +46,16 @@ const handleChangeMedia = (allMedia): void => {
 }
 
 const formatStringMediaToMediaType = computed((): MediaType[] => {
-    if(props.currentMedia){
+    if (props.currentMedia) {
         const fullUrl = imageURL + "/" + props.currentMedia
         return [{
             url: fullUrl,
             remoteUrl: fullUrl,
-            name: '',
+            name: guid(),
             size: 0,
             type: ''
         }]
-    } else{
+    } else {
         return []
     }
 })

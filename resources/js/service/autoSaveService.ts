@@ -14,18 +14,6 @@ export const autoSaveService = {
         return `${year}-${month}-${day}`;
     },
     savePost: (user_id: number, type: string, data: Record<string, any>): Promise<void> => {
-        console.log(data)
-        /**
-         * from softwareForm, data is
-         * authorName
-         * content
-         * coverImage
-         * excerpt
-         * extra_content
-         * softwaretype_id
-         * tags
-         * title
-         */
         const expiryDate = autoSaveService.getExpiryDateMonth()
         console.log(expiryDate)
         const requestPayload = {
