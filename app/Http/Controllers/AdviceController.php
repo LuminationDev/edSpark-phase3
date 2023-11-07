@@ -21,9 +21,12 @@ use Illuminate\Support\Facades\Validator;
 class AdviceController extends Controller
 {
     protected PostService $postService;
-    public function __construct(PostService $postService){
+
+    public function __construct(PostService $postService)
+    {
         $this->postService = $postService;
     }
+
     public function createAdvicePost(Request $request)
     {
         $validator = Validator::make($request->all(), [
@@ -49,9 +52,9 @@ class AdviceController extends Controller
         if ($request->has('advicetype_id')) {
             $advice->advicetypes()->sync($request->input('advicetype_id'));
         }
-
-//        return response()->json(['message' => 'Advice created successfully!', 'advice' => $advice], 201);
-
+        if ($request->has('tags')) {
+            $advice->attachTags($request->input('tags'));
+        }
         return ResponseService::success('Advice created successfully!');
     }
 
@@ -92,6 +95,7 @@ class AdviceController extends Controller
             return response()->json(['error' => "An error occurred: " . $e->getMessage()], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
+
     public function fetchCurrentUserDraftAdvicePosts(Request $request): JsonResponse
     {
         try {

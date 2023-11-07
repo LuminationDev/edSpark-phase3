@@ -192,7 +192,8 @@ export const formService = {
             post_status: status,
             author_id: user_id,
             cover_image: state.cover_image,
-            template: ''
+            tags: state.tags,
+            template: '',
         };
 
         if (itemType === 'software' || itemType === 'advice' || itemType === 'event') {
