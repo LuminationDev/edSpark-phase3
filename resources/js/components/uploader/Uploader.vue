@@ -72,8 +72,6 @@ const handleEmitMaxFileSize = (itemSize): void => {
 
 
 const init = () => {
-    console.log('init called here')
-    console.log(props.media)
     addedMedia.value = [...props.media]
     addedMedia.value.forEach((image, index) => {
         if (!addedMedia.value[index].url) {
@@ -101,7 +99,6 @@ const fileChange = async (event) => {
 
                 try {
                     const {data} = await axios.post(props.server, formData);
-                    console.log(data);
                     const addedImage = {
                         url: url,
                         remoteUrl: data.file.url,
@@ -138,7 +135,6 @@ const fileChange = async (event) => {
 const removeAddedMedia = (index) => {
     const removedImage = addedMedia.value[index];
     addedMedia.value.splice(index, 1);
-    console.log(allMedia.value);
     handleEmitChange(allMedia.value);
     handleEmitRemove(removedImage, removedMedia.value);
 };
@@ -168,7 +164,10 @@ const removeSavedMedia = (index) => {
             />
             <div class="mu-elements-wraper">
                 <!--UPLOAD BUTTON-->
-                <div class="mu-plusbox-container">
+                <div
+                    v-if="allMedia.length < props.max"
+                    class="mu-plusbox-container"
+                >
                     <label
                         for="mu-file-input"
                         class="mu-plusbox"
@@ -198,39 +197,6 @@ const removeSavedMedia = (index) => {
                         @change="fileChange"
                     >
                 </div>
-
-                <!--IMAGES PREVIEW-->
-
-                <!--                <div-->
-                <!--                    v-for="(image, index) in reactiveSavedMedia"-->
-                <!--                    :key="index"-->
-                <!--                    class="mu-image-container"-->
-                <!--                >-->
-                <!--                    <img-->
-                <!--                        :src="image.remoteUrl"-->
-                <!--                        alt=""-->
-                <!--                        class="mu-images-preview"-->
-                <!--                    >-->
-                <!--                    <button-->
-                <!--                        class="mu-close-btn"-->
-                <!--                        type="button"-->
-                <!--                        @click="() => removeAddedMedia(index)"-->
-                <!--                    >-->
-                <!--                        <svg-->
-                <!--                            class="mu-times-icon"-->
-                <!--                            xmlns="http://www.w3.org/2000/svg"-->
-                <!--                            width="0.65em"-->
-                <!--                            height="0.65em"-->
-                <!--                            preserveAspectRatio="xMidYMid meet"-->
-                <!--                            viewBox="0 0 352 512"-->
-                <!--                        >-->
-                <!--                            <path-->
-                <!--                                d="m242.72 256l100.07-100.07c12.28-12.28 12.28-32.19 0-44.48l-22.24-22.24c-12.28-12.28-32.19-12.28-44.48 0L176 189.28L75.93 89.21c-12.28-12.28-32.19-12.28-44.48 0L9.21 111.45c-12.28 12.28-12.28 32.19 0 44.48L109.28 256L9.21 356.07c-12.28 12.28-12.28 32.19 0 44.48l22.24 22.24c12.28 12.28 32.2 12.28 44.48 0L176 322.72l100.07 100.07c12.28 12.28 32.2 12.28 44.48 0l22.24-22.24c12.28-12.28 12.28-32.19 0-44.48L242.72 256z"-->
-                <!--                                fill="currentColor"-->
-                <!--                            />-->
-                <!--                        </svg>-->
-                <!--                    </button>-->
-                <!--                </div>-->
                 <div
                     v-for="(image, index) in allMedia"
                     :key="index"
@@ -276,18 +242,6 @@ const removeSavedMedia = (index) => {
                     hidden
                 >
             </div>
-            <!--            <div-->
-            <!--                v-for="(image, index) in removedMedia"-->
-            <!--                :key="index"-->
-            <!--                class="mu-mt-1"-->
-            <!--            >-->
-            <!--                <input-->
-            <!--                    type="text"-->
-            <!--                    name="removed_media[]"-->
-            <!--                    :value="image.name"-->
-            <!--                    hidden-->
-            <!--                >-->
-            <!--            </div>-->
             <div
                 v-if="allMedia.length"
                 class="mu-mt-1"

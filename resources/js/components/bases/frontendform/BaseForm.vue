@@ -114,7 +114,7 @@ const populateLocalStateFromWindowStateDraftData = (data): void => {
     state.title = data.title || ""
     state.excerpt = data.excerpt || ""
     state.content = data.content || ""
-    state.cover_image = '/' + data.cover_image || ""
+    state.cover_image = data.cover_image || ""
     state.author_name = data.authorName || ""
     state.tags = data.tags || []
 }
