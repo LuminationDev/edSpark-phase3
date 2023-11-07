@@ -141,9 +141,9 @@ const handleReceiveMediaFromUploader = (media: MediaType[]): void => {
     }
 }
 
-const handleClickSave = () => {
+const handleClickSubmitForModeration = () => {
     isSaving.value = true
-    formService.handleSaveForm(state, currentUser.value.id, props.additionalData, props.itemType).then((res) => {
+    formService.handleSubmitPostForModeration(state, currentUser.value.id, props.additionalData, props.itemType).then((res) => {
         formStatusDisplay.value = FormStatus.SAVED
         router.push('/create').then(() => {
             toast('Successfully submitted ' + props.itemType + ' for moderation!')
@@ -153,8 +153,20 @@ const handleClickSave = () => {
     }).finally(() => {
         isSaving.value = false
     })
+}
 
-
+const handleClickSaveAsDraft = () => {
+    isSaving.value = true
+    formService.handleSubmitPostAsDraft(state, currentUser.value.id, props.additionalData, props.itemType).then((res) => {
+        formStatusDisplay.value = FormStatus.SAVED
+        router.push('/create').then(() => {
+            toast('Successfully submitted ' + props.itemType + ' as a Draft!')
+        })
+    }).catch(e => {
+        console.error('Error during saving')
+    }).finally(() => {
+        isSaving.value = false
+    })
 }
 
 const titleGenerator = computed((): string => {
@@ -249,13 +261,13 @@ const statusGenerator = computed(() => {
             <div class="flex justify-center gap-6 saveButtonContainer">
                 <GenericButton
                     class="px-6 py-2"
-                    :callback="handleClickSave"
+                    :callback="handleClickSaveAsDraft"
                 >
                     Save as draft
                 </GenericButton>
                 <GenericButton
                     class="px-6 py-2"
-                    :callback="handleClickSave"
+                    :callback="handleClickSubmitForModeration"
                 >
                     Submit for moderation
                 </GenericButton>

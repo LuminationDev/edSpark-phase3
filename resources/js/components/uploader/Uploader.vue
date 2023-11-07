@@ -1,3 +1,155 @@
+<script setup lang="ts">
+import axios from 'axios'
+import {computed, onMounted, ref} from "vue";
+
+import Loader from './loader/index.vue';
+
+const props = defineProps({
+    server: {
+        type: String,
+        default: '/api/upload'
+    },
+    isInvalid: {
+        type: Boolean,
+        default: false
+    },
+    media: {
+        type: Array,
+        default: () => []
+    },
+    location: {
+        type: String,
+        default: ''
+    },
+    max: {
+        type: Number,
+        default: null
+    },
+    maxFilesize: {
+        type: Number,
+        default: 4
+    },
+    warnings: {
+        type: Boolean,
+        default: true
+    }
+})
+
+const addedMedia = ref([]);
+const savedMedia = ref([]);
+const removedMedia = ref([]);
+const isLoading = ref(true);
+
+const allMedia = computed(() => [...savedMedia.value, ...addedMedia.value]);
+
+const emits = defineEmits([
+    'init',
+    'change',
+    'add',
+    'remove',
+    'max',
+    'maxFilesize'
+]);
+
+const handleEmitInit = (): void => {
+    emits('init')
+}
+const handleEmitChange = (allItem): void => {
+    emits('change', allItem)
+}
+const handleEmitAdd = (item, target): void => {
+    emits('add', item, target)
+}
+const handleEmitRemove = (item, target): void => {
+    emits('remove', item, target)
+}
+const handleEmitMax = (itemCount): void => {
+    emits('max', itemCount)
+}
+const handleEmitMaxFileSize = (itemSize): void => {
+    emits('maxFilesize', itemSize)
+}
+
+
+const init = () => {
+    addedMedia.value = [...props.media]
+    addedMedia.value.forEach((image, index) => {
+        if (!addedMedia.value[index].url) {
+            addedMedia.value[index].url = props.location + "/" + image.name
+        }
+    })
+}
+
+onMounted(() => {
+    init();
+})
+
+const fileChange = async (event) => {
+    isLoading.value = true;
+    const files = event.target.files;
+
+    for (let i = 0; i < files.length; i++) {
+        if (!props.max || allMedia.value.length < props.max) {
+            if (files[i].size <= props.maxFilesize * 1000000) {
+                const formData = new FormData();
+                const url = URL.createObjectURL(files[i]);
+                formData.set('image', files[i]);
+
+                try {
+                    const {data} = await axios.post(props.server, formData);
+                    console.log(data);
+                    const addedImage = {
+                        url: url,
+                        remoteUrl: data.file.url,
+                        name: data.name,
+                        size: files[i].size,
+                        type: files[i].type,
+                    };
+                    addedMedia.value.push(addedImage);
+
+                    handleEmitChange(allMedia.value);
+                    handleEmitAdd(addedImage, addedMedia.value);
+                } catch (error) {
+                    console.error(error);
+                }
+            } else {
+                handleEmitMaxFileSize(files[i].size);
+                if (props.warnings) {
+                    alert('The file you are trying to upload is too big. \nMaximum Filesize: ' + props.maxFilesize + 'MB');
+                }
+                break;
+            }
+        } else {
+            handleEmitMax(props.max);
+            if (props.warnings) {
+                alert('You have reached the maximum number of files that you can upload. \nMaximum Files: ' + props.max);
+            }
+            break;
+        }
+    }
+
+    event.target.value = null;
+    isLoading.value = false;
+};
+const removeAddedMedia = (index) => {
+    const removedImage = addedMedia.value[index];
+    addedMedia.value.splice(index, 1);
+    console.log(allMedia.value);
+    handleEmitChange(allMedia.value);
+    handleEmitRemove(removedImage, removedMedia.value);
+};
+
+const removeSavedMedia = (index) => {
+    const removedImage = savedMedia.value[index];
+    removedMedia.value.push(removedImage);
+    savedMedia.value.splice(index, 1);
+    handleEmitChange(allMedia.value);
+    handleEmitRemove(removedImage, removedMedia.value);
+};
+
+
+</script>
+
 <template>
     <div>
         <div
@@ -147,147 +299,6 @@
     </div>
 </template>
 
-<script>
-import axios from 'axios'
-
-import Loader from './loader/index.vue';
-
-export default {
-    components: {
-        Loader
-    },
-
-    props: {
-        server: {
-            type: String,
-            default: '/api/upload'
-        },
-        isInvalid: {
-            type: Boolean,
-            default: false
-        },
-        media: {
-            type: Array,
-            default: []
-        },
-        location: {
-            type: String,
-            default: ''
-        },
-        max: {
-            type: Number,
-            default: null
-        },
-        maxFilesize: {
-            type: Number,
-            default: 4
-        },
-        warnings: {
-            type: Boolean,
-            default: true
-        }
-    },
-    emits: [
-        'init',
-        'change',
-        'add',
-        'remove',
-        'max',
-        'maxFilesize'
-    ],
-    data() {
-        return {
-            addedMedia: [],
-            savedMedia: [],
-            removedMedia: [],
-
-            isLoading: true
-        }
-    },
-    computed: {
-        allMedia() {
-            return [...this.savedMedia, ...this.addedMedia];
-        },
-        reactiveSavedMedia() {
-            return this.media
-        }
-    },
-    mounted() {
-        this.init()
-    },
-    methods: {
-        init() {
-            this.addedMedia = this.media
-            this.addedMedia.forEach((image, index) => {
-                if (!this.addedMedia[index].url) {
-                    this.addedMedia[index].url = this.location + "/" + image.name
-                }
-            });
-            setTimeout(() => this.isLoading = false, 1000)
-            this.$emit('init', this.allMedia)
-        },
-        async fileChange(event) {
-            this.isLoading = true
-            const files = event.target.files
-
-            for (let i = 0; i < files.length; i++) {
-                if (!this.max || this.allMedia.length < this.max) {
-                    if (files[i].size <= this.maxFilesize * 1000000) {
-                        const formData = new FormData
-                        const url = URL.createObjectURL(files[i])
-                        formData.set('image', files[i])
-
-                        const {data} = await axios.post(this.server, formData)
-                        console.log(data)
-                        const addedImage = {
-                            url: url,
-                            remoteUrl: data.file.url,
-                            name: data.name,
-                            size: files[i].size,
-                            type: files[i].type
-                        }
-                        this.addedMedia.push(addedImage)
-
-                        this.$emit('change', this.allMedia)
-                        this.$emit('add', addedImage, this.addedMedia)
-                    } else {
-                        this.$emit('maxFilesize', files[i].size)
-                        if (this.warnings) {
-                            alert('The file you are trying to upload is too big. \nMaximum Filesize: ' + this.maxFilesize + 'MB')
-                        }
-                        break;
-                    }
-                } else {
-                    this.$emit('max')
-                    if (this.warnings) {
-                        alert('You have reached the maximum number of files that you can upload. \nMaximum Files: ' + this.max)
-                    }
-                    break;
-                }
-            }
-            event.target.value = null
-            this.isLoading = false
-        },
-        removeAddedMedia(index) {
-            const removedImage = this.addedMedia[index]
-            this.addedMedia.splice(index, 1)
-            console.log(this.allMedia)
-            this.$emit('change', this.allMedia)
-            this.$emit('remove', removedImage, this.removedMedia)
-        },
-        removeSavedMedia(index) {
-            const removedImage = this.savedMedia[index]
-            this.removedMedia.push(removedImage)
-            this.savedMedia.splice(index, 1)
-
-            this.$emit('change', this.allMedia)
-            this.$emit('remove', removedImage, this.removedMedia)
-        }
-
-    }
-}
-
-</script>
 
 <style scoped>
 
