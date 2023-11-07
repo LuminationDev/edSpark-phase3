@@ -58,7 +58,7 @@ const fetchSchoolByNameAsync = async (schoolName): Promise<void> => {
     if (isPreviewMode.value) {
         try {
             const pendingData = await schoolService.fetchPendingSchoolByName(schoolName, null, currentUser.value.id, null)
-            if(pendingData){
+            if(pendingData) {
                 schoolContent.value = pendingData
                 if (schoolContent.value['metadata']) {
                     const colorThemeMeta = schoolContent.value['metadata'].filter(meta => meta['schoolmeta_key'] === 'school_color_theme');
@@ -213,16 +213,19 @@ const handleCloseModerationTab = () : void =>{
                                             {{ schoolContent.name }}
                                         </h1>
                                         <div
-                                            class="flex
+                                            class="
+                                                flex
                                                 flex-row
                                                 mb-4
                                                 place-items-center
                                                 schoolTechHoverableRow
-                                                gap-4"
+                                                gap-4
+                                                "
                                         >
                                             <SchoolTechHoverableRow 
                                                 :tech-used-list="schoolContent.tech_used"
-                                                :color-theme="colorTheme" />
+                                                :color-theme="colorTheme"
+                                            />
                                         </div>
                                         <div class="flex justify-center items-center h-40 text-md w-40">
                                             <img

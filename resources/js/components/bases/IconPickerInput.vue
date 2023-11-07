@@ -86,6 +86,14 @@ const togglePicker = () => {
 const closePicker = () => {
     isVisible.value = false
 }
+// turn fas-icon into fas fa-icon - frontend friendly
+const activeGlyphSafe = computed(() =>{
+    if(activeGlyph.value.split(' ').length === 1){
+        return "fas " +  activeGlyph.value.replace('fas-','fa-')
+    } else{
+        return activeGlyph.value
+    }
+})
 </script>
 <template>
     <span
@@ -96,7 +104,7 @@ const closePicker = () => {
     >
         <i
             class="text-3xl vue3-icon-picker"
-            :class="activeGlyph"
+            :class="activeGlyphSafe"
         />
         <span
             v-if="!isIconPicked"

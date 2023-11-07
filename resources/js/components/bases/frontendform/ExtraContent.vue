@@ -17,7 +17,6 @@ const props = defineProps({
         }
     }
 })
-console.log(props.extraContentData)
 
 const state = reactive({
     templateData: props.extraContentData

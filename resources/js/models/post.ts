@@ -7,7 +7,10 @@ export default class Post implements PostInterface {
     coverImage: string
     authorName: string
     tags: Array<string>
-    extraContent: string
+    extraContent: string;
+    updated_at: string;
+    isLikedByUser?: boolean;
+    isBookmarkedByUser?: boolean;
 
     constructor(title: string, excerpt: string, content: string, coverImage: string, authorName: string, tags: Array<string>, extra_content: string) {
         this.title = title

@@ -2,20 +2,18 @@
 
 import {computed} from "vue";
 import {useRoute, useRouter} from "vue-router";
+
 import CreateSelector from "@/js/components/selector/CreateSelector.vue";
 
 const router = useRouter()
 const route = useRoute()
 
 
-console.log(route.name) // createAdvice, createSoftware, createEvent
-
-const handleClickBackToPosts = () :void =>{
+const handleClickBackToPosts = (): void => {
     router.push('/create')
 }
 
 const showBackToPosts = computed(() => {
-    console.log(route.name)
     return route.name !== 'userPosts'
 
 })

@@ -1,6 +1,6 @@
-import {ExtraContentFilamentType} from "@/js/types/SharedTypes";
+import {ExtraContentFilamentType} from "@/js/types/PostTypes";
 
 export type AdviceAdditionalData = {
-    extraContentData: Array<ExtraContentFilamentType>,
-    adviceTypes: Array<string>
+    extra_content: Array<ExtraContentFilamentType>,
+    type: Array<string>
 }

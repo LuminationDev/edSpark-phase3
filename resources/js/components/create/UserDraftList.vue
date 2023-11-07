@@ -1,23 +1,45 @@
-<script setup>
+<script setup lang="ts">
 
-import {capitalize, ref} from "vue";
+import {capitalize} from "vue";
+import {useRouter} from "vue-router";
 
 import Loader from "@/js/components/spinner/Loader.vue";
 import {formatDateToDayTime} from "@/js/helpers/dateHelper";
-import {stripHtmlTags} from "@/js/helpers/slugifyHelper";
+import {BasePostType} from "@/js/types/PostTypes";
 
 const props = defineProps({
     draftArray: {
-        type: Array ,
+        type: Array as () => BasePostType,
         required: false,
-        default: []
+        default: () => {
+        }
     },
     draftLoading: {
         type: Boolean,
         required: true
     }
 })
-console.log(props.draftArray)
+const router = useRouter()
+
+const handleClickEditDraft = (postData: BasePostType) : Promise<void> => {
+    let targetForm = ''
+    const lowerCasePostType = postData.post_type.toLowerCase()
+    if (lowerCasePostType === 'advice') {
+        targetForm = 'createAdvice'
+    } else if (lowerCasePostType === 'event') {
+        targetForm = 'createEvent'
+    } else if (lowerCasePostType === 'software') {
+        targetForm = 'createSoftware'
+    }
+    if (targetForm) {
+        router.push({
+            name: targetForm,
+            state: {draftContent: JSON.stringify(postData)}
+        })
+    }
+    return;
+
+}
 </script>
 
 <template>
@@ -54,14 +76,15 @@ console.log(props.draftArray)
                     hover:bg-gray-50
                     hover:cursor-pointer
                     "
+                @click="() => handleClickEditDraft(draft)"
             >
                 <div class="col-span-6">
                     <div class="DraftTitle">
-                        {{ draft.content.title }}
+                        {{ draft.title }}
                     </div>
-                    <div class="DraftExcerpt line-clamp-1 text-gray-400">
-                        {{ stripHtmlTags(draft.content.excerpt) }}
-                    </div>
+                    <!--                    <div class="DraftExcerpt line-clamp-1 text-gray-400">-->
+                    <!--                        {{ stripHtmlTags(draft.excerpt) }}-->
+                    <!--                    </div>-->
                 </div>
                 <div class="col-span-3 createdAtColumn grid place-items-center">
                     {{ formatDateToDayTime(new Date(draft.created_at)) }}
