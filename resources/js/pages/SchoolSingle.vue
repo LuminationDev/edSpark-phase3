@@ -3,7 +3,7 @@
  * IMPORT DEPENDENCIES
  */
 import {storeToRefs} from "pinia";
-import {computed, onBeforeMount, Ref, ref} from 'vue'
+import {computed, onBeforeMount, Ref, ref, watch} from 'vue'
 import {useRoute} from 'vue-router';
 
 import edSparkLogo from '@/assets/images/edsparkLogo.png'
@@ -26,7 +26,7 @@ import {SchoolDataType} from "@/js/types/SchoolTypes";
 
 const route = useRoute();
 const imageURL = import.meta.env.VITE_SERVER_IMAGE_API
-
+console.log(route.params)
 const schoolContent: Ref<SchoolDataType | null> = ref(null)
 const colorTheme = ref('teal') // default color theme
 const showSchoolNotAvailable = ref(false)
@@ -35,6 +35,9 @@ const schoolNotAvailableMessage= ref('')
 // ref to hold images from editing
 const logoStorage = ref(null)
 const coverImageStorage = ref(null)
+const currentSchoolName = computed(()=>{
+    return route.params.name ? route.params.name : ''
+})
 
 const userStore = useUserStore()
 const {currentUser} = storeToRefs(userStore)
@@ -45,14 +48,17 @@ const isPreviewMode = computed(() => {
 })
 
 onBeforeMount(async () => {
-    const currentSchoolName = route.params.name
-    console.log(currentSchoolName)
     // will automatically create school if user is principal and school has not been created
     await schoolService.getUserSchoolByUserSiteId(currentUser.value.id, currentUser.value.site_id)
-    await fetchSchoolByNameAsync(currentSchoolName)
+    await fetchSchoolByNameAsync(currentSchoolName.value)
 
 })
 
+watch(currentSchoolName, async () =>{
+    console.log('watcher called ')
+    schoolContent.value = null
+    await fetchSchoolByNameAsync(currentSchoolName.value)
+})
 
 const fetchSchoolByNameAsync = async (schoolName): Promise<void> => {
     if (isPreviewMode.value) {
@@ -98,7 +104,7 @@ const fetchSchoolByNameAsync = async (schoolName): Promise<void> => {
 
 const handleSaveNewSchoolInfo = async (contentBlocks, techUsed) => {
     try {
-        const updatedSchoolContent = await schoolService.updateSchool(
+        await schoolService.updateSchool(
             schoolContent.value, contentBlocks, techUsed, logoStorage.value, coverImageStorage.value, colorTheme.value
         );
     } catch (err) {
@@ -298,12 +304,12 @@ const handleCloseModerationTab = () : void =>{
         v-else-if="!isSchoolContentPopulated && showSchoolNotAvailable"
         class="flex justify-center items-center flex-col h-36 mt-[10vh]"
     >
-        <EdsparkPageNotFound :error-message="schoolNotAvailableMessage ? schoolNotAvailableMessage : 'School not found or has no public profile yet. Please check again later'" />
+        <EdsparkPageNotFound :error-message="schoolNotAvailableMessage ? schoolNotAvailableMessage : 'School not available. Please check again later'" />
     </div>
 
     <div
         v-else
-        class="mt-20"
+        class="font-semibold mt-20 text-xl"
     >
         <Loader
             :loader-color="'#0072DA'"
