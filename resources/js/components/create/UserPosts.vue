@@ -43,9 +43,12 @@ const formatDataFromAutoSaveAndPostToDraft = (dataArray) : BasePostType[]  => {
                 id: item.id,
                 type: item.type,
                 post_type: item.post_type,
+                tags:item.tags,
                 created_at: item.created_at,
                 updated_at: item.modified_at,
-
+                start_date: item.start_date,
+                end_date: item.end_date,
+                location: item.location,
             })
         } else if (item['status'] === 'auto-saved') {
             const content = JSON.parse(item.content)
@@ -58,8 +61,12 @@ const formatDataFromAutoSaveAndPostToDraft = (dataArray) : BasePostType[]  => {
                 id: item.post_id,
                 type: content.type,
                 post_type: item.post_type,
+                tags: content.tags,
                 created_at: item.created_at,
                 updated_at: item.updated_at,
+                start_date: content.start_date,
+                end_date: content.end_date,
+                location: content.location,
             })
         }
     })

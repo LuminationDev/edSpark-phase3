@@ -211,11 +211,16 @@ export const formService = {
                     event_excerpt: state.excerpt,
                     event_content: state.content,
                     event_status: status,
-                    start_date: additionalData['startTime'],
-                    end_date: additionalData['endTime'],
-                    event_location: JSON.stringify(additionalData['eventLocation'])
+                    start_date: additionalData['start_date'],
+                    end_date: additionalData['end_date'],
+                    event_location: JSON.stringify(additionalData['location']),
+                    tags: state.tags,
+                    author_id: user_id,
+                    cover_image: state.cover_image,
                 };
-                return {...eventData, ...commonData, ...formattedAdditionalData};
+                formattedAdditionalData.eventtype_id = additionalData['type'];
+
+                return {...eventData, ...formattedAdditionalData};
             }
 
             return {...commonData, ...formattedAdditionalData};

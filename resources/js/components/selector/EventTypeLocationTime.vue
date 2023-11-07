@@ -3,7 +3,7 @@ import useVuelidate from "@vuelidate/core";
 import {required, requiredIf} from "@vuelidate/validators";
 import {watchOnce} from "@vueuse/core";
 import {debounce} from "lodash";
-import {computed, onBeforeMount, reactive, ref, watch} from "vue";
+import {computed, onBeforeMount, onMounted, reactive, ref, watch} from "vue";
 
 import DateTimeInput from "@/js/components/bases/DateTimeInput.vue";
 import TextInput from "@/js/components/bases/TextInput.vue";
@@ -37,6 +37,11 @@ const props = defineProps({
         required: false,
         default: "Select type"
     },
+    selectedType: {
+        type: [Number, String],
+        required: false,
+        default: ""
+    }
 })
 
 const emits = defineEmits<{
@@ -46,10 +51,14 @@ const emits = defineEmits<{
 const selectedEventType = ref(0)
 const availableTypes = ref<EventType[]>([])
 
-
 onBeforeMount(() => {
     formService.getTypes(API_ENDPOINTS.EVENT.FETCH_EVENT_TYPES).then(res => {
         availableTypes.value = res.data
+        availableTypes.value.forEach(item => {
+            if (Object.values(item).includes(props.selectedType)) {
+                selectedEventType.value = item['id']
+            }
+        })
     }).catch(err => {
         console.log(err)
     })
@@ -104,8 +113,6 @@ const emitEventTypeLocationTime = (): void => {
         start_date: state.start_date,
         end_date: state.end_date
     }
-    console.log('notice below me ')
-    console.log(data)
     emits('emitEventTypeLocationTime', data)
 }
 
@@ -122,7 +129,12 @@ const populateLocalStateFromBaseProps = () => {
     state.url = props.typeLocationTime.location?.url || ''
     state.address = props.typeLocationTime.location?.address || ''
 }
+onMounted(() =>{
+    populateLocalStateFromBaseProps()
+})
+
 watchOnce(props.typeLocationTime, () => {
+    console.log('watchone is called')
     populateLocalStateFromBaseProps()
 })
 </script>

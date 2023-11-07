@@ -5,6 +5,7 @@ import BaseForm from "@/js/components/bases/frontendform/BaseForm.vue";
 import ExtraContent from "@/js/components/bases/frontendform/ExtraContent.vue";
 import {templates} from "@/js/components/bases/frontendform/templates/formTemplates";
 import EventTypeLocationTime, {EventTypeLocationTimeType} from "@/js/components/selector/EventTypeLocationTime.vue";
+import {formService} from "@/js/service/formService";
 import {EventAdditionalData} from "@/js/types/EventTypes";
 
 
@@ -29,8 +30,23 @@ const handleReceiveTypesLocationTime = (data: EventTypeLocationTimeType): void =
     addtEventData.location = data.location
     addtEventData.start_date = data.start_date
     addtEventData.end_date = data.end_date
-    if(data.extra_content){
-        addtEventData.extra_content = data.extra_content
+
+}
+
+const handleReceiveAddtContent = (data) => {
+    addtEventData.type = data.type
+    addtEventData.location = data.location
+    addtEventData.start_date = data.start_date
+    addtEventData.end_date = data.end_date
+    if (data['extra_content']) {
+        if(data['extra_content'][0] && data['extra_content'][0]['data']){ // if data is in Filament Format, transform to Simple
+            addtEventData.extra_content =  formService.transformFilamentFormatToSimpleData(data['extra_content'])
+        } else{ //Data is already in simple format
+            addtEventData.extra_content = data['extra_content']
+        }
+    }
+    if (data['type']) {
+        addtEventData.type = data['type']
     }
 }
 </script>
@@ -40,10 +56,11 @@ const handleReceiveTypesLocationTime = (data: EventTypeLocationTimeType): void =
     <BaseForm
         item-type="event"
         :additional-data="addtEventData"
-        @base-emits-addt-content="handleReceiveTypesLocationTime"
+        @base-emits-addt-content="handleReceiveAddtContent"
     >
         <template #itemType>
             <EventTypeLocationTime
+                :selected-type="addtEventData.type"
                 :type-location-time="addtEventData"
                 label="Select Event type"
                 @emit-event-type-location-time="handleReceiveTypesLocationTime"

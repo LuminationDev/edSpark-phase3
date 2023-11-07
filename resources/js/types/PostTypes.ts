@@ -11,6 +11,7 @@ export type BasePostType = {
     updated_at: string;
     isLikedByUser?: boolean;
     isBookmarkedByUser?: boolean;
+    tags?: string[]
 };
 
 

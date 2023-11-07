@@ -122,6 +122,7 @@ class PostService
             'metadata' => $softwareMetadataToSend ?? null,
             'isLikedByUser' => $isLikedByUser,
             'isBookmarkedByUser' => $isBookmarkedByUser,
+            'tags' => $software->tags->pluck('name')
         ];
     }
 

@@ -28,6 +28,7 @@ const selectedTypes = ref([])
 onBeforeMount(() => {
     formService.getTypes(props.typeApiLink).then(res => {
         availableTypes.value = res.data
+        // iterate fetched types and check against the pre-filled items
         availableTypes.value.forEach(item => {
             props.selectedType.forEach(selectedItem => {
                 if (Object.values(item).includes(selectedItem)) {
