@@ -173,6 +173,9 @@ const debouncedDefaultBookmark = debounce(() => {
 const cardHoverToggle: Ref<boolean> = ref(false);
 
 
+// group-hover:brightness-50
+                    // group-hover:min-h-[15%]
+
 </script>
 
 <template>
@@ -181,26 +184,23 @@ const cardHoverToggle: Ref<boolean> = ref(false);
         <template v-if="!props.overrideContent">
             <div class="
                     rounded-t
-                    bg-center
                     bg-cover
-                    bg-slate-50
+                    bg-center
                     cardTopCoverImage
-                    group-hover:h-0
-                    group-hover:min-h-[15%]
-                    group-hover:bg-black/50
-                    min-h-[40%]
+                    filter
+                    group-hover:brightness-75
+                    min-h-[35%]
                     overflow-visible
-                    relative
-                    transition-all
-                    " :class="`bg-[url('${imageURL}/${coverImage}')]`"
-                :style="`background-image: url('${imageURL}/${coverImage}')`">
-
-
+                    relative   
+                    z-0                 
+                    "
+                :style="`background-image: url('${imageURL}/${coverImage}');`">
 
 
             </div>
-            <div class="cardContent" @click="clickCallback">
-                <div class="cardContentWrapper">
+            <div @click="clickCallback" class="cardContent m-0 p-0 group-hover:-mt-[120px] z-10">
+                    <div class="cardContentWrapper p-6 bg-white h-[210px] group-hover:h-[320px]">
+
                     <div class="flex flex-row relative gap-4 mb-3 items-center">
                         <div v-if="$slots.icon">
                             <slot name="icon" />
@@ -231,40 +231,47 @@ const cardHoverToggle: Ref<boolean> = ref(false);
         </template>
 
 
-        <div class="flex flex-row w-full items-end justify-between left-0 bg-white fadebg">
+        <div 
+            class="flex flex-row w-full items-end justify-between left-0 bg-white"
+        >
             <div v-if="$slots.typeTag">
                 <slot name="typeTag" />
             </div>
 
-            <div class="flex flex-row generic-card__footer h-18 mt-auto ml-auto pl-4 justify-items-end justify-end">
+            <div class="flex flex-row generic-card__footer transition-height  transition-all h-0 group-hover:h-14 mt-auto ml-auto pl-4 justify-items-end justify-end bg-white">
 
-                <div class="p-2 m-2 rounded bg-white hover:cursor-pointer like-share">
-                    <LikeFull v-if="currentUserLiked" :key="props.guid" v-tippy="'Unlike this item'"
-                        @click="debouncedDefaultLike" />
-                    <Like v-else :key="props.guid" v-tippy="'Like this item'" @click="debouncedDefaultLike" />
+                <div class="m-1 mb-2 rounded bg-white hover:cursor-pointer like-share" v-tippy="'Like'" @click="debouncedDefaultLike" >
+                    <LikeFull v-if="currentUserLiked" :key="props.guid"/>
+                    <Like v-else :key="props.guid"/>
                 </div>
-                <div class="p-2 m-2 rounded bg-white hover:cursor-pointer like-share">
-                    <BookmarkFull v-if="currentUserBookmarked" :key="props.guid" v-tippy="'Unbookmark this item'"
-                        @click="debouncedDefaultBookmark" />
-                    <BookMark v-else :key="props.guid" v-tippy="'Bookmark this item'" @click="debouncedDefaultBookmark" />
+                
+                <div class="m-1 mb-2 rounded bg-white hover:cursor-pointer like-share" @click="debouncedDefaultBookmark" v-tippy="'Bookmark'" >
+                    <BookmarkFull v-if="currentUserBookmarked" :key="props.guid"/>
+                    <BookMark v-else :key="props.guid" />
                 </div>
-                <div class="p-2 m-2 rounded  bg-white hover:cursor-pointer like-share"
-                    @mouseleave="handleResetTippyMessage">
-                    <ShareIcon v-tippy="shareTippyMessage" @click="handleClickShare" />
+
+                <div class="m-1 mb-2 mr-2 rounded bg-white hover:cursor-pointer like-share" @mouseenter="handleResetTippyMessage" v-tippy="shareTippyMessage" @click="handleClickShare">
+                    <ShareIcon />
                 </div>
+
             </div>
-
 
         </div>
     </div>
 </template>
 
 
-<style scoped>
+<style>
 /* body {
   background: url('https://images.unsplash.com/photo-1531315630201-bb15abeb1653?w=500') center no-repeat;
   background-size: cover;
 } */
+
+*, *:before, *:after {
+      -moz-box-sizing: border-box;
+      -webkit-box-sizing: border-box;
+      box-sizing: border-box;
+     }
 
 .fadebg {
     z-index: 1;
@@ -275,7 +282,6 @@ const cardHoverToggle: Ref<boolean> = ref(false);
 }
 
 
-
 .cardTitle {
     height: fit-content;
 }
@@ -284,12 +290,20 @@ const cardHoverToggle: Ref<boolean> = ref(false);
     opacity: 0;
     transition: 0.3s;
     z-index: 1;
+    border: 1px solid #95C1C5;
+    box-shadow: 0px 1px 2px 0px rgba(16, 24, 40, 0.05);
+    width: 44px;
+    height: 44px;
+    padding-top: 12px
 }
 
+
+
 .like-share svg {
-    width: 25px;
-    height: 25px;
+    width: 20px;
+    height: 20px;
     overflow: visible;
+    margin: auto;
 }
 
 .GenericCardContainer:hover .like-share {
@@ -297,6 +311,11 @@ const cardHoverToggle: Ref<boolean> = ref(false);
     opacity: 1;
     transition: 0.3s;
 }
+
+.like-share:hover path, .like-share:hover svg {
+    stroke-width: 2px;
+}
+
 
 .generic-card__footer {
     /* background-color: #FFF;

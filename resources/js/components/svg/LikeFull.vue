@@ -1,6 +1,6 @@
 <script setup> </script>
 <template>
- <svg class="like-icon" width="33" height="29" version="1.1" viewBox="0 0 970.59 852.94" xml:space="preserve" xmlns="http://www.w3.org/2000/svg">
+ <!-- <svg class="like-icon" width="33" height="29" version="1.1" viewBox="0 0 970.59 852.94" xml:space="preserve" xmlns="http://www.w3.org/2000/svg">
         <g transform="matrix(31.239 0 0 31.239 468.58 406.11)" fill="#fff">
             <g vector-effect="non-scaling-stroke">
                 <g id="XMLID_254_" transform="translate(4.7261 .53027)" stroke-width="0" fill="#397a80">
@@ -11,14 +11,22 @@
                 </g>
             </g>
         </g>
+    </svg> -->
+
+    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="#0A7982DD">
+        <path d="M5.83317 18.3334V9.16675M1.6665 10.8334V16.6667C1.6665 17.5872 2.4127 18.3334 3.33317 18.3334H14.5217C15.7556 
+        18.3334 16.805 17.4331 16.9926 16.2136L17.8901 10.3802C18.1231 8.86583 16.9514 7.50008 15.4191 7.50008H12.4998C12.0396 7.50008 
+        11.6665 7.12699 11.6665 6.66675V3.72161C11.6665 2.58674 10.7465 1.66675 9.61164 1.66675C9.34095 1.66675 9.09565 1.82616 8.98572 2.07352L6.05312 8.67186C5.91937 
+        8.9728 5.62093 9.16675 5.29161 9.16675H3.33317C2.4127 9.16675 1.6665 9.91294 1.6665 10.8334Z" stroke="#0A7982" stroke-width="1.66667" stroke-linecap="round" stroke-linejoin="round"/>
     </svg>
+
 
 
 </template>
 
 
-<style scoped>
+<!-- <style scoped>
     .like-icon:hover path {
         stroke-width: 3px;
     }
-</style>
+</style> -->
