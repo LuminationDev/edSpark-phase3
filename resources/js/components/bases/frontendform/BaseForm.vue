@@ -3,7 +3,7 @@ import useVuelidate from "@vuelidate/core";
 import {required} from "@vuelidate/validators";
 import {watchOnce} from "@vueuse/core";
 import {storeToRefs} from "pinia";
-import {capitalize, computed, onMounted, reactive, ref} from "vue";
+import {capitalize, computed, onBeforeMount, onMounted, reactive, ref} from "vue";
 import {useRouter} from "vue-router";
 import {toast} from "vue3-toastify";
 
@@ -124,7 +124,7 @@ const baseEmitsExtraContentFromDraftData = (data): void => {
     emits('baseEmitsAddtContent', addtContent)
 }
 
-onMounted(() => {
+onBeforeMount(() => {
     if (window.history.state.draftContent) {
         const draftData = JSON.parse(window.history.state.draftContent)
         populateLocalStateFromWindowStateDraftData(draftData)

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import axios from 'axios'
-import {computed, onMounted, ref} from "vue";
+import {computed, onMounted, ref, watch} from "vue";
 
 import Loader from './loader/index.vue';
 
@@ -51,8 +51,8 @@ const emits = defineEmits([
     'maxFilesize'
 ]);
 
-const handleEmitInit = (): void => {
-    emits('init')
+const handleEmitInit = (allMedia): void => {
+    emits('init', allMedia)
 }
 const handleEmitChange = (allItem): void => {
     emits('change', allItem)
@@ -72,12 +72,16 @@ const handleEmitMaxFileSize = (itemSize): void => {
 
 
 const init = () => {
+    console.log('init called here')
+    console.log(props.media)
     addedMedia.value = [...props.media]
     addedMedia.value.forEach((image, index) => {
         if (!addedMedia.value[index].url) {
             addedMedia.value[index].url = props.location + "/" + image.name
         }
     })
+    setTimeout(() => isLoading.value = false, 1000)
+    handleEmitInit(allMedia)
 }
 
 onMounted(() => {
@@ -228,7 +232,7 @@ const removeSavedMedia = (index) => {
                 <!--                    </button>-->
                 <!--                </div>-->
                 <div
-                    v-for="(image, index) in addedMedia"
+                    v-for="(image, index) in allMedia"
                     :key="index"
                     class="mu-image-container"
                 >
