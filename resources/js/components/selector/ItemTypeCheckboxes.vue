@@ -1,5 +1,5 @@
 <script setup>
-import {onBeforeMount,ref, watch} from 'vue'
+import {onBeforeMount, ref, watch} from 'vue'
 
 import {formService} from "@/js/service/formService";
 
@@ -28,9 +28,13 @@ const selectedTypes = ref([])
 onBeforeMount(() => {
     formService.getTypes(props.typeApiLink).then(res => {
         availableTypes.value = res.data
-        console.log(availableTypes.value.filter(item => props.selectedType.includes(item)))
-        console.log('inside then avail types')
-        selectedTypes.value = availableTypes.value.filter(item => props.selectedType.includes(item))
+        availableTypes.value.forEach(item => {
+            props.selectedType.forEach(selectedItem => {
+                if (Object.values(item).includes(selectedItem)) {
+                    selectedTypes.value.push(item['id'])
+                }
+            })
+        })
     }).catch(err => {
         console.log(err)
     })

@@ -27,7 +27,6 @@ const handleReceiveTypes = (typeArray): void => {
 }
 
 const handleReceiveAddtContent = (data) => {
-    console.log(data)
     if (data['extra_content']) {
         if(data['extra_content'][0] && data['extra_content'][0]['data']){ // if data is in Filament Format, transform to Simple
             addtAdviceData.extra_content =  formService.transformFilamentFormatToSimpleData(data['extra_content'])

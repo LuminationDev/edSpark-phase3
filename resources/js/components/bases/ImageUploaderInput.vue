@@ -2,7 +2,7 @@
 import {computed, ref} from "vue";
 
 import Uploader from "@/js/components/uploader/Uploader.vue";
-import {API_ENDPOINTS, IMAGE_ENDPOINTS} from "@/js/constants/API_ENDPOINTS";
+import {IMAGE_ENDPOINTS} from "@/js/constants/API_ENDPOINTS";
 import {imageURL} from "@/js/constants/serverUrl";
 import {guid} from "@/js/helpers/guidGenerator";
 

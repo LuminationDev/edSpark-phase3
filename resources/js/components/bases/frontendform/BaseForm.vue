@@ -92,24 +92,6 @@ const handleTrixInputExcerpt = (data) => {
     v$.value.excerpt.$model = data
 }
 
-
-// copy data from autosave to localState. will only run once under watchOnce
-// const populateLocalStateFromAutoSave = (): void => {
-//     state.title = autoSaveContent.value.content?.title || ""
-//     state.excerpt = autoSaveContent.value.content?.excerpt || ""
-//     state.content = autoSaveContent.value.content?.content || ""
-//     state.coverImage = autoSaveContent.value.content?.coverImage || ""
-//     state.authorName = autoSaveContent.value.content?.authorName || ""
-//     state.tags = autoSaveContent.value.content?.tags || []
-// }
-//
-// watchOnce(autoSaveContent, () => {
-//     if (currentAction.value === FormAction.CREATE) {
-//         populateLocalStateFromAutoSave()
-//         baseEmitsExtraContent()
-//     }
-// })
-
 const populateLocalStateFromWindowStateDraftData = (data): void => {
     state.title = data.title || ""
     state.excerpt = data.excerpt || ""
@@ -160,7 +142,7 @@ const handleClickSaveAsDraft = () => {
     formService.handleSubmitPostAsDraft(state, currentUser.value.id, props.additionalData, props.itemType).then((res) => {
         formStatusDisplay.value = FormStatus.SAVED
         router.push('/create').then(() => {
-            toast('Successfully submitted ' + props.itemType + ' as a Draft!')
+            toast('Successfully saved ' + props.itemType + ' as a draft!')
         })
     }).catch(e => {
         console.error('Error during saving')
