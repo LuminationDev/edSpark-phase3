@@ -1,10 +1,7 @@
 <script setup>
-import GenericCard from "@/js/components/card/GenericCard.vue";
-import lowerSlugify from "@/js/helpers/slugifyHelper";
 import {useRouter} from "vue-router";
-import {likeURL, bookmarkURL} from "@/js/constants/serverUrl";
-import {useUserStore} from "@/js/stores/useUserStore";
-import {storeToRefs} from "pinia";
+
+import GenericCard from "@/js/components/card/GenericCard.vue";
 import SchoolCardIconList from "@/js/components/schools/SchoolCardIconList.vue";
 
 const props = defineProps({
@@ -12,7 +9,7 @@ const props = defineProps({
         type: Object,
         required: true
     },
-    showIcon:{
+    showIcon: {
         type: Boolean,
         required: false,
         default: true
@@ -21,8 +18,6 @@ const props = defineProps({
 })
 
 
-const userStore = useUserStore()
-const {currentUser} = storeToRefs(userStore)
 const router = useRouter()
 
 const handleClickSchoolCard = () => {
@@ -53,36 +48,23 @@ const handleClickSchoolCard = () => {
             #icon
         >
             <div class="card-content_title min-h-[72px] px-2">
-                    <!-- CARD CONTENT HEADER -->
-                    <h5
-                        class="flex justify-start font-semibold text-2xl text-left"
-                    >
-                        {{ data.name }}
-                    </h5>
-                    <div class="school-card-body cardDisplayPreview line-clamp text-left">
-                        {{ data.content_blocks.blocks[1].data.text }}
-                    </div>
+                <!-- CARD CONTENT HEADER -->
+                <h5
+                    class="flex justify-start font-semibold text-2xl text-left"
+                >
+                    {{ data.name }}
+                </h5>
+                <div class="cardDisplayPreview line-clamp school-card-body text-left">
+                    {{ data.content_blocks.blocks[1].data.text }}
+                </div>
             </div>
-            
-           
         </template>
         <template
             v-if="data.name.length > 0"
             #typeTag
-        > <div
-                class="
-                    flex
-                    flex-wrap
-                    justify-center
-                    items-center
-                    py-4
-                    px-6
-                    w-full
-                    gap-2
-                    min-h-[130px]
-                    h-full
-                    fill-secondary-blue
-                    "
+        >
+            <div
+                class="fill-secondary-blue flex justify-center items-center flex-wrap gap-2 h-full min-h-[130px] px-6 py-4 w-full"
             >
                 <SchoolCardIconList
                     :tech-list="data.tech_used"
@@ -95,19 +77,19 @@ const handleClickSchoolCard = () => {
 
 <style scoped>
 .line-clamp {
-  /* width: 400px; */
-  margin:0;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: initial;
-  display: -webkit-box;
-  -webkit-line-clamp: 7;
-  -webkit-box-orient: vertical;
-  max-height:210px;
+    /* width: 400px; */
+    margin: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: initial;
+    display: -webkit-box;
+    -webkit-line-clamp: 7;
+    -webkit-box-orient: vertical;
+    max-height: 210px;
 }
 
 .line-clamp p {
-  display: contents;
+    display: contents;
 }
 
 

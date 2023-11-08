@@ -158,9 +158,9 @@ const handleErrorAvatarFallback = () => {
                     <UserProfileSubmenu :submenu-items="subMenuItems" />
                     <router-view />
                 </div>
-                <div class="UserInfoEditForm flex my-10">
-                    <UserInfoEdit />
-                </div>
+                <!--                <div class="UserInfoEditForm flex my-10">-->
+                <!--                    <UserInfoEdit />-->
+                <!--                </div>-->
                 <div class="UserBookmarkListContainer flex flex-col pt-12">
                     <UserBookmark :bookmark-data="userBookmarks.data" />
                 </div>
