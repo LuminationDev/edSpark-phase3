@@ -1,38 +1,35 @@
 <script setup>
-import {API_ENDPOINTS} from "@/js/constants/API_ENDPOINTS";
-import AdviceHero from '../components/advice/AdviceHero.vue'
 import useSWRV from "swrv";
-import useSwrvState from '@/js/helpers/useSwrvState';
+
+import AdviceCard from "@/js/components/advice/AdviceCard.vue";
 import EducatorHero from "@/js/components/advice/EducatorHero.vue";
 import PartnerHero from "@/js/components/advice/PartnerHero.vue";
-import AdviceCard from "@/js/components/advice/AdviceCard.vue";
-import { axiosFetcherParams} from "@/js/helpers/fetcher";
-import { swrvOptions } from "@/js/constants/swrvConstants";
+import CarouselGenerator from "@/js/components/card/CarouselGenerator.vue";
+import {API_ENDPOINTS} from "@/js/constants/API_ENDPOINTS";
+import {swrvOptions} from "@/js/constants/swrvConstants";
+import {axiosFetcher} from "@/js/helpers/fetcher";
+import {useUserStore} from "@/js/stores/useUserStore";
+
+import AdviceHero from '../components/advice/AdviceHero.vue'
 import CardLoading from '../components/card/CardLoading.vue';
 
-import CarouselGenerator from "@/js/components/card/CarouselGenerator.vue";
-
-import {useUserStore} from "@/js/stores/useUserStore";
 const userStore = useUserStore()
-/**
- * Get the DAG Advice articles
- * and states
- */
-const { data: dagAdvice, error: dagError, isValidating: dagValidating } = useSWRV(API_ENDPOINTS.ADVICE.FETCH_ADVICE_POSTS_BY_TYPE_DAG, axiosFetcherParams(userStore.getUserRequestParam), swrvOptions);
-const { state: dagState, STATES: DAGSTATES } = useSwrvState(dagAdvice, dagError, dagValidating);
-/**
- * Get the Partner adviceA
- * and states
- */
-const { data: partnerAdvice, error: partnerError, isValidating: partnerValidating } = useSWRV(API_ENDPOINTS.ADVICE.FETCH_ADVICE_POSTS_BY_TYPE_PARTNER, axiosFetcherParams(userStore.getUserRequestParam), swrvOptions);
-const { state: partnerState, STATES: PARTNERSTATES } = useSwrvState(partnerAdvice, partnerError, partnerValidating);
+const {
+    data: dagAdvice,
+    error: dagError,
+    isValidating: dagValidating
+} = useSWRV(API_ENDPOINTS.ADVICE.FETCH_ADVICE_POSTS_BY_TYPE_DAG, axiosFetcher, swrvOptions);
+const {
+    data: partnerAdvice,
+    error: partnerError,
+    isValidating: partnerValidating
+} = useSWRV(API_ENDPOINTS.ADVICE.FETCH_ADVICE_POSTS_BY_TYPE_PARTNER, axiosFetcher, swrvOptions);
 
-/**
- * Get General Advice articles (your work, classroom, learning)
- * and states
- */
-const { data: generalAdvice, error: generalError, isValidating: generalValidating } = useSWRV(API_ENDPOINTS.ADVICE.FETCH_ADVICE_POSTS_BY_TYPE_YOUR, axiosFetcherParams(userStore.getUserRequestParam), swrvOptions);
-const { state: generalState, STATES: GENERALSTATE } = useSwrvState(generalAdvice, generalError, generalValidating);
+const {
+    data: generalAdvice,
+    error: generalError,
+    isValidating: generalValidating
+} = useSWRV(API_ENDPOINTS.ADVICE.FETCH_ADVICE_POSTS_BY_TYPE_YOUR, axiosFetcher, swrvOptions);
 
 
 </script>
@@ -70,7 +67,7 @@ const { state: generalState, STATES: GENERALSTATE } = useSwrvState(generalAdvice
         </template>
     </div>
 
-    
+
     <PartnerHero />
     <CarouselGenerator
         :show-count="3"

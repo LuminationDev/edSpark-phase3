@@ -17,12 +17,38 @@ const edsparkColor = [
     '#D53F8C',
     '#ffa000',
     '#C7B2EA',
-    '#be123c' // mbRose - Better accessibility
+    '#be123c', // mbRose - Better accessibility
+    '#002858', //navy
+
+    // light theme colours for breadcrumbs
+    '#9F7AEA',
+    '#C6F6D5',
+    '#BEE3F8',
+    '#e57373',
+    '#BEE3F8',
+    '#DDD6FE',
+    '#B2F5EA',
+    '#FFF1CB',
+    '#FFDECF',
+    '#FECCD0',
+    '#DBCCF5',
+    '#6e99ce',
+
+    // theme colours for selector on editor page
+    '#DE4668',
+    '#FF8D78',
+    '#8866C5',
+
+    // dark theme colours for icons
+    '#185E69',
+    '#FFC836',
+    '#0072DA',
+    '#AEDCF3',
 ];
 
 const generateSafeList = (colors) => {
     const safeList = [];
-    ['text', 'bg', 'hover:text'].forEach((prefix) => {
+    ['text', 'bg', 'hover:text', 'fill', 'stroke'].forEach((prefix) => {
         colors.forEach((color) => {
             safeList.push(`${prefix}-[${color}]`);
         });
@@ -48,7 +74,7 @@ module.exports = {
         extend: {
             colors: {
                 main: {
-                    navy: 'rgba(0, 40, 88, 1)',
+                    navy: '#002858', //was rgba(0, 40, 88, 1)',
                     darkTeal: '#0A7982',
                     teal: '#097982', //was '#339999',
                     lightTeal: '#28D5CB',
@@ -60,12 +86,13 @@ module.exports = {
                     green: '#048246',
                     lightGreen: '#A5D1BD',
                     purple: '#8866C5',
-                    lightPurple: '#8866C5',
                     yellow: '#FFC836',
                     lightYellow: '#F5E1AD',
                     red: '#C73E5D', //was #de4668
                     lightRed: '#F7C1C5',
                     mbRose: '#be123c',
+                    mbIcons: 'green',
+                    coolGrey: '#D9DAE4',
 
                 },
                 custom: {
@@ -73,7 +100,7 @@ module.exports = {
                     genericLighterBlue: 'rgba(180, 216, 241, 0.19)', // Even lighter blue
                     genericScrollbarDark: '#0A0045', // only repeated coz i screwed something up with scrollbar customisation
                 },
-                event:{
+                event: {
                     virtual: '#BE123C',
                     hybrid: '#A855F7',
                     inPerson: '#3B82F6'
@@ -97,10 +124,10 @@ module.exports = {
                 huge: '81px',
                 extraHuge: '140px'
             },
-            screens:{
+            screens: {
                 'ml': '860px',
             },
-            scale:{
+            scale: {
                 '90': '0.9',
             }
         },

@@ -11,7 +11,8 @@ export enum FormStatus {
     SAVED = 'Saved',
     LOADED_AUTOSAVE = 'Autosave loaded',
     CHECKING_AUTOSAVE = "Checking for autosave",
-    FOUND_AUTOSAVE = "Autosave Found!"
+    FOUND_AUTOSAVE = "Autosave Found!",
+    NONE = ''
 }
 
 interface AutoSaveService {
@@ -36,12 +37,12 @@ type AutoSaveDataType = {
         coverImage: string;
         authorName: string;
         tags: string[];
-        extraContentData: any[]; // You may want to specify a more detailed type here if you know the structure
+        extraContentData: any[];
     } | string;
-    exp_date: string; // This can be further refined to Date if you're going to convert it to a Date object
+    exp_date: string;
     is_active: boolean;
-    created_at: string; // This can be further refined to Date if you're going to convert it to a Date object
-    updated_at: string; // This can be further refined to Date if you're going to convert it to a Date object
+    created_at: string;
+    updated_at: string;
 };
 
 export function useAutoSave(
@@ -52,7 +53,7 @@ export function useAutoSave(
     formId: string
 ) {
     const isSaving = ref(false);
-    const formStatusDisplay = ref<FormStatus>(FormStatus.CHECKING_AUTOSAVE);
+    const formStatusDisplay = ref<FormStatus>(FormStatus.NONE);
     // temporary ref to store before loading data into form
     // "private-ish" ref
     const autoSaveContentBuffer = ref<AutoSaveDataType>({})
@@ -63,7 +64,7 @@ export function useAutoSave(
         const data = {
             ...getState(),
         }
-        if (data['title']) {
+        if (data['title'] && formStatusDisplay.value !== FormStatus.SAVED && !isSaving.value) {
             try {
                 await autoSaveService.savePost(currentUser.value.id, itemType, data);
                 isSaving.value = false;
@@ -82,7 +83,7 @@ export function useAutoSave(
         }
     }
 
-    const loadAutoSaveData = () =>{
+    const loadAutoSaveData = () => {
         autoSaveContent.value = Object.assign({}, autoSaveContentBuffer.value)
     }
 
@@ -93,27 +94,33 @@ export function useAutoSave(
             formElement.addEventListener('input', handleActivity);
             formElement.addEventListener('click', handleActivity);
         }
-        autoSaveService.getAutoSave(currentUser.value.id, itemType).then(res => {
-            const formattedResponse: AutoSaveDataType = {...res.data.data}
-            if (formattedResponse['content']) {
-                if (typeof formattedResponse['content'] === 'string') {
-                    formattedResponse['content'] = JSON.parse(<string>formattedResponse['content'])
-                }
-            }
-            /** check if title and (excerpt or content) exists, if they do, autosave is valid and will be used
-             *  otherwise, ignore and go on making new posts
-             */
-            if (formattedResponse.content?.title && (formattedResponse.content?.excerpt || formattedResponse.content?.content)) {
-                autoSaveContentBuffer.value = formattedResponse
-                formStatusDisplay.value = FormStatus.FOUND_AUTOSAVE
-            } else {
-                formStatusDisplay.value = FormStatus.NEW
-            }
-
-
-        }).catch(err => {
-            formStatusDisplay.value = FormStatus.NEW
-        })
+        // autoSaveService.getAutoSave(currentUser.value.id, itemType).then(res => {
+        //     const responseArray : AutoSaveDataType[] = res.data.data
+        //     let formattedResponse;
+        //     if (responseArray.length >= 1 ) {
+        //         formattedResponse = responseArray[0]
+        //     } else{
+        //         formattedResponse = responseArray
+        //     }
+        //     if (formattedResponse['content']) {
+        //         if (typeof formattedResponse['content'] === 'string') {
+        //             formattedResponse['content'] = JSON.parse(<string>formattedResponse['content'])
+        //         }
+        //     }
+        //     /** check if title and (excerpt or content) exists, if they do, autosave is valid and will be used
+        //      *  otherwise, ignore and go on making new posts
+        //      */
+        //     if (formattedResponse.content?.title && (formattedResponse.content?.excerpt || formattedResponse.content?.content)) {
+        //         autoSaveContentBuffer.value = formattedResponse
+        //         formStatusDisplay.value = FormStatus.FOUND_AUTOSAVE
+        //     } else {
+        //         formStatusDisplay.value = FormStatus.NEW
+        //     }
+        //
+        //
+        // }).catch(err => {
+        //     formStatusDisplay.value = FormStatus.NEW
+        // })
     });
 
     onUnmounted(() => {

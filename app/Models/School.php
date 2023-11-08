@@ -35,6 +35,7 @@ class School extends Model
         'status',
         'pedagogical_approaches',
         'tech_landscape',
+        'isFeatured',
         'created_at',
         'updated_at',
     ];

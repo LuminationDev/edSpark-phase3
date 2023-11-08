@@ -1,11 +1,12 @@
 <script setup>
+import {storeToRefs} from "pinia";
+import {useRouter} from "vue-router";
+
 import GenericCard from "@/js/components/card/GenericCard.vue";
 import SoftwareCardIcon from "@/js/components/software/SoftwareCardIcon.vue";
-import lowerSlugify from "@/js/helpers/slugifyHelper";
-import {useRouter} from "vue-router";
-import {likeURL, bookmarkURL} from "@/js/constants/serverUrl";
+import {bookmarkURL,likeURL} from "@/js/constants/serverUrl";
+import {lowerSlugify} from "@/js/helpers/slugifyHelper";
 import {useUserStore} from "@/js/stores/useUserStore";
-import {storeToRefs} from "pinia";
 
 const props = defineProps({
     data: {
@@ -59,7 +60,7 @@ const handleClickCard = () => {
             #icon
         >
             <SoftwareCardIcon
-                class="absolute -top-6 -right-6 icon"
+                class="-top-6 -right-6 icon"
                 :software-icon-name="data.type[0]"
             />
         </template>

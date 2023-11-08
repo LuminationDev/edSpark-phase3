@@ -3,9 +3,10 @@
  * IMPORT DEPENDENCIES
  */
 import {storeToRefs} from "pinia";
-import {computed, onBeforeMount, Ref, ref} from 'vue'
+import {computed, onBeforeMount, Ref, ref, watch} from 'vue'
 import {useRoute} from 'vue-router';
 
+import edSparkLogo from '@/assets/images/edsparkLogo.png'
 import BaseBreadcrumb from "@/js/components/bases/BaseBreadcrumb.vue";
 import BaseHero from "@/js/components/bases/BaseHero.vue";
 import BaseSingle from "@/js/components/bases/BaseSingle.vue";
@@ -25,15 +26,17 @@ import {SchoolDataType} from "@/js/types/SchoolTypes";
 
 const route = useRoute();
 const imageURL = import.meta.env.VITE_SERVER_IMAGE_API
-
 const schoolContent: Ref<SchoolDataType | null> = ref(null)
 const colorTheme = ref('teal') // default color theme
 const showSchoolNotAvailable = ref(false)
-const schoolNotAvailableMessage= ref('')
+const schoolNotAvailableMessage = ref('')
 
 // ref to hold images from editing
 const logoStorage = ref(null)
 const coverImageStorage = ref(null)
+const currentSchoolName = computed(() => {
+    return route.params.name ? route.params.name : ''
+})
 
 const userStore = useUserStore()
 const {currentUser} = storeToRefs(userStore)
@@ -44,20 +47,23 @@ const isPreviewMode = computed(() => {
 })
 
 onBeforeMount(async () => {
-    const currentSchoolName = route.params.name
-    console.log(currentSchoolName)
     // will automatically create school if user is principal and school has not been created
     await schoolService.getUserSchoolByUserSiteId(currentUser.value.id, currentUser.value.site_id)
-    await fetchSchoolByNameAsync(currentSchoolName)
+    await fetchSchoolByNameAsync(currentSchoolName.value)
 
 })
 
+watch(currentSchoolName, async () => {
+    console.log('watcher called ')
+    schoolContent.value = null
+    await fetchSchoolByNameAsync(currentSchoolName.value)
+})
 
 const fetchSchoolByNameAsync = async (schoolName): Promise<void> => {
     if (isPreviewMode.value) {
         try {
             const pendingData = await schoolService.fetchPendingSchoolByName(schoolName, null, currentUser.value.id, null)
-            if(pendingData){
+            if (pendingData) {
                 schoolContent.value = pendingData
                 if (schoolContent.value['metadata']) {
                     const colorThemeMeta = schoolContent.value['metadata'].filter(meta => meta['schoolmeta_key'] === 'school_color_theme');
@@ -65,7 +71,7 @@ const fetchSchoolByNameAsync = async (schoolName): Promise<void> => {
                         colorTheme.value = colorThemeMeta[0]['schoolmeta_value'];
                     }
                 }
-            } else{
+            } else {
                 showSchoolNotAvailable.value = true
                 schoolNotAvailableMessage.value = "No pending content available"
                 schoolContent.value = null;
@@ -97,7 +103,7 @@ const fetchSchoolByNameAsync = async (schoolName): Promise<void> => {
 
 const handleSaveNewSchoolInfo = async (contentBlocks, techUsed) => {
     try {
-        const updatedSchoolContent = await schoolService.updateSchool(
+        await schoolService.updateSchool(
             schoolContent.value, contentBlocks, techUsed, logoStorage.value, coverImageStorage.value, colorTheme.value
         );
     } catch (err) {
@@ -106,7 +112,7 @@ const handleSaveNewSchoolInfo = async (contentBlocks, techUsed) => {
 }
 
 const handleChangeColorTheme = (newColor) => {
-    console.log('received command to swap color to -> ' + 'newColor')
+    console.log('received command to swap color ' + colorTheme.value + ' to -> ' + 'newColor: ' + newColor)
     colorTheme.value = newColor
 }
 
@@ -118,17 +124,17 @@ const handleChangeColorTheme = (newColor) => {
  */
 const handleReceivePhotoFromContent = (type, file) => {
     switch (type) {
-    case 'logo':
-        console.log('received logo')
-        logoStorage.value = file
-        break;
-    case 'coverImage':
-        console.log('received cover Image')
-        coverImageStorage.value = file
-        break;
-    default:
-        console.log('received unknown type image')
-        break;
+        case 'logo':
+            console.log('received logo')
+            logoStorage.value = file
+            break;
+        case 'coverImage':
+            console.log('received cover Image')
+            coverImageStorage.value = file
+            break;
+        default:
+            console.log('received unknown type image')
+            break;
     }
 }
 
@@ -167,7 +173,12 @@ const isSchoolContentPopulated = computed(() => {
     return !!schoolContent.value && !isObjectEmpty(schoolContent.value)
 })
 
-const handleCloseModerationTab = () : void =>{
+// replace logo with edspark logo as a fallback image.
+const handleErrorImage = (e) => {
+    e.target.src = edSparkLogo
+}
+
+const handleCloseModerationTab = (): void => {
     window.close();
 }
 </script>
@@ -194,8 +205,10 @@ const handleCloseModerationTab = () : void =>{
                             <BaseBreadcrumb
                                 :child-page="schoolContent.name"
                                 parent-page="schools"
+                                parent-page-link="browse/school"
                                 :color-theme="colorTheme"
-                                class="mt-[100px]"
+                                @send-color-to-school-single="handleChangeColorTheme"
+                                class="mt-[120px] pt-[10px]"
                             />
                         </template>
                         <template #titleText>
@@ -206,22 +219,27 @@ const handleCloseModerationTab = () : void =>{
                                             {{ schoolContent.name }}
                                         </h1>
                                         <div
-                                            class="flex
+                                            class="
+                                                flex
                                                 flex-row
                                                 mb-4
                                                 place-items-center
                                                 schoolTechHoverableRow
-                                                
-                                                
+
+
                                                 gap-4"
                                         >
-                                            <SchoolTechHoverableRow :tech-used-list="schoolContent.tech_used" />
+                                            <SchoolTechHoverableRow
+                                                :tech-used-list="schoolContent.tech_used"
+                                                :color-theme="colorTheme"
+                                            />
                                         </div>
                                         <div class="flex justify-center items-center h-40 text-md w-40">
                                             <img
                                                 :src="`${imageURL}/${schoolContent.logo}`"
                                                 :alt="`school logo`"
                                                 class="max-h-full object-contain w-full"
+                                                @error="handleErrorImage"
                                             >
                                         </div>
                                     </div>
@@ -229,7 +247,7 @@ const handleCloseModerationTab = () : void =>{
                             </div>
                         </template>
                         <template #submenu>
-                            <div class="SchoolSubmenu cursor-pointer flex flex-row gap-2 z-40 md:!gap-4">
+                            <div class="SchoolSubmenu cursor-pointer flex flex-row gap-2 mb-[-1px] z-40 md:!gap-4">
                                 <BaseSingleSubmenu
                                     :emit-to-base="emitFromSubmenu"
                                     :menu-array="schoolSubmenu"
@@ -250,7 +268,9 @@ const handleCloseModerationTab = () : void =>{
                             >
                                 PREVIEW CONTENT (MODERATION)
                                 <div class="font-medium text-base text-center">
-                                    Created at: {{ schoolContent['updated_at'] ? formatDateToDayTime(schoolContent['updated_at']) : '' }}
+                                    Created at: {{
+                                        schoolContent['updated_at'] ? formatDateToDayTime(schoolContent['updated_at']) : ''
+                                    }}
                                     by <span class="font-semibold"> {{ schoolContent?.owner?.owner_name || "" }} </span>
                                 </div>
                             </div>
@@ -287,12 +307,13 @@ const handleCloseModerationTab = () : void =>{
         v-else-if="!isSchoolContentPopulated && showSchoolNotAvailable"
         class="flex justify-center items-center flex-col h-36 mt-[10vh]"
     >
-        <EdsparkPageNotFound :error-message="schoolNotAvailableMessage ? schoolNotAvailableMessage : 'School not found or has no public profile yet. Please check again later'" />
+        <EdsparkPageNotFound
+            :error-message="schoolNotAvailableMessage ? schoolNotAvailableMessage : 'School not available. Please check again later'"/>
     </div>
 
     <div
         v-else
-        class="mt-20"
+        class="font-semibold mt-20 text-xl"
     >
         <Loader
             :loader-color="'#0072DA'"
@@ -300,3 +321,5 @@ const handleCloseModerationTab = () : void =>{
         />
     </div>
 </template>
+
+

@@ -9,14 +9,11 @@ const router = useRouter()
 const route = useRoute()
 
 
-console.log(route.name) // createAdvice, createSoftware, createEvent
-
-const handleClickBackToPosts = () :void =>{
+const handleClickBackToPosts = (): void => {
     router.push('/create')
 }
 
 const showBackToPosts = computed(() => {
-    console.log(route.name)
     return route.name !== 'userPosts'
 
 })

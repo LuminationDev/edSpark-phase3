@@ -16,6 +16,7 @@ use App\Helpers\Metahelper;
 use stdClass;
 use function PHPUnit\Framework\isEmpty;
 use function PHPUnit\Framework\isNull;
+
 class SchoolController extends Controller
 {
     private function formatSchoolMetadata($schoolMetadata)
@@ -37,15 +38,9 @@ class SchoolController extends Controller
     private function schoolModelToJson($school, $schoolMetadata = NULL, $request = NULL)
     {
         // LIKE AND BOOKMARK
-        $isLikedByUser = false;
-        $isBookmarkedByUser = false;
-
-        if (isset($request) && $request->has('usid')) {
-            $userId = $request->input('usid');
-            $isLikedByUser = $school->likes()->where('user_id', $userId)->exists();
-            $isBookmarkedByUser = $school->bookmarks()->where('user_id', $userId)->exists();
-
-        }
+        $userId = Auth::user()->id;
+        $isLikedByUser = $school->likes()->where('user_id', $userId)->exists();
+        $isBookmarkedByUser = $school->bookmarks()->where('user_id', $userId)->exists();
 
         // LOCATION AND META
         $site = Site::where('site_id', $school->site_id)->first();
@@ -84,7 +79,8 @@ class SchoolController extends Controller
             'location' => $siteLocation,
             'isLikedByUser' => $isLikedByUser,
             'isBookmarkedByUser' => $isBookmarkedByUser,
-            'updated_at'=> $school->updated_at ?: "",
+            'isFeatured' => (bool)$school->isFeatured,
+            'updated_at' => $school->updated_at ?: "",
 
         ];
     }
@@ -132,6 +128,7 @@ class SchoolController extends Controller
             ->where('status', '!=', 'Archived')
             ->update(['status' => 'Archived']);
     }
+
     private function replacePreviousPendingSchoolEntry($schoolId)
     {
         School::where('school_id', $schoolId)
@@ -157,6 +154,7 @@ class SchoolController extends Controller
             'updated_at' => Carbon::now()
         ]);
     }
+
     /*  fetchUser's school based on their site id
         if user is principal, can create the school based on the name and default templates
     */
@@ -177,7 +175,7 @@ class SchoolController extends Controller
             return response()->json(['message' => 'Invalid user', 'status' => 403], 403);
         }
 
-        $site = Site::where('site_id',$siteId) ->first();
+        $site = Site::where('site_id', $siteId)->first();
 
 
         if (!$site) {
@@ -193,7 +191,7 @@ class SchoolController extends Controller
             }
             $schoolMetadata = Schoolmeta::where('school_id', $school->school_id)->get();
             $schoolMetadataToSend = $this->formatSchoolMetadata($schoolMetadata);
-            $result = $this->schoolModelToJson($school,$schoolMetadataToSend, $request);
+            $result = $this->schoolModelToJson($school, $schoolMetadataToSend, $request);
 
             return response()->json($result);
         }
@@ -202,33 +200,32 @@ class SchoolController extends Controller
         try {
             $latestSchool = School::orderBy('school_id', 'desc')->first();
             $nextSchoolId = ($latestSchool ? $latestSchool->school_id + 1 : 1);
-        $school = School::firstOrCreate(
-            ['site_id' => $siteId, 'status' => "Published"],
-            [
-                'owner_id' => $userId,
-                'school_id' => $nextSchoolId,
-                'name' => $site->site_name,
-                'content_blocks' => null,
-                'logo' => '',
-                'cover_image' => '',
-                'tech_used' => '',
-                'pedagogical_approaches' => '',
-                'tech_landscape' => '',
-                'status' => 'Published',
-                'created_at' => Carbon::now(),
-                'updated_at' => Carbon::now()
-            ]
-        );
+            $school = School::firstOrCreate(
+                ['site_id' => $siteId, 'status' => "Published"],
+                [
+                    'owner_id' => $userId,
+                    'school_id' => $nextSchoolId,
+                    'name' => $site->site_name,
+                    'content_blocks' => null,
+                    'logo' => '',
+                    'cover_image' => '',
+                    'tech_used' => '',
+                    'pedagogical_approaches' => '',
+                    'tech_landscape' => '',
+                    'status' => 'Published',
+                    'created_at' => Carbon::now(),
+                    'updated_at' => Carbon::now()
+                ]
+            );
 //        $schoolMetadata = Schoolmeta::where('school_id', $school->school_id)->get();
 //        $schoolMetadataToSend = $this->formatSchoolMetadata($schoolMetadata);
 //        $result = $this->schoolModelToJson($school,$schoolMetadataToSend, $request);
-        $result = $this->schoolModelToJson($school);
-        return response()->json($result);
-        } catch (\Illuminate\Database\QueryException $e){
+            $result = $this->schoolModelToJson($school);
+            return response()->json($result);
+        } catch (\Illuminate\Database\QueryException $e) {
             dd($e);
         }
     }
-
 
 
     public function createSchool(Request $request)
@@ -395,6 +392,7 @@ class SchoolController extends Controller
         return response()->json($data);
 
     }
+
     public function fetchAllStaffFromSite($site_id): \Illuminate\Http\JsonResponse
     {
         // Check if the user is authenticated
@@ -450,7 +448,7 @@ class SchoolController extends Controller
 
         $user_record = Auth::user();
 
-        if (!$user_record || $user_record->site_id !== $site_id || ($user_record->role->role_name !== 'SCHLDR' &&  $user_record->role->role_name !== 'Superadmin')) {
+        if (!$user_record || $user_record->site_id !== $site_id || ($user_record->role->role_name !== 'SCHLDR' && $user_record->role->role_name !== 'Superadmin')) {
             return ResponseService::error('Failed to nominate user. User is not authorized.');
         }
 
@@ -558,7 +556,6 @@ class SchoolController extends Controller
 
         return ResponseService::success('Nominated users retrieved successfully.', $final_result);
     }
-
 
 
     public function checkUserCanEdit(Request $request): \Illuminate\Http\JsonResponse

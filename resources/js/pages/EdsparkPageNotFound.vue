@@ -33,7 +33,7 @@ const handleButtonClick = (): void => {
 
 
 <template>
-    <div class="flex justify-center items-center flex-col font-semibold mt-20 text-black text-center text-md">
+    <div class="flex justify-center items-center flex-col font-semibold mt-20 text-black text-center text-xl">
         {{ props.errorMessage }}
         <GenericButton
             :callback="handleButtonClick"

@@ -9,6 +9,8 @@ use App\Models\Bookmark;
 use App\Models\Like;
 use App\Models\Software;
 use App\Models\Softwaremeta;
+use App\Services\PostService;
+use App\Services\ResponseService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use App\Models\Advice;
@@ -18,37 +20,11 @@ use Illuminate\Support\Facades\Validator;
 
 class AdviceController extends Controller
 {
-    private function adviceModelToJson($advice, $request): array
+    protected PostService $postService;
+
+    public function __construct(PostService $postService)
     {
-        $isLikedByUser = false;
-        $isBookmarkedByUser = false;
-
-        if (isset($request) && $request->has('usid')) {
-            $userId = $request->input('usid');
-            $isLikedByUser = $advice->likes()->where('user_id', $userId)->exists();
-            $isBookmarkedByUser = $advice->bookmarks()->where('user_id', $userId)->exists();
-
-        }
-        return [
-            'id' => $advice->id,
-            'title' => $advice->post_title,
-            'content' => $advice->post_content,
-            'excerpt' => $advice->post_excerpt,
-            'author' => [
-                'author_id' => $advice->author->id,
-                'author_name' => $advice->author->full_name
-            ],
-            'cover_image' => ($advice->cover_image) ? $advice->cover_image : NULL,
-            'template' => ($advice->template) ? $advice->template : NULL,
-            'extra_content' => ($advice->extra_content) ? $advice->extra_content : NULL,
-            'created_at' => $advice->post_date,
-            'modified_at' => $advice->post_modified,
-            'status' => $advice->post_status,
-            'type' => ($advice->advicetypes) ? $advice->advicetypes->pluck('advice_type_name') : NULL,
-            'isLikedByUser' => $isLikedByUser,
-            'isBookmarkedByUser' => $isBookmarkedByUser,
-            'tags' => $advice->tags->pluck('name')
-        ];
+        $this->postService = $postService;
     }
 
     public function createAdvicePost(Request $request)
@@ -61,7 +37,7 @@ class AdviceController extends Controller
             'author_id' => 'required|integer|exists:users,id',
             'advicetype_id' => 'required|array',
             'advicetype_id.*' => 'integer|exists:advice_types,id',
-            'cover_image' => 'sometimes|array',
+            'cover_image' => 'sometimes|string',
             'extra_content' => 'sometimes|array'
         ]);
 
@@ -76,8 +52,10 @@ class AdviceController extends Controller
         if ($request->has('advicetype_id')) {
             $advice->advicetypes()->sync($request->input('advicetype_id'));
         }
-
-        return response()->json(['message' => 'Advice created successfully!', 'advice' => $advice], 201);
+        if ($request->has('tags')) {
+            $advice->attachTags($request->input('tags'));
+        }
+        return ResponseService::success('Advice created successfully!');
     }
 
     public function fetchAdvicePosts(Request $request): \Illuminate\Http\JsonResponse
@@ -87,7 +65,7 @@ class AdviceController extends Controller
         $data = [];
 
         foreach ($advices as $advice) {
-            $result = $this->adviceModelToJson($advice, $request);
+            $result = $this->postService->adviceModelToJson($advice, $request);
             $data[] = $result;
         }
 
@@ -108,7 +86,30 @@ class AdviceController extends Controller
 
             foreach ($advices as $advice) {
 
-                $result = $this->adviceModelToJson($advice, $request);
+                $result = $this->postService->adviceModelToJson($advice, $request);
+                $data[] = $result;
+            }
+
+            return response()->json($data);
+        } catch (\Exception $e) {
+            return response()->json(['error' => "An error occurred: " . $e->getMessage()], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    public function fetchCurrentUserDraftAdvicePosts(Request $request): JsonResponse
+    {
+        try {
+            $userId = Auth::user()->id;
+            $advices = Advice::where('post_status', 'Draft')
+                ->where('author_id', $userId)  // Filter by partner (author) ID
+                ->orderBy('created_at', 'DESC')
+                ->get();
+
+            $data = [];
+
+            foreach ($advices as $advice) {
+
+                $result = $this->postService->adviceModelToJson($advice, $request);
                 $data[] = $result;
             }
 
@@ -134,7 +135,7 @@ class AdviceController extends Controller
         }
 
         // Prepare the data to be returned in the response
-        $data = $this->adviceModelToJson($advice, $request);
+        $data = $this->postService->adviceModelToJson($advice, $request);
 
         // Return the data in the response
         return response()->json($data);
@@ -152,7 +153,7 @@ class AdviceController extends Controller
                 $adviceArticles = Advice::where('advicetype_id', $adviceTypes->id)->get();
 
                 foreach ($adviceArticles as $advice) {
-                    $result = $this->adviceModelToJson($advice, $request);
+                    $result = $this->postService->adviceModelToJson($advice, $request);
                     $data[] = $result;
 
                 }
@@ -163,7 +164,7 @@ class AdviceController extends Controller
             $adviceArticles = Advice::where('advicetype_id', $adviceTypes->id)->get();
 
             foreach ($adviceArticles as $advice) {
-                $result = $this->adviceModelToJson($advice, $request);
+                $result = $this->postService->adviceModelToJson($advice, $request);
                 $data[] = $result;
 
             }
@@ -210,7 +211,7 @@ class AdviceController extends Controller
             // Convert each related advice to JSON format
             $data = [];
             foreach ($relatedAdvices as $advice) {
-                $result = $this->adviceModelToJson($advice, $request);
+                $result = $this->postService->adviceModelToJson($advice, $request);
                 $data[] = $result;
             }
 

@@ -3,11 +3,17 @@ import {computed } from 'vue'
 
 import SchoolTechIconGenerator from "@/js/components/global/SchoolTechIconGenerator.vue";
 import LaptopGear from "@/js/components/svg/LaptopGear.vue";
+import { schoolColorKeys, schoolColorTheme } from "@/js/constants/schoolColorTheme";
 
 const props = defineProps({
     techList:{
         type: Object,
         required: true
+    },
+    colorTheme: {
+        type: String,
+        required: true,
+        default: 'teal',
     }
 })
 
@@ -15,8 +21,17 @@ const deptTech = computed( () =>{
     return props.techList.filter(el => el.name !== 'Lumination' && el.name !== 'Makers Empire')
 })
 
-const partnerTech  =computed(() => {
+const partnerTech = computed(() => {
     return props.techList.filter(el => el.name === 'Lumination' || el.name === 'Makers Empire')
+})
+
+const customFill = computed(() => {
+    if (schoolColorKeys.includes(props.colorTheme)) {
+        return `fill-[${schoolColorTheme[props.colorTheme]['med']}] stroke-[${schoolColorTheme[props.colorTheme]['med']}]`;
+    } else {
+        return `fill-[${schoolColorTheme['teal']['med']}] stroke-[${schoolColorTheme['teal']['med']}]`;
+
+    }
 })
 
 </script>
@@ -38,10 +53,12 @@ const partnerTech  =computed(() => {
             <div
                 v-for="(tech,index) in deptTech"
                 :key="index"
+                :class="customFill"
                 class="basis-1/4 flex mb-4 pb-4 w-full"
             >
                 <SchoolTechIconGenerator
                     :tech-name="tech.name"
+                    :color-theme="colorTheme"
                     class="m-2 min-w-[60px] pr-4"
                 />
                 <p class="basis-3/4 font-light text-base">
@@ -56,10 +73,12 @@ const partnerTech  =computed(() => {
             <div
                 v-for="(tech,index) in partnerTech"
                 :key="index"
+                :class="customFill"
                 class="basis-1/4 flex mb-4 pb-4 w-full"
             >
                 <SchoolTechIconGenerator
                     :tech-name="tech.name"
+                    :color-theme="colorTheme"
                     class="m-2 min-w-[60px] pr-4"
                 />
                 <p class="basis-3/4 font-light text-base">

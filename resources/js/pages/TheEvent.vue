@@ -1,23 +1,24 @@
 <script setup>
+import useSWRV from "swrv";
+import { computed } from "vue";
+import {useRouter} from "vue-router";
+
+import CardLoading from "@/js/components/card/CardLoading.vue";
+import Loader from "@/js/components/spinner/Loader.vue";
 import {API_ENDPOINTS} from "@/js/constants/API_ENDPOINTS";
 import {swrvOptions} from "@/js/constants/swrvConstants";
+import {guid} from "@/js/helpers/guidGenerator";
 import {useUserStore} from "@/js/stores/useUserStore";
-import EventsHero from '../components/events/EventsHero.vue';
+
 import EventsCalendar from '../components/events/EventsCalendar.vue';
+import EventCard from "../components/events/EventsCard.vue";
+import EventsHero from '../components/events/EventsHero.vue';
 import EventsView from '../components/events/EventsView.vue';
 import SectionHeader from '../components/global/SectionHeader.vue';
-import { computed } from "vue";
-import useSWRV from "swrv";
-
-import EventCard from "../components/events/EventsCard.vue";
-import {axiosFetcherParams} from "../helpers/fetcher";
-import {useRouter} from "vue-router";
-import Loader from "@/js/components/spinner/Loader.vue";
-import {guid} from "@/js/helpers/guidGenerator";
-import CardLoading from "@/js/components/card/CardLoading.vue";
+import {axiosFetcher} from "../helpers/fetcher";
 
 const router = useRouter()
-const { data: allEvents, error: eventError } = useSWRV(API_ENDPOINTS.EVENT.FETCH_EVENT_POSTS, axiosFetcherParams(useUserStore().getUserRequestParam), swrvOptions)
+const { data: allEvents, error: eventError } = useSWRV(API_ENDPOINTS.EVENT.FETCH_EVENT_POSTS, axiosFetcher(useUserStore().getUserRequestParam), swrvOptions)
 
 </script>
 

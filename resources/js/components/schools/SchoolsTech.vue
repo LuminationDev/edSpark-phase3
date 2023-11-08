@@ -21,26 +21,11 @@ const props = defineProps({
 </script>
 
 <template>
-    <div class="absolute left-0 pt-[18px] px-[24px] schoolTechContent">
-        <h5 class="font-bold group-hover/tech:inline-block hidden text-[16px]">
+    <div class="schoolTechDescInner absolute left-0 px-[24px]" style="pointer-events: none;">
+        <h5 class="font-bold group-hover/tech:inline-block hidden text-[20px] pb-2 text-blue-900">
             {{ techHover.category }}
         </h5>
-        <div
-            class="schoolTechDescription schools-tech_description"
-        >
-            <p><strong>{{ techHover.name }}</strong> {{ techHover.description }}</p>
-        </div>
-    </div>
-    <div
-        v-if="props.showFirstTech && props.techIndex === 0"
-        class="absolute left-0 firstTimerContainer flex flex-col pt-[18px] px-[24px]"
-    >
-        <h5 class="font-bold text-[16px]">
-            {{ techHover.category }}
-        </h5>
-        <div
-            class="schoolTechDescription"
-        >
+        <div class="schoolTechDescription schools-tech_description">
             <p><strong>{{ techHover.name }}</strong> {{ techHover.description }}</p>
         </div>
     </div>
@@ -58,6 +43,8 @@ const props = defineProps({
     -webkit-line-clamp: 6;
     -webkit-box-orient: vertical;
 }
+
+
 .schoolTechDescription{
     font-size: 16px;
 

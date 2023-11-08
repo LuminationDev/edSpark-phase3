@@ -1,8 +1,10 @@
 <script setup>
 
+import purify from "dompurify";
+
+import AdviceSingleCuratedContent from "@/js/components/advice/AdviceSingleCuratedContent.vue";
 import BaseBreadcrumb from "@/js/components/bases/BaseBreadcrumb.vue";
 import BaseHero from "@/js/components/bases/BaseHero.vue";
-import AdviceSingleCuratedContent from "@/js/components/advice/AdviceSingleCuratedContent.vue";
 import BaseSingle from "@/js/components/bases/BaseSingle.vue";
 import ExtraResourceTemplateDisplay from "@/js/components/renderer/ExtraResourceTemplateDisplay.vue";
 
@@ -69,17 +71,18 @@ const timeFormatter = (originalFormat) => {
         <template #content="{ contentFromBase }">
             <div class="adviceSingleContent flex flex-col mt-14 overflow-hidden p-4 px-8 w-full xl:!flex-row">
                 <!--    Content of the Advice    -->
-                <div class="flex flex-col flex-wrap px-2 py-4 w-full xl:!w-2/3">
+                <div class="flex flex-col flex-wrap mr-10 px-2 py-4 w-full xl:!w-2/3">
                     <div class="flex font-bold text-2xl uppercase">
                         Getting started
                     </div>
                     <div
                         class="flex content-paragraph flex-col max-w-full overflow-hidden text-lg"
-                        v-html="contentFromBase['content']"
                     />
+
+                    <div v-html="purify.sanitize(contentFromBase['content'])" />
                     <div
                         v-if="contentFromBase['extra_content'] && contentFromBase['extra_content'].length"
-                        class="extraResourcesContainer w-full"
+                        class="extraResourcesContainer mt-4 w-full"
                     >
                         <ExtraResourceTemplateDisplay :content="contentFromBase['extra_content']" />
                     </div>

@@ -1,33 +1,30 @@
 <script setup>
 
+import {throttle} from "lodash";
 import {storeToRefs} from "pinia";
 import {onBeforeMount, onBeforeUnmount} from "vue";
 import {onMounted, ref} from "vue";
-import {useRoute, useRouter} from 'vue-router';
+import {useRouter} from 'vue-router';
 
+import Footer from '@/js/components/global/Footer/Footer.vue';
+import Navbar from '@/js/components/global/navbar/Navbar.vue';
 import NavbarMobileMenu from "@/js/components/global/navbar/NavbarMobileMenu.vue";
 import GlobalSearch from "@/js/components/search/GlobalSearch.vue";
 import {appURL} from "@/js/constants/serverUrl";
-import {isObjectEmpty} from "@/js/helpers/objectHelpers";
 import {useAuthStore} from "@/js/stores/useAuthStore";
 import {useUserStore} from "@/js/stores/useUserStore";
 import {useWindowStore} from "@/js/stores/useWindowStore";
 
-import Footer from './components/global/Footer/Footer.vue';
-import NavBar from './components/global/navbar/NavBar.vue';
-
 
 const router = useRouter();
-const route = useRoute();
 
 const userStore = useUserStore()
-const {currentUser} = storeToRefs(userStore)
+const {currentUser, userEntryLink} = storeToRefs(userStore)
 
 const windowStore = useWindowStore()
-const {isMobile, windowWidth,showGlobalSearch} = storeToRefs(windowStore)
+const {isMobile, windowWidth, showGlobalSearch} = storeToRefs(windowStore)
 
 const authStore = useAuthStore()
-const {isAuthenticated} = storeToRefs(authStore)
 
 
 const setWindowWidth = () => {
@@ -35,86 +32,103 @@ const setWindowWidth = () => {
     windowStore.updateIsMobile()
     windowStore.updateIsTablet()
 }
+const setEventListeners = () => {
+    setWindowWidth();
+    window.addEventListener('resize', setWindowWidth);
+    window.addEventListener('scroll', scrollHandler);
+};
 
+const removeEventListeners = () => {
+    window.removeEventListener('resize', setWindowWidth);
+    window.removeEventListener('scroll', scrollHandler);
+};
 
-onBeforeMount(async () => {
-    // if currentUser / local storage is not empty check auth status
-    if (!isObjectEmpty(currentUser.value) && !window.location.origin.includes('test.edspark.sa.edu.au')) {
-        await authStore.checkAuthenticationStatus()
-        /**
-         * here means there is data inside localStorage but not logged in
-         * auto redirect to login and should automatically login if okta still recognize
-         */
-        if (!isAuthenticated.value) {
-            window.location = '/login'
-        } else {
-            if (route.name === 'home') {
-                axios.get(`${appURL}/sanctum/csrf-cookie`).then(response => {
-                    router.push('/dashboard')
-                })
-            }
-        }
+/**
+ * Handles the user's authentication process.
+ *
+ * 1. Checks if the current URL matches a specified origin.
+ * 2. Checks the authentication status of the user.
+ * 3. If the user isn't authenticated, they are redirected to the login page.
+ * 4. If authenticated, the function ensures CSRF cookies are set,
+ *    fetches the current user details and navigates to the appropriate route
+ *    (either the user's entry link or the dashboard).
+ *
+ * @async
+ * @function
+ * @throws Will throw an error if network requests within the function fail.
+ */
+const handleAuth = async () => {
+    // // Check if the URL contains the desired origin
+    // if (window.location.origin.includes('test.edspark.sa.edu.au')) return;
+
+    await authStore.checkAuthenticationStatus(); // populate isAuth with promise
+
+    if (!authStore.isAuthenticated) {
+        window.location = '/login';
     } else {
-        /**
-         * Here means local storage is empty, potentially new user. expect user to click login with okta
-         */
+        await axios.get(`${appURL}/sanctum/csrf-cookie`);
+        await userStore.fetchCurrentUserAndLoadIntoStore();
+        if (userStore.userEntryLink === 'finished') {
+        }
+        // only trigger the redirect if entry link exists and not /
+        else if (userStore.userEntryLink && userStore.userEntryLink !== '/') {
+            let urlObj;
+            try {
+                urlObj = new URL(userStore.userEntryLink).pathname
+            } catch (_) {
+                urlObj = userStore.userEntryLink + ""
+            } finally {
+                userEntryLink.value = "finished" // this will stop redirection
+                await router.push(urlObj)
+            }
+        } else {
+            userEntryLink.value = "finished"
+            await router.push('/dashboard')
+        }
     }
 
-    setWindowWidth()
-    window.addEventListener('resize', setWindowWidth)
-})
+
+};
+
+onBeforeMount(async () => {
+    await handleAuth()
+    setEventListeners();
+});
 
 
 // const userStore = useUserStore();
 const navScrolled = ref(false);
+let scrollHandler;
 
 onMounted(() => {
-    if (!Object.keys(userStore.getUser).length <= 0) {
+    if (Object.keys(userStore.getUser).length > 0) {
         currentUser.value = userStore.getUser;
     }
-    
-    // could probably make this more computationally efficient
-    // but it seems to be more reliable than it was previously
-    window.document.onscroll = () => {
-        
-        // this is only present on mobile
-        let navbar = document.getElementById('navbarMobileBurger');
+    // This logic remains as it's specific to onMounted
+    scrollHandler = throttle(() => {
+        const navbar = document.getElementById('navbarMobileBurger') || document.getElementById('navbarFullsize');
 
-        // if it's not there, get the default navbar
-        if(navbar == null){
-            navbar = document.getElementById('navbarFullsize');
-        }
-
-        // avoiding errors, but shouldn't typically happen
-        if(navbar != null) {
-            // have we scrolled?
+        if (navbar) {
             navScrolled.value = window.scrollY > navbar.offsetTop;
-
-            // adjust classes accordingly
-            if (navScrolled.value){
-                navbar.classList.add('navbarScrolled');
-            } else {
-                navbar.classList.remove('navbarScrolled');
-            }
+            navbar.classList.toggle('navbarScrolled', navScrolled.value);
         }
-        //console.log("Scroll: " + navbar.id +", "+navScrolled.value);
-    }
+    }, 100);
+
 });
 
 onBeforeUnmount(() => {
-    window.removeEventListener('resize', setWindowWidth);
+    removeEventListeners()
 })
 
 </script>
 
 <template>
     <div class="relative w-full z-50">
-        <NavBar            
+        <Navbar
             :key="router.currentRoute.value"
         />
         <NavbarMobileMenu
             v-if="isMobile"
-            class="absolute top-2 left-2 lg:hidden"
         />
     </div>
     <template v-if="showGlobalSearch">

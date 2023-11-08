@@ -1,8 +1,9 @@
 import {useSessionStorage, useStorage} from "@vueuse/core";
-import axios from "axios";
+import axios, {AxiosResponse} from "axios";
 import {defineStore} from "pinia";
 import {Ref} from 'vue'
 
+import {API_ENDPOINTS} from "@/js/constants/API_ENDPOINTS";
 import {serverURL} from "@/js/constants/serverUrl";
 import {SchoolDataType} from "@/js/types/SchoolTypes";
 
@@ -42,6 +43,7 @@ export const useUserStore = defineStore('user', {
     state: (): UserState => <UserState>({
         currentUser: useStorage('currentUser', {}, localStorage, {mergeDefaults: true}),
         userAvatar: useSessionStorage('userAvatar', ''),
+        userEntryLink: useStorage('edspark-entry-link', '', sessionStorage),
         userSchool: {},
         notifications: [],
         userRequestParam: {}
@@ -63,7 +65,6 @@ export const useUserStore = defineStore('user', {
             return this.currentUser?.site?.site_name || "";
         },
         getUserRequestParam(): { params: { usid: number } } {
-            console.log(this.currentUser);
             return {
                 params: {
                     usid: this.currentUser.id
@@ -96,29 +97,8 @@ export const useUserStore = defineStore('user', {
     },
 
     actions: {
-        async updateUserName(newName) {
-            await axios({
-                method: 'POST',
-                url: `${serverURL}/updateUser`,
-                data: {
-                    id: this.currentUser.id,
-                    data: {
-                        updateField: 'full_name',
-                        updateValue: newName
-                    }
-                }
-            }).then(response => {
-                console.log(response);
-
-                this.currentUser.full_name = newName;
-            }).catch(error => {
-                console.error(error);
-            });
-        },
-
-        async fetchCurrentUserAndLoadIntoStore(userId) {
-            console.log(userId);
-            return axios.get(`${serverURL}/fetchUser/${userId}`).then(response => {
+        async fetchCurrentUserAndLoadIntoStore(): Promise<void> {
+            return axios.get<CurrentUser>(API_ENDPOINTS.USER.FETCH_CURRENT_USER).then((response: AxiosResponse<CurrentUser>) => {
                 this.currentUser = response.data;
             }).catch(error => {
                 console.log('There was a problem retrieving that user');
@@ -147,7 +127,6 @@ export const useUserStore = defineStore('user', {
         async fetchAllRoles() {
             return new Promise(async (resolve, reject) => {
                 await axios.get(`${serverURL}/fetchAllRoles`).then(response => {
-                    // console.log(response);
                     const allowedValues = [
                         'SCHLDR',
                         'PRESCLDR',
@@ -179,138 +158,9 @@ export const useUserStore = defineStore('user', {
             })
         },
 
-        getUserSiteById(siteId) {
-            siteId = siteId.replace(/^0+/, '');
-            console.log(siteId);
-            return new Promise(async resolve => {
-                await axios.get(`${serverURL}/fetchSiteByCode/${siteId}`).then(response => {
-                    console.log(response.data);
-                    resolve(response.data);
-                }).catch(error => {
-                    console.log('error', error);
-                })
-            })
-        },
-
-        async createUser(user) {
-            console.log(user);
-            /**
-             * Set the users initials - save as display_name
-             */
-            const str = user.name;
-            const matches = str.match(/\b(\w)/g);
-            const initials = matches.join('');
-
-            const userData = new FormData();
-            // let metaData = new FormData();
-            // let formAvatar = new FormData();
-
-            userData.append('userAvatar', user.avatar ? user.avatar : user.avatarUrl);
-            /**
-             * Populate formData Object
-             */
-            userData.append('full_name', user.name);
-            userData.append('email', user.email);
-            userData.append('display_name', JSON.stringify(initials));
-            userData.append('site_id', JSON.stringify(user.site.id)); // Use the id to store as foreign key
-            userData.append('role_id', JSON.stringify(user.role.id)); // Use the id to store as foreign key
-            const userMetadata = {
-                yearLevels: user.yearLevels,
-                interests: user.interests,
-                subjects: user.subjects,
-                biography: user.biography
-            }
-            /**
-             * Populate metaData Object
-             */
-            userData.append('metadata', JSON.stringify(userMetadata));
-
-            return axios({
-                method: 'POST',
-                url: `${serverURL}/createUser`,
-                data: userData,
-                headers: {"Content-Type": "multipart/form-data"}
-            }).then(async response => {
-                console.log(response);
-                // TODO: Maybe populate user data from here instead?
-                // in opposed to sending another request. make create user return user data if success
-                await this.fetchCurrentUserAndLoadIntoStore(response.data.uid);
-                this.userAvatar = response.data.avatarUrl;
-            }).catch(error => {
-                if (error.status === 403) {
-                    console.log('Forbidden. User Email has been registered')
-                }
-                console.log(error.message)
-
-            })
-        },
-        async updateFirstTimeVisit(user) {
-            console.log("UPDATE USER INFO", user);
-            /**
-             * Set the users initials - save as display_name
-             */
-            const str = user.name;
-            const matches = str.match(/\b(\w)/g);
-            const initials = matches.join('');
-
-            const userData = new FormData();
-            userData.append('userAvatar', user.avatar ? user.avatar : user.avatarUrl);
-            /**
-             * Populate formData Object
-             */
-            userData.append('full_name', user.name);
-            userData.append('email', user.email);
-            userData.append('display_name', JSON.stringify(initials));
-            userData.append('site_id', JSON.stringify(user.site.id)); // Use the id to store as foreign key
-            userData.append('role_id', JSON.stringify(user.role.id)); // Use the id to store as foreign key
-            const userMetadata = {
-                yearLevels: user.yearLevels,
-                interests: user.interests,
-                subjects: user.subjects,
-                biography: user.biography
-
-            }
-            /**
-             * Populate metaData Object
-             */
-            userData.append('metadata', JSON.stringify(userMetadata));
-
-            return axios({
-                method: 'POST',
-                url: `${serverURL}/updateFirstTimeVisitUser`,
-                data: userData,
-                headers: {"Content-Type": "multipart/form-data"}
-            }).then(async response => {
-                console.log(response);
-                // TODO: Maybe populate user data from here instead?
-                // in opposed to sending another request. make create user return user data if success
-                await this.fetchCurrentUserAndLoadIntoStore(response.data.uid);
-                this.userAvatar = response.data.avatarUrl;
-            }).catch(error => {
-                if (error.status === 403) {
-                    console.log('Forbidden. User Email has been registered')
-                }
-                console.log(error.message)
-
-            })
-        },
-
-        async updateSingleUserItem(change) {
-            const data = {
-                data: {
-                    updateField: 'full_name',
-                    updateValue: 'new name'
-                },
-                metaData: {
-                    updateField: 'yearLevels',
-                    updateValue: ['1', '3']
-                }
-            }
-        },
-
-        async fetchAllNotifications(userId) {
+        async fetchAllNotifications() {
             return new Promise(async (resolve, reject) => {
-                await axios.get(`${serverURL}/fetchAllNotifications/${userId}`)
+                await axios.get(API_ENDPOINTS.USER.GET_USER_NOTIFICATION)
                     .then(response => {
                         // console.log(response.data)
                         this.notifications = response.data;

@@ -1,7 +1,15 @@
 import slugify from 'slugify';
 
-const lowerSlugify = (text) => {
-    return slugify(text, { lower: true });
+export const lowerSlugify = (text) => {
+    return slugify(text, {lower: true});
 }
 
-export default lowerSlugify;
+
+export const stripHtmlTags = (str) => {
+    if ((str === null) || (str === ''))
+        return '';
+    else
+        str = str.toString();
+
+    return str.replace(/(<([^>]+)>)/ig, '');
+}

@@ -1,35 +1,11 @@
 import axios, {AxiosResponse} from 'axios'
 
-import {keyToFieldTypes,templates} from "@/js/components/bases/form/templates/formTemplates";
+import {keyToFieldTypes, templates} from "@/js/components/bases/frontendform/templates/formTemplates";
 import {API_ENDPOINTS} from "@/js/constants/API_ENDPOINTS";
+import Advice from "@/js/models/_advice";
+import Software from "@/js/models/_software";
+import {SimpleDataItem, TemplateType, TransformedData} from "@/js/types/PostTypes";
 
-
-export type TemplateType = 'Extraresource' | 'Numbereditems' | 'Dateitems';
-
-interface ContentItem {
-    icon?: string;
-    content: string;
-    heading: string;
-}
-
-interface TransformedData {
-    data: {
-        template: string;
-        extra_content: {
-            [key: string]: {
-                item: ContentItem[];
-                title?: string;
-            };
-        };
-    };
-    type: string;
-}
-
-interface SimpleDataItem {
-    template: TemplateType;
-    title?: string;
-    content: ContentItem[];
-}
 
 const templateFields = {
     TEXT_FIELD: "",
@@ -49,7 +25,6 @@ export const formService = {
         return axios.get(url)
     },
     transformSimpleDataToFilamentFormat: (simpleData: SimpleDataItem[]): TransformedData[] => {
-        console.error(simpleData)
         return simpleData.map(item => {
             const matchedTemplate = templates.find(t => t.type === item.template || t.filamentType === item.template);
 
@@ -66,9 +41,10 @@ export const formService = {
                         [itemDirectory]: {
                             "item": item.content.map(contentItem => {
                                 return {
-                                    "icon": contentItem?.icon || null,
-                                    "content": contentItem?.content || null,
-                                    "heading": contentItem?.heading || null
+                                    ...(contentItem?.icon ? {"icon": contentItem.icon} : {}),
+                                    ...(contentItem?.start_date ? {"start_date": contentItem.start_date} : {}),
+                                    ...(contentItem?.content ? {"content": contentItem.content} : {}),
+                                    ...(contentItem?.heading ? {"heading": contentItem.heading} : {})
                                 };
                             }),
                             "title": item.title
@@ -78,6 +54,27 @@ export const formService = {
                 "type": "templates"
             };
         }).filter(Boolean); // This filter will remove any undefined items, which might be introduced if a matching template isn't found.
+    },
+    transformFilamentFormatToSimpleData: (filamentData: TransformedData[]): SimpleDataItem[] => {
+        return filamentData.map((item): SimpleDataItem => {
+            const template = item.data.template;
+            const itemDirectory = Object.keys(item.data.extra_content)[0];
+            const content = item.data.extra_content[itemDirectory].item.map((contentItem) => {
+                return {
+                    ...(contentItem?.icon ? {"icon": contentItem.icon} : {}),
+                    ...(contentItem?.start_date ? {"start_date": contentItem.start_date} : {}),
+                    ...(contentItem?.content ? {"content": contentItem.content} : {}),
+                    ...(contentItem?.heading ? {"heading": contentItem.heading} : {})
+                };
+            }).filter(Boolean); // Filter out properties with undefined values
+
+            const title = item.data.extra_content[itemDirectory].title;
+            return {
+                template,
+                content,
+                title,
+            };
+        });
     },
     generateEmptyTemplate: (type: TemplateType): object => {
         const template = templates.find(t => t.type === type);
@@ -125,57 +122,127 @@ export const formService = {
             return keyToFieldTypes['other']
         }
     },
-    handleSaveForm: (state: any, user_id: number, additionalData: any, itemType: string): Promise<void | AxiosResponse<any>> => {
-        let createURL =''
-        let combinedData
-        const data = {
+    // handleSaveForm: (state: any, user_id: number, additionalData: any, itemType: string): Promise<void | AxiosResponse<any>> => {
+    //     let createURL = ''
+    //     let combinedData
+    //     const data = {
+    //         post_title: state.title,
+    //         post_excerpt: state.excerpt,
+    //         post_content: state.content,
+    //         post_status: 'Pending',
+    //         author_id: user_id,
+    //         cover_image: state.cover_image,
+    //         template: ''
+    //     }
+    //     if (itemType === 'software') {
+    //         const formattedAddtionalData = {
+    //             extra_content: formService.transformSimpleDataToFilamentFormat(additionalData['extra_content']),
+    //             softwaretype_id: additionalData['type']
+    //         }
+    //         combinedData = {...data, ...formattedAddtionalData}
+    //         createURL = API_ENDPOINTS.SOFTWARE.CREATE_SOFTWARE_POST
+    //     } else if (itemType === 'advice') {
+    //         const formattedAddtionalData = {
+    //             extra_content: formService.transformSimpleDataToFilamentFormat(additionalData['extra_content']),
+    //             advicetype_id: additionalData['type']
+    //         }
+    //         combinedData = {...data, ...formattedAddtionalData}
+    //         createURL = API_ENDPOINTS.ADVICE.CREATE_ADVICE_POST
+    //
+    //     } else if (itemType === 'event') {
+    //         const eventData = {
+    //             event_title: state.title,
+    //             event_excerpt: state.excerpt,
+    //             event_content: state.content,
+    //             event_status: 'Pending',
+    //             author_id: user_id,
+    //             cover_image: state.cover_image,
+    //             template: ''
+    //         }
+    //         const formattedAddtionalData = {
+    //             extra_content: formService.transformSimpleDataToFilamentFormat(additionalData['extra_content']),
+    //             eventtype_id: additionalData['type'],
+    //             start_date: additionalData['startTime'],
+    //             end_date: additionalData['endTime'],
+    //             event_location: JSON.stringify(additionalData['eventLocation'])
+    //         }
+    //         combinedData = {...eventData, ...formattedAddtionalData}
+    //         createURL = API_ENDPOINTS.EVENT.CREATE_EVENT_POST
+    //     }
+    //
+    //     return axios.post(createURL, combinedData).then(res => {
+    //         console.log(res)
+    //     })
+    //
+    // }
+    getCreateUrl: (itemType: string) => {
+        if (itemType === 'software') {
+            return API_ENDPOINTS.SOFTWARE.CREATE_SOFTWARE_POST
+        } else if (itemType === 'advice') {
+            return API_ENDPOINTS.ADVICE.CREATE_ADVICE_POST
+        } else if (itemType === 'event') {
+            return API_ENDPOINTS.EVENT.CREATE_EVENT_POST
+        }
+    },
+    formatData: (state, user_id, additionalData, itemType, status): Advice | Event | Software => {
+        const commonData = {
             post_title: state.title,
             post_excerpt: state.excerpt,
             post_content: state.content,
-            post_status: 'Pending',
+            post_status: status,
             author_id: user_id,
             cover_image: state.cover_image,
-            template: ''
-        }
-        if (itemType === 'software') {
-            const formattedAddtionalData = {
-                extra_content: formService.transformSimpleDataToFilamentFormat(additionalData['extraContentData']),
-                softwaretype_id: additionalData['softwareTypes']
-            }
-            combinedData = {...data, ...formattedAddtionalData}
-            createURL = API_ENDPOINTS.SOFTWARE.CREATE_SOFTWARE_POST
-        } else if (itemType === 'advice') {
-            const formattedAddtionalData = {
-                extra_content: formService.transformSimpleDataToFilamentFormat(additionalData['extraContentData']),
-                advicetype_id: additionalData['adviceTypes']
-            }
-            combinedData = {...data, ...formattedAddtionalData}
-            createURL = API_ENDPOINTS.ADVICE.CREATE_ADVICE_POST
+            tags: state.tags,
+            template: '',
+        };
 
-        } else if(itemType === 'event'){
-            const eventData = {
-                event_title: state.title,
-                event_excerpt: state.excerpt,
-                event_content: state.content,
-                event_status: 'Pending',
-                author_id: user_id,
-                cover_image: state.cover_image,
-                template: ''
-            }
-            const formattedAddtionalData = {
-                extra_content: formService.transformSimpleDataToFilamentFormat(additionalData['extraContentData']),
-                eventtype_id: additionalData['eventType'],
-                start_date : additionalData['startTime'],
-                end_date : additionalData['endTime'],
-                event_location: JSON.stringify(additionalData['eventLocation'])
-            }
-            combinedData = {...eventData, ...formattedAddtionalData}
-            createURL = API_ENDPOINTS.EVENT.CREATE_EVENT_POST
-        }
+        if (itemType === 'software' || itemType === 'advice' || itemType === 'event') {
+            const formattedAdditionalData = {
+                extra_content: formService.transformSimpleDataToFilamentFormat(additionalData['extra_content'])
+            };
 
+            if (itemType === 'software') {
+                formattedAdditionalData.softwaretype_id = additionalData['type'];
+            } else if (itemType === 'advice') {
+                formattedAdditionalData.advicetype_id = additionalData['type'];
+            } else if (itemType === 'event') {
+                const eventData = {
+                    event_title: state.title,
+                    event_excerpt: state.excerpt,
+                    event_content: state.content,
+                    event_status: status,
+                    start_date: additionalData['start_date'],
+                    end_date: additionalData['end_date'],
+                    event_location: JSON.stringify(additionalData['location']),
+                    tags: state.tags,
+                    author_id: user_id,
+                    cover_image: state.cover_image,
+                };
+                formattedAdditionalData.eventtype_id = additionalData['type'];
+
+                return {...eventData, ...formattedAdditionalData};
+            }
+
+            return {...commonData, ...formattedAdditionalData};
+        }
+    },
+    sendRequest: (createURL, combinedData): Promise<void | AxiosResponse<any>> => {
         return axios.post(createURL, combinedData).then(res => {
-            console.log(res)
-        })
+            console.log(res);
+        });
+    },
 
+
+    handleSubmitPostForModeration: (state, user_id, additionalData, itemType): Promise<AxiosResponse<any>> => {
+        const status = 'Pending'
+        const combinedData = formService.formatData(state, user_id, additionalData, itemType, status)
+        const createUrl = formService.getCreateUrl(itemType)
+        return formService.sendRequest(createUrl, combinedData)
+    },
+    handleSubmitPostAsDraft: (state, user_id, additionalData, itemType): Promise<AxiosResponse<any>> => {
+        const status = 'Draft'
+        const combinedData = formService.formatData(state, user_id, additionalData, itemType, status)
+        const createUrl = formService.getCreateUrl(itemType)
+        return formService.sendRequest(createUrl, combinedData)
     }
 }

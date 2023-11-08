@@ -1,18 +1,20 @@
 +
 <script setup>
-import BaseBreadcrumb from "@/js/components/bases/BaseBreadcrumb.vue";
-import BaseSingle from "@/js/components/bases/BaseSingle.vue";
-import BaseHero from "@/js/components/bases/BaseHero.vue";
-import BaseSingleProfilePicture from "@/js/components/bases/BaseSingleProfilePicture.vue";
-import ExtraResourceTemplateDisplay from "@/js/components/renderer/ExtraResourceTemplateDisplay.vue";
-import SoftwareSingleCuratedContent from "@/js/components/software/softwareSingle/SoftwareSingleCuratedContent.vue";
-import BaseSingleSubmenu from "@/js/components/bases/BaseSingleSubmenu.vue";
+import purify from "dompurify";
 import {ref} from 'vue'
-import {findNestedKeyValue} from "@/js/helpers/objectHelpers";
-import {formatDateToDayTime} from "@/js/helpers/dateHelper";
-import {imageURL} from "@/js/constants/serverUrl";
 import {useRouter} from "vue-router";
+
+import BaseBreadcrumb from "@/js/components/bases/BaseBreadcrumb.vue";
+import BaseHero from "@/js/components/bases/BaseHero.vue";
+import BaseSingle from "@/js/components/bases/BaseSingle.vue";
+import BaseSingleProfilePicture from "@/js/components/bases/BaseSingleProfilePicture.vue";
+import BaseSingleSubmenu from "@/js/components/bases/BaseSingleSubmenu.vue";
+import ExtraResourceTemplateDisplay from "@/js/components/renderer/ExtraResourceTemplateDisplay.vue";
 import SoftwareIconGenerator from "@/js/components/software/SoftwareIconGenerator.vue";
+import SoftwareSingleCuratedContent from "@/js/components/software/softwareSingle/SoftwareSingleCuratedContent.vue";
+import {imageURL} from "@/js/constants/serverUrl";
+import {formatDateToDayTime} from "@/js/helpers/dateHelper";
+import {findNestedKeyValue} from "@/js/helpers/objectHelpers";
 /**
  *  type softwareSingleContent = {
  *      post_id: number
@@ -59,7 +61,7 @@ const handleClickViewProfile = (author_id, author_type) => {
 /**
  * End of submenu specific code  plus @emit-active-tab-to-specific-page in BaseSingle
  * */
-const colorTheme = ref('deepPurple')
+const colorTheme = ref('softwarePurple')
 
 </script>
 
@@ -136,7 +138,7 @@ const colorTheme = ref('deepPurple')
 
                 <!--  Selectable sub menu    -->
                 <template #submenu>
-                    <div class="cursor-pointer flex flex-row gap-4 softwareSubmenu z-40">
+                    <div class="cursor-pointer flex flex-row gap-4 softwareSubmenu mb-[-1px] z-40">
                         <BaseSingleSubmenu
                             :emit-to-base="emitFromSubmenu"
                             :menu-array="softwareSubmenu"
@@ -153,17 +155,17 @@ const colorTheme = ref('deepPurple')
                 <template
                     v-if="activeSubmenu === 'detail'"
                 >
-                    <div class="flex flex-col flex-wrap px-2 py-4 w-full xl:!w-2/3">
+                    <div class="flex flex-col flex-wrap px-2 py-4 mr-10 w-full xl:!w-2/3">
                         <div class="flex font-bold py-4 text-2xl uppercase">
                             Getting started
                         </div>
                         <div
                             class="flex content-paragraph flex-col max-w-full overflow-hidden text-lg"
-                            v-html="contentFromBase['content']"
+                            v-html="purify.sanitize(contentFromBase['content'])"
                         />
                         <div
                             v-if="contentFromBase['extra_content'] && contentFromBase['extra_content'].length"
-                            class="extraResourcesContainer"
+                            class="extraResourcesContainer mt-4 w-full"
                         >
                             <ExtraResourceTemplateDisplay :content="contentFromBase['extra_content']" />
                         </div>

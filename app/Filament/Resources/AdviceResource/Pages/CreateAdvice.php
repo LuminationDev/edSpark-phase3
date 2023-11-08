@@ -29,7 +29,6 @@ class CreateAdvice extends CreateRecord
     protected function handleRecordCreation(array $data): Model
     {
         $record =  parent::handleRecordCreation($data);
-
         //handle tags
         if (isset($data['tags'])) {
             $thatEvent = Advice::find($record->id);

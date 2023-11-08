@@ -1,59 +1,33 @@
 <script setup>
-import TrixRichEditor from "@/js/components/bases/form/TrixRichEditor.vue";
-import {API_ENDPOINTS} from "@/js/constants/API_ENDPOINTS";
-import {ref, computed, onBeforeMount} from 'vue';
-import {useUserStore} from '../../stores/useUserStore';
-import {useSiteStore} from '../../stores/useSiteStore';
 import {storeToRefs} from 'pinia'
-import Save from '../svg/Save.vue';
-import Close from '../svg/Close.vue';
+import {computed,  ref} from 'vue';
+
+import ProfilePlaceholder from '@/assets/images/profilePlaceholder.webp'
+import TrixRichEditorInput from "@/js/components/bases/TrixRichEditorInput.vue";
+import UserBookmark from "@/js/components/userprofile/UserBookmark.vue";
+import UserInfoEdit from "@/js/components/userprofile/UserInfoEdit.vue";
+import {useUserStore} from '@/js/stores/useUserStore';
+
 import Edit from '../svg/Edit.vue';
 import UserProfileSubmenu from "./UserProfileSubmenu.vue";
-import {serverURL} from "@/js/constants/serverUrl";
-import BaseHero from "@/js/components/bases/BaseHero.vue";
-import UserBookmark from "@/js/components/userprofile/UserBookmark.vue";
 
 const userStore = useUserStore();
-const siteStore = useSiteStore();
 
 const isEditAvatar = ref(false);
 
-const updatedName = ref('');
 
-const handleSaveChange = () => {
-    console.log('Handle save values here');
-    userStore.updateUserName(updatedName.value);
-};
 const {currentUser, notifications} = storeToRefs(userStore)
 
 const userAvatar = ref(null)
-const activeProfileField = ref('Info')
-const activeInfoItem = ref('Biography')
-const updatedYearLevel = ref(0)
 const userBookmarks = ref([])
-const editIndex = ref(null)
 const subMenuItems = ref(['Info', 'Work', 'Messages'])
-const editingField = ref(false)
-const editName = ref(null);
 const uploadAvatar = ref(null)
 const contentTemp = ref('')
 
-const handleSelectSubmenu = () => {
-    console.log('submenu selected')
-}
-
-function handleCancelEdit() {
-    editingField.value = false;
-}
-
-function fetchUserSite(siteId) {
-    return siteStore.getSiteById(siteId)
-}
 
 const handleClickEditAvatar = () => {
     uploadAvatar.value.click()
 }
-
 
 const imageURL = import.meta.env.VITE_SERVER_IMAGE_API;
 const avatarUrl = ref('');
@@ -67,24 +41,23 @@ const displayUserRole = computed(() => {
     switch (currentUser.value.role) {
     case "SCHLDR":
         return "School Principal"
-        break;
     default:
         return "edSpark User"
     }
 
 })
 
-onBeforeMount(() => {
-    let userData = {
-        user_id: currentUser.value.id
+const userAvatarUrlWithFallback = computed(() => {
+    if (avatarUrl.value) {
+        return `${imageURL}/${avatarUrl.value}`
+    } else {
+        return ProfilePlaceholder
     }
-    axios.post(API_ENDPOINTS.USER.FETCH_ALL_BOOKMARKS_WITH_TITLE, userData).then(res => {
-        console.log(res.data)
-        userBookmarks.value = res.data
-    }).catch(err => {
-        console.log('not successfully fetch bookmarkdata')
-    })
 })
+
+const handleErrorAvatarFallback = () => {
+    avatarUrl.value = ''
+}
 
 </script>
 <template>
@@ -112,7 +85,6 @@ onBeforeMount(() => {
                                 border-white
                                 cursor-pointer
                                 h-[200px]
-                                min-w-[200px]
                                 rounded-full
                                 userAvatar
                                 w-[200px]
@@ -120,9 +92,9 @@ onBeforeMount(() => {
                                 lg:!min-w-[300px]
                                 lg:!w-[300px]
                                 "
-                            :class="!avatarUrl.length <= 0 ? `bg-[url(${imageURL}/${avatarUrl})]` : ''"
-                            :src="`${imageURL}/${avatarUrl}`"
+                            :src="userAvatarUrlWithFallback"
                             alt="user profile picture"
+                            @error="handleErrorAvatarFallback"
                         >
                         <div
                             v-show="isEditAvatar"
@@ -181,18 +153,20 @@ onBeforeMount(() => {
                     </div>
                 </div>
             </div>
-            <div class="bg-slate-50 flex flex-col min-h-[70vh] mt-10 pb-10">
-                <div class="flex flex-col mt-20 profileSubmenuContainer px-4  md:!px-8 lg:!px-24">
+            <div class="bg-slate-50 flex flex-col min-h-[70vh] mt-10 pb-10 px-4 md:!px-8 lg:!px-24">
+                <div class="flex flex-col mt-20 profileSubmenuContainer">
                     <UserProfileSubmenu :submenu-items="subMenuItems" />
                     <router-view />
                 </div>
-                <div class="UserBookmarkListContainer flex flex-col pt-12 px-4 md:!px-8 lg:!px-24">
+                <!--                <div class="UserInfoEditForm flex my-10">-->
+                <!--                    <UserInfoEdit />-->
+                <!--                </div>-->
+                <div class="UserBookmarkListContainer flex flex-col pt-12">
                     <UserBookmark :bookmark-data="userBookmarks.data" />
                 </div>
             </div>
         </div>
     </div>
-    <TrixRichEditor v-model="contentTemp" />
 </template>
 
 <style scoped>

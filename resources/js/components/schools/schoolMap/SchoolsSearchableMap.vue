@@ -1,10 +1,7 @@
 <script setup>
-import axios from 'axios';
-import {computed, onMounted, ref, watch, watchEffect} from 'vue';
+import {computed,  ref,  watchEffect} from 'vue';
 import {useRouter} from 'vue-router';
 import {GoogleMap, InfoWindow,Marker, MarkerCluster} from 'vue3-google-map'
-
-import {serverURL} from "@/js/constants/serverUrl";
 
 import SchoolsMapFilterName from './SchoolsMapFilterName.vue';
 import SchoolsMapFilterTech from './SchoolsMapFilterTech.vue';
@@ -90,13 +87,6 @@ const mapPopupName = ref('');
 const mapPopupInfo = ref({});
 const infoWindow = ref(null)
 
-watchEffect(() => {
-    if(infoWindow.value){
-        console.log(infoWindow.value)
-    } else{
-        console.log('hmm info window is null')
-    }
-})
 /**
  * Map methods
  */
@@ -139,7 +129,7 @@ const handleLinkToSchool = (schoolName) => {
         ref="gMapParent"
         class="border border-[#0072DA] relative w-full"
     >
-        <div class="bg-[#0072DA] flex justify-between flex-row h-[72px] place-items-center px-[48px] relative z-50">
+        <div class="bg-[#0072DA] flex justify-between flex-row h-[72px] place-items-center px-[48px] relative z-40">
             <h1 class="font-bold text-white text-xl md:!text-3xl">
                 Search for Schools
             </h1>

@@ -51,7 +51,7 @@ const handleFilter = (filters, dataPath) => {
         <template #filterBar>
             <GenericMultiSelectFilter
                 id="schoolType"
-                placeholder="Filter by school type"
+                placeholder="Filter by type"
                 :filter-list="schoolFilterList"
                 data-path="site_type_code"
                 @transmit-selected-filters="handleFilter"

@@ -1,9 +1,11 @@
 // Import router dependencies
+import {storeToRefs} from "pinia";
 import {createRouter, createWebHistory} from 'vue-router';
 
-import AdviceForm from "@/js/components/bases/form/types/AdviceForm.vue";
-import EventForm from "@/js/components/bases/form/types/EventForm.vue";
-import SoftwareForm from "@/js/components/bases/form/types/SoftwareForm.vue";
+import AdviceForm from "@/js/components/bases/frontendform/types/AdviceForm.vue";
+import EventForm from "@/js/components/bases/frontendform/types/EventForm.vue";
+import SoftwareForm from "@/js/components/bases/frontendform/types/SoftwareForm.vue";
+import UserPosts from "@/js/components/create/UserPosts.vue";
 import AdviceSearch from "@/js/components/search/AdviceSearch.vue";
 import EventSearch from "@/js/components/search/EventSearch.vue";
 import HardwareSearch from "@/js/components/search/HardwareSearch.vue";
@@ -23,15 +25,13 @@ import PartnerSingle from "@/js/pages/PartnerSingle.vue";
 import SchoolSingle from "@/js/pages/SchoolSingle.vue";
 import TheAdvice from "@/js/pages/TheAdvice.vue";
 import TheCreator from "@/js/pages/TheCreator.vue";
-import TheEvent from "@/js/pages/TheEvent.vue";
 import TheForbidden from "@/js/pages/TheForbidden.vue";
 import TheHardware from "@/js/pages/TheHardware.vue";
 import TheHome from "@/js/pages/TheHome.vue";
 import ThePartner from "@/js/pages/ThePartner.vue";
-import TheSchool from "@/js/pages/TheSchool.vue";
 import TheSoftware from "@/js/pages/TheSoftware.vue";
-import UserPosts from "@/js/pages/UserPosts.vue";
 import {useAuthStore} from '@/js/stores/useAuthStore';
+import {useUserStore} from "@/js/stores/useUserStore";
 
 import DashboardNew from './pages/DashboardNew.vue';
 
@@ -41,7 +41,7 @@ type RouteMeta = {
     navigation?: boolean;
     dropdownItem?: boolean;
     skipScrollTop?: boolean;
-    customText? : string
+    customText?: string
 };
 
 const routes: any = [
@@ -60,7 +60,7 @@ const routes: any = [
         meta: {
             navigation: true,
             requiresAuth: true, //guard the dashboard route
-            customText: "Dash"
+            customText: "Home"
         } as RouteMeta
     },
     {
@@ -225,7 +225,7 @@ const routes: any = [
         meta: {
             navigation: true,
             requiresAuth: true,
-            customText: 'Engage'
+            customText: 'Partners'
         }
     },
     {
@@ -308,19 +308,37 @@ const router = createRouter({
 });
 router.beforeEach(async (to, from, next) => {
     const authStore = useAuthStore();
-    if (to.meta.requiresAuth) {
-        if (!authStore.isAuthenticated) {
-            await authStore.checkAuthenticationStatus();
-        }
+    const userStore = useUserStore();
+    const {userEntryLink} = storeToRefs(userStore)
+    // it will only fill in userEntryLink if the entry link is null or not 'finished
+    if(!userEntryLink.value && userEntryLink.value !== 'finished'){
+        userEntryLink.value = to.fullPath
+    }
 
+    if (!to.meta.requiresAuth) {
+        return next();
+    }
+    if (authStore.isAuthenticated instanceof Promise) {
+        await authStore.isAuthenticated?.then(() => {
+            if (authStore.isAuthenticated) {
+                next();
+            } else {
+                console.log(authStore.isAuthenticated)
+                window.location = '/login'
+                next();
+            }
+        })
+
+    } else { // authStore.isAuthenticated is boolean
         if (authStore.isAuthenticated) {
             next();
         } else {
-            next('/forbidden');
+            console.log(authStore.isAuthenticated)
+            window.location = '/login'
         }
-    } else {
-        next();
     }
+    // If the route doesn't require authentication, move on.
+
 });
 
 export default router;

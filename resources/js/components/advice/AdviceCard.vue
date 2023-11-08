@@ -1,16 +1,17 @@
-<script setup>
-import lowerSlugify from "@/js/helpers/slugifyHelper";
+<script setup lang="ts">
 import {computed} from "vue";
-import GenericCard from "@/js/components/card/GenericCard.vue";
-import AdviceTypeTag from "@/js/components/advice/AdviceTypeTag.vue";
-import AdviceCardIcon from "@/js/components/advice/AdviceCardIcon.vue";
 import {useRouter} from "vue-router";
-import {storeToRefs} from "pinia";
-import {useUserStore} from "@/js/stores/useUserStore";
+
+import AdviceCardIcon from "@/js/components/advice/AdviceCardIcon.vue";
+import AdviceTypeTag from "@/js/components/advice/AdviceTypeTag.vue";
+import GenericCard from "@/js/components/card/GenericCard.vue";
+import {lowerSlugify} from "@/js/helpers/slugifyHelper";
+import {BasePostType} from "@/js/types/PostTypes";
 
 const props = defineProps({
     data: {
-        type: Object, required: true
+        type: Object as () => BasePostType,
+        required: true
     },
     showIcon: {
         type: Boolean, required: false
@@ -18,7 +19,6 @@ const props = defineProps({
 });
 
 const router = useRouter()
-const {currentUser} = storeToRefs(useUserStore())
 
 const randomIconName = computed(() => {
     const source = ['iconBookLight', 'iconBookStars', 'iconBookSearch']
@@ -66,7 +66,7 @@ const handleClickAdviceCard = () => {
             #icon
         >
             <AdviceCardIcon
-                class="absolute right-4 bottom-2 group-hover:-bottom-32 icon transition-all"
+                class="right-4 bottom-2 group-hover:-bottom-32 icon transition-all"
                 :advice-icon-name="randomIconName"
             />
         </template>

@@ -4,27 +4,25 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\AdviceResource\Pages;
 use App\Filament\Resources\AdviceResource\RelationManagers;
+use App\Helpers\Metahelper;
+use App\Helpers\RoleHelpers;
 use App\Models\Advice;
 use Filament\Forms;
-use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables\Table;
 use Filament\Tables;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Illuminate\Support\Facades\Auth;
-use Livewire\TemporaryUploadedFile;
+use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
 
-use App\Models\User;
 
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 use SplFileInfo;
 
-use Guava\FilamentIconPicker\Forms\IconPicker;
-use Guava\FilamentIconPicker\Tables\IconColumn;
+use App\Helpers\EdSparkRolesHelpers;
 
 class AdviceResource extends Resource
 {
@@ -214,10 +212,6 @@ class AdviceResource extends Resource
 
     public static function shouldRegisterNavigation(): bool
     {
-        $allowed_array = ['Superadmin', 'Administrator', 'Moderator'];
-        if (in_array(Auth::user()->role->role_name, $allowed_array)) {
-            return true;
-        }
-        return false;
+        return RoleHelpers::has_minimum_privilege('site_leader');
     }
 }

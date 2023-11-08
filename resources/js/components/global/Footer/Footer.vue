@@ -144,4 +144,7 @@ import ExternalLink from "@/js/components/svg/externalLink.vue";
 </template>
 
 <style>
+.FooterHyperLinks > div {
+    padding: 10px;
+}
 </style>
