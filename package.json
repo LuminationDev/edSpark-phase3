@@ -41,7 +41,7 @@
         "@editorjs/header": "^2.7.0",
         "@editorjs/image": "^2.8.1",
         "@editorjs/list": "^1.8.0",
-        "@editorjs/paragraph": "^2.10.0",
+        "@editorjs/paragraph": "^2.11.2",
         "@editorjs/simple-image": "^1.5.1",
         "@fawmi/vue-google-maps": "^0.9.79",
         "@fortawesome/fontawesome-svg-core": "^6.4.2",
