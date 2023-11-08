@@ -1,15 +1,28 @@
 <script setup>
-import { ref } from 'vue';
+import {onBeforeMount, ref} from 'vue';
+import {useRouter} from "vue-router";
 
 import {appURL} from "@/js/constants/serverUrl";
+import {useAuthStore} from "@/js/stores/useAuthStore";
+import {useUserStore} from "@/js/stores/useUserStore";
+
+const authStore = useAuthStore()
+const userStore = useUserStore()
+
+const router = useRouter()
 
 
 const redirectToOkta = () => {
-    axios.get(`${appURL}/sanctum/csrf-cookie`).then(() => {
-        loginWithOktaButtonPressed.value = true;
-        window.location = '/login';
-    });
+    loginWithOktaButtonPressed.value = true;
+    window.location = '/login';
 }
+
+onBeforeMount(() =>{
+    if(authStore.isAuthenticated && userStore.currentUser.full_name){
+        router.push('/dashboard')
+
+    }
+})
 
 const pageTitle = ref('edSpark Login');
 const email = ref('');

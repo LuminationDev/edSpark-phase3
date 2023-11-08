@@ -335,8 +335,6 @@ router.beforeEach(async (to, from, next) => {
         } else {
             console.log(authStore.isAuthenticated)
             window.location = '/login'
-            next();
-
         }
     }
     // If the route doesn't require authentication, move on.

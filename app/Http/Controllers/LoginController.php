@@ -9,20 +9,19 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 
 
-
 class LoginController extends Controller
 {
     public function redirectToOkta()
     {
         // TODO: SCOPE ONCE WE MIGRATE TO REAL OKTA
-        return Socialite::driver('okta')->scopes(['email','address','phone'])->redirect();
+        return Socialite::driver('okta')->scopes(['edspark','email','address'])->redirect();
 
     }
 
     public function handleOktaCallback(Request $request): \Illuminate\Foundation\Application|\Illuminate\Routing\Redirector|\Illuminate\Http\RedirectResponse|\Illuminate\Contracts\Foundation\Application
     {
         $state = $request->get('state');
-        $request->session()->put('state',$state);
+        $request->session()->put('state', $state);
 //        dd($request);
 
         $user = Socialite::driver('okta')->user();
@@ -35,7 +34,7 @@ class LoginController extends Controller
             ['email' => $user->email],  // columns for finding the existing model
             [
                 'full_name' => $user->name,
-                'name'  => $user->name,
+                'name' => $user->name,
                 // 'role_id' => $role_id, //TODO
                 // 'site_id' => $site_id, //TODO
                 'remember_token' => Str::random(15),
@@ -54,6 +53,7 @@ class LoginController extends Controller
         return redirect('/dashboard'); //working code
 
     }
+
     public function logout()
     {
         Auth::logout();
@@ -65,7 +65,7 @@ class LoginController extends Controller
 
     public function oktaData(Request $request)
     {
-        if (Auth::check()){
+        if (Auth::check()) {
             return response()->json([
                 'success' => true,
                 'email' => Auth::user()->email,
