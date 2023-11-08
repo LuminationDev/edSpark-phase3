@@ -14,18 +14,6 @@ export const autoSaveService = {
         return `${year}-${month}-${day}`;
     },
     savePost: (user_id: number, type: string, data: Record<string, any>): Promise<void> => {
-        console.log(data)
-        /**
-         * from softwareForm, data is
-         * authorName
-         * content
-         * coverImage
-         * excerpt
-         * extra_content
-         * softwaretype_id
-         * tags
-         * title
-         */
         const expiryDate = autoSaveService.getExpiryDateMonth()
         console.log(expiryDate)
         const requestPayload = {
@@ -47,6 +35,14 @@ export const autoSaveService = {
             params: {
                 user_id: user_id,
                 post_type: type
+            }
+        })
+    },
+    getAllUserDraftPost: (user_id: number): Promise<AxiosResponse<any>> => {
+        const url = API_ENDPOINTS.USER.GET_USER_DRAFT_POSTS;
+        return axios.get(url, {
+            params: {
+                user_id: user_id,
             }
         })
     }

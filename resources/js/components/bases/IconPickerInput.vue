@@ -18,6 +18,7 @@ const props = defineProps({
 console.log(props.modelValue)
 const filterText = ref('')
 const activeGlyph = ref(props.modelValue)
+const filamentFriendlyGlyphName = ref('')
 const isVisible = ref(false)
 const isIconPicked = ref(false)
 
@@ -71,7 +72,9 @@ const getGlyphName = glyph => glyph.replace(/f.. fa-/g, '').replace('-', ' ')
 const emit = defineEmits(['update:modelValue'])
 
 const insert = () => {
-    emit('update:modelValue', activeGlyph.value)
+    filamentFriendlyGlyphName.value = activeGlyph.value.split(' ')[1].replace('fa','fas')
+    emit('update:modelValue', filamentFriendlyGlyphName.value)
+    console.log(filamentFriendlyGlyphName.value + " this is filament friendly")
     isVisible.value = false
     isIconPicked.value = true
 }
@@ -83,6 +86,14 @@ const togglePicker = () => {
 const closePicker = () => {
     isVisible.value = false
 }
+// turn fas-icon into fas fa-icon - frontend friendly
+const activeGlyphSafe = computed(() =>{
+    if(activeGlyph.value.split(' ').length === 1){
+        return "fas " +  activeGlyph.value.replace('fas-','fa-')
+    } else{
+        return activeGlyph.value
+    }
+})
 </script>
 <template>
     <span
@@ -93,7 +104,7 @@ const closePicker = () => {
     >
         <i
             class="text-3xl vue3-icon-picker"
-            :class="modelValue"
+            :class="activeGlyphSafe"
         />
         <span
             v-if="!isIconPicked"

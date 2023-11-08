@@ -9,6 +9,11 @@ const props = defineProps({
         type: String,
         required: true
     },
+    parentPageLink: {
+        type: String,
+        required: false,
+        default: ''
+    },
     childPage: {
         type: String, required: true
     },
@@ -59,7 +64,7 @@ const customTextHover = computed(() => {
                 </p>
             </router-link>
             <ChevronRight class="h-3 w-3" />
-            <router-link :to="`/${props.parentPage}`">
+            <router-link :to="`/${props.parentPageLink ? props.parentPageLink : props.parentPage}`">
                 <p
                     class="capitalize text-white"
                     :class="customTextHover" >

@@ -5,6 +5,7 @@ import {createRouter, createWebHistory} from 'vue-router';
 import AdviceForm from "@/js/components/bases/frontendform/types/AdviceForm.vue";
 import EventForm from "@/js/components/bases/frontendform/types/EventForm.vue";
 import SoftwareForm from "@/js/components/bases/frontendform/types/SoftwareForm.vue";
+import UserPosts from "@/js/components/create/UserPosts.vue";
 import AdviceSearch from "@/js/components/search/AdviceSearch.vue";
 import EventSearch from "@/js/components/search/EventSearch.vue";
 import HardwareSearch from "@/js/components/search/HardwareSearch.vue";
@@ -29,7 +30,6 @@ import TheHardware from "@/js/pages/TheHardware.vue";
 import TheHome from "@/js/pages/TheHome.vue";
 import ThePartner from "@/js/pages/ThePartner.vue";
 import TheSoftware from "@/js/pages/TheSoftware.vue";
-import UserPosts from "@/js/pages/UserPosts.vue";
 import {useAuthStore} from '@/js/stores/useAuthStore';
 import {useUserStore} from "@/js/stores/useUserStore";
 

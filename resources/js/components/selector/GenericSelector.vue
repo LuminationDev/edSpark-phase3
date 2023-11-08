@@ -15,7 +15,7 @@ const props = defineProps({
         required: false
     },
     colorTheme:{
-        type: String, 
+        type: String,
         required: false
     }
 })
@@ -50,16 +50,12 @@ const checkIfObjectIsSelected = (itemObj) => {
 }
 
 
-const fillColorTheme = ref('')
-
 const customBackground = computed(() => {
     if (schoolColorKeys.includes(props.colorTheme)) {
-        fillColorTheme.value = `bg-[${schoolColorTheme[props.colorTheme]['light']}] fill-[${schoolColorTheme[props.colorTheme]['med']}]`;
+        return `bg-[${schoolColorTheme[props.colorTheme]['light']}] fill-[${schoolColorTheme[props.colorTheme]['med']}]`;
     } else {
-        fillColorTheme.value = `bg-[${schoolColorTheme['teal']['light']}] fill-[${schoolColorTheme['teal']['med']}]`;
+        return`bg-[${schoolColorTheme['teal']['light']}] fill-[${schoolColorTheme['teal']['med']}]`;
     }
-
-    return fillColorTheme.value;
 })
 
 </script>

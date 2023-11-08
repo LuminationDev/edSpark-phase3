@@ -1,6 +1,6 @@
 import {appURL} from "@/js/constants/serverUrl";
 import {guid} from "@/js/helpers/guidGenerator";
-import lowerSlugify from "@/js/helpers/slugifyHelper";
+import {lowerSlugify} from "@/js/helpers/slugifyHelper";
 
 export const cardDataHelper = (cardData, section) => {
     switch (section) {

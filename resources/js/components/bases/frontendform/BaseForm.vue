@@ -3,15 +3,17 @@ import useVuelidate from "@vuelidate/core";
 import {required} from "@vuelidate/validators";
 import {watchOnce} from "@vueuse/core";
 import {storeToRefs} from "pinia";
-import {capitalize, computed, ref} from "vue";
-import {reactive} from 'vue'
+import {capitalize, computed, onBeforeMount, onMounted, reactive, ref} from "vue";
+import {useRouter} from "vue-router";
+import {toast} from "vue3-toastify";
 
-import ImageUploaderInput from "@/js/components/bases/ImageUploaderInput.vue";
+import ImageUploaderInput, {MediaType} from "@/js/components/bases/ImageUploaderInput.vue";
 import TagsInput from "@/js/components/bases/TagsInput.vue";
 import TextInput from "@/js/components/bases/TextInput.vue";
 import TrixRichEditorInput from "@/js/components/bases/TrixRichEditorInput.vue";
 import GenericButton from "@/js/components/button/GenericButton.vue";
 import {FormStatus, useAutoSave} from "@/js/composables/useAutoSave";
+import {imageURL} from "@/js/constants/serverUrl";
 import {differenceObjects} from "@/js/helpers/jsonHelpers";
 import {autoSaveService} from "@/js/service/autoSaveService";
 import {formService} from "@/js/service/formService";
@@ -57,8 +59,8 @@ const state = reactive({
     title: '',
     excerpt: '',
     content: '',
-    coverImage: '',
-    authorName: '',
+    cover_image: '',
+    author_name: '',
     tags: [],
 })
 
@@ -66,17 +68,16 @@ const rules = {
     title: {required},
     excerpt: {required},
     content: {required},
-    coverImage: {required},
+    cover_image: {required},
     tags: {}
 }
 
 const v$: any = useVuelidate(rules, state)
 
 const currentAction = ref<FormAction>(FormAction.CREATE)
-
 const userStore = useUserStore()
 const {currentUser} = storeToRefs(userStore)
-
+const router = useRouter()
 const {
     formStatusDisplay,
     isSaving,
@@ -91,43 +92,63 @@ const handleTrixInputExcerpt = (data) => {
     v$.value.excerpt.$model = data
 }
 
-const baseEmitsExtraContent = (): void => {
-    const addtContent = differenceObjects(autoSaveContent.value.content, state)
+const populateLocalStateFromWindowStateDraftData = (data): void => {
+    state.title = data.title || ""
+    state.excerpt = data.excerpt || ""
+    state.content = data.content || ""
+    state.cover_image = data.cover_image || ""
+    state.author_name = data.authorName || ""
+    state.tags = data.tags || []
+}
+
+const baseEmitsExtraContentFromDraftData = (data): void => {
+    const addtContent = differenceObjects(data, state)
     emits('baseEmitsAddtContent', addtContent)
 }
 
-// copy data from autosave to localState. will only run once under watchOnce
-const populateLocalStateFromAutoSave = (): void => {
-    state.title = autoSaveContent.value.content?.title || ""
-    state.excerpt = autoSaveContent.value.content?.excerpt || ""
-    state.content = autoSaveContent.value.content?.content || ""
-    state.coverImage = autoSaveContent.value.content?.coverImage || ""
-    state.authorName = autoSaveContent.value.content?.authorName || ""
-    state.tags = autoSaveContent.value.content?.tags || []
-}
-
-watchOnce(autoSaveContent, () => {
-    if (currentAction.value === FormAction.CREATE) {
-        populateLocalStateFromAutoSave()
-        baseEmitsExtraContent()
+onBeforeMount(() => {
+    if (window.history.state.draftContent) {
+        const draftData = JSON.parse(window.history.state.draftContent)
+        populateLocalStateFromWindowStateDraftData(draftData)
+        baseEmitsExtraContentFromDraftData(draftData)
     }
 })
 
 const handleReceiveMediaFromUploader = (media: MediaType[]): void => {
     console.log(media)
-    if (media.length === 1) {
-        state.coverImage = media[0].remoteUrl
+    if (media && media.length === 1 && media[0]) {
+        state.cover_image = media[0].remoteUrl
+    } else{
+        state.cover_image = null
     }
 }
 
-const handleClickSave = () => {
-    formService.handleSaveForm(state, currentUser.value.id, props.additionalData, props.itemType).then(() => {
-        console.log('kinda succedd from base form')
+const handleClickSubmitForModeration = () => {
+    isSaving.value = true
+    formService.handleSubmitPostForModeration(state, currentUser.value.id, props.additionalData, props.itemType).then((res) => {
+        formStatusDisplay.value = FormStatus.SAVED
+        router.push('/create').then(() => {
+            toast('Successfully submitted ' + props.itemType + ' for moderation!')
+        })
     }).catch(e => {
         console.error('Error during saving')
+    }).finally(() => {
+        isSaving.value = false
     })
+}
 
-
+const handleClickSaveAsDraft = () => {
+    isSaving.value = true
+    formService.handleSubmitPostAsDraft(state, currentUser.value.id, props.additionalData, props.itemType).then((res) => {
+        formStatusDisplay.value = FormStatus.SAVED
+        router.push('/create').then(() => {
+            toast('Successfully saved ' + props.itemType + ' as a draft!')
+        })
+    }).catch(e => {
+        console.error('Error during saving')
+    }).finally(() => {
+        isSaving.value = false
+    })
 }
 
 const titleGenerator = computed((): string => {
@@ -152,7 +173,6 @@ const statusGenerator = computed(() => {
 </script>
 
 <template>
-    `
     <div
         id="BaseFormParent"
         class="BaseFormContainer border-[1px] flex flex-col mt-12 mx-5 p-8 rounded-2xl text-black md:!mx-10"
@@ -166,88 +186,74 @@ const statusGenerator = computed(() => {
                     <div class="statusDisplay text-md">
                         {{ statusGenerator }}
                     </div>
-                    <div
-                        v-if="formStatusDisplay === FormStatus.FOUND_AUTOSAVE"
-                        class="
-                            font-semibold
-                            loadAutoSaveText
-                            text-green-600
-                            hover:text-green-800
-                            text-sm
-                            hover:cursor-pointer
-                            "
-                        @click="loadAutoSaveData"
-                    >
-                        Load autosave
-                    </div>
+                    <slot name="formHeader" />
                 </div>
             </div>
-            <slot name="formHeader" />
-        </div>
-        <TextInput
-            ref="titleInputRef"
-            v-model="v$.title.$model"
-            :v$="v$.title"
-            field-id="titleInput"
-            class="my-2"
-            placeholder=""
-        >
-            <template #label>
-                Title
-            </template>
-        </TextInput>
-        <div class="ContainerTemp my-2 richContent">
-            <label> Excerpt</label>
-            <TrixRichEditorInput
-                :src-content="v$.excerpt.$model"
-                @input="handleTrixInputExcerpt"
-            />
-        </div>
-        <div class="ContainerTemp my-2 richContent">
-            <label> Content</label>
-            <TrixRichEditorInput
-                :src-content="v$.content.$model"
-                class="border-gray-300"
-                @input="handleTrixInputContent"
-            />
-        </div>
-        <div class="containerTempImageUploader my-2">
-            <label> Cover image (1 image file)</label>
-            <ImageUploaderInput
-                :item-type="props.itemType"
-                :current-media="state.coverImage"
-                :max="1"
-                @emit-uploaded-media="handleReceiveMediaFromUploader"
-            />
-        </div>
-        <TagsInput
-            v-model="v$.tags.$model"
-            :field-id="'tag-selector'"
-            :v$="v$.tags"
-        >
-            <template #label>
-                Tag
-            </template>
-        </TagsInput>
-        <div class="itemType">
-            <slot name="itemType" />
-        </div>
-        <div class="extraContentSection mb-4">
-            <slot name="extraContent" />
-        </div>
-        <div class="flex justify-center gap-6 saveButtonContainer">
-            <GenericButton
-                class="px-6 py-2"
-                :callback="handleClickSave"
+            <TextInput
+                ref="titleInputRef"
+                v-model="v$.title.$model"
+                :v$="v$.title"
+                field-id="titleInput"
+                class="my-2"
+                placeholder=""
             >
-                Save as draft
-            </GenericButton>
-            <GenericButton
-                class="px-6 py-2"
-                :callback="handleClickSave"
+                <template #label>
+                    Title
+                </template>
+            </TextInput>
+            <div class="ContainerTemp my-2 richContent">
+                <label> Excerpt</label>
+                <TrixRichEditorInput
+                    :src-content="v$.excerpt.$model"
+                    @input="handleTrixInputExcerpt"
+                />
+            </div>
+            <div class="ContainerTemp my-2 richContent">
+                <label> Content</label>
+                <TrixRichEditorInput
+                    :src-content="v$.content.$model"
+                    class="border-gray-300"
+                    @input="handleTrixInputContent"
+                />
+            </div>
+            <div class="containerTempImageUploader my-2">
+                <label> Cover image (1 image file)</label>
+                <ImageUploaderInput
+                    :item-type="props.itemType"
+                    :current-media="state.cover_image"
+                    :max="1"
+                    @emit-uploaded-media="handleReceiveMediaFromUploader"
+                />
+            </div>
+            <TagsInput
+                v-model="v$.tags.$model"
+                :field-id="'tag-selector'"
+                :v$="v$.tags"
             >
-                Submit for moderation
-            </GenericButton>
+                <template #label>
+                    Tag
+                </template>
+            </TagsInput>
+            <div class="itemType">
+                <slot name="itemType" />
+            </div>
+            <div class="extraContentSection mb-4">
+                <slot name="extraContent" />
+            </div>
+            <div class="flex justify-center gap-6 saveButtonContainer">
+                <GenericButton
+                    class="px-6 py-2"
+                    :callback="handleClickSaveAsDraft"
+                >
+                    Save as draft
+                </GenericButton>
+                <GenericButton
+                    class="px-6 py-2"
+                    :callback="handleClickSubmitForModeration"
+                >
+                    Submit for moderation
+                </GenericButton>
+            </div>
         </div>
     </div>
 </template>
