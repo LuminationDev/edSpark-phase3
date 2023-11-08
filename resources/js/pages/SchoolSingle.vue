@@ -226,6 +226,7 @@ const handleCloseModerationTab = (): void => {
                                                 place-items-center
                                                 schoolTechHoverableRow
 
+
                                                 gap-4"
                                         >
                                             <SchoolTechHoverableRow
@@ -246,7 +247,7 @@ const handleCloseModerationTab = (): void => {
                             </div>
                         </template>
                         <template #submenu>
-                            <div class="SchoolSubmenu mb-[-1px] cursor-pointer flex flex-row gap-2 z-40 md:!gap-4">
+                            <div class="SchoolSubmenu cursor-pointer flex flex-row gap-2 mb-[-1px] z-40 md:!gap-4">
                                 <BaseSingleSubmenu
                                     :emit-to-base="emitFromSubmenu"
                                     :menu-array="schoolSubmenu"

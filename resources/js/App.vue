@@ -58,36 +58,36 @@ const removeEventListeners = () => {
  * @throws Will throw an error if network requests within the function fail.
  */
 const handleAuth = async () => {
-    // Check if the URL contains the desired origin
-    if (window.location.origin.includes('test.edspark.sa.edu.au')) return;
+    // // Check if the URL contains the desired origin
+    // if (window.location.origin.includes('test.edspark.sa.edu.au')) return;
 
     await authStore.checkAuthenticationStatus(); // populate isAuth with promise
 
     if (!authStore.isAuthenticated) {
         window.location = '/login';
-        return;
+    } else {
+        await axios.get(`${appURL}/sanctum/csrf-cookie`);
+        await userStore.fetchCurrentUserAndLoadIntoStore();
+        if (userStore.userEntryLink === 'finished') {
+        }
+        // only trigger the redirect if entry link exists and not /
+        else if (userStore.userEntryLink && userStore.userEntryLink !== '/') {
+            let urlObj;
+            try {
+                urlObj = new URL(userStore.userEntryLink).pathname
+            } catch (_) {
+                urlObj = userStore.userEntryLink + ""
+            } finally {
+                userEntryLink.value = "finished" // this will stop redirection
+                await router.push(urlObj)
+            }
+        } else {
+            userEntryLink.value = "finished"
+            await router.push('/dashboard')
+        }
     }
 
-    await axios.get(`${appURL}/sanctum/csrf-cookie`);
-    await userStore.fetchCurrentUserAndLoadIntoStore();
-    if (userStore.userEntryLink === 'finished') {
-        return;
-    }
-    // only trigger the redirect if entry link exists and not /
-    else if (userStore.userEntryLink && userStore.userEntryLink !== '/') {
-        let urlObj;
-        try {
-            urlObj = new URL(userStore.userEntryLink).pathname
-        } catch (_) {
-            urlObj = userStore.userEntryLink + ""
-        } finally {
-            userEntryLink.value = "finished" // this will stop redirection
-            await router.push(urlObj)
-        }
-    } else {
-        userEntryLink.value = "finished"
-        await router.push('/dashboard')
-    }
+
 };
 
 onBeforeMount(async () => {
