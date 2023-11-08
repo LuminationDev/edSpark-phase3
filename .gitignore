@@ -29,5 +29,4 @@ web/
 composer.lock
 package-lock.json
 resources/css/output.css
-resources/css/output.css
 storage/uploads
