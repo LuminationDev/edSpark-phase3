@@ -7,7 +7,7 @@ use App\Models\Advice;
 use App\Models\Hardware;
 use App\Models\Partner;
 use App\Models\Partnermeta;
-use App\Models\PartnerProfile;
+use App\Models\Partnerprofile;
 use App\Models\Software;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -36,7 +36,7 @@ class PartnerController extends Controller
 
         // If it doesn't exist, create a new one.
         if (!$partnerProfile) {
-            $partnerProfile = PartnerProfile::create([
+            $partnerProfile = Partnerprofile::create([
                 'partner_id' => $partner->id,
                 'user_id' => $partner->user_id,
                 'content' => json_encode([
@@ -144,7 +144,7 @@ class PartnerController extends Controller
             $partnerData['profile'] = json_decode($partnerProfile->content);
 
             // Update all other profiles with the same partner_id to "Archived"
-            PartnerProfile::where('user_id', $partnerId)
+            Partnerprofile::where('user_id', $partnerId)
                 ->where('id', '!=', $partnerProfile->id)
                 ->update(['status' => 'Archived']);
 
@@ -187,7 +187,7 @@ class PartnerController extends Controller
                 return response()->json(['error' => 'Blocks content is empty. Not saved.'], Response::HTTP_BAD_REQUEST);
             }
             // Create a new PartnerProfile entry with the content and status as "Pending"
-            PartnerProfile::create([
+            Partnerprofile::create([
                 'partner_id' => $partner->id,
                 'user_id' => $partner->user_id,
                 'content' => json_encode($validatedData['content']),

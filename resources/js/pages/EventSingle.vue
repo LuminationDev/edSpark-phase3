@@ -1,18 +1,19 @@
 <script setup>
+import purify from "dompurify";
+import {useRouter} from "vue-router";
+
 import BaseBreadcrumb from "@/js/components/bases/BaseBreadcrumb.vue";
-import BaseSingle from "@/js/components/bases/BaseSingle.vue";
 import BaseHero from "@/js/components/bases/BaseHero.vue";
+import BaseSingle from "@/js/components/bases/BaseSingle.vue";
 import BaseSingleProfilePicture from "@/js/components/bases/BaseSingleProfilePicture.vue";
 import EventSingleExtraContentRenderer from "@/js/components/events/EventSingleExtraContentRenderer.vue";
-import {schoolColorKeys, schoolColorTheme} from "@/js/constants/schoolColorTheme";
-import purify from "dompurify";
-import {imageURL} from "@/js/constants/serverUrl";
-import TimeIcon from "@/js/components/svg/event/TimeIcon.vue";
-import CalendarIcon from "@/js/components/svg/event/CalendarIcon.vue";
-import LocationIcon from "@/js/components/svg/event/LocationIcon.vue";
-import {useRouter} from "vue-router";
 import EventsLocation from "@/js/components/events/EventsLocation.vue";
 import EventsRsvp from "@/js/components/events/EventsRsvp.vue";
+import CalendarIcon from "@/js/components/svg/event/CalendarIcon.vue";
+import LocationIcon from "@/js/components/svg/event/LocationIcon.vue";
+import TimeIcon from "@/js/components/svg/event/TimeIcon.vue";
+import {schoolColorKeys, schoolColorTheme} from "@/js/constants/schoolColorTheme";
+import {imageURL} from "@/js/constants/serverUrl";
 
 const router = useRouter()
 const handleClickViewProfile = (author_id, author_type) => {
@@ -30,7 +31,7 @@ const getEventColorTheme = (eventType) => {
 }
 
 const getEventBackgroundColorTheme = (eventType) => {
-    let colorKey = getEventColorTheme(eventType)
+    const colorKey = getEventColorTheme(eventType)
     // return "bg-event-"+eventType
     return "bg-[" + schoolColorTheme[colorKey]['med'] + "]"
 }
@@ -48,6 +49,7 @@ const getEventBackgroundColorTheme = (eventType) => {
                     <BaseBreadcrumb
                         :child-page="contentFromBase.title"
                         parent-page="events"
+                        parent-page-link="browse/event"
                         :color-theme="getEventColorTheme(contentFromBase.type)"
                     />
                 </template>
