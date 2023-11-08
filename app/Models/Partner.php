@@ -38,7 +38,7 @@ class Partner extends Authenticatable
     }
     public function profiles()
     {
-        return $this->hasMany('App\Models\PartnerProfile', 'partner_id');
+        return $this->hasMany('App\Models\Partnerprofile', 'partner_id');
     }
     public function likes(): \Illuminate\Database\Eloquent\Relations\HasMany
     {

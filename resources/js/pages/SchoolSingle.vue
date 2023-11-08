@@ -42,7 +42,6 @@ const userStore = useUserStore()
 const {currentUser} = storeToRefs(userStore)
 
 const isPreviewMode = computed(() => {
-    console.log(route.query.preview)
     return route.query.preview && (userStore.getIfUserIsModerator || currentUser.value.site_id === schoolContent.value?.site?.site_id)
 })
 
@@ -124,17 +123,17 @@ const handleChangeColorTheme = (newColor) => {
  */
 const handleReceivePhotoFromContent = (type, file) => {
     switch (type) {
-        case 'logo':
-            console.log('received logo')
-            logoStorage.value = file
-            break;
-        case 'coverImage':
-            console.log('received cover Image')
-            coverImageStorage.value = file
-            break;
-        default:
-            console.log('received unknown type image')
-            break;
+    case 'logo':
+        console.log('received logo')
+        logoStorage.value = file
+        break;
+    case 'coverImage':
+        console.log('received cover Image')
+        coverImageStorage.value = file
+        break;
+    default:
+        console.log('received unknown type image')
+        break;
     }
 }
 
@@ -207,8 +206,8 @@ const handleCloseModerationTab = (): void => {
                                 parent-page="schools"
                                 parent-page-link="browse/school"
                                 :color-theme="colorTheme"
-                                @send-color-to-school-single="handleChangeColorTheme"
                                 class="mt-[120px] pt-[10px]"
+                                @send-color-to-school-single="handleChangeColorTheme"
                             />
                         </template>
                         <template #titleText>
@@ -225,9 +224,8 @@ const handleCloseModerationTab = (): void => {
                                                 mb-4
                                                 place-items-center
                                                 schoolTechHoverableRow
-
-
-                                                gap-4"
+                                                gap-4
+                                                "
                                         >
                                             <SchoolTechHoverableRow
                                                 :tech-used-list="schoolContent.tech_used"
@@ -308,7 +306,8 @@ const handleCloseModerationTab = (): void => {
         class="flex justify-center items-center flex-col h-36 mt-[10vh]"
     >
         <EdsparkPageNotFound
-            :error-message="schoolNotAvailableMessage ? schoolNotAvailableMessage : 'School not available. Please check again later'"/>
+            :error-message="schoolNotAvailableMessage ? schoolNotAvailableMessage : 'School not available. Please check again later'"
+        />
     </div>
 
     <div

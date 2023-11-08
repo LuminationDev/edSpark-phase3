@@ -2,6 +2,7 @@
 import {storeToRefs} from "pinia";
 import {onBeforeMount, onMounted, Ref, ref} from 'vue'
 import {useRoute} from "vue-router";
+import {toast} from "vue3-toastify";
 
 import EditorJsInput from "@/js/components/bases/EditorJsInput.vue";
 import GenericButton from "@/js/components/button/GenericButton.vue";
@@ -30,6 +31,12 @@ const buttonDescriptionByState = {
     pending_loaded: "Submit modified pending content",
 }
 
+enum SchoolContentState {
+    New = "new",
+    PendingAvailable = "pending_available",
+    PendingLoaded = "pending_loaded",
+}
+
 const props = defineProps({
     schoolContent: {
         type: Object as () => SchoolDataType,
@@ -44,7 +51,7 @@ const props = defineProps({
         type: String,
         required: true
     },
-    isPreviewMode:{
+    isPreviewMode: {
         type: Boolean,
         required: false,
         default: false
@@ -59,7 +66,7 @@ const currentSchoolName = route.params.name
 const editMode = ref<boolean>(false)
 const newSchoolContent: Ref<EditorJSDataType | null> = ref(null)
 const pendingSchoolContent: Ref<SchoolDataType | null> = ref(null)
-const schoolContentState = ref('new')
+const schoolContentState = ref(SchoolContentState.New)
 const newTechUsed: Ref<TechUsed[] | null> = ref(null)
 
 const currentUserCanEdit = ref<boolean>(false)
@@ -72,7 +79,7 @@ onBeforeMount(() => {
 })
 
 const handleEditButton = async () => {
-    if(schoolContentState.value === 'new'){
+    if (schoolContentState.value === 'new') {
         checkIfPendingAvailable()
     }
     newSchoolContent.value = _.cloneDeep(props.schoolContent.content_blocks)
@@ -81,40 +88,41 @@ const handleEditButton = async () => {
     // pressing the revert button
     if (schoolContentState.value === 'pending_loaded') {
         schoolEditorRef.value.handleEditorRerender(newSchoolContent.value)
-        schoolContentState.value = 'pending_available'
+        schoolContentState.value = SchoolContentState.PendingAvailable
     }
 }
 
-const handleCancelEditButton = () => {
+const handleCancelEditButton = (): void => {
     editMode.value = false
 }
 
-const handleSchoolData = (data) => {
+const handleSchoolData = (data): void => {
     newSchoolContent.value = data
 }
 
-const handleSchoolTech = (techData) => {
+const handleSchoolTech = (techData): void => {
     newTechUsed.value = techData
 }
 
-const handleAllSaveButton = () => {
+const handleAllSaveButton = (): void => {
     schoolEditorRef.value.handleEditorSave().then(res => {
         emits('sendInfoToSchoolSingle', newSchoolContent.value, newTechUsed.value)
         editMode.value = false
-        schoolContentState.value = 'new'
+        schoolContentState.value = SchoolContentState.New
+        toast('Submitted your new profile for moderation. View will update automatically once approved')
     })
 }
 
-const handleColorSelected = (newColor) => {
+const handleColorSelected = (newColor): void => {
     emits('sendColorToSchoolSingle', newColor)
 }
 
-const handleReceivePhotoFromImageChange = (type, file) => {
+const handleReceivePhotoFromImageChange = (type, file): void => {
     emits('sendPhotoToSchoolSingle', type, file)
 }
 
 onMounted(async () => {
-    if(!props.isPreviewMode){
+    if (!props.isPreviewMode) {
         await schoolService.checkIfUserCanEdit(props.schoolContent.site.site_id, currentUser.value.id, props.schoolContent.school_id).then(res => {
             console.log(res)
             currentUserCanEdit.value = Boolean(res.data.status && res.data.result)
@@ -128,21 +136,20 @@ onMounted(async () => {
     }
 })
 
-const checkIfPendingAvailable = async () : Promise<void> => {
+const checkIfPendingAvailable = async (): Promise<void> => {
     const result = await schoolService.fetchPendingSchoolByName(currentSchoolName, props.schoolContent.site.site_id, currentUser.value.id, props.schoolContent.school_id)
-    if(result){
-        schoolContentState.value = 'pending_available'
+    if (result) {
+        schoolContentState.value = SchoolContentState.PendingAvailable
         pendingSchoolContent.value = result
     }
 }
 
-const handleClickEditPendingContent = () => {
+const handleClickEditPendingContent = (): void => {
     newSchoolContent.value = pendingSchoolContent.value.content_blocks
     newTechUsed.value = pendingSchoolContent.value.tech_used
-    schoolContentState.value = 'pending_loaded'
+    schoolContentState.value = SchoolContentState.PendingLoaded
     schoolEditorRef.value.handleEditorRerender(newSchoolContent.value)
 }
-
 
 
 console.log(props.activeSubmenu)
@@ -175,7 +182,7 @@ console.log(props.activeSubmenu)
                             </div>
                             <div class="mb-10">
                                 <GenericButton
-                                    v-if="schoolContentState === 'pending_available'"
+                                    v-if="schoolContentState === SchoolContentState.PendingAvailable"
                                     class="bg-blue-500 hover:bg-blue-600 mb-2 px-6 py-2 rounded text-white w-48"
                                     :callback="handleClickEditPendingContent"
                                 >
@@ -195,7 +202,7 @@ console.log(props.activeSubmenu)
                                 </GenericButton>
                             </div>
                             <button
-                                v-if="schoolContentState === 'pending_loaded'"
+                                v-if="schoolContentState === SchoolContentState.PendingLoaded"
                                 class="bg-blue-500 hover:bg-blue-600 mb-4 px-6 py-2 rounded text-white w-48"
                                 @click="handleEditButton"
                             >
@@ -210,7 +217,7 @@ console.log(props.activeSubmenu)
                                 class="my-10 self-center"
                                 @color-selected="handleColorSelected"
                             />
-                            <p class="font-semibold text-xl mt-10 mb-5">
+                            <p class="font-semibold mb-5 mt-10 text-xl">
                                 Tech Selector:
                             </p>
                             <TechSelector
@@ -251,10 +258,10 @@ console.log(props.activeSubmenu)
                                     name="additionalContentActions"
                                 />
                             </div>
-                            <SchoolTech 
-                                :tech-list="schoolContent.tech_used"                                
+                            <SchoolTech
+                                :tech-list="schoolContent.tech_used"
                                 :color-theme="colorTheme"
-                                 />
+                            />
                         </div>
                     </div>
                 </div>
