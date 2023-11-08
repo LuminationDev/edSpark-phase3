@@ -176,7 +176,7 @@ const {isMobile, isTablet} = storeToRefs(useWindowStore)
 
 .nav-background {
     clip-path: inset(0 0 round 0 0 75%);
-    height: 95%;
+    height: 100%;
 }
 
 .navDropdown {
@@ -191,6 +191,12 @@ const {isMobile, isTablet} = storeToRefs(useWindowStore)
 
 .navbarFullsize {
     font-size: 1.1rem;
+}
+
+@media screen and (max-width: 654px) {
+    .nav-background {
+        clip-path: inset(0 0 round 0 0 55%) !important;
+    }
 }
 
 @media screen and (min-width: 1024px) {

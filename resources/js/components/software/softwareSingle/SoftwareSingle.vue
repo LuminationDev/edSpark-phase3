@@ -61,7 +61,7 @@ const handleClickViewProfile = (author_id, author_type) => {
 /**
  * End of submenu specific code  plus @emit-active-tab-to-specific-page in BaseSingle
  * */
-const colorTheme = ref('deepPurple')
+const colorTheme = ref('softwarePurple')
 
 </script>
 
@@ -138,7 +138,7 @@ const colorTheme = ref('deepPurple')
 
                 <!--  Selectable sub menu    -->
                 <template #submenu>
-                    <div class="cursor-pointer flex flex-row gap-4 softwareSubmenu z-40">
+                    <div class="cursor-pointer flex flex-row gap-4 softwareSubmenu mb-[-1px] z-40">
                         <BaseSingleSubmenu
                             :emit-to-base="emitFromSubmenu"
                             :menu-array="softwareSubmenu"
@@ -155,7 +155,7 @@ const colorTheme = ref('deepPurple')
                 <template
                     v-if="activeSubmenu === 'detail'"
                 >
-                    <div class="flex flex-col flex-wrap px-2 py-4 w-full xl:!w-2/3">
+                    <div class="flex flex-col flex-wrap px-2 py-4 mr-10 w-full xl:!w-2/3">
                         <div class="flex font-bold py-4 text-2xl uppercase">
                             Getting started
                         </div>

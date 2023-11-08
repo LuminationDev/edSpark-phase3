@@ -98,7 +98,7 @@ const eventTypeColorClass = (eventType: string): string => {
                 @click="handleClickSingleEvent(event.id)"
             >
                 <EventTypeTag
-                    class="!scale-100 lg:!scale-75 xl:!scale-100  !right-0 lg:!-right-2 lg:!top-2 xl:!right-0 xl:!top-4"
+                    class="absolute !scale-100 lg:!scale-75 xl:!scale-100  !right-0 lg:!-right-2 lg:!top-2 xl:!right-0 xl:!top-4"
                     :event-type="event.type"
                 />
                 <div class="flex previewImage">

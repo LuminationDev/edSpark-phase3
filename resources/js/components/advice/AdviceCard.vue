@@ -66,7 +66,7 @@ const handleClickAdviceCard = () => {
             #icon
         >
             <AdviceCardIcon
-                class="absolute right-4 bottom-2 group-hover:-bottom-32 icon transition-all"
+                class="right-4 bottom-2 group-hover:-bottom-32 icon transition-all"
                 :advice-icon-name="randomIconName"
             />
         </template>

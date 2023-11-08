@@ -18,18 +18,20 @@ const router = useRouter()
 const handleClickViewProfile = (author_id, author_type) => {
     router.push(`/${author_type}/${author_id}` )
 }
+
 const getEventColorTheme = (eventType) => {
     if(eventType === 'Virtual'){
-        return 'red'
+        return 'eventRed'
     } else if(eventType === 'Hybrid'){
-        return 'purple'
+        return 'eventPurple'
     } else{
-        return 'blue'
+        return 'eventBlue'
     }
 }
 
 const getEventBackgroundColorTheme = (eventType) => {
     let colorKey = getEventColorTheme(eventType)
+    // return "bg-event-"+eventType
     return "bg-[" + schoolColorTheme[colorKey]['med'] + "]"
 }
 

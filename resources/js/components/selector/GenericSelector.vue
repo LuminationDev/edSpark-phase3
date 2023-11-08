@@ -1,29 +1,29 @@
 <script setup>
-import {computed,onBeforeMount, ref} from 'vue'
-
-import {schoolColorKeys,schoolColorTheme} from "@/js/constants/schoolColorTheme";
+import {onBeforeMount, ref, computed, onMounted} from 'vue'
+import { schoolColorTheme, schoolColorKeys} from "@/js/constants/schoolColorTheme";
 
 const props = defineProps({
-    title: {
+    title:{
         type: String, required: true
     },
-    listData: {
+    listData:{
         type: Array,
         required: true
     },
-    existingData: {
+    existingData:{
         type: Array,
         required: false
     },
-    colorTheme: {
-        type: String, required: false
+    colorTheme:{
+        type: String,
+        required: false
     }
 })
 
 const result = ref()
 
 onBeforeMount(() => {
-    if (props.existingData) {
+    if(props.existingData){
         result.value = props.existingData
     }
 })
@@ -36,10 +36,10 @@ const emits = defineEmits(['sendDataToParent'])
  * very generic function with the aim to be reusable
  */
 const handleSelectItem = (itemObj) => {
-    if (checkIfObjectIsSelected(itemObj)) {
+    if (checkIfObjectIsSelected(itemObj)){
         // remove the item from array
         result.value = result.value.filter(item => item.name !== itemObj.name)
-    } else {
+    } else{
         result.value.push(itemObj)
     }
     emits('sendDataToParent', result.value)
@@ -49,13 +49,14 @@ const checkIfObjectIsSelected = (itemObj) => {
     return result.value.map(item => item.name).includes(itemObj.name)
 }
 
-const customBackground = computed(() => {
-    if (schoolColorTheme[props.colorTheme] && schoolColorTheme[props.colorTheme]['light']) {
-        return `!bg-[${schoolColorTheme[props.colorTheme]['light']}]`
-    }
-    return `!bg-main-teal`
-})
 
+const customBackground = computed(() => {
+    if (schoolColorKeys.includes(props.colorTheme)) {
+        return `bg-[${schoolColorTheme[props.colorTheme]['light']}] fill-[${schoolColorTheme[props.colorTheme]['med']}]`;
+    } else {
+        return`bg-[${schoolColorTheme['teal']['light']}] fill-[${schoolColorTheme['teal']['med']}]`;
+    }
+})
 
 </script>
 <template>
@@ -66,15 +67,15 @@ const customBackground = computed(() => {
         <div
             v-for="(item,index) in listData"
             :key="index"
-            class="bg-blue-300 cursor-pointer grayscale group h-28 my-2 opacity-60 p-2 rounded-xl text-white hover:shadow-xl"
-            :class="[{'bg-blue-300 !grayscale-0 !opacity-100' : checkIfObjectIsSelected(item)}, customBackground]"
-
+            class="cursor-pointer grayscale group h-28 my-2 opacity-60 p-2 rounded-xl text-white hover:shadow-xl"
+            :class="[{'!grayscale-0 !opacity-100' : checkIfObjectIsSelected(item)}, customBackground]"
 
             @click="() => handleSelectItem(item)"
         >
             <slot
                 :name="'selectorItem_' + index"
                 :item-data="item"
+                :color-theme="colorTheme"
             />
         </div>
     </div>

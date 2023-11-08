@@ -102,13 +102,13 @@ const handleAllSaveButton = () => {
         emits('sendInfoToSchoolSingle', newSchoolContent.value, newTechUsed.value)
         editMode.value = false
         schoolContentState.value = 'new'
-
     })
 }
 
 const handleColorSelected = (newColor) => {
     emits('sendColorToSchoolSingle', newColor)
 }
+
 const handleReceivePhotoFromImageChange = (type, file) => {
     emits('sendPhotoToSchoolSingle', type, file)
 }
@@ -173,25 +173,27 @@ console.log(props.activeSubmenu)
                             >
                                 {{ schoolContentStateDescription[schoolContentState] }}
                             </div>
-                            <GenericButton
-                                v-if="schoolContentState === 'pending_available'"
-                                class="bg-blue-500 hover:bg-blue-600 mb-2 px-6 py-2 rounded text-white w-48"
-                                :callback="handleClickEditPendingContent"
-                            >
-                                Edit pending content
-                            </GenericButton>
-                            <GenericButton
-                                class="bg-blue-500 hover:bg-blue-600 mb-2 px-6 py-2 rounded text-white w-48"
-                                :callback="handleAllSaveButton"
-                            >
-                                {{ buttonDescriptionByState[schoolContentState] }}
-                            </GenericButton>
-                            <GenericButton
-                                class="!bg-secondary-mbRose mb-4 px-6 py-2 rounded text-white w-48"
-                                :callback="handleCancelEditButton"
-                            >
-                                Cancel edit
-                            </GenericButton>
+                            <div class="mb-10">
+                                <GenericButton
+                                    v-if="schoolContentState === 'pending_available'"
+                                    class="bg-blue-500 hover:bg-blue-600 mb-2 px-6 py-2 rounded text-white w-48"
+                                    :callback="handleClickEditPendingContent"
+                                >
+                                    Edit pending content
+                                </GenericButton>
+                                <GenericButton
+                                    class="bg-blue-500 hover:bg-blue-600 mb-2 px-6 py-2 rounded text-white w-48"
+                                    :callback="handleAllSaveButton"
+                                >
+                                    {{ buttonDescriptionByState[schoolContentState] }}
+                                </GenericButton>
+                                <GenericButton
+                                    class="!bg-secondary-mbRose mb-4 px-6 py-2 rounded text-white w-48"
+                                    :callback="handleCancelEditButton"
+                                >
+                                    Cancel edit
+                                </GenericButton>
+                            </div>
                             <button
                                 v-if="schoolContentState === 'pending_loaded'"
                                 class="bg-blue-500 hover:bg-blue-600 mb-4 px-6 py-2 rounded text-white w-48"
@@ -205,10 +207,10 @@ console.log(props.activeSubmenu)
                                 @send-uploaded-photo-to-content="handleReceivePhotoFromImageChange"
                             />
                             <SchoolColorPicker
-                                class="mb-5 self-center"
+                                class="my-10 self-center"
                                 @color-selected="handleColorSelected"
                             />
-                            <p class="font-semibold text-xl">
+                            <p class="font-semibold text-xl mt-10 mb-5">
                                 Tech Selector:
                             </p>
                             <TechSelector

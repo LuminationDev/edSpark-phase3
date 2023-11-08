@@ -12,22 +12,11 @@ const props = defineProps({
         required: false,
         default: () => []
     },
-    showFirstTech:{
-        type: Boolean,
-        required: false,
-        default: false
-    },
     guid:{
         type:String,
         required:false,
         default:''
     }
-})
-const showFirstItem = ref(true)
-
-
-const showFirstComputed = computed(() => {
-    return !!(props.showFirstTech && showFirstItem.value);
 })
 
 </script>
@@ -36,15 +25,13 @@ const showFirstComputed = computed(() => {
     <div
         v-for="(tech,index) in props.techList"
         :key="props.guid + '' + index"
-        class="card_inner_parent cursor-pointer"
-        @mouseenter="showFirstItem = false"
-        @mouseleave="showFirstItem = true"
+        class="card_inner_parent"
     >
         <SchoolCardIcon
             :tech-name="tech.name"
             :tech-info="tech"
             :tech-index="index"
-            :show-first-tech="showFirstComputed"
+            v-tippy="tech.name"
         />
     </div>
 </template>

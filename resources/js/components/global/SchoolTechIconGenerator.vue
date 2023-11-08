@@ -23,7 +23,7 @@ const props = defineProps({
     colorTheme: {
         type: String,
         required: false,
-        default: 'navy',
+        default: 'partnerBlue',
     }
 })
 const iconPath = ref('')
@@ -47,7 +47,6 @@ const schoolTechIconComponents = {
     <BaseIconGenerator
         :icon-path="techName"
         :components-object="schoolTechIconComponents"
-        :color-theme="colorTheme"
     />
 </template>
 

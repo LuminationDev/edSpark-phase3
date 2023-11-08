@@ -1,8 +1,6 @@
 <script setup>
 
-import {computed, resolveDynamicComponent} from "vue";
-
-import {schoolColorTheme} from "@/js/constants/schoolColorTheme";
+import { computed, onMounted, resolveDynamicComponent, ref } from 'vue'
 
 const props = defineProps({
     iconPath: {
@@ -10,13 +8,22 @@ const props = defineProps({
     },
     componentsObject: {
         type: Object, required: true
-    },
-    colorTheme: {
-        type: String,
-        required: false,
-        default: 'navy',
     }
 })
+
+// const fillColorTheme = ref('')
+
+// onMounted(() => {
+//     if (schoolColorKeys.includes(props.colorTheme)) {
+//         fillColorTheme.value = `fill-[${schoolColorTheme[props.colorTheme]['med']}] stroke-[${schoolColorTheme[props.colorTheme]['med']}]`;
+//     } else {
+//         fillColorTheme.value = `fill-[${schoolColorTheme['teal']['med']}] stroke-[${schoolColorTheme['teal']['med']}]`;
+//     }
+// })
+
+// const customFill = computed(() => {
+//     return fillColorTheme.value;
+// })
 
 
 const loadIconComponent = (iconPath) => {
@@ -32,29 +39,14 @@ const loadIconComponent = (iconPath) => {
     }
 };
 
-const loadColorTheme = () => {
-    try {
-        return `fill-[${schoolColorTheme[props.colorTheme]['med']}]`
-    } catch (error) {
-        console.error('Failed to load color theme:', error);
-        return `fill-[${schoolColorTheme['navy']['med']}]`; //002858 
-    }
-};
-
 
 const resolvedComponent = computed(() => {
-    return resolveDynamicComponent(loadIconComponent(props.iconPath))
+    return resolveDynamicComponent(loadIconComponent(props.iconPath));
 })
 
-const customFill = computed(() => {
-    return loadColorTheme()
-})
 
 </script>
 <template>
-    <component
-        :is="resolvedComponent"
-        class="pointer-events-none"
-        :class="customFill"
-    />
+        <component :is="resolvedComponent" class="pointer-events-none"
+            style="overflow:visible; stroke-width:0;fill:inherit;" />
 </template>

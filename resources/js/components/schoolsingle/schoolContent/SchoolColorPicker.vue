@@ -1,10 +1,10 @@
 <script setup>
 
-import { schoolColorTheme} from "@/js/constants/schoolColorTheme";
+import {schoolColorTheme} from "@/js/constants/schoolColorTheme";
 
 const emits = defineEmits(['colorSelected'])
 const handleColorBoxClick = (color) => {
-    emits('colorSelected' , color)
+    emits('colorSelected', color)
 }
 </script>
 <template>
@@ -12,14 +12,16 @@ const handleColorBoxClick = (color) => {
         <h3 class="font-semibold text-xl">
             Pick a color theme
         </h3>
-        <div class="flex justify-center flex-row flex-wrap">
-            <div
-                v-for="(color,index) in Object.keys(schoolColorTheme)"
-                :key="index"
-                class="colorBox flex-wrap h-12 m-1 w-12 hover:ring-2"
-                :class="`bg-[${schoolColorTheme[color]['med']}]`"
-                @click="() => handleColorBoxClick(color)"
-            />
+        <div class="flex flex-row flex-wrap justify-center">
+            <template v-for="(color,index) in Object.keys(schoolColorTheme)">
+                <div
+                    v-if="!color.includes('event') && !color.includes('partner') && !color.includes('hardware') && !color.includes('software')"
+                    :key="index"
+                    class="colorBox flex-wrap h-12 m-1 w-12 hover:ring-2"
+                    :class="`bg-[${schoolColorTheme[color]['med']}]`"
+                    @click="() => handleColorBoxClick(color)"
+                />
+            </template>
         </div>
     </div>
 </template>

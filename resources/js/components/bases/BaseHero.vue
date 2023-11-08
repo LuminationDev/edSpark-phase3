@@ -1,7 +1,8 @@
 <script setup>
 import ArticleSingleSwoosh from '../svg/ArticleSingleSwoosh.vue';
-import {computed} from 'vue'
+import {computed, onMounted, resolveDynamicComponent, ref} from 'vue'
 import {imageURL} from "@/js/constants/serverUrl";
+import {schoolColorKeys, schoolColorTheme} from "@/js/constants/schoolColorTheme";
 
 const props = defineProps({
     backgroundUrl: {
@@ -25,10 +26,11 @@ const props = defineProps({
     },
     swooshColorTheme: {
         type: String,
-        required: false,
-        default: 'teal'
+        required: true
     }
 })
+
+
 
 const heroBackground = computed(() => {
     if (!props.backgroundUrl) {
@@ -47,29 +49,47 @@ const heroBackgroundLinkOnly = computed(() => {
     }
 });
 
-const setTheBackground = computed(() => {
-    // console.log(`${imageURL}/${props.backgroundUrl}`);
-    return `${imageURL}/${props.backgroundUrl}`;
-});
+
+
+const gradientBg = ref('')
+
+// :style="'background-image: ' + gradientBg +';'
+onMounted(() => {
+    console.log(props.swooshColorTheme);
+    var useCustomColor = false;
+
+    if(schoolColorKeys.includes(props.swooshColorTheme)){
+        console.log(props.swooshColorTheme);
+        useCustomColor = true
+    } 
+
+    gradientBg.value = "background-image: linear-gradient(to left, "
+        +(useCustomColor ? schoolColorTheme[props.swooshColorTheme]['light'] : schoolColorTheme['teal']['light'])+","
+        +(useCustomColor ? schoolColorTheme[props.swooshColorTheme]['med'] : schoolColorTheme['teal']['med'])+","
+        +(useCustomColor ? schoolColorTheme[props.swooshColorTheme]['dark'] : schoolColorTheme['teal']['dark'])
+        +");"; 
+})
+
+const customFill = computed(() => {
+    return gradientBg.value;
+})
 
 
 </script>
 
 <template>
-    <div class="-mt-28 lg:!h-[720px] BaseHeroContainer h-full relative z-10">
+    <div class="-mt-[9rem] lg:!h-[750px] BaseHeroContainer h-full relative z-10">
         <div
             class="
                 2xl:!pt-44
-                BaseHeroClipThisPath
                 bg-cover
                 grid
                 grid-cols-8
                 h-full
                 pb-20
-                pt-32
+                pt-40
                 px-3
                 relative
-                md:!pt-36
                 lg:!pb-0
                 lg:!pt-40
                 lg:!px-12
@@ -82,7 +102,8 @@ const setTheBackground = computed(() => {
             />
             <div
                 v-if="$slots.titleText || $slots.subtitleText1 || $slots.subtitleText2"
-                class="col-span-8 p-2 relative z-20 lg:!col-span-5"
+                class="col-span-8 p-2 relative z-20 lg:!col-span-5"                
+                :color-theme="swooshColorTheme"
             >
                 <slot name="breadcrumb" />
                 <h1
@@ -145,12 +166,12 @@ const setTheBackground = computed(() => {
                 </div>
             </div>
         </div>
-        <div class="articleSwooshContainer relative w-full z-50">
+        <div class="articleSwooshContainer relative w-full z-50 ">
             <ArticleSingleSwoosh
                 :color-theme="swooshColorTheme"
-                class="scale-y-[300%] md:!scale-y-[200%] lg:!scale-y-[150%] xl:!scale-y-100"
+                class="absolute -top-9 h-16 mt-1 w-full"
             />
-            <div class="absolute -top-9 font-base h-16 mt-1 pl-4 pt-2 text-base text-white w-full z-50 md:!pl-12 md:!text-2xl">
+            <div class="absolute -top-9 h-16 mt-1 w-full z-50  flex items-endfont-base pl-4 pt-2 text-base text-white md:!pl-12 md:!text-2xl">
                 <slot
                     name="submenu"
                 />

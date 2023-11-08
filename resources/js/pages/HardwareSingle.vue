@@ -1,16 +1,17 @@
 <script setup lang="ts">
+import purify from "dompurify";
+import {ref} from 'vue';
+
 import BaseBreadcrumb from "@/js/components/bases/BaseBreadcrumb.vue";
 import BaseHero from '@/js/components/bases/BaseHero.vue';
 import BaseSingle from '@/js/components/bases/BaseSingle.vue';
 import BaseSingleSubmenu from "@/js/components/bases/BaseSingleSubmenu.vue";
+import HardwareAudioVisualTechSpecs from "@/js/components/hardware/HardwareAudioVisualTechSpecs.vue";
 import HardwareCarousel from '@/js/components/hardware/HardwareCarousel.vue';
+import HardwareEmergingTechSpecs from "@/js/components/hardware/HardwareEmergingTechSpecs.vue";
+import HardwareLaptopTechSpecs from "@/js/components/hardware/HardwareLaptopTechSpecs.vue";
 import HardwareSingleBrandContent from "@/js/components/hardware/HardwareSingleBrandContent.vue";
 import ExtraResourceTemplateDisplay from "@/js/components/renderer/ExtraResourceTemplateDisplay.vue";
-
-import {ref} from 'vue';
-import HardwareLaptopTechSpecs from "@/js/components/hardware/HardwareLaptopTechSpecs.vue";
-import HardwareEmergingTechSpecs from "@/js/components/hardware/HardwareEmergingTechSpecs.vue";
-import HardwareAudioVisualTechSpecs from "@/js/components/hardware/HardwareAudioVisualTechSpecs.vue";
 
 const baseContentRef = ref(null);
 /**
@@ -21,7 +22,7 @@ type SubmenuObjectType = {
     displayText: string,
     value: string
 }
-const hardwareSubmenu : Array<SubmenuObjectType> = [
+const hardwareSubmenu: Array<SubmenuObjectType> = [
     {
         displayText: 'Overview',
         value: 'overview'
@@ -41,7 +42,7 @@ const handleChangeSubmenu = (value): void => {
  * End of submenu specific code  plus @emit-active-tab-to-specific-page in BaseSingle
  * */
 
-const colorTheme = ref('green')
+const colorTheme = ref('hardwareGreen')
 </script>
 
 <template>
@@ -79,7 +80,7 @@ const colorTheme = ref('green')
                     <div v-html="contentFromBase['excerpt']" />
                 </template>
                 <template #submenu>
-                    <div class="cursor-pointer flex flex-row gap-4 hardwareSubmenu z-40">
+                    <div class="cursor-pointer flex flex-row gap-4 hardwareSubmenu mb-[-1px] z-40">
                         <BaseSingleSubmenu
                             :emit-to-base="emitFromSubmenu"
                             :menu-array="hardwareSubmenu"
@@ -120,7 +121,7 @@ const colorTheme = ref('green')
                                         pt-8
                                         text-lg
                                         "
-                                    v-html="contentFromBase['content']"
+                                    v-html="purify.sanitize(contentFromBase['content'])"
                                 />
                                 <div
                                     v-if="contentFromBase['extra_content'] && contentFromBase['extra_content'].length"

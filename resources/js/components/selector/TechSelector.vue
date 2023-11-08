@@ -13,6 +13,7 @@ const props = defineProps({
         required: false
     }
 })
+
 const emits = defineEmits(['sendSchoolTech'])
 const handleDataFromChildren = (techUsedList) =>{
     console.log(techUsedList)
@@ -21,7 +22,7 @@ const handleDataFromChildren = (techUsedList) =>{
 
 </script>
 <template>
-    <div class="flex flex-col schoolTechContainer">
+    <div class="flex flex-col schoolTechContainer gap-10">
         <GenericSelector
             title="Department Provided Technologies"
             :list-data="schoolTech"

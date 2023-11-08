@@ -29,12 +29,12 @@ const imageURL = import.meta.env.VITE_SERVER_IMAGE_API
 const schoolContent: Ref<SchoolDataType | null> = ref(null)
 const colorTheme = ref('teal') // default color theme
 const showSchoolNotAvailable = ref(false)
-const schoolNotAvailableMessage= ref('')
+const schoolNotAvailableMessage = ref('')
 
 // ref to hold images from editing
 const logoStorage = ref(null)
 const coverImageStorage = ref(null)
-const currentSchoolName = computed(()=>{
+const currentSchoolName = computed(() => {
     return route.params.name ? route.params.name : ''
 })
 
@@ -53,7 +53,7 @@ onBeforeMount(async () => {
 
 })
 
-watch(currentSchoolName, async () =>{
+watch(currentSchoolName, async () => {
     console.log('watcher called ')
     schoolContent.value = null
     await fetchSchoolByNameAsync(currentSchoolName.value)
@@ -63,7 +63,7 @@ const fetchSchoolByNameAsync = async (schoolName): Promise<void> => {
     if (isPreviewMode.value) {
         try {
             const pendingData = await schoolService.fetchPendingSchoolByName(schoolName, null, currentUser.value.id, null)
-            if(pendingData) {
+            if (pendingData) {
                 schoolContent.value = pendingData
                 if (schoolContent.value['metadata']) {
                     const colorThemeMeta = schoolContent.value['metadata'].filter(meta => meta['schoolmeta_key'] === 'school_color_theme');
@@ -71,7 +71,7 @@ const fetchSchoolByNameAsync = async (schoolName): Promise<void> => {
                         colorTheme.value = colorThemeMeta[0]['schoolmeta_value'];
                     }
                 }
-            } else{
+            } else {
                 showSchoolNotAvailable.value = true
                 schoolNotAvailableMessage.value = "No pending content available"
                 schoolContent.value = null;
@@ -112,7 +112,7 @@ const handleSaveNewSchoolInfo = async (contentBlocks, techUsed) => {
 }
 
 const handleChangeColorTheme = (newColor) => {
-    console.log('received command to swap color to -> ' + 'newColor')
+    console.log('received command to swap color ' + colorTheme.value + ' to -> ' + 'newColor: ' + newColor)
     colorTheme.value = newColor
 }
 
@@ -124,17 +124,17 @@ const handleChangeColorTheme = (newColor) => {
  */
 const handleReceivePhotoFromContent = (type, file) => {
     switch (type) {
-    case 'logo':
-        console.log('received logo')
-        logoStorage.value = file
-        break;
-    case 'coverImage':
-        console.log('received cover Image')
-        coverImageStorage.value = file
-        break;
-    default:
-        console.log('received unknown type image')
-        break;
+        case 'logo':
+            console.log('received logo')
+            logoStorage.value = file
+            break;
+        case 'coverImage':
+            console.log('received cover Image')
+            coverImageStorage.value = file
+            break;
+        default:
+            console.log('received unknown type image')
+            break;
     }
 }
 
@@ -174,11 +174,11 @@ const isSchoolContentPopulated = computed(() => {
 })
 
 // replace logo with edspark logo as a fallback image.
-const handleErrorImage = (e)=>{
+const handleErrorImage = (e) => {
     e.target.src = edSparkLogo
 }
 
-const handleCloseModerationTab = () : void =>{
+const handleCloseModerationTab = (): void => {
     window.close();
 }
 </script>
@@ -207,6 +207,7 @@ const handleCloseModerationTab = () : void =>{
                                 parent-page="schools"
                                 parent-page-link="browse/school"
                                 :color-theme="colorTheme"
+                                @send-color-to-school-single="handleChangeColorTheme"
                                 class="mt-[120px] pt-[10px]"
                             />
                         </template>
@@ -224,10 +225,10 @@ const handleCloseModerationTab = () : void =>{
                                                 mb-4
                                                 place-items-center
                                                 schoolTechHoverableRow
-                                                gap-4
-                                                "
+
+                                                gap-4"
                                         >
-                                            <SchoolTechHoverableRow 
+                                            <SchoolTechHoverableRow
                                                 :tech-used-list="schoolContent.tech_used"
                                                 :color-theme="colorTheme"
                                             />
@@ -245,7 +246,7 @@ const handleCloseModerationTab = () : void =>{
                             </div>
                         </template>
                         <template #submenu>
-                            <div class="SchoolSubmenu cursor-pointer flex flex-row gap-2 z-40 md:!gap-4">
+                            <div class="SchoolSubmenu mb-[-1px] cursor-pointer flex flex-row gap-2 z-40 md:!gap-4">
                                 <BaseSingleSubmenu
                                     :emit-to-base="emitFromSubmenu"
                                     :menu-array="schoolSubmenu"
@@ -266,7 +267,9 @@ const handleCloseModerationTab = () : void =>{
                             >
                                 PREVIEW CONTENT (MODERATION)
                                 <div class="font-medium text-base text-center">
-                                    Created at: {{ schoolContent['updated_at'] ? formatDateToDayTime(schoolContent['updated_at']) : '' }}
+                                    Created at: {{
+                                        schoolContent['updated_at'] ? formatDateToDayTime(schoolContent['updated_at']) : ''
+                                    }}
                                     by <span class="font-semibold"> {{ schoolContent?.owner?.owner_name || "" }} </span>
                                 </div>
                             </div>
@@ -303,7 +306,8 @@ const handleCloseModerationTab = () : void =>{
         v-else-if="!isSchoolContentPopulated && showSchoolNotAvailable"
         class="flex justify-center items-center flex-col h-36 mt-[10vh]"
     >
-        <EdsparkPageNotFound :error-message="schoolNotAvailableMessage ? schoolNotAvailableMessage : 'School not available. Please check again later'" />
+        <EdsparkPageNotFound
+            :error-message="schoolNotAvailableMessage ? schoolNotAvailableMessage : 'School not available. Please check again later'"/>
     </div>
 
     <div
