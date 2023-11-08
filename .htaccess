@@ -6,11 +6,11 @@
 </IfModule>
 
 #Secure a directory that the .htaccess file is in with a password
-AuthType basic
-AuthName "Protected Directory"
-AuthUserFile /home/luminationdev/public_html/futureSchools/web/.htpasswd
-AuthGroupFile /dev/null
-Require valid-user
+#AuthType basic
+#AuthName "Protected Directory"
+#AuthUserFile /home/luminationdev/public_html/futureSchools/web/.htpasswd
+#AuthGroupFile /dev/null
+#Require valid-user
 
 # Allow from localhost without password
 Order Deny,Allow

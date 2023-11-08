@@ -325,7 +325,6 @@ router.beforeEach(async (to, from, next) => {
             } else {
                 console.log(authStore.isAuthenticated)
                 window.location = '/login'
-                next();
             }
         })
 
