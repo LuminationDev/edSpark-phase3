@@ -48,8 +48,6 @@ export const schoolService = {
         ).then(res => {
             if (res.data.result) {
                 const result = res.data.result
-                console.log('result issssss')
-                console.log(result)
                 const {content_blocks, tech_used, cover_image, logo} = parseToJsonIfString(result);
                 return ({
                     ...result,

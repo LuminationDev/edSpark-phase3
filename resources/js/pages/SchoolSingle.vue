@@ -26,7 +26,6 @@ import {SchoolDataType} from "@/js/types/SchoolTypes";
 
 const route = useRoute();
 const imageURL = import.meta.env.VITE_SERVER_IMAGE_API
-console.log(route.params)
 const schoolContent: Ref<SchoolDataType | null> = ref(null)
 const colorTheme = ref('teal') // default color theme
 const showSchoolNotAvailable = ref(false)
