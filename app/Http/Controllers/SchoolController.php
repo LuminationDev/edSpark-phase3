@@ -182,19 +182,19 @@ class SchoolController extends Controller
             return response()->json(['message' => 'Site not found', 'status' => 404], 404);
         }
 
-        // If user is not 'SCHLDR' or 'Superadmin', just fetch the school
-        if ($user->role->role_name !== 'SCHLDR' && $user->role->role_name !== 'Superadmin') {
-            $school = School::where('site_id', $siteId)->where('status', 'Published')->first();
-
-            if (!$school) {
-                return response()->json(['message' => 'School not found based on the provided site id', 'status' => 404], 404);
-            }
-            $schoolMetadata = Schoolmeta::where('school_id', $school->school_id)->get();
-            $schoolMetadataToSend = $this->formatSchoolMetadata($schoolMetadata);
-            $result = $this->schoolModelToJson($school, $schoolMetadataToSend, $request);
-
-            return response()->json($result);
-        }
+//        // If user is not 'SCHLDR' or 'Superadmin', just fetch the school
+//        if ($user->role->role_name !== 'SCHLDR' && $user->role->role_name !== 'Superadmin') {
+//            $school = School::where('site_id', $siteId)->where('status', 'Published')->first();
+//
+//            if (!$school) {
+//                return response()->json(['message' => 'School not found based on the provided site id', 'status' => 404], 404);
+//            }
+//            $schoolMetadata = Schoolmeta::where('school_id', $school->school_id)->get();
+//            $schoolMetadataToSend = $this->formatSchoolMetadata($schoolMetadata);
+//            $result = $this->schoolModelToJson($school, $schoolMetadataToSend, $request);
+//
+//            return response()->json($result);
+//        }
 
         // For 'SCHLDR' or 'Superadmin', use the firstOrCreate logic
         try {

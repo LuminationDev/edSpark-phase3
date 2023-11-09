@@ -73,7 +73,7 @@ const softwareResponsiveData = computed(() => {
                     :data-array="advicesData ? advicesData : []"
                     special-attribute="twoThirdWide"
                 />
-            </div> 
+            </div>
         </div>
 
         <SectionHeader
