@@ -6,41 +6,33 @@ export const defaultSchoolTechLandscape = {}
 
 
 export const defaultSchoolContent = {
-    "time": 1696459941458,
+    "time": 1699418353931,
     "blocks": [{
-        "id": "n1Hd4P4zHP",
-        "type": "paragraph",
-        "data": {"text": "Welcome to Your School's Dedicated Page!"}
+        "id": "uibuJxuKcA",
+        "type": "header",
+        "data": {"text": "School snapshot", "level": 2}
     }, {
-        "id": "Xy2nZrwlA_",
+        "id": "NpPfn4NZN1",
         "type": "paragraph",
-        "data": {"text": "1. <b>Blocks</b>: Seamless Editing Experience: Our intuitive editor is designed around flexible blocks. To introduce a new block, hover below an existing one and click the '+' icon. From headings to paragraphs to images, our options are tailored to your needs."}
+        "data": {"text": "[Describe your school's offerings, challenges, and standout attributes in a detailed paragraph] ."}
     }, {
-        "id": "g6_RQfmfPH",
-        "type": "paragraph",
-        "data": {"text": "2.<b> Efficient Management</b>: Need to make changes? It's straightforward. Hover over the block's \"6 dots\" icon, click to delete, and confirm. It’s streamlined for a hassle-free experience."}
+        "id": "KctVAlfEDQ",
+        "type": "header",
+        "data": {"text": "Technology across the school", "level": 2}
     }, {
-        "id": "aVNG5FSWs2",
+        "id": "irugPgi1Q6",
         "type": "paragraph",
-        "data": {"text": "3. <b>Images</b>: Enhance Your Page: Using our Image block, easily integrate images that represent your institution best. Remember, each block supports one image, so add multiple blocks if you want a series of pictures."}
-    }, {
-        "id": "XsOLdkQ7jb",
+        "data": {"text": "[Describe your school's technology usage and how students access the mentioned technology, is it BYOD or provided.]&nbsp;"}
+    }, {"id": "Lh80VfkEYM", "type": "header", "data": {"text": "Digital technology", "level": 2}}, {
+        "id": "mThGh3cyRZ",
         "type": "paragraph",
-        "data": {"text": "4. <b>Video Integration</b>: Our attachment block is optimized for videos up to 10 MB, ideal for short intros. For extended content, you can smoothly embed links from platforms such as YouTube."}
-    }, {
-        "id": "hKbQ3kQMdp",
+        "data": {"text": "[Describe your school's focus in term of digital technology usage such as photography, 3d design, etc.]&nbsp;"}
+    }, {"id": "EL9wy0zHSk", "type": "header", "data": {"text": "Student learning", "level": 2}}, {
+        "id": "MxzYw3LXtX",
         "type": "paragraph",
-        "data": {"text": "5. <b>Personalize Your Identity</b>: On the right side, you'll find options to upload your school's logo and cover image, ensuring your page truly resonates with your institution’s spirit."}
-    }, {
-        "id": "oK_wiai4BD",
-        "type": "paragraph",
-        "data": {"text": "6. <b>Tailored Themes &amp; Badges</b>: Dive into a range of technology badges and color themes available on the right. These are specifically crafted to let schools showcase their unique technological edge. If you feel there's something missing, don’t hesitate to reach out to the DfE for additional technology badges."}
-    }, {
-        "id": "SjeTeo48fH",
-        "type": "paragraph",
-        "data": {"text": "Once you’ve curated your page to perfection, hit 'submit content'. After a brief moderation process, your meticulously designed school page will be viewable by the community."}
-    }, {"id": "KiLYisMwcF", "type": "paragraph", "data": {"text": "Welcome onboard and happy editing!"}}],
-    "version": "2.28.0"
+        "data": {"text": "[Highlight what stands out in the students' learning process being carried out at your school. Include any images or YouTube/video links (simply paste the link here) for more engagement.]&nbsp;"}
+    }],
+    "version": "2.29.0-rc.1"
 }
 export const emptyEditorJsData = {
     "time": 1696459941458,
