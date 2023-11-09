@@ -17,6 +17,12 @@ const props = defineProps({
 
 })
 
+const stripHTML = (value) => {
+    const div = document.createElement('div');
+    div.innerHTML = value;
+    return div.textContent;
+};
+
 
 const router = useRouter()
 
@@ -55,7 +61,7 @@ const handleClickSchoolCard = () => {
                     {{ data.name }}
                 </h5>
                 <div class="cardDisplayPreview line-clamp school-card-body text-left">
-                    {{ data.content_blocks.blocks[1].data.text }}
+                    {{ stripHTML(data.content_blocks.blocks[1].data.text) }}
                 </div>
             </div>
         </template>
@@ -76,21 +82,6 @@ const handleClickSchoolCard = () => {
 </template>
 
 <style scoped>
-.line-clamp {
-    /* width: 400px; */
-    margin: 0;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: initial;
-    display: -webkit-box;
-    -webkit-line-clamp: 7;
-    -webkit-box-orient: vertical;
-    max-height: 210px;
-}
-
-.line-clamp p {
-    display: contents;
-}
 
 
 </style>
