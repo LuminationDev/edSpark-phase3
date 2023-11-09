@@ -167,6 +167,10 @@ const handleClickShare = (): void => {
         navigator.clipboard.writeText(link)
         shareTippyMessage.value = 'Link copied to clipboard!'
         toast.success('Copied link to clipboard!')
+        setTimeout(() => {
+            shareTippyMessage.value = 'Copy link'
+        }, 1500)
+
     } else {
         toast.error('Failed to copy link. Please try again later')
     }
@@ -187,7 +191,7 @@ const cardFlexDirection = computed(() => {
 
 
 const handleResetTippyMessage = (): void => {
-    shareTippyMessage.value = 'Copy Link'
+    shareTippyMessage.value = 'Copy link'
 }
 
 const debouncedDefaultLike = debounce(() => {
@@ -266,8 +270,7 @@ const cardHoverToggle: Ref<boolean> = ref(false);
             <div
                 class="flex flex-row generic-card__footer transition-height  transition-all h-0 group-hover:h-14 mt-auto ml-auto pl-4 justify-items-end justify-end bg-white">
 
-                <div class="m-1 mb-2 rounded bg-white hover:cursor-pointer like-share" v-tippy="'Like'"
-                    @click="debouncedDefaultLike">
+                <div class="m-1 mb-2 rounded bg-white hover:cursor-pointer like-share" v-tippy="'Like'" @click="debouncedDefaultLike">
                     <LikeFull v-if="currentUserLiked" :key="props.guid" />
                     <Like v-else :key="props.guid" />
                 </div>
@@ -279,7 +282,7 @@ const cardHoverToggle: Ref<boolean> = ref(false);
                 </div>
 
                 <div class="m-1 mb-2 mr-2 rounded bg-white hover:cursor-pointer like-share"
-                    @mouseenter="handleResetTippyMessage" v-tippy="shareTippyMessage" @click="handleClickShare">
+                    v-tippy="shareTippyMessage" @click="handleClickShare">
                     <ShareIcon />
                 </div>
 
@@ -289,6 +292,8 @@ const cardHoverToggle: Ref<boolean> = ref(false);
     </div>
 </template>
 
+                    <!-- @mouseleave="handleResetTippyMessage"
+                    @mouseenter="handleResetTippyMessage"  -->
 
 <style>
 /* body {
