@@ -174,18 +174,31 @@ const numberOfLoadingPlaceholder = computed(() =>{
         height: 12px;
         border-radius: 50%;
     }
-    :deep(.carousel__pagination){
-        margin-top:20px
+
+    :deep(.carousel__pagination) {
+        margin-top: 20px
     }
+
+    :deep(.carousel__next) {
+        border: 2px solid black;
+        border-radius: 100%
+    }
+
+    :deep(.carousel__prev) {
+        border: 2px solid black;
+        border-radius: 100%
+    }
+
 }
+
 
 @media only screen and (min-width: 350px) {
     .carousel__wrapper {
         :deep(.carousel__next){
-            right: -40px ;
+            right: -42px ;
         }
         :deep(.carousel__prev){
-            left: -40px ;
+            left: -42px ;
         }
     }
 }
