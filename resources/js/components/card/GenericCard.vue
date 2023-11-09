@@ -19,6 +19,9 @@ import { toast } from "vue3-toastify";
 import { guid as genGuid } from "@/js/helpers/guidGenerator";
 
 
+import purify from "dompurify";
+
+
 const props = defineProps({
     id: {
         type: [String, Number],
@@ -89,6 +92,17 @@ const props = defineProps({
 const currentUserLiked: Ref<boolean> = ref(props.isLikedByUser);
 const currentUserBookmarked: Ref<boolean> = ref(props.isBookmarkedByUser);
 const shareTippyMessage: Ref<string> = ref('Copy link');
+
+
+
+const stripHTML = (value) => {
+    const div = document.createElement('div');
+    div.innerHTML = value;
+    return div.textContent;
+};
+
+
+
 /**
  * Check if both start and end date are provided.
  * return both date with "-" if true
@@ -153,13 +167,22 @@ const handleClickShare = (): void => {
         navigator.clipboard.writeText(link)
         shareTippyMessage.value = 'Link copied to clipboard!'
         toast.success('Copied link to clipboard!')
+        setTimeout(() => {
+            shareTippyMessage.value = 'Copy link'
+        }, 1500)
+
     } else {
         toast.error('Failed to copy link. Please try again later')
     }
 }
 
+// function parentWidth(elem) {
+//     return elem.parentNode.clientWidth;
+// }
+// parentWidth(document.getElementById('typehead'));
+
 const cardFlexDirection = computed(() => {
-    if(props.sectionType == 'school'){
+    if (props.sectionType == 'school') {
         return 'flex-col items-center';
     } else {
         return 'flex-row items-end';
@@ -168,7 +191,7 @@ const cardFlexDirection = computed(() => {
 
 
 const handleResetTippyMessage = (): void => {
-    shareTippyMessage.value = 'Copy Link'
+    shareTippyMessage.value = 'Copy link'
 }
 
 const debouncedDefaultLike = debounce(() => {
@@ -183,14 +206,13 @@ const cardHoverToggle: Ref<boolean> = ref(false);
 
 
 // group-hover:brightness-50
-                    // group-hover:min-h-[15%]
+// group-hover:min-h-[15%]
 
 </script>
 
 <template>
     <div class="GenericCardContainer card_parent generic-card__wrapper group !border-slate-300 rounded overflow-hidden"
-    :class="props.sectionType"
-        @mouseenter="cardHoverToggle = true">
+        :class="props.sectionType" @mouseenter="cardHoverToggle = true">
         <template v-if="!props.overrideContent">
             <div class="
                     rounded-t
@@ -203,13 +225,12 @@ const cardHoverToggle: Ref<boolean> = ref(false);
                     overflow-visible
                     relative   
                     z-0                 
-                    "
-                :style="`background-image: url('${imageURL}/${coverImage}');`">
+                    " :style="`background-image: url('${imageURL}/${coverImage}');`">
 
 
             </div>
             <div @click="clickCallback" class="cardContent m-0 p-0 group-hover:-mt-[120px] z-10">
-                    <div class="cardContentWrapper p-6 bg-white h-[210px] group-hover:h-[315px]">
+                <div class="cardContentWrapper p-6 bg-white h-[210px] group-hover:h-[315px]">
 
                     <div class="flex flex-row relative gap-4 mb-3 items-center">
                         <div v-if="$slots.icon">
@@ -228,7 +249,7 @@ const cardHoverToggle: Ref<boolean> = ref(false);
                             {{ formattedDate }}
                         </div>
                         <div v-if="props.displayContent" class="cardDisplayPreview line-clamp"
-                            v-html="props.displayContent" />
+                            v-html="stripHTML(props.displayContent)" />
                     </div>
                 </div>
             </div>
@@ -241,27 +262,27 @@ const cardHoverToggle: Ref<boolean> = ref(false);
         </template>
 
 
-        <div 
-            class="flex w-full justify-between left-0 bg-white"
-            :class="cardFlexDirection"
-        >
+        <div class="cardFooter flex w-full justify-between left-0 bg-white" :class="cardFlexDirection">
             <div v-if="$slots.typeTag">
                 <slot name="typeTag" />
             </div>
 
-            <div class="flex flex-row generic-card__footer transition-height  transition-all h-0 group-hover:h-14 mt-auto ml-auto pl-4 justify-items-end justify-end bg-white">
+            <div
+                class="flex flex-row generic-card__footer transition-height  transition-all h-0 group-hover:h-14 mt-auto ml-auto pl-4 justify-items-end justify-end bg-white">
 
-                <div class="m-1 mb-2 rounded bg-white hover:cursor-pointer like-share" v-tippy="'Like'" @click="debouncedDefaultLike" >
-                    <LikeFull v-if="currentUserLiked" :key="props.guid"/>
-                    <Like v-else :key="props.guid"/>
+                <div class="m-1 mb-2 rounded bg-white hover:cursor-pointer like-share" v-tippy="'Like'" @click="debouncedDefaultLike">
+                    <LikeFull v-if="currentUserLiked" :key="props.guid" />
+                    <Like v-else :key="props.guid" />
                 </div>
-                
-                <div class="m-1 mb-2 rounded bg-white hover:cursor-pointer like-share" @click="debouncedDefaultBookmark" v-tippy="'Bookmark'" >
-                    <BookmarkFull v-if="currentUserBookmarked" :key="props.guid"/>
+
+                <div class="m-1 mb-2 rounded bg-white hover:cursor-pointer like-share" @click="debouncedDefaultBookmark"
+                    v-tippy="'Bookmark'">
+                    <BookmarkFull v-if="currentUserBookmarked" :key="props.guid" />
                     <BookMark v-else :key="props.guid" />
                 </div>
 
-                <div class="m-1 mb-2 mr-2 rounded bg-white hover:cursor-pointer like-share" @mouseenter="handleResetTippyMessage" v-tippy="shareTippyMessage" @click="handleClickShare">
+                <div class="m-1 mb-2 mr-2 rounded bg-white hover:cursor-pointer like-share"
+                    v-tippy="shareTippyMessage" @click="handleClickShare">
                     <ShareIcon />
                 </div>
 
@@ -271,6 +292,8 @@ const cardHoverToggle: Ref<boolean> = ref(false);
     </div>
 </template>
 
+                    <!-- @mouseleave="handleResetTippyMessage"
+                    @mouseenter="handleResetTippyMessage"  -->
 
 <style>
 /* body {
@@ -278,11 +301,23 @@ const cardHoverToggle: Ref<boolean> = ref(false);
   background-size: cover;
 } */
 
-*, *:before, *:after {
-      -moz-box-sizing: border-box;
-      -webkit-box-sizing: border-box;
-      box-sizing: border-box;
-     }
+*,
+*:before,
+*:after {
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+@media (max-width: 1279px) {
+
+    .EduAdviceCards .cardFooter {
+        flex-direction: column;
+        align-items: center;
+    }
+
+}
+
 
 .fadebg {
     z-index: 1;
@@ -308,8 +343,6 @@ const cardHoverToggle: Ref<boolean> = ref(false);
     padding-top: 12px
 }
 
-
-
 .like-share svg {
     width: 20px;
     height: 20px;
@@ -323,8 +356,25 @@ const cardHoverToggle: Ref<boolean> = ref(false);
     transition: 0.3s;
 }
 
-.like-share:hover path, .like-share:hover svg {
+.like-share:hover path,
+.like-share:hover svg {
     stroke-width: 2px;
+}
+
+.GenericCardContainer .line-clamp {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    height: 3.2lh;
+    -webkit-box-orient: vertical;
+    margin: 0 auto;
+}
+
+
+.GenericCardContainer:hover .line-clamp {
+    -webkit-line-clamp: 6;
+    height: 6.2lh;
 }
 
 
@@ -353,31 +403,6 @@ const cardHoverToggle: Ref<boolean> = ref(false);
     -webkit-line-clamp: 6;
     -webkit-box-orient: vertical; */
 }
-
-.card_parent:hover .card-content_body {
-    -webkit-line-clamp: 14;
-}
-
-.line-clamp {
-    /* width: 400px; */
-    margin: 0;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: initial;
-    display: -webkit-box;
-    -webkit-line-clamp: 7;
-    -webkit-box-orient: vertical;
-    max-height: 210px;
-}
-
-.school .line-clamp {
-    -webkit-line-clamp: 6 !important;
-    max-height: 180px !important;
-}
-
-/* .line-clamp p {
-  display: contents;
-} */
 
 /* p:after {
   content: "\A";

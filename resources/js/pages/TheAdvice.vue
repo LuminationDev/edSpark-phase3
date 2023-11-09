@@ -46,7 +46,7 @@ const {
 
 
     <EducatorHero />
-    <div class="grid grid-cols-1 gap-10 place-items-center mt-10 px-5 md:!grid-cols-2 lg:!grid-cols-3 lg:!px-huge">
+    <div class="EduAdviceCards grid grid-cols-1 gap-10 place-items-center mt-10 px-5 md:!grid-cols-2 lg:!grid-cols-3 lg:!px-huge">
         <template v-if="generalAdvice && generalAdvice.length">
             <AdviceCard
                 v-for="advice in generalAdvice"
