@@ -40,7 +40,7 @@ class LoginController extends Controller
                 'full_name' => $user->name,
                 'name' => $user->name,
                 'role_id' => $role->id,
-                'site_id' => $site ? $user->user['mainsiteid'] : 9999 ,
+                'site_id' => $site ? $user->user['mainsiteid'] : 10000 , // 10000 fallback id -> school not available
                 'remember_token' => Str::random(15),
                 'token' => $idToken ?? $user->token,  // Adjusted to fall back to `$user->token` if `$idToken` is not set
                 'isFirstTimeVisit' => false,
