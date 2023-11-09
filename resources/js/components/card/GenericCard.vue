@@ -14,12 +14,10 @@ import { cardLinkGenerator } from "@/js/helpers/cardDataHelper";
 import { useUserStore } from "@/js/stores/useUserStore";
 
 const { currentUser } = storeToRefs(useUserStore())
+import purify from "dompurify";
 import { toast } from "vue3-toastify";
 
 import { guid as genGuid } from "@/js/helpers/guidGenerator";
-
-
-import purify from "dompurify";
 
 
 const props = defineProps({
@@ -211,83 +209,140 @@ const cardHoverToggle: Ref<boolean> = ref(false);
 </script>
 
 <template>
-    <div class="GenericCardContainer card_parent generic-card__wrapper group !border-slate-300 rounded overflow-hidden"
-        :class="props.sectionType" @mouseenter="cardHoverToggle = true">
+    <div
+        class="!border-slate-300 GenericCardContainer card_parent generic-card__wrapper group overflow-hidden rounded"
+        :class="props.sectionType"
+        @mouseenter="cardHoverToggle = true"
+    >
         <template v-if="!props.overrideContent">
-            <div class="
-                    rounded-t
-                    bg-cover
+            <div
+                class="
                     bg-center
+                    bg-cover
                     cardTopCoverImage
                     filter
                     group-hover:brightness-75
                     min-h-[35%]
                     overflow-visible
-                    relative   
-                    z-0                 
-                    " :style="`background-image: url('${imageURL}/${coverImage}');`">
-
-
-            </div>
-            <div @click="clickCallback" class="cardContent m-0 p-0 group-hover:-mt-[120px] z-10">
-                <div class="cardContentWrapper p-6 bg-white h-[210px] group-hover:h-[315px]">
-
-                    <div class="flex flex-row relative gap-4 mb-3 items-center">
+                    relative
+                    rounded-t
+                    z-0
+                    "
+                :style="`background-image: url('${imageURL}/${coverImage}');`"
+            />
+            <div
+                class="cardContent group-hover:-mt-[120px] m-0 p-0 z-10"
+                @click="clickCallback"
+            >
+                <div class="bg-white cardContentWrapper group-hover:h-[315px] h-[210px] p-6">
+                    <div class="flex items-center flex-row gap-4 mb-3 relative">
                         <div v-if="$slots.icon">
                             <slot name="icon" />
                         </div>
 
-                        <div v-if="props.title" class="cardTitle !mb-0">
+                        <div
+                            v-if="props.title"
+                            class="!mb-0 cardTitle title-line-clamp"
+                        >
                             {{ props.title }}
                         </div>
                     </div>
                     <div class="card-content_body">
-                        <div v-if="props.displayAuthor" class="cardAuthor">
+                        <div
+                            v-if="props.displayAuthor"
+                            class="cardAuthor"
+                        >
                             {{ props.displayAuthor['author_name'] || props.displayAuthor }}
                         </div>
-                        <div v-if="props.displayDate" class="cardDate">
+                        <div
+                            v-if="props.displayDate"
+                            class="cardDate"
+                        >
                             {{ formattedDate }}
                         </div>
-                        <div v-if="props.displayContent" class="cardDisplayPreview line-clamp"
-                            v-html="stripHTML(props.displayContent)" />
+                        <div
+                            v-if="props.displayContent"
+                            class="cardDisplayPreview line-clamp"
+                            v-html="stripHTML(props.displayContent)"
+                        />
                     </div>
                 </div>
             </div>
             <!-- </div> -->
         </template>
         <template v-else>
-            <div class="schoolCardContentOverridding w-full" @click="props.clickCallback">
+            <div
+                class="schoolCardContentOverridding w-full"
+                @click="props.clickCallback"
+            >
                 <slot name="overiddenContent" />
             </div>
         </template>
 
 
-        <div class="cardFooter flex w-full justify-between left-0 bg-white" :class="cardFlexDirection">
+        <div
+            class="bg-white cardFooter flex justify-between left-0 w-full"
+            :class="cardFlexDirection"
+        >
             <div v-if="$slots.typeTag">
                 <slot name="typeTag" />
             </div>
 
             <div
-                class="flex flex-row generic-card__footer transition-height  transition-all h-0 group-hover:h-14 mt-auto ml-auto pl-4 justify-items-end justify-end bg-white">
-
-                <div class="m-1 mb-2 rounded bg-white hover:cursor-pointer like-share" v-tippy="'Like'" @click="debouncedDefaultLike">
-                    <LikeFull v-if="currentUserLiked" :key="props.guid" />
-                    <Like v-else :key="props.guid" />
+                class="
+                    bg-white
+                    flex
+                    justify-end
+                    justify-items-end
+                    flex-row
+                    generic-card__footer
+                    group-hover:h-14
+                    h-0
+                    ml-auto
+                    mt-auto
+                    pl-4
+                    transition-all
+                    transition-height
+                    "
+            >
+                <div
+                    v-tippy="'Like'"
+                    class="bg-white like-share m-1 mb-2 rounded hover:cursor-pointer"
+                    @click="debouncedDefaultLike"
+                >
+                    <LikeFull
+                        v-if="currentUserLiked"
+                        :key="props.guid"
+                    />
+                    <Like
+                        v-else
+                        :key="props.guid"
+                    />
                 </div>
 
-                <div class="m-1 mb-2 rounded bg-white hover:cursor-pointer like-share" @click="debouncedDefaultBookmark"
-                    v-tippy="'Bookmark'">
-                    <BookmarkFull v-if="currentUserBookmarked" :key="props.guid" />
-                    <BookMark v-else :key="props.guid" />
+                <div
+                    v-tippy="'Bookmark'"
+                    class="bg-white like-share m-1 mb-2 rounded hover:cursor-pointer"
+                    @click="debouncedDefaultBookmark"
+                >
+                    <BookmarkFull
+                        v-if="currentUserBookmarked"
+                        :key="props.guid"
+                    />
+                    <BookMark
+                        v-else
+                        :key="props.guid"
+                    />
                 </div>
 
-                <div class="m-1 mb-2 mr-2 rounded bg-white hover:cursor-pointer like-share"
-                    v-tippy="shareTippyMessage" @click="handleClickShare">
+                <div
+                    v-tippy="shareTippyMessage"
+                    class="bg-white like-share m-1 mb-2 mr-2 rounded hover:cursor-pointer"
+                    @click="handleClickShare"
+                >
                     <ShareIcon />
                 </div>
-
             </div>
-
         </div>
     </div>
 </template>
@@ -359,6 +414,13 @@ const cardHoverToggle: Ref<boolean> = ref(false);
 .like-share:hover path,
 .like-share:hover svg {
     stroke-width: 2px;
+}
+.GenericCardContainer .title-line-clamp{
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
 }
 
 .GenericCardContainer .line-clamp {
