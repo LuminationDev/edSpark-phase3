@@ -21,10 +21,16 @@ const props = defineProps({
     }
 });
 
+const stripHTML = (value) => {
+    const div = document.createElement('div');
+    div.innerHTML = value;
+    return div.textContent;
+};
+
 function getBlurb(mapPopupInfo) {
 
     if (mapPopupInfo.content_blocks != null && mapPopupInfo.content_blocks.blocks.length > 0) {
-        return mapPopupInfo.content_blocks.blocks[1].data.text;
+        return stripHTML(mapPopupInfo.content_blocks.blocks[1].data.text);
     } else {
         return "";
     }
@@ -56,9 +62,9 @@ background-image: url('${imageURL}/${props.schoolData?.cover_image ?? ''}');
 background-size: cover ;background-blend-mode: screen; `" -->
 
 <template>
-    <div class="flex flex-col mapOuterContainer">
+    <div class="flex flex-col mapOuterContainer justify-between">
 
-        <div class="flex justify-between flex-col p-4 pb-0 place-items-center relative  
+        <div class="flex  flex-col p-4 pb-0 place-items-center relative  
                     h-[180px] overflow-hidden">
             <h3 class="font-medium text-xl mt-4 cursor-pointer group
             hover:text-secondary-blue"  @click="handleEmit">
@@ -67,8 +73,7 @@ background-size: cover ;background-blend-mode: screen; `" -->
                         inline align-sub 
                         group-hover:[&>path]:stroke-secondary-blue"/>
             </h3>
-            <div class="school-card-body cardDisplayPreview line-clamp text-left p-0 pt-4"
-            style="font-size: 0.95rem; line-height:1.5">
+            <div class="school-card-body cardDisplayPreview line-clamp text-left p-0 pt-4">
                 {{ getBlurb(mapPopupInfo) }}
             </div>
         </div>
@@ -79,7 +84,7 @@ background-size: cover ;background-blend-mode: screen; `" -->
                     mapPopupContent 
                     overflow-scroll 
                     p-6 pt-2 w-[340px]
-                    fadebg">
+                    ">
             <!-- flex flex-row gap-6 h-[180px] -->
             <div class="
                     flex
@@ -115,23 +120,18 @@ background-size: cover ;background-blend-mode: screen; `" -->
     height: 35px !important;
 }
 
-.fadebg {
-    z-index: 1;
-    background-color: white;
-    box-shadow: 0px -5px 10px 5px rgba(255,255,255,1);
-    -webkit-box-shadow: 0px -5px 10px 5px rgba(255,255,255,1);
-    -moz-box-shadow: 0px -5px 10px 5px rgba(255,255,255,1);
-}
 
-.popup-line-clamp {
-  /* width: 400px; */
-  margin:0;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: initial;
-  display: -webkit-box;
-  -webkit-line-clamp: 4;
-  -webkit-box-orient: vertical;
+.line-clamp {
+    font-size: 0.95rem; 
+    line-height:1.5;
+
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 4;
+    height: 4.8lh;
+    -webkit-box-orient: vertical;
+    margin: 0 auto;
 }
 
 .mapOuterContainer {
