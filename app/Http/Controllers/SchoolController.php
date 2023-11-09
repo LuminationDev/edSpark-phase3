@@ -19,6 +19,37 @@ use function PHPUnit\Framework\isNull;
 
 class SchoolController extends Controller
 {
+    private string $defaultSchoolContent = '{
+    "time": 1699418353931,
+    "blocks": [{
+        "id": "uibuJxuKcA",
+        "type": "header",
+        "data": {"text": "School snapshot", "level": 2}
+    }, {
+        "id": "NpPfn4NZN1",
+        "type": "paragraph",
+        "data": {"text": "[Describe your school\'s offerings, challenges, and standout attributes in a detailed paragraph] ."}
+    }, {
+        "id": "KctVAlfEDQ",
+        "type": "header",
+        "data": {"text": "Technology across the school", "level": 2}
+    }, {
+        "id": "irugPgi1Q6",
+        "type": "paragraph",
+        "data": {"text": "[Describe your school\'s technology usage and how students access the mentioned technology, is it BYOD or provided.]&nbsp;"}
+    }, {"id": "Lh80VfkEYM", "type": "header", "data": {"text": "Digital technology", "level": 2}}, {
+        "id": "mThGh3cyRZ",
+        "type": "paragraph",
+        "data": {"text": "[Describe your school\'s focus in term of digital technology usage such as photography, 3d design, etc.]&nbsp;"}
+    }, {"id": "EL9wy0zHSk", "type": "header", "data": {"text": "Student learning", "level": 2}}, {
+        "id": "MxzYw3LXtX",
+        "type": "paragraph",
+        "data": {"text": "[Highlight what stands out in the students\' learning process being carried out at your school. Include any images or YouTube/video links (simply paste the link here) for more engagement.]&nbsp;"}
+    }],
+    "version": "2.29.0-rc.1"
+}';
+
+
     private function formatSchoolMetadata($schoolMetadata)
     {
         $tempMetadata = [];
@@ -182,19 +213,19 @@ class SchoolController extends Controller
             return response()->json(['message' => 'Site not found', 'status' => 404], 404);
         }
 
-        // If user is not 'SCHLDR' or 'Superadmin', just fetch the school
-        if ($user->role->role_name !== 'SCHLDR' && $user->role->role_name !== 'Superadmin') {
-            $school = School::where('site_id', $siteId)->where('status', 'Published')->first();
-
-            if (!$school) {
-                return response()->json(['message' => 'School not found based on the provided site id', 'status' => 404], 404);
-            }
-            $schoolMetadata = Schoolmeta::where('school_id', $school->school_id)->get();
-            $schoolMetadataToSend = $this->formatSchoolMetadata($schoolMetadata);
-            $result = $this->schoolModelToJson($school, $schoolMetadataToSend, $request);
-
-            return response()->json($result);
-        }
+//        // If user is not 'SCHLDR' or 'Superadmin', just fetch the school
+//        if ($user->role->role_name !== 'SCHLDR' && $user->role->role_name !== 'Superadmin') {
+//            $school = School::where('site_id', $siteId)->where('status', 'Published')->first();
+//
+//            if (!$school) {
+//                return response()->json(['message' => 'School not found based on the provided site id', 'status' => 404], 404);
+//            }
+//            $schoolMetadata = Schoolmeta::where('school_id', $school->school_id)->get();
+//            $schoolMetadataToSend = $this->formatSchoolMetadata($schoolMetadata);
+//            $result = $this->schoolModelToJson($school, $schoolMetadataToSend, $request);
+//
+//            return response()->json($result);
+//        }
 
         // For 'SCHLDR' or 'Superadmin', use the firstOrCreate logic
         try {
@@ -206,7 +237,7 @@ class SchoolController extends Controller
                     'owner_id' => $userId,
                     'school_id' => $nextSchoolId,
                     'name' => $site->site_name,
-                    'content_blocks' => null,
+                    'content_blocks' => $this->safelyEncode(json_decode($this->defaultSchoolContent)),
                     'logo' => '',
                     'cover_image' => '',
                     'tech_used' => '',

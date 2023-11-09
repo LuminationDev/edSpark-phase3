@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Role;
+use App\Models\Site;
 use Illuminate\Http\Request;
 use Laravel\Socialite\Facades\Socialite;
 use App\Models\User;
@@ -14,7 +16,7 @@ class LoginController extends Controller
     public function redirectToOkta()
     {
         // TODO: SCOPE ONCE WE MIGRATE TO REAL OKTA
-        return Socialite::driver('okta')->scopes(['edspark','email','address'])->redirect();
+        return Socialite::driver('okta')->scopes(['edspark', 'email', 'address'])->redirect();
 
     }
 
@@ -22,25 +24,27 @@ class LoginController extends Controller
     {
         $state = $request->get('state');
         $request->session()->put('state', $state);
-//        dd($request);
 
         $user = Socialite::driver('okta')->user();
         $idToken = $user->token;
-        //TODO
-        // $idToken = $user->attributes['id_token'];
-        // $scopes = $user->accessTokenResponseBody['scope'];
+//        dd($user->user['mainrolecode']);
+
+        $role = Role::where('role_name', $user->user['mainrolecode'])->first() ?? Role::find(4);
+
+        $siteId = $user->user['mainsiteid'];
+        $site = Site::where('site_id', $siteId)->first();
 
         $localUser = User::updateOrCreate(
             ['email' => $user->email],  // columns for finding the existing model
             [
                 'full_name' => $user->name,
                 'name' => $user->name,
-                // 'role_id' => $role_id, //TODO
-                // 'site_id' => $site_id, //TODO
+                'role_id' => $role->id,
+                'site_id' => $site ? $user->user['mainsiteid'] : 10000 , // 10000 fallback id -> school not available
                 'remember_token' => Str::random(15),
                 'token' => $idToken ?? $user->token,  // Adjusted to fall back to `$user->token` if `$idToken` is not set
                 'isFirstTimeVisit' => false,
-                'status' => 'Inactive',
+                'status' => 'Active',
             ]
         );
 
