@@ -3607,26 +3607,6 @@ select{
   width: 100vw;
 }
 
-.w-\[390px\]{
-  width: 390px;
-}
-
-.w-\[395px\]{
-  width: 395px;
-}
-
-.w-\[398px\]{
-  width: 398px;
-}
-
-.w-\[399px\]{
-  width: 399px;
-}
-
-.w-\[398\.5px\]{
-  width: 398.5px;
-}
-
 .min-w-0{
   min-width: 0px;
 }
@@ -4628,6 +4608,10 @@ select{
   border-bottom-width: 4px;
 }
 
+.border-b-\[1px\]{
+  border-bottom-width: 1px;
+}
+
 .border-e{
   border-inline-end-width: 1px;
 }
@@ -4646,6 +4630,10 @@ select{
 
 .border-t-2{
   border-top-width: 2px;
+}
+
+.border-t-\[1px\]{
+  border-top-width: 1px;
 }
 
 .border-solid{
@@ -4776,6 +4764,16 @@ select{
 .border-yellow-600{
   --tw-border-opacity: 1;
   border-color: rgb(202 138 4 / var(--tw-border-opacity));
+}
+
+.border-yellow-800{
+  --tw-border-opacity: 1;
+  border-color: rgb(133 77 14 / var(--tw-border-opacity));
+}
+
+.border-yellow-700{
+  --tw-border-opacity: 1;
+  border-color: rgb(161 98 7 / var(--tw-border-opacity));
 }
 
 .border-b-white{
@@ -5268,6 +5266,10 @@ select{
 
 .bg-yellow-600\/10{
   background-color: rgb(202 138 4 / 0.1);
+}
+
+.bg-adviceGreen\/5{
+  background-color: rgb(4 130 70 / 0.05);
 }
 
 .bg-gradient-to-b{
@@ -6656,11 +6658,6 @@ select{
   color: rgb(3 7 18 / var(--tw-text-opacity));
 }
 
-.text-green-600{
-  --tw-text-opacity: 1;
-  color: rgb(22 163 74 / var(--tw-text-opacity));
-}
-
 .text-main-navy{
   --tw-text-opacity: 1;
   color: rgb(0 40 88 / var(--tw-text-opacity));
@@ -6704,6 +6701,16 @@ select{
 .text-yellow-600{
   --tw-text-opacity: 1;
   color: rgb(202 138 4 / var(--tw-text-opacity));
+}
+
+.text-yellow-800{
+  --tw-text-opacity: 1;
+  color: rgb(133 77 14 / var(--tw-text-opacity));
+}
+
+.text-yellow-700{
+  --tw-text-opacity: 1;
+  color: rgb(161 98 7 / var(--tw-text-opacity));
 }
 
 .underline{
@@ -7296,14 +7303,6 @@ input, textarea, select {
   --tw-ring-color: rgb(13 148 136 / var(--tw-ring-opacity));
 }
 
-.hover\:invisible:hover{
-  visibility: hidden;
-}
-
-.hover\:h-20:hover{
-  height: 5rem;
-}
-
 .hover\:cursor-grab:hover{
   cursor: grab;
 }
@@ -7611,11 +7610,6 @@ input, textarea, select {
   color: rgb(55 65 81 / 0.75);
 }
 
-.hover\:text-green-800:hover{
-  --tw-text-opacity: 1;
-  color: rgb(22 101 52 / var(--tw-text-opacity));
-}
-
 .hover\:text-main-teal:hover{
   --tw-text-opacity: 1;
   color: rgb(9 121 130 / var(--tw-text-opacity));
@@ -7875,10 +7869,6 @@ input, textarea, select {
   border-end-end-radius: 0.5rem;
 }
 
-.group:hover .group-hover\:visible{
-  visibility: visible;
-}
-
 .group\/bg:hover .group-hover\/bg\:left-\[15\%\]{
   left: 15%;
 }
@@ -7899,56 +7889,16 @@ input, textarea, select {
   margin-right: 2rem;
 }
 
-.group:hover .group-hover\:block{
-  display: block;
-}
-
 .group\/tech:hover .group-hover\/tech\:inline-block{
   display: inline-block;
-}
-
-.group:hover .group-hover\:flex{
-  display: flex;
 }
 
 .group:hover .group-hover\:h-0{
   height: 0px;
 }
 
-.group:hover .group-hover\:h-\[320px\]{
-  height: 320px;
-}
-
-.group:hover .group-hover\:h-20{
-  height: 5rem;
-}
-
-.group:hover .group-hover\:h-16{
-  height: 4rem;
-}
-
-.group:hover .group-hover\:h-12{
-  height: 3rem;
-}
-
 .group:hover .group-hover\:h-14{
   height: 3.5rem;
-}
-
-.group:hover .group-hover\:h-\[300px\]{
-  height: 300px;
-}
-
-.group:hover .group-hover\:h-\[350px\]{
-  height: 350px;
-}
-
-.group:hover .group-hover\:h-\[290px\]{
-  height: 290px;
-}
-
-.group:hover .group-hover\:h-\[100px\]{
-  height: 100px;
 }
 
 .group:hover .group-hover\:h-\[315px\]{
@@ -7981,11 +7931,6 @@ input, textarea, select {
 
 .group:hover .group-hover\:bg-black\/20{
   background-color: rgb(0 0 0 / 0.2);
-}
-
-.group:hover .group-hover\:bg-black{
-  --tw-bg-opacity: 1;
-  background-color: rgb(0 0 0 / var(--tw-bg-opacity));
 }
 
 .group\/button:hover .group-hover\/button\:text-gray-500{

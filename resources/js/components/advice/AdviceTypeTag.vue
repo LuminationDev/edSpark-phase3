@@ -9,9 +9,9 @@ const props = defineProps({
 const typeTagColor = computed(() => {
 
     if (props.typeTag[0] == 'DAG advice') {
-        return 'text-yellow-600 border-yellow-600 bg-yellow-600/10';
+        return 'text-yellow-700 border-yellow-700 bg-yellow-600/10';
     } else {
-        return 'text-adviceGreen border-adviceGreen bg-adviceGreen/10';
+        return 'text-adviceGreen border-adviceGreen bg-adviceGreen/5';
     }
 })
 
