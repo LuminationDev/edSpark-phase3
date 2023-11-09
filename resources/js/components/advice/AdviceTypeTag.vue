@@ -9,7 +9,7 @@ const props = defineProps({
 const typeTagColor = computed(() => {
 
     if (props.typeTag[0] == 'DAG advice') {
-        return 'text-yellow-700 border-yellow-700 bg-yellow-600/10';
+        return 'text-yellow-700 border-yellow-700 bg-yellow-600/5';
     } else {
         return 'text-adviceGreen border-adviceGreen bg-adviceGreen/5';
     }
@@ -19,7 +19,7 @@ const typeTagColor = computed(() => {
 
 <template>
     <!-- class="absolute rounded bg-[#FFC836] min-w-[136px] h-[39px] text-white flex flex-row justify-around gap-3 place-items-center -right-3 top-3 px-4" -->
-    <div class="TypeTag border border-solid flex gap-4 h-[28px] py-1 place-items-center px-2 rounded-2xl text-sm w-fit mx-3 my-2"
+    <div class="TypeTag border border-solid flex gap-4 h-[28px] py-1 place-items-center px-2 rounded-2xl text-sm w-fit mx-3 my-2 !min-w-fit text-center leading-3"
         :class="typeTagColor">
         {{ typeTag[0] }}
     </div>

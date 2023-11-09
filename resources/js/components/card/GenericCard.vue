@@ -172,6 +172,11 @@ const handleClickShare = (): void => {
     }
 }
 
+// function parentWidth(elem) {
+//     return elem.parentNode.clientWidth;
+// }
+// parentWidth(document.getElementById('typehead'));
+
 const cardFlexDirection = computed(() => {
     if (props.sectionType == 'school') {
         return 'flex-col items-center';
@@ -253,7 +258,7 @@ const cardHoverToggle: Ref<boolean> = ref(false);
         </template>
 
 
-        <div class="flex w-full justify-between left-0 bg-white" :class="cardFlexDirection">
+        <div class="cardFooter flex w-full justify-between left-0 bg-white" :class="cardFlexDirection">
             <div v-if="$slots.typeTag">
                 <slot name="typeTag" />
             </div>
@@ -298,6 +303,16 @@ const cardHoverToggle: Ref<boolean> = ref(false);
     -webkit-box-sizing: border-box;
     box-sizing: border-box;
 }
+
+@media (max-width: 1279px) {
+
+    .EduAdviceCards .cardFooter {
+        flex-direction: column;
+        align-items: center;
+    }
+
+}
+
 
 .fadebg {
     z-index: 1;
