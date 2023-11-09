@@ -46,7 +46,7 @@ export const twoThirdCarouselBreakpoints = {
         itemsToShow: 1,
         snapAlign: 'start',
     },
-    1600: {
+    1535: {
         itemsToShow: 2,
         snapAlign: 'start',
     }
