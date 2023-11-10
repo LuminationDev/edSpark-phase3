@@ -15,6 +15,7 @@ import { useUserStore } from "@/js/stores/useUserStore";
 
 const { currentUser } = storeToRefs(useUserStore())
 import purify from "dompurify";
+import {Tippy} from "vue-tippy";
 import { toast } from "vue3-toastify";
 
 import { guid as genGuid } from "@/js/helpers/guidGenerator";
@@ -305,43 +306,44 @@ const cardHoverToggle: Ref<boolean> = ref(false);
                     transition-height
                     "
             >
-                <div
-                    v-tippy="'Like'"
-                    class="bg-white like-share m-1 mb-2 rounded hover:cursor-pointer"
-                    @click="debouncedDefaultLike"
-                >
-                    <LikeFull
-                        v-if="currentUserLiked"
-                        :key="props.guid"
-                    />
-                    <Like
-                        v-else
-                        :key="props.guid"
-                    />
-                </div>
-
-                <div
-                    v-tippy="'Bookmark'"
-                    class="bg-white like-share m-1 mb-2 rounded hover:cursor-pointer"
-                    @click="debouncedDefaultBookmark"
-                >
-                    <BookmarkFull
-                        v-if="currentUserBookmarked"
-                        :key="props.guid"
-                    />
-                    <BookMark
-                        v-else
-                        :key="props.guid"
-                    />
-                </div>
-
-                <div
-                    v-tippy="shareTippyMessage"
-                    class="bg-white like-share m-1 mb-2 mr-2 rounded hover:cursor-pointer"
-                    @click="handleClickShare"
-                >
-                    <ShareIcon />
-                </div>
+                <tippy content="Like">
+                    <div
+                        class="bg-white like-share m-1 mb-2 rounded hover:cursor-pointer"
+                        @click="debouncedDefaultLike"
+                    >
+                        <LikeFull
+                            v-if="currentUserLiked"
+                            :key="props.guid"
+                        />
+                        <Like
+                            v-else
+                            :key="props.guid"
+                        />
+                    </div>
+                </tippy>
+                <tippy content="Bookmark">
+                    <div
+                        class="bg-white like-share m-1 mb-2 rounded hover:cursor-pointer"
+                        @click="debouncedDefaultBookmark"
+                    >
+                        <BookmarkFull
+                            v-if="currentUserBookmarked"
+                            :key="props.guid"
+                        />
+                        <BookMark
+                            v-else
+                            :key="props.guid"
+                        />
+                    </div>
+                </tippy>
+                <tippy :content="shareTippyMessage">
+                    <div
+                        class="bg-white like-share m-1 mb-2 mr-2 rounded hover:cursor-pointer"
+                        @click="handleClickShare"
+                    >
+                        <ShareIcon />
+                    </div>
+                </tippy>
             </div>
         </div>
     </div>

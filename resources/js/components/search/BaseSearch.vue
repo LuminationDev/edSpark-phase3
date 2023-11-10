@@ -1,5 +1,6 @@
 <script setup>
-import "@hennge/vue3-pagination/dist/vue3-pagination.css";
+import
+    "@hennge/vue3-pagination/dist/vue3-pagination.css";
 
 import VPagination from "@hennge/vue3-pagination";
 import {computed, ref, watch} from 'vue'
@@ -17,7 +18,7 @@ import {findNestedKeyValue} from "@/js/helpers/objectHelpers";
 
 
 const props = defineProps({
-    resourceList:{
+    resourceList: {
         type: Array,
         required: true
     },
@@ -25,7 +26,7 @@ const props = defineProps({
         type: String,
         required: true
     },
-    liveFilterObject:{
+    liveFilterObject: {
         type: Object,
         required: true
     }
@@ -66,30 +67,44 @@ const filterProducts = (products, filterBy) => {
         return products;
     }
 
+    // return products.filter(product => {
+    //     for (const key in filterBy) {
+    //         const productValue = findNestedKeyValue(product, key).flat();
+    //         const filterValues = filterBy[key];
+    //
+    //         // If filterValues is empty for this key, then move on to next key
+    //         if (filterValues.length === 0) continue;
+    //
+    //         // Check if any product value matches the filter values
+    //         const isMatch = productValue.some(value => filterValues.includes(value) || (value ? filterValues.includes(value.name) : false)    ) ;
+    //
+    //         if (!isMatch) return false;
+    //     }
+    //     return true;
+    // });
     return products.filter(product => {
-        for (const key in filterBy) {
-            const productValue = findNestedKeyValue(product, key).flat();
-            const filterValues = filterBy[key];
-
+        return Object.entries(filterBy).every(([key, filterValues]) => {
             // If filterValues is empty for this key, then move on to next key
-            if (filterValues.length === 0) continue;
+            if (filterValues.length === 0) return true;
+
+            const productValue = findNestedKeyValue(product, key).flat();
 
             // Check if any product value matches the filter values
-            const isMatch = productValue.some(value => filterValues.includes(value) || filterValues.includes(value.name));
-
-            if (!isMatch) return false;
-        }
-        return true;
+            return productValue.some(value => {
+                return filterValues.includes(value) || (value ? filterValues.includes(value.name) : false);
+            });
+        });
     });
+
 }
 
 // set a watcher to reset page to the first page when filters are changed
-watch(props.liveFilterObject, () =>{
+watch(props.liveFilterObject, () => {
     page.value = 1
 })
 
-const filteredData = computed(()=>{
-    if(Object.values(props.liveFilterObject).length === 0) return filteredTermData.value
+const filteredData = computed(() => {
+    if (Object.values(props.liveFilterObject).length === 0) return filteredTermData.value
     return filterProducts(filteredTermData.value, props.liveFilterObject)
 })
 
@@ -98,42 +113,42 @@ const page = ref(1)
 const numberOfItemsPerPage = 9
 
 const handleChangePageNumber = (newPageNumber) => {
-    page.value= newPageNumber
+    page.value = newPageNumber
 
 }
 
-const numberOfAvailablePages = computed(() =>{
+const numberOfAvailablePages = computed(() => {
     return Math.ceil(filteredData.value.length / numberOfItemsPerPage)
 })
 
-const paginatedFilteredData = computed(() =>{
-    if(page.value === numberOfAvailablePages.value){
+const paginatedFilteredData = computed(() => {
+    if (page.value === numberOfAvailablePages.value) {
         //show the rest without hard limit
         return filteredData.value.slice((page.value - 1) * numberOfItemsPerPage)
-    }else{
+    } else {
 
-        return filteredData.value.slice((page.value - 1)  * numberOfItemsPerPage, page.value * numberOfItemsPerPage)
+        return filteredData.value.slice((page.value - 1) * numberOfItemsPerPage, page.value * numberOfItemsPerPage)
     }
 })
 
-const showPagination = computed(() =>{
+const showPagination = computed(() => {
     return filteredData.value.length > numberOfItemsPerPage
 })
 
-const formattedSearchTitle = computed(() =>{
-    if(['school','event','partner'].includes(props.searchType)) return props.searchType + 's'
+const formattedSearchTitle = computed(() => {
+    if (['school', 'event', 'partner'].includes(props.searchType)) return props.searchType + 's'
     else return props.searchType
 })
 
 
-const formattedSearchBlurb = computed (()=>{
+const formattedSearchBlurb = computed(() => {
 
-if(['school'].includes(props.searchType)) 
-return "Discover more about how schools in your area are " + 
-        "embracing digital technology, and draw inspiration " +
-        "for your own classroom."
+    if (['school'].includes(props.searchType))
+        return "Discover more about how schools in your area are " +
+            "embracing digital technology, and draw inspiration " +
+            "for your own classroom."
 
-else return "Discover inspiration for your own classroom."
+    else return "Discover inspiration for your own classroom."
 
 
 })
@@ -144,33 +159,30 @@ else return "Discover inspiration for your own classroom."
     <div
         class="browse-schools-container flex items-center flex-col mt-16 px-10"
     >
-
-    
-        <div class="search-filter-element flex max-w-[1000px] w-[80%] mb-6">
-
-            <div class="search-filter-heading basis-1/3 mb-8 pr-4">
+        <div class="flex max-w-[1000px] mb-6 search-filter-element w-[80%]">
+            <div class="basis-1/3 mb-8 pr-4 search-filter-heading">
                 <h3 class="font-semibold text-2xl">
                     Browse all {{ formattedSearchTitle }}
                 </h3>
-                <P class="pt-6 pr-10">
+                <P class="pr-10 pt-6">
                     {{ formattedSearchBlurb }}
                 </P>
             </div>
 
-            <div class="search-filter-components flex-col basis-2/3">
-                <SearchBar 
+            <div class="basis-2/3 flex-col search-filter-components">
+                <SearchBar
                     :placeholder="`Type in ${searchType} name`"
                     @emit-search-term="handleSearchTerm"
                 />
 
-                    <slot name="filterBar" />
+                <slot name="filterBar" />
             </div>
         </div>
         <div class="my-4 searchResults text-base">
             {{ String(filteredData.length) + " search " + (filteredData.length > 1 ? "results" : "result") }}
         </div>
         <div
-            v-if="resourceList" 
+            v-if="resourceList"
             id="resourceResult"
             class="grid grid-cols-1 gap-10 place-items-center pt-10 resourceResult md:!grid-cols-2 xl:!gap-12 xl:!grid-cols-3"
         >
@@ -301,16 +313,17 @@ else return "Discover inspiration for your own classroom."
 
 .BaseSearchPaginationContainer {
 
-    .Pagination{
+    .Pagination {
         font-size: large;
 
-        .PaginationControl{
+        .PaginationControl {
 
-            .Control{
+            .Control {
                 height: 35px;
                 width: 35px;
             }
         }
+
         li {
 
             button {
@@ -319,12 +332,14 @@ else return "Discover inspiration for your own classroom."
                 margin-right: 16px;
 
             }
+
             .Page,
             .Page-active {
                 border: 1px transparent solid;
                 padding: 16px;
             }
-            .Page:hover{
+
+            .Page:hover {
                 border: 1px #339999 solid;
 
             }
