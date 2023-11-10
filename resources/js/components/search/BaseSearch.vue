@@ -164,9 +164,9 @@ const formattedSearchBlurb = computed(() => {
                 <h3 class="font-semibold text-2xl">
                     Browse all {{ formattedSearchTitle }}
                 </h3>
-                <P class="pr-10 pt-6">
+                <p class="pr-10 pt-6">
                     {{ formattedSearchBlurb }}
-                </P>
+                </p>
             </div>
 
             <div class="basis-2/3 flex-col search-filter-components">

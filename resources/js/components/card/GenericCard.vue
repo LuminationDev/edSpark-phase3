@@ -29,7 +29,8 @@ const props = defineProps({
     },
     title: {
         type: String,
-        required: true
+        required: false,
+        default:""
     },
     displayAuthor: {
         type: [Object, String],
