@@ -138,7 +138,7 @@ class SoftwaremoderationResource extends Resource
 
     public static function shouldRegisterNavigation(): bool
     {
-        return RoleHelpers::has_minimum_privilege('admin');
+        return RoleHelpers::has_minimum_privilege('site_leader');
     }
 
 }
