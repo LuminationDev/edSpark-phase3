@@ -63,8 +63,8 @@ const softwareResponsiveData = computed(() => {
             :button-callback="() => router.push('/browse/advice')"
         />
 
-        <div class="flex flex-col w-full  lg:!flex-row lg:px-16">
-            <div class="DAGInfoSection w-full lg:!w-1/4">
+        <div class="flex flex-col w-full lg:!flex-row lg:px-16">
+            <div class="DAGInfoSection w-full lg:!pl-8 lg:!w-1/4">
                 <DAGInfoSection />
             </div>
             <div class="DAGAdviceCarousel w-full lg:!w-3/4">
