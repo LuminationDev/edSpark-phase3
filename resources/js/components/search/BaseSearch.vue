@@ -148,6 +148,7 @@ const formattedSearchBlurb = computed(() => {
             "embracing digital technology, and draw inspiration " +
             "for your own classroom."
 
+
     else return "Discover inspiration for your own classroom."
 
 
