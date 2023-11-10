@@ -60,7 +60,7 @@ if(route.params || route.params.filter){
                 id="softwareType"
                 placeholder="Filter by type"
                 :filter-list="softwareFilterList"
-                data-path="software_type"
+                data-path="type"
                 :preselected="preselectedFilterObject"
                 @transmit-selected-filters="handleFilter"
             />

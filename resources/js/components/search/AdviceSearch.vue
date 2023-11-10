@@ -39,10 +39,9 @@ const handleFilter = (filters, dataPath) => {
                 id="adviceFilter"
                 placeholder="Filter by type"
                 :filter-list="adviceFilterList"
-                data-path="advice_type"
+                data-path="type"
                 @transmit-selected-filters="handleFilter"
             />
-           
         </template>
     </BaseSearch>
 </template>

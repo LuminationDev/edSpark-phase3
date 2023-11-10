@@ -180,13 +180,15 @@ const numberOfLoadingPlaceholder = computed(() =>{
     }
 
     :deep(.carousel__next) {
-        border: 2px solid black;
-        border-radius: 100%
+        border: 1px solid gray;
+        border-radius: 100%;
+
     }
 
     :deep(.carousel__prev) {
-        border: 2px solid black;
-        border-radius: 100%
+        border: 1px solid gray;
+        border-radius: 100%;
+
     }
 
 }
