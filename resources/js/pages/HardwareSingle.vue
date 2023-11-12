@@ -12,6 +12,7 @@ import HardwareEmergingTechSpecs from "@/js/components/hardware/HardwareEmerging
 import HardwareLaptopTechSpecs from "@/js/components/hardware/HardwareLaptopTechSpecs.vue";
 import HardwareSingleBrandContent from "@/js/components/hardware/HardwareSingleBrandContent.vue";
 import ExtraResourceTemplateDisplay from "@/js/components/renderer/ExtraResourceTemplateDisplay.vue";
+import {edSparkContentSanitizer} from "@/js/helpers/objectHelpers";
 
 const baseContentRef = ref(null);
 /**
@@ -121,7 +122,7 @@ const colorTheme = ref('hardwareGreen')
                                         pt-8
                                         text-lg
                                         "
-                                    v-html="purify.sanitize(contentFromBase['content'])"
+                                    v-html="edSparkContentSanitizer(contentFromBase['content'])"
                                 />
                                 <div
                                     v-if="contentFromBase['extra_content'] && contentFromBase['extra_content'].length"
