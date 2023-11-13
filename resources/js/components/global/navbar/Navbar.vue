@@ -64,7 +64,7 @@ const {isMobile, isTablet} = storeToRefs(useWindowStore)
             class="bg-[#002856]/50 container hidden navbarFullsize px-12 py-2 lg:block lg:z-20"
         >
             <ul
-                class="2xl:gap-8 2xl:text-2xl font-['Poppins'] font-semibold gap-4 hidden text-white xl:text-xl lg:flex lg:flex-row"
+                class="2xl:gap-8 2xl:text-2xl font-semibold gap-4 hidden text-white xl:text-xl lg:flex lg:flex-row"
             >
                 <NavItems
                     v-for="(route, i) in navLinks"
@@ -75,33 +75,41 @@ const {isMobile, isTablet} = storeToRefs(useWindowStore)
                     class="cursor-pointer uppercase"
                     @click="handleGlobalsearchClick"
                 >
-              
-                <div id="searchIconMain" class="svg-container">
-                    <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        fill="none"
-                        width="100%" height="100%"
-                        preserveAspectRatio="xMinYMin meet"
-                        class="svg-content"
+                    <div
+                        id="searchIconMain"
+                        class="svg-container"
                     >
-                        <circle cx="10" cy="10" r="8" 
-                            stroke="#FFF" 
-                            stroke-width="3" 
-                            stroke-linecap="round" 
-                            stroke-linejoin="round" 
-                        />
+                        <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            fill="none"
+                            width="100%"
+                            height="100%"
+                            preserveAspectRatio="xMinYMin meet"
+                            class="svg-content"
+                        >
+                            <circle
+                                cx="10"
+                                cy="10"
+                                r="8" 
+                                stroke="#FFF" 
+                                stroke-width="3" 
+                                stroke-linecap="round" 
+                                stroke-linejoin="round" 
+                            />
 
-                        <line x1="15" y1="16" x2="21" y2="22"                
-                            stroke="#FFF" 
-                            stroke-width="3" 
-                            stroke-linecap="round" 
-                            stroke-linejoin="round" 
-                        />
+                            <line
+                                x1="15"
+                                y1="16"
+                                x2="21"
+                                y2="22"                
+                                stroke="#FFF" 
+                                stroke-width="3" 
+                                stroke-linecap="round" 
+                                stroke-linejoin="round" 
+                            />
 
-                    </svg>
-                </div>
-                
-
+                        </svg>
+                    </div>
                 </li>
             </ul>
         </nav>

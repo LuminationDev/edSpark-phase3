@@ -14,7 +14,7 @@ import SoftwareIconGenerator from "@/js/components/software/SoftwareIconGenerato
 import SoftwareSingleCuratedContent from "@/js/components/software/softwareSingle/SoftwareSingleCuratedContent.vue";
 import {imageURL} from "@/js/constants/serverUrl";
 import {formatDateToDayTime} from "@/js/helpers/dateHelper";
-import {findNestedKeyValue} from "@/js/helpers/objectHelpers";
+import {edSparkContentSanitizer, findNestedKeyValue} from "@/js/helpers/objectHelpers";
 /**
  *  type softwareSingleContent = {
  *      post_id: number
@@ -138,7 +138,7 @@ const colorTheme = ref('softwarePurple')
 
                 <!--  Selectable sub menu    -->
                 <template #submenu>
-                    <div class="cursor-pointer flex flex-row gap-4 softwareSubmenu mb-[-1px] z-40">
+                    <div class="cursor-pointer flex flex-row gap-4 mb-[-1px] softwareSubmenu z-40">
                         <BaseSingleSubmenu
                             :emit-to-base="emitFromSubmenu"
                             :menu-array="softwareSubmenu"
@@ -155,13 +155,13 @@ const colorTheme = ref('softwarePurple')
                 <template
                     v-if="activeSubmenu === 'detail'"
                 >
-                    <div class="flex flex-col flex-wrap px-2 py-4 mr-10 w-full xl:!w-2/3">
+                    <div class="flex flex-col flex-wrap mr-10 px-2 py-4 w-full xl:!w-2/3">
                         <div class="flex font-bold py-4 text-2xl uppercase">
                             Getting started
                         </div>
                         <div
                             class="flex content-paragraph flex-col max-w-full overflow-hidden text-lg"
-                            v-html="purify.sanitize(contentFromBase['content'])"
+                            v-html="edSparkContentSanitizer(contentFromBase['content'])"
                         />
                         <div
                             v-if="contentFromBase['extra_content'] && contentFromBase['extra_content'].length"

@@ -1,7 +1,7 @@
 /** @type {import('tailwindcss').Config} */
-import colors from 'tailwindcss/colors'
 import forms from '@tailwindcss/forms'
 import typography from '@tailwindcss/typography'
+import colors from 'tailwindcss/colors'
 
 const edsparkColor = [
     '#4A5568',
@@ -129,6 +129,9 @@ module.exports = {
             },
             scale: {
                 '90': '0.9',
+            },
+            fontFamily:{
+                museoSans:['Museo sans', 'sans-serif']
             }
         },
     },
