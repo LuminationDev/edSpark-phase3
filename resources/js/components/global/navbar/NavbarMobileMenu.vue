@@ -1,12 +1,13 @@
 <script setup>
 
 import {storeToRefs} from "pinia";
-import {useWindowStore} from "@/js/stores/useWindowStore";
 import {onMounted, ref} from "vue";
 import {useRouter} from "vue-router";
+
 import NavItems from "@/js/components/global/navbar/NavItems.vue";
 import Close from "@/js/components/svg/Close.vue";
 import {useAuthStore} from "@/js/stores/useAuthStore";
+import {useWindowStore} from "@/js/stores/useWindowStore";
 
 const router = useRouter();
 const authStore = useAuthStore();
@@ -77,7 +78,7 @@ setupRoutes();
                 "
         >
             <ul
-                class="flex flex-col font-['Poppins'] font-semibold text-white"
+                class="flex flex-col font-semibold text-white"
             >
                 <li
                     class="cursor-pointer font-bold ml-auto text-2xl hover:text-main-teal uppercase"
@@ -91,39 +92,47 @@ setupRoutes();
                     :route="route"
                     :click-callback="handleToggleNavbar"
                 />
-                <li id="searchItem"
-                    class="cursor-pointer uppercase mt-6 text-sm font-normal"
+                <li
+                    id="searchItem"
+                    class="cursor-pointer font-normal mt-6 text-sm uppercase"
                     style="align-self: center;"
                     @click="handleGlobalsearchClick"
                 >
-              
-                <div id="searchIconMobile" class="svg-container">
-                    <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        preserveAspectRatio="xMinYMin meet"
-                        class="svg-content"
+                    <div
+                        id="searchIconMobile"
+                        class="svg-container"
                     >
-                        <circle cx="10" cy="10" r="8" 
-                            stroke="#FFF" 
-                            stroke-width="3" 
-                            stroke-linecap="round" 
-                            stroke-linejoin="round" 
-                        />
+                        <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            preserveAspectRatio="xMinYMin meet"
+                            class="svg-content"
+                        >
+                            <circle
+                                cx="10"
+                                cy="10"
+                                r="8" 
+                                stroke="#FFF" 
+                                stroke-width="3" 
+                                stroke-linecap="round" 
+                                stroke-linejoin="round" 
+                            />
 
-                        <line x1="15" y1="16" x2="21" y2="22"                
-                            stroke="#FFF" 
-                            stroke-width="3" 
-                            stroke-linecap="round" 
-                            stroke-linejoin="round" 
-                        />
+                            <line
+                                x1="15"
+                                y1="16"
+                                x2="21"
+                                y2="22"                
+                                stroke="#FFF" 
+                                stroke-width="3" 
+                                stroke-linecap="round" 
+                                stroke-linejoin="round" 
+                            />
 
-                    </svg>
-                </div>
-                search
-                
-
+                        </svg>
+                    </div>
+                    search
                 </li>
             </ul>
         </div>

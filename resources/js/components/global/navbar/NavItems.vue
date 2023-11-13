@@ -44,7 +44,7 @@ const navDropdownToggle = ref(false);
                 @mouseover="navDropdownToggle = true"
             >
                 <div class="bg-[#002856]/50 mt-[8px]">
-                    <ul class="flex flex-col font-['Poppins'] font-semibold gap-4 py-4 text-[24px] text-center text-white">
+                    <ul class="flex flex-col font-semibold gap-4 py-4 text-[24px] text-center text-white">
                         <router-link
                             class="flex"
                             to="/software"
