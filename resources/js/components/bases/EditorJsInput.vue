@@ -28,7 +28,7 @@ const editor = new EditorJS({
             for (const block of props.existingData.blocks) {
                 editor.blocks.insert(block.type, block.data)
             }
-            // editor.blocks.delete(0);
+            editor.blocks.delete(0);
         }
     },
 });
