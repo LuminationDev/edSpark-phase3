@@ -56,27 +56,36 @@ const softwareResponsiveData = computed(() => {
         <DashboardHero class="-mt-extraHuge" />
 
         <SectionHeader
-            :classes="'bg-main-teal'"
-            :section="'events'"
-            :title="'New Events'"
-            :button-text="'View all events'"
-            :button-callback="() => router.push('/browse/event')"
+            :classes="'bg-main-darkTeal'"
+            :section="'advice'"
+            :title="'Advice'"
+            :button-text="'View all resources'"
+            :button-callback="() => router.push('/browse/advice')"
         />
-        <CarouselGenerator
-            data-type="events"
-            :data-array="eventsData? eventsData : []"
-        />
+
+        <div class="flex flex-col w-full lg:!flex-row lg:px-16">
+            <div class="DAGInfoSection w-full lg:!pl-8 lg:!w-1/4">
+                <DAGInfoSection />
+            </div>
+            <div class="DAGAdviceCarousel w-full lg:!w-3/4">
+                <CarouselGenerator
+                    data-type="advice"
+                    :data-array="advicesData ? advicesData : []"
+                    special-attribute="twoThirdWide"
+                />
+            </div>
+        </div>
 
         <SectionHeader
             :classes="'bg-secondary-darkBlue'"
             :section="'software'"
-            :title="'Top Software'"
+            :title="'Latest Software'"
             :button-text="'View all software'"
             :button-callback="() => router.push('/browse/software')"
         />
 
         <!-- Software Section Here -->
-        <div class="flex flex-col gap-6 group/bg h-full py-8 relative lg:!flex-row lg:!px-huge ">
+        <div class="flex flex-col gap-6 group/bg h-full py-8 relative lg:!flex-row lg:!px-huge">
             <div
                 class="
                     -translate-y-1/2
@@ -96,15 +105,27 @@ const softwareResponsiveData = computed(() => {
             >
                 <SoftwareRobot />
             </div>
-            <div class="flex flex-col pl-8 place-items-center w-full lg:w-[40%] max-h-[1000px]">
+            <div class="flex flex-col max-h-[1000px] pl-8 place-items-center w-full lg:w-[40%]">
                 <SoftwareIllustration />
             </div>
             <template v-if="softwaresData">
-                <div class="grid grid-cols-1 gap-10 place-items-center px-8 max-h-[1000px] h-fit overflow-hidden
-                            xl:grid-cols-2 xl:px-2 
-                            lg:grid-cols-1 
-                            md:grid-cols-2 
-                            sm:grid-cols-1">
+                <div
+                    class="
+                        grid
+                        sm:grid-cols-1
+                        md:grid-cols-2
+                        lg:grid-cols-1
+                        xl:grid-cols-2
+                        grid-cols-1
+                        gap-10
+                        place-items-center
+                        h-fit
+                        max-h-[1000px]
+                        overflow-hidden
+                        px-8
+                        xl:px-2
+                        "
+                >
                     <SoftwareCard
                         v-for="software in softwareResponsiveData"
                         :key="software.guid"
@@ -123,25 +144,17 @@ const softwareResponsiveData = computed(() => {
         </div>
 
         <SectionHeader
-            :classes="'bg-main-darkTeal'"
-            :section="'advice'"
-            :title="'Advice'"
-            :button-text="'View all resources'"
-            :button-callback="() => router.push('/browse/advice')"
+            :classes="'bg-main-teal'"
+            :section="'events'"
+            :title="'New Events'"
+            :button-text="'View all events'"
+            :button-callback="() => router.push('/browse/event')"
+        />
+        <CarouselGenerator
+            data-type="events"
+            :data-array="eventsData? eventsData : []"
         />
 
-        <div class="flex flex-row w-full px-huge lg:px-16">
-            <div class="DAGInfoSection w-1/4">
-                <DAGInfoSection />
-            </div>
-            <div class="DAGAdviceCarousel w-3/4">
-                <CarouselGenerator
-                    data-type="advice"
-                    :data-array="advicesData ? advicesData : []"
-                    special-attribute="twoThirdWide"
-                />
-            </div>
-        </div>
 
         <SectionHeader
             :classes="'bg-main-navy'"

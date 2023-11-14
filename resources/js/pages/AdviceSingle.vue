@@ -7,6 +7,7 @@ import BaseBreadcrumb from "@/js/components/bases/BaseBreadcrumb.vue";
 import BaseHero from "@/js/components/bases/BaseHero.vue";
 import BaseSingle from "@/js/components/bases/BaseSingle.vue";
 import ExtraResourceTemplateDisplay from "@/js/components/renderer/ExtraResourceTemplateDisplay.vue";
+import {edSparkContentSanitizer} from "@/js/helpers/objectHelpers";
 
 /**
  *  type AdviceSingleContent = {
@@ -63,7 +64,7 @@ const timeFormatter = (originalFormat) => {
                     {{ timeFormatter(contentFromBase['post_date']) }}
                 </template> -->
                 <template #subtitleText2>
-                    <div v-html="contentFromBase['excerpt']" />
+                    <div v-html="edSparkContentSanitizer(contentFromBase['excerpt'])" />
                 </template>
             </BaseHero>
         </template>
@@ -79,7 +80,7 @@ const timeFormatter = (originalFormat) => {
                         class="flex content-paragraph flex-col max-w-full overflow-hidden text-lg"
                     />
 
-                    <div v-html="purify.sanitize(contentFromBase['content'])" />
+                    <div v-html="edSparkContentSanitizer(contentFromBase['content'] )" />
                     <div
                         v-if="contentFromBase['extra_content'] && contentFromBase['extra_content'].length"
                         class="extraResourcesContainer mt-4 w-full"

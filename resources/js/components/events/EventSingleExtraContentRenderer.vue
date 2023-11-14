@@ -1,7 +1,8 @@
 <script setup>
-import { computed } from 'vue';
-import EventDateListRenderer from "@/js/components/events/Renderer/EventDateListRenderer.vue";
 import purify from "dompurify";
+import { computed } from 'vue';
+
+import EventDateListRenderer from "@/js/components/events/Renderer/EventDateListRenderer.vue";
 
 const props = defineProps({
     content: {
@@ -21,8 +22,8 @@ const itemArray = computed(() => {
 </script>
 
 <template>
-    <div class="extraContentRendererContainer flex flex-col py-2 my-2 px-4">
-        <template v-if="contentType == 'date_items'">
+    <div class="extraContentRendererContainer flex flex-col my-2 px-4 py-2">
+        <template v-if="contentType === 'date_items'">
             <EventDateListRenderer :item-array="itemArray" />
         </template>
         <template v-else>

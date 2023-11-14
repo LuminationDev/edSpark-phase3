@@ -47,7 +47,7 @@ const isPreviewMode = computed(() => {
 
 onBeforeMount(async () => {
     // will automatically create school if user is principal and school has not been created
-    await schoolService.getUserSchoolByUserSiteId(currentUser.value.id, currentUser.value.site_id)
+    await schoolService.getUserSchoolByUserSiteId(currentUser.value.id, currentUser.value.site_id) // will trigger create the user's school based on the site id
     await fetchSchoolByNameAsync(currentSchoolName.value)
 
 })
@@ -89,6 +89,7 @@ const fetchSchoolByNameAsync = async (schoolName): Promise<void> => {
                     colorTheme.value = colorThemeMeta[0]['schoolmeta_value'];
                 }
             }
+            
         } catch (err) {
             console.log(`${err.message} Inside fetchSchoolByName`);
             showSchoolNotAvailable.value = true

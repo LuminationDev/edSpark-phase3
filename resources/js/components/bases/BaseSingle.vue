@@ -6,7 +6,7 @@ import {useRoute, useRouter} from "vue-router";
 
 import Loader from "@/js/components/spinner/Loader.vue";
 import {API_ENDPOINTS} from "@/js/constants/API_ENDPOINTS";
-import {isObjectEmpty} from "@/js/helpers/objectHelpers";
+import {convertLinksToEmbeds, isObjectEmpty} from "@/js/helpers/objectHelpers";
 import {lowerSlugify} from "@/js/helpers/slugifyHelper";
 import {useAdviceStore} from "@/js/stores/useAdviceStore";
 import {useHardwareStore} from "@/js/stores/useHardwareStore";
@@ -103,27 +103,6 @@ onBeforeMount(async () => {
     getRecommendationBasedOnContentType()
 })
 
-const convertLinksToEmbeds = (content) => {
-    // YouTube
-    const regexYoutube = /(?:https?:\/\/)?(?:www\.)?(?:youtube\.com|youtu\.be)\/(?:watch\?v=)?([\w\-]{11})/g;
-    content = content.replace(regexYoutube, (match, p1) => {
-        return `<iframe width="560" height="315" src="https://www.youtube.com/embed/${p1}" frameborder="0" allowfullscreen></iframe>`;
-    });
-
-    // Vimeo
-    const regexVimeo = /https?:\/\/(?:www\.)?vimeo\.com\/(\d+)/g;
-    content = content.replace(regexVimeo, (match, p1) => {
-        return `<iframe src="https://player.vimeo.com/video/${p1}" width="560" height="315" frameborder="0" allowfullscreen></iframe>`;
-    });
-
-    // Twitter
-    const regexTwitter = /https?:\/\/twitter\.com\/(?:\w+)\/status\/(\d+)/g;
-    content = content.replace(regexTwitter, (match, p1) => {
-        return `<blockquote class="twitter-tweet"><a href="${match}"></a></blockquote><script async src="https://platform.twitter.com/widgets.js" charset="utf-8" />`;
-    });
-
-    return content;
-}
 
 const checkToReadOrFetchContent = async () => {
     if (!window.history.state.content) { // doesn't exists
