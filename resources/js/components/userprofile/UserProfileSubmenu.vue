@@ -49,7 +49,6 @@ onMounted( () => {
             rounded-t-xl
             text-lg
             text-white
-            uppercase
             w-full
             md:!justify-start
             "

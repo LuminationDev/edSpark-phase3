@@ -27,7 +27,7 @@ const audioVisualTechSpecs = computed(() => {
     <div class="AudioVisualTechSpecsContainer flex flex-col w-full bg-gray-50 text-xl p-4">
         <template v-if="audioVisualTechSpecs">
             <div class="audioVisualTechSpecsTitle font-semibold text-3xl pb-6 ">
-                Tech Specs
+                Tech specs
             </div>
             <TechSpecsRow
                 :value="audioVisualTechSpecs.screen"
@@ -45,7 +45,7 @@ const audioVisualTechSpecs = computed(() => {
         </template>
         <template v-else>
             <div class="text-black">
-                Sorry Tech Specs is not available for this item
+                Sorry, tech specs are not available for this item
             </div>
         </template>
     </div>

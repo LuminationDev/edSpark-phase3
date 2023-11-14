@@ -12,8 +12,8 @@
             >
         </div>
         <div class="col-span-6 flex flex-col gap-6 w-full">
-            <h3 class="font-bold text-xl uppercase md:!text-2xl">
-                Borrow or Purchase
+            <h3 class="font-bold text-xl md:!text-2xl">
+                Borrow or purchase
             </h3>
 
             <p class="font-normal text-base md:!text-lg">

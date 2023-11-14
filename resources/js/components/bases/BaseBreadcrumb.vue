@@ -76,7 +76,6 @@ const customTextHover = computed(() => {
             <p
                 class="capitalize w-full"                
                     :class="customText" >
-                 >
                 {{ props.childPage }}
             </p>
         </div>

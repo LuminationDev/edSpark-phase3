@@ -179,7 +179,7 @@ const handleEmitFromSubmenu = (value) => {
         <div class="font-semibold text-xl">
             <Loader
                 :loader-color="'#0072DA'"
-                :loader-message="'Data Loading'"
+                :loader-message="'Data loading'"
             />
         </div>
     </div>

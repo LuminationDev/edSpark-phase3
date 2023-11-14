@@ -81,7 +81,7 @@ setupRoutes();
                 class="flex flex-col font-semibold text-white"
             >
                 <li
-                    class="cursor-pointer font-bold ml-auto text-2xl hover:text-main-teal uppercase"
+                    class="cursor-pointer font-bold ml-auto text-2xl hover:text-main-teal"
                     @click="handleToggleNavbar"
                 >
                     <Close class="fill-white hover:fill-slate-200 h-8 w-8 hover:cursor-pointer" />
@@ -92,9 +92,8 @@ setupRoutes();
                     :route="route"
                     :click-callback="handleToggleNavbar"
                 />
-                <li
-                    id="searchItem"
-                    class="cursor-pointer font-normal mt-6 text-sm uppercase"
+                <li id="searchItem"
+                    class="cursor-pointer mt-6 text-sm font-normal"
                     style="align-self: center;"
                     @click="handleGlobalsearchClick"
                 >
@@ -112,22 +111,22 @@ setupRoutes();
                             <circle
                                 cx="10"
                                 cy="10"
-                                r="8" 
-                                stroke="#FFF" 
-                                stroke-width="3" 
-                                stroke-linecap="round" 
-                                stroke-linejoin="round" 
+                                r="8"
+                                stroke="#FFF"
+                                stroke-width="3"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
                             />
 
                             <line
                                 x1="15"
                                 y1="16"
                                 x2="21"
-                                y2="22"                
-                                stroke="#FFF" 
-                                stroke-width="3" 
-                                stroke-linecap="round" 
-                                stroke-linejoin="round" 
+                                y2="22"
+                                stroke="#FFF"
+                                stroke-width="3"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
                             />
 
                         </svg>

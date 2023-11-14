@@ -156,7 +156,7 @@ const schoolSubmenu = [
         value: 'detail'
     },
     {
-        displayText: "What's New",
+        displayText: "What's new",
         value: 'new'
     },
     {

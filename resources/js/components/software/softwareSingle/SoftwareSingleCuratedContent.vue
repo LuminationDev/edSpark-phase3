@@ -15,7 +15,7 @@ const { relatedSoftware } = storeToRefs(softwareStore)
         v-if="relatedSoftware && relatedSoftware.length > 0"
         class="bg-secondary-coolGrey/20 flex justify-center items-center flex-col mt-8 px-4 py-10 rounded softwareSingleCuratedContentContainer xl:!ml-4 xl:!px-10"
     >
-        <div class="curatedResourcesTitle font-bold pb-8 text-2xl text-center uppercase">
+        <div class="curatedResourcesTitle font-bold pb-8 text-2xl text-center">
             RELATED
         </div>
         <div class="flex flex-col gap-10 lg:!flex-row xl:!flex-col">

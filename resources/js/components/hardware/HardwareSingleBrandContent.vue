@@ -11,9 +11,9 @@ const {relatedBrandHardware} = storeToRefs(hardwareStore)
 <template>
     <div
         v-if="relatedBrandHardware && relatedBrandHardware.length > 0"
-        class="bg-[#048246]/5 flex flex-col gap-6 p-4"
+        class="bg-secondary-coolGrey/20 flex flex-col gap-6 p-4"
     >
-        <h3 class="font-bold mx-auto pb-8 text-[24px]">
+        <h3 class="font-bold mx-auto text-[24px]">
             More from the same brand
         </h3>
         <div

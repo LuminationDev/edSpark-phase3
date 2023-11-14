@@ -18,7 +18,7 @@ const navDropdownToggle = ref(false);
 
 <template>
     <li
-        class="cursor-pointer decoration-4 decoration-[#B8E2DC] py-4 transition-all underline-offset-8 hover:underline uppercase lg:!py-0"
+        class="cursor-pointer decoration-4 decoration-[#B8E2DC] py-4 transition-all underline-offset-8 hover:underline first-letter:uppercase lg:!py-0"
         @click="props.clickCallback"
     >
         <router-link
