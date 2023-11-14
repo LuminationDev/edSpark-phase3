@@ -127,7 +127,7 @@ class AdviceController extends Controller
         }
 
         // Find the advice by ID
-        $advice = Advice::find($id);
+        $advice = Advice::where('id',$id)->where('post_status', "Published")->first();
 
         // Check if advice with given ID exists
         if (!$advice) {

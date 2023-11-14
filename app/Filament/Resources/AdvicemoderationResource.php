@@ -32,13 +32,6 @@ class AdvicemoderationResource extends Resource
 
     public static function form(Form $form): Form
     {
-        $adviceAuthor= Advicemoderation::find($form->model->id)->author;
-        $authorName = $adviceAuthor->full_name;
-
-        $advicemoderation = Advice::find($form->model->id);
-        $adviceTypeIds = $advicemoderation->advicetypes->pluck('id')->toArray();
-        $adviceTypes = Advicetype::find($adviceTypeIds[0]);
-//        dd($adviceTypes->advice_type_name);
 
         return $form->schema([
             Forms\Components\Card::make()->schema([
@@ -46,91 +39,21 @@ class AdvicemoderationResource extends Resource
                     ->label('Title')
                     ->required()
                     ->maxLength(255),
-
-                Forms\Components\RichEditor::make('post_content')
-                    ->label('Content')
-
-                    ->required()
-                    ->maxLength(65535),
-
-                Forms\Components\RichEditor::make('post_excerpt')
-                    ->label('Excerpt')
-                    ->disableToolbarButtons(['attachFiles']),
-
-                Forms\Components\Grid::make(2)->schema([
-                    Forms\Components\TextInput::make('advice_type_display')
-                        ->label('Advice type')
-                        ->columns(3)
-                        ->default($adviceTypes->advice_type_name)
-                        ->disabled()
-                    ,
-
-                    Forms\Components\Select::make('post_status')
-                        ->options([
-                            'Published' => 'Published',
-                            'Unpublished' => 'Unpublished',
-                            'Draft' => 'Draft',
-                            'Pending' => 'Pending'
-                        ])
-                        ->label('Status')
-                        ->required(),
-                ]),
-
-                Forms\Components\TextInput::make('author_id')
-                    ->label('Author')
-                    ->default($authorName) // Set the author's name as the default value
-                    ->disabled(),
-
-                Forms\Components\TagsInput::make('tags')
-                    ->placeholder('Add or create tags')
-                    ->helperText('Separate tags with commas'),
+                Forms\Components\Select::make('status')
+                    ->options([
+                        'Published' => 'Published',
+                        'Unpublished' => 'Unpublished',
+                        'Draft' => 'Draft',
+                        'Pending' => 'Pending'
+                    ])
+                    ->label('Status')
+                    ->required(),
             ]),
         ]);
     }
 
 
-//    public static function form(Form $form): Form
-//    {
-//        $user = Auth::user()->full_name;
-//        return $form
-//            ->schema([
-//                Forms\Components\Card::make()
-//                    ->schema([
-//                        Forms\Components\TextInput::make('post_title')
-//                            ->label('Title')
-//                            ->required()
-//                            ->maxLength(255),
-//                        Forms\Components\RichEditor::make('post_content')
-//                            ->label('Content')
-//                            ->required()
-//                            ->maxLength(65535),
-//                        Forms\Components\RichEditor::make('post_excerpt')
-//                            ->label('Excerpt')
-//                            ->disableToolbarButtons([
-//                                'attachFiles',
-//                            ]),
-//                        Forms\Components\Grid::make(2)
-//                            ->schema([
-//                                // Forms\Components\TextInput::make('author_id')
-//                                //     ->label('Author')
-//                                //     ->relationship('author', 'full_name')
-//                                //     ->disabled(),
-//                                Forms\Components\BelongsToSelect::make('advice_type')
-//                                    ->label('Advice type')
-//                                    ->relationship('advicetype', 'advice_type_name'),
-//                                Forms\Components\Select::make('post_status')
-//                                    ->options([
-//                                        'Published' => 'Published',
-//                                        'Unpublished' => 'Unpublished',
-//                                        'Draft' => 'Draft',
-//                                        'Pending' => 'Pending'
-//                                    ])
-//                                    ->label('Status')
-//                                    ->required(),
-//                            ]),
-//                    ]),
-//            ]);
-//    }
+
 
     public static function table(Table $table): Table
     {
@@ -155,9 +78,6 @@ class AdvicemoderationResource extends Resource
                     ->label('Status')
                     ->sortable()
                     ->searchable(),
-            ])
-            ->filters([
-                //
             ])
             ->actions([
                 Tables\Actions\ViewAction::make(),

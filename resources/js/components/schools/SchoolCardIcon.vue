@@ -1,7 +1,8 @@
 <script setup>
 import {computed, ref, shallowRef, watchEffect} from "vue";
-import SchoolsTech from "@/js/components/schools/SchoolsTech.vue";
+
 import SchoolTechIconGenerator from "@/js/components/global/SchoolTechIconGenerator.vue";
+import SchoolsTech from "@/js/components/schools/SchoolsTech.vue";
 
 const props = defineProps({
     techName:{
@@ -16,11 +17,6 @@ const props = defineProps({
         type: Number,
         required: false,
         default:1
-    },
-    showFirstTech:{
-        type: Boolean,
-        required: false,
-        default: false
     }
 });
 
@@ -28,10 +24,12 @@ const props = defineProps({
 </script>
 <template>
     <div
-        class="my-auto group/tech schools-tech" >
+        class="group/tech my-auto schools-tech"
+    >
         <SchoolTechIconGenerator 
             :tech-name="props.techName" 
-            style="width: 44px; height: 44px;"/>
+            style="width: 44px; height: 44px;"
+        />
     </div>
 </template>
 <style>
