@@ -72,28 +72,32 @@ defineExpose({
     margin: 0 0 0 -65px;
 
 }
-
+.ce-popover__custom-content div{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
 .codex-editor .codex-editor__redactor {
     margin-right: 50px !important;
 }
 
 .ce-block__content {
     max-width: 100% !important;
-    padding: 0.5rem 1rem !important;
+    padding: 0.5rem 0.5rem !important;
 }
 
 .ce-block {
-    margin-bottom: 2rem !important;
+    margin-bottom: 1rem !important;
     overflow: hidden;
 }
 
 .ce-block--focused {
     border: 1px solid #d9d9d9 !important;
-    border-radius: 0.75rem !important;
+    border-radius: 0.3rem !important;
     margin-right: 0 !important;
     padding-right: 0 !important;
-    -webkit-box-shadow: 0px 0px 36px -8px rgba(0, 0, 0, 0.15);
-    box-shadow: 0px 0px 36px -8px rgba(0, 0, 0, 0.15);
+    -webkit-box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+    box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
 }
 
 /* Interaction buttons (add block, edit block, etc) */

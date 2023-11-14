@@ -8,14 +8,9 @@ import Header from '@editorjs/header';
 import ImageTool from '@editorjs/image'
 import List from '@editorjs/list';
 import Paragraph from '@editorjs/paragraph';
-import SimpleImage from '@editorjs/simple-image';
 import FontSize from 'editorjs-inline-font-size-tool';
-// import VideoRecorder from '../../constants/customVideoBlock';
-// import VideoRecorder from '../../constants/editorJsCustomVideoRecorder.js';
-import {onMounted} from 'vue';
 
 import {API_ENDPOINTS} from "@/js/constants/API_ENDPOINTS";
-import {serverURL} from "@/js/constants/serverUrl";
 
 import CustomAttachesTool from '../../constants/attachesExtension';
 
@@ -232,4 +227,8 @@ defineExpose({
 .ce-block__content h6 {
     font-size: 21px;
 }
+
+
+
+
 </style>

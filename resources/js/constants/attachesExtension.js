@@ -122,7 +122,7 @@ export default class CustomAttachesTool {
   static get toolbox() {
     return {
       icon: '',
-      title: 'Attachment',
+      title: 'Video (max 10 MB)',
     };
   }
 
