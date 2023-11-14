@@ -62,11 +62,12 @@ export const editorJsTools = {
     alignmentTunes: {
         class: AlignmentTuneTool,
         config: {
-            default: "right",
+            default: "left",
             blocks: {
                 header: 'center',
                 list: 'left',
-                paragraph: 'left'
+                paragraph: 'left',
+                video: 'center'
             }
         },
     }
