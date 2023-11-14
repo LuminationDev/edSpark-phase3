@@ -60,7 +60,7 @@ const handleClickCard = () => {
             #icon
         >
             <SoftwareCardIcon
-                class="-top-6 -right-6 icon"
+                class="-top-6 -right-6 icon pr-4"
                 :software-icon-name="data.type[0]"
             />
         </template>

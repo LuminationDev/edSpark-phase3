@@ -80,7 +80,7 @@ setupRoutes();
                 class="flex flex-col font-['Poppins'] font-semibold text-white"
             >
                 <li
-                    class="cursor-pointer font-bold ml-auto text-2xl hover:text-main-teal uppercase"
+                    class="cursor-pointer font-bold ml-auto text-2xl hover:text-main-teal"
                     @click="handleToggleNavbar"
                 >
                     <Close class="fill-white hover:fill-slate-200 h-8 w-8 hover:cursor-pointer" />
@@ -92,7 +92,7 @@ setupRoutes();
                     :click-callback="handleToggleNavbar"
                 />
                 <li id="searchItem"
-                    class="cursor-pointer uppercase mt-6 text-sm font-normal"
+                    class="cursor-pointer mt-6 text-sm font-normal"
                     style="align-self: center;"
                     @click="handleGlobalsearchClick"
                 >

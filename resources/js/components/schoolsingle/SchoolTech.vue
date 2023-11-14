@@ -40,15 +40,15 @@ const customFill = computed(() => {
         <div class="absolute -top-24 -right-28 techListBackground">
             <LaptopGear />
         </div>
-        <div class="font-semibold mb-5 techListTitle text-lg">
+        <div class="font-bold mb-5 techListTitle text-xl">
             Tech used at this school
         </div>
         <template v-if="!deptTech.length && !partnerTech.length">
             They're keeping their tech toolkit under wraps!
         </template>
         <template v-if="deptTech.length">
-            <div class="font-semibold mb-2 text-lg underline">
-                Department Supplied Tech
+            <div class="font-semibold mb-2 text-lg">
+                Department supplied tech
             </div>
             <div
                 v-for="(tech,index) in deptTech"
@@ -67,8 +67,8 @@ const customFill = computed(() => {
             </div>
         </template>
         <template v-if="partnerTech.length">
-            <div class="font-semibold mb-2 text-lg underline">
-                Partner Supplied Tech
+            <div class="font-semibold mb-2 text-lg">
+                Partner supplied tech
             </div>
             <div
                 v-for="(tech,index) in partnerTech"

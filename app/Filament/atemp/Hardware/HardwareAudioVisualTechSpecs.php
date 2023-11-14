@@ -10,7 +10,7 @@ final class HardwareAudioVisualTechSpecs
 {
     public static function title()
     {
-        return 'Audio Visual Tech Specs';
+        return 'Audiovisual tech specs';
     }
 
     public static function schema()
@@ -22,7 +22,7 @@ final class HardwareAudioVisualTechSpecs
                 TextInput::make('features')->label('Feature highlights (separate each feature with a comma)'),
 
             ])
-                ->label('Tech Specs')
+                ->label('Tech specs')
                 ->collapsible()
         ];
     }

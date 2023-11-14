@@ -11,14 +11,14 @@ final class HardwareEmergingTechTechSpecs
 {
     public static function title()
     {
-        return 'Emerging Technology Tech Specs';
+        return 'Emerging technology tech specs';
     }
 
     public static function schema()
     {
         return [
             Repeater::make('item')->schema([
-                TextInput::make('units')->label('Number of Unit included'),
+                TextInput::make('units')->label('Number of units included'),
                 Select::make("tech_area")->label('Technology area(s)')
                     ->multiple()
                     ->options([
@@ -34,7 +34,7 @@ final class HardwareEmergingTechTechSpecs
                 TextInput::make('features')->label('Feature highlights (separate each feature with a comma)'),
 
             ])
-                ->label('Tech Specs')
+                ->label('Tech specs')
                 ->collapsible()
         ];
     }

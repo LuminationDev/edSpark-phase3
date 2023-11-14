@@ -11,7 +11,7 @@ const handleEmitType = () => {
 </script>
 
 <template>
-    <div class="flex-1 w-[25%] flex flex-col">
+    <div class="flex-1 w-auto max-w-[500px] flex flex-col">
         <label
             for="filterTypeSchoolType"
             class="font-normal text-[18px] text-white"

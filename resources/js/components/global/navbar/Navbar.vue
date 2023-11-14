@@ -72,7 +72,7 @@ const {isMobile, isTablet} = storeToRefs(useWindowStore)
                     :route="route"
                 />
                 <li
-                    class="cursor-pointer uppercase"
+                    class="cursor-pointer"
                     @click="handleGlobalsearchClick"
                 >
               

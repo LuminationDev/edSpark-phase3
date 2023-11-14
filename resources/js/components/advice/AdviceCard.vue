@@ -65,10 +65,10 @@ const handleClickAdviceCard = () => {
             v-if="showIcon"
             #icon
         >
-            <AdviceCardIcon
+            <!-- <AdviceCardIcon
                 class="right-4 bottom-2 group-hover:-bottom-32 icon transition-all"
                 :advice-icon-name="randomIconName"
-            />
+            /> -->
         </template>
     </GenericCard>
 </template>

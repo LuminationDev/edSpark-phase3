@@ -211,7 +211,7 @@ const cardHoverToggle: Ref<boolean> = ref(false);
 </script>
 
 <template>
-    <div class="GenericCardContainer card_parent generic-card__wrapper group !border-slate-300 rounded overflow-hidden"
+    <div class="GenericCardContainer bg-white card_parent generic-card__wrapper group !border-slate-300 rounded overflow-hidden"
         :class="props.sectionType" @mouseenter="cardHoverToggle = true">
         <template v-if="!props.overrideContent">
             <div class="
@@ -232,9 +232,9 @@ const cardHoverToggle: Ref<boolean> = ref(false);
             <div @click="clickCallback" class="cardContent m-0 p-0 group-hover:-mt-[120px] z-10">
                 <div class="cardContentWrapper p-6 bg-white h-[210px] group-hover:h-[315px]">
 
-                    <div class="flex flex-row relative gap-4 mb-3 items-center">
+                    <div class="flex flex-row relative mb-3 items-center">
                         <div v-if="$slots.icon">
-                            <slot name="icon" />
+                                <slot name="icon" />
                         </div>
 
                         <div v-if="props.title" class="cardTitle !mb-0">
