@@ -92,7 +92,6 @@ const handleAuth = async () => {
 
 onBeforeMount(async () => {
     await handleAuth()
-    setEventListeners();
 });
 
 
@@ -113,6 +112,8 @@ onMounted(() => {
             navbar.classList.toggle('navbarScrolled', navScrolled.value);
         }
     }, 100);
+    setEventListeners();
+
 
 });
 
