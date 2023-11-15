@@ -1,7 +1,9 @@
 <script setup>
-import AdviceRobot from '../svg/adviceRobot/AdviceRobot.vue';
-import GenericButton from "@/js/components/button/GenericButton.vue";
 import {useRouter} from "vue-router";
+
+import GenericButton from "@/js/components/button/GenericButton.vue";
+
+import AdviceRobot from '../svg/adviceRobot/AdviceRobot.vue';
 
 const router = useRouter()
 </script>
@@ -21,14 +23,14 @@ const router = useRouter()
                 to-[#FCEFCC]
                 grid
                 grid-cols-8
+                mb-4
                 pb-8
                 pt-[160px]
                 px-10
-                mb-4
                 "
         >
             <div class="col-span-8 md:!col-span-5">
-                <h1 class="font-semibold pb-8 text-[36px] text-white capitalize">
+                <h1 class="capitalize font-semibold pb-8 text-[36px] text-white">
                     Digital Adoption Group 
                 </h1>
 
@@ -39,7 +41,7 @@ const router = useRouter()
             <div class="col-span-8 flex justify-start items-start relative z-30 md:!col-span-3 md:!items-end md:!justify-end">
                 <AdviceRobot class="absolute lg:right-6 h-[250px] hidden md:!block md:!bottom-4 xl:!-bottom-4 xl:!right-12" />
                 <GenericButton
-                    :callback="() => router.push('browse/advice')"
+                    :callback="() => router.push('browse/advice/dag')"
                     button-id="DAGadvice"
                     class="
                         !rounded-none

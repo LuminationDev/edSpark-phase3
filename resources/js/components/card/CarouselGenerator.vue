@@ -54,7 +54,30 @@ const numberOfLoadingPlaceholder = computed(() =>{
         return windowStore.getNumberOfCardLoading
     }
 })
+// TODO :: Process what card to return from the props.dataArray
+// Can be latest or random in certain scenario
+const controlledDataArray = computed(() =>{
+    if(props.dataArray && props.dataArray.length > 5){
+        if(props.specialAttribute === 'twoThirdWide'){
+            return props.dataArray.slice(0,4)
+        } else{
+            return props.dataArray.slice(0,5)
+        }
+    } else {
+        return props.dataArray
+    }
+})
+
+
+
+
 </script>
+
+
+
+
+
+
 
 <template>
     <div
@@ -62,7 +85,7 @@ const numberOfLoadingPlaceholder = computed(() =>{
         :class="{'lg:!px-huge': props.specialAttribute !== 'twoThirdWide'}"
     >
         <div
-            v-if="props.dataArray && props.dataArray.length > 0"
+            v-if="controlledDataArray && controlledDataArray.length > 0"
             class="carousel__wrapper"
         >
             <Carousel
@@ -71,7 +94,7 @@ const numberOfLoadingPlaceholder = computed(() =>{
                 :breakpoints="breakpointChoser()"
             >
                 <Slide
-                    v-for="cardData in props.dataArray"
+                    v-for="cardData in controlledDataArray"
                     :key="cardData.guid"
                     class="overflow-visible"
                 >

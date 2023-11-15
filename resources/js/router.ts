@@ -113,7 +113,7 @@ const routes: any = [
                 } as RouteMeta
             }, {
                 name: 'browseAdvices',
-                path: 'advice',
+                path: 'advice/:filter?',
                 component: AdviceSearch,
                 meta: {
                     requiresAuth: true,

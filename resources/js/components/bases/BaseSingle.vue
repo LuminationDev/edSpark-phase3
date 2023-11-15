@@ -217,4 +217,7 @@ h2 {
 h3 {
     font-weight: bold;
 }
+:deep(a){
+    text-decoration: underline;
+}
 </style>
