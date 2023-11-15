@@ -2,12 +2,12 @@
 import 'v-calendar/style.css';
 
 import {Calendar} from 'v-calendar';
-import {computed,ref} from 'vue';
+import {computed, onMounted, ref} from 'vue';
 
 import EventsCalendarPopup from "@/js/components/events/EventsCalendarPopup.vue";
 import {EventType} from "@/js/types/EventTypes";
 
-const eventCalendar = ref(null);
+const eventCalendarRef = ref(null);
 const showPopup = ref(false);
 const dayEvents = ref([]);
 const dateForPopup = ref('');
@@ -19,12 +19,8 @@ const props = defineProps({
     }
 });
 
-/**
- * Attempt to build some data for the calendar
- */
 const attributes = computed(() =>
     props.events.map(event => {
-        // const backgroundColor = event.type === 'Virtual' ? '#BF123D' : event.type === 'Hybrid' ? '#A855F7' : '#3B82F6';
         const backgroundColor = event.type === 'Virtual' ? 'mbRose' : event.type === 'Hybrid' ? 'purple' : 'blue';
         return {
             dates: [[event.start_date, event.end_date]],
@@ -83,12 +79,20 @@ const initialCalendarPage = computed(() => {
         year: currentDate.getFullYear()
     }
 })
+
+const handleClickTodayButton = () => {
+    eventCalendarRef.value.focusDate(new Date())
+}
+onMounted(() => {
+    eventCalendarRef.value.focusDate(new Date())
+
+})
 </script>
 
 <template>
     <div class="calendarWrapper mt-10">
         <Calendar
-            ref="eventCalendar"
+            ref="eventCalendarRef"
             borderless
             expanded
             :attributes="attributes"
@@ -96,6 +100,12 @@ const initialCalendarPage = computed(() => {
             :initial-page="initialCalendarPage"
             @dayclick="handleDayClick"
         />
+        <div
+            class="border-[1px] flex p-2 rounded-full"
+            @click="handleClickTodayButton"
+        >
+            Today
+        </div>
     </div>
 
 

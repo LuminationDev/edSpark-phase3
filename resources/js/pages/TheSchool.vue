@@ -40,18 +40,6 @@ const {
 
 const {state, STATES} = useSwrvState(featuredSites, featuredSitesError, isValidatingFeatured)
 
-const cardsLoading = computed(() => {
-    if ([STATES.ERROR, STATES.STALE_IF_ERROR].includes(state.value)) {
-        return false
-    } else if ([STATES.PENDING].includes(state.value)) {
-        return true
-    } else if ([STATES.VALIDATING].includes(state.value)) {
-        return !featuredSites.value.length;
-    } else {
-        return ![STATES.SUCCESS, STATES.STALE_IF_ERROR].includes(state.value)
-    }
-})
-
 const schoolsAvailable = computed(() => {
     return Boolean(schools.value.length)
 })
@@ -59,37 +47,6 @@ const schoolsAvailable = computed(() => {
 
 onBeforeMount(async () => {
     await schoolStore.loadSchools()
-
-    /**
-     * Perform check for user meta here
-     * has_school field
-     */
-    let currentUserHasSchool
-    const currentUserId = currentUser.value.id
-    const currentUserRole = currentUser.value.role
-    try {
-        // await axios.post(`${serverURL}/getUserMetadata`,{id: 1, userMetakey: 'has_school'}).then(res => {
-        //     console.log(res.data[0])
-        //     currentUserHasSchool = res.data[0]['user_meta_value'] === 'false'? false : true
-        //     // console.log('current user has_school meta is ' + currentUserHasSchool)
-        // });
-
-        if (currentUser.value && currentUser.value.metadata && Object.keys(currentUser.value.metadata) === 'has_school') {
-            currentUserHasSchool = true;
-        }
-
-        if (!currentUserHasSchool && (currentUserRole === 'Principal' || currentUserRole === 'Superadmin')) {
-            // console.log('School is not init yet. you should init the school')
-            createSchool.value = false
-        } else if (!currentUserHasSchool) {
-            // console.log('Please notify your principal to set up the school')
-        } else {
-            // console.log('hasnt been handled yet')
-        }
-
-    } catch (err) {
-        console.log(err)
-    }
 })
 
 const handleFinishCreateSchool = () => {

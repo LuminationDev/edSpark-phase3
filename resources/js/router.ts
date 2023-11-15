@@ -29,6 +29,7 @@ import TheForbidden from "@/js/pages/TheForbidden.vue";
 import TheHardware from "@/js/pages/TheHardware.vue";
 import TheHome from "@/js/pages/TheHome.vue";
 import ThePartner from "@/js/pages/ThePartner.vue";
+import TheSchool from "@/js/pages/TheSchool.vue";
 import TheSoftware from "@/js/pages/TheSoftware.vue";
 import {useAuthStore} from '@/js/stores/useAuthStore';
 import {useUserStore} from "@/js/stores/useUserStore";
@@ -154,6 +155,15 @@ const routes: any = [
         path: '/schools/:name',
         component: SchoolSingle,
         meta: {
+            requiresAuth: true,
+        }
+    },
+    {
+    name: 'school',
+        path: '/school',
+        component: TheSchool,
+        meta: {
+            navigation: true,
             requiresAuth: true,
         }
     },
