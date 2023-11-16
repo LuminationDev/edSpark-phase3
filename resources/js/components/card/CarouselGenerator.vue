@@ -81,7 +81,7 @@ const controlledDataArray = computed(() =>{
 
 <template>
     <div
-        class="flex flex-col px-8 py-2 lg:!flex-row lg:!py-8"
+        class="flex flex-col px-4 py-2 lg:!flex-row lg:!py-8"
         :class="{'lg:!px-huge': props.specialAttribute !== 'twoThirdWide'}"
     >
         <div
@@ -172,8 +172,11 @@ const controlledDataArray = computed(() =>{
     scrollbar-width: none;
 }
 
+
+
 .carousel__wrapper {
     width: 100%;
+    min-width: 490px;
 
     :deep(.carousel__viewport) {
         padding-bottom: 36px;
@@ -181,13 +184,15 @@ const controlledDataArray = computed(() =>{
         overflow-y: visible;
     }
 
-    .carousel__next {
-        right: -20px !important;
-    }
+    // .carousel__next {
+    //     right: -20px !important;
+    //     background-color: white;
+    // }
 
-    .carousel__prev {
-        left: -20px !important;
-    }
+    // .carousel__prev {
+    //     left: -20px !important;
+    //     background-color: white;
+    // }
 
     //.carousel__slide[aria-hidden="true"] {
     //    visibility: hidden;
@@ -205,46 +210,75 @@ const controlledDataArray = computed(() =>{
     :deep(.carousel__next) {
         border: 1px solid gray;
         border-radius: 100%;
-
+        background-color: white;
+        opacity: 1;
     }
 
     :deep(.carousel__prev) {
         border: 1px solid gray;
         border-radius: 100%;
+        background-color: white;
+        opacity: 1;
+    }
 
+    @media (min-width: 1024px) {
+        :deep(.carousel__next) {
+            right: -25px;
+        }
+
+        :deep(.carousel__prev) {
+            left: -25px;
+        }
+    }
+
+
+    :deep(.carousel__next--disabled) {
+        border: 1px solid lightgray;
+    }
+
+    :deep(.carousel__prev--disabled) {
+        border: 1px solid lightgray;
+    }
+
+    :deep(.carousel__next--disabled > svg) {
+        fill: lightgray !important;
+    }
+
+    :deep(.carousel__prev--disabled > svg) {
+        fill: lightgray !important;
     }
 
 }
 
 
-@media only screen and (min-width: 350px) {
-    .carousel__wrapper {
-        :deep(.carousel__next){
-            right: -42px ;
-        }
-        :deep(.carousel__prev){
-            left: -42px ;
-        }
-    }
-}
-@media only screen and (min-width: 768px) {
-    .carousel__wrapper {
-        :deep(.carousel__next){
-            right: 0 ;
-        }
-        :deep(.carousel__prev){
-            left: 0 ;
-        }
-    }
-}
-@media only screen and (min-width: 1024px) {
-    .carousel__wrapper {
-        :deep(.carousel__next){
-            right: -20px ;
-        }
-        :deep(.carousel__prev){
-            left: -20px ;
-        }
-    }
-}
+// @media only screen and (min-width: 350px) {
+//     .carousel__wrapper {
+//         :deep(.carousel__next){
+//             right: -42px ;
+//         }
+//         :deep(.carousel__prev){
+//             left: -42px ;
+//         }
+//     }
+// }
+// @media only screen and (min-width: 768px) {
+//     .carousel__wrapper {
+//         :deep(.carousel__next){
+//             right: 0 ;
+//         }
+//         :deep(.carousel__prev){
+//             left: 0 ;
+//         }
+//     }
+// }
+// @media only screen and (min-width: 1024px) {
+//     .carousel__wrapper {
+//         :deep(.carousel__next){
+//             right: -20px ;
+//         }
+//         :deep(.carousel__prev){
+//             left: -20px ;
+//         }
+//     }
+// }
 </style>
