@@ -83,12 +83,16 @@ class EventController extends Controller
 
     public function fetchEventPostById(Request $request, $id): \Illuminate\Http\JsonResponse
     {
-        $validator = Validator::make(['id' => $id], [
+        $validator = Validator::make($request->all(), [
             'id' => 'required|integer|gt:0',
+            'preview' => 'required|boolean',
         ]);
+
         if ($validator->fails()) {
-            return ResponseService::error('Invalid ID', 400);
+            return ResponseService::error('Invalid request parameters', 400);
         }
+
+        $id = $request->input('id');
         if (RoleHelpers::has_minimum_privilege(UserRole::MODERATOR)) {
             // Find the advice by ID
             $event = Event::find('id', $id);

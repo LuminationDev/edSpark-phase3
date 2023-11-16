@@ -164,12 +164,16 @@ class SoftwareController extends Controller
 
     public function fetchSoftwarePostById(Request $request, $id): JsonResponse
     {
-        $validator = Validator::make(['id' => $id], [
+        $validator = Validator::make($request->all(), [
             'id' => 'required|integer|gt:0',
+            'preview' => 'required|boolean',
         ]);
+
         if ($validator->fails()) {
-            return ResponseService::error('Invalid ID', 400);
+            return ResponseService::error('Invalid request parameters', 400);
         }
+
+        $id = $request->input('id');
         if (RoleHelpers::has_minimum_privilege(UserRole::MODERATOR)) {
             // Find the advice by ID
             $software = Software::find($id);

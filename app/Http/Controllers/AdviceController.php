@@ -121,27 +121,35 @@ class AdviceController extends Controller
         }
     }
 
-    public function fetchAdvicePostById(Request $request, $id)
+    public function fetchAdvicePostById(Request $request): JsonResponse
     {
-        $validator = Validator::make(['id' => $id], [
+        // Validate request parameters
+        $validator = Validator::make($request->all(), [
             'id' => 'required|integer|gt:0',
+            'preview' => 'required|boolean',
         ]);
+
         if ($validator->fails()) {
-            return ResponseService::error('Invalid ID', 400);
+            return ResponseService::error('Invalid request parameters', 400);
         }
-        if (RoleHelpers::has_minimum_privilege(UserRole::MODERATOR)) {
+
+        $id = $request->input('id');
+        $preview = $request->input('preview');
+        if (RoleHelpers::has_minimum_privilege(UserRole::MODERATOR) && $preview) {
             // Find the advice by ID
             $advice = Advice::find($id);
         } else {
-            $advice = Advice::where('id', $id)->where('post_status', "Published")->first();
+            $advice = Advice::where('id', $id)->where('post_status', 'Published')->first();
         }
-        // Check if advice with given ID exists
+
+        // Check if advice with the given ID exists
         if (!$advice) {
             return ResponseService::error('Advice not found', 404);
         }
+
         $data = $this->postService->adviceModelToJson($advice, $request);
 
-        return ResponseService::success( "Successfully retrieved advice", $data);
+        return ResponseService::success('Successfully retrieved advice', $data);
     }
 
 

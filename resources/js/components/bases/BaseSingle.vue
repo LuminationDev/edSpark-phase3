@@ -3,9 +3,11 @@ import axios from 'axios'
 import {computed, onBeforeMount, ref, watch} from "vue";
 import {useRoute, useRouter} from "vue-router";
 
+import GenericButton from "@/js/components/button/GenericButton.vue";
 import Loader from "@/js/components/spinner/Loader.vue";
 import useErrorMessage from "@/js/composables/useErrorMessage";
 import {API_ENDPOINTS} from "@/js/constants/API_ENDPOINTS";
+import {formatDateToDayTime} from "@/js/helpers/dateHelper";
 import {convertLinksToEmbeds, isObjectEmpty} from "@/js/helpers/objectHelpers";
 import {lowerSlugify} from "@/js/helpers/slugifyHelper";
 import {useAdviceStore} from "@/js/stores/useAdviceStore";
@@ -34,12 +36,12 @@ const baseIsLoading = ref(!(props.contentType.toLowerCase() === 'school'))
 const recommendedContent = ref({})
 let byIdAPILink;
 
-const isPreviewModeComputed = computed(() =>{
-    if(singleContent.value?.status !== 'Published'){
-        return true
-    } else{
-        return false
-    }
+const isPreviewModeComputed = computed(() => {
+    return userStore.getIfUserIsModerator && route.query.source === 'filament'
+})
+// Only be true if the server return posts which status is not Published
+const showPreviewLabel = computed(() => {
+    return !(singleContent.value?.status && singleContent.value?.status === "Published");
 })
 
 switch (props.contentType) {
@@ -100,7 +102,7 @@ onBeforeMount(async () => {
     //     // perform fetch moderatid content through the API
     //     // TODO : FIX once finalised
     // } else {
-    if(props.contentType !== 'school'){
+    if (props.contentType !== 'school') {
         await fetchContent()
 
     }
@@ -118,7 +120,10 @@ onBeforeMount(async () => {
     // Single pages slug generator and display on the url
     if (singleContent.value && props.contentType !== 'school') {
         const currentQueries = route.query
-        await router.replace({params: {slug: lowerSlugify(getObjectTitleValue(singleContent.value))}, query: currentQueries});
+        await router.replace({
+            params: {slug: lowerSlugify(getObjectTitleValue(singleContent.value))},
+            query: currentQueries
+        });
     }
     getRecommendationBasedOnContentType()
 })
@@ -169,7 +174,11 @@ onBeforeMount(async () => {
 // }
 
 const fetchContent = async () => {
-    await axios.get(`${byIdAPILink}${route.params.id}`).then(res => {
+    const requestData = {
+        id: route.params.id,
+        preview: isPreviewModeComputed.value
+    }
+    await axios.post(byIdAPILink, requestData).then(res => {
         singleContent.value = res.data.data
         if (singleContent.value.content && typeof singleContent.value.content === 'string') {
             singleContent.value.content = convertLinksToEmbeds(singleContent.value.content)
@@ -236,11 +245,26 @@ const handleEmitFromSubmenu = (value) => {
             :content-from-base="singleContent"
             :emit-from-submenu="handleEmitFromSubmenu"
         />
-        <div
-            v-if="isPreviewMode"
-            class="mt-10 text-2xl"
-        >
-            Preview Mode
+        <div class="flex flex-row moderationRow mt-10">
+            <div
+                v-if="showPreviewLabel && !baseIsLoading"
+                class="basis-4/5 font-semibold mb-4 previewLabel text-center text-xl"
+            >
+                Preview content (Moderation)
+                <div class="font-medium text-base text-center">
+                    {{
+                        singleContent['modified_at'] ? "Created on " + formatDateToDayTime(singleContent['modified_at']) : ''
+                    }}
+                    <span class="font-semibold"> {{
+                        singleContent?.author?.author_name ? "by " + singleContent?.author?.author_name : ""
+                    }} </span>
+                </div>
+            </div>
+            <div class="basis-1/5 flex">
+                <GenericButton :callback="() => {}">
+                    Back to moderation
+                </GenericButton>
+            </div>
         </div>
         <slot
             name="content"
