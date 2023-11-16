@@ -1,18 +1,22 @@
 <script setup>
 import { computed } from 'vue'
+import {schoolColorKeys, schoolColorTheme} from "@/js/constants/schoolColorTheme";
+
+
 const props = defineProps({
     typeTag: {
         type: Array, required: true
     }
 })
 
+
 const typeTagColor = computed(() => {
 
-    if (props.typeTag[0] == 'DAG advice') {
-        return 'text-yellow-700 border-yellow-700 bg-yellow-600/5';
-    } else {
-        return 'text-adviceGreen border-adviceGreen bg-adviceGreen/5';
-    }
+if (props.typeTag[0] == 'DAG advice') {
+    return 'text-main-teal border-main-teal bg-main-teal/10';
+} else {
+    return 'text-secondary-bananadark border-secondary-bananadark bg-secondary-banana/10';
+}
 })
 
 </script>

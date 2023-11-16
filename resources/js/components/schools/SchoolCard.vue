@@ -70,7 +70,7 @@ const handleClickSchoolCard = () => {
             #typeTag
         >
             <div
-                class="fill-secondary-blue flex justify-center items-center flex-wrap gap-2 h-full min-h-[130px] px-6 py-4 w-full"
+                class="fill-secondary-blue flex content-end flex-wrap gap-2 h-full min-h-[130px] px-6 py-4 w-full"
             >
                 <SchoolCardIconList
                     :tech-list="data.tech_used"

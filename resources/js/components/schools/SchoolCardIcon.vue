@@ -17,6 +17,11 @@ const props = defineProps({
         required: false,
         default:1
     },
+    onSchoolCard: {
+        type: Boolean,
+        required: false,
+        default: false
+    },
     showFirstTech:{
         type: Boolean,
         required: false,
@@ -31,9 +36,10 @@ const props = defineProps({
         class="my-auto group/tech schools-tech" >
         <SchoolTechIconGenerator 
             :tech-name="props.techName" 
-            style="width: 44px; height: 44px;"/>
+            :on-school-card=true
+            class="w-fit flex flex-row items-center p-2"/>
     </div>
 </template>
 <style>
 
-</style>
+</style> 
