@@ -71,21 +71,15 @@ const handleEmit = () => {
             ref="mapPopup"
             class="flex flex-col mapPopupContent overflow-scroll p-6 pt-2 w-[340px]"
         >
-            <div class="
-                    flex
-                    flex-wrap
-                    w-full
-                    gap-2
-                    h-[120px]
-                    smaller-icons
-                    fill-secondary-blue
-                    content-center
-                    justify-center
-            ">
+            <div
+                class="fill-secondary-blue flex justify-center content-center flex-wrap gap-2 h-[120px] smaller-icons w-full"
+            >
                 <SchoolCardIconList
-                    :tech-list="mapPopupInfo.tech_used"/>
+                    :tech-list="mapPopupInfo.tech_used"
+                />
             </div>
         </div>
+    </div>
 </template>
 <style>
 

@@ -38,7 +38,7 @@ const defaultContentBlocksIfSchoolIsNew = computed(() => {
     <div
         v-for="(item,index) in defaultContentBlocksIfSchoolIsNew.blocks"
         :key="index"
-        class="editorJsContentIterator mb-1 mr-2 p-4 md:!mb-8 md:!mr-12 md:!scale-100"
+        class="editorJsContentIterator mb-1 mr-2 p-4 md:!mr-12 md:!scale-100"
     >
         <template v-if="item.type === 'header'">
             <EditorJsContentHeading :data="item" />
