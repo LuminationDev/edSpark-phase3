@@ -61,7 +61,7 @@ const handleClickSchoolCard = () => {
                     {{ data.name }}
                 </h5>
                 <div class="cardDisplayPreview line-clamp school-card-body text-left">
-                    {{ stripHTML(data.content_blocks.blocks[1].data.text) }}
+                    {{ stripHTML(data.content_blocks?.blocks[1]?.data?.text) || "School" }}
                 </div>
             </div>
         </template>

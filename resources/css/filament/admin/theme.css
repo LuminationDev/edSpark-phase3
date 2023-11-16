@@ -22,7 +22,7 @@
     }
 
     .cardTitle {
-        @apply text-xl text-left font-bold uppercase transition-all mb-4
+        @apply text-xl text-left font-bold transition-all mb-4
     }
 
     .card-content_body {

@@ -18,7 +18,7 @@ const props = defineProps({
 <template>
     <div class="extraResourcesRenderer mt-4 w-full">
         <div class="flex flex-row gap-4 mb-2 place-items-baseline">
-            <h1 class="font-bold text-2xl text-black uppercase whitespace-nowrap">
+            <h1 class="font-bold text-2xl text-black whitespace-nowrap">
                 {{ props.itemTitle || "Extra Resources" }}
             </h1>
             <div class="bg-black h-1 w-full" />

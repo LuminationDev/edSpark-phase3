@@ -38,7 +38,7 @@ const handleClickBookmark = (postType, postId, postTitle) => {
 
 <template>
     <div class="flex flex-col userBookmarkOuterContainer">
-        <div class="bg-main-darkTeal bookmarksectiontitle flex items-center font-semibold h-16 px-4 rounded-t-xl text-lg text-white uppercase">
+        <div class="bg-main-darkTeal bookmarksectiontitle flex items-center font-semibold h-16 px-4 rounded-t-xl text-lg text-white">
             Your Bookmarks
         </div>
         <div class="bg-main-teal/80 h-72 overflow-scroll pt-4 px-4 rounded-b-lg text-white userBookmarkContentSection md:!pt-6 md:!px-10">

@@ -88,7 +88,7 @@ const handleClickDeleteDelegates = async (staff) => {
             v-if="availableStaffList.length"
             class="DelegationPanelAvailableSection bg-gray-100 mb-4 px-2 rounded-xl"
         >
-            <div class="font-semibold pt-2 text-gray-400 text-sm uppercase">
+            <div class="font-semibold pt-2 text-gray-400 text-sm">
                 <span class="flex items-center flex-row font-medium gap-2 pl-1">
                     Available
                     <info-circle-icon
@@ -125,7 +125,7 @@ const handleClickDeleteDelegates = async (staff) => {
             v-if="nominatedStaffList.length"
             class="DelegationPanelAssignedSection bg-gray-100 mb-4 px-2 rounded-xl"
         >
-            <div class="font-semibold pt-2 text-gray-400 text-sm uppercase">
+            <div class="font-semibold pt-2 text-gray-400 text-sm">
                 <span class="flex items-center flex-row font-medium gap-2 pl-1">
                     Assigned
                     <info-circle-icon

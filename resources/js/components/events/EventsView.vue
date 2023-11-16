@@ -97,10 +97,6 @@ const eventTypeColorClass = (eventType: string): string => {
                 class="cursor-pointer flex flex-col gap-2 mb-4 overflow-hidden pb-4 px-4 relative rounded hover:bg-slate-50"
                 @click="handleClickSingleEvent(event.id)"
             >
-                <!--                <EventTypeTag-->
-                <!--                    class="absolute !scale-100 lg:!scale-75 xl:!scale-100  !right-0 lg:!-right-2 lg:!top-2 xl:!right-0 xl:!top-4"-->
-                <!--                    :event-type="event.type"-->
-                <!--                />-->
                 <div class="flex previewImage">
                     <img
                         :src="imageURL+ '/' + event.cover_image"

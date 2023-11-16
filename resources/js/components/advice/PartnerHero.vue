@@ -1,8 +1,10 @@
 <script setup>
-import AdvicePartnerLogos from "@/js/components/svg/adviceRobot/AdvicePartnerLogos.vue";
-import AdviceRobot from '../svg/adviceRobot/AdviceRobot.vue';
-import GenericButton from "@/js/components/button/GenericButton.vue";
 import {useRouter} from "vue-router";
+
+import GenericButton from "@/js/components/button/GenericButton.vue";
+import AdvicePartnerLogos from "@/js/components/svg/adviceRobot/AdvicePartnerLogos.vue";
+
+import AdviceRobot from '../svg/adviceRobot/AdviceRobot.vue';
 
 const router = useRouter()
 </script>
@@ -25,7 +27,7 @@ const router = useRouter()
                 lg:!mx-huge
                 lg:!pt-12">
             <div class="col-span-5">
-                <h1 class="font-semibold pb-8 text-[36px] text-white lowercase first-letter:uppercase">
+                <h1 class="first-letter:uppercase font-semibold lowercase pb-8 text-[36px] text-white">
                     Partner Published Resources
                 </h1>
 
@@ -51,7 +53,7 @@ const router = useRouter()
                         "
                 />
                 <GenericButton
-                    :callback="() => router.push('browse/advice')"
+                    :callback="() => router.push('browse/advice/partner')"
                     button-id="PTRadvice"
                     class="
                         !rounded-none
@@ -78,7 +80,7 @@ const router = useRouter()
             </div>
             <div class="block col-span-8 md:hidden">
                 <GenericButton
-                    :callback="() => router.push('browse/advice')"
+                    :callback="() => router.push('browse/advice/partner')"
                     class="
                         !rounded-none
                         !text-main-navy

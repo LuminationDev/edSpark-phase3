@@ -159,7 +159,7 @@ const getEventBackgroundColorTheme = (eventType) => {
             >
                 <!--    Content of the Advice    -->
                 <div class="flex flex-col flex-wrap px-2 w-full lg:!w-2/3">
-                    <div class="border-b-4 border-black border-dashed flex font-semibold text-2xl uppercase">
+                    <div class="border-b-4 border-black border-dashed flex font-semibold text-2xl">
                         Details
                     </div>
                     <div

@@ -1,10 +1,12 @@
 <script setup>
 
+import {ref} from "vue";
+
+import OpenLink from "@/js/components/svg/OpenLink.vue";
+import {imageURL} from "@/js/constants/serverUrl";
+
 import Close from '../../svg/Close.vue';
 import SchoolCardIconList from '../SchoolCardIconList.vue';
-import OpenLink from "@/js/components/svg/OpenLink.vue";
-import { imageURL } from "@/js/constants/serverUrl";
-import { ref } from "vue";
 
 const props = defineProps({
     schoolData: {
@@ -46,14 +48,6 @@ const handleClosePopup = () => {
 const handleEmit = () => {
     emits('handleLinkToSchool');
 }
-// const showFirstTech = ref(true)
-// const handleMouseEnterCard = () => {
-//     showFirstTech.value = false
-// }
-//
-// const handleMouseExitCard = () =>{
-//     showFirstTech.value = true
-// }
 </script>
 
 <!-- :style="`
@@ -62,44 +56,34 @@ background-image: url('${imageURL}/${props.schoolData?.cover_image ?? ''}');
 background-size: cover ;background-blend-mode: screen; `" -->
 
 <template>
-    <div class="flex flex-col mapOuterContainer justify-between">
-
-        <div class="flex  flex-col p-4 pb-0 place-items-center relative  
-                    h-[180px] overflow-hidden">
-            <h3 class="font-medium text-xl mt-4 cursor-pointer group
-            hover:text-secondary-blue"  @click="handleEmit">
-                {{ mapPopupName }} 
-                <OpenLink class=" overflow-visible
-                        inline align-sub 
-                        group-hover:[&>path]:stroke-secondary-blue"/>
+    <div class="flex justify-between flex-col mapOuterContainer">
+        <div
+            class="flex flex-col h-[180px] overflow-hidden p-4 pb-0 place-items-center relative"
+        >
+            <h3
+                class="cursor-pointer font-medium group mt-4 text-xl hover:text-secondary-blue"
+                @click="handleEmit"
+            >
+                {{ mapPopupName }}
+                <OpenLink
+                    class="align-sub group-hover:[&>path]:stroke-secondary-blue inline overflow-visible"
+                />
             </h3>
-            <div class="school-card-body cardDisplayPreview line-clamp text-left p-0 pt-4">
+            <div class="cardDisplayPreview line-clamp p-0 pt-4 school-card-body text-left">
                 {{ getBlurb(mapPopupInfo) }}
             </div>
         </div>
-        <div ref="mapPopup" 
-            class="
-                    flex 
-                    flex-col 
-                    mapPopupContent 
-                    overflow-scroll 
-                    p-6 pt-2 w-[340px]
-                    ">
+        <div
+            ref="mapPopup"
+            class="flex flex-col mapPopupContent overflow-scroll p-6 pt-2 w-[340px]"
+        >
             <!-- flex flex-row gap-6 h-[180px] -->
-            <div class="
-                    flex
-                    flex-wrap
-                    justify-center
-                    items-center
-                    w-full
-                    gap-2
-                    h-[90px]
-                    smaller-icons                    
-                    fill-secondary-blue
-            ">
-                <SchoolCardIconList 
-                    :tech-list="mapPopupInfo.tech_used" 
-                    :show-first-tech="showFirstTech" />
+            <div
+                class="fill-secondary-blue flex justify-center items-center flex-wrap gap-2 h-[90px] smaller-icons w-full"
+            >
+                <SchoolCardIconList
+                    :tech-list="mapPopupInfo.tech_used"
+                />
             </div>
         </div>
         <!-- <div class="flex justify-end flex-row mb-4 mr-4">
@@ -111,8 +95,6 @@ background-size: cover ;background-blend-mode: screen; `" -->
 </template>
 
 
-
-
 <style>
 
 .smaller-icons svg {
@@ -122,8 +104,8 @@ background-size: cover ;background-blend-mode: screen; `" -->
 
 
 .line-clamp {
-    font-size: 0.95rem; 
-    line-height:1.5;
+    font-size: 0.95rem;
+    line-height: 1.5;
 
     overflow: hidden;
     text-overflow: ellipsis;

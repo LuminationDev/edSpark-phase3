@@ -107,7 +107,7 @@ const customFill = computed(() => {
             >
                 <slot name="breadcrumb" />
                 <h1
-                    class="font-semibold pb-8 text-2xl text-white uppercase md:!text-3xl lg:!text-4xl xl:!text-5xl"
+                    class="font-semibold pb-8 text-2xl text-white md:!text-3xl lg:!text-4xl xl:!text-5xl"
                 >
                     <slot name="titleText" />
                 </h1>
