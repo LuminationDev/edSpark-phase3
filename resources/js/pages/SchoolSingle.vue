@@ -265,7 +265,7 @@ const handleCloseModerationTab = (): void => {
                             <div
                                 class="basis-4/5 font-semibold mb-4 previewLabel text-center text-xl"
                             >
-                                PREVIEW CONTENT (MODERATION)
+                                Preview content (Moderation)
                                 <div class="font-medium text-base text-center">
                                     Created at: {{
                                         schoolContent['updated_at'] ? formatDateToDayTime(schoolContent['updated_at']) : ''

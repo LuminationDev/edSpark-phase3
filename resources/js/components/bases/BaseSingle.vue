@@ -32,8 +32,15 @@ const adviceStore = useAdviceStore()
 const singleContent = ref({})
 const baseIsLoading = ref(!(props.contentType.toLowerCase() === 'school'))
 const recommendedContent = ref({})
-
 let byIdAPILink;
+
+const isPreviewModeComputed = computed(() =>{
+    if(singleContent.value?.status !== 'Published'){
+        return true
+    } else{
+        return false
+    }
+})
 
 switch (props.contentType) {
 case 'software':
@@ -53,9 +60,9 @@ case 'partner':
     break;
 }
 
-const isPreviewMode = computed(() => {
-    return route.query.preview && userStore.getIfUserIsModerator
-})
+// const isPreviewMode = computed(() => {
+//     return route.query.preview && userStore.getIfUserIsModerator
+// })
 
 const currentId = computed(() => {
     if (route.params.id) {
@@ -81,22 +88,26 @@ const getRecommendationBasedOnContentType = () => {
 }
 
 onBeforeMount(async () => {
-    if (!isPreviewMode.value && userStore.getIfUserIsModerator && route.query.source) {
-        if (route.query.source === 'vue') {
-            console.log('only works for school')
-            // display pending school content.. maybe leave it to the SchoolSingle
-        } else if (route.query.source === 'filament') {
-            console.log('source moderation from filament')
-            //fetch pendiong content here through api
-        }
-
-        // perform fetch moderatid content through the API
-    } else {
+    // if (!isPreviewMode.value && userStore.getIfUserIsModerator && route.query.source) {
+    //     if (route.query.source === 'vue') {
+    //         console.log('only works for school')
+    //         // display pending school content.. maybe leave it to the SchoolSingle
+    //     } else if (route.query.source === 'filament') {
+    //         console.log('source moderation from filament')
+    //         //fetch pendiong content here through api
+    //     }
+    //
+    //     // perform fetch moderatid content through the API
+    //     // TODO : FIX once finalised
+    // } else {
+    if(props.contentType !== 'school'){
         await fetchContent()
 
     }
+
+    // }
     // code to emit available submenus - to be used in all baseSingle pages. remove hardcoded
-    if (singleContent.value.metadata && singleContent.value.metadata.filter(meta => Object.values(meta).includes('single_submenu'))) {
+    if (singleContent.value?.metadata && singleContent.value.metadata.filter(meta => Object.values(meta).includes('single_submenu'))) {
         const availableSubMenuObject = singleContent.value.metadata.filter(meta => Object.values(meta).includes('single_submenu'))[0]
         if (availableSubMenuObject) {
             const availableSubMenu = Object.values(availableSubMenuObject)[1] // bit rough but quite guaranteed to success
@@ -106,7 +117,8 @@ onBeforeMount(async () => {
 
     // Single pages slug generator and display on the url
     if (singleContent.value && props.contentType !== 'school') {
-        await router.replace({params: {slug: lowerSlugify(getObjectTitleValue(singleContent.value))}});
+        const currentQueries = route.query
+        await router.replace({params: {slug: lowerSlugify(getObjectTitleValue(singleContent.value))}, query: currentQueries});
     }
     getRecommendationBasedOnContentType()
 })
@@ -158,7 +170,7 @@ onBeforeMount(async () => {
 
 const fetchContent = async () => {
     await axios.get(`${byIdAPILink}${route.params.id}`).then(res => {
-        singleContent.value = res.data
+        singleContent.value = res.data.data
         if (singleContent.value.content && typeof singleContent.value.content === 'string') {
             singleContent.value.content = convertLinksToEmbeds(singleContent.value.content)
         }
@@ -224,6 +236,12 @@ const handleEmitFromSubmenu = (value) => {
             :content-from-base="singleContent"
             :emit-from-submenu="handleEmitFromSubmenu"
         />
+        <div
+            v-if="isPreviewMode"
+            class="mt-10 text-2xl"
+        >
+            Preview Mode
+        </div>
         <slot
             name="content"
             :content-from-base="singleContent"

@@ -80,8 +80,9 @@ export const useUserStore = defineStore('user', {
                 "Superadmin",
                 "Administrator",
                 "Moderator",
-                "PSACT",
-                "SCHLDR"
+                "SCHLDR",
+                "PRESCLDR",
+                "SITELDR"
             ];
             return rolesWithAdminRights.includes(userRole)
         },
@@ -91,6 +92,11 @@ export const useUserStore = defineStore('user', {
                 "Superadmin",
                 "Administrator",
                 "Moderator",
+                "PSACT",
+                "SCHLDR",
+                "PRESCLDR",
+                "SITELDR"
+
             ];
             return rolesWithModRights.includes(userRole)
         }

@@ -131,7 +131,7 @@ class AdviceController extends Controller
         }
         if (RoleHelpers::has_minimum_privilege(UserRole::MODERATOR)) {
             // Find the advice by ID
-            $advice = Advice::find('id', $id);
+            $advice = Advice::find($id);
         } else {
             $advice = Advice::where('id', $id)->where('post_status', "Published")->first();
         }
