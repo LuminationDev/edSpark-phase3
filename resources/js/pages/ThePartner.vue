@@ -68,7 +68,7 @@ const {
             </template>
         </div>
         <SectionHeader
-            :classes="'bg-secondary-darkBlue'"
+            :classes="'bg-secondary-mbRose'"
             :section="'events'"
             :title="'Event Calendar'"
             :button-text="'View all events'"

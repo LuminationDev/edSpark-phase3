@@ -72,7 +72,7 @@ const handleCancelEditLink = () => {
 </script>
 
 <template>
-    <div class="font-bold submitLink text-xl uppercase">
+    <div class="font-bold submitLink text-xl">
         The event has ended. We hoped it was a success.
     </div>
     <template v-if="!recordingLink && props.currentUserIsOwner">

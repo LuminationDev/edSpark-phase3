@@ -28,10 +28,10 @@ const props = defineProps({
         class="card_inner_parent"
     >
         <SchoolCardIcon
+            :on-school-card=true
             :tech-name="tech.name"
             :tech-info="tech"
             :tech-index="index"
-            v-tippy="tech.name"
         />
     </div>
 </template>

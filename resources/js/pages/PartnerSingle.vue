@@ -187,7 +187,7 @@ const colorTheme = ref('partnerBlue')
                         <div class="flex justify-center items-center">
                             <Loader
                                 :loader-color="'#0072DA'"
-                                :loader-message="'Data Loading'"
+                                :loader-message="'Data loading'"
                             />
                         </div>
                     </template>

@@ -29,7 +29,7 @@ const hardwareSubmenu: Array<SubmenuObjectType> = [
         value: 'overview'
     },
     {
-        displayText: 'Tech Specs',
+        displayText: 'Tech specs',
         value: 'techspecs'
     }]
 const activeSubmenu = ref(hardwareSubmenu[0]['value'])
@@ -107,7 +107,7 @@ const colorTheme = ref('hardwareGreen')
                             <div class="flex flex-col py-4 w-full lg:!w-2/3">
                                 <div>
                                     <h1
-                                        class="flex font-bold text-2xl uppercase"
+                                        class="flex font-bold text-2xl"
                                     >
                                         {{ contentFromBase['name'] }}
                                     </h1>

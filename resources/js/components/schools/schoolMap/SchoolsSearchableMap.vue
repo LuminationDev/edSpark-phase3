@@ -129,9 +129,9 @@ const handleLinkToSchool = (schoolName) => {
         ref="gMapParent"
         class="border border-[#0072DA] relative w-full"
     >
-        <div class="bg-[#0072DA] flex justify-between flex-row h-[72px] place-items-center px-[48px] relative z-40">
+        <div class="bg-[#0072DA] flex justify-between flex-row h-[72px] place-items-center px-[48px] py-[48px] relative z-50">
             <h1 class="font-bold text-white text-xl md:!text-3xl">
-                Search for Schools
+                Search for schools
             </h1>
 
             <button
@@ -143,10 +143,10 @@ const handleLinkToSchool = (schoolName) => {
         </div>
 
         <div
-            class="absolute top-0 bottom-0 bg-[#0072DA] p-6 transition-all w-full z-40"
-            :class="showFilters ? 'h-[200px]' : '!h-0 opacity-0 pointer-events-none' "
+            class="absolute top-0 bg-[#0072DA] p-6 pt-[48px] px-[48px] transition-all w-full z-40"
+            :class="showFilters ? 'h-auto md:h-[200px] mt-[20px]' : '!h-0 opacity-0 pointer-events-none' "
         >
-            <div class="flex flex-row flex-wrap gap-6 mt-12">
+            <div class="flex md:flex-row flex-col flex-wrap gap-6 mt-12">
                 <SchoolsMapFilterName
                     v-model="schoolNameFilter"
                 />

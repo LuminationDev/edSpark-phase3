@@ -10,7 +10,7 @@ final class HardwareLaptopTechSpecs
 {
     public static function title()
     {
-        return 'Laptop Tech Specs';
+        return 'Laptop tech specs';
     }
 
     public static function schema()
@@ -26,7 +26,7 @@ final class HardwareLaptopTechSpecs
                 TextInput::make('features')->label('Features Highlights (separate with a comma)'),
 
             ])
-                ->label('Tech Specs')
+                ->label('Tech specs')
                 ->collapsible()
         ];
     }
