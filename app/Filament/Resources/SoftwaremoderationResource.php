@@ -30,43 +30,23 @@ class SoftwaremoderationResource extends Resource
 
     public static function form(Form $form): Form
     {
-        $user = Auth::user()->full_name;
-        return $form
-            ->schema([
-                Forms\Components\Card::make()
-                    ->schema([
-                        Forms\Components\TextInput::make('post_title')
-                            ->label('Title')
-                            ->required()
-                            ->maxLength(255),
-                        Forms\Components\RichEditor::make('post_content')
-                            ->label('Content')
-                            ->required(),
-                        Forms\Components\RichEditor::make('post_excerpt')
-                            ->label('Excerpt')
-                            ->disableToolbarButtons([
-                                'attachFiles',
-                            ]),
-                        Forms\Components\Grid::make(2)
-                            ->schema([
-                                // Forms\Components\TextInput::make('Author')
-                                //     ->default($user)
-                                //     ->disabled(),
-                                Forms\Components\BelongsToSelect::make('software_type')
-                                    ->label('Software type')
-                                    ->relationship('softwaretype', 'software_type_name'),
-                                Forms\Components\Select::make('post_status')
-                                    ->options([
-                                        'Published' => 'Published',
-                                        'Unpublished' => 'Unpublished',
-                                        'Draft' => 'Draft',
-                                        'Pending' => 'Pending'
-                                    ])
-                                    ->label('Status')
-                                    ->required()
-                            ]),
-                            ]),
-            ]);
+        return $form->schema([
+            Forms\Components\Card::make()->schema([
+                Forms\Components\TextInput::make('post_title')
+                    ->label('Title')
+                    ->required()
+                    ->maxLength(255),
+                Forms\Components\Select::make('post_status')
+                    ->options([
+                        'Published' => 'Published',
+                        'Unpublished' => 'Unpublished',
+                        'Draft' => 'Draft',
+                        'Pending' => 'Pending'
+                    ])
+                    ->label('Status')
+                    ->required(),
+            ]),
+        ]);
     }
 
     public static function table(Table $table): Table

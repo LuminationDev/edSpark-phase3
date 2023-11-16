@@ -3,6 +3,7 @@
 namespace App\Filament\Resources\SoftwaremoderationResource\Pages;
 
 use App\Filament\Resources\SoftwaremoderationResource;
+use Filament\Actions\Action;
 use Filament\Pages\Actions;
 use Filament\Resources\Pages\EditRecord;
 use Carbon\Carbon;
@@ -13,8 +14,11 @@ class EditSoftwaremoderation extends EditRecord
 
     protected function getHeaderActions(): array
     {
+        $baseUrl = env('APP_URL');
         return [
-            // Actions\DeleteAction::make(),
+            Action::make('preview')
+                ->url(fn ($record) => rtrim($baseUrl, '/') . '/software/resources/'. $record->id . '/' . $record->post_title .'?preview=true&source=filament')
+                ->openUrlInNewTab()
         ];
     }
 

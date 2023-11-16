@@ -39,7 +39,7 @@ class AdvicemoderationResource extends Resource
                     ->label('Title')
                     ->required()
                     ->maxLength(255),
-                Forms\Components\Select::make('status')
+                Forms\Components\Select::make('post_status')
                     ->options([
                         'Published' => 'Published',
                         'Unpublished' => 'Unpublished',
@@ -78,10 +78,6 @@ class AdvicemoderationResource extends Resource
                     ->label('Status')
                     ->sortable()
                     ->searchable(),
-            ])
-            ->actions([
-                Tables\Actions\ViewAction::make(),
-                Tables\Actions\EditAction::make(),
             ])
             ->bulkActions([
                 // Tables\Actions\DeleteBulkAction::make(),
