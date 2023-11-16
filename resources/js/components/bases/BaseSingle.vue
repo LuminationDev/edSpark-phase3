@@ -1,6 +1,5 @@
 <script setup>
 import axios from 'axios'
-import {isEqual} from "lodash";
 import {computed, onBeforeMount, ref, watch} from "vue";
 import {useRoute, useRouter} from "vue-router";
 
@@ -22,10 +21,18 @@ const props = defineProps({
     }
 })
 const emits = defineEmits(['emitAvailableSubmenu', 'emitActiveTabToSpecificPage'])
+const {error, setError, clearError} = useErrorMessage()
+const route = useRoute()
+const router = useRouter()
+const userStore = useUserStore()
+const softwareStore = useSoftwareStore()
+const hardwareStore = useHardwareStore()
+const adviceStore = useAdviceStore()
+
 const singleContent = ref({})
 const baseIsLoading = ref(!(props.contentType.toLowerCase() === 'school'))
-const {error, setError,clearError} = useErrorMessage()
 const recommendedContent = ref({})
+
 let byIdAPILink;
 
 switch (props.contentType) {
@@ -44,22 +51,17 @@ case 'event':
 case 'partner':
     byIdAPILink = API_ENDPOINTS.PARTNER.FETCH_PARTNER_BY_ID
     break;
-
 }
 
+const isPreviewMode = computed(() => {
+    return route.query.preview && userStore.getIfUserIsModerator
+})
 
-const route = useRoute()
-const router = useRouter()
 const currentId = computed(() => {
     if (route.params.id) {
         return route.params.id
     } else return 0
 })
-
-const softwareStore = useSoftwareStore()
-const hardwareStore = useHardwareStore()
-const adviceStore = useAdviceStore()
-
 const getRecommendationBasedOnContentType = () => {
     switch (props.contentType) {
     case 'hardware':
@@ -79,13 +81,20 @@ const getRecommendationBasedOnContentType = () => {
 }
 
 onBeforeMount(async () => {
-    /**
-     * Get content from history state or fetch
-     */
-    // await checkToReadOrFetchContent()
-    await fetchContent()
+    if (!isPreviewMode.value && userStore.getIfUserIsModerator && route.query.source) {
+        if (route.query.source === 'vue') {
+            console.log('only works for school')
+            // display pending school content.. maybe leave it to the SchoolSingle
+        } else if (route.query.source === 'filament') {
+            console.log('source moderation from filament')
+            //fetch pendiong content here through api
+        }
 
+        // perform fetch moderatid content through the API
+    } else {
+        await fetchContent()
 
+    }
     // code to emit available submenus - to be used in all baseSingle pages. remove hardcoded
     if (singleContent.value.metadata && singleContent.value.metadata.filter(meta => Object.values(meta).includes('single_submenu'))) {
         const availableSubMenuObject = singleContent.value.metadata.filter(meta => Object.values(meta).includes('single_submenu'))[0]
@@ -93,16 +102,12 @@ onBeforeMount(async () => {
             const availableSubMenu = Object.values(availableSubMenuObject)[1] // bit rough but quite guaranteed to success
             emits('emitAvailableSubmenu', availableSubMenu)
         }
-    } else {
-
     }
-    /// end of emiiting submenu
 
+    // Single pages slug generator and display on the url
     if (singleContent.value && props.contentType !== 'school') {
-        console.log(lowerSlugify(getObjectTitleValue(singleContent.value)))
         await router.replace({params: {slug: lowerSlugify(getObjectTitleValue(singleContent.value))}});
     }
-
     getRecommendationBasedOnContentType()
 })
 
@@ -159,7 +164,12 @@ const fetchContent = async () => {
         }
     }).catch(err => {
         console.log(err)
-        setError(err.code, err.message)
+        if (err.response?.data?.error) {
+            // TODO: Fix when we implement response service from the backend
+            setError(err.code, err.response.data.error)
+        } else {
+            setError(err.code, err.message)
+        }
     }).finally(() => {
         baseIsLoading.value = false
 
@@ -182,6 +192,7 @@ const handleEmitFromSubmenu = (value) => {
     emits('emitActiveTabToSpecificPage', value)
 }
 
+
 </script>
 <template>
     <div
@@ -200,7 +211,7 @@ const handleEmitFromSubmenu = (value) => {
         class="flex justify-center py-10"
     >
         <div class="flex font-semibold text-center text-xl">
-            Sorry an error has occured
+            Sorry an error has occured <br>
             {{ error.message }}
         </div>
     </div>

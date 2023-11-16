@@ -3,6 +3,13 @@ namespace App\Helpers;
 
 use Illuminate\Support\Facades\Auth;
 
+class UserRole
+{
+    const ADMIN = 'admin';
+    const SITE_LEADER = 'site_leader';
+    const MODERATOR = 'moderator';
+    const VIEWER = 'viewer';
+}
 
 class RoleHelpers
 {
@@ -46,12 +53,14 @@ class RoleHelpers
         'PWDRESET' => 'PWDRESET',
         'PWDRESETSTD' => 'PWDRESETSTD',];
 
-    protected static array $admin_keys = ['Superadmin', 'Moderator', 'PSACT'];
+    protected static array $admin_keys = ['Superadmin', 'Moderator',];
+    protected static array $moderator_keys = [ 'PSACT'];
     protected static array $site_leader_keys = ['SCHLDR', 'PRESCLDR', 'SITELDR'];
     protected static array $role_hierarchy = [
-        'viewer' => 10,
-        'site_leader' => 20,
-        'admin' => 30
+        UserRole::VIEWER => 10,
+        UserRole::SITE_LEADER => 20,
+        UserRole::MODERATOR => 25,
+        UserRole::ADMIN => 30
     ];
 
     public static function get_privilege_level($role): int
@@ -64,16 +73,18 @@ class RoleHelpers
         $user_role = Auth::user()->role->role_name;
 
         if (in_array($user_role, self::$admin_keys)) {
-            return 'admin';
+            return UserRole::ADMIN;
         } elseif (in_array($user_role, self::$site_leader_keys)) {
-            return 'site_leader';
+            return UserRole::SITE_LEADER;
+        } elseif (in_array($user_role, self::$moderator_keys)) {
+            return UserRole::MODERATOR;
         } else {
-            return 'viewer';
+            return UserRole::VIEWER;
         }
     }
     // check the current user's role and check the hierarchy based on the role_hierarchy
     // and return true if the current users meet the requirements
-    public static function has_minimum_privilege($min_required = 'viewer'): bool
+    public static function has_minimum_privilege($min_required = UserRole::VIEWER): bool
     {
         $role = self::get_current_user_access_level();
         $user_privilege_level = self::get_privilege_level($role);

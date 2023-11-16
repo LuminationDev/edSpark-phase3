@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Helpers\Metahelper;
+use App\Helpers\RoleHelpers;
+use App\Helpers\UserRole;
 use App\Models\Advicemeta;
 use App\Models\Advicetype;
 use App\Models\Bookmark;
@@ -121,25 +123,27 @@ class AdviceController extends Controller
 
     public function fetchAdvicePostById(Request $request, $id)
     {
-        // Validate the input $id to ensure it's a positive integer
-        if (!is_numeric($id) || $id <= 0) {
-            return response()->json(['error' => 'Invalid ID provided.'], 400);
+        $validator = Validator::make(['id' => $id], [
+            'id' => 'required|integer|gt:0',
+        ]);
+        if ($validator->fails()) {
+            return ResponseService::error('Invalid ID', 400);
         }
-
-        // Find the advice by ID
-        $advice = Advice::where('id',$id)->where('post_status', "Published")->first();
-
+        if (RoleHelpers::has_minimum_privilege(UserRole::MODERATOR)) {
+            // Find the advice by ID
+            $advice = Advice::find('id', $id);
+        } else {
+            $advice = Advice::where('id', $id)->where('post_status', "Published")->first();
+        }
         // Check if advice with given ID exists
         if (!$advice) {
-            return response()->json(['error' => 'Advice not found.'], 404);
+            return ResponseService::error('Advice not found', 404);
         }
-
-        // Prepare the data to be returned in the response
         $data = $this->postService->adviceModelToJson($advice, $request);
 
-        // Return the data in the response
-        return response()->json($data);
+        return ResponseService::success( "Successfully retrieved advice", $data);
     }
+
 
     public function fetchAdvicePostByType(Request $request, $type): \Illuminate\Http\JsonResponse
     {
