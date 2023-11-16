@@ -35,15 +35,15 @@ const attributes = computed(() =>
             },
             highlight: {
                 start: {
-                    fillMode: 'outline',
+                    fillMode: 'light',
                     color: backgroundColor
                 },
                 base: {
-                    fillMode: 'solid',
+                    fillMode: 'light',
                     color: backgroundColor
                 },
                 end: {
-                    fillMode: 'outline',
+                    fillMode: 'light',
                     color: backgroundColor
                 },
             },
@@ -91,6 +91,16 @@ onMounted(() => {
 
 <template>
     <div class="calendarWrapper mt-10">
+        <div
+            class="flex justify-end p-2 rounded-full"
+        >
+            <button
+                class="bg-secondary-mbRose hover:bg-gray-200 border-[1px] px-4 py-2 rounded-full text-white hover:cursor-pointer"
+                @click="handleClickTodayButton"
+            >
+                Today
+            </button>
+        </div>
         <Calendar
             ref="eventCalendarRef"
             borderless
@@ -100,12 +110,6 @@ onMounted(() => {
             :initial-page="initialCalendarPage"
             @dayclick="handleDayClick"
         />
-        <div
-            class="border-[1px] flex p-2 rounded-full"
-            @click="handleClickTodayButton"
-        >
-            Today
-        </div>
     </div>
 
 
@@ -146,6 +150,17 @@ onMounted(() => {
 
 .calendarWrapper :deep(.vc-day-box-center-center) {
     height: 68px;
+}
+
+.calendarWrapper :deep(.vc-focus:focus-within) {
+    background-color: #be123c;
+    color: white;
+    padding: 8px;
+    box-shadow: 0 0 10px 10px white;
+}
+
+.calendarWrapper :deep(.vc-bars){
+    height: 4px
 }
 
 :deep(.vc-dfeteal) {
@@ -211,5 +226,18 @@ onMounted(() => {
     --vc-accent-700: #8E0E28;
     --vc-accent-800: #760B1E;
     --vc-accent-900: #5E0914;
+}
+
+:deep(.vc-accessiblePurple) {
+    --vc-accent-50: #B7A5C5;
+    --vc-accent-100: #A490BE;
+    --vc-accent-200: #957BB7;
+    --vc-accent-300: #8766B0;
+    --vc-accent-400: #7851A9;
+    --vc-accent-500: #6D469C;
+    --vc-accent-600: #603D8C;
+    --vc-accent-700: #54347D;
+    --vc-accent-800: #472B6E;
+    --vc-accent-900: #3B226F;
 }
 </style>
