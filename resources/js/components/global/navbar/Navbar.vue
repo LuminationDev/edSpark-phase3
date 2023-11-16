@@ -48,7 +48,6 @@ const setupRoutes = () => {
 
 setupRoutes();
 
-const {isMobile, isTablet} = storeToRefs(useWindowStore)
 </script>
 
 <template>

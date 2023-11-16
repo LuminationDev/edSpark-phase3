@@ -13,7 +13,7 @@ import {useUserStore} from "@/js/stores/useUserStore";
 const route = useRoute()
 
 
-const {data: softwareList, error: softwareError} = useSWRV(API_ENDPOINTS.SOFTWARE.FETCH_SOFTWARE_POSTS, axiosFetcher(useUserStore().getUserRequestParam), swrvOptions)
+const {data: softwareList, error: softwareError} = useSWRV(API_ENDPOINTS.SOFTWARE.FETCH_SOFTWARE_POSTS, axiosFetcher, swrvOptions)
 
 const softwareFilterList = [
     {name: "Department Provided", value:"Department Provided"},

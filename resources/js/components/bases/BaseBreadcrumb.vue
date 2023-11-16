@@ -29,7 +29,7 @@ const textHoverColorTheme = ref('')
 
 
 const customText = computed(() => {
-    if(schoolColorKeys.includes(props.colorTheme)){
+    if (schoolColorKeys.includes(props.colorTheme)) {
         textColorTheme.value = "text-[" + schoolColorTheme[props.colorTheme]['light'] + "]";
 
     } else {
@@ -40,7 +40,7 @@ const customText = computed(() => {
 })
 
 const customTextHover = computed(() => {
-    if(schoolColorKeys.includes(props.colorTheme)){
+    if (schoolColorKeys.includes(props.colorTheme)) {
         textHoverColorTheme.value = "hover:text-[" + schoolColorTheme[props.colorTheme]['light'] + "]";
 
     } else {
@@ -59,7 +59,8 @@ const customTextHover = computed(() => {
             <router-link to="/dashboard">
                 <p
                     class="text-white"
-                    :class="customTextHover" >
+                    :class="customTextHover"
+                >
                     Home
                 </p>
             </router-link>
@@ -67,15 +68,17 @@ const customTextHover = computed(() => {
             <router-link :to="`/${props.parentPageLink ? props.parentPageLink : props.parentPage}`">
                 <p
                     class="capitalize text-white"
-                    :class="customTextHover" >
+                    :class="customTextHover"
+                >
                     {{ props.parentPage }}
                 </p>
             </router-link>
             <ChevronRight class="h-3 w-3" />
 
             <p
-                class="capitalize w-full"                
-                    :class="customText" >
+                class="capitalize w-full"
+                :class="customText"
+            >
                 {{ props.childPage }}
             </p>
         </div>

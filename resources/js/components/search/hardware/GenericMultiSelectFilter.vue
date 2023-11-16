@@ -21,8 +21,7 @@ const props = defineProps({
     preselected: {
         type: Object,
         required: false,
-        default: () => {
-        }
+        default: () => {}
     }
 })
 const selectedValue = ref([])

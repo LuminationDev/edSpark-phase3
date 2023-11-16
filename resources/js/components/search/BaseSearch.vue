@@ -66,22 +66,6 @@ const filterProducts = (products, filterBy) => {
     if (totalValuesCount === 0) {
         return products;
     }
-
-    // return products.filter(product => {
-    //     for (const key in filterBy) {
-    //         const productValue = findNestedKeyValue(product, key).flat();
-    //         const filterValues = filterBy[key];
-    //
-    //         // If filterValues is empty for this key, then move on to next key
-    //         if (filterValues.length === 0) continue;
-    //
-    //         // Check if any product value matches the filter values
-    //         const isMatch = productValue.some(value => filterValues.includes(value) || (value ? filterValues.includes(value.name) : false)    ) ;
-    //
-    //         if (!isMatch) return false;
-    //     }
-    //     return true;
-    // });
     return products.filter(product => {
         return Object.entries(filterBy).every(([key, filterValues]) => {
             // If filterValues is empty for this key, then move on to next key
@@ -114,6 +98,10 @@ const numberOfItemsPerPage = 9
 
 const handleChangePageNumber = (newPageNumber) => {
     page.value = newPageNumber
+    const scrollToTop = () =>{
+        window.scrollTo({top: 0, behavior: 'smooth'})
+    }
+    scrollToTop()
 
 }
 
