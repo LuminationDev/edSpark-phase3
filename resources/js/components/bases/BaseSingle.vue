@@ -90,18 +90,6 @@ const getRecommendationBasedOnContentType = () => {
 }
 
 onBeforeMount(async () => {
-    // if (!isPreviewMode.value && userStore.getIfUserIsModerator && route.query.source) {
-    //     if (route.query.source === 'vue') {
-    //         console.log('only works for school')
-    //         // display pending school content.. maybe leave it to the SchoolSingle
-    //     } else if (route.query.source === 'filament') {
-    //         console.log('source moderation from filament')
-    //         //fetch pendiong content here through api
-    //     }
-    //
-    //     // perform fetch moderatid content through the API
-    //     // TODO : FIX once finalised
-    // } else {
     if (props.contentType !== 'school') {
         await fetchContent()
 
@@ -185,9 +173,8 @@ const fetchContent = async () => {
         }
     }).catch(err => {
         console.log(err)
-        if (err.response?.data?.error) {
-            // TODO: Fix when we implement response service from the backend
-            setError(err.code, err.response.data.error)
+        if (err.response?.data?.message) {
+            setError(err.code, err.response.data.message)
         } else {
             setError(err.code, err.message)
         }
@@ -232,8 +219,7 @@ const handleEmitFromSubmenu = (value) => {
         class="flex justify-center py-10"
     >
         <div class="flex font-semibold text-center text-xl">
-            Sorry an error has occured <br>
-            {{ error.message }}
+            {{ error.message ? error.message : 'Sorry an error has occured' }}
         </div>
     </div>
     <div

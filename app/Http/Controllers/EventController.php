@@ -68,6 +68,7 @@ class EventController extends Controller
 
         $events = Event::where('event_status', 'Published')
             ->where('end_date', '>=', $currentDate)
+            ->where('event_status','Published')
             ->get();
 
         $data = [];
