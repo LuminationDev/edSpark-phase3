@@ -704,6 +704,38 @@ select{
   transition-duration: 150ms;
 }
 
+@font-face {
+  font-family: Museo sans;
+
+  font-weight: 100;
+
+  src: url('../../public/fonts/MuseoSans-100.otf') format("otf");
+}
+
+@font-face {
+  font-family: Museo sans;
+
+  font-weight: 300;
+
+  src: url('../../public/fonts/MuseoSans-300.otf') format("otf");
+}
+
+@font-face {
+  font-family: Museo sans;
+
+  font-weight: 500;
+
+  src: url('../../public/fonts/MuseoSans-500.otf') format("otf");
+}
+
+@font-face {
+  font-family: Museo sans;
+
+  font-weight: 700;
+
+  src: url('../../public/fonts/MuseoSans-700.otf') format("otf");
+}
+
 *, ::before, ::after{
   --tw-border-spacing-x: 0;
   --tw-border-spacing-y: 0;
@@ -2953,6 +2985,10 @@ select{
   margin-top: 120px;
 }
 
+.mt-\[20px\]{
+  margin-top: 20px;
+}
+
 .mt-\[64px\]{
   margin-top: 64px;
 }
@@ -2963,22 +2999,6 @@ select{
 
 .mt-auto{
   margin-top: auto;
-}
-
-.mt-\[200px\]{
-  margin-top: 200px;
-}
-
-.mt-\[80px\]{
-  margin-top: 80px;
-}
-
-.mt-\[60px\]{
-  margin-top: 60px;
-}
-
-.mt-\[20px\]{
-  margin-top: 20px;
 }
 
 .line-clamp-1{
@@ -3037,6 +3057,10 @@ select{
 
 .\!h-0{
   height: 0px !important;
+}
+
+.\!h-\[50px\]{
+  height: 50px !important;
 }
 
 .h-0{
@@ -3278,10 +3302,6 @@ select{
 
 .h-screen{
   height: 100vh;
-}
-
-.\!h-\[50px\]{
-  height: 50px !important;
 }
 
 .max-h-96{
@@ -3540,10 +3560,6 @@ select{
   width: 24px;
 }
 
-.w-\[25\%\]{
-  width: 25%;
-}
-
 .w-\[30vw\]{
   width: 30vw;
 }
@@ -3562,10 +3578,6 @@ select{
 
 .w-\[48px\]{
   width: 48px;
-}
-
-.w-\[50\%\]{
-  width: 50%;
 }
 
 .w-\[500px\]{
@@ -3624,10 +3636,6 @@ select{
 
 .w-screen{
   width: 100vw;
-}
-
-.w-\[33\%\]{
-  width: 33%;
 }
 
 .\!min-w-fit{
@@ -3794,10 +3802,6 @@ select{
 
 .max-w-xs{
   max-width: 20rem;
-}
-
-.max-w-\[200px\]{
-  max-width: 200px;
 }
 
 .flex-1{
@@ -4545,11 +4549,6 @@ select{
 .rounded-b-xl{
   border-bottom-right-radius: 0.75rem;
   border-bottom-left-radius: 0.75rem;
-}
-
-.rounded-t{
-  border-top-left-radius: 0.25rem;
-  border-top-right-radius: 0.25rem;
 }
 
 .rounded-t-md{
@@ -6265,10 +6264,6 @@ select{
   font-size: 1.25rem;
 }
 
-.text-\[10px\]{
-  font-size: 10px;
-}
-
 .text-\[12px\]{
   font-size: 12px;
 }
@@ -6991,7 +6986,7 @@ select{
 /*@import "./font-awesome/css/font-awesome.css";*/
 
 html {
-  font-family: 'Poppins';
+  font-family: 'Museo sans', sans-serif;
 }
 
 input, textarea, select {
@@ -8782,18 +8777,6 @@ input, textarea, select {
     margin-right: 3rem !important;
   }
 
-  .md\:mt-16{
-    margin-top: 4rem;
-  }
-
-  .md\:mt-\[20px\]{
-    margin-top: 20px;
-  }
-
-  .md\:mt-\[200px\]{
-    margin-top: 200px;
-  }
-
   .md\:\!block{
     display: block !important;
   }
@@ -8860,6 +8843,10 @@ input, textarea, select {
 
   .md\:\!w-44{
     width: 11rem !important;
+  }
+
+  .md\:\!w-1\/2{
+    width: 50% !important;
   }
 
   .md\:\!min-w-\[60px\]{
@@ -9091,18 +9078,6 @@ input, textarea, select {
     padding-inline-start: 0.75rem;
   }
 
-  .md\:pt-10{
-    padding-top: 2.5rem;
-  }
-
-  .md\:pt-8{
-    padding-top: 2rem;
-  }
-
-  .md\:pt-\[20px\]{
-    padding-top: 20px;
-  }
-
   .md\:\!text-left{
     text-align: left !important;
   }
@@ -9129,11 +9104,6 @@ input, textarea, select {
   .md\:\!text-lg{
     font-size: 1.125rem !important;
     line-height: 1.75rem !important;
-  }
-
-  .md\:\!text-sm{
-    font-size: 0.875rem !important;
-    line-height: 1.25rem !important;
   }
 
   .md\:\!text-xl{
@@ -9295,10 +9265,6 @@ input, textarea, select {
     height: 100%;
   }
 
-  .lg\:h-\[200px\]{
-    height: 200px;
-  }
-
   .lg\:\!w-1\/2{
     width: 50% !important;
   }
@@ -9307,8 +9273,16 @@ input, textarea, select {
     width: 33.333333% !important;
   }
 
+  .lg\:\!w-1\/4{
+    width: 25% !important;
+  }
+
   .lg\:\!w-2\/3{
     width: 66.666667% !important;
+  }
+
+  .lg\:\!w-3\/4{
+    width: 75% !important;
   }
 
   .lg\:\!w-\[30\%\]{
@@ -9335,8 +9309,12 @@ input, textarea, select {
     width: auto;
   }
 
-  .lg\:w-\[33\%\]{
-    width: 33%;
+  .lg\:\!w-2\/5{
+    width: 40% !important;
+  }
+
+  .lg\:\!w-3\/5{
+    width: 60% !important;
   }
 
   .lg\:\!min-w-\[200px\]{
@@ -9516,6 +9494,10 @@ input, textarea, select {
 
   .lg\:\!pb-0{
     padding-bottom: 0px !important;
+  }
+
+  .lg\:\!pl-8{
+    padding-left: 2rem !important;
   }
 
   .lg\:\!pt-12{
@@ -9711,6 +9693,22 @@ input, textarea, select {
 
   .xl\:\!w-56{
     width: 14rem !important;
+  }
+
+  .xl\:w-1\/4{
+    width: 25%;
+  }
+
+  .xl\:w-3\/4{
+    width: 75%;
+  }
+
+  .xl\:\!w-1\/4{
+    width: 25% !important;
+  }
+
+  .xl\:\!w-3\/4{
+    width: 75% !important;
   }
 
   .xl\:\!min-w-\[300px\]{
