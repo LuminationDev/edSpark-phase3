@@ -1,8 +1,10 @@
 <script setup>
-import ArticleSingleSwoosh from '../svg/ArticleSingleSwoosh.vue';
-import {computed, onMounted, resolveDynamicComponent, ref} from 'vue'
-import {imageURL} from "@/js/constants/serverUrl";
+import {computed, onMounted, ref,resolveDynamicComponent} from 'vue'
+
 import {schoolColorKeys, schoolColorTheme} from "@/js/constants/schoolColorTheme";
+import {imageURL} from "@/js/constants/serverUrl";
+
+import ArticleSingleSwoosh from '../svg/ArticleSingleSwoosh.vue';
 
 const props = defineProps({
     backgroundUrl: {
@@ -26,7 +28,8 @@ const props = defineProps({
     },
     swooshColorTheme: {
         type: String,
-        required: true
+        required: false,
+        default: 'teal'
     }
 })
 
@@ -55,8 +58,7 @@ const gradientBg = ref('')
 
 // :style="'background-image: ' + gradientBg +';'
 onMounted(() => {
-    console.log(props.swooshColorTheme);
-    var useCustomColor = false;
+    let useCustomColor = false;
 
     if(schoolColorKeys.includes(props.swooshColorTheme)){
         console.log(props.swooshColorTheme);
@@ -80,21 +82,7 @@ const customFill = computed(() => {
 <template>
     <div class="-mt-[9rem] lg:!h-[750px] BaseHeroContainer h-full relative z-10">
         <div
-            class="
-                2xl:!pt-44
-                bg-cover
-                grid
-                grid-cols-8
-                h-full
-                pb-20
-                pt-40
-                px-3
-                relative
-                lg:!pb-0
-                lg:!pt-40
-                lg:!px-12
-                xl:!pt-40
-                "
+            class="2xl:!pt-44 bg-cover grid grid-cols-8 h-full pb-20 pt-40 px-3 relative lg:!pb-0 lg:!pt-40 lg:!px-12 xl:!pt-40"
             :style="'background-image: url(' + heroBackgroundLinkOnly +')'"
         >
             <div
@@ -166,12 +154,28 @@ const customFill = computed(() => {
                 </div>
             </div>
         </div>
-        <div class="articleSwooshContainer relative w-full z-50 ">
+        <div class="articleSwooshContainer relative w-full z-50">
             <ArticleSingleSwoosh
                 :color-theme="swooshColorTheme"
                 class="absolute -top-9 h-16 mt-1 w-full"
             />
-            <div class="absolute -top-9 h-16 mt-1 w-full z-50  flex items-endfont-base pl-4 pt-2 text-base text-white md:!pl-12 md:!text-2xl">
+            <div
+                class="absolute
+                    -top-9
+                    flex
+                    items-endfont-base
+                    h-16
+                    mt-1
+                    pl-4
+                    pt-2
+                    text-base
+                    text-white
+                    w-full
+                    z-50
+                    
+                    
+                    md:!pl-12
+                    md:!text-2xl">
                 <slot
                     name="submenu"
                 />

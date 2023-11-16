@@ -5,6 +5,7 @@ import {computed, onBeforeMount, ref, watch} from "vue";
 import {useRoute, useRouter} from "vue-router";
 
 import Loader from "@/js/components/spinner/Loader.vue";
+import useErrorMessage from "@/js/composables/useErrorMessage";
 import {API_ENDPOINTS} from "@/js/constants/API_ENDPOINTS";
 import {convertLinksToEmbeds, isObjectEmpty} from "@/js/helpers/objectHelpers";
 import {lowerSlugify} from "@/js/helpers/slugifyHelper";
@@ -23,7 +24,7 @@ const props = defineProps({
 const emits = defineEmits(['emitAvailableSubmenu', 'emitActiveTabToSpecificPage'])
 const singleContent = ref({})
 const baseIsLoading = ref(!(props.contentType.toLowerCase() === 'school'))
-
+const {error, setError,clearError} = useErrorMessage()
 const recommendedContent = ref({})
 let byIdAPILink;
 
@@ -81,7 +82,9 @@ onBeforeMount(async () => {
     /**
      * Get content from history state or fetch
      */
-    await checkToReadOrFetchContent()
+    // await checkToReadOrFetchContent()
+    await fetchContent()
+
 
     // code to emit available submenus - to be used in all baseSingle pages. remove hardcoded
     if (singleContent.value.metadata && singleContent.value.metadata.filter(meta => Object.values(meta).includes('single_submenu'))) {
@@ -104,47 +107,63 @@ onBeforeMount(async () => {
 })
 
 
-const checkToReadOrFetchContent = async () => {
-    if (!window.history.state.content) { // doesn't exists
-        if (!byIdAPILink) return // fetchByIdAPILink not exist terminate function
-        console.log('No content passed in. Will request from server')
-        // get post by id via API link
-        await axios.get(`${byIdAPILink}${route.params.id}`, useUserStore().getUserRequestParam).then(res => {
-            singleContent.value = res.data
-            singleContent.value.content = convertLinksToEmbeds(singleContent.value.content)
-            console.log('set new data haha yes')
-            baseIsLoading.value = false
-        }).catch(err => {
-            console.log(err)
-            baseIsLoading.value = false
-        })
-    } else {
-        // content exists in window.history.state. NO FETCH JUST PARSE from state
-        // then check if ID matches between the data inside state and current url
-        // if it matches, set the single content value. if not, go to else
-        // TODO: remove these comparison - make it simple
-        if ((JSON.parse(window.history.state.content).post_id || JSON.parse(window.history.state.content).id) === route.params.id) {
-            console.log('same id inside window history id compated to params id ')
-            console.info('Advice content received from parent. No request will be sent to server')
-            singleContent.value = JSON.parse(window.history.state.content)
-            singleContent.value.content = convertLinksToEmbeds(singleContent.value.content)
-            baseIsLoading.value = false
+// const checkToReadOrFetchContent = async () => {
+//     if (!window.history.state.content) { // doesn't exists
+//         if (!byIdAPILink) return // fetchByIdAPILink not exist terminate function
+//         console.log('No content passed in. Will request from server')
+//         // get post by id via API link
+//         await axios.get(`${byIdAPILink}${route.params.id}`, useUserStore().getUserRequestParam).then(res => {
+//             singleContent.value = res.data
+//             singleContent.value.content = convertLinksToEmbeds(singleContent.value.content)
+//             console.log('set new data haha yes')
+//             baseIsLoading.value = false
+//         }).catch(err => {
+//             console.log(err)
+//             baseIsLoading.value = false
+//         })
+//     } else {
+//         // content exists in window.history.state. NO FETCH JUST PARSE from state
+//         // then check if ID matches between the data inside state and current url
+//         // if it matches, set the single content value. if not, go to else
+//         // TODO: remove these comparison - make it simple
+//         if ((JSON.parse(window.history.state.content).post_id || JSON.parse(window.history.state.content).id) === route.params.id) {
+//             console.log('same id inside window history id compated to params id ')
+//             console.info('Advice content received from parent. No request will be sent to server')
+//             singleContent.value = JSON.parse(window.history.state.content)
+//             singleContent.value.content = convertLinksToEmbeds(singleContent.value.content)
+//             baseIsLoading.value = false
+//
+//         } else {
+//             // state has content but ID different, send fetch
+//             console.log('requesting content ')
+//             await axios.get(`${byIdAPILink}${route.params.id}`).then(res => {
+//                 singleContent.value = res.data
+//                 if (singleContent.value.content && typeof singleContent.value.content === 'string') {
+//                     singleContent.value.content = convertLinksToEmbeds(singleContent.value.content)
+//                 }
+//                 baseIsLoading.value = false
+//
+//             }).catch(err => {
+//                 console.log(err)
+//                 baseIsLoading.value = false
+//             })
+//         }
+//     }
+// }
 
-        } else {
-            // state has content but ID different, send fetch
-            await axios.get(`${byIdAPILink}${route.params.id}`).then(res => {
-                singleContent.value = res.data
-                if (singleContent.value.content && typeof singleContent.value.content === 'string') {
-                    singleContent.value.content = convertLinksToEmbeds(singleContent.value.content)
-                }
-                baseIsLoading.value = false
-
-            }).catch(err => {
-                console.log(err)
-                baseIsLoading.value = false
-            })
+const fetchContent = async () => {
+    await axios.get(`${byIdAPILink}${route.params.id}`).then(res => {
+        singleContent.value = res.data
+        if (singleContent.value.content && typeof singleContent.value.content === 'string') {
+            singleContent.value.content = convertLinksToEmbeds(singleContent.value.content)
         }
-    }
+    }).catch(err => {
+        console.log(err)
+        setError(err.code, err.message)
+    }).finally(() => {
+        baseIsLoading.value = false
+
+    })
 }
 const getObjectTitleValue = (data) => {
     let titleKey = Object.keys(data).filter(key => key.includes('title'))[0];
@@ -154,16 +173,8 @@ const getObjectTitleValue = (data) => {
 
     return data[titleKey];
 }
-watch(currentId, () => {
-    if (window.history.state.content && singleContent.value) {
-        if (!isEqual(JSON.parse(window.history.state.content), singleContent.value)) {
-            singleContent.value = JSON.parse(window.history.state.content)
-            singleContent.value.content = convertLinksToEmbeds(singleContent.value.content)
-            baseIsLoading.value = false
-        }
-    } else {
-        checkToReadOrFetchContent()
-    }
+watch(currentId, async () => {
+    await fetchContent()
     getRecommendationBasedOnContentType()
 
 })
@@ -185,6 +196,15 @@ const handleEmitFromSubmenu = (value) => {
         </div>
     </div>
     <div
+        v-else-if="error.status"
+        class="flex justify-center py-10"
+    >
+        <div class="flex font-semibold text-center text-xl">
+            Sorry an error has occured
+            {{ error.message }}
+        </div>
+    </div>
+    <div
         v-else-if="!isObjectEmpty(singleContent) || props.contentType === 'school'"
         class="flex flex-col singleContainer"
     >
@@ -199,15 +219,6 @@ const handleEmitFromSubmenu = (value) => {
             :recommendation-from-base="recommendedContent"
         />
     </div>
-    <div
-        v-else
-        class="flex justify-center py-10"
-    >
-        <div class="font-semibold text-xl">
-            Sorry content not available.
-            Please go back
-        </div>
-    </div>
 </template>
 
 <style scoped>
@@ -218,7 +229,8 @@ h2 {
 h3 {
     font-weight: bold;
 }
-:deep(a){
+
+:deep(a) {
     text-decoration: underline;
 }
 </style>
