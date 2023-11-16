@@ -89,13 +89,13 @@ background-size: cover ;background-blend-mode: screen; `" -->
             <div class="
                     flex
                     flex-wrap
-                    justify-center
-                    items-center
                     w-full
                     gap-2
-                    h-[90px]
+                    h-[120px]
                     smaller-icons                    
                     fill-secondary-blue
+                    content-center
+                    justify-center
             ">
                 <SchoolCardIconList 
                     :tech-list="mapPopupInfo.tech_used" 
@@ -136,7 +136,7 @@ background-size: cover ;background-blend-mode: screen; `" -->
 
 .mapOuterContainer {
     max-width: 340px;
-    max-height: 300px;
+    max-height: 350px;
 }
 
 .mapPopupContent::-webkit-scrollbar {

@@ -3304,6 +3304,10 @@ select{
   height: 100vh;
 }
 
+.h-\[120px\]{
+  height: 120px;
+}
+
 .max-h-96{
   max-height: 24rem;
 }
