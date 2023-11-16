@@ -70,10 +70,10 @@ const timeFormatter = (originalFormat) => {
         </template>
 
         <template #content="{ contentFromBase }">
-            <div class="adviceSingleContent flex flex-col mt-14 overflow-hidden p-4 px-8 w-full xl:!flex-row">
+            <div class="adviceSingleContent flex flex-col mt-10 overflow-hidden p-4 px-8 w-full xl:!flex-row">
                 <!--    Content of the Advice    -->
-                <div class="flex flex-col flex-wrap mr-10 px-2 py-4 w-full xl:!w-2/3">
-                    <div class="flex font-bold text-2xl">
+                <div class="flex flex-col flex-wrap mr-10 px-2 py-2 w-full xl:!w-2/3">
+                    <div class="flex font-bold mb-2 text-2xl">
                         Getting started
                     </div>
                     <div

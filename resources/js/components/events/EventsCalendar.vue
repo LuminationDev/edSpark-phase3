@@ -2,12 +2,12 @@
 import 'v-calendar/style.css';
 
 import {Calendar} from 'v-calendar';
-import {computed,ref} from 'vue';
+import {computed, onMounted, ref} from 'vue';
 
 import EventsCalendarPopup from "@/js/components/events/EventsCalendarPopup.vue";
 import {EventType} from "@/js/types/EventTypes";
 
-const eventCalendar = ref(null);
+const eventCalendarRef = ref(null);
 const showPopup = ref(false);
 const dayEvents = ref([]);
 const dateForPopup = ref('');
@@ -19,12 +19,8 @@ const props = defineProps({
     }
 });
 
-/**
- * Attempt to build some data for the calendar
- */
 const attributes = computed(() =>
     props.events.map(event => {
-        // const backgroundColor = event.type === 'Virtual' ? '#BF123D' : event.type === 'Hybrid' ? '#A855F7' : '#3B82F6';
         const backgroundColor = event.type === 'Virtual' ? 'mbRose' : event.type === 'Hybrid' ? 'purple' : 'blue';
         return {
             dates: [[event.start_date, event.end_date]],
@@ -39,15 +35,15 @@ const attributes = computed(() =>
             },
             highlight: {
                 start: {
-                    fillMode: 'outline',
+                    fillMode: 'light',
                     color: backgroundColor
                 },
                 base: {
-                    fillMode: 'solid',
+                    fillMode: 'light',
                     color: backgroundColor
                 },
                 end: {
-                    fillMode: 'outline',
+                    fillMode: 'light',
                     color: backgroundColor
                 },
             },
@@ -83,12 +79,30 @@ const initialCalendarPage = computed(() => {
         year: currentDate.getFullYear()
     }
 })
+
+const handleClickTodayButton = () => {
+    eventCalendarRef.value.focusDate(new Date())
+}
+onMounted(() => {
+    eventCalendarRef.value.focusDate(new Date())
+
+})
 </script>
 
 <template>
     <div class="calendarWrapper mt-10">
+        <div
+            class="flex justify-end p-2 rounded-full"
+        >
+            <button
+                class="bg-secondary-mbRose hover:bg-gray-200 border-[1px] px-4 py-2 rounded-full text-white hover:cursor-pointer"
+                @click="handleClickTodayButton"
+            >
+                Today
+            </button>
+        </div>
         <Calendar
-            ref="eventCalendar"
+            ref="eventCalendarRef"
             borderless
             expanded
             :attributes="attributes"
@@ -136,6 +150,17 @@ const initialCalendarPage = computed(() => {
 
 .calendarWrapper :deep(.vc-day-box-center-center) {
     height: 68px;
+}
+
+.calendarWrapper :deep(.vc-focus:focus-within) {
+    background-color: #be123c;
+    color: white;
+    padding: 8px;
+    box-shadow: 0 0 10px 10px white;
+}
+
+.calendarWrapper :deep(.vc-bars){
+    height: 4px
 }
 
 :deep(.vc-dfeteal) {
@@ -201,5 +226,18 @@ const initialCalendarPage = computed(() => {
     --vc-accent-700: #8E0E28;
     --vc-accent-800: #760B1E;
     --vc-accent-900: #5E0914;
+}
+
+:deep(.vc-accessiblePurple) {
+    --vc-accent-50: #B7A5C5;
+    --vc-accent-100: #A490BE;
+    --vc-accent-200: #957BB7;
+    --vc-accent-300: #8766B0;
+    --vc-accent-400: #7851A9;
+    --vc-accent-500: #6D469C;
+    --vc-accent-600: #603D8C;
+    --vc-accent-700: #54347D;
+    --vc-accent-800: #472B6E;
+    --vc-accent-900: #3B226F;
 }
 </style>
