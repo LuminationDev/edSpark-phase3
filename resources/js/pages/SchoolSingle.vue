@@ -237,7 +237,7 @@ const handleCloseModerationTab = (): void => {
                                             <img
                                                 :src="`${imageURL}/${schoolContent.logo}`"
                                                 :alt="`school logo`"
-                                                class="max-h-full object-contain w-full"
+                                                class="max-h-full object-contain w-full rounded p-2 bg-white"
                                                 @error="handleErrorImage"
                                             >
                                         </div>
