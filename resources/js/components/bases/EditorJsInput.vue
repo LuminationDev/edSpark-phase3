@@ -23,14 +23,15 @@ const editor = new EditorJS({
     holder: 'editorJs',
     tools: editorJsTools,
     autofocus: true,
-    onReady: (): void => {
-        if (props.existingData) {
-            for (const block of props.existingData.blocks) {
-                editor.blocks.insert(block.type, block.data)
-            }
-            editor.blocks.delete(0);
-        }
-    },
+    // onReady: (): void => {
+    //     if (props.existingData) {
+    //         for (const block of props.existingData.blocks) {
+    //             editor.blocks.insert(block.type, block.data)
+    //         }
+    //         editor.blocks.delete(0);
+    //     }
+    // },
+    data: props.existingData
 });
 
 const handleEditorSave = async (): Promise<void> => {
