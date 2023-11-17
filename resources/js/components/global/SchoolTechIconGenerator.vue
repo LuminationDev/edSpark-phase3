@@ -57,7 +57,7 @@ const schoolTechIconComponents = {
     <template v-if="onSchoolCard">
         <div
             class="schoolCardIcons flex h-[28px] flex-row w-[200px] bg-secondary-blue/10 text-secondary-blue w-fit items-center
-            fill-none border-secondary-blue border border-solid text-white text-sm rounded-full !pr-[10px]">
+            fill-none border-secondary-blue border border-solid text-sm rounded-full !pr-[10px]">
             <BaseIconGenerator class="max-w-[30px] max-h-[25px]" :icon-path="techName"
                 :components-object="schoolTechIconComponents" />
             {{ techName }}
