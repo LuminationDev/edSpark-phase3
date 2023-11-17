@@ -7,6 +7,7 @@ import EditorJsContentList from "@/js/components/schoolsingle/schoolContent/Edit
 import EditorJsContentParagraph from "@/js/components/schoolsingle/schoolContent/EditorJsContentParagraph.vue";
 import EditorJsContentVideo from "@/js/components/schoolsingle/schoolContent/EditorJsContentVideo.vue";
 import {emptyEditorJsData} from "@/js/constants/schoolContentDefault";
+import {findNestedKeyValue} from "@/js/helpers/objectHelpers";
 import {EditorJSDataType} from "@/js/types/EditorJsTypes";
 
 /**
@@ -18,8 +19,8 @@ const props = defineProps({
         type: Object as () => EditorJSDataType,
         required: true
     },
-    defaultContent:{
-        type: Object, required : false,
+    defaultContent: {
+        type: Object, required: false,
         default: emptyEditorJsData
     }
 })
@@ -32,28 +33,52 @@ const defaultContentBlocksIfSchoolIsNew = computed(() => {
     }
 })
 
+const getAlignment = (itemObject) => {
+    const result = findNestedKeyValue(itemObject, 'alignment')
+    if (result.length < 1) {
+        return 'left' // default alignment
+    } else {
+        return result[0]
+    }
+}
+
 </script>
 
 <template>
     <div
         v-for="(item,index) in defaultContentBlocksIfSchoolIsNew.blocks"
         :key="index"
-        class="editorJsContentIterator mb-1 mr-2 p-4 md:!mr-12 md:!scale-100"
+        class="editorJsContentIterator max-w-full mb-1 mr-2 p-4 md:!mr-12 md:!scale-100"
     >
         <template v-if="item.type === 'header'">
-            <EditorJsContentHeading :data="item" />
+            <EditorJsContentHeading
+                :data="item"
+                :alignment="getAlignment(item)"
+            />
         </template>
         <template v-else-if="item.type === 'paragraph'">
-            <EditorJsContentParagraph :data="item" />
+            <EditorJsContentParagraph
+                :data="item"
+                :alignment="getAlignment(item)"
+            />
         </template>
         <template v-else-if="item.type === 'list'">
-            <EditorJsContentList :data="item" />
+            <EditorJsContentList
+                :data="item"
+                :alignment="getAlignment(item)"
+            />
         </template>
         <template v-else-if="item.type === 'image'">
-            <EditorJsContentImage :data="item" />
+            <EditorJsContentImage
+                :data="item"
+                :alignment="getAlignment(item)"
+            />
         </template>
         <template v-else-if="item.type === 'video'">
-            <EditorJsContentVideo :data="item" />
+            <EditorJsContentVideo
+                :data="item"
+                :alignment="getAlignment(item)"
+            />
         </template>
     </div>
 </template>

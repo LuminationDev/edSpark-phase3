@@ -59,6 +59,7 @@
         "@vueuse/core": "^9.13.0",
         "dompurify": "^3.0.6",
         "editorjs-inline-font-size-tool": "^1.0.1",
+        "editorjs-text-alignment-blocktune": "^1.0.3",
         "epic-spinners": "^2.0.0",
         "font-awesome": "^4.7.0",
         "pinia": "^2.1.7",
