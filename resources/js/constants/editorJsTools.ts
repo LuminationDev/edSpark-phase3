@@ -61,14 +61,14 @@ export const editorJsTools = {
     },
     alignmentTunes: {
         class: AlignmentTuneTool,
-        config: {
-            default: "left",
-            blocks: {
-                header: 'center',
-                list: 'left',
-                paragraph: 'left',
-                video: 'center'
-            }
-        },
+        // config: {
+        //     // default: "left",
+        //     // blocks: {
+        //     //     header: 'center',
+        //     //     list: 'left',
+        //     //     paragraph: 'left',
+        //     //     video: 'center'
+        //     // }
+        // },
     }
 }
