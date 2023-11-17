@@ -12,6 +12,7 @@ import HardwareEmergingTechSpecs from "@/js/components/hardware/HardwareEmerging
 import HardwareLaptopTechSpecs from "@/js/components/hardware/HardwareLaptopTechSpecs.vue";
 import HardwareSingleBrandContent from "@/js/components/hardware/HardwareSingleBrandContent.vue";
 import ExtraResourceTemplateDisplay from "@/js/components/renderer/ExtraResourceTemplateDisplay.vue";
+import {edSparkContentSanitizer} from "@/js/helpers/objectHelpers";
 
 const baseContentRef = ref(null);
 /**
@@ -28,7 +29,7 @@ const hardwareSubmenu: Array<SubmenuObjectType> = [
         value: 'overview'
     },
     {
-        displayText: 'Tech Specs',
+        displayText: 'Tech specs',
         value: 'techspecs'
     }]
 const activeSubmenu = ref(hardwareSubmenu[0]['value'])
@@ -106,7 +107,7 @@ const colorTheme = ref('hardwareGreen')
                             <div class="flex flex-col py-4 w-full lg:!w-2/3">
                                 <div>
                                     <h1
-                                        class="flex font-bold text-2xl uppercase"
+                                        class="flex font-bold text-2xl"
                                     >
                                         {{ contentFromBase['name'] }}
                                     </h1>
@@ -121,7 +122,7 @@ const colorTheme = ref('hardwareGreen')
                                         pt-8
                                         text-lg
                                         "
-                                    v-html="purify.sanitize(contentFromBase['content'])"
+                                    v-html="edSparkContentSanitizer(contentFromBase['content'])"
                                 />
                                 <div
                                     v-if="contentFromBase['extra_content'] && contentFromBase['extra_content'].length"

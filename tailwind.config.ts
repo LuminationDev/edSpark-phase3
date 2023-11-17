@@ -1,7 +1,7 @@
 /** @type {import('tailwindcss').Config} */
-import colors from 'tailwindcss/colors'
 import forms from '@tailwindcss/forms'
 import typography from '@tailwindcss/typography'
+import colors from 'tailwindcss/colors'
 
 const edsparkColor = [
     '#4A5568',
@@ -44,6 +44,7 @@ const edsparkColor = [
     '#FFC836',
     '#0072DA',
     '#AEDCF3',
+    '#965A00',
 ];
 
 const generateSafeList = (colors) => {
@@ -94,6 +95,16 @@ module.exports = {
                     mbIcons: 'green',
                     coolGrey: '#D9DAE4',
 
+                    // new style guide
+                    banana: '#FFC836',                     
+                    bananadark: '#965A00',                       
+                    cherry:  '#DE4668',
+                    peach: '#FF8D78',
+                    grape:  '#8866C5',
+                    blueberry: '#0072DA',
+                    teal: '#319795',
+                    navy: '#002858',
+
                 },
                 custom: {
                     genericLightBlue: 'rgba(180, 216, 241, 0.35)', // light blue - table header
@@ -129,6 +140,9 @@ module.exports = {
             },
             scale: {
                 '90': '0.9',
+            },
+            fontFamily:{
+                museoSans:['Museo sans', 'sans-serif']
             }
         },
     },

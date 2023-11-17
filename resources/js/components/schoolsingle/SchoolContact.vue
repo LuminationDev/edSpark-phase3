@@ -120,7 +120,7 @@ const mapOptions = {
 <template>
     <div class="SchoolContactSubPageContainer flex flex-col gap-10 px-5 py-2 text-genericDark md:!px-10 lg:!flex-row">
         <div class="contactEditAndDisplayContainer flex flex-col w-full">
-            <div class="contactSubPageTitle font-semibold text-xl">
+            <div class="contactSubPageTitle font-bold text-2xl">
                 Contact details
             </div>
             <div
@@ -128,13 +128,13 @@ const mapOptions = {
                 class="contactForm flex flex-col"
             >
                 <div class="contactFormTitle font-semibold mb-4 text-xl">
-                    School Contact Form
+                    School contact form
                 </div>
                 <TextInput
                     v-model="v$.location.$model"
                     field-id="schoolLocation"
                     :v$="v$.location"
-                    placeholder="Enter School Address"
+                    placeholder="Enter school address"
                 >
                     <template #label>
                         Location
@@ -144,7 +144,7 @@ const mapOptions = {
                     v-model="v$.website.$model"
                     field-id="schoolLocation"
                     :v$="v$.website"
-                    placeholder="Enter School Website"
+                    placeholder="Enter school website"
                 >
                     <template #label>
                         Website
@@ -154,30 +154,30 @@ const mapOptions = {
                     v-model="v$.email.$model"
                     field-id="schoolLocation"
                     :v$="v$.email"
-                    placeholder="Enter School Email Address"
+                    placeholder="Enter school email address"
                 >
                     <template #label>
-                        Email Address
+                        Email address
                     </template>
                 </TextInput>
                 <TextInput
                     v-model="v$.phone.$model"
                     field-id="schoolLocation"
                     :v$="v$.phone"
-                    placeholder="Enter School Phone Number"
+                    placeholder="Enter school phone number"
                 >
                     <template #label>
-                        Phone Number
+                        Phone number
                     </template>
                 </TextInput>
                 <TextInput
                     v-model="v$.fax.$model"
                     field-id="schoolLocation"
                     :v$="v$.fax"
-                    placeholder="Enter Fax Number"
+                    placeholder="Enter fax number"
                 >
                     <template #label>
-                        Fax Number
+                        Fax number
                     </template>
                 </TextInput>
                 <GenericButton
@@ -185,7 +185,7 @@ const mapOptions = {
                     custom-class="mt-4"
                 >
                     <template #default>
-                        Submit Contact Information
+                        Submit contact information
                     </template>
                 </GenericButton>
             </div>
@@ -201,8 +201,8 @@ const mapOptions = {
                         v-if="state[key]"
                         class="flex flex-row my-4"
                     >
-                        <div class="flex justify-end font-semibold mr-4 text-base w-1/4 md:!text-xl">
-                            {{ key.toUpperCase() }}
+                        <div class="capitalize flex justify-end font-semibold mr-4 text-base w-1/4 md:!text-xl">
+                            {{ key }}
                         </div>
                         <div class="flex flex-wrap text-sm w-3/4 md:!text-lg">
                             <p class="break-words text-ellipsis w-full">
@@ -216,7 +216,7 @@ const mapOptions = {
                 v-else
                 class="available contact flex flex-col no p-4 pt-8"
             >
-                Sorry contact not available yet. Please check back later
+                Sorry, no contact information is available yet. Please check back later
             </div>
             <GenericButton
                 v-if="currentUserCanEdit"

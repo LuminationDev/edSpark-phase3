@@ -156,7 +156,7 @@ const schoolSubmenu = [
         value: 'detail'
     },
     {
-        displayText: "What's New",
+        displayText: "What's new",
         value: 'new'
     },
     {
@@ -237,7 +237,7 @@ const handleCloseModerationTab = (): void => {
                                             <img
                                                 :src="`${imageURL}/${schoolContent.logo}`"
                                                 :alt="`school logo`"
-                                                class="max-h-full object-contain w-full"
+                                                class="max-h-full object-contain w-full rounded p-2 bg-white"
                                                 @error="handleErrorImage"
                                             >
                                         </div>
@@ -265,7 +265,7 @@ const handleCloseModerationTab = (): void => {
                             <div
                                 class="basis-4/5 font-semibold mb-4 previewLabel text-center text-xl"
                             >
-                                PREVIEW CONTENT (MODERATION)
+                                Preview content (Moderation)
                                 <div class="font-medium text-base text-center">
                                     Created at: {{
                                         schoolContent['updated_at'] ? formatDateToDayTime(schoolContent['updated_at']) : ''

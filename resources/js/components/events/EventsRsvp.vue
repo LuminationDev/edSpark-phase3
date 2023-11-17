@@ -186,7 +186,7 @@ onMounted(() => {
 
 <template>
     <div class="EventRsvpFormContainer bg-blue-900 mt-5 px-4 py-4 text-white">
-        <div class="font-bold rsvpHeader text-2xl uppercase">
+        <div class="font-bold rsvpHeader text-2xl">
             Register for this event
         </div>
 
@@ -203,7 +203,7 @@ onMounted(() => {
             v-if="currentUserIsOwner"
             class="border-b-2 border-dashed border-white flex flex-col gap-2 py-4"
         >
-            <div class="font-bold rsvpHeader text-xl uppercase">
+            <div class="font-bold rsvpHeader text-xl">
                 You are the owner of this event
             </div>
             <div>
@@ -279,7 +279,7 @@ onMounted(() => {
             v-else
             class="eventRsvpClosed"
         >
-            <div class="font-bold mt-4 rsvpHeader text-xl uppercase">
+            <div class="font-bold mt-4 rsvpHeader text-xl">
                 This event has ended and registration has closed. Thank you
             </div>
         </div>
@@ -297,7 +297,7 @@ onMounted(() => {
             v-else
             class="border-b-2 border-b-white border-dashed contactHeader eventContactForm flex flex-col py-4 text-lg"
         >
-            <div class="font-bold rsvpHeader text-xl uppercase">
+            <div class="font-bold rsvpHeader text-xl">
                 Contact the organiser
             </div>
             <div class="eventRsvp form-cta pb-4">

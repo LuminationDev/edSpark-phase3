@@ -18,7 +18,7 @@ const navDropdownToggle = ref(false);
 
 <template>
     <li
-        class="cursor-pointer decoration-4 decoration-[#B8E2DC] py-4 transition-all underline-offset-8 hover:underline uppercase lg:!py-0"
+        class="cursor-pointer decoration-4 decoration-[#B8E2DC] py-4 transition-all underline-offset-8 hover:underline first-letter:uppercase lg:!py-0"
         @click="props.clickCallback"
     >
         <router-link
@@ -44,7 +44,7 @@ const navDropdownToggle = ref(false);
                 @mouseover="navDropdownToggle = true"
             >
                 <div class="bg-[#002856]/50 mt-[8px]">
-                    <ul class="flex flex-col font-['Poppins'] font-semibold gap-4 py-4 text-[24px] text-center text-white">
+                    <ul class="flex flex-col font-semibold gap-4 py-4 text-[24px] text-center text-white">
                         <router-link
                             class="flex"
                             to="/software"

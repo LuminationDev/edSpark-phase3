@@ -14,6 +14,7 @@ import LocationIcon from "@/js/components/svg/event/LocationIcon.vue";
 import TimeIcon from "@/js/components/svg/event/TimeIcon.vue";
 import {schoolColorKeys, schoolColorTheme} from "@/js/constants/schoolColorTheme";
 import {imageURL} from "@/js/constants/serverUrl";
+import {edSparkContentSanitizer} from "@/js/helpers/objectHelpers";
 
 const router = useRouter()
 const handleClickViewProfile = (author_id, author_type) => {
@@ -158,12 +159,12 @@ const getEventBackgroundColorTheme = (eventType) => {
             >
                 <!--    Content of the Advice    -->
                 <div class="flex flex-col flex-wrap px-2 w-full lg:!w-2/3">
-                    <div class="border-b-4 border-black border-dashed flex font-semibold text-2xl uppercase">
+                    <div class="border-b-4 border-black border-dashed flex font-semibold text-2xl">
                         Details
                     </div>
                     <div
                         class="flex content-paragraph flex-col max-w-full overflow-hidden text-lg"
-                        v-html="purify.sanitize(contentFromBase['content'])"
+                        v-html="edSparkContentSanitizer(contentFromBase['content'])"
                     />
                     <template
                         v-for="(content,index) in contentFromBase['extra_content']"

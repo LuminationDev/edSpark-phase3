@@ -1,7 +1,8 @@
 <script setup>
-import AdviceEducatorsIcon from "@/js/components/svg/adviceIcon/AdviceEducatorsIcon.vue";
-import GenericButton from "@/js/components/button/GenericButton.vue";
 import { useRouter } from "vue-router";
+
+import GenericButton from "@/js/components/button/GenericButton.vue";
+import AdviceEducatorsIcon from "@/js/components/svg/adviceIcon/AdviceEducatorsIcon.vue";
 
 const router = useRouter()
 </script>
@@ -26,7 +27,7 @@ const router = useRouter()
                 "
         >
             <div class="col-span-5">
-                <h1 class="font-semibold pb-8 text-2xl text-white lowercase first-letter:uppercase md:!text-3xl lg:!text-4xl">
+                <h1 class="first-letter:uppercase font-semibold lowercase pb-8 text-2xl text-white md:!text-3xl lg:!text-4xl">
                     Advice for Educators
                 </h1>
 
@@ -53,7 +54,7 @@ const router = useRouter()
                         "
                 />
                 <GenericButton
-                    :callback="() => router.push('browse/advice')"
+                    :callback="() => router.push('browse/advice/educators')"
                     button-id="EDUadvice"
                     class="
                         !rounded-none
@@ -81,7 +82,7 @@ const router = useRouter()
             </div>
             <div class="block col-span-8 md:hidden">
                 <GenericButton
-                    :callback="() => router.push('browse/advice')"
+                    :callback="() => router.push('browse/advice/educators')"
                     class="
                         !rounded-none
                         !text-main-navy

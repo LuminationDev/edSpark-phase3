@@ -7,6 +7,7 @@ import BaseBreadcrumb from "@/js/components/bases/BaseBreadcrumb.vue";
 import BaseHero from "@/js/components/bases/BaseHero.vue";
 import BaseSingle from "@/js/components/bases/BaseSingle.vue";
 import ExtraResourceTemplateDisplay from "@/js/components/renderer/ExtraResourceTemplateDisplay.vue";
+import {edSparkContentSanitizer} from "@/js/helpers/objectHelpers";
 
 /**
  *  type AdviceSingleContent = {
@@ -63,23 +64,23 @@ const timeFormatter = (originalFormat) => {
                     {{ timeFormatter(contentFromBase['post_date']) }}
                 </template> -->
                 <template #subtitleText2>
-                    <div v-html="contentFromBase['excerpt']" />
+                    <div v-html="edSparkContentSanitizer(contentFromBase['excerpt'])" />
                 </template>
             </BaseHero>
         </template>
 
         <template #content="{ contentFromBase }">
-            <div class="adviceSingleContent flex flex-col mt-14 overflow-hidden p-4 px-8 w-full xl:!flex-row">
+            <div class="adviceSingleContent flex flex-col mt-10 overflow-hidden p-4 px-8 w-full xl:!flex-row">
                 <!--    Content of the Advice    -->
-                <div class="flex flex-col flex-wrap mr-10 px-2 py-4 w-full xl:!w-2/3">
-                    <div class="flex font-bold text-2xl uppercase">
+                <div class="flex flex-col flex-wrap mr-10 px-2 py-2 w-full xl:!w-2/3">
+                    <div class="flex font-bold mb-2 text-2xl">
                         Getting started
                     </div>
                     <div
                         class="flex content-paragraph flex-col max-w-full overflow-hidden text-lg"
                     />
 
-                    <div v-html="purify.sanitize(contentFromBase['content'])" />
+                    <div v-html="edSparkContentSanitizer(contentFromBase['content'] )" />
                     <div
                         v-if="contentFromBase['extra_content'] && contentFromBase['extra_content'].length"
                         class="extraResourcesContainer mt-4 w-full"

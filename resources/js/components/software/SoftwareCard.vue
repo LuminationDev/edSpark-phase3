@@ -5,7 +5,7 @@ import {useRouter} from "vue-router";
 import GenericCard from "@/js/components/card/GenericCard.vue";
 import SoftwareCardIcon from "@/js/components/software/SoftwareCardIcon.vue";
 import {bookmarkURL,likeURL} from "@/js/constants/serverUrl";
-import {lowerSlugify} from "@/js/helpers/slugifyHelper";
+import {lowerSlugify} from "@/js/helpers/stringHelpers";
 import {useUserStore} from "@/js/stores/useUserStore";
 
 const props = defineProps({
@@ -60,7 +60,7 @@ const handleClickCard = () => {
             #icon
         >
             <SoftwareCardIcon
-                class="-top-6 -right-6 icon"
+                class="-right-6 -top-6 icon pr-4"
                 :software-icon-name="data.type[0]"
             />
         </template>

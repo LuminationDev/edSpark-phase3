@@ -10,19 +10,17 @@ const props = defineProps({
         type: Number,
         required: false,
         default: 1
-    },
-    showFirstTech: {
-        type: Boolean,
-        required: false,
-        default: false
     }
 });
 
 </script>
 
 <template>
-    <div class="schoolTechDescInner absolute left-0 px-[24px]" style="pointer-events: none;">
-        <h5 class="font-bold group-hover/tech:inline-block hidden text-[20px] pb-2 text-blue-900">
+    <div
+        class="absolute left-0 px-[24px] schoolTechDescInner"
+        style="pointer-events: none;"
+    >
+        <h5 class="font-bold group-hover/tech:inline-block hidden pb-2 text-[20px] text-blue-900">
             {{ techHover.category }}
         </h5>
         <div class="schoolTechDescription schools-tech_description">

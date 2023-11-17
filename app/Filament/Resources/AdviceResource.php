@@ -77,9 +77,6 @@ class AdviceResource extends Resource
                     Forms\Components\TextInput::make('Author')
                         ->default($user)
                         ->disabled(),
-//                    Forms\Components\BelongsToSelect::make('advice_type')
-//                        ->label('Advice type')
-//                        ->relationship('advicetype', 'advice_type_name'),
                     Forms\Components\Select::make('post_status')
                         ->options([
                             'Published' => 'Published',

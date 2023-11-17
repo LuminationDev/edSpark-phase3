@@ -211,11 +211,8 @@ const cardHoverToggle: Ref<boolean> = ref(false);
 </script>
 
 <template>
-    <div
-        class="!border-slate-300 GenericCardContainer card_parent generic-card__wrapper group overflow-hidden rounded"
-        :class="props.sectionType"
-        @mouseenter="cardHoverToggle = true"
-    >
+    <div class="GenericCardContainer bg-white card_parent generic-card__wrapper group !border-slate-300 rounded overflow-hidden"
+        :class="props.sectionType" @mouseenter="cardHoverToggle = true">
         <template v-if="!props.overrideContent">
             <div
                 class="
@@ -226,20 +223,18 @@ const cardHoverToggle: Ref<boolean> = ref(false);
                     group-hover:brightness-75
                     min-h-[35%]
                     overflow-visible
-                    relative
-                    rounded-t
-                    z-0
-                    "
-                :style="`background-image: url('${imageURL}/${coverImage}');`"
-            />
-            <div
-                class="cardContent group-hover:-mt-[120px] m-0 p-0 z-10"
-                @click="clickCallback"
-            >
-                <div class="bg-white cardContentWrapper group-hover:h-[315px] h-[210px] p-6">
-                    <div class="flex items-center flex-row gap-4 mb-3 relative">
+                    relative   
+                    z-0                 
+                    " :style="`background-image: url('${imageURL}/${coverImage}');`">
+
+
+            </div>
+            <div @click="clickCallback" class="cardContent m-0 p-0 group-hover:-mt-[120px] z-10">
+                <div class="cardContentWrapper p-6 bg-white h-[210px] group-hover:h-[315px]">
+
+                    <div class="flex flex-row relative mb-3 items-center">
                         <div v-if="$slots.icon">
-                            <slot name="icon" />
+                                <slot name="icon" />
                         </div>
 
                         <div

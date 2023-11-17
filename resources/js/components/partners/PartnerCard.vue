@@ -4,7 +4,7 @@ import {computed,ref} from 'vue'
 import {useRouter} from "vue-router";
 
 import GenericCard from "@/js/components/card/GenericCard.vue";
-import {lowerSlugify} from "@/js/helpers/slugifyHelper";
+import {lowerSlugify} from "@/js/helpers/stringHelpers";
 import {useUserStore} from "@/js/stores/useUserStore";
 
 const props = defineProps({

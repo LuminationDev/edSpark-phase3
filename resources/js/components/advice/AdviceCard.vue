@@ -5,7 +5,7 @@ import {useRouter} from "vue-router";
 import AdviceCardIcon from "@/js/components/advice/AdviceCardIcon.vue";
 import AdviceTypeTag from "@/js/components/advice/AdviceTypeTag.vue";
 import GenericCard from "@/js/components/card/GenericCard.vue";
-import {lowerSlugify} from "@/js/helpers/slugifyHelper";
+import {lowerSlugify} from "@/js/helpers/stringHelpers";
 import {BasePostType} from "@/js/types/PostTypes";
 
 const props = defineProps({
@@ -65,10 +65,10 @@ const handleClickAdviceCard = () => {
             v-if="showIcon"
             #icon
         >
-            <AdviceCardIcon
+            <!-- <AdviceCardIcon
                 class="right-4 bottom-2 group-hover:-bottom-32 icon transition-all"
                 :advice-icon-name="randomIconName"
-            />
+            /> -->
         </template>
     </GenericCard>
 </template>
