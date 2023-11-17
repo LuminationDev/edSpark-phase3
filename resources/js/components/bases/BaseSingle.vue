@@ -7,7 +7,7 @@ import {useRoute, useRouter} from "vue-router";
 import Loader from "@/js/components/spinner/Loader.vue";
 import {API_ENDPOINTS} from "@/js/constants/API_ENDPOINTS";
 import {convertLinksToEmbeds, isObjectEmpty} from "@/js/helpers/objectHelpers";
-import {lowerSlugify} from "@/js/helpers/slugifyHelper";
+import {lowerSlugify} from "@/js/helpers/stringHelpers";
 import {useAdviceStore} from "@/js/stores/useAdviceStore";
 import {useHardwareStore} from "@/js/stores/useHardwareStore";
 import {useSoftwareStore} from "@/js/stores/useSoftwareStore";

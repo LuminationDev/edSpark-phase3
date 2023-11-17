@@ -1,22 +1,36 @@
 <script setup>
-    const props = defineProps({
-        data: {
-            type: Object,
-            required: true
-        }
-    });
+import {computed} from "vue";
 
-    // console.log(props.data.data.file);
+import {alignmentClassGenerator} from "@/js/helpers/stringHelpers";
+
+const props = defineProps({
+    data: {
+        type: Object,
+        required: true
+    },
+    alignment: {
+        type: String,
+        required: false,
+        default: 'left'
+    }
+});
+const alignmentClass = computed(() => {
+    return alignmentClassGenerator(props.alignment)
+})
+
 </script>
 
 <template>
-    <div class="videoRendererWrapper">
+    <div
+        class="flex videoRendererWrapper"
+        :class="`${alignmentClass}`"
+    >
         <video
             controls
         >
             <source
                 :src="data.data.file.url"
-            />
+            >
         </video>
     </div>
 </template>

@@ -98,7 +98,7 @@ class ImageController extends Controller
                     $imgName = $prefix . '-' . md5(Str::random(30) . time() . '_' . $image) . '.' . $data['file']->extension();
                 } else {
                     $type = 'image';
-                    $image = $data['image'];
+                    $image = (array_key_exists('file', $data) ? $data['file'] : NULL) ?? (array_key_exists('image', $data) ? $data['image'] : NULL);
                     $imgName = $prefix . '-' . md5(Str::random(30) . time() . '_' . $image) . '.' . $image->getClientOriginalExtension();
                 }
                 $image->storeAs('public/uploads/' . $type, $imgName);
@@ -109,7 +109,7 @@ class ImageController extends Controller
                 "success" => 1,
                 "file" => [
                     "url" => env('VITE_SERVER_IMAGE_API') . $imagePath,
-                    "title" => 'Video.mp4',
+                    "title" => $prefix . $image->extension(),
                     "extension" => $image->getClientOriginalExtension()
                 ]
             ]);
