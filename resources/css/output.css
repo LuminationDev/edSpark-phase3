@@ -2861,6 +2861,10 @@ select{
   margin-bottom: -1px;
 }
 
+.mb-\[50px\]{
+  margin-bottom: 50px;
+}
+
 .mb-auto{
   margin-bottom: auto;
 }
@@ -2887,6 +2891,10 @@ select{
 
 .ml-2{
   margin-left: 0.5rem;
+}
+
+.ml-20{
+  margin-left: 5rem;
 }
 
 .ml-4{
@@ -3283,6 +3291,10 @@ select{
   height: 545px;
 }
 
+.h-\[60px\]{
+  height: 60px;
+}
+
 .h-\[65\%\]{
   height: 65%;
 }
@@ -3318,10 +3330,6 @@ select{
 
 .h-screen{
   height: 100vh;
-}
-
-.h-\[60px\]{
-  height: 60px;
 }
 
 .max-h-96{
@@ -4466,10 +4474,6 @@ select{
 
 .overflow-visible{
   overflow: visible;
-}
-
-.\!overflow-visible{
-  overflow: visible !important;
 }
 
 .overflow-scroll{
@@ -5943,6 +5947,11 @@ select{
   padding-right: 0.625rem;
 }
 
+.px-20{
+  padding-left: 5rem;
+  padding-right: 5rem;
+}
+
 .px-3{
   padding-left: 0.75rem;
   padding-right: 0.75rem;
@@ -6086,11 +6095,6 @@ select{
 .py-\[48px\]{
   padding-top: 48px;
   padding-bottom: 48px;
-}
-
-.px-20{
-  padding-left: 5rem;
-  padding-right: 5rem;
 }
 
 .\!pr-\[10px\]{
@@ -7084,7 +7088,7 @@ select{
 /*@import "./font-awesome/css/font-awesome.css";*/
 
 html {
-  font-family: 'Museo sans', sans-serif;
+  font-family: 'Museo sans', 'Nunito Sans', 'Calibri', sans-serif;
 }
 
 input, textarea, select {
@@ -8831,10 +8835,6 @@ input, textarea, select {
     margin-top: 1.75rem;
   }
 
-  .sm\:-mt-\[100px\]{
-    margin-top: -100px;
-  }
-
   .sm\:block{
     display: block;
   }
@@ -9394,6 +9394,11 @@ input, textarea, select {
     padding-right: 1.5rem;
   }
 
+  .md\:px-20{
+    padding-left: 5rem;
+    padding-right: 5rem;
+  }
+
   .md\:\!pl-12{
     padding-left: 3rem !important;
   }
@@ -9545,20 +9550,8 @@ input, textarea, select {
     margin-left: 0px !important;
   }
 
-  .lg\:\!mt-20{
-    margin-top: 5rem !important;
-  }
-
   .lg\:\!mt-24{
     margin-top: 6rem !important;
-  }
-
-  .lg\:-mt-\[100px\]{
-    margin-top: -100px;
-  }
-
-  .lg\:mt-\[100px\]{
-    margin-top: 100px;
   }
 
   .lg\:mt-\[10px\]{
@@ -9826,11 +9819,6 @@ input, textarea, select {
     padding-right: 2rem;
   }
 
-  .lg\:py-8{
-    padding-top: 2rem;
-    padding-bottom: 2rem;
-  }
-
   .lg\:\!pb-0{
     padding-bottom: 0px !important;
   }
@@ -9921,6 +9909,10 @@ input, textarea, select {
 @media (min-width: 1280px){
   .xl\:\!-bottom-4{
     bottom: -1rem !important;
+  }
+
+  .xl\:\!-bottom-\[3rem\]{
+    bottom: -3rem !important;
   }
 
   .xl\:\!right-12{
@@ -10014,20 +10006,8 @@ input, textarea, select {
     height: 14rem !important;
   }
 
-  .xl\:h-\[100px\]{
-    height: 100px;
-  }
-
-  .xl\:h-\[120px\]{
-    height: 120px;
-  }
-
   .xl\:h-\[130px\]{
     height: 130px;
-  }
-
-  .xl\:h-\[125px\]{
-    height: 125px;
   }
 
   .xl\:\!w-1\/3{

@@ -28,13 +28,9 @@ import SoftwareRobot from "@/js/components/svg/software/SoftwareRobot.vue";
                 Software
             </h1>
             <p class="font-normal pb-2 text-[16px] text-white">
-                Find out what software is available to you to use as an employee and how to access it.
-            </p>
-            <p class="font-normal text-[16px] text-white">
-                Use this page to explore software which has the Department for Education tick of approval.
-
-                Find out more information,
-                see use cases, steps to purchase and possible costs.
+                Discover software with the Department for Education tick of approval, and find out what  is available to you to use as an employee and how to access it. 
+                
+                Explore technical specifications, use cases, steps to purchase, and possible costs.
             </p>
         </div>
         <div class="col-span-3 hidden relative md:!block lg:!col-span-2">

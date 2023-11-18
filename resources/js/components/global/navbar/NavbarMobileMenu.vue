@@ -72,6 +72,7 @@ setupRoutes();
                 py-10
                 sidebarMenu
                 text-white
+                text-2xl
                 transition
                 w-[30vw]
                 z-[60]
@@ -131,7 +132,7 @@ setupRoutes();
 
                         </svg>
                     </div>
-                    search
+                    <p style="margin-top:4px">Search</p>
                 </li>
             </ul>
         </div>

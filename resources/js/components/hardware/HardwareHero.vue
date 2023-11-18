@@ -5,18 +5,14 @@ import BasePageHero from "@/js/components/bases/BasePageHero.vue";
 </script>
 <template>
     <BasePageHero
-        class="!from-[#002858] !to-[#A5D1BD] !via-[#0A7982] bg-gradient-to-r"
+        class="!from-[#002858] !to-[#A5D1BD] !via-[#0A7982] bg-gradient-to-r  mb-[50px]"
         title="Hardware"
-        subtitle="Explore what options are available for schools with locked prices on hardware selected to be purpose fit for school use"
-    >
-        <template #subtitle2>
-            Use this page to explore software which has the Department for Education tick of approval.
-            <br>
-            Find out more information,
-            see use cases, steps to purchase and possible costs.
-        </template>
+        subtitle="Browse hardware that has the Department for Education tick of approval. 
+             Discover what is available to purchase or borrow, and generate a quote for purchases which can then be processed
+                by your school business manager.">
+
         <template #pageIconSVG>
-            <hardware-hero-robot class="absolute -top-16 right-12" />
+            <hardware-hero-robot class="absolute -top-24 right-12" />
         </template>
     </BasePageHero>
 </template>

@@ -12,7 +12,7 @@ import BasePageHero from "@/js/components/bases/BasePageHero.vue";
     >
         <template #pageIconSVG>
             <img
-                class="mx-auto"
+                class="mx-auto absolute mt-1 ml-20"
                 src="../../../assets/images/eventsCalendar.png"
                 alt="Industry Partners connecting pieces of the puzzle"
             >
