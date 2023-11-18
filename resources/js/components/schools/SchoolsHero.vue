@@ -11,13 +11,8 @@ import SchoolsRobot from '@/js/components/svg/schoolsRobot/schoolsRobot.vue';
     >
         <template #pageIconSVG>
             <SchoolsRobot
-                class="absolute -top-16 md:!-top-[4.5rem] hidden md:!right-8  md:!block md:scale-75 lg:!right-12 lg:!scale-100"
+                class="absolute mr-0 sm:!-mr-[50px] -top-20 md:!-top-[3.5rem] lg:!-top-[5.5rem] hidden md:!right-8  md:!block md:scale-75 lg:!right-12 lg:!scale-90"
             />
         </template>
     </BasePageHero>
 </template>
-
-
-     
-    <!-- max-width: -webkit-fill-available;
-    right: 0 !important; -->

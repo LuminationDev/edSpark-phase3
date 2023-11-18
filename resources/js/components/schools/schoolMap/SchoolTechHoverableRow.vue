@@ -39,7 +39,7 @@ const customFill = computed(() => {
 
 <template>
     <div v-for="(tech, index) in props.techUsedList" :key="index"
-        class="cursor-pointer hidden relative w-6 md:!w-14 lg:!block iconColours z-30">
+        class="cursor-pointer relative w-6 md:!w-14 lg:!block iconColours z-30 min-w-fit flex-wrap">
         <div @mouseenter="handleToggleTooltip(index)" @mouseleave="handleToggleTooltip(index)" :class="customFill">
             <SchoolTechIconGenerator :tech-name="tech.name"
                 class="cursor-pointer m-2 min-w-[30px] pr-1 relative w-8 md:!min-w-[60px] md:!pr-4" />

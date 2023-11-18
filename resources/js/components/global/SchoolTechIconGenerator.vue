@@ -51,14 +51,14 @@ const schoolTechIconComponents = {
 
 <template>
     <template v-if="!onSchoolCard">
-        <BaseIconGenerator :icon-path="techName" style="padding:8px" :components-object="schoolTechIconComponents" />
+        <BaseIconGenerator :icon-path="techName" style="padding:4px;" class="iconSizer" :components-object="schoolTechIconComponents" />
     </template>
 
     <template v-if="onSchoolCard">
         <div
-            class="schoolCardIcons flex h-[28px] flex-row w-[200px] bg-secondary-blue/10 text-secondary-blue w-fit items-center
+            class="schoolCardIcons flex h-[28px] flex-row w-[200px] bg-secondary-blue/10 text-secondary-blue min-w-fit w-fit items-center
             fill-none border-secondary-blue border border-solid text-sm rounded-full !pr-[10px]">
-            <BaseIconGenerator class="max-w-[30px] max-h-[25px]" :icon-path="techName"
+            <BaseIconGenerator class="max-w-[30px] max-h-[25px] min-w-fit" :icon-path="techName"
                 :components-object="schoolTechIconComponents" />
             {{ techName }}
         </div>
@@ -71,6 +71,13 @@ const schoolTechIconComponents = {
 .schoolCardIcons path {
     fill: #0072da !important;
     stroke: transparent !important;
+}
+
+@media (max-width: 500px) {
+    .iconSizer {
+    max-height:50px !important; max-width:50px !important
+}
+
 }
 
 </style>

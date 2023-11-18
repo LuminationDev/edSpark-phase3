@@ -197,21 +197,25 @@ const handleCloseModerationTab = (): void => {
                         <template #titleText>
                             <div class="SchoolHeroContentContainer flex flex-row w-full">
                                 <div class="flex flex-row w-full">
-                                    <div class="flex flex-row items-end">
+                                    <div class="flex sm:flex-row sm:items-end sm:mx-0 
+                                               lg:pl-0 pl-0 sm:pl-8
+                                              flex-col items-center gap-8 mx-auto                                    
+                                    ">
 
-                                        <div class="flex justify-center items-center bg-white p-2 mt-8 rounded-xl text-md h-[200px] w-[200px]">
+                                        <div class="flex justify-center items-center bg-white mt-8 rounded-md text-md h-[200px] w-[200px]">
                                             <img :src="`${imageURL}/${schoolContent.logo}`" :alt="`school logo`"
-                                                class="max-h-full object-contain w-full rounded p-2 bg-white"
+                                                class="max-h-full object-contain w-full rounded p-3 bg-white"
                                                 @error="handleErrorImage">
                                         </div>
 
-                                        <div class="flex flex-col pl-12">
+                                        <div class="flex flex-col sm:pl-8 pl-0">
                                             <h1 class="font-bold text-white pb-6">
                                                 {{ schoolContent.name }}
                                             </h1>
                                             <div class="
                                                 flex
                                                 flex-row
+                                                flex-wrap
                                                 place-items-center
                                                 schoolTechHoverableRow
                                                 gap-1

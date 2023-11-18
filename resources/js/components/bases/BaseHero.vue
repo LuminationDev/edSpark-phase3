@@ -86,7 +86,7 @@ const customFill = computed(() => {
                 grid
                 grid-cols-8
                 h-full
-                pb-20
+                pb-10
                 pt-40
                 px-3
                 relative
@@ -171,7 +171,7 @@ const customFill = computed(() => {
                 :color-theme="swooshColorTheme"
                 class="absolute -top-9 h-16 mt-1 w-full"
             />
-            <div class="absolute -top-9 h-16 mt-1 w-full flex items-endfont-base pl-4 pt-2 text-base text-white md:!pl-12 md:!text-2xl">
+            <div class="absolute -top-9 h-16 mt-1 w-full flex pl-4 pt-2 text-xl text-white md:!pl-12 md:!text-2xl">
                 <slot
                     name="submenu"
                 />

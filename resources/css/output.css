@@ -2466,6 +2466,22 @@ select{
   top: 100%;
 }
 
+.-top-20{
+  top: -5rem;
+}
+
+.-top-\[2rem\]{
+  top: -2rem;
+}
+
+.-top-\[3rem\]{
+  top: -3rem;
+}
+
+.top-\[2rem\]{
+  top: 2rem;
+}
+
 .isolate{
   isolation: isolate;
 }
@@ -3023,6 +3039,22 @@ select{
 
 .mt-auto{
   margin-top: auto;
+}
+
+.-mr-\[20px\]{
+  margin-right: -20px;
+}
+
+.-mr-\[50px\]{
+  margin-right: -50px;
+}
+
+.mr-0{
+  margin-right: 0px;
+}
+
+.mt-24{
+  margin-top: 6rem;
 }
 
 .line-clamp-1{
@@ -3670,6 +3702,14 @@ select{
   width: 100vw;
 }
 
+.w-\[220px\]{
+  width: 220px;
+}
+
+.w-\[250px\]{
+  width: 250px;
+}
+
 .\!min-w-fit{
   min-width: -moz-fit-content !important;
   min-width: fit-content !important;
@@ -3725,6 +3765,11 @@ select{
 
 .min-w-full{
   min-width: 100%;
+}
+
+.min-w-fit{
+  min-width: -moz-fit-content;
+  min-width: fit-content;
 }
 
 .max-w-2xl{
@@ -6092,6 +6137,26 @@ select{
   padding-bottom: 48px;
 }
 
+.py-\[50px\]{
+  padding-top: 50px;
+  padding-bottom: 50px;
+}
+
+.py-\[40px\]{
+  padding-top: 40px;
+  padding-bottom: 40px;
+}
+
+.py-\[30px\]{
+  padding-top: 30px;
+  padding-bottom: 30px;
+}
+
+.py-\[10px\]{
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+
 .\!pr-\[10px\]{
   padding-right: 10px !important;
 }
@@ -6290,6 +6355,10 @@ select{
 
 .pt-\[48px\]{
   padding-top: 48px;
+}
+
+.pl-0{
+  padding-left: 0px;
 }
 
 .text-left{
@@ -8822,6 +8891,11 @@ input, textarea, select {
     margin-right: 0px;
   }
 
+  .sm\:mx-auto{
+    margin-left: auto;
+    margin-right: auto;
+  }
+
   .sm\:me-0{
     margin-inline-end: 0px;
   }
@@ -8836,6 +8910,10 @@ input, textarea, select {
 
   .sm\:mt-7{
     margin-top: 1.75rem;
+  }
+
+  .sm\:\!-mr-\[50px\]{
+    margin-right: -50px !important;
   }
 
   .sm\:block{
@@ -8872,6 +8950,10 @@ input, textarea, select {
 
   .sm\:w-screen{
     width: 100vw;
+  }
+
+  .sm\:\!w-\[40px\]{
+    width: 40px !important;
   }
 
   .sm\:max-w-lg{
@@ -8913,12 +8995,20 @@ input, textarea, select {
     flex-direction: row;
   }
 
+  .sm\:flex-col{
+    flex-direction: column;
+  }
+
   .sm\:flex-nowrap{
     flex-wrap: nowrap;
   }
 
   .sm\:items-start{
     align-items: flex-start;
+  }
+
+  .sm\:items-end{
+    align-items: flex-end;
   }
 
   .sm\:items-center{
@@ -8939,6 +9029,10 @@ input, textarea, select {
 
   .sm\:gap-3{
     gap: 0.75rem;
+  }
+
+  .sm\:gap-8{
+    gap: 2rem;
   }
 
   .sm\:gap-x-4{
@@ -9013,6 +9107,18 @@ input, textarea, select {
 
   .sm\:pt-1\.5{
     padding-top: 0.375rem;
+  }
+
+  .sm\:pl-8{
+    padding-left: 2rem;
+  }
+
+  .sm\:pl-0{
+    padding-left: 0px;
+  }
+
+  .sm\:pl-12{
+    padding-left: 3rem;
   }
 
   .sm\:text-left{
@@ -9115,6 +9221,14 @@ input, textarea, select {
     top: -4.5rem !important;
   }
 
+  .md\:\!-top-\[4rem\]{
+    top: -4rem !important;
+  }
+
+  .md\:\!-top-\[3\.5rem\]{
+    top: -3.5rem !important;
+  }
+
   .md\:order-first{
     order: -9999;
   }
@@ -9176,6 +9290,10 @@ input, textarea, select {
 
   .md\:\!mt-auto{
     margin-top: auto !important;
+  }
+
+  .md\:\!-mr-\[50px\]{
+    margin-right: -50px !important;
   }
 
   .md\:\!block{
@@ -9337,6 +9455,10 @@ input, textarea, select {
     align-items: flex-end !important;
   }
 
+  .md\:items-end{
+    align-items: flex-end;
+  }
+
   .md\:\!items-center{
     align-items: center !important;
   }
@@ -9484,6 +9606,18 @@ input, textarea, select {
     padding-inline-start: 0.75rem;
   }
 
+  .md\:pl-8{
+    padding-left: 2rem;
+  }
+
+  .md\:pl-0{
+    padding-left: 0px;
+  }
+
+  .md\:pl-12{
+    padding-left: 3rem;
+  }
+
   .md\:\!text-left{
     text-align: left !important;
   }
@@ -9549,6 +9683,10 @@ input, textarea, select {
 
   .lg\:right-6{
     right: 1.5rem;
+  }
+
+  .lg\:\!-top-\[5\.5rem\]{
+    top: -5.5rem !important;
   }
 
   .lg\:z-0{
@@ -9800,6 +9938,10 @@ input, textarea, select {
     align-items: flex-start;
   }
 
+  .lg\:items-end{
+    align-items: flex-end;
+  }
+
   .lg\:items-center{
     align-items: center;
   }
@@ -9904,6 +10046,10 @@ input, textarea, select {
 
   .lg\:pe-8{
     padding-inline-end: 2rem;
+  }
+
+  .lg\:pl-0{
+    padding-left: 0px;
   }
 
   .lg\:\!text-4xl{
