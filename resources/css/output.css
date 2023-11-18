@@ -5947,11 +5947,6 @@ select{
   padding-right: 0.625rem;
 }
 
-.px-20{
-  padding-left: 5rem;
-  padding-right: 5rem;
-}
-
 .px-3{
   padding-left: 0.75rem;
   padding-right: 0.75rem;
@@ -6173,6 +6168,10 @@ select{
   padding-left: 0.25rem;
 }
 
+.pl-12{
+  padding-left: 3rem;
+}
+
 .pl-4{
   padding-left: 1rem;
 }
@@ -6360,6 +6359,10 @@ select{
   font-size: 12px;
 }
 
+.text-\[14px\]{
+  font-size: 14px;
+}
+
 .text-\[15px\]{
   font-size: 15px;
 }
@@ -6473,10 +6476,6 @@ select{
   text-transform: capitalize;
 }
 
-.normal-case{
-  text-transform: none;
-}
-
 .italic{
   font-style: italic;
 }
@@ -6499,6 +6498,10 @@ select{
 
 .leading-loose{
   line-height: 2;
+}
+
+.leading-tight{
+  line-height: 1.25;
 }
 
 .tracking-tight{
@@ -8879,6 +8882,12 @@ input, textarea, select {
     max-width: 24rem;
   }
 
+  .sm\:scale-75{
+    --tw-scale-x: .75;
+    --tw-scale-y: .75;
+    transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
+  }
+
   .sm\:columns-\[--cols-sm\]{
     -moz-columns: var(--cols-sm);
          columns: var(--cols-sm);
@@ -9046,6 +9055,10 @@ input, textarea, select {
 }
 
 @media (min-width: 768px){
+  .md\:\!-bottom-\[2rem\]{
+    bottom: -2rem !important;
+  }
+
   .md\:\!-right-6{
     right: -1.5rem !important;
   }
@@ -9068,6 +9081,38 @@ input, textarea, select {
 
   .md\:bottom-4{
     bottom: 1rem;
+  }
+
+  .md\:\!-bottom-\[1rem\]{
+    bottom: -1rem !important;
+  }
+
+  .md\:\!-top-\[5\.5rem\]{
+    top: -5.5rem !important;
+  }
+
+  .md\:-top-20{
+    top: -5rem;
+  }
+
+  .md\:-top-\[3rem\]{
+    top: -3rem;
+  }
+
+  .md\:\!right-\[3rem\]{
+    right: 3rem !important;
+  }
+
+  .md\:\!right-8{
+    right: 2rem !important;
+  }
+
+  .md\:\!-top-\[5rem\]{
+    top: -5rem !important;
+  }
+
+  .md\:\!-top-\[4\.5rem\]{
+    top: -4.5rem !important;
   }
 
   .md\:order-first{
@@ -9125,6 +9170,14 @@ input, textarea, select {
     margin-right: 3rem !important;
   }
 
+  .md\:ml-16{
+    margin-left: 4rem;
+  }
+
+  .md\:\!mt-auto{
+    margin-top: auto !important;
+  }
+
   .md\:\!block{
     display: block !important;
   }
@@ -9175,6 +9228,10 @@ input, textarea, select {
 
   .md\:h-\[200px\]{
     height: 200px;
+  }
+
+  .md\:h-\[150px\]{
+    height: 150px;
   }
 
   .md\:\!w-14{
@@ -9389,14 +9446,14 @@ input, textarea, select {
     padding-right: 0.5rem;
   }
 
-  .md\:px-6{
-    padding-left: 1.5rem;
-    padding-right: 1.5rem;
-  }
-
   .md\:px-20{
     padding-left: 5rem;
     padding-right: 5rem;
+  }
+
+  .md\:px-6{
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
   }
 
   .md\:\!pl-12{
@@ -9598,8 +9655,8 @@ input, textarea, select {
     height: 300px !important;
   }
 
-  .lg\:\!h-\[750px\]{
-    height: 750px !important;
+  .lg\:\!h-\[700px\]{
+    height: 700px !important;
   }
 
   .lg\:h-full{
@@ -9698,6 +9755,12 @@ input, textarea, select {
     --tw-scale-x: 0.9 !important;
     --tw-scale-y: 0.9 !important;
     transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y)) !important;
+  }
+
+  .lg\:scale-100{
+    --tw-scale-x: 1;
+    --tw-scale-y: 1;
+    transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
   }
 
   .lg\:columns-\[--cols-lg\]{
@@ -10034,6 +10097,12 @@ input, textarea, select {
     min-width: 300px !important;
   }
 
+  .xl\:scale-100{
+    --tw-scale-x: 1;
+    --tw-scale-y: 1;
+    transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
+  }
+
   .xl\:columns-\[--cols-xl\]{
     -moz-columns: var(--cols-xl);
          columns: var(--cols-xl);
@@ -10133,16 +10202,6 @@ input, textarea, select {
   .xl\:\!text-5xl{
     font-size: 3rem !important;
     line-height: 1 !important;
-  }
-
-  .xl\:\!text-base{
-    font-size: 1rem !important;
-    line-height: 1.5rem !important;
-  }
-
-  .xl\:text-xl{
-    font-size: 1.25rem;
-    line-height: 1.75rem;
   }
 }
 

@@ -10,10 +10,13 @@ import BasePageHero from "@/js/components/bases/BasePageHero.vue";
     >
         <template #pageIconSVG>
             <img
-                class="mx-auto absolute -mt-4 ml-20"
+                class="mx-auto absolute ml-20 md:!mt-auto md:ml-16 md:scale-75 xl:scale-100"
                 src="../../../assets/images/PartnersPuzzle.png"
                 alt="Industry Partners connecting pieces of the puzzle"
             >
         </template>
     </BasePageHero>
 </template>
+
+
+

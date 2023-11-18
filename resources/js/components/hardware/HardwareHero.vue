@@ -12,7 +12,7 @@ import BasePageHero from "@/js/components/bases/BasePageHero.vue";
                 by your school business manager.">
 
         <template #pageIconSVG>
-            <hardware-hero-robot class="absolute -top-24 right-12" />
+            <hardware-hero-robot class="absolute -top-24 right-12  md:-top-[3rem] md:scale-75" />
         </template>
     </BasePageHero>
 </template>

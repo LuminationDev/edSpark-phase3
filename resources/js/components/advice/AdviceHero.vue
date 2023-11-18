@@ -40,7 +40,7 @@ const router = useRouter()
                 </p>
             </div>
             <div class="col-span-8 flex justify-start items-start relative z-30 md:!col-span-3 md:!items-end md:!justify-end">
-                <AdviceRobot class="absolute lg:right-6 h-[250px] hidden md:!block md:!bottom-4 xl:!-bottom-[3rem] xl:!right-12" />
+                <AdviceRobot class="absolute lg:right-6 h-[250px] md:h-[200px] hidden md:!block md:!-bottom-[1rem] xl:!-bottom-[3rem] xl:!right-12" />
                 <GenericButton
                     :callback="() => router.push('browse/advice/dag')"
                     button-id="DAGadvice"

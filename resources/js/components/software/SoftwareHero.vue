@@ -35,6 +35,7 @@ import SoftwareRobot from "@/js/components/svg/software/SoftwareRobot.vue";
         </div>
         <div class="col-span-3 hidden relative md:!block lg:!col-span-2">
             <SoftwareRobot class="absolute  md:!scale-75
+                                            md:!right-[3rem]
                                             lg:!scale-100
                                             xl:!right-12" />
 
