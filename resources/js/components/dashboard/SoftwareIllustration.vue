@@ -102,7 +102,7 @@ onUnmounted(() => {
     <div class="flex flex-row gap-4 h-1/2 relative w-full">
         <div class="relative w-1/4">
             <div
-                class="absolute left-1/2 border-[1.5px] border-black border-dashed negotiatedDealsLine z-10 lg:mt-[10px] -mt-[100px]"
+                class="absolute left-1/2 border-[1.5px] border-black negotiatedDealsLine z-10 lg:mt-[10px] -mt-[100px]"
                 :style="`height: calc(${distanceBetweenEls}px + 40px); top: calc(-${top}px + 30px);`"
             />
             <div class="flex flex-col h-full relative z-20">

@@ -21,7 +21,7 @@ if(schoolColorKeys.includes(props.colorTheme)){
 </script>
 
 <template>
-<svg class="absolute w-full" width="1800" height="180" fill="none" preserveAspectRatio="none" version="1.1" viewBox="0 0 1800 180" xmlns="http://www.w3.org/2000/svg">
+<svg class="absolute w-full h-fill min-h-8" width="100%" height="100%" fill="none" preserveAspectRatio="none" version="1.1" viewBox="0 0 1800 60" xmlns="http://www.w3.org/2000/svg">
     <rect width="100%" height="100%" fill="url(#paint0_linear_1830_23198)"></rect>
         <defs>
             <linearGradient

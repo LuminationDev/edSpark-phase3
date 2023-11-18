@@ -107,7 +107,7 @@ const colorTheme = ref('softwarePurple')
                                     <button
                                         @click="() => handleClickViewProfile(contentFromBase['author']['author_id'],contentFromBase['author']['author_type'])"
                                     >
-                                        View Profile
+                                        View profile
                                     </button>
                                 </div>
                             </div>
@@ -125,7 +125,7 @@ const colorTheme = ref('softwarePurple')
                     <div v-html="contentFromBase['excerpt']" />
                 </template>
                 <template #subtitleContent>
-                    <div class="SoftwareTypeInfoInHero flex flex-row gap-4 my-8">
+                    <div class="SoftwareTypeInfoInHero flex flex-row gap-4 mt-8">
                         <SoftwareIconGenerator
                             :icon-name="contentFromBase['type'][0]"
                             class="h-14 w-14"
@@ -150,7 +150,7 @@ const colorTheme = ref('softwarePurple')
         </template>
         <template #content="{contentFromBase}">
             <div
-                class="flex flex-col mt-10 overflow-hidden pt-0 px-5 softwareSingleContent w-full lg:!px-10 xl:!flex-row"
+                class="flex flex-col overflow-hidden pt-0 px-5 softwareSingleContent w-full lg:!px-10 xl:!flex-row"
             >
                 <template
                     v-if="activeSubmenu === 'detail'"

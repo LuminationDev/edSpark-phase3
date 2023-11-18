@@ -114,8 +114,8 @@ module.exports = {
                 event: {
                     virtual: '#BE123C',
                     hybrid: '#A855F7',
-                    inPerson: '#3B82F6'
-
+                    inPerson: '#3B82F6',
+                    virtualTag: '#ffd5de'
                 },
 
                 adviceYellow: '#FFC836',

@@ -238,7 +238,7 @@ const handleCloseModerationTab = (): void => {
                     </BaseHero>
                 </template>
                 <template #content>
-                    <div class="flex flex-col mt-10 w-full xl:!mt-20">
+                    <div class="flex flex-col w-full">
                         <div v-if="isPreviewMode && schoolContent.name" class="flex justify-center flex-row">
                             <div class="basis-4/5 font-semibold mb-4 previewLabel text-center text-xl">
                                 Preview content (Moderation)

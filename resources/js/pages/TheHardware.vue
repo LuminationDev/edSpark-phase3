@@ -95,8 +95,8 @@ const getResponsiveDisplayData = (itemArray) => {
         />
         <div class="grid grid-cols-12 px-5 lg:!px-20 xl:!px-huge">
             <div class="col-span-12 flex flex-row gap-6 mb-6 xl:!col-span-4 xl:!flex-col">
-                <div class="flex items-start flex-col">
-                    <h5 class="font-bold text-[18px]">
+                <div class="flex items-start flex-col pr-8">
+                    <h5 class="font-bold text-[18px] pr-8">
                         A variety of AV equipment
                     </h5>
                     <p>

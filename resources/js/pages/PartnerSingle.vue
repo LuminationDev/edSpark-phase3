@@ -45,6 +45,7 @@ const partnerData = reactive({
 })
 const fetchSubmenuData = async() => {
     // perform fetches here and assign value/data into parterData(reactive)
+    console.log("Item: "+availableSubmenu.value);
     const partnerId  = route.params.id
     for (const submenu of availableSubmenu.value) {
         switch (submenu) {
@@ -142,11 +143,12 @@ const colorTheme = ref('partnerBlue')
                 </template>
 
                 <template #titleText>
-                    <div class="flex items-center flex-row">
-                        <div class="flex justify-center items-center h-20 mx-4 smallPartnerLogo w-24">
+                    <div class=" ">
+                        <div class=" ">
                             <img
                                 :src="`${imageURL}/${contentFromBase['logo']}`"
                                 alt="logo"
+                                class="rounded"
                             >
                         </div>
                         <span>

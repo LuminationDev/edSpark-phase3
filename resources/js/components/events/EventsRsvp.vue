@@ -190,9 +190,9 @@ onMounted(() => {
             Register for this event
         </div>
 
-        <div class="border-b-2 border-b-white border-dashed flex flex-col py-2 rsvpSubheader text-lg">
-            <div class="eventTypeDescriptor pb-4">
-                This event is <strong> {{ props.locationType }} </strong>
+        <div class="border-b-2 border-b-white flex flex-col py-2 rsvpSubheader text-lg">
+            <div class="eventTypeDescriptor pb-2 pt-4">
+                This event is <span class="font-semibold uppercase"> {{ props.locationType }} </span>
                 {{ props.locationType ? (props.locationType.toLowerCase() !== "hybrid" ? "only" : '') : "" }}
             </div>
             <div class="eventRsvp form-cta pb-4">
@@ -201,7 +201,7 @@ onMounted(() => {
         </div>
         <div
             v-if="currentUserIsOwner"
-            class="border-b-2 border-dashed border-white flex flex-col gap-2 py-4"
+            class="border-b-2 border-white flex flex-col gap-2 py-4"
         >
             <div class="font-bold rsvpHeader text-xl">
                 You are the owner of this event
@@ -212,7 +212,7 @@ onMounted(() => {
         </div>
         <form
             v-else-if="(!currentUserIsOwner && !currentUserRsvped && eventStatus !== 'ENDED') || editingRsvp"
-            class="border-b-2 border-dashed border-white flex flex-col gap-2 py-4 rsvpFormInputs"
+            class="border-b-2 border-white flex flex-col gap-2 py-8 rsvpFormInputs"
             autocomplete="off"
             @submit.prevent=""
         >
@@ -239,7 +239,7 @@ onMounted(() => {
             </TextInput>
 
             <div class="-mt-1 Selector dropdown flex flex-col school">
-                <label class="-mb-2 ml-2"> School name (start typing your school name and click on the result)</label>
+                <label class="-mb-2 ml-2"> School name <br/><i>Start typing your school name and click on the result</i></label>
                 <SearchDropdown
                     class="-mt-2 searchable_dropdown"
                     :options="dropdownSites"
@@ -256,7 +256,7 @@ onMounted(() => {
                 <GenericButton
                     :callback="handleSubmitRsvp"
                     id="rsvpBtn"
-                    class="!bg-secondary-mbRose font-semibold mt-4 px-6 rounded-sm w-fit"
+                    class="!bg-secondary-coolGrey !text-black font-semibold mt-4 px-6 rounded-sm w-fit"
                 >
                     <template #default>
                         RSVP
@@ -286,7 +286,7 @@ onMounted(() => {
         <!--   Event Contact Form     -->
         <div
             v-if="(eventStatus === 'ENDED') "
-            class="border-b-2 border-b-white border-dashed flex flex-col py-4 text-lg"
+            class="border-b-2 border-b-white flex flex-col py-4 text-lg"
         >
             <EventSubmitRecording
                 :event-id="props.eventId"
@@ -295,9 +295,9 @@ onMounted(() => {
         </div>
         <div
             v-else
-            class="border-b-2 border-b-white border-dashed contactHeader eventContactForm flex flex-col py-4 text-lg"
+            class="contactHeader eventContactForm flex flex-col py-4 text-lg"
         >
-            <div class="font-bold rsvpHeader text-xl">
+            <div class="font-bold rsvpHeader text-xl mb-4 ">
                 Contact the organiser
             </div>
             <div class="eventRsvp form-cta pb-4">
@@ -305,13 +305,13 @@ onMounted(() => {
             </div>
             <a
                 v-if="props.authorInfo && props.authorInfo['author_email']"
-                class="flex"
+                class="flex !no-underline"
                 :href="`mailto:${props.authorInfo['author_email']}`"
             >
                 <GenericButton
                     :callback="handleClickContactOrganiser"
                     id="contactBtn"
-                    class="!bg-main-teal font-semibold mt-4 px-6 rounded-sm w-fit"
+                    class="!bg-secondary-coolGrey !text-black font-semibold mt-4 px-6 rounded-sm w-fit"
                 >
                     <template #default>
                         Email organiser
@@ -327,6 +327,6 @@ onMounted(() => {
 .searchable_dropdown :deep(.dropdown-toggle input) {
     padding: 8px !important;
     border-radius: 0.25rem;
-    color: #727272;
+    color: #d9dae3;
 }
 </style>

@@ -15,6 +15,7 @@ import TimeIcon from "@/js/components/svg/event/TimeIcon.vue";
 import {schoolColorKeys, schoolColorTheme} from "@/js/constants/schoolColorTheme";
 import {imageURL} from "@/js/constants/serverUrl";
 import {edSparkContentSanitizer} from "@/js/helpers/objectHelpers";
+import EventTypeTag from "@/js/components/events/EventTypeTag.vue";
 
 const router = useRouter()
 const handleClickViewProfile = (author_id, author_type) => {
@@ -22,19 +23,19 @@ const handleClickViewProfile = (author_id, author_type) => {
 }
 
 const getEventColorTheme = (eventType) => {
-    if(eventType === 'Virtual'){
-        return 'eventRed'
-    } else if(eventType === 'Hybrid'){
-        return 'eventPurple'
-    } else{
-        return 'eventBlue'
-    }
+    // if(eventType === 'Virtual'){
+    //     return 'eventRed'
+    // } else if(eventType === 'Hybrid'){
+    //     return 'eventPurple'
+    // } else{
+    //     return 'eventBlue'
+    // }
 }
 
 const getEventBackgroundColorTheme = (eventType) => {
     const colorKey = getEventColorTheme(eventType)
     // return "bg-event-"+eventType
-    return "bg-[" + schoolColorTheme[colorKey]['med'] + "]"
+    return "bg-[" + schoolColorTheme[colorKey]['light'] + "]" 
 }
 
 
@@ -61,24 +62,20 @@ const getEventBackgroundColorTheme = (eventType) => {
                 <template #additionalTags>
                     <div
                         class="
-                            grid
-                            grid-cols-3
                             gap-2
-                            place-items-center
                             max-w-full
-                            text-white
                             typeAndTags
-                            w-full
-                            md:!grid-cols-4
-                            lg:!grid-cols-5
-                            xl:!grid-cols-6
+                            w-fit
+                            hidden
                             ">
-                        <div
-                            class="EventTypeTag font-semibold grid place-items-center mb-2 mr-2 py-2 rounded-2xl w-full"
-                            :class="getEventBackgroundColorTheme(contentFromBase['type'])"
-                        >
-                            {{ contentFromBase['type'] }}
-                        </div>
+                       
+                            <div class="bg-white rounded-full w-fit h-fit">
+                                <EventTypeTag
+                                    class="!m-0"
+                                    :event-type="contentFromBase.type"
+                                />
+                            </div>
+
                         <div
                             v-for="(tag, index) in contentFromBase['tags']"
                             :key="index"
@@ -88,7 +85,6 @@ const getEventBackgroundColorTheme = (eventType) => {
                                 font-semibold
                                 grid
                                 place-items-center
-                                mb-2
                                 mr-2
                                 py-2
                                 rounded-2xl
@@ -104,9 +100,9 @@ const getEventBackgroundColorTheme = (eventType) => {
                 <template #authorName>
                     <div
                         v-if="contentFromBase['author'] && contentFromBase['author']"
-                        class="EventHeroAuthorContainer flex flex-col"
+                        class="EventHeroAuthorContainer flex flex-col gap-8 mt-2"
                     >
-                        <div class="flex items-center flex-row">
+                        <div class="flex items-center flex-row gap-8 my-4">
                             <BaseSingleProfilePicture
                                 :author-name="contentFromBase['author']['author_name']"
                                 :author-logo-url="String(contentFromBase['author']['author_logo'])"
@@ -117,10 +113,10 @@ const getEventBackgroundColorTheme = (eventType) => {
                                 </div>
                                 <div
                                     v-if="!(contentFromBase['author']['author_type'] === 'user')"
-                                    class="hover:cursor-pointer hover:text-red-200"
+                                    class="hover:cursor-pointer"
                                 >
-                                    <button @click="() => handleClickViewProfile(contentFromBase['author']['author_id'],contentFromBase['author']['author_type'])">
-                                        View Profile
+                                    <button class="bg-secondary-coolGrey text-black text-sm rounded py-1 px-3" @click="() => handleClickViewProfile(contentFromBase['author']['author_id'],contentFromBase['author']['author_type'])">
+                                        View profile
                                     </button>
                                 </div>
                             </div>
@@ -131,19 +127,19 @@ const getEventBackgroundColorTheme = (eventType) => {
                 <template #subtitleText2>
                     <div class="eventDetails flex flex-col gap-2 here">
                         <div class="flex items-center flex-row">
-                            <CalendarIcon class="mr-2" />
+                            <CalendarIcon class="mr-2 fill-white" />
                             {{ new Date(Date.parse(contentFromBase['start_date'])).toLocaleDateString('en-GB', {
                                 day: '2-digit', month: 'long', year: 'numeric'
                             }) }}
                         </div>
                         <div class="flex items-center flex-row">
-                            <TimeIcon class="flex justify-center items-center mr-2" />
+                            <TimeIcon class="flex justify-center items-center mr-2 fill-white" />
                             {{ new Date(Date.parse(contentFromBase['start_date'])).toLocaleString('en-US',{ hour: 'numeric', minute: 'numeric', hour12: true } ) }}
                             {{ "-" }}
                             {{ new Date(Date.parse(contentFromBase['end_date'])).toLocaleString('en-US',{ hour: 'numeric', minute: 'numeric', hour12: true } ) }}
                         </div>
                         <div class="flex items-center flex-row">
-                            <LocationIcon class="mr-2" />
+                            <LocationIcon class="mr-2 fill-white" />
                             <!--                            {{ contentFromBase['type'] === 'in person' ? contentFromBase['location']['address'] : contentFromBase['type'] }}-->
                             {{ contentFromBase['location']['address'] ? contentFromBase['location']['address'] : 'Online' }}
                         </div>
@@ -155,11 +151,11 @@ const getEventBackgroundColorTheme = (eventType) => {
 
         <template #content="{contentFromBase}">
             <div
-                class="eventSingleContent flex flex-col overflow-hidden px-8 py-20 w-full lg:!flex-row"
+                class="eventSingleContent flex flex-col overflow-hidden px-8 w-full lg:!flex-row"
             >
                 <!--    Content of the Advice    -->
-                <div class="flex flex-col flex-wrap px-2 w-full lg:!w-2/3">
-                    <div class="border-b-4 border-black border-dashed flex font-semibold text-2xl">
+                <div class="flex flex-col flex-wrap pl-6 px-12 w-full lg:!w-2/3">
+                    <div class="border-b-2 border-black flex font-semibold text-2xl">
                         Details
                     </div>
                     <div
@@ -188,7 +184,7 @@ const getEventBackgroundColorTheme = (eventType) => {
                     />
                 </div>
             </div>
-            <div class="flex overflow-scroll" />
+            <!-- <div class="flex overflow-scroll" /> -->
         </template>
     </BaseSingle>
 </template>
