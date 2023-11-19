@@ -1,6 +1,7 @@
 import '../css/app.css';
 import '../css/output.css';
 import '../css/attaches.css';
+import '../css/font/font.css'
 import './bootstrap';
 import 'vue3-toastify/dist/index.css';
 import 'tippy.js/dist/tippy.css'

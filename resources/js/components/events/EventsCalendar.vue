@@ -251,41 +251,41 @@ onMounted(() => {
 }
 
 :deep(.vc-cherry) {
-    --vc-cherry-50: #F7D8E1;
-    --vc-cherry-100: #F0B6C7;
-    --vc-cherry-200: #E994AE;
-    --vc-cherry-300: #E27394;
-    --vc-cherry-400: #DB517B;
-    --vc-cherry-500: #DE4668; /* Original Cherry Color */
-    --vc-cherry-600: #C33E5E;
-    --vc-cherry-700: #A83554;
-    --vc-cherry-800: #8F2C4A;
-    --vc-cherry-900: #762442;
+    --vc-accent-50: #F7D8E1;
+    --vc-accent-100: #F0B6C7;
+    --vc-accent-200: #E994AE;
+    --vc-accent-300: #E27394;
+    --vc-accent-400: #DB517B;
+    --vc-accent-500: #DE4668; /* Original Cherry Color */
+    --vc-accent-600: #C33E5E;
+    --vc-accent-700: #A83554;
+    --vc-accent-800: #8F2C4A;
+    --vc-accent-900: #762442;
 }
 
 
 :deep(.vc-grape) {
-    --vc-grape-50: #C6BAE8;
-    --vc-grape-100: #B1A3E0;
-    --vc-grape-200: #9C8BD9;
-    --vc-grape-300: #5D569F;
-    --vc-grape-400: #725EB3;
-    --vc-grape-500: #8766C5;/* Original Grape Color */
-    --vc-grape-600: #524D90;
-    --vc-grape-700: #484481;
-    --vc-grape-800: #3D3B72;
-    --vc-grape-900: #333062;
+    --vc-accent-50: #C6BAE8;
+    --vc-accent-100: #B1A3E0;
+    --vc-accent-200: #9C8BD9;
+    --vc-accent-300: #5D569F;
+    --vc-accent-400: #725EB3;
+    --vc-accent-500: #8766C5;/* Original Grape Color */
+    --vc-accent-600: #524D90;
+    --vc-accent-700: #484481;
+    --vc-accent-800: #3D3B72;
+    --vc-accent-900: #333062;
 }
 :deep(.vc-blueberry) {
-    --vc-blueberry-50: #9AC7F5;
-    --vc-blueberry-100: #76B0F1;
-    --vc-blueberry-200: #5298EC;
-    --vc-blueberry-300: #2E81E8;
-    --vc-blueberry-400: #1A6BE4;
-    --vc-blueberry-500: #0072DA; /* Original Bluebaya Color */
-    --vc-blueberry-600: #0066C1;
-    --vc-blueberry-700: #005BAA;
-    --vc-blueberry-800: #005093;
-    --vc-blueberry-900: #00457C;
+    --vc-accent-50: #9AC7F5;
+    --vc-accent-100: #76B0F1;
+    --vc-accent-200: #5298EC;
+    --vc-accent-300: #2E81E8;
+    --vc-accent-400: #1A6BE4;
+    --vc-accent-500: #0072DA; /* Original Bluebaya Color */
+    --vc-accent-600: #0066C1;
+    --vc-accent-700: #005BAA;
+    --vc-accent-800: #005093;
+    --vc-accent-900: #00457C;
 }
 </style>

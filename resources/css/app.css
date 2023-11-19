@@ -38,32 +38,10 @@
     .cardDisplayPreview {
         @apply pt-2 h-full font-light text-lg overflow-hidden mt-auto pb-6 transition-all
     }
-
-    @font-face {
-        font-family: Museo sans;
-        font-weight: 100;
-        src: url('../../public/fonts/MuseoSans-100.otf') format("otf");
-    }
-    @font-face {
-        font-family: Museo sans;
-        font-weight: 300;
-        src: url('../../public/fonts/MuseoSans-300.otf') format("otf");
-    }
-    @font-face {
-        font-family: Museo sans;
-        font-weight: 500;
-        src: url('../../public/fonts/MuseoSans-500.otf') format("otf");
-    }
-    @font-face {
-        font-family: Museo sans;
-        font-weight: 700;
-        src: url('../../public/fonts/MuseoSans-700.otf') format("otf");
-    }
 }
 
-
 html {
-    font-family: 'Museo sans', sans-serif;
+    font-family: 'MuseoSans300', sans-serif;
 }
 
 
