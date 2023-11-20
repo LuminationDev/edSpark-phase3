@@ -22,7 +22,9 @@ import {useWindowStore} from "@/js/stores/useWindowStore";
 const router = useRouter()
 const userStore = useUserStore();
 const {currentUser} = storeToRefs(userStore)
-const {isMobile} = storeToRefs(useWindowStore())
+const windowStore = useWindowStore()
+const {isMobile} = storeToRefs(windowStore)
+
 
 const shouldStartSwrv = computed(() => {
     return Boolean(currentUser.value.id)
@@ -137,7 +139,7 @@ const softwareResponsiveData = computed(() => {
                 <div class="px-8 w-full lg:!px-20">
                     <CardLoading
                         :number-of-rows="2"
-                        :number-per-row="2"
+                        :number-per-row="windowStore.getNumberOfCardLoading"
                     />
                 </div>
             </template>
