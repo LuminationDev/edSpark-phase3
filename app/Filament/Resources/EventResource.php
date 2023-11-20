@@ -14,7 +14,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 use Illuminate\Support\Facades\Auth;
-use Livewire\TemporaryUploadedFile;
+use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
 
 
 use Illuminate\Filesystem\Filesystem;
@@ -98,7 +98,7 @@ class EventResource extends Resource
                             ]),
                         Forms\Components\TagsInput::make('tags')
                             ->placeholder('Add or create tags')
-                            ->helperText('Separate tags with commas'),
+                            ->helperText('Press enter after each tag'),
                         Forms\Components\Card::make()
                             ->schema([
                                 Forms\Components\Builder::make('extra_content')
