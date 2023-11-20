@@ -4,7 +4,7 @@
         "typecheck": "tsc --noEmit",
         "dev": "vite",
         "build": "npx tailwindcss build -i ./resources/css/app.css -o ./resources/css/output.css && vite build && cp -r ./public/* ./web",
-        "prod": "vite build && composer install && cp -r ./public/* ./web",
+        "prod": "npx tailwindcss build -i ./resources/css/app.css -o ./resources/css/output.css && vite build && composer install && cp -r ./public/* ./web",
         "buildtest": "vite build && composer install"
     },
     "devDependencies": {
