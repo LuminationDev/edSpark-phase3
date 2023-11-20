@@ -35,8 +35,8 @@ const defaultContentBlocksIfSchoolIsNew = computed(() => {
 
 const getAlignment = (itemObject) => {
     const result = findNestedKeyValue(itemObject, 'alignment')
-    if (result.length < 1) {a
-                            return 'left' // default alignment
+    if (result.length < 1) {
+        return 'left' // default alignment
     } else {
         return result[0]
     }
