@@ -1,8 +1,8 @@
 <script setup>
 import 'vue3-carousel/dist/carousel.css';
 
-import { computed} from 'vue'
-import {Carousel, Navigation,Pagination, Slide} from 'vue3-carousel';
+import {computed} from 'vue'
+import {Carousel, Navigation, Pagination, Slide} from 'vue3-carousel';
 
 import AdviceCard from "@/js/components/advice/AdviceCard.vue";
 import CardLoading from "@/js/components/card/CardLoading.vue";
@@ -28,7 +28,7 @@ const props = defineProps({
         type: String,
         required: true
     },
-    specialAttribute:{
+    specialAttribute: {
         type: String,
         required: false,
         default: ''
@@ -37,31 +37,30 @@ const props = defineProps({
 const windowStore = useWindowStore()
 
 const breakpointChoser = () => {
-    if(props.specialAttribute === 'twoThirdWide'){
+    if (props.specialAttribute === 'twoThirdWide') {
         return twoThirdCarouselBreakpoints
-    } else if(props.dataType === 'school'){
+    } else if (props.dataType === 'school') {
         return schoolCarouselBreakpoints
-    }
-    else{
+    } else {
         return generalCarouselBreakpoints
     }
 }
 
-const numberOfLoadingPlaceholder = computed(() =>{
-    if(props.specialAttribute === 'twoThirdWide'){
+const numberOfLoadingPlaceholder = computed(() => {
+    if (props.specialAttribute === 'twoThirdWide') {
         return windowStore.getNumberOfCardLoading - 1
-    } else{
+    } else {
         return windowStore.getNumberOfCardLoading
     }
 })
 // TODO :: Process what card to return from the props.dataArray
 // Can be latest or random in certain scenario
-const controlledDataArray = computed(() =>{
-    if(props.dataArray && props.dataArray.length > 5){
-        if(props.specialAttribute === 'twoThirdWide'){
-            return props.dataArray.slice(0,4)
-        } else{
-            return props.dataArray.slice(0,5)
+const controlledDataArray = computed(() => {
+    if (props.dataArray && props.dataArray.length > 5) {
+        if (props.specialAttribute === 'twoThirdWide') {
+            return props.dataArray.slice(0, 4)
+        } else {
+            return props.dataArray.slice(0, 5)
         }
     } else {
         return props.dataArray
@@ -69,14 +68,7 @@ const controlledDataArray = computed(() =>{
 })
 
 
-
-
 </script>
-
-
-
-
-
 
 
 <template>
@@ -172,31 +164,36 @@ const controlledDataArray = computed(() =>{
     scrollbar-width: none;
 }
 
+@media screen and (max-width: 400px) {
+    .carousel__wrapper {
+        max-width: 100%;
+        min-width: auto !important;
+    }
 
+}
+
+@media screen and (max-width: 480px) {
+
+    :deep(.carousel__next) {
+        right: -20px !important;
+        background-color: white;
+    }
+
+    :deep(.carousel__prev) {
+        left: -20px !important;
+        background-color: white;
+    }
+}
 
 .carousel__wrapper {
     width: 100%;
-    min-width: 490px;
+    min-width: 360px;
 
     :deep(.carousel__viewport) {
         padding-bottom: 36px;
         overflow-x: hidden;
         overflow-y: visible;
     }
-
-    // .carousel__next {
-    //     right: -20px !important;
-    //     background-color: white;
-    // }
-
-    // .carousel__prev {
-    //     left: -20px !important;
-    //     background-color: white;
-    // }
-
-    //.carousel__slide[aria-hidden="true"] {
-    //    visibility: hidden;
-    //}
 
     :deep(.carousel__pagination-button::after) {
         height: 12px;
@@ -249,36 +246,4 @@ const controlledDataArray = computed(() =>{
     }
 
 }
-
-
-// @media only screen and (min-width: 350px) {
-//     .carousel__wrapper {
-//         :deep(.carousel__next){
-//             right: -42px ;
-//         }
-//         :deep(.carousel__prev){
-//             left: -42px ;
-//         }
-//     }
-// }
-// @media only screen and (min-width: 768px) {
-//     .carousel__wrapper {
-//         :deep(.carousel__next){
-//             right: 0 ;
-//         }
-//         :deep(.carousel__prev){
-//             left: 0 ;
-//         }
-//     }
-// }
-// @media only screen and (min-width: 1024px) {
-//     .carousel__wrapper {
-//         :deep(.carousel__next){
-//             right: -20px ;
-//         }
-//         :deep(.carousel__prev){
-//             left: -20px ;
-//         }
-//     }
-// }
 </style>

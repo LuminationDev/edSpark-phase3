@@ -17,8 +17,6 @@ import VueGoogleMaps from 'vue-google-maps-community-fork';
 import VueTippy from 'vue-tippy'
 import Vue3Toastify, {ToastContainerOptions} from "vue3-toastify";
 
-import IconPickerInput from "@/js/components/bases/IconPickerInput.vue";
-
 import App from './App.vue';
 import router from './router';
 

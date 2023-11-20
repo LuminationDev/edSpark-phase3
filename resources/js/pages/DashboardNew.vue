@@ -64,10 +64,10 @@ const softwareResponsiveData = computed(() => {
         />
 
         <div class="flex flex-col w-full lg:!flex-row lg:px-16">
-            <div class="DAGInfoSection px-8 w-full       lg:!pl-8   lg:!w-2/5    xl:!w-1/4">
+            <div class="DAGInfoSection px-8 w-full            lg:!pl-8 lg:!w-2/5 xl:!w-1/4">
                 <DAGInfoSection />
             </div>
-            <div class="DAGAdviceCarousel w-full    lg:!w-3/5               xl:!w-3/4">
+            <div class="DAGAdviceCarousel w-full                  lg:!w-3/5 xl:!w-3/4">
                 <CarouselGenerator
                     data-type="advice"
                     :data-array="advicesData ? advicesData : []"
@@ -85,7 +85,7 @@ const softwareResponsiveData = computed(() => {
         />
 
         <!-- Software Section Here -->
-        <div class="flex flex-col gap-6 group/bg h-full xl:py-8 relative lg:!flex-row lg:!px-huge">
+        <div class="flex flex-col gap-6 group/bg h-full relative lg:!flex-row lg:!px-huge xl:py-8">
             <div
                 class="
                     -translate-y-1/2
@@ -175,7 +175,7 @@ const softwareResponsiveData = computed(() => {
     padding-right: 2rem !important;
 }
 
-.CardSection  {
+.CardSection {
     max-width: fit-content !important;
     margin: auto !important;
 }
