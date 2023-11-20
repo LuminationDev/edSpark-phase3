@@ -1,4 +1,20 @@
 {
+  "public/fonts/MuseoSans-100.otf": {
+    "file": "assets/MuseoSans-100-68e3b7f9.otf",
+    "src": "public/fonts/MuseoSans-100.otf"
+  },
+  "public/fonts/MuseoSans-300.otf": {
+    "file": "assets/MuseoSans-300-ecc24f40.otf",
+    "src": "public/fonts/MuseoSans-300.otf"
+  },
+  "public/fonts/MuseoSans-500.otf": {
+    "file": "assets/MuseoSans-500-46428f2c.otf",
+    "src": "public/fonts/MuseoSans-500.otf"
+  },
+  "public/fonts/MuseoSans-700.otf": {
+    "file": "assets/MuseoSans-700-c36ca8cd.otf",
+    "src": "public/fonts/MuseoSans-700.otf"
+  },
   "resources/assets/images/PartnersPuzzle.png": {
     "file": "assets/PartnersPuzzle-f8ea4960.png",
     "src": "resources/assets/images/PartnersPuzzle.png"
@@ -7,9 +23,9 @@
     "file": "assets/WhatIsDag-10bb387b.png",
     "src": "resources/assets/images/WhatIsDag.png"
   },
-  "resources/assets/images/eventsCalendar.png": {
-    "file": "assets/eventsCalendar-39cdf35b.png",
-    "src": "resources/assets/images/eventsCalendar.png"
+  "resources/assets/images/edsparkLogo.png": {
+    "file": "assets/edsparkLogo-e7914418.png",
+    "src": "resources/assets/images/edsparkLogo.png"
   },
   "resources/assets/images/footer/cc.png": {
     "file": "assets/cc-286aeef7.png",
@@ -39,54 +55,138 @@
     "file": "assets/navbar-514ca0d3.png",
     "src": "resources/assets/images/navbar.png"
   },
+  "resources/assets/images/profilePlaceholder.webp": {
+    "file": "assets/profilePlaceholder-9b013e68.webp",
+    "src": "resources/assets/images/profilePlaceholder.webp"
+  },
   "resources/assets/images/profile_background.jpeg": {
     "file": "assets/profile_background-84005a5c.jpeg",
     "src": "resources/assets/images/profile_background.jpeg"
   },
   "resources/css/app.css": {
-    "file": "assets/app-0cd51d90.css",
+    "file": "assets/app-bdb85b3d.css",
     "isEntry": true,
     "src": "resources/css/app.css"
   },
-  "resources/css/filament.css": {
-    "file": "assets/filament-26d5344b.css",
-    "isEntry": true,
-    "src": "resources/css/filament.css"
-  },
   "resources/css/filament/admin/theme.css": {
-    "file": "assets/theme-106ac8c2.css",
+    "file": "assets/theme-dcde1830.css",
     "isEntry": true,
     "src": "resources/css/filament/admin/theme.css"
   },
+  "resources/css/font/museosans-100-webfont.eot": {
+    "file": "assets/museosans-100-webfont-dd3e73e3.eot",
+    "src": "resources/css/font/museosans-100-webfont.eot"
+  },
+  "resources/css/font/museosans-100-webfont.ttf": {
+    "file": "assets/museosans-100-webfont-aaf1db03.ttf",
+    "src": "resources/css/font/museosans-100-webfont.ttf"
+  },
+  "resources/css/font/museosans-100-webfont.woff": {
+    "file": "assets/museosans-100-webfont-e94c0507.woff",
+    "src": "resources/css/font/museosans-100-webfont.woff"
+  },
+  "resources/css/font/museosans-100-webfont.woff2": {
+    "file": "assets/museosans-100-webfont-e02f2d2f.woff2",
+    "src": "resources/css/font/museosans-100-webfont.woff2"
+  },
+  "resources/css/font/museosans-300-webfont.eot": {
+    "file": "assets/museosans-300-webfont-adb453b1.eot",
+    "src": "resources/css/font/museosans-300-webfont.eot"
+  },
+  "resources/css/font/museosans-300-webfont.ttf": {
+    "file": "assets/museosans-300-webfont-d74517d1.ttf",
+    "src": "resources/css/font/museosans-300-webfont.ttf"
+  },
+  "resources/css/font/museosans-300-webfont.woff": {
+    "file": "assets/museosans-300-webfont-efd77478.woff",
+    "src": "resources/css/font/museosans-300-webfont.woff"
+  },
+  "resources/css/font/museosans-300-webfont.woff2": {
+    "file": "assets/museosans-300-webfont-a974d5e9.woff2",
+    "src": "resources/css/font/museosans-300-webfont.woff2"
+  },
+  "resources/css/font/museosans-500-webfont.eot": {
+    "file": "assets/museosans-500-webfont-6e9f4f1c.eot",
+    "src": "resources/css/font/museosans-500-webfont.eot"
+  },
+  "resources/css/font/museosans-500-webfont.ttf": {
+    "file": "assets/museosans-500-webfont-1ff7f89a.ttf",
+    "src": "resources/css/font/museosans-500-webfont.ttf"
+  },
+  "resources/css/font/museosans-500-webfont.woff": {
+    "file": "assets/museosans-500-webfont-48dcb4e6.woff",
+    "src": "resources/css/font/museosans-500-webfont.woff"
+  },
+  "resources/css/font/museosans-500-webfont.woff2": {
+    "file": "assets/museosans-500-webfont-62b985d3.woff2",
+    "src": "resources/css/font/museosans-500-webfont.woff2"
+  },
+  "resources/css/font/museosans-700-webfont.eot": {
+    "file": "assets/museosans-700-webfont-4fb242a4.eot",
+    "src": "resources/css/font/museosans-700-webfont.eot"
+  },
+  "resources/css/font/museosans-700-webfont.ttf": {
+    "file": "assets/museosans-700-webfont-c9809fc4.ttf",
+    "src": "resources/css/font/museosans-700-webfont.ttf"
+  },
+  "resources/css/font/museosans-700-webfont.woff": {
+    "file": "assets/museosans-700-webfont-02c46e40.woff",
+    "src": "resources/css/font/museosans-700-webfont.woff"
+  },
+  "resources/css/font/museosans-700-webfont.woff2": {
+    "file": "assets/museosans-700-webfont-edb1187f.woff2",
+    "src": "resources/css/font/museosans-700-webfont.woff2"
+  },
   "resources/css/output.css": {
-    "file": "assets/output-4fef7ac3.css",
+    "file": "assets/output-c4289709.css",
     "isEntry": true,
     "src": "resources/css/output.css"
   },
   "resources/js/app.css": {
-    "file": "assets/app-b996322a.css",
+    "file": "assets/app-ce33fd4a.css",
     "src": "resources/js/app.css"
   },
   "resources/js/app.ts": {
     "assets": [
-      "assets/navbar-514ca0d3.png",
       "assets/cc-286aeef7.png",
       "assets/south-australia-eaa8c844.png",
       "assets/sagovau_rev-19524a3e.png",
       "assets/white-ribbon-6ba8cd1c.svg",
       "assets/dfe-42a1625e.svg",
-      "assets/eventsCalendar-39cdf35b.png",
+      "assets/navbar-514ca0d3.png",
+      "assets/profile_background-84005a5c.jpeg",
+      "assets/profilePlaceholder-9b013e68.webp",
+      "assets/edsparkLogo-e7914418.png",
       "assets/hardwareInfoImage-e7b190a8.png",
       "assets/PartnersPuzzle-f8ea4960.png",
       "assets/WhatIsDag-10bb387b.png",
-      "assets/profile_background-84005a5c.jpeg"
+      "assets/museosans-300-webfont-adb453b1.eot",
+      "assets/museosans-300-webfont-a974d5e9.woff2",
+      "assets/museosans-300-webfont-efd77478.woff",
+      "assets/museosans-300-webfont-d74517d1.ttf",
+      "assets/museosans-100-webfont-dd3e73e3.eot",
+      "assets/museosans-100-webfont-e02f2d2f.woff2",
+      "assets/museosans-100-webfont-e94c0507.woff",
+      "assets/museosans-100-webfont-aaf1db03.ttf",
+      "assets/museosans-500-webfont-6e9f4f1c.eot",
+      "assets/museosans-500-webfont-62b985d3.woff2",
+      "assets/museosans-500-webfont-48dcb4e6.woff",
+      "assets/museosans-500-webfont-1ff7f89a.ttf",
+      "assets/museosans-700-webfont-4fb242a4.eot",
+      "assets/museosans-700-webfont-edb1187f.woff2",
+      "assets/museosans-700-webfont-02c46e40.woff",
+      "assets/museosans-700-webfont-c9809fc4.ttf",
+      "assets/MuseoSans-100-68e3b7f9.otf",
+      "assets/MuseoSans-300-ecc24f40.otf",
+      "assets/MuseoSans-500-46428f2c.otf",
+      "assets/MuseoSans-700-c36ca8cd.otf"
     ],
     "css": [
-      "assets/app-b996322a.css",
-      "assets/app-0cd51d90.css",
-      "assets/output-4fef7ac3.css"
+      "assets/app-ce33fd4a.css",
+      "assets/app-bdb85b3d.css",
+      "assets/output-c4289709.css"
     ],
-    "file": "assets/app-036f7534.js",
+    "file": "assets/app-b27ed980.js",
     "isEntry": true,
     "src": "resources/js/app.ts"
   }
