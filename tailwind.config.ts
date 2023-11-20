@@ -114,8 +114,8 @@ module.exports = {
                 event: {
                     virtual: '#DE4668', // same as cherry
                     hybrid: '#8866C5', // same as grape
-                    inPerson: '#0072DA' // same as blueberry
-
+                    inPerson: '#0072DA', // same as blueberry
+                    virtualTag: '#ffd5de'
                 },
 
                 adviceYellow: '#FFC836',

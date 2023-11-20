@@ -2,9 +2,9 @@
 /**
  * IMPORT DEPENDENCIES
  */
-import {storeToRefs} from "pinia";
-import {computed, onBeforeMount, Ref, ref, watch} from 'vue'
-import {useRoute} from 'vue-router';
+import { storeToRefs } from "pinia";
+import { computed, onBeforeMount, Ref, ref, watch } from 'vue'
+import { useRoute } from 'vue-router';
 
 import edSparkLogo from '@/assets/images/edsparkLogo.png'
 import BaseBreadcrumb from "@/js/components/bases/BaseBreadcrumb.vue";
@@ -16,12 +16,12 @@ import SchoolDelegatePanel from "@/js/components/schools/delegatesPanel/SchoolDe
 import SchoolTechHoverableRow from "@/js/components/schools/schoolMap/SchoolTechHoverableRow.vue";
 import SchoolContent from "@/js/components/schoolsingle/SchoolContent.vue";
 import Loader from "@/js/components/spinner/Loader.vue";
-import {formatDateToDayTime} from "@/js/helpers/dateHelper";
-import {isObjectEmpty} from "@/js/helpers/objectHelpers";
+import { formatDateToDayTime } from "@/js/helpers/dateHelper";
+import { isObjectEmpty } from "@/js/helpers/objectHelpers";
 import EdsparkPageNotFound from "@/js/pages/EdsparkPageNotFound.vue";
-import {schoolService} from "@/js/service/schoolService";
-import {useUserStore} from "@/js/stores/useUserStore";
-import {SchoolDataType} from "@/js/types/SchoolTypes";
+import { schoolService } from "@/js/service/schoolService";
+import { useUserStore } from "@/js/stores/useUserStore";
+import { SchoolDataType } from "@/js/types/SchoolTypes";
 
 
 const route = useRoute();
@@ -39,7 +39,7 @@ const currentSchoolName = computed(() => {
 })
 
 const userStore = useUserStore()
-const {currentUser} = storeToRefs(userStore)
+const { currentUser } = storeToRefs(userStore)
 
 const isPreviewMode = computed(() => {
     return route.query.preview && (userStore.getIfUserIsModerator || currentUser.value.site_id === schoolContent.value?.site?.site_id)
@@ -53,7 +53,7 @@ onBeforeMount(async () => {
 })
 
 watch(currentSchoolName, async () => {
-    console.log('watcher called ')
+    // console.log('watcher called ')
     schoolContent.value = null
     await fetchSchoolByNameAsync(currentSchoolName.value)
 })
@@ -89,7 +89,7 @@ const fetchSchoolByNameAsync = async (schoolName): Promise<void> => {
                     colorTheme.value = colorThemeMeta[0]['schoolmeta_value'];
                 }
             }
-            
+
         } catch (err) {
             console.log(`${err.message} Inside fetchSchoolByName`);
             showSchoolNotAvailable.value = true
@@ -112,7 +112,7 @@ const handleSaveNewSchoolInfo = async (contentBlocks, techUsed) => {
 }
 
 const handleChangeColorTheme = (newColor) => {
-    console.log('received command to swap color ' + colorTheme.value + ' to -> ' + 'newColor: ' + newColor)
+    // console.log('received command to swap color ' + colorTheme.value + ' to -> ' + 'newColor: ' + newColor)
     colorTheme.value = newColor
 }
 
@@ -124,26 +124,24 @@ const handleChangeColorTheme = (newColor) => {
  */
 const handleReceivePhotoFromContent = (type, file) => {
     switch (type) {
-    case 'logo':
-        console.log('received logo')
-        logoStorage.value = file
-        break;
-    case 'coverImage':
-        console.log('received cover Image')
-        coverImageStorage.value = file
-        break;
-    default:
-        console.log('received unknown type image')
-        break;
+        case 'logo':
+            console.log('received logo')
+            logoStorage.value = file
+            break;
+        case 'coverImage':
+            console.log('received cover Image')
+            coverImageStorage.value = file
+            break;
+        default:
+            console.log('received unknown type image')
+            break;
     }
 }
 
 const coverImageLink = computed(() => {
     if (schoolContent.value['cover_image']) {
-        console.log('loaded');
         return schoolContent.value['cover_image'].replace(/\\\//g, "/");
     } else {
-        console.log('noloaddddd');
         return;
     }
 });
@@ -185,86 +183,64 @@ const handleCloseModerationTab = (): void => {
 <template>
     <div v-if="isSchoolContentPopulated">
         <div class="-mt-[140px] flex flex-col">
-            <img
-                class="hidden"
-                aria-hidden="true"
-                :src="`${imageURL}/${schoolContent.cover_image}`"
-                alt="School background preload image"
-            >
+            <img class="hidden" aria-hidden="true" :src="`${imageURL}/${schoolContent.cover_image}`"
+                alt="School background preload image">
             <!-- @load="handleCoverImageLoaded" -->
-            <BaseSingle
-                content-type="school"
-                @emit-active-tab-to-specific-page="handleChangeSubmenu"
-            >
-                <template #hero="{emitFromSubmenu}">
-                    <BaseHero
-                        :background-url="coverImageLink"
-                        :swoosh-color-theme="colorTheme"
-                    >
+            <BaseSingle content-type="school" @emit-active-tab-to-specific-page="handleChangeSubmenu">
+                <template #hero="{ emitFromSubmenu }">
+                    <BaseHero :background-url="coverImageLink" :swoosh-color-theme="colorTheme">
                         <template #breadcrumb>
-                            <BaseBreadcrumb
-                                :child-page="schoolContent.name"
-                                parent-page="schools"
-                                parent-page-link="browse/school"
-                                :color-theme="colorTheme"
-                                class="mt-[120px] pt-[10px]"
-                                @send-color-to-school-single="handleChangeColorTheme"
-                            />
+                            <BaseBreadcrumb :child-page="schoolContent.name" parent-page="schools"
+                                parent-page-link="browse/school" :color-theme="colorTheme" class="mt-[120px] pt-[10px]"
+                                @send-color-to-school-single="handleChangeColorTheme" />
                         </template>
                         <template #titleText>
                             <div class="SchoolHeroContentContainer flex flex-row w-full">
                                 <div class="flex flex-row w-full">
-                                    <div class="flex flex-col">
-                                        <h1 class="font-bold text-white">
-                                            {{ schoolContent.name }}
-                                        </h1>
-                                        <div
-                                            class="
+                                    <div class="flex sm:flex-row sm:items-end sm:mx-0 
+                                               lg:pl-0 pl-0 sm:pl-8
+                                              flex-col items-center gap-8 mx-auto                                    
+                                    ">
+
+                                        <div class="flex justify-center items-center bg-white mt-8 rounded-md text-md h-[200px] w-[200px]">
+                                            <img :src="`${imageURL}/${schoolContent.logo}`" :alt="`school logo`"
+                                                class="max-h-full object-contain w-full rounded p-3 bg-white"
+                                                @error="handleErrorImage">
+                                        </div>
+
+                                        <div class="flex flex-col sm:pl-8 pl-0">
+                                            <h1 class="font-bold text-white pb-6">
+                                                {{ schoolContent.name }}
+                                            </h1>
+                                            <div class="
                                                 flex
                                                 flex-row
-                                                mb-4
+                                                flex-wrap
                                                 place-items-center
                                                 schoolTechHoverableRow
-                                                gap-4
-                                                "
-                                        >
-                                            <SchoolTechHoverableRow
-                                                :tech-used-list="schoolContent.tech_used"
-                                                :color-theme="colorTheme"
-                                            />
+                                                gap-1
+                                                ">
+                                                <SchoolTechHoverableRow :tech-used-list="schoolContent.tech_used"
+                                                    :color-theme="colorTheme" />
+                                            </div>
                                         </div>
-                                        <div class="flex justify-center items-center h-40 text-md w-40">
-                                            <img
-                                                :src="`${imageURL}/${schoolContent.logo}`"
-                                                :alt="`school logo`"
-                                                class="max-h-full object-contain w-full rounded p-2 bg-white"
-                                                @error="handleErrorImage"
-                                            >
-                                        </div>
+
                                     </div>
                                 </div>
                             </div>
                         </template>
                         <template #submenu>
                             <div class="SchoolSubmenu cursor-pointer flex flex-row gap-2 mb-[-1px] z-40 md:!gap-4">
-                                <BaseSingleSubmenu
-                                    :emit-to-base="emitFromSubmenu"
-                                    :menu-array="schoolSubmenu"
-                                    :active-subpage="activeSubmenu"
-                                />
+                                <BaseSingleSubmenu :emit-to-base="emitFromSubmenu" :menu-array="schoolSubmenu"
+                                    :active-subpage="activeSubmenu" />
                             </div>
                         </template>
                     </BaseHero>
                 </template>
                 <template #content>
-                    <div class="flex flex-col mt-10 w-full xl:!mt-20">
-                        <div
-                            v-if="isPreviewMode && schoolContent.name"
-                            class="flex justify-center flex-row"
-                        >
-                            <div
-                                class="basis-4/5 font-semibold mb-4 previewLabel text-center text-xl"
-                            >
+                    <div class="flex flex-col w-full">
+                        <div v-if="isPreviewMode && schoolContent.name" class="flex justify-center flex-row">
+                            <div class="basis-4/5 font-semibold mb-4 previewLabel text-center text-xl">
                                 Preview content (Moderation)
                                 <div class="font-medium text-base text-center">
                                     Created at: {{
@@ -279,21 +255,15 @@ const handleCloseModerationTab = (): void => {
                                 </GenericButton>
                             </div>
                         </div>
-                        <SchoolContent
-                            :school-content="schoolContent"
-                            :color-theme="colorTheme"
-                            :active-submenu="activeSubmenu"
-                            :is-preview-mode="isPreviewMode"
+                        <SchoolContent :school-content="schoolContent" :color-theme="colorTheme"
+                            :active-submenu="activeSubmenu" :is-preview-mode="isPreviewMode"
                             @send-info-to-school-single="handleSaveNewSchoolInfo"
                             @send-color-to-school-single="handleChangeColorTheme"
-                            @send-photo-to-school-single="handleReceivePhotoFromContent"
-                        >
+                            @send-photo-to-school-single="handleReceivePhotoFromContent">
                             <template #additionalContentActions>
                                 <div class="DelegationPanelOuterContainer flex flex-col mt-4 w-full">
-                                    <SchoolDelegatePanel
-                                        :school-id="schoolContent?.school_id"
-                                        :site-id="schoolContent?.site?.site_id"
-                                    />
+                                    <SchoolDelegatePanel :school-id="schoolContent?.school_id"
+                                        :site-id="schoolContent?.site?.site_id" />
                                 </div>
                             </template>
                         </SchoolContent>
@@ -302,23 +272,14 @@ const handleCloseModerationTab = (): void => {
             </BaseSingle>
         </div>
     </div>
-    <div
-        v-else-if="!isSchoolContentPopulated && showSchoolNotAvailable"
-        class="flex justify-center items-center flex-col h-36 mt-[10vh]"
-    >
+    <div v-else-if="!isSchoolContentPopulated && showSchoolNotAvailable"
+        class="flex justify-center items-center flex-col h-36 mt-[10vh]">
         <EdsparkPageNotFound
-            :error-message="schoolNotAvailableMessage ? schoolNotAvailableMessage : 'School not available. Please check again later'"
-        />
+            :error-message="schoolNotAvailableMessage ? schoolNotAvailableMessage : 'School not available. Please check again later'" />
     </div>
 
-    <div
-        v-else
-        class="font-semibold mt-20 text-xl"
-    >
-        <Loader
-            :loader-color="'#0072DA'"
-            :loader-message="'School loading'"
-        />
+    <div v-else class="font-semibold mt-20 text-xl">
+        <Loader :loader-color="'#0072DA'" :loader-message="'School loading'" />
     </div>
 </template>
 

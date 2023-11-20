@@ -3,7 +3,7 @@
 </script>
 
 <template>
-    <div class="grid grid-cols-12 place-items-center mt-16 mx-5 lg:!mx-10 xl:!mx-20">
+    <div class="hidden grid grid-cols-12 place-items-center mt-16 mx-5 lg:!mx-10 xl:!mx-20">
         <div class="col-span-6">
             <img
                 class="mx-auto scale-75 lg:!scale-100"

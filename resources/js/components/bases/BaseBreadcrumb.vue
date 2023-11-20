@@ -55,7 +55,7 @@ const customTextHover = computed(() => {
 
 <template>
     <div class="flex mb-4">
-        <div class="flex flex-row gap-2 h-[32px] mt-6 place-items-center text-[12px]">
+        <div class="flex flex-row gap-2 mt-6 mb-4 place-items-center text-[14px]">
             <router-link to="/dashboard">
                 <p
                     class="text-white"

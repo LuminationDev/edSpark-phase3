@@ -27,13 +27,13 @@ onMounted(() =>{
 </script>
 
 <template>
-    <div class="flex justify-center items-center h-20 mx-4 smallPartnerLogo w-24">
+    <div class=" ">
         <img
             v-if="!showPlaceholderImage"
             id="smallPartnerLogoImage"
             :src="`${imageURL}/${props.authorLogoUrl}`"
             :alt="'author logo'"
-            class="bg-center h-24 object-contain rounded-full text-xs w-24"
+            class="bg-center bg-white h-24 object-contain rounded-full text-xs w-24"
         >
         <Profile
             v-else
