@@ -31,7 +31,7 @@ const router = useRouter()
                     Advice for Educators
                 </h1>
 
-                <p class="font-normal hidden pb-4 text-white text-xl md:block">
+                <p class="font-normal hidden pb-4 text-white text-[16px] md:block">
                     Find advice from a range of trusted sources to help you as an educator to integrate technology in your
                     classroom, your work and your own learning
                 </p>

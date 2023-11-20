@@ -88,7 +88,7 @@ class SoftwareResource extends Resource
                             ]),
                         Forms\Components\TagsInput::make('tags')
                             ->placeholder('Add or create tags')
-                            ->helperText('Separate tags with commas')
+                            ->helperText('Press enter after each tag')
                     ]),
 
                 Forms\Components\Card::make()

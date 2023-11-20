@@ -63,7 +63,7 @@ setupRoutes();
             class="bg-[#002856]/50 container hidden navbarFullsize px-12 py-2 lg:block lg:z-20"
         >
             <ul
-                class="2xl:gap-8 2xl:text-2xl font-semibold gap-4 hidden text-white xl:text-xl lg:flex lg:flex-row"
+                class="2xl:gap-8 2xl:text-2xl font-semibold gap-4 hidden text-white lg:flex lg:flex-row"
             >
                 <NavItems
                     v-for="(route, i) in navLinks"
@@ -197,7 +197,7 @@ setupRoutes();
 }
 
 .navbarFullsize {
-    font-size: 1.1rem;
+    font-size: 1.5rem;
 }
 
 @media screen and (max-width: 654px) {

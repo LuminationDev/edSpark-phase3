@@ -19,7 +19,7 @@ const handleClickEditRsvp = () =>{
 
 <template>
     <div class="EventRsvpSummaryContainer">
-        <div class="border-b-2 border-b-white border-dashed flex flex-col py-2 rsvpSubheader text-lg">
+        <div class="border-b-2 border-b-white flex flex-col py-2 rsvpSubheader text-lg">
             <div class="eventRsvp form-cta pb-4">
                 You have <strong> registered </strong> for this event. We are looking forward to your attendance.
             </div>
@@ -45,7 +45,7 @@ const handleClickEditRsvp = () =>{
             </div>
             <GenericButton
                 :callback="handleClickEditRsvp"
-                class="!bg-secondary-mbRose font-semibold mt-4 px-6 rounded-sm w-fit"
+                class="font-semibold mt-4 px-6 rounded-sm w-fit"
             >
                 <template #default>
                     Edit RSVP

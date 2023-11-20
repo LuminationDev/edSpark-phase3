@@ -48,7 +48,7 @@ export default {
                 w-full
 
                 ">
-            <div class="2xl:!px-40 grid grid-cols-6 px-5 xl:!px-10 pb-[3rem]">
+            <div class="2xl:!px-40 grid grid-cols-6 md:px-20 px-10 xl:!px-20 pb-[3rem]">
                 <div class="col-span-6 pt-[220px]  md:!col-span-3">
                     <h1 class="font-semibold pb-8 text-3xl text-white  md:!text-[2.5rem] lg:!text-5xl lg:!text-[48px]">
                         {{ welcomeMessage }}
@@ -93,7 +93,7 @@ export default {
                 </div>
             </div>
         </div>
-        <div class="min-h-24 swooshContainer relative !mt-0">
+        <div class="min-h-24 h-[60px] xl:h-[130px] swooshContainer relative !mt-0">
             <Swoosh style="transform: translate(0, -60%);"/>
         </div>
     </div>

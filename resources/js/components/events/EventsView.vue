@@ -67,7 +67,6 @@ const eventTypeColorClass = (eventType: string): string => {
 <template>
     <div
         class="
-            h-[700px]
             mr-2
             mt-10
             overflow-y-scroll

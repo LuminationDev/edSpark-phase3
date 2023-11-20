@@ -20,7 +20,7 @@ export const schoolTech = [{
     },
     {
         name: 'Frog',
-        description: 'provides whole school systems for teaching, learning and communication. Additionally we create platforms that allow businesses, MATs and schools to create and deliver online training',
+        description: 'provides whole school systems for teaching, learning and communication. Additionally we create platforms that allow businesses, MATs and schools to create and deliver online training.',
         category: 'Platforms',
         provider: 'department'
 
@@ -47,7 +47,7 @@ export const schoolTech = [{
     },
     {
         name: 'Robotics',
-        description: 'is an interdisciplinary branch of computer science and engineering. Robotics involves design, construction, operation, and use of robots. ',
+        description: 'is an interdisciplinary branch of computer science and engineering. Robotics involves design, construction, operation, and use of robots.',
         category: 'Emerging tech',
         provider: 'department'
 
@@ -57,14 +57,14 @@ export const schoolTech = [{
 export const schoolPartnerTech = [
     {
         name: 'Lumination',
-        description: ' is an Immersive Technology company that works across wide-range of industry from Education, Manufacturing, Defense and many more. We revolutionise the way we learn, teach and work',
+        description: 'is an immersive technology company that works across wide-range of industry from education, manufacturing, defense and many more, revolutionising the way we learn, teach and work.',
         category: 'Emerging tech',
         provider: 'partner'
 
     },
     {
         name: 'Makers Empire',
-        description: 'provides primary, elementary and middle school teachers with the tools, skills and resources to improve STEM learning outcomes for students, confidently teach Design & Technology curricula and engage students in authentic, real-world problem solving..',
+        description: 'provides primary, elementary and middle school teachers with the tools, skills and resources to improve STEM learning outcomes for students, confidently teach design & technology curricula and engage students in authentic, real-world problem solving.',
         category: 'Tools',
         provider: 'partner'
 

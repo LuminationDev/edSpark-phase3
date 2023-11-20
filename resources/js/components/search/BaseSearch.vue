@@ -146,7 +146,7 @@ const formattedSearchBlurb = computed(() => {
 
 <template>
     <div
-        class="browse-schools-container flex items-center flex-col mt-16 px-10"
+        class="browse-schools-container flex items-center flex-col mt-24 px-10"
     >
         <div class="flex max-w-[1000px] mb-6 search-filter-element w-[80%]">
             <div class="basis-1/3 mb-8 pr-4 search-filter-heading">

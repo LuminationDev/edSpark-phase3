@@ -34,12 +34,13 @@ const router = useRouter()
                     Digital Adoption Group 
                 </h1>
 
-                <p class="font-normal text-lg text-white">
-                    The Digital Adoption Group (DAG) offers comprehensive guidance on digital technologies, assisting leaders and educators with seamless integration. We provide practical, system-wide advice for purchasing and adopting high-impact technologies that enhance teaching and learning.
+                <p class="font-normal text-[16px] text-white pb-2">
+                    The Digital Adoption Group (DAG) offers comprehensive guidance on digital technologies, providing practical, system-wide 
+                    advice for purchasing and adopting high-impact technologies that enhance teaching and learning.
                 </p>
             </div>
             <div class="col-span-8 flex justify-start items-start relative z-30 md:!col-span-3 md:!items-end md:!justify-end">
-                <AdviceRobot class="absolute lg:right-6 h-[250px] hidden md:!block md:!bottom-4 xl:!-bottom-4 xl:!right-12" />
+                <AdviceRobot class="absolute lg:right-6 h-[250px] md:h-[200px] hidden md:!block md:!-bottom-[1rem] xl:!-bottom-[3rem] xl:!right-12" />
                 <GenericButton
                     :callback="() => router.push('browse/advice/dag')"
                     button-id="DAGadvice"
