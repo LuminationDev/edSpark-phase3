@@ -144,7 +144,7 @@ class PostService
                 'author_id' => $event->author->id,
                 'author_name' => $event->author->full_name,
                 'author_email' => $event->author->email,
-                'author_type' => $event->author->usertype->user_type_name,
+                'author_type' => $event->author->usertype->user_type_name ?? '',
                 'author_logo' => $author_logo
             ],
             'cover_image' => ($event->cover_image) ?? NULL,
