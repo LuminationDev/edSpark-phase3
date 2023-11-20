@@ -21,7 +21,7 @@ const props = defineProps({
 
 const attributes = computed(() =>
     props.events.map(event => {
-        const backgroundColor = event.type === 'Virtual' ? 'mbRose' : event.type === 'Hybrid' ? 'purple' : 'blue';
+        const backgroundColor = event.type === 'Virtual' ? 'cherry' : event.type === 'Hybrid' ? 'grape' : 'blueberry';
         return {
             dates: [[event.start_date, event.end_date]],
             key: event.id,
@@ -95,7 +95,16 @@ onMounted(() => {
             class="flex justify-end p-2 rounded-full"
         >
             <button
-                class="bg-secondary-mbRose hover:bg-gray-200 border-[1px] px-4 py-2 rounded-full text-white hover:cursor-pointer"
+                class="bg-secondary-cherry
+                    hover:bg-secondary-cherry/80
+                    border-[1px]
+                    px-4
+                    py-2
+                    rounded-full
+                    text-white
+                    
+                    
+                    hover:cursor-pointer"
                 @click="handleClickTodayButton"
             >
                 Today
@@ -153,7 +162,7 @@ onMounted(() => {
 }
 
 .calendarWrapper :deep(.vc-focus:focus-within) {
-    background-color: #be123c;
+    background-color: #DE4668;
     color: white;
     padding: 8px;
     box-shadow: 0 0 10px 10px white;
@@ -239,5 +248,44 @@ onMounted(() => {
     --vc-accent-700: #54347D;
     --vc-accent-800: #472B6E;
     --vc-accent-900: #3B226F;
+}
+
+:deep(.vc-cherry) {
+    --vc-accent-50: #F7D8E1;
+    --vc-accent-100: #F0B6C7;
+    --vc-accent-200: #E994AE;
+    --vc-accent-300: #E27394;
+    --vc-accent-400: #DB517B;
+    --vc-accent-500: #DE4668; /* Original Cherry Color */
+    --vc-accent-600: #C33E5E;
+    --vc-accent-700: #A83554;
+    --vc-accent-800: #8F2C4A;
+    --vc-accent-900: #762442;
+}
+
+
+:deep(.vc-grape) {
+    --vc-accent-50: #C6BAE8;
+    --vc-accent-100: #B1A3E0;
+    --vc-accent-200: #9C8BD9;
+    --vc-accent-300: #5D569F;
+    --vc-accent-400: #725EB3;
+    --vc-accent-500: #8766C5;/* Original Grape Color */
+    --vc-accent-600: #524D90;
+    --vc-accent-700: #484481;
+    --vc-accent-800: #3D3B72;
+    --vc-accent-900: #333062;
+}
+:deep(.vc-blueberry) {
+    --vc-accent-50: #9AC7F5;
+    --vc-accent-100: #76B0F1;
+    --vc-accent-200: #5298EC;
+    --vc-accent-300: #2E81E8;
+    --vc-accent-400: #1A6BE4;
+    --vc-accent-500: #0072DA; /* Original Bluebaya Color */
+    --vc-accent-600: #0066C1;
+    --vc-accent-700: #005BAA;
+    --vc-accent-800: #005093;
+    --vc-accent-900: #00457C;
 }
 </style>
