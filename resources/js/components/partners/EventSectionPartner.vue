@@ -32,16 +32,16 @@ const {
                         Calendar Colors Legend
                     </div>
                     <div class="flex items-center flex-row virtualLegend">
-                        <div class="bg-event-virtual colorDot h-4 mx-4 rounded-full w-4" />
+                        <div class="bg-secondary-cherry colorDot h-4 mx-4 rounded-full w-4" />
                         <p>Virtual </p>
                     </div>
                     <div class="flex items-center flex-row hybridLegend">
-                        <div class="bg-event-hybrid colorDot h-4 mx-4 rounded-full w-4" />
+                        <div class="bg-secondary-grape colorDot h-4 mx-4 rounded-full w-4" />
 
                         <p>Hybrid</p>
                     </div>
                     <div class="flex items-center flex-row inPersonLegend">
-                        <div class="bg-event-inPerson colorDot h-4 mx-4 rounded-full w-4" />
+                        <div class="bg-secondary-blueberry colorDot h-4 mx-4 rounded-full w-4" />
                         <p>In Person</p>
                     </div>
                 </div>
