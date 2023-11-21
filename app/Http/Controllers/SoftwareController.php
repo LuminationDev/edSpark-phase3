@@ -3,8 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Helpers\Metahelper;
+use App\Helpers\RoleHelpers;
+use App\Helpers\UserRole;
+use App\Models\Advice;
 use App\Models\Softwaretype;
 use App\Services\PostService;
+use App\Services\ResponseService;
 use Illuminate\Http\Response;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
@@ -20,6 +24,7 @@ class SoftwareController extends Controller
     {
         $this->postService = $postService;
     }
+
     public function createSoftwarePost(Request $request)
     {
         $validator = Validator::make($request->all(), [
@@ -159,7 +164,27 @@ class SoftwareController extends Controller
 
     public function fetchSoftwarePostById(Request $request, $id): JsonResponse
     {
-        $software = Software::find($id);
+        $validator = Validator::make($request->all(), [
+            'id' => 'required|integer|gt:0',
+            'preview' => 'required|boolean',
+        ]);
+
+        if ($validator->fails()) {
+            return ResponseService::error('Invalid request parameters', 400);
+        }
+
+        $id = $request->input('id');
+        if (RoleHelpers::has_minimum_privilege(UserRole::MODERATOR)) {
+            // Find the advice by ID
+            $software = Software::find($id);
+
+        } else {
+            $software = Software::where('id', $id)->where('post_status', "Published")->first();
+        }
+        if (!$software) {
+            return ResponseService::error('Software not found', 404);
+        }
+
         $softwareMetadataToSend = Metahelper::getMeta(
             Softwaremeta::class,
             $software,
@@ -168,7 +193,8 @@ class SoftwareController extends Controller
             'software_meta_value'
         );
         $data = $this->postService->softwareModelToJson($software, $softwareMetadataToSend, $request);
-        return response()->json($data);
+        return ResponseService::success("Successfully retrieved software", $data);
+
 
     }
 

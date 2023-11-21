@@ -1,8 +1,10 @@
 <script setup>
-import ArticleSingleSwoosh from '../svg/ArticleSingleSwoosh.vue';
-import {computed, onMounted, resolveDynamicComponent, ref} from 'vue'
-import {imageURL} from "@/js/constants/serverUrl";
+import {computed, onMounted, ref,resolveDynamicComponent} from 'vue'
+
 import {schoolColorKeys, schoolColorTheme} from "@/js/constants/schoolColorTheme";
+import {imageURL} from "@/js/constants/serverUrl";
+
+import ArticleSingleSwoosh from '../svg/ArticleSingleSwoosh.vue';
 
 const props = defineProps({
     backgroundUrl: {
@@ -26,7 +28,8 @@ const props = defineProps({
     },
     swooshColorTheme: {
         type: String,
-        required: true
+        required: false,
+        default: 'teal'
     }
 })
 
@@ -55,8 +58,7 @@ const gradientBg = ref('')
 
 // :style="'background-image: ' + gradientBg +';'
 onMounted(() => {
-    console.log(props.swooshColorTheme);
-    var useCustomColor = false;
+    let useCustomColor = false;
 
     if(schoolColorKeys.includes(props.swooshColorTheme)){
         console.log(props.swooshColorTheme);
@@ -77,12 +79,6 @@ const customFill = computed(() => {
 
 </script>
 
-<!-- 
-2xl:!pt-44
-lg:!pb-0
-lg:!pt-40
-lg:!px-12
-xl:!pt-40 -->
 
 <template>
     <div class="mb-0 -mt-[9rem] BaseHeroContainer relative z-10">
@@ -95,7 +91,7 @@ xl:!pt-40 -->
                 pb-4
                 pt-40
                 px-8
-                relative                
+                relative
                 "
             :style="'background-image: url(' + heroBackgroundLinkOnly +')'"
         >
@@ -104,7 +100,7 @@ xl:!pt-40 -->
             />
             <div
                 v-if="$slots.titleText || $slots.subtitleText1 || $slots.subtitleText2"
-                class="col-span-8 p-2 relative z-20"                
+                class="col-span-8 p-2 relative z-20"
                 :color-theme="swooshColorTheme"
             >
                 <slot name="breadcrumb" />

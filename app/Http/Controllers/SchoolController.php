@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Helpers\RoleHelpers;
+use App\Helpers\UserRole;
 use App\Models\User;
 use App\Models\Usermeta;
 use App\Services\ResponseService;
@@ -375,8 +377,7 @@ class SchoolController extends Controller
     {
         $currentUser = Auth::user();
         $school = School::where('name', $schoolName)->first();
-        // Check if the user has superadmin role or the same site_id
-        if ($currentUser->role->role_name !== 'Superadmin' && $currentUser->site_id !== $school->site_id) {
+        if (!RoleHelpers::has_minimum_privilege(UserRole::MODERATOR) && $currentUser->site_id !== $school->site_id) {
             // Return a forbidden response or any other response to indicate lack of permission
             return response()->json([
                 "status" => 403,

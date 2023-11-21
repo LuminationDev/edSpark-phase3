@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Helpers\Metahelper;
+use App\Helpers\RoleHelpers;
+use App\Helpers\UserRole;
 use App\Models\Advicemeta;
 use App\Models\Advicetype;
 use App\Models\Bookmark;
@@ -119,27 +121,37 @@ class AdviceController extends Controller
         }
     }
 
-    public function fetchAdvicePostById(Request $request, $id)
+    public function fetchAdvicePostById(Request $request): JsonResponse
     {
-        // Validate the input $id to ensure it's a positive integer
-        if (!is_numeric($id) || $id <= 0) {
-            return response()->json(['error' => 'Invalid ID provided.'], 400);
+        // Validate request parameters
+        $validator = Validator::make($request->all(), [
+            'id' => 'required|integer|gt:0',
+            'preview' => 'required|boolean',
+        ]);
+
+        if ($validator->fails()) {
+            return ResponseService::error('Invalid request parameters', 400);
         }
 
-        // Find the advice by ID
-        $advice = Advice::find($id);
+        $id = $request->input('id');
+        $preview = $request->input('preview');
+        if (RoleHelpers::has_minimum_privilege(UserRole::MODERATOR) && $preview) {
+            // Find the advice by ID
+            $advice = Advice::find($id);
+        } else {
+            $advice = Advice::where('id', $id)->where('post_status', 'Published')->first();
+        }
 
-        // Check if advice with given ID exists
+        // Check if advice with the given ID exists
         if (!$advice) {
-            return response()->json(['error' => 'Advice not found.'], 404);
+            return ResponseService::error('Advice not found', 404);
         }
 
-        // Prepare the data to be returned in the response
         $data = $this->postService->adviceModelToJson($advice, $request);
 
-        // Return the data in the response
-        return response()->json($data);
+        return ResponseService::success('Successfully retrieved advice', $data);
     }
+
 
     public function fetchAdvicePostByType(Request $request, $type): \Illuminate\Http\JsonResponse
     {
@@ -150,7 +162,7 @@ class AdviceController extends Controller
 
             foreach ($typeArray as $typeItem) {
                 $adviceTypes = Advicetype::where('advice_type_name', $typeItem)->first();
-                $adviceArticles = Advice::where('advicetype_id', $adviceTypes->id)->get();
+                $adviceArticles = Advice::where('advicetype_id', $adviceTypes->id)->where('post_status', 'Published')->get();
 
                 foreach ($adviceArticles as $advice) {
                     $result = $this->postService->adviceModelToJson($advice, $request);
@@ -161,7 +173,7 @@ class AdviceController extends Controller
 
         } else {
             $adviceTypes = Advicetype::where('advice_type_name', $type)->first();
-            $adviceArticles = Advice::where('advicetype_id', $adviceTypes->id)->get();
+            $adviceArticles = Advice::where('advicetype_id', $adviceTypes->id)->where('post_status', 'Published')->get();
 
             foreach ($adviceArticles as $advice) {
                 $result = $this->postService->adviceModelToJson($advice, $request);

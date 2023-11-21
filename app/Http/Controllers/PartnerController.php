@@ -9,6 +9,7 @@ use App\Models\Partner;
 use App\Models\Partnermeta;
 use App\Models\Partnerprofile;
 use App\Models\Software;
+use App\Services\ResponseService;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
@@ -107,7 +108,7 @@ class PartnerController extends Controller
             $this->initializePartnerMetadata($partner); // Ensure metadata exists.
             $data = $this->partnerModelToJson($partner, $request);
 
-            return response()->json($data);
+            return ResponseService::success('Successfully retreived partner', $data);
         } catch (\Exception $e) {
             return response()->json(['error' => "$e"], Response::HTTP_INTERNAL_SERVER_ERROR);
         }

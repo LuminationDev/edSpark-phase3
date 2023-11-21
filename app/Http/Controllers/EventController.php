@@ -2,11 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Helpers\RoleHelpers;
+use App\Helpers\UserRole;
+use App\Models\Advice;
 use App\Models\Eventmeta;
 use App\Models\Eventtype;
 use App\Models\Partner;
 use App\Models\Usermeta;
 use App\Services\PostService;
+use App\Services\ResponseService;
 use Illuminate\Http\Request;
 use App\Models\Event;
 use Illuminate\Support\Facades\Auth;
@@ -64,6 +68,7 @@ class EventController extends Controller
 
         $events = Event::where('event_status', 'Published')
             ->where('end_date', '>=', $currentDate)
+            ->where('event_status','Published')
             ->get();
 
         $data = [];
@@ -79,9 +84,30 @@ class EventController extends Controller
 
     public function fetchEventPostById(Request $request, $id): \Illuminate\Http\JsonResponse
     {
-        $event = Event::find($id);
+        $validator = Validator::make($request->all(), [
+            'id' => 'required|integer|gt:0',
+            'preview' => 'required|boolean',
+        ]);
+
+        if ($validator->fails()) {
+            return ResponseService::error('Invalid request parameters', 400);
+        }
+
+        $id = $request->input('id');
+        if (RoleHelpers::has_minimum_privilege(UserRole::MODERATOR)) {
+            // Find the advice by ID
+            $event = Event::find('id', $id);
+        } else {
+            $event = Event::where('id', $id)->where('event_status', "Published")->first();
+        }
+
+        if (!$event) {
+            return ResponseService::error('Event not found', 404);
+        }
         $data = $this->postService->eventModelToJson($event, $request);
-        return response()->json($data);
+
+
+        return ResponseService::success("Successfully retrieved event", $data);
     }
 
     public function addEventRecording(Request $request): \Illuminate\Http\JsonResponse

@@ -17,7 +17,7 @@ class EditSchoolmoderation extends EditRecord
         $baseUrl = env('APP_URL');
         return [
             Action::make('preview')
-                ->url(fn ($record) => rtrim($baseUrl, '/') . '/schools/'. $record->name . '?preview=true')
+                ->url(fn ($record) => rtrim($baseUrl, '/') . '/schools/'. $record->name . '?preview=true&source=filament')
                 ->openUrlInNewTab()
         ];
     }

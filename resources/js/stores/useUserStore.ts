@@ -80,9 +80,8 @@ export const useUserStore = defineStore('user', {
                 "Superadmin",
                 "Administrator",
                 "Moderator",
-                "PSACT",
                 "SCHLDR",
-                "PRSCLDR",
+                "PRESCLDR",
                 "SITELDR"
             ];
             return rolesWithAdminRights.includes(userRole)

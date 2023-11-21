@@ -3,6 +3,7 @@
 namespace App\Filament\Resources\AdvicemoderationResource\Pages;
 
 use App\Filament\Resources\AdvicemoderationResource;
+use Filament\Actions\Action;
 use Filament\Pages\Actions;
 use Filament\Resources\Pages\EditRecord;
 use Illuminate\Support\Facades\Auth;
@@ -15,8 +16,11 @@ class EditAdvicemoderation extends EditRecord
 
     protected function getHeaderActions(): array
     {
+        $baseUrl = env('APP_URL');
         return [
-            // Actions\DeleteAction::make(),
+            Action::make('preview')
+                ->url(fn ($record) => rtrim($baseUrl, '/') . '/advice/resources/'. $record->id . '/' . $record->post_title .'?preview=true&source=filament')
+                ->openUrlInNewTab()
         ];
     }
 

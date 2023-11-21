@@ -9,6 +9,7 @@ export const parseToJsonIfString = (data) => {
 export const schoolContentArrParser = data => {
     const copyOfData = _.cloneDeep(data)
     for (let i = 0; i < copyOfData.length; i++) {
+        copyOfData[i].id = copyOfData[i].school_id
         copyOfData[i].content_blocks = parseToJsonIfString(copyOfData[i].content_blocks)
         copyOfData[i].tech_used = parseToJsonIfString(copyOfData[i].tech_used)
     }
