@@ -5,7 +5,7 @@ import {computed} from "vue";
 import {useRouter} from "vue-router";
 
 import {imageURL} from "@/js/constants/serverUrl";
-import {lowerSlugify} from "@/js/helpers/slugifyHelper";
+import {lowerSlugify} from "@/js/helpers/stringHelpers";
 import {useWindowStore} from "@/js/stores/useWindowStore";
 
 const props = defineProps({

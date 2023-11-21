@@ -47,41 +47,41 @@ const customFill = computed(() => {
             They're keeping their tech toolkit under wraps!
         </template>
         <template v-if="deptTech.length">
-            <div class="font-semibold mb-2 text-lg">
+            <div class="font-semibold mb-4 text-lg">
                 Department supplied tech
             </div>
             <div
                 v-for="(tech,index) in deptTech"
                 :key="index"
                 :class="customFill"
-                class="basis-1/4 flex mb-4 pb-4 w-full"
+                class="basis-1/4 flex mb-10 gap-4 w-full"
             >
                 <SchoolTechIconGenerator
                     :tech-name="tech.name"
                     :color-theme="colorTheme"
                     class="m-2 min-w-[60px] pr-4"
                 />
-                <p class="basis-3/4 font-light text-base">
+                <p class="basis-3/4 font-light text-base leading-tight">
                     {{ `${tech.name} ${tech.description}` }}
                 </p>
             </div>
         </template>
         <template v-if="partnerTech.length">
-            <div class="font-semibold mb-2 text-lg">
+            <div class="font-semibold mb-4 text-lg">
                 Partner supplied tech
             </div>
             <div
                 v-for="(tech,index) in partnerTech"
                 :key="index"
                 :class="customFill"
-                class="basis-1/4 flex mb-4 pb-4 w-full"
+                class="basis-1/4 flex mb-10 gap-4 w-full"
             >
                 <SchoolTechIconGenerator
                     :tech-name="tech.name"
                     :color-theme="colorTheme"
                     class="m-2 min-w-[60px] pr-4"
                 />
-                <p class="basis-3/4 font-light text-base">
+                <p class="basis-3/4 font-light text-base leading-tight">
                     {{ `${tech.name} ${tech.description}` }}
                 </p>
             </div>

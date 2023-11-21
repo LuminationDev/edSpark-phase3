@@ -29,7 +29,7 @@ const stripHTML = (value) => {
     return div.textContent;
 };
 
-function getBlurb(mapPopupInfo) {
+const getBlurb = (mapPopupInfo) => {
 
     if (mapPopupInfo.content_blocks != null && mapPopupInfo.content_blocks.blocks.length > 0) {
         return stripHTML(mapPopupInfo.content_blocks.blocks[1].data.text);
@@ -49,12 +49,6 @@ const handleEmit = () => {
     emits('handleLinkToSchool');
 }
 </script>
-
-<!-- :style="`
-background-color: rgba(255,255,255,0.85);
-background-image: url('${imageURL}/${props.schoolData?.cover_image ?? ''}'); 
-background-size: cover ;background-blend-mode: screen; `" -->
-
 <template>
     <div class="flex justify-between flex-col mapOuterContainer">
         <div
@@ -77,24 +71,16 @@ background-size: cover ;background-blend-mode: screen; `" -->
             ref="mapPopup"
             class="flex flex-col mapPopupContent overflow-scroll p-6 pt-2 w-[340px]"
         >
-            <!-- flex flex-row gap-6 h-[180px] -->
             <div
-                class="fill-secondary-blue flex justify-center items-center flex-wrap gap-2 h-[90px] smaller-icons w-full"
+                class="fill-secondary-blue flex justify-center content-center flex-wrap gap-2 h-[120px] smaller-icons w-full"
             >
                 <SchoolCardIconList
                     :tech-list="mapPopupInfo.tech_used"
                 />
             </div>
         </div>
-        <!-- <div class="flex justify-end flex-row mb-4 mr-4">
-            <button class="bg-[#0072DA] hover:bg-[#0359a9] px-8 py-3 text-white" @click="handleEmit">
-                Visit
-            </button>
-        </div> -->
     </div>
 </template>
-
-
 <style>
 
 .smaller-icons svg {
@@ -118,7 +104,7 @@ background-size: cover ;background-blend-mode: screen; `" -->
 
 .mapOuterContainer {
     max-width: 340px;
-    max-height: 300px;
+    max-height: 350px;
 }
 
 .mapPopupContent::-webkit-scrollbar {

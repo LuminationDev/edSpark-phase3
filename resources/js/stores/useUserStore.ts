@@ -93,10 +93,9 @@ export const useUserStore = defineStore('user', {
                 "Administrator",
                 "Moderator",
                 "PSACT",
-                "SCHLDR",
-                "PRESCLDR",
-                "SITELDR"
-
+                "SCHLDR",// TODO: Remove once we have psact acount
+                "PRSCLDR",// TODO: Remove once we have psact acount
+                "SITELDR" // TODO: Remove once we have psact acount
             ];
             return rolesWithModRights.includes(userRole)
         }

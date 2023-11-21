@@ -1,24 +1,24 @@
 <script setup lang="ts">
 import axios from "axios";
-import { debounce } from "lodash";
-import { storeToRefs } from "pinia";
-import { computed, ComputedRef, defineProps, Ref, ref } from "vue";
+import {debounce} from "lodash";
+import {storeToRefs} from "pinia";
+import {computed, ComputedRef, defineProps, Ref, ref} from "vue";
 
 import BookMark from "@/js/components/svg/BookMark.vue";
 import BookmarkFull from "@/js/components/svg/BookmarkFull.vue";
 import Like from "@/js/components/svg/Like.vue";
 import LikeFull from "@/js/components/svg/LikeFull.vue";
 import ShareIcon from "@/js/components/svg/ShareIcon.vue";
-import { bookmarkURL, imageURL, likeURL } from "@/js/constants/serverUrl";
-import { cardLinkGenerator } from "@/js/helpers/cardDataHelper";
-import { useUserStore } from "@/js/stores/useUserStore";
+import {bookmarkURL, imageURL, likeURL} from "@/js/constants/serverUrl";
+import {cardLinkGenerator} from "@/js/helpers/cardDataHelper";
+import {useUserStore} from "@/js/stores/useUserStore";
 
-const { currentUser } = storeToRefs(useUserStore())
+const {currentUser} = storeToRefs(useUserStore())
 import purify from "dompurify";
 import {Tippy} from "vue-tippy";
-import { toast } from "vue3-toastify";
+import {toast} from "vue3-toastify";
 
-import { guid as genGuid } from "@/js/helpers/guidGenerator";
+import {guid as genGuid} from "@/js/helpers/guidGenerator";
 
 
 const props = defineProps({
@@ -30,7 +30,7 @@ const props = defineProps({
     title: {
         type: String,
         required: false,
-        default:""
+        default: ""
     },
     displayAuthor: {
         type: [Object, String],
@@ -94,13 +94,11 @@ const currentUserBookmarked: Ref<boolean> = ref(props.isBookmarkedByUser);
 const shareTippyMessage: Ref<string> = ref('Copy link');
 
 
-
 const stripHTML = (value) => {
     const div = document.createElement('div');
     div.innerHTML = value;
     return div.textContent;
 };
-
 
 
 /**
@@ -205,14 +203,14 @@ const debouncedDefaultBookmark = debounce(() => {
 const cardHoverToggle: Ref<boolean> = ref(false);
 
 
-// group-hover:brightness-50
-// group-hover:min-h-[15%]
-
 </script>
 
 <template>
-    <div class="GenericCardContainer bg-white card_parent generic-card__wrapper group !border-slate-300 rounded overflow-hidden"
-        :class="props.sectionType" @mouseenter="cardHoverToggle = true">
+    <div 
+        class="!border-slate-300 GenericCardContainer bg-white card_parent generic-card__wrapper group overflow-hidden rounded"
+        :class="props.sectionType"
+        @mouseenter="cardHoverToggle = true"
+    >
         <template v-if="!props.overrideContent">
             <div
                 class="
@@ -223,18 +221,19 @@ const cardHoverToggle: Ref<boolean> = ref(false);
                     group-hover:brightness-75
                     min-h-[35%]
                     overflow-visible
-                    relative   
-                    z-0                 
-                    " :style="`background-image: url('${imageURL}/${coverImage}');`">
-
-
-            </div>
-            <div @click="clickCallback" class="cardContent m-0 p-0 group-hover:-mt-[120px] z-10">
-                <div class="cardContentWrapper p-6 bg-white h-[210px] group-hover:h-[315px]">
-
-                    <div class="flex flex-row relative mb-3 items-center">
+                    relative
+                    z-0
+                    "
+                :style="`background-image: url('${imageURL}/${coverImage}');`"
+            />
+            <div
+                class="cardContent group-hover:-mt-[120px] m-0 p-0 z-10"
+                @click="clickCallback"
+            >
+                <div class="bg-white cardContentWrapper group-hover:h-[315px] h-[210px] p-6">
+                    <div class="flex items-center flex-row mb-3 relative">
                         <div v-if="$slots.icon">
-                                <slot name="icon" />
+                            <slot name="icon" />
                         </div>
 
                         <div
@@ -345,8 +344,8 @@ const cardHoverToggle: Ref<boolean> = ref(false);
     </div>
 </template>
 
-                    <!-- @mouseleave="handleResetTippyMessage"
-                    @mouseenter="handleResetTippyMessage"  -->
+<!-- @mouseleave="handleResetTippyMessage"
+@mouseenter="handleResetTippyMessage"  -->
 
 <style>
 /* body {
@@ -413,7 +412,8 @@ const cardHoverToggle: Ref<boolean> = ref(false);
 .like-share:hover svg {
     stroke-width: 2px;
 }
-.GenericCardContainer .title-line-clamp{
+
+.GenericCardContainer .title-line-clamp {
     overflow: hidden;
     text-overflow: ellipsis;
     display: -webkit-box;

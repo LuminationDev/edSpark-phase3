@@ -79,10 +79,20 @@ const customFill = computed(() => {
 
 </script>
 
+
 <template>
-    <div class="-mt-[9rem] lg:!h-[750px] BaseHeroContainer h-full relative z-10">
+    <div class="mb-0 -mt-[9rem] BaseHeroContainer relative z-10">
         <div
-            class="2xl:!pt-44 bg-cover grid grid-cols-8 h-full pb-20 pt-40 px-3 relative lg:!pb-0 lg:!pt-40 lg:!px-12 xl:!pt-40"
+            class="
+                bg-cover
+                grid
+                grid-cols-8
+                h-full
+                pb-4
+                pt-40
+                px-8
+                relative
+                "
             :style="'background-image: url(' + heroBackgroundLinkOnly +')'"
         >
             <div
@@ -90,12 +100,12 @@ const customFill = computed(() => {
             />
             <div
                 v-if="$slots.titleText || $slots.subtitleText1 || $slots.subtitleText2"
-                class="col-span-8 p-2 relative z-20 lg:!col-span-5"                
+                class="col-span-8 p-2 relative z-20"
                 :color-theme="swooshColorTheme"
             >
                 <slot name="breadcrumb" />
                 <h1
-                    class="font-semibold pb-8 text-2xl text-white md:!text-3xl lg:!text-4xl xl:!text-5xl"
+                    class="font-semibold pb-4 text-2xl text-white md:!text-3xl lg:!text-4xl xl:!text-5xl"
                 >
                     <slot name="titleText" />
                 </h1>
@@ -116,14 +126,14 @@ const customFill = computed(() => {
 
                 <p
                     v-if="$slots.contentDate"
-                    class="flex flex-col font-thin gap-4 my-4 text-base text-white"
+                    class="flex flex-col font-thin gap-4 mb-0 lg:mb-8 text-base text-white"
                 >
                     <slot name="contentDate" />
                 </p>
 
                 <p
                     v-if="$slots.subtitleText1"
-                    class="flex flex-col font-thin gap-4 my-4 pb-4 text-base text-white"
+                    class="flex flex-col font-thin gap-4 mb-4 pb-4 text-base text-white"
                 >
                     <slot name="subtitleText1" />
                 </p>
@@ -137,9 +147,9 @@ const customFill = computed(() => {
 
                 <div
                     v-if="$slots.subtitleText2"
-                    class="font-normal h-auto mt-6 text-base text-white"
+                    class="font-normal h-auto mt-6 text-base text-white pb-4 lg:max-w-[70%]"
                 >
-                    <p class="line-clamp-3">
+                    <p class="">
                         <slot name="subtitleText2" />
                     </p>
                     <slot name="subtitleContent" />
@@ -154,28 +164,12 @@ const customFill = computed(() => {
                 </div>
             </div>
         </div>
-        <div class="articleSwooshContainer relative w-full z-50">
+        <div class="articleSwooshContainer relative w-full z-10 mb-8">
             <ArticleSingleSwoosh
                 :color-theme="swooshColorTheme"
-                class="absolute -top-9 h-16 mt-1 w-full"
+                class=""
             />
-            <div
-                class="absolute
-                    -top-9
-                    flex
-                    items-endfont-base
-                    h-16
-                    mt-1
-                    pl-4
-                    pt-2
-                    text-base
-                    text-white
-                    w-full
-                    z-50
-                    
-                    
-                    md:!pl-12
-                    md:!text-2xl">
+            <div class="-top-1 h-16 w-full flex pl-4 pt-2 text-xl text-white md:!pl-12 md:!text-2xl">
                 <slot
                     name="submenu"
                 />

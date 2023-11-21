@@ -85,7 +85,7 @@ const handleSaveWelcomePopup = (data) => {
             @send-save-popup="handleSaveWelcomePopup"
         />
         <SchoolsHero />
-        <div class="featuredClassContainer py-5 lg:!py-20">
+        <div class="featuredClassContainer py-[10px] ">
             <SectionHeader
                 :classes="'bg-[#002858]'"
                 :section="'schools'"

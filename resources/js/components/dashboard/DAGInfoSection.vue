@@ -5,7 +5,7 @@ import whatIsDag from '@/assets/images/WhatIsDag.png'
 <template>
     <div class="grid gap-6 h-full px-4 w-full">
         <div class="grid grid-cols-3 py-4 row-span-4">
-            <div class="col-span-1 row-span-1">
+            <div class="col-span-1 row-span-1 p-2 flex items-center">
                 <img
                     class=""
                     :src="whatIsDag"

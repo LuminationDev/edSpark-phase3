@@ -44,6 +44,7 @@ const edsparkColor = [
     '#FFC836',
     '#0072DA',
     '#AEDCF3',
+    '#965A00',
 ];
 
 const generateSafeList = (colors) => {
@@ -94,6 +95,16 @@ module.exports = {
                     mbIcons: 'green',
                     coolGrey: '#D9DAE4',
 
+                    // new style guide
+                    banana: '#FFC836',                     
+                    bananadark: '#965A00',                       
+                    cherry:  '#DE4668',
+                    peach: '#FF8D78',
+                    grape:  '#8866C5',
+                    blueberry: '#0072DA',
+                    teal: '#319795',
+                    navy: '#002858',
+
                 },
                 custom: {
                     genericLightBlue: 'rgba(180, 216, 241, 0.35)', // light blue - table header
@@ -101,10 +112,10 @@ module.exports = {
                     genericScrollbarDark: '#0A0045', // only repeated coz i screwed something up with scrollbar customisation
                 },
                 event: {
-                    virtual: '#BE123C',
-                    hybrid: '#A855F7',
-                    inPerson: '#3B82F6'
-
+                    virtual: '#DE4668', // same as cherry
+                    hybrid: '#8866C5', // same as grape
+                    inPerson: '#0072DA', // same as blueberry
+                    virtualTag: '#ffd5de'
                 },
 
                 adviceYellow: '#FFC836',

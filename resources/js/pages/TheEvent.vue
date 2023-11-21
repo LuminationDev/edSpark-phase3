@@ -103,7 +103,7 @@ const { data: allEvents, error: eventError } = useSWRV(API_ENDPOINTS.EVENT.FETCH
             <div class="font-semibold text-xl">
                 <Loader
                     :loader-color="'#0072DA'"
-                    :loader-message="'Calendar Loading'"
+                    :loader-message="'Calendar loading'"
                 />
             </div>
         </div>

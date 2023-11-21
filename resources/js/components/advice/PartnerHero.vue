@@ -22,7 +22,6 @@ const router = useRouter()
                 pt-8
                 px-10
                 
-                
                 lg:!mt-24
                 lg:!mx-huge
                 lg:!pt-12">
@@ -31,7 +30,7 @@ const router = useRouter()
                     Partner Published Resources
                 </h1>
 
-                <p class="font-normal hidden pb-4 text-white text-xl md:block">
+                <p class="font-normal hidden pb-4 text-white text-[16px] md:block">
                     Find a curated collection of valuable resources published by our trusted partners to provide you with the latest insights, tips and strategies to help your classroom.
                 </p>
             </div>

@@ -1,22 +1,19 @@
 <script>
 import Swoosh from '../svg/DashboardSwoosh.vue';
-// import WelcomeRobot from '../svg/WelcomeRobot.vue';
 import {
     Circle,
     Gear,
     GearDottedLines,
-    Shadow,
+    LeftArm,
+    RightArm,
     RobotBody,
     RobotHead,
-    LeftArm,
-    RightArm
-} from '../svg/welcomeRobot/index.js'
+    Shadow} from '../svg/welcomeRobot/index.js'
 
 export default {
 
     components: {
         Swoosh,
-        // WelcomeRobot
         Circle,
         Gear,
         GearDottedLines,
@@ -38,17 +35,9 @@ export default {
 <template>
     <div class="bg-clip-content overflow-hidden">
         <div
-            class="
-                bg-clip-content
-                bg-gradient-to-br
-                from-[#002856]
-                via-[#309A9A]
-                to-[#B8E2DC]
-                h-auto
-                w-full
-
-                ">
-            <div class="2xl:!px-40 grid grid-cols-6 px-5 xl:!px-10 pb-[3rem]">
+            class="bg-clip-content bg-gradient-to-br from-[#002856] via-[#309A9A] to-[#B8E2DC] h-auto w-full"
+        >
+            <div class="2xl:!px-40 grid grid-cols-6 pb-[3rem] px-10 md:px-20 xl:!px-20">
                 <div class="col-span-6 pt-[220px]  md:!col-span-3">
                     <h1 class="font-semibold pb-8 text-3xl text-white  md:!text-[2.5rem] lg:!text-5xl lg:!text-[48px]">
                         {{ welcomeMessage }}
@@ -58,7 +47,9 @@ export default {
                         {{ welcomeDescription }}
                     </p>
                 </div>
-                <div class="hidden relative welcomeRobot  md:!col-span-2 md:!scale-75 md:block lg:!ml-0 lg:!scale-90 z-10">
+                <div
+                    class="hidden relative welcomeRobot z-10  md:!col-span-2 md:!scale-75 md:block lg:!ml-0 lg:!scale-90"
+                >
                     <!-- Gear and dots -->
                     <div class="">
                         <Gear class="absolute top-48 left-12 gear z-10" />
@@ -88,140 +79,138 @@ export default {
                     <div class="">
                         <Circle class="absolute top-52 left-20 z-0" />
                     </div>
-
-                    <!-- <WelcomeRobot  class="absolute -bottom-[150px] right-0 mx-auto"/> -->
                 </div>
             </div>
         </div>
-        <div class="min-h-24 swooshContainer relative !mt-0">
-            <Swoosh style="transform: translate(0, -60%);"/>
+        <div class="!mt-0 h-[60px] xl:h-[130px] min-h-24 relative swooshContainer">
+            <Swoosh style="transform: translate(0, -60%);" />
         </div>
     </div>
 </template>
 
 <style>
-    /* .welcomeRobot .gear {
-        animation: rotateClockwise infinite forwards;
+/* .welcomeRobot .gear {
+    animation: rotateClockwise infinite forwards;
+    transform: rotate(0deg);
+    transition: transform 5s linear;
+} */
+
+.welcomeRobot:hover .gear {
+    animation: rotateClockwise 12s forwards;
+    transform: rotate(0deg);
+    transition: transform 5s linear;
+}
+
+.welcomeRobot:hover .dottedLines {
+    animation: rotateAntiClockwise 12s linear forwards;
+}
+
+.welcomeRobot:hover .robotShadow {
+    animation: shadowStretch 0.3s forwards;
+    animation-iteration-count: 1;
+}
+
+.welcomeRobot:hover .robotBody {
+    animation: veryExcite 0.2s linear forwards;
+    /* animation-iteration-count: 1; */
+}
+
+.welcomeRobot:hover .robotHead {
+    animation: excitedHead 0.25s linear forwards;
+    /* animation-iteration-count: 1; */
+}
+
+.welcomeRobot:hover .leftArm {
+    animation: leftArm 0.25s linear forwards;
+    /* animation-iteration-count: 1; */
+}
+
+.welcomeRobot:hover .rightArm {
+    animation: rightArm 0.25s linear forwards;
+    /* animation-iteration-count: 1; */
+}
+
+@keyframes rotateClockwise {
+    from {
         transform: rotate(0deg);
-        transition: transform 5s linear;
-    } */
+    }
+    to {
+        transform: rotate(360deg);
+        transform-origin: center;
+    }
+}
 
-    .welcomeRobot:hover .gear {
-        animation: rotateClockwise 12s forwards;
+@keyframes rotateAntiClockwise {
+    from {
         transform: rotate(0deg);
-        transition: transform 5s linear;
     }
+    to {
+        transform: rotate(-360deg);
+        transform-origin: center;
+    }
+}
 
-    .welcomeRobot:hover .dottedLines {
-        animation: rotateAntiClockwise 12s linear forwards;
+@keyframes shadowStretch {
+    from {
+        transform: scaleX(1);
     }
+    to {
+        transform: scaleX(0.8);
+        transform-origin: center;
+    }
+}
 
-    .welcomeRobot:hover .robotShadow {
-        animation: shadowStretch 0.3s forwards;
-        animation-iteration-count: 1;
+/* Something is very wrong here... */
+@keyframes veryExcite {
+    from {
+        transform: scaleX(1);
+        top: 450px;
     }
+    to {
+        top: 435px;
+        transform: scaleX(0.9);
+        /* transform-origin: bottom;  */
+    }
+}
 
-    .welcomeRobot:hover .robotBody {
-        animation: veryExcite 0.2s linear forwards;
-        /* animation-iteration-count: 1; */
+@keyframes excitedHead {
+    from {
+        top: 250px;
+        transform: rotate(0deg);
     }
+    to {
+        top: 235px;
+        transform: rotate(3deg);
+        /* transform: translateY(1.1);
+        transform-origin: bottom; */
+    }
+}
 
-    .welcomeRobot:hover .robotHead {
-        animation: excitedHead 0.25s linear forwards;
-        /* animation-iteration-count: 1; */
+@keyframes leftArm {
+    from {
+        transform: rotate(0deg);
+        top: 390px;
+        left: 410px;
     }
+    to {
+        top: 370px;
+        left: 395px;
+        transform: rotate(-32deg);
+        transform-origin: bottom left 25%;
+    }
+}
 
-    .welcomeRobot:hover .leftArm {
-        animation: leftArm 0.25s linear forwards;
-        /* animation-iteration-count: 1; */
+@keyframes rightArm {
+    from {
+        transform: rotate(0deg);
+        top: 390px;
+        left: 10rem;
     }
-
-    .welcomeRobot:hover .rightArm {
-        animation: rightArm 0.25s linear forwards;
-        /* animation-iteration-count: 1; */
+    to {
+        top: 370px;
+        left: 11rem;
+        transform: rotate(36deg);
+        transform-origin: bottom left 25%;
     }
-
-    @keyframes rotateClockwise {
-        from {
-            transform: rotate(0deg);
-        }
-        to {
-            transform: rotate(360deg);
-            transform-origin: center;
-        }
-    }
-
-    @keyframes rotateAntiClockwise {
-        from {
-            transform: rotate(0deg);
-        }
-        to {
-            transform: rotate(-360deg);
-            transform-origin: center;
-        }
-    }
-
-    @keyframes shadowStretch {
-        from {
-            transform: scaleX(1);
-        }
-        to {
-            transform: scaleX(0.8);
-            transform-origin: center;
-        }
-    }
-
-    /* Something is very wrong here... */
-    @keyframes veryExcite {
-        from {
-            transform: scaleX(1);
-            top: 450px;
-        }
-        to {
-            top: 435px;
-            transform: scaleX(0.9);
-            /* transform-origin: bottom;  */
-        }
-    }
-
-    @keyframes excitedHead {
-        from {
-            top: 250px;
-            transform: rotate(0deg);
-        }
-        to {
-            top: 235px;
-            transform: rotate(3deg);
-            /* transform: translateY(1.1);
-            transform-origin: bottom; */
-        }
-    }
-
-    @keyframes leftArm {
-        from {
-            transform: rotate(0deg);
-            top: 390px;
-            left: 410px;
-        }
-        to {
-            top: 370px;
-            left: 395px;
-            transform: rotate(-32deg);
-            transform-origin: bottom left 25%;
-        }
-    }
-
-    @keyframes rightArm {
-        from {
-            transform: rotate(0deg);
-            top: 390px;
-            left: 10rem;
-        }
-        to {
-            top: 370px;
-            left: 11rem;
-            transform: rotate(36deg);
-            transform-origin: bottom left 25%;
-        }
-    }
+}
 </style>

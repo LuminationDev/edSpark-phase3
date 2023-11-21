@@ -9,7 +9,7 @@ import useErrorMessage from "@/js/composables/useErrorMessage";
 import {API_ENDPOINTS} from "@/js/constants/API_ENDPOINTS";
 import {formatDateToDayTime} from "@/js/helpers/dateHelper";
 import {convertLinksToEmbeds, isObjectEmpty} from "@/js/helpers/objectHelpers";
-import {lowerSlugify} from "@/js/helpers/slugifyHelper";
+import {lowerSlugify} from "@/js/helpers/stringHelpers";
 import {useAdviceStore} from "@/js/stores/useAdviceStore";
 import {useHardwareStore} from "@/js/stores/useHardwareStore";
 import {useSoftwareStore} from "@/js/stores/useSoftwareStore";

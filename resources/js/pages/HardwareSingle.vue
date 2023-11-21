@@ -93,12 +93,12 @@ const colorTheme = ref('hardwareGreen')
         </template>
 
         <template #content="{ contentFromBase }">
-            <div class="flex flex-row mt-20 w-full">
+            <div class="flex flex-row w-full">
                 <template v-if="activeSubmenu === hardwareSubmenu[0]['value']">
                     <div
                         :id="contentFromBase['id']"
                         ref="baseContentRef"
-                        class="flex flex-col overflow-hidden px-5 py-4 w-full lg:!px-20"
+                        class="flex flex-col overflow-hidden px-5 pb-4 w-full lg:!px-20"
                     >
                         <HardwareCarousel
                             :slide-items="contentFromBase"

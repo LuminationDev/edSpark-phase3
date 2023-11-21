@@ -5,7 +5,7 @@ import {useRouter} from "vue-router";
 import AdviceCardIcon from "@/js/components/advice/AdviceCardIcon.vue";
 import AdviceTypeTag from "@/js/components/advice/AdviceTypeTag.vue";
 import GenericCard from "@/js/components/card/GenericCard.vue";
-import {lowerSlugify} from "@/js/helpers/slugifyHelper";
+import {lowerSlugify} from "@/js/helpers/stringHelpers";
 import {BasePostType} from "@/js/types/PostTypes";
 
 const props = defineProps({
