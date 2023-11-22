@@ -1,6 +1,6 @@
 <script setup>
 
-import { ref, computed } from 'vue'
+import { computed,ref } from 'vue'
 
 const props = defineProps({
     techUsedList: {
@@ -38,16 +38,27 @@ const customFill = computed(() => {
 </script>
 
 <template>
-    <div v-for="(tech, index) in props.techUsedList" :key="index"
-        class="cursor-pointer relative w-6 md:!w-14 lg:!block iconColours z-30 min-w-fit flex-wrap">
-        <div @mouseenter="handleToggleTooltip(index)" @mouseleave="handleToggleTooltip(index)" :class="customFill">
-            <SchoolTechIconGenerator :tech-name="tech.name"
-                class="cursor-pointer m-2 min-w-[30px] pr-1 relative w-8 md:!min-w-[60px] md:!pr-4" />
-            <div v-if="toggleTooltip && tooltipIndex === index"
-                class="absolute text-base bg-main-navy border-l-[3px] border-white px-[24px] py-[18px] shadow-xl w-[450px]">
-
+    <div
+        v-for="(tech, index) in props.techUsedList"
+        :key="index"
+        class="cursor-pointer flex-wrap iconColours min-w-fit relative w-6 z-40 md:!w-14 lg:!block"
+        :class="{'z-50' : toggleTooltip && tooltipIndex === index}"
+    >
+        <div
+            :class="customFill"
+            @mouseenter="handleToggleTooltip(index)"
+            @mouseleave="handleToggleTooltip(index)"
+        >
+            <SchoolTechIconGenerator
+                :tech-name="tech.name"
+                class="cursor-pointer m-2 min-w-[30px] pr-1 relative w-8 md:!min-w-[60px] md:!pr-4"
+            />
+            <div
+                v-if="toggleTooltip && tooltipIndex === index"
+                class="absolute bg-main-navy border-l-[3px] border-white px-[24px] py-[18px] shadow-xl text-base w-[450px] z-50"
+            >
                 <span class="font-normal text-white">
-                    <span class="font-bold text-lg pr-1 capitalize">
+                    <span class="capitalize font-bold pr-1 text-lg">
                         {{ tech.name }}
                     </span>
                     {{ tech.description }}
