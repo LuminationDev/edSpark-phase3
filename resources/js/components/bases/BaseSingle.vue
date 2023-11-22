@@ -41,7 +41,8 @@ const isPreviewModeComputed = computed(() => {
 })
 // Only be true if the server return posts which status is not Published
 const showPreviewLabel = computed(() => {
-    return !(singleContent.value?.status && singleContent.value?.status === "Published");
+    console.log(singleContent.value)
+    return props.contentType !== 'school' && !(singleContent.value?.status && singleContent.value?.status === "Published");
 })
 
 switch (props.contentType) {
@@ -231,9 +232,11 @@ const handleEmitFromSubmenu = (value) => {
             :content-from-base="singleContent"
             :emit-from-submenu="handleEmitFromSubmenu"
         />
-        <div class="flex flex-row moderationRow mt-10">
+        <div
+            v-if="showPreviewLabel && !baseIsLoading"
+            class="flex flex-row moderationRow mt-10"
+        >
             <div
-                v-if="showPreviewLabel && !baseIsLoading"
                 class="basis-4/5 font-semibold mb-4 previewLabel text-center text-xl"
             >
                 Preview content (Moderation)
@@ -245,11 +248,11 @@ const handleEmitFromSubmenu = (value) => {
                         singleContent?.author?.author_name ? "by " + singleContent?.author?.author_name : ""
                     }} </span>
                 </div>
-            </div>
-            <div class="basis-1/5 flex">
-                <GenericButton :callback="() => {}">
-                    Back to moderation
-                </GenericButton>
+                <div class="basis-1/5 flex">
+                    <GenericButton :callback="() => {}">
+                        Back to moderation
+                    </GenericButton>
+                </div>
             </div>
         </div>
         <slot

@@ -162,7 +162,7 @@ class SoftwareController extends Controller
         }
     }
 
-    public function fetchSoftwarePostById(Request $request, $id): JsonResponse
+    public function fetchSoftwarePostById(Request $request): JsonResponse
     {
         $validator = Validator::make($request->all(), [
             'id' => 'required|integer|gt:0',

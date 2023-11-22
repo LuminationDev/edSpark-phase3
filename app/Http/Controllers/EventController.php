@@ -82,7 +82,7 @@ class EventController extends Controller
     }
 
 
-    public function fetchEventPostById(Request $request, $id): \Illuminate\Http\JsonResponse
+    public function fetchEventPostById(Request $request): \Illuminate\Http\JsonResponse
     {
         $validator = Validator::make($request->all(), [
             'id' => 'required|integer|gt:0',

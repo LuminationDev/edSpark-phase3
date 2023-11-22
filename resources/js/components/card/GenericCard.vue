@@ -280,9 +280,9 @@ const cardHoverToggle: Ref<boolean> = ref(false);
             class="bg-white cardFooter flex justify-between left-0 w-full"
             :class="cardFlexDirection"
         >
-            <div v-if="$slots.typeTag">
+            <template v-if="$slots.typeTag">
                 <slot name="typeTag" />
-            </div>
+            </template>
 
             <div
                 class="
