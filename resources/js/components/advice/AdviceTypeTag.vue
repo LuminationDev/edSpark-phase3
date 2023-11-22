@@ -1,11 +1,10 @@
 <script setup>
-import { computed } from 'vue'
-import { schoolColorKeys, schoolColorTheme } from "@/js/constants/schoolColorTheme";
-
+import {computed} from 'vue'
 
 import IconDAG from "@/js/components/svg/AdviceDAG.vue";
-import IconWork from "@/js/components/svg/AdviceWork.vue";
 import IconOther from "@/js/components/svg/AdviceOther.vue";
+import IconWork from "@/js/components/svg/AdviceWork.vue";
+import {schoolColorKeys, schoolColorTheme} from "@/js/constants/schoolColorTheme";
 
 const props = defineProps({
     typeTag: {
@@ -25,15 +24,15 @@ const typeTagColor = computed(() => {
 
 
 <template>
-    <div class="TypeTag 
-            border border-solid flex gap-2 h-[28px] py-1 place-items-center 
-            px-2 rounded-2xl text-sm w-fit mx-3 my-2" :class=typeTagColor>
-
-        <template v-if="props.typeTag[0] == 'DAG advice'">
+    <div
+        class="TypeTag border border-solid flex gap-2 h-[28px] mx-3 my-2 place-items-center px-2 py-1 rounded-2xl text-sm w-fit"
+        :class="typeTagColor"
+    >
+        <template v-if="props.typeTag[0] === 'DAG advice'">
             <IconDAG />
         </template>
 
-        <template v-else-if="props.typeTag[0] == 'Your Work'">
+        <template v-else-if="props.typeTag[0] === 'Your Work'">
             <IconWork />
         </template>
 
@@ -41,7 +40,9 @@ const typeTagColor = computed(() => {
             <IconOther />
         </template>
 
-        {{ typeTag[0] }}
+        <p class="whitespace-nowrap">
+            {{ typeTag[0] }}
+        </p>
     </div>
 </template>
 
