@@ -28,20 +28,20 @@ const rules = {
 const v$: any = useVuelidate(rules, state)
 
 
-const partnerBusinessTypes = [
+const partnerBusinessTypes = [-
     {
         id: 0,
         name: 'software'
     }, {
-        id: 1,
-        name: 'hardware'
-    }, {
-        id: 2,
-        name: 'content'
-    }, {
-        id: 3,
-        name: 'service'
-    }
+    id: 1,
+    name: 'hardware'
+}, {
+    id: 2,
+    name: 'content'
+}, {
+    id: 3,
+    name: 'service'
+}
 ]
 </script>
 

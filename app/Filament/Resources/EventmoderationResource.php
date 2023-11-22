@@ -5,6 +5,7 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\EventmoderationResource\Pages;
 use App\Filament\Resources\EventmoderationResource\RelationManagers;
 use App\Helpers\RoleHelpers;
+use App\Helpers\UserRole;
 use App\Models\Eventmoderation;
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -110,7 +111,8 @@ class EventmoderationResource extends Resource
     }
     public static function shouldRegisterNavigation(): bool
     {
-        return RoleHelpers::has_minimum_privilege('site_leader');
+        return RoleHelpers::has_minimum_privilege(UserRole::MODERATOR);
+
     }
 
 }

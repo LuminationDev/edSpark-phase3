@@ -5,6 +5,7 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\AdvicemoderationResource\Pages;
 use App\Filament\Resources\AdvicemoderationResource\RelationManagers;
 use App\Helpers\RoleHelpers;
+use App\Helpers\UserRole;
 use App\Models\Advice;
 use App\Models\Advicemoderation;
 use App\Models\Advicetype;
@@ -117,7 +118,7 @@ class AdvicemoderationResource extends Resource
 
     public static function shouldRegisterNavigation(): bool
     {
-        return RoleHelpers::has_minimum_privilege('site_leader');
+        return RoleHelpers::has_minimum_privilege(UserRole::MODERATOR);
     }
 
 }
