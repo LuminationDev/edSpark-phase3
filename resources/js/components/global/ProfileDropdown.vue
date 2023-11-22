@@ -133,7 +133,7 @@ const mySchoolTargetPath = computed(() =>{
                         My School
                     </ProfileDropdownItem>
                     <template
-                        v-if="userStore.getIfUserIsAdmin"
+                        v-if="userStore.getIfUserIsModerator"
                     >
                         <ProfileDropdownItem
                             :is-router-link="false"

@@ -5,6 +5,7 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\SchoolmoderationResource\Pages;
 use App\Filament\Resources\SchoolmoderationResource\RelationManagers;
 use App\Helpers\RoleHelpers;
+use App\Helpers\UserRole;
 use App\Models\Schoolmoderation;
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -104,7 +105,7 @@ class SchoolmoderationResource extends Resource
     }
     public static function shouldRegisterNavigation(): bool
     {
-        return RoleHelpers::has_minimum_privilege('site_leader');
+        return RoleHelpers::has_minimum_privilege(UserRole::MODERATOR);
     }
 
 }
