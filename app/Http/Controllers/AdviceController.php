@@ -22,8 +22,7 @@ class AdviceController extends Controller
     public function __construct(PostService $postService)
     {
         $this->postService = $postService;
-        $this->middleware(ResourceAccessControl::class . ':schldr,handleFetchAdvicePosts,createAdvicePost,fetchAdvicePostById');
-
+        $this->middleware(ResourceAccessControl::class . ':partner,handleFetchAdvicePosts,createAdvicePost,fetchAdvicePostById');
     }
 
     public function createAdvicePost(Request $request)
