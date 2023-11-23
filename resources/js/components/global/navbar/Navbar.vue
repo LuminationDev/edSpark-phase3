@@ -40,7 +40,6 @@ const setupRoutes = () => {
     const tempNavArray = [];
     const currentUserIsPartner = userStore.getUserRoleName === 'SITESUPP' // TODO
     router.options.routes.forEach(route => {
-        console.log(currentUserIsPartner)
         if (Object.keys(route).includes('meta') && route.meta['navigation']) {
             if (currentUserIsPartner && Object.keys(route.meta).includes('partnerCanAccess')) {
                 if (route.meta['partnerCanAccess']) {

@@ -42,7 +42,7 @@ const isPreviewModeComputed = computed(() => {
 // Only be true if the server return posts which status is not Published
 const showPreviewLabel = computed(() => {
     console.log(singleContent.value)
-    return props.contentType !== 'school' && !(singleContent.value?.status && singleContent.value?.status === "Published");
+    return (props.contentType !== 'school' && props.contentType !== 'partner') && !(singleContent.value?.status && singleContent.value?.status === "Published");
 })
 
 switch (props.contentType) {

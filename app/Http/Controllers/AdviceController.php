@@ -2,15 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Helpers\Metahelper;
 use App\Helpers\RoleHelpers;
 use App\Helpers\UserRole;
-use App\Models\Advicemeta;
+use App\Http\Middleware\ResourceAccessControl;
 use App\Models\Advicetype;
-use App\Models\Bookmark;
-use App\Models\Like;
-use App\Models\Software;
-use App\Models\Softwaremeta;
 use App\Services\PostService;
 use App\Services\ResponseService;
 use Illuminate\Http\JsonResponse;
@@ -27,6 +22,8 @@ class AdviceController extends Controller
     public function __construct(PostService $postService)
     {
         $this->postService = $postService;
+        $this->middleware(ResourceAccessControl::class . ':schldr,handleFetchAdvicePosts,createAdvicePost,fetchAdvicePostById');
+
     }
 
     public function createAdvicePost(Request $request)
@@ -60,9 +57,18 @@ class AdviceController extends Controller
         return ResponseService::success('Advice created successfully!');
     }
 
-    public function fetchAdvicePosts(Request $request): \Illuminate\Http\JsonResponse
+    public function handleFetchAdvicePosts(Request $request)
     {
+        $userRole = Auth::user()->role->role_name;
+        if ($userRole === 'partner') {
+            return $this->fetchUserAdvicePosts($request);
+        } else {
+            return $this->fetchAllAdvicePosts($request);
+        }
+    }
 
+    public function fetchAllAdvicePosts(Request $request): \Illuminate\Http\JsonResponse
+    {
         $advices = Advice::where('post_status', 'Published')->orderBy('created_at', 'DESC')->get();
         $data = [];
 
