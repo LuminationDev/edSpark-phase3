@@ -9,20 +9,16 @@ use Illuminate\Support\Facades\Auth;
 
 class ResourceAccessControl
 {
-
-    protected $role;
-    protected $allowedMethods;
-
     public function handle($request, Closure $next, ...$parameters)
     {
         // Extract role and allowedMethods from parameters
-        $this->role = array_shift($parameters);
-        $this->allowedMethods = $parameters;
+        $role = array_shift($parameters);
+        $allowedMethods = $parameters;
 
         // Check if the user has the role. If true, subject to the check
-        if (strtolower(Auth::user()->role->role_name) === $this->role) {
+        if (strtolower(Auth::user()->role->role_name) === $role) {
             $currentMethod = $request->route()->getActionMethod();
-            if (!in_array($currentMethod, $this->allowedMethods)) {
+            if (!in_array($currentMethod, $allowedMethods)) {
                 return ResponseService::error('Unauthorized', 'Forbidden', 403 );
             }
         }
