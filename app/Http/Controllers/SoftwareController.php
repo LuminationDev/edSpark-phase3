@@ -14,6 +14,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use App\Models\Software;
 use App\Models\Softwaremeta;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 
 class SoftwareController extends Controller
@@ -85,7 +86,7 @@ class SoftwareController extends Controller
     public function fetchUserSoftwarePosts(Request $request): JsonResponse
     {
         try {
-            $userId = $request->user_id;
+            $userId = Auth::user()->id;
             $softwares = Software::where('post_status', 'Published')
                 ->where('author_id', $userId)  // Filter by partner (author) ID
                 ->orderBy('created_at', 'DESC')

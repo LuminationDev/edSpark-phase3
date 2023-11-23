@@ -78,7 +78,7 @@ class AdviceController extends Controller
     public function fetchUserAdvicePosts(Request $request): JsonResponse
     {
         try {
-            $userId = $request->user_id;
+            $userId = Auth::user()->id;
             $advices = Advice::where('post_status', 'Published')
                 ->where('author_id', $userId)  // Filter by partner (author) ID
                 ->orderBy('created_at', 'DESC')

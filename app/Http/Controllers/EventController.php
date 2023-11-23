@@ -13,8 +13,10 @@ use App\Services\PostService;
 use App\Services\ResponseService;
 use Illuminate\Http\Request;
 use App\Models\Event;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
+use Symfony\Component\HttpFoundation\JsonResponse;
 
 class EventController extends Controller
 {
@@ -26,7 +28,7 @@ class EventController extends Controller
         $this->postService = $postService;
     }
 
-    public function createEventPost(Request $request)
+    public function createEventPost(Request $request): \Illuminate\Http\JsonResponse
     {
         $validator = Validator::make($request->all(), [
             'event_title' => 'required|string',
@@ -60,7 +62,6 @@ class EventController extends Controller
 
     }
 
-
     public function fetchEventPosts(Request $request): \Illuminate\Http\JsonResponse
     {
         // Get the current date without the time component
@@ -68,7 +69,7 @@ class EventController extends Controller
 
         $events = Event::where('event_status', 'Published')
             ->where('end_date', '>=', $currentDate)
-            ->where('event_status','Published')
+            ->where('event_status', 'Published')
             ->get();
 
         $data = [];
@@ -79,6 +80,29 @@ class EventController extends Controller
         }
 
         return response()->json($data);
+    }
+
+    public function fetchUserEventPosts(Request $request): JsonResponse
+    {
+        try {
+            $userId = Auth::user()->id;
+            $events = Event::where('event_status', 'Published')
+                ->where('author_id', $userId)  // Filter by partner (author) ID
+                ->orderBy('created_at', 'DESC')
+                ->get();
+
+            $data = [];
+
+            foreach ($events as $event) {
+
+                $result = $this->postService->eventModelToJson($event, $request);
+                $data[] = $result;
+            }
+
+            return response()->json($data);
+        } catch (\Exception $e) {
+            return response()->json(['error' => "An error occurred: " . $e->getMessage()], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
     }
 
 
@@ -174,4 +198,6 @@ class EventController extends Controller
 
         return response()->json($eventTypes);
     }
+
+
 }
