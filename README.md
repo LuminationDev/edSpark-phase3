@@ -23,7 +23,7 @@ https://www.markdownguide.org/cheat-sheet/
 ### Partner restriction
 User who has role as 'partner' will not be able to access advice, software and school section.
 Means:
-- API: Disable All Advice, software and school API for user role 'partner'
+- API: Disable all advice, software and school API for user role 'partner'
 - API: Create own partner controller-only allow their own resources/posts ? (Under consideration)
 - Client: Router middleware, do not add disabled section when rendering navbar and registering route
 - Client: Simplified dashboard. (Possibly just their own page?)
@@ -31,5 +31,18 @@ Means:
 Router middleware
 - Checks if user is partner
     if yes, check for specific meta / specific to be determined
-    if not, next()
-  
+    if not, next
+
+router.ts -> meta restrictPartner?
+
+`` this two below are closely related, will make it work closely
+database->partner_meta ? 
+and inside the API?
+```pseudo code
+    if(Auth::User()->role->role_name === 'Partner'){
+        Partnermeta::Where userId = User-> id && partner_meta_key === 'allowed_section'
+        if ( allowedType contains currentResourceType) return fetchAllPosts (adv, software, evt)
+        else fetchUserPosts (adv, software, evt)
+        (Query with current APIs)
+    }
+```
