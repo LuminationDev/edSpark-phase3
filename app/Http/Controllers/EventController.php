@@ -4,19 +4,17 @@ namespace App\Http\Controllers;
 
 use App\Helpers\RoleHelpers;
 use App\Helpers\UserRole;
-use App\Models\Advice;
+use App\Http\Middleware\ResourceAccessControl;
 use App\Models\Eventmeta;
 use App\Models\Eventtype;
-use App\Models\Partner;
-use App\Models\Usermeta;
 use App\Services\PostService;
 use App\Services\ResponseService;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use App\Models\Event;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
-use Symfony\Component\HttpFoundation\JsonResponse;
 
 class EventController extends Controller
 {
@@ -26,6 +24,8 @@ class EventController extends Controller
     public function __construct(PostService $postService)
     {
         $this->postService = $postService;
+        $this->middleware(ResourceAccessControl::class . ':partner,handleFetchEventPosts,fetchEventPostById');
+
     }
 
     public function createEventPost(Request $request): \Illuminate\Http\JsonResponse
@@ -62,7 +62,16 @@ class EventController extends Controller
 
     }
 
-    public function fetchEventPosts(Request $request): \Illuminate\Http\JsonResponse
+    public function handleFetchEventPosts(Request $request): \Illuminate\Http\JsonResponse
+    {
+        if (Auth::user()->isPartner()) {
+            return $this->fetchUserEventPosts($request);
+        } else {
+            return $this->fetchAllEventPosts($request);
+        }
+    }
+
+    public function fetchAllEventPosts(Request $request): \Illuminate\Http\JsonResponse
     {
         // Get the current date without the time component
         $currentDate = now()->startOfDay();

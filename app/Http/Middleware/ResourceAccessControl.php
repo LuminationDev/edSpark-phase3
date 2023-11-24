@@ -13,6 +13,7 @@ class ResourceAccessControl
     {
         // Extract role and allowedMethods from parameters
         $role = array_shift($parameters);
+        // might be worthwhile to do disallowed methods instead of allowed
         $allowedMethods = $parameters;
 
         // Check if the user has the role. If true, subject to the check

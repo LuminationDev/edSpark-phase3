@@ -91,4 +91,9 @@ class User extends Authenticatable implements FilamentUser, HasName
     {
         return $this->hasOne(Partner::class);
     }
+
+    public function isPartner(): bool
+    {
+        return strtolower($this->role->role_name) === 'partner';
+    }
 }

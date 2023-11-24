@@ -22,7 +22,7 @@ class AdviceController extends Controller
     public function __construct(PostService $postService)
     {
         $this->postService = $postService;
-        $this->middleware(ResourceAccessControl::class . ':partner,handleFetchAdvicePosts,createAdvicePost,fetchAdvicePostById');
+        $this->middleware(ResourceAccessControl::class . ':partner,handleFetchAdvicePosts,createAdvicePost,fetchAdvicePostById,fetchRelatedAdvice');
     }
 
     public function createAdvicePost(Request $request)
@@ -58,8 +58,7 @@ class AdviceController extends Controller
 
     public function handleFetchAdvicePosts(Request $request)
     {
-        $userRole = Auth::user()->role->role_name;
-        if ($userRole === 'partner') {
+        if (Auth::user()->isPartner()) {
             return $this->fetchUserAdvicePosts($request);
         } else {
             return $this->fetchAllAdvicePosts($request);

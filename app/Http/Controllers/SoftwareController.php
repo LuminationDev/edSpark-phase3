@@ -5,10 +5,12 @@ namespace App\Http\Controllers;
 use App\Helpers\Metahelper;
 use App\Helpers\RoleHelpers;
 use App\Helpers\UserRole;
+use App\Http\Middleware\ResourceAccessControl;
 use App\Models\Advice;
 use App\Models\Softwaretype;
 use App\Services\PostService;
 use App\Services\ResponseService;
+
 use Illuminate\Http\Response;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
@@ -24,6 +26,8 @@ class SoftwareController extends Controller
     public function __construct(PostService $postService)
     {
         $this->postService = $postService;
+        $this->middleware(ResourceAccessControl::class . ':partner,handleFetchAdvicePosts,createAdvicePost,fetchAdvicePostById,fetchRelatedAdvice');
+
     }
 
     public function createSoftwarePost(Request $request)
@@ -54,6 +58,15 @@ class SoftwareController extends Controller
         }
 
         return response()->json(['message' => 'Software created successfully!', 'software' => $software], 201);
+    }
+
+    public function handleFetchSoftwarePosts(Request $request)
+    {
+        if (Auth::user()->isPartner()) {
+            return $this->fetchUserSoftwarePosts($request);
+        } else {
+            return $this->fetchSoftwarePosts($request);
+        }
     }
 
     public function fetchSoftwarePosts(Request $request): JsonResponse

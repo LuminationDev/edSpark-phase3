@@ -60,7 +60,7 @@ Route::middleware('auth:sanctum')->group(function () {
 
     // Software APIs
     Route::post('createSoftwarePost', [SoftwareController::class, 'createSoftwarePost']);
-    Route::get('fetchSoftwarePosts', [SoftwareController::class, 'fetchSoftwarePosts']);
+    Route::get('fetchSoftwarePosts', [SoftwareController::class, 'handleFetchSoftwarePosts']);
     Route::post('fetchSoftwarePostById', [SoftwareController::class, 'fetchSoftwarePostById']);
     Route::post('fetchRelatedSoftware', [SoftwareController::class, 'fetchRelatedSoftware']);
     Route::get('fetchSoftwareTypes', [SoftwareController::class, 'fetchSoftwareTypes']);
@@ -68,7 +68,7 @@ Route::middleware('auth:sanctum')->group(function () {
 
     // Event APIs
     Route::post('createEventPost', [EventController::class, 'createEventPost']);
-    Route::get('fetchEventPosts', [EventController::class, 'fetchEventPosts']);
+    Route::get('fetchEventPosts', [EventController::class, 'handleFetchEventPosts']);
     Route::post('fetchEventPostById', [EventController::class, 'fetchEventPostById']);
     Route::get('fetchEventTypes', [EventController::class, 'fetchEventTypes']);
 
