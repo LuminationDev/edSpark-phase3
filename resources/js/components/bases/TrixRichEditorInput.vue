@@ -71,6 +71,22 @@ const handleInitialContentChange = (newContent, oldContent) => {
         reloadEditorContent(editorContent.value)
     }
 }
+
+const handleEmbedVideo = () => {
+    const videoUrl = prompt('Paste YouTube or Vimeo link:');
+    if (videoUrl) {
+        const attachment = new Trix.Attachment({
+            content: `<iframe src="${videoUrl}" width="560" height="315" frameborder="0" allowfullscreen></iframe>`,
+            contentType: 'application/x-trix-attachment-embed',
+            embedContent: true
+        });
+
+        trix.value.editor.insertAttachment(attachment);
+        editorContent.value = trix.value.editor.getDocument().toString();
+    }
+};
+
+
 const emitEditorState = (value) => {
     emits('update', editorContent.value)
     emits('update:srcContent', editorContent.value)
@@ -275,9 +291,20 @@ const h2ButtonConfig = {
         }
     }
 };
+
+const embedVideoButtonConfig = {
+    icon: subheadingButton,
+    group: 'text',
+    position: 'beforeend',
+    title: 'Embed Video',
+};
+
+
+
 addToolbarButton('underline', underlineButtonConfig)
 addToolbarButton('h1', h1ButtonConfig);
 addToolbarButton('h2', h2ButtonConfig);
+addToolbarButton('embedVideo', embedVideoButtonConfig, handleEmbedVideo);
 
 </script>
 <template>
