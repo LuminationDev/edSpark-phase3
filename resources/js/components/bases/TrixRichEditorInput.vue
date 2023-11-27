@@ -5,7 +5,13 @@
 import Trix from 'trix'
 import {computed, ref, watch} from 'vue';
 
-import {headingButton, subheadingButton, underlineButton} from "@/js/components/bases/frontendform/EditorButtonIcon";
+import {
+    alignCenterButtonConfig,
+    alignLeftButtonConfig, alignRightButtonConfig,
+    h1ButtonConfig,
+    h2ButtonConfig,
+    underlineButtonConfig
+} from "@/js/components/bases/frontendform/TrixRichText/TrixCustomTools";
 import {API_ENDPOINTS} from "@/js/constants/API_ENDPOINTS";
 
 const props = defineProps({
@@ -50,6 +56,7 @@ const isActive = ref(null)
 const isInitalized = ref(false)
 const initalizeQueue = ref([])
 const emits = defineEmits(['input', 'update', 'update:srcContent', 'trix-file-accept', 'trix-attachment-add', 'trix-attachment-remove', 'trix-selection-change', 'trix-initialize', 'trix-before-initialize', 'trix-focus', 'trix-blur'])
+const isPopupOpen = ref(false)
 
 const handleContentChange = (event) => {
     editorContent.value = event.srcElement ? event.srcElement.value : event.target.value
@@ -72,58 +79,93 @@ const handleInitialContentChange = (newContent, oldContent) => {
 }
 
 const handleEmbedVideo = () => {
-    // Create a container for the modal
-    const modalContainer = document.createElement('div');
-    modalContainer.classList.add('embed-modal');
-
-    // Find the position of the embed video button
-    const embedToolbarButton = document.querySelector('.trix-button[data-trix-attribute="embedVideo"]');
-    const buttonRect = embedToolbarButton.getBoundingClientRect();
-
-    // Set the position of the modal
-    modalContainer.style.position = 'absolute';
-    modalContainer.style.top = `${buttonRect.bottom + window.scrollY}px`;
-    modalContainer.style.left = `${buttonRect.left + window.scrollX}px`;
-
-    // Create input field
-    const inputField = document.createElement('input');
-    inputField.setAttribute('type', 'text');
-    inputField.setAttribute('placeholder', 'Insert link to images or video');
-
-    // Create Embed and Cancel buttons
-    const embedButton = document.createElement('button');
-    embedButton.textContent = 'Embed';
-    embedButton.addEventListener('click', () => {
-        const videoUrl = inputField.value;
-        if (videoUrl) {
-            const attachment = new Trix.Attachment({
-                content: `<iframe src="${videoUrl}" width="560" height="315" frameborder="0" allowfullscreen></iframe>`,
-                contentType: 'application/x-trix-attachment-embed',
-                embedContent: true,
-            });
-
-            trix.value.editor.insertAttachment(attachment);
-            editorContent.value = trix.value.editor.getDocument().toString();
+    // do a simple check if the popup is already open
+    if (isPopupOpen.value) {
+        try {
+            const modalContainer = document.querySelector(".embed-modal")
+            modalContainer.remove();
+            isPopupOpen.value = false
+        } catch (e) {
+            console.log(e)
         }
+    } else {
+        // Create a container for the modal
+        const modalContainer = document.createElement('div');
+        modalContainer.classList.add('embed-modal');
 
-        // Remove the modal after embedding or canceling
-        modalContainer.remove();
-    });
+        // Find the position of the embed video button
+        const embedToolbarButton = document.querySelector('.trix-button[data-trix-attribute="embedVideo"]');
+        const buttonRect = embedToolbarButton.getBoundingClientRect();
 
-    const cancelButton = document.createElement('button');
-    cancelButton.textContent = 'Cancel';
-    cancelButton.addEventListener('click', () => {
-        // Remove the modal if canceled
-        modalContainer.remove();
-    });
+        // Set the position of the modal
+        modalContainer.style.position = 'absolute';
+        modalContainer.style.top = `${buttonRect.bottom + window.scrollY}px`;
+        modalContainer.style.left = `${buttonRect.left + window.scrollX}px`;
 
-    // Append elements to the modal container
-    modalContainer.appendChild(inputField);
-    modalContainer.appendChild(embedButton);
-    modalContainer.appendChild(cancelButton);
+        // Create input field
+        const inputField = document.createElement('input');
+        inputField.setAttribute('type', 'text');
+        inputField.setAttribute('placeholder', 'Insert link to images or video');
 
-    // Append the modal container to the body
-    document.body.appendChild(modalContainer);
+        // Create Embed and Cancel buttons
+        const embedButton = document.createElement('button');
+        embedButton.textContent = 'Embed';
+        embedButton.setAttribute('class', 'embedFloatingButton')
+        isPopupOpen.value = true
+        embedButton.addEventListener('click', () => {
+            const inputUrl = inputField.value;
+            if (inputUrl) {
+                let videoUrl;
+                // Check if the user input is a full YouTube or Vimeo URL
+                const youtubeMatch = inputUrl.match(/^(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/(?:[^\/\n\s]+\/\S+\/|(?:v|e(?:mbed)?)\/|\S*?[?&]v=)|youtu\.be\/)([a-zA-Z0-9_-]{11})/);
+                const vimeoMatch = inputUrl.match(/^(?:https?:\/\/)?(?:www\.)?(?:vimeo\.com\/(?:channels\/(?:\w+\/)?|(\d+)\/)?)(\d+)(?:$|\/|\?)/);
+
+                if (youtubeMatch) {
+                    videoUrl = `https://www.youtube.com/embed/${youtubeMatch[1]}`;
+                } else if (vimeoMatch) {
+                    videoUrl = `https://player.vimeo.com/video/${vimeoMatch[2]}`;
+                } else {
+                    // Check if the user input is an embed code
+                    const embedMatch = inputUrl.match(/<iframe[^>]*src=["']([^"']+)/);
+                    if (embedMatch) {
+                        videoUrl = embedMatch[1];
+                    } else {
+                        // If the input doesn't match any known patterns, assume it's a direct URL
+                        videoUrl = inputUrl;
+                    }
+                }
+                const attachment = new Trix.Attachment({
+                    content: `<iframe src="${videoUrl}" width="560" height="315" frameborder="0" allowfullscreen></iframe>`,
+                    contentType: 'application/x-trix-attachment-embed',
+                    embedContent: true,
+                });
+
+
+                trix.value.editor.insertAttachment(attachment);
+                editorContent.value = trix.value.editor.getDocument().toString();
+            }
+
+            // Remove the modal after embedding or canceling
+            modalContainer.remove();
+        });
+
+        const cancelButton = document.createElement('button');
+        cancelButton.textContent = 'Cancel';
+        cancelButton.setAttribute('class', 'cancelFloatingButton')
+        cancelButton.addEventListener('click', () => {
+            // Remove the modal if canceled
+            modalContainer.remove();
+        });
+
+        // Append elements to the modal container
+        modalContainer.appendChild(inputField);
+        modalContainer.appendChild(embedButton);
+        modalContainer.appendChild(cancelButton);
+
+        // Append the modal container to the body
+        document.body.appendChild(modalContainer);
+    }
+
 };
 
 
@@ -290,47 +332,7 @@ const addToolbarButton = async (name, options, func) => {
 }
 
 
-const underlineButtonConfig = {
-    icon: underlineButton,
-    group: 'text',
-    position: 'beforeend',
-    title: 'Underline',
-    trixAttribute: {
-        type: 'text',
-        data: {
-            styleProperty: 'textDecoration',
-            value: 'underline',
-            inheritable: true
-        }
-    }
-};
-const h1ButtonConfig = {
-    icon: headingButton,
-    group: 'text',
-    position: 'beforeend',
-    customStyle: "width:80px",
-    title: 'Heading 1',
-    trixAttribute: {
-        type: 'block',
-        data: {
-            tagName: 'h1'
-        }
-    }
-};
 
-const h2ButtonConfig = {
-    icon: subheadingButton,
-    group: 'text',
-    position: 'beforeend',
-    customStyle: "width:100px",
-    title: 'Heading 2',
-    trixAttribute: {
-        type: 'block',
-        data: {
-            tagName: 'h2'
-        }
-    }
-};
 
 const embedVideoButtonConfig = {
     icon: `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-paperclip" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M15 7l-6.5 6.5a1.5 1.5 0 0 0 3 3l6.5 -6.5a3 3 0 0 0 -6 -6l-6.5 6.5a4.5 4.5 0 0 0 9 9l6.5 -6.5" /></svg>`,
@@ -344,6 +346,9 @@ addToolbarButton('underline', underlineButtonConfig)
 addToolbarButton('h1', h1ButtonConfig);
 addToolbarButton('h2', h2ButtonConfig);
 addToolbarButton('embedVideo', embedVideoButtonConfig, handleEmbedVideo);
+addToolbarButton('alignLeft', alignLeftButtonConfig);
+addToolbarButton('alignCenter', alignCenterButtonConfig);
+addToolbarButton('alignRight', alignRightButtonConfig);
 
 </script>
 <template>
@@ -356,7 +361,7 @@ addToolbarButton('embedVideo', embedVideoButtonConfig, handleEmbedVideo);
         <trix-editor
             ref="trix"
             :contenteditable="!disabledEditor"
-            :class="['trix-content'] "
+            :class="['trix-content']"
             :placeholder="placeholder"
             :input="computedId"
             @trix-change="handleContentChange"
@@ -412,12 +417,14 @@ addToolbarButton('embedVideo', embedVideoButtonConfig, handleEmbedVideo);
     trix-editor {
         border-radius: 0 0 10px 10px;
         border-color: gray;
-        min-height: 6rem;
+        min-height: 16rem;
         padding: 6px 12px;
         background-color: #fff;
-        a{
+
+        a {
             text-decoration: underline;
         }
+
         s {
             text-decoration: line-through;
         }
@@ -536,13 +543,27 @@ trix-editor .attachment__toolbar .trix-button-row {
     position: absolute;
     padding: 10px;
     background-color: #fff;
-    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-    z-index: 1000;
+    border: 1px #D4D4D8 solid;
+    border-radius: 12px;
+    z-index: 100;
+
+    input {
+        width: 100%;
+        margin-bottom: 10px;
+        border-color: #D4D4D8;
+        border-radius: 12px;
+
+    }
+
+    .cancelFloatingButton,
+    .embedFloatingButton {
+        padding: 0.5rem 1.5rem;
+        border-radius: 12px;
+        background-color: #097982;
+        color: white;
+        margin-right: 0.5rem;
+    }
 }
 
-.embed-modal input {
-    width: 100%;
-    margin-bottom: 10px;
-}
 </style>
 

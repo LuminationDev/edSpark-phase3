@@ -118,7 +118,7 @@ const handleReceiveMediaFromUploader = (media: MediaType[]): void => {
     console.log(media)
     if (media && media.length === 1 && media[0]) {
         state.cover_image = media[0].remoteUrl
-    } else{
+    } else {
         state.cover_image = null
     }
 }
@@ -195,18 +195,24 @@ const statusGenerator = computed(() => {
                 :v$="v$.title"
                 field-id="titleInput"
                 class="my-2"
-                placeholder=""
+                placeholder="Title"
             >
                 <template #label>
                     Title
                 </template>
             </TextInput>
             <div class="ContainerTemp my-2 richContent">
-                <label> Excerpt</label>
-                <TrixRichEditorInput
-                    :src-content="v$.excerpt.$model"
-                    @input="handleTrixInputExcerpt"
-                />
+                <TextInput
+                    v-model="v$.excerpt.$model"
+                    field-id="excerptInput"
+                    :v$="v$.excerpt"
+                    class="my-2"
+                    placeholder="150 characters or less"
+                >
+                    <template #label>
+                        Tagline
+                    </template>
+                </TextInput>
             </div>
             <div class="ContainerTemp my-2 richContent">
                 <label> Content</label>
