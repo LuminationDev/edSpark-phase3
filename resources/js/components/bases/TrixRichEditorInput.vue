@@ -6,7 +6,6 @@ import Trix from 'trix'
 import {computed, ref, watch} from 'vue';
 
 import {headingButton, subheadingButton, underlineButton} from "@/js/components/bases/frontendform/EditorButtonIcon";
-import Profile from "@/js/components/svg/Profile.vue";
 import {API_ENDPOINTS} from "@/js/constants/API_ENDPOINTS";
 
 const props = defineProps({
@@ -73,17 +72,58 @@ const handleInitialContentChange = (newContent, oldContent) => {
 }
 
 const handleEmbedVideo = () => {
-    const videoUrl = prompt('Paste YouTube or Vimeo link:');
-    if (videoUrl) {
-        const attachment = new Trix.Attachment({
-            content: `<iframe src="${videoUrl}" width="560" height="315" frameborder="0" allowfullscreen></iframe>`,
-            contentType: 'application/x-trix-attachment-embed',
-            embedContent: true
-        });
+    // Create a container for the modal
+    const modalContainer = document.createElement('div');
+    modalContainer.classList.add('embed-modal');
 
-        trix.value.editor.insertAttachment(attachment);
-        editorContent.value = trix.value.editor.getDocument().toString();
-    }
+    // Find the position of the embed video button
+    const embedToolbarButton = document.querySelector('.trix-button[data-trix-attribute="embedVideo"]');
+    const buttonRect = embedToolbarButton.getBoundingClientRect();
+
+    // Set the position of the modal
+    modalContainer.style.position = 'absolute';
+    modalContainer.style.top = `${buttonRect.bottom + window.scrollY}px`;
+    modalContainer.style.left = `${buttonRect.left + window.scrollX}px`;
+
+    // Create input field
+    const inputField = document.createElement('input');
+    inputField.setAttribute('type', 'text');
+    inputField.setAttribute('placeholder', 'Insert link to images or video');
+
+    // Create Embed and Cancel buttons
+    const embedButton = document.createElement('button');
+    embedButton.textContent = 'Embed';
+    embedButton.addEventListener('click', () => {
+        const videoUrl = inputField.value;
+        if (videoUrl) {
+            const attachment = new Trix.Attachment({
+                content: `<iframe src="${videoUrl}" width="560" height="315" frameborder="0" allowfullscreen></iframe>`,
+                contentType: 'application/x-trix-attachment-embed',
+                embedContent: true,
+            });
+
+            trix.value.editor.insertAttachment(attachment);
+            editorContent.value = trix.value.editor.getDocument().toString();
+        }
+
+        // Remove the modal after embedding or canceling
+        modalContainer.remove();
+    });
+
+    const cancelButton = document.createElement('button');
+    cancelButton.textContent = 'Cancel';
+    cancelButton.addEventListener('click', () => {
+        // Remove the modal if canceled
+        modalContainer.remove();
+    });
+
+    // Append elements to the modal container
+    modalContainer.appendChild(inputField);
+    modalContainer.appendChild(embedButton);
+    modalContainer.appendChild(cancelButton);
+
+    // Append the modal container to the body
+    document.body.appendChild(modalContainer);
 };
 
 
@@ -293,12 +333,11 @@ const h2ButtonConfig = {
 };
 
 const embedVideoButtonConfig = {
-    icon: subheadingButton,
-    group: 'text',
+    icon: `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-paperclip" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M15 7l-6.5 6.5a1.5 1.5 0 0 0 3 3l6.5 -6.5a3 3 0 0 0 -6 -6l-6.5 6.5a4.5 4.5 0 0 0 9 9l6.5 -6.5" /></svg>`,
+    group: 'block',
     position: 'beforeend',
     title: 'Embed Video',
 };
-
 
 
 addToolbarButton('underline', underlineButtonConfig)
@@ -376,6 +415,64 @@ addToolbarButton('embedVideo', embedVideoButtonConfig, handleEmbedVideo);
         min-height: 6rem;
         padding: 6px 12px;
         background-color: #fff;
+        a{
+            text-decoration: underline;
+        }
+        s {
+            text-decoration: line-through;
+        }
+
+        strong {
+            font-weight: bolder;
+        }
+
+        em {
+            font-style: italic;
+        }
+
+        code {
+            font-family: monospace;
+            background-color: #f0f0f0; /* You can adjust the background color for code blocks */
+            padding: 0.2em 0.4em;
+            border-radius: 4px;
+        }
+
+        pre {
+            white-space: pre-wrap;
+            background-color: #f0f0f0; /* You can adjust the background color for code blocks */
+            padding: 0.5em;
+            border-radius: 4px;
+        }
+
+        blockquote {
+            border-left: 2px solid #999; /* You can adjust the color and width of the blockquote border */
+            margin: 0;
+            padding-left: 1em;
+        }
+
+        ul {
+            list-style: disc;
+
+            ul {
+                list-style: circle;
+            }
+
+            ol {
+                list-style: decimal;
+            }
+        }
+
+        ol {
+            list-style: decimal;
+
+            ul {
+                list-style: disc;
+            }
+
+            ol {
+                list-style: upper-alpha;
+            }
+        }
 
     }
 
@@ -434,5 +531,18 @@ trix-editor .attachment__toolbar .trix-button-row {
     border: 0 !important
 }
 
+
+.embed-modal {
+    position: absolute;
+    padding: 10px;
+    background-color: #fff;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+}
+
+.embed-modal input {
+    width: 100%;
+    margin-bottom: 10px;
+}
 </style>
 
