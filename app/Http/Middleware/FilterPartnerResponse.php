@@ -24,7 +24,6 @@ class FilterPartnerResponse
             $content = json_decode($response->content(), true);
             if (isset($content['data'])) {
                 $content['data'] = array_filter($content['data'], function ($post) use ($user) {
-                    dd($post['author_id']);
                     return $post['author_id'] === $user->id;
                 });
             }

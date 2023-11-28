@@ -78,94 +78,192 @@ const handleInitialContentChange = (newContent, oldContent) => {
     }
 }
 
-const handleEmbedVideo = () => {
-    // do a simple check if the popup is already open
-    if (isPopupOpen.value) {
-        try {
-            const modalContainer = document.querySelector(".embed-modal")
-            modalContainer.remove();
-            isPopupOpen.value = false
-        } catch (e) {
-            console.log(e)
-        }
-    } else {
-        // Create a container for the modal
-        const modalContainer = document.createElement('div');
-        modalContainer.classList.add('embed-modal');
+// const handleEmbedVideo = () => {
+//     // do a simple check if the popup is already open
+//     if (isPopupOpen.value) {
+//         try {
+//             const modalContainer = document.querySelector(".embed-modal")
+//             modalContainer.remove();
+//             isPopupOpen.value = false
+//         } catch (e) {
+//             console.log(e)
+//         }
+//     } else {
+//         // Create a container for the modal
+//         const modalContainer = document.createElement('div');
+//         modalContainer.classList.add('embed-modal');
+//
+//         // Find the position of the embed video button
+//         const embedToolbarButton = document.querySelector('.trix-button[data-trix-attribute="embedVideo"]');
+//         const buttonRect = embedToolbarButton.getBoundingClientRect();
+//
+//         // Set the position of the modal
+//         modalContainer.style.position = 'absolute';
+//         modalContainer.style.top = `${buttonRect.bottom + window.scrollY}px`;
+//         modalContainer.style.left = `${buttonRect.left + window.scrollX}px`;
+//
+//         // Create input field
+//         const inputField = document.createElement('input');
+//         inputField.setAttribute('type', 'text');
+//         inputField.setAttribute('placeholder', 'Insert link to images or video');
+//
+//         // Create Embed and Cancel buttons
+//         const embedButton = document.createElement('button');
+//         embedButton.textContent = 'Embed';
+//         embedButton.setAttribute('class', 'embedFloatingButton')
+//         isPopupOpen.value = true
+//         embedButton.addEventListener('click', () => {
+//             const inputUrl = inputField.value;
+//             if (inputUrl) {
+//                 let videoUrl;
+//                 // Check if the user input is a full YouTube or Vimeo URL
+//                 const youtubeMatch = inputUrl.match(/^(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/(?:[^\/\n\s]+\/\S+\/|(?:v|e(?:mbed)?)\/|\S*?[?&]v=)|youtu\.be\/)([a-zA-Z0-9_-]{11})/);
+//                 const vimeoMatch = inputUrl.match(/^(?:https?:\/\/)?(?:www\.)?(?:vimeo\.com\/(?:channels\/(?:\w+\/)?|(\d+)\/)?)(\d+)(?:$|\/|\?)/);
+//
+//                 if (youtubeMatch) {
+//                     videoUrl = `https://www.youtube.com/embed/${youtubeMatch[1]}`;
+//                 } else if (vimeoMatch) {
+//                     videoUrl = `https://player.vimeo.com/video/${vimeoMatch[2]}`;
+//                 } else {
+//                     // Check if the user input is an embed code
+//                     const embedMatch = inputUrl.match(/<iframe[^>]*src=["']([^"']+)/);
+//                     if (embedMatch) {
+//                         videoUrl = embedMatch[1];
+//                     } else {
+//                         // If the input doesn't match any known patterns, assume it's a direct URL
+//                         videoUrl = inputUrl;
+//                     }
+//                 }
+//                 const attachment = new Trix.Attachment({
+//                     content: `<iframe src="${videoUrl}" width="560" height="315" frameborder="0" allowfullscreen></iframe>`,
+//                     contentType: 'application/x-trix-attachment-embed',
+//                     embedContent: true,
+//                 });
+//
+//
+//                 trix.value.editor.insertAttachment(attachment);
+//                 editorContent.value = trix.value.editor.getDocument().toString();
+//             }
+//
+//             // Remove the modal after embedding or canceling
+//             modalContainer.remove();
+//         });
+//
+//         const cancelButton = document.createElement('button');
+//         cancelButton.textContent = 'Cancel';
+//         cancelButton.setAttribute('class', 'cancelFloatingButton')
+//         cancelButton.addEventListener('click', () => {
+//             // Remove the modal if canceled
+//             modalContainer.remove();
+//         });
+//
+//         // Append elements to the modal container
+//         modalContainer.appendChild(inputField);
+//         modalContainer.appendChild(embedButton);
+//         modalContainer.appendChild(cancelButton);
+//
+//         // Append the modal container to the body
+//         document.body.appendChild(modalContainer);
+//     }
+//
+// };
 
-        // Find the position of the embed video button
-        const embedToolbarButton = document.querySelector('.trix-button[data-trix-attribute="embedVideo"]');
-        const buttonRect = embedToolbarButton.getBoundingClientRect();
+const closeEmbedModal = () => {
+    try {
+        const modalContainer = document.querySelector(".embed-modal");
+        modalContainer.remove();
+        isPopupOpen.value = false;
+    } catch (e) {
+        console.log(e);
+    }
+};
 
-        // Set the position of the modal
-        modalContainer.style.position = 'absolute';
-        modalContainer.style.top = `${buttonRect.bottom + window.scrollY}px`;
-        modalContainer.style.left = `${buttonRect.left + window.scrollX}px`;
+const createEmbedModal = (buttonRect) => {
+    const modalContainer = document.createElement('div');
+    modalContainer.classList.add('embed-modal');
+    modalContainer.style.position = 'absolute';
+    modalContainer.style.top = `${buttonRect.bottom + window.scrollY}px`;
+    modalContainer.style.left = `${buttonRect.left + window.scrollX}px`;
 
-        // Create input field
-        const inputField = document.createElement('input');
-        inputField.setAttribute('type', 'text');
-        inputField.setAttribute('placeholder', 'Insert link to images or video');
+    const inputField = createInputField();
+    const embedButton = createEmbedButton(inputField);
+    const cancelButton = createCancelButton(modalContainer);
 
-        // Create Embed and Cancel buttons
-        const embedButton = document.createElement('button');
-        embedButton.textContent = 'Embed';
-        embedButton.setAttribute('class', 'embedFloatingButton')
-        isPopupOpen.value = true
-        embedButton.addEventListener('click', () => {
-            const inputUrl = inputField.value;
-            if (inputUrl) {
-                let videoUrl;
-                // Check if the user input is a full YouTube or Vimeo URL
-                const youtubeMatch = inputUrl.match(/^(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/(?:[^\/\n\s]+\/\S+\/|(?:v|e(?:mbed)?)\/|\S*?[?&]v=)|youtu\.be\/)([a-zA-Z0-9_-]{11})/);
-                const vimeoMatch = inputUrl.match(/^(?:https?:\/\/)?(?:www\.)?(?:vimeo\.com\/(?:channels\/(?:\w+\/)?|(\d+)\/)?)(\d+)(?:$|\/|\?)/);
+    modalContainer.appendChild(inputField);
+    modalContainer.appendChild(embedButton);
+    modalContainer.appendChild(cancelButton);
 
-                if (youtubeMatch) {
-                    videoUrl = `https://www.youtube.com/embed/${youtubeMatch[1]}`;
-                } else if (vimeoMatch) {
-                    videoUrl = `https://player.vimeo.com/video/${vimeoMatch[2]}`;
-                } else {
-                    // Check if the user input is an embed code
-                    const embedMatch = inputUrl.match(/<iframe[^>]*src=["']([^"']+)/);
-                    if (embedMatch) {
-                        videoUrl = embedMatch[1];
-                    } else {
-                        // If the input doesn't match any known patterns, assume it's a direct URL
-                        videoUrl = inputUrl;
-                    }
-                }
-                const attachment = new Trix.Attachment({
-                    content: `<iframe src="${videoUrl}" width="560" height="315" frameborder="0" allowfullscreen></iframe>`,
-                    contentType: 'application/x-trix-attachment-embed',
-                    embedContent: true,
-                });
+    document.body.appendChild(modalContainer);
+    isPopupOpen.value = true;
+};
 
+const createInputField = () => {
+    const inputField = document.createElement('input');
+    inputField.setAttribute('type', 'text');
+    inputField.setAttribute('placeholder', 'Insert link to images or video');
+    return inputField;
+};
 
-                trix.value.editor.insertAttachment(attachment);
-                editorContent.value = trix.value.editor.getDocument().toString();
-            }
+const createEmbedButton = (inputField) => {
+    const embedButton = document.createElement('button');
+    embedButton.textContent = 'Embed';
+    embedButton.setAttribute('class', 'embedFloatingButton');
+    embedButton.addEventListener('click', () => handleEmbedButtonClick(inputField));
+    return embedButton;
+};
 
-            // Remove the modal after embedding or canceling
-            modalContainer.remove();
-        });
+const createCancelButton = (modalContainer) => {
+    const cancelButton = document.createElement('button');
+    cancelButton.textContent = 'Cancel';
+    cancelButton.setAttribute('class', 'cancelFloatingButton');
+    cancelButton.addEventListener('click', () => modalContainer.remove());
+    return cancelButton;
+};
 
-        const cancelButton = document.createElement('button');
-        cancelButton.textContent = 'Cancel';
-        cancelButton.setAttribute('class', 'cancelFloatingButton')
-        cancelButton.addEventListener('click', () => {
-            // Remove the modal if canceled
-            modalContainer.remove();
-        });
-
-        // Append elements to the modal container
-        modalContainer.appendChild(inputField);
-        modalContainer.appendChild(embedButton);
-        modalContainer.appendChild(cancelButton);
-
-        // Append the modal container to the body
-        document.body.appendChild(modalContainer);
+const handleEmbedButtonClick = (inputField) => {
+    const inputUrl = inputField.value;
+    if (inputUrl) {
+        const videoUrl = getVideoUrl(inputUrl);
+        const attachment = createVideoAttachment(videoUrl);
+        trix.value.editor.insertAttachment(attachment);
+        editorContent.value = trix.value.editor.getDocument().toString();
     }
 
+    // Remove the modal after embedding or canceling
+    closeEmbedModal();
+};
+
+const getVideoUrl = (inputUrl) => {
+    const youtubeMatch = inputUrl.match(/^(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/(?:[^\/\n\s]+\/\S+\/|(?:v|e(?:mbed)?)\/|\S*?[?&]v=)|youtu\.be\/)([a-zA-Z0-9_-]{11})/);
+    const vimeoMatch = inputUrl.match(/^(?:https?:\/\/)?(?:www\.)?(?:vimeo\.com\/(?:channels\/(?:\w+\/)?|(\d+)\/)?)(\d+)(?:$|\/|\?)/);
+
+    if (youtubeMatch) {
+        return `https://www.youtube.com/embed/${youtubeMatch[1]}`;
+    } else if (vimeoMatch) {
+        return `https://player.vimeo.com/video/${vimeoMatch[2]}`;
+    } else {
+        const embedMatch = inputUrl.match(/<iframe[^>]*src=["']([^"']+)/);
+        return embedMatch ? embedMatch[1] : inputUrl;
+    }
+};
+
+const createVideoAttachment = (videoUrl) => {
+    return new Trix.Attachment({
+        content: `<iframe src="${videoUrl}" width="560" height="315" frameborder="0" allowfullscreen></iframe>`,
+        contentType: 'application/x-trix-attachment-embed',
+        embedContent: true,
+    });
+};
+
+// Now, you can use these functions in your main function
+const handleEmbedVideo = () => {
+    if (isPopupOpen.value) {
+        closeEmbedModal();
+    } else {
+        const embedToolbarButton = document.querySelector('.trix-button[data-trix-attribute="embedVideo"]');
+        const buttonRect = embedToolbarButton.getBoundingClientRect();
+        createEmbedModal(buttonRect);
+    }
 };
 
 
@@ -284,6 +382,8 @@ const isDisabled = computed(() => {
 watch(editorContent, emitEditorState)
 watch(initialContent, handleInitialContentChange)
 watch(isDisabled, decorateDisabledEditor)
+
+
 /** Extra Toolbar Buttons **/
 const buildButtonHtml = (options, name, func) => {
     const style = options.customStyle ? `style="${options.customStyle}"` : '';
@@ -313,6 +413,7 @@ const addToolbarButton = async (name, options, func) => {
     } = options;
 
     whenInitalized(() => {
+
         if (trixAttribute?.type && trixAttribute?.data && Trix.config[trixAttribute.type + 'Attributes']) {
             Trix.config[trixAttribute.type + 'Attributes'][name] = trixAttribute.data;
         }
@@ -329,10 +430,7 @@ const addToolbarButton = async (name, options, func) => {
             .querySelector(`.trix-button-group.trix-button-group--${group}-tools`)
             .insertAdjacentHTML(position, buildButtonHtml({...otherOptions, icon, html: processedHtml}, name, func));
     });
-}
-
-
-
+};
 
 const embedVideoButtonConfig = {
     icon: `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-paperclip" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M15 7l-6.5 6.5a1.5 1.5 0 0 0 3 3l6.5 -6.5a3 3 0 0 0 -6 -6l-6.5 6.5a4.5 4.5 0 0 0 9 9l6.5 -6.5" /></svg>`,
@@ -479,6 +577,19 @@ addToolbarButton('alignRight', alignRightButtonConfig);
             ol {
                 list-style: upper-alpha;
             }
+        }
+
+        center-div {
+            display: block;
+            text-align: center;
+        }
+        left-div{
+            display: block;
+            text-align: left;
+        }
+        right-div{
+            display: block;
+            text-align: right;
         }
 
     }

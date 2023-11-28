@@ -6,11 +6,15 @@ const alignLeftButtonConfig = {
     position: 'beforeend',
     title: 'Align Left',
     trixAttribute: {
-        type: 'text-align',
+        type: 'block',
         data: {
             styleProperty: 'text-align',
             value: 'left',
-            inheritable: true
+            inheritable: true,
+            tagName: 'left-div',
+            parse: false,
+            nestable: false,
+            exclusive: true,
         }
     }
 };
@@ -21,11 +25,15 @@ const alignCenterButtonConfig = {
     position: 'beforeend',
     title: 'Align Center',
     trixAttribute: {
-        type: 'text-align',
+        type: 'block',
         data: {
             styleProperty: 'text-align',
             value: 'center',
-            inheritable: true
+            inheritable: true,
+            tagName: 'center-div',
+            parse: false,
+            nestable: false,
+            exclusive: true,
         }
     }
 };
@@ -36,11 +44,15 @@ const alignRightButtonConfig = {
     position: 'beforeend',
     title: 'Align Right',
     trixAttribute: {
-        type: 'text-align',
+        type: 'block',
         data: {
             styleProperty: 'text-align',
             value: 'right',
-            inheritable: true
+            inheritable: true,
+            tagName: 'right-div',
+            parse: false,
+            nestable: false,
+            exclusive: true,
         }
     }
 };
