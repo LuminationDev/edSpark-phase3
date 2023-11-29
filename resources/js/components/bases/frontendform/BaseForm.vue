@@ -1,19 +1,17 @@
 <script setup lang="ts">
 import useVuelidate from "@vuelidate/core";
 import {required} from "@vuelidate/validators";
-import {watchOnce} from "@vueuse/core";
 import {storeToRefs} from "pinia";
-import {capitalize, computed, onBeforeMount, onMounted, reactive, ref} from "vue";
+import {capitalize, computed, onBeforeMount, reactive, ref} from "vue";
 import {useRouter} from "vue-router";
 import {toast} from "vue3-toastify";
 
+import CKEditorRichText from "@/js/components/bases/frontendform/CKEditor/CKEditorRichText.vue";
 import ImageUploaderInput, {MediaType} from "@/js/components/bases/ImageUploaderInput.vue";
 import TagsInput from "@/js/components/bases/TagsInput.vue";
 import TextInput from "@/js/components/bases/TextInput.vue";
-import TrixRichEditorInput from "@/js/components/bases/TrixRichEditorInput.vue";
 import GenericButton from "@/js/components/button/GenericButton.vue";
 import {FormStatus, useAutoSave} from "@/js/composables/useAutoSave";
-import {imageURL} from "@/js/constants/serverUrl";
 import {differenceObjects} from "@/js/helpers/jsonHelpers";
 import {autoSaveService} from "@/js/service/autoSaveService";
 import {formService} from "@/js/service/formService";
@@ -21,7 +19,6 @@ import {useUserStore} from "@/js/stores/useUserStore";
 import {AdviceAdditionalData} from "@/js/types/AdviceTypes";
 import {EventAdditionalData} from "@/js/types/EventTypes";
 import {SoftwareAdditionalData} from "@/js/types/SoftwareTypes";
-
 
 const props = defineProps({
     additionalData: {
@@ -48,6 +45,8 @@ enum FormAction {
     CREATE = 'CREATE',
     EDIT = 'EDIT'
 }
+
+
 
 
 const emits = defineEmits<{
@@ -216,11 +215,12 @@ const statusGenerator = computed(() => {
             </div>
             <div class="ContainerTemp my-2 richContent">
                 <label> Content</label>
-                <TrixRichEditorInput
-                    :src-content="v$.content.$model"
-                    class="border-gray-300"
-                    @input="handleTrixInputContent"
-                />
+                <!--                <TrixRichEditorInput-->
+                <!--                    :src-content="v$.content.$model"-->
+                <!--                    class="border-gray-300"-->
+                <!--                    @input="handleTrixInputContent"-->
+                <!--                />-->
+                <CKEditorRichText :src-content="v$.content.$model" />
             </div>
             <div class="containerTempImageUploader my-2">
                 <label> Cover image (1 image file)</label>

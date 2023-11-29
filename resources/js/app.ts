@@ -6,6 +6,7 @@ import './bootstrap';
 import 'vue3-toastify/dist/index.css';
 import 'tippy.js/dist/tippy.css'
 
+import CKEditor from '@ckeditor/ckeditor5-vue';
 import {library} from '@fortawesome/fontawesome-svg-core'
 import {fas} from '@fortawesome/free-solid-svg-icons'
 import {FontAwesomeIcon} from '@fortawesome/vue-fontawesome'
@@ -20,7 +21,6 @@ import Vue3Toastify, {ToastContainerOptions} from "vue3-toastify";
 import App from './App.vue';
 import router from './router';
 
-
 const pinia = createPinia();
 // const authStore = useAuthStore(pinia);
 const tippyOptions: any = {
@@ -29,8 +29,7 @@ const tippyOptions: any = {
     defaultProps: {placement: 'top', hideOnClick: false},
 }
 
-library.add(fas
-)
+library.add(fas)
 createApp(App)
     .use(pinia)
     .use(router)
@@ -44,5 +43,6 @@ createApp(App)
     .use(VueTippy, tippyOptions)
     .use(Vue3Toastify, {autoClose: 3000} as ToastContainerOptions)
     .use(VueDragsScroll)
+    .use( CKEditor )
     .component('font-awesome-icon', FontAwesomeIcon)
     .mount('#app');

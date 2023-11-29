@@ -178,6 +178,7 @@ const closeEmbedModal = () => {
     }
 };
 
+
 const createEmbedModal = (buttonRect) => {
     const modalContainer = document.createElement('div');
     modalContainer.classList.add('embed-modal');

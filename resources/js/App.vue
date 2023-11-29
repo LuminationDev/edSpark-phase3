@@ -15,7 +15,6 @@ import {useAuthStore} from "@/js/stores/useAuthStore";
 import {useUserStore} from "@/js/stores/useUserStore";
 import {useWindowStore} from "@/js/stores/useWindowStore";
 
-
 const router = useRouter();
 
 const userStore = useUserStore()
