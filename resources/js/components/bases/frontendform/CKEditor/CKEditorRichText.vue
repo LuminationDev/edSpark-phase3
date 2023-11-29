@@ -14,17 +14,21 @@ import {ref} from "vue";
 
 const editor = Editor
 const editorContent = ref(props.srcContent)
-const intialContent = ref(null)
-const editorConfig = {
+const initialContent = ref(null)
+const editorConfig = {}
+
+const handleInputEditor = () =>{
+    console.log(initialContent.value)
 }
 
 </script>
 
 <template>
     <Ckeditor
-        v-model="intialContent"
+        v-model="initialContent"
         :editor="editor"
         :config="editorConfig"
+        @input="handleInputEditor"
     />
 </template>
 <style>
