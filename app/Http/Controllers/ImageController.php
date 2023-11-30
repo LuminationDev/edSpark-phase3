@@ -115,5 +115,46 @@ class ImageController extends Controller
             ]);
         }
     }
+
+
+    public function imageUploadTinyMCEjs(Request $request)
+    {
+        if ($request->isMethod('post')) {
+            $data = $request->all();
+            $imagePath = "";
+            $currPath = "";
+            $image = '';
+
+            if ($data) {
+                // dd(array_values($data)[0]);
+                $type = '';
+                $file = array_values($data)[0];
+                $prefix = "edspark-" . $type;
+                $imgName = '';
+
+                if ($file->getMimeType() == 'video/mp4') {
+                    $type = 'video';
+                    $image = $data['file'];
+                    $imgName = $prefix . '-' . md5(Str::random(30) . time() . '_' . $image) . '.' . $data['file']->extension();
+                } else {
+                    $type = 'image';
+                    $image = (array_key_exists('file', $data) ? $data['file'] : NULL) ?? (array_key_exists('image', $data) ? $data['image'] : NULL);
+                    $imgName = $prefix . '-' . md5(Str::random(30) . time() . '_' . $image) . '.' . $image->getClientOriginalExtension();
+                }
+                $image->storeAs('public/uploads/' . $type, $imgName);
+                $imagePath .= "/uploads/" . $type . "/" . $imgName;
+            }
+
+            return response()->json([
+                "success" => 1,
+                "file" => [
+                    "url" => env('VITE_SERVER_IMAGE_API') . $imagePath,
+                    "title" => $prefix . $image->extension(),
+                    "extension" => $image->getClientOriginalExtension()
+                ],
+                "location" => env('VITE_SERVER_IMAGE_API') . $imagePath
+            ]);
+        }
+    }
 }
 

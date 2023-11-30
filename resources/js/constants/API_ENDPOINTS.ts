@@ -126,7 +126,8 @@ export const APP_ENDPOINTS = {
 export const IMAGE_ENDPOINTS = {
     IMAGE: {
         UPLOAD_IMAGE: `${imageUploadURL}/imageUpload`,
-        IMAGE_UPLOAD_EDITOR_JS: `${imageUploadURL}/imageUploadEditorjs`
+        IMAGE_UPLOAD_EDITOR_JS: `${imageUploadURL}/imageUploadEditorjs`,
+        IMAGE_UPLOAD_TINYMCE: `${imageUploadURL}/imageUploadTinyMCEjs`
 
     }
 }
