@@ -7,6 +7,7 @@ import {useRouter} from "vue-router";
 import {toast} from "vue3-toastify";
 
 import CKEditorRichText from "@/js/components/bases/frontendform/CKEditor/CKEditorRichText.vue";
+import TinyMceRichTextInput from "@/js/components/bases/frontendform/TinyMceEditor/TinyMceRichTextInput.vue";
 import ImageUploaderInput, {MediaType} from "@/js/components/bases/ImageUploaderInput.vue";
 import TagsInput from "@/js/components/bases/TagsInput.vue";
 import TextInput from "@/js/components/bases/TextInput.vue";
@@ -169,6 +170,11 @@ const statusGenerator = computed(() => {
     }
 
 })
+
+const handleTinyRichContent = (data) =>{
+    console.log('base form received ' + data)
+    v$.value.content.$model = data
+}
 </script>
 
 <template>
@@ -220,7 +226,11 @@ const statusGenerator = computed(() => {
                 <!--                    class="border-gray-300"-->
                 <!--                    @input="handleTrixInputContent"-->
                 <!--                />-->
-                <CKEditorRichText :src-content="v$.content.$model" />
+                <!--                <CKEditorRichText :src-content="v$.content.$model" />-->
+                <TinyMceRichTextInput
+                    :src-content="v$.content.$model"
+                    @emitTinyRichContent="handleTinyRichContent"
+                />
             </div>
             <div class="containerTempImageUploader my-2">
                 <label> Cover image (1 image file)</label>

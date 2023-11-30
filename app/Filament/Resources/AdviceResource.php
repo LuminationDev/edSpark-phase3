@@ -20,6 +20,7 @@ use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
+use Mohamedsabil83\FilamentFormsTinyeditor\Components\TinyEditor;
 use SplFileInfo;
 
 use App\Helpers\EdSparkRolesHelpers;
@@ -47,10 +48,13 @@ class AdviceResource extends Resource
                     ->label('Title')
                     ->required()
                     ->maxLength(255),
-                Forms\Components\RichEditor::make('post_content')
+//                Forms\Components\RichEditor::make('post_content')
+//                    ->label('Content')
+//                    ->required()
+//                    ->maxLength(65535),
+                TinyEditor::make('post_content')
                     ->label('Content')
-                    ->required()
-                    ->maxLength(65535),
+                    ->required(),
                 Forms\Components\RichEditor::make('post_excerpt')
                     ->label('Excerpt')
                     ->disableToolbarButtons(['attachFiles']),
