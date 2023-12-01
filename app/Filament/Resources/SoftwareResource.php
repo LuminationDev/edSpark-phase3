@@ -45,14 +45,13 @@ class SoftwareResource extends Resource
                             ->label('Title')
                             ->required()
                             ->maxLength(255),
+                        Forms\Components\TextInput::make('post_excerpt')
+                            ->label('Tagline')
+                            ->placeholder('150 characters or less')
+                            ->maxLength(150),
                         Forms\Components\RichEditor::make('post_content')
                             ->label('Content')
                             ->required(),
-                        Forms\Components\RichEditor::make('post_excerpt')
-                            ->label('Excerpt')
-                            ->disableToolbarButtons([
-                                'attachFiles',
-                            ]),
                         Forms\Components\FileUpload::make('cover_image')
                             ->preserveFilenames()
                             ->disk('public')

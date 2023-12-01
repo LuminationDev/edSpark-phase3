@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import useVuelidate from "@vuelidate/core";
-import {required} from "@vuelidate/validators";
+import {maxLength, required} from "@vuelidate/validators";
 import {storeToRefs} from "pinia";
 import {capitalize, computed, onBeforeMount, reactive, ref} from "vue";
 import {useRouter} from "vue-router";
@@ -48,8 +48,6 @@ enum FormAction {
 }
 
 
-
-
 const emits = defineEmits<{
     (e: 'baseEmitsAddtContent', content): void
 }>()
@@ -66,7 +64,10 @@ const state = reactive({
 
 const rules = {
     title: {required},
-    excerpt: {required},
+    excerpt: {
+        required,
+        maxLength: maxLength(150)
+    },
     content: {required},
     cover_image: {required},
     tags: {}
@@ -171,7 +172,7 @@ const statusGenerator = computed(() => {
 
 })
 
-const handleTinyRichContent = (data) =>{
+const handleTinyRichContent = (data) => {
     console.log('base form received ' + data)
     v$.value.content.$model = data
 }
