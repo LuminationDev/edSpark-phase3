@@ -13,9 +13,14 @@ return [
     'profiles' => [
 
         'default' => [
-            'plugins' => 'advlist autoresize codesample directionality emoticons fullscreen hr image imagetools link lists media table toc wordcount',
-            'toolbar' => 'undo redo removeformat | formatselect fontsizeselect | bold italic | rtl ltr | alignjustify alignright aligncenter alignleft | numlist bullist | forecolor backcolor | blockquote table toc hr | image link media codesample emoticons | wordcount fullscreen',
+            'menubar' => true,
+            'plugins' => 'advlist autoresize codesample directionality emoticons fullscreen hr image imagetools link lists media table wordcount',
+            'toolbar' => 'undo redo removeformat | formatselect fontsizeselect | bold italic | alignjustify alignright aligncenter alignleft | numlist bullist | forecolor backcolor | blockquote table toc hr | image link media codesample emoticons | wordcount fullscreen',
             'upload_directory' => null,
+            'custom_configs' => [
+                'toolbar_sticky' => true,
+                'toolbar_sticky_offset' => 65
+            ]
         ],
 
         'simple' => [

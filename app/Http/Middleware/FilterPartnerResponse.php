@@ -18,13 +18,13 @@ class FilterPartnerResponse
     {
         $response = $next($request);
 
-        if (Auth::check()) {
+        if (Auth::check() && Auth::user()->role->role_name === 'partner') {
             // If the user is a partner, filter the posts by their own ID
             $user = Auth::user();
             $content = json_decode($response->content(), true);
             if (isset($content['data'])) {
                 $content['data'] = array_filter($content['data'], function ($post) use ($user) {
-                    return $post['author_id'] === $user->id;
+                    return $post === $user->id;
                 });
             }
 

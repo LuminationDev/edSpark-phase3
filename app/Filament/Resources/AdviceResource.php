@@ -53,7 +53,9 @@ class AdviceResource extends Resource
 //                    ->required()
 //                    ->maxLength(65535),
                 TinyEditor::make('post_content')
-                    ->label('Content')
+                    ->label('Content')->fileAttachmentsDisk('local')
+                    ->fileAttachmentsVisibility('public')
+                    ->fileAttachmentsDirectory('public/uploads/advice')
                     ->required(),
                 Forms\Components\RichEditor::make('post_excerpt')
                     ->label('Excerpt')

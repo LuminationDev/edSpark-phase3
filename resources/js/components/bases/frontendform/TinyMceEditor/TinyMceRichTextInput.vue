@@ -1,11 +1,5 @@
 <script setup>
-// import 'tinymce/plugins/advlist';
-// import 'tinymce/plugins/code';
-// import 'tinymce/plugins/emoticons';
-// import 'tinymce/plugins/emoticons/js/emojis';
-// import 'tinymce/plugins/link';
-// import 'tinymce/plugins/lists';
-// import 'tinymce/plugins/table';
+
 
 import Editor from '@tinymce/tinymce-vue'
 import {watchDebounced} from "@vueuse/core";
@@ -36,11 +30,14 @@ watchDebounced(editorContent, emitContent,  {debounce: 200, maxWait: 1000})
     <editor
         v-model="editorContent"
         :init="{
-            height:500,
+            min_height: 300,
             menubar: false,
-            plugins: 'advlist autoresize codesample directionality emoticons fullscreen image imagetools link lists media table wordcount',
-            toolbar: 'undo redo removeformat | formatselect fontsizeselect | bold italic | alignjustify  aligncenter alignleft alignright | numlist bullist | forecolor backcolor | blockquote table hr | image link media codesample emoticons | wordcount fullscreen',
-            images_upload_url: IMAGE_ENDPOINTS.IMAGE.IMAGE_UPLOAD_TINYMCE
+            plugins: 'advlist autoresize codesample directionality emoticons fullscreen image link lists media table wordcount',
+            toolbar: 'undo redo removeformat |  styles fontfamily fontsize | bold italic | alignjustify alignleft aligncenter  alignright | numlist bullist | forecolor backcolor | blockquote table hr | image link media codesample emoticons | wordcount fullscreen',
+            images_upload_url: IMAGE_ENDPOINTS.IMAGE.IMAGE_UPLOAD_TINYMCE,
+            convert_urls: false,
+            toolbar_sticky: true,
+            toolbar_sticky_offset: 45
         }"
     />
 </template>
