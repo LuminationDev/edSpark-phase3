@@ -15,11 +15,16 @@ return [
         'default' => [
             'menubar' => true,
             'plugins' => 'advlist autoresize codesample directionality emoticons fullscreen hr image imagetools link lists media table wordcount',
-            'toolbar' => 'undo redo removeformat | formatselect fontsizeselect | bold italic | alignjustify alignright aligncenter alignleft | numlist bullist | forecolor backcolor | blockquote table toc hr | image link media codesample emoticons | wordcount fullscreen',
-            'upload_directory' => null,
+            'toolbar' => 'undo redo removeformat | formatselect fontsizeselect | bold italic | alignjustify alignright aligncenter alignleft | numlist bullist | forecolor backcolor | blockquote table toc hr | image link media codesample emoticons | wordcount',
+            'upload_directory' => 'uploads/advice',
+            'images_upload_url' => env('VITE_SERVER_IMAGE_API') . '/imageUploadTinyMCEjs',
             'custom_configs' => [
                 'toolbar_sticky' => true,
-                'toolbar_sticky_offset' => 65
+                'toolbar_sticky_offset' => 65,
+                'image_caption' => true,
+                'image_advtab' => true,
+                'images_upload_url' => env('VITE_SERVER_IMAGE_API') . '/imageUploadTinyMCEjs',
+                'convert_urls'=> false,
             ]
         ],
 

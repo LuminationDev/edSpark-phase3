@@ -48,18 +48,16 @@ class AdviceResource extends Resource
                     ->label('Title')
                     ->required()
                     ->maxLength(255),
-//                Forms\Components\RichEditor::make('post_content')
-//                    ->label('Content')
-//                    ->required()
-//                    ->maxLength(65535),
+                Forms\Components\TextInput::make('post_excerpt')
+                    ->label('Tagline')
+                    ->placeholder('150 characters or less')
+                    ->maxLength(150),
                 TinyEditor::make('post_content')
                     ->label('Content')->fileAttachmentsDisk('local')
                     ->fileAttachmentsVisibility('public')
                     ->fileAttachmentsDirectory('public/uploads/advice')
                     ->required(),
-                Forms\Components\RichEditor::make('post_excerpt')
-                    ->label('Excerpt')
-                    ->disableToolbarButtons(['attachFiles']),
+
                 Forms\Components\FileUpload::make('cover_image')
                     ->preserveFilenames()
                     ->disk('public')
