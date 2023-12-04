@@ -14,8 +14,8 @@ return [
 
         'default' => [
             'menubar' => true,
-            'plugins' => 'advlist autoresize codesample directionality emoticons fullscreen hr image imagetools link lists media table wordcount',
-            'toolbar' => 'undo redo removeformat | formatselect fontsizeselect | bold italic | alignjustify alignright aligncenter alignleft | numlist bullist | forecolor backcolor | blockquote table toc hr | image link media codesample emoticons | wordcount',
+            'plugins' => 'advlist autoresize codesample directionality emoticons fullscreen hr image imagetools link lists paste media table wordcount',
+            'toolbar' => 'undo redo removeformat | formatselect fontsizeselect | bold italic | alignjustify alignright aligncenter alignleft lineheight | numlist bullist | forecolor backcolor | blockquote table toc hr | image link media codesample emoticons | wordcount',
             'upload_directory' => 'uploads/advice',
             'images_upload_url' => env('VITE_SERVER_IMAGE_API') . '/imageUploadTinyMCEjs',
             'custom_configs' => [
@@ -24,7 +24,12 @@ return [
                 'image_caption' => true,
                 'image_advtab' => true,
                 'images_upload_url' => env('VITE_SERVER_IMAGE_API') . '/imageUploadTinyMCEjs',
-                'convert_urls'=> false,
+                'convert_urls' => false,
+                'paste_retain_style_properties' => 'color font-size',
+                'content_css' => '/css/filament/font/font.css',
+                'content_style' => "body {font-family: MuseoSans;} html {font-family: MuseoSans;}",
+                'image_file_types' => 'jpg,svg,webp',
+                'paste_preprocess'=> "myPastePreprocessFunction"
             ]
         ],
 

@@ -230,7 +230,7 @@ const handleTinyRichContent = (data) => {
                 <!--                <CKEditorRichText :src-content="v$.content.$model" />-->
                 <TinyMceRichTextInput
                     :src-content="v$.content.$model"
-                    @emitTinyRichContent="handleTinyRichContent"
+                    @emit-tiny-rich-content="handleTinyRichContent"
                 />
             </div>
             <div class="containerTempImageUploader my-2">

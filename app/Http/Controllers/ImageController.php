@@ -60,8 +60,8 @@ class ImageController extends Controller
             return response()->json([
                 "success" => 1,
                 "file" => [
-                    "url" => env('VITE_SERVER_IMAGE_API') .'/'. $imagePath,
-                    "title" => 'Video.mp4',
+                    "url" => $imagePath,
+                    "title" => $imgName,
                     "extension" => $image->getClientOriginalExtension()
                 ]
             ]);
@@ -108,7 +108,7 @@ class ImageController extends Controller
             return response()->json([
                 "success" => 1,
                 "file" => [
-                    "url" => env('VITE_SERVER_IMAGE_API'). '/' . $imagePath,
+                    "url" => $imagePath,
                     "title" => $prefix . $image->extension(),
                     "extension" => $image->getClientOriginalExtension()
                 ]
@@ -148,11 +148,11 @@ class ImageController extends Controller
             return response()->json([
                 "success" => 1,
                 "file" => [
-                    "url" => env('VITE_SERVER_IMAGE_API') . '/' . $imagePath,
+                    "url" => $imagePath,
                     "title" => $prefix . $image->extension(),
                     "extension" => $image->getClientOriginalExtension()
                 ],
-                "location" => env('VITE_SERVER_IMAGE_API'). '/'  . $imagePath
+                "location" => env('VITE_SERVER_IMAGE_API') . '/' . $imagePath
             ]);
         }
     }
