@@ -1,19 +1,18 @@
 <script setup lang="ts">
 import useVuelidate from "@vuelidate/core";
-import {required} from "@vuelidate/validators";
-import {watchOnce} from "@vueuse/core";
+import {maxLength, required} from "@vuelidate/validators";
 import {storeToRefs} from "pinia";
-import {capitalize, computed, onBeforeMount, onMounted, reactive, ref} from "vue";
+import {capitalize, computed, onBeforeMount, reactive, ref} from "vue";
 import {useRouter} from "vue-router";
 import {toast} from "vue3-toastify";
 
+import CKEditorRichText from "@/js/components/bases/frontendform/CKEditor/CKEditorRichText.vue";
+import TinyMceRichTextInput from "@/js/components/bases/frontendform/TinyMceEditor/TinyMceRichTextInput.vue";
 import ImageUploaderInput, {MediaType} from "@/js/components/bases/ImageUploaderInput.vue";
 import TagsInput from "@/js/components/bases/TagsInput.vue";
 import TextInput from "@/js/components/bases/TextInput.vue";
-import TrixRichEditorInput from "@/js/components/bases/TrixRichEditorInput.vue";
 import GenericButton from "@/js/components/button/GenericButton.vue";
 import {FormStatus, useAutoSave} from "@/js/composables/useAutoSave";
-import {imageURL} from "@/js/constants/serverUrl";
 import {differenceObjects} from "@/js/helpers/jsonHelpers";
 import {autoSaveService} from "@/js/service/autoSaveService";
 import {formService} from "@/js/service/formService";
@@ -21,7 +20,6 @@ import {useUserStore} from "@/js/stores/useUserStore";
 import {AdviceAdditionalData} from "@/js/types/AdviceTypes";
 import {EventAdditionalData} from "@/js/types/EventTypes";
 import {SoftwareAdditionalData} from "@/js/types/SoftwareTypes";
-
 
 const props = defineProps({
     additionalData: {
@@ -66,7 +64,10 @@ const state = reactive({
 
 const rules = {
     title: {required},
-    excerpt: {required},
+    excerpt: {
+        required,
+        maxLength: maxLength(150)
+    },
     content: {required},
     cover_image: {required},
     tags: {}
@@ -118,7 +119,7 @@ const handleReceiveMediaFromUploader = (media: MediaType[]): void => {
     console.log(media)
     if (media && media.length === 1 && media[0]) {
         state.cover_image = media[0].remoteUrl
-    } else{
+    } else {
         state.cover_image = null
     }
 }
@@ -170,6 +171,11 @@ const statusGenerator = computed(() => {
     }
 
 })
+
+const handleTinyRichContent = (data) => {
+    console.log('base form received ' + data)
+    v$.value.content.$model = data
+}
 </script>
 
 <template>
@@ -195,25 +201,36 @@ const statusGenerator = computed(() => {
                 :v$="v$.title"
                 field-id="titleInput"
                 class="my-2"
-                placeholder=""
+                placeholder="Title"
             >
                 <template #label>
                     Title
                 </template>
             </TextInput>
             <div class="ContainerTemp my-2 richContent">
-                <label> Excerpt</label>
-                <TrixRichEditorInput
-                    :src-content="v$.excerpt.$model"
-                    @input="handleTrixInputExcerpt"
-                />
+                <TextInput
+                    v-model="v$.excerpt.$model"
+                    field-id="excerptInput"
+                    :v$="v$.excerpt"
+                    class="my-2"
+                    placeholder="150 characters or less"
+                >
+                    <template #label>
+                        Tagline
+                    </template>
+                </TextInput>
             </div>
             <div class="ContainerTemp my-2 richContent">
                 <label> Content</label>
-                <TrixRichEditorInput
+                <!--                <TrixRichEditorInput-->
+                <!--                    :src-content="v$.content.$model"-->
+                <!--                    class="border-gray-300"-->
+                <!--                    @input="handleTrixInputContent"-->
+                <!--                />-->
+                <!--                <CKEditorRichText :src-content="v$.content.$model" />-->
+                <TinyMceRichTextInput
                     :src-content="v$.content.$model"
-                    class="border-gray-300"
-                    @input="handleTrixInputContent"
+                    @emit-tiny-rich-content="handleTinyRichContent"
                 />
             </div>
             <div class="containerTempImageUploader my-2">

@@ -13,6 +13,7 @@ use Filament\Forms\Components\Builder;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\MarkdownEditor;
 use Filament\Forms\Components\Select;
+use Mohamedsabil83\FilamentFormsTinyeditor\Components\TinyEditor;
 
 
 final class IconList
@@ -30,7 +31,11 @@ final class IconList
                     ->columns(4)
                     ->sets(['fontawesome-solid']),
                 TextInput::make('heading'),
-                RichEditor::make('content')
+                TinyEditor::make('content')
+                    ->label('Content')->fileAttachmentsDisk('local')
+                    ->fileAttachmentsVisibility('public')
+                    ->fileAttachmentsDirectory('public/uploads/image')
+                    ->required(),
             ])
                 ->label('Item')
                 ->collapsible()

@@ -2,15 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Helpers\Metahelper;
 use App\Helpers\RoleHelpers;
 use App\Helpers\UserRole;
-use App\Models\Advicemeta;
+use App\Http\Middleware\ResourceAccessControl;
 use App\Models\Advicetype;
-use App\Models\Bookmark;
-use App\Models\Like;
-use App\Models\Software;
-use App\Models\Softwaremeta;
 use App\Services\PostService;
 use App\Services\ResponseService;
 use Illuminate\Http\JsonResponse;
@@ -27,6 +22,7 @@ class AdviceController extends Controller
     public function __construct(PostService $postService)
     {
         $this->postService = $postService;
+        $this->middleware(ResourceAccessControl::class . ':partner,handleFetchAdvicePosts,createAdvicePost,fetchAdvicePostById,fetchRelatedAdvice');
     }
 
     public function createAdvicePost(Request $request)
@@ -60,9 +56,17 @@ class AdviceController extends Controller
         return ResponseService::success('Advice created successfully!');
     }
 
-    public function fetchAdvicePosts(Request $request): \Illuminate\Http\JsonResponse
+    public function handleFetchAdvicePosts(Request $request)
     {
+        if (Auth::user()->isPartner()) {
+            return $this->fetchUserAdvicePosts($request);
+        } else {
+            return $this->fetchAllAdvicePosts($request);
+        }
+    }
 
+    public function fetchAllAdvicePosts(Request $request): \Illuminate\Http\JsonResponse
+    {
         $advices = Advice::where('post_status', 'Published')->orderBy('created_at', 'DESC')->get();
         $data = [];
 
@@ -78,7 +82,7 @@ class AdviceController extends Controller
     public function fetchUserAdvicePosts(Request $request): JsonResponse
     {
         try {
-            $userId = $request->user_id;
+            $userId = Auth::user()->id;
             $advices = Advice::where('post_status', 'Published')
                 ->where('author_id', $userId)  // Filter by partner (author) ID
                 ->orderBy('created_at', 'DESC')

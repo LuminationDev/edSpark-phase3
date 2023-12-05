@@ -107,7 +107,7 @@ class ProductController extends Controller
     public function fetchUserProductPosts(Request $request): JsonResponse
     {
         try {
-            $userId = $request->user_id;
+            $userId = Auth::user()->id;
 
             $hardwares = Hardware::where('owner_id', $userId)  // Filter by partner (author) ID
             ->orderBy('created_at', 'DESC')

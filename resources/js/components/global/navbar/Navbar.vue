@@ -6,6 +6,7 @@ import {useRouter} from 'vue-router';
 import ProfileDropdown from "@/js/components/global/ProfileDropdown.vue";
 import Logo from '@/js/components/svg/Logo.vue';
 import NavSwoosh from '@/js/components/svg/NavSwoosh.vue';
+import Search from "@/js/components/svg/Search.vue";
 import {useAuthStore} from '@/js/stores/useAuthStore';
 import {useUserStore} from '@/js/stores/useUserStore';
 import {useWindowStore} from "@/js/stores/useWindowStore";
@@ -37,10 +38,18 @@ const handleGlobalsearchClick = () => {
 
 const setupRoutes = () => {
     const tempNavArray = [];
+    const currentUserIsPartner = userStore.getUserRoleName === 'SITESUPP' // TODO
     router.options.routes.forEach(route => {
         if (Object.keys(route).includes('meta') && route.meta['navigation']) {
-            // TODO: Make the dropdown element dynamic
-            tempNavArray.push(route);
+            if (currentUserIsPartner && Object.keys(route.meta).includes('partnerCanAccess')) {
+                if (route.meta['partnerCanAccess']) {
+                    tempNavArray.push(route);
+                }
+            } else { // no partnerCanAccess meta here
+                tempNavArray.push(route)
+            }
+
+
         }
     });
     navLinks.value = tempNavArray;
@@ -78,36 +87,7 @@ setupRoutes();
                         id="searchIconMain"
                         class="svg-container"
                     >
-                        <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            fill="none"
-                            width="100%"
-                            height="100%"
-                            preserveAspectRatio="xMinYMin meet"
-                            class="svg-content"
-                        >
-                            <circle
-                                cx="10"
-                                cy="10"
-                                r="8" 
-                                stroke="#FFF" 
-                                stroke-width="3" 
-                                stroke-linecap="round" 
-                                stroke-linejoin="round" 
-                            />
-
-                            <line
-                                x1="15"
-                                y1="16"
-                                x2="21"
-                                y2="22"                
-                                stroke="#FFF" 
-                                stroke-width="3" 
-                                stroke-linecap="round" 
-                                stroke-linejoin="round" 
-                            />
-
-                        </svg>
+                        <Search />
                     </div>
                 </li>
             </ul>
@@ -159,26 +139,26 @@ setupRoutes();
 
 <style>
 
-#searchIconMain { 
-    width: 28px; 
-    margin-top: 2px; 
-    z-index: -1; 
+#searchIconMain {
+    width: 28px;
+    margin-top: 2px;
+    z-index: -1;
 }
 
-.svg-content { 
-	display: inline-block;
-	position: absolute;
-	top: 0;
-	left: 0;
+.svg-content {
+    display: inline-block;
+    position: absolute;
+    top: 0;
+    left: 0;
 }
 
-.svg-container { 
-	display: inline-block;
-	position: relative;
-	width: 100%;
-	padding-bottom: 100%; 
-	vertical-align: middle; 
-	overflow: hidden; 
+.svg-container {
+    display: inline-block;
+    position: relative;
+    width: 100%;
+    padding-bottom: 100%;
+    vertical-align: middle;
+    overflow: hidden;
 }
 
 .nav-background {

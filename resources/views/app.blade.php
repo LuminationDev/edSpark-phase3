@@ -13,9 +13,11 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <link rel="icon" type="image/x-icon" href="{{ env('VITE_SERVER_IMAGE_API').'/uploads/image/edsparkLogo.png' }}">
     @vite(['resources/js/app.ts'])
+    @vite(['tinymce/tinymce.min.js'])
 
 </head>
 <body class="relative w-full lg:w-auto">
 <div id="app" class="flex flex-col container mx-auto shadow-lg min-h-screen "></div>
+
 </body>
 </html>

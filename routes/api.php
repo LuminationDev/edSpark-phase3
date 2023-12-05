@@ -51,7 +51,7 @@ Route::middleware('auth:sanctum')->group(function () {
 
     // Advice APIs
     Route::post('createAdvicePost', [AdviceController::class, 'createAdvicePost']);
-    Route::get('fetchAdvicePosts', [AdviceController::class, 'fetchAdvicePosts']);
+    Route::get('fetchAdvicePosts', [AdviceController::class, 'handleFetchAdvicePosts']);
     Route::post('fetchAdvicePostById', [AdviceController::class, 'fetchAdvicePostById']);
     Route::get('fetchAdvicePostByType/{type}', [AdviceController::class, 'fetchAdvicePostByType']);
     Route::post('fetchRelatedAdvice', [AdviceController::class, 'fetchRelatedAdvice']);
@@ -60,7 +60,7 @@ Route::middleware('auth:sanctum')->group(function () {
 
     // Software APIs
     Route::post('createSoftwarePost', [SoftwareController::class, 'createSoftwarePost']);
-    Route::get('fetchSoftwarePosts', [SoftwareController::class, 'fetchSoftwarePosts']);
+    Route::get('fetchSoftwarePosts', [SoftwareController::class, 'handleFetchSoftwarePosts']);
     Route::post('fetchSoftwarePostById', [SoftwareController::class, 'fetchSoftwarePostById']);
     Route::post('fetchRelatedSoftware', [SoftwareController::class, 'fetchRelatedSoftware']);
     Route::get('fetchSoftwareTypes', [SoftwareController::class, 'fetchSoftwareTypes']);
@@ -68,7 +68,7 @@ Route::middleware('auth:sanctum')->group(function () {
 
     // Event APIs
     Route::post('createEventPost', [EventController::class, 'createEventPost']);
-    Route::get('fetchEventPosts', [EventController::class, 'fetchEventPosts']);
+    Route::get('fetchEventPosts', [EventController::class, 'handleFetchEventPosts']);
     Route::post('fetchEventPostById', [EventController::class, 'fetchEventPostById']);
     Route::get('fetchEventTypes', [EventController::class, 'fetchEventTypes']);
 
@@ -114,7 +114,7 @@ Route::middleware('auth:sanctum')->group(function () {
 
     // Partners API
     Route::get('fetchAllPartners', [PartnerController::class, 'fetchAllPartners']);
-    Route::get('fetchPartnerById/{id}', [PartnerController::class, 'fetchPartnerById']);
+    Route::post('fetchPartnerById', [PartnerController::class, 'fetchPartnerById']);
     Route::post('updatePartnerContent', [PartnerController::class, 'updatePartnerContent']);
     Route::post('checkIfUserCanEditPartner', [PartnerController::class, 'checkIfUserCanEditPartner']);
     Route::post('fetchPartnerPendingProfile', [PartnerController::class, 'fetchPendingPartnerProfile']);

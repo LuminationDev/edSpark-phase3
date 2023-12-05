@@ -4,15 +4,15 @@ namespace App\Http\Controllers;
 
 use App\Helpers\RoleHelpers;
 use App\Helpers\UserRole;
-use App\Models\Advice;
+use App\Http\Middleware\ResourceAccessControl;
 use App\Models\Eventmeta;
 use App\Models\Eventtype;
-use App\Models\Partner;
-use App\Models\Usermeta;
 use App\Services\PostService;
 use App\Services\ResponseService;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use App\Models\Event;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 
@@ -24,9 +24,11 @@ class EventController extends Controller
     public function __construct(PostService $postService)
     {
         $this->postService = $postService;
+        $this->middleware(ResourceAccessControl::class . ':partner,handleFetchEventPosts,fetchEventPostById');
+
     }
 
-    public function createEventPost(Request $request)
+    public function createEventPost(Request $request): \Illuminate\Http\JsonResponse
     {
         $validator = Validator::make($request->all(), [
             'event_title' => 'required|string',
@@ -60,15 +62,23 @@ class EventController extends Controller
 
     }
 
+    public function handleFetchEventPosts(Request $request): \Illuminate\Http\JsonResponse
+    {
+        if (Auth::user()->isPartner()) {
+            return $this->fetchUserEventPosts($request);
+        } else {
+            return $this->fetchAllEventPosts($request);
+        }
+    }
 
-    public function fetchEventPosts(Request $request): \Illuminate\Http\JsonResponse
+    public function fetchAllEventPosts(Request $request): \Illuminate\Http\JsonResponse
     {
         // Get the current date without the time component
         $currentDate = now()->startOfDay();
 
         $events = Event::where('event_status', 'Published')
             ->where('end_date', '>=', $currentDate)
-            ->where('event_status','Published')
+            ->where('event_status', 'Published')
             ->get();
 
         $data = [];
@@ -79,6 +89,29 @@ class EventController extends Controller
         }
 
         return response()->json($data);
+    }
+
+    public function fetchUserEventPosts(Request $request): JsonResponse
+    {
+        try {
+            $userId = Auth::user()->id;
+            $events = Event::where('event_status', 'Published')
+                ->where('author_id', $userId)  // Filter by partner (author) ID
+                ->orderBy('created_at', 'DESC')
+                ->get();
+
+            $data = [];
+
+            foreach ($events as $event) {
+
+                $result = $this->postService->eventModelToJson($event, $request);
+                $data[] = $result;
+            }
+
+            return response()->json($data);
+        } catch (\Exception $e) {
+            return response()->json(['error' => "An error occurred: " . $e->getMessage()], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
     }
 
 
@@ -174,4 +207,6 @@ class EventController extends Controller
 
         return response()->json($eventTypes);
     }
+
+
 }

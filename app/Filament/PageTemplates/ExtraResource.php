@@ -13,6 +13,7 @@ use Filament\Forms\Components\Builder;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\MarkdownEditor;
 use Filament\Forms\Components\Select;
+use Mohamedsabil83\FilamentFormsTinyeditor\Components\TinyEditor;
 
 final class ExtraResource
 {
@@ -29,7 +30,11 @@ final class ExtraResource
                 ->maxLength(255),
             Repeater::make('item')->schema([
                 TextInput::make('heading'),
-                RichEditor::make('content')
+                TinyEditor::make('content')
+                    ->label('Content')->fileAttachmentsDisk('local')
+                    ->fileAttachmentsVisibility('public')
+                    ->fileAttachmentsDirectory('public/uploads/image')
+                    ->required(),
             ])
                 ->label('Item')
                 ->collapsible()

@@ -1,18 +1,19 @@
 <script setup>
-import {API_ENDPOINTS} from "@/js/constants/API_ENDPOINTS";
-import {ref, computed, reactive, onMounted} from 'vue'
-import {email, minLength, numeric, required} from "@vuelidate/validators";
 import useVuelidate from "@vuelidate/core";
+import {email, minLength, numeric, required} from "@vuelidate/validators";
 import axios from "axios";
-import {serverURL} from "@/js/constants/serverUrl";
+import {storeToRefs} from "pinia";
+import SearchDropdown from 'search-dropdown-vue';
+import {computed, onMounted,reactive, ref} from 'vue'
+
+import ErrorMessages from "@/js/components/bases/ErrorMessages.vue";
 import TextInput from "@/js/components/bases/TextInput.vue";
 import GenericButton from "@/js/components/button/GenericButton.vue";
-import SearchDropdown from 'search-dropdown-vue';
-import ErrorMessages from "@/js/components/bases/ErrorMessages.vue";
-import {storeToRefs} from "pinia";
-import {useUserStore} from "@/js/stores/useUserStore";
 import EventRsvpSummary from "@/js/components/events/EventRsvpSummary.vue";
 import EventSubmitRecording from "@/js/components/events/EventSubmitRecording.vue";
+import {API_ENDPOINTS} from "@/js/constants/API_ENDPOINTS";
+import {serverURL} from "@/js/constants/serverUrl";
+import {useUserStore} from "@/js/stores/useUserStore";
 
 
 const props = defineProps({
@@ -75,7 +76,7 @@ axios.get(API_ENDPOINTS.SCHOOL.FETCH_ALL_SITES).then(res => {
 })
 
 onMounted(() => {
-    let checkRsvpData = {
+    const checkRsvpData = {
         event_id: props.eventId,
         user_id: currentUser.value.id
     }
@@ -199,6 +200,10 @@ onMounted(() => {
                 Please register your interest below to reserve your spot!
             </div>
         </div>
+
+
+
+
         <div
             v-if="currentUserIsOwner"
             class="border-b-2 border-white flex flex-col gap-2 py-4"
@@ -210,6 +215,9 @@ onMounted(() => {
                 Number of guests registered: {{ currentOwnerInfo['total_guest'] }}
             </div>
         </div>
+
+
+
         <form
             v-else-if="(!currentUserIsOwner && !currentUserRsvped && eventStatus !== 'ENDED') || editingRsvp"
             class="border-b-2 border-white flex flex-col gap-2 py-8 rsvpFormInputs"
@@ -239,7 +247,7 @@ onMounted(() => {
             </TextInput>
 
             <div class="-mt-1 Selector dropdown flex flex-col school">
-                <label class="-mb-2 ml-2"> School name <br/><i>Start typing your school name and click on the result</i></label>
+                <label class="-mb-2 ml-2"> School name <br><i>Start typing your school name and click on the result</i></label>
                 <SearchDropdown
                     class="-mt-2 searchable_dropdown"
                     :options="dropdownSites"
@@ -254,8 +262,8 @@ onMounted(() => {
             </div>
             <div class="flex items-center flex-row">
                 <GenericButton
-                    :callback="handleSubmitRsvp"
                     id="rsvpBtn"
+                    :callback="handleSubmitRsvp"
                     class="!bg-secondary-coolGrey !text-black font-semibold mt-4 px-6 rounded-sm w-fit"
                 >
                     <template #default>
@@ -270,11 +278,23 @@ onMounted(() => {
             </div>
         </form>
 
+
+
+
+
         <EventRsvpSummary
             v-else-if="!currentUserIsOwner && eventStatus !== 'ENDED'"
             :rsvp-info="currentRsvpInfo"
             @start-edit-rsvp="handleStartEditRsvp"
         />
+
+
+
+
+
+
+
+
         <div
             v-else
             class="eventRsvpClosed"
@@ -297,7 +317,7 @@ onMounted(() => {
             v-else
             class="contactHeader eventContactForm flex flex-col py-4 text-lg"
         >
-            <div class="font-bold rsvpHeader text-xl mb-4 ">
+            <div class="font-bold mb-4 rsvpHeader text-xl">
                 Contact the organiser
             </div>
             <div class="eventRsvp form-cta pb-4">
@@ -305,12 +325,12 @@ onMounted(() => {
             </div>
             <a
                 v-if="props.authorInfo && props.authorInfo['author_email']"
-                class="flex !no-underline"
+                class="!no-underline flex"
                 :href="`mailto:${props.authorInfo['author_email']}`"
             >
                 <GenericButton
-                    :callback="handleClickContactOrganiser"
                     id="contactBtn"
+                    :callback="handleClickContactOrganiser"
                     class="!bg-secondary-coolGrey !text-black font-semibold mt-4 px-6 rounded-sm w-fit"
                 >
                     <template #default>

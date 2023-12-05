@@ -64,6 +64,9 @@ export const useUserStore = defineStore('user', {
             console.log(this.currentUser?.site?.site_name);
             return this.currentUser?.site?.site_name || "";
         },
+        getUserRoleName(): string {
+            return this.currentUser.role
+        },
         getUserRequestParam(): { params: { usid: number } } {
             return {
                 params: {
