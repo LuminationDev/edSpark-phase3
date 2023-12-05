@@ -3,6 +3,7 @@
 import DateTimeInput from "@/js/components/bases/DateTimeInput.vue";
 import ExtraContentHeader from "@/js/components/bases/frontendform/ExtraContentHeader.vue";
 import {templateFields} from "@/js/components/bases/frontendform/templates/formTemplates";
+import TinyMceRichTextInput from "@/js/components/bases/frontendform/TinyMceEditor/TinyMceRichTextInput.vue";
 import IconPickerInput from "@/js/components/bases/IconPickerInput.vue";
 import NumberInput from "@/js/components/bases/NumberInput.vue";
 import TextInput from "@/js/components/bases/TextInput.vue";
@@ -170,12 +171,16 @@ const handleTemplateTypeChange = (
                                     :key="itemIndex + index"
                                     class="ContainerTemp my-2 richContent"
                                 >
-                                    <TrixRichEditorInput
-                                        label="Content"
+                                    <TinyMceRichTextInput
                                         :src-content="item.content"
-                                        class="border-gray-300"
-                                        @input="(contentData) => item.content = contentData"
+                                        @emit-tiny-rich-content="(contentData) => item.content = contentData"
                                     />
+                                    <!--                                    <TrixRichEditorInput-->
+                                    <!--                                        label="Content"-->
+                                    <!--                                        :src-content="item.content"-->
+                                    <!--                                        class="border-gray-300"-->
+                                    <!--                                        @input="(contentData) => item.content = contentData"-->
+                                    <!--                                    />-->
                                 </div>
                             </template>
                         </template>

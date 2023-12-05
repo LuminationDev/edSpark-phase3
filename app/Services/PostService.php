@@ -112,7 +112,7 @@ class PostService
             'cover_image' => $software->cover_image ?? null,
             'created_at' => $software->post_date ?? null,
             'modified_at' => $software->post_modified ?? null,
-            'post_status' => $software->post_status ?? null,
+            'status' => $software->post_status ?? null,
             'type' => ($software->softwaretypes)
                 ? $software->softwaretypes->pluck('software_type_name')
                 : null,

@@ -3,13 +3,20 @@
 namespace App\Http\Controllers;
 
 use App\Helpers\Metahelper;
+use App\Helpers\RoleHelpers;
+use App\Helpers\UserRole;
+use App\Http\Middleware\ResourceAccessControl;
+use App\Models\Advice;
 use App\Models\Softwaretype;
 use App\Services\PostService;
+use App\Services\ResponseService;
+
 use Illuminate\Http\Response;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use App\Models\Software;
 use App\Models\Softwaremeta;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 
 class SoftwareController extends Controller
@@ -19,7 +26,10 @@ class SoftwareController extends Controller
     public function __construct(PostService $postService)
     {
         $this->postService = $postService;
+        $this->middleware(ResourceAccessControl::class . ':partner,handleFetchAdvicePosts,createAdvicePost,fetchAdvicePostById,fetchRelatedAdvice');
+
     }
+
     public function createSoftwarePost(Request $request)
     {
         $validator = Validator::make($request->all(), [
@@ -48,6 +58,15 @@ class SoftwareController extends Controller
         }
 
         return response()->json(['message' => 'Software created successfully!', 'software' => $software], 201);
+    }
+
+    public function handleFetchSoftwarePosts(Request $request)
+    {
+        if (Auth::user()->isPartner()) {
+            return $this->fetchUserSoftwarePosts($request);
+        } else {
+            return $this->fetchSoftwarePosts($request);
+        }
     }
 
     public function fetchSoftwarePosts(Request $request): JsonResponse
@@ -80,7 +99,7 @@ class SoftwareController extends Controller
     public function fetchUserSoftwarePosts(Request $request): JsonResponse
     {
         try {
-            $userId = $request->user_id;
+            $userId = Auth::user()->id;
             $softwares = Software::where('post_status', 'Published')
                 ->where('author_id', $userId)  // Filter by partner (author) ID
                 ->orderBy('created_at', 'DESC')
@@ -157,9 +176,29 @@ class SoftwareController extends Controller
         }
     }
 
-    public function fetchSoftwarePostById(Request $request, $id): JsonResponse
+    public function fetchSoftwarePostById(Request $request): JsonResponse
     {
-        $software = Software::find($id);
+        $validator = Validator::make($request->all(), [
+            'id' => 'required|integer|gt:0',
+            'preview' => 'required|boolean',
+        ]);
+
+        if ($validator->fails()) {
+            return ResponseService::error('Invalid request parameters', 400);
+        }
+
+        $id = $request->input('id');
+        if (RoleHelpers::has_minimum_privilege(UserRole::MODERATOR)) {
+            // Find the advice by ID
+            $software = Software::find($id);
+
+        } else {
+            $software = Software::where('id', $id)->where('post_status', "Published")->first();
+        }
+        if (!$software) {
+            return ResponseService::error('Software not found', 404);
+        }
+
         $softwareMetadataToSend = Metahelper::getMeta(
             Softwaremeta::class,
             $software,
@@ -168,7 +207,8 @@ class SoftwareController extends Controller
             'software_meta_value'
         );
         $data = $this->postService->softwareModelToJson($software, $softwareMetadataToSend, $request);
-        return response()->json($data);
+        return ResponseService::success("Successfully retrieved software", $data);
+
 
     }
 

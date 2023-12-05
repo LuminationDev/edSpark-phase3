@@ -8,27 +8,31 @@ import {defineConfig} from 'vite';
 export default defineConfig({
     build: {
         outDir: './public/build',
+        commonjsOptions: {
+            exclude: ['ckeditor5-custom-build']
+        }
     },
     plugins: [
         vue({
-                template: {
-                    compilerOptions: {
-                        isCustomElement: tag => tag === 'trix-editor'
-                    }
+            template: {
+                compilerOptions: {
+                    isCustomElement: tag => tag === 'trix-editor' || tag === 'ckeditor',
+
                 }
-            }),
-            laravel({
-                input: [
-                    'resources/css/app.css',
-                    'resources/css/output.css',
-                    'resources/js/app.ts',
-                    'resources/css/filament/admin/theme.css'
-                ],
-                refresh: [
-                    ...refreshPaths,
-                    'app/Livewire/**',
-                ],
-            }),
+            }
+        }),
+        laravel({
+            input: [
+                'resources/css/app.css',
+                'resources/css/output.css',
+                'resources/js/app.ts',
+                'resources/css/filament/admin/theme.css'
+            ],
+            refresh: [
+                ...refreshPaths,
+                'app/Livewire/**',
+            ],
+        }),
     ],
     resolve: {
         alias: {
@@ -40,6 +44,7 @@ export default defineConfig({
         include: [
             "vue-google-maps-community-fork",
             "fast-deep-equal",
+            'ckeditor5-custom-build'
         ],
     },
     esbuild: {

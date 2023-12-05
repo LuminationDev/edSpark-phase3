@@ -14,6 +14,7 @@ use Filament\Tables;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 
 class PartnersResource extends Resource
 {
@@ -39,9 +40,8 @@ class PartnersResource extends Resource
                         Forms\Components\TextInput::make('email')->email()
                             ->required(),
                         Forms\Components\TextInput::make('password')
-                            ->default('edSparkDigitalHub')
-                            ->helperText('**password to be changed on login')
-                            ->disabled()
+                            ->required()
+
                     ])
             ]);
     }

@@ -1,4 +1,3 @@
-
 <?php
 
 use App\Http\Controllers\AutoSaveController;
@@ -29,20 +28,20 @@ use App\Http\Controllers\RsvpController;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
-Route::middleware('auth:sanctum')->group(function() {
+Route::middleware('auth:sanctum')->group(function () {
 //Route::middleware('api')->group(function() {
     // School APIs
     Route::get('fetchAllSchools', [SchoolController::class, 'fetchAllSchools']);
     Route::get('fetchFeaturedSchools', [SchoolController::class, 'fetchFeaturedSchools']);
     Route::get('fetchSchoolByName/{schoolName}', [SchoolController::class, 'fetchSchoolByName']);
-    Route::get('fetchStaffFromSite/{site_id}',[SchoolController::class, 'fetchAllStaffFromSite']);
+    Route::get('fetchStaffFromSite/{site_id}', [SchoolController::class, 'fetchAllStaffFromSite']);
     Route::post('createSchool', [SchoolController::class, 'createSchool']);
     Route::post('updateSchool', [SchoolController::class, 'updateSchool']);
-    Route::post('checkUserCanEdit',[SchoolController::class, 'checkUserCanEdit']);
-    Route::post('nominateUserForSchool',[SchoolController::class, 'nominateUserForSchool']);
-    Route::post('deleteNominatedUser',[SchoolController::class, 'deleteNominatedUserSchool']);
-    Route::post('getNominatedUsersFromSchool',[SchoolController::class, 'getNominatedUsersFromSchool']);
-    Route::post('createOrUpdateSchoolContact', [SchoolController::class , 'createOrUpdateContact']);
+    Route::post('checkUserCanEdit', [SchoolController::class, 'checkUserCanEdit']);
+    Route::post('nominateUserForSchool', [SchoolController::class, 'nominateUserForSchool']);
+    Route::post('deleteNominatedUser', [SchoolController::class, 'deleteNominatedUserSchool']);
+    Route::post('getNominatedUsersFromSchool', [SchoolController::class, 'getNominatedUsersFromSchool']);
+    Route::post('createOrUpdateSchoolContact', [SchoolController::class, 'createOrUpdateContact']);
     Route::post('fetchSchoolContact', [SchoolController::class, 'fetchSchoolContact']);
     Route::post('fetchPendingSchoolByName/{schoolName}', [SchoolController::class, 'fetchPendingSchoolByName']);
 
@@ -51,27 +50,27 @@ Route::middleware('auth:sanctum')->group(function() {
     Route::post('fetchUserSchool', [SchoolController::class, 'fetchUserSchool']);
 
     // Advice APIs
-    Route::post('createAdvicePost',[AdviceController::class, 'createAdvicePost']);
-    Route::get('fetchAdvicePosts', [AdviceController::class, 'fetchAdvicePosts']);
-    Route::get('fetchAdvicePostById/{id}', [AdviceController::class, 'fetchAdvicePostById']);
+    Route::post('createAdvicePost', [AdviceController::class, 'createAdvicePost']);
+    Route::get('fetchAdvicePosts', [AdviceController::class, 'handleFetchAdvicePosts']);
+    Route::post('fetchAdvicePostById', [AdviceController::class, 'fetchAdvicePostById']);
     Route::get('fetchAdvicePostByType/{type}', [AdviceController::class, 'fetchAdvicePostByType']);
-    Route::post('fetchRelatedAdvice',[AdviceController::class, 'fetchRelatedAdvice']);
-    Route::get('fetchAdviceTypes', [AdviceController::class,'fetchAdviceTypes']);
+    Route::post('fetchRelatedAdvice', [AdviceController::class, 'fetchRelatedAdvice']);
+    Route::get('fetchAdviceTypes', [AdviceController::class, 'fetchAdviceTypes']);
     Route::get('fetchUserAdvice', [AdviceController::class, 'fetchUserAdvicePosts']);
 
     // Software APIs
-    Route::post('createSoftwarePost', [SoftwareController::class,'createSoftwarePost']);
-    Route::get('fetchSoftwarePosts', [SoftwareController::class, 'fetchSoftwarePosts']);
-    Route::get('fetchSoftwarePostById/{id}', [SoftwareController::class, 'fetchSoftwarePostById']);
+    Route::post('createSoftwarePost', [SoftwareController::class, 'createSoftwarePost']);
+    Route::get('fetchSoftwarePosts', [SoftwareController::class, 'handleFetchSoftwarePosts']);
+    Route::post('fetchSoftwarePostById', [SoftwareController::class, 'fetchSoftwarePostById']);
     Route::post('fetchRelatedSoftware', [SoftwareController::class, 'fetchRelatedSoftware']);
-    Route::get('fetchSoftwareTypes', [SoftwareController::class,'fetchSoftwareTypes']);
-    Route::get('fetchUserSoftware',[SoftwareController::class, 'fetchUserSoftwarePosts']);
+    Route::get('fetchSoftwareTypes', [SoftwareController::class, 'fetchSoftwareTypes']);
+    Route::get('fetchUserSoftware', [SoftwareController::class, 'fetchUserSoftwarePosts']);
 
     // Event APIs
-    Route::post('createEventPost',[EventController::class,'createEventPost']);
-    Route::get('fetchEventPosts', [EventController::class, 'fetchEventPosts']);
-    Route::get('fetchEventPostById/{id}', [EventController::class, 'fetchEventPostById']);
-    Route::get('fetchEventTypes',[EventController::class, 'fetchEventTypes']);
+    Route::post('createEventPost', [EventController::class, 'createEventPost']);
+    Route::get('fetchEventPosts', [EventController::class, 'handleFetchEventPosts']);
+    Route::post('fetchEventPostById', [EventController::class, 'fetchEventPostById']);
+    Route::get('fetchEventTypes', [EventController::class, 'fetchEventTypes']);
 
     // Community APIs
     Route::get('fetchCommunityPosts', [CommunityController::class, 'fetchCommunityPosts']);
@@ -92,7 +91,7 @@ Route::middleware('auth:sanctum')->group(function() {
     Route::get('fetchSiteByCode/{siteCode}', [SiteController::class, 'fetchSiteByCode']);
     Route::get('fetchAllRoles', [RoleController::class, 'fetchAllRoles']);
     Route::get('fetchRoleByCode/{roleCode}', [RoleController::class, 'fetchRoleByCode']);
-    Route::post('getUserMetadata',[UserController::class, 'getUserMetadata'] );
+    Route::post('getUserMetadata', [UserController::class, 'getUserMetadata']);
     Route::post('createUser', [UserController::class, 'createUser']);
     Route::post('updateFirstTimeVisitUser', [UserController::class, 'updateFirstTimeVisitUser']);
     Route::post('updateUser', [UserController::class, 'updateUser']);
@@ -115,18 +114,18 @@ Route::middleware('auth:sanctum')->group(function() {
 
     // Partners API
     Route::get('fetchAllPartners', [PartnerController::class, 'fetchAllPartners']);
-    Route::get('fetchPartnerById/{id}', [PartnerController::class, 'fetchPartnerById']);
+    Route::post('fetchPartnerById', [PartnerController::class, 'fetchPartnerById']);
     Route::post('updatePartnerContent', [PartnerController::class, 'updatePartnerContent']);
-    Route::post('checkIfUserCanEditPartner',[PartnerController::class, 'checkIfUserCanEditPartner']);
+    Route::post('checkIfUserCanEditPartner', [PartnerController::class, 'checkIfUserCanEditPartner']);
     Route::post('fetchPartnerPendingProfile', [PartnerController::class, 'fetchPendingPartnerProfile']);
 
     // Event Rsvp
-    Route::get('fetchRsvpByEventId/{event_id}',[RsvpController::class,'fetchRsvpByEventId']);
-    Route::post('addRsvpToEvent',[RsvpController::class,'addRsvpToEvent']);
-    Route::post('removeRsvpFromEvent',[RsvpController::class,'removeRsvpFromEvent']);
-    Route::post('checkIfUserRsvped',[RsvpController::class,'checkIfUserRsvped']);
-    Route::post('addEventRecording',[EventController::class,'addEventRecording']);
-    Route::get('checkEventRecording/{event_id}',[EventController::class,'checkEventRecording']);
+    Route::get('fetchRsvpByEventId/{event_id}', [RsvpController::class, 'fetchRsvpByEventId']);
+    Route::post('addRsvpToEvent', [RsvpController::class, 'addRsvpToEvent']);
+    Route::post('removeRsvpFromEvent', [RsvpController::class, 'removeRsvpFromEvent']);
+    Route::post('checkIfUserRsvped', [RsvpController::class, 'checkIfUserRsvped']);
+    Route::post('addEventRecording', [EventController::class, 'addEventRecording']);
+    Route::get('checkEventRecording/{event_id}', [EventController::class, 'checkEventRecording']);
 
     //Search
     Route::get(

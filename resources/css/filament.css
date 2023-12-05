@@ -1,5 +1,5 @@
 /*@import '../../vendor/filament/filament/resources/css/theme.css';*/
-
+@import './font/font.css';
 
 
 @tailwind base;
@@ -45,7 +45,7 @@
 
 
 html {
-    font-family: 'Poppins';
+    font-family: 'MuseoSans', sans-serif;
 }
 
 

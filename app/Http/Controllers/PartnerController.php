@@ -9,9 +9,11 @@ use App\Models\Partner;
 use App\Models\Partnermeta;
 use App\Models\Partnerprofile;
 use App\Models\Software;
+use App\Services\ResponseService;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
 
 class PartnerController extends Controller
@@ -96,9 +98,19 @@ class PartnerController extends Controller
         }
     }
 
-    public function fetchPartnerById(Request $request, $id)
+    public function fetchPartnerById(Request $request)
     {
         try {
+            $validator = Validator::make($request->all(), [
+                'id' => 'required|integer|gt:0',
+                'preview' => 'required|boolean',
+            ]);
+
+            if ($validator->fails()) {
+                return ResponseService::error('Invalid request parameters', 400);
+            }
+            $id = $request->input('id');
+            $preview = $request->input('preview');
             $partner = Partner::where('user_id', $id)->first();
 
             if (!$partner) {
@@ -107,7 +119,7 @@ class PartnerController extends Controller
             $this->initializePartnerMetadata($partner); // Ensure metadata exists.
             $data = $this->partnerModelToJson($partner, $request);
 
-            return response()->json($data);
+            return ResponseService::success('Successfully retreived partner', $data);
         } catch (\Exception $e) {
             return response()->json(['error' => "$e"], Response::HTTP_INTERNAL_SERVER_ERROR);
         }

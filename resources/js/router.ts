@@ -29,6 +29,7 @@ import TheForbidden from "@/js/pages/TheForbidden.vue";
 import TheHardware from "@/js/pages/TheHardware.vue";
 import TheHome from "@/js/pages/TheHome.vue";
 import ThePartner from "@/js/pages/ThePartner.vue";
+import ThePartnerWelcome from "@/js/pages/ThePartnerWelcome.vue";
 import TheSchool from "@/js/pages/TheSchool.vue";
 import TheSoftware from "@/js/pages/TheSoftware.vue";
 import {useAuthStore} from '@/js/stores/useAuthStore';
@@ -165,6 +166,7 @@ const routes: any = [
         meta: {
             navigation: true,
             requiresAuth: true,
+            partnerCanAccess: false
         }
     },
     {
@@ -174,6 +176,7 @@ const routes: any = [
         meta: {
             navigation: true,
             requiresAuth: true,
+            partnerCanAccess: false
         }
     },
     {
@@ -194,6 +197,7 @@ const routes: any = [
             navigation: true,
             dropdownItem: true,
             requiresAuth: true,
+            partnerCanAccess: false
         }
     },
     {
@@ -292,6 +296,15 @@ const routes: any = [
         }
     },
     {
+        name: 'publicPartnerWelcome',
+        path: '/welcome/partner',
+        component: ThePartnerWelcome,
+        meta:{
+            skipScrollTop: false,
+            requiresAuth: false
+        }
+    },
+    {
         name: 'forbidden',
         path: '/forbidden',
         component: TheForbidden,
@@ -316,6 +329,23 @@ const router = createRouter({
         }
     }
 });
+const partnerRouteChecker = (to, from,next) =>{
+    console.log('partnerRouteChecker called')
+    const userStore = useUserStore();
+    if(userStore.getUserRoleName === 'SITESUPP'){ // meant to be Partner
+        if(to.meta.partnerCanAccess === false){
+            next('/forbidden')
+        } else{
+            next();
+        }
+    } else{
+        next();
+    }
+}
+
+
+router.beforeEach(partnerRouteChecker)
+// regular authentication
 router.beforeEach(async (to, from, next) => {
     const authStore = useAuthStore();
     const userStore = useUserStore();

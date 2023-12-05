@@ -64,6 +64,9 @@ export const useUserStore = defineStore('user', {
             console.log(this.currentUser?.site?.site_name);
             return this.currentUser?.site?.site_name || "";
         },
+        getUserRoleName(): string {
+            return this.currentUser.role
+        },
         getUserRequestParam(): { params: { usid: number } } {
             return {
                 params: {
@@ -80,10 +83,6 @@ export const useUserStore = defineStore('user', {
                 "Superadmin",
                 "Administrator",
                 "Moderator",
-                "PSACT",
-                "SCHLDR",
-                "PRSCLDR",
-                "SITELDR"
             ];
             return rolesWithAdminRights.includes(userRole)
         },
@@ -93,10 +92,7 @@ export const useUserStore = defineStore('user', {
                 "Superadmin",
                 "Administrator",
                 "Moderator",
-                "PSACT",
-                "SCHLDR",// TODO: Remove once we have psact acount
-                "PRSCLDR",// TODO: Remove once we have psact acount
-                "SITELDR" // TODO: Remove once we have psact acount
+                "PSACT"
             ];
             return rolesWithModRights.includes(userRole)
         }

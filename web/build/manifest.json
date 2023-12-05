@@ -1,20 +1,4 @@
 {
-  "public/fonts/MuseoSans-100.otf": {
-    "file": "assets/MuseoSans-100-68e3b7f9.otf",
-    "src": "public/fonts/MuseoSans-100.otf"
-  },
-  "public/fonts/MuseoSans-300.otf": {
-    "file": "assets/MuseoSans-300-ecc24f40.otf",
-    "src": "public/fonts/MuseoSans-300.otf"
-  },
-  "public/fonts/MuseoSans-500.otf": {
-    "file": "assets/MuseoSans-500-46428f2c.otf",
-    "src": "public/fonts/MuseoSans-500.otf"
-  },
-  "public/fonts/MuseoSans-700.otf": {
-    "file": "assets/MuseoSans-700-c36ca8cd.otf",
-    "src": "public/fonts/MuseoSans-700.otf"
-  },
   "resources/assets/images/PartnersPuzzle.png": {
     "file": "assets/PartnersPuzzle-f8ea4960.png",
     "src": "resources/assets/images/PartnersPuzzle.png"
@@ -64,12 +48,12 @@
     "src": "resources/assets/images/profile_background.jpeg"
   },
   "resources/css/app.css": {
-    "file": "assets/app-bdb85b3d.css",
+    "file": "assets/app-3c7b467c.css",
     "isEntry": true,
-    "src": "resources/css/app.css"
+    "src": "resources/css/output.css"
   },
   "resources/css/filament/admin/theme.css": {
-    "file": "assets/theme-dcde1830.css",
+    "file": "assets/theme-c9277dc1.css",
     "isEntry": true,
     "src": "resources/css/filament/admin/theme.css"
   },
@@ -138,12 +122,12 @@
     "src": "resources/css/font/museosans-700-webfont.woff2"
   },
   "resources/css/output.css": {
-    "file": "assets/output-c4289709.css",
+    "file": "assets/app-3c7b467c.css",
     "isEntry": true,
     "src": "resources/css/output.css"
   },
   "resources/js/app.css": {
-    "file": "assets/app-ce33fd4a.css",
+    "file": "assets/app-8901eecb.css",
     "src": "resources/js/app.css"
   },
   "resources/js/app.ts": {
@@ -160,14 +144,14 @@
       "assets/hardwareInfoImage-e7b190a8.png",
       "assets/PartnersPuzzle-f8ea4960.png",
       "assets/WhatIsDag-10bb387b.png",
-      "assets/museosans-300-webfont-adb453b1.eot",
-      "assets/museosans-300-webfont-a974d5e9.woff2",
-      "assets/museosans-300-webfont-efd77478.woff",
-      "assets/museosans-300-webfont-d74517d1.ttf",
       "assets/museosans-100-webfont-dd3e73e3.eot",
       "assets/museosans-100-webfont-e02f2d2f.woff2",
       "assets/museosans-100-webfont-e94c0507.woff",
       "assets/museosans-100-webfont-aaf1db03.ttf",
+      "assets/museosans-300-webfont-adb453b1.eot",
+      "assets/museosans-300-webfont-a974d5e9.woff2",
+      "assets/museosans-300-webfont-efd77478.woff",
+      "assets/museosans-300-webfont-d74517d1.ttf",
       "assets/museosans-500-webfont-6e9f4f1c.eot",
       "assets/museosans-500-webfont-62b985d3.woff2",
       "assets/museosans-500-webfont-48dcb4e6.woff",
@@ -175,18 +159,13 @@
       "assets/museosans-700-webfont-4fb242a4.eot",
       "assets/museosans-700-webfont-edb1187f.woff2",
       "assets/museosans-700-webfont-02c46e40.woff",
-      "assets/museosans-700-webfont-c9809fc4.ttf",
-      "assets/MuseoSans-100-68e3b7f9.otf",
-      "assets/MuseoSans-300-ecc24f40.otf",
-      "assets/MuseoSans-500-46428f2c.otf",
-      "assets/MuseoSans-700-c36ca8cd.otf"
+      "assets/museosans-700-webfont-c9809fc4.ttf"
     ],
     "css": [
-      "assets/app-ce33fd4a.css",
-      "assets/app-bdb85b3d.css",
-      "assets/output-c4289709.css"
+      "assets/app-8901eecb.css",
+      "assets/app-3c7b467c.css"
     ],
-    "file": "assets/app-b27ed980.js",
+    "file": "assets/app-ba1b5c2c.js",
     "isEntry": true,
     "src": "resources/js/app.ts"
   }

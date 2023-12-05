@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use App\Helpers\RoleHelpers;
+use App\Helpers\UserRole;
 use Filament\Panel;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -42,8 +44,7 @@ class User extends Authenticatable implements FilamentUser, HasName
     ];
 
     public function canAccessPanel(Panel $panel): bool {
-        return true;
-        // return str_ends_with($this->email, 'edspark.sa.gov.au') && $this->hasVerifiedEmail();
+        return RoleHelpers::has_minimum_privilege(UserRole::MODERATOR);
     }
 
     public function getFilamentName(): string
@@ -89,5 +90,10 @@ class User extends Authenticatable implements FilamentUser, HasName
     public function partner()
     {
         return $this->hasOne(Partner::class);
+    }
+
+    public function isPartner(): bool
+    {
+        return strtolower($this->role->role_name) === 'partner';
     }
 }

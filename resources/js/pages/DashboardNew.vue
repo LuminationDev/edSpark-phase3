@@ -22,7 +22,9 @@ import {useWindowStore} from "@/js/stores/useWindowStore";
 const router = useRouter()
 const userStore = useUserStore();
 const {currentUser} = storeToRefs(userStore)
-const {isMobile} = storeToRefs(useWindowStore())
+const windowStore = useWindowStore()
+const {isMobile} = storeToRefs(windowStore)
+
 
 const shouldStartSwrv = computed(() => {
     return Boolean(currentUser.value.id)
@@ -64,10 +66,10 @@ const softwareResponsiveData = computed(() => {
         />
 
         <div class="flex flex-col w-full lg:!flex-row lg:px-16">
-            <div class="DAGInfoSection px-8 w-full            lg:!pl-8 lg:!w-2/5 xl:!w-1/4">
+            <div class="DAGInfoSection px-8 w-full lg:!pl-8 lg:!w-2/5 xl:!w-1/4">
                 <DAGInfoSection />
             </div>
-            <div class="DAGAdviceCarousel w-full                  lg:!w-3/5 xl:!w-3/4">
+            <div class="DAGAdviceCarousel w-full lg:!w-3/5 xl:!w-3/4">
                 <CarouselGenerator
                     data-type="advice"
                     :data-array="advicesData ? advicesData : []"
@@ -137,7 +139,7 @@ const softwareResponsiveData = computed(() => {
                 <div class="px-8 w-full lg:!px-20">
                     <CardLoading
                         :number-of-rows="2"
-                        :number-per-row="2"
+                        :number-per-row="windowStore.getNumberOfCardLoading"
                     />
                 </div>
             </template>
