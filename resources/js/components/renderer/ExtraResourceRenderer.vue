@@ -34,7 +34,10 @@ const props = defineProps({
                 <h3 class="font-bold mb-3 text-2xl">
                     {{ res.heading }}
                 </h3>
-                <div v-html="edSparkContentSanitizer(res.content)" />
+                <div
+                    class="flex flex-col"
+                    v-html="edSparkContentSanitizer(res.content)"
+                />
             </template>
         </div>
     </div>
