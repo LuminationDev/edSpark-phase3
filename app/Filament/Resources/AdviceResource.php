@@ -37,8 +37,6 @@ class AdviceResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-light-bulb';
 
-    // protected static bool $shouldRegisterNavigation = false;
-
     public static function form(Form $form): Form
     {
         $user = Auth::user()->full_name;

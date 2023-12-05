@@ -79,7 +79,10 @@ const timeFormatter = (originalFormat) => {
                         class="flex flex-col max-w-full overflow-hidden text-lg"
                     />
 
-                    <div v-html="edSparkContentSanitizer(contentFromBase['content'] )" />
+                    <div
+                        class="richTextContentContainer"
+                        v-html="edSparkContentSanitizer(contentFromBase['content'] )"
+                    />
                     <div
                         v-if="contentFromBase['extra_content'] && contentFromBase['extra_content'].length"
                         class="extraResourcesContainer mt-4 w-full"

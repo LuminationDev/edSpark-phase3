@@ -1,6 +1,8 @@
 <script setup>
 import purify from "dompurify";
 
+import {edSparkContentSanitizer} from "@/js/helpers/objectHelpers";
+
 const props = defineProps({
     itemArray: {
         type: Array,
@@ -32,7 +34,7 @@ const props = defineProps({
                 <h3 class="font-bold mb-3 text-2xl">
                     {{ res.heading }}
                 </h3>
-                <div v-html="purify.sanitize(res.content)" />
+                <div v-html="edSparkContentSanitizer(res.content)" />
             </template>
         </div>
     </div>

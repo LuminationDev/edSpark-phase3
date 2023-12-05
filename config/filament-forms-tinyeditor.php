@@ -15,7 +15,7 @@ return [
         'default' => [
             'menubar' => true,
             'plugins' => 'advlist autoresize codesample directionality emoticons fullscreen hr image imagetools link lists paste media table wordcount',
-            'toolbar' => 'undo redo removeformat | formatselect fontsizeselect | bold italic | alignjustify alignright aligncenter alignleft lineheight | numlist bullist | forecolor backcolor | blockquote table toc hr | image link media codesample emoticons | wordcount',
+            'toolbar' => 'undo redo removeformat | formatselect fontsizeselect | bold italic | alignjustify alignleft aligncenter alignright lineheight | numlist bullist | forecolor backcolor | blockquote table toc hr | image link media codesample emoticons | wordcount',
             'upload_directory' => 'uploads/advice',
             'images_upload_url' => env('VITE_SERVER_IMAGE_API') . '/imageUploadTinyMCEjs',
             'custom_configs' => [
@@ -29,7 +29,7 @@ return [
                 'content_css' => '/css/filament/font/font.css',
                 'content_style' => "body {font-family: MuseoSans;} html {font-family: MuseoSans;}",
                 'image_file_types' => 'jpg,svg,webp',
-                'paste_preprocess'=> "myPastePreprocessFunction"
+                'paste_preprocess' => "myPastePreprocessFunction"
             ]
         ],
 
