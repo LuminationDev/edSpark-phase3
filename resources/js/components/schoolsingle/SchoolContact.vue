@@ -1,15 +1,18 @@
 <script setup>
 
 import useVuelidate from '@vuelidate/core'
-import { email, minLength, numeric,required } from '@vuelidate/validators'
+import {email, minLength, numeric, required} from '@vuelidate/validators'
 import axios from "axios";
-import { onMounted,reactive, ref } from "vue";
-import { GoogleMap, Marker } from 'vue3-google-map'
+import {onMounted, reactive, ref} from "vue";
+import {GoogleMap, Marker} from 'vue3-google-map'
 
 import TextInput from "@/js/components/bases/TextInput.vue";
 import GenericButton from "@/js/components/button/GenericButton.vue";
+import Loader from "@/js/components/spinner/Loader.vue";
+import useIsLoading from "@/js/composables/useIsLoading";
 import {API_ENDPOINTS} from "@/js/constants/API_ENDPOINTS";
-import { serverURL } from "@/js/constants/serverUrl";
+import {serverURL} from "@/js/constants/serverUrl";
+import {schoolContactService} from "@/js/service/schoolContactService";
 
 
 const props = defineProps({
@@ -20,7 +23,7 @@ const props = defineProps({
     schoolLocation: {
         type: Object,
         required: false,
-        default: () => ({ lat: 0, lng: 0 })
+        default: () => ({lat: 0, lng: 0})
     },
     currentUserCanEdit: {
         type: Boolean,
@@ -31,6 +34,23 @@ const props = defineProps({
 
 const editMode = ref(false)
 const contactInfoAvailable = ref(false)
+
+
+const initiateFetchSchoolContact = () => {
+    console.log('init fetch school contact')
+    schoolContactService.fetchSchoolContact(props.schoolId).then(res => {
+        console.log(res)
+        state['location'] = res.location
+        state['website'] = res.website
+        state['email'] = res.email
+        state['phone'] = res.phone
+        state['fax'] = res.fax
+        contactInfoAvailable.value = true
+
+    })
+}
+const {data, error, isLoading, fetchData} = useIsLoading(initiateFetchSchoolContact)
+
 const state = reactive({
     location: "",
     website: "",
@@ -41,10 +61,10 @@ const state = reactive({
 })
 
 const rules = {
-    location: { required, minLength: minLength(10) },
-    website: { required },
-    email: { required, email },
-    phone: { required, minLength: minLength(9) },
+    location: {required, minLength: minLength(10)},
+    website: {required},
+    email: {required, email},
+    phone: {required, minLength: minLength(9)},
     fax: {}
 }
 
@@ -53,7 +73,6 @@ const v$ = useVuelidate(rules, state)
 const handleSaveContactForm = () => {
     v$.value.$validate();
     if (!v$.$errors) {
-        console.log(JSON.stringify(state))
         const sendContactDataBody = {
             school_id: props.schoolId,
             school_contact: JSON.stringify(state)
@@ -61,7 +80,7 @@ const handleSaveContactForm = () => {
         axios.post(API_ENDPOINTS.SCHOOL.CREATE_OR_UPDATE_SCHOOL_CONTACT, sendContactDataBody).then(res => {
             editMode.value = false
             contactInfoAvailable.value = true
-            
+
         })
 
     } else {
@@ -73,27 +92,24 @@ const handleToggleEditContactForm = () => {
     editMode.value = !editMode.value
 }
 
-const contactRequestBody = {
-    school_id: props.schoolId
-}
-axios.post(API_ENDPOINTS.SCHOOL.FETCH_SCHOOL_CONTACT, contactRequestBody).then(res => {
-    console.log(res.data)
-    if (res.data.result) {
-        const parsedData = typeof res.data.school_contact == 'string' ? JSON.parse(res.data.school_contact) : res.data.school_contact
-        state.location = parsedData.location || ""
-        state.website = parsedData.website || ""
-        state.email = parsedData.email || ""
-        state.phone = parsedData.phone || ""
-        state.fax = parsedData.fax || ""
-        contactInfoAvailable.value = true
-
-        console.log(parsedData)
-    } else {
-        console.log('schoolDataNotFound')
-    }
-}).catch(err => {
-    console.log()
-})
+// axios.post(API_ENDPOINTS.SCHOOL.FETCH_SCHOOL_CONTACT, contactRequestBody).then(res => {
+//     console.log(res.data)
+//     if (res.data.result) {
+//         const parsedData = typeof res.data.school_contact == 'string' ? JSON.parse(res.data.school_contact) : res.data.school_contact
+//         state.location = parsedData.location || ""
+//         state.website = parsedData.website || ""
+//         state.email = parsedData.email || ""
+//         state.phone = parsedData.phone || ""
+//         state.fax = parsedData.fax || ""
+//         contactInfoAvailable.value = true
+//
+//         console.log(parsedData)
+//     } else {
+//         console.log('schoolDataNotFound')
+//     }
+// }).catch(err => {
+//     console.log()
+// })
 
 
 const mapOptions = {
@@ -114,7 +130,6 @@ const mapOptions = {
 };
 
 
-
 </script>
 
 <template>
@@ -123,8 +138,14 @@ const mapOptions = {
             <div class="contactSubPageTitle font-bold text-2xl">
                 Contact details
             </div>
+            <div v-if="isLoading">
+                <Loader
+                    :loader-color="'#0072DA'"
+                    :loader-message="'Contact detail loading'"
+                />
+            </div>
             <div
-                v-if="editMode && currentUserCanEdit"
+                v-else-if="editMode && currentUserCanEdit"
                 class="contactForm flex flex-col"
             >
                 <div class="contactFormTitle font-semibold mb-4 text-xl">
