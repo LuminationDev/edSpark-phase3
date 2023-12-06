@@ -38,8 +38,8 @@ const props = defineProps({
     >
         <SchoolTechIconGenerator
             :tech-name="props.techName"
-            :on-school-card=true
-            class="w-fit flex flex-row items-center p-2"/>
+            :on-school-card="true"
+        />
     </div>
 </template>
 <style>

@@ -18,7 +18,7 @@ export const schoolService = {
             const {content_blocks, tech_used, cover_image, logo} = parseToJsonIfString(data);
             return ({
                 ...data,
-                content_blocks: content_blocks ? parseToJsonIfString(content_blocks) : {},
+                content_blocks: content_blocks || '',
                 tech_used: tech_used ? parseToJsonIfString(tech_used) : [],
                 cover_image: cover_image ? cover_image.replace("/\\/g", "") : '',
                 logo: logo ? logo.replace("/\\/g", "") : ''
@@ -51,7 +51,7 @@ export const schoolService = {
                 const {content_blocks, tech_used, cover_image, logo} = parseToJsonIfString(result);
                 return ({
                     ...result,
-                    content_blocks: content_blocks ? parseToJsonIfString(content_blocks) : {},
+                    content_blocks: content_blocks || "",
                     tech_used: tech_used ? parseToJsonIfString(tech_used) : [],
                     cover_image: cover_image ? cover_image.replace("/\\/g", "") : '',
                     logo: logo ? logo.replace("/\\/g", "") : ''
@@ -95,7 +95,6 @@ export const schoolService = {
 
             if (response.data.data.status === 'Published') {
                 const updatedSchoolContent = response.data.data;
-                updatedSchoolContent.content_blocks = parseToJsonIfString(updatedSchoolContent.content_blocks);
                 updatedSchoolContent.tech_used = parseToJsonIfString(updatedSchoolContent.tech_used);
                 return updatedSchoolContent;
             }

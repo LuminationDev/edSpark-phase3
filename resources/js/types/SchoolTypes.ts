@@ -5,7 +5,7 @@ export type SchoolDataType = {
     site: Site;
     owner: Owner;
     name: string;
-    content_blocks: EditorJSDataType;
+    content_blocks: string;
     logo: string;
     cover_image: string;
     tech_used: TechUsed[];
