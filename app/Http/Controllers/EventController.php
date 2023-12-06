@@ -208,5 +208,51 @@ class EventController extends Controller
         return response()->json($eventTypes);
     }
 
+    public function addOrEditEventEMSLink(Request $request): \Illuminate\Http\JsonResponse
+    {
+        $eventId = $request->input('event_id');
+        $emsLink = $request->input('ems_link');
+
+        $event = Event::find($eventId);
+        $user = Auth::user();
+
+        if (strtolower($user->role->role_name) !== 'partner' || $event->author->id != $user->id) {
+            return ResponseService::error('User is not a partner', 'Forbidden', 403);
+        }
+        if (!isset($emsLink)) {
+            return ResponseService::error('EMS Link is not provided', "Missing Data", 400);
+        }
+
+        Eventmeta::updateOrCreate(
+            [
+                'event_id' => $eventId,
+                'event_meta_key' => 'ems_link',
+            ],
+            [
+                'event_meta_value' => $emsLink,
+            ]
+        );
+        return ResponseService::success('Event recording updated successfully.');
+
+    }
+
+    public function fetchEventEMSLink($eventId): \Illuminate\Http\JsonResponse
+    {
+        if(!isset($eventId)){
+            return ResponseService::error("Event ID is required", 422);
+        }
+        // Check if the 'event_recording' meta exists for the given event ID
+        $eventRecordingMeta = Eventmeta::where('event_id', $eventId)
+            ->where('event_meta_key', 'ems_link')
+            ->first();
+
+        if ($eventRecordingMeta) {
+            $recordingLink = $eventRecordingMeta->event_meta_value;
+            $result = ['ems_link' => $recordingLink];
+            return ResponseService::success('Event EMS link found', $result);
+        } else {
+            return ResponseService::error('Event EMS Link not found', 404);
+        }
+    }
 
 }
