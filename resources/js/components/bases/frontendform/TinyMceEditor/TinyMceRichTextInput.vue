@@ -1,12 +1,9 @@
 <script setup>
-
-
 import Editor from '@tinymce/tinymce-vue'
 import {watchDebounced} from "@vueuse/core";
 import {ref} from "vue";
 
 import {API_ENDPOINTS, IMAGE_ENDPOINTS} from "@/js/constants/API_ENDPOINTS";
-
 const props = defineProps({
     srcContent: {
         type: String,
@@ -18,11 +15,11 @@ const props = defineProps({
 const emits = defineEmits('emitTinyRichContent')
 const editorContent = ref(props.srcContent)
 
-const emitContent = () =>{
-    emits('emitTinyRichContent', editorContent.value )
+const emitContent = () => {
+    emits('emitTinyRichContent', editorContent.value)
 }
 
-watchDebounced(editorContent, emitContent,  {debounce: 200, maxWait: 1000})
+watchDebounced(editorContent, emitContent, {debounce: 200, maxWait: 1000})
 
 </script>
 
@@ -40,16 +37,19 @@ watchDebounced(editorContent, emitContent,  {debounce: 200, maxWait: 1000})
             toolbar_sticky_offset: 45,
             image_caption: true,
             image_advtab: true,
+            content_css: '/css/filament/font/font.css',
+            skin: false,
+            content_style: `body {font-family: MuseoSans;} html {font-family: MuseoSans;}`
         }"
     />
 </template>
 <style>
-.tox-promotion{
+.tox-promotion {
     display: none;
 }
 
 
-.tox-statusbar__branding{
+.tox-statusbar__branding {
     display: none;
 
 }
