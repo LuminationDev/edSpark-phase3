@@ -5,7 +5,9 @@ import {useRoute} from "vue-router";
 
 import EditorJsControl from "@/js/components/bases/EditorJsControl.vue";
 import EditorJsInput from "@/js/components/bases/EditorJsInput.vue";
+import TinyMceRichTextInput from "@/js/components/bases/frontendform/TinyMceEditor/TinyMceRichTextInput.vue";
 import EditorJsContentDisplay from "@/js/components/schoolsingle/EditorJsContentDisplay.vue";
+import {edSparkContentSanitizer} from "@/js/helpers/objectHelpers";
 import {partnerService} from "@/js/service/partnerService";
 import {useUserStore} from "@/js/stores/useUserStore";
 import {EditorJSDataType} from "@/js/types/EditorJsTypes";
@@ -48,7 +50,7 @@ const route = useRoute()
 const partnerId = route.params.id
 const currentUserCanEdit = ref<boolean>(false)
 const editMode = ref<boolean>(false)
-const newPartnerContent: Ref<EditorJSDataType | null> = ref(null)
+const newPartnerContent: Ref<string> = ref(null)
 const pendingPartnerProfile: Ref<any> = ref(null)
 const partnerContentState = ref('new')
 const displayErrorMessage = ref('')
@@ -148,28 +150,37 @@ const handleClickEditPendingContent = (): void => {
             v-if="currentUserCanEdit && editMode"
             class="partnerOverviewEditorJs w-full"
         >
-            <EditorJsInput
-                ref="partnerEditorRef"
-                :existing-data="newPartnerContent"
-                @send-editorjs-data="handlePartnerDataFromEditor"
-            >
-                <template #editorjsControl>
-                    <EditorJsControl
-                        :load-pending-function="handleClickEditPendingContent"
-                        :edit-function="handleEditButton"
-                        :save-function="handleAllSaveButton"
-                        :button-description-by-state="buttonDescriptionByState"
-                        :editor-description-by-state="partnerContentStateDescription"
-                        :current-state="partnerContentState"
-                    />
-                </template>
-            </EditorJsInput>
+            <!--            <EditorJsInput-->
+            <!--                ref="partnerEditorRef"-->
+            <!--                :existing-data="newPartnerContent"-->
+            <!--                @send-editorjs-data="handlePartnerDataFromEditor"-->
+            <!--            >-->
+            <!--                <template #editorjsControl>-->
+            <!--                    <EditorJsControl-->
+            <!--                        :load-pending-function="handleClickEditPendingContent"-->
+            <!--                        :edit-function="handleEditButton"-->
+            <!--                        :save-function="handleAllSaveButton"-->
+            <!--                        :button-description-by-state="buttonDescriptionByState"-->
+            <!--                        :editor-description-by-state="partnerContentStateDescription"-->
+            <!--                        :current-state="partnerContentState"-->
+            <!--                    />-->
+            <!--                </template>-->
+            <!--            </EditorJsInput>-->
+            <TinyMceRichTextInput
+                :src-content="newPartnerContent"
+                :min-height="600"
+                @emit-tiny-rich-content="handlePartnerDataFromEditor"
+            />
         </div>
         <div
             v-else
             class="partnerOverviewContentRenderer"
         >
-            <EditorJsContentDisplay :content-blocks="props.contentFromBase.profile" />
+            <!--            <EditorJsContentDisplay :content-blocks="props.contentFromBase.profile" />-->
+            <div
+                class="richTextContentContainer"
+                v-html="edSparkContentSanitizer(props.contentFromBase.profile)"
+            />
         </div>
     </div>
 </template>

@@ -165,11 +165,6 @@ console.log(props.activeSubmenu)
                     >
                         <div class="flex flex-col w-full lg:!basis-2/3">
                             Curate your school content by adding blocks here with desired contents.
-                            <!--                            <EditorJsInput-->
-                            <!--                                ref="schoolEditorRef"-->
-                            <!--                                :existing-data="newSchoolContent"-->
-                            <!--                                @send-editorjs-data="handleSchoolData"-->
-                            <!--                            />-->
                             <TinyMceRichTextInput
                                 :src-content="newSchoolContent"
                                 :min-height="600"
