@@ -48,12 +48,12 @@ class EventResource extends Resource
                         Forms\Components\TextInput::make('event_title')
                             ->required()
                             ->maxLength(255),
+                        Forms\Components\TextInput::make('event_excerpt')
+                            ->label('Tagline')
+                            ->placeholder('150 characters or less')
+                            ->maxLength(150),
                         Forms\Components\RichEditor::make('event_content')
-                            ->required(),
-                        Forms\Components\RichEditor::make('event_excerpt')
-                            ->disableToolbarButtons([
-                                'attachFiles',
-                            ])
+                            ->required()
                             ->maxLength(65535),
                         Forms\Components\FileUpload::make('cover_image')
                             ->preserveFilenames()

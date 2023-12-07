@@ -2,6 +2,9 @@
 
 namespace App\Http;
 
+use App\Http\Middleware\FilterPartnerResponse;
+use App\Http\Middleware\ResourceAccessControl;
+use Filament\Resources\Resource;
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
 use App\Http\Middleware\OktaAuthenticationMiddleware;
 
@@ -44,6 +47,8 @@ class Kernel extends HttpKernel
             \Laravel\Sanctum\Http\Middleware\EnsureFrontendRequestsAreStateful::class,
             'throttle:api',
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
+            ResourceAccessControl::class,
+            FilterPartnerResponse::class
         ],
     ];
 

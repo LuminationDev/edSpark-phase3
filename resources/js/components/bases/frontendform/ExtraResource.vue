@@ -2,7 +2,7 @@
 import {onBeforeMount,reactive} from 'vue'
 
 import ExtraContentHeader from "@/js/components/bases/frontendform/ExtraContentHeader.vue";
-import TrixRichEditorInput from "@/js/components/bases/frontendform/TrixRichEditorInput.vue";
+import TinyMceRichTextInput from "@/js/components/bases/frontendform/TinyMceEditor/TinyMceRichTextInput.vue";
 import TextInput from "@/js/components/bases/TextInput.vue";
 import GenericButton from "@/js/components/button/GenericButton.vue";
 import Add from "@/js/components/svg/Add.vue";
@@ -80,12 +80,16 @@ const handleClickDeleteItem = (resourceIndex: number, itemIndex: number): void =
                             </template>
                         </TextInput>
                         <div class="ContainerTemp my-2 richContent">
-                            <TrixRichEditorInput
-                                label="Content"
+                            <TinyMceRichTextInput
                                 :src-content="item.content"
-                                class="border-gray-300"
-                                @input="(contentData) => item.content = contentData"
+                                @emit-tiny-rich-content="(contentData) => item.content = contentData"
                             />
+                            <!--                            <TrixRichEditorInput-->
+                            <!--                                label="Content"-->
+                            <!--                                :src-content="item.content"-->
+                            <!--                                class="border-gray-300"-->
+                            <!--                                @input="(contentData) => item.content = contentData"-->
+                            <!--                            />-->
                         </div>
                     </div>
                 </div>

@@ -13,6 +13,7 @@ use Filament\Forms\Components\Builder;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\MarkdownEditor;
 use Filament\Forms\Components\Select;
+use Mohamedsabil83\FilamentFormsTinyeditor\Components\TinyEditor;
 
 final class DateList
 {
@@ -26,7 +27,11 @@ final class DateList
         return [
             Repeater::make('item')->schema([
                 TextInput::make('heading'),
-                RichEditor::make('content'),
+                TinyEditor::make('content')
+                    ->label('Content')->fileAttachmentsDisk('local')
+                    ->fileAttachmentsVisibility('public')
+                    ->fileAttachmentsDirectory('public/uploads/image')
+                    ->required(),
                 Forms\Components\DateTimePicker::make('start_date')
                     ->required(),
             ])

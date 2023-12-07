@@ -13,6 +13,7 @@ use App\Services\ResponseService;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
 
 class PartnerController extends Controller
@@ -97,9 +98,19 @@ class PartnerController extends Controller
         }
     }
 
-    public function fetchPartnerById(Request $request, $id)
+    public function fetchPartnerById(Request $request)
     {
         try {
+            $validator = Validator::make($request->all(), [
+                'id' => 'required|integer|gt:0',
+                'preview' => 'required|boolean',
+            ]);
+
+            if ($validator->fails()) {
+                return ResponseService::error('Invalid request parameters', 400);
+            }
+            $id = $request->input('id');
+            $preview = $request->input('preview');
             $partner = Partner::where('user_id', $id)->first();
 
             if (!$partner) {

@@ -5,6 +5,7 @@ namespace App\Filament\PageTemplates;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\Repeater;
+use Mohamedsabil83\FilamentFormsTinyeditor\Components\TinyEditor;
 
 final class NumberedList
 {
@@ -18,7 +19,11 @@ final class NumberedList
         return [
             Repeater::make('item')->schema([
                 TextInput::make('heading'),
-                RichEditor::make('content')
+                TinyEditor::make('content')
+                    ->label('Content')->fileAttachmentsDisk('local')
+                    ->fileAttachmentsVisibility('public')
+                    ->fileAttachmentsDirectory('public/uploads/image')
+                    ->required(),
             ])
                 ->label('Item')
                 ->collapsible()

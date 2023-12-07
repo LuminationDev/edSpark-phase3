@@ -28,28 +28,28 @@ const rules = {
 const v$: any = useVuelidate(rules, state)
 
 
-const partnerBusinessTypes = [-
+const partnerBusinessTypes = [
     {
         id: 0,
         name: 'software'
     }, {
-    id: 1,
-    name: 'hardware'
-}, {
-    id: 2,
-    name: 'content'
-}, {
-    id: 3,
-    name: 'service'
-}
+        id: 1,
+        name: 'hardware'
+    }, {
+        id: 2,
+        name: 'content'
+    }, {
+        id: 3,
+        name: 'service'
+    }
 ]
 </script>
 
 <template>
     <DashboardHero class="-mt-extraHuge" />
     <div class="PartnerFormContainer flex justify-around flex-row mt-10 px-8  gap-8 lg:!px-10">
-        <div class="basis-1/2 bg-white border-[1px] drop-shadow-lg flex partnerFormContaner rounded-lg">
-            <form class="p-8">
+        <div class="basis-1/2 bg-white border-[1px] drop-shadow-lg flex justify-center partnerFormContaner rounded-lg">
+            <form class="p-4">
                 <h2 class="font-semibold py-2 text-2xl text-center">
                     Join edSpark today!
                 </h2>
@@ -150,36 +150,41 @@ const partnerBusinessTypes = [-
                 </div>
             </form>
         </div>
-        <div class="Description basis-1/2 flex flex-col p-8 partnerForm">
+        <div class="Description basis-1/2 flex flex-col p-4 partnerForm px-8">
             <h2 class="font-extrabold py-2 text-2xl text-center">
-                edSpark for Partners (Content TBD)
+                edSpark for Partners
             </h2>
-            <h3 class="font-bold">
-                What is edSpark? (sample content)
-            </h3>
-            <p>edSpark is a platform for schools, SA Department for Education and industry partners to showcase their technology and encourage the use of technology for all educators in South Australia</p>
+
+            <p class="text-justify">
+                Welcome to edSpark, a Digital Hub is where education and technology meet. This hub serves as a
+                collaborative space where you can connect, share knowledge, and contribute to the growth and development
+                of education professionals, including educators and principals.
+            </p>
+            <p>
+                At edSpark, we believe in the power of collaboration and the exchange of ideas. This platform provides a
+                centralized space for partners to showcase their expertise, products, and services, enabling educators
+                and principals to access a wealth of valuable resources and stay updated on the latest trends and
+                advancements in the education field. Through this hub, you can share your expertise, educational events,
+                workshops, and other relevant information with our community.
+            </p>
             <h3 class="font-bold mt-4">
                 Selection criteria for partners:
             </h3>
             <ul class="list-disc pl-6">
-                <li> Has current active operation in South Australia</li>
-                <li> Works directly with at least 1 school and Department for Education</li>
-                <li> Agrees to edSpark terms and conditions</li>
+                <li>Alignment with Educational Goals</li>
+                <li>Security and Data Privacy</li>
+                <li>User Experience and Accessibility</li>
+                <li>Reliability and Stability</li>
+                <li>Integration and Interoperability</li>
+                <li>Scalability and Flexibility</li>
+                <li>Cost-effectiveness and Value</li>
             </ul>
             <h3 class="font-bold mt-4">
                 How to join edSpark?
             </h3>
             <ul class="list-disc pl-6">
-                <li>Download edSpark application form below</li>
-                <li>Upload the completed document to the form on this page</li>
-                <li>We will contact you via email to advise the outcome of your application - keep an eye out!</li>
+                <li>Submit a pdf addressing the criteria mentioned above through the form on this page.</li>
             </ul>
-            <GenericButton
-                class="grow-0 mt-4"
-                :callback="() => {}"
-            >
-                <FileIcon />  Download Form
-            </GenericButton>
         </div>
     </div>
 </template>

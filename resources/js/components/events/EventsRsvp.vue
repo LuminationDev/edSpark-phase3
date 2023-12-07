@@ -4,7 +4,7 @@ import {email, minLength, numeric, required} from "@vuelidate/validators";
 import axios from "axios";
 import {storeToRefs} from "pinia";
 import SearchDropdown from 'search-dropdown-vue';
-import {computed, onMounted, reactive, ref} from 'vue'
+import {computed, onMounted,reactive, ref} from 'vue'
 
 import ErrorMessages from "@/js/components/bases/ErrorMessages.vue";
 import TextInput from "@/js/components/bases/TextInput.vue";
@@ -198,6 +198,10 @@ onMounted(() => {
                 Please register your interest below to reserve your spot!
             </div>
         </div>
+
+
+
+
         <div
             v-if="currentUserIsOwner"
             class="border-b-2 border-white flex flex-col gap-2 py-4"
@@ -209,6 +213,9 @@ onMounted(() => {
                 Number of guests registered: {{ currentOwnerInfo['total_guest'] }}
             </div>
         </div>
+
+
+
         <form
             v-else-if="(!currentUserIsOwner && !currentUserRsvped && eventStatus !== 'ENDED') || editingRsvp"
             class="border-b-2 border-white flex flex-col gap-2 py-8 rsvpFormInputs"
@@ -274,6 +281,7 @@ onMounted(() => {
             :rsvp-info="currentRsvpInfo"
             @start-edit-rsvp="handleStartEditRsvp"
         />
+
         <div
             v-else
             class="eventRsvpClosed"

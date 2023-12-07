@@ -71,15 +71,18 @@ const timeFormatter = (originalFormat) => {
         <template #content="{ contentFromBase }">
             <div class="adviceSingleContent flex flex-col overflow-hidden px-8 w-full xl:!flex-row">
                 <!--    Content of the Advice    -->
-                <div class="flex flex-col flex-wrap mr-10 px-2 py-2 w-full xl:!w-2/3">
+                <div class="flex flex-col flex-wrap mr-10 px-2 py-2 richTextContentContainer w-full xl:!w-2/3">
                     <div class="flex font-bold mb-2 text-2xl">
                         Getting started
                     </div>
                     <div
-                        class="flex content-paragraph flex-col max-w-full overflow-hidden text-lg"
+                        class="flex flex-col max-w-full overflow-hidden text-lg"
                     />
 
-                    <div v-html="edSparkContentSanitizer(contentFromBase['content'] )" />
+                    <div
+                        class="richTextContentContainer"
+                        v-html="edSparkContentSanitizer(contentFromBase['content'] )"
+                    />
                     <div
                         v-if="contentFromBase['extra_content'] && contentFromBase['extra_content'].length"
                         class="extraResourcesContainer mt-4 w-full"

@@ -4,15 +4,15 @@ namespace App\Http\Controllers;
 
 use App\Helpers\RoleHelpers;
 use App\Helpers\UserRole;
-use App\Models\Advice;
+use App\Http\Middleware\ResourceAccessControl;
 use App\Models\Eventmeta;
 use App\Models\Eventtype;
-use App\Models\Partner;
-use App\Models\Usermeta;
 use App\Services\PostService;
 use App\Services\ResponseService;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use App\Models\Event;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 
@@ -24,9 +24,11 @@ class EventController extends Controller
     public function __construct(PostService $postService)
     {
         $this->postService = $postService;
+        $this->middleware(ResourceAccessControl::class . ':partner,handleFetchEventPosts,fetchEventPostById');
+
     }
 
-    public function createEventPost(Request $request)
+    public function createEventPost(Request $request): \Illuminate\Http\JsonResponse
     {
         $validator = Validator::make($request->all(), [
             'event_title' => 'required|string',
@@ -60,15 +62,23 @@ class EventController extends Controller
 
     }
 
+    public function handleFetchEventPosts(Request $request): \Illuminate\Http\JsonResponse
+    {
+        if (Auth::user()->isPartner()) {
+            return $this->fetchUserEventPosts($request);
+        } else {
+            return $this->fetchAllEventPosts($request);
+        }
+    }
 
-    public function fetchEventPosts(Request $request): \Illuminate\Http\JsonResponse
+    public function fetchAllEventPosts(Request $request): \Illuminate\Http\JsonResponse
     {
         // Get the current date without the time component
         $currentDate = now()->startOfDay();
 
         $events = Event::where('event_status', 'Published')
             ->where('end_date', '>=', $currentDate)
-            ->where('event_status','Published')
+            ->where('event_status', 'Published')
             ->get();
 
         $data = [];
@@ -79,6 +89,29 @@ class EventController extends Controller
         }
 
         return response()->json($data);
+    }
+
+    public function fetchUserEventPosts(Request $request): JsonResponse
+    {
+        try {
+            $userId = Auth::user()->id;
+            $events = Event::where('event_status', 'Published')
+                ->where('author_id', $userId)  // Filter by partner (author) ID
+                ->orderBy('created_at', 'DESC')
+                ->get();
+
+            $data = [];
+
+            foreach ($events as $event) {
+
+                $result = $this->postService->eventModelToJson($event, $request);
+                $data[] = $result;
+            }
+
+            return response()->json($data);
+        } catch (\Exception $e) {
+            return response()->json(['error' => "An error occurred: " . $e->getMessage()], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
     }
 
 
@@ -174,4 +207,56 @@ class EventController extends Controller
 
         return response()->json($eventTypes);
     }
+
+    public function addOrEditEMSLink(Request $request): \Illuminate\Http\JsonResponse
+    {
+        $eventId = $request->input('event_id');
+        $emsLink = $request->input('ems_link');
+
+        $event = Event::find($eventId);
+        $user = Auth::user();
+
+
+//        if (strtolower($user->role->role_name) !== 'partner' || $event->author->id != $user->id) {
+//            return ResponseService::error('User is not a partner', 'Forbidden', 403);
+//        }
+        if (!isset($emsLink)) {
+            return ResponseService::error('EMS Link is not provided', "Missing Data", 422);
+        }
+        if(!$event->isActive()){
+            return ResponseService::error('Event has ended', "Ended Event", 400);
+
+        }
+
+        $event_link = Eventmeta::updateOrCreate(
+            [
+                'event_id' => $eventId,
+                'event_meta_key' => 'ems_link',
+            ],
+            [
+                'event_meta_value' => $emsLink,
+            ]
+        );
+        return ResponseService::success('EMS link updated successfully.', $event_link);
+    }
+
+    public function fetchEMSLink($eventId): \Illuminate\Http\JsonResponse
+    {
+        if(!isset($eventId)){
+            return ResponseService::error("Event ID is required", 422);
+        }
+        // Check if the 'event_recording' meta exists for the given event ID
+        $eventRecordingMeta = Eventmeta::where('event_id', $eventId)
+            ->where('event_meta_key', 'ems_link')
+            ->first();
+
+        if ($eventRecordingMeta) {
+            $recordingLink = $eventRecordingMeta->event_meta_value;
+            $result = ['ems_link' => $recordingLink];
+            return ResponseService::success('Event EMS link found', $result);
+        } else {
+            return ResponseService::error('Event EMS Link not found', "NOT FOUND",404);
+        }
+    }
+
 }

@@ -116,7 +116,7 @@ const fontAwesomeDefaultColor = (itemColor) => {
                     </div>
 
                     <div
-                        class="flex flex-wrap htmlRenderer"
+                        class="flex flex-col htmlRenderer"
                         v-html="item.content"
                     />
                 </div>

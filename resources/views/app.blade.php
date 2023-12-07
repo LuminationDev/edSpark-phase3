@@ -17,5 +17,6 @@
 </head>
 <body class="relative w-full lg:w-auto">
 <div id="app" class="flex flex-col container mx-auto shadow-lg min-h-screen "></div>
+
 </body>
 </html>
