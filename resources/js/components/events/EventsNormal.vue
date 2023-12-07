@@ -4,7 +4,7 @@ import {email, minLength, numeric, required} from "@vuelidate/validators";
 import axios from "axios";
 import {storeToRefs} from "pinia";
 import SearchDropdown from 'search-dropdown-vue';
-import {computed, onMounted, reactive, ref} from 'vue'
+import {computed, onMounted,reactive, ref} from 'vue'
 
 import ErrorMessages from "@/js/components/bases/ErrorMessages.vue";
 import TextInput from "@/js/components/bases/TextInput.vue";
@@ -14,7 +14,6 @@ import EventSubmitRecording from "@/js/components/events/EventSubmitRecording.vu
 import {API_ENDPOINTS} from "@/js/constants/API_ENDPOINTS";
 import {serverURL} from "@/js/constants/serverUrl";
 import {useUserStore} from "@/js/stores/useUserStore";
-
 
 const props = defineProps({
     locationType: {
@@ -41,7 +40,6 @@ const props = defineProps({
     }
 })
 
-
 const allSites = ref([])
 const currentUserIsOwner = ref(false)
 const currentOwnerInfo = ref({})
@@ -55,15 +53,15 @@ const userStore = useUserStore()
 const {currentUser} = storeToRefs(userStore)
 
 const state = reactive({
-    fullName: userStore.getUserFullName,
-    schoolName: userStore.getUserSiteName,
-    numOfGuest: "",
+    ems_link: userStore.getUserFullName,
+    //schoolName: userStore.getUserSiteName,
+    //numOfGuest: "",
 })
 
 const rules = {
-    fullName: {required},
-    schoolName: {required},
-    numOfGuest: {required, numeric},
+    ems_link: {required},
+    // schoolName: {required},
+    // numOfGuest: {required, numeric},
 }
 const v$ = useVuelidate(rules, state)
 
@@ -111,6 +109,8 @@ const eventStatus = computed(() => {
     } else {
         return "UNKNOWN"
     }
+
+
 })
 const dropdownSites = computed(() => {
     if (allSites.value.length === 0) return []
@@ -137,9 +137,9 @@ const handleSubmitRsvp = () => {
         const rsvpData = {
             user_id: currentUser.value.id,
             event_id: props.eventId,
-            full_name: state.fullName,
-            school_name: state.schoolName,
-            number_of_guests: state.numOfGuest
+            // full_name: state.ems_link,
+            // school_name: state.schoolName,
+            // number_of_guests: state.numOfGuest
         }
         return axios.post(API_ENDPOINTS.EVENT.ADD_RSVP_TO_EVENT, rsvpData).then(res => {
             console.log(res.data)
@@ -163,9 +163,9 @@ const handleSubmitRsvp = () => {
 const handleStartEditRsvp = () => {
     editingRsvp.value = true
     console.log(currentRsvpInfo.value['school_name'])
-    v$.value.fullName.$model = currentRsvpInfo.value['full_name']
-    v$.value.schoolName.$model = currentRsvpInfo.value['school_name']
-    v$.value.numOfGuest.$model = currentRsvpInfo.value['number_of_guests']
+    v$.value.ems_link.$model = currentRsvpInfo.value['full_name']
+    // v$.value.schoolName.$model = currentRsvpInfo.value['school_name']
+    // v$.value.numOfGuest.$model = currentRsvpInfo.value['number_of_guests']
     schoolDropdownDisplay.value = currentRsvpInfo.value['school_name']
 }
 
@@ -216,9 +216,9 @@ onMounted(() => {
             @submit.prevent=""
         >
             <TextInput
-                v-model="v$.fullName.$model"
-                field-id="fullName"
-                :v$="v$.fullName"
+                v-model="v$.ems_link.$model"
+                field-id="ems_link"
+                :v$="v$.ems_link"
                 placeholder="Full name"
             >
                 <template #label>
@@ -226,31 +226,31 @@ onMounted(() => {
                 </template>
             </TextInput>
 
-            <TextInput
-                v-model="v$.numOfGuest.$model"
-                field-id="numOfGuest"
-                :v$="v$.numOfGuest"
-                placeholder="Enter number of guest"
-            >
-                <template #label>
-                    Number of guests
-                </template>
-            </TextInput>
+            <!--            <TextInput-->
+            <!--                v-model="v$.numOfGuest.$model"-->
+            <!--                field-id="numOfGuest"-->
+            <!--                :v$="v$.numOfGuest"-->
+            <!--                placeholder="Enter number of guest"-->
+            <!--            >-->
+            <!--                <template #label>-->
+            <!--                    Number of guests-->
+            <!--                </template>-->
+            <!--            </TextInput>-->
 
-            <div class="-mt-1 Selector dropdown flex flex-col school">
-                <label class="-mb-2 ml-2"> School name <br><i>Start typing your school name and click on the result</i></label>
-                <SearchDropdown
-                    class="-mt-2 searchable_dropdown"
-                    :options="dropdownSites"
-                    :placeholder=" schoolDropdownDisplay ||'Type and select your school'"
-                    name="site"
-                    :close-on-outside-click="true"
-                    @selected="onSelectedSchoolDropdown"
-                />
-                <ErrorMessages
-                    :v$="v$.schoolName"
-                />
-            </div>
+            <!--            <div class="-mt-1 Selector dropdown flex flex-col school">-->
+            <!--                <label class="-mb-2 ml-2"> School name <br/><i>Start typing your school name and click on the result</i></label>-->
+            <!--                <SearchDropdown-->
+            <!--                    class="-mt-2 searchable_dropdown"-->
+            <!--                    :options="dropdownSites"-->
+            <!--                    :placeholder=" schoolDropdownDisplay ||'Type and select your school'"-->
+            <!--                    name="site"-->
+            <!--                    :close-on-outside-click="true"-->
+            <!--                    @selected="onSelectedSchoolDropdown"-->
+            <!--                />-->
+            <!--                <ErrorMessages-->
+            <!--                    :v$="v$.schoolName"-->
+            <!--                />-->
+            <!--            </div>-->
             <div class="flex items-center flex-row">
                 <GenericButton
                     id="rsvpBtn"
@@ -258,7 +258,7 @@ onMounted(() => {
                     class="!bg-secondary-coolGrey !text-black font-semibold mt-4 px-6 rounded-sm w-fit"
                 >
                     <template #default>
-                        RSVP
+                        Submit
                     </template>
                 </GenericButton>
                 <span
@@ -269,19 +269,19 @@ onMounted(() => {
             </div>
         </form>
 
-        <EventRsvpSummary
-            v-else-if="!currentUserIsOwner && eventStatus !== 'ENDED'"
-            :rsvp-info="currentRsvpInfo"
-            @start-edit-rsvp="handleStartEditRsvp"
-        />
-        <div
-            v-else
-            class="eventRsvpClosed"
-        >
-            <div class="font-bold mt-4 rsvpHeader text-xl">
-                This event has ended and registration has closed. Thank you
-            </div>
-        </div>
+        <!--        <EventRsvpSummary-->
+        <!--            v-else-if="!currentUserIsOwner && eventStatus !== 'ENDED'"-->
+        <!--            :rsvp-info="currentRsvpInfo"-->
+        <!--            @start-edit-rsvp="handleStartEditRsvp"-->
+        <!--        />-->
+        <!--        <div-->
+        <!--            v-else-->
+        <!--            class="eventRsvpClosed"-->
+        <!--        >-->
+        <!--            <div class="font-bold mt-4 rsvpHeader text-xl">-->
+        <!--                This event has ended and registration has closed. Thank you-->
+        <!--            </div>-->
+        <!--        </div>-->
         <!--   Event Contact Form     -->
         <div
             v-if="(eventStatus === 'ENDED') "
@@ -292,33 +292,33 @@ onMounted(() => {
                 :current-user-is-owner="currentUserIsOwner"
             />
         </div>
-        <div
-            v-else
-            class="contactHeader eventContactForm flex flex-col py-4 text-lg"
-        >
-            <div class="font-bold mb-4 rsvpHeader text-xl">
-                Contact the organiser
-            </div>
-            <div class="eventRsvp form-cta pb-4">
-                Do you have any question? Reach out to the organiser for more information.
-            </div>
-            <a
-                v-if="props.authorInfo && props.authorInfo['author_email']"
-                class="!no-underline flex"
-                :href="`mailto:${props.authorInfo['author_email']}`"
-            >
-                <GenericButton
-                    id="contactBtn"
-                    :callback="handleClickContactOrganiser"
-                    class="!bg-secondary-coolGrey !text-black font-semibold mt-4 px-6 rounded-sm w-fit"
-                >
-                    <template #default>
-                        Email organiser
-                    </template>
-                </GenericButton>
+        <!--        <div-->
+        <!--            v-else-->
+        <!--            class="contactHeader eventContactForm flex flex-col py-4 text-lg"-->
+        <!--        >-->
+        <!--            <div class="font-bold rsvpHeader text-xl mb-4 ">-->
+        <!--                Contact the organiser-->
+        <!--            </div>-->
+        <!--            <div class="eventRsvp form-cta pb-4">-->
+        <!--                Do you have any question? Reach out to the organiser for more information.-->
+        <!--            </div>-->
+        <!--            <a-->
+        <!--                v-if="props.authorInfo && props.authorInfo['author_email']"-->
+        <!--                class="flex !no-underline"-->
+        <!--                :href="`mailto:${props.authorInfo['author_email']}`"-->
+        <!--            >-->
+        <!--                <GenericButton-->
+        <!--                    :callback="handleClickContactOrganiser"-->
+        <!--                    id="contactBtn"-->
+        <!--                    class="!bg-secondary-coolGrey !text-black font-semibold mt-4 px-6 rounded-sm w-fit"-->
+        <!--                >-->
+        <!--                    <template #default>-->
+        <!--                        Email organiser-->
+        <!--                    </template>-->
+        <!--                </GenericButton>-->
 
-            </a>
-        </div>
+        <!--            </a>-->
+        <!--        </div>-->
     </div>
 </template>
 

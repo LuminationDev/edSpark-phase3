@@ -1,6 +1,6 @@
 <script setup>
-import { ref, computed, onMounted } from 'vue'
-import { GoogleMap, Marker } from 'vue3-google-map'
+import {computed, onMounted,ref} from 'vue'
+import {GoogleMap, Marker} from 'vue3-google-map'
 
 const props = defineProps({
     locationType: {
@@ -41,7 +41,7 @@ const markerCenter = ref({
 
 onMounted(() => {
     if (props.locationInfo.length && (props.locationType.toLowerCase() === 'in person' || props.locationType.toLowerCase() === 'hybrid') && props.locationInfo.address) {
-        const { address } = props.locationInfo
+        const {address} = props.locationInfo
         axios.get(`https://geocode.maps.co/search?q={${address}}`).then(res => {
             if (res.data[0]['lat'] && res.data[0]['lon']) {
                 if (eventMapRef.value?.ready) {
@@ -90,20 +90,20 @@ const formattedUrl = computed(() => {
         </div>
     </div>
     <div v-else-if="props.locationType && props.locationType.toLowerCase() === 'virtual'">
-        <div
-            v-if="props.locationInfo.url"
-            class="bg-blue-900 border-2 border-black p-4 text-white"
-        >
-            <div class="EventUrlTitle">
-                You can attend this event via this link below
-            </div>
-            <div class="VirtualEventLocationURL">
-                <a
-                    :href="formattedUrl"
-                    class="cursor-pointer font-semibold"
-                >{{ props.locationInfo.url }}</a>
-            </div>
-        </div>
+        <!--        <div-->
+        <!--            v-if="props.locationInfo.url"-->
+        <!--            class="bg-blue-900 border-2 border-black p-4 text-white"-->
+        <!--        >-->
+        <!--            <div class="EventUrlTitle">-->
+        <!--                You can attend this event via this link below-->
+        <!--            </div>-->
+        <!--            <div class="VirtualEventLocationURL">-->
+        <!--                <a-->
+        <!--                    :href="formattedUrl"-->
+        <!--                    class="cursor-pointer font-semibold"-->
+        <!--                >{{ props.locationInfo.url }}</a>-->
+        <!--            </div>-->
+        <!--        </div>-->
     </div>
     <div v-else-if="props.locationType && props.locationType.toLowerCase() === 'hybrid'">
         <template v-if="props.locationInfo.address">
@@ -127,7 +127,8 @@ const formattedUrl = computed(() => {
                     <Marker
                         class="relative"
                         :options="{ position: markerCenter }"
-                    />¬
+                    />
+                    ¬
                 </GoogleMap>
             </div>
         </template>

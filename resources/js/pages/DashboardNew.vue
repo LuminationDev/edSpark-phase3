@@ -25,7 +25,6 @@ const {currentUser} = storeToRefs(userStore)
 const windowStore = useWindowStore()
 const {isMobile} = storeToRefs(windowStore)
 
-
 const shouldStartSwrv = computed(() => {
     return Boolean(currentUser.value.id)
 })
@@ -39,7 +38,6 @@ const {
 const {
     data: advicesData,
 } = useSWRV(() => shouldStartSwrv.value ? API_ENDPOINTS.ADVICE.FETCH_ADVICE_POSTS : null, axiosFetcher, swrvOptions)
-
 
 const softwareResponsiveData = computed(() => {
     if (!softwaresData.value.length) {

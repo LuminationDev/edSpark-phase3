@@ -6,7 +6,6 @@ import Advice from "@/js/models/_advice";
 import Software from "@/js/models/_software";
 import {SimpleDataItem, TemplateType, TransformedData} from "@/js/types/PostTypes";
 
-
 const templateFields = {
     TEXT_FIELD: "",
     RICH_TEXT: "",

@@ -8,7 +8,8 @@ import BaseSingle from "@/js/components/bases/BaseSingle.vue";
 import BaseSingleProfilePicture from "@/js/components/bases/BaseSingleProfilePicture.vue";
 import EventSingleExtraContentRenderer from "@/js/components/events/EventSingleExtraContentRenderer.vue";
 import EventsLocation from "@/js/components/events/EventsLocation.vue";
-import EventsRsvp from "@/js/components/events/EventsRsvp.vue";
+//import EventsRsvp from "@/js/components/events/EventsRsvp.vue";
+import EventsRsvp from "@/js/components/events/EventsNorm.vue";
 import CalendarIcon from "@/js/components/svg/event/CalendarIcon.vue";
 import LocationIcon from "@/js/components/svg/event/LocationIcon.vue";
 import TimeIcon from "@/js/components/svg/event/TimeIcon.vue";
@@ -35,7 +36,7 @@ const getEventColorTheme = (eventType) => {
 const getEventBackgroundColorTheme = (eventType) => {
     const colorKey = getEventColorTheme(eventType)
     // return "bg-event-"+eventType
-    return "bg-[" + schoolColorTheme[colorKey]['light'] + "]" 
+    return "bg-[" + schoolColorTheme[colorKey]['light'] + "]"
 }
 
 
@@ -68,7 +69,7 @@ const getEventBackgroundColorTheme = (eventType) => {
                             w-fit
                             hidden
                             ">
-                       
+
                             <div class="bg-white rounded-full w-fit h-fit">
                                 <EventTypeTag
                                     class="!m-0"
