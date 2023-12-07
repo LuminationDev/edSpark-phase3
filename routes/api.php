@@ -125,8 +125,8 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('removeRsvpFromEvent', [RsvpController::class, 'removeRsvpFromEvent']);
     Route::post('checkIfUserRsvped', [RsvpController::class, 'checkIfUserRsvped']);
     Route::post('addEventRecording', [EventController::class, 'addEventRecording']);
-    Route::post('addOrEditEventEMSLink', [EventController::class, 'addOrEditEventEMSLink']);
-    Route::get('fetchEventEMSLink/{event_id}', [EventController::class, 'fetchEventEMSLink']);
+    Route::post('addOrEditEMSLink', [EventController::class, 'addOrEditEMSLink']);
+    Route::get('fetchEMSLink/{event_id}', [EventController::class, 'fetchEMSLink']);
 
 
     //Search

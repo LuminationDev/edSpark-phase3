@@ -85,7 +85,9 @@ export const API_ENDPOINTS: Endpoints = appendServerURL({
         FETCH_EVENT_POSTS: `/fetchEventPosts`,
         FETCH_EVENT_POST_BY_ID: `/fetchEventPostById`,
         FETCH_EVENT_TYPES: `/fetchEventTypes`,
-        CREATE_EVENT_POST: `/createEventPost`
+        CREATE_EVENT_POST: `/createEventPost`,
+        ADD_OR_EDIT_EMS_LINK: `/addOrEditEMSLink`,
+        FETCH_EMS_LINK: `/fetchEMSLink/`
     },
     USER: {
         FETCH_CURRENT_USER: `/fetchCurrentUser`,
