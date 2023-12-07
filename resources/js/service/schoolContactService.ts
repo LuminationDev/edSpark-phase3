@@ -16,7 +16,6 @@ export const schoolContactService = {
                 result['email'] = parsedData.email || ""
                 result['phone'] = parsedData.phone || ""
                 result['fax'] = parsedData.fax || ""
-                // contactInfoAvailable.value = true
                 return result
 
             } else {

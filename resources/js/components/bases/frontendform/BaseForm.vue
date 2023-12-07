@@ -85,14 +85,6 @@ const {
     autoSaveContent, loadAutoSaveData
 } = useAutoSave(autoSaveService, currentUser, props.itemType, () => ({...state, ...props.additionalData}), 'BaseFormParent')
 
-const handleTrixInputContent = (data) => {
-    v$.value.content.$model = data
-}
-
-const handleTrixInputExcerpt = (data) => {
-    v$.value.excerpt.$model = data
-}
-
 const populateLocalStateFromWindowStateDraftData = (data): void => {
     state.title = data.title || ""
     state.excerpt = data.excerpt || ""

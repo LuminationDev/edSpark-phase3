@@ -1,9 +1,9 @@
-<script setup>
+<script setup lang="ts">
 
 import useVuelidate from '@vuelidate/core'
-import {email, minLength, numeric, required} from '@vuelidate/validators'
+import {email, minLength,  required} from '@vuelidate/validators'
 import axios from "axios";
-import {onMounted, reactive, ref} from "vue";
+import { reactive, ref} from "vue";
 import {GoogleMap, Marker} from 'vue3-google-map'
 
 import TextInput from "@/js/components/bases/TextInput.vue";
@@ -11,7 +11,6 @@ import GenericButton from "@/js/components/button/GenericButton.vue";
 import Loader from "@/js/components/spinner/Loader.vue";
 import useIsLoading from "@/js/composables/useIsLoading";
 import {API_ENDPOINTS} from "@/js/constants/API_ENDPOINTS";
-import {serverURL} from "@/js/constants/serverUrl";
 import {schoolContactService} from "@/js/service/schoolContactService";
 
 
@@ -36,20 +35,18 @@ const editMode = ref(false)
 const contactInfoAvailable = ref(false)
 
 
-const initiateFetchSchoolContact = () => {
+const initiateFetchSchoolContact = (): Promise<any> => {
     console.log('init fetch school contact')
-    schoolContactService.fetchSchoolContact(props.schoolId).then(res => {
-        console.log(res)
+    return schoolContactService.fetchSchoolContact(+props.schoolId).then(res => {
         state['location'] = res.location
         state['website'] = res.website
         state['email'] = res.email
         state['phone'] = res.phone
         state['fax'] = res.fax
         contactInfoAvailable.value = true
-
     })
 }
-const {data, error, isLoading, fetchData} = useIsLoading(initiateFetchSchoolContact)
+const {isLoading} = useIsLoading(initiateFetchSchoolContact)
 
 const state = reactive({
     location: "",
@@ -91,25 +88,6 @@ const handleSaveContactForm = () => {
 const handleToggleEditContactForm = () => {
     editMode.value = !editMode.value
 }
-
-// axios.post(API_ENDPOINTS.SCHOOL.FETCH_SCHOOL_CONTACT, contactRequestBody).then(res => {
-//     console.log(res.data)
-//     if (res.data.result) {
-//         const parsedData = typeof res.data.school_contact == 'string' ? JSON.parse(res.data.school_contact) : res.data.school_contact
-//         state.location = parsedData.location || ""
-//         state.website = parsedData.website || ""
-//         state.email = parsedData.email || ""
-//         state.phone = parsedData.phone || ""
-//         state.fax = parsedData.fax || ""
-//         contactInfoAvailable.value = true
-//
-//         console.log(parsedData)
-//     } else {
-//         console.log('schoolDataNotFound')
-//     }
-// }).catch(err => {
-//     console.log()
-// })
 
 
 const mapOptions = {

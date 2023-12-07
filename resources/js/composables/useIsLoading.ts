@@ -1,11 +1,11 @@
 import { onMounted,ref } from 'vue';
 
-export default function useIsLoading(fetchFunction) {
+export default function useIsLoading(fetchFunction : () => Promise<any>) {
     const data = ref(null);
     const error = ref(null);
     const isLoading = ref(false);
 
-    const fetchData = async () => {
+    const fetchData = async (): void => {
         try {
             isLoading.value = true;
             const response = await fetchFunction();
