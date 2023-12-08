@@ -86,8 +86,8 @@ const routes: any = [
                     requiresAuth: true,
                 } as RouteMeta
             }, {
-                name: 'createAdvice',
-                path: 'advice',
+                name: 'createGuide',
+                path: 'guide',
                 component: AdviceForm,
                 meta: {
                     requiresAuth: true,
@@ -115,7 +115,7 @@ const routes: any = [
                 } as RouteMeta
             }, {
                 name: 'browseAdvices',
-                path: 'advice/:filter?',
+                path: 'guide/:filter?',
                 component: AdviceSearch,
                 meta: {
                     requiresAuth: true,
@@ -170,8 +170,8 @@ const routes: any = [
         }
     },
     {
-        name: 'advice',
-        path: '/advice',
+        name: 'guides',
+        path: '/guides',
         component: TheAdvice,
         meta: {
             navigation: true,
@@ -180,9 +180,9 @@ const routes: any = [
         }
     },
     {
-        name: 'advice-single',
-        path: '/advice/resources/:id/:slug?',
-        alias: '/advice/resources/:id',
+        name: 'guide-single',
+        path: '/guide/resources/:id/:slug?',
+        alias: '/guide/resources/:id',
         component: AdviceSingle,
         params: true,
         meta: {

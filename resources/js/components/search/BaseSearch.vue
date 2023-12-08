@@ -180,7 +180,7 @@ const formattedSearchBlurb = computed(() => {
                 :key="data['key']"
             >
                 <template
-                    v-if="searchType === 'advice'"
+                    v-if="searchType === 'guide'"
                 >
                     <div
                         :key="data.id"

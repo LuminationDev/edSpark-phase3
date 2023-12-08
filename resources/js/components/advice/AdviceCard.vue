@@ -31,7 +31,7 @@ const handleClickAdviceCard = () => {
      * which is /advice/resources/:id
      */
     router.push({
-        name: "advice-single",
+        name: "guide-single",
         params: {id: props.data.id, slug: lowerSlugify(props.data.title)},
         state: {content: JSON.stringify(props.data)}
     })

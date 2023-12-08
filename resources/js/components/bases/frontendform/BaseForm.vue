@@ -146,7 +146,7 @@ const handleClickSaveAsDraft = () => {
 
 const titleGenerator = computed((): string => {
     if (currentAction.value === FormAction.CREATE) {
-        return "Create " + capitalize(props.itemType)
+        return "Create " + capitalize(props.itemType == 'advice' ? 'guide' : props.itemType)
 
     } else if (currentAction.value === FormAction.EDIT) {
         return "Edit " + capitalize(props.itemType)
