@@ -41,15 +41,10 @@ class PartnerController extends Controller
             $partnerProfile = Partnerprofile::create([
                 'partner_id' => $partner->id,
                 'user_id' => $partner->user_id,
-                'content' => json_encode([
-                    "time" => time() * 1000,
-                    "blocks" => [],
-                    'version' => 1
-                ]),
+                'content' => "<p>Partner Content</p>",
                 'status' => 'Published',
             ]);
         }
-
         return $partnerProfile;
     }
 
@@ -77,7 +72,7 @@ class PartnerController extends Controller
             'metadata' => $partnerMeta,
             'isLikedByUser' => $isLikedByUser,
             'isBookmarkedByUser' => $isBookmarkedByUser,
-            'profile' => json_decode($partnerProfile->content)
+            'profile' => $partnerProfile->content
         ];
     }
 
@@ -182,10 +177,7 @@ class PartnerController extends Controller
         try {
             // Validate the request data
             $validatedData = $request->validate([
-                'content' => 'required|array',
-                'content.time' => 'required',
-                'content.version' => 'required',
-                'content.blocks' => 'required|array',
+                'content' => 'required',
                 'partner_id' => 'required'
             ]);
 
@@ -194,9 +186,6 @@ class PartnerController extends Controller
 
             if (!$partner) {
                 return response()->json(['error' => 'Partner not found'], Response::HTTP_NOT_FOUND);
-            }
-            if (empty($validatedData['content']['blocks'])) {
-                return response()->json(['error' => 'Blocks content is empty. Not saved.'], Response::HTTP_BAD_REQUEST);
             }
             // Create a new PartnerProfile entry with the content and status as "Pending"
             Partnerprofile::create([
