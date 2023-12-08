@@ -60,7 +60,7 @@ setupRoutes();
 </script>
 
 <template>
-    <div class="h-32 relative w-full z-50 md:!h-40 lg:!h-56">
+    <div class="h-32 relative w-full z-40 md:!h-40 lg:!h-56">
         <img
             src="@/assets/images/navbar.png"
             alt="Image of children writing and playing VR"
@@ -69,10 +69,10 @@ setupRoutes();
         <nav
             v-if="isAuthenticated"
             id="navbarFullsize"
-            class="bg-[#002856]/50 container hidden navbarFullsize px-12 py-2 lg:block lg:z-20"
+            class="bg-[#002856]/50 container hidden navbarFullsize px-12 z-40 lg:block"
         >
             <ul
-                class="2xl:gap-8 2xl:text-2xl font-semibold gap-4 hidden text-white lg:flex lg:flex-row"
+                class="2xl:gap-8 2xl:text-2xl font-semibold gap-4 hidden items-center text-white lg:flex lg:flex-row"
             >
                 <NavItems
                     v-for="(route, i) in navLinks"
@@ -80,57 +80,61 @@ setupRoutes();
                     :route="route"
                 />
                 <li
-                    class="cursor-pointer"
+                    class="cursor-pointer ml-auto mr-2"
                     @click="handleGlobalsearchClick"
                 >
                     <div
                         id="searchIconMain"
-                        class="svg-container"
+                        class="scale-[110%] svg-container"
                     >
                         <Search />
                     </div>
                 </li>
+                <li class="mr-64 py-1">
+                    <ProfileDropdown
+                        v-if="isAuthenticated"
+                        :key="currentUser"
+                        :current-user="currentUser"
+                        :avatar-url="avatarUrl"
+                    />
+                </li>
             </ul>
+            <div
+                id="edSparkLogo"
+                title="edSpark logo"
+            >
+                <router-link
+                    :to="{name: 'dashboard'}"
+                    title="Go to dashboard"
+                >
+                    <Logo
+                        class="
+                            absolute
+                            top-2
+                            right-2
+                            h-32
+                            nav-logo
+                            transition-all
+                            w-40
+                            z-30
+                            md:!h-44
+                            md:!right-12
+                            md:!top-2
+                            md:!w-44
+                            lg:!right-10
+                            lg:!top-4
+                            xl:!h-56
+                            xl:!right-20
+                            xl:!top-4
+                            xl:!w-56
+                            "
+                    />
+                </router-link>
+            </div>
         </nav>
 
-        <ProfileDropdown
-            v-if="isAuthenticated"
-            :key="currentUser"
-            :current-user="currentUser"
-            :avatar-url="avatarUrl"
-        />
-        <div
-            id="edSparkLogo"
-            title="edSpark logo"
-        >
-            <router-link
-                :to="{name: 'dashboard'}"
-                title="Go to dashboard"
-            >
-                <Logo
-                    class="
-                        absolute
-                        top-4
-                        right-2
-                        h-32
-                        nav-logo
-                        transition-all
-                        w-40
-                        z-30
-                        md:!h-44
-                        md:!right-12
-                        md:!top-6
-                        md:!w-44
-                        lg:!right-10
-                        lg:!top-12
-                        xl:!h-56
-                        xl:!right-20
-                        xl:!top-8
-                        xl:!w-56
-                        "
-                />
-            </router-link>
-        </div>
+
+
         <NavSwoosh
             class="absolute -bottom-0 left-0 pointer-events-none scale-y-[1.2] w-full"
         />
