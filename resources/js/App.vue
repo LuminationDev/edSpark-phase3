@@ -105,10 +105,11 @@ onMounted(() => {
     // This logic remains as it's specific to onMounted
     scrollHandler = throttle(() => {
         const navbar = document.getElementById('navbarMobileBurger') || document.getElementById('navbarFullsize');
-
+        const edSparkLogo = document.getElementById('edSparkLogo')
         if (navbar) {
             navScrolled.value = window.scrollY > navbar.offsetTop;
             navbar.classList.toggle('navbarScrolled', navScrolled.value);
+
         }
     }, 100);
     setEventListeners();
