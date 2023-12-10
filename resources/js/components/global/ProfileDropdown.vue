@@ -72,7 +72,7 @@ const mySchoolTargetPath = computed(() =>{
 </script>
 
 <template>
-    <div class="h-11 hidden w-11 z-50 lg:block">
+    <div class="h-12 hidden w-12 z-50 lg:block">
         <div
             class="bg-slate-200 cursor-pointer flex h-full overflow-hidden relative rounded-full w-full z-50 hover:shadow-2xl"
             @click="toggleDropdownMenu"
