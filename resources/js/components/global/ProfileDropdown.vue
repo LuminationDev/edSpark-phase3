@@ -72,7 +72,7 @@ const mySchoolTargetPath = computed(() =>{
 </script>
 
 <template>
-    <div class="h-12 hidden w-12 z-50 lg:block">
+    <div class="absolute h-12 hidden w-12  lg:!right-48 lg:!top-52 lg:block xl:!right-72 xl:!top-56">
         <div
             class="bg-slate-200 cursor-pointer flex h-full overflow-hidden relative rounded-full w-full z-50 hover:shadow-2xl"
             @click="toggleDropdownMenu"
@@ -96,11 +96,11 @@ const mySchoolTargetPath = computed(() =>{
             class="h-full relative w-full z-50"
             @mouseleave="toggleDropdownMenu"
         >
-            <div class="absolute -top-6 left-[24px] bg-[#637D99] flex flex-col px-4 py-6 shadow-lg w-[240px] z-50">
+            <div class="absolute -top-6 left-[24px] bg-[#637D99] flex flex-col px-4 py-6 shadow-lg w-[240px] z-50 z-50">
                 <div class="border-b border-white font-bold h-fit pb-3 text-[24px] text-center text-white w-full">
                     <h5>{{ currentUser.full_name }}</h5>
                 </div>
-                <div class="border-b border-white flex flex-col gap-3 py-3 z-50">
+                <div class="border-b border-white flex flex-col gap-3 py-3">
                     <ProfileDropdownItem
                         v-if="profileTargetPath"
                         :is-router-link="true"
