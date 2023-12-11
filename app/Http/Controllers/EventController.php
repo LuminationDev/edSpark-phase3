@@ -223,9 +223,8 @@ class EventController extends Controller
         if (!isset($emsLink)) {
             return ResponseService::error('EMS Link is not provided', "Missing Data", 422);
         }
-        if(!$event->isActive()){
+        if (!$event->isActive()) {
             return ResponseService::error('Event has ended', "Ended Event", 400);
-
         }
 
         $event_link = Eventmeta::updateOrCreate(
@@ -242,7 +241,7 @@ class EventController extends Controller
 
     public function fetchEMSLink($eventId): \Illuminate\Http\JsonResponse
     {
-        if(!isset($eventId)){
+        if (!isset($eventId)) {
             return ResponseService::error("Event ID is required", 422);
         }
         // Check if the 'event_recording' meta exists for the given event ID
@@ -255,7 +254,7 @@ class EventController extends Controller
             $result = ['ems_link' => $recordingLink];
             return ResponseService::success('Event EMS link found', $result);
         } else {
-            return ResponseService::error('Event EMS Link not found', "NOT FOUND",404);
+            return ResponseService::error('Event EMS Link not found', "NOT FOUND", 404);
         }
     }
 

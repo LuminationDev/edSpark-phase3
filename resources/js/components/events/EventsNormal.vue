@@ -4,7 +4,7 @@ import {email, minLength, numeric, required} from "@vuelidate/validators";
 import axios from "axios";
 import {storeToRefs} from "pinia";
 import SearchDropdown from 'search-dropdown-vue';
-import {computed, onMounted,reactive, ref} from 'vue'
+import {computed, onMounted, reactive, ref} from 'vue'
 
 import ErrorMessages from "@/js/components/bases/ErrorMessages.vue";
 import TextInput from "@/js/components/bases/TextInput.vue";
@@ -53,7 +53,7 @@ const userStore = useUserStore()
 const {currentUser} = storeToRefs(userStore)
 
 const state = reactive({
-    ems_link: userStore.getUserFullName,
+    ems_link: '',
     //schoolName: userStore.getUserSiteName,
     //numOfGuest: "",
 })

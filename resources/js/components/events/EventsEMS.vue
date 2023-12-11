@@ -1,19 +1,15 @@
 <script setup>
 import useVuelidate from "@vuelidate/core";
 import {required} from "@vuelidate/validators";
-import {storeToRefs} from "pinia";
 import {computed, onMounted, reactive, ref} from 'vue'
 import {useRoute} from "vue-router";
 
-import TextInput from "@/js/components/bases/TextInput.vue";
 import GenericButton from "@/js/components/button/GenericButton.vue";
 import EventEMSNoOwnerEMSLink from "@/js/components/events/EMSForms/EventEMSNoOwnerEMSLink.vue";
-import EventEMSNoOwnerNoEMSLink from "@/js/components/events/EMSForms/EventEMSNoOwnerNoEMSLink.vue";
 import EventEMSOwnerEMSLink from "@/js/components/events/EMSForms/EventEMSOwnerEMSLink.vue";
 import EventEMSOwnerNoEMSLink from "@/js/components/events/EMSForms/EventEMSOwnerNoEMSLink.vue";
 import EventSubmitRecording from "@/js/components/events/EventSubmitRecording.vue";
 import {API_ENDPOINTS} from "@/js/constants/API_ENDPOINTS";
-import {useUserStore} from "@/js/stores/useUserStore";
 
 const props = defineProps({
     locationType: {
@@ -42,7 +38,7 @@ const props = defineProps({
 
 const currentUserIsOwner = ref(true)
 const currentUserHasProvidedEMSLink = ref(false)
-const editingEMSlink = ref(true)
+const editingEMSlink = ref(false)
 const rsvpError = ref('')
 const route = useRoute()
 const state = reactive({
@@ -82,7 +78,6 @@ const updateDummyEMSLink = () => {
     }).catch(err => {
         console.log(err)
     })
-
 }
 
 const getEMSLink = () => {
@@ -114,8 +109,9 @@ const handleEmptyErrorMessage = () => {
     rsvpError.value = ''
 }
 const handleClickEditLink = () => {
-    console.log('clicked edit')
+    console.log('clicked edit button')
     editingEMSlink.value = true
+
 }
 
 
@@ -160,26 +156,19 @@ const handleClickSubmitLink = () => {
                 Please register your interest below to reserve your spot!
             </div>
         </div>
-        <template v-if="editingEMSlink">
-            <TextInput
-                v-model="v$.currentUserEMSLink.$model"
-                field-id="userSubmitLink"
-                :v$="v$"
-            >
-                <template #label>
-                    Insert EMS link
-                </template>
-            </TextInput>
-            {{ rsvpError }}
-            <GenericButton
-                :callback="handleClickSubmitLink"
-                :disabled="isLoading"
-            >
-                <template #default>
-                    {{ isLoading ? 'Loading...' : 'Submit link' }}
-                </template>
-            </GenericButton>
+
+        <!--        Fo>rm no 2 - conditional, user=owner && EMS=No-->
+        <template
+            v-if="(currentUserIsOwner && !currentUserHasProvidedEMSLink && eventStatus !== 'ENDED') || editingEMSlink"
+        >
+            <EventEMSOwnerNoEMSLink
+                :button-callback="handleClickSubmitLink"
+                :error-message="rsvpError"
+                :v$="v$.currentUserEMSLink"
+                @send-empty-error-message="handleEmptyErrorMessage"
+            />
         </template>
+
 
         <!--    Form no 1 - conditional, user=owner && EMS=yes-->
         <template
@@ -197,14 +186,14 @@ const handleClickSubmitLink = () => {
         <template
             v-else-if="(currentUserIsOwner && !currentUserHasProvidedEMSLink && eventStatus !== 'ENDED') || !editingEMSlink"
         >
-            <EventEMSOwnerNoEMSLink
-                :current-user-e-m-s-link="v$.currentUserEMSLink.$model"
-                :button-callback="handleSubmitRsvp"
-                :error-message="rsvpError"
-                :v$="v$.currentUserEMSLink"
+            <!--            <EventEMSOwnerNoEMSLink-->
+            <!--                :current-user-e-m-s-link="v$.currentUserEMSLink.$model"-->
+            <!--                :button-callback="handleSubmitRsvp"-->
+            <!--                :error-message="rsvpError"-->
+            <!--                :v$="v$.currentUserEMSLink"-->
 
-                @send-empty-error-message="handleEmptyErrorMessage"
-            />
+            <!--                @send-empty-error-message="handleEmptyErrorMessage"-->
+            <!--            />-->
         </template>
         <!--         Form no 3 - conditional, user=Not-owner && EMS=Yes-->
         <template
@@ -268,8 +257,8 @@ const handleClickSubmitLink = () => {
 
 <style scoped>
 .searchable_dropdown :deep(.dropdown-toggle input) {
-  padding: 8px !important;
-  border-radius: 0.25rem;
-  color: #d9dae3;
+    padding: 8px !important;
+    border-radius: 0.25rem;
+    color: #d9dae3;
 }
 </style>

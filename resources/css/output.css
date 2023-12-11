@@ -2540,6 +2540,14 @@ select {
   margin: 0px !important;
 }
 
+.-m-0 {
+  margin: -0px;
+}
+
+.-m-0\.5 {
+  margin: -0.125rem;
+}
+
 .-m-1 {
   margin: -0.25rem;
 }
@@ -2550,6 +2558,18 @@ select {
 
 .-m-2 {
   margin: -0.5rem;
+}
+
+.-m-2\.5 {
+  margin: -0.625rem;
+}
+
+.-m-3 {
+  margin: -0.75rem;
+}
+
+.-m-3\.5 {
+  margin: -0.875rem;
 }
 
 .m-0 {
@@ -2566,16 +2586,6 @@ select {
 
 .m-auto {
   margin: auto;
-}
-
-.-mx-1 {
-  margin-left: -0.25rem;
-  margin-right: -0.25rem;
-}
-
-.-mx-1\.5 {
-  margin-left: -0.375rem;
-  margin-right: -0.375rem;
 }
 
 .-mx-2 {
@@ -2702,20 +2712,8 @@ select {
   margin-bottom: -1.5rem;
 }
 
-.-me-1 {
-  margin-inline-end: -0.25rem;
-}
-
-.-me-1\.5 {
-  margin-inline-end: -0.375rem;
-}
-
 .-me-2 {
   margin-inline-end: -0.5rem;
-}
-
-.-me-2\.5 {
-  margin-inline-end: -0.625rem;
 }
 
 .-ms-0 {
@@ -2728,10 +2726,6 @@ select {
 
 .-ms-1 {
   margin-inline-start: -0.25rem;
-}
-
-.-ms-1\.5 {
-  margin-inline-start: -0.375rem;
 }
 
 .-ms-2 {
@@ -4669,6 +4663,10 @@ select {
   border-bottom-width: 2px;
 }
 
+.border-b-4 {
+  border-bottom-width: 4px;
+}
+
 .border-b-\[1px\] {
   border-bottom-width: 1px;
 }
@@ -5108,6 +5106,11 @@ select {
   background-color: rgb(4 130 70 / 0.6);
 }
 
+.bg-amber-900 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(120 53 15 / var(--tw-bg-opacity));
+}
+
 .bg-black {
   --tw-bg-opacity: 1;
   background-color: rgb(0 0 0 / var(--tw-bg-opacity));
@@ -5419,6 +5422,12 @@ select {
 .from-black {
   --tw-gradient-from: #000 var(--tw-gradient-from-position);
   --tw-gradient-to: rgb(0 0 0 / 0) var(--tw-gradient-to-position);
+  --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to);
+}
+
+.from-main-navy {
+  --tw-gradient-from: #002858 var(--tw-gradient-from-position);
+  --tw-gradient-to: rgb(0 40 88 / 0) var(--tw-gradient-to-position);
   --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to);
 }
 
@@ -7124,7 +7133,11 @@ select {
 /*@import "./font-awesome/css/font-awesome.css";*/
 
 html {
-  font-family: 'MuseoSans300', 'Nunito Sans', 'Calibri', sans-serif;
+  font-family: 'MuseoSans', 'Nunito Sans', 'Calibri', sans-serif !important;
+}
+
+body {
+  font-family: 'MuseoSans', 'Nunito Sans', 'Calibri', sans-serif !important;
 }
 
 input, textarea, select {
@@ -8057,6 +8070,12 @@ input, textarea, select {
   outline-offset: 2px;
 }
 
+.focus\:ring-0:focus {
+  --tw-ring-offset-shadow: var(--tw-ring-inset) 0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color);
+  --tw-ring-shadow: var(--tw-ring-inset) 0 0 0 calc(0px + var(--tw-ring-offset-width)) var(--tw-ring-color);
+  box-shadow: var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow, 0 0 #0000);
+}
+
 .focus\:ring-1:focus {
   --tw-ring-offset-shadow: var(--tw-ring-inset) 0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color);
   --tw-ring-shadow: var(--tw-ring-inset) 0 0 0 calc(1px + var(--tw-ring-offset-width)) var(--tw-ring-color);
@@ -8143,19 +8162,9 @@ input, textarea, select {
   color: rgb(55 65 81 / 0.75);
 }
 
-.focus-visible\:underline:focus-visible {
-  text-decoration-line: underline;
-}
-
 .focus-visible\:outline-none:focus-visible {
   outline: 2px solid transparent;
   outline-offset: 2px;
-}
-
-.focus-visible\:ring-0:focus-visible {
-  --tw-ring-offset-shadow: var(--tw-ring-inset) 0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color);
-  --tw-ring-shadow: var(--tw-ring-inset) 0 0 0 calc(0px + var(--tw-ring-offset-width)) var(--tw-ring-color);
-  box-shadow: var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow, 0 0 #0000);
 }
 
 .focus-visible\:ring-1:focus-visible {
@@ -8334,6 +8343,14 @@ input, textarea, select {
   color: rgb(55 65 81 / var(--tw-text-opacity));
 }
 
+.group\/item:hover .group-hover\/item\:underline {
+  text-decoration-line: underline;
+}
+
+.group\/link:hover .group-hover\/link\:underline {
+  text-decoration-line: underline;
+}
+
 .group:hover .group-hover\:brightness-75 {
   --tw-brightness: brightness(.75);
   filter: var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow);
@@ -8347,6 +8364,14 @@ input, textarea, select {
 .group:focus-visible .group-focus-visible\:text-gray-700 {
   --tw-text-opacity: 1;
   color: rgb(55 65 81 / var(--tw-text-opacity));
+}
+
+.group\/item:focus-visible .group-focus-visible\/item\:underline {
+  text-decoration-line: underline;
+}
+
+.group\/link:focus-visible .group-focus-visible\/link\:underline {
+  text-decoration-line: underline;
 }
 
 .peer:focus ~ .peer-focus\:-translate-y-1 {
@@ -8590,6 +8615,11 @@ input, textarea, select {
 :is(.dark .dark\:text-danger-400) {
   --tw-text-opacity: 1;
   color: rgb(251 113 133 / var(--tw-text-opacity));
+}
+
+:is(.dark .dark\:text-danger-500) {
+  --tw-text-opacity: 1;
+  color: rgb(244 63 94 / var(--tw-text-opacity));
 }
 
 :is(.dark .dark\:text-gray-200) {
@@ -8933,10 +8963,6 @@ input, textarea, select {
     margin-right: -50px !important;
   }
 
-  .sm\:me-0 {
-    margin-inline-end: 0px;
-  }
-
   .sm\:ml-0 {
     margin-left: 0px;
   }
@@ -8985,12 +9011,48 @@ input, textarea, select {
     width: 100vw;
   }
 
+  .sm\:max-w-2xl {
+    max-width: 42rem;
+  }
+
+  .sm\:max-w-3xl {
+    max-width: 48rem;
+  }
+
+  .sm\:max-w-4xl {
+    max-width: 56rem;
+  }
+
+  .sm\:max-w-5xl {
+    max-width: 64rem;
+  }
+
+  .sm\:max-w-6xl {
+    max-width: 72rem;
+  }
+
+  .sm\:max-w-7xl {
+    max-width: 80rem;
+  }
+
   .sm\:max-w-lg {
     max-width: 32rem;
   }
 
+  .sm\:max-w-md {
+    max-width: 28rem;
+  }
+
   .sm\:max-w-sm {
     max-width: 24rem;
+  }
+
+  .sm\:max-w-xl {
+    max-width: 36rem;
+  }
+
+  .sm\:max-w-xs {
+    max-width: 20rem;
   }
 
   .sm\:columns-\[--cols-sm\] {
@@ -9055,10 +9117,6 @@ input, textarea, select {
          column-gap: 1rem;
   }
 
-  .sm\:gap-y-1 {
-    row-gap: 0.25rem;
-  }
-
   .sm\:rounded-lg {
     border-radius: 0.5rem;
   }
@@ -9089,11 +9147,6 @@ input, textarea, select {
   .sm\:py-1\.5 {
     padding-top: 0.375rem;
     padding-bottom: 0.375rem;
-  }
-
-  .sm\:py-3 {
-    padding-top: 0.75rem;
-    padding-bottom: 0.75rem;
   }
 
   .sm\:pe-3 {
@@ -9252,11 +9305,6 @@ input, textarea, select {
   .md\:\!my-4 {
     margin-top: 1rem !important;
     margin-bottom: 1rem !important;
-  }
-
-  .md\:mx-0 {
-    margin-left: 0px;
-    margin-right: 0px;
   }
 
   .md\:\!mb-6 {
@@ -9691,11 +9739,6 @@ input, textarea, select {
     margin-right: 81px !important;
   }
 
-  .lg\:mx-0 {
-    margin-left: 0px;
-    margin-right: 0px;
-  }
-
   .lg\:\!ml-0 {
     margin-left: 0px !important;
   }
@@ -10109,11 +10152,6 @@ input, textarea, select {
     margin-right: 81px !important;
   }
 
-  .xl\:mx-0 {
-    margin-left: 0px;
-    margin-right: 0px;
-  }
-
   .xl\:\!ml-4 {
     margin-left: 1rem !important;
   }
@@ -10275,11 +10313,6 @@ input, textarea, select {
     grid-column-start: var(--col-start-2xl);
   }
 
-  .\32xl\:mx-0 {
-    margin-left: 0px;
-    margin-right: 0px;
-  }
-
   .\32xl\:block {
     display: block;
   }
@@ -10438,6 +10471,14 @@ input, textarea, select {
 
 .\[\&\>svg\]\:stroke-secondary-bananadark>svg {
   stroke: #965A00;
+}
+
+.\[\&_\.choices\\_\\_inner\]\:ps-0 .choices__inner {
+  padding-inline-start: 0px;
+}
+
+.\[\&_\.filepond--root\]\:font-sans .filepond--root {
+  font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
 }
 
 .\[\&_optgroup\]\:bg-white optgroup {

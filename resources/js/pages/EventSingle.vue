@@ -7,9 +7,11 @@ import BaseBreadcrumb from "@/js/components/bases/BaseBreadcrumb.vue";
 import BaseHero from "@/js/components/bases/BaseHero.vue";
 import BaseSingle from "@/js/components/bases/BaseSingle.vue";
 import BaseSingleProfilePicture from "@/js/components/bases/BaseSingleProfilePicture.vue";
+// import EventsNorm from "@/js/components/events/EventsNorm.vue";
+// import EventsRsvp from "@/js/components/events/EventsRsvp.vue";
+import EventsNorm from "@/js/components/events/EventsEMS.vue";
 import EventSingleExtraContentRenderer from "@/js/components/events/EventSingleExtraContentRenderer.vue";
 import EventsLocation from "@/js/components/events/EventsLocation.vue";
-import EventsRsvp from "@/js/components/events/EventsRsvp.vue";
 import EventTypeTag from "@/js/components/events/EventTypeTag.vue";
 import CalendarIcon from "@/js/components/svg/event/CalendarIcon.vue";
 import LocationIcon from "@/js/components/svg/event/LocationIcon.vue";
@@ -42,7 +44,7 @@ const getEventBackgroundColorTheme = (eventType) => {
 const route = useRoute()
 
 
-const updateDummyEMSLink = () =>{
+const updateDummyEMSLink = () => {
     const data = {
         event_id: route.params.id,
         ems_link: 'https://google.com'
@@ -55,13 +57,13 @@ const updateDummyEMSLink = () =>{
 
 }
 
-const getEMSLink =() =>{
-    const urlWithEventID =`${API_ENDPOINTS.EVENT.FETCH_EMS_LINK}${route.params.id}`
-    axios.get(urlWithEventID).then(res =>{
+const getEMSLink = () => {
+    const urlWithEventID = `${API_ENDPOINTS.EVENT.FETCH_EMS_LINK}${route.params.id}`
+    axios.get(urlWithEventID).then(res => {
         console.log(res.data.data.ems_link)
         console.log('Found EMS LINK ^^^')
 
-    }).catch(err =>{
+    }).catch(err => {
         console.log(err.message)
         console.log("EMS LINK NOT FOUND")
     })
@@ -69,7 +71,6 @@ const getEMSLink =() =>{
 onMounted(() => {
     getEMSLink()
 })
-
 
 </script>
 <template>
@@ -220,13 +221,14 @@ onMounted(() => {
                         :location-type="contentFromBase['type']"
                         :location-info="contentFromBase['location']"
                     />
-                    <EventsRsvp
-                        :author-info="contentFromBase['author']"
-                        :event-id="contentFromBase['id']"
-                        :location-type="contentFromBase['type']"
-                        :event-start-date="contentFromBase['start_date']"
-                        :event-end-date="contentFromBase['end_date']"
-                    />
+                    <!--                    <EventsRsvp-->
+                    <!--                        :author-info="contentFromBase['author']"-->
+                    <!--                        :event-id="contentFromBase['id']"-->
+                    <!--                        :location-type="contentFromBase['type']"-->
+                    <!--                        :event-start-date="contentFromBase['start_date']"-->
+                    <!--                        :event-end-date="contentFromBase['end_date']"-->
+                    <!--                    />-->
+                    <EventsNorm />
                 </div>
             </div>
             <!-- <div class="flex overflow-scroll" /> -->
@@ -237,8 +239,8 @@ onMounted(() => {
 
 <style scoped>
 .eventSingleContent :deep(p) {
-    margin-top: 16px;
-    text-align: justify;
+  margin-top: 16px;
+  text-align: justify;
 }
 
 </style>

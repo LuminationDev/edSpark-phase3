@@ -1,5 +1,6 @@
 <script setup>
 import {storeToRefs} from "pinia";
+import {ref} from "vue";
 
 import ErrorMessages from "@/js/components/bases/ErrorMessages.vue";
 import TextInput from "@/js/components/bases/TextInput.vue";
@@ -7,7 +8,7 @@ import GenericButton from "@/js/components/button/GenericButton.vue";
 import {useUserStore} from "@/js/stores/useUserStore";
 
 const props = defineProps({
-    currentUserEMSLink: {
+    currentUserEMSLinkk: {
         type: String,
         required: true,
     },
@@ -36,10 +37,9 @@ const emits = defineEmits(['sendEmptyErrorMessage'])
 const handleClickErrorMessage = () => {
     console.log('inside ownerems link')
     emits('sendEmptyErrorMessage')
-
 }
 
-
+const isLoading = ref(false)
 </script>
 
 
@@ -51,9 +51,9 @@ const handleClickErrorMessage = () => {
     >
         <div class="-mt-1 Selector dropdown flex flex-col school">
             <TextInput
-                v-model="v$.currentUserEMSLink"
-                field-id="fullName"
-                :v$="v$.currentUserEMSLink"
+                v-model="props.currentUserEMSLink"
+                field-id="userSubmitLink"
+                :v$="v$.currentUserEMSLinkk"
                 placeholder="Enter the link here"
                 :with-no-left-margin="true"
             >
@@ -61,25 +61,21 @@ const handleClickErrorMessage = () => {
                     Provide link to your Event Management System
                 </template>
             </TextInput>
-            <ErrorMessages
-                :v$="v$"
-            />
-            <div class="flex items-center flex-row">
-                <GenericButton
-                    id="rsvpBtn"
-                    :callback="props.buttonCallback"
-                    class="!bg-secondary-coolGrey !text-black font-semibold mt-4 px-6 rounded-sm w-fit"
-                >
-                    <template #default>
-                        Submit
-                    </template>
-                </GenericButton>
-                <span
-                    v-if="props.errorMessage"
-                    class="cursor-pointer font-semibold mt-4 px-4 text-red-500"
-                    @click="handleClickErrorMessage = ''"
-                > {{ props.errorMessage }}</span>
-            </div>
+            {{ rsvpError }}
+            <GenericButton
+                :callback="props.buttonCallback"
+                class="!bg-secondary-coolGrey !text-black font-semibold mt-4 px-6 rounded-sm w-fit"
+                :disabled="isLoading"
+            >
+                <template #default>
+                    {{ isLoading ? 'Loading...' : 'Submit' }}
+                </template>
+            </GenericButton>
+            <span
+                v-if="props.errorMessage"
+                class="cursor-pointer font-semibold mt-4 px-4 text-red-500"
+                @click="handleClickErrorMessage = ''"
+            > {{ props.errorMessage }}</span>
         </div>
     </form>
 </template>

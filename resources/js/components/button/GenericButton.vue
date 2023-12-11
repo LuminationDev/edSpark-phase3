@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import {ref} from 'vue'
 
 import Spinner from '../spinner/Spinner.vue'
 
@@ -15,7 +15,7 @@ const props = defineProps({
     },
     disabled: {
         type: Boolean,
-        required: false
+        required: true
     },
     customClass: {
         type: String,
@@ -37,6 +37,7 @@ const asyncCall = () => {
         resolve(props.callback())
     }).then()
 }
+
 </script>
 <template>
     <button
