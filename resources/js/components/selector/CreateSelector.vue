@@ -26,12 +26,12 @@ const router = useRouter()
 const route = useRoute()
 const items = ref(<SelectorItemType[]>[
     {
-        type: "Advice",
-        name: "createAdvice",
+        type: "Guide",
+        name: "createGuide",
         bgClass: "bg-adviceGreen/60",
         iconComponent: markRaw(AdviceBackgroundIcon),
         strokeClass: "stroke-adviceGreen",
-        link: "/create/advice"
+        link: "/create/guide"
     },
     {
         type: "Software",

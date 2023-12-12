@@ -43,7 +43,7 @@ if (route.params || route.params.filter) {
         preselectedFilterObject.value = {name: "Partner", value: "Partner"}
         break;
     default:
-        router.push('/browse/advice')
+        router.push('/browse/guide')
     }
 }
 
@@ -52,7 +52,7 @@ if (route.params || route.params.filter) {
 
 <template>
     <BaseSearch
-        search-type="advice"
+        search-type="guide"
         :resource-list="adviceList"
         :live-filter-object="filterObject"
     >

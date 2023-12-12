@@ -6,13 +6,13 @@ import {capitalize, computed, onBeforeMount, reactive, ref} from "vue";
 import {useRouter} from "vue-router";
 import {toast} from "vue3-toastify";
 
-import CKEditorRichText from "@/js/components/bases/frontendform/CKEditor/CKEditorRichText.vue";
 import TinyMceRichTextInput from "@/js/components/bases/frontendform/TinyMceEditor/TinyMceRichTextInput.vue";
 import ImageUploaderInput, {MediaType} from "@/js/components/bases/ImageUploaderInput.vue";
 import TagsInput from "@/js/components/bases/TagsInput.vue";
 import TextInput from "@/js/components/bases/TextInput.vue";
 import GenericButton from "@/js/components/button/GenericButton.vue";
 import {FormStatus, useAutoSave} from "@/js/composables/useAutoSave";
+import useErrorMessage from "@/js/composables/useErrorMessage";
 import {differenceObjects} from "@/js/helpers/jsonHelpers";
 import {autoSaveService} from "@/js/service/autoSaveService";
 import {formService} from "@/js/service/formService";
@@ -73,9 +73,12 @@ const rules = {
     tags: {}
 }
 
-const v$: any = useVuelidate(rules, state)
+
+
+const v$ = useVuelidate(rules, state)
 
 const currentAction = ref<FormAction>(FormAction.CREATE)
+const {error, setError, clearError} = useErrorMessage()
 const userStore = useUserStore()
 const {currentUser} = storeToRefs(userStore)
 const router = useRouter()
@@ -110,27 +113,41 @@ onBeforeMount(() => {
 const handleReceiveMediaFromUploader = (media: MediaType[]): void => {
     console.log(media)
     if (media && media.length === 1 && media[0]) {
-        state.cover_image = media[0].remoteUrl
+        v$.value.cover_image.$model = media[0].remoteUrl
     } else {
-        state.cover_image = null
+        v$.value.cover_image.$model = null
     }
 }
 
 const handleClickSubmitForModeration = () => {
     isSaving.value = true
+    v$.value.$validate();
+    if (!v$.value.$errors) {
+        console.log(v$.value.$errors)
+        setError(1, 'Please provide title, tagline, content and cover image')
+        isSaving.value = false
+        return
+    }
     formService.handleSubmitPostForModeration(state, currentUser.value.id, props.additionalData, props.itemType).then((res) => {
         formStatusDisplay.value = FormStatus.SAVED
         router.push('/create').then(() => {
             toast('Successfully submitted ' + props.itemType + ' for moderation!')
         })
     }).catch(e => {
-        console.error('Error during saving')
+        console.log(e.response.data)
+        setError(1, 'Please provide all the required information')
+
+
     }).finally(() => {
         isSaving.value = false
     })
 }
 
 const handleClickSaveAsDraft = () => {
+    if(v$.value.title.$model.length < 1 ||v$.value.content.$model.length < 1){
+        setError(2, 'Please provide at least title and content to save post as a draft')
+        return
+    }
     isSaving.value = true
     formService.handleSubmitPostAsDraft(state, currentUser.value.id, props.additionalData, props.itemType).then((res) => {
         formStatusDisplay.value = FormStatus.SAVED
@@ -138,6 +155,7 @@ const handleClickSaveAsDraft = () => {
             toast('Successfully saved ' + props.itemType + ' as a draft!')
         })
     }).catch(e => {
+        setError(2, 'Please provide at least title to save post as a draft')
         console.error('Error during saving')
     }).finally(() => {
         isSaving.value = false
@@ -146,7 +164,7 @@ const handleClickSaveAsDraft = () => {
 
 const titleGenerator = computed((): string => {
     if (currentAction.value === FormAction.CREATE) {
-        return "Create " + capitalize(props.itemType)
+        return "Create " + capitalize(props.itemType == 'advice' ? 'guide' : props.itemType)
 
     } else if (currentAction.value === FormAction.EDIT) {
         return "Edit " + capitalize(props.itemType)
@@ -214,14 +232,9 @@ const handleTinyRichContent = (data) => {
             </div>
             <div class="ContainerTemp my-2 richContent">
                 <label> Content</label>
-                <!--                <TrixRichEditorInput-->
-                <!--                    :src-content="v$.content.$model"-->
-                <!--                    class="border-gray-300"-->
-                <!--                    @input="handleTrixInputContent"-->
-                <!--                />-->
-                <!--                <CKEditorRichText :src-content="v$.content.$model" />-->
                 <TinyMceRichTextInput
                     :src-content="v$.content.$model"
+                    :v$="v$.content"
                     @emit-tiny-rich-content="handleTinyRichContent"
                 />
             </div>
@@ -229,8 +242,9 @@ const handleTinyRichContent = (data) => {
                 <label> Cover image (1 image file)</label>
                 <ImageUploaderInput
                     :item-type="props.itemType"
-                    :current-media="state.cover_image"
+                    :current-media="v$.cover_image.$model"
                     :max="1"
+                    :v$="v$.cover_image"
                     @emit-uploaded-media="handleReceiveMediaFromUploader"
                 />
             </div>
@@ -248,6 +262,12 @@ const handleTinyRichContent = (data) => {
             </div>
             <div class="extraContentSection mb-4">
                 <slot name="extraContent" />
+            </div>
+            <div
+                v-show="error.status"
+                class="italic text-red-600"
+            >
+                {{ error.message }}
             </div>
             <div class="flex justify-center gap-6 saveButtonContainer">
                 <GenericButton

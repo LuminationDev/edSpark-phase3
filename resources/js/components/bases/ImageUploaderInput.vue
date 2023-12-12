@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import {computed, ref} from "vue";
 
+import ErrorMessages from "@/js/components/bases/ErrorMessages.vue";
 import Uploader from "@/js/components/uploader/Uploader.vue";
 import {IMAGE_ENDPOINTS} from "@/js/constants/API_ENDPOINTS";
 import {imageURL} from "@/js/constants/serverUrl";
@@ -24,6 +25,12 @@ const props = defineProps({
     },
     currentMedia: {
         type: String, required: false, default: ''
+    },
+    v$: {
+        type: Object,
+        required: false,
+        default: () => {
+        }
     }
 })
 
@@ -68,6 +75,7 @@ const formatStringMediaToMediaType = computed((): MediaType[] => {
         :media="formatStringMediaToMediaType"
         @change="handleChangeMedia"
     />
+    <ErrorMessages :v$="props.v$" />
 </template>
 <style scoped>
 :deep(.mu-container) {

@@ -22,6 +22,7 @@ const router = useRouter()
                 pt-8
                 px-10
                 
+                
                 lg:!mt-24
                 lg:!mx-huge
                 lg:!pt-12">
@@ -30,7 +31,7 @@ const router = useRouter()
                     Partner Published Resources
                 </h1>
 
-                <p class="font-normal hidden pb-4 text-white text-[16px] md:block">
+                <p class="font-normal hidden pb-4 text-[16px] text-white md:block">
                     Find a curated collection of valuable resources published by our trusted partners to provide you with the latest insights, tips and strategies to help your classroom.
                 </p>
             </div>
@@ -52,7 +53,7 @@ const router = useRouter()
                         "
                 />
                 <GenericButton
-                    :callback="() => router.push('browse/advice/partner')"
+                    :callback="() => router.push('browse/guide/partner')"
                     button-id="PTRadvice"
                     class="
                         !rounded-none
@@ -69,7 +70,7 @@ const router = useRouter()
                         md:!block
                         "
                 >
-                    View all advice
+                    View all guides
                 </GenericButton>
             </div>
             <div class="block col-span-8 md:hidden">
@@ -79,7 +80,7 @@ const router = useRouter()
             </div>
             <div class="block col-span-8 md:hidden">
                 <GenericButton
-                    :callback="() => router.push('browse/advice/partner')"
+                    :callback="() => router.push('browse/guide/partner')"
                     class="
                         !rounded-none
                         !text-main-navy

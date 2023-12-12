@@ -3,6 +3,7 @@ import Editor from '@tinymce/tinymce-vue'
 import {watchDebounced} from "@vueuse/core";
 import {ref} from "vue";
 
+import ErrorMessages from "@/js/components/bases/ErrorMessages.vue";
 import {API_ENDPOINTS, IMAGE_ENDPOINTS} from "@/js/constants/API_ENDPOINTS";
 const props = defineProps({
     srcContent: {
@@ -13,6 +14,11 @@ const props = defineProps({
         type: Number,
         required: false,
         default: 300
+    },
+    v$:{
+        type: Object,
+        required: false,
+        default: () =>{}
     }
 })
 
@@ -46,6 +52,7 @@ watchDebounced(editorContent, emitContent, {debounce: 200, maxWait: 1000})
             content_style: `body {font-family: MuseoSans;} html {font-family: MuseoSans;}`
         }"
     />
+    <ErrorMessages :v$="props.v$" />
 </template>
 <style>
 .tox-promotion {
