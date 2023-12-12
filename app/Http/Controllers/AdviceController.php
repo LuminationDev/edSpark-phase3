@@ -29,6 +29,7 @@ class AdviceController extends Controller
     {
         if (strtolower($request->input('post_status')) === 'draft') {
             $validator = Validator::make($request->all(), [
+                'post_content' => 'required|string',
                 'post_title' => 'required|string',
             ]);
         } else if (strtolower($request->input('post_status')) === 'pending') {

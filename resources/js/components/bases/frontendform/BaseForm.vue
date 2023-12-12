@@ -135,7 +135,7 @@ const handleClickSubmitForModeration = () => {
         })
     }).catch(e => {
         console.log(e.response.data)
-        setError(1, 'Please provide at least one advice type')
+        setError(1, 'Please provide all the required information')
 
 
     }).finally(() => {
