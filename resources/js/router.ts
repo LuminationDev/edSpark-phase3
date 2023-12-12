@@ -330,7 +330,6 @@ const router = createRouter({
     }
 });
 const partnerRouteChecker = (to, from,next) =>{
-    console.log('partnerRouteChecker called')
     const userStore = useUserStore();
     if(userStore.getUserRoleName === 'SITESUPP'){ // meant to be Partner
         if(to.meta.partnerCanAccess === false){

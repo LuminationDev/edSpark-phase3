@@ -77,7 +77,7 @@ class PostService
             'cover_image' => ($advice->cover_image) ?: NULL,
             'template' => ($advice->template) ?: NULL,
             'extra_content' => ($advice->extra_content) ?: NULL,
-            'created_at' => $advice->post_date,
+            'created_at' => $advice->created_at,
             'modified_at' => $advice->post_modified,
             'status' => $advice->post_status,
             'type' => ($advice->advicetypes) ? $advice->advicetypes->pluck('advice_type_name') : NULL,
@@ -110,7 +110,7 @@ class PostService
                 'author_logo' => $authorLogo
             ],
             'cover_image' => $software->cover_image ?? null,
-            'created_at' => $software->post_date ?? null,
+            'created_at' => $software->created_at ?? null,
             'modified_at' => $software->post_modified ?? null,
             'status' => $software->post_status ?? null,
             'type' => ($software->softwaretypes)
