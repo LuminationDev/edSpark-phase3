@@ -70,6 +70,7 @@ const getEMSLink = () => {
 }
 onMounted(() => {
     getEMSLink()
+  
 })
 
 </script>

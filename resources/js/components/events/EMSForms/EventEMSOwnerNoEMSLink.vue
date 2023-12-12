@@ -8,7 +8,7 @@ import GenericButton from "@/js/components/button/GenericButton.vue";
 import {useUserStore} from "@/js/stores/useUserStore";
 
 const props = defineProps({
-    currentUserEMSLinkk: {
+    currentUserEMSLink: {
         type: String,
         required: true,
     },
@@ -30,10 +30,11 @@ const props = defineProps({
     }
 })
 
-const userStore = useUserStore()
-const {currentUser} = storeToRefs(userStore)
-
-const emits = defineEmits(['sendEmptyErrorMessage'])
+const localLink = ref(props.currentUserEMSLink)
+const emits = defineEmits(['sendEmptyErrorMessage', 'sendNewLink', 'sendSomething'])
+const handleSendNewLink = () => {
+    emits('sendNewLink', localLink.value)
+}
 const handleClickErrorMessage = () => {
     console.log('inside ownerems link')
     emits('sendEmptyErrorMessage')
@@ -41,7 +42,6 @@ const handleClickErrorMessage = () => {
 
 const isLoading = ref(false)
 </script>
-
 
 <template>
     <form
@@ -51,11 +51,12 @@ const isLoading = ref(false)
     >
         <div class="-mt-1 Selector dropdown flex flex-col school">
             <TextInput
-                v-model="props.currentUserEMSLink"
+                v-model="localLink"
                 field-id="userSubmitLink"
-                :v$="v$.currentUserEMSLinkk"
+                :v$="v$.currentUserEMSLink"
                 placeholder="Enter the link here"
                 :with-no-left-margin="true"
+                @input-update="handleSendNewLink"
             >
                 <template #label>
                     Provide link to your Event Management System
@@ -74,7 +75,7 @@ const isLoading = ref(false)
             <span
                 v-if="props.errorMessage"
                 class="cursor-pointer font-semibold mt-4 px-4 text-red-500"
-                @click="handleClickErrorMessage = ''"
+                @click="handleClickErrorMessage"
             > {{ props.errorMessage }}</span>
         </div>
     </form>

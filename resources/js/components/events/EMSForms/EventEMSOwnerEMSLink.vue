@@ -29,9 +29,6 @@ const props = defineProps({
     }
 })
 
-const userStore = useUserStore()
-const {currentUser} = storeToRefs(userStore)
-
 const emits = defineEmits(['sendEmptyErrorMessage'])
 const handleClickErrorMessage = () => {
     console.log('inside ownerems link')
@@ -39,10 +36,7 @@ const handleClickErrorMessage = () => {
 
 }
 
-
 </script>
-
-
 <template>
     <form
         class="border-b-2 border-white flex flex-col gap-2 py-8 rsvpFormInputs"
@@ -51,7 +45,11 @@ const handleClickErrorMessage = () => {
     >
         <div class="-mt-1 Selector dropdown flex flex-col school">
             <label class="-mb-2 ml-2"> You have provided the
-                Link<br><br><label class="-mb-2 bg-amber-900 ml-2 p-2"> {{ props.currentUserEMSLink }}</label></label>
+                Link<br><br>
+                <span class="bg-gray-400 flex font-bold p-2 text-2xl">
+                    {{ props.currentUserEMSLink }}
+                </span>
+            </label>
 
             <ErrorMessages
                 :v$="v$"

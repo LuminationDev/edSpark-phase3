@@ -1,11 +1,12 @@
 <script setup>
 import useVuelidate from "@vuelidate/core";
-import {required} from "@vuelidate/validators";
+import {required, url} from "@vuelidate/validators";
 import {computed, onMounted, reactive, ref} from 'vue'
 import {useRoute} from "vue-router";
 
 import GenericButton from "@/js/components/button/GenericButton.vue";
 import EventEMSNoOwnerEMSLink from "@/js/components/events/EMSForms/EventEMSNoOwnerEMSLink.vue";
+import EventEMSNoOwnerNoEMSLink from "@/js/components/events/EMSForms/EventEMSNoOwnerNoEMSLink.vue";
 import EventEMSOwnerEMSLink from "@/js/components/events/EMSForms/EventEMSOwnerEMSLink.vue";
 import EventEMSOwnerNoEMSLink from "@/js/components/events/EMSForms/EventEMSOwnerNoEMSLink.vue";
 import EventSubmitRecording from "@/js/components/events/EventSubmitRecording.vue";
@@ -41,6 +42,7 @@ const currentUserHasProvidedEMSLink = ref(false)
 const editingEMSlink = ref(false)
 const rsvpError = ref('')
 const route = useRoute()
+
 const state = reactive({
     currentUserEMSLink: ''
 })
@@ -48,7 +50,7 @@ const state = reactive({
 const isLoading = ref(false)
 
 const rules = {
-    currentUserEMSLink: {required}
+    currentUserEMSLink: {required, url}
 }
 const v$ = useVuelidate(rules, state)
 
@@ -68,36 +70,24 @@ const eventStatus = computed(() => {
     }
 })
 
-const updateDummyEMSLink = () => {
-    const data = {
-        event_id: route.params.id,
-        ems_link: 'https://simple.com'
-    }
-    axios.post(API_ENDPOINTS.EVENT.ADD_OR_EDIT_EMS_LINK, data).then(res => {
-        console.log(res.data)
-    }).catch(err => {
-        console.log(err)
-    })
-}
 
 const getEMSLink = () => {
-    const urlWithEventID = `${API_ENDPOINTS.EVENT.FETCH_EMS_LINK}${route.params.id}`
-    axios.get(urlWithEventID).then(res => {
-        state.currentUserEMSLink = res.data.data.ems_link
-        currentUserHasProvidedEMSLink.value = true
-    }).catch(err => {
-        rsvpError.value = err.message
-    })
-}
+    const urlWithEventID = `${API_ENDPOINTS.EVENT.FETCH_EMS_LINK}${route.params.id}`;
+    axios.get(urlWithEventID)
+        .then(res => {
+            state.currentUserEMSLink = res.data.data.ems_link;
+            currentUserHasProvidedEMSLink.value = true;
+        })
+        .catch(err => {
+            rsvpError.value = err.message;
+        });
+};
+
 
 onMounted(() => {
     getEMSLink()
+
 })
-
-const handleSubmitRsvp = () => {
-    console.log('Submit RSVP is called')
-
-}
 
 
 const handleClickContactOrganiser = () => {
@@ -115,30 +105,45 @@ const handleClickEditLink = () => {
 }
 
 
-const handleClickEditLinked = () => {
-    console.log('clicked edit')
-
-}
-
 const handleClickSubmitLink = () => {
-    // update the link to the new one
-    isLoading.value = true
-    console.log(v$.value.currentUserEMSLink.$model)
+    const validUrlRegex = /^(https?:\/\/)?(www\.)?([-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*))$/;
+
+
+    if (!validUrlRegex.test(v$.value.currentUserEMSLink.$model)) {
+
+        console.error('Invalid URL');
+        rsvpError.value = 'Enter valid URL'
+        return;
+    }
+
+    rsvpError.value = false
     const data = {
         event_id: route.params.id,
         ems_link: v$.value.currentUserEMSLink.$model
-    }
-    axios.post(API_ENDPOINTS.EVENT.ADD_OR_EDIT_EMS_LINK, data).then(res => {
-        console.log(res.data)
-        editingEMSlink.value = false
-    }).catch(err => {
-        rsvpError.value = err.message
-        console.log(err)
-    }).finally(() => {
-        isLoading.value = false
-    })
-}
+    };
 
+    axios.post(API_ENDPOINTS.EVENT.ADD_OR_EDIT_EMS_LINK, data)
+        .then(res => {
+            console.log(res.data);
+            editingEMSlink.value = false;
+            getEMSLink().value = false;
+            // Reload the page
+            location.reload();
+
+        })
+        .catch(err => {
+            rsvpError.value = err.message;
+            console.error(err);
+        })
+        .finally(() => {
+            isLoading.value = false;
+        });
+
+};
+
+const handleAcceptNewLink = (newlink) => {
+    state.currentUserEMSLink = newlink
+}
 </script>
 
 <template>
@@ -149,7 +154,7 @@ const handleClickSubmitLink = () => {
 
         <div class="border-b-2 border-b-white flex flex-col py-2 rsvpSubheader text-lg">
             <div class="eventTypeDescriptor pb-2 pt-4">
-                This event is <span class="font-semibold uppercase"> {{ props.locationType }} </span>
+                This event is Virtual<span class="font-semibold uppercase"> {{ props.locationType }} </span>
                 {{ props.locationType ? (props.locationType.toLowerCase() !== "hybrid" ? "only" : '') : "" }}
             </div>
             <div class="eventRsvp form-cta pb-4">
@@ -157,18 +162,19 @@ const handleClickSubmitLink = () => {
             </div>
         </div>
 
-        <!--        Fo>rm no 2 - conditional, user=owner && EMS=No-->
+        <!--        Fo>rm no 2 - conditional, user = owner && EMS = No-->
         <template
             v-if="(currentUserIsOwner && !currentUserHasProvidedEMSLink && eventStatus !== 'ENDED') || editingEMSlink"
         >
             <EventEMSOwnerNoEMSLink
+                :current-user-e-m-s-link="state.currentUserEMSLink"
                 :button-callback="handleClickSubmitLink"
                 :error-message="rsvpError"
                 :v$="v$.currentUserEMSLink"
+                @send-new-link="handleAcceptNewLink"
                 @send-empty-error-message="handleEmptyErrorMessage"
             />
         </template>
-
 
         <!--    Form no 1 - conditional, user=owner && EMS=yes-->
         <template
@@ -180,41 +186,31 @@ const handleClickSubmitLink = () => {
                 :error-message="rsvpError"
                 :v$="v$.currentUserEMSLink"
                 @send-empty-error-message="handleEmptyErrorMessage"
+                @send-new-link="handleAcceptNewLink"
             />
         </template>
-        <!--        Fo>rm no 2 - conditional, user=owner && EMS=No-->
-        <template
-            v-else-if="(currentUserIsOwner && !currentUserHasProvidedEMSLink && eventStatus !== 'ENDED') || !editingEMSlink"
-        >
-            <!--            <EventEMSOwnerNoEMSLink-->
-            <!--                :current-user-e-m-s-link="v$.currentUserEMSLink.$model"-->
-            <!--                :button-callback="handleSubmitRsvp"-->
-            <!--                :error-message="rsvpError"-->
-            <!--                :v$="v$.currentUserEMSLink"-->
 
-            <!--                @send-empty-error-message="handleEmptyErrorMessage"-->
-            <!--            />-->
-        </template>
-        <!--         Form no 3 - conditional, user=Not-owner && EMS=Yes-->
+        <!--    Form no 3 - conditional, user = noowner && EMS = no-->
         <template
-            v-else-if="(!currentUserIsOwner && eventStatus !== 'ENDED') || editingEMSlink"
+            v-else-if="(currentUserIsOwner && !currentUserHasProvidedEMSLink && eventStatus !== 'ENDED') || editingEMSlink"
+        >
+            <EventEMSNoOwnerNoEMSLink />
+        </template>
+
+        <!--    Form no 4 - conditional, user = noowner && EMS = yes-->
+        <template
+            v-else-if="(currentUserIsOwner && currentUserHasProvidedEMSLink && eventStatus !== 'ENDED') || !editingEMSlink"
         >
             <EventEMSNoOwnerEMSLink
-                :current-user-e-m-s-link="v$.currentUserEMSLink.$model"
+                :current-user-e-m-s-link="state.currentUserEMSLink"
+                :button-callback="handleClickSubmitLink"
+                :error-message="rsvpError"
+                :v$="v$.currentUserEMSLink"
+                @send-new-link="handleAcceptNewLink"
+
+                @send-empty-error-message="handleEmptyErrorMessage"
             />
         </template>
-        <!--        &lt;!&ndash;        Form no 4 - conditional, user=Not-owner && EMS=No&ndash;&gt;-->
-        <!--        <template-->
-        <!--            v-else-if="(!currentUserIsOwner && !currentUserHasProvidedEMSLink && eventStatus !== 'ENDED') || editingEMSlink"-->
-        <!--        >-->
-        <!--            <EventEMSNoOwnerNoEMSLink-->
-        <!--                :current-user-e-m-s-link="v$.currentUserEMSLink.$model"-->
-        <!--                :button-callback="handleSubmitRsvp"-->
-        <!--                :error-message="rsvpError"-->
-        <!--                :v$="v$.currentUserEMSLink"-->
-        <!--                @send-empty-error-message="handleEmptyErrorMessage"-->
-        <!--            />-->
-        <!--        </template>-->
 
         <div
             v-if="(eventStatus === 'ENDED') "
@@ -257,8 +253,8 @@ const handleClickSubmitLink = () => {
 
 <style scoped>
 .searchable_dropdown :deep(.dropdown-toggle input) {
-    padding: 8px !important;
-    border-radius: 0.25rem;
-    color: #d9dae3;
+  padding: 8px !important;
+  border-radius: 0.25rem;
+  color: #d9dae3;
 }
 </style>
