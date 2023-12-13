@@ -76,6 +76,7 @@ const getEMSLink = () => {
     axios.get(urlWithEventID)
         .then(res => {
             state.currentUserEMSLink = res.data.data.ems_link;
+            currentUserIsOwner.value = res.data.data.is_owner;
             currentUserHasProvidedEMSLink.value = true;
         })
         .catch(err => {

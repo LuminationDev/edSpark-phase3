@@ -129,7 +129,7 @@ class EventController extends Controller
         $id = $request->input('id');
         if (RoleHelpers::has_minimum_privilege(UserRole::MODERATOR)) {
             // Find the advice by ID
-            $event = Event::find('id', $id);
+            $event = Event::find($id);
         } else {
             $event = Event::where('id', $id)->where('event_status', "Published")->first();
         }
@@ -244,6 +244,8 @@ class EventController extends Controller
         if (!isset($eventId)) {
             return ResponseService::error("Event ID is required", 422);
         }
+        $event = Event::find($eventId);
+        $user = Auth::user();
         // Check if the 'event_recording' meta exists for the given event ID
         $eventRecordingMeta = Eventmeta::where('event_id', $eventId)
             ->where('event_meta_key', 'ems_link')
@@ -251,7 +253,11 @@ class EventController extends Controller
 
         if ($eventRecordingMeta) {
             $recordingLink = $eventRecordingMeta->event_meta_value;
-            $result = ['ems_link' => $recordingLink];
+            $isOwner = false;
+            if ($event->author_id == $user->id) {
+                $isOwner = 'true';
+            }
+            $result = ['ems_link' => $recordingLink , 'is_owner' => $isOwner];
             return ResponseService::success('Event EMS link found', $result);
         } else {
             return ResponseService::error('Event EMS Link not found', "NOT FOUND", 404);

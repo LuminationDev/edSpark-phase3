@@ -73,7 +73,7 @@ const isLoading = ref(false)
             <!--            {{ rsvpError }}-->
             <GenericButton
                 :callback="props.buttonCallback"
-                class="!bg-secondary-coolGrey !text-black font-semibold mt-4 px-6 rounded-sm w-fit"
+                class="!text-black font-semibold mt-4 px-6 rounded-sm w-fit"
                 :disabled="isLoading"
             >
                 <template #default>
