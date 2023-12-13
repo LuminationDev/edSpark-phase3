@@ -5,6 +5,7 @@ import {useRoute} from "vue-router";
 import {toast} from "vue3-toastify";
 
 import EditorJsInput from "@/js/components/bases/EditorJsInput.vue";
+import TinyMceRichTextInput from "@/js/components/bases/frontendform/TinyMceEditor/TinyMceRichTextInput.vue";
 import GenericButton from "@/js/components/button/GenericButton.vue";
 import EditorJsContentDisplay from "@/js/components/schoolsingle/EditorJsContentDisplay.vue";
 import SchoolContact from "@/js/components/schoolsingle/SchoolContact.vue";
@@ -14,6 +15,7 @@ import SchoolTech from "@/js/components/schoolsingle/SchoolTech.vue";
 import SchoolWhatsNew from "@/js/components/schoolsingle/SchoolWhatsNew.vue";
 import TechSelector from "@/js/components/selector/TechSelector.vue";
 import {defaultSchoolContent} from "@/js/constants/schoolContentDefault";
+import {edSparkContentSanitizer} from "@/js/helpers/objectHelpers";
 import {schoolService} from "@/js/service/schoolService";
 import {useUserStore} from "@/js/stores/useUserStore";
 import {EditorJSDataType} from "@/js/types/EditorJsTypes";
@@ -64,17 +66,16 @@ const emits = defineEmits(['sendInfoToSchoolSingle', 'sendColorToSchoolSingle', 
 const {currentUser} = storeToRefs(useUserStore())
 const currentSchoolName = route.params.name
 const editMode = ref<boolean>(false)
-const newSchoolContent: Ref<EditorJSDataType | null> = ref(null)
+const newSchoolContent: Ref<string> = ref("")
 const pendingSchoolContent: Ref<SchoolDataType | null> = ref(null)
 const schoolContentState = ref(SchoolContentState.New)
 const newTechUsed: Ref<TechUsed[] | null> = ref(null)
 
 const currentUserCanEdit = ref<boolean>(false)
 const currentUserCanNominate = ref<boolean>(false)
-const schoolEditorRef = ref() // for triggering save inside editorjs component
 
 onBeforeMount(() => {
-    newSchoolContent.value = _.cloneDeep(props.schoolContent.content_blocks)
+    newSchoolContent.value = props.schoolContent.content_blocks
     newTechUsed.value = _.cloneDeep(props.schoolContent.tech_used)
 })
 
@@ -82,12 +83,11 @@ const handleEditButton = async () => {
     if (schoolContentState.value === 'new') {
         checkIfPendingAvailable()
     }
-    newSchoolContent.value = _.cloneDeep(props.schoolContent.content_blocks)
+    newSchoolContent.value = props.schoolContent.content_blocks
     newTechUsed.value = _.cloneDeep(props.schoolContent.tech_used)
     editMode.value = true
     // pressing the revert button
     if (schoolContentState.value === 'pending_loaded') {
-        schoolEditorRef.value.handleEditorRerender(newSchoolContent.value)
         schoolContentState.value = SchoolContentState.PendingAvailable
     }
 }
@@ -105,12 +105,10 @@ const handleSchoolTech = (techData): void => {
 }
 
 const handleAllSaveButton = (): void => {
-    schoolEditorRef.value.handleEditorSave().then(res => {
-        emits('sendInfoToSchoolSingle', newSchoolContent.value, newTechUsed.value)
-        editMode.value = false
-        schoolContentState.value = SchoolContentState.New
-        toast('Submitted your new profile for moderation. View will update automatically once approved')
-    })
+    emits('sendInfoToSchoolSingle', newSchoolContent.value, newTechUsed.value)
+    editMode.value = false
+    schoolContentState.value = SchoolContentState.New
+    toast('Submitted your new profile for moderation. View will update automatically once approved')
 }
 
 const handleColorSelected = (newColor): void => {
@@ -148,7 +146,6 @@ const handleClickEditPendingContent = (): void => {
     newSchoolContent.value = pendingSchoolContent.value.content_blocks
     newTechUsed.value = pendingSchoolContent.value.tech_used
     schoolContentState.value = SchoolContentState.PendingLoaded
-    schoolEditorRef.value.handleEditorRerender(newSchoolContent.value)
 }
 
 
@@ -168,10 +165,10 @@ console.log(props.activeSubmenu)
                     >
                         <div class="flex flex-col w-full lg:!basis-2/3">
                             Curate your school content by adding blocks here with desired contents.
-                            <EditorJsInput
-                                ref="schoolEditorRef"
-                                :existing-data="newSchoolContent"
-                                @send-editorjs-data="handleSchoolData"
+                            <TinyMceRichTextInput
+                                :src-content="newSchoolContent"
+                                :min-height="600"
+                                @emit-tiny-rich-content="handleSchoolData"
                             />
                         </div>
                         <div class="flex items-center flex-col w-full lg:!basis-1/3">
@@ -233,9 +230,9 @@ console.log(props.activeSubmenu)
                         class="contentDisplay flex lg:flex-row justify-between flex-col gap-4 schoolContent w-full"
                     >
                         <div class="basis-2/3">
-                            <EditorJsContentDisplay
-                                :content-blocks="schoolContent.content_blocks"
-                                :default-content="defaultSchoolContent"
+                            <div
+                                class="richTextContentContainer"
+                                v-html="edSparkContentSanitizer(schoolContent.content_blocks)"
                             />
                         </div>
                         <div class="basis-1/3 school-tech">

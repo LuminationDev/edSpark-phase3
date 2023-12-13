@@ -4,12 +4,12 @@ import {onMounted, ref} from "vue";
 import {imageURL} from "@/js/constants/serverUrl";
 
 const props = defineProps({
-    currentLogo:{
+    currentLogo: {
         type: String,
         required: false,
         default: ''
     },
-    currentCoverImage:{
+    currentCoverImage: {
         type: String,
         required: false,
         default: ''
@@ -26,25 +26,25 @@ const coverImagePreview = ref(null)
 const emits = defineEmits(['sendUploadedPhotoToContent'])
 
 const addImageURL = (itemUrl) => {
-    return imageURL+ "/" + itemUrl
+    return imageURL + "/" + itemUrl
 }
 
-onMounted(() =>{
-    if(props.currentLogo){
+onMounted(() => {
+    if (props.currentLogo) {
         logoPreview.value.setAttribute('src', addImageURL(props.currentLogo))
         console.log(addImageURL(props.currentLogo))
     }
-    if(props.currentCoverImage){
-        coverImagePreview.value.setAttribute('src',addImageURL(props.currentCoverImage))
+    if (props.currentCoverImage) {
+        coverImagePreview.value.setAttribute('src', addImageURL(props.currentCoverImage))
     }
 
 })
 
-const handleLogoUpload = (event) =>{
+const handleLogoUpload = (event) => {
     logoEditFile.value = event.target.files[0]
     const reader = new FileReader()
     reader.readAsDataURL(logoEditFile.value)
-    reader.onload = (event) =>{
+    reader.onload = (event) => {
         logoPreview.value.setAttribute('src', event.target.result)
     }
     emits('sendUploadedPhotoToContent', 'logo', logoEditFile.value)
@@ -53,7 +53,7 @@ const handleCoverImageUpload = (event) => {
     coverImageEditFile.value = event.target.files[0]
     const reader = new FileReader()
     reader.readAsDataURL(coverImageEditFile.value)
-    reader.onload = (event) =>{
+    reader.onload = (event) => {
         coverImagePreview.value.setAttribute('src', event.target.result)
     }
     emits('sendUploadedPhotoToContent', 'coverImage', coverImageEditFile.value)
@@ -119,7 +119,7 @@ const handleCoverImageUpload = (event) => {
                             <p class="mb-2 text-center dark:text-gray-400 text-gray-500 text-sm"><span
                                 class="font-semibold"
                             >Click to upload</span></p>
-                            <p class="text-center dark:text-gray-400 text-gray-500 text-xs">SVG, PNG, JPG or GIF</p>
+                            <p class="text-center dark:text-gray-400 text-gray-500 text-xs">SVG, PNG or JPG</p>
                         </div>
                         <input
                             id="dropzone-file"
@@ -133,7 +133,7 @@ const handleCoverImageUpload = (event) => {
 
                 <img
                     ref="logoPreview"
-                    class="h-36 self-center w-36"
+                    class="h-36 object-contain self-center w-36"
                 >
             </div>
             <div class="border-0 flex flex-col gap-2 px-2">
@@ -141,13 +141,6 @@ const handleCoverImageUpload = (event) => {
                     for="coverImageUpload"
                     class="font-semibold mt-2 text-center text-lg"
                 >Cover Image</label>
-                <!--                <input-->
-                <!--                    id="coverImageEditUpload"-->
-                <!--                    ref="coverImageEditFile"-->
-                <!--                    class="!border-0"-->
-                <!--                    type="file"-->
-                <!--                    @change="handleCoverImageUpload"-->
-                <!--                >-->
                 <div class="flex justify-center items-center flex flex-col gap-2 w-full">
                     <label
                         for="dropzone-file-1"
@@ -191,7 +184,7 @@ const handleCoverImageUpload = (event) => {
                             <p class="mb-2 text-center dark:text-gray-400 text-gray-500 text-sm"><span
                                 class="font-semibold"
                             >Click to upload</span></p>
-                            <p class="text-center dark:text-gray-400 text-gray-500 text-xs">SVG, PNG, JPG or GIF</p>
+                            <p class="text-center dark:text-gray-400 text-gray-500 text-xs">SVG, PNG or JPG</p>
                         </div>
                         <input
                             id="dropzone-file-1"
@@ -203,7 +196,7 @@ const handleCoverImageUpload = (event) => {
                     </label>
                     <img
                         ref="coverImagePreview"
-                        class="h-36 self-center w-56"
+                        class="h-36 object-contain self-center w-56"
                     >
                 </div>
             </div>

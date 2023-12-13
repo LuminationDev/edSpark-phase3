@@ -25,7 +25,7 @@ const handleClickEditDraft = (postData: BasePostType) : Promise<void> => {
     let targetForm = ''
     const lowerCasePostType = postData.post_type.toLowerCase()
     if (lowerCasePostType === 'advice') {
-        targetForm = 'createAdvice'
+        targetForm = 'createGuide'
     } else if (lowerCasePostType === 'event') {
         targetForm = 'createEvent'
     } else if (lowerCasePostType === 'software') {

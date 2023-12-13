@@ -1,4 +1,5 @@
 // useAutoSave.ts
+import {auto} from "@popperjs/core";
 import {AxiosResponse} from "axios";
 import {debounce} from 'lodash';
 import {onMounted, onUnmounted, Ref, ref} from 'vue';
@@ -60,7 +61,7 @@ export function useAutoSave(
     // attached to the actual form component. load data to autoSaveContent when sure
     const autoSaveContent = ref<AutoSaveDataType>({})
 
-    const autosave = debounce(async (): Promise<void> => {
+    const autosave = async (): Promise<void> => {
         const data = {
             ...getState(),
         }
@@ -74,12 +75,13 @@ export function useAutoSave(
 
             }
         }
-    }, 5000);
+    }
 
     const handleActivity = () => {
         formStatusDisplay.value = FormStatus.EDITING;
-        if (!isSaving.value) {
-            autosave();
+        const formElement = document.getElementById(formId);
+        if (formElement) {
+            formElement.removeEventListener('input', handleActivity);
         }
     }
 
@@ -89,19 +91,18 @@ export function useAutoSave(
 
     onMounted(() => {
         const formElement = document.getElementById(formId);
-
         if (formElement) {
             formElement.addEventListener('input', handleActivity);
-            formElement.addEventListener('click', handleActivity);
         }
     });
 
-    onUnmounted(() => {
-        const formElement = document.getElementById(formId);
-        if (formElement) {
-            formElement.removeEventListener('input', handleActivity);
-            formElement.removeEventListener('click', handleActivity);
+    onUnmounted(async () => {
+
+        if(formStatusDisplay.value === FormStatus.EDITING){
+            await autosave()
         }
+
+
     });
 
     return {

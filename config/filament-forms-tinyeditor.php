@@ -29,7 +29,6 @@ return [
                 'content_css' => '/css/filament/font/font.css',
                 'content_style' => "body {font-family: MuseoSans;} html {font-family: MuseoSans;}",
                 'image_file_types' => 'jpg,svg,webp',
-                'paste_preprocess' => "myPastePreprocessFunction"
             ]
         ],
 

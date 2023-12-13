@@ -31,7 +31,7 @@ const router = useRouter()
                     Advice for Educators
                 </h1>
 
-                <p class="font-normal hidden pb-4 text-white text-[16px] md:block">
+                <p class="font-normal hidden pb-4 text-[16px] text-white md:block">
                     Find advice from a range of trusted sources to help you as an educator to integrate technology in your
                     classroom, your work and your own learning
                 </p>
@@ -54,7 +54,7 @@ const router = useRouter()
                         "
                 />
                 <GenericButton
-                    :callback="() => router.push('browse/advice/educators')"
+                    :callback="() => router.push('browse/guide/educators')"
                     button-id="EDUadvice"
                     class="
                         !rounded-none
@@ -71,7 +71,7 @@ const router = useRouter()
                         md:!block
                         "
                 >
-                    View all advice
+                    View all guides
                 </GenericButton>
             </div>
             <div class="block col-span-8 md:hidden">
@@ -82,7 +82,7 @@ const router = useRouter()
             </div>
             <div class="block col-span-8 md:hidden">
                 <GenericButton
-                    :callback="() => router.push('browse/advice/educators')"
+                    :callback="() => router.push('browse/guide/educators')"
                     class="
                         !rounded-none
                         !text-main-navy
@@ -96,7 +96,7 @@ const router = useRouter()
                         z-30
                         "
                 >
-                    View all advice
+                    View all guides
                 </GenericButton>
             </div>
         </div>

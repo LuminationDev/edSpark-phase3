@@ -20,5 +20,5 @@ export type PartnerDataType = {
     metadata: Metadata[];
     isLikedByUser: boolean;
     isBookmarkedByUser: boolean;
-    profile: EditorJSDataType;
+    profile: string;
 };

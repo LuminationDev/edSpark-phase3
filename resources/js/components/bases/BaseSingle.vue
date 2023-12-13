@@ -164,7 +164,7 @@ onBeforeMount(async () => {
 
 const fetchContent = async () => {
     const requestData = {
-        id: route.params.id,
+        id: +route.params.id,
         preview: isPreviewModeComputed.value
     }
     await axios.post(byIdAPILink, requestData).then(res => {

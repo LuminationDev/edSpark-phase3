@@ -41,9 +41,12 @@
 }
 
 html {
-    font-family: 'MuseoSans300', 'Nunito Sans', 'Calibri', sans-serif;
+    font-family: 'MuseoSans', 'Nunito Sans', 'Calibri', sans-serif !important;
 }
 
+body {
+    font-family: 'MuseoSans', 'Nunito Sans', 'Calibri', sans-serif !important;
+}
 
 input, textarea, select {
     width: 100%;
