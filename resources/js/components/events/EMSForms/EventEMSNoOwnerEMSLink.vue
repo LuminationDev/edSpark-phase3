@@ -31,8 +31,6 @@ const props = defineProps({
 })
 
 const localLink = ref(props.currentUserEMSLink)
-const phonenumber = ref()
-const emailid = ref()
 
 const emits = defineEmits(['sendEmptyErrorMessage', 'sendNewLink', 'sendSomething'])
 const handleSendNewLink = () => {
@@ -54,6 +52,7 @@ const isLoading = ref(false)
         @submit.prevent=""
     >
         <div class="-mt-1 Selector dropdown flex flex-col school">
+            Register for the event:
             <TextInput
                 v-model="localLink"
                 field-id="userSubmitLink"
@@ -63,41 +62,14 @@ const isLoading = ref(false)
                 @input-update="handleSendNewLink"
             >
                 <template #label>
-                    Register for the event here
                     <br><br>
                     <span>
-                        Enter your name
+                        Enter the link here
                     </span>
                 </template>
             </TextInput>
-            <TextInput
-                v-model="phonenumber"
-                field-id="userSubmitLink"
-                :v$="v$.currentUserEMSLink"
-                placeholder="Enter the link here"
-                :with-no-left-margin="true"
-                @input-update="handleSendNewLink"
-            >
-                <template #label>
-                    <span>
-                        Enter your phone number
-                    </span>
-                </template>
-            </TextInput>
-            <TextInput
-                v-model="emailid"
-                field-id="userSubmitLink"
-                :v$="v$.currentUserEMSLink"
-                placeholder="Enter the link here"
-                :with-no-left-margin="true"
-                @input-update="handleSendNewLink"
-            >
-                <template #label>
-                    <span>
-                        Enter your email id
-                    </span>
-                </template>
-            </TextInput>
+
+
             <!--            {{ rsvpError }}-->
             <GenericButton
                 :callback="props.buttonCallback"

@@ -59,7 +59,7 @@ const handleClickErrorMessage = () => {
             <GenericButton
                 id="rsvpBtn"
                 :callback="props.buttonCallback"
-                class="!bg-secondary-coolGrey !text-black font-semibold mt-4 px-6 rounded-sm w-fit"
+                class="!text-white font-bold mt-4 px-6 rounded-sm text-lg w-fit"
             >
                 <template #default>
                     Edit

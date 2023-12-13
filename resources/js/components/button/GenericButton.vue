@@ -15,7 +15,7 @@ const props = defineProps({
     },
     disabled: {
         type: Boolean,
-        required: true
+        required: false
     },
     customClass: {
         type: String,

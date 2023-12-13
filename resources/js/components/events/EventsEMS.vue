@@ -126,10 +126,6 @@ const handleClickSubmitLink = () => {
         .then(res => {
             console.log(res.data);
             editingEMSlink.value = false;
-            getEMSLink().value = false;
-            // Reload the page
-            location.reload();
-
         })
         .catch(err => {
             rsvpError.value = err.message;
@@ -190,16 +186,16 @@ const handleAcceptNewLink = (newlink) => {
             />
         </template>
 
-        <!--    Form no 3 - conditional, user = noowner && EMS = no-->
+        <!--    Form no 3 - conditional, user = no owner && EMS = no-->
         <template
-            v-else-if="(currentUserIsOwner && !currentUserHasProvidedEMSLink && eventStatus !== 'ENDED') || editingEMSlink"
+            v-else-if="(!currentUserIsOwner && !currentUserHasProvidedEMSLink && eventStatus !== 'ENDED') || editingEMSlink"
         >
             <EventEMSNoOwnerNoEMSLink />
         </template>
 
-        <!--    Form no 4 - conditional, user = noowner && EMS = yes-->
+        <!--    Form no 4 - conditional, user = no owner && EMS = yes-->
         <template
-            v-else-if="(currentUserIsOwner && currentUserHasProvidedEMSLink && eventStatus !== 'ENDED') || !editingEMSlink"
+            v-else-if="(!currentUserIsOwner && currentUserHasProvidedEMSLink && eventStatus !== 'ENDED') || !editingEMSlink"
         >
             <EventEMSNoOwnerEMSLink
                 :current-user-e-m-s-link="state.currentUserEMSLink"
@@ -253,8 +249,8 @@ const handleAcceptNewLink = (newlink) => {
 
 <style scoped>
 .searchable_dropdown :deep(.dropdown-toggle input) {
-  padding: 8px !important;
-  border-radius: 0.25rem;
-  color: #d9dae3;
+    padding: 8px !important;
+    border-radius: 0.25rem;
+    color: #d9dae3;
 }
 </style>

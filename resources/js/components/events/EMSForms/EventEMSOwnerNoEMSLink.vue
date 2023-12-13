@@ -31,7 +31,7 @@ const props = defineProps({
 })
 
 const localLink = ref(props.currentUserEMSLink)
-const emits = defineEmits(['sendEmptyErrorMessage', 'sendNewLink', 'sendSomething'])
+const emits = defineEmits(['sendEmptyErrorMessage', 'sendNewLink'])
 const handleSendNewLink = () => {
     emits('sendNewLink', localLink.value)
 }
