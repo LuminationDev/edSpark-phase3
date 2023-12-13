@@ -46,12 +46,11 @@ const partnerBusinessTypes = [
 </script>
 
 <template>
-    <DashboardHero class="-mt-extraHuge" />
     <div class="PartnerFormContainer flex justify-around flex-row mt-10 px-8  gap-8 lg:!px-10">
         <div class="basis-1/2 bg-white border-[1px] drop-shadow-lg flex justify-center partnerFormContaner rounded-lg">
             <form class="p-4">
                 <h2 class="font-semibold py-2 text-2xl text-center">
-                    Join edSpark today!
+                    Join edSpark today
                 </h2>
                 <TextInput
                     v-model="v$.orgName.$model"
