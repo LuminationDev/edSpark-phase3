@@ -84,7 +84,6 @@ const getEMSLink = () => {
         });
 };
 
-
 onMounted(() => {
     getEMSLink()
 
@@ -175,7 +174,7 @@ const handleAcceptNewLink = (newlink) => {
 
         <!--    Form no 1 - conditional, user=owner && EMS=yes-->
         <template
-            v-else-if="(currentUserIsOwner && currentUserHasProvidedEMSLink && eventStatus !== 'ENDED') || !editingEMSlink"
+            v-else-if="(currentUserIsOwner && currentUserHasProvidedEMSLink && eventStatus !== 'ENDED') || editingEMSlink"
         >
             <EventEMSOwnerEMSLink
                 :current-user-e-m-s-link="v$.currentUserEMSLink.$model"
@@ -196,7 +195,7 @@ const handleAcceptNewLink = (newlink) => {
 
         <!--    Form no 4 - conditional, user = no owner && EMS = yes-->
         <template
-            v-else-if="(!currentUserIsOwner && currentUserHasProvidedEMSLink && eventStatus !== 'ENDED') || !editingEMSlink"
+            v-else-if="(!currentUserIsOwner && currentUserHasProvidedEMSLink && eventStatus !== 'ENDED') || editingEMSlink"
         >
             <EventEMSNoOwnerEMSLink
                 :current-user-e-m-s-link="state.currentUserEMSLink"

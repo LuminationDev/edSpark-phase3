@@ -69,8 +69,8 @@ const getEMSLink = () => {
     })
 }
 onMounted(() => {
-    getEMSLink()
-  
+    // getEMSLink()
+
 })
 
 </script>
@@ -240,8 +240,8 @@ onMounted(() => {
 
 <style scoped>
 .eventSingleContent :deep(p) {
-  margin-top: 16px;
-  text-align: justify;
+    margin-top: 16px;
+    text-align: justify;
 }
 
 </style>
