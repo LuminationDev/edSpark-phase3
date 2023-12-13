@@ -1,14 +1,10 @@
 <script setup>
-import purify from "dompurify";
-import {onMounted} from "vue";
-import {useRoute, useRouter} from "vue-router";
+import { useRouter} from "vue-router";
 
 import BaseBreadcrumb from "@/js/components/bases/BaseBreadcrumb.vue";
 import BaseHero from "@/js/components/bases/BaseHero.vue";
 import BaseSingle from "@/js/components/bases/BaseSingle.vue";
 import BaseSingleProfilePicture from "@/js/components/bases/BaseSingleProfilePicture.vue";
-// import EventsNorm from "@/js/components/events/EventsNorm.vue";
-// import EventsRsvp from "@/js/components/events/EventsRsvp.vue";
 import EventsNorm from "@/js/components/events/EventsEMS.vue";
 import EventSingleExtraContentRenderer from "@/js/components/events/EventSingleExtraContentRenderer.vue";
 import EventsLocation from "@/js/components/events/EventsLocation.vue";
@@ -16,7 +12,6 @@ import EventTypeTag from "@/js/components/events/EventTypeTag.vue";
 import CalendarIcon from "@/js/components/svg/event/CalendarIcon.vue";
 import LocationIcon from "@/js/components/svg/event/LocationIcon.vue";
 import TimeIcon from "@/js/components/svg/event/TimeIcon.vue";
-import {API_ENDPOINTS} from "@/js/constants/API_ENDPOINTS";
 import {schoolColorTheme} from "@/js/constants/schoolColorTheme";
 import {edSparkContentSanitizer} from "@/js/helpers/objectHelpers";
 
@@ -40,38 +35,6 @@ const getEventBackgroundColorTheme = (eventType) => {
     // return "bg-event-"+eventType
     return "bg-[" + schoolColorTheme[colorKey]['light'] + "]"
 }
-
-const route = useRoute()
-
-
-const updateDummyEMSLink = () => {
-    const data = {
-        event_id: route.params.id,
-        ems_link: 'https://google.com'
-    }
-    axios.post(API_ENDPOINTS.EVENT.ADD_OR_EDIT_EMS_LINK, data).then(res => {
-        console.log(res.data)
-    }).catch(err => {
-        console.log(err)
-    })
-
-}
-
-const getEMSLink = () => {
-    const urlWithEventID = `${API_ENDPOINTS.EVENT.FETCH_EMS_LINK}${route.params.id}`
-    axios.get(urlWithEventID).then(res => {
-        console.log(res.data.data.ems_link)
-        console.log('Found EMS LINK ^^^')
-
-    }).catch(err => {
-        console.log(err.message)
-        console.log("EMS LINK NOT FOUND")
-    })
-}
-onMounted(() => {
-    // getEMSLink()
-
-})
 
 </script>
 <template>
