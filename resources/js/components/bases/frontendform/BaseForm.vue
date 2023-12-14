@@ -6,6 +6,7 @@ import {capitalize, computed, onBeforeMount, onMounted, reactive, ref} from "vue
 import {useRouter} from "vue-router";
 import {toast} from "vue3-toastify";
 
+import LabelsSelector from "@/js/components/bases/frontendform/LabelsSelector.vue";
 import TinyMceRichTextInput from "@/js/components/bases/frontendform/TinyMceEditor/TinyMceRichTextInput.vue";
 import ImageUploaderInput, {MediaType} from "@/js/components/bases/ImageUploaderInput.vue";
 import TagsInput from "@/js/components/bases/TagsInput.vue";
@@ -108,11 +109,6 @@ onBeforeMount(() => {
         populateLocalStateFromWindowStateDraftData(draftData)
         baseEmitsExtraContentFromDraftData(draftData)
     }
-})
-onMounted(() =>{
-    formService.fetchAllLabels().then(res =>{
-        console.log(res.data.data)
-    })
 })
 
 const handleReceiveMediaFromUploader = (media: MediaType[]): void => {
@@ -262,6 +258,7 @@ const handleTinyRichContent = (data) => {
                     Tag
                 </template>
             </TagsInput>
+            <LabelsSelector />
             <div class="itemType">
                 <slot name="itemType" />
             </div>
