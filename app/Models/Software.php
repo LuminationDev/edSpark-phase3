@@ -102,4 +102,8 @@ class Software extends Model
             }
         });
     }
+    public function labels()
+    {
+        return $this->morphToMany(Label::class, 'labellable');
+    }
 }
