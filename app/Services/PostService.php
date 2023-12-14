@@ -84,7 +84,8 @@ class PostService
             'post_type' => 'advice',
             'isLikedByUser' => $isLikedByUser,
             'isBookmarkedByUser' => $isBookmarkedByUser,
-            'tags' => $advice->tags->pluck('name')
+            'tags' => $advice->tags->pluck('name'),
+            'labels' => $advice->labels
         ];
     }
 
@@ -122,7 +123,8 @@ class PostService
             'metadata' => $softwareMetadataToSend ?? null,
             'isLikedByUser' => $isLikedByUser,
             'isBookmarkedByUser' => $isBookmarkedByUser,
-            'tags' => $software->tags->pluck('name')
+            'tags' => $software->tags->pluck('name'),
+            'labels' => $software->labels
         ];
     }
 
@@ -158,7 +160,8 @@ class PostService
             'extra_content' => ($event->extra_content) ?? NULL,
             'isLikedByUser' => $isLikedByUser,
             'isBookmarkedByUser' => $isBookmarkedByUser,
-            'tags' => $event->tags->pluck('name')
+            'tags' => $event->tags->pluck('name'),
+            'labels' => $event->labels
         ];
     }
 }

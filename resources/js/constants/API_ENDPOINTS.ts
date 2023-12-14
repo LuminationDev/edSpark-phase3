@@ -110,6 +110,10 @@ export const API_ENDPOINTS: Endpoints = appendServerURL({
         FETCH_ALL_BOOKMARKS_WITH_TITLE: `/fetchAllBookmarksWithTitle`,
         FETCH_ALL_BOOKMARKS_BY_TYPE: `/fetchAllBookmarksByType`,
     },
+    LABEL:{
+      FETCH_ALL_LABELS: '/fetchAllLabels'
+    },
+
 
     SEARCH: {
         SEARCH_ALL: `/search/`

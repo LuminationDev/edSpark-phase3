@@ -2,7 +2,7 @@
 import useVuelidate from "@vuelidate/core";
 import {maxLength, required} from "@vuelidate/validators";
 import {storeToRefs} from "pinia";
-import {capitalize, computed, onBeforeMount, reactive, ref} from "vue";
+import {capitalize, computed, onBeforeMount, onMounted, reactive, ref} from "vue";
 import {useRouter} from "vue-router";
 import {toast} from "vue3-toastify";
 
@@ -108,6 +108,11 @@ onBeforeMount(() => {
         populateLocalStateFromWindowStateDraftData(draftData)
         baseEmitsExtraContentFromDraftData(draftData)
     }
+})
+onMounted(() =>{
+    formService.fetchAllLabels().then(res =>{
+        console.log(res.data.data)
+    })
 })
 
 const handleReceiveMediaFromUploader = (media: MediaType[]): void => {

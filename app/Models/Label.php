@@ -6,12 +6,13 @@ use Illuminate\Database\Eloquent\Model;
 
 class Label extends Model
 {
+    protected $table='labels';
     protected $fillable = ['value', 'description', 'type'];
 
-    public function labellables()
-    {
-        return $this->hasMany(Labellable::class);
-    }
+//    public function labellables()
+//    {
+//        return $this->hasMany(Labellable::class);
+//    }
 
     public function advices()
     {
