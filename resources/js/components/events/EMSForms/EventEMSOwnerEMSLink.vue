@@ -29,6 +29,17 @@ const props = defineProps({
     }
 })
 
+const formattedLink = (userLink) => {
+    console.log("Original Link:", userLink);
+    if (!userLink.includes("http://") && !userLink.startsWith('http://')) {
+
+        return userLink = "http://" + userLink;
+    } else {
+
+        return userLink;
+    }
+}
+
 const emits = defineEmits(['sendEmptyErrorMessage'])
 const handleClickErrorMessage = () => {
     console.log('inside ownerems link')
@@ -47,7 +58,12 @@ const handleClickErrorMessage = () => {
             <label class="-mb-2"> You have provided the
                 Link<br>
                 <span class="flex font-bold mt-4 text-xl">
-                    {{ props.currentUserEMSLink }}
+                    <a
+                        :href="formattedLink(props.currentUserEMSLink)"
+                        target="_blank"
+                    >
+                        {{ props.currentUserEMSLink }}
+                    </a>
                 </span>
             </label>
 
