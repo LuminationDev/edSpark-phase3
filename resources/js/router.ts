@@ -6,6 +6,7 @@ import AdviceForm from "@/js/components/bases/frontendform/types/AdviceForm.vue"
 import EventForm from "@/js/components/bases/frontendform/types/EventForm.vue";
 import SoftwareForm from "@/js/components/bases/frontendform/types/SoftwareForm.vue";
 import UserPosts from "@/js/components/create/UserPosts.vue";
+import TheTechnology from "@/js/components/global/navbar/TheTechnology.vue";
 import AdviceSearch from "@/js/components/search/AdviceSearch.vue";
 import EventSearch from "@/js/components/search/EventSearch.vue";
 import HardwareSearch from "@/js/components/search/HardwareSearch.vue";
@@ -148,7 +149,7 @@ const routes: any = [
                 meta: {
                     requiresAuth: true,
                 } as RouteMeta
-            },
+            }
         ]
     },
     {
@@ -160,7 +161,7 @@ const routes: any = [
         }
     },
     {
-    name: 'school',
+        name: 'school',
         path: '/school',
         component: TheSchool,
         meta: {
@@ -243,6 +244,15 @@ const routes: any = [
         }
     },
     {
+        path: '/technology',
+        component: TheTechnology,
+        meta: {
+            navigation: true,
+            dropdownItems: true, // Add this property
+            requiresAuth: true
+        } as RouteMeta
+    },
+    {
         name: 'partner-single',
         path: '/partner/:id/:slug?',
         alias: '/partner/:id',
@@ -299,7 +309,7 @@ const routes: any = [
         name: 'publicPartnerWelcome',
         path: '/welcome/partner',
         component: ThePartnerWelcome,
-        meta:{
+        meta: {
             skipScrollTop: false,
             requiresAuth: false
         }
@@ -329,15 +339,15 @@ const router = createRouter({
         }
     }
 });
-const partnerRouteChecker = (to, from,next) =>{
+const partnerRouteChecker = (to, from, next) => {
     const userStore = useUserStore();
-    if(userStore.getUserRoleName === 'SITESUPP'){ // meant to be Partner
-        if(to.meta.partnerCanAccess === false){
+    if (userStore.getUserRoleName === 'SITESUPP') { // meant to be Partner
+        if (to.meta.partnerCanAccess === false) {
             next('/forbidden')
-        } else{
+        } else {
             next();
         }
-    } else{
+    } else {
         next();
     }
 }
@@ -350,7 +360,7 @@ router.beforeEach(async (to, from, next) => {
     const userStore = useUserStore();
     const {userEntryLink} = storeToRefs(userStore)
     // it will only fill in userEntryLink if the entry link is null or not 'finished
-    if(!userEntryLink.value && userEntryLink.value !== 'finished'){
+    if (!userEntryLink.value && userEntryLink.value !== 'finished') {
         userEntryLink.value = to.fullPath
     }
 
