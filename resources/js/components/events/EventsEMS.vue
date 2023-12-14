@@ -40,6 +40,7 @@ const props = defineProps({
 const currentUserIsOwner = ref(true)
 const currentUserHasProvidedEMSLink = ref(false)
 const editingEMSlink = ref(false)
+const cancelLink = ref(false)
 const rsvpError = ref('')
 const route = useRoute()
 
@@ -48,6 +49,7 @@ const state = reactive({
 })
 
 const isLoading = ref(false)
+const tempLink = ref('')
 
 const rules = {
     currentUserEMSLink: {required, url}
@@ -75,8 +77,11 @@ const getEMSLink = () => {
     const urlWithEventID = `${API_ENDPOINTS.EVENT.FETCH_EMS_LINK}${route.params.id}`;
     axios.get(urlWithEventID)
         .then(res => {
+            tempLink.value = res.data.data.ems_link;
             state.currentUserEMSLink = res.data.data.ems_link;
-            currentUserIsOwner.value = res.data.data.is_owner;
+            console.log(res.data.data)
+            //currentUserIsOwner.value = res.data.data.is_owner;
+            currentUserIsOwner.value = Boolean(res.data.data.is_owner);
             currentUserHasProvidedEMSLink.value = true;
         })
         .catch(err => {
@@ -88,7 +93,6 @@ onMounted(() => {
     getEMSLink()
 
 })
-
 
 const handleClickContactOrganiser = () => {
     console.log('Contacting Organiser!')
@@ -104,10 +108,15 @@ const handleClickEditLink = () => {
 
 }
 
+const handleCancelLink = () => {
+    console.log('clicked cancel button')
+    editingEMSlink.value = false
+    state.currentUserEMSLink = tempLink.value;
+}
+
 
 const handleClickSubmitLink = () => {
     const validUrlRegex = /^(https?:\/\/)?(www\.)?([-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*))$/;
-
 
     if (!validUrlRegex.test(v$.value.currentUserEMSLink.$model)) {
 
@@ -116,13 +125,15 @@ const handleClickSubmitLink = () => {
         return;
     }
 
+    isLoading.value = true;
     rsvpError.value = false
+    tempLink.value = state.currentUserEMSLink
     const data = {
         event_id: route.params.id,
         ems_link: v$.value.currentUserEMSLink.$model
     };
 
-    axios.post(API_ENDPOINTS.EVENT.ADD_OR_EDIT_EMS_LINK, data)
+    return axios.post(API_ENDPOINTS.EVENT.ADD_OR_EDIT_EMS_LINK, data)
         .then(res => {
             console.log(res.data);
             editingEMSlink.value = false;
@@ -165,8 +176,10 @@ const handleAcceptNewLink = (newlink) => {
             <EventEMSOwnerNoEMSLink
                 :current-user-e-m-s-link="state.currentUserEMSLink"
                 :button-callback="handleClickSubmitLink"
+                :button-cancelback="handleCancelLink"
                 :error-message="rsvpError"
                 :v$="v$.currentUserEMSLink"
+                :is-loading="isLoading"
                 @send-new-link="handleAcceptNewLink"
                 @send-empty-error-message="handleEmptyErrorMessage"
             />
@@ -186,20 +199,12 @@ const handleAcceptNewLink = (newlink) => {
             />
         </template>
 
-        <!--    Form no 3 - conditional, user = no owner && EMS = no-->
-        <template
-            v-else-if="(!currentUserIsOwner && !currentUserHasProvidedEMSLink && eventStatus !== 'ENDED') || editingEMSlink"
-        >
-            <EventEMSNoOwnerNoEMSLink />
-        </template>
-
         <!--    Form no 4 - conditional, user = no owner && EMS = yes-->
         <template
             v-else-if="(!currentUserIsOwner && currentUserHasProvidedEMSLink && eventStatus !== 'ENDED') || editingEMSlink"
         >
             <EventEMSNoOwnerEMSLink
                 :current-user-e-m-s-link="state.currentUserEMSLink"
-                :button-callback="handleClickSubmitLink"
                 :error-message="rsvpError"
                 :v$="v$.currentUserEMSLink"
                 @send-new-link="handleAcceptNewLink"
@@ -208,6 +213,12 @@ const handleAcceptNewLink = (newlink) => {
             />
         </template>
 
+        <!--    Form no 3 - conditional, user = no owner && EMS = no-->
+        <template
+            v-else-if="(!currentUserIsOwner && !currentUserHasProvidedEMSLink && eventStatus !== 'ENDED') || editingEMSlink"
+        >
+            <EventEMSNoOwnerNoEMSLink />
+        </template>
         <div
             v-if="(eventStatus === 'ENDED') "
             class="border-b-2 border-b-white flex flex-col py-4 text-lg"
@@ -249,8 +260,8 @@ const handleAcceptNewLink = (newlink) => {
 
 <style scoped>
 .searchable_dropdown :deep(.dropdown-toggle input) {
-    padding: 8px !important;
-    border-radius: 0.25rem;
-    color: #d9dae3;
+  padding: 8px !important;
+  border-radius: 0.25rem;
+  color: #d9dae3;
 }
 </style>

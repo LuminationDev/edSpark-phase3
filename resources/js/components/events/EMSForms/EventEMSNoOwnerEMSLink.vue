@@ -30,17 +30,23 @@ const props = defineProps({
     }
 })
 
-const localLink = ref(props.currentUserEMSLink)
+const emits = defineEmits(['sendEmptyErrorMessage', 'sendNewLink'])
 
-const emits = defineEmits(['sendEmptyErrorMessage', 'sendNewLink', 'sendSomething'])
-const handleSendNewLink = () => {
-    emits('sendNewLink', localLink.value)
-}
 const handleClickErrorMessage = () => {
     console.log('inside ownerems link')
     emits('sendEmptyErrorMessage')
 }
 
+const formattedLink = (userLink) => {
+    console.log("Original Link:", userLink);
+    if (!userLink.includes("http://") && !userLink.startsWith('http://')) {
+
+        return userLink = "http://" + userLink;
+    } else {
+
+        return userLink;
+    }
+}
 
 const isLoading = ref(false)
 </script>
@@ -52,39 +58,26 @@ const isLoading = ref(false)
         @submit.prevent=""
     >
         <div class="-mt-1 Selector dropdown flex flex-col school">
-            Register for the event:
-            <TextInput
-                v-model="localLink"
-                field-id="userSubmitLink"
-                :v$="v$.currentUserEMSLink"
-                placeholder="Enter the link here"
-                :with-no-left-margin="true"
-                @input-update="handleSendNewLink"
-            >
-                <template #label>
-                    <br><br>
-                    <span>
-                        Enter the link here
-                    </span>
-                </template>
-            </TextInput>
-
-
-            <!--            {{ rsvpError }}-->
-            <GenericButton
-                :callback="props.buttonCallback"
-                class="!text-black font-semibold mt-4 px-6 rounded-sm w-fit"
-                :disabled="isLoading"
-            >
-                <template #default>
-                    {{ isLoading ? 'Loading...' : 'Submit' }}
-                </template>
-            </GenericButton>
+            <label class="-mb-6">
+                Please click on the link below<br><br>
+                <span class="-mt-2 hover:text-main-lightTeal flex font-bold mb-4 text-xl">
+                    <a
+                        :href="formattedLink(props.currentUserEMSLink)"
+                        target="_blank"
+                    >
+                        {{ props.currentUserEMSLink }}
+                    </a>
+                </span>
+            </label>
+        </div>
+        <div class="flex items-center flex-row">
             <span
                 v-if="props.errorMessage"
-                class="cursor-pointer font-semibold mt-4 px-4 text-red-500"
-                @click="handleClickErrorMessage = ''"
-            > {{ props.errorMessage }}</span>
+                class="cursor-pointer font-semibold mt-6 px-4 text-red-500"
+                @click="handleClickErrorMessage"
+            >
+                {{ props.errorMessage }}
+            </span>
         </div>
     </form>
 </template>

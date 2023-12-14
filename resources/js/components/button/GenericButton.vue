@@ -29,13 +29,27 @@ const props = defineProps({
     }
 })
 const onClick = async () => {
-    await asyncCall()
+    spinner.value = true
+    console.log('inside on lcick')
+    await asyncCall();
+    spinner.value = false
 }
 
 const asyncCall = () => {
-    return new Promise((resolve) => {
-        resolve(props.callback())
-    }).then()
+    return new Promise(async (resolve, reject) => {
+        try {
+            console.log('before callback')
+            const result = props.callback();
+            if (result instanceof Promise) {
+                result.then(resolve).catch(reject);
+            } else {
+                resolve(result);
+            }
+
+        } catch (error) {
+            reject(error);
+        }
+    })
 }
 
 </script>
@@ -45,7 +59,7 @@ const asyncCall = () => {
         :class="{
             'h-auto rounded-lg text-white text-base bg-main-teal hover:bg-main-navy' : true,
             'my-3 hover:bg-blue-400': type === 'school',
-            '!bg-slate-300 pointer-events-none': disabled,
+            'pointer-events-none': disabled,
             '!text-black bg-white border-0 !p-0': type === 'plain'
         }"
         class="flex justify-center items-center p-2"

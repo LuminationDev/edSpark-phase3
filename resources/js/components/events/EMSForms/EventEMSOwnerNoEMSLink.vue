@@ -5,6 +5,7 @@ import {ref} from "vue";
 import ErrorMessages from "@/js/components/bases/ErrorMessages.vue";
 import TextInput from "@/js/components/bases/TextInput.vue";
 import GenericButton from "@/js/components/button/GenericButton.vue";
+import Spinner from "@/js/components/spinner/Spinner.vue";
 import {useUserStore} from "@/js/stores/useUserStore";
 
 const props = defineProps({
@@ -13,6 +14,12 @@ const props = defineProps({
         required: true,
     },
     buttonCallback: {
+        type: Function,
+        required: false,
+        default: () => {
+        }
+    },
+    buttonCancelback: {
         type: Function,
         required: false,
         default: () => {
@@ -27,11 +34,15 @@ const props = defineProps({
         required: false,
         default: () => {
         }
-    }
+    }, isLoading:
+        {
+            type: Boolean,
+            required: true
+        }
 })
 
 const localLink = ref(props.currentUserEMSLink)
-const emits = defineEmits(['sendEmptyErrorMessage', 'sendNewLink'])
+const emits = defineEmits(['sendEmptyErrorMessage', 'sendNewLink', 'cancel-link'])
 const handleSendNewLink = () => {
     emits('sendNewLink', localLink.value)
 }
@@ -40,7 +51,6 @@ const handleClickErrorMessage = () => {
     emits('sendEmptyErrorMessage')
 }
 
-const isLoading = ref(false)
 </script>
 
 <template>
@@ -63,13 +73,29 @@ const isLoading = ref(false)
                 </template>
             </TextInput>
             {{ rsvpError }}
+            <!--            <div-->
+            <!--                v-if="props.isLoading"-->
+            <!--                class="!w-28 bg-main-teal flex justify-center items-center spinnerContainer"-->
+            <!--            >-->
+            <!--                <Spinner />-->
+            <!--            </div>-->
             <GenericButton
                 :callback="props.buttonCallback"
-                class="!bg-secondary-coolGrey !text-black font-semibold mt-4 px-6 rounded-sm w-fit"
-                :disabled="isLoading"
+                class="!text-white !w-28 font-bold px-6 rounded-sm text-lg w-fit"
+                :disabled="props.isLoading"
             >
                 <template #default>
-                    {{ isLoading ? 'Loading...' : 'Submit' }}
+                    <span>Submit</span>
+                </template>
+            </GenericButton>
+
+            <GenericButton
+                id="rsvpBtn"
+                :callback="props.buttonCancelback"
+                class="!text-white !w-28 font-bold mt-4 px-6 rounded-sm text-lg w-fit"
+            >
+                <template #default>
+                    Cancel
                 </template>
             </GenericButton>
             <span

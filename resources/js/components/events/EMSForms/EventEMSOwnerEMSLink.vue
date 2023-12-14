@@ -44,9 +44,9 @@ const handleClickErrorMessage = () => {
         @submit.prevent=""
     >
         <div class="-mt-1 Selector dropdown flex flex-col school">
-            <label class="-mb-2 ml-2"> You have provided the
-                Link<br><br>
-                <span class="bg-gray-400 flex font-bold p-2 text-2xl">
+            <label class="-mb-2"> You have provided the
+                Link<br>
+                <span class="flex font-bold mt-4 text-xl">
                     {{ props.currentUserEMSLink }}
                 </span>
             </label>
@@ -59,12 +59,13 @@ const handleClickErrorMessage = () => {
             <GenericButton
                 id="rsvpBtn"
                 :callback="props.buttonCallback"
-                class="!text-white font-bold mt-4 px-6 rounded-sm text-lg w-fit"
+                class="!text-white !w-28 font-bold mt-2 px-6 rounded-sm text-lg w-fit"
             >
                 <template #default>
                     Edit
                 </template>
             </GenericButton>
+
             <span
                 v-if="props.errorMessage"
                 class="cursor-pointer font-semibold mt-4 px-4 text-red-500"
