@@ -1,8 +1,9 @@
 <script setup lang="ts">
-import {capitalize, onMounted, reactive, Ref, ref} from 'vue'
+import {capitalize, onMounted, reactive, Ref, ref, watch} from 'vue'
 import Multiselect from "vue-multiselect";
 
 import {formService} from "@/js/service/formService";
+
 type LabelSelectorItem = {
     id: number,
     value: string,
@@ -25,6 +26,13 @@ const displayTextByLabelKey = {
     category: "Categories"
 }
 
+const props = defineProps({
+    modelValue: {
+        type: Object,
+        required: true
+    }
+})
+
 
 function groupByType(data: LabelSelectorItem[]): GroupedLabel {
     // Create an object to store grouped items
@@ -45,10 +53,14 @@ function groupByType(data: LabelSelectorItem[]): GroupedLabel {
 
     return groupedData;
 }
-
+const emits  = defineEmits(['emitSelectedOptions'])
 const allLabels: Ref<LabelSelectorItem[] > = ref([])
 const groupedLabels : Ref<GroupedLabel|null> = ref(null)
-const selectedOptions = reactive({})
+const selectedOptions = reactive(props.modelValue)
+
+watch(selectedOptions, () =>{
+    emits('emitSelectedOptions', selectedOptions)
+})
 
 
 onMounted(() =>{
@@ -85,6 +97,7 @@ onMounted(() =>{
                     aria-controls="resourceResult"
                     label="name"
                     deselect-label="X"
+                    select-label=""
                 />
             </div>
         </div>

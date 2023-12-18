@@ -142,6 +142,7 @@ export const formService = {
             cover_image: state.cover_image,
             tags: state.tags,
             template: '',
+            labels: state.labels
         };
 
         if (itemType === 'software' || itemType === 'advice' || itemType === 'event') {
@@ -165,6 +166,7 @@ export const formService = {
                     tags: state.tags,
                     author_id: user_id,
                     cover_image: state.cover_image,
+                    labels: state.labels
                 };
                 formattedAdditionalData.eventtype_id = additionalData['type'];
 

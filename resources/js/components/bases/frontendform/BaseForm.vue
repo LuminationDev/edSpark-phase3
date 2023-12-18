@@ -61,6 +61,7 @@ const state = reactive({
     cover_image: '',
     author_name: '',
     tags: [],
+    labels: {}
 })
 
 const rules = {
@@ -71,7 +72,8 @@ const rules = {
     },
     content: {required},
     cover_image: {required},
-    tags: {}
+    tags: {},
+    labels: {}
 }
 
 
@@ -187,6 +189,11 @@ const handleTinyRichContent = (data) => {
     console.log('base form received ' + data)
     v$.value.content.$model = data
 }
+const handleSelectedLabels = (data) => {
+    console.log(data)
+    v$.value.labels.$model = data
+
+}
 </script>
 
 <template>
@@ -258,7 +265,10 @@ const handleTinyRichContent = (data) => {
                     Tag
                 </template>
             </TagsInput>
-            <LabelsSelector />
+            <LabelsSelector
+                v-model="v$.labels.$model"
+                @emit-selected-options="handleSelectedLabels"
+            />
             <div class="itemType">
                 <slot name="itemType" />
             </div>

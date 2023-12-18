@@ -85,7 +85,14 @@ class PostService
             'isLikedByUser' => $isLikedByUser,
             'isBookmarkedByUser' => $isBookmarkedByUser,
             'tags' => $advice->tags->pluck('name'),
-            'labels' => $advice->labels
+            'labels' => $advice->labels->map(function ($label) {
+                return [
+                    'id' => $label['id'],
+                    'value' => $label['value'],
+                    'description' => $label['description'],
+                    'type' => $label['type'],
+                ];
+            }),
         ];
     }
 
@@ -124,7 +131,14 @@ class PostService
             'isLikedByUser' => $isLikedByUser,
             'isBookmarkedByUser' => $isBookmarkedByUser,
             'tags' => $software->tags->pluck('name'),
-            'labels' => $software->labels
+            'labels' => $software->labels->map(function ($label) {
+                return [
+                    'id' => $label['id'],
+                    'value' => $label['value'],
+                    'description' => $label['description'],
+                    'type' => $label['type'],
+                ];
+            }),
         ];
     }
 
@@ -161,7 +175,14 @@ class PostService
             'isLikedByUser' => $isLikedByUser,
             'isBookmarkedByUser' => $isBookmarkedByUser,
             'tags' => $event->tags->pluck('name'),
-            'labels' => $event->labels
+            'labels' => $event->labels->map(function ($label) {
+                return [
+                    'id' => $label['id'],
+                    'value' => $label['value'],
+                    'description' => $label['description'],
+                    'type' => $label['type'],
+                ];
+            }),
         ];
     }
 }

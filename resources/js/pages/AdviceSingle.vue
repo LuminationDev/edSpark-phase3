@@ -64,6 +64,7 @@ const timeFormatter = (originalFormat) => {
                 </template> -->
                 <template #subtitleText2>
                     <div v-html="edSparkContentSanitizer(contentFromBase['excerpt'])" />
+                    <pre> {{ contentFromBase['labels'].map(label => label['description']) }}</pre>
                 </template>
             </BaseHero>
         </template>
