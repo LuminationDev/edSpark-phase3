@@ -12,15 +12,15 @@ const props = defineProps({
     }
 })
 const labelColors = {
-    year: 'banana',
-    learning: 'cherry',
-    capability: 'grape',
-    category: 'blueberry',
+    year: 'bg-secondary-banana/40 border-secondary-banana',
+    learning: 'bg-secondary-cherry/40 border-secondary-cherry',
+    capability: 'bg-secondary-grape/40 border-secondary-grape' ,
+    category: 'bg-secondary-blueberry/40 border-secondary-blueberry',
 };
 
 
 const tagClassName = (type: string): string => {
-    const baseColor = `bg-secondary-${labelColors[type]}/40 border-[1px] border-secondary-${labelColors[type]} px-6 py-2 rounded-full`;
+    const baseColor = ` ${labelColors[type]} border-[1px]  px-6 py-2 rounded-full`;
     // return `${baseColor} transition-colors duration-300 hover:text-secondary-${labelColors[type]}`;
     return `${baseColor} transition-colors duration-300 hover:text-main-lightTeal`;
 };
