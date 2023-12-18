@@ -29,7 +29,7 @@ const tagClassName = (type: string): string => {
 </script>
 
 <template>
-    <div class="flex flex-row gap-4 pt-4">
+    <div class="flex flex-row flex-wrap h-auto max-w-full pt-4  gap-4">
         <div
             v-for="(label,index) in props.labelsArray"
             :key="index"
