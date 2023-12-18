@@ -36,8 +36,9 @@ const navDropdownToggle = ref(false);
     >
         <router-link
             :to="{ name: route.name }"
+            class="flex items-center"
         >
-            {{ route.meta.customText ?? route.name }}
+            <span>{{ route.meta.customText ?? route.name }}</span>
         </router-link>
         <div
             v-if="hasChildren"
@@ -49,13 +50,12 @@ const navDropdownToggle = ref(false);
                 v-show="navDropdownToggle"
                 class="absolute m-2 navDropdown"
             >
-                <div
-                    class="bg-amber-50 font-sans h-full mt-8 p-0 w-60"
-                >
+                <div class="bg-[#F5F5F5] font-medium font-sans h-full ml-0 mt-8 p-0 w-60">
                     <NavItems
                         v-for="(child, index) in props.route.children"
                         :key="index"
-                        class="-ml-0 hover:!bg-main-darkTeal h-16 p-3 text-black"
+                        class="first-letter:uppercase font-sans hover:font-bold p-4 text-black text-xl hover:bg-[#E7ECEE]"
+                        :to="{ name: child.name }"
                         :route="child"
                     />
                 </div>
@@ -70,130 +70,207 @@ const navDropdownToggle = ref(false);
     >
         <router-link
             :to="{ name: route.name }"
+            class="flex items-center"
         >
-            {{ route.meta.customText ?? route.name }}
+            <span>{{ route.meta.customText ?? route.name }}</span>
         </router-link>
     </li>
+</template>
 
 
-    <!--    <li-->
-    <!--        v-if="route.meta.dropdownItems"-->
-    <!--        class="cursor-pointer relative"-->
-    <!--    >-->
-    <!--        <div-->
-    <!--            class="h-fit"-->
-    <!--            @mouseover="navDropdownToggle = true"-->
-    <!--            @mouseleave="navDropdownToggle = false"-->
-    <!--        >-->
-    <!--            School-->
-    <!--            <div-->
-    <!--                v-show="navDropdownToggle"-->
-    <!--                class="absolute navDropdown"-->
-    <!--                @mouseover="navDropdownToggle = true"-->
-    <!--            >-->
-    <!--                <div class="bg-[#002856]/50 mt-[8px]">-->
-    <!--                    <ul class="flex flex-col font-semibold gap-4 py-4 text-[24px] text-center text-white">-->
-    <!--                        <router-link-->
-    <!--                            class="flex"-->
-    <!--                            to="/software"-->
-    <!--                        >-->
-    <!--                            <li-->
-    <!--                                class="-->
-    <!--                                    cursor-pointer-->
-    <!--                                    decoration-4-->
-    <!--                                    decoration-[#B8E2DC]-->
-    <!--                                    mx-auto-->
-    <!--                                    px-4-->
-    <!--                                    transition-all-->
-    <!--                                    underline-offset-8-->
-    <!--                                    hover:underline-->
-    <!--                                    "-->
-    <!--                            >-->
-    <!--                                Software-->
-    <!--                            </li>-->
-    <!--                        </router-link>-->
-    <!--                        <router-link to="/hardware">-->
-    <!--                            <li-->
-    <!--                                class="-->
-    <!--                                    cursor-pointer-->
-    <!--                                    decoration-4-->
-    <!--                                    decoration-[#B8E2DC]-->
-    <!--                                    mx-auto-->
-    <!--                                    px-4-->
-    <!--                                    transition-all-->
-    <!--                                    underline-offset-8-->
-    <!--                                    hover:underline-->
-    <!--                                    "-->
-    <!--                            >-->
-    <!--                                Hardware-->
-    <!--                            </li>-->
-    <!--                        </router-link>-->
-    <!--                    </ul>-->
-    <!--                </div>-->
-    <!--            </div>-->
-    <!--        </div>-->
-    <!--    </li>-->
-
-    <!--    <li-->
-    <!--        v-else-if="route.meta.dropdownSc"-->
-    <!--        class="cursor-pointer relative"-->
-    <!--    >-->
-    <!--        <div-->
-    <!--            class="h-fit"-->
-    <!--            @mouseover="navDropdownToggle = true"-->
-    <!--            @mouseleave="navDropdownToggle = false"-->
-    <!--        >-->
-    <!--            School-->
-    <!--            <div-->
-    <!--                v-show="navDropdownToggle"-->
-    <!--                class="absolute navDropdown"-->
-    <!--                @mouseover="navDropdownToggle = true"-->
-    <!--            >-->
-    <!--                <div class="bg-[#002856]/50 mt-[8px]">-->
-    <!--                    <ul class="flex flex-col font-semibold gap-4 py-4 text-[24px] text-center text-white">-->
-    <!--                        <router-link-->
-    <!--                            class="flex"-->
-    <!--                            to="/software"-->
-    <!--                        >-->
-    <!--                            <li-->
-    <!--                                class="-->
-    <!--                                    cursor-pointer-->
-    <!--                                    decoration-4-->
-    <!--                                    decoration-[#B8E2DC]-->
-    <!--                                    mx-auto-->
-    <!--                                    px-4-->
-    <!--                                    transition-all-->
-    <!--                                    underline-offset-8-->
-    <!--                                    hover:underline-->
-    <!--                                    "-->
-    <!--                            >-->
-    <!--                                Software-->
-    <!--                            </li>-->
-    <!--                        </router-link>-->
-    <!--                        <router-link to="/hardware">-->
-    <!--                            <li-->
-    <!--                                class="-->
-    <!--                                    cursor-pointer-->
-    <!--                                    decoration-4-->
-    <!--                                    decoration-[#B8E2DC]-->
-    <!--                                    mx-auto-->
-    <!--                                    px-4-->
-    <!--                                    transition-all-->
-    <!--                                    underline-offset-8-->
-    <!--                                    hover:underline-->
-    <!--                                    "-->
-    <!--                            >-->
-    <!--                                Hardware-->
-    <!--                            </li>-->
-    <!--                        </router-link>-->
-    <!--                    </ul>-->
-    <!--                </div>-->
-    <!--            </div>-->
-    <!--        </div>-->
-    <!--    </li>-->
+<!--  <li-->
+<!--      v-if="hasChildren"-->
+<!--      class="-ml-4 lg:!py-0 cursor-pointer decoration-4 decoration-[#B8E2DC] first-letter:uppercase py-4 relative transition-all"-->
+<!--      @click="props.clickCallback"-->
+<!--  >-->
+<!--    <router-link-->
+<!--        :to="{ name: route.name }"-->
+<!--        class="flex items-center"-->
+<!--    >-->
+<!--      &lt;!&ndash; Wrap the entire content in the router-link &ndash;&gt;-->
+<!--      {{ route.meta.customText ?? route.name }}-->
+<!--      <div-->
+<!--          v-if="hasChildren"-->
+<!--          class="absolute bottom-0 decoration-4 h-full w-full"-->
+<!--          @mouseover="navDropdownToggle = true"-->
+<!--          @mouseleave="navDropdownToggle = false"-->
+<!--      >-->
+<!--        &lt;!&ndash; Nested content &ndash;&gt;-->
+<!--        <div-->
+<!--            v-show="navDropdownToggle"-->
+<!--            class="absolute m-2 navDropdown"-->
+<!--        >-->
+<!--          <div-->
+<!--              class="bg-amber-50 font-sans h-full mt-8 p-0 w-60"-->
+<!--          >-->
+<!--                        <span><NavItems-->
+<!--                            v-for="(child, index) in props.route.children"-->
+<!--                            :key="index"-->
+<!--                            class="-ml-0 hover:!bg-main-darkTeal cursor-pointer flex h-16 p-3 text-black transition-all"-->
+<!--                            :route="child"-->
+<!--                        /></span>-->
+<!--          </div>-->
+<!--        </div>-->
+<!--      </div>-->
+<!--    </router-link>-->
+<!--  </li>-->
+<!--  <li-->
+<!--      v-else-->
+<!--      class=""-->
+<!--      @click="props.clickCallback"-->
+<!--      @mouseover="navDropdownToggle = true"-->
+<!--  >-->
+<!--    <router-link-->
+<!--        :to="{ name: route.name }"-->
+<!--        class="flex items-center"-->
+<!--    >-->
+<!--      &lt;!&ndash; Wrap the entire content in the router-link &ndash;&gt;-->
+<!--      {{ route.meta.customText ?? route.name }}-->
+<!--      <div-->
+<!--          v-if="hasChildren"-->
+<!--          class="absolute bottom-0 decoration-4 h-full w-full"-->
+<!--          @mouseover="navDropdownToggle = true"-->
+<!--          @mouseleave="navDropdownToggle = false"-->
+<!--      >-->
+<!--        &lt;!&ndash; Nested content &ndash;&gt;-->
+<!--        <div-->
+<!--            v-show="navDropdownToggle"-->
+<!--            class="absolute m-2 navDropdown"-->
+<!--        >-->
+<!--          <div-->
+<!--              class="bg-amber-50 font-sans h-full mt-8 p-0 w-60"-->
+<!--          >-->
+<!--                        <span><NavItems-->
+<!--                            v-for="(child, index) in props.route.children"-->
+<!--                            :key="index"-->
+<!--                            class="-ml-0 hover:!bg-main-darkTeal cursor-pointer flex h-16 p-3 text-black transition-all"-->
+<!--                            :route="child"-->
+<!--                        /></span>-->
+<!--          </div>-->
+<!--        </div>-->
+<!--      </div>-->
+<!--    </router-link>-->
+<!--  </li>-->
 
 
-    <!-- <li
+<!--    <li-->
+<!--        v-if="route.meta.dropdownItems"-->
+<!--        class="cursor-pointer relative"-->
+<!--    >-->
+<!--        <div-->
+<!--            class="h-fit"-->
+<!--            @mouseover="navDropdownToggle = true"-->
+<!--            @mouseleave="navDropdownToggle = false"-->
+<!--        >-->
+<!--            School-->
+<!--            <div-->
+<!--                v-show="navDropdownToggle"-->
+<!--                class="absolute navDropdown"-->
+<!--                @mouseover="navDropdownToggle = true"-->
+<!--            >-->
+<!--                <div class="bg-[#002856]/50 mt-[8px]">-->
+<!--                    <ul class="flex flex-col font-semibold gap-4 py-4 text-[24px] text-center text-white">-->
+<!--                        <router-link-->
+<!--                            class="flex"-->
+<!--                            to="/software"-->
+<!--                        >-->
+<!--                            <li-->
+<!--                                class="-->
+<!--                                    cursor-pointer-->
+<!--                                    decoration-4-->
+<!--                                    decoration-[#B8E2DC]-->
+<!--                                    mx-auto-->
+<!--                                    px-4-->
+<!--                                    transition-all-->
+<!--                                    underline-offset-8-->
+<!--                                    hover:underline-->
+<!--                                    "-->
+<!--                            >-->
+<!--                                Software-->
+<!--                            </li>-->
+<!--                        </router-link>-->
+<!--                        <router-link to="/hardware">-->
+<!--                            <li-->
+<!--                                class="-->
+<!--                                    cursor-pointer-->
+<!--                                    decoration-4-->
+<!--                                    decoration-[#B8E2DC]-->
+<!--                                    mx-auto-->
+<!--                                    px-4-->
+<!--                                    transition-all-->
+<!--                                    underline-offset-8-->
+<!--                                    hover:underline-->
+<!--                                    "-->
+<!--                            >-->
+<!--                                Hardware-->
+<!--                            </li>-->
+<!--                        </router-link>-->
+<!--                    </ul>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--    </li>-->
+
+<!--    <li-->
+<!--        v-else-if="route.meta.dropdownSc"-->
+<!--        class="cursor-pointer relative"-->
+<!--    >-->
+<!--        <div-->
+<!--            class="h-fit"-->
+<!--            @mouseover="navDropdownToggle = true"-->
+<!--            @mouseleave="navDropdownToggle = false"-->
+<!--        >-->
+<!--            School-->
+<!--            <div-->
+<!--                v-show="navDropdownToggle"-->
+<!--                class="absolute navDropdown"-->
+<!--                @mouseover="navDropdownToggle = true"-->
+<!--            >-->
+<!--                <div class="bg-[#002856]/50 mt-[8px]">-->
+<!--                    <ul class="flex flex-col font-semibold gap-4 py-4 text-[24px] text-center text-white">-->
+<!--                        <router-link-->
+<!--                            class="flex"-->
+<!--                            to="/software"-->
+<!--                        >-->
+<!--                            <li-->
+<!--                                class="-->
+<!--                                    cursor-pointer-->
+<!--                                    decoration-4-->
+<!--                                    decoration-[#B8E2DC]-->
+<!--                                    mx-auto-->
+<!--                                    px-4-->
+<!--                                    transition-all-->
+<!--                                    underline-offset-8-->
+<!--                                    hover:underline-->
+<!--                                    "-->
+<!--                            >-->
+<!--                                Software-->
+<!--                            </li>-->
+<!--                        </router-link>-->
+<!--                        <router-link to="/hardware">-->
+<!--                            <li-->
+<!--                                class="-->
+<!--                                    cursor-pointer-->
+<!--                                    decoration-4-->
+<!--                                    decoration-[#B8E2DC]-->
+<!--                                    mx-auto-->
+<!--                                    px-4-->
+<!--                                    transition-all-->
+<!--                                    underline-offset-8-->
+<!--                                    hover:underline-->
+<!--                                    "-->
+<!--                            >-->
+<!--                                Hardware-->
+<!--                            </li>-->
+<!--                        </router-link>-->
+<!--                    </ul>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--    </li>-->
+
+
+<!-- <li
 v-if="route.meta.dropdownItem"
 class="relative cursor-pointer"
 >
@@ -228,4 +305,4 @@ Hardware
 </div>
 </div>
 </li> -->
-</template>
+

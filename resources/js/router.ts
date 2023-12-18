@@ -6,6 +6,7 @@ import AdviceForm from "@/js/components/bases/frontendform/types/AdviceForm.vue"
 import EventForm from "@/js/components/bases/frontendform/types/EventForm.vue";
 import SoftwareForm from "@/js/components/bases/frontendform/types/SoftwareForm.vue";
 import UserPosts from "@/js/components/create/UserPosts.vue";
+import TheInspirationGuides from "@/js/components/create/UserPosts.vue";
 import AdviceSearch from "@/js/components/search/AdviceSearch.vue";
 import EventSearch from "@/js/components/search/EventSearch.vue";
 import HardwareSearch from "@/js/components/search/HardwareSearch.vue";
@@ -70,9 +71,6 @@ const routes: any = [
         name: 'create-pages',
         path: '/create',
         component: TheCreator,
-        meta: {
-            navigation: true
-        },
         children: [
             {
                 name: "userPosts",
@@ -100,6 +98,39 @@ const routes: any = [
                 name: 'createEvent',
                 path: 'event',
                 component: EventForm,
+                meta: {
+                    requiresAuth: true,
+                } as RouteMeta
+            }
+        ]
+    },
+    {
+        name: 'Inspiration and guides',
+        path: '/inspiration',
+        component: TheInspirationGuides,
+        meta: {
+            navigation: true
+        },
+        children: [
+            {
+                name: "School Profiles",
+                path: "schoolProfiles",
+                component: UserPosts,
+                meta: {
+                    requiresAuth: true,
+                } as RouteMeta
+            },
+            {
+                name: 'digitalMaturity',
+                path: 'software',
+                component: SoftwareForm,
+                meta: {
+                    requiresAuth: true,
+                } as RouteMeta
+            }, {
+                name: 'guidesResource',
+                path: 'guide',
+                component: AdviceForm,
                 meta: {
                     requiresAuth: true,
                 } as RouteMeta
