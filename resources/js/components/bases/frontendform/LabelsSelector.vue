@@ -3,21 +3,9 @@ import {capitalize, onMounted, reactive, Ref, ref, watch} from 'vue'
 import Multiselect from "vue-multiselect";
 
 import {formService} from "@/js/service/formService";
+import {GroupedLabel, LabelSelectorItem} from "@/js/types/GlobalLabelTypes";
 
-type LabelSelectorItem = {
-    id: number,
-    value: string,
-    description: string,
-    type: 'year' | 'learning' | 'capability' | 'category'
-}
 
-type GroupedLabel = {
-    [key in LabelSelectorItem['type']]: {
-        id: number;
-        value: string;
-        name: string;
-    }[];
-};
 
 const displayTextByLabelKey = {
     year: "Year Levels",
