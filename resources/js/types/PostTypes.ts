@@ -1,3 +1,5 @@
+import {LabelSelectorItem} from "@/js/types/GlobalLabelTypes";
+
 export type BasePostType = {
     content: string;
     title: string;
@@ -11,7 +13,8 @@ export type BasePostType = {
     updated_at: string;
     isLikedByUser?: boolean;
     isBookmarkedByUser?: boolean;
-    tags?: string[]
+    tags?: string[],
+    labels: LabelSelectorItem[]
 };
 
 
