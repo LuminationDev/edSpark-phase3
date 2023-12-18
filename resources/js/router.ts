@@ -6,7 +6,6 @@ import AdviceForm from "@/js/components/bases/frontendform/types/AdviceForm.vue"
 import EventForm from "@/js/components/bases/frontendform/types/EventForm.vue";
 import SoftwareForm from "@/js/components/bases/frontendform/types/SoftwareForm.vue";
 import UserPosts from "@/js/components/create/UserPosts.vue";
-import TheTechnology from "@/js/components/global/navbar/TheTechnology.vue";
 import AdviceSearch from "@/js/components/search/AdviceSearch.vue";
 import EventSearch from "@/js/components/search/EventSearch.vue";
 import HardwareSearch from "@/js/components/search/HardwareSearch.vue";
@@ -63,6 +62,7 @@ const routes: any = [
         meta: {
             navigation: true,
             requiresAuth: true, //guard the dashboard route
+            dropdownItem: true,
             customText: "Home"
         } as RouteMeta
     },
@@ -70,6 +70,9 @@ const routes: any = [
         name: 'create-pages',
         path: '/create',
         component: TheCreator,
+        meta: {
+            navigation: true
+        },
         children: [
             {
                 name: "userPosts",
@@ -149,7 +152,7 @@ const routes: any = [
                 meta: {
                     requiresAuth: true,
                 } as RouteMeta
-            }
+            },
         ]
     },
     {
@@ -242,15 +245,6 @@ const routes: any = [
             requiresAuth: true,
             customText: 'Partners'
         }
-    },
-    {
-        path: '/technology',
-        component: TheTechnology,
-        meta: {
-            navigation: true,
-            dropdownItems: true, // Add this property
-            requiresAuth: true
-        } as RouteMeta
     },
     {
         name: 'partner-single',
