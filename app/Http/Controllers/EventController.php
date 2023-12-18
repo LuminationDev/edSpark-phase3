@@ -135,7 +135,7 @@ class EventController extends Controller
         $id = $request->input('id');
         if (RoleHelpers::has_minimum_privilege(UserRole::MODERATOR)) {
             // Find the advice by ID
-            $event = Event::find('id');
+            $event = Event::find($id);
         } else {
             $event = Event::where('id', $id)->where('event_status', "Published")->first();
         }

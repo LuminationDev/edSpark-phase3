@@ -80,7 +80,7 @@ const timeFormatter = (originalFormat) => {
                     />
 
                     <div
-                        class="richTextContentContainer"
+                        class="max-w-full richTextContentContainer"
                         v-html="edSparkContentSanitizer(contentFromBase['content'] )"
                     />
                     <div
