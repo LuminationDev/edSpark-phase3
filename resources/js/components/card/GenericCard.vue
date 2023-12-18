@@ -270,6 +270,7 @@ const cardHoverToggle: Ref<boolean> = ref(false);
                         />
                         <label-row-content-display
                             :labels-array="props.labels"
+                            :gap-size="2"
                             class="text-xs"
                         />
                     </div>

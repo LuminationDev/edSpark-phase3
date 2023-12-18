@@ -87,10 +87,10 @@ class PostService
             'tags' => $advice->tags->pluck('name'),
             'labels' => $advice->labels->map(function ($label) {
                 return [
-                    'id' => $label['id'],
-                    'value' => $label['value'],
-                    'description' => $label['description'],
-                    'type' => $label['type'],
+                    'label_id' => $label['id'],
+                    'label_value' => $label['value'],
+                    'label_description' => $label['description'],
+                    'label_type' => $label['type'],
                 ];
             }),
         ];
@@ -133,10 +133,10 @@ class PostService
             'tags' => $software->tags->pluck('name'),
             'labels' => $software->labels->map(function ($label) {
                 return [
-                    'id' => $label['id'],
-                    'value' => $label['value'],
-                    'description' => $label['description'],
-                    'type' => $label['type'],
+                    'label_id' => $label['id'],
+                    'label_value' => $label['value'],
+                    'label_description' => $label['description'],
+                    'label_type' => $label['type'],
                 ];
             }),
         ];
@@ -177,10 +177,10 @@ class PostService
             'tags' => $event->tags->pluck('name'),
             'labels' => $event->labels->map(function ($label) {
                 return [
-                    'id' => $label['id'],
-                    'value' => $label['value'],
-                    'description' => $label['description'],
-                    'type' => $label['type'],
+                    'label_id' => $label['id'],
+                    'label_value' => $label['value'],
+                    'label_description' => $label['description'],
+                    'label_type' => $label['type'],
                 ];
             }),
         ];

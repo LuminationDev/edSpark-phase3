@@ -1,5 +1,7 @@
 <script setup lang="ts">
 
+import {computed} from "vue";
+
 import {lowerSlugify} from "@/js/helpers/stringHelpers";
 import {LabelSelectorItem} from "@/js/types/GlobalLabelTypes";
 
@@ -8,7 +10,9 @@ const props = defineProps({
     labelsArray :{
         type: Array as () => LabelSelectorItem[],
         required: true
-
+    },
+    gapSize:{
+        type: Number, required: false , default: 4
     }
 })
 const labelColors = {
@@ -20,25 +24,36 @@ const labelColors = {
 
 
 const tagClassName = (type: string): string => {
-    const baseColor = ` ${labelColors[type]} border-[1px]  px-6 py-2 rounded-full`;
     // return `${baseColor} transition-colors duration-300 hover:text-secondary-${labelColors[type]}`;
-    return `${baseColor} transition-colors duration-300 hover:text-main-lightTeal`;
+    // transition-colors duration-300 hover:text-main-lightTeal
+    return ` ${labelColors[type]} border-[1px]  px-6 py-2 rounded-full`;
+
 };
 
+const tailwindGapClass  = computed(() =>{
+    if(props.gapSize){
+        return 'gap-' + props.gapSize
+    } else{
+        return 'gap-4'
+    }
+})
 
 </script>
 
 <template>
-    <div class="flex flex-row flex-wrap gap-4 h-auto max-w-full pt-4 text-white">
+    <div
+        class="flex flex-row flex-wrap h-auto max-w-full pt-4 text-white"
+        :class="tailwindGapClass"
+    >
         <div
             v-for="(label,index) in props.labelsArray"
             :key="index"
         >
             <div
-                class="cursor-pointer font-semibold"
-                :class="tagClassName(label.type)"
+                class="font-semibold"
+                :class="tagClassName(label.label_type)"
             >
-                {{ "#" + lowerSlugify(label.description) }}
+                {{ "#" + lowerSlugify(label.label_description) }}
             </div>
         </div>
     </div>

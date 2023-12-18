@@ -22,25 +22,7 @@ const props = defineProps({
 })
 
 
-function groupByType(data: LabelSelectorItem[]): GroupedLabel {
-    // Create an object to store grouped items
-    const groupedData: GroupedLabel = {} as GroupedLabel;
 
-    // Loop through the array and group items by their 'type'
-    data.forEach((item) => {
-        const { type, id, value, description } = item;
-
-        // If the type doesn't exist in the groupedData object, create an array for it
-        if (!groupedData[type]) {
-            groupedData[type] = [];
-        }
-
-        // Push the item into the corresponding type array
-        groupedData[type].push({id, value, name: capitalize(description) });
-    });
-
-    return groupedData;
-}
 const emits  = defineEmits(['emitSelectedOptions'])
 const allLabels: Ref<LabelSelectorItem[] > = ref([])
 const groupedLabels : Ref<GroupedLabel|null> = ref(null)
@@ -55,7 +37,7 @@ onMounted(() =>{
     formService.fetchAllLabels().then(res =>{
         console.log(res.data.data)
         allLabels.value = res.data.data
-        groupedLabels.value = groupByType(allLabels.value)
+        groupedLabels.value = formService.groupLabelByType(allLabels.value)
     })
 })
 

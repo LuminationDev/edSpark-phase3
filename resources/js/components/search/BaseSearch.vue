@@ -148,9 +148,9 @@ const formattedSearchBlurb = computed(() => {
     <div
         class="browse-schools-container flex items-center flex-col mt-24 px-10"
     >
-        <div class="flex max-w-[1000px] mb-6 search-filter-element w-[80%]">
-            <div class="basis-1/3 mb-8 pr-4 search-filter-heading">
-                <h3 class="font-semibold text-2xl">
+        <div class="flex flex-col search-filter-element w-[80%]">
+            <div class="mb-8 pr-4 search-filter-heading">
+                <h3 class="font-semibold text-3xl">
                     Browse all {{ formattedSearchTitle }}
                 </h3>
                 <p class="pr-10 pt-6">
@@ -158,14 +158,18 @@ const formattedSearchBlurb = computed(() => {
                 </p>
             </div>
 
-            <div class="basis-2/3 flex-col search-filter-components">
+            <div class="flex flex-col search-filter-components">
                 <SearchBar
                     :placeholder="`Type in ${searchType} name`"
                     @emit-search-term="handleSearchTerm"
                 />
-
-                <slot name="filterBar" />
+                <div class="mt-6">
+                    <slot name="filterBar" />
+                </div>
             </div>
+        </div>
+        <div class="w-[80%]">
+            <slot name="additionalFilters" />
         </div>
         <div class="my-4 searchResults text-base">
             {{ String(filteredData.length) + " search " + (filteredData.length > 1 ? "results" : "result") }}

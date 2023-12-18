@@ -1,9 +1,11 @@
 import axios, {AxiosResponse} from 'axios'
+import {capitalize} from "vue";
 
 import {keyToFieldTypes, templates} from "@/js/components/bases/frontendform/templates/formTemplates";
 import {API_ENDPOINTS} from "@/js/constants/API_ENDPOINTS";
 import Advice from "@/js/models/_advice";
 import Software from "@/js/models/_software";
+import {GroupedLabel, LabelSelectorItem} from "@/js/types/GlobalLabelTypes";
 import {SimpleDataItem, TemplateType, TransformedData} from "@/js/types/PostTypes";
 
 
@@ -197,5 +199,23 @@ export const formService = {
     },
     fetchAllLabels: (): Promise<AxiosResponse<any>> => {
         return axios.get(API_ENDPOINTS.LABEL.FETCH_ALL_LABELS)
-    }
+    },
+    groupLabelByType: (data : LabelSelectorItem[]) : GroupedLabel => {
+        const groupedData: GroupedLabel = {} as GroupedLabel;
+
+        // Loop through the array and group items by their 'type'
+        data.forEach((item) => {
+            const { label_type, label_id, label_value, label_description } = item;
+
+            // If the type doesn't exist in the groupedData object, create an array for it
+            if (!groupedData[label_type]) {
+                groupedData[label_type] = [];
+            }
+
+            // Push the item into the corresponding type array
+            groupedData[label_type].push({id: label_id, value: label_value, name: capitalize(label_description) });
+        });
+
+        return groupedData;
+}
 }

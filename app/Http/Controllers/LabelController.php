@@ -12,10 +12,10 @@ class LabelController extends Controller
         $result = [];
         foreach ($labels as $label){
             $result[] = [
-                'id'  => $label->id,
-                'type' => $label->type,
-                'value' => $label->value,
-                'description' => $label->description
+                'label_id'  => $label->id,
+                'label_type' => $label->type,
+                'label_value' => $label->value,
+                'label_description' => $label->description
             ];
 
         }
