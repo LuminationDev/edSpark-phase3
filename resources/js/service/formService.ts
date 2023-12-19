@@ -213,7 +213,7 @@ export const formService = {
             }
 
             // Push the item into the corresponding type array
-            groupedData[label_type].push({id: label_id, value: label_value, name: capitalize(label_description) });
+            groupedData[label_type].push({id: label_id, value: label_value, name: capitalize(label_value) });
         });
 
         return groupedData;
