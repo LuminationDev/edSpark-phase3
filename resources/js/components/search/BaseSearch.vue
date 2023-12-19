@@ -163,7 +163,7 @@ const formattedSearchBlurb = computed(() => {
                     :placeholder="`Type in ${searchType} name`"
                     @emit-search-term="handleSearchTerm"
                 />
-                <div class="mt-6">
+                <div class="">
                     <slot name="filterBar" />
                 </div>
             </div>

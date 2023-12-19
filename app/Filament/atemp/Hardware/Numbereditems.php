@@ -5,7 +5,6 @@ namespace App\Filament\atemp\Hardware;
 use Filament\Forms\Components\Repeater;
 use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\TextInput;
-use Guava\FilamentIconPicker\Forms\IconPicker;
 
 
 final class Numbereditems
