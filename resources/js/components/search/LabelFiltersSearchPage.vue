@@ -30,7 +30,10 @@ const handleTransmittedFromGenericMultiSelectFilter = (selectedValue, dataPath) 
 
 <template>
     <div class="">
-        <div v-if="isLoading">
+        <div
+            v-if="isLoading"
+            class="mt-6"
+        >
             <Loader
                 :loader-color="'#0072DA'"
                 :loader-message="'Loading labels'"
