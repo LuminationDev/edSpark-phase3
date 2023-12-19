@@ -40,7 +40,7 @@ if (props.preselected) {
 
 
 <template>
-    <div class="flex flex-col text-xl">
+    <div class="flex flex-col mt-6 text-xl">
         {{ props.placeholder }}
     </div>
     <div

@@ -269,9 +269,7 @@ const cardHoverToggle: Ref<boolean> = ref(false);
                             v-html="stripHTML(props.displayContent)"
                         />
                         <label-row-content-display
-                            :labels-array="props.labels"
-                            :gap-size="2"
-                            class="text-xs"
+                            :labels-array="props.labels.slice(0,3)"
                         />
                     </div>
                 </div>

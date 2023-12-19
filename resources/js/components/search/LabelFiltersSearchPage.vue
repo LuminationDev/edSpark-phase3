@@ -29,7 +29,7 @@ const handleTransmittedFromGenericMultiSelectFilter = (selectedValue, dataPath) 
 </script>
 
 <template>
-    <div class="mt-6">
+    <div class="">
         <div v-if="isLoading">
             <Loader
                 :loader-color="'#0072DA'"
@@ -37,7 +37,7 @@ const handleTransmittedFromGenericMultiSelectFilter = (selectedValue, dataPath) 
             />
         </div>
         <template v-else>
-            <div class="grid grid-cols-2 gap-6 w-full">
+            <div class="grid grid-cols-2 gap-x-6 w-full">
                 <div
                     v-for="(value,key) in groupedLabels"
                     :key="key"
