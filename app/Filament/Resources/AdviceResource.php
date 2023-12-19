@@ -45,13 +45,13 @@ class AdviceResource extends Resource
         $labelColumns = [];
 
         foreach ($groupedLabels as $category => $labels) {
-            $labelColumns[] = Forms\Components\CheckboxList::make("labels_{$category}")
+            $labelColumns[] = Forms\Components\CheckboxList::make("labels")
                 ->label("Labels - {$category}")
                 ->extraAttributes(['class' => 'text-primary-600'])
                 ->options($labels->pluck('value', 'id')->toArray())
-                ->relationship('labels', 'value',function ($query) use ($category) {
-                $query->where('type', $category);
-                    })
+                ->relationship('labels', 'value', function ($query) use ($category) {
+                    $query->where('type', $category)->orderByRaw('CAST(labels.id AS SIGNED)');
+                })
                 ->columns(3);
         }
         return $form->schema([

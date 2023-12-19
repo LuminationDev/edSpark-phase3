@@ -16,21 +16,21 @@ class Label extends Model
 
     public function advices()
     {
-        return $this->morphedByMany(Advice::class, 'labellable');
+        return $this->morphedByMany(Advice::class, 'labellable', 'labellables');
     }
 
     public function events()
     {
-        return $this->morphedByMany(Event::class, 'labellable');
+        return $this->morphedByMany(Event::class, 'labellable', 'labellables');
     }
 
     public function softwares()
     {
-        return $this->morphedByMany(Software::class, 'labellable');
+        return $this->morphedByMany(Software::class, 'labellable', 'labellables');
     }
 
     public function hardwares()
     {
-        return $this->morphedByMany(Hardware::class, 'labellable');
+        return $this->morphedByMany(Hardware::class, 'labellable', 'labellables');
     }
 }
