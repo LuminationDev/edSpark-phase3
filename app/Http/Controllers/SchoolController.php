@@ -2,19 +2,56 @@
 
 namespace App\Http\Controllers;
 
+use App\Helpers\RoleHelpers;
+use App\Helpers\UserRole;
 use App\Models\User;
+use App\Models\Usermeta;
+use App\Services\ResponseService;
 use Illuminate\Http\Request;
 use App\Models\School;
 use App\Models\Schoolmeta;
 use App\Models\Site;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 use App\Helpers\Metahelper;
+use stdClass;
 use function PHPUnit\Framework\isEmpty;
 use function PHPUnit\Framework\isNull;
 
 class SchoolController extends Controller
 {
+    private string $defaultSchoolContent = '{
+    "time": 1699418353931,
+    "blocks": [{
+        "id": "uibuJxuKcA",
+        "type": "header",
+        "data": {"text": "School snapshot", "level": 2}
+    }, {
+        "id": "NpPfn4NZN1",
+        "type": "paragraph",
+        "data": {"text": "[Describe your school\'s offerings, challenges, and standout attributes in a detailed paragraph]"}
+    }, {
+        "id": "KctVAlfEDQ",
+        "type": "header",
+        "data": {"text": "Technology across the school", "level": 2}
+    }, {
+        "id": "irugPgi1Q6",
+        "type": "paragraph",
+        "data": {"text": "[Describe your school\'s technology usage and how students access the mentioned technology, is it BYOD or provided]&nbsp;"}
+    }, {"id": "Lh80VfkEYM", "type": "header", "data": {"text": "Digital technology", "level": 2}}, {
+        "id": "mThGh3cyRZ",
+        "type": "paragraph",
+        "data": {"text": "[Describe your school\'s focus in term of digital technology usage such as photography, 3D design, etc]&nbsp;"}
+    }, {"id": "EL9wy0zHSk", "type": "header", "data": {"text": "Student learning", "level": 2}}, {
+        "id": "MxzYw3LXtX",
+        "type": "paragraph",
+        "data": {"text": "[Highlight what stands out in the students\' learning process being carried out at your school. Include any images or YouTube/video links (simply paste the link here) for more engagement]&nbsp;"}
+    }],
+    "version": "2.29.0-rc.1"
+}';
+
+
     private function formatSchoolMetadata($schoolMetadata)
     {
         $tempMetadata = [];
@@ -34,21 +71,15 @@ class SchoolController extends Controller
     private function schoolModelToJson($school, $schoolMetadata = NULL, $request = NULL)
     {
         // LIKE AND BOOKMARK
-        $isLikedByUser = false;
-        $isBookmarkedByUser = false;
-
-        if(isset($request) && $request->has('usid')){
-            $userId = $request->input('usid');
-            $isLikedByUser = $school->likes()->where('user_id', $userId)->exists();
-            $isBookmarkedByUser = $school->bookmarks()->where('user_id', $userId)->exists();
-
-        }
+        $userId = Auth::user()->id;
+        $isLikedByUser = $school->likes()->where('user_id', $userId)->exists();
+        $isBookmarkedByUser = $school->bookmarks()->where('user_id', $userId)->exists();
 
         // LOCATION AND META
         $site = Site::where('site_id', $school->site_id)->first();
-        $siteLocation = (object) [
-            'lat' => $site ? (float) $site->site_latitude : 0.0,
-            'lng' => $site ? (float) $site->site_longitude : 0.0
+        $siteLocation = (object)[
+            'lat' => $site ? (float)$site->site_latitude : 0.0,
+            'lng' => $site ? (float)$site->site_longitude : 0.0
         ];
 
         // adding schoolType into meta
@@ -59,10 +90,11 @@ class SchoolController extends Controller
         $schoolMetadata[] = $schoolType;
 
         return [
-            'id' => $school->id,
+            'school_id' => $school->school_id,
             'site' => [
                 'site_id' => $school->site->site_id,
-                'site_name' => ($school->site->site_id) ? $school->site->site_name : NULL
+                'site_name' => ($school->site->site_id) ? $school->site->site_name : NULL,
+                'site_type_code' => ($school->site) ? $school->site->site_type_code : NULL
             ],
             'owner' => [
                 'owner_id' => $school->owner_id,
@@ -73,15 +105,162 @@ class SchoolController extends Controller
             'logo' => ($school->logo) ? $school->logo : NULL,
             'cover_image' => ($school->cover_image) ? $school->cover_image : NULL,
             'tech_used' => ($school->tech_used) ? json_decode($school->tech_used) : NULL,
+            'status' => $school->status,
             'pedagogical_approaches' => ($school->pedagogical_approaches) ? json_decode($school->pedagogical_approaches) : NULL,
             'tech_landscape' => ($school->tech_landscape) ? json_decode($school->tech_landscape) : NULL,
             'metadata' => ($schoolMetadata) ?: NULL,
             'location' => $siteLocation,
             'isLikedByUser' => $isLikedByUser,
             'isBookmarkedByUser' => $isBookmarkedByUser,
+            'isFeatured' => (bool)$school->isFeatured,
+            'updated_at' => $school->updated_at ?: "",
 
         ];
     }
+
+    private function handleImageUpload($image, $prefix, $folder)
+    {
+        if (isset($image) && is_string($image) === false) {
+            $imgName = $prefix . '-' . md5(Str::random(30) . time() . '_' . $image) . '.' . $image->getClientOriginalExtension();
+            $image->storeAs('public/uploads/school/' . $folder, $imgName);
+            return "uploads/school/$folder/" . $imgName;
+        }
+        return null;
+    }
+
+    private function handleMetadata($schoolId, $metadata)
+    {
+        foreach ($metadata as $key => $value) {
+            $valueToInsert = is_string($value) ? $value : implode(', ', $value);
+
+            Schoolmeta::updateOrCreate(
+                [
+                    'school_id' => $schoolId,
+                    'schoolmeta_key' => $key
+                ],
+                [
+                    'schoolmeta_value' => $valueToInsert,
+                    'updated_at' => Carbon::now()
+                ]
+            );
+        }
+    }
+
+    private function safelyEncode($data)
+    {
+        // Check if data is already a JSON string
+        if (is_string($data) && json_decode($data) && json_last_error() == JSON_ERROR_NONE) {
+            return $data;  // It's already a JSON string, so return it as is
+        }
+        return json_encode($data);
+    }
+
+    private function archivePreviousSchoolEntry($schoolId)
+    {
+        School::where('school_id', $schoolId)
+            ->where('status', '!=', 'Archived')
+            ->update(['status' => 'Archived']);
+    }
+
+    private function replacePreviousPendingSchoolEntry($schoolId)
+    {
+        School::where('school_id', $schoolId)
+            ->where('status', 'Pending')
+            ->update(['status' => 'Archived']);
+    }
+
+    private function insertNewSchoolVersion($data, $schoolLogoUrl, $coverImageUrl)
+    {
+        return School::create([
+            'school_id' => $data['school_id'],
+            'site_id' => $data['site_id'],
+            'owner_id' => $data['owner_id'],
+            'name' => $data['name'],
+            'content_blocks' => $this->safelyEncode($data['content_blocks']),
+            'logo' => $schoolLogoUrl ?? $data['logo'],
+            'cover_image' => $coverImageUrl ?? $data['cover_image'],
+            'tech_used' => $this->safelyEncode($data['tech_used']),
+            'pedagogical_approaches' => $this->safelyEncode($data['pedagogical_approaches']),
+            'tech_landscape' => $this->safelyEncode($data['tech_landscape']),
+            'status' => 'Pending',
+            'created_at' => Carbon::now(),
+            'updated_at' => Carbon::now()
+        ]);
+    }
+
+    /*  fetchUser's school based on their site id
+        if user is principal, can create the school based on the name and default templates
+    */
+
+    public function fetchUserSchool(Request $request)
+    {
+        $request->validate([
+            'user_id' => 'required|integer',
+            'site_id' => 'required|integer'
+        ]);
+
+        $userId = $request->input('user_id');
+        $siteId = $request->input('site_id');
+
+        $user = User::find($userId);
+
+        if (!$user) {
+            return response()->json(['message' => 'Invalid user', 'status' => 403], 403);
+        }
+
+        $site = Site::where('site_id', $siteId)->first();
+
+
+        if (!$site) {
+            return response()->json(['message' => 'Site not found', 'status' => 404], 404);
+        }
+
+//        // If user is not 'SCHLDR' or 'Superadmin', just fetch the school
+//        if ($user->role->role_name !== 'SCHLDR' && $user->role->role_name !== 'Superadmin') {
+//            $school = School::where('site_id', $siteId)->where('status', 'Published')->first();
+//
+//            if (!$school) {
+//                return response()->json(['message' => 'School not found based on the provided site id', 'status' => 404], 404);
+//            }
+//            $schoolMetadata = Schoolmeta::where('school_id', $school->school_id)->get();
+//            $schoolMetadataToSend = $this->formatSchoolMetadata($schoolMetadata);
+//            $result = $this->schoolModelToJson($school, $schoolMetadataToSend, $request);
+//
+//            return response()->json($result);
+//        }
+
+        // For 'SCHLDR' or 'Superadmin', use the firstOrCreate logic
+        try {
+            $latestSchool = School::orderBy('school_id', 'desc')->first();
+            $nextSchoolId = ($latestSchool ? $latestSchool->school_id + 1 : 1);
+            $school = School::firstOrCreate(
+                ['site_id' => $siteId, 'status' => "Published"],
+                [
+                    'owner_id' => $userId,
+                    'school_id' => $nextSchoolId,
+                    'name' => $site->site_name,
+                    'content_blocks' => $this->safelyEncode(json_decode($this->defaultSchoolContent)),
+                    'logo' => '',
+                    'cover_image' => '',
+                    'tech_used' => '',
+                    'pedagogical_approaches' => '',
+                    'tech_landscape' => '',
+                    'status' => 'Published',
+                    'created_at' => Carbon::now(),
+                    'updated_at' => Carbon::now()
+                ]
+            );
+//        $schoolMetadata = Schoolmeta::where('school_id', $school->school_id)->get();
+//        $schoolMetadataToSend = $this->formatSchoolMetadata($schoolMetadata);
+//        $result = $this->schoolModelToJson($school,$schoolMetadataToSend, $request);
+            $result = $this->schoolModelToJson($school);
+            return response()->json($result);
+        } catch (\Illuminate\Database\QueryException $e) {
+            dd($e);
+        }
+    }
+
+
     public function createSchool(Request $request)
     {
         if ($request->isMethod('post')) {
@@ -92,55 +271,29 @@ class SchoolController extends Controller
                 // save school info into school table
                 try {
                     $prefix = "edspark-school";
-                    if (isset($data['logo']) && is_string($data['logo']) === false) {
-                        $schoolLogo = $data['logo'];
-                        $imgName = $prefix . '-' . md5(Str::random(30) . time() . '_' . $schoolLogo) . '.' . $schoolLogo->getClientOriginalExtension();
-                        $schoolLogo->storeAs('public/uploads/school/logo', $imgName);
-                        $schoolLogoUrl = "uploads\/school\/logo\/" . $imgName;
-                    }
-                    if (isset($data['cover_image']) && is_string($data['cover_image']) === false) {
-                        $coverImage = $data['cover_image'];
-                        $imgName = $prefix . '-' . md5(Str::random(30) . time() . '_' . $coverImage) . '.' . $coverImage->getClientOriginalExtension();
-                        $coverImage->storeAs('public/uploads/school', $imgName);
-                        $coverImageUrl = "uploads\/school\/" . $imgName;
-                    }
+                    $schoolLogoUrl = $this->handleImageUpload($data['logo'] ?? null, $prefix, 'logo');
+                    $coverImageUrl = $this->handleImageUpload($data['cover_image'] ?? null, $prefix, '');
                     $dataToInsert = [
                         'site_id' => $data['site_id'],
                         'owner_id' => $data['owner_id'],
                         'name' => $data['name'],
-                        'content_blocks' => json_encode($data['content_blocks']),
+                        'content_blocks' => $this->safelyEncode($data['content_blocks']),
                         'logo' => $schoolLogoUrl ?? ($data['logo'] ?: NULL),
                         'cover_image' => $coverImageUrl ?? ($data['cover_image'] ?: NULL),
-                        'tech_used' => json_encode($data['tech_used']),
-                        'pedagogical_approaches' => json_encode($data['pedagogical_approaches']),
-                        'tech_landscape' => json_encode($data['tech_landscape']),
+                        'tech_used' => $this->safelyEncode($data['tech_used']),
+                        'pedagogical_approaches' => $this->safelyEncode($data['pedagogical_approaches']),
+                        'tech_landscape' => $this->safelyEncode($data['tech_landscape']),
                         'created_at' => Carbon::now(),
                         'updated_at' => Carbon::now()
                     ];
                     $schoolId = School::insertGetId($dataToInsert);
+                    School::where('id', $schoolId)->update(['school_id' => $schoolId]);
                 } catch (Exception $e) {
                     $error = $e->getMessage();
                 }
             }
-            $schoolMeta = $request->schoolMetadata;
-            if ($schoolMeta) {
-                try {
-                    foreach ($schoolMeta as $key => $value) {
-                        $res =
-                            [
-                                'school_id' => $schoolId,
-                                'schoolmeta_key' => $key,
-                                'schoolmeta_value' => (is_string($value)) ? $value : implode(', ', $value),
-                                'created_at' => Carbon::now(),
-                                'updated_at' => Carbon::now()
-                            ];
-                        $metadataToInsert[] = $res;
-                    }
-                    Schoolmeta::insert($metadataToInsert);
-
-                } catch (Exception $e) {
-                    $error = $e->getMessage();
-                }
+            if (isset($request->schoolMetadata)) {
+                $this->handleMetadata($schoolId, $request->schoolMetadata);
             }
 
             return response()->json([
@@ -157,93 +310,45 @@ class SchoolController extends Controller
             $data = $request->all();
             $error = '';
 
-            if ($data) {
-                try {
-                    $prefix = "edspark-school";
-                    if (isset($data['logo']) && is_string($data['logo']) === false) {
-                        $schoolLogo = $data['logo'];
-                        $imgName = $prefix . '-' . md5(Str::random(30) . time() . '_' . $schoolLogo) . '.' . $schoolLogo->getClientOriginalExtension();
-                        $schoolLogo->storeAs('public/uploads/school/logo', $imgName);
-                        $schoolLogoUrl = "uploads\/school\/logo\/" . $imgName;
-                    }
-                    if (isset($data['cover_image']) && is_string($data['cover_image']) === false) {
-                        $coverImage = $data['cover_image'];
-                        $imgName = $prefix . '-' . md5(Str::random(30) . time() . '_' . $coverImage) . '.' . $coverImage->getClientOriginalExtension();
-                        $coverImage->storeAs('public/uploads/school', $imgName);
-                        $coverImageUrl = "uploads\/school\/" . $imgName;
-                    }
-                    $dataToUpdate = [
-                        'name' => $data['name'],
-                        'content_blocks' => json_encode($data['content_blocks']),
-                        'logo' => $schoolLogoUrl ?? $data['logo'],
-                        'cover_image' => $coverImageUrl ?? $data['cover_image'],
-                        'tech_used' => json_encode($data['tech_used']),
-                        'pedagogical_approaches' => json_encode($data['pedagogical_approaches']),
-                        'tech_landscape' => json_encode($data['tech_landscape']),
-                        'updated_at' => Carbon::now()
+            try {
+                $prefix = "edspark-school";
+                $schoolLogoUrl = $this->handleImageUpload($data['logo'] ?? null, $prefix, 'logo');
+                $coverImageUrl = $this->handleImageUpload($data['cover_image'] ?? null, $prefix, '');
 
-                    ];
-                    School::where('id', '=', $data['id'])
-                        ->update($dataToUpdate);
-                } catch (Exception $e) {
-                    $error = $e->getMessage();
-                }
+                // Archive previous entries and insert new version
+//                $this->archivePreviousSchoolEntry($data['school_id']);
+                $this->replacePreviousPendingSchoolEntry($data['school_id']);
+                $newSchool = $this->insertNewSchoolVersion($data, $schoolLogoUrl, $coverImageUrl);
+
+                $metadata = json_decode($data['metadata']);
+                $this->handleMetadata($newSchool->school_id, $metadata);  // Use the new school's ID for metadata
+
+                // get metadata
+                $schoolMetadata = Schoolmeta::where('school_id', $newSchool->school_id)->get();
+                $schoolMetadataToSend = $this->formatSchoolMetadata($schoolMetadata);
+                $returningResult = $this->schoolModelToJson($newSchool, $schoolMetadataToSend);
+
+            } catch (Exception $e) {
+                $error = $e->getMessage();
             }
-            $metadata = json_decode($data['metadata']);
-            if (!empty($metadata)) {
-                if (gettype($metadata) != 'array') {
-                    $metadata = [$metadata]; // cast it to an array containing one object
-                }
-                foreach ($metadata as $meta) {
-                    foreach ($meta as $key => $value) {
-                        try {
-                            $existingMeta = Schoolmeta::where('school_id', $data['id'])
-                                ->where('schoolmeta_key', $key)
-                                ->first();
 
-                            if ($existingMeta) {
-                                $existingMeta->schoolmeta_value = $value;
-                                $existingMeta->save();
-                            } else {
-                                Schoolmeta::create([
-                                    'school_id' => $data['id'],
-                                    'schoolmeta_key' => $key,
-                                    'schoolmeta_value' => $value,
-                                    'created_at' => now(),
-                                    'updated_at' => now(),
-                                ]);
-                            }
-                        } catch (Exception $e) {
-                            $error = $e->getMessage();
-                            // Handle the error as needed
-                        }
-                    }
-
-                }
-            }
-            // get the latest data with the correct/expected form and return with res()
-            $school = School::where('id', $data['id'])->first();
-
-            // get metadata
-            $schoolMetadata = Schoolmeta::where('school_id', $school->id)->get();
-            $schoolMetadataToSend = $this->formatSchoolMetadata($schoolMetadata);
-            $returningResult = $this->schoolModelToJson($school, $schoolMetadataToSend);
             return response()->json([
-                'message' => "School updated successfully",
+                'message' => "New school version added successfully",
                 'error' => $error,
                 'status' => 200,
-                'data' => $returningResult
+                'data' => $returningResult ?? null
             ]);
         }
     }
 
+
     public function fetchAllSchools(Request $request)
     {
-        $schools = School::get();
+        $schools = School::where('status', 'Published')->get();
         $data = [];
         foreach ($schools as $school) {
-            $schoolMetadata = Schoolmeta::where('school_id', $school->id)->get();
-            $schoolMetadataToSend =  $this->formatSchoolMetadata($schoolMetadata);
+            $schoolMetadata = Schoolmeta::where('school_id', $school->school_id)->get();
+            $schoolMetadataToSend = $this->formatSchoolMetadata($schoolMetadata);
             $result = $this->schoolModelToJson($school, $schoolMetadataToSend, $request);
             $data[] = $result;
         }
@@ -255,11 +360,11 @@ class SchoolController extends Controller
     public function fetchSchoolByName(Request $request, $schoolName)
     {
         $schoolName = str_replace('%20', ' ', $schoolName);
-        $school = School::where('name', $schoolName)->first();
+        $school = School::where('name', $schoolName)->where('status', 'Published')->first();
         if ($school == null) {
             return response('School Not found', 404);
         } else {
-            $schoolMetadata = Schoolmeta::where('school_id', $school->id)->get();
+            $schoolMetadata = Schoolmeta::where('school_id', $school->school_id)->get();
             $schoolMetadataToSend = $this->formatSchoolMetadata($schoolMetadata);
             $result = $this->schoolModelToJson($school, $schoolMetadataToSend, $request);
             return response()->json($result, 200);
@@ -267,13 +372,50 @@ class SchoolController extends Controller
         }
 
     }
+
+    public function fetchPendingSchoolByName(Request $request, $schoolName)
+    {
+        $currentUser = Auth::user();
+        $school = School::where('name', $schoolName)->first();
+        if (!RoleHelpers::has_minimum_privilege(UserRole::MODERATOR) && $currentUser->site_id !== $school->site_id) {
+            // Return a forbidden response or any other response to indicate lack of permission
+            return response()->json([
+                "status" => 403,
+                "message" => "Forbidden. You do not have permission to access this resource."
+            ], 403);
+        }
+
+        $schoolName = str_replace('%20', ' ', $schoolName);
+        $school = School::where('name', $schoolName)->where('status', 'Pending')->first();
+
+        if ($school == null) {
+            return response()->json([
+                "status" => 200,
+                "pending_available" => false,
+                "result" => null
+            ]);
+        } else {
+            $schoolMetadata = Schoolmeta::where('school_id', $school->school_id)->get();
+            $schoolMetadataToSend = $this->formatSchoolMetadata($schoolMetadata);
+            $result = $this->schoolModelToJson($school, $schoolMetadataToSend, $request);
+
+            return response()->json([
+                "status" => 200,
+                "pending_available" => true,
+                "result" => $result
+            ]);
+        }
+    }
+
+
     public function fetchFeaturedSchools(Request $request)
     {
+//        $schools = School::where('isFeatured', 1)->inRandomOrder()->->inRandomOrder()->limit(4)->get();
         $schools = School::where('isFeatured', 1)->inRandomOrder()->limit(4)->get();
         $data = [];
 
         foreach ($schools as $school) {
-            $schoolMetadata = Schoolmeta::where('school_id', $school->id)->get();
+            $schoolMetadata = Schoolmeta::where('school_id', $school->school_id)->get();
             $schoolMetadataToSend = $this->formatSchoolMetadata($schoolMetadata);
             $result = $this->schoolModelToJson($school, $schoolMetadataToSend, $request);
             $data[] = $result;
@@ -285,62 +427,73 @@ class SchoolController extends Controller
 
     public function fetchAllStaffFromSite($site_id): \Illuminate\Http\JsonResponse
     {
-        $all_staff = User::where('site_id', $site_id)->get();
+        // Check if the user is authenticated
+        if (!Auth::check()) {
+            return ResponseService::error('User not authenticated.', null, 401);
+        }
+
+        // Check if the authenticated user's site_id matches the given site_id
+        if (Auth::user()->site_id !== intval($site_id)) {
+            return ResponseService::error('Access denied for this site.', null, 403);
+        }
+
+        $all_staff = User::where('site_id', intval($site_id))->get();
+
+        if ($all_staff->isEmpty()) {
+            return ResponseService::error('No staff found for this site.', null, 404);
+        }
+
         $final_result = [];
         foreach ($all_staff as $staff) {
+            $avatarUrl = Usermeta::where('user_id', $staff->id)
+                ->where('user_meta_key', 'userAvatar')
+                ->first();
             $result = [
                 'id' => $staff->id,
                 'name' => $staff->full_name,
-                'email' => $staff->email,
+                'display_name' => $staff->display_name ?? NULL,
                 'role' => ($staff->role) ? $staff->role->role_name : NULL,
+                'userAvatar' => $avatarUrl ? stripslashes($avatarUrl->user_meta_value) : NULL
             ];
             $final_result[] = $result;
         }
-        return response()->json($final_result);
+
+        return ResponseService::success('Staff fetched successfully.', $final_result);
     }
+
 
     public function nominateUserForSchool(Request $request): \Illuminate\Http\JsonResponse
     {
-        if ($request->isMethod('post')) {
-            $requestData = $request->validate([
-                'school_id' => 'required',
-                'site_id' => 'required',
-                'user_id' => 'required',
-                'nominated_user_id' => 'required',
-            ]);
-
-            $school_id = $requestData['school_id'];
-            $site_id = $requestData['site_id'];
-            $user_id = $requestData['user_id'];
-            $nominated_user_id = $requestData['nominated_user_id'];
-
-            $user_record = User::find($user_id);
-
-            if ($user_record && $user_record->site_id == $site_id && $user_record->role->role_name === 'SCHLDR') {
-                $meta_to_insert = [
-                    "school_id" => $school_id,
-                    "schoolmeta_key" => 'nominated_user',
-                    'schoolmeta_value' => $nominated_user_id,
-                ];
-                Schoolmeta::create($meta_to_insert);
-
-                return response()->json([
-                    "status" => 200,
-                    "result" => 'User has been nominated successfully.'
-                ]);
-            } else {
-                return response()->json([
-                    "status" => 401,
-                    "result" => 'Failed to nominate user. User is not authorized.'
-                ]);
-            }
-        } else {
-            return response()->json([
-                "status" => 401,
-                "result" => 'Failed to nominate user. Invalid request method.'
-            ]);
+        if (!$request->isMethod('post')) {
+            return ResponseService::error('Failed to nominate user. Invalid request method.');
         }
+
+        $requestData = $request->validate([
+            'school_id' => 'required',
+            'site_id' => 'required',
+            'nominated_user_id' => 'required',
+        ]);
+
+        $school_id = $requestData['school_id'];
+        $site_id = $requestData['site_id'];
+        $nominated_user_id = $requestData['nominated_user_id'];
+
+        $user_record = Auth::user();
+
+        if (!$user_record || $user_record->site_id !== $site_id || ($user_record->role->role_name !== 'SCHLDR' && $user_record->role->role_name !== 'Superadmin')) {
+            return ResponseService::error('Failed to nominate user. User is not authorized.');
+        }
+
+        $meta_to_insert = [
+            "school_id" => $school_id,
+            "schoolmeta_key" => 'nominated_user',
+            'schoolmeta_value' => $nominated_user_id,
+        ];
+        Schoolmeta::create($meta_to_insert);
+
+        return ResponseService::success('User has been nominated successfully.');
     }
+
 
     public function deleteNominatedUserSchool(Request $request)
     {
@@ -348,18 +501,16 @@ class SchoolController extends Controller
             $requestData = $request->validate([
                 'school_id' => 'required',
                 'site_id' => 'required',
-                'user_id' => 'required',
                 'nominated_id_delete' => 'required',
             ]);
 
             $school_id = $requestData['school_id'];
             $site_id = $requestData['site_id'];
-            $user_id = $requestData['user_id'];
             $nominated_id_delete = $requestData['nominated_id_delete'];
 
-            $user_record = User::find($user_id);
+            $user_record = Auth::user();
 
-            if ($user_record && $user_record->site_id == $site_id && $user_record->role->role_name === 'SCHLDR') {
+            if ($user_record && $user_record->site_id == $site_id && ($user_record->role->role_name === 'SCHLDR' || $user_record->role->role_name === 'Superadmin')) {
 
                 $deleted = Schoolmeta::where('school_id', $school_id)
                     ->where('schoolmeta_key', 'nominated_user')
@@ -393,46 +544,51 @@ class SchoolController extends Controller
 
     public function getNominatedUsersFromSchool(Request $request): \Illuminate\Http\JsonResponse
     {
-        if ($request->isMethod('post')) {
-            $requestData = $request->validate([
-                'school_id' => 'required',
-                'user_id' => 'required',
-                'site_id' => 'required'
-            ]);
-
-            $school_id = $requestData['school_id'];
-            $site_id = $requestData['site_id'];
-            $user_id = $requestData['user_id'];
-
-            $user_record = User::find($user_id);
-
-            if ($user_record && $user_record->site_id == $site_id && $user_record->role->role_name === 'SCHLDR') {
-
-                $nominated_users = Schoolmeta::where('school_id', $school_id)
-                    ->where('schoolmeta_key', 'nominated_user')
-                    ->pluck('schoolmeta_value');
-
-                $users = User::whereIn('id', $nominated_users)
-                    ->pluck('full_name', 'id')
-                    ->toArray();
-
-                return response()->json([
-                    "status" => 200,
-                    "result" => $users
-                ]);
-            } else {
-                return response()->json([
-                    "status" => 401,
-                    "result" => 'Failed to retrieve nominated users. User is not authorized as the school principal.'
-                ]);
-            }
-        } else {
-            return response()->json([
-                "status" => 401,
-                "result" => 'Invalid request method.'
-            ]);
+        if (!$request->isMethod('post')) {
+            return ResponseService::error('Invalid request method.');
         }
+
+        $requestData = $request->validate([
+            'school_id' => 'required',
+            'user_id' => 'required',
+            'site_id' => 'required'
+        ]);
+
+        $school_id = $requestData['school_id'];
+        $site_id = $requestData['site_id'];
+        $user_id = $requestData['user_id'];
+
+        $user_record = User::find($user_id);
+
+        if (!$user_record || $user_record->site_id !== $site_id || $user_record->role->role_name !== 'SCHLDR' && $user_record->role->role_name !== 'Superadmin') {
+            return ResponseService::error('Failed to retrieve nominated users. User is not authorized as the school principal.');
+        }
+
+        $nominated_users_ids = Schoolmeta::where('school_id', $school_id)
+            ->where('schoolmeta_key', 'nominated_user')
+            ->pluck('schoolmeta_value');
+
+        $nominated_users = User::whereIn('id', $nominated_users_ids)->get();
+
+        $final_result = [];
+        foreach ($nominated_users as $user) {
+            $avatarUrl = Usermeta::where('user_id', $user->id)
+                ->where('user_meta_key', 'userAvatar')
+                ->first();
+
+            $result = [
+                'id' => $user->id,
+                'name' => $user->full_name,
+                'display_name' => $user->display_name ?? NULL,
+                'role' => ($user->role) ? $user->role->role_name : NULL,
+                'userAvatar' => $avatarUrl ? stripslashes($avatarUrl->user_meta_value) : NULL
+            ];
+            $final_result[] = $result;
+        }
+
+        return ResponseService::success('Nominated users retrieved successfully.', $final_result);
     }
+
 
     public function checkUserCanEdit(Request $request): \Illuminate\Http\JsonResponse
     {
@@ -450,7 +606,7 @@ class SchoolController extends Controller
             //check user site id == school Id && user role === school principal
             $user_record = User::find($user_id);
 
-            if ($user_record && $user_record->site_id == $site_id && $user_record->role->role_name === 'SCHLDR') {
+            if ($user_record && $user_record->site_id == $site_id && ($user_record->role->role_name === 'SCHLDR' || $user_record->role->role_name === 'Superadmin')) {
                 return response()->json([
                     "status" => 200,
                     "result" => true,
@@ -490,50 +646,39 @@ class SchoolController extends Controller
      ************************************/
     public function createOrUpdateContact(Request $request): \Illuminate\Http\JsonResponse
     {
-        if ($request->isMethod('post')) {
-            $requestData = $request->validate([
-                'school_id' => 'required',
-                'school_contact' => 'required'
+        if (!$request->isMethod('post')) {
+            return response()->json([
+                "status" => 401,
+                "result" => false,
+                'message' => 'Unauthorized'
             ]);
-
-            $school_id = $requestData['school_id'];
-            $school_contact = $requestData['school_contact'];
-            $schoolmeta_record = Schoolmeta::where('school_id', $school_id)
-                ->where('schoolmeta_key', 'school_contact')
-                ->first();
-
-            if ($schoolmeta_record) {
-                // Update existing school contact
-                $schoolmeta_record->schoolmeta_value = $school_contact;
-                $schoolmeta_record->save();
-
-                return response()->json([
-                    "status" => 200,
-                    "result" => true,
-                    'message' => 'School contact updated successfully.'
-                ]);
-            } else {
-                // Create new school contact
-                $schoolmeta = new Schoolmeta();
-                $schoolmeta->school_id = $school_id;
-                $schoolmeta->schoolmeta_key = 'school_contact';
-                $schoolmeta->schoolmeta_value = $school_contact;
-                $schoolmeta->save();
-
-                return response()->json([
-                    "status" => 200,
-                    "result" => true,
-                    'message' => 'School contact created successfully.'
-                ]);
-            }
         }
 
+        $requestData = $request->validate([
+            'school_id' => 'required',
+            'school_contact' => 'required'
+        ]);
+
+        $school_id = $requestData['school_id'];
+        $school_contact = $requestData['school_contact'];
+
+        Schoolmeta::updateOrCreate(
+            [
+                'school_id' => $school_id,
+                'schoolmeta_key' => 'school_contact'
+            ],
+            [
+                'schoolmeta_value' => $school_contact
+            ]
+        );
+
         return response()->json([
-            "status" => 401,
-            "result" => false,
-            'message' => 'Unauthorized'
+            "status" => 200,
+            "result" => true,
+            'message' => 'School contact saved successfully.'
         ]);
     }
+
 
     public function fetchSchoolContact(Request $request): \Illuminate\Http\JsonResponse
     {

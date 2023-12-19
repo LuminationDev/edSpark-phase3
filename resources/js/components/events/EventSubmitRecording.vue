@@ -44,8 +44,8 @@ const handleSubmitLinkButton = async () => {
 
 onMounted(() => {
     axios.get(`${API_ENDPOINTS.EVENT.CHECK_EVENT_RECORDING}${props.eventId}`).then(res => {
-        if (res.data['event_recording']) {
-            recordingLink.value = res.data['event_recording']
+        if (res.data['recording']) {
+            recordingLink.value = res.data['recording']
         }
     }).catch(err =>{
         console.log(err.message)
@@ -72,7 +72,7 @@ const handleCancelEditLink = () => {
 </script>
 
 <template>
-    <div class="font-bold submitLink text-xl uppercase">
+    <div class="font-bold submitLink text-xl">
         The event has ended. We hoped it was a success.
     </div>
     <template v-if="!recordingLink && props.currentUserIsOwner">

@@ -1,77 +1,40 @@
-<script setup>
-/**
- * Import Dependencies
- */
-import {ref, onMounted} from "vue";
-/**
- * Import SVG's
- */
-import Profile from "../svg/Profile.vue";
+<script setup lang="ts">
 
-/**
- * Import stores
- */
-import { useUserStore } from "@/js/stores/useUserStore";
-import { storeToRefs } from "pinia";
-import axios from "axios";
-/**
- * Import components
- */
+import {storeToRefs} from "pinia";
+import {computed, ref} from "vue";
+
+import ProfileDropdownItem from "@/js/components/global/ProfileDropdownItem.vue";
+import Profile from "@/js/components/svg/Profile.vue";
+import AdminIcon from "@/js/components/svg/profileDropdown/AdminIcon.vue";
+import CreateIcon from "@/js/components/svg/profileDropdown/CreateIcon.vue";
+import MessageIcon from "@/js/components/svg/profileDropdown/MessageIcon.vue";
+import SchoolGradHat from "@/js/components/svg/SchoolGradHat.vue";
+import {APP_ENDPOINTS} from "@/js/constants/API_ENDPOINTS";
+import {useUserStore} from "@/js/stores/useUserStore";
 
 const props = defineProps({
-    // currentUser: {
-    //     type: Object,
-    //     required: true,
-    // },
-    profileDropdown: {
-        type: Boolean,
-        required: true,
-    },
     avatarUrl: {
         type: String,
         required: true,
     },
 });
 
-const emits = defineEmits(["handleAvatarClick"]);
 
 const userStore = useUserStore();
-const { currentUser } = storeToRefs(userStore);
+const {currentUser} = storeToRefs(userStore);
+const showDropdownMenu = ref(false)
+
 const imageURL = import.meta.env.VITE_SERVER_IMAGE_API;
-const userMetadata = userStore.getUser.metadata;
-import { appURL } from "@/js/constants/serverUrl";
 
-
-//commented for now
-// if (userMetadata !== undefined) {
-//     const userAvatarMeta = userMetadata.filter(meta => meta.user_meta_key === 'userAvatar');
-//     console.log(userAvatarMeta);
-//     avatarUrl.value = userAvatarMeta[0].user_meta_value[0].replace(/\\\//g, "/");
-// };
-
-const notificationCount = userStore.getNotifications;
-
-const handleAvatar = () => {
-    emits("handleAvatarClick");
-};
+const toggleDropdownMenu = () : void => {
+    showDropdownMenu.value = !showDropdownMenu.value
+}
 
 const handleLogoutUser = async () => {
-    // console.log("clicked the button");
-    // // await oktaAuth.signOut(); //old but working code if okta is done on vue end
-
-    // // Send a request to laravel logout route
-    // await axios.post('/logout');
-    // this.userStore.clearStore();
-
-    // // Redirect the user to the login page or perform any other necessary actions
-    // window.location.href = '/';
-
-    // Call a logout API endpoint in laravel backend
     try {
-        const response = await fetch(`${appURL}/logout`, {
+        const response = await fetch(APP_ENDPOINTS.LOGOUT, {
             method: 'POST',
         });
-
         // Handle the response from the server
         const data = await response.json();
         console.log(data.message);
@@ -85,39 +48,38 @@ const handleLogoutUser = async () => {
     }
 };
 
-const isAdmin = ref(false);
-const checkUserRole = () => {
-    let userRole = userStore.getUser.role;
-    switch (userRole) {
-    case "Administrator":
-    case "Moderator":
-    case "PSACT":
-    case "SCHLDR":
-        isAdmin.value = true;
-        break;
-    default:
-        isAdmin.value = false;
-        break;
+const handleClickAdmin = () => {
+    window.open(window.location.origin + '/admin', '_self')
+}
+
+const profileTargetPath = computed(() =>{
+    if(currentUser.value.id){
+        return `/profile/${currentUser.value.id}`
+    } else return ''
+})
+const messageTargetPath = computed(() =>{
+    if(currentUser.value.id){
+        return `/message/${currentUser.value.id}`
+    } else return ''
+})
+const mySchoolTargetPath = computed(() =>{
+    if(currentUser.value?.site?.site_name){
+        return `/schools/${currentUser.value.site.site_name}`
     }
-};
-onMounted(() => {
-    checkUserRole();
+    else return ''
 })
 
-const handleClickAdmin = () =>{
-    window.open(window.location.origin + '/admin','_self')
-}
 </script>
 
 <template>
-    <div class="absolute h-12 hidden w-12  lg:!right-48 lg:!top-50 lg:block xl:!right-72 xl:!top-56">
+    <div class="absolute h-12 hidden w-12  lg:!right-48 lg:!top-52 lg:block xl:!right-72 xl:!top-56">
         <div
             class="bg-slate-200 cursor-pointer flex h-full overflow-hidden relative rounded-full w-full z-50 hover:shadow-2xl"
-            @click.prevent="handleAvatar"
+            @click="toggleDropdownMenu"
         >
             <img
-                v-if="!avatarUrl.length <= 0"
-                class="m-auto w-full"
+                v-if="avatarUrl"
+                class="object-center object-cover w-full"
                 :src="`${imageURL}/${avatarUrl}`"
                 alt=""
             >
@@ -130,100 +92,56 @@ const handleClickAdmin = () =>{
         </div>
 
         <div
-            v-show="profileDropdown"
+            v-show="showDropdownMenu"
             class="h-full relative w-full z-50"
-            @mouseleave="handleAvatar"
+            @mouseleave="toggleDropdownMenu"
         >
             <div class="absolute -top-6 left-[24px] bg-[#637D99] flex flex-col px-4 py-6 shadow-lg w-[240px] z-50 z-50">
                 <div class="border-b border-white font-bold h-fit pb-3 text-[24px] text-center text-white w-full">
                     <h5>{{ currentUser.full_name }}</h5>
                 </div>
                 <div class="border-b border-white flex flex-col gap-3 py-3">
-                    <router-link :to="`/profile/${currentUser.id}`">
-                        <button
-                            class="
-                                flex
-                                justify-start
-                                flex-row
-                                font-medium
-                                place-items-center
-                                px-2
-                                py-3
-                                text-[18px]
-                                text-white
-                                w-full
-                                gap-4
-                                hover:bg-[#405974]
-                                "
-                        >
-                            <Profile />
-                            Profile
-                        </button>
-                    </router-link>
-                    <router-link :to="`/message/${currentUser.id}`">
-                        <button
-                            class="
-                                flex
-                                justify-start
-                                flex-row
-                                font-medium
-                                place-items-center
-                                px-2
-                                py-3
-                                text-[18px]
-                                text-white
-                                w-full
-                                gap-4
-                                hover:bg-[#405974]
-                                "
-                        >
-                            <Profile />
-                            Messages
-                        </button>
-                    </router-link>
-
-                    <button
-                        class="
-                            flex
-                            justify-start
-                            flex-row
-                            font-medium
-                            place-items-center
-                            px-2
-                            py-3
-                            text-[18px]
-                            text-white
-                            w-full
-                            gap-4
-                            hover:bg-[#405974]
-                            "
+                    <ProfileDropdownItem
+                        v-if="profileTargetPath"
+                        :is-router-link="true"
+                        :target-path="profileTargetPath"
                     >
                         <Profile />
-                        Help
-                    </button>
-                    <template
-                        v-if="isAdmin"
+                        Profile
+                    </ProfileDropdownItem>
+                    <ProfileDropdownItem
+                        v-if="messageTargetPath"
+                        :is-router-link="true"
+                        :target-path="messageTargetPath"
                     >
-                        <button
-                            class="
-                                flex
-                                justify-start
-                                flex-row
-                                font-medium
-                                place-items-center
-                                px-2
-                                py-3
-                                text-[18px]
-                                text-white
-                                w-full
-                                gap-4
-                                hover:bg-[#405974]
-                                "
-                            @click="handleClickAdmin"
+                        <MessageIcon />
+                        Messages
+                    </ProfileDropdownItem>
+                    <ProfileDropdownItem
+                        :is-router-link="true"
+                        target-path="/create"
+                    >
+                        <CreateIcon />
+                        Create
+                    </ProfileDropdownItem>
+                    <ProfileDropdownItem
+                        v-if="mySchoolTargetPath"
+                        :is-router-link="true"
+                        :target-path="mySchoolTargetPath"
+                    >
+                        <SchoolGradHat />
+                        My School
+                    </ProfileDropdownItem>
+                    <template
+                        v-if="userStore.getIfUserIsModerator"
+                    >
+                        <ProfileDropdownItem
+                            :is-router-link="false"
+                            :click-callback="handleClickAdmin"
                         >
-                            <Profile />
+                            <AdminIcon />
                             Admin
-                        </button>
+                        </ProfileDropdownItem>
                     </template>
                 </div>
                 <div class="pt-3">

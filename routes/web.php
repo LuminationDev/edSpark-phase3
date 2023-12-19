@@ -1,10 +1,6 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use Illuminate\Support\Facades\Auth;
-use App\Http\Controllers\AutomaticController;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Cookie;
 
 use App\Http\Controllers\LoginController;
 
@@ -21,7 +17,6 @@ use App\Http\Controllers\LoginController;
 |
 */
 
-// Route::get('/admin/autologin',[AutomaticController::class, 'initialLogin']); //backup : Desparate Fix
 
 
 Route::get('/login', [LoginController::class, 'redirectToOkta'])->name('okta.login');

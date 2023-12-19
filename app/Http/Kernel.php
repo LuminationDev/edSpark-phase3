@@ -2,6 +2,9 @@
 
 namespace App\Http;
 
+use App\Http\Middleware\FilterPartnerResponse;
+use App\Http\Middleware\ResourceAccessControl;
+use Filament\Resources\Resource;
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
 use App\Http\Middleware\OktaAuthenticationMiddleware;
 
@@ -16,14 +19,12 @@ class Kernel extends HttpKernel
      * @var array<int, class-string|string>
      */
     protected $middleware = [
-        // \App\Http\Middleware\TrustHosts::class,
         \App\Http\Middleware\TrustProxies::class,
         \Illuminate\Http\Middleware\HandleCors::class,
         \App\Http\Middleware\PreventRequestsDuringMaintenance::class,
         \Illuminate\Foundation\Http\Middleware\ValidatePostSize::class,
         \App\Http\Middleware\TrimStrings::class,
         \Illuminate\Foundation\Http\Middleware\ConvertEmptyStringsToNull::class,
-        // \App\Http\Middleware\OktaAuthenticationMiddleware::class,
     ];
 
     /**
@@ -39,16 +40,15 @@ class Kernel extends HttpKernel
             \Illuminate\View\Middleware\ShareErrorsFromSession::class,
             \App\Http\Middleware\VerifyCsrfToken::class,
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
-            // \Illuminate\Auth\Middleware\Authenticate::class,
-            // OktaAuthenticationMiddleware::class
 
         ],
 
         'api' => [
-            // \Laravel\Sanctum\Http\Middleware\EnsureFrontendRequestsAreStateful::class,
+            \Laravel\Sanctum\Http\Middleware\EnsureFrontendRequestsAreStateful::class,
             'throttle:api',
-            // \Illuminate\Session\Middleware\StartSession::class,
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
+            ResourceAccessControl::class,
+            FilterPartnerResponse::class
         ],
     ];
 

@@ -4,22 +4,26 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\PartnersResource\Pages;
 use App\Filament\Resources\PartnersResource\RelationManagers;
+use App\Helpers\RoleHelpers;
 use App\Models\Partner;
 use Filament\Forms;
-use Filament\Resources\Form;
+use Filament\Forms\Form;
 use Filament\Resources\Resource;
-use Filament\Resources\Table;
+use Filament\Tables\Table;
 use Filament\Tables;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 
 class PartnersResource extends Resource
 {
     protected static ?string $model = Partner::class;
+    protected static ?string $modelLabel= "Partner";
 
     protected static ?string $navigationGroup = 'User Management';
 
-    protected static ?string $navigationIcon = 'heroicon-o-collection';
+    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
     protected static ?string $navigationLabel = 'Partners';
     protected static ?int $navigationSort = 1;
 
@@ -36,9 +40,8 @@ class PartnersResource extends Resource
                         Forms\Components\TextInput::make('email')->email()
                             ->required(),
                         Forms\Components\TextInput::make('password')
-                            ->default('edSparkDigitalHub')
-                            ->helperText('**password to be changed on login')
-                            ->disabled()
+                            ->required()
+
                     ])
             ]);
     }
@@ -76,4 +79,10 @@ class PartnersResource extends Resource
             'edit' => Pages\EditPartners::route('/{record}/edit'),
         ];
     }
+
+    public static function shouldRegisterNavigation(): bool
+    {
+        return RoleHelpers::has_minimum_privilege('admin');
+    }
+
 }

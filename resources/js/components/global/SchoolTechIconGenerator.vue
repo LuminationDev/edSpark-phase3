@@ -1,46 +1,110 @@
 <script setup>
 
-import {ref} from "vue";
+import { ref } from "vue";
+
 import BaseIconGenerator from "@/js/components/global/BaseIconGenerator.vue";
-import MicrosoftTeamsIcon from '@/js/components/svg/Microsoft.vue';
-import ThreeDPrintingIcon from '@/js/components/svg/ThreeDPrintingIcon.vue';
 import AppleIcon from '@/js/components/svg/AppleIcon.vue';
+import ARIcon from '@/js/components/svg/ARIcon.vue';
 import FrogIcon from '@/js/components/svg/FrogIcon.vue';
 import IoTIcon from '@/js/components/svg/IoTIcon.vue';
-import RoboticsIcon from '@/js/components/svg/RoboticsIcon.vue';
-import ARIcon from '@/js/components/svg/ARIcon.vue';
-import VRIcon from '@/js/components/svg/VRIcon.vue';
 import LuminationIcon from '@/js/components/svg/LuminationIcon.vue';
 import MakersEmpireIcon from '@/js/components/svg/MakersEmpireIcon.vue';
+import MicrosoftTeamsIcon from '@/js/components/svg/Microsoft.vue';
+import RoboticsIcon from '@/js/components/svg/RoboticsIcon.vue';
+import ThreeDPrintingIcon from '@/js/components/svg/ThreeDPrintingIcon.vue';
+import VRIcon from '@/js/components/svg/VRIcon.vue';
 
 
 const props = defineProps({
-    techName:{
+    techName: {
         type: String,
         required: true
     },
+    onSchoolCard: {
+        type: Boolean,
+        required: false,
+        default: false
+    },
+    colorTheme: {
+        type: String,
+        required: false,
+        default: 'partnerBlue',
+    }
 })
-const iconPath = ref('')
 
+const iconPath = ref('')
 
 const schoolTechIconComponents = {
     "Microsoft Teams": MicrosoftTeamsIcon,
-    "3D Printing": ThreeDPrintingIcon,
+    "Lumination": LuminationIcon,
+    "Makers Empire": MakersEmpireIcon,
     "Apple": AppleIcon,
     "Frog": FrogIcon,
+    "3D Printing": ThreeDPrintingIcon,
     "IoT": IoTIcon,
     "Robotics": RoboticsIcon,
     "AR": ARIcon,
-    "VR": VRIcon,
-    "Lumination": LuminationIcon,
-    "Makers Empire": MakersEmpireIcon
+    "VR": VRIcon
 }
 
-
 </script>
+
 <template>
-    <BaseIconGenerator
-        :icon-path="techName"
-        :components-object="schoolTechIconComponents"
-    />
+    <template v-if="!onSchoolCard">
+        <BaseIconGenerator
+            :icon-path="techName"
+            style="padding:4px;"
+            class="iconSizer"
+            :components-object="schoolTechIconComponents"
+        />
+    </template>
+
+    <template v-if="onSchoolCard">
+        <div
+            class="
+                !pr-[10px]
+                bg-secondary-blue/10
+                border
+                border-secondary-blue
+                border-solid
+                fill-none
+                flex
+                items-center
+                flex-row
+                h-[28px]
+                min-w-fit
+                rounded-full
+                schoolCardIcons
+                text-secondary-blue
+                text-sm
+                w-[200px]
+                w-fit
+                "
+        >
+            <BaseIconGenerator
+                class="max-h-[25px] max-w-[30px] min-w-fit"
+                :icon-path="techName"
+                :components-object="schoolTechIconComponents"
+            /> 
+            {{ techName }}
+        </div>
+    </template>
 </template>
+
+<style>
+
+.schoolCardIcons path {
+    fill: #0072da !important;
+    stroke: transparent !important;
+}
+
+@media (max-width: 500px) {
+    .iconSizer {
+    max-height:50px !important; max-width:50px !important
+}
+
+}
+
+</style>
+
+

@@ -2,12 +2,15 @@
 
 namespace App\Models;
 
+use App\Helpers\ExtraContentCleaner;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Laravel\Scout\Searchable;
+use Spatie\Tags\HasTags;
 
 class Hardware extends Model
 {
-    use HasFactory;
+    use HasFactory, HasTags, Searchable;
 
     /**
      * The table associated with the model.
@@ -66,11 +69,49 @@ class Hardware extends Model
     {
         return $this->hasMany(Bookmark::class, 'post_id', 'id')->where('post_type', 'hardware');
     }
+    public function getSearchResult() {
+        return [
+            'title' => $this->product_name,
+            'content' => strip_tags($this->product_content),
+            'tags' => $this->tags,
+            'author' =>[
+                'author_id' => $this->author->id ?? '',
+                'author_name' => $this->author->full_name ?? '',
+                'author_type' => $this->author->usertype->user_type_name ?? '',
+            ],
+        ];
+    }
 
+    public function toSearchableArray(): array
+    {
+        return [
+            'title' => $this->product_name,
+            'slug' => $this->product_name,
+            'content' => $this->product_content,
+        ];
+    }
     protected $casts = [
         'cover_image' => 'array',
         'gallery' => 'array',
         'extra_content' => 'array'
     ];
+    protected static function boot()
+    {
+        parent::boot();
+        static::creating(function ($hardware) {
+            if ($hardware->extra_content) {
+                $hardware->extra_content = ExtraContentCleaner::cleanExtraContent($hardware->extra_content);
+            }
+        });
+        static::updating(function ($hardware) {
+            if ($hardware->isDirty('extra_content')) {
+                $hardware->extra_content = ExtraContentCleaner::cleanExtraContent($hardware->extra_content);
+            }
+        });
+    }
+    public function labels()
+    {
+        return $this->morphToMany(Label::class, 'labellable');
+    }
 
 }

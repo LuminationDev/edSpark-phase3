@@ -10,50 +10,27 @@ const props = defineProps({
         type: Number,
         required: false,
         default: 1
-    },
-    showFirstTech: {
-        type: Boolean,
-        required: false,
-        default: false
     }
 });
-const computedProps = computed(() => {
-    console.log('here is computed called')
-    console.log(props.showFirstTech)
-    return props.showFirstTech
-
-})
 
 </script>
 
 <template>
-    <div class="schoolTechContent absolute left-0 px-[24px] pt-[18px]">
-        <h5 class="hidden group-hover/tech:inline-block text-[16px] font-bold">
-            {{ techHover.category }}
-        </h5>
-        <div
-            class="schools-tech_description schoolTechDescription"
-        >
-            <p><strong>{{ techHover.name }}</strong> {{ techHover.description }}</p>
-        </div>
-    </div>
     <div
-        v-if="props.showFirstTech && props.techIndex === 0"
-        class="firstTimerContainer absolute flex flex-col left-0 px-[24px] pt-[18px]"
+        class="absolute left-0 px-[24px] schoolTechDescInner"
+        style="pointer-events: none;"
     >
-        <h5 class="text-[16px] font-bold">
+        <h5 class="font-bold group-hover/tech:inline-block hidden pb-2 text-[20px] text-blue-900">
             {{ techHover.category }}
         </h5>
-        <div
-            class="schoolTechDescription"
-        >
+        <div class="schoolTechDescription schools-tech_description">
             <p><strong>{{ techHover.name }}</strong> {{ techHover.description }}</p>
         </div>
     </div>
 </template>
 
-<style>
-.schools-tech_description {
+<style scoped>
+/* .schools-tech_description {
     display: none;
 }
 
@@ -63,10 +40,11 @@ const computedProps = computed(() => {
     display: -webkit-box;
     -webkit-line-clamp: 6;
     -webkit-box-orient: vertical;
-}
+} */
+
+
 .schoolTechDescription{
     font-size: 16px;
-
 }
 
 

@@ -6,9 +6,9 @@ use App\Filament\Resources\UsersResource\Pages;
 use App\Filament\Resources\UsersResource\RelationManagers;
 use App\Models\User;
 use Filament\Forms;
-use Filament\Resources\Form;
+use Filament\Forms\Form;
 use Filament\Resources\Resource;
-use Filament\Resources\Table;
+use Filament\Tables\Table;
 use Filament\Tables;
 use Filament\Tables\Filters\Filter;
 use Filament\Tables\Filters\SelectFilter;
@@ -19,9 +19,10 @@ use Illuminate\Support\Facades\Auth;
 class UsersResource extends Resource
 {
     protected static ?string $model = User::class;
+    protected static ?string $modelLabel = 'User';
 
     protected static ?string $navigationGroup = 'User Management';
-    protected static ?string $navigationGroupIcon = 'heroicon-o-collection';
+    protected static ?string $navigationGroupIcon = 'heroicon-o-rectangle-stack';
 
     protected static ?string $navigationIcon = 'heroicon-o-user-circle';
 
@@ -107,12 +108,10 @@ class UsersResource extends Resource
 
     public static function shouldRegisterNavigation(): bool
     {
-
-        // Moderator check
-        if(Auth::user()->role->role_name == 'Moderator') {
-            return false;
+        $allowed_array = ['Superadmin', 'Administrator'];
+        if (in_array(Auth::user()->role->role_name, $allowed_array)) {
+            return true;
         }
-
-        return true;
+        return false;
     }
 }

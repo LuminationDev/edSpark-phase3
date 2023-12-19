@@ -3,7 +3,7 @@
 </script>
 
 <template>
-    <div class="grid grid-cols-12 place-items-center mt-16 mx-5 lg:!mx-10 xl:!mx-20">
+    <div class="hidden grid grid-cols-12 place-items-center mt-16 mx-5 lg:!mx-10 xl:!mx-20">
         <div class="col-span-6">
             <img
                 class="mx-auto scale-75 lg:!scale-100"
@@ -12,8 +12,8 @@
             >
         </div>
         <div class="col-span-6 flex flex-col gap-6 w-full">
-            <h3 class="font-bold text-xl uppercase md:!text-2xl">
-                Borrow or Purchase
+            <h3 class="font-bold text-xl md:!text-2xl">
+                Borrow or purchase
             </h3>
 
             <p class="font-normal text-base md:!text-lg">
@@ -21,10 +21,6 @@
                 loan items and generate a quote for purchases which can then be processed
                 by your school business manager.
             </p>
-
-            <button class="font-medium text-[#048246] hover:text-[#0EBE6A] text-[18px] underline w-fit">
-                Learn more
-            </button>
         </div>
     </div>
 </template>

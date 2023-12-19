@@ -1,45 +1,49 @@
 <script setup>
-import { computed } from 'vue'
+import {computed} from 'vue'
+
+import IconDAG from "@/js/components/svg/AdviceDAG.vue";
+import IconOther from "@/js/components/svg/AdviceOther.vue";
+import IconWork from "@/js/components/svg/AdviceWork.vue";
+import {schoolColorKeys, schoolColorTheme} from "@/js/constants/schoolColorTheme";
+
 const props = defineProps({
     typeTag: {
         type: Array, required: true
     }
 })
-const typeTagColor = computed(() => {
-    switch (props.typeTag) {
-    case 'DAG advice':
-        return 'bg-yellow-600';
-        break;
-    default:
-        return 'bg-green-800'
 
+
+const typeTagColor = computed(() => {
+    if (props.typeTag[0] == 'DAG advice') {
+        return 'text-main-teal border-main-teal bg-main-teal/10 [&>svg]:fill-main-teal [&>svg]:stroke-main-teal';
+    } else {
+        return 'text-secondary-bananadark border-secondary-bananadark bg-secondary-banana/10 [&>svg]:fill-secondary-bananadark [&>svg]:stroke-secondary-bananadark';
     }
 })
-
 </script>
 
+
 <template>
-    <!-- class="absolute rounded bg-[#FFC836] min-w-[136px] h-[39px] text-white flex flex-row justify-around gap-3 place-items-center -right-3 top-3 px-4" -->
     <div
-        class="
-            TypeTag
-            absolute
-            top-4
-            right-0
-            bg-adviceGreen
-            flex
-            h-10
-            p-1
-            md:px-6
-            place-items-center
-            px-2
-            rounded
-            text-white
-            sm:!-right-4
-            md:!-right-6
-            "
+        class="TypeTag border border-solid flex gap-2 h-[28px] mx-3 my-2 place-items-center px-2 py-1 rounded-2xl text-sm w-fit"
         :class="typeTagColor"
     >
-        {{ typeTag[0] }}
+        <template v-if="props.typeTag[0] === 'DAG advice'">
+            <IconDAG />
+        </template>
+
+        <template v-else-if="props.typeTag[0] === 'Your Work'">
+            <IconWork />
+        </template>
+
+        <template v-else>
+            <IconOther />
+        </template>
+
+        <p class="whitespace-nowrap">
+            {{ typeTag[0] }}
+        </p>
     </div>
 </template>
+
+

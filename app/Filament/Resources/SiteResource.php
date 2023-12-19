@@ -4,11 +4,12 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\SiteResource\Pages;
 use App\Filament\Resources\SiteResource\RelationManagers;
+use App\Helpers\RoleHelpers;
 use App\Models\Site;
 use Filament\Forms;
-use Filament\Resources\Form;
+use Filament\Forms\Form;
 use Filament\Resources\Resource;
-use Filament\Resources\Table;
+use Filament\Tables\Table;
 use Filament\Tables;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
@@ -18,10 +19,12 @@ use Illuminate\Support\Facades\Auth;
 class SiteResource extends Resource
 {
     protected static ?string $model = Site::class;
+    protected static ?string $modelLabel= "Site";
+
 
     protected static ?string $navigationGroup = 'User Management';
 
-    protected static ?string $navigationIcon = 'heroicon-o-collection';
+    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
     public static function form(Form $form): Form
     {
@@ -100,13 +103,7 @@ class SiteResource extends Resource
 
     public static function shouldRegisterNavigation(): bool
     {
-        // use Illuminate\Support\Facades\Auth;
-
-        // Moderator check
-        if(Auth::user()->role->role_name == 'Moderator') {
-            return false;
-        }
-
-        return true;
+        return RoleHelpers::has_minimum_privilege('admin');
     }
+
 }

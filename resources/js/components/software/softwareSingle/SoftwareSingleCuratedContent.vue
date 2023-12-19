@@ -1,41 +1,29 @@
-*-<script setup>
-import {API_ENDPOINTS} from "@/js/constants/API_ENDPOINTS";
-import {useUserStore} from "@/js/stores/useUserStore";
-import { computed} from "vue";
+<script setup>
+import {useSoftwareStore} from "@/js/stores/useSoftwareStore";
+import {storeToRefs} from "pinia";
+import {computed, onMounted} from "vue";
 import SoftwareCard from "@/js/components/software/SoftwareCard.vue";
-import {axiosFetcherParams} from "@/js/helpers/fetcher";
-import useSWRV from "swrv";
+import {useRoute} from "vue-router";
 
-
-const {data : allCuratedSoftware, error: curatedSoftwareError} = useSWRV(API_ENDPOINTS.SOFTWARE.FETCH_SOFTWARE_POSTS, axiosFetcherParams(useUserStore().getUserRequestParam))
-
-const twoRecommendation  = computed( () => {
-    let temp = []
-    if(allCuratedSoftware.value){
-        for(let i= 0; i < 2 ; i++){
-            temp.push(allCuratedSoftware.value[Math.floor(Math.random() * allCuratedSoftware.value.length)])
-        }
-    }
-    return temp
-})
+const route = useRoute()
+const softwareStore = useSoftwareStore()
+const { relatedSoftware } = storeToRefs(softwareStore)
 
 </script>
 <template>
     <div
-        v-if="allCuratedSoftware && allCuratedSoftware.length > 0"
-        class="bg-purple-50 flex justify-center items-center flex-col px-5 rounded softwareSingleCuratedContentContainer xl:!ml-4 xl:!px-10"
+        v-if="relatedSoftware && relatedSoftware.length > 0"
+        class="bg-secondary-coolGrey/20 flex justify-center items-center flex-col mt-8 px-4 py-10 rounded softwareSingleCuratedContentContainer xl:!ml-4 xl:!px-10"
     >
-        <div class="curatedResourcesTitle font-bold my-2 py-4 text-2xl text-center uppercase">
+        <div class="curatedResourcesTitle font-bold pb-8 text-2xl text-center">
             RELATED
         </div>
-        <div class="flex-col lg:!flex-row xl:!flex-col">
+        <div class="flex flex-col gap-10 lg:!flex-row xl:!flex-col">
             <SoftwareCard
-                v-for="software in twoRecommendation"
+                v-for="software in relatedSoftware"
                 :key="software.guid"
-                :software-data="software"
+                :data="software"
                 :show-icon="true"
-                :number-per-row="2"
-                class="mb-4"
             />
         </div>
     </div>

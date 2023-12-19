@@ -1,17 +1,15 @@
 <script setup>
-import {ref, computed, onMounted, watch, watchEffect} from 'vue';
-import axios from 'axios';
-import {GoogleMap, Marker, MarkerCluster, InfoWindow} from 'vue3-google-map'
+import {computed,  ref,  watchEffect} from 'vue';
 import {useRouter} from 'vue-router';
-import {serverURL} from "@/js/constants/serverUrl";
+import {GoogleMap, InfoWindow,Marker, MarkerCluster} from 'vue3-google-map'
 
+import SchoolsMapFilterName from './SchoolsMapFilterName.vue';
+import SchoolsMapFilterTech from './SchoolsMapFilterTech.vue';
+import SchoolsMapFilterType from './SchoolsMapFilterType.vue';
 /**
  * Components
  */
 import SchoolsMapPopup from './SchoolsMapPopup.vue';
-import SchoolsMapFilterName from './SchoolsMapFilterName.vue';
-import SchoolsMapFilterType from './SchoolsMapFilterType.vue';
-import SchoolsMapFilterTech from './SchoolsMapFilterTech.vue';
 
 /**
  * Get some props
@@ -57,91 +55,29 @@ const schoolNameFilter = ref('');
 const schoolTypeFilter = ref('All');
 const schoolTechFilter = ref('All');
 
-const schoolsArray = ref(props.schools);
-
-const filteredListId = computed(() => {
-    if (!schoolNameFilter.value && schoolTypeFilter.value === 'All' && schoolTechFilter.value === 'All') {
-        console.log('inside all filter is empty return all')
-        return props.schools.map(school => school.id)
+const schoolMatchesCriteria = (school) => {
+    if (schoolNameFilter.value && !school.name.toLowerCase().includes(schoolNameFilter.value.toLowerCase())) {
+        return false;
     }
 
-    return Array.from(new Set([...idsFromName.value, ...idsFromTech.value, ...idsFromType.value]))
-})
+    if (schoolTechFilter.value !== 'All') {
+        if (!Array.isArray(school.tech_used) || !school.tech_used.some(tech => tech.name === schoolTechFilter.value)) {
+            return false;
+        }
+    }
+
+    if (schoolTypeFilter.value !== 'All') {
+        if (!Array.isArray(school.metadata) || !school.metadata.some(item => item['schoolmeta_key'] === 'school_type' && item['schoolmeta_value'] === schoolTypeFilter.value)) {
+            return false;
+        }
+    }
+
+    return true;
+}
 
 const filteredList = computed(() => {
-    console.log(filteredListId.value)
-    if (filteredListId.value) {
-        return props.schools.filter(school => filteredListId.value.includes(school.id))
-    } else {
-        return []
-    }
-})
-
-/**
- * Handle filter
- */
-const idsFromName = computed(() => {
-    console.log('inside ids from name computed')
-    if (!schoolNameFilter.value) {
-        // console.log(props.schools.map(school => {
-        //     return school.id
-        // }))
-        return []
-    } else {
-        return props.schools.filter(school => school.name.toLowerCase().includes(schoolNameFilter.value.toLowerCase())).map(school => school.id);
-    }
-
-})
-
-const idsFromTech = computed(() => {
-    if (schoolTechFilter.value === 'All') {
-        // console.log(props.schools.map(school => {
-        //     return school.id
-        // }))
-        return []
-    } else {
-        return props.schools.filter(
-            school => {
-                if (Array.isArray(school.tech_used)) {
-                    return school.tech_used.some(
-                        tech => tech.name === schoolTechFilter.value
-                    )
-
-                } else {
-                    return false
-                }
-            }
-        ).map(school => school.id)
-    }
-})
-
-const idsFromType = computed(() => {
-    if (schoolTypeFilter.value === 'All') {
-        // console.log(props.schools.map(school => {
-        //     return school.id
-        // }))
-        return []
-    } else {
-        return props.schools.filter(
-            school => {
-                if (Array.isArray(school.metadata)) {
-                    return school.metadata.some(
-                        item => {
-                            console.log(item)
-                            if (item['schoolmeta_key'] === 'school_type') {
-                                return item['schoolmeta_value'] === schoolTypeFilter.value
-                            } else {
-                                return false
-                            }
-                        }
-                    )
-                } else {
-                    return false
-                }
-            }
-        ).map(school => school.id)
-    }
-})
+    return props.schools.filter(schoolMatchesCriteria);
+});
 
 
 const popupX = ref('');
@@ -151,13 +87,6 @@ const mapPopupName = ref('');
 const mapPopupInfo = ref({});
 const infoWindow = ref(null)
 
-watchEffect(() => {
-    if(infoWindow.value){
-        console.log(infoWindow.value)
-    } else{
-        console.log('hmm info window is null')
-    }
-})
 /**
  * Map methods
  */
@@ -183,25 +112,15 @@ const handleFilterBarClick = () => {
     showFilters.value = !showFilters.value;
 };
 
-const handleLinkToSchool = () => {
-    props.schools.forEach(school => {
-        const idMatch = school.id;
-        console.log(idMatch);
-        if (idMatch === mapPopupIndex.value) {
-            let schoolUrlFriendly = school.name.replace(/\s+/g, '-').toLowerCase();
-            router.push({
-                name: 'school-single',
-                params: {
-                    name: school.name
-                }
-            });
+const handleLinkToSchool = (schoolName) => {
+    router.push({
+        name: 'school-single',
+        params: {
+            name: schoolName
         }
     });
-};
 
-const handleChangeInfoWindows = () => {
-    console.log('inside handel infoWindwos')
-}
+};
 
 </script>
 
@@ -210,9 +129,9 @@ const handleChangeInfoWindows = () => {
         ref="gMapParent"
         class="border border-[#0072DA] relative w-full"
     >
-        <div class="bg-[#0072DA] flex justify-between flex-row h-[72px] place-items-center px-[48px] relative z-50">
+        <div class="bg-[#0072DA] flex justify-between flex-row h-[72px] place-items-center px-[48px] py-[48px] relative z-40">
             <h1 class="font-bold text-white text-xl md:!text-3xl">
-                Search for Schools
+                Search for schools
             </h1>
 
             <button
@@ -224,10 +143,10 @@ const handleChangeInfoWindows = () => {
         </div>
 
         <div
-            class="absolute top-0 bottom-0 bg-[#0072DA] p-6 transition-all w-full z-40"
-            :class="showFilters ? 'h-[200px]' : '!h-0 opacity-0 pointer-events-none' "
+            class="absolute top-0 bg-[#0072DA] p-6 pt-[48px] px-[48px] transition-all w-full z-30"
+            :class="showFilters ? 'h-auto md:h-[200px] mt-[20px]' : '!h-0 opacity-0 pointer-events-none' "
         >
-            <div class="flex flex-row flex-wrap gap-6 mt-12">
+            <div class="flex md:flex-row flex-col flex-wrap gap-6 mt-12">
                 <SchoolsMapFilterName
                     v-model="schoolNameFilter"
                 />
@@ -256,7 +175,7 @@ const handleChangeInfoWindows = () => {
                         <Marker
                             v-for="(school, i) in filteredList"
                             :key="i"
-                            :options="{ position: school.location }"
+                            :options="{ position: school.location, title: school.name }"
                             @click="handleOnClusterClick(school, i)"
                         >
                             <InfoWindow ref="infoWindow">
@@ -265,7 +184,7 @@ const handleChangeInfoWindows = () => {
                                     :map-popup-name="mapPopupName"
                                     :map-popup-info="mapPopupInfo"
                                     @handle-toggle="handleTogglePopupEmit"
-                                    @handle-link-to-school="handleLinkToSchool"
+                                    @handle-link-to-school="() => handleLinkToSchool(school.name)"
                                 />
                             </InfoWindow>
                         </Marker>

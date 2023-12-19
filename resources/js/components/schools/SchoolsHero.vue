@@ -1,6 +1,6 @@
 <script setup>
-import SchoolsRobot from '@/js/components/svg/schoolsRobot/schoolsRobot.vue';
 import BasePageHero from "@/js/components/bases/BasePageHero.vue";
+import SchoolsRobot from '@/js/components/svg/schoolsRobot/schoolsRobot.vue';
 </script>
 
 <template>
@@ -10,7 +10,9 @@ import BasePageHero from "@/js/components/bases/BasePageHero.vue";
         subtitle="Get inspiration and find out how other schools are enhancing their teaching and learning through digital Technology. Make connections with schools on the same pathway, share learnings and expand your PLC."
     >
         <template #pageIconSVG>
-            <SchoolsRobot class="absolute -top-16 hidden md:!block md:scale-75 lg:!right-12 lg:!scale-100" />
+            <SchoolsRobot
+                class="absolute mr-0 sm:!-mr-[50px] -top-20 md:!-top-[3.5rem] lg:!-top-[5.5rem] hidden md:!right-8  md:!block md:scale-75 lg:!right-12 lg:!scale-90"
+            />
         </template>
     </BasePageHero>
 </template>

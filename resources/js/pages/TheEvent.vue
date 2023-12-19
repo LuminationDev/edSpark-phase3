@@ -1,42 +1,43 @@
 <script setup>
+import useSWRV from "swrv";
+import { computed } from "vue";
+import {useRouter} from "vue-router";
+
+import CardLoading from "@/js/components/card/CardLoading.vue";
+import Loader from "@/js/components/spinner/Loader.vue";
 import {API_ENDPOINTS} from "@/js/constants/API_ENDPOINTS";
 import {swrvOptions} from "@/js/constants/swrvConstants";
+import {guid} from "@/js/helpers/guidGenerator";
 import {useUserStore} from "@/js/stores/useUserStore";
-import EventsHero from '../components/events/EventsHero.vue';
+
 import EventsCalendar from '../components/events/EventsCalendar.vue';
+import EventCard from "../components/events/EventsCard.vue";
+import EventsHero from '../components/events/EventsHero.vue';
 import EventsView from '../components/events/EventsView.vue';
 import SectionHeader from '../components/global/SectionHeader.vue';
-import { computed } from "vue";
-import useSWRV from "swrv";
-
-import EventCard from "../components/events/EventsCard.vue";
-import {axiosFetcherParams} from "../helpers/fetcher";
-import {useRouter} from "vue-router";
-import Loader from "@/js/components/spinner/Loader.vue";
-import {guid} from "@/js/helpers/guidGenerator";
-import CardLoading from "@/js/components/card/CardLoading.vue";
+import {axiosFetcher} from "../helpers/fetcher";
 
 const router = useRouter()
-const { data: allEvents, error: eventError } = useSWRV(API_ENDPOINTS.EVENT.FETCH_EVENT_POSTS, axiosFetcherParams(useUserStore().getUserRequestParam), swrvOptions)
+const { data: allEvents, error: eventError } = useSWRV(API_ENDPOINTS.EVENT.FETCH_EVENT_POSTS, axiosFetcher(useUserStore().getUserRequestParam), swrvOptions)
 
 </script>
 
 <template>
     <EventsHero />
     <SectionHeader
-        :classes="'bg-[#C73858]'"
+        :classes="'bg-event-virtual '"
         :section="'events'"
         :title="'Upcoming Events'"
         :button-text="'View all events'"
         :button-callback="() => router.push('/browse/event')"
     />
     <div class="EventContentContainer flex flex-col h-full px-5 lg:!px-20">
-        <div class="EventCardListContainer grid grid-cols-1 gap-6 place-items-center heading text-xl  md:!grid-cols-2 xl:!grid-cols-3">
-            <template v-if="allEvents.length > 0">
+        <div class="EventCardListContainer grid grid-cols-1 gap-10 place-items-center heading text-xl  md:!grid-cols-2 xl:!grid-cols-3">
+            <template v-if="allEvents && allEvents.length > 0">
                 <EventCard
                     v-for="event in allEvents.filter((event,index) => index < 3)"
                     :key="event.guid"
-                    :event-data="event"
+                    :data="event"
                     :show-icon="true"
                 />
             </template>
@@ -54,7 +55,7 @@ const { data: allEvents, error: eventError } = useSWRV(API_ENDPOINTS.EVENT.FETCH
     </div>
 
     <SectionHeader
-        :classes="'bg-[#C73858]'"
+        :classes="'bg-event-virtual'"
         :section="'events'"
         :title="'Calendar'"
         :button-text="'View all events'"
@@ -70,6 +71,24 @@ const { data: allEvents, error: eventError } = useSWRV(API_ENDPOINTS.EVENT.FETCH
                 <EventsCalendar
                     :events="allEvents"
                 />
+                <div class="calendarColorLegend flex shrink flex-col gap-2 pt-5">
+                    <div class="colorLegendTitle font-semibold">
+                        Calendar Colors Legend
+                    </div>
+                    <div class="flex items-center flex-row virtualLegend">
+                        <div class="bg-event-virtual colorDot h-4 mx-4 rounded-full w-4" />
+                        <p>Virtual </p>
+                    </div>
+                    <div class="flex items-center flex-row hybridLegend">
+                        <div class="bg-event-hybrid colorDot h-4 mx-4 rounded-full w-4" />
+
+                        <p>Hybrid</p>
+                    </div>
+                    <div class="flex items-center flex-row inPersonLegend">
+                        <div class="bg-event-inPerson colorDot h-4 mx-4 rounded-full w-4" />
+                        <p>In Person</p>
+                    </div>
+                </div>
             </div>
             <div class="w-full lg:!w-1/3">
                 <EventsView
@@ -84,7 +103,7 @@ const { data: allEvents, error: eventError } = useSWRV(API_ENDPOINTS.EVENT.FETCH
             <div class="font-semibold text-xl">
                 <Loader
                     :loader-color="'#0072DA'"
-                    :loader-message="'Calendar Loading'"
+                    :loader-message="'Calendar loading'"
                 />
             </div>
         </div>

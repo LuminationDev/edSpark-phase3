@@ -6,9 +6,9 @@ use App\Filament\Resources\PartnerprofileResource\Pages;
 use App\Filament\Resources\PartnerprofileResource\RelationManagers;
 use App\Models\Partnerprofile;
 use Filament\Forms;
-use Filament\Resources\Form;
+use Filament\Forms\Form;
 use Filament\Resources\Resource;
-use Filament\Resources\Table;
+use Filament\Tables\Table;
 use Filament\Tables;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
@@ -24,8 +24,9 @@ use SplFileInfo;
 class PartnerprofileResource extends Resource
 {
     protected static ?string $model = Partnerprofile::class;
+    protected static ?string $modelLabel= "Partner Profile";
 
-    protected static ?string $navigationIcon = 'heroicon-o-collection';
+    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
     protected static ?string $navigationGroup = "User Management";
     protected static ?string $navigationLabel = "Partner Profile";
@@ -90,9 +91,9 @@ class PartnerprofileResource extends Resource
     {
         $filesystem = app(Filesystem::class);
 
-        return collect($filesystem->allFiles(app_path('Filament/PageTemplates/Partner')))
+        return collect($filesystem->allFiles(app_path('Filament/PageTemplates')))
             ->map(function (SplFileInfo $file): string {
-                return (string) Str::of('App\\Filament\\PageTemplates\\Partner')
+                return (string) Str::of('App\\Filament\\PageTemplates')
                     ->append('\\', $file->getRelativePathName())
                     ->replace(['/', '.php'], ['\\', '']);
             });
@@ -147,5 +148,14 @@ class PartnerprofileResource extends Resource
             'create' => Pages\CreatePartnerprofile::route('/create'),
             'edit' => Pages\EditPartnerprofile::route('/{record}/edit'),
         ];
+    }
+
+    public static function shouldRegisterNavigation(): bool
+    {
+        $allowed_array = ['Superadmin', 'Administrator','Moderator'];
+        if (in_array(Auth::user()->role->role_name, $allowed_array)) {
+            return true;
+        }
+        return false;
     }
 }

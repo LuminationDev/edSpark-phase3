@@ -1,0 +1,29 @@
+{
+    "compilerOptions": {
+        "target": "esnext",
+        "module": "esnext",
+        "moduleResolution": "node",
+        "importHelpers": true,
+        "isolatedModules": false,
+        "noEmit": true,
+        "allowSyntheticDefaultImports": true,
+        "strict": false,
+        "skipLibCheck": true,
+        "baseUrl": ".",
+        "paths": {
+            "@/*": ["resources/*"]
+        },
+        "types": [
+            "vue3-toastify/global",
+            "node"
+        ]
+    },
+    "include": ["./resources/**/*.ts",
+        "./resources/**/*.d.ts",
+        "./resources/**/*.tsx",
+        "./resources/**/*.vue",
+
+    ],
+    "exclude": ["./node_modules"]
+
+}

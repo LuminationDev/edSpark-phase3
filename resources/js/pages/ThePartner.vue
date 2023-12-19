@@ -1,29 +1,26 @@
 <script setup>
-import {API_ENDPOINTS} from "@/js/constants/API_ENDPOINTS";
-import {axiosFetcherParams} from "@/js/helpers/fetcher";
-import {useUserStore} from "@/js/stores/useUserStore";
-import PartnersHero from '../components/partners/PartnersHero.vue';
-import recommenderEdsparkSingletonFactory from "@/js/recommender/recommenderEdspark";
-import {onMounted, ref} from "vue";
 import useSWRV from "swrv";
-import {swrvOptions} from "@/js/constants/swrvConstants";
-import {SWRVKeys} from "@/js/constants/swrvKeys";
-import SectionHeader from "@/js/components/global/SectionHeader.vue";
 import {useRouter} from "vue-router";
-import PartnerCard from "@/js/components/partners/PartnerCard.vue";
+
 import CardLoading from "@/js/components/card/CardLoading.vue";
+import SectionHeader from "@/js/components/global/SectionHeader.vue";
+import EventSectionPartner from "@/js/components/partners/EventSectionPartner.vue";
+import PartnerCard from "@/js/components/partners/PartnerCard.vue";
+import {API_ENDPOINTS} from "@/js/constants/API_ENDPOINTS";
+import {swrvOptions} from "@/js/constants/swrvConstants";
+import {axiosFetcher} from "@/js/helpers/fetcher";
+
+import PartnersHero from '../components/partners/PartnersHero.vue';
 
 
-let recommender = recommenderEdsparkSingletonFactory().getInstance()
 const router = useRouter()
-const techList = ref({})
 
 
 const {
     data: partnerList,
     error: partnerListError,
     isValidating: partnerListIsValidating
-} = useSWRV(API_ENDPOINTS.PARTNER.FETCH_ALL_PARTNERS, axiosFetcherParams(useUserStore().getUserRequestParam), swrvOptions)
+} = useSWRV(API_ENDPOINTS.PARTNER.FETCH_ALL_PARTNERS, axiosFetcher, swrvOptions)
 
 </script>
 
@@ -38,7 +35,17 @@ const {
             :button-callback="() => router.push('/browse/partner')"
         />
         <div
-            class="PartnerListGalleryContainer grid grid-cols-1 gap-4 place-items-center px-5 md:!grid-cols-2 lg:!px-huge xl:!grid-cols-3"
+            class="PartnerListGalleryContainer
+                grid
+                grid-cols-1
+                gap-10
+                place-items-center
+                px-5
+                
+                
+                md:!grid-cols-2
+                lg:!px-huge
+                xl:!grid-cols-3"
         >
             <template v-if="partnerList">
                 <template
@@ -47,7 +54,7 @@ const {
                     :key="index"
                 >
                     <PartnerCard
-                        :partner-data="singlePartnerData"
+                        :data="singlePartnerData"
                     />
                 </template>
             </template>
@@ -60,5 +67,13 @@ const {
                 </div>
             </template>
         </div>
+        <SectionHeader
+            :classes="'bg-secondary-cherry'"
+            :section="'events'"
+            :title="'Event Calendar'"
+            :button-text="'View all events'"
+            :button-callback="() => router.push('/browse/event')"
+        />
+        <EventSectionPartner />
     </div>
 </template>

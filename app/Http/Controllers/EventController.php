@@ -2,101 +2,161 @@
 
 namespace App\Http\Controllers;
 
+use App\Helpers\RoleHelpers;
+use App\Helpers\UserRole;
+use App\Http\Middleware\ResourceAccessControl;
 use App\Models\Eventmeta;
-use App\Models\Partner;
-use App\Models\Usermeta;
+use App\Models\Eventtype;
+use App\Services\PostService;
+use App\Services\ResponseService;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use App\Models\Event;
+use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Validator;
 
 class EventController extends Controller
 {
 
-    private function getAuthorLogo($author)
+    protected PostService $postService;
+
+    public function __construct(PostService $postService)
     {
-        if (!$author || !$author->usertype) {
-            return '';
+        $this->postService = $postService;
+        $this->middleware(ResourceAccessControl::class . ':partner,handleFetchEventPosts,fetchEventPostById');
+
+    }
+
+    public function createEventPost(Request $request): \Illuminate\Http\JsonResponse
+    {
+        if (strtolower($request->input('event_status')) === 'draft') {
+            $validator = Validator::make($request->all(), [
+                'event_title' => 'required|string',
+                'event_content' => 'required|string',
+            ]);
+        } else if (strtolower($request->input('post_status')) === 'pending') {
+            $validator = Validator::make($request->all(), [
+                'event_title' => 'required|string',
+                'event_content' => 'required|string',
+                'event_excerpt' => 'sometimes|string',
+                'event_location' => 'required|string',
+                'start_date' => 'required|date',
+                'end_date' => 'required|date|after_or_equal:start_date',
+                'event_status' => 'required|string',
+                'author_id' => 'required|integer|exists:users,id',
+                'eventtype_id' => 'required|integer|exists:event_types,id',
+                'extra_content' => 'sometimes|array'
+            ]);
+        }
+        if ($validator->fails()) {
+            return response()->json(['errors' => $validator->errors()], 400);
         }
 
-        $authorType = $author->usertype->user_type_name;
-        $authorId = $author->id;
+        $eventData = $request->except('eventtype_id');
+        $event = Event::create($eventData);
 
-        switch ($authorType) {
-            case 'user':
-                $avatar = Usermeta::where('user_id', $authorId)
-                    ->where('user_meta_key', 'userAvatar')
-                    ->first();
-                return $avatar->user_meta_value ?? '';
+        // Attach the event type to the created event
+        if ($request->has('eventtype_id')) {
+            $event->eventtype()->associate($request->input('eventtype_id'))->save();
+        }
+        if ($request->has('tags')) {
+            $event->attachTags($request->input('tags'));
+        }
+        if ($request->has('labels')) {
+            $allLabelIds = [];
+            $inputArray = $request->input('labels');
+            foreach ($inputArray as $subArray) {
+                foreach ($subArray as $item) {
+                    $allLabelIds[] = $item['id'];
+                }
+            }
+            $event->labels()->attach($allLabelIds);
+        }
 
-            case 'partner':
-                $partnerLogo = Partner::where('user_id', $authorId)->first();
-                return $partnerLogo ? json_decode($partnerLogo->logo, true) : '';
+        return response()->json(['message' => 'Event created successfully!', 'event' => $event], 201);
 
-            default:
-                return '';
+    }
+
+    public function handleFetchEventPosts(Request $request): \Illuminate\Http\JsonResponse
+    {
+        if (Auth::user()->isPartner()) {
+            return $this->fetchUserEventPosts($request);
+        } else {
+            return $this->fetchAllEventPosts($request);
         }
     }
 
-    private function eventModelToJson($event, $request){
-        $author = $event->author;
-        $author_logo = $this->getAuthorLogo($author);
-
-        $isLikedByUser = false;
-        $isBookmarkedByUser = false;
-
-        if (isset($request) && $request->has('usid')) {
-            $userId = $request->input('usid');
-            $isLikedByUser = $event->likes()->where('user_id', $userId)->exists();
-            $isBookmarkedByUser = $event->bookmarks()->where('user_id', $userId)->exists();
-        }
-        return [
-            'event_id' => $event->id,
-            'event_title' => $event->event_title,
-            'event_content' => $event->event_content,
-            'event_excerpt' => $event->event_excerpt,
-            'event_location' => json_decode($event->event_location),
-            'author' => [
-                'author_id' => $event->author->id,
-                'author_name' => $event->author->full_name,
-                'author_email' => $event->author->email,
-                'author_type' => $event->author->usertype->user_type_name,
-                'author_logo' => $author_logo
-            ],
-            'cover_image' => ($event->cover_image) ?? NULL,
-            'start_date' => $event->start_date,
-            'end_date' => $event->end_date,
-            'event_status' => $event->event_status,
-            'event_type' => ($event->eventtype) ? $event->eventtype->event_type_name : NULL,
-            'created_at' => $event->created_at,
-            'updated_at' => $event->updated_at,
-            'extra_content' => ($event->extra_content)?? NULL,
-            'isLikedByUser' => $isLikedByUser,
-            'isBookmarkedByUser' => $isBookmarkedByUser,
-        ];
-    }
-
-
-    public function fetchEventPosts(Request $request): \Illuminate\Http\JsonResponse
+    public function fetchAllEventPosts(Request $request): \Illuminate\Http\JsonResponse
     {
-        $events = Event::where('event_status', 'Published')->get();
+        // Get the current date without the time component
+        $currentDate = now()->startOfDay();
+
+        $events = Event::where('event_status', 'Published')
+            ->where('end_date', '>=', $currentDate)
+            ->where('event_status', 'Published')
+            ->get();
 
         $data = [];
 
         foreach ($events as $event) {
-
-            $result = $this->eventModelToJson($event, $request);
-
+            $result = $this->postService->eventModelToJson($event, $request);
             $data[] = $result;
         }
 
         return response()->json($data);
-
     }
 
-    public function fetchEventPostById(Request $request, $id): \Illuminate\Http\JsonResponse
+    public function fetchUserEventPosts(Request $request): JsonResponse
     {
-        $event = Event::find($id);
-        $data = $this->eventModelToJson($event, $request);
-        return response()->json($data);
+        try {
+            $userId = Auth::user()->id;
+            $events = Event::where('event_status', 'Published')
+                ->where('author_id', $userId)  // Filter by partner (author) ID
+                ->orderBy('created_at', 'DESC')
+                ->get();
+
+            $data = [];
+
+            foreach ($events as $event) {
+
+                $result = $this->postService->eventModelToJson($event, $request);
+                $data[] = $result;
+            }
+
+            return response()->json($data);
+        } catch (\Exception $e) {
+            return response()->json(['error' => "An error occurred: " . $e->getMessage()], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
+
+
+    public function fetchEventPostById(Request $request): \Illuminate\Http\JsonResponse
+    {
+        $validator = Validator::make($request->all(), [
+            'id' => 'required|integer|gt:0',
+            'preview' => 'required|boolean',
+        ]);
+
+        if ($validator->fails()) {
+            return ResponseService::error('Invalid request parameters', 400);
+        }
+
+        $id = $request->input('id');
+        if (RoleHelpers::has_minimum_privilege(UserRole::MODERATOR)) {
+            // Find the advice by ID
+            $event = Event::find($id);
+        } else {
+            $event = Event::where('id', $id)->where('event_status', "Published")->first();
+        }
+
+        if (!$event) {
+            return ResponseService::error('Event not found', 404);
+        }
+        $data = $this->postService->eventModelToJson($event, $request);
+
+
+        return ResponseService::success("Successfully retrieved event", $data);
     }
 
     public function addEventRecording(Request $request): \Illuminate\Http\JsonResponse
@@ -133,6 +193,7 @@ class EventController extends Controller
         return response()->json(['message' => 'Event recording updated successfully.']);
 
     }
+
     public function checkEventRecording($eventId): \Illuminate\Http\JsonResponse
     {
         // Check if the 'event_recording' meta exists for the given event ID
@@ -147,4 +208,21 @@ class EventController extends Controller
             return response()->json(['error' => 'Event recording not found.'], 404);
         }
     }
+
+    public function fetchEventTypes(Request $request): \Illuminate\Http\JsonResponse
+    {
+        $eventTypes = Eventtype::all()
+            ->map(function ($eventType) {
+                return [
+                    'id' => $eventType->id,
+                    'name' => $eventType->event_type_name,
+                    'value' => $eventType->event_type_value
+                ];
+            })
+            ->toArray();
+
+        return response()->json($eventTypes);
+    }
+
+
 }

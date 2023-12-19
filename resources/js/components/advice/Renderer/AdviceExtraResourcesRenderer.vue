@@ -11,19 +11,24 @@ console.log(props.itemArray);
 </script>
 
 <template>
-    <div class="extraResourcesRenderer w-full mb-20">
-        <div class="flex flex-row gap-4 place-items-baseline mb-2">
-            <h1 class="text-[24px] font-bold text-black uppercase whitespace-nowrap">
+    <div class="extraResourcesRenderer mb-20 w-full">
+        <div class="flex flex-row gap-4 mb-2 place-items-baseline">
+            <h1 class="font-bold text-[24px] text-black whitespace-nowrap">
                 Extra Resources
             </h1>
-            <div class="w-full h-[3px] bg-black" />
+            <div class="bg-black h-[3px] w-full" />
         </div>
 
         <div class="bg-main-navy px-6 py-12 text-white">
-            <h3 class="text-[21px] font-bold mb-3">
-                {{ itemArray.heading }}
-            </h3>
-            <div v-html="itemArray.content" />
+            <template
+                v-for="(res,index) in itemArray"
+                :key="index"
+            >
+                <h3 class="font-bold mb-3 text-[21px]">
+                    {{ res.heading }}
+                </h3>
+                <div v-html="res.content" />
+            </template>
         </div>
     </div>
 </template>
@@ -77,3 +82,5 @@ console.log(props.itemArray);
         }
     }
 </style>
+
+

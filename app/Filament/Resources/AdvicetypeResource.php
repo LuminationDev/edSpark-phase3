@@ -4,11 +4,12 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\AdvicetypeResource\Pages;
 use App\Filament\Resources\AdvicetypeResource\RelationManagers;
+use App\Helpers\RoleHelpers;
 use App\Models\Advicetype;
 use Filament\Forms;
-use Filament\Resources\Form;
+use Filament\Forms\Form;
 use Filament\Resources\Resource;
-use Filament\Resources\Table;
+use Filament\Tables\Table;
 use Filament\Tables;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
@@ -18,13 +19,14 @@ use Illuminate\Support\Facades\Auth;
 class AdvicetypeResource extends Resource
 {
     protected static ?string $model = Advicetype::class;
+    protected static ?string $modelLabel = 'Advice Type';
 
     protected static ?string $navigationGroup = 'Content Management';
-    protected static ?string $navigationGroupIcon = 'heroicon-o-collection';
+    protected static ?string $navigationGroupIcon = 'heroicon-o-rectangle-stack';
 
     protected static ?int $navigationSort = 0;
 
-    protected static ?string $navigationIcon = 'heroicon-o-collection';
+    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
     protected static ?string $navigationLabel = 'Advice types';
 
@@ -90,13 +92,7 @@ class AdvicetypeResource extends Resource
 
     public static function shouldRegisterNavigation(): bool
     {
-        // use Illuminate\Support\Facades\Auth;
-
-        // Moderator check
-        if(Auth::user()->role->role_name == 'Moderator') {
-            return false;
-        }
-
-        return true;
+        return RoleHelpers::has_minimum_privilege('admin');
     }
+
 }

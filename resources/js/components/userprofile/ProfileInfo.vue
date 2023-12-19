@@ -50,7 +50,7 @@ const handleClickProfileInfoMenu = (menuName) => {
 
 </script>
 <template>
-    <div class="bg-main-teal/80 flex flex-col profileInfoContainer pt-4 px-1 py-6 rounded-b-xl text-lg text-white md:!px-6">
+    <div class="bg-main-teal flex flex-col profileInfoContainer pt-4 px-1 py-6 rounded-b-xl text-lg text-white md:!px-6">
         <div class="flex justify-center flex-col md:!flex-row">
             <div
                 class="

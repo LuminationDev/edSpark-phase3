@@ -2,12 +2,17 @@
 
 namespace App\Models;
 
+use App\Helpers\ExtraContentCleaner;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Laravel\Scout\Searchable;
+use Spatie\Tags\HasTags;
 
 class Software extends Model
 {
-    use HasFactory;
+    use
+        HasFactory, HasTags;
+    use Searchable;
 
     /**
      * The table associated with the model.
@@ -55,8 +60,50 @@ class Software extends Model
         return $this->hasMany(Bookmark::class, 'post_id', 'id')->where('post_type', 'software');
     }
 
+    public function getSearchResult()
+    {
+        return [
+            'title' => $this->post_title,
+            'content' => strip_tags($this->post_content),
+            'tags' => $this->tags,
+            'author' => [
+                'author_id' => $this->author->id ?? '',
+                'author_name' => $this->author->full_name ?? '',
+                'author_type' => $this->author->usertype->user_type_name ?? '',
+            ],
+        ];
+    }
+
+    public function toSearchableArray(): array
+    {
+        return [
+            'title' => $this->post_title,
+            'slug' => $this->post_title,
+            'content' => $this->post_content,
+        ];
+    }
+
     protected $casts = [
         'cover_image' => 'array',
         'extra_content' => 'array'
     ];
+
+    protected static function boot()
+    {
+        parent::boot();
+        static::creating(function ($software) {
+            if ($software->extra_content) {
+                $software->extra_content = ExtraContentCleaner::cleanExtraContent($software->extra_content);
+            }
+        });
+        static::updating(function ($software) {
+            if ($software->isDirty('extra_content')) {
+                $software->extra_content = ExtraContentCleaner::cleanExtraContent($software->extra_content);
+            }
+        });
+    }
+    public function labels()
+    {
+        return $this->morphToMany(Label::class, 'labellable');
+    }
 }

@@ -14,32 +14,33 @@ class Partnerprofile extends Model
      *
      * @var string
      */
-    protected $table = 'partners';
+    protected $table = 'partner_profiles';
 
     /**
-     * The attributes that are mass assignable
+     * The attributes that are mass assignable.
      *
      * @var array
      */
     protected $fillable = [
+        'partner_id',
         'user_id',
-        'name',
-        'email',
-        'logo',
-        'cover_image',
-        'motto',
-        'introduction',
-        'content'
+        'content',
+        'status',
     ];
 
-    public function user()
+    /**
+     * Get the partner associated with the profile.
+     */
+    public function partner()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo('App\Models\Partner', 'partner_id');
     }
 
-    protected $casts = [
-        'logo' => 'array',
-        'cover_image' => 'array',
-        'content' => 'array',
-    ];
+    /**
+     * Get the user associated with the profile.
+     */
+    public function user()
+    {
+        return $this->belongsTo('App\Models\User', 'user_id');
+    }
 }

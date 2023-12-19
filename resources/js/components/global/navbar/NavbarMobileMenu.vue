@@ -1,23 +1,33 @@
 <script setup>
 
 import {storeToRefs} from "pinia";
-import {useWindowStore} from "@/js/stores/useWindowStore";
-import {ref} from "vue";
+import {onMounted, ref} from "vue";
 import {useRouter} from "vue-router";
+
 import NavItems from "@/js/components/global/navbar/NavItems.vue";
 import Close from "@/js/components/svg/Close.vue";
 import {useAuthStore} from "@/js/stores/useAuthStore";
+import {useWindowStore} from "@/js/stores/useWindowStore";
 
-const {showMobileNavbar} = storeToRefs(useWindowStore())
+const router = useRouter();
+const authStore = useAuthStore();
+const windowStore = useWindowStore();
+
+const { showMobileNavbar } = storeToRefs(useWindowStore());
+const { isAuthenticated } = storeToRefs(authStore);
+const {showGlobalSearch} = storeToRefs(windowStore);
+
 const navLinks = ref([]);
-const router = useRouter()
+
+
+const handleGlobalsearchClick = () => {
+    showGlobalSearch.value = true
+}
+
+
 const handleToggleNavbar = () => {
     showMobileNavbar.value = !showMobileNavbar.value
 }
-
-const authStore = useAuthStore();
-const { isAuthenticated } = storeToRefs(authStore)
-
 
 const setupRoutes = () => {
     const tempNavArray = [];
@@ -30,20 +40,23 @@ const setupRoutes = () => {
     navLinks.value = tempNavArray;
 };
 
+
 setupRoutes();
 
 </script>
 
 <template>
-    <div
+    <nav
         v-if="isAuthenticated"
+        id="navbarMobileBurger"
         class="HAMBURGER-ICON absolute top-2 left-2 bg-[#002856]/50 p-4 rounded space-y-2 z-50 hover:cursor-pointer"
+        :class="{navbarScrolled : navScrolled}"
         @click="handleToggleNavbar"
     >
         <span class="bg-white block h-1 w-10" />
         <span class="bg-white block h-1 w-10" />
         <span class="bg-white block h-1 w-10" />
-    </div>
+    </nav>
     <Transition name="slide-fade">
         <div
             v-if="showMobileNavbar"
@@ -59,16 +72,17 @@ setupRoutes();
                 py-10
                 sidebarMenu
                 text-white
+                text-2xl
                 transition
                 w-[30vw]
                 z-[60]
                 "
         >
             <ul
-                class="flex flex-col font-['Poppins'] font-semibold text-white"
+                class="flex flex-col font-semibold text-white"
             >
                 <li
-                    class="cursor-pointer font-bold ml-auto text-2xl hover:text-main-teal uppercase"
+                    class="cursor-pointer font-bold ml-auto text-2xl hover:text-main-teal"
                     @click="handleToggleNavbar"
                 >
                     <Close class="fill-white hover:fill-slate-200 h-8 w-8 hover:cursor-pointer" />
@@ -79,20 +93,88 @@ setupRoutes();
                     :route="route"
                     :click-callback="handleToggleNavbar"
                 />
+                <li id="searchItem"
+                    class="cursor-pointer mt-6 text-sm font-normal"
+                    style="align-self: center;"
+                    @click="handleGlobalsearchClick"
+                >
+                    <div
+                        id="searchIconMobile"
+                        class="svg-container"
+                    >
+                        <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            preserveAspectRatio="xMinYMin meet"
+                            class="svg-content"
+                        >
+                            <circle
+                                cx="10"
+                                cy="10"
+                                r="8"
+                                stroke="#FFF"
+                                stroke-width="3"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                            />
+
+                            <line
+                                x1="15"
+                                y1="16"
+                                x2="21"
+                                y2="22"
+                                stroke="#FFF"
+                                stroke-width="3"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                            />
+
+                        </svg>
+                    </div>
+                    <p style="margin-top:4px">Search</p>
+                </li>
             </ul>
         </div>
     </Transition>
     <div
         v-if="showMobileNavbar"
-        class="absolute top-0 right-0 bg-slate-100 grey h-screen opacity-50 overlay w-[70vw] z-50"
+        class="absolute top-0 right-0 bg-main-navy/50 h-screen overlay w-[70vw] z-50"
         @click="handleToggleNavbar"
     />
 </template>
 <style scoped>
-/*
-  Enter and leave animations can use different
-  durations and timing functions.
-*/
+
+#searchItem {
+    
+    display: flex;
+    align-self: center;
+    flex-direction: column;
+    align-items: center;
+}
+
+#searchIconMobile { 
+    width: 28px; 
+    margin-top: 16px; 
+    z-index: -1; 
+}
+
+.svg-content { 
+	display: inline-block;
+	position: absolute;
+	top: 0;
+	left: 0;
+}
+
+.svg-container { 
+	display: inline-block;
+	position: relative;
+	width: 100%;
+	padding-bottom: 70%; 
+	vertical-align: middle; 
+	overflow: hidden; 
+}
+
 .slide-fade-enter-active {
     transition: all 0.2s ease-out;
 }
@@ -106,4 +188,38 @@ setupRoutes();
     transform: translateX(-20px);
     opacity: 0;
 }
+@media screen and (min-width: 375px){
+    #navbarMobileBurger{
+        left: 10px;
+    }
+}
+/* @media screen and (min-width: 640px){
+    #navbarMobileBurger{
+        left: 4vw !important;
+    }
+}
+@media screen and (min-width: 700px){
+    #navbarMobileBurger{
+        left: 8vw !important;
+    }
+}
+@media screen and (min-width: 900px){
+    #navbarMobileBurger{
+        left: 12vw !important;
+    }
+} */
+
+#navbarMobileBurger{
+    transition: 300ms;
+    position: fixed;
+    top: 10px;
+    left: 10px;
+
+}
+.navbarScrolled {
+    /* top: 10px !important; */
+    background-color: #002856 !important;
+}
+
+
 </style>

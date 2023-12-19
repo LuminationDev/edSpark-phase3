@@ -1,7 +1,8 @@
 <script setup>
-import AdviceEducatorsIcon from "@/js/components/svg/adviceIcon/AdviceEducatorsIcon.vue";
-import GenericButton from "@/js/components/button/GenericButton.vue";
 import { useRouter } from "vue-router";
+
+import GenericButton from "@/js/components/button/GenericButton.vue";
+import AdviceEducatorsIcon from "@/js/components/svg/adviceIcon/AdviceEducatorsIcon.vue";
 
 const router = useRouter()
 </script>
@@ -26,11 +27,11 @@ const router = useRouter()
                 "
         >
             <div class="col-span-5">
-                <h1 class="font-semibold pb-8 text-2xl text-white uppercase md:!text-3xl lg:!text-4xl">
+                <h1 class="first-letter:uppercase font-semibold lowercase pb-8 text-2xl text-white md:!text-3xl lg:!text-4xl">
                     Advice for Educators
                 </h1>
 
-                <p class="font-normal hidden pb-4 text-white text-xl md:block">
+                <p class="font-normal hidden pb-4 text-[16px] text-white md:block">
                     Find advice from a range of trusted sources to help you as an educator to integrate technology in your
                     classroom, your work and your own learning
                 </p>
@@ -53,7 +54,8 @@ const router = useRouter()
                         "
                 />
                 <GenericButton
-                    :callback="() => router.push('browse/advices')"
+                    :callback="() => router.push('browse/guide/educators')"
+                    button-id="EDUadvice"
                     class="
                         !rounded-none
                         !text-main-navy
@@ -69,7 +71,7 @@ const router = useRouter()
                         md:!block
                         "
                 >
-                    View all advice
+                    View all guides
                 </GenericButton>
             </div>
             <div class="block col-span-8 md:hidden">
@@ -80,7 +82,7 @@ const router = useRouter()
             </div>
             <div class="block col-span-8 md:hidden">
                 <GenericButton
-                    :callback="() => router.push('browse/advices')"
+                    :callback="() => router.push('browse/guide/educators')"
                     class="
                         !rounded-none
                         !text-main-navy
@@ -94,7 +96,7 @@ const router = useRouter()
                         z-30
                         "
                 >
-                    View all advice
+                    View all guides
                 </GenericButton>
             </div>
         </div>

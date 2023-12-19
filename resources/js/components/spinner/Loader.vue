@@ -1,5 +1,5 @@
 <script setup>
-import { CirclesToRhombusesSpinner } from 'epic-spinners';
+import {CirclesToRhombusesSpinner} from 'epic-spinners';
 
 const props = defineProps({
     loaderColor: {
@@ -11,14 +11,37 @@ const props = defineProps({
         type: String,
         required: false,
         default: 'Loading'
+    },
+    loaderMessageClass: {
+        type: String,
+        required: false,
+        default: 'text-2xl font-bold'
+    },
+    loaderType: {
+        type: String,
+        required: false,
+        default: 'page'
+
     }
 });
 </script>
 
 <template>
-    <div class="flex flex-col min-h-[80vh] mx-auto place-items-center">
-        <div class="mb-8 text-center">
-            <h3 class="font-bold text-[24px]">
+    <div
+        class="flex flex-col mx-auto place-items-center"
+        :class="{
+            'min-h-[80vh]' : props.loaderType === 'page'
+        }"
+    >
+        <div
+            class="mb-4 text-center"
+            :class="{
+                '!mb-8' : props.loaderType === 'page'
+            }"
+        >
+            <h3
+                :class="props.loaderMessageSize"
+            >
                 {{ loaderMessage }}
             </h3>
         </div>

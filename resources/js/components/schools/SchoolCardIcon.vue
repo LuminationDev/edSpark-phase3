@@ -1,22 +1,29 @@
 <script setup>
 import {computed, ref, shallowRef, watchEffect} from "vue";
-import SchoolsTech from "@/js/components/schools/SchoolsTech.vue";
+
 import SchoolTechIconGenerator from "@/js/components/global/SchoolTechIconGenerator.vue";
+import SchoolsTech from "@/js/components/schools/SchoolsTech.vue";
+
 const props = defineProps({
-    techName:{
+    techName: {
         type: String,
         required: true
     },
-    techInfo:{
+    techInfo: {
         type: Object,
         required: true
     },
-    techIndex:{
+    techIndex: {
         type: Number,
         required: false,
-        default:1
+        default: 1
     },
-    showFirstTech:{
+    onSchoolCard: {
+        type: Boolean,
+        required: false,
+        default: false
+    },
+    showFirstTech: {
         type: Boolean,
         required: false,
         default: false
@@ -24,17 +31,14 @@ const props = defineProps({
 });
 
 
-
 </script>
 <template>
     <div
-        class="my-auto group/tech schools-tech"
+        class="group/tech my-auto schools-tech"
     >
-        <SchoolTechIconGenerator :tech-name="props.techName" />
-        <SchoolsTech
-            :tech-hover="techInfo"
-            :tech-index="props.techIndex"
-            :show-first-tech="showFirstTech"
+        <SchoolTechIconGenerator
+            :tech-name="props.techName"
+            :on-school-card="true"
         />
     </div>
 </template>

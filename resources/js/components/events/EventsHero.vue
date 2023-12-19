@@ -1,10 +1,7 @@
-<script>
+<script setup>
 import BasePageHero from "@/js/components/bases/BasePageHero.vue";
 
-export default {
-    components: {BasePageHero}
 
-}
 </script>
 
 <template>
@@ -15,7 +12,7 @@ export default {
     >
         <template #pageIconSVG>
             <img
-                class="absolute right-0"
+                class="mx-auto absolute mt-1 ml-20"
                 src="../../../assets/images/eventsCalendar.png"
                 alt="Industry Partners connecting pieces of the puzzle"
             >

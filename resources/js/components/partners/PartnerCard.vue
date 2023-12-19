@@ -1,19 +1,21 @@
 <script setup>
-import {ref, computed} from 'vue'
-import GenericCard from "@/js/components/card/GenericCard.vue";
-import {useUserStore} from "@/js/stores/useUserStore";
 import {storeToRefs} from "pinia";
+import {computed,ref} from 'vue'
 import {useRouter} from "vue-router";
 
+import GenericCard from "@/js/components/card/GenericCard.vue";
+import {lowerSlugify} from "@/js/helpers/stringHelpers";
+import {useUserStore} from "@/js/stores/useUserStore";
+
 const props = defineProps({
-    partnerData: {
+    data: {
         type: Object,
         required: true
     },
 })
 
 // eslint-disable-next-line vue/no-setup-props-destructure
-// const {id, name, user_id, introduction, cover_image, isLikedByUser, isBookmarkedByUser, guid} = props.partnerData
+// const {id, name, user_id, introduction, cover_image, isLikedByUser, isBookmarkedByUser, guid} = props.data
 
 
 const userStore = useUserStore()
@@ -24,8 +26,8 @@ const router = useRouter()
 const handleClickPartnerCard = () => {
     router.push({
         name: "partner-single",
-        params: {id: props.partnerData.user_id},
-        state: {content: JSON.stringify(props.partnerData)}
+        params: {id: props.data.user_id, slug: lowerSlugify(props.data.name)},
+        state: {content: JSON.stringify(props.data)}
     })
 }
 
@@ -33,17 +35,17 @@ const handleClickPartnerCard = () => {
 
 <template>
     <GenericCard
-        :id="partnerData.id"
-        :key="partnerData.guid"
-        :title="partnerData.name"
-        :item="partnerData"
-        :display-content="partnerData.introduction"
-        :cover-image="partnerData.cover_image"
-        :display-author="partnerData.name"
+        :id="data.id"
+        :key="data.guid"
+        :title="data.name"
+        :item="data"
+        :display-content="data.introduction"
+        :cover-image="data.cover_image"
+        :display-author="data.name"
         :click-callback="handleClickPartnerCard"
-        :is-liked-by-user="partnerData.isLikedByUser"
-        :is-bookmarked-by-user="partnerData.isBookmarkedByUser"
-        :guid="partnerData.guid"
+        :is-liked-by-user="data.isLikedByUser"
+        :is-bookmarked-by-user="data.isBookmarkedByUser"
+        :guid="data.guid"
         section-type="partner"
     />
 </template>

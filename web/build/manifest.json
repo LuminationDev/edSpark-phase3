@@ -1,8 +1,4 @@
 {
-  "resources/assets/images/CommunityIllustration.png": {
-    "file": "assets/CommunityIllustration-a28447f8.png",
-    "src": "resources/assets/images/CommunityIllustration.png"
-  },
   "resources/assets/images/PartnersPuzzle.png": {
     "file": "assets/PartnersPuzzle-f8ea4960.png",
     "src": "resources/assets/images/PartnersPuzzle.png"
@@ -11,13 +7,9 @@
     "file": "assets/WhatIsDag-10bb387b.png",
     "src": "resources/assets/images/WhatIsDag.png"
   },
-  "resources/assets/images/departmentProvidedAndApproved.png": {
-    "file": "assets/departmentProvidedAndApproved-45068dc9.png",
-    "src": "resources/assets/images/departmentProvidedAndApproved.png"
-  },
-  "resources/assets/images/eventsCalendar.png": {
-    "file": "assets/eventsCalendar-39cdf35b.png",
-    "src": "resources/assets/images/eventsCalendar.png"
+  "resources/assets/images/edsparkLogo.png": {
+    "file": "assets/edsparkLogo-e7914418.png",
+    "src": "resources/assets/images/edsparkLogo.png"
   },
   "resources/assets/images/footer/cc.png": {
     "file": "assets/cc-286aeef7.png",
@@ -43,49 +35,138 @@
     "file": "assets/hardwareInfoImage-e7b190a8.png",
     "src": "resources/assets/images/hardwareInfoImage.png"
   },
-  "resources/assets/images/negotiatedDeals.png": {
-    "file": "assets/negotiatedDeals-0e67ab26.png",
-    "src": "resources/assets/images/negotiatedDeals.png"
+  "resources/assets/images/navbar.png": {
+    "file": "assets/navbar-514ca0d3.png",
+    "src": "resources/assets/images/navbar.png"
+  },
+  "resources/assets/images/profilePlaceholder.webp": {
+    "file": "assets/profilePlaceholder-9b013e68.webp",
+    "src": "resources/assets/images/profilePlaceholder.webp"
+  },
+  "resources/assets/images/profile_background.jpeg": {
+    "file": "assets/profile_background-84005a5c.jpeg",
+    "src": "resources/assets/images/profile_background.jpeg"
   },
   "resources/css/app.css": {
-    "file": "assets/app-bc5ac936.css",
+    "file": "assets/app-e46d71c0.css",
     "isEntry": true,
-    "src": "resources/css/app.css"
+    "src": "resources/css/output.css"
   },
-  "resources/css/filament.css": {
-    "file": "assets/filament-ea76ed15.css",
+  "resources/css/filament/admin/theme.css": {
+    "file": "assets/theme-c9277dc1.css",
     "isEntry": true,
-    "src": "resources/css/filament.css"
+    "src": "resources/css/filament/admin/theme.css"
+  },
+  "resources/css/font/museosans-100-webfont.eot": {
+    "file": "assets/museosans-100-webfont-dd3e73e3.eot",
+    "src": "resources/css/font/museosans-100-webfont.eot"
+  },
+  "resources/css/font/museosans-100-webfont.ttf": {
+    "file": "assets/museosans-100-webfont-aaf1db03.ttf",
+    "src": "resources/css/font/museosans-100-webfont.ttf"
+  },
+  "resources/css/font/museosans-100-webfont.woff": {
+    "file": "assets/museosans-100-webfont-e94c0507.woff",
+    "src": "resources/css/font/museosans-100-webfont.woff"
+  },
+  "resources/css/font/museosans-100-webfont.woff2": {
+    "file": "assets/museosans-100-webfont-e02f2d2f.woff2",
+    "src": "resources/css/font/museosans-100-webfont.woff2"
+  },
+  "resources/css/font/museosans-300-webfont.eot": {
+    "file": "assets/museosans-300-webfont-adb453b1.eot",
+    "src": "resources/css/font/museosans-300-webfont.eot"
+  },
+  "resources/css/font/museosans-300-webfont.ttf": {
+    "file": "assets/museosans-300-webfont-d74517d1.ttf",
+    "src": "resources/css/font/museosans-300-webfont.ttf"
+  },
+  "resources/css/font/museosans-300-webfont.woff": {
+    "file": "assets/museosans-300-webfont-efd77478.woff",
+    "src": "resources/css/font/museosans-300-webfont.woff"
+  },
+  "resources/css/font/museosans-300-webfont.woff2": {
+    "file": "assets/museosans-300-webfont-a974d5e9.woff2",
+    "src": "resources/css/font/museosans-300-webfont.woff2"
+  },
+  "resources/css/font/museosans-500-webfont.eot": {
+    "file": "assets/museosans-500-webfont-6e9f4f1c.eot",
+    "src": "resources/css/font/museosans-500-webfont.eot"
+  },
+  "resources/css/font/museosans-500-webfont.ttf": {
+    "file": "assets/museosans-500-webfont-1ff7f89a.ttf",
+    "src": "resources/css/font/museosans-500-webfont.ttf"
+  },
+  "resources/css/font/museosans-500-webfont.woff": {
+    "file": "assets/museosans-500-webfont-48dcb4e6.woff",
+    "src": "resources/css/font/museosans-500-webfont.woff"
+  },
+  "resources/css/font/museosans-500-webfont.woff2": {
+    "file": "assets/museosans-500-webfont-62b985d3.woff2",
+    "src": "resources/css/font/museosans-500-webfont.woff2"
+  },
+  "resources/css/font/museosans-700-webfont.eot": {
+    "file": "assets/museosans-700-webfont-4fb242a4.eot",
+    "src": "resources/css/font/museosans-700-webfont.eot"
+  },
+  "resources/css/font/museosans-700-webfont.ttf": {
+    "file": "assets/museosans-700-webfont-c9809fc4.ttf",
+    "src": "resources/css/font/museosans-700-webfont.ttf"
+  },
+  "resources/css/font/museosans-700-webfont.woff": {
+    "file": "assets/museosans-700-webfont-02c46e40.woff",
+    "src": "resources/css/font/museosans-700-webfont.woff"
+  },
+  "resources/css/font/museosans-700-webfont.woff2": {
+    "file": "assets/museosans-700-webfont-edb1187f.woff2",
+    "src": "resources/css/font/museosans-700-webfont.woff2"
   },
   "resources/css/output.css": {
-    "file": "assets/output-f918ad58.css",
+    "file": "assets/app-e46d71c0.css",
     "isEntry": true,
     "src": "resources/css/output.css"
   },
   "resources/js/app.css": {
-    "file": "assets/app-a78db5e7.css",
+    "file": "assets/app-c0661482.css",
     "src": "resources/js/app.css"
   },
-  "resources/js/app.js": {
+  "resources/js/app.ts": {
     "assets": [
       "assets/cc-286aeef7.png",
       "assets/south-australia-eaa8c844.png",
       "assets/sagovau_rev-19524a3e.png",
       "assets/white-ribbon-6ba8cd1c.svg",
       "assets/dfe-42a1625e.svg",
-      "assets/CommunityIllustration-a28447f8.png",
+      "assets/navbar-514ca0d3.png",
+      "assets/profile_background-84005a5c.jpeg",
+      "assets/profilePlaceholder-9b013e68.webp",
+      "assets/edsparkLogo-e7914418.png",
+      "assets/hardwareInfoImage-e7b190a8.png",
       "assets/PartnersPuzzle-f8ea4960.png",
-      "assets/eventsCalendar-39cdf35b.png",
       "assets/WhatIsDag-10bb387b.png",
-      "assets/hardwareInfoImage-e7b190a8.png"
+      "assets/museosans-100-webfont-dd3e73e3.eot",
+      "assets/museosans-100-webfont-e02f2d2f.woff2",
+      "assets/museosans-100-webfont-e94c0507.woff",
+      "assets/museosans-100-webfont-aaf1db03.ttf",
+      "assets/museosans-300-webfont-adb453b1.eot",
+      "assets/museosans-300-webfont-a974d5e9.woff2",
+      "assets/museosans-300-webfont-efd77478.woff",
+      "assets/museosans-300-webfont-d74517d1.ttf",
+      "assets/museosans-500-webfont-6e9f4f1c.eot",
+      "assets/museosans-500-webfont-62b985d3.woff2",
+      "assets/museosans-500-webfont-48dcb4e6.woff",
+      "assets/museosans-500-webfont-1ff7f89a.ttf",
+      "assets/museosans-700-webfont-4fb242a4.eot",
+      "assets/museosans-700-webfont-edb1187f.woff2",
+      "assets/museosans-700-webfont-02c46e40.woff",
+      "assets/museosans-700-webfont-c9809fc4.ttf"
     ],
     "css": [
-      "assets/app-a78db5e7.css",
-      "assets/app-bc5ac936.css",
-      "assets/output-f918ad58.css"
+      "assets/app-c0661482.css",
+      "assets/app-e46d71c0.css"
     ],
-    "file": "assets/app-55bf09e9.js",
+    "file": "assets/app-d815a505.js",
     "isEntry": true,
-    "src": "resources/js/app.js"
+    "src": "resources/js/app.ts"
   }
 }

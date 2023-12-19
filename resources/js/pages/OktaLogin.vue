@@ -1,15 +1,30 @@
 <script setup>
-import { ref } from 'vue';
+import {onBeforeMount, ref} from 'vue';
+import {useRouter} from "vue-router";
+
+import {appURL} from "@/js/constants/serverUrl";
+import {useAuthStore} from "@/js/stores/useAuthStore";
+import {useUserStore} from "@/js/stores/useUserStore";
+
+const authStore = useAuthStore()
+const userStore = useUserStore()
+
+const router = useRouter()
 
 
 const redirectToOkta = () => {
-    console.log("Redirect to okta");
     loginWithOktaButtonPressed.value = true;
     window.location = '/login';
 }
 
-const pageTitle = ref('EdSpark Login');
-const showModal = ref(true); // Set to true to display the modal by default
+onBeforeMount(() =>{
+    if(authStore.isAuthenticated && userStore.currentUser.full_name){
+        router.push('/dashboard')
+
+    }
+})
+
+const pageTitle = ref('edSpark Login');
 const email = ref('');
 const password = ref('');
 const loginWithOktaButtonPressed = ref(false);
@@ -25,9 +40,8 @@ const loginWithOktaButtonPressed = ref(false);
             <h2 class="font-bold mb-4 text-2xl">
                 {{ pageTitle }}
             </h2>
-            <form
+            <div
                 class="flex items-center flex-col w-full"
-                @submit.prevent="login"
             >
                 <div class="mb-4 w-full">
                     <label
@@ -46,7 +60,6 @@ const loginWithOktaButtonPressed = ref(false);
                         type="email"
                         placeholder="Enter you email address"
                         class="border focus:border-[#8dc9c5] px-3 py-2 rounded-lg w-full focus:outline-none"
-                        :required="!loginWithOktaButtonPressed"
                     >
                 </div>
                 <div class="mb-4 w-full">
@@ -66,7 +79,6 @@ const loginWithOktaButtonPressed = ref(false);
                         type="password"
                         placeholder="Enter your password"
                         class="border focus:border-[#8dc9c5] px-3 py-2 rounded-lg w-full focus:outline-none"
-                        :required="!loginWithOktaButtonPressed"
                     >
                 </div>
                 <div class="flex justify-center w-full">
@@ -96,7 +108,7 @@ const loginWithOktaButtonPressed = ref(false);
                         Login with Okta
                     </button>
                 </div>
-            </form>
+            </div>
         </div>
     </div>
 </template>

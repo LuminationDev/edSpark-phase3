@@ -1,7 +1,9 @@
 <script setup>
-import AdviceRobot from '../svg/adviceRobot/AdviceRobot.vue';
-import GenericButton from "@/js/components/button/GenericButton.vue";
 import {useRouter} from "vue-router";
+
+import GenericButton from "@/js/components/button/GenericButton.vue";
+
+import AdviceRobot from '../svg/adviceRobot/AdviceRobot.vue';
 
 const router = useRouter()
 </script>
@@ -10,7 +12,7 @@ const router = useRouter()
     <div class="AdviceHeroContainer">
         <div
             class="
-                -mt-12
+                -mt-[90px]
                 lg:!mt-24
                 lg:!mx-10
                 lg:!pt-12
@@ -21,24 +23,38 @@ const router = useRouter()
                 to-[#FCEFCC]
                 grid
                 grid-cols-8
+                mb-4
                 pb-8
-                pt-24
+                pt-[160px]
                 px-10
                 "
         >
             <div class="col-span-8 md:!col-span-5">
-                <h1 class="font-semibold pb-8 text-[36px] text-white uppercase">
+                <h1 class="capitalize font-semibold pb-8 text-[36px] text-white">
                     Digital Adoption Group 
                 </h1>
 
-                <p class="font-normal text-lg text-white">
-                    The Digital Adoption Group (DAG) offers comprehensive guidance on digital technologies, assisting leaders and educators with seamless integration. We provide practical, system-wide advice for purchasing and adopting high-impact technologies that enhance teaching and learning.
+                <p class="font-normal pb-2 text-[16px] text-white">
+                    The Digital Adoption Group (DAG) offers comprehensive guidance on digital technologies, providing practical, system-wide 
+                    advice for purchasing and adopting high-impact technologies that enhance teaching and learning.
                 </p>
             </div>
             <div class="col-span-8 flex justify-start items-start relative z-30 md:!col-span-3 md:!items-end md:!justify-end">
-                <AdviceRobot class="absolute lg:right-6 h-[250px] hidden md:!block md:!bottom-4 xl:!-bottom-4 xl:!right-12" />
+                <AdviceRobot
+                    class="absolute
+                        lg:right-6
+                        h-[250px]
+                        md:h-[200px]
+                        hidden
+                        
+                        
+                        md:!-bottom-[1rem]
+                        md:!block
+                        xl:!-bottom-[3rem]
+                        xl:!right-12" />
                 <GenericButton
-                    :callback="() => router.push('browse/advices')"
+                    :callback="() => router.push('browse/guide/dag')"
+                    button-id="DAGadvice"
                     class="
                         !rounded-none
                         !text-main-navy
@@ -53,7 +69,7 @@ const router = useRouter()
                         z-30
                         "
                 >
-                    View all advice
+                    View all guides
                 </GenericButton>
             </div>
         </div>

@@ -15,12 +15,6 @@ class CreatePartners extends CreateRecord
 {
     protected static string $resource = PartnersResource::class;
 
-    protected function mutateFormDataBeforeCreate(array $data): array
-    {
-        $data['password'] = Hash::make($data['password']);
-        return $data;
-    }
-
     protected function handleRecordCreation(array $data): Model
     {
         $user = User::create([
@@ -30,11 +24,13 @@ class CreatePartners extends CreateRecord
             'password' => $data['password'],
             'status' => 'Active',
             'remember_token' => Str::random(15),
+            'role_id' => 23 // TODO:: CHANGE IN THE FUTURE PARTNER ROLE ID
         ]);
 
         $partner = $user->partner()->create([
             'name' => $data['full_name'],
-            'email' => $data['email']
+            'email' => $data['email'],
+
         ]);
 
         return $partner;

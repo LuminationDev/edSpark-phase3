@@ -3,6 +3,7 @@
 namespace App\Filament\Resources\EventmoderationResource\Pages;
 
 use App\Filament\Resources\EventmoderationResource;
+use Filament\Actions\Action;
 use Filament\Pages\Actions;
 use Filament\Resources\Pages\EditRecord;
 use Carbon\Carbon;
@@ -11,10 +12,13 @@ class EditEventmoderation extends EditRecord
 {
     protected static string $resource = EventmoderationResource::class;
 
-    protected function getActions(): array
+    protected function getHeaderActions(): array
     {
+        $baseUrl = env('APP_URL');
         return [
-            // Actions\DeleteAction::make(),
+            Action::make('preview')
+                ->url(fn ($record) => rtrim($baseUrl, '/') . '/event/resources/'. $record->id . '/' . $record->event_title .'?preview=true&source=filament')
+                ->openUrlInNewTab()
         ];
     }
 

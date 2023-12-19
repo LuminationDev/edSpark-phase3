@@ -4,16 +4,17 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\SoftwareResource\Pages;
 use App\Filament\Resources\SoftwareResource\RelationManagers;
+use App\Helpers\RoleHelpers;
+use App\Models\Label;
 use App\Models\Software;
 use Filament\Forms;
-use Filament\Resources\Form;
+use Filament\Forms\Form;
 use Filament\Resources\Resource;
-use Filament\Resources\Table;
+use Filament\Tables\Table;
 use Filament\Tables;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Illuminate\Support\Facades\Auth;
-use Livewire\TemporaryUploadedFile;
+use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
 
 
 use Illuminate\Filesystem\Filesystem;
@@ -22,23 +23,35 @@ use Illuminate\Support\Str;
 use SplFileInfo;
 
 
-
-
 class SoftwareResource extends Resource
 {
     protected static ?string $model = Software::class;
+    protected static ?string $modelLabel = "Software";
 
     protected static ?string $navigationGroup = 'Content Management';
-    protected static ?string $navigationGroupIcon = 'heroicon-o-collection';
+    protected static ?string $navigationGroupIcon = 'heroicon-o-rectangle-stack';
 
     protected static ?int $navigationSort = 3;
 
-
-    protected static ?string $navigationIcon = 'heroicon-o-collection';
+    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
     public static function form(Form $form): Form
     {
         $user = Auth::user()->full_name;
+        $groupedLabels = Label::all()->groupBy('type');
+
+        $labelColumns = [];
+
+        foreach ($groupedLabels as $category => $labels) {
+            $labelColumns[] = Forms\Components\CheckboxList::make("labels")
+                ->label("Labels - {$category}")
+                ->extraAttributes(['class' => 'text-primary-600'])
+                ->options($labels->pluck('value', 'id')->toArray())
+                ->relationship('labels', 'value',function ($query) use ($category) {
+                    $query->where('type', $category)->orderByRaw('CAST(labels.id AS SIGNED)');
+                })
+                ->columns(3);
+        }
         return $form
             ->schema([
                 Forms\Components\Card::make()
@@ -47,21 +60,20 @@ class SoftwareResource extends Resource
                             ->label('Title')
                             ->required()
                             ->maxLength(255),
+                        Forms\Components\TextInput::make('post_excerpt')
+                            ->label('Tagline')
+                            ->placeholder('150 characters or less')
+                            ->maxLength(150),
                         Forms\Components\RichEditor::make('post_content')
                             ->label('Content')
                             ->required(),
-                        Forms\Components\RichEditor::make('post_excerpt')
-                            ->label('Excerpt')
-                            ->disableToolbarButtons([
-                                'attachFiles',
-                            ]),
                         Forms\Components\FileUpload::make('cover_image')
                             ->preserveFilenames()
                             ->disk('public')
                             ->directory('uploads/software')
                             ->acceptedFileTypes(['image/jpeg', 'image/jpg', 'image/png'])
                             ->getUploadedFileNameForStorageUsing(function (TemporaryUploadedFile $file): string {
-                                return (string) str($file->getClientOriginalName())->prepend('edSpark-software-');
+                                return (string)str($file->getClientOriginalName())->prepend('edSpark-software-');
                             }),
 
                         Forms\Components\Card::make()
@@ -70,17 +82,15 @@ class SoftwareResource extends Resource
                                     ->label('Software type')
                                     ->extraAttributes(['class' => 'text-primary-600'])
                                     ->relationship('softwaretypes', 'software_type_name')
-                                    ->columns(3)
-                                    ->bulkToggleable()
+                                    ->columns(3),
+                                ...$labelColumns
+
                             ]),
                         Forms\Components\Grid::make(2)
                             ->schema([
                                 Forms\Components\TextInput::make('Author')
                                     ->default($user)
                                     ->disabled(),
-//                                Forms\Components\BelongsToSelect::make('software_type')
-//                                    ->label('Software type')
-//                                    ->relationship('softwaretype', 'software_type_name'),
                                 Forms\Components\Select::make('post_status')
                                     ->options([
                                         'Published' => 'Published',
@@ -91,40 +101,13 @@ class SoftwareResource extends Resource
                                     ->label('Status')
                                     ->required(),
                             ]),
+                        Forms\Components\TagsInput::make('tags')
+                            ->placeholder('Add or create tags')
+                            ->helperText('Press enter after each tag')
                     ]),
 
                 Forms\Components\Card::make()
                     ->schema([
-//                        Forms\Components\Select::make('template')
-//                            ->label('Choose a Template')
-//                            ->reactive()
-//                            ->options(static::getTemplates()),
-//                        ...static::getTemplateSchemas(),
-
-//                        Forms\Components\Builder::make('content')
-//                            ->blocks([
-//                                Forms\Components\Builder\Block::make('heading')
-//                                    ->schema([
-//                                        Forms\Components\TextInput::make('content')
-//                                            ->label('Heading')
-//                                            ->required()
-//                                    ]),
-//                                Forms\Components\Builder\Block::make('paragraph')
-//                                    ->schema([
-//                                        Forms\Components\MarkdownEditor::make('content')
-//                                            ->label('Paragraph')
-//                                            ->required()
-//                                    ]),
-//                                Forms\Components\Builder\Block::make('image')
-//                                    ->schema([
-//                                        Forms\Components\FileUpload::make('url')
-//                                            ->label('image')
-//                                            ->image()
-//                                            ->required()
-//                                    ])
-//                            ]),
-
-
                         Forms\Components\Builder::make('extra_content')
                             ->blocks([
                                     Forms\Components\Builder\Block::make('templates')
@@ -135,35 +118,27 @@ class SoftwareResource extends Resource
                                                 ->options(static::getTemplates()),
                                             ...static::getTemplateSchemas()
                                         ]),
-                                    Forms\Components\Builder\Block::make('extra_resources')
-                                        ->schema([
-                                            Forms\Components\Repeater::make('item')
-                                                ->schema([
-                                                    Forms\Components\TextInput::make('heading'),
-                                                    Forms\Components\RichEditor::make('content')
-                                                ])
-                                        ])
-                                        ->label('Extra Resources')
                                 ]
                             )
                             ->label('Extra content')
 
                     ])
+
             ]);
     }
 
     public static function getTemplates(): Collection
     {
-        return static::getTemplateClasses()->mapWithKeys(fn ($class) => [$class => $class::title()]);
+        return static::getTemplateClasses()->mapWithKeys(fn($class) => [$class => $class::title()]);
     }
 
     public static function getTemplateClasses(): Collection
     {
         $filesystem = app(Filesystem::class);
 
-        return collect($filesystem->allFiles(app_path('Filament/PageTemplates/Software')))
+        return collect($filesystem->allFiles(app_path('Filament/PageTemplates')))
             ->map(function (SplFileInfo $file): string {
-                return (string) Str::of('App\\Filament\\PageTemplates\\Software')
+                return (string)Str::of('App\\Filament\\PageTemplates')
                     ->append('\\', $file->getRelativePathname())
                     ->replace(['/', '.php'], ['\\', '']);
             });
@@ -172,15 +147,16 @@ class SoftwareResource extends Resource
     public static function getTemplateSchemas(): array
     {
         return static::getTemplateClasses()
-            ->map(fn ($class) =>
-                Forms\Components\Group::make($class::schema())
-                    ->columnSpan(2)
-                    ->afterStateHydrated(fn ($component, $state) => $component->getChildComponentContainer()->fill($state))
-                    ->statePath('extra_content.' . static::getTemplateName($class))
-                    ->visible(fn ($get) => $get('template') == $class)
+            ->map(fn($class) => Forms\Components\Group::make($class::schema())
+                ->columnSpan(2)
+                ->afterStateHydrated(fn($component, $state) => $component->getChildComponentContainer()->fill($state))
+                ->statePath('extra_content.' . static::getTemplateName($class))
+                ->visible(fn($get) => $get('template') == $class)
             )
             ->toArray();
+
     }
+
 
     public static function getTemplateName($class)
     {
@@ -192,9 +168,9 @@ class SoftwareResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('post_title')
-                ->label('Title')
-                ->searchable()
-                ->sortable(),
+                    ->label('Title')
+                    ->searchable()
+                    ->sortable(),
 //                Tables\Columns\TextColumn::make('post_content')
 //                ->limit(50)
 //                ->label('Content'),
@@ -251,15 +227,7 @@ class SoftwareResource extends Resource
 
     public static function shouldRegisterNavigation(): bool
     {
-        // use Illuminate\Support\Facades\Auth;
-
-        // Moderator check
-        if(Auth::user()->role->role_name == 'Moderator') {
-            return false;
-        }
-
-        return true;
+        return RoleHelpers::has_minimum_privilege('site_leader');
     }
-
 
 }

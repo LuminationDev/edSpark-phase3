@@ -54,7 +54,7 @@ const laptopTechSpecs = computed(() => {
     <div class="laptopTechSpecsContainer flex flex-col w-full bg-gray-50 text-xl p-4">
         <template v-if="!isObjectEmpty(laptopTechSpecs)">
             <div class="laptopTechSpecsTitle font-semibold text-3xl pb-6 ">
-                Tech Specs
+                Tech specs
             </div>
             <TechSpecsRow
                 :value="laptopTechSpecs.processor"
@@ -84,7 +84,7 @@ const laptopTechSpecs = computed(() => {
         </template>
         <template v-else>
             <div class="text-black">
-                Sorry Tech Specs is not available for this item
+                Sorry, tech specs are not available for this item
             </div>
         </template>
     </div>

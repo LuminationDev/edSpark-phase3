@@ -16,15 +16,58 @@ const handleSearchChange = () =>{
 const emits = defineEmits(['emitSearchTerm'])
 </script>
 <template>
-    <div class="flex justify-center items-center searchbar w-full lg:!w-4/5">
-        <input
-            id="searchbar-text-input"
-            v-model="searchTerm"
-            class="!border-black !w-[50%] border-2 h-12 mt-4 px-4 rounded text-black text-lg"
-            type="text"
-            :placeholder="props.placeholder"
-            @input="handleSearchChange"
+    <div class="flex flex-col">
+        <p
+            id="searchTitle "
+            class="text-xl"
         >
+            Search
+        </p>
+        <div
+            style="position: relative"
+            class="!border-black border-2 flex items-center font-medium gap-1 h-12 pl-4 rounded text-black text-lg"
+        >
+            <input
+                id="searchbar-text-input"
+                v-model="searchTerm"
+                class="bg-transparent border-0 font-light ml-2 text-lg"
+                type="text"
+                :placeholder="props.placeholder"
+                @input="handleSearchChange"
+            >
+            <div
+                id="searchIcon"
+                style="width: 28px; position: absolute; right: 5px; z-index: -1;"
+            >
+                <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                >
+                    <circle
+                        cx="10"
+                        cy="10"
+                        r="8" 
+                        stroke="#000" 
+                        stroke-width="2" 
+                        stroke-linecap="round" 
+                        stroke-linejoin="round" 
+                    />
+
+                    <line
+                        x1="15"
+                        y1="16"
+                        x2="21"
+                        y2="22"                
+                        stroke="#000" 
+                        stroke-width="2" 
+                        stroke-linecap="round" 
+                        stroke-linejoin="round" 
+                    />
+
+                </svg>
+            </div>
+        </div>
     </div>
 </template>
 

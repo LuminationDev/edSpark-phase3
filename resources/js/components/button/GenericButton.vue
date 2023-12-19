@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue'
+
 import Spinner from '../spinner/Spinner.vue'
 
 const spinner = ref(false)
@@ -41,12 +42,12 @@ const asyncCall = () => {
     <button
         :id="buttonId"
         :class="{
-            'h-auto rounded-lg text-white text-base bg-blue-600': true,
+            'h-auto rounded-lg text-white text-base bg-main-teal hover:bg-main-navy' : true,
             'my-3 hover:bg-blue-400': type === 'school',
             '!bg-slate-300 pointer-events-none': disabled,
             '!text-black bg-white border-0 !p-0': type === 'plain'
         }"
-        class="p-2 flex justify-center items-center"
+        class="flex justify-center items-center p-2"
         :disabled="disabled"
         @click="onClick()"
     >

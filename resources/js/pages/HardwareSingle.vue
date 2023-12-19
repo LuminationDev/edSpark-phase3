@@ -1,53 +1,41 @@
-<script setup>
+<script setup lang="ts">
+import purify from "dompurify";
+import {ref} from 'vue';
+
+import BaseBreadcrumb from "@/js/components/bases/BaseBreadcrumb.vue";
 import BaseHero from '@/js/components/bases/BaseHero.vue';
 import BaseSingle from '@/js/components/bases/BaseSingle.vue';
 import BaseSingleSubmenu from "@/js/components/bases/BaseSingleSubmenu.vue";
-import HardwareCarousel from '@/js/components/hardware/HardwareCarousel.vue';
-import GenericCard from '../components/card/GenericCard.vue';
-import HardwareExtraContentRenderer from "@/js/components/hardware/HardwareExtraContentRenderer.vue";
-
-import {ref, onBeforeMount, onMounted, computed} from 'vue';
-import {useRoute, useRouter} from 'vue-router';
-import {useHardwareStore} from '../stores/useHardwareStore.js';
-import {useUserStore} from "@/js/stores/useUserStore";
-import {storeToRefs} from "pinia";
-import HardwareCard from "@/js/components/hardware/HardwareCard.vue";
-import HardwareLaptopTechSpecs from "@/js/components/hardware/HardwareLaptopTechSpecs.vue";
-import HardwareEmergingTechSpecs from "@/js/components/hardware/HardwareEmergingTechSpecs.vue";
 import HardwareAudioVisualTechSpecs from "@/js/components/hardware/HardwareAudioVisualTechSpecs.vue";
+import HardwareCarousel from '@/js/components/hardware/HardwareCarousel.vue';
+import HardwareEmergingTechSpecs from "@/js/components/hardware/HardwareEmergingTechSpecs.vue";
+import HardwareLaptopTechSpecs from "@/js/components/hardware/HardwareLaptopTechSpecs.vue";
+import HardwareSingleBrandContent from "@/js/components/hardware/HardwareSingleBrandContent.vue";
+import ExtraResourceTemplateDisplay from "@/js/components/renderer/ExtraResourceTemplateDisplay.vue";
+import {edSparkContentSanitizer} from "@/js/helpers/objectHelpers";
 
-const hardwareStore = useHardwareStore();
-const recommendedResources = ref([]);
 const baseContentRef = ref(null);
-const route = useRoute();
-const router = useRouter();
-
-const userStore = useUserStore()
-const {currentUser } = storeToRefs(userStore)
-
-const likeBookmarkData = {
-    post_id: route.params.id,
-    user_id: currentUser.value.id,
-    post_type: 'hardware'
-};
-
-
 /**
  * Submenu specific codes
  */
-const hardwareSubmenu = [
+
+type SubmenuObjectType = {
+    displayText: string,
+    value: string
+}
+const hardwareSubmenu: Array<SubmenuObjectType> = [
     {
         displayText: 'Overview',
         value: 'overview'
     },
     {
-        displayText: 'Tech Specs',
+        displayText: 'Tech specs',
         value: 'techspecs'
     }]
 const activeSubmenu = ref(hardwareSubmenu[0]['value'])
 
 // handleChangeSubmenu will be triggered by emit from BaseSingle
-const handleChangeSubmenu = (value) => {
+const handleChangeSubmenu = (value): void => {
     activeSubmenu.value = value
     console.log('active submenu has been changed to ', value)
 }
@@ -55,7 +43,7 @@ const handleChangeSubmenu = (value) => {
  * End of submenu specific code  plus @emit-active-tab-to-specific-page in BaseSingle
  * */
 
-
+const colorTheme = ref('hardwareGreen')
 </script>
 
 <template>
@@ -67,9 +55,17 @@ const handleChangeSubmenu = (value) => {
         <template #hero="{contentFromBase, emitFromSubmenu}">
             <BaseHero
                 :background-url="contentFromBase['cover_image']"
+                :swoosh-color-theme="colorTheme"
             >
+                <template #breadcrumb>
+                    <BaseBreadcrumb
+                        :child-page="contentFromBase.title"
+                        parent-page="hardware"
+                        :color-theme="colorTheme"
+                    />
+                </template>
                 <template #titleText>
-                    {{ contentFromBase['product_name'] }}
+                    {{ contentFromBase['title'] }}
                 </template>
                 <template
                     v-if="contentFromBase['brand']"
@@ -82,10 +78,10 @@ const handleChangeSubmenu = (value) => {
                     </div>
                 </template>
                 <template #subtitleText2>
-                    <div v-html="contentFromBase['product_excerpt']" />
+                    <div v-html="contentFromBase['excerpt']" />
                 </template>
                 <template #submenu>
-                    <div class="cursor-pointer flex flex-row gap-4 hardwareSubmenu z-40">
+                    <div class="cursor-pointer flex flex-row gap-4 hardwareSubmenu mb-[-1px] z-40">
                         <BaseSingleSubmenu
                             :emit-to-base="emitFromSubmenu"
                             :menu-array="hardwareSubmenu"
@@ -96,15 +92,14 @@ const handleChangeSubmenu = (value) => {
             </BaseHero>
         </template>
 
-        <template #content="{ contentFromBase,recommendationFromBase }">
-            <div class="flex flex-row mt-20 w-full">
+        <template #content="{ contentFromBase }">
+            <div class="flex flex-row w-full">
                 <template v-if="activeSubmenu === hardwareSubmenu[0]['value']">
                     <div
                         :id="contentFromBase['id']"
                         ref="baseContentRef"
-                        class="flex flex-col overflow-hidden px-5 py-4 w-full lg:!px-20"
+                        class="flex flex-col overflow-hidden px-5 pb-4 w-full lg:!px-20"
                     >
-                        <!-- Carousel here -->
                         <HardwareCarousel
                             :slide-items="contentFromBase"
                         />
@@ -112,9 +107,9 @@ const handleChangeSubmenu = (value) => {
                             <div class="flex flex-col py-4 w-full lg:!w-2/3">
                                 <div>
                                     <h1
-                                        class="flex font-bold text-2xl uppercase"
+                                        class="flex font-bold text-2xl"
                                     >
-                                        {{ contentFromBase['product_name'] }}
+                                        {{ contentFromBase['name'] }}
                                     </h1>
                                 </div>
                                 <div
@@ -127,40 +122,21 @@ const handleChangeSubmenu = (value) => {
                                         pt-8
                                         text-lg
                                         "
-                                    v-html="contentFromBase['product_content']"
+                                    v-html="edSparkContentSanitizer(contentFromBase['content'])"
                                 />
-                                <template
-                                    v-for="(content,index) in contentFromBase['extra_content']"
-                                    :key="index"
+                                <div
+                                    v-if="contentFromBase['extra_content'] && contentFromBase['extra_content'].length"
+                                    class="extraResourcesContainer"
                                 >
-                                    <HardwareExtraContentRenderer :content="content" />
-                                </template>
+                                    <ExtraResourceTemplateDisplay :content="contentFromBase['extra_content']" />
+                                </div>
                             </div>
 
                             <div
                                 v-if="contentFromBase['brand']"
                                 class="w-full lg:!w-1/3"
                             >
-                                <div
-                                    v-if="recommendationFromBase && recommendationFromBase.length > 0"
-                                    class="bg-[#048246]/5 flex flex-col gap-6 px-6 py-6"
-                                >
-                                    <h3 class="font-bold mx-auto pb-8 text-[24px]">
-                                        More from {{ contentFromBase['brand']['brandName'] }}
-                                    </h3>
-                                    <div
-                                        v-for="(item,index) in recommendationFromBase.slice(0,2)"
-                                        :key="index"
-                                        class="flex justify-between"
-                                    >
-                                        <HardwareCard
-                                            :key="index.guid"
-                                            class="bg-white mx-auto"
-                                            :hardware-data="item"
-                                            :number-per-row="1"
-                                        />
-                                    </div>
-                                </div>
+                                <HardwareSingleBrandContent />
                             </div>
                         </div>
                     </div>

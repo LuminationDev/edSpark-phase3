@@ -1,25 +1,26 @@
 <script setup>
-import {ref, computed,  reactive} from 'vue'
-import BaseSingle from "@/js/components/bases/BaseSingle.vue";
-import BaseHero from "@/js/components/bases/BaseHero.vue";
-import {imageURL} from "@/js/constants/serverUrl";
-import BaseSingleSubmenu from "@/js/components/bases/BaseSingleSubmenu.vue";
-import PartnerOverview from "@/js/components/partners/partnerSubPages/PartnerOverview.vue";
-import PartnerAccess from "@/js/components/partners/partnerSubPages/PartnerAccess.vue";
-import PartnerHardware from "@/js/components/partners/partnerSubPages/PartnerHardware.vue";
-import PartnerSoftware from "@/js/components/partners/partnerSubPages/PartnerSoftware.vue";
-import PartnerCurriculum from "@/js/components/partners/partnerSubPages/PartnerCurriculum.vue";
-import recommenderEdsparkSingletonFactory from "@/js/recommender/recommenderEdspark";
 import {storeToRefs} from "pinia";
-import {useUserStore} from "@/js/stores/useUserStore";
-import Loader from "@/js/components/spinner/Loader.vue";
+import {computed,  reactive,ref} from 'vue'
 import {useRoute} from "vue-router";
 
-const props = defineProps({})
-const {currentUser} = storeToRefs(useUserStore())
+import BaseBreadcrumb from "@/js/components/bases/BaseBreadcrumb.vue";
+import BaseHero from "@/js/components/bases/BaseHero.vue";
+import BaseSingle from "@/js/components/bases/BaseSingle.vue";
+import BaseSingleSubmenu from "@/js/components/bases/BaseSingleSubmenu.vue";
+import PartnerAccess from "@/js/components/partners/partnerSubPages/PartnerAccess.vue";
+import PartnerCurriculum from "@/js/components/partners/partnerSubPages/PartnerCurriculum.vue";
+import PartnerHardware from "@/js/components/partners/partnerSubPages/PartnerHardware.vue";
+import PartnerOverview from "@/js/components/partners/partnerSubPages/PartnerOverview.vue";
+import PartnerSoftware from "@/js/components/partners/partnerSubPages/PartnerSoftware.vue";
+import Loader from "@/js/components/spinner/Loader.vue";
+import {imageURL} from "@/js/constants/serverUrl";
+import {partnerService} from "@/js/service/partnerService";
+import {useUserStore} from "@/js/stores/useUserStore";
 
-const emits = defineEmits([])
+
+const {currentUser} = storeToRefs(useUserStore())
 const availableSubmenu = ref(['overview', 'access'])
+const route = useRoute()
 
 const formattedSubmenuData = computed(() => {
     if (!availableSubmenu.value || availableSubmenu.value.length === 0) {
@@ -34,8 +35,6 @@ const formattedSubmenuData = computed(() => {
 
     }
 })
-//TODO: Replace site_id
-const recommender = recommenderEdsparkSingletonFactory().getInstance(currentUser.value.id, currentUser.value.role, currentUser.value.site_id || 123)
 
 const partnerData = reactive({
     overview: {},
@@ -44,11 +43,9 @@ const partnerData = reactive({
     hardware: {},
     curriculum: {}
 })
-const route = useRoute()
-
-
 const fetchSubmenuData = async() => {
     // perform fetches here and assign value/data into parterData(reactive)
+    console.log("Item: "+availableSubmenu.value);
     const partnerId  = route.params.id
     for (const submenu of availableSubmenu.value) {
         switch (submenu) {
@@ -56,21 +53,18 @@ const fetchSubmenuData = async() => {
             partnerData[submenu] = {data: 'this is temporary string for partner overview'}
             break;
         case 'software':
-            partnerData[submenu] = recommender.getTechByAuthorAsync(partnerId).then(res => res['software'])
+            partnerData[submenu] = partnerService.fetchPartnerSoftware(partnerId).then(res => res)
             break;
         case 'hardware':
-            partnerData[submenu] = recommender.getTechByAuthorAsync(partnerId).then(res => res['hardware'])
+            partnerData[submenu] = partnerService.fetchPartnerHardware(partnerId).then(res => res)
             break;
         case 'curriculum':
-            partnerData[submenu] = recommender.getAdviceByAuthorId(partnerId).then(res => res)
+            partnerData[submenu] = partnerService.fetchPartnerAdvice(partnerId).then(res => res)
             break;
         case 'access':
             partnerData[submenu] = {overview: 'access here'}
             break;
-
         }
-
-
     }
 }
 
@@ -126,6 +120,8 @@ const dynamicProps = computed(() => {
         return partnerData.overview
     }
 })
+
+const colorTheme = ref('partnerBlue')
 </script>
 
 <template>
@@ -136,13 +132,23 @@ const dynamicProps = computed(() => {
         <template #hero="{contentFromBase}">
             <BaseHero
                 :background-url="contentFromBase['cover_image']"
+                :swoosh-color-theme="colorTheme"
             >
+                <template #breadcrumb>
+                    <BaseBreadcrumb
+                        :child-page="contentFromBase.name"
+                        parent-page="partners"
+                        :color-theme="colorTheme"
+                    />
+                </template>
+
                 <template #titleText>
-                    <div class="flex items-center flex-row">
-                        <div class="flex justify-center items-center h-20 mx-4 smallPartnerLogo w-24">
+                    <div class=" ">
+                        <div class=" ">
                             <img
                                 :src="`${imageURL}/${contentFromBase['logo']}`"
                                 alt="logo"
+                                class="rounded"
                             >
                         </div>
                         <span>
@@ -165,6 +171,7 @@ const dynamicProps = computed(() => {
                         :active-subpage="activeSubMenu"
                         :emit-to-base="handleChangeSubmenu"
                         :menu-array="formattedSubmenuData"
+                        class="mb-[-1px]"
                     />
                 </template>
             </BaseHero>
@@ -182,7 +189,7 @@ const dynamicProps = computed(() => {
                         <div class="flex justify-center items-center">
                             <Loader
                                 :loader-color="'#0072DA'"
-                                :loader-message="'Data Loading'"
+                                :loader-message="'Data loading'"
                             />
                         </div>
                     </template>

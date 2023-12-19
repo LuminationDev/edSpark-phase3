@@ -6,7 +6,7 @@ import SoftwareRobot from "@/js/components/svg/software/SoftwareRobot.vue";
 <template>
     <div
         class="
-            -mt-12
+            -mt-[90px]
             lg:!mt-24
             lg:!mx-10
             lg:!pt-12
@@ -18,26 +18,27 @@ import SoftwareRobot from "@/js/components/svg/software/SoftwareRobot.vue";
             grid
             grid-cols-8
             pb-8
-            pt-24
+            pt-[160px]
             px-10
+            mb-4
             "
     >
-        <div class="col-span-8 md:!col-span-5 lg:!col-span-6">
-            <h1 class="font-semibold pb-8 text-[36px] text-white uppercase">
+        <div class="col-span-8 md:!col-span-5 lg:!col-span-6 pr-8">
+            <h1 class="font-semibold pb-8 text-[36px] text-white lowercase first-letter:uppercase">
                 Software
             </h1>
             <p class="font-normal pb-2 text-[16px] text-white">
-                Find out what software is available to you to use as an employee and how to access it.
-            </p>
-            <p class="font-normal text-[16px] text-white">
-                Use this page to explore software which has the Department for Education tick of approval.
-                <br>
-                Find out more information,
-                see use cases, steps to purchase and possible costs.
+                Discover software with the Department for Education tick of approval, and find out what  is available to you to use as an employee and how to access it. 
+                
+                Explore technical specifications, use cases, steps to purchase, and possible costs.
             </p>
         </div>
         <div class="col-span-3 hidden relative md:!block lg:!col-span-2">
-            <SoftwareRobot class="absolute  md:!bottom-4 md:!scale-75 lg:!bottom-6 lg:!scale-100 xl:!-bottom-4 xl:!right-12" />
+            <SoftwareRobot class="absolute  md:!scale-75
+                                            md:!right-[3rem]
+                                            lg:!scale-100
+                                            xl:!right-12" />
+
         </div>
     </div>
 </template>

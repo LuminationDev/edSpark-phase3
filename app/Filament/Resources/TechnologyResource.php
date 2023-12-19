@@ -6,21 +6,23 @@ use App\Filament\Resources\TechnologyResource\Pages;
 use App\Filament\Resources\TechnologyResource\RelationManagers;
 use App\Models\Technology;
 use Filament\Forms;
-use Filament\Resources\Form;
+use Filament\Forms\Form;
 use Filament\Resources\Resource;
-use Filament\Resources\Table;
+use Filament\Tables\Table;
 use Filament\Tables;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 use Guava\FilamentIconPicker\Forms\IconPicker;
 use Guava\FilamentIconPicker\Tables\IconColumn;
+use Illuminate\Support\Facades\Auth;
 
 class TechnologyResource extends Resource
 {
     protected static ?string $model = Technology::class;
+    protected static ?string $modelLabel = 'Technology';
 
-    protected static ?string $navigationIcon = 'heroicon-o-collection';
+    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
     public static function form(Form $form): Form
     {
@@ -33,15 +35,10 @@ class TechnologyResource extends Resource
                             ->maxLength(255),
                         Forms\Components\Textarea::make('value')
                             ->maxLength(65535),
-                        // Forms\Components\TextInput::make('icon')
-                        //     ->maxLength(65535),
-                        // IconPicker::make('icon')
-                        //     ->columns(4)
-                        //     ->itemTemplate(fn($icon) => view('mycustomicon', ['icon' => $icon]))
                         IconPicker::make('icon')
+                            ->sets(['fontawesome-solid'])
                             ->columns(4)
                     ])
-
             ]);
     }
 
@@ -84,5 +81,10 @@ class TechnologyResource extends Resource
             'create' => Pages\CreateTechnology::route('/create'),
             'edit' => Pages\EditTechnology::route('/{record}/edit'),
         ];
+    }
+
+    public static function shouldRegisterNavigation(): bool
+    {
+        return false;
     }
 }

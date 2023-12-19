@@ -30,7 +30,14 @@ class AppServiceProvider extends ServiceProvider
     {
         Filament::serving(function () {
             // Using vite
-            Filament::registerViteTheme('resources/css/filament.css');
+//            Filament::registerViteTheme('resources/css/filament.css');
+            Filament::registerNavigationGroups([
+                'Moderation',
+                'Content Management',
+                'Product Management',
+                'School Management',
+                'System',
+            ]);
         });
 
         // Example to register custom navigation in admin panel

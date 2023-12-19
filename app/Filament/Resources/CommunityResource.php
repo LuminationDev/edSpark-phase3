@@ -6,9 +6,9 @@ use App\Filament\Resources\CommunityResource\Pages;
 use App\Filament\Resources\CommunityResource\RelationManagers;
 use App\Models\Community;
 use Filament\Forms;
-use Filament\Resources\Form;
+use Filament\Forms\Form;
 use Filament\Resources\Resource;
-use Filament\Resources\Table;
+use Filament\Tables\Table;
 use Filament\Tables;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
@@ -20,11 +20,13 @@ use Livewire\TemporaryUploadedFile;
 class CommunityResource extends Resource
 {
     protected static ?string $model = Community::class;
+    protected static ?string $modelLabel = 'Community';
+
 
     protected static ?string $navigationIcon = 'heroicon-o-user-group';
 
     protected static ?string $navigationGroup = 'Content Management';
-    protected static ?string $navigationGroupIcon = 'heroicon-o-collection';
+    protected static ?string $navigationGroupIcon = 'heroicon-o-rectangle-stack';
 
     protected static ?int $navigationSort = 7;
 
@@ -130,14 +132,11 @@ class CommunityResource extends Resource
 
     public static function shouldRegisterNavigation(): bool
     {
-        // use Illuminate\Support\Facades\Auth;
-
-        // Moderator check
-        if(Auth::user()->role->role_name == 'Moderator') {
-            return false;
+        $allowed_array = ['Superadmin', 'Administrator','Moderator'];
+        if (in_array(Auth::user()->role->role_name, $allowed_array)) {
+            return true;
         }
-
-        return true;
+        return false;
     }
 
 

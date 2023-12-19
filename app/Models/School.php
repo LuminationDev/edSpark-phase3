@@ -4,10 +4,11 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Spatie\Tags\HasTags;
 
 class School extends Model
 {
-    use HasFactory;
+    use HasFactory, HasTags;
 
     /**
      * The table associated with the model.
@@ -22,6 +23,7 @@ class School extends Model
      * @var array
      */
     protected $fillable = [
+        'school_id',
         'site_id',
         'owner_id',
         'allowEditIds',
@@ -30,8 +32,10 @@ class School extends Model
         'logo',
         'cover_image',
         'tech_used',
+        'status',
         'pedagogical_approaches',
         'tech_landscape',
+        'isFeatured',
         'created_at',
         'updated_at',
     ];
@@ -47,11 +51,11 @@ class School extends Model
     }
     public function likes(): \Illuminate\Database\Eloquent\Relations\HasMany
     {
-        return $this->hasMany(Like::class, 'post_id', 'id')->where('post_type', 'school');
+        return $this->hasMany(Like::class, 'post_id', 'school_id')->where('post_type', 'school');
     }
 
     public function bookmarks(): \Illuminate\Database\Eloquent\Relations\HasMany
     {
-        return $this->hasMany(Bookmark::class, 'post_id', 'id')->where('post_type', 'school');
+        return $this->hasMany(Bookmark::class, 'post_id', 'school_id')->where('post_type', 'school');
     }
 }

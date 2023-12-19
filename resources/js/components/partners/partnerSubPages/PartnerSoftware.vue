@@ -24,7 +24,7 @@ console.log(props.data)
             <SoftwareCard
                 v-for="(item, index) in fulfilledData"
                 :key="index"
-                :software-data="item"
+                :data="item"
                 :number-per-row="3"
             />
         </div>

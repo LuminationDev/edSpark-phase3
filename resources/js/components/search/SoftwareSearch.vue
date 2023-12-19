@@ -1,21 +1,21 @@
 <script setup>
-import {API_ENDPOINTS} from "@/js/constants/API_ENDPOINTS";
-import {swrvOptions} from "@/js/constants/swrvConstants";
-import {useUserStore} from "@/js/stores/useUserStore";
+import useSWRV from "swrv";
 import { ref} from "vue";
+import {useRoute} from "vue-router";
 
 import BaseSearch from "@/js/components/search/BaseSearch.vue";
 import GenericMultiSelectFilter from "@/js/components/search/hardware/GenericMultiSelectFilter.vue";
-import useSWRV from "swrv";
-import { axiosFetcherParams} from "@/js/helpers/fetcher";
-import {useRoute} from "vue-router";
+import {API_ENDPOINTS} from "@/js/constants/API_ENDPOINTS";
+import {swrvOptions} from "@/js/constants/swrvConstants";
+import { axiosFetcher} from "@/js/helpers/fetcher";
 import router from "@/js/router";
+import {useUserStore} from "@/js/stores/useUserStore";
 const route = useRoute()
 
 
-const {data: softwareList, error: softwareError} = useSWRV(API_ENDPOINTS.SOFTWARE.FETCH_SOFTWARE_POSTS, axiosFetcherParams(useUserStore().getUserRequestParam), swrvOptions)
+const {data: softwareList, error: softwareError} = useSWRV(API_ENDPOINTS.SOFTWARE.FETCH_SOFTWARE_POSTS, axiosFetcher, swrvOptions)
 
-let softwareFilterList = [
+const softwareFilterList = [
     {name: "Department Provided", value:"Department Provided"},
     {name: "Department Approved", value:"Department Approved"},
     {name: "Department Approved and Negotiated", value:"Approved and Negotiated"},
@@ -57,9 +57,10 @@ if(route.params || route.params.filter){
     >
         <template #filterBar>
             <GenericMultiSelectFilter
-                placeholder="Filter by software type"
+                id="softwareType"
+                placeholder="Filter by type"
                 :filter-list="softwareFilterList"
-                data-path="software_type"
+                data-path="type"
                 :preselected="preselectedFilterObject"
                 @transmit-selected-filters="handleFilter"
             />

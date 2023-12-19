@@ -4,11 +4,12 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\SchoolResource\Pages;
 use App\Filament\Resources\SchoolResource\RelationManagers;
+use App\Helpers\RoleHelpers;
 use App\Models\School;
 use Filament\Forms;
-use Filament\Resources\Form;
+use Filament\Forms\Form;
 use Filament\Resources\Resource;
-use Filament\Resources\Table;
+use Filament\Tables\Table;
 use Filament\Tables;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
@@ -19,6 +20,8 @@ use Illuminate\Support\Facades\Auth;
 class SchoolResource extends Resource
 {
     protected static ?string $model = School::class;
+    protected static ?string $modelLabel= "School";
+
 
     protected static ?string $navigationIcon = 'heroicon-o-academic-cap';
 
@@ -29,24 +32,24 @@ class SchoolResource extends Resource
     {
         return $form
             ->schema([
-                // Forms\Components\Card::make()
-                //     ->schema([
-                //         Forms\Components\TextInput::make('site_id'),
-                //         Forms\Components\TextInput::make('owner_id'),
-                //         // Forms\Components\TextInput::make('allowEditIds')
-                //         //     ->maxLength(255),
-                //         Forms\Components\TextInput::make('name')
-                //             ->required()
-                //             ->maxLength(255),
-                //         Forms\Components\Textarea::make('content_blocks'),
-                //         Forms\Components\TextInput::make('logo')
-                //             ->maxLength(255),
-                //         Forms\Components\TextInput::make('cover_image')
-                //             ->maxLength(255),
-                //         Forms\Components\Textarea::make('tech_used'),
-                //         Forms\Components\Textarea::make('pedagogical_approaches'),
-                //         Forms\Components\Textarea::make('tech_landscape'),
-                //     ])
+//                Forms\Components\Card::make()
+//                    ->schema([
+//                        Forms\Components\TextInput::make('site_id'),
+//                        Forms\Components\TextInput::make('owner_id'),
+//                        // Forms\Components\TextInput::make('allowEditIds')
+//                        //     ->maxLength(255),
+//                        Forms\Components\TextInput::make('name')
+//                            ->required()
+//                            ->maxLength(255),
+//                        Forms\Components\Textarea::make('content_blocks'),
+//                        Forms\Components\TextInput::make('logo')
+//                            ->maxLength(255),
+//                        Forms\Components\TextInput::make('cover_image')
+//                            ->maxLength(255),
+//                        Forms\Components\Textarea::make('tech_used'),
+//                        Forms\Components\Textarea::make('pedagogical_approaches'),
+//                        Forms\Components\Textarea::make('tech_landscape'),
+//                    ])
             ]);
     }
 
@@ -55,15 +58,7 @@ class SchoolResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('site_id'),
-                // Tables\Columns\TextColumn::make('allowEditIds'),
                 Tables\Columns\TextColumn::make('name'),
-                // Tables\Columns\TextColumn::make('content_blocks')
-                    // ->limit(20),
-                // Tables\Columns\TextColumn::make('logo'),
-                // Tables\Columns\TextColumn::make('cover_image'),
-                // Tables\Columns\TextColumn::make('tech_used'),
-                // Tables\Columns\TextColumn::make('pedagogical_approaches'),
-                // Tables\Columns\TextColumn::make('tech_landscape'),
                 Tables\Columns\TextColumn::make('owner.full_name')->label('Owner'),
                 Tables\Columns\ToggleColumn::make('isFeatured'),
                 Tables\Columns\TextColumn::make('created_at')
@@ -106,13 +101,7 @@ class SchoolResource extends Resource
 
     public static function shouldRegisterNavigation(): bool
     {
-        // use Illuminate\Support\Facades\Auth;
-
-        // Moderator check
-        if(Auth::user()->role->role_name == 'Moderator') {
-            return false;
-        }
-
-        return true;
+        return RoleHelpers::has_minimum_privilege('site_leader');
     }
+
 }

@@ -5,7 +5,8 @@ import {ref } from 'vue'
 const props = defineProps({
     colorTheme:{
         type: String,
-        required: true
+        required: true,
+        default: 'teal'
     }
 })
 const useCustomColor= ref(false)
@@ -14,22 +15,14 @@ const useCustomColor= ref(false)
  */
 if(schoolColorKeys.includes(props.colorTheme)){
     useCustomColor.value = true
+} else {
+
 }
 </script>
 
 <template>
-    <svg
-        width="1800"
-        height="180"
-        viewBox="0 0 1800 81"
-        fill="none"
-        xmlns="http://www.w3.org/2000/svg"
-        class="absolute w-full -top-28 left-0 overflow-clip"
-    >
-        <path
-            d="M 1805 -3 V 22 V 40 C 1793 61 1727 101 1716 101 C 1573 101 1583 101 1500 101 H 0 V 26 H 874 C 1065 26 1342 26 1499 27 C 1656 24 1730 21 1805 -74 Z"
-            fill="url(#paint0_linear_1830_23198)"
-        />
+<svg class="absolute w-full h-fill min-h-8" width="100%" height="100%" fill="none" preserveAspectRatio="none" version="1.1" viewBox="0 0 1800 60" xmlns="http://www.w3.org/2000/svg">
+    <rect width="100%" height="100%" fill="url(#paint0_linear_1830_23198)"></rect>
         <defs>
             <linearGradient
                 id="paint0_linear_1830_23198"
@@ -41,15 +34,15 @@ if(schoolColorKeys.includes(props.colorTheme)){
             >
                 <stop
                     offset="0.214873"
-                    :stop-color="(useCustomColor ? schoolColorTheme[colorTheme]['dark'] :'#0d47a1')"
+                    :stop-color="(useCustomColor ? schoolColorTheme[colorTheme]['dark'] : schoolColorTheme['teal']['dark'])"
                 />
                 <stop
                     offset="0.460472"
-                    :stop-color="(useCustomColor ? schoolColorTheme[colorTheme]['med'] :'#1e88e5')"
+                    :stop-color="(useCustomColor ? schoolColorTheme[colorTheme]['med'] : schoolColorTheme['teal']['med'])"
                 />
                 <stop
                     offset="1"
-                    :stop-color="(useCustomColor ? schoolColorTheme[colorTheme]['light'] : '#64b5f6')"
+                    :stop-color="(useCustomColor ? schoolColorTheme[colorTheme]['light'] : schoolColorTheme['teal']['light'])"
                 />
             </linearGradient>
         </defs>

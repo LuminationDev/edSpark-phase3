@@ -40,10 +40,12 @@ return [
             'driver' => 'session',
             'provider' => 'users',
         ],
-        'partner' => [
-            'driver' => 'session',
-            'provider' => 'partners',
-        ]
+        'api' => [
+            'driver' => 'sanctum',
+            'provider' => 'users',
+            'hash' => false,
+        ],
+
     ],
 
     /*

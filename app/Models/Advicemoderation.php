@@ -2,8 +2,11 @@
 
 namespace App\Models;
 
+use App\Helpers\ExtraContentCleaner;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Laravel\Scout\Searchable;
+use Spatie\Tags\HasTags;
 
 class Advicemoderation extends Model
 {
@@ -29,16 +32,10 @@ class Advicemoderation extends Model
         'post_date',
         'post_modified',
         'author_id',
-        'advicetype_id'
+        'cover_image',
+        'advicetype_id',
+        'template',
+        'extra_content'
     ];
 
-    public function author()
-    {
-        return $this->belongsTo(User::class);
-    }
-
-    public function advicetype()
-    {
-        return $this->belongsTo(Advicetype::class);
-    }
 }

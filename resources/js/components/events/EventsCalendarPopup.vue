@@ -1,10 +1,14 @@
-<script setup>
-import { imageURL } from '../../constants/serverUrl';
+<script setup lang="ts">
+import {onClickOutside} from "@vueuse/core";
+import {Ref,ref} from "vue";
 import {useRouter} from "vue-router";
+
+import { imageURL } from '@/js/constants/serverUrl';
+import {EventType} from "@/js/types/EventTypes";
 
 const props = defineProps({
     dayEvents: {
-        type: Array,
+        type: Array as () => EventType[],
         required: true
     },
     date: {
@@ -14,49 +18,67 @@ const props = defineProps({
 });
 
 const emits = defineEmits(['emitClosePopup']);
-const router = useRouter()
+const calendarPopupBox: Ref<HTMLDivElement | null> = ref(null);
 
-const formatDate = (theDate) => {
-    return new Date(theDate).toLocaleDateString('en-us', { weekday:"long", year:"numeric", month:"short", day:"numeric"})
+const router = useRouter();
+
+const formatDate = (theDate: string): string => {
+    return new Date(theDate).toLocaleDateString('en-us', { weekday:"long", year:"numeric", month:"short", day:"numeric"});
 }
 
-const formatTime = (theDate) => {
+const formatTime = (theDate: string): string => {
     return new Date(theDate).toLocaleTimeString('en-us', { hour: 'numeric', minute: 'numeric', hour12: true });
 }
 
-const checkIfMultiDay = (startDate, endDate) => {
-    let start = new Date(startDate);
-    let end = new Date(endDate);
+const checkIfMultiDay = (startDate: string, endDate: string): string | undefined => {
+    const start = new Date(startDate);
+    const end = new Date(endDate);
 
-    if (start.getDate() === end.getDate()) {
-        return;
-    } else {
-        return ' | Multi-day'
+    if (start.getDate() !== end.getDate()) {
+        return ' | Multi-day';
     }
 }
 
-const handleEmitClosePopup = () => {
+const handleEmitClosePopup = (): void => {
     emits('emitClosePopup');
 }
 
-const handleClickEventFromPopup = (eventId) => {
+const handleClickEventFromPopup = (eventId: number): void => {
     console.log('Clicked the event with id: ', eventId);
     document.body.style.overflow = 'auto';
     router.push({
         name:"event-single",
-        params: { id: eventId},
-    })
+        params: { id: eventId },
+    });
 }
 
-const print = (thing) => {
-    console.log(thing.customData.cover_image);
-}
+onClickOutside(calendarPopupBox,() => {
+    emits('emitClosePopup');
+});
 </script>
 
 <template>
-    <div class="fixed inset-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] max-h-[900px] h-fit p-6 bg-white shadow-lg flex items-center justify-center z-50">
+    <div
+        ref="calendarPopupBox"
+        class="
+            -translate-x-1/2
+            -translate-y-1/2
+            bg-white
+            fixed
+            inset-1/2
+            flex
+            justify-center
+            items-center
+            h-fit
+            max-h-[900px]
+            p-6
+            shadow-lg
+            w-[800px]
+            z-50
+            "
+    >
         <div class="flex flex-col gap-4 w-full">
-            <div class="flex flex-row justify-between">
+            <div class="flex justify-between flex-row">
                 <h4 class="text-[24px]">
                     {{ formatDate(date) }}
                 </h4>
@@ -65,33 +87,45 @@ const print = (thing) => {
                     Close
                 </button>
             </div>
-            <div class="eventPopupContent w-full flex flex-col gap-4">
+            <div class="eventPopupContent flex flex-col gap-4 w-full">
                 <div
                     v-for="(event, index) in dayEvents"
                     :key="index"
                 >
-                    {{ print(event) }}
                     <div
-                        class="flex flex-row h-[146px] gap-4 w-full place-items-center cursor-pointer hover:bg-slate-50 px-6 py-2"
-                        @click="handleClickEventFromPopup(event.customData.event_id)"
+                        class="
+                            cursor-pointer
+                            flex
+                            flex-row
+                            h-[146px]
+                            place-items-center
+                            px-6
+                            py-2
+                            w-full
+                            gap-4
+                            hover:bg-slate-50
+                            "
+                        @click="handleClickEventFromPopup(event.customData.id)"
                     >
                         <div
-                            class="min-w-[100px] min-h-[100px] max-w-[100px] max-h-[100px]"
+                            class="max-h-[100px] max-w-[100px] min-h-[100px] min-w-[100px]"
                             :style="`background: url('${imageURL}/${event.customData.cover_image}') center center / cover no-repeat;`"
                         />
-                        <div class="shortDescription flex flex-col h-full w-[588px]">
-                            <div class="flex flex-row justify-between pb-2">
+                        <div class="flex flex-col h-full shortDescription w-[588px]">
+                            <div class="flex justify-between flex-row pb-2">
                                 <h5 class="font-semibold">
-                                    {{ event.customData.event_title }}
+                                    {{ event.customData.title }}
                                 </h5>
                                 <p class="text-[12px]">
-                                    {{ formatTime(event.customData.start_date) }} to {{ formatTime(event.customData.end_date) }} <span class="font-semibold">{{ checkIfMultiDay(event.customData.start_date, event.customData.end_date) }}</span>
+                                    {{ formatTime(event.customData.start_date) }} to {{ formatTime(event.customData.end_date) }} <span
+                                        class="font-semibold"
+                                    >{{ checkIfMultiDay(event.customData.start_date, event.customData.end_date) }}</span>
                                 </p>
                             </div>
 
                             <div
                                 class="eventEvcerptText"
-                                v-html="event.customData.event_excerpt"
+                                v-html="event.customData.excerpt"
                             />
                         </div>
                     </div>
@@ -106,7 +140,7 @@ const print = (thing) => {
         width: 588px;
     }
 
-    .eventEvcerptText >>> p {
+    .eventEvcerptText :deep(p) {
         max-width: 588px;
         width: 588px;
         overflow: hidden;

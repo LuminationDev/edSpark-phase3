@@ -2,57 +2,95 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Advicemeta;
+use App\Helpers\RoleHelpers;
+use App\Helpers\UserRole;
+use App\Http\Middleware\ResourceAccessControl;
 use App\Models\Advicetype;
-use App\Models\Bookmark;
-use App\Models\Like;
+use App\Services\PostService;
+use App\Services\ResponseService;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use App\Models\Advice;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Validator;
 
 class AdviceController extends Controller
 {
-    private function adviceModelToJson($advice, $request): array
+    protected PostService $postService;
+
+    public function __construct(PostService $postService)
     {
-        $isLikedByUser = false;
-        $isBookmarkedByUser = false;
-
-        if(isset($request) && $request->has('usid')){
-            $userId = $request->input('usid');
-            $isLikedByUser = $advice->likes()->where('user_id', $userId)->exists();
-            $isBookmarkedByUser = $advice->bookmarks()->where('user_id', $userId)->exists();
-
-        }
-        return [
-            'post_id' => $advice->id,
-            'post_title' => $advice->post_title,
-            'post_content' => $advice->post_content,
-            'post_excerpt' => $advice->post_excerpt,
-            'author'=> [
-                'author_id' => $advice->author->id,
-                'author_name'=> $advice->author->full_name
-            ],
-            'cover_image' => ($advice->cover_image) ? $advice->cover_image : NULL ,
-            'template' => ($advice->template) ? $advice->template : NULL,
-            'extra_content' => ($advice->extra_content) ? $advice->extra_content : NULL,
-            'post_date' => $advice->post_date,
-            'post_modified' => $advice->post_modified,
-            'post_status' => $advice->post_status,
-            'advice_type' => ($advice->advicetypes) ? $advice->advicetypes->pluck('advice_type_name') : NULL ,
-            'created_at' => $advice->created_at,
-            'updated_at' => $advice->updated_at,
-            'isLikedByUser' => $isLikedByUser,
-            'isBookmarkedByUser' => $isBookmarkedByUser,
-        ];
+        $this->postService = $postService;
+        $this->middleware(ResourceAccessControl::class . ':partner,handleFetchAdvicePosts,createAdvicePost,fetchAdvicePostById,fetchRelatedAdvice');
     }
-    public function fetchAdvicePosts(Request $request): \Illuminate\Http\JsonResponse
-    {
 
+    public function createAdvicePost(Request $request)
+    {
+        if (strtolower($request->input('post_status')) === 'draft') {
+            $validator = Validator::make($request->all(), [
+                'post_content' => 'required|string',
+                'post_title' => 'required|string',
+            ]);
+        } else if (strtolower($request->input('post_status')) === 'pending') {
+            $validator = Validator::make($request->all(), [
+                'post_title' => 'required|string',
+                'post_content' => 'required|string',
+                'post_excerpt' => 'sometimes|string',
+                'post_status' => 'required|string',
+                'author_id' => 'required|integer|exists:users,id',
+                'advicetype_id' => 'required|array',
+                'advicetype_id.*' => 'integer|exists:advice_types,id',
+                'cover_image' => 'sometimes|string',
+            ]);
+        }
+
+
+        if ($validator->fails()) {
+            return response()->json(['errors' => $validator->errors()], 400);
+        }
+
+        $adviceData = $request->except('advicetype_id');
+        $advice = Advice::create($adviceData);
+
+        // Attach the advice types to the created advice
+        if ($request->has('advicetype_id')) {
+            $advice->advicetypes()->sync($request->input('advicetype_id'));
+        }
+        if ($request->has('tags')) {
+            $advice->attachTags($request->input('tags'));
+        }
+        if ($request->has('labels')) {
+            $allLabelIds = [];
+            $inputArray = $request->input('labels');
+            foreach ($inputArray as $subArray) {
+                foreach ($subArray as $item) {
+                    $allLabelIds[] = $item['id'];
+                }
+            }
+            $advice->labels()->attach($allLabelIds);
+        }
+
+
+        return ResponseService::success('Advice created successfully!');
+    }
+
+    public function handleFetchAdvicePosts(Request $request)
+    {
+        if (Auth::user()->isPartner()) {
+            return $this->fetchUserAdvicePosts($request);
+        } else {
+            return $this->fetchAllAdvicePosts($request);
+        }
+    }
+
+    public function fetchAllAdvicePosts(Request $request): \Illuminate\Http\JsonResponse
+    {
         $advices = Advice::where('post_status', 'Published')->orderBy('created_at', 'DESC')->get();
         $data = [];
 
-        foreach ($advices as $advice){
-            $result = $this->adviceModelToJson($advice, $request);
+        foreach ($advices as $advice) {
+            $result = $this->postService->adviceModelToJson($advice, $request);
             $data[] = $result;
         }
 
@@ -60,53 +98,108 @@ class AdviceController extends Controller
 
     }
 
-    public function fetchAdvicePostById(Request $request ,$id)
+    public function fetchUserAdvicePosts(Request $request): JsonResponse
     {
-        // Validate the input $id to ensure it's a positive integer
-        if (!is_numeric($id) || $id <= 0) {
-            return response()->json(['error' => 'Invalid ID provided.'], 400);
+        try {
+            $userId = Auth::user()->id;
+            $advices = Advice::where('post_status', 'Published')
+                ->where('author_id', $userId)  // Filter by partner (author) ID
+                ->orderBy('created_at', 'DESC')
+                ->get();
+
+            $data = [];
+
+            foreach ($advices as $advice) {
+
+                $result = $this->postService->adviceModelToJson($advice, $request);
+                $data[] = $result;
+            }
+
+            return response()->json($data);
+        } catch (\Exception $e) {
+            return response()->json(['error' => "An error occurred: " . $e->getMessage()], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
-
-        // Find the advice by ID
-        $advice = Advice::find($id);
-
-        // Check if advice with given ID exists
-        if (!$advice) {
-            return response()->json(['error' => 'Advice not found.'], 404);
-        }
-
-        // Prepare the data to be returned in the response
-        $data = $this->adviceModelToJson($advice, $request);
-
-        // Return the data in the response
-        return response()->json($data);
     }
-    public function fetchAdvicePostByType(Request $request,$type): \Illuminate\Http\JsonResponse
+
+    public function fetchCurrentUserDraftAdvicePosts(Request $request): JsonResponse
+    {
+        try {
+            $userId = Auth::user()->id;
+            $advices = Advice::where('post_status', 'Draft')
+                ->where('author_id', $userId)  // Filter by partner (author) ID
+                ->orderBy('created_at', 'DESC')
+                ->get();
+
+            $data = [];
+
+            foreach ($advices as $advice) {
+
+                $result = $this->postService->adviceModelToJson($advice, $request);
+                $data[] = $result;
+            }
+
+            return response()->json($data);
+        } catch (\Exception $e) {
+            return response()->json(['error' => "An error occurred: " . $e->getMessage()], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    public function fetchAdvicePostById(Request $request): JsonResponse
+    {
+        // Validate request parameters
+        $validator = Validator::make($request->all(), [
+            'id' => 'required|integer|gt:0',
+            'preview' => 'required|boolean',
+        ]);
+
+        if ($validator->fails()) {
+            return ResponseService::error('Invalid request parameters', 400);
+        }
+
+        $id = $request->input('id');
+        $preview = $request->input('preview');
+        if (RoleHelpers::has_minimum_privilege(UserRole::MODERATOR) && $preview) {
+            // Find the advice by ID
+            $advice = Advice::find($id);
+        } else {
+            $advice = Advice::where('id', $id)->where('post_status', 'Published')->first();
+        }
+
+        // Check if advice with the given ID exists
+        if (!$advice) {
+            return ResponseService::error('Advice not found', 404);
+        }
+
+        $data = $this->postService->adviceModelToJson($advice, $request);
+
+        return ResponseService::success('Successfully retrieved advice', $data);
+    }
+
+
+    public function fetchAdvicePostByType(Request $request, $type): \Illuminate\Http\JsonResponse
     {
         $data = [];
 
         if (strpos($type, ',')) {
             $typeArray = explode(',', $type);
 
-            foreach($typeArray as $typeItem) {
+            foreach ($typeArray as $typeItem) {
                 $adviceTypes = Advicetype::where('advice_type_name', $typeItem)->first();
-                $adviceArticles = Advice::where('advicetype_id', $adviceTypes->id)->get();
+                $adviceArticles = Advice::where('advicetype_id', $adviceTypes->id)->where('post_status', 'Published')->get();
 
                 foreach ($adviceArticles as $advice) {
-                    $result = $this->adviceModelToJson($advice,$request);
+                    $result = $this->postService->adviceModelToJson($advice, $request);
                     $data[] = $result;
 
                 }
             }
 
         } else {
-            // var_dump($type);
-            // var_dump('bb'); exit;
             $adviceTypes = Advicetype::where('advice_type_name', $type)->first();
-            $adviceArticles = Advice::where('advicetype_id', $adviceTypes->id)->get();
+            $adviceArticles = Advice::where('advicetype_id', $adviceTypes->id)->where('post_status', 'Published')->get();
 
             foreach ($adviceArticles as $advice) {
-                $result = $this->adviceModelToJson($advice, $request);
+                $result = $this->postService->adviceModelToJson($advice, $request);
                 $data[] = $result;
 
             }
@@ -116,6 +209,67 @@ class AdviceController extends Controller
         return response()->json($data);
 
 
+    }
+
+    public function fetchRelatedAdvice(Request $request): \Illuminate\Http\JsonResponse
+    {
+        try {
+            // Get currentId from the request body
+            $currentAdviceId = $request->input('currentId');
+
+            // Fetch the advice post associated with the currentAdviceId
+            $currentAdvice = Advice::find($currentAdviceId);
+            if (!$currentAdvice) {
+                return response()->json(['error' => 'Advice not found'], Response::HTTP_NOT_FOUND);
+            }
+
+            // Retrieve the tags from the current advice
+            $tags = $currentAdvice->tags->pluck('name')->toArray();
+
+            // Fetch advice posts that have at least one of the current advice's tags and don't have the currentAdviceId
+            $relatedAdvices = Advice::withAnyTags($tags)
+                ->where('id', '!=', $currentAdviceId)
+                ->where('post_status', 'Published')
+                ->orderBy('created_at', 'DESC')
+                ->limit(2)
+                ->get();
+
+            // If no related advices are found, fetch two random advice posts
+            if ($relatedAdvices->isEmpty()) {
+                $relatedAdvices = Advice::where('id', '!=', $currentAdviceId)
+                    ->where('post_status', 'Published')
+                    ->inRandomOrder()
+                    ->limit(2)
+                    ->get();
+            }
+
+            // Convert each related advice to JSON format
+            $data = [];
+            foreach ($relatedAdvices as $advice) {
+                $result = $this->postService->adviceModelToJson($advice, $request);
+                $data[] = $result;
+            }
+
+            return response()->json($data);
+        } catch (\Exception $e) {
+            return response()->json(['error' => $e->getMessage()], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    public function fetchAdviceTypes(Request $request): JsonResponse
+    {
+
+        $adviceTypes = AdviceType::all()
+            ->map(function ($adviceType) {
+                return [
+                    'id' => $adviceType->id,
+                    'name' => $adviceType->advice_type_name,
+                    'value' => $adviceType->advice_type_value
+                ];
+            })
+            ->toArray();
+
+        return response()->json($adviceTypes);
     }
 }
 
