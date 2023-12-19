@@ -45,9 +45,20 @@ const edsparkColor = [
     '#0072DA',
     '#AEDCF3',
     '#965A00',
+
+    // new secondary color style guide
+    '#FFC836',
+    '#965A00',
+    '#DE4668',
+    '#FF8D78',
+    '#8866C5',
+    '#0072DA',
+    '#319795',
+    '#002858',
+
 ];
 
-const generateSafeList = (colors) => {
+const generateSafeList = (colors) : Array<string> => {
     const safeList = [];
     ['text', 'bg', 'hover:text', 'fill', 'stroke'].forEach((prefix) => {
         colors.forEach((color) => {
@@ -94,10 +105,9 @@ module.exports = {
                     mbRose: '#be123c',
                     mbIcons: 'green',
                     coolGrey: '#D9DAE4',
-
                     // new style guide
-                    banana: '#FFC836',                     
-                    bananadark: '#965A00',                       
+                    banana: '#FFC836',
+                    bananadark: '#965A00',
                     cherry:  '#DE4668',
                     peach: '#FF8D78',
                     grape:  '#8866C5',

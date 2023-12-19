@@ -54,6 +54,7 @@ const handleClickAdviceCard = () => {
         :is-liked-by-user="data.isLikedByUser"
         :is-bookmarked-by-user="data.isBookmarkedByUser"
         :guid="data.guid"
+        :labels="data.labels"
     >
         <template
             v-if="data.type.length > 0"

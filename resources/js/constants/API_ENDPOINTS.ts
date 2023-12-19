@@ -71,7 +71,7 @@ export const API_ENDPOINTS: Endpoints = appendServerURL({
     },
     PARTNER: {
         FETCH_ALL_PARTNERS: `/fetchAllPartners`,
-        FETCH_PARTNER_BY_ID: `/fetchPartnerById/`,
+        FETCH_PARTNER_BY_ID: `/fetchPartnerById`,
         UPDATE_PARTNER_CONTENT: `/updatePartnerContent`,
         FETCH_PARTNER_RESOURCE: '/fetchPartnerResource',
         CHECK_IF_USER_CAN_EDIT_PARTNER: '/checkIfUserCanEditPartner',
@@ -110,6 +110,10 @@ export const API_ENDPOINTS: Endpoints = appendServerURL({
         FETCH_ALL_BOOKMARKS_WITH_TITLE: `/fetchAllBookmarksWithTitle`,
         FETCH_ALL_BOOKMARKS_BY_TYPE: `/fetchAllBookmarksByType`,
     },
+    LABEL:{
+      FETCH_ALL_LABELS: '/fetchAllLabels'
+    },
+
 
     SEARCH: {
         SEARCH_ALL: `/search/`

@@ -60,6 +60,18 @@ class AdviceController extends Controller
         if ($request->has('tags')) {
             $advice->attachTags($request->input('tags'));
         }
+        if ($request->has('labels')) {
+            $allLabelIds = [];
+            $inputArray = $request->input('labels');
+            foreach ($inputArray as $subArray) {
+                foreach ($subArray as $item) {
+                    $allLabelIds[] = $item['id'];
+                }
+            }
+            $advice->labels()->attach($allLabelIds);
+        }
+
+
         return ResponseService::success('Advice created successfully!');
     }
 
