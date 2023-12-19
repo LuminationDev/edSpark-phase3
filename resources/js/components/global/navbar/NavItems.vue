@@ -31,12 +31,12 @@ const navDropdownToggle = ref(false);
 <template>
     <li
         v-if="hasChildren"
-        class="-ml-4 lg:!py-0 cursor-pointer decoration-4 decoration-[#B8E2DC] first-letter:uppercase py-4 relative transition-all"
+        class="cursor-pointer decoration-4 decoration-[#B8E2DC] first-letter:uppercase ml-0 py-4 relative transition-all lg:!py-0"
         @click="props.clickCallback"
     >
         <router-link
             :to="{ name: route.name }"
-            class="flex items-center"
+            class=""
         >
             <span>{{ route.meta.customText ?? route.name }}</span>
         </router-link>
@@ -48,13 +48,13 @@ const navDropdownToggle = ref(false);
         >
             <div
                 v-show="navDropdownToggle"
-                class="absolute m-2 navDropdown"
+                class="absolute m-2"
             >
-                <div class="bg-[#F5F5F5] font-medium font-sans h-full ml-0 mt-8 p-0 w-60">
+                <div class="-ml-2 bg-[#F5F5F5] font-medium font-sans h-full mt-9 p-0 w-60">
                     <NavItems
                         v-for="(child, index) in props.route.children"
                         :key="index"
-                        class="first-letter:uppercase font-sans hover:font-bold p-4 text-black text-xl hover:bg-[#E7ECEE]"
+                        class="first-letter:uppercase font-sans hover:font-bold text-black text-sm hover:bg-[#E7ECEE]"
                         :to="{ name: child.name }"
                         :route="child"
                     />
@@ -70,7 +70,7 @@ const navDropdownToggle = ref(false);
     >
         <router-link
             :to="{ name: route.name }"
-            class="flex items-center"
+            class="flex p-4"
         >
             <span>{{ route.meta.customText ?? route.name }}</span>
         </router-link>

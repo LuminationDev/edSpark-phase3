@@ -61,7 +61,6 @@ const routes: any = [
         path: '/dashboard',
         component: DashboardNew,
         meta: {
-            navigation: true,
             requiresAuth: true, //guard the dashboard route
             dropdownItem: true,
             customText: "Home"
@@ -121,16 +120,169 @@ const routes: any = [
                 } as RouteMeta
             },
             {
-                name: 'digitalMaturity',
+                name: 'Assess your digital maturity',
                 path: 'software',
                 component: SoftwareForm,
                 meta: {
                     requiresAuth: true,
                 } as RouteMeta
             }, {
-                name: 'guidesResource',
+                name: 'Guides and resources',
                 path: 'guide',
                 component: AdviceForm,
+                meta: {
+                    requiresAuth: true,
+                } as RouteMeta
+            }
+        ]
+    },
+    {
+        name: 'Technology',
+        path: '/inspiration',
+        component: TheInspirationGuides,
+        meta: {
+            navigation: true
+        },
+        children: [
+            {
+                name: "Apps and programs",
+                path: "schoolProfiles",
+                component: UserPosts,
+                meta: {
+                    requiresAuth: true,
+                } as RouteMeta
+            },
+            {
+                name: 'Equipment and devices',
+                path: 'software',
+                component: SoftwareForm,
+                meta: {
+                    requiresAuth: true,
+                } as RouteMeta
+            }
+        ]
+    },
+    {
+        name: 'AI hub',
+        path: '/inspiration',
+        component: TheInspirationGuides,
+        meta: {
+            navigation: true
+        },
+        children: [
+            {
+                name: "List 1",
+                path: "schoolProfiles",
+                component: UserPosts,
+                meta: {
+                    requiresAuth: true,
+                } as RouteMeta
+            },
+            {
+                name: 'List 2',
+                path: 'software',
+                component: SoftwareForm,
+                meta: {
+                    requiresAuth: true,
+                } as RouteMeta
+            },
+            {
+                name: 'List 3',
+                path: 'software',
+                component: SoftwareForm,
+                meta: {
+                    requiresAuth: true,
+                } as RouteMeta
+            },
+            {
+                name: 'List 4',
+                path: 'software',
+                component: SoftwareForm,
+                meta: {
+                    requiresAuth: true,
+                } as RouteMeta
+            }
+        ]
+    },
+    {
+        name: 'Providers and events',
+        path: '/inspiration',
+        component: TheInspirationGuides,
+        meta: {
+            navigation: true
+        },
+        children: [
+            {
+                name: "List 1",
+                path: "schoolProfiles",
+                component: UserPosts,
+                meta: {
+                    requiresAuth: true,
+                } as RouteMeta
+            },
+            {
+                name: 'List 2',
+                path: 'software',
+                component: SoftwareForm,
+                meta: {
+                    requiresAuth: true,
+                } as RouteMeta
+            },
+            {
+                name: 'List 3',
+                path: 'software',
+                component: SoftwareForm,
+                meta: {
+                    requiresAuth: true,
+                } as RouteMeta
+            },
+            {
+                name: 'List 4',
+                path: 'software',
+                component: SoftwareForm,
+                meta: {
+                    requiresAuth: true,
+                } as RouteMeta
+            },
+            {
+                name: 'List 5',
+                path: 'software',
+                component: SoftwareForm,
+                meta: {
+                    requiresAuth: true,
+                } as RouteMeta
+            }
+        ]
+    },
+
+    {
+        name: 'Community',
+        path: '/inspiration',
+        component: TheInspirationGuides,
+        meta: {
+            navigation: true
+        },
+        children: [
+            {
+                name: "List 1",
+                path: "schoolProfiles",
+                component: UserPosts,
+                meta: {
+                    requiresAuth: true,
+                } as RouteMeta
+            },
+            {
+                name: 'List 2',
+                path: 'software',
+                component: SoftwareForm,
+                meta: {
+                    requiresAuth: true,
+                } as RouteMeta
+            },
+            {
+                name: 'List 3',
+                path: 'software',
+                component: SoftwareForm,
                 meta: {
                     requiresAuth: true,
                 } as RouteMeta
@@ -199,7 +351,6 @@ const routes: any = [
         path: '/school',
         component: TheSchool,
         meta: {
-            navigation: true,
             requiresAuth: true,
             partnerCanAccess: false
         }
@@ -209,7 +360,6 @@ const routes: any = [
         path: '/guides',
         component: TheAdvice,
         meta: {
-            navigation: true,
             requiresAuth: true,
             partnerCanAccess: false
         }
@@ -229,7 +379,6 @@ const routes: any = [
         path: '/software',
         component: TheSoftware,
         meta: {
-            navigation: true,
             dropdownItem: true,
             requiresAuth: true,
             partnerCanAccess: false
@@ -251,7 +400,6 @@ const routes: any = [
         path: '/hardware',
         component: TheHardware,
         meta: {
-            navigation: true,
             dropdownItem: true,
             requiresAuth: true,
         }
@@ -272,7 +420,6 @@ const routes: any = [
         path: '/partners',
         component: ThePartner,
         meta: {
-            navigation: true,
             requiresAuth: true,
             customText: 'Partners'
         }
