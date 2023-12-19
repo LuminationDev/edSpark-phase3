@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AutoSaveController;
+use App\Http\Controllers\LabelController;
 use App\Http\Controllers\TagController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AdviceController;
@@ -138,6 +139,9 @@ Route::middleware('auth:sanctum')->group(function () {
 
     //Tags
     Route::post('getTopTags', [TagController::class, 'getTopTagsByModelType']);
+
+    //Labels
+    Route::get('fetchAllLabels', [LabelController::class , 'fetchAllLabels']);
 });
 
 

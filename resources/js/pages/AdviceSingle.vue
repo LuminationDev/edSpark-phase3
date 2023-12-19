@@ -6,6 +6,7 @@ import AdviceSingleCuratedContent from "@/js/components/advice/AdviceSingleCurat
 import BaseBreadcrumb from "@/js/components/bases/BaseBreadcrumb.vue";
 import BaseHero from "@/js/components/bases/BaseHero.vue";
 import BaseSingle from "@/js/components/bases/BaseSingle.vue";
+import LabelRowContentDisplay from "@/js/components/global/LabelRowContentDisplay.vue";
 import ExtraResourceTemplateDisplay from "@/js/components/renderer/ExtraResourceTemplateDisplay.vue";
 import {edSparkContentSanitizer} from "@/js/helpers/objectHelpers";
 
@@ -64,6 +65,7 @@ const timeFormatter = (originalFormat) => {
                 </template> -->
                 <template #subtitleText2>
                     <div v-html="edSparkContentSanitizer(contentFromBase['excerpt'])" />
+                    <LabelRowContentDisplay :labels-array="contentFromBase['labels']" />
                 </template>
             </BaseHero>
         </template>
@@ -80,7 +82,7 @@ const timeFormatter = (originalFormat) => {
                     />
 
                     <div
-                        class="richTextContentContainer"
+                        class="max-w-full richTextContentContainer"
                         v-html="edSparkContentSanitizer(contentFromBase['content'] )"
                     />
                     <div

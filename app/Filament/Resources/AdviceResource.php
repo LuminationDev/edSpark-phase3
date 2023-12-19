@@ -4,9 +4,9 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\AdviceResource\Pages;
 use App\Filament\Resources\AdviceResource\RelationManagers;
-use App\Helpers\Metahelper;
 use App\Helpers\RoleHelpers;
 use App\Models\Advice;
+use App\Models\Label;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -40,6 +40,20 @@ class AdviceResource extends Resource
     public static function form(Form $form): Form
     {
         $user = Auth::user()->full_name;
+        $groupedLabels = Label::all()->groupBy('type');
+
+        $labelColumns = [];
+
+        foreach ($groupedLabels as $category => $labels) {
+            $labelColumns[] = Forms\Components\CheckboxList::make("labels")
+                ->label("Labels - {$category}")
+                ->extraAttributes(['class' => 'text-primary-600'])
+                ->options($labels->pluck('value', 'id')->toArray())
+                ->relationship('labels', 'value', function ($query) use ($category) {
+                    $query->where('type', $category)->orderByRaw('CAST(labels.id AS SIGNED)');
+                })
+                ->columns(3);
+        }
         return $form->schema([
             Forms\Components\Card::make()->schema([
                 Forms\Components\TextInput::make('post_title')
@@ -71,8 +85,14 @@ class AdviceResource extends Resource
                             ->label('Advice type')
                             ->extraAttributes(['class' => 'text-primary-600'])
                             ->relationship('advicetypes', 'advice_type_name')
-                            ->columns(3)
-                            ->bulkToggleable(),
+                            ->columns(3),
+                        ...$labelColumns
+//                        Forms\Components\CheckboxList::make('labels')
+//                            ->label('Labels')
+//                            ->extraAttributes(['class' => 'text-primary-600'])
+//                            ->relationship('labels', 'value')
+//                            ->columns(3)
+//                            ->bulkToggleable(),
                     ]),
 
                 Forms\Components\Grid::make(2)->schema([
@@ -92,6 +112,7 @@ class AdviceResource extends Resource
                 Forms\Components\TagsInput::make('tags')
                     ->placeholder('Add or create tags')
                     ->helperText('Press enter after each tag')
+
             ]),
             Forms\Components\Card::make()
                 ->schema([

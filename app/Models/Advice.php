@@ -105,4 +105,20 @@ class Advice extends Model
         });
     }
 
+    public function labels()
+    {
+        return $this->morphToMany(Label::class, 'labellable');
+    }
+    public function syncLabels(string | array | \ArrayAccess $labels): static
+    {
+        if (is_string($labels)) {
+            $labels = \Illuminate\Support\Arr::wrap($labels);
+        }
+
+        $labels = collect(Label::findOrCreate($labels));
+
+        $this->labels()->sync($labels->pluck('id')->toArray());
+
+        return $this;
+    }
 }

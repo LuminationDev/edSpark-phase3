@@ -62,6 +62,16 @@ class SoftwareController extends Controller
         if ($request->has('tags')) {
             $software->attachTags($request->input('tags'));
         }
+        if ($request->has('labels')) {
+            $allLabelIds = [];
+            $inputArray = $request->input('labels');
+            foreach ($inputArray as $subArray) {
+                foreach ($subArray as $item) {
+                    $allLabelIds[] = $item['id'];
+                }
+            }
+            $software->labels()->attach($allLabelIds);
+        }
 
         return response()->json(['message' => 'Software created successfully!', 'software' => $software], 201);
     }

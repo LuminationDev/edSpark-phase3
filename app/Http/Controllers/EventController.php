@@ -63,6 +63,16 @@ class EventController extends Controller
         if ($request->has('tags')) {
             $event->attachTags($request->input('tags'));
         }
+        if ($request->has('labels')) {
+            $allLabelIds = [];
+            $inputArray = $request->input('labels');
+            foreach ($inputArray as $subArray) {
+                foreach ($subArray as $item) {
+                    $allLabelIds[] = $item['id'];
+                }
+            }
+            $event->labels()->attach($allLabelIds);
+        }
 
         return response()->json(['message' => 'Event created successfully!', 'event' => $event], 201);
 
@@ -135,7 +145,7 @@ class EventController extends Controller
         $id = $request->input('id');
         if (RoleHelpers::has_minimum_privilege(UserRole::MODERATOR)) {
             // Find the advice by ID
-            $event = Event::find('id', $id);
+            $event = Event::find($id);
         } else {
             $event = Event::where('id', $id)->where('event_status', "Published")->first();
         }

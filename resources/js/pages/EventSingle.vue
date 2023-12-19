@@ -9,13 +9,14 @@ import BaseSingleProfilePicture from "@/js/components/bases/BaseSingleProfilePic
 import EventSingleExtraContentRenderer from "@/js/components/events/EventSingleExtraContentRenderer.vue";
 import EventsLocation from "@/js/components/events/EventsLocation.vue";
 import EventsRsvp from "@/js/components/events/EventsRsvp.vue";
+import EventTypeTag from "@/js/components/events/EventTypeTag.vue";
+import LabelRowContentDisplay from "@/js/components/global/LabelRowContentDisplay.vue";
 import CalendarIcon from "@/js/components/svg/event/CalendarIcon.vue";
 import LocationIcon from "@/js/components/svg/event/LocationIcon.vue";
 import TimeIcon from "@/js/components/svg/event/TimeIcon.vue";
 import {schoolColorKeys, schoolColorTheme} from "@/js/constants/schoolColorTheme";
 import {imageURL} from "@/js/constants/serverUrl";
 import {edSparkContentSanitizer} from "@/js/helpers/objectHelpers";
-import EventTypeTag from "@/js/components/events/EventTypeTag.vue";
 
 const router = useRouter()
 const handleClickViewProfile = (author_id, author_type) => {
@@ -61,20 +62,14 @@ const getEventBackgroundColorTheme = (eventType) => {
 
                 <template #additionalTags>
                     <div
-                        class="
-                            gap-2
-                            max-w-full
-                            typeAndTags
-                            w-fit
-                            hidden
-                            ">
-                       
-                            <div class="bg-white rounded-full w-fit h-fit">
-                                <EventTypeTag
-                                    class="!m-0"
-                                    :event-type="contentFromBase.type"
-                                />
-                            </div>
+                        class="gap-2 hidden max-w-full typeAndTags w-fit"
+                    >
+                        <div class="bg-white h-fit rounded-full w-fit">
+                            <EventTypeTag
+                                class="!m-0"
+                                :event-type="contentFromBase.type"
+                            />
+                        </div>
 
                         <div
                             v-for="(tag, index) in contentFromBase['tags']"
@@ -115,7 +110,10 @@ const getEventBackgroundColorTheme = (eventType) => {
                                     v-if="!(contentFromBase['author']['author_type'] === 'user')"
                                     class="hover:cursor-pointer"
                                 >
-                                    <button class="bg-secondary-coolGrey text-black text-sm rounded py-1 px-3" @click="() => handleClickViewProfile(contentFromBase['author']['author_id'],contentFromBase['author']['author_type'])">
+                                    <button
+                                        class="bg-secondary-coolGrey px-3 py-1 rounded text-black text-sm"
+                                        @click="() => handleClickViewProfile(contentFromBase['author']['author_id'],contentFromBase['author']['author_type'])"
+                                    >
                                         View profile
                                     </button>
                                 </div>
@@ -127,22 +125,23 @@ const getEventBackgroundColorTheme = (eventType) => {
                 <template #subtitleText2>
                     <div class="eventDetails flex flex-col gap-2 here">
                         <div class="flex items-center flex-row">
-                            <CalendarIcon class="mr-2 fill-white" />
+                            <CalendarIcon class="fill-white mr-2" />
                             {{ new Date(Date.parse(contentFromBase['start_date'])).toLocaleDateString('en-GB', {
                                 day: '2-digit', month: 'long', year: 'numeric'
                             }) }}
                         </div>
                         <div class="flex items-center flex-row">
-                            <TimeIcon class="flex justify-center items-center mr-2 fill-white" />
+                            <TimeIcon class="fill-white flex justify-center items-center mr-2" />
                             {{ new Date(Date.parse(contentFromBase['start_date'])).toLocaleString('en-US',{ hour: 'numeric', minute: 'numeric', hour12: true } ) }}
                             {{ "-" }}
                             {{ new Date(Date.parse(contentFromBase['end_date'])).toLocaleString('en-US',{ hour: 'numeric', minute: 'numeric', hour12: true } ) }}
                         </div>
                         <div class="flex items-center flex-row">
-                            <LocationIcon class="mr-2 fill-white" />
+                            <LocationIcon class="fill-white mr-2" />
                             <!--                            {{ contentFromBase['type'] === 'in person' ? contentFromBase['location']['address'] : contentFromBase['type'] }}-->
                             {{ contentFromBase['location']['address'] ? contentFromBase['location']['address'] : 'Online' }}
                         </div>
+                        <LabelRowContentDisplay :labels-array="contentFromBase['labels']" />
                     </div>
                     <!--                    <div v-html="purify.sanitize(contentFromBase['excerpt'])" />-->
                 </template>

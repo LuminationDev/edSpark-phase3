@@ -18,7 +18,9 @@ import purify from "dompurify";
 import {Tippy} from "vue-tippy";
 import {toast} from "vue3-toastify";
 
+import LabelRowContentDisplay from "@/js/components/global/LabelRowContentDisplay.vue";
 import {guid as genGuid} from "@/js/helpers/guidGenerator";
+import {LabelSelectorItem} from "@/js/types/GlobalLabelTypes";
 
 
 const props = defineProps({
@@ -86,6 +88,11 @@ const props = defineProps({
         type: String,
         required: false,
         default: genGuid()
+    },
+    labels: {
+        type: Array as () => LabelSelectorItem[],
+        required: false,
+        default: []
     }
 
 });
@@ -260,6 +267,11 @@ const cardHoverToggle: Ref<boolean> = ref(false);
                             v-if="props.displayContent"
                             class="cardDisplayPreview line-clamp"
                             v-html="stripHTML(props.displayContent)"
+                        />
+                        <label-row-content-display
+                            :labels-array="props.labels"
+                            :gap-size="2"
+                            class="text-xs"
                         />
                     </div>
                 </div>

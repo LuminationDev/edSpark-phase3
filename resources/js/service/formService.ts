@@ -1,9 +1,11 @@
 import axios, {AxiosResponse} from 'axios'
+import {capitalize} from "vue";
 
 import {keyToFieldTypes, templates} from "@/js/components/bases/frontendform/templates/formTemplates";
 import {API_ENDPOINTS} from "@/js/constants/API_ENDPOINTS";
 import Advice from "@/js/models/_advice";
 import Software from "@/js/models/_software";
+import {GroupedLabel, LabelSelectorItem} from "@/js/types/GlobalLabelTypes";
 import {SimpleDataItem, TemplateType, TransformedData} from "@/js/types/PostTypes";
 
 
@@ -122,59 +124,7 @@ export const formService = {
             return keyToFieldTypes['other']
         }
     },
-    // handleSaveForm: (state: any, user_id: number, additionalData: any, itemType: string): Promise<void | AxiosResponse<any>> => {
-    //     let createURL = ''
-    //     let combinedData
-    //     const data = {
-    //         post_title: state.title,
-    //         post_excerpt: state.excerpt,
-    //         post_content: state.content,
-    //         post_status: 'Pending',
-    //         author_id: user_id,
-    //         cover_image: state.cover_image,
-    //         template: ''
-    //     }
-    //     if (itemType === 'software') {
-    //         const formattedAddtionalData = {
-    //             extra_content: formService.transformSimpleDataToFilamentFormat(additionalData['extra_content']),
-    //             softwaretype_id: additionalData['type']
-    //         }
-    //         combinedData = {...data, ...formattedAddtionalData}
-    //         createURL = API_ENDPOINTS.SOFTWARE.CREATE_SOFTWARE_POST
-    //     } else if (itemType === 'advice') {
-    //         const formattedAddtionalData = {
-    //             extra_content: formService.transformSimpleDataToFilamentFormat(additionalData['extra_content']),
-    //             advicetype_id: additionalData['type']
-    //         }
-    //         combinedData = {...data, ...formattedAddtionalData}
-    //         createURL = API_ENDPOINTS.ADVICE.CREATE_ADVICE_POST
-    //
-    //     } else if (itemType === 'event') {
-    //         const eventData = {
-    //             event_title: state.title,
-    //             event_excerpt: state.excerpt,
-    //             event_content: state.content,
-    //             event_status: 'Pending',
-    //             author_id: user_id,
-    //             cover_image: state.cover_image,
-    //             template: ''
-    //         }
-    //         const formattedAddtionalData = {
-    //             extra_content: formService.transformSimpleDataToFilamentFormat(additionalData['extra_content']),
-    //             eventtype_id: additionalData['type'],
-    //             start_date: additionalData['startTime'],
-    //             end_date: additionalData['endTime'],
-    //             event_location: JSON.stringify(additionalData['eventLocation'])
-    //         }
-    //         combinedData = {...eventData, ...formattedAddtionalData}
-    //         createURL = API_ENDPOINTS.EVENT.CREATE_EVENT_POST
-    //     }
-    //
-    //     return axios.post(createURL, combinedData).then(res => {
-    //         console.log(res)
-    //     })
-    //
-    // }
+
     getCreateUrl: (itemType: string) => {
         if (itemType === 'software') {
             return API_ENDPOINTS.SOFTWARE.CREATE_SOFTWARE_POST
@@ -194,6 +144,7 @@ export const formService = {
             cover_image: state.cover_image,
             tags: state.tags,
             template: '',
+            labels: state.labels
         };
 
         if (itemType === 'software' || itemType === 'advice' || itemType === 'event') {
@@ -217,6 +168,7 @@ export const formService = {
                     tags: state.tags,
                     author_id: user_id,
                     cover_image: state.cover_image,
+                    labels: state.labels
                 };
                 formattedAdditionalData.eventtype_id = additionalData['type'];
 
@@ -244,5 +196,26 @@ export const formService = {
         const combinedData = formService.formatData(state, user_id, additionalData, itemType, status)
         const createUrl = formService.getCreateUrl(itemType)
         return formService.sendRequest(createUrl, combinedData)
-    }
+    },
+    fetchAllLabels: (): Promise<AxiosResponse<any>> => {
+        return axios.get(API_ENDPOINTS.LABEL.FETCH_ALL_LABELS)
+    },
+    groupLabelByType: (data : LabelSelectorItem[]) : GroupedLabel => {
+        const groupedData: GroupedLabel = {} as GroupedLabel;
+
+        // Loop through the array and group items by their 'type'
+        data.forEach((item) => {
+            const { label_type, label_id, label_value, label_description } = item;
+
+            // If the type doesn't exist in the groupedData object, create an array for it
+            if (!groupedData[label_type]) {
+                groupedData[label_type] = [];
+            }
+
+            // Push the item into the corresponding type array
+            groupedData[label_type].push({id: label_id, value: label_value, name: capitalize(label_description) });
+        });
+
+        return groupedData;
+}
 }
