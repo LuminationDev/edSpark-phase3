@@ -63,7 +63,7 @@ if (route.params || route.params.filter) {
                 placeholder="Filter by type"
                 :filter-list="adviceFilterList"
                 data-path="type"
-                :preselected="preselectedFilterObject"
+                :preselected="preselectedFilterObject" 
                 @transmit-selected-filters="handleFilter"
             />
         </template>
