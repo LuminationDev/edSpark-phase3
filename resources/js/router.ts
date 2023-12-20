@@ -105,7 +105,7 @@ const routes: any = [
     },
     {
         name: 'Inspiration and guides',
-        path: '/inspiration',
+        path: '/create',
         component: TheInspirationGuides,
         meta: {
             navigation: true
@@ -113,18 +113,19 @@ const routes: any = [
         children: [
             {
                 name: "School Profiles",
-                path: "schoolProfiles",
+                path: "",
                 component: UserPosts,
                 meta: {
                     requiresAuth: true,
                 } as RouteMeta
             },
             {
-                name: 'Assess your digital maturity',
+                name: 'DMA',
                 path: 'software',
                 component: SoftwareForm,
                 meta: {
                     requiresAuth: true,
+                    customText: 'Assess your digital maturity'
                 } as RouteMeta
             }, {
                 name: 'Guides and resources',
@@ -138,7 +139,7 @@ const routes: any = [
     },
     {
         name: 'Technology',
-        path: '/inspiration',
+        path: '/browse',
         component: TheInspirationGuides,
         meta: {
             navigation: true

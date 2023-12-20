@@ -31,30 +31,45 @@ const navDropdownToggle = ref(false);
 <template>
     <li
         v-if="hasChildren"
-        class="cursor-pointer decoration-4 decoration-[#B8E2DC] first-letter:uppercase ml-0 py-4 relative transition-all lg:!py-0"
+        class="
+            cursor-pointer
+            decoration-4
+            decoration-[#B8E2DC]
+            first-letter:uppercase
+            flex
+            items-center
+            h-full
+            ml-0
+            py-4
+            relative
+            transition-all
+            lg:!py-0
+            "
         @click="props.clickCallback"
     >
         <router-link
             :to="{ name: route.name }"
             class=""
         >
-            <span>{{ route.meta.customText ?? route.name }}</span>
+            {{ route.meta.customText ?? route.name }}
         </router-link>
         <div
             v-if="hasChildren"
-            class="absolute bottom-0 decoration-4 h-full w-full"
+            class="absolute bottom-0 decoration-4 h-full overlayForTriggerDropdown w-full"
             @mouseover="navDropdownToggle = true"
             @mouseleave="navDropdownToggle = false"
         >
             <div
                 v-show="navDropdownToggle"
-                class="absolute m-2"
+                class="absolute top-16 dropdownBackgroundContainer"
             >
-                <div class="-ml-2 bg-[#F5F5F5] font-medium font-sans h-full mt-9 p-0 w-60">
+                <div
+                    class="-ml-2 bg-[#F5F5F5] font-medium h-full p-0 w-60"
+                >
                     <NavItems
                         v-for="(child, index) in props.route.children"
                         :key="index"
-                        class="first-letter:uppercase font-sans hover:font-bold text-black text-sm hover:bg-[#E7ECEE]"
+                        class="first-letter:uppercase text-black text-sm  hover:bg-[#E7ECEE] hover:font-bold"
                         :to="{ name: child.name }"
                         :route="child"
                     />
@@ -66,13 +81,12 @@ const navDropdownToggle = ref(false);
         v-else
         class=""
         @click="props.clickCallback"
-        @mouseover="navDropdownToggle = true"
     >
         <router-link
             :to="{ name: route.name }"
             class="flex p-4"
         >
-            <span>{{ route.meta.customText ?? route.name }}</span>
+            {{ route.meta.customText ?? route.name }}
         </router-link>
     </li>
 </template>

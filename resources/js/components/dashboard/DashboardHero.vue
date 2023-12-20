@@ -8,7 +8,8 @@ import {
     RightArm,
     RobotBody,
     RobotHead,
-    Shadow} from '../svg/welcomeRobot/index.js'
+    Shadow
+} from '../svg/welcomeRobot/index.js'
 
 export default {
 
@@ -35,11 +36,11 @@ export default {
 <template>
     <div class="bg-clip-content overflow-hidden">
         <div
-            class="bg-clip-content bg-gradient-to-br from-[#002856] via-[#309A9A] to-[#B8E2DC] h-auto w-full"
+            class="bg-clip-content bg-gradient-to-br from-[#002856] via-[#309A9A] to-[#B8E2DC] h-90 w-full"
         >
-            <div class="2xl:!px-40 grid grid-cols-6 pb-[3rem] px-10 md:px-20 xl:!px-20">
-                <div class="col-span-6 pt-[220px]  md:!col-span-3">
-                    <h1 class="font-semibold pb-8 text-3xl text-white  md:!text-[2.5rem] lg:!text-5xl lg:!text-[48px]">
+            <div class="-ml-24 md:px-20 xl:!px-20 2xl:!px-40 grid grid-cols-6 pb-[5rem] px-10">
+                <div class="col-span-6 pt-[120px]  md:!col-span-3">
+                    <h1 class="font-semibold pb-8 text-3xl text-white md:!text-[2.5rem] lg:!text-lg">
                         {{ welcomeMessage }}
                     </h1>
 
@@ -48,7 +49,7 @@ export default {
                     </p>
                 </div>
                 <div
-                    class="hidden relative welcomeRobot z-10  md:!col-span-2 md:!scale-75 md:block lg:!ml-0 lg:!scale-90"
+                    class="hidden relative welcomeRobot z-10 md:!col-span-2 md:!scale-75 md:block lg:!ml-0 lg:!scale-90"
                 >
                     <!-- Gear and dots -->
                     <div class="">

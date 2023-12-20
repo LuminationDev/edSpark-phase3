@@ -48,8 +48,6 @@ const setupRoutes = () => {
             } else { // no partnerCanAccess meta here
                 tempNavArray.push(route)
             }
-
-
         }
     });
     navLinks.value = tempNavArray;
@@ -61,18 +59,26 @@ setupRoutes();
 
 <template>
     <div class="h-32 relative w-full z-50 md:!h-40 lg:!h-56">
-        <img
-            src="@/assets/images/navbar.png"
-            alt="Image of children writing and playing VR"
-            class="absolute top-0 left-0 h-full nav-background object-cover w-full"
-        >
         <nav
             v-if="isAuthenticated"
             id="navbarFullsize"
-            class="bg-[#002856]/50 container hidden navbarFullsize px-12 py-2 lg:block lg:z-20"
+            class="container h-16 hidden navbarFullsize px-12 text-black  lg:block lg:z-20"
         >
             <ul
-                class="2xl:gap-8 2xl:text-2xl font-semibold gap-4 hidden text-white lg:flex lg:flex-row"
+                class="
+                    2xl:gap-4
+                    2xl:text-2xl
+                    font-semibold
+                    h-full
+                    hidden
+                    ml-48
+                    text-lg
+                    lg:text-xl
+                    gap-4
+                    lg:flex
+                    lg:flex-row
+                    lg:items-center
+                    "
             >
                 <NavItems
                     v-for="(route, i) in navLinks"
@@ -117,23 +123,18 @@ setupRoutes();
                         transition-all
                         w-40
                         z-30
-                        md:!h-44
                         md:!right-12
-                        md:!top-6
+                        md:!top-2
                         md:!w-44
-                        lg:!right-10
-                        lg:!top-12
-                        xl:!h-56
+                        lg:!left-10
+                        lg:!top-8
+                        xl:!h-36
                         xl:!right-20
-                        xl:!top-8
-                        xl:!w-56
+                        xl:!top-2
                         "
                 />
             </router-link>
         </div>
-        <NavSwoosh
-            class="absolute -bottom-0 left-0 pointer-events-none scale-y-[1.2] w-full"
-        />
     </div>
 </template>
 
@@ -198,6 +199,7 @@ setupRoutes();
         background-color: #002856 !important;
         z-index: 60 !important;
         position: fixed;
+        color: white !important;
     }
 }
 

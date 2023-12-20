@@ -26,7 +26,7 @@ const showDropdownMenu = ref(false)
 
 const imageURL = import.meta.env.VITE_SERVER_IMAGE_API;
 
-const toggleDropdownMenu = () : void => {
+const toggleDropdownMenu = (): void => {
     showDropdownMenu.value = !showDropdownMenu.value
 }
 
@@ -52,27 +52,26 @@ const handleClickAdmin = () => {
     window.open(window.location.origin + '/admin', '_self')
 }
 
-const profileTargetPath = computed(() =>{
-    if(currentUser.value.id){
+const profileTargetPath = computed(() => {
+    if (currentUser.value.id) {
         return `/profile/${currentUser.value.id}`
     } else return ''
 })
-const messageTargetPath = computed(() =>{
-    if(currentUser.value.id){
+const messageTargetPath = computed(() => {
+    if (currentUser.value.id) {
         return `/message/${currentUser.value.id}`
     } else return ''
 })
-const mySchoolTargetPath = computed(() =>{
-    if(currentUser.value?.site?.site_name){
+const mySchoolTargetPath = computed(() => {
+    if (currentUser.value?.site?.site_name) {
         return `/schools/${currentUser.value.site.site_name}`
-    }
-    else return ''
+    } else return ''
 })
 
 </script>
 
 <template>
-    <div class="absolute h-12 hidden w-12  lg:!right-48 lg:!top-52 lg:block xl:!right-72 xl:!top-56">
+    <div class="absolute h-12 hidden w-12  lg:!right-6 lg:!top-10 lg:block xl:!right-6 xl:!top-6">
         <div
             class="bg-slate-200 cursor-pointer flex h-full overflow-hidden relative rounded-full w-full z-50 hover:shadow-2xl"
             @click="toggleDropdownMenu"
