@@ -177,7 +177,7 @@ const formattedSearchBlurb = computed(() => {
         <div
             v-if="resourceList"
             id="resourceResult"
-            class="grid grid-cols-1 gap-10 place-items-center pt-10 resourceResult md:!grid-cols-2 xl:!gap-12 xl:!grid-cols-3"
+            class="grid grid-cols-1 gap-10 place-items-center pt-10 resourceResult w-full md:!grid-cols-2 xl:!gap-12 xl:!grid-cols-3"
         >
             <template
                 v-for="(data) in paginatedFilteredData"
