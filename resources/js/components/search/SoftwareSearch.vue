@@ -5,6 +5,7 @@ import {useRoute} from "vue-router";
 
 import BaseSearch from "@/js/components/search/BaseSearch.vue";
 import GenericMultiSelectFilter from "@/js/components/search/hardware/GenericMultiSelectFilter.vue";
+import LabelFiltersSearchPage from "@/js/components/search/LabelFiltersSearchPage.vue";
 import {API_ENDPOINTS} from "@/js/constants/API_ENDPOINTS";
 import {swrvOptions} from "@/js/constants/swrvConstants";
 import { axiosFetcher} from "@/js/helpers/fetcher";
@@ -64,6 +65,9 @@ if(route.params || route.params.filter){
                 :preselected="preselectedFilterObject"
                 @transmit-selected-filters="handleFilter"
             />
+        </template>
+        <template #additionalFilters>
+            <LabelFiltersSearchPage @emit-filter-to-individual-search-page="handleFilter" />
         </template>
     </BaseSearch>
 </template>

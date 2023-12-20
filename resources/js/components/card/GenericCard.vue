@@ -288,15 +288,18 @@ const cardHoverToggle: Ref<boolean> = ref(false);
             :class="cardFlexDirection"
         >
             <div
-                class="fill-secondary-blue flex flex-wrap h-fit px-3 w-full  gap-2"
+                class="fill-secondary-blue flex items-center flex-wrap gap-2 h-fit mb-1 px-3 w-full"
             >
                 <label-row-content-display
                     :labels-array="props.labels.slice(0,5)"
                     :display-type="'Card'"
                 />
             </div>
+            <template v-if="$slots.typeTag && props.sectionType === 'school'">
+                <slot name="typeTag" />
+            </template>
             <div class="flex justify-around flex-row w-full">
-                <template v-if="$slots.typeTag">
+                <template v-if="$slots.typeTag && props.sectionType !== 'school'">
                     <slot name="typeTag" />
                 </template>
 
