@@ -207,13 +207,11 @@ export const formService = {
         data.forEach((item) => {
             const { label_type, label_id, label_value, label_description } = item;
 
-            // If the type doesn't exist in the groupedData object, create an array for it
             if (!groupedData[label_type]) {
                 groupedData[label_type] = [];
             }
-
-            // Push the item into the corresponding type array
-            groupedData[label_type].push({id: label_id, value: label_value, name: capitalize(label_description) });
+            // group to format to match format accepted by multiselectfilter
+            groupedData[label_type].push({id: label_id, value: label_value, name: capitalize(label_value) });
         });
 
         return groupedData;
