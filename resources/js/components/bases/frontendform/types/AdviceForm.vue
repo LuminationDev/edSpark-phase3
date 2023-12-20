@@ -52,7 +52,7 @@ const handleReceiveAddtContent = (data) => {
             <ItemTypeCheckboxes
                 :selected-type="addtAdviceData.type"
                 :type-api-link="API_ENDPOINTS.ADVICE.FETCH_ADVICE_TYPES"
-                label="Select advice type"
+                label="Select guide type"
                 @send-selected-types-as-array="handleReceiveTypes"
             />
         </template>

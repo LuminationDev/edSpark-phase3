@@ -32,16 +32,22 @@ class SoftwareController extends Controller
 
     public function createSoftwarePost(Request $request)
     {
-        $validator = Validator::make($request->all(), [
-            'post_title' => 'required|string',
-            'post_content' => 'required|string',
-            'post_excerpt' => 'sometimes|string',
-            'post_status' => 'required|string',
-            'author_id' => 'required|integer|exists:users,id',
-            'softwaretype_id' => 'required|array',
-            'softwaretype_id.*' => 'integer|exists:software_types,id',
-        ]);
-
+        if (strtolower($request->input('post_status')) === 'draft') {
+            $validator = Validator::make($request->all(), [
+                'post_content' => 'required|string',
+                'post_title' => 'required|string',
+            ]);
+        } else if (strtolower($request->input('post_status')) === 'pending') {
+            $validator = Validator::make($request->all(), [
+                'post_title' => 'required|string',
+                'post_content' => 'required|string',
+                'post_excerpt' => 'sometimes|string',
+                'post_status' => 'required|string',
+                'author_id' => 'required|integer|exists:users,id',
+                'softwaretype_id' => 'required|array',
+                'softwaretype_id.*' => 'integer|exists:software_types,id',
+            ]);
+        }
         if ($validator->fails()) {
             return response()->json(['errors' => $validator->errors()], 400);
         }
@@ -55,6 +61,16 @@ class SoftwareController extends Controller
         }
         if ($request->has('tags')) {
             $software->attachTags($request->input('tags'));
+        }
+        if ($request->has('labels')) {
+            $allLabelIds = [];
+            $inputArray = $request->input('labels');
+            foreach ($inputArray as $subArray) {
+                foreach ($subArray as $item) {
+                    $allLabelIds[] = $item['id'];
+                }
+            }
+            $software->labels()->attach($allLabelIds);
         }
 
         return response()->json(['message' => 'Software created successfully!', 'software' => $software], 201);

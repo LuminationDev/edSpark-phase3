@@ -40,12 +40,12 @@ if (props.preselected) {
 
 
 <template>
+    <div class="flex flex-col mt-6 text-xl">
+        {{ props.placeholder }}
+    </div>
     <div
-        class="!border-black border-2 flex items-center font-medium gap-1 h-12 h-auto mt-4 pl-4 rounded text-black text-lg"
+        class="!border-black border-2 flex items-center font-medium h-12 h-auto mt-2 pl-4 rounded text-black text-lg"
     >
-        <div class="filter-input pr-2">
-            {{ props.placeholder }}
-        </div>
         <Multiselect
             :id="props.id"
             v-model="selectedValue"

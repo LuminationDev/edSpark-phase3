@@ -9,7 +9,7 @@ type ErrorMessageObject = {
 
 type ErrorMessageComposable = {
     error: Ref<ErrorMessageObject | null>;
-    setError: (status: boolean, code: number, message?: string) => void;
+    setError: ( code: number, message?: string) => void;
     clearError: () => void;
 };
 export default function useErrorMessage(): ErrorMessageComposable {

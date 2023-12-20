@@ -1,8 +1,8 @@
 <script setup>
-import SchoolTechIconGenerator from "@/js/components/global/SchoolTechIconGenerator.vue";
-import { schoolColorTheme, schoolColorKeys} from "@/js/constants/schoolColorTheme";
+import {computed,ref} from 'vue'
 
-import {ref, computed} from 'vue'
+import SchoolTechIconGenerator from "@/js/components/global/SchoolTechIconGenerator.vue";
+import { schoolColorKeys,schoolColorTheme} from "@/js/constants/schoolColorTheme";
 
 const props = defineProps({
     item: {
@@ -13,16 +13,15 @@ const props = defineProps({
 
 </script>
 <template>
-    <div class="h-full p-2 text-black rounded-xl flex flex-row ">
+    <div class="flex flex-row h-full p-2 rounded-xl text-black">
         <div class="basis-1/3">
             <SchoolTechIconGenerator
                 :tech-name="item.name"
                 :color-theme="colorTheme"
-                class="min-w-[60px] max-h-full pr-4 m-2"
             />
         </div>
-        <div class="basis-2/3 overflow-clip techSelectorItemDescription overflow-y-scroll">
-            <p class="line-clamp-3 ">
+        <div class="basis-2/3 overflow-clip overflow-y-scroll techSelectorItemDescription">
+            <p class="line-clamp-3">
                 {{ `${item.name} ${item.description}` }}
             </p>
         </div>

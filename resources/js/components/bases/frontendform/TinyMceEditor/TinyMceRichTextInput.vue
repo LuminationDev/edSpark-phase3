@@ -3,16 +3,26 @@ import Editor from '@tinymce/tinymce-vue'
 import {watchDebounced} from "@vueuse/core";
 import {ref} from "vue";
 
+import ErrorMessages from "@/js/components/bases/ErrorMessages.vue";
 import {API_ENDPOINTS, IMAGE_ENDPOINTS} from "@/js/constants/API_ENDPOINTS";
 const props = defineProps({
     srcContent: {
         type: String,
+        required: true,
+    },
+    minHeight:{
+        type: Number,
         required: false,
-        default: ''
+        default: 300
+    },
+    v$:{
+        type: Object,
+        required: false,
+        default: () =>{}
     }
 })
 
-const emits = defineEmits('emitTinyRichContent')
+const emits = defineEmits(['emitTinyRichContent'])
 const editorContent = ref(props.srcContent)
 
 const emitContent = () => {
@@ -27,7 +37,7 @@ watchDebounced(editorContent, emitContent, {debounce: 200, maxWait: 1000})
     <editor
         v-model="editorContent"
         :init="{
-            min_height: 300,
+            min_height: props.minHeight,
             menubar: false,
             plugins: 'advlist autoresize codesample directionality emoticons fullscreen image link lists media table wordcount',
             toolbar: 'undo redo removeformat |  styles fontsize | bold italic | alignjustify alignleft aligncenter  alignright | numlist bullist | forecolor backcolor | blockquote table hr | image link media codesample emoticons | wordcount',
@@ -42,6 +52,7 @@ watchDebounced(editorContent, emitContent, {debounce: 200, maxWait: 1000})
             content_style: `body {font-family: MuseoSans;} html {font-family: MuseoSans;}`
         }"
     />
+    <ErrorMessages :v$="props.v$" />
 </template>
 <style>
 .tox-promotion {

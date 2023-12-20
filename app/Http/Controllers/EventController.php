@@ -30,19 +30,25 @@ class EventController extends Controller
 
     public function createEventPost(Request $request): \Illuminate\Http\JsonResponse
     {
-        $validator = Validator::make($request->all(), [
-            'event_title' => 'required|string',
-            'event_content' => 'required|string',
-            'event_excerpt' => 'sometimes|string',
-            'event_location' => 'required|string',
-            'start_date' => 'required|date',
-            'end_date' => 'required|date|after_or_equal:start_date',
-            'event_status' => 'required|string',
-            'author_id' => 'required|integer|exists:users,id',
-            'eventtype_id' => 'required|integer|exists:event_types,id',
-            'extra_content' => 'sometimes|array'
-        ]);
-
+        if (strtolower($request->input('event_status')) === 'draft') {
+            $validator = Validator::make($request->all(), [
+                'event_title' => 'required|string',
+                'event_content' => 'required|string',
+            ]);
+        } else if (strtolower($request->input('post_status')) === 'pending') {
+            $validator = Validator::make($request->all(), [
+                'event_title' => 'required|string',
+                'event_content' => 'required|string',
+                'event_excerpt' => 'sometimes|string',
+                'event_location' => 'required|string',
+                'start_date' => 'required|date',
+                'end_date' => 'required|date|after_or_equal:start_date',
+                'event_status' => 'required|string',
+                'author_id' => 'required|integer|exists:users,id',
+                'eventtype_id' => 'required|integer|exists:event_types,id',
+                'extra_content' => 'sometimes|array'
+            ]);
+        }
         if ($validator->fails()) {
             return response()->json(['errors' => $validator->errors()], 400);
         }
@@ -56,6 +62,16 @@ class EventController extends Controller
         }
         if ($request->has('tags')) {
             $event->attachTags($request->input('tags'));
+        }
+        if ($request->has('labels')) {
+            $allLabelIds = [];
+            $inputArray = $request->input('labels');
+            foreach ($inputArray as $subArray) {
+                foreach ($subArray as $item) {
+                    $allLabelIds[] = $item['id'];
+                }
+            }
+            $event->labels()->attach($allLabelIds);
         }
 
         return response()->json(['message' => 'Event created successfully!', 'event' => $event], 201);

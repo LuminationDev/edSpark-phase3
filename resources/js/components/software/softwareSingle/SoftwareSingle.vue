@@ -9,6 +9,7 @@ import BaseHero from "@/js/components/bases/BaseHero.vue";
 import BaseSingle from "@/js/components/bases/BaseSingle.vue";
 import BaseSingleProfilePicture from "@/js/components/bases/BaseSingleProfilePicture.vue";
 import BaseSingleSubmenu from "@/js/components/bases/BaseSingleSubmenu.vue";
+import LabelRowContentDisplay from "@/js/components/global/LabelRowContentDisplay.vue";
 import ExtraResourceTemplateDisplay from "@/js/components/renderer/ExtraResourceTemplateDisplay.vue";
 import SoftwareIconGenerator from "@/js/components/software/SoftwareIconGenerator.vue";
 import SoftwareSingleCuratedContent from "@/js/components/software/softwareSingle/SoftwareSingleCuratedContent.vue";
@@ -123,6 +124,7 @@ const colorTheme = ref('softwarePurple')
                 </template>
                 <template #subtitleText2>
                     <div v-html="contentFromBase['excerpt']" />
+                    <LabelRowContentDisplay :labels-array="contentFromBase['labels']" />
                 </template>
                 <template #subtitleContent>
                     <div class="SoftwareTypeInfoInHero flex flex-row gap-4 mt-8">
@@ -155,7 +157,7 @@ const colorTheme = ref('softwarePurple')
                 <template
                     v-if="activeSubmenu === 'detail'"
                 >
-                    <div class="flex flex-col flex-wrap px-2 py-4 mr-10 w-full xl:!w-2/3">
+                    <div class="flex flex-col flex-wrap mr-10 px-2 py-4 w-full xl:!w-2/3">
                         <div class="flex font-bold py-4 text-2xl">
                             Getting started
                         </div>

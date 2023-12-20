@@ -1,16 +1,18 @@
-<script setup>
+<script setup lang="ts">
 import useSWRV from "swrv";
-import {ref} from "vue";
+import { ref} from "vue";
 import {useRoute, useRouter} from "vue-router";
 
 import BaseSearch from "@/js/components/search/BaseSearch.vue";
 import GenericMultiSelectFilter from "@/js/components/search/hardware/GenericMultiSelectFilter.vue";
+import LabelFiltersSearchPage from "@/js/components/search/LabelFiltersSearchPage.vue";
 import {API_ENDPOINTS} from "@/js/constants/API_ENDPOINTS";
 import {swrvOptions} from "@/js/constants/swrvConstants";
 import {axiosFetcher} from "@/js/helpers/fetcher";
 
 const route = useRoute()
 const router = useRouter()
+
 const {
     data: adviceList,
     error: adviceError
@@ -25,11 +27,12 @@ const adviceFilterList = [
 const filterObject = ref({})
 
 const handleFilter = (filters, dataPath) => {
+    console.log('handlefilter called ' + filters + dataPath)
     filterObject.value[dataPath] = filters.map(filter => filter.value).flat(1)
 }
 
 
-const preselectedFilterObject = ref('');
+const preselectedFilterObject = ref(null as {name: string, value: string | string[]} | null);
 
 if (route.params || route.params.filter) {
     switch (route.params.filter) {
@@ -43,16 +46,14 @@ if (route.params || route.params.filter) {
         preselectedFilterObject.value = {name: "Partner", value: "Partner"}
         break;
     default:
-        router.push('/browse/advice')
+        router.push('/browse/guide')
     }
 }
-
-
 </script>
 
 <template>
     <BaseSearch
-        search-type="advice"
+        search-type="guide"
         :resource-list="adviceList"
         :live-filter-object="filterObject"
     >
@@ -65,6 +66,9 @@ if (route.params || route.params.filter) {
                 :preselected="preselectedFilterObject"
                 @transmit-selected-filters="handleFilter"
             />
+        </template>
+        <template #additionalFilters>
+            <LabelFiltersSearchPage @emit-filter-to-individual-search-page="handleFilter" />
         </template>
     </BaseSearch>
 </template>

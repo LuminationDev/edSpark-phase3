@@ -25,7 +25,7 @@ const typeTagColor = computed(() => {
 
 <template>
     <div
-        class="TypeTag border border-solid flex gap-2 h-[28px] mx-3 my-2 place-items-center px-2 py-1 rounded-2xl text-sm w-fit"
+        class="TypeTag border border-solid flex gap-2 h-[28px] mx-3 my-2 place-items-start px-2 py-1 rounded-2xl text-sm w-fit"
         :class="typeTagColor"
     >
         <template v-if="props.typeTag[0] === 'DAG advice'">

@@ -58,9 +58,9 @@ const softwareResponsiveData = computed(() => {
         <SectionHeader
             :classes="'bg-main-darkTeal'"
             :section="'advice'"
-            :title="'Advice'"
-            :button-text="'View all resources'"
-            :button-callback="() => router.push('/browse/advice')"
+            :title="'Guides'"
+            :button-text="'View all guides'"
+            :button-callback="() => router.push('/browse/guide')"
         />
 
         <div class="flex flex-col w-full lg:!flex-row lg:px-16">

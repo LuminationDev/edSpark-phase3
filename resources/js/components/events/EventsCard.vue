@@ -47,6 +47,7 @@ const handleClickEventCard = () => {
         :is-bookmarked-by-user="data.isBookmarkedByUser"
         section-type="event"
         :guid="data.guid"
+        :labels="data.labels"
     >
         <template #typeTag>
             <EventTypeTag

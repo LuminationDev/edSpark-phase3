@@ -51,7 +51,6 @@ const customFill = computed(() => {
         >
             <SchoolTechIconGenerator
                 :tech-name="tech.name"
-                class="cursor-pointer m-2 min-w-[30px] pr-1 relative w-8 md:!min-w-[60px] md:!pr-4"
             />
             <div
                 v-if="toggleTooltip && tooltipIndex === index"

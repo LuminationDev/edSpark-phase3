@@ -1,5 +1,6 @@
 <script setup>
-import { useRouter} from "vue-router";
+import purify from "dompurify";
+import {useRouter} from "vue-router";
 
 import BaseBreadcrumb from "@/js/components/bases/BaseBreadcrumb.vue";
 import BaseHero from "@/js/components/bases/BaseHero.vue";
@@ -9,6 +10,8 @@ import EventsNorm from "@/js/components/events/EventsEMS.vue";
 import EventSingleExtraContentRenderer from "@/js/components/events/EventSingleExtraContentRenderer.vue";
 import EventsLocation from "@/js/components/events/EventsLocation.vue";
 import EventTypeTag from "@/js/components/events/EventTypeTag.vue";
+import EventsRsvp from "@/js/components/events/EventsRsvp.vue";
+import LabelRowContentDisplay from "@/js/components/global/LabelRowContentDisplay.vue";
 import CalendarIcon from "@/js/components/svg/event/CalendarIcon.vue";
 import LocationIcon from "@/js/components/svg/event/LocationIcon.vue";
 import TimeIcon from "@/js/components/svg/event/TimeIcon.vue";
@@ -122,21 +125,13 @@ const getEventBackgroundColorTheme = (eventType) => {
                     <div class="eventDetails flex flex-col gap-2 here">
                         <div class="flex items-center flex-row">
                             <CalendarIcon class="fill-white mr-2" />
-                            {{
-                                new Date(Date.parse(contentFromBase['start_date'])).toLocaleDateString('en-GB', {
-                                    day: '2-digit', month: 'long', year: 'numeric'
-                                })
-                            }}
+                            {{ new Date(Date.parse(contentFromBase['start_date'])).toLocaleDateString('en-GB', {
+                                day: '2-digit', month: 'long', year: 'numeric'
+                            }) }}
                         </div>
                         <div class="flex items-center flex-row">
                             <TimeIcon class="fill-white flex justify-center items-center mr-2" />
-                            {{
-                                new Date(Date.parse(contentFromBase['start_date'])).toLocaleString('en-US', {
-                                    hour: 'numeric',
-                                    minute: 'numeric',
-                                    hour12: true
-                                })
-                            }}
+                            {{ new Date(Date.parse(contentFromBase['start_date'])).toLocaleString('en-US',{ hour: 'numeric', minute: 'numeric', hour12: true } ) }}
                             {{ "-" }}
                             {{
                                 new Date(Date.parse(contentFromBase['end_date'])).toLocaleString('en-US', {
@@ -153,6 +148,7 @@ const getEventBackgroundColorTheme = (eventType) => {
                                 contentFromBase['location']['address'] ? contentFromBase['location']['address'] : 'Online'
                             }}
                         </div>
+                        <LabelRowContentDisplay :labels-array="contentFromBase['labels']" />
                     </div>
                     <!--                    <div v-html="purify.sanitize(contentFromBase['excerpt'])" />-->
                 </template>

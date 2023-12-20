@@ -27,17 +27,24 @@ class AdviceController extends Controller
 
     public function createAdvicePost(Request $request)
     {
-        $validator = Validator::make($request->all(), [
-            'post_title' => 'required|string',
-            'post_content' => 'required|string',
-            'post_excerpt' => 'sometimes|string',
-            'post_status' => 'required|string',
-            'author_id' => 'required|integer|exists:users,id',
-            'advicetype_id' => 'required|array',
-            'advicetype_id.*' => 'integer|exists:advice_types,id',
-            'cover_image' => 'sometimes|string',
-            'extra_content' => 'sometimes|array'
-        ]);
+        if (strtolower($request->input('post_status')) === 'draft') {
+            $validator = Validator::make($request->all(), [
+                'post_content' => 'required|string',
+                'post_title' => 'required|string',
+            ]);
+        } else if (strtolower($request->input('post_status')) === 'pending') {
+            $validator = Validator::make($request->all(), [
+                'post_title' => 'required|string',
+                'post_content' => 'required|string',
+                'post_excerpt' => 'sometimes|string',
+                'post_status' => 'required|string',
+                'author_id' => 'required|integer|exists:users,id',
+                'advicetype_id' => 'required|array',
+                'advicetype_id.*' => 'integer|exists:advice_types,id',
+                'cover_image' => 'sometimes|string',
+            ]);
+        }
+
 
         if ($validator->fails()) {
             return response()->json(['errors' => $validator->errors()], 400);
@@ -53,6 +60,18 @@ class AdviceController extends Controller
         if ($request->has('tags')) {
             $advice->attachTags($request->input('tags'));
         }
+        if ($request->has('labels')) {
+            $allLabelIds = [];
+            $inputArray = $request->input('labels');
+            foreach ($inputArray as $subArray) {
+                foreach ($subArray as $item) {
+                    $allLabelIds[] = $item['id'];
+                }
+            }
+            $advice->labels()->attach($allLabelIds);
+        }
+
+
         return ResponseService::success('Advice created successfully!');
     }
 

@@ -77,14 +77,22 @@ class PostService
             'cover_image' => ($advice->cover_image) ?: NULL,
             'template' => ($advice->template) ?: NULL,
             'extra_content' => ($advice->extra_content) ?: NULL,
-            'created_at' => $advice->post_date,
+            'created_at' => $advice->created_at,
             'modified_at' => $advice->post_modified,
             'status' => $advice->post_status,
             'type' => ($advice->advicetypes) ? $advice->advicetypes->pluck('advice_type_name') : NULL,
             'post_type' => 'advice',
             'isLikedByUser' => $isLikedByUser,
             'isBookmarkedByUser' => $isBookmarkedByUser,
-            'tags' => $advice->tags->pluck('name')
+            'tags' => $advice->tags->pluck('name'),
+            'labels' => $advice->labels->map(function ($label) {
+                return [
+                    'label_id' => $label['id'],
+                    'label_value' => $label['value'],
+                    'label_description' => $label['description'],
+                    'label_type' => $label['type'],
+                ];
+            }),
         ];
     }
 
@@ -110,7 +118,7 @@ class PostService
                 'author_logo' => $authorLogo
             ],
             'cover_image' => $software->cover_image ?? null,
-            'created_at' => $software->post_date ?? null,
+            'created_at' => $software->created_at ?? null,
             'modified_at' => $software->post_modified ?? null,
             'status' => $software->post_status ?? null,
             'type' => ($software->softwaretypes)
@@ -122,7 +130,15 @@ class PostService
             'metadata' => $softwareMetadataToSend ?? null,
             'isLikedByUser' => $isLikedByUser,
             'isBookmarkedByUser' => $isBookmarkedByUser,
-            'tags' => $software->tags->pluck('name')
+            'tags' => $software->tags->pluck('name'),
+            'labels' => $software->labels->map(function ($label) {
+                return [
+                    'label_id' => $label['id'],
+                    'label_value' => $label['value'],
+                    'label_description' => $label['description'],
+                    'label_type' => $label['type'],
+                ];
+            }),
         ];
     }
 
@@ -158,7 +174,15 @@ class PostService
             'extra_content' => ($event->extra_content) ?? NULL,
             'isLikedByUser' => $isLikedByUser,
             'isBookmarkedByUser' => $isBookmarkedByUser,
-            'tags' => $event->tags->pluck('name')
+            'tags' => $event->tags->pluck('name'),
+            'labels' => $event->labels->map(function ($label) {
+                return [
+                    'label_id' => $label['id'],
+                    'label_value' => $label['value'],
+                    'label_description' => $label['description'],
+                    'label_type' => $label['type'],
+                ];
+            }),
         ];
     }
 }

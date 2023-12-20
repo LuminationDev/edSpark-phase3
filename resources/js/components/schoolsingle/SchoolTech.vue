@@ -54,14 +54,13 @@ const customFill = computed(() => {
                 v-for="(tech,index) in deptTech"
                 :key="index"
                 :class="customFill"
-                class="basis-1/4 flex mb-10 gap-4 w-full"
+                class="basis-1/4 flex gap-4 mb-10 w-full"
             >
                 <SchoolTechIconGenerator
                     :tech-name="tech.name"
                     :color-theme="colorTheme"
-                    class="m-2 min-w-[60px] pr-4"
                 />
-                <p class="basis-3/4 font-light text-base leading-tight">
+                <p class="basis-3/4 font-light leading-tight text-base">
                     {{ `${tech.name} ${tech.description}` }}
                 </p>
             </div>
@@ -74,14 +73,13 @@ const customFill = computed(() => {
                 v-for="(tech,index) in partnerTech"
                 :key="index"
                 :class="customFill"
-                class="basis-1/4 flex mb-10 gap-4 w-full"
+                class="basis-1/4 flex gap-4 mb-10 w-full"
             >
                 <SchoolTechIconGenerator
                     :tech-name="tech.name"
                     :color-theme="colorTheme"
-                    class="m-2 min-w-[60px] pr-4"
                 />
-                <p class="basis-3/4 font-light text-base leading-tight">
+                <p class="basis-3/4 font-light leading-tight text-base">
                     {{ `${tech.name} ${tech.description}` }}
                 </p>
             </div>
