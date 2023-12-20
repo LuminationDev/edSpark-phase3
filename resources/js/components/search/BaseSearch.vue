@@ -188,7 +188,7 @@ const formattedSearchBlurb = computed(() => {
                 >
                     <div
                         :key="data.id"
-                        class="group h-[470px] max-w-[300px] transition-all w-full  hover:shadow-2xl lg:!max-w-[400px]"
+                        class="group h-[470px] max-w-[350px] transition-all w-full  hover:shadow-2xl lg:!max-w-[400px]"
                     >
                         <AdviceCard
                             :key="data.id"
@@ -200,7 +200,7 @@ const formattedSearchBlurb = computed(() => {
                 <template v-else-if="searchType === 'software'">
                     <div
                         :key="data.id"
-                        class="group h-[470px] max-w-[300px] transition-all w-full hover:shadow-2xl lg:!max-w-[400px]"
+                        class="group h-[470px] max-w-[350px] transition-all w-full hover:shadow-2xl lg:!max-w-[400px]"
                     >
                         <SoftwareCard
                             :key="data.id"
@@ -211,7 +211,7 @@ const formattedSearchBlurb = computed(() => {
                 <template v-else-if="searchType === 'hardware'">
                     <div
                         :key="data.id"
-                        class="group h-[470px] max-w-[300px] transition-all w-full hover:shadow-2xl lg:!max-w-[400px]"
+                        class="group h-[470px] max-w-[350px] transition-all w-full hover:shadow-2xl lg:!max-w-[400px]"
                     >
                         <HardwareCard
                             :key="data.id"
@@ -222,7 +222,7 @@ const formattedSearchBlurb = computed(() => {
                 <template v-else-if="searchType === 'school'">
                     <div
                         :key="data.id"
-                        class="group h-[470px] max-w-[300px] transition-all w-full hover:shadow-2xl lg:!max-w-[400px]]"
+                        class="group h-[470px] max-w-[350px] transition-all w-full hover:shadow-2xl lg:!max-w-[400px]]"
                     >
                         <SchoolCard
                             class="mx-auto"
@@ -233,7 +233,7 @@ const formattedSearchBlurb = computed(() => {
                 <template v-else-if="searchType === 'partner'">
                     <div
                         :key="data.id"
-                        class="group h-[470px] max-w-[300px] transition-all w-full hover:shadow-2xl lg:!max-w-[400px]"
+                        class="group h-[470px] max-w-[350px] transition-all w-full hover:shadow-2xl lg:!max-w-[400px]"
                     >
                         <PartnerCard
                             :data="data"
@@ -247,7 +247,7 @@ const formattedSearchBlurb = computed(() => {
                             border-black
                             group
                             h-[470px]
-                            max-w-[300px]
+                            max-w-[350px]
                             transition-all
                             w-full
                             hover:shadow-2xl
