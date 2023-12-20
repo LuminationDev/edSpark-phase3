@@ -268,11 +268,6 @@ const cardHoverToggle: Ref<boolean> = ref(false);
                             class="cardDisplayPreview line-clamp"
                             v-html="stripHTML(props.displayContent)"
                         />
-                        <label-row-content-display
-                            :labels-array="props.labels"
-                            :gap-size="2"
-                            class="text-xs"
-                        />
                     </div>
                 </div>
             </div>
@@ -289,68 +284,81 @@ const cardHoverToggle: Ref<boolean> = ref(false);
 
 
         <div
-            class="bg-white cardFooter flex justify-between left-0 w-full"
+            class="bg-white cardFooter flex justify-between flex-col left-0 w-full"
             :class="cardFlexDirection"
         >
-            <template v-if="$slots.typeTag">
+            <div
+                class="fill-secondary-blue flex items-center flex-wrap gap-2 h-fit mb-1 px-3 w-full"
+            >
+                <label-row-content-display
+                    :labels-array="props.labels.slice(0,5)"
+                    :display-type="'Card'"
+                />
+            </div>
+            <template v-if="$slots.typeTag && props.sectionType === 'school'">
                 <slot name="typeTag" />
             </template>
+            <div class="flex justify-around flex-row w-full">
+                <template v-if="$slots.typeTag && props.sectionType !== 'school'">
+                    <slot name="typeTag" />
+                </template>
 
-            <div
-                class="
-                    bg-white
-                    flex
-                    justify-end
-                    justify-items-end
-                    flex-row
-                    generic-card__footer
-                    group-hover:h-14
-                    h-0
-                    ml-auto
-                    mt-auto
-                    pl-4
-                    transition-all
-                    transition-height
-                    "
-            >
-                <tippy content="Like">
-                    <div
-                        class="bg-white like-share m-1 mb-2 rounded hover:cursor-pointer"
-                        @click="debouncedDefaultLike"
-                    >
-                        <LikeFull
-                            v-if="currentUserLiked"
-                            :key="props.guid"
-                        />
-                        <Like
-                            v-else
-                            :key="props.guid"
-                        />
-                    </div>
-                </tippy>
-                <tippy content="Bookmark">
-                    <div
-                        class="bg-white like-share m-1 mb-2 rounded hover:cursor-pointer"
-                        @click="debouncedDefaultBookmark"
-                    >
-                        <BookmarkFull
-                            v-if="currentUserBookmarked"
-                            :key="props.guid"
-                        />
-                        <BookMark
-                            v-else
-                            :key="props.guid"
-                        />
-                    </div>
-                </tippy>
-                <tippy :content="shareTippyMessage">
-                    <div
-                        class="bg-white like-share m-1 mb-2 mr-2 rounded hover:cursor-pointer"
-                        @click="handleClickShare"
-                    >
-                        <ShareIcon />
-                    </div>
-                </tippy>
+                <div
+                    class="
+                        bg-white
+                        flex
+                        justify-end
+                        justify-items-end
+                        flex-row
+                        generic-card__footer
+                        group-hover:h-14
+                        h-0
+                        ml-auto
+                        mt-auto
+                        pl-4
+                        transition-all
+                        transition-height
+                        "
+                >
+                    <tippy content="Like">
+                        <div
+                            class="bg-white like-share m-1 mb-2 rounded hover:cursor-pointer"
+                            @click="debouncedDefaultLike"
+                        >
+                            <LikeFull
+                                v-if="currentUserLiked"
+                                :key="props.guid"
+                            />
+                            <Like
+                                v-else
+                                :key="props.guid"
+                            />
+                        </div>
+                    </tippy>
+                    <tippy content="Bookmark">
+                        <div
+                            class="bg-white like-share m-1 mb-2 rounded hover:cursor-pointer"
+                            @click="debouncedDefaultBookmark"
+                        >
+                            <BookmarkFull
+                                v-if="currentUserBookmarked"
+                                :key="props.guid"
+                            />
+                            <BookMark
+                                v-else
+                                :key="props.guid"
+                            />
+                        </div>
+                    </tippy>
+                    <tippy :content="shareTippyMessage">
+                        <div
+                            class="bg-white like-share m-1 mb-2 mr-2 rounded hover:cursor-pointer"
+                            @click="handleClickShare"
+                        >
+                            <ShareIcon />
+                        </div>
+                    </tippy>
+                </div>
             </div>
         </div>
     </div>
