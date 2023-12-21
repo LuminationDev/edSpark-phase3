@@ -11,6 +11,7 @@ import EventEMSOwnerEMSLink from "@/js/components/events/EMSForms/EventEMSOwnerE
 import EventEMSOwnerNoEMSLink from "@/js/components/events/EMSForms/EventEMSOwnerNoEMSLink.vue";
 import EventSubmitRecording from "@/js/components/events/EventSubmitRecording.vue";
 import {API_ENDPOINTS} from "@/js/constants/API_ENDPOINTS";
+import {simpleValidateUrl} from "@/js/helpers/stringHelpers";
 
 const props = defineProps({
     locationType: {
@@ -37,10 +38,9 @@ const props = defineProps({
     }
 })
 
-const currentUserIsOwner = ref(true)
+const currentUserIsOwner = ref(false)
 const currentUserHasProvidedEMSLink = ref(false)
 const editingEMSlink = ref(false)
-const cancelLink = ref(false)
 const rsvpError = ref('')
 const route = useRoute()
 
@@ -86,7 +86,7 @@ const getEMSLink = () => {
         })
         .catch(err => {
             rsvpError.value = err.message;
-        });
+        });6
 };
 
 onMounted(() => {
@@ -99,35 +99,28 @@ const handleClickContactOrganiser = () => {
 }
 
 const handleEmptyErrorMessage = () => {
-    console.log('this is the function handle empty error message called inside parent')
     rsvpError.value = ''
 }
 const handleClickEditLink = () => {
-    console.log('clicked edit button')
     editingEMSlink.value = true
-
 }
 
 const handleCancelLink = () => {
-    console.log('clicked cancel button')
     editingEMSlink.value = false
     state.currentUserEMSLink = tempLink.value;
 }
 
 
 const handleClickSubmitLink = () => {
-    const validUrlRegex = /^(https?:\/\/)?(www\.)?([-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*))$/;
-
-    if (!validUrlRegex.test(v$.value.currentUserEMSLink.$model)) {
-
+    if (!simpleValidateUrl(v$.value.currentUserEMSLink.$model)) {
         console.error('Invalid URL');
-        rsvpError.value = 'Enter valid URL'
+        rsvpError.value = 'Please enter a valid URL'
         return;
     }
-
     isLoading.value = true;
     rsvpError.value = false
     tempLink.value = state.currentUserEMSLink
+
     const data = {
         event_id: route.params.id,
         ems_link: v$.value.currentUserEMSLink.$model
@@ -150,6 +143,10 @@ const handleClickSubmitLink = () => {
 
 const handleAcceptNewLink = (newlink) => {
     state.currentUserEMSLink = newlink
+}
+const handleInvalidUrlFromServer = () =>{
+    currentUserHasProvidedEMSLink.value = false
+    state.currentUserEMSLink= ''
 }
 </script>
 
@@ -194,8 +191,8 @@ const handleAcceptNewLink = (newlink) => {
                 :button-callback="handleClickEditLink"
                 :error-message="rsvpError"
                 :v$="v$.currentUserEMSLink"
-                @send-empty-error-message="handleEmptyErrorMessage"
                 @send-new-link="handleAcceptNewLink"
+                @send-empty-error-message="handleEmptyErrorMessage"
             />
         </template>
 
@@ -208,8 +205,8 @@ const handleAcceptNewLink = (newlink) => {
                 :error-message="rsvpError"
                 :v$="v$.currentUserEMSLink"
                 @send-new-link="handleAcceptNewLink"
-
                 @send-empty-error-message="handleEmptyErrorMessage"
+                @send-url-from-server-invalid="handleInvalidUrlFromServer"
             />
         </template>
 

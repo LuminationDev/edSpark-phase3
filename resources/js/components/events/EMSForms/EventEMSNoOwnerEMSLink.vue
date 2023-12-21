@@ -1,11 +1,8 @@
 <script setup>
-import {storeToRefs} from "pinia";
-import {ref} from "vue";
 
-import ErrorMessages from "@/js/components/bases/ErrorMessages.vue";
-import TextInput from "@/js/components/bases/TextInput.vue";
-import GenericButton from "@/js/components/button/GenericButton.vue";
-import {useUserStore} from "@/js/stores/useUserStore";
+import {computed, ref, watch} from "vue";
+
+import {simpleValidateUrl} from "@/js/helpers/stringHelpers";
 
 const props = defineProps({
     currentUserEMSLink: {
@@ -30,8 +27,18 @@ const props = defineProps({
     }
 })
 
-const emits = defineEmits(['sendEmptyErrorMessage', 'sendNewLink'])
+const emits = defineEmits(['sendEmptyErrorMessage', 'sendNewLink', 'sendUrlFromServerInvalid'])
 
+
+watch(props.currentUserEMSLink , () =>{
+    if(!simpleValidateUrl(props.currentUserEMSLink)){
+        console.log('url is not valid')
+        emits('sendUrlFromServerInvalid')
+    } else{
+        console.log('url is valid')
+    }
+
+})
 const handleClickErrorMessage = () => {
     console.log('inside ownerems link')
     emits('sendEmptyErrorMessage')
@@ -41,14 +48,14 @@ const formattedLink = (userLink) => {
     console.log("Original Link:", userLink);
     if (!userLink.includes("http://") && !userLink.startsWith('http://')) {
 
-        return userLink = "http://" + userLink;
+        return "http://" + userLink;
     } else {
 
         return userLink;
     }
 }
 
-const isLoading = ref(false)
+
 </script>
 
 <template>
@@ -59,7 +66,7 @@ const isLoading = ref(false)
     >
         <div class="-mt-1 Selector dropdown flex flex-col school">
             <label class="-mb-6">
-                Please click on the link below<br><br>
+                Please register for this event through the link below<br><br>
                 <span class="-mt-2 hover:text-main-lightTeal flex font-bold mb-4 text-xl">
                     <a
                         :href="formattedLink(props.currentUserEMSLink)"

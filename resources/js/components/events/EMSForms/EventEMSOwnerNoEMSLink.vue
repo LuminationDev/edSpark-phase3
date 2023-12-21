@@ -1,12 +1,8 @@
 <script setup>
-import {storeToRefs} from "pinia";
 import {ref} from "vue";
 
-import ErrorMessages from "@/js/components/bases/ErrorMessages.vue";
 import TextInput from "@/js/components/bases/TextInput.vue";
 import GenericButton from "@/js/components/button/GenericButton.vue";
-import Spinner from "@/js/components/spinner/Spinner.vue";
-import {useUserStore} from "@/js/stores/useUserStore";
 
 const props = defineProps({
     currentUserEMSLink: {
@@ -43,6 +39,7 @@ const props = defineProps({
 
 const localLink = ref(props.currentUserEMSLink)
 const emits = defineEmits(['sendEmptyErrorMessage', 'sendNewLink', 'cancel-link'])
+
 const handleSendNewLink = () => {
     emits('sendNewLink', localLink.value)
 }
@@ -72,32 +69,27 @@ const handleClickErrorMessage = () => {
                     Provide link to your Event Management System
                 </template>
             </TextInput>
-            {{ rsvpError }}
-            <!--            <div-->
-            <!--                v-if="props.isLoading"-->
-            <!--                class="!w-28 bg-main-teal flex justify-center items-center spinnerContainer"-->
-            <!--            >-->
-            <!--                <Spinner />-->
-            <!--            </div>-->
-            <GenericButton
-                :callback="props.buttonCallback"
-                class="!text-white !w-28 font-bold px-6 rounded-sm text-lg w-fit"
-                :disabled="props.isLoading"
-            >
-                <template #default>
-                    <span>Submit</span>
-                </template>
-            </GenericButton>
+            <div class="flex flex-row gap-4 mt-auto">
+                <GenericButton
+                    :callback="props.buttonCallback"
+                    class="!text-white !w-28 font-bold px-6 rounded-sm text-lg w-fit"
+                    :disabled="props.isLoading"
+                >
+                    <template #default>
+                        <span>Submit</span>
+                    </template>
+                </GenericButton>
 
-            <GenericButton
-                id="rsvpBtn"
-                :callback="props.buttonCancelback"
-                class="!text-white !w-28 font-bold mt-4 px-6 rounded-sm text-lg w-fit"
-            >
-                <template #default>
-                    Cancel
-                </template>
-            </GenericButton>
+                <GenericButton
+                    id="rsvpBtn"
+                    :callback="props.buttonCancelback"
+                    class="!bg-red-400 hover:!bg-red-600 !text-white !w-28 font-bold px-6 rounded-sm text-lg w-fit"
+                >
+                    <template #default>
+                        Cancel
+                    </template>
+                </GenericButton>
+            </div>
             <span
                 v-if="props.errorMessage"
                 class="cursor-pointer font-semibold mt-4 px-4 text-red-500"

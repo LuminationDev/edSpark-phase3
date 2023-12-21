@@ -55,8 +55,7 @@ const handleClickErrorMessage = () => {
         @submit.prevent=""
     >
         <div class="-mt-1 Selector dropdown flex flex-col school">
-            <label class="-mb-2"> You have provided the
-                Link<br>
+            <label class="-mb-2"> Link to the Event Management System
                 <span class="flex font-bold mt-4 text-xl">
                     <a
                         :href="formattedLink(props.currentUserEMSLink)"
