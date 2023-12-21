@@ -71,6 +71,11 @@ class Event extends Model
             ],
         ];
     }
+    public function isActive(): bool
+    {
+        // Check if the end date is in the future
+        return now()->lessThan($this->end_date);
+    }
 
     public function toSearchableArray(): array
     {

@@ -182,7 +182,6 @@ const statusGenerator = computed(() => {
     } else {
         return ''
     }
-
 })
 
 const handleTinyRichContent = (data) => {

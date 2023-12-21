@@ -1,4 +1,4 @@
-<script>
+<script setup>
 import Swoosh from '../svg/DashboardSwoosh.vue';
 import {
     Circle,
@@ -10,26 +10,8 @@ import {
     RobotHead,
     Shadow} from '../svg/welcomeRobot/index.js'
 
-export default {
-
-    components: {
-        Swoosh,
-        Circle,
-        Gear,
-        GearDottedLines,
-        Shadow,
-        RobotBody,
-        RobotHead,
-        LeftArm,
-        RightArm
-    },
-    data() {
-        return {
-            welcomeMessage: 'Welcome to edSpark!',
-            welcomeDescription: 'The edSpark Digital Hub is where education and technology meet. Discover how schools are already using technology effectively. Spark your imagination with advice on integrating tech into your classroom. Gain access to the best software and hardware at great prices. Join a community of like minded educators and partners.'
-        }
-    }
-}
+const welcomeMessage =  'Welcome to edSpark!'
+const welcomeDescription= 'The edSpark Digital Hub is where education and technology meet. Discover how schools are already using technology effectively. Spark your imagination with advice on integrating tech into your classroom. Gain access to the best software and hardware at great prices. Join a community of like minded educators and partners.'
 </script>
 
 <template>

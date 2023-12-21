@@ -8,7 +8,6 @@ import Software from "@/js/models/_software";
 import {GroupedLabel, LabelSelectorItem} from "@/js/types/GlobalLabelTypes";
 import {SimpleDataItem, TemplateType, TransformedData} from "@/js/types/PostTypes";
 
-
 const templateFields = {
     TEXT_FIELD: "",
     RICH_TEXT: "",
