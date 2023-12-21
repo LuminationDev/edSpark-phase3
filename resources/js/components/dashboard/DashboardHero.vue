@@ -49,7 +49,19 @@ export default {
                     </p>
                 </div>
                 <div
-                    class="hidden relative welcomeRobot z-10 md:!col-span-2 md:!scale-75 md:block lg:!ml-0 lg:!scale-90"
+                    class="
+                        hidden
+                        relative
+                        -top-36
+                        left-40
+                        welcomeRobot
+                        z-10
+                        md:!col-span-2
+                        md:!scale-75
+                        md:block
+                        lg:!ml-0
+                        lg:!scale-70
+                        "
                 >
                     <!-- Gear and dots -->
                     <div class="">
@@ -58,7 +70,7 @@ export default {
                     </div>
                     <!-- Shadow -->
                     <div class="">
-                        <Shadow class="absolute top-[620px] left-64 robotShadow z-10" />
+                        <Shadow class="absolute top-[580px] left-64 robotShadow z-10" />
                     </div>
                     <!-- Robot Body -->
                     <div class="">

@@ -65,20 +65,7 @@ setupRoutes();
             class="container h-16 hidden navbarFullsize px-12 text-black  lg:block lg:z-20"
         >
             <ul
-                class="
-                    2xl:gap-4
-                    2xl:text-2xl
-                    font-semibold
-                    h-full
-                    hidden
-                    ml-48
-                    text-lg
-                    lg:text-xl
-                    gap-4
-                    lg:flex
-                    lg:flex-row
-                    lg:items-center
-                    "
+                class="2xl:text-2xl font-semibold gap-4 h-full hidden ml-48 text-lg lg:text-xl lg:flex lg:flex-row lg:items-center"
             >
                 <NavItems
                     v-for="(route, i) in navLinks"
@@ -86,14 +73,14 @@ setupRoutes();
                     :route="route"
                 />
                 <li
-                    class="cursor-pointer"
+                    class="cursor-pointer flex items-center flex-row gap-2 ml-auto mr-8"
                     @click="handleGlobalsearchClick"
                 >
-                    <div
-                        id="searchIconMain"
-                        class="svg-container"
-                    >
-                        <Search />
+                    <div class="searchText">
+                        Search
+                    </div>
+                    <div>
+                        <Search class="stroke-black" />
                     </div>
                 </li>
             </ul>
@@ -142,25 +129,8 @@ setupRoutes();
 
 #searchIconMain {
     width: 28px;
-    margin-top: 2px;
-    z-index: -1;
 }
 
-.svg-content {
-    display: inline-block;
-    position: absolute;
-    top: 0;
-    left: 0;
-}
-
-.svg-container {
-    display: inline-block;
-    position: relative;
-    width: 100%;
-    padding-bottom: 100%;
-    vertical-align: middle;
-    overflow: hidden;
-}
 
 .nav-background {
     clip-path: inset(0 0 round 0 0 75%);
