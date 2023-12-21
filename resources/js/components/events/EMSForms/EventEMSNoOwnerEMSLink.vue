@@ -1,6 +1,5 @@
 <script setup>
 
-import {computed, ref, watch} from "vue";
 
 import {simpleValidateUrl} from "@/js/helpers/stringHelpers";
 
@@ -29,16 +28,6 @@ const props = defineProps({
 
 const emits = defineEmits(['sendEmptyErrorMessage', 'sendNewLink', 'sendUrlFromServerInvalid'])
 
-
-watch(props.currentUserEMSLink , () =>{
-    if(!simpleValidateUrl(props.currentUserEMSLink)){
-        console.log('url is not valid')
-        emits('sendUrlFromServerInvalid')
-    } else{
-        console.log('url is valid')
-    }
-
-})
 const handleClickErrorMessage = () => {
     console.log('inside ownerems link')
     emits('sendEmptyErrorMessage')
@@ -46,6 +35,11 @@ const handleClickErrorMessage = () => {
 
 const formattedLink = (userLink) => {
     console.log("Original Link:", userLink);
+    if(!simpleValidateUrl(props.currentUserEMSLink)){
+        console.log('url is not valid')
+        emits('sendUrlFromServerInvalid')
+        return
+    }
     if (!userLink.includes("http://") && !userLink.startsWith('http://')) {
 
         return "http://" + userLink;

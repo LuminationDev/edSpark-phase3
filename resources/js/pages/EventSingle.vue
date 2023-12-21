@@ -1,58 +1,37 @@
 <script setup>
-import purify from "dompurify";
 import {useRouter} from "vue-router";
 
 import BaseBreadcrumb from "@/js/components/bases/BaseBreadcrumb.vue";
 import BaseHero from "@/js/components/bases/BaseHero.vue";
 import BaseSingle from "@/js/components/bases/BaseSingle.vue";
 import BaseSingleProfilePicture from "@/js/components/bases/BaseSingleProfilePicture.vue";
-import EventsNorm from "@/js/components/events/EventsEMS.vue";
+import EventsEMS from "@/js/components/events/EventsEMS.vue";
 import EventSingleExtraContentRenderer from "@/js/components/events/EventSingleExtraContentRenderer.vue";
 import EventsLocation from "@/js/components/events/EventsLocation.vue";
 import EventTypeTag from "@/js/components/events/EventTypeTag.vue";
-import EventsRsvp from "@/js/components/events/EventsRsvp.vue";
 import LabelRowContentDisplay from "@/js/components/global/LabelRowContentDisplay.vue";
 import CalendarIcon from "@/js/components/svg/event/CalendarIcon.vue";
 import LocationIcon from "@/js/components/svg/event/LocationIcon.vue";
 import TimeIcon from "@/js/components/svg/event/TimeIcon.vue";
-import {schoolColorTheme} from "@/js/constants/schoolColorTheme";
 import {edSparkContentSanitizer} from "@/js/helpers/objectHelpers";
 
 const router = useRouter()
+
 const handleClickViewProfile = (author_id, author_type) => {
     router.push(`/${author_type}/${author_id}`)
 }
-
-const getEventColorTheme = (eventType) => {
-    // if(eventType === 'Virtual'){
-    //     return 'eventRed'
-    // } else if(eventType === 'Hybrid'){
-    //     return 'eventPurple'
-    // } else{
-    //     return 'eventBlue'
-    // }
-}
-
-const getEventBackgroundColorTheme = (eventType) => {
-    const colorKey = getEventColorTheme(eventType)
-    // return "bg-event-"+eventType
-    return "bg-[" + schoolColorTheme[colorKey]['light'] + "]"
-}
-
 </script>
 <template>
     <BaseSingle content-type="event">
         <template #hero="{contentFromBase}">
             <BaseHero
                 :background-url="contentFromBase['cover_image']"
-                :swoosh-color-theme="getEventColorTheme(contentFromBase.type)"
             >
                 <template #breadcrumb>
                     <BaseBreadcrumb
                         :child-page="contentFromBase.title"
                         parent-page="events"
                         parent-page-link="browse/event"
-                        :color-theme="getEventColorTheme(contentFromBase.type)"
                     />
                 </template>
                 <template #titleText>
@@ -181,17 +160,15 @@ const getEventBackgroundColorTheme = (eventType) => {
                         :location-type="contentFromBase['type']"
                         :location-info="contentFromBase['location']"
                     />
-                    <!--                    <EventsRsvp-->
-                    <!--                        :author-info="contentFromBase['author']"-->
-                    <!--                        :event-id="contentFromBase['id']"-->
-                    <!--                        :location-type="contentFromBase['type']"-->
-                    <!--                        :event-start-date="contentFromBase['start_date']"-->
-                    <!--                        :event-end-date="contentFromBase['end_date']"-->
-                    <!--                    />-->
-                    <EventsNorm />
+                    <EventsEMS
+                        :author-info="contentFromBase['author']"
+                        :event-id="contentFromBase['id']"
+                        :location-type="contentFromBase['type']"
+                        :event-start-date="contentFromBase['start_date']"
+                        :event-end-date="contentFromBase['end_date']"
+                    />
                 </div>
             </div>
-            <!-- <div class="flex overflow-scroll" /> -->
         </template>
     </BaseSingle>
 </template>

@@ -67,7 +67,7 @@ const formattedUrl = computed(() => {
     <div v-if="props.locationType && props.locationType.toLowerCase() === 'in person'">
         <div class="bg-blue-900 border-2 border-black p-4 text-white">
             <div class="EventAddressTitle">
-                You can attend this event in person at
+                This event is being held in-person at
             </div>
             <div class="eventAddress font-semibold">
                 {{ props.locationInfo.address }}
@@ -94,7 +94,7 @@ const formattedUrl = computed(() => {
         <template v-if="props.locationInfo.address">
             <div class="bg-blue-900 border-2 border-black p-4 text-white">
                 <div class="EventAddressTitle">
-                    You can attend this event in person at
+                    This event is being held in-person at
                 </div>
                 <div class="eventAddress font-semibold">
                     {{ props.locationInfo.address }}
@@ -113,7 +113,6 @@ const formattedUrl = computed(() => {
                         class="relative"
                         :options="{ position: markerCenter }"
                     />
-                    ¬
                 </GoogleMap>
             </div>
         </template>
@@ -123,7 +122,7 @@ const formattedUrl = computed(() => {
             class="bg-blue-900 border-2 border-black p-4 text-white"
         >
             <div class="EventUrlTitle">
-                Or join via the link below
+                Or via the link below
             </div>
             <div class="VirtualEventLocationURL">
                 <a
