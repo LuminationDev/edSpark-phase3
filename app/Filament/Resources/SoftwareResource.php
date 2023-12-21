@@ -169,11 +169,9 @@ class SoftwareResource extends Resource
             ->columns([
                 Tables\Columns\TextColumn::make('post_title')
                     ->label('Title')
+                    ->limit(30)
                     ->searchable()
                     ->sortable(),
-//                Tables\Columns\TextColumn::make('post_content')
-//                ->limit(50)
-//                ->label('Content'),
                 Tables\Columns\ImageColumn::make('cover_image'),
                 Tables\Columns\TextColumn::make('softwaretypes.software_type_name')
                     ->label('Type')

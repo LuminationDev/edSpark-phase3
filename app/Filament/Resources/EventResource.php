@@ -181,12 +181,10 @@ class EventResource extends Resource
             ->columns([
                 Tables\Columns\TextColumn::make('event_title')
                     ->label('Title')
-                    ->limit(20)
+                    ->limit(30)
                     ->sortable()
                     ->searchable(),
-                Tables\Columns\TextColumn::make('event_content')
-                    ->label('Content')
-                    ->limit(20),
+
                 Tables\Columns\ImageColumn::make('cover_image'),
                 Tables\Columns\TextColumn::make('event_status')
                     ->label('status')
