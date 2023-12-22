@@ -62,10 +62,26 @@ setupRoutes();
         <nav
             v-if="isAuthenticated"
             id="navbarFullsize"
-            class="container h-16 hidden navbarFullsize px-12 text-black  lg:block lg:z-20"
+            class="container h-16 hidden navbarFullsize px-12 text-black lg:block lg:z-20"
         >
             <ul
-                class="2xl:text-2xl font-semibold gap-4 h-full hidden ml-48 text-lg lg:text-xl lg:flex lg:flex-row lg:items-center"
+                class="
+                    2xl:ml-48
+                    2xl:text-xl
+                    :text-lg
+                    font-semibold
+                    h-full
+                    hidden
+                    ml-48
+                    lg:ml-40
+                    gap-4
+                    lg:flex
+                    lg:flex-row
+                    lg:gap-6
+                    lg:items-center
+                    lg:text-[16px]
+                    xl:text-lg
+                    "
             >
                 <NavItems
                     v-for="(route, i) in navLinks"
@@ -80,7 +96,7 @@ setupRoutes();
                         Search
                     </div>
                     <div>
-                        <Search class="stroke-black" />
+                        <Search class="2xl:h-7 2xl:w-7 stroke-black lg:h-5 lg:w-5" />
                     </div>
                 </li>
             </ul>
@@ -114,7 +130,7 @@ setupRoutes();
                         md:!top-2
                         md:!w-44
                         lg:!left-10
-                        lg:!top-8
+                        lg:!top-2
                         xl:!h-36
                         xl:!right-20
                         xl:!top-2

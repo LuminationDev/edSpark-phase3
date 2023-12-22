@@ -2,6 +2,8 @@
 import {required} from "@vuelidate/validators";
 import {ref} from 'vue';
 
+import NavbarMobileMenu from "@/js/components/global/navbar/NavbarMobileMenu.vue";
+
 const props = defineProps({
     route: {
         type: Object,
@@ -12,7 +14,8 @@ const props = defineProps({
         required: false,
         default: () => {
         }
-    },
+    }
+
 
 });
 
@@ -90,7 +93,15 @@ const navDropdownToggle = ref(false);
         </router-link>
     </li>
 </template>
+<style>
+/* Existing styles */
 
+@media screen and (max-width: 768px) {
+    .navDropdownToggle:hover {
+        display: none;
+    }
+}
+</style>
 
 <!--  <li-->
 <!--      v-if="hasChildren"-->

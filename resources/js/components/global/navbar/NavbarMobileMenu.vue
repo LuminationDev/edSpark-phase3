@@ -13,8 +13,8 @@ const router = useRouter();
 const authStore = useAuthStore();
 const windowStore = useWindowStore();
 
-const { showMobileNavbar } = storeToRefs(useWindowStore());
-const { isAuthenticated } = storeToRefs(authStore);
+const {showMobileNavbar} = storeToRefs(useWindowStore());
+const {isAuthenticated} = storeToRefs(authStore);
 const {showGlobalSearch} = storeToRefs(windowStore);
 
 const navLinks = ref([]);
@@ -71,8 +71,8 @@ setupRoutes();
                 px-5
                 py-10
                 sidebarMenu
-                text-white
                 text-2xl
+                text-white
                 transition
                 w-[30vw]
                 z-[60]
@@ -93,8 +93,9 @@ setupRoutes();
                     :route="route"
                     :click-callback="handleToggleNavbar"
                 />
-                <li id="searchItem"
-                    class="cursor-pointer mt-6 text-sm font-normal"
+                <li
+                    id="searchItem"
+                    class="cursor-pointer font-normal mt-6 text-sm"
                     style="align-self: center;"
                     @click="handleGlobalsearchClick"
                 >
@@ -132,7 +133,9 @@ setupRoutes();
 
                         </svg>
                     </div>
-                    <p style="margin-top:4px">Search</p>
+                    <p style="margin-top:4px">
+                        Search
+                    </p>
                 </li>
             </ul>
         </div>
@@ -146,33 +149,33 @@ setupRoutes();
 <style scoped>
 
 #searchItem {
-    
+
     display: flex;
     align-self: center;
     flex-direction: column;
     align-items: center;
 }
 
-#searchIconMobile { 
-    width: 28px; 
-    margin-top: 16px; 
-    z-index: -1; 
+#searchIconMobile {
+    width: 28px;
+    margin-top: 16px;
+    z-index: -1;
 }
 
-.svg-content { 
-	display: inline-block;
-	position: absolute;
-	top: 0;
-	left: 0;
+.svg-content {
+    display: inline-block;
+    position: absolute;
+    top: 0;
+    left: 0;
 }
 
-.svg-container { 
-	display: inline-block;
-	position: relative;
-	width: 100%;
-	padding-bottom: 70%; 
-	vertical-align: middle; 
-	overflow: hidden; 
+.svg-container {
+    display: inline-block;
+    position: relative;
+    width: 100%;
+    padding-bottom: 70%;
+    vertical-align: middle;
+    overflow: hidden;
 }
 
 .slide-fade-enter-active {
@@ -188,11 +191,13 @@ setupRoutes();
     transform: translateX(-20px);
     opacity: 0;
 }
-@media screen and (min-width: 375px){
-    #navbarMobileBurger{
+
+@media screen and (min-width: 375px) {
+    #navbarMobileBurger {
         left: 10px;
     }
 }
+
 /* @media screen and (min-width: 640px){
     #navbarMobileBurger{
         left: 4vw !important;
@@ -209,13 +214,14 @@ setupRoutes();
     }
 } */
 
-#navbarMobileBurger{
+#navbarMobileBurger {
     transition: 300ms;
     position: fixed;
     top: 10px;
     left: 10px;
 
 }
+
 .navbarScrolled {
     /* top: 10px !important; */
     background-color: #002856 !important;
