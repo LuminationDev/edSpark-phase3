@@ -71,7 +71,7 @@ const mySchoolTargetPath = computed(() => {
 </script>
 
 <template>
-    <div class="absolute h-12 hidden w-12  lg:!right-6 lg:!top-6 lg:block xl:!right-6 xl:!top-6">
+    <div class="absolute h-12 hidden w-12  lg:!right-5 lg:!top-2 lg:block xl:!right-5 xl:!top-2">
         <div
             class="bg-slate-200 cursor-pointer flex h-full overflow-hidden relative rounded-full w-full z-50 hover:shadow-2xl"
             @click="toggleDropdownMenu"

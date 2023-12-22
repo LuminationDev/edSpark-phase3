@@ -111,15 +111,16 @@ window.addEventListener('scroll', () => {
                         />
                     </div>
                 </li>
+                <ProfileDropdown
+                    v-if="isAuthenticated"
+                    :key="currentUser"
+                    :current-user="currentUser"
+                    :avatar-url="avatarUrl"
+                />
             </ul>
         </nav>
 
-        <ProfileDropdown
-            v-if="isAuthenticated"
-            :key="currentUser"
-            :current-user="currentUser"
-            :avatar-url="avatarUrl"
-        />
+
         <div
             id="edSparkLogo"
             title="edSpark logo"
