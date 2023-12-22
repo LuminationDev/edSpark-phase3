@@ -1,8 +1,7 @@
 <script setup>
 import {required} from "@vuelidate/validators";
-import {ref} from 'vue';
+import {onMounted, ref} from 'vue';
 
-import NavbarMobileMenu from "@/js/components/global/navbar/NavbarMobileMenu.vue";
 
 const props = defineProps({
     route: {
@@ -26,7 +25,9 @@ if (props.route.children && props.route.children.length > 0) {
     console.log(props.route)
     hasChildren.value = true
 }
-const navDropdownToggle = ref(false);
+const navDropdownToggle = ref(false)
+
+const isMobile = (window.innerWidth <= 1024)
 
 
 </script>
@@ -57,7 +58,7 @@ const navDropdownToggle = ref(false);
             {{ route.meta.customText ?? route.name }}
         </router-link>
         <div
-            v-if="hasChildren"
+            v-if="hasChildren && !isMobile"
             class="absolute bottom-0 decoration-4 h-full overlayForTriggerDropdown w-full"
             @mouseover="navDropdownToggle = true"
             @mouseleave="navDropdownToggle = false"
@@ -93,15 +94,7 @@ const navDropdownToggle = ref(false);
         </router-link>
     </li>
 </template>
-<style>
-/* Existing styles */
 
-@media screen and (max-width: 768px) {
-    .navDropdownToggle:hover {
-        display: none;
-    }
-}
-</style>
 
 <!--  <li-->
 <!--      v-if="hasChildren"-->
