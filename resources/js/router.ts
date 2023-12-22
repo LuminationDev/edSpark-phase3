@@ -112,7 +112,7 @@ const routes: any = [
         },
         children: [
             {
-                name: "School Profiles",
+                name: "School profiles",
                 path: "",
                 component: UserPosts,
                 meta: {
