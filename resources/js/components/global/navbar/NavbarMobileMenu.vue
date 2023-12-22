@@ -6,6 +6,7 @@ import {useRouter} from "vue-router";
 
 import NavItems from "@/js/components/global/navbar/NavItems.vue";
 import Close from "@/js/components/svg/Close.vue";
+import Search from "@/js/components/svg/Search.vue";
 import {useAuthStore} from "@/js/stores/useAuthStore";
 import {useWindowStore} from "@/js/stores/useWindowStore";
 
@@ -94,48 +95,15 @@ setupRoutes();
                     :click-callback="handleToggleNavbar"
                 />
                 <li
-                    id="searchItem"
-                    class="cursor-pointer font-normal mt-6 text-sm"
-                    style="align-self: center;"
+                    class="cursor-pointer flex items-center flex-row gap-28 mt-4"
                     @click="handleGlobalsearchClick"
                 >
-                    <div
-                        id="searchIconMobile"
-                        class="svg-container"
-                    >
-                        <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            preserveAspectRatio="xMinYMin meet"
-                            class="svg-content"
-                        >
-                            <circle
-                                cx="10"
-                                cy="10"
-                                r="8"
-                                stroke="#FFF"
-                                stroke-width="3"
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                            />
-
-                            <line
-                                x1="15"
-                                y1="16"
-                                x2="21"
-                                y2="22"
-                                stroke="#FFF"
-                                stroke-width="3"
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                            />
-
-                        </svg>
-                    </div>
-                    <p style="margin-top:4px">
+                    <div class="searchText">
                         Search
-                    </p>
+                    </div>
+                    <div>
+                        <Search class="ml-10" />
+                    </div>
                 </li>
             </ul>
         </div>

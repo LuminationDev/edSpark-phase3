@@ -54,6 +54,13 @@ const setupRoutes = () => {
 };
 
 setupRoutes();
+const scrollPosition = ref(0);
+
+// Listen for scroll events and update scrollPosition
+window.addEventListener('scroll', () => {
+    scrollPosition.value = window.scrollY;
+})
+
 
 </script>
 
@@ -62,6 +69,7 @@ setupRoutes();
         <nav
             v-if="isAuthenticated"
             id="navbarFullsize"
+            :class="{ navbarScrolled: scrollPosition > 0 }"
             class="container h-16 hidden navbarFullsize px-12 text-black lg:block lg:z-20"
         >
             <ul
@@ -82,6 +90,7 @@ setupRoutes();
                     lg:text-[16px]
                     xl:text-lg
                     "
+                :class="{'text-white': scrollPosition > 0}"
             >
                 <NavItems
                     v-for="(route, i) in navLinks"
@@ -96,7 +105,10 @@ setupRoutes();
                         Search
                     </div>
                     <div>
-                        <Search class="2xl:h-7 2xl:w-7 stroke-black lg:h-5 lg:w-5" />
+                        <Search
+                            class="2xl:h-7 2xl:w-7 stroke-black lg:h-5 lg:w-5"
+                            :class="{'stroke-white': scrollPosition > 0}"
+                        />
                     </div>
                 </li>
             </ul>
@@ -185,7 +197,6 @@ setupRoutes();
         background-color: #002856 !important;
         z-index: 60 !important;
         position: fixed;
-        color: white !important;
     }
 }
 
