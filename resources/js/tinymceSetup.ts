@@ -35,6 +35,5 @@ import 'tinymce/icons/default'
 import 'tinymce/plugins/emoticons/js/emojis'
 import 'tinymce/plugins/emoticons/js/emojiimages'
 import 'tinymce/skins/ui/oxide/skin.min.css';
-import 'tinymce/skins/content/default/content.min.css';
 
 export default window.tinymce;

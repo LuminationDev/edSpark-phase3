@@ -143,3 +143,14 @@ onBeforeUnmount(() => {
         <Footer />
     </footer>
 </template>
+<style>
+.tox-promotion {
+    display: none;
+}
+
+
+.tox-statusbar__branding {
+    display: none;
+
+}
+</style>
