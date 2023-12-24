@@ -2,7 +2,6 @@ import '../css/font/font.css'
 import './bootstrap';
 import 'vue3-toastify/dist/index.css';
 import 'tippy.js/dist/tippy.css'
-import '../css/app.css';
 import '../css/output.css';
 
 import {library} from '@fortawesome/fontawesome-svg-core'

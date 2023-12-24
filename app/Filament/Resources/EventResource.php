@@ -21,6 +21,7 @@ use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
+use Mohamedsabil83\FilamentFormsTinyeditor\Components\TinyEditor;
 use Spatie\Tags\Tag;
 use SplFileInfo;
 
@@ -66,9 +67,11 @@ class EventResource extends Resource
                             ->label('Tagline')
                             ->placeholder('150 characters or less')
                             ->maxLength(150),
-                        Forms\Components\RichEditor::make('event_content')
-                            ->required()
-                            ->maxLength(65535),
+                        TinyEditor::make('event_content')
+                            ->label('Content')->fileAttachmentsDisk('local')
+                            ->fileAttachmentsVisibility('public')
+                            ->fileAttachmentsDirectory('public/uploads/event')
+                            ->required(),
                         Forms\Components\FileUpload::make('cover_image')
                             ->preserveFilenames()
                             ->disk('public')

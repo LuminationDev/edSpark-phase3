@@ -85,11 +85,9 @@ table[border]:not([border="0"]):not([style*=border-color]) td, table[border]:not
 
 figure {
     display: table;
-    margin: 1rem auto
 }
 
 figure figcaption {
-    color: #999;
     display: block;
     margin-top: .25rem;
     text-align: center
