@@ -101,6 +101,12 @@ export const API_ENDPOINTS: Endpoints = appendServerURL({
         GET_USER_DRAFT_POSTS: `/getUserDraftPosts`
 
     },
+    CATALOGUE: {
+        FETCH_CATALOGUE_BY_FIELD : '/fetchCatalogueByField',
+        FETCH_SINGLE_PRODUCT_BY_NAME: '/fetchSingleProductByName',
+        FETCH_UPGRADES_SINGLE_PRODUCT: '/fetchUpgradesSingleProduct',
+        FETCH_BUNDLES_SINGLE_PRODUCT: '/fetchBundlesSingleProduct',
+    },
     LIKE: {
         LIKE: `/like`,
         FETCH_ALL_LIKES: `/fetchAllLikes`,
