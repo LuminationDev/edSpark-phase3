@@ -53,7 +53,7 @@ const softwareResponsiveData = computed(() => {
 
 <template>
     <div>
-        <DashboardHero class="-mt-extraHuge" />
+        <DashboardHero />
 
         <SectionHeader
             :classes="'bg-main-darkTeal'"

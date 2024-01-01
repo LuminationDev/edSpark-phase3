@@ -143,7 +143,8 @@ module.exports = {
                 large: '36px',
                 extraLarge: '48px',
                 huge: '81px',
-                extraHuge: '140px'
+                extraHuge: '140px',
+                mainHero: '500px'
             },
             screens: {
                 'ml': '860px',

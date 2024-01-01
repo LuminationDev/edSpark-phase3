@@ -21,6 +21,7 @@ import AdviceSingle from "@/js/pages/AdviceSingle.vue";
 import EdsparkPageNotFound from "@/js/pages/EdsparkPageNotFound.vue";
 import EventSingle from "@/js/pages/EventSingle.vue";
 import HardwareSingle from '@/js/pages/HardwareSingle.vue';
+import InspirationAndGuides from "@/js/pages/InspirationAndGuides.vue";
 import PartnerSingle from "@/js/pages/PartnerSingle.vue";
 import SchoolSingle from "@/js/pages/SchoolSingle.vue";
 import TheAdvice from "@/js/pages/TheAdvice.vue";
@@ -172,7 +173,7 @@ const routes: any = [
     {
         name: 'guides',
         path: '/guides',
-        component: TheAdvice,
+        component: InspirationAndGuides,
         meta: {
             navigation: true,
             requiresAuth: true,

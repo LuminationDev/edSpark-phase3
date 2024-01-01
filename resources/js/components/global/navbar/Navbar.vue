@@ -60,12 +60,12 @@ setupRoutes();
 </script>
 
 <template>
-    <div class="h-32 relative w-full z-50 md:!h-40 lg:!h-56">
-        <img
-            src="@/assets/images/navbar.png"
-            alt="Image of children writing and playing VR"
-            class="absolute top-0 left-0 h-full nav-background object-cover w-full"
-        >
+    <div class="h-24 relative w-full z-50 md:!h-24 lg:!h-24">
+        <!--        <img-->
+        <!--            src="@/assets/images/navbar.png"-->
+        <!--            alt="Image of children writing and playing VR"-->
+        <!--            class="absolute top-0 left-0 h-full nav-background object-cover w-full"-->
+        <!--        >-->
         <nav
             v-if="isAuthenticated"
             id="navbarFullsize"
@@ -131,9 +131,9 @@ setupRoutes();
                 />
             </router-link>
         </div>
-        <NavSwoosh
-            class="absolute -bottom-0 left-0 pointer-events-none scale-y-[1.2] w-full"
-        />
+        <!--        <NavSwoosh-->
+        <!--            class="absolute -bottom-0 left-0 pointer-events-none scale-y-[1.2] w-full"-->
+        <!--        />-->
     </div>
 </template>
 
