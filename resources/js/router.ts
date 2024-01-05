@@ -109,7 +109,7 @@ const routes: any = [
         children: [
             {
                 name: 'browseSchools',
-                path: 'school',
+                path: 'school/:filter?',
                 component: SchoolSearch,
                 meta: {
                     requiresAuth: true,

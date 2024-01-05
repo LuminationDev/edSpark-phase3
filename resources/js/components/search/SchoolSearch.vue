@@ -1,23 +1,27 @@
-<script setup>
+<script setup lang="ts">
 import useSWRV from "swrv";
 import {computed, ref} from "vue";
+import {useRoute, useRouter} from "vue-router";
 
 import BaseSearch from "@/js/components/search/BaseSearch.vue";
 import GenericMultiSelectFilter from "@/js/components/search/hardware/GenericMultiSelectFilter.vue";
 import {API_ENDPOINTS} from "@/js/constants/API_ENDPOINTS";
 import {schoolPartnerTech,schoolTech} from "@/js/constants/schoolTech";
 import { axiosSchoolFetcherParams} from "@/js/helpers/fetcher";
+import {lowerSlugify} from "@/js/helpers/stringHelpers";
 import {useUserStore} from "@/js/stores/useUserStore";
 
 const swrvOptions = {
     revalidateOnFocus: false, // disable refresh on every focus, suspect its too often
     refreshInterval: 30000 // refresh or revalidate data every 30 secs
 }
+const route = useRoute()
+const router = useRouter()
+
 const combinedSchoolTech = [...schoolTech,...schoolPartnerTech];
 console.log(combinedSchoolTech)
 
 const {data: schoolList, error: schoolError} = useSWRV(API_ENDPOINTS.SCHOOL.FETCH_ALL_SCHOOLS, axiosSchoolFetcherParams(useUserStore().getUserRequestParam), swrvOptions)
-
 const schoolFilterList = [
     {name: "Preschool", value:"PRE"},
     {name: "Primary Education", value:"PRIM"},
@@ -40,6 +44,22 @@ const handleFilter = (filters, dataPath) => {
     filterObject.value[dataPath] = filters.map(filter => filter.value)
 }
 
+const preselectedFilterObject = ref(null as {name: string, value: string | string[]} | null);
+
+
+if (route.params && route.params.filter) {
+    const filterNameSlug = lowerSlugify(route.params.filter);
+
+    const matchingFilter = schoolFilterList.find(filter => filterNameSlug === lowerSlugify(filter.name));
+
+    if (matchingFilter) {
+        preselectedFilterObject.value = matchingFilter;
+    } else {
+        router.push('/browse/school');
+    }
+}
+
+
 </script>
 
 <template>
@@ -54,6 +74,8 @@ const handleFilter = (filters, dataPath) => {
                 placeholder="Filter by type"
                 :filter-list="schoolFilterList"
                 data-path="site_type_code"
+                :preselected="preselectedFilterObject"
+
                 @transmit-selected-filters="handleFilter"
             />
             <GenericMultiSelectFilter

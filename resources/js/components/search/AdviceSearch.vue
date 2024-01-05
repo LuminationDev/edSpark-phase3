@@ -28,7 +28,7 @@ const filterObject = ref({})
 
 const handleFilter = (filters, dataPath) => {
     console.log('handlefilter called ' + filters + dataPath)
-    filterObject.value[dataPath] = filters.map(filter => filter.value).flat(1)
+    filterObject.value[dataPth] = filters.map(filter => filter.value).flat(1)
 }
 
 

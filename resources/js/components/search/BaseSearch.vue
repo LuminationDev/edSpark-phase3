@@ -38,8 +38,6 @@ const filteredTermData = computed(() => {
     if (!props.resourceList) return [];
 
     return props.resourceList.reduce((acc, resource) => {
-
-
         // List of possible attribute names to check - here because different objects has different field
         const attributesToCheck = ['name', 'title'];
 

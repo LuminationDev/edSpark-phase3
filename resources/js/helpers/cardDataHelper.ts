@@ -77,3 +77,6 @@ export const cardLinkGenerator = (type: string, name:string ,id?: number ) => {
         return `${appURL}/${type}/resources/${id}/${lowerSlugify(name)}`
     }
 }
+
+export const getNRandomElementsFromArray = (array, num) => array.length <= num ? array : array.sort(() => Math.random() - 0.5).slice(0, num);
+
