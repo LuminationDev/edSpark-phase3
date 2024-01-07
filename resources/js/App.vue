@@ -59,7 +59,7 @@ const removeEventListeners = () => {
 const handleAuth = async () => {
     // // Check if the URL contains the desired origin
     // if (window.location.origin.includes('test.edspark.sa.edu.au')) return;
-
+    userStore.fetchCurrentUserAndLoadIntoStore();
     await authStore.checkAuthenticationStatus(); // populate isAuth with promise
 
     if (!authStore.isAuthenticated) {
