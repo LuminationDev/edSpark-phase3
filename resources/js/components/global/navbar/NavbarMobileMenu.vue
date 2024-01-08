@@ -4,7 +4,7 @@ import {storeToRefs} from "pinia";
 import {onMounted, ref} from "vue";
 import {useRouter} from "vue-router";
 
-import NavItems from "@/js/components/global/navbar/NavItems.vue";
+import NavItemsMobileMenu from "@/js/components/global/navbar/NavItemsMobileMenu.vue";
 import Close from "@/js/components/svg/Close.vue";
 import Search from "@/js/components/svg/Search.vue";
 import {useAuthStore} from "@/js/stores/useAuthStore";
@@ -86,9 +86,9 @@ setupRoutes();
                     class="cursor-pointer font-bold ml-auto text-2xl hover:text-main-teal"
                     @click="handleToggleNavbar"
                 >
-                    <Close class="fill-white hover:fill-slate-200 h-8 w-8 hover:cursor-pointer" />
+                    <Close class="fill-white hover:fill-slate-200 h-6 w-6 hover:cursor-pointer" />
                 </li>
-                <NavItems
+                <NavItemsMobileMenu
                     v-for="(route, i) in navLinks"
                     :key="i"
                     :route="route"

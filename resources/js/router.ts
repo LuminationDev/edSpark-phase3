@@ -115,6 +115,7 @@ const routes: any = [
                 name: "School profiles",
                 path: "",
                 component: UserPosts,
+                active: false,
                 meta: {
                     requiresAuth: true,
                 } as RouteMeta
