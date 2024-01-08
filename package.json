@@ -42,7 +42,7 @@
         "vite": "^4.5.0"
     },
     "dependencies": {
-        "@ckeditor/ckeditor5-alignment": "40.1.0",
+        "@ckeditor/ckeditor5-alignment": "40.2.0",
         "@ckeditor/ckeditor5-autoformat": "40.1.0",
         "@ckeditor/ckeditor5-autosave": "40.1.0",
         "@ckeditor/ckeditor5-basic-styles": "40.1.0",
