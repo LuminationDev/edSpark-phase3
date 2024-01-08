@@ -154,8 +154,15 @@ onMounted(async () => {
             <div class="flex flex-col gap-6 group/bg h-full relative lg:!flex-row">
                 <div class="flex flex-col max-h-[1000px] pl-8 place-items-center w-full lg:w-[40%]">
                     <SoftwareIllustration />
-                </div>
-                <template v-if="technologyList">
+                </div><template v-if="!technologyList || !technologyList.length">
+                    <div class="px-8 w-full lg:!px-20">
+                        <CardLoading
+                            :number-of-rows="1"
+                            :number-per-row="2"
+                        />
+                    </div>
+                </template>
+                <template v-else>
                     <div
                         class="
                             grid
@@ -177,14 +184,6 @@ onMounted(async () => {
                             v-for="software in getNRandomElementsFromArray(technologyList,2)"
                             :key="software.guid"
                             :data="software"
-                        />
-                    </div>
-                </template>
-                <template v-else>
-                    <div class="px-8 w-full lg:!px-20">
-                        <CardLoading
-                            :number-of-rows="2"
-                            :number-per-row="windowStore.getNumberOfCardLoading"
                         />
                     </div>
                 </template>

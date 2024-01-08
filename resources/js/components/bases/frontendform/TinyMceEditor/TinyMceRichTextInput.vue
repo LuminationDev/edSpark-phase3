@@ -25,14 +25,38 @@ const props = defineProps({
     }
 })
 
+const editorStyleFormat = [
+    { title: 'Normal Text', format: 'p' },
+    { title: 'Headings', items: [
+        { title: 'Heading 1', format: 'h1' },
+        { title: 'Heading 2', format: 'h2' },
+        { title: 'Heading 3', format: 'h3' },
+        { title: 'Heading 4', format: 'h4' },
+        { title: 'Heading 5', format: 'h5' },
+        { title: 'Heading 6', format: 'h6' }
+    ]},
+    { title: 'Inline', items: [
+        { title: 'Underline', format: 'underline' },
+        { title: 'Strikethrough', format: 'strikethrough' },
+        { title: 'Superscript', format: 'superscript' },
+        { title: 'Subscript', format: 'subscript' },
+    ]},
+    { title: 'Blocks', items: [
+        { title: 'Blockquote', format: 'blockquote' },
+        { title: 'Code', format: 'code' }
+    ]},
+]
+
+
 const emits = defineEmits(['emitTinyRichContent'])
 const editorContent = ref(props.srcContent)
-
 const emitContent = () => {
     emits('emitTinyRichContent', editorContent.value)
 }
 
 watchDebounced(editorContent, emitContent, {debounce: 200, maxWait: 1000})
+
+
 
 </script>
 
@@ -53,7 +77,8 @@ watchDebounced(editorContent, emitContent, {debounce: 200, maxWait: 1000})
             image_advtab: true,
             content_css: '/css/filament/font/font.css',
             skin: false,
-            content_style: `body {font-family: MuseoSans;} html {font-family: MuseoSans;} .mce-offscreen-selection{display: none;}`
+            content_style: `body {font-family: MuseoSans;} html {font-family: MuseoSans;} .mce-offscreen-selection{display: none;}`,
+            style_formats: editorStyleFormat
         }"
     />
     <ErrorMessages :v$="props.v$" />

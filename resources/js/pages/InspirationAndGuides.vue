@@ -53,7 +53,7 @@ const handleClickViewAllSchools = () => {
             <div class="flex justify-between items-center flex-row w-full">
                 <div class="font-semibold text-4xl">
                     Unsure how you schools stacks up? <br>
-                    Assess you digital maturity.
+                    Assess your digital maturity.
                 </div>
             </div>
         </template>
@@ -68,7 +68,7 @@ const handleClickViewAllSchools = () => {
     </BaseLandingSection>
     <BaseLandingSection background-color="white">
         <template #title>
-            Popular Guides
+            Popular guides
         </template>
         <template #button>
             <GenericButton
@@ -92,10 +92,10 @@ const handleClickViewAllSchools = () => {
     </BaseLandingSection>
     <BaseLandingSection background-color="teal">
         <template #title>
-            School Profile
+            School profile
         </template>
         <template #subtitle>
-            See what technology other schools are using in their calssrooms to help their students thrive.
+            See what technology other schools are using in their classrooms to help their students thrive.
         </template>
         <template #button>
             <GenericButton
