@@ -24,6 +24,7 @@ import HardwareSingle from '@/js/pages/HardwareSingle.vue';
 import PartnerSingle from "@/js/pages/PartnerSingle.vue";
 import SchoolSingle from "@/js/pages/SchoolSingle.vue";
 import TheAdvice from "@/js/pages/TheAdvice.vue";
+import TheCatalogue from "@/js/pages/TheCatalogue.vue";
 import TheCreator from "@/js/pages/TheCreator.vue";
 import TheForbidden from "@/js/pages/TheForbidden.vue";
 import TheHardware from "@/js/pages/TheHardware.vue";
@@ -228,6 +229,15 @@ const routes: any = [
         component: HardwareSingle,
         params: true,
         meta: {
+            requiresAuth: true,
+        }
+    },
+    {
+        name: 'catalogue',
+        path: '/catalogue',
+        component: TheCatalogue,
+        meta: {
+            navigation: false,
             requiresAuth: true,
         }
     },

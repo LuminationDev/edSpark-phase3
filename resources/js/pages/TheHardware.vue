@@ -1,7 +1,7 @@
 <script setup>
 import {storeToRefs} from "pinia";
 import useSWRV from "swrv";
-import {computed, ref, watch} from 'vue';
+import {computed, onMounted, ref, watch} from 'vue';
 import {useRouter} from "vue-router";
 
 import CardLoading from "@/js/components/card/CardLoading.vue";
@@ -47,6 +47,15 @@ const getResponsiveDisplayData = (itemArray) => {
     else return itemArray
 }
 
+onMounted(() =>{
+    const payload = {
+        field: 'types',
+        value: 'Notebook'
+    }
+    axios.post(API_ENDPOINTS.CATALOGUE.FETCH_CATALOGUE_BY_FIELD, payload).then(res =>{
+        console.log(res.data)
+    })
+})
 
 </script>
 
@@ -96,7 +105,7 @@ const getResponsiveDisplayData = (itemArray) => {
         <div class="grid grid-cols-12 px-5 lg:!px-20 xl:!px-huge">
             <div class="col-span-12 flex flex-row gap-6 mb-6 xl:!col-span-4 xl:!flex-col">
                 <div class="flex items-start flex-col pr-8">
-                    <h5 class="font-bold text-[18px] pr-8">
+                    <h5 class="font-bold pr-8 text-[18px]">
                         A variety of AV equipment
                     </h5>
                     <p>

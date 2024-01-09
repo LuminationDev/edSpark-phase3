@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AutoSaveController;
+use App\Http\Controllers\CatalogueController;
 use App\Http\Controllers\LabelController;
 use App\Http\Controllers\TagController;
 use Illuminate\Support\Facades\Route;
@@ -144,6 +145,12 @@ Route::middleware('auth:sanctum')->group(function () {
 
     //Labels
     Route::get('fetchAllLabels', [LabelController::class , 'fetchAllLabels']);
+
+    // Catalogue
+    Route::post('fetchCatalogueByField', [CatalogueController::class,"fetchCatalogueByField" ]);
+    Route::post('fetchSingleProductByName', [CatalogueController::class, 'fetchSingleProductByName']);
+    Route::post('fetchUpgradesSingleProduct', [CatalogueController::class, 'fetchUpgradesSingleProduct']);
+    Route::post('fetchBundlesSingleProduct', [CatalogueController::class, 'fetchBundlesSingleProduct']);
 });
 
 
