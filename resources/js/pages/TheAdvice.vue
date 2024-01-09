@@ -40,7 +40,7 @@ const {
         <CarouselGenerator
             :show-count="3"
             data-type="advice"
-            :data-array="dagAdvice ? dagAdvice : []"
+            :data-array="dagAdvice ? dagAdvice.slice(0,5) : []"
         />
     </div>
 
@@ -49,7 +49,7 @@ const {
     <div class="EduAdviceCards grid grid-cols-1 gap-10 place-items-center mt-10 px-5 md:!grid-cols-2 lg:!grid-cols-3 lg:!px-huge">
         <template v-if="generalAdvice && generalAdvice.length">
             <AdviceCard
-                v-for="advice in generalAdvice"
+                v-for="advice in generalAdvice.slice(0,6)"
                 :key="advice.guid"
                 :data="advice"
                 :show-icon="true"
@@ -72,6 +72,6 @@ const {
     <CarouselGenerator
         :show-count="3"
         data-type="advice"
-        :data-array="partnerAdvice ? partnerAdvice : []"
+        :data-array="partnerAdvice ? partnerAdvice.slice(0,5) : []"
     />
 </template>

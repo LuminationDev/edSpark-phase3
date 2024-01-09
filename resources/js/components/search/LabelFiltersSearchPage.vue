@@ -37,6 +37,7 @@ const handleTransmittedFromGenericMultiSelectFilter = (selectedValue, dataPath) 
             <Loader
                 :loader-color="'#0072DA'"
                 :loader-message="'Loading labels'"
+                :loader-type="'small'"
             />
         </div>
         <template v-else>
