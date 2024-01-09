@@ -4,6 +4,7 @@ import useSWRV from "swrv";
 import {computed, onMounted, ref} from 'vue';
 import {useRouter} from "vue-router";
 
+import AdviceCard from "@/js/components/advice/AdviceCard.vue";
 import BaseLandingCardRow from "@/js/components/bases/BaseLandingCardRow.vue";
 import BaseLandingSection from "@/js/components/bases/BaseLandingSection.vue";
 import GenericButton from "@/js/components/button/GenericButton.vue";
@@ -65,26 +66,6 @@ onMounted(async () => {
 })
 
 
-// const {
-//     data: eventsData,
-// } = useSWRV(() => shouldStartSwrv.value ? API_ENDPOINTS.EVENT.FETCH_EVENT_POSTS : null, axiosFetcher, swrvOptions)
-// const {
-//     data: softwaresData,
-// } = useSWRV(() => shouldStartSwrv.value ? API_ENDPOINTS.SOFTWARE.FETCH_SOFTWARE_POSTS : null, axiosFetcher, swrvOptions)
-// const {
-//     data: advicesData,
-// } = useSWRV(() => shouldStartSwrv.value ? API_ENDPOINTS.ADVICE.FETCH_ADVICE_POSTS : null, axiosFetcher, swrvOptions)
-//
-// const softwareResponsiveData = computed(() => {
-//     if (!softwaresData.value.length) {
-//         return []
-//     } else if (isMobile.value) {
-//         return softwaresData.value.slice(0, 2)
-//     } else {
-//         return softwaresData.value.slice(0, 4)
-//     }
-// })
-
 </script>
 
 <template>
@@ -133,7 +114,17 @@ onMounted(async () => {
                 View all guides
             </GenericButton>
         </template>
-        <template #content />
+        <template #content>
+            <BaseLandingCardRow :resource-list="guideList">
+                <template #rowContent>
+                    <AdviceCard
+                        v-for="(guide,index) in getNRandomElementsFromArray(guideList,3)"
+                        :key="index"
+                        :data="guide"
+                    />
+                </template>
+            </BaseLandingCardRow>
+        </template>
     </BaseLandingSection>
 
     <BaseLandingSection
@@ -154,8 +145,9 @@ onMounted(async () => {
             <div class="flex flex-col gap-6 group/bg h-full relative lg:!flex-row">
                 <div class="flex flex-col max-h-[1000px] pl-8 place-items-center w-full lg:w-[40%]">
                     <SoftwareIllustration />
-                </div><template v-if="!technologyList || !technologyList.length">
-                    <div class="px-8 w-full lg:!px-20">
+                </div>
+                <template v-if="!technologyList || !technologyList.length">
+                    <div class="">
                         <CardLoading
                             :number-of-rows="1"
                             :number-per-row="2"
@@ -204,7 +196,17 @@ onMounted(async () => {
                 View all events
             </GenericButton>
         </template>
-        <template #content />
+        <template #content>
+            <BaseLandingCardRow :resource-list="eventList">
+                <template #rowContent>
+                    <AdviceCard
+                        v-for="(event,index) in getNRandomElementsFromArray(eventList,3)"
+                        :key="index"
+                        :data="event"
+                    />
+                </template>
+            </BaseLandingCardRow>
+        </template>
     </BaseLandingSection>
 
     <!--        <SectionHeader-->

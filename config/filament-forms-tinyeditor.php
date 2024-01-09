@@ -25,12 +25,13 @@ return [
                 'image_advtab' => true,
                 'images_upload_url' => env('VITE_SERVER_IMAGE_API') . '/imageUploadTinyMCEjs',
                 'convert_urls' => false,
-                'paste_retain_style_properties' => 'color font-size',
+                'paste_retain_style_properties' => "margin, padding, width, height, font-size, font-weight, color, text-align, ul, ol, li, text-decoration, border, background, float, display",
                 'content_css' => '/css/filament/font/font.css',
                 'content_style' => "body {font-family: MuseoSans;} html {font-family: MuseoSans;}",
                 'image_file_types' => 'jpg,svg,webp',
                 'block_formats' => 'Normal text=p; Heading 1=h1; Heading 2=h2; Heading 3=h3; Heading 4=h4; Heading 5=h5; Heading 6=h6;',
-                'style_formats_merge' => true
+                'style_formats_merge' => true,
+                'contextmenu' => 'copy cut paste link image'
             ],
         ],
 

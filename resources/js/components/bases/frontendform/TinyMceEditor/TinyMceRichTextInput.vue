@@ -78,7 +78,8 @@ watchDebounced(editorContent, emitContent, {debounce: 200, maxWait: 1000})
             content_css: '/css/filament/font/font.css',
             skin: false,
             content_style: `body {font-family: MuseoSans;} html {font-family: MuseoSans;} .mce-offscreen-selection{display: none;}`,
-            style_formats: editorStyleFormat
+            style_formats: editorStyleFormat,
+            contextmenu: 'copy cut paste image link'
         }"
     />
     <ErrorMessages :v$="props.v$" />

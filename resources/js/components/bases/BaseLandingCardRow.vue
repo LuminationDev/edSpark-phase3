@@ -1,6 +1,7 @@
 <script setup>
 import CardLoading from "@/js/components/card/CardLoading.vue";
 import {getNRandomElementsFromArray} from "@/js/helpers/cardDataHelper";
+import {useWindowStore} from "@/js/stores/useWindowStore";
 
 const props = defineProps({
     resourceList:{
@@ -8,6 +9,8 @@ const props = defineProps({
         required: true
     }
 })
+
+const windowStore = useWindowStore()
 </script>
 <template>
     <div class="BaseLandingCardRowContainer grid grid-cols-1 gap-10 place-items-center mt-10 md:!grid-cols-2 lg:!grid-cols-3">
@@ -17,7 +20,7 @@ const props = defineProps({
             >
                 <CardLoading
                     :number-of-rows="1"
-                    :number-per-row="3"
+                    :number-per-row="windowStore.getNumberOfCardLoading"
                 />
             </div>
         </template>

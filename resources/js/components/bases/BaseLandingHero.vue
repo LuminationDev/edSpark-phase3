@@ -56,7 +56,7 @@ const backgroudColorClass = computed(() => {
                 </p>
             </div>
             <div
-                class="relative welcomeRobot z-10  md:!col-span-2 md:block lg:!ml-0"
+                class="hidden relative welcomeRobot z-10 md:!col-span-2 md:block md:scale-75 lg:!ml-0 lg:!scale-100"
             >
                 <slot name="robotIllustration" />
             </div>
