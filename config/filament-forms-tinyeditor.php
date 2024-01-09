@@ -25,7 +25,7 @@ return [
                 'image_advtab' => true,
                 'images_upload_url' => env('VITE_SERVER_IMAGE_API') . '/imageUploadTinyMCEjs',
                 'convert_urls' => false,
-                'paste_retain_style_properties' => "margin, padding, width, height, font-size, font-weight, color, text-align, ul, ol, li, text-decoration, border, background, float, display",
+                'paste_retain_style_properties' => "margin padding width height font-size font-weight color text-align ul ol li text-decoration border background float display",
                 'content_css' => '/css/filament/font/font.css',
                 'content_style' => "body {font-family: MuseoSans;} html {font-family: MuseoSans;}",
                 'image_file_types' => 'jpg,svg,webp',

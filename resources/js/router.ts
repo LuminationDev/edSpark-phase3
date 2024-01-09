@@ -33,6 +33,7 @@ import ThePartner from "@/js/pages/ThePartner.vue";
 import ThePartnerWelcome from "@/js/pages/ThePartnerWelcome.vue";
 import TheSchool from "@/js/pages/TheSchool.vue";
 import TheSoftware from "@/js/pages/TheSoftware.vue";
+import TheTechnology from "@/js/pages/TheTechnology.vue";
 import {useAuthStore} from '@/js/stores/useAuthStore';
 import {useUserStore} from "@/js/stores/useUserStore";
 
@@ -193,7 +194,7 @@ const routes: any = [
     {
         name: 'software',
         path: '/software',
-        component: TheSoftware,
+        component: TheTechnology,
         meta: {
             navigation: true,
             dropdownItem: true,

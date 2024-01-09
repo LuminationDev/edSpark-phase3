@@ -61,7 +61,8 @@ const asyncCall = () => {
             'my-3 hover:bg-blue-400': type === 'school',
             'pointer-events-none': disabled,
             '!text-black bg-white border-0 !p-0': type === 'plain',
-            '!h-fit !text-white px-12 py-2 w-64' : type === 'teal'
+            '!h-fit !text-white px-12 py-2 w-64' : type === 'teal',
+            '!h-fit !text-white px-12 py-2 w-64 !bg-secondary-grapeDark' : type === 'purple'
         }"
         class="flex justify-center items-center p-2"
         :disabled="disabled"

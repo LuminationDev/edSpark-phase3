@@ -1,20 +1,21 @@
 <script setup>
-import {computed,ref} from 'vue'
+import {computed,} from 'vue'
+
+import {getNRandomElementsFromArray} from "@/js/helpers/cardDataHelper";
 
 const props = defineProps({
-    adviceList: {
+    resourceList: {
         type: Array,
         required: true
     }
 })
 
-const handleClickPopularGuide = () =>{
+const handleClickResource = () =>{
     console.log('clciked on one please router me away')
 
 }
-const filterGuide = computed(() =>{
-    console.log(props.adviceList.slice(0,6))
-    return props.adviceList.slice(0,6)
+const filteredResource = computed(() =>{
+    return getNRandomElementsFromArray(props.resourceList, 6)
 })
 
 
@@ -22,8 +23,8 @@ const filterGuide = computed(() =>{
 
 <template>
     <div class="grid grid-cols-2 gap-8 w-full">
-        <div
-            v-for="(guide,index) in filterGuide"
+        <button
+            v-for="(resource,index) in filteredResource"
             :key="index"
             class="
                 border-2
@@ -38,16 +39,17 @@ const filterGuide = computed(() =>{
                 w-full
                 hover:bg-main-teal
                 "
+            @click="handleClickResource"
         >
             <div class="flex justify-between flex-row w-full">
                 <div class="title">
-                    {{ guide.title }}
+                    {{ resource.title }}
                 </div>
                 <div class="Arrow">
                     ->
                 </div>
             </div>
-        </div>
+        </button>
     </div>
 </template>
 

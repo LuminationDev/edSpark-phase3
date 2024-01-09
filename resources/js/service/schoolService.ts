@@ -4,6 +4,7 @@ import _ from "lodash";
 import {API_ENDPOINTS} from "@/js/constants/API_ENDPOINTS";
 import {parseToJsonIfString, schoolContentArrParser} from "@/js/helpers/jsonHelpers";
 import {schoolDataFormDataBuilder} from "@/js/helpers/schoolDataHelpers";
+import {schoolContactService} from "@/js/service/schoolContactService";
 import {SchoolDataType} from "@/js/types/SchoolTypes";
 
 type CheckCanEditResponseType = {
@@ -178,6 +179,11 @@ export const schoolService = {
             {name: "Specialist Facilities", value: "SPFAC"},
             {name: "Aboriginal/Anangu Schools", value: "ABAN"},
         ]
+    },
+    fetchAllSchools: () =>{
+        return axios.get(API_ENDPOINTS.SCHOOL.FETCH_ALL_SCHOOLS).then(res =>{
+            return schoolContentArrParser(res.data)
+        })
     }
 
 

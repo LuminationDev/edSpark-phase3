@@ -1,36 +1,31 @@
 <script setup lang="ts">
-import useSWRV from "swrv";
-import {computed, ref} from "vue";
+import {storeToRefs} from "pinia";
+import {computed, onMounted, ref} from "vue";
 import {useRoute, useRouter} from "vue-router";
 
 import BaseSearch from "@/js/components/search/BaseSearch.vue";
 import GenericMultiSelectFilter from "@/js/components/search/hardware/GenericMultiSelectFilter.vue";
-import {API_ENDPOINTS} from "@/js/constants/API_ENDPOINTS";
 import {schoolPartnerTech,schoolTech} from "@/js/constants/schoolTech";
-import { axiosSchoolFetcherParams} from "@/js/helpers/fetcher";
 import {lowerSlugify} from "@/js/helpers/stringHelpers";
-import {useUserStore} from "@/js/stores/useUserStore";
+import {schoolService} from "@/js/service/schoolService";
+import {useSchoolsStore} from "@/js/stores/useSchoolsStore";
 
-const swrvOptions = {
-    revalidateOnFocus: false, // disable refresh on every focus, suspect its too often
-    refreshInterval: 30000 // refresh or revalidate data every 30 secs
-}
 const route = useRoute()
 const router = useRouter()
 
 const combinedSchoolTech = [...schoolTech,...schoolPartnerTech];
-console.log(combinedSchoolTech)
+const {allSchools} = storeToRefs(useSchoolsStore())
 
-const {data: schoolList, error: schoolError} = useSWRV(API_ENDPOINTS.SCHOOL.FETCH_ALL_SCHOOLS, axiosSchoolFetcherParams(useUserStore().getUserRequestParam), swrvOptions)
-const schoolFilterList = [
-    {name: "Preschool", value:"PRE"},
-    {name: "Primary Education", value:"PRIM"},
-    {name: "Primary/Secondary", value:"PRSEC"},
-    {name: "Secondary Education", value:"SEC"},
-    {name: "Special Education", value:"SPEC"},
-    {name: "Specialist Facilities", value:"SPFAC"},
-    {name: "Aboriginal/Anangu Schools", value:"ABAN"},
-]
+onMounted(() =>{
+    schoolService.fetchAllSchools().then(res =>{
+        console.log(res)
+        allSchools.value = res
+    })
+
+})
+
+
+const schoolFilterList = schoolService.getSchoolFilterList()
 
 const schoolTechFilterList = computed(() =>{
     return combinedSchoolTech.map(item =>{
@@ -65,7 +60,7 @@ if (route.params && route.params.filter) {
 <template>
     <BaseSearch
         search-type="school"
-        :resource-list="schoolList"
+        :resource-list="allSchools"
         :live-filter-object="filterObject"
     >
         <template #filterBar>

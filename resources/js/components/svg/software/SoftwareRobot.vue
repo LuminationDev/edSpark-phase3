@@ -1,8 +1,8 @@
 <script setup></script>
 <template>
     <svg
-        width="224"
-        height="262"
+        width="336"
+        height="393"
         viewBox="0 0 224 262"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"

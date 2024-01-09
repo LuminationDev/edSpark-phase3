@@ -1,6 +1,5 @@
 <script setup>
 import {storeToRefs} from "pinia";
-import useSWRV from "swrv";
 import {computed, onMounted, ref} from 'vue';
 import {useRouter} from "vue-router";
 
@@ -9,41 +8,30 @@ import BaseLandingCardRow from "@/js/components/bases/BaseLandingCardRow.vue";
 import BaseLandingSection from "@/js/components/bases/BaseLandingSection.vue";
 import GenericButton from "@/js/components/button/GenericButton.vue";
 import CardLoading from '@/js/components/card/CardLoading.vue';
-import CarouselGenerator from "@/js/components/card/CarouselGenerator.vue";
-import DAGInfoSection from "@/js/components/dashboard/DAGInfoSection.vue";
 import DashboardHero from '@/js/components/dashboard/DashboardHero.vue';
 import SoftwareIllustration from "@/js/components/dashboard/SoftwareIllustration.vue";
-import SectionHeader from '@/js/components/global/SectionHeader.vue';
 import SchoolProfileGuidesQuickFilters from "@/js/components/inspirationandguides/SchoolProfileGuidesQuickFilters.vue";
-import SchoolProfilesGuides from "@/js/components/inspirationandguides/SchoolProfilesGuides.vue";
 import SchoolCard from "@/js/components/schools/SchoolCard.vue";
-import SchoolSectionDashboard from "@/js/components/schools/SchoolSectionDashboard.vue";
 import SoftwareCard from "@/js/components/software/SoftwareCard.vue";
-import SoftwareRobot from '@/js/components/svg/SoftwareRobot.vue';
-import {API_ENDPOINTS} from "@/js/constants/API_ENDPOINTS";
-import {swrvOptions} from "@/js/constants/swrvConstants";
 import {getNRandomElementsFromArray} from "@/js/helpers/cardDataHelper";
-import {axiosFetcher} from "@/js/helpers/fetcher";
 import {adviceService} from "@/js/service/adviceService";
 import {eventService} from "@/js/service/eventService";
 import {schoolService} from "@/js/service/schoolService";
 import {softwareService} from "@/js/service/softwareService";
+import {useSchoolsStore} from "@/js/stores/useSchoolsStore";
+import {useSoftwareStore} from "@/js/stores/useSoftwareStore";
 import {useUserStore} from '@/js/stores/useUserStore';
 import {useWindowStore} from "@/js/stores/useWindowStore";
 
 const router = useRouter()
 const userStore = useUserStore();
-const {currentUser} = storeToRefs(userStore)
 const windowStore = useWindowStore()
-const {isMobile} = storeToRefs(windowStore)
-
-const shouldStartSwrv = computed(() => {
-    return Boolean(currentUser.value.id)
-})
 
 const latestSchoolList = ref([])
+const {featuredSchools} = storeToRefs(useSchoolsStore())
 const guideList = ref([])
-const technologyList = ref([])
+const {allSoftware} = storeToRefs(useSoftwareStore())
+
 const eventList = ref([])
 
 onMounted(async () => {
@@ -56,8 +44,9 @@ onMounted(async () => {
         ]);
 
         latestSchoolList.value = featuredSchool;
+        featuredSchools.value = featuredSchool
         guideList.value = allAdvice;
-        technologyList.value = allSoftware;
+        allSoftware.value = allSoftware;
         eventList.value = allEvent;
     } catch (error) {
         // Handle errors here
@@ -146,7 +135,7 @@ onMounted(async () => {
                 <div class="flex flex-col max-h-[1000px] pl-8 place-items-center w-full lg:w-[40%]">
                     <SoftwareIllustration />
                 </div>
-                <template v-if="!technologyList || !technologyList.length">
+                <template v-if="!allSoftware || !allSoftware.length">
                     <div class="">
                         <CardLoading
                             :number-of-rows="1"
@@ -173,7 +162,7 @@ onMounted(async () => {
                             "
                     >
                         <SoftwareCard
-                            v-for="software in getNRandomElementsFromArray(technologyList,2)"
+                            v-for="software in getNRandomElementsFromArray(allSoftware,2)"
                             :key="software.guid"
                             :data="software"
                         />

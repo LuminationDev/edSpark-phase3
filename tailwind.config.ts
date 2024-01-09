@@ -97,7 +97,7 @@ module.exports = {
                     darkBlue: '#1C5CA9',
                     green: '#048246',
                     lightGreen: '#A5D1BD',
-                    purple: '#8866C5',
+                    purple: '',
                     yellow: '#FFC836',
                     lightYellow: '#F5E1AD',
                     red: '#C73E5D', //was #de4668
@@ -114,6 +114,7 @@ module.exports = {
                     blueberry: '#0072DA',
                     teal: '#319795',
                     navy: '#002858',
+                    grapeDark: '#3D239B'
 
                 },
                 custom: {

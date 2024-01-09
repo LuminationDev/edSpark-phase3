@@ -4,20 +4,19 @@ import {useRouter} from "vue-router";
 
 import BaseLandingHero from "@/js/components/bases/BaseLandingHero.vue";
 import BaseLandingSection from "@/js/components/bases/BaseLandingSection.vue";
+import PopularResourceShortcuts from "@/js/components/bases/PopularResourceShortcuts.vue";
 import GenericButton from "@/js/components/button/GenericButton.vue";
 import CaseStudyGuides from "@/js/components/inspirationandguides/CaseStudyGuides.vue";
 import CaseStudyQuickSearchGuides from "@/js/components/inspirationandguides/CaseStudyQuickSearchGuides.vue";
 import InspirationAndGuidesRobot from "@/js/components/inspirationandguides/InspirationAndGuidesRobot.vue";
-import PopularGuideShortcuts from "@/js/components/inspirationandguides/PopularGuideShortcuts.vue";
 import SchoolProfileGuidesQuickFilters from "@/js/components/inspirationandguides/SchoolProfileGuidesQuickFilters.vue";
 import SchoolProfilesGuides from "@/js/components/inspirationandguides/SchoolProfilesGuides.vue";
-import BaseSearch from "@/js/components/search/BaseSearch.vue";
 import Loader from "@/js/components/spinner/Loader.vue";
+import {LandingHeroText} from "@/js/constants/LandingPageTitle";
 import {adviceService} from "@/js/service/adviceService";
 import {schoolService} from "@/js/service/schoolService";
 
-const heroTitle = "Inspiration and guides"
-const heroParagraph = "Discover software with the Department for Education tick of approval, and find out what is available to you to use as an employee and how to access it. Explore technical specifications, use cases, steps to purchase, and possible costs."
+
 const router = useRouter()
 const featuredSites = ref([])
 const adviceList = ref([])
@@ -41,8 +40,8 @@ const handleClickViewAllSchools = () => {
 
 <template>
     <BaseLandingHero
-        :title="heroTitle"
-        :title-paragraph="heroParagraph"
+        :title="LandingHeroText['inspiration']['title']"
+        :title-paragraph="LandingHeroText['inspiration']['subtitle']"
     >
         <template #robotIllustration>
             <InspirationAndGuidesRobot class="absolute top-10 left-36" />
@@ -79,9 +78,9 @@ const handleClickViewAllSchools = () => {
             </GenericButton>
         </template>
         <template #content>
-            <PopularGuideShortcuts
+            <PopularResourceShortcuts
                 v-if="adviceList && adviceList.length"
-                :advice-list="adviceList"
+                :resource-list="adviceList"
             />
             <Loader
                 v-else

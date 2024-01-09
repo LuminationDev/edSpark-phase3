@@ -31,6 +31,8 @@ const backgroudColorClass = computed(() => {
         return 'bg-main-darkTeal'
     case 'navy':
         return 'bg-main-navy'
+    case 'purple':
+        return 'bg-secondary-grapeDark'
     default:
         return 'teal'
     }

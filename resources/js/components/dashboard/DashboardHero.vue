@@ -1,5 +1,6 @@
 <script setup>
 import BaseLandingHero from "@/js/components/bases/BaseLandingHero.vue";
+import {LandingHeroText} from "@/js/constants/LandingPageTitle";
 
 import Swoosh from '../svg/DashboardSwoosh.vue';
 import {
@@ -13,14 +14,12 @@ import {
     Shadow
 } from '../svg/welcomeRobot/index.js'
 
-const welcomeMessage = 'Welcome to edSpark!'
-const welcomeDescription = 'The edSpark Digital Hub is where education and technology meet. Discover how schools are already using technology effectively. Spark your imagination with advice on integrating tech into your classroom. Gain access to the best software and hardware at great prices. Join a community of like minded educators and partners.'
 </script>
 
 <template>
     <BaseLandingHero
-        :title="welcomeMessage"
-        :title-paragraph="welcomeDescription"
+        :title="LandingHeroText['dashboard']['title']"
+        :title-paragraph="LandingHeroText['dashboard']['subtitle']"
         background-color="navy"
     >
         <template #robotIllustration>
