@@ -20,9 +20,6 @@ const props = defineProps({
 
 const hasChildren = ref(false)
 if (props.route.children && props.route.children.length > 0) {
-    console.log('route is' + props.route.name)
-    console.log('has children')
-    console.log(props.route)
     hasChildren.value = true
 }
 const navDropdownToggle = ref(false)

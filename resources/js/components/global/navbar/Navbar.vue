@@ -5,7 +5,6 @@ import {useRouter} from 'vue-router';
 
 import ProfileDropdown from "@/js/components/global/ProfileDropdown.vue";
 import Logo from '@/js/components/svg/Logo.vue';
-import NavSwoosh from '@/js/components/svg/NavSwoosh.vue';
 import Search from "@/js/components/svg/Search.vue";
 import {useAuthStore} from '@/js/stores/useAuthStore';
 import {useUserStore} from '@/js/stores/useUserStore';

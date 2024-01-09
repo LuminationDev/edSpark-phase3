@@ -170,41 +170,8 @@ const routes: any = [
         component: TheInspirationGuides,
         meta: {
             navigation: true
-        },
-        children: [
-            {
-                name: "List 1",
-                path: "schoolProfiles",
-                component: UserPosts,
-                meta: {
-                    requiresAuth: true,
-                } as RouteMeta
-            },
-            {
-                name: 'List 2',
-                path: 'software',
-                component: SoftwareForm,
-                meta: {
-                    requiresAuth: true,
-                } as RouteMeta
-            },
-            {
-                name: 'List 3',
-                path: 'software',
-                component: SoftwareForm,
-                meta: {
-                    requiresAuth: true,
-                } as RouteMeta
-            },
-            {
-                name: 'List 4',
-                path: 'software',
-                component: SoftwareForm,
-                meta: {
-                    requiresAuth: true,
-                } as RouteMeta
-            }
-        ]
+        }
+
     },
     {
         name: 'Providers and events',
@@ -212,49 +179,7 @@ const routes: any = [
         component: TheInspirationGuides,
         meta: {
             navigation: true
-        },
-        children: [
-            {
-                name: "List 1",
-                path: "schoolProfiles",
-                component: UserPosts,
-                meta: {
-                    requiresAuth: true,
-                } as RouteMeta
-            },
-            {
-                name: 'List 2',
-                path: 'software',
-                component: SoftwareForm,
-                meta: {
-                    requiresAuth: true,
-                } as RouteMeta
-            },
-            {
-                name: 'List 3',
-                path: 'software',
-                component: SoftwareForm,
-                meta: {
-                    requiresAuth: true,
-                } as RouteMeta
-            },
-            {
-                name: 'List 4',
-                path: 'software',
-                component: SoftwareForm,
-                meta: {
-                    requiresAuth: true,
-                } as RouteMeta
-            },
-            {
-                name: 'List 5',
-                path: 'software',
-                component: SoftwareForm,
-                meta: {
-                    requiresAuth: true,
-                } as RouteMeta
-            }
-        ]
+        }
     },
 
     {
@@ -264,32 +189,6 @@ const routes: any = [
         meta: {
             navigation: true
         },
-        children: [
-            {
-                name: "List 1",
-                path: "schoolProfiles",
-                component: UserPosts,
-                meta: {
-                    requiresAuth: true,
-                } as RouteMeta
-            },
-            {
-                name: 'List 2',
-                path: 'software',
-                component: SoftwareForm,
-                meta: {
-                    requiresAuth: true,
-                } as RouteMeta
-            },
-            {
-                name: 'List 3',
-                path: 'software',
-                component: SoftwareForm,
-                meta: {
-                    requiresAuth: true,
-                } as RouteMeta
-            }
-        ]
     },
     {
         name: 'browse-pages',
