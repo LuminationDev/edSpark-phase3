@@ -177,6 +177,7 @@ class AdviceResource extends Resource
             ->columns([
                 Tables\Columns\TextColumn::make('post_title')
                     ->label('Title')
+                    ->limit(30)
                     ->sortable()
                     ->searchable(),
                 Tables\Columns\ImageColumn::make('cover_image'),
@@ -186,16 +187,16 @@ class AdviceResource extends Resource
                     ->searchable()
                     ->wrap(),
                 Tables\Columns\TextColumn::make('author.full_name')->label('Author'),
-                Tables\Columns\TextColumn::make('post_date')
-                    ->date()
-                    ->label('Created At'),
-                Tables\Columns\TextColumn::make('post_modified')
-                    ->date()
-                    ->label('Modified At'),
                 Tables\Columns\TextColumn::make('post_status')
                     ->label('Status')
                     ->sortable()
                     ->searchable(),
+                Tables\Columns\TextColumn::make('post_modified')
+                    ->date()
+                    ->label('Modified At'),
+                Tables\Columns\TextColumn::make('post_date')
+                    ->date()
+                    ->label('Created At'),
             ])
             ->filters([
                 //

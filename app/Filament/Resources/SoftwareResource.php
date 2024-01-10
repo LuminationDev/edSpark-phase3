@@ -20,6 +20,7 @@ use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
+use Mohamedsabil83\FilamentFormsTinyeditor\Components\TinyEditor;
 use SplFileInfo;
 
 
@@ -64,8 +65,10 @@ class SoftwareResource extends Resource
                             ->label('Tagline')
                             ->placeholder('150 characters or less')
                             ->maxLength(150),
-                        Forms\Components\RichEditor::make('post_content')
-                            ->label('Content')
+                        TinyEditor::make('post_content')
+                            ->label('Content')->fileAttachmentsDisk('local')
+                            ->fileAttachmentsVisibility('public')
+                            ->fileAttachmentsDirectory('public/uploads/software')
                             ->required(),
                         Forms\Components\FileUpload::make('cover_image')
                             ->preserveFilenames()
@@ -169,11 +172,9 @@ class SoftwareResource extends Resource
             ->columns([
                 Tables\Columns\TextColumn::make('post_title')
                     ->label('Title')
+                    ->limit(30)
                     ->searchable()
                     ->sortable(),
-//                Tables\Columns\TextColumn::make('post_content')
-//                ->limit(50)
-//                ->label('Content'),
                 Tables\Columns\ImageColumn::make('cover_image'),
                 Tables\Columns\TextColumn::make('softwaretypes.software_type_name')
                     ->label('Type')
