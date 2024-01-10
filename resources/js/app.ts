@@ -44,7 +44,6 @@ import 'tinymce/skins/content/default/content.min.css';
 import '../css/app.css';
 import '../css/output.css';
 
-import CKEditor from '@ckeditor/ckeditor5-vue';
 import {library} from '@fortawesome/fontawesome-svg-core'
 import {fas} from '@fortawesome/free-solid-svg-icons'
 import {FontAwesomeIcon} from '@fortawesome/vue-fontawesome'
@@ -102,6 +101,5 @@ createApp(App)
     .use(VueTippy, tippyOptions)
     .use(Vue3Toastify, {autoClose: 3000} as ToastContainerOptions)
     .use(VueDragsScroll)
-    .use( CKEditor )
     .component('font-awesome-icon', FontAwesomeIcon)
     .mount('#app');

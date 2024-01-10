@@ -45,6 +45,7 @@ const isMobile = (window.innerWidth <= 1024)
             relative
             transition-all
             lg:!py-0
+             text-main-darkGrey
             "
         @click="props.clickCallback"
     >
@@ -85,7 +86,7 @@ const isMobile = (window.innerWidth <= 1024)
     >
         <router-link
             :to="{ name: route.name }"
-            class="flex p-4"
+            class="flex p-4 text-main-darkGrey"
         >
             {{ route.meta.customText ?? route.name }}
         </router-link>

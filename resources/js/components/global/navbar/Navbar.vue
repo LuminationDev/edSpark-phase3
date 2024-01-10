@@ -97,7 +97,7 @@ window.addEventListener('scroll', () => {
                     :route="route"
                 />
                 <li
-                    class="cursor-pointer flex items-center flex-row gap-2 ml-auto mr-8"
+                    class="cursor-pointer flex items-center flex-row gap-2 ml-auto mr-8 text-main-darkGrey"
                     @click="handleGlobalsearchClick"
                 >
                     <div class="searchText">
@@ -105,7 +105,7 @@ window.addEventListener('scroll', () => {
                     </div>
                     <div>
                         <Search
-                            class="2xl:h-7 2xl:w-7 stroke-black lg:h-5 lg:w-5"
+                            class="2xl:h-7 2xl:w-7 stroke-main-darkGrey lg:h-5 lg:w-5"
                             :class="{'stroke-white': scrollPosition > 0}"
                         />
                     </div>

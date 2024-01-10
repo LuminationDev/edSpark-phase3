@@ -1,19 +1,20 @@
 <script setup>
 
 const props = defineProps({
-    isRouterLink :{
+    isRouterLink: {
         type: Boolean,
         required: true
     },
-    targetPath :{
+    targetPath: {
         type: String,
         required: false,
         default: '/'
     },
-    clickCallback:{
+    clickCallback: {
         type: Function,
         required: false,
-        default: () =>{}
+        default: () => {
+        }
     }
 
 })
@@ -35,20 +36,29 @@ const props = defineProps({
                 px-2
                 py-3
                 text-[18px]
-                text-white
+                text-main-darkGrey
                 w-full
                 gap-4
-                hover:bg-[#405974]
+                hover:bg-main-teal
+                hover:rounded-lg
+                hover:text-white
+                hover:stroke-white
                 "
         >
-            <slot />
+            <slot/>
         </button>
     </router-link>
     <button
         v-else
-        class="flex justify-start flex-row font-medium gap-4 place-items-center px-2 py-3 text-[18px] text-white w-full hover:bg-[#405974]"
+        class="flex justify-start flex-row font-medium gap-4 place-items-center px-2 py-3 text-[18px] text-main-darkGrey w-full
+                hover:bg-main-teal
+                hover:rounded-lg
+                hover:text-white
+                hover:stroke-white
+
+"
         @click="props.clickCallback"
     >
-        <slot />
+        <slot/>
     </button>
 </template>

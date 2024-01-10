@@ -95,17 +95,35 @@ const mySchoolTargetPath = computed(() => {
             class="h-full relative w-full z-50"
             @mouseleave="toggleDropdownMenu"
         >
-            <div class="absolute -top-6 left-[24px] bg-[#637D99] flex flex-col px-4 py-6 shadow-lg w-[240px] z-50 z-50">
-                <div class="border-b border-white font-bold h-fit pb-3 text-[24px] text-center text-white w-full">
+            <div
+                class="
+                    absolute
+                    top-2
+                    -right-5
+                    bg-white
+                    border-[1px]
+                    border-slate-300
+                    flex
+                    flex-col
+                    px-4
+                    py-6
+                    rounded-lg
+                    shadow-lg
+                    text-main-darkGrey
+                    w-[240px]
+                    z-50
+                    "
+            >
+                <div class="border-b border-white font-bold h-fit pb-3 text-[24px] text-center w-full">
                     <h5>{{ currentUser.full_name }}</h5>
                 </div>
-                <div class="border-b border-white flex flex-col gap-3 py-3">
+                <div class="border-b-2 border-slate-100 flex flex-col py-3  gap-3">
                     <ProfileDropdownItem
                         v-if="profileTargetPath"
                         :is-router-link="true"
                         :target-path="profileTargetPath"
                     >
-                        <Profile />
+                        <Profile/>
                         Profile
                     </ProfileDropdownItem>
                     <ProfileDropdownItem
@@ -113,14 +131,14 @@ const mySchoolTargetPath = computed(() => {
                         :is-router-link="true"
                         :target-path="messageTargetPath"
                     >
-                        <MessageIcon />
+                        <MessageIcon/>
                         Messages
                     </ProfileDropdownItem>
                     <ProfileDropdownItem
                         :is-router-link="true"
                         target-path="/create"
                     >
-                        <CreateIcon />
+                        <CreateIcon/>
                         Create
                     </ProfileDropdownItem>
                     <ProfileDropdownItem
@@ -128,7 +146,7 @@ const mySchoolTargetPath = computed(() => {
                         :is-router-link="true"
                         :target-path="mySchoolTargetPath"
                     >
-                        <SchoolGradHat />
+                        <SchoolGradHat/>
                         My School
                     </ProfileDropdownItem>
                     <template
@@ -145,7 +163,18 @@ const mySchoolTargetPath = computed(() => {
                 </div>
                 <div class="pt-3">
                     <button
-                        class="font-medium px-2 py-3 text-[18px] text-white w-full hover:underline"
+                        class="
+                            font-medium
+                            px-2
+                            py-3
+                            text-[18px]
+                            hover:text-white
+                            text-main-darkGrey
+                            w-full
+                            hover:bg-main-teal
+                            hover:rounded-lg
+                            hover:stroke-white
+                            "
                         @click.prevent="handleLogoutUser"
                     >
                         Sign out
