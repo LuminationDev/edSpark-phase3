@@ -46,7 +46,7 @@ const timeFormatter = (originalFormat) => {
                 <template #breadcrumb>
                     <BaseBreadcrumb
                         :child-page="contentFromBase.title"
-                        parent-page="advice"
+                        parent-page="guides"
                     />
                 </template>
                 <template #titleText>
