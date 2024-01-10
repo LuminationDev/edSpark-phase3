@@ -1,32 +1,33 @@
-<script setup>
-import useSWRV from "swrv";
-import {computed, ref} from "vue";
+<script setup lang="ts">
+import {storeToRefs} from "pinia";
+import {computed, onMounted, ref} from "vue";
+import {useRoute, useRouter} from "vue-router";
 
 import BaseSearch from "@/js/components/search/BaseSearch.vue";
 import GenericMultiSelectFilter from "@/js/components/search/hardware/GenericMultiSelectFilter.vue";
-import {API_ENDPOINTS} from "@/js/constants/API_ENDPOINTS";
+import SchoolsRobot from "@/js/components/svg/schoolsRobot/schoolsRobot.vue";
+import {LandingHeroText} from "@/js/constants/PageBlurb";
 import {schoolPartnerTech,schoolTech} from "@/js/constants/schoolTech";
-import { axiosSchoolFetcherParams} from "@/js/helpers/fetcher";
-import {useUserStore} from "@/js/stores/useUserStore";
+import {lowerSlugify} from "@/js/helpers/stringHelpers";
+import {schoolService} from "@/js/service/schoolService";
+import {useSchoolsStore} from "@/js/stores/useSchoolsStore";
 
-const swrvOptions = {
-    revalidateOnFocus: false, // disable refresh on every focus, suspect its too often
-    refreshInterval: 30000 // refresh or revalidate data every 30 secs
-}
+const route = useRoute()
+const router = useRouter()
+
 const combinedSchoolTech = [...schoolTech,...schoolPartnerTech];
-console.log(combinedSchoolTech)
+const {allSchools} = storeToRefs(useSchoolsStore())
 
-const {data: schoolList, error: schoolError} = useSWRV(API_ENDPOINTS.SCHOOL.FETCH_ALL_SCHOOLS, axiosSchoolFetcherParams(useUserStore().getUserRequestParam), swrvOptions)
+onMounted(() =>{
+    schoolService.fetchAllSchools().then(res =>{
+        console.log(res)
+        allSchools.value = res
+    })
 
-const schoolFilterList = [
-    {name: "Preschool", value:"PRE"},
-    {name: "Primary Education", value:"PRIM"},
-    {name: "Primary/Secondary", value:"PRSEC"},
-    {name: "Secondary Education", value:"SEC"},
-    {name: "Special Education", value:"SPEC"},
-    {name: "Specialist Facilities", value:"SPFAC"},
-    {name: "Aboriginal/Anangu Schools", value:"ABAN"},
-]
+})
+
+
+const schoolFilterList = schoolService.getSchoolFilterList()
 
 const schoolTechFilterList = computed(() =>{
     return combinedSchoolTech.map(item =>{
@@ -40,13 +41,31 @@ const handleFilter = (filters, dataPath) => {
     filterObject.value[dataPath] = filters.map(filter => filter.value)
 }
 
+const preselectedFilterObject = ref(null as {name: string, value: string | string[]} | null);
+
+
+if (route.params && route.params.filter) {
+    const filterNameSlug = lowerSlugify(route.params.filter);
+
+    const matchingFilter = schoolFilterList.find(filter => filterNameSlug === lowerSlugify(filter.name));
+
+    if (matchingFilter) {
+        preselectedFilterObject.value = matchingFilter;
+    } else {
+        router.push('/browse/school');
+    }
+}
+
+
 </script>
 
 <template>
     <BaseSearch
         search-type="school"
-        :resource-list="schoolList"
+        :resource-list="allSchools"
         :live-filter-object="filterObject"
+        :hero-title="LandingHeroText['school']['title']"
+        :hero-subtitle="LandingHeroText['school']['subtitle']"
     >
         <template #filterBar>
             <GenericMultiSelectFilter
@@ -54,6 +73,8 @@ const handleFilter = (filters, dataPath) => {
                 placeholder="Filter by type"
                 :filter-list="schoolFilterList"
                 data-path="site_type_code"
+                :preselected="preselectedFilterObject"
+
                 @transmit-selected-filters="handleFilter"
             />
             <GenericMultiSelectFilter
@@ -62,6 +83,11 @@ const handleFilter = (filters, dataPath) => {
                 :filter-list="schoolTechFilterList"
                 data-path="tech_used"
                 @transmit-selected-filters="handleFilter"
+            />
+        </template>
+        <template #robot>
+            <SchoolsRobot
+                class="absolute top-10 left-36"
             />
         </template>
     </BaseSearch>

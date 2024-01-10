@@ -29,32 +29,28 @@ const handleTransmittedFromGenericMultiSelectFilter = (selectedValue, dataPath) 
 </script>
 
 <template>
-    <div class="">
+    <div
+        v-if="isLoading"
+        class="mt-6"
+    >
+        <Loader
+            :loader-color="'#0072DA'"
+            :loader-message="'Loading labels'"
+            :loader-type="'small'"
+        />
+    </div>
+    <template v-else>
         <div
-            v-if="isLoading"
-            class="mt-6"
+            v-for="(value,key) in groupedLabels"
+            :key="key"
         >
-            <Loader
-                :loader-color="'#0072DA'"
-                :loader-message="'Loading labels'"
-                :loader-type="'small'"
+            <GenericMultiSelectFilter
+                :id="'adviceFilter' + key"
+                :placeholder="'Filter by ' + key"
+                :filter-list="value"
+                data-path="label_value"
+                @transmit-selected-filters="handleTransmittedFromGenericMultiSelectFilter"
             />
         </div>
-        <template v-else>
-            <div class="grid grid-cols-2 gap-x-6 w-full">
-                <div
-                    v-for="(value,key) in groupedLabels"
-                    :key="key"
-                >
-                    <GenericMultiSelectFilter
-                        :id="'adviceFilter' + key"
-                        :placeholder="'Filter by ' + key"
-                        :filter-list="value"
-                        data-path="label_value"
-                        @transmit-selected-filters="handleTransmittedFromGenericMultiSelectFilter"
-                    />
-                </div>
-            </div>
-        </template>
-    </div>
+    </template>
 </template>
