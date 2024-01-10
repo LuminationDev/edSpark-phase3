@@ -20,7 +20,6 @@ const props = defineProps({
 </script>
 
 <template>
-    <!--    <div class="w-full">-->
     <div
         v-for="(row,index) in numberOfRows"
         :key="index"

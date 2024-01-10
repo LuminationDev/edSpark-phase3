@@ -6,6 +6,7 @@ import VPagination from "@hennge/vue3-pagination";
 import {computed, ref, watch} from 'vue'
 
 import AdviceCard from "@/js/components/advice/AdviceCard.vue";
+import BaseLandingHero from "@/js/components/bases/BaseLandingHero.vue";
 import SearchBar from "@/js/components/browseschools/SearchBar.vue";
 import CardLoading from "@/js/components/card/CardLoading.vue";
 import EventsCard from "@/js/components/events/EventsCard.vue";
@@ -13,6 +14,7 @@ import HardwareCard from "@/js/components/hardware/HardwareCard.vue";
 import PartnerCard from "@/js/components/partners/PartnerCard.vue";
 import SchoolCard from "@/js/components/schools/SchoolCard.vue";
 import SoftwareCard from "@/js/components/software/SoftwareCard.vue";
+import {LandingHeroText, SearchTitleByType} from "@/js/constants/PageBlurb";
 import {guid} from "@/js/helpers/guidGenerator";
 import {findNestedKeyValue} from "@/js/helpers/objectHelpers";
 
@@ -29,6 +31,19 @@ const props = defineProps({
     liveFilterObject: {
         type: Object,
         required: true
+    },
+    heroTitle: {
+        type: String,
+        required: true
+    },
+    heroSubtitle: {
+        type: String,
+        required: true
+    },
+    heroBackgroundColor: {
+        type: String,
+        required: false,
+        default: 'teal'
     }
 })
 
@@ -38,8 +53,6 @@ const filteredTermData = computed(() => {
     if (!props.resourceList) return [];
 
     return props.resourceList.reduce((acc, resource) => {
-
-
         // List of possible attribute names to check - here because different objects has different field
         const attributesToCheck = ['name', 'title'];
 
@@ -98,7 +111,7 @@ const numberOfItemsPerPage = 9
 
 const handleChangePageNumber = (newPageNumber) => {
     page.value = newPageNumber
-    const scrollToTop = () =>{
+    const scrollToTop = () => {
         window.scrollTo({top: 0, behavior: 'smooth'})
     }
     scrollToTop()
@@ -124,8 +137,7 @@ const showPagination = computed(() => {
 })
 
 const formattedSearchTitle = computed(() => {
-    if (['school', 'event', 'partner'].includes(props.searchType)) return props.searchType + 's'
-    else return props.searchType
+    return SearchTitleByType[props.searchType]
 })
 
 
@@ -145,10 +157,19 @@ const formattedSearchBlurb = computed(() => {
 </script>
 
 <template>
-    <div
-        class="browse-schools-container flex items-center flex-col mt-24 px-10"
+    <BaseLandingHero
+        :title="props.heroTitle"
+        :title-paragraph="props.heroSubtitle"
+        :background-color="props.heroBackgroundColor"
     >
-        <div class="flex flex-col search-filter-element w-[80%]">
+        <template #robotIllustration>
+            <slot name="robot" />
+        </template>
+    </BaseLandingHero>
+    <div
+        class="browse-schools-container flex items-center flex-col px-12 py-16"
+    >
+        <div class="flex flex-col search-filter-element w-full">
             <div class="mb-8 pr-4 search-filter-heading">
                 <h3 class="font-semibold text-3xl">
                     Browse all {{ formattedSearchTitle }}
@@ -158,17 +179,25 @@ const formattedSearchBlurb = computed(() => {
                 </p>
             </div>
 
+            <!--            <div class="flex flex-col search-filter-components">-->
+            <!--                <SearchBar-->
+            <!--                    :placeholder="`Type in ${searchType} name`"-->
+            <!--                    @emit-search-term="handleSearchTerm"-->
+            <!--                />-->
+            <!--                <div class="">-->
+            <!--                    <slot name="filterBar" />-->
+            <!--                </div>-->
+            <!--            </div>-->
+        </div>
+        <div class="grid grid-cols-3 gap-4 w-full">
             <div class="flex flex-col search-filter-components">
                 <SearchBar
                     :placeholder="`Type in ${searchType} name`"
                     @emit-search-term="handleSearchTerm"
                 />
-                <div class="">
-                    <slot name="filterBar" />
-                </div>
+                <div class="" />
             </div>
-        </div>
-        <div class="w-[80%]">
+            <slot name="filterBar" />
             <slot name="additionalFilters" />
         </div>
         <div class="my-4 searchResults text-base">
@@ -188,7 +217,7 @@ const formattedSearchBlurb = computed(() => {
                 >
                     <div
                         :key="data.id"
-                        class="group h-[470px] max-w-[300px] transition-all w-full  hover:shadow-2xl lg:!max-w-[400px]"
+                        class="group h-[470px] max-w-[350px] transition-all w-full  hover:shadow-2xl lg:!max-w-[400px]"
                     >
                         <AdviceCard
                             :key="data.id"
@@ -200,7 +229,7 @@ const formattedSearchBlurb = computed(() => {
                 <template v-else-if="searchType === 'software'">
                     <div
                         :key="data.id"
-                        class="group h-[470px] max-w-[300px] transition-all w-full hover:shadow-2xl lg:!max-w-[400px]"
+                        class="group h-[470px] max-w-[350px] transition-all w-full hover:shadow-2xl lg:!max-w-[400px]"
                     >
                         <SoftwareCard
                             :key="data.id"
@@ -211,7 +240,7 @@ const formattedSearchBlurb = computed(() => {
                 <template v-else-if="searchType === 'hardware'">
                     <div
                         :key="data.id"
-                        class="group h-[470px] max-w-[300px] transition-all w-full hover:shadow-2xl lg:!max-w-[400px]"
+                        class="group h-[470px] max-w-[350px] transition-all w-full hover:shadow-2xl lg:!max-w-[400px]"
                     >
                         <HardwareCard
                             :key="data.id"
@@ -222,7 +251,7 @@ const formattedSearchBlurb = computed(() => {
                 <template v-else-if="searchType === 'school'">
                     <div
                         :key="data.id"
-                        class="group h-[470px] max-w-[300px] transition-all w-full hover:shadow-2xl lg:!max-w-[400px]]"
+                        class="group h-[470px] max-w-[350px] transition-all w-full hover:shadow-2xl lg:!max-w-[400px]]"
                     >
                         <SchoolCard
                             class="mx-auto"
@@ -233,7 +262,7 @@ const formattedSearchBlurb = computed(() => {
                 <template v-else-if="searchType === 'partner'">
                     <div
                         :key="data.id"
-                        class="group h-[470px] max-w-[300px] transition-all w-full hover:shadow-2xl lg:!max-w-[400px]"
+                        class="group h-[470px] max-w-[350px] transition-all w-full hover:shadow-2xl lg:!max-w-[400px]"
                     >
                         <PartnerCard
                             :data="data"
@@ -247,7 +276,7 @@ const formattedSearchBlurb = computed(() => {
                             border-black
                             group
                             h-[470px]
-                            max-w-[300px]
+                            max-w-[350px]
                             transition-all
                             w-full
                             hover:shadow-2xl

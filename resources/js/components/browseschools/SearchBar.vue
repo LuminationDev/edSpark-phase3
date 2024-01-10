@@ -25,19 +25,12 @@ const emits = defineEmits(['emitSearchTerm'])
         </p>
         <div
             style="position: relative"
-            class="!border-black border-2 flex items-center font-medium gap-1 h-12 pl-4 rounded text-black text-lg"
+            class="!border-slate-300 border-2 flex items-center font-medium gap-1 h-12 pl-4 rounded text-black text-lg"
         >
-            <input
-                id="searchbar-text-input"
-                v-model="searchTerm"
-                class="bg-transparent border-0 font-light ml-2 text-lg"
-                type="text"
-                :placeholder="props.placeholder"
-                @input="handleSearchChange"
-            >
             <div
                 id="searchIcon"
-                style="width: 28px; position: absolute; right: 5px; z-index: -1;"
+                class="fill-slate-300 stroke-slate-300"
+                style="width: 28px; position: absolute; left: 5px; z-index: -1;"
             >
                 <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -47,26 +40,32 @@ const emits = defineEmits(['emitSearchTerm'])
                     <circle
                         cx="10"
                         cy="10"
-                        r="8" 
-                        stroke="#000" 
-                        stroke-width="2" 
-                        stroke-linecap="round" 
-                        stroke-linejoin="round" 
+                        r="8"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
                     />
 
                     <line
                         x1="15"
                         y1="16"
                         x2="21"
-                        y2="22"                
-                        stroke="#000" 
-                        stroke-width="2" 
-                        stroke-linecap="round" 
-                        stroke-linejoin="round" 
+                        y2="22"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
                     />
 
                 </svg>
             </div>
+            <input
+                id="searchbar-text-input"
+                v-model="searchTerm"
+                class="bg-transparent border-0 font-light ml-4 text-lg"
+                type="text"
+                :placeholder="props.placeholder"
+                @input="handleSearchChange"
+            >
         </div>
     </div>
 </template>

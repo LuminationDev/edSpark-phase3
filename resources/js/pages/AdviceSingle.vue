@@ -6,6 +6,7 @@ import AdviceSingleCuratedContent from "@/js/components/advice/AdviceSingleCurat
 import BaseBreadcrumb from "@/js/components/bases/BaseBreadcrumb.vue";
 import BaseHero from "@/js/components/bases/BaseHero.vue";
 import BaseSingle from "@/js/components/bases/BaseSingle.vue";
+import TinyMceContentRenderer from "@/js/components/bases/frontendform/TinyMceEditor/TinyMceContentRenderer.vue";
 import LabelRowContentDisplay from "@/js/components/global/LabelRowContentDisplay.vue";
 import ExtraResourceTemplateDisplay from "@/js/components/renderer/ExtraResourceTemplateDisplay.vue";
 import {edSparkContentSanitizer} from "@/js/helpers/objectHelpers";
@@ -74,17 +75,11 @@ const timeFormatter = (originalFormat) => {
             <div class="adviceSingleContent flex flex-col overflow-hidden px-8 w-full xl:!flex-row">
                 <!--    Content of the Advice    -->
                 <div class="flex flex-col flex-wrap mr-10 px-2 py-2 richTextContentContainer w-full xl:!w-2/3">
-                    <div class="flex font-bold mb-2 text-2xl">
-                        Getting started
-                    </div>
                     <div
                         class="flex flex-col max-w-full overflow-hidden text-lg"
-                    />
-
-                    <div
-                        class="max-w-full richTextContentContainer"
-                        v-html="edSparkContentSanitizer(contentFromBase['content'] )"
-                    />
+                    >
+                        <TinyMceContentRenderer :raw-content="contentFromBase['content']" />
+                    </div>
                     <div
                         v-if="contentFromBase['extra_content'] && contentFromBase['extra_content'].length"
                         class="extraResourcesContainer mt-4 w-full"

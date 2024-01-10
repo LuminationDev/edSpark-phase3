@@ -62,6 +62,6 @@ const {
                     :loader-message="'Calendar loading'"
                 />
             </div>
-        </div>a
+        </div>
     </div>
 </template>
