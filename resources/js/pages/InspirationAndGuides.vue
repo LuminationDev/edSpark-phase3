@@ -21,15 +21,18 @@ import {useAdviceStore} from "@/js/stores/useAdviceStore";
 
 const router = useRouter()
 const featuredSites = ref([])
-const allAdvice = storeToRefs(useAdviceStore())
+const {allAdvice} = storeToRefs(useAdviceStore())
 
-onMounted(() =>{
+onMounted(() => {
     schoolService.fetchFeaturedSchool().then(res =>
         featuredSites.value = res
     )
-    adviceService.fetchAllAdvice().then(res =>
+    adviceService.fetchAllAdvice().then(res => {
+        console.log(res)
         allAdvice.value = res
-    )
+        console.log(allAdvice.value)
+
+    })
 
 })
 
