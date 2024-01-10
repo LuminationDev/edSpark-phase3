@@ -48,7 +48,7 @@ const borderColorClass = computed(() => {
             @click="handleClickResource"
         >
             <div class="flex justify-between flex-row w-full">
-                <div class="title">
+                <div class="text-start title w-full">
                     {{ resource.title }}
                 </div>
                 <div class="Arrow grid place-items-center">

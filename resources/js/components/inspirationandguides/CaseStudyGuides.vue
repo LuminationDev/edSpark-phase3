@@ -14,7 +14,7 @@ const props = defineProps({
 
 <template>
     <div class="EduAdviceCards grid grid-cols-1 gap-10 place-items-center mt-10 md:!grid-cols-2 lg:!grid-cols-3">
-        <template v-if="adviceList && adviceList.length">
+        <template v-if="props.adviceList && props.adviceList.length">
             <AdviceCard
                 v-for="advice in getNRandomElementsFromArray(adviceList,3)"
                 :key="advice.guid"
