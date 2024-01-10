@@ -78,5 +78,13 @@ export const cardLinkGenerator = (type: string, name:string ,id?: number ) => {
     }
 }
 
-export const getNRandomElementsFromArray = (array, num) => array.length <= num ? array : array.sort(() => Math.random() - 0.5).slice(0, num);
+export const getNRandomElementsFromArray = (array, num) => {
+    const shuffledArray = [...array];
 
+    for (let i = shuffledArray.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [shuffledArray[i], shuffledArray[j]] = [shuffledArray[j], shuffledArray[i]];
+    }
+
+    return shuffledArray.slice(0, num);
+};

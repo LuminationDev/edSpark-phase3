@@ -1,5 +1,6 @@
 <script setup>
-import {ref} from "vue";
+import {storeToRefs} from "pinia";
+import {onMounted, ref} from "vue";
 import {useRouter} from "vue-router";
 
 import BaseLandingHero from "@/js/components/bases/BaseLandingHero.vue";
@@ -12,21 +13,25 @@ import InspirationAndGuidesRobot from "@/js/components/inspirationandguides/Insp
 import SchoolProfileGuidesQuickFilters from "@/js/components/inspirationandguides/SchoolProfileGuidesQuickFilters.vue";
 import SchoolProfilesGuides from "@/js/components/inspirationandguides/SchoolProfilesGuides.vue";
 import Loader from "@/js/components/spinner/Loader.vue";
-import {LandingHeroText} from "@/js/constants/LandingPageTitle";
+import {LandingHeroText} from "@/js/constants/PageBlurb";
 import {adviceService} from "@/js/service/adviceService";
 import {schoolService} from "@/js/service/schoolService";
+import {useAdviceStore} from "@/js/stores/useAdviceStore";
 
 
 const router = useRouter()
 const featuredSites = ref([])
-const adviceList = ref([])
+const allAdvice = storeToRefs(useAdviceStore())
 
-schoolService.fetchFeaturedSchool().then(res =>
-    featuredSites.value = res
-)
-adviceService.fetchAllAdvice().then(res =>
-    adviceList.value = res
-)
+onMounted(() =>{
+    schoolService.fetchFeaturedSchool().then(res =>
+        featuredSites.value = res
+    )
+    adviceService.fetchAllAdvice().then(res =>
+        allAdvice.value = res
+    )
+
+})
 
 const handleClickViewAllGuides = () => {
     return router.push('browse/guide')
@@ -79,8 +84,8 @@ const handleClickViewAllSchools = () => {
         </template>
         <template #content>
             <PopularResourceShortcuts
-                v-if="adviceList && adviceList.length"
-                :resource-list="adviceList"
+                v-if="allAdvice && allAdvice.length"
+                :resource-list="allAdvice"
             />
             <Loader
                 v-else
@@ -122,7 +127,7 @@ const handleClickViewAllSchools = () => {
             <CaseStudyQuickSearchGuides />
         </template>
         <template #content>
-            <CaseStudyGuides :advice-list="adviceList" />
+            <CaseStudyGuides :advice-list="allAdvice" />
         </template>
     </BaseLandingSection>
 </template>

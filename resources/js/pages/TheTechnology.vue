@@ -16,24 +16,37 @@ import HardwareCard from "@/js/components/hardware/HardwareCard.vue";
 import SoftwareCard from "@/js/components/software/SoftwareCard.vue";
 import Loader from "@/js/components/spinner/Loader.vue";
 import SoftwareRobot from "@/js/components/svg/software/SoftwareRobot.vue";
-import {LandingHeroText} from "@/js/constants/LandingPageTitle";
-import {getNRandomElementsFromArray} from "@/js/helpers/cardDataHelper";
+import {API_ENDPOINTS} from "@/js/constants/API_ENDPOINTS";
+import {LandingHeroText} from "@/js/constants/PageBlurb";
+import {cardDataWithGuid, getNRandomElementsFromArray} from "@/js/helpers/cardDataHelper";
+import {adviceService} from "@/js/service/adviceService";
 import {softwareService} from "@/js/service/softwareService";
+import {useAdviceStore} from "@/js/stores/useAdviceStore";
 import {useHardwareStore} from "@/js/stores/useHardwareStore";
 import {useSoftwareStore} from "@/js/stores/useSoftwareStore";
 
 const router = useRouter()
 const {allSoftware} = storeToRefs(useSoftwareStore())
 const {allHardware} = storeToRefs(useHardwareStore())
-const handleClickPopularTech = () => {
-    console.log('jhee popular')
-}
+const {allAdvice} = storeToRefs(useAdviceStore())
 
 onMounted(() => {
     softwareService.fetchAllSoftware().then(res => {
         allSoftware.value = res
     })
+    // TODO: Replace with catalogue Items instead of this
+    axios.get(API_ENDPOINTS.HARDWARE.FETCH_HARDWARE_POSTS).then(res => {
+        allHardware.value = cardDataWithGuid(res.data)
+    })
+    adviceService.fetchAllAdvice().then(res =>
+        allAdvice.value = res
+    )
 })
+
+
+const handleClickPopularTech = () => {
+    console.log('jhee popular')
+}
 </script>
 
 <template>
@@ -48,20 +61,13 @@ onMounted(() => {
     </BaseLandingHero>
     <BaseLandingSection background-color="white">
         <template #title>
-            Popular guides
-        </template>
-        <template #button>
-            <GenericButton
-                :callback="handleClickPopularTech"
-                :type="'teal'"
-            >
-                View all guides
-            </GenericButton>
+            Popular Technology
         </template>
         <template #content>
             <PopularResourceShortcuts
                 v-if="allSoftware && allSoftware.length"
                 :resource-list="allSoftware"
+                border-color="purple"
             />
             <Loader
                 v-else
@@ -78,7 +84,7 @@ onMounted(() => {
         </template>
         <template #button>
             <GenericButton
-                :callback="() => router.push('browse/guide')"
+                :callback="() => router.push('browse/software')"
                 :type="'purple'"
             >
                 View all apps and programs
@@ -129,23 +135,48 @@ onMounted(() => {
         background-color="white"
     >
         <template #title>
-            Guides and resources
+            Latest equipment and devices
         </template>
         <template #button>
             <GenericButton
-                :callback="() => router.push('browse/guide')"
+                :callback="() => router.push('browse/hardware')"
                 :type="'purple'"
             >
                 View all equipment and devices
             </GenericButton>
         </template>
         <template #content>
-            <BaseLandingCardRow :resource-list="guideList">
+            <BaseLandingCardRow :resource-list="allHardware">
                 <template #rowContent>
                     <HardwareCard
-                        v-for="(guide,index) in getNRandomElementsFromArray(guideList,3)"
+                        v-for="(hardware,index) in getNRandomElementsFromArray(allHardware,3)"
                         :key="index"
-                        :data="guide"
+                        :data="hardware"
+                    />
+                </template>
+            </BaseLandingCardRow>
+        </template>
+    </BaseLandingSection>
+
+    <BaseLandingSection background-color="purple">
+        <template #title>
+            Technology guides and resources
+        </template>
+        <template #button>
+            <GenericButton
+                :callback="handleClickPopularTech"
+                :type="'purple'"
+            >
+                View all guides
+            </GenericButton>
+        </template>
+        <template #content>
+            <BaseLandingCardRow :resource-list="allAdvice">
+                <template #rowContent>
+                    <HardwareCard
+                        v-for="(advice,index) in getNRandomElementsFromArray(allAdvice,3)"
+                        :key="index"
+                        :data="advice"
                     />
                 </template>
             </BaseLandingCardRow>

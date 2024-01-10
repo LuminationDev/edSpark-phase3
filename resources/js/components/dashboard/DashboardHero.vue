@@ -1,6 +1,6 @@
 <script setup>
 import BaseLandingHero from "@/js/components/bases/BaseLandingHero.vue";
-import {LandingHeroText} from "@/js/constants/LandingPageTitle";
+import {LandingHeroText} from "@/js/constants/PageBlurb";
 
 import Swoosh from '../svg/DashboardSwoosh.vue';
 import {

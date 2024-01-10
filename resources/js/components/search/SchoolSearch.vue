@@ -5,6 +5,8 @@ import {useRoute, useRouter} from "vue-router";
 
 import BaseSearch from "@/js/components/search/BaseSearch.vue";
 import GenericMultiSelectFilter from "@/js/components/search/hardware/GenericMultiSelectFilter.vue";
+import SchoolsRobot from "@/js/components/svg/schoolsRobot/schoolsRobot.vue";
+import {LandingHeroText} from "@/js/constants/PageBlurb";
 import {schoolPartnerTech,schoolTech} from "@/js/constants/schoolTech";
 import {lowerSlugify} from "@/js/helpers/stringHelpers";
 import {schoolService} from "@/js/service/schoolService";
@@ -62,6 +64,8 @@ if (route.params && route.params.filter) {
         search-type="school"
         :resource-list="allSchools"
         :live-filter-object="filterObject"
+        :hero-title="LandingHeroText['school']['title']"
+        :hero-subtitle="LandingHeroText['school']['subtitle']"
     >
         <template #filterBar>
             <GenericMultiSelectFilter
@@ -79,6 +83,11 @@ if (route.params && route.params.filter) {
                 :filter-list="schoolTechFilterList"
                 data-path="tech_used"
                 @transmit-selected-filters="handleFilter"
+            />
+        </template>
+        <template #robot>
+            <SchoolsRobot
+                class="absolute top-10 left-36"
             />
         </template>
     </BaseSearch>

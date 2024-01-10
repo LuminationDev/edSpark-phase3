@@ -7,6 +7,7 @@ import BaseSearch from "@/js/components/search/BaseSearch.vue";
 import GenericMultiSelectFilter from "@/js/components/search/hardware/GenericMultiSelectFilter.vue";
 import LabelFiltersSearchPage from "@/js/components/search/LabelFiltersSearchPage.vue";
 import {API_ENDPOINTS} from "@/js/constants/API_ENDPOINTS";
+import {LandingHeroText} from "@/js/constants/PageBlurb";
 import {swrvOptions} from "@/js/constants/swrvConstants";
 import {axiosFetcher} from "@/js/helpers/fetcher";
 
@@ -28,7 +29,7 @@ const filterObject = ref({})
 
 const handleFilter = (filters, dataPath) => {
     console.log('handlefilter called ' + filters + dataPath)
-    filterObject.value[dataPth] = filters.map(filter => filter.value).flat(1)
+    filterObject.value[dataPath] = filters.map(filter => filter.value).flat(1)
 }
 
 
@@ -56,6 +57,8 @@ if (route.params || route.params.filter) {
         search-type="guide"
         :resource-list="adviceList"
         :live-filter-object="filterObject"
+        :hero-title="LandingHeroText['guideSearch']['title']"
+        :hero-subtitle="LandingHeroText['guideSearch']['subtitle']"
     >
         <template #filterBar>
             <GenericMultiSelectFilter

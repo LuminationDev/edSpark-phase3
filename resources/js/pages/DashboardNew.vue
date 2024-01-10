@@ -27,7 +27,6 @@ const router = useRouter()
 const userStore = useUserStore();
 const windowStore = useWindowStore()
 
-const latestSchoolList = ref([])
 const {featuredSchools} = storeToRefs(useSchoolsStore())
 const guideList = ref([])
 const {allSoftware} = storeToRefs(useSoftwareStore())
@@ -36,18 +35,17 @@ const eventList = ref([])
 
 onMounted(async () => {
     try {
-        const [featuredSchool, allAdvice, allSoftware, allEvent] = await Promise.all([
+        const [fetchedFeaturedSchool, fetchedAdvice, fetchedSoftware, fetchedEvent] = await Promise.all([
             schoolService.fetchFeaturedSchool(),
             adviceService.fetchAllAdvice(),
             softwareService.fetchAllSoftware(),
             eventService.fetchAllEvent()
         ]);
 
-        latestSchoolList.value = featuredSchool;
-        featuredSchools.value = featuredSchool
-        guideList.value = allAdvice;
-        allSoftware.value = allSoftware;
-        eventList.value = allEvent;
+        featuredSchools.value = fetchedFeaturedSchool;
+        guideList.value = fetchedAdvice;
+        allSoftware.value = fetchedSoftware;
+        eventList.value = fetchedEvent;
     } catch (error) {
         // Handle errors here
         console.error("Error fetching data:", error);
@@ -76,10 +74,10 @@ onMounted(async () => {
                 <SchoolProfileGuidesQuickFilters />
             </template>
             <template #content>
-                <BaseLandingCardRow :resource-list="latestSchoolList">
+                <BaseLandingCardRow :resource-list="featuredSchools">
                     <template #rowContent>
                         <SchoolCard
-                            v-for="(school,index) in getNRandomElementsFromArray(latestSchoolList,3)"
+                            v-for="(school,index) in getNRandomElementsFromArray(featuredSchools,3)"
                             :key="index"
                             :data="school"
                         />
