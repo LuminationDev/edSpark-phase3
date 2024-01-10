@@ -1,7 +1,7 @@
 <script setup>
 import {storeToRefs} from "pinia";
 import useSWRV from "swrv";
-import {computed, ref, watch} from 'vue';
+import {computed, onMounted, ref, watch} from 'vue';
 import {useRouter} from "vue-router";
 
 import CardLoading from "@/js/components/card/CardLoading.vue";
@@ -48,6 +48,15 @@ const getResponsiveDisplayData = (itemArray) => {
     else return itemArray
 }
 
+onMounted(() =>{
+    const payload = {
+        field: 'types',
+        value: 'Notebook'
+    }
+    axios.post(API_ENDPOINTS.CATALOGUE.FETCH_CATALOGUE_BY_FIELD, payload).then(res =>{
+        console.log(res.data)
+    })
+})
 
 </script>
 
