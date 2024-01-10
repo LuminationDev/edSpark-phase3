@@ -1,11 +1,13 @@
-import {API_ENDPOINTS} from "@/js/constants/API_ENDPOINTS";
-import { defineStore } from "pinia";
 import axios from 'axios';
+import { defineStore } from "pinia";
+
+import {API_ENDPOINTS} from "@/js/constants/API_ENDPOINTS";
 import {serverURL} from "@/js/constants/serverUrl";
 
 export const useSoftwareStore = defineStore('software', {
     state: () => ({
-        relatedSoftware: []
+        relatedSoftware: [],
+        allSoftware: []
     }),
 
     getters: {

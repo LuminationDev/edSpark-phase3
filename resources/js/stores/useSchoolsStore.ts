@@ -26,9 +26,10 @@ export const useSchoolsStore = defineStore('schools', {
      * }
      */
     state: () => ({
-        schools: [],
+        allSchools: [],
         newSchool: {},
-        currentUserSchool: {}
+        currentUserSchool: {},
+        featuredSchools: []
     }),
 
     getters: {

@@ -185,7 +185,9 @@ class AdviceController extends Controller
 
             foreach ($typeArray as $typeItem) {
                 $adviceTypes = Advicetype::where('advice_type_name', $typeItem)->first();
-                $adviceArticles = Advice::where('advicetype_id', $adviceTypes->id)->where('post_status', 'Published')->get();
+                $adviceArticles = Advice::whereHas('advicetypes', function ($query) use ($adviceTypes) {
+                    $query->where('advice_types.id', $adviceTypes->id);
+                })->where('post_status', 'Published')->orderBy('created_at', 'DESC')->get();
 
                 foreach ($adviceArticles as $advice) {
                     $result = $this->postService->adviceModelToJson($advice, $request);
@@ -196,7 +198,9 @@ class AdviceController extends Controller
 
         } else {
             $adviceTypes = Advicetype::where('advice_type_name', $type)->first();
-            $adviceArticles = Advice::where('advicetype_id', $adviceTypes->id)->where('post_status', 'Published')->get();
+            $adviceArticles = Advice::whereHas('advicetypes', function ($query) use ($adviceTypes) {
+                $query->where('advice_types.id', $adviceTypes->id);
+            })->where('post_status', 'Published')->orderBy('created_at', 'DESC')->get();
 
             foreach ($adviceArticles as $advice) {
                 $result = $this->postService->adviceModelToJson($advice, $request);

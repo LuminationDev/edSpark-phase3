@@ -1,4 +1,7 @@
 <script setup>
+import BaseLandingHero from "@/js/components/bases/BaseLandingHero.vue";
+import {LandingHeroText} from "@/js/constants/PageBlurb";
+
 import Swoosh from '../svg/DashboardSwoosh.vue';
 import {
     Circle,
@@ -8,66 +11,51 @@ import {
     RightArm,
     RobotBody,
     RobotHead,
-    Shadow} from '../svg/welcomeRobot/index.js'
+    Shadow
+} from '../svg/welcomeRobot/index.js'
 
-const welcomeMessage =  'Welcome to edSpark!'
-const welcomeDescription= 'The edSpark Digital Hub is where education and technology meet. Discover how schools are already using technology effectively. Spark your imagination with advice on integrating tech into your classroom. Gain access to the best software and hardware at great prices. Join a community of like minded educators and partners.'
 </script>
 
 <template>
-    <div class="bg-clip-content overflow-hidden">
-        <div
-            class="bg-clip-content bg-gradient-to-br from-[#002856] via-[#309A9A] to-[#B8E2DC] h-auto w-full"
-        >
-            <div class="2xl:!px-40 grid grid-cols-6 pb-[3rem] px-10 md:px-20 xl:!px-20">
-                <div class="col-span-6 pt-[220px]  md:!col-span-3">
-                    <h1 class="font-semibold pb-8 text-3xl text-white  md:!text-[2.5rem] lg:!text-5xl lg:!text-[48px]">
-                        {{ welcomeMessage }}
-                    </h1>
-
-                    <p class="font-normal text-white text-xl">
-                        {{ welcomeDescription }}
-                    </p>
+    <BaseLandingHero
+        :title="LandingHeroText['dashboard']['title']"
+        :title-paragraph="LandingHeroText['dashboard']['subtitle']"
+        background-color="navy"
+    >
+        <template #robotIllustration>
+            <div class="welcomeRobot">
+                <!-- Gear and dots -->
+                <div class="">
+                    <Gear class="absolute top-8 left-12 gear z-10" />
+                    <GearDottedLines class="absolute top-8 left-12 dottedLines z-10" />
                 </div>
-                <div
-                    class="hidden relative welcomeRobot z-10  md:!col-span-2 md:!scale-75 md:block lg:!ml-0 lg:!scale-90"
-                >
-                    <!-- Gear and dots -->
-                    <div class="">
-                        <Gear class="absolute top-48 left-12 gear z-10" />
-                        <GearDottedLines class="absolute top-48 left-12 dottedLines z-10" />
-                    </div>
-                    <!-- Shadow -->
-                    <div class="">
-                        <Shadow class="absolute top-[620px] left-64 robotShadow z-10" />
-                    </div>
-                    <!-- Robot Body -->
-                    <div class="">
-                        <RobotBody class="absolute top-[450px] left-64 robotBody z-20" />
-                    </div>
-                    <!-- Robot Head -->
-                    <div class="">
-                        <RobotHead class="absolute top-[250px] left-64 robotHead z-20" />
-                    </div>
-                    <!-- Robot Left Arm -->
-                    <div class="">
-                        <LeftArm class="absolute top-[390px] left-[410px] leftArm z-20" />
-                    </div>
-                    <!-- Robot Right Arm -->
-                    <div class="">
-                        <RightArm class="absolute top-[390px] rightArm left-40 z-20" />
-                    </div>
-                    <!-- Background circle -->
-                    <div class="">
-                        <Circle class="absolute top-52 left-20 z-0" />
-                    </div>
+                <!-- Shadow -->
+                <div class="">
+                    <Shadow class="absolute top-[420px] left-64 robotShadow z-10" />
+                </div>
+                <!-- Robot Body -->
+                <div class="">
+                    <RobotBody class="absolute top-[250px] left-64 robotBody z-20" />
+                </div>
+                <!-- Robot Head -->
+                <div class="">
+                    <RobotHead class="absolute top-[50px] left-64 robotHead z-20" />
+                </div>
+                <!-- Robot Left Arm -->
+                <div class="">
+                    <LeftArm class="absolute top-[190px] left-[410px] leftArm z-20" />
+                </div>
+                <!-- Robot Right Arm -->
+                <div class="">
+                    <RightArm class="absolute top-[190px] rightArm left-40 z-20" />
+                </div>
+                <!-- Background circle -->
+                <div class="">
+                    <Circle class="absolute top-10 left-20 z-0" />
                 </div>
             </div>
-        </div>
-        <div class="!mt-0 h-[60px] xl:h-[130px] min-h-24 relative swooshContainer">
-            <Swoosh style="transform: translate(0, -60%);" />
-        </div>
-    </div>
+        </template>
+    </BaseLandingHero>
 </template>
 
 <style>
@@ -146,10 +134,10 @@ const welcomeDescription= 'The edSpark Digital Hub is where education and techno
 @keyframes veryExcite {
     from {
         transform: scaleX(1);
-        top: 450px;
+        top: 250px;
     }
     to {
-        top: 435px;
+        top: 235px;
         transform: scaleX(0.9);
         /* transform-origin: bottom;  */
     }
@@ -157,11 +145,11 @@ const welcomeDescription= 'The edSpark Digital Hub is where education and techno
 
 @keyframes excitedHead {
     from {
-        top: 250px;
+        top: 50px;
         transform: rotate(0deg);
     }
     to {
-        top: 235px;
+        top: 35px;
         transform: rotate(3deg);
         /* transform: translateY(1.1);
         transform-origin: bottom; */
@@ -171,11 +159,11 @@ const welcomeDescription= 'The edSpark Digital Hub is where education and techno
 @keyframes leftArm {
     from {
         transform: rotate(0deg);
-        top: 390px;
+        top: 190px;
         left: 410px;
     }
     to {
-        top: 370px;
+        top: 170px;
         left: 395px;
         transform: rotate(-32deg);
         transform-origin: bottom left 25%;
@@ -185,11 +173,11 @@ const welcomeDescription= 'The edSpark Digital Hub is where education and techno
 @keyframes rightArm {
     from {
         transform: rotate(0deg);
-        top: 390px;
+        top: 190px;
         left: 10rem;
     }
     to {
-        top: 370px;
+        top: 170px;
         left: 11rem;
         transform: rotate(36deg);
         transform-origin: bottom left 25%;
