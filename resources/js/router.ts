@@ -6,7 +6,6 @@ import AdviceForm from "@/js/components/bases/frontendform/types/AdviceForm.vue"
 import EventForm from "@/js/components/bases/frontendform/types/EventForm.vue";
 import SoftwareForm from "@/js/components/bases/frontendform/types/SoftwareForm.vue";
 import UserPosts from "@/js/components/create/UserPosts.vue";
-import TheInspirationGuides from "@/js/components/create/UserPosts.vue";
 import AdviceSearch from "@/js/components/search/AdviceSearch.vue";
 import EventSearch from "@/js/components/search/EventSearch.vue";
 import HardwareSearch from "@/js/components/search/HardwareSearch.vue";
@@ -23,9 +22,11 @@ import EdsparkPageNotFound from "@/js/pages/EdsparkPageNotFound.vue";
 import EventSingle from "@/js/pages/EventSingle.vue";
 import HardwareSingle from '@/js/pages/HardwareSingle.vue';
 import PartnerSingle from "@/js/pages/PartnerSingle.vue";
+import PlaceholderParentPage from "@/js/pages/PlaceholderParentPage.vue";
 import SchoolSingle from "@/js/pages/SchoolSingle.vue";
 import TheAdvice from "@/js/pages/TheAdvice.vue";
 import TheCreator from "@/js/pages/TheCreator.vue";
+import TheEvent from "@/js/pages/TheEvent.vue";
 import TheForbidden from "@/js/pages/TheForbidden.vue";
 import TheHardware from "@/js/pages/TheHardware.vue";
 import TheHome from "@/js/pages/TheHome.vue";
@@ -105,16 +106,16 @@ const routes: any = [
     },
     {
         name: 'Inspiration and guides',
-        path: '/create',
-        component: TheInspirationGuides,
+        path: '/inspire',
+        component: PlaceholderParentPage,
         meta: {
             navigation: true
         },
         children: [
             {
                 name: "School profiles",
-                path: "",
-                component: UserPosts,
+                path: "schools",
+                component: TheSchool,
                 active: false,
                 meta: {
                     requiresAuth: true,
@@ -122,8 +123,8 @@ const routes: any = [
             },
             {
                 name: 'DMA',
-                path: 'software',
-                component: SoftwareForm,
+                path: 'dma',
+                component: DashboardNew,
                 meta: {
                     requiresAuth: true,
                     customText: 'Assess your digital maturity'
@@ -131,7 +132,7 @@ const routes: any = [
             }, {
                 name: 'Guides and resources',
                 path: 'guide',
-                component: AdviceForm,
+                component: TheAdvice,
                 meta: {
                     requiresAuth: true,
                 } as RouteMeta
@@ -140,24 +141,24 @@ const routes: any = [
     },
     {
         name: 'Technology',
-        path: '/browse',
-        component: TheInspirationGuides,
+        path: '/tech',
+        component: PlaceholderParentPage,
         meta: {
             navigation: true
         },
         children: [
             {
                 name: "Apps and programs",
-                path: "schoolProfiles",
-                component: UserPosts,
+                path: "software",
+                component: TheSoftware,
                 meta: {
                     requiresAuth: true,
                 } as RouteMeta
             },
             {
                 name: 'Equipment and devices',
-                path: 'software',
-                component: SoftwareForm,
+                path: 'hardware',
+                component: TheHardware,
                 meta: {
                     requiresAuth: true,
                 } as RouteMeta
@@ -166,8 +167,8 @@ const routes: any = [
     },
     {
         name: 'AI hub',
-        path: '/inspiration',
-        component: TheInspirationGuides,
+        path: '/ai-hub',
+        component: DashboardNew,
         meta: {
             navigation: true
         }
@@ -175,8 +176,8 @@ const routes: any = [
     },
     {
         name: 'Providers and events',
-        path: '/inspiration',
-        component: TheInspirationGuides,
+        path: '/events',
+        component: TheEvent,
         meta: {
             navigation: true
         }
@@ -184,8 +185,8 @@ const routes: any = [
 
     {
         name: 'Community',
-        path: '/inspiration',
-        component: TheInspirationGuides,
+        path: '/community',
+        component: DashboardNew,
         meta: {
             navigation: true
         },

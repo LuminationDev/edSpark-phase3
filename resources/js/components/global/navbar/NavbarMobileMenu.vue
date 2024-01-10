@@ -1,27 +1,40 @@
 <script setup>
 
 import {storeToRefs} from "pinia";
-import {onMounted, ref} from "vue";
+import {computed, onMounted, ref} from "vue";
 import {useRouter} from "vue-router";
 
 import NavItemsMobileMenu from "@/js/components/global/navbar/NavItemsMobileMenu.vue";
+import ProfileDropdown from "@/js/components/global/ProfileDropdown.vue";
+import ProfileDropdownMobile from "@/js/components/global/ProfileDropdownMobile.vue";
 import Close from "@/js/components/svg/Close.vue";
+import Logo from "@/js/components/svg/Logo.vue";
 import Search from "@/js/components/svg/Search.vue";
 import {useAuthStore} from "@/js/stores/useAuthStore";
+import {useUserStore} from "@/js/stores/useUserStore";
 import {useWindowStore} from "@/js/stores/useWindowStore";
 
 const router = useRouter();
 const authStore = useAuthStore();
 const windowStore = useWindowStore();
+const userStore = useUserStore()
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+const {currentUser} = storeToRefs(userStore);
 
 const {showMobileNavbar} = storeToRefs(useWindowStore());
 const {isAuthenticated} = storeToRefs(authStore);
 const {showGlobalSearch} = storeToRefs(windowStore);
 
 const navLinks = ref([]);
+const profileLinks = ref([]);
 const mobileNavParent = ref('')
 const mobileNavChildren = ref([])
 
+
+const avatarUrl = computed(() => {
+    const meta = currentUser.value?.metadata?.find(m => m.user_meta_key === 'userAvatar');
+    return meta ? meta.user_meta_value[0].replace(/\\\//g, "/") : '';
+});
 const handleGlobalsearchClick = () => {
     showGlobalSearch.value = true
 }
@@ -34,6 +47,7 @@ const handleClickMobileNavItems = (route) => {
         console.log(mobileNavParent)
     }
 }
+
 
 const toggleNavbar = () => {
     showMobileNavbar.value = !showMobileNavbar.value
@@ -48,10 +62,16 @@ const BackNavbar = () => {
 
 const setupRoutes = () => {
     const tempNavArray = [];
+    const currentUserIsPartner = userStore.getUserRoleName === 'SITESUPP' // TODO
     router.options.routes.forEach(route => {
         if (Object.keys(route).includes('meta') && route.meta['navigation']) {
-            // TODO: Make the dropdown element dynamic
-            tempNavArray.push(route);
+            if (currentUserIsPartner && Object.keys(route.meta).includes('partnerCanAccess')) {
+                if (route.meta['partnerCanAccess']) {
+                    tempNavArray.push(route);
+                }
+            } else { // no partnerCanAccess meta here
+                tempNavArray.push(route)
+            }
         }
     });
     navLinks.value = tempNavArray;
@@ -98,11 +118,24 @@ setupRoutes();
             <!--            Main Listing Condition    -->
             <ul
                 v-if="!mobileNavChildren.length && !mobileNavParent"
-                class="flex flex-col font-semibold text-white"
+                class="flex flex-col font-semibold text-3xl text-white"
             >
                 <li
                     class="cursor-pointer font-bold ml-auto text-2xl hover:text-main-teal"
                 >
+                    <div
+                        id="edSparkLogo"
+                        title="edSpark logo"
+                    >
+                        <router-link
+                            :to="{name: 'dashboard'}"
+                            title="Go to dashboard"
+                        >
+                            <Logo
+                                class="absolute top-8 left-5 h-16 nav-logo transition-all w-16 z-30"
+                            />
+                        </router-link>
+                    </div>
                     <button
                         @click="toggleNavbar"
                     >
@@ -128,6 +161,14 @@ setupRoutes();
                     <div>
                         <Search class="ml-10" />
                     </div>
+                </li>
+                <li class="-mt-2 flex font-semibold py-4 text-3xl">
+                    <ProfileDropdownMobile
+                        v-if="isAuthenticated"
+                        :key="currentUser"
+                        :current-user="currentUser"
+                        :avatar-url="avatarUrl"
+                    />
                 </li>
             </ul>
             <!--            Children Listing Condition    -->
@@ -203,66 +244,66 @@ setupRoutes();
 
 #searchItem {
 
-    display: flex;
-    align-self: center;
-    flex-direction: column;
-    align-items: center;
+  display: flex;
+  align-self: center;
+  flex-direction: column;
+  align-items: center;
 }
 
 #searchIconMobile {
-    width: 28px;
-    margin-top: 16px;
-    z-index: -1;
+  width: 28px;
+  margin-top: 16px;
+  z-index: -1;
 }
 
 .svg-content {
-    display: inline-block;
-    position: absolute;
-    top: 0;
-    left: 0;
+  display: inline-block;
+  position: absolute;
+  top: 0;
+  left: 0;
 }
 
 .svg-container {
-    display: inline-block;
-    position: relative;
-    width: 100%;
-    padding-bottom: 70%;
-    vertical-align: middle;
-    overflow: hidden;
+  display: inline-block;
+  position: relative;
+  width: 100%;
+  padding-bottom: 70%;
+  vertical-align: middle;
+  overflow: hidden;
 }
 
 .slide-fade-enter-active {
-    transition: all 0.2s ease-out;
+  transition: all 0.2s ease-out;
 }
 
 .slide-fade-leave-active {
-    transition: all 0.2s cubic-bezier(1, 0.5, 0.8, 1);
+  transition: all 0.2s cubic-bezier(1, 0.5, 0.8, 1);
 }
 
 .slide-fade-enter-from,
 .slide-fade-leave-to {
-    transform: translateX(-20px);
-    opacity: 0;
+  transform: translateX(-20px);
+  opacity: 0;
 }
 
 @media screen and (min-width: 375px) {
-    #navbarMobileBurger {
-        left: 10px;
-    }
+  #navbarMobileBurger {
+    left: 10px;
+  }
 }
 
 
 #navbarMobileBurger {
-    transition: 300ms;
-    position: fixed;
-    top: 10px;
-    left: 10px;
+  transition: 300ms;
+  position: fixed;
+  top: 10px;
+  left: 10px;
 
 }
 
 .navbarScrolled {
-    /* top: 10px !important; */
-    background-color: #002856 !important;
+  /* top: 10px !important; */
+  background-color: #002856 !important;
 }
 
 
