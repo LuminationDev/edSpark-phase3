@@ -2,8 +2,9 @@ import axios, {AxiosResponse} from "axios";
 import _ from "lodash";
 
 import {API_ENDPOINTS} from "@/js/constants/API_ENDPOINTS";
-import {parseToJsonIfString} from "@/js/helpers/jsonHelpers";
+import {parseToJsonIfString, schoolContentArrParser} from "@/js/helpers/jsonHelpers";
 import {schoolDataFormDataBuilder} from "@/js/helpers/schoolDataHelpers";
+import {schoolContactService} from "@/js/service/schoolContactService";
 import {SchoolDataType} from "@/js/types/SchoolTypes";
 
 type CheckCanEditResponseType = {
@@ -23,6 +24,11 @@ export const schoolService = {
                 cover_image: cover_image ? cover_image.replace("/\\/g", "") : '',
                 logo: logo ? logo.replace("/\\/g", "") : ''
             })
+        })
+    },
+    fetchFeaturedSchool: async (): Promise<any> => {
+        return axios.get(API_ENDPOINTS.SCHOOL.FETCH_FEATURED_SCHOOL).then(res => {
+            return schoolContentArrParser(res.data)
         })
     },
     checkIfUserCanEdit: async (site_id, user_id, school_id): Promise<AxiosResponse<CheckCanEditResponseType>> => {
@@ -105,7 +111,7 @@ export const schoolService = {
             throw err;
         }
     },
-    getAllStaffBySiteId: async (siteId: number, currentUserId: number) : Promise<Array<any>> => {
+    getAllStaffBySiteId: async (siteId: number, currentUserId: number): Promise<Array<any>> => {
         try {
             const res = await axios.get(`${API_ENDPOINTS.SCHOOL.FETCH_STAFF_FROM_SITE}${siteId}`);
             console.log(res.data);
@@ -137,7 +143,7 @@ export const schoolService = {
             return [];
         }
     },
-    nominateNewDelegates: (siteId: number, schoolId: number, nominatedUserId: number) =>{
+    nominateNewDelegates: (siteId: number, schoolId: number, nominatedUserId: number) => {
         return axios({
             method: "POST",
             url: API_ENDPOINTS.SCHOOL.NOMINATE_USER_FOR_SCHOOL,
@@ -146,11 +152,11 @@ export const schoolService = {
                 "school_id": schoolId,
                 'nominated_user_id': nominatedUserId
             }
-        }).then(res =>{
+        }).then(res => {
             return res.data
         })
     },
-    removeDelegates:(siteId: number, schoolId: number, nominatedUserId: number) : Promise<any> => {
+    removeDelegates: (siteId: number, schoolId: number, nominatedUserId: number): Promise<any> => {
         return axios({
             method: "POST",
             url: API_ENDPOINTS.SCHOOL.DELETE_NOMINATED_USER,
@@ -159,8 +165,24 @@ export const schoolService = {
                 "school_id": schoolId,
                 'nominated_id_delete': nominatedUserId
             }
-        }).then(res =>{
+        }).then(res => {
             return res.data
+        })
+    },
+    getSchoolFilterList: () => {
+        return [
+            {name: "Preschool", value: "PRE"},
+            {name: "Primary Education", value: "PRIM"},
+            {name: "Primary/Secondary", value: "PRSEC"},
+            {name: "Secondary Education", value: "SEC"},
+            {name: "Special Education", value: "SPEC"},
+            {name: "Specialist Facilities", value: "SPFAC"},
+            {name: "Aboriginal/Anangu Schools", value: "ABAN"},
+        ]
+    },
+    fetchAllSchools: () =>{
+        return axios.get(API_ENDPOINTS.SCHOOL.FETCH_ALL_SCHOOLS).then(res =>{
+            return schoolContentArrParser(res.data)
         })
     }
 

@@ -21,35 +21,7 @@ use function PHPUnit\Framework\isNull;
 
 class SchoolController extends Controller
 {
-    private string $defaultSchoolContent = '{
-    "time": 1699418353931,
-    "blocks": [{
-        "id": "uibuJxuKcA",
-        "type": "header",
-        "data": {"text": "School snapshot", "level": 2}
-    }, {
-        "id": "NpPfn4NZN1",
-        "type": "paragraph",
-        "data": {"text": "[Describe your school\'s offerings, challenges, and standout attributes in a detailed paragraph]"}
-    }, {
-        "id": "KctVAlfEDQ",
-        "type": "header",
-        "data": {"text": "Technology across the school", "level": 2}
-    }, {
-        "id": "irugPgi1Q6",
-        "type": "paragraph",
-        "data": {"text": "[Describe your school\'s technology usage and how students access the mentioned technology, is it BYOD or provided]&nbsp;"}
-    }, {"id": "Lh80VfkEYM", "type": "header", "data": {"text": "Digital technology", "level": 2}}, {
-        "id": "mThGh3cyRZ",
-        "type": "paragraph",
-        "data": {"text": "[Describe your school\'s focus in term of digital technology usage such as photography, 3D design, etc]&nbsp;"}
-    }, {"id": "EL9wy0zHSk", "type": "header", "data": {"text": "Student learning", "level": 2}}, {
-        "id": "MxzYw3LXtX",
-        "type": "paragraph",
-        "data": {"text": "[Highlight what stands out in the students\' learning process being carried out at your school. Include any images or YouTube/video links (simply paste the link here) for more engagement]&nbsp;"}
-    }],
-    "version": "2.29.0-rc.1"
-}';
+    private string $defaultSchoolContent = "<h1>School snapshot</h1>\n<p>Write a brief paragraph that captures the essence of the school, highlighting its character as a dynamic and inclusive educational environment committed to fostering excellence in both students and educators.</p>\n<h1>Technology across the school</h1>\n<p>Provide a concise overview of how technology is integrated into various aspects of the school, emphasizing its role in enhancing the learning experience, facilitating communication, and preparing students for the digital challenges of the modern era.</p>\n<h1>Digital technology</h1>\n<p>Offer a short paragraph focusing specifically on the school's approach to digital technology. Describe how the institution embraces innovation, incorporating tools like smart classrooms and online platforms to promote digital literacy and empower students as both users and creators of technology.</p>\n<h1>Student learning</h1>\n<p>Summarize the school's approach to student learning, emphasizing a holistic strategy that accommodates diverse learning styles. Mention key elements such as personalized learning plans, project-based assignments, and real-world applications, showcasing how the school equips students with essential skills for success in a rapidly changing global landscape.</p>";
 
 
     private function formatSchoolMetadata($schoolMetadata)
@@ -101,7 +73,7 @@ class SchoolController extends Controller
                 'owner_name' => ($school->owner_id) ? $school->owner->full_name : NULL
             ],
             'name' => $school->name,
-            'content_blocks' => ($school->content_blocks) ? json_decode($school->content_blocks) : NULL,
+            'content_blocks' => $school->content_blocks ?: NULL,
             'logo' => ($school->logo) ? $school->logo : NULL,
             'cover_image' => ($school->cover_image) ? $school->cover_image : NULL,
             'tech_used' => ($school->tech_used) ? json_decode($school->tech_used) : NULL,
@@ -189,7 +161,7 @@ class SchoolController extends Controller
     }
 
     /*  fetchUser's school based on their site id
-        if user is principal, can create the school based on the name and default templates
+        if user is principal, WILL CREATE SCHOOL WITH DEFAULT CONTENT
     */
 
     public function fetchUserSchool(Request $request)
@@ -239,7 +211,7 @@ class SchoolController extends Controller
                     'owner_id' => $userId,
                     'school_id' => $nextSchoolId,
                     'name' => $site->site_name,
-                    'content_blocks' => $this->safelyEncode(json_decode($this->defaultSchoolContent)),
+                    'content_blocks' => $this->defaultSchoolContent,
                     'logo' => '',
                     'cover_image' => '',
                     'tech_used' => '',

@@ -1,5 +1,8 @@
 import axios from 'axios'
 
+import {API_ENDPOINTS} from "@/js/constants/API_ENDPOINTS";
+import {cardDataWithGuid} from "@/js/helpers/cardDataHelper";
+
 interface ContentItem {
     icon?: string;
     content: string;
@@ -25,7 +28,10 @@ interface SimpleDataItem {
 
 
 export const softwareService = {
-    fetchSoftware: () => {
+    fetchAllSoftware: () => {
+        return axios.get(API_ENDPOINTS.SOFTWARE.FETCH_SOFTWARE_POSTS).then(res =>{
+            return cardDataWithGuid(res.data)
+        })
     },
 
 }

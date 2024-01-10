@@ -1,59 +1,37 @@
 <script setup>
-import purify from "dompurify";
 import {useRouter} from "vue-router";
 
 import BaseBreadcrumb from "@/js/components/bases/BaseBreadcrumb.vue";
 import BaseHero from "@/js/components/bases/BaseHero.vue";
 import BaseSingle from "@/js/components/bases/BaseSingle.vue";
 import BaseSingleProfilePicture from "@/js/components/bases/BaseSingleProfilePicture.vue";
+import EventsEMS from "@/js/components/events/EventsEMS.vue";
 import EventSingleExtraContentRenderer from "@/js/components/events/EventSingleExtraContentRenderer.vue";
 import EventsLocation from "@/js/components/events/EventsLocation.vue";
-import EventsRsvp from "@/js/components/events/EventsRsvp.vue";
 import EventTypeTag from "@/js/components/events/EventTypeTag.vue";
 import LabelRowContentDisplay from "@/js/components/global/LabelRowContentDisplay.vue";
 import CalendarIcon from "@/js/components/svg/event/CalendarIcon.vue";
 import LocationIcon from "@/js/components/svg/event/LocationIcon.vue";
 import TimeIcon from "@/js/components/svg/event/TimeIcon.vue";
-import {schoolColorKeys, schoolColorTheme} from "@/js/constants/schoolColorTheme";
-import {imageURL} from "@/js/constants/serverUrl";
 import {edSparkContentSanitizer} from "@/js/helpers/objectHelpers";
 
 const router = useRouter()
+
 const handleClickViewProfile = (author_id, author_type) => {
-    router.push(`/${author_type}/${author_id}` )
+    router.push(`/${author_type}/${author_id}`)
 }
-
-const getEventColorTheme = (eventType) => {
-    // if(eventType === 'Virtual'){
-    //     return 'eventRed'
-    // } else if(eventType === 'Hybrid'){
-    //     return 'eventPurple'
-    // } else{
-    //     return 'eventBlue'
-    // }
-}
-
-const getEventBackgroundColorTheme = (eventType) => {
-    const colorKey = getEventColorTheme(eventType)
-    // return "bg-event-"+eventType
-    return "bg-[" + schoolColorTheme[colorKey]['light'] + "]" 
-}
-
-
 </script>
 <template>
     <BaseSingle content-type="event">
         <template #hero="{contentFromBase}">
             <BaseHero
                 :background-url="contentFromBase['cover_image']"
-                :swoosh-color-theme="getEventColorTheme(contentFromBase.type)"
             >
                 <template #breadcrumb>
                     <BaseBreadcrumb
                         :child-page="contentFromBase.title"
                         parent-page="events"
                         parent-page-link="browse/event"
-                        :color-theme="getEventColorTheme(contentFromBase.type)"
                     />
                 </template>
                 <template #titleText>
@@ -134,12 +112,20 @@ const getEventBackgroundColorTheme = (eventType) => {
                             <TimeIcon class="fill-white flex justify-center items-center mr-2" />
                             {{ new Date(Date.parse(contentFromBase['start_date'])).toLocaleString('en-US',{ hour: 'numeric', minute: 'numeric', hour12: true } ) }}
                             {{ "-" }}
-                            {{ new Date(Date.parse(contentFromBase['end_date'])).toLocaleString('en-US',{ hour: 'numeric', minute: 'numeric', hour12: true } ) }}
+                            {{
+                                new Date(Date.parse(contentFromBase['end_date'])).toLocaleString('en-US', {
+                                    hour: 'numeric',
+                                    minute: 'numeric',
+                                    hour12: true
+                                })
+                            }}
                         </div>
                         <div class="flex items-center flex-row">
                             <LocationIcon class="fill-white mr-2" />
                             <!--                            {{ contentFromBase['type'] === 'in person' ? contentFromBase['location']['address'] : contentFromBase['type'] }}-->
-                            {{ contentFromBase['location']['address'] ? contentFromBase['location']['address'] : 'Online' }}
+                            {{
+                                contentFromBase['location']['address'] ? contentFromBase['location']['address'] : 'Online'
+                            }}
                         </div>
                         <LabelRowContentDisplay :labels-array="contentFromBase['labels']" />
                     </div>
@@ -174,7 +160,7 @@ const getEventBackgroundColorTheme = (eventType) => {
                         :location-type="contentFromBase['type']"
                         :location-info="contentFromBase['location']"
                     />
-                    <EventsRsvp
+                    <EventsEMS
                         :author-info="contentFromBase['author']"
                         :event-id="contentFromBase['id']"
                         :location-type="contentFromBase['type']"
@@ -183,14 +169,13 @@ const getEventBackgroundColorTheme = (eventType) => {
                     />
                 </div>
             </div>
-            <!-- <div class="flex overflow-scroll" /> -->
         </template>
     </BaseSingle>
 </template>
 
 
 <style scoped>
-.eventSingleContent :deep(p){
+.eventSingleContent :deep(p) {
     margin-top: 16px;
     text-align: justify;
 }
