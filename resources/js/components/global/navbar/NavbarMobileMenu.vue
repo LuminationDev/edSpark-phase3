@@ -5,11 +5,11 @@ import {computed, onMounted, ref} from "vue";
 import {useRouter} from "vue-router";
 
 import NavItemsMobileMenu from "@/js/components/global/navbar/NavItemsMobileMenu.vue";
-import ProfileDropdown from "@/js/components/global/ProfileDropdown.vue";
 import ProfileDropdownMobile from "@/js/components/global/ProfileDropdownMobile.vue";
 import Close from "@/js/components/svg/Close.vue";
 import Logo from "@/js/components/svg/Logo.vue";
 import Search from "@/js/components/svg/Search.vue";
+import {APP_ENDPOINTS} from "@/js/constants/API_ENDPOINTS";
 import {useAuthStore} from "@/js/stores/useAuthStore";
 import {useUserStore} from "@/js/stores/useUserStore";
 import {useWindowStore} from "@/js/stores/useWindowStore";
@@ -26,9 +26,86 @@ const {isAuthenticated} = storeToRefs(authStore);
 const {showGlobalSearch} = storeToRefs(windowStore);
 
 const navLinks = ref([]);
-const profileLinks = ref([]);
 const mobileNavParent = ref('')
 const mobileNavChildren = ref([])
+
+
+const profileTargetPath = computed(() => {
+    if (currentUser.value.id) {
+        return `/profile/${currentUser.value.id}`
+    } else return ''
+})
+const messageTargetPath = computed(() => {
+    if (currentUser.value.id) {
+        return `/message/${currentUser.value.id}`
+    } else return ''
+})
+const mySchoolTargetPath = computed(() => {
+    if (currentUser.value?.site?.site_name) {
+        return `/schools/${currentUser.value.site.site_name}`
+    } else return ''
+})
+
+const handleLogoutUser = async () => {
+    console.log('handleLogoiut callback is called')
+    try {
+        const response = await fetch(APP_ENDPOINTS.LOGOUT, {
+            method: 'POST',
+        });
+        // Handle the response from the server
+        const data = await response.json();
+        console.log(data.message);
+
+        userStore.clearStore();
+
+        window.location.href = '/';
+
+    } catch (error) {
+        console.error('Logout failed: ', error);
+    }
+};
+
+const profileChildren = [
+    {
+        name: 'userProfileInfo',
+        path: profileTargetPath,
+        meta: {
+            customText: 'User Profile'
+        }
+    }, {
+        name: 'userProfileMessages',
+        path: messageTargetPath,
+        meta: {
+            customText: 'Message'
+        }
+    }
+    , {
+        name: 'create-pages',
+        path: '/create',
+        meta: {
+            customText: 'Create'
+        }
+    }, {
+        name: 'school',
+        path: mySchoolTargetPath,
+        meta: {
+            customText: 'My School'
+        }
+    }, {
+        name: 'Sign Out',
+        type: 'signout',
+        clickCallback: handleLogoutUser,
+
+    }
+]
+const isSearchVisible = ref(false);
+
+const handleClickMobileProfile = () => {
+
+    mobileNavParent.value = "My account"
+    mobileNavChildren.value = profileChildren
+    isSearchVisible.value = false;
+}
 
 
 const avatarUrl = computed(() => {
@@ -43,11 +120,17 @@ const handleClickMobileNavItems = (route) => {
     if (route.children && route.children.length) {
         mobileNavParent.value = route.name
         mobileNavChildren.value = route.children
-
+        isSearchVisible.value = true;
         console.log(mobileNavParent)
+    } else {
+        toggleNavbar()
+        isSearchVisible.value = false;
     }
 }
 
+const handleClickAdmin = () => {
+    window.open(window.location.origin + '/admin', '_self')
+}
 
 const toggleNavbar = () => {
     showMobileNavbar.value = !showMobileNavbar.value
@@ -79,6 +162,7 @@ const setupRoutes = () => {
 
 
 setupRoutes();
+
 
 </script>
 
@@ -118,7 +202,7 @@ setupRoutes();
             <!--            Main Listing Condition    -->
             <ul
                 v-if="!mobileNavChildren.length && !mobileNavParent"
-                class="flex flex-col font-semibold text-3xl text-white"
+                class="flex flex-col font-semibold mt-6 text-3xl text-white"
             >
                 <li
                     class="cursor-pointer font-bold ml-auto text-2xl hover:text-main-teal"
@@ -162,19 +246,33 @@ setupRoutes();
                         <Search class="ml-10" />
                     </div>
                 </li>
-                <li class="-mt-2 flex font-semibold py-4 text-3xl">
+                <li>
+                    <div class="bg-white h-px mt-12 my-4" />
+                </li>
+                <li
+                    class="cursor-pointer flex items-center flex-row font-semibold mt-8"
+                >
                     <ProfileDropdownMobile
                         v-if="isAuthenticated"
                         :key="currentUser"
+                        class="mr-10"
+                        :click-callback="handleClickMobileProfile"
                         :current-user="currentUser"
                         :avatar-url="avatarUrl"
+                        :is-router-link="false"
                     />
+                    <div
+                        class="ml-6 searchText"
+                        @click="handleClickMobileProfile"
+                    >
+                        Profile
+                    </div>
                 </li>
             </ul>
             <!--            Children Listing Condition    -->
             <ul v-else>
                 <li
-                    class="cursor-pointer flex justify-between font-bold ml-auto text-2xl hover:text-main-teal"
+                    class="cursor-pointer flex justify-between font-bold ml-auto mt-6 text-2xl hover:text-main-teal"
                 >
                     <button
                         class="-ml-2 hover:cursor-pointer hover:fill-slate-200 fill-white flex justify-between h-6 w-6"
@@ -221,6 +319,7 @@ setupRoutes();
 
 
                 <li
+                    v-if="isSearchVisible"
                     class="cursor-pointer flex justify-between items-center mt-4"
                     @click="handleGlobalsearchClick"
                 >

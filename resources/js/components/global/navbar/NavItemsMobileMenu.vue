@@ -95,11 +95,21 @@ const handleDropdownToggle = () => {
     </li>
     <!--     if it doesn't have children, renders a router link to route.        -->
     <li
+        v-else-if="route.type === 'signout'"
+    >
+        <div
+            class="mt-4 pb-4"
+            @click="route.clickCallback"
+        >
+            {{ route.name ?? route.name }}
+        </div>
+    </li>
+    <li
         v-else
         @click="props.clickCallback"
     >
         <router-link
-            :to="{ name: route.name }"
+            :to="route.path ? {path:route.path} : { name: route.name }"
             class="flex py-4"
         >
             {{ route.meta.customText ?? route.name }}
