@@ -1,5 +1,6 @@
 <script setup>
 import {onMounted, ref} from 'vue';
+import {useRouter} from "vue-router";
 
 const props = defineProps({
     route: {
@@ -21,6 +22,8 @@ if (props.route.children && props.route.children.length > 0) {
 const navDropdownToggle = ref(false)
 
 const isMobile = (window.innerWidth <= 1024)
+
+const router = useRouter()
 </script>
 
 <template>
@@ -39,6 +42,7 @@ const isMobile = (window.innerWidth <= 1024)
             relative
             transition-all
             lg:!py-0
+            pr-2
             "
         @click="props.clickCallback"
     >
@@ -50,7 +54,7 @@ const isMobile = (window.innerWidth <= 1024)
         </router-link>
         <div
             v-if="hasChildren && !isMobile"
-            class="absolute bottom-0 decoration-4 h-full overlayForTriggerDropdown w-full"
+            class="absolute bottom-0 decoration-4 h-full overlayForTriggerDropdown w-full  "
             @mouseover="navDropdownToggle = true"
             @mouseleave="navDropdownToggle = false"
         >
@@ -64,7 +68,7 @@ const isMobile = (window.innerWidth <= 1024)
                     <NavItems
                         v-for="(child, index) in props.route.children"
                         :key="index"
-                        class="first-letter:uppercase text-sm  hover:bg-[#E7ECEE] hover:font-bold"
+                        class="first-letter:uppercase text-sm text-main-darkGrey  hover:bg-[#E7ECEE] hover:font-bold"
                         :to="{ name: child.name }"
                         :route="child"
                     />
@@ -79,7 +83,7 @@ const isMobile = (window.innerWidth <= 1024)
     >
         <router-link
             :to="{ name: route.name }"
-            class="flex p-4"
+            class="flex py-4 px-2"
         >
             {{ route.meta.customText ?? route.name }}
         </router-link>

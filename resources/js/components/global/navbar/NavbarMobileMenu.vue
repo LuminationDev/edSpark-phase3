@@ -1,4 +1,6 @@
 <script setup>
+import ChevronLeftNavIcon from "@/js/components/svg/ChevronLeftNavIcon.vue";
+import ChevronRightNavIcon from "@/js/components/svg/ChevronRightNavIcon.vue";
 import {storeToRefs} from "pinia";
 import {computed, onMounted, ref} from "vue";
 import {useRouter} from "vue-router";
@@ -44,6 +46,10 @@ const mySchoolTargetPath = computed(() => {
     } else return ''
 })
 
+const handleClickAdmin = () => {
+    window.open(window.location.origin + '/admin', '_self')
+}
+
 const handleLogoutUser = async () => {
     console.log('handleLogoiut callback is called')
     try {
@@ -55,7 +61,6 @@ const handleLogoutUser = async () => {
         console.log(data.message);
 
         userStore.clearStore();
-
         window.location.href = '/';
 
     } catch (error) {
@@ -89,7 +94,14 @@ const profileChildren = [
         meta: {
             customText: 'My School'
         }
-    }, {
+    },
+    {
+        name: 'Admin',
+        type: 'admin',
+        clickCallback: handleClickAdmin,
+
+    },
+    {
         name: 'Sign Out',
         type: 'signout',
         clickCallback: handleLogoutUser,
@@ -109,7 +121,7 @@ const avatarUrl = computed(() => {
     const meta = currentUser.value?.metadata?.find(m => m.user_meta_key === 'userAvatar');
     return meta ? meta.user_meta_value[0].replace(/\\\//g, "/") : '';
 });
-const handleGlobalsearchClick = () => {
+const handleGlobalSearchClick = () => {
     showGlobalSearch.value = true
 }
 
@@ -125,9 +137,6 @@ const handleClickMobileNavItems = (route) => {
     }
 }
 
-const handleClickAdmin = () => {
-    window.open(window.location.origin + '/admin', '_self')
-}
 
 const toggleNavbar = () => {
     showMobileNavbar.value = !showMobileNavbar.value
@@ -135,7 +144,7 @@ const toggleNavbar = () => {
     mobileNavChildren.value = []
 }
 
-const BackNavbar = () => {
+const handleClickBackNavbar = () => {
     mobileNavChildren.value = []
     mobileNavParent.value = ''
 }
@@ -167,9 +176,9 @@ setupRoutes();
         :class="{navbarScrolled : navScrolled}"
         @click="toggleNavbar"
     >
-        <span class="bg-white block h-1 w-10" />
-        <span class="bg-white block h-1 w-10" />
-        <span class="bg-white block h-1 w-10" />
+        <span class="bg-white block h-1 w-10"/>
+        <span class="bg-white block h-1 w-10"/>
+        <span class="bg-white block h-1 w-10"/>
     </nav>
     <Transition name="slide-fade">
         <div
@@ -216,10 +225,10 @@ setupRoutes();
                     <button
                         @click="toggleNavbar"
                     >
-                        <Close class="fill-white hover:fill-slate-200 h-6 w-6 hover:cursor-pointer" />
+                        <Close class="fill-white hover:fill-slate-200 h-6 w-6 hover:cursor-pointer"/>
                     </button>
                 </li>
-                <li class="-mt-2 flex font-semibold py-4 text-3xl" />
+                <li class="-mt-2 flex font-semibold py-4 text-3xl"/>
                 <NavItemsMobileMenu
                     v-for="(route, i) in navLinks"
                     :key="i"
@@ -230,17 +239,17 @@ setupRoutes();
 
                 <li
                     class="cursor-pointer flex justify-between items-center mt-4"
-                    @click="handleGlobalsearchClick"
+                    @click="handleGlobalSearchClick"
                 >
                     <div class="searchText">
                         Search
                     </div>
                     <div>
-                        <Search class="ml-10" />
+                        <Search class="ml-10"/>
                     </div>
                 </li>
                 <li>
-                    <div class="bg-white h-px mt-12 my-4" />
+                    <div class="bg-white h-px mt-12 my-4"/>
                 </li>
                 <li
                     class="cursor-pointer flex items-center flex-row font-semibold mt-8"
@@ -265,39 +274,23 @@ setupRoutes();
             <!--            Children Listing Condition    -->
             <ul v-else>
                 <li
-                    class="cursor-pointer flex justify-between font-bold ml-auto mt-6 text-2xl hover:text-main-teal"
+                    class="cursor-pointer flex justify-between font-bold ml-auto mt-6 text-2xl "
                 >
                     <button
-                        class="-ml-2 hover:cursor-pointer hover:fill-slate-200 fill-white flex justify-between h-6 w-6"
-                        @click="BackNavbar"
+                        class="-ml-2 hover:cursor-pointer fill-white flex justify-between "
+                        @click="handleClickBackNavbar"
                     >
                         <div
-                            class="-mt-0 hover:fill-slate-200 over:cursor-pointer mr-2"
+                            class="gap-x-2 over:cursor-pointer mr-2 flex flex-row"
                         >
-                            <svg
-                                width="30"
-                                height="30"
-                                viewBox="0 0 20 23"
-                                fill="none"
-                                xmlns="http://www.w3.org/2000/svg"
-                            >
-                                <path
-                                    id="Icons / Bold / arrow-right-1"
-                                    d="M6.99689 11.2999C6.99634 10.8843 7.18593 10.4885 7.51721 10.2138L14.9565 4.0509C15.4692 3.64578 16.2316 3.70018 16.6737 4.17342C17.1157 4.64667 17.0757 5.36566 16.5835 5.7928L10.0781 11.1818C10.042 11.2117 10.0213 11.2547 10.0213 11.2999C10.0213 11.3452 10.042 11.3882 10.0781 11.418L16.5835 16.8071C17.0757 17.2342 17.1157 17.9532 16.6737 18.4264C16.2316 18.8997 15.4692 18.9541 14.9565 18.549L7.51988 12.3879C7.1878 12.1128 6.99731 11.7165 6.99689 11.2999Z"
-                                    fill="white"
-                                />
-                            </svg>
-                        </div>
-                        <div
-                            class="-mt-1 hover:cursor-pointer hover:fill-slate-200 font-sans font-thin text-white"
-                        >
+                            <ChevronLeftNavIcon/>
                             Back
                         </div>
                     </button>
                     <button
                         @click="toggleNavbar"
                     >
-                        <Close class="fill-white hover:fill-slate-200 h-6 w-6 hover:cursor-pointer" />
+                        <Close class="fill-white hover:fill-slate-200 h-6 w-6 hover:cursor-pointer"/>
                     </button>
                 </li>
                 <li class="flex font-semibold mt-8 py-4 text-3xl">
@@ -309,18 +302,16 @@ setupRoutes();
                     :route="route"
                     :click-callback="() => handleClickMobileNavItems(route)"
                 />
-
-
                 <li
                     v-if="isSearchVisible"
                     class="cursor-pointer flex justify-between items-center mt-4"
-                    @click="handleGlobalsearchClick"
+                    @click="handleGlobalSearchClick"
                 >
                     <div class="searchText">
                         Search
                     </div>
                     <div>
-                        <Search class="ml-auto" />
+                        <Search class="ml-auto"/>
                     </div>
                 </li>
             </ul>
