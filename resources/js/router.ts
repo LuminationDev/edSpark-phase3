@@ -134,7 +134,7 @@ const routes: any = [
             }, {
                 name: 'Guides and resources',
                 path: 'guide',
-                component: TheAdvice,
+                component: InspirationAndGuides,
                 meta: {
                     requiresAuth: true,
                 } as RouteMeta
@@ -152,7 +152,7 @@ const routes: any = [
             {
                 name: "Apps and programs",
                 path: "software",
-                component: TheSoftware,
+                component: SoftwareSearch,
                 meta: {
                     requiresAuth: true,
                 } as RouteMeta
@@ -166,6 +166,15 @@ const routes: any = [
                 } as RouteMeta
             }
         ]
+    },
+    {
+        name: 'TechnologyLanding',
+        path: '/technology',
+        component: TheTechnology,
+        meta: {
+            navigation: false
+        }
+
     },
     {
         name: 'AI hub',
