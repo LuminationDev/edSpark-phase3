@@ -28,6 +28,10 @@ export const LandingHeroText = {
         title: 'Industry partners',
         subtitle: 'Discover wide range of partners and their resources and events related to their products'
     },
+    event:{
+        title: 'Providers and events',
+        subtitle: 'The department have partnered with trusted companies to provide you with the best digital tool at your fingertips. Find out more about our partners and access a range of curated resources.'
+    },
     guideSearch: {
         title: 'Guides and resources',
         subtitle: 'Discover guides and resource published by the Digital Adoption Group (DAG), Department for Education and Partners. Explore technical sepcifications, use cases, steps to purchase and possible costs.'

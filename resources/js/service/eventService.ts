@@ -5,7 +5,7 @@ import {cardDataWithGuid} from "@/js/helpers/cardDataHelper";
 
 export const eventService = {
     fetchAllEvent: async () =>{
-        return axios.get(API_ENDPOINTS.ADVICE.FETCH_ADVICE_POSTS).then(res =>{
+        return axios.get(API_ENDPOINTS.EVENT.FETCH_EVENT_POSTS).then(res =>{
             return cardDataWithGuid(res.data)
         })
     }
