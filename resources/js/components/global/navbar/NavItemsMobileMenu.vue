@@ -1,7 +1,5 @@
 <script setup>
-import {required} from "@vuelidate/validators";
 import {onMounted, ref} from 'vue';
-
 
 const props = defineProps({
     route: {
@@ -22,8 +20,6 @@ const navDropdownOpen = ref(false);
 const handleDropdownToggle = () => {
     navDropdownOpen.value = !navDropdownOpen.value;
 };
-
-
 </script>
 
 <template>

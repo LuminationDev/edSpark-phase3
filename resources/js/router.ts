@@ -39,7 +39,6 @@ import {useUserStore} from "@/js/stores/useUserStore";
 
 import DashboardNew from './pages/DashboardNew.vue';
 
-
 type RouteMeta = {
     requiresAuth?: boolean;
     navigation?: boolean;
@@ -437,7 +436,6 @@ router.beforeEach(async (to, from, next) => {
     if (!userEntryLink.value && userEntryLink.value !== 'finished') {
         userEntryLink.value = to.fullPath
     }
-
     if (!to.meta.requiresAuth) {
         return next();
     }
@@ -450,7 +448,6 @@ router.beforeEach(async (to, from, next) => {
                 window.location = '/login'
             }
         })
-
     } else { // authStore.isAuthenticated is boolean
         if (authStore.isAuthenticated) {
             next();
@@ -460,7 +457,5 @@ router.beforeEach(async (to, from, next) => {
         }
     }
     // If the route doesn't require authentication, move on.
-
 });
-
 export default router;

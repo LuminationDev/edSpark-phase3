@@ -38,11 +38,9 @@ export default {
         <div
             class="bg-clip-content bg-gradient-to-br from-[#002856] via-[#309A9A] to-[#B8E2DC] h-90 w-full"
         >
-            <div
-                class="-ml-24 md:ml-10 md:px-20 lg:-ml-5 xl:!px-20 2xl:!px-40 2xl:-ml-20 grid grid-cols-6 pb-[5rem] px-10"
-            >
-                <div class="col-span-6 pt-[120px]  md:!col-span-3">
-                    <h1 class="font-semibold pb-8 text-3xl text-white md:!text-[2.5rem] lg:!text-lg">
+            <div class="2xl:!px-40 grid grid-cols-6 pb-[3rem] px-10 md:px-20 xl:!px-20">
+                <div class="col-span-6 pt-[220px]  md:!col-span-3">
+                    <h1 class="font-semibold pb-8 text-3xl text-white  md:!text-[2.5rem] lg:!text-5xl lg:!text-[48px]">
                         {{ welcomeMessage }}
                     </h1>
 

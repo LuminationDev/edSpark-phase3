@@ -38,7 +38,6 @@ interface UserState {
     userRequestParam: Record<string, any>;
 }
 
-
 export const useUserStore = defineStore('user', {
     state: (): UserState => <UserState>({
         currentUser: useStorage('currentUser', {}, localStorage, {mergeDefaults: true}),
@@ -48,7 +47,6 @@ export const useUserStore = defineStore('user', {
         notifications: [],
         userRequestParam: {}
     }),
-
     getters: {
         getUser(): CurrentUser | any {
             return this.currentUser;

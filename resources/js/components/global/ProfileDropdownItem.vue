@@ -1,5 +1,4 @@
 <script setup>
-
 const props = defineProps({
     isRouterLink: {
         type: Boolean,
@@ -16,9 +15,7 @@ const props = defineProps({
         default: () => {
         }
     }
-
 })
-
 </script>
 
 <template>
@@ -36,29 +33,39 @@ const props = defineProps({
                 px-2
                 py-3
                 text-[18px]
+                hover:text-white
                 text-main-darkGrey
                 w-full
                 gap-4
                 hover:bg-main-teal
                 hover:rounded-lg
-                hover:text-white
                 hover:stroke-white
                 "
         >
-            <slot/>
+            <slot />
         </button>
     </router-link>
     <button
         v-else
-        class="flex justify-start flex-row font-medium gap-4 place-items-center px-2 py-3 text-[18px] text-main-darkGrey w-full
-                hover:bg-main-teal
-                hover:rounded-lg
-                hover:text-white
-                hover:stroke-white
-
-"
+        class="
+            flex
+            justify-start
+            flex-row
+            font-medium
+            place-items-center
+            px-2
+            py-3
+            text-[18px]
+            hover:text-white
+            text-main-darkGrey
+            w-full
+            gap-4
+            hover:bg-main-teal
+            hover:rounded-lg
+            hover:stroke-white
+            "
         @click="props.clickCallback"
     >
-        <slot/>
+        <slot />
     </button>
 </template>

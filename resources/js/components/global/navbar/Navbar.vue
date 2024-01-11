@@ -23,17 +23,14 @@ const {showGlobalSearch} = storeToRefs(windowStore);
 
 const navLinks = ref([]);
 
-
 const avatarUrl = computed(() => {
     const meta = currentUser.value?.metadata?.find(m => m.user_meta_key === 'userAvatar');
     return meta ? meta.user_meta_value[0].replace(/\\\//g, "/") : '';
 });
 
-
 const handleGlobalsearchClick = () => {
     showGlobalSearch.value = true
 }
-
 
 const setupRoutes = () => {
     const tempNavArray = [];
@@ -51,16 +48,8 @@ const setupRoutes = () => {
     });
     navLinks.value = tempNavArray;
 };
-
 setupRoutes();
 const scrollPosition = ref(0);
-
-// Listen for scroll events and update scrollPosition
-window.addEventListener('scroll', () => {
-    scrollPosition.value = window.scrollY;
-})
-
-
 </script>
 
 <template>
@@ -154,58 +143,57 @@ window.addEventListener('scroll', () => {
 <style>
 
 #searchIconMain {
-  width: 28px;
+    width: 28px;
 }
 
-
 .nav-background {
-  clip-path: inset(0 0 round 0 0 75%);
-  height: 100%;
+    clip-path: inset(0 0 round 0 0 75%);
+    height: 100%;
 }
 
 .navDropdown {
-  width: 170px;
-  left: 50%;
-  transform: translateX(-50%);
+    width: 170px;
+    left: 50%;
+    transform: translateX(-50%);
 }
 
 .nav-logo:hover {
-  filter: drop-shadow(0px 0px 15px rgba(0, 0, 0, 0.5));
+    filter: drop-shadow(0px 0px 15px rgba(0, 0, 0, 0.5));
 }
 
 .navbarFullsize {
-  font-size: 1.5rem;
+    font-size: 1.5rem;
 }
 
 @media screen and (max-width: 654px) {
-  .nav-background {
-    clip-path: inset(0 0 round 0 0 55%) !important;
-  }
+    .nav-background {
+        clip-path: inset(0 0 round 0 0 55%) !important;
+    }
 }
 
 @media screen and (min-width: 1024px) {
-  .navbarFullsize {
-    transition: 300ms;
-    position: fixed;
-    top: 20px;
-  }
+    .navbarFullsize {
+        transition: 300ms;
+        position: fixed;
+        top: 20px;
+    }
 
-  .navbarScrolled {
-    top: 0 !important;
-    background-color: #002856 !important;
-    z-index: 60 !important;
-    position: fixed;
-  }
+    .navbarScrolled {
+        top: 0 !important;
+        background-color: #002856 !important;
+        z-index: 60 !important;
+        position: fixed;
+    }
 }
 
 /* MB added the below to tidy up responsive nav bars */
 @media screen and (max-width: 1024px) {
-  #app, #app .container {
-    min-width: 360px; /*was 320px */
-    max-width: 1024px;
-    width: 100%;
-    margin: auto;
-  }
+    #app, #app .container {
+        min-width: 360px; /*was 320px */
+        max-width: 1024px;
+        width: 100%;
+        margin: auto;
+    }
 }
 
 </style>

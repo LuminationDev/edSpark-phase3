@@ -1,5 +1,4 @@
 <script setup>
-
 import {storeToRefs} from "pinia";
 import {computed, onMounted, ref} from "vue";
 import {useRouter} from "vue-router";
@@ -28,7 +27,6 @@ const {showGlobalSearch} = storeToRefs(windowStore);
 const navLinks = ref([]);
 const mobileNavParent = ref('')
 const mobileNavChildren = ref([])
-
 
 const profileTargetPath = computed(() => {
     if (currentUser.value.id) {
@@ -107,7 +105,6 @@ const handleClickMobileProfile = () => {
     isSearchVisible.value = false;
 }
 
-
 const avatarUrl = computed(() => {
     const meta = currentUser.value?.metadata?.find(m => m.user_meta_key === 'userAvatar');
     return meta ? meta.user_meta_value[0].replace(/\\\//g, "/") : '';
@@ -159,11 +156,7 @@ const setupRoutes = () => {
     });
     navLinks.value = tempNavArray;
 };
-
-
 setupRoutes();
-
-
 </script>
 
 <template>
@@ -343,67 +336,64 @@ setupRoutes();
 
 #searchItem {
 
-  display: flex;
-  align-self: center;
-  flex-direction: column;
-  align-items: center;
+    display: flex;
+    align-self: center;
+    flex-direction: column;
+    align-items: center;
 }
 
 #searchIconMobile {
-  width: 28px;
-  margin-top: 16px;
-  z-index: -1;
+    width: 28px;
+    margin-top: 16px;
+    z-index: -1;
 }
 
 .svg-content {
-  display: inline-block;
-  position: absolute;
-  top: 0;
-  left: 0;
+    display: inline-block;
+    position: absolute;
+    top: 0;
+    left: 0;
 }
 
 .svg-container {
-  display: inline-block;
-  position: relative;
-  width: 100%;
-  padding-bottom: 70%;
-  vertical-align: middle;
-  overflow: hidden;
+    display: inline-block;
+    position: relative;
+    width: 100%;
+    padding-bottom: 70%;
+    vertical-align: middle;
+    overflow: hidden;
 }
 
 .slide-fade-enter-active {
-  transition: all 0.2s ease-out;
+    transition: all 0.2s ease-out;
 }
 
 .slide-fade-leave-active {
-  transition: all 0.2s cubic-bezier(1, 0.5, 0.8, 1);
+    transition: all 0.2s cubic-bezier(1, 0.5, 0.8, 1);
 }
 
 .slide-fade-enter-from,
 .slide-fade-leave-to {
-  transform: translateX(-20px);
-  opacity: 0;
+    transform: translateX(-20px);
+    opacity: 0;
 }
 
 @media screen and (min-width: 375px) {
-  #navbarMobileBurger {
-    left: 10px;
-  }
+    #navbarMobileBurger {
+        left: 10px;
+    }
 }
 
-
 #navbarMobileBurger {
-  transition: 300ms;
-  position: fixed;
-  top: 10px;
-  left: 10px;
-
+    transition: 300ms;
+    position: fixed;
+    top: 10px;
+    left: 10px;
 }
 
 .navbarScrolled {
-  /* top: 10px !important; */
-  background-color: #002856 !important;
+    /* top: 10px !important; */
+    background-color: #002856 !important;
 }
-
 
 </style>
