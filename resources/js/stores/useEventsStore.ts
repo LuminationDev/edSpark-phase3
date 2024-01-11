@@ -4,7 +4,7 @@ import {serverURL} from "@/js/constants/serverUrl";
 
 export const useEventsStore = defineStore('events', {
     state: () => ({
-        events: []
+        allEvents: []
     }),
 
     getters: {

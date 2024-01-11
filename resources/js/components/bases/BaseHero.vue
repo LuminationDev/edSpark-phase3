@@ -81,7 +81,7 @@ const customFill = computed(() => {
 
 
 <template>
-    <div class="mb-0 -mt-[9rem] BaseHeroContainer relative z-10">
+    <div class="mb-0 BaseHeroContainer relative z-10">
         <div
             class="
                 bg-cover
@@ -89,7 +89,7 @@ const customFill = computed(() => {
                 grid-cols-8
                 h-full
                 pb-4
-                pt-40
+                pt-20
                 px-8
                 relative
                 "
