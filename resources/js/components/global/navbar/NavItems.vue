@@ -37,7 +37,6 @@ const isMobile = (window.innerWidth <= 1024)
             ml-0
             py-4
             relative
-            text-main-darkGrey
             transition-all
             lg:!py-0
             "
@@ -65,7 +64,7 @@ const isMobile = (window.innerWidth <= 1024)
                     <NavItems
                         v-for="(child, index) in props.route.children"
                         :key="index"
-                        class="first-letter:uppercase text-black text-sm  hover:bg-[#E7ECEE] hover:font-bold"
+                        class="first-letter:uppercase text-sm  hover:bg-[#E7ECEE] hover:font-bold"
                         :to="{ name: child.name }"
                         :route="child"
                     />
@@ -80,7 +79,7 @@ const isMobile = (window.innerWidth <= 1024)
     >
         <router-link
             :to="{ name: route.name }"
-            class="flex p-4 text-main-darkGrey"
+            class="flex p-4"
         >
             {{ route.meta.customText ?? route.name }}
         </router-link>

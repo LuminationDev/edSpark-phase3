@@ -1,3 +1,4 @@
+
 @config '../../tailwind.config.ts';
 
 @tailwind base;
@@ -352,11 +353,9 @@ input, textarea, select {
 
 .richTextContentContainer figure {
     display: table;
-    margin: 1rem auto
 }
 
 .richTextContentContainer figure figcaption {
-    color: #999;
     display: block;
     margin-top: .25rem;
     text-align: center
@@ -390,5 +389,12 @@ input, textarea, select {
     margin: 0.5em 0;
     overflow: auto;
     background: #f5f2f0;
+}
+.richTextContentContainer pre {
+    white-space: pre-wrap;       /* Since CSS 2.1 */
+    white-space: -moz-pre-wrap;  /* Mozilla, since 1999 */
+    white-space: -pre-wrap;      /* Opera 4-6 */
+    white-space: -o-pre-wrap;    /* Opera 7 */
+    word-wrap: break-word;       /* Internet Explorer 5.5+ */
 }
 

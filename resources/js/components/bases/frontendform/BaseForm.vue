@@ -2,10 +2,11 @@
 import useVuelidate from "@vuelidate/core";
 import {maxLength, required} from "@vuelidate/validators";
 import {storeToRefs} from "pinia";
-import {capitalize, computed, onBeforeMount, reactive, ref} from "vue";
+import {capitalize, computed, onBeforeMount, onMounted, reactive, ref} from "vue";
 import {useRouter} from "vue-router";
 import {toast} from "vue3-toastify";
 
+import LabelsSelector from "@/js/components/bases/frontendform/LabelsSelector.vue";
 import TinyMceRichTextInput from "@/js/components/bases/frontendform/TinyMceEditor/TinyMceRichTextInput.vue";
 import ImageUploaderInput, {MediaType} from "@/js/components/bases/ImageUploaderInput.vue";
 import TagsInput from "@/js/components/bases/TagsInput.vue";
@@ -60,6 +61,7 @@ const state = reactive({
     cover_image: '',
     author_name: '',
     tags: [],
+    labels: {}
 })
 
 const rules = {
@@ -70,7 +72,8 @@ const rules = {
     },
     content: {required},
     cover_image: {required},
-    tags: {}
+    tags: {},
+    labels: {}
 }
 
 
@@ -179,12 +182,16 @@ const statusGenerator = computed(() => {
     } else {
         return ''
     }
-
 })
 
 const handleTinyRichContent = (data) => {
     console.log('base form received ' + data)
     v$.value.content.$model = data
+}
+const handleSelectedLabels = (data) => {
+    console.log(data)
+    v$.value.labels.$model = data
+
 }
 </script>
 
@@ -257,6 +264,10 @@ const handleTinyRichContent = (data) => {
                     Tag
                 </template>
             </TagsInput>
+            <LabelsSelector
+                v-model="v$.labels.$model"
+                @emit-selected-options="handleSelectedLabels"
+            />
             <div class="itemType">
                 <slot name="itemType" />
             </div>

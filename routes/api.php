@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\AutoSaveController;
+use App\Http\Controllers\CatalogueController;
+use App\Http\Controllers\LabelController;
 use App\Http\Controllers\TagController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AdviceController;
@@ -125,7 +127,9 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('removeRsvpFromEvent', [RsvpController::class, 'removeRsvpFromEvent']);
     Route::post('checkIfUserRsvped', [RsvpController::class, 'checkIfUserRsvped']);
     Route::post('addEventRecording', [EventController::class, 'addEventRecording']);
-    Route::get('checkEventRecording/{event_id}', [EventController::class, 'checkEventRecording']);
+    Route::post('addOrEditEMSLink', [EventController::class, 'addOrEditEMSLink']);
+    Route::get('fetchEMSLink/{event_id}', [EventController::class, 'fetchEMSLink']);
+
 
     //Search
     Route::get(
@@ -138,6 +142,15 @@ Route::middleware('auth:sanctum')->group(function () {
 
     //Tags
     Route::post('getTopTags', [TagController::class, 'getTopTagsByModelType']);
+
+    //Labels
+    Route::get('fetchAllLabels', [LabelController::class , 'fetchAllLabels']);
+
+    // Catalogue
+    Route::post('fetchCatalogueByField', [CatalogueController::class,"fetchCatalogueByField" ]);
+    Route::post('fetchSingleProductByName', [CatalogueController::class, 'fetchSingleProductByName']);
+    Route::post('fetchUpgradesSingleProduct', [CatalogueController::class, 'fetchUpgradesSingleProduct']);
+    Route::post('fetchBundlesSingleProduct', [CatalogueController::class, 'fetchBundlesSingleProduct']);
 });
 
 

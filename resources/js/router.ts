@@ -21,10 +21,12 @@ import AdviceSingle from "@/js/pages/AdviceSingle.vue";
 import EdsparkPageNotFound from "@/js/pages/EdsparkPageNotFound.vue";
 import EventSingle from "@/js/pages/EventSingle.vue";
 import HardwareSingle from '@/js/pages/HardwareSingle.vue';
+import InspirationAndGuides from "@/js/pages/InspirationAndGuides.vue";
 import PartnerSingle from "@/js/pages/PartnerSingle.vue";
 import PlaceholderParentPage from "@/js/pages/PlaceholderParentPage.vue";
 import SchoolSingle from "@/js/pages/SchoolSingle.vue";
 import TheAdvice from "@/js/pages/TheAdvice.vue";
+import TheCatalogue from "@/js/pages/TheCatalogue.vue";
 import TheCreator from "@/js/pages/TheCreator.vue";
 import TheEvent from "@/js/pages/TheEvent.vue";
 import TheForbidden from "@/js/pages/TheForbidden.vue";
@@ -34,6 +36,7 @@ import ThePartner from "@/js/pages/ThePartner.vue";
 import ThePartnerWelcome from "@/js/pages/ThePartnerWelcome.vue";
 import TheSchool from "@/js/pages/TheSchool.vue";
 import TheSoftware from "@/js/pages/TheSoftware.vue";
+import TheTechnology from "@/js/pages/TheTechnology.vue";
 import {useAuthStore} from '@/js/stores/useAuthStore';
 import {useUserStore} from "@/js/stores/useUserStore";
 
@@ -196,7 +199,7 @@ const routes: any = [
         children: [
             {
                 name: 'browseSchools',
-                path: 'school',
+                path: 'school/:filter?',
                 component: SchoolSearch,
                 meta: {
                     requiresAuth: true,
@@ -259,7 +262,7 @@ const routes: any = [
     {
         name: 'guides',
         path: '/guides',
-        component: TheAdvice,
+        component: InspirationAndGuides,
         meta: {
             requiresAuth: true,
             partnerCanAccess: false
@@ -278,7 +281,7 @@ const routes: any = [
     {
         name: 'software',
         path: '/software',
-        component: TheSoftware,
+        component: TheTechnology,
         meta: {
             dropdownItem: true,
             requiresAuth: true,
@@ -312,6 +315,15 @@ const routes: any = [
         component: HardwareSingle,
         params: true,
         meta: {
+            requiresAuth: true,
+        }
+    },
+    {
+        name: 'catalogue',
+        path: '/catalogue',
+        component: TheCatalogue,
+        meta: {
+            navigation: false,
             requiresAuth: true,
         }
     },

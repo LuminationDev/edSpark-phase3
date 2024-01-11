@@ -21,7 +21,8 @@ const props = defineProps({
     preselected: {
         type: Object,
         required: false,
-        default: () => {}
+        default: () => {
+        }
     }
 })
 const selectedValue = ref([])
@@ -40,28 +41,30 @@ if (props.preselected) {
 
 
 <template>
-    <div
-        class="!border-black border-2 flex items-center font-medium gap-1 h-12 h-auto mt-4 pl-4 rounded text-black text-lg"
-    >
-        <div class="filter-input pr-2">
+    <div class="GenericMultiselectFilterWrapper flex flex-col">
+        <div class="flex flex-col text-xl">
             {{ props.placeholder }}
         </div>
-        <Multiselect
-            :id="props.id"
-            v-model="selectedValue"
-            :options="props.filterList"
-            :multiple="true"
-            :close-on-select="false"
-            label="name"
-            track-by="name"
-            aria-expanded="false"
-            aria-controls="resourceResult"
-            deselect-label="X"
-            select-label="[Enter]"
-            selected-label=""
-            @select="handleEmitSelectedFilters"
-            @remove="handleEmitSelectedFilters"
-        />
+        <div
+            class="!border-slate-300 border-2 flex items-center font-medium gap-1 h-12 h-auto pl-4 rounded text-black text-lg"
+        >
+            <Multiselect
+                :id="props.id"
+                v-model="selectedValue"
+                :options="props.filterList"
+                :multiple="true"
+                :close-on-select="false"
+                label="name"
+                track-by="name"
+                aria-expanded="false"
+                aria-controls="resourceResult"
+                deselect-label="X"
+                select-label="[Enter]"
+                selected-label="Selected"
+                @select="handleEmitSelectedFilters"
+                @remove="handleEmitSelectedFilters"
+            />
+        </div>
     </div>
 </template>
 
@@ -136,6 +139,11 @@ if (props.preselected) {
     margin-bottom: 0 !important;
 }
 
+.multiselect__tags {
+    max-height: 50px;
+    overflow: clip;
+}
+
 .multiselect__tag span {
     cursor: pointer;
 }
@@ -191,10 +199,12 @@ if (props.preselected) {
     background: #f3f3f3;
     color: unset;
 }
+
 .multiselect__option--selected.multiselect__option--highlight[data-deselect="X"]::after {
     background: #ff6a6a !important;
     color: unset;
 }
+
 .multiselect__tag-icon::after,
 .multiselect__tag-icon {
     color: #FFF !important;

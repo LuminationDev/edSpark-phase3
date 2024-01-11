@@ -5,6 +5,7 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\EventResource\Pages;
 use App\Helpers\RoleHelpers;
 use App\Models\Event;
+use App\Models\Label;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -20,6 +21,7 @@ use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
+use Mohamedsabil83\FilamentFormsTinyeditor\Components\TinyEditor;
 use Spatie\Tags\Tag;
 use SplFileInfo;
 
@@ -29,7 +31,7 @@ use Closure;
 class EventResource extends Resource
 {
     protected static ?string $model = Event::class;
-    protected static ?string $modelLabel= "Event";
+    protected static ?string $modelLabel = "Event";
 
     protected static ?string $navigationIcon = 'heroicon-o-calendar';
 
@@ -41,6 +43,19 @@ class EventResource extends Resource
     public static function form(Form $form): Form
     {
         $user = Auth::user()->full_name;
+
+        $groupedLabels = Label::all()->groupBy('type');
+        $labelColumns = [];
+        foreach ($groupedLabels as $category => $labels) {
+            $labelColumns[] = Forms\Components\CheckboxList::make("labels")
+                ->label("Labels - {$category}")
+                ->extraAttributes(['class' => 'text-primary-600'])
+                ->options($labels->pluck('value', 'id')->toArray())
+                ->relationship('labels', 'value', function ($query) use ($category) {
+                    $query->where('type', $category)->orderByRaw('CAST(labels.id AS SIGNED)');
+                })
+                ->columns(3);
+        }
         return $form
             ->schema([
                 Forms\Components\Card::make()
@@ -52,16 +67,18 @@ class EventResource extends Resource
                             ->label('Tagline')
                             ->placeholder('150 characters or less')
                             ->maxLength(150),
-                        Forms\Components\RichEditor::make('event_content')
-                            ->required()
-                            ->maxLength(65535),
+                        TinyEditor::make('event_content')
+                            ->label('Content')->fileAttachmentsDisk('local')
+                            ->fileAttachmentsVisibility('public')
+                            ->fileAttachmentsDirectory('public/uploads/event')
+                            ->required(),
                         Forms\Components\FileUpload::make('cover_image')
                             ->preserveFilenames()
                             ->disk('public')
                             ->directory('uploads/event')
                             ->acceptedFileTypes(['image/jpeg', 'image/jpg', 'image/png'])
                             ->getUploadedFileNameForStorageUsing(function (TemporaryUploadedFile $file): string {
-                                return (string) str($file->getClientOriginalName())->prepend('edSpark-event-');
+                                return (string)str($file->getClientOriginalName())->prepend('edSpark-event-');
                             }),
                         Forms\Components\Grid::make(3)
                             ->schema([
@@ -81,10 +98,16 @@ class EventResource extends Resource
                                     ->relationship('eventtype', 'event_type_name'),
                                 Forms\Components\TextInput::make('url')
                                     ->label('URL')
-                                    ->hidden(fn (\Filament\Forms\Get $get) => $get('event_type') === null || $get('event_type') == '7'),
+                                    ->hidden(fn(\Filament\Forms\Get $get) => $get('event_type') === null || $get('event_type') == '7'),
                                 Forms\Components\TextInput::make('address')
                                     ->label('Address')
-                                    ->hidden(fn (\Filament\Forms\Get $get) => $get('event_type') === null || $get('event_type') == '6'),                                ]),
+                                    ->hidden(fn(\Filament\Forms\Get $get) => $get('event_type') === null || $get('event_type') == '6'),
+                            ]),
+                        Forms\Components\Card::make()
+                            ->schema([
+                                ...$labelColumns
+                            ]),
+
                         Forms\Components\Grid::make(2)
                             ->schema([
                                 Forms\Components\Select::make('event_status')
@@ -121,7 +144,7 @@ class EventResource extends Resource
 
     public static function getTemplates(): Collection
     {
-        return static::getTemplateClasses()->mapWithKeys(fn ($class) => [$class => $class::title()]);
+        return static::getTemplateClasses()->mapWithKeys(fn($class) => [$class => $class::title()]);
     }
 
     public static function getTemplateClasses(): Collection
@@ -130,22 +153,21 @@ class EventResource extends Resource
 
         return collect($filesystem->allFiles(app_path('Filament/PageTemplates')))
             ->map(function (SplFileInfo $file): string {
-                return (string) Str::of('App\\Filament\\PageTemplates')
+                return (string)Str::of('App\\Filament\\PageTemplates')
                     ->append('\\', $file->getRelativePathname())
-                    ->replace(['/', '.php'],['\\', '']);
+                    ->replace(['/', '.php'], ['\\', '']);
             });
     }
 
     public static function getTemplateSchemas(): array
     {
         return static::getTemplateClasses()
-            ->map(fn ($class) =>
-            Forms\Components\Group::make($class::schema())
+            ->map(fn($class) => Forms\Components\Group::make($class::schema())
                 ->columnSpan(2)
-                ->afterStateHydrated(fn ($component, $state) => $component->getChildComponentContainer()->fill($state))
+                ->afterStateHydrated(fn($component, $state) => $component->getChildComponentContainer()->fill($state))
                 ->statePath('extra_content.' . static::getTemplateName($class))
                 // ->statePath(static::getTemplateName($class))
-                ->visible(fn ($get) => $get('template') == $class)
+                ->visible(fn($get) => $get('template') == $class)
             )
             ->toArray();
 
@@ -162,12 +184,10 @@ class EventResource extends Resource
             ->columns([
                 Tables\Columns\TextColumn::make('event_title')
                     ->label('Title')
-                    ->limit(20)
+                    ->limit(30)
                     ->sortable()
                     ->searchable(),
-                Tables\Columns\TextColumn::make('event_content')
-                    ->label('Content')
-                    ->limit(20),
+
                 Tables\Columns\ImageColumn::make('cover_image'),
                 Tables\Columns\TextColumn::make('event_status')
                     ->label('status')

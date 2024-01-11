@@ -1,58 +1,37 @@
 <script setup>
-import purify from "dompurify";
 import {useRouter} from "vue-router";
 
 import BaseBreadcrumb from "@/js/components/bases/BaseBreadcrumb.vue";
 import BaseHero from "@/js/components/bases/BaseHero.vue";
 import BaseSingle from "@/js/components/bases/BaseSingle.vue";
 import BaseSingleProfilePicture from "@/js/components/bases/BaseSingleProfilePicture.vue";
+import EventsEMS from "@/js/components/events/EventsEMS.vue";
 import EventSingleExtraContentRenderer from "@/js/components/events/EventSingleExtraContentRenderer.vue";
 import EventsLocation from "@/js/components/events/EventsLocation.vue";
-import EventsRsvp from "@/js/components/events/EventsRsvp.vue";
+import EventTypeTag from "@/js/components/events/EventTypeTag.vue";
+import LabelRowContentDisplay from "@/js/components/global/LabelRowContentDisplay.vue";
 import CalendarIcon from "@/js/components/svg/event/CalendarIcon.vue";
 import LocationIcon from "@/js/components/svg/event/LocationIcon.vue";
 import TimeIcon from "@/js/components/svg/event/TimeIcon.vue";
-import {schoolColorKeys, schoolColorTheme} from "@/js/constants/schoolColorTheme";
-import {imageURL} from "@/js/constants/serverUrl";
 import {edSparkContentSanitizer} from "@/js/helpers/objectHelpers";
-import EventTypeTag from "@/js/components/events/EventTypeTag.vue";
 
 const router = useRouter()
+
 const handleClickViewProfile = (author_id, author_type) => {
-    router.push(`/${author_type}/${author_id}` )
+    router.push(`/${author_type}/${author_id}`)
 }
-
-const getEventColorTheme = (eventType) => {
-    // if(eventType === 'Virtual'){
-    //     return 'eventRed'
-    // } else if(eventType === 'Hybrid'){
-    //     return 'eventPurple'
-    // } else{
-    //     return 'eventBlue'
-    // }
-}
-
-const getEventBackgroundColorTheme = (eventType) => {
-    const colorKey = getEventColorTheme(eventType)
-    // return "bg-event-"+eventType
-    return "bg-[" + schoolColorTheme[colorKey]['light'] + "]" 
-}
-
-
 </script>
 <template>
     <BaseSingle content-type="event">
         <template #hero="{contentFromBase}">
             <BaseHero
                 :background-url="contentFromBase['cover_image']"
-                :swoosh-color-theme="getEventColorTheme(contentFromBase.type)"
             >
                 <template #breadcrumb>
                     <BaseBreadcrumb
                         :child-page="contentFromBase.title"
                         parent-page="events"
                         parent-page-link="browse/event"
-                        :color-theme="getEventColorTheme(contentFromBase.type)"
                     />
                 </template>
                 <template #titleText>
@@ -61,20 +40,14 @@ const getEventBackgroundColorTheme = (eventType) => {
 
                 <template #additionalTags>
                     <div
-                        class="
-                            gap-2
-                            max-w-full
-                            typeAndTags
-                            w-fit
-                            hidden
-                            ">
-                       
-                            <div class="bg-white rounded-full w-fit h-fit">
-                                <EventTypeTag
-                                    class="!m-0"
-                                    :event-type="contentFromBase.type"
-                                />
-                            </div>
+                        class="gap-2 hidden max-w-full typeAndTags w-fit"
+                    >
+                        <div class="bg-white h-fit rounded-full w-fit">
+                            <EventTypeTag
+                                class="!m-0"
+                                :event-type="contentFromBase.type"
+                            />
+                        </div>
 
                         <div
                             v-for="(tag, index) in contentFromBase['tags']"
@@ -115,7 +88,10 @@ const getEventBackgroundColorTheme = (eventType) => {
                                     v-if="!(contentFromBase['author']['author_type'] === 'user')"
                                     class="hover:cursor-pointer"
                                 >
-                                    <button class="bg-secondary-coolGrey text-black text-sm rounded py-1 px-3" @click="() => handleClickViewProfile(contentFromBase['author']['author_id'],contentFromBase['author']['author_type'])">
+                                    <button
+                                        class="bg-secondary-coolGrey px-3 py-1 rounded text-black text-sm"
+                                        @click="() => handleClickViewProfile(contentFromBase['author']['author_id'],contentFromBase['author']['author_type'])"
+                                    >
                                         View profile
                                     </button>
                                 </div>
@@ -127,22 +103,31 @@ const getEventBackgroundColorTheme = (eventType) => {
                 <template #subtitleText2>
                     <div class="eventDetails flex flex-col gap-2 here">
                         <div class="flex items-center flex-row">
-                            <CalendarIcon class="mr-2 fill-white" />
+                            <CalendarIcon class="fill-white mr-2" />
                             {{ new Date(Date.parse(contentFromBase['start_date'])).toLocaleDateString('en-GB', {
                                 day: '2-digit', month: 'long', year: 'numeric'
                             }) }}
                         </div>
                         <div class="flex items-center flex-row">
-                            <TimeIcon class="flex justify-center items-center mr-2 fill-white" />
+                            <TimeIcon class="fill-white flex justify-center items-center mr-2" />
                             {{ new Date(Date.parse(contentFromBase['start_date'])).toLocaleString('en-US',{ hour: 'numeric', minute: 'numeric', hour12: true } ) }}
                             {{ "-" }}
-                            {{ new Date(Date.parse(contentFromBase['end_date'])).toLocaleString('en-US',{ hour: 'numeric', minute: 'numeric', hour12: true } ) }}
+                            {{
+                                new Date(Date.parse(contentFromBase['end_date'])).toLocaleString('en-US', {
+                                    hour: 'numeric',
+                                    minute: 'numeric',
+                                    hour12: true
+                                })
+                            }}
                         </div>
                         <div class="flex items-center flex-row">
-                            <LocationIcon class="mr-2 fill-white" />
+                            <LocationIcon class="fill-white mr-2" />
                             <!--                            {{ contentFromBase['type'] === 'in person' ? contentFromBase['location']['address'] : contentFromBase['type'] }}-->
-                            {{ contentFromBase['location']['address'] ? contentFromBase['location']['address'] : 'Online' }}
+                            {{
+                                contentFromBase['location']['address'] ? contentFromBase['location']['address'] : 'Online'
+                            }}
                         </div>
+                        <LabelRowContentDisplay :labels-array="contentFromBase['labels']" />
                     </div>
                     <!--                    <div v-html="purify.sanitize(contentFromBase['excerpt'])" />-->
                 </template>
@@ -175,7 +160,7 @@ const getEventBackgroundColorTheme = (eventType) => {
                         :location-type="contentFromBase['type']"
                         :location-info="contentFromBase['location']"
                     />
-                    <EventsRsvp
+                    <EventsEMS
                         :author-info="contentFromBase['author']"
                         :event-id="contentFromBase['id']"
                         :location-type="contentFromBase['type']"
@@ -184,14 +169,13 @@ const getEventBackgroundColorTheme = (eventType) => {
                     />
                 </div>
             </div>
-            <!-- <div class="flex overflow-scroll" /> -->
         </template>
     </BaseSingle>
 </template>
 
 
 <style scoped>
-.eventSingleContent :deep(p){
+.eventSingleContent :deep(p) {
     margin-top: 16px;
     text-align: justify;
 }

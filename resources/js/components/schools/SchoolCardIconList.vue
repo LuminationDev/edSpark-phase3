@@ -2,8 +2,9 @@
 /**
  * Import SVG's
  */
-import SchoolCardIcon from "@/js/components/schools/SchoolCardIcon.vue";
 import {computed, ref} from "vue";
+
+import SchoolCardIcon from "@/js/components/schools/SchoolCardIcon.vue";
 
 
 const props = defineProps({
@@ -28,7 +29,7 @@ const props = defineProps({
         class="card_inner_parent"
     >
         <SchoolCardIcon
-            :on-school-card=true
+            :on-school-card="true"
             :tech-name="tech.name"
             :tech-info="tech"
             :tech-index="index"

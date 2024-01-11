@@ -71,7 +71,7 @@ export const API_ENDPOINTS: Endpoints = appendServerURL({
     },
     PARTNER: {
         FETCH_ALL_PARTNERS: `/fetchAllPartners`,
-        FETCH_PARTNER_BY_ID: `/fetchPartnerById/`,
+        FETCH_PARTNER_BY_ID: `/fetchPartnerById`,
         UPDATE_PARTNER_CONTENT: `/updatePartnerContent`,
         FETCH_PARTNER_RESOURCE: '/fetchPartnerResource',
         CHECK_IF_USER_CAN_EDIT_PARTNER: '/checkIfUserCanEditPartner',
@@ -85,7 +85,9 @@ export const API_ENDPOINTS: Endpoints = appendServerURL({
         FETCH_EVENT_POSTS: `/fetchEventPosts`,
         FETCH_EVENT_POST_BY_ID: `/fetchEventPostById`,
         FETCH_EVENT_TYPES: `/fetchEventTypes`,
-        CREATE_EVENT_POST: `/createEventPost`
+        CREATE_EVENT_POST: `/createEventPost`,
+        ADD_OR_EDIT_EMS_LINK: `/addOrEditEMSLink`,
+        FETCH_EMS_LINK: `/fetchEMSLink/`
     },
     USER: {
         FETCH_CURRENT_USER: `/fetchCurrentUser`,
@@ -99,6 +101,12 @@ export const API_ENDPOINTS: Endpoints = appendServerURL({
         GET_USER_DRAFT_POSTS: `/getUserDraftPosts`
 
     },
+    CATALOGUE: {
+        FETCH_CATALOGUE_BY_FIELD : '/fetchCatalogueByField',
+        FETCH_SINGLE_PRODUCT_BY_NAME: '/fetchSingleProductByName',
+        FETCH_UPGRADES_SINGLE_PRODUCT: '/fetchUpgradesSingleProduct',
+        FETCH_BUNDLES_SINGLE_PRODUCT: '/fetchBundlesSingleProduct',
+    },
     LIKE: {
         LIKE: `/like`,
         FETCH_ALL_LIKES: `/fetchAllLikes`,
@@ -110,6 +118,10 @@ export const API_ENDPOINTS: Endpoints = appendServerURL({
         FETCH_ALL_BOOKMARKS_WITH_TITLE: `/fetchAllBookmarksWithTitle`,
         FETCH_ALL_BOOKMARKS_BY_TYPE: `/fetchAllBookmarksByType`,
     },
+    LABEL:{
+      FETCH_ALL_LABELS: '/fetchAllLabels'
+    },
+
 
     SEARCH: {
         SEARCH_ALL: `/search/`

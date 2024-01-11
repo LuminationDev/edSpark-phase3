@@ -45,9 +45,20 @@ const edsparkColor = [
     '#0072DA',
     '#AEDCF3',
     '#965A00',
+
+    // new secondary color style guide
+    '#FFC836',
+    '#965A00',
+    '#DE4668',
+    '#FF8D78',
+    '#8866C5',
+    '#0072DA',
+    '#319795',
+    '#002858',
+
 ];
 
-const generateSafeList = (colors) => {
+const generateSafeList = (colors) : Array<string> => {
     const safeList = [];
     ['text', 'bg', 'hover:text', 'fill', 'stroke'].forEach((prefix) => {
         colors.forEach((color) => {
@@ -87,7 +98,7 @@ module.exports = {
                     darkBlue: '#1C5CA9',
                     green: '#048246',
                     lightGreen: '#A5D1BD',
-                    purple: '#8866C5',
+                    purple: '',
                     yellow: '#FFC836',
                     lightYellow: '#F5E1AD',
                     red: '#C73E5D', //was #de4668
@@ -95,16 +106,16 @@ module.exports = {
                     mbRose: '#be123c',
                     mbIcons: 'green',
                     coolGrey: '#D9DAE4',
-
                     // new style guide
-                    banana: '#FFC836',                     
-                    bananadark: '#965A00',                       
+                    banana: '#FFC836',
+                    bananadark: '#965A00',
                     cherry:  '#DE4668',
                     peach: '#FF8D78',
                     grape:  '#8866C5',
                     blueberry: '#0072DA',
                     teal: '#319795',
                     navy: '#002858',
+                    grapeDark: '#3D239B'
 
                 },
                 custom: {
@@ -134,7 +145,8 @@ module.exports = {
                 large: '36px',
                 extraLarge: '48px',
                 huge: '81px',
-                extraHuge: '140px'
+                extraHuge: '140px',
+                mainHero: '500px'
             },
             screens: {
                 'ml': '860px',

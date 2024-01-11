@@ -3,7 +3,9 @@ import useSWRV from "swrv";
 import {ref} from "vue";
 
 import BaseSearch from "@/js/components/search/BaseSearch.vue";
+import LabelFiltersSearchPage from "@/js/components/search/LabelFiltersSearchPage.vue";
 import {API_ENDPOINTS} from "@/js/constants/API_ENDPOINTS";
+import {LandingHeroText} from "@/js/constants/PageBlurb";
 import {swrvOptions} from "@/js/constants/swrvConstants";
 import {axiosFetcher, axiosSchoolFetcherParams} from "@/js/helpers/fetcher";
 import {useUserStore} from "@/js/stores/useUserStore";
@@ -23,5 +25,11 @@ const handleFilter = (filters, dataPath) => {
         search-type="event"
         :resource-list="eventList"
         :live-filter-object="filterObject"
-    />
+        :hero-title="LandingHeroText['eventSearch']['title']"
+        :hero-subtitle="LandingHeroText['eventSearch']['subtitle']"
+    >
+        <template #additionalFilters>
+            <LabelFiltersSearchPage @emit-filter-to-individual-search-page="handleFilter" />
+        </template>
+    </BaseSearch>
 </template>

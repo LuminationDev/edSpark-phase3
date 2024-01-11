@@ -54,6 +54,7 @@ const handleClickAdviceCard = () => {
         :is-liked-by-user="data.isLikedByUser"
         :is-bookmarked-by-user="data.isBookmarkedByUser"
         :guid="data.guid"
+        :labels="data.labels"
     >
         <template
             v-if="data.type.length > 0"
@@ -64,11 +65,6 @@ const handleClickAdviceCard = () => {
         <template
             v-if="showIcon"
             #icon
-        >
-            <!-- <AdviceCardIcon
-                class="right-4 bottom-2 group-hover:-bottom-32 icon transition-all"
-                :advice-icon-name="randomIconName"
-            /> -->
-        </template>
+        />
     </GenericCard>
 </template>

@@ -71,6 +71,11 @@ class Event extends Model
             ],
         ];
     }
+    public function isActive(): bool
+    {
+        // Check if the end date is in the future
+        return now()->lessThan($this->end_date);
+    }
 
     public function toSearchableArray(): array
     {
@@ -100,5 +105,9 @@ class Event extends Model
                 $event->extra_content = ExtraContentCleaner::cleanExtraContent($event->extra_content);
             }
         });
+    }
+    public function labels()
+    {
+        return $this->morphToMany(Label::class, 'labellable');
     }
 }

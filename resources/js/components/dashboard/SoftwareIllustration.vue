@@ -46,104 +46,158 @@ onUnmounted(() => {
 </script>
 
 <template>
-    <div class="flex flex-row gap-4 h-1/2 w-full">
-        <div class="relative w-1/4">
-            <!--  first line-->
+    <div class="grid grid-cols-6 place-items-center relative lg:!place-items-start">
+        <div
+            class="bg-white border-[4px] border-black col-span-2 flex h-[100px] my-auto relative rounded-full w-[100px]"
+        >
             <div
-                class="absolute left-1/2 border-[2px] border-black connectingLine z-10"
-                :style="`height: ${distanceBetweenEls}px; top: ${top}px;`"
+                class="absolute left-1/2 border-[2px] border-black connectingLine z-[-1]"
+                :style="`height: ${distanceBetweenEls}px; top: ${top - 10}px;`"
             />
-            <div class="flex flex-col h-full relative z-20">
-                <div class="flex h-1/2 min-h-[200px] place-self-center">
-                    <div
-                        class="bg-white border-[4px] border-black flex h-[100px] my-auto rounded-full w-[100px]"
-                    >
-                        <DeptProvidedIcon class="h-full p-1" />
-                    </div>
-                </div>
-                <div class="flex h-1/2 min-h-[200px] place-self-center">
-                    <div
-                        class="bg-white border-[4px] border-black flex h-[100px] my-auto rounded-full w-[100px]"
-                    >
-                        <DeptApprovedIcon class="h-full p-1" />
-                    </div>
-                </div>
-            </div>
+            <DeptProvidedIcon class="h-full p-1" />
+        </div>
+        <div
+            class="col-span-4 flex justify-center flex flex-col h-1/2 min-h-[200px] my-auto softwareDashboardContentContainer"
+        >
+            <h5 class="font-semibold pt-4 text-xl">
+                Department Provided
+            </h5>
+            <p class="w-9/12">
+                These applications are provided by the department
+                at no cost to schools
+            </p>
         </div>
 
-        <div class="h-full ml-4 w-3/4">
-            <div class="flex flex-col h-full">
-                <div
-                    class="flex justify-center flex-col h-1/2 min-h-[200px] my-auto softwareDashboardContentContainer"
-                >
-                    <h5 class="font-semibold pt-4 text-xl">
-                        Department Provided
-                    </h5>
-                    <p class="w-9/12">
-                        These applications are provided by the department
-                        at no cost to schools
-                    </p>
-                </div>
-                <div
-                    class="flex justify-center flex-col h-1/2 min-h-[200px] my-auto softwareDashboardContentContainer"
-                >
-                    <h5 class="font-semibold text-xl">
-                        Department Approved
-                    </h5>
-                    <p class="pb-4 w-9/12">
-                        These applications have been risk assessed and can
-                        be safely used in schools
-                    </p>
-                </div>
-            </div>
+        <div
+            class="bg-white border-[4px] border-black col-span-2 flex h-[100px] my-auto rounded-full w-[100px]"
+        >
+            <DeptApprovedIcon class="h-full p-1" />
         </div>
-    </div>
-
-    <div class="flex flex-row gap-4 h-1/2 relative w-full">
-        <div class="relative w-1/4">
-            <div
-                class="absolute left-1/2 border-[1.5px] border-black negotiatedDealsLine z-10 lg:mt-[10px] -mt-[100px]"
-                :style="`height: calc(${distanceBetweenEls}px + 40px); top: calc(-${top}px + 30px);`"
+        <div
+            class="col-span-4 flex justify-center flex flex-col h-1/2 min-h-[200px] my-auto softwareDashboardContentContainer"
+        >
+            <h5 class="font-semibold text-xl">
+                Department Approved
+            </h5>
+            <p class="pb-4 w-9/12">
+                These applications have been risk assessed and can
+                be safely used in schools
+            </p>
+        </div>
+        <div
+            class="bg-white border-[2px] border-black border-dashed col-span-2 flex h-[100px] my-auto relative rounded-full w-[100px]"
+        >
+            <DeptApprovedIcon class="h-full p-1" />
+            <DepartmentApprovedSolo
+                class="absolute -top-1 -right-1 h-[40px] w-[40px]"
             />
-            <div class="flex flex-col h-full relative z-20">
-                <div class="flex h-3/4 place-self-center">
-                    <div
-                        class="
-                            bg-white
-                            border-[2px]
-                            border-black
-                            border-dashed
-                            flex
-                            h-[100px]
-                            my-auto
-                            relative
-                            rounded-full
-                            w-[100px]
-                            "
-                    >
-                        <DeptApprovedIcon class="h-full p-1" />
-                        <DepartmentApprovedSolo class="absolute -top-1 -right-1 h-[40px] w-[40px]" />
-                    </div>
-                </div>
-                <div class="flex h-1/4 place-self-center" />
-            </div>
+        </div>
+        <div
+            class="col-span-4 flex justify-center flex flex-col h-1/2 min-h-[200px] my-auto softwareDashboardContentContainer"
+        >
+            <h5 class="font-semibold text-xl">
+                Negotiated Deals
+            </h5>
+            <p class="pb-4 w-[85%]">
+                Still risk assessed, these applications have an agreement
+                in place for schools to receive better value. Schools will
+                need to fund purchases
+            </p>
         </div>
 
-        <div class="ml-4 w-3/4">
-            <div class="flex flex-col h-full">
-                <div class="flex justify-center flex-col h-3/4 min-h-[200px] my-auto">
-                    <h5 class="font-semibold text-xl">
-                        Negotiated Deals
-                    </h5>
-                    <p class="pb-4 w-[85%]">
-                        Still risk assessed, these applications have an agreement
-                        in place for schools to receive better value. Schools will
-                        need to fund purchases
-                    </p>
-                </div>
-                <div class="flex justify-center flex-col h-1/4 my-auto" />
-            </div>
-        </div>
+        <!--    <div class="flex flex-row gap-4 h-1/2 w-full">-->
+        <!--        <div class="relative w-1/4">-->
+        <!--            &lt;!&ndash;  first line&ndash;&gt;-->
+        <!--            <div-->
+        <!--                class="absolute left-1/2 border-[2px] border-black connectingLine z-10"-->
+        <!--                :style="`height: ${distanceBetweenEls}px; top: ${top}px;`"-->
+        <!--            />-->
+        <!--            <div class="flex flex-col h-full relative z-20">-->
+
+        <!--                <div class="flex h-1/2 min-h-[200px] place-self-center">-->
+        <!--                    <div-->
+        <!--                        class="bg-white border-[4px] border-black flex h-[100px] my-auto rounded-full w-[100px]"-->
+        <!--                    >-->
+        <!--                        <DeptApprovedIcon class="h-full p-1" />-->
+        <!--                    </div>-->
+        <!--                </div>-->
+        <!--            </div>-->
+        <!--        </div>-->
+
+        <!--        <div class="h-full ml-4 w-3/4">-->
+        <!--            <div class="flex flex-col h-full">-->
+        <!--                <div-->
+        <!--                    class="flex justify-center flex-col h-1/2 min-h-[200px] my-auto softwareDashboardContentContainer"-->
+        <!--                >-->
+        <!--                    <h5 class="font-semibold pt-4 text-xl">-->
+        <!--                        Department Provided-->
+        <!--                    </h5>-->
+        <!--                    <p class="w-9/12">-->
+        <!--                        These applications are provided by the department-->
+        <!--                        at no cost to schools-->
+        <!--                    </p>-->
+        <!--                </div>-->
+        <!--                <div-->
+        <!--                    class="flex justify-center flex-col h-1/2 min-h-[200px] my-auto softwareDashboardContentContainer"-->
+        <!--                >-->
+        <!--                    <h5 class="font-semibold text-xl">-->
+        <!--                        Department Approved-->
+        <!--                    </h5>-->
+        <!--                    <p class="pb-4 w-9/12">-->
+        <!--                        These applications have been risk assessed and can-->
+        <!--                        be safely used in schools-->
+        <!--                    </p>-->
+        <!--                </div>-->
+        <!--            </div>-->
+        <!--        </div>-->
+        <!--    </div>-->
+
+        <!--    <div class="flex flex-row gap-4 h-1/2 relative w-full">-->
+        <!--        <div class="relative w-1/4">-->
+        <!--            <div-->
+        <!--                class="-mt-[100px] lg:mt-[10px] absolute left-1/2 border-[1.5px] border-black negotiatedDealsLine z-10"-->
+        <!--                :style="`height: calc(${distanceBetweenEls}px + 10px); top: calc(-${top}px + 10px);`"-->
+        <!--            />-->
+        <!--            <div class="flex flex-col h-full relative z-20">-->
+        <!--                <div class="flex h-3/4 place-self-center">-->
+        <!--                    <div-->
+        <!--                        class="-->
+        <!--                            bg-white-->
+        <!--                            border-[2px]-->
+        <!--                            border-black-->
+        <!--                            border-dashed-->
+        <!--                            flex-->
+        <!--                            h-[100px]-->
+        <!--                            my-auto-->
+        <!--                            relative-->
+        <!--                            rounded-full-->
+        <!--                            w-[100px]-->
+        <!--                            "-->
+        <!--                    >-->
+        <!--                        <DeptApprovedIcon class="h-full p-1" />-->
+        <!--                        <DepartmentApprovedSolo class="absolute -top-1 -right-1 h-[40px] w-[40px]" />-->
+        <!--                    </div>-->
+        <!--                </div>-->
+        <!--                <div class="flex h-1/4 place-self-center" />-->
+        <!--            </div>-->
+        <!--        </div>-->
+
+        <!--        <div class="ml-4 w-3/4">-->
+        <!--            <div class="flex flex-col h-full">-->
+        <!--                <div class="flex justify-center flex-col h-3/4 min-h-[200px] my-auto">-->
+        <!--                    <h5 class="font-semibold text-xl">-->
+        <!--                        Negotiated Deals-->
+        <!--                    </h5>-->
+        <!--                    <p class="pb-4 w-[85%]">-->
+        <!--                        Still risk assessed, these applications have an agreement-->
+        <!--                        in place for schools to receive better value. Schools will-->
+        <!--                        need to fund purchases-->
+        <!--                    </p>-->
+        <!--                </div>-->
+        <!--                <div class="flex justify-center flex-col h-1/4 my-auto" />-->
+        <!--            </div>-->
+        <!--        </div>-->
+        <!--    </div>-->
     </div>
 </template>
 <style scoped lang="scss">

@@ -1,6 +1,6 @@
 <script setup>
 import {storeToRefs} from "pinia";
-import {computed, ref} from 'vue';
+import {computed, onBeforeUnmount, onMounted, ref} from 'vue';
 import {useRouter} from 'vue-router';
 
 import ProfileDropdown from "@/js/components/global/ProfileDropdown.vue";
@@ -50,6 +50,18 @@ const setupRoutes = () => {
 };
 setupRoutes();
 const scrollPosition = ref(0);
+
+const setScrollPosition = () => {
+    scrollPosition.value = window.scrollY
+}
+
+onMounted(() => {
+    window.addEventListener('scroll', setScrollPosition)
+})
+
+onBeforeUnmount(() => {
+    window.removeEventListener('scroll', setScrollPosition)
+})
 </script>
 
 <template>
@@ -57,14 +69,14 @@ const scrollPosition = ref(0);
         <nav
             v-if="isAuthenticated"
             id="navbarFullsize"
-            :class="{ navbarScrolled: scrollPosition > 0 }"
-            class="container h-16 hidden navbarFullsize px-12 text-black lg:block lg:z-20"
+            :class="{ 'navbarScrolled' : scrollPosition > 0 }"
+            class="container h-16 hidden navbarFullsize px-12 text-main-darkGrey lg:block lg:z-20"
         >
             <ul
                 class="
                     2xl:ml-48
                     2xl:text-xl
-                    :text-lg
+                    text-lg
                     font-semibold
                     h-full
                     hidden
@@ -78,7 +90,7 @@ const scrollPosition = ref(0);
                     lg:text-[16px]
                     xl:text-lg
                     "
-                :class="{'text-white': scrollPosition > 0}"
+                :class="{'text-white !ml-24': scrollPosition > 0}"
             >
                 <NavItems
                     v-for="(route, i) in navLinks"
@@ -86,7 +98,7 @@ const scrollPosition = ref(0);
                     :route="route"
                 />
                 <li
-                    class="cursor-pointer flex items-center flex-row gap-2 ml-auto mr-8 text-main-darkGrey"
+                    class="cursor-pointer flex items-center flex-row gap-2 ml-auto mr-8"
                     @click="handleGlobalsearchClick"
                 >
                     <div class="searchText">
@@ -124,15 +136,16 @@ const scrollPosition = ref(0);
                             transition-all
                             w-40
                             z-30
-                            md:!top-0
-                            md:!w-44
-                            lg:!-top-2
-                            lg:!left-10
-                            lg:!visible
-                            xl:!-top-2
-                            xl:!h-36
-                            xl:!right-20
+                            md:top-0
+                            md:w-44
+                            lg:-top-2
+                            lg:left-10
+                            lg:visible
+                            xl:-top-2
+                            xl:h-36
+                            xl:right-20
                             "
+                        :class="{ '!w-14 !h-14 !top-1 !left-12' : scrollPosition > 0 }"
                     />
                 </router-link>
             </div>

@@ -1,36 +1,25 @@
 <script setup>
-import useSWRV from "swrv";
+import {onMounted, ref} from "vue";
 
 import AdviceCard from "@/js/components/advice/AdviceCard.vue";
 import EducatorHero from "@/js/components/advice/EducatorHero.vue";
 import PartnerHero from "@/js/components/advice/PartnerHero.vue";
 import CarouselGenerator from "@/js/components/card/CarouselGenerator.vue";
-import {API_ENDPOINTS} from "@/js/constants/API_ENDPOINTS";
-import {swrvOptions} from "@/js/constants/swrvConstants";
-import {axiosFetcher} from "@/js/helpers/fetcher";
-import {useUserStore} from "@/js/stores/useUserStore";
+import {adviceService} from "@/js/service/adviceService";
 
 import AdviceHero from '../components/advice/AdviceHero.vue'
 import CardLoading from '../components/card/CardLoading.vue';
 
-const userStore = useUserStore()
-const {
-    data: dagAdvice,
-    error: dagError,
-    isValidating: dagValidating
-} = useSWRV(API_ENDPOINTS.ADVICE.FETCH_ADVICE_POSTS_BY_TYPE_DAG, axiosFetcher, swrvOptions);
-const {
-    data: partnerAdvice,
-    error: partnerError,
-    isValidating: partnerValidating
-} = useSWRV(API_ENDPOINTS.ADVICE.FETCH_ADVICE_POSTS_BY_TYPE_PARTNER, axiosFetcher, swrvOptions);
 
-const {
-    data: generalAdvice,
-    error: generalError,
-    isValidating: generalValidating
-} = useSWRV(API_ENDPOINTS.ADVICE.FETCH_ADVICE_POSTS_BY_TYPE_YOUR, axiosFetcher, swrvOptions);
+const dagAdvice = ref([])
+const partnerAdvice = ref([])
+const generalAdvice = ref([])
 
+onMounted(() => {
+    dagAdvice.value = adviceService.fetchDagAdvice()
+    partnerAdvice.value = adviceService.fetchPartnerAdvice()
+    generalAdvice.value = adviceService.fetchGeneralAdvice()
+})
 
 </script>
 
@@ -40,16 +29,18 @@ const {
         <CarouselGenerator
             :show-count="3"
             data-type="advice"
-            :data-array="dagAdvice ? dagAdvice : []"
+            :data-array="dagAdvice ? dagAdvice.slice(0,5) : []"
         />
     </div>
 
 
     <EducatorHero />
-    <div class="EduAdviceCards grid grid-cols-1 gap-10 place-items-center mt-10 px-5 md:!grid-cols-2 lg:!grid-cols-3 lg:!px-huge">
+    <div
+        class="EduAdviceCards grid grid-cols-1 gap-10 place-items-center mt-10 px-5 md:!grid-cols-2 lg:!grid-cols-3 lg:!px-huge"
+    >
         <template v-if="generalAdvice && generalAdvice.length">
             <AdviceCard
-                v-for="advice in generalAdvice"
+                v-for="advice in generalAdvice.slice(0,6)"
                 :key="advice.guid"
                 :data="advice"
                 :show-icon="true"
@@ -72,6 +63,6 @@ const {
     <CarouselGenerator
         :show-count="3"
         data-type="advice"
-        :data-array="partnerAdvice ? partnerAdvice : []"
+        :data-array="partnerAdvice ? partnerAdvice.slice(0,5) : []"
     />
 </template>

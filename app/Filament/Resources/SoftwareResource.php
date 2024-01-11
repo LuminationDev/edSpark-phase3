@@ -5,6 +5,7 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\SoftwareResource\Pages;
 use App\Filament\Resources\SoftwareResource\RelationManagers;
 use App\Helpers\RoleHelpers;
+use App\Models\Label;
 use App\Models\Software;
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -19,6 +20,7 @@ use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
+use Mohamedsabil83\FilamentFormsTinyeditor\Components\TinyEditor;
 use SplFileInfo;
 
 
@@ -37,6 +39,20 @@ class SoftwareResource extends Resource
     public static function form(Form $form): Form
     {
         $user = Auth::user()->full_name;
+        $groupedLabels = Label::all()->groupBy('type');
+
+        $labelColumns = [];
+
+        foreach ($groupedLabels as $category => $labels) {
+            $labelColumns[] = Forms\Components\CheckboxList::make("labels")
+                ->label("Labels - {$category}")
+                ->extraAttributes(['class' => 'text-primary-600'])
+                ->options($labels->pluck('value', 'id')->toArray())
+                ->relationship('labels', 'value',function ($query) use ($category) {
+                    $query->where('type', $category)->orderByRaw('CAST(labels.id AS SIGNED)');
+                })
+                ->columns(3);
+        }
         return $form
             ->schema([
                 Forms\Components\Card::make()
@@ -49,8 +65,10 @@ class SoftwareResource extends Resource
                             ->label('Tagline')
                             ->placeholder('150 characters or less')
                             ->maxLength(150),
-                        Forms\Components\RichEditor::make('post_content')
-                            ->label('Content')
+                        TinyEditor::make('post_content')
+                            ->label('Content')->fileAttachmentsDisk('local')
+                            ->fileAttachmentsVisibility('public')
+                            ->fileAttachmentsDirectory('public/uploads/software')
                             ->required(),
                         Forms\Components\FileUpload::make('cover_image')
                             ->preserveFilenames()
@@ -67,8 +85,9 @@ class SoftwareResource extends Resource
                                     ->label('Software type')
                                     ->extraAttributes(['class' => 'text-primary-600'])
                                     ->relationship('softwaretypes', 'software_type_name')
-                                    ->columns(3)
-                                    ->bulkToggleable()
+                                    ->columns(3),
+                                ...$labelColumns
+
                             ]),
                         Forms\Components\Grid::make(2)
                             ->schema([
@@ -153,11 +172,9 @@ class SoftwareResource extends Resource
             ->columns([
                 Tables\Columns\TextColumn::make('post_title')
                     ->label('Title')
+                    ->limit(30)
                     ->searchable()
                     ->sortable(),
-//                Tables\Columns\TextColumn::make('post_content')
-//                ->limit(50)
-//                ->label('Content'),
                 Tables\Columns\ImageColumn::make('cover_image'),
                 Tables\Columns\TextColumn::make('softwaretypes.software_type_name')
                     ->label('Type')
