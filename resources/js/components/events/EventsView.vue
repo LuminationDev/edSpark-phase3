@@ -67,6 +67,7 @@ const eventTypeColorClass = (eventType: string): string => {
 <template>
     <div
         class="
+            max-h-[60vh]
             mr-2
             mt-10
             overflow-y-scroll
@@ -76,7 +77,6 @@ const eventTypeColorClass = (eventType: string): string => {
             scrollbar-thumb-custom
             scrollbar-thumb-custom-genericScrollbarDark
             scrollbar-thumb-rounded-full
-            w-full
             "
     >
         <div

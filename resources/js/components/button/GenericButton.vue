@@ -62,7 +62,8 @@ const asyncCall = () => {
             'pointer-events-none': disabled,
             '!text-black bg-white border-0 !p-0': type === 'plain',
             '!h-fit !text-white px-12 py-2 w-64' : type === 'teal',
-            '!h-fit !text-white px-12 py-2 w-64 !bg-secondary-grapeDark' : type === 'purple'
+            '!h-fit !text-white px-12 py-2 w-64 !bg-secondary-grapeDark' : type === 'purple',
+            '!h-fit !text-white px-12 py-2 w-64 !bg-secondary-cherry' : type === 'red'
         }"
         class="flex justify-center items-center p-2"
         :disabled="disabled"
