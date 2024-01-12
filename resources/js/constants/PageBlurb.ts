@@ -39,6 +39,10 @@ export const LandingHeroText = {
     eventSearch: {
         title: "Events",
         subtitle: "Discover events hosted by industry partners to upskill and broaded your networks"
+    },
+    creator: {
+        title: 'Create and publish',
+        subtitle: "Create guides, case studies and any other resources and share with the edSpark communities from schools, partners and the departments"
     }
 }
 

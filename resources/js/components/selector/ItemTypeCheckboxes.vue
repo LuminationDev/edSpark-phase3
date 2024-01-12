@@ -59,11 +59,11 @@ watch(selectedTypes, () => {
         <div class="TypeLabel">
             {{ props.label }}
         </div>
-        <div class="TypeCheckboxList flex justify-around flex-row">
+        <div class="TypeCheckboxList flex flex-row w-full">
             <div
                 v-for="(type,index) in availableTypes"
                 :key="index + type.id"
-                class="TypeCheckboxContainer flex items-center flex-row gap-4 p-4"
+                class="TypeCheckboxContainer flex items-center flex-row gap-4 px-6 py-4 first:pl-0"
             >
                 <input
                     v-model="selectedTypes"

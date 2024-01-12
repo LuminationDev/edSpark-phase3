@@ -7,6 +7,7 @@ import AdviceBackgroundIcon from "@/js/components/svg/createSelectorIcons/Advice
 import EventBackgroundIcon from "@/js/components/svg/createSelectorIcons/EventBackgroundIcon.vue";
 import HardwareBackgroundIcon from "@/js/components/svg/createSelectorIcons/HardwareBackgroundIcon.vue";
 import SoftwareBackgroundIcon from "@/js/components/svg/createSelectorIcons/SoftwareBackgroundIcon.vue";
+import ArrowRightIcon from "@/js/components/svg/ArrowRightIcon.vue";
 
 interface SelectorItemType {
     type: string,
@@ -75,24 +76,23 @@ const isDisabled = (item: SelectorItemType) => {
 </script>
 
 <template>
-    <div class="flex justify-center flex-row gap-4">
-        <CreateSelectorItem
-            v-for="item in items"
-            :key="item.type"
-            :bg-color-class="item.bgClass"
-            :click-callback="() => handleClickSelector(item.link)"
-            :disabled="isDisabled(item)"
+    <div class="grid grid-cols-2 gap-4 mt-4">
+
+        <button
+            v-for="(item,index) in items"
+            :key="index"
+            class="border-2 cursor-pointer popularGuideItem px-8 py-4 rounded text-2xl bg-white hover:text-white w-full border-main-teal hover:bg-main-teal"
+            @click="() => handleClickSelector(item.link)"
         >
-            <template #selectorText>
-                {{ item.type }}
-            </template>
-            <template #backgroundImage>
-                <component
-                    :is="item.iconComponent"
-                    :class="item.strokeClass"
-                />
-            </template>
-        </CreateSelectorItem>
+            <div class="flex justify-between flex-row w-full">
+                <div class="text-start title w-full">
+                    {{ item.type }}
+                </div>
+                <div class="Arrow grid place-items-center">
+                    <ArrowRightIcon/>
+                </div>
+            </div>
+        </button>
     </div>
 </template>
 

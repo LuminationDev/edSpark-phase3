@@ -80,6 +80,8 @@ const routes: any = [
                 component: UserPosts,
                 meta: {
                     requiresAuth: true,
+                    skipScrollTop: true
+
                 } as RouteMeta
             },
             {
@@ -88,6 +90,8 @@ const routes: any = [
                 component: SoftwareForm,
                 meta: {
                     requiresAuth: true,
+                    skipScrollTop: true
+
                 } as RouteMeta
             }, {
                 name: 'createGuide',
@@ -95,6 +99,8 @@ const routes: any = [
                 component: AdviceForm,
                 meta: {
                     requiresAuth: true,
+                    skipScrollTop: true
+
                 } as RouteMeta
             }, {
                 name: 'createEvent',
@@ -102,6 +108,8 @@ const routes: any = [
                 component: EventForm,
                 meta: {
                     requiresAuth: true,
+                    skipScrollTop: true
+
                 } as RouteMeta
             }
         ]

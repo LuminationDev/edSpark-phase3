@@ -3,7 +3,11 @@
 import {computed} from "vue";
 import {useRoute, useRouter} from "vue-router";
 
+import BaseLandingHero from "@/js/components/bases/BaseLandingHero.vue";
+import BaseLandingSection from "@/js/components/bases/BaseLandingSection.vue";
+import InspirationAndGuidesRobot from "@/js/components/inspirationandguides/InspirationAndGuidesRobot.vue";
 import CreateSelector from "@/js/components/selector/CreateSelector.vue";
+import {LandingHeroText} from "@/js/constants/PageBlurb";
 
 const router = useRouter()
 const route = useRoute()
@@ -20,29 +24,32 @@ const showBackToPosts = computed(() => {
 </script>
 
 <template>
-    <div class="mt-12 mx-5 theCreatorContainer md:!mx-10 lg:!mx-20">
-        <div class="flex flex-col">
-            <div class="TheCreatorPageTitle flex items-center flex-col">
-                <div
-                    v-if="showBackToPosts"
-                    class="backToPosts font-base text-sm hover:text-main-teal hover:cursor-pointer"
-                    @click="handleClickBackToPosts"
-                >
-                    Back to posts
-                </div>
-                <div
-                    v-else
-                    class="h-5"
-                >
-                    {{ "" }}
-                </div>
-                <div class="CreatorTitle font-semibold mb-4 text-xl">
-                    What would you like to create?
+    <BaseLandingHero
+        :title="LandingHeroText['creator']['title']"
+        :title-paragraph="LandingHeroText['creator']['subtitle']"
+    >
+        <template #robotIllustration>
+            <InspirationAndGuidesRobot class="absolute top-10 left-36" />
+        </template>
+    </BaseLandingHero>
+    <div
+        v-if="showBackToPosts"
+        class="backToPosts font-base text-sm hover:text-main-teal hover:cursor-pointer"
+        @click="handleClickBackToPosts"
+    >
+        Back to posts
+    </div>
+    <BaseLandingSection>
+        <template #title>
+            <div class="flex justify-between items-center flex-row w-full">
+                <div class="font-semibold text-4xl">
+                    What would you like to create? <br>
                 </div>
             </div>
+        </template>
+        <template #content>
             <CreateSelector />
-        </div>
-
-        <router-view />
-    </div>
+        </template>
+    </BaseLandingSection>
+    <router-view />
 </template>

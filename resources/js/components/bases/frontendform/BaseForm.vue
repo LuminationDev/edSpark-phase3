@@ -198,11 +198,11 @@ const handleSelectedLabels = (data) => {
 <template>
     <div
         id="BaseFormParent"
-        class="BaseFormContainer border-[1px] flex flex-col mt-12 mx-5 p-8 rounded-2xl text-black md:!mx-10"
+        class="BaseFormContainer flex flex-col mt-12 mx-5 p-8 rounded-2xl text-black"
     >
         <div class="Introduction formHeader my-4">
             <div class="flex justify-between flex-row">
-                <div class="font-semibold text-xl">
+                <div class="font-semibold mb-8 text-3xl">
                     {{ titleGenerator }}
                 </div>
                 <div class="flex flex-col smallAutoSaveHeaderSection">
@@ -212,40 +212,66 @@ const handleSelectedLabels = (data) => {
                     <slot name="formHeader" />
                 </div>
             </div>
-            <TextInput
-                ref="titleInputRef"
-                v-model="v$.title.$model"
-                :v$="v$.title"
-                field-id="titleInput"
-                class="my-2"
-                placeholder="Title"
-            >
-                <template #label>
-                    Title
-                </template>
-            </TextInput>
-            <div class="ContainerTemp my-2 richContent">
+            <div class="my-8">
+                <TextInput
+                    ref="titleInputRef"
+                    v-model="v$.title.$model"
+                    :v$="v$.title"
+                    field-id="titleInput"
+                    class="my-2"
+                    placeholder="Enter a title for your publication"
+                >
+                    <template #label>
+                        Title
+                    </template>
+                </TextInput>
+            </div>
+            <div class="ContainerTemp my-8 richContent">
                 <TextInput
                     v-model="v$.excerpt.$model"
                     field-id="excerptInput"
                     :v$="v$.excerpt"
                     class="my-2"
-                    placeholder="150 characters or less"
+                    placeholder="Enter a tagline for your publication (150 characters or less)"
                 >
                     <template #label>
                         Tagline
                     </template>
                 </TextInput>
             </div>
-            <div class="ContainerTemp my-2 richContent">
-                <label> Content</label>
+            <div class="itemType">
+                <slot name="itemType" />
+            </div>
+            <div class="ContainerTemp my-8 richContent">
+                <label> Main content</label>
                 <TinyMceRichTextInput
                     :src-content="v$.content.$model"
                     :v$="v$.content"
                     @emit-tiny-rich-content="handleTinyRichContent"
                 />
             </div>
-            <div class="containerTempImageUploader my-2">
+            <div class="extraContentSection mb-8">
+                <slot name="extraContent" />
+            </div>
+            <div class="my-6">
+                <LabelsSelector
+                    v-model="v$.labels.$model"
+                    @emit-selected-options="handleSelectedLabels"
+                />
+            </div>
+            <div class="my-6">
+                <TagsInput
+                    v-model="v$.tags.$model"
+                    :field-id="'tag-selector'"
+                    :v$="v$.tags"
+                >
+                    <template #label>
+                        Tag
+                    </template>
+                </TagsInput>
+            </div>
+
+            <div class="containerTempImageUploader my-8">
                 <label> Cover image (1 image file)</label>
                 <ImageUploaderInput
                     :item-type="props.itemType"
@@ -254,25 +280,6 @@ const handleSelectedLabels = (data) => {
                     :v$="v$.cover_image"
                     @emit-uploaded-media="handleReceiveMediaFromUploader"
                 />
-            </div>
-            <TagsInput
-                v-model="v$.tags.$model"
-                :field-id="'tag-selector'"
-                :v$="v$.tags"
-            >
-                <template #label>
-                    Tag
-                </template>
-            </TagsInput>
-            <LabelsSelector
-                v-model="v$.labels.$model"
-                @emit-selected-options="handleSelectedLabels"
-            />
-            <div class="itemType">
-                <slot name="itemType" />
-            </div>
-            <div class="extraContentSection mb-4">
-                <slot name="extraContent" />
             </div>
             <div
                 v-show="error.status"

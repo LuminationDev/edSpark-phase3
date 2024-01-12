@@ -2,6 +2,7 @@
 
 import {onMounted, ref} from "vue";
 
+import BaseLandingSection from "@/js/components/bases/BaseLandingSection.vue";
 import UserDraftList from "@/js/components/create/UserDraftList.vue";
 import {autoSaveService} from "@/js/service/autoSaveService";
 import {useUserStore} from "@/js/stores/useUserStore";
@@ -11,9 +12,6 @@ const userStore = useUserStore()
 const draftArray = ref([])
 const autoSaveLoading = ref(true)
 const postLoading = ref(true)
-
-
-
 
 
 onMounted(() => {
@@ -31,7 +29,7 @@ onMounted(() => {
     })
 })
 
-const formatDataFromAutoSaveAndPostToDraft = (dataArray) : BasePostType[]  => {
+const formatDataFromAutoSaveAndPostToDraft = (dataArray): BasePostType[] => {
     return dataArray.map(item => {
         if (item["post_status"] === 'Draft' || item["status"] === 'Draft') {
             return ({
@@ -43,7 +41,7 @@ const formatDataFromAutoSaveAndPostToDraft = (dataArray) : BasePostType[]  => {
                 id: item.id,
                 type: item.type,
                 post_type: item.post_type,
-                tags:item.tags,
+                tags: item.tags,
                 created_at: item.created_at,
                 updated_at: item.modified_at,
                 start_date: item.start_date,
@@ -73,27 +71,33 @@ const formatDataFromAutoSaveAndPostToDraft = (dataArray) : BasePostType[]  => {
 }
 
 
-
 </script>
 
 <template>
-    <div class="flex justify-center items-center flex-col mt-6 userPostsContainer">
-        <div class="YourDraftsTitle font-semibold text-xl">
-            Your drafts
-        </div>
-        <div class="YourDraftsTitle font-base mb-4 text-lg">
-            Here you can find your incomplete posts
-        </div>
-        <UserDraftList
-            :draft-array="draftArray"
-            :draft-loading="autoSaveLoading || postLoading"
-        />
-        <div class="YourDraftsTitle font-semibold text-xl">
+    <BaseLandingSection background-color="white">
+        <template #title>
+            Your Drafts
+        </template>
+        <template #subtitle>
+            Find all of your in progress publications and those awaiting for moderation here.
+        </template>
+        <template #content>
+            <UserDraftList
+                :draft-array="draftArray"
+                :draft-loading="autoSaveLoading || postLoading"
+            />
+        </template>
+    </BaseLandingSection>
+
+
+    <BaseLandingSection background-color="teal">
+        <template #title>
             Your recent posts
-        </div>
-        <div class="YourDraftsTitle font-base mb-4 text-lg">
+        </template>
+        <template #subtitle>
             Here you can find your recently published posts
-        </div>
-    </div>
+        </template>
+        <template #content />
+    </BaseLandingSection>
 </template>
 

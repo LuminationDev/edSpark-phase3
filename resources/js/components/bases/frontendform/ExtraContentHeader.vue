@@ -12,7 +12,7 @@ const props = defineProps({
 </script>
 
 <template>
-    <div class="bg-main-teal flex justify-between items-center flex-row formExtraContentHeader h-10 mb-2 px-4 rounded-t-xl text-base text-white">
+    <div class="flex justify-between items-center flex-row formExtraContentHeader text-base">
         <div class="formExtraContentHeading">
             <slot name="headingLeft" />
         </div>

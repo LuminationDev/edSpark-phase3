@@ -46,16 +46,13 @@ onMounted(() =>{
 
 <template>
     <div class="flex flex-col labelSelectors">
-        <div class="selectorTitle">
-            Pick appropriate label by type
-        </div>
-        <div class="flex justify-around items-center flex-row flex-wrap selectorRows">
+        <div class="grid grid-cols-2 gap-x-4 gap-y-8">
             <div
                 v-for="(value,key) in groupedLabels"
                 :key="key"
-                class="flex justify-center items-center flex-col min-h-[150px] p-6 w-72"
+                class="flex justify-center items-center flex-col"
             >
-                {{ displayTextByLabelKey[key] }}
+                <span class="flex flex-start w-full">{{ displayTextByLabelKey[key] }} </span>
                 <Multiselect
                     :id="key + `selector`"
                     v-model="selectedOptions[key]"
@@ -68,6 +65,7 @@ onMounted(() =>{
                     label="name"
                     deselect-label="X"
                     select-label=""
+                    class="border-[1px] rounded w-full"
                 />
             </div>
         </div>
