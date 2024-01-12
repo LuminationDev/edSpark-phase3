@@ -143,7 +143,9 @@ export const formService = {
             cover_image: state.cover_image,
             tags: state.tags,
             template: '',
-            labels: state.labels
+            labels: state.labels,
+            content_origin: state.content_origin,
+            existing_id: state.existing_id
         };
 
         if (itemType === 'software' || itemType === 'advice' || itemType === 'event') {
@@ -167,7 +169,9 @@ export const formService = {
                     tags: state.tags,
                     author_id: user_id,
                     cover_image: state.cover_image,
-                    labels: state.labels
+                    labels: state.labels,
+                    content_origin: state.content_origin,
+                    existing_id: state.existing_id
                 };
                 formattedAdditionalData.eventtype_id = additionalData['type'];
 

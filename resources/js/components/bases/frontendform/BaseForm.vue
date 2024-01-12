@@ -48,6 +48,11 @@ enum FormAction {
     EDIT = 'EDIT'
 }
 
+enum ContentOrigin{
+    NEW = 'NEW',
+    DRAFT = 'DRAFT'
+}
+
 
 const emits = defineEmits<{
     (e: 'baseEmitsAddtContent', content): void
@@ -61,7 +66,9 @@ const state = reactive({
     cover_image: '',
     author_name: '',
     tags: [],
-    labels: {}
+    labels: {},
+    content_origin: ContentOrigin.NEW,
+    existing_id: 0
 })
 
 const rules = {
@@ -73,7 +80,10 @@ const rules = {
     content: {required},
     cover_image: {required},
     tags: {},
-    labels: {}
+    labels: {},
+    existing_id: {},
+    content_origin: {}
+
 }
 
 
@@ -98,6 +108,7 @@ const populateLocalStateFromWindowStateDraftData = (data): void => {
     state.cover_image = data.cover_image || ""
     state.author_name = data.authorName || ""
     state.tags = data.tags || []
+    state.existing_id = data.id || 0
 }
 
 const baseEmitsExtraContentFromDraftData = (data): void => {
@@ -108,8 +119,10 @@ const baseEmitsExtraContentFromDraftData = (data): void => {
 onBeforeMount(() => {
     if (window.history.state.draftContent) {
         const draftData = JSON.parse(window.history.state.draftContent)
+        console.log(draftData)
         populateLocalStateFromWindowStateDraftData(draftData)
         baseEmitsExtraContentFromDraftData(draftData)
+        state.content_origin = ContentOrigin.DRAFT
     }
 })
 
@@ -131,7 +144,7 @@ const handleClickSubmitForModeration = () => {
         isSaving.value = false
         return
     }
-    formService.handleSubmitPostForModeration(state, currentUser.value.id, props.additionalData, props.itemType).then((res) => {
+    return formService.handleSubmitPostForModeration(state, currentUser.value.id, props.additionalData, props.itemType).then((res) => {
         formStatusDisplay.value = FormStatus.SAVED
         router.push('/create').then(() => {
             toast('Successfully submitted ' + props.itemType + ' for moderation!')
@@ -152,7 +165,7 @@ const handleClickSaveAsDraft = () => {
         return
     }
     isSaving.value = true
-    formService.handleSubmitPostAsDraft(state, currentUser.value.id, props.additionalData, props.itemType).then((res) => {
+    return formService.handleSubmitPostAsDraft(state, currentUser.value.id, props.additionalData, props.itemType).then((res) => {
         formStatusDisplay.value = FormStatus.SAVED
         router.push('/create').then(() => {
             toast('Successfully saved ' + props.itemType + ' as a draft!')

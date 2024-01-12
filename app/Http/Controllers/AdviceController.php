@@ -25,6 +25,7 @@ class AdviceController extends Controller
         $this->middleware(ResourceAccessControl::class . ':partner,handleFetchAdvicePosts,createAdvicePost,fetchAdvicePostById,fetchRelatedAdvice');
     }
 
+
     public function createAdvicePost(Request $request)
     {
         if (strtolower($request->input('post_status')) === 'draft') {
@@ -69,6 +70,14 @@ class AdviceController extends Controller
                 }
             }
             $advice->labels()->attach($allLabelIds);
+        }
+
+        if ($request->input('existing_id') != 0 && strtolower($request->input('content_origin')) === 'draft') {
+            $existingAdvice = Advice::find($request->input('existing_id'));
+
+            if ($existingAdvice) {
+                $existingAdvice->update(['post_status' => 'Archived']);
+            }
         }
 
 

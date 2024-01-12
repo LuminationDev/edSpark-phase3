@@ -46,7 +46,7 @@ onMounted(() =>{
 
 <template>
     <div class="flex flex-col labelSelectors">
-        <div class="grid grid-cols-2 gap-x-4 gap-y-8">
+        <div class="grid grid-cols-2 gap-x-16 gap-y-8">
             <div
                 v-for="(value,key) in groupedLabels"
                 :key="key"
