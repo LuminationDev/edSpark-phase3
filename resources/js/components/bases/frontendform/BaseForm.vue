@@ -2,10 +2,11 @@
 import useVuelidate from "@vuelidate/core";
 import {maxLength, required} from "@vuelidate/validators";
 import {storeToRefs} from "pinia";
-import {capitalize, computed, onBeforeMount, onBeforeUnmount, reactive, ref} from "vue";
-import {useRouter} from "vue-router";
+import {capitalize, computed, onBeforeMount, onBeforeUnmount, onMounted, reactive, ref} from "vue";
+import {onBeforeRouteLeave, useRouter} from "vue-router";
 import {toast} from "vue3-toastify";
 
+import FormExitConfirmationPopup from "@/js/components/bases/frontendform/FormExitConfirmationPopup.vue";
 import LabelsSelector from "@/js/components/bases/frontendform/LabelsSelector.vue";
 import TinyMceRichTextInput from "@/js/components/bases/frontendform/TinyMceEditor/TinyMceRichTextInput.vue";
 import ImageUploaderInput, {MediaType} from "@/js/components/bases/ImageUploaderInput.vue";
@@ -25,12 +26,14 @@ const props = defineProps({
     additionalData: {
         type: Object as () => SoftwareAdditionalData | AdviceAdditionalData | EventAdditionalData,
         required: false,
-        default: () => {}
+        default: () => {
+        }
     },
     additionalValidation: {
         type: Object,
         required: false,
-        default: () => {}
+        default: () => {
+        }
     },
     itemType: {
         type: String,
@@ -54,11 +57,14 @@ enum ContentOrigin {
 }
 
 const baseFormFieldErrorMessage = {
-    advicetype_id: 'advice type',
+    type: 'publication type',
     cover_image: 'cover image',
     excerpt: 'tagline',
     title: 'title',
-    content: 'main content'
+    content: 'main content',
+    location: 'location',
+    start_date: 'start date',
+    end_date: 'end_date'
 }
 
 const emits = defineEmits<{
@@ -103,6 +109,8 @@ const {currentUser} = storeToRefs(userStore)
 const router = useRouter()
 const isSaving = ref(false)
 const formStatusDisplay = ref(FormStatus.NEW)
+const showExitConfirmation = ref(false)
+const byPassExitConfirmation = ref(false)
 
 const populateLocalStateFromWindowStateDraftData = (data): void => {
     state.title = data.title || ""
@@ -112,6 +120,7 @@ const populateLocalStateFromWindowStateDraftData = (data): void => {
     state.author_name = data.authorName || ""
     state.tags = data.tags || []
     state.existing_id = data.id || 0
+    state.labels = data.labels || 0
 }
 
 const baseEmitsExtraContentFromDraftData = (data): void => {
@@ -133,6 +142,17 @@ onBeforeUnmount(() => {
     // do auto save as draft here
 })
 
+onMounted(() => {
+    const baseFormDiv = document.getElementById('BaseFormParent')
+    if (baseFormDiv) {
+        baseFormDiv.scrollIntoView({
+            behavior: 'smooth',
+            block: 'nearest',
+            inline: 'nearest',
+        });
+    }
+})
+
 const handleReceiveMediaFromUploader = (media: MediaType[]): void => {
     if (media && media.length === 1 && media[0]) {
         v$.value.cover_image.$model = media[0].remoteUrl
@@ -141,25 +161,30 @@ const handleReceiveMediaFromUploader = (media: MediaType[]): void => {
     }
 }
 
-const generateErrorMessageFromv$Errors = (arrayOfMissingFields, draftOrModeration) => {
+const generateErrorMessageFromvErrors = (arrayOfMissingFields, draftOrModeration) => {
     const fieldsListString = []
     const endingString = draftOrModeration.toLowerCase() === "draft" ? ' to create a draft' : ' to submit for moderation'
-    arrayOfMissingFields.forEach(field =>{
+    arrayOfMissingFields.forEach(field => {
+        console.log(baseFormFieldErrorMessage[field.$property || field])
         fieldsListString.push(baseFormFieldErrorMessage[field.$property || field])
     })
     return "Please provide " + fieldsListString.join(", ") + ' ' + endingString
 }
 
-const handleClickSubmitForModeration = () => {
+const handleClickSubmitForModeration = async () => {
     isSaving.value = true
-    v$.value.$validate();
-    if (v$.value.$errors) {
-        setError(1, generateErrorMessageFromv$Errors(v$.value.$errors, 'moderation'))
+    await v$.value.$validate();
+    await props.additionalValidation.$validate();
+    console.log(props.additionalValidation.$errors)
+    if (v$.value.$error || props.additionalValidation.$error) {
+        // Only using parent's additionalValidation due to automatic collection from useVuelidate
+        setError(1, generateErrorMessageFromvErrors(props.additionalValidation.$errors, 'moderation'))
         isSaving.value = false
         return
     }
     return formService.handleSubmitPostForModeration(state, currentUser.value.id, props.additionalData, props.itemType).then((res) => {
         formStatusDisplay.value = FormStatus.SAVED
+        byPassExitConfirmation.value = true
         router.push('/create').then(() => {
             toast('Successfully submitted ' + props.itemType + ' for moderation!')
         })
@@ -172,27 +197,31 @@ const handleClickSubmitForModeration = () => {
 }
 
 const handleClickSaveAsDraft = () => {
-    if (v$.value.$errors) {
+    if (v$.value.$error) {
         v$.value.$reset()
         clearError();
+    }
+    if (props.additionalValidation.$error) {
+        props.additionalValidation.$reset()
     }
     const draftError = []
 
     if (v$.value.title.$model.length < 1) {
         draftError.push('title')
     }
-    if( v$.value.content.$model.length < 1){
+    if (v$.value.content.$model.length < 1) {
         draftError.push('content')
     }
-    if(draftError && draftError.length > 0){
+    if (draftError && draftError.length > 0) {
         console.log(draftError)
-        setError(1, generateErrorMessageFromv$Errors(draftError, 'draft'))
+        setError(1, generateErrorMessageFromvErrors(draftError, 'draft'))
         return
     }
 
     isSaving.value = true
     return formService.handleSubmitPostAsDraft(state, currentUser.value.id, props.additionalData, props.itemType).then((res) => {
         formStatusDisplay.value = FormStatus.SAVED
+        byPassExitConfirmation.value = true
         router.push('/create').then(() => {
             toast('Successfully saved ' + props.itemType + ' as a draft!')
         })
@@ -224,30 +253,67 @@ const statusGenerator = computed(() => {
 })
 
 const handleTinyRichContent = (data) => {
-    console.log('base form received ' + data)
     v$.value.content.$model = data
 }
 const handleSelectedLabels = (data) => {
-    console.log(data)
     v$.value.labels.$model = data
 }
 
-const canSaveDraft = computed(() => {
-    return state.title && state.title.length > 0 && state.content && state.content.length > 0
+const handleClickExitOverlay = () => {
+    showExitConfirmation.value = false
+}
+
+let innerResolver
+let innerButtonPromise = new Promise(res => {
+    innerResolver = res
 })
 
-const canSaveModeration = computed(() => {
-    return canSaveDraft.value &&
-        state.cover_image &&
-        (Array.isArray(props.additionalData.type) ? props.additionalData.type.length > 0 : !!props.additionalData.type)
+const handleClickStayPage = async () => {
+    innerResolver(false)
+}
+
+const handleClickLeavePage = async () => {
+    innerResolver(true)
+}
+
+
+const handleShowConfirmationPopup = async () => {
+    return new Promise(async (resolve) => {
+        showExitConfirmation.value = true
+        const buttonConfirmationResult = await innerButtonPromise
+        resolve(buttonConfirmationResult)
+    })
+}
+
+onBeforeRouteLeave(async (to, from) => {
+    if (!v$.value.$anyDirty && !props.additionalValidation.$anyDirty) {
+        return true
+    }
+    if(byPassExitConfirmation.value) return true
+    const confirmationDecision = await handleShowConfirmationPopup()
+    if (!confirmationDecision) {
+        showExitConfirmation.value = false
+    }
+    //reset the promise
+    innerButtonPromise = new Promise(res => {
+        innerResolver = res
+    })
+    return confirmationDecision
 })
-
-
-
 
 </script>
 
 <template>
+    <div
+        v-if="showExitConfirmation"
+        class="exitConfirmationPopup"
+    >
+        <FormExitConfirmationPopup
+            :overlay-callback="handleClickExitOverlay"
+            :stay-callback="handleClickStayPage"
+            :leave-callback="handleClickLeavePage"
+        />
+    </div>
     <div
         id="BaseFormParent"
         class="BaseFormContainer flex flex-col mt-12 mx-5 p-8 rounded-2xl text-black"
@@ -336,7 +402,7 @@ const canSaveModeration = computed(() => {
             <div
                 class="italic my-8 text-red-600"
             >
-                {{ error.message || '' }}
+                {{ error.message || ' ' }}
             </div>
             <div class="flex justify-center gap-6 saveButtonContainer">
                 <GenericButton

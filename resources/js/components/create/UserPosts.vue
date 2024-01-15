@@ -22,7 +22,9 @@ onMounted(() => {
     })
     autoSaveService.getAllUserDraftPost(userStore.currentUser.id).then(res => {
         const result = res.data.data
+        console.log(result)
         const flattenResult = Object.values(result).flat(1)
+        console.log(flattenResult)
         draftArray.value = [...draftArray.value, ...formatDataFromAutoSaveAndPostToDraft(flattenResult)]
     }).finally(() => {
         postLoading.value = false
@@ -47,6 +49,7 @@ const formatDataFromAutoSaveAndPostToDraft = (dataArray): BasePostType[] => {
                 start_date: item.start_date,
                 end_date: item.end_date,
                 location: item.location,
+                labels: item.labels
             })
         } else if (item['status'] === 'auto-saved') {
             const content = JSON.parse(item.content)

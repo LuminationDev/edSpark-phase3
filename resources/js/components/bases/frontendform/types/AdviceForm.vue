@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import useVuelidate from "@vuelidate/core";
+import {required} from "@vuelidate/validators";
 import {reactive} from "vue";
 
 import BaseForm from "@/js/components/bases/frontendform/BaseForm.vue";
@@ -15,6 +17,12 @@ const addtAdviceData = reactive<AdviceAdditionalData>({
     type: [],
 
 })
+const rules = {
+    extra_content:{},
+    type: {required}
+}
+
+const v$ = useVuelidate(rules, addtAdviceData)
 
 const updateExtraContent = (content): void => {
     if (content) {
@@ -46,6 +54,7 @@ const handleReceiveAddtContent = (data) => {
     <BaseForm
         item-type="advice"
         :additional-data="addtAdviceData"
+        :additional-validation="v$"
         @base-emits-addt-content="handleReceiveAddtContent"
     >
         <template #itemType>
@@ -53,6 +62,7 @@ const handleReceiveAddtContent = (data) => {
                 :selected-type="addtAdviceData.type"
                 :type-api-link="API_ENDPOINTS.ADVICE.FETCH_ADVICE_TYPES"
                 label="Guide type"
+                :v$="v$.type"
                 @send-selected-types-as-array="handleReceiveTypes"
             />
         </template>

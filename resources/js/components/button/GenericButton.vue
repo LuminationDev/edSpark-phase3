@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import {ref} from 'vue'
+import {onBeforeRouteLeave} from "vue-router";
 
 import Spinner from '../spinner/Spinner.vue'
 
@@ -54,6 +55,7 @@ const asyncCall = () => {
         }
     })
 }
+
 
 </script>
 <template>

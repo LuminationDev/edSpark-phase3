@@ -65,6 +65,16 @@ class PostService
         $isLikedByUser = $advice->likes()->where('user_id', $userId)->exists();
         $isBookmarkedByUser = $advice->bookmarks()->where('user_id', $userId)->exists();
 
+        $groupedLabels = collect($advice->labels)->groupBy('type')->map(function ($labels) {
+            return $labels->map(function ($label) {
+                return [
+                    'id' => $label['id'],
+                    'value' => $label['value'],
+                    'name' => $label['value'],
+                ];
+            });
+        });
+
         return [
             'id' => $advice->id,
             'title' => $advice->post_title,
@@ -85,14 +95,15 @@ class PostService
             'isLikedByUser' => $isLikedByUser,
             'isBookmarkedByUser' => $isBookmarkedByUser,
             'tags' => $advice->tags->pluck('name'),
-            'labels' => $advice->labels->map(function ($label) {
-                return [
-                    'label_id' => $label['id'],
-                    'label_value' => $label['value'],
-                    'label_description' => $label['description'],
-                    'label_type' => $label['type'],
-                ];
-            }),
+//            'labels' => $advice->labels->map(function ($label) {
+//                return [
+//                    'label_id' => $label['id'],
+//                    'label_value' => $label['value'],
+//                    'label_description' => $label['description'],
+//                    'label_type' => $label['type'],
+//                ];
+//            }),
+            'labels' => $groupedLabels
         ];
     }
 

@@ -1,6 +1,7 @@
 <script setup>
 import {onBeforeMount, ref, watch} from 'vue'
 
+import ErrorMessages from "@/js/components/bases/ErrorMessages.vue";
 import {formService} from "@/js/service/formService";
 
 
@@ -18,6 +19,11 @@ const props = defineProps({
         type: Array,
         required: false,
         default: []
+    },
+    v$:{
+        type: Object,
+        required: false,
+        default: {}
     }
 })
 
@@ -69,11 +75,12 @@ watch(selectedTypes, () => {
                     v-model="selectedTypes"
                     type="checkbox"
                     class="rounded text-main-teal"
-                    :name="type.name"
+                    :name="type.id"
                     :value="type.id"
                 >
                 <label for="LabelTypeSelector">{{ type.name }}</label>
             </div>
         </div>
+        <ErrorMessages :v$="props.v$" />
     </div>
 </template>
