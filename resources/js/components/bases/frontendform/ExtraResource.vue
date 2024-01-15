@@ -84,12 +84,6 @@ const handleClickDeleteItem = (resourceIndex: number, itemIndex: number): void =
                                 :src-content="item.content"
                                 @emit-tiny-rich-content="(contentData) => item.content = contentData"
                             />
-                            <!--                            <TrixRichEditorInput-->
-                            <!--                                label="Content"-->
-                            <!--                                :src-content="item.content"-->
-                            <!--                                class="border-gray-300"-->
-                            <!--                                @input="(contentData) => item.content = contentData"-->
-                            <!--                            />-->
                         </div>
                     </div>
                 </div>

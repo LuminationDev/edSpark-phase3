@@ -35,7 +35,6 @@ watch(selectedOptions, () =>{
 
 onMounted(() =>{
     formService.fetchAllLabels().then(res =>{
-        console.log(res.data.data)
         allLabels.value = res.data.data
         groupedLabels.value = formService.groupLabelByType(allLabels.value)
     })

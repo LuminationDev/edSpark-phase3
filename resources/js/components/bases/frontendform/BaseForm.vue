@@ -2,7 +2,7 @@
 import useVuelidate from "@vuelidate/core";
 import {maxLength, required} from "@vuelidate/validators";
 import {storeToRefs} from "pinia";
-import {capitalize, computed, onBeforeMount, onMounted, reactive, ref} from "vue";
+import {capitalize, computed, onBeforeMount, onBeforeUnmount, reactive, ref} from "vue";
 import {useRouter} from "vue-router";
 import {toast} from "vue3-toastify";
 
@@ -12,10 +12,9 @@ import ImageUploaderInput, {MediaType} from "@/js/components/bases/ImageUploader
 import TagsInput from "@/js/components/bases/TagsInput.vue";
 import TextInput from "@/js/components/bases/TextInput.vue";
 import GenericButton from "@/js/components/button/GenericButton.vue";
-import {FormStatus, useAutoSave} from "@/js/composables/useAutoSave";
+import {FormStatus} from "@/js/composables/useAutoSave";
 import useErrorMessage from "@/js/composables/useErrorMessage";
 import {differenceObjects} from "@/js/helpers/jsonHelpers";
-import {autoSaveService} from "@/js/service/autoSaveService";
 import {formService} from "@/js/service/formService";
 import {useUserStore} from "@/js/stores/useUserStore";
 import {AdviceAdditionalData} from "@/js/types/AdviceTypes";
@@ -26,15 +25,16 @@ const props = defineProps({
     additionalData: {
         type: Object as () => SoftwareAdditionalData | AdviceAdditionalData | EventAdditionalData,
         required: false,
-        default: () => {
-        }
+        default: () => {}
     },
     additionalValidation: {
-        type: Object, required: false, default: () => {
-        }
+        type: Object,
+        required: false,
+        default: () => {}
     },
     itemType: {
-        type: String, required: true
+        type: String,
+        required: true
     }
 })
 
@@ -48,11 +48,18 @@ enum FormAction {
     EDIT = 'EDIT'
 }
 
-enum ContentOrigin{
+enum ContentOrigin {
     NEW = 'NEW',
     DRAFT = 'DRAFT'
 }
 
+const baseFormFieldErrorMessage = {
+    advicetype_id: 'advice type',
+    cover_image: 'cover image',
+    excerpt: 'tagline',
+    title: 'title',
+    content: 'main content'
+}
 
 const emits = defineEmits<{
     (e: 'baseEmitsAddtContent', content): void
@@ -87,7 +94,6 @@ const rules = {
 }
 
 
-
 const v$ = useVuelidate(rules, state)
 
 const currentAction = ref<FormAction>(FormAction.CREATE)
@@ -95,11 +101,8 @@ const {error, setError, clearError} = useErrorMessage()
 const userStore = useUserStore()
 const {currentUser} = storeToRefs(userStore)
 const router = useRouter()
-const {
-    formStatusDisplay,
-    isSaving,
-    autoSaveContent, loadAutoSaveData
-} = useAutoSave(autoSaveService, currentUser, props.itemType, () => ({...state, ...props.additionalData}), 'BaseFormParent')
+const isSaving = ref(false)
+const formStatusDisplay = ref(FormStatus.NEW)
 
 const populateLocalStateFromWindowStateDraftData = (data): void => {
     state.title = data.title || ""
@@ -119,15 +122,18 @@ const baseEmitsExtraContentFromDraftData = (data): void => {
 onBeforeMount(() => {
     if (window.history.state.draftContent) {
         const draftData = JSON.parse(window.history.state.draftContent)
-        console.log(draftData)
         populateLocalStateFromWindowStateDraftData(draftData)
         baseEmitsExtraContentFromDraftData(draftData)
         state.content_origin = ContentOrigin.DRAFT
+        formStatusDisplay.value = FormStatus.EDITING
     }
 })
 
+onBeforeUnmount(() => {
+    // do auto save as draft here
+})
+
 const handleReceiveMediaFromUploader = (media: MediaType[]): void => {
-    console.log(media)
     if (media && media.length === 1 && media[0]) {
         v$.value.cover_image.$model = media[0].remoteUrl
     } else {
@@ -135,12 +141,20 @@ const handleReceiveMediaFromUploader = (media: MediaType[]): void => {
     }
 }
 
+const generateErrorMessageFromv$Errors = (arrayOfMissingFields, draftOrModeration) => {
+    const fieldsListString = []
+    const endingString = draftOrModeration.toLowerCase() === "draft" ? ' to create a draft' : ' to submit for moderation'
+    arrayOfMissingFields.forEach(field =>{
+        fieldsListString.push(baseFormFieldErrorMessage[field.$property || field])
+    })
+    return "Please provide " + fieldsListString.join(", ") + ' ' + endingString
+}
+
 const handleClickSubmitForModeration = () => {
     isSaving.value = true
     v$.value.$validate();
-    if (!v$.value.$errors) {
-        console.log(v$.value.$errors)
-        setError(1, 'Please provide title, tagline, content and cover image')
+    if (v$.value.$errors) {
+        setError(1, generateErrorMessageFromv$Errors(v$.value.$errors, 'moderation'))
         isSaving.value = false
         return
     }
@@ -152,18 +166,30 @@ const handleClickSubmitForModeration = () => {
     }).catch(e => {
         console.log(e.response.data)
         setError(1, 'Please provide all the required information')
-
-
     }).finally(() => {
         isSaving.value = false
     })
 }
 
 const handleClickSaveAsDraft = () => {
-    if(v$.value.title.$model.length < 1 ||v$.value.content.$model.length < 1){
-        setError(2, 'Please provide at least title and content to save post as a draft')
+    if (v$.value.$errors) {
+        v$.value.$reset()
+        clearError();
+    }
+    const draftError = []
+
+    if (v$.value.title.$model.length < 1) {
+        draftError.push('title')
+    }
+    if( v$.value.content.$model.length < 1){
+        draftError.push('content')
+    }
+    if(draftError && draftError.length > 0){
+        console.log(draftError)
+        setError(1, generateErrorMessageFromv$Errors(draftError, 'draft'))
         return
     }
+
     isSaving.value = true
     return formService.handleSubmitPostAsDraft(state, currentUser.value.id, props.additionalData, props.itemType).then((res) => {
         formStatusDisplay.value = FormStatus.SAVED
@@ -204,8 +230,21 @@ const handleTinyRichContent = (data) => {
 const handleSelectedLabels = (data) => {
     console.log(data)
     v$.value.labels.$model = data
-
 }
+
+const canSaveDraft = computed(() => {
+    return state.title && state.title.length > 0 && state.content && state.content.length > 0
+})
+
+const canSaveModeration = computed(() => {
+    return canSaveDraft.value &&
+        state.cover_image &&
+        (Array.isArray(props.additionalData.type) ? props.additionalData.type.length > 0 : !!props.additionalData.type)
+})
+
+
+
+
 </script>
 
 <template>
@@ -295,10 +334,9 @@ const handleSelectedLabels = (data) => {
                 />
             </div>
             <div
-                v-show="error.status"
-                class="italic text-red-600"
+                class="italic my-8 text-red-600"
             >
-                {{ error.message }}
+                {{ error.message || '' }}
             </div>
             <div class="flex justify-center gap-6 saveButtonContainer">
                 <GenericButton

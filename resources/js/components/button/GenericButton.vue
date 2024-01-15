@@ -26,6 +26,9 @@ const props = defineProps({
         type: String,
         required: false,
         default: 'button'
+    },
+    tooltipOnHover:{
+        type: String, required: false, default: ""
     }
 })
 const onClick = async () => {
@@ -56,10 +59,11 @@ const asyncCall = () => {
 <template>
     <button
         :id="buttonId"
+        v-tippy="tooltipOnHover"
         :class="{
             'h-auto rounded-lg text-white text-base bg-main-teal hover:bg-main-navy' : true,
             'my-3 hover:bg-blue-400': type === 'school',
-            'pointer-events-none': disabled,
+            'pointer-events-none !bg-slate-300': disabled,
             '!text-black bg-white border-0 !p-0': type === 'plain',
             '!h-fit !text-white px-12 py-2 w-64' : type === 'teal',
             '!h-fit !text-white px-12 py-2 w-64 !bg-secondary-grapeDark' : type === 'purple',

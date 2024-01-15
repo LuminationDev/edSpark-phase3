@@ -52,7 +52,7 @@ watchOnce(props,() =>{
             :id="fieldId"
             :tags="tags"
             placeholder="Add or create tags"
-            class="!border-gray-300 border-2 py-1 rounded text-black"
+            class="!border-gray-300 border-2 p-1 rounded text-black"
             @on-tags-changed="handleChangeTag"
         />
     </div>
