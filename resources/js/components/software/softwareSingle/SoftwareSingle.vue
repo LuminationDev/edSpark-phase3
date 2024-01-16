@@ -112,8 +112,6 @@ const colorTheme = ref('softwarePurple')
                         </div>
                     </div>
                 </template>
-
-
                 <template #contentDate>
                     <div class="font-semibold my-4">
                         {{ formatDateToDayTime(contentFromBase['modified_at']) }}
