@@ -88,7 +88,7 @@ const colorTheme = ref('softwarePurple')
                         v-if="contentFromBase['author'] && contentFromBase['author']"
                         class="EventHeroAuthorContainer flex flex-col"
                     >
-                        <div class="flex items-center flex-row">
+                        <div class="flex items-center flex-row gap-8 my-4">
                             <BaseSingleProfilePicture
                                 :author-name="contentFromBase['author']['author_name']"
                                 :author-logo-url="String(contentFromBase['author']['author_logo'])"
@@ -115,7 +115,7 @@ const colorTheme = ref('softwarePurple')
 
 
                 <template #contentDate>
-                    <div class="font-semibold">
+                    <div class="font-semibold my-4">
                         {{ formatDateToDayTime(contentFromBase['modified_at']) }}
                     </div>
                 </template>

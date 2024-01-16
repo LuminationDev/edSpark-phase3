@@ -30,7 +30,7 @@ onMounted(() => {
         postLoading.value = false
     })
 })
-
+// unflatten labels from database for Form Purposes
 const unflattenLabelsForFrontendForm = (flattenedLabels) => {
     const unflattenedLabels = {};
 

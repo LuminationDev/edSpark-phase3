@@ -76,7 +76,7 @@ watch(selectedTypes, () => {
                     type="checkbox"
                     class="rounded text-main-teal"
                     :name="type.id"
-                    :value="type.id"
+                    :value="+type.id"
                 >
                 <label for="LabelTypeSelector">{{ type.name }}</label>
             </div>
