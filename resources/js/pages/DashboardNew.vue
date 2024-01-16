@@ -122,7 +122,7 @@ onMounted(async () => {
         </template>
         <template #button>
             <GenericButton
-                :callback="() => router.push('browse/guide')"
+                :callback="() => router.push('tech/hardware')"
                 :type="'teal'"
             >
                 View all technology

@@ -43,17 +43,17 @@ const handleClickEditDraft = (postData: BasePostType) : Promise<void> => {
 </script>
 
 <template>
-    <div class="UserDraftListContainer flex items-start flex-col mb-6 w-full">
+    <div class="UserDraftListContainer flex items-start flex-col my-6 w-full">
         <div
             class="draftsHeader font-semibold grid grid-cols-12 mb-4 w-full"
         >
-            <div class="col-span-6 grid place-items-center">
+            <div class="col-span-6 grid place-items-start">
                 Title
             </div>
-            <div class="col-span-3 grid place-items-center">
+            <div class="col-span-3 grid place-items-start">
                 Created at
             </div>
-            <div class="col-span-3 grid place-items-center">
+            <div class="col-span-3 grid place-items-start">
                 Type
             </div>
         </div>
@@ -79,17 +79,17 @@ const handleClickEditDraft = (postData: BasePostType) : Promise<void> => {
                 @click="() => handleClickEditDraft(draft)"
             >
                 <div class="col-span-6">
-                    <div class="DraftTitle">
+                    <div class="DraftTitle p-4">
                         {{ draft.title }}
                     </div>
                     <!--                    <div class="DraftExcerpt line-clamp-1 text-gray-400">-->
                     <!--                        {{ stripHtmlTags(draft.excerpt) }}-->
                     <!--                    </div>-->
                 </div>
-                <div class="col-span-3 createdAtColumn grid place-items-center">
+                <div class="col-span-3 createdAtColumn grid place-items-start">
                     {{ formatDateToDayTime(new Date(draft.created_at)) }}
                 </div>
-                <div class="col-span-3 grid place-items-center postTypeColumn">
+                <div class="col-span-3 grid place-items-start postTypeColumn">
                     <div class="flex flex-col titleAndExcerpt">
                         {{ capitalize(draft.post_type) }}
                     </div>

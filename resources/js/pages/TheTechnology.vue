@@ -19,6 +19,7 @@ import SoftwareRobot from "@/js/components/svg/software/SoftwareRobot.vue";
 import {API_ENDPOINTS} from "@/js/constants/API_ENDPOINTS";
 import {LandingHeroText} from "@/js/constants/PageBlurb";
 import {cardDataWithGuid, getNRandomElementsFromArray} from "@/js/helpers/cardDataHelper";
+import {lowerSlugify} from "@/js/helpers/stringHelpers";
 import {adviceService} from "@/js/service/adviceService";
 import {softwareService} from "@/js/service/softwareService";
 import {useAdviceStore} from "@/js/stores/useAdviceStore";
@@ -44,8 +45,11 @@ onMounted(() => {
 })
 
 
-const handleClickPopularTech = () => {
-    console.log('jhee popular')
+const handleClickPopularTech = (techId, title) => {
+    return router.push({
+        name: "software-single",
+        params: {id: techId, slug: lowerSlugify(title)},
+    })
 }
 </script>
 
@@ -68,6 +72,7 @@ const handleClickPopularTech = () => {
                 v-if="allSoftware && allSoftware.length"
                 :resource-list="allSoftware"
                 border-color="purple"
+                :resource-click-callback="handleClickPopularTech"
             />
             <Loader
                 v-else
@@ -139,7 +144,7 @@ const handleClickPopularTech = () => {
         </template>
         <template #button>
             <GenericButton
-                :callback="() => router.push('browse/hardware')"
+                :callback="() => router.push('/browse/hardware')"
                 :type="'purple'"
             >
                 View all equipment and devices
@@ -164,7 +169,7 @@ const handleClickPopularTech = () => {
         </template>
         <template #button>
             <GenericButton
-                :callback="handleClickPopularTech"
+                :callback="() => router.push('/browse/guide/dag')"
                 :type="'purple'"
             >
                 View all guides

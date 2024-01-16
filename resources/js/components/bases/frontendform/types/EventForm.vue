@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import useVuelidate from "@vuelidate/core";
+import {required} from "@vuelidate/validators";
 import {reactive} from "vue";
 
 import BaseForm from "@/js/components/bases/frontendform/BaseForm.vue";
@@ -16,6 +18,15 @@ const addtEventData = reactive<EventAdditionalData>({
     start_date: new Date(),
     end_date: new Date()
 })
+
+const rules = {
+    extra_content:{},
+    type: {required},
+    location: {required},
+    start_date: {required},
+    end_date: {required},
+}
+const v$ = useVuelidate(rules, addtEventData)
 
 const updateExtraContent = (content): void => {
     console.log('here is content')
@@ -56,6 +67,7 @@ const handleReceiveAddtContent = (data) => {
     <BaseForm
         item-type="event"
         :additional-data="addtEventData"
+        :additional-validation="v$"
         @base-emits-addt-content="handleReceiveAddtContent"
     >
         <template #itemType>
