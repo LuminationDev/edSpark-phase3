@@ -59,11 +59,11 @@ const timeFormatter = (originalFormat) => {
                 <template #contentDate>
                     {{ timeFormatter(contentFromBase['modified_at']) }}
                 </template>
-                <!-- <template #subtitleText1>
-                    {{ timeFormatter(contentFromBase['post_date']) }}
-                </template> -->
                 <template #subtitleText2>
-                    <div v-html="edSparkContentSanitizer(contentFromBase['excerpt'])" />
+                    <div
+                        class="hidden xl:!block"
+                        v-html="edSparkContentSanitizer(contentFromBase['excerpt'])"
+                    />
                     <LabelRowContentDisplay :labels-array="contentFromBase['labels']" />
                 </template>
             </BaseHero>

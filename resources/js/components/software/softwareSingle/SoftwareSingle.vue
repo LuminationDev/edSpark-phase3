@@ -118,20 +118,20 @@ const colorTheme = ref('softwarePurple')
                     </div>
                 </template>
                 <template #subtitleText2>
-                    <div v-html="contentFromBase['excerpt']" />
+                    <!--                    <div v-html="contentFromBase['excerpt']" />-->
                     <LabelRowContentDisplay :labels-array="contentFromBase['labels']" />
                 </template>
-                <template #subtitleContent>
-                    <div class="SoftwareTypeInfoInHero flex flex-row gap-4 mt-8">
-                        <SoftwareIconGenerator
-                            :icon-name="contentFromBase['type'][0]"
-                            class="h-14 w-14"
-                        />
-                        <p class="flex justify-center items-center font-light">
-                            {{ contentFromBase['type'][0] }}
-                        </p>
-                    </div>
-                </template>
+                <!--                <template #subtitleContent>-->
+                <!--                    <div class="SoftwareTypeInfoInHero flex flex-row gap-4 mt-8">-->
+                <!--                        <SoftwareIconGenerator-->
+                <!--                            :icon-name="contentFromBase['type'][0]"-->
+                <!--                            class="h-14 w-14"-->
+                <!--                        />-->
+                <!--                        <p class="flex justify-center items-center font-light">-->
+                <!--                            {{ contentFromBase['type'][0] }}-->
+                <!--                        </p>-->
+                <!--                    </div>-->
+                <!--                </template>-->
 
                 <!--  Selectable sub menu    -->
                 <template #submenu>

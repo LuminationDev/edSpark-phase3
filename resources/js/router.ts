@@ -141,7 +141,7 @@ const routes: any = [
                 } as RouteMeta
             }, {
                 name: 'Guides and resources',
-                path: 'guide',
+                path: 'guides',
                 component: InspirationAndGuides,
                 meta: {
                     requiresAuth: true,

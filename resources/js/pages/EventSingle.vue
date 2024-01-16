@@ -129,7 +129,6 @@ const handleClickViewProfile = (author_id, author_type) => {
                         </div>
                         <LabelRowContentDisplay :labels-array="contentFromBase['labels']" />
                     </div>
-                    <!--                    <div v-html="purify.sanitize(contentFromBase['excerpt'])" />-->
                 </template>
             </BaseHero>
         </template>
