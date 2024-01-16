@@ -110,51 +110,57 @@ const customFill = computed(() => {
                     <slot name="titleText" />
                 </h1>
 
-                <div
-                    v-if="$slots.additionalTags"
-                    class="flex flex-row flex-wrap gap-4 max-w-full w-full"
-                >
-                    <slot name="additionalTags" />
-                </div>
+                    <div
+                        v-if="$slots.additionalTags"
+                        class="flex flex-row flex-wrap gap-4 max-w-full w-full"
+                    >
+                        <slot name="additionalTags" />
+                    </div>
 
-                <p
-                    v-if="$slots.authorName"
-                    class="flex flex-col font-semibold gap-4 text-[18px] text-white"
-                >
-                    <slot name="authorName" />
-                </p>
-
-                <p
-                    v-if="$slots.contentDate"
-                    class="flex flex-col font-thin gap-4 mb-0 lg:mb-8 text-base text-white"
-                >
-                    <slot name="contentDate" />
-                </p>
-
-                <p
-                    v-if="$slots.subtitleText1"
-                    class="flex flex-col font-thin gap-4 mb-4 pb-4 text-base text-white"
-                >
-                    <slot name="subtitleText1" />
-                </p>
-
-                <p
-                    v-if="$slots.hardwareProvider"
-                    class="flex flex-col font-normal gap-4 pb-4 text-base text-white"
-                >
-                    <slot name="hardwareProvider" />
-                </p>
-
-                <div
-                    v-if="$slots.subtitleText2"
-                    class="font-normal h-auto mt-6 text-base text-white pb-4 lg:max-w-[70%]"
-                >
-                    <p class="">
-                        <slot name="subtitleText2" />
+                    <p
+                        v-if="$slots.authorName"
+                        class="flex flex-col font-semibold gap-4 text-[18px] text-white"
+                    >
+                        <slot name="authorName" />
                     </p>
-                    <slot name="subtitleContent" />
+
+                    <p
+                        v-if="$slots.contentDate"
+                        class="flex flex-col font-thin gap-4 mb-0 lg:mb-8 text-base text-white"
+                    >
+                        <slot name="contentDate" />
+                    </p>
+
+                    <p
+                        v-if="$slots.subtitleText1"
+                        class="flex flex-col font-thin gap-4 mb-4 pb-4 text-base text-white"
+                    >
+                        <slot name="subtitleText1" />
+                    </p>
+
+                    <p
+                        v-if="$slots.hardwareProvider"
+                        class="flex flex-col font-normal gap-4 pb-4 text-base text-white"
+                    >
+                        <slot name="hardwareProvider" />
+                    </p>
+
+                    <div
+                        v-if="$slots.subtitleText2"
+                        class="font-normal h-auto mt-6 pb-4 text-lg text-white lg:max-w-[70%]"
+                    >
+                        <p class="">
+                            <slot name="subtitleText2" />
+                        </p>
+                        <slot name="subtitleContent" />
+                    </div>
                 </div>
             </div>
+            <div
+                class="bg-center bg-cover bg-no-repeat col-span-4 imageCover"
+                :style="'background-image: url(' + heroBackgroundLinkOnly +')'"
+            />
+
             <div
                 v-if="$slots.icon"
                 class="col-span-3 relative"
@@ -164,12 +170,12 @@ const customFill = computed(() => {
                 </div>
             </div>
         </div>
-        <div class="articleSwooshContainer relative w-full z-10 mb-8">
+        <div class="articleSwooshContainer mb-8 relative w-full z-10">
             <ArticleSingleSwoosh
                 :color-theme="swooshColorTheme"
                 class=""
             />
-            <div class="-top-1 h-16 w-full flex pl-4 pt-2 text-xl text-white md:!pl-12 md:!text-2xl">
+            <div class="-top-1 md:!pl-12 md:!text-2xl flex h-16 pl-4 pt-2 text-white text-xl w-full">
                 <slot
                     name="submenu"
                 />
