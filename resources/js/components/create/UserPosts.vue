@@ -31,6 +31,28 @@ onMounted(() => {
     })
 })
 
+const unflattenLabelsForFrontendForm = (flattenedLabels) => {
+    const unflattenedLabels = {};
+
+    flattenedLabels.forEach(label => {
+        const labelType = label.label_type;
+
+        if (!unflattenedLabels[labelType]) {
+            unflattenedLabels[labelType] = [];
+        }
+
+        const unflattenedLabel = {
+            id: label.label_id,
+            value: label.label_value,
+            name: label.label_value
+        };
+
+        unflattenedLabels[labelType].push(unflattenedLabel);
+    });
+
+    return unflattenedLabels;
+}
+
 const formatDataFromAutoSaveAndPostToDraft = (dataArray): BasePostType[] => {
     return dataArray.map(item => {
         if (item["post_status"] === 'Draft' || item["status"] === 'Draft') {
@@ -49,7 +71,7 @@ const formatDataFromAutoSaveAndPostToDraft = (dataArray): BasePostType[] => {
                 start_date: item.start_date,
                 end_date: item.end_date,
                 location: item.location,
-                labels: item.labels
+                labels: unflattenLabelsForFrontendForm(item.labels)
             })
         } else if (item['status'] === 'auto-saved') {
             const content = JSON.parse(item.content)
