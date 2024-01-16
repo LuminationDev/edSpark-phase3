@@ -13,11 +13,15 @@ const props = defineProps({
         type: String,
         required: false,
         default: 'teal'
+    },
+    resourceClickCallback:{
+        required: true,
+        type: Function
     }
 })
 
-const handleClickResource = () => {
-    console.log('clciked on one please router me away')
+const handleClickResource = (id, title) => {
+    props.resourceClickCallback(id, title)
 
 }
 const filteredResource = computed(() => {
@@ -45,7 +49,7 @@ const borderColorClass = computed(() => {
             :key="index"
             class="border-2 cursor-pointer popularGuideItem px-8 py-4 rounded text-2xl hover:text-white w-full"
             :class="borderColorClass"
-            @click="handleClickResource"
+            @click="() => handleClickResource(resource.id, resource.title)"
         >
             <div class="flex justify-between flex-row w-full">
                 <div class="text-start title w-full">

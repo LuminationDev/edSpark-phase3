@@ -6,6 +6,7 @@ import AdviceForm from "@/js/components/bases/frontendform/types/AdviceForm.vue"
 import EventForm from "@/js/components/bases/frontendform/types/EventForm.vue";
 import SoftwareForm from "@/js/components/bases/frontendform/types/SoftwareForm.vue";
 import UserPosts from "@/js/components/create/UserPosts.vue";
+import InspirationAndGuidesRobot from "@/js/components/inspirationandguides/InspirationAndGuidesRobot.vue";
 import AdviceSearch from "@/js/components/search/AdviceSearch.vue";
 import EventSearch from "@/js/components/search/EventSearch.vue";
 import HardwareSearch from "@/js/components/search/HardwareSearch.vue";
@@ -22,6 +23,7 @@ import EdsparkPageNotFound from "@/js/pages/EdsparkPageNotFound.vue";
 import EventSingle from "@/js/pages/EventSingle.vue";
 import HardwareSingle from '@/js/pages/HardwareSingle.vue';
 import InspirationAndGuides from "@/js/pages/InspirationAndGuides.vue";
+import InspirationLanding from "@/js/pages/InspirationLanding.vue";
 import PartnerSingle from "@/js/pages/PartnerSingle.vue";
 import PlaceholderParentPage from "@/js/pages/PlaceholderParentPage.vue";
 import SchoolSingle from "@/js/pages/SchoolSingle.vue";
@@ -117,7 +119,7 @@ const routes: any = [
     {
         name: 'Inspiration and guides',
         path: '/inspire',
-        component: PlaceholderParentPage,
+        component: InspirationLanding,
         meta: {
             navigation: true
         },
@@ -151,12 +153,13 @@ const routes: any = [
     },
     {
         name: 'Technology',
-        path: '/tech',
-        component: PlaceholderParentPage,
+        path: '/technology',
+        component: TheTechnology,
         meta: {
             navigation: true
         },
         children: [
+
             {
                 name: "Apps and programs",
                 path: "software",
@@ -174,15 +177,6 @@ const routes: any = [
                 } as RouteMeta
             }
         ]
-    },
-    {
-        name: 'TechnologyLanding',
-        path: '/technology',
-        component: TheTechnology,
-        meta: {
-            navigation: false
-        }
-
     },
     {
         name: 'AI hub',

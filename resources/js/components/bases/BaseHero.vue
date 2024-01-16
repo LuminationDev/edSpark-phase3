@@ -1,6 +1,6 @@
 <script setup>
 import {storeToRefs} from "pinia";
-import {computed, onMounted, ref, resolveDynamicComponent} from 'vue'
+import {computed, onMounted, ref} from 'vue'
 
 import {schoolColorKeys, schoolColorTheme} from "@/js/constants/schoolColorTheme";
 import {imageURL} from "@/js/constants/serverUrl";
@@ -36,15 +36,6 @@ const props = defineProps({
 })
 
 
-const heroBackground = computed(() => {
-    if (!props.backgroundUrl) {
-        return `bg-gradient-to-r from-[${props.color1}] via-[${props.color2}] to-[${props.color3}]`
-    } else {
-        return `bg-[url(${imageURL}/${props.backgroundUrl.replace(' ', "%20").replace(/\\/g, "")}')] bg-blend-soft-light bg-center bg-no-repeat bg-gray-600`
-    }
-})
-
-
 const heroBackgroundLinkOnly = computed(() => {
     if (props.backgroundUrl) {
         return `${imageURL}/${props.backgroundUrl.replace(' ', "%20").replace(/\\/g, "")}`
@@ -56,7 +47,6 @@ const heroBackgroundLinkOnly = computed(() => {
 
 const gradientBg = ref('')
 
-// :style="'background-image: ' + gradientBg +';'
 onMounted(() => {
     let useCustomColor = false;
 
@@ -72,16 +62,13 @@ onMounted(() => {
         + ");";
 })
 
-const customFill = computed(() => {
-    return gradientBg.value;
-})
 const windowStore = useWindowStore()
 const {windowWidth} = storeToRefs(windowStore)
 
-const heroBackgroundSwitch = computed(() =>{
-    if(windowWidth.value < 1024){
-        return 'background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url(' + heroBackgroundLinkOnly.value +') !important;  background-position: center top; '
-    } else{
+const heroBackgroundSwitch = computed(() => {
+    if (windowWidth.value < 1024) {
+        return 'background-image: linear-gradient(rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.8)), url(' + heroBackgroundLinkOnly.value + ') !important;  background-position: center top; '
+    } else {
         return ''
     }
 })
@@ -127,7 +114,7 @@ const heroBackgroundSwitch = computed(() =>{
                     </div>
 
                     <p
-                        v-if="$slots.authorName"
+                        v-if="$slots.authorName" 
                         class="flex flex-col font-semibold gap-4 text-[18px] text-white"
                     >
                         <slot name="authorName" />
