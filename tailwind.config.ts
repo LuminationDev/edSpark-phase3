@@ -90,6 +90,7 @@ module.exports = {
                     darkTeal: '#0A7982',
                     teal: '#097982', //was '#339999',
                     lightTeal: '#28D5CB',
+                    darkGrey: '#232323'
                 },
                 secondary: {
                     blue: '#0072DA',
@@ -97,7 +98,7 @@ module.exports = {
                     darkBlue: '#1C5CA9',
                     green: '#048246',
                     lightGreen: '#A5D1BD',
-                    purple: '#8866C5',
+                    purple: '',
                     yellow: '#FFC836',
                     lightYellow: '#F5E1AD',
                     red: '#C73E5D', //was #de4668
@@ -114,6 +115,7 @@ module.exports = {
                     blueberry: '#0072DA',
                     teal: '#319795',
                     navy: '#002858',
+                    grapeDark: '#3D239B'
 
                 },
                 custom: {
@@ -143,7 +145,8 @@ module.exports = {
                 large: '36px',
                 extraLarge: '48px',
                 huge: '81px',
-                extraHuge: '140px'
+                extraHuge: '140px',
+                mainHero: '500px'
             },
             screens: {
                 'ml': '860px',

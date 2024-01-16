@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import useVuelidate from "@vuelidate/core";
+import {required} from "@vuelidate/validators";
 import {reactive} from "vue";
 
 import BaseForm from "@/js/components/bases/frontendform/BaseForm.vue";
@@ -15,6 +17,13 @@ const addtSoftwareData = reactive<SoftwareAdditionalData>({
     type : []
 
 })
+const rules = {
+    extra_content:{},
+    type: {required}
+}
+
+const v$ = useVuelidate(rules, addtSoftwareData)
+
 
 const updateExtraContent = (content) : void => {
     if (content) {
@@ -46,6 +55,7 @@ const handleReceiveAddtContent = (data) => {
     <BaseForm
         item-type="software"
         :additional-data="addtSoftwareData"
+        :additional-validation="v$"
         @base-emits-addt-content="handleReceiveAddtContent"
     >
         <template #itemType>

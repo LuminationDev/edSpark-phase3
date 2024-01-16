@@ -66,10 +66,10 @@ const handleClearSearchbar = () => {
 <template>
     <div class="absolute top-0 right-0 bottom-0 left-0 globalSearchScreenContainer grid place-items-center h-screen w-screen z-50">
         <div
-            class="bg-main-navy/80 fixed top-0 left-0 grayoverlay h-full w-full z-40"
+            class="bg-main-navy/80 fixed top-0 left-0 grayoverlay h-[1000vh] w-full z-40"
             @click="handleClickOverlay"
         />
-        <div class="bg-white drop-shadow-xl flex flex-col h-1/2 overflow-y-auto relative rounded-xl searchBox z-50 w-10/12 lg:w-1/2">
+        <div class="bg-white drop-shadow-xl flex flex-col h-1/2 overflow-y-auto relative rounded-xl searchBox w-10/12 lg:w-1/2 z-50">
             <input
                 ref="globalSearchInputBox"
                 v-model="searchTerms"

@@ -25,6 +25,7 @@ class AdviceController extends Controller
         $this->middleware(ResourceAccessControl::class . ':partner,handleFetchAdvicePosts,createAdvicePost,fetchAdvicePostById,fetchRelatedAdvice');
     }
 
+
     public function createAdvicePost(Request $request)
     {
         if (strtolower($request->input('post_status')) === 'draft') {
@@ -69,6 +70,14 @@ class AdviceController extends Controller
                 }
             }
             $advice->labels()->attach($allLabelIds);
+        }
+        // archive draft
+        if ($request->input('existing_id') != 0 && strtolower($request->input('content_origin')) === 'draft') {
+            $existingAdvice = Advice::find($request->input('existing_id'));
+
+            if ($existingAdvice) {
+                $existingAdvice->update(['post_status' => 'Archived']);
+            }
         }
 
 
@@ -185,7 +194,9 @@ class AdviceController extends Controller
 
             foreach ($typeArray as $typeItem) {
                 $adviceTypes = Advicetype::where('advice_type_name', $typeItem)->first();
-                $adviceArticles = Advice::where('advicetype_id', $adviceTypes->id)->where('post_status', 'Published')->get();
+                $adviceArticles = Advice::whereHas('advicetypes', function ($query) use ($adviceTypes) {
+                    $query->where('advice_types.id', $adviceTypes->id);
+                })->where('post_status', 'Published')->orderBy('created_at', 'DESC')->get();
 
                 foreach ($adviceArticles as $advice) {
                     $result = $this->postService->adviceModelToJson($advice, $request);
@@ -196,7 +207,9 @@ class AdviceController extends Controller
 
         } else {
             $adviceTypes = Advicetype::where('advice_type_name', $type)->first();
-            $adviceArticles = Advice::where('advicetype_id', $adviceTypes->id)->where('post_status', 'Published')->get();
+            $adviceArticles = Advice::whereHas('advicetypes', function ($query) use ($adviceTypes) {
+                $query->where('advice_types.id', $adviceTypes->id);
+            })->where('post_status', 'Published')->orderBy('created_at', 'DESC')->get();
 
             foreach ($adviceArticles as $advice) {
                 $result = $this->postService->adviceModelToJson($advice, $request);

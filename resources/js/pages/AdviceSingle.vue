@@ -1,11 +1,10 @@
 <script setup>
 
-import purify from "dompurify";
-
 import AdviceSingleCuratedContent from "@/js/components/advice/AdviceSingleCuratedContent.vue";
 import BaseBreadcrumb from "@/js/components/bases/BaseBreadcrumb.vue";
 import BaseHero from "@/js/components/bases/BaseHero.vue";
 import BaseSingle from "@/js/components/bases/BaseSingle.vue";
+import TinyMceContentRenderer from "@/js/components/bases/frontendform/TinyMceEditor/TinyMceContentRenderer.vue";
 import LabelRowContentDisplay from "@/js/components/global/LabelRowContentDisplay.vue";
 import ExtraResourceTemplateDisplay from "@/js/components/renderer/ExtraResourceTemplateDisplay.vue";
 import {edSparkContentSanitizer} from "@/js/helpers/objectHelpers";
@@ -45,7 +44,7 @@ const timeFormatter = (originalFormat) => {
                 <template #breadcrumb>
                     <BaseBreadcrumb
                         :child-page="contentFromBase.title"
-                        parent-page="advice"
+                        parent-page="guide"
                     />
                 </template>
                 <template #titleText>
@@ -60,11 +59,11 @@ const timeFormatter = (originalFormat) => {
                 <template #contentDate>
                     {{ timeFormatter(contentFromBase['modified_at']) }}
                 </template>
-                <!-- <template #subtitleText1>
-                    {{ timeFormatter(contentFromBase['post_date']) }}
-                </template> -->
                 <template #subtitleText2>
-                    <div v-html="edSparkContentSanitizer(contentFromBase['excerpt'])" />
+                    <div
+                        class="hidden xl:!block"
+                        v-html="edSparkContentSanitizer(contentFromBase['excerpt'])"
+                    />
                     <LabelRowContentDisplay :labels-array="contentFromBase['labels']" />
                 </template>
             </BaseHero>
@@ -74,17 +73,11 @@ const timeFormatter = (originalFormat) => {
             <div class="adviceSingleContent flex flex-col overflow-hidden px-8 w-full xl:!flex-row">
                 <!--    Content of the Advice    -->
                 <div class="flex flex-col flex-wrap mr-10 px-2 py-2 richTextContentContainer w-full xl:!w-2/3">
-                    <div class="flex font-bold mb-2 text-2xl">
-                        Getting started
-                    </div>
                     <div
                         class="flex flex-col max-w-full overflow-hidden text-lg"
-                    />
-
-                    <div
-                        class="max-w-full richTextContentContainer"
-                        v-html="edSparkContentSanitizer(contentFromBase['content'] )"
-                    />
+                    >
+                        <TinyMceContentRenderer :raw-content="contentFromBase['content']" />
+                    </div>
                     <div
                         v-if="contentFromBase['extra_content'] && contentFromBase['extra_content'].length"
                         class="extraResourcesContainer mt-4 w-full"

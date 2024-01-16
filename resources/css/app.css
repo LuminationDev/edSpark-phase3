@@ -1,3 +1,4 @@
+
 @config '../../tailwind.config.ts';
 
 @tailwind base;
@@ -352,11 +353,9 @@ input, textarea, select {
 
 .richTextContentContainer figure {
     display: table;
-    margin: 1rem auto
 }
 
 .richTextContentContainer figure figcaption {
-    color: #999;
     display: block;
     margin-top: .25rem;
     text-align: center

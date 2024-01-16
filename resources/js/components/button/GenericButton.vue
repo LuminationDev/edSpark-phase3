@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import {ref} from 'vue'
+import {onBeforeRouteLeave} from "vue-router";
 
 import Spinner from '../spinner/Spinner.vue'
 
@@ -26,26 +27,49 @@ const props = defineProps({
         type: String,
         required: false,
         default: 'button'
+    },
+    tooltipOnHover:{
+        type: String, required: false, default: ""
     }
 })
 const onClick = async () => {
-    await asyncCall()
+    spinner.value = true
+    console.log('inside on lcick')
+    await asyncCall();
+    spinner.value = false
 }
 
 const asyncCall = () => {
-    return new Promise((resolve) => {
-        resolve(props.callback())
-    }).then()
+    return new Promise(async (resolve, reject) => {
+        try {
+            console.log('before callback')
+            const result = props.callback();
+            if (result instanceof Promise) {
+                result.then(resolve).catch(reject);
+            } else {
+                resolve(result);
+            }
+
+        } catch (error) {
+            reject(error);
+        }
+    })
 }
+
+
 </script>
 <template>
     <button
         :id="buttonId"
+        v-tippy="tooltipOnHover"
         :class="{
             'h-auto rounded-lg text-white text-base bg-main-teal hover:bg-main-navy' : true,
             'my-3 hover:bg-blue-400': type === 'school',
-            '!bg-slate-300 pointer-events-none': disabled,
-            '!text-black bg-white border-0 !p-0': type === 'plain'
+            'pointer-events-none !bg-slate-300': disabled,
+            '!text-black bg-white border-0 !p-0': type === 'plain',
+            '!h-fit !text-white px-12 py-2 w-64' : type === 'teal',
+            '!h-fit !text-white px-12 py-2 w-64 !bg-secondary-grapeDark' : type === 'purple',
+            '!h-fit !text-white px-12 py-2 w-64 !bg-secondary-cherry' : type === 'red'
         }"
         class="flex justify-center items-center p-2"
         :disabled="disabled"

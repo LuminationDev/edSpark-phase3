@@ -85,7 +85,9 @@ export const API_ENDPOINTS: Endpoints = appendServerURL({
         FETCH_EVENT_POSTS: `/fetchEventPosts`,
         FETCH_EVENT_POST_BY_ID: `/fetchEventPostById`,
         FETCH_EVENT_TYPES: `/fetchEventTypes`,
-        CREATE_EVENT_POST: `/createEventPost`
+        CREATE_EVENT_POST: `/createEventPost`,
+        ADD_OR_EDIT_EMS_LINK: `/addOrEditEMSLink`,
+        FETCH_EMS_LINK: `/fetchEMSLink/`
     },
     USER: {
         FETCH_CURRENT_USER: `/fetchCurrentUser`,
@@ -98,6 +100,12 @@ export const API_ENDPOINTS: Endpoints = appendServerURL({
         GET_USER_NOTIFICATION: `/fetchUserNotification`,
         GET_USER_DRAFT_POSTS: `/getUserDraftPosts`
 
+    },
+    CATALOGUE: {
+        FETCH_CATALOGUE_BY_FIELD : '/fetchCatalogueByField',
+        FETCH_SINGLE_PRODUCT_BY_NAME: '/fetchSingleProductByName',
+        FETCH_UPGRADES_SINGLE_PRODUCT: '/fetchUpgradesSingleProduct',
+        FETCH_BUNDLES_SINGLE_PRODUCT: '/fetchBundlesSingleProduct',
     },
     LIKE: {
         LIKE: `/like`,

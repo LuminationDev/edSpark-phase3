@@ -1,5 +1,4 @@
 import slugify from 'slugify';
-import {computed} from "vue/dist/vue";
 
 export const lowerSlugify = (text) => {
     return slugify(text, {lower: true});
@@ -23,4 +22,9 @@ export const alignmentClassGenerator = (alignment) => {
     } else{
         return 'text-left justify-start items-start'
     }
+}
+
+export const simpleValidateUrl = (url: string) : boolean =>{
+    const validUrlRegex = /^(https?:\/\/)?(www\.)?([-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*))$/;
+    return validUrlRegex.test(url)
 }

@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import {  ref } from 'vue'
+import {ref} from 'vue'
+
 import ErrorMessages from './ErrorMessages.vue'
 
 const props = defineProps({
@@ -19,9 +20,14 @@ const props = defineProps({
         type: String,
         required: false,
         default: 'Insert value here'
+    },
+    withNoLeftMargin: {
+        type: Boolean,
+        required: false,
+        default: false
     }
 })
-const emit = defineEmits(['update:modelValue','inputUpdate'])
+const emit = defineEmits(['update:modelValue', 'inputUpdate'])
 
 const inputRef = ref(null)
 
@@ -39,12 +45,14 @@ const handleInput = (e) => {
 defineExpose({
     focus
 })
+
 </script>
 
 <template>
     <div class="flex-col mb-4">
         <label
-            class="h-8 ml-2"
+            class="h-8"
+            :class="{'ml-2' : !props.withNoLeftMargin}"
             :for="fieldId"
         >
             <slot name="label" />
@@ -55,7 +63,7 @@ defineExpose({
             :value="modelValue"
             :placeholder="placeholder"
             type="text"
-            class="border-[1px] border-gray-300 mr-1 p-2 rounded text-black"
+            class="border-[1px] border-gray-300 mr-1 p-2 rounded text-black placeholder:font-light"
             :class="{
                 '!border-red-500': v$ && v$.$error
             }"

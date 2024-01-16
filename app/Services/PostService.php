@@ -65,6 +65,17 @@ class PostService
         $isLikedByUser = $advice->likes()->where('user_id', $userId)->exists();
         $isBookmarkedByUser = $advice->bookmarks()->where('user_id', $userId)->exists();
 
+//        $groupedLabels = collect($advice->labels)->groupBy('type')->map(function ($labels) {
+//            return $labels->map(function ($label) {
+//                return [
+//                    'id' => $label['id'],
+//                    'value' => $label['value'],
+//                    'name' => $label['value'],
+//                    'type' => $label['type']
+//                ];
+//            });
+//        });
+
         return [
             'id' => $advice->id,
             'title' => $advice->post_title,
@@ -93,6 +104,7 @@ class PostService
                     'label_type' => $label['type'],
                 ];
             }),
+//            'labels' => $groupedLabels
         ];
     }
 

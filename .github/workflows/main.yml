@@ -27,7 +27,7 @@ jobs:
             git checkout ${{github.ref_name}}
             composer update
             npm install
-            npm run buildtest
+            npm run prod
           host: 'edspark.sa.edu.au'
           username: 'luminationdev'
           password: ${{ secrets.EDSPARK_DIGITAL_HUB }}

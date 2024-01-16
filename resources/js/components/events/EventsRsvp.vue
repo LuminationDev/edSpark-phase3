@@ -111,8 +111,6 @@ const eventStatus = computed(() => {
     } else {
         return "UNKNOWN"
     }
-
-
 })
 const dropdownSites = computed(() => {
     if (allSites.value.length === 0) return []
@@ -278,22 +276,11 @@ onMounted(() => {
             </div>
         </form>
 
-
-
-
-
         <EventRsvpSummary
             v-else-if="!currentUserIsOwner && eventStatus !== 'ENDED'"
             :rsvp-info="currentRsvpInfo"
             @start-edit-rsvp="handleStartEditRsvp"
         />
-
-
-
-
-
-
-
 
         <div
             v-else

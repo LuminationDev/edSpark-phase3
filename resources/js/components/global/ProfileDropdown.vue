@@ -26,7 +26,7 @@ const showDropdownMenu = ref(false)
 
 const imageURL = import.meta.env.VITE_SERVER_IMAGE_API;
 
-const toggleDropdownMenu = () : void => {
+const toggleDropdownMenu = (): void => {
     showDropdownMenu.value = !showDropdownMenu.value
 }
 
@@ -52,27 +52,26 @@ const handleClickAdmin = () => {
     window.open(window.location.origin + '/admin', '_self')
 }
 
-const profileTargetPath = computed(() =>{
-    if(currentUser.value.id){
+const profileTargetPath = computed(() => {
+    if (currentUser.value.id) {
         return `/profile/${currentUser.value.id}`
     } else return ''
 })
-const messageTargetPath = computed(() =>{
-    if(currentUser.value.id){
+const messageTargetPath = computed(() => {
+    if (currentUser.value.id) {
         return `/message/${currentUser.value.id}`
     } else return ''
 })
-const mySchoolTargetPath = computed(() =>{
-    if(currentUser.value?.site?.site_name){
+const mySchoolTargetPath = computed(() => {
+    if (currentUser.value?.site?.site_name) {
         return `/schools/${currentUser.value.site.site_name}`
-    }
-    else return ''
+    } else return ''
 })
 
 </script>
 
 <template>
-    <div class="absolute h-12 hidden w-12  lg:!right-48 lg:!top-52 lg:block xl:!right-72 xl:!top-56">
+    <div class="absolute h-12 hidden w-12  lg:!right-5 lg:!top-2 lg:block xl:!right-5 xl:!top-2">
         <div
             class="bg-slate-200 cursor-pointer flex h-full overflow-hidden relative rounded-full w-full z-50 hover:shadow-2xl"
             @click="toggleDropdownMenu"
@@ -96,17 +95,35 @@ const mySchoolTargetPath = computed(() =>{
             class="h-full relative w-full z-50"
             @mouseleave="toggleDropdownMenu"
         >
-            <div class="absolute -top-6 left-[24px] bg-[#637D99] flex flex-col px-4 py-6 shadow-lg w-[240px] z-50 z-50">
-                <div class="border-b border-white font-bold h-fit pb-3 text-[24px] text-center text-white w-full">
+            <div
+                class="
+                    absolute
+                    top-2
+                    -right-5
+                    bg-white
+                    border-[1px]
+                    border-slate-300
+                    flex
+                    flex-col
+                    px-4
+                    py-6
+                    rounded-lg
+                    shadow-lg
+                    text-main-darkGrey
+                    w-[240px]
+                    z-50
+                    "
+            >
+                <div class="border-b border-white font-bold h-fit pb-3 text-[24px] text-center w-full">
                     <h5>{{ currentUser.full_name }}</h5>
                 </div>
-                <div class="border-b border-white flex flex-col gap-3 py-3">
+                <div class="border-b-2 border-slate-100 flex flex-col py-3  gap-3">
                     <ProfileDropdownItem
                         v-if="profileTargetPath"
                         :is-router-link="true"
                         :target-path="profileTargetPath"
                     >
-                        <Profile />
+                        <Profile/>
                         Profile
                     </ProfileDropdownItem>
                     <ProfileDropdownItem
@@ -114,14 +131,14 @@ const mySchoolTargetPath = computed(() =>{
                         :is-router-link="true"
                         :target-path="messageTargetPath"
                     >
-                        <MessageIcon />
+                        <MessageIcon/>
                         Messages
                     </ProfileDropdownItem>
                     <ProfileDropdownItem
                         :is-router-link="true"
                         target-path="/create"
                     >
-                        <CreateIcon />
+                        <CreateIcon/>
                         Create
                     </ProfileDropdownItem>
                     <ProfileDropdownItem
@@ -129,7 +146,7 @@ const mySchoolTargetPath = computed(() =>{
                         :is-router-link="true"
                         :target-path="mySchoolTargetPath"
                     >
-                        <SchoolGradHat />
+                        <SchoolGradHat/>
                         My School
                     </ProfileDropdownItem>
                     <template
@@ -146,7 +163,18 @@ const mySchoolTargetPath = computed(() =>{
                 </div>
                 <div class="pt-3">
                     <button
-                        class="font-medium px-2 py-3 text-[18px] text-white w-full hover:underline"
+                        class="
+                            font-medium
+                            px-2
+                            py-3
+                            text-[18px]
+                            hover:text-white
+                            text-main-darkGrey
+                            w-full
+                            hover:bg-main-teal
+                            hover:rounded-lg
+                            hover:stroke-white
+                            "
                         @click.prevent="handleLogoutUser"
                     >
                         Sign out

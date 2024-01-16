@@ -6,6 +6,7 @@ import AdviceForm from "@/js/components/bases/frontendform/types/AdviceForm.vue"
 import EventForm from "@/js/components/bases/frontendform/types/EventForm.vue";
 import SoftwareForm from "@/js/components/bases/frontendform/types/SoftwareForm.vue";
 import UserPosts from "@/js/components/create/UserPosts.vue";
+import InspirationAndGuidesRobot from "@/js/components/inspirationandguides/InspirationAndGuidesRobot.vue";
 import AdviceSearch from "@/js/components/search/AdviceSearch.vue";
 import EventSearch from "@/js/components/search/EventSearch.vue";
 import HardwareSearch from "@/js/components/search/HardwareSearch.vue";
@@ -21,10 +22,16 @@ import AdviceSingle from "@/js/pages/AdviceSingle.vue";
 import EdsparkPageNotFound from "@/js/pages/EdsparkPageNotFound.vue";
 import EventSingle from "@/js/pages/EventSingle.vue";
 import HardwareSingle from '@/js/pages/HardwareSingle.vue';
+import InspirationAndGuides from "@/js/pages/InspirationAndGuides.vue";
+import InspirationLanding from "@/js/pages/InspirationLanding.vue";
 import PartnerSingle from "@/js/pages/PartnerSingle.vue";
+import PlaceholderParentPage from "@/js/pages/PlaceholderParentPage.vue";
 import SchoolSingle from "@/js/pages/SchoolSingle.vue";
+import TechnologyLanding from "@/js/pages/TechnologyLanding.vue";
 import TheAdvice from "@/js/pages/TheAdvice.vue";
+import TheCatalogue from "@/js/pages/TheCatalogue.vue";
 import TheCreator from "@/js/pages/TheCreator.vue";
+import TheEvent from "@/js/pages/TheEvent.vue";
 import TheForbidden from "@/js/pages/TheForbidden.vue";
 import TheHardware from "@/js/pages/TheHardware.vue";
 import TheHome from "@/js/pages/TheHome.vue";
@@ -32,11 +39,11 @@ import ThePartner from "@/js/pages/ThePartner.vue";
 import ThePartnerWelcome from "@/js/pages/ThePartnerWelcome.vue";
 import TheSchool from "@/js/pages/TheSchool.vue";
 import TheSoftware from "@/js/pages/TheSoftware.vue";
+import TheTechnology from "@/js/pages/TheTechnology.vue";
 import {useAuthStore} from '@/js/stores/useAuthStore';
 import {useUserStore} from "@/js/stores/useUserStore";
 
 import DashboardNew from './pages/DashboardNew.vue';
-
 
 type RouteMeta = {
     requiresAuth?: boolean;
@@ -60,8 +67,8 @@ const routes: any = [
         path: '/dashboard',
         component: DashboardNew,
         meta: {
-            navigation: true,
             requiresAuth: true, //guard the dashboard route
+            dropdownItem: true,
             customText: "Home"
         } as RouteMeta
     },
@@ -76,6 +83,8 @@ const routes: any = [
                 component: UserPosts,
                 meta: {
                     requiresAuth: true,
+                    skipScrollTop: true
+
                 } as RouteMeta
             },
             {
@@ -84,6 +93,8 @@ const routes: any = [
                 component: SoftwareForm,
                 meta: {
                     requiresAuth: true,
+                    skipScrollTop: true
+
                 } as RouteMeta
             }, {
                 name: 'createGuide',
@@ -91,6 +102,8 @@ const routes: any = [
                 component: AdviceForm,
                 meta: {
                     requiresAuth: true,
+                    skipScrollTop: true
+
                 } as RouteMeta
             }, {
                 name: 'createEvent',
@@ -98,9 +111,99 @@ const routes: any = [
                 component: EventForm,
                 meta: {
                     requiresAuth: true,
+                    skipScrollTop: true
+
                 } as RouteMeta
             }
         ]
+    },
+    {
+        name: 'Inspiration and guides',
+        path: '/inspire',
+        component: InspirationLanding,
+        meta: {
+            navigation: true
+        },
+        children: [
+            {
+                name: "School profiles",
+                path: "schools",
+                component: TheSchool,
+                active: false,
+                meta: {
+                    requiresAuth: true,
+                } as RouteMeta
+            },
+            {
+                name: 'DMA',
+                path: 'dma',
+                component: DashboardNew,
+                meta: {
+                    requiresAuth: true,
+                    customText: 'Assess your digital maturity'
+                } as RouteMeta
+            }, {
+                name: 'Guides and resources',
+                path: 'guides',
+                component: InspirationAndGuides,
+                meta: {
+                    requiresAuth: true,
+                } as RouteMeta
+            }
+        ]
+    },
+    {
+        name: 'Technology',
+        path: '/technology',
+        component: TechnologyLanding,
+        meta: {
+            navigation: true
+        },
+        children: [
+
+            {
+                name: "Apps and programs",
+                path: "software",
+                component: SoftwareSearch,
+                meta: {
+                    requiresAuth: true,
+                } as RouteMeta
+            },
+            {
+                name: 'Equipment and devices',
+                path: 'hardware',
+                component: TheHardware,
+                meta: {
+                    requiresAuth: true,
+                } as RouteMeta
+            }
+        ]
+    },
+    {
+        name: 'AI hub',
+        path: '/ai-hub',
+        component: DashboardNew,
+        meta: {
+            navigation: true
+        }
+
+    },
+    {
+        name: 'Providers and events',
+        path: '/events',
+        component: TheEvent,
+        meta: {
+            navigation: true
+        }
+    },
+
+    {
+        name: 'Community',
+        path: '/community',
+        component: DashboardNew,
+        meta: {
+            navigation: true
+        },
     },
     {
         name: 'browse-pages',
@@ -108,7 +211,7 @@ const routes: any = [
         children: [
             {
                 name: 'browseSchools',
-                path: 'school',
+                path: 'school/:filter?',
                 component: SchoolSearch,
                 meta: {
                     requiresAuth: true,
@@ -160,11 +263,10 @@ const routes: any = [
         }
     },
     {
-    name: 'school',
+        name: 'school',
         path: '/school',
         component: TheSchool,
         meta: {
-            navigation: true,
             requiresAuth: true,
             partnerCanAccess: false
         }
@@ -172,9 +274,8 @@ const routes: any = [
     {
         name: 'guides',
         path: '/guides',
-        component: TheAdvice,
+        component: InspirationAndGuides,
         meta: {
-            navigation: true,
             requiresAuth: true,
             partnerCanAccess: false
         }
@@ -192,9 +293,8 @@ const routes: any = [
     {
         name: 'software',
         path: '/software',
-        component: TheSoftware,
+        component: TheTechnology,
         meta: {
-            navigation: true,
             dropdownItem: true,
             requiresAuth: true,
             partnerCanAccess: false
@@ -216,7 +316,6 @@ const routes: any = [
         path: '/hardware',
         component: TheHardware,
         meta: {
-            navigation: true,
             dropdownItem: true,
             requiresAuth: true,
         }
@@ -231,13 +330,21 @@ const routes: any = [
             requiresAuth: true,
         }
     },
+    {
+        name: 'catalogue',
+        path: '/catalogue',
+        component: TheCatalogue,
+        meta: {
+            navigation: false,
+            requiresAuth: true,
+        }
+    },
 
     {
         name: 'partners',
         path: '/partners',
         component: ThePartner,
         meta: {
-            navigation: true,
             requiresAuth: true,
             customText: 'Partners'
         }
@@ -299,7 +406,7 @@ const routes: any = [
         name: 'publicPartnerWelcome',
         path: '/welcome/partner',
         component: ThePartnerWelcome,
-        meta:{
+        meta: {
             skipScrollTop: false,
             requiresAuth: false
         }
@@ -329,15 +436,15 @@ const router = createRouter({
         }
     }
 });
-const partnerRouteChecker = (to, from,next) =>{
+const partnerRouteChecker = (to, from, next) => {
     const userStore = useUserStore();
-    if(userStore.getUserRoleName === 'SITESUPP'){ // meant to be Partner
-        if(to.meta.partnerCanAccess === false){
+    if (userStore.getUserRoleName === 'SITESUPP') { // meant to be Partner
+        if (to.meta.partnerCanAccess === false) {
             next('/forbidden')
-        } else{
+        } else {
             next();
         }
-    } else{
+    } else {
         next();
     }
 }
@@ -350,10 +457,9 @@ router.beforeEach(async (to, from, next) => {
     const userStore = useUserStore();
     const {userEntryLink} = storeToRefs(userStore)
     // it will only fill in userEntryLink if the entry link is null or not 'finished
-    if(!userEntryLink.value && userEntryLink.value !== 'finished'){
+    if (!userEntryLink.value && userEntryLink.value !== 'finished') {
         userEntryLink.value = to.fullPath
     }
-
     if (!to.meta.requiresAuth) {
         return next();
     }
@@ -366,7 +472,6 @@ router.beforeEach(async (to, from, next) => {
                 window.location = '/login'
             }
         })
-
     } else { // authStore.isAuthenticated is boolean
         if (authStore.isAuthenticated) {
             next();
@@ -376,7 +481,5 @@ router.beforeEach(async (to, from, next) => {
         }
     }
     // If the route doesn't require authentication, move on.
-
 });
-
 export default router;
