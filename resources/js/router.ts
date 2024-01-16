@@ -122,9 +122,21 @@ const routes: any = [
         path: '/inspire',
         component: InspirationLanding,
         meta: {
-            navigation: true
+            navigation: true,
+            requiresAuth: true,
         },
         children: [
+            {
+                name: "InspirationGuides",
+                path: "",
+                component: InspirationAndGuides,
+                meta: {
+                    requiresAuth: true,
+                    skipScrollTop: true,
+                    navigation: false
+
+                } as RouteMeta
+            },
             {
                 name: "School profiles",
                 path: "schools",
@@ -132,6 +144,8 @@ const routes: any = [
                 active: false,
                 meta: {
                     requiresAuth: true,
+                    navigation: true
+
                 } as RouteMeta
             },
             {
@@ -140,7 +154,9 @@ const routes: any = [
                 component: DashboardNew,
                 meta: {
                     requiresAuth: true,
-                    customText: 'Assess your digital maturity'
+                    customText: 'Assess your digital maturity',
+                    navigation: true
+
                 } as RouteMeta
             }, {
                 name: 'Guides and resources',
@@ -148,6 +164,7 @@ const routes: any = [
                 component: InspirationAndGuides,
                 meta: {
                     requiresAuth: true,
+                    navigation: true
                 } as RouteMeta
             }
         ]
@@ -167,6 +184,8 @@ const routes: any = [
                 component: SoftwareSearch,
                 meta: {
                     requiresAuth: true,
+                    navigation: true
+
                 } as RouteMeta
             },
             {
@@ -175,6 +194,7 @@ const routes: any = [
                 component: TheHardware,
                 meta: {
                     requiresAuth: true,
+                    navigation: true
                 } as RouteMeta
             }
         ]

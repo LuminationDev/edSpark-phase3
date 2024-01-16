@@ -1,5 +1,5 @@
 <script setup>
-import {onMounted, ref} from 'vue';
+import {computed, onMounted, ref} from 'vue';
 import {useRouter} from "vue-router";
 
 const props = defineProps({
@@ -19,6 +19,13 @@ const hasChildren = ref(false)
 if (props.route.children && props.route.children.length > 0) {
     hasChildren.value = true
 }
+const childrenWithNavigation = computed(() =>{
+    if(hasChildren.value){
+        return props.route.children.filter(child => child.meta.navigation)
+    }
+    else return []
+})
+
 const navDropdownToggle = ref(false)
 
 const isMobile = (window.innerWidth <= 1024)
@@ -52,7 +59,7 @@ const handleClickParentNavItems = () => {
         @mouseleave="navDropdownToggle = false"
     >
         <router-link
-            :to="{ name: route.name }"
+            :to="route.path"
             class="flex items-center h-full text-center"
             @mouseover="navDropdownToggle = true"
         >
@@ -66,10 +73,10 @@ const handleClickParentNavItems = () => {
                 class="-ml-2 bg-[#F5F5F5] font-medium h-full p-0 w-60"
             >
                 <NavItems
-                    v-for="(child, index) in props.route.children"
+                    v-for="(child, index) in childrenWithNavigation"
                     :key="index"
                     class="first-letter:uppercase text-base text-main-darkGrey hover:bg-[#E7ECEE] hover:font-bold"
-                    :to="{ name: child.name }"
+                    :to="child.path"
                     :route="child"
                 />
             </div>

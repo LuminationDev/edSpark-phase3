@@ -12,12 +12,14 @@ const router = useRouter()
 // Watch for changes in the route component
 watchEffect(() => {
     Component.value = router.currentRoute.value.matched[router.currentRoute.value.matched.length - 1].components.default;
+    console.log(router.currentRoute.value.matched)
 });
 </script>
 
 <template>
     <div>
-        <router-view />
-        <component :is="Component.value || InspirationAndGuides" />
+        <template v-if="Component">
+            <router-view />
+        </template>
     </div>
 </template>

@@ -11,7 +11,7 @@ class UsersChart extends ApexChartWidget
      *
      * @var string
      */
-    protected static string $chartId = 'usersChart';
+    protected static ?string $chartId = 'usersChart';
 
     /**
      * Widget Title
