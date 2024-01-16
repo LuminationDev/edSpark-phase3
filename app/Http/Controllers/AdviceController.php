@@ -71,7 +71,7 @@ class AdviceController extends Controller
             }
             $advice->labels()->attach($allLabelIds);
         }
-
+        // archive draft
         if ($request->input('existing_id') != 0 && strtolower($request->input('content_origin')) === 'draft') {
             $existingAdvice = Advice::find($request->input('existing_id'));
 

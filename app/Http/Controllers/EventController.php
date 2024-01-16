@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Helpers\RoleHelpers;
 use App\Helpers\UserRole;
 use App\Http\Middleware\ResourceAccessControl;
+use App\Models\Advice;
 use App\Models\Eventmeta;
 use App\Models\Eventtype;
 use App\Services\PostService;
@@ -71,6 +72,14 @@ class EventController extends Controller
                 }
             }
             $event->labels()->attach($allLabelIds);
+        }
+        // archive draft
+        if ($request->input('existing_id') != 0 && strtolower($request->input('content_origin')) === 'draft') {
+            $existingEvent = Event::find($request->input('existing_id'));
+
+            if ($existingEvent) {
+                $existingEvent->update(['post_status' => 'Archived']);
+            }
         }
 
         return response()->json(['message' => 'Event created successfully!', 'event' => $event], 201);
