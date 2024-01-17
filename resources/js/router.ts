@@ -154,7 +154,7 @@ const routes: any = [
                 component: DashboardNew,
                 meta: {
                     requiresAuth: true,
-                    customText: 'Assess your digital maturity',
+                    customText: 'Assess your digital maturity (coming soon)',
                     navigation: true
 
                 } as RouteMeta
@@ -232,7 +232,7 @@ const routes: any = [
         path: '/community',
         component: DashboardNew,
         meta: {
-            navigation: true
+            navigation: false
         },
     },
     {
