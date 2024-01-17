@@ -177,7 +177,17 @@ const routes: any = [
             navigation: true
         },
         children: [
+            {
+                name: "TechnologyHome",
+                path: "",
+                component: TheTechnology,
+                meta: {
+                    requiresAuth: true,
+                    skipScrollTop: true,
+                    navigation: false
 
+                } as RouteMeta
+            },
             {
                 name: "Apps and programs",
                 path: "software",
