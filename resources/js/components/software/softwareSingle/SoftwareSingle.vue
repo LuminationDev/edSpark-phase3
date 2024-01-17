@@ -88,13 +88,13 @@ const colorTheme = ref('softwarePurple')
                         v-if="contentFromBase['author'] && contentFromBase['author']"
                         class="EventHeroAuthorContainer flex flex-col"
                     >
-                        <div class="flex items-center flex-row gap-8 my-4">
+                        <div class="flex items-center flex-row gap-4">
                             <BaseSingleProfilePicture
                                 :author-name="contentFromBase['author']['author_name']"
                                 :author-logo-url="String(contentFromBase['author']['author_logo'])"
                             />
                             <div class="authorName flex justify-center flex-col">
-                                <div class="mb-2 text-2xl">
+                                <div class="mb-2 text-xl">
                                     {{ contentFromBase['author']['author_name'] }}
                                 </div>
                                 <!--   For now, Only non-user (partners only) can be viewed. Still working on Partner Profile   -->
