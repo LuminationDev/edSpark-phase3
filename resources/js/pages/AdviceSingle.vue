@@ -61,7 +61,6 @@ const timeFormatter = (originalFormat) => {
                 </template>
                 <template #subtitleText2>
                     <div
-                        class="hidden xl:!block"
                         v-html="edSparkContentSanitizer(contentFromBase['excerpt'])"
                     />
                     <LabelRowContentDisplay :labels-array="contentFromBase['labels']" />

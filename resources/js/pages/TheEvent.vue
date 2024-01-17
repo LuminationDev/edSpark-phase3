@@ -62,7 +62,7 @@ onMounted(() => {
         </template>
         <template #button>
             <GenericButton
-                :callback="() =>{}"
+                :callback="() => router.push('/browse/event')"
                 :type="'red'"
             >
                 View all events
@@ -92,7 +92,7 @@ onMounted(() => {
         </template>
         <template #button>
             <GenericButton
-                :callback="() =>{}"
+                :callback="() => router.push('/browse/partner')"
                 :type="'red'"
             >
                 View all partners
@@ -129,7 +129,7 @@ onMounted(() => {
                         />
                         <div class="calendarColorLegend flex shrink flex-col gap-2 pt-5">
                             <div class="colorLegendTitle font-semibold">
-                                Calendar Colors Legend
+                                Calendar color legends
                             </div>
                             <div class="flex items-center flex-row virtualLegend">
                                 <div class="bg-event-virtual colorDot h-4 mx-4 rounded-full w-4" />

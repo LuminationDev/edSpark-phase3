@@ -1,6 +1,6 @@
 <script setup>
 import {storeToRefs} from "pinia";
-import {computed,  reactive,ref} from 'vue'
+import {computed, reactive, ref} from 'vue'
 import {useRoute} from "vue-router";
 
 import BaseBreadcrumb from "@/js/components/bases/BaseBreadcrumb.vue";
@@ -43,10 +43,10 @@ const partnerData = reactive({
     hardware: {},
     curriculum: {}
 })
-const fetchSubmenuData = async() => {
+const fetchSubmenuData = async () => {
     // perform fetches here and assign value/data into parterData(reactive)
-    console.log("Item: "+availableSubmenu.value);
-    const partnerId  = route.params.id
+    console.log("Item: " + availableSubmenu.value);
+    const partnerId = route.params.id
     for (const submenu of availableSubmenu.value) {
         switch (submenu) {
         case 'overview':
@@ -143,18 +143,12 @@ const colorTheme = ref('partnerBlue')
                 </template>
 
                 <template #titleText>
-                    <div class=" ">
-                        <div class=" ">
-                            <img
-                                :src="`${imageURL}/${contentFromBase['logo']}`"
-                                alt="logo"
-                                class="rounded"
-                            >
-                        </div>
-                        <span>
-                            {{ contentFromBase['name'] }}
-
-                        </span>
+                    <div class="">
+                        <img
+                            :src="`${imageURL}/${contentFromBase['logo']}`"
+                            alt="logo"
+                            class="h-16 rounded"
+                        >
                     </div>
                 </template>
                 <template #authorName>

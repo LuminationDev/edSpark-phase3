@@ -11,7 +11,8 @@ import ArticleSingleSwoosh from '../svg/ArticleSingleSwoosh.vue';
 const props = defineProps({
     backgroundUrl: {
         type: String,
-        required: false
+        required: false,
+        default: ''
     },
     color1: {
         type: String,
@@ -67,7 +68,7 @@ const {windowWidth} = storeToRefs(windowStore)
 
 const heroBackgroundSwitch = computed(() => {
     if (windowWidth.value < 1024) {
-        return 'background-image: linear-gradient(rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.8)), url(' + heroBackgroundLinkOnly.value + ') !important;  background-position: center top; '
+        return 'background-image: linear-gradient(rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.8)), url(' + heroBackgroundLinkOnly.value + ') !important;  background-position: center center;  background-color:white '
     } else {
         return ''
     }
@@ -76,15 +77,15 @@ const heroBackgroundSwitch = computed(() => {
 
 
 <template>
-    <div class="BaseHeroContainer h-mainHero max-h-mainHero mb-0 relative z-10">
+    <div class="BaseHeroContainer h-mainHero max-h-mainHero mb-0 overflow-y-hidden relative z-10">
         <div
-            class="bg-cover grid grid-cols-8 h-full relative"
+            class="grid grid-cols-8 h-full relative"
         >
             <div
                 class="
                     HeroSolidColor
                     bg-center
-                    bg-cover
+                    bg-contain
                     bg-no-repeat
                     bg-secondary-blueberry
                     col-span-8
@@ -115,7 +116,7 @@ const heroBackgroundSwitch = computed(() => {
 
                     <p
                         v-if="$slots.authorName" 
-                        class="flex flex-col font-semibold gap-4 text-[18px] text-white"
+                        class="flex flex-col font-semibold gap-4 text-lg text-white"
                     >
                         <slot name="authorName" />
                     </p>
@@ -143,7 +144,7 @@ const heroBackgroundSwitch = computed(() => {
 
                     <div
                         v-if="$slots.subtitleText2"
-                        class="font-normal h-auto mt-6 pb-4 text-lg text-white lg:max-w-[70%]"
+                        class="font-normal h-auto mt-4 pb-4 text-base text-white"
                     >
                         <p class="">
                             <slot name="subtitleText2" />
@@ -153,7 +154,7 @@ const heroBackgroundSwitch = computed(() => {
                 </div>
             </div>
             <div
-                class="bg-center bg-cover bg-no-repeat hidden imageCover lg:!block lg:!col-span-4"
+                class="bg-center bg-contain bg-no-repeat bg-white hidden imageCover lg:!block lg:!col-span-4"
                 :style="'background-image: url(' + heroBackgroundLinkOnly +')'"
             />
         </div>
