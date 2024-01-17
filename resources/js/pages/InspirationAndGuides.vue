@@ -14,6 +14,7 @@ import SchoolProfileGuidesQuickFilters from "@/js/components/inspirationandguide
 import SchoolProfilesGuides from "@/js/components/inspirationandguides/SchoolProfilesGuides.vue";
 import Loader from "@/js/components/spinner/Loader.vue";
 import {LandingHeroText} from "@/js/constants/PageBlurb";
+import {lowerSlugify} from "@/js/helpers/stringHelpers";
 import {adviceService} from "@/js/service/adviceService";
 import {schoolService} from "@/js/service/schoolService";
 import {useAdviceStore} from "@/js/stores/useAdviceStore";
@@ -37,13 +38,19 @@ onMounted(() => {
 })
 
 const handleClickViewAllGuides = () => {
-    return router.push('browse/guide')
+    return router.push('/browse/guide')
 }
 
 const handleClickViewAllSchools = () => {
-    return router.push('browse/school')
+    return router.push('/browse/school')
 }
 
+const handleClickPopularGuides = (guideId,title) =>{
+    return router.push({
+        name: "guide-single",
+        params: {id: guideId, slug: lowerSlugify(title)},
+    })
+}
 </script>
 
 <template>
@@ -69,7 +76,7 @@ const handleClickViewAllSchools = () => {
                 :callback="() => {}"
                 :type="'teal'"
             >
-                View Assessment
+                (Coming soon)
             </GenericButton>
         </template>
     </BaseLandingSection>
@@ -89,6 +96,7 @@ const handleClickViewAllSchools = () => {
             <PopularResourceShortcuts
                 v-if="allAdvice && allAdvice.length"
                 :resource-list="allAdvice"
+                :resource-click-callback="handleClickPopularGuides"
             />
             <Loader
                 v-else
@@ -126,9 +134,7 @@ const handleClickViewAllSchools = () => {
         <template #subtitle>
             See how technology is being used within schools, including the impact, learnings and outcomes.
         </template>
-        <template #sectionAction>
-            <CaseStudyQuickSearchGuides />
-        </template>
+        <template #sectionAction />
         <template #content>
             <CaseStudyGuides :advice-list="allAdvice" />
         </template>

@@ -88,7 +88,7 @@ const colorTheme = ref('softwarePurple')
                         v-if="contentFromBase['author'] && contentFromBase['author']"
                         class="EventHeroAuthorContainer flex flex-col"
                     >
-                        <div class="flex items-center flex-row">
+                        <div class="flex items-center flex-row gap-8 my-4">
                             <BaseSingleProfilePicture
                                 :author-name="contentFromBase['author']['author_name']"
                                 :author-logo-url="String(contentFromBase['author']['author_logo'])"
@@ -112,28 +112,26 @@ const colorTheme = ref('softwarePurple')
                         </div>
                     </div>
                 </template>
-
-
                 <template #contentDate>
-                    <div class="font-semibold">
+                    <div class="font-semibold my-4">
                         {{ formatDateToDayTime(contentFromBase['modified_at']) }}
                     </div>
                 </template>
                 <template #subtitleText2>
-                    <div v-html="contentFromBase['excerpt']" />
+                    <!--                    <div v-html="contentFromBase['excerpt']" />-->
                     <LabelRowContentDisplay :labels-array="contentFromBase['labels']" />
                 </template>
-                <template #subtitleContent>
-                    <div class="SoftwareTypeInfoInHero flex flex-row gap-4 mt-8">
-                        <SoftwareIconGenerator
-                            :icon-name="contentFromBase['type'][0]"
-                            class="h-14 w-14"
-                        />
-                        <p class="flex justify-center items-center font-light">
-                            {{ contentFromBase['type'][0] }}
-                        </p>
-                    </div>
-                </template>
+                <!--                <template #subtitleContent>-->
+                <!--                    <div class="SoftwareTypeInfoInHero flex flex-row gap-4 mt-8">-->
+                <!--                        <SoftwareIconGenerator-->
+                <!--                            :icon-name="contentFromBase['type'][0]"-->
+                <!--                            class="h-14 w-14"-->
+                <!--                        />-->
+                <!--                        <p class="flex justify-center items-center font-light">-->
+                <!--                            {{ contentFromBase['type'][0] }}-->
+                <!--                        </p>-->
+                <!--                    </div>-->
+                <!--                </template>-->
 
                 <!--  Selectable sub menu    -->
                 <template #submenu>

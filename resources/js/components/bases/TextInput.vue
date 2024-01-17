@@ -63,7 +63,7 @@ defineExpose({
             :value="modelValue"
             :placeholder="placeholder"
             type="text"
-            class="border-[1px] border-gray-300 mr-1 p-2 rounded text-black"
+            class="border-[1px] border-gray-300 mr-1 p-2 rounded text-black placeholder:font-light"
             :class="{
                 '!border-red-500': v$ && v$.$error
             }"

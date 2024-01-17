@@ -83,10 +83,10 @@ const initialCalendarPage = computed(() => {
 const handleClickTodayButton = () => {
     eventCalendarRef.value.focusDate(new Date())
 }
-onMounted(() => {
-    eventCalendarRef.value.focusDate(new Date())
-
-})
+// onMounted(() => {
+//     eventCalendarRef.value.focusDate(new Date())
+//
+// })
 </script>
 
 <template>

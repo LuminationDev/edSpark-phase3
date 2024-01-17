@@ -20,19 +20,21 @@ const props = defineProps({
         default: 'Hero'
     }
 })
-const labelColors = {
-    year: 'bg-secondary-blueberry/20 border-secondary-blueberry',
-    learning: 'bg-secondary-blueberry/20 border-secondary-blueberry',
-    capability: 'bg-secondary-blueberry/20 border-secondary-blueberry',
-    category: 'bg-secondary-blueberry/20 border-secondary-blueberry',
-};
+const labelColors = computed(() =>{
+    if(props.displayType === 'Card'){
+        return 'bg-secondary-blueberry/20 border-secondary-blueberry'
+
+    }else{
+        return 'border-white'
+    }
+})
 
 
 const tagClassName = (type: string): string => {
     // return `${baseColor} transition-colors duration-300 hover:text-secondary-${labelColors[type]}`;
     // transition-colors duration-300 hover:text-main-lightTeal
     const fontColor = props.displayType == 'Card' ? 'text-secondary-blueberry h-[28px]  ' : 'text-white'
-    return ` ${labelColors[type]} border-[1px] px-2 py-1 rounded-full text-sm ${fontColor}`;
+    return ` ${labelColors.value} border-[1px] px-2 py-1 rounded-full text-sm ${fontColor}`;
 
 };
 

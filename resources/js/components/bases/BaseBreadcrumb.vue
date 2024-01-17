@@ -55,7 +55,7 @@ const customTextHover = computed(() => {
 
 <template>
     <div class="flex mb-4">
-        <div class="flex flex-row gap-2 mt-6 mb-4 place-items-center text-[14px]">
+        <div class="flex flex-row gap-2 mb-4 mt-6 place-items-center text-[14px] w-full">
             <router-link to="/dashboard">
                 <p
                     class="text-white"
@@ -76,7 +76,7 @@ const customTextHover = computed(() => {
             <ChevronRight class="h-3 w-3" />
 
             <p
-                class="capitalize w-full"
+                class="capitalize truncate w-full"
                 :class="customText"
             >
                 {{ props.childPage }}

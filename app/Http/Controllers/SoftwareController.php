@@ -73,6 +73,16 @@ class SoftwareController extends Controller
             $software->labels()->attach($allLabelIds);
         }
 
+        // archive draft
+        if ($request->input('existing_id') != 0 && strtolower($request->input('content_origin')) === 'draft') {
+            $existingSoftware = Software::find($request->input('existing_id'));
+
+            if ($existingSoftware) {
+                $existingSoftware->update(['post_status' => 'Archived']);
+            }
+        }
+
+
         return response()->json(['message' => 'Software created successfully!', 'software' => $software], 201);
     }
 

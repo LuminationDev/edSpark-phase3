@@ -1,26 +1,24 @@
 <script setup>
+import {storeToRefs} from "pinia";
+import {computed, onMounted, ref} from "vue";
+import {useRouter} from "vue-router";
+
 import BaseLandingCardRow from "@/js/components/bases/BaseLandingCardRow.vue";
 import BaseLandingHero from "@/js/components/bases/BaseLandingHero.vue";
 import BaseLandingSection from "@/js/components/bases/BaseLandingSection.vue";
 import GenericButton from "@/js/components/button/GenericButton.vue";
+import CardLoading from "@/js/components/card/CardLoading.vue";
 import PartnerCard from "@/js/components/partners/PartnerCard.vue";
+import Loader from "@/js/components/spinner/Loader.vue";
 import {API_ENDPOINTS} from "@/js/constants/API_ENDPOINTS";
 import {LandingHeroText} from "@/js/constants/PageBlurb";
 import {cardDataWithGuid} from "@/js/helpers/cardDataHelper";
 import {eventService} from "@/js/service/eventService";
 import {useEventsStore} from "@/js/stores/useEventsStore";
-import {storeToRefs} from "pinia";
-import {computed, onMounted, ref} from "vue";
-import {useRouter} from "vue-router";
-
-import CardLoading from "@/js/components/card/CardLoading.vue";
-import Loader from "@/js/components/spinner/Loader.vue";
 
 import EventsCalendar from '../components/events/EventsCalendar.vue';
 import EventCard from "../components/events/EventsCard.vue";
-import EventsHero from '../components/events/EventsHero.vue';
 import EventsView from '../components/events/EventsView.vue';
-import SectionHeader from '../components/global/SectionHeader.vue';
 
 const router = useRouter()
 const {allEvents} = storeToRefs(useEventsStore())
@@ -45,17 +43,17 @@ onMounted(() => {
     <BaseLandingHero
         :title="LandingHeroText['event']['title']"
         :title-paragraph="LandingHeroText['event']['subtitle']"
-        color="red"
+        background-color="red"
     >
         <template #robotIllustration>
             <img
-                class="mx-auto absolute top-6 mt-1 ml-20"
+                class="absolute top-6 ml-20 mt-1 mx-auto"
                 src="@/assets/images/eventsCalendar.png"
                 alt="Industry Partners connecting pieces of the puzzle"
             >
         </template>
     </BaseLandingHero>
-    <BaseLandingSection background-color="teal">
+    <BaseLandingSection background-color="red">
         <template #title>
             Events
         </template>
@@ -64,14 +62,13 @@ onMounted(() => {
         </template>
         <template #button>
             <GenericButton
-                :callback="() =>{}"
-                :type="'teal'"
+                :callback="() => router.push('/browse/event')"
+                :type="'red'"
             >
                 View all events
             </GenericButton>
         </template>
-        <template #sectionAction>
-        </template>
+        <template #sectionAction />
         <template #content>
             <BaseLandingCardRow :resource-list="allEvents">
                 <template #rowContent>
@@ -95,14 +92,13 @@ onMounted(() => {
         </template>
         <template #button>
             <GenericButton
-                :callback="() =>{}"
-                :type="'teal'"
+                :callback="() => router.push('/browse/partner')"
+                :type="'red'"
             >
                 View all partners
             </GenericButton>
         </template>
-        <template #sectionAction>
-        </template>
+        <template #sectionAction />
         <template #content>
             <BaseLandingCardRow :resource-list="allPartners">
                 <template #rowContent>
@@ -116,51 +112,58 @@ onMounted(() => {
         </template>
     </BaseLandingSection>
 
+    <BaseLandingSection background-color="red">
+        <template #title>
+            Event Calendar
+        </template>
+        <template #subtitle />
+        <template #content>
+            <div class="eventCalendarContainer flex flex-col h-full">
+                <div
+                    v-if="allEvents && allEvents.length > 0"
+                    class="flex lg:flex-row flex-col flex-wrap"
+                >
+                    <div class="pl-8 w-full lg:!w-2/3">
+                        <EventsCalendar
+                            :events="allEvents"
+                        />
+                        <div class="calendarColorLegend flex shrink flex-col gap-2 pt-5">
+                            <div class="colorLegendTitle font-semibold">
+                                Calendar color legends
+                            </div>
+                            <div class="flex items-center flex-row virtualLegend">
+                                <div class="bg-event-virtual colorDot h-4 mx-4 rounded-full w-4" />
+                                <p>Virtual </p>
+                            </div>
+                            <div class="flex items-center flex-row hybridLegend">
+                                <div class="bg-event-hybrid colorDot h-4 mx-4 rounded-full w-4" />
 
-    <div class="eventCalendarContainer flex flex-col h-full px-5 lg:!px-20">
-        <div
-            v-if="allEvents && allEvents.length > 0"
-            class="flex lg:flex-row flex-col flex-wrap"
-        >
-            <div class="pl-8 w-full lg:!w-2/3">
-                <EventsCalendar
-                    :events="allEvents"
-                />
-                <div class="calendarColorLegend flex shrink flex-col gap-2 pt-5">
-                    <div class="colorLegendTitle font-semibold">
-                        Calendar Colors Legend
+                                <p>Hybrid</p>
+                            </div>
+                            <div class="flex items-center flex-row inPersonLegend">
+                                <div class="bg-event-inPerson colorDot h-4 mx-4 rounded-full w-4" />
+                                <p>In Person</p>
+                            </div>
+                        </div>
                     </div>
-                    <div class="flex items-center flex-row virtualLegend">
-                        <div class="bg-event-virtual colorDot h-4 mx-4 rounded-full w-4"/>
-                        <p>Virtual </p>
+                    <div class="w-full lg:!w-1/3">
+                        <EventsView
+                            :events="allEvents"
+                        />
                     </div>
-                    <div class="flex items-center flex-row hybridLegend">
-                        <div class="bg-event-hybrid colorDot h-4 mx-4 rounded-full w-4"/>
-
-                        <p>Hybrid</p>
-                    </div>
-                    <div class="flex items-center flex-row inPersonLegend">
-                        <div class="bg-event-inPerson colorDot h-4 mx-4 rounded-full w-4"/>
-                        <p>In Person</p>
+                </div>
+                <div
+                    v-else
+                    class="flex justify-center py-10"
+                >
+                    <div class="font-semibold text-xl">
+                        <Loader
+                            :loader-color="'#0072DA'"
+                            :loader-message="'Calendar loading'"
+                        />
                     </div>
                 </div>
             </div>
-            <div class="w-full lg:!w-1/3">
-                <EventsView
-                    :events="allEvents"
-                />
-            </div>
-        </div>
-        <div
-            v-else
-            class="flex justify-center py-10"
-        >
-            <div class="font-semibold text-xl">
-                <Loader
-                    :loader-color="'#0072DA'"
-                    :loader-message="'Calendar loading'"
-                />
-            </div>
-        </div>
-    </div>
+        </template>
+    </BaseLandingSection>
 </template>

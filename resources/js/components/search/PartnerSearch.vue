@@ -29,5 +29,6 @@ const handleFilter = (filters, dataPath) => {
         :live-filter-object="filterObject"
         :hero-title="LandingHeroText['partner']['title']"
         :hero-subtitle="LandingHeroText['partner']['subtitle']"
+        hero-background-color="navy"
     />
 </template>
