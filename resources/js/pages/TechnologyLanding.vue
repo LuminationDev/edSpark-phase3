@@ -2,7 +2,6 @@
 import {ref, watchEffect} from 'vue';
 import {useRouter} from "vue-router";
 
-import TheTechnology from "@/js/pages/TheTechnology.vue";
 
 const Component = ref(null);
 
@@ -17,7 +16,8 @@ watchEffect(() => {
 
 <template>
     <div>
-        <router-view />
-        <component :is="Component.value || TheTechnology" />
+        <template v-if="Component">
+            <router-view />
+        </template>
     </div>
 </template>
