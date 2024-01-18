@@ -74,39 +74,54 @@ class CatalogueController extends Controller
     // Accept field and value from request and return list of products matches the query
     public function fetchCatalogueByField(Request $request): \Illuminate\Http\JsonResponse
     {
-        // Validate the request parameters
-        $validator = Validator::make($request->all(), [
-            'field' => 'required|in:type,brand,vendor,category',
-            'value' => 'required',
-        ]);
+        $inputField = $request->input('field');
+        $values = $request->input('value');
+        $perPage = $request->input('per_page', 20);
 
-        if ($validator->fails()) {
-            return ResponseService::error($validator->errors()->first(), null, 400);
+        // Process data from the request
+        $field = $inputField;
+        $values = is_array($values) ? $values : [$values];
+
+        // If either value or field is empty, fetch all items without pagination
+        if (empty($field) || empty($values)) {
+            $paginatedQueryResult = Catalogue::paginate($perPage);
+            $queryResult = $paginatedQueryResult->getCollection();
+        } else {
+            // Fetch all items without pagination for availableFields
+            $queryResult = Catalogue::whereIn($field, $values);
+            $paginatedQueryResult = $queryResult->paginate($perPage);
+
+            if ($paginatedQueryResult->isEmpty()) {
+                return ResponseService::error('No results found.', null, 404);
+            }
         }
 
-        $inputField = $request->input('field');
-        $value = $request->input('value');
+        // Get distinct values for each field other than the main field to update filter UI
+        $availableFields = [];
+        foreach (['type', 'brand', 'vendor', 'category'] as $otherField) {
+            if ($otherField != $field) {
+                $availableFields[$otherField] = $paginatedQueryResult->pluck($otherField)->unique()->values()->all();
+            }
+        }
 
-        $field = $inputField;
-
-        // Use paginate for pagination
-        $perPage = $request->input('per_page', 20);
-        $queryResult = Catalogue::where($field, $value)->paginate($perPage);
-
-        if ($queryResult->isEmpty()) {
-            return ResponseService::error('No results found.', null, 404);
+        $itemResults = [];
+        foreach ($paginatedQueryResult->items() as $item) {
+            $itemResults[] = $this->catalogueModelToJson($item);
         }
 
         return ResponseService::success('Results fetched successfully.', [
-            'items' => $queryResult->items(),
+            'items' => $itemResults,
+            'available_fields' => $availableFields,
             'pagination' => [
-                'current_page' => $queryResult->currentPage(),
-                'total_pages' => $queryResult->lastPage(),
-                'per_page' => $queryResult->perPage(),
-                'total_items' => $queryResult->total(),
+                'current_page' => $paginatedQueryResult->currentPage(),
+                'total_pages' => $paginatedQueryResult->lastPage(),
+                'per_page' => $paginatedQueryResult->perPage(),
+                'total_items' => $paginatedQueryResult->total(),
             ],
         ]);
     }
+
+
 
     // Get Individual products, excluding bundle offers and upgrades
     public function fetchAllProducts(Request $request)
