@@ -6,7 +6,6 @@ type CatalogueFieldTypes = 'brand'|'type'|'vendor'|'category'
 
 export const catalogueService = {
     fetchCatalogueByField: (fieldType: CatalogueFieldTypes, fieldValue: string ,nthPage: number = 1, perPage: number = 20) =>{
-        console.log('fetch catalogue called ' + fieldType + " " + nthPage)
         const body = {field : fieldType, value: fieldValue, per_page: perPage}
         const params = {page: nthPage }
         return axios.post(API_ENDPOINTS.CATALOGUE.FETCH_CATALOGUE_BY_FIELD, body, {params: params})
@@ -40,4 +39,8 @@ export const catalogueService = {
         const body = { name: name };
         return axios.post(API_ENDPOINTS.CATALOGUE.FETCH_BUNDLES_SINGLE_PRODUCT, body);
     },
+
+    fetchAllCategories: () =>{
+        return axios.get(API_ENDPOINTS.CATALOGUE.FETCH_ALL_CATALOGUE_CATEGORIES)
+    }
 }

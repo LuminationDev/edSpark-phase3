@@ -106,6 +106,10 @@ export const API_ENDPOINTS: Endpoints = appendServerURL({
         FETCH_SINGLE_PRODUCT_BY_NAME: '/fetchSingleProductByName',
         FETCH_UPGRADES_SINGLE_PRODUCT: '/fetchUpgradesSingleProduct',
         FETCH_BUNDLES_SINGLE_PRODUCT: '/fetchBundlesSingleProduct',
+        FETCH_ALL_CATALOGUE_CATEGORIES : '/fetchAllCatalogueCategories',
+        FETCH_ALL_CATALOGUE_TYPES : '/fetchAllCatalogueTypes',
+        FETCH_ALL_CATALOGUE_BRANDS : '/fetchAllCatalogueBrands',
+        FETCH_ALL_CATALOGUE_VENDORS : '/fetchAllCatalogueVendors'
     },
     LIKE: {
         LIKE: `/like`,

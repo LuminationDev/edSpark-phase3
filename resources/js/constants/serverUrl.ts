@@ -8,3 +8,6 @@ export const imageUploadURL = import.meta.env.VITE_SERVER_URL_IMAGE
 export const likeURL = `${serverURL}/like`
 
 export const bookmarkURL = `${serverURL}/bookmark`
+
+//http://localhost:8000/storage/uploads/catalogue/AC-000001.PNG
+export const catalogueImageURL = `${imageURL}/uploads/catalogue/`

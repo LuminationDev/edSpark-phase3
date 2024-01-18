@@ -9,28 +9,66 @@ use Illuminate\Support\Facades\Validator;
 
 class CatalogueController extends Controller
 {
+    private function catalogueModelToJson($item)
+    {
+        return [
+            'id' => $item->id,
+            'unique_reference' => $item->unique_reference,
+            'type' => $item->type,
+            'brand' => $item->brand,
+            'name' => $item->name,
+            'vendor' => $item->vendor,
+            'category' => $item->category,
+            'price_inc_gst' => $item->price_inc_gst,
+            'processor' => $item->processor,
+            'storage' => $item->storage,
+            'memory' => $item->memory,
+            'form_factor' => $item->form_factor,
+            'display' => $item->display,
+            'graphics' => $item->graphics,
+            'wireless' => $item->wireless,
+            'webcam' => $item->webcam,
+            'operating_system' => $item->operating_system,
+            'warranty' => $item->warranty,
+            'battery_life' => $item->battery_life,
+            'weight' => $item->weight,
+            'stylus' => $item->stylus,
+            'other' => $item->other,
+            'available_now' => $item->available_now,
+            'corporate' => $item->corporate,
+            'administration' => $item->administration,
+            'curriculum' => $item->curriculum,
+            'image' => $item->image,
+            'product_number' => $item->product_number,
+            'price_expiry' => $item->price_expiry,
+        ];
+    }
+
     public function fetchAllTypes()
     {
         $types = Catalogue::distinct('type')->pluck('type');
-        return response()->json($types);
+        return ResponseService::success('Fetch success', $types);
+
     }
 
-    public function fetchAllBrands()
+    public function fetchAllBrands(): \Illuminate\Http\JsonResponse
     {
         $brands = Catalogue::distinct('brand')->pluck('brand');
-        return response()->json($brands);
+        return ResponseService::success('Fetch success', $brands);
+
     }
 
-    public function fetchAllVendors()
+    public function fetchAllVendors(): \Illuminate\Http\JsonResponse
     {
         $vendors = Catalogue::distinct('vendor')->pluck('vendor');
-        return response()->json($vendors);
+        return ResponseService::success('Fetch success', $vendors);
+
     }
 
-    public function fetchAllCategories()
+    public function fetchAllCategories(): \Illuminate\Http\JsonResponse
     {
         $categories = Catalogue::distinct('category')->pluck('category');
-        return response()->json($categories);
+        return ResponseService::success('Fetch success', $categories);
     }
 
     // Accept field and value from request and return list of products matches the query
@@ -53,7 +91,7 @@ class CatalogueController extends Controller
 
         // Use paginate for pagination
         $perPage = $request->input('per_page', 20);
-        $queryResult = Catalogue::excludeBundlesAndUpgrades()->where($field, $value)->paginate($perPage);
+        $queryResult = Catalogue::where($field, $value)->paginate($perPage);
 
         if ($queryResult->isEmpty()) {
             return ResponseService::error('No results found.', null, 404);
@@ -75,8 +113,7 @@ class CatalogueController extends Controller
     {
         $perPage = $request->input('per_page', 20);
 
-        $products = Catalogue::excludeBundlesAndUpgrades()
-            ->paginate($perPage);
+        $products = Catalogue::paginate($perPage);
 
         return ResponseService::success('Products fetched successfully.', [
             'items' => $products->items(),
@@ -88,6 +125,7 @@ class CatalogueController extends Controller
             ],
         ]);
     }
+
     // Get full information regarding a product
     public function fetchSingleProductByName(Request $request)
     {
@@ -163,7 +201,6 @@ class CatalogueController extends Controller
 
         return ResponseService::success('Bundles fetched successfully.', $bundles);
     }
-
 
 
 }
