@@ -9,6 +9,7 @@ import CatalogueFilterColumn from "@/js/components/catalogue/CatalogueFilterColu
 import Loader from "@/js/components/spinner/Loader.vue";
 import useErrorMessage from "@/js/composables/useErrorMessage";
 import usePagination from "@/js/composables/usePagination";
+import {LandingHeroText} from "@/js/constants/PageBlurb";
 import {catalogueImageURL} from "@/js/constants/serverUrl";
 import {catalogueService} from "@/js/service/catalogueService";
 import {CatalogueFilterField, CatalogueItemType} from "@/js/types/catalogueTypes";
@@ -139,14 +140,16 @@ watch(currentPage, () => {
 })
 
 watch(primaryFilter.value, () =>{
-    currentPage.value =1
-} )
+    currentPage.value = 1
+})
+
+
 </script>
 
 <template>
     <BaseLandingHero
-        title="ICT Catalogue"
-        title-paragraph="Explore"
+        :title="LandingHeroText['catalogue']['title']"
+        :title-paragraph="LandingHeroText['catalogue']['subtitle']"
     />
     <div class="cataloguePageOuterContainer grid grid-cols-4 mt-10">
         <div class="col-span-1 flex items-center flex-col gap-2">
