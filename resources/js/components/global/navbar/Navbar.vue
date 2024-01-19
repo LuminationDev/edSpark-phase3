@@ -76,19 +76,19 @@ onBeforeUnmount(() => {
                 class="
                     2xl:ml-48
                     2xl:text-xl
-                    text-lg
                     font-semibold
                     h-full
                     hidden
                     ml-48
                     lg:ml-40
+                    text-lg
+                    lg:text-[16px]
+                    xl:text-lg
                     gap-4
                     lg:flex
                     lg:flex-row
                     lg:gap-6
                     lg:items-center
-                    lg:text-[16px]
-                    xl:text-lg
                     "
                 :class="{'text-white !ml-24': scrollPosition > 0}"
             >
@@ -111,6 +111,7 @@ onBeforeUnmount(() => {
                         />
                     </div>
                 </li>
+
                 <ProfileDropdown
                     v-if="isAuthenticated"
                     :key="currentUser"
@@ -118,6 +119,7 @@ onBeforeUnmount(() => {
                     :avatar-url="avatarUrl"
                 />
             </ul>
+
             <div
                 id="edSparkLogo"
                 title="edSpark logo"
@@ -130,20 +132,20 @@ onBeforeUnmount(() => {
                         class="
                             absolute
                             top-0
+                            md:top-0
                             right-2
+                            xl:right-20
+                            lg:left-10
                             h-32
+                            xl:h-36
                             nav-logo
                             transition-all
                             w-40
-                            z-30
-                            md:top-0
                             md:w-44
+                            z-30
                             lg:-top-2
-                            lg:left-10
                             lg:visible
                             xl:-top-2
-                            xl:h-36
-                            xl:right-20
                             "
                         :class="{ '!w-14 !h-14 !top-1 !left-12' : scrollPosition > 0 }"
                     />

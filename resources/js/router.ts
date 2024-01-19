@@ -69,6 +69,7 @@ const routes: any = [
             customText: "Home"
         } as RouteMeta
     },
+    
     {
         name: 'create-pages',
         path: '/create',

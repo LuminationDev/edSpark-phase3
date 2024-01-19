@@ -5,6 +5,7 @@ import BaseBreadcrumb from "@/js/components/bases/BaseBreadcrumb.vue";
 import BaseHero from "@/js/components/bases/BaseHero.vue";
 import BaseSingle from "@/js/components/bases/BaseSingle.vue";
 import BaseSingleProfilePicture from "@/js/components/bases/BaseSingleProfilePicture.vue";
+import GenericButton from "@/js/components/button/GenericButton.vue";
 import EventsEMS from "@/js/components/events/EventsEMS.vue";
 import EventSingleExtraContentRenderer from "@/js/components/events/EventSingleExtraContentRenderer.vue";
 import EventsLocation from "@/js/components/events/EventsLocation.vue";
@@ -19,6 +20,10 @@ const router = useRouter()
 
 const handleClickViewProfile = (author_id, author_type) => {
     router.push(`/${author_type}/${author_id}`)
+}
+
+const handleSendFeedbackButton = () => {
+    console.log('Feedback Button Pressed!')
 }
 </script>
 <template>
@@ -104,13 +109,21 @@ const handleClickViewProfile = (author_id, author_type) => {
                     <div class="eventDetails flex flex-col gap-2 here">
                         <div class="flex items-center flex-row">
                             <CalendarIcon class="fill-white mr-2" />
-                            {{ new Date(Date.parse(contentFromBase['start_date'])).toLocaleDateString('en-GB', {
-                                day: '2-digit', month: 'long', year: 'numeric'
-                            }) }}
+                            {{
+                                new Date(Date.parse(contentFromBase['start_date'])).toLocaleDateString('en-GB', {
+                                    day: '2-digit', month: 'long', year: 'numeric'
+                                })
+                            }}
                         </div>
                         <div class="flex items-center flex-row">
                             <TimeIcon class="fill-white flex justify-center items-center mr-2" />
-                            {{ new Date(Date.parse(contentFromBase['start_date'])).toLocaleString('en-US',{ hour: 'numeric', minute: 'numeric', hour12: true } ) }}
+                            {{
+                                new Date(Date.parse(contentFromBase['start_date'])).toLocaleString('en-US', {
+                                    hour: 'numeric',
+                                    minute: 'numeric',
+                                    hour12: true
+                                })
+                            }}
                             {{ "-" }}
                             {{
                                 new Date(Date.parse(contentFromBase['end_date'])).toLocaleString('en-US', {
@@ -179,5 +192,6 @@ const handleClickViewProfile = (author_id, author_type) => {
     margin-top: 16px;
     text-align: justify;
 }
+
 
 </style>
