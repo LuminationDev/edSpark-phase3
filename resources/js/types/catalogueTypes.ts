@@ -29,3 +29,11 @@ export interface CatalogueItemType {
     product_number: string | null;
     price_expiry: string | null;
 }
+
+
+export enum CatalogueFilterField{
+    Type = 'type',
+    Brand = 'brand',
+    Vendor = 'vendor',
+    Category = 'category',
+}

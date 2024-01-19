@@ -77,6 +77,8 @@ class CatalogueController extends Controller
         $inputField = $request->input('field');
         $values = $request->input('value');
         $perPage = $request->input('per_page', 20);
+        $availableFields = [];
+
 
         // Process data from the request
         $field = $inputField;
@@ -86,6 +88,11 @@ class CatalogueController extends Controller
         if (empty($field) || empty($values)) {
             $paginatedQueryResult = Catalogue::paginate($perPage);
             $queryResult = $paginatedQueryResult->getCollection();
+            foreach (['type', 'brand', 'vendor', 'category'] as $otherField) {
+                if ($otherField != $field) {
+                    $availableFields[$otherField] = Catalogue::distinct($otherField)->pluck($otherField);
+                }
+            }
         } else {
             // Fetch all items without pagination for availableFields
             $queryResult = Catalogue::whereIn($field, $values);
@@ -94,15 +101,15 @@ class CatalogueController extends Controller
             if ($paginatedQueryResult->isEmpty()) {
                 return ResponseService::error('No results found.', null, 404);
             }
+            foreach (['type', 'brand', 'vendor', 'category'] as $otherField) {
+                if ($otherField != $field) {
+                    $availableFields[$otherField] = $paginatedQueryResult->pluck($otherField)->unique()->values()->all();
+                }
+            }
         }
 
         // Get distinct values for each field other than the main field to update filter UI
-        $availableFields = [];
-        foreach (['type', 'brand', 'vendor', 'category'] as $otherField) {
-            if ($otherField != $field) {
-                $availableFields[$otherField] = $paginatedQueryResult->pluck($otherField)->unique()->values()->all();
-            }
-        }
+
 
         $itemResults = [];
         foreach ($paginatedQueryResult->items() as $item) {

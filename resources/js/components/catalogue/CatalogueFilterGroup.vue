@@ -1,6 +1,5 @@
 <script setup>
 const filterList = defineModel()
-
 const selectedList = defineModel('selected')
 
 const props = defineProps({

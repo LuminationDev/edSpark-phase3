@@ -18,25 +18,25 @@ const selectedVendor = defineModel('selectedVendor')
 <template>
     <div class="flex justify-center items-center flex-col">
         <CatalogueFilterGroup
-            v-if="categoryList"
+            v-if="categoryList.length"
             v-model="categoryList"
             v-model:selected="selectedCategory"
             title="Category"
         />
         <CatalogueFilterGroup
-            v-if="typeList"
+            v-if="typeList.length"
             v-model="typeList"
             v-model:selected="selectedType"
             title="Type"
         />
         <CatalogueFilterGroup
-            v-if="brandList"
+            v-if="brandList.length"
             v-model="brandList"
             v-model:selected="selectedBrand"
             title="Brand"
         />
         <CatalogueFilterGroup
-            v-if="vendorList"
+            v-if="vendorList.length"
             v-model="vendorList"
             v-model:selected="selectedVendor"
             title="Vendor"

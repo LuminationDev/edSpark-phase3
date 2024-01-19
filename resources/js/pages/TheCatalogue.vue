@@ -1,10 +1,8 @@
 <script setup lang="ts">
-import
-    "@hennge/vue3-pagination/dist/vue3-pagination.css";
+import "@hennge/vue3-pagination/dist/vue3-pagination.css";
 
 import VPagination from "@hennge/vue3-pagination";
-import {Ref} from "vue";
-import {computed, onMounted, ref, watch} from 'vue'
+import {computed, onMounted, Ref, ref, watch} from "vue";
 
 import BaseLandingHero from "@/js/components/bases/BaseLandingHero.vue";
 import CatalogueFilterColumn from "@/js/components/catalogue/CatalogueFilterColumn.vue";
@@ -13,10 +11,11 @@ import useErrorMessage from "@/js/composables/useErrorMessage";
 import usePagination from "@/js/composables/usePagination";
 import {catalogueImageURL} from "@/js/constants/serverUrl";
 import {catalogueService} from "@/js/service/catalogueService";
-import {CatalogueItemType} from "@/js/types/catalogueTypes";
+import {CatalogueFilterField, CatalogueItemType} from "@/js/types/catalogueTypes";
 
 
 const catalogueList: Ref<CatalogueItemType[] | []> = ref([]);
+
 const categoryList = ref([])
 const brandList = ref([])
 const typeList = ref([])
@@ -26,9 +25,10 @@ const selectedCategory = ref([])
 const selectedBrand = ref([])
 const selectedType = ref([])
 const selectedVendor = ref([])
-const {error,setError, clearError} = useErrorMessage()
+
 
 const isProductsLoading = ref(false)
+const {error, setError, clearError} = useErrorMessage()
 const {
     currentPage, perPage, totalPages, totalItems,
     handleChangePageNumber, updatePaginationData
@@ -38,12 +38,18 @@ const showPagination = computed(() => {
     return totalPages.value > 1
 })
 
+// have a primary filte rhere
+const primaryFilter: Ref<CatalogueFilterField | null> = ref(null)
+
+const primarySelectedValues = computed(() =>{
+    if (primaryFilter.value == CatalogueFilterField.Type) return selectedType.value
+    if (primaryFilter.value == CatalogueFilterField.Vendor) return selectedVendor.value
+    if (primaryFilter.value == CatalogueFilterField.Brand) return selectedBrand.value
+    if (primaryFilter.value == CatalogueFilterField.Category) return selectedCategory.value
+})
 
 onMounted(async () => {
-    fetchCatalogue('category', selectedCategory.value, currentPage.value, perPage.value)
-    catalogueService.fetchAllCategories().then(res => {
-    })
-
+    fetchCatalogue(CatalogueFilterField.Category, selectedCategory.value, currentPage.value, perPage.value)
     try {
         const [categoriesResponse, typesResponse, brandsResponse, vendorsResponse] = await Promise.all([
             catalogueService.fetchAllCategories(),
@@ -59,7 +65,6 @@ onMounted(async () => {
         // Handle errors here
         console.error('Error fetching data:', error);
     }
-
 })
 
 const fetchCatalogue = (field, category, page, perPage = 40) => {
@@ -68,40 +73,70 @@ const fetchCatalogue = (field, category, page, perPage = 40) => {
     catalogueService.fetchCatalogueByField(field, category, page, perPage).then(res => {
         isProductsLoading.value = false
         catalogueList.value = res.data.data.items
-        updatePaginationData(res.data.data.pagination)
-        updateOtherFilters(res.data.data.available_fields)
-    }).catch(err =>{
+        if (res.data.data.pagination) {
+            updatePaginationData(res.data.data.pagination)
+
+        }
+        if (res.data.data.available_fields) {
+            updateOtherFilters(res.data.data.available_fields)
+
+        }
+    }).catch(err => {
         console.log(err)
         isProductsLoading.value = false
-        if(err.response.status == 404){
+        if (err.response.status == 404) {
             setError(404, 'No product found')
         }
     })
 }
 
 
-const updateOtherFilters = (available_fields) =>{
+const updateOtherFilters = (available_fields) => {
     const listOfKeys = Object.keys(available_fields)
-    listOfKeys.forEach(key =>{
-        if(key === 'brand'){
-            brandList.value = available_fields[key]
-        }else if(key === 'type'){
-            typeList.value = available_fields[key]
-        } else if(key === 'vendor'){
-            vendorList.value = available_fields[key]
-        }else if(key === 'categories'){
-            categoryList.value = available_fields[key]
+    listOfKeys.forEach(key => {
+        if (key === 'brand') {
+            brandList.value = available_fields[key].filter(Boolean)
+        } else if (key === 'type') {
+            typeList.value = available_fields[key].filter(Boolean)
+        } else if (key === 'vendor') {
+            vendorList.value = available_fields[key].filter(Boolean)
+        } else if (key === 'category') {
+            categoryList.value = available_fields[key].filter(Boolean)
         }
     })
 }
+
 watch(selectedCategory, () => {
-    fetchCatalogue('category', selectedCategory.value, currentPage.value, perPage.value)
+    if (selectedBrand.value.length === 0 && selectedType.value.length === 0 && selectedVendor.value.length === 0 ) {
+        primaryFilter.value = CatalogueFilterField.Category
+        fetchCatalogue(CatalogueFilterField.Category, selectedCategory.value, currentPage.value, perPage.value)
+    }
 })
+
+watch(selectedBrand, () => {
+    if (selectedVendor.value.length === 0 && selectedType.value.length === 0 && selectedCategory.value.length === 0 ) {
+        primaryFilter.value = CatalogueFilterField.Brand;
+        fetchCatalogue(CatalogueFilterField.Brand, selectedBrand.value, currentPage.value, perPage.value)
+    }
+})
+watch(selectedType, () => {
+    if (selectedBrand.value.length === 0 && selectedVendor.value.length === 0 && selectedCategory.value.length === 0 ) {
+        primaryFilter.value = CatalogueFilterField.Type;
+        fetchCatalogue(CatalogueFilterField.Type, selectedType.value, currentPage.value, perPage.value)
+    }
+})
+watch(selectedVendor, () => {
+    if (selectedBrand.value.length === 0 && selectedType.value.length === 0 && selectedCategory.value.length === 0 ) {
+        primaryFilter.value = CatalogueFilterField.Vendor;
+        fetchCatalogue(CatalogueFilterField.Vendor, selectedVendor.value, currentPage.value, perPage.value)
+    }
+})
+
+
 watch(currentPage, () => {
-    fetchCatalogue('category', selectedCategory.value, currentPage.value, perPage.value)
-
+    console.log('primary filter is  ' + primaryFilter.value)
+    fetchCatalogue(primaryFilter.value, primarySelectedValues.value, currentPage.value, perPage.value)
 })
-
 </script>
 
 <template>
@@ -129,23 +164,58 @@ watch(currentPage, () => {
             v-else-if="!isProductsLoading && !error.status"
             class="col-span-3 productPanel"
         >
+            <div class="my-4 text-center totalItems">
+                Total Items: {{ totalItems }}
+            </div>
             <div class="grid grid-cols-2 gap-4 place-items-center lg:!grid-cols-3 xl:!grid-cols-4">
                 <div
                     v-for="(item,index) in catalogueList"
                     :key="index"
-                    class="border-[1px] grid place-items-center rounded w-48"
+                    class="border-[1px] catalogueCard grid place-items-center rounded w-72"
                 >
                     <img
                         :src="catalogueImageURL + item.image"
-                        class="w-24"
+                        class="h-32 w-auto"
                         :alt="'Photo of ' + item.name"
                     >
-
-                    <div class="font-semibold productName">
-                        {{ item.name }}
+                    <div class="grid grid-cols-2 place-items-start p-4 productInformationSection w-full">
+                        <div class="font-medium">
+                            Product Name:
+                        </div>
+                        <div class="font-light">
+                            {{ item.name }}
+                        </div>
+                        <div class="font-medium">
+                            Brand:
+                        </div>
+                        <div class="font-light">
+                            {{ item.brand }}
+                        </div>
+                        <div class="font-medium">
+                            Category:
+                        </div>
+                        <div class="font-light">
+                            {{ item.category }}
+                        </div>
+                        <div class="font-medium">
+                            Type:
+                        </div>
+                        <div class="font-light">
+                            {{ item.type }}
+                        </div>
+                        <div class="font-medium">
+                            Price inc gst:
+                        </div>
+                        <div class="font-light">
+                            {{ '$' + item.price_inc_gst }}
+                        </div>
+                        <div class="font-medium">
+                            Vendor:
+                        </div>
+                        <div class="font-light">
+                            {{ item.vendor }}
+                        </div>
                     </div>
-                    <div> {{ item.category }}</div>
-                    <div> {{ '$' + item.price_inc_gst }}</div>
                 </div>
             </div>
 

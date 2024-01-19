@@ -24,4 +24,18 @@ class Catalogue extends Model
     {
         return $query->whereNotIn('category', ['bundle']);
     }
+
+    public function getNameAttribute($value)
+    {
+        return trim($value);
+    }
+
+    public function getVendorAttribute($value)
+    {
+        return trim($value);
+    }
+
+    public function getBrandAttribute($value){
+        return trim($value);
+    }
 }
