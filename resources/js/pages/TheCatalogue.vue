@@ -137,6 +137,10 @@ watch(currentPage, () => {
     console.log('primary filter is  ' + primaryFilter.value)
     fetchCatalogue(primaryFilter.value, primarySelectedValues.value, currentPage.value, perPage.value)
 })
+
+watch(primaryFilter.value, () =>{
+    currentPage.value =1
+} )
 </script>
 
 <template>
