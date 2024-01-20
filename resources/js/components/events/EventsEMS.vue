@@ -40,7 +40,7 @@ const props = defineProps({
 
 const currentUserIsOwner = ref(false)
 const currentUserHasProvidedEMSLink = ref(false)
-const editingEMSlink = ref(false)
+const editingEMSlink = ref(true)
 const rsvpError = ref('')
 const route = useRoute()
 
@@ -86,7 +86,8 @@ const getEMSLink = () => {
         })
         .catch(err => {
             rsvpError.value = err.message;
-        });6
+        });
+    6
 };
 
 onMounted(() => {
@@ -144,9 +145,9 @@ const handleClickSubmitLink = () => {
 const handleAcceptNewLink = (newlink) => {
     state.currentUserEMSLink = newlink
 }
-const handleInvalidUrlFromServer = () =>{
+const handleInvalidUrlFromServer = () => {
     currentUserHasProvidedEMSLink.value = false
-    state.currentUserEMSLink= ''
+    state.currentUserEMSLink = ''
 }
 </script>
 
@@ -257,8 +258,8 @@ const handleInvalidUrlFromServer = () =>{
 
 <style scoped>
 .searchable_dropdown :deep(.dropdown-toggle input) {
-  padding: 8px !important;
-  border-radius: 0.25rem;
-  color: #d9dae3;
+    padding: 8px !important;
+    border-radius: 0.25rem;
+    color: #d9dae3;
 }
 </style>

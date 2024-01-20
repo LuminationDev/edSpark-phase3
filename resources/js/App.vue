@@ -6,6 +6,7 @@ import {onBeforeMount, onBeforeUnmount} from "vue";
 import {onMounted, ref} from "vue";
 import {useRouter} from 'vue-router';
 
+import FeedbackForm from "@/js/components/feedbackform/FeedbackForm.vue";
 import Footer from '@/js/components/global/Footer/Footer.vue';
 import Navbar from '@/js/components/global/navbar/Navbar.vue';
 import NavbarMobileMenu from "@/js/components/global/navbar/NavbarMobileMenu.vue";
@@ -89,6 +90,7 @@ const handleAuth = async () => {
 
 };
 
+
 onBeforeMount(async () => {
     await handleAuth()
 });
@@ -113,35 +115,49 @@ onMounted(() => {
     }, 100);
     setEventListeners();
 
-
 });
 
 onBeforeUnmount(() => {
     removeEventListeners()
 })
 
+
 </script>
 
 <template>
-    <div class="relative w-full z-50">
-        <Navbar
-            :key="router.currentRoute.value"
-        />
-        <NavbarMobileMenu
-            v-if="isMobile"
-        />
-    </div>
-    <template v-if="showGlobalSearch">
-        <GlobalSearch />
-    </template>
+    <div>
+        <div
+
+            class="relative w-full z-50"
+        >
+            <Navbar
+                :key="router.currentRoute.value"
+            />
+
+            <NavbarMobileMenu
+                v-if="isMobile"
+            />
+        </div>
+        <div>
+            <FeedbackForm />
+        </div>
+        <template v-if="showGlobalSearch">
+            <GlobalSearch />
+        </template>
 
 
-    <div class="pageBodyContentContainer">
-        <router-view />
+        <div
+            class="pageBodyContentContainer"
+        >
+            <router-view />
+        </div>
+
+        <footer
+            class="mt-auto"
+        >
+            <Footer />
+        </footer>
     </div>
-    <footer class="mt-auto">
-        <Footer />
-    </footer>
 </template>
 <style>
 .tox-promotion {
@@ -153,4 +169,6 @@ onBeforeUnmount(() => {
     display: none;
 
 }
+
+
 </style>
