@@ -25,6 +25,8 @@ class PartnermoderationResource extends Resource
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
     protected static ?string $navigationGroup = 'Moderation';
     protected static ?string $navigationLabel = 'Partner Moderation';
+    protected static ?int $navigationSort = 5;
+
 
     public static function form(Form $form): Form
     {
@@ -49,16 +51,16 @@ class PartnermoderationResource extends Resource
                         ->disk('public')
                         ->directory('uploads/partner/logo')
                         ->acceptedFileTypes(['image/jpeg', 'image/jpg', 'image/png'])
-                        ->getUploadedFileNameForStorageUsing( function (TemporaryUploadedFile $file): string {
-                            return (string) str($file->getClientOriginalName())->prepend('edSpark-partner-logo-');
+                        ->getUploadedFileNameForStorageUsing(function (TemporaryUploadedFile $file): string {
+                            return (string)str($file->getClientOriginalName())->prepend('edSpark-partner-logo-');
                         }),
                     Forms\Components\FileUpload::make('cover_image')
                         ->preserveFilenames()
                         ->disk('public')
                         ->directory('uploads/partner/coverimage')
                         ->acceptedFileTypes(['image/jpeg', 'image/jpg', 'image/png'])
-                        ->getUploadedFileNameForStorageUsing( function (TemporaryUploadedFile $file): string {
-                            return (string) str($file->getClientOriginalName())->prepend('edSpark-partner-');
+                        ->getUploadedFileNameForStorageUsing(function (TemporaryUploadedFile $file): string {
+                            return (string)str($file->getClientOriginalName())->prepend('edSpark-partner-');
                         }),
                     Forms\Components\Select::make('status')
                         ->options([
@@ -77,10 +79,14 @@ class PartnermoderationResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('partner_id'),
-                Tables\Columns\TextColumn::make('partner.name')->label('Partner name'),
-                Tables\Columns\TextColumn::make('introduction')->label('Owner'),
-                Tables\Columns\TextColumn::make('motto'),
+                Tables\Columns\TextColumn::make('partner_id')
+                    ->limit(20),
+                Tables\Columns\TextColumn::make('partner.name')->label('Partner name')
+                    ->limit(20),
+                Tables\Columns\TextColumn::make('introduction')->label('Introduction')
+                    ->limit(20),
+                Tables\Columns\TextColumn::make('motto')
+                    ->limit(20),
                 Tables\Columns\TextColumn::make('updated_at')
                     ->dateTime(),
             ])
@@ -102,6 +108,7 @@ class PartnermoderationResource extends Resource
             //
         ];
     }
+
     public static function getEloquentQuery(): Builder
     {
         return parent::getEloquentQuery()->where('status', 'Pending');
@@ -115,6 +122,7 @@ class PartnermoderationResource extends Resource
             'edit' => Pages\EditPartnermoderation::route('/{record}/edit'),
         ];
     }
+
     public static function getNavigationBadge(): ?string
     {
         $count = static::getModel()::query()->where('status', 'pending')->count();
