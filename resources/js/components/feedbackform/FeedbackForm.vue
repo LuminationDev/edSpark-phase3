@@ -92,6 +92,7 @@ const handleSubmitForm = async () => {
 }
 const handleCancelForm = () => {
     console.log("Cancel Button Pressed")
+    showFeedbackForm.value = !showFeedbackForm.value
 }
 
 
