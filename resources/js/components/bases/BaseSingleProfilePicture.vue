@@ -1,7 +1,8 @@
 <script setup>
+import {computed, onMounted,ref} from 'vue'
+
 import Profile from "@/js/components/svg/Profile.vue";
 import {imageURL} from "@/js/constants/serverUrl";
-import {ref, computed, onMounted} from 'vue'
 
 const props = defineProps({
     authorLogoUrl:{
@@ -27,13 +28,13 @@ onMounted(() =>{
 </script>
 
 <template>
-    <div class=" ">
+    <div class="">
         <img
             v-if="!showPlaceholderImage"
             id="smallPartnerLogoImage"
             :src="`${imageURL}/${props.authorLogoUrl}`"
             :alt="'author logo'"
-            class="bg-center bg-white h-24 object-contain rounded-full text-xs w-24"
+            class="bg-center bg-white h-16 object-contain rounded-full text-xs w-16"
         >
         <Profile
             v-else

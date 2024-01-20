@@ -75,7 +75,7 @@ const handleClickViewProfile = (author_id, author_type) => {
                         v-if="contentFromBase['author'] && contentFromBase['author']"
                         class="EventHeroAuthorContainer flex flex-col gap-8 mt-2"
                     >
-                        <div class="flex items-center flex-row gap-8 my-4">
+                        <div class="flex items-center flex-row gap-4">
                             <BaseSingleProfilePicture
                                 :author-name="contentFromBase['author']['author_name']"
                                 :author-logo-url="String(contentFromBase['author']['author_logo'])"
