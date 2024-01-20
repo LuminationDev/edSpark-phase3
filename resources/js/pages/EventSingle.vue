@@ -139,9 +139,6 @@ const handleClickViewProfile = (author_id, author_type) => {
             >
                 <!--    Content of the Advice    -->
                 <div class="flex flex-col flex-wrap pl-6 px-12 w-full lg:!w-2/3">
-                    <div class="border-b-2 border-black flex font-semibold text-2xl">
-                        Details
-                    </div>
                     <div
                         class="flex content-paragraph flex-col max-w-full overflow-hidden text-lg"
                         v-html="edSparkContentSanitizer(contentFromBase['content'])"
