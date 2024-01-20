@@ -11,7 +11,8 @@ import {useRoute} from "vue-router";
 import TinyMceRichTextInput from "@/js/components/bases/frontendform/TinyMceEditor/TinyMceRichTextInput.vue";
 import GenericButton from "@/js/components/button/GenericButton.vue";
 import TextInput from "@/js/components/feedbackform/TextInput.vue";
-import Feedback from "@/js/components/svg/Feedback.vue";
+import FeedbackBackground from "@/js/components/svg/FeedbackIcon/FeedbackBackground.vue";
+import FeedbackIcon from "@/js/components/svg/FeedbackIcon/FeedbackIcon.vue";
 import {API_ENDPOINTS} from "@/js/constants/API_ENDPOINTS";
 import {useUserStore} from "@/js/stores/useUserStore";
 
@@ -109,10 +110,12 @@ const toggleFeedbackForm = (): void => {
 
 <template>
     <div
-        class="cursor-pointer fixed right-16 bottom-12 mr-auto overflow-hidden z-40 hover:shadow-2xl"
+        class="cursor-pointer fixed right-1 sm:right-3 bottom-10 mr-auto overflow-hidden z-40 hover:shadow-2xl"
         @click="toggleFeedbackForm"
     >
-        <Feedback />
+        <div>
+            <FeedbackBackground />
+        </div>
     </div>
 
     <div
