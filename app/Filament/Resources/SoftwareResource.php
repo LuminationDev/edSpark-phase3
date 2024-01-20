@@ -194,7 +194,17 @@ class SoftwareResource extends Resource
                     ->dateTime(),
             ])
             ->filters([
-                //
+                Tables\Filters\SelectFilter::make('status')
+                    ->options([
+                        'published' => 'Published',
+                        'pending' => 'Pending Moderation',
+                        'archived' => 'Archived',
+                        'draft' => 'Draft/Incomplete',
+                        'unpublished' => 'Deleted'
+                    ])
+                    ->label('Software status')
+                    ->default('published')
+                    ->attribute('post_status'),
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),

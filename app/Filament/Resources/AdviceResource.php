@@ -82,9 +82,8 @@ class AdviceResource extends Resource
 
                 Forms\Components\Card::make()
                     ->schema([
-                        Forms\Components\CheckboxList::make('advice_type')
+                        Forms\Components\Select::make('advice_type')
                             ->label('Advice type')
-                            ->extraAttributes(['class' => 'text-primary-600'])
                             ->relationship('advicetypes', 'advice_type_name')
                             ->columns(3),
                         ...$labelColumns
@@ -204,10 +203,12 @@ class AdviceResource extends Resource
                 Tables\Filters\SelectFilter::make('status')
                     ->options([
                         'published' => 'Published',
-                        'pending' => 'Pending',
+                        'pending' => 'Pending Moderation',
                         'archived' => 'Archived',
+                        'draft' => 'Draft/Incomplete',
+                        'unpublished' => 'Deleted'
                     ])
-                    ->label('Status')
+                    ->label('Guide status')
                     ->default('published')
                     ->attribute('post_status'),
             ])

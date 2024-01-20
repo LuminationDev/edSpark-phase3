@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Helpers\JsonHelper;
 use App\Helpers\Metahelper;
 use App\Models\Advice;
 use App\Models\Hardware;
@@ -64,15 +65,14 @@ class PartnerController extends Controller
             'user_id' => $partner->user_id,
             'name' => $partner->name,
             'email' => $partner->email,
-            'logo' => json_decode($partner->logo) ?: NULL,
-            'cover_image' => json_decode($partner->cover_image) ?: NULL,
-            'motto' => $partner->motto,
-            'introduction' => $partner->introduction,
-            'content' => json_decode($partner->content),
+            'logo' => JsonHelper::safelyDecodeString($partnerProfile->logo) ?: NULL,
+            'cover_image' => JsonHelper::safelyDecodeString($partnerProfile->cover_image) ?: NULL,
+            'motto' => $partnerProfile->motto,
+            'introduction' => $partnerProfile->introduction,
             'metadata' => $partnerMeta,
             'isLikedByUser' => $isLikedByUser,
             'isBookmarkedByUser' => $isBookmarkedByUser,
-            'profile' => $partnerProfile->content
+            'profile' => JsonHelper::safelyDecodeString($partnerProfile->content)
         ];
     }
 
@@ -187,11 +187,19 @@ class PartnerController extends Controller
             if (!$partner) {
                 return response()->json(['error' => 'Partner not found'], Response::HTTP_NOT_FOUND);
             }
+            $newIntro = $request->input('introduction') ?? '';
+            $newMotto = $request->input('motto') ?? '';
+            $newLogo = $request->input('logo') ?? '';
+            $newCoverImage = $request->input('cover_image') ?? '';
             // Create a new PartnerProfile entry with the content and status as "Pending"
             Partnerprofile::create([
                 'partner_id' => $partner->id,
                 'user_id' => $partner->user_id,
-                'content' => json_encode($validatedData['content']),
+                'content' => JsonHelper::safelyEncodeData($validatedData['content']),
+                'introduction' => $newIntro,
+                'motto' => $newMotto,
+                'logo' => $newLogo,
+                'cover_image' => $newCoverImage,
                 'status' => 'Pending'
             ]);
 
