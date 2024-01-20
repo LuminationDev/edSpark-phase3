@@ -90,9 +90,9 @@ const heroBackgroundSwitch = computed(() => {
                     bg-secondary-blueberry
                     col-span-8
                     h-full
-                    px-16
+                    px-110
                     py-8
-                    lg:!col-span-4
+                    lg:!col-span-5
                     "
                 :style="heroBackgroundSwitch"
             >
@@ -154,7 +154,7 @@ const heroBackgroundSwitch = computed(() => {
                 </div>
             </div>
             <div
-                class="bg-center bg-contain bg-no-repeat bg-white hidden imageCover lg:!block lg:!col-span-4"
+                class="bg-center bg-contain bg-no-repeat bg-white hidden imageCover lg:!block lg:!col-span-3"
                 :style="'background-image: url(' + heroBackgroundLinkOnly +')'"
             />
         </div>

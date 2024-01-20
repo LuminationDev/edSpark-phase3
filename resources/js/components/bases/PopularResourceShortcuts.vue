@@ -14,7 +14,7 @@ const props = defineProps({
         required: false,
         default: 'teal'
     },
-    resourceClickCallback:{
+    resourceClickCallback: {
         required: true,
         type: Function
     }
@@ -52,7 +52,7 @@ const borderColorClass = computed(() => {
             @click="() => handleClickResource(resource.id, resource.title)"
         >
             <div class="flex justify-between flex-row w-full">
-                <div class="text-start title w-full">
+                <div class="h-8 overflow-hidden text-ellipsis text-start title w-full">
                     {{ resource.title }}
                 </div>
                 <div class="Arrow grid place-items-center">

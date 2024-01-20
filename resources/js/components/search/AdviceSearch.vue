@@ -20,7 +20,7 @@ const {
 } = useSWRV(API_ENDPOINTS.ADVICE.FETCH_ADVICE_POSTS, axiosFetcher, swrvOptions)
 
 const adviceFilterList = [
-    {name: "Digital Adoption Group", value: "DAG advice"},
+    {name: "Digital Adoption Group", value: "DAG"},
     {name: "Partner", value: "Partner"},
     {name: "Your Classroom", value: "Your Classroom"},
     {name: "Your Work", value: "Your Work"},
@@ -40,7 +40,7 @@ const preselectedFilterObject = ref(null as {name: string, value: string | strin
 if (route.params || route.params.filter) {
     switch (route.params.filter) {
     case "dag":
-        preselectedFilterObject.value = {name: "Digital Adoption Group", value: "DAG advice"}
+        preselectedFilterObject.value = {name: "Digital Adoption Group", value: "DAG"}
         break;
     case "educators":
         preselectedFilterObject.value = {name: "Educators", value: ["Your Classroom", "Your Work", "Your Learning"]}

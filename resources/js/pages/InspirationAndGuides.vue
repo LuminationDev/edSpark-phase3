@@ -8,7 +8,7 @@ import BaseLandingSection from "@/js/components/bases/BaseLandingSection.vue";
 import PopularResourceShortcuts from "@/js/components/bases/PopularResourceShortcuts.vue";
 import GenericButton from "@/js/components/button/GenericButton.vue";
 import CaseStudyGuides from "@/js/components/inspirationandguides/CaseStudyGuides.vue";
-import CaseStudyQuickSearchGuides from "@/js/components/inspirationandguides/CaseStudyQuickSearchGuides.vue";
+import DAGCardsRowGuides from "@/js/components/inspirationandguides/DAGCardsRowGuides.vue";
 import InspirationAndGuidesRobot from "@/js/components/inspirationandguides/InspirationAndGuidesRobot.vue";
 import SchoolProfileGuidesQuickFilters from "@/js/components/inspirationandguides/SchoolProfileGuidesQuickFilters.vue";
 import SchoolProfilesGuides from "@/js/components/inspirationandguides/SchoolProfilesGuides.vue";
@@ -37,6 +37,7 @@ onMounted(() => {
 
 })
 
+
 const handleClickViewAllGuides = () => {
     return router.push('/browse/guide')
 }
@@ -45,7 +46,7 @@ const handleClickViewAllSchools = () => {
     return router.push('/browse/school')
 }
 
-const handleClickPopularGuides = (guideId,title) =>{
+const handleClickPopularGuides = (guideId, title) => {
     return router.push({
         name: "guide-single",
         params: {id: guideId, slug: lowerSlugify(title)},
@@ -75,8 +76,9 @@ const handleClickPopularGuides = (guideId,title) =>{
             <GenericButton
                 :callback="() => {}"
                 :type="'teal'"
+                :disabled="true"
             >
-                (Coming soon)
+                Coming soon
             </GenericButton>
         </template>
     </BaseLandingSection>
@@ -107,6 +109,26 @@ const handleClickPopularGuides = (guideId,title) =>{
     </BaseLandingSection>
     <BaseLandingSection background-color="teal">
         <template #title>
+            The Digital Adoption Group (DAG)
+        </template>
+        <template #subtitle>
+            The Digital Adoption Group (DAG) offers comprehensive guidance on digital technologies, providing practical,
+            system-wide advice for purchasing and adopting high-impact technologies that enhance teaching and learning.
+        </template>
+        <template #button>
+            <GenericButton
+                :callback="() =>router.push('/browse/guide/dag')"
+                :type="'teal'"
+            >
+                View all DAG guides
+            </GenericButton>
+        </template>
+        <template #content>
+            <DAGCardsRowGuides :advice-list="allAdvice" />
+        </template>
+    </BaseLandingSection>
+    <BaseLandingSection background-color="white">
+        <template #title>
             School profile
         </template>
         <template #subtitle>
@@ -127,7 +149,7 @@ const handleClickPopularGuides = (guideId,title) =>{
             <SchoolProfilesGuides :school-list="featuredSites" />
         </template>
     </BaseLandingSection>
-    <BaseLandingSection background-color="white">
+    <BaseLandingSection background-color="teal">
         <template #title>
             Featured case studies
         </template>
