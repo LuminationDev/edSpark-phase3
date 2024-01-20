@@ -14,7 +14,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
-use Livewire\TemporaryUploadedFile;
+use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
 use App\Models\User;
 
 use Illuminate\Filesystem\Filesystem;
@@ -152,10 +152,7 @@ class PartnerprofileResource extends Resource
 
     public static function shouldRegisterNavigation(): bool
     {
-        $allowed_array = ['Superadmin', 'Administrator','Moderator'];
-        if (in_array(Auth::user()->role->role_name, $allowed_array)) {
-            return true;
-        }
+
         return false;
     }
 }

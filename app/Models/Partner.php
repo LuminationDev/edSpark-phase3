@@ -29,7 +29,8 @@ class Partner extends Authenticatable
         'logo',
         'cover_image',
         'motto',
-        'introduction'
+        'introduction',
+        'content'
     ];
 
     public function user()

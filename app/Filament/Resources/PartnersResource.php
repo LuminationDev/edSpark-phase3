@@ -15,6 +15,8 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
+use Mohamedsabil83\FilamentFormsTinyeditor\Components\TinyEditor;
 
 class PartnersResource extends Resource
 {
@@ -34,13 +36,41 @@ class PartnersResource extends Resource
             ->schema([
                 Forms\Components\Card::make()
                     ->schema([
-                        Forms\Components\TextInput::make('full_name')
-                            ->required(),
-                        Forms\Components\TextInput::make('display_name'),
-                        Forms\Components\TextInput::make('email')->email()
-                            ->required(),
-                        Forms\Components\TextInput::make('password')
+                        Forms\Components\TextInput::make('name')
+                            ->label('Partner Name')
                             ->required()
+                            ->disabled()
+                            ->maxLength(255),
+                        Forms\Components\TextInput::make('display_name')
+                            ->label('Display Name')
+                            ->required()
+                            ->maxLength(255),
+                        Forms\Components\TextInput::make('motto')
+                            ->label('Partner Motto'),
+                        Forms\Components\TextInput::make('introduction')
+                            ->label('Partner Introduction'),
+                        TinyEditor::make('content')
+                            ->label('Partner profile')
+                            ->fileAttachmentsDisk('local')
+                            ->fileAttachmentsVisibility('public')
+                            ->fileAttachmentsDirectory('public/uploads/partners')
+                            ->required(),
+                        Forms\Components\FileUpload::make('cover_image')
+                            ->preserveFilenames()
+                            ->disk('public')
+                            ->directory('uploads/partners')
+                            ->acceptedFileTypes(['image/jpeg', 'image/jpg', 'image/png'])
+                            ->getUploadedFileNameForStorageUsing(function (TemporaryUploadedFile $file): string {
+                                return (string)str($file->getClientOriginalName())->prepend('edSpark-partners-');
+                            }),
+                        Forms\Components\FileUpload::make('logo')
+                            ->preserveFilenames()
+                            ->disk('public')
+                            ->directory('uploads/partner')
+                            ->acceptedFileTypes(['image/jpeg', 'image/jpg', 'image/png'])
+                            ->getUploadedFileNameForStorageUsing(function (TemporaryUploadedFile $file): string {
+                                return (string)str($file->getClientOriginalName())->prepend('edSpark-partners-');
+                            }),
 
                     ])
             ]);
