@@ -21,8 +21,10 @@ const {
 
 const adviceFilterList = [
     {name: "Digital Adoption Group", value: "DAG advice"},
-    {name: "Educators", value: ["Your Classroom", "Your Work", "Your Learning"]},
     {name: "Partner", value: "Partner"},
+    {name: "Your Classroom", value: "Your Classroom"},
+    {name: "Your Work", value: "Your Work"},
+    {name: "Your Learning", value: "Your Learning"},
 ]
 
 const filterObject = ref({})

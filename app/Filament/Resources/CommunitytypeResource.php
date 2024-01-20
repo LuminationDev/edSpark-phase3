@@ -4,6 +4,8 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\CommunitytypeResource\Pages;
 use App\Filament\Resources\CommunitytypeResource\RelationManagers;
+use App\Helpers\RoleHelpers;
+use App\Helpers\UserRole;
 use App\Models\Communitytype;
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -91,10 +93,6 @@ class CommunitytypeResource extends Resource
 
     public static function shouldRegisterNavigation(): bool
     {
-        $allowed_array = ['Superadmin', 'Administrator'];
-        if (in_array(Auth::user()->role->role_name, $allowed_array)) {
-            return true;
-        }
-        return false;
+        return RoleHelpers::has_minimum_privilege(UserRole::GODMODE);
     }
 }
