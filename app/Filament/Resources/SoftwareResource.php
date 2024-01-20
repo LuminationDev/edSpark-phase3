@@ -81,9 +81,8 @@ class SoftwareResource extends Resource
 
                         Forms\Components\Card::make()
                             ->schema([
-                                Forms\Components\CheckboxList::make('software_type')
+                                Forms\Components\Select::make('software_type')
                                     ->label('Software type')
-                                    ->extraAttributes(['class' => 'text-primary-600'])
                                     ->relationship('softwaretypes', 'software_type_name')
                                     ->columns(3),
                                 ...$labelColumns
