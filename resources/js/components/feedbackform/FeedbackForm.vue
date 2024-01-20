@@ -110,7 +110,7 @@ const toggleFeedbackForm = (): void => {
 
 <template>
     <div
-        class="cursor-pointer fixed right-1 sm:right-3 bottom-10 mr-auto overflow-hidden z-40 hover:shadow-2xl"
+        class="cursor-pointer fixed right-1 sm:right-3 bottom-10 mr-auto overflow-hidden shadow- z-40"
         @click="toggleFeedbackForm"
     >
         <div>
