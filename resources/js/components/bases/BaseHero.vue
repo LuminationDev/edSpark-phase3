@@ -90,7 +90,7 @@ const heroBackgroundSwitch = computed(() => {
                     bg-secondary-blueberry
                     col-span-8
                     h-full
-                    px-110
+                    px-11
                     py-8
                     lg:!col-span-5
                     "
