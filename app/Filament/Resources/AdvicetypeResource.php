@@ -5,6 +5,7 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\AdvicetypeResource\Pages;
 use App\Filament\Resources\AdvicetypeResource\RelationManagers;
 use App\Helpers\RoleHelpers;
+use App\Helpers\UserRole;
 use App\Models\Advicetype;
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -92,7 +93,7 @@ class AdvicetypeResource extends Resource
 
     public static function shouldRegisterNavigation(): bool
     {
-        return RoleHelpers::has_minimum_privilege('admin');
+        return RoleHelpers::has_minimum_privilege(UserRole::ADMIN);
     }
 
 }

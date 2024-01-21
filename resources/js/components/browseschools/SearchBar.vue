@@ -25,7 +25,7 @@ const emits = defineEmits(['emitSearchTerm'])
         </p>
         <div
             style="position: relative"
-            class="!border-slate-300 border-2 flex items-center font-medium gap-1 h-12 pl-4 rounded text-black text-lg"
+            class="!border-slate-300 border-2 flex items-center font-medium gap-1 h-[52px] pl-4 rounded text-black text-lg"
         >
             <div
                 id="searchIcon"

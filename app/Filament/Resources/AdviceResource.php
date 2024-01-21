@@ -10,6 +10,7 @@ use App\Models\Label;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
+use Filament\Tables\Filters\Filter;
 use Filament\Tables\Table;
 use Filament\Tables;
 use Illuminate\Database\Eloquent\Builder;
@@ -81,9 +82,8 @@ class AdviceResource extends Resource
 
                 Forms\Components\Card::make()
                     ->schema([
-                        Forms\Components\CheckboxList::make('advice_type')
+                        Forms\Components\Select::make('advice_type')
                             ->label('Advice type')
-                            ->extraAttributes(['class' => 'text-primary-600'])
                             ->relationship('advicetypes', 'advice_type_name')
                             ->columns(3),
                         ...$labelColumns
@@ -177,29 +177,40 @@ class AdviceResource extends Resource
             ->columns([
                 Tables\Columns\TextColumn::make('post_title')
                     ->label('Title')
-                    ->limit(30)
+                    ->limit(25)
                     ->sortable()
                     ->searchable(),
-                Tables\Columns\ImageColumn::make('cover_image'),
+                Tables\Columns\ImageColumn::make('cover_image')
+                    ->limit(15)
+                ,
                 Tables\Columns\TextColumn::make('advicetypes.advice_type_name')
                     ->label('Type')
                     ->sortable()
                     ->searchable()
                     ->wrap(),
-                Tables\Columns\TextColumn::make('author.full_name')->label('Author'),
+                Tables\Columns\TextColumn::make('author.full_name')->label('Author')
+                    ->limit(15)
+                ,
                 Tables\Columns\TextColumn::make('post_status')
                     ->label('Status')
                     ->sortable()
                     ->searchable(),
                 Tables\Columns\TextColumn::make('post_modified')
                     ->date()
-                    ->label('Modified At'),
-                Tables\Columns\TextColumn::make('post_date')
-                    ->date()
-                    ->label('Created At'),
+                    ->label('Last modified'),
             ])
             ->filters([
-                //
+                Tables\Filters\SelectFilter::make('status')
+                    ->options([
+                        'published' => 'Published',
+                        'pending' => 'Pending Moderation',
+                        'archived' => 'Archived',
+                        'draft' => 'Draft/Incomplete',
+                        'unpublished' => 'Deleted'
+                    ])
+                    ->label('Guide status')
+                    ->default('published')
+                    ->attribute('post_status'),
             ])
             ->actions([
                 // Tables\Actions\ViewAction::make(),

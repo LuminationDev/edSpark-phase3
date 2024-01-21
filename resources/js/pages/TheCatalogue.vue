@@ -1,31 +1,250 @@
-<script setup>
-import {computed, onMounted, ref} from 'vue'
+<script setup lang="ts">
+import "@hennge/vue3-pagination/dist/vue3-pagination.css";
 
-import {API_ENDPOINTS} from "@/js/constants/API_ENDPOINTS";
+import VPagination from "@hennge/vue3-pagination";
+import {computed, onMounted, Ref, ref, watch} from "vue";
+
+import BaseLandingHero from "@/js/components/bases/BaseLandingHero.vue";
+import CatalogueFilterColumn from "@/js/components/catalogue/CatalogueFilterColumn.vue";
+import Loader from "@/js/components/spinner/Loader.vue";
+import useErrorMessage from "@/js/composables/useErrorMessage";
+import usePagination from "@/js/composables/usePagination";
+import {LandingHeroText} from "@/js/constants/PageBlurb";
+import {catalogueImageURL} from "@/js/constants/serverUrl";
 import {catalogueService} from "@/js/service/catalogueService";
+import {CatalogueFilterField, CatalogueItemType} from "@/js/types/catalogueTypes";
 
-const catalogueList = ref([]);
+
+const catalogueList: Ref<CatalogueItemType[] | []> = ref([]);
+
+const categoryList = ref([])
+const brandList = ref([])
+const typeList = ref([])
+const vendorList = ref([])
+
+const selectedCategory = ref([])
+const selectedBrand = ref([])
+const selectedType = ref([])
+const selectedVendor = ref([])
 
 
-onMounted(() =>{
-    catalogueService.fetchCatalogueByField('type', 'Notebook', 4,40).then(res =>{
-        console.log(res.data.data)
-        catalogueList.value = res.data.data.items
-    })
+const isProductsLoading = ref(false)
+const {error, setError, clearError} = useErrorMessage()
+const {
+    currentPage, perPage, totalPages, totalItems,
+    handleChangePageNumber, updatePaginationData
+} = usePagination(1, 30)
+
+const showPagination = computed(() => {
+    return totalPages.value > 1
 })
+
+// have a primary filte rhere
+const primaryFilter: Ref<CatalogueFilterField | null> = ref(null)
+
+const primarySelectedValues = computed(() =>{
+    if (primaryFilter.value == CatalogueFilterField.Type) return selectedType.value
+    if (primaryFilter.value == CatalogueFilterField.Vendor) return selectedVendor.value
+    if (primaryFilter.value == CatalogueFilterField.Brand) return selectedBrand.value
+    if (primaryFilter.value == CatalogueFilterField.Category) return selectedCategory.value
+})
+
+onMounted(async () => {
+    fetchCatalogue(CatalogueFilterField.Category, selectedCategory.value, currentPage.value, perPage.value)
+    try {
+        const [categoriesResponse, typesResponse, brandsResponse, vendorsResponse] = await Promise.all([
+            catalogueService.fetchAllCategories(),
+            catalogueService.fetchAllTypes(),
+            catalogueService.fetchAllBrands(),
+            catalogueService.fetchAllVendors()
+        ]);
+        categoryList.value = categoriesResponse.data.data.filter(Boolean)
+        typeList.value = typesResponse.data.data.filter(Boolean);
+        brandList.value = brandsResponse.data.data.filter(Boolean);
+        vendorList.value = vendorsResponse.data.data.filter(Boolean);
+    } catch (error) {
+        // Handle errors here
+        console.error('Error fetching data:', error);
+    }
+})
+
+const fetchCatalogue = (field, category, page, perPage = 40) => {
+    isProductsLoading.value = true
+    clearError()
+    catalogueService.fetchCatalogueByField(field, category, page, perPage).then(res => {
+        isProductsLoading.value = false
+        catalogueList.value = res.data.data.items
+        if (res.data.data.pagination) {
+            updatePaginationData(res.data.data.pagination)
+
+        }
+        if (res.data.data.available_fields) {
+            updateOtherFilters(res.data.data.available_fields)
+
+        }
+    }).catch(err => {
+        console.log(err)
+        isProductsLoading.value = false
+        if (err.response.status == 404) {
+            setError(404, 'No product found')
+        }
+    })
+}
+
+
+const updateOtherFilters = (available_fields) => {
+    const listOfKeys = Object.keys(available_fields)
+    listOfKeys.forEach(key => {
+        if (key === 'brand') {
+            brandList.value = available_fields[key].filter(Boolean)
+        } else if (key === 'type') {
+            typeList.value = available_fields[key].filter(Boolean)
+        } else if (key === 'vendor') {
+            vendorList.value = available_fields[key].filter(Boolean)
+        } else if (key === 'category') {
+            categoryList.value = available_fields[key].filter(Boolean)
+        }
+    })
+}
+
+watch(selectedCategory, () => {
+    if (selectedBrand.value.length === 0 && selectedType.value.length === 0 && selectedVendor.value.length === 0 ) {
+        primaryFilter.value = CatalogueFilterField.Category
+        fetchCatalogue(CatalogueFilterField.Category, selectedCategory.value, currentPage.value, perPage.value)
+    }
+})
+
+watch(selectedBrand, () => {
+    if (selectedVendor.value.length === 0 && selectedType.value.length === 0 && selectedCategory.value.length === 0 ) {
+        primaryFilter.value = CatalogueFilterField.Brand;
+        fetchCatalogue(CatalogueFilterField.Brand, selectedBrand.value, currentPage.value, perPage.value)
+    }
+})
+watch(selectedType, () => {
+    if (selectedBrand.value.length === 0 && selectedVendor.value.length === 0 && selectedCategory.value.length === 0 ) {
+        primaryFilter.value = CatalogueFilterField.Type;
+        fetchCatalogue(CatalogueFilterField.Type, selectedType.value, currentPage.value, perPage.value)
+    }
+})
+watch(selectedVendor, () => {
+    if (selectedBrand.value.length === 0 && selectedType.value.length === 0 && selectedCategory.value.length === 0 ) {
+        primaryFilter.value = CatalogueFilterField.Vendor;
+        fetchCatalogue(CatalogueFilterField.Vendor, selectedVendor.value, currentPage.value, perPage.value)
+    }
+})
+
+
+watch(currentPage, () => {
+    console.log('primary filter is  ' + primaryFilter.value)
+    fetchCatalogue(primaryFilter.value, primarySelectedValues.value, currentPage.value, perPage.value)
+})
+
+watch(primaryFilter.value, () =>{
+    currentPage.value = 1
+})
+
+
 </script>
 
 <template>
-    <div class="flex flex-row flex-wrap gap-4 mt-10">
-        <div
-            v-for="(item,index) in catalogueList"
-            :key="index"
-            class="border-[1px] rounded w-48"
-        >
-            <div class="font-semibold productName">
-                {{ item.name }}
-            </div>
-            <div> {{ item.category }}</div>
+    <BaseLandingHero
+        :title="LandingHeroText['catalogue']['title']"
+        :title-paragraph="LandingHeroText['catalogue']['subtitle']"
+    />
+    <div class="cataloguePageOuterContainer grid grid-cols-4 mt-10">
+        <div class="col-span-1 flex items-center flex-col gap-2">
+            <CatalogueFilterColumn
+                v-model:brand-list="brandList"
+                v-model:type-list="typeList"
+                v-model:vendor-list="vendorList"
+                v-model:category-list="categoryList"
+                v-model:selected-brand="selectedBrand"
+                v-model:selected-type="selectedType"
+                v-model:selected-vendor="selectedVendor"
+                v-model:selected-category="selectedCategory"
+            />
         </div>
+        <div v-if="error.status ">
+            {{ error.message }}
+        </div>
+        <div
+            v-else-if="!isProductsLoading && !error.status"
+            class="col-span-3 productPanel"
+        >
+            <div class="my-4 text-center totalItems">
+                Total Items: {{ totalItems }}
+            </div>
+            <div class="grid grid-cols-2 gap-4 place-items-center lg:!grid-cols-3 xl:!grid-cols-4">
+                <div
+                    v-for="(item,index) in catalogueList"
+                    :key="index"
+                    class="border-[1px] catalogueCard grid place-items-center rounded w-72"
+                >
+                    <img
+                        :src="catalogueImageURL + item.image"
+                        class="h-32 w-auto"
+                        :alt="'Photo of ' + item.name"
+                    >
+                    <div class="grid grid-cols-2 place-items-start p-4 productInformationSection w-full">
+                        <div class="font-medium">
+                            Product Name:
+                        </div>
+                        <div class="font-light">
+                            {{ item.name }}
+                        </div>
+                        <div class="font-medium">
+                            Brand:
+                        </div>
+                        <div class="font-light">
+                            {{ item.brand }}
+                        </div>
+                        <div class="font-medium">
+                            Category:
+                        </div>
+                        <div class="font-light">
+                            {{ item.category }}
+                        </div>
+                        <div class="font-medium">
+                            Type:
+                        </div>
+                        <div class="font-light">
+                            {{ item.type }}
+                        </div>
+                        <div class="font-medium">
+                            Price inc gst:
+                        </div>
+                        <div class="font-light">
+                            {{ '$' + item.price_inc_gst }}
+                        </div>
+                        <div class="font-medium">
+                            Vendor:
+                        </div>
+                        <div class="font-light">
+                            {{ item.vendor }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div
+                v-if="showPagination"
+                class="flex justify-center mt-12 text-lg"
+            >
+                <v-pagination
+                    v-model="currentPage"
+                    :range-size="1"
+                    :pages="totalPages"
+                    active-color="#DCEDFF"
+                    @update:model-value="handleChangePageNumber"
+                />
+            </div>
+        </div>
+
+
+        <Loader
+            v-else
+            loader-type="small"
+            loader-message="loading products"
+        />
     </div>
 </template>

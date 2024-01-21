@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 /**
- * @method static excludeBundlesAndUpgrades()
+ * @method static excludeBundles()
  */
 class Catalogue extends Model
 {
@@ -20,8 +20,22 @@ class Catalogue extends Model
         'curriculum', 'image', 'product_number', 'price_expiry',
     ];
 
-    public function scopeExcludeBundlesAndUpgrades($query)
+    public function scopeExcludeBundles($query)
     {
-        return $query->whereNotIn('category', ['bundle', 'upgrade']);
+        return $query->whereNotIn('category', ['bundle']);
+    }
+
+    public function getNameAttribute($value)
+    {
+        return trim($value);
+    }
+
+    public function getVendorAttribute($value)
+    {
+        return trim($value);
+    }
+
+    public function getBrandAttribute($value){
+        return trim($value);
     }
 }

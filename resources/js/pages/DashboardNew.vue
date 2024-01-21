@@ -10,6 +10,7 @@ import GenericButton from "@/js/components/button/GenericButton.vue";
 import CardLoading from '@/js/components/card/CardLoading.vue';
 import DashboardHero from '@/js/components/dashboard/DashboardHero.vue';
 import SoftwareIllustration from "@/js/components/dashboard/SoftwareIllustration.vue";
+import EventsCard from "@/js/components/events/EventsCard.vue";
 import SchoolProfileGuidesQuickFilters from "@/js/components/inspirationandguides/SchoolProfileGuidesQuickFilters.vue";
 import SchoolCard from "@/js/components/schools/SchoolCard.vue";
 import SoftwareCard from "@/js/components/software/SoftwareCard.vue";
@@ -186,7 +187,7 @@ onMounted(async () => {
         <template #content>
             <BaseLandingCardRow :resource-list="eventList">
                 <template #rowContent>
-                    <AdviceCard
+                    <EventsCard
                         v-for="(event,index) in getNRandomElementsFromArray(eventList,3)"
                         :key="index"
                         :data="event"

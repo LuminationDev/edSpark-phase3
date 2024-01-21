@@ -43,6 +43,10 @@ export const LandingHeroText = {
     creator: {
         title: 'Create and publish',
         subtitle: "Create guides, case studies and any other resources and share with the edSpark communities from schools, partners and the departments"
+    },
+    catalogue:{
+        title: 'ICT Catalogue',
+        subtitle: "Explore our curated catalogue featuring products from DfE (Department for Education) approved partners, all accessible on our digital hub. Discover educational resources, tools, and solutions designed to enhance learning experiences for students and educators alike."
     }
 }
 
