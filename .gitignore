@@ -26,7 +26,5 @@ oktaConfig.js
 /**/.DS_Store
 web/
 .env.orig-10-8-23
-composer.lock
-package-lock.json
 resources/css/output.css
 storage/uploads

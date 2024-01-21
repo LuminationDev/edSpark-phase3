@@ -6,6 +6,7 @@ import AdviceForm from "@/js/components/bases/frontendform/types/AdviceForm.vue"
 import EventForm from "@/js/components/bases/frontendform/types/EventForm.vue";
 import SoftwareForm from "@/js/components/bases/frontendform/types/SoftwareForm.vue";
 import UserPosts from "@/js/components/create/UserPosts.vue";
+import InspirationAndGuidesRobot from "@/js/components/inspirationandguides/InspirationAndGuidesRobot.vue";
 import AdviceSearch from "@/js/components/search/AdviceSearch.vue";
 import EventSearch from "@/js/components/search/EventSearch.vue";
 import HardwareSearch from "@/js/components/search/HardwareSearch.vue";
@@ -22,9 +23,11 @@ import EdsparkPageNotFound from "@/js/pages/EdsparkPageNotFound.vue";
 import EventSingle from "@/js/pages/EventSingle.vue";
 import HardwareSingle from '@/js/pages/HardwareSingle.vue';
 import InspirationAndGuides from "@/js/pages/InspirationAndGuides.vue";
+import InspirationLanding from "@/js/pages/InspirationLanding.vue";
 import PartnerSingle from "@/js/pages/PartnerSingle.vue";
 import PlaceholderParentPage from "@/js/pages/PlaceholderParentPage.vue";
 import SchoolSingle from "@/js/pages/SchoolSingle.vue";
+import TechnologyLanding from "@/js/pages/TechnologyLanding.vue";
 import TheAdvice from "@/js/pages/TheAdvice.vue";
 import TheCatalogue from "@/js/pages/TheCatalogue.vue";
 import TheCreator from "@/js/pages/TheCreator.vue";
@@ -81,6 +84,8 @@ const routes: any = [
                 component: UserPosts,
                 meta: {
                     requiresAuth: true,
+                    skipScrollTop: true
+
                 } as RouteMeta
             },
             {
@@ -89,6 +94,8 @@ const routes: any = [
                 component: SoftwareForm,
                 meta: {
                     requiresAuth: true,
+                    skipScrollTop: true
+
                 } as RouteMeta
             }, {
                 name: 'createGuide',
@@ -96,6 +103,8 @@ const routes: any = [
                 component: AdviceForm,
                 meta: {
                     requiresAuth: true,
+                    skipScrollTop: true
+
                 } as RouteMeta
             }, {
                 name: 'createEvent',
@@ -103,6 +112,8 @@ const routes: any = [
                 component: EventForm,
                 meta: {
                     requiresAuth: true,
+                    skipScrollTop: true
+
                 } as RouteMeta
             }
         ]
@@ -110,11 +121,23 @@ const routes: any = [
     {
         name: 'Inspiration and guides',
         path: '/inspire',
-        component: PlaceholderParentPage,
+        component: InspirationLanding,
         meta: {
-            navigation: true
+            navigation: true,
+            requiresAuth: true,
         },
         children: [
+            {
+                name: "InspirationGuides",
+                path: "",
+                component: InspirationAndGuides,
+                meta: {
+                    requiresAuth: true,
+                    skipScrollTop: true,
+                    navigation: false
+
+                } as RouteMeta
+            },
             {
                 name: "School profiles",
                 path: "schools",
@@ -122,6 +145,8 @@ const routes: any = [
                 active: false,
                 meta: {
                     requiresAuth: true,
+                    navigation: true
+
                 } as RouteMeta
             },
             {
@@ -130,32 +155,48 @@ const routes: any = [
                 component: DashboardNew,
                 meta: {
                     requiresAuth: true,
-                    customText: 'Assess your digital maturity'
+                    customText: 'Assess your digital maturity (coming soon)',
+                    navigation: true
+
                 } as RouteMeta
             }, {
                 name: 'Guides and resources',
-                path: 'guide',
-                component: TheAdvice,
+                path: 'guides',
+                component: InspirationAndGuides,
                 meta: {
                     requiresAuth: true,
+                    navigation: true
                 } as RouteMeta
             }
         ]
     },
     {
         name: 'Technology',
-        path: '/tech',
-        component: PlaceholderParentPage,
+        path: '/technology',
+        component: TechnologyLanding,
         meta: {
             navigation: true
         },
         children: [
             {
-                name: "Apps and programs",
-                path: "software",
-                component: TheSoftware,
+                name: "TechnologyHome",
+                path: "",
+                component: TheTechnology,
                 meta: {
                     requiresAuth: true,
+                    skipScrollTop: true,
+                    navigation: false
+
+                } as RouteMeta
+            },
+            {
+                name: "Apps and programs",
+                path: "software",
+                component: SoftwareSearch,
+                meta: {
+                    requiresAuth: true,
+                    navigation: true
+
                 } as RouteMeta
             },
             {
@@ -164,6 +205,7 @@ const routes: any = [
                 component: TheHardware,
                 meta: {
                     requiresAuth: true,
+                    navigation: true
                 } as RouteMeta
             }
         ]
@@ -191,7 +233,7 @@ const routes: any = [
         path: '/community',
         component: DashboardNew,
         meta: {
-            navigation: true
+            navigation: false
         },
     },
     {

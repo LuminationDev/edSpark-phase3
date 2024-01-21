@@ -85,7 +85,7 @@ const handleSendFeedbackButton = () => {
                                 :author-name="contentFromBase['author']['author_name']"
                                 :author-logo-url="String(contentFromBase['author']['author_logo'])"
                             />
-                            <div class="authorName flex flex-col pt-6">
+                            <div class="authorName flex flex-col">
                                 <div class="mb-2 text-2xl">
                                     {{ contentFromBase['author']['author_name'] }}
                                 </div>
@@ -142,7 +142,6 @@ const handleSendFeedbackButton = () => {
                         </div>
                         <LabelRowContentDisplay :labels-array="contentFromBase['labels']" />
                     </div>
-                    <!--                    <div v-html="purify.sanitize(contentFromBase['excerpt'])" />-->
                 </template>
             </BaseHero>
         </template>

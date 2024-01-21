@@ -1,5 +1,6 @@
 <script setup>
-import {onMounted, ref} from 'vue';
+import {computed, onMounted, ref} from 'vue';
+import {useRouter} from "vue-router";
 
 const props = defineProps({
     route: {
@@ -18,9 +19,23 @@ const hasChildren = ref(false)
 if (props.route.children && props.route.children.length > 0) {
     hasChildren.value = true
 }
+const childrenWithNavigation = computed(() =>{
+    if(hasChildren.value){
+        return props.route.children.filter(child => child.meta.navigation)
+    }
+    else return []
+})
+
 const navDropdownToggle = ref(false)
 
 const isMobile = (window.innerWidth <= 1024)
+
+const router = useRouter()
+
+const handleClickParentNavItems = () => {
+    console.log('im called hehe')
+    return router.push({name: props.route.name})
+}
 </script>
 
 <template>
@@ -35,40 +50,35 @@ const isMobile = (window.innerWidth <= 1024)
             items-center
             h-full
             ml-0
+            pr-2
             py-4
             relative
             transition-all
             lg:!py-0
             "
-        @click="props.clickCallback"
+        @mouseleave="navDropdownToggle = false"
     >
         <router-link
-            :to="{ name: route.name }"
-            class=""
+            :to="route.path"
+            class="flex items-center h-full text-center"
+            @mouseover="navDropdownToggle = true"
         >
             {{ route.meta.customText ?? route.name }}
         </router-link>
         <div
-            v-if="hasChildren && !isMobile"
-            class="absolute bottom-0 decoration-4 h-full overlayForTriggerDropdown w-full"
-            @mouseover="navDropdownToggle = true"
-            @mouseleave="navDropdownToggle = false"
+            v-show="navDropdownToggle"
+            class="absolute top-16 dropdownBackgroundContainer"
         >
             <div
-                v-show="navDropdownToggle"
-                class="absolute top-16 dropdownBackgroundContainer"
+                class="-ml-2 bg-[#F5F5F5] font-medium h-full p-0 w-60"
             >
-                <div
-                    class="-ml-2 bg-[#F5F5F5] font-medium h-full p-0 w-60"
-                >
-                    <NavItems
-                        v-for="(child, index) in props.route.children"
-                        :key="index"
-                        class="first-letter:uppercase text-sm  hover:bg-[#E7ECEE] hover:font-bold"
-                        :to="{ name: child.name }"
-                        :route="child"
-                    />
-                </div>
+                <NavItems
+                    v-for="(child, index) in childrenWithNavigation"
+                    :key="index"
+                    class="first-letter:uppercase text-base text-main-darkGrey hover:bg-[#E7ECEE] hover:font-bold"
+                    :to="child.path"
+                    :route="child"
+                />
             </div>
         </div>
     </li>
@@ -79,7 +89,7 @@ const isMobile = (window.innerWidth <= 1024)
     >
         <router-link
             :to="{ name: route.name }"
-            class="flex p-4"
+            class="flex px-2 py-4"
         >
             {{ route.meta.customText ?? route.name }}
         </router-link>

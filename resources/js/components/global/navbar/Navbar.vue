@@ -55,6 +55,7 @@ const setScrollPosition = () => {
     scrollPosition.value = window.scrollY
 }
 
+
 onMounted(() => {
     window.addEventListener('scroll', setScrollPosition)
 })
@@ -62,29 +63,34 @@ onMounted(() => {
 onBeforeUnmount(() => {
     window.removeEventListener('scroll', setScrollPosition)
 })
+
+const logoClass = computed(() => {
+    return {
+        'absolute nav-logo transition-all -top-4 w-28 h-28 z-30': true,
+        'md:!w-36 md:!h-36 lg:left-10 lg:visible xl:!w-44 xl:!h-44': scrollPosition.value === 0,
+        '!w-14 !h-14 !top-1 !left-12': scrollPosition.value > 0,
+    };
+})
 </script>
 
 <template>
-    <div class="h-32 relative w-full z-50 md:!h-40 lg:!h-56">
+    <div class="h-[84px] relative w-full z-50">
         <nav
             v-if="isAuthenticated"
             id="navbarFullsize"
             :class="{ 'navbarScrolled' : scrollPosition > 0 }"
-            class="container h-16 hidden navbarFullsize px-12 text-main-darkGrey lg:block lg:z-20"
+            class="container h-16 hidden navbarFullsize px-12 text-main-darkGrey bg-white lg:block lg:z-20"
         >
             <ul
                 class="
-                    2xl:ml-48
+                    xl:ml-48
                     2xl:text-xl
                     font-semibold
                     h-full
                     hidden
-                    ml-48
-                    lg:ml-40
-                    text-lg
-                    lg:text-[16px]
-                    xl:text-lg
-                    gap-4
+                    ml-32
+                    lg:ml-36
+                    gap-2
                     lg:flex
                     lg:flex-row
                     lg:gap-6
@@ -101,12 +107,12 @@ onBeforeUnmount(() => {
                     class="cursor-pointer flex items-center flex-row gap-2 ml-auto mr-8"
                     @click="handleGlobalsearchClick"
                 >
-                    <div class="searchText">
+                    <div class="searchText hidden xl:!block">
                         Search
                     </div>
                     <div>
                         <Search
-                            class="2xl:h-7 2xl:w-7 stroke-main-darkGrey lg:h-5 lg:w-5"
+                            class="stroke-main-darkGrey h-7 w-7"
                             :class="{'stroke-white': scrollPosition > 0}"
                         />
                     </div>
@@ -129,25 +135,7 @@ onBeforeUnmount(() => {
                     title="Go to dashboard"
                 >
                     <Logo
-                        class="
-                            absolute
-                            top-0
-                            md:top-0
-                            right-2
-                            xl:right-20
-                            lg:left-10
-                            h-32
-                            xl:h-36
-                            nav-logo
-                            transition-all
-                            w-40
-                            md:w-44
-                            z-30
-                            lg:-top-2
-                            lg:visible
-                            xl:-top-2
-                            "
-                        :class="{ '!w-14 !h-14 !top-1 !left-12' : scrollPosition > 0 }"
+                        :class="logoClass"
                     />
                 </router-link>
             </div>

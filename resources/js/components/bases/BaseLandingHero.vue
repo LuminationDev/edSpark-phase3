@@ -4,7 +4,7 @@ import {computed} from "vue";
 
 import DashboardSwoosh from "@/js/components/svg/DashboardSwoosh.vue";
 
-type ValidLandingHeroBackgroundColor = 'navy' | 'teal' | 'darkTeal'
+type ValidLandingHeroBackgroundColor = 'navy' | 'teal' | 'darkTeal' | 'red'
 
 
 const props = defineProps({
@@ -33,6 +33,8 @@ const backgroudColorClass = computed(() => {
         return 'bg-main-navy'
     case 'purple':
         return 'bg-secondary-grapeDark'
+    case 'red':
+        return 'bg-secondary-cherry'
     default:
         return 'teal'
     }

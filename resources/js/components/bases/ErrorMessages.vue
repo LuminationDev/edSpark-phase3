@@ -1,7 +1,8 @@
 <script setup>
 import { computed } from 'vue'
-import WarningIconSmall from "@/js/components/svg/WarningIconSmall.vue";
+
 import ErrorIconSmall from "@/js/components/svg/ErrorIconSmall.vue";
+import WarningIconSmall from "@/js/components/svg/WarningIconSmall.vue";
 
 
 const props = defineProps({
@@ -24,10 +25,10 @@ defineEmits(['update:modelValue'])
             <div
                 v-for="(error, index) in v$.$errors"
                 :key="index"
-                class="flex flex-row items-center text-red-500 mt-2"
+                class="flex items-center flex-row mt-2 text-red-500"
             >
                 <ErrorIconSmall
-                    class="w-4 h-4 stroke-inactive fill-inactive shrink-0 max-w-none mr-2"
+                    class="fill-inactive h-5 max-w-none mr-2 shrink-0 stroke-inactive w-5"
                     alt="error icon"
                 />
                 <span class="text-sm">{{ error.$message }}</span>
