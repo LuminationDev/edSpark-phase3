@@ -54,10 +54,10 @@ const customFill = computed(() => {
             />
             <div
                 v-if="toggleTooltip && tooltipIndex === index"
-                class="absolute bg-main-navy border-l-[3px] border-white px-[24px] py-[18px] shadow-xl text-base w-[450px] z-50"
+                class="absolute bg-main-navy border-l-[3px] border-white px-[24px] py-[18px] shadow-xl text-sm w-[350px] z-50"
             >
                 <span class="font-normal text-white">
-                    <span class="capitalize font-bold pr-1 text-lg">
+                    <span class="capitalize font-bold pr-1 text-base">
                         {{ tech.name }}
                     </span>
                     {{ tech.description }}

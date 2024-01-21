@@ -16,6 +16,8 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Closure;
 
 use Illuminate\Support\Facades\Auth;
+use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
+use Mohamedsabil83\FilamentFormsTinyeditor\Components\TinyEditor;
 
 class SchoolResource extends Resource
 {
@@ -32,24 +34,37 @@ class SchoolResource extends Resource
     {
         return $form
             ->schema([
-//                Forms\Components\Card::make()
-//                    ->schema([
-//                        Forms\Components\TextInput::make('site_id'),
-//                        Forms\Components\TextInput::make('owner_id'),
-//                        // Forms\Components\TextInput::make('allowEditIds')
-//                        //     ->maxLength(255),
-//                        Forms\Components\TextInput::make('name')
-//                            ->required()
-//                            ->maxLength(255),
-//                        Forms\Components\Textarea::make('content_blocks'),
-//                        Forms\Components\TextInput::make('logo')
-//                            ->maxLength(255),
-//                        Forms\Components\TextInput::make('cover_image')
-//                            ->maxLength(255),
-//                        Forms\Components\Textarea::make('tech_used'),
-//                        Forms\Components\Textarea::make('pedagogical_approaches'),
-//                        Forms\Components\Textarea::make('tech_landscape'),
-//                    ])
+                Forms\Components\Card::make()
+                    ->schema([
+                        Forms\Components\TextInput::make('name')
+                            ->label('School Name')
+                            ->required()
+                            ->disabled()
+                            ->maxLength(255),
+                        TinyEditor::make('content_blocks')
+                            ->label('School profile')
+                            ->fileAttachmentsDisk('local')
+                            ->fileAttachmentsVisibility('public')
+                            ->fileAttachmentsDirectory('public/uploads/schools')
+                            ->required(),
+                        Forms\Components\FileUpload::make('cover_image')
+                            ->preserveFilenames()
+                            ->disk('public')
+                            ->directory('uploads/schools')
+                            ->acceptedFileTypes(['image/jpeg', 'image/jpg', 'image/png'])
+                            ->getUploadedFileNameForStorageUsing(function (TemporaryUploadedFile $file): string {
+                                return (string)str($file->getClientOriginalName())->prepend('edSpark-schools-');
+                            }),
+                        Forms\Components\FileUpload::make('logo')
+                            ->preserveFilenames()
+                            ->disk('public')
+                            ->directory('uploads/school')
+                            ->acceptedFileTypes(['image/jpeg', 'image/jpg', 'image/png'])
+                            ->getUploadedFileNameForStorageUsing(function (TemporaryUploadedFile $file): string {
+                                return (string)str($file->getClientOriginalName())->prepend('edSpark-schools-');
+                            }),
+
+                    ])
             ]);
     }
 

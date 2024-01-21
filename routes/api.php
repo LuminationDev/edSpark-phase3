@@ -151,6 +151,12 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('fetchSingleProductByName', [CatalogueController::class, 'fetchSingleProductByName']);
     Route::post('fetchUpgradesSingleProduct', [CatalogueController::class, 'fetchUpgradesSingleProduct']);
     Route::post('fetchBundlesSingleProduct', [CatalogueController::class, 'fetchBundlesSingleProduct']);
+
+
+    Route::get('fetchAllCatalogueCategories',[CatalogueController::class,'fetchAllCategories']);
+    Route::get('fetchAllCatalogueTypes',[CatalogueController::class,'fetchAllTypes']);
+    Route::get('fetchAllCatalogueBrands',[CatalogueController::class,'fetchAllBrands']);
+    Route::get('fetchAllCatalogueVendors',[CatalogueController::class,'fetchAllVendors']);
 });
 
 

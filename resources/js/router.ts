@@ -161,7 +161,7 @@ const routes: any = [
             }, {
                 name: 'Guides and resources',
                 path: 'guides',
-                component: InspirationAndGuides,
+                component: AdviceSearch,
                 meta: {
                     requiresAuth: true,
                     navigation: true

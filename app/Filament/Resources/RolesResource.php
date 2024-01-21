@@ -2,6 +2,8 @@
 
 namespace App\Filament\Resources;
 
+use App\Helpers\RoleHelpers;
+use App\Helpers\UserRole;
 use Filament\Facades\Filament;
 use App\Filament\Resources\RolesResource\Pages;
 // use App\Filament\Resources\RolesResource\RelationManagers;
@@ -288,10 +290,7 @@ class RolesResource extends Resource
 
     public static function shouldRegisterNavigation(): bool
     {
-        if(Auth::user()->role->role_name != 'Superadmin') {
-            return false;
-        }
+        return RoleHelpers::has_minimum_privilege(UserRole::GODMODE);
 
-        return true;
     }
 }

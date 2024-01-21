@@ -43,7 +43,7 @@ const handleClickSearchResultCard = () => {
     let componentName = ''
     switch(props.data.type) {
     case"advice":
-        componentName = 'advice-single'
+        componentName = 'guide-single'
         break;
     case"software":
         componentName = 'software-single'

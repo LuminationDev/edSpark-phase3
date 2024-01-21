@@ -9,6 +9,7 @@ class UserRole
     const SITE_LEADER = 'site_leader';
     const MODERATOR = 'moderator';
     const VIEWER = 'viewer';
+    const GODMODE = 'godmode';
 }
 
 class RoleHelpers
@@ -52,6 +53,7 @@ class RoleHelpers
         'STAFF' => 'STAFF',
         'PWDRESET' => 'PWDRESET',
         'PWDRESETSTD' => 'PWDRESETSTD',];
+    protected static array $god_key = ['Godmode'];
 
     protected static array $admin_keys = ['Superadmin', 'Moderator',];
     protected static array $moderator_keys = ['PSACT'];
@@ -60,7 +62,8 @@ class RoleHelpers
         UserRole::VIEWER => 10,
         UserRole::SITE_LEADER => 20,
         UserRole::MODERATOR => 25,
-        UserRole::ADMIN => 30
+        UserRole::ADMIN => 30,
+        UserRole::GODMODE => 50
     ];
 
     public static function get_privilege_level($role): int
@@ -72,7 +75,9 @@ class RoleHelpers
     {
         $user_role = Auth::user()->role->role_name;
 
-        if (in_array($user_role, self::$admin_keys)) {
+        if (in_array($user_role, self::$god_key)) {
+            return UserRole::GODMODE;
+        } elseif (in_array($user_role, self::$admin_keys)) {
             return UserRole::ADMIN;
         } elseif (in_array($user_role, self::$site_leader_keys)) {
             return UserRole::SITE_LEADER;
