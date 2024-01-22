@@ -1,10 +1,9 @@
 <script setup lang="ts">
 import {useVuelidate} from "@vuelidate/core";
 import {email, maxLength, required, url} from "@vuelidate/validators";
-import {onKeyStroke} from '@vueuse/core';
 import axios from "axios";
 import {storeToRefs} from "pinia";
-import {computed, reactive, ref} from "vue";
+import {reactive, ref} from "vue";
 import {useRoute} from "vue-router";
 
 import TinyMceRichTextInput from "@/js/components/bases/frontendform/TinyMceEditor/TinyMceRichTextInput.vue";
@@ -20,9 +19,12 @@ const userStore = useUserStore()
 const {currentUser} = storeToRefs(userStore)
 
 const isLoading = ref(false)
+const showFeedbackForm = ref(false)
+const feedbackError = ref("")
+const screenShotInfoPopUp = ref(false)
 
 const route = useRoute()
-const feedbackError = ref("")
+// use route.params.id (to get params)
 const state = reactive({
     name: '',
     email: '',
@@ -31,47 +33,39 @@ const state = reactive({
     content: ''
 })
 
-const emits = defineEmits(['emitFormOpenState', 'emitHideFeedbackForm'])
+const rules = {
+    name: {required},
+    email: {
+        required, email,
+        maxLength: maxLength(255)
+    },
+    organisation: {required},
+    urlissue: {required, url, maxLength: maxLength(2083)},
+    content: {required}
+}
 
-const rules = computed(() => {
-    return {
-        name: {required},
-        email: {
-            required, email,
-            maxLength: maxLength(255)
-        },
-        organisation: {required},
-        urlissue: {required, url, maxLength: maxLength(2083)},
-        content: {required}
-    }
-})
-
-const showFeedbackForm = ref(false)
 const v$ = useVuelidate(rules, state)
 
+const emits = defineEmits(['emitFormOpenState', 'emitHideFeedbackForm'])
 
 const handleTinyRichContent = (data) => {
     console.log('base form received ' + data)
     v$.value.content.$model = data
 }
 
-//function to validate the form and submit the data to backend using POST
+// function to validate the form and submit the data to backend using POST
 const handleSubmitForm = async () => {
-    console.log("Submit Button Pressed")
 
     const fields_check = await v$.value.$validate()
     if (fields_check) {
         console.log("Form is Submitted")
         const data = {
-            // below code is used to get the ID out of the path in router, but its not needed as we are creating the entire table for feedback form.
-            // event_id: route.params.id,
             feedback_id: ' ',
             user_name: v$.value.name.$model,
             email: v$.value.email.$model,
             organisation_name: v$.value.organisation.$model,
             issue_url: v$.value.urlissue.$model,
             content: v$.value.content.$model
-
         }
         console.log(fields_check)
         return axios.post(API_ENDPOINTS.FEEDBACK.CREATE_FEEDBACK, data)
@@ -102,14 +96,13 @@ const toggleFeedbackForm = (): void => {
     emits('emitFormOpenState', showFeedbackForm.value)
 }
 
-const screenshotinfopop = ref(false)
-const showScreenshotInfoPopup = () => {
+const showscreenShotInfoPopUpup = () => {
     console.log("Screenshot Info Popup hover")
-    screenshotinfopop.value = true
+    screenShotInfoPopUp.value = true
 }
 
 const hideScreeshotInfoPop = () => {
-    screenshotinfopop.value = false
+    screenShotInfoPopUp.value = false
 }
 
 </script>
@@ -130,11 +123,7 @@ const hideScreeshotInfoPop = () => {
         @click="toggleFeedbackForm(); hideScreeshotInfoPop();"
     />
 
-    <ScreenshotInfoPopup
-        v-if="screenshotinfopop"
-        class="HideScrollBar absolute top-20 right-6 z-[80]"
-        @mouseleave="hideScreeshotInfoPop"
-    />
+
     <div
         v-if="showFeedbackForm"
         id="BaseFormParent_1"
@@ -147,7 +136,8 @@ const hideScreeshotInfoPop = () => {
             inset-x-0
             max-h-[80vh]
             mx-auto
-            overflow-y-scroll
+            overflow-auto
+            overflow-y-auto
             p-8
             rounded-2xl
             text-black
@@ -216,12 +206,17 @@ const hideScreeshotInfoPop = () => {
                 </TextInput>
             </div>
             <div>
-                <div class="flex items-center flex-row ml-2 mt-6">
+                <div class="flex items-center flex-row ml-2 mt-6 relative">
                     <label> Describe your issue</label>
                     <InfoCircleIcon
                         id="infobtn"
                         class="!text-xl h-6 mb-2 ml-auto mr-4 w-6"
-                        @mouseover="showScreenshotInfoPopup"
+                        @mouseover="showscreenShotInfoPopUpup"
+                    />
+                    <ScreenshotInfoPopup
+                        v-if="screenShotInfoPopUp"
+                        class="HideScrollBar fixed -right-16 bottom-10 z-[80]"
+                        @mouseleave="hideScreeshotInfoPop"
                     />
                 </div>
                 <TinyMceRichTextInput
@@ -251,7 +246,7 @@ const hideScreeshotInfoPop = () => {
                     </template>
                 </GenericButton>
                 <GenericButton
-                    id="submitbtn"
+                    id="submitBtn"
                     :callback="handleSubmitForm"
                     class="!h-16 !text-xl 2xl:w-[15%] ml-auto hover:!bg-adminTeal sm:w-[20%]"
                 >
