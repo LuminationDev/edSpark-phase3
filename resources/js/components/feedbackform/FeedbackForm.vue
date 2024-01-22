@@ -1,18 +1,18 @@
 <script setup lang="ts">
 import {useVuelidate} from "@vuelidate/core";
 import {email, maxLength, required, url} from "@vuelidate/validators";
-import {onClickOutside} from "@vueuse/core";
+import {onKeyStroke} from '@vueuse/core';
 import axios from "axios";
 import {storeToRefs} from "pinia";
 import {computed, reactive, ref} from "vue";
-import {Ref} from "vue/dist/vue";
 import {useRoute} from "vue-router";
 
 import TinyMceRichTextInput from "@/js/components/bases/frontendform/TinyMceEditor/TinyMceRichTextInput.vue";
 import GenericButton from "@/js/components/button/GenericButton.vue";
+import ScreenshotInfoPopup from "@/js/components/feedbackform/ScreenshotInfoPopup.vue";
 import TextInput from "@/js/components/feedbackform/TextInput.vue";
 import FeedbackBackground from "@/js/components/svg/FeedbackIcon/FeedbackBackground.vue";
-import FeedbackIcon from "@/js/components/svg/FeedbackIcon/FeedbackIcon.vue";
+import InfoCircleIcon from "@/js/components/svg/InfoCircleIcon.vue";
 import {API_ENDPOINTS} from "@/js/constants/API_ENDPOINTS";
 import {useUserStore} from "@/js/stores/useUserStore";
 
@@ -58,6 +58,7 @@ const handleTinyRichContent = (data) => {
 //function to validate the form and submit the data to backend using POST
 const handleSubmitForm = async () => {
     console.log("Submit Button Pressed")
+
     const fields_check = await v$.value.$validate()
     if (fields_check) {
         console.log("Form is Submitted")
@@ -70,7 +71,9 @@ const handleSubmitForm = async () => {
             organisation_name: v$.value.organisation.$model,
             issue_url: v$.value.urlissue.$model,
             content: v$.value.content.$model
+
         }
+        console.log(fields_check)
         return axios.post(API_ENDPOINTS.FEEDBACK.CREATE_FEEDBACK, data)
             .then(res => {
                 console.log(res.data)
@@ -95,8 +98,18 @@ const handleCancelForm = () => {
 
 const toggleFeedbackForm = (): void => {
     showFeedbackForm.value = !showFeedbackForm.value
-    console.log('button clicked')
+    console.log('button clicked..')
     emits('emitFormOpenState', showFeedbackForm.value)
+}
+
+const screenshotinfopop = ref(false)
+const showScreenshotInfoPopup = () => {
+    console.log("Screenshot Info Popup hover")
+    screenshotinfopop.value = true
+}
+
+const hideScreeshotInfoPop = () => {
+    screenshotinfopop.value = false
 }
 
 </script>
@@ -114,14 +127,19 @@ const toggleFeedbackForm = (): void => {
     <div
         v-if="showFeedbackForm"
         class="backdrop-blur blur-overlay fixed top-0 left-0 h-full w-full z-[60]"
-        @click="toggleFeedbackForm"
+        @click="toggleFeedbackForm(); hideScreeshotInfoPop();"
     />
 
+    <ScreenshotInfoPopup
+        v-if="screenshotinfopop"
+        class="HideScrollBar absolute top-20 right-6 z-[80]"
+        @mouseleave="hideScreeshotInfoPop"
+    />
     <div
         v-if="showFeedbackForm"
         id="BaseFormParent_1"
         class="
-            BaseFormContainer
+            HideScrollBar
             bg-white
             border-[1px]
             fixed
@@ -136,6 +154,7 @@ const toggleFeedbackForm = (): void => {
             w-[50vw]
             z-[70]
             "
+        @click="hideScreeshotInfoPop"
     >
         <div class="Introduction formHeader">
             <div class="">
@@ -196,8 +215,15 @@ const toggleFeedbackForm = (): void => {
                     </template>
                 </TextInput>
             </div>
-            <div class="">
-                <label> Describe your issue</label>
+            <div>
+                <div class="flex items-center flex-row ml-2 mt-6">
+                    <label> Describe your issue</label>
+                    <InfoCircleIcon
+                        id="infobtn"
+                        class="!text-xl h-6 mb-2 ml-auto mr-4 w-6"
+                        @mouseover="showScreenshotInfoPopup"
+                    />
+                </div>
                 <TinyMceRichTextInput
                     :src-content="v$.content.$model"
                     :v$="v$.content"
@@ -238,7 +264,7 @@ const toggleFeedbackForm = (): void => {
     </div>
 </template>
 <style>
-.BaseFormContainer::-webkit-scrollbar {
+.HideScrollBar::-webkit-scrollbar {
     display: none;
 }
 
