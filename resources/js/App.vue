@@ -138,7 +138,7 @@ onBeforeUnmount(() => {
                 v-if="isMobile"
             />
         </div>
-        <div>
+        <div class="relative w-full z-50">
             <FeedbackForm />
         </div>
         <template v-if="showGlobalSearch">

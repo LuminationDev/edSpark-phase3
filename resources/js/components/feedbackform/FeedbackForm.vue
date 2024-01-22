@@ -50,9 +50,6 @@ const showFeedbackForm = ref(false)
 const v$ = useVuelidate(rules, state)
 
 
-const addFeedbackFormItemSelector: Ref<HTMLDivElement | null> = ref(null)
-
-
 const handleTinyRichContent = (data) => {
     console.log('base form received ' + data)
     v$.value.content.$model = data
@@ -96,11 +93,6 @@ const handleCancelForm = () => {
 }
 
 
-onClickOutside(addFeedbackFormItemSelector, () => {
-    showFeedbackForm.value = false
-    emits('emitFormOpenState', showFeedbackForm.value)
-    console.log("This is showing feedback on outside: " + showFeedbackForm.value)
-})
 const toggleFeedbackForm = (): void => {
     showFeedbackForm.value = !showFeedbackForm.value
     console.log('button clicked')
@@ -122,12 +114,12 @@ const toggleFeedbackForm = (): void => {
     <div
         v-if="showFeedbackForm"
         class="backdrop-blur blur-overlay fixed top-0 left-0 h-full w-full z-[60]"
+        @click="toggleFeedbackForm"
     />
 
     <div
         v-if="showFeedbackForm"
         id="BaseFormParent_1"
-        ref="addFeedbackFormItemSelector"
         class="
             BaseFormContainer
             bg-white
