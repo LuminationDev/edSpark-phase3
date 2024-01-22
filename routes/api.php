@@ -145,10 +145,10 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('getTopTags', [TagController::class, 'getTopTagsByModelType']);
 
     //Labels
-    Route::get('fetchAllLabels', [LabelController::class , 'fetchAllLabels']);
+    Route::get('fetchAllLabels', [LabelController::class, 'fetchAllLabels']);
 
     // Catalogue
-    Route::post('fetchCatalogueByField', [CatalogueController::class,"fetchCatalogueByField" ]);
+    Route::post('fetchCatalogueByField', [CatalogueController::class, "fetchCatalogueByField"]);
     Route::post('fetchSingleProductByName', [CatalogueController::class, 'fetchSingleProductByName']);
     Route::post('fetchUpgradesSingleProduct', [CatalogueController::class, 'fetchUpgradesSingleProduct']);
     Route::post('fetchBundlesSingleProduct', [CatalogueController::class, 'fetchBundlesSingleProduct']);

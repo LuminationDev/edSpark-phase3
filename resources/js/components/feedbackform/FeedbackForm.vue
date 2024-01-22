@@ -24,11 +24,11 @@ const isLoading = ref(false)
 const route = useRoute()
 const feedbackError = ref("")
 const state = reactive({
-    name: 'Rohan',
-    email: 'rohan@gmail.com',
+    name: '',
+    email: '',
     organisation: '',
-    urlissue: 'http://www.rohan.com.au',
-    content: 'This is Rohan here!'
+    urlissue: '',
+    content: ''
 })
 
 const emits = defineEmits(['emitFormOpenState', 'emitHideFeedbackForm'])
@@ -68,13 +68,13 @@ const handleSubmitForm = async () => {
             // below code is used to get the ID out of the path in router, but its not needed as we are creating the entire table for feedback form.
             // event_id: route.params.id,
             feedback_id: ' ',
-            feedback_name: v$.value.name.$model,
-            feedback_email: v$.value.email.$model,
-            feedback_organisation: v$.value.organisation.$model,
-            feedback_urlissue: v$.value.urlissue.$model,
-            feedback_content: v$.value.content.$model
+            user_name: v$.value.name.$model,
+            email: v$.value.email.$model,
+            organisation_name: v$.value.organisation.$model,
+            issue_url: v$.value.urlissue.$model,
+            content: v$.value.content.$model
         }
-        return axios.post(API_ENDPOINTS.EVENT.ADD_OR_EDIT_EMS_LINK, data)
+        return axios.post(API_ENDPOINTS.FEEDBACK.CREATE_FEEDBACK, data)
             .then(res => {
                 console.log(res.data)
                 console.log("inside Axios")
