@@ -234,7 +234,6 @@ const handleCloseModerationTab = (): void => {
                                                 md:h-[200px]
                                                 rounded-md
                                                 text-md
-                                                w-full
                                                 md:w-[200px]
                                                 "
                                         >
@@ -243,11 +242,12 @@ const handleCloseModerationTab = (): void => {
                                                 :alt="`school logo`"
                                                 class="
                                                     bg-white
+                                                    h-52
                                                     max-h-full
                                                     object-contain
                                                     p-3
                                                     rounded
-                                                    w-full
+                                                    w-52
                                                     "
                                                 @error="handleErrorImage"
                                             >

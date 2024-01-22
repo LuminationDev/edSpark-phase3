@@ -68,7 +68,7 @@ const {windowWidth} = storeToRefs(windowStore)
 
 const heroBackgroundSwitch = computed(() => {
     if (windowWidth.value < 1024) {
-        return 'background-image: linear-gradient(rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.8)), url(' + heroBackgroundLinkOnly.value + ') !important;  background-position: center center;  background-color:white '
+        return 'background-image: linear-gradient(rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.8)), url(' + heroBackgroundLinkOnly.value + ') !important;  background-position: center center;  background-color:white;background-size:cover'
     } else {
         return ''
     }
@@ -79,7 +79,7 @@ const heroBackgroundSwitch = computed(() => {
 <template>
     <div class="BaseHeroContainer h-mainHero max-h-mainHero mb-0 overflow-y-hidden relative z-10">
         <div
-            class="grid grid-cols-8 h-full relative"
+            class="grid grid-cols-10 h-full relative"
         >
             <div
                 class="
@@ -88,13 +88,12 @@ const heroBackgroundSwitch = computed(() => {
                     bg-contain
                     bg-no-repeat
                     bg-secondary-blueberry
-                    col-span-8
+                    col-span-10
                     h-full
                     px-11
                     py-8
-                    lg:!col-span-5
+                    lg:!col-span-6
                     "
-                :style="heroBackgroundSwitch"
             >
                 <div
                     v-if="$slots.titleText || $slots.subtitleText1 || $slots.subtitleText2"
@@ -154,7 +153,7 @@ const heroBackgroundSwitch = computed(() => {
                 </div>
             </div>
             <div
-                class="bg-center bg-contain bg-no-repeat bg-white hidden imageCover lg:!block lg:!col-span-3"
+                class="bg-center bg-cover bg-no-repeat bg-white hidden imageCover lg:!block lg:!col-span-4"
                 :style="'background-image: url(' + heroBackgroundLinkOnly +')'"
             />
         </div>

@@ -234,10 +234,10 @@ const handleEmitFromSubmenu = (value) => {
         />
         <div
             v-if="showPreviewLabel && !baseIsLoading"
-            class="flex flex-row moderationRow mt-10"
+            class="grid grid-cols-4 moderationRow mt-10"
         >
             <div
-                class="basis-4/5 font-semibold mb-4 previewLabel text-center text-xl"
+                class="col-span-3 font-semibold mb-4 previewLabel text-center text-xl"
             >
                 Preview content (Moderation)
                 <div class="font-medium text-base text-center">
@@ -248,7 +248,7 @@ const handleEmitFromSubmenu = (value) => {
                         singleContent?.author?.author_name ? "by " + singleContent?.author?.author_name : ""
                     }} </span>
                 </div>
-                <div class="basis-1/5 flex">
+                <div class="col-span-1 flex">
                     <GenericButton :callback="() => {}">
                         Back to moderation
                     </GenericButton>
