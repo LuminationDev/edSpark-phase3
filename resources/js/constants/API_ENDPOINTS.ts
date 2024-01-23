@@ -104,6 +104,7 @@ export const API_ENDPOINTS: Endpoints = appendServerURL({
     CATALOGUE: {
         FETCH_CATALOGUE_BY_FIELD : '/fetchCatalogueByField',
         FETCH_SINGLE_PRODUCT_BY_NAME: '/fetchSingleProductByName',
+        FETCH_SINGLE_PRODUCT_BY_REFERENCE: '/fetchSingleProductByReference',
         FETCH_UPGRADES_SINGLE_PRODUCT: '/fetchUpgradesSingleProduct',
         FETCH_BUNDLES_SINGLE_PRODUCT: '/fetchBundlesSingleProduct',
         FETCH_ALL_CATALOGUE_CATEGORIES : '/fetchAllCatalogueCategories',

@@ -32,7 +32,7 @@ const shadyBackgroudColorClass = computed(() => {
 
 <template>
     <div
-        class="flex flex-col my-4 px-1 py-16 lg:!px-16"
+        class="flex flex-col px-1 py-16 lg:!px-16"
         :class="shadyBackgroudColorClass"
     >
         <div class="flex justify-between items-start flex-row mb-4 sectionHeader w-full">

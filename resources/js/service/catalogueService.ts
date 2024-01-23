@@ -29,6 +29,10 @@ export const catalogueService = {
         const body = { name: name };
         return axios.post(API_ENDPOINTS.CATALOGUE.FETCH_SINGLE_PRODUCT_BY_NAME, body);
     },
+    fetchSingleProductByReference: (reference: string) => {
+        const body = { unique_reference: reference };
+        return axios.post(API_ENDPOINTS.CATALOGUE.FETCH_SINGLE_PRODUCT_BY_REFERENCE, body);
+    },
 
     fetchUpgradesSingleProduct: (name: string) => {
         const body = { name: name };

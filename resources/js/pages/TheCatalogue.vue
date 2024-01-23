@@ -3,6 +3,7 @@ import "@hennge/vue3-pagination/dist/vue3-pagination.css";
 
 import VPagination from "@hennge/vue3-pagination";
 import {computed, onMounted, Ref, ref, watch} from "vue";
+import {useRouter} from "vue-router";
 
 import BaseLandingHero from "@/js/components/bases/BaseLandingHero.vue";
 import CatalogueFilterColumn from "@/js/components/catalogue/CatalogueFilterColumn.vue";
@@ -37,6 +38,7 @@ const {
     handleChangePageNumber, updatePaginationData
 } = usePagination(1, 24)
 
+const router = useRouter()
 const showPagination = computed(() => {
     return totalPages.value > 1
 })
@@ -52,24 +54,25 @@ const primarySelectedValues = computed(() => {
 })
 
 onMounted(async () => {
-    const fetchResult = await fetchCatalogue(CatalogueFilterField.Category, selectedCategory.value, currentPage.value, perPage.value)
-    if (fetchResult.pagination) {
-        updatePaginationData(fetchResult.pagination)
-    }
-    catalogueList.value = fetchResult.items
+
 
     try {
         isFilterLoading.value = true
-        const [categoriesResponse, typesResponse, brandsResponse, vendorsResponse] = await Promise.all([
+        const [categoriesResponse, typesResponse, brandsResponse, vendorsResponse, cataloguesResult] = await Promise.all([
             catalogueService.fetchAllCategories(),
             catalogueService.fetchAllTypes(),
             catalogueService.fetchAllBrands(),
-            catalogueService.fetchAllVendors()
+            catalogueService.fetchAllVendors(),
+            fetchCatalogue(CatalogueFilterField.Category, selectedCategory.value, currentPage.value, perPage.value)
         ]);
         categoryList.value = categoriesResponse.data.data.filter(Boolean)
         typeList.value = typesResponse.data.data.filter(Boolean);
         brandList.value = brandsResponse.data.data.filter(Boolean);
         vendorList.value = vendorsResponse.data.data.filter(Boolean);
+        catalogueList.value = cataloguesResult.items
+        if (cataloguesResult.pagination) {
+            updatePaginationData(cataloguesResult.pagination)
+        }
     } catch (error) {
         // Handle errors here
         console.error('Error fetching data:', error);
@@ -78,7 +81,7 @@ onMounted(async () => {
     }
 })
 
-const fetchCatalogue = async (field, category, page, perPage = 24) =>{
+const fetchCatalogue = async (field, category, page, perPage = 24) => {
     isProductsLoading.value = true
     return catalogueService.fetchCatalogueByField(field, category, page, perPage)
         .then(res => {
@@ -92,14 +95,14 @@ const fetchCatalogue = async (field, category, page, perPage = 24) =>{
             if (err.response.status == 404) {
                 setError(404, 'No product found')
             }
-        }).finally( () =>{
+        }).finally(() => {
             isProductsLoading.value = false
         })
 }
 const fetchCatalogueAndUpdateOtherFilters = async (field, category, page, perPage = 24) => {
     isProductsLoading.value = true
     clearError()
-    const catalogueFetchResult =  await fetchCatalogue(field, category, page, perPage)
+    const catalogueFetchResult = await fetchCatalogue(field, category, page, perPage)
     console.log('after await')
     catalogueList.value = catalogueFetchResult.items
     isProductsLoading.value = false
@@ -166,6 +169,16 @@ watch(primaryFilter.value, () => {
     currentPage.value = 1
 })
 
+const handleClickCatalogueCard = (reference) => {
+    console.log('catalogue card clicked')
+    router.push({
+        name: 'catalogue-single', params: {
+            ref: reference
+        }
+    })
+
+}
+
 
 </script>
 
@@ -173,6 +186,7 @@ watch(primaryFilter.value, () => {
     <BaseLandingHero
         :title="LandingHeroText['catalogue']['title']"
         :title-paragraph="LandingHeroText['catalogue']['subtitle']"
+        swoosh-color="teal"
     />
     <div class="cataloguePageOuterContainer grid grid-cols-4 mt-10">
         <div class="col-span-1 flex items-center flex-col gap-2">
@@ -203,7 +217,8 @@ watch(primaryFilter.value, () => {
                 <div
                     v-for="(item,index) in catalogueList"
                     :key="index"
-                    class="border-[1px] catalogueCard grid place-items-center rounded w-72"
+                    class="border-[1px] catalogueCard cursor-pointer grid place-items-center rounded w-72"
+                    @click="() => handleClickCatalogueCard(item.unique_reference)"
                 >
                     <img
                         :src="catalogueImageURL + item.image"
