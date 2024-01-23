@@ -103,6 +103,10 @@ const fetchCatalogueAndUpdateOtherFilters = async (field, category, page, perPag
     console.log('after await')
     catalogueList.value = catalogueFetchResult.items
     isProductsLoading.value = false
+    if (catalogueFetchResult.pagination) {
+        updatePaginationData(catalogueFetchResult.pagination)
+    }
+
     if (catalogueFetchResult.available_fields) {
         updateOtherFilters(catalogueFetchResult.available_fields)
 
@@ -263,7 +267,7 @@ watch(primaryFilter.value, () => {
 
         <div
             v-else
-            class="col-span-3 flex justify-center items-center flex-row"
+            class="col-span-3 flex justify-center items-start flex-row mt-24"
         >
             <Loader
                 loader-type="small"
