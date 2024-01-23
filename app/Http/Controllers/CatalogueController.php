@@ -130,10 +130,9 @@ class CatalogueController extends Controller
 
 
 
-    // Get Individual products, excluding bundle offers and upgrades
-    public function fetchAllProducts(Request $request)
+    public function fetchAllCatalogue(Request $request)
     {
-        $perPage = $request->input('per_page', 20);
+        $perPage = $request->input('per_page', 24);
 
         $products = Catalogue::paginate($perPage);
 

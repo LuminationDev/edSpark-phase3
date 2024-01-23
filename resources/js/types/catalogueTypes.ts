@@ -32,6 +32,7 @@ export interface CatalogueItemType {
 
 
 export enum CatalogueFilterField{
+    All= 'all',
     Type = 'type',
     Brand = 'brand',
     Vendor = 'vendor',

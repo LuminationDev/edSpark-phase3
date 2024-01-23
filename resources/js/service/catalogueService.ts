@@ -51,5 +51,9 @@ export const catalogueService = {
     },
     fetchAllVendors: () =>{
         return axios.get(API_ENDPOINTS.CATALOGUE.FETCH_ALL_CATALOGUE_VENDORS)
+    },
+    fetchAllCatalogue: (per_page)=>{
+        const body = {per_page: per_page}
+        return axios.post(API_ENDPOINTS.CATALOGUE.FETCH_ALL_CATALOGUE,body)
     }
 }
