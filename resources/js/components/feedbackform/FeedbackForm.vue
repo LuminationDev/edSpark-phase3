@@ -3,18 +3,20 @@ import {useVuelidate} from "@vuelidate/core";
 import {email, maxLength, required, url} from "@vuelidate/validators";
 import axios from "axios";
 import {storeToRefs} from "pinia";
-import {reactive, ref} from "vue";
-import {useRoute} from "vue-router";
+import {reactive, ref, watch} from "vue";
+import {useRouter} from "vue-router";
 
+import ErrorMessages from "@/js/components/bases/ErrorMessages.vue";
 import TinyMceRichTextInput from "@/js/components/bases/frontendform/TinyMceEditor/TinyMceRichTextInput.vue";
+import TextInput from "@/js/components/bases/TextInput.vue";
 import GenericButton from "@/js/components/button/GenericButton.vue";
 import ScreenshotInfoPopup from "@/js/components/feedbackform/ScreenshotInfoPopup.vue";
-import TextInput from "@/js/components/feedbackform/TextInput.vue";
 import FeedbackBackground from "@/js/components/svg/FeedbackIcon/FeedbackBackground.vue";
 import InfoCircleIcon from "@/js/components/svg/InfoCircleIcon.vue";
 import {API_ENDPOINTS} from "@/js/constants/API_ENDPOINTS";
 import {useUserStore} from "@/js/stores/useUserStore";
 
+const router = useRouter()
 const userStore = useUserStore()
 const {currentUser} = storeToRefs(userStore)
 
@@ -23,13 +25,12 @@ const showFeedbackForm = ref(false)
 const feedbackError = ref("")
 const screenShotInfoPopUp = ref(false)
 
-const route = useRoute()
 // use route.params.id (to get params)
 const state = reactive({
-    name: '',
-    email: '',
-    organisation: '',
-    urlissue: '',
+    name: currentUser.value.full_name,
+    email: currentUser.value.email,
+    organisation: currentUser.value.site.site_name,
+    urlIssue: '',
     content: ''
 })
 
@@ -40,11 +41,12 @@ const rules = {
         maxLength: maxLength(255)
     },
     organisation: {required},
-    urlissue: {required, url, maxLength: maxLength(2083)},
+    urlIssue: {required, maxLength: maxLength(2083)},
     content: {required}
 }
 
 const v$ = useVuelidate(rules, state)
+
 
 const emits = defineEmits(['emitFormOpenState', 'emitHideFeedbackForm'])
 
@@ -58,13 +60,14 @@ const handleSubmitForm = async () => {
 
     const fields_check = await v$.value.$validate()
     if (fields_check) {
+
         console.log("Form is Submitted")
         const data = {
             feedback_id: ' ',
             user_name: v$.value.name.$model,
             email: v$.value.email.$model,
             organisation_name: v$.value.organisation.$model,
-            issue_url: v$.value.urlissue.$model,
+            issue_url: v$.value.urlIssue.$model,
             content: v$.value.content.$model
         }
         console.log(fields_check)
@@ -85,25 +88,43 @@ const handleSubmitForm = async () => {
     }
 }
 const handleCancelForm = () => {
-    console.log("Cancel Button Pressed")
     showFeedbackForm.value = !showFeedbackForm.value
 }
-
 
 const toggleFeedbackForm = (): void => {
     showFeedbackForm.value = !showFeedbackForm.value
-    console.log('button clicked..')
     emits('emitFormOpenState', showFeedbackForm.value)
+
+    formattedLink(window.location.href)
+
 }
 
-const showscreenShotInfoPopUpup = () => {
-    console.log("Screenshot Info Popup hover")
+const showScreenShotInfoPopUpup = () => {
     screenShotInfoPopUp.value = true
 }
 
-const hideScreeshotInfoPop = () => {
+const hideScreeShotInfoPop = () => {
     screenShotInfoPopUp.value = false
 }
+
+const showError = ref(false)
+
+const formattedLink = (userLink) => {
+    console.log("Original Link:", userLink)
+    if (!userLink.includes("http://", "https://") && !userLink.startsWith('http://', "https://")) {
+        showError.value = true
+        console.log("Does not have https:// link")
+    } else {
+        userLink
+        console.log("Does have https:// link")
+        showError.value = false
+    }
+}
+
+watch(router.currentRoute, () => {
+    v$.value.urlIssue.$model = window.location.href
+})
+
 
 </script>
 
@@ -120,7 +141,7 @@ const hideScreeshotInfoPop = () => {
     <div
         v-if="showFeedbackForm"
         class="backdrop-blur blur-overlay fixed top-0 left-0 h-full w-full z-[60]"
-        @click="toggleFeedbackForm(); hideScreeshotInfoPop();"
+        @click="toggleFeedbackForm(); hideScreeShotInfoPop();"
     />
 
 
@@ -144,7 +165,7 @@ const hideScreeshotInfoPop = () => {
             w-[50vw]
             z-[70]
             "
-        @click="hideScreeshotInfoPop"
+        @click="hideScreeShotInfoPop"
     >
         <div class="Introduction formHeader">
             <div class="">
@@ -169,6 +190,8 @@ const hideScreeshotInfoPop = () => {
             <div class="ContainerTemp my-2 richContent">
                 <TextInput
                     v-model="v$.email.$model"
+
+
                     :v$="v$.email"
                     class="my-2"
                     placeholder="Enter your email address"
@@ -194,8 +217,8 @@ const hideScreeshotInfoPop = () => {
             </div>
             <div class="ContainerTemp my-2 richContent">
                 <TextInput
-                    v-model="v$.urlissue.$model"
-                    :v$="v$.urlissue"
+                    v-model="v$.urlIssue.$model"
+                    :v$="v$.urlIssue"
                     class="my-2 placeholder:text-red-700"
                     placeholder="https://edspark.sa.edu/software"
                     :with-no-left-margin="true"
@@ -204,6 +227,9 @@ const hideScreeshotInfoPop = () => {
                         URL of page with issue
                     </template>
                 </TextInput>
+                <div v-if="showError">
+                    error
+                </div>
             </div>
             <div>
                 <div class="flex items-center flex-row ml-2 mt-6 relative">
@@ -211,12 +237,12 @@ const hideScreeshotInfoPop = () => {
                     <InfoCircleIcon
                         id="infobtn"
                         class="!text-xl h-6 mb-2 ml-auto mr-4 w-6"
-                        @mouseover="showscreenShotInfoPopUpup"
+                        @mouseover="showScreenShotInfoPopUpup"
                     />
                     <ScreenshotInfoPopup
                         v-if="screenShotInfoPopUp"
-                        class="HideScrollBar fixed -right-16 bottom-10 z-[80]"
-                        @mouseleave="hideScreeshotInfoPop"
+                        class="HideScrollBar fixed top-28 right-32 z-[80]"
+                        @mouseleave="hideScreeShotInfoPop"
                     />
                 </div>
                 <TinyMceRichTextInput
@@ -227,7 +253,7 @@ const hideScreeshotInfoPop = () => {
             </div>
             <div class="flex flex-row ml-2 mt-6">
                 <GenericButton
-                    id="cancelbtn"
+                    id="cancelBtn"
                     :callback="handleCancelForm"
                     class="
                         !bg-[#FFFFFF]

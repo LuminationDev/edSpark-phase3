@@ -4,7 +4,7 @@
 
 <template>
     <div
-        class="bg-gray-50 border-2 h-[400px] overflow-y-scroll rounded-2xl w-[40%]  right-2"
+        class="bg-gray-50 border-2 h-[400px] overflow-y-scroll rounded-2xl w-[40%]"
     >
         <div class="m-6">
             <p class="font-bold">
@@ -24,7 +24,7 @@
             <p class="font-bold">
                 How do I attach that to this form?
             </p><br>
-            <p class="font-bold"> 
+            <p class="font-bold">
                 Rich text editor -
             </p>
             <p>
