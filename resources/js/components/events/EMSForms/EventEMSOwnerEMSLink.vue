@@ -33,7 +33,7 @@ const formattedLink = (userLink) => {
     console.log("Original Link:", userLink);
     if (!userLink.includes("http://") && !userLink.startsWith('http://')) {
 
-        return userLink = "http://" + userLink;
+        return "http://" + userLink;
     } else {
 
         return userLink;

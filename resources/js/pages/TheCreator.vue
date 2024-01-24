@@ -28,6 +28,7 @@ const showBackToPosts = computed(() => {
     <BaseLandingHero
         :title="LandingHeroText['creator']['title']"
         :title-paragraph="LandingHeroText['creator']['subtitle']"
+        swoosh-color="teal"
     >
         <template #robotIllustration>
             <InspirationAndGuidesRobot class="absolute top-10 left-36" />

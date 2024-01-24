@@ -130,10 +130,9 @@ class CatalogueController extends Controller
 
 
 
-    // Get Individual products, excluding bundle offers and upgrades
-    public function fetchAllProducts(Request $request)
+    public function fetchAllCatalogue(Request $request)
     {
-        $perPage = $request->input('per_page', 20);
+        $perPage = $request->input('per_page', 24);
 
         $products = Catalogue::paginate($perPage);
 
@@ -167,19 +166,44 @@ class CatalogueController extends Controller
             return ResponseService::error('Product not found.', null, 404);
         }
 
-        // Check for available upgrades
-        $upgradeAvailable = Catalogue::where('name', $request->input('name'))
-            ->where('type', 'Upgrade')
-            ->exists();
+//        // Check for available upgrades
+//        $upgradeAvailable = Catalogue::where('name', $request->input('name'))
+//            ->where('type', 'Upgrade')
+//            ->exists();
+//
+//        // Check for available bundles
+//        $bundleAvailable = Catalogue::where('name', 'like', $request->input('name') . '%')
+//            ->where('type', 'Bundle')
+//            ->exists();
+//
+//        // Add fields to the product
+//        $product->upgrade_available = $upgradeAvailable;
+//        $product->bundle_available = $bundleAvailable;
 
-        // Check for available bundles
-        $bundleAvailable = Catalogue::where('name', 'like', $request->input('name') . '%')
-            ->where('type', 'Bundle')
-            ->exists();
+        return ResponseService::success('Product fetched successfully.', $product);
+    }
 
-        // Add fields to the product
-        $product->upgrade_available = $upgradeAvailable;
-        $product->bundle_available = $bundleAvailable;
+    public function fetchSingleProductByUniqueReference(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'unique_reference' => 'required',
+        ]);
+
+        if ($validator->fails()) {
+            return ResponseService::error($validator->errors()->first(), null, 400);
+        }
+
+        // Fetch the product by name
+        $product = Catalogue::where('unique_reference', $request->input('unique_reference'))->first();
+
+
+        // Check if the product exists
+        if (!$product) {
+            return ResponseService::error('Product not found.', null, 404);
+        }
+
+        $product = $this->catalogueModelToJson($product);
+
 
         return ResponseService::success('Product fetched successfully.', $product);
     }

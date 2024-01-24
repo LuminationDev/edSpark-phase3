@@ -2,7 +2,7 @@
 
 import {computed} from "vue";
 
-import DashboardSwoosh from "@/js/components/svg/DashboardSwoosh.vue";
+import EdSparkSlimSwoosh from "@/js/components/svg/EdSparkSlimSwoosh.vue";
 
 type ValidLandingHeroBackgroundColor = 'navy' | 'teal' | 'darkTeal' | 'red'
 
@@ -18,6 +18,11 @@ const props = defineProps({
     },
     backgroundColor: {
         type: String as ValidLandingHeroBackgroundColor,
+        required: false,
+        default: 'teal'
+    },
+    swooshColor:{
+        type: String,
         required: false,
         default: 'teal'
     }
@@ -44,7 +49,7 @@ const backgroudColorClass = computed(() => {
 
 <template>
     <div
-        class="h-mainHero mb-8 relative"
+        class="h-mainHero relative"
         :class="backgroudColorClass"
     >
         <div class="grid grid-cols-6 h-full px-16 md:px-16">
@@ -66,13 +71,9 @@ const backgroudColorClass = computed(() => {
             </div>
         </div>
         <div
-            class="2xl:-bottom-4 BaseLandingHeroSwoosh absolute -bottom-14 h-[120px] hidden w-full z-20 md:block xl:-bottom-8"
+            class="2xl:-bottom-5 BaseLandingHeroSwoosh absolute -bottom-10 h-[120px] hidden w-full z-20 md:block xl:-bottom-8"
         >
-            <img
-                src="@/assets/images/BaseLandingHeroSwoosh.png"
-                alt="A curved line graphic"
-                class="object-contain scale-x-[101.5%] w-full"
-            >
+            <EdSparkSlimSwoosh :color-theme="swooshColor" />
         </div>
     </div>
 </template>

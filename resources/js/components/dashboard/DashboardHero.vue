@@ -21,6 +21,7 @@ import {
         :title="LandingHeroText['dashboard']['title']"
         :title-paragraph="LandingHeroText['dashboard']['subtitle']"
         background-color="navy"
+        swoosh-color="blue"
     >
         <template #robotIllustration>
             <div class="welcomeRobot">
