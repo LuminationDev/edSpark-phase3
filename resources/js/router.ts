@@ -19,6 +19,7 @@ import ProfileMessages from '@/js/components/userprofile/ProfileMessages.vue'
 import ProfileWork from '@/js/components/userprofile/ProfileWork.vue'
 import UserProfile from '@/js/components/userprofile/UserProfile.vue';
 import AdviceSingle from "@/js/pages/AdviceSingle.vue";
+import CatalogueSingle from "@/js/pages/CatalogueSingle.vue";
 import EdsparkPageNotFound from "@/js/pages/EdsparkPageNotFound.vue";
 import EventSingle from "@/js/pages/EventSingle.vue";
 import HardwareSingle from '@/js/pages/HardwareSingle.vue';
@@ -364,6 +365,15 @@ const routes: any = [
         name: 'catalogue',
         path: '/catalogue',
         component: TheCatalogue,
+        meta: {
+            navigation: false,
+            requiresAuth: true,
+        }
+    },
+    {
+        name: 'catalogue-single',
+        path: '/catalogue/resources/:ref/:name?',
+        component: CatalogueSingle,
         meta: {
             navigation: false,
             requiresAuth: true,

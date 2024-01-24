@@ -3,9 +3,11 @@ import "@hennge/vue3-pagination/dist/vue3-pagination.css";
 
 import VPagination from "@hennge/vue3-pagination";
 import {computed, onMounted, Ref, ref, watch} from "vue";
+import {useRouter} from "vue-router";
 
 import BaseLandingHero from "@/js/components/bases/BaseLandingHero.vue";
 import CatalogueFilterColumn from "@/js/components/catalogue/CatalogueFilterColumn.vue";
+import CataloguePerPageSelector from "@/js/components/catalogue/CataloguePerPageSelector.vue";
 import Loader from "@/js/components/spinner/Loader.vue";
 import useErrorMessage from "@/js/composables/useErrorMessage";
 import usePagination from "@/js/composables/usePagination";
@@ -29,12 +31,14 @@ const selectedVendor = ref([])
 
 
 const isProductsLoading = ref(false)
+const isFilterLoading = ref(false)
 const {error, setError, clearError} = useErrorMessage()
 const {
     currentPage, perPage, totalPages, totalItems,
     handleChangePageNumber, updatePaginationData
-} = usePagination(1, 30)
+} = usePagination(1, 24)
 
+const router = useRouter()
 const showPagination = computed(() => {
     return totalPages.value > 1
 })
@@ -42,7 +46,7 @@ const showPagination = computed(() => {
 // have a primary filte rhere
 const primaryFilter: Ref<CatalogueFilterField | null> = ref(null)
 
-const primarySelectedValues = computed(() =>{
+const primarySelectedValues = computed(() => {
     if (primaryFilter.value == CatalogueFilterField.Type) return selectedType.value
     if (primaryFilter.value == CatalogueFilterField.Vendor) return selectedVendor.value
     if (primaryFilter.value == CatalogueFilterField.Brand) return selectedBrand.value
@@ -50,45 +54,67 @@ const primarySelectedValues = computed(() =>{
 })
 
 onMounted(async () => {
-    fetchCatalogue(CatalogueFilterField.Category, selectedCategory.value, currentPage.value, perPage.value)
+
+
     try {
-        const [categoriesResponse, typesResponse, brandsResponse, vendorsResponse] = await Promise.all([
+        isFilterLoading.value = true
+        const [categoriesResponse, typesResponse, brandsResponse, vendorsResponse, cataloguesResult] = await Promise.all([
             catalogueService.fetchAllCategories(),
             catalogueService.fetchAllTypes(),
             catalogueService.fetchAllBrands(),
-            catalogueService.fetchAllVendors()
+            catalogueService.fetchAllVendors(),
+            fetchCatalogue(CatalogueFilterField.Category, selectedCategory.value, currentPage.value, perPage.value)
         ]);
         categoryList.value = categoriesResponse.data.data.filter(Boolean)
         typeList.value = typesResponse.data.data.filter(Boolean);
         brandList.value = brandsResponse.data.data.filter(Boolean);
         vendorList.value = vendorsResponse.data.data.filter(Boolean);
+        catalogueList.value = cataloguesResult.items
+        if (cataloguesResult.pagination) {
+            updatePaginationData(cataloguesResult.pagination)
+        }
     } catch (error) {
         // Handle errors here
         console.error('Error fetching data:', error);
+    } finally {
+        isFilterLoading.value = false
     }
 })
 
-const fetchCatalogue = (field, category, page, perPage = 40) => {
+const fetchCatalogue = async (field, category, page, perPage = 24) => {
+    isProductsLoading.value = true
+    return catalogueService.fetchCatalogueByField(field, category, page, perPage)
+        .then(res => {
+            console.log('here resolved')
+            return res.data.data
+
+        })
+        .catch(err => {
+            console.log(err)
+            isProductsLoading.value = false
+            if (err.response.status == 404) {
+                setError(404, 'No product found')
+            }
+        }).finally(() => {
+            isProductsLoading.value = false
+        })
+}
+const fetchCatalogueAndUpdateOtherFilters = async (field, category, page, perPage = 24) => {
     isProductsLoading.value = true
     clearError()
-    catalogueService.fetchCatalogueByField(field, category, page, perPage).then(res => {
-        isProductsLoading.value = false
-        catalogueList.value = res.data.data.items
-        if (res.data.data.pagination) {
-            updatePaginationData(res.data.data.pagination)
+    const catalogueFetchResult = await fetchCatalogue(field, category, page, perPage)
+    console.log('after await')
+    catalogueList.value = catalogueFetchResult.items
+    isProductsLoading.value = false
+    if (catalogueFetchResult.pagination) {
+        updatePaginationData(catalogueFetchResult.pagination)
+    }
 
-        }
-        if (res.data.data.available_fields) {
-            updateOtherFilters(res.data.data.available_fields)
+    if (catalogueFetchResult.available_fields) {
+        updateOtherFilters(catalogueFetchResult.available_fields)
 
-        }
-    }).catch(err => {
-        console.log(err)
-        isProductsLoading.value = false
-        if (err.response.status == 404) {
-            setError(404, 'No product found')
-        }
-    })
+    }
+
 }
 
 
@@ -108,40 +134,50 @@ const updateOtherFilters = (available_fields) => {
 }
 
 watch(selectedCategory, () => {
-    if (selectedBrand.value.length === 0 && selectedType.value.length === 0 && selectedVendor.value.length === 0 ) {
+    if (selectedBrand.value.length === 0 && selectedType.value.length === 0 && selectedVendor.value.length === 0) {
         primaryFilter.value = CatalogueFilterField.Category
-        fetchCatalogue(CatalogueFilterField.Category, selectedCategory.value, currentPage.value, perPage.value)
+        fetchCatalogueAndUpdateOtherFilters(CatalogueFilterField.Category, selectedCategory.value, currentPage.value, perPage.value)
     }
 })
 
 watch(selectedBrand, () => {
-    if (selectedVendor.value.length === 0 && selectedType.value.length === 0 && selectedCategory.value.length === 0 ) {
+    if (selectedVendor.value.length === 0 && selectedType.value.length === 0 && selectedCategory.value.length === 0) {
         primaryFilter.value = CatalogueFilterField.Brand;
-        fetchCatalogue(CatalogueFilterField.Brand, selectedBrand.value, currentPage.value, perPage.value)
+        fetchCatalogueAndUpdateOtherFilters(CatalogueFilterField.Brand, selectedBrand.value, currentPage.value, perPage.value)
     }
 })
 watch(selectedType, () => {
-    if (selectedBrand.value.length === 0 && selectedVendor.value.length === 0 && selectedCategory.value.length === 0 ) {
+    if (selectedBrand.value.length === 0 && selectedVendor.value.length === 0 && selectedCategory.value.length === 0) {
         primaryFilter.value = CatalogueFilterField.Type;
-        fetchCatalogue(CatalogueFilterField.Type, selectedType.value, currentPage.value, perPage.value)
+        fetchCatalogueAndUpdateOtherFilters(CatalogueFilterField.Type, selectedType.value, currentPage.value, perPage.value)
     }
 })
 watch(selectedVendor, () => {
-    if (selectedBrand.value.length === 0 && selectedType.value.length === 0 && selectedCategory.value.length === 0 ) {
+    if (selectedBrand.value.length === 0 && selectedType.value.length === 0 && selectedCategory.value.length === 0) {
         primaryFilter.value = CatalogueFilterField.Vendor;
-        fetchCatalogue(CatalogueFilterField.Vendor, selectedVendor.value, currentPage.value, perPage.value)
+        fetchCatalogueAndUpdateOtherFilters(CatalogueFilterField.Vendor, selectedVendor.value, currentPage.value, perPage.value)
     }
 })
 
 
-watch(currentPage, () => {
+watch([currentPage, perPage], () => {
     console.log('primary filter is  ' + primaryFilter.value)
-    fetchCatalogue(primaryFilter.value, primarySelectedValues.value, currentPage.value, perPage.value)
+    fetchCatalogueAndUpdateOtherFilters(primaryFilter.value, primarySelectedValues.value, currentPage.value, perPage.value)
 })
 
-watch(primaryFilter.value, () =>{
+watch(primaryFilter.value, () => {
     currentPage.value = 1
 })
+
+const handleClickCatalogueCard = (reference) => {
+    console.log('catalogue card clicked')
+    router.push({
+        name: 'catalogue-single', params: {
+            ref: reference
+        }
+    })
+
+}
 
 
 </script>
@@ -150,9 +186,11 @@ watch(primaryFilter.value, () =>{
     <BaseLandingHero
         :title="LandingHeroText['catalogue']['title']"
         :title-paragraph="LandingHeroText['catalogue']['subtitle']"
+        swoosh-color="teal"
     />
     <div class="cataloguePageOuterContainer grid grid-cols-4 mt-10">
         <div class="col-span-1 flex items-center flex-col gap-2">
+            <CataloguePerPageSelector v-model="perPage" />
             <CatalogueFilterColumn
                 v-model:brand-list="brandList"
                 v-model:type-list="typeList"
@@ -162,6 +200,7 @@ watch(primaryFilter.value, () =>{
                 v-model:selected-type="selectedType"
                 v-model:selected-vendor="selectedVendor"
                 v-model:selected-category="selectedCategory"
+                :is-filter-loading="isFilterLoading"
             />
         </div>
         <div v-if="error.status ">
@@ -178,7 +217,8 @@ watch(primaryFilter.value, () =>{
                 <div
                     v-for="(item,index) in catalogueList"
                     :key="index"
-                    class="border-[1px] catalogueCard grid place-items-center rounded w-72"
+                    class="border-[1px] catalogueCard cursor-pointer grid place-items-center rounded w-72"
+                    @click="() => handleClickCatalogueCard(item.unique_reference)"
                 >
                     <img
                         :src="catalogueImageURL + item.image"
@@ -240,11 +280,14 @@ watch(primaryFilter.value, () =>{
             </div>
         </div>
 
-
-        <Loader
+        <div
             v-else
-            loader-type="small"
-            loader-message="loading products"
-        />
+            class="col-span-3 flex justify-center items-start flex-row mt-24"
+        >
+            <Loader
+                loader-type="small"
+                loader-message="loading products"
+            />
+        </div>
     </div>
 </template>

@@ -58,6 +58,7 @@ const handleClickPopularGuides = (guideId, title) => {
     <BaseLandingHero
         :title="LandingHeroText['inspiration']['title']"
         :title-paragraph="LandingHeroText['inspiration']['subtitle']"
+        swoosh-color="teal"
     >
         <template #robotIllustration>
             <InspirationAndGuidesRobot class="absolute top-10 left-36" />
