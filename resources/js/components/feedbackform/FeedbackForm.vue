@@ -15,6 +15,7 @@ import FeedbackBackground from "@/js/components/svg/FeedbackIcon/FeedbackBackgro
 import InfoCircleIcon from "@/js/components/svg/InfoCircleIcon.vue";
 import {API_ENDPOINTS} from "@/js/constants/API_ENDPOINTS";
 import {useUserStore} from "@/js/stores/useUserStore";
+import {simpleValidateUrl} from "@/js/helpers/stringHelpers";
 
 const router = useRouter()
 const userStore = useUserStore()
@@ -54,10 +55,19 @@ const handleTinyRichContent = (data) => {
     console.log('base form received ' + data)
     v$.value.content.$model = data
 }
+const displayError = ref('')
 
+const showError = ref(false)
 // function to validate the form and submit the data to backend using POST
 const handleSubmitForm = async () => {
+    if (!simpleValidateUrl(v$.value.urlIssue.$model)) {
+        console.error('Invalid URL')
+        displayError.value = 'Please enter a valid URL'
+        showError.value = true
+        return
+    }
 
+    showError.value = false
     const fields_check = await v$.value.$validate()
     if (fields_check) {
 
@@ -67,9 +77,9 @@ const handleSubmitForm = async () => {
             user_name: v$.value.name.$model,
             email: v$.value.email.$model,
             organisation_name: v$.value.organisation.$model,
-            issue_url: v$.value.urlIssue.$model,
             content: v$.value.content.$model
         }
+
         console.log(fields_check)
         return axios.post(API_ENDPOINTS.FEEDBACK.CREATE_FEEDBACK, data)
             .then(res => {
@@ -83,7 +93,10 @@ const handleSubmitForm = async () => {
             .finally(() => {
                 isLoading.value = false;
             })
-    } else {
+    }
+
+
+    else {
         console.log("Form is not Submitted")
     }
 }
@@ -95,7 +108,7 @@ const toggleFeedbackForm = (): void => {
     showFeedbackForm.value = !showFeedbackForm.value
     emits('emitFormOpenState', showFeedbackForm.value)
 
-    formattedLink(window.location.href)
+   // formattedLink(window.location.href)
 
 }
 
@@ -107,7 +120,6 @@ const hideScreeShotInfoPop = () => {
     screenShotInfoPopUp.value = false
 }
 
-const showError = ref(false)
 
 const formattedLink = (userLink) => {
     console.log("Original Link:", userLink)
@@ -228,7 +240,7 @@ watch(router.currentRoute, () => {
                     </template>
                 </TextInput>
                 <div v-if="showError">
-                    error
+                    {{ displayError }}
                 </div>
             </div>
             <div>

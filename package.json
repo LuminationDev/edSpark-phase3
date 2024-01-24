@@ -39,6 +39,7 @@
   },
   "dependencies": {
     "@codexteam/ajax": "^4.2.0",
+    "@editorjs/editorjs": "^2.28.2",
     "@fawmi/vue-google-maps": "^0.9.79",
     "@fortawesome/fontawesome-svg-core": "^6.5.1",
     "@fortawesome/free-brands-svg-icons": "^6.5.1",
