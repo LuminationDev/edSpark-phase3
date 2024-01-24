@@ -38,10 +38,10 @@ onMounted(() => {
             Brand: {{ itemData.brand }}
         </template>
     </BaseHero>
-    <div class="flex justify-center items-center">
-        <table class="bg-white border border-gray-300">
+    <div class="flex justify-center items-center mx-auto w-1/2">
+        <table class="bg-white border border-gray-300 w-full">
             <thead>
-                <tr>
+                <tr class="grid grid-cols-2">
                     <th class="bg-gray-100 border-b px-4 py-2">
                         Property
                     </th>
@@ -54,11 +54,12 @@ onMounted(() => {
                 <tr
                     v-for="(value, key) in itemData"
                     :key="key"
+                    class="grid grid-cols-2 w-full even:bg-slate-50 odd:bg-white"
                 >
-                    <td class="border-b px-4 py-2">
+                    <td class="border-b col-span-1 grid place-items-center px-4 py-2">
                         {{ key }}
                     </td>
-                    <td class="border-b px-4 py-2">
+                    <td class="border-b col-span-1 grid place-items-center px-4 py-2">
                         {{ value }}
                     </td>
                 </tr>
