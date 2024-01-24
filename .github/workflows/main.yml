@@ -25,7 +25,7 @@ jobs:
             git pull
             git branch -D ${{github.ref_name}}
             git checkout ${{github.ref_name}}
-            composer update
+            composer install
             npm install
             npm run prod
           host: 'edspark.sa.edu.au'
@@ -53,7 +53,7 @@ jobs:
             git pull
             git branch -D ${{github.ref_name}}
             git checkout ${{github.ref_name}}
-            composer update
+            composer install
             npm install
             npm run prod
           host: 'edspark.sa.edu.au'
