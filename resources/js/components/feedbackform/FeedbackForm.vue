@@ -53,14 +53,14 @@ const v$ = useVuelidate(rules, state)
 const emits = defineEmits(['emitFormOpenState', 'emitHideFeedbackForm'])
 
 const handleTinyRichContent = (data) => {
-    console.log('base form received ' + data)
+
     v$.value.content.$model = data
 }
 
 // function to validate the form and submit the data to backend using POST
 const handleSubmitForm = async () => {
     if (!simpleValidateUrl(v$.value.urlIssue.$model)) {
-        console.error('Invalid URL')
+
         foundError.value = true
         displayError.value = 'Valid URL is required'
         return
@@ -69,7 +69,7 @@ const handleSubmitForm = async () => {
     if(foundError.value == false) {
         const fields_check = await v$.value.$validate()
         if (fields_check) {
-            console.log("Form is Submitted")
+
             const data = {
                 feedback_id: ' ',
                 user_name: v$.value.name.$model,
@@ -78,15 +78,12 @@ const handleSubmitForm = async () => {
                 issue_url: v$.value.urlIssue.$model,
                 content: v$.value.content.$model
             }
-            console.log(fields_check)
+
             return axios.post(API_ENDPOINTS.FEEDBACK.CREATE_FEEDBACK, data)
                 .then(res => {
-                    console.log(res.data)
-                    console.log("inside Axios")
                 })
                 .catch(err => {
                     feedbackError.value = err.message;
-                    console.error(err)
                 })
                 .finally(() => {
                     isLoading.value = false;
@@ -94,7 +91,7 @@ const handleSubmitForm = async () => {
         }
     }
     else {
-        console.log("Form is not Submitted")
+
     }
 }
 
@@ -179,7 +176,7 @@ watch(router.currentRoute, () => {
                     Contact name
                 </template>
             </TextInput>
-            <div class="ContainerTemp my-2 richContent">
+            <div class="my-2">
                 <TextInput
                     v-model="v$.email.$model"
 
@@ -194,7 +191,7 @@ watch(router.currentRoute, () => {
                     </template>
                 </TextInput>
             </div>
-            <div class="ContainerTemp my-2 richContent">
+            <div class="my-2">
                 <TextInput
                     v-model="v$.organisation.$model"
                     :v$="v$.organisation"
@@ -207,7 +204,7 @@ watch(router.currentRoute, () => {
                     </template>
                 </TextInput>
             </div>
-            <div class="ContainerTemp my-2 richContent">
+            <div class="my-2">
                 <TextInput
                     v-model="v$.urlIssue.$model"
                     :v$="v$.urlIssue"
@@ -228,7 +225,7 @@ watch(router.currentRoute, () => {
                     <label> Describe your issue</label>
                     <InfoCircleIcon
                         id="infobtn"
-                        class="!text-xl h-6 mb-2 ml-auto mr-4 w-6"
+                        class="h-6 mb-2 ml-auto mr-4 w-6"
                         @mouseover="showScreenShotInfoPopUpup"
                     />
                     <ScreenshotInfoPopup

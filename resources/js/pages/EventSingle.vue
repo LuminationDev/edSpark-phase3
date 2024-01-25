@@ -22,9 +22,6 @@ const handleClickViewProfile = (author_id, author_type) => {
     router.push(`/${author_type}/${author_id}`)
 }
 
-const handleSendFeedbackButton = () => {
-    console.log('Feedback Button Pressed!')
-}
 </script>
 <template>
     <BaseSingle content-type="event">

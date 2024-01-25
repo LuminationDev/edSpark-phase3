@@ -40,7 +40,7 @@ const props = defineProps({
 
 const currentUserIsOwner = ref(false)
 const currentUserHasProvidedEMSLink = ref(false)
-const editingEMSlink = ref(true)
+const editingEMSlink = ref(false)
 const rsvpError = ref('')
 const route = useRoute()
 
@@ -79,7 +79,6 @@ const getEMSLink = () => {
         .then(res => {
             tempLink.value = res.data.data.ems_link;
             state.currentUserEMSLink = res.data.data.ems_link;
-            console.log(res.data.data)
             //currentUserIsOwner.value = res.data.data.is_owner;
             currentUserIsOwner.value = Boolean(res.data.data.is_owner);
             currentUserHasProvidedEMSLink.value = true;
@@ -87,7 +86,6 @@ const getEMSLink = () => {
         .catch(err => {
             rsvpError.value = err.message;
         });
-    6
 };
 
 onMounted(() => {
@@ -96,7 +94,6 @@ onMounted(() => {
 })
 
 const handleClickContactOrganiser = () => {
-    console.log('Contacting Organiser!')
 }
 
 const handleEmptyErrorMessage = () => {
@@ -114,7 +111,6 @@ const handleCancelLink = () => {
 
 const handleClickSubmitLink = () => {
     if (!simpleValidateUrl(v$.value.currentUserEMSLink.$model)) {
-        console.error('Invalid URL');
         rsvpError.value = 'Please enter a valid URL'
         return;
     }
@@ -129,12 +125,10 @@ const handleClickSubmitLink = () => {
 
     return axios.post(API_ENDPOINTS.EVENT.ADD_OR_EDIT_EMS_LINK, data)
         .then(res => {
-            console.log(res.data);
             editingEMSlink.value = false;
         })
         .catch(err => {
             rsvpError.value = err.message;
-            console.error(err);
         })
         .finally(() => {
             isLoading.value = false;
