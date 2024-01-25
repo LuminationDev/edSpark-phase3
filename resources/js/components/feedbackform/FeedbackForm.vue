@@ -243,20 +243,22 @@ watch(router.currentRoute, () => {
                     @emit-tiny-rich-content="handleTinyRichContent"
                 />
             </div>
-            <div class="flex flex-row ml-2 mt-6">
+            <div class="flex flex-row ml-2 mt-6 mr-2">
                 <GenericButton
                     id="cancelBtn"
                     :callback="handleCancelForm"
                     class="
                         !bg-[#FFFFFF]
                         !h-16
-                        !text-adminTeal
+                        !text-red-600
                         !text-xl
-                        2xl:w-[15%]
+                        2xl:w-[10em]
                         border-[1px]
-                        border-adminTeal
+                        border-red-600
+                        min-w-[100px]
+                        p-4
                         mr-auto
-                        sm:w-[20%]
+                        sm:w-[30%]
                         "
                 >
                     <template #default>
@@ -266,7 +268,7 @@ watch(router.currentRoute, () => {
                 <GenericButton
                     id="submitBtn"
                     :callback="handleSubmitForm"
-                    class="!h-16 !text-xl 2xl:w-[15%] ml-auto hover:!bg-adminTeal sm:w-[20%]"
+                    class="!h-16 p-4 !text-xl 2xl:w-[10em] ml-auto hover:!bg-adminTeal min-w-[100px] sm:w-[30%]"
                 >
                     <template #default>
                         Submit
