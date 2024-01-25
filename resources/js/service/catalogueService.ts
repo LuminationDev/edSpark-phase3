@@ -5,8 +5,7 @@ import {API_ENDPOINTS} from "@/js/constants/API_ENDPOINTS";
 type CatalogueFieldTypes = 'brand'|'type'|'vendor'|'category'
 
 export const catalogueService = {
-    fetchCatalogueByField: (fieldType: CatalogueFieldTypes, fieldValue: string ,nthPage: number = 1, perPage: number = 20) =>{
-        console.log('fetch catalogue called ' + fieldType + " " + nthPage)
+    fetchCatalogueByField: (fieldType: CatalogueFieldTypes, fieldValue: Array<string> ,nthPage: number = 1, perPage: number = 20) =>{
         const body = {field : fieldType, value: fieldValue, per_page: perPage}
         const params = {page: nthPage }
         return axios.post(API_ENDPOINTS.CATALOGUE.FETCH_CATALOGUE_BY_FIELD, body, {params: params})
@@ -30,6 +29,10 @@ export const catalogueService = {
         const body = { name: name };
         return axios.post(API_ENDPOINTS.CATALOGUE.FETCH_SINGLE_PRODUCT_BY_NAME, body);
     },
+    fetchSingleProductByReference: (reference: string) => {
+        const body = { unique_reference: reference };
+        return axios.post(API_ENDPOINTS.CATALOGUE.FETCH_SINGLE_PRODUCT_BY_REFERENCE, body);
+    },
 
     fetchUpgradesSingleProduct: (name: string) => {
         const body = { name: name };
@@ -40,4 +43,21 @@ export const catalogueService = {
         const body = { name: name };
         return axios.post(API_ENDPOINTS.CATALOGUE.FETCH_BUNDLES_SINGLE_PRODUCT, body);
     },
+
+    fetchAllCategories: () =>{
+        return axios.get(API_ENDPOINTS.CATALOGUE.FETCH_ALL_CATALOGUE_CATEGORIES)
+    },
+    fetchAllTypes: () =>{
+        return axios.get(API_ENDPOINTS.CATALOGUE.FETCH_ALL_CATALOGUE_TYPES)
+    },
+    fetchAllBrands: () =>{
+        return axios.get(API_ENDPOINTS.CATALOGUE.FETCH_ALL_CATALOGUE_BRANDS)
+    },
+    fetchAllVendors: () =>{
+        return axios.get(API_ENDPOINTS.CATALOGUE.FETCH_ALL_CATALOGUE_VENDORS)
+    },
+    fetchAllCatalogue: (per_page)=>{
+        const body = {per_page: per_page}
+        return axios.post(API_ENDPOINTS.CATALOGUE.FETCH_ALL_CATALOGUE,body)
+    }
 }

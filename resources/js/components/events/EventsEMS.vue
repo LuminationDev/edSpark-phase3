@@ -79,14 +79,13 @@ const getEMSLink = () => {
         .then(res => {
             tempLink.value = res.data.data.ems_link;
             state.currentUserEMSLink = res.data.data.ems_link;
-            console.log(res.data.data)
             //currentUserIsOwner.value = res.data.data.is_owner;
             currentUserIsOwner.value = Boolean(res.data.data.is_owner);
             currentUserHasProvidedEMSLink.value = true;
         })
         .catch(err => {
             rsvpError.value = err.message;
-        });6
+        });
 };
 
 onMounted(() => {
@@ -95,7 +94,6 @@ onMounted(() => {
 })
 
 const handleClickContactOrganiser = () => {
-    console.log('Contacting Organiser!')
 }
 
 const handleEmptyErrorMessage = () => {
@@ -113,7 +111,6 @@ const handleCancelLink = () => {
 
 const handleClickSubmitLink = () => {
     if (!simpleValidateUrl(v$.value.currentUserEMSLink.$model)) {
-        console.error('Invalid URL');
         rsvpError.value = 'Please enter a valid URL'
         return;
     }
@@ -128,12 +125,10 @@ const handleClickSubmitLink = () => {
 
     return axios.post(API_ENDPOINTS.EVENT.ADD_OR_EDIT_EMS_LINK, data)
         .then(res => {
-            console.log(res.data);
             editingEMSlink.value = false;
         })
         .catch(err => {
             rsvpError.value = err.message;
-            console.error(err);
         })
         .finally(() => {
             isLoading.value = false;
@@ -144,9 +139,9 @@ const handleClickSubmitLink = () => {
 const handleAcceptNewLink = (newlink) => {
     state.currentUserEMSLink = newlink
 }
-const handleInvalidUrlFromServer = () =>{
+const handleInvalidUrlFromServer = () => {
     currentUserHasProvidedEMSLink.value = false
-    state.currentUserEMSLink= ''
+    state.currentUserEMSLink = ''
 }
 </script>
 
@@ -257,8 +252,8 @@ const handleInvalidUrlFromServer = () =>{
 
 <style scoped>
 .searchable_dropdown :deep(.dropdown-toggle input) {
-  padding: 8px !important;
-  border-radius: 0.25rem;
-  color: #d9dae3;
+    padding: 8px !important;
+    border-radius: 0.25rem;
+    color: #d9dae3;
 }
 </style>

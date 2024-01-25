@@ -102,10 +102,16 @@ export const API_ENDPOINTS: Endpoints = appendServerURL({
 
     },
     CATALOGUE: {
-        FETCH_CATALOGUE_BY_FIELD : '/fetchCatalogueByField',
+        FETCH_CATALOGUE_BY_FIELD: '/fetchCatalogueByField',
         FETCH_SINGLE_PRODUCT_BY_NAME: '/fetchSingleProductByName',
+        FETCH_SINGLE_PRODUCT_BY_REFERENCE: '/fetchSingleProductByReference',
         FETCH_UPGRADES_SINGLE_PRODUCT: '/fetchUpgradesSingleProduct',
         FETCH_BUNDLES_SINGLE_PRODUCT: '/fetchBundlesSingleProduct',
+        FETCH_ALL_CATALOGUE_CATEGORIES : '/fetchAllCatalogueCategories',
+        FETCH_ALL_CATALOGUE_TYPES : '/fetchAllCatalogueTypes',
+        FETCH_ALL_CATALOGUE_BRANDS : '/fetchAllCatalogueBrands',
+        FETCH_ALL_CATALOGUE_VENDORS : '/fetchAllCatalogueVendors',
+        FETCH_ALL_CATALOGUE: '/fetchAllCatalogue'
     },
     LIKE: {
         LIKE: `/like`,
@@ -118,8 +124,8 @@ export const API_ENDPOINTS: Endpoints = appendServerURL({
         FETCH_ALL_BOOKMARKS_WITH_TITLE: `/fetchAllBookmarksWithTitle`,
         FETCH_ALL_BOOKMARKS_BY_TYPE: `/fetchAllBookmarksByType`,
     },
-    LABEL:{
-      FETCH_ALL_LABELS: '/fetchAllLabels'
+    LABEL: {
+        FETCH_ALL_LABELS: '/fetchAllLabels'
     },
 
 
@@ -128,6 +134,9 @@ export const API_ENDPOINTS: Endpoints = appendServerURL({
     },
     AUTOSAVE: {
         AUTOSAVE: `/auto-save`
+    },
+    FEEDBACK: {
+        CREATE_FEEDBACK: '/createFeedback'
     }
 })
 

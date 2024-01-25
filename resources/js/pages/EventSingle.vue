@@ -5,6 +5,7 @@ import BaseBreadcrumb from "@/js/components/bases/BaseBreadcrumb.vue";
 import BaseHero from "@/js/components/bases/BaseHero.vue";
 import BaseSingle from "@/js/components/bases/BaseSingle.vue";
 import BaseSingleProfilePicture from "@/js/components/bases/BaseSingleProfilePicture.vue";
+import GenericButton from "@/js/components/button/GenericButton.vue";
 import EventsEMS from "@/js/components/events/EventsEMS.vue";
 import EventSingleExtraContentRenderer from "@/js/components/events/EventSingleExtraContentRenderer.vue";
 import EventsLocation from "@/js/components/events/EventsLocation.vue";
@@ -20,6 +21,7 @@ const router = useRouter()
 const handleClickViewProfile = (author_id, author_type) => {
     router.push(`/${author_type}/${author_id}`)
 }
+
 </script>
 <template>
     <BaseSingle content-type="event">
@@ -75,7 +77,7 @@ const handleClickViewProfile = (author_id, author_type) => {
                         v-if="contentFromBase['author'] && contentFromBase['author']"
                         class="EventHeroAuthorContainer flex flex-col gap-8 mt-2"
                     >
-                        <div class="flex items-center flex-row gap-8 my-4">
+                        <div class="flex items-center flex-row gap-4">
                             <BaseSingleProfilePicture
                                 :author-name="contentFromBase['author']['author_name']"
                                 :author-logo-url="String(contentFromBase['author']['author_logo'])"
@@ -104,13 +106,21 @@ const handleClickViewProfile = (author_id, author_type) => {
                     <div class="eventDetails flex flex-col gap-2 here">
                         <div class="flex items-center flex-row">
                             <CalendarIcon class="fill-white mr-2" />
-                            {{ new Date(Date.parse(contentFromBase['start_date'])).toLocaleDateString('en-GB', {
-                                day: '2-digit', month: 'long', year: 'numeric'
-                            }) }}
+                            {{
+                                new Date(Date.parse(contentFromBase['start_date'])).toLocaleDateString('en-GB', {
+                                    day: '2-digit', month: 'long', year: 'numeric'
+                                })
+                            }}
                         </div>
                         <div class="flex items-center flex-row">
                             <TimeIcon class="fill-white flex justify-center items-center mr-2" />
-                            {{ new Date(Date.parse(contentFromBase['start_date'])).toLocaleString('en-US',{ hour: 'numeric', minute: 'numeric', hour12: true } ) }}
+                            {{
+                                new Date(Date.parse(contentFromBase['start_date'])).toLocaleString('en-US', {
+                                    hour: 'numeric',
+                                    minute: 'numeric',
+                                    hour12: true
+                                })
+                            }}
                             {{ "-" }}
                             {{
                                 new Date(Date.parse(contentFromBase['end_date'])).toLocaleString('en-US', {
@@ -139,9 +149,6 @@ const handleClickViewProfile = (author_id, author_type) => {
             >
                 <!--    Content of the Advice    -->
                 <div class="flex flex-col flex-wrap pl-6 px-12 w-full lg:!w-2/3">
-                    <div class="border-b-2 border-black flex font-semibold text-2xl">
-                        Details
-                    </div>
                     <div
                         class="flex content-paragraph flex-col max-w-full overflow-hidden text-lg"
                         v-html="edSparkContentSanitizer(contentFromBase['content'])"
@@ -178,5 +185,6 @@ const handleClickViewProfile = (author_id, author_type) => {
     margin-top: 16px;
     text-align: justify;
 }
+
 
 </style>

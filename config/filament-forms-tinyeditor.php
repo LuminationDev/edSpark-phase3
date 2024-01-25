@@ -15,7 +15,7 @@ return [
         'default' => [
             'menubar' => true,
             'plugins' => 'advlist autoresize codesample directionality emoticons fullscreen hr image imagetools link lists paste media table wordcount',
-            'toolbar' => 'undo redo removeformat | formatselect fontsizeselect | bold italic | alignjustify alignleft aligncenter alignright lineheight | numlist bullist | forecolor backcolor | blockquote table toc hr | image link media codesample emoticons | wordcount',
+            'toolbar' => 'undo redo removeformat | formatselect | bold italic | alignjustify alignleft aligncenter alignright lineheight | numlist bullist | forecolor backcolor | blockquote table toc hr | image link media codesample emoticons | wordcount',
             'upload_directory' => 'uploads/advice',
             'images_upload_url' => env('VITE_SERVER_IMAGE_API') . '/imageUploadTinyMCEjs',
             'custom_configs' => [

@@ -81,9 +81,8 @@ class SoftwareResource extends Resource
 
                         Forms\Components\Card::make()
                             ->schema([
-                                Forms\Components\CheckboxList::make('software_type')
+                                Forms\Components\Select::make('software_type')
                                     ->label('Software type')
-                                    ->extraAttributes(['class' => 'text-primary-600'])
                                     ->relationship('softwaretypes', 'software_type_name')
                                     ->columns(3),
                                 ...$labelColumns
@@ -194,7 +193,17 @@ class SoftwareResource extends Resource
                     ->dateTime(),
             ])
             ->filters([
-                //
+                Tables\Filters\SelectFilter::make('status')
+                    ->options([
+                        'published' => 'Published',
+                        'pending' => 'Pending Moderation',
+                        'archived' => 'Archived',
+                        'draft' => 'Draft/Incomplete',
+                        'unpublished' => 'Deleted'
+                    ])
+                    ->label('Software status')
+                    ->default('published')
+                    ->attribute('post_status'),
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),

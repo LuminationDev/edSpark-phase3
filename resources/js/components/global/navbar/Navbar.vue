@@ -85,7 +85,6 @@ const logoClass = computed(() => {
                 class="
                     xl:ml-48
                     2xl:text-xl
-                    text-lg
                     font-semibold
                     h-full
                     hidden
@@ -96,8 +95,6 @@ const logoClass = computed(() => {
                     lg:flex-row
                     lg:gap-6
                     lg:items-center
-                    lg:text-[16px]
-                    xl:text-lg
                     "
                 :class="{'text-white !ml-24': scrollPosition > 0}"
             >
@@ -120,6 +117,7 @@ const logoClass = computed(() => {
                         />
                     </div>
                 </li>
+
                 <ProfileDropdown
                     v-if="isAuthenticated"
                     :key="currentUser"
@@ -127,6 +125,7 @@ const logoClass = computed(() => {
                     :avatar-url="avatarUrl"
                 />
             </ul>
+
             <div
                 id="edSparkLogo"
                 title="edSpark logo"

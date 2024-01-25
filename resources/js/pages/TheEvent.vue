@@ -44,6 +44,7 @@ onMounted(() => {
         :title="LandingHeroText['event']['title']"
         :title-paragraph="LandingHeroText['event']['subtitle']"
         background-color="red"
+        swoosh-color="pink"
     >
         <template #robotIllustration>
             <img

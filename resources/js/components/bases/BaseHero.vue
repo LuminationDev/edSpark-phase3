@@ -2,6 +2,7 @@
 import {storeToRefs} from "pinia";
 import {computed, onMounted, ref} from 'vue'
 
+import EdSparkSlimSwoosh from "@/js/components/svg/EdSparkSlimSwoosh.vue";
 import {schoolColorKeys, schoolColorTheme} from "@/js/constants/schoolColorTheme";
 import {imageURL} from "@/js/constants/serverUrl";
 import {useWindowStore} from "@/js/stores/useWindowStore";
@@ -13,6 +14,11 @@ const props = defineProps({
         type: String,
         required: false,
         default: ''
+    },
+    backgroundServerUrl: {
+        type: String,
+        required: false,
+        default: imageURL
     },
     color1: {
         type: String,
@@ -39,7 +45,7 @@ const props = defineProps({
 
 const heroBackgroundLinkOnly = computed(() => {
     if (props.backgroundUrl) {
-        return `${imageURL}/${props.backgroundUrl.replace(' ', "%20").replace(/\\/g, "")}`
+        return `${props.backgroundServerUrl}/${props.backgroundUrl.replace(' ', "%20").replace(/\\/g, "")}`
     } else {
         return ''
     }
@@ -68,7 +74,7 @@ const {windowWidth} = storeToRefs(windowStore)
 
 const heroBackgroundSwitch = computed(() => {
     if (windowWidth.value < 1024) {
-        return 'background-image: linear-gradient(rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.8)), url(' + heroBackgroundLinkOnly.value + ') !important;  background-position: center center;  background-color:white '
+        return "background-image: linear-gradient(rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.8)), url('" + heroBackgroundLinkOnly.value + "') !important;  background-position: center center;  background-color:white; background-size:cover"
     } else {
         return ''
     }
@@ -79,7 +85,7 @@ const heroBackgroundSwitch = computed(() => {
 <template>
     <div class="BaseHeroContainer h-mainHero max-h-mainHero mb-0 overflow-y-hidden relative z-10">
         <div
-            class="grid grid-cols-8 h-full relative"
+            class="grid grid-cols-10 h-full relative"
         >
             <div
                 class="
@@ -88,11 +94,11 @@ const heroBackgroundSwitch = computed(() => {
                     bg-contain
                     bg-no-repeat
                     bg-secondary-blueberry
-                    col-span-8
+                    col-span-10
                     h-full
-                    px-16
-                    py-8
-                    lg:!col-span-4
+                    pt-14
+                    px-11
+                    lg:!col-span-6
                     "
                 :style="heroBackgroundSwitch"
             >
@@ -115,7 +121,7 @@ const heroBackgroundSwitch = computed(() => {
                     </div>
 
                     <p
-                        v-if="$slots.authorName" 
+                        v-if="$slots.authorName"
                         class="flex flex-col font-semibold gap-4 text-lg text-white"
                     >
                         <slot name="authorName" />
@@ -154,7 +160,7 @@ const heroBackgroundSwitch = computed(() => {
                 </div>
             </div>
             <div
-                class="bg-center bg-contain bg-no-repeat bg-white hidden imageCover lg:!block lg:!col-span-4"
+                class="bg-center bg-cover bg-no-repeat bg-white hidden imageCover lg:!block lg:!col-span-4"
                 :style="'background-image: url(' + heroBackgroundLinkOnly +')'"
             />
         </div>
@@ -168,11 +174,18 @@ const heroBackgroundSwitch = computed(() => {
             </div>
         </div>
     </div>
-    <div class="articleSwooshContainer mb-8 relative w-full z-10">
+    <div class="articleSwooshContainer relative w-full z-10">
         <ArticleSingleSwoosh
+            v-if="$slots.submenu"
             :color-theme="swooshColorTheme"
             class=""
         />
+        <div
+            v-else
+            class="BaseHeroSwooshPositioningContainer absolute -top-20 h-[120px] hidden w-full z-20 md:block xl:!-top-24"
+        >
+            <EdSparkSlimSwoosh color-theme="teal" />
+        </div>
         <div class="-top-1 md:!pl-12 md:!text-2xl flex h-16 pl-4 pt-2 text-white text-xl w-full">
             <slot
                 name="submenu"

@@ -12,7 +12,6 @@ use Filament\Resources\Resource;
 use Filament\Tables\Table;
 use Filament\Tables;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 use Illuminate\Support\Facades\Auth;
 use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
@@ -22,7 +21,6 @@ use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 use Mohamedsabil83\FilamentFormsTinyeditor\Components\TinyEditor;
-use Spatie\Tags\Tag;
 use SplFileInfo;
 
 use Closure;
@@ -190,16 +188,44 @@ class EventResource extends Resource
 
                 Tables\Columns\ImageColumn::make('cover_image'),
                 Tables\Columns\TextColumn::make('event_status')
-                    ->label('status')
+                    ->label('Status')
                     ->sortable()
                     ->searchable(),
-                Tables\Columns\TextColumn::make('created_at')
-                    ->dateTime(),
                 Tables\Columns\TextColumn::make('updated_at')
                     ->dateTime(),
             ])
             ->filters([
-                //
+                Tables\Filters\SelectFilter::make('event_status')
+                    ->options([
+                        'published' => 'Published',
+                        'pending' => 'Pending Moderation',
+                        'archived' => 'Archived',
+                        'draft' => 'Draft/Incomplete',
+                        'unpublished' => 'Deleted'
+                    ])
+                    ->label('Event status')
+                    ->default('published')
+                    ->attribute('event_status'),
+                Tables\Filters\SelectFilter::make('event_date')
+                    ->options([
+                        'all' => 'All Events',
+                        'past' => 'Past Events',
+                        'upcoming' => 'Upcoming Events',
+                    ])
+                    ->label('Event Date')
+                    ->default('all')
+                    ->attribute('start_date')
+                    ->query(function (Builder $query, array $data): Builder {
+                        $today = now()->toDateString();
+                        switch ($data['value']) {
+                            case 'past':
+                                return $query->where('end_date', '<', $today);
+                            case 'upcoming':
+                                return $query->where('end_date', '>=', $today);
+                            default:
+                                return $query;
+                        }
+                    })
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),

@@ -34,7 +34,7 @@ const props = defineProps({
 })
 const onClick = async () => {
     spinner.value = true
-    console.log('inside on lcick')
+    console.log('inside on click')
     await asyncCall();
     spinner.value = false
 }

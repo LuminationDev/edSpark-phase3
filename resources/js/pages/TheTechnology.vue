@@ -58,6 +58,7 @@ const handleClickPopularTech = (techId, title) => {
         :title="LandingHeroText['technology']['title']"
         :title-paragraph="LandingHeroText['technology']['subtitle']"
         background-color="purple"
+        swoosh-color="purple"
     >
         <template #robotIllustration>
             <SoftwareRobot class="absolute top-10 left-36" />
