@@ -41,14 +41,12 @@ const props = defineProps({
                 max-w-[250px]
                 mb-4
                 min-h-[480px]
-                min-w-[200px]
+                min-w-[300px]
                 mx-[29px]
                 pointer-events-none
                 transition-all
                 w-full
                 hover:shadow-2xl
-                lg:!min-w-[200px]
-                xl:!min-w-[300px]
                 "
         >
             <div

@@ -7,6 +7,7 @@ import BaseForm from "@/js/components/bases/frontendform/BaseForm.vue";
 import ExtraContent from "@/js/components/bases/frontendform/ExtraContent.vue";
 import {templates} from "@/js/components/bases/frontendform/templates/formTemplates";
 import ItemTypeCheckboxes from "@/js/components/selector/ItemTypeCheckboxes.vue";
+import ItemTypeDropdownSelect from "@/js/components/selector/ItemTypeDropdownSelect.vue";
 import {API_ENDPOINTS} from "@/js/constants/API_ENDPOINTS";
 import {formService} from "@/js/service/formService";
 import {SoftwareAdditionalData} from "@/js/types/SoftwareTypes";
@@ -59,7 +60,7 @@ const handleReceiveAddtContent = (data) => {
         @base-emits-addt-content="handleReceiveAddtContent"
     >
         <template #itemType>
-            <ItemTypeCheckboxes
+            <ItemTypeDropdownSelect
                 :selected-type="addtSoftwareData.type"
                 :type-api-link="API_ENDPOINTS.SOFTWARE.FETCH_SOFTWARE_TYPES"
                 label="Select software type"

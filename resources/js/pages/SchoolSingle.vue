@@ -205,26 +205,24 @@ const handleCloseModerationTab = (): void => {
                                 parent-page="schools"
                                 parent-page-link="browse/school"
                                 :color-theme="colorTheme"
-                                class="mt-[120px] pt-[10px]"
+                                class="mt-24 pt-[10px]"
                                 @send-color-to-school-single="handleChangeColorTheme"
                             />
                         </template>
                         <template #titleText>
                             <div class="SchoolHeroContentContainer flex flex-row w-full">
-                                <div class="flex flex-row w-full">
+                                <div class="flex justify-center flex-row w-full md:!justify-start">
                                     <div
                                         class="
                                             flex
-                                            sm:flex-row
                                             items-center
-                                            sm:items-end
-                                            flex-col
-                                            mx-auto
-                                            sm:mx-0
-                                            pl-0
-                                            sm:pl-8
+                                            md:items-start
+                                            flex-row
+                                            pl-8
                                             lg:pl-0
-                                            gap-8
+                                            lg:pl-0
+                                            gap-4
+                                            sm:mx-0
                                             ">
                                         <div
                                             class="
@@ -232,11 +230,11 @@ const handleCloseModerationTab = (): void => {
                                                 flex
                                                 justify-center
                                                 items-center
-                                                h-[200px]
-                                                mt-8
+                                                h-full
+                                                md:h-[200px]
                                                 rounded-md
                                                 text-md
-                                                w-[200px]
+                                                md:w-[200px]
                                                 "
                                         >
                                             <img
@@ -244,18 +242,19 @@ const handleCloseModerationTab = (): void => {
                                                 :alt="`school logo`"
                                                 class="
                                                     bg-white
+                                                    h-52
                                                     max-h-full
                                                     object-contain
                                                     p-3
                                                     rounded
-                                                    w-full
+                                                    w-52
                                                     "
                                                 @error="handleErrorImage"
                                             >
                                         </div>
 
-                                        <div class="flex flex-col pl-0 sm:pl-8">
-                                            <h1 class="font-bold pb-6 text-white">
+                                        <div class="flex flex-col hidden pl-8 lg:pl-0 md:block">
+                                            <h1 class="font-bold pb-4 text-white">
                                                 {{ schoolContent.name }}
                                             </h1>
                                             <div

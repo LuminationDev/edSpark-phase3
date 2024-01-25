@@ -390,7 +390,7 @@ onBeforeRouteLeave(async (to, from) => {
             </div>
 
             <div class="containerTempImageUploader my-8">
-                <label> Cover image (1 image file)</label>
+                <label> Cover image <span class="font-light text-xs"> (500px x 500px recommended. max. 5 MB. Accepted format: JPG, JPEG, PNG & SVG.)</span></label>
                 <ImageUploaderInput
                     :item-type="props.itemType"
                     :current-media="v$.cover_image.$model"

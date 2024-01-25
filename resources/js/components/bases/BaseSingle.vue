@@ -118,50 +118,6 @@ onBeforeMount(async () => {
 })
 
 
-// const checkToReadOrFetchContent = async () => {
-//     if (!window.history.state.content) { // doesn't exists
-//         if (!byIdAPILink) return // fetchByIdAPILink not exist terminate function
-//         console.log('No content passed in. Will request from server')
-//         // get post by id via API link
-//         await axios.get(`${byIdAPILink}${route.params.id}`, useUserStore().getUserRequestParam).then(res => {
-//             singleContent.value = res.data
-//             singleContent.value.content = convertLinksToEmbeds(singleContent.value.content)
-//             console.log('set new data haha yes')
-//             baseIsLoading.value = false
-//         }).catch(err => {
-//             console.log(err)
-//             baseIsLoading.value = false
-//         })
-//     } else {
-//         // content exists in window.history.state. NO FETCH JUST PARSE from state
-//         // then check if ID matches between the data inside state and current url
-//         // if it matches, set the single content value. if not, go to else
-//         // TODO: remove these comparison - make it simple
-//         if ((JSON.parse(window.history.state.content).post_id || JSON.parse(window.history.state.content).id) === route.params.id) {
-//             console.log('same id inside window history id compated to params id ')
-//             console.info('Advice content received from parent. No request will be sent to server')
-//             singleContent.value = JSON.parse(window.history.state.content)
-//             singleContent.value.content = convertLinksToEmbeds(singleContent.value.content)
-//             baseIsLoading.value = false
-//
-//         } else {
-//             // state has content but ID different, send fetch
-//             console.log('requesting content ')
-//             await axios.get(`${byIdAPILink}${route.params.id}`).then(res => {
-//                 singleContent.value = res.data
-//                 if (singleContent.value.content && typeof singleContent.value.content === 'string') {
-//                     singleContent.value.content = convertLinksToEmbeds(singleContent.value.content)
-//                 }
-//                 baseIsLoading.value = false
-//
-//             }).catch(err => {
-//                 console.log(err)
-//                 baseIsLoading.value = false
-//             })
-//         }
-//     }
-// }
-
 const fetchContent = async () => {
     const requestData = {
         id: +route.params.id,
@@ -234,10 +190,10 @@ const handleEmitFromSubmenu = (value) => {
         />
         <div
             v-if="showPreviewLabel && !baseIsLoading"
-            class="flex flex-row moderationRow mt-10"
+            class="grid grid-cols-4 moderationRow mt-10"
         >
             <div
-                class="basis-4/5 font-semibold mb-4 previewLabel text-center text-xl"
+                class="col-span-3 font-semibold mb-4 previewLabel text-center text-xl"
             >
                 Preview content (Moderation)
                 <div class="font-medium text-base text-center">
@@ -248,7 +204,7 @@ const handleEmitFromSubmenu = (value) => {
                         singleContent?.author?.author_name ? "by " + singleContent?.author?.author_name : ""
                     }} </span>
                 </div>
-                <div class="basis-1/5 flex">
+                <div class="col-span-1 flex">
                     <GenericButton :callback="() => {}">
                         Back to moderation
                     </GenericButton>

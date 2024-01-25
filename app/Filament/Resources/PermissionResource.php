@@ -4,6 +4,8 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\PermissionResource\Pages;
 use App\Filament\Resources\PermissionResource\RelationManagers\RolesRelationManager;
+use App\Helpers\RoleHelpers;
+use App\Helpers\UserRole;
 use App\Models\Permission;
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -93,11 +95,8 @@ class PermissionResource extends Resource
 
     public static function shouldRegisterNavigation(): bool
     {
-        if(Auth::user()->role->role_name != 'Superadmin') {
-            return false;
-        }
+        return RoleHelpers::has_minimum_privilege(UserRole::GODMODE);
 
-        return true;
     }
 
 }

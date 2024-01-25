@@ -26,6 +26,10 @@ class Partnerprofile extends Model
         'user_id',
         'content',
         'status',
+        'cover_image',
+        'logo',
+        'introduction',
+        'motto'
     ];
 
     /**

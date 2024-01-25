@@ -161,6 +161,7 @@ const formattedSearchBlurb = computed(() => {
         :title="props.heroTitle"
         :title-paragraph="props.heroSubtitle"
         :background-color="props.heroBackgroundColor"
+        :swoosh-color="heroBackgroundColor"
     >
         <template #robotIllustration>
             <slot name="robot" />
