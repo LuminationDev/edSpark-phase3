@@ -9,13 +9,13 @@ import {useRouter} from "vue-router";
 import TinyMceRichTextInput from "@/js/components/bases/frontendform/TinyMceEditor/TinyMceRichTextInput.vue";
 import TextInput from "@/js/components/bases/TextInput.vue";
 import GenericButton from "@/js/components/button/GenericButton.vue";
+import CustomErrorMessages from "@/js/components/feedbackform/CustomErrorMessages.vue";
+import FeedbackFloatingButton from "@/js/components/feedbackform/FeedbackFloatingButton.vue";
 import ScreenshotInfoPopup from "@/js/components/feedbackform/ScreenshotInfoPopup.vue";
-import FeedbackBackground from "@/js/components/svg/FeedbackIcon/FeedbackBackground.vue";
 import InfoCircleIcon from "@/js/components/svg/InfoCircleIcon.vue";
 import {API_ENDPOINTS} from "@/js/constants/API_ENDPOINTS";
-import {useUserStore} from "@/js/stores/useUserStore";
 import {simpleValidateUrl} from "@/js/helpers/stringHelpers";
-import CustomErrorMessages from "@/js/components/feedbackform/CustomErrorMessages.vue";
+import {useUserStore} from "@/js/stores/useUserStore";
 
 const router = useRouter()
 const userStore = useUserStore()
@@ -120,11 +120,11 @@ watch(router.currentRoute, () => {
 
 <template>
     <div
-        class="cursor-pointer fixed right-1 sm:right-3 bottom-10 mr-auto overflow-hidden shadow- z-40"
+        class="cursor-pointer fixed right-1 sm:right-3 bottom-1 md:bottom-4 mr-auto overflow-hidden shadow- z-40"
         @click="toggleFeedbackForm"
     >
         <div>
-            <FeedbackBackground />
+            <FeedbackFloatingButton />
         </div>
     </div>
 
@@ -217,7 +217,10 @@ watch(router.currentRoute, () => {
                     </template>
                 </TextInput>
                 <div v-if="foundError">
-                    <CustomErrorMessages :error-text="displayError" class="-mt-6"/>
+                    <CustomErrorMessages
+                        :error-text="displayError"
+                        class="-mt-6"
+                    />
                 </div>
             </div>
             <div>
