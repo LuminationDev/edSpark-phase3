@@ -19,6 +19,14 @@ class Catalogue extends Model
         'weight', 'stylus', 'other', 'available_now', 'corporate', 'administration',
         'curriculum', 'image', 'product_number', 'price_expiry',
     ];
+    public static function deleteAll()
+    {
+        // Ensure you have a proper mechanism to handle deletion,
+        // such as checking user permissions or confirming the action.
+
+        // Delete all entries in the "catalogues" table
+        static::query()->delete();
+    }
 
     public function scopeExcludeBundles($query)
     {
