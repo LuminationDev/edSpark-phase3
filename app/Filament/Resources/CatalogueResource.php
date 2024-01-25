@@ -34,7 +34,8 @@ class CatalogueResource extends Resource
                 Tables\Columns\TextColumn::make('name')
                     ->label('Name')
                     ->sortable()
-                    ->limit(30),
+                    ->limit(30)
+                    ->searchable(),
                 Tables\Columns\TextColumn::make('vendor')
                     ->label('Vendor')
                     ->limit(30)->sortable()
@@ -55,7 +56,6 @@ class CatalogueResource extends Resource
                 //
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
