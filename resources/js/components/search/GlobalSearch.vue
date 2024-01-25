@@ -48,7 +48,7 @@ onMounted(async () =>{
     await nextTick()
     globalSearchInputBox.value.focus();
 
-    
+
 })
 const handleClickOverlay = () => {
     showGlobalSearch.value = false

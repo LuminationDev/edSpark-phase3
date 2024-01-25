@@ -8,6 +8,7 @@ use App\Http\Middleware\ResourceAccessControl;
 use App\Models\Advice;
 use App\Models\Eventmeta;
 use App\Models\Eventtype;
+use App\Models\Feedback;
 use App\Services\PostService;
 use App\Services\ResponseService;
 use Illuminate\Http\JsonResponse;
@@ -281,11 +282,12 @@ class EventController extends Controller
             if ($event->author_id == $user->id) {
                 $isOwner = 'true';
             }
-            $result = ['ems_link' => $recordingLink , 'is_owner' => $isOwner];
+            $result = ['ems_link' => $recordingLink, 'is_owner' => $isOwner];
             return ResponseService::success('Event EMS link found', $result);
         } else {
             return ResponseService::error('Event EMS Link not found', "NOT FOUND", 404);
         }
     }
+
 
 }
