@@ -10,6 +10,12 @@ use Filament\Actions\Imports\Models\Import;
 class CatalogueImporter extends Importer
 {
     protected static ?string $model = Catalogue::class;
+    /**
+     * The number of times the job may be attempted.
+     *
+     * @var int
+     */
+    public $tries = 5;
 
     public static function getColumns(): array
     {

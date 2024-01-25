@@ -87,12 +87,6 @@ class AdviceResource extends Resource
                             ->relationship('advicetypes', 'advice_type_name')
                             ->columns(3),
                         ...$labelColumns
-//                        Forms\Components\CheckboxList::make('labels')
-//                            ->label('Labels')
-//                            ->extraAttributes(['class' => 'text-primary-600'])
-//                            ->relationship('labels', 'value')
-//                            ->columns(3)
-//                            ->bulkToggleable(),
                     ]),
 
                 Forms\Components\Grid::make(2)->schema([

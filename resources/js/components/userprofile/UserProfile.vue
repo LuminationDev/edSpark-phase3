@@ -1,6 +1,6 @@
 <script setup>
 import {storeToRefs} from 'pinia'
-import {computed,  ref} from 'vue';
+import {computed, ref} from 'vue';
 
 import ProfilePlaceholder from '@/assets/images/profilePlaceholder.webp'
 import TrixRichEditorInput from "@/js/components/bases/TrixRichEditorInput.vue";
@@ -34,7 +34,10 @@ const avatarUrl = ref('');
 const userMetadata = userStore.getUser.metadata;
 if (userMetadata !== undefined) {
     const userAvatarMeta = userMetadata.filter(meta => meta.user_meta_key === 'userAvatar');
-    avatarUrl.value = userAvatarMeta[0].user_meta_value[0].replace(/\\\//g, "/");
+    if (userAvatarMeta && userAvatarMeta.length) {
+        avatarUrl.value = userAvatarMeta[0].user_meta_value[0].replace(/\\\//g, "/");
+
+    }
 }
 
 const displayUserRole = computed(() => {

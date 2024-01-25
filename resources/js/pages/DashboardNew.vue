@@ -14,6 +14,8 @@ import EventsCard from "@/js/components/events/EventsCard.vue";
 import SchoolProfileGuidesQuickFilters from "@/js/components/inspirationandguides/SchoolProfileGuidesQuickFilters.vue";
 import SchoolCard from "@/js/components/schools/SchoolCard.vue";
 import SoftwareCard from "@/js/components/software/SoftwareCard.vue";
+import {API_ENDPOINTS} from "@/js/constants/API_ENDPOINTS";
+import {serverURL} from "@/js/constants/serverUrl";
 import {getNRandomElementsFromArray} from "@/js/helpers/cardDataHelper";
 import {adviceService} from "@/js/service/adviceService";
 import {eventService} from "@/js/service/eventService";
@@ -52,7 +54,6 @@ onMounted(async () => {
         console.error("Error fetching data:", error);
     }
 })
-
 
 </script>
 
