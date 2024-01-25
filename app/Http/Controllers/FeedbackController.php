@@ -28,11 +28,9 @@ class FeedbackController extends Controller
                     'email' => $feedbackEmail,
                     'organisation_name' => $feedbackOrganisation,
                     'issue_url' => $feedbackIssueurl,
-                    'content' => $feedbackContent
+                    'content' => $feedbackContent,
+                    'status' => 'active'
                 ],
-                [
-
-                ]
             );
 
             $feedbackId = $feedback->id;

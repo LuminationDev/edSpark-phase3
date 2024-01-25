@@ -17,7 +17,8 @@ class Feedback extends Model
         'organisation_name',
         'issue_url',
         'content',
-        'images'
+        'images',
+        'status'
     ];
 
 }
