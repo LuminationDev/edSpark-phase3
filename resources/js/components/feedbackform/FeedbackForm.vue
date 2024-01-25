@@ -1,12 +1,11 @@
 <script setup lang="ts">
 import {useVuelidate} from "@vuelidate/core";
-import {email, maxLength, required, url} from "@vuelidate/validators";
+import {email, maxLength, required} from "@vuelidate/validators";
 import axios from "axios";
 import {storeToRefs} from "pinia";
 import {reactive, ref, watch} from "vue";
 import {useRouter} from "vue-router";
 
-import ErrorMessages from "@/js/components/bases/ErrorMessages.vue";
 import TinyMceRichTextInput from "@/js/components/bases/frontendform/TinyMceEditor/TinyMceRichTextInput.vue";
 import TextInput from "@/js/components/bases/TextInput.vue";
 import GenericButton from "@/js/components/button/GenericButton.vue";
@@ -16,6 +15,7 @@ import InfoCircleIcon from "@/js/components/svg/InfoCircleIcon.vue";
 import {API_ENDPOINTS} from "@/js/constants/API_ENDPOINTS";
 import {useUserStore} from "@/js/stores/useUserStore";
 import {simpleValidateUrl} from "@/js/helpers/stringHelpers";
+import CustomErrorMessages from "@/js/components/feedbackform/CustomErrorMessages.vue";
 
 const router = useRouter()
 const userStore = useUserStore()
@@ -25,6 +25,8 @@ const isLoading = ref(false)
 const showFeedbackForm = ref(false)
 const feedbackError = ref("")
 const screenShotInfoPopUp = ref(false)
+const displayError = ref('')
+const foundError = ref(false)
 
 // use route.params.id (to get params)
 const state = reactive({
@@ -48,58 +50,54 @@ const rules = {
 
 const v$ = useVuelidate(rules, state)
 
-
 const emits = defineEmits(['emitFormOpenState', 'emitHideFeedbackForm'])
 
 const handleTinyRichContent = (data) => {
     console.log('base form received ' + data)
     v$.value.content.$model = data
 }
-const displayError = ref('')
 
-const showError = ref(false)
 // function to validate the form and submit the data to backend using POST
 const handleSubmitForm = async () => {
     if (!simpleValidateUrl(v$.value.urlIssue.$model)) {
         console.error('Invalid URL')
-        displayError.value = 'Please enter a valid URL'
-        showError.value = true
+        foundError.value = true
+        displayError.value = 'Valid URL is required'
         return
     }
-
-    showError.value = false
-    const fields_check = await v$.value.$validate()
-    if (fields_check) {
-
-        console.log("Form is Submitted")
-        const data = {
-            feedback_id: ' ',
-            user_name: v$.value.name.$model,
-            email: v$.value.email.$model,
-            organisation_name: v$.value.organisation.$model,
-            content: v$.value.content.$model
+    foundError.value = false
+    if(foundError.value == false) {
+        const fields_check = await v$.value.$validate()
+        if (fields_check) {
+            console.log("Form is Submitted")
+            const data = {
+                feedback_id: ' ',
+                user_name: v$.value.name.$model,
+                email: v$.value.email.$model,
+                organisation_name: v$.value.organisation.$model,
+                issue_url: v$.value.urlIssue.$model,
+                content: v$.value.content.$model
+            }
+            console.log(fields_check)
+            return axios.post(API_ENDPOINTS.FEEDBACK.CREATE_FEEDBACK, data)
+                .then(res => {
+                    console.log(res.data)
+                    console.log("inside Axios")
+                })
+                .catch(err => {
+                    feedbackError.value = err.message;
+                    console.error(err)
+                })
+                .finally(() => {
+                    isLoading.value = false;
+                })
         }
-
-        console.log(fields_check)
-        return axios.post(API_ENDPOINTS.FEEDBACK.CREATE_FEEDBACK, data)
-            .then(res => {
-                console.log(res.data)
-                console.log("inside Axios")
-            })
-            .catch(err => {
-                feedbackError.value = err.message;
-                console.error(err)
-            })
-            .finally(() => {
-                isLoading.value = false;
-            })
     }
-
-
     else {
         console.log("Form is not Submitted")
     }
 }
+
 const handleCancelForm = () => {
     showFeedbackForm.value = !showFeedbackForm.value
 }
@@ -107,9 +105,6 @@ const handleCancelForm = () => {
 const toggleFeedbackForm = (): void => {
     showFeedbackForm.value = !showFeedbackForm.value
     emits('emitFormOpenState', showFeedbackForm.value)
-
-   // formattedLink(window.location.href)
-
 }
 
 const showScreenShotInfoPopUpup = () => {
@@ -120,23 +115,9 @@ const hideScreeShotInfoPop = () => {
     screenShotInfoPopUp.value = false
 }
 
-
-const formattedLink = (userLink) => {
-    console.log("Original Link:", userLink)
-    if (!userLink.includes("http://", "https://") && !userLink.startsWith('http://', "https://")) {
-        showError.value = true
-        console.log("Does not have https:// link")
-    } else {
-        userLink
-        console.log("Does have https:// link")
-        showError.value = false
-    }
-}
-
 watch(router.currentRoute, () => {
     v$.value.urlIssue.$model = window.location.href
 })
-
 
 </script>
 
@@ -155,7 +136,6 @@ watch(router.currentRoute, () => {
         class="backdrop-blur blur-overlay fixed top-0 left-0 h-full w-full z-[60]"
         @click="toggleFeedbackForm(); hideScreeShotInfoPop();"
     />
-
 
     <div
         v-if="showFeedbackForm"
@@ -239,8 +219,8 @@ watch(router.currentRoute, () => {
                         URL of page with issue
                     </template>
                 </TextInput>
-                <div v-if="showError">
-                    {{ displayError }}
+                <div v-if="foundError">
+                    <CustomErrorMessages :error-text="displayError" class="-mt-6"/>
                 </div>
             </div>
             <div>
@@ -296,10 +276,10 @@ watch(router.currentRoute, () => {
         </div>
     </div>
 </template>
+
 <style>
 .HideScrollBar::-webkit-scrollbar {
     display: none;
 }
-
 
 </style>
