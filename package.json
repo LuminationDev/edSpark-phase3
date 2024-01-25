@@ -55,7 +55,7 @@
         "@vuelidate/validators": "^2.0.4",
         "@vueuse/core": "^9.13.0",
         "ckeditor5-custom-build": "file:ckeditor5",
-        "dompurify": "^3.0.6",
+        "dompurify": "^3.0.7",
         "editorjs-inline-font-size-tool": "^1.0.1",
         "editorjs-text-alignment-blocktune": "^1.0.3",
         "epic-spinners": "^2.0.0",
