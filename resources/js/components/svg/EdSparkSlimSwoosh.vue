@@ -20,8 +20,8 @@ const swooshColorLibrary = {
     },
     pink: {
         color1: '#002856',
-        color2: '#A8449E',
-        color3: '#F48CF6',
+        color2: '#692c61',
+        color3: '#DE4668',
     },
     purple: {
         color1: '#002856',

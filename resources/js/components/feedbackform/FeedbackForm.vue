@@ -5,6 +5,7 @@ import axios from "axios";
 import {storeToRefs} from "pinia";
 import {reactive, ref, watch} from "vue";
 import {useRouter} from "vue-router";
+import {toast} from "vue3-toastify";
 
 import TinyMceRichTextInput from "@/js/components/bases/frontendform/TinyMceEditor/TinyMceRichTextInput.vue";
 import TextInput from "@/js/components/bases/TextInput.vue";
@@ -81,6 +82,8 @@ const handleSubmitForm = async () => {
 
             return axios.post(API_ENDPOINTS.FEEDBACK.CREATE_FEEDBACK, data)
                 .then(res => {
+                    toast.success('Successfully submitted feedback')
+                    toggleFeedbackForm()
                 })
                 .catch(err => {
                     feedbackError.value = err.message;
@@ -243,23 +246,11 @@ watch(router.currentRoute, () => {
                     @emit-tiny-rich-content="handleTinyRichContent"
                 />
             </div>
-            <div class="flex flex-row ml-2 mt-6 mr-2">
+            <div class="flex flex-row ml-2 mr-2 mt-6">
                 <GenericButton
                     id="cancelBtn"
                     :callback="handleCancelForm"
-                    class="
-                        !bg-[#FFFFFF]
-                        !h-16
-                        !text-red-600
-                        !text-xl
-                        2xl:w-[10em]
-                        border-[1px]
-                        border-red-600
-                        min-w-[100px]
-                        p-4
-                        mr-auto
-                        sm:w-[30%]
-                        "
+                    class="!bg-white !h-16 !text-red-600 !text-xl border-[1px] border-red-600 mr-auto p-4 w-28 lg:!w-36"
                 >
                     <template #default>
                         Cancel
@@ -268,7 +259,7 @@ watch(router.currentRoute, () => {
                 <GenericButton
                     id="submitBtn"
                     :callback="handleSubmitForm"
-                    class="!h-16 p-4 !text-xl 2xl:w-[10em] ml-auto hover:!bg-adminTeal min-w-[100px] sm:w-[30%]"
+                    class="!h-16 !text-xl ml-auto p-4 w-28 hover:!bg-main-teal lg:!w-36"
                 >
                     <template #default>
                         Submit
