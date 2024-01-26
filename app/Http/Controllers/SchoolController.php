@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Helpers\JsonHelper;
 use App\Helpers\RoleHelpers;
 use App\Helpers\UserRole;
 use App\Models\User;
@@ -73,7 +74,7 @@ class SchoolController extends Controller
                 'owner_name' => ($school->owner_id) ? $school->owner->full_name : NULL
             ],
             'name' => $school->name,
-            'content_blocks' => $school->content_blocks ?: NULL,
+            'content_blocks' => JsonHelper::safelyDecodeString($school->content_blocks) ?: NULL,
             'logo' => ($school->logo) ? $school->logo : NULL,
             'cover_image' => ($school->cover_image) ? $school->cover_image : NULL,
             'tech_used' => ($school->tech_used) ? json_decode($school->tech_used) : NULL,

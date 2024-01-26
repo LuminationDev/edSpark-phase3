@@ -182,7 +182,7 @@ const handleCloseModerationTab = (): void => {
 </script>
 <template>
     <div v-if="isSchoolContentPopulated">
-        <div class="-mt-[140px] flex flex-col">
+        <div class="flex flex-col">
             <img
                 class="hidden"
                 aria-hidden="true"
@@ -205,7 +205,7 @@ const handleCloseModerationTab = (): void => {
                                 parent-page="schools"
                                 parent-page-link="browse/school"
                                 :color-theme="colorTheme"
-                                class="mt-24 pt-[10px]"
+                                class=""
                                 @send-color-to-school-single="handleChangeColorTheme"
                             />
                         </template>
