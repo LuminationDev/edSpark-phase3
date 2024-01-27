@@ -333,7 +333,7 @@ const formattedSearchBlurb = computed(() => {
         </div>
 
         <div
-            v-if="showPagination"
+            v-if="showPagination && !customView"
             class="BaseSearchPaginationContainer flex justify-center mt-12 text-lg"
         >
             <v-pagination
