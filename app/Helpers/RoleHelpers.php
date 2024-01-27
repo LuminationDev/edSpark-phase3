@@ -55,7 +55,7 @@ class RoleHelpers
         'PWDRESETSTD' => 'PWDRESETSTD',];
     protected static array $god_key = ['Godmode'];
 
-    protected static array $admin_keys = ['Superadmin', 'Moderator',];
+    protected static array $admin_keys = ['Superadmin', 'Moderator'];
     protected static array $moderator_keys = ['PSACT'];
     protected static array $site_leader_keys = ['SCHLDR', 'PRESCLDR', 'SITELDR'];
     protected static array $role_hierarchy = [

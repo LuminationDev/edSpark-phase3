@@ -23,22 +23,8 @@ const props = defineProps({
     }
 });
 
-const stripHTML = (value) => {
-    const div = document.createElement('div');
-    div.innerHTML = value;
-    return div.textContent;
-};
-
-const getBlurb = (mapPopupInfo) => {
-    return 'school introduction'
-
-}
-
 const emits = defineEmits(['handleLinkToSchool', 'handleToggle']);
 
-const handleClosePopup = () => {
-    emits('handleToggle');
-};
 
 const handleEmit = () => {
     emits('handleLinkToSchool');
@@ -59,7 +45,7 @@ const handleEmit = () => {
                 />
             </h3>
             <div class="cardDisplayPreview line-clamp p-0 pt-4 school-card-body text-left">
-                {{ getBlurb(mapPopupInfo) }}
+                <!--                {{ getBlurb(mapPopupInfo) }}-->
             </div>
         </div>
         <div
