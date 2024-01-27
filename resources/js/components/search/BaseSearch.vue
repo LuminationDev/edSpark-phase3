@@ -44,6 +44,11 @@ const props = defineProps({
         type: String,
         required: false,
         default: 'teal'
+    },
+    customView:{
+        type: Boolean,
+        required: false,
+        default: false
     }
 })
 
@@ -179,148 +184,166 @@ const formattedSearchBlurb = computed(() => {
                     {{ formattedSearchBlurb }}
                 </p>
             </div>
-
-            <!--            <div class="flex flex-col search-filter-components">-->
-            <!--                <SearchBar-->
-            <!--                    :placeholder="`Type in ${searchType} name`"-->
-            <!--                    @emit-search-term="handleSearchTerm"-->
-            <!--                />-->
-            <!--                <div class="">-->
-            <!--                    <slot name="filterBar" />-->
-            <!--                </div>-->
-            <!--            </div>-->
-        </div>
-        <div class="grid grid-cols-3 gap-4 w-full">
-            <div class="flex flex-col search-filter-components">
-                <SearchBar
-                    :placeholder="`Type in ${searchType} name`"
-                    @emit-search-term="handleSearchTerm"
-                />
-                <div class="" />
+            <div class="grid grid-cols-3 gap-4 w-full">
+                <div class="flex flex-col search-filter-components">
+                    <SearchBar
+                        :placeholder="`Type in ${searchType} name`"
+                        @emit-search-term="handleSearchTerm"
+                    />
+                </div>
+                <slot name="filterBar" />
+                <slot name="additionalFilters" />
             </div>
-            <slot name="filterBar" />
-            <slot name="additionalFilters" />
-        </div>
-        <div class="my-4 searchResults text-base">
-            {{ String(filteredData.length) + " search " + (filteredData.length > 1 ? "results" : "result") }}
-        </div>
-        <div
-            v-if="resourceList"
-            id="resourceResult"
-            class="grid grid-cols-1 gap-10 place-items-center pt-10 resourceResult w-full md:!grid-cols-2 xl:!gap-12 xl:!grid-cols-3"
-        >
-            <template
-                v-for="(data) in paginatedFilteredData"
-                :key="data['key']"
+            <div class="my-4 searchResults text-base">
+                {{ String(filteredData.length) + " search " + (filteredData.length > 1 ? "results" : "result") }}
+            </div>
+            <div
+                v-if="resourceList&&
+                    props.customView"
+                class="customViewContainer"
+            >
+                <slot
+                    name="customViewSlot"
+                    :filtered-data="filteredData"
+                />
+            </div>
+            <div
+                v-else-if="resourceList && !props.customView"
+                id="resourceResult"
+                class="
+                    grid
+                    grid-cols-1
+                    gap-10
+                    place-items-center
+                    pt-10
+                    resourceResult
+                    w-full
+                    md:!grid-cols-2
+                    xl:!gap-12
+                    xl:!grid-cols-3
+                    "
             >
                 <template
-                    v-if="searchType === 'guide'"
+                    v-for="(data) in paginatedFilteredData"
+                    :key="data['key']"
                 >
-                    <div
-                        :key="data.id"
-                        class="group h-[470px] max-w-[350px] transition-all w-full  hover:shadow-2xl lg:!max-w-[400px]"
+                    <template
+                        v-if="searchType === 'guide'"
                     >
-                        <AdviceCard
+                        <div
                             :key="data.id"
-                            :data="data"
-                            :show-icon="true"
-                        />
-                    </div>
-                </template>
-                <template v-else-if="searchType === 'software'">
-                    <div
-                        :key="data.id"
-                        class="group h-[470px] max-w-[350px] transition-all w-full hover:shadow-2xl lg:!max-w-[400px]"
-                    >
-                        <SoftwareCard
+                            class="group h-[470px] max-w-[350px] transition-all w-full hover:shadow-2xl lg:!max-w-[400px]"
+                        >
+                            <AdviceCard
+                                :key="data.id"
+                                :data="data"
+                                :show-icon="true"
+                            />
+                        </div>
+                    </template>
+                    <template v-else-if="searchType === 'software'">
+                        <div
                             :key="data.id"
-                            :data="data"
-                        />
-                    </div>
-                </template>
-                <template v-else-if="searchType === 'hardware'">
-                    <div
-                        :key="data.id"
-                        class="group h-[470px] max-w-[350px] transition-all w-full hover:shadow-2xl lg:!max-w-[400px]"
-                    >
-                        <HardwareCard
+                            class="group h-[470px] max-w-[350px] transition-all w-full hover:shadow-2xl lg:!max-w-[400px]"
+                        >
+                            <SoftwareCard
+                                :key="data.id"
+                                :data="data"
+                            />
+                        </div>
+                    </template>
+                    <template v-else-if="searchType === 'hardware'">
+                        <div
                             :key="data.id"
-                            :data="data"
-                        />
-                    </div>
+                            class="group h-[470px] max-w-[350px] transition-all w-full hover:shadow-2xl lg:!max-w-[400px]"
+                        >
+                            <HardwareCard
+                                :key="data.id"
+                                :data="data"
+                            />
+                        </div>
+                    </template>
+                    <template v-else-if="searchType === 'school'">
+                        <div
+                            :key="data.id"
+                            class="
+                                group
+                                h-[470px]
+                                max-w-[350px]
+                                transition-all
+                                w-full
+                                hover:shadow-2xl
+                                lg:!max-w-[400px]]
+                                "
+                        >
+                            <SchoolCard
+                                class="mx-auto"
+                                :data="data"
+                            />
+                        </div>
+                    </template>
+                    <template v-else-if="searchType === 'partner'">
+                        <div
+                            :key="data.id"
+                            class="group h-[470px] max-w-[350px] transition-all w-full hover:shadow-2xl lg:!max-w-[400px]"
+                        >
+                            <PartnerCard
+                                :data="data"
+                            />
+                        </div>
+                    </template>
+                    <template v-else-if="searchType === 'event'">
+                        <div
+                            :key="data.id"
+                            class="
+                                border-black
+                                group
+                                h-[470px]
+                                max-w-[350px]
+                                transition-all
+                                w-full
+                                hover:shadow-2xl
+                                lg:!max-w-[400px]
+                                "
+                        >
+                            <EventsCard
+                                :data="data"
+                                :show-icon="true"
+                            />
+                        </div>
+                    </template>
                 </template>
-                <template v-else-if="searchType === 'school'">
-                    <div
-                        :key="data.id"
-                        class="group h-[470px] max-w-[350px] transition-all w-full hover:shadow-2xl lg:!max-w-[400px]]"
-                    >
-                        <SchoolCard
-                            class="mx-auto"
-                            :data="data"
-                        />
-                    </div>
-                </template>
-                <template v-else-if="searchType === 'partner'">
-                    <div
-                        :key="data.id"
-                        class="group h-[470px] max-w-[350px] transition-all w-full hover:shadow-2xl lg:!max-w-[400px]"
-                    >
-                        <PartnerCard
-                            :data="data"
-                        />
-                    </div>
-                </template>
-                <template v-else-if="searchType === 'event'">
-                    <div
-                        :key="data.id"
-                        class="
-                            border-black
-                            group
-                            h-[470px]
-                            max-w-[350px]
-                            transition-all
-                            w-full
-                            hover:shadow-2xl
-                            lg:!max-w-[400px]
-                            "
-                    >
-                        <EventsCard
-                            :data="data"
-                            :show-icon="true"
-                        />
-                    </div>
-                </template>
-            </template>
 
+                <div
+                    v-if="filteredData.length <= 0"
+                    class="col-span-1 font-semibold text-xl md:!col-span-2 lg:!col-span-3"
+                >
+                    No search result
+                </div>
+            </div>
             <div
-                v-if="filteredData.length <= 0"
-                class="col-span-1 font-semibold text-xl md:!col-span-2 lg:!col-span-3"
+                v-else
+                class="w-full"
             >
-                No search result
+                <CardLoading
+                    :number-per-row="3"
+                    :number-of-rows="2"
+                />
             </div>
         </div>
+
         <div
-            v-else
-            class="w-full"
+            v-if="showPagination"
+            class="BaseSearchPaginationContainer flex justify-center mt-12 text-lg"
         >
-            <CardLoading
-                :number-per-row="3"
-                :number-of-rows="2"
+            <v-pagination
+                v-model="page"
+                :range-size="1"
+                :pages="numberOfAvailablePages"
+                active-color="#DCEDFF"
+                @update:model-value="handleChangePageNumber"
             />
         </div>
-    </div>
-
-    <div
-        v-if="showPagination"
-        class="BaseSearchPaginationContainer flex justify-center mt-12 text-lg"
-    >
-        <v-pagination
-            v-model="page"
-            :range-size="1"
-            :pages="numberOfAvailablePages"
-            active-color="#DCEDFF"
-            @update:model-value="handleChangePageNumber"
-        />
     </div>
 </template>
 <style lang="scss">

@@ -30,12 +30,7 @@ const stripHTML = (value) => {
 };
 
 const getBlurb = (mapPopupInfo) => {
-
-    if (mapPopupInfo.content_blocks != null && mapPopupInfo.content_blocks.blocks.length > 0) {
-        return stripHTML(mapPopupInfo.content_blocks.blocks[1].data.text);
-    } else {
-        return "";
-    }
+    return 'school introduction'
 
 }
 
