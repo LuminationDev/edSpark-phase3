@@ -43,8 +43,6 @@ class AdviceResource extends Resource
     public static function form(Form $form): Form
     {
         $current_user = Auth::user();
-        $current_user_full_name = $current_user->full_name;
-        $current_user_display_name = $current_user->display_name;
         $groupedLabels = Label::all()->groupBy('type');
 
         $labelColumns = [];
@@ -95,10 +93,10 @@ class AdviceResource extends Resource
 
 
                 Forms\Components\Grid::make(2)->schema([
-                    Forms\Components\Select::make('author')
+                    Forms\Components\Select::make('author_id')
                         ->relationship(name: 'author', titleAttribute: 'display_name')
                         ->disabled(fn() => !RoleHelpers::has_minimum_privilege(UserRole::ADMIN))
-                        ->default(fn(Forms\Get $get) => $get('selected_author')?? $current_user->id)
+//                        ->default(fn(Forms\Get $get) => $get('selected_author')?? $current_user->id)
                         ->searchable()
                         ->preload(),
 

@@ -4,6 +4,7 @@ namespace App\Filament\Resources\SoftwareResource\Pages;
 
 use App\Filament\Resources\SoftwareResource;
 use App\Models\Software;
+use App\Models\User;
 use Filament\Pages\Actions;
 use Filament\Resources\Pages\EditRecord;
 
@@ -23,7 +24,18 @@ class EditSoftware extends EditRecord
 
     protected function mutateFormDatabeforeFill(array $data): array
     {
-        $data['Author'] = Auth::user()->full_name;
+        // author manipulation
+//        if (isset($data['author_id'])) {
+//            $author = User::find($data['author_id']);
+//            if ($author) {
+//                $data['selected_author'] = $author->id;
+//            } else {
+//                $data['selected_author'] = null;
+//            }
+//        } else {
+//            $data['selected_author'] = null;
+//        }
+
         // tags related
         $record = parent::getRecord();
         $targetData = Software::find($record->id);

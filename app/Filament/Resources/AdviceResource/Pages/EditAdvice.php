@@ -27,21 +27,6 @@ class EditAdvice extends EditRecord
 
     protected function mutateFormDatabeforeFill(array $data): array
     {
-        if (isset($data['author_id'])) {
-            $author = User::find($data['author_id']);
-
-            if ($author) {
-                // Format the author data to match the format used in the select options
-
-                $data['selected_author'] = $author->id;
-            } else {
-                // Handle the case where the specified author_id does not exist
-                $data['selected_author'] = null;
-            }
-        } else {
-            // Handle the case where 'author_id' is not present in the data
-            $data['selected_author'] = null;
-        }
 
         $record = parent::getRecord();
         $targetData = Advice::find($record->id);

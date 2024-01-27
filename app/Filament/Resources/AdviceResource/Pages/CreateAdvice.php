@@ -20,7 +20,6 @@ class CreateAdvice extends CreateRecord
 
     protected function mutateFormDataBeforeCreate(array $data): array
     {
-        $data['author_id'] = $data['author'];
         $data['post_date'] = Carbon::now();
         $data['post_modified'] = Carbon::now();
         return $data;

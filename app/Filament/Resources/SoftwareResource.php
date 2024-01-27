@@ -5,6 +5,7 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\SoftwareResource\Pages;
 use App\Filament\Resources\SoftwareResource\RelationManagers;
 use App\Helpers\RoleHelpers;
+use App\Helpers\UserRole;
 use App\Models\Label;
 use App\Models\Software;
 use Filament\Forms;
@@ -38,7 +39,7 @@ class SoftwareResource extends Resource
 
     public static function form(Form $form): Form
     {
-        $user = Auth::user()->full_name;
+        $current_user = Auth::user();
         $groupedLabels = Label::all()->groupBy('type');
 
         $labelColumns = [];
@@ -90,9 +91,13 @@ class SoftwareResource extends Resource
                             ]),
                         Forms\Components\Grid::make(2)
                             ->schema([
-                                Forms\Components\TextInput::make('Author')
-                                    ->default($user)
-                                    ->disabled(),
+                                Forms\Components\Select::make('author_id')
+                                    ->relationship(name: 'author', titleAttribute: 'display_name')
+                                    ->disabled(fn() => !RoleHelpers::has_minimum_privilege(UserRole::ADMIN))
+//                                    ->default(fn(Forms\Get $get) => $get('selected_author')?? $current_user->id)
+                                    ->searchable()
+                                    ->preload(),
+
                                 Forms\Components\Select::make('post_status')
                                     ->options([
                                         'Published' => 'Published',
