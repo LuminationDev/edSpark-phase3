@@ -4,6 +4,7 @@ namespace App\Filament\Resources\EventResource\Pages;
 
 use App\Filament\Resources\EventResource;
 use App\Models\Event;
+use App\Models\User;
 use Filament\Pages\Actions;
 use Filament\Resources\Pages\EditRecord;
 
@@ -33,8 +34,19 @@ class EditEvent extends EditRecord
             $data['tags'] = $tagNames;
         }
 
-        //others
-        $data['author'] = Auth::user()->full_name;
+        //author
+//        if (isset($data['author_id'])) {
+//            $author = User::find($data['author_id']);
+//            if ($author) {
+//                $data['selected_author'] = $author->id;
+//            } else {
+//                $data['selected_author'] = null;
+//            }
+//        } else {
+//            $data['selected_author'] = null;
+//        }
+
+
         $location = json_decode($data['event_location']);
         $data['url'] = $location && isset($location->url) ? $location->url : '';
         $data['address'] = $location && isset($location->address) ? $location->address : '';

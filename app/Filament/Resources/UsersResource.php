@@ -42,7 +42,7 @@ class UsersResource extends Resource
                         Forms\Components\TextInput::make('password')
                             ->default('edSparkDigitalHub')
                             ->helperText('**password to be changed on login')
-                            ->disabled(),
+                            ->readOnly(),
                         Forms\Components\Grid::make(3)
                             ->schema([
                                 Forms\Components\BelongsToSelect::make('role_id')

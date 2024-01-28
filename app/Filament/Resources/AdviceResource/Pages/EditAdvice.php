@@ -5,6 +5,7 @@ namespace App\Filament\Resources\AdviceResource\Pages;
 use App\Filament\Resources\AdviceResource;
 use App\Models\Advice;
 use App\Models\Label;
+use App\Models\User;
 use Filament\Pages\Actions;
 use Filament\Resources\Pages\EditRecord;
 
@@ -26,7 +27,6 @@ class EditAdvice extends EditRecord
 
     protected function mutateFormDatabeforeFill(array $data): array
     {
-        $data['Author'] = Auth::user()->full_name;
 
         $record = parent::getRecord();
         $targetData = Advice::find($record->id);

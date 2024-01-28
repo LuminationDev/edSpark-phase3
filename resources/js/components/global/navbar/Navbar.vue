@@ -79,17 +79,17 @@ const logoClass = computed(() => {
             v-if="isAuthenticated"
             id="navbarFullsize"
             :class="{ 'navbarScrolled' : scrollPosition > 0 }"
-            class="container h-16 hidden navbarFullsize px-12 text-main-darkGrey bg-white lg:block lg:z-20"
+            class="bg-white container h-16 hidden navbarFullsize px-12 text-main-darkGrey  lg:block lg:z-20"
         >
             <ul
                 class="
-                    xl:ml-48
                     2xl:text-xl
                     font-semibold
                     h-full
                     hidden
                     ml-32
                     lg:ml-36
+                    xl:ml-48
                     gap-2
                     lg:flex
                     lg:flex-row
@@ -107,12 +107,12 @@ const logoClass = computed(() => {
                     class="cursor-pointer flex items-center flex-row gap-2 ml-auto mr-8"
                     @click="handleGlobalsearchClick"
                 >
-                    <div class="searchText hidden xl:!block">
+                    <div class="hidden searchText xl:!block">
                         Search
                     </div>
                     <div>
                         <Search
-                            class="stroke-main-darkGrey h-7 w-7"
+                            class="h-7 stroke-main-darkGrey w-7"
                             :class="{'stroke-white': scrollPosition > 0}"
                         />
                     </div>
