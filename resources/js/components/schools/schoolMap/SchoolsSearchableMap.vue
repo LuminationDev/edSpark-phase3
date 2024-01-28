@@ -48,37 +48,6 @@ const mapOptions = ref({
     }
 });
 
-/**
- * Map markers and filters
- */
-const schoolNameFilter = ref('');
-const schoolTypeFilter = ref('All');
-const schoolTechFilter = ref('All');
-
-const schoolMatchesCriteria = (school) => {
-    if (schoolNameFilter.value && !school.name.toLowerCase().includes(schoolNameFilter.value.toLowerCase())) {
-        return false;
-    }
-
-    if (schoolTechFilter.value !== 'All') {
-        if (!Array.isArray(school.tech_used) || !school.tech_used.some(tech => tech.name === schoolTechFilter.value)) {
-            return false;
-        }
-    }
-
-    if (schoolTypeFilter.value !== 'All') {
-        if (!Array.isArray(school.metadata) || !school.metadata.some(item => item['schoolmeta_key'] === 'school_type' && item['schoolmeta_value'] === schoolTypeFilter.value)) {
-            return false;
-        }
-    }
-
-    return true;
-}
-
-const filteredList = computed(() => {
-    return props.schools.filter(schoolMatchesCriteria);
-});
-
 
 const popupX = ref('');
 const popupY = ref('');
@@ -108,9 +77,6 @@ const handleTogglePopupEmit = () => {
     // toggleMapPopup.value = !toggleMapPopup.value;
 };
 
-const handleFilterBarClick = () => {
-    showFilters.value = !showFilters.value;
-};
 
 const handleLinkToSchool = (schoolName) => {
     router.push({
@@ -129,37 +95,6 @@ const handleLinkToSchool = (schoolName) => {
         ref="gMapParent"
         class="border border-[#0072DA] relative w-full"
     >
-        <div class="bg-[#0072DA] flex justify-between flex-row h-[72px] place-items-center px-[48px] py-[48px] relative z-40">
-            <h1 class="font-bold text-white text-xl md:!text-3xl">
-                Search for schools
-            </h1>
-
-            <button
-                class="bg-white px-8 py-3 text-[#0072DA] w-[120px]"
-                @click="handleFilterBarClick"
-            >
-                {{ (showFilters ? 'Close' : 'Filters') }}
-            </button>
-        </div>
-
-        <div
-            class="absolute top-0 bg-[#0072DA] p-6 pt-[48px] px-[48px] transition-all w-full z-30"
-            :class="showFilters ? 'h-auto md:h-[200px] mt-[20px]' : '!h-0 opacity-0 pointer-events-none' "
-        >
-            <div class="flex md:flex-row flex-col flex-wrap gap-6 mt-12">
-                <SchoolsMapFilterName
-                    v-model="schoolNameFilter"
-                />
-
-                <SchoolsMapFilterType
-                    v-model="schoolTypeFilter"
-                />
-                <SchoolsMapFilterTech
-                    v-model="schoolTechFilter"
-                />
-            </div>
-        </div>
-
         <div class="relative">
             <div ref="map">
                 <GoogleMap
@@ -168,12 +103,10 @@ const handleLinkToSchool = (schoolName) => {
                     :center="mapOptions.center"
                     :zoom="mapOptions.zoom"
                     :options="mapOptions.options"
-                    @click="showFilters = false"
-                    @drag="showFilters = false"
                 >
                     <MarkerCluster>
                         <Marker
-                            v-for="(school, i) in filteredList"
+                            v-for="(school, i) in props.schools"
                             :key="i"
                             :options="{ position: school.location, title: school.name }"
                             @click="handleOnClusterClick(school, i)"

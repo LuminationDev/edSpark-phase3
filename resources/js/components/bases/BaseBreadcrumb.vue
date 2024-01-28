@@ -1,5 +1,5 @@
 <script setup>
-import {computed, onMounted, ref} from 'vue'
+import {computed} from 'vue'
 
 import ChevronRight from "@/js/components/svg/ChevronRight.vue";
 import {schoolColorKeys, schoolColorTheme} from "@/js/constants/schoolColorTheme";
@@ -24,32 +24,23 @@ const props = defineProps({
     }
 })
 
-const textColorTheme = ref('')
-const textHoverColorTheme = ref('')
-
-
 const customText = computed(() => {
     if (schoolColorKeys.includes(props.colorTheme)) {
-        textColorTheme.value = "text-[" + schoolColorTheme[props.colorTheme]['light'] + "]";
+        return "text-[" + schoolColorTheme[props.colorTheme]['light'] + "]";
 
     } else {
-        textColorTheme.value = "text-[" + schoolColorTheme['teal']['light'] + "]";
+        return "text-[" + schoolColorTheme['teal']['light'] + "]";
     }
 
-    return textColorTheme.value;
 })
 
 const customTextHover = computed(() => {
     if (schoolColorKeys.includes(props.colorTheme)) {
-        textHoverColorTheme.value = "hover:text-[" + schoolColorTheme[props.colorTheme]['light'] + "]";
-
+        return "hover:text-[" + schoolColorTheme[props.colorTheme]['light'] + "]";
     } else {
-        textHoverColorTheme.value = "hover:text-[" + schoolColorTheme['teal']['light'] + "]";
+        return "hover:text-[" + schoolColorTheme['teal']['light'] + "]";
     }
-
-    return textHoverColorTheme.value;
 })
-
 
 </script>
 
@@ -84,3 +75,8 @@ const customTextHover = computed(() => {
         </div>
     </div>
 </template>
+<style scoped>
+a {
+    text-decoration: none
+}
+</style>
