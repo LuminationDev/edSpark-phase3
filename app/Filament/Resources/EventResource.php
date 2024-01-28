@@ -4,6 +4,7 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\EventResource\Pages;
 use App\Helpers\RoleHelpers;
+use App\Helpers\UserRole;
 use App\Models\Event;
 use App\Models\Label;
 use Filament\Forms;
@@ -40,7 +41,7 @@ class EventResource extends Resource
 
     public static function form(Form $form): Form
     {
-        $user = Auth::user()->full_name;
+        $current_user = Auth::user();
 
         $groupedLabels = Label::all()->groupBy('type');
         $labelColumns = [];
@@ -84,9 +85,12 @@ class EventResource extends Resource
                                     ->required(),
                                 Forms\Components\DateTimePicker::make('end_date')
                                     ->required(),
-                                Forms\Components\TextInput::make('Author')
-                                    ->default($user)
-                                    ->disabled(),
+                                Forms\Components\Select::make('author_id')
+                                    ->relationship(name: 'author', titleAttribute: 'display_name')
+                                    ->disabled(fn() => !RoleHelpers::has_minimum_privilege(UserRole::ADMIN))
+//                                    ->default(fn(Forms\Get $get) => $get('selected_author')?? $current_user->id)
+                                    ->searchable()
+                                    ->preload(),
                             ]),
                         Forms\Components\Grid::make(3)
                             ->schema([

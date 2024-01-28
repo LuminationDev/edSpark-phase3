@@ -29,7 +29,7 @@ class FeedbackController extends Controller
                     'organisation_name' => $feedbackOrganisation,
                     'issue_url' => $feedbackIssueurl,
                     'content' => $feedbackContent,
-                    'status' => 'active'
+                    'status' => 'Active'
                 ],
             );
 

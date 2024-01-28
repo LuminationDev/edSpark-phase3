@@ -16,6 +16,7 @@ class CreateEvent extends CreateRecord
 
     protected function mutateFormDataBeforeCreate(array $data): array
     {
+
         if(isset($data['url'])){
             $data['event_location']['url'] = $data['url'];
         }
@@ -23,7 +24,6 @@ class CreateEvent extends CreateRecord
             $data['event_location']['address'] = $data['address'];
         }
         $data['event_location'] = json_encode($data['event_location']);
-        $data['author_id'] = Auth::user()->id;
         $data['post_date'] = Carbon::now();
         $data['post_modified'] = Carbon::now();
         return $data;

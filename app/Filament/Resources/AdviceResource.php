@@ -5,8 +5,10 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\AdviceResource\Pages;
 use App\Filament\Resources\AdviceResource\RelationManagers;
 use App\Helpers\RoleHelpers;
+use App\Helpers\UserRole;
 use App\Models\Advice;
 use App\Models\Label;
+use App\Models\User;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -40,7 +42,7 @@ class AdviceResource extends Resource
 
     public static function form(Form $form): Form
     {
-        $user = Auth::user()->full_name;
+        $current_user = Auth::user();
         $groupedLabels = Label::all()->groupBy('type');
 
         $labelColumns = [];
@@ -89,10 +91,16 @@ class AdviceResource extends Resource
                         ...$labelColumns
                     ]),
 
+
                 Forms\Components\Grid::make(2)->schema([
-                    Forms\Components\TextInput::make('Author')
-                        ->default($user)
-                        ->disabled(),
+                    Forms\Components\Select::make('author_id')
+                        ->relationship(name: 'author', titleAttribute: 'display_name')
+                        ->disabled(fn() => !RoleHelpers::has_minimum_privilege(UserRole::ADMIN))
+//                        ->default(fn(Forms\Get $get) => $get('selected_author')?? $current_user->id)
+                        ->searchable()
+                        ->preload(),
+
+
                     Forms\Components\Select::make('post_status')
                         ->options([
                             'Published' => 'Published',
@@ -182,7 +190,7 @@ class AdviceResource extends Resource
                     ->sortable()
                     ->searchable()
                     ->wrap(),
-                Tables\Columns\TextColumn::make('author.full_name')->label('Author')
+                Tables\Columns\TextColumn::make('author.display_name')->label('Author')
                     ->limit(15)
                 ,
                 Tables\Columns\TextColumn::make('post_status')
