@@ -3,6 +3,7 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\EventResource\Pages;
+use App\Helpers\CustomHtmlable;
 use App\Helpers\RoleHelpers;
 use App\Helpers\UserRole;
 use App\Models\Event;
@@ -72,6 +73,8 @@ class EventResource extends Resource
                             ->fileAttachmentsDirectory('public/uploads/event')
                             ->required(),
                         Forms\Components\FileUpload::make('cover_image')
+                            ->label(new CustomHtmlable("Cover Image <span class='text-xs italic'> (500px * 500px / 1:1 aspect ratio] </span>"))
+                            ->required()
                             ->preserveFilenames()
                             ->disk('public')
                             ->directory('uploads/event')
@@ -79,23 +82,18 @@ class EventResource extends Resource
                             ->getUploadedFileNameForStorageUsing(function (TemporaryUploadedFile $file): string {
                                 return (string)str($file->getClientOriginalName())->prepend('edSpark-event-');
                             }),
-                        Forms\Components\Grid::make(3)
+                        Forms\Components\Grid::make(2)
                             ->schema([
                                 Forms\Components\DateTimePicker::make('start_date')
                                     ->required(),
                                 Forms\Components\DateTimePicker::make('end_date')
                                     ->required(),
-                                Forms\Components\Select::make('author_id')
-                                    ->relationship(name: 'author', titleAttribute: 'display_name')
-                                    ->disabled(fn() => !RoleHelpers::has_minimum_privilege(UserRole::ADMIN))
-//                                    ->default(fn(Forms\Get $get) => $get('selected_author')?? $current_user->id)
-                                    ->searchable()
-                                    ->preload(),
                             ]),
                         Forms\Components\Grid::make(3)
                             ->schema([
                                 Forms\Components\BelongsToSelect::make('event_type')
                                     ->label('Event type')
+                                    ->required()
                                     ->reactive()
                                     ->relationship('eventtype', 'event_type_name'),
                                 Forms\Components\TextInput::make('url')
@@ -112,6 +110,12 @@ class EventResource extends Resource
 
                         Forms\Components\Grid::make(2)
                             ->schema([
+                                Forms\Components\Select::make('author_id')
+                                    ->relationship(name: 'author', titleAttribute: 'display_name')
+                                    ->disabled(fn() => !RoleHelpers::has_minimum_privilege(UserRole::ADMIN))
+                                    ->required()
+                                    ->searchable()
+                                    ->preload(),
                                 Forms\Components\Select::make('event_status')
                                     ->options([
                                         'Published' => 'Published',

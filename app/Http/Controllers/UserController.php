@@ -20,10 +20,12 @@ use Illuminate\Http\Response;
 class UserController extends Controller
 {
     protected PostService $postService;
+    private array $userProfileMetaKeys ;
 
     public function __construct(PostService $postService)
     {
         $this->postService = $postService;
+        $this->userProfileMetaKeys =['yearLevels', 'Interest', 'Subjects', 'Biography'];
 
 
     }
@@ -364,6 +366,148 @@ class UserController extends Controller
                     'user_status' => $userEmailDetails->status
                 ],
             ]);
+        }
+    }
+
+
+    /**
+     * Update or create user metadata based on the provided fields.
+     *
+     * @param Request $request
+     * @param int $userId
+     * @return \Illuminate\Http\JsonResponse
+     *
+     * @throws \Exception
+     *
+     * @example Request body:
+     * {
+     *    "fields": {
+     *        "yearLevels": [2, 10, 4, 12],
+     *        "Interest": ["Drones", "VR", "Robotics", "AR"],
+     *        "Subjects": ["Mathematics", "Technologies", "Science", "The Arts"],
+     *        "Biography": "I am a teacher"
+     *    }
+     * }
+     */
+    public function updateOrCreateMetadata(Request $request, $userId)
+    {
+        try {
+            // Check if the request is a POST request
+            if (!$request->isMethod('post')) {
+                return ResponseService::error('Invalid request method. Only POST requests are allowed.', null, 405);
+            }
+
+            // Validate the request data
+            $validatedData = $request->validate([
+                'fields' => [
+                    'required',
+                    'array',
+                    function ($attribute, $value, $fail) {
+                        // Ensure that each field key is one of the specified keys
+                        $allowedKeys = $this->userProfileMetaKeys;
+                        foreach ($value as $key => $val) {
+                            if (!in_array($key, $allowedKeys)) {
+                                $fail("Invalid field key: $key. Allowed keys are " . implode(', ', $allowedKeys));
+                            }
+                        }
+                    },
+                ],
+            ]);
+
+            // Find the user by ID
+            $user = User::find($userId);
+
+            if (!$user) {
+                return ResponseService::error('User not found', null, 404);
+            }
+
+            // Loop through the fields and update or create user metadata
+            foreach ($validatedData['fields'] as $key => $value) {
+                Usermeta::updateOrCreate(
+                    [
+                        'user_id' => $user->id,
+                        'user_meta_key' => $key,
+                    ],
+                    [
+                        'user_meta_value' => json_encode($value),
+                    ]
+                );
+            }
+
+            return ResponseService::success('User metadata updated successfully');
+        } catch (\Exception $e) {
+            // Handle exceptions here
+            return ResponseService::error('Error updating user metadata', $e->getMessage());
+        }
+    }
+
+    public function getAllUserMetadata(Request $request)
+    {
+        try {
+            if ($request->isMethod('post')) {
+                $userMetaDataToSend = [];
+                $userId = $request->id;
+                $userMetakey = $request->userMetakey;
+
+                // Retrieve user metadata
+                $result = Usermeta::where([
+                    ['user_id', $userId],
+                    ['user_meta_key', $userMetakey]
+                ])->get();
+
+                if ($result) {
+                    foreach ($result as $value) {
+                        $userMetaDataToSend[] = [
+                            'user_meta_key' => $value->user_meta_key,
+                            'user_meta_value' => $value->user_meta_value,
+                        ];
+                    }
+                }
+
+                return ResponseService::success('User metadata retrieved successfully', $userMetaDataToSend);
+            } else {
+                return ResponseService::error('Invalid request method. Only POST requests are allowed.', null, 405);
+            }
+        } catch (\Exception $e) {
+            // Handle exceptions here
+            return ResponseService::error('Error retrieving user metadata', $e->getMessage());
+        }
+    }
+
+    /**
+     * Get user metadata for all specified fields based on the provided user ID.
+     *
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function getUserProfileMetadata(Request $request, int $userId)
+    {
+        try {
+            if ($request->isMethod('get')) {
+                $userId = $request->id;
+
+                // Retrieve user metadata for the specified keys
+                $result = Usermeta::where('user_id', $userId)
+                    ->whereIn('user_meta_key', $this->userProfileMetaKeys)
+                    ->get();
+
+                $userMetaDataToSend = [];
+
+                // Populate the result into the response array
+                foreach ($result as $value) {
+                    $userMetaDataToSend[] = [
+                        'user_meta_key' => $value->user_meta_key,
+                        'user_meta_value' => $value->user_meta_value,
+                    ];
+                }
+
+                return ResponseService::success('User metadata retrieved successfully', $userMetaDataToSend);
+            } else {
+                return ResponseService::error('Invalid request method. Only GET requests are allowed.', null, 405);
+            }
+        } catch (\Exception $e) {
+            // Handle exceptions here
+            return ResponseService::error('Error retrieving user metadata', $e->getMessage());
         }
     }
 }

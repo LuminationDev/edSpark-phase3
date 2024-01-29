@@ -162,6 +162,10 @@ Route::middleware('auth:sanctum')->group(function () {
 
     // Feedback
     Route::post('createFeedback', [FeedbackController::class, 'createFeedback']);
+
+    // User metadata for user profile
+    Route::post('updateOrCreateMetadata/{user_id}', [UserController::class, 'updateOrCreateMetadata']);
+    Route::get('getUserProfileMetadata/{user_id}', [UserController::class, 'getUserProfileMetadata']);
 });
 
 

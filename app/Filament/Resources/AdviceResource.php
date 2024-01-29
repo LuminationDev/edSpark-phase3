@@ -4,6 +4,7 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\AdviceResource\Pages;
 use App\Filament\Resources\AdviceResource\RelationManagers;
+use App\Helpers\CustomHtmlable;
 use App\Helpers\RoleHelpers;
 use App\Helpers\UserRole;
 use App\Models\Advice;
@@ -27,6 +28,9 @@ use Mohamedsabil83\FilamentFormsTinyeditor\Components\TinyEditor;
 use SplFileInfo;
 
 use App\Helpers\EdSparkRolesHelpers;
+
+
+
 
 class AdviceResource extends Resource
 {
@@ -74,6 +78,8 @@ class AdviceResource extends Resource
                     ->required(),
 
                 Forms\Components\FileUpload::make('cover_image')
+                    ->label(new CustomHtmlable("Cover Image <span class='text-xs italic'> (500px * 500px / 1:1 aspect ratio] </span>"))
+                    ->required()
                     ->preserveFilenames()
                     ->disk('public')
                     ->directory('uploads/advice')
@@ -87,16 +93,16 @@ class AdviceResource extends Resource
                         Forms\Components\Select::make('advice_type')
                             ->label('Advice type')
                             ->relationship('advicetypes', 'advice_type_name')
+                            ->required()
                             ->columns(3),
                         ...$labelColumns
                     ]),
-
 
                 Forms\Components\Grid::make(2)->schema([
                     Forms\Components\Select::make('author_id')
                         ->relationship(name: 'author', titleAttribute: 'display_name')
                         ->disabled(fn() => !RoleHelpers::has_minimum_privilege(UserRole::ADMIN))
-//                        ->default(fn(Forms\Get $get) => $get('selected_author')?? $current_user->id)
+                        ->required()
                         ->searchable()
                         ->preload(),
 

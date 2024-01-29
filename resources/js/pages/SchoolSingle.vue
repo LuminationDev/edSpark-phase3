@@ -288,7 +288,7 @@ const handleCloseModerationTab = (): void => {
                     </BaseHero>
                 </template>
                 <template #content>
-                    <div class="flex flex-col w-full">
+                    <div class="flex flex-col mt-6 w-full">
                         <div
                             v-if="isPreviewMode && schoolContent.name"
                             class="flex justify-center flex-row"
@@ -302,7 +302,7 @@ const handleCloseModerationTab = (): void => {
                                     by <span class="font-semibold"> {{ schoolContent?.owner?.owner_name || "" }} </span>
                                 </div>
                             </div>
-                            <div class="basis-1/5 flex">
+                            <div class="basis-1/5 flex p-2">
                                 <GenericButton :callback="handleCloseModerationTab">
                                     Back to moderation
                                 </GenericButton>
