@@ -4,6 +4,7 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\SoftwareResource\Pages;
 use App\Filament\Resources\SoftwareResource\RelationManagers;
+use App\Helpers\CustomHtmlable;
 use App\Helpers\RoleHelpers;
 use App\Helpers\UserRole;
 use App\Models\Label;
@@ -72,6 +73,7 @@ class SoftwareResource extends Resource
                             ->fileAttachmentsDirectory('public/uploads/software')
                             ->required(),
                         Forms\Components\FileUpload::make('cover_image')
+                            ->label(new CustomHtmlable("Cover Image <span class='text-xs italic'> (500px * 500px / 1:1 aspect ratio] </span>"))
                             ->preserveFilenames()
                             ->disk('public')
                             ->directory('uploads/software')
@@ -85,6 +87,7 @@ class SoftwareResource extends Resource
                                 Forms\Components\Select::make('software_type')
                                     ->label('Software type')
                                     ->relationship('softwaretypes', 'software_type_name')
+                                    ->required()
                                     ->columns(3),
                                 ...$labelColumns
 
@@ -94,7 +97,7 @@ class SoftwareResource extends Resource
                                 Forms\Components\Select::make('author_id')
                                     ->relationship(name: 'author', titleAttribute: 'display_name')
                                     ->disabled(fn() => !RoleHelpers::has_minimum_privilege(UserRole::ADMIN))
-//                                    ->default(fn(Forms\Get $get) => $get('selected_author')?? $current_user->id)
+                                    ->required()
                                     ->searchable()
                                     ->preload(),
 

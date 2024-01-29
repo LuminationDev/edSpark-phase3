@@ -22,8 +22,8 @@ const shadyBackgroudColorClass = computed(() => {
         return 'bg-main-navy/20'
     case 'purple':
         return 'bg-secondary-grapeDark/20'
-    case 'red':
-        return 'bg-secondary-cherry/10'
+    case 'blue':
+        return 'bg-secondary-blueberry/10'
     default:
         return 'teal'
     }

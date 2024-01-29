@@ -95,8 +95,8 @@ const handleClickTodayButton = () => {
             class="flex justify-end p-2 rounded-full"
         >
             <button
-                class="bg-secondary-cherry
-                    hover:bg-secondary-cherry/80
+                class="bg-secondary-blueberry
+                    hover:bg-secondary-blueberry/80
                     border-[1px]
                     px-4
                     py-2
@@ -162,7 +162,7 @@ const handleClickTodayButton = () => {
 }
 
 .calendarWrapper :deep(.vc-focus:focus-within) {
-    background-color: #DE4668;
+    background-color: #0072DA;
     color: white;
     padding: 8px;
     box-shadow: 0 0 10px 10px white;
