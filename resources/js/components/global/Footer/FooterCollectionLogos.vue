@@ -49,7 +49,7 @@
                 <img
                     src="@/assets/images/footer/dfe.svg"
                     alt="DepartmentForEducationLogo"
-                    class="h-full object-contain w-full"
+                    class="h-full object-contain scale-150 w-full"
                 >
 
             </a>
