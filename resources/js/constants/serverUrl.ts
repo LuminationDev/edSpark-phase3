@@ -5,6 +5,8 @@ export const imageURL = import.meta.env.VITE_SERVER_IMAGE_API
 
 export const imageUploadURL = import.meta.env.VITE_SERVER_URL_IMAGE
 
+export const avatarUIFallbackURL = "https://ui-avatars.com/api/?background=339999&color=fff&name="
+
 export const likeURL = `${serverURL}/like`
 
 export const bookmarkURL = `${serverURL}/bookmark`
