@@ -7,6 +7,7 @@ use App\Models\Hardware;
 use App\Models\Productbrand;
 use App\Models\Software;
 use App\Models\Softwaremeta;
+use App\Services\ResponseService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use App\Models\Productbrand as Brand;
@@ -127,12 +128,13 @@ class ProductController extends Controller
     }
 
 
-    public function fetchProductById(Request $request, $id)
+    public function fetchProductById(Request $request)
     {
+        $id = $request->id;
         $hardware = Product::find($id);
         $data = $this->hardwareModelToJson($hardware, $request);
 
-        return response()->json($data);
+        return ResponseService::success('Success fetch product', $data);
     }
 
     public function fetchProductByBrand(Request $request): \Illuminate\Http\JsonResponse

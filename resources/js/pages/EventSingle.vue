@@ -32,7 +32,7 @@ const handleClickViewProfile = (author_id, author_type) => {
                 <template #breadcrumb>
                     <BaseBreadcrumb
                         :child-page="contentFromBase.title"
-                        parent-page="events"
+                        parent-page="Events"
                         parent-page-link="browse/event"
                     />
                 </template>
