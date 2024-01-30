@@ -82,7 +82,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('fetchAllBrands', [ProductController::class, 'fetchAllBrands']);
     Route::get('fetchAllCategories', [ProductController::class, 'fetchAllCategories']);
     Route::get('fetchAllProducts', [ProductController::class, 'fetchAllProducts']);
-    Route::get('fetchProductById/{id}', [ProductController::class, 'fetchProductById']);
+    Route::post('fetchProductById', [ProductController::class, 'fetchProductById']);
     Route::post('fetchProductByBrand', [ProductController::class, 'fetchProductByBrand']);
     Route::get('fetchUserProduct', [ProductController::class, 'fetchUserProductPosts']);
 
