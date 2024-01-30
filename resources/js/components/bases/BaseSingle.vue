@@ -75,9 +75,9 @@ const currentId = computed(() => {
 const getRecommendationBasedOnContentType = () => {
     switch (props.contentType) {
     case 'hardware':
-        if (singleContent.value.brand?.brandName) {
-            hardwareStore.loadProductsByBrand(currentId.value)
-        }
+        // if (singleContent.value.brand?.brandName) {
+        //     hardwareStore.loadProductsByBrand(currentId.value)
+        // }
         break;
     case 'software':
         softwareStore.loadRelatedSoftware(currentId.value)
