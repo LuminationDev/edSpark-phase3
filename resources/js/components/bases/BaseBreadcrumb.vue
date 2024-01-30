@@ -35,13 +35,6 @@ const customText = computed(() => {
 
 })
 
-const customTextHover = computed(() => {
-    if (schoolColorKeys.includes(props.colorTheme)) {
-        return "hover:text-[" + schoolColorTheme[props.colorTheme]['light'] + "]";
-    } else {
-        return "hover:text-[" + schoolColorTheme['teal']['light'] + "]";
-    }
-})
 
 </script>
 
@@ -49,8 +42,7 @@ const customTextHover = computed(() => {
     <div class="flex grow flex-row gap-2 mb-4 mt-6 place-items-center text-sm w-full">
         <router-link to="/dashboard">
             <p
-                class="text-white"
-                :class="customTextHover"
+                class="text-white hover:text-slate-300"
             >
                 Home
             </p>
@@ -61,8 +53,10 @@ const customTextHover = computed(() => {
             :to="`/${props.parentPageLink ? props.parentPageLink : props.parentPage}`"
         >
             <div
-                class="flex grow text-white"
-                :class="{'w-32 ' : props.parentPage.split('').length > 15, customTextHover : true}"
+                class="flex grow text-white hover:text-slate-300"
+                :class="{'w-32' : props.parentPage.split('').length > 15,
+                         '!w-[155px]' : props.parentPage.split('').length > 20,
+                         customTextHover : true}"
             >
                 {{ props.parentPage }}
             </div>
