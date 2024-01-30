@@ -9,7 +9,7 @@ export const LandingHeroText = {
     },
     school: {
         title: 'School profiles',
-        subtitle: 'Get inspiration and find out how other schools are enhancing their teaching and leanring through digital technology. Make connections with shcools on the same pathway, share learnings and expand your PLC.'
+        subtitle: 'Get inspiration and find out how other schools are enhancing their teaching and learning through digital technology. Make connections with shcools on the same pathway, share learnings and expand your PLC.'
     },
     technology: {
         title: 'Technology',

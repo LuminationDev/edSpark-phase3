@@ -10,6 +10,7 @@ import GenericButton from "@/js/components/button/GenericButton.vue";
 import CardLoading from "@/js/components/card/CardLoading.vue";
 import PartnerCard from "@/js/components/partners/PartnerCard.vue";
 import Loader from "@/js/components/spinner/Loader.vue";
+import HardwareRobot from "@/js/components/svg/hardwareRobot/HardwareRobot.vue";
 import {API_ENDPOINTS} from "@/js/constants/API_ENDPOINTS";
 import {LandingHeroText} from "@/js/constants/PageBlurb";
 import {cardDataWithGuid} from "@/js/helpers/cardDataHelper";
@@ -43,18 +44,21 @@ onMounted(() => {
     <BaseLandingHero
         :title="LandingHeroText['event']['title']"
         :title-paragraph="LandingHeroText['event']['subtitle']"
-        background-color="red"
-        swoosh-color="pink"
+        background-color="blue"
+        swoosh-color="blue"
     >
         <template #robotIllustration>
-            <img
-                class="absolute top-6 ml-20 mt-1 mx-auto"
-                src="@/assets/images/eventsCalendar.png"
-                alt="Industry Partners connecting pieces of the puzzle"
-            >
+            <HardwareRobot
+                class="absolute top-10 left-32 scale-125"
+            />
+            <!--            <img-->
+            <!--                class="absolute top-32 left-36 scale-150"-->
+            <!--                src="@/assets/images/PartnersPuzzle.png"-->
+            <!--                alt="Industry Partners connecting pieces of the puzzle"-->
+            <!--            >-->
         </template>
     </BaseLandingHero>
-    <BaseLandingSection background-color="red">
+    <BaseLandingSection background-color="blue">
         <template #title>
             Events
         </template>
@@ -64,7 +68,7 @@ onMounted(() => {
         <template #button>
             <GenericButton
                 :callback="() => router.push('/browse/event')"
-                :type="'red'"
+                :type="'blue'"
             >
                 View all events
             </GenericButton>
@@ -94,7 +98,7 @@ onMounted(() => {
         <template #button>
             <GenericButton
                 :callback="() => router.push('/browse/partner')"
-                :type="'red'"
+                :type="'blue'"
             >
                 View all partners
             </GenericButton>
@@ -113,7 +117,7 @@ onMounted(() => {
         </template>
     </BaseLandingSection>
 
-    <BaseLandingSection background-color="red">
+    <BaseLandingSection background-color="blue">
         <template #title>
             Event Calendar
         </template>

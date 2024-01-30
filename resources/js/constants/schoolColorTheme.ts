@@ -70,6 +70,7 @@ export const schoolColorTheme = {
             med: '#6B46C1',
             dark: '#1F133F',
         },
+
    
 }
 

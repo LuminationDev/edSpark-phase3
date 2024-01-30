@@ -10,6 +10,7 @@ import CreateIcon from "@/js/components/svg/profileDropdown/CreateIcon.vue";
 import MessageIcon from "@/js/components/svg/profileDropdown/MessageIcon.vue";
 import SchoolGradHat from "@/js/components/svg/SchoolGradHat.vue";
 import {APP_ENDPOINTS} from "@/js/constants/API_ENDPOINTS";
+import {avatarUIFallbackURL} from "@/js/constants/serverUrl";
 import {useUserStore} from "@/js/stores/useUserStore";
 
 const props = defineProps({
@@ -25,7 +26,7 @@ const {currentUser} = storeToRefs(userStore);
 const showDropdownMenu = ref(false)
 
 const imageURL = import.meta.env.VITE_SERVER_IMAGE_API;
-
+const imageError = ref(false)
 const toggleDropdownMenu = (): void => {
     showDropdownMenu.value = !showDropdownMenu.value
 }
@@ -68,6 +69,18 @@ const mySchoolTargetPath = computed(() => {
     } else return ''
 })
 
+const avatarUrlWithFallback  = computed(() =>{
+    if(imageError.value){
+        return avatarUIFallbackURL + currentUser.value.display_name
+    } else{
+        return `${imageURL}/${props.avatarUrl}\``
+    }
+})
+
+const handleImageLoadError = () => {
+    imageError.value = true
+}
+
 </script>
 
 <template>
@@ -77,19 +90,12 @@ const mySchoolTargetPath = computed(() => {
             @click="toggleDropdownMenu"
         >
             <img
-                v-if="avatarUrl"
                 class="object-center object-cover w-full"
-                :src="`${imageURL}/${avatarUrl}`"
-                alt=""
+                :src="avatarUrlWithFallback"
+                alt="profile picture"
+                @error="handleImageLoadError"
             >
-            <p
-                v-else
-                class="font-bold m-auto text-[1.25rem] text-white"
-            >
-                {{ currentUser.display_name }}
-            </p>
         </div>
-
         <div
             v-show="showDropdownMenu"
             class="h-full relative w-full z-50"
@@ -123,7 +129,7 @@ const mySchoolTargetPath = computed(() => {
                         :is-router-link="true"
                         :target-path="profileTargetPath"
                     >
-                        <Profile/>
+                        <Profile />
                         Profile
                     </ProfileDropdownItem>
                     <ProfileDropdownItem
@@ -131,14 +137,14 @@ const mySchoolTargetPath = computed(() => {
                         :is-router-link="true"
                         :target-path="messageTargetPath"
                     >
-                        <MessageIcon/>
+                        <MessageIcon />
                         Messages
                     </ProfileDropdownItem>
                     <ProfileDropdownItem
                         :is-router-link="true"
                         target-path="/create"
                     >
-                        <CreateIcon/>
+                        <CreateIcon />
                         Create
                     </ProfileDropdownItem>
                     <ProfileDropdownItem
@@ -146,7 +152,7 @@ const mySchoolTargetPath = computed(() => {
                         :is-router-link="true"
                         :target-path="mySchoolTargetPath"
                     >
-                        <SchoolGradHat/>
+                        <SchoolGradHat />
                         My School
                     </ProfileDropdownItem>
                     <template

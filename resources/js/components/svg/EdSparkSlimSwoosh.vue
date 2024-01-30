@@ -18,6 +18,11 @@ const swooshColorLibrary = {
         color2: '#44B8F3',
         color3: '#B4DEF3',
     },
+    navy: {
+        color1: '#002856',
+        color2: '#44B8F3',
+        color3: '#B4DEF3',
+    },
     pink: {
         color1: '#002856',
         color2: '#692c61',
@@ -25,15 +30,15 @@ const swooshColorLibrary = {
     },
     purple: {
         color1: '#002856',
-        color2: '#6B42CE',
-        color3: '#A78BEB',
+        color2: '#6d469c',
+        color3: '#7556c4',
     },
 }
 </script>
 
 <template>
     <svg
-        class="max-w-[1536px] scale-[101.5%] w-full"
+        class="max-w-[1536px] scale-[101%] w-full"
         height="129"
         viewBox="0 0 1536 129"
         fill="none"

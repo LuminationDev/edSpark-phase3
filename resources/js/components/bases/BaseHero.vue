@@ -104,7 +104,7 @@ const heroBackgroundSwitch = computed(() => {
             >
                 <div
                     v-if="$slots.titleText || $slots.subtitleText1 || $slots.subtitleText2"
-                    class="col-span-8 h-full p-2 relative z-20 lg:mt-12"
+                    class="col-span-8 h-full p-2 relative z-20 xl:mt-8"
                 >
                     <slot name="breadcrumb" />
                     <h1
@@ -112,7 +112,6 @@ const heroBackgroundSwitch = computed(() => {
                     >
                         <slot name="titleText" />
                     </h1>
-
                     <div
                         v-if="$slots.additionalTags"
                         class="flex flex-row flex-wrap gap-4 max-w-full w-full"

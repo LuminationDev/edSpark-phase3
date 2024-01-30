@@ -64,7 +64,7 @@ export const API_ENDPOINTS: Endpoints = appendServerURL({
         FETCH_HARDWARE_POSTS: `/fetchAllProducts`,
         FETCH_ALL_BRANDS: `/fetchAllBrands`,
         FETCH_ALL_CATEGORIES: `/fetchAllCategories`,
-        FETCH_HARDWARE_BY_ID: `/fetchProductById/`,
+        FETCH_HARDWARE_BY_ID: `/fetchProductById`,
         FETCH_HARDWARE_BY_BRAND: `/fetchProductByBrand/`,
         FETCH_RELATED_HARDWARE: `/fetchRelatedProduct`,
         FETCH_USER_HARDWARE: '/fetchUserProduct'
