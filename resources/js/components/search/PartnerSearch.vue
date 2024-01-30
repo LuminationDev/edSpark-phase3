@@ -12,7 +12,7 @@ import {useUserStore} from "@/js/stores/useUserStore";
 const {
     data: partnerList,
     error: partnerError
-} = useSWRV(API_ENDPOINTS.PARTNER.FETCH_ALL_PARTNERS, axiosFetcher(useUserStore().getUserRequestParam), swrvOptions)
+} = useSWRV(API_ENDPOINTS.PARTNER.FETCH_ALL_PARTNERS, axiosFetcher, swrvOptions)
 
 const filterObject = ref({})
 

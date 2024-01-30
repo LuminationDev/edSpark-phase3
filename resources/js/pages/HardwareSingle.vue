@@ -60,7 +60,8 @@ const colorTheme = ref('hardwareGreen')
                 <template #breadcrumb>
                     <BaseBreadcrumb
                         :child-page="contentFromBase.title"
-                        parent-page="hardware"
+                        parent-page="Equipment and devices"
+                        parent-page-link="technology/hardware"
                         :color-theme="colorTheme"
                     />
                 </template>
@@ -98,7 +99,7 @@ const colorTheme = ref('hardwareGreen')
                     <div
                         :id="contentFromBase['id']"
                         ref="baseContentRef"
-                        class="flex flex-col overflow-hidden px-5 pb-4 w-full lg:!px-20"
+                        class="flex flex-col overflow-hidden pb-4 px-5 w-full lg:!px-20"
                     >
                         <HardwareCarousel
                             :slide-items="contentFromBase"

@@ -202,7 +202,7 @@ const handleCloseModerationTab = (): void => {
                         <template #breadcrumb>
                             <BaseBreadcrumb
                                 :child-page="schoolContent.name"
-                                parent-page="schools"
+                                parent-page="Schools"
                                 parent-page-link="browse/school"
                                 :color-theme="colorTheme"
                                 class=""

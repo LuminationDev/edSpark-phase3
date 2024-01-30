@@ -25,12 +25,13 @@ const props = defineProps({
 })
 
 const customText = computed(() => {
-    if (schoolColorKeys.includes(props.colorTheme)) {
-        return "text-[" + schoolColorTheme[props.colorTheme]['light'] + "]";
-
-    } else {
-        return "text-[" + schoolColorTheme['teal']['light'] + "]";
-    }
+    // if (schoolColorKeys.includes(props.colorTheme)) {
+    //     return "text-[" + schoolColorTheme[props.colorTheme]['light'] + "]";
+    //
+    // } else {
+    //     return "text-[" + schoolColorTheme['teal']['light'] + "]";
+    // }
+    return 'text-white'
 
 })
 
@@ -45,34 +46,35 @@ const customTextHover = computed(() => {
 </script>
 
 <template>
-    <div class="flex mb-4">
-        <div class="flex flex-row gap-2 mb-4 mt-6 place-items-center text-[14px] w-full">
-            <router-link to="/dashboard">
-                <p
-                    class="text-white"
-                    :class="customTextHover"
-                >
-                    Home
-                </p>
-            </router-link>
-            <ChevronRight class="h-3 w-3" />
-            <router-link :to="`/${props.parentPageLink ? props.parentPageLink : props.parentPage}`">
-                <p
-                    class="capitalize text-white"
-                    :class="customTextHover"
-                >
-                    {{ props.parentPage }}
-                </p>
-            </router-link>
-            <ChevronRight class="h-3 w-3" />
-
+    <div class="flex grow flex-row gap-2 mb-4 mt-6 place-items-center text-sm w-full">
+        <router-link to="/dashboard">
             <p
-                class="capitalize truncate w-full"
-                :class="customText"
+                class="text-white"
+                :class="customTextHover"
             >
-                {{ props.childPage }}
+                Home
             </p>
-        </div>
+        </router-link>
+        <ChevronRight class="h-3 w-3" />
+        <router-link
+            class="flex grow"
+            :to="`/${props.parentPageLink ? props.parentPageLink : props.parentPage}`"
+        >
+            <div
+                class="flex grow text-white"
+                :class="{'w-32 ' : props.parentPage.split('').length > 15, customTextHover : true}"
+            >
+                {{ props.parentPage }}
+            </div>
+        </router-link>
+        <ChevronRight class="h-3 w-3" />
+
+        <p
+            class="truncate w-full"
+            :class="customText"
+        >
+            {{ props.childPage }}
+        </p>
     </div>
 </template>
 <style scoped>
