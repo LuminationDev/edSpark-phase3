@@ -181,12 +181,10 @@ class SoftwareResource extends Resource
                 Tables\Columns\TextColumn::make('post_title')
                     ->label('Title')
                     ->limit(30)
-                    ->searchable()
-                    ->sortable(),
+                    ->searchable(),
                 Tables\Columns\ImageColumn::make('cover_image'),
                 Tables\Columns\TextColumn::make('softwaretypes.software_type_name')
                     ->label('Type')
-                    ->sortable()
                     ->searchable()
                     ->wrap(),
                 Tables\Columns\TextColumn::make('author.full_name')
@@ -194,7 +192,6 @@ class SoftwareResource extends Resource
 
                 Tables\Columns\TextColumn::make('post_status')
                     ->label('Status')
-                    ->sortable()
                     ->searchable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime(),
