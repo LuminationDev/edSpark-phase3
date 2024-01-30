@@ -79,9 +79,7 @@ const fetchPendingContent = async () => {
         }
     } catch (e) {
         if (e.status === "404") {
-            console.error("No pending profile found")
         } else {
-            console.error('Failed to fetch pending')
         }
     }
 }
