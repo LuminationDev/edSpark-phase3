@@ -25,8 +25,8 @@ const swooshColorLibrary = {
     },
     purple: {
         color1: '#002856',
-        color2: '#6B42CE',
-        color3: '#A78BEB',
+        color2: '#6d469c',
+        color3: '#7556c4',
     },
 }
 </script>
