@@ -166,6 +166,7 @@ Route::middleware('auth:sanctum')->group(function () {
     // User metadata for user profile
     Route::post('updateOrCreateMetadata/{user_id}', [UserController::class, 'updateOrCreateMetadata']);
     Route::get('getUserProfileMetadata/{user_id}', [UserController::class, 'getUserProfileMetadata']);
+    Route::post('updateOrCreateUserAvatar/{user_id}', [UserController::class, 'updateOrCreateUserAvatar']);
 });
 
 

@@ -77,6 +77,6 @@ const customTextHover = computed(() => {
 </template>
 <style scoped>
 a {
-    text-decoration: none
+    text-decoration: none !important
 }
 </style>
