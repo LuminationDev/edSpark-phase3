@@ -112,7 +112,6 @@ const heroBackgroundSwitch = computed(() => {
                     >
                         <slot name="titleText" />
                     </h1>
-
                     <div
                         v-if="$slots.additionalTags"
                         class="flex flex-row flex-wrap gap-4 max-w-full w-full"
