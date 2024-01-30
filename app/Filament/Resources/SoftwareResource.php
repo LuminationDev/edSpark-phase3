@@ -74,6 +74,7 @@ class SoftwareResource extends Resource
                             ->required(),
                         Forms\Components\FileUpload::make('cover_image')
                             ->label(new CustomHtmlable("Cover Image <span class='text-xs italic'> (500px * 500px / 1:1 aspect ratio] </span>"))
+                            ->validationAttribute('cover image')
                             ->preserveFilenames()
                             ->disk('public')
                             ->directory('uploads/software')
