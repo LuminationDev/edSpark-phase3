@@ -123,7 +123,7 @@ watch(router.currentRoute, () => {
 
 <template>
     <div
-        class="cursor-pointer fixed right-1 sm:right-3 bottom-1 md:bottom-4 mr-auto overflow-hidden shadow- z-40"
+        class="cursor-pointer fixed right-1 sm:right-3 bottom-1 md:bottom-4 mr-auto overflow-hidden z-40"
         @click="toggleFeedbackForm"
     >
         <div>
