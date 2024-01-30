@@ -69,7 +69,7 @@ const mySchoolTargetPath = computed(() => {
     } else return ''
 })
 
-const avatarUrlForFallback  = computed(() =>{
+const avatarUrlWithFallback  = computed(() =>{
     if(imageError.value){
         return avatarUIFallbackURL + currentUser.value.display_name
     } else{
@@ -91,7 +91,7 @@ const handleImageLoadError = () => {
         >
             <img
                 class="object-center object-cover w-full"
-                :src="avatarUrlForFallback"
+                :src="avatarUrlWithFallback"
                 alt="profile picture"
                 @error="handleImageLoadError"
             >
