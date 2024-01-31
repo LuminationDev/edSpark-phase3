@@ -60,9 +60,6 @@ const handleClickSchoolCard = () => {
                 >
                     {{ data.name }}
                 </h5>
-                <div class="cardDisplayPreview line-clamp school-card-body text-left">
-                    {{ "School" }}
-                </div>
             </div>
         </template>
         <template

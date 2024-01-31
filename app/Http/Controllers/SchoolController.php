@@ -279,6 +279,7 @@ class SchoolController extends Controller
 
     public function updateSchool(Request $request)
     {
+        // todo check user. make a private function to check user  and call here and there
         if ($request->isMethod('post')) {
             $data = $request->all();
             $error = '';
@@ -569,17 +570,24 @@ class SchoolController extends Controller
         if ($request->isMethod('post')) {
             $requestData = $request->validate([
                 'school_id' => 'required',
-                'user_id' => 'required',
                 'site_id' => 'required'
             ]);
 
             $site_id = $requestData['site_id'];
-            $user_id = $requestData['user_id'];
+            $user_id = Auth::user()->id;
             $school_id = $requestData['school_id'];
             //check user site id == school Id && user role === school principal
             $user_record = User::find($user_id);
 
-            if ($user_record && $user_record->site_id == $site_id && ($user_record->role->role_name === 'SCHLDR' || $user_record->role->role_name === 'Superadmin')) {
+            if($user_record->role->role_name === 'Superadmin'){
+                return response()->json([
+                    "status" => 200,
+                    "result" => true,
+                    'canNominate' => false,
+                    'canPublish' => true,
+                ]);
+            }
+            if ($user_record && $user_record->site_id == $site_id && ($user_record->role->role_name === 'SCHLDR')) {
                 return response()->json([
                     "status" => 200,
                     "result" => true,

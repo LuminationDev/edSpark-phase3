@@ -32,7 +32,6 @@ const addImageURL = (itemUrl) => {
 onMounted(() => {
     if (props.currentLogo) {
         logoPreview.value.setAttribute('src', addImageURL(props.currentLogo))
-        console.log(addImageURL(props.currentLogo))
     }
     if (props.currentCoverImage) {
         coverImagePreview.value.setAttribute('src', addImageURL(props.currentCoverImage))
@@ -62,20 +61,13 @@ const handleCoverImageUpload = (event) => {
 }
 </script>
 <template>
-    <div class="border-2 flex flex-col mb-4 mr-8 pb-4 pt-2 px-2 rounded-xl">
-        <div class="flex flex-row">
-            <div class="flex flex-col gap-2 px-2">
+    <div class="flex flex-col px-4 rounded w-4/5">
+        <div class="flex flex-row gap-6">
+            <div class="flex flex-col gap-4 logoColumn px-2 w-1/2">
                 <label
                     for="logoUpload"
                     class="font-semibold mt-2 text-center text-lg"
                 >Logo</label>
-                <!--                <input-->
-                <!--                    id="logoEditUpload"-->
-                <!--                    ref="logoEditFile"-->
-                <!--                    type="file"-->
-                <!--                    class="!border-0"-->
-                <!--                    @change="handleLogoUpload"-->
-                <!--                >-->
                 <div class="flex justify-center items-center w-full  gap-2">
                     <label
                         for="dropzone-file"
@@ -97,6 +89,7 @@ const handleCoverImageUpload = (event) => {
                             flex-col
                             h-36
                             rounded-lg
+                            w-36
                             w-full
                             "
                     >
@@ -120,6 +113,7 @@ const handleCoverImageUpload = (event) => {
                                 class="font-semibold"
                             >Click to upload</span></p>
                             <p class="text-center dark:text-gray-400 text-gray-500 text-xs">SVG, PNG or JPG</p>
+                            <p class="text-center dark:text-gray-400 text-gray-500 text-xs">200px * 200px </p>
                         </div>
                         <input
                             id="dropzone-file"
@@ -130,18 +124,17 @@ const handleCoverImageUpload = (event) => {
                         >
                     </label>
                 </div>
-
                 <img
                     ref="logoPreview"
-                    class="h-36 object-contain self-center w-36"
+                    class="h-28 object-contain self-center w-28"
                 >
             </div>
-            <div class="border-0 flex flex-col gap-2 px-2">
+            <div class="CoverImageColumn border-0 flex flex-col px-2 w-1/2  gap-4">
                 <label
                     for="coverImageUpload"
                     class="font-semibold mt-2 text-center text-lg"
                 >Cover Image</label>
-                <div class="flex justify-center items-center flex flex-col gap-2 w-full">
+                <div class="flex justify-center items-center flex flex-col gap-4 w-full">
                     <label
                         for="dropzone-file-1"
                         class="
@@ -185,6 +178,8 @@ const handleCoverImageUpload = (event) => {
                                 class="font-semibold"
                             >Click to upload</span></p>
                             <p class="text-center dark:text-gray-400 text-gray-500 text-xs">SVG, PNG or JPG</p>
+                            <p class="text-center dark:text-gray-400 text-gray-500 text-xs">500px * 500px </p>
+
                         </div>
                         <input
                             id="dropzone-file-1"
@@ -196,7 +191,7 @@ const handleCoverImageUpload = (event) => {
                     </label>
                     <img
                         ref="coverImagePreview"
-                        class="h-36 object-contain self-center w-56"
+                        class="h-28 object-contain self-center w-28"
                     >
                 </div>
             </div>

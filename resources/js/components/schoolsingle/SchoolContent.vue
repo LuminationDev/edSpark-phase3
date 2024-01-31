@@ -73,6 +73,11 @@ const newTechUsed: Ref<TechUsed[] | null> = ref(null)
 
 const currentUserCanEdit = ref<boolean>(false)
 const currentUserCanNominate = ref<boolean>(false)
+const tinyMceRefreshKey = ref(0)
+
+const forceRefreshTinyMce = () =>{
+    tinyMceRefreshKey.value++
+}
 
 onBeforeMount(() => {
     newSchoolContent.value = props.schoolContent.content_blocks
@@ -90,6 +95,7 @@ const handleEditButton = async () => {
     if (schoolContentState.value === 'pending_loaded') {
         schoolContentState.value = SchoolContentState.PendingAvailable
     }
+    forceRefreshTinyMce()
 }
 
 const handleCancelEditButton = (): void => {
@@ -146,10 +152,10 @@ const handleClickEditPendingContent = (): void => {
     newSchoolContent.value = pendingSchoolContent.value.content_blocks
     newTechUsed.value = pendingSchoolContent.value.tech_used
     schoolContentState.value = SchoolContentState.PendingLoaded
+    forceRefreshTinyMce()
 }
 
 
-console.log(props.activeSubmenu)
 </script>
 <template>
     <div class="flex flex-col w-full">
@@ -164,10 +170,10 @@ console.log(props.activeSubmenu)
                         class="contentEditor flex justify-between flex-col schoolContent w-full lg:!flex-row"
                     >
                         <div class="flex flex-col w-full lg:!basis-2/3">
-                            Curate your school content by adding blocks here with desired contents.
                             <TinyMceRichTextInput
+                                :key="tinyMceRefreshKey"
                                 :src-content="newSchoolContent"
-                                :min-height="600"
+                                :min-height="1000"
                                 @emit-tiny-rich-content="handleSchoolData"
                             />
                         </div>
@@ -177,7 +183,7 @@ console.log(props.activeSubmenu)
                             >
                                 {{ schoolContentStateDescription[schoolContentState] }}
                             </div>
-                            <div class="mb-10">
+                            <div class="mb-4">
                                 <GenericButton
                                     v-if="schoolContentState === SchoolContentState.PendingAvailable"
                                     class="bg-blue-500 hover:bg-blue-600 mb-2 px-6 py-2 rounded text-white w-48"
@@ -192,7 +198,7 @@ console.log(props.activeSubmenu)
                                     {{ buttonDescriptionByState[schoolContentState] }}
                                 </GenericButton>
                                 <GenericButton
-                                    class="!bg-secondary-mbRose mb-4 px-6 py-2 rounded text-white w-48"
+                                    class="!bg-secondary-mbRose mb-2 px-6 py-2 rounded text-white w-48"
                                     :callback="handleCancelEditButton"
                                 >
                                     Cancel edit
@@ -205,23 +211,26 @@ console.log(props.activeSubmenu)
                             >
                                 Revert
                             </button>
+                            <SchoolColorPicker
+                                class="mb-6"
+                                @color-selected="handleColorSelected"
+                            />
                             <SchoolImageChange
+                                class="mb-6"
                                 :current-logo="props.schoolContent.logo"
                                 :current-cover-image="props.schoolContent.cover_image"
                                 @send-uploaded-photo-to-content="handleReceivePhotoFromImageChange"
                             />
-                            <SchoolColorPicker
-                                class="my-10 self-center"
-                                @color-selected="handleColorSelected"
-                            />
-                            <p class="font-semibold mb-5 mt-10 text-xl">
+                            <p class="font-semibold mb-5 text-xl">
                                 Tech Selector:
                             </p>
-                            <TechSelector
-                                :existing-tech-used="newTechUsed"
-                                :color-theme="colorTheme"
-                                @send-school-tech="handleSchoolTech"
-                            />
+                            <div class="px-4 techSelectorContainer">
+                                <TechSelector
+                                    :existing-tech-used="newTechUsed"
+                                    :color-theme="colorTheme"
+                                    @send-school-tech="handleSchoolTech"
+                                />
+                            </div>
                         </div>
                     </div>
                     <!--    Display Content     -->
