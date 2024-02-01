@@ -2,7 +2,7 @@
 import {computed, onMounted,ref} from 'vue'
 
 import Profile from "@/js/components/svg/Profile.vue";
-import {imageURL} from "@/js/constants/serverUrl";
+import {avatarUIFallbackURL, imageURL} from "@/js/constants/serverUrl";
 
 const props = defineProps({
     authorLogoUrl:{
@@ -15,32 +15,33 @@ const props = defineProps({
         required: true
     }
 })
-const showPlaceholderImage = ref(false)
-const handleProfileImageError = () =>{
-    console.log('error liao')
-    showPlaceholderImage.value = true
+const imageError = ref(false)
+
+const handleImageLoadError = () => {
+    imageError.value = true
 }
 
-onMounted(() =>{
-    document.getElementById('smallPartnerLogoImage').addEventListener('error', handleProfileImageError)
+const avatarUrlWithFallback  = computed(() =>{
+    if(imageError.value){
+        return avatarUIFallbackURL + props.authorName
+    } else{
+        return `${imageURL}/${props.authorLogoUrl}`
+    }
 })
+
+
+
 
 </script>
 
 <template>
-    <div class="">
-        <img
-            v-if="!showPlaceholderImage"
-            id="smallPartnerLogoImage"
-            :src="`${imageURL}/${props.authorLogoUrl}`"
-            :alt="'author logo'"
-            class="bg-center bg-white h-16 object-contain rounded-full text-xs w-16"
-        >
-        <Profile
-            v-else
-            class="h-16 rounded-full w-16"
-        />
-    </div>
+    <img
+        id="smallPartnerLogoImage"
+        :src="avatarUrlWithFallback"
+        :alt="'author logo'"
+        class="bg-center bg-white h-16 object-contain rounded-full text-xs w-16"
+        @error=" handleImageLoadError"
+    >
 </template>
 <style scoped>
 :deep(path){

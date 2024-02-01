@@ -42,7 +42,7 @@ const isPreviewModeComputed = computed(() => {
 // Only be true if the server return posts which status is not Published
 const showPreviewLabel = computed(() => {
     console.log(singleContent.value)
-    return (props.contentType !== 'school' && props.contentType !== 'partner') && !(singleContent.value?.status && singleContent.value?.status === "Published");
+    return (props.contentType !== 'school' && props.contentType !== 'partner') && !(singleContent.value?.status && singleContent.value?.status === "Published") && route.params.preview;
 })
 
 switch (props.contentType) {
@@ -75,9 +75,9 @@ const currentId = computed(() => {
 const getRecommendationBasedOnContentType = () => {
     switch (props.contentType) {
     case 'hardware':
-        if (singleContent.value.brand?.brandName) {
-            hardwareStore.loadProductsByBrand(currentId.value)
-        }
+        // if (singleContent.value.brand?.brandName) {
+        //     hardwareStore.loadProductsByBrand(currentId.value)
+        // }
         break;
     case 'software':
         softwareStore.loadRelatedSoftware(currentId.value)

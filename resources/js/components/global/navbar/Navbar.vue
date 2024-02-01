@@ -74,7 +74,7 @@ const logoClass = computed(() => {
 </script>
 
 <template>
-    <div class="h-[84px] relative w-full z-50">
+    <div class="h-[84px] hidden relative w-full z-50 lg:block">
         <nav
             v-if="isAuthenticated"
             id="navbarFullsize"
@@ -83,7 +83,6 @@ const logoClass = computed(() => {
         >
             <ul
                 class="
-                    2xl:text-xl
                     font-semibold
                     h-full
                     hidden
@@ -95,6 +94,8 @@ const logoClass = computed(() => {
                     lg:flex-row
                     lg:gap-6
                     lg:items-center
+                    lg:text-xl
+                    xl:text-xl
                     "
                 :class="{'text-white !ml-24': scrollPosition > 0}"
             >
@@ -164,9 +165,9 @@ const logoClass = computed(() => {
     filter: drop-shadow(0px 0px 15px rgba(0, 0, 0, 0.5));
 }
 
-.navbarFullsize {
-    font-size: 1.5rem;
-}
+/*.navbarFullsize {*/
+/*    font-size: 1.5rem;*/
+/*}*/
 
 @media screen and (max-width: 654px) {
     .nav-background {

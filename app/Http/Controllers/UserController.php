@@ -20,10 +20,12 @@ use Illuminate\Http\Response;
 class UserController extends Controller
 {
     protected PostService $postService;
+    private array $userProfileMetaKeys;
 
     public function __construct(PostService $postService)
     {
         $this->postService = $postService;
+        $this->userProfileMetaKeys = ['yearLevels', 'Interest', 'Subjects', 'Biography'];
 
 
     }
@@ -252,33 +254,40 @@ class UserController extends Controller
 
     public function updateUser(Request $request): JsonResponse
     {
-        if ($request->isMethod('post')) {
-            try {
-                $userId = $request->id;
-
-                if ($request->data) {
-                    $this->handleUserDataUpdate($request->data, $userId);
-                }
-
-                if ($request->metaData) {
-                    $this->handleUserMetaDataUpdate($request->metaData, $userId);
-                }
-
-                return response()->json([
-                    'message' => "User updated successfully",
-                    'uid' => $userId,
-                    'status' => 200
-                ]);
-            } catch (Exception $e) {
-                return response()->json([
-                    'message' => "Error updating the user",
-                    'error' => $e->getMessage(),
-                    'status' => 500
-                ]);
+        try {
+            // Validate the request method
+            if (!$request->isMethod('post')) {
+                return ResponseService::error('Invalid request method. Only POST requests are allowed.', null, 400);
             }
-        }
 
-        return response()->json(['message' => 'Invalid request method', 'status' => 400]);
+            // Ensure the authenticated user is allowed to update the specified user
+            $authUserId = Auth::id();
+            $userId = $request->id;
+
+            if ($authUserId !== $userId) {
+                // If not the same user, check if the authenticated user is a superadmin
+                $userRole = Auth::user()->role; // Assuming there's a 'role' relationship in the User model
+
+                if (!$userRole || strtolower($userRole->role_name) !== 'superadmin') {
+                    return ResponseService::error('Unauthorized. Insufficient permissions to update the user.', null, 403);
+                }
+            }
+
+            if ($request->data) {
+                $this->handleUserDataUpdate($request->data, $userId);
+            }
+
+            if ($request->metaData) {
+                $this->handleUserMetaDataUpdate($request->metaData, $userId);
+            }
+
+            return ResponseService::success('User updated successfully', [
+                'uid' => $userId,
+            ]);
+        } catch (\Exception $e) {
+            // Handle exceptions here
+            return ResponseService::error('Error updating the user', $e->getMessage(), 500);
+        }
     }
 
     private function handleUserDataUpdate($data, $userId)
@@ -364,6 +373,138 @@ class UserController extends Controller
                     'user_status' => $userEmailDetails->status
                 ],
             ]);
+        }
+    }
+
+
+    /**
+     * Update or create user metadata based on the provided fields.
+     *
+     * @param Request $request
+     * @param int $userId
+     * @return \Illuminate\Http\JsonResponse
+     *
+     * @throws \Exception
+     *
+     * @example Request body:
+     * {
+     *    "fields": {
+     *        "yearLevels": [2, 10, 4, 12],
+     *        "Interest": ["Drones", "VR", "Robotics", "AR"],
+     *        "Subjects": ["Mathematics", "Technologies", "Science", "The Arts"],
+     *        "Biography": "I am a teacher"
+     *    }
+     * }
+     */
+    public function updateOrCreateMetadata(Request $request, int $userId)
+    {
+        try {
+            // Check if the request is a POST request
+            if (!$request->isMethod('post')) {
+                return ResponseService::error('Invalid request method. Only POST requests are allowed.', null, 405);
+            }
+
+            // Validate the request data
+            $validatedData = $request->validate([
+                'fields' => [
+                    'required',
+                    'array',
+                    function ($attribute, $value, $fail) {
+                        // Ensure that each field key is one of the specified keys
+                        $allowedKeys = $this->userProfileMetaKeys;
+                        foreach ($value as $key => $val) {
+                            if (!in_array($key, $allowedKeys)) {
+                                $fail("Invalid field key: $key. Allowed keys are " . implode(', ', $allowedKeys));
+                            }
+                        }
+                    },
+                ],
+            ]);
+
+            // Find the user by ID
+            $user = User::find($userId);
+
+            if (!$user) {
+                return ResponseService::error('User not found', null, 404);
+            }
+
+            // Loop through the fields and update or create user metadata
+            foreach ($validatedData['fields'] as $key => $value) {
+                Usermeta::updateOrCreate(
+                    [
+                        'user_id' => $user->id,
+                        'user_meta_key' => $key,
+                    ],
+                    [
+                        'user_meta_value' => json_encode($value),
+                    ]
+                );
+            }
+
+            return ResponseService::success('User metadata updated successfully');
+        } catch (\Exception $e) {
+            // Handle exceptions here
+            return ResponseService::error('Error updating user metadata', $e->getMessage());
+        }
+    }
+
+    public function updateOrCreateUserAvatar(Request $request, $userId)
+    {
+        try {
+            // Check if the request is a POST request
+            if (!$request->isMethod('post')) {
+                return ResponseService::error('Invalid request method. Only POST requests are allowed.', null, 405);
+            }
+            // Find the user by ID
+            $user = User::find($userId);
+
+            if (!$user) {
+                return ResponseService::error('User not found', null, 404);
+            }
+            if ($request->userAvatar) {
+                $this->handleUserAvatar($userId);
+            }
+            return ResponseService::success('User metadata updated successfully');
+        } catch (\Exception $e) {
+            // Handle exceptions here
+            return ResponseService::error('Error updating user metadata', $e->getMessage());
+        }
+    }
+
+    /**
+     * Get user metadata for all specified fields based on the provided user ID.
+     *
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function getUserProfileMetadata(Request $request, int $userId)
+    {
+        try {
+            if ($request->isMethod('get')) {
+                $userId = $request->id;
+
+                // Retrieve user metadata for the specified keys
+                $result = Usermeta::where('user_id', $userId)
+                    ->whereIn('user_meta_key', $this->userProfileMetaKeys)
+                    ->get();
+
+                $userMetaDataToSend = [];
+
+                // Populate the result into the response array
+                foreach ($result as $value) {
+                    $userMetaDataToSend[] = [
+                        'user_meta_key' => $value->user_meta_key,
+                        'user_meta_value' => $value->user_meta_value,
+                    ];
+                }
+
+                return ResponseService::success('User metadata retrieved successfully', $userMetaDataToSend);
+            } else {
+                return ResponseService::error('Invalid request method. Only GET requests are allowed.', null, 405);
+            }
+        } catch (\Exception $e) {
+            // Handle exceptions here
+            return ResponseService::error('Error retrieving user metadata', $e->getMessage());
         }
     }
 }

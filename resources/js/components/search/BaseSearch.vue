@@ -194,7 +194,7 @@ const formattedSearchBlurb = computed(() => {
                 <slot name="filterBar" />
                 <slot name="additionalFilters" />
             </div>
-            <div class="my-4 searchResults text-base">
+            <div class="my-4 searchResults text-base text-center">
                 {{ String(filteredData.length) + " search " + (filteredData.length > 1 ? "results" : "result") }}
             </div>
             <div

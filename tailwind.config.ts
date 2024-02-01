@@ -115,7 +115,7 @@ module.exports = {
                     blueberry: '#0072DA',
                     teal: '#319795',
                     navy: '#002858',
-                    grapeDark: '#3D239B'
+                    grapeDark: '#6d469c'
 
                 },
                 custom: {

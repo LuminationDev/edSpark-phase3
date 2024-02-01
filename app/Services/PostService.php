@@ -64,17 +64,9 @@ class PostService
         $userId = Auth::user()->id;
         $isLikedByUser = $advice->likes()->where('user_id', $userId)->exists();
         $isBookmarkedByUser = $advice->bookmarks()->where('user_id', $userId)->exists();
+        $author = $advice->author;
 
-//        $groupedLabels = collect($advice->labels)->groupBy('type')->map(function ($labels) {
-//            return $labels->map(function ($label) {
-//                return [
-//                    'id' => $label['id'],
-//                    'value' => $label['value'],
-//                    'name' => $label['value'],
-//                    'type' => $label['type']
-//                ];
-//            });
-//        });
+        $authorLogo = $this->getAuthorLogo($author);
 
         return [
             'id' => $advice->id,
@@ -82,8 +74,10 @@ class PostService
             'content' => $advice->post_content,
             'excerpt' => $advice->post_excerpt,
             'author' => [
-                'author_id' => $advice->author->id,
-                'author_name' => $advice->author->full_name
+                'author_id' => $author->id,
+                'author_name' => $author->full_name,
+                'author_logo' => $authorLogo
+
             ],
             'cover_image' => ($advice->cover_image) ?: NULL,
             'template' => ($advice->template) ?: NULL,

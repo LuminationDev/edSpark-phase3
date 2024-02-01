@@ -1,20 +1,21 @@
 <script setup>
-import {onBeforeMount, ref, computed, onMounted} from 'vue'
-import { schoolColorTheme, schoolColorKeys} from "@/js/constants/schoolColorTheme";
+import {computed, onBeforeMount, onMounted,ref} from 'vue'
+
+import {schoolColorKeys,schoolColorTheme} from "@/js/constants/schoolColorTheme";
 
 const props = defineProps({
-    title:{
+    title: {
         type: String, required: true
     },
-    listData:{
+    listData: {
         type: Array,
         required: true
     },
-    existingData:{
+    existingData: {
         type: Array,
         required: false
     },
-    colorTheme:{
+    colorTheme: {
         type: String,
         required: false
     }
@@ -23,23 +24,22 @@ const props = defineProps({
 const result = ref()
 
 onBeforeMount(() => {
-    if(props.existingData){
+    if (props.existingData) {
         result.value = props.existingData
     }
 })
 
 const emits = defineEmits(['sendDataToParent'])
 
-
 /**
  * pass in item object to the function and will check if exists based on ID
  * very generic function with the aim to be reusable
  */
 const handleSelectItem = (itemObj) => {
-    if (checkIfObjectIsSelected(itemObj)){
+    if (checkIfObjectIsSelected(itemObj)) {
         // remove the item from array
         result.value = result.value.filter(item => item.name !== itemObj.name)
-    } else{
+    } else {
         result.value.push(itemObj)
     }
     emits('sendDataToParent', result.value)
@@ -53,7 +53,7 @@ const customBackground = computed(() => {
     if (schoolColorKeys.includes(props.colorTheme)) {
         return `bg-[${schoolColorTheme[props.colorTheme]['light']}] fill-[${schoolColorTheme[props.colorTheme]['med']}]`;
     } else {
-        return`bg-[${schoolColorTheme['teal']['light']}] fill-[${schoolColorTheme['teal']['med']}]`;
+        return `bg-[${schoolColorTheme['teal']['light']}] fill-[${schoolColorTheme['teal']['med']}]`;
     }
 })
 

@@ -137,7 +137,8 @@ const colorTheme = ref('partnerBlue')
                 <template #breadcrumb>
                     <BaseBreadcrumb
                         :child-page="contentFromBase.name"
-                        parent-page="partners"
+                        parent-page="Partners"
+                        :parent-page-link="'browse/partner'"
                         :color-theme="colorTheme"
                     />
                 </template>

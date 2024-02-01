@@ -76,7 +76,8 @@ const colorTheme = ref('softwarePurple')
                 <template #breadcrumb>
                     <BaseBreadcrumb
                         :child-page="contentFromBase.title"
-                        parent-page="software"
+                        parent-page="Apps and Programs"
+                        :parent-page-link="'browse/software'"
                         :color-theme="colorTheme"
                     />
                 </template>
