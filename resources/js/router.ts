@@ -36,6 +36,7 @@ import TheEvent from "@/js/pages/TheEvent.vue";
 import TheForbidden from "@/js/pages/TheForbidden.vue";
 import TheHardware from "@/js/pages/TheHardware.vue";
 import TheHome from "@/js/pages/TheHome.vue";
+import TheLearningTask from "@/js/pages/TheLearningTask.vue";
 import ThePartner from "@/js/pages/ThePartner.vue";
 import ThePartnerWelcome from "@/js/pages/ThePartnerWelcome.vue";
 import TheSchool from "@/js/pages/TheSchool.vue";
@@ -450,6 +451,15 @@ const routes: any = [
         meta: {
             skipScrollTop: false,
             requiresAuth: false
+        }
+    },
+    {
+        name: 'learningSample',
+        path: '/learningTask',
+        component: TheLearningTask,
+        meta: {
+            skipScrollTop: false,
+            requiresAuth: true
         }
     },
     {

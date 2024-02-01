@@ -127,8 +127,6 @@ export const API_ENDPOINTS: Endpoints = appendServerURL({
     LABEL: {
         FETCH_ALL_LABELS: '/fetchAllLabels'
     },
-
-
     SEARCH: {
         SEARCH_ALL: `/search/`
     },
