@@ -73,6 +73,7 @@ const newTechUsed: Ref<TechUsed[] | null> = ref(null)
 
 const currentUserCanEdit = ref<boolean>(false)
 const currentUserCanNominate = ref<boolean>(false)
+const currentUserCanPublish = ref<boolean>(false)
 const tinyMceRefreshKey = ref(0)
 
 const forceRefreshTinyMce = () =>{
@@ -127,10 +128,11 @@ const handleReceivePhotoFromImageChange = (type, file): void => {
 
 onMounted(async () => {
     if (!props.isPreviewMode) {
-        await schoolService.checkIfUserCanEdit(props.schoolContent.site.site_id, currentUser.value.id, props.schoolContent.school_id).then(res => {
+        await schoolService.checkIfUserCanEdit(props.schoolContent.site.site_id, props.schoolContent.school_id).then(res => {
             console.log(res)
             currentUserCanEdit.value = Boolean(res.data.status && res.data.result)
             currentUserCanNominate.value = Boolean(res.data.status && res.data.canNominate)
+            currentUserCanPublish.value = Boolean(res.data.status && res.data.canPublish)
 
         })
         if (currentUserCanEdit.value) {
@@ -179,7 +181,7 @@ const handleClickEditPendingContent = (): void => {
                         </div>
                         <div class="flex items-center flex-col w-full lg:!basis-1/3">
                             <div
-                                class="flex font-semibold mb-4 text-center"
+                                class="AdminSectionSchoolProfile flex font-semibold mb-4 text-center"
                             >
                                 {{ schoolContentStateDescription[schoolContentState] }}
                             </div>
