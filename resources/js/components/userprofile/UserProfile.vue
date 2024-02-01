@@ -37,12 +37,6 @@ const rules = {
 
 const v$ = useVuelidate(rules, state)
 
-const data = {
-    yearLevels: [1, 2, 3, 4, 5],
-    interests: ["VR", "AR"],
-    subjects: ["Math", "History"]
-};
-
 const handleClickEditAvatar = () => {
     uploadAvatar.value.click()
 }

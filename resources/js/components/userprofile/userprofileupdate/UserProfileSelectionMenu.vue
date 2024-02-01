@@ -1,9 +1,13 @@
-<script setup lang="ts" xmlns:src="http://www.w3.org/1999/xhtml">
+<script setup lang="ts">
 
+import axios from "axios";
+import {storeToRefs} from "pinia";
 import {onMounted, ref} from "vue";
 
 import {AvailableSubjectsList} from "@/js/components/userprofile/userprofileupdate/userListing";
 import UserSelector from "@/js/components/userprofile/userprofileupdate/UserSelector.vue";
+import {API_ENDPOINTS} from "@/js/constants/API_ENDPOINTS";
+import {useUserStore} from "@/js/stores/useUserStore";
 const props = defineProps({
     displayUsernameInput:{
         type: String,
@@ -11,21 +15,44 @@ const props = defineProps({
     }
 })
 
-const userSelectedSubjects = ref(['English', 'HASS'])
 
+const userSelectedSubjects = ref([])
+const userStore = useUserStore()
+const {currentUser} = storeToRefs(userStore)
 const handleSubmitUserSubjects = () => {
     const requestData = {
         subjects: userSelectedSubjects
     }
+    console.log(userSelectedSubjects.value)
 }
 
 const handleReceiveSubjectsFromSelector = (subjectList) => {
     userSelectedSubjects.value = subjectList
 };
 
+
+const data = {
+    yearsLevels: [],
+    interests: [],
+    subjects: userSelectedSubjects.value
+}
+
+const handleClickSubmitData = () => {
+    axios.post(API_ENDPOINTS.USER.UPDATE_OR_CREATE_METADATA + currentUser.value.id, data)
+        .then(res => {
+            console.log(res.data)
+        })
+        .catch(err => {
+            console.log(err.value)
+        })
+}
+
+
+
 onMounted(() =>{
     // populate userSelectedSubjects from the database
     //fetch here
+
 })
 
 
@@ -176,13 +203,16 @@ onMounted(() =>{
                 <div class="flex gap-2 mt-2">
                     <input
                         type="checkbox"
-                        class="h-20 mt-2 rounded-lg w-20"
+                        class="bg-[#5A67D8] h-20 mt-2 rounded-lg w-20"
+                        @click="handleClickSubmitData"
                     >
                 </div>
                 <div class="flex gap-2 mt-2">
                     <input
+
                         type="checkbox"
-                        class="h-20 mt-2 rounded-lg w-20"
+                        class="bg-green-100 cursor-pointer h-20 mt-2 rounded-lg w-20"
+                        @click="handleSubmitUserSubjects"
                     >
                 </div>
             </div>

@@ -35,13 +35,11 @@ const handleClickItem = (itemName) =>{
     } else {
         selectedValues.value.push(itemName)
     }
-
-
+    console.log(selectedValues.value)
     emitNewSubjectsToParent()
 }
-
 const emitNewSubjectsToParent = () =>{
-    emits('sendSelectedValues', selectedValues)
+    emits('sendSelectedValues', selectedValues.value)
 }
 
 const selectedValueBackgroundClass = (item) => {
@@ -72,6 +70,7 @@ const selectedValueBackgroundClass = (item) => {
             >
         </div>
     </div>
+    <pre>{{ selectedValues }}</pre>
 </template>
 
 <style scoped>
