@@ -1,21 +1,24 @@
 <script setup lang="ts">
-import { computed, ref, defineProps, defineEmits } from "vue";
-import { schoolColorKeys, schoolColorTheme } from "@/js/constants/schoolColorTheme";
+import {computed, defineEmits,defineProps, ref} from "vue";
 
-const colorTheme = ref("peach");
-const selectedValues = ref([]);
+import {schoolColorKeys, schoolColorTheme} from "@/js/constants/schoolColorTheme";
+
 const props = defineProps({
-    listData: {
+    availableItems:{
         type: Array,
-        required: true,
+        required: true
     },
-    modelValue: {
-        type: Number,
-        default: null,
-    },
+    selectedItems:{
+        type: Array,
+        required: false,
+        default: () => []
+    }
 });
 
-const emits = defineEmits(["storeItemName", "update:modelValue", "sendSelectedValues"]);
+const colorTheme = ref("peach");
+const selectedValues = ref(props.selectedItems);
+
+const emits = defineEmits(["sendSelectedValues"]);
 
 const customBackground = computed(() => {
     if (schoolColorKeys.includes(colorTheme)) {
@@ -26,33 +29,47 @@ const customBackground = computed(() => {
     }
 });
 
-const handleItemClick = (item, index) => {
-    // Toggle the selected state for the clicked item
-    selectedValues.value[index] = !selectedValues.value[index]
+const handleClickItem = (itemName) =>{
+    if(selectedValues.value.includes(itemName)){
+        selectedValues.value = selectedValues.value.filter(item => item != itemName)
+    } else {
+        selectedValues.value.push(itemName)
+    }
 
-    // Filter out the selected items and emit to the parent component
-    const selectedItems = props.listData
-        .filter((item, index) => selectedValues.value[index])
-        .map((item) => item.name)
 
-    emits("storeItemName", selectedItems)
-    emits("sendSelectedValues", selectedValues.value[index])
-};
+    emitNewSubjectsToParent()
+}
+
+const emitNewSubjectsToParent = () =>{
+    emits('sendSelectedValues', selectedValues)
+}
+
+const selectedValueBackgroundClass = (item) => {
+    if(selectedValues.value.includes(item)){
+        return 'bg-yellow-400'
+    } else{
+        return ''
+    }
+}
+
 </script>
 
 <template>
     <div
-        v-for="(item, index) in props.listData"
+        v-for="(item, index) in availableItems"
         :key="index"
-        class="cursor-pointer mr-6 mt-4 h-full w-full p-2 rounded-xl text-white hover:!bg-adminTeal hover:shadow-2xl"
+        class="cursor-pointer h-full mr-6 mt-4 p-2 rounded-xl text-white w-full hover:!bg-adminTeal hover:shadow-2xl"
         :class="customBackground"
     >
         <div
             class="p-2 text-lg"
-            @click="() => handleItemClick(item, index)"
-            :class="{ 'bg-yellow-400': selectedValues[index] }"
+            :class="selectedValueBackgroundClass(item.name)"
+            @click="() => handleClickItem(item.name)"
         >
-            <img :src='item.svg' class="items-center">
+            <img
+                :src="item.svg"
+                class="items-center"
+            >
         </div>
     </div>
 </template>

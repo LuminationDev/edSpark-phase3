@@ -1,12 +1,9 @@
 <script setup lang="ts" xmlns:src="http://www.w3.org/1999/xhtml">
 
-import UserSelector from "@/js/components/userprofile/userprofileupdate/UserSelector.vue";
-import {userSubjects} from "@/js/components/userprofile/userprofileupdate/userListing";
 import {onMounted, ref} from "vue";
 
-
-const itemFromChild = ref()
-const selectedValueFromChild = ref()
+import {AvailableSubjectsList} from "@/js/components/userprofile/userprofileupdate/userListing";
+import UserSelector from "@/js/components/userprofile/userprofileupdate/UserSelector.vue";
 const props = defineProps({
     displayUsernameInput:{
         type: String,
@@ -14,59 +11,193 @@ const props = defineProps({
     }
 })
 
-const handleItemClick = (items) => {
+const userSelectedSubjects = ref(['English', 'HASS'])
 
-    itemFromChild.value = items
-    console.log('Subject name selected inside the parent:  ' + itemFromChild.value)
+const handleSubmitUserSubjects = () => {
+    const requestData = {
+        subjects: userSelectedSubjects
+    }
+}
+
+const handleReceiveSubjectsFromSelector = (subjectList) => {
+    userSelectedSubjects.value = subjectList
 };
-const handleSelectedValue = (valuess) => {
 
-    selectedValueFromChild.value = valuess
-    console.log('Subject value selected inside the parent:  ' + selectedValueFromChild.value)
-};
+onMounted(() =>{
+    // populate userSelectedSubjects from the database
+    //fetch here
+})
 
-const toggleSelect=  ref(false)
+
 
 </script>
 
 <template>
     <div
-        class="
-            UserProfileSelectionMenuContainer
-            bg-white
-            h-full
-            w-full
-            rounded-2xl
-            gap-12 flex flex-col"
+        class="UserProfileSelectionMenuContainer bg-white flex flex-col gap-12 h-full rounded-2xl w-full"
     >
-        <div class="text-2xl m-10 "><div>Display Name</div>
-            <input class="mt-4 rounded-2xl border-1" v-model="props.displayUsernameInput">
+        <div class="m-10 text-2xl">
+            <div>Display Name</div>
         </div>
-        <div class="text-2xl m-10"><div>Year Level</div>
-            <div class="gap-10 flex">
-                <div class="gap-2 flex mt-2"><p class="text-lg">Y1</p><input type="checkbox" class="mt-1 w-6 h-6"></div>
-                <div class="gap-2 flex mt-2"><p class="text-lg">Y2</p><input type="checkbox" class="mt-1 w-6 h-6"></div>
-                <div class="gap-2 flex mt-2"><p class="text-lg">Y3</p><input type="checkbox" class="mt-1 w-6 h-6"></div>
-                <div class="gap-2 flex mt-2"><p class="text-lg">Y4</p><input type="checkbox" class="mt-1 w-6 h-6"></div>
-                <div class="gap-2 flex mt-2"><p class="text-lg">Y5</p><input type="checkbox" class="mt-1 w-6 h-6"></div>
-                <div class="gap-2 flex mt-2"><p class="text-lg">Y6</p><input type="checkbox" class="mt-1 w-6 h-6"></div>
-                <div class="gap-2 flex mt-2"><p class="text-lg">Y7</p><input type="checkbox" class="mt-1 w-6 h-6"></div>
-                <div class="gap-2 flex mt-2"><p class="text-lg">Y8</p><input type="checkbox" class="mt-1 w-6 h-6"></div>
-                <div class="gap-2 flex mt-2"><p class="text-lg">Y9</p><input type="checkbox" class="mt-1 w-6 h-6"></div>
-                <div class="gap-2 flex mt-2"><p class="text-lg">Y10</p><input type="checkbox" class="mt-1 w-6 h-6"></div>
-                <div class="gap-2 flex mt-2"><p class="text-lg">Y11</p><input type="checkbox" class="mt-1 w-6 h-6"></div>
-                <div class="gap-2 flex mt-2"><p class="text-lg">Y12</p><input type="checkbox" class="mt-1 w-6 h-6"></div>
+        <div class="m-10 text-2xl">
+            <div>Year Level</div>
+            <div class="flex gap-10">
+                <div class="flex gap-2 mt-2">
+                    <p class="text-lg">
+                        Y1
+                    </p><input
+                        type="checkbox"
+                        class="h-6 mt-1 w-6"
+                    >
+                </div>
+                <div class="flex gap-2 mt-2">
+                    <p class="text-lg">
+                        Y2
+                    </p><input
+                        type="checkbox"
+                        class="h-6 mt-1 w-6"
+                    >
+                </div>
+                <div class="flex gap-2 mt-2">
+                    <p class="text-lg">
+                        Y3
+                    </p><input
+                        type="checkbox"
+                        class="h-6 mt-1 w-6"
+                    >
+                </div>
+                <div class="flex gap-2 mt-2">
+                    <p class="text-lg">
+                        Y4
+                    </p><input
+                        type="checkbox"
+                        class="h-6 mt-1 w-6"
+                    >
+                </div>
+                <div class="flex gap-2 mt-2">
+                    <p class="text-lg">
+                        Y5
+                    </p><input
+                        type="checkbox"
+                        class="h-6 mt-1 w-6"
+                    >
+                </div>
+                <div class="flex gap-2 mt-2">
+                    <p class="text-lg">
+                        Y6
+                    </p><input
+                        type="checkbox"
+                        class="h-6 mt-1 w-6"
+                    >
+                </div>
+                <div class="flex gap-2 mt-2">
+                    <p class="text-lg">
+                        Y7
+                    </p><input
+                        type="checkbox"
+                        class="h-6 mt-1 w-6"
+                    >
+                </div>
+                <div class="flex gap-2 mt-2">
+                    <p class="text-lg">
+                        Y8
+                    </p><input
+                        type="checkbox"
+                        class="h-6 mt-1 w-6"
+                    >
+                </div>
+                <div class="flex gap-2 mt-2">
+                    <p class="text-lg">
+                        Y9
+                    </p><input
+                        type="checkbox"
+                        class="h-6 mt-1 w-6"
+                    >
+                </div>
+                <div class="flex gap-2 mt-2">
+                    <p class="text-lg">
+                        Y10
+                    </p><input
+                        type="checkbox"
+                        class="h-6 mt-1 w-6"
+                    >
+                </div>
+                <div class="flex gap-2 mt-2">
+                    <p class="text-lg">
+                        Y11
+                    </p><input
+                        type="checkbox"
+                        class="h-6 mt-1 w-6"
+                    >
+                </div>
+                <div class="flex gap-2 mt-2">
+                    <p class="text-lg">
+                        Y12
+                    </p><input
+                        type="checkbox"
+                        class="h-6 mt-1 w-6"
+                    >
+                </div>
             </div>
         </div>
-        <div class="text-2xl m-10"><div>Interests</div>
-            <div class="gap-10 flex">
-                <div class="gap-2 flex mt-2"><input type="checkbox" class="mt-2 w-20 h-20 rounded-lg"></div>
-                <div class="gap-2 flex mt-2"><input type="checkbox" class="mt-2 w-20 h-20 rounded-lg"></div>
-                <div class="gap-2 flex mt-2"><input type="checkbox" class="mt-2 w-20 h-20 rounded-lg"></div>
-                <div class="gap-2 flex mt-2"><input type="checkbox" class="mt-2 w-20 h-20 rounded-lg"></div>
-                <div class="gap-2 flex mt-2"><input type="checkbox" class="mt-2 w-20 h-20 rounded-lg"></div>
-                <div class="gap-2 flex mt-2"><input type="checkbox" class="mt-2 w-20 h-20 rounded-lg"></div>
-                <div class="gap-2 flex mt-2"><input type="checkbox" class="mt-2 w-20 h-20 rounded-lg"></div>
+        <div class="m-10 text-2xl">
+            <div>Interests</div>
+            <div class="flex gap-10">
+                <div class="flex gap-2 mt-2">
+                    <input
+                        type="checkbox"
+                        class="h-20 mt-2 rounded-lg w-20"
+                    >
+                </div>
+                <div class="flex gap-2 mt-2">
+                    <input
+                        type="checkbox"
+                        class="h-20 mt-2 rounded-lg w-20"
+                    >
+                </div>
+                <div class="flex gap-2 mt-2">
+                    <input
+                        type="checkbox"
+                        class="h-20 mt-2 rounded-lg w-20"
+                    >
+                </div>
+                <div class="flex gap-2 mt-2">
+                    <input
+                        type="checkbox"
+                        class="h-20 mt-2 rounded-lg w-20"
+                    >
+                </div>
+                <div class="flex gap-2 mt-2">
+                    <input
+                        type="checkbox"
+                        class="h-20 mt-2 rounded-lg w-20"
+                    >
+                </div>
+                <div class="flex gap-2 mt-2">
+                    <input
+                        type="checkbox"
+                        class="h-20 mt-2 rounded-lg w-20"
+                    >
+                </div>
+                <div class="flex gap-2 mt-2">
+                    <input
+                        type="checkbox"
+                        class="h-20 mt-2 rounded-lg w-20"
+                    >
+                </div>
+            </div>
+        </div>
+
+
+        <div class="m-10 text-2xl">
+            <div>Subjects</div>
+            <div class="flex flex-row userSubjectSelectorContainer">
+                <!-- For Subjects-->
+                <UserSelector
+                    :available-items="AvailableSubjectsList"
+                    :selected-items="userSelectedSubjects"
+                    @send-selected-values="handleReceiveSubjectsFromSelector"
+                />
             </div>
         </div>
 
@@ -83,65 +214,94 @@ const toggleSelect=  ref(false)
 
 
 
-        <div class="text-2xl m-10"><div>Subjects</div>
-            <div class="flex flex-row">
-                <UserSelector class="" :list-data="userSubjects" @store-item-name="handleItemClick" v-model="toggleSelect" @send-selected-values="handleSelectedValue">
-                </UserSelector>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        <div class="m-10 text-2xl">
+            <div>Extra Items</div>
+            <div class="flex gap-10">
+                <div class="flex gap-2 mt-2">
+                    <label><input
+                        type="checkbox"
+                        class="checkbox"
+                    ><span class="h-20 label mt-2 rounded-lg w-20"><img
+                        src="https://cdn-icons-png.flaticon.com/512/2815/2815428.png"
+                        class="align-center bg-transparent h-12 m-auto mt-4 w-12"
+                    ></span></label>
+                </div>
+                <div class="flex gap-2 mt-2">
+                    <label><input
+                        type="checkbox"
+                        class="checkbox"
+                    ><span class="h-20 label mt-2 rounded-lg w-20"><img
+                        src=""
+                        class="align-center bg-transparent h-12 m-auto mt-4 w-12"
+                    ></span></label>
+                </div>
+                <div class="flex gap-2 mt-2">
+                    <label><input
+                        type="checkbox"
+                        class="checkbox"
+                    ><span class="h-20 label mt-2 rounded-lg w-20"><img
+                        src=""
+                        class="align-center bg-transparent h-12 m-auto mt-2 w-12"
+                    ></span></label>
+                </div>
+                <div class="flex gap-2 mt-2">
+                    <label><input
+                        type="checkbox"
+                        class="checkbox"
+                    ><span class="h-20 label mt-2 rounded-lg w-20"><img
+                        src=""
+                        class="align-center bg-transparent h-12 m-auto mt-2 w-12"
+                    ></span></label>
+                </div>
+                <div class="flex gap-2 mt-2">
+                    <label><input
+                        type="checkbox"
+                        class="checkbox"
+                    ><span class="h-20 label mt-2 rounded-lg w-20"><img
+                        src=""
+                        class="align-center bg-transparent h-12 m-auto mt-2 w-12"
+                    ></span></label>
+                </div>
+                <div class="flex gap-2 mt-2">
+                    <label><input
+                        type="checkbox"
+                        class="checkbox"
+                    ><span class="h-20 label mt-2 rounded-lg w-20"><img
+                        src=""
+                        class="align-center bg-transparent h-12 m-auto mt-2 w-12"
+                    ></span></label>
+                </div>
+                <div class="flex gap-2 mt-2">
+                    <label><input
+                        type="checkbox"
+                        class="checkbox"
+                    ><span class="h-20 label mt-2 rounded-lg w-20"><img
+                        src=""
+                        class="align-center bg-transparent h-12 m-auto mt-2 w-12"
+                    ></span></label>
+                </div>
             </div>
         </div>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        <div class="text-2xl m-10"><div>Extra Items</div>
-            <div class="gap-10 flex">
-                <div class="gap-2 flex mt-2"><label><input type="checkbox" class="checkbox"><span class="label mt-2 w-20 h-20 rounded-lg"><img
-                    src="https://cdn-icons-png.flaticon.com/512/2815/2815428.png" class="bg-transparent align-center w-12 h-12 mt-4 m-auto"></span></label></div>
-                <div class="gap-2 flex mt-2"><label><input type="checkbox" class="checkbox"><span class="label mt-2 w-20 h-20 rounded-lg"><img
-                    src="" class="bg-transparent align-center w-12 h-12 mt-4 m-auto"></span></label></div>
-                <div class="gap-2 flex mt-2"><label><input type="checkbox" class="checkbox"><span class="label mt-2 w-20 h-20 rounded-lg"><img
-                    src="" class="bg-transparent align-center w-12 h-12 mt-2 m-auto"></span></label></div>
-                <div class="gap-2 flex mt-2"><label><input type="checkbox" class="checkbox"><span class="label mt-2 w-20 h-20 rounded-lg"><img
-                    src="" class="bg-transparent align-center w-12 h-12 mt-2 m-auto"></span></label></div>
-                <div class="gap-2 flex mt-2"><label><input type="checkbox" class="checkbox"><span class="label mt-2 w-20 h-20 rounded-lg"><img
-                    src="" class="bg-transparent align-center w-12 h-12 mt-2 m-auto"></span></label></div>
-                <div class="gap-2 flex mt-2"><label><input type="checkbox" class="checkbox"><span class="label mt-2 w-20 h-20 rounded-lg"><img
-                    src="" class="bg-transparent align-center w-12 h-12 mt-2 m-auto"></span></label></div>
-                <div class="gap-2 flex mt-2"><label><input type="checkbox" class="checkbox"><span class="label mt-2 w-20 h-20 rounded-lg"><img
-                    src="" class="bg-transparent align-center w-12 h-12 mt-2 m-auto"></span></label></div>
-            </div>
+        <div class="m-10 text-2xl">
+            <div>Biography</div>
+            <input class="h-44 mt-4 rounded-2xl">
         </div>
-
-        <div class="text-2xl m-10"><div>Biography</div>
-            <input class="mt-4 h-44 rounded-2xl">
-
-        </div>
-
     </div>
 </template>
 

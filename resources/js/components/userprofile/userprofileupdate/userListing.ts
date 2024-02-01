@@ -1,7 +1,7 @@
-import Logo1 from '@/assets/images/userProfile/english-language.png'
 import Logo2 from '@/assets/images/userProfile/eng.png'
+import Logo1 from '@/assets/images/userProfile/english-language.png'
 import Logo3 from '@/assets/images/userProfile/icons8-book-100.png'
-export const userSubjects = [{
+export const AvailableSubjectsList = [{
         name: 'English',
         description: '',
         category: '',
