@@ -1,15 +1,19 @@
 {
+  "resources/assets/images/Feedback-MSG-icon.png": {
+    "file": "assets/Feedback-MSG-icon-fa72a2c2.png",
+    "src": "resources/assets/images/Feedback-MSG-icon.png"
+  },
   "resources/assets/images/PartnersPuzzle.png": {
     "file": "assets/PartnersPuzzle-f8ea4960.png",
     "src": "resources/assets/images/PartnersPuzzle.png"
   },
-  "resources/assets/images/WhatIsDag.png": {
-    "file": "assets/WhatIsDag-10bb387b.png",
-    "src": "resources/assets/images/WhatIsDag.png"
-  },
   "resources/assets/images/edsparkLogo.png": {
     "file": "assets/edsparkLogo-e7914418.png",
     "src": "resources/assets/images/edsparkLogo.png"
+  },
+  "resources/assets/images/eventsCalendar.png": {
+    "file": "assets/eventsCalendar-39cdf35b.png",
+    "src": "resources/assets/images/eventsCalendar.png"
   },
   "resources/assets/images/footer/cc.png": {
     "file": "assets/cc-286aeef7.png",
@@ -35,10 +39,6 @@
     "file": "assets/hardwareInfoImage-e7b190a8.png",
     "src": "resources/assets/images/hardwareInfoImage.png"
   },
-  "resources/assets/images/navbar.png": {
-    "file": "assets/navbar-514ca0d3.png",
-    "src": "resources/assets/images/navbar.png"
-  },
   "resources/assets/images/profilePlaceholder.webp": {
     "file": "assets/profilePlaceholder-9b013e68.webp",
     "src": "resources/assets/images/profilePlaceholder.webp"
@@ -48,12 +48,12 @@
     "src": "resources/assets/images/profile_background.jpeg"
   },
   "resources/css/app.css": {
-    "file": "assets/app-fa786363.css",
+    "file": "assets/app-6f980e42.css",
     "isEntry": true,
     "src": "resources/css/output.css"
   },
   "resources/css/filament/admin/theme.css": {
-    "file": "assets/theme-c9277dc1.css",
+    "file": "assets/theme-01055a61.css",
     "isEntry": true,
     "src": "resources/css/filament/admin/theme.css"
   },
@@ -122,28 +122,28 @@
     "src": "resources/css/font/museosans-700-webfont.woff2"
   },
   "resources/css/output.css": {
-    "file": "assets/app-fa786363.css",
+    "file": "assets/app-6f980e42.css",
     "isEntry": true,
     "src": "resources/css/output.css"
   },
   "resources/js/app.css": {
-    "file": "assets/app-a4cee2da.css",
+    "file": "assets/app-90549fe7.css",
     "src": "resources/js/app.css"
   },
   "resources/js/app.ts": {
     "assets": [
+      "assets/Feedback-MSG-icon-fa72a2c2.png",
       "assets/cc-286aeef7.png",
       "assets/south-australia-eaa8c844.png",
       "assets/sagovau_rev-19524a3e.png",
       "assets/white-ribbon-6ba8cd1c.svg",
       "assets/dfe-42a1625e.svg",
-      "assets/navbar-514ca0d3.png",
       "assets/profile_background-84005a5c.jpeg",
       "assets/profilePlaceholder-9b013e68.webp",
+      "assets/english-language-76add6b4.png",
       "assets/edsparkLogo-e7914418.png",
-      "assets/hardwareInfoImage-e7b190a8.png",
+      "assets/eventsCalendar-39cdf35b.png",
       "assets/PartnersPuzzle-f8ea4960.png",
-      "assets/WhatIsDag-10bb387b.png",
       "assets/museosans-100-webfont-dd3e73e3.eot",
       "assets/museosans-100-webfont-e02f2d2f.woff2",
       "assets/museosans-100-webfont-e94c0507.woff",
@@ -162,11 +162,14 @@
       "assets/museosans-700-webfont-c9809fc4.ttf"
     ],
     "css": [
-      "assets/app-a4cee2da.css",
-      "assets/app-fa786363.css"
+      "assets/app-90549fe7.css"
     ],
-    "file": "assets/app-9e2de917.js",
+    "file": "assets/app-93bf7705.js",
     "isEntry": true,
     "src": "resources/js/app.ts"
+  },
+  "resources/js/components/userprofile/userprofileupdate/svgs/english-language.png": {
+    "file": "assets/english-language-76add6b4.png",
+    "src": "resources/js/components/userprofile/userprofileupdate/svgs/english-language.png"
   }
 }

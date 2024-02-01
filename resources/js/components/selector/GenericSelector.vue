@@ -49,7 +49,6 @@ const checkIfObjectIsSelected = (itemObj) => {
     return result.value.map(item => item.name).includes(itemObj.name)
 }
 
-
 const customBackground = computed(() => {
     if (schoolColorKeys.includes(props.colorTheme)) {
         return `bg-[${schoolColorTheme[props.colorTheme]['light']}] fill-[${schoolColorTheme[props.colorTheme]['med']}]`;
