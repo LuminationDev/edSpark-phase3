@@ -5,7 +5,7 @@ export const AvailableSubjectsList = [{
         name: 'English',
         description: '',
         category: '',
-        provider: 'department',
+        provider: '',
         svg: Logo1
     },
     {
@@ -63,6 +63,50 @@ export const AvailableSubjectsList = [{
         category: '',
         provider: '',
         svg: Logo2
+    }
+]
+
+export const AvailableInterestsList = [{
+        name: 'Drones',
+        description: '',
+        category: '',
+        provider: 'department',
+        svg: Logo1
+    },
+    {
+        name: 'VR',
+        description: '',
+        category: '',
+        provider: '',
+        svg: Logo2
+    },
+    {
+        name: 'AR',
+        description: '',
+        category: '',
+        provider: '',
+        svg: Logo3
+    },
+    {
+        name: 'Robotics',
+        description: '',
+        category: '',
+        provider: '',
+        svg: Logo1
+    },
+    {
+        name: 'AV systems',
+        description: '',
+        category: '',
+        provider: '',
+        svg: Logo2
+    },
+    {
+        name: 'IoT',
+        description: '',
+        category: '',
+        provider: '',
+        svg: Logo3
     }
 ]
 

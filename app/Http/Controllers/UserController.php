@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Helpers\JsonHelper;
 use App\Models\Advice;
 use App\Models\Event;
 use App\Models\Software;
@@ -388,12 +389,10 @@ class UserController extends Controller
      *
      * @example Request body:
      * {
-     *    "fields": {
      *        "yearLevels": [2, 10, 4, 12],
      *        "Interest": ["Drones", "VR", "Robotics", "AR"],
      *        "Subjects": ["Mathematics", "Technologies", "Science", "The Arts"],
      *        "Biography": "I am a teacher"
-     *    }
      * }
      */
     public function updateOrCreateMetadata(Request $request, int $userId)
@@ -404,39 +403,23 @@ class UserController extends Controller
                 return ResponseService::error('Invalid request method. Only POST requests are allowed.', null, 405);
             }
 
-            // Validate the request data
-            $validatedData = $request->validate([
-                'fields' => [
-                    'required',
-                    'array',
-                    function ($attribute, $value, $fail) {
-                        // Ensure that each field key is one of the specified keys
-                        $allowedKeys = $this->userProfileMetaKeys;
-                        foreach ($value as $key => $val) {
-                            if (!in_array($key, $allowedKeys)) {
-                                $fail("Invalid field key: $key. Allowed keys are " . implode(', ', $allowedKeys));
-                            }
-                        }
-                    },
-                ],
-            ]);
-
             // Find the user by ID
             $user = User::find($userId);
+            $data = $request->all();
 
             if (!$user) {
                 return ResponseService::error('User not found', null, 404);
             }
 
             // Loop through the fields and update or create user metadata
-            foreach ($validatedData['fields'] as $key => $value) {
+            foreach ($data as $key => $value) {
                 Usermeta::updateOrCreate(
                     [
                         'user_id' => $user->id,
                         'user_meta_key' => $key,
                     ],
                     [
-                        'user_meta_value' => json_encode($value),
+                        'user_meta_value' => JsonHelper::safelyEncodeData($value),
                     ]
                 );
             }

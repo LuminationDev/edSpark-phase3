@@ -26,16 +26,7 @@ const subMenuItems = ref(['Info', 'Work', 'Messages'])
 const uploadAvatar = ref(null)
 const contentTemp = ref('')
 
-const state = reactive({
-    displayName: currentUser.value.display_name,
-    yearLevel: currentUser.value
-})
 
-const rules = {
-    displayName: {required},
-}
-
-const v$ = useVuelidate(rules, state)
 
 const handleClickEditAvatar = () => {
     uploadAvatar.value.click()
@@ -172,7 +163,7 @@ const handleErrorAvatarFallback = () => {
             </div>
             <div class="bg-slate-50 flex flex-col min-h-[70vh] mt-10 pb-10 px-4 md:!px-8 lg:!px-24">
                 <div class="UserProfileSelectionMenuContainer flex flex-col mt-20">
-                    <UserProfileSelectionMenu :display-username-input="v$.displayName.$model" />
+                    <UserProfileSelectionMenu />
                 </div>
 
 
