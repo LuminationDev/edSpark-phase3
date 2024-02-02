@@ -6,6 +6,7 @@ import axios from "axios";
 import {storeToRefs} from "pinia";
 import {onMounted, reactive, ref} from "vue";
 
+import ErrorMessages from "@/js/components/bases/ErrorMessages.vue";
 import UserCardItemSelector from "@/js/components/userprofile/userprofileupdate/UserCardItemSelector.vue";
 import UserChecklistSelector from "@/js/components/userprofile/userprofileupdate/UserChecklistSelector.vue";
 import {
@@ -16,20 +17,29 @@ import {
 import {API_ENDPOINTS} from "@/js/constants/API_ENDPOINTS";
 import {useUserStore} from "@/js/stores/useUserStore";
 
+
 const userSelectedSubjects = ref([])
 const userSelectedInterests = ref([])
 const userSelectedYearLevel = ref([])
+const userBiographyInputText = ref('')
 const userStore = useUserStore()
 const {currentUser} = storeToRefs(userStore)
 
 //for form validation
 const state = reactive({
     displayName: currentUser.value.display_name,
-    yearLevel: currentUser.value
+    subjectSelect: '',
+    interestSelect: '',
+    yearLevelSelect: '',
+    biography: ''
+
 })
 const rules = {
     displayName: {required},
-    yearLevel: {required}
+    subjectSelect: {required},
+    interestSelect: {required},
+    yearLevelSelect: {required},
+    biography: {required}
 }
 const v$ = useVuelidate(rules, state)
 
@@ -45,19 +55,28 @@ const handleReceiveYearListFromSelector = (yearList) => {
 }
 
 //handle submit data on click, posts the data to api and then store to the database.
-const handleClickSubmitData = () => {
-    const data = {
-        subjects: userSelectedSubjects.value,
-        interest: userSelectedInterests.value,
-        yearLevels: userSelectedYearLevel.value
+const handleClickSubmitData = async () => {
+    const result = await v$.value.$validate()
+    if (result) {
+        const data = {
+            subjects: userSelectedSubjects.value,
+            interest: userSelectedInterests.value,
+            yearLevels: userSelectedYearLevel.value,
+            biography: userBiographyInputText.value
+        }
+        axios.post(API_ENDPOINTS.USER.UPDATE_OR_CREATE_METADATA + currentUser.value.id, data)
+            .then(res => {
+                console.log(res.data)
+            })
+            .catch(err => {
+                console.log(err.value)
+            })
+        console.log("Data saved successfully")
     }
-    axios.post(API_ENDPOINTS.USER.UPDATE_OR_CREATE_METADATA + currentUser.value.id, data)
-        .then(res => {
-            console.log(res.data)
-        })
-        .catch(err => {
-            console.log(err.value)
-        })
+    else {
+        console.log("Data not saved successfully, Please enter all the values")
+    }
+
 }
 
 //used to get data, automatically from the database using api
@@ -94,6 +113,9 @@ onMounted(() =>{
                 v-model="v$.displayName.$model"
                 class="border-1 mt-4 rounded-2xl"
             >
+            <span>
+                <ErrorMessages :v$="v$.displayName" />
+            </span>
         </div>
 
         <div class="m-10">
@@ -106,6 +128,9 @@ onMounted(() =>{
                     :selected-items="userSelectedYearLevel"
                     @send-selected-values="handleReceiveYearListFromSelector"
                 />
+                <span>
+                    <ErrorMessages :v$="v$.yearLevelSelect" />
+                </span>
             </div>
         </div>
         <div class="m-10 text-2xl">
@@ -118,6 +143,12 @@ onMounted(() =>{
                     @send-selected-values="handleReceiveSubjectsFromSelector"
                 />
             </div>
+            <span>
+                <ErrorMessages
+                    :v$="v$.subjectSelect"
+                    class="mt-4"
+                />
+            </span>
         </div>
         <div class="m-10 text-2xl">
             <div>Interests</div>
@@ -128,6 +159,9 @@ onMounted(() =>{
                     :selected-items="userSelectedInterests"
                     @send-selected-values="handleReceiveInterestsFromSelector"
                 />
+                <span>
+                    <ErrorMessages :v$="v$.interestSelect" />
+                </span>
             </div>
         </div>
 
@@ -253,7 +287,13 @@ onMounted(() =>{
 
         <div class="m-10 text-2xl">
             <div>Biography</div>
-            <input class="h-44 mt-4 rounded-2xl">
+            <input
+                v-model="userBiographyInputText"
+                class="h-44 mt-4 rounded-2xl"
+            >
+            <span>
+                <ErrorMessages :v$="v$.yearLevelSelect" />
+            </span>
         </div>
     </div>
 </template>
