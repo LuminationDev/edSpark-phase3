@@ -7,12 +7,18 @@ import {storeToRefs} from "pinia";
 import {onMounted, reactive, ref} from "vue";
 
 import UserCardItemSelector from "@/js/components/userprofile/userprofileupdate/UserCardItemSelector.vue";
-import {AvailableInterestsList,AvailableSubjectsList} from "@/js/components/userprofile/userprofileupdate/userListing";
+import UserChecklistSelector from "@/js/components/userprofile/userprofileupdate/UserChecklistSelector.vue";
+import {
+    AvailableInterestsList,
+    AvailableSchoolYearList,
+    AvailableSubjectsList
+} from "@/js/components/userprofile/userprofileupdate/userListing";
 import {API_ENDPOINTS} from "@/js/constants/API_ENDPOINTS";
 import {useUserStore} from "@/js/stores/useUserStore";
 
 const userSelectedSubjects = ref([])
 const userSelectedInterests = ref([])
+const userSelectedYearLevel = ref([])
 const userStore = useUserStore()
 const {currentUser} = storeToRefs(userStore)
 
@@ -23,23 +29,27 @@ const state = reactive({
 })
 const rules = {
     displayName: {required},
+    yearLevel: {required}
 }
 const v$ = useVuelidate(rules, state)
 
-//handling the received subjects list data (in arrays) from UserCardItemSelector in the form of emits.
+//handling the received subjects and Year list data (in arrays) from their appropriate Selector in the form of emits.
 const handleReceiveSubjectsFromSelector = (subjectList) => {
     userSelectedSubjects.value = subjectList
-};
-//handling the received Interests list data (in arrays) from UserCardItemSelector in the form of emits.
+}
 const handleReceiveInterestsFromSelector = (interestList) => {
     userSelectedInterests.value = interestList
-};
+}
+const handleReceiveYearListFromSelector = (yearList) => {
+    userSelectedYearLevel.value = yearList
+}
 
 //handle submit data on click, posts the data to api and then store to the database.
 const handleClickSubmitData = () => {
     const data = {
         subjects: userSelectedSubjects.value,
-        interest: userSelectedInterests.value
+        interest: userSelectedInterests.value,
+        yearLevels: userSelectedYearLevel.value
     }
     axios.post(API_ENDPOINTS.USER.UPDATE_OR_CREATE_METADATA + currentUser.value.id, data)
         .then(res => {
@@ -58,9 +68,23 @@ onMounted(() =>{
 
 })
 
+
+//All the scripts regarding the checklist implmentation
+
+
+
 </script>
 
 <template>
+    <div class="bg-red-100 border-2 cursor-pointer fixed bottom-[5rem] left-[6rem] flex flex-row rounded-2xl w-24 z-[70]">
+        <div
+            class="align-center ml-2 text-2xl"
+            @click="handleClickSubmitData"
+        >
+            Submit Button
+        </div>
+    </div>
+
     <div
         class="UserProfileSelectionMenuContainer bg-white flex flex-col gap-12 h-full rounded-2xl w-full"
     >
@@ -71,114 +95,17 @@ onMounted(() =>{
                 class="border-1 mt-4 rounded-2xl"
             >
         </div>
-        <div class="m-10 text-2xl">
-            <div>Year Level</div>
-            <div class="flex gap-10">
-                <div class="flex gap-2 mt-2">
-                    <p class="text-lg">
-                        Y1
-                    </p><input
-                        type="checkbox"
-                        class="h-6 mt-1 w-6"
-                    >
-                </div>
-                <div class="flex gap-2 mt-2">
-                    <p class="text-lg">
-                        Y2
-                    </p><input
-                        type="checkbox"
-                        class="h-6 mt-1 w-6"
-                    >
-                </div>
-                <div class="flex gap-2 mt-2">
-                    <p class="text-lg">
-                        Y3
-                    </p><input
-                        type="checkbox"
-                        class="h-6 mt-1 w-6"
-                    >
-                </div>
-                <div class="flex gap-2 mt-2">
-                    <p class="text-lg">
-                        Y4
-                    </p><input
-                        type="checkbox"
-                        class="h-6 mt-1 w-6"
-                    >
-                </div>
-                <div class="flex gap-2 mt-2">
-                    <p class="text-lg">
-                        Y5
-                    </p><input
-                        type="checkbox"
-                        class="h-6 mt-1 w-6"
-                    >
-                </div>
-                <div class="flex gap-2 mt-2">
-                    <p class="text-lg">
-                        Y6
-                    </p><input
-                        type="checkbox"
-                        class="h-6 mt-1 w-6"
-                    >
-                </div>
-                <div class="flex gap-2 mt-2">
-                    <p class="text-lg">
-                        Y7
-                    </p><input
-                        type="checkbox"
-                        class="h-6 mt-1 w-6"
-                    >
-                </div>
-                <div class="flex gap-2 mt-2">
-                    <p class="text-lg">
-                        Y8
-                    </p><input
-                        type="checkbox"
-                        class="h-6 mt-1 w-6"
-                    >
-                </div>
-                <div class="flex gap-2 mt-2">
-                    <p class="text-lg">
-                        Y9
-                    </p><input
-                        type="checkbox"
-                        class="h-6 mt-1 w-6"
-                    >
-                </div>
-                <div class="flex gap-2 mt-2">
-                    <p class="text-lg">
-                        Y10
-                    </p><input
-                        type="checkbox"
-                        class="h-6 mt-1 w-6"
-                    >
-                </div>
-                <div class="flex gap-2 mt-2">
-                    <p class="text-lg">
-                        Y11
-                    </p><input
-                        type="checkbox"
-                        class="h-6 mt-1 w-6"
-                    >
-                </div>
-                <div class="flex gap-2 mt-2">
-                    <p class="text-lg">
-                        Y12
-                    </p><input
-                        type="checkbox"
-                        class="h-6 mt-1 w-6"
-                    >
-                </div>
-                <div class="-ml-72 fixed flex gap-2 mt-2">
-                    <p class="text-lg">
-                        Submit Button
-                    </p><input
-                        type="checkbox"
-                        class="h-6 mt-1 w-6"
-                        @click="handleClickSubmitData"
-                    >
-                </div>
+
+        <div class="m-10">
+            <div class="text-2xl">
+                Year Level
+            </div>
+            <div class="grid grid-cols-6 mt-6">
+                <UserChecklistSelector
+                    :available-items="AvailableSchoolYearList"
+                    :selected-items="userSelectedYearLevel"
+                    @send-selected-values="handleReceiveYearListFromSelector"
+                />
             </div>
         </div>
         <div class="m-10 text-2xl">

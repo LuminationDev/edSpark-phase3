@@ -110,4 +110,76 @@ export const AvailableInterestsList = [{
     }
 ]
 
-
+export const AvailableSchoolYearList = [{
+        name: 'Year 1',
+        description: '',
+        category: '',
+        provider: ''
+    },
+    {
+        name: 'Year 2',
+        description: '',
+        category: '',
+        provider: ''
+    },
+    {
+        name: 'Year 3',
+        description: '',
+        category: '',
+        provider: ''
+    },
+    {
+        name: 'Year 4',
+        description: '',
+        category: '',
+        provider: ''
+    },
+    {
+        name: 'Year 5',
+        description: '',
+        category: '',
+        provider: ''
+    },
+    {
+        name: 'Year 6',
+        description: '',
+        category: '',
+        provider: ''
+    },
+    {
+        name: 'Year 7',
+        description: '',
+        category: '',
+        provider: ''
+    },
+    {
+        name: 'Year 8',
+        description: '',
+        category: '',
+        provider: ''
+    },
+    {
+        name: 'Year 9',
+        description: '',
+        category: '',
+        provider: ''
+    },
+    {
+        name: 'Year 10',
+        description: '',
+        category: '',
+        provider: ''
+    },
+    {
+        name: 'Year 11',
+        description: '',
+        category: '',
+        provider: ''
+    },
+    {
+        name: 'Year 12',
+        description: '',
+        category: '',
+        provider: ''
+    }
+]

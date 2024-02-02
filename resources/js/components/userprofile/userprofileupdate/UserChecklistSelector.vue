@@ -1,9 +1,7 @@
 <script setup lang="ts">
-import {computed, defineEmits,defineProps, ref} from "vue";
 
-import {schoolColorKeys, schoolColorTheme} from "@/js/constants/schoolColorTheme";
+import {defineEmits, defineProps, ref} from "vue";
 
-//important props used to import data from UserProfileSelectionMenu
 const props = defineProps({
     availableItems:{
         type: Array,
@@ -21,16 +19,6 @@ const colorTheme = ref("peach")
 //saving value from the props.selectedItems
 const selectedValues = ref(props.selectedItems)
 
-//give custom background to the layout
-const customBackground = computed(() => {
-    if (schoolColorKeys.includes(colorTheme)) {
-        return `bg-[${schoolColorTheme[colorTheme]["light"]}]`
-    } else {
-        return `bg-[${schoolColorTheme["peach"]["light"]}] fill
-        -[${schoolColorTheme["peach"]["med"]}]`
-    }
-})
-
 const emitNewItemsToParent = () =>{
     emits('sendSelectedValues', selectedValues.value)
 }
@@ -46,9 +34,9 @@ const handleClickItem = (itemName) =>{
 }
 
 //custom backgrond color for the selected items
-const selectedValueBackgroundClass = (item) => {
+const selectedItemBackgroundClass = (item) => {
     if(selectedValues.value.includes(item)){
-        return 'bg-yellow-400'
+        return 'bg-red-200'
     } else{
         return ''
     }
@@ -60,25 +48,19 @@ const selectedValueBackgroundClass = (item) => {
     <div
         v-for="(item, index) in availableItems"
         :key="index"
-        class="cursor-pointer h-full rounded-2xl text-white w-full hover:!bg-adminTeal hover:shadow-2xl"
-        :class="customBackground"
+        class="cursor-pointer flex flex-row mb-10 w-[7em]"
     >
         <div
-            class="rounded-2xl text-lg"
-            :class="selectedValueBackgroundClass(item.name)"
+            class="CheckListSelector border-2 cursor-pointer h-6 mb-auto ml-2 mt-auto w-6"
+            :class="selectedItemBackgroundClass(item.name)"
             @click="() => handleClickItem(item.name)"
-        >
-            <img
-                :src="item.svg"
-                class="items-center p-6"
-            >
+        />
+        <div class="align-right ml-4 text-lg">
+            {{ item.name }}
         </div>
     </div>
-<!--    <pre>{{ selectedValues }}</pre>-->
 </template>
 
 <style scoped>
-.selected {
-    background-color: lightblue;
-}
+
 </style>
