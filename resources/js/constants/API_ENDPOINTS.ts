@@ -98,8 +98,9 @@ export const API_ENDPOINTS: Endpoints = appendServerURL({
         CHECK_EMAIL: `/checkEmail`,
         GET_USER_METADATA: `/getUserMetadata`,
         GET_USER_NOTIFICATION: `/fetchUserNotification`,
-        GET_USER_DRAFT_POSTS: `/getUserDraftPosts`
-
+        GET_USER_DRAFT_POSTS: `/getUserDraftPosts`,
+        UPDATE_OR_CREATE_METADATA:  '/updateOrCreateMetadata/',
+        GET_USER_PROFILE_METADATA:  '/getUserProfileMetadata/'
     },
     CATALOGUE: {
         FETCH_CATALOGUE_BY_FIELD: '/fetchCatalogueByField',

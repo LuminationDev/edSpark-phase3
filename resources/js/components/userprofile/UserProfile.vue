@@ -1,16 +1,18 @@
 <script setup>
+import useVuelidate from "@vuelidate/core";
+import {required} from "@vuelidate/validators";
 import {storeToRefs} from 'pinia'
-import {computed, ref} from 'vue';
+import {computed, reactive, ref} from 'vue';
 
 import ProfilePlaceholder from '@/assets/images/profilePlaceholder.webp'
 import TrixRichEditorInput from "@/js/components/bases/TrixRichEditorInput.vue";
 import UserBookmark from "@/js/components/userprofile/UserBookmark.vue";
 import UserInfoEdit from "@/js/components/userprofile/UserInfoEdit.vue";
+import UserProfileSelectionMenu from "@/js/components/userprofile/userprofileupdate/UserProfileSelectionMenu.vue";
 import {useUserStore} from '@/js/stores/useUserStore';
 
 import Edit from '../svg/Edit.vue';
 import UserProfileSubmenu from "./UserProfileSubmenu.vue";
-
 const userStore = useUserStore();
 
 const isEditAvatar = ref(false);
@@ -25,20 +27,23 @@ const uploadAvatar = ref(null)
 const contentTemp = ref('')
 
 
+
 const handleClickEditAvatar = () => {
     uploadAvatar.value.click()
 }
 
 const imageURL = import.meta.env.VITE_SERVER_IMAGE_API;
-const avatarUrl = ref('');
-const userMetadata = userStore.getUser.metadata;
+const avatarUrl = ref('')
+const userMetadata = userStore.getUser.metadata
 if (userMetadata !== undefined) {
-    const userAvatarMeta = userMetadata.filter(meta => meta.user_meta_key === 'userAvatar');
+    const userAvatarMeta = userMetadata.filter(meta => meta.user_meta_key === 'userAvatar')
     if (userAvatarMeta && userAvatarMeta.length) {
-        avatarUrl.value = userAvatarMeta[0].user_meta_value[0].replace(/\\\//g, "/");
-
+        avatarUrl.value = userAvatarMeta[0].user_meta_value[0].replace(/\\\//g, "/")
+        console.log('user data is: ' + userStore)
     }
 }
+
+
 
 const displayUserRole = computed(() => {
     switch (currentUser.value.role) {
@@ -157,15 +162,14 @@ const handleErrorAvatarFallback = () => {
                 </div>
             </div>
             <div class="bg-slate-50 flex flex-col min-h-[70vh] mt-10 pb-10 px-4 md:!px-8 lg:!px-24">
+                <div class="UserProfileSelectionMenuContainer flex flex-col mt-20">
+                    <UserProfileSelectionMenu />
+                </div>
+
+
                 <div class="flex flex-col mt-20 profileSubmenuContainer">
                     <UserProfileSubmenu :submenu-items="subMenuItems" />
                     <router-view />
-                </div>
-                <!--                <div class="UserInfoEditForm flex my-10">-->
-                <!--                    <UserInfoEdit />-->
-                <!--                </div>-->
-                <div class="UserBookmarkListContainer flex flex-col pt-12">
-                    <UserBookmark :bookmark-data="userBookmarks.data" />
                 </div>
             </div>
         </div>
