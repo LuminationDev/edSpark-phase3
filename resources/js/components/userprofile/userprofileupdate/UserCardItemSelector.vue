@@ -15,6 +15,7 @@ const props = defineProps({
         default: () => []
     }
 })
+
 const emits = defineEmits(["sendSelectedValues"])
 
 const colorTheme = ref("peach")
@@ -35,12 +36,14 @@ const emitNewItemsToParent = () =>{
     emits('sendSelectedValues', selectedValues.value)
 }
 
+
 //function to handle click item and then sends listing items array to the UserProfileSelectionMenu
 const handleClickItem = (itemName) =>{
     if(selectedValues.value.includes(itemName)){
         selectedValues.value = selectedValues.value.filter(item => item != itemName)
     } else {
         selectedValues.value.push(itemName)
+
     }
     emitNewItemsToParent()
 }
@@ -48,7 +51,9 @@ const handleClickItem = (itemName) =>{
 //custom backgrond color for the selected items
 const selectedValueBackgroundClass = (item) => {
     if(selectedValues.value.includes(item)){
+        console.log("this is running on yellow")
         return 'bg-yellow-400'
+
     } else{
         return ''
     }

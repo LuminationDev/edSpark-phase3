@@ -13,9 +13,8 @@ const props = defineProps({
         default: () => []
     }
 })
-const emits = defineEmits(["sendSelectedValues"])
+const emits = defineEmits(["sendSelectedValues", "sendSelectedItemBooleanValue"])
 
-const colorTheme = ref("peach")
 //saving value from the props.selectedItems
 const selectedValues = ref(props.selectedItems)
 
@@ -36,7 +35,7 @@ const handleClickItem = (itemName) =>{
 //custom backgrond color for the selected items
 const selectedItemBackgroundClass = (item) => {
     if(selectedValues.value.includes(item)){
-        return 'bg-red-200'
+        return 'bg-red-400'
     } else{
         return ''
     }

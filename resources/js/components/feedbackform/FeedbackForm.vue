@@ -54,7 +54,6 @@ const v$ = useVuelidate(rules, state)
 const emits = defineEmits(['emitFormOpenState', 'emitHideFeedbackForm'])
 
 const handleTinyRichContent = (data) => {
-
     v$.value.content.$model = data
 }
 
