@@ -4,7 +4,7 @@ import useVuelidate from "@vuelidate/core";
 import {required} from "@vuelidate/validators";
 import axios from "axios";
 import {storeToRefs} from "pinia";
-import {onMounted, reactive, ref} from "vue";
+import {onMounted, onUnmounted, reactive, ref, watchEffect} from "vue";
 
 import ErrorMessages from "@/js/components/bases/ErrorMessages.vue";
 import CustomErrorMessages from "@/js/components/feedbackform/CustomErrorMessages.vue";
@@ -57,7 +57,38 @@ const handleReceiveYearListFromSelector = (yearList) => {
 }
 
 //handle submit data on click, posts the data to api and then store to the database.
-const handleClickSubmitData = async () => {
+// const handleClickSubmitData = async () => {
+//     const result = await v$.value.$validate()
+//     if (result) {
+//         if ((userSelectedSubjects.value.length !== 0) && (userSelectedInterests.value.length !== 0) && (userSelectedYearLevel.value.length !== 0)) {
+//             const data = {
+//                 subjects: userSelectedSubjects.value,
+//                 interest: userSelectedInterests.value,
+//                 yearLevels: userSelectedYearLevel.value,
+//                 biography: v$.value.biographyInput.$model
+//             }
+//             axios.post(API_ENDPOINTS.USER.UPDATE_OR_CREATE_METADATA + currentUser.value.id, data)
+//                 .then(res => {
+//                     console.log(res.data)
+//                 })
+//                 .catch(err => {
+//                     console.log(err.value)
+//                 })
+//             console.log("Data saved successfully")
+//             booleanValueOnSubmitButton.value = false
+//         }
+//     }
+//     else {
+//         console.log("Data not saved successfully, Please enter all the values")
+//     }
+//     booleanValueOnSubmitButton.value = true
+// }
+
+// Autosave feature building
+const AUTOSAVE_INTERVAL = 5000; // Set the autosave interval msec
+
+// Automatically save data to the database
+const saveDataToDatabase = async () => {
     const result = await v$.value.$validate()
     if (result) {
         if ((userSelectedSubjects.value.length !== 0) && (userSelectedInterests.value.length !== 0) && (userSelectedYearLevel.value.length !== 0)) {
@@ -82,7 +113,22 @@ const handleClickSubmitData = async () => {
         console.log("Data not saved successfully, Please enter all the values")
     }
     booleanValueOnSubmitButton.value = true
-}
+
+    console.log("Autosave working");
+};
+
+// Set up an interval for autosave
+const autosaveInterval = setInterval(async () => {
+    await saveDataToDatabase();
+}, AUTOSAVE_INTERVAL);
+
+// Clear the autosave interval when the component is unmounted
+onUnmounted(() => {
+    clearInterval(autosaveInterval);
+});
+
+
+
 
 //used to get data, automatically from the database using api
 onMounted(() =>{
@@ -95,14 +141,14 @@ onMounted(() =>{
 </script>
 
 <template>
-    <div class="bg-red-100 border-2 cursor-pointer fixed bottom-[5rem] left-[6rem] flex flex-row rounded-2xl w-24 z-[70]">
-        <div
-            class="align-center ml-2 text-2xl"
-            @click="handleClickSubmitData"
-        >
-            Submit Button
-        </div>
-    </div>
+    <!--    <div class="bg-red-100 border-2 cursor-pointer fixed bottom-[5rem] left-[6rem] flex flex-row rounded-2xl w-24 z-[70]">-->
+    <!--        <div-->
+    <!--            class="align-center ml-2 text-2xl"-->
+    <!--            @click="handleClickSubmitData"-->
+    <!--        >-->
+    <!--            Submit Button-->
+    <!--        </div>-->
+    <!--    </div>-->
     <div
         class="UserProfileSelectionMenuContainer bg-white flex flex-col gap-12 h-full rounded-2xl w-full"
     >
