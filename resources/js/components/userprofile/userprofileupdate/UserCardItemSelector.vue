@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import {computed, defineEmits,defineProps, ref} from "vue";
+import {computed, defineEmits, defineProps, ref} from "vue";
 
 import {schoolColorKeys, schoolColorTheme} from "@/js/constants/schoolColorTheme";
 
@@ -31,11 +31,9 @@ const customBackground = computed(() => {
         -[${schoolColorTheme["peach"]["med"]}]`
     }
 })
-
 const emitNewItemsToParent = () =>{
     emits('sendSelectedValues', selectedValues.value)
 }
-
 
 //function to handle click item and then sends listing items array to the UserProfileSelectionMenu
 const handleClickItem = (itemName) =>{
@@ -43,7 +41,6 @@ const handleClickItem = (itemName) =>{
         selectedValues.value = selectedValues.value.filter(item => item != itemName)
     } else {
         selectedValues.value.push(itemName)
-
     }
     emitNewItemsToParent()
 }
@@ -51,9 +48,7 @@ const handleClickItem = (itemName) =>{
 //custom backgrond color for the selected items
 const selectedValueBackgroundClass = (item) => {
     if(selectedValues.value.includes(item)){
-        console.log("this is running on yellow")
         return 'bg-yellow-400'
-
     } else{
         return ''
     }
@@ -62,21 +57,23 @@ const selectedValueBackgroundClass = (item) => {
 </script>
 
 <template>
-    <div
-        v-for="(item, index) in availableItems"
-        :key="index"
-        class="cursor-pointer h-full rounded-2xl text-white w-full hover:!bg-adminTeal hover:shadow-2xl"
-        :class="customBackground"
-    >
+    <div class="grid grid-cols-5 gap-[2%]">
         <div
-            class="rounded-2xl text-lg"
-            :class="selectedValueBackgroundClass(item.name)"
-            @click="() => handleClickItem(item.name)"
+            v-for="(item, index) in availableItems"
+            :key="index"
+            class="cursor-pointer h-full rounded-2xl text-white w-full hover:!bg-adminTeal hover:shadow-2xl"
+            :class="customBackground"
         >
-            <img
-                :src="item.svg"
-                class="items-center p-6"
+            <div
+                class="rounded-2xl text-lg"
+                :class="selectedValueBackgroundClass(item.name)"
+                @click="() => handleClickItem(item.name)"
             >
+                <img
+                    :src="item.svg"
+                    class="items-center p-6"
+                >
+            </div>
         </div>
     </div>
 <!--    <pre>{{ selectedValues }}</pre>-->

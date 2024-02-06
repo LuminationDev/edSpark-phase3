@@ -1,5 +1,4 @@
 <script setup lang="ts">
-
 import {defineEmits, defineProps, ref} from "vue";
 
 const props = defineProps({
@@ -13,11 +12,10 @@ const props = defineProps({
         default: () => []
     }
 })
-const emits = defineEmits(["sendSelectedValues", "sendSelectedItemBooleanValue"])
+const emits = defineEmits(["sendSelectedValues"])
 
 //saving value from the props.selectedItems
 const selectedValues = ref(props.selectedItems)
-
 const emitNewItemsToParent = () =>{
     emits('sendSelectedValues', selectedValues.value)
 }

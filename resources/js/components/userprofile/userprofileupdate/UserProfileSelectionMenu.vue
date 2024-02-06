@@ -7,6 +7,7 @@ import {storeToRefs} from "pinia";
 import {onMounted, reactive, ref} from "vue";
 
 import ErrorMessages from "@/js/components/bases/ErrorMessages.vue";
+import CustomErrorMessages from "@/js/components/feedbackform/CustomErrorMessages.vue";
 import UserCardItemSelector from "@/js/components/userprofile/userprofileupdate/UserCardItemSelector.vue";
 import UserChecklistSelector from "@/js/components/userprofile/userprofileupdate/UserChecklistSelector.vue";
 import {
@@ -20,11 +21,12 @@ import {useUserStore} from "@/js/stores/useUserStore";
 const userStore = useUserStore()
 const {currentUser} = storeToRefs(userStore)
 
+const displayErrorMessageText = "Value is required"
+const booleanValueOnSubmitButton = ref(false)
 //states stored in variables
 const userSelectedSubjects = ref([])
 const userSelectedInterests = ref([])
 const userSelectedYearLevel = ref([])
-
 
 //for form validation
 const state = reactive({
@@ -35,11 +37,11 @@ const state = reactive({
     biographyInput: ''
 })
 const rules = {
-    displayName: {required},
-    subjectSelect: { required },
-    interestSelect: {required},
-    yearLevelSelect: {required},
-    biographyInput: {required}
+    displayName: {required: required},
+    subjectSelect: {required: required},
+    interestSelect: {required: required},
+    yearLevelSelect: {required: required},
+    biographyInput: {required: required},
 }
 const v$ = useVuelidate(rules, state)
 
@@ -58,26 +60,28 @@ const handleReceiveYearListFromSelector = (yearList) => {
 const handleClickSubmitData = async () => {
     const result = await v$.value.$validate()
     if (result) {
-        const data = {
-            subjects: v$.value.subjectSelect.$model,
-            interest: v$.value.interestSelect.$model,
-            yearLevels: v$.value.yearLevelSelect.$model,
-            biography: v$.value.biographyInput.$model
+        if ((userSelectedSubjects.value.length !== 0) && (userSelectedInterests.value.length !== 0) && (userSelectedYearLevel.value.length !== 0)) {
+            const data = {
+                subjects: userSelectedSubjects.value,
+                interest: userSelectedInterests.value,
+                yearLevels: userSelectedYearLevel.value,
+                biography: v$.value.biographyInput.$model
+            }
+            axios.post(API_ENDPOINTS.USER.UPDATE_OR_CREATE_METADATA + currentUser.value.id, data)
+                .then(res => {
+                    console.log(res.data)
+                })
+                .catch(err => {
+                    console.log(err.value)
+                })
+            console.log("Data saved successfully")
+            booleanValueOnSubmitButton.value = false
         }
-        axios.post(API_ENDPOINTS.USER.UPDATE_OR_CREATE_METADATA + currentUser.value.id, data)
-            .then(res => {
-                console.log(res.data)
-            })
-            .catch(err => {
-                console.log(err.value)
-            })
-        console.log("Data saved successfully")
     }
     else {
         console.log("Data not saved successfully, Please enter all the values")
     }
-    console.log(currentUser.value.subjects)
-    console.log(currentUser.value)
+    booleanValueOnSubmitButton.value = true
 }
 
 //used to get data, automatically from the database using api
@@ -85,14 +89,9 @@ onMounted(() =>{
     // populate userSelectedSubjects from the database
     //fetch here
 
+
+
 })
-
-//script for extra work:
-
-
-
-
-
 </script>
 
 <template>
@@ -104,7 +103,6 @@ onMounted(() =>{
             Submit Button
         </div>
     </div>
-
     <div
         class="UserProfileSelectionMenuContainer bg-white flex flex-col gap-12 h-full rounded-2xl w-full"
     >
@@ -118,7 +116,6 @@ onMounted(() =>{
                 <ErrorMessages :v$="v$.displayName" />
             </span>
         </div>
-
         <div class="m-10">
             <div class="text-2xl">
                 Year Level
@@ -132,15 +129,20 @@ onMounted(() =>{
                     :selected-items="userSelectedYearLevel"
                     @send-selected-values="handleReceiveYearListFromSelector"
                 />
-                <span>
-                    <ErrorMessages :v$="v$.yearLevelSelect" />
-                </span>
             </div>
+            <span v-if="((userSelectedYearLevel.length === 0) && (booleanValueOnSubmitButton===true))">
+                <CustomErrorMessages
+                    :error-text="displayErrorMessageText"
+                    class="mt-6"
+                /></span>
         </div>
-        <div class="m-10 text-2xl">
+        <div
+            class="m-10 text-2xl"
+        >
             <div>Subjects</div>
-            <div class="grid grid-cols-5 gap-[2%] mt-6 userSubjectSelectorContainer">
-                <!-- For Subjects-->
+            <div
+                class="mt-6 userSubjectSelectorContainer"
+            >
                 <UserCardItemSelector
                     v-model="v$.subjectSelect.$model"
                     :available-items="AvailableSubjectsList"
@@ -148,32 +150,28 @@ onMounted(() =>{
                     @send-selected-values="handleReceiveSubjectsFromSelector"
                 />
             </div>
-            <span>
-                <ErrorMessages
-                    :v$="v$.subjectSelect"
-                    class="mt-4"
-                />
-            </span>
+            <span v-if="((userSelectedSubjects.length === 0) && (booleanValueOnSubmitButton===true))">
+                <CustomErrorMessages
+                    :error-text="displayErrorMessageText"
+                    class="mt-6"
+                /></span>
         </div>
         <div class="m-10 text-2xl">
             <div>Interests</div>
-            <div class="grid grid-cols-3 gap-[3%] mt-6 userInterestSelectorContainer">
-                <!-- For Interests-->
+            <div class="mt-6 userInterestSelectorContainer">
                 <UserCardItemSelector
                     v-model="v$.interestSelect.$model"
                     :available-items="AvailableInterestsList"
                     :selected-items="userSelectedInterests"
                     @send-selected-values="handleReceiveInterestsFromSelector"
                 />
-                <span>
-                    <ErrorMessages
-                        :v$="v$.interestSelect"
-                        class="mt-4"
-                    />
-                </span>
             </div>
+            <span v-if="((userSelectedInterests.length === 0) && (booleanValueOnSubmitButton===true))">
+                <CustomErrorMessages
+                    :error-text="displayErrorMessageText"
+                    class="mt-6"
+                /></span>
         </div>
-
         <div class="m-10 text-2xl">
             <div>Biography</div>
             <input
