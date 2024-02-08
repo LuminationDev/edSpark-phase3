@@ -5,6 +5,7 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\FeedbackResource\Pages;
 use App\Filament\Resources\FeedbackResource\RelationManagers;
 use App\Helpers\RoleHelpers;
+use App\Models\Question;
 use App\Models\Survey;
 use Closure;
 use Filament\Forms;
@@ -93,7 +94,6 @@ class SurveyResource extends Resource
         return RoleHelpers::has_minimum_privilege('moderator');
     }
 
-    protected static array $domains = ['triage', 'teaching', 'managing', 'leading', 'learning'];
 
 
     /**
@@ -110,7 +110,7 @@ class SurveyResource extends Resource
                 // invalid file
                 return 'File is invalid';
             }
-            if(!json_validate($contents)) {
+            if (!json_validate($contents)) {
                 // invalid json
                 return 'JSON is invalid';
             }
@@ -125,53 +125,21 @@ class SurveyResource extends Resource
                 // expected an array
                 return 'Expected an object containing a \'questions\' array ';
             }
-            if(count($json['questions']) === 0) {
+            if (count($json['questions']) === 0) {
                 return 'Survey is empty - questions are required';
             }
 
             //validate questions
             foreach ($json['questions'] as &$question) {
-                //todo: move domains somewhere global
-                if(!array_key_exists('domain', $question)) {
-                    return 'Question is missing the required \'domain\' field';
-                }
-                $domain = $question['domain'];
-                if (!in_array($domain, self::$domains, true)) {
-                    return 'Question contained invalid domain: ' . $domain;
-                }
-
-                // validate all values are strings
-                foreach ($question as $key => $value) {
-                    if (!is_string($value)) {
-                        return 'Expected string value for: '. $key . ' received value: ' . $value;
-                    }
-                    // todo: validate the question field names
+                $invalid = Question::isValidQuestion($question);
+                if($invalid != null)
+                {
+                    return $invalid;
                 }
             }
 
             unset($question);
 
-
-            // {questions: [/*question*/]}
-            // question (triage): {domain, element, generated_variable, question}
-            // question (survey): {
-            //  domain
-            //  element
-            //  indicator
-            //  variable_suffix
-            //  generated_variable
-            //  dependencies
-            //  phase
-            //  phase_description
-            //  domain_print
-            //  element_print
-            //  indicator_print
-            //  element_description
-            //  question
-            //  question_example
-            //  description
-            //  advice
-            //}
         } catch (\Exception $e) { /*ignore and fail*/
             Log::error($e);
             return 'Exception parsing file: ' . $e->getMessage();
