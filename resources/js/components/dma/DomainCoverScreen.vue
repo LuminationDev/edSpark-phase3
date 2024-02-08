@@ -2,9 +2,13 @@
 
 import {computed, onBeforeUnmount, onMounted, ref} from "vue";
 
-import AnswerButton from "@/js/components/dma/AnswerButton.vue";
+import OverlayModal from "@/js/components/bases/OverlayModal.vue";
 import PrimaryActionButton from "@/js/components/dma/PrimaryActionButton.vue";
+import TextButton from "@/js/components/dma/TextButton.vue";
+import WarningModal from "@/js/components/dma/WarningModal.vue";
 import Spinner from "@/js/components/spinner/Spinner.vue";
+
+import useDomainDescription from "./domainDescription";
 
 const props = defineProps({
     domain: {
@@ -20,8 +24,19 @@ const props = defineProps({
 
 const emit = defineEmits(['continue','reset']);
 
+const showResetModal = ref(false);
+
+const handleResetDomain = () => {
+    showResetModal.value = false;
+    emit('reset');
+}
+
 const domainName = computed(() => {
     return props.domain.domain.toLowerCase();
+})
+
+const domainComplete = computed(() => {
+    return props.domain.completed_question_count === props.domain.question_count;
 })
 
 // chapters contains the list of chapter names in this domain, and their current progress status
@@ -34,11 +49,11 @@ const chapters = computed(() => {
         const question = props.questions[index];
         let chapterItem = chapterList.find(item => item.name === question.chapter);
         if (!chapterItem) {
-            const status = (index < currentQuestionIndex ? 'complete' : 'incomplete');
+            const status = ((domainComplete.value || index < currentQuestionIndex) ? 'complete' : 'incomplete');
             chapterItem = { name: question.chapter, status};
             chapterList.push(chapterItem);
         }
-        if (index === currentQuestionIndex) chapterItem.status = 'active';
+        if (!domainComplete.value && index === currentQuestionIndex) chapterItem.status = 'active';
     }
     return chapterList;
 })
@@ -63,7 +78,7 @@ const chapters = computed(() => {
                     {{ domain.domain }}
                 </h2>
                 <p class="font-light mt-10 w-2/3">
-                    {{ domain.description }}
+                    {{ useDomainDescription(domain.domain) }}
                 </p>
             </div>
         </div>
@@ -103,15 +118,43 @@ const chapters = computed(() => {
                 </div>
                 <Spinner v-else />
             </div>
-            <div>
-                <PrimaryActionButton
-                    :disabled="!questions"
-                    @click="emit('continue')"
+            <div class="text-center">
+                <div v-if="!domainComplete">
+                    <PrimaryActionButton
+                        :disabled="!questions"
+                        @click="emit('continue')"
+                    >
+                        Continue
+                    </PrimaryActionButton>
+                </div>
+                <div
+                    v-else
                 >
-                    Continue
-                </PrimaryActionButton>
+                    <div class="text-lg">
+                        ✓ Completed
+                    </div>
+                </div>
+
+                <TextButton
+                    class="mt-10 text-xs"
+                    @click="showResetModal = true"
+                >
+                    Reset progress
+                </TextButton>
             </div>
         </div>
+        <WarningModal
+            v-if="showResetModal"
+            @cancel="showResetModal=false"
+            @reset="handleResetDomain"
+        >
+            <template #title>
+                Are you sure?
+            </template>
+            <template #message>
+                Resetting will erase all your progress made on this domain. Other domains won't be affected.
+            </template>
+        </WarningModal>
     </div>
 </template>
 

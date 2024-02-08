@@ -23,7 +23,7 @@ const emit = defineEmits(['primary', 'secondary']);
         class="cover-screen flex justify-start items-center flex-col gap-10 h-full p-20 w-full"
         :class="`bg-${props.theme}-flat`"
     >
-        <!-- TODO this can be one block with layout handled via tailwind classed -->
+        <!-- TODO can this be one block with layout handled via tailwind classes? -->
 
         <div class="flex justify-center items-center flex-1 w-full">
             <slot name="content" />

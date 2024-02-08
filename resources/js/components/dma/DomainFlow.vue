@@ -1,10 +1,11 @@
 <script setup>
-import {computed, onMounted, ref, toRaw} from "vue";
+import {computed, onMounted, ref} from "vue";
 
 import CoverScreen from "@/js/components/dma/CoverScreen.vue";
 import DomainCoverScreen from "@/js/components/dma/DomainCoverScreen.vue";
 import ProgressBar from "@/js/components/dma/ProgressBar.vue";
 import QuestionScreen from "@/js/components/dma/QuestionScreen.vue";
+import WarningModal from "@/js/components/dma/WarningModal.vue";
 import Spinner from "@/js/components/spinner/Spinner.vue";
 import {dmaService} from "@/js/service/dmaService";
 
@@ -28,6 +29,9 @@ const questionId = ref(null);
 // completed is true when there are no more questions to answer
 const completed = ref(false);
 
+const showResetModal = ref(false);
+
+const previousQuestionId = ref(null);
 
 onMounted(async () => {
     // get domain questions for the current survey
@@ -78,11 +82,14 @@ const getNextQuestionId = (nextChapter = false) => {
     let nextQuestion = null;
     if (currentIndex < questions.value.length -1) {
         if (nextChapter) {
-            // if requested, skip to next chapter
-            nextQuestion = questions.value.find((q, index) => index > currentIndex && q.chapter !== currentQuestion.value.chapter);
+            // if requested, skip to next category
+            nextQuestion = questions.value.find((q, index) => index > currentIndex && q.category !== currentQuestion.value.category);
         } else {
             // otherwise, get the following question
             nextQuestion = questions.value[currentIndex + 1];
+            // skip non-question entries
+            // (should be safe to skip ahead as there should always be a following question)
+            if (nextQuestion.phase === -1) nextQuestion = questions.value[currentIndex + 2];
         }
     }
     if (!nextQuestion) {
@@ -93,18 +100,26 @@ const getNextQuestionId = (nextChapter = false) => {
     return nextQuestion.id;
 }
 
-const handleAnswer = (answer) => {
+const handleNextQuestion = () => {
+    previousQuestionId.value = questionId.value;
+    questionId.value = getNextQuestionId();
+}
+
+const handleAnswer = (answer, answerText = null) => {
     const nextQuestionId = getNextQuestionId(answer === 0);
     // TODO submit answer to API with next question ID
+    previousQuestionId.value = questionId.value;
     questionId.value = nextQuestionId;
 }
 
-const handlePrevious = () => {
-    // can only go to previous question in current session
+const handlePreviousQuestion = () => {
+    if (previousQuestionId.value) {
+        questionId.value = previousQuestionId.value;
+        previousQuestionId.value = null;
+    }
 }
 
 const handleResetDomain = () => {
-    // TODO perform domain reset here
     emit('reset');
 }
 
@@ -124,8 +139,8 @@ const handleResetDomain = () => {
                 v-else-if="currentQuestion.phase === 0"
                 :theme="domainName"
                 corner-controls
-                @primary="questionId = getNextQuestionId()"
-                @secondary="questionId = null"
+                @primary="handleNextQuestion"
+                @secondary="handlePreviousQuestion"
             >
                 <template #content>
                     <div class="">
@@ -143,15 +158,18 @@ const handleResetDomain = () => {
                 <template #primaryAction>
                     Continue
                 </template>
-                <template #secondaryAction>
+                <template
+                    v-if="previousQuestionId"
+                    #secondaryAction
+                >
                     Previous
                 </template>
             </CoverScreen>
             <QuestionScreen
                 v-else
                 :theme="domainName"
-                :show-previous="false"
-                @previous="handlePrevious"
+                :show-previous="!!previousQuestionId"
+                @previous="handlePreviousQuestion"
                 @answer="handleAnswer"
             >
                 <template #contentTop>
@@ -188,7 +206,7 @@ const handleResetDomain = () => {
             v-else
             :theme="domainName"
             @primary="emit('complete')"
-            @secondary="handleResetDomain"
+            @secondary="showResetModal = true"
         >
             <template #content>
                 <div class="text-center">
@@ -209,6 +227,18 @@ const handleResetDomain = () => {
                 Reset progress
             </template>
         </CoverScreen>
+        <WarningModal
+            v-if="showResetModal"
+            @cancel="showResetModal=false"
+            @reset="handleResetDomain"
+        >
+            <template #title>
+                Are you sure?
+            </template>
+            <template #message>
+                Resetting will erase all your progress made on this domain. Other domains won't be affected.
+            </template>
+        </WarningModal>
     </template>
     <div
         v-else

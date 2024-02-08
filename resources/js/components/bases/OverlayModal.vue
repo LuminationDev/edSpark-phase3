@@ -6,6 +6,14 @@ const props = defineProps({
         type: Boolean,
         default: false,
     },
+    shade: {
+        type: Number,
+        default: 80,
+    },
+    zIndex: {
+        type: Number,
+        default: 50,
+    }
 })
 
 const emit = defineEmits(['close']);
@@ -37,10 +45,12 @@ const handleOverlayClick = (event) => {
 <template>
     <div
         ref="overlayRef"
-        class="bg-black/80 fixed top-0 right-0 bottom-0 left-0 flex justify-center items-center overlay p-10 z-50"
+        class="fixed top-0 right-0 bottom-0 left-0 flex justify-center items-center overlay p-10"
+        :class="`bg-black/${props.shade}`"
+        :style="{zIndex: props.zIndex}"
         @click="handleOverlayClick"
     >
-        <slot name="content" />
+        <slot />
     </div>
 </template>
 

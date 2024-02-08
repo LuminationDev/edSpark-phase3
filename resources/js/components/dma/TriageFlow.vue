@@ -11,8 +11,8 @@ const props = defineProps({
         type: [String, Number],
         required: true,
     },
-    domainId: {
-        type: [String, Number],
+    domain: {
+        type: Object,
         required: true,
     }
 })
@@ -29,7 +29,7 @@ const question = ref(null);
 
 onMounted(async () => {
     // get triage questions for the current survey
-    triage.value = await dmaService.getQuestions(props.surveyId, props.domainId);
+    triage.value = await dmaService.getQuestions(props.surveyId, props.domain.id);
 });
 
 const handleAnswer = (answer) => {

@@ -3,6 +3,7 @@
 import {onBeforeUnmount, onMounted, ref} from "vue";
 
 import AnswerButton from "@/js/components/dma/AnswerButton.vue";
+import PrimaryActionButton from "@/js/components/dma/PrimaryActionButton.vue";
 
 const props = defineProps({
     theme: {
@@ -22,7 +23,14 @@ const props = defineProps({
 
 const emit = defineEmits(['answer','previous']);
 
+const REASON = {
+    NOT_APPLICABLE: "It is not applicable to my school",
+    AMBIGUOUS: "Statement is too ambiguous",
+    NOT_HELPFUL: "The examples are not helpful",
+};
+
 const isUnsure = ref(false);
+const answerText = ref(null);
 
 const handleKeypress = (event) => {
     const keyList = ['1','2','3','4'];
@@ -40,8 +48,8 @@ const handleKeypress = (event) => {
     }
 }
 
-const handleAnswer = (answer) => {
-    emit('answer', answer);
+const handleAnswer = (answer, answerText) => {
+    emit('answer', answer, answerText);
     isUnsure.value = false;
 }
 
@@ -120,33 +128,46 @@ onBeforeUnmount(() => {
                 </AnswerButton>
             </div>
             <div
-                v-else
+                v-else-if="answerText === null"
                 class="answers"
             >
                 <AnswerButton
                     hint="Press 1"
-                    @click="handleAnswer(2)"
+                    @click="handleAnswer(2, REASON.NOT_APPLICABLE)"
                 >
-                    It is not applicable to my school
+                    {{ REASON.NOT_APPLICABLE }}
                 </AnswerButton>
                 <AnswerButton
                     hint="Press 2"
-                    @click="handleAnswer(3)"
+                    @click="handleAnswer(2, REASON.AMBIGUOUS)"
                 >
-                    Statement is too ambiguous
+                    {{ REASON.AMBIGUOUS }}
                 </AnswerButton>
                 <AnswerButton
                     hint="Press 3"
-                    @click="handleAnswer(4)"
+                    @click="handleAnswer(2, REASON.NOT_HELPFUL)"
                 >
-                    The examples are not helpful
+                    {{ REASON.NOT_HELPFUL }}
                 </AnswerButton>
                 <AnswerButton
                     hint="Press 4"
-                    @click="handleAnswer(5)"
+                    @click="answerText = ''"
                 >
                     Other
                 </AnswerButton>
+            </div>
+            <div v-else>
+                <textarea
+                    v-model="answerText"
+                    rows="8"
+                    class="bg-gray-800 resize-none rounded-3xl"
+                    placeholder="Your explanation"
+                />
+                <div class="flex justify-end mt-5">
+                    <PrimaryActionButton @click="handleAnswer(2, answerText)">
+                        Continue
+                    </PrimaryActionButton>
+                </div>
             </div>
         </div>
     </div>

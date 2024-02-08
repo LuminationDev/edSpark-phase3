@@ -5,6 +5,7 @@ import imgLeading from '@/assets/images/dma/Leading.png';
 import imgLearning from '@/assets/images/dma/Learning.png';
 import imgManaging from '@/assets/images/dma/Managing.png';
 import imgTeaching from '@/assets/images/dma/Teaching.png';
+import useDomainDescription from "@/js/components/dma/domainDescription";
 import ProgressBar from "@/js/components/dma/ProgressBar.vue";
 
 const props = defineProps({
@@ -47,12 +48,12 @@ const domainName = computed(() => {
         <div class="flex justify-center items-center w-48">
             <img :src="domainImages[domainName]">
         </div>
-        <div class="flex content flex-col h-full text-left">
+        <div class="flex content flex-col h-full text-left w-full">
             <div class="font-black mb-1 text-2xl uppercase">
                 {{ props.domain.domain }}
             </div>
             <div class="flex-1 font-base opacity-70 text-lg">
-                {{ props.domain.description }}
+                {{ useDomainDescription(props.domain.domain) }}
             </div>
             <div
                 v-if="props.resetting"
@@ -68,7 +69,7 @@ const domainName = computed(() => {
                     <ProgressBar :percent="progressPercent" />
                 </div>
                 <div class="font-bold progress-value text-xl">
-                    {{ props.domain.completed_chapters_count }}/{{ props.domain.chapters_count }}
+                    {{ props.domain.completed_chapter_count }}/{{ props.domain.chapter_count }}
                 </div>
             </div>
             <div

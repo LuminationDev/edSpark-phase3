@@ -6,7 +6,9 @@ import BaseLandingSection from "@/js/components/bases/BaseLandingSection.vue";
 import OverlayModal from "@/js/components/bases/OverlayModal.vue";
 import DomainSummary from "@/js/components/dma/DomainSummary.vue";
 import SurveyModal from "@/js/components/dma/SurveyModal.vue";
+import WarningModal from "@/js/components/dma/WarningModal.vue";
 import InspirationAndGuidesRobot from "@/js/components/inspirationandguides/InspirationAndGuidesRobot.vue";
+import Spinner from "@/js/components/spinner/Spinner.vue";
 import {LandingHeroText} from "@/js/constants/PageBlurb";
 import {dmaService} from "@/js/service/dmaService";
 
@@ -16,24 +18,30 @@ const showSurveyModal = ref(false);
 const surveyDetails = ref(null);
 
 const selectedDomainId = ref(null);
-const resettingDomainId = ref(null);
+const resetting = ref(false);
+
+const showResetModal = ref(false);
 
 onMounted(async () => {
     await fetchUserSurvey();
 })
 
 const domains = computed(() => {
-    console.log("DOMAINS", surveyDetails.value.survey_domains);
     if (!surveyDetails.value) return [];
-    return surveyDetails.value.survey_domains;
+    return surveyDetails.value.survey_domains.filter(d => d.domain !== 'triage');
 });
+
+const isInProgress = computed(() => {
+    if (domains.value.length) {
+        return domains.value.some(d => d.completed_question_count > 0);
+    }
+})
 
 const fetchUserSurvey = async () => {
     surveyDetails.value = await dmaService.getSurvey();
 }
 
 const handleLaunchSurvey = (domainId) => {
-    console.log("Launch survey for domain", domainId);
     selectedDomainId.value = domainId;
     showSurveyModal.value = true;
 }
@@ -44,14 +52,30 @@ const handleCloseSurveyModal = () => {
     fetchUserSurvey();
 }
 
-const handleResetDomain = (domainId) => {
-    showSurveyModal.value = false;
-    resettingDomainId.value = domainId;
+const showResetting = () => {
+    resetting.value = true;
     setTimeout(() => {
-        resettingDomainId.value = null
+        resetting.value = false
         // refetch survey data
         fetchUserSurvey();
     }, 4000);
+}
+
+const handleResetDomain = () => {
+    showSurveyModal.value = false;
+    // TODO perform reset on domain
+    showResetting();
+}
+
+const isDomainResetting = (domainId) => {
+    return resetting.value && (!selectedDomainId.value || selectedDomainId.value === domainId);
+}
+
+const handleResetSurvey = () => {
+    showResetModal.value = false;
+    // TODO perform reset on survey
+    showResetting();
+
 }
 
 </script>
@@ -83,7 +107,7 @@ const handleResetDomain = (domainId) => {
                     class="DMAColContainer grid grid-cols-1 gap-10 mt-10 md:!grid-cols-2"
                 >
                     <div
-                        class="DMADomainContainer grid grid-cols-1 gap-10"
+                        class="DMADomainContainer flex-1 grid grid-cols-1 gap-10"
                     >
                         <BaseLandingSection>
                             <template #title>
@@ -100,6 +124,12 @@ const handleResetDomain = (domainId) => {
                             The tool is for you and your school. Your data is only stored locally in the
                             current profile of your web browser. You can generate a PDF report for sharing within
                             your school or including in your next round of School Improvement planning.
+                            <button
+                                class="block mt-10 underline"
+                                @click="showResetModal = true"
+                            >
+                                Reset progress
+                            </button>
                         </p>
                     </div>
 
@@ -110,26 +140,32 @@ const handleResetDomain = (domainId) => {
                             v-for="domain of domains"
                             :key="domain.id"
                             :domain="domain"
-                            :resetting="resettingDomainId === domain.id"
+                            :resetting="isDomainResetting(domain.id)"
                             @click="handleLaunchSurvey(domain.id)"
                         />
                     </div>
                 </div>
+                <WarningModal
+                    v-if="showResetModal"
+                    @cancel="showResetModal=false"
+                    @reset="handleResetSurvey"
+                >
+                    <template #title>
+                        Are you sure?
+                    </template>
+                    <template #message>
+                        Resetting will erase all your progress on the survey.
+                    </template>
+                </WarningModal>
             </template>
         </BaseLandingSection>
     </div>
 
-    <OverlayModal
-        v-if="showSurveyModal"
-    >
-        <template #content>
-            <SurveyModal
-                v-if="surveyDetails && selectedDomainId"
-                :survey="surveyDetails"
-                :domain-id="selectedDomainId"
-                @close="handleCloseSurveyModal"
-                @reset="handleResetDomain(selectedDomainId)"
-            />
-        </template>
-    </OverlayModal>
+    <SurveyModal
+        v-if="showSurveyModal && surveyDetails && selectedDomainId"
+        :survey="surveyDetails"
+        :domain-id="selectedDomainId"
+        @close="handleCloseSurveyModal"
+        @reset="handleResetDomain"
+    />
 </template>
