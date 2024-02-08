@@ -17,6 +17,8 @@ use Illuminate\Support\Str;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Response;
 
+use Log;
+
 class UserController extends Controller
 {
     protected PostService $postService;
@@ -49,6 +51,7 @@ class UserController extends Controller
 
     public function fetchCurrentUser(): JsonResponse
     {
+        Log::info("Fetch current user");
         try {
             $user = User::find(Auth::user()->id);
 

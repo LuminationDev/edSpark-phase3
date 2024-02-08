@@ -398,3 +398,20 @@ input, textarea, select {
     word-wrap: break-word;       /* Internet Explorer 5.5+ */
 }
 
+/* DMA styles */
+.bg-triage-flat {
+    background-color: rgba( 1, 36, 39 );
+}
+.bg-teaching-flat {
+    background-color: rgba( 34, 60, 145 );
+}
+.bg-learning-flat {
+    background-color: rgba( 41, 152, 169 );
+}
+.bg-leading-flat {
+    background-color: rgba( 188, 51, 66 );
+}
+.bg-managing-flat {
+    background-color: rgba( 253, 145, 64 );
+}
+
