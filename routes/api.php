@@ -170,11 +170,11 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('updateOrCreateUserAvatar/{user_id}', [UserController::class, 'updateOrCreateUserAvatar']);
 
 
-    Route::get('survey/{survey_id}/domain/{domain_id}/questions', [SurveyController::class, 'getSurveyQuestionsForDomain']);
     Route::group(['prefix' => 'user/survey'], function () {
         Route::get('/', [SurveyController::class, 'getUserSurvey']);
         Route::delete('/', [SurveyController::class, 'resetUserSurvey']);
-        Route::post('/{survey_id}/answer', [SurveyController::class, 'saveUserAnswerToQuestion']);
+        Route::get('domain/{domain_id}/questions', [SurveyController::class, 'getSurveyQuestionsForDomain']);
+        Route::post('/answer', [SurveyController::class, 'saveUserAnswerToQuestion']);
         Route::delete('/domain/{domain_id}', [SurveyController::class, 'resetUserSurveyDomain']);
     });
 

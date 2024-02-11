@@ -21,10 +21,8 @@ class UserSurvey extends Model
         'status'
     ];
 
-    public static function makeNew($userId)
+    public static function makeNew($survey, $userId)
     {
-        $survey = Survey::where('is_active', true)
-            ->first();
         $userSurvey = new UserSurvey();
         $userSurvey->survey_id = $survey->version;
         $userSurvey->user_id = $userId;
@@ -33,13 +31,14 @@ class UserSurvey extends Model
         return $userSurvey;
     }
 
-    public function abandon() {
+    public function abandon()
+    {
         $this['status'] = 'Abandoned';
-        foreach (Question::$DOMAINS as $domain) {
-            $surveyDomain = UserSurveyDomain::where('user_survey_id', $this->id)
-                ->where('domain', $domain)
-                ->first();
-            if($surveyDomain) {
+        $surveyDomains = UserSurveyDomain::where('user_survey_id', $this->id)
+            ->get();
+        foreach ($surveyDomains as $surveyDomain) {
+            if ($surveyDomain) {
+                // abandon all domains
                 $surveyDomain['status'] = 'Abandoned';
                 $surveyDomain->save();
             }

@@ -10,7 +10,21 @@ class Question extends Model
     use HasFactory;
 
     protected $table = 'questions';
-
+    protected $hidden = [
+        'updated_at',
+        'created_at',
+        'survey_id',
+        'domain',
+        "generated_variable",
+        "domain_print",
+        "advice",
+        "variable_suffix",
+        "dependencies",
+        "phase_description",
+        "chapter_print",
+        "category_print",
+        "chapter_description",
+    ];
     public static array $DOMAINS = ['triage', 'teaching', 'managing', 'leading', 'learning'];
 
     public static array $REQUIRED_JSON_FIELDS = [

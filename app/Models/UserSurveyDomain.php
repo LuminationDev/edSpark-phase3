@@ -11,7 +11,7 @@ class UserSurveyDomain extends Model
     use HasFactory;
 
     protected $table = 'user_survey_domains';
-
+    protected $hidden = ['user_survey_id', 'created_at', 'updated_at', 'status'];
 
     protected $fillable = [
         'user_survey_id',

@@ -11,7 +11,7 @@ class UserAnswer extends Model
     use HasFactory;
 
     protected $table = 'user_answers';
-
+    public $timestamps = false;
 
     protected $fillable = [
         'question_id',

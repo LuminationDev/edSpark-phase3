@@ -24,7 +24,7 @@ return new class extends Migration
             $table->enum('answer', ['0', '1', '2']);
             $table->text('answer_text')->nullable();
 
-            $table->timestamp('created_at')->nullable();
+            $table->timestamp('created_at')->useCurrent();
         });
     }
 
