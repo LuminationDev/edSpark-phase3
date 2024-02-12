@@ -24,7 +24,6 @@ class SurveyController extends Controller
             ->where('status', '<>', 'Abandoned')
             ->first();
 
-
         if ($userSurvey != null) {
             $survey_domains = UserSurveyDomain::where('user_survey_id', $userSurvey->id)
                 ->where('status', '<>', 'Abandoned')
@@ -34,9 +33,10 @@ class SurveyController extends Controller
             // need to create an active survey before wrangling
             $survey = Survey::where('is_active', true)
                 ->first();
-            if($survey == null ) {
+            if ($survey == null) {
                 return $this->surveyNotFound();
             }
+
             $userSurvey = UserSurvey::makeNew($survey, $user->id);
             // make the user_survey_domains
             foreach (Question::$DOMAINS as $domain) {
@@ -57,7 +57,6 @@ class SurveyController extends Controller
         ]);
     }
 
-
     public function getSurveyQuestionsForDomain(Request $request, $user_domain_id): JsonResponse
     {
         Log::info('Received request ' . ' / ' . $user_domain_id);
@@ -65,13 +64,16 @@ class SurveyController extends Controller
         if ($userDomain == null) {
             return $this->domainNotFound();
         }
+
         $userSurvey = UserSurvey::find($userDomain->user_survey_id);
         if (!$userSurvey) {
             return $this->surveyNotFound();
         }
+
         $domainQuestions = Question::where('survey_id', $userSurvey->survey_id)
             ->where('domain', $userDomain->domain)
             ->get();
+
         return response()->json(
             [
                 'success' => true,
@@ -106,8 +108,8 @@ class SurveyController extends Controller
 
         if (Question::find($questionId) == null) {
             return $this->questionNotFound();
-
         }
+
         $currentUserSurveyDomain = UserSurveyDomain::find($user_domain_id);
         if ($currentUserSurveyDomain) {
             if ($increaseCompletedChapterCount) {
@@ -124,6 +126,7 @@ class SurveyController extends Controller
                 $currentUserSurveyDomain->status = "Complete";
                 $currentUserSurveyDomain->next_question_id = null;
                 $currentUserSurveyDomain->save();
+
                 // if there are no other domains In Progress -> set the survey to completed
                 $numInProgress = UserSurveyDomain::where('user_survey_id', $userSurvey->survey_id)
                     ->where('status', 'In Progress')
@@ -145,7 +148,6 @@ class SurveyController extends Controller
         $userAnswer->answer = strval($answer);
         $userAnswer->answer_text = $answerText;
         $userAnswer->save();
-
 
         return response()->json([
             'success' => true,
@@ -176,7 +178,6 @@ class SurveyController extends Controller
         ]);
     }
 
-
     public function resetUserSurveyDomain(Request $request, $domain_id): JsonResponse
     {
         $currentUserSurveyDomain = UserSurveyDomain::find($domain_id);
@@ -188,7 +189,6 @@ class SurveyController extends Controller
         $currentUserSurveyDomain->save();
 
         //make a new user survey domain
-
         $user = User::find(Auth::user()->id);
         $userSurvey = UserSurvey::where('user_id', $user->id)
             ->where('status', '<>', 'Abandoned')
@@ -197,7 +197,6 @@ class SurveyController extends Controller
             UserSurveyDomain::makeNew($userSurvey, $currentUserSurveyDomain->domain);
         }
 
-
         return response()->json([
             'success' => true,
             'message' => 'Domain reset successfully',
@@ -205,9 +204,7 @@ class SurveyController extends Controller
             'code' => 0,
             'locale' => 'en',
         ]);
-
     }
-
 
     public function domainNotFound(): JsonResponse
     {
@@ -241,5 +238,4 @@ class SurveyController extends Controller
             'locale' => 'en',
         ], 422);
     }
-
 }

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Filament\Resources\FeedbackResource\Pages;
+namespace App\Filament\Resources\SurveyResource\Pages;
 
 use App\Filament\Resources\SurveyResource;
 use Filament\Actions;

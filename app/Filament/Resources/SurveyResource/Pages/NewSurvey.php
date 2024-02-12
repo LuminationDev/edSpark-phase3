@@ -1,11 +1,12 @@
 <?php
 
-namespace App\Filament\Resources\FeedbackResource\Pages;
+namespace App\Filament\Resources\SurveyResource\Pages;
 
 use App\Filament\Resources\SurveyResource;
 use App\Models\Question;
 use Filament\Notifications\Notification;
 use Filament\Resources\Pages\CreateRecord;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Log;
 
 class NewSurvey extends CreateRecord
@@ -18,14 +19,13 @@ class NewSurvey extends CreateRecord
         return parent::mutateFormDataBeforeCreate($data);
     }
 
-    protected function handleRecordCreation(array $data): \Illuminate\Database\Eloquent\Model
+    protected function handleRecordCreation(array $data): Model
     {
         // Create the main record.
         $record = parent::handleRecordCreation($data);
         $savedQuestions = [];
         try {
             // we assume the json_file is valid by this point.
-
             $contents = $data['json_file']->get();
             $json = json_decode($contents, true);
             foreach ($json['questions'] as &$jsonQuestion) {

@@ -2,8 +2,7 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\FeedbackResource\Pages;
-use App\Filament\Resources\FeedbackResource\RelationManagers;
+use App\Filament\Resources\SurveyResource\Pages;
 use App\Helpers\RoleHelpers;
 use App\Models\Question;
 use App\Models\Survey;
@@ -69,16 +68,11 @@ class SurveyResource extends Resource
                     ->label('Last Updated'),
             ])
             ->defaultSort('version', 'desc');
-//            ->actions([
-//                Tables\Actions\EditAction::make(),
-//            ])
     }
 
     public static function getRelations(): array
     {
-        return [
-            //
-        ];
+        return [];
     }
 
     public static function getPages(): array
@@ -93,8 +87,6 @@ class SurveyResource extends Resource
     {
         return RoleHelpers::has_minimum_privilege('moderator');
     }
-
-
 
     /**
      *
@@ -132,8 +124,7 @@ class SurveyResource extends Resource
             //validate questions
             foreach ($json['questions'] as &$question) {
                 $invalid = Question::isValidQuestion($question);
-                if($invalid != null)
-                {
+                if ($invalid != null) {
                     return $invalid;
                 }
             }

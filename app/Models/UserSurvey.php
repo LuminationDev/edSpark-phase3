@@ -4,8 +4,6 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\Log;
-
 
 class UserSurvey extends Model
 {
@@ -21,7 +19,7 @@ class UserSurvey extends Model
         'status'
     ];
 
-    public static function makeNew($survey, $userId)
+    public static function makeNew($survey, $userId): UserSurvey
     {
         $userSurvey = new UserSurvey();
         $userSurvey->survey_id = $survey->version;
@@ -31,7 +29,7 @@ class UserSurvey extends Model
         return $userSurvey;
     }
 
-    public function abandon()
+    public function abandon(): void
     {
         $this['status'] = 'Abandoned';
         $surveyDomains = UserSurveyDomain::where('user_survey_id', $this->id)

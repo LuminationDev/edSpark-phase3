@@ -25,11 +25,13 @@ class Question extends Model
         "category_print",
         "chapter_description",
     ];
+
     public static array $DOMAINS = ['triage', 'teaching', 'managing', 'leading', 'learning'];
 
     public static array $REQUIRED_JSON_FIELDS = [
         'domain', 'element', 'generated_variable', 'question'
     ];
+
     public static array $OTHER_JSON_FIELDS = [
         'advice',
         'dependencies',
@@ -44,6 +46,7 @@ class Question extends Model
         'question_example',
         'variable_suffix',
     ];
+
     public static array $NON_EMPTY_FIELDS = [
         'domain',
         'description',
@@ -73,7 +76,6 @@ class Question extends Model
         "dependencies",
         "phase",
         "phase_description",
-
 
         //------------------------------------------
         // mapped fields
@@ -125,11 +127,4 @@ class Question extends Model
         }
         return null;
     }
-
-
-    public function __toString()
-    {
-        return parent::__toString();
-    }
-
 }

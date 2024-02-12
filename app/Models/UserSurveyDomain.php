@@ -5,7 +5,6 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-
 class UserSurveyDomain extends Model
 {
     use HasFactory;
@@ -24,8 +23,7 @@ class UserSurveyDomain extends Model
         'next_question_id'
     ];
 
-
-    public static function makeNew($userSurvey, $domain)
+    public static function makeNew($userSurvey, $domain): UserSurveyDomain
     {
         $questions = Question::where('survey_id', $userSurvey->survey_id)
             ->where('domain', $domain)
