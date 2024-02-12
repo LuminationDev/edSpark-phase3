@@ -1,6 +1,7 @@
 <script setup>
 
-import {onBeforeUnmount, onMounted, ref} from "vue";
+import { Tooltip } from "bootstrap";
+import {onBeforeUnmount, onMounted, ref, watch} from "vue";
 
 import AnswerButton from "@/js/components/dma/AnswerButton.vue";
 import PrimaryActionButton from "@/js/components/dma/PrimaryActionButton.vue";
@@ -29,8 +30,16 @@ const REASON = {
     NOT_HELPFUL: "The examples are not helpful",
 };
 
+let questionObserver = null;
+
 const isUnsure = ref(false);
 const answerText = ref(null);
+const questionRef = ref(null);
+
+const screenRef = ref(null);
+const tooltipRef = ref(null);
+const tooltipTarget = ref(null);
+const tooltipContent = ref('');
 
 const handleKeypress = (event) => {
     const keyList = ['1','2','3','4'];
@@ -53,19 +62,64 @@ const handleAnswer = (answer, answerText) => {
     isUnsure.value = false;
 }
 
+const handleBindQuestionTooltips =() => {
+    const anchors = document.querySelectorAll('[data-bs-toggle="tooltip"]');
+    anchors.forEach(anchor => {
+        // prevent clicking on anchors from scrolling page to top
+        anchor.addEventListener('click', (event) => { event.preventDefault() });
+        // add tooltip handler
+        const tooltip = anchor.dataset.bsTitle;
+        anchor.addEventListener('mouseover', (event) => handleShowTooltip(event));
+        anchor.addEventListener('mouseout', (event) => handleHideTooltip(event));
+    });
+}
+
+const handleShowTooltip = (event) => {
+    tooltipTarget.value = event.target;
+    tooltipContent.value = event.target.dataset.bsTitle;
+
+    const screenRect = screenRef.value.getBoundingClientRect();
+    const targetRect = event.target.getBoundingClientRect();
+
+    tooltipRef.value.style.display = 'block';
+    tooltipRef.value.style.left = `${targetRect.left - screenRect.left}px`;
+    tooltipRef.value.style.top = `${targetRect.bottom - screenRect.top + 5}px`;
+}
+const handleHideTooltip = (event) => {
+    if (tooltipTarget.value === event.target) {
+        tooltipTarget.value = null;
+        tooltipContent.value = '';
+
+        tooltipRef.value.style.display = 'none';
+    }
+}
+
 onMounted(() => {
     // globally capture number keypress events
     window.addEventListener('keydown', handleKeypress);
+
+    // observe changes to the question slot and handle tooltips on anchors
+    // TODO not very Vue friendly
+    handleBindQuestionTooltips();
+    questionObserver = new MutationObserver(handleBindQuestionTooltips);
+    questionObserver.observe(questionRef.value, {
+        childList: true,
+        subtree: true
+    });
 })
 onBeforeUnmount(() => {
     // release keypress event
     window.removeEventListener('keydown', handleKeypress);
+
+    // disconnect from observing the question slot
+    questionObserver.disconnect();
 })
 
 </script>
 
 <template>
     <div
+        ref="screenRef"
         class="flex justify-start items-center flex-row h-full question-screen w-full"
     >
         <div
@@ -93,13 +147,29 @@ onBeforeUnmount(() => {
                     v-if="$slots.info"
                     class="cursor-help info-icon relative"
                 >
-                    <span>ⓘ</span>
-                    <div class="absolute top-6 right-0 bg-gray-600 info-tooltip p-2 rounded-lg w-[200px]">
+                    <div class="h-8">ⓘ</div>
+                    <div
+                        class="
+                            absolute
+                            top-6
+                            right-0
+                            backdrop-blur
+                            bg-gray-500/70
+                            cursor-default
+                            info-tooltip
+                            p-5
+                            rounded-lg
+                            w-[300px]
+                            "
+                    >
                         <slot name="info" />
                     </div>
                 </span>
             </div>
-            <div class="flex-1 mt-3 question text-2xl">
+            <div
+                ref="questionRef"
+                class="flex-1 font-light mt-5 question text-2xl"
+            >
                 <slot name="question" />
             </div>
             <div
@@ -170,14 +240,33 @@ onBeforeUnmount(() => {
                 </div>
             </div>
         </div>
+        <div
+            ref="tooltipRef"
+            class="absolute top-0 left-0 backdrop-blur bg-gray-500/70 cursor-default floating-tooltip hidden p-5 rounded-lg w-[300px]"
+            v-html="tooltipContent"
+        />
     </div>
 </template>
 
-<style scoped>
+<style scoped lang="scss">
+:deep {
+    ul {
+        list-style: revert;
+        margin-top: 0.5em;
+        padding-left: 1em;
+    }
+    a {
+        text-decoration: underline;
+        &[data-bs-toggle='tooltip'] {
+            cursor: help;
+        }
+    }
+}
 .info-tooltip {
     display: none;
 }
 .info-icon:hover .info-tooltip {
     display: block;
 }
+
 </style>

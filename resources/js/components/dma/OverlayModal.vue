@@ -1,6 +1,6 @@
 <script setup>
 import {FocusTrap} from "focus-trap-vue";
-import {onBeforeUnmount, onMounted, ref} from "vue";
+import {onBeforeUnmount, onMounted, ref, watch} from "vue";
 
 const props = defineProps({
     clickAway: {
@@ -48,23 +48,21 @@ const handleOverlayClick = (event) => {
     }
 }
 
-// TODO implement focus trap to restrict tabbing within the modal
-
 </script>
 
 <template>
-    <focus-trap active>
-        <div
-            ref="overlayRef"
-            tab-index="-1"
-            class="fixed top-0 right-0 bottom-0 left-0 flex justify-center items-center overlay p-10"
-            :class="`bg-black/${props.shade} ${embed ? 'absolute' : 'fixed'}`"
-            :style="{zIndex: props.zIndex}"
-            @click="handleOverlayClick"
-        >
+    <div
+        ref="overlayRef"
+        tab-index="-1"
+        class="fixed top-0 right-0 bottom-0 left-0 flex justify-center items-center overlay p-10"
+        :class="`bg-black/${props.shade} ${embed ? 'absolute' : 'fixed'}`"
+        :style="{zIndex: props.zIndex}"
+        @click="handleOverlayClick"
+    >
+        <focus-trap active>
             <slot />
-        </div>
-    </focus-trap>
+        </focus-trap>
+    </div>
 </template>
 
 <style scoped>

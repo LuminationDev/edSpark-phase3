@@ -21,8 +21,6 @@ class Question extends Model
         "variable_suffix",
         "dependencies",
         "phase_description",
-        "chapter_print",
-        "category_print",
         "chapter_description",
     ];
 

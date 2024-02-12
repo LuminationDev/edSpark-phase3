@@ -83,13 +83,13 @@ const getNextQuestionId = (nextChapter = false) => {
     if (currentIndex < questions.value.length -1) {
         if (nextChapter) {
             // if requested, skip to next category
-            nextQuestion = questions.value.find((q, index) => index > currentIndex && q.category !== currentQuestion.value.category);
+            nextQuestion = questions.value.find((q, index) => {
+                console.log("find next category:", currentIndex, currentQuestion.value.category, index, q.category, q)
+                return index > currentIndex && q.category !== currentQuestion.value.category
+            });
         } else {
             // otherwise, get the following question
             nextQuestion = questions.value[currentIndex + 1];
-            // skip non-question entries
-            // (should be safe to skip ahead as there should always be a following question)
-            if (nextQuestion.phase === -1) nextQuestion = questions.value[currentIndex + 2];
         }
     }
     if (!nextQuestion) {
@@ -97,6 +97,13 @@ const getNextQuestionId = (nextChapter = false) => {
         completed.value = true;
         return null;
     }
+    // skip non-question entries
+    // (should be safe to skip ahead as there should always be a following question)
+    if (nextQuestion.phase === -1) {
+        const nextIndex = questions.value.findIndex(q => q.id === nextQuestion.id);
+        nextQuestion = questions.value[nextIndex + 1];
+    }
+
     return nextQuestion.id;
 }
 
@@ -148,11 +155,12 @@ const handleResetDomain = () => {
                             Chapter {{ chapters.indexOf(currentQuestion.chapter)+1 }}/{{ chapters.length }}
                         </div>
                         <h2 class="font-black text-6xl uppercase">
-                            {{ currentQuestion.chapter }}
+                            {{ currentQuestion.chapter_print }}
                         </h2>
-                        <p class="mt-10">
-                            {{ currentQuestion.description }}
-                        </p>
+                        <div
+                            class="mt-10"
+                            v-html="currentQuestion.description"
+                        />
                     </div>
                 </template>
                 <template #primaryAction>
@@ -177,10 +185,10 @@ const handleResetDomain = () => {
                         Chapter {{ chapters.indexOf(currentQuestion.chapter)+1 }}/{{ chapters.length }}
                     </div>
                     <h3 class="font-black text-3xl uppercase">
-                        {{ currentQuestion.chapter }}
+                        {{ currentQuestion.chapter_print }}
                     </h3>
                     <p class="font-light mt-10">
-                        {{ currentQuestion.category }}
+                        {{ currentQuestion.category_print }}
                     </p>
                 </template>
                 <template #contentBottom>
@@ -192,13 +200,13 @@ const handleResetDomain = () => {
                     <ProgressBar :percent="domainProgress" />
                 </template>
                 <template #question>
-                    <span>{{ currentQuestion.question }}</span>
+                    <div v-html="currentQuestion.question" />
                 </template>
                 <template
                     v-if="currentQuestion?.question_example"
                     #info
                 >
-                    {{ currentQuestion.question_example }}
+                    <div v-html="currentQuestion.question_example" />
                 </template>
             </QuestionScreen>
         </template>

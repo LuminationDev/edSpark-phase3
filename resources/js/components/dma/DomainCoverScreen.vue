@@ -32,6 +32,10 @@ const handleResetDomain = () => {
     emit('reset');
 }
 
+const hideVideo =() => {
+    showVideo.value = false;
+}
+
 const domainName = computed(() => {
     return props.domain.domain.toLowerCase();
 })
@@ -48,10 +52,10 @@ const chapters = computed(() => {
     const chapterList = [];
     for (let index = 0; index < props.questions.length; ++index) {
         const question = props.questions[index];
-        let chapterItem = chapterList.find(item => item.name === question.chapter);
+        let chapterItem = chapterList.find(item => item.ref === question.chapter);
         if (!chapterItem) {
             const status = ((domainComplete.value || index < currentQuestionIndex) ? 'complete' : 'incomplete');
-            chapterItem = { name: question.chapter, status};
+            chapterItem = { ref: question.chapter, name: question.chapter_print, status};
             chapterList.push(chapterItem);
         }
         if (!domainComplete.value && index === currentQuestionIndex) chapterItem.status = 'active';
@@ -91,13 +95,13 @@ const chapters = computed(() => {
                 v-if="showVideo"
                 :embed="true"
                 :click-away="true"
-                @close="showVideo = false"
+                @close="hideVideo"
             >
                 <video
                     src="@/assets/video/temporary.mp4"
                     controls
                     autoplay
-                    @ended="showVideo = false"
+                    @ended="hideVideo"
                 />
             </OverlayModal>
         </div>

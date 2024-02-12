@@ -85,13 +85,13 @@ const handlePrevious = () => {
                 </h2>
             </template>
             <template #question>
-                <span>{{ triage.domain_questions[question].question }}</span>
+                <div v-html="triage.domain_questions[question].question" />
             </template>
             <template
                 v-if="triage.domain_questions[question].question_example"
                 #info
             >
-                {{ triage.domain_questions[question].question_example }}
+                <div v-html="triage.domain_questions[question].question_example" />
             </template>
         </QuestionScreen>
     </template>
