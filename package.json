@@ -64,6 +64,8 @@
         "editorjs-inline-font-size-tool": "^1.0.1",
         "editorjs-text-alignment-blocktune": "^1.0.3",
         "epic-spinners": "^2.0.0",
+        "focus-trap": "^7.5.4",
+        "focus-trap-vue": "^4.0.3",
         "font-awesome": "^4.7.0",
         "pinia": "^2.1.7",
         "sanitize-html": "^2.10.0",

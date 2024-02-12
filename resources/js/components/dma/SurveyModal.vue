@@ -1,10 +1,9 @@
 <script setup>
 import {computed, onMounted, ref} from "vue";
 
-import OverlayModal from "@/js/components/bases/OverlayModal.vue";
 import CloseButton from "@/js/components/dma/CloseButton.vue";
-import DomainCoverScreen from "@/js/components/dma/DomainCoverScreen.vue";
 import DomainFlow from "@/js/components/dma/DomainFlow.vue";
+import OverlayModal from "@/js/components/dma/OverlayModal.vue";
 import TriageFlow from "@/js/components/dma/TriageFlow.vue";
 import Spinner from "@/js/components/spinner/Spinner.vue";
 
@@ -56,7 +55,7 @@ const handleCompleteTriage = () => {
         <!-- TODO correct dimensions of modal to be defined -->
         <div class="bg-black h-full max-h-[800px] max-w-5xl relative text-white w-full">
             <CloseButton
-                class="absolute top-10 left-10"
+                class="absolute top-10 left-10 z-[100]"
                 @click="emit('close')"
             />
             <div class="h-full">

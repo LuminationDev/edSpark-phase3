@@ -1,8 +1,8 @@
 <script setup>
 
-import {computed, onBeforeUnmount, onMounted, ref} from "vue";
+import {computed, ref} from "vue";
 
-import OverlayModal from "@/js/components/bases/OverlayModal.vue";
+import OverlayModal from "@/js/components/dma/OverlayModal.vue";
 import PrimaryActionButton from "@/js/components/dma/PrimaryActionButton.vue";
 import TextButton from "@/js/components/dma/TextButton.vue";
 import WarningModal from "@/js/components/dma/WarningModal.vue";
@@ -25,6 +25,7 @@ const props = defineProps({
 const emit = defineEmits(['continue','reset']);
 
 const showResetModal = ref(false);
+const showVideo = ref(false);
 
 const handleResetDomain = () => {
     showResetModal.value = false;
@@ -65,11 +66,16 @@ const chapters = computed(() => {
         class="flex justify-start items-center flex-row h-full question-screen w-full"
     >
         <div
-            class="basis-2/3 flex flex-col h-full p-10 pt-28"
+            class="basis-2/3 flex flex-col h-full p-10 pt-28 relative"
             :class="`bg-${domainName}-flat`"
         >
             <div class="flex justify-center items-center flex-1">
-                [launch video]
+                <button
+                    class="bg-black/50 flex justify-center items-center h-16 rounded-full w-16"
+                    @click="showVideo = true"
+                >
+                    ▶
+                </button>
             </div>
             <div>
                 <h2
@@ -81,6 +87,19 @@ const chapters = computed(() => {
                     {{ useDomainDescription(domain.domain) }}
                 </p>
             </div>
+            <OverlayModal
+                v-if="showVideo"
+                :embed="true"
+                :click-away="true"
+                @close="showVideo = false"
+            >
+                <video
+                    src="@/assets/video/temporary.mp4"
+                    controls
+                    autoplay
+                    @ended="showVideo = false"
+                />
+            </OverlayModal>
         </div>
         <div class="basis-1/3 bg-black flex flex-col h-full p-10 py-16">
             <div class="text-center">

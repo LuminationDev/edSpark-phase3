@@ -1,14 +1,12 @@
 <script setup>
-import {computed, onMounted, ref, toRaw} from 'vue';
+import {computed, onMounted, ref} from 'vue';
 
 import BaseLandingHero from "@/js/components/bases/BaseLandingHero.vue";
 import BaseLandingSection from "@/js/components/bases/BaseLandingSection.vue";
-import OverlayModal from "@/js/components/bases/OverlayModal.vue";
 import DomainSummary from "@/js/components/dma/DomainSummary.vue";
 import SurveyModal from "@/js/components/dma/SurveyModal.vue";
 import WarningModal from "@/js/components/dma/WarningModal.vue";
 import InspirationAndGuidesRobot from "@/js/components/inspirationandguides/InspirationAndGuidesRobot.vue";
-import Spinner from "@/js/components/spinner/Spinner.vue";
 import {LandingHeroText} from "@/js/constants/PageBlurb";
 import {dmaService} from "@/js/service/dmaService";
 

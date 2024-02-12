@@ -1,5 +1,5 @@
 <script setup>
-import OverlayModal from "@/js/components/bases/OverlayModal.vue";
+import OverlayModal from "@/js/components/dma/OverlayModal.vue";
 import RoundButton from "@/js/components/dma/RoundButton.vue";
 
 const emit = defineEmits(['cancel','reset']);
@@ -7,8 +7,8 @@ const emit = defineEmits(['cancel','reset']);
 
 <template>
     <OverlayModal
-        :z-index="60"
-        :shade="60"
+        :embed="true"
+        :z-index="101"
     >
         <div class="bg-white max-w-full p-5 rounded-3xl text-black w-96">
             <div><strong><slot name="title" /></strong></div>
