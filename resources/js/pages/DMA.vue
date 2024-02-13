@@ -3,6 +3,7 @@ import {computed, onMounted, ref} from 'vue';
 
 import BaseLandingHero from "@/js/components/bases/BaseLandingHero.vue";
 import BaseLandingSection from "@/js/components/bases/BaseLandingSection.vue";
+import CircleDiagram from "@/js/components/dma/CircleDiagram.vue";
 import DomainSummary from "@/js/components/dma/DomainSummary.vue";
 import FaqEntry from "@/js/components/dma/FaqEntry.vue";
 import SurveyModal from "@/js/components/dma/SurveyModal.vue";
@@ -10,7 +11,6 @@ import WarningModal from "@/js/components/dma/WarningModal.vue";
 import InspirationAndGuidesRobot from "@/js/components/inspirationandguides/InspirationAndGuidesRobot.vue";
 import {LandingHeroText} from "@/js/constants/PageBlurb";
 import {dmaService} from "@/js/service/dmaService";
-import CircleDiagram from "@/js/components/dma/CircleDiagram.vue";
 
 const showSurveyModal = ref(false);
 
@@ -47,6 +47,25 @@ const isInProgress = computed(() => {
     if (surveyDetails.value.survey_domains.length) {
         return surveyDetails.value.survey_domains.some(d => d.completed_question_count > 0);
     }
+})
+
+const categoryScores = computed(() => {
+    // TODO mocked score data
+    const scores = [];
+    let index = 0;
+    for( let i=0; i < Math.ceil(Math.random()*6)+3; i++) {
+        scores.push({ category: `CAT${++index}`, colour: 'rgba( 34, 60, 145 )', score:Math.ceil(Math.random()*4)});
+    }
+    for( let i=0; i < Math.ceil(Math.random()*6)+3; i++) {
+        scores.push({ category: `CAT${++index}`, colour: 'rgba( 41, 152, 169 )', score:Math.ceil(Math.random()*4)});
+    }
+    for( let i=0; i < Math.ceil(Math.random()*6)+3; i++) {
+        scores.push({ category: `CAT${++index}`, colour: 'rgba( 188, 51, 66 )', score:Math.ceil(Math.random()*4)});
+    }
+    for( let i=0; i < Math.ceil(Math.random()*6)+3; i++) {
+        scores.push({ category: `CAT${++index}`, colour: 'rgba( 253, 145, 64 )', score:Math.ceil(Math.random()*4)});
+    }
+    return scores;
 })
 
 const fetchUserSurvey = async () => {
@@ -135,7 +154,7 @@ const handleResetSurvey = async () => {
                                 After completing your evaluation, a chart will be updated with your performance below.
                             </template>
                             <template #content>
-                                <CircleDiagram/>
+                                <CircleDiagram :scores="categoryScores" />
                             </template>
                         </BaseLandingSection>
                         <p>

@@ -29,6 +29,10 @@ const props = defineProps({
     colour: {
         type: String,
         default: 'black',
+    },
+    label: {
+        type: String,
+        default: '',
     }
 });
 
@@ -57,6 +61,7 @@ const y4 = y_offset + outer_radius * Math.sin(start_angle);
            L ${x1} ${y1}
            `"
         :fill="colour"
+        :data-label="props.label"
     />
 </template>
 <style></style>
