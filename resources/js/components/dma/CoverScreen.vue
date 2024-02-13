@@ -20,49 +20,51 @@ const emit = defineEmits(['primary', 'secondary']);
 
 <template>
     <div
-        class="cover-screen flex justify-start items-center flex-col gap-10 h-full p-20 w-full"
-        :class="`bg-${props.theme}-flat`"
+        class="cover-screen h-full w-full"
+        :class="`bg-${props.theme}-img`"
     >
-        <!-- TODO can this be one block with layout handled via tailwind classes? -->
+        <div class="backdrop-blur-lg flex justify-start items-center flex-col gap-10 h-full p-20 w-full">
+            <div class="flex justify-center items-center flex-1 w-full">
+                <slot name="content" />
+            </div>
 
-        <div class="flex justify-center items-center flex-1 w-full">
-            <slot name="content" />
-        </div>
-        <div
-            v-if="props.cornerControls"
-            class="flex justify-between items-center w-full"
-        >
-            <TextButton
-                v-if="$slots.secondaryAction"
-                @click="emit('secondary')"
+            <!-- TODO can this be one block with layout handled via tailwind classes? -->
+            <div
+                v-if="props.cornerControls"
+                class="flex justify-between items-center w-full"
             >
-                <slot name="secondaryAction" />
-            </TextButton>
-            <span v-else />
-            <PrimaryActionButton
-                v-if="$slots.primaryAction"
-                @click="emit('primary')"
-            >
-                <slot name="primaryAction" />
-            </PrimaryActionButton>
-        </div>
+                <TextButton
+                    v-if="$slots.secondaryAction"
+                    @click="emit('secondary')"
+                >
+                    <slot name="secondaryAction" />
+                </TextButton>
+                <span v-else />
+                <PrimaryActionButton
+                    v-if="$slots.primaryAction"
+                    @click="emit('primary')"
+                >
+                    <slot name="primaryAction" />
+                </PrimaryActionButton>
+            </div>
 
-        <div
-            v-else
-            class="flex justify-center items-center flex-col gap-10 w-full"
-        >
-            <PrimaryActionButton
-                v-if="$slots.primaryAction"
-                @click="emit('primary')"
+            <div
+                v-else
+                class="flex justify-center items-center flex-col gap-10 w-full"
             >
-                <slot name="primaryAction" />
-            </PrimaryActionButton>
-            <TextButton
-                v-if="$slots.secondaryAction"
-                @click="emit('secondary')"
-            >
-                <slot name="secondaryAction" />
-            </TextButton>
+                <PrimaryActionButton
+                    v-if="$slots.primaryAction"
+                    @click="emit('primary')"
+                >
+                    <slot name="primaryAction" />
+                </PrimaryActionButton>
+                <TextButton
+                    v-if="$slots.secondaryAction"
+                    @click="emit('secondary')"
+                >
+                    <slot name="secondaryAction" />
+                </TextButton>
+            </div>
         </div>
     </div>
 </template>

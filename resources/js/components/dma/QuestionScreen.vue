@@ -2,8 +2,13 @@
 
 import {onBeforeUnmount, onMounted, ref} from "vue";
 
+import imgLeading from '@/assets/images/dma/Leading.png';
+import imgLearning from '@/assets/images/dma/Learning.png';
+import imgManaging from '@/assets/images/dma/Managing.png';
+import imgTeaching from '@/assets/images/dma/Teaching.png';
 import AnswerButton from "@/js/components/dma/AnswerButton.vue";
 import PrimaryActionButton from "@/js/components/dma/PrimaryActionButton.vue";
+
 
 const props = defineProps({
     theme: {
@@ -31,6 +36,14 @@ const REASON = {
     NOT_APPLICABLE: "It is not applicable to my school",
     AMBIGUOUS: "Statement is too ambiguous",
     NOT_HELPFUL: "The examples are not helpful",
+};
+
+const domainImages = {
+    triage: imgTeaching, // TODO triage image needed
+    teaching: imgTeaching,
+    learning: imgLearning,
+    leading: imgLeading,
+    managing: imgManaging
 };
 
 let questionObserver = null;
@@ -127,7 +140,7 @@ onBeforeUnmount(() => {
     >
         <div
             class="basis-1/3 flex flex-col h-full p-10 pt-28"
-            :class="`bg-${props.theme}-flat`"
+            :class="`bg-${props.theme}-img`"
         >
             <div class="flex-1">
                 <slot name="contentTop" />
@@ -154,11 +167,27 @@ onBeforeUnmount(() => {
                     <div
                         class="
                             absolute
-                            top-6
-                            right-0
+                            top-[25px]
+                            right-[3px]
                             backdrop-blur
                             bg-gray-500/70
                             cursor-default
+                            h-[10px]
+                            hidden
+                            info-tooltip-arrow
+                            rotate-45
+                            w-[10px]
+                            "
+                    />
+                    <div
+                        class="
+                            absolute
+                            top-[30px]
+                            right-[-30px]
+                            backdrop-blur
+                            bg-gray-500/70
+                            cursor-default
+                            hidden
                             info-tooltip
                             p-5
                             rounded-lg
@@ -256,9 +285,27 @@ onBeforeUnmount(() => {
         </div>
         <div
             ref="tooltipRef"
-            class="absolute top-0 left-0 backdrop-blur bg-gray-500/70 cursor-default floating-tooltip hidden p-5 rounded-lg w-[300px]"
-            v-html="tooltipContent"
-        />
+            class="absolute top-0 left-0 hidden w-[300px]"
+        >
+            <div
+                class="
+                    absolute
+                    top-0
+                    left-[30px]
+                    backdrop-blur
+                    bg-gray-500/70
+                    cursor-default
+                    h-[10px]
+                    info-tooltip-arrow
+                    rotate-45
+                    w-[10px]
+                    "
+            />
+            <div
+                class="backdrop-blur bg-gray-500/70 cursor-default floating-tooltip mt-[5px] p-5 rounded-lg w-full"
+                v-html="tooltipContent"
+            />
+        </div>
     </div>
 </template>
 
@@ -276,11 +323,10 @@ onBeforeUnmount(() => {
         }
     }
 }
-.info-tooltip {
-    display: none;
-}
-.info-icon:hover .info-tooltip {
-    display: block;
+.info-icon:hover {
+    .info-tooltip, .info-tooltip-arrow {
+        display: block;
+    }
 }
 
 </style>
