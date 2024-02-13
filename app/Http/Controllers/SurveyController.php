@@ -115,16 +115,18 @@ class SurveyController extends Controller
             if ($increaseCompletedChapterCount) {
                 ++$currentUserSurveyDomain->completed_chapter_count;
             }
-            // increase question count to the next question id
-            // this accounts for the skipped questions due to pressing 'no'
-            $currentUserSurveyDomain->completed_question_count = min(
-                $currentUserSurveyDomain->completed_question_count + $nextQuestionId - $questionId,
-                $currentUserSurveyDomain->question_count);
+            if($nextQuestionId == null) {
+                $currentUserSurveyDomain->completed_question_count = $currentUserSurveyDomain->question_count;
+            } else {
+                // increase question count to the next question id
+                // this accounts for the skipped questions due to pressing 'no'
+                //note: this assumes that domain questions are ordered
+                $currentUserSurveyDomain->completed_question_count = $currentUserSurveyDomain->completed_question_count + $nextQuestionId - $questionId;
+            }
             $currentUserSurveyDomain->next_question_id = $nextQuestionId;
             if ($currentUserSurveyDomain->completed_question_count >= $currentUserSurveyDomain->question_count) {
                 // there are no remaining questions
                 $currentUserSurveyDomain->status = "Complete";
-                $currentUserSurveyDomain->next_question_id = null;
                 $currentUserSurveyDomain->save();
 
                 // if there are no other domains In Progress -> set the survey to completed
