@@ -34,4 +34,14 @@ export const dmaService = {
             return res.data;
         })
     },
+    resetDomainProgress: async(domainId:string):Promise<AxiosResponse<any>> => {
+        return axios.delete(`${API_ENDPOINTS.DMA.USER_SURVEY}/domain/${domainId}`).then(res => {
+            return res.data;
+        })
+    },
+    resetSurveyProgress: async():Promise<AxiosResponse<any>> => {
+        return axios.delete(`${API_ENDPOINTS.DMA.USER_SURVEY}`).then(res => {
+            return res.data;
+        })
+    }
 }

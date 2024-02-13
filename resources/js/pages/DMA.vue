@@ -4,6 +4,7 @@ import {computed, onMounted, ref} from 'vue';
 import BaseLandingHero from "@/js/components/bases/BaseLandingHero.vue";
 import BaseLandingSection from "@/js/components/bases/BaseLandingSection.vue";
 import DomainSummary from "@/js/components/dma/DomainSummary.vue";
+import FaqEntry from "@/js/components/dma/FaqEntry.vue";
 import SurveyModal from "@/js/components/dma/SurveyModal.vue";
 import WarningModal from "@/js/components/dma/WarningModal.vue";
 import InspirationAndGuidesRobot from "@/js/components/inspirationandguides/InspirationAndGuidesRobot.vue";
@@ -25,13 +26,25 @@ onMounted(async () => {
 })
 
 const domains = computed(() => {
-    if (!surveyDetails.value) return [];
-    return surveyDetails.value.survey_domains.filter(d => d.domain !== 'triage');
+    const list = [];
+    if (surveyDetails.value) {
+        // Return domains in a predefined order, excluding triage
+        // If any domains are not found in surveyDetails, they will be skipped
+        const teaching = surveyDetails.value.survey_domains.find(d => d.domain === 'teaching');
+        if (teaching) list.push(teaching);
+        const learning = surveyDetails.value.survey_domains.find(d => d.domain === 'learning');
+        if (learning) list.push(learning);
+        const leading = surveyDetails.value.survey_domains.find(d => d.domain === 'leading');
+        if (leading) list.push(leading);
+        const managing = surveyDetails.value.survey_domains.find(d => d.domain === 'managing');
+        if (managing) list.push(managing);
+    }
+    return list;
 });
 
 const isInProgress = computed(() => {
-    if (domains.value.length) {
-        return domains.value.some(d => d.completed_question_count > 0);
+    if (surveyDetails.value.survey_domains.length) {
+        return surveyDetails.value.survey_domains.some(d => d.completed_question_count > 0);
     }
 })
 
@@ -39,40 +52,46 @@ const fetchUserSurvey = async () => {
     surveyDetails.value = await dmaService.getSurvey();
 }
 
-const handleLaunchSurvey = (domainId) => {
+const handleLaunchSurvey = async (domainId) => {
+    // if triage is started but incomplete, reset the triage domain,
+    // then refetch the survey as the triage ID will have changed
+    const triage = surveyDetails.value.survey_domains.find(d => d.domain === 'triage');
+    if (triage.completed_question_count > 0 && triage.completed_question_count < triage.question_count) {
+        await dmaService.resetDomainProgress(triage.id);
+        await fetchUserSurvey();
+    }
+
     selectedDomainId.value = domainId;
     showSurveyModal.value = true;
 }
 
 const handleCloseSurveyModal = () => {
     showSurveyModal.value = false;
-    // refetch survey data
+    selectedDomainId.value = null;
     fetchUserSurvey();
 }
 
-const showResetting = () => {
+const showResetting = async () => {
     resetting.value = true;
-    setTimeout(() => {
-        resetting.value = false
-        // refetch survey data
-        fetchUserSurvey();
-    }, 4000);
+    await new Promise(r => setTimeout(r, 4000));
+    await fetchUserSurvey();
+    resetting.value = false
 }
 
-const handleResetDomain = () => {
+const handleResetDomain = async () => {
     showSurveyModal.value = false;
-    // TODO perform reset on domain
-    showResetting();
+    await showResetting();
+    await dmaService.resetDomainProgress(selectedDomainId.value);
 }
 
-const isDomainResetting = (domainId) => {
+const isDomainResetting = (domainId = null) => {
     return resetting.value && (!selectedDomainId.value || selectedDomainId.value === domainId);
 }
 
-const handleResetSurvey = () => {
+const handleResetSurvey = async () => {
     showResetModal.value = false;
-    // TODO perform reset on survey
-    showResetting();
+    await dmaService.resetSurveyProgress();
+    await showResetting();
 
 }
 
@@ -119,10 +138,12 @@ const handleResetSurvey = () => {
                             </template>
                         </BaseLandingSection>
                         <p>
+                            <!-- TODO correct this information -->
                             The tool is for you and your school. Your data is only stored locally in the
                             current profile of your web browser. You can generate a PDF report for sharing within
                             your school or including in your next round of School Improvement planning.
                             <button
+                                v-if="isInProgress && !isDomainResetting()"
                                 class="block mt-10 underline"
                                 @click="showResetModal = true"
                             >
@@ -155,6 +176,51 @@ const handleResetSurvey = () => {
                         Resetting will erase all your progress on the survey.
                     </template>
                 </WarningModal>
+            </template>
+        </BaseLandingSection>
+
+        <BaseLandingSection>
+            <template #title>
+                Frequently Asked
+            </template>
+            <template #subtitle>
+                <div class="mb-10">
+                    The Digital Adoption Group (DAG) offers comprehensive guidance on digital technologies,
+                    providing practical, system-wide advice for purchasing and adopting high-impact technologies
+                    that enhance teaching and learning.
+                </div>
+            </template>
+            <template #content>
+                <FaqEntry>
+                    <template #question>
+                        Can I pause anytime?
+                    </template>
+                    <template #answer>
+                        <!-- TODO add answer -->
+                        Yes, your progress is recorded as you go, and you can resume where you left off.
+                    </template>
+                </FaqEntry>
+                <FaqEntry>
+                    <template #question>
+                        How do I reset my progress?
+                    </template>
+                    <template #answer>
+                        <!-- TODO add answer -->
+                        When viewing any domain, you can click 'Reset progress'
+                        and all answers for that domain will be cleared.
+                        <br>
+                        To reset the entire survey, click 'Reset progress' below the performance chart.
+                    </template>
+                </FaqEntry>
+                <FaqEntry>
+                    <template #question>
+                        Where is my data stored?
+                    </template>
+                    <template #answer>
+                        <!-- TODO add answer -->
+                        ...
+                    </template>
+                </FaqEntry>
             </template>
         </BaseLandingSection>
     </div>

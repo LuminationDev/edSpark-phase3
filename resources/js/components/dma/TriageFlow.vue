@@ -22,9 +22,9 @@ const emit = defineEmits(['complete']);
 // triage data from API
 const triage = ref(null);
 // current triage question index
-// (triage is always done in its entirety so don't care about question IDs)
 const question = ref(null);
-
+// submitting is true while an answer is being submitted
+const submitting = ref(false);
 
 
 onMounted(async () => {
@@ -33,28 +33,30 @@ onMounted(async () => {
 });
 
 const handleAnswer = async (answer) => {
-    if (question.value < triage.value.domain_questions.length -1) {
+    submitting.value = true;
+    const nextQuestionId =
+        question.value < triage.value.domain_questions.length -1
+            ? triage.value.domain_questions[question.value + 1].id
+            : null;
 
-        const nextQuestionId =
-            question.value < triage.value.domain_questions.length -2
-                ? triage.value.domain_questions[question.value + 1].id
-                : null;
+    // submit answer to API
+    const result = await dmaService.postAnswer(
+        props.domain.id,
+        triage.value.domain_questions[question.value].id,
+        answer,
+        null,
+        nextQuestionId,
+        nextQuestionId === null
+    );
+    console.log('triage answer submitted:', result);
 
-        // submit answer to API
-        const result = await dmaService.postAnswer(
-            props.domain.id,
-            triage.value.domain_questions[question.value].id,
-            answer,
-            null,
-            nextQuestionId,
-            nextQuestionId === null
-        );
-        console.log('triage answer submitted:', result);
-
+    if(nextQuestionId !== null) {
         question.value += 1;
     } else {
         emit('complete');
     }
+
+    submitting.value = false;
 }
 
 const handlePrevious = () => {
@@ -90,6 +92,7 @@ const handlePrevious = () => {
             theme="triage"
             :allow-unsure="false"
             :show-previous="question > 0"
+            :disabled="submitting"
             @previous="handlePrevious"
             @answer="handleAnswer"
         >

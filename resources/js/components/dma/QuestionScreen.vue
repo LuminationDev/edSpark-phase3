@@ -19,6 +19,10 @@ const props = defineProps({
         type: Boolean,
         required: false,
     },
+    disabled: {
+        type: Boolean,
+        required: false,
+    }
 })
 
 const emit = defineEmits(['answer','previous']);
@@ -177,12 +181,14 @@ onBeforeUnmount(() => {
             >
                 <AnswerButton
                     hint="Press 1"
+                    :disabled="props.disabled"
                     @click="handleAnswer(1)"
                 >
                     YES
                 </AnswerButton>
                 <AnswerButton
                     hint="Press 2"
+                    :disabled="props.disabled"
                     @click="handleAnswer(0)"
                 >
                     NO
@@ -191,6 +197,7 @@ onBeforeUnmount(() => {
                     v-if="props.allowUnsure"
                     hint="Press 3"
                     outline
+                    :disabled="props.disabled"
                     @click="isUnsure = true"
                 >
                     UNSURE
@@ -202,24 +209,28 @@ onBeforeUnmount(() => {
             >
                 <AnswerButton
                     hint="Press 1"
+                    :disabled="props.disabled"
                     @click="handleAnswer(2, REASON.NOT_APPLICABLE)"
                 >
                     {{ REASON.NOT_APPLICABLE }}
                 </AnswerButton>
                 <AnswerButton
                     hint="Press 2"
+                    :disabled="props.disabled"
                     @click="handleAnswer(2, REASON.AMBIGUOUS)"
                 >
                     {{ REASON.AMBIGUOUS }}
                 </AnswerButton>
                 <AnswerButton
                     hint="Press 3"
+                    :disabled="props.disabled"
                     @click="handleAnswer(2, REASON.NOT_HELPFUL)"
                 >
                     {{ REASON.NOT_HELPFUL }}
                 </AnswerButton>
                 <AnswerButton
                     hint="Press 4"
+                    :disabled="props.disabled"
                     @click="answerText = ''"
                 >
                     Other
@@ -229,11 +240,15 @@ onBeforeUnmount(() => {
                 <textarea
                     v-model="answerText"
                     rows="8"
+                    :disabled="props.disabled"
                     class="bg-gray-800 resize-none rounded-3xl"
                     placeholder="Your explanation"
                 />
                 <div class="flex justify-end mt-5">
-                    <PrimaryActionButton @click="handleAnswer(2, answerText)">
+                    <PrimaryActionButton
+                        :disabled="props.disabled"
+                        @click="handleAnswer(2, answerText)"
+                    >
                         Continue
                     </PrimaryActionButton>
                 </div>

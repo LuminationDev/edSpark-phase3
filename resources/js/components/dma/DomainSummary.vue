@@ -5,7 +5,7 @@ import imgLeading from '@/assets/images/dma/Leading.png';
 import imgLearning from '@/assets/images/dma/Learning.png';
 import imgManaging from '@/assets/images/dma/Managing.png';
 import imgTeaching from '@/assets/images/dma/Teaching.png';
-import useDomainDescription from "@/js/components/dma/domainDescription";
+import {useDomainDescription} from "@/js/components/dma/domainHelper";
 import ProgressBar from "@/js/components/dma/ProgressBar.vue";
 
 const props = defineProps({
@@ -33,20 +33,16 @@ const progressPercent = computed(() => {
     return props.domain.completed_question_count / props.domain.question_count * 100;
 })
 
-const domainName = computed(() => {
-    return props.domain.domain.toLowerCase();
-})
-
 </script>
 
 <template>
     <button
         class="bg-gray-500 domain-summary flex justify-start items-center flex-row gap-5 p-5 rounded-3xl text-white"
-        :class="`bg-${domainName}-flat`"
+        :class="`bg-${props.domain.domain}-flat`"
         @click="emit('click')"
     >
         <div class="flex justify-center items-center w-48">
-            <img :src="domainImages[domainName]">
+            <img :src="domainImages[props.domain.domain]">
         </div>
         <div class="flex content flex-col h-full text-left w-full">
             <div class="font-black mb-1 text-2xl uppercase">

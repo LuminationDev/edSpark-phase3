@@ -6,6 +6,7 @@ import DomainFlow from "@/js/components/dma/DomainFlow.vue";
 import OverlayModal from "@/js/components/dma/OverlayModal.vue";
 import TriageFlow from "@/js/components/dma/TriageFlow.vue";
 import Spinner from "@/js/components/spinner/Spinner.vue";
+import {dmaService} from "@/js/service/dmaService";
 
 const props = defineProps({
     domainId: {
@@ -32,7 +33,7 @@ const triageDomain = computed(() => {
 const showTriage = ref(null);
 
 
-onMounted(() => {
+onMounted(async () => {
     // set up initial state of survey:
 
     if (triageDomain.value) {

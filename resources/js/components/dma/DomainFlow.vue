@@ -28,6 +28,8 @@ const questions = ref(null);
 const questionId = ref(null);
 // completed is true when there are no more questions to answer
 const completed = ref(false);
+// submitting is true while an answer is being submitted
+const submitting = ref(false);
 
 const showResetModal = ref(false);
 
@@ -38,10 +40,6 @@ onMounted(async () => {
     const domainData = await dmaService.getQuestions(props.domain.id);
     if(domainData) questions.value = domainData.domain_questions;
 });
-
-const domainName = computed(() => {
-    return props.domain.domain.toLowerCase();
-})
 
 const currentQuestion = computed(() => {
     if (!questions.value) return null;
@@ -112,6 +110,7 @@ const handleNextQuestion = () => {
 }
 
 const handleAnswer = async (answer, answerText = null) => {
+    submitting.value = true;
     const nextQuestionId = getNextQuestionId(answer === 0);
 
     // check if chapter is complete
@@ -140,6 +139,8 @@ const handleAnswer = async (answer, answerText = null) => {
 
     previousQuestionId.value = questionId.value;
     questionId.value = nextQuestionId;
+
+    submitting.value = false;
 }
 
 const handlePreviousQuestion = () => {
@@ -167,7 +168,7 @@ const handleResetDomain = () => {
             />
             <CoverScreen
                 v-else-if="currentQuestion.phase === 0"
-                :theme="domainName"
+                :theme="props.domain.domain"
                 corner-controls
                 @primary="handleNextQuestion"
                 @secondary="handlePreviousQuestion"
@@ -198,8 +199,9 @@ const handleResetDomain = () => {
             </CoverScreen>
             <QuestionScreen
                 v-else
-                :theme="domainName"
+                :theme="props.domain.domain"
                 :show-previous="!!previousQuestionId"
+                :disabled="submitting"
                 @previous="handlePreviousQuestion"
                 @answer="handleAnswer"
             >
@@ -235,7 +237,7 @@ const handleResetDomain = () => {
         </template>
         <CoverScreen
             v-else
-            :theme="domainName"
+            :theme="props.domain.domain"
             @primary="emit('complete')"
             @secondary="showResetModal = true"
         >

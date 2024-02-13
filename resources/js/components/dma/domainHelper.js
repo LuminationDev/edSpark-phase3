@@ -1,4 +1,9 @@
-export default function useDomainDescription(domainName) {
+/**
+ * returns the description for a domain given its name
+ * @param domainName
+ * @returns {string}
+ */
+export function useDomainDescription(domainName) {
     switch(domainName) {
         case 'teaching':
             return "Exploring innovative teaching techniques and effective student engagement.";

@@ -8,7 +8,7 @@ import TextButton from "@/js/components/dma/TextButton.vue";
 import WarningModal from "@/js/components/dma/WarningModal.vue";
 import Spinner from "@/js/components/spinner/Spinner.vue";
 
-import useDomainDescription from "./domainDescription";
+import { useDomainDescription } from "./domainHelper";
 
 const props = defineProps({
     domain: {
@@ -35,10 +35,6 @@ const handleResetDomain = () => {
 const hideVideo =() => {
     showVideo.value = false;
 }
-
-const domainName = computed(() => {
-    return props.domain.domain.toLowerCase();
-})
 
 const domainComplete = computed(() => {
     return props.domain.completed_question_count === props.domain.question_count;
@@ -71,7 +67,7 @@ const chapters = computed(() => {
     >
         <div
             class="basis-2/3 flex flex-col h-full p-10 pt-28 relative"
-            :class="`bg-${domainName}-flat`"
+            :class="`bg-${props.domain.domain}-flat`"
         >
             <div class="flex justify-center items-center flex-1">
                 <button
