@@ -1,7 +1,6 @@
 <script setup>
 
-import { Tooltip } from "bootstrap";
-import {onBeforeUnmount, onMounted, ref, watch} from "vue";
+import {onBeforeUnmount, onMounted, ref} from "vue";
 
 import AnswerButton from "@/js/components/dma/AnswerButton.vue";
 import PrimaryActionButton from "@/js/components/dma/PrimaryActionButton.vue";

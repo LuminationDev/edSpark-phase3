@@ -35,7 +35,7 @@ const previousQuestionId = ref(null);
 
 onMounted(async () => {
     // get domain questions for the current survey
-    const domainData = await dmaService.getQuestions(props.surveyId, props.domain.id);
+    const domainData = await dmaService.getQuestions(props.domain.id);
     if(domainData) questions.value = domainData.domain_questions;
 });
 
@@ -72,7 +72,7 @@ const handleContinueSurvey = () => {
     questionId.value = props.domain.next_question_id;
 }
 
-const getNextQuestionId = (nextChapter = false) => {
+const getNextQuestionId = (nextCategory = false) => {
     if (questionId.value === null) {
         handleContinueSurvey();
         return questionId.value;
@@ -81,10 +81,9 @@ const getNextQuestionId = (nextChapter = false) => {
     const currentIndex = questions.value.findIndex(q => q.id === questionId.value);
     let nextQuestion = null;
     if (currentIndex < questions.value.length -1) {
-        if (nextChapter) {
+        if (nextCategory) {
             // if requested, skip to next category
             nextQuestion = questions.value.find((q, index) => {
-                console.log("find next category:", currentIndex, currentQuestion.value.category, index, q.category, q)
                 return index > currentIndex && q.category !== currentQuestion.value.category
             });
         } else {
@@ -112,9 +111,33 @@ const handleNextQuestion = () => {
     questionId.value = getNextQuestionId();
 }
 
-const handleAnswer = (answer, answerText = null) => {
+const handleAnswer = async (answer, answerText = null) => {
     const nextQuestionId = getNextQuestionId(answer === 0);
-    // TODO submit answer to API with next question ID
+
+    // check if chapter is complete
+    let chapterComplete = false;
+    if (nextQuestionId === null) {
+        // end of domain
+        chapterComplete = true;
+    } else {
+        const nextQuestion = questions.value.find(q => q.id === nextQuestionId);
+        if (!nextQuestion || nextQuestion.chapter !== currentQuestion.value.chapter) {
+            // next question starts a new chapter
+            chapterComplete = true;
+        }
+    }
+
+    // submit answer to API
+    const result = await dmaService.postAnswer(
+        props.domain.id,
+        questionId.value,
+        answer,
+        answerText,
+        nextQuestionId,
+        chapterComplete
+    );
+    console.log("Answer submitted:", result);
+
     previousQuestionId.value = questionId.value;
     questionId.value = nextQuestionId;
 }

@@ -29,12 +29,28 @@ const question = ref(null);
 
 onMounted(async () => {
     // get triage questions for the current survey
-    triage.value = await dmaService.getQuestions(props.surveyId, props.domain.id);
+    triage.value = await dmaService.getQuestions(props.domain.id);
 });
 
-const handleAnswer = (answer) => {
+const handleAnswer = async (answer) => {
     if (question.value < triage.value.domain_questions.length -1) {
-        // TODO submit answer
+
+        const nextQuestionId =
+            question.value < triage.value.domain_questions.length -2
+                ? triage.value.domain_questions[question.value + 1].id
+                : null;
+
+        // submit answer to API
+        const result = await dmaService.postAnswer(
+            props.domain.id,
+            triage.value.domain_questions[question.value].id,
+            answer,
+            null,
+            nextQuestionId,
+            nextQuestionId === null
+        );
+        console.log('triage answer submitted:', result);
+
         question.value += 1;
     } else {
         emit('complete');

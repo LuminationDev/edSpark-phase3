@@ -10,9 +10,28 @@ export const dmaService = {
             return res.data.data;
         })
     },
-    getQuestions: async (surveyId: string, domainId: string):Promise<AxiosResponse<any>> => {
+    getQuestions: async (domainId: string):Promise<AxiosResponse<any>> => {
         return axios.get(`${API_ENDPOINTS.DMA.USER_SURVEY}/domain/${domainId}/questions`).then(res => {
             return res.data.data;
+        })
+    },
+    postAnswer: async(
+        domainId: string,
+        questionId: string,
+        answer: number,
+        answerText: string,
+        nextQuestionId: string,
+        chapterComplete: boolean
+    ):Promise<AxiosResponse<any>> => {
+        return axios.post(`${API_ENDPOINTS.DMA.USER_SURVEY}/answer`, {
+            domain_id: domainId,
+            question_id: questionId,
+            answer,
+            answer_text: answerText,
+            next_question_id: nextQuestionId,
+            increase_completed_chapter_count: chapterComplete,
+        }).then(res => {
+            return res.data;
         })
     },
 }
