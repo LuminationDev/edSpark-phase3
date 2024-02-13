@@ -10,6 +10,7 @@ import WarningModal from "@/js/components/dma/WarningModal.vue";
 import InspirationAndGuidesRobot from "@/js/components/inspirationandguides/InspirationAndGuidesRobot.vue";
 import {LandingHeroText} from "@/js/constants/PageBlurb";
 import {dmaService} from "@/js/service/dmaService";
+import CircleDiagram from "@/js/components/dma/CircleDiagram.vue";
 
 const showSurveyModal = ref(false);
 
@@ -134,7 +135,7 @@ const handleResetSurvey = async () => {
                                 After completing your evaluation, a chart will be updated with your performance below.
                             </template>
                             <template #content>
-                                (circle diagram)
+                                <CircleDiagram/>
                             </template>
                         </BaseLandingSection>
                         <p>
