@@ -161,11 +161,11 @@ onBeforeUnmount(() => {
     >
         <div
             class="basis-1/3 h-full"
-            :class="`QuestionScreen-bg-${props.theme}`"
+            :class="`QuestionScreen-bg-${props.theme} ${props.blurBg ?
+                'bg-blur' : ''}`"
         >
             <div
                 class="flex flex-col h-full p-10 pt-36 w-full"
-                :class="{'backdrop-blur-lg': props.blurBg}"
             >
                 <div class="flex-1">
                     <slot name="contentTop" />
@@ -196,7 +196,7 @@ onBeforeUnmount(() => {
                         class="
                             absolute
                             top-[25px]
-                            right-[3px]
+                            right-[7px]
                             backdrop-blur
                             bg-gray-500/70
                             cursor-default
@@ -215,11 +215,13 @@ onBeforeUnmount(() => {
                             backdrop-blur
                             bg-gray-500/70
                             cursor-default
+                            font-medium
                             hidden
                             info-tooltip
                             p-5
                             rounded-lg
-                            w-[300px]
+                            text-base
+                            w-[400px]
                             "
                     >
                         <slot name="info" />
@@ -302,7 +304,7 @@ onBeforeUnmount(() => {
                         v-model="answerText"
                         rows="8"
                         :disabled="props.disabled"
-                        class="bg-gray-800 resize-none rounded-3xl"
+                        class="bg-black-2 border-none px-8 py-7 resize-none rounded-3xl text-medium"
                         placeholder="Your explanation"
                     />
                     <div class="flex justify-end mt-5">

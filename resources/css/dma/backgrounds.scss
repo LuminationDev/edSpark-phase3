@@ -93,7 +93,7 @@
     }
 
     /**
-     * CoverScreen component
+     * CoverScreen and QuestionScreen components
      */
     .CoverScreen-bg-triage,
     .QuestionScreen-bg-triage {
@@ -104,33 +104,67 @@
     .CoverScreen-bg-teaching,
     .CoverScreen-bg-learning,
     .CoverScreen-bg-leading,
-    .CoverScreen-bg-managing {
+    .CoverScreen-bg-managing,
+    .QuestionScreen-bg-teaching,
+    .QuestionScreen-bg-learning,
+    .QuestionScreen-bg-leading,
+    .QuestionScreen-bg-managing {
         background-repeat: no-repeat;
-        background-position: 600% 100%;
-        background-size: 90%;
 
-        .bg-blur {
-            backdrop-filter: blur(20px);
-            position: relative;
-
-            > * {
+        &.bg-blur {
+            > div {
+                backdrop-filter: blur(20px);
                 position: relative;
-            }
 
-            &:before {
-                content: "";
-                position: absolute;
-                z-index: 0;
-                inset: 0;
+                > * {
+                    position: relative;
+                }
+
+                &:before {
+                    content: "";
+                    position: absolute;
+                    z-index: 0;
+                    inset: 0;
+                }
             }
         }
     }
 
-    .CoverScreen-bg-teaching {
+    .CoverScreen-bg-teaching,
+    .CoverScreen-bg-learning,
+    .CoverScreen-bg-leading,
+    .CoverScreen-bg-managing {
+        background-position: 50% 60%;
+        background-size: 100%;
+
+        &.bg-blur {
+            background-position: 600% 100%;
+            background-size: 90%;
+        }
+    }
+
+    .QuestionScreen-bg-teaching,
+    .QuestionScreen-bg-learning,
+    .QuestionScreen-bg-leading,
+    .QuestionScreen-bg-managing {
+        background-position: -10% 100%;
+        background-size: 300%;
+    }
+
+    .CoverScreen-bg-teaching,
+    .QuestionScreen-bg-teaching {
         background-color: var(--color-blue-dark);
         background-image: url("@/assets/images/dma/illustration-teaching.png");
 
-        .bg-blur:before {
+        &:not(.bg-blur) > div {
+            background: linear-gradient(
+                204deg,
+                rgba(28, 54, 99, 0) -151.35%,
+                #122b56 65.29%
+            );
+        }
+
+        &.bg-blur > div:before {
             background: linear-gradient(
                 204deg,
                 rgba(28, 54, 99, 0) 0%,
@@ -138,11 +172,20 @@
             );
         }
     }
-    .CoverScreen-bg-learning {
+    .CoverScreen-bg-learning,
+    .QuestionScreen-bg-learning {
         background-color: var(--color-cyan-dark);
         background-image: url("@/assets/images/dma/illustration-learning.png");
 
-        .bg-blur:before {
+        &:not(.bg-blur) > div {
+            background: linear-gradient(
+                204deg,
+                rgba(99, 226, 235, 0) -151.35%,
+                #007b84 65.29%
+            );
+        }
+
+        &.bg-blur > div:before {
             background: linear-gradient(
                 204deg,
                 rgba(99, 226, 235, 0),
@@ -150,11 +193,20 @@
             );
         }
     }
-    .CoverScreen-bg-leading {
+    .CoverScreen-bg-leading,
+    .QuestionScreen-bg-leading {
         background-color: var(--color-red-dark);
         background-image: url("@/assets/images/dma/illustration-leading.png");
 
-        .bg-blur:before {
+        &:not(.bg-blur) > div {
+            background: linear-gradient(
+                204deg,
+                rgba(255, 167, 192, 0) -151.35%,
+                #9c2648 65.29%
+            );
+        }
+
+        &.bg-blur > div:before {
             background: linear-gradient(
                 204deg,
                 rgba(156, 38, 72, 0) 0%,
@@ -162,11 +214,20 @@
             );
         }
     }
-    .CoverScreen-bg-managing {
+    .CoverScreen-bg-managing,
+    .QuestionScreen-bg-managing {
         background-color: var(--color-orange-dark);
         background-image: url("@/assets/images/dma/illustration-managing.png");
 
-        .bg-blur:before {
+        &:not(.bg-blur) > div {
+            background: linear-gradient(
+                204deg,
+                rgba(203, 68, 19, 0) -151.35%,
+                #cb4413 65.29%
+            );
+        }
+
+        &.bg-blur > div:before {
             background: linear-gradient(
                 204deg,
                 rgba(203, 68, 19, 0) 0%,

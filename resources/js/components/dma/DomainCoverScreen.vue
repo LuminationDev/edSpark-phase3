@@ -163,8 +163,13 @@ const chapters = computed(() => {
                 <div
                     v-else
                 >
-                    <div class="text-lg">
-                        ✓ Completed
+                    <div
+                        class="flex justify-center items-center font-semibold gap-2 text-medium"
+                    >
+                        <img
+                            :src="iconCheck"
+                            class="opacity-60"
+                        > Completed
                     </div>
                 </div>
 

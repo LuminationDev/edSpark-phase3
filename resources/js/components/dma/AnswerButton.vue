@@ -40,7 +40,21 @@ const dynamicClasses = computed(() => {
 
 <template>
     <button
-        class="flex justify-between items-center flex-row mt-6 px-11 py-9 text-h4-caps text-white w-full"
+        class="
+            flex
+            justify-between
+            items-center
+            flex-row
+            mt-6
+            normal-case
+            px-11
+            py-9
+            rounded-2xl
+            text-h4-caps
+            text-white
+            tracking-normal
+            w-full
+            "
         :class="dynamicClasses"
         :disabled="props.disabled"
         @click="emit('click')"
@@ -48,13 +62,7 @@ const dynamicClasses = computed(() => {
         <slot />
         <span
             v-if="props.hint"
-            class="font-light hint text-gray-500 text-small"
+            class="hint normal-case text-gray-500 text-small"
         >{{ props.hint }}</span>
     </button>
 </template>
-
-<style scoped>
-    button {
-        border-radius: 16px
-    }
-</style>

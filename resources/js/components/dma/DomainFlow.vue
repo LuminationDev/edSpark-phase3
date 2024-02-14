@@ -245,11 +245,11 @@ const handleResetDomain = () => {
         >
             <template #content>
                 <div class="text-center">
-                    <h1>
-                        <span class="font-black text-4xl uppercase">Domain</span><br>
-                        <span class="font-black text-6xl uppercase">Complete</span>
+                    <h1 class="text-h3-caps">
+                        <span>Domain</span><br>
+                        <span class="text-h1-caps">Complete</span>
                     </h1>
-                    <p class="mt-10">
+                    <p class="mt-9 text-large">
                         You did great. Let's start another<br>
                         domain when you're ready.
                     </p>

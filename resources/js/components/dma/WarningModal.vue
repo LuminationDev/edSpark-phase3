@@ -18,9 +18,13 @@ const emit = defineEmits(['cancel','reset']);
         :embed="props.embed"
         :z-index="101"
     >
-        <div class="bg-white max-w-full p-5 rounded-3xl text-black w-96">
-            <div><strong><slot name="title" /></strong></div>
-            <p class="font-light">
+        <div
+            class="bg-white flex flex-col gap-3 max-w-full p-7 rounded-2xl text-black w-[400px]"
+        >
+            <h2 class="font-semibold text-medium">
+                <slot name="title" />
+            </h2>
+            <p class="text-base">
                 <slot name="message" />
             </p>
             <div class="flex justify-end flex-row gap-3 mt-5">

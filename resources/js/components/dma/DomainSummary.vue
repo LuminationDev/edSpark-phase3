@@ -1,6 +1,7 @@
 <script setup>
 import {computed} from "vue";
 
+import iconCheck from '@/assets/images/dma/icons/check.svg';
 import imgLeading from '@/assets/images/dma/illustration-leading.png';
 import imgLearning from '@/assets/images/dma/illustration-learning.png';
 import imgManaging from '@/assets/images/dma/illustration-managing.png';
@@ -38,7 +39,8 @@ const progressPercent = computed(() => {
 <template>
     <button
         class="bg-gray-500 domain-summary flex justify-start items-center flex-row gap-10 p-10 rounded-3xl text-white"
-        :class="`DomainSummary-bg-${props.domain.domain}`"
+        :class="`DomainSummary-bg-${props.domain.domain} ${props.resetting
+            ? 'opacity-50' : ''}`"
         :disabled="props.resetting"
         @click="emit('click')"
     >
@@ -54,9 +56,12 @@ const progressPercent = computed(() => {
             </div>
             <div
                 v-if="props.resetting"
-                class="font-bold"
+                class="flex justify-center items-center font-semibold gap-2 text-medium"
             >
-                ✓ Domain reset
+                <img
+                    :src="iconCheck"
+                    class="opacity-60"
+                > Domain reset
             </div>
             <div
                 v-else-if="progressPercent < 100"
@@ -71,9 +76,12 @@ const progressPercent = computed(() => {
             </div>
             <div
                 v-else
-                class="font-bold"
+                class="flex justify-center items-center font-semibold gap-2 text-medium"
             >
-                ✓ Completed
+                <img
+                    :src="iconCheck"
+                    class="opacity-60"
+                > Completed
             </div>
         </div>
     </button>
