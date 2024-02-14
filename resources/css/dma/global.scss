@@ -13,6 +13,8 @@
     --color-black-0: #000000;
     --color-black-1: #0b0a16;
     --color-black-2: #21212e;
+    --color-black-3: #363644;
+    --color-black-4: #474757;
 
     font-family: "Poppins", sans-serif;
     font-size: 16px;
@@ -23,4 +25,24 @@
 
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+
+    /* TODO: remove this, used for debugging */
+    .text-h1,
+    .text-h1-caps,
+    .text-h2,
+    .text-h2-caps,
+    .text-h3,
+    .text-h3-caps,
+    .text-h4,
+    .text-h4-caps,
+    .text-h5,
+    .text-h5-caps,
+    .text-xLarge,
+    .text-large,
+    .text-medium,
+    .text-base,
+    .text-small,
+    .text-button {
+        // color: blue !important;
+    }
 }

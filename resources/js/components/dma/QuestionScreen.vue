@@ -2,6 +2,7 @@
 
 import {onBeforeUnmount, onMounted, ref} from "vue";
 
+import iconArrowCircleLeft from '@/assets/images/dma/icons/arrow-circle-left.svg';
 import imgLeading from '@/assets/images/dma/Leading.png';
 import imgLearning from '@/assets/images/dma/Learning.png';
 import imgManaging from '@/assets/images/dma/Managing.png';
@@ -102,9 +103,7 @@ const handleBindQuestionTooltips =() => {
         // add tooltip handler
         const tooltip = anchor.dataset.bsTitle;
         anchor.addEventListener('mouseover', (event) => handleShowTooltip(event));
-        anchor.addEventListener('focus', (event) => handleShowTooltip(event));
         anchor.addEventListener('mouseout', (event) => handleHideTooltip(event));
-        anchor.addEventListener('blur', (event) => handleHideTooltip(event));
     });
 }
 
@@ -158,10 +157,10 @@ onBeforeUnmount(() => {
     >
         <div
             class="basis-1/3 h-full"
-            :class="`bg-${props.theme}-img`"
+            :class="`screen-bg-${props.theme}`"
         >
             <div
-                class="flex flex-col h-full p-10 pt-28 w-full"
+                class="flex flex-col h-full p-10 pt-36 w-full"
                 :class="{'backdrop-blur-lg': props.blurBg}"
             >
                 <div class="flex-1">
@@ -172,24 +171,22 @@ onBeforeUnmount(() => {
                 </div>
             </div>
         </div>
-        <div class="basis-2/3 bg-black flex flex-col h-full p-16 pt-10">
-            <div class="flex justify-between h-5 question-controls">
+        <div class="basis-2/3 bg-black-1 flex flex-col h-full p-16 pt-10">
+            <div class="flex justify-between h-10 question-controls">
                 <span>
                     <button
                         v-if="props.showPrevious"
+                        class="flex items-center font-bold gap-2 text-h5-caps active:hover:opacity-60 hover:opacity-80"
                         @click="handlePrevious"
                     >
-                        &lt; Previous
+                        <img :src="iconArrowCircleLeft"> Previous
                     </button>
                 </span>
-                <a
+                <span
                     v-if="$slots.info"
                     class="cursor-help info-icon relative"
-                    href="#"
                 >
-                    <div
-                        class="h-8"
-                    >ⓘ</div>
+                    <div class="h-8">ⓘ</div>
                     <div
                         class="
                             absolute
@@ -222,11 +219,11 @@ onBeforeUnmount(() => {
                     >
                         <slot name="info" />
                     </div>
-                </a>
+                </span>
             </div>
             <div
                 ref="questionRef"
-                class="flex-1 font-light mt-5 question text-2xl"
+                class="flex-1 mt-5 text-xLarge"
             >
                 <slot name="question" />
             </div>
@@ -342,14 +339,14 @@ onBeforeUnmount(() => {
         margin-top: 0.5em;
         padding-left: 1em;
     }
-    .question a, .info-tooltip a {
+    a {
         text-decoration: underline;
         &[data-bs-toggle='tooltip'] {
             cursor: help;
         }
     }
 }
-.info-icon:hover, .info-icon:focus-within {
+.info-icon:hover {
     .info-tooltip, .info-tooltip-arrow {
         display: block;
     }

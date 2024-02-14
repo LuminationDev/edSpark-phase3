@@ -22,16 +22,16 @@ const emit = defineEmits(['click'])
 const dynamicClasses = computed(() => {
     let classStr = '';
     if (props.outline) {
-        classStr = 'bg-black border-2 border-gray-800';
+        classStr = 'bg-black-1 border-2 border-gray-800';
     } else {
-        classStr = 'bg-gray-800';
+        classStr = 'bg-black-2';
     }
     if (props.disabled) {
         classStr += ' opacity-50'
     } else if (props.outline) {
         classStr += ' hover:border-gray-700';
     } else {
-        classStr += ' hover:bg-gray-700';
+        classStr += ' hover:bg-black-3 active:bg-black-4';
     }
     return classStr;
 })
@@ -39,7 +39,7 @@ const dynamicClasses = computed(() => {
 </script>
 <template>
     <button
-        class="flex justify-between items-center flex-row font-bold mt-3 p-5 rounded-xl text-lg text-white w-full"
+        class="flex justify-between items-center flex-row mt-8 px-11 py-9 text-h4-caps text-white w-full"
         :class="dynamicClasses"
         :disabled="props.disabled"
         @click="emit('click')"
@@ -47,8 +47,13 @@ const dynamicClasses = computed(() => {
         <slot />
         <span
             v-if="props.hint"
-            class="font-light hint text-gray-500 text-sm"
+            class="font-light hint text-gray-500 text-small"
         >{{ props.hint }}</span>
     </button>
 </template>
-<style></style>
+
+<style>
+    button {
+        border-radius: 16px
+    }
+</style>

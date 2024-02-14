@@ -1,4 +1,34 @@
 .dma-app-root {
+    /**
+     * Utils
+     */
+    .bg-black {
+        background-color: var(--color-black-0);
+    }
+
+    .bg-black-1 {
+        background-color: var(--color-black-1);
+    }
+
+    .bg-black-2 {
+        background-color: var(--color-black-2);
+    }
+
+    .hover\:bg-black-3 {
+        &:hover {
+            background-color: var(--color-black-3);
+        }
+    }
+
+    .active\:bg-black-4 {
+        &:active {
+            background-color: var(--color-black-4);
+        }
+    }
+
+    /**
+     * DomainSummary component
+     */
     .DomainSummary-bg-teaching {
         background: linear-gradient(131deg, #3e5c8e 23.57%, #122b56 95.07%);
     }
@@ -12,28 +42,31 @@
         background: linear-gradient(131deg, #ffd9c3 -22.29%, #cb4413 70.25%);
     }
 
-    .bg-triage-img {
-        background-color: rgba(1, 36, 39);
-    }
-
-    .bg-teaching-img {
-        background-color: var(--color-blue-dark);
-        background-image: url("/resources/assets/images/dma/Teaching.png");
+    /**
+     * Screen backgrounds
+     */
+    .screen-bg-triage {
+        background: #012427 url("@/assets/images/dma/bg-cover-triage.jpg");
         background-size: cover;
     }
-    .bg-learning-img {
-        background-color: var(--color-cyan-dark);
-        background-image: url("/resources/assets/images/dma/Learning.png");
+    .screen-bg-teaching {
+        background-image: var(--color-blue-dark)
+            url("@/assets/images/dma/Teaching.png");
         background-size: cover;
     }
-    .bg-leading-img {
-        background-color: rgba(188, 51, 66);
-        background-image: url("/resources/assets/images/dma/Leading.png");
+    .screen-bg-learning {
+        background-image: var(--color-cyan-dark)
+            url("@/assets/images/dma/Learning.png");
         background-size: cover;
     }
-    .bg-managing-img {
-        background-color: rgba(253, 145, 64);
-        background-image: url("/resources/assets/images/dma/Managing.png");
+    .screen-bg-leading {
+        background-image: var(--color-red-dark)
+            url("@/assets/images/dma/Leading.png");
+        background-size: cover;
+    }
+    .screen-bg-managing {
+        background-image: var(--color-orange-dark)
+            url("@/assets/images/dma/Managing.png");
         background-size: cover;
     }
 }

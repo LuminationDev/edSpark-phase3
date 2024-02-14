@@ -43,7 +43,7 @@ const overlayRef = ref(null)
 // If clickAway is true, clicking on the overlay outside the modal content will fire a close event
 const handleOverlayClick = (event) => {
     if (props.clickAway) {
-        if (event.target === overlayRef.value.children[0]) {
+        if (event.target === overlayRef.value) {
             emit('close');
         }
     }
