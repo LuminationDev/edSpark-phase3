@@ -96,7 +96,7 @@ const handleQuestionChange =() => {
     scrollableRef.value.scrollTop = 0;
     isUnsure.value = false;
     handleShowAnswerField(false);
-    
+
     const anchors = document.querySelectorAll('[data-bs-toggle="tooltip"]');
     anchors.forEach(anchor => {
         // prevent clicking on anchors from scrolling page to top
@@ -159,7 +159,7 @@ onBeforeUnmount(() => {
     >
         <div
             class="basis-1/3 h-full"
-            :class="`screen-bg-${props.theme}`"
+            :class="`QuestionScreen-bg-${props.theme}`"
         >
             <div
                 class="flex flex-col h-full p-10 pt-36 w-full"
@@ -226,7 +226,7 @@ onBeforeUnmount(() => {
             </div>
             <div
                 ref="scrollableRef"
-                class="flex flex-1 flex-col overflow-scroll pb-16 pt-5 px-16"
+                class="flex flex-1 flex-col overflow-x-none overflow-y-scroll pb-16 pt-5 px-16"
             >
                 <div
                     ref="questionRef"

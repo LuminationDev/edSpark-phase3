@@ -175,15 +175,15 @@ const handleResetDomain = () => {
                 @secondary="handlePreviousQuestion"
             >
                 <template #content>
-                    <div class="">
-                        <div class="font-black font-bold text-xl uppercase">
+                    <div>
+                        <div class="text-h5-caps">
                             Chapter {{ chapters.indexOf(currentQuestion.chapter)+1 }}/{{ chapters.length }}
                         </div>
-                        <h2 class="font-black text-6xl uppercase">
+                        <h2 class="text-h1-caps">
                             {{ currentQuestion.chapter_print }}
                         </h2>
                         <div
-                            class="mt-10"
+                            class="mt-10 text-large"
                             v-html="currentQuestion.description"
                         />
                     </div>
