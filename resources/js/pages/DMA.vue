@@ -102,8 +102,8 @@ const showResetting = async () => {
 
 const handleResetDomain = async () => {
     showSurveyModal.value = false;
-    await showResetting();
     await dmaService.resetDomainProgress(selectedDomainId.value);
+    await showResetting();
 }
 
 const isDomainResetting = (domainId = null) => {
