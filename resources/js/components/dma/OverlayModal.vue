@@ -43,7 +43,7 @@ const overlayRef = ref(null)
 // If clickAway is true, clicking on the overlay outside the modal content will fire a close event
 const handleOverlayClick = (event) => {
     if (props.clickAway) {
-        if (event.target === overlayRef.value) {
+        if (event.target === overlayRef.value.children[0]) {
             emit('close');
         }
     }
@@ -52,18 +52,22 @@ const handleOverlayClick = (event) => {
 </script>
 
 <template>
-    <focus-trap active>
-        <div
-            ref="overlayRef"
-            tab-index="-1"
-            class="dma-app-root fixed top-0 right-0 bottom-0 left-0 flex justify-center items-center overlay p-10"
-            :class="`bg-black/80 ${embed ? 'absolute' : 'fixed'}`"
-            :style="{zIndex: props.zIndex}"
-            @click="handleOverlayClick"
-        >
-            <slot />
-        </div>
-    </focus-trap>
+    <div
+        ref="overlayRef"
+        class="dma-app-root fixed top-0 right-0 bottom-0 left-0"
+        :class="embed ? 'absolute' : 'fixed'"
+        :style="{zIndex: props.zIndex}"
+        @click="handleOverlayClick"
+    >
+        <focus-trap active>
+            <div
+                tab-index="-1"
+                class="bg-black/80 flex justify-center items-center h-full overlay p-10 w-full"
+            >
+                <slot />
+            </div>
+        </focus-trap>
+    </div>
 </template>
 
 <style scoped>
