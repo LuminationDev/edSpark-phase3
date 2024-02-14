@@ -28,6 +28,31 @@ class SurveyController extends Controller
             $survey_domains = UserSurveyDomain::where('user_survey_id', $userSurvey->id)
                 ->where('status', '<>', 'Abandoned')
                 ->get();
+            foreach ($survey_domains as &$survey_domain) {
+                /** Get the user scores for each category
+                 * This query gets all the questions for the domain
+                 * and the corresponding user answers
+                 * Gives a score of 0 - MAX(Phase) for each category
+                 *  The score is 0 if unanswered, or if the user said 0 to phase 1
+                 *  otherwise it is the phase of the highest phase question
+                 *  they answered yes to.
+                 */
+                $results = Question::selectRaw("
+                MAX(CASE WHEN answer = '1'
+                            THEN phase
+                            ELSE 0
+                            END) as value,
+                            category_print as category")
+                    ->leftJoin('user_answers', function ($join) use ($survey_domain) {
+                        $join->on('questions.id', '=', 'user_answers.question_id')
+                            ->where('user_answers.user_survey_domain_id', '=', $survey_domain->id);
+                    })
+                    ->where('questions.domain','=', $survey_domain->domain)
+                    ->whereNotNull('category_print')
+                    ->groupBy('category_print')
+                    ->get();
+                $survey_domain['results'] = $results;
+            }
         } else {
             Log::info('Creating new survey for user');
             // need to create an active survey before wrangling
@@ -40,7 +65,9 @@ class SurveyController extends Controller
             $userSurvey = UserSurvey::makeNew($survey, $user->id);
             // make the user_survey_domains
             foreach (Question::$DOMAINS as $domain) {
-                $survey_domains[] = UserSurveyDomain::makeNew($userSurvey, $domain);
+                $temp = UserSurveyDomain::makeNew($userSurvey, $domain);
+                $temp['results'] = [];
+                $survey_domains[] = $temp;
             }
         }
 
@@ -115,7 +142,7 @@ class SurveyController extends Controller
             if ($increaseCompletedChapterCount) {
                 ++$currentUserSurveyDomain->completed_chapter_count;
             }
-            if($nextQuestionId == null) {
+            if ($nextQuestionId == null) {
                 $currentUserSurveyDomain->completed_question_count = $currentUserSurveyDomain->question_count;
             } else {
                 // increase question count to the next question id
