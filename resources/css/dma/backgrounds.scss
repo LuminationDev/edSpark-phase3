@@ -50,23 +50,49 @@
         background-size: cover;
     }
     .screen-bg-teaching {
-        background-image: var(--color-blue-dark)
-            url("@/assets/images/dma/Teaching.png");
+        background-color: var(--color-blue-dark);
+        background-image: linear-gradient(
+                173deg,
+                rgba(62, 92, 142, 0) 3.32%,
+                rgba(28, 54, 99, 0.95) 64.68%,
+                #122b56 100%
+            ),
+            url("@/assets/images/dma/illustration-teaching.png"),
+            url("@/assets/images/dma/bg-cover-teaching.jpg");
         background-size: cover;
     }
     .screen-bg-learning {
-        background-image: var(--color-cyan-dark)
-            url("@/assets/images/dma/Learning.png");
+        background-color: var(--color-cyan-dark);
+        background-image: linear-gradient(
+                173deg,
+                rgba(99, 226, 235, 0) 3.32%,
+                rgba(0, 123, 132, 0.95) 64.68%,
+                #007b84 100%
+            ),
+            url("@/assets/images/dma/illustration-learning.png"),
+            url("@/assets/images/dma/bg-cover-learning.jpg");
         background-size: cover;
     }
     .screen-bg-leading {
-        background-image: var(--color-red-dark)
-            url("@/assets/images/dma/Leading.png");
+        background-color: var(--color-red-dark);
+        background-image: linear-gradient(
+                175deg,
+                rgba(255, 167, 192, 0.29) 30.86%,
+                #9c2648 77.89%
+            ),
+            url("@/assets/images/dma/illustration-leading.png"),
+            url("@/assets/images/dma/bg-cover-leading.jpg");
         background-size: cover;
     }
     .screen-bg-managing {
-        background-image: var(--color-orange-dark)
-            url("@/assets/images/dma/Managing.png");
+        background-color: var(--color-orange-dark);
+        background-image: linear-gradient(
+                175deg,
+                rgba(203, 68, 19, 0.4) 32.87%,
+                #cb4413 77.89%
+            ),
+            url("@/assets/images/dma/illustration-managing.png"),
+            url("@/assets/images/dma/bg-cover-managing.jpg");
         background-size: cover;
     }
 }

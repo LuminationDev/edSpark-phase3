@@ -77,7 +77,7 @@ const chapters = computed(() => {
     >
         <div
             class="basis-2/3 flex flex-col h-full p-10 pt-28 relative"
-            :class="`bg-${props.domain.domain}-img`"
+            :class="`screen-bg-${props.domain.domain}`"
         >
             <div class="flex justify-center items-center flex-1">
                 <button

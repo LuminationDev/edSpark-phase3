@@ -1,10 +1,10 @@
 <script setup>
 import {computed} from "vue";
 
-import imgLeading from '@/assets/images/dma/Leading.png';
-import imgLearning from '@/assets/images/dma/Learning.png';
-import imgManaging from '@/assets/images/dma/Managing.png';
-import imgTeaching from '@/assets/images/dma/Teaching.png';
+import imgLeading from '@/assets/images/dma/illustration-leading.png';
+import imgLearning from '@/assets/images/dma/illustration-learning.png';
+import imgManaging from '@/assets/images/dma/illustration-managing.png';
+import imgTeaching from '@/assets/images/dma/illustration-teaching.png';
 import {useDomainDescription} from "@/js/components/dma/domainHelper";
 import ProgressBar from "@/js/components/dma/ProgressBar.vue";
 
