@@ -16,7 +16,6 @@ import {dmaService} from "@/js/service/dmaService";
 
 const showSurveyModal = ref(false);
 
-// TODO survey details populated by API
 const surveyDetails = ref(null);
 
 const selectedDomainId = ref(null);

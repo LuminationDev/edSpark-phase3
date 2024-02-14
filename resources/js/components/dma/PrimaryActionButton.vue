@@ -24,11 +24,11 @@ const handleEnter = (event => {
 
 onMounted(() => {
     // globally capture enter keypress event
-    window.addEventListener('keydown', handleEnter);
+    window.addEventListener('keyup', handleEnter);
 })
 onBeforeUnmount(() => {
     // release enter keypress event
-    window.removeEventListener('keydown', handleEnter);
+    window.removeEventListener('keyup', handleEnter);
 })
 
 </script>

@@ -10,7 +10,7 @@ const props = defineProps({
         default: 100,
     },
     scores: {
-        type: Array<any>, // TODO structured type: { category, colour, score }
+        type: Array<any>, // TODO structured type: { domain, category, score }
         required: true,
     }
 });

@@ -103,7 +103,9 @@ const handleBindQuestionTooltips =() => {
         // add tooltip handler
         const tooltip = anchor.dataset.bsTitle;
         anchor.addEventListener('mouseover', (event) => handleShowTooltip(event));
+        anchor.addEventListener('focus', (event) => handleShowTooltip(event));
         anchor.addEventListener('mouseout', (event) => handleHideTooltip(event));
+        anchor.addEventListener('blur', (event) => handleHideTooltip(event));
     });
 }
 
@@ -129,10 +131,9 @@ const handleHideTooltip = (event) => {
 
 onMounted(() => {
     // globally capture number keypress events
-    window.addEventListener('keydown', handleKeypress);
+    window.addEventListener('keyup', handleKeypress);
 
     // observe changes to the question slot and handle tooltips on anchors
-    // TODO not very Vue friendly
     handleBindQuestionTooltips();
     questionObserver = new MutationObserver(handleBindQuestionTooltips);
     questionObserver.observe(questionRef.value, {
@@ -142,7 +143,7 @@ onMounted(() => {
 })
 onBeforeUnmount(() => {
     // release keypress event
-    window.removeEventListener('keydown', handleKeypress);
+    window.removeEventListener('keyup', handleKeypress);
 
     // disconnect from observing the question slot
     questionObserver.disconnect();
@@ -182,9 +183,10 @@ onBeforeUnmount(() => {
                         <img :src="iconArrowCircleLeft"> Previous
                     </button>
                 </span>
-                <span
+                <a
                     v-if="$slots.info"
                     class="cursor-help info-icon relative"
+                    href="#"
                 >
                     <div class="h-8">ⓘ</div>
                     <div
@@ -219,11 +221,11 @@ onBeforeUnmount(() => {
                     >
                         <slot name="info" />
                     </div>
-                </span>
+                </a>
             </div>
             <div
                 ref="questionRef"
-                class="flex-1 mt-5 text-xLarge"
+                class="flex-1 mt-5 question text-xLarge"
             >
                 <slot name="question" />
             </div>
@@ -339,14 +341,14 @@ onBeforeUnmount(() => {
         margin-top: 0.5em;
         padding-left: 1em;
     }
-    a {
+    .question a, .info-tooltip a {
         text-decoration: underline;
         &[data-bs-toggle='tooltip'] {
             cursor: help;
         }
     }
 }
-.info-icon:hover {
+.info-icon:hover, .info-icon:focus-within {
     .info-tooltip, .info-tooltip-arrow {
         display: block;
     }

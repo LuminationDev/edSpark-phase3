@@ -39,6 +39,7 @@ const progressPercent = computed(() => {
     <button
         class="bg-gray-500 domain-summary flex justify-start items-center flex-row gap-10 p-10 rounded-3xl text-white"
         :class="`DomainSummary-bg-${props.domain.domain}`"
+        :disabled="props.resetting"
         @click="emit('click')"
     >
         <div class="flex shrink-0 justify-center items-center w-44">
