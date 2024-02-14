@@ -3,6 +3,7 @@
 import {onBeforeUnmount, onMounted, ref} from "vue";
 
 import iconArrowCircleLeft from '@/assets/images/dma/icons/arrow-circle-left.svg';
+import iconInfoCircle from '@/assets/images/dma/icons/info-circle.svg';
 import imgLeading from '@/assets/images/dma/Leading.png';
 import imgLearning from '@/assets/images/dma/Learning.png';
 import imgManaging from '@/assets/images/dma/Managing.png';
@@ -121,6 +122,7 @@ const handleShowTooltip = (event) => {
     tooltipRef.value.style.left = `${targetRect.left - screenRect.left}px`;
     tooltipRef.value.style.top = `${targetRect.bottom - screenRect.top + 5}px`;
 }
+
 const handleHideTooltip = (event) => {
     if (tooltipTarget.value === event.target) {
         tooltipTarget.value = null;
@@ -189,7 +191,7 @@ onBeforeUnmount(() => {
                     class="cursor-help info-icon relative"
                     href="#"
                 >
-                    <div class="h-8">ⓘ</div>
+                    <div class="h-8"><img :src="iconInfoCircle"></div>
                     <div
                         class="
                             absolute

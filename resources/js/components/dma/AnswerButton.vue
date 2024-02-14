@@ -40,7 +40,7 @@ const dynamicClasses = computed(() => {
 
 <template>
     <button
-        class="flex justify-between items-center flex-row mt-8 px-11 py-9 text-h4-caps text-white w-full"
+        class="flex justify-between items-center flex-row mt-6 px-11 py-9 text-h4-caps text-white w-full"
         :class="dynamicClasses"
         :disabled="props.disabled"
         @click="emit('click')"

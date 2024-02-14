@@ -208,19 +208,19 @@ const handleResetDomain = () => {
                 @answer="handleAnswer"
             >
                 <template #contentTop>
-                    <div class="font-black font-bold uppercase">
+                    <div class="text-h5-caps">
                         Chapter {{ chapters.indexOf(currentQuestion.chapter)+1 }}/{{ chapters.length }}
                     </div>
-                    <h3 class="font-black text-3xl uppercase">
+                    <h3 class="mt-1 text-h3-caps">
                         {{ currentQuestion.chapter_print }}
                     </h3>
-                    <p class="font-light mt-10">
+                    <p class="mt-7 text-medium">
                         {{ currentQuestion.category_print }}
                     </p>
                 </template>
                 <template #contentBottom>
                     <h2
-                        class="font-black text-4xl uppercase"
+                        class="mb-6 text-h3-caps"
                     >
                         {{ domain.domain }}
                     </h2>
