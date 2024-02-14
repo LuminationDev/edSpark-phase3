@@ -170,6 +170,7 @@ const handleResetDomain = () => {
                 v-else-if="currentQuestion.phase === 0"
                 :theme="props.domain.domain"
                 corner-controls
+                blur-bg
                 @primary="handleNextQuestion"
                 @secondary="handlePreviousQuestion"
             >
@@ -202,6 +203,7 @@ const handleResetDomain = () => {
                 :theme="props.domain.domain"
                 :show-previous="!!previousQuestionId"
                 :disabled="submitting"
+                blur-bg
                 @previous="handlePreviousQuestion"
                 @answer="handleAnswer"
             >

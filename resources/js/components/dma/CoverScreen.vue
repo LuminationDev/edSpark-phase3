@@ -11,6 +11,10 @@ const props = defineProps({
     cornerControls: {
         type: Boolean,
         required: false,
+    },
+    blurBg: {
+        type: Boolean,
+        required: false,
     }
 })
 
@@ -23,7 +27,10 @@ const emit = defineEmits(['primary', 'secondary']);
         class="cover-screen h-full w-full"
         :class="`bg-${props.theme}-img`"
     >
-        <div class="backdrop-blur-lg flex justify-start items-center flex-col gap-10 h-full p-20 w-full">
+        <div
+            class="flex justify-start items-center flex-col gap-10 h-full p-20 w-full"
+            :class="{'backdrop-blur-lg': props.blurBg}"
+        >
             <div class="flex justify-center items-center flex-1 w-full">
                 <slot name="content" />
             </div>

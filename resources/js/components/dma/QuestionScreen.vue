@@ -27,6 +27,10 @@ const props = defineProps({
     disabled: {
         type: Boolean,
         required: false,
+    },
+    blurBg: {
+        type: Boolean,
+        required: false,
     }
 })
 
@@ -59,23 +63,35 @@ const tooltipContent = ref('');
 
 const handleKeypress = (event) => {
     const keyList = ['1','2','3','4'];
-    if (keyList.includes(event.key)) {
+    // capture keypresses if screen is not disabled and not currently typing an answer
+    if (!props.disabled && answerText.value == null && keyList.includes(event.key)) {
         if(!isUnsure.value) {
             if (event.key === '1') handleAnswer(1);
             if (event.key === '2') handleAnswer(0);
             if (event.key === '3') isUnsure.value = true;
         } else {
-            if (event.key === '1') handleAnswer(2);
-            if (event.key === '2') handleAnswer(3);
-            if (event.key === '3') handleAnswer(4);
-            if (event.key === '4') handleAnswer(5);
+            if (event.key === '1') handleAnswer(2, REASON.NOT_APPLICABLE);
+            if (event.key === '2') handleAnswer(2, REASON.AMBIGUOUS);
+            if (event.key === '3') handleAnswer(2, REASON.NOT_HELPFUL);
+            if (event.key === '4') handleShowAnswerField();
         }
     }
 }
 
-const handleAnswer = (answer, answerText) => {
-    emit('answer', answer, answerText);
+const handleShowAnswerField = (show = true) => {
+    answerText.value = show ? '' : null;
+}
+
+const handlePrevious = () => {
     isUnsure.value = false;
+    handleShowAnswerField(false);
+    emit('previous');
+}
+
+const handleAnswer = (answer, text) => {
+    isUnsure.value = false;
+    handleShowAnswerField(false);
+    emit('answer', answer, text);
 }
 
 const handleBindQuestionTooltips =() => {
@@ -139,14 +155,19 @@ onBeforeUnmount(() => {
         class="flex justify-start items-center flex-row h-full question-screen w-full"
     >
         <div
-            class="basis-1/3 flex flex-col h-full p-10 pt-28"
+            class="basis-1/3 h-full"
             :class="`bg-${props.theme}-img`"
         >
-            <div class="flex-1">
-                <slot name="contentTop" />
-            </div>
-            <div>
-                <slot name="contentBottom" />
+            <div
+                class="flex flex-col h-full p-10 pt-28 w-full"
+                :class="{'backdrop-blur-lg': props.blurBg}"
+            >
+                <div class="flex-1">
+                    <slot name="contentTop" />
+                </div>
+                <div>
+                    <slot name="contentBottom" />
+                </div>
             </div>
         </div>
         <div class="basis-2/3 bg-black flex flex-col h-full p-16 pt-10">
@@ -154,7 +175,7 @@ onBeforeUnmount(() => {
                 <span>
                     <button
                         v-if="props.showPrevious"
-                        @click="emit('previous')"
+                        @click="handlePrevious"
                     >
                         &lt; Previous
                     </button>
@@ -260,7 +281,7 @@ onBeforeUnmount(() => {
                 <AnswerButton
                     hint="Press 4"
                     :disabled="props.disabled"
-                    @click="answerText = ''"
+                    @click="handleShowAnswerField"
                 >
                     Other
                 </AnswerButton>
