@@ -54,15 +54,19 @@ const handleOverlayClick = (event) => {
 <template>
     <div
         ref="overlayRef"
-        class="dma-app-root fixed top-0 right-0 bottom-0 left-0"
+        class="dma-app-root fixed top-0 right-0 bottom-0 left-0 overlay"
+        tab-index="-1"
         :class="embed ? 'absolute' : 'fixed'"
         :style="{zIndex: props.zIndex}"
         @click="handleOverlayClick"
     >
-        <focus-trap active>
+        <focus-trap
+            active
+            fallback-focus=".dma-app-root"
+        >
             <div
                 tab-index="-1"
-                class="bg-black/80 flex justify-center items-center h-full overlay p-10 w-full"
+                class="bg-black/80 flex justify-center items-center h-full p-10 w-full"
             >
                 <slot />
             </div>

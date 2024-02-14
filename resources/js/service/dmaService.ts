@@ -6,7 +6,6 @@ export const dmaService = {
     // TODO proper typing on APIs
     getSurvey: async ():Promise<AxiosResponse<any>> => {
         return axios.get(API_ENDPOINTS.DMA.USER_SURVEY, {}).then(res => {
-            console.log("survey data", res.data.data);
             return res.data.data;
         })
     },

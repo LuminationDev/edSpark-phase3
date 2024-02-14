@@ -95,7 +95,12 @@ const handleHideTooltip = () => {
             </g>
 
             <mask id="line_mask">
-                <circle cx="0" cy="0" :r="size/2" fill="white"/>
+                <circle
+                    cx="0"
+                    cy="0"
+                    :r="size/2"
+                    fill="white"
+                />
                 <line
                     v-for="n of num_angles"
                     :key="n"
@@ -111,7 +116,7 @@ const handleHideTooltip = () => {
         </svg>
         <div
             ref="tooltipRef"
-            class="absolute bg-black category-tooltip hidden p-3 rounded text-center text-white uppercase w-[150px]"
+            class="absolute bg-black category-tooltip hidden p-3 rounded text-center text-white uppercase w-[180px]"
         >
             {{ tooltipTarget?.dataset.label }}
         </div>

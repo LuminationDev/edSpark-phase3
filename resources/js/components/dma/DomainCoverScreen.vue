@@ -2,6 +2,11 @@
 
 import {computed, ref} from "vue";
 
+import vidTeaching from '@/assets/video/temporary.mp4';
+// import vidTeaching from '@/assets/video/dma/teaching.mp4';
+// import vidLeading from '@/assets/video/dma/leading.mp4';
+// import vidLearning from '@/assets/video/dma/learning.mp4';
+// import vidManaging from '@/assets/video/dma/managing.mp4';
 import OverlayModal from "@/js/components/dma/OverlayModal.vue";
 import PrimaryActionButton from "@/js/components/dma/PrimaryActionButton.vue";
 import TextButton from "@/js/components/dma/TextButton.vue";
@@ -19,21 +24,26 @@ const props = defineProps({
         type: Array,
         required: false,
         default: null,
-    }
+    },
 })
 
 const emit = defineEmits(['continue','reset']);
 
+// map domains to their images
+// TODO insert video paths when available
+const domainVideos = {
+    teaching: vidTeaching,
+    learning: null, //vidLearning,
+    leading: null, //vidLeading,
+    managing: null, //vidManaging
+};
+
 const showResetModal = ref(false);
-const showVideo = ref(false);
+const showVideoModal = ref(false);
 
 const handleResetDomain = () => {
     showResetModal.value = false;
     emit('reset');
-}
-
-const hideVideo =() => {
-    showVideo.value = false;
 }
 
 const domainComplete = computed(() => {
@@ -71,8 +81,9 @@ const chapters = computed(() => {
         >
             <div class="flex justify-center items-center flex-1">
                 <button
+                    v-if="domainVideos[domain.domain] !== null"
                     class="bg-black/50 flex justify-center items-center h-16 rounded-full w-16"
-                    @click="showVideo = true"
+                    @click="showVideoModal = true"
                 >
                     ▶
                 </button>
@@ -88,16 +99,16 @@ const chapters = computed(() => {
                 </p>
             </div>
             <OverlayModal
-                v-if="showVideo"
+                v-if="showVideoModal"
                 :embed="true"
                 :click-away="true"
-                @close="hideVideo"
+                @close="showVideoModal = false"
             >
                 <video
-                    src="@/assets/video/temporary.mp4"
+                    :src="domainVideos[domain.domain]"
                     controls
                     autoplay
-                    @ended="hideVideo"
+                    @ended="showVideoModal = false"
                 />
             </OverlayModal>
         </div>
