@@ -1,4 +1,6 @@
 <script setup>
+import "@/css/dma/index.css";
+
 import {computed, onMounted, ref} from 'vue';
 
 import BaseLandingHero from "@/js/components/bases/BaseLandingHero.vue";
@@ -118,7 +120,7 @@ const handleResetSurvey = async () => {
 </script>
 
 <template>
-    <div>
+    <div id="dma-app">
         <BaseLandingHero
             :title="LandingHeroText['dma']['title']"
             :title-paragraph="LandingHeroText['dma']['subtitle']"
