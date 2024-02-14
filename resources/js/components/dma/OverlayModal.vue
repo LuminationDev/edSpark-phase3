@@ -7,10 +7,6 @@ const props = defineProps({
         type: Boolean,
         default: false,
     },
-    shade: {
-        type: Number,
-        default: 80,
-    },
     zIndex: {
         type: Number,
         default: 50,
@@ -56,18 +52,18 @@ const handleOverlayClick = (event) => {
 </script>
 
 <template>
-    <div
-        ref="overlayRef"
-        tab-index="-1"
-        class="dma-app-root fixed top-0 right-0 bottom-0 left-0 flex justify-center items-center overlay p-10"
-        :class="`bg-black/${props.shade} ${embed ? 'absolute' : 'fixed'}`"
-        :style="{zIndex: props.zIndex}"
-        @click="handleOverlayClick"
-    >
-        <focus-trap active>
+    <focus-trap active>
+        <div
+            ref="overlayRef"
+            tab-index="-1"
+            class="dma-app-root fixed top-0 right-0 bottom-0 left-0 flex justify-center items-center overlay p-10"
+            :class="`bg-black/80 ${embed ? 'absolute' : 'fixed'}`"
+            :style="{zIndex: props.zIndex}"
+            @click="handleOverlayClick"
+        >
             <slot />
-        </focus-trap>
-    </div>
+        </div>
+    </focus-trap>
 </template>
 
 <style scoped>

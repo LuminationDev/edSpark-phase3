@@ -102,7 +102,9 @@ const handleBindQuestionTooltips =() => {
         // add tooltip handler
         const tooltip = anchor.dataset.bsTitle;
         anchor.addEventListener('mouseover', (event) => handleShowTooltip(event));
+        anchor.addEventListener('focus', (event) => handleShowTooltip(event));
         anchor.addEventListener('mouseout', (event) => handleHideTooltip(event));
+        anchor.addEventListener('blur', (event) => handleHideTooltip(event));
     });
 }
 
@@ -180,11 +182,14 @@ onBeforeUnmount(() => {
                         &lt; Previous
                     </button>
                 </span>
-                <span
+                <a
                     v-if="$slots.info"
                     class="cursor-help info-icon relative"
+                    href="#"
                 >
-                    <div class="h-8">ⓘ</div>
+                    <div
+                        class="h-8"
+                    >ⓘ</div>
                     <div
                         class="
                             absolute
@@ -217,7 +222,7 @@ onBeforeUnmount(() => {
                     >
                         <slot name="info" />
                     </div>
-                </span>
+                </a>
             </div>
             <div
                 ref="questionRef"
@@ -337,14 +342,14 @@ onBeforeUnmount(() => {
         margin-top: 0.5em;
         padding-left: 1em;
     }
-    a {
+    .question a, .info-tooltip a {
         text-decoration: underline;
         &[data-bs-toggle='tooltip'] {
             cursor: help;
         }
     }
 }
-.info-icon:hover {
+.info-icon:hover, .info-icon:focus-within {
     .info-tooltip, .info-tooltip-arrow {
         display: block;
     }
