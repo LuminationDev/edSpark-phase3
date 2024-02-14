@@ -10,10 +10,10 @@ const showAnswer = ref(false);
         @click="showAnswer = !showAnswer"
     >
         <div class="flex justify-between items-center question-row">
-            <div class="text-2xl">
+            <div class="text-large">
                 <slot name="question" />
             </div>
-            <div class="text-2xl toggle">
+            <div class="text-large toggle">
                 <div
                     class="flex justify-center items-center h-8 w-8"
                 >
@@ -24,7 +24,7 @@ const showAnswer = ref(false);
         </div>
         <div
             v-if="showAnswer"
-            class="font-light mt-5 text-left"
+            class="font-light mt-5 text-base text-left"
         >
             <slot name="answer" />
         </div>

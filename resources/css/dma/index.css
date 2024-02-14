@@ -1,3 +1,18 @@
-@import "./global.css";
-@import "./typography.css";
-@import "./backgrounds.css";
+@import "./global.scss";
+@import "./typography.scss";
+@import "./backgrounds.scss";
+
+/* TODO: remove this, used for debugging */
+.text-h1,
+.text-h1-caps,
+.text-h2,
+.text-h2-caps,
+.text-h3,
+.text-h3-caps,
+.text-large,
+.text-medium,
+.text-base,
+.text-small,
+.text-button {
+    /* color: blue !important; */
+}

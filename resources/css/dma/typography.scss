@@ -1,0 +1,76 @@
+.dma-app-root {
+    /**
+     * Text styles
+     */
+    .text-h1,
+    .text-h1-caps {
+        font-size: 40px;
+        font-weight: 600;
+
+        @media screen and (min-width: 768px) {
+            font-size: 96px;
+        }
+    }
+
+    .text-h2,
+    .text-h2-caps {
+        font-size: 32px;
+        font-weight: 600;
+
+        @media screen and (min-width: 768px) {
+            font-size: 64px;
+        }
+    }
+
+    .text-h3,
+    .text-h3-caps {
+        font-size: 20px;
+        font-weight: 600;
+
+        @media screen and (min-width: 768px) {
+            font-size: 36px;
+        }
+    }
+
+    .text-h1-caps,
+    .text-h2-caps,
+    .text-h3-caps {
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
+        font-weight: 700;
+    }
+
+    .text-large {
+        font-size: 16px;
+        line-height: 1.5;
+
+        @media screen and (min-width: 768px) {
+            font-size: 24px;
+        }
+    }
+
+    .text-medium {
+        font-size: 16px;
+        line-height: 1.5;
+
+        @media screen and (min-width: 768px) {
+            font-size: 20px;
+        }
+    }
+
+    .text-base {
+        font-size: 16px;
+        line-height: 1.5;
+    }
+
+    .text-small {
+        font-size: 14px;
+        line-height: 1.4;
+    }
+
+    // Specific to button components
+    .text-button {
+        font-size: 20px;
+        line-height: 1.5;
+    }
+}

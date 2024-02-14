@@ -117,7 +117,7 @@ const handleResetSurvey = async () => {
 </script>
 
 <template>
-    <div id="dma-app">
+    <div class="dma-app-root">
         <BaseLandingHero
             :title="LandingHeroText['dma']['title']"
             :title-paragraph="LandingHeroText['dma']['subtitle']"
@@ -131,7 +131,9 @@ const handleResetSurvey = async () => {
             background-color="white"
         >
             <template #title>
-                Your DMA
+                <h2 class="text-h3">
+                    Your DMA
+                </h2>
             </template>
             <template #content>
                 <div v-if="!surveyDetails">
@@ -147,16 +149,22 @@ const handleResetSurvey = async () => {
                     >
                         <BaseLandingSection>
                             <template #title>
-                                Results
+                                <h3 class="text-h3">
+                                    Results
+                                </h3>
                             </template>
                             <template #subtitle>
-                                After completing your evaluation, a chart will be updated with your performance below.
+                                <p class="text-base">
+                                    After completing your evaluation, a
+                                    chart will be updated with your
+                                    performance below.
+                                </p>
                             </template>
                             <template #content>
                                 <CircleDiagram :scores="categoryScores" />
                             </template>
                         </BaseLandingSection>
-                        <p>
+                        <p class="text-base">
                             <!-- TODO correct this information -->
                             The tool is for you and your school. Your data is only stored locally in the
                             current profile of your web browser. You can generate a PDF report for sharing within
@@ -200,10 +208,12 @@ const handleResetSurvey = async () => {
 
         <BaseLandingSection>
             <template #title>
-                Frequently Asked
+                <h2 class="text-h3">
+                    Frequently Asked
+                </h2>
             </template>
             <template #subtitle>
-                <div class="mb-10">
+                <div class="mb-10 text-medium">
                     The Digital Adoption Group (DAG) offers comprehensive guidance on digital technologies,
                     providing practical, system-wide advice for purchasing and adopting high-impact technologies
                     that enhance teaching and learning.

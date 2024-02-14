@@ -37,18 +37,18 @@ const progressPercent = computed(() => {
 
 <template>
     <button
-        class="bg-gray-500 domain-summary flex justify-start items-center flex-row gap-5 p-5 rounded-3xl text-white"
-        :class="`bg-${props.domain.domain}-gradient`"
+        class="bg-gray-500 domain-summary flex justify-start items-center flex-row gap-10 p-10 rounded-3xl text-white"
+        :class="`DomainSummary-bg-${props.domain.domain}`"
         @click="emit('click')"
     >
-        <div class="flex justify-center items-center w-48">
+        <div class="flex shrink-0 justify-center items-center w-44">
             <img :src="domainImages[props.domain.domain]">
         </div>
         <div class="flex content flex-col h-full text-left w-full">
-            <div class="font-black mb-1 text-2xl uppercase">
+            <div class="mb-1 text-h3-caps">
                 {{ props.domain.domain }}
             </div>
-            <div class="flex-1 font-base opacity-70 text-lg">
+            <div class="flex-1 font-medium mb-8 opacity-60 text-medium">
                 {{ useDomainDescription(props.domain.domain) }}
             </div>
             <div
@@ -64,7 +64,7 @@ const progressPercent = computed(() => {
                 <div class="bg-white/20 flex-1 h-2 progress-bar-track rounded-full">
                     <ProgressBar :percent="progressPercent" />
                 </div>
-                <div class="font-bold progress-value text-xl">
+                <div class="font-bold progress-value text-medium">
                     {{ props.domain.completed_chapter_count }}/{{ props.domain.chapter_count }}
                 </div>
             </div>

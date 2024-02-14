@@ -27,6 +27,10 @@ const emit = defineEmits(['close']);
 // (embedded modals do not block scrolling)
 onMounted(() => {
     if(!props.embed) {
+        // add a right inset to account for the scroll bar disappearing
+        // if it was visible
+        const scrollBarWidth = window.innerWidth - document.documentElement.clientWidth
+        document.body.style.paddingRight = `${scrollBarWidth}px`;
         document.body.style.overflowY = 'hidden';
     }
 })
@@ -34,6 +38,7 @@ onMounted(() => {
 onBeforeUnmount(() => {
     if(!props.embed) {
         document.body.style.overflowY = 'auto';
+        document.body.style.paddingRight = '0px';
     }
 })
 
@@ -54,7 +59,7 @@ const handleOverlayClick = (event) => {
     <div
         ref="overlayRef"
         tab-index="-1"
-        class="fixed top-0 right-0 bottom-0 left-0 flex justify-center items-center overlay p-10"
+        class="dma-app-root fixed top-0 right-0 bottom-0 left-0 flex justify-center items-center overlay p-10"
         :class="`bg-black/${props.shade} ${embed ? 'absolute' : 'fixed'}`"
         :style="{zIndex: props.zIndex}"
         @click="handleOverlayClick"

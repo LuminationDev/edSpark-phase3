@@ -1,0 +1,39 @@
+.dma-app-root {
+    .DomainSummary-bg-teaching {
+        background: linear-gradient(131deg, #3e5c8e 23.57%, #122b56 95.07%);
+    }
+    .DomainSummary-bg-learning {
+        background: linear-gradient(131deg, #63e2eb -40.7%, #007b84 63.31%);
+    }
+    .DomainSummary-bg-leading {
+        background: linear-gradient(131deg, #ffc0d2 -40.69%, #9c2648 73.37%);
+    }
+    .DomainSummary-bg-managing {
+        background: linear-gradient(131deg, #ffd9c3 -22.29%, #cb4413 70.25%);
+    }
+
+    .bg-triage-img {
+        background-color: rgba(1, 36, 39);
+    }
+
+    .bg-teaching-img {
+        background-color: var(--color-blue-dark);
+        background-image: url("/resources/assets/images/dma/Teaching.png");
+        background-size: cover;
+    }
+    .bg-learning-img {
+        background-color: var(--color-cyan-dark);
+        background-image: url("/resources/assets/images/dma/Learning.png");
+        background-size: cover;
+    }
+    .bg-leading-img {
+        background-color: rgba(188, 51, 66);
+        background-image: url("/resources/assets/images/dma/Leading.png");
+        background-size: cover;
+    }
+    .bg-managing-img {
+        background-color: rgba(253, 145, 64);
+        background-image: url("/resources/assets/images/dma/Managing.png");
+        background-size: cover;
+    }
+}

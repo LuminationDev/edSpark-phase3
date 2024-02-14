@@ -1,6 +1,6 @@
 @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap");
 
-#dma-app {
+.dma-app-root {
     --color-blue: #6985b7;
     --color-blue-dark: #223c91;
     --color-cyan: #5eadb2;
@@ -10,7 +10,17 @@
     --color-red: #d8747f;
     --color-red-dark: #bc3242;
 
+    --color-black-0: #000000;
+    --color-black-1: #0b0a16;
+    --color-black-2: #21212e;
+
     font-family: "Poppins", sans-serif;
+    font-size: 16px;
     font-weight: 400;
     font-style: normal;
+    line-height: 1.4;
+    color: var(--color-black-2);
+
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
 }
