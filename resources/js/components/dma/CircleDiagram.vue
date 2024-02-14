@@ -116,22 +116,23 @@ const handleHideTooltip = () => {
         </svg>
         <div
             ref="tooltipRef"
-            class="absolute bg-black category-tooltip hidden p-3 rounded text-center text-white uppercase w-[180px]"
+            class="absolute bg-black category-tooltip font-semibold hidden p-3 rounded text-center text-small text-white uppercase"
         >
             {{ tooltipTarget?.dataset.label }}
         </div>
     </div>
 </template>
 <style scoped lang="scss">
+
 .category-tooltip::before {
     content: "";
     background: black;
     position: absolute;
     width: 10px;
     height: 10px;
-    left: 70px;
+    left: 50%;
     bottom: -5px;
-    transform: rotate(45deg);
+    transform: translateX(-50%) rotate(45deg);
 
 }
 
