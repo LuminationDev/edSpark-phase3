@@ -2,6 +2,8 @@
 
 import {ref} from "vue";
 
+import iconChevronRight from '@/assets/images/dma/icons/chevron-right.svg';
+
 const showAnswer = ref(false);
 </script>
 <template>
@@ -17,8 +19,10 @@ const showAnswer = ref(false);
                 <div
                     class="flex justify-center items-center h-8 w-8"
                 >
-                    <span v-if="showAnswer">v</span>
-                    <span v-else>></span>
+                    <img
+                        :src="iconChevronRight"
+                        :class="showAnswer ? `rotate-90` : `rotate-0`"
+                    >
                 </div>
             </div>
         </div>
