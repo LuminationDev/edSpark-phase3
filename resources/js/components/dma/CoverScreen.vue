@@ -25,7 +25,7 @@ const emit = defineEmits(['primary', 'secondary']);
 <template>
     <div
         class="cover-screen h-full w-full"
-        :class="`bg-${props.theme}-img`"
+        :class="`screen-bg-${props.theme}`"
     >
         <div
             class="flex justify-start items-center flex-col gap-10 h-full p-20 w-full"

@@ -2,19 +2,12 @@
 import OverlayModal from "@/js/components/dma/OverlayModal.vue";
 import RoundButton from "@/js/components/dma/RoundButton.vue";
 
-const props = defineProps({
-    embed: {
-        type: Boolean,
-        required: false,
-    },
-})
-
 const emit = defineEmits(['cancel','reset']);
 </script>
 
 <template>
     <OverlayModal
-        :embed="props.embed"
+        :embed="true"
         :z-index="101"
     >
         <div class="bg-white max-w-full p-5 rounded-3xl text-black w-96">

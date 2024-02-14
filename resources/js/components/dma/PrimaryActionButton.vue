@@ -40,7 +40,7 @@ onBeforeUnmount(() => {
         >
             <slot />
         </RoundButton>
-        <div class="font-light mt-3 text-md">
+        <div class="mt-4 opacity-80 text-small">
             Press Enter ⏎
         </div>
     </div>

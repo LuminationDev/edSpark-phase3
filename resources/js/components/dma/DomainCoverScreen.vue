@@ -164,7 +164,6 @@ const chapters = computed(() => {
         </div>
         <WarningModal
             v-if="showResetModal"
-            embed
             @cancel="showResetModal=false"
             @reset="handleResetDomain"
         >

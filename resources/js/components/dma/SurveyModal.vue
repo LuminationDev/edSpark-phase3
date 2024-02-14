@@ -54,9 +54,7 @@ const handleCompleteTriage = () => {
 <template>
     <OverlayModal>
         <!-- TODO correct dimensions of modal to be defined -->
-        <div
-            class="bg-black h-full max-h-[800px] max-w-5xl relative text-white w-full"
-        >
+        <div class="bg-black h-full max-h-[880px] max-w-[1320px] relative text-white w-full">
             <CloseButton
                 class="absolute top-10 left-10 z-[100]"
                 @click="emit('close')"

@@ -74,11 +74,11 @@ const handlePrevious = () => {
         >
             <template #content>
                 <div class="text-center">
-                    <h1>
-                        <span class="font-black text-4xl uppercase">Digital Maturity</span><br>
-                        <span class="font-black text-6xl uppercase">Assessment</span>
+                    <h1 class="text-h3-caps">
+                        <span>Digital Maturity</span><br>
+                        <span class="text-h1-caps">Assessment</span>
                     </h1>
-                    <p class="mt-10">
+                    <p class="mt-9 text-large">
                         Before you get started, please<br>answer a few quick questions
                     </p>
                 </div>
@@ -98,7 +98,7 @@ const handlePrevious = () => {
         >
             <template #contentTop>
                 <h2
-                    class="font-black text-3xl uppercase"
+                    class="text-h3-caps"
                 >
                     General Questions
                 </h2>
@@ -121,3 +121,14 @@ const handlePrevious = () => {
         <Spinner />
     </div>
 </template>
+
+
+<style>
+    h1 {
+        line-height: 1.1;
+    }
+    h1 span:first-child {
+        font-size: 1.15em;
+        letter-spacing: 0.2em;
+    }
+</style>

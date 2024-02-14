@@ -1,14 +1,28 @@
 <script setup lang="ts">
+import iconX from '@/assets/images/dma/icons/x.svg';
 
 const emit = defineEmits(['click'])
 
 </script>
 <template>
     <button
-        class="bg-gray-100 hover:bg-white cursor-pointer flex justify-center items-center h-8 rounded-full text-gray-800 w-8"
+        class="
+            bg-white
+            hover:active:bg-gray-200
+            hover:bg-gray-100
+            cursor-pointer
+            flex
+            justify-center
+            items-center
+            h-[52px]
+            rounded-full
+            w-[52px]
+            "
         @click="emit('click')"
     >
-        X
+        <img :src="iconX">
     </button>
 </template>
-<style></style>
+
+<style>
+</style>
