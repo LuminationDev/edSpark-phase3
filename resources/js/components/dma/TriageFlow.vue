@@ -123,7 +123,7 @@ const handlePrevious = () => {
 </template>
 
 
-<style>
+<style scoped>
     h1 {
         line-height: 1.1;
     }

@@ -37,6 +37,7 @@ const dynamicClasses = computed(() => {
 })
 
 </script>
+
 <template>
     <button
         class="flex justify-between items-center flex-row mt-8 px-11 py-9 text-h4-caps text-white w-full"
@@ -52,7 +53,7 @@ const dynamicClasses = computed(() => {
     </button>
 </template>
 
-<style>
+<style scoped>
     button {
         border-radius: 16px
     }

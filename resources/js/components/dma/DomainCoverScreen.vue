@@ -2,6 +2,7 @@
 
 import {computed, ref} from "vue";
 
+import iconCheck from '@/assets/images/dma/icons/check.svg';
 import vidTeaching from '@/assets/video/temporary.mp4';
 // import vidTeaching from '@/assets/video/dma/teaching.mp4';
 // import vidLeading from '@/assets/video/dma/leading.mp4';
@@ -76,7 +77,7 @@ const chapters = computed(() => {
         class="flex justify-start items-center flex-row h-full question-screen w-full"
     >
         <div
-            class="basis-2/3 flex flex-col h-full p-10 pt-28 relative"
+            class="basis-2/3 flex flex-col h-full p-14 pt-28 relative"
             :class="`screen-bg-${props.domain.domain}`"
         >
             <div class="flex justify-center items-center flex-1">
@@ -90,11 +91,11 @@ const chapters = computed(() => {
             </div>
             <div>
                 <h2
-                    class="font-black text-4xl uppercase"
+                    class="text-h2-caps"
                 >
                     {{ domain.domain }}
                 </h2>
-                <p class="font-light mt-10 w-2/3">
+                <p class="mt-5 text-medium w-2/3">
                     {{ useDomainDescription(domain.domain) }}
                 </p>
             </div>
@@ -114,35 +115,37 @@ const chapters = computed(() => {
         </div>
         <div class="basis-1/3 bg-black flex flex-col h-full p-10 py-16">
             <div class="text-center">
-                <h3 class="font-black text-3xl">
-                    <div class="text-lg uppercase">
+                <h3 class="text-h3">
+                    <span class="text-h5-caps">
                         Domain
-                    </div>
+                    </span> <br>
                     Breakdown
                 </h3>
             </div>
             <div class="flex justify-center items-center flex-1">
                 <div
                     v-if="questions"
-                    class="chapter-progress"
+                    class="chapter-progress flex flex-col gap-8"
                 >
                     <div
                         v-for="(chapter, index) of chapters"
                         :key="index"
-                        class="my-5 text-xl"
+                        class="flex items-center gap-5 text-large"
                     >
-                        <span
+                        <div
                             v-if="chapter.status === 'complete'"
-                            class="mr-10"
-                        >✓</span>
-                        <span
+                            class="complete status-mark"
+                        >
+                            <img :src="iconCheck">
+                        </div>
+                        <div
                             v-else-if="chapter.status === 'active'"
-                            class="mr-10"
-                        >⬤</span>
-                        <span
+                            class="current status-mark"
+                        />
+                        <div
                             v-else
-                            class="mr-10"
-                        >◯</span>
+                            class="incomplete status-mark"
+                        />
                         {{ chapter.name }}
                     </div>
                 </div>
@@ -166,7 +169,7 @@ const chapters = computed(() => {
                 </div>
 
                 <TextButton
-                    class="mt-10 text-xs"
+                    class="mt-10 text-small"
                     @click="showResetModal = true"
                 >
                     Reset progress
@@ -195,5 +198,49 @@ const chapters = computed(() => {
 }
 .info-icon:hover .info-tooltip {
     display: block;
+}
+
+.chapter-progress {
+    position: relative;
+    padding: 0.5rem 0px;
+
+    &:before {
+        content: '';
+        position: absolute;
+        left: 10px;
+        top: 0px;
+        bottom: 1rem;
+        width: 1px;
+        background: rgba(255, 255, 255, 0.3);
+    }
+}
+
+.status-mark {
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.16);
+    backdrop-filter: blur(20px);
+    display:flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+
+    img {
+        width: 16px;
+        height: 16px;
+    }
+
+    &.current {
+        background: white;
+    }
+
+    &.incomplete:after {
+        content: '';
+        position: absolute;
+        inset: 5px;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.3);
+    }
 }
 </style>

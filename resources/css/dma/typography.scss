@@ -70,7 +70,6 @@
     .text-xLarge {
         font-size: 24px;
         line-height: 1.5;
-        text-transform: initial;
         letter-spacing: initial;
 
         @media screen and (min-width: 768px) {
@@ -81,7 +80,6 @@
     .text-large {
         font-size: 16px;
         line-height: 1.5;
-        text-transform: initial;
         letter-spacing: initial;
 
         @media screen and (min-width: 768px) {
@@ -92,7 +90,6 @@
     .text-medium {
         font-size: 16px;
         line-height: 1.5;
-        text-transform: initial;
         letter-spacing: initial;
 
         @media screen and (min-width: 768px) {
@@ -103,14 +100,12 @@
     .text-base {
         font-size: 16px;
         line-height: 1.5;
-        text-transform: initial;
         letter-spacing: initial;
     }
 
     .text-small {
         font-size: 14px;
         line-height: 1.4;
-        text-transform: initial;
         letter-spacing: initial;
     }
 
@@ -120,5 +115,12 @@
         text-transform: uppercase;
         font-weight: 700;
         line-height: 1.5;
+    }
+
+    /**
+     * Utils
+     */
+    .uppercase {
+        text-transform: uppercase;
     }
 }
