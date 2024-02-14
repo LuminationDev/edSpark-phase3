@@ -52,20 +52,17 @@ const isInProgress = computed(() => {
 })
 
 const categoryScores = computed(() => {
-    // TODO mocked score data
     const scores = [];
-    let index = 0;
-    for( let i=0; i < Math.ceil(Math.random()*6)+3; i++) {
-        scores.push({ category: `CAT${++index}`, colour: 'rgba( 34, 60, 145 )', score:Math.ceil(Math.random()*4)});
-    }
-    for( let i=0; i < Math.ceil(Math.random()*6)+3; i++) {
-        scores.push({ category: `CAT${++index}`, colour: 'rgba( 41, 152, 169 )', score:Math.ceil(Math.random()*4)});
-    }
-    for( let i=0; i < Math.ceil(Math.random()*6)+3; i++) {
-        scores.push({ category: `CAT${++index}`, colour: 'rgba( 188, 51, 66 )', score:Math.ceil(Math.random()*4)});
-    }
-    for( let i=0; i < Math.ceil(Math.random()*6)+3; i++) {
-        scores.push({ category: `CAT${++index}`, colour: 'rgba( 253, 145, 64 )', score:Math.ceil(Math.random()*4)});
+    if (domains.value) {
+        for (const domain of domains.value) {
+            for (const result of domain.results) {
+                scores.push({
+                    category: result.category,
+                    domain: domain.domain,
+                    score: result.value,
+                })
+            }
+        }
     }
     return scores;
 })
