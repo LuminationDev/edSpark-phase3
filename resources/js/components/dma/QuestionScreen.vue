@@ -55,8 +55,9 @@ let questionObserver = null;
 
 const isUnsure = ref(false);
 const answerText = ref(null);
-const questionRef = ref(null);
 
+const scrollableRef = ref(null);
+const questionRef = ref(null);
 const screenRef = ref(null);
 const tooltipRef = ref(null);
 const tooltipTarget = ref(null);
@@ -84,18 +85,18 @@ const handleShowAnswerField = (show = true) => {
 }
 
 const handlePrevious = () => {
-    isUnsure.value = false;
-    handleShowAnswerField(false);
     emit('previous');
 }
 
 const handleAnswer = (answer, text) => {
-    isUnsure.value = false;
-    handleShowAnswerField(false);
     emit('answer', answer, text);
 }
 
-const handleBindQuestionTooltips =() => {
+const handleQuestionChange =() => {
+    scrollableRef.value.scrollTop = 0;
+    isUnsure.value = false;
+    handleShowAnswerField(false);
+    
     const anchors = document.querySelectorAll('[data-bs-toggle="tooltip"]');
     anchors.forEach(anchor => {
         // prevent clicking on anchors from scrolling page to top
@@ -134,8 +135,8 @@ onMounted(() => {
     window.addEventListener('keyup', handleKeypress);
 
     // observe changes to the question slot and handle tooltips on anchors
-    handleBindQuestionTooltips();
-    questionObserver = new MutationObserver(handleBindQuestionTooltips);
+    handleQuestionChange();
+    questionObserver = new MutationObserver(handleQuestionChange);
     questionObserver.observe(questionRef.value, {
         childList: true,
         subtree: true
@@ -172,8 +173,8 @@ onBeforeUnmount(() => {
                 </div>
             </div>
         </div>
-        <div class="basis-2/3 bg-black-1 flex flex-col h-full p-16 pt-10">
-            <div class="flex justify-between h-10 question-controls">
+        <div class="basis-2/3 bg-black-1 flex flex-col h-full pt-10">
+            <div class="flex justify-between h-10 px-16 question-controls">
                 <span>
                     <button
                         v-if="props.showPrevious"
@@ -224,87 +225,92 @@ onBeforeUnmount(() => {
                 </a>
             </div>
             <div
-                ref="questionRef"
-                class="flex-1 mt-5 question text-xLarge"
+                ref="scrollableRef"
+                class="flex flex-1 flex-col overflow-scroll pb-16 pt-5 px-16"
             >
-                <slot name="question" />
-            </div>
-            <div
-                v-if="!isUnsure"
-                class="answers"
-            >
-                <AnswerButton
-                    hint="Press 1"
-                    :disabled="props.disabled"
-                    @click="handleAnswer(1)"
+                <div
+                    ref="questionRef"
+                    class="flex-1 question text-xLarge"
                 >
-                    YES
-                </AnswerButton>
-                <AnswerButton
-                    hint="Press 2"
-                    :disabled="props.disabled"
-                    @click="handleAnswer(0)"
+                    <slot name="question" />
+                </div>
+                <div
+                    v-if="!isUnsure"
+                    class="answers"
                 >
-                    NO
-                </AnswerButton>
-                <AnswerButton
-                    v-if="props.allowUnsure"
-                    hint="Press 3"
-                    outline
-                    :disabled="props.disabled"
-                    @click="isUnsure = true"
-                >
-                    UNSURE
-                </AnswerButton>
-            </div>
-            <div
-                v-else-if="answerText === null"
-                class="answers"
-            >
-                <AnswerButton
-                    hint="Press 1"
-                    :disabled="props.disabled"
-                    @click="handleAnswer(2, REASON.NOT_APPLICABLE)"
-                >
-                    {{ REASON.NOT_APPLICABLE }}
-                </AnswerButton>
-                <AnswerButton
-                    hint="Press 2"
-                    :disabled="props.disabled"
-                    @click="handleAnswer(2, REASON.AMBIGUOUS)"
-                >
-                    {{ REASON.AMBIGUOUS }}
-                </AnswerButton>
-                <AnswerButton
-                    hint="Press 3"
-                    :disabled="props.disabled"
-                    @click="handleAnswer(2, REASON.NOT_HELPFUL)"
-                >
-                    {{ REASON.NOT_HELPFUL }}
-                </AnswerButton>
-                <AnswerButton
-                    hint="Press 4"
-                    :disabled="props.disabled"
-                    @click="handleShowAnswerField"
-                >
-                    Other
-                </AnswerButton>
-            </div>
-            <div v-else>
-                <textarea
-                    v-model="answerText"
-                    rows="8"
-                    :disabled="props.disabled"
-                    class="bg-gray-800 resize-none rounded-3xl"
-                    placeholder="Your explanation"
-                />
-                <div class="flex justify-end mt-5">
-                    <PrimaryActionButton
+                    <AnswerButton
+                        hint="Press 1"
                         :disabled="props.disabled"
-                        @click="handleAnswer(2, answerText)"
+                        @click="handleAnswer(1)"
                     >
-                        Continue
-                    </PrimaryActionButton>
+                        YES
+                    </AnswerButton>
+                    <AnswerButton
+                        hint="Press 2"
+                        :disabled="props.disabled"
+                        @click="handleAnswer(0)"
+                    >
+                        NO
+                    </AnswerButton>
+                    <AnswerButton
+                        v-if="props.allowUnsure"
+                        hint="Press 3"
+                        outline
+                        :disabled="props.disabled"
+                        @click="isUnsure = true"
+                    >
+                        UNSURE
+                    </AnswerButton>
+                </div>
+                <div
+                    v-else-if="answerText === null"
+                    class="answers"
+                >
+                    <AnswerButton
+                        hint="Press 1"
+                        :disabled="props.disabled"
+                        @click="handleAnswer(2, REASON.NOT_APPLICABLE)"
+                    >
+                        {{ REASON.NOT_APPLICABLE }}
+                    </AnswerButton>
+                    <AnswerButton
+                        hint="Press 2"
+                        :disabled="props.disabled"
+                        @click="handleAnswer(2, REASON.AMBIGUOUS)"
+                    >
+                        {{ REASON.AMBIGUOUS }}
+                    </AnswerButton>
+                    <AnswerButton
+                        hint="Press 3"
+                        :disabled="props.disabled"
+                        @click="handleAnswer(2, REASON.NOT_HELPFUL)"
+                    >
+                        {{ REASON.NOT_HELPFUL }}
+                    </AnswerButton>
+                    <AnswerButton
+                        hint="Press 4"
+                        :disabled="props.disabled"
+                        @click="handleShowAnswerField"
+                    >
+                        Other
+                    </AnswerButton>
+                </div>
+                <div v-else>
+                    <textarea
+                        v-model="answerText"
+                        rows="8"
+                        :disabled="props.disabled"
+                        class="bg-gray-800 resize-none rounded-3xl"
+                        placeholder="Your explanation"
+                    />
+                    <div class="flex justify-end mt-5">
+                        <PrimaryActionButton
+                            :disabled="props.disabled"
+                            @click="handleAnswer(2, answerText)"
+                        >
+                            Continue
+                        </PrimaryActionButton>
+                    </div>
                 </div>
             </div>
         </div>
