@@ -73,7 +73,7 @@ const handleOverlayClick = (event) => {
         >
             <div
                 tab-index="-1"
-                class="bg-black/80 flex justify-center flex-col h-full overlay p-4 w-full md:!p-10"
+                class="bg-black/80 flex justify-center flex-col h-full overlay p-0 w-full md:!p-6 lg:!p-10"
                 :class="`items-${verticalAlign}`"
             >
                 <slot />

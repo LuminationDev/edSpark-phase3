@@ -53,9 +53,20 @@ const handleCompleteTriage = () => {
 
 <template>
     <OverlayModal>
-        <!-- TODO correct dimensions of modal to be defined -->
         <div
-            class="bg-black h-full max-h-[880px] max-w-[1320px] overflow-hidden relative rounded-lg text-white w-full"
+            class="
+                bg-black
+                min-h-full
+                overflow-hidden
+                relative
+                text-white
+                w-full
+                md:!min-h-0
+                md:h-full
+                md:max-h-[880px]
+                md:max-w-[1320px]
+                md:rounded-lg
+                "
         >
             <CloseButton
                 class="absolute top-10 left-10 z-50"
@@ -64,7 +75,7 @@ const handleCompleteTriage = () => {
             <div class="h-full">
                 <div
                     v-if="showTriage === null"
-                    class="flex justify-center items-center h-full w-full"
+                    class="flex justify-center items-center min-h-full w-full md:h-full"
                 >
                     <Spinner />
                 </div>

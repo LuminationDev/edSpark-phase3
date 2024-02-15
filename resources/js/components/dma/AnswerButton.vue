@@ -41,6 +41,7 @@ const dynamicClasses = computed(() => {
 <template>
     <button
         class="
+            duration-100
             flex
             justify-between
             items-center
@@ -53,6 +54,7 @@ const dynamicClasses = computed(() => {
             text-h4-caps
             text-white
             tracking-normal
+            transition-colors
             w-full
             "
         :class="dynamicClasses"
@@ -62,7 +64,7 @@ const dynamicClasses = computed(() => {
         <slot />
         <span
             v-if="props.hint"
-            class="hint normal-case text-gray-500 text-small"
+            class="hidden hint normal-case text-gray-500 text-small lg:block"
         >{{ props.hint }}</span>
     </button>
 </template>

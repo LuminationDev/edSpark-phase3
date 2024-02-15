@@ -18,7 +18,7 @@ const progressPercent = computed(() => {
 <template>
     <div class="bg-white/10 flex-1 h-2 progress-bar-track rounded-full">
         <div
-            class="bg-white h-full progress-bar rounded-full"
+            class="bg-white duration-500 h-full progress-bar rounded-full transition-all"
             :style="`width: ${progressPercent}%`"
         />
     </div>

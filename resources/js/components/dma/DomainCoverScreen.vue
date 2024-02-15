@@ -5,10 +5,9 @@ import {computed, ref} from "vue";
 import iconCheck from '@/assets/images/dma/icons/check.svg';
 import iconPlay from '@/assets/images/dma/icons/play.svg';
 import vidTeaching from '@/assets/video/temporary.mp4';
-// import vidTeaching from '@/assets/video/dma/teaching.mp4';
-// import vidLeading from '@/assets/video/dma/leading.mp4';
-// import vidLearning from '@/assets/video/dma/learning.mp4';
-// import vidManaging from '@/assets/video/dma/managing.mp4';
+import vidLeading from '@/assets/video/temporary.mp4';
+import vidLearning from '@/assets/video/temporary.mp4';
+import vidManaging from '@/assets/video/temporary.mp4';
 import OverlayModal from "@/js/components/dma/OverlayModal.vue";
 import PlayButton from "@/js/components/dma/PlayButton.vue";
 import PrimaryActionButton from "@/js/components/dma/PrimaryActionButton.vue";
@@ -37,9 +36,9 @@ const emit = defineEmits(['continue','reset']);
 // TODO insert video paths when available
 const domainVideos = {
     teaching: vidTeaching,
-    learning: null, //vidLearning,
-    leading: null, //vidLeading,
-    managing: null, //vidManaging
+    learning: vidLearning,
+    leading: vidLeading,
+    managing: vidManaging
 };
 
 const showResetModal = ref(false);
@@ -77,13 +76,15 @@ const chapters = computed(() => {
 
 <template>
     <div
-        class="flex justify-start items-center flex-row h-full question-screen w-full"
+        class="flex md:flex-row justify-start items-center flex-col h-full question-screen w-full"
     >
         <div
-            class="basis-2/3 flex flex-col h-full p-14 pt-28 relative"
+            class="flex-col h-full hidden p-14 pt-28 relative md:!flex md:basis-3/5 lg:!basis-2/3"
             :class="`DomainCover-bg-${props.domain.domain}`"
         >
-            <div class="flex justify-center items-center flex-1">
+            <div
+                class="flex justify-center items-center flex-1 lg:min-h-[300px]"
+            >
                 <PlayButton
                     v-if="domainVideos[domain.domain] !== null && !showVideoModal"
                     @click="showVideoModal = true"
@@ -105,16 +106,21 @@ const chapters = computed(() => {
                 @close="showVideoModal = false"
             />
         </div>
-        <div class="basis-1/3 bg-black flex flex-col h-full p-10 py-16">
-            <div class="text-center">
-                <h3 class="text-h3">
+        <div
+            class="bg-black flex flex-col min-h-full p-10 w-full md:!py-16 md:basis-2/5 md:h-full lg:basis-1/3"
+        >
+            <div class="mb-10 mt-20 text-center md:!mt-0">
+                <h3 class="text-h2 md:text-h3">
                     <span class="text-h5-caps">
                         Domain
                     </span> <br>
                     Breakdown
                 </h3>
             </div>
-            <div class="flex justify-center items-center flex-1">
+            <div
+                class="flex justify-center items-center flex-1 transition-opacity"
+                :class="`${questions ? 'opacity-100' : 'opacity-0'}`"
+            >
                 <div
                     v-if="questions"
                     class="chapter-progress flex flex-col gap-8"
@@ -141,9 +147,8 @@ const chapters = computed(() => {
                         {{ chapter.name }}
                     </div>
                 </div>
-                <Spinner v-else />
             </div>
-            <div class="text-center">
+            <div class="flex flex-col gap-7 md:gap-10 mt-10 text-center">
                 <div v-if="!domainComplete">
                     <PrimaryActionButton
                         :disabled="!questions"
@@ -164,9 +169,8 @@ const chapters = computed(() => {
                         > Completed
                     </div>
                 </div>
-
                 <TextButton
-                    class="mt-10 text-small"
+                    class="text-small"
                     @click="showResetModal = true"
                 >
                     Reset progress

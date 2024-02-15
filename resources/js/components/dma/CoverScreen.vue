@@ -29,13 +29,12 @@ const emit = defineEmits(['primary', 'secondary']);
             ''}`"
     >
         <div
-            class="flex justify-start items-center flex-col gap-10 h-full px-24 py-20 w-full"
+            class="flex justify-start items-center flex-col gap-10 h-full pb-10 pt-20 px-3 w-full md:!px-24 md:!py-20"
         >
             <div class="flex justify-center items-center flex-1 w-full">
                 <slot name="content" />
             </div>
 
-            <!-- TODO can this be one block with layout handled via tailwind classes? -->
             <div
                 v-if="props.cornerControls"
                 class="flex justify-between items-center w-full"

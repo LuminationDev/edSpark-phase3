@@ -19,7 +19,7 @@ const emit = defineEmits(['cancel','reset']);
         :z-index="101"
     >
         <div
-            class="bg-white flex flex-col gap-3 max-w-full p-7 rounded-2xl text-black w-[400px]"
+            class="bg-white flex flex-col gap-3 m-4 max-w-[400px] p-7 rounded-2xl text-black sm:w-[400px] md:!m-10"
         >
             <h2 class="font-semibold text-medium">
                 <slot name="title" />
