@@ -1,7 +1,6 @@
-.dma-app-root {
-    $md-start: 768px;
-    $lg-start: 1024px;
+@import "variables";
 
+.dma-app-root {
     /**
      * Text styles
      */
@@ -80,7 +79,7 @@
     }
 
     .text-xLarge {
-        font-size: 24px;
+        font-size: 20px;
         font-weight: 400;
         line-height: 1.5;
         letter-spacing: initial;

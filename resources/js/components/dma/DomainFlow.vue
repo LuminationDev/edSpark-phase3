@@ -220,7 +220,7 @@ const handleResetDomain = () => {
                 </template>
                 <template #contentBottom>
                     <h2
-                        class="mb-6 text-h3-caps"
+                        class="hidden mb-6 text-h3-caps md:!block"
                     >
                         {{ domain.domain }}
                     </h2>

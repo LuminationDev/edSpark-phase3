@@ -184,27 +184,29 @@ onBeforeUnmount(() => {
 <template>
     <div
         ref="screenRef"
-        class="flex justify-start items-center flex-row h-full question-screen w-full"
+        class="flex justify-start items-center flex-1 flex-col h-full question-screen w-full md:!flex-row"
     >
         <div
-            class="basis-1/3 h-full"
+            class="w-full md:w-auto md:basis-1/3 md:h-full"
             :class="`QuestionScreen-bg-${props.theme} ${props.blurBg ?
                 'bg-blur' : ''}`"
         >
             <div
-                class="flex flex-col h-full p-10 pt-36 w-full"
+                class="flex flex-col h-full px-4 w-full md:!p-10 md:!pt-36"
             >
-                <div class="flex-1">
+                <div class="flex-1 hidden md:!block">
                     <slot name="contentTop" />
                 </div>
-                <div>
+                <div class="pt-32 md:!pt-0">
                     <slot name="contentBottom" />
                 </div>
             </div>
         </div>
-        <div class="basis-2/3 bg-black-1 flex flex-col h-full pt-10">
-            <div class="flex justify-between items-center h-[52px] px-16 question-controls">
-                <span>
+        <div
+            class="bg-black-1 flex flex-1 flex-col pt-10 w-full md:!w-auto md:basis-2/3 md:h-full"
+        >
+            <div class="flex justify-between items-center h-[52px] mb-5 px-5 question-controls md:!px-16">
+                <span class="flex items-center h-full">
                     <BackButton
                         v-if="isUnsure"
                         @click="handleShowUnsure(false)"
@@ -219,10 +221,10 @@ onBeforeUnmount(() => {
                 </span>
                 <a
                     v-if="$slots.info"
-                    class="cursor-help info-icon relative"
+                    class="cursor-help flex items-center h-full info-icon relative"
                     href="#"
                 >
-                    <div class="h-8"><img :src="iconInfoCircle"></div>
+                    <img :src="iconInfoCircle">
                     <div
                         class="
                             absolute
@@ -236,6 +238,7 @@ onBeforeUnmount(() => {
                             info-tooltip-arrow
                             rotate-45
                             w-[10px]
+                            z-10
                             "
                     />
                     <div
@@ -253,22 +256,25 @@ onBeforeUnmount(() => {
                             rounded-lg
                             text-base
                             w-[400px]
+                            z-10
                             "
                     >
                         <slot name="info" />
                     </div>
                 </a>
             </div>
-            <div class="flex-1 overflow-hidden relative">
-                <div class="absolute top-0 bg-gradient-to-b from-black to-transparent h-5 w-full" />
-                <div class="absolute bottom-0 bg-gradient-to-b from-transparent via-black to-black h-10 w-full" />
+            <div class="flex flex-1 flex-col relative md:overflow-hidden">
+                <!-- <div class="absolute top-0 bg-gradient-to-b from-black to-transparent h-5 w-full" /> -->
+                <div
+                    class="absolute bottom-0 bg-gradient-to-b from-transparent via-black to-black h-10 hidden w-full md:!block"
+                />
                 <div
                     ref="scrollableRef"
-                    class="flex flex-col h-full overflow-x-none overflow-y-scroll pb-16 pt-5 px-16 w-full"
+                    class="flex flex-1 flex-col pb-6 px-5 md:!pb-16 md:!px-16 md:overflow-x-none md:overflow-y-scroll"
                 >
                     <div
                         ref="questionRef"
-                        class="flex-1 question text-xLarge"
+                        class="flex-1 mb-6 question text-xLarge"
                     >
                         <slot name="question" />
                     </div>

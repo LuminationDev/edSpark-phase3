@@ -1,3 +1,5 @@
+@import "variables";
+
 .dma-app-root {
     /**
      * Utils
@@ -128,6 +130,7 @@
     /**
      * CoverScreen and QuestionScreen components
      */
+
     .CoverScreen-bg-triage,
     .QuestionScreen-bg-triage {
         background: #012427 url("@/assets/images/dma/bg-cover-triage.jpg");
@@ -182,6 +185,11 @@
     .QuestionScreen-bg-managing {
         background-position: -10% 100%;
         background-size: 300%;
+
+        @media screen and (max-width: #{$md-start - 1}) {
+            background-color: var(--color-black-1);
+            background-image: none;
+        }
     }
 
     .CoverScreen-bg-teaching,
@@ -266,6 +274,23 @@
                 rgba(203, 68, 19, 0) 0%,
                 #cb4413 65.29%
             );
+        }
+    }
+
+    // Remove backgrounds on mobile
+    @media screen and (max-width: #{$md-start - 1}) {
+        .QuestionScreen-bg-triage,
+        .QuestionScreen-bg-teaching,
+        .QuestionScreen-bg-learning,
+        .QuestionScreen-bg-leading,
+        .QuestionScreen-bg-managing {
+            background-color: var(--color-black-1);
+            background-image: none;
+
+            > div,
+            > div:before {
+                background: none !important;
+            }
         }
     }
 }

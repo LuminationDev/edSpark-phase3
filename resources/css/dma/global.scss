@@ -1,3 +1,4 @@
+@import "variables";
 @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap");
 
 .dma-app-root {
@@ -42,25 +43,11 @@
             background-color: rgba(255, 255, 255, 0.05);
             border-radius: 99px;
         }
-    }
 
-    /* TODO: remove this, used for debugging */
-    .text-h1,
-    .text-h1-caps,
-    .text-h2,
-    .text-h2-caps,
-    .text-h3,
-    .text-h3-caps,
-    .text-h4,
-    .text-h4-caps,
-    .text-h5,
-    .text-h5-caps,
-    .text-xLarge,
-    .text-large,
-    .text-medium,
-    .text-base,
-    .text-small,
-    .text-button {
-        // color: blue !important;
+        @media screen and (max-width: #{$md-start - 1}) {
+            &::-webkit-scrollbar {
+                display: none;
+            }
+        }
     }
 }

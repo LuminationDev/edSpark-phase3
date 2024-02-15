@@ -12,7 +12,7 @@ const showAnswer = ref(false);
         @click="showAnswer = !showAnswer"
     >
         <div class="flex justify-between items-center question-row">
-            <div class="text-large">
+            <div class="text-large text-left">
                 <slot name="question" />
             </div>
             <div class="text-large toggle">

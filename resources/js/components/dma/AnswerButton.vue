@@ -61,25 +61,30 @@ const dynamicClasses = computed(() => {
             justify-between
             items-center
             flex-row
-            mt-6
+            mt-4
             normal-case
-            px-11
-            py-9
+            px-4
+            py-6
             rounded-2xl
             text-h4-caps
             text-white
             tracking-normal
             transition-colors
             w-full
+            md:!mt-6
+            md:!px-11
+            md:!py-9
             "
         :class="dynamicClasses"
         :disabled="props.disabled"
         @click="emit('click')"
     >
-        <slot />
+        <span class="flex-1 text-center lg:!text-left">
+            <slot />
+        </span>
         <span
             v-if="props.hint"
-            class="hidden hint normal-case text-gray-500 text-small lg:block"
+            class="hidden hint normal-case text-gray-500 text-small lg:!block"
         >{{ props.hint }}</span>
     </button>
 </template>

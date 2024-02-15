@@ -131,7 +131,7 @@ const handleResetSurvey = async () => {
                 background-color="white"
             >
                 <template #title>
-                    <h2 class="px-3 text-h2 md:text-h3 md:!px-5 lg:!px-0">
+                    <h2 class="px-4 text-h2 md:text-h3 md:!px-5 lg:!px-0">
                         Your DMA
                     </h2>
                 </template>
@@ -153,7 +153,7 @@ const handleResetSurvey = async () => {
                                     flex
                                     sm:flex-row
                                     flex-col
-                                    px-3
+                                    px-4
                                     py-10
                                     gap-10
                                     md:!px-10
@@ -180,7 +180,7 @@ const handleResetSurvey = async () => {
                                     <CircleDiagram :scores="categoryScores" />
                                 </div>
                             </div>
-                            <p class="px-3 text-base md:!px-5 lg:!px-0">
+                            <p class="px-4 text-base md:!px-5 lg:!px-0">
                                 <!-- TODO correct this information -->
                                 The tool is for you and your school. Your data is only stored locally in the
                                 current profile of your web browser. You can generate a PDF report for sharing within
@@ -196,7 +196,7 @@ const handleResetSurvey = async () => {
                         </div>
 
                         <div
-                            class="DMADomainContainer flex flex-col gap-5 px-3 md:!gap-7 md:!px-5 lg:!gap-9 lg:!px-0"
+                            class="DMADomainContainer flex flex-col gap-5 px-4 md:!gap-7 md:!px-5 lg:!gap-9 lg:!px-0"
                         >
                             <DomainSummary
                                 v-for="domain of domains"
@@ -224,19 +224,19 @@ const handleResetSurvey = async () => {
 
             <BaseLandingSection>
                 <template #title>
-                    <h2 class="px-3 text-h3 md:!px-5 lg:!px-0">
+                    <h2 class="px-4 text-h3 md:!px-5 lg:!px-0">
                         Frequently Asked
                     </h2>
                 </template>
                 <template #subtitle>
-                    <div class="mb-10 px-3 text-medium md:!px-5 lg:!px-0">
+                    <div class="mb-10 px-4 text-medium md:!px-5 lg:!px-0">
                         The Digital Adoption Group (DAG) offers comprehensive guidance on digital technologies,
                         providing practical, system-wide advice for purchasing and adopting high-impact technologies
                         that enhance teaching and learning.
                     </div>
                 </template>
                 <template #content>
-                    <div class="flex flex-col gap-5 lg:gap-7 px-3 md:!px-5 lg:!px-0">
+                    <div class="flex flex-col gap-5 lg:gap-7 px-4 md:!px-5 lg:!px-0">
                         <FaqEntry>
                             <template #question>
                                 Can I pause anytime?

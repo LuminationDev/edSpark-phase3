@@ -69,10 +69,10 @@ const handleCompleteTriage = () => {
                 "
         >
             <CloseButton
-                class="absolute top-10 left-10 z-50"
+                class="absolute top-6 left-4 z-50 md:!left-10 md:!top-10"
                 @click="emit('close')"
             />
-            <div class="h-full">
+            <div class="h-full overflow-y-scroll md:!overflow-y-hidden">
                 <div
                     v-if="showTriage === null"
                     class="flex justify-center items-center min-h-full w-full md:h-full"
