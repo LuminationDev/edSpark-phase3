@@ -189,6 +189,9 @@ const chapters = computed(() => {
             <template #message>
                 Resetting will erase all your progress made on this domain. Other domains won't be affected.
             </template>
+            <template #confirm>
+                Reset
+            </template>
         </WarningModal>
     </div>
 </template>

@@ -17,7 +17,7 @@ const props = defineProps({
     }
 })
 
-const emit = defineEmits(['complete']);
+const emit = defineEmits(['complete', 'error']);
 
 // triage data from API
 const triage = ref(null);
@@ -29,7 +29,12 @@ const submitting = ref(false);
 
 onMounted(async () => {
     // get triage questions for the current survey
-    triage.value = await dmaService.getQuestions(props.domain.id);
+    dmaService.getQuestions(props.domain.id).then((result) => {
+        triage.value = result;
+    }).catch((error) => {
+        console.log("API error getting triage questions:", error);
+        emit('error');
+    })
 });
 
 const handleAnswer = async (answer) => {
@@ -40,23 +45,25 @@ const handleAnswer = async (answer) => {
             : null;
 
     // submit answer to API
-    const result = await dmaService.postAnswer(
+    dmaService.postAnswer(
         props.domain.id,
         triage.value.domain_questions[question.value].id,
         answer,
         null,
         nextQuestionId,
         nextQuestionId === null
-    );
-    console.log('triage answer submitted:', result);
-
-    if(nextQuestionId !== null) {
-        question.value += 1;
-    } else {
-        emit('complete');
-    }
-
-    submitting.value = false;
+    ).then((result) => {
+        console.log('triage answer submitted:', result);
+        if(nextQuestionId !== null) {
+            question.value += 1;
+        } else {
+            emit('complete');
+        }
+        submitting.value = false;
+    }).catch((error) => {
+        console.log("API error submitting triage answer:", error);
+        emit('error');
+    })
 }
 
 const handlePrevious = () => {

@@ -22,6 +22,8 @@ const selectedDomainId = ref(null);
 const resetting = ref(false);
 
 const showResetModal = ref(false);
+const showErrorModal = ref(false);
+const showSurveyError = ref(false);
 
 onMounted(async () => {
     await fetchUserSurvey();
@@ -67,7 +69,13 @@ const categoryScores = computed(() => {
 })
 
 const fetchUserSurvey = async () => {
-    surveyDetails.value = await dmaService.getSurvey();
+    showSurveyError.value = false;
+    dmaService.getSurvey().then((result) => {
+        surveyDetails.value = result;
+    }).catch((error) => {
+        console.log("API error getting survey:", error);
+        showSurveyError.value = true;
+    })
 }
 
 const handleLaunchSurvey = async (domainId) => {
@@ -75,8 +83,13 @@ const handleLaunchSurvey = async (domainId) => {
     // then refetch the survey as the triage ID will have changed
     const triage = surveyDetails.value.survey_domains.find(d => d.domain === 'triage');
     if (triage.completed_question_count > 0 && triage.completed_question_count < triage.question_count) {
-        await dmaService.resetDomainProgress(triage.id);
-        await fetchUserSurvey();
+        dmaService.resetDomainProgress(triage.id).then((result) => {
+            surveyDetails.value = result;
+            fetchUserSurvey();
+        }).catch((error) => {
+            console.log("API error resetting triage:", error);
+            showErrorModal.value = true;
+        });
     }
 
     selectedDomainId.value = domainId;
@@ -98,8 +111,13 @@ const showResetting = async () => {
 
 const handleResetDomain = async () => {
     showSurveyModal.value = false;
-    await dmaService.resetDomainProgress(selectedDomainId.value);
-    await showResetting();
+    dmaService.resetDomainProgress(selectedDomainId.value).then(() => {
+        showResetting();
+    }).catch((error) => {
+        console.log("API error resetting domain:", error);
+        showErrorModal.value = true;
+    })
+
 }
 
 const isDomainResetting = (domainId = null) => {
@@ -108,9 +126,12 @@ const isDomainResetting = (domainId = null) => {
 
 const handleResetSurvey = async () => {
     showResetModal.value = false;
-    await dmaService.resetSurveyProgress();
-    await showResetting();
-
+    dmaService.resetSurveyProgress().then(() => {
+        showResetting();
+    }).catch((error) => {
+        console.log("API error resetting survey:", error);
+        showErrorModal.value = true;
+    })
 }
 
 </script>
@@ -136,8 +157,19 @@ const handleResetSurvey = async () => {
                     </h2>
                 </template>
                 <template #content>
+                    <div
+                        v-if="showSurveyError"
+                        class="font-bold my-2"
+                    >
+                        There was a network error obtaining your latest survey data. <button
+                            class="underline"
+                            @click="fetchUserSurvey"
+                        >
+                            Refresh survey
+                        </button>
+                    </div>
                     <div v-if="!surveyDetails">
-                        <!-- TODO display loading spinner, handle API error-->
+                        <!-- TODO display loading spinner -->
                         Loading...
                     </div>
                     <div
@@ -218,6 +250,9 @@ const handleResetSurvey = async () => {
                         <template #message>
                             Resetting will erase all your progress on the survey.
                         </template>
+                        <template #confirm>
+                            Reset
+                        </template>
                     </WarningModal>
                 </template>
             </BaseLandingSection>
@@ -280,4 +315,19 @@ const handleResetSurvey = async () => {
         @close="handleCloseSurveyModal"
         @reset="handleResetDomain"
     />
+
+    <WarningModal
+        v-if="showErrorModal"
+        :show-cancel="false"
+        @reset="showErrorModal = false"
+    >
+        <template #title>
+            Network error
+        </template>
+        <template #message>
+            A network error has occurred while resetting your survey.<br>
+            <br>
+            Please wait a moment before trying again.
+        </template>
+    </WarningModal>
 </template>

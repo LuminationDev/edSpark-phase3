@@ -224,7 +224,7 @@ onBeforeUnmount(() => {
                 </span>
                 <a
                     v-if="$slots.info"
-                    class="cursor-help flex items-center h-full info-icon relative"
+                    class="cursor-help flex items-center h-full info-icon relative z-10"
                     href="#"
                 >
                     <img :src="iconInfoCircle">
@@ -372,7 +372,7 @@ onBeforeUnmount(() => {
         </div>
         <div
             ref="tooltipRef"
-            class="absolute top-0 left-0 hidden w-[300px]"
+            class="absolute top-0 left-0 hidden w-[300px] z-20"
         >
             <div
                 class="

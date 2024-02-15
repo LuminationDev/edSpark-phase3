@@ -6,6 +6,10 @@ const props = defineProps({
     embed: {
         type: Boolean,
         default: false,
+    },
+    showCancel: {
+        type: Boolean,
+        default: true,
     }
 })
 
@@ -28,7 +32,10 @@ const emit = defineEmits(['cancel','reset']);
                 <slot name="message" />
             </p>
             <div class="flex justify-end flex-row gap-3 mt-5">
-                <RoundButton @click="emit('cancel')">
+                <RoundButton
+                    v-if="props.showCancel"
+                    @click="emit('cancel')"
+                >
                     Cancel
                 </RoundButton>
                 <RoundButton
@@ -36,7 +43,9 @@ const emit = defineEmits(['cancel','reset']);
                     text-color="white"
                     @click="emit('reset')"
                 >
-                    Reset
+                    <slot name="confirm">
+                        OK
+                    </slot>
                 </RoundButton>
             </div>
         </div>

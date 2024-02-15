@@ -5,8 +5,8 @@ import CloseButton from "@/js/components/dma/CloseButton.vue";
 import DomainFlow from "@/js/components/dma/DomainFlow.vue";
 import OverlayModal from "@/js/components/dma/OverlayModal.vue";
 import TriageFlow from "@/js/components/dma/TriageFlow.vue";
+import WarningModal from "@/js/components/dma/WarningModal.vue";
 import Spinner from "@/js/components/spinner/Spinner.vue";
-import {dmaService} from "@/js/service/dmaService";
 
 const props = defineProps({
     domainId: {
@@ -20,6 +20,8 @@ const props = defineProps({
 })
 
 const emit = defineEmits(['close','reset']);
+
+const showErrorModal = ref(false);
 
 const domain = computed(() => {
     return props.survey.survey_domains.find(d => d.id === props.domainId);
@@ -47,6 +49,11 @@ onMounted(async () => {
 
 const handleCompleteTriage = () => {
     showTriage.value = false;
+}
+
+const handleErrorDismissed = () => {
+    showErrorModal.value = false;
+    emit('close');
 }
 
 </script>
@@ -85,6 +92,7 @@ const handleCompleteTriage = () => {
                         :survey-id="props.survey.survey_id"
                         :domain="triageDomain"
                         @complete="handleCompleteTriage"
+                        @error="showErrorModal = true"
                     />
                     <DomainFlow
                         v-else
@@ -92,9 +100,27 @@ const handleCompleteTriage = () => {
                         :domain="domain"
                         @complete="emit('close')"
                         @reset="emit('reset')"
+                        @error="showErrorModal = true"
                     />
                 </template>
             </div>
+
+            <WarningModal
+                v-if="showErrorModal"
+                embed
+                :show-cancel="false"
+                @reset="handleErrorDismissed"
+            >
+                <template #title>
+                    Network error
+                </template>
+                <template #message>
+                    A network error has occured.<br>
+                    Your progress to this point has been saved.<br>
+                    <br>
+                    Please wait a moment before resuming your survey.
+                </template>
+            </WarningModal>
         </div>
     </OverlayModal>
 </template>

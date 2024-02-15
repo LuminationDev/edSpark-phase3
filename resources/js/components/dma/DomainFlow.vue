@@ -20,7 +20,7 @@ const props = defineProps({
     }
 })
 
-const emit = defineEmits(['complete','reset']);
+const emit = defineEmits(['complete','reset','error']);
 
 // question data from API
 const questions = ref(null);
@@ -37,8 +37,12 @@ const previousQuestionId = ref(null);
 
 onMounted(async () => {
     // get domain questions for the current survey
-    const domainData = await dmaService.getQuestions(props.domain.id);
-    if(domainData) questions.value = domainData.domain_questions;
+    dmaService.getQuestions(props.domain.id).then((result) => {
+        if (result) questions.value = result.domain_questions;
+    }).catch((error) => {
+        console.log("API error getting domain questions:", error);
+        emit('error');
+    })
 });
 
 const currentQuestion = computed(() => {
@@ -127,20 +131,21 @@ const handleAnswer = async (answer, answerText = null) => {
     }
 
     // submit answer to API
-    const result = await dmaService.postAnswer(
+    dmaService.postAnswer(
         props.domain.id,
         questionId.value,
         answer,
         answerText,
         nextQuestionId,
         chapterComplete
-    );
-    console.log("Answer submitted:", result);
-
-    previousQuestionId.value = questionId.value;
-    questionId.value = nextQuestionId;
-
-    submitting.value = false;
+    ).then(() => {
+        previousQuestionId.value = questionId.value;
+        questionId.value = nextQuestionId;
+        submitting.value = false;
+    }).catch((error) => {
+        console.log("API error submitting answer:", error);
+        emit('error');
+    });
 }
 
 const handlePreviousQuestion = () => {
@@ -153,7 +158,6 @@ const handlePreviousQuestion = () => {
 const handleResetDomain = () => {
     emit('reset');
 }
-
 </script>
 
 <template>
@@ -262,19 +266,6 @@ const handleResetDomain = () => {
                 Reset progress
             </template>
         </CoverScreen>
-        <WarningModal
-            v-if="showResetModal"
-            embed
-            @cancel="showResetModal=false"
-            @reset="handleResetDomain"
-        >
-            <template #title>
-                Are you sure?
-            </template>
-            <template #message>
-                Resetting will erase all your progress made on this domain. Other domains won't be affected.
-            </template>
-        </WarningModal>
     </template>
     <div
         v-else
