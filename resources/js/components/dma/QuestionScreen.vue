@@ -233,7 +233,7 @@ onBeforeUnmount(() => {
                             absolute
                             top-[25px]
                             right-[7px]
-                            backdrop-blur
+                            backdrop-blur-lg
                             bg-gray-500/70
                             cursor-default
                             h-[10px]
@@ -248,18 +248,21 @@ onBeforeUnmount(() => {
                         class="
                             absolute
                             top-[30px]
-                            right-[-30px]
-                            backdrop-blur
+                            right-[-10px]
+                            backdrop-blur-lg
                             bg-gray-500/70
                             cursor-default
                             font-medium
                             hidden
                             info-tooltip
+                            max-w-[400px]
                             p-5
                             rounded-lg
                             text-base
-                            w-[400px]
+                            w-[90vw]
                             z-10
+                            md:!right-[-30px]
+                            md:!w-[400px]
                             "
                     >
                         <slot name="info" />
@@ -354,7 +357,7 @@ onBeforeUnmount(() => {
                             v-model="answerText"
                             rows="8"
                             :disabled="props.disabled"
-                            class="bg-black-2 border-none px-8 py-7 resize-none rounded-3xl text-medium"
+                            class="bg-black-2 border-none px-8 py-7 resize-none rounded-2xl text-medium"
                             placeholder="Your explanation"
                         />
                         <div class="flex justify-end mt-5">
@@ -379,7 +382,7 @@ onBeforeUnmount(() => {
                     absolute
                     top-0
                     left-[30px]
-                    backdrop-blur
+                    backdrop-blur-lg
                     bg-gray-500/70
                     cursor-default
                     h-[10px]
@@ -389,7 +392,7 @@ onBeforeUnmount(() => {
                     "
             />
             <div
-                class="backdrop-blur bg-gray-500/70 cursor-default floating-tooltip mt-[5px] p-5 rounded-lg w-full"
+                class="backdrop-blur-lg bg-gray-500/70 cursor-default floating-tooltip mt-[5px] p-5 rounded-lg w-full"
                 v-html="tooltipContent"
             />
         </div>
