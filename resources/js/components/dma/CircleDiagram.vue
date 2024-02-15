@@ -124,9 +124,7 @@ const handleHideTooltip = () => {
     </div>
 </template>
 <style scoped lang="scss">
-svg {
-    border: 1px solid red;
-}
+
 .category-tooltip::before {
     content: "";
     background: black;
