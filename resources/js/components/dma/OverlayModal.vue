@@ -14,7 +14,15 @@ const props = defineProps({
     embed: {
         type: Boolean,
         default: false,
-    }
+    },
+    verticalAlign: {
+        type: String,
+        default: 'center',
+    },
+    noFocusTrap: {
+        type: Boolean,
+        default: false,
+    },
 })
 
 const emit = defineEmits(['close']);
@@ -60,12 +68,13 @@ const handleOverlayClick = (event) => {
         @click="handleOverlayClick"
     >
         <focus-trap
-            active
+            :active="!noFocusTrap"
             fallback-focus=".dma-app-root"
         >
             <div
                 tab-index="-1"
-                class="bg-black/80 flex justify-center items-center h-full overlay p-4 w-full md:!p-10"
+                class="bg-black/80 flex justify-center flex-col h-full overlay p-4 w-full md:!p-10"
+                :class="`items-${verticalAlign}`"
             >
                 <slot />
             </div>

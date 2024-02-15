@@ -3,14 +3,17 @@
 import {computed, ref} from "vue";
 
 import iconCheck from '@/assets/images/dma/icons/check.svg';
+import iconPlay from '@/assets/images/dma/icons/play.svg';
 import vidTeaching from '@/assets/video/temporary.mp4';
 // import vidTeaching from '@/assets/video/dma/teaching.mp4';
 // import vidLeading from '@/assets/video/dma/leading.mp4';
 // import vidLearning from '@/assets/video/dma/learning.mp4';
 // import vidManaging from '@/assets/video/dma/managing.mp4';
 import OverlayModal from "@/js/components/dma/OverlayModal.vue";
+import PlayButton from "@/js/components/dma/PlayButton.vue";
 import PrimaryActionButton from "@/js/components/dma/PrimaryActionButton.vue";
 import TextButton from "@/js/components/dma/TextButton.vue";
+import VideoModal from "@/js/components/dma/VideoModal.vue";
 import WarningModal from "@/js/components/dma/WarningModal.vue";
 import Spinner from "@/js/components/spinner/Spinner.vue";
 
@@ -81,13 +84,10 @@ const chapters = computed(() => {
             :class="`DomainCover-bg-${props.domain.domain}`"
         >
             <div class="flex justify-center items-center flex-1">
-                <button
-                    v-if="domainVideos[domain.domain] !== null"
-                    class="bg-black/50 flex justify-center items-center h-16 rounded-full w-16"
+                <PlayButton
+                    v-if="domainVideos[domain.domain] !== null && !showVideoModal"
                     @click="showVideoModal = true"
-                >
-                    ▶
-                </button>
+                />
             </div>
             <div>
                 <h2
@@ -99,19 +99,11 @@ const chapters = computed(() => {
                     {{ useDomainDescription(domain.domain) }}
                 </p>
             </div>
-            <OverlayModal
+            <VideoModal
                 v-if="showVideoModal"
-                :embed="true"
-                :click-away="true"
+                :src="domainVideos[domain.domain]"
                 @close="showVideoModal = false"
-            >
-                <video
-                    :src="domainVideos[domain.domain]"
-                    controls
-                    autoplay
-                    @ended="showVideoModal = false"
-                />
-            </OverlayModal>
+            />
         </div>
         <div class="basis-1/3 bg-black flex flex-col h-full p-10 py-16">
             <div class="text-center">

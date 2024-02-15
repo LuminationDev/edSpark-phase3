@@ -1,13 +1,15 @@
 <script setup lang="ts">
-import iconX from '@/assets/images/dma/icons/x.svg';
+import iconBack from '@/assets/images/dma/icons/arrow-left.svg';
 
 </script>
 <template>
     <button
         class="
-            bg-white
+            bg-black-2
+            active:bg-black-4
             hover:active:bg-gray-200
-            hover:bg-gray-100
+            hover:bg-black-3
+            bg-white
             cursor-pointer
             flex
             justify-center
@@ -17,7 +19,7 @@ import iconX from '@/assets/images/dma/icons/x.svg';
             w-[52px]
             "
     >
-        <img :src="iconX">
+        <img :src="iconBack">
     </button>
 </template>
 

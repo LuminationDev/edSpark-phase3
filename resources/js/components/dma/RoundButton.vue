@@ -17,8 +17,6 @@ const props = defineProps({
     }
 });
 
-const emit = defineEmits(['click'])
-
 </script>
 <template>
     <button
@@ -26,7 +24,6 @@ const emit = defineEmits(['click'])
         :class="{'opacity-50': disabled}"
         :style="{backgroundColor: props.color, color: props.textColor}"
         :disabled="disabled"
-        @click="emit('click')"
     >
         <slot />
     </button>

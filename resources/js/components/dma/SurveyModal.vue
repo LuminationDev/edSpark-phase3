@@ -58,7 +58,7 @@ const handleCompleteTriage = () => {
             class="bg-black h-full max-h-[880px] max-w-[1320px] overflow-hidden relative rounded-lg text-white w-full"
         >
             <CloseButton
-                class="absolute top-10 left-10 z-[100]"
+                class="absolute top-10 left-10 z-50"
                 @click="emit('close')"
             />
             <div class="h-full">

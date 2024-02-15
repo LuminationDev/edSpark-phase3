@@ -3,12 +3,14 @@
 import {onBeforeUnmount, onMounted, ref} from "vue";
 
 import iconArrowCircleLeft from '@/assets/images/dma/icons/arrow-circle-left.svg';
+import iconArrowLeft from '@/assets/images/dma/icons/arrow-left.svg';
 import iconInfoCircle from '@/assets/images/dma/icons/info-circle.svg';
 import imgLeading from '@/assets/images/dma/Leading.png';
 import imgLearning from '@/assets/images/dma/Learning.png';
 import imgManaging from '@/assets/images/dma/Managing.png';
 import imgTeaching from '@/assets/images/dma/Teaching.png';
 import AnswerButton from "@/js/components/dma/AnswerButton.vue";
+import BackButton from "@/js/components/dma/BackButton.vue";
 import PrimaryActionButton from "@/js/components/dma/PrimaryActionButton.vue";
 
 
@@ -60,9 +62,12 @@ const answerText = ref(null);
 const scrollableRef = ref(null);
 const questionRef = ref(null);
 const screenRef = ref(null);
+const bottomRef = ref(null);
+
 const tooltipRef = ref(null);
 const tooltipTarget = ref(null);
 const tooltipContent = ref('');
+
 
 const handleKeypress = (event) => {
     const keyList = ['1','2','3','4'];
@@ -81,6 +86,14 @@ const handleKeypress = (event) => {
     }
 }
 
+const handleShowUnsure = (show = true, smooth = true) => {
+    isUnsure.value = show;
+    handleShowAnswerField(false);
+    setTimeout(() => {
+        bottomRef.value.scrollIntoView({behavior: smooth ? 'smooth' : 'auto'});
+    })
+}
+
 const handleShowAnswerField = (show = true) => {
     answerText.value = show ? '' : null;
 }
@@ -95,7 +108,7 @@ const handleAnswer = (answer, text) => {
 
 const handleQuestionChange =() => {
     scrollableRef.value.scrollTop = 0;
-    isUnsure.value = false;
+    handleShowUnsure(false, false);
     handleShowAnswerField(false);
 
     const anchors = document.querySelectorAll('[data-bs-toggle="tooltip"]');
@@ -176,10 +189,14 @@ onBeforeUnmount(() => {
             </div>
         </div>
         <div class="basis-2/3 bg-black-1 flex flex-col h-full pt-10">
-            <div class="flex justify-between h-10 px-16 question-controls">
+            <div class="flex justify-between items-center h-[52px] mb-5 px-16 question-controls">
                 <span>
+                    <BackButton
+                        v-if="isUnsure"
+                        @click="handleShowUnsure(false)"
+                    />
                     <button
-                        v-if="props.showPrevious"
+                        v-else-if="props.showPrevious"
                         class="flex items-center font-bold gap-2 text-h5-caps active:hover:opacity-60 hover:opacity-80"
                         @click="handlePrevious"
                     >
@@ -230,7 +247,7 @@ onBeforeUnmount(() => {
             </div>
             <div
                 ref="scrollableRef"
-                class="flex flex-1 flex-col overflow-x-none overflow-y-scroll pb-16 pt-5 px-16"
+                class="flex flex-1 flex-col overflow-x-none overflow-y-scroll pb-16 px-16"
             >
                 <div
                     ref="questionRef"
@@ -261,7 +278,7 @@ onBeforeUnmount(() => {
                         hint="Press 3"
                         outline
                         :disabled="props.disabled"
-                        @click="isUnsure = true"
+                        @click="handleShowUnsure(true)"
                     >
                         UNSURE
                     </AnswerButton>
@@ -316,6 +333,7 @@ onBeforeUnmount(() => {
                         </PrimaryActionButton>
                     </div>
                 </div>
+                <div ref="bottomRef" />
             </div>
         </div>
         <div
