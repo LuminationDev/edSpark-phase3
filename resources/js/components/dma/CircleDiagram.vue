@@ -59,7 +59,6 @@ const segments = computed(() => {
 const handleShowTooltip = (event) => {
     tooltipTarget.value = event.target;
     tooltipRef.value.style.display = 'block';
-    console.log(chartRef.value.getBoundingClientRect(), event.target.getBoundingClientRect());
     const screenRect = chartRef.value.getBoundingClientRect();
     const targetRect = event.target.getBoundingClientRect();
 
