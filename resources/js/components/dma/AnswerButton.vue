@@ -14,6 +14,10 @@ const props = defineProps({
     disabled: {
         type: Boolean,
         required: false,
+    },
+    highlighted: {
+        type: Boolean,
+        required: false,
     }
 })
 
@@ -21,6 +25,7 @@ const emit = defineEmits(['click'])
 
 const dynamicClasses = computed(() => {
     let classStr = '';
+
     if (props.outline) {
         classStr = 'bg-black-1 border-2 border-gray-800';
     } else {
@@ -28,10 +33,20 @@ const dynamicClasses = computed(() => {
     }
     if (props.disabled) {
         classStr += ' opacity-50'
-    } else if (props.outline) {
-        classStr += ' hover:border-gray-700';
     } else {
-        classStr += ' hover:bg-black-3 active:bg-black-4';
+        if (props.highlighted) {
+            if (props.outline) {
+                classStr += ' border-gray-600';
+            } else {
+                classStr += ' bg-black-4';
+            }
+        } else {
+            if (props.outline) {
+                classStr += ' hover:border-gray-700 active:border-gray-600';
+            } else {
+                classStr += ' hover:bg-black-3 active:bg-black-4';
+            }
+        }
     }
     return classStr;
 })
