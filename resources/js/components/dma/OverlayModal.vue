@@ -65,7 +65,7 @@ const handleOverlayClick = (event) => {
         >
             <div
                 tab-index="-1"
-                class="bg-black/80 flex justify-center items-center h-full overlay p-10 w-full"
+                class="bg-black/80 flex justify-center items-center h-full overlay p-4 w-full md:!p-10"
             >
                 <slot />
             </div>
