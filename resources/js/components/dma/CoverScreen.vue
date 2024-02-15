@@ -24,12 +24,12 @@ const emit = defineEmits(['primary', 'secondary']);
 
 <template>
     <div
-        class="cover-screen h-full w-full"
+        class="cover-screen flex min-h-full w-full md:h-full"
         :class="`CoverScreen-bg-${props.theme} ${props.blurBg ? 'bg-blur' :
             ''}`"
     >
         <div
-            class="flex justify-start items-center flex-col gap-10 h-full pb-10 pt-20 px-3 w-full md:!px-24 md:!py-20"
+            class="flex justify-start items-center flex-col gap-10 pb-10 pt-32 px-8 w-full md:!pt-20 md:!px-24 md:!py-20 md:h-full"
         >
             <div class="flex justify-center items-center flex-1 w-full">
                 <slot name="content" />

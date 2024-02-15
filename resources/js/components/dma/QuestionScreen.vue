@@ -197,7 +197,10 @@ onBeforeUnmount(() => {
                 <div class="flex-1 hidden md:!block">
                     <slot name="contentTop" />
                 </div>
-                <div class="pt-32 md:!pt-0">
+                <div
+                    class="md:!pt-0"
+                    :class="`${props.theme==='triage' ? 'pt-16':'pt-32'}`"
+                >
                     <slot name="contentBottom" />
                 </div>
             </div>
