@@ -79,11 +79,11 @@ const chapters = computed(() => {
         class="flex md:flex-row justify-start items-center flex-col h-full question-screen w-full"
     >
         <div
-            class="flex-col h-full hidden p-14 pt-28 relative md:!flex md:basis-3/5 lg:!basis-2/3"
+            class="flex flex-col h-full pb-8 pt-24 px-8 relative md:!p-12 md:!pt-28 md:basis-1/2 lg:!basis-2/3 lg:!p-14"
             :class="`DomainCover-bg-${props.domain.domain}`"
         >
             <div
-                class="flex justify-center items-center flex-1 lg:min-h-[300px]"
+                class="flex justify-center items-center flex-1 mb-6 min-h-[200px] lg:min-h-[300px]"
             >
                 <PlayButton
                     v-if="domainVideos[domain.domain] !== null && !showVideoModal"
@@ -92,11 +92,11 @@ const chapters = computed(() => {
             </div>
             <div>
                 <h2
-                    class="text-h2-caps"
+                    class="font-bold text-h2-caps md:text-h3-caps lg:text-h2-caps"
                 >
                     {{ domain.domain }}
                 </h2>
-                <p class="mt-5 text-medium w-2/3">
+                <p class="mt-5 text-medium w-full xl:!w-2/3">
                     {{ useDomainDescription(domain.domain) }}
                 </p>
             </div>
@@ -107,9 +107,9 @@ const chapters = computed(() => {
             />
         </div>
         <div
-            class="bg-black flex flex-col min-h-full p-10 w-full md:!py-16 md:basis-2/5 md:h-full lg:basis-1/3"
+            class="bg-black flex flex-col p-10 w-full md:!py-16 md:basis-1/2 md:h-full lg:basis-1/3"
         >
-            <div class="mb-10 mt-20 text-center md:!mt-0">
+            <div class="mb-14 mt-4 text-center md:!mt-0">
                 <h3 class="text-h2 md:text-h3">
                     <span class="text-h5-caps">
                         Domain
@@ -118,7 +118,7 @@ const chapters = computed(() => {
                 </h3>
             </div>
             <div
-                class="flex justify-center items-center flex-1 transition-opacity"
+                class="duration-300 flex justify-center items-center flex-1 transition-opacity"
                 :class="`${questions ? 'opacity-100' : 'opacity-0'}`"
             >
                 <div
@@ -148,7 +148,7 @@ const chapters = computed(() => {
                     </div>
                 </div>
             </div>
-            <div class="flex flex-col gap-7 md:gap-10 mt-10 text-center">
+            <div class="flex flex-col gap-7 md:gap-10 mt-16 text-center">
                 <div v-if="!domainComplete">
                     <PrimaryActionButton
                         :disabled="!questions"
