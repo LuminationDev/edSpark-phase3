@@ -8,7 +8,7 @@ const showAnswer = ref(false);
 </script>
 <template>
     <button
-        class="block border border-main-darkTeal faq-entry mt-5 p-8 w-full"
+        class="border border-main-darkTeal faq-entry p-6 md:p-8"
         @click="showAnswer = !showAnswer"
     >
         <div class="flex justify-between items-center question-row">

@@ -38,25 +38,39 @@ const progressPercent = computed(() => {
 
 <template>
     <button
-        class="bg-gray-500 domain-summary flex justify-start items-center flex-row gap-10 p-10 rounded-3xl text-white"
+        class="
+            bg-gray-500
+            domain-summary
+            flex
+            justify-start
+            md:items-center
+            flex-row
+            p-5
+            rounded-2xl
+            text-white
+            gap-5
+            md:!gap-10
+            md:!p-10
+            md:!rounded-3xl
+            "
         :class="`DomainSummary-bg-${props.domain.domain} ${props.resetting
             ? 'opacity-50' : ''}`"
         :disabled="props.resetting"
         @click="emit('click')"
     >
-        <div class="flex shrink-0 justify-center items-center w-44">
+        <div class="flex shrink-0 justify-start items-center w-28 md:w-44">
             <img :src="domainImages[props.domain.domain]">
         </div>
         <div class="flex content flex-col h-full text-left w-full">
             <div class="mb-1 text-h3-caps">
                 {{ props.domain.domain }}
             </div>
-            <div class="flex-1 font-medium mb-8 opacity-60 text-medium">
+            <div class="flex-1 font-medium mb-4 opacity-60 text-medium md:!mb-8">
                 {{ useDomainDescription(props.domain.domain) }}
             </div>
             <div
                 v-if="props.resetting"
-                class="flex justify-center items-center font-semibold gap-2 text-medium"
+                class="flex items-center font-semibold text-medium  gap-2"
             >
                 <img
                     :src="iconCheck"
@@ -76,7 +90,7 @@ const progressPercent = computed(() => {
             </div>
             <div
                 v-else
-                class="flex justify-center items-center font-semibold gap-2 text-medium"
+                class="flex items-center font-semibold gap-2 text-medium"
             >
                 <img
                     :src="iconCheck"
