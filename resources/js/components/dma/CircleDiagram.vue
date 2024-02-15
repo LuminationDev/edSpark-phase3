@@ -22,7 +22,8 @@ const tooltipTarget = ref(null);
 const TAU = 2 * Math.PI;
 
 //full radius of the circle to draw
-const radius = props.size / 3;
+const radius = props.size / 2;
+const num_radii_to_skip = 1;
 // angular and radial space between the wedges
 const padding = 0.5;
 // offset for the start angle
@@ -32,16 +33,18 @@ const num_radii = 4;
 // number of circumferential elements
 const num_angles = props.scores.length;
 
+const num_radii_actual = num_radii + num_radii_to_skip;
 const segments = computed(() => {
     const arr = [];
     for (let seg = 0; seg < num_angles; seg++) {
-        for (let rad = 1; rad <= num_radii; ++rad) {
-            const clazz = rad <= props.scores[seg].score ? props.scores[seg].domain : 'white';
+        for (let rad_index = 1; rad_index <= num_radii; ++rad_index) {
+            const rad = rad_index + num_radii_to_skip;
+            const clazz = rad_index <= props.scores[seg].score ? props.scores[seg].domain : 'white';
             arr.push({
                 id: `${seg}_${rad}`,
                 category: props.scores[seg].category,
-                inner_radius: ((radius * rad) / num_radii) + (padding/2),
-                outer_radius: ((radius * (rad + 1)) / num_radii) - (padding/2),
+                inner_radius: ((radius * (rad - 1)) / (num_radii_actual)) + (padding/2),
+                outer_radius: ((radius * rad) / num_radii_actual) - (padding/2),
                 start_angle: (seg * TAU / num_angles) - angular_offset,
                 delta_angle: (TAU / num_angles),
                 x_offset: 0,
@@ -56,14 +59,12 @@ const segments = computed(() => {
 const handleShowTooltip = (event) => {
     tooltipTarget.value = event.target;
     tooltipRef.value.style.display = 'block';
-
+    console.log(chartRef.value.getBoundingClientRect(), event.target.getBoundingClientRect());
     const screenRect = chartRef.value.getBoundingClientRect();
     const targetRect = event.target.getBoundingClientRect();
 
-    const posX = targetRect.left - screenRect.left - 75 + (targetRect.width / 2);
-
-    tooltipRef.value.style.left = `${posX}px`;
-    tooltipRef.value.style.bottom = `${screenRect.bottom - targetRect.top + 5}px`;
+    tooltipRef.value.style.left = `${targetRect.left - screenRect.left +( targetRect.width / 2)}px`;
+    tooltipRef.value.style.bottom = `${(screenRect.bottom - (targetRect.top))}px`;
 }
 const handleHideTooltip = () => {
     tooltipTarget.value = null;
@@ -123,7 +124,9 @@ const handleHideTooltip = () => {
     </div>
 </template>
 <style scoped lang="scss">
-
+svg {
+    border: 1px solid red;
+}
 .category-tooltip::before {
     content: "";
     background: black;
@@ -133,7 +136,10 @@ const handleHideTooltip = () => {
     left: 50%;
     bottom: -5px;
     transform: translateX(-50%) rotate(45deg);
+}
 
+.category-tooltip {
+    transform: translateX(-50%)
 }
 
 .teaching {
