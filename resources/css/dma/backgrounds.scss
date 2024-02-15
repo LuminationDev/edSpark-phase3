@@ -41,6 +41,31 @@
     .DomainSummary-bg-managing {
         background: linear-gradient(131deg, #ffd9c3 -22.29%, #cb4413 70.25%);
     }
+    .DomainSummary-bg-teaching,
+    .DomainSummary-bg-learning,
+    .DomainSummary-bg-leading,
+    .DomainSummary-bg-managing {
+        position: relative;
+        overflow: hidden;
+
+        > * {
+            position: relative;
+        }
+
+        &:before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            opacity: 0;
+            background-color: #ccc;
+            mix-blend-mode: overlay;
+            transition: opacity 0.1s ease-out;
+        }
+
+        &:hover:before {
+            opacity: 0.2;
+        }
+    }
 
     /**
      * DomainCover component

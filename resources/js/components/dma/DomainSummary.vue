@@ -45,9 +45,11 @@ const progressPercent = computed(() => {
             justify-start
             md:items-center
             flex-row
+            focus-visible:ring
             p-5
             rounded-2xl
             text-white
+            focus:outline-none
             gap-5
             md:!gap-10
             md:!p-10
