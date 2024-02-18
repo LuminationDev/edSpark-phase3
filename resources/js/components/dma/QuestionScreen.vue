@@ -3,12 +3,7 @@
 import {onBeforeUnmount, onMounted, ref} from "vue";
 
 import iconArrowCircleLeft from '@/assets/images/dma/icons/arrow-circle-left.svg';
-import iconArrowLeft from '@/assets/images/dma/icons/arrow-left.svg';
 import iconInfoCircle from '@/assets/images/dma/icons/info-circle.svg';
-import imgLeading from '@/assets/images/dma/Leading.png';
-import imgLearning from '@/assets/images/dma/Learning.png';
-import imgManaging from '@/assets/images/dma/Managing.png';
-import imgTeaching from '@/assets/images/dma/Teaching.png';
 import AnswerButton from "@/js/components/dma/AnswerButton.vue";
 import BackButton from "@/js/components/dma/BackButton.vue";
 import PrimaryActionButton from "@/js/components/dma/PrimaryActionButton.vue";
@@ -47,14 +42,6 @@ const REASON = {
 };
 
 const keyList = ['1','2','3','4'];
-
-const domainImages = {
-    triage: imgTeaching, // TODO triage image needed
-    teaching: imgTeaching,
-    learning: imgLearning,
-    leading: imgLeading,
-    managing: imgManaging
-};
 
 let questionObserver = null;
 
@@ -187,7 +174,7 @@ onBeforeUnmount(() => {
         class="flex justify-start items-center flex-1 flex-col h-full question-screen w-full md:!flex-row"
     >
         <div
-            class="w-full md:w-auto md:basis-1/3 md:h-full"
+            class="w-full md:w-auto md:basis-1/4 md:h-full lg:basis-1/3"
             :class="`QuestionScreen-bg-${props.theme} ${props.blurBg ?
                 'bg-blur' : ''}`"
         >
@@ -206,7 +193,7 @@ onBeforeUnmount(() => {
             </div>
         </div>
         <div
-            class="bg-black-1 flex flex-1 flex-col pt-10 w-full md:!w-auto md:basis-2/3 md:h-full"
+            class="bg-black-1 flex flex-1 flex-col pt-10 w-full md:!w-auto md:basis-3/4 md:h-full lg:basis-2/3"
         >
             <div class="flex justify-between items-center h-[52px] mb-5 px-5 question-controls md:!px-16">
                 <span class="flex items-center h-full">
@@ -272,7 +259,19 @@ onBeforeUnmount(() => {
             <div class="flex flex-1 flex-col relative md:overflow-hidden">
                 <!-- <div class="absolute top-0 bg-gradient-to-b from-black to-transparent h-5 w-full" /> -->
                 <div
-                    class="absolute bottom-0 bg-gradient-to-b from-transparent via-black to-black h-10 hidden w-full md:!block"
+                    class="
+                        absolute
+                        right-6
+                        bottom-0
+                        left-0
+                        bg-gradient-to-b
+                        from-transparent
+                        via-black
+                        to-black
+                        h-10
+                        hidden
+                        md:!block
+                        "
                 />
                 <div
                     ref="scrollableRef"
@@ -280,7 +279,7 @@ onBeforeUnmount(() => {
                 >
                     <div
                         ref="questionRef"
-                        class="flex-1 mb-6 question text-xLarge"
+                        class="flex-1 mb-6 question text-xLarge md:text-medium lg:text-xLarge"
                     >
                         <slot name="question" />
                     </div>
