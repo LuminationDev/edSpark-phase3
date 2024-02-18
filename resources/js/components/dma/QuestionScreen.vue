@@ -208,7 +208,7 @@ onBeforeUnmount(() => {
         <div
             class="bg-black-1 flex flex-1 flex-col pt-10 w-full md:!w-auto md:basis-2/3 md:h-full"
         >
-            <div class="flex justify-between items-center h-[52px] mb-5 px-5 question-controls md:!px-16">
+            <div class="flex justify-between items-center h-[52px] mb-5 pl-5 pr-[40px] question-controls md:!px-16">
                 <span class="flex items-center h-full">
                     <BackButton
                         v-if="isUnsure"
@@ -231,7 +231,7 @@ onBeforeUnmount(() => {
                     <div
                         class="
                             absolute
-                            top-[25px]
+                            top-[45px]
                             right-[7px]
                             backdrop-blur
                             bg-gray-500/70
@@ -247,8 +247,9 @@ onBeforeUnmount(() => {
                     <div
                         class="
                             absolute
-                            top-[30px]
-                            right-[-30px]
+                            top-[50px]
+                            right-[-20px]
+                            md:right-[-30px]
                             backdrop-blur
                             bg-gray-500/70
                             cursor-default
