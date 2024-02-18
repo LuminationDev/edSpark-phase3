@@ -72,8 +72,8 @@ const dynamicClasses = computed(() => {
             transition-colors
             w-full
             md:!mt-6
-            md:!px-11
-            md:!py-9
+            lg:!px-11
+            lg:!py-9
             "
         :class="dynamicClasses"
         :disabled="props.disabled"

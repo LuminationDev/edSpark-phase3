@@ -80,13 +80,13 @@ const handlePrevious = () => {
             @primary="() => question = 0"
         >
             <template #content>
-                <div class="text-center">
+                <div class="flex items-center flex-col text-center">
                     <h1 class="text-h3-caps">
                         <span>Digital Maturity</span><br>
                         <span class="text-h1-caps">Assessment</span>
                     </h1>
-                    <p class="mt-9 text-large">
-                        Before you get started, please<br>answer a few quick questions
+                    <p class="max-w-[400px] mt-9 text-large">
+                        Before you get started, please answer a few quick questions
                     </p>
                 </div>
             </template>

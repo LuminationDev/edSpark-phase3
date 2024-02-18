@@ -3,18 +3,15 @@
 import {computed, ref} from "vue";
 
 import iconCheck from '@/assets/images/dma/icons/check.svg';
-import iconPlay from '@/assets/images/dma/icons/play.svg';
 import vidTeaching from '@/assets/video/temporary.mp4';
 import vidLeading from '@/assets/video/temporary.mp4';
 import vidLearning from '@/assets/video/temporary.mp4';
 import vidManaging from '@/assets/video/temporary.mp4';
-import OverlayModal from "@/js/components/dma/OverlayModal.vue";
 import PlayButton from "@/js/components/dma/PlayButton.vue";
 import PrimaryActionButton from "@/js/components/dma/PrimaryActionButton.vue";
 import TextButton from "@/js/components/dma/TextButton.vue";
 import VideoModal from "@/js/components/dma/VideoModal.vue";
 import WarningModal from "@/js/components/dma/WarningModal.vue";
-import Spinner from "@/js/components/spinner/Spinner.vue";
 
 import { useDomainDescription } from "./domainHelper";
 
@@ -207,16 +204,16 @@ const chapters = computed(() => {
 .chapter-progress {
     position: relative;
     padding: 0.5rem 0px;
+}
 
-    &:before {
-        content: '';
-        position: absolute;
-        left: 10px;
-        top: 0px;
-        bottom: 1rem;
-        width: 1px;
-        background: rgba(255, 255, 255, 0.3);
-    }
+.chapter-progress:before {
+    content: '';
+    position: absolute;
+    left: 10px;
+    top: 0px;
+    bottom: 1rem;
+    width: 1px;
+    background: rgba(255, 255, 255, 0.3);
 }
 
 .status-mark {
@@ -229,22 +226,22 @@ const chapters = computed(() => {
     align-items: center;
     justify-content: center;
     position: relative;
+}
 
-    img {
-        width: 16px;
-        height: 16px;
-    }
+.status-mark img {
+    width: 16px;
+    height: 16px;
+}
 
-    &.current {
-        background: white;
-    }
+.status-mark.current {
+    background: white;
+}
 
-    &.incomplete:after {
-        content: '';
-        position: absolute;
-        inset: 5px;
-        border-radius: 50%;
-        background: rgba(255, 255, 255, 0.3);
-    }
+.status-mark.incomplete:after {
+    content: '';
+    position: absolute;
+    inset: 5px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.3);
 }
 </style>

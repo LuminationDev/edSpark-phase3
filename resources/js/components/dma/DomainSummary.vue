@@ -60,14 +60,14 @@ const progressPercent = computed(() => {
         :disabled="props.resetting"
         @click="emit('click')"
     >
-        <div class="flex shrink-0 justify-start items-center w-28 md:w-44">
+        <div class="flex shrink-0 justify-start items-center w-24 md:w-44">
             <img :src="domainImages[props.domain.domain]">
         </div>
         <div class="flex content flex-col h-full text-left w-full">
             <div class="mb-1 text-h3-caps">
                 {{ props.domain.domain }}
             </div>
-            <div class="flex-1 font-medium mb-4 opacity-60 text-medium md:!mb-8">
+            <div class="flex-1 font-medium mb-4 opacity-60 text-small md:text-medium md:!mb-8">
                 {{ useDomainDescription(props.domain.domain) }}
             </div>
             <div

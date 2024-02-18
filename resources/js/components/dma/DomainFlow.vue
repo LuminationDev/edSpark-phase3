@@ -248,14 +248,13 @@ const handleResetDomain = () => {
             @secondary="showResetModal = true"
         >
             <template #content>
-                <div class="text-center">
+                <div class="flex items-center flex-col text-center">
                     <h1 class="text-h3-caps">
                         <span>Domain</span><br>
                         <span class="text-h1-caps">Complete</span>
                     </h1>
-                    <p class="mt-9 text-large">
-                        You did great. Let's start another<br>
-                        domain when you're ready.
+                    <p class="max-w-[400px] mt-9 text-large">
+                        You did great. Let's start another domain when you're ready.
                     </p>
                 </div>
             </template>
