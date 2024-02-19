@@ -227,14 +227,14 @@ class SurveyController extends Controller
                             THEN phase
                             ELSE 0
                             END) as value,
-                            category_print as category")
+                            category_print as category, chapter_print as chapter")
             ->leftJoin('user_answers', function ($join) use ($user_survey_domain) {
                 $join->on('questions.id', '=', 'user_answers.question_id')
                     ->where('user_answers.user_survey_domain_id', '=', $user_survey_domain->id);
             })
             ->where('questions.domain','=', $user_survey_domain->domain)
             ->whereNotNull('category_print')
-            ->groupBy('category_print')
+            ->groupBy('category_print', 'chapter_print')
             ->get();
     }
 
