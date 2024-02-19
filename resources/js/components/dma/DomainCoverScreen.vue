@@ -46,6 +46,10 @@ const handleResetDomain = () => {
     emit('reset');
 }
 
+const domainStarted = computed(() => {
+    return props.domain.completed_question_count > 0;
+})
+
 const domainComplete = computed(() => {
     return props.domain.completed_question_count === props.domain.question_count;
 })
@@ -168,6 +172,7 @@ const chapters = computed(() => {
                 </div>
                 <TextButton
                     class="text-small"
+                    :class="{'invisible': !domainStarted}"
                     @click="showResetModal = true"
                 >
                     Reset progress
