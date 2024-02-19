@@ -4,6 +4,7 @@ use App\Http\Controllers\AutoSaveController;
 use App\Http\Controllers\CatalogueController;
 use App\Http\Controllers\FeedbackController;
 use App\Http\Controllers\LabelController;
+use App\Http\Controllers\SurveyController;
 use App\Http\Controllers\TagController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AdviceController;
@@ -148,16 +149,16 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('fetchAllLabels', [LabelController::class, 'fetchAllLabels']);
 
     // Catalogue
-    Route::post('fetchCatalogueByField', [CatalogueController::class,"fetchCatalogueByField" ]);
+    Route::post('fetchCatalogueByField', [CatalogueController::class, "fetchCatalogueByField"]);
     Route::post('fetchSingleProductByReference', [CatalogueController::class, 'fetchSingleProductByUniqueReference']);
     Route::post('fetchSingleProductByName', [CatalogueController::class, 'fetchSingleProductByName']);
     Route::post('fetchUpgradesSingleProduct', [CatalogueController::class, 'fetchUpgradesSingleProduct']);
     Route::post('fetchBundlesSingleProduct', [CatalogueController::class, 'fetchBundlesSingleProduct']);
-    Route::post('fetchAllCatalogue',[CatalogueController::class, 'fetchAllCatalogue']);
-    Route::get('fetchAllCatalogueCategories',[CatalogueController::class,'fetchAllCategories']);
-    Route::get('fetchAllCatalogueTypes',[CatalogueController::class,'fetchAllTypes']);
-    Route::get('fetchAllCatalogueBrands',[CatalogueController::class,'fetchAllBrands']);
-    Route::get('fetchAllCatalogueVendors',[CatalogueController::class,'fetchAllVendors']);
+    Route::post('fetchAllCatalogue', [CatalogueController::class, 'fetchAllCatalogue']);
+    Route::get('fetchAllCatalogueCategories', [CatalogueController::class, 'fetchAllCategories']);
+    Route::get('fetchAllCatalogueTypes', [CatalogueController::class, 'fetchAllTypes']);
+    Route::get('fetchAllCatalogueBrands', [CatalogueController::class, 'fetchAllBrands']);
+    Route::get('fetchAllCatalogueVendors', [CatalogueController::class, 'fetchAllVendors']);
 
 
     // Feedback
@@ -167,6 +168,15 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('updateOrCreateMetadata/{user_id}', [UserController::class, 'updateOrCreateMetadata']);
     Route::get('getUserProfileMetadata/{user_id}', [UserController::class, 'getUserProfileMetadata']);
     Route::post('updateOrCreateUserAvatar/{user_id}', [UserController::class, 'updateOrCreateUserAvatar']);
+
+
+    Route::group(['prefix' => 'user/survey'], function () {
+        Route::get('/', [SurveyController::class, 'getUserSurvey']);
+        Route::delete('/', [SurveyController::class, 'resetUserSurvey']);
+        Route::get('domain/{domain_id}/questions', [SurveyController::class, 'getSurveyQuestionsForDomain']);
+        Route::post('/answer', [SurveyController::class, 'saveUserAnswerToQuestion']);
+        Route::delete('/domain/{domain_id}', [SurveyController::class, 'resetUserSurveyDomain']);
+    });
+
+
 });
-
-
