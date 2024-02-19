@@ -56,12 +56,32 @@ const categoryScores = computed(() => {
     const scores = [];
     if (domains.value) {
         for (const domain of domains.value) {
+            const chapters = [];
             for (const result of domain.results) {
+                let chapter = chapters.find(c => c.name === result.chapter);
+                if (!chapter) {
+                    chapter = { name: result.chapter, scores: [], completed: false};
+                    chapters.push(chapter);
+                }
+                if (chapters.length <= domain.completed_chapter_count) {
+                    chapter.completed = true;
+                }
+                chapter.scores.push(result.value);
+            }
+            for (const chapter of chapters) {
+                // if no questions have been answered, score is 0;
+                // otherwise, it is the average of all category scores
+                let score = 0;
+                if(chapter.completed) {
+                    score = Math.round(chapter.scores.reduce((sum, val) => {
+                        return sum + (val || 1); // treat 0 as 1
+                    }, 0) / chapter.scores.length);
+                }
                 scores.push({
-                    category: result.category,
+                    chapter: chapter.name,
                     domain: domain.domain,
-                    score: result.value,
-                })
+                    score,
+                });
             }
         }
     }
