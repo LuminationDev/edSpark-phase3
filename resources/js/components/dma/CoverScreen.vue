@@ -29,7 +29,7 @@ const emit = defineEmits(['primary', 'secondary']);
             ''}`"
     >
         <div
-            class="flex justify-start items-center flex-col gap-10 pb-10 pt-32 px-8 w-full md:!pt-20 md:!px-24 md:!py-20 md:h-full"
+            class="flex justify-start items-center flex-col gap-10 pb-10 pt-32 px-6 w-full md:!pt-20 md:!px-24 md:!py-20 md:h-full"
         >
             <div class="flex justify-center items-center flex-1 w-full">
                 <slot name="content" />
@@ -37,26 +37,30 @@ const emit = defineEmits(['primary', 'secondary']);
 
             <div
                 v-if="props.cornerControls"
-                class="flex justify-between items-center w-full"
+                class="flex md:justify-between items-center flex-col gap-6 w-full md:!flex-row"
             >
+                <PrimaryActionButton
+                    v-if="$slots.primaryAction"
+                    class="order-0 md:order-1"
+                    @click="emit('primary')"
+                >
+                    <slot name="primaryAction" />
+                </PrimaryActionButton>
                 <TextButton
                     v-if="$slots.secondaryAction"
                     @click="emit('secondary')"
                 >
                     <slot name="secondaryAction" />
                 </TextButton>
-                <span v-else />
-                <PrimaryActionButton
-                    v-if="$slots.primaryAction"
-                    @click="emit('primary')"
-                >
-                    <slot name="primaryAction" />
-                </PrimaryActionButton>
+                <span
+                    v-else
+                    class="hidden md:!block"
+                />
             </div>
 
             <div
                 v-else
-                class="flex justify-center items-center flex-col gap-10 w-full"
+                class="flex justify-center items-center flex-col gap-6 w-full md:!gap-10"
             >
                 <PrimaryActionButton
                     v-if="$slots.primaryAction"

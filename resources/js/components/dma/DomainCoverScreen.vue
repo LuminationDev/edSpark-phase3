@@ -76,7 +76,7 @@ const chapters = computed(() => {
         class="flex md:flex-row justify-start items-center flex-col h-full question-screen w-full"
     >
         <div
-            class="flex flex-col h-full pb-8 pt-24 px-8 relative md:!p-12 md:!pt-28 md:basis-1/2 lg:!basis-2/3 lg:!p-14"
+            class="flex flex-col pb-8 pt-24 px-8 relative md:!p-12 md:!pt-28 md:basis-1/2 md:h-full lg:!basis-2/3 lg:!p-14"
             :class="`DomainCover-bg-${props.domain.domain}`"
         >
             <div

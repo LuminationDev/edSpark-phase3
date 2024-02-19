@@ -171,11 +171,11 @@
     .CoverScreen-bg-learning,
     .CoverScreen-bg-leading,
     .CoverScreen-bg-managing {
-        background-position: 50% 60%;
-        background-size: 100%;
+        background-position: center;
+        background-size: cover;
 
         &.bg-blur {
-            background-position: 600% 100%;
+            background-position: 550% 100%;
             background-size: 90%;
         }
     }
@@ -184,7 +184,7 @@
     .QuestionScreen-bg-learning,
     .QuestionScreen-bg-leading,
     .QuestionScreen-bg-managing {
-        background-position: -10% 100%;
+        background-position: -5% 100%;
         background-size: 300%;
 
         @media screen and (max-width: #{$md-start - 1}) {

@@ -189,11 +189,8 @@ const handleResetSurvey = async () => {
                                     py-10
                                     gap-10
                                     md:!px-10
-                                    md:!py-14
-                                    lg:!p-14
                                     xl:!flex-col
                                     xl:!gap-14
-                                    xl:p-10
                                     "
                             >
                                 <div class="flex flex-1 flex-col gap-4 md:!basis-2/5">
@@ -216,19 +213,23 @@ const handleResetSurvey = async () => {
                                 <!-- TODO correct this information -->
                                 The tool is for you and your school. Your data is only stored locally in the
                                 current profile of your web browser. You can generate a PDF report for sharing within
-                                your school or including in your next round of School Improvement planning.
-                                <button
-                                    v-if="isInProgress && !isDomainResetting()"
-                                    class="block font-semibold mt-10 underline"
-                                    @click="showResetModal = true"
-                                >
-                                    Reset progress
-                                </button>
+                                your school or including in your next
+                                round of School Improvement planning.
+
+                                <span class="block h-6 mt-7">
+                                    <button
+                                        v-if="isInProgress && !isDomainResetting()"
+                                        class="block font-semibold underline"
+                                        @click="showResetModal = true"
+                                    >
+                                        Reset progress
+                                    </button>
+                                </span>
                             </p>
                         </div>
 
                         <div
-                            class="DMADomainContainer flex flex-col gap-5 px-4 md:!gap-7 md:!px-5 lg:!gap-9 lg:!px-0"
+                            class="DMADomainContainer flex flex-col gap-5 px-4 md:!gap-6 md:!px-5 lg:!gap-8 lg:!px-0"
                         >
                             <DomainSummary
                                 v-for="domain of domains"

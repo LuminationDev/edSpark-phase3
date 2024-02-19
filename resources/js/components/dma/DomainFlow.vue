@@ -179,15 +179,17 @@ const handleResetDomain = () => {
                 @secondary="handlePreviousQuestion"
             >
                 <template #content>
-                    <div>
-                        <div class="text-h5-caps">
+                    <div
+                        class="w-full"
+                    >
+                        <div class="mb-2 text-h5-caps">
                             Chapter {{ chapters.indexOf(currentQuestion.chapter)+1 }}/{{ chapters.length }}
                         </div>
-                        <h2 class="text-h1-caps">
+                        <h2 class="text-h1-caps md:text-h2-caps lg:text-h1-caps">
                             {{ currentQuestion.chapter_print }}
                         </h2>
                         <div
-                            class="mt-10 text-large"
+                            class="max-w-[900px] mt-6 md:mt-10 text-base md:text-medium lg:text-large"
                             v-html="currentQuestion.description"
                         />
                     </div>
@@ -224,7 +226,7 @@ const handleResetDomain = () => {
                 </template>
                 <template #contentBottom>
                     <h2
-                        class="hidden mb-6 text-h3-caps md:!block"
+                        class="hidden mb-5 text-h4-caps md:!block"
                     >
                         {{ domain.domain }}
                     </h2>
@@ -253,7 +255,7 @@ const handleResetDomain = () => {
                         <span>Domain</span><br>
                         <span class="text-h1-caps">Complete</span>
                     </h1>
-                    <p class="max-w-[400px] mt-9 text-large">
+                    <p class="max-w-[400px] mt-9 text-medium md:text-large">
                         You did great. Let's start another domain when you're ready.
                     </p>
                 </div>

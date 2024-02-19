@@ -25,7 +25,7 @@ const TAU = 2 * Math.PI;
 const radius = props.size / 2;
 const num_radii_to_skip = 1;
 // angular and radial space between the wedges
-const padding = 0.5;
+const padding = 0.33;
 // offset for the start angle
 const angular_offset = TAU / 4;
 // number of radial elements

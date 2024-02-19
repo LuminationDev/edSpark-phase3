@@ -60,7 +60,7 @@ const progressPercent = computed(() => {
         :disabled="props.resetting"
         @click="emit('click')"
     >
-        <div class="flex shrink-0 justify-start items-center w-24 md:w-44">
+        <div class="flex shrink-0 justify-start items-center w-24 md:!w-44">
             <img :src="domainImages[props.domain.domain]">
         </div>
         <div class="flex content flex-col h-full text-left w-full">
@@ -72,27 +72,24 @@ const progressPercent = computed(() => {
             </div>
             <div
                 v-if="props.resetting"
-                class="flex items-center font-semibold text-medium  gap-2"
+                class="flex items-center font-semibold text-small md:text-medium"
             >
-                <img
-                    :src="iconCheck"
-                    class="opacity-60"
-                > Domain reset
+                Resetting domain...
             </div>
             <div
                 v-else-if="progressPercent < 100"
-                class="flex items-center flex-row gap-5 progress"
+                class="flex items-center flex-row gap-3 progress md:!gap-5"
             >
                 <div class="bg-white/20 flex-1 h-2 progress-bar-track rounded-full">
                     <ProgressBar :percent="progressPercent" />
                 </div>
-                <div class="font-bold progress-value text-medium">
+                <div class="font-bold progress-value text-small md:text-medium">
                     {{ props.domain.completed_chapter_count }}/{{ props.domain.chapter_count }}
                 </div>
             </div>
             <div
                 v-else
-                class="flex items-center font-semibold gap-2 text-medium"
+                class="flex items-center font-semibold gap-2 text-small md:text-medium"
             >
                 <img
                     :src="iconCheck"

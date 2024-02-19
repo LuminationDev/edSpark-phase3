@@ -179,23 +179,23 @@ onBeforeUnmount(() => {
                 'bg-blur' : ''}`"
         >
             <div
-                class="flex flex-col h-full px-4 w-full md:!p-10 md:!pt-36"
+                class="flex flex-col h-full px-4 w-full md:!pt-36 md:!px-10 md:!py-16"
             >
                 <div class="flex-1 hidden md:!block">
                     <slot name="contentTop" />
                 </div>
                 <div
                     class="md:!pt-0"
-                    :class="`${props.theme==='triage' ? 'pt-16':'pt-32'}`"
+                    :class="`${props.theme==='triage' ? 'pt-12' : 'pt-20'}`"
                 >
                     <slot name="contentBottom" />
                 </div>
             </div>
         </div>
         <div
-            class="bg-black-1 flex flex-1 flex-col pt-10 w-full md:!w-auto md:basis-3/4 md:h-full lg:basis-2/3"
+            class="bg-black-1 flex flex-1 flex-col pt-4 w-full md:!pt-10 md:!w-auto md:basis-3/4 md:h-full lg:basis-2/3"
         >
-            <div class="flex justify-between items-center h-[52px] mb-5 px-5 question-controls md:!px-16">
+            <div class="flex justify-between items-center h-[52px] mb-5 px-4 question-controls md:!px-16">
                 <span class="flex items-center h-full">
                     <BackButton
                         v-if="isUnsure"
@@ -257,25 +257,12 @@ onBeforeUnmount(() => {
                 </a>
             </div>
             <div class="flex flex-1 flex-col relative md:overflow-hidden">
-                <!-- <div class="absolute top-0 bg-gradient-to-b from-black to-transparent h-5 w-full" /> -->
                 <div
-                    class="
-                        absolute
-                        right-6
-                        bottom-0
-                        left-0
-                        bg-gradient-to-b
-                        from-transparent
-                        via-black
-                        to-black
-                        h-10
-                        hidden
-                        md:!block
-                        "
+                    class="absolute right-6 bottom-0 left-0 bg-gradient-to-b from-transparent to-black h-10 hidden md:!block"
                 />
                 <div
                     ref="scrollableRef"
-                    class="flex flex-1 flex-col pb-6 px-5 md:!pb-16 md:!px-16 md:overflow-x-none md:overflow-y-scroll"
+                    class="flex flex-1 flex-col pb-6 px-4 md:!pb-16 md:!px-16 md:overflow-x-none md:overflow-y-scroll"
                 >
                     <div
                         ref="questionRef"
@@ -320,6 +307,7 @@ onBeforeUnmount(() => {
                     >
                         <AnswerButton
                             hint="Press 1"
+                            class="font-semibold"
                             :highlighted="activeKey === '1'"
                             :disabled="props.disabled"
                             @click="handleAnswer(2, REASON.NOT_APPLICABLE)"
@@ -328,6 +316,7 @@ onBeforeUnmount(() => {
                         </AnswerButton>
                         <AnswerButton
                             hint="Press 2"
+                            class="font-semibold"
                             :highlighted="activeKey === '2'"
                             :disabled="props.disabled"
                             @click="handleAnswer(2, REASON.AMBIGUOUS)"
@@ -336,6 +325,7 @@ onBeforeUnmount(() => {
                         </AnswerButton>
                         <AnswerButton
                             hint="Press 3"
+                            class="font-semibold"
                             :highlighted="activeKey === '3'"
                             :disabled="props.disabled"
                             @click="handleAnswer(2, REASON.NOT_HELPFUL)"
@@ -344,6 +334,7 @@ onBeforeUnmount(() => {
                         </AnswerButton>
                         <AnswerButton
                             hint="Press 4"
+                            class="font-semibold"
                             :highlighted="activeKey === '4'"
                             :disabled="props.disabled"
                             @click="handleShowAnswerField"
@@ -354,9 +345,21 @@ onBeforeUnmount(() => {
                     <div v-else>
                         <textarea
                             v-model="answerText"
-                            rows="8"
+                            rows="7"
                             :disabled="props.disabled"
-                            class="bg-black-2 border-none px-8 py-7 resize-none rounded-2xl text-medium"
+                            class="
+                                bg-black-2
+                                border-none
+                                px-6
+                                py-5
+                                resize-none
+                                rounded-2xl
+                                text-medium
+                                focus:outline-none
+                                focus:ring
+                                md:!px-8
+                                md:!py-7
+                                "
                             placeholder="Your explanation"
                         />
                         <div class="flex justify-end mt-5">
@@ -399,19 +402,20 @@ onBeforeUnmount(() => {
 </template>
 
 <style scoped lang="scss">
-:deep {
-    ul {
-        list-style: revert;
-        margin-top: 0.5em;
-        padding-left: 1em;
-    }
-    .question a, .info-tooltip a {
-        text-decoration: underline;
-        &[data-bs-toggle='tooltip'] {
-            cursor: help;
-        }
+:deep(ul) {
+    list-style: revert;
+    margin-top: 0.5em;
+    padding-left: 1em;
+}
+
+:deep(.question a,
+.info-tooltip a) {
+    text-decoration: underline;
+    &[data-bs-toggle='tooltip'] {
+        cursor: help;
     }
 }
+
 .info-icon:hover, .info-icon:focus-within {
     .info-tooltip, .info-tooltip-arrow {
         display: block;

@@ -18,6 +18,11 @@ const props = defineProps({
     highlighted: {
         type: Boolean,
         required: false,
+    },
+    class: {
+        type: String,
+        required: false,
+        default: '',
     }
 })
 
@@ -61,21 +66,21 @@ const dynamicClasses = computed(() => {
             justify-between
             items-center
             flex-row
-            mt-4
+            mt-3
             normal-case
             px-4
-            py-6
+            py-4
             rounded-2xl
             text-h4-caps
             text-white
             tracking-normal
             transition-colors
             w-full
-            md:!mt-6
+            md:!mt-5
             lg:!px-11
-            lg:!py-9
+            lg:!py-8
             "
-        :class="dynamicClasses"
+        :class="`${dynamicClasses} ${props.class}`"
         :disabled="props.disabled"
         @click="emit('click')"
     >

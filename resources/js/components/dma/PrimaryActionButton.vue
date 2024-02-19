@@ -9,6 +9,11 @@ const props = defineProps({
         type: Boolean,
         required: false,
     },
+    class: {
+        type: String,
+        required: false,
+        default: '',
+    },
 });
 
 const emit = defineEmits(['click'])
@@ -33,7 +38,10 @@ onBeforeUnmount(() => {
 
 </script>
 <template>
-    <div class="text-center">
+    <div
+        class="text-center"
+        :class="props.class"
+    >
         <RoundButton
             :disabled="props.disabled"
             @click="emit('click')"

@@ -1,14 +1,6 @@
 <script setup>
 import CloseButton from "@/js/components/dma/CloseButton.vue";
 import OverlayModal from "@/js/components/dma/OverlayModal.vue";
-import RoundButton from "@/js/components/dma/RoundButton.vue";
-
-const props = defineProps({
-    src: {
-        type: String,
-        required: true,
-    }
-})
 
 const emit = defineEmits(['close']);
 
@@ -22,13 +14,13 @@ const emit = defineEmits(['close']);
         no-focus-trap
         @close="emit('close')"
     >
-        <div class="mt-24 w-full">
+        <div class="mt-24 mx-4 md:!mx-0 md:w-full">
             <CloseButton
-                class="absolute top-10 left-10 z-50"
+                class="absolute top-6 md:top-10 left-4 md:left-10 z-50"
                 @click.stop="emit('close')"
             />
             <video
-                class="rounded-3xl w-full"
+                class="w-full md:rounded-3xl"
                 :src="src"
                 controls
                 autoplay
