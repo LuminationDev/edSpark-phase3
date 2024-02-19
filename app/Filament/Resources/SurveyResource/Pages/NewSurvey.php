@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Log;
 class NewSurvey extends CreateRecord
 {
     protected static string $resource = SurveyResource::class;
+    protected static bool $canCreateAnother = false;
 
     protected function mutateFormDataBeforeCreate(array $data): array
     {

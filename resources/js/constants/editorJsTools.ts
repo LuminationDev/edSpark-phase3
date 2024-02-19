@@ -3,7 +3,7 @@ import ImageTool from "@editorjs/image"
 import List from "@editorjs/list";
 import Paragraph from "@editorjs/paragraph";
 import FontSize from "editorjs-inline-font-size-tool";
-import AlignmentTuneTool from 'editorjs-text-alignment-blocktune'
+import AlignmentTuneTool from 'editorjs-text-alignment-blocktune';
 
 import {IMAGE_ENDPOINTS} from "@/js/constants/API_ENDPOINTS";
 import CustomAttachesTool from "@/js/constants/attachesExtension";

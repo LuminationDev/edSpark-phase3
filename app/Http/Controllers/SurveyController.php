@@ -28,6 +28,10 @@ class SurveyController extends Controller
             $survey_domains = UserSurveyDomain::where('user_survey_id', $userSurvey->id)
                 ->where('status', '<>', 'Abandoned')
                 ->get();
+            foreach ($survey_domains as &$survey_domain) {
+
+                $survey_domain['results'] = $this->getScoresForSurvey($survey_domain);
+            }
         } else {
             Log::info('Creating new survey for user');
             // need to create an active survey before wrangling
@@ -40,7 +44,9 @@ class SurveyController extends Controller
             $userSurvey = UserSurvey::makeNew($survey, $user->id);
             // make the user_survey_domains
             foreach (Question::$DOMAINS as $domain) {
-                $survey_domains[] = UserSurveyDomain::makeNew($userSurvey, $domain);
+                $user_survey_domain = UserSurveyDomain::makeNew($userSurvey, $domain);
+                $user_survey_domain['results'] = $this->getScoresForSurvey($user_survey_domain);
+                $survey_domains[] = $user_survey_domain;
             }
         }
 
@@ -56,7 +62,6 @@ class SurveyController extends Controller
             ],
         ]);
     }
-
     public function getSurveyQuestionsForDomain(Request $request, $user_domain_id): JsonResponse
     {
         Log::info('Received request ' . ' / ' . $user_domain_id);
@@ -115,16 +120,18 @@ class SurveyController extends Controller
             if ($increaseCompletedChapterCount) {
                 ++$currentUserSurveyDomain->completed_chapter_count;
             }
-            // increase question count to the next question id
-            // this accounts for the skipped questions due to pressing 'no'
-            $currentUserSurveyDomain->completed_question_count = min(
-                $currentUserSurveyDomain->completed_question_count + $nextQuestionId - $questionId,
-                $currentUserSurveyDomain->question_count);
+            if ($nextQuestionId == null) {
+                $currentUserSurveyDomain->completed_question_count = $currentUserSurveyDomain->question_count;
+            } else {
+                // increase question count to the next question id
+                // this accounts for the skipped questions due to pressing 'no'
+                //note: this assumes that domain questions are ordered
+                $currentUserSurveyDomain->completed_question_count = $currentUserSurveyDomain->completed_question_count + $nextQuestionId - $questionId;
+            }
             $currentUserSurveyDomain->next_question_id = $nextQuestionId;
             if ($currentUserSurveyDomain->completed_question_count >= $currentUserSurveyDomain->question_count) {
                 // there are no remaining questions
                 $currentUserSurveyDomain->status = "Complete";
-                $currentUserSurveyDomain->next_question_id = null;
                 $currentUserSurveyDomain->save();
 
                 // if there are no other domains In Progress -> set the survey to completed
@@ -205,6 +212,32 @@ class SurveyController extends Controller
             'locale' => 'en',
         ]);
     }
+
+    /** Get the user scores for each category
+     * This query gets all the questions for the domain
+     * and the corresponding user answers
+     * Gives a score of 0 - MAX(Phase) for each category
+     *  The score is 0 if unanswered, or if the user said 0 to phase 1
+     *  otherwise it is the phase of the highest phase question
+     *  they answered yes to.
+     */
+    protected function getScoresForSurvey($user_survey_domain) {
+        return Question::selectRaw("
+                MAX(CASE WHEN answer = '1'
+                            THEN phase
+                            ELSE 0
+                            END) as value,
+                            category_print as category, chapter_print as chapter")
+            ->leftJoin('user_answers', function ($join) use ($user_survey_domain) {
+                $join->on('questions.id', '=', 'user_answers.question_id')
+                    ->where('user_answers.user_survey_domain_id', '=', $user_survey_domain->id);
+            })
+            ->where('questions.domain','=', $user_survey_domain->domain)
+            ->whereNotNull('category_print')
+            ->groupBy('category_print', 'chapter_print')
+            ->get();
+    }
+
 
     public function domainNotFound(): JsonResponse
     {
