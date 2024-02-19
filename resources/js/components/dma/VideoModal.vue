@@ -16,7 +16,7 @@ const emit = defineEmits(['close']);
     >
         <div class="mt-24 mx-4 md:!mx-0 md:w-full">
             <CloseButton
-                class="absolute top-6 md:top-10 left-4 md:left-10 z-50"
+                class="absolute top-6 left-4 z-50 md:!left-10 md:!top-10"
                 @click.stop="emit('close')"
             />
             <video
