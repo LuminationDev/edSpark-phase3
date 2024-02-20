@@ -5,7 +5,6 @@ import CoverScreen from "@/js/components/dma/CoverScreen.vue";
 import DomainCoverScreen from "@/js/components/dma/DomainCoverScreen.vue";
 import ProgressBar from "@/js/components/dma/ProgressBar.vue";
 import QuestionScreen from "@/js/components/dma/QuestionScreen.vue";
-import WarningModal from "@/js/components/dma/WarningModal.vue";
 import Spinner from "@/js/components/spinner/Spinner.vue";
 import {dmaService} from "@/js/service/dmaService";
 
@@ -30,6 +29,8 @@ const questionId = ref(null);
 const completed = ref(false);
 // submitting is true while an answer is being submitted
 const submitting = ref(false);
+// dependencies that have been met (generated_variables from answered questions)
+const metDependencies = ref(props.domain.met_dependencies || []);
 
 const showResetModal = ref(false);
 
@@ -74,23 +75,37 @@ const handleContinueSurvey = () => {
     questionId.value = props.domain.next_question_id;
 }
 
-const getNextQuestionId = (nextIndicator = false) => {
+const getNextQuestion = () => {
     if (questionId.value === null) {
         handleContinueSurvey();
         return questionId.value;
     }
     // find the index of the current question
     const currentIndex = questions.value.findIndex(q => q.id === questionId.value);
+    let nextIndex = currentIndex + 1;
     let nextQuestion = null;
-    if (currentIndex < questions.value.length -1) {
-        if (nextIndicator) {
-            // if requested, skip to next indicator
-            nextQuestion = questions.value.find((q, index) => {
-                return index > currentIndex && q.indicator !== currentQuestion.value.indicator
+
+    // search ahead until the next question with all dependencies met
+    while (!nextQuestion && nextIndex < questions.value.length) {
+        nextQuestion = questions.value[nextIndex];
+        // check question dependencies are met, excluding out-of-domain dependencies;
+        // triage dependencies are assumed to be global
+        // i.e. dependency must start with an element name from this domain, or 'triage'
+        if (nextQuestion.dependencies) {
+            const dependencies = nextQuestion.dependencies.split(' && ').filter(dep => {
+                if (dep.startsWith('triage')) return true;
+                for(const el of elements.value) {
+                    if (dep.startsWith(el)) return true;
+                }
+                console.log("Question", nextQuestion.id, ":", nextQuestion.generated_variable, " - Dependency '",dep,"' is out-of-domain; ignored");
+                return false;
             });
-        } else {
-            // otherwise, get the following question
-            nextQuestion = questions.value[currentIndex + 1];
+            if (!dependencies.every(dep => metDependencies.value.includes(dep))) {
+                // dependencies not met, skip and keep searching
+                console.log("Question", nextQuestion.id, ":", nextQuestion.generated_variable, " - Dependencies not met, skipping:", dependencies);
+                nextQuestion = null;
+                ++nextIndex;
+            }
         }
     }
     if (!nextQuestion) {
@@ -98,37 +113,39 @@ const getNextQuestionId = (nextIndicator = false) => {
         completed.value = true;
         return null;
     }
-    // skip non-question entries
-    // (should be safe to skip ahead as there should always be a following question)
-    if (nextQuestion.phase === -1) {
-        const nextIndex = questions.value.findIndex(q => q.id === nextQuestion.id);
-        nextQuestion = questions.value[nextIndex + 1];
-    }
 
-    return nextQuestion.id;
+    return nextQuestion;
 }
 
 const handleNextQuestion = () => {
-    previousQuestionId.value = questionId.value;
-    questionId.value = getNextQuestionId();
+    // when advancing past a non-question (eg. section intro),
+    // always answer yes to set dependencies
+    handleAnswer(1);
 }
 
 const handleAnswer = async (answer, answerText = null) => {
     submitting.value = true;
-    const nextQuestionId = getNextQuestionId(answer === 0);
+
+    // if answer was yes, update met dependencies
+    if (answer === 1) {
+        metDependencies.value.push(currentQuestion.value.generated_variable);
+    }
+
+    const nextQuestion = getNextQuestion();
 
     // check if element is complete
     let elementComplete = false;
-    if (nextQuestionId === null) {
+    if (nextQuestion === null) {
         // end of domain
         elementComplete = true;
     } else {
-        const nextQuestion = questions.value.find(q => q.id === nextQuestionId);
         if (!nextQuestion || nextQuestion.element !== currentQuestion.value.element) {
             // next question starts a new element
             elementComplete = true;
         }
     }
+
+    const nextQuestionId = nextQuestion?.id || null;
 
     // submit answer to API
     dmaService.postAnswer(
@@ -141,6 +158,11 @@ const handleAnswer = async (answer, answerText = null) => {
     ).then(() => {
         previousQuestionId.value = questionId.value;
         questionId.value = nextQuestionId;
+        if (nextQuestion?.phase === -1) {
+            // next question should be skipped over;
+            // automatically submit yes and get the following answer
+            return handleNextQuestion();
+        }
         submitting.value = false;
     }).catch((error) => {
         console.log("API error submitting answer:", error);

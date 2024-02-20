@@ -23,13 +23,17 @@ const emit = defineEmits(['close','reset']);
 
 const showErrorModal = ref(false);
 
-const domain = computed(() => {
-    return props.survey.survey_domains.find(d => d.id === props.domainId);
-})
 
 const triageDomain = computed(() => {
     return props.survey.survey_domains.find(d => d.domain === 'triage');
 });
+
+const domain = computed(() => {
+    const dom = props.survey.survey_domains.find(d => d.id === props.domainId);
+    // inject triage met dependencies into domain
+    dom.met_dependencies = [...triageDomain.value.met_dependencies, ...dom.met_dependencies];
+    return dom;
+})
 
 // showTriage is initially null (loading)
 const showTriage = ref(null);
@@ -47,7 +51,8 @@ onMounted(async () => {
     }
 });
 
-const handleCompleteTriage = () => {
+const handleCompleteTriage = (deps) => {
+    triageDomain.value.met_dependencies = deps;
     showTriage.value = false;
 }
 

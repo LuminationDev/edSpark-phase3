@@ -31,6 +31,7 @@ class SurveyController extends Controller
             foreach ($survey_domains as &$survey_domain) {
 
                 $survey_domain['results'] = $this->getScoresForSurvey($survey_domain);
+                $survey_domain['met_dependencies'] = $this->getMetDependencies($survey_domain);
             }
         } else {
             Log::info('Creating new survey for user');
@@ -46,6 +47,7 @@ class SurveyController extends Controller
             foreach (Question::$DOMAINS as $domain) {
                 $user_survey_domain = UserSurveyDomain::makeNew($userSurvey, $domain);
                 $user_survey_domain['results'] = $this->getScoresForSurvey($user_survey_domain);
+                $user_survey_domain['met_dependencies'] = [];
                 $survey_domains[] = $user_survey_domain;
             }
         }
@@ -235,9 +237,26 @@ class SurveyController extends Controller
             ->where('questions.domain','=', $user_survey_domain->domain)
             ->whereNotNull('indicator_print')
             ->groupBy('indicator_print', 'element_print')
-            ->get();
+            ->get()
+            ->flatten(3);
     }
 
+    /** Get the met dependencies for each question answered 'yes'
+     * This query gets all the questions for the domain
+     * and the corresponding user answers where the answer was yes
+     * and returns the list of all generated_variables as a flat array.
+     */
+    protected function getMetDependencies($user_survey_domain) {
+        $result = Question::select("generated_variable")
+            ->leftJoin('user_answers', function ($join) use ($user_survey_domain) {
+                $join->on('questions.id', '=', 'user_answers.question_id')
+                    ->where('user_answers.user_survey_domain_id', '=', $user_survey_domain->id);
+            })
+            ->where('user_answers.answer','=', '1')
+            ->groupBy('generated_variable')
+            ->get();
+        return $result->pluck('generated_variable');
+    }
 
     public function domainNotFound(): JsonResponse
     {
