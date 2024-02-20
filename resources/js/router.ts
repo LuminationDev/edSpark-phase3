@@ -156,7 +156,7 @@ const routes: any = [
                 component: DashboardNew,
                 meta: {
                     requiresAuth: true,
-                    customText: 'Assess your digital maturity (coming soon)',
+                    customText: 'Assess your digital maturity',
                     navigation: true
 
                 } as RouteMeta
