@@ -20,6 +20,7 @@ import ProfileWork from '@/js/components/userprofile/ProfileWork.vue'
 import UserProfile from '@/js/components/userprofile/UserProfile.vue';
 import AdviceSingle from "@/js/pages/AdviceSingle.vue";
 import CatalogueSingle from "@/js/pages/CatalogueSingle.vue";
+import DMA from "@/js/pages/DMA.vue";
 import EdsparkPageNotFound from "@/js/pages/EdsparkPageNotFound.vue";
 import EventSingle from "@/js/pages/EventSingle.vue";
 import HardwareSingle from '@/js/pages/HardwareSingle.vue';
@@ -73,7 +74,7 @@ const routes: any = [
             customText: "Home"
         } as RouteMeta
     },
-    
+
     {
         name: 'create-pages',
         path: '/create',
@@ -153,7 +154,7 @@ const routes: any = [
             {
                 name: 'DMA',
                 path: 'dma',
-                component: DashboardNew,
+                component: DMA,
                 meta: {
                     requiresAuth: true,
                     customText: 'Assess your digital maturity (coming soon)',
@@ -509,6 +510,7 @@ router.beforeEach(async (to, from, next) => {
             if (authStore.isAuthenticated) {
                 next();
             } else {
+                console.log("Auth promise false");
                 console.log(authStore.isAuthenticated)
                 window.location = '/login'
             }
@@ -517,6 +519,7 @@ router.beforeEach(async (to, from, next) => {
         if (authStore.isAuthenticated) {
             next();
         } else {
+            console.log("Auth bool false");
             console.log(authStore.isAuthenticated)
             window.location = '/login'
         }

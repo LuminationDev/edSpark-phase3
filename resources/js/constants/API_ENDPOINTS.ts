@@ -137,6 +137,9 @@ export const API_ENDPOINTS: Endpoints = appendServerURL({
     },
     FEEDBACK: {
         CREATE_FEEDBACK: '/createFeedback'
+    },
+    DMA: {
+        USER_SURVEY: '/user/survey'
     }
 })
 
