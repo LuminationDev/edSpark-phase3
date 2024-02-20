@@ -25,8 +25,8 @@ type SubmenuObjectType = {
 }
 const hardwareSubmenu: Array<SubmenuObjectType> = [
     {
-        displayText: 'Overview',
-        value: 'overview'
+        displayText: 'Details',
+        value: 'detail'
     },
     {
         displayText: 'Tech specs',

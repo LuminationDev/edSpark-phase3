@@ -103,7 +103,7 @@ const handleClickPopularGuides = (guideId, title) => {
             />
             <Loader
                 v-else
-                loader-message="loading popular guides"
+                loader-message="Loading popular guides"
                 loader-type="small"
             />
         </template>

@@ -24,6 +24,18 @@ class SchoolController extends Controller
 {
     private string $defaultSchoolContent = "<h1>School snapshot</h1>\n<p>Write a brief paragraph that captures the essence of the school, highlighting its character as a dynamic and inclusive educational environment committed to fostering excellence in both students and educators.</p>\n<h1>Technology across the school</h1>\n<p>Provide a concise overview of how technology is integrated into various aspects of the school, emphasizing its role in enhancing the learning experience, facilitating communication, and preparing students for the digital challenges of the modern era.</p>\n<h1>Digital technology</h1>\n<p>Offer a short paragraph focusing specifically on the school's approach to digital technology. Describe how the institution embraces innovation, incorporating tools like smart classrooms and online platforms to promote digital literacy and empower students as both users and creators of technology.</p>\n<h1>Student learning</h1>\n<p>Summarize the school's approach to student learning, emphasizing a holistic strategy that accommodates diverse learning styles. Mention key elements such as personalized learning plans, project-based assignments, and real-world applications, showcasing how the school equips students with essential skills for success in a rapidly changing global landscape.</p>";
 
+    private function checkUserCanAccess($site_id)
+    {
+        $current_user_id = Auth::user()->id;
+        $current_user = User::find($current_user_id);
+
+        if ($current_user
+            && $current_user->site_id === $site_id && $current_user->role->role_name === 'SCHLDR') {
+            return true;
+        } elseif (RoleHelpers::has_minimum_privilege(UserRole::ADMIN)){
+            return true;
+        } else return false;
+    }
 
     private function formatSchoolMetadata($schoolMetadata)
     {
@@ -282,6 +294,10 @@ class SchoolController extends Controller
         if ($request->isMethod('post')) {
             $data = $request->all();
             $error = '';
+
+            if(!$this->checkUserCanAccess($data['school_id'])){
+                return ResponseService::error_unauthorized();
+            }
 
             try {
                 $prefix = "edspark-school";
@@ -569,17 +585,24 @@ class SchoolController extends Controller
         if ($request->isMethod('post')) {
             $requestData = $request->validate([
                 'school_id' => 'required',
-                'user_id' => 'required',
                 'site_id' => 'required'
             ]);
 
             $site_id = $requestData['site_id'];
-            $user_id = $requestData['user_id'];
-            $school_id = $requestData['school_id'];
+            $user_id = Auth::user()->id;
+            $school_id = $requestData['school_id']; // only for sake of schools meta
             //check user site id == school Id && user role === school principal
             $user_record = User::find($user_id);
 
-            if ($user_record && $user_record->site_id == $site_id && ($user_record->role->role_name === 'SCHLDR' || $user_record->role->role_name === 'Superadmin')) {
+            if ($user_record->role->role_name === 'Superadmin') {
+                return response()->json([
+                    "status" => 200,
+                    "result" => true,
+                    'canNominate' => false,
+                    'canPublish' => true,
+                ]);
+            }
+            if ($user_record && $user_record->site_id == $site_id && ($user_record->role->role_name === 'SCHLDR')) {
                 return response()->json([
                     "status" => 200,
                     "result" => true,

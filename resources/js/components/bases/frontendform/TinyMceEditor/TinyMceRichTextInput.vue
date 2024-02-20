@@ -2,7 +2,7 @@
 
 import Editor from '@tinymce/tinymce-vue'
 import {watchDebounced} from "@vueuse/core";
-import {ref} from "vue";
+import {ref, watch} from "vue";
 
 import ErrorMessages from "@/js/components/bases/ErrorMessages.vue";
 import {API_ENDPOINTS, IMAGE_ENDPOINTS} from "@/js/constants/API_ENDPOINTS";
@@ -47,6 +47,7 @@ const editorStyleFormat = [
     ]},
 ]
 
+const tinyMCE = ref(null)
 
 const emits = defineEmits(['emitTinyRichContent'])
 const editorContent = ref(props.srcContent)
@@ -62,6 +63,7 @@ watchDebounced(editorContent, emitContent, {debounce: 200, maxWait: 1000})
 
 <template>
     <editor
+        ref="tinyMCE"
         v-model="editorContent"
         :init="{
             min_height: props.minHeight,

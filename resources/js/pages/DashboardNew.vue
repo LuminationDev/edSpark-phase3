@@ -132,16 +132,14 @@ onMounted(async () => {
         </template>
         <template #content>
             <div class="flex flex-col gap-6 group/bg h-full relative lg:!flex-row">
-                <div class="flex flex-col max-h-[1000px] pl-8 place-items-center w-full lg:w-[40%]">
+                <div class="flex flex-col max-h-[1000px] place-items-center w-full lg:w-[40%] xl:pl-8">
                     <SoftwareIllustration />
                 </div>
                 <template v-if="!allSoftware || !allSoftware.length">
-                    <div class="">
-                        <CardLoading
-                            :number-of-rows="1"
-                            :number-per-row="2"
-                        />
-                    </div>
+                    <CardLoading
+                        :number-of-rows="1"
+                        :number-per-row="2"
+                    />
                 </template>
                 <template v-else>
                     <div
@@ -154,8 +152,6 @@ onMounted(async () => {
                             grid-cols-1
                             gap-10
                             place-items-center
-                            h-fit
-                            max-h-[1000px]
                             overflow-hidden
                             px-8
                             xl:px-2

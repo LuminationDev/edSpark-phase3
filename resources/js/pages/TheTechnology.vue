@@ -77,7 +77,7 @@ const handleClickPopularTech = (techId, title) => {
             />
             <Loader
                 v-else
-                loader-message="loading popular resource"
+                loader-message="Loading popular resource"
                 loader-type="small"
             />
         </template>
