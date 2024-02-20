@@ -101,7 +101,7 @@ class SurveyController extends Controller
         $answer = $request['answer'];
         $answerText = $request['answer_text'];
         $nextQuestionId = $request['next_question_id'];
-        $increaseCompletedChapterCount = $request['increase_completed_chapter_count'];
+        $increaseCompletedElementCount = $request['increase_completed_element_count'];
 
         $userSurvey = UserSurvey::where('user_id', $user->id)
             ->where('status', '<>', 'Abandoned')
@@ -117,8 +117,8 @@ class SurveyController extends Controller
 
         $currentUserSurveyDomain = UserSurveyDomain::find($user_domain_id);
         if ($currentUserSurveyDomain) {
-            if ($increaseCompletedChapterCount) {
-                ++$currentUserSurveyDomain->completed_chapter_count;
+            if ($increaseCompletedElementCount) {
+                ++$currentUserSurveyDomain->completed_element_count;
             }
             if ($nextQuestionId == null) {
                 $currentUserSurveyDomain->completed_question_count = $currentUserSurveyDomain->question_count;
@@ -213,10 +213,10 @@ class SurveyController extends Controller
         ]);
     }
 
-    /** Get the user scores for each category
+    /** Get the user scores for each indicator
      * This query gets all the questions for the domain
      * and the corresponding user answers
-     * Gives a score of 0 - MAX(Phase) for each category
+     * Gives a score of 0 - MAX(Phase) for each indicator
      *  The score is 0 if unanswered, or if the user said 0 to phase 1
      *  otherwise it is the phase of the highest phase question
      *  they answered yes to.
@@ -227,14 +227,14 @@ class SurveyController extends Controller
                             THEN phase
                             ELSE 0
                             END) as value,
-                            category_print as category, chapter_print as chapter")
+                            indicator_print as indicator, element_print as element")
             ->leftJoin('user_answers', function ($join) use ($user_survey_domain) {
                 $join->on('questions.id', '=', 'user_answers.question_id')
                     ->where('user_answers.user_survey_domain_id', '=', $user_survey_domain->id);
             })
             ->where('questions.domain','=', $user_survey_domain->domain)
-            ->whereNotNull('category_print')
-            ->groupBy('category_print', 'chapter_print')
+            ->whereNotNull('indicator_print')
+            ->groupBy('indicator_print', 'element_print')
             ->get();
     }
 

@@ -84,7 +84,7 @@ const progressPercent = computed(() => {
                     <ProgressBar :percent="progressPercent" />
                 </div>
                 <div class="font-bold progress-value text-small md:text-medium">
-                    {{ props.domain.completed_chapter_count }}/{{ props.domain.chapter_count }}
+                    {{ props.domain.completed_element_count }}/{{ props.domain.element_count }}
                 </div>
             </div>
             <div

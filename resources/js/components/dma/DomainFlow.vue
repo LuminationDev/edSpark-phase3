@@ -59,11 +59,11 @@ const domainProgress = computed(() => {
     return questionNumber / questions.value.length * 100;
 });
 
-const chapters = computed(() => {
+const elements = computed(() => {
     if (!questions.value) return [];
     return questions.value.reduce((list, question) => {
-        if (!list.includes(question.chapter)) {
-            list.push(question.chapter);
+        if (!list.includes(question.element)) {
+            list.push(question.element);
         }
         return list;
     }, []);
@@ -74,7 +74,7 @@ const handleContinueSurvey = () => {
     questionId.value = props.domain.next_question_id;
 }
 
-const getNextQuestionId = (nextCategory = false) => {
+const getNextQuestionId = (nextIndicator = false) => {
     if (questionId.value === null) {
         handleContinueSurvey();
         return questionId.value;
@@ -83,10 +83,10 @@ const getNextQuestionId = (nextCategory = false) => {
     const currentIndex = questions.value.findIndex(q => q.id === questionId.value);
     let nextQuestion = null;
     if (currentIndex < questions.value.length -1) {
-        if (nextCategory) {
-            // if requested, skip to next category
+        if (nextIndicator) {
+            // if requested, skip to next indicator
             nextQuestion = questions.value.find((q, index) => {
-                return index > currentIndex && q.category !== currentQuestion.value.category
+                return index > currentIndex && q.indicator !== currentQuestion.value.indicator
             });
         } else {
             // otherwise, get the following question
@@ -117,16 +117,16 @@ const handleAnswer = async (answer, answerText = null) => {
     submitting.value = true;
     const nextQuestionId = getNextQuestionId(answer === 0);
 
-    // check if chapter is complete
-    let chapterComplete = false;
+    // check if element is complete
+    let elementComplete = false;
     if (nextQuestionId === null) {
         // end of domain
-        chapterComplete = true;
+        elementComplete = true;
     } else {
         const nextQuestion = questions.value.find(q => q.id === nextQuestionId);
-        if (!nextQuestion || nextQuestion.chapter !== currentQuestion.value.chapter) {
-            // next question starts a new chapter
-            chapterComplete = true;
+        if (!nextQuestion || nextQuestion.element !== currentQuestion.value.element) {
+            // next question starts a new element
+            elementComplete = true;
         }
     }
 
@@ -137,7 +137,7 @@ const handleAnswer = async (answer, answerText = null) => {
         answer,
         answerText,
         nextQuestionId,
-        chapterComplete
+        elementComplete
     ).then(() => {
         previousQuestionId.value = questionId.value;
         questionId.value = nextQuestionId;
@@ -183,10 +183,10 @@ const handleResetDomain = () => {
                         class="w-full"
                     >
                         <div class="mb-2 text-h5-caps">
-                            Chapter {{ chapters.indexOf(currentQuestion.chapter)+1 }}/{{ chapters.length }}
+                            Element {{ elements.indexOf(currentQuestion.element) + 1 }}/{{ elements.length }}
                         </div>
                         <h2 class="text-h1-caps md:text-h2-caps lg:text-h1-caps">
-                            {{ currentQuestion.chapter_print }}
+                            {{ currentQuestion.element_print }}
                         </h2>
                         <div
                             class="max-w-[900px] mt-6 md:mt-10 text-base md:text-medium lg:text-large"
@@ -215,13 +215,13 @@ const handleResetDomain = () => {
             >
                 <template #contentTop>
                     <div class="text-h5-caps">
-                        Chapter {{ chapters.indexOf(currentQuestion.chapter)+1 }}/{{ chapters.length }}
+                        Element {{ elements.indexOf(currentQuestion.element) + 1 }}/{{ elements.length }}
                     </div>
                     <h3 class="mt-1 text-h3-caps">
-                        {{ currentQuestion.chapter_print }}
+                        {{ currentQuestion.element_print }}
                     </h3>
                     <p class="mt-7 text-medium">
-                        {{ currentQuestion.category_print }}
+                        {{ currentQuestion.indicator_print }}
                     </p>
                 </template>
                 <template #contentBottom>
