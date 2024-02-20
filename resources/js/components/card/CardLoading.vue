@@ -32,8 +32,8 @@ getContainerWidth()
 const numberOfCardsPerRowWithSafety = computed(() =>{
     if(loadingContainerWidth){
         console.log(loadingContainerWidth)
-        console.log(Math.floor(loadingContainerWidth/500))
-        return Math.floor(loadingContainerWidth/500)
+        console.log(Math.floor(loadingContainerWidth/450))
+        return Math.floor(loadingContainerWidth/450)
     } else{
         return props.numberPerRow
     }

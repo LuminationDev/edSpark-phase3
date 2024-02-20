@@ -82,7 +82,7 @@ const schoolTechIconComponents = {
                 "
         >
             <BaseIconGenerator
-                class="max-h-[25px] max-w-[30px] min-w-fit"
+                class="!max-w-[30px] max-h-[25px]"
                 :icon-path="techName"
                 :components-object="schoolTechIconComponents"
             /> 
