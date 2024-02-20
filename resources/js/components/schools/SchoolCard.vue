@@ -60,6 +60,10 @@ const handleClickSchoolCard = () => {
                 >
                     {{ data.name }}
                 </h5>
+                <div
+                    class="cardDisplayPreview line-clamp-1 school-card-body text-left"
+                    v-html="stripHTML(data.content_blocks)"
+                />
             </div>
         </template>
         <template
