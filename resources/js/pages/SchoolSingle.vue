@@ -154,10 +154,10 @@ const schoolSubmenu = [
         displayText: 'Details',
         value: 'detail'
     },
-    {
-        displayText: "What's new",
-        value: 'new'
-    },
+    // {
+    //     displayText: "What's new",
+    //     value: 'new'
+    // },
     {
         displayText: 'Contact',
         value: 'contact'

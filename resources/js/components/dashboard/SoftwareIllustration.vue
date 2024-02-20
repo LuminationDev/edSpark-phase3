@@ -53,7 +53,7 @@ onUnmounted(() => {
 </script>
 
 <template>
-    <div class="grid grid-cols-6 place-items-center relative lg:!place-items-start">
+    <div class="grid grid-cols-6 gap-x-8 place-items-center relative lg:!place-items-start">
         <div
             class="bg-white border-[4px] border-black col-span-2 flex h-[100px] my-auto relative rounded-full w-[100px]"
         >
@@ -69,7 +69,7 @@ onUnmounted(() => {
             <h5 class="font-semibold pt-4 text-xl">
                 No cost
             </h5>
-            <p class="w-9/12">
+            <p class="">
                 These are applications are available with no cost to schools, these applications have been formally risk assessed by Cyber Security centrally.
             </p>
         </div>
@@ -85,7 +85,7 @@ onUnmounted(() => {
             <h5 class="font-semibold text-xl">
                 Cyber Assessed
             </h5>
-            <p class="pb-4 w-9/12">
+            <p class="pb-4">
                 These are applications that have been risk assessed by Cyber Security but are not provided by the Department, site leaders should be aware of the risks prior to being used at your school.
             </p>
         </div>
@@ -104,7 +104,7 @@ onUnmounted(() => {
             <h5 class="font-semibold text-xl">
                 Negotiated Deals
             </h5>
-            <p class="pb-4 w-[85%]">
+            <p class="pb-4">
                 Still risk assessed, these applications have an agreement
                 in place for schools to receive better value. Schools will
                 need to fund purchases
