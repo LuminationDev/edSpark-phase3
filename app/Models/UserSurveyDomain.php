@@ -16,8 +16,8 @@ class UserSurveyDomain extends Model
         'user_survey_id',
         'status',
         'domain',
-        'chapter_count',
-        'completed_chapter_count',
+        'element_count',
+        'completed_element_count',
         'question_count',
         'completed_question_count',
         'next_question_id'
@@ -28,14 +28,14 @@ class UserSurveyDomain extends Model
         $questions = Question::where('survey_id', $userSurvey->survey_id)
             ->where('domain', $domain)
             ->get();
-        $byChapter = $questions->groupBy('chapter');
+        $byElement = $questions->groupBy('element');
 
         $userSurveyDomain = new UserSurveyDomain;
         $userSurveyDomain->user_survey_id = $userSurvey->id;
         $userSurveyDomain->status = 'In Progress';
         $userSurveyDomain->domain = $domain;
-        $userSurveyDomain->chapter_count = $byChapter->count();
-        $userSurveyDomain->completed_chapter_count = 0;
+        $userSurveyDomain->element_count = $byElement->count();
+        $userSurveyDomain->completed_element_count = 0;
         $userSurveyDomain->question_count = $questions->count();
         $userSurveyDomain->completed_question_count = 0;
         $userSurveyDomain->next_question_id = $questions[0]->id;

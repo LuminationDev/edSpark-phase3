@@ -55,22 +55,22 @@ const domainComplete = computed(() => {
 })
 
 // chapters contains the list of chapter names in this domain, and their current progress status
-const chapters = computed(() => {
+const elements = computed(() => {
     let currentQuestionIndex = props.questions.findIndex(q => q.id === props.domain.next_question_id);
     if (currentQuestionIndex < 0) currentQuestionIndex = 0;
 
-    const chapterList = [];
+    const elementList = [];
     for (let index = 0; index < props.questions.length; ++index) {
         const question = props.questions[index];
-        let chapterItem = chapterList.find(item => item.ref === question.chapter);
-        if (!chapterItem) {
+        let element = elementList.find(item => item.ref === question.element);
+        if (!element) {
             const status = ((domainComplete.value || index < currentQuestionIndex) ? 'complete' : 'incomplete');
-            chapterItem = { ref: question.chapter, name: question.chapter_print, status};
-            chapterList.push(chapterItem);
+            element = { ref: question.element, name: question.element_print, status};
+            elementList.push(element);
         }
-        if (!domainComplete.value && index === currentQuestionIndex) chapterItem.status = 'active';
+        if (!domainComplete.value && index === currentQuestionIndex) element.status = 'active';
     }
-    return chapterList;
+    return elementList;
 })
 
 </script>
@@ -124,28 +124,28 @@ const chapters = computed(() => {
             >
                 <div
                     v-if="questions"
-                    class="chapter-progress flex flex-col gap-8"
+                    class="element-progress flex flex-col gap-8"
                 >
                     <div
-                        v-for="(chapter, index) of chapters"
+                        v-for="(element, index) of elements"
                         :key="index"
                         class="flex items-center gap-5 text-large"
                     >
                         <div
-                            v-if="chapter.status === 'complete'"
+                            v-if="element.status === 'complete'"
                             class="complete status-mark"
                         >
                             <img :src="iconCheck">
                         </div>
                         <div
-                            v-else-if="chapter.status === 'active'"
+                            v-else-if="element.status === 'active'"
                             class="current status-mark"
                         />
                         <div
                             v-else
                             class="incomplete status-mark"
                         />
-                        {{ chapter.name }}
+                        {{ element.name }}
                     </div>
                 </div>
             </div>
@@ -206,12 +206,12 @@ const chapters = computed(() => {
     display: block;
 }
 
-.chapter-progress {
+.element-progress {
     position: relative;
     padding: 0.5rem 0px;
 }
 
-.chapter-progress:before {
+.element-progress:before {
     content: '';
     position: absolute;
     left: 10px;

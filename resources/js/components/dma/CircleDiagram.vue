@@ -10,7 +10,7 @@ const props = defineProps({
         default: 100,
     },
     scores: {
-        type: Array<any>, // TODO structured type: { domain, chapter, score }
+        type: Array<any>, // TODO structured type: { domain, element, score }
         required: true,
     }
 });
@@ -42,7 +42,7 @@ const segments = computed(() => {
             const clazz = rad_index <= props.scores[seg].score ? props.scores[seg].domain : 'white';
             arr.push({
                 id: `${seg}_${rad}`,
-                chapter: props.scores[seg].chapter,
+                element: props.scores[seg].element,
                 inner_radius: ((radius * (rad - 1)) / (num_radii_actual)) + (padding/2),
                 outer_radius: ((radius * rad) / num_radii_actual) - (padding/2),
                 start_angle: (seg * TAU / num_angles) - angular_offset,
@@ -82,7 +82,7 @@ const handleHideTooltip = () => {
                     v-for="segment in segments"
                     :key="segment.id"
                     :class="segment.class"
-                    :label="segment.chapter"
+                    :label="segment.element"
                     :inner_radius="segment.inner_radius"
                     :outer_radius="segment.outer_radius"
                     :start_angle="segment.start_angle"
@@ -116,7 +116,7 @@ const handleHideTooltip = () => {
         </svg>
         <div
             ref="tooltipRef"
-            class="absolute bg-black chapter-tooltip font-semibold hidden p-3 rounded text-center text-small text-white uppercase"
+            class="absolute bg-black element-tooltip font-semibold hidden p-3 rounded text-center text-small text-white uppercase"
         >
             {{ tooltipTarget?.dataset.label }}
         </div>
@@ -124,7 +124,7 @@ const handleHideTooltip = () => {
 </template>
 <style scoped lang="scss">
 
-.chapter-tooltip::before {
+.element-tooltip::before {
     content: "";
     background: black;
     position: absolute;
@@ -135,7 +135,7 @@ const handleHideTooltip = () => {
     transform: translateX(-50%) rotate(45deg);
 }
 
-.chapter-tooltip {
+.element-tooltip {
     transform: translateX(-50%)
 }
 

@@ -52,33 +52,33 @@ const isInProgress = computed(() => {
     }
 })
 
-const categoryScores = computed(() => {
+const indicatorScores = computed(() => {
     const scores = [];
     if (domains.value) {
         for (const domain of domains.value) {
-            const chapters = [];
+            const elements = [];
             for (const result of domain.results) {
-                let chapter = chapters.find(c => c.name === result.chapter);
-                if (!chapter) {
-                    chapter = { name: result.chapter, scores: [], completed: false};
-                    chapters.push(chapter);
+                let element = elements.find(c => c.name === result.element);
+                if (!element) {
+                    element = { name: result.element, scores: [], completed: false};
+                    elements.push(element);
                 }
-                if (chapters.length <= domain.completed_chapter_count) {
-                    chapter.completed = true;
+                if (elements.length <= domain.completed_element_count) {
+                    element.completed = true;
                 }
-                chapter.scores.push(result.value);
+                element.scores.push(result.value);
             }
-            for (const chapter of chapters) {
+            for (const element of elements) {
                 // if no questions have been answered, score is 0;
-                // otherwise, it is the average of all category scores
+                // otherwise, it is the average of all indicator scores
                 let score = 0;
-                if(chapter.completed) {
-                    score = Math.round(chapter.scores.reduce((sum, val) => {
+                if(element.completed) {
+                    score = Math.round(element.scores.reduce((sum, val) => {
                         return sum + (val || 1); // treat 0 as 1
-                    }, 0) / chapter.scores.length);
+                    }, 0) / element.scores.length);
                 }
                 scores.push({
-                    chapter: chapter.name,
+                    element: element.name,
                     domain: domain.domain,
                     score,
                 });
@@ -226,7 +226,7 @@ const handleResetSurvey = async () => {
                                 <div
                                     class="flex-1 md:!basis-3/5"
                                 >
-                                    <CircleDiagram :scores="categoryScores" />
+                                    <CircleDiagram :scores="indicatorScores" />
                                 </div>
                             </div>
                             <p class="px-4 text-base md:!px-5 lg:!px-0">

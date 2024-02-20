@@ -21,7 +21,7 @@ class Question extends Model
         "variable_suffix",
         "dependencies",
         "phase_description",
-        "chapter_description",
+        "element_description",
     ];
 
     public static array $DOMAINS = ['triage', 'teaching', 'managing', 'leading', 'learning'];
@@ -78,11 +78,11 @@ class Question extends Model
         //------------------------------------------
         // mapped fields
         //------------------------------------------
-        "chapter", // aka element
-        "category", // aka indicator
-        "chapter_print",  // aka element_print
-        "category_print", // aka indicator_print
-        "chapter_description", //aka element_description
+        "element",
+        "indicator",
+        "element_print",
+        "indicator_print",
+        "element_description",
 
         //------------------------------------------
         // Introduced fields

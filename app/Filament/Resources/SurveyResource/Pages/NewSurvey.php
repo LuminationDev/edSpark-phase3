@@ -37,7 +37,7 @@ class NewSurvey extends CreateRecord
 
                 // common
                 $dbQuestion->domain = $jsonQuestion['domain'];
-                $dbQuestion->chapter = $jsonQuestion['element'];
+                $dbQuestion->element = $jsonQuestion['element'];
                 $dbQuestion->generated_variable = $jsonQuestion['generated_variable'];
                 $dbQuestion->question = $jsonQuestion['question'];
 
@@ -63,11 +63,10 @@ class NewSurvey extends CreateRecord
                     $dbQuestion->variable_suffix = $jsonQuestion['variable_suffix'];
                     $dbQuestion->dependencies = $jsonQuestion['dependencies'];
                     $dbQuestion->phase_description = $jsonQuestion['phase_description'];
-                    // we map indicator and element to category and chapter respectively
-                    $dbQuestion->category = $jsonQuestion['indicator'];
-                    $dbQuestion->category_print = $jsonQuestion['indicator_print'];
-                    $dbQuestion->chapter_print = $jsonQuestion['element_print'];
-                    $dbQuestion->chapter_description = $jsonQuestion['element_description'];
+                    $dbQuestion->indicator = $jsonQuestion['indicator'];
+                    $dbQuestion->indicator_print = $jsonQuestion['indicator_print'];
+                    $dbQuestion->element_print = $jsonQuestion['element_print'];
+                    $dbQuestion->element_description = $jsonQuestion['element_description'];
                 }
 
                 $dbQuestion->save();

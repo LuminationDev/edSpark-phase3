@@ -20,8 +20,8 @@ return new class extends Migration
                 ->onDelete('cascade');
             $table->enum('status', UserSurvey::$STATUS_TYPES);
             $table->string('domain');
-            $table->integer('chapter_count');
-            $table->integer('completed_chapter_count');
+            $table->integer('element_count');
+            $table->integer('completed_element_count');
             $table->integer('question_count');
             $table->integer('completed_question_count');
             $table->integer('next_question_id')->nullable();
