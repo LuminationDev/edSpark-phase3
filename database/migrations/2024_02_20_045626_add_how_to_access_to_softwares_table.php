@@ -11,7 +11,7 @@ return new class extends Migration {
     public function up(): void
     {
         Schema::table('softwares', function (Blueprint $table) {
-            $table->string('how_to_access')->nullable()->after('extra_content');
+            $table->longText('how_to_access')->nullable()->after('extra_content');
         });
     }
 
