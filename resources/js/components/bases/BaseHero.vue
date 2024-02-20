@@ -185,7 +185,10 @@ const heroBackgroundSwitch = computed(() => {
         >
             <EdSparkSlimSwoosh color-theme="teal" />
         </div>
-        <div class="-top-1 md:!pl-12 md:!text-2xl flex h-16 pl-4 pt-2 text-white text-xl w-full">
+        <div
+            v-if="$slots.submenu"
+            class="-top-1 md:!pl-12 md:!text-2xl flex h-16 pl-4 pt-2 text-white text-xl w-full"
+        >
             <slot
                 name="submenu"
             />

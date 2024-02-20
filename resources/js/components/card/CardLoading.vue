@@ -1,4 +1,6 @@
-<script setup>
+ <script setup>
+
+import {computed, onMounted, onUnmounted} from "vue";
 
 const props = defineProps({
     numberPerRow: {
@@ -17,19 +19,46 @@ const props = defineProps({
         default: ''
     }
 });
+let loadingContainerWidth = 0
+const getContainerWidth = () => {
+    const loadingContainer = document.getElementsByClassName("LoadingCardRowContainer")[0];
+    if(loadingContainer){
+        console.log(loadingContainer.offsetWidth)
+        loadingContainerWidth = loadingContainer.offsetWidth;
+    }
+}
+getContainerWidth()
+
+const numberOfCardsPerRowWithSafety = computed(() =>{
+    if(loadingContainerWidth){
+        console.log(loadingContainerWidth)
+        console.log(Math.floor(loadingContainerWidth/500))
+        return Math.floor(loadingContainerWidth/500)
+    } else{
+        return props.numberPerRow
+    }
+})
+
+
+onMounted(() =>{
+    window.addEventListener('resize', getContainerWidth)
+})
+
+onUnmounted(() =>{
+    window.removeEventListener('resize',getContainerWidth)
+})
 </script>
 
 <template>
     <div
         v-for="(row,index) in numberOfRows"
         :key="index"
-        class="flex justify-center flex-row overflow-hidden w-full"
+        class="LoadingCardRowContainer flex justify-around flex-row gap-4 mx-auto overflow-hidden w-full"
     >
         <div
-            v-for="(count,colIndex) in numberPerRow"
+            v-for="(count,colIndex) in numberOfCardsPerRowWithSafety"
             :key="colIndex"
             class="
-                GenericCardContainer
                 border-[0.5px]
                 border-slate-100
                 card_parent
@@ -42,7 +71,6 @@ const props = defineProps({
                 mb-4
                 min-h-[480px]
                 min-w-[300px]
-                mx-[29px]
                 pointer-events-none
                 transition-all
                 w-full

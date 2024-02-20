@@ -31,10 +31,9 @@ export const schoolService = {
             return schoolContentArrParser(res.data)
         })
     },
-    checkIfUserCanEdit: async (site_id, user_id, school_id): Promise<AxiosResponse<CheckCanEditResponseType>> => {
+    checkIfUserCanEdit: async (site_id, school_id): Promise<AxiosResponse<CheckCanEditResponseType>> => {
         const data = {
             "site_id": site_id,
-            "user_id": user_id,
             "school_id": school_id
         }
         return axios.post(
