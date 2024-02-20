@@ -20,7 +20,7 @@ export const dmaService = {
         answer: number,
         answerText: string,
         nextQuestionId: string,
-        chapterComplete: boolean
+        elementComplete: boolean
     ):Promise<AxiosResponse<any>> => {
         return axios.post(`${API_ENDPOINTS.DMA.USER_SURVEY}/answer`, {
             domain_id: domainId,
@@ -28,7 +28,7 @@ export const dmaService = {
             answer,
             answer_text: answerText,
             next_question_id: nextQuestionId,
-            increase_completed_chapter_count: chapterComplete,
+            increase_completed_element_count: elementComplete,
         }).then(res => {
             return res.data;
         })

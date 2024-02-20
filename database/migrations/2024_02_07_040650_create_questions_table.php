@@ -19,7 +19,7 @@ return new class extends Migration
                 ->onDelete('cascade');
             $table->string('domain');
             $table->text('question');
-            $table->string("chapter");
+            $table->string("element");
             $table->string("generated_variable");
             $table->string("domain_print")->nullable();
             $table->text('advice')->nullable();
@@ -29,10 +29,10 @@ return new class extends Migration
             $table->string("dependencies")->nullable();
             $table->integer("phase")->nullable();
             $table->string("phase_description")->nullable();
-            $table->string("category")->nullable();
-            $table->text("chapter_print")->nullable();
-            $table->string("category_print")->nullable();
-            $table->text("chapter_description")->nullable();
+            $table->string("indicator")->nullable();
+            $table->text("element_print")->nullable();
+            $table->string("indicator_print")->nullable();
+            $table->text("element_description")->nullable();
             $table->timestamps();
 
             $table->index('survey_id');
