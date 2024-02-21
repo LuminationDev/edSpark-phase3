@@ -72,6 +72,7 @@ onUnmounted(() =>{
                 min-h-[480px]
                 min-w-[300px]
                 pointer-events-none
+                rounded
                 transition-all
                 w-full
                 hover:shadow-2xl
@@ -87,11 +88,12 @@ onUnmounted(() =>{
                     loadingCard-image
                     min-h-[35%]
                     relative
+                    rounded-t
                     transition-all
                     "
             />
             <div
-                class="bg-white cardContent flex flex-col gap-6 h-full loadingCard-content overflow-hidden p-4 transition-all"
+                class="bg-white cardContent flex flex-col gap-6 h-full loadingCard-content overflow-hidden p-4 rounded transition-all"
             >
                 <div class="h-[2.25rem] loadingCard-title rounded-xl w-full" />
 
