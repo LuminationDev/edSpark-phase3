@@ -18,7 +18,7 @@ const CaseStudyAdviceList = computed(() =>{
 </script>
 
 <template>
-    <div class="EduAdviceCards grid grid-cols-1 gap-10 place-items-center mt-10 md:!grid-cols-2 lg:!grid-cols-3">
+    <div class="EduAdviceCards grid grid-cols-1 gap-10 place-items-center md:!grid-cols-2 lg:!grid-cols-3">
         <template v-if="props.adviceList && props.adviceList.length">
             <AdviceCard
                 v-for="advice in getNRandomElementsFromArray(CaseStudyAdviceList,3)"
