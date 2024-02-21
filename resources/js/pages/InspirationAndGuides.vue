@@ -52,6 +52,10 @@ const handleClickPopularGuides = (guideId, title) => {
         params: {id: guideId, slug: lowerSlugify(title)},
     })
 }
+
+const handleClickGoToDMA = () =>{
+    return router.push('/inspire/dma')
+}
 </script>
 
 <template>
@@ -75,11 +79,10 @@ const handleClickPopularGuides = (guideId, title) => {
         </template>
         <template #button>
             <GenericButton
-                :callback="() => {}"
+                :callback="handleClickGoToDMA"
                 :type="'teal'"
-                :disabled="true"
             >
-                Coming soon
+                Go to DMA tool
             </GenericButton>
         </template>
     </BaseLandingSection>

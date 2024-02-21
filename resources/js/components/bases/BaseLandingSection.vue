@@ -32,15 +32,24 @@ const shadyBackgroudColorClass = computed(() => {
 
 <template>
     <div
-        class="flex flex-col px-4 py-16 md:!px-8 xl:!px-16"
+        class="flex justify-center flex-col px-4 py-16 md:!px-8 xl:!px-16"
         :class="shadyBackgroudColorClass"
     >
-        <div class="flex justify-between items-start flex-row mb-4 sectionHeader w-full">
+        <div
+            class="flex justify-between items-start flex-row sectionHeader w-full"
+            :class="{'mb-4' : $slots.content}"
+        >
             <div class="flex flex-col titleAndSubtitle">
-                <div class="font-medium mb-4 text-4xl">
+                <div
+                    class="font-medium text-4xl"
+                    :class="{'mb-4' : $slots.subtitle}"
+                >
                     <slot name="title" />
                 </div>
-                <div class="font-base text-lg">
+                <div
+                    v-if="$slots.subtitle"
+                    class="font-base text-lg"
+                >
                     <slot name="subtitle" />
                 </div>
             </div>

@@ -1,9 +1,10 @@
 <script setup>
 
 import BaseIconGenerator from "@/js/components/global/BaseIconGenerator.vue";
+import DepartmentApprovedSolo from "@/js/components/svg/DepartmentApprovedSolo.vue";
 import DeptApprovedIcon from "@/js/components/svg/software/DeptApprovedIcon.vue"
-import DeptProvidedIcon from '@/js/components/svg/software/DeptProvidedIcon.vue'
 import DeptNegotiatedIcon from "@/js/components/svg/software/DeptNegotiatedIcon.vue";
+import DeptProvidedIcon from '@/js/components/svg/software/DeptProvidedIcon.vue'
 
 const props = defineProps({
     iconName:{
@@ -12,9 +13,9 @@ const props = defineProps({
     }
 })
 const adviceIconComponents = {
-    'Department Approved':DeptApprovedIcon,
-    'Department Provided': DeptProvidedIcon,
-    'Approved and Negotiated': DeptNegotiatedIcon
+    'No cost':DeptApprovedIcon,
+    'Cyber Assessed': DeptProvidedIcon,
+    'Negotiated Deals': DepartmentApprovedSolo
 
 }
 
