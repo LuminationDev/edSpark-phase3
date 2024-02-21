@@ -19,7 +19,7 @@ const handleClickSchoolQuickFilter = (filterName) => {
 </script>
 
 <template>
-    <div class="flex flex-row flex-wrap gap-4 py-8 w-full">
+    <div class="flex flex-row flex-wrap gap-4 my-8 w-full">
         <button
             v-for="(filterItem,index) in schoolFilterList"
             :key="index"

@@ -20,7 +20,7 @@ const DAGAdviceList = computed(() =>{
 </script>
 
 <template>
-    <div class=":!grid-cols-2 EduAdviceCards grid grid-cols-1 gap-10 place-items-center mt-10 lg:!grid-cols-3">
+    <div class=":!grid-cols-2 EduAdviceCards grid grid-cols-1 gap-10 place-items-center lg:!grid-cols-3">
         <template v-if="props.adviceList && props.adviceList.length">
             <AdviceCard
                 v-for="advice in getNRandomElementsFromArray(DAGAdviceList,3)"

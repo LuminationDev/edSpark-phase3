@@ -37,7 +37,8 @@ class Software extends Model
         'cover_image',
         'softwaretype_id',
         'template',
-        'extra_content'
+        'extra_content',
+        'how_to_access'
     ];
 
     public function author()
