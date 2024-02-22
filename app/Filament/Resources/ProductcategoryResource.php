@@ -59,13 +59,13 @@ class ProductcategoryResource extends Resource
                     ->label('Category Description')
                     ->limit(50),
                 // Tables\Columns\TextColumn::make('product_created_at')
-                //     ->dateTime(),
+                //     ->dateTime('j M y, h:i a'),
                 // Tables\Columns\TextColumn::make('product_modified_at')
-                //     ->dateTime(),
+                //     ->dateTime('j M y, h:i a'),
                 Tables\Columns\TextColumn::make('created_at')
-                    ->dateTime(),
+                    ->dateTime('j M y, h:i a'),
                 Tables\Columns\TextColumn::make('updated_at')
-                    ->dateTime(),
+                    ->dateTime('j M y, h:i a'),
             ])
             ->filters([
                 //

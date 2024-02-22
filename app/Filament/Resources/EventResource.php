@@ -75,7 +75,6 @@ class EventResource extends Resource
                         Forms\Components\FileUpload::make('cover_image')
                             ->label(new CustomHtmlable("Cover Image <span class='text-xs italic'> (500px * 500px / 1:1 aspect ratio] </span>"))
                             ->validationAttribute('cover image')
-                            ->required()
                             ->preserveFilenames()
                             ->disk('public')
                             ->directory('uploads/event')
@@ -199,7 +198,7 @@ class EventResource extends Resource
                     ->label('Status')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('updated_at')
-                    ->dateTime(),
+                    ->dateTime('j M y, h:i a'),
             ])
             ->filters([
                 Tables\Filters\SelectFilter::make('event_status')

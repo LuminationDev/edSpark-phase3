@@ -73,16 +73,32 @@ class SchoolResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('site_id'),
-                Tables\Columns\TextColumn::make('name'),
-                Tables\Columns\TextColumn::make('owner.full_name')->label('Owner'),
+                Tables\Columns\TextColumn::make('name')
+                    ->limit(25)
+                ,
+                Tables\Columns\TextColumn::make('owner.full_name')->label('Owner')
+                    ->limit(15)
+                ,
                 Tables\Columns\ToggleColumn::make('isFeatured'),
-                Tables\Columns\TextColumn::make('created_at')
-                    ->dateTime(),
                 Tables\Columns\TextColumn::make('updated_at')
-                    ->dateTime(),
+                    ->sortable()
+                    ->dateTime('j M y, h:i a'),
+
+                Tables\Columns\TextColumn::make('created_at')
+                    ->dateTime('j M y, h:i a'),
             ])
             ->filters([
-                //
+                Tables\Filters\SelectFilter::make('status')
+                    ->options([
+                        'published' => 'Published',
+                        'pending' => 'Pending Moderation',
+                        'archived' => 'Archived',
+                        'draft' => 'Draft/Incomplete',
+                        'unpublished' => 'Deleted'
+                    ])
+                    ->label('Guide status')
+                    ->default('published')
+                    ->attribute('status'),
             ])
             ->actions([
                 // Tables\Actions\ViewAction::make(),
