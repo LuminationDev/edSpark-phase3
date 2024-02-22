@@ -88,7 +88,7 @@ class PartnermoderationResource extends Resource
                 Tables\Columns\TextColumn::make('motto')
                     ->limit(20),
                 Tables\Columns\TextColumn::make('updated_at')
-                    ->dateTime(),
+                    ->dateTime('j M y, h:i a'),
             ])
             ->filters([
                 //
