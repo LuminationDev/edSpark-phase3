@@ -13,6 +13,7 @@ import ExtraResourceTemplateDisplay from "@/js/components/renderer/ExtraResource
 import SoftwareIconGenerator from "@/js/components/software/SoftwareIconGenerator.vue";
 import SoftwareSingleCuratedContent from "@/js/components/software/softwareSingle/SoftwareSingleCuratedContent.vue";
 import {formatDateToDayTime} from "@/js/helpers/dateHelper";
+import {edSparkContentSanitizer} from "@/js/helpers/objectHelpers";
 /**
  *  type softwareSingleContent = {
  *      post_id: number
@@ -171,9 +172,16 @@ const colorTheme = ref('softwarePurple')
                     </div>
                 </template>
                 <template v-else-if="activeSubmenu === 'access'">
-                    <div class="flex flex-col mt-10 overflow-hidden pt-0 px-5 softwareSingleHowToAccess">
-                        Welcome to how to
-                        access sub page
+                    <div
+                        v-if="contentFromBase['how_to_access']"
+                        class="flex flex-col mt-10 overflow-hidden pt-0 px-5 softwareSingleHowToAccess"
+                        v-html="edSparkContentSanitizer(contentFromBase['how_to_access'])"
+                    />
+                    <div
+                        v-else
+                        class="flex flex-col mt-10 overflow-hidden pt-0 px-5 softwareSingleHowToAccess"
+                    >
+                        No information provided.
                     </div>
                 </template>
             </div>

@@ -66,7 +66,7 @@ const getPositionAtCenter = (element) => {
 </script>
 
 <template>
-    <div class="extraContent relative">
+    <div class="extraContent mb-10 relative">
         <div
             class="absolute left-[12.4%] bg-black connectingLine hidden w-0.5 z-10 md:!flex"
             :style="`height: ${distanceBetweenEls}px; top: ${top}px;`"

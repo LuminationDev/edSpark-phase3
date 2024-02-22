@@ -34,7 +34,6 @@ const props = defineProps({
 })
 const onClick = async () => {
     spinner.value = true
-    console.log('inside on click')
     await asyncCall();
     spinner.value = false
 }
@@ -42,7 +41,6 @@ const onClick = async () => {
 const asyncCall = () => {
     return new Promise(async (resolve, reject) => {
         try {
-            console.log('before callback')
             const result = props.callback();
             if (result instanceof Promise) {
                 result.then(resolve).catch(reject);

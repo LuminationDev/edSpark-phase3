@@ -1,0 +1,46 @@
+import axios, {AxiosResponse} from "axios";
+
+import {API_ENDPOINTS} from "@/js/constants/API_ENDPOINTS";
+
+export const dmaService = {
+    // TODO proper typing on APIs
+    getSurvey: async ():Promise<AxiosResponse<any>> => {
+        return axios.get(API_ENDPOINTS.DMA.USER_SURVEY, {}).then(res => {
+            return res.data.data;
+        })
+    },
+    getQuestions: async (domainId: string):Promise<AxiosResponse<any>> => {
+        return axios.get(`${API_ENDPOINTS.DMA.USER_SURVEY}/domain/${domainId}/questions`).then(res => {
+            return res.data.data;
+        })
+    },
+    postAnswer: async(
+        domainId: string,
+        questionId: string,
+        answer: number,
+        answerText: string,
+        nextQuestionId: string,
+        elementComplete: boolean
+    ):Promise<AxiosResponse<any>> => {
+        return axios.post(`${API_ENDPOINTS.DMA.USER_SURVEY}/answer`, {
+            domain_id: domainId,
+            question_id: questionId,
+            answer,
+            answer_text: answerText,
+            next_question_id: nextQuestionId,
+            increase_completed_element_count: elementComplete,
+        }).then(res => {
+            return res.data;
+        })
+    },
+    resetDomainProgress: async(domainId:string):Promise<AxiosResponse<any>> => {
+        return axios.delete(`${API_ENDPOINTS.DMA.USER_SURVEY}/domain/${domainId}`).then(res => {
+            return res.data;
+        })
+    },
+    resetSurveyProgress: async():Promise<AxiosResponse<any>> => {
+        return axios.delete(`${API_ENDPOINTS.DMA.USER_SURVEY}`).then(res => {
+            return res.data;
+        })
+    }
+}

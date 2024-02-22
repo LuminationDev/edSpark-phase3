@@ -18,7 +18,7 @@ const emits = defineEmits(['emitSearchTerm'])
 <template>
     <div class="flex flex-col">
         <p
-            id="searchTitle "
+            id="searchTitle"
             class="text-xl"
         >
             Search
@@ -61,7 +61,7 @@ const emits = defineEmits(['emitSearchTerm'])
             <input
                 id="searchbar-text-input"
                 v-model="searchTerm"
-                class="bg-transparent border-0 font-light ml-4 text-lg"
+                class="bg-transparent border-0 font-light ml-4 placeholder-black text-black text-lg"
                 type="text"
                 :placeholder="props.placeholder"
                 @input="handleSearchChange"

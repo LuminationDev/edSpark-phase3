@@ -184,7 +184,7 @@ const formattedSearchBlurb = computed(() => {
                     {{ formattedSearchBlurb }}
                 </p>
             </div>
-            <div class="grid grid-cols-3 gap-4 w-full">
+            <div class="grid grid-cols-1 gap-4 w-full lg:!grid-cols-3">
                 <div class="flex flex-col search-filter-components">
                     <SearchBar
                         :placeholder="`Type in ${searchType} name`"

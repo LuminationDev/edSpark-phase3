@@ -2,7 +2,7 @@
 import {computed} from 'vue'
 
 import AdviceCaseStudyIcon from "@/js/components/svg/AdviceCaseStudyIcon.vue";
-import IconDAG from "@/js/components/svg/AdviceDAG.vue";
+import AdviceDAG from "@/js/components/svg/AdviceDAG.vue";
 import IconOther from "@/js/components/svg/AdviceOther.vue";
 import IconWork from "@/js/components/svg/AdviceWork.vue";
 import {schoolColorKeys, schoolColorTheme} from "@/js/constants/schoolColorTheme";
@@ -30,7 +30,7 @@ const typeTagColor = computed(() => {
         :class="typeTagColor"
     >
         <template v-if="props.typeTag[0] === 'DAG'">
-            <IconDAG />
+            <AdviceDAG />
         </template>
 
         <template v-else-if="props.typeTag[0] === 'Your Work'">
