@@ -68,7 +68,6 @@ class HardwareResource extends Resource
                                 return (string)str($file->getClientOriginalName())->prepend('edSpark-hardware-gallery-');
                             })
                             ->enableReordering()
-                            ->minFiles(2)
                             ->maxFiles(5),
                         Forms\Components\TextInput::make('price')
                             ->required(),
@@ -141,6 +140,7 @@ class HardwareResource extends Resource
             ->columns([
                 Tables\Columns\TextColumn::make('product_name')
                     ->label("Name")
+                    ->limit(25)
                     ->sortable()
                     ->searchable(),
                 Tables\Columns\TextColumn::make('brand.product_brand_name')
@@ -153,13 +153,13 @@ class HardwareResource extends Resource
                     ->searchable(),
                 // Tables\Columns\TextColumn::make('product_inventory'),
                 Tables\Columns\TextColumn::make('price'),
-                Tables\Columns\IconColumn::make('product_isLoan')
-                    ->boolean()
-                    ->label('IsLoan'),
+//                Tables\Columns\IconColumn::make('product_isLoan')
+//                    ->boolean()
+//                    ->label('IsLoan'),
                 Tables\Columns\TextColumn::make('created_at')
-                    ->dateTime(),
+                    ->dateTime('j M y, h:i a'),
                 Tables\Columns\TextColumn::make('updated_at')
-                    ->dateTime(),
+                    ->dateTime('j M y, h:i a'),
             ])
             ->filters([
                 //
