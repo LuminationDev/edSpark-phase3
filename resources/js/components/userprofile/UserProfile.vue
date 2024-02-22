@@ -165,10 +165,6 @@ const handleErrorAvatarFallback = () => {
                 <div class="UserProfileSelectionMenuContainer flex flex-col mt-20">
                     <UserProfileSelectionMenu />
                 </div>
-                <div class="flex flex-col mt-20 profileSubmenuContainer">
-                    <UserProfileSubmenu :submenu-items="subMenuItems" />
-                    <router-view />
-                </div>
             </div>
         </div>
     </div>
