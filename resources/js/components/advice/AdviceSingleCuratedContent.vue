@@ -2,7 +2,6 @@
 import {storeToRefs} from "pinia";
 
 import AdviceCard from "@/js/components/advice/AdviceCard.vue";
-import {API_ENDPOINTS} from "@/js/constants/API_ENDPOINTS";
 import {useAdviceStore} from "@/js/stores/useAdviceStore";
 
 const adviceStore = useAdviceStore()

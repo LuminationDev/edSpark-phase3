@@ -130,7 +130,7 @@ const routes: any = [
         },
         children: [
             {
-                name: "InspirationGuides",
+                name: "Inspiration & guides",
                 path: "",
                 component: InspirationAndGuides,
                 meta: {
@@ -181,7 +181,7 @@ const routes: any = [
         },
         children: [
             {
-                name: "TechnologyHome",
+                name: "Technology Hub",
                 path: "",
                 component: TheTechnology,
                 meta: {
