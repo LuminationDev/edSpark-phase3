@@ -11,6 +11,7 @@ import ProfilePlaceholder from "@/assets/images/profilePlaceholder.webp";
 import ErrorMessages from "@/js/components/bases/ErrorMessages.vue";
 import GenericButton from "@/js/components/button/GenericButton.vue";
 import CustomErrorMessages from "@/js/components/feedbackform/CustomErrorMessages.vue";
+import ErrorIconSmall from "@/js/components/svg/ErrorIconSmall.vue";
 import UserCardItemSelector from "@/js/components/userprofile/userprofileupdate/UserCardItemSelector.vue";
 import UserChecklistSelector from "@/js/components/userprofile/userprofileupdate/UserChecklistSelector.vue";
 import {
@@ -195,18 +196,53 @@ const filteredItems = computed(() => itemsDataProfile.value.filter(item => item.
                 :left-heading="leftHeadingProfile"
                 :left-description="leftDescriptionProfile"
                 :items="filteredItems"
-                :right-content-check-list-selector="1"
-                :is-edit-avatar="isEditAvatar"
-                :user-avatar-url-with-fallback="userAvatarUrlWithFallback"
-                :selector-checklist="userSelectedYearLevel"
-                :selector-cardlist="userSelectedSubjects"
-                :available-years-list-items="AvailableSchoolYearList"
-                :available-subjects-list-items="AvailableSubjectsList"
-                :send-save-data-to-child="saveDataToDatabase"
-                :send-boolean-value-to-chid="booleanValueOnSubmitButton"
-                :send-selected-check-values="handleReceiveYearListFromSelector"
-                :send-selected-card-values="handleReceiveSubjectsFromSelector"
-            />
+            >
+                <template #content>
+                    <!--                    <div-->
+                    <!--                        v-if="item.hideUserCardListSelector"-->
+                    <!--                        class="grid grid-cols-6 mt-6"-->
+                    <!--                    >-->
+                    <!--                        <UserCardItemSelector-->
+                    <!--                            v-model="item.selectorCardlist"-->
+                    <!--                            :available-items="availableSubjectsListItems"-->
+                    <!--                            :selected-items="selectorCardlist"-->
+                    <!--                            @send-selected-values="sendSelectedCardValues"-->
+                    <!--                        />-->
+                    <!--                        <div-->
+                    <!--                            v-if="selectorCardlist.length === 0"-->
+                    <!--                            class="flex items-center flex-row mt-2 text-red-500"-->
+                    <!--                        >-->
+                    <!--                            <ErrorIconSmall-->
+                    <!--                                class="fill-inactive h-5 max-w-none mr-2 shrink-0 stroke-inactive w-5"-->
+                    <!--                                alt="error icon"-->
+                    <!--                            />-->
+                    <!--                            <span class="text-sm">Value is reqred</span>-->
+                    <!--                        </div>-->
+                    <!--                    </div>-->
+                    <UserCardItemSelector
+                        v-model="v$.interestSelect.$model"
+                        :available-items="AvailableInterestsList"
+                        :selected-items="userSelectedInterests"
+                        @send-selected-values="handleReceiveInterestsFromSelector"
+                    />
+                    <div class="m-10 text-2xl">
+                        <div>Interests</div>
+                        <div class="mt-6 userInterestSelectorContainer">
+                            <UserCardItemSelector
+                                v-model="v$.interestSelect.$model"
+                                :available-items="AvailableInterestsList"
+                                :selected-items="userSelectedInterests"
+                                @send-selected-values="handleReceiveInterestsFromSelector"
+                            />
+                        </div>
+                        <span v-if="((userSelectedInterests.length === 0) && (booleanValueOnSubmitButton===true))">
+                            <CustomErrorMessages
+                                :error-text="displayErrorMessageText"
+                                class="mt-6"
+                            /></span>
+                    </div>
+                </template>
+            </UserProfileContentContainer>
         </div>
         <div
             class="m-10 text-2xl"

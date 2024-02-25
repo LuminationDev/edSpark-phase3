@@ -163,49 +163,7 @@ const handleClickEditAvatar = () => {
                         </div>
                     </span>
                 </div>
-                <div
-                    v-if="item.hideUserCheckListSelector"
-                    class="grid grid-cols-6 mt-6"
-                    :class="{'hidden': index === 2}"
-                >
-                    <UserChecklistSelector
-                        v-model="item.selectorChecklist"
-                        :available-items="availableYearsListItems"
-                        :selected-items="selectorChecklist"
-                        @send-selected-values="sendSelectedCheckValues"
-                    />
-                    <div
-                        v-if="selectorChecklist.length === 0"
-                        class="flex items-center flex-row mt-2 text-red-500"
-                    >
-                        <ErrorIconSmall
-                            class="fill-inactive h-5 max-w-none mr-2 shrink-0 stroke-inactive w-5"
-                            alt="error icon"
-                        />
-                        <span class="text-sm">Value is required</span>
-                    </div>
-                </div>
-                <div
-                    v-if="item.hideUserCardListSelector"
-                    class="grid grid-cols-6 mt-6"
-                >
-                    <UserCardItemSelector
-                        v-model="item.selectorCardlist"
-                        :available-items="availableSubjectsListItems"
-                        :selected-items="selectorCardlist"
-                        @send-selected-values="sendSelectedCardValues"
-                    />
-                    <div
-                        v-if="selectorCardlist.length === 0"
-                        class="flex items-center flex-row mt-2 text-red-500"
-                    >
-                        <ErrorIconSmall
-                            class="fill-inactive h-5 max-w-none mr-2 shrink-0 stroke-inactive w-5"
-                            alt="error icon"
-                        />
-                        <span class="text-sm">Value is reqred</span>
-                    </div>
-                </div>
+                <slot name="content" />
             </div>
             <div
                 v-if="hideProfilePicture"
