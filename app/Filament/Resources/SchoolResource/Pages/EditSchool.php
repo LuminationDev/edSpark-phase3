@@ -3,6 +3,8 @@
 namespace App\Filament\Resources\SchoolResource\Pages;
 
 use App\Filament\Resources\SchoolResource;
+use App\Helpers\JsonHelper;
+use App\Models\Advice;
 use Filament\Pages\Actions;
 use Filament\Resources\Pages\EditRecord;
 
@@ -17,10 +19,16 @@ class EditSchool extends EditRecord
         ];
     }
 
-    // protected function mutateFormDataBeforeSave(array $data): array
-    // {
-    //     dd($data);
-    //     $data['post_modified'] = Carbon::now();
-    //     return $data;
-    // }
+    protected function mutateFormDataBeforeFill(array $data): array
+    {
+
+//        $record = parent::getRecord();
+        $data['content_blocks'] = JsonHelper::safelyDecodeString($data['content_blocks']);
+        return $data;
+    }
+
+    protected function getRedirectUrl(): string
+    {
+        return $this->previousUrl ?? $this->getResource()::getUrl('index');
+    }
 }

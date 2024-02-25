@@ -266,15 +266,7 @@ const formattedSearchBlurb = computed(() => {
                     <template v-else-if="searchType === 'school'">
                         <div
                             :key="data.id"
-                            class="
-                                group
-                                h-[470px]
-                                max-w-[350px]
-                                transition-all
-                                w-full
-                                hover:shadow-2xl
-                                lg:!max-w-[400px]]
-                                "
+                            class="group h-[470px] max-w-[350px] transition-all w-full hover:shadow-2xl lg:!max-w-[400px]"
                         >
                             <SchoolCard
                                 class="mx-auto"
