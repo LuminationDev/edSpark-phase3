@@ -149,12 +149,12 @@ const colorTheme = ref('softwarePurple')
         </template>
         <template #content="{contentFromBase}">
             <div
-                class="flex flex-col overflow-hidden pt-0 px-5 softwareSingleContent w-full lg:!px-10 xl:!flex-row"
+                class="flex flex-col overflow-hidden pt-0 px-5 softwareSingleContent w-full lg:!px-10"
             >
                 <template
                     v-if="activeSubmenu === 'detail'"
                 >
-                    <div class="flex flex-col flex-wrap mr-10 px-2 py-4 w-full xl:!w-2/3">
+                    <div class="flex flex-col mr-10 px-2 py-4 w-full">
                         <div
                             class="flex flex-col max-w-full overflow-hidden text-lg"
                         >
@@ -167,7 +167,7 @@ const colorTheme = ref('softwarePurple')
                             <ExtraResourceTemplateDisplay :content="contentFromBase['extra_content']" />
                         </div>
                     </div>
-                    <div class="flex flex-col w-full xl:!w-1/3">
+                    <div class="flex flex-col w-full">
                         <SoftwareSingleCuratedContent />
                     </div>
                 </template>

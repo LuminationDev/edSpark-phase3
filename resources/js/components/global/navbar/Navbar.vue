@@ -135,9 +135,11 @@ const logoClass = computed(() => {
                     :to="{name: 'dashboard'}"
                     title="Go to dashboard"
                 >
-                    <Logo
+                    <img
                         :class="logoClass"
-                    />
+                        src="@/assets/images/edSparkLogoNew.png"
+                        alt="edSpark logo"
+                    >
                 </router-link>
             </div>
         </nav>

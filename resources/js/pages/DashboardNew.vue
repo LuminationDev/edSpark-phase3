@@ -152,6 +152,7 @@ onMounted(async () => {
                             grid-cols-1
                             gap-10
                             place-items-center
+                            h-fit
                             overflow-hidden
                             px-8
                             xl:px-2
