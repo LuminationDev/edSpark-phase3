@@ -132,24 +132,31 @@ class SurveyController extends Controller
 
     public function saveUserActionPlan(Request $request, $user_domain_id): JsonResponse
     {
-        $userDomain = UserSurveyDomain::find($user_domain_id);
+        $user = User::find(Auth::user()->id);
+        $userSurvey = UserSurvey::where('user_id', $user->id)
+            ->where('status', '<>', 'Abandoned')
+            ->first();
+
+        if ($userSurvey == null) {
+            return $this->domainNotFound();
+        }
+
+        $userDomain = UserSurveyDomain::where('id', $user_domain_id)
+            ->where('user_survey_id', $userSurvey->id)
+            ->first();
         if ($userDomain == null) {
             return $this->domainNotFound();
         }
+
         $element = $request['element'];
 
-        // validate element
-        $userSurvey = UserSurvey::find($userDomain->user_survey_id);
-        if (!$userSurvey) {
-            return $this->surveyNotFound();
-        }
         $domainQuestions = Question::where('survey_id', $userSurvey->survey_id)
             ->where('domain', $userDomain->domain)
             ->where('element_print', $element)
             ->get();
 
         Log::info(print_r($domainQuestions, true));
-        if(empty($domainQuestions) || $domainQuestions->isEmpty()) {
+        if (empty($domainQuestions) || $domainQuestions->isEmpty()) {
             return $this->elementNotFound();
         }
 
@@ -158,7 +165,7 @@ class SurveyController extends Controller
             ->where('element', $element)
             ->first();
 
-        if($userActionPlan == null) {
+        if ($userActionPlan == null) {
             $userActionPlan = new UserSurveyActionPlan();
             $userActionPlan->user_survey_domain_id = $user_domain_id;
             $userActionPlan->element = $element;
@@ -180,7 +187,18 @@ class SurveyController extends Controller
 
     public function saveUserReflection(Request $request, $user_domain_id): JsonResponse
     {
-        $userDomain = UserSurveyDomain::find($user_domain_id);
+        $user = User::find(Auth::user()->id);
+        $userSurvey = UserSurvey::where('user_id', $user->id)
+            ->where('status', '<>', 'Abandoned')
+            ->first();
+
+        if ($userSurvey == null) {
+            return $this->domainNotFound();
+        }
+
+        $userDomain = UserSurveyDomain::where('id', $user_domain_id)
+            ->where('user_survey_id', $userSurvey->id)
+            ->first();
         if ($userDomain == null) {
             return $this->domainNotFound();
         }
@@ -188,7 +206,7 @@ class SurveyController extends Controller
         // check if a reflection already exists
         $userReflection = UserSurveyReflection::where('user_survey_domain_id', $user_domain_id)
             ->first();
-        if($userReflection == null) {
+        if ($userReflection == null) {
             $userReflection = new UserSurveyReflection();
             $userReflection->user_survey_domain_id = $user_domain_id;
         }
@@ -371,13 +389,14 @@ class SurveyController extends Controller
      * and the corresponding user answers where the answer was yes
      * and returns the list of all generated_variables as a flat array.
      */
-    protected function getMetDependencies($user_survey_domain) {
+    protected function getMetDependencies($user_survey_domain)
+    {
         $result = Question::select("generated_variable")
             ->leftJoin('user_answers', function ($join) use ($user_survey_domain) {
                 $join->on('questions.id', '=', 'user_answers.question_id')
                     ->where('user_answers.user_survey_domain_id', '=', $user_survey_domain->id);
             })
-            ->where('user_answers.answer','=', '1')
+            ->where('user_answers.answer', '=', '1')
             ->groupBy('generated_variable')
             ->get();
         return $result->pluck('generated_variable');
