@@ -21,6 +21,7 @@ if(schoolColorKeys.includes(props.colorTheme)){
 </script>
 
 <template>
+    <span style="border-top: 8px white solid; display: block; margin-top:-8px" >
 <svg class="absolute w-full h-fill min-h-8" width="100%" height="100%" fill="none" preserveAspectRatio="none" version="1.1" viewBox="0 0 1800 60" xmlns="http://www.w3.org/2000/svg">
     <rect width="100%" height="100%" fill="url(#paint0_linear_1830_23198)"></rect>
         <defs>
@@ -42,9 +43,10 @@ if(schoolColorKeys.includes(props.colorTheme)){
                 />
                 <stop
                     offset="1"
-                    :stop-color="(useCustomColor ? schoolColorTheme[colorTheme]['light'] : schoolColorTheme['teal']['light'])"
+                    :stop-color="(useCustomColor ? schoolColorTheme[colorTheme]['med'] : schoolColorTheme['teal']['med'])"
                 />
             </linearGradient>
         </defs>
     </svg>
+    </span>
 </template>

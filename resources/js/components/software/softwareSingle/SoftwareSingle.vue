@@ -60,7 +60,7 @@ const handleClickViewProfile = (author_id, author_type) => {
 /**
  * End of submenu specific code  plus @emit-active-tab-to-specific-page in BaseSingle
  * */
-const colorTheme = ref('softwarePurple')
+const colorTheme = ref('technologyPurple')
 
 </script>
 

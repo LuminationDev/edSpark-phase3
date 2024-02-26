@@ -10,7 +10,7 @@ const props = defineProps({
 })
 
 
-const shadyBackgroudColorClass = computed(() => {
+const shadyBackgroundColorClass = computed(() => {
     switch (props.backgroundColor) {
     case 'white':
         return 'bg-white'
@@ -33,7 +33,7 @@ const shadyBackgroudColorClass = computed(() => {
 <template>
     <div
         class="flex justify-center flex-col px-4 py-16 md:!px-8 xl:!px-16"
-        :class="shadyBackgroudColorClass"
+        :class="shadyBackgroundColorClass"
     >
         <div
             class="flex justify-between items-start flex-row sectionHeader w-full"

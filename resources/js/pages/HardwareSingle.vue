@@ -43,7 +43,7 @@ const handleChangeSubmenu = (value): void => {
  * End of submenu specific code  plus @emit-active-tab-to-specific-page in BaseSingle
  * */
 
-const colorTheme = ref('hardwareGreen')
+const colorTheme = ref('technologyPurple')
 </script>
 
 <template>

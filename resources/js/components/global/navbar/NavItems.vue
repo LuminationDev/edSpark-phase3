@@ -75,7 +75,7 @@ const handleClickParentNavItems = () => {
                 <NavItems
                     v-for="(child, index) in childrenWithNavigation"
                     :key="index"
-                    class="first-letter:uppercase text-base text-main-darkGrey hover:bg-[#E7ECEE] hover:font-bold"
+                    class="first-letter:uppercase text-base text-main-darkGrey hover:bg-[#E7ECEE] hover:font-bold px-4"
                     :to="child.path"
                     :route="child"
                 />

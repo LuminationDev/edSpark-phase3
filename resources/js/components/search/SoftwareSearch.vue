@@ -65,7 +65,7 @@ if (route.params || route.params.filter) {
         :live-filter-object="filterObject"
         :hero-title="LandingHeroText['apps']['title']"
         :hero-subtitle="LandingHeroText['apps']['subtitle']"
-        hero-background-color="purple"
+        hero-background-color="technologyPurple"
     >
         <template #filterBar>
             <GenericMultiSelectFilter
