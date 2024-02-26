@@ -141,7 +141,7 @@ const eventTypeColorClass = (eventType: string): string => {
 }
 </style>
 
-<style>
+<style scoped>
 ::-webkit-scrollbar-track {
     margin-top: 1rem !important;
     margin-bottom: 1rem !important;
