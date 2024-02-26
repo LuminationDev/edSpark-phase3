@@ -7,6 +7,7 @@ use App\Models\Survey;
 use App\Models\User;
 use App\Models\UserAnswer;
 use App\Models\UserSurvey;
+use App\Models\UserSurveyActionPlan;
 use App\Models\UserSurveyDomain;
 use App\Models\UserSurveyReflection;
 use Illuminate\Http\Request;
@@ -96,6 +97,87 @@ class SurveyController extends Controller
             ]
         );
     }
+
+    public function getUserActionPlan(Request $request): JsonResponse
+    {
+        $user = User::find(Auth::user()->id);
+        $userSurvey = UserSurvey::where('user_id', $user->id)
+            ->where('status', '<>', 'Abandoned')
+            ->first();
+
+        if ($userSurvey == null) {
+            return $this->surveyNotFound();
+        }
+
+        $survey_domains = UserSurveyDomain::where('user_survey_id', $userSurvey->id)
+            ->where('status', '<>', 'Abandoned')
+            ->get();
+
+        foreach ($survey_domains as $survey_domain) {
+            $results[$survey_domain->domain] = UserSurveyActionPlan::where('user_survey_domain_id', $survey_domain->id)->get();
+        }
+
+        return response()->json(
+            [
+                'success' => true,
+                'message' => 'OK',
+                'code' => 0,
+                'locale' => 'en',
+                'data' => [
+                    'action_plan' => $results
+                ]
+            ]
+        );
+    }
+
+    public function saveUserActionPlan(Request $request, $user_domain_id): JsonResponse
+    {
+        $userDomain = UserSurveyDomain::find($user_domain_id);
+        if ($userDomain == null) {
+            return $this->domainNotFound();
+        }
+        $element = $request['element'];
+
+        // validate element
+        $userSurvey = UserSurvey::find($userDomain->user_survey_id);
+        if (!$userSurvey) {
+            return $this->surveyNotFound();
+        }
+        $domainQuestions = Question::where('survey_id', $userSurvey->survey_id)
+            ->where('domain', $userDomain->domain)
+            ->where('element_print', $element)
+            ->get();
+
+        Log::info(print_r($domainQuestions, true));
+        if(empty($domainQuestions) || $domainQuestions->isEmpty()) {
+            return $this->elementNotFound();
+        }
+
+        // check if an action plan for this element already exists
+        $userActionPlan = UserSurveyActionPlan::where('user_survey_domain_id', $user_domain_id)
+            ->where('element', $element)
+            ->first();
+
+        if($userActionPlan == null) {
+            $userActionPlan = new UserSurveyActionPlan();
+            $userActionPlan->user_survey_domain_id = $user_domain_id;
+            $userActionPlan->element = $element;
+        }
+        $userActionPlan->action = $request['action'];
+        $userActionPlan->save();
+
+        return response()->json(
+            [
+                'success' => true,
+                'message' => 'Action plan saved successfully',
+                'code' => 0,
+                'locale' => 'en',
+                'data' => (object)[]
+
+            ]
+        );
+    }
+
     public function saveUserReflection(Request $request, $user_domain_id): JsonResponse
     {
         $userDomain = UserSurveyDomain::find($user_domain_id);
@@ -328,6 +410,17 @@ class SurveyController extends Controller
         return response()->json([
             'success' => false,
             'message' => 'Question ID not found',
+            'data' => (object)[],
+            'code' => 34,
+            'locale' => 'en',
+        ], 422);
+    }
+
+    private function elementNotFound()
+    {
+        return response()->json([
+            'success' => false,
+            'message' => 'Element not found',
             'data' => (object)[],
             'code' => 34,
             'locale' => 'en',
