@@ -237,9 +237,11 @@ select {
     width: 50px;
 }
 
+.richTextContentContainer,
+.richTextContentContainer div,
 .richTextContentContainer p {
     font-weight: 100;
-    padding-bottom: 8px;
+    padding-bottom: 16px;
     line-height: 1.5;
     font-size: 1.1em;
 }
@@ -479,3 +481,14 @@ table[border]:not([border="0"]):not([style*="border-color"]) th {
 .searchText {
     font-weight: 500;
 }
+
+
+/* textarea + .tox.tox-tinymce p {
+font-weight: 100; 
+color: blue !important;
+} */
+
+/* .tox.tox-tinymce * {
+    font-weight: 100 !important;
+    color: red !important;
+} */

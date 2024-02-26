@@ -154,7 +154,7 @@ const colorTheme = ref('partnerBlue')
 
         <template #content="{contentFromBase}">
             <div
-                class="eventSingleContent flex flex-col overflow-hidden px-8 w-full lg:!flex-row"
+                class="eventSingleContent font-light flex flex-col overflow-hidden px-8 w-full lg:!flex-row"
             >
                 <!--    Content of the Advice    -->
                 <div class="flex flex-col flex-wrap pl-6 px-12 w-full lg:!w-2/3">
