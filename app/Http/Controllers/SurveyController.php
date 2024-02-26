@@ -8,6 +8,7 @@ use App\Models\User;
 use App\Models\UserAnswer;
 use App\Models\UserSurvey;
 use App\Models\UserSurveyDomain;
+use App\Models\UserSurveyReflection;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Auth;
@@ -65,6 +66,7 @@ class SurveyController extends Controller
             ],
         ]);
     }
+
     public function getSurveyQuestionsForDomain(Request $request, $user_domain_id): JsonResponse
     {
         Log::info('Received request ' . ' / ' . $user_domain_id);
@@ -91,6 +93,33 @@ class SurveyController extends Controller
                 'data' => [
                     'domain_questions' => $domainQuestions,
                 ],
+            ]
+        );
+    }
+    public function saveUserReflection(Request $request, $user_domain_id): JsonResponse
+    {
+        $userDomain = UserSurveyDomain::find($user_domain_id);
+        if ($userDomain == null) {
+            return $this->domainNotFound();
+        }
+
+        // check if a reflection already exists
+        $userReflection = UserSurveyReflection::where('user_survey_domain_id', $user_domain_id)
+            ->first();
+        if($userReflection == null) {
+            $userReflection = new UserSurveyReflection();
+            $userReflection->user_survey_domain_id = $user_domain_id;
+        }
+        $userReflection->reflection = $request['reflection'];
+        $userReflection->save();
+
+        return response()->json(
+            [
+                'success' => true,
+                'message' => 'Reflection saved successfully',
+                'code' => 0,
+                'locale' => 'en',
+                'data' => (object)[]
             ]
         );
     }
@@ -224,7 +253,8 @@ class SurveyController extends Controller
      *  otherwise it is the phase of the highest phase question
      *  they answered yes to.
      */
-    protected function getScoresForSurvey($user_survey, $user_survey_domain) {
+    protected function getScoresForSurvey($user_survey, $user_survey_domain)
+    {
         $highestScores = Question::selectRaw("
                 MAX(CASE WHEN answer = '1'
                             THEN phase
@@ -235,7 +265,7 @@ class SurveyController extends Controller
                 $join->on('questions.id', '=', 'user_answers.question_id')
                     ->where('user_answers.user_survey_domain_id', '=', $user_survey_domain->id);
             })
-            ->where('questions.domain','=', $user_survey_domain->domain)
+            ->where('questions.domain', '=', $user_survey_domain->domain)
             ->whereNotNull('indicator_print')
             ->groupBy('indicator_print', 'element_print');
 

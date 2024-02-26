@@ -173,7 +173,8 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::group(['prefix' => 'user/survey'], function () {
         Route::get('/', [SurveyController::class, 'getUserSurvey']);
         Route::delete('/', [SurveyController::class, 'resetUserSurvey']);
-        Route::get('domain/{domain_id}/questions', [SurveyController::class, 'getSurveyQuestionsForDomain']);
+        Route::get('/domain/{domain_id}/questions', [SurveyController::class, 'getSurveyQuestionsForDomain']);
+        Route::put('/domain/{domain_id}/reflection', [SurveyController::class, 'saveUserReflection']);
         Route::post('/answer', [SurveyController::class, 'saveUserAnswerToQuestion']);
         Route::delete('/domain/{domain_id}', [SurveyController::class, 'resetUserSurveyDomain']);
     });
