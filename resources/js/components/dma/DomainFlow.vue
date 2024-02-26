@@ -25,12 +25,19 @@ const emit = defineEmits(['complete','reset','error']);
 const questions = ref(null);
 // question ID is null until continue event from cover
 const questionId = ref(null);
+// elementCompleted is true when all questions in an element have been answered
+const elementCompleted = ref(null);
 // completed is true when there are no more questions to answer
 const completed = ref(false);
 // submitting is true while an answer is being submitted
 const submitting = ref(false);
 // dependencies that have been met (generated_variables from answered questions)
 const metDependencies = ref(props.domain.met_dependencies || []);
+
+// when the domain is completed, the summary is displayed for reflection
+const showDomainSummary = ref(false);
+// reflection is the user provided feedback
+const reflection = ref(null);
 
 const showResetModal = ref(false);
 
@@ -65,6 +72,15 @@ const elements = computed(() => {
     return questions.value.reduce((list, question) => {
         if (!list.includes(question.element)) {
             list.push(question.element);
+        }
+        return list;
+    }, []);
+})
+const displayElements = computed(() => {
+    if (!questions.value) return [];
+    return questions.value.reduce((list, question) => {
+        if (!list.includes(question.element_print)) {
+            list.push(question.element_print);
         }
         return list;
     }, []);
@@ -126,23 +142,29 @@ const handleNextQuestion = () => {
 const handleAnswer = async (answer, answerText = null) => {
     submitting.value = true;
 
-    // if answer was yes, update met dependencies
+    // if answer was yes:
     if (answer === 1) {
+        // update met dependencies
         metDependencies.value.push(currentQuestion.value.generated_variable);
+        // update results
+        const result = props.domain.results.find(r =>
+            r.element === currentQuestion.value.element_print &&
+            r.indicator === currentQuestion.value.indicator_print);
+        if(result) {
+            // treat interstitial question items (phase -1) as phase 0
+            result.value = Math.max(currentQuestion.value.phase, 0);
+            result.description = currentQuestion.value.description;
+        }
     }
-
     const nextQuestion = getNextQuestion();
 
     // check if element is complete
-    let elementComplete = false;
-    if (nextQuestion === null) {
-        // end of domain
-        elementComplete = true;
-    } else {
-        if (!nextQuestion || nextQuestion.element !== currentQuestion.value.element) {
-            // next question starts a new element
-            elementComplete = true;
-        }
+    if (nextQuestion === null || nextQuestion.element !== currentQuestion.value.element) {
+        elementCompleted.value = currentQuestion.value.element_print;
+    }
+    // if domain is complete, show the summary
+    if(nextQuestion === null) {
+        showDomainSummary.value = true;
     }
 
     const nextQuestionId = nextQuestion?.id || null;
@@ -154,7 +176,7 @@ const handleAnswer = async (answer, answerText = null) => {
         answer,
         answerText,
         nextQuestionId,
-        elementComplete
+        !!elementCompleted.value
     ).then(() => {
         previousQuestionId.value = questionId.value;
         questionId.value = nextQuestionId;
@@ -177,6 +199,43 @@ const handlePreviousQuestion = () => {
     }
 }
 
+const getElementResults = (element) => {
+    return props.domain.results.filter(result => result.element === element);
+
+}
+
+const getScoreLabel = (element) => {
+    // Displayed on 'element completed' results page, after answering the last question.
+    // Get average score of indicators for the completed element
+    const results = getElementResults(element);
+    const totalScore = results.reduce((sum, result) => {
+        return sum + (result.value || 1); // treat 0 as 1
+    }, 0);
+    const score = Math.round(totalScore / results.length);
+
+    switch(score) {
+    case 2:
+        return 'Developing';
+    case 3:
+        return 'Achieving';
+    case 4:
+        return 'Excelling';
+    default:
+        return 'Emerging';
+    }
+}
+
+const handleCloseElementSummary = (previous = false) => {
+    if (previous) {
+        handlePreviousQuestion();
+    }
+    elementCompleted.value = null;
+}
+
+const handleSubmitReflection = () => {
+    showDomainSummary.value = false;
+}
+
 const handleResetDomain = () => {
     emit('reset');
 }
@@ -184,7 +243,49 @@ const handleResetDomain = () => {
 
 <template>
     <template v-if="domain">
-        <template v-if="!completed">
+        <CoverScreen
+            v-if="elementCompleted !== null"
+            :theme="props.domain.domain"
+            corner-controls
+            blur-bg
+            @primary="handleCloseElementSummary()"
+            @secondary="handleCloseElementSummary(true)"
+        >
+            <template #content>
+                <div
+                    class="flex flex-col h-full w-full"
+                >
+                    <h2 class="text-h2-caps md:text-h3-caps lg:text-h2-caps">
+                        {{ elementCompleted }} is {{ getScoreLabel(elementCompleted) }}
+                    </h2>
+                    <div class="flex-1 overflow-hidden scroll-fade">
+                        <div
+                            class="h-full pb-10 relative z-50 md:overflow-x-none md:overflow-y-scroll"
+                        >
+                            <template
+                                v-for="result of getElementResults(elementCompleted)"
+                                :key="`${result.element}_${result.indicator}`"
+                            >
+                                <div
+                                    class="max-w-[900px] mt-10 text-base md:text-medium lg:text-large"
+                                    v-html="result.description"
+                                />
+                            </template>
+                        </div>
+                    </div>
+                </div>
+            </template>
+            <template #primaryAction>
+                Continue
+            </template>
+            <template
+                v-if="previousQuestionId"
+                #secondaryAction
+            >
+                Previous
+            </template>
+        </CoverScreen>
+        <template v-else-if="!completed">
             <DomainCoverScreen
                 v-if="questionId === null"
                 :domain="domain"
@@ -266,6 +367,78 @@ const handleResetDomain = () => {
             </QuestionScreen>
         </template>
         <CoverScreen
+            v-else-if="showDomainSummary"
+            :theme="props.domain.domain"
+            corner-controls
+            blur-bg
+            :disabled="!reflection"
+            @primary="handleSubmitReflection"
+        >
+            <template #content>
+                <div
+                    class="flex flex-col h-full w-full"
+                >
+                    <h2 class="text-h2-caps md:text-h3-caps lg:text-h2-caps">
+                        {{ props.domain.domain }}
+                    </h2>
+                    <div class="flex-1 overflow-hidden scroll-fade">
+                        <div
+                            class="h-full pb-10 relative z-50 md:overflow-x-none md:overflow-y-scroll"
+                        >
+                            <template
+                                v-for="element of displayElements"
+                                :key="`${element}`"
+                            >
+                                <h2 class="mt-10 text-h3-caps md:text-h4-caps lg:text-h3-caps">
+                                    {{ element }} is {{ getScoreLabel(element) }}
+                                </h2>
+                                <template
+                                    v-for="result of getElementResults(element)"
+                                    :key="`${result.element}_${result.indicator}`"
+                                >
+                                    <div
+                                        class="max-w-[900px] mt-10 text-base md:text-medium lg:text-large"
+                                        v-html="result.description"
+                                    />
+                                </template>
+                            </template>
+
+                            <textarea
+                                v-model="reflection"
+                                rows="7"
+                                :disabled="props.disabled"
+                                class="
+                                    bg-black/50
+                                    border-none
+                                    max-md:h-96
+                                    mt-10
+                                    px-6
+                                    py-5
+                                    resize-none
+                                    rounded-2xl
+                                    text-medium
+                                    focus:outline-none
+                                    focus:ring
+                                    md:!px-8
+                                    md:!py-7
+                                    "
+                                placeholder="Add your reflection here.
+Does this result align with your expectations?
+What practices are working well and why?
+What areas of success have been highlighted?
+What aspects need to be prioritised?
+In what way will existing practices and ways of working need to change?
+                                "
+                            />
+                        </div>
+                    </div>
+                </div>
+            </template>
+            <template #primaryAction>
+                Continue
+            </template>
+        </CoverScreen>
+        <CoverScreen
             v-else
             :theme="props.domain.domain"
             @primary="emit('complete')"
@@ -297,3 +470,11 @@ const handleResetDomain = () => {
         <Spinner />
     </div>
 </template>
+
+<style scoped lang="scss">
+@media screen and (min-width: 768px) {
+    .scroll-fade {
+        mask-image: linear-gradient(transparent, black 5%, black 95%, transparent);
+    }
+}
+</style>

@@ -16,7 +16,6 @@ class Question extends Model
         'survey_id',
         'domain',
         "domain_print",
-        "advice",
         "variable_suffix",
         "phase_description",
         "element_description",

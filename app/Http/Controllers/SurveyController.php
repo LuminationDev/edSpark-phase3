@@ -12,6 +12,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\DB;
 
 class SurveyController extends Controller
 {
@@ -30,7 +31,7 @@ class SurveyController extends Controller
                 ->get();
             foreach ($survey_domains as &$survey_domain) {
 
-                $survey_domain['results'] = $this->getScoresForSurvey($survey_domain);
+                $survey_domain['results'] = $this->getScoresForSurvey($userSurvey, $survey_domain);
                 $survey_domain['met_dependencies'] = $this->getMetDependencies($survey_domain);
             }
         } else {
@@ -46,7 +47,7 @@ class SurveyController extends Controller
             // make the user_survey_domains
             foreach (Question::$DOMAINS as $domain) {
                 $user_survey_domain = UserSurveyDomain::makeNew($userSurvey, $domain);
-                $user_survey_domain['results'] = $this->getScoresForSurvey($user_survey_domain);
+                $user_survey_domain['results'] = $this->getScoresForSurvey($userSurvey, $user_survey_domain);
                 $user_survey_domain['met_dependencies'] = [];
                 $survey_domains[] = $user_survey_domain;
             }
@@ -223,8 +224,8 @@ class SurveyController extends Controller
      *  otherwise it is the phase of the highest phase question
      *  they answered yes to.
      */
-    protected function getScoresForSurvey($user_survey_domain) {
-        return Question::selectRaw("
+    protected function getScoresForSurvey($user_survey, $user_survey_domain) {
+        $highestScores = Question::selectRaw("
                 MAX(CASE WHEN answer = '1'
                             THEN phase
                             ELSE 0
@@ -236,7 +237,19 @@ class SurveyController extends Controller
             })
             ->where('questions.domain','=', $user_survey_domain->domain)
             ->whereNotNull('indicator_print')
-            ->groupBy('indicator_print', 'element_print')
+            ->groupBy('indicator_print', 'element_print');
+
+        // Join questions based on highest score for the indicator.
+        // Non-question items (before first question in each indicator)
+        // have a score of 0 (element cover screen) or -1 (non-cover).
+        // 0-score answers use the description from these items, so normalise to 0.
+        return Question::selectRaw('scores.value, scores.indicator, scores.element, questions.description')
+            ->joinSub($highestScores, 'scores', function ($join) {
+                $join->on('scores.indicator', '=', 'questions.indicator_print')
+                    ->on('scores.element', '=', 'questions.element_print')
+                    ->on('scores.value', '=', DB::raw('GREATEST(questions.phase, 0)'));
+            })
+            ->where('questions.survey_id', '=', $user_survey->survey_id)
             ->get()
             ->flatten(3);
     }

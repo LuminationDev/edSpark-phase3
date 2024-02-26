@@ -278,6 +278,19 @@
         }
     }
 
+    .advice-bg-teaching {
+        background-color: var(--color-blue-dark);
+    }
+    .advice-bg-learning {
+        background-color: var(--color-cyan-dark);
+    }
+    .advice-bg-leading {
+        background-color: var(--color-red-dark);
+    }
+    .advice-bg-managing {
+        background-color: var(--color-orange-dark);
+    }
+
     // Remove backgrounds on mobile
     @media screen and (max-width: #{$md-start - 1}) {
         .QuestionScreen-bg-triage,

@@ -123,7 +123,7 @@ const handleErrorDismissed = () => {
                     A network error has occured.<br>
                     Your progress to this point has been saved.<br>
                     <br>
-                    Please wait a moment before resuming your survey.
+                    Please wait a moment before resuming your assessment.
                 </template>
             </WarningModal>
         </div>

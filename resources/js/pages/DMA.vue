@@ -8,6 +8,8 @@ import BaseLandingSection from "@/js/components/bases/BaseLandingSection.vue";
 import CircleDiagram from "@/js/components/dma/CircleDiagram.vue";
 import DomainSummary from "@/js/components/dma/DomainSummary.vue";
 import FaqEntry from "@/js/components/dma/FaqEntry.vue";
+import ReportModal from "@/js/components/dma/ReportModal.vue";
+import RoundButton from "@/js/components/dma/RoundButton.vue";
 import SurveyModal from "@/js/components/dma/SurveyModal.vue";
 import WarningModal from "@/js/components/dma/WarningModal.vue";
 import InspirationAndGuidesRobot from "@/js/components/inspirationandguides/InspirationAndGuidesRobot.vue";
@@ -15,6 +17,7 @@ import {LandingHeroText} from "@/js/constants/PageBlurb";
 import {dmaService} from "@/js/service/dmaService";
 
 const showSurveyModal = ref(false);
+const showReportModal = ref(false);
 
 const surveyDetails = ref(null);
 
@@ -49,6 +52,12 @@ const domains = computed(() => {
 const isInProgress = computed(() => {
     if (surveyDetails.value.survey_domains.length) {
         return surveyDetails.value.survey_domains.some(d => d.completed_question_count > 0);
+    }
+})
+
+const isCompleted = computed(() => {
+    if (surveyDetails.value.survey_domains.length) {
+        return surveyDetails.value.survey_domains.every(d => d.completed_question_count === d.question_count);
     }
 })
 
@@ -122,6 +131,10 @@ const handleCloseSurveyModal = () => {
     fetchUserSurvey();
 }
 
+const handleCloseReportModal = () => {
+    showReportModal.value = false;
+}
+
 const showResetting = async () => {
     resetting.value = true;
     await new Promise(r => setTimeout(r, 4000));
@@ -181,14 +194,14 @@ const handleResetSurvey = async () => {
                         v-if="showSurveyError"
                         class="font-bold my-2"
                     >
-                        There was a network error obtaining your latest survey data. <button
+                        There was a network error obtaining your latest assessment data. <button
                             class="underline"
                             @click="fetchUserSurvey"
                         >
                             Refresh survey
                         </button>
                     </div>
-                    <div v-if="!surveyDetails">
+                    <div v-else-if="!surveyDetails">
                         <!-- TODO display loading spinner -->
                         Loading...
                     </div>
@@ -217,7 +230,16 @@ const handleResetSurvey = async () => {
                                     <h3 class="text-h2 md:text-h3">
                                         Results
                                     </h3>
-                                    <p class="text-base">
+                                    <p
+                                        v-if="isCompleted"
+                                        class="text-base"
+                                    >
+                                        This chart shows your performance in each of the assessed elements.
+                                    </p>
+                                    <p
+                                        v-else
+                                        class="text-base"
+                                    >
                                         After completing your evaluation, this
                                         chart will be updated with your
                                         performance.
@@ -228,6 +250,12 @@ const handleResetSurvey = async () => {
                                 >
                                     <CircleDiagram :scores="indicatorScores" />
                                 </div>
+                                <RoundButton
+                                    v-if="isCompleted"
+                                    @click="showReportModal = true"
+                                >
+                                    View assessment report
+                                </RoundButton>
                             </div>
                             <p class="px-4 text-base md:!px-5 lg:!px-0">
                                 <!-- TODO correct this information -->
@@ -269,7 +297,7 @@ const handleResetSurvey = async () => {
                             Are you sure?
                         </template>
                         <template #message>
-                            Resetting will erase all your progress on the survey.
+                            Resetting will erase all your progress on the assessment.
                         </template>
                         <template #confirm>
                             Reset
@@ -311,7 +339,7 @@ const handleResetSurvey = async () => {
                                 When viewing any domain, you can click 'Reset progress'
                                 and all answers for that domain will be cleared.
                                 <br>
-                                To reset the entire survey, click 'Reset progress' below the performance chart.
+                                To reset the entire assessment, click 'Reset progress' below the performance chart.
                             </template>
                         </FaqEntry>
                         <FaqEntry>
@@ -335,6 +363,13 @@ const handleResetSurvey = async () => {
         :domain-id="selectedDomainId"
         @close="handleCloseSurveyModal"
         @reset="handleResetDomain"
+    />
+
+    <ReportModal
+        v-if="showReportModal && surveyDetails"
+        :domains="domains"
+        :scores="indicatorScores"
+        @close="handleCloseReportModal"
     />
 
     <WarningModal
