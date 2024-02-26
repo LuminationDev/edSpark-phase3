@@ -27,11 +27,11 @@
     }
 
     .cardAuthor {
-        @apply text-base font-semibold mt-2 transition-all;
+        @apply text-base font-normal mt-2 transition-all;
     }
 
     .cardDate {
-        @apply text-base mb-2 transition-all;
+        @apply text-base font-normal mb-2 transition-all;
     }
 
     .cardDisplayPreview {
@@ -237,6 +237,13 @@ select {
     width: 50px;
 }
 
+.richTextContentContainer p {
+    font-weight: 100;
+    padding-bottom: 8px;
+    line-height: 1.5;
+    font-size: 1.1em;
+}
+
 .richTextContentContainer h1 {
     display: block;
     font-size: 2em;
@@ -245,6 +252,8 @@ select {
     margin-inline-start: 0px;
     margin-inline-end: 0px;
     font-weight: bold;
+    margin-top: 32px;
+    margin-bottom: 16px;
 }
 
 .richTextContentContainer h2 {
@@ -255,6 +264,8 @@ select {
     margin-inline-start: 0px;
     margin-inline-end: 0px;
     font-weight: bold;
+    margin-top: 28px;
+    margin-bottom: 16px;
 }
 
 .richTextContentContainer h3 {
@@ -265,7 +276,10 @@ select {
     margin-inline-start: 0px;
     margin-inline-end: 0px;
     font-weight: bold;
+    margin-top: 24px;
+    margin-bottom: 16px;
 }
+
 .richTextContentContainer h4 {
     display: block;
     margin-block-start: 1.33em;
@@ -273,7 +287,10 @@ select {
     margin-inline-start: 0px;
     margin-inline-end: 0px;
     font-weight: bold;
+    margin-top: 20px;
+    margin-bottom: 14px;
 }
+
 .richTextContentContainer h5 {
     display: block;
     font-size: 0.83em;
@@ -282,7 +299,10 @@ select {
     margin-inline-start: 0px;
     margin-inline-end: 0px;
     font-weight: bold;
+    margin-top: 20px;
+    margin-bottom: 14px;
 }
+
 .richTextContentContainer h6 {
     display: block;
     font-size: 0.67em;
@@ -291,7 +311,10 @@ select {
     margin-inline-start: 0px;
     margin-inline-end: 0px;
     font-weight: bold;
+    margin-top: 20px;
+    margin-bottom: 14px;
 }
+
 .richTextContentContainer table {
     display: table;
     border-collapse: separate;
@@ -299,17 +322,21 @@ select {
     text-indent: initial;
     border-spacing: 2px;
     border-color: gray;
+    margin: 20px 0px 42px;
 }
+
 .richTextContentContainer tbody {
     display: table-row-group;
     vertical-align: middle;
     border-color: inherit;
 }
+
 .richTextContentContainer tr {
     display: table-row;
     vertical-align: inherit;
     border-color: inherit;
 }
+
 .richTextContentContainer td {
     display: table-cell;
     vertical-align: inherit;
@@ -340,6 +367,7 @@ table[border]:not([border="0"]):not([style*="border-style"]) th {
 table[border]:not([border="0"]):not([style*="border-color"]) th {
     border-color: #ccc;
 }
+
 .richTextContentContainer ul {
     display: block;
     list-style-type: disc;
@@ -349,6 +377,7 @@ table[border]:not([border="0"]):not([style*="border-color"]) th {
     margin-inline-end: 0px;
     padding-inline-start: 40px;
 }
+
 .richTextContentContainer ol {
     display: block;
     list-style-type: decimal;
@@ -389,6 +418,7 @@ table[border]:not([border="0"]):not([style*="border-color"]) th {
     border-left: 2px solid #ccc;
     margin-left: 1.5rem;
     padding-left: 1rem;
+    margin: 20px 0px 42px;
 }
 
 .richTextContentContainer pre[class*="language-"] {
@@ -403,6 +433,8 @@ table[border]:not([border="0"]):not([style*="border-color"]) th {
     white-space: -pre-wrap; /* Opera 4-6 */
     white-space: -o-pre-wrap; /* Opera 7 */
     word-wrap: break-word; /* Internet Explorer 5.5+ */
+    
+    margin: 20px 0px 42px;
 }
 
 .richTextContentContainer p:has(iframe){
@@ -410,6 +442,7 @@ table[border]:not([border="0"]):not([style*="border-color"]) th {
     overflow: hidden;
     width: 100%;
     padding-top: 56.25%; /* 16:9 Aspect Ratio (divide 9 by 16 = 0.5625) */
+    margin: 20px 0px 42px;
 }
 
 .richTextContentContainer iframe{
@@ -420,4 +453,29 @@ table[border]:not([border="0"]):not([style*="border-color"]) th {
     right: 0;
     width: 100%;
     height: 100%;
+}
+
+#navbarFullsize > ul > li > a:hover{
+    text-decoration: underline 3px #B8E2DC;
+    text-underline-offset: 12px;
+}
+
+#navbarFullsize > ul > li > a {
+    font-weight: 500;
+    font-size: 18px;
+}
+
+#navbarFullsize > ul > li > div > div > li > a {
+    font-weight: 100;
+    font-size: 16px;
+}
+
+
+#navbarFullsize > ul > li > div > div > li > a:hover {
+    font-weight: 500;
+    font-size: 16px;
+}
+
+.searchText {
+    font-weight: 500;
 }

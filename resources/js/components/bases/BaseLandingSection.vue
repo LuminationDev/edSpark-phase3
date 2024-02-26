@@ -37,7 +37,7 @@ const shadyBackgroundColorClass = computed(() => {
     >
         <div
             class="flex justify-between items-start flex-row sectionHeader w-full"
-            :class="{'mb-4' : $slots.content}"
+            :class="{'mb-8' : $slots.content}"
         >
             <div class="flex flex-col titleAndSubtitle">
                 <div
