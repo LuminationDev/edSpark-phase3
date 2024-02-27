@@ -27,7 +27,8 @@ const renderMap = computed(() => {
         return {
             component,
             data: findNestedKeyValue(item.data, 'item')[0],
-            title: findNestedKeyValue(item.data, 'title')[0] || ''
+            title: findNestedKeyValue(item.data, 'title')[0] || '',
+            backColor: findNestedKeyValue(item.data, 'back_color')[0] || '',
         };
     });
 });
@@ -43,6 +44,7 @@ const renderMap = computed(() => {
             v-if="item.component"
             :item-array="item.data"
             :item-title="item.title"
+            :item-back-color="item.backColor"
         />
     </template>
 </template>

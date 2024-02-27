@@ -11,6 +11,7 @@ import EventSingleExtraContentRenderer from "@/js/components/events/EventSingleE
 import EventsLocation from "@/js/components/events/EventsLocation.vue";
 import EventTypeTag from "@/js/components/events/EventTypeTag.vue";
 import LabelRowContentDisplay from "@/js/components/global/LabelRowContentDisplay.vue";
+import ExtraResourceTemplateDisplay from "@/js/components/renderer/ExtraResourceTemplateDisplay.vue";
 import CalendarIcon from "@/js/components/svg/event/CalendarIcon.vue";
 import LocationIcon from "@/js/components/svg/event/LocationIcon.vue";
 import TimeIcon from "@/js/components/svg/event/TimeIcon.vue";
@@ -153,12 +154,12 @@ const handleClickViewProfile = (author_id, author_type) => {
                         class="flex content-paragraph flex-col max-w-full overflow-hidden text-lg"
                         v-html="edSparkContentSanitizer(contentFromBase['content'])"
                     />
-                    <template
-                        v-for="(content,index) in contentFromBase['extra_content']"
-                        :key="index"
+                    <div
+                        v-if="contentFromBase['extra_content'] && contentFromBase['extra_content'].length"
+                        class="extraResourcesContainer mt-4 w-full"
                     >
-                        <EventSingleExtraContentRenderer :content="content" />
-                    </template>
+                        <ExtraResourceTemplateDisplay :content="contentFromBase['extra_content']" />
+                    </div>
                 </div>
                 <!--      Curated Content      -->
                 <div class="flex flex-col p-4 w-full lg:!w-1/3">
