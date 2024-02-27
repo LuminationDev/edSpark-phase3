@@ -176,6 +176,7 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::get('/domain/{domain_id}/questions', [SurveyController::class, 'getSurveyQuestionsForDomain']);
         Route::put('/domain/{domain_id}/reflection', [SurveyController::class, 'saveUserReflection']);
         Route::put('/domain/{domain_id}/actionplan', [SurveyController::class, 'saveUserActionPlan']);
+        Route::delete('/domain/{domain_id}/actionplan', [SurveyController::class, 'deleteUserActionPlan']);
         Route::get('/actionplans', [SurveyController::class, 'getUserActionPlan']);
         Route::post('/answer', [SurveyController::class, 'saveUserAnswerToQuestion']);
         Route::delete('/domain/{domain_id}', [SurveyController::class, 'resetUserSurveyDomain']);
