@@ -5,6 +5,7 @@ import iconChevronRight from "@/assets/images/dma/icons/chevron-right.svg";
 import CircleDiagram from "@/js/components/dma/CircleDiagram.vue";
 import CloseButton from "@/js/components/dma/CloseButton.vue";
 import OverlayModal from "@/js/components/dma/OverlayModal.vue";
+import RoundButton from "@/js/components/dma/RoundButton.vue";
 import TextButton from "@/js/components/dma/TextButton.vue";
 import WarningModal from "@/js/components/dma/WarningModal.vue";
 import Spinner from "@/js/components/spinner/Spinner.vue";
@@ -27,22 +28,24 @@ const scrollableRef = ref(null);
 const circleRef = ref(null);
 const domainListRef = ref(null);
 
+const actionPlanData = ref(null)
 const actionPlan = ref(null)
 const showErrorModal = ref(false);
 const selectedElement = ref(null);
 
 const questionData = ref([]);
-const showAdviceElements = ref([]);
 
 onMounted(async () => {
     // get questions for all domains, for cross-domain dependency checks
+    const data = [];
     for (const domain of props.domains) {
         const result = await dmaService.getQuestions(domain.id);
-        questionData.value.push({domain: domain.domain, questions: result.domain_questions});
+        data.push({domain: domain.domain, questions: result.domain_questions});
     }
-    // TODO load action plan
-    // Initialise an empty action plan
-    actionPlan.value = [];
+    questionData.value = data;
+
+    // load action plan
+    actionPlanData.value = await dmaService.getActionPlans();
 });
 onBeforeUnmount(() => {
     // remove scroll listener
@@ -59,32 +62,14 @@ watch(scrollableRef, async(val) => {
 })
 
 const highlightedScores = computed(() => {
-    return props.scores.map(score => ({
-        ...score,
-        highlighted: selectedElement.value === `${score.domain}|${score.element}`,
-        selected: showAdviceElements.value.some(e => e.domain === score.domain && e.element === score.element)
-    }));
-});
-
-const reportData = computed(() => {
-    const data = [];
-    for(const domain of props.domains) {
-        const elements = getElementResults(domain.domain);
-        for(const element of elements) {
-            element.indicators = getIndicatorResults(domain.domain, element.element);
-            for (const indicator of element.indicators) {
-                indicator.advice = getAdviceForIndicator(domain.domain, element.element, indicator.indicator);
-            }
+    return props.scores.map(score => {
+        return {
+            ...score,
+            highlighted: selectedElement.value === `${score.domain}|${score.element}`,
+            selected: actionPlan.value ? actionPlan.value[score.domain][score.element].expanded : false,
         }
-        const reportDomain = {
-            domain: domain.domain,
-            questions: getQuestionsForDomain(domain.domain),
-            elements,
-        };
-        data.push(reportDomain);
-    }
-    return data;
-})
+    });
+});
 
 const handleHighlightElement = () => {
     if(window.innerWidth >= 1024) {
@@ -164,7 +149,6 @@ const getAdviceForIndicator = (domainName, elementName, indicatorName) => {
     return question.advice.replace(/<a\s/g,'<a target="_blank" ');
 }
 
-
 const checkIndicatorDependencies = (domainName, elementName, indicatorName, score, prevMetDependencies = []) => {
     const domain = props.domains.find(d=>d.domain === domainName);
     if(!domain) return null;
@@ -186,7 +170,9 @@ const checkIndicatorDependencies = (domainName, elementName, indicatorName, scor
         });
         for (const dep of dependencies) {
             // get dependency question
+            console.log("dep",dep);
             const depQuestion = getQuestionForDependency(dep);
+            console.log("dep question", depQuestion);
             // check score for dependency question
             const depResult = getIndicatorResults(depQuestion.domain, depQuestion.element_print).find(r => r.indicator === depQuestion.indicator_print);
             if (!depResult || depResult.value < depQuestion.phase) {
@@ -209,6 +195,47 @@ const checkElementDependencies = (domainName, elementName) => {
     return null;
 }
 
+const reportData = computed(() => {
+    const data = [];
+    for(const domain of props.domains) {
+        const elements = getElementResults(domain.domain);
+        for(const element of elements) {
+            element.indicators = getIndicatorResults(domain.domain, element.element);
+            for (const indicator of element.indicators) {
+                indicator.advice = getAdviceForIndicator(domain.domain, element.element, indicator.indicator);
+            }
+        }
+        const reportDomain = {
+            id: domain.id,
+            domain: domain.domain,
+            questions: getQuestionsForDomain(domain.domain),
+            elements,
+        };
+        data.push(reportDomain);
+    }
+    return data;
+})
+
+watch([reportData, actionPlanData], async([data, planData]) => {
+    if(data && planData) {
+        // initialise actionPlan with data from report
+        const plan = {};
+        for (const domain of data) {
+            plan[domain.domain] = {};
+            for (const element of domain.elements) {
+                const currentPlan = planData.action_plan[domain.domain]?.find(e => e.element === element.element);
+                if (currentPlan) {
+                    // map loaded action plan
+                    plan[domain.domain][element.element] = { expanded: !!currentPlan.action, action_plan: currentPlan.action, edited: false};
+                } else {
+                    plan[domain.domain][element.element] = {expanded: false, action_plan: null, edited: false};
+                }
+            }
+        }
+        actionPlan.value = plan;
+    }
+});
+
 const handleScrollToElement = async (item) => {
     const elementSummary = document.getElementById(`${item.domain}|${item.element.replace(' ','_')}`);
     if(elementSummary) {
@@ -230,21 +257,29 @@ const handleScrollToElement = async (item) => {
     }
 }
 
-const showingAdvice = (domainName, elementName) => {
-    return showAdviceElements.value.some(e => e.domain === domainName && e.element === elementName);
+const handleSaveActionPlan = async (domain, elementName) => {
+    console.log("save plan", domain);
+    const plan = actionPlan.value[domain.domain][elementName];
+    try {
+        await dmaService.putActionPlan(domain.id, elementName, plan.action_plan);
+        actionPlan.value[domain.domain][elementName].edited = false;
+    } catch(e) {
+        console.log("error saving action plan", e);
+    }
 }
 
 const toggleShowAdvice = async (domainName, elementName) => {
-    const index = showAdviceElements.value.findIndex(e => e.domain === domainName && e.element === elementName);
-    if(index >= 0) {
-        showAdviceElements.value.splice(index, 1);
-    } else {
-        showAdviceElements.value.push({domain: domainName, element: elementName});
-    }
+    const el = actionPlan.value[domainName][elementName];
+    el.expanded = !el.expanded;
 }
 
 const handleErrorDismissed = () => {
     showErrorModal.value = false;
+}
+
+const handleCloseReport = () => {
+    // save action plans
+
     emit('close');
 }
 
@@ -269,7 +304,7 @@ const handleErrorDismissed = () => {
         >
             <CloseButton
                 class="absolute top-6 left-4 z-50 md:!left-10 md:!top-10"
-                @click="emit('close')"
+                @click="handleCloseReport"
             />
             <div
                 v-if="!actionPlan"
@@ -309,6 +344,14 @@ const handleErrorDismissed = () => {
                         </p>
                     </div>
 
+                    <div class="max-w-[800px] mx-auto my-10 text-left">
+                        <p>
+                            Please select between 1 and 3 elements that your school would like to focus on
+                            by clicking 'Show advice & action plan' and filling in your action plan in the box provided.
+                            These elements will be highlighted on your profile.
+                        </p>
+                    </div>
+
                     <div class="flex lg:flex-row flex-col gap-10">
                         <div
                             class="
@@ -336,12 +379,6 @@ const handleErrorDismissed = () => {
                                     clickable
                                     @click="handleScrollToElement"
                                 />
-                                <!--                                <p class="mt-10">-->
-                                <!--                                    Please select between 1 and 3 elements that your school would like to focus on-->
-                                <!--                                    by checking the boxes next to your chosen elements.-->
-                                <!--                                    These will be highlighted on your profile, and your actions plans associated-->
-                                <!--                                    with these elements will appear in your printed report.-->
-                                <!--                                </p>-->
                             </div>
                         </div>
 
@@ -373,7 +410,8 @@ const handleErrorDismissed = () => {
                                                 items-center
                                                 flex-row
                                                 p-2
-                                                rounded-lg
+                                                pl-4
+                                                rounded
                                                 text-h4
                                                 "
                                             :class="{'bg-black/30': selectedElement === `${domain.domain}|${element.element}`}"
@@ -383,19 +421,26 @@ const handleErrorDismissed = () => {
                                                 class="!text-xs underline"
                                                 @click="() => toggleShowAdvice(element.domain, element.element)"
                                             >
-                                                <span class="hidden md:block">{{ showingAdvice(element.domain, element.element) ? 'Hide' : 'Show' }} advice & action plan</span>
+                                                <span class="hidden md:block">{{ actionPlan[domain.domain][element.element].expanded ? 'Hide' : 'Show' }} advice & action plan</span>
                                                 <span class="md:hidden">advice & plan</span>
                                             </TextButton>
                                             <img
                                                 :src="iconChevronRight"
                                                 class="brightness-0 scale-75"
-                                                :class="{'rotate-90': showingAdvice(element.domain, element.element)}"
+                                                :class="{'rotate-90': actionPlan[domain.domain][element.element].expanded}"
                                             >
                                         </h3>
 
                                         <button
                                             v-if="element.dependency && element.dependency.element !== element.element"
-                                            class="bg-red-500/20 mt-5 p-2 rounded w-full"
+                                            class="
+                                                bg-red-500/20
+                                                hover:bg-red-500/30
+                                                mt-5
+                                                p-2
+                                                rounded-lg
+                                                w-full
+                                                "
                                             @click="() => handleScrollToElement(element.dependency)"
                                         >
                                             It is recommended you focus on <b
@@ -413,7 +458,7 @@ const handleErrorDismissed = () => {
                                             <p v-html="indicator.description" />
 
                                             <div
-                                                v-if="showingAdvice(element.domain, element.element)"
+                                                v-if="actionPlan[domain.domain][element.element].expanded"
                                                 class="advice my-4 p-4 rounded-lg text-white"
                                                 :class="`advice-bg-${domain.domain}`"
                                             >
@@ -423,50 +468,64 @@ const handleErrorDismissed = () => {
                                                 <p v-html="indicator.advice" />
                                             </div>
                                         </div>
-
-                                        <textarea
-                                            v-if="showingAdvice(element.domain, element.element)"
-                                            rows="7"
-                                            :disabled="props.disabled"
-                                            class="
-                                                bg-black/10
-                                                border-none
-                                                px-6
-                                                py-5
-                                                resize-none
-                                                rounded-2xl
-                                                text-medium
-                                                focus:outline-none
-                                                focus:ring
-                                                md:!px-8
-                                                md:!py-7
-                                                "
-                                            placeholder="After reviewing the advice offered, explain how you intend to advance towards the next phase for this element of the framework."
-                                        />
+                                        <div v-if="actionPlan[domain.domain][element.element].expanded">
+                                            <textarea
+                                                v-model="actionPlan[domain.domain][element.element].action_plan"
+                                                rows="7"
+                                                :disabled="props.disabled"
+                                                class="
+                                                    bg-black/10
+                                                    border-none
+                                                    px-6
+                                                    py-5
+                                                    resize-none
+                                                    rounded-2xl
+                                                    text-medium
+                                                    focus:outline-none
+                                                    focus:ring
+                                                    md:!px-8
+                                                    md:!py-7
+                                                    "
+                                                placeholder="After reviewing the advice offered, explain how you intend to advance towards the next phase for this element of the framework."
+                                                @keyup="actionPlan[domain.domain][element.element].edited = true"
+                                            />
+                                            <div class="flex justify-end gap-5 mt-2">
+                                                <RoundButton
+                                                    :disabled="!actionPlan[domain.domain][element.element].edited"
+                                                    @click="handleSaveActionPlan(domain,element.element)"
+                                                >
+                                                    Save
+                                                </RoundButton>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </template>
                         </div>
                     </div>
+                    <div class="mt-10 text-center">
+                        <RoundButton @click="handleCloseReport">
+                            Save & Close
+                        </RoundButton>
+                    </div>
                 </div>
-            </div>
 
-            <WarningModal
-                v-if="showErrorModal"
-                embed
-                :show-cancel="false"
-                @reset="handleErrorDismissed"
-            >
-                <template #title>
-                    Network error
-                </template>
-                <template #message>
-                    A network error has occured.<br>
-                    Your progress to this point has been saved.<br>
-                    <br>
-                    Please wait a moment and try again.
-                </template>
-            </WarningModal>
+                <WarningModal
+                    v-if="showErrorModal"
+                    embed
+                    :show-cancel="false"
+                    @reset="handleErrorDismissed"
+                >
+                    <template #title>
+                        Network error
+                    </template>
+                    <template #message>
+                        A network error has occured.<br>
+                        <br>
+                        Please wait a moment and try again.
+                    </template>
+                </WarningModal>
+            </div>
         </div>
     </OverlayModal>
 </template>

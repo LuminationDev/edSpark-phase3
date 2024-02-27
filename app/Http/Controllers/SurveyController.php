@@ -7,7 +7,9 @@ use App\Models\Survey;
 use App\Models\User;
 use App\Models\UserAnswer;
 use App\Models\UserSurvey;
+use App\Models\UserSurveyActionPlan;
 use App\Models\UserSurveyDomain;
+use App\Models\UserSurveyReflection;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Auth;
@@ -65,6 +67,7 @@ class SurveyController extends Controller
             ],
         ]);
     }
+
     public function getSurveyQuestionsForDomain(Request $request, $user_domain_id): JsonResponse
     {
         Log::info('Received request ' . ' / ' . $user_domain_id);
@@ -91,6 +94,132 @@ class SurveyController extends Controller
                 'data' => [
                     'domain_questions' => $domainQuestions,
                 ],
+            ]
+        );
+    }
+
+    public function getUserActionPlan(Request $request): JsonResponse
+    {
+        $user = User::find(Auth::user()->id);
+        $userSurvey = UserSurvey::where('user_id', $user->id)
+            ->where('status', '<>', 'Abandoned')
+            ->first();
+
+        if ($userSurvey == null) {
+            return $this->surveyNotFound();
+        }
+
+        $survey_domains = UserSurveyDomain::where('user_survey_id', $userSurvey->id)
+            ->where('status', '<>', 'Abandoned')
+            ->get();
+
+        foreach ($survey_domains as $survey_domain) {
+            $results[$survey_domain->domain] = UserSurveyActionPlan::where('user_survey_domain_id', $survey_domain->id)->get();
+        }
+
+        return response()->json(
+            [
+                'success' => true,
+                'message' => 'OK',
+                'code' => 0,
+                'locale' => 'en',
+                'data' => [
+                    'action_plan' => $results
+                ]
+            ]
+        );
+    }
+
+    public function saveUserActionPlan(Request $request, $user_domain_id): JsonResponse
+    {
+        $user = User::find(Auth::user()->id);
+        $userSurvey = UserSurvey::where('user_id', $user->id)
+            ->where('status', '<>', 'Abandoned')
+            ->first();
+
+        if ($userSurvey == null) {
+            return $this->domainNotFound();
+        }
+
+        $userDomain = UserSurveyDomain::where('id', $user_domain_id)
+            ->where('user_survey_id', $userSurvey->id)
+            ->first();
+        if ($userDomain == null) {
+            return $this->domainNotFound();
+        }
+
+        $element = $request['element'];
+
+        $domainQuestions = Question::where('survey_id', $userSurvey->survey_id)
+            ->where('domain', $userDomain->domain)
+            ->where('element_print', $element)
+            ->get();
+
+        Log::info(print_r($domainQuestions, true));
+        if (empty($domainQuestions) || $domainQuestions->isEmpty()) {
+            return $this->elementNotFound();
+        }
+
+        // check if an action plan for this element already exists
+        $userActionPlan = UserSurveyActionPlan::where('user_survey_domain_id', $user_domain_id)
+            ->where('element', $element)
+            ->first();
+
+        if ($userActionPlan == null) {
+            $userActionPlan = new UserSurveyActionPlan();
+            $userActionPlan->user_survey_domain_id = $user_domain_id;
+            $userActionPlan->element = $element;
+        }
+        $userActionPlan->action = $request['action'];
+        $userActionPlan->save();
+
+        return response()->json(
+            [
+                'success' => true,
+                'message' => 'Action plan saved successfully',
+                'code' => 0,
+                'locale' => 'en',
+                'data' => (object)[]
+
+            ]
+        );
+    }
+
+    public function saveUserReflection(Request $request, $user_domain_id): JsonResponse
+    {
+        $user = User::find(Auth::user()->id);
+        $userSurvey = UserSurvey::where('user_id', $user->id)
+            ->where('status', '<>', 'Abandoned')
+            ->first();
+
+        if ($userSurvey == null) {
+            return $this->domainNotFound();
+        }
+
+        $userDomain = UserSurveyDomain::where('id', $user_domain_id)
+            ->where('user_survey_id', $userSurvey->id)
+            ->first();
+        if ($userDomain == null) {
+            return $this->domainNotFound();
+        }
+
+        // check if a reflection already exists
+        $userReflection = UserSurveyReflection::where('user_survey_domain_id', $user_domain_id)
+            ->first();
+        if ($userReflection == null) {
+            $userReflection = new UserSurveyReflection();
+            $userReflection->user_survey_domain_id = $user_domain_id;
+        }
+        $userReflection->reflection = $request['reflection'];
+        $userReflection->save();
+
+        return response()->json(
+            [
+                'success' => true,
+                'message' => 'Reflection saved successfully',
+                'code' => 0,
+                'locale' => 'en',
+                'data' => (object)[]
             ]
         );
     }
@@ -224,7 +353,8 @@ class SurveyController extends Controller
      *  otherwise it is the phase of the highest phase question
      *  they answered yes to.
      */
-    protected function getScoresForSurvey($user_survey, $user_survey_domain) {
+    protected function getScoresForSurvey($user_survey, $user_survey_domain)
+    {
         $highestScores = Question::selectRaw("
                 MAX(CASE WHEN answer = '1'
                             THEN phase
@@ -235,7 +365,7 @@ class SurveyController extends Controller
                 $join->on('questions.id', '=', 'user_answers.question_id')
                     ->where('user_answers.user_survey_domain_id', '=', $user_survey_domain->id);
             })
-            ->where('questions.domain','=', $user_survey_domain->domain)
+            ->where('questions.domain', '=', $user_survey_domain->domain)
             ->whereNotNull('indicator_print')
             ->groupBy('indicator_print', 'element_print');
 
@@ -243,7 +373,7 @@ class SurveyController extends Controller
         // Non-question items (before first question in each indicator)
         // have a score of 0 (element cover screen) or -1 (non-cover).
         // 0-score answers use the description from these items, so normalise to 0.
-        return Question::selectRaw('scores.value, scores.indicator, scores.element, questions.description')
+        return Question::selectRaw('questions.id, scores.value, scores.indicator, scores.element, questions.description')
             ->joinSub($highestScores, 'scores', function ($join) {
                 $join->on('scores.indicator', '=', 'questions.indicator_print')
                     ->on('scores.element', '=', 'questions.element_print')
@@ -259,13 +389,14 @@ class SurveyController extends Controller
      * and the corresponding user answers where the answer was yes
      * and returns the list of all generated_variables as a flat array.
      */
-    protected function getMetDependencies($user_survey_domain) {
+    protected function getMetDependencies($user_survey_domain)
+    {
         $result = Question::select("generated_variable")
             ->leftJoin('user_answers', function ($join) use ($user_survey_domain) {
                 $join->on('questions.id', '=', 'user_answers.question_id')
                     ->where('user_answers.user_survey_domain_id', '=', $user_survey_domain->id);
             })
-            ->where('user_answers.answer','=', '1')
+            ->where('user_answers.answer', '=', '1')
             ->groupBy('generated_variable')
             ->get();
         return $result->pluck('generated_variable');
@@ -298,6 +429,17 @@ class SurveyController extends Controller
         return response()->json([
             'success' => false,
             'message' => 'Question ID not found',
+            'data' => (object)[],
+            'code' => 34,
+            'locale' => 'en',
+        ], 422);
+    }
+
+    private function elementNotFound()
+    {
+        return response()->json([
+            'success' => false,
+            'message' => 'Element not found',
             'data' => (object)[],
             'code' => 34,
             'locale' => 'en',

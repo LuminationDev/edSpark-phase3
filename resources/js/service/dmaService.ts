@@ -42,5 +42,24 @@ export const dmaService = {
         return axios.delete(`${API_ENDPOINTS.DMA.USER_SURVEY}`).then(res => {
             return res.data;
         })
-    }
+    },
+
+    getActionPlans: async():Promise<AxiosResponse<any>> => {
+        return axios.get(`${API_ENDPOINTS.DMA.USER_SURVEY}/actionplans`).then(res => {
+            return res.data.data;
+        })
+    },
+
+    putActionPlan: async(
+        domainId: string,
+        element: string,
+        action: string,
+    ):Promise<AxiosResponse<any>> => {
+        return axios.put(`${API_ENDPOINTS.DMA.USER_SURVEY}/domain/${domainId}/actionplan`, {
+            element,
+            action,
+        }).then(res => {
+            return res.data;
+        })
+    },
 }
