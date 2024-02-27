@@ -1,5 +1,4 @@
 @import "variables";
-@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap");
 
 .dma-app-root {
     --color-blue: #6985b7;
@@ -19,15 +18,11 @@
 
     --scrollbar-width: 14px;
 
-    font-family: "Poppins", sans-serif;
     font-size: 16px;
-    font-weight: 400;
+    font-weight: 300;
     font-style: normal;
     line-height: 1.4;
     color: var(--color-black-2);
-
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
 
     * {
         &::-webkit-scrollbar {
