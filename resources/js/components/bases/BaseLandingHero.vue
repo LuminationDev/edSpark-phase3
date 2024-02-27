@@ -49,7 +49,7 @@ const backgroudColorClass = computed(() => {
 
 <template>
     <div
-        class="h-mainHero mb-4 relative"
+        class="h-mainHero relative lg:!mb-4"
         :class="backgroudColorClass"
     >
         <div class="grid grid-cols-6 h-full px-16 md:px-16">
