@@ -373,7 +373,7 @@ class SurveyController extends Controller
         // Non-question items (before first question in each indicator)
         // have a score of 0 (element cover screen) or -1 (non-cover).
         // 0-score answers use the description from these items, so normalise to 0.
-        return Question::selectRaw('scores.value, scores.indicator, scores.element, questions.description')
+        return Question::selectRaw('questions.id, scores.value, scores.indicator, scores.element, questions.description')
             ->joinSub($highestScores, 'scores', function ($join) {
                 $join->on('scores.indicator', '=', 'questions.indicator_print')
                     ->on('scores.element', '=', 'questions.element_print')
