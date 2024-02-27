@@ -87,17 +87,17 @@ const handleClickViewProfile = (author_id, author_type) => {
                                 <div class="mb-2 text-2xl">
                                     {{ contentFromBase['author']['author_name'] }}
                                 </div>
-                                <div
-                                    v-if="!(contentFromBase['author']['author_type'] === 'user')"
-                                    class="hover:cursor-pointer"
-                                >
-                                    <button
-                                        class="bg-secondary-coolGrey px-3 py-1 rounded text-black text-sm"
-                                        @click="() => handleClickViewProfile(contentFromBase['author']['author_id'],contentFromBase['author']['author_type'])"
-                                    >
-                                        View profile
-                                    </button>
-                                </div>
+                                <!--                                <div-->
+                                <!--                                    v-if="!(contentFromBase['author']['author_type'] === 'user')"-->
+                                <!--                                    class="hover:cursor-pointer"-->
+                                <!--                                >-->
+                                <!--                                    <button-->
+                                <!--                                        class="bg-secondary-coolGrey px-3 py-1 rounded text-black text-sm"-->
+                                <!--                                        @click="() => handleClickViewProfile(contentFromBase['author']['author_id'],contentFromBase['author']['author_type'])"-->
+                                <!--                                    >-->
+                                <!--                                        View profile-->
+                                <!--                                    </button>-->
+                                <!--                                </div>-->
                             </div>
                         </div>
                     </div>
