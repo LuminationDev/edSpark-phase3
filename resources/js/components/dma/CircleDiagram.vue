@@ -51,7 +51,7 @@ const segments = computed(() => {
                 {
                     'empty': rad_index > props.scores[seg].score,
                     'cursor-pointer': props.clickable,
-                    'brightness-90': hoverElement.value === props.scores[seg].element,
+                    'brightness-90': props.scores[seg].highlighted || hoverElement.value === props.scores[seg].element,
                     'highlight': props.scores[seg].selected
                 }
             ];

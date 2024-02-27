@@ -246,16 +246,16 @@ const handleResetSurvey = async () => {
                                     </p>
                                 </div>
                                 <div
-                                    class="flex-1 md:!basis-3/5"
+                                    class="flex flex-1 flex-col gap-5 md:!basis-3/5"
                                 >
                                     <CircleDiagram :scores="indicatorScores" />
+                                    <RoundButton
+                                        v-if="isCompleted"
+                                        @click="showReportModal = true"
+                                    >
+                                        View assessment report
+                                    </RoundButton>
                                 </div>
-                                <RoundButton
-                                    v-if="isCompleted"
-                                    @click="showReportModal = true"
-                                >
-                                    View assessment report
-                                </RoundButton>
                             </div>
                             <p class="px-4 text-base md:!px-5 lg:!px-0">
                                 <!-- TODO correct this information -->

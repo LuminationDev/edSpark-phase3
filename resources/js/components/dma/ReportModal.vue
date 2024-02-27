@@ -35,6 +35,11 @@ const questionData = ref([]);
 const showAdviceElements = ref([]);
 
 onMounted(async () => {
+    // get questions for all domains, for cross-domain dependency checks
+    for (const domain of props.domains) {
+        const result = await dmaService.getQuestions(domain.id);
+        questionData.value.push({domain: domain.domain, questions: result.domain_questions});
+    }
     // TODO load action plan
     // Initialise an empty action plan
     actionPlan.value = [];
@@ -46,34 +51,63 @@ onBeforeUnmount(() => {
     }
 })
 
-watch(scrollableRef, async(newVal, oldVal) => {
+watch(scrollableRef, async(val) => {
     // when scrollableRef is displayed, attach scroll listener
-    if(newVal) {
-        newVal.addEventListener("scroll", handleHighlightElement);
-        handleHighlightElement();
+    if(val) {
+        val.addEventListener("scroll", handleHighlightElement);
     }
 })
 
 const highlightedScores = computed(() => {
     return props.scores.map(score => ({
-        ...score, selected: selectedElement.value === `${score.domain}|${score.element}`
+        ...score,
+        highlighted: selectedElement.value === `${score.domain}|${score.element}`,
+        selected: showAdviceElements.value.some(e => e.domain === score.domain && e.element === score.element)
     }));
 });
 
-const handleHighlightElement = () => {
-    const circleRect = circleRef.value.$el.getBoundingClientRect();
-    const elementSummaries = document.getElementsByClassName('domain-element');
-    let element = null;
-    for (let i = 0; i < elementSummaries.length; ++i) {
-        if (elementSummaries[i].getBoundingClientRect().top > circleRect.top + (circleRect.height/2)) {
-            break;
+const reportData = computed(() => {
+    const data = [];
+    for(const domain of props.domains) {
+        const elements = getElementResults(domain.domain);
+        for(const element of elements) {
+            element.indicators = getIndicatorResults(domain.domain, element.element);
+            for (const indicator of element.indicators) {
+                indicator.advice = getAdviceForIndicator(domain.domain, element.element, indicator.indicator);
+            }
         }
-        element = elementSummaries[i];
+        const reportDomain = {
+            domain: domain.domain,
+            questions: getQuestionsForDomain(domain.domain),
+            elements,
+        };
+        data.push(reportDomain);
     }
-    selectedElement.value = element.id.replace('_',' ');
+    return data;
+})
+
+const handleHighlightElement = () => {
+    if(window.innerWidth >= 1024) {
+        if (scrollableRef.value.scrollTop > 0) {
+            const circleRect = circleRef.value.$el.getBoundingClientRect();
+            const elementSummaries = document.getElementsByClassName('domain-element');
+            let element = null;
+            for (let i = 0; i < elementSummaries.length; ++i) {
+                if (elementSummaries[i].getBoundingClientRect().top > circleRect.top + (circleRect.height / 2)) {
+                    break;
+                }
+                element = elementSummaries[i];
+            }
+            if (element) {
+                selectedElement.value = element.id.replace('_', ' ');
+            }
+        } else {
+            selectedElement.value = null;
+        }
+    }
 }
 
-const getElements = (domainName) => {
+const getElementResults = (domainName) => {
     return props.scores.reduce((elements, item) => {
         if(item.domain === domainName) {
             let scoreLabel = "Emerging";
@@ -81,11 +115,19 @@ const getElements = (domainName) => {
             else if (item.score === 3) scoreLabel = 'Achieving';
             else if (item.score === 4) scoreLabel = 'Excelling';
 
-            elements.push({...item, label: scoreLabel});
+            const dependency = checkElementDependencies(domainName, item.element);
+
+            elements.push({...item, label: scoreLabel, dependency});
         }
         return elements;
     }, []);
 };
+
+const getQuestionsForDomain = (domainName) => {
+    const domain = questionData.value.find(d => d.domain === domainName);
+    if (!domain) return [];
+    return domain.questions;
+}
 
 const getIndicatorResults = (domainName, elementName) => {
     const domain = props.domains.find(d=> d.domain === domainName);
@@ -95,14 +137,95 @@ const getIndicatorResults = (domainName, elementName) => {
     return [];
 }
 
-const handleDiagramClick = (item) => {
+const getQuestionForDependency = (dependency) => {
+    for (const domain of questionData.value) {
+        for (const question of domain.questions) {
+            if (question.generated_variable === dependency) {
+                return {...question, domain: domain.domain};
+            }
+        }
+    }
+    return null;
+}
+
+const getQuestionForIndicator = (domainName, elementName, indicatorName, score) => {
+    return getQuestionsForDomain(domainName).find(q =>
+        q.element_print === elementName &&
+        q.indicator_print === indicatorName &&
+        q.phase === score);
+}
+
+const getAdviceForIndicator = (domainName, elementName, indicatorName) => {
+    const domainQuestions = questionData.value.find(d => d.domain === domainName);
+    if(!domainQuestions) return null;
+    const question = domainQuestions.questions.find(q => q.element_print === elementName && q.indicator_print === indicatorName);
+    if (!question) return null;
+    // make sure all anchors open in new window
+    return question.advice.replace(/<a\s/g,'<a target="_blank" ');
+}
+
+
+const checkIndicatorDependencies = (domainName, elementName, indicatorName, score, prevMetDependencies = []) => {
+    const domain = props.domains.find(d=>d.domain === domainName);
+    if(!domain) return null;
+
+    // find the question entry for this indicator
+    let question = getQuestionForIndicator(domainName, elementName, indicatorName, score);
+    if(!question) question = getQuestionForIndicator(domainName, elementName, indicatorName, -1);
+    if(!question) return null;
+
+    let dependencies = [];
+    // get dependencies (cross-domain only at first level)
+    if(question.dependencies) {
+        dependencies = question.dependencies.split(' && ').filter(dep => {
+            // exclude met dependencies
+            if (domain.met_dependencies.includes(dep)) return false;
+            // exclude dependencies that would be met by the previous questions
+            if (prevMetDependencies.includes(dep)) return false;
+            return true;
+        });
+        for (const dep of dependencies) {
+            // get dependency question
+            const depQuestion = getQuestionForDependency(dep);
+            // check score for dependency question
+            const depResult = getIndicatorResults(depQuestion.domain, depQuestion.element_print).find(r => r.indicator === depQuestion.indicator_print);
+            if (!depResult || depResult.value < depQuestion.phase) {
+                return {domain: depQuestion.domain, element: depQuestion.element_print};
+            }
+        }
+    }
+    // if this is not the highest result for this indicator, check if the next higher value has any unmet dependencies
+    if (score < 4) {
+        return checkIndicatorDependencies(domainName, elementName, indicatorName, score + 1, [...prevMetDependencies, question.generated_variable]);
+    }
+    return null;
+}
+const checkElementDependencies = (domainName, elementName) => {
+    // check each indicator for this element
+    for (const result of getIndicatorResults(domainName, elementName)) {
+        const depElement = checkIndicatorDependencies(domainName, result.element, result.indicator, result.value);
+        if (depElement) return depElement;
+    }
+    return null;
+}
+
+const handleScrollToElement = async (item) => {
     const elementSummary = document.getElementById(`${item.domain}|${item.element.replace(' ','_')}`);
     if(elementSummary) {
         const scrollPos = scrollableRef.value.scrollTop;
         const circleRect = circleRef.value.$el.getBoundingClientRect();
         const elementRect = elementSummary.getBoundingClientRect();
 
-        scrollableRef.value.scrollTo({top: scrollPos + elementRect.top - circleRect.top});
+        if(window.innerWidth < 1024) {
+            // mobile view:
+            await new Promise(r => setTimeout(r, 500));
+            // scroll top of element to below close button, with room for domain header
+            scrollableRef.value.scrollTo({top: scrollPos + elementRect.top - 120});
+        } else {
+            // web view:
+            // selection is based on scroll position; scroll top of element to top of circle
+            scrollableRef.value.scrollTo({top: scrollPos + elementRect.top - circleRect.top});
+        }
 
     }
 }
@@ -116,25 +239,8 @@ const toggleShowAdvice = async (domainName, elementName) => {
     if(index >= 0) {
         showAdviceElements.value.splice(index, 1);
     } else {
-        // fetch question data for this domain if it is not available
-        if(!questionData.value.some(q => q.domain === domainName)) {
-            const domain = props.domains.find(d => d.domain === domainName);
-            if (!domain) return;
-            const result = await dmaService.getQuestions(domain.id);
-            if (!result) return;
-            questionData.value.push({domain: domainName, questions: result.domain_questions});
-        }
         showAdviceElements.value.push({domain: domainName, element: elementName});
     }
-}
-
-const getAdviceForIndicator = (domainName, elementName, indicatorName) => {
-    const domainQuestions = questionData.value.find(d => d.domain === domainName);
-    if(!domainQuestions) return null;
-    const question = domainQuestions.questions.find(q => q.element_print === elementName && q.indicator_print === indicatorName);
-    if (!question) return null;
-    // make sure all anchors open in new window
-    return question.advice.replace('<a ','<a target="_blank" ');
 }
 
 const handleErrorDismissed = () => {
@@ -177,7 +283,7 @@ const handleErrorDismissed = () => {
                 class="bg-white h-full overflow-y-scroll scroll-smooth text-black"
             >
                 <div
-                    class="bg-main-teal/10 p-20"
+                    class="bg-main-teal/10 max-sm:pt-16 p-5 md:p-20"
                 >
                     <div class="flex items-center flex-col text-center">
                         <h1 class="text-h3-caps">
@@ -203,11 +309,23 @@ const handleErrorDismissed = () => {
                         </p>
                     </div>
 
-                    <div class="flex md:flex-row flex-col gap-10">
-                        <div class="flex md:justify-end flex-col max-w-[600px] mt-32 w-full md:basis-1/3 md:order-last">
+                    <div class="flex lg:flex-row flex-col gap-10">
+                        <div
+                            class="
+                                flex
+                                lg:justify-end
+                                flex-col
+                                max-lg:mx-auto
+                                max-w-[500px]
+                                w-full
+                                lg:basis-1/3
+                                lg:mt-32
+                                lg:order-last
+                                "
+                        >
                             <div class="sticky bottom-20">
                                 <div
-                                    class="font-bold mb-5 text-center text-sm uppercase"
+                                    class="font-bold h-5 max-lg:hidden mb-5 text-center text-sm uppercase"
                                     :class="`text-${selectedElement?.split('|')[0]}`"
                                 >
                                     {{ selectedElement?.replace('|',': &nbsp;') }}
@@ -216,34 +334,34 @@ const handleErrorDismissed = () => {
                                     ref="circleRef"
                                     :scores="highlightedScores"
                                     clickable
-                                    @click="handleDiagramClick"
+                                    @click="handleScrollToElement"
                                 />
-                            <!--                        <p class="mt-10">-->
-                            <!--                            Please select between 1 and 3 elements that your school would like to focus on-->
-                            <!--                            by checking the boxes next to your chosen elements.-->
-                            <!--                            These will be highlighted on your profile, and your actions plans associated-->
-                            <!--                            with these elements will appear in your printed report.-->
-                            <!--                        </p>-->
+                                <!--                                <p class="mt-10">-->
+                                <!--                                    Please select between 1 and 3 elements that your school would like to focus on-->
+                                <!--                                    by checking the boxes next to your chosen elements.-->
+                                <!--                                    These will be highlighted on your profile, and your actions plans associated-->
+                                <!--                                    with these elements will appear in your printed report.-->
+                                <!--                                </p>-->
                             </div>
                         </div>
 
                         <div
                             ref="domainListRef"
-                            class="md:basis-2/3"
+                            class="lg:basis-2/3"
                         >
                             <template
-                                v-for="domain of domains"
+                                v-for="domain of reportData"
                                 :key="domain.id"
                             >
                                 <div class="mt-10">
                                     <h2
-                                        class="text-h2-caps"
+                                        class="text-h2-caps md:text-h3-caps"
                                         :class="`text-${domain.domain}`"
                                     >
                                         {{ domain.domain }} domain
                                     </h2>
                                     <div
-                                        v-for="element of getElements(domain.domain)"
+                                        v-for="element of domain.elements"
                                         :id="`${domain.domain}|${element.element.replace(' ','_')}`"
                                         :key="element"
                                         class="domain-element mt-5"
@@ -260,12 +378,13 @@ const handleErrorDismissed = () => {
                                                 "
                                             :class="{'bg-black/30': selectedElement === `${domain.domain}|${element.element}`}"
                                         >
-                                            <span class="flex-1">{{ element.element }} is {{ element.label }}</span>
+                                            <span class="flex-1 mr-2">{{ element.element }} is {{ element.label }}</span>
                                             <TextButton
                                                 class="!text-xs underline"
                                                 @click="() => toggleShowAdvice(element.domain, element.element)"
                                             >
-                                                {{ showingAdvice(element.domain, element.element) ? 'Hide' : 'Show' }} advice & action plan
+                                                <span class="hidden md:block">{{ showingAdvice(element.domain, element.element) ? 'Hide' : 'Show' }} advice & action plan</span>
+                                                <span class="md:hidden">advice & plan</span>
                                             </TextButton>
                                             <img
                                                 :src="iconChevronRight"
@@ -274,12 +393,24 @@ const handleErrorDismissed = () => {
                                             >
                                         </h3>
 
+                                        <button
+                                            v-if="element.dependency && element.dependency.element !== element.element"
+                                            class="bg-red-500/20 mt-5 p-2 rounded w-full"
+                                            @click="() => handleScrollToElement(element.dependency)"
+                                        >
+                                            It is recommended you focus on <b
+                                                class="capitalize"
+                                            >
+                                                {{ element.dependency.domain }}: {{ element.dependency.element }}
+                                            </b><br>before advancing this element.
+                                        </button>
+
                                         <div
-                                            v-for="result of getIndicatorResults(domain.domain, element.element)"
-                                            :key="`${result.element}_${result.indicator}`"
+                                            v-for="indicator of getIndicatorResults(domain.domain, element.element)"
+                                            :key="`${indicator.element}_${indicator.indicator}`"
                                             class="mt-5"
                                         >
-                                            <p v-html="result.description" />
+                                            <p v-html="indicator.description" />
 
                                             <div
                                                 v-if="showingAdvice(element.domain, element.element)"
@@ -289,9 +420,29 @@ const handleErrorDismissed = () => {
                                                 <p class="font-bold mb-4">
                                                     Suggested strategies for further school development include:
                                                 </p>
-                                                <p v-html="getAdviceForIndicator(element.domain, element.element, result.indicator)" />
+                                                <p v-html="indicator.advice" />
                                             </div>
                                         </div>
+
+                                        <textarea
+                                            v-if="showingAdvice(element.domain, element.element)"
+                                            rows="7"
+                                            :disabled="props.disabled"
+                                            class="
+                                                bg-black/10
+                                                border-none
+                                                px-6
+                                                py-5
+                                                resize-none
+                                                rounded-2xl
+                                                text-medium
+                                                focus:outline-none
+                                                focus:ring
+                                                md:!px-8
+                                                md:!py-7
+                                                "
+                                            placeholder="After reviewing the advice offered, explain how you intend to advance towards the next phase for this element of the framework."
+                                        />
                                     </div>
                                 </div>
                             </template>
@@ -329,10 +480,5 @@ const handleErrorDismissed = () => {
         list-style: revert;
         padding-left: 1em;
     }
-}
-@media screen and (min-width: 768px) {
-  .scroll-fade {
-    mask-image: linear-gradient(transparent, black 5%, black 95%, transparent);
-  }
 }
 </style>
