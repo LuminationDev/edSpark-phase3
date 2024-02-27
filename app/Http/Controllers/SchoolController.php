@@ -600,13 +600,16 @@ class SchoolController extends Controller
                     "result" => true,
                     'canNominate' => false,
                     'canPublish' => true,
+                    'message' => 'You are editing as a Superadmin'
                 ]);
             }
             if ($user_record && $user_record->site_id == $site_id && ($user_record->role->role_name === 'SCHLDR')) {
                 return response()->json([
                     "status" => 200,
                     "result" => true,
-                    'canNominate' => true
+                    'canNominate' => true,
+                    'message' => 'You are editing as a school leader'
+
                 ]);
             }
             // check school meta
@@ -620,7 +623,9 @@ class SchoolController extends Controller
                 return response()->json([
                     "status" => 200,
                     "result" => true,
-                    'canNominate' => false
+                    'canNominate' => false,
+                    'message' => 'You are editing as '
+
                 ]);
             }
 
