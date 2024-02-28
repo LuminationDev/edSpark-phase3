@@ -23,7 +23,6 @@ let loadingContainerWidth = 0
 const getContainerWidth = () => {
     const loadingContainer = document.getElementsByClassName("LoadingCardRowContainer")[0];
     if(loadingContainer){
-        console.log(loadingContainer.offsetWidth)
         loadingContainerWidth = loadingContainer.offsetWidth;
     }
 }
@@ -31,8 +30,6 @@ getContainerWidth()
 
 const numberOfCardsPerRowWithSafety = computed(() =>{
     if(loadingContainerWidth){
-        console.log(loadingContainerWidth)
-        console.log(Math.floor(loadingContainerWidth/450))
         return Math.floor(loadingContainerWidth/450)
     } else{
         return props.numberPerRow

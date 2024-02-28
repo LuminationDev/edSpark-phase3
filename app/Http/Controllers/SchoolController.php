@@ -32,7 +32,7 @@ class SchoolController extends Controller
         if ($current_user
             && $current_user->site_id === $site_id && $current_user->role->role_name === 'SCHLDR') {
             return true;
-        } elseif (RoleHelpers::has_minimum_privilege(UserRole::ADMIN)){
+        } elseif (RoleHelpers::has_minimum_privilege(UserRole::ADMIN)) {
             return true;
         } else return false;
     }
@@ -295,7 +295,7 @@ class SchoolController extends Controller
             $data = $request->all();
             $error = '';
 
-            if(!$this->checkUserCanAccess($data['school_id'])){
+            if (!$this->checkUserCanAccess($data['school_id'])) {
                 return ResponseService::error_unauthorized();
             }
 
@@ -593,47 +593,51 @@ class SchoolController extends Controller
             $school_id = $requestData['school_id']; // only for sake of schools meta
             //check user site id == school Id && user role === school principal
             $user_record = User::find($user_id);
+            $user_message = '';
+            $user_can_edit = false;
+            $user_can_nominate = false;
+            $user_can_publish = false;
 
-            if ($user_record->role->role_name === 'Superadmin') {
-                return response()->json([
-                    "status" => 200,
-                    "result" => true,
-                    'canNominate' => false,
-                    'canPublish' => true,
-                    'message' => 'You are editing as a Superadmin'
-                ]);
-            }
-            if ($user_record && $user_record->site_id == $site_id && ($user_record->role->role_name === 'SCHLDR')) {
-                return response()->json([
-                    "status" => 200,
-                    "result" => true,
-                    'canNominate' => true,
-                    'message' => 'You are editing as a school leader'
 
-                ]);
-            }
-            // check school meta
-            // if user's id is inside meta, in the nominated_user field
             $schoolmeta_record = Schoolmeta::where('school_id', $school_id)
                 ->where('schoolmeta_key', 'nominated_user')
                 ->where('schoolmeta_value', $user_id)
                 ->first();
 
             if ($schoolmeta_record) {
-                return response()->json([
-                    "status" => 200,
-                    "result" => true,
-                    'canNominate' => false,
-                    'message' => 'You are editing as '
-
-                ]);
+                $user_can_edit = true;
+                $user_can_nominate = false;
+                $user_can_publish = false;
+                $user_message = 'You are editing as a Nominated user';
             }
 
-            return response()->json([
-                "status" => 401,
-                "result" => False
-            ]);
+            if ($user_record && $user_record->site_id == $site_id && ($user_record->role->role_name === 'SCHLDR')) {
+                $user_can_edit = true;
+                $user_can_nominate = true;
+                $user_can_publish = false;
+                $user_message = 'You are editing as a School leader';
+            }
 
+            if ($user_record->role->role_name === 'Superadmin') {
+                $user_can_edit = true;
+                $user_can_publish = true;
+                $user_message = 'You are editing as a Superadmin';
+            }
+            if ($user_can_edit) {
+                return response()->json([
+                    "status" => 200,
+                    "result" => $user_can_edit,
+                    'canNominate' => $user_can_nominate,
+                    'canPublish' => $user_can_publish,
+                    'message' => $user_message
+                ]);
+            } else {
+                return response()->json([
+                    "status" => 401,
+                    "result" => False
+                ]);
+
+            }
         }
         return response()->json([
             "status" => 401,

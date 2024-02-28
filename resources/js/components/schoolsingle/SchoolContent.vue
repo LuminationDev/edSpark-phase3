@@ -21,13 +21,13 @@ import {SchoolDataType, TechUsed} from "@/js/types/SchoolTypes";
 
 const schoolContentStateDescription = {
     new: "",
-    pending_available: "You have a pending content awaiting for moderation from ",
-    pending_loaded: "You are editing your pending content",
+    pending_available: "You have a pending profile awaiting for moderation from ",
+    pending_loaded: "You are editing your pending profile",
 }
 const buttonDescriptionByState = {
-    new: "Submit content",
-    pending_available: "Submit & replace pending content",
-    pending_loaded: "Submit content",
+    new: "Submit for moderation",
+    pending_available: "Submit for moderation",
+    pending_loaded: "Submit for moderation",
 }
 
 enum SchoolContentState {
@@ -59,7 +59,7 @@ const props = defineProps({
 const route = useRoute()
 console.log(props.schoolContent)
 
-const emits = defineEmits(['sendInfoToSchoolSingle', 'sendColorToSchoolSingle', 'sendPhotoToSchoolSingle'])
+const emits = defineEmits(['sendInfoToSchoolSingle', 'sendColorToSchoolSingle', 'sendPhotoToSchoolSingle','resetColorTheme'])
 const {currentUser} = storeToRefs(useUserStore())
 const currentSchoolName = route.params.name
 const editMode = ref<boolean>(false)
@@ -99,6 +99,13 @@ const handleEditButton = async () => {
 
 const handleCancelEditButton = (): void => {
     editMode.value = false
+    if(pendingSchoolContent.value){
+        schoolContentState.value = SchoolContentState.PendingAvailable
+    } else {
+        schoolContentState.value = SchoolContentState.New
+
+    }
+
 }
 
 const handleSchoolData = (data): void => {
@@ -113,6 +120,8 @@ const handleAllSaveButton = (): void => {
     emits('sendInfoToSchoolSingle', newSchoolContent.value, newTechUsed.value)
     editMode.value = false
     schoolContentState.value = SchoolContentState.New
+    // reset color here
+    emits('resetColorTheme');
     toast('Submitted your new profile for moderation. View will update automatically once approved')
 }
 
@@ -173,7 +182,7 @@ const moderationStatusMessage = computed(() => {
     else if (pendingSchoolContent.value) {
         return schoolContentStateDescription[schoolContentState.value] + formatDateToDayTime(pendingSchoolContent.value.updated_at)
     } else {
-        return "Your latest profile has been approved on " + formatDateToDayTime(props.schoolContent.update_at)
+        return "Your latest profile has been approved on " + formatDateToDayTime(props.schoolContent.updated_at)
     }
 })
 
@@ -212,7 +221,7 @@ const moderationStatusMessage = computed(() => {
                         </div>
 
                         <div
-                            class="flex items-center flex-col gap-4 px-6 w-full lg:!basis-1/3"
+                            class="flex items-center flex-col gap-4 px-4 w-full lg:!basis-1/3"
                         >
                             <h2
                                 v-if="currentUserCanEdit"
@@ -258,23 +267,21 @@ const moderationStatusMessage = computed(() => {
                                             class="
                                                 bg-blue-500
                                                 hover:bg-blue-600
-                                                mb-2
-                                                px-4
                                                 rounded
+                                                text-base
                                                 text-white
                                                 w-48
                                                 "
                                             :callback="handleClickEditPendingContent"
                                         >
-                                            Edit pending content
+                                            View pending profile
                                         </GenericButton>
                                         <GenericButton
                                             class="
                                                 bg-blue-500
                                                 hover:bg-blue-600
-                                                mb-2
-                                                px-4
                                                 rounded
+                                                text-base
                                                 text-white
                                                 w-48
                                                 "
@@ -283,7 +290,7 @@ const moderationStatusMessage = computed(() => {
                                             {{ buttonDescriptionByState[schoolContentState] }}
                                         </GenericButton>
                                         <GenericButton
-                                            class="mb-2 px-6 py-2 rounded text-white w-48"
+                                            class="px-6 py-2 rounded text-white w-48"
                                             :callback="handleCancelEditButton"
                                         >
                                             Cancel edit
@@ -301,7 +308,7 @@ const moderationStatusMessage = computed(() => {
                                                 "
                                             :callback="handleEditButton"
                                         >
-                                            Revert
+                                            Revert to current
                                         </GenericButton>
                                     </div>
 
