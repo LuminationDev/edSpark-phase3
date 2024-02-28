@@ -38,7 +38,7 @@ const backgroundColorClass = computed(() => {
         return 'bg-main-navy'
     case 'purple':
     case 'technologyPurple':
-        return 'bg-secondary-grapeDark'
+        return 'bg-secondary-grape'
     case 'blue':
     case 'partnerBlue':
         return 'bg-secondary-blueberry'

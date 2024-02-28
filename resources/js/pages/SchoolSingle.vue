@@ -261,7 +261,7 @@ const handleCloseModerationTab = (): void => {
                                             >
                                         </div>
 
-                                        <div class="flex flex-col hidden pl-8 lg:pl-0 md:block">
+                                        <div class="flex flex-col hidden lg:pl-0 md:block">
                                             <h1 class="font-bold pb-4 text-white">
                                                 {{ schoolContent.name }}
                                             </h1>

@@ -42,8 +42,8 @@ export const schoolColorTheme = {
     },
 
     technologyPurple: {
-        light: "#6D469C",
-        med:"#6D469C",
+        light: "#8866C5",
+        med:"#8866C5",
         dark:"#002858",
     },
 

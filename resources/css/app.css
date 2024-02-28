@@ -500,10 +500,14 @@ table[border]:not([border="0"]):not([style*="border-color"]) th {
     font-size: 16px;
 }
 
-.searchText {
+#navbarFullsize .searchText {
     font-weight: 500;
 }
 
+.searchText {
+    font-weight: 300;
+    font-size: large;
+}
 
 /* textarea + .tox.tox-tinymce p {
 font-weight: 100; 

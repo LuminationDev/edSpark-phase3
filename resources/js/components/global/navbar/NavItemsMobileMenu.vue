@@ -64,16 +64,16 @@ const handleDropdownToggle = () : void => {
                     font-bold
                     h-8
                     ml-2
-                    text-2xl
+                    text-xl
                     w-8
                     "
                 @click="handleDropdownToggle"
             />
-            <div class="bg-main-navy font-medium h-full ml-0">
+            <div class="bg-main-navy font-light h-full ml-0">
                 <NavItemsMobileMenu
                     v-for="(child, index) in props.route.children"
                     :key="index"
-                    class="first-letter:uppercase text-2xl text-white transition"
+                    class="first-letter:uppercase text-xl text-white transition"
                     :to="{ name: child.name }"
                     :route="child"
                 />
@@ -107,7 +107,7 @@ const handleDropdownToggle = () : void => {
     >
         <router-link
             :to="{name: route.name}"
-            class="flex py-4"
+            class="flex py-4 font-light text-xl"
         >
             {{ route.meta.customText ?? route.name }}
         </router-link>

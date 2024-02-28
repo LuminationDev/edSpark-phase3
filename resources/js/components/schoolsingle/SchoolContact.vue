@@ -119,6 +119,7 @@ const mapOptions = {
             <div v-if="isLoading">
                 <Loader
                     :loader-color="'#0072DA'"
+                    class="pt-4"
                     :loader-message="'Contact detail loading'"
                 />
             </div>
