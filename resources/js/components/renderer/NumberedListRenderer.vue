@@ -71,7 +71,7 @@ const getPositionAtCenter = (element) => {
     <div class="extraContent mb-10 relative">
         <div
             class="absolute left-[12.4%] bg-black bg-secondary-blueberry connectingLine hidden w-0.5 z-10 md:!flex"
-            :style="`height: ${distanceBetweenEls}px; top: ${top+40}px;`"
+            :style="`height: ${distanceBetweenEls-top-40}px; top: ${top+40}px; margin-top: ${top+40}px;`"
         />
         <div class="flex flex-col">
             <div

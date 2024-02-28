@@ -237,8 +237,8 @@ select {
     width: 50px;
 }
 
-/* .richTextContentContainer,
-.richTextContentContainer div, */
+
+.extraResourcesContainer p,
 .richTextContentContainer li,
 .richTextContentContainer p {
     font-weight: 100;
@@ -248,11 +248,13 @@ select {
 }
 
 
+.extraResourcesContainer a,
 .richTextContentContainer a {
     font-weight: 300;
     text-underline-offset: 4px;
 }
 
+.extraResourcesContainer a:hover,
 .richTextContentContainer a:hover {
     text-decoration: underline;
     text-decoration-thickness: 2px;
@@ -447,7 +449,6 @@ table[border]:not([border="0"]):not([style*="border-color"]) th {
     white-space: -pre-wrap; /* Opera 4-6 */
     white-space: -o-pre-wrap; /* Opera 7 */
     word-wrap: break-word; /* Internet Explorer 5.5+ */
-    
     margin: 20px 0px 42px;
 }
 

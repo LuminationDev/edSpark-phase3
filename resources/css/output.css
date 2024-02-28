@@ -7781,9 +7781,7 @@ select {
   width: 50px;
 }
 
-/* .richTextContentContainer,
-.richTextContentContainer div, */
-
+.extraResourcesContainer p,
 .richTextContentContainer li,
 .richTextContentContainer p {
   font-weight: 100;
@@ -7792,11 +7790,13 @@ select {
   font-size: 1.1em;
 }
 
+.extraResourcesContainer a,
 .richTextContentContainer a {
   font-weight: 300;
   text-underline-offset: 4px;
 }
 
+.extraResourcesContainer a:hover,
 .richTextContentContainer a:hover {
   text-decoration: underline;
   text-decoration-thickness: 2px;
