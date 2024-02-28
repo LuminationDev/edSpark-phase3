@@ -1,17 +1,18 @@
 <script setup lang="ts">
-
-import {left} from "@popperjs/core";
 import useVuelidate from "@vuelidate/core";
 import {required} from "@vuelidate/validators";
 import axios from "axios";
 import {storeToRefs} from "pinia";
-import {computed, onMounted, onUnmounted, reactive, ref, watchEffect} from "vue";
+import {emits} from "v-calendar/dist/types/src/use/datePicker";
+import {computed, reactive, Ref, ref} from "vue";
 
 import ProfilePlaceholder from "@/assets/images/profilePlaceholder.webp";
 import ErrorMessages from "@/js/components/bases/ErrorMessages.vue";
 import GenericButton from "@/js/components/button/GenericButton.vue";
 import CustomErrorMessages from "@/js/components/feedbackform/CustomErrorMessages.vue";
-import ErrorIconSmall from "@/js/components/svg/ErrorIconSmall.vue";
+import SchoolImageChange from "@/js/components/schoolsingle/schoolContent/SchoolImageChange.vue";
+import Edit from "@/js/components/svg/Edit.vue";
+import UserAvatarChange from "@/js/components/userprofile/userprofileupdate/UserAvatarChange.vue";
 import UserCardItemSelector from "@/js/components/userprofile/userprofileupdate/UserCardItemSelector.vue";
 import UserChecklistSelector from "@/js/components/userprofile/userprofileupdate/UserChecklistSelector.vue";
 import {
@@ -23,90 +24,81 @@ import UserProfileContentContainer from "@/js/components/userprofile/userprofile
 import {API_ENDPOINTS} from "@/js/constants/API_ENDPOINTS";
 import {imageURL} from "@/js/constants/serverUrl";
 import {useUserStore} from "@/js/stores/useUserStore";
+import {SchoolDataType} from "@/js/types/SchoolTypes";
 
 const userStore = useUserStore()
 const {currentUser} = storeToRefs(userStore)
 
-const displayErrorMessageText = "Value is required"
-const booleanValueOnSubmitButton = ref(false)
-const showErrorOnSubmitButton = ref(false)
-//states stored in variables
-const userSelectedSubjects = ref([])
-const userSelectedInterests = ref([])
-const userSelectedYearLevel = ref([])
-const biographyInput = ref('')
-//variables for UserProfileContentContainer
-const leftHeadingPersonalInfo = ref('Perosnal info')
-const leftDescriptionPersonalInfo = ref('Update your photo and personal details.')
+//All sting defined constants
+const leftHeadingPersonal = ref('Personal info')
+const leftDescriptionPersonal = ref('Update your photo and personal details.')
 const leftHeadingProfile = ref('Profile')
 const leftDescriptionProfile = ref('Update your subjects and interests.')
-const isEditAvatar = ref(false);
-//for form validation
-const state = reactive({
+const displayErrorMessageText = "Value is required"
+
+const booleanValueOnSubmitButton = ref(false)
+//vuelidation state and rules are defined
+const statePersonal = reactive({
     displayName: currentUser.value.display_name,
-    subjectSelect: userSelectedSubjects.value,
-    interestSelect: userSelectedInterests.value,
-    yearLevelSelect: userSelectedYearLevel.value
+    biography: ''
 })
-const rules = {
+const rulesPersonal = {
     displayName: {required: required},
+    biography: {required: required}
+}
+//vuelidation state and rules are defined
+const stateProfile = reactive({
+    subjectSelect: [],
+    interestSelect: [],
+    yearLevelSelect: []
+})
+const rulesProfile = {
     subjectSelect: {required: required},
     interestSelect: {required: required},
     yearLevelSelect: {required: required}
 }
-const v$ = useVuelidate(rules, state)
-
-//handling the received subjects and Year list data (in arrays) from their appropriate Selector in the form of emits.
+const vPersonal$ = useVuelidate(rulesPersonal, statePersonal)
+const vProfile$ = useVuelidate(rulesProfile, stateProfile)
+const handleReceiveYearListFromSelector = (yearList) => {
+    stateProfile.yearLevelSelect = yearList
+}
 const handleReceiveSubjectsFromSelector = (subjectList) => {
-    userSelectedSubjects.value = subjectList
+    stateProfile.subjectSelect = subjectList
 }
 const handleReceiveInterestsFromSelector = (interestList) => {
-    userSelectedInterests.value = interestList
-}
-const handleReceiveYearListFromSelector = (yearList) => {
-    userSelectedYearLevel.value = yearList
+    stateProfile.interestSelect = interestList
 }
 
 //handle submit data on click, posts the data to api and then store to the database.
-// const handleClickSubmitData = async () => {
-//     const result = await v$.value.$validate()
-//     if (result) {
-//         if ((userSelectedSubjects.value.length !== 0) && (userSelectedInterests.value.length !== 0) && (userSelectedYearLevel.value.length !== 0)) {
-//             const data = {
-//                 subjects: userSelectedSubjects.value,
-//                 interest: userSelectedInterests.value,
-//                 yearLevels: userSelectedYearLevel.value,
-//                 biography: v$.value.biographyInput.$model
-//             }
-//             axios.post(API_ENDPOINTS.USER.UPDATE_OR_CREATE_METADATA + currentUser.value.id, data)
-//                 .then(res => {
-//                     console.log(res.data)
-//                 })
-//                 .catch(err => {
-//                     console.log(err.value)
-//                 })
-//             console.log("Data saved successfully")
-//             booleanValueOnSubmitButton.value = false
-//         }
-//     }
-//     else {
-//         console.log("Data not saved successfully, Please enter all the values")
-//     }
-//     booleanValueOnSubmitButton.value = true
-// }
-
-
-// Save data on submit button
-const saveDataToDatabase = async () => {
-    showErrorOnSubmitButton.value = true
-    const result = await v$.value.$validate()
+const handleClickSubmitPersonalData = async () => {
+    const result = await vPersonal$.value.$validate()
     if (result) {
-        if ((userSelectedSubjects.value.length !== 0) && (userSelectedInterests.value.length !== 0) && (userSelectedYearLevel.value.length !== 0)) {
+        const data = {
+            biography: statePersonal.biography
+        }
+        axios.post(API_ENDPOINTS.USER.UPDATE_OR_CREATE_METADATA + currentUser.value.id, data)
+            .then(res => {
+                console.log(res.data)
+            })
+            .catch(err => {
+                console.log(err.value)
+            })
+        console.log("Personal Data saved successfully")
+    }
+    else {
+        console.log("Personal Data not saved successfully, Please enter all the values")
+    }
+}
+
+//handle submit data on click, posts the data to api and then store to the database.
+const handleClickSubmitProfileData = async () => {
+    const result = await vProfile$.value.$validate()
+    if (result) {
+        if ((stateProfile.subjectSelect.length !== 0) && (stateProfile.yearLevelSelect.length !== 0)) {
             const data = {
-                subjects: userSelectedSubjects.value,
-                interest: userSelectedInterests.value,
-                yearLevels: userSelectedYearLevel.value,
-                biography: biographyInput.value
+                yearLevels: stateProfile.yearLevelSelect,
+                subjects: stateProfile.subjectSelect,
+                interest: stateProfile.interestSelect
             }
             axios.post(API_ENDPOINTS.USER.UPDATE_OR_CREATE_METADATA + currentUser.value.id, data)
                 .then(res => {
@@ -115,208 +107,204 @@ const saveDataToDatabase = async () => {
                 .catch(err => {
                     console.log(err.value)
                 })
-            console.log("Data saved successfully")
+            console.log("Profile Data saved successfully")
             booleanValueOnSubmitButton.value = false
         }
     }
     else {
-        console.log("Data not saved successfully, Please enter all the values")
-
+        console.log("Profile Data not saved successfully, Please enter all the values")
     }
     booleanValueOnSubmitButton.value = true
-    console.log("Autosave working");
-};
+}
 
-
-
-onUnmounted(() => {
-
-});
-
-
-
-
-//used to get data, automatically from the database using api
-onMounted(() =>{
-    // populate userSelectedSubjects from the database
-    //fetch here
-})
-//function for sending the data in array to UserProfileContentContainer
-const itemsDataPersonal = ref([
-    { rightHeading: 'Display name', rightContent: state.displayName },
-    { rightHeading: 'Biography', rightContent: biographyInput }
-]);
-const itemsDataProfile = ref([
-    { rightHeading: 'Year Levels', selectorChecklist: 'dssdfsdf',  hideUserCheckListSelector: true  },
-    { rightHeading: 'Subjects', selectorChecklist: 'hh', hideUserCardListSelector: true, showError: true },
-    { rightHeading: 'Interests', selectorChecklist: 'hh', hideUserCardListSelector: true, showError: true },
-]);
-const avatarUrl = ref('')
-const userAvatarUrlWithFallback = computed(() => {
-    if (avatarUrl.value) {
-        return `${imageURL}/${avatarUrl.value}`
-    } else {
-        return ProfilePlaceholder
+const logoStorage = ref(null)
+const handleReceivePhotoFromContent = (type, file) => {
+    switch (type) {
+    case 'logo':
+        console.log('received logo')
+        logoStorage.value = file
+        break;
+    default:
+        console.log('received unknown type image')
+        break;
     }
-})
-const filteredItems = computed(() => itemsDataProfile.value.filter(item => item.hideUserCheckListSelector || item.hideUserCardListSelector));
-
-
+}
 
 </script>
 
 <template>
-    <!--    <div class="bg-red-100 border-2 cursor-pointer fixed bottom-[5rem] left-[6rem] flex flex-row rounded-2xl w-24 z-[70]">-->
-    <!--        <div-->
-    <!--            class="align-center ml-2 text-2xl"-->
-    <!--            @click="handleClickSubmitData"-->
-    <!--        >-->
-    <!--            Submit Button-->
-    <!--        </div>-->
-    <!--    </div>-->
     <div
         class="UserProfileSelectionMenuContainer bg-white flex flex-col gap-12 h-full w-full"
     >
         <div>
             <UserProfileContentContainer
-                :left-heading="leftHeadingPersonalInfo"
-                :left-description="leftDescriptionPersonalInfo"
-                :items="itemsDataPersonal"
-                :right-content-index="1"
-                :is-edit-avatar="isEditAvatar"
-                :user-avatar-url-with-fallback="userAvatarUrlWithFallback"
-                :send-save-data-to-child="saveDataToDatabase"
-                :hide-user-check-list-selector="false"
-            />
-        </div>
-        <div>
-            <UserProfileContentContainer
-                :hide-input-field="false"
-                :hide-profile-picture="false"
-                :left-heading="leftHeadingProfile"
-                :left-description="leftDescriptionProfile"
-                :items="filteredItems"
+                :left-heading="leftHeadingPersonal"
+                :left-description="leftDescriptionPersonal"
             >
                 <template #content>
-                    <!--                    <div-->
-                    <!--                        v-if="item.hideUserCardListSelector"-->
-                    <!--                        class="grid grid-cols-6 mt-6"-->
-                    <!--                    >-->
-                    <!--                        <UserCardItemSelector-->
-                    <!--                            v-model="item.selectorCardlist"-->
-                    <!--                            :available-items="availableSubjectsListItems"-->
-                    <!--                            :selected-items="selectorCardlist"-->
-                    <!--                            @send-selected-values="sendSelectedCardValues"-->
-                    <!--                        />-->
-                    <!--                        <div-->
-                    <!--                            v-if="selectorCardlist.length === 0"-->
-                    <!--                            class="flex items-center flex-row mt-2 text-red-500"-->
-                    <!--                        >-->
-                    <!--                            <ErrorIconSmall-->
-                    <!--                                class="fill-inactive h-5 max-w-none mr-2 shrink-0 stroke-inactive w-5"-->
-                    <!--                                alt="error icon"-->
-                    <!--                            />-->
-                    <!--                            <span class="text-sm">Value is reqred</span>-->
-                    <!--                        </div>-->
-                    <!--                    </div>-->
-                    <UserCardItemSelector
-                        v-model="v$.interestSelect.$model"
-                        :available-items="AvailableInterestsList"
-                        :selected-items="userSelectedInterests"
-                        @send-selected-values="handleReceiveInterestsFromSelector"
-                    />
-                    <div class="m-10 text-2xl">
-                        <div>Interests</div>
-                        <div class="mt-6 userInterestSelectorContainer">
-                            <UserCardItemSelector
-                                v-model="v$.interestSelect.$model"
-                                :available-items="AvailableInterestsList"
-                                :selected-items="userSelectedInterests"
-                                @send-selected-values="handleReceiveInterestsFromSelector"
-                            />
-                        </div>
-                        <span v-if="((userSelectedInterests.length === 0) && (booleanValueOnSubmitButton===true))">
-                            <CustomErrorMessages
-                                :error-text="displayErrorMessageText"
-                                class="mt-6"
-                            /></span>
+                    <div class="ml-4 mt-4">
+                        Display
                     </div>
+                    <input
+                        v-model="vPersonal$.displayName.$model"
+                        class="border-1 border-gray-400 mt-4 rounded-2xl"
+                    >
+                    <span>
+
+                        <ErrorMessages :v$="vPersonal$.displayName" />
+                    </span>
+
+                    <div class="ml-4 mt-4">
+                        Biography
+                    </div>
+                    <input
+                        v-model="vPersonal$.biography.$model"
+                        class="border-1 border-gray-400 h-64 mt-4 rounded-2xl"
+                    >
+                    <span>
+                        <ErrorMessages :v$="vPersonal$.biography" />
+                    </span>
+
+                    <UserAvatarChange
+                        class="mt-6"
+                        @send-uploaded-photo-to-content="handleReceivePhotoFromContent"
+                    />
+                </template>
+                <template #buttons>
+                    <GenericButton
+                        id="cancelBtn"
+                        class="
+                            !bg-white
+                            !h-14
+                            !rounded-xl
+                            !text-gray-700
+                            !text-xl
+                            border-[1px]
+                            border-gray-400
+                            ml-auto
+                            p-4
+                            w-28
+                            "
+                        callback="d"
+                    >
+                        <template #default>
+                            Cancel
+                        </template>
+                    </GenericButton>
+                    <GenericButton
+                        id="submitBtn"
+                        class="!h-14 !rounded-xl !text-xl p-4 w-28 hover:!bg-main-teal lg:!w-40"
+                        :callback="handleClickSubmitPersonalData"
+                    >
+                        <template #default>
+                            Save changes
+                        </template>
+                    </GenericButton>
                 </template>
             </UserProfileContentContainer>
-        </div>
-        <div
-            class="m-10 text-2xl"
-        >
-            <div>Subjects</div>
-            <div
-                class="mt-6 userSubjectSelectorContainer"
+            <div class="border-[1px] border-gray-100" />
+            <UserProfileContentContainer
+                :left-heading="leftHeadingProfile"
+                :left-description="leftDescriptionProfile"
             >
-                <UserCardItemSelector
-                    v-model="v$.subjectSelect.$model"
-                    :available-items="AvailableSubjectsList"
-                    :selected-items="userSelectedSubjects"
-                    @send-selected-values="handleReceiveSubjectsFromSelector"
-                />
-            </div>
-            <span v-if="((userSelectedSubjects.length === 0) && (booleanValueOnSubmitButton===true))">
-                <CustomErrorMessages
-                    :error-text="displayErrorMessageText"
-                    class="mt-6"
-                /></span>
-        </div>
-        <div class="m-10 text-2xl">
-            <div>Interests</div>
-            <div class="mt-6 userInterestSelectorContainer">
-                <UserCardItemSelector
-                    v-model="v$.interestSelect.$model"
-                    :available-items="AvailableInterestsList"
-                    :selected-items="userSelectedInterests"
-                    @send-selected-values="handleReceiveInterestsFromSelector"
-                />
-            </div>
-            <span v-if="((userSelectedInterests.length === 0) && (booleanValueOnSubmitButton===true))">
-                <CustomErrorMessages
-                    :error-text="displayErrorMessageText"
-                    class="mt-6"
-                /></span>
-        </div>
-        <!--        <div class="m-10 text-2xl">-->
-        <!--            <div>Biography</div>-->
-        <!--            <input-->
-        <!--                v-model="v$.biographyInput.$model"-->
-        <!--                class="h-44 mt-4 rounded-2xl"-->
-        <!--            >-->
-        <!--            <span>-->
-        <!--                <ErrorMessages :v$="v$.biographyInput" />-->
-        <!--            </span>-->
-        <!--        </div>-->
-        <div>
-            <GenericButton
-                :callback="saveDataToDatabase"
-                class="!h-10 m-10 ml-auto w-32"
-            >
-                Submit
-            </GenericButton>
+                <template #content>
+                    <div class="ml-4 mt-4">
+                        <div class="ml-1">
+                            Year levels
+                        </div>
+                        <div class="grid grid-cols-6 mt-6 userYearLevelSelectorContainer">
+                            <UserChecklistSelector
+                                :available-items="AvailableSchoolYearList"
+                                :selected-items="stateProfile.yearLevelSelect"
+                                @send-selected-values="handleReceiveYearListFromSelector"
+                            />
+                            <span v-if="((stateProfile.yearLevelSelect.length === 0) && (booleanValueOnSubmitButton===true))">
+                                <CustomErrorMessages
+                                    :error-text="displayErrorMessageText"
+                                    class="mb-6"
+                                />
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="ml-4 mt-4">
+                        <div class="ml-1">
+                            Subjects
+                        </div>
+                        <div class="mt-4 userSubjectSelectorContainer">
+                            <!-- For Subjects-->
+                            <UserCardItemSelector
+                                v-model="vProfile$.subjectSelect.$model"
+                                :available-items="AvailableSubjectsList"
+                                :selected-items="stateProfile.subjectSelect"
+                                @send-selected-values="handleReceiveSubjectsFromSelector"
+                            />
+                            <span v-if="((stateProfile.subjectSelect.length === 0) && (booleanValueOnSubmitButton===true))">
+                                <CustomErrorMessages
+                                    :error-text="displayErrorMessageText"
+                                    class="mb-6 mt-6"
+                                />
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="ml-4 mt-4">
+                        <div class="ml-1">
+                            Interests
+                        </div>
+                        <div class="mt-4 userInterestSelectorContainer">
+                            <!-- For Interest-->
+                            <UserCardItemSelector
+                                v-model="vProfile$.interestSelect.$model"
+                                :available-items="AvailableInterestsList"
+                                :selected-items="stateProfile.interestSelect"
+                                @send-selected-values="handleReceiveInterestsFromSelector"
+                            />
+                            <span v-if="((stateProfile.interestSelect.length === 0) && (booleanValueOnSubmitButton===true))">
+                                <CustomErrorMessages
+                                    :error-text="displayErrorMessageText"
+                                    class="mb-6 mt-6"
+                                />
+                            </span>
+                        </div>
+                    </div>
+                </template>
+                <template #buttons>
+                    <GenericButton
+                        id="cancelBtn"
+                        class="
+                            !bg-white
+                            !h-14
+                            !rounded-xl
+                            !text-gray-700
+                            !text-xl
+                            border-[1px]
+                            border-gray-400
+                            ml-auto
+                            p-4
+                            w-28
+                            "
+                        callback="d"
+                    >
+                        <template #default>
+                            Cancel
+                        </template>
+                    </GenericButton>
+                    <GenericButton
+                        id="submitBtn"
+                        class="!h-14 !rounded-xl !text-xl p-4 w-28 hover:!bg-main-teal lg:!w-40"
+                        :callback="handleClickSubmitProfileData"
+                    >
+                        <template #default>
+                            Save changes
+                        </template>
+                    </GenericButton>
+                </template>
+            </UserProfileContentContainer>
         </div>
     </div>
 </template>
 
 <style scoped>
-.checkbox {
-    display: none;
-}
-.label {
-    border: 1px solid #0d9aa6;
-    display: inline-block;
-    background: white;
-    opacity: 1;
-    /* background: url("unchecked.png") no-repeat left center; */
-    /* padding-left: 15px; */
-}
-input[type=checkbox]:checked + .label {
-    background: #55c5c9;
 
-    opacity: 1;
-    /* background-image: url("checked.png"); */
-}
 </style>

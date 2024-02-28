@@ -116,7 +116,6 @@ const handleChangeColorTheme = (newColor) => {
     colorTheme.value = newColor
 }
 
-
 /**
  * Handle Event emitted from children containing type {logo,coverImage} and Image file
  * @param {String} type
@@ -145,7 +144,6 @@ const coverImageLink = computed(() => {
         return;
     }
 });
-
 
 // Submenu specific codes
 const schoolSubmenu = [

@@ -1,68 +1,87 @@
-import Logo2 from '@/assets/images/userProfile/eng.png'
-import Logo1 from '@/assets/images/userProfile/english-language.png'
-import Logo3 from '@/assets/images/userProfile/icons8-book-100.png'
+import InterestArIcon from '@/js/components/userprofile/userprofileupdate/svgcomponents/InterestArIcon.vue'
+import InterestAvSystemsIcon from '@/js/components/userprofile/userprofileupdate/svgcomponents/InterestAvSystemsIcon.vue'
+import InterestDronesIcon from '@/js/components/userprofile/userprofileupdate/svgcomponents/InterestDronesIcon.vue'
+import InterestIotIcon from '@/js/components/userprofile/userprofileupdate/svgcomponents/InterestIotIcon.vue'
+import InterestRoboticsIcon from '@/js/components/userprofile/userprofileupdate/svgcomponents/InterestRoboticsIcon.vue'
+import InterestVrIcon from '@/js/components/userprofile/userprofileupdate/svgcomponents/InterestVrIcon.vue'
+import SubjectEnglishIcon from '@/js/components/userprofile/userprofileupdate/svgcomponents/SubjectEnglishIcon.vue'
+import SubjectHASSIcon from '@/js/components/userprofile/userprofileupdate/svgcomponents/SubjectHASSIcon.vue'
+import SubjectHealthAndPEIcon from '@/js/components/userprofile/userprofileupdate/svgcomponents/SubjectHealthAndPEIcon.vue'
+import SubjectLanguagesIcon from '@/js/components/userprofile/userprofileupdate/svgcomponents/SubjectLanguagesIcon.vue'
+import SubjectMathematicsIcon from '@/js/components/userprofile/userprofileupdate/svgcomponents/SubjectMathematicsIcon.vue'
+import SubjectScienceIcon from '@/js/components/userprofile/userprofileupdate/svgcomponents/SubjectScienceIcon.vue'
+import SubjectTechnologiesIcon from '@/js/components/userprofile/userprofileupdate/svgcomponents/SubjectTechnologiesIcon.vue'
+import SubjectTheArtsIcon from '@/js/components/userprofile/userprofileupdate/svgcomponents/SubjectTheArtsIcon.vue'
+import SubjectWorkStudiesIcon from '@/js/components/userprofile/userprofileupdate/svgcomponents/SubjectWorkStudiesIcon.vue'
+
 export const AvailableSubjectsList = [{
         name: 'English',
         description: '',
         category: '',
         provider: '',
-        svg: Logo1
+        svgComponent: SubjectEnglishIcon
     },
     {
         name: 'Mathematics',
         description: '',
         category: '',
         provider: '',
-        svg: Logo2
+        svgComponent: SubjectMathematicsIcon
     },
     {
         name: 'Science',
         description: '',
         category: '',
         provider: '',
-        svg: Logo3
+        svgComponent: SubjectScienceIcon
     },
     {
         name: 'HASS',
         description: '',
         category: '',
         provider: '',
-        svg: Logo1
+        svgComponent: SubjectHASSIcon
+
     },
     {
         name: 'The Arts',
         description: '',
         category: '',
         provider: '',
-        svg: Logo2
+        svgComponent: SubjectTheArtsIcon
+
     },
     {
         name: 'Technologies',
         description: '',
         category: '',
         provider: '',
-        svg: Logo3
+        svgComponent: SubjectTechnologiesIcon
+
     },
     {
         name: 'Health and PE',
         description: '',
         category: '',
         provider: '',
-        svg: Logo1
+        svgComponent: SubjectHealthAndPEIcon
+
     },
     {
         name: 'Languages',
         description: '',
         category: '',
         provider: '',
-        svg: Logo1
+        svgComponent: SubjectLanguagesIcon
+
     },
     {
         name: 'Work Studies',
         description: '',
         category: '',
         provider: '',
-        svg: Logo2
+        svgComponent: SubjectWorkStudiesIcon
+
     }
 ]
 
@@ -71,42 +90,44 @@ export const AvailableInterestsList = [{
         description: '',
         category: '',
         provider: 'department',
-        svg: Logo1
+        svgComponent: InterestDronesIcon
     },
     {
         name: 'VR',
         description: '',
         category: '',
         provider: '',
-        svg: Logo2
+        svgComponent: InterestVrIcon,
+        svgCustomSelectedClass: 'fill-main-darkTeal',
+        svgCustomUnSelectedClass: 'fill-[#344054]'
     },
     {
         name: 'AR',
         description: '',
         category: '',
         provider: '',
-        svg: Logo3
+        svgComponent: InterestArIcon
     },
     {
         name: 'Robotics',
         description: '',
         category: '',
         provider: '',
-        svg: Logo1
+        svgComponent: InterestRoboticsIcon
     },
     {
         name: 'AV systems',
         description: '',
         category: '',
         provider: '',
-        svg: Logo2
+        svgComponent: InterestAvSystemsIcon
     },
     {
         name: 'IoT',
         description: '',
         category: '',
         provider: '',
-        svg: Logo3
+        svgComponent: InterestIotIcon
     }
 ]
 

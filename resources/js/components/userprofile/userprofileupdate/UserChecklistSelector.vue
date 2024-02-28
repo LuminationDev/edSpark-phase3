@@ -29,30 +29,29 @@ const handleClickItem = (itemName) =>{
     }
     emitNewItemsToParent()
 }
+// To deteremine the item is selected for checkbox
+const isSelected = (item) => selectedValues.value.includes(item.name)
 
-//custom backgrond color for the selected items
-const selectedItemBackgroundClass = (item) => {
-    if(selectedValues.value.includes(item)){
-        return 'bg-red-400'
-    } else{
-        return ''
-    }
-}
-
+// To get the checkbox state for an item
+const getCheckboxState = (item) => isSelected(item)
 </script>
 
 <template>
     <div
         v-for="(item, index) in availableItems"
         :key="index"
-        class="cursor-pointer flex flex-row mb-10 w-[7em]"
+        class="cursor-pointer flex flex-row gap-6 mb-10 w-[7em]"
+        @click="() => handleClickItem(item.name)"
     >
-        <div
-            class="CheckListSelector border-2 cursor-pointer h-6 mb-auto ml-2 mt-auto w-6"
-            :class="selectedItemBackgroundClass(item.name)"
-            @click="() => handleClickItem(item.name)"
-        />
-        <div class="align-right ml-4 text-lg">
+        <div class="CheckListSelector mt-1">
+            <input
+                :checked="getCheckboxState(item)"
+                type="checkbox"
+                class="absolute bg-gray-10 dark:bg-gray-700 border-gray-300 dark:border-gray-600 h-5 rounded w-5"
+                style="color: #0A7982;"
+            >
+        </div>
+        <div class="align-right ml-3 text-lg">
             {{ item.name }}
         </div>
     </div>

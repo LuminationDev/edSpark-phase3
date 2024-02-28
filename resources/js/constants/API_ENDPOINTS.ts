@@ -18,7 +18,6 @@ const appendServerURL = (endpoints: Endpoints): Endpoints => {
             result[group][key] = `${serverURL}${path}`;
         }
     }
-
     return result;
 };
 export const API_ENDPOINTS: Endpoints = appendServerURL({
@@ -128,8 +127,6 @@ export const API_ENDPOINTS: Endpoints = appendServerURL({
     LABEL: {
         FETCH_ALL_LABELS: '/fetchAllLabels'
     },
-
-
     SEARCH: {
         SEARCH_ALL: `/search/`
     },
@@ -138,6 +135,9 @@ export const API_ENDPOINTS: Endpoints = appendServerURL({
     },
     FEEDBACK: {
         CREATE_FEEDBACK: '/createFeedback'
+    },
+    USERAVATAR:{
+        UPDATE_OR_CREATE_USER_AVATAR: '/updateOrCreateUserAvatar/'
     }
 })
 
@@ -150,6 +150,5 @@ export const IMAGE_ENDPOINTS = {
         UPLOAD_IMAGE: `${imageUploadURL}/imageUpload`,
         IMAGE_UPLOAD_EDITOR_JS: `${imageUploadURL}/imageUploadEditorjs`,
         IMAGE_UPLOAD_TINYMCE: `${imageUploadURL}/imageUploadTinyMCEjs`
-
     }
 }

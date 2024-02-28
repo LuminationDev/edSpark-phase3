@@ -1,8 +1,6 @@
 <script setup lang="ts">
 import {computed, defineEmits, defineProps, ref} from "vue";
 
-import {schoolColorKeys, schoolColorTheme} from "@/js/constants/schoolColorTheme";
-
 //important props used to import data from UserProfileSelectionMenu
 const props = defineProps({
     availableItems:{
@@ -23,14 +21,14 @@ const colorTheme = ref("peach")
 const selectedValues = ref(props.selectedItems)
 
 //give custom background to the layout
-const customBackground = computed(() => {
-    if (schoolColorKeys.includes(colorTheme)) {
-        return `bg-[${schoolColorTheme[colorTheme]["light"]}]`
-    } else {
-        return `bg-[${schoolColorTheme["peach"]["light"]}] fill
-        -[${schoolColorTheme["peach"]["med"]}]`
-    }
-})
+// const customBackground = computed(() => {
+//     if (schoolColorKeys.includes(colorTheme)) {
+//         return `bg-[${schoolColorTheme[colorTheme]["light"]}]`
+//     } else {
+//         return `bg-[${schoolColorTheme["peach"]["light"]}] fill
+//         -[${schoolColorTheme["peach"]["med"]}]`
+//     }
+// })
 const emitNewItemsToParent = () =>{
     emits('sendSelectedValues', selectedValues.value)
 }
@@ -45,34 +43,72 @@ const handleClickItem = (itemName) =>{
     emitNewItemsToParent()
 }
 
+//custom border color and other settings for the selected items
 //custom backgrond color for the selected items
 const selectedValueBackgroundClass = (item) => {
-    if(selectedValues.value.includes(item)){
-        return 'bg-yellow-400'
-    } else{
+    if (selectedValues.value.includes(item)) {
+        return 'border-[#339999] border-[2px] cursor-pointer h-36 rounded-2xl text-white w-36 ml-[-2px] mt-[-2px]'
+    } else {
         return ''
     }
 }
+const selectedValueSvgColorClass = (item, svgCustomSelectedClass, svgCustomUnSelectedClass) => {
+    if (selectedValues.value.includes(item)) {
+        return `stroke-main-darkTeal ${svgCustomSelectedClass}`
+    } else {
+        return `stroke-[#344054] ${svgCustomUnSelectedClass}`
+    }
+}
+const selectedValueTextColorClass = (item) => {
+    if (selectedValues.value.includes(item)) {
+        return 'text-main-darkTeal'
+    } else {
+        return `text-[#344054]`
+    }
+}
+
+// To deteremine the item is selected for checkbox
+const isSelected = (item) => selectedValues.value.includes(item.name)
+
+// To get the checkbox state for an item
+const getCheckboxState = (item) => isSelected(item)
+
+
 
 </script>
 
 <template>
-    <div class="grid grid-cols-5 gap-[2%]">
+    <div class="grid grid-cols-5 gap-8 mb-16">
         <div
             v-for="(item, index) in availableItems"
             :key="index"
-            class="cursor-pointer h-full rounded-2xl text-white w-full hover:!bg-adminTeal hover:shadow-2xl"
-            :class="customBackground"
+            class="!border-gray-250 hover:!border-[#339999] border-[2px] cursor-pointer h-36 rounded-2xl text-white w-36"
         >
             <div
-                class="rounded-2xl text-lg"
+                class="flex flex-col text-lg"
                 :class="selectedValueBackgroundClass(item.name)"
                 @click="() => handleClickItem(item.name)"
             >
-                <img
-                    :src="item.svg"
-                    class="items-center p-6"
+                <div class="ml-auto mr-6 mt-2">
+                    <input
+                        :checked="getCheckboxState(item)"
+                        type="checkbox"
+                        class="absolute bg-gray-10 dark:bg-gray-700 border-gray-300 dark:border-gray-600 h-5 rounded w-5"
+                        style="color: #0A7982;"
+                    >
+                </div>
+                <div class="cardIconDynamicComponent ml-auto mr-auto p-4">
+                    <component
+                        :is="item.svgComponent"
+                        :class="selectedValueSvgColorClass(item.name , item.svgCustomSelectedClass || '', item.svgCustomUnSelectedClass || '')"
+                    />
+                </div>
+                <div
+                    class="ml-auto mr-auto text-xl"
+                    :class="selectedValueTextColorClass(item.name)"
                 >
+                    {{ item.name }}
+                </div>
             </div>
         </div>
     </div>
@@ -80,7 +116,6 @@ const selectedValueBackgroundClass = (item) => {
 </template>
 
 <style scoped>
-.selected {
-    background-color: lightblue;
-}
+
+
 </style>
