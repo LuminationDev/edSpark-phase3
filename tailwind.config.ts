@@ -88,7 +88,7 @@ module.exports = {
                 main: {
                     navy: '#002858', //was rgba(0, 40, 88, 1)',
                     darkTeal: '#0A7982',
-                    teal: '#097982', //was '#339999',
+                    teal: '#339999', //was '#339999',
                     lightTeal: '#28D5CB',
                     darkGrey: '#232323'
                 },
@@ -115,7 +115,7 @@ module.exports = {
                     blueberry: '#0072DA',
                     teal: '#319795',
                     navy: '#002858',
-                    grapeDark: '#6d469c'
+                    grapeDark: '#6D469C'
 
                 },
                 custom: {

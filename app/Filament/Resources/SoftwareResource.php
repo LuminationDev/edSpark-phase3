@@ -23,6 +23,7 @@ use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 use Mohamedsabil83\FilamentFormsTinyeditor\Components\TinyEditor;
+use PhpOffice\PhpSpreadsheet\Calculation\Statistical\Distributions\F;
 use SplFileInfo;
 
 
@@ -50,7 +51,7 @@ class SoftwareResource extends Resource
                 ->label("Labels - {$category}")
                 ->extraAttributes(['class' => 'text-primary-600'])
                 ->options($labels->pluck('value', 'id')->toArray())
-                ->relationship('labels', 'value',function ($query) use ($category) {
+                ->relationship('labels', 'value', function ($query) use ($category) {
                     $query->where('type', $category)->orderByRaw('CAST(labels.id AS SIGNED)');
                 })
                 ->columns(3);
@@ -116,7 +117,14 @@ class SoftwareResource extends Resource
                             ->placeholder('Add or create tags')
                             ->helperText('Press enter after each tag')
                     ]),
-
+                Forms\Components\Card::make()
+                    ->schema([
+                        TinyEditor::make('how_to_access')
+                            ->label('How to access')
+                            ->fileAttachmentsDisk('local')
+                            ->fileAttachmentsVisibility('public')
+                            ->fileAttachmentsDirectory('public/uploads/software'),
+                    ]),
                 Forms\Components\Card::make()
                     ->schema([
                         Forms\Components\Builder::make('extra_content')
@@ -134,6 +142,7 @@ class SoftwareResource extends Resource
                             ->label('Extra content')
 
                     ])
+
 
             ]);
     }
@@ -194,9 +203,9 @@ class SoftwareResource extends Resource
                     ->label('Status')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('created_at')
-                    ->dateTime(),
+                    ->dateTime('j M y, h:i a'),
                 Tables\Columns\TextColumn::make('updated_at')
-                    ->dateTime(),
+                    ->dateTime('j M y, h:i a'),
             ])
             ->filters([
                 Tables\Filters\SelectFilter::make('status')

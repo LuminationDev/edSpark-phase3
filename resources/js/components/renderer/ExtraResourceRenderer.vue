@@ -1,5 +1,6 @@
 <script setup>
 import purify from "dompurify";
+import {computed} from "vue";
 
 import {edSparkContentSanitizer} from "@/js/helpers/objectHelpers";
 
@@ -12,30 +13,47 @@ const props = defineProps({
         type: String,
         required: false,
         default: ''
+    },
+    itemBackColor:{
+        type: String,
+        required: false,
+        default: ''
     }
 });
+console.log(props.itemBackColor)
 
+const extraResourceBackground = computed(() =>{
+    if (props.itemBackColor){
+        return `bg-[${props.itemBackColor}] `
+    } else{
+        return 'bg-main-navy'
+    }
+})
 </script>
 
 <template>
-    <div class="extraResourcesRenderer mt-4 w-full">
-        <div class="flex flex-row gap-4 mb-2 place-items-baseline">
-            <h1 class="font-bold text-2xl text-black whitespace-nowrap">
-                {{ props.itemTitle || "Extra Resources" }}
-            </h1>
-            <div class="bg-black h-1 w-full" />
-        </div>
-
-        <div class="bg-main-navy px-6 py-6 text-white">
+    <div class="extraResourcesRenderer mb-10 mt-4 w-full">
+        <div
+            class="px-6 py-6 text-white"
+            :class="extraResourceBackground"
+        >
+            <div class="flex flex-row gap-4 pb-6 place-items-baseline">
+                <h1
+                    class="font-bold text-3xl whitespace-nowrap"
+                >
+                    {{ props.itemTitle || "Extra Resources" }}
+                </h1>
+                <div class="bg-white h-1 w-full" />
+            </div>
             <template
                 v-for="(res,index) in itemArray"
                 :key="index"
             >
-                <h3 class="font-bold mb-3 text-2xl">
+                <h3 class="font-bold mb-2 text-xl">
                     {{ res.heading }}
                 </h3>
                 <div
-                    class="flex flex-col"
+                    class="flex flex-col mb-5"
                     v-html="edSparkContentSanitizer(res.content)"
                 />
             </template>

@@ -11,6 +11,7 @@ import CardLoading from "@/js/components/card/CardLoading.vue";
 import PartnerCard from "@/js/components/partners/PartnerCard.vue";
 import Loader from "@/js/components/spinner/Loader.vue";
 import HardwareRobot from "@/js/components/svg/hardwareRobot/HardwareRobot.vue";
+import RobotEvents from "@/js/components/svg/RobotEvents.vue";
 import {API_ENDPOINTS} from "@/js/constants/API_ENDPOINTS";
 import {LandingHeroText} from "@/js/constants/PageBlurb";
 import {cardDataWithGuid} from "@/js/helpers/cardDataHelper";
@@ -45,11 +46,11 @@ onMounted(() => {
         :title="LandingHeroText['event']['title']"
         :title-paragraph="LandingHeroText['event']['subtitle']"
         background-color="blue"
-        swoosh-color="blue"
+        swoosh-color="partnerBlue"
     >
         <template #robotIllustration>
-            <HardwareRobot
-                class="absolute top-10 left-32 scale-125"
+            <RobotEvents
+                class="absolute top-16 left-32 scale-120 py-4"
             />
             <!--            <img-->
             <!--                class="absolute top-32 left-36 scale-150"-->

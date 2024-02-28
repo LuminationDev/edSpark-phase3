@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import {onMounted, ref} from 'vue';
+
 import ChevronRightNavIcon from "@/js/components/svg/ChevronRightNavIcon.vue";
 
 const props = defineProps({
@@ -105,7 +106,7 @@ const handleDropdownToggle = () : void => {
         @click="props.clickCallback"
     >
         <router-link
-            :to="route.path ? {path:route.path} : { name: route.name }"
+            :to="{name: route.name}"
             class="flex py-4"
         >
             {{ route.meta.customText ?? route.name }}

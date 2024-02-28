@@ -19,7 +19,7 @@ const isLoading = computed(() => {
 </script>
 <template>
     <div
-        class="BaseLandingCardRowContainer grid grid-cols-1 gap-10 place-items-center mt-10 md:!grid-cols-2 lg:!grid-cols-3"
+        class="BaseLandingCardRowContainer grid grid-cols-1 gap-10 place-items-center  md:!grid-cols-2 lg:!grid-cols-3"
     >
         <template v-if="isLoading">
             <div

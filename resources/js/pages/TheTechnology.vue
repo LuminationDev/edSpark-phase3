@@ -15,7 +15,7 @@ import SoftwareIllustration from "@/js/components/dashboard/SoftwareIllustration
 import HardwareCard from "@/js/components/hardware/HardwareCard.vue";
 import SoftwareCard from "@/js/components/software/SoftwareCard.vue";
 import Loader from "@/js/components/spinner/Loader.vue";
-import SoftwareRobot from "@/js/components/svg/software/SoftwareRobot.vue";
+import HardwareRobot from "@/js/components/svg/hardwareRobot/HardwareRobot.vue";
 import {API_ENDPOINTS} from "@/js/constants/API_ENDPOINTS";
 import {LandingHeroText} from "@/js/constants/PageBlurb";
 import {cardDataWithGuid, getNRandomElementsFromArray} from "@/js/helpers/cardDataHelper";
@@ -57,11 +57,12 @@ const handleClickPopularTech = (techId, title) => {
     <BaseLandingHero
         :title="LandingHeroText['technology']['title']"
         :title-paragraph="LandingHeroText['technology']['subtitle']"
-        background-color="purple"
-        swoosh-color="purple"
+        background-color="technologyPurple"
+        swoosh-color="technologyPurple"
     >
         <template #robotIllustration>
-            <SoftwareRobot class="absolute top-10 left-36" />
+            <HardwareRobot 
+                class="absolute top-16 left-32 scale-125 py-4" />
         </template>
     </BaseLandingHero>
     <BaseLandingSection background-color="white">
@@ -72,18 +73,18 @@ const handleClickPopularTech = (techId, title) => {
             <PopularResourceShortcuts
                 v-if="allSoftware && allSoftware.length"
                 :resource-list="allSoftware"
-                border-color="purple"
+                border-color="technologyPurple"
                 :resource-click-callback="handleClickPopularTech"
             />
             <Loader
                 v-else
-                loader-message="loading popular resource"
+                loader-message="Loading popular resource"
                 loader-type="small"
             />
         </template>
     </BaseLandingSection>
     <BaseLandingSection
-        background-color="purple"
+        background-color="technologyPurple"
     >
         <template #title>
             Latest technology
@@ -164,7 +165,7 @@ const handleClickPopularTech = (techId, title) => {
         </template>
     </BaseLandingSection>
 
-    <BaseLandingSection background-color="purple">
+    <BaseLandingSection background-color="technologyPurple">
         <template #title>
             Technology guides and resources
         </template>

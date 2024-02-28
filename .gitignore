@@ -28,3 +28,5 @@ web/
 .env.orig-10-8-23
 resources/css/output.css
 storage/uploads
+resources/css/output.css
+composer.lock

@@ -205,7 +205,7 @@ class RolesResource extends Resource
     //                 // ->counts('permissions')
     //                 ->colors(['success']),
     //             Tables\Columns\TextColumn::make('updated_at')
-    //                 ->dateTime(),
+    //                 ->dateTime('j M y, h:i a'),
 
 
     //         ])

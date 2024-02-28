@@ -23,6 +23,11 @@ class ResponseService
     {
         return self::sendResponse($status, $message, null, $error);
     }
+
+    public static function error_unauthorized()
+    {
+        return self::sendResponse(401, 'Unauthorized');
+    }
 }
 
 

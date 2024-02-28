@@ -6,7 +6,6 @@ import AdviceForm from "@/js/components/bases/frontendform/types/AdviceForm.vue"
 import EventForm from "@/js/components/bases/frontendform/types/EventForm.vue";
 import SoftwareForm from "@/js/components/bases/frontendform/types/SoftwareForm.vue";
 import UserPosts from "@/js/components/create/UserPosts.vue";
-import InspirationAndGuidesRobot from "@/js/components/inspirationandguides/InspirationAndGuidesRobot.vue";
 import AdviceSearch from "@/js/components/search/AdviceSearch.vue";
 import EventSearch from "@/js/components/search/EventSearch.vue";
 import HardwareSearch from "@/js/components/search/HardwareSearch.vue";
@@ -20,6 +19,7 @@ import ProfileWork from '@/js/components/userprofile/ProfileWork.vue'
 import UserProfile from '@/js/components/userprofile/UserProfile.vue';
 import AdviceSingle from "@/js/pages/AdviceSingle.vue";
 import CatalogueSingle from "@/js/pages/CatalogueSingle.vue";
+import DMA from "@/js/pages/DMA.vue";
 import EdsparkPageNotFound from "@/js/pages/EdsparkPageNotFound.vue";
 import EventSingle from "@/js/pages/EventSingle.vue";
 import HardwareSingle from '@/js/pages/HardwareSingle.vue';
@@ -73,7 +73,7 @@ const routes: any = [
             customText: "Home"
         } as RouteMeta
     },
-    
+
     {
         name: 'create-pages',
         path: '/create',
@@ -129,7 +129,7 @@ const routes: any = [
         },
         children: [
             {
-                name: "InspirationGuides",
+                name: "Inspiration & guides",
                 path: "",
                 component: InspirationAndGuides,
                 meta: {
@@ -153,10 +153,10 @@ const routes: any = [
             {
                 name: 'DMA',
                 path: 'dma',
-                component: DashboardNew,
+                component: DMA,
                 meta: {
                     requiresAuth: true,
-                    customText: 'Assess your digital maturity (coming soon)',
+                    customText: 'Assess your digital maturity',
                     navigation: true
 
                 } as RouteMeta
@@ -180,7 +180,7 @@ const routes: any = [
         },
         children: [
             {
-                name: "TechnologyHome",
+                name: "Technology Hub",
                 path: "",
                 component: TheTechnology,
                 meta: {
@@ -509,6 +509,7 @@ router.beforeEach(async (to, from, next) => {
             if (authStore.isAuthenticated) {
                 next();
             } else {
+                console.log("Auth promise false");
                 console.log(authStore.isAuthenticated)
                 window.location = '/login'
             }
@@ -517,6 +518,7 @@ router.beforeEach(async (to, from, next) => {
         if (authStore.isAuthenticated) {
             next();
         } else {
+            console.log("Auth bool false");
             console.log(authStore.isAuthenticated)
             window.location = '/login'
         }

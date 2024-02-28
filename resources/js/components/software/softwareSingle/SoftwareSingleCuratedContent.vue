@@ -1,9 +1,10 @@
 <script setup>
-import {useSoftwareStore} from "@/js/stores/useSoftwareStore";
 import {storeToRefs} from "pinia";
 import {computed, onMounted} from "vue";
-import SoftwareCard from "@/js/components/software/SoftwareCard.vue";
 import {useRoute} from "vue-router";
+
+import SoftwareCard from "@/js/components/software/SoftwareCard.vue";
+import {useSoftwareStore} from "@/js/stores/useSoftwareStore";
 
 const route = useRoute()
 const softwareStore = useSoftwareStore()
@@ -13,12 +14,12 @@ const { relatedSoftware } = storeToRefs(softwareStore)
 <template>
     <div
         v-if="relatedSoftware && relatedSoftware.length > 0"
-        class="bg-secondary-coolGrey/20 flex justify-center items-center flex-col mt-8 px-4 py-10 rounded softwareSingleCuratedContentContainer xl:!ml-4 xl:!px-10"
+        class="flex flex-col mt-8 py-6 rounded softwareSingleCuratedContentContainer"
     >
-        <div class="curatedResourcesTitle font-bold pb-8 text-2xl text-center">
-            RELATED
+        <div class="curatedResourcesTitle font-bold pb-4 text-2xl">
+            Other similar resources
         </div>
-        <div class="flex flex-col gap-10 lg:!flex-row xl:!flex-col">
+        <div class="flex flex-row gap-10">
             <SoftwareCard
                 v-for="software in relatedSoftware"
                 :key="software.guid"
