@@ -165,7 +165,8 @@ const logoClass = computed(() => {
 }
 
 .nav-logo:hover {
-    filter: drop-shadow(0px 0px 15px rgba(0, 0, 0, 0.5));
+    /* filter: drop-shadow(0px 0px 15px rgba(0, 0, 0, 0.5)); */
+    filter: drop-shadow(0px 4px 5px rgba(0, 0, 0, 0.5));
 }
 
 /*.navbarFullsize {*/
