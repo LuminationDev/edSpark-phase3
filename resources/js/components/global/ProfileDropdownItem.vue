@@ -28,7 +28,7 @@ const props = defineProps({
                 flex
                 justify-start
                 flex-row
-                font-medium
+                font-light
                 place-items-center
                 px-2
                 py-3

@@ -85,7 +85,10 @@ class EventResource extends Resource
                         Forms\Components\Grid::make(2)
                             ->schema([
                                 Forms\Components\DateTimePicker::make('start_date')
-                                    ->required(),
+                                    ->required()
+                                ->seconds(false)
+                                ->native(false)
+                                ,
                                 Forms\Components\DateTimePicker::make('end_date')
                                     ->required(),
                             ]),
@@ -219,7 +222,7 @@ class EventResource extends Resource
                         'upcoming' => 'Upcoming Events',
                     ])
                     ->label('Event Date')
-                    ->default('all')
+                    ->default('upcoming')
                     ->attribute('start_date')
                     ->query(function (Builder $query, array $data): Builder {
                         $today = now()->toDateString();

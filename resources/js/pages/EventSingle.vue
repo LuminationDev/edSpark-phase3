@@ -1,5 +1,6 @@
 <script setup>
 import {useRouter} from "vue-router";
+import {ref} from 'vue';
 
 import BaseBreadcrumb from "@/js/components/bases/BaseBreadcrumb.vue";
 import BaseHero from "@/js/components/bases/BaseHero.vue";
@@ -11,6 +12,7 @@ import EventSingleExtraContentRenderer from "@/js/components/events/EventSingleE
 import EventsLocation from "@/js/components/events/EventsLocation.vue";
 import EventTypeTag from "@/js/components/events/EventTypeTag.vue";
 import LabelRowContentDisplay from "@/js/components/global/LabelRowContentDisplay.vue";
+import ExtraResourceTemplateDisplay from "@/js/components/renderer/ExtraResourceTemplateDisplay.vue";
 import CalendarIcon from "@/js/components/svg/event/CalendarIcon.vue";
 import LocationIcon from "@/js/components/svg/event/LocationIcon.vue";
 import TimeIcon from "@/js/components/svg/event/TimeIcon.vue";
@@ -18,22 +20,30 @@ import {edSparkContentSanitizer} from "@/js/helpers/objectHelpers";
 
 const router = useRouter()
 
+
+
 const handleClickViewProfile = (author_id, author_type) => {
     router.push(`/${author_type}/${author_id}`)
 }
 
+
+const colorTheme = ref('partnerBlue')
+
 </script>
 <template>
+
     <BaseSingle content-type="event">
         <template #hero="{contentFromBase}">
             <BaseHero
                 :background-url="contentFromBase['cover_image']"
+                :swoosh-color-theme="colorTheme"
             >
                 <template #breadcrumb>
                     <BaseBreadcrumb
                         :child-page="contentFromBase.title"
                         parent-page="Events"
                         parent-page-link="browse/event"
+                        :color-theme="colorTheme"
                     />
                 </template>
                 <template #titleText>
@@ -86,17 +96,17 @@ const handleClickViewProfile = (author_id, author_type) => {
                                 <div class="mb-2 text-2xl">
                                     {{ contentFromBase['author']['author_name'] }}
                                 </div>
-                                <div
-                                    v-if="!(contentFromBase['author']['author_type'] === 'user')"
-                                    class="hover:cursor-pointer"
-                                >
-                                    <button
-                                        class="bg-secondary-coolGrey px-3 py-1 rounded text-black text-sm"
-                                        @click="() => handleClickViewProfile(contentFromBase['author']['author_id'],contentFromBase['author']['author_type'])"
-                                    >
-                                        View profile
-                                    </button>
-                                </div>
+                                <!--                                <div-->
+                                <!--                                    v-if="!(contentFromBase['author']['author_type'] === 'user')"-->
+                                <!--                                    class="hover:cursor-pointer"-->
+                                <!--                                >-->
+                                <!--                                    <button-->
+                                <!--                                        class="bg-secondary-coolGrey px-3 py-1 rounded text-black text-sm"-->
+                                <!--                                        @click="() => handleClickViewProfile(contentFromBase['author']['author_id'],contentFromBase['author']['author_type'])"-->
+                                <!--                                    >-->
+                                <!--                                        View profile-->
+                                <!--                                    </button>-->
+                                <!--                                </div>-->
                             </div>
                         </div>
                     </div>
@@ -145,7 +155,7 @@ const handleClickViewProfile = (author_id, author_type) => {
 
         <template #content="{contentFromBase}">
             <div
-                class="eventSingleContent flex flex-col overflow-hidden px-8 w-full lg:!flex-row"
+                class="eventSingleContent font-light flex flex-col overflow-hidden px-8 w-full lg:!flex-row"
             >
                 <!--    Content of the Advice    -->
                 <div class="flex flex-col flex-wrap pl-6 px-12 w-full lg:!w-2/3">
@@ -153,12 +163,12 @@ const handleClickViewProfile = (author_id, author_type) => {
                         class="flex content-paragraph flex-col max-w-full overflow-hidden text-lg"
                         v-html="edSparkContentSanitizer(contentFromBase['content'])"
                     />
-                    <template
-                        v-for="(content,index) in contentFromBase['extra_content']"
-                        :key="index"
+                    <div
+                        v-if="contentFromBase['extra_content'] && contentFromBase['extra_content'].length"
+                        class="extraResourcesContainer mt-4 w-full"
                     >
-                        <EventSingleExtraContentRenderer :content="content" />
-                    </template>
+                        <ExtraResourceTemplateDisplay :content="contentFromBase['extra_content']" />
+                    </div>
                 </div>
                 <!--      Curated Content      -->
                 <div class="flex flex-col p-4 w-full lg:!w-1/3">

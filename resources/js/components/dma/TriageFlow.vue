@@ -23,6 +23,8 @@ const emit = defineEmits(['complete', 'error']);
 const triage = ref(null);
 // current triage question index
 const question = ref(null);
+// list of dependencies satisfied by triage answers
+const metDependencies = ref([]);
 // submitting is true while an answer is being submitted
 const submitting = ref(false);
 
@@ -39,6 +41,12 @@ onMounted(async () => {
 
 const handleAnswer = async (answer) => {
     submitting.value = true;
+
+    if(answer === 1) {
+        // add met dependency for this question
+        metDependencies.value.push(triage.value.domain_questions[question.value].generated_variable);
+    }
+
     const nextQuestionId =
         question.value < triage.value.domain_questions.length -1
             ? triage.value.domain_questions[question.value + 1].id
@@ -53,11 +61,10 @@ const handleAnswer = async (answer) => {
         nextQuestionId,
         nextQuestionId === null
     ).then((result) => {
-        console.log('triage answer submitted:', result);
         if(nextQuestionId !== null) {
             question.value += 1;
         } else {
-            emit('complete');
+            emit('complete', metDependencies.value);
         }
         submitting.value = false;
     }).catch((error) => {

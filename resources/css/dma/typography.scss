@@ -7,7 +7,7 @@
     .text-h1,
     .text-h1-caps {
         font-size: 40px;
-        font-weight: 600;
+        font-weight: 700;
         line-height: 1;
 
         @media screen and (min-width: $md-start) {
@@ -18,7 +18,7 @@
     .text-h2,
     .text-h2-caps {
         font-size: 32px;
-        font-weight: 600;
+        font-weight: 700;
         line-height: 1;
 
         @media screen and (min-width: $md-start) {
@@ -29,7 +29,7 @@
     .text-h3,
     .text-h3-caps {
         font-size: 20px;
-        font-weight: 600;
+        font-weight: 700;
         line-height: 1.1;
 
         @media screen and (min-width: $md-start) {
@@ -40,7 +40,7 @@
     .text-h4,
     .text-h4-caps {
         font-size: 18px;
-        font-weight: 600;
+        font-weight: 700;
         line-height: 1.2;
 
         @media screen and (min-width: $md-start) {
@@ -51,7 +51,7 @@
     .text-h5,
     .text-h5-caps {
         font-size: 14px;
-        font-weight: 600;
+        font-weight: 700;
         line-height: 1.3;
 
         @media screen and (min-width: $md-start) {
@@ -71,7 +71,7 @@
 
     .text-xLarge {
         font-size: 22px;
-        font-weight: 400;
+        font-weight: 500;
         line-height: 1.5;
         letter-spacing: initial;
 
@@ -82,7 +82,7 @@
 
     .text-large {
         font-size: 20px;
-        font-weight: 400;
+        font-weight: 500;
         line-height: 1.5;
         letter-spacing: initial;
 
@@ -93,7 +93,7 @@
 
     .text-medium {
         font-size: 18px;
-        font-weight: 400;
+        font-weight: 500;
         line-height: 1.5;
         letter-spacing: initial;
 
@@ -104,14 +104,14 @@
 
     .text-base {
         font-size: 16px;
-        font-weight: 400;
+        font-weight: 500;
         line-height: 1.5;
         letter-spacing: initial;
     }
 
     .text-small {
         font-size: 14px;
-        font-weight: 400;
+        font-weight: 500;
         line-height: 1.4;
         letter-spacing: initial;
     }
@@ -132,21 +132,21 @@
         .md\:text-h2,
         .md\:text-h2-caps {
             font-size: 64px;
-            font-weight: 600;
+            font-weight: 700;
             line-height: 1;
         }
 
         .md\:text-h3,
         .md\:text-h3-caps {
             font-size: 36px;
-            font-weight: 600;
+            font-weight: 700;
             line-height: 1.1;
         }
 
         .md\:text-h5,
         .md\:text-h5-caps {
             font-size: 36px;
-            font-weight: 600;
+            font-weight: 700;
             line-height: 1.1;
         }
 
@@ -158,14 +158,14 @@
 
         .md\:text-medium {
             font-size: 20px;
-            font-weight: 400;
+            font-weight: 500;
             line-height: 1.5;
             letter-spacing: initial;
         }
 
         .md\:text-base {
             font-size: 16px;
-            font-weight: 400;
+            font-weight: 500;
             line-height: 1.5;
             letter-spacing: initial;
         }
@@ -175,14 +175,14 @@
         .lg\:text-h1,
         .lg\:text-h1-caps {
             font-size: 96px;
-            font-weight: 600;
+            font-weight: 700;
             line-height: 1;
         }
 
         .lg\:text-h2,
         .lg\:text-h2-caps {
             font-size: 64px;
-            font-weight: 600;
+            font-weight: 700;
             line-height: 1.2;
         }
 
@@ -193,17 +193,30 @@
 
         .lg\:text-xLarge {
             font-size: 28px;
-            font-weight: 400;
+            font-weight: 500;
             line-height: 1.5;
             letter-spacing: initial;
         }
 
         .lg\:text-large {
             font-size: 24px;
-            font-weight: 400;
+            font-weight: 500;
             line-height: 1.5;
             letter-spacing: initial;
         }
+    }
+
+    .text-teaching {
+        color: var(--color-blue-dark);
+    }
+    .text-learning {
+        color: var(--color-cyan-dark);
+    }
+    .text-leading {
+        color: var(--color-red-dark);
+    }
+    .text-managing {
+        color: var(--color-orange-dark);
     }
 
     /**
@@ -220,13 +233,13 @@
     }
 
     .font-normal {
-        font-weight: 400;
+        font-weight: 500;
     }
     .font-medium {
         font-weight: 500;
     }
     .font-semibold {
-        font-weight: 600;
+        font-weight: 700;
     }
     .font-bold {
         font-weight: 700;

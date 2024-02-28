@@ -1,13 +1,16 @@
 @import "variables";
-@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap");
 
 .dma-app-root {
+    --color-blue-pale: #dce3f1;
     --color-blue: #6985b7;
     --color-blue-dark: #223c91;
+    --color-cyan-pale: #c7e1e3;
     --color-cyan: #5eadb2;
     --color-cyan-dark: #2898a9;
+    --color-orange-pale: #f6e6dd;
     --color-orange: #f4b07e;
     --color-orange-dark: #fd9141;
+    --color-red-pale: #f5e0e2;
     --color-red: #d8747f;
     --color-red-dark: #bc3242;
 
@@ -19,15 +22,11 @@
 
     --scrollbar-width: 14px;
 
-    font-family: "Poppins", sans-serif;
     font-size: 16px;
-    font-weight: 400;
+    font-weight: 300;
     font-style: normal;
     line-height: 1.4;
     color: var(--color-black-2);
-
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
 
     * {
         &::-webkit-scrollbar {

@@ -60,7 +60,7 @@ const handleClickViewProfile = (author_id, author_type) => {
 /**
  * End of submenu specific code  plus @emit-active-tab-to-specific-page in BaseSingle
  * */
-const colorTheme = ref('softwarePurple')
+const colorTheme = ref('technologyPurple')
 
 </script>
 
@@ -174,7 +174,16 @@ const colorTheme = ref('softwarePurple')
                 <template v-else-if="activeSubmenu === 'access'">
                     <div
                         v-if="contentFromBase['how_to_access']"
-                        class="flex flex-col mt-10 overflow-hidden pt-0 px-5 softwareSingleHowToAccess"
+                        class="
+                            flex
+                            flex-col
+                            mt-10
+                            overflow-hidden
+                            pt-0
+                            px-5
+                            richTextContentContainer
+                            softwareSingleHowToAccess
+                            "
                         v-html="edSparkContentSanitizer(contentFromBase['how_to_access'])"
                     />
                     <div
