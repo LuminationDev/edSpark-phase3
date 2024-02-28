@@ -20,8 +20,8 @@ const props = defineProps({
 </script>
 <template>
     <button
-        class="p-2 px-7 rounded-full text-button hover:active:brightness-75 hover:brightness-90"
-        :class="{'opacity-50': disabled}"
+        class="p-2 px-7 rounded-full text-button"
+        :class="{'opacity-50': disabled, 'hover:active:brightness-75': !disabled, 'hover:brightness-90':!disabled}"
         :style="{backgroundColor: props.color, color: props.textColor}"
         :disabled="disabled"
     >

@@ -10,14 +10,21 @@ const props = defineProps({
         default: 100,
     },
     scores: {
-        type: Array<any>, // TODO structured type: { domain, element, score }
+        type: Array<any>, // TODO structured type: { domain, element, score, selected }
         required: true,
+    },
+    clickable: {
+        type: Boolean,
+        default: false,
     }
 });
+
+const emit = defineEmits(['click']);
 
 const chartRef = ref(null);
 const tooltipRef = ref(null);
 const tooltipTarget = ref(null);
+const hoverElement = ref(null);
 
 const TAU = 2 * Math.PI;
 
@@ -39,10 +46,19 @@ const segments = computed(() => {
     for (let seg = 0; seg < num_angles; seg++) {
         for (let rad_index = 1; rad_index <= num_radii; ++rad_index) {
             const rad = rad_index + num_radii_to_skip;
-            const clazz = rad_index <= props.scores[seg].score ? props.scores[seg].domain : 'white';
+            const clazz = [
+                props.scores[seg].domain,
+                {
+                    'empty': rad_index > props.scores[seg].score,
+                    'cursor-pointer': props.clickable,
+                    'brightness-90': props.scores[seg].highlighted || hoverElement.value === props.scores[seg].element,
+                    'highlight': props.scores[seg].selected
+                }
+            ];
             arr.push({
                 id: `${seg}_${rad}`,
                 element: props.scores[seg].element,
+                element_index: seg,
                 inner_radius: ((radius * (rad - 1)) / (num_radii_actual)) + (padding/2),
                 outer_radius: ((radius * rad) / num_radii_actual) - (padding/2),
                 start_angle: (seg * TAU / num_angles) - angular_offset,
@@ -64,10 +80,19 @@ const handleShowTooltip = (event) => {
 
     tooltipRef.value.style.left = `${targetRect.left - screenRect.left +( targetRect.width / 2)}px`;
     tooltipRef.value.style.bottom = `${(screenRect.bottom - (targetRect.top))}px`;
+
+    if(props.clickable) {
+        hoverElement.value = event.target.dataset.label;
+    }
 }
 const handleHideTooltip = () => {
     tooltipTarget.value = null;
     tooltipRef.value.style.display = 'none';
+    hoverElement.value = null;
+}
+
+const handleClickSegment = (segment) => {
+    emit('click',props.scores[segment.element_index]);
 }
 
 </script>
@@ -91,6 +116,7 @@ const handleHideTooltip = () => {
                     :y_offset="segment.y_offset"
                     @mouseover="handleShowTooltip"
                     @mouseout="handleHideTooltip"
+                    @click="handleClickSegment(segment)"
                 />
             </g>
 
@@ -141,21 +167,45 @@ const handleHideTooltip = () => {
 
 .teaching {
     fill: var(--color-blue);
+    &.highlight {
+      fill: var(--color-blue-dark);
+      &.empty {
+        fill: var(--color-blue-pale);
+      }
+    }
 }
 
 .learning {
     fill: var(--color-cyan);
+    &.highlight {
+      fill: var(--color-cyan-dark);
+      &.empty {
+        fill: var(--color-cyan-pale);
+      }
+    }
 }
 
 .leading {
     fill: var(--color-red);
+    &.highlight {
+      fill: var(--color-red-dark);
+      &.empty {
+        fill: var(--color-red-pale);
+      }
+    }
 }
 
 .managing {
     fill: var(--color-orange);
+    &.highlight {
+      fill: var(--color-orange-dark);
+      &.empty {
+        fill: var(--color-orange-pale);
+      }
+    }
 }
 
-.white {
+.empty {
     fill: white;
 }
 

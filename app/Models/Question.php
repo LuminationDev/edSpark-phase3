@@ -15,11 +15,8 @@ class Question extends Model
         'created_at',
         'survey_id',
         'domain',
-        "generated_variable",
         "domain_print",
-        "advice",
         "variable_suffix",
-        "dependencies",
         "phase_description",
         "element_description",
     ];
