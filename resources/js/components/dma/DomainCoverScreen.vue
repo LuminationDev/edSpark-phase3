@@ -183,7 +183,7 @@ const elements = computed(() => {
             v-if="showResetModal"
             embed
             @cancel="showResetModal=false"
-            @reset="handleResetDomain"
+            @confirm="handleResetDomain"
         >
             <template #title>
                 Are you sure?

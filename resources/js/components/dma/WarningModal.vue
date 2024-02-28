@@ -13,7 +13,7 @@ const props = defineProps({
     }
 })
 
-const emit = defineEmits(['cancel','reset']);
+const emit = defineEmits(['cancel','confirm']);
 
 </script>
 
@@ -41,7 +41,7 @@ const emit = defineEmits(['cancel','reset']);
                 <RoundButton
                     color="orangered"
                     text-color="white"
-                    @click="emit('reset')"
+                    @click="emit('confirm')"
                 >
                     <slot name="confirm">
                         OK
