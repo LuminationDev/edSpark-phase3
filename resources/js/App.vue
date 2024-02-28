@@ -127,13 +127,11 @@ onBeforeUnmount(() => {
 <template>
     <div>
         <div
-
-            class="relative w-full z-50"
+            class="mobileBody relative w-full z-50"
         >
             <Navbar
                 :key="router.currentRoute.value"
             />
-
             <NavbarMobileMenu
                 v-if="isMobile"
             />

@@ -142,6 +142,15 @@ const toggleNavbar = () => {
     showMobileNavbar.value = !showMobileNavbar.value
     mobileNavParent.value = ''
     mobileNavChildren.value = []
+
+    if(showMobileNavbar.value){        
+        document.body.classList.add('overflow-y-hidden');
+        document.body.classList.add('h-screen');
+    } else {
+        document.body.classList.remove('overflow-y-hidden');
+        document.body.classList.remove('h-screen');
+    }
+    
 }
 
 const handleClickBackNavbar = () => {
@@ -186,9 +195,10 @@ setupRoutes();
             class="
                 bg-main-navy
                 fixed
+                overflow-y-auto
                 top-0
                 left-0
-                h-screen
+                h-full
                 min-w-[300px]
                 max-w-[800px]
                 mobileNavbarFull
@@ -205,7 +215,7 @@ setupRoutes();
             <!--            Main Listing Condition    -->
             <ul
                 v-if="!mobileNavChildren.length && !mobileNavParent"
-                class="flex flex-col font-regular text-xl text-white"
+                class="flex flex-col font-light text-xl text-white"
             >
                 <li
                     class="cursor-pointer font-bold ml-auto text-2xl hover:text-main-teal"
@@ -219,7 +229,7 @@ setupRoutes();
                             title="Go to dashboard"
                         >
                             <Logo
-                                class="absolute top-8 left-5 h-16 nav-logo transition-all w-16 z-30"
+                                class="absolute top-4 left-5 h-16 nav-logo transition-all w-16 z-30"
                             />
                         </router-link>
                     </div>
@@ -335,7 +345,7 @@ setupRoutes();
     </Transition>
     <div
         v-if="showMobileNavbar"
-        class="absolute top-0 right-0 bg-main-navy/50 h-screen overlay w-[70vw] z-50"
+        class="absolute top-0 right-0 bg-main-navy/50 h-screen w-screen overlay z-50"
         @click="toggleNavbar"
     />
 </template>

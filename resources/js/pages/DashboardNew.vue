@@ -59,6 +59,7 @@ onMounted(async () => {
 
 <template>
     <div>
+        
         <DashboardHero />
         <BaseLandingSection>
             <template #title>
