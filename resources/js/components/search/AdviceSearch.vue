@@ -62,6 +62,7 @@ if (route.params || route.params.filter) {
         :hero-title="LandingHeroText['guideSearch']['title']"
         :hero-subtitle="LandingHeroText['guideSearch']['subtitle']"
     >
+    
         <template #filterBar>
             <GenericMultiSelectFilter
                 id="adviceFilter"

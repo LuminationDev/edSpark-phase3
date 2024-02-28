@@ -9,6 +9,8 @@ import PopularResourceShortcuts from "@/js/components/bases/PopularResourceShort
 import GenericButton from "@/js/components/button/GenericButton.vue";
 import CaseStudyGuides from "@/js/components/inspirationandguides/CaseStudyGuides.vue";
 import DAGCardsRowGuides from "@/js/components/inspirationandguides/DAGCardsRowGuides.vue";
+import RobotSearch from "@/js/components/svg/RobotSearch.vue";
+import SoftwareRobot from "@/js/components/svg/software/SoftwareRobot.vue";
 import InspirationAndGuidesRobot from "@/js/components/inspirationandguides/InspirationAndGuidesRobot.vue";
 import SchoolProfileGuidesQuickFilters from "@/js/components/inspirationandguides/SchoolProfileGuidesQuickFilters.vue";
 import SchoolProfilesGuides from "@/js/components/inspirationandguides/SchoolProfilesGuides.vue";
@@ -52,6 +54,10 @@ const handleClickPopularGuides = (guideId, title) => {
         params: {id: guideId, slug: lowerSlugify(title)},
     })
 }
+
+const handleClickGoToDMA = () =>{
+    return router.push('/inspire/dma')
+}
 </script>
 
 <template>
@@ -60,9 +66,9 @@ const handleClickPopularGuides = (guideId, title) => {
         :title-paragraph="LandingHeroText['inspiration']['subtitle']"
         swoosh-color="teal"
     >
-        <template #robotIllustration>
-            <InspirationAndGuidesRobot class="absolute top-10 left-36" />
-        </template>
+    <template #robotIllustration>
+        <RobotSearch class="absolute top-16 left-36" />
+    </template>
     </BaseLandingHero>
     <BaseLandingSection>
         <template #title>
@@ -75,11 +81,10 @@ const handleClickPopularGuides = (guideId, title) => {
         </template>
         <template #button>
             <GenericButton
-                :callback="() => {}"
+                :callback="handleClickGoToDMA"
                 :type="'teal'"
-                :disabled="true"
             >
-                Coming soon
+                Go to DMA tool
             </GenericButton>
         </template>
     </BaseLandingSection>
@@ -103,7 +108,7 @@ const handleClickPopularGuides = (guideId, title) => {
             />
             <Loader
                 v-else
-                loader-message="loading popular guides"
+                loader-message="Loading popular guides"
                 loader-type="small"
             />
         </template>

@@ -6,9 +6,14 @@ const props = defineProps({
     itemArray: {
         type: Array,
         required: true
+    },
+    itemTitle:{
+        type: String,
+        required: false,
+        default: ""
     }
 });
-
+console.log(props.itemTitle)
 const iconListContent = computed(() =>
     Array.isArray(props.itemArray) ? props.itemArray : Object.values(props.itemArray)
 );
@@ -71,54 +76,65 @@ const fontAwesomeDefaultColor = (itemColor) => {
 </script>
 
 <template>
-    <div class="extraContent relative">
+    <div class="extraContent mb-10 relative">
         <div
-            class="absolute left-[12.4%] bg-black connectingLine hidden w-1 z-10 md:!flex"
-            :style="`height: ${distanceBetweenEls}px; top: ${top}px;`"
+            class="absolute left-[12.4%] bg-black bg-secondary-blueberry connectingLine hidden w-0.5 z-10 md:!flex"
+            :style="`height: ${distanceBetweenEls}px; top: ${top+40}px;`"
         />
-        <div
-            v-for="(item,index) in iconListContent"
-            :key="index"
-            class="eachContent min-h-[180px] py-2 w-full"
-        >
-            <div class="flex flex-row w-full">
-                <div class="extraContentIcon hidden relative w-1/4  items-center justify-center md:!flex">
+        <div class="flex flex-col">
+            <div
+                v-if="props.itemTitle"
+                class="flex flex-row gap-4 mb-5 place-items-baseline"
+            >
+                <h1
+                    class="font-bold text-3xl whitespace-nowrap"
+                >
+                    {{ props.itemTitle }}
+                </h1>
+                <div class="bg-black h-1 w-full" />
+            </div>
+            <div
+                v-for="(item,index) in iconListContent"
+                :key="index"
+                class="eachContent min-h-[180px] py-2 w-full"
+            >
+                <div class="flex flex-row w-full">
+                    <div class="extraContentIcon hidden justify-center mt-6 relative w-1/4 md:!flex">
+                        <div
+                            class="
+                                absolute
+                                bg-white
+                                flex
+                                justify-center
+                                items-center
+                                rounded-full
+                                text-2xl
+                                w-16
+                                z-20
+                                md:!h-24
+                                md:!w-24
+                                "
+                            :class="uniqueContainerClass"
+                        >
+                            <FontAwesomeIcon
+                                :icon="`${fontAwesomeNameFormatter(item.icon)}`"
+                                class="h-full stroke-main-teal w-full"
+                                :color="fontAwesomeDefaultColor(item.color)"
+                            />
+                        </div>
+                    </div>
                     <div
-                        class="
-                            absolute
-                            bg-white
-                            border-4
-                            border-black
-                            flex
-                            justify-center
-                            items-center
-                            rounded-full
-                            text-2xl
-                            w-16
-                            z-20
-                            md:!h-24
-                            md:!w-24
-                            "
-                        :class="uniqueContainerClass"
+                        class="flex flex-col mt-6 w-full md:!w-3/4"
                     >
-                        <FontAwesomeIcon
-                            :icon="`${fontAwesomeNameFormatter(item.icon)}`"
-                            class="h-14 stroke-main-teal w-14"
-                            :color="fontAwesomeDefaultColor(item.color)"
+                        <div class="font-semibold heading mb-2 text-xl">
+                            {{ item.heading }}
+                        </div>
+
+                        <div
+                            class="flex flex-col htmlRenderer"
+                            v-html="item.content"
                         />
                     </div>
-                </div>
-                <div
-                    class="flex flex-col w-full md:!w-3/4"
-                >
-                    <div class="font-semibold heading mb-2 mt-6 text-xl">
-                        {{ item.heading }}
-                    </div>
-
-                    <div
-                        class="flex flex-col htmlRenderer"
-                        v-html="item.content"
-                    />
                 </div>
             </div>
         </div>

@@ -264,7 +264,7 @@ setupRoutes();
                         :is-router-link="false"
                     />
                     <div
-                        class="ml-6 searchText"
+                        class="ml-12 searchText"
                         @click="handleClickMobileProfile"
                     >
                         Profile

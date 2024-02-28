@@ -3,6 +3,7 @@ import purify from "dompurify";
 import { computed } from 'vue';
 
 import EventDateListRenderer from "@/js/components/events/Renderer/EventDateListRenderer.vue";
+import {edSparkContentSanitizer} from "@/js/helpers/objectHelpers";
 
 const props = defineProps({
     content: {
@@ -27,7 +28,7 @@ const itemArray = computed(() => {
             <EventDateListRenderer :item-array="itemArray" />
         </template>
         <template v-else>
-            <div v-html="purify.sanitize(itemArray)" />
+            <div v-html="edSparkContentSanitizer(itemArray)" />
         </template>
     </div>
 </template>

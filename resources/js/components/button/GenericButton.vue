@@ -34,7 +34,6 @@ const props = defineProps({
 })
 const onClick = async () => {
     spinner.value = true
-    console.log('inside on click')
     await asyncCall();
     spinner.value = false
 }
@@ -42,7 +41,6 @@ const onClick = async () => {
 const asyncCall = () => {
     return new Promise(async (resolve, reject) => {
         try {
-            console.log('before callback')
             const result = props.callback();
             if (result instanceof Promise) {
                 result.then(resolve).catch(reject);
@@ -67,10 +65,10 @@ const asyncCall = () => {
             'my-3 hover:bg-blue-400': type === 'school',
             'pointer-events-none !bg-slate-300': disabled,
             '!text-black bg-white border-0 !p-0': type === 'plain',
-            '!h-fit !text-white px-12 py-2 w-64' : type === 'teal',
-            '!h-fit !text-white px-12 py-2 w-64 !bg-secondary-grapeDark' : type === 'purple',
-            '!h-fit !text-white px-12 py-2 w-64 !bg-secondary-cherry' : type === 'red',
-            '!h-fit !text-white px-12 py-2 w-64 !bg-secondary-blueberry' : type === 'blue'
+            '!h-fit !text-white px-6 lg:!px-12 py-2 w-32 lg:!w-64' : type === 'teal',
+            '!h-fit !text-white px-6 lg:!px-12 py-2 w-32 lg:!w-64 bg-secondary-grapeDark' : type === 'purple',
+            '!h-fit !text-white px-6 lg:!px-12 py-2 w-32 lg:!w-64 bg-secondary-cherry' : type === 'red',
+            '!h-fit !text-white px-6 lg:!px-12 py-2 w-32 lg:!w-64 bg-secondary-blueberry' : type === 'blue'
         }"
         class="flex justify-center items-center p-2"
         :disabled="disabled"

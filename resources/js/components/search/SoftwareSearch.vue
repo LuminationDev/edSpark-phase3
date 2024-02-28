@@ -22,9 +22,9 @@ const {
 } = useSWRV(API_ENDPOINTS.SOFTWARE.FETCH_SOFTWARE_POSTS, axiosFetcher, swrvOptions)
 
 const softwareFilterList = [
-    {name: "Department Provided", value: "Department Provided"},
-    {name: "Department Approved", value: "Department Approved"},
-    {name: "Department Approved and Negotiated", value: "Approved and Negotiated"},
+    {name: "No cost", value: "No cost"},
+    {name: "Cyber Assessed", value: "Cyber Assessed"},
+    {name: "Negotiated Deals", value:"Negotiated Deals"},
 ]
 
 const filterObject = ref({})
@@ -65,7 +65,7 @@ if (route.params || route.params.filter) {
         :live-filter-object="filterObject"
         :hero-title="LandingHeroText['apps']['title']"
         :hero-subtitle="LandingHeroText['apps']['subtitle']"
-        hero-background-color="purple"
+        hero-background-color="technologyPurple"
     >
         <template #filterBar>
             <GenericMultiSelectFilter

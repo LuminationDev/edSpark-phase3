@@ -15,7 +15,7 @@ const handleColorBoxClick = (color) => {
         <div class="flex flex-row flex-wrap justify-center">
             <template v-for="(color,index) in Object.keys(schoolColorTheme)">
                 <div
-                    v-if="!color.includes('event') && !color.includes('partner') && !color.includes('hardware') && !color.includes('software')"
+                    v-if="!color.includes('event') && !color.includes('partner') && !color.includes('hardware') && !color.includes('software') && !color.includes('technology')"
                     :key="index"
                     class="colorBox flex-wrap h-12 m-1 w-12 hover:ring-2"
                     :class="`bg-[${schoolColorTheme[color]['med']}]`"

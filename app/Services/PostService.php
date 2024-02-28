@@ -133,6 +133,7 @@ class PostService
             'post_type' => 'software',
             'template' => $software->template ?? null,
             'extra_content' => $software->extra_content ?? null,
+            'how_to_access' => ($software->how_to_access) ?: NULL,
             'metadata' => $softwareMetadataToSend ?? null,
             'isLikedByUser' => $isLikedByUser,
             'isBookmarkedByUser' => $isBookmarkedByUser,

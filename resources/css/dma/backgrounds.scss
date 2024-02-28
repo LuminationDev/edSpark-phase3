@@ -1,0 +1,310 @@
+@import "variables";
+
+.dma-app-root {
+    /**
+     * Utils
+     */
+    .bg-black {
+        background-color: var(--color-black-0);
+    }
+
+    .bg-black-1 {
+        background-color: var(--color-black-1);
+    }
+
+    .bg-black-2 {
+        background-color: var(--color-black-2);
+    }
+
+    .bg-black-3 {
+        background-color: var(--color-black-3);
+    }
+
+    .bg-black-4 {
+        background-color: var(--color-black-4);
+    }
+
+    .hover\:bg-black-3 {
+        &:hover {
+            background-color: var(--color-black-3);
+        }
+    }
+
+    .active\:bg-black-4 {
+        &:active {
+            background-color: var(--color-black-4);
+        }
+    }
+
+    /**
+     * DomainSummary component
+     */
+    .DomainSummary-bg-teaching {
+        background: linear-gradient(131deg, #3e5c8e 23.57%, #122b56 95.07%);
+    }
+    .DomainSummary-bg-learning {
+        background: linear-gradient(131deg, #63e2eb -40.7%, #007b84 63.31%);
+    }
+    .DomainSummary-bg-leading {
+        background: linear-gradient(131deg, #ffc0d2 -40.69%, #9c2648 73.37%);
+    }
+    .DomainSummary-bg-managing {
+        background: linear-gradient(131deg, #ffd9c3 -22.29%, #cb4413 70.25%);
+    }
+    .DomainSummary-bg-teaching,
+    .DomainSummary-bg-learning,
+    .DomainSummary-bg-leading,
+    .DomainSummary-bg-managing {
+        position: relative;
+        overflow: hidden;
+
+        > * {
+            position: relative;
+        }
+
+        &:before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            opacity: 0;
+            background-color: #fff;
+            mix-blend-mode: overlay;
+            transition: opacity 0.1s ease-out;
+        }
+
+        &:hover:before {
+            opacity: 0.2;
+        }
+    }
+
+    /**
+     * DomainCover component
+     */
+    .DomainCover-bg-teaching {
+        background-color: var(--color-blue-dark);
+        background-image: linear-gradient(
+                173deg,
+                rgba(62, 92, 142, 0) 3.32%,
+                rgba(28, 54, 99, 0.95) 64.68%,
+                #122b56 100%
+            ),
+            url("@/assets/images/dma/illustration-teaching.png"),
+            url("@/assets/images/dma/bg-cover-teaching.jpg");
+        background-size: cover;
+    }
+    .DomainCover-bg-learning {
+        background-color: var(--color-cyan-dark);
+        background-image: linear-gradient(
+                173deg,
+                rgba(99, 226, 235, 0) 3.32%,
+                rgba(0, 123, 132, 0.95) 64.68%,
+                #007b84 100%
+            ),
+            url("@/assets/images/dma/illustration-learning.png"),
+            url("@/assets/images/dma/bg-cover-learning.jpg");
+        background-size: cover;
+    }
+    .DomainCover-bg-leading {
+        background-color: var(--color-red-dark);
+        background-image: linear-gradient(
+                175deg,
+                rgba(255, 167, 192, 0.29) 30.86%,
+                #9c2648 77.89%
+            ),
+            url("@/assets/images/dma/illustration-leading.png"),
+            url("@/assets/images/dma/bg-cover-leading.jpg");
+        background-size: cover;
+    }
+    .DomainCover-bg-managing {
+        background-color: var(--color-orange-dark);
+        background-image: linear-gradient(
+                175deg,
+                rgba(203, 68, 19, 0.4) 32.87%,
+                #cb4413 77.89%
+            ),
+            url("@/assets/images/dma/illustration-managing.png"),
+            url("@/assets/images/dma/bg-cover-managing.jpg");
+        background-size: cover;
+    }
+
+    /**
+     * CoverScreen and QuestionScreen components
+     */
+
+    .CoverScreen-bg-triage,
+    .QuestionScreen-bg-triage {
+        background: #012427 url("@/assets/images/dma/bg-cover-triage.jpg");
+        background-size: cover;
+        background-position: center;
+    }
+
+    .CoverScreen-bg-teaching,
+    .CoverScreen-bg-learning,
+    .CoverScreen-bg-leading,
+    .CoverScreen-bg-managing,
+    .QuestionScreen-bg-teaching,
+    .QuestionScreen-bg-learning,
+    .QuestionScreen-bg-leading,
+    .QuestionScreen-bg-managing {
+        background-repeat: no-repeat;
+
+        &.bg-blur {
+            > div {
+                backdrop-filter: blur(20px);
+                position: relative;
+
+                > * {
+                    position: relative;
+                }
+
+                &:before {
+                    content: "";
+                    position: absolute;
+                    z-index: 0;
+                    inset: 0;
+                }
+            }
+        }
+    }
+
+    .CoverScreen-bg-teaching,
+    .CoverScreen-bg-learning,
+    .CoverScreen-bg-leading,
+    .CoverScreen-bg-managing {
+        background-position: center;
+        background-size: cover;
+
+        &.bg-blur {
+            background-position: 550% 100%;
+            background-size: 90%;
+        }
+    }
+
+    .QuestionScreen-bg-teaching,
+    .QuestionScreen-bg-learning,
+    .QuestionScreen-bg-leading,
+    .QuestionScreen-bg-managing {
+        background-position: -5% 100%;
+        background-size: 300%;
+
+        @media screen and (max-width: #{$md-start - 1}) {
+            background-color: var(--color-black-1);
+            background-image: none;
+        }
+    }
+
+    .CoverScreen-bg-teaching,
+    .QuestionScreen-bg-teaching {
+        background-color: var(--color-blue-dark);
+        background-image: url("@/assets/images/dma/illustration-teaching.png");
+
+        &:not(.bg-blur) > div {
+            background: linear-gradient(
+                204deg,
+                rgba(28, 54, 99, 0) -151.35%,
+                #122b56 65.29%
+            );
+        }
+
+        &.bg-blur > div:before {
+            background: linear-gradient(
+                204deg,
+                rgba(28, 54, 99, 0) 0%,
+                #122b56 65.29%
+            );
+        }
+    }
+    .CoverScreen-bg-learning,
+    .QuestionScreen-bg-learning {
+        background-color: var(--color-cyan-dark);
+        background-image: url("@/assets/images/dma/illustration-learning.png");
+
+        &:not(.bg-blur) > div {
+            background: linear-gradient(
+                204deg,
+                rgba(99, 226, 235, 0) -151.35%,
+                #007b84 65.29%
+            );
+        }
+
+        &.bg-blur > div:before {
+            background: linear-gradient(
+                204deg,
+                rgba(99, 226, 235, 0),
+                #007b84 65.29%
+            );
+        }
+    }
+    .CoverScreen-bg-leading,
+    .QuestionScreen-bg-leading {
+        background-color: var(--color-red-dark);
+        background-image: url("@/assets/images/dma/illustration-leading.png");
+
+        &:not(.bg-blur) > div {
+            background: linear-gradient(
+                204deg,
+                rgba(255, 167, 192, 0) -151.35%,
+                #9c2648 65.29%
+            );
+        }
+
+        &.bg-blur > div:before {
+            background: linear-gradient(
+                204deg,
+                rgba(156, 38, 72, 0) 0%,
+                #9c2648 65.29%
+            );
+        }
+    }
+    .CoverScreen-bg-managing,
+    .QuestionScreen-bg-managing {
+        background-color: var(--color-orange-dark);
+        background-image: url("@/assets/images/dma/illustration-managing.png");
+
+        &:not(.bg-blur) > div {
+            background: linear-gradient(
+                204deg,
+                rgba(203, 68, 19, 0) -151.35%,
+                #cb4413 65.29%
+            );
+        }
+
+        &.bg-blur > div:before {
+            background: linear-gradient(
+                204deg,
+                rgba(203, 68, 19, 0) 0%,
+                #cb4413 65.29%
+            );
+        }
+    }
+
+    .advice-bg-teaching {
+        background-color: var(--color-blue-dark);
+    }
+    .advice-bg-learning {
+        background-color: var(--color-cyan-dark);
+    }
+    .advice-bg-leading {
+        background-color: var(--color-red-dark);
+    }
+    .advice-bg-managing {
+        background-color: var(--color-orange-dark);
+    }
+
+    // Remove backgrounds on mobile
+    @media screen and (max-width: #{$md-start - 1}) {
+        .QuestionScreen-bg-triage,
+        .QuestionScreen-bg-teaching,
+        .QuestionScreen-bg-learning,
+        .QuestionScreen-bg-leading,
+        .QuestionScreen-bg-managing {
+            background-color: var(--color-black-1);
+            background-image: none;
+
+            > div,
+            > div:before {
+                background: none !important;
+            }
+        }
+    }
+}

@@ -85,7 +85,7 @@ const handleImageLoadError = () => {
 </script>
 
 <template>
-    <div class="absolute h-12 hidden w-12  lg:!right-5 lg:!top-2 lg:block xl:!right-5 xl:!top-2">
+    <div class="absolute h-12 hidden w-12 lg:!right-5 lg:!top-4 lg:block xl:!right-5 xl:!top-4">
         <div
             class="bg-slate-200 cursor-pointer flex h-full overflow-hidden relative rounded-full w-full z-50 hover:shadow-2xl"
             @click="toggleDropdownMenu"
@@ -121,7 +121,7 @@ const handleImageLoadError = () => {
                     z-50
                     "
             >
-                <div class="border-b border-white font-bold h-fit pb-3 text-[24px] text-center w-full">
+                <div class="border-b border-white font-bold h-fit pb-3 text-center w-full">
                     <h5>{{ currentUser.full_name }}</h5>
                 </div>
                 <div class="border-b-2 border-slate-100 flex flex-col py-3  gap-3">

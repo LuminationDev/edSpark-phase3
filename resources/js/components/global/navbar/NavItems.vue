@@ -50,7 +50,7 @@ const handleClickParentNavItems = () => {
             items-center
             h-full
             ml-0
-            pr-2
+            pr-4
             py-4
             relative
             transition-all
@@ -67,7 +67,8 @@ const handleClickParentNavItems = () => {
         </router-link>
         <div
             v-show="navDropdownToggle"
-            class="absolute top-16 dropdownBackgroundContainer"
+            class="absolute top-20 dropdownBackgroundContainer"
+            style="box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);"
         >
             <div
                 class="-ml-2 bg-[#F5F5F5] font-medium h-full p-0 w-60"
@@ -75,7 +76,7 @@ const handleClickParentNavItems = () => {
                 <NavItems
                     v-for="(child, index) in childrenWithNavigation"
                     :key="index"
-                    class="first-letter:uppercase text-base text-main-darkGrey hover:bg-[#E7ECEE] hover:font-bold"
+                    class="first-letter:uppercase text-base text-main-darkGrey hover:bg-[#E7ECEE] hover:font-bold px-4"
                     :to="child.path"
                     :route="child"
                 />

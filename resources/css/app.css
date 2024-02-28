@@ -1,4 +1,3 @@
-
 @config '../../tailwind.config.ts';
 
 @tailwind base;
@@ -6,52 +5,53 @@
 @tailwind utilities;
 /*@import "./font-awesome/css/font-awesome.css";*/
 
-
 @layer base {
     .generic-card__wrapper {
-        @apply w-full border-[0.5px] border-black hover:shadow-lg flex flex-col min-h-[480px] h-[48px] max-w-[400px] max-h-[480px] transition-all cursor-pointer
+        @apply w-full border-[0.5px] border-black hover:shadow-lg flex flex-col min-h-[480px] h-[48px] max-w-[400px] max-h-[480px] transition-all cursor-pointer;
     }
 
     .cardTopCoverImage {
-        @apply relative min-h-[35%] bg-cover bg-center transition-all
+        @apply relative min-h-[35%] bg-cover bg-center transition-all;
     }
 
     .cardContent {
-        @apply h-full flex flex-col p-4 overflow-hidden transition-all bg-white
+        @apply h-full flex flex-col p-4 overflow-hidden transition-all bg-white;
     }
 
     .cardTitle {
-        @apply text-xl text-left font-bold transition-all mb-4
+        @apply text-xl text-left font-bold transition-all mb-4;
     }
 
     .card-content_body {
-        @apply flex flex-col h-full text-left
+        @apply flex flex-col h-full text-left;
     }
 
     .cardAuthor {
-        @apply text-base font-semibold mt-2 transition-all
+        @apply text-base font-normal mt-2 transition-all;
     }
 
     .cardDate {
-        @apply text-base mb-2 transition-all
+        @apply text-base font-normal mb-2 transition-all;
     }
 
     .cardDisplayPreview {
-        @apply pt-2 h-full font-light text-lg overflow-hidden mt-auto pb-6 transition-all
+        @apply pt-2 h-full font-light text-lg overflow-hidden mt-auto pb-6 transition-all;
     }
 }
 
 html {
-    font-family: 'MuseoSans', 'Nunito Sans', 'Calibri', sans-serif !important;
+    font-family: "MuseoSans", "Nunito Sans", "Calibri", sans-serif !important;
 }
 
 body {
-    font-family: 'MuseoSans', 'Nunito Sans', 'Calibri', sans-serif !important;
+    font-family: "MuseoSans", "Nunito Sans", "Calibri", sans-serif !important;
 }
 
-input, textarea, select {
+input,
+textarea,
+select {
     width: 100%;
-    padding: .75rem 1.5rem;
+    padding: 0.75rem 1.5rem;
     border: solid 0.5px black;
 }
 
@@ -61,7 +61,7 @@ input, textarea, select {
 
 .searchable_dropdown .dropdown-toggle input {
     width: 100% !important;
-    padding: .75rem 1.5rem !important;
+    padding: 0.75rem 1.5rem !important;
     border: solid 0.5px black !important;
     background: #fff;
     border-radius: 0;
@@ -134,11 +134,10 @@ input, textarea, select {
     border-radius: 50%;
     width: 96px;
     height: 96px;
-    background-color: #EF5350;
+    background-color: #ef5350;
     color: #ffffff;
     font-weight: 700;
 }
-
 
 /* Custom Video Recorder container */
 .custom_block-video_container {
@@ -154,7 +153,8 @@ input, textarea, select {
     position: relative;
 }
 
-.custom_block-video, .custom_block-video_playback {
+.custom_block-video,
+.custom_block-video_playback {
     height: 365px;
     width: 100%;
     object-fit: cover;
@@ -189,7 +189,7 @@ input, textarea, select {
     border-radius: 50%;
     width: 96px;
     height: 96px;
-    background-color: #EF5350;
+    background-color: #ef5350;
     display: flex;
     place-items: center;
     justify-content: center;
@@ -210,7 +210,7 @@ input, textarea, select {
     max-width: 450px;
     height: 6px;
     border-radius: 0.25rem;
-    background-color: #B83F3D;
+    background-color: #b83f3d;
 }
 
 .custom_block-countdown_wrapper {
@@ -231,11 +231,31 @@ input, textarea, select {
 
 .fi-btn:hover {
     background-color: blue !important;
-
 }
 
 .time_elapsed-counter {
     width: 50px;
+}
+
+/* .richTextContentContainer,
+.richTextContentContainer div, */
+.richTextContentContainer li,
+.richTextContentContainer p {
+    font-weight: 100;
+    padding-bottom: 16px;
+    line-height: 1.5;
+    font-size: 1.1em;
+}
+
+
+.richTextContentContainer a {
+    font-weight: 300;
+    text-underline-offset: 4px;
+}
+
+.richTextContentContainer a:hover {
+    text-decoration: underline;
+    text-decoration-thickness: 2px;
 }
 
 .richTextContentContainer h1 {
@@ -246,8 +266,9 @@ input, textarea, select {
     margin-inline-start: 0px;
     margin-inline-end: 0px;
     font-weight: bold;
+    margin-top: 32px;
+    margin-bottom: 16px;
 }
-
 
 .richTextContentContainer h2 {
     display: block;
@@ -257,6 +278,8 @@ input, textarea, select {
     margin-inline-start: 0px;
     margin-inline-end: 0px;
     font-weight: bold;
+    margin-top: 28px;
+    margin-bottom: 16px;
 }
 
 .richTextContentContainer h3 {
@@ -267,7 +290,10 @@ input, textarea, select {
     margin-inline-start: 0px;
     margin-inline-end: 0px;
     font-weight: bold;
+    margin-top: 24px;
+    margin-bottom: 16px;
 }
+
 .richTextContentContainer h4 {
     display: block;
     margin-block-start: 1.33em;
@@ -275,7 +301,10 @@ input, textarea, select {
     margin-inline-start: 0px;
     margin-inline-end: 0px;
     font-weight: bold;
+    margin-top: 20px;
+    margin-bottom: 14px;
 }
+
 .richTextContentContainer h5 {
     display: block;
     font-size: 0.83em;
@@ -284,7 +313,10 @@ input, textarea, select {
     margin-inline-start: 0px;
     margin-inline-end: 0px;
     font-weight: bold;
+    margin-top: 20px;
+    margin-bottom: 14px;
 }
+
 .richTextContentContainer h6 {
     display: block;
     font-size: 0.67em;
@@ -293,45 +325,63 @@ input, textarea, select {
     margin-inline-start: 0px;
     margin-inline-end: 0px;
     font-weight: bold;
+    margin-top: 20px;
+    margin-bottom: 14px;
 }
-.richTextContentContainer table{
+
+.richTextContentContainer table {
     display: table;
     border-collapse: separate;
     box-sizing: border-box;
     text-indent: initial;
     border-spacing: 2px;
     border-color: gray;
+    margin: 20px 0px 42px;
 }
-.richTextContentContainer tbody{
+
+.richTextContentContainer tbody {
     display: table-row-group;
     vertical-align: middle;
     border-color: inherit;
 }
-.richTextContentContainer tr{
+
+.richTextContentContainer tr {
     display: table-row;
     vertical-align: inherit;
     border-color: inherit;
 }
-.richTextContentContainer td{
+
+.richTextContentContainer td {
     display: table-cell;
     vertical-align: inherit;
 }
 
-.richTextContentContainer table:not([cellpadding]) td,table:not([cellpadding]) th {
-    padding: .4rem
+.richTextContentContainer table:not([cellpadding]) td,
+table:not([cellpadding]) th {
+    padding: 0.4rem;
 }
 
-.richTextContentContainer table[border]:not([border="0"]):not([style*=border-width]) td,table[border]:not([border="0"]):not([style*=border-width]) th {
-    border-width: 1px
+.richTextContentContainer
+    table[border]:not([border="0"]):not([style*="border-width"])
+    td,
+table[border]:not([border="0"]):not([style*="border-width"]) th {
+    border-width: 1px;
 }
 
-.richTextContentContainer table[border]:not([border="0"]):not([style*=border-style]) td,table[border]:not([border="0"]):not([style*=border-style]) th {
-    border-style: solid
+.richTextContentContainer
+    table[border]:not([border="0"]):not([style*="border-style"])
+    td,
+table[border]:not([border="0"]):not([style*="border-style"]) th {
+    border-style: solid;
 }
 
-.richTextContentContainer table[border]:not([border="0"]):not([style*=border-color]) td,table[border]:not([border="0"]):not([style*=border-color]) th {
-    border-color: #ccc
+.richTextContentContainer
+    table[border]:not([border="0"]):not([style*="border-color"])
+    td,
+table[border]:not([border="0"]):not([style*="border-color"]) th {
+    border-color: #ccc;
 }
+
 .richTextContentContainer ul {
     display: block;
     list-style-type: disc;
@@ -341,6 +391,7 @@ input, textarea, select {
     margin-inline-end: 0px;
     padding-inline-start: 40px;
 }
+
 .richTextContentContainer ol {
     display: block;
     list-style-type: decimal;
@@ -357,21 +408,20 @@ input, textarea, select {
 
 .richTextContentContainer figure figcaption {
     display: block;
-    margin-top: .25rem;
-    text-align: center
+    margin-top: 0.25rem;
+    text-align: center;
 }
 
 .richTextContentContainer hr {
     border-color: #ccc;
     border-style: solid;
-    border-width: 1px 0 0 0
+    border-width: 1px 0 0 0;
 }
 
 .richTextContentContainer code {
     border-radius: 3px;
-    padding: .1rem .2rem
+    padding: 0.1rem 0.2rem;
 }
-
 
 .richTextContentContainer blockquote {
     display: block;
@@ -381,20 +431,76 @@ input, textarea, select {
     margin-inline-end: 40px;
     border-left: 2px solid #ccc;
     margin-left: 1.5rem;
-    padding-left: 1rem
+    padding-left: 1rem;
+    margin: 20px 0px 42px;
 }
 
-.richTextContentContainer pre[class*=language-] {
+.richTextContentContainer pre[class*="language-"] {
     padding: 1em;
     margin: 0.5em 0;
     overflow: auto;
     background: #f5f2f0;
 }
 .richTextContentContainer pre {
-    white-space: pre-wrap;       /* Since CSS 2.1 */
-    white-space: -moz-pre-wrap;  /* Mozilla, since 1999 */
-    white-space: -pre-wrap;      /* Opera 4-6 */
-    white-space: -o-pre-wrap;    /* Opera 7 */
-    word-wrap: break-word;       /* Internet Explorer 5.5+ */
+    white-space: pre-wrap; /* Since CSS 2.1 */
+    white-space: -moz-pre-wrap; /* Mozilla, since 1999 */
+    white-space: -pre-wrap; /* Opera 4-6 */
+    white-space: -o-pre-wrap; /* Opera 7 */
+    word-wrap: break-word; /* Internet Explorer 5.5+ */
+    
+    margin: 20px 0px 42px;
 }
 
+.richTextContentContainer p:has(iframe){
+    position: relative;
+    overflow: hidden;
+    width: 100%;
+    padding-top: 56.25%; /* 16:9 Aspect Ratio (divide 9 by 16 = 0.5625) */
+    margin: 20px 0px 42px;
+}
+
+.richTextContentContainer iframe{
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    width: 100%;
+    height: 100%;
+}
+
+#navbarFullsize > ul > li > a:hover{
+    text-decoration: underline 3px #B8E2DC;
+    text-underline-offset: 12px;
+}
+
+#navbarFullsize > ul > li > a {
+    font-weight: 500;
+    font-size: 18px;
+}
+
+#navbarFullsize > ul > li > div > div > li > a {
+    font-weight: 100;
+    font-size: 16px;
+}
+
+
+#navbarFullsize > ul > li > div > div > li > a:hover {
+    font-weight: 500;
+    font-size: 16px;
+}
+
+.searchText {
+    font-weight: 500;
+}
+
+
+/* textarea + .tox.tox-tinymce p {
+font-weight: 100; 
+color: blue !important;
+} */
+
+/* .tox.tox-tinymce * {
+    font-weight: 100 !important;
+    color: red !important;
+} */

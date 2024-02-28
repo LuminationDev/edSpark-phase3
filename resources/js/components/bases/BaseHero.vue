@@ -62,11 +62,15 @@ onMounted(() => {
         useCustomColor = true
     }
 
+    console.log("Custom? "+useCustomColor+", "+props.swooshColorTheme);
+
     gradientBg.value = "background-image: linear-gradient(to left, "
-        + (useCustomColor ? schoolColorTheme[props.swooshColorTheme]['light'] : schoolColorTheme['teal']['light']) + ","
+        + (useCustomColor ? schoolColorTheme[props.swooshColorTheme]['med'] : schoolColorTheme['teal']['med']) + ","
         + (useCustomColor ? schoolColorTheme[props.swooshColorTheme]['med'] : schoolColorTheme['teal']['med']) + ","
         + (useCustomColor ? schoolColorTheme[props.swooshColorTheme]['dark'] : schoolColorTheme['teal']['dark'])
         + ");";
+
+        console.log(gradientBg.value)
 })
 
 const windowStore = useWindowStore()
@@ -77,6 +81,24 @@ const heroBackgroundSwitch = computed(() => {
         return "background-image: linear-gradient(rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.8)), url('" + heroBackgroundLinkOnly.value + "') !important;  background-position: center center;  background-color:white; background-size:cover"
     } else {
         return ''
+    }
+})
+
+const heroBackgroundColor = computed(() => {
+    switch (props.swooshColorTheme) {
+    
+    case 'navy':
+        return 'bg-main-navy'
+    case 'purple':
+    case 'technologyPurple':
+        return 'bg-secondary-grapeDark'
+    case 'blue':
+    case 'partnerBlue':
+        return 'bg-secondary-blueberry'
+    case 'teal':
+    case 'darkTeal':
+    default:
+        return 'bg-main-darkTeal'
     }
 })
 </script>
@@ -93,7 +115,6 @@ const heroBackgroundSwitch = computed(() => {
                     bg-center
                     bg-contain
                     bg-no-repeat
-                    bg-secondary-blueberry
                     col-span-10
                     h-full
                     pt-14
@@ -101,6 +122,7 @@ const heroBackgroundSwitch = computed(() => {
                     lg:!col-span-6
                     "
                 :style="heroBackgroundSwitch"
+                :class="heroBackgroundColor"
             >
                 <div
                     v-if="$slots.titleText || $slots.subtitleText1 || $slots.subtitleText2"
@@ -183,9 +205,12 @@ const heroBackgroundSwitch = computed(() => {
             v-else
             class="BaseHeroSwooshPositioningContainer absolute -top-20 h-[120px] hidden w-full z-20 md:block xl:!-top-24"
         >
-            <EdSparkSlimSwoosh color-theme="teal" />
+            <EdSparkSlimSwoosh :color-theme="swooshColorTheme" />
         </div>
-        <div class="-top-1 md:!pl-12 md:!text-2xl flex h-16 pl-4 pt-2 text-white text-xl w-full">
+        <div
+            v-if="$slots.submenu"
+            class="-top-1 md:!pl-12 md:!text-2xl flex h-16 pl-4 pt-2 text-white text-xl w-full"
+        >
             <slot
                 name="submenu"
             />

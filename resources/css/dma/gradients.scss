@@ -1,0 +1,11 @@
+.dma-app-root {
+    .from-black {
+        --tw-gradient-from: var(--color-black-1) var(--tw-gradient-from-position);
+    }
+    .via-black {
+        --tw-gradient-stops: var(--tw-gradient-from), var(--color-black-1) var(--tw-gradient-via-position), var(--tw-gradient-to);
+    }
+    .to-black {
+        --tw-gradient-to: var(--color-black-1) var(--tw-gradient-to-position);
+    }
+}

@@ -172,7 +172,7 @@ const colorTheme = ref('partnerBlue')
             </BaseHero>
         </template>
         <template #content="{contentFromBase,recommendationFromBase}">
-            <div class="mt-20 partnerSingleContentContainer px-5 lg:!px-10">
+            <div class="partnerSingleContentContainer px-5 lg:!px-10">
                 <Suspense timeout="0">
                     <component
                         :is="partnerSubPageComponent"

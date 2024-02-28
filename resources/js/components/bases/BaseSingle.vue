@@ -211,11 +211,13 @@ const handleEmitFromSubmenu = (value) => {
                 </div>
             </div>
         </div>
-        <slot
-            name="content"
-            :content-from-base="singleContent"
-            :recommendation-from-base="recommendedContent"
-        />
+        <div class="baseSingleContentContainer mt-10">
+            <slot
+                name="content"
+                :content-from-base="singleContent"
+                :recommendation-from-base="recommendedContent"
+            />
+        </div>
     </div>
 </template>
 

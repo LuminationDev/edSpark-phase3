@@ -43,11 +43,11 @@ const borderColorClass = computed(() => {
 </script>
 
 <template>
-    <div class="grid grid-cols-2 gap-8 w-full">
+    <div class="grid grid-cols-1 gap-8 w-full lg:!grid-cols-2">
         <button
             v-for="(resource,index) in filteredResource"
             :key="index"
-            class="border-2 cursor-pointer popularGuideItem px-8 py-4 rounded text-2xl hover:text-white w-full"
+            class="border-2 cursor-pointer popularGuideItem px-8 py-4 rounded text-xl hover:text-white w-full"
             :class="borderColorClass"
             @click="() => handleClickResource(resource.id, resource.title)"
         >

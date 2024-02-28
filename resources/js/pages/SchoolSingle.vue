@@ -27,7 +27,10 @@ import {SchoolDataType} from "@/js/types/SchoolTypes";
 const route = useRoute();
 const imageURL = import.meta.env.VITE_SERVER_IMAGE_API
 const schoolContent: Ref<SchoolDataType | null> = ref(null)
-const colorTheme = ref('teal') // default color theme
+
+const originalColorTheme = ref('teal')
+const colorTheme = ref('darkTeal') // default color theme
+
 const showSchoolNotAvailable = ref(false)
 const schoolNotAvailableMessage = ref('')
 
@@ -68,6 +71,7 @@ const fetchSchoolByNameAsync = async (schoolName): Promise<void> => {
                     const colorThemeMeta = schoolContent.value['metadata'].filter(meta => meta['schoolmeta_key'] === 'school_color_theme');
                     if (colorThemeMeta.length > 0) {
                         colorTheme.value = colorThemeMeta[0]['schoolmeta_value'];
+                        originalColorTheme.value = colorThemeMeta[0]['schoolmeta_value'];
                     }
                 }
             } else {
@@ -87,6 +91,7 @@ const fetchSchoolByNameAsync = async (schoolName): Promise<void> => {
                 const colorThemeMeta = schoolContent.value['metadata'].filter(meta => meta['schoolmeta_key'] === 'school_color_theme');
                 if (colorThemeMeta.length > 0) {
                     colorTheme.value = colorThemeMeta[0]['schoolmeta_value'];
+                    originalColorTheme.value = colorThemeMeta[0]['schoolmeta_value'];
                 }
             }
 
@@ -103,6 +108,7 @@ const fetchSchoolByNameAsync = async (schoolName): Promise<void> => {
 
 const handleSaveNewSchoolInfo = async (contentBlocks, techUsed) => {
     try {
+        // update school might return some stuff.
         await schoolService.updateSchool(
             schoolContent.value, contentBlocks, techUsed, logoStorage.value, coverImageStorage.value, colorTheme.value
         );
@@ -115,6 +121,11 @@ const handleChangeColorTheme = (newColor) => {
     // console.log('received command to swap color ' + colorTheme.value + ' to -> ' + 'newColor: ' + newColor)
     colorTheme.value = newColor
 }
+
+const handleResetColorTheme = () =>{
+    colorTheme.value = originalColorTheme.value
+}
+
 
 /**
  * Handle Event emitted from children containing type {logo,coverImage} and Image file
@@ -145,16 +156,17 @@ const coverImageLink = computed(() => {
     }
 });
 
+
 // Submenu specific codes
 const schoolSubmenu = [
     {
         displayText: 'Details',
         value: 'detail'
     },
-    {
-        displayText: "What's new",
-        value: 'new'
-    },
+    // {
+    //     displayText: "What's new",
+    //     value: 'new'
+    // },
     {
         displayText: 'Contact',
         value: 'contact'
@@ -286,7 +298,7 @@ const handleCloseModerationTab = (): void => {
                     </BaseHero>
                 </template>
                 <template #content>
-                    <div class="flex flex-col mt-6 w-full">
+                    <div class="flex flex-col w-full">
                         <div
                             v-if="isPreviewMode && schoolContent.name"
                             class="flex justify-center flex-row"
@@ -301,8 +313,11 @@ const handleCloseModerationTab = (): void => {
                                 </div>
                             </div>
                             <div class="basis-1/5 flex p-2">
-                                <GenericButton :callback="handleCloseModerationTab">
-                                    Back to moderation
+                                <GenericButton
+                                    class="px-4"
+                                    :callback="handleCloseModerationTab"
+                                >
+                                    Close preview
                                 </GenericButton>
                             </div>
                         </div>
@@ -314,6 +329,7 @@ const handleCloseModerationTab = (): void => {
                             @send-info-to-school-single="handleSaveNewSchoolInfo"
                             @send-color-to-school-single="handleChangeColorTheme"
                             @send-photo-to-school-single="handleReceivePhotoFromContent"
+                            @reset-color-theme="handleResetColorTheme"
                         >
                             <template #additionalContentActions>
                                 <div class="DelegationPanelOuterContainer flex flex-col mt-4 w-full">

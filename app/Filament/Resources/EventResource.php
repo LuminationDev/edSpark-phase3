@@ -75,7 +75,6 @@ class EventResource extends Resource
                         Forms\Components\FileUpload::make('cover_image')
                             ->label(new CustomHtmlable("Cover Image <span class='text-xs italic'> (500px * 500px / 1:1 aspect ratio] </span>"))
                             ->validationAttribute('cover image')
-                            ->required()
                             ->preserveFilenames()
                             ->disk('public')
                             ->directory('uploads/event')
@@ -86,7 +85,10 @@ class EventResource extends Resource
                         Forms\Components\Grid::make(2)
                             ->schema([
                                 Forms\Components\DateTimePicker::make('start_date')
-                                    ->required(),
+                                    ->required()
+                                ->seconds(false)
+                                ->native(false)
+                                ,
                                 Forms\Components\DateTimePicker::make('end_date')
                                     ->required(),
                             ]),
@@ -199,7 +201,7 @@ class EventResource extends Resource
                     ->label('Status')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('updated_at')
-                    ->dateTime(),
+                    ->dateTime('j M y, h:i a'),
             ])
             ->filters([
                 Tables\Filters\SelectFilter::make('event_status')
@@ -220,7 +222,7 @@ class EventResource extends Resource
                         'upcoming' => 'Upcoming Events',
                     ])
                     ->label('Event Date')
-                    ->default('all')
+                    ->default('upcoming')
                     ->attribute('start_date')
                     ->query(function (Builder $query, array $data): Builder {
                         $today = now()->toDateString();

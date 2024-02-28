@@ -1,0 +1,52 @@
+@import "variables";
+
+.dma-app-root {
+    --color-blue-pale: #dce3f1;
+    --color-blue: #6985b7;
+    --color-blue-dark: #223c91;
+    --color-cyan-pale: #c7e1e3;
+    --color-cyan: #5eadb2;
+    --color-cyan-dark: #2898a9;
+    --color-orange-pale: #f6e6dd;
+    --color-orange: #f4b07e;
+    --color-orange-dark: #fd9141;
+    --color-red-pale: #f5e0e2;
+    --color-red: #d8747f;
+    --color-red-dark: #bc3242;
+
+    --color-black-0: #000000;
+    --color-black-1: #0b0a16;
+    --color-black-2: #21212e;
+    --color-black-3: #363644;
+    --color-black-4: #474757;
+
+    --scrollbar-width: 14px;
+
+    font-size: 16px;
+    font-weight: 300;
+    font-style: normal;
+    line-height: 1.4;
+    color: var(--color-black-2);
+
+    * {
+        &::-webkit-scrollbar {
+            width: var(--scrollbar-width);
+            height: auto;
+        }
+
+        &::-webkit-scrollbar-track {
+            background-color: transparent;
+        }
+
+        &::-webkit-scrollbar-thumb {
+            background-color: rgba(255, 255, 255, 0.05);
+            border-radius: 99px;
+        }
+
+        @media screen and (max-width: #{$md-start - 1}) {
+            &::-webkit-scrollbar {
+                display: none;
+            }
+        }
+    }
+}
