@@ -43,12 +43,10 @@ class CreateAdvice extends CreateRecord
         $currentUser = Auth::user();
         $usersExceptCurrent = User::whereKeyNot($currentUser)->get();
 
-
         // create the notification item
-        $notificationObject = new NotificationResource($record->id, 'test title', 'test author', 'test', 'create');
+        $notificationObject = new NotificationResource($record->id, 'test title', 10005, 'test', 'create');
 
-
-        Notification::send($usersExceptCurrent, new ResourceCreated($notificationObject));
+        Notification::send(User::all(), new ResourceCreated($notificationObject));
         return $record;
     }
 

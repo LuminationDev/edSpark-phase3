@@ -14,16 +14,19 @@ class Notification extends Model
      *
      * @var string
      */
-    protected $table = "notifications";
+    protected $table = "user_notifications";
 
     /**
      * The attributes that are mass assignable
      *
-     * @var array
      */
     protected $fillable = [
-        'type',
         'data',
+        'type',
         'read_at',
     ];
+    public function notifiable()
+    {
+        return $this->morphTo();
+    }
 }
