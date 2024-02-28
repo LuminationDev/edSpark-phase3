@@ -136,8 +136,11 @@ const heroBackgroundColor = computed(() => {
 </script>
 
 
+
+<!-- :class="heroBackgroundColor" -->
+
 <template>
-    <div class="BaseHeroContainer h-mainHero max-h-mainHero mb-0 overflow-y-hidden relative z-10">
+    <div class="BaseHeroContainer bg-main-darkTeal h-mainHero max-h-mainHero mb-0 overflow-y-hidden relative z-10">
         <div
             class="grid grid-cols-10 h-full relative"
         >
@@ -154,7 +157,6 @@ const heroBackgroundColor = computed(() => {
                     lg:!col-span-6
                     "
                 :style="heroBackgroundSwitch"
-                :class="heroBackgroundColor"
             >
                 <div
                     v-if="$slots.titleText || $slots.subtitleText1 || $slots.subtitleText2"
