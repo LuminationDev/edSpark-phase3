@@ -70,7 +70,7 @@ const fontAwesomeNameFormatter = (nameFromFilament) => {
 }
 
 const fontAwesomeDefaultColor = (itemColor) => {
-    if (!itemColor) return '#1C5CA9' // fallback light teal color
+    if (!itemColor) return '#0072DA' // fallback light teal color
     else return itemColor
 }
 </script>
