@@ -11,35 +11,40 @@ use Mohamedsabil83\FilamentFormsTinyeditor\Components\TinyEditor;
 final class ExtraResource
 {
     private static $backgroundColorTheme = [
-        'yellow' => [
-            'light' => '#FFF1CB',
-            'med' => '#FFC836',
-            'dark' => '#965A00',
-        ],
-        'red' => [
-            'light' => '#FECCD0',
-            'med' => '#DE4668',
-            'dark' => '#9B2749',
-        ],
-        'orange' => [
-            'light' => '#FFDECF',
-            'med' => '#FF8D78',
-            'dark' => '#A43D18',
-        ],
-        'purple' => [
-            'light' => '#DBCCF5',
-            'med' => '#8866C5',
-            'dark' => '#6D479B',
+        // 'yellow' => [
+        //     'light' => '#FFF1CB',
+        //     'med' => '#FFC836',
+        //     'dark' => '#965A00',
+        // ],
+        // 'red' => [
+        //     'light' => '#FECCD0',
+        //     'med' => '#DE4668',
+        //     'dark' => '#9B2749',
+        // ],
+        // 'orange' => [
+        //     'light' => '#FFDECF',
+        //     'med' => '#FF8D78',
+        //     'dark' => '#A43D18',
+        // ],
+        'grey' => [
+            'light' => '#D9DAE4',
+            'med' => '#D9DAE4',
+            'dark' => '#D9DAE4',
+        ], 
+        'teal' => [
+            'light' => '#B2F5EA',
+            'med' => '#319795',
+            'dark' => '#185E69',
         ],
         'blue' => [
             'light' => '#AEDCF3',
             'med' => '#0072DA',
             'dark' => '#03369A',
         ],
-        'teal' => [
-            'light' => '#B2F5EA',
-            'med' => '#319795',
-            'dark' => '#185E69',
+        'purple' => [
+            'light' => '#DBCCF5',
+            'med' => '#8866C5',
+            'dark' => '#6D479B',
         ],
         'navy' => [
             'light' => '#6e99ce', //was #3d6ba3
@@ -59,7 +64,7 @@ final class ExtraResource
 
     public static function title()
     {
-        return 'Extra Resources';
+        return 'Extra resources';
     }
 
 

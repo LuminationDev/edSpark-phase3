@@ -45,6 +45,14 @@ const edsparkColor = [
     '#0072DA',
     '#AEDCF3',
     '#965A00',
+    '#9B2749',
+    '#A43D18',
+    '#6D479B',
+    '#03369A',
+    '#002858',
+    '#001c3d',
+    '#c67f14',
+    '#da5525',
 
     // new secondary color style guide
     '#FFC836',
@@ -55,6 +63,7 @@ const edsparkColor = [
     '#0072DA',
     '#319795',
     '#002858',
+    '#D9DAE4',
 
 ];
 
@@ -92,7 +101,7 @@ module.exports = {
                     lightTeal: '#28D5CB',
                     darkGrey: '#232323'
                 },
-                secondary: {
+               secondary: {
                     blue: '#0072DA',
                     lightBlue: '#44B8F3',
                     darkBlue: '#1C5CA9',
@@ -108,14 +117,18 @@ module.exports = {
                     coolGrey: '#D9DAE4',
                     // new style guide
                     banana: '#FFC836',
-                    bananadark: '#965A00',
+                    bananaMed: '#d4a426',
+                    bananaDark: '#c67f14',
                     cherry:  '#DE4668',
+                    cherryMed:  '#be2145',
                     peach: '#FF8D78',
+                    peachMed: '#be2145',
                     grape:  '#8866C5',
+                    grapeDark: '#6D469C',
                     blueberry: '#0072DA',
+                    blueberryMed: '#1C5CA9',
                     teal: '#319795',
-                    navy: '#002858',
-                    grapeDark: '#6D469C'
+                    navy: '#002858'
 
                 },
                 custom: {

@@ -2,7 +2,7 @@ export const schoolColorTheme = {
     banana: {
         light: '#FFF1CB',
         med: '#FFC836',
-        dark: '#965A00',
+        dark: '#c67f14',
     },
     cherry: {
         light: '#FECCD0',
@@ -12,7 +12,7 @@ export const schoolColorTheme = {
     peach: {
         light: '#FFDECF',
         med: '#FF8D78',
-        dark: '#A43D18',
+        dark: '#da5525',
     },
     grape: {
         light: '#DBCCF5',
@@ -20,7 +20,7 @@ export const schoolColorTheme = {
         dark: '#6D479B',
     },
     blueberry: {
-        light: '#',
+        light: '#44B8F3',
         med: '#0072DA',
         dark: '#03369A',
     },
@@ -38,7 +38,7 @@ export const schoolColorTheme = {
     navy: {
         light: '#6e99ce', //was #3d6ba3
         med: '#002858',
-        dark: '#002858',
+        dark: '#001c3d',
     },
 
     technologyPurple: {

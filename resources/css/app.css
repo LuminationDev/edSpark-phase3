@@ -237,6 +237,9 @@ select {
     width: 50px;
 }
 
+.richTextContentContainer {
+    margin-top: 20px;
+}
 
 .extraResourcesContainer p,
 .richTextContentContainer li,
@@ -244,7 +247,7 @@ select {
     font-weight: 100;
     padding-bottom: 16px;
     line-height: 1.5;
-    font-size: 1.1em;
+    font-size: large;
 }
 
 
@@ -262,7 +265,7 @@ select {
 
 .richTextContentContainer h1 {
     display: block;
-    font-size: 2em;
+    /* font-size: 2em; */
     margin-block-start: 0.67em;
     margin-block-end: 0.67em;
     margin-inline-start: 0px;
@@ -270,11 +273,12 @@ select {
     font-weight: bold;
     margin-top: 32px;
     margin-bottom: 16px;
+    font-size: xx-large;
 }
 
 .richTextContentContainer h2 {
     display: block;
-    font-size: 1.5em;
+    /* font-size: 1.5em; */
     margin-block-start: 0.83em;
     margin-block-end: 0.83em;
     margin-inline-start: 0px;
@@ -282,11 +286,12 @@ select {
     font-weight: bold;
     margin-top: 28px;
     margin-bottom: 16px;
+    font-size: x-large;
 }
 
 .richTextContentContainer h3 {
     display: block;
-    font-size: 1.17em;
+    /* font-size: 1.17em; */
     margin-block-start: 1em;
     margin-block-end: 1em;
     margin-inline-start: 0px;
@@ -294,6 +299,7 @@ select {
     font-weight: bold;
     margin-top: 24px;
     margin-bottom: 16px;
+    font-size: larger;
 }
 
 .richTextContentContainer h4 {
@@ -305,30 +311,33 @@ select {
     font-weight: bold;
     margin-top: 20px;
     margin-bottom: 14px;
+    font-size: large;
 }
 
 .richTextContentContainer h5 {
     display: block;
-    font-size: 0.83em;
+    /* font-size: 0.83em; */
     margin-block-start: 1.67em;
     margin-block-end: 1.67em;
     margin-inline-start: 0px;
     margin-inline-end: 0px;
-    font-weight: bold;
+    font-weight: 500;
     margin-top: 20px;
     margin-bottom: 14px;
+    font-size: large;
 }
 
 .richTextContentContainer h6 {
     display: block;
-    font-size: 0.67em;
+    /* font-size: 0.67em; */
     margin-block-start: 2.33em;
     margin-block-end: 2.33em;
     margin-inline-start: 0px;
     margin-inline-end: 0px;
-    font-weight: bold;
+    font-weight: 500;
     margin-top: 20px;
     margin-bottom: 14px;
+    font-size: medium;
 }
 
 .richTextContentContainer table {

@@ -29,7 +29,7 @@ const props = defineProps({
 const loadIconComponent = (iconPath) => {
     try {
         if (!Object.keys(props.componentsObject).includes(iconPath)) {
-            console.log('Oh no icon name is not recognized')
+            console.log('Icon name is not recognized')
         } else {
             return props.componentsObject[iconPath];
         }

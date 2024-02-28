@@ -28,10 +28,9 @@ const handleToggleTooltip = (index) => {
 
 const customFill = computed(() => {
     if (schoolColorKeys.includes(props.colorTheme)) {
-        return `fill-[${schoolColorTheme[props.colorTheme]['med']}] stroke-[${schoolColorTheme[props.colorTheme]['med']}]`;
+        return `fill-[${schoolColorTheme[props.colorTheme]['dark']}] stroke-[${schoolColorTheme[props.colorTheme]['dark']}]`;
     } else {
         return `fill-[${schoolColorTheme['teal']['med']}] stroke-[${schoolColorTheme['teal']['med']}]`;
-
     }
 })
 

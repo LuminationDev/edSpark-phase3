@@ -29,7 +29,7 @@ const {
         <PartnersHero />
         <SectionHeader
             title="Our Partners"
-            :classes="'bg-secondary-darkBlue'"
+            :classes="'bg-secondary-blueberry'"
             section="laptops"
             button-text="View all partners"
             :button-callback="() => router.push('/browse/partner')"

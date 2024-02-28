@@ -83,7 +83,7 @@ onUnmounted(() => {
             class="col-span-4 flex justify-center flex flex-col h-1/2 min-h-[250px] my-auto softwareDashboardContentContainer"
         >
             <h5 class="font-medium text-xl">
-                Cyber Assessed
+                Cyber assessed
             </h5>
             <p class="pb-4 font-light">
                 These are applications that have been risk assessed by Cyber Security but are not provided by the Department, site leaders should be aware of the risks prior to being used at your school.
@@ -102,7 +102,7 @@ onUnmounted(() => {
             class="col-span-4 flex justify-center flex flex-col h-1/2 min-h-[250px] my-auto softwareDashboardContentContainer"
         >
             <h5 class="font-medium text-xl">
-                Negotiated Deals
+                Negotiated deals
             </h5>
             <p class="pb-4 font-light">
                 Still risk assessed, these applications have an agreement
