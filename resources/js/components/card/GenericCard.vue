@@ -449,6 +449,7 @@ const cardHoverToggle: Ref<boolean> = ref(false);
     height: 3.2lh;
     -webkit-box-orient: vertical;
     margin: 0 auto;
+    width: 99%;
 }
 
 

@@ -46,7 +46,7 @@ if(schoolColorKeys.includes(props.colorTheme)){
                 />
                 <stop
                     offset="1"
-                    :stop-color="(useCustomColor ? schoolColorTheme[colorTheme]['light'] : '#64b5f6')"
+                    :stop-color="(useCustomColor ? schoolColorTheme[colorTheme]['med'] :'#1e88e5')"
                 />
             </linearGradient>
         </defs>

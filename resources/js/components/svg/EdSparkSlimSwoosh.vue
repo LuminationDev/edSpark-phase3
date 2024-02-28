@@ -1,4 +1,7 @@
 <script setup>
+import {schoolColorKeys, schoolColorTheme} from "@/js/constants/schoolColorTheme";
+
+
 const props = defineProps({
     colorTheme: {
         type: String,
@@ -7,33 +10,41 @@ const props = defineProps({
     }
 })
 
-const swooshColorLibrary = {
-    teal: {
-        color1: '#002856',
-        color2: '#309A9A',
-        color3: '#B8E2DC',
-    },
-    blue: {
-        color1: '#002856',
-        color2: '#44B8F3',
-        color3: '#B4DEF3',
-    },
-    navy: {
-        color1: '#002856',
-        color2: '#44B8F3',
-        color3: '#B4DEF3',
-    },
-    pink: {
-        color1: '#002856',
-        color2: '#692c61',
-        color3: '#DE4668',
-    },
-    purple: {
-        color1: '#002856',
-        color2: '#6d469c',
-        color3: '#7556c4',
-    },
-}
+// const swooshColorLibrary = {
+//     teal: {
+//         color1: '#002856',
+//         color2: '#339999',
+//         color3: '#B8E2DC',
+//     },
+//     darkTeal: {
+//         color1: '#002856',
+//         color2: '#339999',
+//         color3: '#0A7982',
+//     },
+//     blue: {
+//         color1: '#002856',
+//         color2: '#0072DA',
+//         color3: '#B4DEF3',
+//     },
+//     navy: {
+//         color1: '#002856',
+//         color2: '#44B8F3',
+//         color3: '#B4DEF3',
+//     },
+//     pink: {
+//         color1: '#002856',
+//         color2: '#692c61',
+//         color3: '#DE4668',
+//     },
+//     purple: {
+//         color1: '#002856',
+//         color2: '#6d469c',
+//         color3: '#7556c4',
+//     },
+// }
+
+console.log(props.colorTheme)
+
 </script>
 
 <template>
@@ -59,17 +70,18 @@ const swooshColorLibrary = {
                 y2="682.253"
                 gradientUnits="userSpaceOnUse"
             >
+            
                 <stop
                     offset="0.214873"
-                    :stop-color="swooshColorLibrary[props.colorTheme]['color1']"
+                    :stop-color="schoolColorTheme[props.colorTheme]['dark']"
                 />
                 <stop
                     offset="0.460472"
-                    :stop-color="swooshColorLibrary[props.colorTheme]['color2']"
+                    :stop-color="schoolColorTheme[props.colorTheme]['med']"
                 />
                 <stop
                     offset="1"
-                    :stop-color="swooshColorLibrary[props.colorTheme]['color3']"
+                    :stop-color="schoolColorTheme[props.colorTheme]['med']"
                 />
             </linearGradient>
         </defs>

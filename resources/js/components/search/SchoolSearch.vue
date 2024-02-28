@@ -114,7 +114,7 @@ const handleClickSearchResultView = (viewType) =>{
         </template>
         <template #robot>
             <SchoolsRobot
-                class="absolute top-10 left-36"
+                class="absolute top-16 left-36"
             />
         </template>
         <template #customViewSlot="{filteredData}">

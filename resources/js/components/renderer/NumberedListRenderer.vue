@@ -70,7 +70,7 @@ const getPositionAtCenter = (element) => {
 <template>
     <div class="extraContent mb-10 relative">
         <div
-            class="absolute left-[12.4%] bg-black bg-secondary-darkBlue connectingLine hidden w-0.5 z-10 md:!flex"
+            class="absolute left-[12.4%] bg-black bg-secondary-blueberry connectingLine hidden w-0.5 z-10 md:!flex"
             :style="`height: ${distanceBetweenEls}px; top: ${top+40}px;`"
         />
         <div class="flex flex-col">
@@ -95,7 +95,7 @@ const getPositionAtCenter = (element) => {
                         <div
                             class="
                                 absolute
-                                bg-secondary-darkBlue
+                                bg-secondary-blueberry
                                 font-extrabold
                                 grid
                                 place-items-center

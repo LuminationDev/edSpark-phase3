@@ -41,20 +41,20 @@ const props = defineProps({
         <div class="flex flex-row gap-4">
             <button
                 v-if="currentState === 'pending_available' || currentState === 'submitted_pending'"
-                class="bg-blue-500 hover:bg-blue-600 mb-4 px-6 py-2 rounded text-white w-48"
+                class="bg-blue-500 hover:bg-secondary-blueberry mb-4 px-6 py-2 rounded text-white w-48"
                 @click="loadPendingFunction"
             >
                 Edit pending content
             </button>
             <button
-                class="bg-blue-500 hover:bg-blue-600 mb-4 px-6 py-2 rounded text-white w-48"
+                class="bg-blue-500 hover:bg-secondary-blueberry mb-4 px-6 py-2 rounded text-white w-48"
                 @click="saveFunction"
             >
                 {{ buttonDescriptionByState[currentState] }}
             </button>
             <button
                 v-if="currentState === 'pending_loaded'"
-                class="bg-blue-500 hover:bg-blue-600 mb-4 px-6 py-2 rounded text-white w-48"
+                class="bg-blue-500 hover:bg-secondary-blueberry mb-4 px-6 py-2 rounded text-white w-48"
                 @click="editFunction"
             >
                 Revert

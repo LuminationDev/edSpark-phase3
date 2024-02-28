@@ -1,5 +1,6 @@
 <script setup>
 import {useRouter} from "vue-router";
+import {ref} from 'vue';
 
 import BaseBreadcrumb from "@/js/components/bases/BaseBreadcrumb.vue";
 import BaseHero from "@/js/components/bases/BaseHero.vue";
@@ -19,22 +20,30 @@ import {edSparkContentSanitizer} from "@/js/helpers/objectHelpers";
 
 const router = useRouter()
 
+
+
 const handleClickViewProfile = (author_id, author_type) => {
     router.push(`/${author_type}/${author_id}`)
 }
 
+
+const colorTheme = ref('partnerBlue')
+
 </script>
 <template>
+
     <BaseSingle content-type="event">
         <template #hero="{contentFromBase}">
             <BaseHero
                 :background-url="contentFromBase['cover_image']"
+                :swoosh-color-theme="colorTheme"
             >
                 <template #breadcrumb>
                     <BaseBreadcrumb
                         :child-page="contentFromBase.title"
                         parent-page="Events"
                         parent-page-link="browse/event"
+                        :color-theme="colorTheme"
                     />
                 </template>
                 <template #titleText>
@@ -146,7 +155,7 @@ const handleClickViewProfile = (author_id, author_type) => {
 
         <template #content="{contentFromBase}">
             <div
-                class="eventSingleContent flex flex-col overflow-hidden px-8 w-full lg:!flex-row"
+                class="eventSingleContent font-light flex flex-col overflow-hidden px-8 w-full lg:!flex-row"
             >
                 <!--    Content of the Advice    -->
                 <div class="flex flex-col flex-wrap pl-6 px-12 w-full lg:!w-2/3">

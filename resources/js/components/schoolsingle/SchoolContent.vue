@@ -44,7 +44,7 @@ const props = defineProps({
     colorTheme: {
         type: String,
         required: false,
-        default: 'teal',
+        default: 'darkTeal',
     },
     activeSubmenu: {
         type: String,
@@ -126,6 +126,7 @@ const handleAllSaveButton = (): void => {
 }
 
 const handleColorSelected = (newColor): void => {
+    console.log("Color: "+newColor);
     emits('sendColorToSchoolSingle', newColor)
 }
 
