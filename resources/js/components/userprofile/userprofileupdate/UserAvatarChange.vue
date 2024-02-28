@@ -73,11 +73,13 @@ const uploadImage = ref('')
 
 const handleSubmitImage = () => {
     console.log("Submit button is pressed")
-    const data = {
-        uploadImage: logoDataURL.value
-    }
-    return axios.post(API_ENDPOINTS.USERAVATAR.UPDATE_OR_CREATE_USER_AVATAR + '39', data)
+
+    const data = new FormData()
+    data.append('userAvatar',logoEditFile.value )
+    return axios.post(API_ENDPOINTS.USERAVATAR.UPDATE_OR_CREATE_USER_AVATAR + currentUser.value.id, data)
         .then(res => {
+            console.log(res.data.data)
+            userStore.fetchCurrentUserAndLoadIntoStore()
             toast.success("Successfully submitted the image file")
         })
         .catch(err => {

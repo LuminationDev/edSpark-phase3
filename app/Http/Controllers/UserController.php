@@ -445,9 +445,11 @@ class UserController extends Controller
                 return ResponseService::error('User not found', null, 404);
             }
             if ($request->userAvatar) {
-                $this->handleUserAvatar($userId);
+                $newAvatarUrl = $this->handleUserAvatar($request->userAvatar, $user);
+                return ResponseService::success('User metadata updated successfully',$newAvatarUrl);
+            }else{
+                return ResponseService::error('User Avatar not provided');
             }
-            return ResponseService::success('User metadata updated successfully');
         } catch (\Exception $e) {
             // Handle exceptions here
             return ResponseService::error('Error updating user metadata', $e->getMessage());

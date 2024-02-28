@@ -73,7 +73,8 @@ const avatarUrlWithFallback  = computed(() =>{
     if(imageError.value){
         return avatarUIFallbackURL + currentUser.value.display_name
     } else{
-        return `${imageURL}/${props.avatarUrl}\``
+        console.log(`${imageURL}/${props.avatarUrl}`)
+        return `${imageURL}/${props.avatarUrl}`
     }
 })
 
