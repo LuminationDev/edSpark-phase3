@@ -64,6 +64,7 @@ const edsparkColor = [
     '#319795',
     '#002858',
     '#D9DAE4',
+    '#acafc6', //school logo bg dark cool grey
 
 ];
 
@@ -115,6 +116,7 @@ module.exports = {
                     mbRose: '#be123c',
                     mbIcons: 'green',
                     coolGrey: '#D9DAE4',
+                    coolGreyDark: '#acafc6',
                     // new style guide
                     banana: '#FFC836',
                     bananaMed: '#d4a426',

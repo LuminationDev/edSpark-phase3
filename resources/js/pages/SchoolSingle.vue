@@ -236,7 +236,6 @@ const handleCloseModerationTab = (): void => {
                                             ">
                                         <div
                                             class="
-                                                bg-white
                                                 flex
                                                 justify-center
                                                 items-center
@@ -251,7 +250,6 @@ const handleCloseModerationTab = (): void => {
                                                 :src="`${imageURL}/${schoolContent.logo}`"
                                                 :alt="`school logo`"
                                                 class="
-                                                    bg-white
                                                     h-52
                                                     max-h-full
                                                     object-contain
