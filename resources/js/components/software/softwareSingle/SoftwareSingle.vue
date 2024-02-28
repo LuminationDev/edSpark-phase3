@@ -174,7 +174,16 @@ const colorTheme = ref('technologyPurple')
                 <template v-else-if="activeSubmenu === 'access'">
                     <div
                         v-if="contentFromBase['how_to_access']"
-                        class="flex flex-col mt-10 overflow-hidden pt-0 px-5 softwareSingleHowToAccess"
+                        class="
+                            flex
+                            flex-col
+                            mt-10
+                            overflow-hidden
+                            pt-0
+                            px-5
+                            richTextContentContainer
+                            softwareSingleHowToAccess
+                            "
                         v-html="edSparkContentSanitizer(contentFromBase['how_to_access'])"
                     />
                     <div

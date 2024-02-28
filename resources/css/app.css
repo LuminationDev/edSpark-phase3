@@ -258,6 +258,10 @@ select {
     margin-bottom: 16px;
 }
 
+.richTextContentContainer p{
+    font-weight:300;
+}
+
 .richTextContentContainer h2 {
     display: block;
     font-size: 1.5em;

@@ -147,7 +147,7 @@ onBeforeUnmount(() => {
 
 
         <div
-            class="pageBodyContentContainer"
+            class="min-h-[80vh] pageBodyContentContainer"
         >
             <router-view />
         </div>
