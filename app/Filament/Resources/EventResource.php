@@ -222,7 +222,7 @@ class EventResource extends Resource
                         'upcoming' => 'Upcoming Events',
                     ])
                     ->label('Event Date')
-                    ->default('all')
+                    ->default('upcoming')
                     ->attribute('start_date')
                     ->query(function (Builder $query, array $data): Builder {
                         $today = now()->toDateString();

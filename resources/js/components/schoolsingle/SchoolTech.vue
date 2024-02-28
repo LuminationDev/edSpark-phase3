@@ -36,7 +36,7 @@ const customFill = computed(() => {
 
 </script>
 <template>
-    <div class="bg-white border-[0.5px] border-black flex flex-col overflow-hidden px-4 py-4 relative">
+    <div class="bg-white border-[0.5px] border-black flex flex-col overflow-hidden px-4 py-4 relative w-full">
         <div class="absolute -top-24 -right-28 techListBackground">
             <LaptopGear />
         </div>

@@ -1,36 +1,33 @@
 <script setup lang="ts">
 import {storeToRefs} from "pinia";
-import {onBeforeMount, onMounted, Ref, ref} from 'vue'
+import {computed, onBeforeMount, onMounted, Ref, ref} from 'vue'
 import {useRoute} from "vue-router";
 import {toast} from "vue3-toastify";
 
-import EditorJsInput from "@/js/components/bases/EditorJsInput.vue";
 import TinyMceRichTextInput from "@/js/components/bases/frontendform/TinyMceEditor/TinyMceRichTextInput.vue";
 import GenericButton from "@/js/components/button/GenericButton.vue";
-import EditorJsContentDisplay from "@/js/components/schoolsingle/EditorJsContentDisplay.vue";
 import SchoolContact from "@/js/components/schoolsingle/SchoolContact.vue";
 import SchoolColorPicker from "@/js/components/schoolsingle/schoolContent/SchoolColorPicker.vue";
 import SchoolImageChange from "@/js/components/schoolsingle/schoolContent/SchoolImageChange.vue";
 import SchoolTech from "@/js/components/schoolsingle/SchoolTech.vue";
 import SchoolWhatsNew from "@/js/components/schoolsingle/SchoolWhatsNew.vue";
 import TechSelector from "@/js/components/selector/TechSelector.vue";
-import {defaultSchoolContent} from "@/js/constants/schoolContentDefault";
+import {formatDateToDayTime} from "@/js/helpers/dateHelper";
 import {edSparkContentSanitizer} from "@/js/helpers/objectHelpers";
 import {schoolService} from "@/js/service/schoolService";
 import {useUserStore} from "@/js/stores/useUserStore";
-import {EditorJSDataType} from "@/js/types/EditorJsTypes";
 import {SchoolDataType, TechUsed} from "@/js/types/SchoolTypes";
 
 
 const schoolContentStateDescription = {
     new: "",
-    pending_available: "You have a pending content available. Submitting new content will replace your current pending content",
-    pending_loaded: "You are editing your pending content",
+    pending_available: "You have a pending profile awaiting for moderation from ",
+    pending_loaded: "You are editing your pending profile",
 }
 const buttonDescriptionByState = {
-    new: "Submit content",
-    pending_available: "Submit & replace pending content",
-    pending_loaded: "Submit modified pending content",
+    new: "Submit for moderation",
+    pending_available: "Submit for moderation",
+    pending_loaded: "Submit for moderation",
 }
 
 enum SchoolContentState {
@@ -60,9 +57,9 @@ const props = defineProps({
     }
 })
 const route = useRoute()
+console.log(props.schoolContent)
 
-
-const emits = defineEmits(['sendInfoToSchoolSingle', 'sendColorToSchoolSingle', 'sendPhotoToSchoolSingle'])
+const emits = defineEmits(['sendInfoToSchoolSingle', 'sendColorToSchoolSingle', 'sendPhotoToSchoolSingle','resetColorTheme'])
 const {currentUser} = storeToRefs(useUserStore())
 const currentSchoolName = route.params.name
 const editMode = ref<boolean>(false)
@@ -74,9 +71,10 @@ const newTechUsed: Ref<TechUsed[] | null> = ref(null)
 const currentUserCanEdit = ref<boolean>(false)
 const currentUserCanNominate = ref<boolean>(false)
 const currentUserCanPublish = ref<boolean>(false)
+const currentUserAdminMessage = ref<string>('')
 const tinyMceRefreshKey = ref(0)
 
-const forceRefreshTinyMce = () =>{
+const forceRefreshTinyMce = () => {
     tinyMceRefreshKey.value++
 }
 
@@ -101,6 +99,13 @@ const handleEditButton = async () => {
 
 const handleCancelEditButton = (): void => {
     editMode.value = false
+    if(pendingSchoolContent.value){
+        schoolContentState.value = SchoolContentState.PendingAvailable
+    } else {
+        schoolContentState.value = SchoolContentState.New
+
+    }
+
 }
 
 const handleSchoolData = (data): void => {
@@ -115,6 +120,8 @@ const handleAllSaveButton = (): void => {
     emits('sendInfoToSchoolSingle', newSchoolContent.value, newTechUsed.value)
     editMode.value = false
     schoolContentState.value = SchoolContentState.New
+    // reset color here
+    emits('resetColorTheme');
     toast('Submitted your new profile for moderation. View will update automatically once approved')
 }
 
@@ -134,6 +141,7 @@ onMounted(async () => {
             currentUserCanEdit.value = Boolean(res.data.status && res.data.result)
             currentUserCanNominate.value = Boolean(res.data.status && res.data.canNominate)
             currentUserCanPublish.value = Boolean(res.data.status && res.data.canPublish)
+            currentUserAdminMessage.value = res.data.message
 
         })
         if (currentUserCanEdit.value) {
@@ -158,6 +166,26 @@ const handleClickEditPendingContent = (): void => {
     forceRefreshTinyMce()
 }
 
+const userEditRole = computed(() => {
+    if (currentUserAdminMessage.value.includes('Superadmin')) {
+        return "Superadmin"
+    } else if (currentUserAdminMessage.value.includes('leader')) {
+        return 'School leader'
+    } else if (currentUserAdminMessage.value.includes('nominated user')) {
+        return 'Nominated user'
+    }
+})
+
+const moderationStatusMessage = computed(() => {
+    if(schoolContentState.value === SchoolContentState.PendingLoaded){
+        return schoolContentStateDescription[schoolContentState.value]
+    }
+    else if (pendingSchoolContent.value) {
+        return schoolContentStateDescription[schoolContentState.value] + formatDateToDayTime(pendingSchoolContent.value.updated_at)
+    } else {
+        return "Your latest profile has been approved on " + formatDateToDayTime(props.schoolContent.updated_at)
+    }
+})
 
 </script>
 <template>
@@ -169,10 +197,13 @@ const handleClickEditPendingContent = (): void => {
             >
                 <div class="flex flex-row w-full">
                     <div
-                        v-if="editMode"
-                        class="contentEditor flex justify-between flex-col schoolContent w-full lg:!flex-row"
+
+                        class="flex justify-between flex-col schoolContent w-full lg:!flex-row"
                     >
-                        <div class="flex flex-col w-full lg:!basis-2/3">
+                        <div
+                            v-if="editMode"
+                            class="flex flex-col w-full lg:!basis-2/3"
+                        >
                             <TinyMceRichTextInput
                                 :key="tinyMceRefreshKey"
                                 :src-content="newSchoolContent"
@@ -180,99 +211,164 @@ const handleClickEditPendingContent = (): void => {
                                 @emit-tiny-rich-content="handleSchoolData"
                             />
                         </div>
-                        <div class="flex items-center flex-col w-full lg:!basis-1/3">
-                            <div
-                                class="AdminSectionSchoolProfile flex font-semibold mb-4 text-center"
-                            >
-                                {{ schoolContentStateDescription[schoolContentState] }}
-                            </div>
-                            <div class="mb-4">
-                                <GenericButton
-                                    v-if="schoolContentState === SchoolContentState.PendingAvailable"
-                                    class="bg-blue-500 hover:bg-blue-600 mb-2 px-6 py-2 rounded text-white w-48"
-                                    :callback="handleClickEditPendingContent"
-                                >
-                                    Edit pending content
-                                </GenericButton>
-                                <GenericButton
-                                    class="bg-blue-500 hover:bg-blue-600 mb-2 px-6 py-2 rounded text-white w-48"
-                                    :callback="handleAllSaveButton"
-                                >
-                                    {{ buttonDescriptionByState[schoolContentState] }}
-                                </GenericButton>
-                                <GenericButton
-                                    class="!bg-secondary-mbRose mb-2 px-6 py-2 rounded text-white w-48"
-                                    :callback="handleCancelEditButton"
-                                >
-                                    Cancel edit
-                                </GenericButton>
-                            </div>
-                            <button
-                                v-if="schoolContentState === SchoolContentState.PendingLoaded"
-                                class="bg-blue-500 hover:bg-blue-600 mb-4 px-6 py-2 rounded text-white w-48"
-                                @click="handleEditButton"
-                            >
-                                Revert
-                            </button>
-                            <SchoolColorPicker
-                                class="mb-6"
-                                @color-selected="handleColorSelected"
-                            />
-                            <SchoolImageChange
-                                class="mb-6"
-                                :current-logo="props.schoolContent.logo"
-                                :current-cover-image="props.schoolContent.cover_image"
-                                @send-uploaded-photo-to-content="handleReceivePhotoFromImageChange"
-                            />
-                            <p class="font-semibold mb-5 text-xl">
-                                Tech Selector:
-                            </p>
-                            <div class="px-4 techSelectorContainer">
-                                <TechSelector
-                                    :existing-tech-used="newTechUsed"
-                                    :color-theme="colorTheme"
-                                    @send-school-tech="handleSchoolTech"
-                                />
-                            </div>
-                        </div>
-                    </div>
-                    <!--    Display Content     -->
-                    <div
-                        v-else
-                        class="contentDisplay flex lg:flex-row justify-between flex-col gap-4 schoolContent w-full"
-                    >
-                        <div class="basis-2/3">
+                        <div
+                            v-else
+                            class="w-full lg:!basis-2/3"
+                        >
                             <div
                                 class="richTextContentContainer"
                                 v-html="edSparkContentSanitizer(schoolContent.content_blocks)"
                             />
                         </div>
-                        <div class="basis-1/3 school-tech">
+
+                        <div
+                            class="flex items-center flex-col gap-4 px-4 w-full lg:!basis-1/3"
+                        >
+                            <h2
+                                v-if="currentUserCanEdit"
+                                class="font-semibold text-center text-genericDark text-lg w-full"
+                            >
+                                Admin Sections
+                            </h2>
                             <div
                                 v-if="currentUserCanEdit"
-                                class="border-[1px] border-black flex flex-col mb-2 px-4 py-4 schoolAdminSection"
+                                class="
+                                    border-[1px]
+                                    border-gray-300
+                                    flex
+                                    items-center
+                                    flex-col
+                                    mb-2
+                                    pb-4
+                                    pt-2
+                                    px-4
+                                    rounded
+                                    schoolAdminSection
+                                    w-full
+                                    "
                             >
-                                <h2 class="font-semibold mb-2 text-genericDark text-lg">
-                                    Admin Sections
-                                </h2>
-                                <GenericButton
-                                    v-if="!editMode "
-                                    class="bg-blue-600 hover:bg-blue-400 px-6 py-2 rounded text-white w-48"
-                                    :callback="handleEditButton"
+                                <p>
+                                    Your Role
+                                </p>
+                                <p class="font-semibold mb-4">
+                                    {{ userEditRole }}
+                                </p>
+                                <p>
+                                    Moderation status
+                                </p>
+                                <p class="font-semibold mb-4 text-center">
+                                    {{ moderationStatusMessage }}
+                                </p>
+                                <template
+                                    v-if="editMode"
                                 >
-                                    Edit this page
-                                </GenericButton>
-                                <slot
-                                    v-if="currentUserCanNominate"
-                                    name="additionalContentActions"
+                                    <div class="2xl:!grid-cols-2 grid grid-cols-1 gap-2 mb-4">
+                                        <GenericButton
+                                            v-if="schoolContentState === SchoolContentState.PendingAvailable"
+                                            class="
+                                                bg-blue-500
+                                                hover:bg-blue-600
+                                                rounded
+                                                text-base
+                                                text-white
+                                                w-48
+                                                "
+                                            :callback="handleClickEditPendingContent"
+                                        >
+                                            View pending profile
+                                        </GenericButton>
+                                        <GenericButton
+                                            class="
+                                                bg-blue-500
+                                                hover:bg-blue-600
+                                                rounded
+                                                text-base
+                                                text-white
+                                                w-48
+                                                "
+                                            :callback="handleAllSaveButton"
+                                        >
+                                            {{ buttonDescriptionByState[schoolContentState] }}
+                                        </GenericButton>
+                                        <GenericButton
+                                            class="px-6 py-2 rounded text-white w-48"
+                                            :callback="handleCancelEditButton"
+                                        >
+                                            Cancel edit
+                                        </GenericButton>
+                                        <GenericButton
+                                            v-if="schoolContentState === SchoolContentState.PendingLoaded"
+                                            class="
+                                                !bg-secondary-mbRose
+                                                mb-4
+                                                px-6
+                                                py-2
+                                                rounded-lg
+                                                text-white
+                                                w-48
+                                                "
+                                            :callback="handleEditButton"
+                                        >
+                                            Revert to current
+                                        </GenericButton>
+                                    </div>
+
+                                    <SchoolColorPicker
+                                        class="mb-6"
+                                        @color-selected="handleColorSelected"
+                                    />
+                                    <SchoolImageChange
+                                        class="mb-6"
+                                        :current-logo="props.schoolContent.logo"
+                                        :current-cover-image="props.schoolContent.cover_image"
+                                        @send-uploaded-photo-to-content="handleReceivePhotoFromImageChange"
+                                    />
+                                    <p class="font-semibold mb-5 text-xl">
+                                        Tech Selector:
+                                    </p>
+                                    <div class="px-4 techSelectorContainer">
+                                        <TechSelector
+                                            :existing-tech-used="newTechUsed"
+                                            :color-theme="colorTheme"
+                                            @send-school-tech="handleSchoolTech"
+                                        />
+                                    </div>
+                                </template>
+                                <template v-else>
+                                    <GenericButton
+                                        v-if="!editMode "
+                                        class="
+                                            bg-blue-600
+                                            hover:bg-blue-400
+                                            mb-4
+                                            px-6
+                                            py-2
+                                            rounded
+                                            text-white
+                                            w-48
+                                            "
+                                        :callback="handleEditButton"
+                                    >
+                                        Edit this page
+                                    </GenericButton>
+                                    <slot
+                                        v-if="currentUserCanNominate"
+                                        name="additionalContentActions"
+                                    />
+                                </template>
+                            </div>
+
+                            <div
+                                class="contentDisplay flex items-center flex-col schoolContent w-full"
+                            >
+                                <SchoolTech
+                                    :tech-list="schoolContent.tech_used"
+                                    :color-theme="colorTheme"
                                 />
                             </div>
-                            <SchoolTech
-                                :tech-list="schoolContent.tech_used"
-                                :color-theme="colorTheme"
-                            />
                         </div>
                     </div>
+                    <!--    Display Content     -->
                 </div>
             </div>
         </template>

@@ -52,7 +52,7 @@ final class ExtraResource
     {
         $colorLabels = [];
         foreach (self::$backgroundColorTheme as $color => $properties) {
-            $colorLabels[$properties['dark']] = ucfirst($color) ;
+            $colorLabels[$properties['med']] = ucfirst($color) ;
         }
         return $colorLabels;
     }

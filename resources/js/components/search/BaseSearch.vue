@@ -198,7 +198,7 @@ const formattedSearchBlurb = computed(() => {
                 {{ String(filteredData.length) + " search " + (filteredData.length > 1 ? "results" : "result") }}
             </div>
             <div
-                v-if="resourceList&&
+                v-if="resourceList && resourceList.length &&
                     props.customView"
                 class="customViewContainer"
             >
@@ -208,7 +208,7 @@ const formattedSearchBlurb = computed(() => {
                 />
             </div>
             <div
-                v-else-if="resourceList && !props.customView"
+                v-else-if="resourceList && resourceList.length && !props.customView"
                 id="resourceResult"
                 class="
                     grid
