@@ -61,7 +61,6 @@ const handleAnswer = async (answer) => {
         nextQuestionId,
         nextQuestionId === null
     ).then((result) => {
-        console.log('triage answer submitted:', result);
         if(nextQuestionId !== null) {
             question.value += 1;
         } else {

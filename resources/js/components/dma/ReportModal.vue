@@ -30,23 +30,31 @@ const domainListRef = ref(null);
 
 const actionPlanData = ref(null)
 const actionPlan = ref(null)
-const showErrorModal = ref(false);
 const showUnsavedWarningModal = ref(false);
 const selectedElement = ref(null);
 
 const questionData = ref([]);
 
+const showErrorModal = ref(false);
+const closeOnError = ref(false);
+
 onMounted(async () => {
     // get questions for all domains, for cross-domain dependency checks
     const data = [];
-    for (const domain of props.domains) {
-        const result = await dmaService.getQuestions(domain.id);
-        data.push({domain: domain.domain, questions: result.domain_questions});
-    }
-    questionData.value = data;
+    try {
+        for (const domain of props.domains) {
+            const result = await dmaService.getQuestions(domain.id);
+            data.push({domain: domain.domain, questions: result.domain_questions});
+        }
+        questionData.value = data;
 
-    // load action plan
-    actionPlanData.value = await dmaService.getActionPlans();
+        // load action plan
+        actionPlanData.value = await dmaService.getActionPlans();
+    } catch(error) {
+        console.log("Error loading assessment report data", error);
+        closeOnError.value = true;
+        showErrorModal.value = true
+    }
 });
 onBeforeUnmount(() => {
     // remove scroll listener
@@ -171,9 +179,7 @@ const checkIndicatorDependencies = (domainName, elementName, indicatorName, scor
         });
         for (const dep of dependencies) {
             // get dependency question
-            console.log("dep",dep);
             const depQuestion = getQuestionForDependency(dep);
-            console.log("dep question", depQuestion);
             // check score for dependency question
             const depResult = getIndicatorResults(depQuestion.domain, depQuestion.element_print).find(r => r.indicator === depQuestion.indicator_print);
             if (!depResult || depResult.value < depQuestion.phase) {
@@ -259,7 +265,6 @@ const handleScrollToElement = async (item) => {
 }
 
 const handleSaveActionPlan = async (domain, elementName) => {
-    console.log("save plan", domain);
     const plan = actionPlan.value[domain.domain][elementName];
     try {
         if (plan.action_plan) {
@@ -268,8 +273,8 @@ const handleSaveActionPlan = async (domain, elementName) => {
             await dmaService.deleteActionPlan(domain.id, elementName);
         }
         actionPlan.value[domain.domain][elementName].edited = false;
-    } catch(e) {
-        console.log("error saving action plan", e);
+    } catch(error) {
+        console.log("error saving action plan", error);
         showErrorModal.value = true;
     }
 }
@@ -281,6 +286,9 @@ const toggleShowAdvice = async (domainName, elementName) => {
 
 const handleErrorDismissed = () => {
     showErrorModal.value = false;
+    if(closeOnError.value) {
+        emit('close');
+    }
 }
 
 const handleCloseReport = () => {
@@ -536,23 +544,22 @@ const handleCloseReport = () => {
                         You have unsaved changes to your action plans that will not be saved. Continue?
                     </template>
                 </WarningModal>
-
-                <WarningModal
-                    v-if="showErrorModal"
-                    embed
-                    :show-cancel="false"
-                    @confirm="handleErrorDismissed"
-                >
-                    <template #title>
-                        Network error
-                    </template>
-                    <template #message>
-                        A network error has occured.<br>
-                        <br>
-                        Please wait a moment and try again.
-                    </template>
-                </WarningModal>
             </div>
+            <WarningModal
+                v-if="showErrorModal"
+                embed
+                :show-cancel="false"
+                @confirm="handleErrorDismissed"
+            >
+                <template #title>
+                    Network error
+                </template>
+                <template #message>
+                    A network error has occured.<br>
+                    <br>
+                    Please wait a moment and try again.
+                </template>
+            </WarningModal>
         </div>
     </OverlayModal>
 </template>

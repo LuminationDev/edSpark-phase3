@@ -113,12 +113,10 @@ const getNextQuestion = () => {
                 for(const el of elements.value) {
                     if (dep.startsWith(el)) return true;
                 }
-                console.log("Question", nextQuestion.id, ":", nextQuestion.generated_variable, " - Dependency '",dep,"' is out-of-domain; ignored");
                 return false;
             });
             if (!dependencies.every(dep => metDependencies.value.includes(dep))) {
                 // dependencies not met, skip and keep searching
-                console.log("Question", nextQuestion.id, ":", nextQuestion.generated_variable, " - Dependencies not met, skipping:", dependencies);
                 nextQuestion = null;
                 ++nextIndex;
             }
@@ -233,8 +231,13 @@ const handleCloseElementSummary = (previous = false) => {
 }
 
 const handleSubmitReflection = async () => {
-    await dmaService.putReflection(props.domain.id, reflection.value);
-    showDomainSummary.value = false;
+    try {
+        await dmaService.putReflection(props.domain.id, reflection.value);
+        showDomainSummary.value = false;
+    } catch(error) {
+        console.log('Error submitting reflection', error);
+        emit('error');
+    }
 }
 
 const handleResetDomain = () => {
