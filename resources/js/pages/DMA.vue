@@ -291,7 +291,7 @@ const handleResetSurvey = async () => {
                     <WarningModal
                         v-if="showResetModal"
                         @cancel="showResetModal=false"
-                        @reset="handleResetSurvey"
+                        @confirm="handleResetSurvey"
                     >
                         <template #title>
                             Are you sure?

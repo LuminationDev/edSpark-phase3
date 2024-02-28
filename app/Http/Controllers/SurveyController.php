@@ -138,7 +138,7 @@ class SurveyController extends Controller
             ->first();
 
         if ($userSurvey == null) {
-            return $this->domainNotFound();
+            return $this->surveyNotFound();
         }
 
         $userDomain = UserSurveyDomain::where('id', $user_domain_id)
@@ -184,6 +184,64 @@ class SurveyController extends Controller
             ]
         );
     }
+    public function deleteUserActionPlan(Request $request, $user_domain_id): JsonResponse
+    {
+        $user = User::find(Auth::user()->id);
+        $userSurvey = UserSurvey::where('user_id', $user->id)
+            ->where('status', '<>', 'Abandoned')
+            ->first();
+
+        if ($userSurvey == null) {
+            return $this->surveyNotFound();
+        }
+
+        $userDomain = UserSurveyDomain::where('id', $user_domain_id)
+            ->where('user_survey_id', $userSurvey->id)
+            ->first();
+        if ($userDomain == null) {
+            return $this->domainNotFound();
+        }
+
+        $element = $request['element'];
+
+        $domainQuestions = Question::where('survey_id', $userSurvey->survey_id)
+            ->where('domain', $userDomain->domain)
+            ->where('element_print', $element)
+            ->get();
+
+        Log::info(print_r($domainQuestions, true));
+        if (empty($domainQuestions) || $domainQuestions->isEmpty()) {
+            return $this->elementNotFound();
+        }
+
+        // check if an action plan for this element already exists
+        $userActionPlan = UserSurveyActionPlan::where('user_survey_domain_id', $user_domain_id)
+            ->where('element', $element)
+            ->first();
+
+        if ($userActionPlan == null) {
+            return response()->json(
+                [
+                    'success' => true,
+                    'message' => 'Action plan not found',
+                    'code' => 0,
+                    'locale' => 'en',
+                    'data' => (object)[]
+                ], 204
+            );
+        }
+        $userActionPlan->delete();
+
+        return response()->json(
+            [
+                'success' => true,
+                'message' => 'Action plan deleted successfully',
+                'code' => 0,
+                'locale' => 'en',
+                'data' => (object)[]
+            ]
+        );
+    }
 
     public function saveUserReflection(Request $request, $user_domain_id): JsonResponse
     {
@@ -193,7 +251,7 @@ class SurveyController extends Controller
             ->first();
 
         if ($userSurvey == null) {
-            return $this->domainNotFound();
+            return $this->surveyNotFound();
         }
 
         $userDomain = UserSurveyDomain::where('id', $user_domain_id)

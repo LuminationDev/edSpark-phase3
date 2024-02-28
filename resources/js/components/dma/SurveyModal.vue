@@ -114,7 +114,7 @@ const handleErrorDismissed = () => {
                 v-if="showErrorModal"
                 embed
                 :show-cancel="false"
-                @reset="handleErrorDismissed"
+                @confirm="handleErrorDismissed"
             >
                 <template #title>
                     Network error

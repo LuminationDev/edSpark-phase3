@@ -31,6 +31,7 @@ const domainListRef = ref(null);
 const actionPlanData = ref(null)
 const actionPlan = ref(null)
 const showErrorModal = ref(false);
+const showUnsavedWarningModal = ref(false);
 const selectedElement = ref(null);
 
 const questionData = ref([]);
@@ -261,10 +262,15 @@ const handleSaveActionPlan = async (domain, elementName) => {
     console.log("save plan", domain);
     const plan = actionPlan.value[domain.domain][elementName];
     try {
-        await dmaService.putActionPlan(domain.id, elementName, plan.action_plan);
+        if (plan.action_plan) {
+            await dmaService.putActionPlan(domain.id, elementName, plan.action_plan);
+        } else {
+            await dmaService.deleteActionPlan(domain.id, elementName);
+        }
         actionPlan.value[domain.domain][elementName].edited = false;
     } catch(e) {
         console.log("error saving action plan", e);
+        showErrorModal.value = true;
     }
 }
 
@@ -278,8 +284,15 @@ const handleErrorDismissed = () => {
 }
 
 const handleCloseReport = () => {
-    // save action plans
-
+    // check for unsaved changes
+    for(const domainData of Object.values(actionPlan.value)) {
+        for(const plan of Object.values(domainData)) {
+            if (plan.edited) {
+                showUnsavedWarningModal.value = true;
+                return;
+            }
+        }
+    }
     emit('close');
 }
 
@@ -505,16 +518,30 @@ const handleCloseReport = () => {
                     </div>
                     <div class="mt-10 text-center">
                         <RoundButton @click="handleCloseReport">
-                            Save & Close
+                            Close
                         </RoundButton>
                     </div>
                 </div>
 
                 <WarningModal
+                    v-if="showUnsavedWarningModal"
+                    embed
+                    @cancel="showUnsavedWarningModal = false"
+                    @confirm="emit('close')"
+                >
+                    <template #title>
+                        Unsaved changes
+                    </template>
+                    <template #message>
+                        You have unsaved changes to your action plans that will not be saved. Continue?
+                    </template>
+                </WarningModal>
+
+                <WarningModal
                     v-if="showErrorModal"
                     embed
                     :show-cancel="false"
-                    @reset="handleErrorDismissed"
+                    @confirm="handleErrorDismissed"
                 >
                     <template #title>
                         Network error

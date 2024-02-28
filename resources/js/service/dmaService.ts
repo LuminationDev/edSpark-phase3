@@ -44,6 +44,17 @@ export const dmaService = {
         })
     },
 
+    putReflection: async(
+        domainId: string,
+        reflection: string,
+    ):Promise<AxiosResponse<any>> => {
+        return axios.put(`${API_ENDPOINTS.DMA.USER_SURVEY}/domain/${domainId}/reflection`, {
+            reflection,
+        }).then(res => {
+            return res.data;
+        })
+    },
+
     getActionPlans: async():Promise<AxiosResponse<any>> => {
         return axios.get(`${API_ENDPOINTS.DMA.USER_SURVEY}/actionplans`).then(res => {
             return res.data.data;
@@ -58,6 +69,17 @@ export const dmaService = {
         return axios.put(`${API_ENDPOINTS.DMA.USER_SURVEY}/domain/${domainId}/actionplan`, {
             element,
             action,
+        }).then(res => {
+            return res.data;
+        })
+    },
+
+    deleteActionPlan: async(
+        domainId: string,
+        element: string,
+    ):Promise<AxiosResponse<any>> => {
+        return axios.delete(`${API_ENDPOINTS.DMA.USER_SURVEY}/domain/${domainId}/actionplan`, {
+            data: {element},
         }).then(res => {
             return res.data;
         })

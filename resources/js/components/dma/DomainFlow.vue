@@ -232,7 +232,8 @@ const handleCloseElementSummary = (previous = false) => {
     elementCompleted.value = null;
 }
 
-const handleSubmitReflection = () => {
+const handleSubmitReflection = async () => {
+    await dmaService.putReflection(props.domain.id, reflection.value);
     showDomainSummary.value = false;
 }
 
@@ -242,7 +243,7 @@ const handleResetDomain = () => {
 </script>
 
 <template>
-    <template v-if="domain">
+    <template v-if="props.domain">
         <CoverScreen
             v-if="elementCompleted !== null"
             :theme="props.domain.domain"
