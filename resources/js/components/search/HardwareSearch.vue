@@ -65,7 +65,7 @@ const handleCategoryFilter = (filters, dataPath) => {
         :live-filter-object="filterObject"
         :hero-title="LandingHeroText['equipment']['title']"
         :hero-subtitle="LandingHeroText['equipment']['subtitle']"
-        hero-background-color="purple"
+        hero-background-color="technologyPurple"
     >
         <template #filterBar>
             <GenericMultiSelectFilter

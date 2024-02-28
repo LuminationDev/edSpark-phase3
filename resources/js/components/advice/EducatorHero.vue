@@ -62,7 +62,7 @@ const router = useRouter()
                         bg-white
                         hover:bg-slate-50
                         border-2
-                        border-secondary-darkBlue
+                        bg-secondary-blueberry
                         font-medium
                         hidden
                         px-12
@@ -89,7 +89,7 @@ const router = useRouter()
                         bg-white
                         hover:bg-slate-50
                         border-2
-                        border-secondary-darkBlue
+                        bg-secondary-blueberry
                         font-semibold
                         px-12
                         text-lg

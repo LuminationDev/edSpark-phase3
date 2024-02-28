@@ -19,16 +19,16 @@ const props = defineProps({
     backgroundColor: {
         type: String as ValidLandingHeroBackgroundColor,
         required: false,
-        default: 'teal'
+        default: 'darkTeal'
     },
     swooshColor:{
         type: String,
         required: false,
-        default: 'teal'
+        default: 'darkTeal'
     }
 })
 
-const backgroudColorClass = computed(() => {
+const backgroundColorClass = computed(() => {
     switch (props.backgroundColor) {
     case 'teal':
         return 'bg-main-teal'
@@ -37,11 +37,13 @@ const backgroudColorClass = computed(() => {
     case 'navy':
         return 'bg-main-navy'
     case 'purple':
+    case 'technologyPurple':
         return 'bg-secondary-grapeDark'
     case 'blue':
+    case 'partnerBlue':
         return 'bg-secondary-blueberry'
     default:
-        return 'teal'
+        return 'bg-main-darkTeal'
     }
 })
 
@@ -49,8 +51,8 @@ const backgroudColorClass = computed(() => {
 
 <template>
     <div
-        class="h-mainHero relative lg:!mb-4"
-        :class="backgroudColorClass"
+        class="h-mainHero mb-4 relative"
+        :class="backgroundColorClass"
     >
         <div class="grid grid-cols-6 h-full px-16 md:px-16">
             <div class="col-span-6 flex justify-center flex-col gap-2 h-full md:!col-span-3">
@@ -65,7 +67,8 @@ const backgroudColorClass = computed(() => {
                 </p>
             </div>
             <div
-                class="hidden relative welcomeRobot z-10 md:!col-span-2 md:block md:scale-75 lg:!ml-0 lg:!scale-100"
+                class="hidden relative 
+                welcomeRobot z-10 md:!col-span-2 md:block md:scale-75 lg:!ml-0 lg:!scale-100"
             >
                 <slot name="robotIllustration" />
             </div>

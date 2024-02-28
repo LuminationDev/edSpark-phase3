@@ -170,7 +170,7 @@ const handleClickEditPendingContent = (): void => {
             </h2>
             <button
                 v-if="!editMode "
-                class="bg-blue-600 hover:bg-blue-400 px-6 py-2 rounded text-white w-48"
+                class="bg-secondary-blueberry hover:bg-blue-400 px-6 py-2 rounded text-white w-48"
                 @click="handleEditButton"
             >
                 Edit this page

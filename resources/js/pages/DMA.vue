@@ -164,7 +164,7 @@ const handleResetSurvey = async () => {
             swoosh-color="teal"
         >
             <template #robotIllustration>
-                <InspirationAndGuidesRobot class="absolute top-10 left-36" />
+                <InspirationAndGuidesRobot class="absolute top-16 left-36" />
             </template>
         </BaseLandingHero>
         <div class="dma-app-root">

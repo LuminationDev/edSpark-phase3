@@ -56,12 +56,12 @@ const handleClickSchoolCard = () => {
             <div class="card-content_title min-h-[72px] px-2">
                 <!-- CARD CONTENT HEADER -->
                 <h5
-                    class="flex justify-start font-semibold text-2xl text-left"
+                    class="flex justify-start font-semibold text-xl text-left"
                 >
                     {{ data.name }}
                 </h5>
                 <div
-                    class="cardDisplayPreview line-clamp-1 school-card-body text-left"
+                    class="cardDisplayPreview line-clamp-2 school-card-body text-left"
                     v-html="stripHTML(data.content_blocks)"
                 />
             </div>
@@ -83,6 +83,21 @@ const handleClickSchoolCard = () => {
 </template>
 
 <style scoped>
+ .line-clamp-2 {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    height: 3.1lh;
+    -webkit-box-orient: vertical;
+    margin: 0 auto;
+    width: 99%;
+    font-size: 16px;
+}
 
+.GenericCardContainer:hover .line-clamp-2 {
+    -webkit-line-clamp: 6;
+    height: 6.2lh;
+}
 
 </style>
