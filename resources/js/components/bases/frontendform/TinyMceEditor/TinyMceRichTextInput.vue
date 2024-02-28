@@ -144,4 +144,7 @@ code {
     margin-right: 1.5rem;
     padding-right: 1rem
 }
+.mce-content-body p{
+    font-weight: 300
+}
 </style>
