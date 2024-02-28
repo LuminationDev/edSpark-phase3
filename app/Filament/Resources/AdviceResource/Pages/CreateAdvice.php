@@ -3,8 +3,11 @@
 namespace App\Filament\Resources\AdviceResource\Pages;
 
 use App\Filament\Resources\AdviceResource;
+use App\Helpers\NotificationResource;
 use App\Models\Advice;
 use App\Models\Event;
+use App\Models\User;
+use App\Notifications\ResourceCreated;
 use Filament\Pages\Actions;
 use Filament\Resources\Pages\CreateRecord;
 
@@ -13,6 +16,7 @@ use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 
 use App\Models\Advicemeta;
+use Illuminate\Support\Facades\Notification;
 
 class CreateAdvice extends CreateRecord
 {
@@ -33,6 +37,18 @@ class CreateAdvice extends CreateRecord
             $thatEvent = Advice::find($record->id);
             $thatEvent->attachTags($data['tags']);
         }
+
+        // send notification here
+        // users to send notification too
+        $currentUser = Auth::user();
+        $usersExceptCurrent = User::whereKeyNot($currentUser)->get();
+
+
+        // create the notification item
+        $notificationObject = new NotificationResource($record->id, 'test title', 'test author', 'test', 'create');
+
+
+        Notification::send($usersExceptCurrent, new ResourceCreated($notificationObject));
         return $record;
     }
 

@@ -11,11 +11,12 @@ use Illuminate\Database\Eloquent\Model;
 use Filament\Models\Contracts\FilamentUser;
 use Filament\Models\Contracts\HasName;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable implements FilamentUser, HasName
 {
-    use HasFactory, HasApiTokens;
+    use HasFactory, HasApiTokens, Notifiable;
 
     /**
      * The table associated with the model.

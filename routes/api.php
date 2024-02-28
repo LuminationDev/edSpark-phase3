@@ -170,6 +170,11 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('updateOrCreateUserAvatar/{user_id}', [UserController::class, 'updateOrCreateUserAvatar']);
 
 
+
+    // Notification
+    Route::get('user/notification/{user_id}', [NotificationController::class,'getUserNotification']);
+
+
     Route::group(['prefix' => 'user/survey'], function () {
         Route::get('/', [SurveyController::class, 'getUserSurvey']);
         Route::delete('/', [SurveyController::class, 'resetUserSurvey']);
