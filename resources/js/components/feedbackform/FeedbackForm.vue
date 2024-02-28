@@ -108,10 +108,12 @@ const toggleFeedbackForm = (): void => {
 }
 
 const showScreenShotInfoPopUpup = () => {
+    console.log("SHOW")
     screenShotInfoPopUp.value = true
 }
 
-const hideScreeShotInfoPop = () => {
+const hideScreenShotInfoPop = () => {
+    console.log("HIDE")
     screenShotInfoPopUp.value = false
 }
 
@@ -134,7 +136,7 @@ watch(router.currentRoute, () => {
     <div
         v-if="showFeedbackForm"
         class="backdrop-blur blur-overlay fixed top-0 left-0 h-full w-full z-[60]"
-        @click="toggleFeedbackForm(); hideScreeShotInfoPop();"
+        @click="toggleFeedbackForm(); hideScreenShotInfoPop();"
     />
 
     <div
@@ -157,12 +159,11 @@ watch(router.currentRoute, () => {
             w-[50vw]
             z-[70]
             "
-        @click="hideScreeShotInfoPop"
     >
         <div class="Introduction formHeader">
             <div class="">
                 <div class="font-semibold text-[36px]">
-                    Feedback form
+                    Feedback & suggestions
                 </div>
                 <div class="flex flex-col smallAutoSaveHeaderSection">
                     <slot name="formHeader" />
@@ -176,7 +177,7 @@ watch(router.currentRoute, () => {
                 :with-no-left-margin="true"
             >
                 <template #label>
-                    Contact name
+                    Contact name *
                 </template>
             </TextInput>
             <div class="my-2">
@@ -190,7 +191,7 @@ watch(router.currentRoute, () => {
                     :with-no-left-margin="true"
                 >
                     <template #label>
-                        Contact email address
+                        Contact email address *
                     </template>
                 </TextInput>
             </div>
@@ -203,7 +204,7 @@ watch(router.currentRoute, () => {
                     :with-no-left-margin="true"
                 >
                     <template #label>
-                        Organisation Name
+                        School name *
                     </template>
                 </TextInput>
             </div>
@@ -216,7 +217,7 @@ watch(router.currentRoute, () => {
                     :with-no-left-margin="true"
                 >
                     <template #label>
-                        URL of page with issue
+                        URL of page the feedback relates to *
                     </template>
                 </TextInput>
                 <div v-if="foundError">
@@ -228,16 +229,18 @@ watch(router.currentRoute, () => {
             </div>
             <div>
                 <div class="flex items-center flex-row ml-2 mt-6 relative">
-                    <label> Describe your issue</label>
+                    <label>Please enter your feedback or suggestion *</label>
                     <InfoCircleIcon
                         id="infobtn"
                         class="h-6 mb-2 ml-auto mr-4 w-6"
                         @mouseover="showScreenShotInfoPopUpup"
+                        @click="showScreenShotInfoPopUpup"
+                        @click.stop.prevent
                     />
                     <ScreenshotInfoPopup
                         v-if="screenShotInfoPopUp"
-                        class="HideScrollBar fixed top-28 right-32 z-[80]"
-                        @mouseleave="hideScreeShotInfoPop"
+                        class="fixed top-[10rem] right-32 z-[80]"
+                        @mouseleave="hideScreenShotInfoPop"
                     />
                 </div>
                 <TinyMceRichTextInput
@@ -273,6 +276,10 @@ watch(router.currentRoute, () => {
 <style>
 .HideScrollBar::-webkit-scrollbar {
     display: none;
+}
+
+input, p{
+    font-weight: 100;
 }
 
 </style>

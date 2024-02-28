@@ -24,8 +24,17 @@
             src="@/assets/images/Feedback-MSG-icon.png"
             alt="icon indicating message"
         >
-        <div class="text-center text-white">
-            Report <br> issue
+        <div class="text-center text-white floatingFeedbackBtn">
+            Feedback & <br> suggestions
         </div>
     </div>
 </template>
+
+
+<style scoped>
+.floatingFeedbackBtn {
+    font-size: 0.76rem;
+    font-weight: 400;
+    line-height: 1.1;
+}
+</style>
