@@ -70,7 +70,7 @@ onMounted(async () => {
                     :callback="() => router.push('browse/school')"
                     :type="'teal'"
                 >
-                    View all school
+                    View all schools
                 </GenericButton>
             </template>
             <template #sectionAction>

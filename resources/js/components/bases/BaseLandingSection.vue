@@ -32,16 +32,16 @@ const shadyBackgroundColorClass = computed(() => {
 
 <template>
     <div
-        class="flex justify-center flex-col px-4 py-16 md:!px-8 xl:!px-16"
+        class="flex justify-center flex-col px-8 py-16 xl:!px-16"
         :class="shadyBackgroundColorClass"
     >
         <div
-            class="flex justify-between items-start flex-row sectionHeader w-full"
+            class="flex justify-between items-center sm:items-start flex-col justify-center gap-8 sm:flex-row sectionHeader w-full"
             :class="{'mb-8' : $slots.content}"
         >
-            <div class="flex flex-col titleAndSubtitle">
+            <div class="flex flex-col titleAndSubtitle w-full">
                 <div
-                    class="font-medium text-4xl"
+                    class="font-medium text-3xl sm:text-4xl"
                     :class="{'mb-4' : $slots.subtitle}"
                 >
                     <slot name="title" />
@@ -53,7 +53,7 @@ const shadyBackgroundColorClass = computed(() => {
                     <slot name="subtitle" />
                 </div>
             </div>
-            <div class="flex justify-start items-start">
+            <div class="flex justify-start items-start w-full sm:w-64 [&>button]:w-full sm:[&>button]:w-64">
                 <slot name="button" />
             </div>
         </div>

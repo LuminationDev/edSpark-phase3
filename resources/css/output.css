@@ -4078,6 +4078,14 @@ select {
   max-width: 20rem;
 }
 
+.max-w-\[300px\] {
+  max-width: 300px;
+}
+
+.max-w-\[420px\] {
+  max-width: 420px;
+}
+
 .flex-1 {
   flex: 1 1 0%;
 }
@@ -4520,6 +4528,10 @@ select {
 
 .justify-around {
   justify-content: space-around;
+}
+
+.justify-stretch {
+  justify-content: stretch;
 }
 
 .justify-items-start {
@@ -6860,6 +6872,10 @@ select {
 
 .pt-\[240px\] {
   padding-top: 240px;
+}
+
+.pr-2 {
+  padding-right: 0.5rem;
 }
 
 .text-left {
@@ -9558,6 +9574,18 @@ color: blue !important;
     width: 100vw;
   }
 
+  .sm\:w-auto {
+    width: auto;
+  }
+
+  .sm\:w-16 {
+    width: 4rem;
+  }
+
+  .sm\:w-64 {
+    width: 16rem;
+  }
+
   .sm\:max-w-2xl {
     max-width: 42rem;
   }
@@ -9602,6 +9630,18 @@ color: blue !important;
     max-width: 20rem;
   }
 
+  .sm\:max-w-\[700px\] {
+    max-width: 700px;
+  }
+
+  .sm\:max-w-\[420px\] {
+    max-width: 420px;
+  }
+
+  .sm\:max-w-\[500px\] {
+    max-width: 500px;
+  }
+
   .sm\:columns-\[--cols-sm\] {
     -moz-columns: var(--cols-sm);
          columns: var(--cols-sm);
@@ -9625,6 +9665,10 @@ color: blue !important;
 
   .sm\:flex-row {
     flex-direction: row;
+  }
+
+  .sm\:flex-col {
+    flex-direction: column;
   }
 
   .sm\:flex-nowrap {
@@ -9696,6 +9740,11 @@ color: blue !important;
     padding-bottom: 0.375rem;
   }
 
+  .sm\:\!px-8 {
+    padding-left: 2rem !important;
+    padding-right: 2rem !important;
+  }
+
   .sm\:pe-3 {
     padding-inline-end: 0.75rem;
   }
@@ -9740,6 +9789,16 @@ color: blue !important;
   .sm\:text-sm {
     font-size: 0.875rem;
     line-height: 1.25rem;
+  }
+
+  .sm\:text-4xl {
+    font-size: 2.25rem;
+    line-height: 2.5rem;
+  }
+
+  .sm\:text-2xl {
+    font-size: 1.5rem;
+    line-height: 2rem;
   }
 
   .sm\:leading-6 {
@@ -10016,6 +10075,18 @@ color: blue !important;
 
   .md\:max-w-\[1320px\] {
     max-width: 1320px;
+  }
+
+  .md\:max-w-\[700px\] {
+    max-width: 700px;
+  }
+
+  .md\:max-w-\[420px\] {
+    max-width: 420px;
+  }
+
+  .md\:max-w-\[600px\] {
+    max-width: 600px;
   }
 
   .md\:\!basis-1\/4 {
@@ -10416,6 +10487,16 @@ color: blue !important;
     font-size: 1.25rem;
     line-height: 1.75rem;
   }
+
+  .md\:text-4xl {
+    font-size: 2.25rem;
+    line-height: 2.5rem;
+  }
+
+  .md\:text-3xl {
+    font-size: 1.875rem;
+    line-height: 2.25rem;
+  }
 }
 
 @media (min-width: 1024px) {
@@ -10625,6 +10706,10 @@ color: blue !important;
     max-width: 20rem;
   }
 
+  .lg\:max-w-\[700px\] {
+    max-width: 700px;
+  }
+
   .lg\:\!basis-1 {
     flex-basis: 0.25rem !important;
   }
@@ -10698,6 +10783,10 @@ color: blue !important;
 
   .lg\:\!flex-col {
     flex-direction: column !important;
+  }
+
+  .lg\:flex-col {
+    flex-direction: column;
   }
 
   .lg\:\!place-items-start {
@@ -10814,6 +10903,11 @@ color: blue !important;
     padding-right: 2rem;
   }
 
+  .lg\:\!px-4 {
+    padding-left: 1rem !important;
+    padding-right: 1rem !important;
+  }
+
   .lg\:\!pt-12 {
     padding-top: 3rem !important;
   }
@@ -10856,6 +10950,11 @@ color: blue !important;
   .lg\:text-xl {
     font-size: 1.25rem;
     line-height: 1.75rem;
+  }
+
+  .lg\:text-4xl {
+    font-size: 2.25rem;
+    line-height: 2.5rem;
   }
 
   .lg\:shadow-none {
@@ -11189,6 +11288,34 @@ color: blue !important;
 
   .xs\:w-24 {
     width: 6rem;
+  }
+
+  .xs\:w-full {
+    width: 100%;
+  }
+
+  .xs\:w-auto {
+    width: auto;
+  }
+
+  .xs\:max-w-\[420px\] {
+    max-width: 420px;
+  }
+
+  .xs\:max-w-\[500px\] {
+    max-width: 500px;
+  }
+
+  .xs\:flex-row {
+    flex-direction: row;
+  }
+
+  .xs\:flex-col {
+    flex-direction: column;
+  }
+
+  .xs\:items-start {
+    align-items: flex-start;
   }
 
   .xs\:text-lg {
@@ -11828,6 +11955,30 @@ color: blue !important;
   margin-bottom: 0px;
 }
 
+.\[\&\>button\]\:w-full>button {
+  width: 100%;
+}
+
+@media (min-width: 640px) {
+  .sm\:\[\&\>button\]\:w-auto>button {
+    width: auto;
+  }
+
+  .sm\:\[\&\>button\]\:w-16>button {
+    width: 4rem;
+  }
+
+  .sm\:\[\&\>button\]\:w-64>button {
+    width: 16rem;
+  }
+}
+
+@media (min-width: 500px) {
+  .xs\:\[\&\>button\]\:w-auto>button {
+    width: auto;
+  }
+}
+
 .group:hover .group-hover\:\[\&\>path\]\:stroke-secondary-blue>path {
   stroke: #0072DA;
 }
@@ -11878,6 +12029,10 @@ color: blue !important;
 :is(:where(.dark) .\[\&_option\]\:dark\:bg-gray-900) option {
   --tw-bg-opacity: 1;
   background-color: rgb(17 24 39 / var(--tw-bg-opacity));
+}
+
+.\[\&button\]\:w-fullbutton {
+  width: 100%;
 }
 
 :checked+*>.\[\:checked\+\*\>\&\]\:text-white {

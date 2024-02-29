@@ -50,7 +50,8 @@ onUnmounted(() =>{
     <div
         v-for="(row,index) in numberOfRows"
         :key="index"
-        class="LoadingCardRowContainer flex justify-around flex-row gap-4 mx-auto overflow-hidden w-full max-width-[200px]"
+        class="LoadingCardRowContainer flex justify-around flex-row gap-4 mx-auto overflow-hidden w-full"
+        style="max-width: 100vw !important; margin: auto;"
     >
         <div
             v-for="(count,colIndex) in numberOfCardsPerRowWithSafety"
