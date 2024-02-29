@@ -15,6 +15,10 @@ const props = defineProps({
     blurBg: {
         type: Boolean,
         required: false,
+    },
+    disabled: {
+        type: Boolean,
+        default: false,
     }
 })
 
@@ -31,7 +35,7 @@ const emit = defineEmits(['primary', 'secondary']);
         <div
             class="flex justify-start items-center flex-col gap-10 pb-10 pt-32 px-6 w-full md:!pt-20 md:!px-24 md:!py-20 md:h-full"
         >
-            <div class="flex justify-center items-center flex-1 w-full">
+            <div class="flex justify-center items-center flex-1 w-full md:h-0">
                 <slot name="content" />
             </div>
 
@@ -42,12 +46,14 @@ const emit = defineEmits(['primary', 'secondary']);
                 <PrimaryActionButton
                     v-if="$slots.primaryAction"
                     class="order-0 md:order-1"
+                    :disabled="disabled"
                     @click="emit('primary')"
                 >
                     <slot name="primaryAction" />
                 </PrimaryActionButton>
                 <TextButton
                     v-if="$slots.secondaryAction"
+                    :disabled="disabled"
                     @click="emit('secondary')"
                 >
                     <slot name="secondaryAction" />
@@ -64,12 +70,14 @@ const emit = defineEmits(['primary', 'secondary']);
             >
                 <PrimaryActionButton
                     v-if="$slots.primaryAction"
+                    :disabled="disabled"
                     @click="emit('primary')"
                 >
                     <slot name="primaryAction" />
                 </PrimaryActionButton>
                 <TextButton
                     v-if="$slots.secondaryAction"
+                    :disabled="disabled"
                     @click="emit('secondary')"
                 >
                     <slot name="secondaryAction" />
