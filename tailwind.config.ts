@@ -65,7 +65,7 @@ const edsparkColor = [
     '#002858',
     '#D9DAE4',
     '#b84921',
-    '#c37052',
+    '#f0866f',
     '#44B8F3',
     '#acafc6', //school logo bg dark cool grey
 

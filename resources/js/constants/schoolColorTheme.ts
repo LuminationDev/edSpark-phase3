@@ -12,7 +12,7 @@ export const schoolColorTheme = {
     peach: {
         light: '#FFDECF',
         med: '#FF8D78',
-        dark: '#c37052', //was '#b84921', //was da5525
+        dark: '#f0866f', //was '#b84921', //was da5525
     },
     grape: {
         light: '#DBCCF5',

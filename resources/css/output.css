@@ -5488,11 +5488,6 @@ select {
   background-color: rgb(190 18 60 / var(--tw-bg-opacity));
 }
 
-.bg-\[\#c37052\] {
-  --tw-bg-opacity: 1;
-  background-color: rgb(195 112 82 / var(--tw-bg-opacity));
-}
-
 .bg-\[\#c67f14\] {
   --tw-bg-opacity: 1;
   background-color: rgb(198 127 20 / var(--tw-bg-opacity));
@@ -5511,6 +5506,11 @@ select {
 .bg-\[\#e57373\] {
   --tw-bg-opacity: 1;
   background-color: rgb(229 115 115 / var(--tw-bg-opacity));
+}
+
+.bg-\[\#f0866f\] {
+  --tw-bg-opacity: 1;
+  background-color: rgb(240 134 111 / var(--tw-bg-opacity));
 }
 
 .bg-\[\#ffa000\] {
@@ -6153,10 +6153,6 @@ select {
   fill: #be123c;
 }
 
-.fill-\[\#c37052\] {
-  fill: #c37052;
-}
-
 .fill-\[\#c67f14\] {
   fill: #c67f14;
 }
@@ -6171,6 +6167,10 @@ select {
 
 .fill-\[\#e57373\] {
   fill: #e57373;
+}
+
+.fill-\[\#f0866f\] {
+  fill: #f0866f;
 }
 
 .fill-\[\#ffa000\] {
@@ -6365,10 +6365,6 @@ select {
   stroke: #be123c;
 }
 
-.stroke-\[\#c37052\] {
-  stroke: #c37052;
-}
-
 .stroke-\[\#c67f14\] {
   stroke: #c67f14;
 }
@@ -6383,6 +6379,10 @@ select {
 
 .stroke-\[\#e57373\] {
   stroke: #e57373;
+}
+
+.stroke-\[\#f0866f\] {
+  stroke: #f0866f;
 }
 
 .stroke-\[\#ffa000\] {
@@ -7348,11 +7348,6 @@ select {
   color: rgb(190 18 60 / var(--tw-text-opacity));
 }
 
-.text-\[\#c37052\] {
-  --tw-text-opacity: 1;
-  color: rgb(195 112 82 / var(--tw-text-opacity));
-}
-
 .text-\[\#c67f14\] {
   --tw-text-opacity: 1;
   color: rgb(198 127 20 / var(--tw-text-opacity));
@@ -7371,6 +7366,11 @@ select {
 .text-\[\#e57373\] {
   --tw-text-opacity: 1;
   color: rgb(229 115 115 / var(--tw-text-opacity));
+}
+
+.text-\[\#f0866f\] {
+  --tw-text-opacity: 1;
+  color: rgb(240 134 111 / var(--tw-text-opacity));
 }
 
 .text-\[\#ffa000\] {
@@ -8921,11 +8921,6 @@ color: blue !important;
   color: rgb(190 18 60 / var(--tw-text-opacity));
 }
 
-.hover\:text-\[\#c37052\]:hover {
-  --tw-text-opacity: 1;
-  color: rgb(195 112 82 / var(--tw-text-opacity));
-}
-
 .hover\:text-\[\#c67f14\]:hover {
   --tw-text-opacity: 1;
   color: rgb(198 127 20 / var(--tw-text-opacity));
@@ -8944,6 +8939,11 @@ color: blue !important;
 .hover\:text-\[\#e57373\]:hover {
   --tw-text-opacity: 1;
   color: rgb(229 115 115 / var(--tw-text-opacity));
+}
+
+.hover\:text-\[\#f0866f\]:hover {
+  --tw-text-opacity: 1;
+  color: rgb(240 134 111 / var(--tw-text-opacity));
 }
 
 .hover\:text-\[\#ffa000\]:hover {
@@ -9742,11 +9742,6 @@ color: blue !important;
     line-height: 1.25rem;
   }
 
-  .sm\:text-lg {
-    font-size: 1.125rem;
-    line-height: 1.75rem;
-  }
-
   .sm\:leading-6 {
     line-height: 1.5rem;
   }
@@ -10415,11 +10410,6 @@ color: blue !important;
   .md\:text-base {
     font-size: 1rem;
     line-height: 1.5rem;
-  }
-
-  .md\:text-lg {
-    font-size: 1.125rem;
-    line-height: 1.75rem;
   }
 
   .md\:text-xl {
