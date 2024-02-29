@@ -11,9 +11,6 @@ import {API_ENDPOINTS} from "@/js/constants/API_ENDPOINTS";
 import {avatarUIFallbackURL, imageURL} from "@/js/constants/serverUrl";
 import {useUserStore} from "@/js/stores/useUserStore";
 
-
-
-
 const props = defineProps({
     currentLogo: {
         type: String,
@@ -26,8 +23,6 @@ const props = defineProps({
         default: false
     }
 })
-const handleSubmitRef = ref(null);
-
 
 const errorMessage = ref("Please upload the Image")
 const imageError = ref(false)
@@ -108,12 +103,15 @@ const handleSubmitImage = () => {
         })
 }
 
-// watch(() => (props.sendImageUploadInstance === true), () => {
-//
-//
-//     handleSubmitImage()
-//
-// })
+watch(() => props.sendImageUploadInstance, (newValue, oldValue) => {
+    if (newValue === true && oldValue === false) {
+        console.log("The value is true")
+        handleSubmitImage()
+    }
+    else{
+        console.log("The value is false")
+    }
+})
 
 onMounted(() => {
     if (props.currentLogo) {
@@ -121,8 +119,7 @@ onMounted(() => {
         console.log(addImageURL(props.currentLogo))
     }
 })
-handleSubmitRef.value = handleSubmitImage;
-defineExpose({handleSubmitImage: handleSubmitRef})
+
 </script>
 
 <template>
