@@ -87,26 +87,26 @@ const heroBackgroundSwitch = computed(() => {
 const heroBackgroundColor = computed(() => {
     switch (props.swooshColorTheme) {
     
-    case 'banana':
-        return 'bg-secondary-banana'
+    // case 'banana':
+    //     return 'bg-secondary-banana'
 
-    case 'cherry':
-        return 'bg-secondary-cherry'
+    // case 'cherry':
+    //     return 'bg-secondary-cherry'
 
-        case 'peach':
-            return 'bg-secondary-peach'
+    //     case 'peach':
+    //         return 'bg-secondary-peach'
 
-    case 'navy':
-        return 'bg-main-navy'
+    // case 'navy':
+    //     return 'bg-main-navy'
         
-    case 'grape':
-    case 'purple':
+    // case 'grape':
+    // case 'purple':
     case 'technologyPurple':
         return 'bg-secondary-grape'
 
-    case 'blue':
+    // case 'blue':
     case 'partnerBlue':
-    case 'blueberry':
+    // case 'blueberry':
         return 'bg-secondary-blueberry'
 
     case 'teal':
@@ -140,7 +140,7 @@ const heroBackgroundColor = computed(() => {
 <!-- :class="heroBackgroundColor" -->
 
 <template>
-    <div class="BaseHeroContainer bg-main-darkTeal h-mainHero max-h-mainHero mb-0 overflow-y-hidden relative z-10">
+    <div class="BaseHeroContainer h-mainHero max-h-mainHero mb-0 overflow-y-hidden relative z-10">
         <div
             class="grid grid-cols-10 h-full relative"
         >
@@ -157,6 +157,7 @@ const heroBackgroundColor = computed(() => {
                     lg:!col-span-6
                     "
                 :style="heroBackgroundSwitch"
+                :class="heroBackgroundColor"
             >
                 <div
                     v-if="$slots.titleText || $slots.subtitleText1 || $slots.subtitleText2"

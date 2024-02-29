@@ -188,7 +188,25 @@ setupRoutes();
         <span class="bg-white block h-1 w-10"/>
         <span class="bg-white block h-1 w-10"/>
         <span class="bg-white block h-1 w-10"/>
+
+
     </nav>
+    
+    <div
+        id="edSparkLogo"
+        title="edSpark logo"
+        class="absolute right-5"
+    >
+        <router-link
+            :to="{name: 'dashboard'}"
+            title="Go to dashboard"
+        >
+            <Logo
+                class="absolute top-5 right-3 nav-logo transition-all z-30 w-16 h-16 xs:w-24 xs:h-24 sm:w-32 sm:h-32 md:w-24 md:h-24"
+            />
+        </router-link>
+    </div>
+
     <Transition name="slide-fade">
         <div
             v-if="showMobileNavbar"

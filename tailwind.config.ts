@@ -168,6 +168,7 @@ module.exports = {
             },
             screens: {
                 'ml': '860px',
+                'xs': '500px',
                 'portrait': {
                     'raw': '(orientation: portrait)'
                 },
