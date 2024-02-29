@@ -27,7 +27,7 @@ const handleFilter = (filters, dataPath) => {
         :live-filter-object="filterObject"
         :hero-title="LandingHeroText['eventSearch']['title']"
         :hero-subtitle="LandingHeroText['eventSearch']['subtitle']"
-        hero-background-color="blue"
+        hero-background-color="partnerBlue"
     >
         <template #additionalFilters>
             <LabelFiltersSearchPage @emit-filter-to-individual-search-page="handleFilter" />
