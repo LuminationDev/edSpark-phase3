@@ -188,11 +188,13 @@ const colorTheme = ref('partnerBlue')
 </template>
 
 
-<style scoped>
+<!-- <style scoped>
+    
+/* commenting this out fixes off center guide text */
 .eventSingleContent :deep(p) {
     margin-top: 16px;
     text-align: justify;
 }
 
 
-</style>
+</style> -->

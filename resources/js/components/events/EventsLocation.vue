@@ -23,7 +23,11 @@ const mapOptions = {
         lng: 138.572068
     },
     zoom: 16,
+    
+    // width: '100%',
+    // height: '600px',
     options: {
+        // map.controls[google.maps.ControlPosition.CENTER].push(centerControlDiv);
         zoomControl: false,
         mapTypeControl: false,
         scaleControl: false,
@@ -87,6 +91,22 @@ const formattedUrl = computed(() => {
                     :options="{ position: markerCenter }"
                 />
             </GoogleMap>
+
+            <!-- <div class="schoolContactMapContainer w-full"> -->
+            <!-- <GoogleMap
+                api-key="AIzaSyAFbqxGQntzgzfzKFh6bArwU14MJhcV1Wc"
+                style="width: 100%; height: 700px"
+                :options="mapOptions.options"
+                :center="mapOptions.center"
+                :zoom="mapOptions.zoom"
+            >
+                <Marker
+                    class="relative"
+                    :options="{ position: { lat: props.markerCenter.lat, lng: props.markerCenter.lng } }"
+                />
+            </GoogleMap> -->
+        <!-- </div> -->
+
         </div>
     </div>
     <div v-else-if="props.locationType && props.locationType.toLowerCase() === 'virtual'" />
@@ -134,4 +154,12 @@ const formattedUrl = computed(() => {
     </div>
 </template>
 
+<!-- 
+<style>
+/* fix for off center guide text */
+.gm-style-mot,
+.eventSingleContent[data-v-d30c4087] p {
+    text-align: center !important;
+}
 
+</style> -->
