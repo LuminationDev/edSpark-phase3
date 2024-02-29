@@ -131,9 +131,7 @@ module.exports = {
                     grape:  '#8866C5',
                     grapeDark: '#6D469C',
                     blueberry: '#0072DA',
-                    blueberryMed: '#1C5CA9',
-                    teal: '#319795',
-                    navy: '#002858'
+                    blueberryMed: '#1C5CA9'
 
                 },
                 custom: {
@@ -142,8 +140,8 @@ module.exports = {
                     genericScrollbarDark: '#0A0045', // only repeated coz i screwed something up with scrollbar customisation
                 },
                 event: {
-                    virtual: '#DE4668', // same as cherry
-                    hybrid: '#8866C5', // same as grape
+                    virtual: '#319795', // teal now, was cherry
+                    hybrid: '#002858', // navy now, was grape
                     inPerson: '#0072DA', // same as blueberry
                     virtualTag: '#ffd5de'
                 },

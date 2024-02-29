@@ -53,11 +53,11 @@ const handleClickSingleEvent = (eventId: number): void => {
 const eventTypeColorClass = (eventType: string): string => {
     switch (eventType) {
     case 'Virtual':
-        return "bg-secondary-cherry";
+        return "bg-event-virtual";
     case "In Person":
-        return "bg-secondary-blueberry";
+        return "bg-event-inPerson";
     case "Hybrid":
-        return "bg-secondary-grape";
+        return "bg-event-hybrid";
     default:
         return "";
     }

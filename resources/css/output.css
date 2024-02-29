@@ -2481,10 +2481,6 @@ select {
   top: 1rem;
 }
 
-.top-40 {
-  top: 10rem;
-}
-
 .top-5 {
   top: 1.25rem;
 }
@@ -2806,6 +2802,36 @@ select {
 .my-auto {
   margin-top: auto;
   margin-bottom: auto;
+}
+
+.mx-0 {
+  margin-left: 0px;
+  margin-right: 0px;
+}
+
+.\!mx-0 {
+  margin-left: 0px !important;
+  margin-right: 0px !important;
+}
+
+.\!my-4 {
+  margin-top: 1rem !important;
+  margin-bottom: 1rem !important;
+}
+
+.\!my-6 {
+  margin-top: 1.5rem !important;
+  margin-bottom: 1.5rem !important;
+}
+
+.\!my-8 {
+  margin-top: 2rem !important;
+  margin-bottom: 2rem !important;
+}
+
+.\!my-0 {
+  margin-top: 0px !important;
+  margin-bottom: 0px !important;
 }
 
 .\!mb-0 {
@@ -5212,16 +5238,6 @@ select {
   border-color: rgb(161 98 7 / var(--tw-border-opacity));
 }
 
-.border-\[\#243c5a\] {
-  --tw-border-opacity: 1;
-  border-color: rgb(36 60 90 / var(--tw-border-opacity));
-}
-
-.border-\[\#000000\] {
-  --tw-border-opacity: 1;
-  border-color: rgb(0 0 0 / var(--tw-border-opacity));
-}
-
 .border-b-white {
   --tw-border-opacity: 1;
   border-bottom-color: rgb(255 255 255 / var(--tw-border-opacity));
@@ -5586,7 +5602,7 @@ select {
 
 .bg-event-hybrid {
   --tw-bg-opacity: 1;
-  background-color: rgb(136 102 197 / var(--tw-bg-opacity));
+  background-color: rgb(0 40 88 / var(--tw-bg-opacity));
 }
 
 .bg-event-inPerson {
@@ -5596,7 +5612,7 @@ select {
 
 .bg-event-virtual {
   --tw-bg-opacity: 1;
-  background-color: rgb(222 70 104 / var(--tw-bg-opacity));
+  background-color: rgb(49 151 149 / var(--tw-bg-opacity));
 }
 
 .bg-gray-100 {
@@ -5845,6 +5861,10 @@ select {
 
 .bg-yellow-600\/5 {
   background-color: rgb(202 138 4 / 0.05);
+}
+
+.bg-main-navy\/10 {
+  background-color: rgb(0 40 88 / 0.1);
 }
 
 .bg-gradient-to-b {
@@ -8375,6 +8395,46 @@ color: blue !important;
     color: red !important;
 } */
 
+/* .eventCalendarContainer .is-first-day .vc-day-layer .vc-highlight.vc-highlight-base-middle.vc-highlight-bg-light{
+    border-top-left-radius: 50% !important;
+    border-bottom-left-radius: 50% !important;
+    width: 28px;
+} */
+
+.eventCalendarContainer .day-1.week-1 .vc-highlight-base-middle, 
+.eventCalendarContainer .weekday-position-1 .vc-highlight-bg-light {
+  border-top-left-radius: 29px !important;
+  border-bottom-left-radius: 29px !important;
+}
+
+.eventCalendarContainer .day-from-end-1 .vc-highlight-bg-light,
+.eventCalendarContainer .weekday-position-7 .vc-highlight-bg-light {
+  border-top-right-radius: 29px !important;
+  border-bottom-right-radius: 29px !important;
+}
+
+.vc-container.vc-monthly {
+  border-radius: 16px;
+  padding: 16px;
+}
+
+.vc-container .vc-weeks {
+  padding: 24px;
+}
+
+.vc-container .vc-week {
+  align-items: center;
+}
+
+/* 
+.vc-container .is-today .vc-focusable.vc-focus {
+    filter: brightness(1.5);
+} */
+
+.vc-container .vc-focusable.vc-focus:focus-within {
+  box-shadow: none !important;
+}
+
 :is(:where(.dark) .dark\:prose-invert) {
   --tw-prose-body: var(--tw-prose-invert-body);
   --tw-prose-headings: var(--tw-prose-invert-headings);
@@ -9526,6 +9586,11 @@ color: blue !important;
     margin-right: 0px;
   }
 
+  .sm\:\!my-4 {
+    margin-top: 1rem !important;
+    margin-bottom: 1rem !important;
+  }
+
   .sm\:\!-mr-\[50px\] {
     margin-right: -50px !important;
   }
@@ -9540,6 +9605,14 @@ color: blue !important;
 
   .sm\:mt-7 {
     margin-top: 1.75rem;
+  }
+
+  .sm\:mb-2 {
+    margin-bottom: 0.5rem;
+  }
+
+  .sm\:mt-8 {
+    margin-top: 2rem;
   }
 
   .sm\:block {
@@ -9667,6 +9740,10 @@ color: blue !important;
     flex-direction: row;
   }
 
+  .sm\:flex-col {
+    flex-direction: column;
+  }
+
   .sm\:flex-nowrap {
     flex-wrap: nowrap;
   }
@@ -9697,6 +9774,10 @@ color: blue !important;
 
   .sm\:gap-3 {
     gap: 0.75rem;
+  }
+
+  .sm\:gap-4 {
+    gap: 1rem;
   }
 
   .sm\:gap-x-4 {
@@ -11913,12 +11994,28 @@ color: blue !important;
   fill: rgb(198 127 20 / 0.1);
 }
 
+.\[\&\>svg\]\:fill-main-navy>svg {
+  fill: #002858;
+}
+
+.\[\&\>svg\]\:fill-secondary-blueberry>svg {
+  fill: #0072DA;
+}
+
 .\[\&\>svg\]\:stroke-main-teal>svg {
   stroke: #339999;
 }
 
 .\[\&\>svg\]\:stroke-secondary-bananaDark>svg {
   stroke: #c67f14;
+}
+
+.\[\&\>svg\]\:stroke-main-navy>svg {
+  stroke: #002858;
+}
+
+.\[\&\>svg\]\:stroke-secondary-blueberry>svg {
+  stroke: #0072DA;
 }
 
 .\[\&_\.choices\\_\\_inner\]\:ps-0 .choices__inner {

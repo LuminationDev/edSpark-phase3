@@ -532,3 +532,46 @@ color: blue !important;
     font-weight: 100 !important;
     color: red !important;
 } */
+
+
+
+
+/* .eventCalendarContainer .is-first-day .vc-day-layer .vc-highlight.vc-highlight-base-middle.vc-highlight-bg-light{
+    border-top-left-radius: 50% !important;
+    border-bottom-left-radius: 50% !important;
+    width: 28px;
+} */
+
+
+.eventCalendarContainer .day-1.week-1 .vc-highlight-base-middle, 
+.eventCalendarContainer .weekday-position-1 .vc-highlight-bg-light {
+    border-top-left-radius: 29px !important;
+    border-bottom-left-radius: 29px !important;
+}
+
+.eventCalendarContainer .day-from-end-1 .vc-highlight-bg-light,
+.eventCalendarContainer .weekday-position-7 .vc-highlight-bg-light {
+    border-top-right-radius: 29px !important;
+    border-bottom-right-radius: 29px !important;
+}
+
+.vc-container.vc-monthly {
+    border-radius: 16px;
+    padding: 16px;
+}
+
+.vc-container .vc-weeks {
+    padding: 24px;
+}
+
+.vc-container .vc-week {
+    align-items: center;
+}
+/* 
+.vc-container .is-today .vc-focusable.vc-focus {
+    filter: brightness(1.5);
+} */
+
+.vc-container .vc-focusable.vc-focus:focus-within {
+    box-shadow: none !important;
+}

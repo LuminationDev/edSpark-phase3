@@ -69,6 +69,10 @@ const asyncCall = () => {
             '!h-fit !text-white px-6 lg:!px-12 py-2 w-32 lg:!w-64 bg-secondary-grapeDark' : type === 'purple',
             '!h-fit !text-white px-6 lg:!px-12 py-2 w-32 lg:!w-64 bg-secondary-cherry' : type === 'red',
             '!h-fit !text-white px-6 lg:!px-12 py-2 w-32 lg:!w-64 bg-secondary-blueberry' : type === 'blue'
+            
+            // '!h-fit !text-white px-6 lg:!px-12 py-2 w-32 lg:!w-64 bg-event-hybrid' : type === 'purple',
+            // '!h-fit !text-white px-6 lg:!px-12 py-2 w-32 lg:!w-64 bg-event-virtual' : type === 'red',
+            // '!h-fit !text-white px-6 lg:!px-12 py-2 w-32 lg:!w-64 bg-event-inPerson' : type === 'blue'
         }"
         class="flex justify-center items-center p-2"
         :disabled="disabled"

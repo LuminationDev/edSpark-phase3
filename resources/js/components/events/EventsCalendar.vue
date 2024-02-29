@@ -21,7 +21,7 @@ const props = defineProps({
 
 const attributes = computed(() =>
     props.events.map(event => {
-        const backgroundColor = event.type === 'Virtual' ? 'cherry' : event.type === 'Hybrid' ? 'grape' : 'blueberry';
+        const backgroundColor = event.type === 'Virtual' ? 'teal' : event.type === 'Hybrid' ? 'navy' : 'blueberry';
         return {
             dates: [[event.start_date, event.end_date]],
             key: event.id,
