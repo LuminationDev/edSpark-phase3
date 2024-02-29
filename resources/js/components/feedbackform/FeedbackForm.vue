@@ -135,7 +135,7 @@ watch(router.currentRoute, () => {
 
     <div
         v-if="showFeedbackForm"
-        class="backdrop-blur blur-overlay fixed top-0 left-0 h-full w-full z-[60]"
+        class="backdrop-blur-sm blur-overlay bg-main-navy/70 fixed top-0 left-0 h-full w-full z-[60]"
         @click="toggleFeedbackForm(); hideScreenShotInfoPop();"
     />
 
@@ -156,8 +156,9 @@ watch(router.currentRoute, () => {
             p-8
             rounded-2xl
             text-black
-            w-[50vw]
             z-[70]
+            max-w-[800px]
+            w-[85%]
             "
     >
         <div class="Introduction formHeader">

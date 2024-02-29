@@ -363,7 +363,7 @@ setupRoutes();
     </Transition>
     <div
         v-if="showMobileNavbar"
-        class="absolute top-0 right-0 bg-main-navy/50 h-screen w-screen overlay z-50"
+        class="absolute top-0 right-0 bg-main-navy/70 backdrop-blur-sm h-screen w-screen overlay z-50"
         @click="toggleNavbar"
     />
 </template>
