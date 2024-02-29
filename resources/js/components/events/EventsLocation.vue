@@ -65,7 +65,7 @@ const formattedUrl = computed(() => {
 
 <template>
     <div v-if="props.locationType && props.locationType.toLowerCase() === 'in person'">
-        <div class="bg-main-navy border-2 border-black p-4 text-white">
+        <div class="bg-secondary-blueberry p-4 text-white">
             <div class="EventAddressTitle">
                 This event is being held in-person at
             </div>
@@ -92,7 +92,7 @@ const formattedUrl = computed(() => {
     <div v-else-if="props.locationType && props.locationType.toLowerCase() === 'virtual'" />
     <div v-else-if="props.locationType && props.locationType.toLowerCase() === 'hybrid'">
         <template v-if="props.locationInfo.address">
-            <div class="bg-main-navy border-2 border-black p-4 text-white">
+            <div class="bg-secondary-blueberry p-4 text-white">
                 <div class="EventAddressTitle">
                     This event is being held in-person at
                 </div>
@@ -119,7 +119,7 @@ const formattedUrl = computed(() => {
 
         <div
             v-if="props.locationInfo.url"
-            class="bg-main-navy border-2 border-black p-4 text-white"
+            class="bg-secondary-blueberry p-4 text-white"
         >
             <div class="EventUrlTitle">
                 Or via the link below
