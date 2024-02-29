@@ -25,13 +25,12 @@ const props = defineProps({
 })
 
 const errorMessage = ref("Please upload the Image")
-const errorInstance = ref(false)
 const imageError = ref(false)
 const userStore = useUserStore();
 const {currentUser} = storeToRefs(userStore);
 const logoEditFile = ref(null)
 const logoPreview = ref(null)
-const emits = defineEmits(['sendUploadedPhotoToContent', 'sendHandleSubmitImageInstance'])
+const emits = defineEmits(['sendUploadedPhotoToContent', 'sendHandleFileDroppedInstance'])
 const addImageURL = (itemUrl) => {
     return imageURL + "/" + itemUrl
 }
@@ -49,19 +48,20 @@ const handleLogoUpload = (event) => {
         reader.readAsDataURL(file);
 
         reader.onload = (event) => {
-            logoPreview.value.setAttribute('src', event.target.result);
-            logoDataURL = event.target.result;
-            console.log("Current user value: " + currentUser.value);
-            console.log('Logo preview value: ' + logoPreview.value);
+            logoPreview.value.setAttribute('src', event.target.result)
+            logoDataURL = event.target.result
+            console.log("Current user value: " + currentUser.value)
+            console.log('Logo preview value: ' + logoPreview.value)
             console.log('Data URL:', logoDataURL);
         };
         console.log("File is  dropped")
-        emits('sendUploadedPhotoToContent', 'logo', file);
+        emits('sendUploadedPhotoToContent', 'logo', file)
     } else {
         // No file is selected
         fileDropped.value = false;
         console.log("File is not dropped")
     }
+    emits("sendHandleFileDroppedInstance", fileDropped.value)
 };
 
 const avatarUrl = computed(() => {
@@ -95,19 +95,12 @@ const handleSubmitImage = () => {
             console.log(res.data.data)
             userStore.fetchCurrentUserAndLoadIntoStore()
             toast.success("Successfully submitted the image file")
-
-
         })
         .catch(err => {
-            if (err.response && err.response.status === 500) {
-                console.log("This is error 500");
-                errorInstance.value = true
-            } else {
-                uploadError.value = err.message;
-            }
+            uploadError.value = err.message
         })
         .finally(() => {
-            isLoading.value = true
+            isLoading.value = false
         })
 }
 

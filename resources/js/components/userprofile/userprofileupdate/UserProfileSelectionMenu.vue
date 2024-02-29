@@ -72,25 +72,27 @@ const handleReceiveInterestsFromSelector = (interestList) => {
 const uploadImageInstance = ref(false)
 //handle submit data on click, posts the data to api and then store to the database.
 const handleClickSubmitPersonalData = async () => {
-    const result = await vPersonal$.value.$validate()
-    if (result) {
+    uploadImageInstance.value = true
+    const result = await vPersonal$.value.$validate();
+    if (result && fileDropped.value === true) {
         const data = {
             biography: statePersonal.biography
-        }
+            // Add other properties as needed
+        };
         axios.post(API_ENDPOINTS.USER.UPDATE_OR_CREATE_METADATA + currentUser.value.id, data)
             .then(res => {
-                console.log(res.data)
+                console.log(res.data);
+                console.log("Personal Data saved successfully");
+                uploadImageInstance.value = true
             })
             .catch(err => {
-                console.log(err.value)
-            })
-        uploadImageInstance.value = true
-        console.log("Personal Data saved successfully")
+                console.error(err);
+                console.log("Error occurred while saving personal data");
+            });
+    } else {
+        console.log("Personal Data not saved successfully. Please enter all the values.");
     }
-    else {
-        console.log("Personal Data not saved successfully, Please enter all the values")
-    }
-}
+};
 
 //handle submit data on click, posts the data to api and then store to the database.
 const handleClickSubmitProfileData = async () => {
@@ -130,6 +132,12 @@ const handleReceivePhotoFromContent = (type, file) => {
         console.log('received unknown type image')
         break;
     }
+}
+
+const fileDropped = ref(false)
+const handleReceiveFileDroppedInstance = (fileDroppedInsance) => {
+    fileDropped.value = fileDroppedInsance
+
 }
 
 
@@ -172,6 +180,7 @@ const handleReceivePhotoFromContent = (type, file) => {
                         class="mt-6"
                         :send-image-upload-instance="uploadImageInstance"
                         @send-uploaded-photo-to-content="handleReceivePhotoFromContent"
+                        @send-handle-file-dropped-instance="handleReceiveFileDroppedInstance"
                     />
                 </template>
                 <template #buttons>
