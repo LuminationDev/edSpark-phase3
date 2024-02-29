@@ -1,7 +1,7 @@
 <script setup>
-import {storeToRefs} from "pinia";
-import {computed, reactive, ref} from 'vue'
-import {useRoute} from "vue-router";
+import { storeToRefs } from "pinia";
+import { computed, reactive, ref } from 'vue'
+import { useRoute } from "vue-router";
 
 import BaseBreadcrumb from "@/js/components/bases/BaseBreadcrumb.vue";
 import BaseHero from "@/js/components/bases/BaseHero.vue";
@@ -13,12 +13,12 @@ import PartnerHardware from "@/js/components/partners/partnerSubPages/PartnerHar
 import PartnerOverview from "@/js/components/partners/partnerSubPages/PartnerOverview.vue";
 import PartnerSoftware from "@/js/components/partners/partnerSubPages/PartnerSoftware.vue";
 import Loader from "@/js/components/spinner/Loader.vue";
-import {imageURL} from "@/js/constants/serverUrl";
-import {partnerService} from "@/js/service/partnerService";
-import {useUserStore} from "@/js/stores/useUserStore";
+import { imageURL } from "@/js/constants/serverUrl";
+import { partnerService } from "@/js/service/partnerService";
+import { useUserStore } from "@/js/stores/useUserStore";
 
 
-const {currentUser} = storeToRefs(useUserStore())
+const { currentUser } = storeToRefs(useUserStore())
 const availableSubmenu = ref(['overview', 'access'])
 const route = useRoute()
 
@@ -27,6 +27,14 @@ const formattedSubmenuData = computed(() => {
         return []
     } else {
         return availableSubmenu.value.map(menu => {
+
+            if (menu === 'curriculum') {
+                return {
+                    displayText: 'Inspiration',
+                    value: menu
+                }
+            }
+
             return {
                 displayText: menu.charAt(0).toUpperCase() + menu.slice(1),
                 value: menu
@@ -49,21 +57,21 @@ const fetchSubmenuData = async () => {
     const partnerId = route.params.id
     for (const submenu of availableSubmenu.value) {
         switch (submenu) {
-        case 'overview':
-            partnerData[submenu] = {data: 'this is temporary string for partner overview'}
-            break;
-        case 'software':
-            partnerData[submenu] = partnerService.fetchPartnerSoftware(partnerId).then(res => res)
-            break;
-        case 'hardware':
-            partnerData[submenu] = partnerService.fetchPartnerHardware(partnerId).then(res => res)
-            break;
-        case 'curriculum':
-            partnerData[submenu] = partnerService.fetchPartnerAdvice(partnerId).then(res => res)
-            break;
-        case 'access':
-            partnerData[submenu] = {overview: 'access here'}
-            break;
+            case 'overview':
+                partnerData[submenu] = { data: 'this is temporary string for partner overview' }
+                break;
+            case 'software':
+                partnerData[submenu] = partnerService.fetchPartnerSoftware(partnerId).then(res => res)
+                break;
+            case 'hardware':
+                partnerData[submenu] = partnerService.fetchPartnerHardware(partnerId).then(res => res)
+                break;
+            case 'curriculum':
+                partnerData[submenu] = partnerService.fetchPartnerAdvice(partnerId).then(res => res)
+                break;
+            case 'access':
+                partnerData[submenu] = { overview: 'access here' }
+                break;
         }
     }
 }
@@ -87,18 +95,18 @@ const handleEmittedAvailableSubmenu = (value) => {
 // computed value returning dynamic component
 const partnerSubPageComponent = computed(() => {
     switch (activeSubMenu.value) {
-    case 'overview':
-        return PartnerOverview
-    case 'access':
-        return PartnerAccess
-    case 'hardware':
-        return PartnerHardware
-    case 'software':
-        return PartnerSoftware
-    case 'curriculum':
-        return PartnerCurriculum
-    default:
-        return PartnerOverview
+        case 'overview':
+            return PartnerOverview
+        case 'access':
+            return PartnerAccess
+        case 'hardware':
+            return PartnerHardware
+        case 'software':
+            return PartnerSoftware
+        case 'curriculum':
+            return PartnerCurriculum
+        default:
+            return PartnerOverview
     }
 })
 
@@ -106,18 +114,18 @@ const partnerSubPageComponent = computed(() => {
 // work as a pair with partnerSubPageComponent computed value
 const dynamicProps = computed(() => {
     switch (activeSubMenu.value) {
-    case 'overview':
-        return partnerData.overview
-    case 'access':
-        return partnerData.access
-    case 'hardware':
-        return partnerData.hardware
-    case 'software':
-        return partnerData.software
-    case 'curriculum':
-        return partnerData.curriculum
-    default:
-        return partnerData.overview
+        case 'overview':
+            return partnerData.overview
+        case 'access':
+            return partnerData.access
+        case 'hardware':
+            return partnerData.hardware
+        case 'software':
+            return partnerData.software
+        case 'curriculum':
+            return partnerData.curriculum
+        default:
+            return partnerData.overview
     }
 })
 
@@ -125,31 +133,17 @@ const colorTheme = ref('partnerBlue')
 </script>
 
 <template>
-    <BaseSingle
-        content-type="partner"
-        @emit-available-submenu="handleEmittedAvailableSubmenu"
-    >
-        <template #hero="{contentFromBase}">
-            <BaseHero
-                :background-url="contentFromBase['cover_image']"
-                :swoosh-color-theme="colorTheme"
-            >
+    <BaseSingle content-type="partner" @emit-available-submenu="handleEmittedAvailableSubmenu">
+        <template #hero="{ contentFromBase }">
+            <BaseHero :background-url="contentFromBase['cover_image']" :swoosh-color-theme="colorTheme">
                 <template #breadcrumb>
-                    <BaseBreadcrumb
-                        :child-page="contentFromBase.name"
-                        parent-page="Partners"
-                        :parent-page-link="'browse/partner'"
-                        :color-theme="colorTheme"
-                    />
+                    <BaseBreadcrumb :child-page="contentFromBase.name" parent-page="Partners"
+                        :parent-page-link="'browse/partner'" :color-theme="colorTheme" />
                 </template>
 
                 <template #titleText>
                     <div class="">
-                        <img
-                            :src="`${imageURL}/${contentFromBase['logo']}`"
-                            alt="logo"
-                            class="h-16 rounded"
-                        >
+                        <img :src="`${imageURL}/${contentFromBase['logo']}`" alt="logo" class="h-16 rounded">
                     </div>
                 </template>
                 <template #authorName>
@@ -162,30 +156,19 @@ const colorTheme = ref('partnerBlue')
                     {{ contentFromBase['introduction'] }}
                 </template>
                 <template #submenu>
-                    <BaseSingleSubmenu
-                        :active-subpage="activeSubMenu"
-                        :emit-to-base="handleChangeSubmenu"
-                        :menu-array="formattedSubmenuData"
-                        class="mb-[-1px]"
-                    />
+                    <BaseSingleSubmenu :active-subpage="activeSubMenu" :emit-to-base="handleChangeSubmenu"
+                        :menu-array="formattedSubmenuData" class="mb-[-1px]" />
                 </template>
             </BaseHero>
         </template>
-        <template #content="{contentFromBase,recommendationFromBase}">
+        <template #content="{ contentFromBase, recommendationFromBase }">
             <div class="partnerSingleContentContainer px-5 lg:!px-10">
                 <Suspense timeout="0">
-                    <component
-                        :is="partnerSubPageComponent"
-                        :data="dynamicProps"
-                        :content-from-base="contentFromBase"
-                        :recommendation-from-base="recommendationFromBase"
-                    />
+                    <component :is="partnerSubPageComponent" :data="dynamicProps" :content-from-base="contentFromBase"
+                        :recommendation-from-base="recommendationFromBase" />
                     <template #fallback>
                         <div class="flex justify-center items-center">
-                            <Loader
-                                :loader-color="'#0072DA'"
-                                :loader-message="'Data loading'"
-                            />
+                            <Loader :loader-color="'#0072DA'" :loader-message="'Data loading'" />
                         </div>
                     </template>
                 </Suspense>
