@@ -52,6 +52,8 @@ const calculatePositions = () => {
     return {firstEl, lastEl, distance, newTop};
 };
 
+var halfItemHeight = 0;
+
 const getDistanceBetweenElements = (a, b) => {
     const {x: ax, y: ay} = getPositionAtCenter(a);
     const {x: bx, y: by} = getPositionAtCenter(b);
@@ -60,11 +62,14 @@ const getDistanceBetweenElements = (a, b) => {
 
 const getPositionAtCenter = (element) => {
     const {top, left, width, height} = element.getBoundingClientRect();
+    halfItemHeight = height/2;
     return {
         x: left + width / 2,
-        y: top + height / 2
+        y: top // only top to start-align the icons
+        // y: top + height / 2
     };
 };
+
 const fontAwesomeNameFormatter = (nameFromFilament) => {
     return nameFromFilament.replace('fas-', 'fa-')
 }
@@ -75,16 +80,13 @@ const fontAwesomeDefaultColor = (itemColor) => {
 }
 </script>
 
+
 <template>
     <div class="extraContent mb-10 relative">
-        <div
-            class="absolute left-[12.4%] bg-black bg-secondary-blueberry connectingLine hidden w-0.5 z-10 md:!flex"
-            :style="`height: ${distanceBetweenEls-top-40}px; top: ${top+40}px; margin-top: ${top+40}px;`"
-        />
         <div class="flex flex-col">
             <div
                 v-if="props.itemTitle"
-                class="flex flex-row gap-4 mb-5 place-items-baseline"
+                class="flex flex-row mb-5 place-items-baseline  gap-4"
             >
                 <h1
                     class="font-bold text-3xl whitespace-nowrap"
@@ -93,6 +95,13 @@ const fontAwesomeDefaultColor = (itemColor) => {
                 </h1>
                 <div class="bg-black h-1 w-full" />
             </div>
+            </div>
+            
+        <div class="flex flex-col">
+        <div
+            class="absolute left-[12.4%] bg-transparent border-[#0072DA] border connectingLine hidden w-0 z-10 md:!flex"
+            :style="`height: ${distanceBetweenEls-top+halfItemHeight}px; top: ${top+halfItemHeight}px; margin-top: ${top+halfItemHeight}px;`"
+        />
             <div
                 v-for="(item,index) in iconListContent"
                 :key="index"
@@ -107,6 +116,7 @@ const fontAwesomeDefaultColor = (itemColor) => {
                                 justify-center
                                 items-center
                                 rounded-full
+                                bg-white
                                 text-2xl
                                 w-16
                                 z-20

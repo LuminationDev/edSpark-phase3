@@ -50,6 +50,8 @@ const calculatePositions = () => {
     return {firstEl, lastEl, distance, newTop};
 };
 
+var halfItemHeight = 0;
+
 const getDistanceBetweenElements = (a, b) => {
     const {x: ax, y: ay} = getPositionAtCenter(a);
     const {x: bx, y: by} = getPositionAtCenter(b);
@@ -58,6 +60,7 @@ const getDistanceBetweenElements = (a, b) => {
 
 const getPositionAtCenter = (element) => {
     const {top, left, width, height} = element.getBoundingClientRect();
+    halfItemHeight = height/2;
     return {
         x: left + width / 2,
         y: top // only top to start-align the icons
@@ -69,10 +72,6 @@ const getPositionAtCenter = (element) => {
 
 <template>
     <div class="extraContent mb-10 relative">
-        <div
-            class="absolute left-[12.4%] bg-black bg-secondary-blueberry connectingLine hidden w-0.5 z-10 md:!flex"
-            :style="`height: ${distanceBetweenEls-top-40}px; top: ${top+40}px; margin-top: ${top+40}px;`"
-        />
         <div class="flex flex-col">
             <div
                 v-if="props.itemTitle"
@@ -85,6 +84,13 @@ const getPositionAtCenter = (element) => {
                 </h1>
                 <div class="bg-black h-1 w-full" />
             </div>
+            </div>
+            
+        <div class="flex flex-col">
+        <div
+            class="absolute left-[12.4%] bg-black bg-secondary-blueberry connectingLine hidden w-0.5 z-10 md:!flex"
+            :style="`height: ${distanceBetweenEls-top+halfItemHeight}px; top: ${top+halfItemHeight}px; margin-top: ${top+halfItemHeight}px;`"
+        />
             <div
                 v-for="(item,index) in numberedListContent"
                 :key="index"

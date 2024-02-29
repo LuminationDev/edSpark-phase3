@@ -15,7 +15,7 @@ const top = ref('');
 const distanceBetweenEls = ref('');
 const floatingLineClasses = ref('');
 
-
+var halfItemheight = 0;
 const adjustConnectingLinePositions = () => {
     const listContainers = document.querySelectorAll('.softwareDashboardContentContainer');
 
@@ -29,10 +29,12 @@ const adjustConnectingLinePositions = () => {
         lastContainer
     );
 
+    halfItemHeight = firstElHeight / 2;
     const firstElHeight = firstContainer.offsetHeight;
     top.value = firstContainer.offsetTop + firstElHeight / 2;
     floatingLineClasses.value = `top-[${top.value}] h-[${distanceBetweenEls.value}px]`;
 };
+
 const handleResize = () => adjustConnectingLinePositions()
 
 const debouncedHandleScroll = _.debounce(() => {
@@ -59,7 +61,7 @@ onUnmounted(() => {
         >
             <div
                 class="absolute left-1/2 border-[2px] border-black connectingLine z-[-1]"
-                :style="`height: ${distanceBetweenEls}px; top: ${top-40}px;`"
+                :style="`height: ${distanceBetweenEls}px; top: ${top-halfItemHeight}px;`"
             />
             <DeptProvidedIcon class="h-full p-1" />
         </div>

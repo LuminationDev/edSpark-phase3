@@ -46,7 +46,7 @@ const tailwindGapClass = computed(() => {
 
 <template>
     <div
-        class="flex flex-row flex-wrap h-auto max-w-full pt-4 text-white"
+        class="flex flex-row flex-wrap h-auto max-w-full pt-3 pb-1 text-white"
         :class="tailwindGapClass"
     >
         <div
