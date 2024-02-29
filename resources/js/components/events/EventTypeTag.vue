@@ -14,7 +14,7 @@ const props = defineProps({
 </script>
 
 <template>
-    <div
+    <div v-if="props.eventType"
 
         class="TypeTag whitespace-nowrap
             border border-solid flex gap-2 h-[28px] py-1 place-items-center 
