@@ -73,6 +73,7 @@ const uploadImageInstance = ref(false)
 //handle submit data on click, posts the data to api and then store to the database.
 const handleClickSubmitPersonalData = async () => {
     uploadImageInstance.value = true
+    UserAvatarChange.handleSubmitImg.value()
     const result = await vPersonal$.value.$validate();
     if (result && fileDropped.value === true) {
         const data = {

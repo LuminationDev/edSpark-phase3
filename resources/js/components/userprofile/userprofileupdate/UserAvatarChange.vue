@@ -11,6 +11,9 @@ import {API_ENDPOINTS} from "@/js/constants/API_ENDPOINTS";
 import {avatarUIFallbackURL, imageURL} from "@/js/constants/serverUrl";
 import {useUserStore} from "@/js/stores/useUserStore";
 
+
+
+
 const props = defineProps({
     currentLogo: {
         type: String,
@@ -23,6 +26,8 @@ const props = defineProps({
         default: false
     }
 })
+const handleSubmitRef = ref(null);
+
 
 const errorMessage = ref("Please upload the Image")
 const imageError = ref(false)
@@ -35,17 +40,16 @@ const addImageURL = (itemUrl) => {
     return imageURL + "/" + itemUrl
 }
 
+let fileDropped = false
 let logoDataURL
-const fileDropped = ref(false)
 
 const handleLogoUpload = (event) => {
-    const file = event.target.files[0];
+    const file = event.target.files[0]
     if (file) {
-        // File is dropped or selected
-        fileDropped.value = true;
-        logoEditFile.value = file;
-        const reader = new FileReader();
-        reader.readAsDataURL(file);
+        fileDropped = true
+        logoEditFile.value = file
+        const reader = new FileReader()
+        reader.readAsDataURL(file)
 
         reader.onload = (event) => {
             logoPreview.value.setAttribute('src', event.target.result)
@@ -58,16 +62,16 @@ const handleLogoUpload = (event) => {
         emits('sendUploadedPhotoToContent', 'logo', file)
     } else {
         // No file is selected
-        fileDropped.value = false;
+        fileDropped = false;
         console.log("File is not dropped")
     }
-    emits("sendHandleFileDroppedInstance", fileDropped.value)
-};
+    emits("sendHandleFileDroppedInstance", fileDropped)
+}
 
 const avatarUrl = computed(() => {
-    const meta = currentUser.value?.metadata?.find(m => m.user_meta_key === 'userAvatar');
-    return meta ? meta.user_meta_value[0].replace(/\\\//g, "/") : '';
-});
+    const meta = currentUser.value?.metadata?.find(m => m.user_meta_key === 'userAvatar')
+    return meta ? meta.user_meta_value[0].replace(/\\\//g, "/") : ''
+})
 
 const avatarUrlWithFallback  = computed(() =>{
     if(imageError.value){
@@ -104,15 +108,12 @@ const handleSubmitImage = () => {
         })
 }
 
-watch(() => props.sendImageUploadInstance, (newValue, oldValue) => {
-    if (newValue === true && oldValue === false) {
-        console.log("The value is true")
-        handleSubmitImage()
-    }
-    else{
-        console.log("The value is false")
-    }
-})
+// watch(() => (props.sendImageUploadInstance === true), () => {
+//
+//
+//     handleSubmitImage()
+//
+// })
 
 onMounted(() => {
     if (props.currentLogo) {
@@ -120,7 +121,8 @@ onMounted(() => {
         console.log(addImageURL(props.currentLogo))
     }
 })
-
+handleSubmitRef.value = handleSubmitImage;
+defineExpose({handleSubmitImage: handleSubmitRef})
 </script>
 
 <template>
