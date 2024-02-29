@@ -3,9 +3,10 @@ import {useVuelidate} from "@vuelidate/core";
 import {required} from "@vuelidate/validators";
 import axios from "axios";
 import {storeToRefs} from "pinia";
-import {computed, onMounted, reactive, ref} from "vue";
+import {computed, onMounted, onUnmounted, reactive, ref, watch, watchEffect} from "vue";
 import {toast} from "vue3-toastify";
 
+import CustomErrorMessages from "@/js/components/feedbackform/CustomErrorMessages.vue";
 import {API_ENDPOINTS} from "@/js/constants/API_ENDPOINTS";
 import {avatarUIFallbackURL, imageURL} from "@/js/constants/serverUrl";
 import {useUserStore} from "@/js/stores/useUserStore";
@@ -15,40 +16,53 @@ const props = defineProps({
         type: String,
         required: false,
         default: ''
+    },
+    sendImageUploadInstance: {
+        type:Boolean,
+        required: true,
+        default: false
     }
 })
+
+const errorMessage = ref("Please upload the Image")
+const errorInstance = ref(false)
 const imageError = ref(false)
 const userStore = useUserStore();
 const {currentUser} = storeToRefs(userStore);
 const logoEditFile = ref(null)
 const logoPreview = ref(null)
-const emits = defineEmits(['sendUploadedPhotoToContent'])
+const emits = defineEmits(['sendUploadedPhotoToContent', 'sendHandleSubmitImageInstance'])
 const addImageURL = (itemUrl) => {
     return imageURL + "/" + itemUrl
 }
-onMounted(() => {
-    if (props.currentLogo) {
-        logoPreview.value.setAttribute('src', addImageURL(props.currentLogo))
-        console.log(addImageURL(props.currentLogo))
-    }
-})
-let logoDataURL
-const handleLogoUpload = (event) => {
-    logoEditFile.value = event.target.files[0]
-    const reader = new FileReader()
-    reader.readAsDataURL(logoEditFile.value)
 
-    reader.onload = (event) => {
-        logoPreview.value.setAttribute('src', event.target.result)
-        logoDataURL = event.target.result
-        //  console.log('Event tareget result value:' + event.target.result)
-        console.log("Current user value" + currentUser.value)
-        console.log('Logo preview value:' + logoPreview.value)
-        console.log('Data URL:', logoDataURL)
+let logoDataURL
+const fileDropped = ref(false)
+
+const handleLogoUpload = (event) => {
+    const file = event.target.files[0];
+    if (file) {
+        // File is dropped or selected
+        fileDropped.value = true;
+        logoEditFile.value = file;
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+
+        reader.onload = (event) => {
+            logoPreview.value.setAttribute('src', event.target.result);
+            logoDataURL = event.target.result;
+            console.log("Current user value: " + currentUser.value);
+            console.log('Logo preview value: ' + logoPreview.value);
+            console.log('Data URL:', logoDataURL);
+        };
+        console.log("File is  dropped")
+        emits('sendUploadedPhotoToContent', 'logo', file);
+    } else {
+        // No file is selected
+        fileDropped.value = false;
+        console.log("File is not dropped")
     }
-    emits('sendUploadedPhotoToContent', 'logo', logoEditFile.value)
-    reader.readAsDataURL(file)
-}
+};
 
 const avatarUrl = computed(() => {
     const meta = currentUser.value?.metadata?.find(m => m.user_meta_key === 'userAvatar');
@@ -68,7 +82,7 @@ const handleImageLoadError = () => {
 
 const isLoading = ref(false)
 const uploadError = ref("")
-const uploadImage = ref('')
+
 
 
 const handleSubmitImage = () => {
@@ -81,15 +95,38 @@ const handleSubmitImage = () => {
             console.log(res.data.data)
             userStore.fetchCurrentUserAndLoadIntoStore()
             toast.success("Successfully submitted the image file")
+
+
         })
         .catch(err => {
-            uploadError.value = err.message;
+            if (err.response && err.response.status === 500) {
+                console.log("This is error 500");
+                errorInstance.value = true
+            } else {
+                uploadError.value = err.message;
+            }
         })
         .finally(() => {
-            isLoading.value = false;
+            isLoading.value = true
         })
 }
 
+watch(() => props.sendImageUploadInstance, (newValue, oldValue) => {
+    if (newValue === true && oldValue === false) {
+        console.log("The value is true")
+        handleSubmitImage()
+    }
+    else{
+        console.log("The value is false")
+    }
+})
+
+onMounted(() => {
+    if (props.currentLogo) {
+        logoPreview.value.setAttribute('src', addImageURL(props.currentLogo))
+        console.log(addImageURL(props.currentLogo))
+    }
+})
 
 </script>
 
@@ -158,13 +195,19 @@ const handleSubmitImage = () => {
                         >
                     </label>
                 </div>
-                <button
-                    class="border-2 border-black"
-                    @click="handleSubmitImage"
-                >
-                    Submit Image
-                </button>
+                <!--                <button-->
+                <!--                    class="border-2 border-black"-->
+                <!--                    @click="handleSubmitImage"-->
+                <!--                >-->
+                <!--                    Submit Image-->
+                <!--                </button>-->
             </div>
+            <span v-if="((fileDropped === false) && (sendImageUploadInstance === true))">
+                <CustomErrorMessages
+                    :error-text="errorMessage"
+                    class="mb-6"
+                />
+            </span>
         </div>
     </div>
 </template>

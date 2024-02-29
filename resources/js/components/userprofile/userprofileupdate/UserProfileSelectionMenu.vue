@@ -69,6 +69,7 @@ const handleReceiveInterestsFromSelector = (interestList) => {
     stateProfile.interestSelect = interestList
 }
 
+const uploadImageInstance = ref(false)
 //handle submit data on click, posts the data to api and then store to the database.
 const handleClickSubmitPersonalData = async () => {
     const result = await vPersonal$.value.$validate()
@@ -83,6 +84,7 @@ const handleClickSubmitPersonalData = async () => {
             .catch(err => {
                 console.log(err.value)
             })
+        uploadImageInstance.value = true
         console.log("Personal Data saved successfully")
     }
     else {
@@ -130,6 +132,7 @@ const handleReceivePhotoFromContent = (type, file) => {
     }
 }
 
+
 </script>
 
 <template>
@@ -167,6 +170,7 @@ const handleReceivePhotoFromContent = (type, file) => {
 
                     <UserAvatarChange
                         class="mt-6"
+                        :send-image-upload-instance="uploadImageInstance"
                         @send-uploaded-photo-to-content="handleReceivePhotoFromContent"
                     />
                 </template>
