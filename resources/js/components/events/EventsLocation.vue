@@ -40,7 +40,7 @@ const markerCenter = ref({
 })
 
 onMounted(() => {
-    if (props.locationInfo.length && (props.locationType.toLowerCase() === 'in person' || props.locationType.toLowerCase() === 'hybrid') && props.locationInfo.address) {
+    if (props.locationInfo && props.locationInfo.length && (props.locationType.toLowerCase() === 'in person' || props.locationType.toLowerCase() === 'hybrid') && props.locationInfo.address) {
         const {address} = props.locationInfo
         axios.get(`https://geocode.maps.co/search?q={${address}}`).then(res => {
             if (res.data[0]['lat'] && res.data[0]['lon']) {
