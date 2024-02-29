@@ -8,6 +8,7 @@ use App\Helpers\RoleHelpers;
 use App\Helpers\UserRole;
 use App\Models\Event;
 use App\Models\Label;
+use Coolsam\FilamentFlatpickr\Forms\Components\Flatpickr;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -84,12 +85,11 @@ class EventResource extends Resource
                             }),
                         Forms\Components\Grid::make(2)
                             ->schema([
-                                Forms\Components\DateTimePicker::make('start_date')
-                                    ->required()
-                                ->seconds(false)
-                                ->native(false)
-                                ,
-                                Forms\Components\DateTimePicker::make('end_date')
+                                Flatpickr::make('start_date')
+                                    ->enableTime()
+                                    ->required(),
+                                Flatpickr::make('end_date')
+                                    ->enableTime()
                                     ->required(),
                             ]),
                         Forms\Components\Grid::make(3)

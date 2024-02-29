@@ -1,6 +1,6 @@
 <script setup>
-import {useRouter} from "vue-router";
 import {ref} from 'vue';
+import {useRouter} from "vue-router";
 
 import BaseBreadcrumb from "@/js/components/bases/BaseBreadcrumb.vue";
 import BaseHero from "@/js/components/bases/BaseHero.vue";
@@ -31,7 +31,6 @@ const colorTheme = ref('partnerBlue')
 
 </script>
 <template>
-
     <BaseSingle content-type="event">
         <template #hero="{contentFromBase}">
             <BaseHero
@@ -142,9 +141,8 @@ const colorTheme = ref('partnerBlue')
                         </div>
                         <div class="flex items-center flex-row">
                             <LocationIcon class="fill-white mr-2" />
-                            <!--                            {{ contentFromBase['type'] === 'in person' ? contentFromBase['location']['address'] : contentFromBase['type'] }}-->
                             {{
-                                contentFromBase['location']['address'] ? contentFromBase['location']['address'] : 'Online'
+                                contentFromBase['location'] ? (contentFromBase['location']['address'] ? contentFromBase['location']['address'] : 'Online') : ""
                             }}
                         </div>
                         <LabelRowContentDisplay :labels-array="contentFromBase['labels']" />
@@ -155,7 +153,7 @@ const colorTheme = ref('partnerBlue')
 
         <template #content="{contentFromBase}">
             <div
-                class="eventSingleContent font-light flex flex-col overflow-hidden px-8 w-full lg:!flex-row"
+                class="eventSingleContent flex flex-col font-light overflow-hidden px-8 w-full lg:!flex-row"
             >
                 <!--    Content of the Advice    -->
                 <div class="flex flex-col flex-wrap pl-6 px-12 w-full lg:!w-2/3">

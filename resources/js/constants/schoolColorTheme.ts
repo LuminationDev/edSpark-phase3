@@ -20,7 +20,7 @@ export const schoolColorTheme = {
         dark: '#6D479B',
     },
     blueberry: {
-        light: '#44B8F3',
+        light: '#44B8F3', // light: '#AEDCF3',
         med: '#0072DA',
         dark: '#03369A',
     },
