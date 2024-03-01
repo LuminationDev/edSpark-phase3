@@ -72,8 +72,6 @@ const handleReceiveInterestsFromSelector = (interestList) => {
 const uploadImageInstance = ref(false)
 //handle submit data on click, posts the data to api and then store to the database.
 const handleClickSubmitPersonalData = async () => {
-    uploadImageInstance.value = true
-
     const result = await vPersonal$.value.$validate();
     if (result && fileDropped.value === true) {
         const data = {
@@ -89,9 +87,11 @@ const handleClickSubmitPersonalData = async () => {
             .catch(err => {
                 console.error(err);
                 console.log("Error occurred while saving personal data");
+
             });
     } else {
         console.log("Personal Data not saved successfully. Please enter all the values.");
+
     }
 };
 
@@ -138,8 +138,26 @@ const handleReceivePhotoFromContent = (type, file) => {
 const fileDropped = ref(false)
 const handleReceiveFileDroppedInstance = (fileDroppedInsance) => {
     fileDropped.value = fileDroppedInsance
-
 }
+
+const handlePersonalCancelButton = () => {
+    vPersonal$.value.$reset()
+    statePersonal.biography = ('')
+    statePersonal.displayName = ('')
+    divContent.value = "Reset Content"
+    reloadKey.value++
+}
+
+const divContent = ref('Initial content')
+const reloadKey = ref(0)
+const handleProfilelCancelButton = () => {
+    stateProfile.interestSelect = []
+    stateProfile.yearLevelSelect = []
+    stateProfile.subjectSelect = []
+    divContent.value = "Reset Content"
+    reloadKey.value++
+}
+
 
 
 </script>
@@ -150,6 +168,8 @@ const handleReceiveFileDroppedInstance = (fileDroppedInsance) => {
     >
         <div>
             <UserProfileContentContainer
+                id="reloadableDiv"
+                :key="reloadKey"
                 :left-heading="leftHeadingPersonal"
                 :left-description="leftDescriptionPersonal"
             >
@@ -163,18 +183,24 @@ const handleReceiveFileDroppedInstance = (fileDroppedInsance) => {
                     >
                     <span>
 
-                        <ErrorMessages :v$="vPersonal$.displayName" />
+                        <ErrorMessages
+                            :v$="vPersonal$.displayName"
+                            class="mb-6 mt-2"
+                        />
                     </span>
 
                     <div class="ml-4 mt-4">
                         Biography
                     </div>
-                    <input
+                    <textarea
                         v-model="vPersonal$.biography.$model"
-                        class="border-1 border-gray-400 h-64 mt-4 rounded-2xl"
-                    >
+                        class="border-1 border-gray-400 h-72 mt-4 rounded-2xl"
+                    />
                     <span>
-                        <ErrorMessages :v$="vPersonal$.biography" />
+                        <ErrorMessages
+                            :v$="vPersonal$.biography"
+                            class="mb-6 mt-2"
+                        />
                     </span>
 
                     <UserAvatarChange
@@ -182,6 +208,7 @@ const handleReceiveFileDroppedInstance = (fileDroppedInsance) => {
                         :send-image-upload-instance="uploadImageInstance"
                         @send-uploaded-photo-to-content="handleReceivePhotoFromContent"
                         @send-handle-file-dropped-instance="handleReceiveFileDroppedInstance"
+                        @reset-image-upload-boolean="uploadImageInstance = false"
                     />
                 </template>
                 <template #buttons>
@@ -199,7 +226,7 @@ const handleReceiveFileDroppedInstance = (fileDroppedInsance) => {
                             p-4
                             w-28
                             "
-                        callback="d"
+                        :callback="handlePersonalCancelButton"
                     >
                         <template #default>
                             Cancel
@@ -207,7 +234,7 @@ const handleReceiveFileDroppedInstance = (fileDroppedInsance) => {
                     </GenericButton>
                     <GenericButton
                         id="submitBtn"
-                        class="!h-14 !rounded-xl !text-xl p-4 w-28 hover:!bg-main-teal lg:!w-40"
+                        class="!h-14 !rounded-xl p-4 text-xl hover:!bg-main-teal sm:!w-40"
                         :callback="handleClickSubmitPersonalData"
                     >
                         <template #default>
@@ -218,6 +245,8 @@ const handleReceiveFileDroppedInstance = (fileDroppedInsance) => {
             </UserProfileContentContainer>
             <div class="border-[1px] border-gray-100" />
             <UserProfileContentContainer
+                id="reloadableDiv"
+                :key="reloadKey"
                 :left-heading="leftHeadingProfile"
                 :left-description="leftDescriptionProfile"
             >
@@ -226,7 +255,7 @@ const handleReceiveFileDroppedInstance = (fileDroppedInsance) => {
                         <div class="ml-1">
                             Year levels
                         </div>
-                        <div class="grid grid-cols-6 mt-6 userYearLevelSelectorContainer">
+                        <div>
                             <UserChecklistSelector
                                 :available-items="AvailableSchoolYearList"
                                 :selected-items="stateProfile.yearLevelSelect"
@@ -256,7 +285,7 @@ const handleReceiveFileDroppedInstance = (fileDroppedInsance) => {
                             <span v-if="((stateProfile.subjectSelect.length === 0) && (booleanValueOnSubmitButton===true))">
                                 <CustomErrorMessages
                                     :error-text="displayErrorMessageText"
-                                    class="mb-6 mt-6"
+                                    class="mb-10 mt-6"
                                 />
                             </span>
                         </div>
@@ -277,7 +306,7 @@ const handleReceiveFileDroppedInstance = (fileDroppedInsance) => {
                             <span v-if="((stateProfile.interestSelect.length === 0) && (booleanValueOnSubmitButton===true))">
                                 <CustomErrorMessages
                                     :error-text="displayErrorMessageText"
-                                    class="mb-6 mt-6"
+                                    class="mb-10 mt-6"
                                 />
                             </span>
                         </div>
@@ -298,7 +327,7 @@ const handleReceiveFileDroppedInstance = (fileDroppedInsance) => {
                             p-4
                             w-28
                             "
-                        callback="d"
+                        :callback="handleProfilelCancelButton"
                     >
                         <template #default>
                             Cancel
@@ -306,7 +335,7 @@ const handleReceiveFileDroppedInstance = (fileDroppedInsance) => {
                     </GenericButton>
                     <GenericButton
                         id="submitBtn"
-                        class="!h-14 !rounded-xl !text-xl p-4 w-28 hover:!bg-main-teal lg:!w-40"
+                        class="!h-14 !rounded-xl p-4 text-xl hover:!bg-main-teal sm:!w-40"
                         :callback="handleClickSubmitProfileData"
                     >
                         <template #default>

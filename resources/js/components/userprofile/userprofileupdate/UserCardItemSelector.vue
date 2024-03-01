@@ -78,11 +78,22 @@ const getCheckboxState = (item) => isSelected(item)
 </script>
 
 <template>
-    <div class="grid grid-cols-5 gap-8 mb-16">
+    <div class="2xl:!grid-cols-5 grid sm:grid-cols-3 grid-cols-2 gap-2 place-items-center mb-10 md:!grid-cols-4 lg:!gap-8">
         <div
             v-for="(item, index) in availableItems"
             :key="index"
-            class="!border-gray-250 hover:!border-[#339999] border-[2px] cursor-pointer h-36 rounded-2xl text-white w-36"
+            class="
+                !border-gray-250
+                hover:!border-[#339999]
+                border-[2px]
+                cursor-pointer
+                h-36
+                rounded-2xl
+                scale-75
+                text-white
+                w-36
+                sm:!scale-100
+                "
         >
             <div
                 class="flex flex-col text-lg"

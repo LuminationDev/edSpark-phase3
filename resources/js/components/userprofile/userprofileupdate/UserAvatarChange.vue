@@ -12,11 +12,6 @@ import {avatarUIFallbackURL, imageURL} from "@/js/constants/serverUrl";
 import {useUserStore} from "@/js/stores/useUserStore";
 
 const props = defineProps({
-    currentLogo: {
-        type: String,
-        required: false,
-        default: ''
-    },
     sendImageUploadInstance: {
         type:Boolean,
         required: true,
@@ -24,43 +19,45 @@ const props = defineProps({
     }
 })
 
-const errorMessage = ref("Please upload the Image")
+const errorMessage = ref("Please upload the image by pressing Save changes")
 const imageError = ref(false)
 const userStore = useUserStore();
 const {currentUser} = storeToRefs(userStore);
 const logoEditFile = ref(null)
 const logoPreview = ref(null)
-const emits = defineEmits(['sendUploadedPhotoToContent', 'sendHandleFileDroppedInstance'])
+const emits = defineEmits(['sendUploadedPhotoToContent', 'sendHandleFileDroppedInstance','resetImageUploadBoolean'])
 const addImageURL = (itemUrl) => {
     return imageURL + "/" + itemUrl
 }
 
-let fileDropped = false
+
+const fileDropped = ref(false)
 let logoDataURL
 
 const handleLogoUpload = (event) => {
+    console.log(event.target.files)
     const file = event.target.files[0]
     if (file) {
-        fileDropped = true
         logoEditFile.value = file
         const reader = new FileReader()
         reader.readAsDataURL(file)
-
         reader.onload = (event) => {
             logoPreview.value.setAttribute('src', event.target.result)
             logoDataURL = event.target.result
             console.log("Current user value: " + currentUser.value)
             console.log('Logo preview value: ' + logoPreview.value)
             console.log('Data URL:', logoDataURL);
+
         };
+        fileDropped.value = true
         console.log("File is  dropped")
         emits('sendUploadedPhotoToContent', 'logo', file)
     } else {
         // No file is selected
-        fileDropped = false;
+        fileDropped.value = false;
         console.log("File is not dropped")
     }
-    emits("sendHandleFileDroppedInstance", fileDropped)
+    emits("sendHandleFileDroppedInstance", fileDropped.value)
 }
 
 const avatarUrl = computed(() => {
@@ -94,9 +91,12 @@ const handleSubmitImage = () => {
             console.log(res.data.data)
             userStore.fetchCurrentUserAndLoadIntoStore()
             toast.success("Successfully submitted the image file")
+            emits('resetImageUploadBoolean')
+            fileDropped.value = true
         })
         .catch(err => {
             uploadError.value = err.message
+            fileDropped.value = false
         })
         .finally(() => {
             isLoading.value = false
@@ -180,7 +180,6 @@ onMounted(() => {
                         </div>
                         <input
                             id="dropzone-file"
-                            ref="logoEditFile"
                             type="file"
                             class="hidden"
                             @change="handleLogoUpload"
@@ -194,10 +193,10 @@ onMounted(() => {
                 <!--                    Submit Image-->
                 <!--                </button>-->
             </div>
-            <span v-if="((fileDropped === false) && (sendImageUploadInstance === true))">
+            <span v-if="((fileDropped === false) && (sendImageUploadInstance === false)) ">
                 <CustomErrorMessages
                     :error-text="errorMessage"
-                    class="mb-6"
+                    class="mb-6 mt-6"
                 />
             </span>
         </div>
