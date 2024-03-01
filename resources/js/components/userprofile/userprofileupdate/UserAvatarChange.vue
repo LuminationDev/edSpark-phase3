@@ -12,6 +12,7 @@ import {avatarUIFallbackURL, imageURL} from "@/js/constants/serverUrl";
 import {useUserStore} from "@/js/stores/useUserStore";
 
 const props = defineProps({
+
     sendImageUploadInstance: {
         type:Boolean,
         required: true,
@@ -25,7 +26,7 @@ const userStore = useUserStore();
 const {currentUser} = storeToRefs(userStore);
 const logoEditFile = ref(null)
 const logoPreview = ref(null)
-const emits = defineEmits(['sendUploadedPhotoToContent', 'sendHandleFileDroppedInstance','resetImageUploadBoolean'])
+const emits = defineEmits(['sendHandleFileDroppedInstance','resetImageUploadBoolean'])
 const addImageURL = (itemUrl) => {
     return imageURL + "/" + itemUrl
 }
@@ -44,18 +45,13 @@ const handleLogoUpload = (event) => {
         reader.onload = (event) => {
             logoPreview.value.setAttribute('src', event.target.result)
             logoDataURL = event.target.result
-            console.log("Current user value: " + currentUser.value)
-            console.log('Logo preview value: ' + logoPreview.value)
-            console.log('Data URL:', logoDataURL);
+
 
         };
         fileDropped.value = true
-        console.log("File is  dropped")
-        emits('sendUploadedPhotoToContent', 'logo', file)
     } else {
         // No file is selected
         fileDropped.value = false;
-        console.log("File is not dropped")
     }
     emits("sendHandleFileDroppedInstance", fileDropped.value)
 }
@@ -82,7 +78,6 @@ const uploadError = ref("")
 
 
 const handleSubmitImage = () => {
-    console.log("Submit button is pressed")
 
     const data = new FormData()
     data.append('userAvatar',logoEditFile.value )
@@ -105,20 +100,10 @@ const handleSubmitImage = () => {
 
 watch(() => props.sendImageUploadInstance, (newValue, oldValue) => {
     if (newValue === true && oldValue === false) {
-        console.log("The value is true")
         handleSubmitImage()
-    }
-    else{
-        console.log("The value is false")
     }
 })
 
-onMounted(() => {
-    if (props.currentLogo) {
-        logoPreview.value.setAttribute('src', addImageURL(props.currentLogo))
-        console.log(addImageURL(props.currentLogo))
-    }
-})
 
 </script>
 

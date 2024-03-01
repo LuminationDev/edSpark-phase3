@@ -81,16 +81,12 @@ const handleClickSubmitPersonalData = async () => {
         axios.post(API_ENDPOINTS.USER.UPDATE_OR_CREATE_METADATA + currentUser.value.id, data)
             .then(res => {
                 console.log(res.data);
-                console.log("Personal Data saved successfully");
                 uploadImageInstance.value = true
             })
             .catch(err => {
-                console.error(err);
-                console.log("Error occurred while saving personal data");
 
             });
     } else {
-        console.log("Personal Data not saved successfully. Please enter all the values.");
 
     }
 };
@@ -112,28 +108,14 @@ const handleClickSubmitProfileData = async () => {
                 .catch(err => {
                     console.log(err.value)
                 })
-            console.log("Profile Data saved successfully")
             booleanValueOnSubmitButton.value = false
         }
     }
     else {
-        console.log("Profile Data not saved successfully, Please enter all the values")
     }
     booleanValueOnSubmitButton.value = true
 }
 
-const logoStorage = ref(null)
-const handleReceivePhotoFromContent = (type, file) => {
-    switch (type) {
-    case 'logo':
-        console.log('received logo')
-        logoStorage.value = file
-        break;
-    default:
-        console.log('received unknown type image')
-        break;
-    }
-}
 
 const fileDropped = ref(false)
 const handleReceiveFileDroppedInstance = (fileDroppedInsance) => {
@@ -206,7 +188,6 @@ const handleProfilelCancelButton = () => {
                     <UserAvatarChange
                         class="mt-6"
                         :send-image-upload-instance="uploadImageInstance"
-                        @send-uploaded-photo-to-content="handleReceivePhotoFromContent"
                         @send-handle-file-dropped-instance="handleReceiveFileDroppedInstance"
                         @reset-image-upload-boolean="uploadImageInstance = false"
                     />

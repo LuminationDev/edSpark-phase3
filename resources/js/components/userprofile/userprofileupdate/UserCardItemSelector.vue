@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import {computed, defineEmits, defineProps, ref} from "vue";
+import {defineEmits, defineProps, ref} from "vue";
 
 //important props used to import data from UserProfileSelectionMenu
 const props = defineProps({
@@ -16,19 +16,8 @@ const props = defineProps({
 
 const emits = defineEmits(["sendSelectedValues"])
 
-const colorTheme = ref("peach")
-//saving value from the props.selectedItems
 const selectedValues = ref(props.selectedItems)
 
-//give custom background to the layout
-// const customBackground = computed(() => {
-//     if (schoolColorKeys.includes(colorTheme)) {
-//         return `bg-[${schoolColorTheme[colorTheme]["light"]}]`
-//     } else {
-//         return `bg-[${schoolColorTheme["peach"]["light"]}] fill
-//         -[${schoolColorTheme["peach"]["med"]}]`
-//     }
-// })
 const emitNewItemsToParent = () =>{
     emits('sendSelectedValues', selectedValues.value)
 }
@@ -43,8 +32,6 @@ const handleClickItem = (itemName) =>{
     emitNewItemsToParent()
 }
 
-//custom border color and other settings for the selected items
-//custom backgrond color for the selected items
 const selectedValueBackgroundClass = (item) => {
     if (selectedValues.value.includes(item)) {
         return 'border-[#339999] border-[2px] cursor-pointer h-36 rounded-2xl text-white w-36 ml-[-2px] mt-[-2px]'
@@ -67,10 +54,10 @@ const selectedValueTextColorClass = (item) => {
     }
 }
 
-// To deteremine the item is selected for checkbox
+
 const isSelected = (item) => selectedValues.value.includes(item.name)
 
-// To get the checkbox state for an item
+
 const getCheckboxState = (item) => isSelected(item)
 
 
