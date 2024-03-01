@@ -20,7 +20,7 @@ const props = defineProps({
     }
 })
 
-const errorMessage = ref("Please upload the image by pressing Save changes")
+
 const imageError = ref(false)
 const userStore = useUserStore();
 const {currentUser} = storeToRefs(userStore);
@@ -178,12 +178,6 @@ watch(() => props.sendImageUploadInstance, (newValue, oldValue) => {
                 <!--                    Submit Image-->
                 <!--                </button>-->
             </div>
-            <span v-if="((fileDropped === false) && (sendImageUploadInstance === false)) ">
-                <CustomErrorMessages
-                    :error-text="errorMessage"
-                    class="mb-6 mt-6"
-                />
-            </span>
         </div>
     </div>
 </template>

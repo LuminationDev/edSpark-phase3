@@ -5,6 +5,7 @@ import axios from "axios";
 import {storeToRefs} from "pinia";
 import {emits} from "v-calendar/dist/types/src/use/datePicker";
 import {computed, reactive, Ref, ref} from "vue";
+import {toast} from "vue3-toastify";
 
 import ProfilePlaceholder from "@/assets/images/profilePlaceholder.webp";
 import ErrorMessages from "@/js/components/bases/ErrorMessages.vue";
@@ -82,6 +83,7 @@ const handleClickSubmitPersonalData = async () => {
             .then(res => {
                 console.log(res.data);
                 uploadImageInstance.value = true
+                toast.success("Successfully submitted the Personal Info")
             })
             .catch(err => {
 
@@ -104,6 +106,7 @@ const handleClickSubmitProfileData = async () => {
             axios.post(API_ENDPOINTS.USER.UPDATE_OR_CREATE_METADATA + currentUser.value.id, data)
                 .then(res => {
                     console.log(res.data)
+                    toast.success("Successfully submitted the Profile Info")
                 })
                 .catch(err => {
                     console.log(err.value)
@@ -138,6 +141,7 @@ const handleProfilelCancelButton = () => {
     stateProfile.subjectSelect = []
     divContent.value = "Reset Content"
     reloadKey.value++
+
 }
 
 
