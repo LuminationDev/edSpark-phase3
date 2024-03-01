@@ -18,4 +18,15 @@ class NotificationResource
         $this->type = $type;
         $this->action = $action;
     }
+
+    public function toArray()
+    {
+        return [
+            'id' => $this->id,
+            'title' => $this->title,
+            'author' => $this->author,
+            'type' => $this->type,
+            'action' => $this->action
+        ];
+    }
 }

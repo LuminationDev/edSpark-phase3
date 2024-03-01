@@ -29,29 +29,20 @@ class ResourceCreated extends Notification
         return ['database'];
     }
 
-    /**
-     * Get the mail representation of the notification.
-     */
-    public function toDatabase($notifiable)
+    public function toArray($notifiable): array
     {
         return [
-            'resource_id' => $this->resource->id,
-            'title' => $this->resource->title,
-            'author' => $this->resource->author,
-            'type' => $this->resource->type,
-            'action' => $this->resource->action
+            'type' => get_class($this->resource),
+            'data' => $this->resource->toArray(),
+            // Any other data you want to include in the notification
         ];
-    }
 
-    /**
-     * Get the array representation of the notification.
-     *
-     * @return array<string, mixed>
-     */
-    public function toArray(object $notifiable): array
-    {
-        return [
-            //
-        ];
+//        return [
+//            'resource_id' => $this->resource->id,
+//            'title' => $this->resource->title,
+//            'author' => $this->resource->author,
+//            'type' => $this->resource->type,
+//            'action' => $this->resource->action
+//        ];
     }
 }

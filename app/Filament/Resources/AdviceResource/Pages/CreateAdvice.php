@@ -45,8 +45,11 @@ class CreateAdvice extends CreateRecord
 
         // create the notification item
         $notificationObject = new NotificationResource($record->id, 'test title', 10005, 'test', 'create');
+        User::find(10005)->notify(new ResourceCreated($notificationObject));
 
-        Notification::send(User::all(), new ResourceCreated($notificationObject));
+//        foreach ($usersExceptCurrent as $eachUser){
+//            $eachUser->notify(new ResourceCreated($notificationObject));
+//        }
         return $record;
     }
 

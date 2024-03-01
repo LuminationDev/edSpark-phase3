@@ -2,19 +2,17 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Notification extends Model
 {
-    use HasFactory;
 
     /**
      * The table associated with the model
      *
      * @var string
      */
-    protected $table = "user_notifications";
+    protected $table = "notifications";
 
     /**
      * The attributes that are mass assignable
@@ -24,6 +22,8 @@ class Notification extends Model
         'data',
         'type',
         'read_at',
+        'notifiable_type',
+        'notifiable_id'
     ];
     public function notifiable()
     {

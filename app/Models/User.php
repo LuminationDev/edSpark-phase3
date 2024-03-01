@@ -6,7 +6,6 @@ use App\Helpers\RoleHelpers;
 use App\Helpers\UserRole;
 use Filament\Panel;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
 
 use Filament\Models\Contracts\FilamentUser;
 use Filament\Models\Contracts\HasName;
@@ -81,11 +80,6 @@ class User extends Authenticatable implements FilamentUser, HasName
     public function likes()
     {
         return $this->hasMany(Like::class);
-    }
-
-    public function notifications()
-    {
-        return $this->hasMany(Notification::class);
     }
 
     public function partner()
