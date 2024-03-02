@@ -62,8 +62,8 @@ const handleCoverImageUpload = (event) => {
 </script>
 <template>
     <div class="flex flex-col px-4 rounded w-4/5">
-        <div class="flex flex-row gap-6">
-            <div class="flex flex-col gap-4 logoColumn px-2 w-1/2">
+        <div class="flex flex-col sm:!flex-row gap-6">
+            <div class="flex flex-col gap-4 logoColumn px-2 w-full sm:!w-1/2">
                 <label
                     for="logoUpload"
                     class="font-semibold mt-2 text-center text-lg"
@@ -129,11 +129,11 @@ const handleCoverImageUpload = (event) => {
                     class="h-28 object-contain self-center w-28"
                 >
             </div>
-            <div class="CoverImageColumn border-0 flex flex-col px-2 w-1/2  gap-4">
+            <div class="CoverImageColumn border-0 flex flex-col px-2 w-1/2  gap-4 w-full sm:!w-1/2">
                 <label
                     for="coverImageUpload"
                     class="font-semibold mt-2 text-center text-lg"
-                >Cover Image</label>
+                >Cover image</label>
                 <div class="flex justify-center items-center flex flex-col gap-4 w-full">
                     <label
                         for="dropzone-file-1"

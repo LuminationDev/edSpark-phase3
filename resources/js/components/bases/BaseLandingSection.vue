@@ -80,8 +80,8 @@ const scrLg = parseInt(theme.screens.lg);
         >
             <div class="flex flex-col titleAndSubtitle w-full">
                 <div
-                    class="font-medium text-3xl sm:text-4xl"
-                    :class="{'mb-4' : $slots.subtitle}"
+                    class="font-medium text-3xl sm:text-4xl mb-4"
+                    :class="{'mb-2' : $slots.subtitle}"
                 >
                     <slot name="title" />
                 </div>

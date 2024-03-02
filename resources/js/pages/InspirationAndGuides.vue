@@ -73,7 +73,7 @@ const handleClickGoToDMA = () =>{
     <BaseLandingSection>
         <template #title>
             <div class="flex justify-between items-center flex-row w-full align-center">
-                <div class="font-semibold                 
+                <div class="font-semibold             
                         text-3xl    sm:text-3xl         md:text-3xl     lg:text-4xl
                         max-w-full  sm:max-w-[500px]    md:max-w-[600px] lg:max-w-[700px]">
 
