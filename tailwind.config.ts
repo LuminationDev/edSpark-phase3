@@ -84,7 +84,7 @@ const generateSafeList = (colors) : Array<string> => {
 
 
 
-module.exports = {
+export default {
     darkMode: 'class',
     content: [
         './resources/**/*.blade.php',

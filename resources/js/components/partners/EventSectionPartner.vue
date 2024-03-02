@@ -23,13 +23,13 @@ const {
             v-if="allEvents && allEvents.length > 0"
             class="flex lg:flex-row flex-col flex-wrap"
         >
-            <div class="pl-8 w-full lg:!w-2/3">
+            <div class="pl-0 lg:pl-8 w-full lg:!w-2/3">
                 <EventsCalendar
                     :events="allEvents"
                 />
                 <div class="calendarColorLegend flex shrink flex-col gap-2 pt-5">
                     <div class="colorLegendTitle font-semibold">
-                        Calendar Colors Legend
+                        Calendar legend
                     </div>
                     <div class="flex items-center flex-row virtualLegend">
                         <div class="bg-event-virtual colorDot h-4 mx-4 rounded-full w-4" />
@@ -56,7 +56,7 @@ const {
             v-else
             class="flex justify-center py-10"
         >
-            <div class="font-semibold text-xl">
+            <div class="font-thin text-xl">
                 <Loader
                     :loader-color="'#0072DA'"
                     :loader-message="'Calendar loading'"

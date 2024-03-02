@@ -188,6 +188,7 @@ const formattedSearchBlurb = computed(() => {
                 <div class="flex flex-col search-filter-components">
                     <SearchBar
                         :placeholder="`Type in ${searchType} name`"
+                        class="[&>p]:font-medium [&>p]:text-lg md:[&>p]:text-xl [&>p]:!ml-0 mb-4 lg:mb-0"
                         @emit-search-term="handleSearchTerm"
                     />
                 </div>
@@ -348,6 +349,12 @@ const formattedSearchBlurb = computed(() => {
     }
 }
 
+// @media screen and (max-width: 510px) {
+//     #searchIcon {
+//         margin-left: 0.5rem !important;
+//         top: 0.1rem !important;
+//     }
+// }
 
 .BaseSearchPaginationContainer {
 

@@ -535,16 +535,39 @@ color: blue !important;
 
 
 
+@media screen and (max-width: 620px) {
+    .calendarWrapper .vc-dots {
+        display:none !important;
+    }
 
-/* .eventCalendarContainer .is-first-day .vc-day-layer .vc-highlight.vc-highlight-base-middle.vc-highlight-bg-light{
-    border-top-left-radius: 50% !important;
-    border-bottom-left-radius: 50% !important;
-    width: 28px;
-} */
+    .calendarWrapper .vc-day-box-center-center {
+        height: 48px !important;
+    }
+}
 
+.eventCalendarContainer .weekday-1 > div.vc-highlights.vc-day-layer  {
+    border-top-left-radius: 29px !important;
+    border-bottom-left-radius: 29px !important;
+    height: 28px;
+    margin: auto;
+}
 
+.eventCalendarContainer .day-from-end-1 > div.vc-highlights.vc-day-layer {
+    border-top-right-radius: 29px !important;
+    border-bottom-right-radius: 29px !important;
+    height: 28px;
+    margin: auto;
+}
+
+.eventCalendarContainer .weekday-1 > div.vc-highlights.vc-day-layer > div,
+.eventCalendarContainer .day-from-end-1 > div.vc-highlights.vc-day-layer > div {
+    height: 28px;
+    margin: auto;
+}
+
+ /* vc-day-box-center-center  */
 .eventCalendarContainer .day-1.week-1 .vc-highlight-base-middle, 
-.eventCalendarContainer .weekday-position-1 .vc-highlight-bg-light {
+.eventCalendarContainer .weekday-position-1 .vc-highlight-bg-light { 
     border-top-left-radius: 29px !important;
     border-bottom-left-radius: 29px !important;
 }
@@ -574,4 +597,10 @@ color: blue !important;
 
 .vc-container .vc-focusable.vc-focus:focus-within {
     box-shadow: none !important;
+}
+
+.vc-container .vc-focusable.vc-focus:focus-within,
+.calendarWrapper .vc-focus:focus-within {
+    color: black !important;
+    background-color: #e5f1fb !important;
 }

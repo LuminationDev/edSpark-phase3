@@ -130,7 +130,7 @@ const handleClickTodayButton = () => {
     />
     <div
         v-if="showPopup"
-        class="absolute top-0 right-0 bottom-0 left-0 bg-black/30 z-40"
+        class="absolute top-0 right-0 bottom-0 left-0 bg-black/30 z-40 w-screen min-w-[270px]"
     />
 </template>
 
@@ -141,6 +141,13 @@ const handleClickTodayButton = () => {
 /*
  vc-highlight-base-middle vc-highlight-bg-solid
 */
+
+/* @media screen and (max-width: 620px) { */
+    /* .vc-dots {
+        display:none;
+    } */
+/* } */
+
 .vc-highlight.vc-highlight-base-middle.vc-highlight-bg-solid {
     border-radius: 10px 0 0 10px !important;
 }

@@ -1,5 +1,5 @@
 <script setup>
-import {computed} from "vue";
+import {computed, onMounted, onUnmounted, ref} from "vue";
 
 const props = defineProps({
     backgroundColor: {
@@ -8,6 +8,13 @@ const props = defineProps({
         default: 'teal'
     }
 })
+
+
+import {useWindowStore} from "@/js/stores/useWindowStore";
+const windowStore = useWindowStore()
+
+import resolveConfig from 'tailwindcss/resolveConfig'
+import tailwindConfig from '../../../../tailwind.config.ts';
 
 
 const shadyBackgroundColorClass = computed(() => {
@@ -28,6 +35,38 @@ const shadyBackgroundColorClass = computed(() => {
         return 'teal'
     }
 })
+
+const isMed = ref('');
+
+const windowWidthCheck = () => {
+    // windowWidth.value = window.innerWidth;
+    isMed.value = window.innerWidth < scrLg;
+    windowStore.isMed = isMed;
+    console.log("Width = "+ window.innerWidth +", "+isMed.value+", "+windowStore.isMed);
+};
+
+const handleResize = () => windowWidthCheck()
+
+onMounted(async () => {
+    window.addEventListener('resize', handleResize);
+    handleResize();
+});
+
+onUnmounted(() => {
+    window.removeEventListener('resize', handleResize);
+});
+
+const { theme } = resolveConfig(tailwindConfig);
+
+const scrMd = parseInt(theme.screens.md);
+const scrLg = parseInt(theme.screens.lg);
+
+// const isMed = computed(() => {
+//     var isMed = windowWidth.value < scrLg;
+//     return isMed;
+// })
+
+
 </script>
 
 <template>
@@ -36,7 +75,7 @@ const shadyBackgroundColorClass = computed(() => {
         :class="shadyBackgroundColorClass"
     >
         <div
-            class="flex justify-between items-center sm:items-start flex-col justify-center gap-8 sm:flex-row sectionHeader w-full"
+            class="flex justify-between items-center sm:items-start flex-col justify-center sm:flex-row sectionHeader w-full"
             :class="{'mb-8' : $slots.content}"
         >
             <div class="flex flex-col titleAndSubtitle w-full">
@@ -48,7 +87,7 @@ const shadyBackgroundColorClass = computed(() => {
                 </div>
                 <div
                     v-if="$slots.subtitle"
-                    class="font-base text-lg"
+                    class="font-base text-lg mb-8"
                 >
                     <slot name="subtitle" />
                 </div>

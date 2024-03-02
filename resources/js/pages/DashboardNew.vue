@@ -77,7 +77,16 @@ onMounted(async () => {
                 <SchoolProfileGuidesQuickFilters />
             </template>
             <template #content>
-                <BaseLandingCardRow :resource-list="featuredSchools">
+                <BaseLandingCardRow :resource-list="featuredSchools" v-if="windowStore.isMed">
+                    <template #rowContent>
+                        <SchoolCard
+                            v-for="(school,index) in getNRandomElementsFromArray(featuredSchools,2)"
+                            :key="index"
+                            :data="school"
+                        />
+                    </template>
+                </BaseLandingCardRow>
+                <BaseLandingCardRow :resource-list="featuredSchools" v-if="!windowStore.isMed">
                     <template #rowContent>
                         <SchoolCard
                             v-for="(school,index) in getNRandomElementsFromArray(featuredSchools,3)"
@@ -105,7 +114,16 @@ onMounted(async () => {
             </GenericButton>
         </template>
         <template #content>
-            <BaseLandingCardRow :resource-list="guideList">
+            <BaseLandingCardRow :resource-list="guideList" v-if="windowStore.isMed">
+                <template #rowContent>
+                    <AdviceCard
+                        v-for="(guide,index) in getNRandomElementsFromArray(guideList,2)"
+                        :key="index"
+                        :data="guide"
+                    />
+                </template>
+            </BaseLandingCardRow>
+            <BaseLandingCardRow :resource-list="guideList" v-if="!windowStore.isMed">
                 <template #rowContent>
                     <AdviceCard
                         v-for="(guide,index) in getNRandomElementsFromArray(guideList,3)"
@@ -184,7 +202,16 @@ onMounted(async () => {
             </GenericButton>
         </template>
         <template #content>
-            <BaseLandingCardRow :resource-list="eventList">
+            <BaseLandingCardRow :resource-list="eventList" v-if="windowStore.isMed">
+                <template #rowContent>
+                    <EventsCard
+                        v-for="(event,index) in getNRandomElementsFromArray(eventList,2)"
+                        :key="index"
+                        :data="event"
+                    />
+                </template>
+            </BaseLandingCardRow>
+            <BaseLandingCardRow :resource-list="eventList" v-if="!windowStore.isMed">
                 <template #rowContent>
                     <EventsCard
                         v-for="(event,index) in getNRandomElementsFromArray(eventList,3)"

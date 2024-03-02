@@ -15,7 +15,8 @@ const top = ref('');
 const distanceBetweenEls = ref('');
 const floatingLineClasses = ref('');
 
-var halfItemheight = 0;
+const halfItemHeight = ref('');
+
 const adjustConnectingLinePositions = () => {
     const listContainers = document.querySelectorAll('.softwareDashboardContentContainer');
 
@@ -29,8 +30,8 @@ const adjustConnectingLinePositions = () => {
         lastContainer
     );
 
-    halfItemHeight = firstElHeight / 2;
     const firstElHeight = firstContainer.offsetHeight;
+    halfItemHeight.value = firstElHeight / 2;
     top.value = firstContainer.offsetTop + firstElHeight / 2;
     floatingLineClasses.value = `top-[${top.value}] h-[${distanceBetweenEls.value}px]`;
 };

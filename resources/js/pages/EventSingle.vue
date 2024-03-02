@@ -151,7 +151,7 @@ const colorTheme = ref('partnerBlue')
 
                        
                             <EventTypeTag
-                                class="!mx-0 !my-0 sm:!my-4 bg-white hidden sm:flex"
+                                class="!mx-0 !my-0 sm:!my-4 bg-white border-2 font-medium hidden sm:flex"
                                 :event-type="contentFromBase['type']"
                             />
 
