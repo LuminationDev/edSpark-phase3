@@ -42,7 +42,10 @@ window.addEventListener('DOMContentLoaded', () => {
         toolbar_sticky_offset: 45,
         image_caption: true,
         image_advtab: true,
-        content_css: false, skin: false
+        browser_spellcheck : true,
+        context_menu : false,
+        content_css: false, 
+        skin: false
     });
 
 });
