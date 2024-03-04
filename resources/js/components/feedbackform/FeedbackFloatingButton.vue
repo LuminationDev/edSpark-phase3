@@ -5,7 +5,7 @@
 <template>
     <div
         class="
-            bg-main-teal
+            bg-main-darkTeal
             border-[1px]
             border-white
             flex
@@ -16,7 +16,7 @@
             rounded-lg
             scale-75
             w-20
-            hover:!bg-main-darkTeal
+            hover:!bg-main-teal
             md:!scale-100
             ">
         <img

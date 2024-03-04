@@ -69,6 +69,7 @@ onMounted(async () => {
                 <GenericButton
                     :callback="() => router.push('browse/school')"
                     :type="'teal'"
+                    :id="schoolsBtn"
                 >
                     View all schools
                 </GenericButton>
@@ -109,6 +110,7 @@ onMounted(async () => {
             <GenericButton
                 :callback="() => router.push('browse/guide')"
                 :type="'teal'"
+                    :id="guidesBtn"
             >
                 View all guides
             </GenericButton>
@@ -145,6 +147,7 @@ onMounted(async () => {
             <GenericButton
                 :callback="() => router.push('browse/software')"
                 :type="'teal'"
+                    :id="techBtn"
             >
                 View all technology
             </GenericButton>

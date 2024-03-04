@@ -255,6 +255,11 @@ select {
     margin-top: 20px;
 }
 
+.richTextContentContainer img {
+    border: 1px solid black;
+    margin: 24px auto;
+}
+
 .extraResourcesContainer p,
 .richTextContentContainer li,
 .richTextContentContainer p {
@@ -429,6 +434,7 @@ table[border]:not([border="0"]):not([style*="border-color"]) th {
 
 .richTextContentContainer figure {
     display: table;
+    margin: auto;
 }
 
 .richTextContentContainer figure figcaption {

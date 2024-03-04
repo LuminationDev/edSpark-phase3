@@ -51,8 +51,11 @@ const edsparkColor = [
     '#03369A',
     '#002858',
     '#001c3d',
-    '#c67f14',
+    // '#c67f14',
+    '#a06610',
     '#da5525',
+    '#006ccf',
+    '#8160bb',
 
     // new secondary color style guide
     '#FFC836',
@@ -123,15 +126,17 @@ export default {
                     // new style guide
                     banana: '#FFC836',
                     bananaMed: '#d4a426',
-                    bananaDark: '#c67f14',
+                    bananaDark: '#a06610', //'#c67f14',
                     cherry:  '#DE4668',
                     cherryMed:  '#be2145',
                     peach: '#FF8D78',
                     peachMed: '#be2145',
                     grape:  '#8866C5',
+                    grapeWeb: '#8160bb',
                     grapeDark: '#6D469C',
                     blueberry: '#0072DA',
-                    blueberryMed: '#1C5CA9'
+                    blueberryMed: '#1C5CA9',
+                    blueberryWeb: '#006ccf'
 
                 },
                 custom: {
@@ -142,7 +147,7 @@ export default {
                 event: {
                     virtual: '#319795', // teal now, was cherry
                     hybrid: '#002858', // navy now, was grape
-                    inPerson: '#0072DA', // same as blueberry
+                    inPerson: '#006ccf', // same as blueberry
                     virtualTag: '#ffd5de'
                 },
 

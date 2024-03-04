@@ -98,6 +98,7 @@ const handleClickPopularTech = (techId, title) => {
             <GenericButton
                 :callback="() => router.push('browse/software')"
                 :type="'purple'"
+                :id="appsBtn"
             >
                 View all apps and programs
             </GenericButton>
@@ -153,6 +154,7 @@ const handleClickPopularTech = (techId, title) => {
             <GenericButton
                 :callback="() => router.push('/browse/hardware')"
                 :type="'purple'"
+                :id="equipBtn"
             >
                 View all equipment and devices
             </GenericButton>
@@ -187,6 +189,7 @@ const handleClickPopularTech = (techId, title) => {
             <GenericButton
                 :callback="() => router.push('/browse/guide/dag')"
                 :type="'purple'"
+                :id="guidesBtn"
             >
                 View all guides
             </GenericButton>

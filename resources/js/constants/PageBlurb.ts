@@ -50,7 +50,7 @@ export const LandingHeroText = {
     },
     dma:{
         title: 'Digital Capability Leadership Reflection Tool',
-        subtitle: 'Discover software with the Department of Education tick of approval, and find out what is available to you to use as an employee and how to access it.',
+        subtitle: '',
     }
 }
 

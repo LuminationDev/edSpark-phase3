@@ -32,7 +32,7 @@ const borderColorClass = computed(() => {
     switch (props.borderColor) {
     case 'technologyPurple':
     case 'purple':
-        return 'border-secondary-grape hover:bg-secondary-grape'
+        return 'border-secondary-grapeWeb hover:bg-secondary-grapeWeb'
     default:
         return 'border-main-teal hover:bg-main-teal'
     }

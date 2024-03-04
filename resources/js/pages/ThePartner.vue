@@ -30,8 +30,9 @@ const {
         <SectionHeader
             title="Our partners"
             :classes="'bg-secondary-blueberry'"
-            section="laptops"
+            section="partners"
             button-text="View all partners"
+            :id="partnersBtn"
             :button-callback="() => router.push('/browse/partner')"
         />
         <div
@@ -72,6 +73,7 @@ const {
             :section="'events'"
             :title="'Event calendar'"
             :button-text="'View all events'"
+            :id="eventsBtn"
             :button-callback="() => router.push('/browse/event')"
         />
         <EventSectionPartner />

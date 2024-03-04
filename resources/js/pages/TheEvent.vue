@@ -76,6 +76,7 @@ onMounted(() => {
             <GenericButton
                 :callback="() => router.push('/browse/event')"
                 :type="'blue'"
+                :id="eventsBtn"
             >
                 View all events
             </GenericButton>
@@ -118,6 +119,7 @@ onMounted(() => {
             <GenericButton
                 :callback="() => router.push('/browse/partner')"
                 :type="'blue'"
+                :id="partnersBtn"
             >
                 View all partners
             </GenericButton>
@@ -181,9 +183,10 @@ onMounted(() => {
                             </div>
                         </div>
                     </div>
-                    <div class="w-full lg:!w-1/3 md:max-h-[500px] lg:max-h-[850px] overflow-y-auto">
+                    <div class="w-full lg:!w-1/3 md:max-h-[500px] lg:max-h-[850px] overflow-y-auto" tabindex="0">
                         <EventsView
                             :events="allEvents"
+                            tabindex="0"
                         />
                     </div>
                 </div>

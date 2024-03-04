@@ -14,13 +14,13 @@ const props = defineProps({
 
 const typeTagColor = computed(() => {
     if (props.eventType === 'Virtual') {
-        return 'text-main-teal border-main-teal bg-main-teal/10 [&>svg]:fill-main-teal [&>svg]:stroke-main-teal';
+        return 'text-main-darkTeal border-main-darkTeal bg-main-teal/10 [&>svg]:fill-main-darkTeal [&>svg]:stroke-main-darkTeal';
 
     } else if (props.eventType === 'Hybrid') {
         return 'text-main-navy border-main-navy bg-main-navy/10 [&>svg]:fill-main-navy [&>svg]:stroke-main-navy';
 
     } else { //must be In Person
-        return 'text-secondary-blueberry border-secondary-blueberry bg-secondary-blueberry/10 [&>svg]:fill-secondary-blueberry [&>svg]:stroke-secondary-blueberry';
+        return 'text-secondary-blueberryWeb border-secondary-blueberryWeb bg-secondary-blueberry/10 [&>svg]:fill-secondary-blueberryWeb [&>svg]:stroke-secondary-blueberryWeb';
     }
 })
 </script>

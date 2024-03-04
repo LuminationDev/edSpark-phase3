@@ -167,7 +167,7 @@ const colorTheme = ref('partnerBlue')
                     <component :is="partnerSubPageComponent" :data="dynamicProps" :content-from-base="contentFromBase"
                         :recommendation-from-base="recommendationFromBase" />
                     <template #fallback>
-                        <div class="flex justify-center items-center">
+                        <div class="flex justify-center items-center font-thin">
                             <Loader :loader-color="'#0072DA'" :loader-message="'Data loading'" />
                         </div>
                     </template>

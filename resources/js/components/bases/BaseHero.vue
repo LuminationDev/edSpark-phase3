@@ -102,7 +102,7 @@ const heroBackgroundColor = computed(() => {
     // case 'grape':
     // case 'purple':
     case 'technologyPurple':
-        return 'bg-secondary-grape'
+        return 'bg-secondary-grapeWeb'
 
     // case 'blue':
     case 'partnerBlue':
@@ -185,7 +185,7 @@ const heroBackgroundColor = computed(() => {
 
                     <p
                         v-if="$slots.contentDate"
-                        class="flex flex-col font-thin gap-4 mb-0 lg:mb-4 text-base text-white"
+                        class="flex flex-col font-light gap-4 mb-0 lg:mb-4 text-base text-white"
                     >
                         <slot name="contentDate" />
                     </p>
@@ -206,7 +206,7 @@ const heroBackgroundColor = computed(() => {
 
                     <div
                         v-if="$slots.subtitleText2"
-                        class="font-normal h-auto mt-4 pb-4 text-base text-white"
+                        class="font-normal h-auto mt-4 pb-4 text-base text-white hidden"
                     >
                         <p class="">
                             <slot name="subtitleText2" />

@@ -19,6 +19,11 @@ const props = defineProps({
     }
 });
 
+onMounted(() => {
+    document.getElementsByClassName('vc-next')[0].setAttribute("aria-label", "Next");
+    document.getElementsByClassName('vc-prev')[0].setAttribute("aria-label", "Previous");
+})
+
 const attributes = computed(() =>
     props.events.map(event => {
         const backgroundColor = event.type === 'Virtual' ? 'teal' : event.type === 'Hybrid' ? 'navy' : 'blueberry';
@@ -110,6 +115,7 @@ const handleClickTodayButton = () => {
                 Today
             </button>
         </div>
+
         <Calendar
             ref="eventCalendarRef"
             borderless

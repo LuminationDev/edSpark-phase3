@@ -120,12 +120,12 @@ const logoClass = computed(() => {
                     </div>
                 </li>
 
-                <ProfileDropdown
+                <li><ProfileDropdown
                     v-if="isAuthenticated"
                     :key="currentUser"
                     :current-user="currentUser"
                     :avatar-url="avatarUrl"
-                />
+                /></li>
             </ul>
 
             <div

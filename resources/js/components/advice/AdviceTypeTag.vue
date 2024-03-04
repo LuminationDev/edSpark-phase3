@@ -16,7 +16,7 @@ const props = defineProps({
 
 const typeTagColor = computed(() => {
     if (props.typeTag[0] === 'DAG') {
-        return 'text-main-teal border-main-teal bg-main-teal/10 [&>svg]:fill-main-teal [&>svg]:stroke-main-teal';
+        return 'text-main-darkTeal border-main-darkTeal bg-main-teal/10 [&>svg]:fill-main-darkTeal [&>svg]:stroke-main-darkTeal';
     } else {
         return 'text-secondary-bananaDark border-secondary-bananaDark bg-secondary-banana/10 [&>svg]:fill-secondary-bananaDark/10 [&>svg]:stroke-secondary-bananaDark';
     }

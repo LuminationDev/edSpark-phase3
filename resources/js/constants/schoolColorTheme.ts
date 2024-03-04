@@ -2,7 +2,7 @@ export const schoolColorTheme = {
     banana: {
         light: '#FFF1CB',
         med: '#FFC836',
-        dark: '#c67f14',
+        dark: '#a06610', //'#c67f14',
     },
     cherry: {
         light: '#FECCD0',
