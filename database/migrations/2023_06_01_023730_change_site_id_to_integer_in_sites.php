@@ -12,20 +12,10 @@ return new class extends Migration {
      */
     public function up()
     {
-// Drop the unique index temporarily
-        Schema::table('sites', function (Blueprint $table) {
-            $table->dropUnique('sites_site_id_unique');
-        });
-
-// Alter the column data type
         Schema::table('sites', function (Blueprint $table) {
             $table->unsignedBigInteger('site_id')->change();
         });
 
-// Recreate the unique index
-        Schema::table('sites', function (Blueprint $table) {
-            $table->unique('site_id');
-        });
     }
 
     /**
@@ -35,16 +25,8 @@ return new class extends Migration {
      */
     public function down()
     {
-// Drop the unique index temporarily
         Schema::table('sites', function (Blueprint $table) {
-            $table->dropUnique('sites_site_id_unique');
+            $table->string('site_id')->nullable()->change();
         });
-
-// Alter the column data type
-        Schema::table('sites', function (Blueprint $table) {
-            $table->string('site_id')->unique()->nullable()->change();
-        });
-
-// Recreate the unique index
     }
 };
