@@ -14,7 +14,7 @@ return new class extends Migration {
     {
 // Drop the unique index temporarily
         Schema::table('sites', function (Blueprint $table) {
-            $table->dropUnique('sites_site_id_unique');
+            $table->dropUnique('site_id');
         });
 
 // Alter the column data type
@@ -37,7 +37,7 @@ return new class extends Migration {
     {
 // Drop the unique index temporarily
         Schema::table('sites', function (Blueprint $table) {
-            $table->dropUnique('sites_site_id_unique');
+            $table->dropUnique('site_id');
         });
 
 // Alter the column data type
