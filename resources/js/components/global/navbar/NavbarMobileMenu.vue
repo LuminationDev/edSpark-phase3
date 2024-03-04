@@ -1,12 +1,12 @@
 <script setup>
-import ChevronLeftNavIcon from "@/js/components/svg/ChevronLeftNavIcon.vue";
-import ChevronRightNavIcon from "@/js/components/svg/ChevronRightNavIcon.vue";
 import {storeToRefs} from "pinia";
 import {computed, onMounted, ref} from "vue";
 import {useRouter} from "vue-router";
 
 import NavItemsMobileMenu from "@/js/components/global/navbar/NavItemsMobileMenu.vue";
 import ProfileDropdownMobile from "@/js/components/global/ProfileDropdownMobile.vue";
+import ChevronLeftNavIcon from "@/js/components/svg/ChevronLeftNavIcon.vue";
+import ChevronRightNavIcon from "@/js/components/svg/ChevronRightNavIcon.vue";
 import Close from "@/js/components/svg/Close.vue";
 import Logo from "@/js/components/svg/Logo.vue";
 import Search from "@/js/components/svg/Search.vue";
@@ -176,9 +176,9 @@ setupRoutes();
         :class="{navbarScrolled : navScrolled}"
         @click="toggleNavbar"
     >
-        <span class="bg-white block h-1 w-10"/>
-        <span class="bg-white block h-1 w-10"/>
-        <span class="bg-white block h-1 w-10"/>
+        <span class="bg-white block h-1 w-10" />
+        <span class="bg-white block h-1 w-10" />
+        <span class="bg-white block h-1 w-10" />
     </nav>
     <Transition name="slide-fade">
         <div
@@ -207,7 +207,7 @@ setupRoutes();
                 class="flex flex-col font-semibold mt-6 text-3xl text-white"
             >
                 <li
-                    class="cursor-pointer font-bold ml-auto text-2xl hover:text-main-teal"
+                    class="cursor-pointer font-bold ml-auto text-2xl"
                 >
                     <div
                         id="edSparkLogo"
@@ -225,10 +225,10 @@ setupRoutes();
                     <button
                         @click="toggleNavbar"
                     >
-                        <Close class="fill-white hover:fill-slate-200 h-6 w-6 hover:cursor-pointer"/>
+                        <Close class="fill-white hover:fill-slate-200 h-6 w-6 hover:cursor-pointer" />
                     </button>
                 </li>
-                <li class="-mt-2 flex font-semibold py-4 text-3xl"/>
+                <li class="-mt-2 flex font-semibold py-4 text-3xl" />
                 <NavItemsMobileMenu
                     v-for="(route, i) in navLinks"
                     :key="i"
@@ -245,11 +245,11 @@ setupRoutes();
                         Search
                     </div>
                     <div>
-                        <Search class="ml-10"/>
+                        <Search class="ml-10" />
                     </div>
                 </li>
                 <li>
-                    <div class="bg-white h-px mt-12 my-4"/>
+                    <div class="bg-white h-px mt-12 my-4" />
                 </li>
                 <li
                     class="cursor-pointer flex items-center flex-row font-semibold mt-8"
@@ -274,23 +274,23 @@ setupRoutes();
             <!--            Children Listing Condition    -->
             <ul v-else>
                 <li
-                    class="cursor-pointer flex justify-between font-bold ml-auto mt-6 text-2xl "
+                    class="cursor-pointer flex justify-between font-bold ml-auto mt-6 text-2xl"
                 >
                     <button
-                        class="-ml-2 hover:cursor-pointer fill-white flex justify-between "
+                        class="-ml-2 hover:cursor-pointer fill-white flex justify-between"
                         @click="handleClickBackNavbar"
                     >
                         <div
-                            class="gap-x-2 over:cursor-pointer mr-2 flex flex-row"
+                            class="flex flex-row gap-x-2 mr-2 over:cursor-pointer"
                         >
-                            <ChevronLeftNavIcon/>
+                            <ChevronLeftNavIcon />
                             Back
                         </div>
                     </button>
                     <button
                         @click="toggleNavbar"
                     >
-                        <Close class="fill-white hover:fill-slate-200 h-6 w-6 hover:cursor-pointer"/>
+                        <Close class="fill-white hover:fill-slate-200 h-6 w-6 hover:cursor-pointer" />
                     </button>
                 </li>
                 <li class="flex font-semibold mt-8 py-4 text-3xl">
@@ -308,10 +308,10 @@ setupRoutes();
                     @click="handleGlobalSearchClick"
                 >
                     <div class="searchText">
-                        Search
+                        Sear
                     </div>
                     <div>
-                        <Search class="ml-auto"/>
+                        <Search class="ml-auto" />
                     </div>
                 </li>
             </ul>
