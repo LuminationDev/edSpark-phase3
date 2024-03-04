@@ -98,7 +98,7 @@ export const AvailableInterestsList = [{
         category: '',
         provider: '',
         svgComponent: InterestVrIcon,
-        svgCustomSelectedClass: 'fill-main-darkTeal',
+        svgCustomSelectedClass: 'fill-[#0A7982]',
         svgCustomUnSelectedClass: 'fill-[#344054]'
     },
     {
