@@ -308,7 +308,7 @@ setupRoutes();
                     @click="handleGlobalSearchClick"
                 >
                     <div class="searchText">
-                        Sear
+                        Search
                     </div>
                     <div>
                         <Search class="ml-auto" />
