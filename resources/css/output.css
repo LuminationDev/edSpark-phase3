@@ -9675,6 +9675,10 @@ color: blue !important;
     height: 8rem;
   }
 
+  .sm\:\!w-1\/2 {
+    width: 50% !important;
+  }
+
   .sm\:w-32 {
     width: 8rem;
   }
@@ -9693,10 +9697,6 @@ color: blue !important;
 
   .sm\:w-screen {
     width: 100vw;
-  }
-
-  .sm\:\!w-1\/2 {
-    width: 50% !important;
   }
 
   .sm\:max-w-2xl {
@@ -9768,12 +9768,12 @@ color: blue !important;
     grid-template-columns: repeat(auto-fit,minmax(0,1fr));
   }
 
-  .sm\:flex-row {
-    flex-direction: row;
-  }
-
   .sm\:\!flex-row {
     flex-direction: row !important;
+  }
+
+  .sm\:flex-row {
+    flex-direction: row;
   }
 
   .sm\:flex-col {
@@ -10192,14 +10192,6 @@ color: blue !important;
     width: 100%;
   }
 
-  .md\:w-1\/2 {
-    width: 50%;
-  }
-
-  .md\:\!w-1\/2 {
-    width: 50% !important;
-  }
-
   .md\:max-w-\[1320px\] {
     max-width: 1320px;
   }
@@ -10293,10 +10285,6 @@ color: blue !important;
 
   .md\:\!flex-col {
     flex-direction: column !important;
-  }
-
-  .md\:flex-col {
-    flex-direction: column;
   }
 
   .md\:items-start {
