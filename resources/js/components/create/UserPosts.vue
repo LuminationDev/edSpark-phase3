@@ -112,7 +112,7 @@ const formatDataFromAutoSaveAndPostToDraft = (dataArray): BasePostType[] => {
             Your Drafts
         </template>
         <template #subtitle>
-            Find all of your in progress publications and those awaiting for moderation here.
+            Find all of your in-progress publications and those awaiting for moderation here
         </template>
         <template #content>
             <UserDraftList

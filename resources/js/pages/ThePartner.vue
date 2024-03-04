@@ -28,7 +28,7 @@ const {
     <div>
         <PartnersHero />
         <SectionHeader
-            title="Our Partners"
+            title="Our partners"
             :classes="'bg-secondary-blueberry'"
             section="laptops"
             button-text="View all partners"
@@ -70,7 +70,7 @@ const {
         <SectionHeader
             :classes="'bg-secondary-blueberry'"
             :section="'events'"
-            :title="'Event Calendar'"
+            :title="'Event calendar'"
             :button-text="'View all events'"
             :button-callback="() => router.push('/browse/event')"
         />

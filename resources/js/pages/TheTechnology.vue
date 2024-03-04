@@ -72,7 +72,7 @@ const handleClickPopularTech = (techId, title) => {
     </BaseLandingHero>
     <BaseLandingSection background-color="white">
         <template #title>
-            Popular Technology
+            Popular technology
         </template>
         <template #content>
             <PopularResourceShortcuts

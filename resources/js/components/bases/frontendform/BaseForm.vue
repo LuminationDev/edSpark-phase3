@@ -324,7 +324,7 @@ onBeforeRouteLeave(async (to, from) => {
                     {{ titleGenerator }}
                 </div>
                 <div class="flex flex-col smallAutoSaveHeaderSection">
-                    <div class="statusDisplay text-md">
+                    <div class="statusDisplay rounded-3xl border-secondary-blueberry text-secondary-blueberry bg-secondary-blueberry/5 px-4 py-2 border border-radius-4 text-md">
                         {{ statusGenerator }}
                     </div>
                     <slot name="formHeader" />

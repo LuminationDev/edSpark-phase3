@@ -62,7 +62,7 @@ const backgroundColorClass = computed(() => {
                     {{ props.title }}
                 </h1>
 
-                <p class="font-thin grid place-items-start text-white text-md xs:text-lg md:text-xl">
+                <p class="font-thin grid place-items-start text-white text-md xs:text-lg md:text-xl lg:!text-[21px]">
                     {{ props.titleParagraph }}
                 </p>
             </div>

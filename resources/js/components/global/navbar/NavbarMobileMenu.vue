@@ -37,7 +37,8 @@ const profileTargetPath = computed(() => {
 })
 const messageTargetPath = computed(() => {
     if (currentUser.value.id) {
-        return `/message/${currentUser.value.id}`
+        // return `/message/${currentUser.value.id}`        
+        return `/profile/${currentUser.value.id}/messages`
     } else return ''
 })
 const mySchoolTargetPath = computed(() => {
@@ -73,13 +74,13 @@ const profileChildren = [
         name: 'userProfileInfo',
         path: profileTargetPath,
         meta: {
-            customText: 'User Profile'
+            customText: 'User profile'
         }
     }, {
         name: 'userProfileMessages',
         path: messageTargetPath,
         meta: {
-            customText: 'Message'
+            customText: 'Messages'
         }
     }
     , {
@@ -89,10 +90,10 @@ const profileChildren = [
             customText: 'Create'
         }
     }, {
-        name: 'school',
+        name: 'school-single',
         path: mySchoolTargetPath,
         meta: {
-            customText: 'My School'
+            customText: 'My school'
         }
     },
     {
@@ -102,7 +103,7 @@ const profileChildren = [
 
     },
     {
-        name: 'Sign Out',
+        name: 'Sign out',
         type: 'signout',
         clickCallback: handleLogoutUser,
 
@@ -336,20 +337,18 @@ setupRoutes();
                     :key="i"
                     :route="route"
                     :click-callback="() => handleClickMobileNavItems(route)"
+                    class="text-lg"
                 />
-
-                
-                <li>
-                    <div class="bg-white h-px my-6"/>
-                </li>
-
-                
 
                 <li
                     v-if="isSearchVisible"
                     class="cursor-pointer flex justify-between items-center mt-4"
                     @click="handleGlobalSearchClick"
                 >
+                
+                <li>
+                    <div class="bg-white h-px my-6"/>
+                </li>
                     <div class="searchText">
                         Search
                     </div>

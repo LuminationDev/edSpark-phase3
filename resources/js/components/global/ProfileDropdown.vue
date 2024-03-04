@@ -61,7 +61,8 @@ const profileTargetPath = computed(() => {
 
 const messageTargetPath = computed(() => {
     if (currentUser.value.id) {
-        return `/message/${currentUser.value.id}`
+        // return `/message/${currentUser.value.id}`
+        return `/profile/${currentUser.value.id}/messages`
     } else return ''
 })
 

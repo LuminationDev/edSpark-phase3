@@ -27,8 +27,9 @@ const shadyBackgroundColorClass = computed(() => {
         return 'bg-main-darkTeal/20'
     case 'navy':
         return 'bg-main-navy/20'
+    case 'technologyPurple':
     case 'purple':
-        return 'bg-secondary-grapeDark/20'
+        return 'bg-secondary-grape/10'
     case 'blue':
         return 'bg-secondary-blueberry/10'
     default:

@@ -98,7 +98,8 @@ const routes: any = [
                     skipScrollTop: true
 
                 } as RouteMeta
-            }, {
+            },
+             {
                 name: 'createGuide',
                 path: 'guide',
                 component: AdviceForm,
@@ -225,6 +226,7 @@ const routes: any = [
         path: '/events',
         component: TheEvent,
         meta: {
+            customText: 'Events',
             navigation: true
         }
     },
@@ -288,7 +290,7 @@ const routes: any = [
     },
     {
         name: 'school-single',
-        path: '/schools/:name',
+        path: '/schools/:name?',
         component: SchoolSingle,
         meta: {
             requiresAuth: true,

@@ -68,6 +68,7 @@ const handleClickEditDraft = (postData: BasePostType) : Promise<void> => {
                     border-gray-100
                     flex-row
                     items-center
+                    font-light
                     grid
                     grid-cols-12
                     h-16

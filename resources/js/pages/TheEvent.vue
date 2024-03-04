@@ -112,7 +112,7 @@ onMounted(() => {
             Industry providers
         </template>
         <template #subtitle>
-            Industry providers for education
+            Explore the profiles of our educational industry providers
         </template>
         <template #button>
             <GenericButton
@@ -147,9 +147,11 @@ onMounted(() => {
 
     <BaseLandingSection background-color="blue">
         <template #title>
-            Event Calendar
+            Event calendar
         </template>
-        <template #subtitle />
+        <template #subtitle>
+            Browse through the events our providers and partners have on offer
+        </template>
         <template #content>
             <div class="eventCalendarContainer flex flex-col h-full">
                 <div

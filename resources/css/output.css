@@ -7568,6 +7568,16 @@ select {
   color: rgb(255 255 255 / var(--tw-text-opacity));
 }
 
+.text-secondary-coolGrey {
+  --tw-text-opacity: 1;
+  color: rgb(217 218 228 / var(--tw-text-opacity));
+}
+
+.text-slate-400 {
+  --tw-text-opacity: 1;
+  color: rgb(148 163 184 / var(--tw-text-opacity));
+}
+
 .underline {
   text-decoration-line: underline;
 }

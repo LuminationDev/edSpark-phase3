@@ -354,7 +354,7 @@ const handleCloseModerationTab = (): void => {
 
     <div
         v-else
-        class="font-semibold mt-20 text-xl"
+        class="font-thin mt-20 text-xl"
     >
         <Loader
             :loader-color="'#0072DA'"

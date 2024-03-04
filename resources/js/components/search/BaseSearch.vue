@@ -155,8 +155,7 @@ const formattedSearchBlurb = computed(() => {
             "embracing digital technology, and draw inspiration " +
             "for your own classroom."
 
-
-    else return "Discover inspiration for your own classroom."
+    else return "Discover inspiration for your own classroom"
 
 
 })
@@ -180,7 +179,7 @@ const formattedSearchBlurb = computed(() => {
                 <h3 class="font-semibold text-3xl">
                     Browse all {{ formattedSearchTitle }}
                 </h3>
-                <p class="pr-10 pt-6">
+                <p class="pr-10 pt-6 text-lg">
                     {{ formattedSearchBlurb }}
                 </p>
             </div>
@@ -196,7 +195,7 @@ const formattedSearchBlurb = computed(() => {
                 <slot name="additionalFilters" />
             </div>
             <div class="my-4 searchResults text-base text-center">
-                {{ String(filteredData.length) + " search " + (filteredData.length > 1 ? "results" : "result") }}
+              <span  v-if="resourceList">  {{ String(filteredData.length) + " search " + (filteredData.length > 1 ? "results" : "result") }}</span>
             </div>
             <div
                 v-if="resourceList && resourceList.length &&
