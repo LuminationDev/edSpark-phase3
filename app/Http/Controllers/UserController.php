@@ -466,7 +466,6 @@ class UserController extends Controller
     {
         try {
             if ($request->isMethod('get')) {
-                $userId = $request->id;
 
                 // Retrieve user metadata for the specified keys
                 $result = Usermeta::where('user_id', $userId)

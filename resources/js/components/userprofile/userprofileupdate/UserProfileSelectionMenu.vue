@@ -4,7 +4,7 @@ import {required} from "@vuelidate/validators";
 import axios from "axios";
 import {storeToRefs} from "pinia";
 import {emits} from "v-calendar/dist/types/src/use/datePicker";
-import {computed, reactive, Ref, ref} from "vue";
+import {computed, onMounted, reactive, Ref, ref} from "vue";
 import {toast} from "vue3-toastify";
 
 import ProfilePlaceholder from "@/assets/images/profilePlaceholder.webp";
@@ -86,12 +86,41 @@ const handleClickSubmitPersonalData = async () => {
                 toast.success("Successfully submitted the Personal Info")
             })
             .catch(err => {
-
-            });
+                console.log(err.value)
+            })
     } else {
+    }
+}
+
+const fetchUserMetadata = async () => {
+    try{
+        const response = await axios.get(API_ENDPOINTS.USER.GET_USER_PROFILE_METADATA + currentUser.value.id)
+
+        const metadata = response.data.data;
+        statePersonal.biography = metadata.find(item => item.user_meta_key === 'biography')
+        const biography = statePersonal.biography ? statePersonal.biography.user_meta_value.replace(/^"(.*)"$/, '$1') : '';
+        statePersonal.biography = biography || '';
+
+        // converting string to an array.
+        const yearLevelMetadataString =  metadata.find(item => item.user_meta_key === 'yearLevels')?.user_meta_value || [];
+        const yearLevelMetadataArray = JSON.parse(yearLevelMetadataString)
+        stateProfile.yearLevelSelect = yearLevelMetadataArray
+        const subjectMetadataString =  metadata.find(item => item.user_meta_key === 'subjects')?.user_meta_value || [];
+        const subjectMetadataArray = JSON.parse(subjectMetadataString)
+        stateProfile.subjectSelect = subjectMetadataArray
+        const interestMetadataString =  metadata.find(item => item.user_meta_key === 'interest')?.user_meta_value || [];
+        const interestMetadataArray = JSON.parse(interestMetadataString)
+        stateProfile.interestSelect = interestMetadataArray
+
+        console.log("Fetching data successfully.")
 
     }
-};
+    catch (error) {
+        console.error("Error fetching user metadata:", error)
+    }
+}
+
+onMounted(fetchUserMetadata);
 
 //handle submit data on click, posts the data to api and then store to the database.
 const handleClickSubmitProfileData = async () => {

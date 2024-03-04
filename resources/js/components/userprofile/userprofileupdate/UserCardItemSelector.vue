@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import {defineEmits, defineProps, ref} from "vue";
+import {defineEmits, defineProps, onMounted, ref, watch} from "vue";
 
 //important props used to import data from UserProfileSelectionMenu
 const props = defineProps({
@@ -13,6 +13,12 @@ const props = defineProps({
         default: () => []
     }
 })
+
+watch(() => props.selectedItems, (newValue) => {
+    console.log(newValue)
+    selectedValues.value = newValue
+
+});
 
 const emits = defineEmits(["sendSelectedValues"])
 
@@ -31,6 +37,8 @@ const handleClickItem = (itemName) =>{
     }
     emitNewItemsToParent()
 }
+
+
 
 const selectedValueBackgroundClass = (item) => {
     if (selectedValues.value.includes(item)) {

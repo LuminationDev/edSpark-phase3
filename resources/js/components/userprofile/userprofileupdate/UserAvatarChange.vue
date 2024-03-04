@@ -8,7 +8,7 @@ import {toast} from "vue3-toastify";
 
 import CustomErrorMessages from "@/js/components/feedbackform/CustomErrorMessages.vue";
 import {API_ENDPOINTS} from "@/js/constants/API_ENDPOINTS";
-import {avatarUIFallbackURL, imageURL} from "@/js/constants/serverUrl";
+import {avatarUIFallbackURL} from "@/js/constants/serverUrl";
 import {useUserStore} from "@/js/stores/useUserStore";
 
 const props = defineProps({
@@ -20,16 +20,13 @@ const props = defineProps({
     }
 })
 
-
+const imageURL = import.meta.env.VITE_SERVER_IMAGE_API;
 const imageError = ref(false)
 const userStore = useUserStore();
 const {currentUser} = storeToRefs(userStore);
 const logoEditFile = ref(null)
 const logoPreview = ref(null)
 const emits = defineEmits(['sendHandleFileDroppedInstance','resetImageUploadBoolean'])
-const addImageURL = (itemUrl) => {
-    return imageURL + "/" + itemUrl
-}
 
 
 const fileDropped = ref(false)
@@ -57,17 +54,18 @@ const handleLogoUpload = (event) => {
 }
 
 const avatarUrl = computed(() => {
-    const meta = currentUser.value?.metadata?.find(m => m.user_meta_key === 'userAvatar')
-    return meta ? meta.user_meta_value[0].replace(/\\\//g, "/") : ''
-})
+    const meta = currentUser.value?.metadata?.find(m => m.user_meta_key === 'userAvatar');
+    return meta ? meta.user_meta_value[0].replace(/\\\//g, "/") : '';
+});
 
 const avatarUrlWithFallback  = computed(() =>{
     if(imageError.value){
         return avatarUIFallbackURL + currentUser.value.display_name
     } else{
-        return `${imageURL}/${avatarUrl.value}\``
+        return `${imageURL}/${avatarUrl.value}`
     }
 })
+
 const handleImageLoadError = () => {
     imageError.value = true
 }
@@ -85,7 +83,7 @@ const handleSubmitImage = () => {
         .then(res => {
             console.log(res.data.data)
             userStore.fetchCurrentUserAndLoadIntoStore()
-            toast.success("Successfully submitted the image file")
+            //toast.success("Successfully submitted the image file")
             emits('resetImageUploadBoolean')
             fileDropped.value = true
         })
@@ -171,12 +169,6 @@ watch(() => props.sendImageUploadInstance, (newValue, oldValue) => {
                         >
                     </label>
                 </div>
-                <!--                <button-->
-                <!--                    class="border-2 border-black"-->
-                <!--                    @click="handleSubmitImage"-->
-                <!--                >-->
-                <!--                    Submit Image-->
-                <!--                </button>-->
             </div>
         </div>
     </div>

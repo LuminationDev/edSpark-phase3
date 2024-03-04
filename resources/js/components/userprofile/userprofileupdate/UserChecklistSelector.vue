@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import {defineEmits, defineProps, ref} from "vue";
+import {defineEmits, defineProps, ref, watch} from "vue";
 
 const props = defineProps({
     availableItems:{
@@ -13,6 +13,11 @@ const props = defineProps({
     }
 })
 const emits = defineEmits(["sendSelectedValues"])
+
+watch(() => props.selectedItems, (newValue) => {
+    console.log(newValue)
+    selectedValues.value = newValue
+});
 
 //saving value from the props.selectedItems
 const selectedValues = ref(props.selectedItems)
