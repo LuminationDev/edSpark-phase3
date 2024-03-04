@@ -47,7 +47,7 @@ const imageURL = import.meta.env.VITE_SERVER_IMAGE_API;
             >
                 <img
                     v-if="props.avatarUrl"
-                    class="object-center object-cover w-full"
+                    class="object-center object-cover rounded-3xl w-full"
                     :src="`${imageURL}/${props.avatarUrl}`"
                     alt=""
                 >
