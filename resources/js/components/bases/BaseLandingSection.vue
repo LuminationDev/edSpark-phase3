@@ -38,11 +38,13 @@ const shadyBackgroundColorClass = computed(() => {
 
 const isMed = ref('');
 
+const { theme } = resolveConfig(tailwindConfig);
+const scrLg = parseInt(theme.screens.lg);
 const windowWidthCheck = () => {
     // windowWidth.value = window.innerWidth;
     isMed.value = window.innerWidth < scrLg;
     windowStore.isMed = isMed;
-    console.log("Width = "+ window.innerWidth +", "+isMed.value+", "+windowStore.isMed);
+    // console.log("Width = "+ window.innerWidth +", "+isMed.value+", "+windowStore.isMed);
 };
 
 const handleResize = () => windowWidthCheck()
@@ -55,17 +57,6 @@ onMounted(async () => {
 onUnmounted(() => {
     window.removeEventListener('resize', handleResize);
 });
-
-const { theme } = resolveConfig(tailwindConfig);
-
-const scrMd = parseInt(theme.screens.md);
-const scrLg = parseInt(theme.screens.lg);
-
-// const isMed = computed(() => {
-//     var isMed = windowWidth.value < scrLg;
-//     return isMed;
-// })
-
 
 </script>
 
@@ -87,7 +78,7 @@ const scrLg = parseInt(theme.screens.lg);
                 </div>
                 <div
                     v-if="$slots.subtitle"
-                    class="font-base text-lg mb-8"
+                    class="font-thin text-lg mb-8"
                 >
                     <slot name="subtitle" />
                 </div>

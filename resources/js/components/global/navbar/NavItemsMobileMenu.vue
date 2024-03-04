@@ -92,7 +92,7 @@ const handleDropdownToggle = () : void => {
         </div>
     </li>
     <li
-        v-else-if="route.type === 'signout'"
+        v-else-if="route.type === 'admin'"
     >
         <div
             class="mt-4 pb-4"

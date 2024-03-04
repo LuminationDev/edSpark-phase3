@@ -111,7 +111,6 @@ const profileChildren = [
 const isSearchVisible = ref(false);
 
 const handleClickMobileProfile = () => {
-
     mobileNavParent.value = "My account"
     mobileNavChildren.value = profileChildren
     isSearchVisible.value = false;

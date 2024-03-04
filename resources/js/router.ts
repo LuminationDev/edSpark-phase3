@@ -216,7 +216,7 @@ const routes: any = [
         path: '/ai-hub',
         component: DashboardNew,
         meta: {
-            navigation: true
+            navigation: false
         }
 
     },
@@ -411,8 +411,8 @@ const routes: any = [
     },
     {
         name: 'userProfile',
-        path: '/profile/:userId',
-        component: UserProfile,
+        path: '/profile/:userId?',
+        component: UserProfile,     
         children: [
             {
                 path: '',
