@@ -18,7 +18,7 @@ return new class extends Migration
             $table->foreign('brand_id')
                 ->references('id')->on('product_brands')->onDelete('no action');
             $table->foreign('inventory_id')
-                ->references('id')->on('product_inventories')->onDelete('cascade');
+                ->references('id')->on('product_inventories')->onDelete('no action');
         });
     }
 
