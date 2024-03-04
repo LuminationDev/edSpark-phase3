@@ -387,7 +387,7 @@ const handleResetDomain = () => {
                     </h2>
                     <div class="flex-1 overflow-hidden scroll-fade">
                         <div
-                            class="h-full pb-10 relative z-50 md:overflow-x-none md:overflow-y-scroll"
+                            class="h-full pb-10 px-1 relative z-50 md:overflow-x-none md:overflow-y-scroll"
                         >
                             <template
                                 v-for="element of displayElements"
