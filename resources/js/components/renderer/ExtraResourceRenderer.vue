@@ -24,7 +24,27 @@ console.log(props.itemBackColor)
 
 const extraResourceBackground = computed(() =>{
     console.log("Got colour? "+props.itemBackColor)
-    if (props.itemBackColor && props.itemBackColor != '#D9DAE4'){
+    
+    //light teal
+    if (props.itemBackColor && props.itemBackColor == '#B2F5EA'){
+        return `bg-white border-2 border-main-darkTeal text-main-darkTeal [&>div>div.h-1]:bg-main-darkTeal [&>div>div.h-1]:h-[2px]`
+
+    //light grape
+    } else if (props.itemBackColor && props.itemBackColor == '#DBCCF5'){
+        return `bg-white border-2 border-secondary-grapeDark text-secondary-grapeDark [&>div>div.h-1]:bg-secondary-grapeDark [&>div>div.h-1]:h-[2px]`
+
+
+    //light blueberry
+    } else if (props.itemBackColor && props.itemBackColor == '#AEDCF3'){
+        return `bg-white border-2 border-secondary-blueberryWeb text-secondary-blueberryWeb [&>div>div.h-1]:bg-secondary-blueberryWeb [&>div>div.h-1]:h-[2px]`
+
+
+    //light navy
+    } else if (props.itemBackColor && props.itemBackColor == '#6e99ce'){
+        return `bg-white border-2 border-main-navy text-main-navy [&>div>div.h-1]:bg-main-navy [&>div>div.h-1]:h-[2px]`
+
+    //cool grey
+    } else if (props.itemBackColor && props.itemBackColor != '#D9DAE4'){
         return `bg-[${props.itemBackColor}] text-white`
 
     } else {

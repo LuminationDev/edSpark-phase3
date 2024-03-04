@@ -5238,6 +5238,11 @@ select {
   border-color: rgb(161 98 7 / var(--tw-border-opacity));
 }
 
+.border-secondary-grapeDark {
+  --tw-border-opacity: 1;
+  border-color: rgb(109 70 156 / var(--tw-border-opacity));
+}
+
 .border-b-white {
   --tw-border-opacity: 1;
   border-bottom-color: rgb(255 255 255 / var(--tw-border-opacity));
@@ -7608,6 +7613,11 @@ select {
 .text-white {
   --tw-text-opacity: 1;
   color: rgb(255 255 255 / var(--tw-text-opacity));
+}
+
+.text-secondary-grapeDark {
+  --tw-text-opacity: 1;
+  color: rgb(109 70 156 / var(--tw-text-opacity));
 }
 
 .underline {
@@ -12115,6 +12125,44 @@ color: blue !important;
   .sm\:\[\&\>button\]\:w-64>button {
     width: 16rem;
   }
+}
+
+.\[\&\>div\.h-1\]\:bg-main-navy>div.h-1 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(0 40 88 / var(--tw-bg-opacity));
+}
+
+.\[\&\>div\>div\.h-1\]\:h-\[2px\]>div>div.h-1 {
+  height: 2px;
+}
+
+.\[\&\>div\>div\.h-1\]\:h-\[4px\]>div>div.h-1 {
+  height: 4px;
+}
+
+.\[\&\>div\>div\.h-1\]\:bg-main-navy>div>div.h-1 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(0 40 88 / var(--tw-bg-opacity));
+}
+
+.\[\&\>div\>div\.h-1\]\:bg-secondary-blueberryWeb>div>div.h-1 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(0 108 207 / var(--tw-bg-opacity));
+}
+
+.\[\&\>div\>div\.h-1\]\:bg-secondary-grapeDark>div>div.h-1 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(109 70 156 / var(--tw-bg-opacity));
+}
+
+.\[\&\>div\>div\.h-1\]\:bg-main-darkTeal>div>div.h-1 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(10 121 130 / var(--tw-bg-opacity));
+}
+
+.\[\&\>h-1\]\:bg-main-navy>h-1 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(0 40 88 / var(--tw-bg-opacity));
 }
 
 .\[\&\>p\]\:\!ml-0>p {

@@ -50,15 +50,19 @@ final class ExtraResource
             'light' => '#6e99ce', //was #3d6ba3
             'med' => '#002858',
             'dark' => '#002858',
-        ],
+        ]
     ];
 
     private static function getColorLabel()
     {
         $colorLabels = [];
         foreach (self::$backgroundColorTheme as $color => $properties) {
-            $colorLabels[$properties['med']] = ucfirst($color) ;
+            $colorLabels[$properties['med']] = ucfirst($color);
+            if($color != 'grey'){
+                $colorLabels[$properties['light']] = ucfirst($color." (light)");
+            }
         }
+
         return $colorLabels;
     }
 
