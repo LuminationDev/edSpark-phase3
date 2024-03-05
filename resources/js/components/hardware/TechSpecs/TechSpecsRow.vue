@@ -24,12 +24,12 @@ const emits = defineEmits([])
 
 <template>
     <div class="border-b-2 flex flex-row py-4 techSpecsRow">
-        <div class="font-semibold techSpecsLabel w-1/2">
+        <div class="font-medium techSpecsLabel w-1/2">
             {{ props.label }}
         </div>
         <div
             v-if="props.isList"
-            class="font-sm techSpecsValue w-1/2 md:!font-base"
+            class="font-sm techSpecsValue font-thin w-1/2 md:!font-base"
         >
             <ul class="pl-6 valueList">
                 <li
@@ -44,7 +44,7 @@ const emits = defineEmits([])
         <!--   or   -->
         <div
             v-else
-            class="font-sm techSpecsValue w-1/2 md:!font-base"
+            class="font-sm techSpecsValue font-thin w-1/2 md:!font-base"
         >
             {{ props.value }}
         </div>

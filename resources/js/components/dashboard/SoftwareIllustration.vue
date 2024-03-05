@@ -15,6 +15,7 @@ const top = ref('');
 const distanceBetweenEls = ref('');
 const floatingLineClasses = ref('');
 
+const halfItemHeight = ref('');
 
 const adjustConnectingLinePositions = () => {
     const listContainers = document.querySelectorAll('.softwareDashboardContentContainer');
@@ -30,9 +31,11 @@ const adjustConnectingLinePositions = () => {
     );
 
     const firstElHeight = firstContainer.offsetHeight;
+    halfItemHeight.value = firstElHeight / 2;
     top.value = firstContainer.offsetTop + firstElHeight / 2;
     floatingLineClasses.value = `top-[${top.value}] h-[${distanceBetweenEls.value}px]`;
 };
+
 const handleResize = () => adjustConnectingLinePositions()
 
 const debouncedHandleScroll = _.debounce(() => {
@@ -59,7 +62,7 @@ onUnmounted(() => {
         >
             <div
                 class="absolute left-1/2 border-[2px] border-black connectingLine z-[-1]"
-                :style="`height: ${distanceBetweenEls}px; top: ${top-40}px;`"
+                :style="`height: ${distanceBetweenEls}px; top: ${top-halfItemHeight}px;`"
             />
             <DeptProvidedIcon class="h-full p-1" />
         </div>
@@ -83,7 +86,7 @@ onUnmounted(() => {
             class="col-span-4 flex justify-center flex flex-col h-1/2 min-h-[250px] my-auto softwareDashboardContentContainer"
         >
             <h5 class="font-medium text-xl">
-                Cyber Assessed
+                Cyber assessed
             </h5>
             <p class="pb-4 font-light">
                 These are applications that have been risk assessed by Cyber Security but are not provided by the Department, site leaders should be aware of the risks prior to being used at your school.
@@ -102,7 +105,7 @@ onUnmounted(() => {
             class="col-span-4 flex justify-center flex flex-col h-1/2 min-h-[250px] my-auto softwareDashboardContentContainer"
         >
             <h5 class="font-medium text-xl">
-                Negotiated Deals
+                Negotiated deals
             </h5>
             <p class="pb-4 font-light">
                 Still risk assessed, these applications have an agreement

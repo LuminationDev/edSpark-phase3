@@ -27,11 +27,20 @@ const handleToggleTooltip = (index) => {
 }
 
 const customFill = computed(() => {
-    if (schoolColorKeys.includes(props.colorTheme)) {
-        return `fill-[${schoolColorTheme[props.colorTheme]['med']}] stroke-[${schoolColorTheme[props.colorTheme]['med']}]`;
-    } else {
-        return `fill-[${schoolColorTheme['teal']['med']}] stroke-[${schoolColorTheme['teal']['med']}]`;
+    console.log("Got "+props.colorTheme);
+    // if (props.colorTheme == 'cherry' || props.colorTheme == 'banana' || props.colorTheme == 'teal' || props.colorTheme == 'peach') {
+    //     return `fill-[${schoolColorTheme[props.colorTheme]['dark']}] stroke-[${schoolColorTheme[props.colorTheme]['dark']}]`;
 
+    // } else 
+    if (props.colorTheme == 'navy') {
+        return `fill-[${schoolColorTheme[props.colorTheme]['med']}] stroke-[${schoolColorTheme[props.colorTheme]['med']}]`;
+
+    } else   
+    if (schoolColorKeys.includes(props.colorTheme)) {
+        return `fill-[${schoolColorTheme[props.colorTheme]['dark']}] stroke-[${schoolColorTheme[props.colorTheme]['dark']}]`;
+
+    } else {
+        return `fill-[${schoolColorTheme['teal']['dark']}] stroke-[${schoolColorTheme['teal']['dark']}]`;
     }
 })
 

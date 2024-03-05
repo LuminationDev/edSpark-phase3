@@ -164,7 +164,7 @@ const handleEmitFromSubmenu = (value) => {
         v-if="baseIsLoading"
         class="flex justify-center py-10"
     >
-        <div class="font-semibold text-xl">
+        <div class="font-thin text-xl">
             <Loader
                 :loader-color="'#0072DA'"
                 :loader-message="'Data loading'"
