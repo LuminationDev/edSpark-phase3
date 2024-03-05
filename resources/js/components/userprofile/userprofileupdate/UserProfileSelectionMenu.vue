@@ -38,13 +38,31 @@ const leftDescriptionProfile = ref('Update your subjects and interests.')
 const displayErrorMessageText = "Value is required"
 
 const booleanValueOnSubmitButton = ref(false)
+
+const displayUserRole = computed(() => {
+    switch (currentUser.value.role) {
+    case "SCHLDR":
+        return "School Principal"
+    default:
+        return "edSpark User"
+    }
+})
+
 //vuelidation state and rules are defined
 const statePersonal = reactive({
     displayName: currentUser.value.display_name,
+    fullName: currentUser.value.full_name,
+    userRole: displayUserRole.value,
+    siteName: currentUser.value.site.site_name,
+    emailId: currentUser.value.email,
     biography: ''
 })
 const rulesPersonal = {
     displayName: {required: required},
+    fullName: {required: required},
+    userRole: {required: required},
+    siteName: {required: required},
+    emailId: {required: required},
     biography: {required: required}
 }
 //vuelidation state and rules are defined
@@ -91,6 +109,8 @@ const handleClickSubmitPersonalData = async () => {
     } else {
     }
 }
+
+
 
 const fetchUserMetadata = async () => {
     try{
@@ -145,7 +165,6 @@ const handleClickSubmitProfileData = async () => {
     booleanValueOnSubmitButton.value = true
 }
 
-
 const fileDropped = ref(false)
 const handleReceiveFileDroppedInstance = (fileDroppedInsance) => {
     fileDropped.value = fileDroppedInsance
@@ -155,6 +174,10 @@ const handlePersonalCancelButton = () => {
     vPersonal$.value.$reset()
     statePersonal.biography = ('')
     statePersonal.displayName = ('')
+    statePersonal.userRole = ('')
+    statePersonal.fullName = ('')
+    statePersonal.siteName = ('')
+    statePersonal.emailId = ('')
     divContent.value = "Reset Content"
     reloadKey.value++
 }
@@ -167,10 +190,7 @@ const handleProfileCancelButton = () => {
     stateProfile.subjectSelect = []
     divContent.value = "Reset Content"
     reloadKey.value++
-
 }
-
-
 
 </script>
 
@@ -200,6 +220,74 @@ const handleProfileCancelButton = () => {
                             class="mb-6 mt-2"
                         />
                     </span>
+                    <!--                    For the Full User name-->
+                    <div class="hidden">
+                        <div class="ml-4 mt-4">
+                            Full name
+                        </div>
+                        <input
+                            v-model="vPersonal$.fullName.$model"
+                            class="border-1 border-gray-400 mt-4 rounded-2xl"
+                        >
+                        <span>
+
+                            <ErrorMessages
+                                :v$="vPersonal$.fullName"
+                                class="mb-6 mt-2"
+                            />
+                        </span>
+                    </div>
+                    <!--                    For the user designation-->
+                    <div class="hidden">
+                        <div class="ml-4 mt-4">
+                            Designation
+                        </div>
+                        <input
+                            v-model="vPersonal$.userRole.$model"
+                            class="border-1 border-gray-400 mt-4 rounded-2xl"
+                        >
+                        <span>
+
+                            <ErrorMessages
+                                :v$="vPersonal$.userRole"
+                                class="mb-6 mt-2"
+                            />
+                        </span>
+                    </div>
+                    <!--                    For the School name-->
+                    <div class="hidden">
+                        <div class="ml-4 mt-4">
+                            School name
+                        </div>
+                        <input
+                            v-model="vPersonal$.siteName.$model"
+                            class="border-1 border-gray-400 mt-4 rounded-2xl"
+                        >
+                        <span>
+
+                            <ErrorMessages
+                                :v$="vPersonal$.siteName"
+                                class="mb-6 mt-2"
+                            />
+                        </span>
+                    </div>
+                    <!--                    For the email id-->
+                    <div class="hidden">
+                        <div class="ml-4 mt-4">
+                            Email
+                        </div>
+                        <input
+                            v-model="vPersonal$.emailId.$model"
+                            class="border-1 border-gray-400 mt-4 rounded-2xl"
+                        >
+                        <span>
+
+                            <ErrorMessages
+                                :v$="vPersonal$.emailId"
+                                class="mb-6 mt-2"
+                            />
+                        </span>
+                    </div>
 
                     <div class="ml-4 mt-4">
                         Biography
