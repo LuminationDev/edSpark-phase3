@@ -63,9 +63,9 @@ const schoolTechIconComponents = {
         <div
             class="
                 !pr-[10px]
-                bg-secondary-blue/10
+                bg-secondary-blueberry/5
                 border
-                border-secondary-blue
+                border-secondary-blueberryWeb
                 border-solid
                 fill-none
                 flex
@@ -75,8 +75,9 @@ const schoolTechIconComponents = {
                 min-w-fit
                 rounded-full
                 schoolCardIcons
-                text-secondary-blue
+                text-secondary-blueberryWeb
                 text-sm
+                font-light
                 w-[200px]
                 w-fit
                 "
@@ -94,7 +95,7 @@ const schoolTechIconComponents = {
 <style>
 
 .schoolCardIcons path {
-    fill: #0072da !important;
+    fill: #006ccf !important;
     stroke: transparent !important;
 }
 

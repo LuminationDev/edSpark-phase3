@@ -37,13 +37,10 @@ const loginWithOktaButtonPressed = ref(false);
             <h2 class="font-bold mb-4 text-2xl">
                 Welcome to edSpark!
             </h2>
-            <p class="mb-2">
-                edSpark is created by the Department for Education South Australia
-            </p>
-            <p class="mb-2">
-                Access to edSpark is granted through EdPass.
-            </p><p class="mb-4">
-                You'll be redirected within a few seconds or click the button below.
+            <p class="mb-2 font-thin">
+                edSpark is created by the Department for Education, South Australia. Access to edSpark is granted through EdPass.
+            </p><p class="mb-4 font-thin">
+                You'll be redirected within a few seconds, or click the button below.
             </p>
             <p />
             <button

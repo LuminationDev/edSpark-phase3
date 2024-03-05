@@ -401,7 +401,10 @@ const cardHoverToggle: Ref<boolean> = ref(false);
 
 
 .cardTitle {
-    height: fit-content;
+    /* height: fit-content; */
+    min-height: 54px;
+    display: flex !important;
+    align-items: center;
 }
 
 .like-share {

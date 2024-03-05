@@ -53,21 +53,23 @@ const handleClickSingleEvent = (eventId: number): void => {
 const eventTypeColorClass = (eventType: string): string => {
     switch (eventType) {
     case 'Virtual':
-        return "bg-secondary-cherry";
+        return "bg-event-virtual";
     case "In Person":
-        return "bg-secondary-blueberry";
+        return "bg-event-inPerson";
     case "Hybrid":
-        return "bg-secondary-grape";
+        return "bg-event-hybrid";
     default:
         return "";
     }
 };
 </script>
 
+<!-- max-h-[60vh] -->
 <template>
     <div
         class="
             max-h-[60vh]
+            md:!max-h-[90%]
             mr-2
             mt-10
             overflow-y-scroll
@@ -96,10 +98,11 @@ const eventTypeColorClass = (eventType: string): string => {
                 class="cursor-pointer flex flex-col gap-2 mb-4 overflow-hidden pb-4 px-4 relative rounded hover:bg-slate-50"
                 @click="handleClickSingleEvent(event.id)"
             >
-                <div class="flex previewImage">
+                <div class="flex previewImage" :class="eventTypeColorClass(event.type)">
                     <img
                         :src="imageURL+ '/' + event.cover_image"
                         :alt="event.title"
+                        onerror="this.style.visibility='hidden'"
                         class="h-24 object-cover object-top w-full"
                     >
                 </div>
@@ -117,7 +120,7 @@ const eventTypeColorClass = (eventType: string): string => {
                         </div>
 
                         <div
-                            class="eventEvcerptTextInline"
+                            class="eventExcerptTextInline"
                             v-html="event.excerpt"
                         />
                     </div>
@@ -128,13 +131,13 @@ const eventTypeColorClass = (eventType: string): string => {
 </template>
 
 <style scoped>
-.eventEvcerptTextInline {
-    max-width: 354px;
+.eventExcerptTextInline {
+    /* max-width: 354px; */
 }
 
-.eventEvcerptTextInline :deep(p) {
-    max-width: 354px;
-    width: 354px;
+.eventExcerptTextInline :deep(p) {
+    /* max-width: 354px; */
+    width: 90%;
     overflow: hidden;
     text-overflow: ellipsis;
     height: 100px;

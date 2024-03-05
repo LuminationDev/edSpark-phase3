@@ -21,7 +21,6 @@ import {edSparkContentSanitizer} from "@/js/helpers/objectHelpers";
 const router = useRouter()
 
 
-
 const handleClickViewProfile = (author_id, author_type) => {
     router.push(`/${author_type}/${author_id}`)
 }
@@ -112,7 +111,8 @@ const colorTheme = ref('partnerBlue')
                 </template>
 
                 <template #subtitleText2>
-                    <div class="eventDetails flex flex-col gap-2 here">
+                    <div class="eventDetails flex flex-col gap-2">
+                        <div class="flex items-start flex-col sm:flex-row gap-4 mb-2 mt-8">
                         <div class="flex items-center flex-row">
                             <CalendarIcon class="fill-white mr-2" />
                             {{
@@ -139,13 +139,25 @@ const colorTheme = ref('partnerBlue')
                                 })
                             }}
                         </div>
+                        </div>
+
+                        <div class="flex items-start justify-between flex-row sm:flex-col gap-4 mb-2 w-full">
                         <div class="flex items-center flex-row">
                             <LocationIcon class="fill-white mr-2" />
                             {{
                                 contentFromBase['location'] ? (contentFromBase['location']['address'] ? contentFromBase['location']['address'] : 'Online') : ""
                             }}
                         </div>
-                        <LabelRowContentDisplay :labels-array="contentFromBase['labels']" />
+
+                       
+                            <EventTypeTag
+                                class="!mx-0 !my-0 sm:!my-4 bg-white border-2 font-medium hidden sm:flex"
+                                :event-type="contentFromBase['type']"
+                            />
+
+                        </div>
+
+                        <!-- <LabelRowContentDisplay :labels-array="contentFromBase['labels']" /> -->
                     </div>
                 </template>
             </BaseHero>
@@ -188,11 +200,13 @@ const colorTheme = ref('partnerBlue')
 </template>
 
 
-<style scoped>
+<!-- <style scoped>
+    
+/* commenting this out fixes off center guide text */
 .eventSingleContent :deep(p) {
     margin-top: 16px;
     text-align: justify;
 }
 
 
-</style>
+</style> -->

@@ -93,7 +93,7 @@ const handleClickSearchResultCard = () => {
                 <div v-html="props.data.excerpt " />
             </div>
             <div
-                class="contentTags flex flex-row gap-1 overflow-hidden"
+                class="contentTags flex flex-row gap-1 overflow-hidden items-start"
             >
                 <span class="capitalize mr-2 py-1 rounded-xl text-xs">
                     {{ props.data.type }}
