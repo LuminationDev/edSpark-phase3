@@ -15,7 +15,6 @@ const props = defineProps({
 const emits = defineEmits(["sendSelectedValues"])
 
 watch(() => props.selectedItems, (newValue) => {
-    console.log(newValue)
     selectedValues.value = newValue
 });
 

@@ -39,7 +39,6 @@ if (userMetadata !== undefined) {
     const userAvatarMeta = userMetadata.filter(meta => meta.user_meta_key === 'userAvatar')
     if (userAvatarMeta && userAvatarMeta.length) {
         avatarUrl.value = userAvatarMeta[0].user_meta_value[0].replace(/\\\//g, "/")
-        console.log('user data is: ' + userStore)
     }
 }
 

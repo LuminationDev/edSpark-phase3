@@ -15,8 +15,7 @@ const props = defineProps({
 
     sendImageUploadInstance: {
         type:Boolean,
-        required: true,
-        default: false
+        required: true
     }
 })
 

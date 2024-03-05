@@ -103,17 +103,16 @@ const fetchUserMetadata = async () => {
 
         // converting string to an array.
         const yearLevelMetadataString =  metadata.find(item => item.user_meta_key === 'yearLevels')?.user_meta_value || [];
-        const yearLevelMetadataArray = JSON.parse(yearLevelMetadataString)
-        stateProfile.yearLevelSelect = yearLevelMetadataArray
         const subjectMetadataString =  metadata.find(item => item.user_meta_key === 'subjects')?.user_meta_value || [];
-        const subjectMetadataArray = JSON.parse(subjectMetadataString)
-        stateProfile.subjectSelect = subjectMetadataArray
         const interestMetadataString =  metadata.find(item => item.user_meta_key === 'interest')?.user_meta_value || [];
+
+        const yearLevelMetadataArray = JSON.parse(yearLevelMetadataString)
+        const subjectMetadataArray = JSON.parse(subjectMetadataString)
         const interestMetadataArray = JSON.parse(interestMetadataString)
+
+        stateProfile.yearLevelSelect = yearLevelMetadataArray
+        stateProfile.subjectSelect = subjectMetadataArray
         stateProfile.interestSelect = interestMetadataArray
-
-        console.log("Fetching data successfully.")
-
     }
     catch (error) {
         console.error("Error fetching user metadata:", error)
@@ -126,22 +125,20 @@ onMounted(fetchUserMetadata);
 const handleClickSubmitProfileData = async () => {
     const result = await vProfile$.value.$validate()
     if (result) {
-        if ((stateProfile.subjectSelect.length !== 0) && (stateProfile.yearLevelSelect.length !== 0)) {
-            const data = {
-                yearLevels: stateProfile.yearLevelSelect,
-                subjects: stateProfile.subjectSelect,
-                interest: stateProfile.interestSelect
-            }
-            axios.post(API_ENDPOINTS.USER.UPDATE_OR_CREATE_METADATA + currentUser.value.id, data)
-                .then(res => {
-                    console.log(res.data)
-                    toast.success("Successfully submitted the Profile Info")
-                })
-                .catch(err => {
-                    console.log(err.value)
-                })
-            booleanValueOnSubmitButton.value = false
+        const data = {
+            yearLevels: stateProfile.yearLevelSelect,
+            subjects: stateProfile.subjectSelect,
+            interest: stateProfile.interestSelect
         }
+        axios.post(API_ENDPOINTS.USER.UPDATE_OR_CREATE_METADATA + currentUser.value.id, data)
+            .then(res => {
+                toast.success("Successfully submitted the Profile Info")
+            })
+            .catch(err => {
+                console.log(err.value)
+            })
+        booleanValueOnSubmitButton.value = false
+
     }
     else {
     }
@@ -164,7 +161,7 @@ const handlePersonalCancelButton = () => {
 
 const divContent = ref('Initial content')
 const reloadKey = ref(0)
-const handleProfilelCancelButton = () => {
+const handleProfileCancelButton = () => {
     stateProfile.interestSelect = []
     stateProfile.yearLevelSelect = []
     stateProfile.subjectSelect = []
@@ -341,7 +338,7 @@ const handleProfilelCancelButton = () => {
                             p-4
                             w-28
                             "
-                        :callback="handleProfilelCancelButton"
+                        :callback="handleProfileCancelButton"
                     >
                         <template #default>
                             Cancel
