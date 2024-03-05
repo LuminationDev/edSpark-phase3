@@ -36,7 +36,7 @@ const leftDescriptionPersonal = ref('Update your photo and personal details.')
 const leftHeadingProfile = ref('Profile')
 const leftDescriptionProfile = ref('Update your subjects and interests.')
 const displayErrorMessageText = "Value is required"
-
+const disabled = ref(true)
 const booleanValueOnSubmitButton = ref(false)
 
 const displayUserRole = computed(() => {
@@ -221,73 +221,71 @@ const handleProfileCancelButton = () => {
                         />
                     </span>
                     <!--                    For the Full User name-->
-                    <div class="hidden">
-                        <div class="ml-4 mt-4">
-                            Full name
-                        </div>
-                        <input
-                            v-model="vPersonal$.fullName.$model"
-                            class="border-1 border-gray-400 mt-4 rounded-2xl"
-                        >
-                        <span>
-
-                            <ErrorMessages
-                                :v$="vPersonal$.fullName"
-                                class="mb-6 mt-2"
-                            />
-                        </span>
+                    <div class="ml-4 mt-4">
+                        Full name
                     </div>
+                    <input
+                        v-model="vPersonal$.fullName.$model"
+                        :disabled="disabled"
+                        class="border-1 border-gray-400 mt-4 rounded-2xl"
+                    >
+                    <span>
+
+                        <ErrorMessages
+                            :v$="vPersonal$.fullName"
+                            class="mb-6 mt-2"
+                        />
+                    </span>
+
                     <!--                    For the user designation-->
-                    <div class="hidden">
-                        <div class="ml-4 mt-4">
-                            Designation
-                        </div>
-                        <input
-                            v-model="vPersonal$.userRole.$model"
-                            class="border-1 border-gray-400 mt-4 rounded-2xl"
-                        >
-                        <span>
-
-                            <ErrorMessages
-                                :v$="vPersonal$.userRole"
-                                class="mb-6 mt-2"
-                            />
-                        </span>
+                    <div class="ml-4 mt-4">
+                        Designation
                     </div>
+                    <input
+                        v-model="vPersonal$.userRole.$model"
+                        :disabled="disabled"
+                        class="border-1 border-gray-400 mt-4 rounded-2xl"
+                    >
+                    <span>
+
+                        <ErrorMessages
+                            :v$="vPersonal$.userRole"
+                            class="mb-6 mt-2"
+                        />
+                    </span>
+
                     <!--                    For the School name-->
-                    <div class="hidden">
-                        <div class="ml-4 mt-4">
-                            School name
-                        </div>
-                        <input
-                            v-model="vPersonal$.siteName.$model"
-                            class="border-1 border-gray-400 mt-4 rounded-2xl"
-                        >
-                        <span>
-
-                            <ErrorMessages
-                                :v$="vPersonal$.siteName"
-                                class="mb-6 mt-2"
-                            />
-                        </span>
+                    <div class="ml-4 mt-4">
+                        School name
                     </div>
-                    <!--                    For the email id-->
-                    <div class="hidden">
-                        <div class="ml-4 mt-4">
-                            Email
-                        </div>
-                        <input
-                            v-model="vPersonal$.emailId.$model"
-                            class="border-1 border-gray-400 mt-4 rounded-2xl"
-                        >
-                        <span>
+                    <input
+                        v-model="vPersonal$.siteName.$model"
+                        :disabled="disabled"
+                        class="border-1 border-gray-400 mt-4 rounded-2xl"
+                    >
+                    <span>
 
-                            <ErrorMessages
-                                :v$="vPersonal$.emailId"
-                                class="mb-6 mt-2"
-                            />
-                        </span>
+                        <ErrorMessages
+                            :v$="vPersonal$.siteName"
+                            class="mb-6 mt-2"
+                        />
+                    </span>
+
+                    <div class="ml-4 mt-4">
+                        Email
                     </div>
+                    <input
+                        v-model="vPersonal$.emailId.$model"
+                        :disabled="disabled"
+                        class="border-1 border-gray-400 mt-4 rounded-2xl"
+                    >
+                    <span>
+
+                        <ErrorMessages
+                            :v$="vPersonal$.emailId"
+                            class="mb-6 mt-2"
+                        />
+                    </span>
 
                     <div class="ml-4 mt-4">
                         Biography
