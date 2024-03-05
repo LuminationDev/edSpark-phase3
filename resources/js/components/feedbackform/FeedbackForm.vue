@@ -33,7 +33,7 @@ const foundError = ref(false)
 const state = reactive({
     name: currentUser.value.full_name,
     email: currentUser.value.email,
-    organisation: currentUser.value.site.site_name,
+    organisation: currentUser.value && currentUser.value.site ? currentUser.value.site.site_name : "",
     urlIssue: '',
     content: ''
 })
