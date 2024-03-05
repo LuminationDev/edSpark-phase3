@@ -12,6 +12,7 @@ import ErrorMessages from "@/js/components/bases/ErrorMessages.vue";
 import GenericButton from "@/js/components/button/GenericButton.vue";
 import CustomErrorMessages from "@/js/components/feedbackform/CustomErrorMessages.vue";
 import SchoolImageChange from "@/js/components/schoolsingle/schoolContent/SchoolImageChange.vue";
+import Loader from "@/js/components/spinner/Loader.vue";
 import Edit from "@/js/components/svg/Edit.vue";
 import UserAvatarChange from "@/js/components/userprofile/userprofileupdate/UserAvatarChange.vue";
 import UserCardItemSelector from "@/js/components/userprofile/userprofileupdate/UserCardItemSelector.vue";
@@ -39,6 +40,7 @@ const displayErrorMessageText = "Value is required"
 const disabled = ref(true)
 const booleanValueOnSubmitButton = ref(false)
 
+const isLoading = ref(true)
 const displayUserRole = computed(() => {
     switch (currentUser.value.role) {
     case "SCHLDR":
@@ -133,6 +135,7 @@ const fetchUserMetadata = async () => {
         stateProfile.yearLevelSelect = yearLevelMetadataArray
         stateProfile.subjectSelect = subjectMetadataArray
         stateProfile.interestSelect = interestMetadataArray
+        isLoading.value = false
     }
     catch (error) {
         console.error("Error fetching user metadata:", error)
@@ -198,7 +201,13 @@ const handleProfileCancelButton = () => {
     <div
         class="UserProfileSelectionMenuContainer bg-white flex flex-col gap-12 h-full w-full"
     >
-        <div>
+        <Loader
+            v-if="isLoading"
+            class="mt-[15%]"
+        >
+            <div />
+        </loader>
+        <div v-if="!isLoading">
             <UserProfileContentContainer
                 id="reloadableDiv"
                 :key="reloadKey"
