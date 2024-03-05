@@ -56,6 +56,9 @@ const edsparkColor = [
     '#319795',
     '#002858',
 
+    '#344054', // Dark Greyish
+    '#0A7982', // Dark teal (main)
+
 ];
 
 const generateSafeList = (colors) : Array<string> => {
