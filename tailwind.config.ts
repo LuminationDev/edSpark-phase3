@@ -72,6 +72,9 @@ const edsparkColor = [
     '#44B8F3',
     '#acafc6', //school logo bg dark cool grey
 
+    '#344054', // Dark Greyish
+    '#0A7982', // Dark teal (main)
+
 ];
 
 const generateSafeList = (colors) : Array<string> => {
