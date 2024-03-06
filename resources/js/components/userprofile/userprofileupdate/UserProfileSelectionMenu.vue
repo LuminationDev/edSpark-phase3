@@ -3,6 +3,7 @@ import useVuelidate from "@vuelidate/core";
 import {required} from "@vuelidate/validators";
 import axios from "axios";
 import {storeToRefs} from "pinia";
+import {async} from "tailwind-scrollbar";
 import {computed, onMounted, reactive, Ref, ref} from "vue";
 import {Tippy} from "vue-tippy";
 import {toast} from "vue3-toastify";
@@ -236,6 +237,20 @@ const notificationsArray = [
     { categoryText: 'Guide', notificationTimeDate: 'Fri, 08 March 24', notificationHeading: 'Guide Update Available' },
     { categoryText: 'Event', notificationTimeDate: 'Sun, 10 March 24', notificationHeading: 'Event Update Available' }
 ]
+
+const notifications = ref([])
+const fetchNotifications = async () => {
+    try {
+        const response = await axios.get(API_ENDPOINTS.NOTIFICATION.GET_NOTIFICATIONS + + currentUser.value.id);
+        notifications.value = response.data;
+    } catch (error) {
+        console.error('Error fetching notifications:', error);
+    }
+}
+
+onMounted(() => {
+    fetchNotifications();
+});
 
 </script>
 
@@ -525,7 +540,7 @@ const notificationsArray = [
                                 :send-category-text-value="notificationCategoryHeading"
                                 :send-time-date-value="notificationTimeDate"
                                 :send-notification-heading-value="notificationHeading"
-                                :send-notifications="notificationsArray"
+                                :send-notifications="notificationsArrayData"
                             />
                             <span
                                 v-if="((stateProfile.yearLevelSelect.length === 0) && (booleanValueOnSubmitButton===true))"

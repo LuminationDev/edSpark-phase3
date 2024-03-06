@@ -52,8 +52,6 @@ const getCategoryStyling = (categoryText) => {
         return '!border-green-600 !border-2 !text-green-700 !bg-green-50';
     case 'Event':
         return '!border-blue-500 !border-2 !text-blue-700 !bg-blue-50';
-    case 'DAG':
-        return '!border-adminTeal !border-2 !text-adminTeal !bg-blue-50';
     default:
         return 'border';
     }
@@ -71,7 +69,7 @@ const getCategoryStyling = (categoryText) => {
                 class="bg-blue-50 border-2 border-adminTeal p-2 rounded-3xl"
                 :class="['border', categoryStyling]"
             >
-                <div class="ml-8 mr-8">{{ categoryText }}</div>
+                <div class="text-center w-32">{{ categoryText }}</div>
             </span>
             <span class="p-2">
                 <div class="ml-6 mr-6 text-gray-500">{{ notificationTimeDate }}</div>
@@ -83,6 +81,7 @@ const getCategoryStyling = (categoryText) => {
             </div>
         </div>
     </div>
+    <div class="border-2 border-black mb-36 mt-20" />
     <!--Testing the listing using for loop -->
     <div class="ListingNotificationLayout">
         <div
@@ -90,15 +89,17 @@ const getCategoryStyling = (categoryText) => {
             :key="index"
             class="bg-gray-50 flex items-center flex-row m-2 mt-4 rounded-3xl"
         >
-            <span :class="['bg-blue-50 border-2 border-adminTeal p-2 rounded-3xl', getCategoryStyling(notification.categoryText)]">
-                <div class="ml-8 mr-8">{{ notification.categoryText }}</div>
+            <span :class="['bg-blue-50 w-40 border-2 border-adminTeal p-2 rounded-3xl', getCategoryStyling(notification.categoryText)]">
+                <div class="text-center">{{ notification.categoryText }}</div>
             </span>
-            <span class="p-2">
-                <div class="ml-6 mr-6 text-gray-500">{{ notification.notificationTimeDate }}</div>
-            </span>
-            <div class="p-2">
-                <div class="ml-6 mr-6">
-                    {{ notification.notificationHeading }}
+            <div class="flex justify-center">
+                <span class="p-2">
+                    <div class="ml-12 text-gray-500 w-40">{{ notification.notificationTimeDate }}</div>
+                </span>
+                <div class="p-2">
+                    <div class="">
+                        {{ notification.notificationHeading }}
+                    </div>
                 </div>
             </div>
         </div>
