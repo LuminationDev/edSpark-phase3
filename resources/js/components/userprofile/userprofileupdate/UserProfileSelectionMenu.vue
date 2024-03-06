@@ -3,6 +3,7 @@ import useVuelidate from "@vuelidate/core";
 import {required} from "@vuelidate/validators";
 import axios from "axios";
 import {storeToRefs} from "pinia";
+import {async} from "tailwind-scrollbar";
 import {computed, onMounted, reactive, Ref, ref} from "vue";
 import {Tippy} from "vue-tippy";
 import {toast} from "vue3-toastify";
@@ -19,6 +20,8 @@ import {
     AvailableSchoolYearList,
     AvailableSubjectsList
 } from "@/js/components/userprofile/userprofileupdate/userListing";
+import UserNotificationLinearLayout
+    from "@/js/components/userprofile/userprofileupdate/UserNotificationLinearLayout.vue";
 import UserProfileContentContainer from "@/js/components/userprofile/userprofileupdate/UserProfileContentContainer.vue";
 import {API_ENDPOINTS} from "@/js/constants/API_ENDPOINTS";
 import {useUserStore} from "@/js/stores/useUserStore";
@@ -31,6 +34,8 @@ const leftHeadingPersonal = ref('Personal info')
 const leftDescriptionPersonal = ref('Update your photo and personal details.')
 const leftHeadingProfile = ref('Profile')
 const leftDescriptionProfile = ref('Update your subjects and interests.')
+const leftHeadingNotification = ref('Notifications')
+const leftDescriptionNotification = ref('Stay up to date with the latest activities.')
 const disabledTippyMessage = "This information is retrieved from EdPass and cannot be changed through edSpark. Please change on EdPass if necessary."
 const displayErrorMessageText = "Value is required"
 const disabled = ref(true)
@@ -219,6 +224,34 @@ const handleProfileCancelButton = () => {
     reloadKey.value++
 }
 
+
+
+//test constant for sending category heading value like Software, Guide, Event, DAG
+const notificationCategoryHeading = ref('Software')
+const notificationTimeDate = ref('Wed, 06 March 24')
+const notificationHeading = ref('Adobe Creative Cloud Express')
+
+//test constant for sending category heading in array values like Software, Guide, Event, DAG
+const notificationsArray = [
+    { categoryText: 'Software', notificationTimeDate: 'Wed, 06 March 24', notificationHeading: 'Software Update Available' },
+    { categoryText: 'Guide', notificationTimeDate: 'Fri, 08 March 24', notificationHeading: 'Guide Update Available' },
+    { categoryText: 'Event', notificationTimeDate: 'Sun, 10 March 24', notificationHeading: 'Event Update Available' }
+]
+
+const notifications = ref([])
+const fetchNotifications = async () => {
+    try {
+        const response = await axios.get(API_ENDPOINTS.NOTIFICATION.GET_NOTIFICATIONS + + currentUser.value.id);
+        notifications.value = response.data;
+    } catch (error) {
+        console.error('Error fetching notifications:', error);
+    }
+}
+
+onMounted(() => {
+    fetchNotifications();
+});
+
 </script>
 
 <template>
@@ -348,6 +381,7 @@ const handleProfileCancelButton = () => {
                         @send-handle-file-dropped-instance="handleReceiveFileDroppedInstance"
                         @reset-image-upload-boolean="uploadImageInstance = false"
                     />
+                    <div class="border-[1px] border-gray-200 mt-10" />
                 </template>
                 <template #buttons>
                     <GenericButton
@@ -455,6 +489,7 @@ const handleProfileCancelButton = () => {
                             </span>
                         </div>
                     </div>
+                    <div class="border-[1px] border-gray-200 mt-10" />
                 </template>
                 <template #buttons>
                     <GenericButton
@@ -488,6 +523,37 @@ const handleProfileCancelButton = () => {
                     </GenericButton>
                 </template>
             </UserProfileContentContainer>
+            <div class="border-[1px] border-gray-100" />
+            <UserProfileContentContainer
+                id="reloadableDiv"
+                :key="reloadKey"
+                :left-heading="leftHeadingNotification"
+                :left-description="leftDescriptionNotification"
+            >
+                <template #content>
+                    <div class="ml-4 mt-2">
+                        <div class="ml-1">
+                            Recent Activities
+                        </div>
+                        <div>
+                            <UserNotificationLinearLayout
+                                :send-category-text-value="notificationCategoryHeading"
+                                :send-time-date-value="notificationTimeDate"
+                                :send-notification-heading-value="notificationHeading"
+                                :send-notifications="notificationsArrayData"
+                            />
+                            <span
+                                v-if="((stateProfile.yearLevelSelect.length === 0) && (booleanValueOnSubmitButton===true))"
+                            >
+                                <CustomErrorMessages
+                                    :error-text="displayErrorMessageText"
+                                    class="mb-6"
+                                />
+                            </span>
+                        </div>
+                    </div>
+                </template>
+            </userprofilecontentcontainer>
         </div>
     </div>
 </template>
