@@ -112,7 +112,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('fetchAllBookmarksByType', [LikeBookmarkController::class, 'fetchAllBookmarksByType']);
 
     // Notifications
-//    Route::get('fetchAllNotifications/{userId}', [NotificationController::class, 'getAllNotifications']);
+    Route::get('getNotifications/{userId}', [NotificationController::class, 'getNotifications']);
 //    Route::get('fetchSingleNotification', [NotificationController::class, 'getSingleNotification']);
 //    Route::get('fetchNotificationByType', [NotificationController::class, 'getNotificationByType']);
 

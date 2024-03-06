@@ -4,49 +4,52 @@ namespace App\Http\Controllers;
 
 use App\Services\ResponseService;
 use App\Models\User;
+use Illuminate\Http\Request;
+
 class NotificationController extends Controller
 {
+    public static function formatNotification($notifications)
+    {
+        $formattedNotifications = [];
 
-    public function getUserNotification($userId){
+        foreach ($notifications as $notification) {
+            $formattedNotification = [
+                'id' => $notification->id,
+                'title' => $notification->data['data']['title'] ?? null,
+                'author' => $notification->data['data']['author'],
+                'type' => $notification->data['data']['type'],
+                'action' => $notification->data['data']['action']
+            ];
+
+            $formattedNotifications[] = $formattedNotification;
+        }
+
+        return $formattedNotifications;
+    }
+
+    public function getNotifications(Request $request, $userId){
         $user = User::find($userId);
         if(!$user){
             return ResponseService::error("User not found");
         }
-        $userNotifications = $user->notifications;
-        dd($user->notifications);
-        return ResponseService::success('Notification fetched successfully', $userNotifications);
+        $userNotifications = $user->unreadNotifications->take(6);
+        $formattedNotifications = $this->formatNotification($userNotifications);
+
+        return ResponseService::success('Notification fetched successfully', $formattedNotifications);
 
     }
-//    /**
-//     * Get All Notifications
-//     *
-//     */
-//    public function getAllNotifications($userId)
-//    {
-//        $notifications = Notification::where('user_id', '=', $userId)
-//                                ->where('status', '=', 0)
-//                                ->get();
-//        $dataToSend = [];
-//        $count = 0;
-//        if ($notifications) {
-//            $count += count($notifications);
-//            foreach ($notifications as $notification) {
-//                $result = [
-//                    'id' => $notification->id,
-//                    'type' => ($notification->type) ? $notification->type : NULL,
-//                    'data' => $notification->data,
-//                    'status' => $notification->status,
-////                    'read_at' => ($notification->read_at) ? $notification->read_at : NULL
-//                ];
-//                $dataToSend[] = $result;
-//            }
-//        }
-//        return response()->json([
-//            "result" => $dataToSend,
-//            "count" => $count
-//        ]);
-//
-//    }
+
+    public function getAllNotifications(Request $request, $userId){
+        $user = User::find($userId);
+        if(!$user){
+            return ResponseService::error("User not found");
+        }
+        $userNotifications = $user->notifications();
+        $formattedNotifications = $this->formatNotification($userNotifications);
+
+        return ResponseService::success('All notifications fetched successfully', $formattedNotifications);
+    }
+
 
 
 

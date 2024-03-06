@@ -251,11 +251,10 @@ setupRoutes();
                     <button
                         @click="toggleNavbar"
                     >
-
-                        <Close class="fill-white hover:fill-slate-200 h-6 w-6 hover:cursor-pointer  mb-6"/>
+                        <Close class="fill-white hover:fill-slate-200 h-6 mb-6 w-6  hover:cursor-pointer" />
                     </button>
                 </li>
-                <li class="-mt-2 flex font-medium py-4 text-2xl"/>
+                <li class="-mt-2 flex font-medium py-4 text-2xl" />
                 <NavItemsMobileMenu
                     v-for="(route, i) in navLinks"
                     :key="i"
@@ -302,7 +301,7 @@ setupRoutes();
             <!--            Children Listing Condition    -->
             <ul v-else>
                 <li
-                    class="cursor-pointer flex justify-between font-bold ml-auto text-xl font-light h-0 mb-16"
+                    class="cursor-pointer flex justify-between font-bold font-light h-0 mb-16 ml-auto text-xl"
                 >
                     <button
                         class="-ml-2 hover:cursor-pointer fill-white flex justify-between"
@@ -337,7 +336,8 @@ setupRoutes();
                     v-if="isSearchVisible"
                     class="cursor-pointer flex justify-between items-center mt-4"
                     @click="handleGlobalSearchClick"
-                /><li>
+                />
+                <li>
                     <div class="bg-white h-px my-6" />
                 </li>
                 <div class="searchText">
@@ -346,7 +346,6 @@ setupRoutes();
                 <div>
                     <Search class="ml-auto" />
                 </div>
-                </li>
             </ul>
         </div>
     </Transition>
