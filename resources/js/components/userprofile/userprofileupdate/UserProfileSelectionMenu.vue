@@ -145,19 +145,30 @@ onMounted(fetchUserMetadata);
 //handle submit data on click, posts the data to api and then store to the database.
 const handleClickSubmitPersonalData = async () => {
     const result = await vPersonal$.value.$validate();
-    if (result && fileDropped.value === true) {
-        const data = {
+    if (result) {
+        const biographyData = {
             biography: statePersonal.biography
         };
-        return axios.post(API_ENDPOINTS.USER.UPDATE_OR_CREATE_METADATA + currentUser.value.id, data)
-            .then(res => {
-                console.log(res.data);
-                uploadImageInstance.value = true
-                toast.success("Successfully submitted personal info")
-            })
-            .catch(err => {
-                console.log(err.value)
-            })
+
+        const displayNameData = {
+            data: {
+                updateField: "display_name",
+                updateValue: statePersonal.displayName
+
+            }
+        }
+
+        const biographyPromise = axios.post(API_ENDPOINTS.USER.UPDATE_OR_CREATE_METADATA + currentUser.value.id, biographyData)
+        const displayNamePromise = axios.post(API_ENDPOINTS.USER.UPDATE_USER + currentUser.value.id, displayNameData)
+
+        return Promise.all([biographyPromise, displayNamePromise]).then(() => {
+            uploadImageInstance.value = true
+            toast.success("Successfully submitted personal info")
+        }).catch(err => {
+            console.log('Error during submission of personal data')
+            console.error(err.message)
+        })
+
     }
 }
 
@@ -193,17 +204,17 @@ const handleReceiveFileDroppedInstance = (fileDroppedInsance) => {
 const handlePersonalCancelButton = () => {
     vPersonal$.value.$reset()
     statePersonal.biography = initialPersonalState.biography
-    statePersonal.displayName= currentUser.value.display_name
-    statePersonal.fullName= currentUser.value.full_name
-    statePersonal.userRole= displayUserRole.value
-    statePersonal.siteName= currentUser.value.site.site_name
-    statePersonal.emailId= currentUser.value.email
+    statePersonal.displayName = currentUser.value.display_name
+    statePersonal.fullName = currentUser.value.full_name
+    statePersonal.userRole = displayUserRole.value
+    statePersonal.siteName = currentUser.value.site.site_name
+    statePersonal.emailId = currentUser.value.email
     reloadKey.value++
 }
 
 const handleProfileCancelButton = () => {
     stateProfile.interestSelect = initialProfileState.interestSelect
-    stateProfile.yearLevelSelect =  initialProfileState.yearLevelSelect
+    stateProfile.yearLevelSelect = initialProfileState.yearLevelSelect
     stateProfile.subjectSelect = initialProfileState.subjectSelect
     reloadKey.value++
 }
