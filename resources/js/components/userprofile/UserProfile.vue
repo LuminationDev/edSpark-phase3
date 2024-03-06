@@ -13,6 +13,9 @@ onMounted(() =>{
     axios.get(API_ENDPOINTS.NOTIFICATION.GET_NOTIFICATIONS + currentUser.value.id ).then(res =>{
         console.log(res.data)
     } )
+    // axios.get(API_ENDPOINTS.NOTIFICATION.READ_NOTIFICATION + '2cde425c-1239-42b9-84f6-b1ed1f842562' ).then(res =>{
+    //     console.log(res.data)
+    // } )
 })
 </script>
 <template>

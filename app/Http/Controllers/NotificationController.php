@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Services\ResponseService;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Notification;
 
 class NotificationController extends Controller
 {
@@ -15,6 +17,7 @@ class NotificationController extends Controller
         foreach ($notifications as $notification) {
             $formattedNotification = [
                 'id' => $notification->id,
+                'resource_id' => $notification->data['data']['id'],
                 'title' => $notification->data['data']['title'] ?? null,
                 'author' => $notification->data['data']['author'],
                 'type' => $notification->data['data']['type'],
@@ -48,6 +51,29 @@ class NotificationController extends Controller
         $formattedNotifications = $this->formatNotification($userNotifications);
 
         return ResponseService::success('All notifications fetched successfully', $formattedNotifications);
+    }
+
+    public function readNotification(Request $request, $notificationId)
+    {
+        $notification = Auth::user()->notifications->find($notificationId);
+        if (!$notification) {
+            return ResponseService::error("Notification not found");
+        }
+
+        $notification->markAsRead();
+
+        return ResponseService::success("Notification marked as read");
+    }
+
+    public function readAllNotifications($userId){
+        $user = User::find($userId);
+        if(!$user){
+            return ResponseService::error("User not found");
+        }
+        $user->unreadNotifications->markAsRead();
+        return ResponseService::success("All notifications marked as read");
+
+
     }
 
 
