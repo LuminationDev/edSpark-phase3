@@ -264,7 +264,7 @@ class UserController extends Controller
             // Ensure the authenticated user is allowed to update the specified user
             $authUserId = Auth::id();
 
-            if ($authUserId !== $userId) {
+            if ($authUserId !== intval($userId)) {
                 // If not the same user, check if the authenticated user is a superadmin
                 $userRole = Auth::user()->role; // Assuming there's a 'role' relationship in the User model
 

@@ -3,7 +3,6 @@ import useVuelidate from "@vuelidate/core";
 import {required} from "@vuelidate/validators";
 import axios from "axios";
 import {storeToRefs} from "pinia";
-import {async} from "tailwind-scrollbar";
 import {computed, onMounted, reactive, Ref, ref} from "vue";
 import {Tippy} from "vue-tippy";
 import {toast} from "vue3-toastify";
@@ -21,7 +20,7 @@ import {
     AvailableSubjectsList
 } from "@/js/components/userprofile/userprofileupdate/userListing";
 import UserNotificationLinearLayout
-    from "@/js/components/userprofile/userprofileupdate/UserNotificationLinearLayout.vue";
+    from "@/js/components/userprofile/userprofileupdate/usernotification/UserNotificationLinearLayout.vue";
 import UserProfileContentContainer from "@/js/components/userprofile/userprofileupdate/UserProfileContentContainer.vue";
 import {API_ENDPOINTS} from "@/js/constants/API_ENDPOINTS";
 import {useUserStore} from "@/js/stores/useUserStore";
@@ -226,31 +225,6 @@ const handleProfileCancelButton = () => {
 
 
 
-//test constant for sending category heading value like Software, Guide, Event, DAG
-const notificationCategoryHeading = ref('Software')
-const notificationTimeDate = ref('Wed, 06 March 24')
-const notificationHeading = ref('Adobe Creative Cloud Express')
-
-//test constant for sending category heading in array values like Software, Guide, Event, DAG
-const notificationsArray = [
-    { categoryText: 'Software', notificationTimeDate: 'Wed, 06 March 24', notificationHeading: 'Software Update Available' },
-    { categoryText: 'Guide', notificationTimeDate: 'Fri, 08 March 24', notificationHeading: 'Guide Update Available' },
-    { categoryText: 'Event', notificationTimeDate: 'Sun, 10 March 24', notificationHeading: 'Event Update Available' }
-]
-
-const notifications = ref([])
-const fetchNotifications = async () => {
-    try {
-        const response = await axios.get(API_ENDPOINTS.NOTIFICATION.GET_NOTIFICATIONS + + currentUser.value.id);
-        notifications.value = response.data;
-    } catch (error) {
-        console.error('Error fetching notifications:', error);
-    }
-}
-
-onMounted(() => {
-    fetchNotifications();
-});
 
 </script>
 
@@ -536,20 +510,7 @@ onMounted(() => {
                             Recent Activities
                         </div>
                         <div>
-                            <UserNotificationLinearLayout
-                                :send-category-text-value="notificationCategoryHeading"
-                                :send-time-date-value="notificationTimeDate"
-                                :send-notification-heading-value="notificationHeading"
-                                :send-notifications="notificationsArrayData"
-                            />
-                            <span
-                                v-if="((stateProfile.yearLevelSelect.length === 0) && (booleanValueOnSubmitButton===true))"
-                            >
-                                <CustomErrorMessages
-                                    :error-text="displayErrorMessageText"
-                                    class="mb-6"
-                                />
-                            </span>
+                            <UserNotificationLinearLayout />
                         </div>
                     </div>
                 </template>
