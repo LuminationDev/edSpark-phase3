@@ -41,8 +41,6 @@ const handleLogoUpload = (event) => {
         reader.onload = (event) => {
             logoPreview.value.setAttribute('src', event.target.result)
             logoDataURL = event.target.result
-
-
         };
         fileDropped.value = true
     } else {
@@ -75,7 +73,7 @@ const uploadError = ref("")
 
 
 const handleSubmitImage = () => {
-
+    if(!logoEditFile.value) return;
     const data = new FormData()
     data.append('userAvatar',logoEditFile.value )
     return axios.post(API_ENDPOINTS.USERAVATAR.UPDATE_OR_CREATE_USER_AVATAR + currentUser.value.id, data)
@@ -96,7 +94,7 @@ const handleSubmitImage = () => {
 }
 
 watch(() => props.sendImageUploadInstance, (newValue, oldValue) => {
-    if (newValue === true && oldValue === false) {
+    if (newValue && !oldValue) {
         handleSubmitImage()
     }
 })

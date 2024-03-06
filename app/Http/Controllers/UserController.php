@@ -253,7 +253,7 @@ class UserController extends Controller
     }
 
 
-    public function updateUser(Request $request): JsonResponse
+    public function updateUser(Request $request, $userId): JsonResponse
     {
         try {
             // Validate the request method
@@ -263,7 +263,6 @@ class UserController extends Controller
 
             // Ensure the authenticated user is allowed to update the specified user
             $authUserId = Auth::id();
-            $userId = $request->id;
 
             if ($authUserId !== $userId) {
                 // If not the same user, check if the authenticated user is a superadmin
@@ -273,7 +272,6 @@ class UserController extends Controller
                     return ResponseService::error('Unauthorized. Insufficient permissions to update the user.', null, 403);
                 }
             }
-
             if ($request->data) {
                 $this->handleUserDataUpdate($request->data, $userId);
             }

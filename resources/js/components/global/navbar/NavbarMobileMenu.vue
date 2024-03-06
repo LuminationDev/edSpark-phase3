@@ -37,7 +37,6 @@ const profileTargetPath = computed(() => {
 })
 const messageTargetPath = computed(() => {
     if (currentUser.value.id) {
-        // return `/message/${currentUser.value.id}`
         return `/profile/${currentUser.value.id}/messages`
     } else return ''
 })
@@ -252,10 +251,11 @@ setupRoutes();
                     <button
                         @click="toggleNavbar"
                     >
-                        <Close class="fill-white hover:fill-slate-200 h-6 w-6 hover:cursor-pointer" />
+
+                        <Close class="fill-white hover:fill-slate-200 h-6 w-6 hover:cursor-pointer  mb-6"/>
                     </button>
                 </li>
-                <li class="-mt-2 flex font-medium py-4 text-2xl" />
+                <li class="-mt-2 flex font-medium py-4 text-2xl"/>
                 <NavItemsMobileMenu
                     v-for="(route, i) in navLinks"
                     :key="i"
@@ -279,8 +279,6 @@ setupRoutes();
                         <Search class="ml-10" />
                     </div>
                 </li>
-
-
                 <li
                     class="cursor-pointer flex items-center flex-row font-medium mb-8 mt-4"
                 >
@@ -304,7 +302,7 @@ setupRoutes();
             <!--            Children Listing Condition    -->
             <ul v-else>
                 <li
-                    class="cursor-pointer flex justify-between font-bold font-light h-0 mb-16 ml-auto text-xl"
+                    class="cursor-pointer flex justify-between font-bold ml-auto text-xl font-light h-0 mb-16"
                 >
                     <button
                         class="-ml-2 hover:cursor-pointer fill-white flex justify-between"

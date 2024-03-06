@@ -98,7 +98,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('getUserMetadata', [UserController::class, 'getUserMetadata']);
     Route::post('createUser', [UserController::class, 'createUser']);
     Route::post('updateFirstTimeVisitUser', [UserController::class, 'updateFirstTimeVisitUser']);
-    Route::post('updateUser', [UserController::class, 'updateUser']);
+    Route::post('updateUser/{userId}', [UserController::class, 'updateUser']);
     Route::post('checkEmail', [UserController::class, 'checkEmail']);
     Route::get('getUserDraftPosts', [UserController::class, 'getAllUserDraftPosts']);
 
