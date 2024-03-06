@@ -6,7 +6,7 @@ class NotificationResource
 {
     public $id;
     public $title;
-    public $author;
+    public $author_id;
     public $type;
     public $action;
 
@@ -14,7 +14,7 @@ class NotificationResource
     {
         $this->id = $id;
         $this->title = $title;
-        $this->author = $author;
+        $this->author_id = $author;
         $this->type = $type;
         $this->action = $action;
     }
@@ -24,7 +24,7 @@ class NotificationResource
         return [
             'id' => $this->id,
             'title' => $this->title,
-            'author' => $this->author,
+            'author_id' => $this->author_id,
             'type' => $this->type,
             'action' => $this->action
         ];

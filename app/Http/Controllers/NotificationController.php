@@ -15,11 +15,12 @@ class NotificationController extends Controller
         $formattedNotifications = [];
 
         foreach ($notifications as $notification) {
+            $authorDisplayName = User::find($notification->data['data']['author_id'])->display_name ?? "Name unavailable";
             $formattedNotification = [
                 'id' => $notification->id,
                 'resource_id' => $notification->data['data']['id'],
                 'title' => $notification->data['data']['title'] ?? null,
-                'author' => $notification->data['data']['author'],
+                'author_name' => $authorDisplayName, // change to display name
                 'type' => $notification->data['data']['type'],
                 'action' => $notification->data['data']['action']
             ];

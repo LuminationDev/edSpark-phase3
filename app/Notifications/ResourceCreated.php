@@ -37,12 +37,5 @@ class ResourceCreated extends Notification
             // Any other data you want to include in the notification
         ];
 
-//        return [
-//            'resource_id' => $this->resource->id,
-//            'title' => $this->resource->title,
-//            'author' => $this->resource->author,
-//            'type' => $this->resource->type,
-//            'action' => $this->resource->action
-//        ];
     }
 }

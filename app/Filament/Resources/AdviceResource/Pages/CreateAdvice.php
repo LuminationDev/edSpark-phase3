@@ -9,17 +9,19 @@ use App\Helpers\NotificationResourceType;
 use App\Models\Advice;
 use App\Models\User;
 use App\Notifications\ResourceCreated;
+use App\Traits\UseNotification;
 use Filament\Resources\Pages\CreateRecord;
 
 use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 
-use App\Models\Advicemeta;
-use Illuminate\Support\Facades\Notification;
 
 class CreateAdvice extends CreateRecord
 {
+    use useNotification;
+    private string $notificationResourceType = NotificationResourceType::ADVICE;
+
     protected static string $resource = AdviceResource::class;
 
     protected function mutateFormDataBeforeCreate(array $data): array
@@ -42,10 +44,15 @@ class CreateAdvice extends CreateRecord
         // send notification here
         $currentUser = Auth::user();
         $usersExceptCurrent = User::whereKeyNot($currentUser)->get();
-        $notificationObject = new NotificationResource($record->id, $record->post_title, $currentUser->id, NotificationResourceType::ADVICE, NotificationActionType::PUBLISHED);
+
         foreach ($usersExceptCurrent as $eachUser){
-            $eachUser->notify(new ResourceCreated($notificationObject));
+            $this->sendNotification($eachUser, $record->id, $record->post_title, $currentUser->id, $this->notificationResourceType, NotificationActionType::PUBLISHED);
         }
+
+//        $notificationObject = new NotificationResource($record->id, $record->post_title, $currentUser->id, NotificationResourceType::ADVICE, NotificationActionType::PUBLISHED);
+//        foreach ($usersExceptCurrent as $eachUser){
+//            $eachUser->notify(new ResourceCreated($notificationObject));
+//        }
         // end of notification code
 
 
