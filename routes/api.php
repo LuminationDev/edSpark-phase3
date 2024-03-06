@@ -113,8 +113,9 @@ Route::middleware('auth:sanctum')->group(function () {
 
     // Notifications
     Route::get('getNotifications/{userId}', [NotificationController::class, 'getNotifications']);
-//    Route::get('fetchSingleNotification', [NotificationController::class, 'getSingleNotification']);
-//    Route::get('fetchNotificationByType', [NotificationController::class, 'getNotificationByType']);
+    Route::get('getAllNotifications/{userId}', [NotificationController::class, 'getAllNotifications']);
+    Route::get('readNotification/{notificationId}', [NotificationController::class, 'readNotification']);
+    Route::get('readAllNotifications/{userId}', [NotificationController::class, 'readAllNotifications']);
 
     // Partners API
     Route::get('fetchAllPartners', [PartnerController::class, 'fetchAllPartners']);
@@ -172,7 +173,8 @@ Route::middleware('auth:sanctum')->group(function () {
 
 
     // Notification
-    Route::get('user/notification/{user_id}', [NotificationController::class,'getUserNotification']);
+//    Route::get('user/notification/{user_id}', [NotificationController::class,'getUserNotification']);
+//    Route::get('user/notification/{user_id}', [NotificationController::class,'getUserNotification']);
 
 
     Route::group(['prefix' => 'user/survey'], function () {
