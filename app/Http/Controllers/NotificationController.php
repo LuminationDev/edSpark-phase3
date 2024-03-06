@@ -22,7 +22,8 @@ class NotificationController extends Controller
                 'title' => $notification->data['data']['title'] ?? null,
                 'author_name' => $authorDisplayName, // change to display name
                 'type' => $notification->data['data']['type'],
-                'action' => $notification->data['data']['action']
+                'action' => $notification->data['data']['action'],
+                'updated_at' => $notification->updated_at
             ];
 
             $formattedNotifications[] = $formattedNotification;

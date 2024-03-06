@@ -114,7 +114,7 @@ Route::middleware('auth:sanctum')->group(function () {
     // Notifications
     Route::get('getNotifications/{userId}', [NotificationController::class, 'getNotifications']);
     Route::get('getAllNotifications/{userId}', [NotificationController::class, 'getAllNotifications']);
-    Route::get('readNotification/{notificationId}', [NotificationController::class, 'readNotification']);
+    Route::post('readNotification/{notificationId}', [NotificationController::class, 'readNotification']);
     Route::get('readAllNotifications/{userId}', [NotificationController::class, 'readAllNotifications']);
 
     // Partners API
