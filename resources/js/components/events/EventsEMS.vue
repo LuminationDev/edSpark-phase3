@@ -146,13 +146,16 @@ const handleInvalidUrlFromServer = () => {
 </script>
 
 <template>
-    <div class="EventRsvpFormContainer bg-main-navy mt-5 px-4 py-4 text-white">
+    <div class="EventRsvpFormContainer bg-secondary-blueberry mt-5 px-4 py-4 text-white">
         <div class="font-bold rsvpHeader text-2xl">
             Register for this event
         </div>
 
         <div class="border-b-2 border-b-white flex flex-col py-2 rsvpSubheader text-lg">
-            <div class="eventTypeDescriptor pb-2 pt-4">
+            <div
+                v-if="props.locationType"
+                class="eventTypeDescriptor pb-2 pt-4"
+            >
                 This event is <span class="font-semibold uppercase"> {{ props.locationType }} </span>
                 {{ props.locationType ? (props.locationType.toLowerCase() !== "hybrid" ? "only" : '') : "" }}
             </div>

@@ -98,7 +98,8 @@ const routes: any = [
                     skipScrollTop: true
 
                 } as RouteMeta
-            }, {
+            },
+             {
                 name: 'createGuide',
                 path: 'guide',
                 component: AdviceForm,
@@ -129,7 +130,7 @@ const routes: any = [
         },
         children: [
             {
-                name: "Inspiration & guides",
+                name: "Inspiration hub",
                 path: "",
                 component: InspirationAndGuides,
                 meta: {
@@ -180,7 +181,7 @@ const routes: any = [
         },
         children: [
             {
-                name: "Technology Hub",
+                name: "Technology hub",
                 path: "",
                 component: TheTechnology,
                 meta: {
@@ -216,7 +217,7 @@ const routes: any = [
         path: '/ai-hub',
         component: DashboardNew,
         meta: {
-            navigation: true
+            navigation: false
         }
 
     },
@@ -225,6 +226,7 @@ const routes: any = [
         path: '/events',
         component: TheEvent,
         meta: {
+            customText: 'Events',
             navigation: true
         }
     },
@@ -288,7 +290,7 @@ const routes: any = [
     },
     {
         name: 'school-single',
-        path: '/schools/:name',
+        path: '/schools/:name?',
         component: SchoolSingle,
         meta: {
             requiresAuth: true,
@@ -411,8 +413,8 @@ const routes: any = [
     },
     {
         name: 'userProfile',
-        path: '/profile/:userId',
-        component: UserProfile,
+        path: '/profile/:userId?',
+        component: UserProfile,     
         children: [
             {
                 path: '',

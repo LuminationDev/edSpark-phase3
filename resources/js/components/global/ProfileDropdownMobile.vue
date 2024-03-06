@@ -19,6 +19,7 @@ const props = defineProps({
 const userStore = useUserStore();
 const {currentUser} = storeToRefs(userStore);
 const imageURL = import.meta.env.VITE_SERVER_IMAGE_API;
+
 </script>
 
 <template>
