@@ -14,8 +14,6 @@ import EventsCard from "@/js/components/events/EventsCard.vue";
 import SchoolProfileGuidesQuickFilters from "@/js/components/inspirationandguides/SchoolProfileGuidesQuickFilters.vue";
 import SchoolCard from "@/js/components/schools/SchoolCard.vue";
 import SoftwareCard from "@/js/components/software/SoftwareCard.vue";
-import {API_ENDPOINTS} from "@/js/constants/API_ENDPOINTS";
-import {serverURL} from "@/js/constants/serverUrl";
 import {getNRandomElementsFromArray} from "@/js/helpers/cardDataHelper";
 import {adviceService} from "@/js/service/adviceService";
 import {eventService} from "@/js/service/eventService";
@@ -27,7 +25,6 @@ import {useUserStore} from '@/js/stores/useUserStore';
 import {useWindowStore} from "@/js/stores/useWindowStore";
 
 const router = useRouter()
-const userStore = useUserStore();
 const windowStore = useWindowStore()
 
 const {featuredSchools} = storeToRefs(useSchoolsStore())
@@ -59,7 +56,6 @@ onMounted(async () => {
 
 <template>
     <div>
-        
         <DashboardHero />
         <BaseLandingSection>
             <template #title>
@@ -67,9 +63,9 @@ onMounted(async () => {
             </template>
             <template #button>
                 <GenericButton
+                    id="schoolsBtn"
                     :callback="() => router.push('browse/school')"
                     :type="'teal'"
-                    :id="schoolsBtn"
                 >
                     View all schools
                 </GenericButton>
@@ -78,7 +74,10 @@ onMounted(async () => {
                 <SchoolProfileGuidesQuickFilters />
             </template>
             <template #content>
-                <BaseLandingCardRow :resource-list="featuredSchools" v-if="windowStore.isMed">
+                <BaseLandingCardRow
+                    v-if="windowStore.isMed"
+                    :resource-list="featuredSchools"
+                >
                     <template #rowContent>
                         <SchoolCard
                             v-for="(school,index) in getNRandomElementsFromArray(featuredSchools,2)"
@@ -87,7 +86,10 @@ onMounted(async () => {
                         />
                     </template>
                 </BaseLandingCardRow>
-                <BaseLandingCardRow :resource-list="featuredSchools" v-if="!windowStore.isMed">
+                <BaseLandingCardRow
+                    v-if="!windowStore.isMed"
+                    :resource-list="featuredSchools"
+                >
                     <template #rowContent>
                         <SchoolCard
                             v-for="(school,index) in getNRandomElementsFromArray(featuredSchools,3)"
@@ -108,15 +110,18 @@ onMounted(async () => {
         </template>
         <template #button>
             <GenericButton
+                id="guidesBtn"
                 :callback="() => router.push('browse/guide')"
                 :type="'teal'"
-                    :id="guidesBtn"
             >
                 View all guides
             </GenericButton>
         </template>
         <template #content>
-            <BaseLandingCardRow :resource-list="guideList" v-if="windowStore.isMed">
+            <BaseLandingCardRow
+                v-if="windowStore.isMed"
+                :resource-list="guideList"
+            >
                 <template #rowContent>
                     <AdviceCard
                         v-for="(guide,index) in getNRandomElementsFromArray(guideList,2)"
@@ -125,7 +130,10 @@ onMounted(async () => {
                     />
                 </template>
             </BaseLandingCardRow>
-            <BaseLandingCardRow :resource-list="guideList" v-if="!windowStore.isMed">
+            <BaseLandingCardRow
+                v-if="!windowStore.isMed"
+                :resource-list="guideList"
+            >
                 <template #rowContent>
                     <AdviceCard
                         v-for="(guide,index) in getNRandomElementsFromArray(guideList,3)"
@@ -145,9 +153,9 @@ onMounted(async () => {
         </template>
         <template #button>
             <GenericButton
+                id="techBtn"
                 :callback="() => router.push('browse/software')"
                 :type="'teal'"
-                    :id="techBtn"
             >
                 View all technology
             </GenericButton>
@@ -205,7 +213,10 @@ onMounted(async () => {
             </GenericButton>
         </template>
         <template #content>
-            <BaseLandingCardRow :resource-list="eventList" v-if="windowStore.isMed">
+            <BaseLandingCardRow
+                v-if="windowStore.isMed"
+                :resource-list="eventList"
+            >
                 <template #rowContent>
                     <EventsCard
                         v-for="(event,index) in getNRandomElementsFromArray(eventList,2)"
@@ -214,7 +225,10 @@ onMounted(async () => {
                     />
                 </template>
             </BaseLandingCardRow>
-            <BaseLandingCardRow :resource-list="eventList" v-if="!windowStore.isMed">
+            <BaseLandingCardRow
+                v-if="!windowStore.isMed"
+                :resource-list="eventList"
+            >
                 <template #rowContent>
                     <EventsCard
                         v-for="(event,index) in getNRandomElementsFromArray(eventList,3)"

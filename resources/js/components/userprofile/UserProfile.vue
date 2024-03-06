@@ -1,7 +1,19 @@
 <script setup>
 
-import UserProfileSelectionMenu from "@/js/components/userprofile/userprofileupdate/UserProfileSelectionMenu.vue";
+import {storeToRefs} from "pinia";
+import {onMounted} from "vue";
 
+import UserProfileSelectionMenu from "@/js/components/userprofile/userprofileupdate/UserProfileSelectionMenu.vue";
+import {API_ENDPOINTS} from "@/js/constants/API_ENDPOINTS";
+import {useUserStore} from "@/js/stores/useUserStore";
+
+const {currentUser} = storeToRefs(useUserStore())
+
+onMounted(() =>{
+    axios.get(API_ENDPOINTS.NOTIFICATION.GET_NOTIFICATIONS + currentUser.value.id ).then(res =>{
+        console.log(res.data)
+    } )
+})
 </script>
 <template>
     <div class="UserProfilePage h-full w-full">
