@@ -86,7 +86,7 @@ class HardwareResource extends Resource
                                 Forms\Components\Builder\Block::make('templates')
                                     ->schema([
                                         Forms\Components\Select::make('template')
-                                            ->label('Choose a Template')
+                                            ->label('Choose a template')
                                             ->reactive()
                                             ->options(static::getTemplates()),
                                         ...static::getTemplateSchemas()

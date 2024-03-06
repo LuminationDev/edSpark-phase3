@@ -16,19 +16,27 @@ const postLoading = ref(true)
 
 onMounted(() => {
     autoSaveService.getAutoSave(userStore.currentUser.id, 'all').then(res => {
-        draftArray.value = [...draftArray.value, ...formatDataFromAutoSaveAndPostToDraft(res.data.data)]
+        if(res){
+            draftArray.value = [...draftArray.value, ...formatDataFromAutoSaveAndPostToDraft(res.data.data)]
+        } else {
+            
+        }
     }).finally(() => {
         autoSaveLoading.value = false
     })
+
     autoSaveService.getAllUserDraftPost(userStore.currentUser.id).then(res => {
-        const result = res.data.data
-        console.log(result)
-        const flattenResult = Object.values(result).flat(1)
-        console.log(flattenResult)
-        draftArray.value = [...draftArray.value, ...formatDataFromAutoSaveAndPostToDraft(flattenResult)]
+        if(res){
+            const result = res.data.data
+            console.log(result)
+            const flattenResult = Object.values(result).flat(1)
+            console.log(flattenResult)
+            draftArray.value = [...draftArray.value, ...formatDataFromAutoSaveAndPostToDraft(flattenResult)]
+        }
     }).finally(() => {
         postLoading.value = false
     })
+
 })
 // unflatten labels from database for Form Purposes
 const unflattenLabelsForFrontendForm = (flattenedLabels) => {
@@ -104,7 +112,7 @@ const formatDataFromAutoSaveAndPostToDraft = (dataArray): BasePostType[] => {
             Your Drafts
         </template>
         <template #subtitle>
-            Find all of your in progress publications and those awaiting for moderation here.
+            Find all of your in-progress publications and those awaiting for moderation here
         </template>
         <template #content>
             <UserDraftList

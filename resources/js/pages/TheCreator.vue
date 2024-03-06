@@ -40,7 +40,7 @@ const showBackToPosts = computed(() => {
             <div class="flex justify-between items-start flex-col w-full">
                 <div
                     v-if="showBackToPosts"
-                    class="backToPosts flex items-center flex-row font-base text-sm hover:cursor-pointer hover:underline"
+                    class="backToPosts flex items-center flex-row font-base text-sm mb-4 hover:cursor-pointer hover:underline"
                     @click="handleClickBackToPosts"
                 >
                     <ChevronLeftNavIcon class="fill-black h-5 p-1 stroke-black w-5" />Back to your posts

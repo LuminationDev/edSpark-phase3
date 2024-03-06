@@ -19,6 +19,8 @@ return [
             'upload_directory' => 'uploads/advice',
             'images_upload_url' => env('VITE_SERVER_IMAGE_API') . '/imageUploadTinyMCEjs',
             'custom_configs' => [
+            'browser_spellcheck' => true,
+            'context_menu' => false,
                 'toolbar_sticky' => true,
                 'toolbar_sticky_offset' => 65,
                 'image_caption' => true,
