@@ -57,10 +57,9 @@ const handleClickEditDraft = (postData: BasePostType) : Promise<void> => {
                 Type
             </div>
         </div>
-        <template
-            v-if="!props.draftLoading"
-        >
+        <template v-if="!props.draftLoading">
             <div
+                v-if="draftArray"
                 v-for="(draft,index) in draftArray"
                 :key="index"
                 :class="{'border-t-[1px]' : index === 0}"
@@ -69,6 +68,7 @@ const handleClickEditDraft = (postData: BasePostType) : Promise<void> => {
                     border-gray-100
                     flex-row
                     items-center
+                    font-light
                     grid
                     grid-cols-12
                     h-16
@@ -95,10 +95,14 @@ const handleClickEditDraft = (postData: BasePostType) : Promise<void> => {
                     </div>
                 </div>
             </div>
+            <div class="text-slate-400 mt-6 w-full text-center font-light"
+                v-if="!draftArray">
+                No drafts available
+            </div>
         </template>
         <template v-else>
             <Loader
-                loader-message="fetching your drafts"
+                loader-message="Fetching your drafts"
                 loader-type="inline"
             />
         </template>

@@ -31,6 +31,10 @@ const {allSoftware} = storeToRefs(useSoftwareStore())
 const {allHardware} = storeToRefs(useHardwareStore())
 const {allAdvice} = storeToRefs(useAdviceStore())
 
+
+import {useWindowStore} from "@/js/stores/useWindowStore";
+const windowStore = useWindowStore()
+
 onMounted(() => {
     softwareService.fetchAllSoftware().then(res => {
         allSoftware.value = res
@@ -43,6 +47,7 @@ onMounted(() => {
         allAdvice.value = res
     )
 })
+
 
 
 const handleClickPopularTech = (techId, title) => {
@@ -67,7 +72,7 @@ const handleClickPopularTech = (techId, title) => {
     </BaseLandingHero>
     <BaseLandingSection background-color="white">
         <template #title>
-            Popular Technology
+            Popular technology
         </template>
         <template #content>
             <PopularResourceShortcuts
@@ -78,7 +83,7 @@ const handleClickPopularTech = (techId, title) => {
             />
             <Loader
                 v-else
-                loader-message="Loading popular resource"
+                loader-message="Loading popular resources"
                 loader-type="small"
             />
         </template>
@@ -93,6 +98,7 @@ const handleClickPopularTech = (techId, title) => {
             <GenericButton
                 :callback="() => router.push('browse/software')"
                 :type="'purple'"
+                :id="appsBtn"
             >
                 View all apps and programs
             </GenericButton>
@@ -148,12 +154,22 @@ const handleClickPopularTech = (techId, title) => {
             <GenericButton
                 :callback="() => router.push('/browse/hardware')"
                 :type="'purple'"
+                :id="equipBtn"
             >
                 View all equipment and devices
             </GenericButton>
         </template>
         <template #content>
-            <BaseLandingCardRow :resource-list="allHardware">
+            <BaseLandingCardRow :resource-list="allHardware" v-if="windowStore.isMed">
+                <template #rowContent>
+                    <HardwareCard
+                        v-for="(hardware,index) in getNRandomElementsFromArray(allHardware,2)"
+                        :key="index"
+                        :data="hardware"
+                    />
+                </template>
+            </BaseLandingCardRow>
+            <BaseLandingCardRow :resource-list="allHardware" v-if="!windowStore.isMed">
                 <template #rowContent>
                     <HardwareCard
                         v-for="(hardware,index) in getNRandomElementsFromArray(allHardware,3)"
@@ -173,12 +189,22 @@ const handleClickPopularTech = (techId, title) => {
             <GenericButton
                 :callback="() => router.push('/browse/guide/dag')"
                 :type="'purple'"
+                :id="guidesBtn"
             >
                 View all guides
             </GenericButton>
         </template>
         <template #content>
-            <BaseLandingCardRow :resource-list="allAdvice">
+            <BaseLandingCardRow :resource-list="allAdvice" v-if="windowStore.isMed">
+                <template #rowContent>
+                    <HardwareCard
+                        v-for="(advice,index) in getNRandomElementsFromArray(allAdvice,2)"
+                        :key="index"
+                        :data="advice"
+                    />
+                </template>
+            </BaseLandingCardRow>
+            <BaseLandingCardRow :resource-list="allAdvice" v-if="!windowStore.isMed">
                 <template #rowContent>
                     <HardwareCard
                         v-for="(advice,index) in getNRandomElementsFromArray(allAdvice,3)"
