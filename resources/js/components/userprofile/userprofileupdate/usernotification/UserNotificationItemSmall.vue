@@ -1,5 +1,7 @@
 <script setup>
 
+import {computed} from "vue";
+
 import {formatDateToDayTime} from "@/js/helpers/dateHelper";
 
 const props = defineProps({
@@ -37,11 +39,29 @@ const getCategoryStyling = (categoryText) => {
         return 'border';
     }
 };
+
+const formattedCategoryTextString = computed(() => {
+    return props.categoryText.charAt(0).toUpperCase() + props.categoryText.slice(1).toLowerCase();
+})
+
 </script>
 
 <template>
     <div
-        class="flex items-center flex-row m-2 mt-4 notificationItemSmallContainer w-full"
+        class="
+            bg-gray-50
+            cursor-pointer
+            flex
+            items-center
+            flex-row
+            m-2
+            mr-4
+            mt-4
+            notificationItemSmallContainer
+            rounded-3xl
+            w-full
+            hover:!bg-gray-100
+            "
         @click="clickCallback"
     >
         <div
@@ -49,7 +69,7 @@ const getCategoryStyling = (categoryText) => {
             :class="['border', getCategoryStyling(categoryText)]"
         >
             <div class="text-center w-32">
-                {{ categoryText }}
+                {{ formattedCategoryTextString }}
             </div>
         </div>
         <div class="p-2">

@@ -21,6 +21,7 @@ class NotificationController extends Controller
                 'resource_id' => $notification->data['data']['id'],
                 'title' => $notification->data['data']['title'] ?? null,
                 'author_name' => $authorDisplayName, // change to display name
+                'read_at' => $notification->read_at ?? null,
                 'type' => $notification->data['data']['type'],
                 'action' => $notification->data['data']['action'],
                 'updated_at' => $notification->updated_at
@@ -49,7 +50,7 @@ class NotificationController extends Controller
         if(!$user){
             return ResponseService::error("User not found");
         }
-        $userNotifications = $user->notifications();
+        $userNotifications = $user->notifications;
         $formattedNotifications = $this->formatNotification($userNotifications);
 
         return ResponseService::success('All notifications fetched successfully', $formattedNotifications);

@@ -223,7 +223,13 @@ const handleProfileCancelButton = () => {
     reloadKey.value++
 }
 
-
+const userNotificationLargeLayout = computed(() =>
+{
+    if (currentUser.value.id) {
+        console.log("View all button pressed")
+        return `/notifications/${currentUser.value.id}`
+    } else return ''
+})
 
 
 </script>
@@ -283,7 +289,6 @@ const handleProfileCancelButton = () => {
                             class="mb-6 mt-2"
                         />
                     </span>
-
                     <!--                    For the School name-->
                     <div class="ml-4 mt-2">
                         School name
@@ -296,7 +301,6 @@ const handleProfileCancelButton = () => {
                         >
                     </tippy>
                     <span>
-
                         <ErrorMessages
                             :v$="vPersonal$.siteName"
                             class="mb-6 mt-2"
@@ -506,11 +510,23 @@ const handleProfileCancelButton = () => {
             >
                 <template #content>
                     <div class="ml-4 mt-2">
-                        <div class="ml-1">
-                            Recent Activities
+                        <div class="flex flex-row">
+                            <div class="ml-1">
+                                Recent Activities
+                            </div>
+                            <div class="cursor-pointer ml-auto mr-4 underline">
+                                <router-link
+                                    :to="userNotificationLargeLayout"
+                                >
+                                    View all
+                                </router-link>
+                            </div>
                         </div>
                         <div>
-                            <UserNotificationLinearLayout />
+                            <UserNotificationLinearLayout
+                                notification-size="small"
+                                notification-unread="unread"
+                            />
                         </div>
                     </div>
                 </template>
