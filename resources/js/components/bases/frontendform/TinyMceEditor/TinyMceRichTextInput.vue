@@ -77,6 +77,7 @@ watchDebounced(editorContent, emitContent, {debounce: 200, maxWait: 1000})
             toolbar_sticky_offset: 45,
             image_caption: true,
             image_advtab: true,
+            browser_spellcheck : true,
             content_css: '/css/filament/font/font.css',
             skin: false,
             content_style: `body {font-family: MuseoSans;} html {font-family: MuseoSans;} .mce-offscreen-selection{display: none;}`,

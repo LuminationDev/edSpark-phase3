@@ -30,18 +30,6 @@ const props = defineProps({
 </template>
 
 <style scoped>
-/* .schools-tech_description {
-    display: none;
-}
-
-.schools-tech:hover .schools-tech_description {
-    overflow: hidden;
-    text-overflow: ellipsis;
-    display: -webkit-box;
-    -webkit-line-clamp: 6;
-    -webkit-box-orient: vertical;
-} */
-
 
 .schoolTechDescription{
     font-size: 16px;

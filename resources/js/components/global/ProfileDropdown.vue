@@ -58,11 +58,14 @@ const profileTargetPath = computed(() => {
         return `/profile/${currentUser.value.id}`
     } else return ''
 })
+
 const messageTargetPath = computed(() => {
     if (currentUser.value.id) {
-        return `/message/${currentUser.value.id}`
+        // return `/message/${currentUser.value.id}`
+        return `/profile/${currentUser.value.id}/messages`
     } else return ''
 })
+
 const mySchoolTargetPath = computed(() => {
     if (currentUser.value?.site?.site_name) {
         return `/schools/${currentUser.value.site.site_name}`
@@ -73,7 +76,7 @@ const avatarUrlWithFallback  = computed(() =>{
     if(imageError.value){
         return avatarUIFallbackURL + currentUser.value.display_name
     } else{
-        return `${imageURL}/${props.avatarUrl}\``
+        return `${imageURL}/${props.avatarUrl}`
     }
 })
 
@@ -153,7 +156,7 @@ const handleImageLoadError = () => {
                         :target-path="mySchoolTargetPath"
                     >
                         <SchoolGradHat />
-                        My School
+                        My school
                     </ProfileDropdownItem>
                     <template
                         v-if="userStore.getIfUserIsModerator"

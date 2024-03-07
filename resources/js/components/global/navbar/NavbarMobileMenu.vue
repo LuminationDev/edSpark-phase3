@@ -1,12 +1,12 @@
 <script setup>
-import ChevronLeftNavIcon from "@/js/components/svg/ChevronLeftNavIcon.vue";
-import ChevronRightNavIcon from "@/js/components/svg/ChevronRightNavIcon.vue";
 import {storeToRefs} from "pinia";
 import {computed, onMounted, ref} from "vue";
 import {useRouter} from "vue-router";
 
 import NavItemsMobileMenu from "@/js/components/global/navbar/NavItemsMobileMenu.vue";
 import ProfileDropdownMobile from "@/js/components/global/ProfileDropdownMobile.vue";
+import ChevronLeftNavIcon from "@/js/components/svg/ChevronLeftNavIcon.vue";
+import ChevronRightNavIcon from "@/js/components/svg/ChevronRightNavIcon.vue";
 import Close from "@/js/components/svg/Close.vue";
 import Logo from "@/js/components/svg/Logo.vue";
 import Search from "@/js/components/svg/Search.vue";
@@ -37,7 +37,8 @@ const profileTargetPath = computed(() => {
 })
 const messageTargetPath = computed(() => {
     if (currentUser.value.id) {
-        return `/message/${currentUser.value.id}`
+        // return `/message/${currentUser.value.id}`        
+        return `/profile/${currentUser.value.id}/messages`
     } else return ''
 })
 const mySchoolTargetPath = computed(() => {
@@ -73,13 +74,13 @@ const profileChildren = [
         name: 'userProfileInfo',
         path: profileTargetPath,
         meta: {
-            customText: 'User Profile'
+            customText: 'User profile'
         }
     }, {
         name: 'userProfileMessages',
         path: messageTargetPath,
         meta: {
-            customText: 'Message'
+            customText: 'Messages'
         }
     }
     , {
@@ -89,10 +90,10 @@ const profileChildren = [
             customText: 'Create'
         }
     }, {
-        name: 'school',
+        name: 'school-single',
         path: mySchoolTargetPath,
         meta: {
-            customText: 'My School'
+            customText: 'My school'
         }
     },
     {
@@ -102,7 +103,7 @@ const profileChildren = [
 
     },
     {
-        name: 'Sign Out',
+        name: 'Sign out',
         type: 'signout',
         clickCallback: handleLogoutUser,
 
@@ -111,7 +112,6 @@ const profileChildren = [
 const isSearchVisible = ref(false);
 
 const handleClickMobileProfile = () => {
-
     mobileNavParent.value = "My account"
     mobileNavChildren.value = profileChildren
     isSearchVisible.value = false;
@@ -142,6 +142,15 @@ const toggleNavbar = () => {
     showMobileNavbar.value = !showMobileNavbar.value
     mobileNavParent.value = ''
     mobileNavChildren.value = []
+
+    if(showMobileNavbar.value){        
+        document.body.classList.add('overflow-y-hidden');
+        document.body.classList.add('h-screen');
+    } else {
+        document.body.classList.remove('overflow-y-hidden');
+        document.body.classList.remove('h-screen');
+    }
+    
 }
 
 const handleClickBackNavbar = () => {
@@ -176,38 +185,56 @@ setupRoutes();
         :class="{navbarScrolled : navScrolled}"
         @click="toggleNavbar"
     >
-        <span class="bg-white block h-1 w-10"/>
-        <span class="bg-white block h-1 w-10"/>
-        <span class="bg-white block h-1 w-10"/>
+        <span class="bg-white block h-1 w-10" />
+        <span class="bg-white block h-1 w-10" />
+        <span class="bg-white block h-1 w-10" />
     </nav>
+    
+    <div
+        id="edSparkLogo"
+        title="edSpark logo"
+        class="absolute right-5"
+    >
+        <router-link
+            :to="{name: 'dashboard'}"
+            title="Go to dashboard"
+        >
+            <Logo
+                class="absolute top-5 right-3 nav-logo transition-all z-30 w-16 h-16 xs:w-24 xs:h-24 sm:w-32 sm:h-32 md:w-24 md:h-24"
+            />
+        </router-link>
+    </div>
+
     <Transition name="slide-fade">
         <div
             v-if="showMobileNavbar"
             class="
                 bg-main-navy
                 fixed
+                overflow-y-auto
                 top-0
                 left-0
-                h-screen
+                h-full
                 min-w-[300px]
+                max-w-[800px]
                 mobileNavbarFull
                 px-5
-                py-10
+                py-6
                 sidebarMenu
                 text-2xl
                 text-white
                 transition
-                w-[45vw]
+                w-[85vw]
                 z-[60]
                 "
         >
             <!--            Main Listing Condition    -->
             <ul
                 v-if="!mobileNavChildren.length && !mobileNavParent"
-                class="flex flex-col font-semibold mt-6 text-3xl text-white"
+                class="flex flex-col font-light text-xl text-white"
             >
                 <li
-                    class="cursor-pointer font-bold ml-auto text-2xl hover:text-main-teal"
+                    class="cursor-pointer font-bold ml-auto text-2xl"
                 >
                     <div
                         id="edSparkLogo"
@@ -218,17 +245,17 @@ setupRoutes();
                             title="Go to dashboard"
                         >
                             <Logo
-                                class="absolute top-8 left-5 h-16 nav-logo transition-all w-16 z-30"
+                                class="absolute top-4 left-5 h-16 nav-logo transition-all w-16 z-30"
                             />
                         </router-link>
                     </div>
                     <button
                         @click="toggleNavbar"
                     >
-                        <Close class="fill-white hover:fill-slate-200 h-6 w-6 hover:cursor-pointer"/>
+                        <Close class="fill-white hover:fill-slate-200 h-6 w-6 hover:cursor-pointer  mb-6"/>
                     </button>
                 </li>
-                <li class="-mt-2 flex font-semibold py-4 text-3xl"/>
+                <li class="-mt-2 flex font-medium py-4 text-2xl"/>
                 <NavItemsMobileMenu
                     v-for="(route, i) in navLinks"
                     :key="i"
@@ -236,23 +263,25 @@ setupRoutes();
                     :click-callback="() => handleClickMobileNavItems(route)"
                 />
 
+                <li>
+                    <div class="bg-white h-px my-6"/>
+                </li>
+
+                
 
                 <li
-                    class="cursor-pointer flex justify-between items-center mt-4"
+                    class="cursor-pointer flex justify-between items-center mb-4"
                     @click="handleGlobalSearchClick"
                 >
                     <div class="searchText">
                         Search
                     </div>
                     <div>
-                        <Search class="ml-10"/>
+                        <Search class="ml-10" />
                     </div>
                 </li>
-                <li>
-                    <div class="bg-white h-px mt-12 my-4"/>
-                </li>
                 <li
-                    class="cursor-pointer flex items-center flex-row font-semibold mt-8"
+                    class="cursor-pointer flex items-center flex-row font-medium mt-4 mb-8"
                 >
                     <ProfileDropdownMobile
                         v-if="isAuthenticated"
@@ -274,44 +303,51 @@ setupRoutes();
             <!--            Children Listing Condition    -->
             <ul v-else>
                 <li
-                    class="cursor-pointer flex justify-between font-bold ml-auto mt-6 text-2xl "
+                    class="cursor-pointer flex justify-between font-bold ml-auto text-xl font-light h-0 mb-16"
                 >
                     <button
-                        class="-ml-2 hover:cursor-pointer fill-white flex justify-between "
+                        class="-ml-2 hover:cursor-pointer fill-white flex justify-between"
                         @click="handleClickBackNavbar"
                     >
                         <div
-                            class="gap-x-2 over:cursor-pointer mr-2 flex flex-row"
+                            class="flex flex-row gap-x-2 mr-2 over:cursor-pointer"
                         >
-                            <ChevronLeftNavIcon/>
+                            <ChevronLeftNavIcon />
                             Back
                         </div>
                     </button>
                     <button
                         @click="toggleNavbar"
                     >
-                        <Close class="fill-white hover:fill-slate-200 h-6 w-6 hover:cursor-pointer"/>
+                        <Close class="fill-white hover:fill-slate-200 h-6 w-6 hover:cursor-pointer" />
                     </button>
                 </li>
-                <li class="flex font-semibold mt-8 py-4 text-3xl">
+                <li class="flex font-medium mt-8 py-4 text-2xl">
                     {{ mobileNavParent }}
                 </li>
+                
                 <NavItemsMobileMenu
                     v-for="(route, i) in mobileNavChildren"
                     :key="i"
                     :route="route"
                     :click-callback="() => handleClickMobileNavItems(route)"
+                    class="text-lg"
                 />
+
                 <li
                     v-if="isSearchVisible"
                     class="cursor-pointer flex justify-between items-center mt-4"
                     @click="handleGlobalSearchClick"
                 >
+                
+                <li>
+                    <div class="bg-white h-px my-6"/>
+                </li>
                     <div class="searchText">
                         Search
                     </div>
                     <div>
-                        <Search class="ml-auto"/>
+                        <Search class="ml-auto" />
                     </div>
                 </li>
             </ul>
@@ -319,7 +355,7 @@ setupRoutes();
     </Transition>
     <div
         v-if="showMobileNavbar"
-        class="absolute top-0 right-0 bg-main-navy/50 h-screen overlay w-[70vw] z-50"
+        class="absolute top-0 right-0 bg-main-navy/70 backdrop-blur-sm h-screen w-screen overlay z-50"
         @click="toggleNavbar"
     />
 </template>

@@ -19,6 +19,7 @@ const props = defineProps({
 const userStore = useUserStore();
 const {currentUser} = storeToRefs(userStore);
 const imageURL = import.meta.env.VITE_SERVER_IMAGE_API;
+
 </script>
 
 <template>
@@ -47,7 +48,7 @@ const imageURL = import.meta.env.VITE_SERVER_IMAGE_API;
             >
                 <img
                     v-if="props.avatarUrl"
-                    class="object-center object-cover w-full"
+                    class="object-center object-cover rounded-full w-full"
                     :src="`${imageURL}/${props.avatarUrl}`"
                     alt=""
                 >

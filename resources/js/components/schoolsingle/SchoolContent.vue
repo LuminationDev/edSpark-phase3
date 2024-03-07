@@ -198,7 +198,7 @@ const moderationStatusMessage = computed(() => {
                 <div class="flex flex-row w-full">
                     <div
 
-                        class="flex justify-between flex-col schoolContent w-full lg:!flex-row"
+                        class="flex justify-between flex-col schoolContent w-full lg:!flex-row gap-12"
                     >
                         <div
                             v-if="editMode"

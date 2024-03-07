@@ -11,25 +11,10 @@ const props = defineProps({
     }
 })
 
-// const fillColorTheme = ref('')
-
-// onMounted(() => {
-//     if (schoolColorKeys.includes(props.colorTheme)) {
-//         fillColorTheme.value = `fill-[${schoolColorTheme[props.colorTheme]['med']}] stroke-[${schoolColorTheme[props.colorTheme]['med']}]`;
-//     } else {
-//         fillColorTheme.value = `fill-[${schoolColorTheme['teal']['med']}] stroke-[${schoolColorTheme['teal']['med']}]`;
-//     }
-// })
-
-// const customFill = computed(() => {
-//     return fillColorTheme.value;
-// })
-
-
 const loadIconComponent = (iconPath) => {
     try {
         if (!Object.keys(props.componentsObject).includes(iconPath)) {
-            console.log('Oh no icon name is not recognized')
+            console.log('Icon name is not recognized')
         } else {
             return props.componentsObject[iconPath];
         }
