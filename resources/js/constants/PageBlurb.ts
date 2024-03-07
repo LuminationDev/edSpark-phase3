@@ -48,6 +48,10 @@ export const LandingHeroText = {
         title: 'ICT Catalogue',
         subtitle: "Explore our curated catalogue featuring products from DfE (Department for Education) approved partners, all accessible on our digital hub. Discover educational resources, tools, and solutions designed to enhance learning experiences for students and educators alike."
     },
+    profile:{
+        title: "User profile",
+        subtitle: "Personalise your account information, adjust your preferences and stay informed with notifications"
+    },
     dma:{
         title: 'Digital Capability Leadership Reflection Tool',
         subtitle: '',
