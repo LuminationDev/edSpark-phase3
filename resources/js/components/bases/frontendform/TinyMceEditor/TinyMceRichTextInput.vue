@@ -67,7 +67,7 @@ watchDebounced(editorContent, emitContent, {debounce: 200, maxWait: 1000})
         v-model="editorContent"
         :init="{
             min_height: props.minHeight,
-            placeholder: '<p>hehehe</p>',
+            placeholder: '<p>Insert text here</p>',
             menubar: false,
             plugins: 'advlist autoresize codesample directionality emoticons fullscreen image link lists media table wordcount',
             toolbar: 'undo redo removeformat |  styles fontsize | bold italic | alignjustify alignleft aligncenter  alignright | numlist bullist | forecolor backcolor | blockquote table hr | image link media codesample emoticons | wordcount',

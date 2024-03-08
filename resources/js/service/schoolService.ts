@@ -16,13 +16,14 @@ export const schoolService = {
     fetchSchoolByName: async (schoolName: string): Promise<any> => {
         return axios.get(`${API_ENDPOINTS.SCHOOL.FETCH_SCHOOL_BY_NAME}${schoolName}`).then(res => {
             const {data} = res;
-            const {content_blocks, tech_used, cover_image, logo} = parseToJsonIfString(data);
+            const {content_blocks, tech_used, cover_image, logo, tech_landscape} = parseToJsonIfString(data);
             return ({
                 ...data,
                 content_blocks: content_blocks || '',
                 tech_used: tech_used ? parseToJsonIfString(tech_used) : [],
                 cover_image: cover_image ? cover_image.replace("/\\/g", "") : '',
-                logo: logo ? logo.replace("/\\/g", "") : ''
+                logo: logo ? logo.replace("/\\/g", "") : '',
+                tech_landscape: tech_landscape ? parseToJsonIfString(tech_landscape) : []
             })
         })
     },
@@ -53,13 +54,15 @@ export const schoolService = {
         ).then(res => {
             if (res.data.result) {
                 const result = res.data.result
-                const {content_blocks, tech_used, cover_image, logo} = parseToJsonIfString(result);
+                const {content_blocks, tech_used, cover_image, logo, tech_landscape} = parseToJsonIfString(result);
                 return ({
                     ...result,
                     content_blocks: content_blocks || "",
                     tech_used: tech_used ? parseToJsonIfString(tech_used) : [],
                     cover_image: cover_image ? cover_image.replace("/\\/g", "") : '',
-                    logo: logo ? logo.replace("/\\/g", "") : ''
+                    logo: logo ? logo.replace("/\\/g", "") : '',
+                    tech_landscape: tech_landscape ? parseToJsonIfString(tech_landscape) : []
+
                 })
             } else {
                 return null

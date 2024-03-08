@@ -9,6 +9,7 @@ import GenericButton from "@/js/components/button/GenericButton.vue";
 import SchoolContact from "@/js/components/schoolsingle/SchoolContact.vue";
 import SchoolColorPicker from "@/js/components/schoolsingle/schoolContent/SchoolColorPicker.vue";
 import SchoolImageChange from "@/js/components/schoolsingle/schoolContent/SchoolImageChange.vue";
+import SchoolHowToUseTech from "@/js/components/schoolsingle/SchoolHowToUseTech.vue";
 import SchoolTech from "@/js/components/schoolsingle/SchoolTech.vue";
 import SchoolWhatsNew from "@/js/components/schoolsingle/SchoolWhatsNew.vue";
 import TechSelector from "@/js/components/selector/TechSelector.vue";
@@ -104,6 +105,7 @@ const handleEditButton = async () => {
 }
 
 const handleCancelEditButton = (): void => {
+    emits('resetColorTheme');
     editMode.value = false
     if (pendingSchoolContent.value) {
         schoolContentState.value = SchoolContentState.PendingAvailable
@@ -398,6 +400,12 @@ onBeforeRouteLeave(() =>{
                 :current-user-can-edit="currentUserCanEdit"
                 :school-id="props.schoolContent['school_id']"
                 :school-location="props.schoolContent['location']"
+            />
+        </template>
+        <template v-if="props.activeSubmenu === 'how-to-use-tech'">
+            <SchoolHowToUseTech
+                :tech-used="props.schoolContent.tech_used"
+                :tech-landscape="props.schoolContent.tech_landscape"
             />
         </template>
     </div>

@@ -81,13 +81,13 @@ const handleClickDeleteDelegates = async (staff) => {
     <div
         class="DelegationPanelInnerContainer flex flex-col rounded-xl w-full"
     >
-        <div class="font-semibold mb-2 text-genericDark text-lg">
-            Nominate staff
-        </div>
         <div
             v-if="availableStaffList.length"
             class="DelegationPanelAvailableSection bg-gray-100 mb-4 px-2 rounded-xl"
         >
+            <div class="font-semibold mb-2 text-genericDark text-lg">
+                Nominate staff
+            </div>
             <div class="font-semibold pt-2 text-gray-400 text-sm">
                 <span class="flex items-center flex-row font-medium gap-2 pl-1">
                     Available

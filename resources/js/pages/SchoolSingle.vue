@@ -163,10 +163,10 @@ const schoolSubmenu = [
         displayText: 'Details',
         value: 'detail'
     },
-    // {
-    //     displayText: "What's new",
-    //     value: 'new'
-    // },
+    {
+        displayText: "How to use tech",
+        value: 'how-to-use-tech'
+    },
     {
         displayText: 'Contact',
         value: 'contact'
@@ -261,7 +261,7 @@ const handleCloseModerationTab = (): void => {
                                             >
                                         </div>
 
-                                        <div class="flex flex-col hidden lg:pl-0 md:block">
+                                        <div class="flex flex-col hidden md:block lg:pl-0">
                                             <h1 class="font-bold pb-4 text-white">
                                                 {{ schoolContent.name }}
                                             </h1>
