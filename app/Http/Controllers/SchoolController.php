@@ -607,15 +607,12 @@ class SchoolController extends Controller
 
             if ($schoolmeta_record) {
                 $user_can_edit = true;
-                $user_can_nominate = false;
-                $user_can_publish = false;
                 $user_message = 'You are editing as a Nominated user';
             }
 
-            if ($user_record && $user_record->site_id == $site_id && ($user_record->role->role_name === 'SCHLDR')) {
+            if ($user_record && $user_record->site_id == $site_id && RoleHelpers::has_minimum_privilege(UserRole::SITE_LEADER)) {
                 $user_can_edit = true;
                 $user_can_nominate = true;
-                $user_can_publish = false;
                 $user_message = 'You are editing as a School leader';
             }
 

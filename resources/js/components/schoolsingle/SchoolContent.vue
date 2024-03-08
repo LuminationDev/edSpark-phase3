@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import {storeToRefs} from "pinia";
-import {computed, onBeforeMount, onMounted, Ref, ref} from 'vue'
-import {useRoute} from "vue-router";
+import {computed, onBeforeMount, onBeforeUnmount, onMounted, Ref, ref} from 'vue'
+import {onBeforeRouteLeave, useRoute} from "vue-router";
 import {toast} from "vue3-toastify";
 
 import TinyMceRichTextInput from "@/js/components/bases/frontendform/TinyMceEditor/TinyMceRichTextInput.vue";
@@ -57,9 +57,8 @@ const props = defineProps({
     }
 })
 const route = useRoute()
-console.log(props.schoolContent)
 
-const emits = defineEmits(['sendInfoToSchoolSingle', 'sendColorToSchoolSingle', 'sendPhotoToSchoolSingle','resetColorTheme'])
+const emits = defineEmits(['sendInfoToSchoolSingle', 'sendColorToSchoolSingle', 'sendPhotoToSchoolSingle', 'resetColorTheme'])
 const {currentUser} = storeToRefs(useUserStore())
 const currentSchoolName = route.params.name
 const editMode = ref<boolean>(false)
@@ -73,6 +72,13 @@ const currentUserCanNominate = ref<boolean>(false)
 const currentUserCanPublish = ref<boolean>(false)
 const currentUserAdminMessage = ref<string>('')
 const tinyMceRefreshKey = ref(0)
+
+const requiresConfirmationBeforeExit = ref(false)
+
+const setConfirmToTrue = () => {
+    if (requiresConfirmationBeforeExit.value) return;
+    requiresConfirmationBeforeExit.value = true
+}
 
 const forceRefreshTinyMce = () => {
     tinyMceRefreshKey.value++
@@ -99,7 +105,7 @@ const handleEditButton = async () => {
 
 const handleCancelEditButton = (): void => {
     editMode.value = false
-    if(pendingSchoolContent.value){
+    if (pendingSchoolContent.value) {
         schoolContentState.value = SchoolContentState.PendingAvailable
     } else {
         schoolContentState.value = SchoolContentState.New
@@ -109,10 +115,12 @@ const handleCancelEditButton = (): void => {
 }
 
 const handleSchoolData = (data): void => {
+    setConfirmToTrue()
     newSchoolContent.value = data
 }
 
 const handleSchoolTech = (techData): void => {
+    setConfirmToTrue()
     newTechUsed.value = techData
 }
 
@@ -126,11 +134,12 @@ const handleAllSaveButton = (): void => {
 }
 
 const handleColorSelected = (newColor): void => {
-    console.log("Color: "+newColor);
+    setConfirmToTrue()
     emits('sendColorToSchoolSingle', newColor)
 }
 
 const handleReceivePhotoFromImageChange = (type, file): void => {
+    setConfirmToTrue()
     emits('sendPhotoToSchoolSingle', type, file)
 }
 
@@ -177,16 +186,23 @@ const userEditRole = computed(() => {
 })
 
 const moderationStatusMessage = computed(() => {
-    if(schoolContentState.value === SchoolContentState.PendingLoaded){
+    if (schoolContentState.value === SchoolContentState.PendingLoaded) {
         return schoolContentStateDescription[schoolContentState.value]
-    }
-    else if (pendingSchoolContent.value) {
+    } else if (pendingSchoolContent.value) {
         return schoolContentStateDescription[schoolContentState.value] + formatDateToDayTime(pendingSchoolContent.value.updated_at)
     } else {
         return "Your latest profile has been approved on " + formatDateToDayTime(props.schoolContent.updated_at)
     }
 })
 
+onBeforeRouteLeave(() =>{
+    if(requiresConfirmationBeforeExit.value){
+        if (!confirm("You have unsaved changes. Are you sure you want to leave?")) {
+            // Prevent component from unmounting
+            return false;
+        }
+    }
+})
 </script>
 <template>
     <div class="flex flex-col w-full">
@@ -198,8 +214,9 @@ const moderationStatusMessage = computed(() => {
                 <div class="flex flex-row w-full">
                     <div
 
-                        class="flex justify-between flex-col schoolContent w-full lg:!flex-row gap-12"
+                        class="flex justify-between flex-col gap-12 schoolContent w-full lg:!flex-row"
                     >
+                        <!--        Beginning of Edit mode                -->
                         <div
                             v-if="editMode"
                             class="flex flex-col w-full lg:!basis-2/3"
@@ -259,6 +276,7 @@ const moderationStatusMessage = computed(() => {
                                 <p class="font-semibold mb-4 text-center">
                                     {{ moderationStatusMessage }}
                                 </p>
+                                <!--      RHS edit mode     -->
                                 <template
                                     v-if="editMode"
                                 >
