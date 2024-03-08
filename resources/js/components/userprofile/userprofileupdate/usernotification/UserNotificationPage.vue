@@ -4,17 +4,24 @@
 import {storeToRefs} from "pinia";
 import {ref} from "vue";
 
-import UserNotificationItemSmall
-    from "@/js/components/userprofile/userprofileupdate/usernotification/UserNotificationItemSmall.vue";
+import Loader from "@/js/components/spinner/Loader.vue";
 import UserNotificationLinearLayout
     from "@/js/components/userprofile/userprofileupdate/usernotification/UserNotificationLinearLayout.vue";
 import UserProfileContentContainer from "@/js/components/userprofile/userprofileupdate/UserProfileContentContainer.vue";
 import {useUserStore} from "@/js/stores/useUserStore";
-
+const isLoading  = ref
 const {currentUser} = storeToRefs(useUserStore())
 const leftHeadingNotification = ref('Notifications')
 const leftDescriptionNotification = ref('Stay up to date with the latest activities.')
 const reloadKey = ref(0)
+const markAllAsRead = ref()
+
+const handleReceiveMarkAllAsRead = (value) => {
+    markAllAsRead.value = value
+}
+const handleReceiveIsLoading = (value) => {
+    isLoading.value = value
+}
 </script>
 
 <template>
@@ -34,20 +41,34 @@ const reloadKey = ref(0)
                         >
                             <template #content>
                                 <div class="flex flex-col gap-10">
-                                    <div class="ml-4 mt-2">
+                                    <div
+
+                                        class="ml-4 mt-2"
+                                    >
                                         <div class="flex flex-row">
                                             <div class="ml-1">
                                                 Unread Notifications
                                             </div>
+                                            <button
+                                                class="ml-auto mr-4 underline"
+                                                @click="markAllAsRead"
+                                            >
+                                                Mark all as read
+                                            </button>
                                         </div>
                                         <div>
                                             <UserNotificationLinearLayout
                                                 notification-size="large"
-                                                notification-unread="unread"
+                                                notification-status="unread"
+                                                @send-mark-all-as-read-button="handleReceiveMarkAllAsRead"
+                                                @send-is-loading="handleReceiveIsLoading"
                                             />
                                         </div>
                                     </div>
-                                    <div class="ml-4 mt-2">
+                                    <div
+
+                                        class="ml-4 mt-2"
+                                    >
                                         <div class="flex flex-row">
                                             <div class="ml-1">
                                                 Read Notifications
@@ -56,7 +77,7 @@ const reloadKey = ref(0)
                                         <div>
                                             <UserNotificationLinearLayout
                                                 notification-size="large"
-                                                notification-unread="read"
+                                                notification-status="read"
                                             />
                                         </div>
                                     </div>

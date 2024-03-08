@@ -11,6 +11,9 @@ export const notificationService = {
     },
     readNotification: async (notificationId): Promise<any> =>{
         return axios.post(API_ENDPOINTS.NOTIFICATION.READ_NOTIFICATION + notificationId)
+    },
+    readAllNotifications: async (currentUserId): Promise<AxiosResponse<any>> => {
+        return axios.post(API_ENDPOINTS.NOTIFICATION.READ_ALL_NOTIFICATIONS + currentUserId);
     }
 
 }

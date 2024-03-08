@@ -75,8 +75,6 @@ class NotificationController extends Controller
         }
         $user->unreadNotifications->markAsRead();
         return ResponseService::success("All notifications marked as read");
-
-
     }
 
 

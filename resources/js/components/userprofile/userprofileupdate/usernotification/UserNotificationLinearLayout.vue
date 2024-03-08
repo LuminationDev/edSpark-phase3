@@ -19,40 +19,43 @@ const props = defineProps({
         required: false,
         default: 'small'
     },
-    notificationUnread:{
+    notificationStatus:{
         type: String,
         required: false,
         default:'unread'
     }
 })
+
+const emits = defineEmits(['sendMarkAllAsReadButton'])
+
 const isLoading = ref(true);
-const notificationUnread = ref(props.notificationUnread);
-const notifications = ref([])
-const allNotifications = ref([])
+const notificationUnread = ref(props.notificationStatus);
+const unreadNotification = ref([])
+const readNotification = ref([])
 
 const {currentUser} = storeToRefs(useUserStore())
 const router = useRouter()
 
 onMounted(() => {
     notificationService.getNotifications(currentUser.value.id).then(res => {
-        notifications.value = res.data.data
+        unreadNotification.value = res.data.data
         isLoading.value = false
     }).catch(err => {
         console.log(err.message)
         isLoading.value = false
     })
     notificationService.getAllNotifications(currentUser.value.id).then(res =>{
-        allNotifications.value = res.data.data
-        console.log(allNotification)
+        readNotification.value = res.data.data.filter(notification => notification.read_at)
+        console.log(readNotification)
         isLoading.value = false
     }).catch(err => {
         console.log(err.message)
         isLoading.value = false
     })
+    emits('sendMarkAllAsReadButton', handleMarkAllAsRead)
 });
 
-
-console.log(notificationService.getNotifications(notifications.value))
+console.log(notificationService.getNotifications(unreadNotification.value))
 const handleClickNotification = (notificationId,resourceId, resourceType, resourceTitle) =>{
     const routeInfo = {
         name: '',
@@ -80,12 +83,40 @@ const handleClickNotification = (notificationId,resourceId, resourceType, resour
 
 const filteredNotifications = computed(() => {
     if (notificationUnread.value === 'unread') {
-        return notifications.value;
+        return unreadNotification.value;
     } else if (notificationUnread.value === 'read') {
-        return allNotifications.value;
+        return readNotification.value;
     }
-    // Add more conditions if needed
 });
+
+
+const handleMarkAllAsRead = () => {
+    isLoading.value = true;
+    notificationService.readAllNotifications(currentUser.value.id)
+        .then(() => {
+            refreshNotifications();
+        })
+        .catch((error) => {
+            console.error("Error marking all notifications as read:", error.message);
+            isLoading.value = false;
+        });
+};
+const refreshNotifications = async () => {
+    isLoading.value = true;
+    try {
+        // notificationService.getNotifications(currentUser.value.id).then(res => {
+        //     notifications.value = res.data.data;
+        // }),
+        notificationService.getAllNotifications(currentUser.value.id).then(res => {
+            readNotification.value = res.data.data.filter(notification => notification.read_at);
+            unreadNotification.value = res.data.data.filter(notification => !notification.read_at)
+        })
+    } catch (error) {
+        console.error("Error refreshing notifications:", error.message);
+    } finally {
+        isLoading.value = false;
+    }
+};
 
 </script>
 
@@ -100,7 +131,7 @@ const filteredNotifications = computed(() => {
         />
     </div>
     <div
-        v-else-if="notifications.length && notificationUnread === 'unread' || notificationUnread === 'read'"
+        v-else-if="unreadNotification.length && notificationUnread === 'unread' || notificationUnread === 'read'"
         class="ListingNotificationLayout"
     >
         <div
@@ -109,7 +140,6 @@ const filteredNotifications = computed(() => {
             class="mr-4"
         >
             <UserNotificationItemSmall
-                :is="getNotificationComponent"
                 v-if="notificationSize === 'small'"
                 :display-heading="notification.title"
                 :time-date="notification.updated_at"
@@ -117,7 +147,6 @@ const filteredNotifications = computed(() => {
                 :click-callback="() => handleClickNotification(notification.id,notification.resource_id, notification.type,notification.title )"
             />
             <UserNotificationItemLarge
-                :is="getNotificationComponent"
                 v-else-if="notificationSize === 'large'"
                 :display-heading="notification.title"
                 :time-date="notification.updated_at"
@@ -131,9 +160,17 @@ const filteredNotifications = computed(() => {
 
     <div v-else>
         <p class="ml-1 mt-10">
-            No notifications available
+            No unreadNotification available
         </p>
     </div>
+<!--    <div class="mt-20">-->
+<!--        <button-->
+<!--            class="mark-all-as-read-button"-->
+<!--            @click="handleMarkAllAsRead"-->
+<!--        >-->
+<!--            Mark All as Read-->
+<!--        </button>-->
+<!--    </div>-->
 </template>
 
 <style scoped>
