@@ -16,6 +16,8 @@ import InspirationAndGuidesRobot from "@/js/components/inspirationandguides/Insp
 import {LandingHeroText} from "@/js/constants/PageBlurb";
 import {dmaService} from "@/js/service/dmaService";
 
+import PDFBuilder from "@/js/components/global/PDFBuilder.vue";
+
 const showSurveyModal = ref(false);
 const showReportModal = ref(false);
 
@@ -259,10 +261,12 @@ const handleResetSurvey = async () => {
                             </div>
                             <p class="px-4 text-base md:!px-5 lg:!px-0">
                                 <!-- TODO correct this information -->
-                                The tool is for you and your school. Your data is only stored locally in the
-                                current profile of your web browser. You can generate a PDF report for sharing within
-                                your school or including in your next
-                                round of School Improvement planning.
+                                <PDFBuilder>
+                                    The tool is for you and your school. Your data is only stored locally in the
+                                    current profile of your web browser. You can generate a PDF report for sharing within
+                                    your school or including in your next
+                                    round of School Improvement planning.
+                                </PDFBuilder>
 
                                 <span class="block h-6 mt-7">
                                     <button
@@ -283,6 +287,7 @@ const handleResetSurvey = async () => {
                                 v-for="domain of domains"
                                 :key="domain.id"
                                 :domain="domain"
+                                id="DomainSummary"
                                 :resetting="isDomainResetting(domain.id)"
                                 @click="handleLaunchSurvey(domain.id)"
                             />
