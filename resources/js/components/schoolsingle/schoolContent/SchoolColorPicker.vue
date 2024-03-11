@@ -8,7 +8,7 @@ const handleColorBoxClick = (color) => {
 }
 </script>
 <template>
-    <div class="bg-slate-100 border-2 flex flex-col max-w-xl schoolColorPickerContainer text-center w-1/2">
+    <div class="bg-slate-100 border-2 flex flex-col max-w-xl px-4 py-2 schoolColorPickerContainer text-center w-full  xl:!w-3/4">
         <h3 class="font-semibold text-xl">
             Pick a colour theme
         </h3>
