@@ -30,7 +30,7 @@ class SchoolController extends Controller
         $current_user = User::find($current_user_id);
 
         if ($current_user
-            && $current_user->site_id === $site_id && $current_user->role->role_name === 'SCHLDR') {
+            && $current_user->site_id === intval($site_id) && RoleHelpers::has_minimum_privilege(UserRole::SITE_LEADER)) {
             return true;
         } elseif (RoleHelpers::has_minimum_privilege(UserRole::ADMIN)) {
             return true;
@@ -38,6 +38,7 @@ class SchoolController extends Controller
     }
 
     private function formatSchoolMetadata($schoolMetadata)
+
     {
         $tempMetadata = [];
         if ($schoolMetadata) {
@@ -295,7 +296,7 @@ class SchoolController extends Controller
             $data = $request->all();
             $error = '';
 
-            if (!$this->checkUserCanAccess($data['school_id'])) {
+            if (!$this->checkUserCanAccess($data['site_id'])) {
                 return ResponseService::error_unauthorized();
             }
 
@@ -606,15 +607,12 @@ class SchoolController extends Controller
 
             if ($schoolmeta_record) {
                 $user_can_edit = true;
-                $user_can_nominate = false;
-                $user_can_publish = false;
                 $user_message = 'You are editing as a Nominated user';
             }
 
-            if ($user_record && $user_record->site_id == $site_id && ($user_record->role->role_name === 'SCHLDR')) {
+            if ($user_record && $user_record->site_id == $site_id && RoleHelpers::has_minimum_privilege(UserRole::SITE_LEADER)) {
                 $user_can_edit = true;
                 $user_can_nominate = true;
-                $user_can_publish = false;
                 $user_message = 'You are editing as a School leader';
             }
 
