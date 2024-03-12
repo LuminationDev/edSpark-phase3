@@ -124,6 +124,13 @@ export const API_ENDPOINTS: Endpoints = appendServerURL({
         FETCH_ALL_BOOKMARKS_WITH_TITLE: `/fetchAllBookmarksWithTitle`,
         FETCH_ALL_BOOKMARKS_BY_TYPE: `/fetchAllBookmarksByType`,
     },
+    NOTIFICATION:{
+        GET_NOTIFICATIONS : '/getNotifications/',
+        GET_ALL_NOTIFICATIONS : '/getAllNotifications/',
+        READ_NOTIFICATION: '/readNotification/',
+        READ_ALL_NOTIFICATIONS: '/readAllNotifications/'
+    },
+
     LABEL: {
         FETCH_ALL_LABELS: '/fetchAllLabels'
     },

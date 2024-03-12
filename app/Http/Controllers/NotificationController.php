@@ -2,99 +2,83 @@
 
 namespace App\Http\Controllers;
 
+use App\Services\ResponseService;
+use App\Models\User;
 use Illuminate\Http\Request;
-use App\Models\Notification;
-use Carbon\Carbon;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Notification;
 
 class NotificationController extends Controller
 {
-    /**
-     * Get All Notifications
-     *
-     */
-    public function getAllNotifications($userId)
+    public static function formatNotification($notifications)
     {
-        $notifications = Notification::where('user_id', '=', $userId)
-                                ->where('status', '=', 0)
-                                ->get();
-        $dataToSend = [];
-        $count = 0;
-        if ($notifications) {
-            $count += count($notifications);
-            foreach ($notifications as $notification) {
-                $result = [
-                    'id' => $notification->id,
-                    'type' => ($notification->type) ? $notification->type : NULL,
-                    'data' => $notification->data,
-                    'status' => $notification->status,
-//                    'read_at' => ($notification->read_at) ? $notification->read_at : NULL
-                ];
-                $dataToSend[] = $result;
-            }
-        }
-        return response()->json([
-            "result" => $dataToSend,
-            "count" => $count
-        ]);
+        $formattedNotifications = [];
 
-    }
-
-    /**
-     * Get single notification
-     */
-    public function getSingleNotification(Request $request)
-    {
-        $data = $request->all();
-        $notificationId = $data['notificationId'];
-        $notification = Notification::findOrFail($notificationId);
-        $read_at = Carbon::now();
-        if($notification) {
-            $notification->update([
-                'read_at' => $read_at,
-                'status' => 1
-            ]);
-            $result = [
+        foreach ($notifications as $notification) {
+            $authorDisplayName = User::find($notification->data['data']['author_id'])->display_name ?? "Name unavailable";
+            $formattedNotification = [
                 'id' => $notification->id,
-                'type' => ($notification->type) ? $notification->type : NULL,
-                'data' => $notification->data,
-                'status' => $notification->status,
-                'read_at' => ($notification->read_at) ? $notification->read_at : NULL
+                'resource_id' => $notification->data['data']['id'],
+                'title' => $notification->data['data']['title'] ?? null,
+                'author_name' => $authorDisplayName, // change to display name
+                'read_at' => $notification->read_at ?? null,
+                'type' => $notification->data['data']['type'],
+                'action' => $notification->data['data']['action'],
+                'updated_at' => $notification->updated_at
             ];
 
-            return response()->json($result);
+            $formattedNotifications[] = $formattedNotification;
         }
+
+        return $formattedNotifications;
     }
 
-    /**
-     * Get notifications by type
-     */
-    public function getNotificationByType(Request $request)
-    {
-        $data = $request->all();
-        $userId = $data['userId'];
-        $type = $data['type'];
-        $notifications = Notification::where('user_id', '=', $userId)
-                                        ->where('type', '=', $type)
-                                        ->where('status', '=', 0)
-                                        ->get();
-        $dataToSend = [];
-        $count = 0;
-        if ($notifications) {
-            $count += count($notifications);
-            foreach ($notifications as $notification) {
-                $result = [
-                    'id' => $notification->id,
-                    'type' => ($notification->type) ? $notification->type : NULL,
-                    'data' => $notification->data,
-                    'status' => $notification->status,
-//                    'read_at' => ($notification->read_at) ? $notification->read_at : NULL
-                ];
-                $dataToSend[] = $result;
-            }
+    public function getNotifications(Request $request, $userId){
+        $user = User::find($userId);
+        if(!$user){
+            return ResponseService::error("User not found");
         }
-        return response()->json([
-            "data" => $dataToSend,
-            "count" => $count
-        ]);
+        $userNotifications = $user->unreadNotifications->take(6);
+        $formattedNotifications = $this->formatNotification($userNotifications);
+
+        return ResponseService::success('Notification fetched successfully', $formattedNotifications);
+
     }
+
+    public function getAllNotifications(Request $request, $userId){
+        $user = User::find($userId);
+        if(!$user){
+            return ResponseService::error("User not found");
+        }
+        $userNotifications = $user->notifications;
+        $formattedNotifications = $this->formatNotification($userNotifications);
+
+        return ResponseService::success('All notifications fetched successfully', $formattedNotifications);
+    }
+
+    public function readNotification(Request $request, $notificationId)
+    {
+        $notification = Auth::user()->notifications->find($notificationId);
+        if (!$notification) {
+            return ResponseService::error("Notification not found");
+        }
+
+        $notification->markAsRead();
+
+        return ResponseService::success("Notification marked as read");
+    }
+
+    public function readAllNotifications($userId){
+        $user = User::find($userId);
+        if(!$user){
+            return ResponseService::error("User not found");
+        }
+        $user->unreadNotifications->markAsRead();
+        return ResponseService::success("All notifications marked as read");
+    }
+
+
+
+
+
 }
