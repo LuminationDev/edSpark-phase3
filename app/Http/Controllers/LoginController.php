@@ -48,7 +48,8 @@ class LoginController extends Controller
     {
         $idToken = $user->token;
         // with user's email check for edSpark's Id
-        $userEdSparkId = User::where('email', $user->email)->first()->id;
+        $userEdSpark = User::where('email', $user->email)->first();
+        $userEdSparkId = isset($userEdSpark) ? $userEdSpark->id : false;
 
         if($userEdSparkId){
             $isSuperAdminMeta = Usermeta::where('user_id', $userEdSparkId)
@@ -70,6 +71,7 @@ class LoginController extends Controller
         $role = $isSuperAdmin ? Role::find(1) : Role::where('role_name', $user->user['mainrolecode'])->first() ?? Role::find(4);
 
         $siteId = $user->user['mainsiteid'];
+        dd($user->user);
         $site = Site::where('site_id', $siteId)->first();
 
         return User::updateOrCreate(
@@ -77,7 +79,7 @@ class LoginController extends Controller
             [
                 'full_name' => $user->name,
                 'role_id' => $isSuperAdmin ? 1 : $role->id,
-                'site_id' => $site ? $siteId : 10000,
+                'site_id' => $site ? $siteId : 9999,
                 'remember_token' => Str::random(15),
                 'token' => $idToken ?? $user->token,
                 'isFirstTimeVisit' => false,
