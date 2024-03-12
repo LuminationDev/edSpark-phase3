@@ -1,18 +1,19 @@
 <script setup>
-import {computed,ref} from 'vue'
+import {watchDebounced} from "@vueuse/core";
+import {computed, ref} from 'vue'
 
 import TinyMceRichTextInput from "@/js/components/bases/frontendform/TinyMceEditor/TinyMceRichTextInput.vue";
 import ImageUploaderInput from "@/js/components/bases/ImageUploaderInput.vue";
-import {schoolPartnerTech,schoolTech} from "@/js/constants/schoolTech";
+import {schoolPartnerTech, schoolTech} from "@/js/constants/schoolTech";
 
 // techUsed is the technology selected on the selector
 // techLandscape is the content being saved to the profile
 const props = defineProps({
-    techUsed:{
+    techUsed: {
         type: Array,
         required: true
     },
-    techLandscape:{
+    techLandscape: {
         type: Array,
         required: true
     }
@@ -28,39 +29,41 @@ const createHowToDataStructure = item => {
         images: []
     })
 }
-const allHowToUseData = ref([])
 const howToUseData = ref([])
+const allTechnologyList = [...schoolTech, ...schoolPartnerTech]
 
-// handle existing data
-if(props.techLandscape && props.techLandscape.length > 0){
-    console.log('current data fouund, cloning and will perform check later')
+
+// initialise howToUseData,
+// if not null, deep copy and check if there's missing field and create it with the createHowTODataStructure
+// if null or length == 0, make a fresh copy
+if (props.techLandscape && props.techLandscape.length > 0) {
     howToUseData.value = _.cloneDeep(props.techLandscape)
-
-    // do a check based on tech used, filters out data no longer inside tech used and add skeleton for new tech
-
+    howToUseData.value.forEach(existingItem => {
+        const matchingTech = allTechnologyList.find(tech => tech.name === existingItem.name);
+        if (!matchingTech) {
+            // If the item is missing in allTechnologyList, add it
+            howToUseData.value.push(createHowToDataStructure(existingItem));
+        }
+    });
 } else {
-    console.log('no existing data from techLandscape')
-    console.log('creating skeleton here')
-    howToUseData.value = [...schoolTech, ...schoolPartnerTech].map(item => {
+    howToUseData.value = allTechnologyList.map(item => {
         return createHowToDataStructure(item);
     })
 }
 
-const handleTinyMceContent = (name,data) =>{
-    console.log(JSON.stringify(data))
+const handleTinyMceContent = (name, data) => {
     howToUseData.value.filter(item => item.name === name)[0].text = data
 }
-const handleUploadedImageUrls = (name, urlsData) =>{
-    console.log(urlsData)
+const handleUploadedImageUrls = (name, urlsData) => {
     howToUseData.value.filter(item => item.name === name)[0].url = urlsData.map(item => item.remoteUrl)
 }
 
-const activeHowToUseTechItem = computed(() =>{
+const activeHowToUseTechItem = computed(() => {
     return howToUseData.value.filter(htuitem => props.techUsed.map(tuItem => tuItem.name).includes(htuitem.name))
 })
 
 const displayTitle = (code) => {
-    switch(code){
+    switch (code) {
     case "IoT":
         return "Internet of Things"
     case "VR":
@@ -72,6 +75,16 @@ const displayTitle = (code) => {
     }
 }
 
+const emits = defineEmits(['emitTechLandscape'])
+
+
+const sendDataToParent = () =>{
+    emits('emitTechLandscape', howToUseData.value)
+}
+
+watchDebounced(howToUseData, () =>{
+    sendDataToParent()
+}, {deep: true})
 
 </script>
 

@@ -197,6 +197,10 @@ const moderationStatusMessage = computed(() => {
     }
 })
 
+const handleReceiveTechLandscape = (data)=>{
+    console.log(JSON.stringify(data))
+}
+
 onBeforeRouteLeave(() =>{
     if(requiresConfirmationBeforeExit.value){
         if (!confirm("You have unsaved changes. Are you sure you want to leave?")) {
@@ -406,6 +410,7 @@ onBeforeRouteLeave(() =>{
                                 <SchoolHowToUseTech
                                     :tech-used="newTechUsed"
                                     :tech-landscape="props.schoolContent.tech_landscape"
+                                    @emit-tech-landscape="handleReceiveTechLandscape"
                                 />
                             </div>
                         </div>

@@ -57,6 +57,91 @@ const emitContent = () => {
 
 watchDebounced(editorContent, emitContent, {debounce: 200, maxWait: 1000})
 
+const fontStyling = `
+h1 {
+    display: block;
+    /* font-size: 2em; */
+    margin-block-start: 0.67em;
+    margin-block-end: 0.67em;
+    margin-inline-start: 0px;
+    margin-inline-end: 0px;
+    font-weight: bold;
+    margin-top: 32px;
+    margin-bottom: 16px;
+    font-size: xx-large;
+}
+
+h2 {
+    display: block;
+    /* font-size: 1.5em; */
+    margin-block-start: 0.83em;
+    margin-block-end: 0.83em;
+    margin-inline-start: 0px;
+    margin-inline-end: 0px;
+    font-weight: bold;
+    margin-top: 28px;
+    margin-bottom: 16px;
+    font-size: x-large;
+}
+
+h3 {
+    display: block;
+    /* font-size: 1.17em; */
+    margin-block-start: 1em;
+    margin-block-end: 1em;
+    margin-inline-start: 0px;
+    margin-inline-end: 0px;
+    font-weight: bold;
+    margin-top: 24px;
+    margin-bottom: 16px;
+    font-size: larger;
+}
+
+h4 {
+    display: block;
+    margin-block-start: 1.33em;
+    margin-block-end: 1.33em;
+    margin-inline-start: 0px;
+    margin-inline-end: 0px;
+    font-weight: bold;
+    margin-top: 20px;
+    margin-bottom: 14px;
+    font-size: large;
+}
+
+h5 {
+    display: block;
+    /* font-size: 0.83em; */
+    margin-block-start: 1.67em;
+    margin-block-end: 1.67em;
+    margin-inline-start: 0px;
+    margin-inline-end: 0px;
+    font-weight: 500;
+    margin-top: 20px;
+    margin-bottom: 14px;
+    font-size: large;
+}
+
+h6 {
+    display: block;
+    /* font-size: 0.67em; */
+    margin-block-start: 2.33em;
+    margin-block-end: 2.33em;
+    margin-inline-start: 0px;
+    margin-inline-end: 0px;
+    font-weight: 500;
+    margin-top: 20px;
+    margin-bottom: 14px;
+    font-size: medium;
+}
+
+p {
+    font-weight: 100;
+    padding-bottom: 16px;
+    line-height: 1.5;
+    font-size: large;
+}
+`
 
 
 </script>
@@ -80,7 +165,7 @@ watchDebounced(editorContent, emitContent, {debounce: 200, maxWait: 1000})
             browser_spellcheck : true,
             content_css: '/css/filament/font/font.css',
             skin: false,
-            content_style: `body {font-family: MuseoSans;} html {font-family: MuseoSans;} .mce-offscreen-selection{display: none;}`,
+            content_style: `body {font-family: MuseoSans;} html {font-family: MuseoSans;} .mce-offscreen-selection{display: none;} ${fontStyling}`,
             style_formats: editorStyleFormat,
             contextmenu: 'copy cut paste image link'
         }"
