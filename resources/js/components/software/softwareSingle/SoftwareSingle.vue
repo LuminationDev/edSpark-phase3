@@ -39,7 +39,6 @@ const softwareSubmenu = [
         value: 'detail'
     },
     {
-
         displayText: 'How to access',
         value: 'access'
     }]

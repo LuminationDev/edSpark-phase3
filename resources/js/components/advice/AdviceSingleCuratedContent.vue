@@ -25,6 +25,6 @@ const {relatedAdvice} = storeToRefs(adviceStore)
         </div>
     </div>
     <div v-else>
-        Loading..
+        Loading...
     </div>
 </template>

@@ -29,6 +29,6 @@ const { relatedSoftware } = storeToRefs(softwareStore)
         </div>
     </div>
     <div v-else>
-        Loading
+        Loading...
     </div>
 </template>
