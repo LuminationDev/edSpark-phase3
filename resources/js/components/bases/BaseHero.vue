@@ -138,11 +138,12 @@ const heroBackgroundColor = computed(() => {
 
 
 <!-- :class="heroBackgroundColor" -->
+<!-- grid grid-cols-10 -->
 
 <template>
     <div class="BaseHeroContainer h-mainHero max-h-mainHero mb-0 overflow-y-hidden relative z-10">
         <div
-            class="grid grid-cols-10 h-full relative"
+            class="flex flex-row h-full relative"
         >
             <div
                 class="
@@ -156,6 +157,7 @@ const heroBackgroundColor = computed(() => {
                     px-11
                     lg:!col-span-6
                     "
+                style="flex:1"
                 :style="heroBackgroundSwitch"
                 :class="heroBackgroundColor"
             >
@@ -218,6 +220,7 @@ const heroBackgroundColor = computed(() => {
             <div
                 class="bg-center bg-cover bg-no-repeat bg-white hidden imageCover lg:!block lg:!col-span-4"
                 :style="'background-image: url(' + heroBackgroundLinkOnly +')'"
+                style="width: 500px; height: auto"
             />
         </div>
 
