@@ -5,6 +5,7 @@ import CoverScreen from "@/js/components/dma/CoverScreen.vue";
 import DomainCoverScreen from "@/js/components/dma/DomainCoverScreen.vue";
 import ProgressBar from "@/js/components/dma/ProgressBar.vue";
 import QuestionScreen from "@/js/components/dma/QuestionScreen.vue";
+import WarningModal from "@/js/components/dma/WarningModal.vue";
 import Spinner from "@/js/components/spinner/Spinner.vue";
 import {dmaService} from "@/js/service/dmaService";
 
@@ -295,7 +296,7 @@ const handleResetDomain = () => {
                 :domain="domain"
                 :questions="questions"
                 @continue="handleContinueSurvey"
-                @reset="handleResetDomain"
+                @reset="showResetModal = true"
             />
             <CoverScreen
                 v-else-if="currentQuestion.phase === 0"
@@ -376,6 +377,7 @@ const handleResetDomain = () => {
             corner-controls
             blur-bg
             :disabled="!reflection"
+            :primary-on-enter="false"
             @primary="handleSubmitReflection"
         >
             <template #content>
@@ -466,6 +468,22 @@ In what way will existing practices and ways of working need to change?
                 Reset progress
             </template>
         </CoverScreen>
+        <WarningModal
+            v-if="showResetModal"
+            embed
+            @cancel="showResetModal=false"
+            @confirm="handleResetDomain"
+        >
+            <template #title>
+                Are you sure?
+            </template>
+            <template #message>
+                Resetting will erase all your progress made on this domain. Other domains won't be affected.
+            </template>
+            <template #confirm>
+                Reset
+            </template>
+        </WarningModal>
     </template>
     <div
         v-else
