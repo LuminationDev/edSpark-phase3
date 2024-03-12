@@ -539,7 +539,12 @@ const userNotificationLargeLayout = computed(() =>
                 class="UserBookmarkListContainer flex flex-col pt-12"
             >
                 <template #content>
-                    <UserBookmark :bookmark-data="userBookmarks" />
+                    <div class="flex flex-row mb-6 ml-4 mt-2">
+                        Your Bookmarks
+                    </div>
+                    <div class="ml-4">
+                        <UserBookmark />
+                    </div>
                 </template>
             </UserProfileContentContainer>
         </div>

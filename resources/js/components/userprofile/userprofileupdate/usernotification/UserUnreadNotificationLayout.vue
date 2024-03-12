@@ -6,7 +6,7 @@ import {useRouter} from "vue-router";
 
 import Loader from "@/js/components/spinner/Loader.vue";
 import UserNotificationItemSmall
-    from "@/js/components/userprofile/userprofileupdate/usernotification/UserNotificationItemSmall.vue";
+    from "@/js/components/userprofile/userprofileupdate/usernotification/ListingDesignItemSmall.vue";
 import {lowerSlugify} from "@/js/helpers/stringHelpers";
 import {notificationService} from "@/js/service/notificationService";
 import {useUserStore} from "@/js/stores/useUserStore";

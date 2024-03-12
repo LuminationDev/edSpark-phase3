@@ -28,12 +28,15 @@ const props = defineProps({
 const emits = defineEmits([])
 
 const getCategoryStyling = (categoryText) => {
-    switch (categoryText) {
-    case 'SOFTWARE':
+    const lowerCaseCategory = categoryText.toLowerCase();
+    switch (lowerCaseCategory) {
+    case 'software':
         return '!border-purple-500 !border-2 !text-purple-500 !bg-purple-50';
-    case 'ADVICE':
+    case 'school':
+        return '!border-purple-500 !border-2 !text-purple-500 !bg-purple-50';
+    case 'advice':
         return '!border-green-600 !border-2 !text-green-700 !bg-green-50';
-    case 'EVENT':
+    case 'event':
         return '!border-blue-500 !border-2 !text-blue-700 !bg-blue-50';
     default:
         return 'border';
@@ -73,7 +76,7 @@ const formattedCategoryTextString = computed(() => {
             </div>
         </div>
         <div class="p-2">
-            <div class="ml-6 mr-6 text-gray-500">
+            <div class="ml-6 mr-6 text-gray-500 w-48">
                 {{ formatDateToDayTime(timeDate) }}
             </div>
         </div>
