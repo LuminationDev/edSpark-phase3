@@ -19,7 +19,7 @@ const props = defineProps({
 const emit = defineEmits(['click'])
 
 const handleEnter = (event => {
-    if(event.key === 'Enter') emit('click');
+    if(!props.disabled && event.key === 'Enter') emit('click');
 });
 
 /*
