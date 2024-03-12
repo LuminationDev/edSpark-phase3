@@ -29,7 +29,9 @@ class Partnerprofile extends Model
         'cover_image',
         'logo',
         'introduction',
-        'motto'
+        'motto',
+        'created_at',
+        'updated_at'
     ];
 
     /**

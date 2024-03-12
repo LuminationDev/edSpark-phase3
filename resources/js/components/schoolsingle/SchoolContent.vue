@@ -103,9 +103,7 @@ const handleCancelEditButton = (): void => {
         schoolContentState.value = SchoolContentState.PendingAvailable
     } else {
         schoolContentState.value = SchoolContentState.New
-
     }
-
 }
 
 const handleSchoolData = (data): void => {
@@ -198,7 +196,7 @@ const moderationStatusMessage = computed(() => {
                 <div class="flex flex-row w-full">
                     <div
 
-                        class="flex justify-between flex-col schoolContent w-full lg:!flex-row gap-12"
+                        class="flex justify-between flex-col gap-12 schoolContent w-full lg:!flex-row"
                     >
                         <div
                             v-if="editMode"
