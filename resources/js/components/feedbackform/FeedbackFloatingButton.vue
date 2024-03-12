@@ -5,7 +5,7 @@
 <template>
     <div
         class="
-            bg-main-teal
+            bg-main-darkTeal
             border-[1px]
             border-white
             flex
@@ -16,7 +16,7 @@
             rounded-lg
             scale-75
             w-20
-            hover:!bg-main-darkTeal
+            hover:!bg-main-teal
             md:!scale-100
             ">
         <img
@@ -24,8 +24,17 @@
             src="@/assets/images/Feedback-MSG-icon.png"
             alt="icon indicating message"
         >
-        <div class="text-center text-white">
-            Report <br> issue
+        <div class="text-center text-white floatingFeedbackBtn">
+            Feedback & <br> suggestions
         </div>
     </div>
 </template>
+
+
+<style scoped>
+.floatingFeedbackBtn {
+    font-size: 0.76rem;
+    font-weight: 400;
+    line-height: 1.1;
+}
+</style>

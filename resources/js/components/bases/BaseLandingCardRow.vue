@@ -16,6 +16,7 @@ const windowStore = useWindowStore()
 const isLoading = computed(() => {
     return !props.resourceList || !props.resourceList.length
 })
+
 </script>
 <template>
     <div
@@ -32,7 +33,7 @@ const isLoading = computed(() => {
             </div>
         </template>
         <template v-else>
-            <slot name="rowContent" />
+            <slot name="rowContent"/>
         </template>
     </div>
 </template>

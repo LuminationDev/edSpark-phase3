@@ -223,15 +223,28 @@ input, textarea, select {
 }
 
 .fi-btn {
-    background-color: teal !important;
-    color: white !important;
+    /* background-color: teal !important;
+    color: white !important; */
     border: none;
     padding: 10px 20px;
 }
 
-.fi-btn:hover {
-    background-color: blue !important;
+.fi-btn-label {
+    background: transparent;
+}
 
+.fi-fo-builder-block-picker .fi-btn {
+    background-color: teal !important;
+    color: white !important;
+}
+
+.fi-btn:hover {
+    /* background-color: blue !important; */
+    -webkit-filter: brightness(1.1);
+}
+
+.fi-btn.bg-white {
+    background-color: #fbfbfb;
 }
 
 .time_elapsed-counter {

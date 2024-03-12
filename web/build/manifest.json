@@ -103,25 +103,21 @@
     "file": "assets/hardwareInfoImage-e7b190a8.png",
     "src": "resources/assets/images/hardwareInfoImage.png"
   },
-  "resources/assets/images/profilePlaceholder.webp": {
-    "file": "assets/profilePlaceholder-9b013e68.webp",
-    "src": "resources/assets/images/profilePlaceholder.webp"
-  },
-  "resources/assets/images/profile_background.jpeg": {
-    "file": "assets/profile_background-84005a5c.jpeg",
-    "src": "resources/assets/images/profile_background.jpeg"
+  "resources/assets/video/temporary.mp4": {
+    "file": "assets/temporary-71944d74.mp4",
+    "src": "resources/assets/video/temporary.mp4"
   },
   "resources/assets/video/temporary.mp4": {
     "file": "assets/temporary-71944d74.mp4",
     "src": "resources/assets/video/temporary.mp4"
   },
   "resources/css/app.css": {
-    "file": "assets/app-4c226ef6.css",
+    "file": "assets/app-ce81d578.css",
     "isEntry": true,
     "src": "resources/css/output.css"
   },
   "resources/css/filament/admin/theme.css": {
-    "file": "assets/theme-dcd636e7.css",
+    "file": "assets/theme-9cbb555a.css",
     "isEntry": true,
     "src": "resources/css/filament/admin/theme.css"
   },
@@ -190,12 +186,12 @@
     "src": "resources/css/font/museosans-700-webfont.woff2"
   },
   "resources/css/output.css": {
-    "file": "assets/app-4c226ef6.css",
+    "file": "assets/app-ce81d578.css",
     "isEntry": true,
     "src": "resources/css/output.css"
   },
   "resources/js/app.css": {
-    "file": "assets/app-69258a6c.css",
+    "file": "assets/app-9dedac3d.css",
     "src": "resources/js/app.css"
   },
   "resources/js/app.ts": {
@@ -207,8 +203,6 @@
       "assets/white-ribbon-6ba8cd1c.svg",
       "assets/dfe-42a1625e.svg",
       "assets/edSparkLogoNew-5769a113.png",
-      "assets/profile_background-84005a5c.jpeg",
-      "assets/profilePlaceholder-9b013e68.webp",
       "assets/check-bbafe64b.svg",
       "assets/illustration-leading-35b1ce05.png",
       "assets/illustration-learning-69130225.png",
@@ -246,10 +240,10 @@
       "assets/bg-cover-triage-16975a06.jpg"
     ],
     "css": [
-      "assets/app-69258a6c.css",
-      "assets/app-4c226ef6.css"
+      "assets/app-9dedac3d.css",
+      "assets/app-ce81d578.css"
     ],
-    "file": "assets/app-b8d6e3da.js",
+    "file": "assets/app-817cd2f2.js",
     "isEntry": true,
     "src": "resources/js/app.ts"
   }

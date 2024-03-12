@@ -28,10 +28,11 @@ const {
     <div>
         <PartnersHero />
         <SectionHeader
-            title="Our Partners"
-            :classes="'bg-secondary-darkBlue'"
-            section="laptops"
+            title="Our partners"
+            :classes="'bg-secondary-blueberry'"
+            section="partners"
             button-text="View all partners"
+            :id="partnersBtn"
             :button-callback="() => router.push('/browse/partner')"
         />
         <div
@@ -68,10 +69,11 @@ const {
             </template>
         </div>
         <SectionHeader
-            :classes="'bg-secondary-cherry'"
+            :classes="'bg-secondary-blueberry'"
             :section="'events'"
-            :title="'Event Calendar'"
+            :title="'Event calendar'"
             :button-text="'View all events'"
+            :id="eventsBtn"
             :button-callback="() => router.push('/browse/event')"
         />
         <EventSectionPartner />

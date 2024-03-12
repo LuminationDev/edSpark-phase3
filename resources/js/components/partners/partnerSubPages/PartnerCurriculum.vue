@@ -18,7 +18,7 @@ const fulfilledData = await props.data
     <div class="adviceSubPageContainer flex flex-col px-10">
         <div class="Title adviceSubpage">
             <div class="font-semibold pb-6 text-2xl text-center">
-                Here is your listed advice
+                Find inspiration in the articles below
             </div>
         </div>
         <div class="flex justify-center lg:justify-start flex-row flex-wrap gap-6">

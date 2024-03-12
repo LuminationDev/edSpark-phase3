@@ -103,12 +103,14 @@ if (props.preselected) {
 
     #searchTitle {
         margin-left: 25px; /* centre with icon */
-        padding-top: 0.5rem;
+        padding-top: 0.4rem;
     }
 
     #searchIcon {
-        margin-right: 7rem !important;
-        margin-top: 0.5rem !important;
+        margin-left: 0.1rem !important;
+        margin-top: 0.1rem !important;
+        /* margin-right: 7rem !important;
+        margin-top: 0.5rem !important; */
         right: unset !important;
         margin-left: 35px; /* centre with icon */
     }

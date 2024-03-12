@@ -87,22 +87,57 @@ const heroBackgroundSwitch = computed(() => {
 const heroBackgroundColor = computed(() => {
     switch (props.swooshColorTheme) {
     
-    case 'navy':
-        return 'bg-main-navy'
-    case 'purple':
+    // case 'banana':
+    //     return 'bg-secondary-banana'
+
+    // case 'cherry':
+    //     return 'bg-secondary-cherry'
+
+    //     case 'peach':
+    //         return 'bg-secondary-peach'
+
+    // case 'navy':
+    //     return 'bg-main-navy'
+        
+    // case 'grape':
+    // case 'purple':
     case 'technologyPurple':
-        return 'bg-secondary-grapeDark'
-    case 'blue':
+        return 'bg-secondary-grapeWeb'
+
+    // case 'blue':
     case 'partnerBlue':
+    // case 'blueberry':
         return 'bg-secondary-blueberry'
+
     case 'teal':
     case 'darkTeal':
     default:
         return 'bg-main-darkTeal'
     }
 })
+
+// const heroBackgroundColor = computed(() => {
+//     switch (props.swooshColorTheme) {
+    
+//     case 'navy':
+//         return 'bg-main-navy'
+//     case 'purple':
+//     case 'technologyPurple':
+//         return 'bg-secondary-grapeDark'
+//     case 'blue':
+//     case 'partnerBlue':
+//         return 'bg-secondary-blueberry'
+//     case 'teal':
+//     case 'darkTeal':
+//     default:
+//         return 'bg-main-darkTeal'
+//     }
+// })
 </script>
 
+
+
+<!-- :class="heroBackgroundColor" -->
 
 <template>
     <div class="BaseHeroContainer h-mainHero max-h-mainHero mb-0 overflow-y-hidden relative z-10">
@@ -150,7 +185,7 @@ const heroBackgroundColor = computed(() => {
 
                     <p
                         v-if="$slots.contentDate"
-                        class="flex flex-col font-thin gap-4 mb-0 lg:mb-4 text-base text-white"
+                        class="flex flex-col font-light gap-4 mb-0 lg:mb-4 text-base text-white"
                     >
                         <slot name="contentDate" />
                     </p>
@@ -171,7 +206,7 @@ const heroBackgroundColor = computed(() => {
 
                     <div
                         v-if="$slots.subtitleText2"
-                        class="font-normal h-auto mt-4 pb-4 text-base text-white"
+                        class="font-normal h-auto mt-4 pb-4 text-base text-white hidden"
                     >
                         <p class="">
                             <slot name="subtitleText2" />

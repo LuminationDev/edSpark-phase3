@@ -106,11 +106,11 @@ const fetchSchoolByNameAsync = async (schoolName): Promise<void> => {
 }
 
 
-const handleSaveNewSchoolInfo = async (contentBlocks, techUsed) => {
+const handleSaveNewSchoolInfo = async (contentBlocks, techUsed, techLandscape) => {
     try {
-        // update school might return some stuff. 
+        // update school might return some stuff.
         await schoolService.updateSchool(
-            schoolContent.value, contentBlocks, techUsed, logoStorage.value, coverImageStorage.value, colorTheme.value
+            schoolContent.value, contentBlocks, techUsed,techLandscape, logoStorage.value, coverImageStorage.value, colorTheme.value
         );
     } catch (err) {
         console.log('Something wrong while attempting to post');
@@ -163,10 +163,10 @@ const schoolSubmenu = [
         displayText: 'Details',
         value: 'detail'
     },
-    // {
-    //     displayText: "What's new",
-    //     value: 'new'
-    // },
+    {
+        displayText: "How to use tech",
+        value: 'how-to-use-tech'
+    },
     {
         displayText: 'Contact',
         value: 'contact'
@@ -236,7 +236,6 @@ const handleCloseModerationTab = (): void => {
                                             ">
                                         <div
                                             class="
-                                                bg-white
                                                 flex
                                                 justify-center
                                                 items-center
@@ -251,7 +250,6 @@ const handleCloseModerationTab = (): void => {
                                                 :src="`${imageURL}/${schoolContent.logo}`"
                                                 :alt="`school logo`"
                                                 class="
-                                                    bg-white
                                                     h-52
                                                     max-h-full
                                                     object-contain
@@ -263,7 +261,7 @@ const handleCloseModerationTab = (): void => {
                                             >
                                         </div>
 
-                                        <div class="flex flex-col hidden pl-8 lg:pl-0 md:block">
+                                        <div class="flex flex-col hidden md:block lg:pl-0">
                                             <h1 class="font-bold pb-4 text-white">
                                                 {{ schoolContent.name }}
                                             </h1>
@@ -356,7 +354,7 @@ const handleCloseModerationTab = (): void => {
 
     <div
         v-else
-        class="font-semibold mt-20 text-xl"
+        class="font-thin mt-20 text-xl"
     >
         <Loader
             :loader-color="'#0072DA'"
