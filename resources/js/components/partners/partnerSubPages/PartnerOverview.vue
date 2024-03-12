@@ -2,6 +2,7 @@
 import {storeToRefs} from "pinia";
 import {computed,onBeforeMount, onMounted, Ref, ref} from 'vue'
 import {useRoute} from "vue-router";
+import {toast} from "vue3-toastify";
 
 import TinyMceRichTextInput from "@/js/components/bases/frontendform/TinyMceEditor/TinyMceRichTextInput.vue";
 import GenericButton from "@/js/components/button/GenericButton.vue";
@@ -38,7 +39,7 @@ console.log(props.contentFromBase)
 
 const partnerContentStateDescription = {
     new: "",
-    pending_available: "You have a pending content available. Submitting new content will replace your current pending content",
+    pending_available: "You have a pending profile awaiting for moderation from ",
     pending_loaded: "You are editing your pending content",
     submitted_pending: "You have successfully submitted content for moderation. Content will update once moderator approved your submission"
 }
@@ -86,6 +87,9 @@ const forceRefreshTinyMce = () => {
 const fetchPendingContent = async () => {
     try {
         const {data} = await partnerService.fetchPendingPartnerProfile(+partnerId, currentUser.value.id)
+        toast(
+            "You have successfully submitted content for moderation. Content will update once moderator approved your submission"
+        )
         if (data.pending_available) {
             partnerContentState.value = 'pending_available'
             pendingPartnerProfile.value = data.result.profile
