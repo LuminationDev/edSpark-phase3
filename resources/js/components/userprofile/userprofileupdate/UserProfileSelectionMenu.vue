@@ -19,8 +19,6 @@ import {
     AvailableSchoolYearList,
     AvailableSubjectsList
 } from "@/js/components/userprofile/userprofileupdate/userListing";
-import UserNotificationLinearLayout
-    from "@/js/components/userprofile/userprofileupdate/usernotification/UserNotificationLinearLayout.vue";
 import UserUnreadNotificationLayout
     from "@/js/components/userprofile/userprofileupdate/usernotification/UserUnreadNotificationLayout.vue";
 import UserProfileContentContainer from "@/js/components/userprofile/userprofileupdate/UserProfileContentContainer.vue";
