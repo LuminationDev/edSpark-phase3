@@ -9,6 +9,8 @@ import UserNotificationItemLarge
     from "@/js/components/userprofile/userprofileupdate/usernotification/UserNotificationItemLarge.vue";
 import UserNotificationItemSmall
     from "@/js/components/userprofile/userprofileupdate/usernotification/UserNotificationItemSmall.vue";
+import UserUnreadNotificationLayout
+    from "@/js/components/userprofile/userprofileupdate/usernotification/UserUnreadNotificationLayout.vue";
 import {lowerSlugify} from "@/js/helpers/stringHelpers";
 import {notificationService} from "@/js/service/notificationService";
 import {useUserStore} from "@/js/stores/useUserStore";
@@ -37,19 +39,9 @@ const {currentUser} = storeToRefs(useUserStore())
 const router = useRouter()
 
 onMounted(() => {
-    notificationService.getNotifications(currentUser.value.id).then(res => {
-        unreadNotification.value = res.data.data
-        isLoading.value = false
-    }).catch(err => {
-        console.log(err.message)
-        isLoading.value = false
-    })
-    notificationService.getAllNotifications(currentUser.value.id).then(res =>{
-        readNotification.value = res.data.data.filter(notification => notification.read_at)
-        console.log(readNotification)
-        isLoading.value = false
-    }).catch(err => {
-        console.log(err.message)
+    notificationService.getAllNotifications(currentUser.value.id).then(res => {
+        readNotification.value = res.data.data.filter(notification => notification.read_at);
+        unreadNotification.value = res.data.data.filter(notification => !notification.read_at)
         isLoading.value = false
     })
     //  emits('sendMarkAllAsReadButton', handleMarkAllAsRead)

@@ -21,6 +21,8 @@ import {
 } from "@/js/components/userprofile/userprofileupdate/userListing";
 import UserNotificationLinearLayout
     from "@/js/components/userprofile/userprofileupdate/usernotification/UserNotificationLinearLayout.vue";
+import UserUnreadNotificationLayout
+    from "@/js/components/userprofile/userprofileupdate/usernotification/UserUnreadNotificationLayout.vue";
 import UserProfileContentContainer from "@/js/components/userprofile/userprofileupdate/UserProfileContentContainer.vue";
 import {API_ENDPOINTS} from "@/js/constants/API_ENDPOINTS";
 import {useUserStore} from "@/js/stores/useUserStore";
@@ -523,10 +525,7 @@ const userNotificationLargeLayout = computed(() =>
                             </div>
                         </div>
                         <div>
-                            <UserNotificationLinearLayout
-                                notification-size="small"
-                                notification-unread="unread"
-                            />
+                            <UserUnreadNotificationLayout />
                         </div>
                     </div>
                 </template>
