@@ -11,6 +11,7 @@ import ErrorMessages from "@/js/components/bases/ErrorMessages.vue";
 import GenericButton from "@/js/components/button/GenericButton.vue";
 import CustomErrorMessages from "@/js/components/feedbackform/CustomErrorMessages.vue";
 import Loader from "@/js/components/spinner/Loader.vue";
+import UserBookmark from "@/js/components/userprofile/UserBookmark.vue";
 import UserAvatarChange from "@/js/components/userprofile/userprofileupdate/UserAvatarChange.vue";
 import UserCardItemSelector from "@/js/components/userprofile/userprofileupdate/UserCardItemSelector.vue";
 import UserChecklistSelector from "@/js/components/userprofile/userprofileupdate/UserChecklistSelector.vue";
@@ -31,6 +32,8 @@ const {currentUser} = storeToRefs(userStore)
 //All sting defined constants
 const leftHeadingPersonal = ref('Personal info')
 const leftDescriptionPersonal = ref('Update your photo and personal details.')
+const leftHeadingBookmark = ref('Bookmarks')
+const leftDescriptionBookmark = ref('Your favourite bookmarks are here')
 const leftHeadingProfile = ref('Profile')
 const leftDescriptionProfile = ref('Update your subjects and interests.')
 const leftHeadingNotification = ref('Notifications')
@@ -528,6 +531,17 @@ const userNotificationLargeLayout = computed(() =>
                     </div>
                 </template>
             </userprofilecontentcontainer>
+            <UserProfileContentContainer
+                id="reloadableDiv"
+                :key="reloadKey"
+                :left-heading="leftHeadingBookmark"
+                :left-description="leftDescriptionBookmark"
+                class="UserBookmarkListContainer flex flex-col pt-12"
+            >
+                <template #content>
+                    <UserBookmark :bookmark-data="userBookmarks" />
+                </template>
+            </UserProfileContentContainer>
         </div>
     </div>
 </template>
