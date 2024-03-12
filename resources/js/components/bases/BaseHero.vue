@@ -152,7 +152,7 @@ const heroBackgroundColor = computed(() => {
                     bg-contain
                     bg-no-repeat
                     col-span-10
-                    h-full
+                    h-[500px]
                     pt-14
                     px-11
                     lg:!col-span-6
@@ -218,9 +218,8 @@ const heroBackgroundColor = computed(() => {
                 </div>
             </div>
             <div
-                class="bg-center bg-cover bg-no-repeat bg-white hidden imageCover lg:!block lg:!col-span-4"
+                class="bg-center bg-cover bg-no-repeat bg-white h-[500px] w-[500px] hidden imageCover lg:!block lg:!col-span-4"
                 :style="'background-image: url(' + heroBackgroundLinkOnly +')'"
-                style="width: 500px; height: auto"
             />
         </div>
 
