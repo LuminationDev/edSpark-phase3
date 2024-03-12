@@ -3,12 +3,13 @@ import {storeToRefs} from "pinia";
 import {onMounted, ref} from 'vue'
 import {useRouter} from "vue-router";
 
+import Loader from "@/js/components/spinner/Loader.vue";
 import ListingDesignItemSmall
     from "@/js/components/userprofile/userprofileupdate/usernotification/ListingDesignItemSmall.vue";
 import {API_ENDPOINTS} from "@/js/constants/API_ENDPOINTS";
 import {useUserStore} from '@/js/stores/useUserStore';
 
-
+const isLoading = ref(true);
 const userBookmarks = ref([])
 const count = ref(0)
 const router = useRouter()
@@ -42,13 +43,14 @@ const handleClickBookmark = (postType, postId, postTitle) => {
 
 
 const fetchBookmarksWithTitle = () => {
-    const userId = currentUser.value.id; // Hardcoded user ID
+    const userId = currentUser.value.id;
     axios.post(API_ENDPOINTS.BOOKMARK.FETCH_ALL_BOOKMARKS_WITH_TITLE, { user_id: userId })
         .then(response => {
             console.log(currentUser.value.id)
             console.log(userBookmarks)
             userBookmarks.value = response.data.data;
             count.value = response.data.count;
+            isLoading.value = false
         })
         .catch(error => {
             console.error('Error fetching bookmarks:', error);
@@ -65,9 +67,19 @@ onMounted(() => {
 <template>
     <div>
         <div
+            v-if="isLoading"
+            class="loader"
+        >
+            <Loader
+                loader-type="small"
+                loader-message="Fetching your notifications"
+            />
+        </div>
+
+        <div
             v-for="(singleBookmark, index) in userBookmarks"
             :key="index"
-            class="mr-4"
+            class="flex flex-row mr-4"
         >
             <ListingDesignItemSmall
                 :time-date="singleBookmark.post_id"
@@ -75,6 +87,10 @@ onMounted(() => {
                 :category-text="singleBookmark.post_type"
                 :click-callback="() => handleClickBookmark(singleBookmark.post_type, singleBookmark.post_id,singleBookmark.post_title)"
             />
+            <input
+                type="checkbox"
+                class="border-2 border-black h-6 items-center m-auto w-6"
+            >
         </div>
     </div>
 </template>

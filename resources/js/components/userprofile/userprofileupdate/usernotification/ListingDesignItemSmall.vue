@@ -1,6 +1,6 @@
 <script setup>
 
-import {computed} from "vue";
+import {computed, onBeforeUnmount, onMounted, ref} from "vue";
 
 import {formatDateToDayTime} from "@/js/helpers/dateHelper";
 
@@ -47,6 +47,37 @@ const formattedCategoryTextString = computed(() => {
     return props.categoryText.charAt(0).toUpperCase() + props.categoryText.slice(1).toLowerCase();
 })
 
+const shouldSliceDisplayHeading = ref(false);
+const truncatedDisplayHeading = computed(() => {
+    return props.displayHeading.slice(0, getSliceLength()) + '...';
+});
+
+const handleResize = () => {
+    shouldSliceDisplayHeading.value = window.innerWidth < 1536;
+};
+
+const getSliceLength = () => {
+    const screenWidth = window.innerWidth;
+    if (screenWidth < 1536) {
+        return 21;
+    }
+    if (screenWidth < 836) {
+        return 10;
+    }
+    else {
+        return 100;
+    }
+};
+
+onMounted(() => {
+    handleResize();
+    window.addEventListener('resize', handleResize);
+});
+
+onBeforeUnmount(() => {
+    window.removeEventListener('resize', handleResize);
+});
+
 </script>
 
 <template>
@@ -71,18 +102,18 @@ const formattedCategoryTextString = computed(() => {
             class="bg-blue-50 border-2 border-adminTeal p-2 rounded-3xl"
             :class="['border', getCategoryStyling(categoryText)]"
         >
-            <div class="text-center w-32">
+            <div class="text-center w-16 sm:!w-32">
                 {{ formattedCategoryTextString }}
             </div>
         </div>
-        <div class="p-2">
-            <div class="ml-6 mr-6 text-gray-500 w-48">
+        <div class="p-2 w-auto">
+            <div class="ml-6 mr-0 text-gray-500 w-16 sm:!mr-0 sm:!w-48 md:!mr-6">
                 {{ formatDateToDayTime(timeDate) }}
             </div>
         </div>
-        <div class="p-2">
-            <div class="ml-6 mr-6">
-                {{ displayHeading }}
+        <div class="p-2 w-auto">
+            <div class="ml-0 mr-6 sm:!ml-0 md:!ml-6">
+                {{ shouldSliceDisplayHeading ? truncatedDisplayHeading : displayHeading }}
             </div>
         </div>
     </div>

@@ -53,7 +53,7 @@ const handleClickNotification = (notificationId, resourceId, resourceType, resou
 </script>
 
 <template>
-    <div class="UnreadNotifications-UserProfile">
+    <div>
         <div
             v-if="isLoading"
             class="loader"
