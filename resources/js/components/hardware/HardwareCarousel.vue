@@ -45,7 +45,7 @@ const handleImageGallery = (index) => {
                 </template>
             </carousel>
         </div>
-        <!-- <div class="w-auto lg:!w-[30%]">
+        <div class="w-auto lg:!w-[30%]">
             <div class="border border-black grid grid-cols-2 w-full">
                 <div
                     v-for="(item, index) in slideItems['gallery']"
@@ -62,7 +62,7 @@ const handleImageGallery = (index) => {
                     />
                 </div>
             </div>
-        </div> -->
+        </div>
     </div>
 </template>
 
