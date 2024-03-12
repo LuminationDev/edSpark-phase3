@@ -88,6 +88,10 @@ watchDebounced(editorContent, emitContent, {debounce: 200, maxWait: 1000})
     <ErrorMessages :v$="props.v$" />
 </template>
 <style>
+.tox-tinymce{
+    border-radius: 3px !important;
+    border-width: 1px !important;
+}
 :deep(.mce-offscreen-selection){
     display: none;
 }
