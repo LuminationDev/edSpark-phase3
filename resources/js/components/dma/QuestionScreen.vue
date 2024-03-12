@@ -274,22 +274,26 @@ onBeforeUnmount(() => {
                         v-if="!isUnsure"
                         class="answers"
                     >
-                        <AnswerButton
-                            hint="Press 1"
-                            :highlighted="activeKey === '1'"
-                            :disabled="props.disabled"
-                            @click="handleAnswer(1)"
+                        <div
+                            class="flex flex-row gap-2 md:!flex-col md:!gap-0"
                         >
-                            YES
-                        </AnswerButton>
-                        <AnswerButton
-                            hint="Press 2"
-                            :highlighted="activeKey === '2'"
-                            :disabled="props.disabled"
-                            @click="handleAnswer(0)"
-                        >
-                            NO
-                        </AnswerButton>
+                            <AnswerButton
+                                hint="Press 1"
+                                :highlighted="activeKey === '1'"
+                                :disabled="props.disabled"
+                                @click="handleAnswer(1)"
+                            >
+                                YES
+                            </AnswerButton>
+                            <AnswerButton
+                                hint="Press 2"
+                                :highlighted="activeKey === '2'"
+                                :disabled="props.disabled"
+                                @click="handleAnswer(0)"
+                            >
+                                NO
+                            </AnswerButton>
+                        </div>
                         <AnswerButton
                             v-if="props.allowUnsure"
                             hint="Press 3"
