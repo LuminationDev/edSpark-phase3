@@ -181,9 +181,11 @@ const checkIndicatorDependencies = (domainName, elementName, indicatorName, scor
             // get dependency question
             const depQuestion = getQuestionForDependency(dep);
             // check score for dependency question
-            const depResult = getIndicatorResults(depQuestion.domain, depQuestion.element_print).find(r => r.indicator === depQuestion.indicator_print);
-            if (!depResult || depResult.value < depQuestion.phase) {
-                return {domain: depQuestion.domain, element: depQuestion.element_print};
+            if (depQuestion) {
+                const depResult = getIndicatorResults(depQuestion.domain, depQuestion.element_print).find(r => r.indicator === depQuestion.indicator_print);
+                if (!depResult || depResult.value < depQuestion.phase) {
+                    return {domain: depQuestion.domain, element: depQuestion.element_print};
+                }
             }
         }
     }
@@ -310,7 +312,6 @@ const handleCloseReport = () => {
     <OverlayModal>
         <div
             class="
-                bg-black
                 min-h-full
                 overflow-hidden
                 relative
@@ -322,6 +323,7 @@ const handleCloseReport = () => {
                 md:max-w-[1320px]
                 md:rounded-lg
                 "
+            :class="actionPlan ? 'bg-white' : 'bg-black'"
         >
             <CloseButton
                 class="absolute top-6 left-4 z-50 md:!left-10 md:!top-10"
@@ -336,10 +338,10 @@ const handleCloseReport = () => {
             <div
                 v-else
                 ref="scrollableRef"
-                class="bg-white h-full overflow-y-scroll scroll-smooth text-black"
+                class="bg-main-teal/10 h-full overflow-y-scroll scroll-smooth text-black"
             >
                 <div
-                    class="bg-main-teal/10 max-sm:pt-16 p-5 md:p-20"
+                    class="max-sm:pt-16 p-5 md:p-20"
                 >
                     <div class="flex items-center flex-col text-center">
                         <h1 class="text-h3-caps">
@@ -565,7 +567,11 @@ const handleCloseReport = () => {
 </template>
 
 <style scoped lang="scss">
+::-webkit-scrollbar-track {
+    background-color: transparent;
+}
 .advice {
+    overflow-wrap: anywhere;
     :deep(a) {
         text-decoration: underline;
     }
