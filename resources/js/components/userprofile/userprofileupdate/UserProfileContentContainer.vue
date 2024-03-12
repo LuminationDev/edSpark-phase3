@@ -26,7 +26,6 @@ const props = defineProps({
         </div>
         <div class="border-2 border-gray-200 h-full p-4 rightLayout rounded-xl xl:w-[70%]">
             <div><slot name="content" /></div>
-            <div class="border-[1px] border-gray-200 mt-10" />
             <div class="flex flex-row gap-6 mb-2 ml-2 mr-2 mt-4">
                 <slot name="buttons" />
             </div>

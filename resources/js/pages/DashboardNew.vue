@@ -14,8 +14,6 @@ import EventsCard from "@/js/components/events/EventsCard.vue";
 import SchoolProfileGuidesQuickFilters from "@/js/components/inspirationandguides/SchoolProfileGuidesQuickFilters.vue";
 import SchoolCard from "@/js/components/schools/SchoolCard.vue";
 import SoftwareCard from "@/js/components/software/SoftwareCard.vue";
-import {API_ENDPOINTS} from "@/js/constants/API_ENDPOINTS";
-import {serverURL} from "@/js/constants/serverUrl";
 import {getNRandomElementsFromArray} from "@/js/helpers/cardDataHelper";
 import {adviceService} from "@/js/service/adviceService";
 import {eventService} from "@/js/service/eventService";
@@ -27,7 +25,6 @@ import {useUserStore} from '@/js/stores/useUserStore';
 import {useWindowStore} from "@/js/stores/useWindowStore";
 
 const router = useRouter()
-const userStore = useUserStore();
 const windowStore = useWindowStore()
 
 const {featuredSchools} = storeToRefs(useSchoolsStore())
@@ -122,7 +119,7 @@ onUnmounted(() => {
         </template>
         <template #button>
             <GenericButton
-                :id="guidesBtn"
+                id="guidesBtn"
                 :callback="() => router.push('browse/guide')"
                 :type="'teal'"
             >
@@ -165,7 +162,7 @@ onUnmounted(() => {
         </template>
         <template #button>
             <GenericButton
-                :id="techBtn"
+                id="techBtn"
                 :callback="() => router.push('browse/software')"
                 :type="'teal'"
             >

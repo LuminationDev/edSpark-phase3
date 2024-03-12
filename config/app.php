@@ -214,7 +214,6 @@ return [
     'aliases' => Facade::defaultAliases()->merge([
         // 'ExampleClass' => App\Example\ExampleClass::class,
         'Metahelper' => App\Helpers\Metahelper::class,
-        'NotificationHelper' => App\Helpers\NotificationHelper::class,
         'OutputHelper' => App\Helpers\OutputHelper::class
     ])->toArray(),
 
