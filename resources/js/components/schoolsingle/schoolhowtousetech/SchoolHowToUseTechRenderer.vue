@@ -2,6 +2,8 @@
 
 import {computed} from "vue";
 
+import SchoolHowToUseTechGallery from "@/js/components/schoolsingle/schoolhowtousetech/SchoolHowToUseTechGallery.vue";
+
 const props = defineProps({
     techLandscape:{
         required: true,
@@ -51,8 +53,14 @@ const displayTitle = (code) => {
                         v-html="landscapeItem.text"
                     />
                 </div>
-                <div class="imageGallery w-full  lg:!w-1/2">
-                    {{ landscapeItem.images }}
+                <div class="flex flex-col imageGallery w-full  lg:!w-1/2">
+                    <SchoolHowToUseTechGallery :image-array="landscapeItem.images" />
+                    <!--                    <div class="imageDisplayLarge w-full">-->
+                    <!--                        <img-->
+                    <!--                            :src="landscapeItem.images[0]"-->
+                    <!--                            alt="how to use image sample picture"-->
+                    <!--                        >-->
+                    <!--                    </div>-->
                 </div>
             </div>
         </div>

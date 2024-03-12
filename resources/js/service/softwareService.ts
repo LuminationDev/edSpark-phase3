@@ -28,8 +28,8 @@ interface SimpleDataItem {
 
 
 export const softwareService = {
-    fetchAllSoftware: () => {
-        return axios.get(API_ENDPOINTS.SOFTWARE.FETCH_SOFTWARE_POSTS).then(res =>{
+    fetchAllSoftware: ({signal}) => {
+        return axios.get(API_ENDPOINTS.SOFTWARE.FETCH_SOFTWARE_POSTS,{signal}).then(res =>{
             return cardDataWithGuid(res.data)
         })
     },
