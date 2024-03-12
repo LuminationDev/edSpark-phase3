@@ -83,7 +83,6 @@ watchDebounced(howToUseData, () =>{
 </script>
 
 <template>
-    <pre>{{ activeHowToUseTechItem }}</pre>
     <div class="HowToUseTechContainer flex justify-center items-center flex-col px-5 py-2 text-genericDark">
         <div
             v-for="(item,index) in activeHowToUseTechItem"
