@@ -82,10 +82,11 @@ export const schoolService = {
         }
         return axios.post(`${API_ENDPOINTS.SCHOOL.FETCH_USER_SCHOOL}`, payload)
     },
-    updateSchool: async (schoolContent, contentBlocks, techUsed, logoStorage, coverImageStorage, colorTheme): Promise<SchoolDataType | null> => {
+    updateSchool: async (schoolContent, contentBlocks, techUsed,techLandscape, logoStorage, coverImageStorage, colorTheme): Promise<SchoolDataType | null> => {
         const schoolData: SchoolDataType = _.cloneDeep(schoolContent)
         schoolData.content_blocks = contentBlocks
         schoolData.tech_used = techUsed
+        schoolData.tech_landscape = techLandscape
         const newUpdatedSchoolFormData = schoolDataFormDataBuilder(schoolData)
         newUpdatedSchoolFormData.append('logo', logoStorage ? logoStorage : schoolData.logo)
         newUpdatedSchoolFormData.append('cover_image', coverImageStorage ? coverImageStorage : schoolData.cover_image)

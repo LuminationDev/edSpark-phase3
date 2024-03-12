@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import {storeToRefs} from "pinia";
-import {computed, onBeforeMount, onBeforeUnmount, onMounted, Ref, ref} from 'vue'
+import {computed, onBeforeMount,  onMounted, Ref, ref} from 'vue'
 import {onBeforeRouteLeave, useRoute} from "vue-router";
 import {toast} from "vue3-toastify";
 
@@ -9,7 +9,8 @@ import GenericButton from "@/js/components/button/GenericButton.vue";
 import SchoolContact from "@/js/components/schoolsingle/SchoolContact.vue";
 import SchoolColorPicker from "@/js/components/schoolsingle/schoolContent/SchoolColorPicker.vue";
 import SchoolImageChange from "@/js/components/schoolsingle/schoolContent/SchoolImageChange.vue";
-import SchoolHowToUseTech from "@/js/components/schoolsingle/SchoolHowToUseTech.vue";
+import SchoolHowToUseTech from "@/js/components/schoolsingle/schoolhowtousetech/SchoolHowToUseTech.vue";
+import SchoolHowToUseTechRenderer from "@/js/components/schoolsingle/schoolhowtousetech/SchoolHowToUseTechRenderer.vue";
 import SchoolTech from "@/js/components/schoolsingle/SchoolTech.vue";
 import SchoolWhatsNew from "@/js/components/schoolsingle/SchoolWhatsNew.vue";
 import TechSelector from "@/js/components/selector/TechSelector.vue";
@@ -67,6 +68,7 @@ const newSchoolContent: Ref<string> = ref("")
 const pendingSchoolContent: Ref<SchoolDataType | null> = ref(null)
 const schoolContentState = ref(SchoolContentState.New)
 const newTechUsed: Ref<TechUsed[] | null> = ref(null)
+const newTechLandscape = ref(null)
 
 const currentUserCanEdit = ref<boolean>(false)
 const currentUserCanNominate = ref<boolean>(false)
@@ -88,6 +90,7 @@ const forceRefreshTinyMce = () => {
 onBeforeMount(() => {
     newSchoolContent.value = props.schoolContent.content_blocks
     newTechUsed.value = _.cloneDeep(props.schoolContent.tech_used)
+    newTechLandscape.value = props.schoolContent.tech_landscape
 })
 
 const handleEditButton = async () => {
@@ -96,6 +99,7 @@ const handleEditButton = async () => {
     }
     newSchoolContent.value = props.schoolContent.content_blocks
     newTechUsed.value = _.cloneDeep(props.schoolContent.tech_used)
+    newTechLandscape.value = props.schoolContent.tech_landscape
     editMode.value = true
     // pressing the revert button
     if (schoolContentState.value === 'pending_loaded') {
@@ -126,8 +130,13 @@ const handleSchoolTech = (techData): void => {
     newTechUsed.value = techData
 }
 
+const handleReceiveTechLandscape = (data) => {
+    console.log(JSON.stringify(data))
+    newTechLandscape.value = data
+}
+
 const handleAllSaveButton = (): void => {
-    emits('sendInfoToSchoolSingle', newSchoolContent.value, newTechUsed.value)
+    emits('sendInfoToSchoolSingle', newSchoolContent.value, newTechUsed.value, newTechLandscape.value)
     editMode.value = false
     schoolContentState.value = SchoolContentState.New
     // reset color here
@@ -173,6 +182,7 @@ const checkIfPendingAvailable = async (): Promise<void> => {
 const handleClickEditPendingContent = (): void => {
     newSchoolContent.value = pendingSchoolContent.value.content_blocks
     newTechUsed.value = pendingSchoolContent.value.tech_used
+    newTechLandscape.value = pendingSchoolContent.value.tech_landscape || ""
     schoolContentState.value = SchoolContentState.PendingLoaded
     forceRefreshTinyMce()
 }
@@ -197,9 +207,7 @@ const moderationStatusMessage = computed(() => {
     }
 })
 
-const handleReceiveTechLandscape = (data)=>{
-    console.log(JSON.stringify(data))
-}
+
 
 onBeforeRouteLeave(() =>{
     if(requiresConfirmationBeforeExit.value){
@@ -429,11 +437,15 @@ onBeforeRouteLeave(() =>{
             />
         </template>
         <template v-if="props.activeSubmenu === 'how-to-use-tech'">
-            <SchoolHowToUseTech
-                :tech-used="props.schoolContent.tech_used"
-                :tech-landscape="props.schoolContent.tech_landscape"
-            />
+            <!--            <SchoolHowToUseTech-->
+            <!--                :tech-used="props.schoolContent.tech_used"-->
+            <!--                :tech-landscape="props.schoolContent.tech_landscape"-->
+            <!--            />-->
             <!--  swap to renderer here -->
+            <SchoolHowToUseTechRenderer
+                :tech-landscape="props.schoolContent.tech_landscape"
+                :tech-used="props.schoolContent.tech_used"
+            />
         </template>
     </div>
 </template>
