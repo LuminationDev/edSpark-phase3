@@ -4,8 +4,8 @@ import {API_ENDPOINTS} from "@/js/constants/API_ENDPOINTS";
 import {cardDataWithGuid} from "@/js/helpers/cardDataHelper";
 
 export const adviceService = {
-    fetchAllAdvice: ({signal}) => {
-        return axios.get(API_ENDPOINTS.ADVICE.FETCH_ADVICE_POSTS,{signal}).then(res => {
+    fetchAllAdvice: () => {
+        return axios.get(API_ENDPOINTS.ADVICE.FETCH_ADVICE_POSTS,).then(res => {
             return cardDataWithGuid(res.data)
         })
     },

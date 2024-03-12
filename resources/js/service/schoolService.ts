@@ -27,8 +27,8 @@ export const schoolService = {
             })
         })
     },
-    fetchFeaturedSchool: async ({signal}): Promise<any> => {
-        return axios.get(API_ENDPOINTS.SCHOOL.FETCH_FEATURED_SCHOOL,{signal}).then(res => {
+    fetchFeaturedSchool: async (): Promise<any> => {
+        return axios.get(API_ENDPOINTS.SCHOOL.FETCH_FEATURED_SCHOOL,).then(res => {
             return schoolContentArrParser(res.data)
         })
     },

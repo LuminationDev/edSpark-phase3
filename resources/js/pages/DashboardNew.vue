@@ -41,10 +41,10 @@ const signal = abortController.signal;
 onMounted(async () => {
     try {
         const [fetchedFeaturedSchool, fetchedAdvice, fetchedSoftware, fetchedEvent] = await Promise.all([
-            schoolService.fetchFeaturedSchool({signal}),
-            adviceService.fetchAllAdvice({signal}),
-            softwareService.fetchAllSoftware({signal}),
-            eventService.fetchAllEvent({signal})
+            schoolService.fetchFeaturedSchool(),
+            adviceService.fetchAllAdvice(),
+            softwareService.fetchAllSoftware(),
+            eventService.fetchAllEvent()
         ]);
 
         featuredSchools.value = fetchedFeaturedSchool;

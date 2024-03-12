@@ -55,6 +55,7 @@ const handleTinyMceContent = (name, data) => {
     howToUseData.value.filter(item => item.name === name)[0].text = data
 }
 const handleUploadedImageUrls = (name, urlsData) => {
+
     howToUseData.value.filter(item => item.name === name)[0].images = urlsData.map(item => item.remoteUrl)
 }
 

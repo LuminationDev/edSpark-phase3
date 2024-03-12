@@ -4,8 +4,8 @@ import {API_ENDPOINTS} from "@/js/constants/API_ENDPOINTS";
 import {cardDataWithGuid} from "@/js/helpers/cardDataHelper";
 
 export const eventService = {
-    fetchAllEvent: async ({signal}) =>{
-        return axios.get(API_ENDPOINTS.EVENT.FETCH_EVENT_POSTS,{signal}).then(res =>{
+    fetchAllEvent: async () =>{
+        return axios.get(API_ENDPOINTS.EVENT.FETCH_EVENT_POSTS).then(res =>{
             return cardDataWithGuid(res.data)
         })
     }
