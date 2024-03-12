@@ -137,8 +137,9 @@ const handleCloseReportModal = () => {
 
 const showResetting = async () => {
     resetting.value = true;
-    await new Promise(r => setTimeout(r, 4000));
+    await new Promise(r => setTimeout(r, 3500));
     await fetchUserSurvey();
+    await new Promise(r => setTimeout(r, 500));
     resetting.value = false
 }
 
@@ -159,6 +160,8 @@ const isDomainResetting = (domainId = null) => {
 
 const handleResetSurvey = async () => {
     showResetModal.value = false;
+
+
     dmaService.resetSurveyProgress().then(() => {
         showResetting();
     }).catch((error) => {
