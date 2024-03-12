@@ -18,6 +18,7 @@ import {
 } from "@/js/constants/carouselBreakpoints";
 import {useWindowStore} from "@/js/stores/useWindowStore";
 
+const windowStore = useWindowStore()
 
 const props = defineProps({
     dataArray: {
@@ -34,7 +35,6 @@ const props = defineProps({
         default: ''
     }
 })
-const windowStore = useWindowStore()
 
 const breakpointChoser = () => {
     if (props.specialAttribute === 'twoThirdWide') {

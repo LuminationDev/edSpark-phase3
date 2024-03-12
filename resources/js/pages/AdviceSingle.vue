@@ -72,7 +72,7 @@ const timeFormatter = (originalFormat) => {
                     </div>
                 </template>
                 <template #contentDate>
-                    <div class="font-semibold my-4">
+                    <div class="font-light my-4">
                         {{ formatDateToDayTime(contentFromBase['modified_at']) }}
                     </div>
                 </template>

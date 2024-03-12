@@ -56,7 +56,7 @@ const handleClickSchoolCard = () => {
             <div class="card-content_title min-h-[72px] px-2">
                 <!-- CARD CONTENT HEADER -->
                 <h5
-                    class="flex justify-start font-semibold text-xl text-left"
+                    class="flex justify-start font-semibold text-xl text-left line-clamp-title"
                 >
                     {{ data.name }}
                 </h5>
@@ -71,7 +71,7 @@ const handleClickSchoolCard = () => {
             #typeTag
         >
             <div
-                class="fill-secondary-blue flex content-end flex-wrap gap-2 h-full min-h-[130px] px-6 py-4 w-full"
+                class="fill-secondary-blue flex content-end flex-wrap gap-2 h-full min-h-[130px] px-6 pb-4 w-full"
             >
                 <SchoolCardIconList
                     :tech-list="data.tech_used"
@@ -83,6 +83,18 @@ const handleClickSchoolCard = () => {
 </template>
 
 <style scoped>
+.cardFooter {
+    padding-top: 0rem;
+}
+.line-clamp-title {
+    overflow: hidden;
+    /* text-overflow: ellipsis; */
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    height: 1.1lh;
+    -webkit-box-orient: vertical;
+}
+
  .line-clamp-2 {
     overflow: hidden;
     text-overflow: ellipsis;

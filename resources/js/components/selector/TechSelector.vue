@@ -22,9 +22,9 @@ const handleDataFromChildren = (techUsedList) =>{
 
 </script>
 <template>
-    <div class="flex flex-col schoolTechContainer gap-10">
+    <div class="flex flex-col gap-10 schoolTechContainer">
         <GenericSelector
-            title="Department Provided Technologies"
+            title="Department provided"
             :list-data="schoolTech"
             :existing-data="existingTechUsed"
             :color-theme="colorTheme"
@@ -39,7 +39,7 @@ const handleDataFromChildren = (techUsedList) =>{
             </template>
         </GenericSelector>
         <GenericSelector
-            title="Partners Provided Technologies"
+            title="Partners provided"
             :list-data="schoolPartnerTech"
             :existing-data="existingTechUsed"
             :color-theme="colorTheme"

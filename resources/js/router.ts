@@ -17,6 +17,8 @@ import ProfileInfo from '@/js/components/userprofile/ProfileInfo.vue'
 import ProfileMessages from '@/js/components/userprofile/ProfileMessages.vue'
 import ProfileWork from '@/js/components/userprofile/ProfileWork.vue'
 import UserProfile from '@/js/components/userprofile/UserProfile.vue';
+import UserNotificationPage
+    from "@/js/components/userprofile/userprofileupdate/usernotification/UserNotificationPage.vue";
 import AdviceSingle from "@/js/pages/AdviceSingle.vue";
 import CatalogueSingle from "@/js/pages/CatalogueSingle.vue";
 import DMA from "@/js/pages/DMA.vue";
@@ -98,7 +100,8 @@ const routes: any = [
                     skipScrollTop: true
 
                 } as RouteMeta
-            }, {
+            },
+             {
                 name: 'createGuide',
                 path: 'guide',
                 component: AdviceForm,
@@ -129,7 +132,7 @@ const routes: any = [
         },
         children: [
             {
-                name: "Inspiration & guides",
+                name: "Inspiration hub",
                 path: "",
                 component: InspirationAndGuides,
                 meta: {
@@ -180,7 +183,7 @@ const routes: any = [
         },
         children: [
             {
-                name: "Technology Hub",
+                name: "Technology hub",
                 path: "",
                 component: TheTechnology,
                 meta: {
@@ -216,7 +219,7 @@ const routes: any = [
         path: '/ai-hub',
         component: DashboardNew,
         meta: {
-            navigation: true
+            navigation: false
         }
 
     },
@@ -225,6 +228,7 @@ const routes: any = [
         path: '/events',
         component: TheEvent,
         meta: {
+            customText: 'Events',
             navigation: true
         }
     },
@@ -288,7 +292,7 @@ const routes: any = [
     },
     {
         name: 'school-single',
-        path: '/schools/:name',
+        path: '/schools/:name?',
         component: SchoolSingle,
         meta: {
             requiresAuth: true,
@@ -411,7 +415,7 @@ const routes: any = [
     },
     {
         name: 'userProfile',
-        path: '/profile/:userId',
+        path: '/profile/:userId?',
         component: UserProfile,
         children: [
             {
@@ -461,7 +465,17 @@ const routes: any = [
         path: '/:pathMatch(.*)*',
         name: 'not-found',
         component: EdsparkPageNotFound
-    }]
+    },
+    {
+        name: 'notificationListPage',
+        path: '/notifications/:userId?',
+        component: UserNotificationPage,
+        meta: {
+            // skipScrollTop: false,
+            // requiresAuth: false
+        }
+    },
+]
 
 const router = createRouter({
     history: createWebHistory(),

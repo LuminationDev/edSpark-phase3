@@ -98,7 +98,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('getUserMetadata', [UserController::class, 'getUserMetadata']);
     Route::post('createUser', [UserController::class, 'createUser']);
     Route::post('updateFirstTimeVisitUser', [UserController::class, 'updateFirstTimeVisitUser']);
-    Route::post('updateUser', [UserController::class, 'updateUser']);
+    Route::post('updateUser/{userId}', [UserController::class, 'updateUser']);
     Route::post('checkEmail', [UserController::class, 'checkEmail']);
     Route::get('getUserDraftPosts', [UserController::class, 'getAllUserDraftPosts']);
 
@@ -112,9 +112,10 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('fetchAllBookmarksByType', [LikeBookmarkController::class, 'fetchAllBookmarksByType']);
 
     // Notifications
-    Route::get('fetchAllNotifications/{userId}', [NotificationController::class, 'getAllNotifications']);
-    Route::get('fetchSingleNotification', [NotificationController::class, 'getSingleNotification']);
-    Route::get('fetchNotificationByType', [NotificationController::class, 'getNotificationByType']);
+    Route::get('getNotifications/{userId}', [NotificationController::class, 'getNotifications']);
+    Route::get('getAllNotifications/{userId}', [NotificationController::class, 'getAllNotifications']);
+    Route::post('readNotification/{notificationId}', [NotificationController::class, 'readNotification']);
+    Route::post('readAllNotifications/{userId}', [NotificationController::class, 'readAllNotifications']);
 
     // Partners API
     Route::get('fetchAllPartners', [PartnerController::class, 'fetchAllPartners']);
@@ -168,6 +169,12 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('updateOrCreateMetadata/{user_id}', [UserController::class, 'updateOrCreateMetadata']);
     Route::get('getUserProfileMetadata/{user_id}', [UserController::class, 'getUserProfileMetadata']);
     Route::post('updateOrCreateUserAvatar/{user_id}', [UserController::class, 'updateOrCreateUserAvatar']);
+
+
+
+    // Notification
+//    Route::get('user/notification/{user_id}', [NotificationController::class,'getUserNotification']);
+//    Route::get('user/notification/{user_id}', [NotificationController::class,'getUserNotification']);
 
 
     Route::group(['prefix' => 'user/survey'], function () {

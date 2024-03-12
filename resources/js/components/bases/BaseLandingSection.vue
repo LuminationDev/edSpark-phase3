@@ -1,5 +1,5 @@
 <script setup>
-import {computed} from "vue";
+import {computed, onMounted, onUnmounted, ref} from "vue";
 
 const props = defineProps({
     backgroundColor: {
@@ -8,6 +8,13 @@ const props = defineProps({
         default: 'teal'
     }
 })
+
+
+import {useWindowStore} from "@/js/stores/useWindowStore";
+const windowStore = useWindowStore()
+
+import resolveConfig from 'tailwindcss/resolveConfig'
+import tailwindConfig from '../../../../tailwind.config.ts';
 
 
 const shadyBackgroundColorClass = computed(() => {
@@ -20,40 +27,64 @@ const shadyBackgroundColorClass = computed(() => {
         return 'bg-main-darkTeal/20'
     case 'navy':
         return 'bg-main-navy/20'
+    case 'technologyPurple':
     case 'purple':
-        return 'bg-secondary-grapeDark/20'
+        return 'bg-secondary-grape/10'
     case 'blue':
         return 'bg-secondary-blueberry/10'
     default:
         return 'teal'
     }
 })
+
+const isMed = ref('');
+
+const { theme } = resolveConfig(tailwindConfig);
+const scrLg = parseInt(theme.screens.lg);
+const windowWidthCheck = () => {
+    // windowWidth.value = window.innerWidth;
+    isMed.value = window.innerWidth < scrLg;
+    windowStore.isMed = isMed;
+    // console.log("Width = "+ window.innerWidth +", "+isMed.value+", "+windowStore.isMed);
+};
+
+const handleResize = () => windowWidthCheck()
+
+onMounted(async () => {
+    window.addEventListener('resize', handleResize);
+    handleResize();
+});
+
+onUnmounted(() => {
+    window.removeEventListener('resize', handleResize);
+});
+
 </script>
 
 <template>
     <div
-        class="flex justify-center flex-col px-4 py-16 md:!px-8 xl:!px-16"
+        class="flex justify-center flex-col px-8 py-16 xl:!px-16"
         :class="shadyBackgroundColorClass"
     >
         <div
-            class="flex justify-between items-start flex-row sectionHeader w-full"
+            class="flex justify-between items-center sm:items-start flex-col justify-center sm:flex-row sectionHeader w-full"
             :class="{'mb-8' : $slots.content}"
         >
-            <div class="flex flex-col titleAndSubtitle">
+            <div class="flex flex-col titleAndSubtitle w-full">
                 <div
-                    class="font-medium text-4xl"
-                    :class="{'mb-4' : $slots.subtitle}"
+                    class="font-medium text-3xl sm:text-4xl mb-4"
+                    :class="{'mb-2' : $slots.subtitle}"
                 >
                     <slot name="title" />
                 </div>
                 <div
                     v-if="$slots.subtitle"
-                    class="font-base text-lg"
+                    class="font-thin text-lg mb-8"
                 >
                     <slot name="subtitle" />
                 </div>
             </div>
-            <div class="flex justify-start items-start">
+            <div class="flex justify-start items-start w-full sm:w-64 [&>button]:w-full sm:[&>button]:w-64">
                 <slot name="button" />
             </div>
         </div>

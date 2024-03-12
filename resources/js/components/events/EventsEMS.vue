@@ -146,7 +146,7 @@ const handleInvalidUrlFromServer = () => {
 </script>
 
 <template>
-    <div class="EventRsvpFormContainer bg-main-navy mt-5 px-4 py-4 text-white">
+    <div class="EventRsvpFormContainer bg-secondary-blueberry mt-5 px-4 py-4 text-white">
         <div class="font-bold rsvpHeader text-2xl">
             Register for this event
         </div>
