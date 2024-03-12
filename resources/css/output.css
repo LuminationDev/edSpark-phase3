@@ -7277,6 +7277,10 @@ select {
   font-weight: 100;
 }
 
+.\!font-thin {
+  font-weight: 100 !important;
+}
+
 .uppercase {
   text-transform: uppercase;
 }
