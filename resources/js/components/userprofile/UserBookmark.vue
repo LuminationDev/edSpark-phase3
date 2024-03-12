@@ -22,7 +22,7 @@ const handleClickBookmark = (postType, postId, postTitle) => {
     case "school":
         targetUrl = '/schools/' + postTitle
         router.push(targetUrl)
-        return;
+        // return;
         break;
     case "advice":
         targetUrl = '/advice/resources/'
@@ -37,7 +37,9 @@ const handleClickBookmark = (postType, postId, postTitle) => {
         console.log('unknown post type')
         break;
     }
-    router.push(targetUrl + postId)
+    if (targetUrl !== '') {
+        router.push(targetUrl + postId);
+    }
 }
 
 
@@ -57,6 +59,17 @@ const fetchBookmarksWithTitle = () => {
         });
 }
 
+const deleteBookmark = (index) => {
+    const bookmarkToDelete = userBookmarks.value[index]
+    axios.post(API_ENDPOINTS.BOOKMARK.BOOKMARK, { post_id: bookmarkToDelete.post_id, post_type: bookmarkToDelete.post_type, user_id: currentUser.value.id })
+        .then(() => {
+            userBookmarks.value.splice(index, 1); // Remove the deleted bookmark from the list
+            count.value--; // Decrease the count
+        })
+        .catch(error => {
+            console.error('Error deleting bookmark:', error);
+        });
+}
 
 onMounted(() => {
     fetchBookmarksWithTitle();
@@ -72,7 +85,7 @@ onMounted(() => {
         >
             <Loader
                 loader-type="small"
-                loader-message="Fetching your notifications"
+                loader-message="Fetching your bookmarks"
             />
         </div>
 
@@ -87,10 +100,9 @@ onMounted(() => {
                 :category-text="singleBookmark.post_type"
                 :click-callback="() => handleClickBookmark(singleBookmark.post_type, singleBookmark.post_id,singleBookmark.post_title)"
             />
-            <input
-                type="checkbox"
-                class="border-2 border-black h-6 items-center m-auto w-6"
-            >
+            <button @click="deleteBookmark(index)">
+                Delete
+            </button>
         </div>
     </div>
 </template>
