@@ -5,6 +5,8 @@ import {onMounted, ref} from "vue";
 import {useRouter} from "vue-router";
 
 import Loader from "@/js/components/spinner/Loader.vue";
+import UserNotificationItemLarge
+    from "@/js/components/userprofile/userprofileupdate/usernotification/UserNotificationItemLarge.vue";
 import UserNotificationItemSmall
     from "@/js/components/userprofile/userprofileupdate/usernotification/UserNotificationItemSmall.vue";
 import UserProfileContentContainer from "@/js/components/userprofile/userprofileupdate/UserProfileContentContainer.vue";
@@ -133,9 +135,11 @@ const refreshNotifications = async () => {
                                                 :key="index"
                                                 class="mr-4"
                                             >
-                                                <UserNotificationItemSmall
+                                                <UserNotificationItemLarge
                                                     :display-heading="notification.title"
                                                     :time-date="notification.updated_at"
+                                                    :display-author="notification.author_name"
+                                                    :display-action="notification.action"
                                                     :category-text="notification.type"
                                                     :click-callback="() => handleClickNotification(notification.id,notification.resource_id, notification.type,notification.title )"
                                                 />
@@ -160,9 +164,11 @@ const refreshNotifications = async () => {
                                                 :key="index"
                                                 class="mr-4"
                                             >
-                                                <UserNotificationItemSmall
+                                                <UserNotificationItemLarge
                                                     :display-heading="notification.title"
                                                     :time-date="notification.updated_at"
+                                                    :display-author="notification.author_name"
+                                                    :display-action="notification.action"
                                                     :category-text="notification.type"
                                                     :click-callback="() => handleClickNotification(notification.id,notification.resource_id, notification.type,notification.title )"
                                                 />

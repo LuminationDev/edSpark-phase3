@@ -1,15 +1,18 @@
 <script setup>
-import {ref, computed} from 'vue'
-import GenericLongCard from "@/js/components/card/GenericLongCard.vue";
+import {storeToRefs} from "pinia";
+import {onMounted, ref} from 'vue'
 import {useRouter} from "vue-router";
 
-const props = defineProps({
-    bookmarkData:{
-        type: Object,
-        required: true
-    }
-})
+import GenericLongCard from "@/js/components/card/GenericLongCard.vue";
+import {API_ENDPOINTS} from "@/js/constants/API_ENDPOINTS";
+import {useUserStore} from '@/js/stores/useUserStore';
+
+const userBookmarks = ref([])
+const count = ref(0)
 const router = useRouter()
+const userStore = useUserStore();
+const {currentUser} = storeToRefs(userStore)
+
 const handleClickBookmark = (postType, postId, postTitle) => {
     let targetUrl = ''
     switch(postType){
@@ -34,6 +37,24 @@ const handleClickBookmark = (postType, postId, postTitle) => {
     router.push(targetUrl + postId)
 }
 
+const fetchBookmarksWithTitle = () => {
+    const userId = currentUser.value.id; // Hardcoded user ID
+    axios.post(API_ENDPOINTS.BOOKMARK.FETCH_ALL_BOOKMARKS_WITH_TITLE, { user_id: userId })
+        .then(response => {
+            console.log(currentUser.value.id)
+            console.log(userBookmarks)
+            userBookmarks.value = response.data.data;
+            count.value = response.data.count;
+        })
+        .catch(error => {
+            console.error('Error fetching bookmarks:', error);
+        });
+}
+
+onMounted(() => {
+    fetchBookmarksWithTitle();
+});
+
 </script>
 
 <template>
@@ -43,7 +64,7 @@ const handleClickBookmark = (postType, postId, postTitle) => {
         </div>
         <div class="bg-main-teal/80 h-72 overflow-scroll pt-4 px-4 rounded-b-lg text-white userBookmarkContentSection md:!pt-6 md:!px-10">
             <template
-                v-for="(singleBookmark, index) in bookmarkData"
+                v-for="(singleBookmark, index) in userBookmarks"
                 :key="index"
             >
                 <GenericLongCard
