@@ -7,13 +7,77 @@
     "file": "assets/PartnersPuzzle-f8ea4960.png",
     "src": "resources/assets/images/PartnersPuzzle.png"
   },
+  "resources/assets/images/dma/bg-cover-leading.jpg": {
+    "file": "assets/bg-cover-leading-4f193d79.jpg",
+    "src": "resources/assets/images/dma/bg-cover-leading.jpg"
+  },
+  "resources/assets/images/dma/bg-cover-learning.jpg": {
+    "file": "assets/bg-cover-learning-501d1416.jpg",
+    "src": "resources/assets/images/dma/bg-cover-learning.jpg"
+  },
+  "resources/assets/images/dma/bg-cover-managing.jpg": {
+    "file": "assets/bg-cover-managing-7cad4711.jpg",
+    "src": "resources/assets/images/dma/bg-cover-managing.jpg"
+  },
+  "resources/assets/images/dma/bg-cover-teaching.jpg": {
+    "file": "assets/bg-cover-teaching-2eb34e0b.jpg",
+    "src": "resources/assets/images/dma/bg-cover-teaching.jpg"
+  },
+  "resources/assets/images/dma/bg-cover-triage.jpg": {
+    "file": "assets/bg-cover-triage-16975a06.jpg",
+    "src": "resources/assets/images/dma/bg-cover-triage.jpg"
+  },
+  "resources/assets/images/dma/icons/arrow-circle-left.svg": {
+    "file": "assets/arrow-circle-left-a4211f62.svg",
+    "src": "resources/assets/images/dma/icons/arrow-circle-left.svg"
+  },
+  "resources/assets/images/dma/icons/arrow-left.svg": {
+    "file": "assets/arrow-left-e1df0749.svg",
+    "src": "resources/assets/images/dma/icons/arrow-left.svg"
+  },
+  "resources/assets/images/dma/icons/check.svg": {
+    "file": "assets/check-bbafe64b.svg",
+    "src": "resources/assets/images/dma/icons/check.svg"
+  },
+  "resources/assets/images/dma/icons/chevron-right.svg": {
+    "file": "assets/chevron-right-7ec8c5ff.svg",
+    "src": "resources/assets/images/dma/icons/chevron-right.svg"
+  },
+  "resources/assets/images/dma/icons/info-circle.svg": {
+    "file": "assets/info-circle-f6a3020f.svg",
+    "src": "resources/assets/images/dma/icons/info-circle.svg"
+  },
+  "resources/assets/images/dma/icons/play.svg": {
+    "file": "assets/play-7bbc71f2.svg",
+    "src": "resources/assets/images/dma/icons/play.svg"
+  },
+  "resources/assets/images/dma/icons/x.svg": {
+    "file": "assets/x-a2a415f2.svg",
+    "src": "resources/assets/images/dma/icons/x.svg"
+  },
+  "resources/assets/images/dma/illustration-leading.png": {
+    "file": "assets/illustration-leading-35b1ce05.png",
+    "src": "resources/assets/images/dma/illustration-leading.png"
+  },
+  "resources/assets/images/dma/illustration-learning.png": {
+    "file": "assets/illustration-learning-69130225.png",
+    "src": "resources/assets/images/dma/illustration-learning.png"
+  },
+  "resources/assets/images/dma/illustration-managing.png": {
+    "file": "assets/illustration-managing-844dfbee.png",
+    "src": "resources/assets/images/dma/illustration-managing.png"
+  },
+  "resources/assets/images/dma/illustration-teaching.png": {
+    "file": "assets/illustration-teaching-130e321b.png",
+    "src": "resources/assets/images/dma/illustration-teaching.png"
+  },
+  "resources/assets/images/edSparkLogoNew.png": {
+    "file": "assets/edSparkLogoNew-5769a113.png",
+    "src": "resources/assets/images/edSparkLogoNew.png"
+  },
   "resources/assets/images/edsparkLogo.png": {
     "file": "assets/edsparkLogo-e7914418.png",
     "src": "resources/assets/images/edsparkLogo.png"
-  },
-  "resources/assets/images/eventsCalendar.png": {
-    "file": "assets/eventsCalendar-39cdf35b.png",
-    "src": "resources/assets/images/eventsCalendar.png"
   },
   "resources/assets/images/footer/cc.png": {
     "file": "assets/cc-286aeef7.png",
@@ -39,21 +103,17 @@
     "file": "assets/hardwareInfoImage-e7b190a8.png",
     "src": "resources/assets/images/hardwareInfoImage.png"
   },
-  "resources/assets/images/profilePlaceholder.webp": {
-    "file": "assets/profilePlaceholder-9b013e68.webp",
-    "src": "resources/assets/images/profilePlaceholder.webp"
-  },
-  "resources/assets/images/profile_background.jpeg": {
-    "file": "assets/profile_background-84005a5c.jpeg",
-    "src": "resources/assets/images/profile_background.jpeg"
+  "resources/assets/video/temporary.mp4": {
+    "file": "assets/temporary-71944d74.mp4",
+    "src": "resources/assets/video/temporary.mp4"
   },
   "resources/css/app.css": {
-    "file": "assets/app-6f980e42.css",
+    "file": "assets/app-ce81d578.css",
     "isEntry": true,
     "src": "resources/css/output.css"
   },
   "resources/css/filament/admin/theme.css": {
-    "file": "assets/theme-01055a61.css",
+    "file": "assets/theme-9cbb555a.css",
     "isEntry": true,
     "src": "resources/css/filament/admin/theme.css"
   },
@@ -122,12 +182,12 @@
     "src": "resources/css/font/museosans-700-webfont.woff2"
   },
   "resources/css/output.css": {
-    "file": "assets/app-6f980e42.css",
+    "file": "assets/app-ce81d578.css",
     "isEntry": true,
     "src": "resources/css/output.css"
   },
   "resources/js/app.css": {
-    "file": "assets/app-90549fe7.css",
+    "file": "assets/app-9dedac3d.css",
     "src": "resources/js/app.css"
   },
   "resources/js/app.ts": {
@@ -138,11 +198,20 @@
       "assets/sagovau_rev-19524a3e.png",
       "assets/white-ribbon-6ba8cd1c.svg",
       "assets/dfe-42a1625e.svg",
-      "assets/profile_background-84005a5c.jpeg",
-      "assets/profilePlaceholder-9b013e68.webp",
-      "assets/english-language-76add6b4.png",
+      "assets/edSparkLogoNew-5769a113.png",
+      "assets/check-bbafe64b.svg",
+      "assets/illustration-leading-35b1ce05.png",
+      "assets/illustration-learning-69130225.png",
+      "assets/illustration-managing-844dfbee.png",
+      "assets/illustration-teaching-130e321b.png",
+      "assets/chevron-right-7ec8c5ff.svg",
+      "assets/x-a2a415f2.svg",
+      "assets/temporary-71944d74.mp4",
+      "assets/play-7bbc71f2.svg",
+      "assets/arrow-circle-left-a4211f62.svg",
+      "assets/info-circle-f6a3020f.svg",
+      "assets/arrow-left-e1df0749.svg",
       "assets/edsparkLogo-e7914418.png",
-      "assets/eventsCalendar-39cdf35b.png",
       "assets/PartnersPuzzle-f8ea4960.png",
       "assets/museosans-100-webfont-dd3e73e3.eot",
       "assets/museosans-100-webfont-e02f2d2f.woff2",
@@ -159,17 +228,19 @@
       "assets/museosans-700-webfont-4fb242a4.eot",
       "assets/museosans-700-webfont-edb1187f.woff2",
       "assets/museosans-700-webfont-02c46e40.woff",
-      "assets/museosans-700-webfont-c9809fc4.ttf"
+      "assets/museosans-700-webfont-c9809fc4.ttf",
+      "assets/bg-cover-teaching-2eb34e0b.jpg",
+      "assets/bg-cover-learning-501d1416.jpg",
+      "assets/bg-cover-leading-4f193d79.jpg",
+      "assets/bg-cover-managing-7cad4711.jpg",
+      "assets/bg-cover-triage-16975a06.jpg"
     ],
     "css": [
-      "assets/app-90549fe7.css"
+      "assets/app-9dedac3d.css",
+      "assets/app-ce81d578.css"
     ],
-    "file": "assets/app-93bf7705.js",
+    "file": "assets/app-817cd2f2.js",
     "isEntry": true,
     "src": "resources/js/app.ts"
-  },
-  "resources/js/components/userprofile/userprofileupdate/svgs/english-language.png": {
-    "file": "assets/english-language-76add6b4.png",
-    "src": "resources/js/components/userprofile/userprofileupdate/svgs/english-language.png"
   }
 }

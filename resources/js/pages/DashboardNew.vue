@@ -1,6 +1,6 @@
 <script setup>
 import {storeToRefs} from "pinia";
-import {computed, onMounted, ref} from 'vue';
+import {computed, onMounted, onUnmounted, ref} from 'vue';
 import {useRouter} from "vue-router";
 
 import AdviceCard from "@/js/components/advice/AdviceCard.vue";
@@ -32,6 +32,9 @@ const guideList = ref([])
 const {allSoftware} = storeToRefs(useSoftwareStore())
 
 const eventList = ref([])
+const abortController = new AbortController();
+const signal = abortController.signal;
+
 
 onMounted(async () => {
     try {
@@ -51,6 +54,12 @@ onMounted(async () => {
         console.error("Error fetching data:", error);
     }
 })
+
+onUnmounted(() => {
+    abortController.abort();
+});
+
+
 
 </script>
 
