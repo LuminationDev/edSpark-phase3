@@ -170,7 +170,7 @@ export default {
                 extraLarge: '48px',
                 huge: '81px',
                 extraHuge: '140px',
-                mainHero: '500px'
+                mainHero: '508px'
             },
             screens: {
                 'ml': '860px',
