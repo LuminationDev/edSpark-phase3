@@ -38,6 +38,7 @@ const eventList = ref([])
 const abortController = new AbortController();
 const signal = abortController.signal;
 
+
 onMounted(async () => {
     try {
         const [fetchedFeaturedSchool, fetchedAdvice, fetchedSoftware, fetchedEvent] = await Promise.all([

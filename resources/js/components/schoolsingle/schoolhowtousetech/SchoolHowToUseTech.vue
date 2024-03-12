@@ -4,6 +4,8 @@ import {computed, ref} from 'vue'
 
 import TinyMceRichTextInput from "@/js/components/bases/frontendform/TinyMceEditor/TinyMceRichTextInput.vue";
 import ImageUploaderInput from "@/js/components/bases/ImageUploaderInput.vue";
+import SchoolHowToUseTechEditableRow
+    from "@/js/components/schoolsingle/schoolhowtousetech/SchoolHowToUseTechEditableRow.vue";
 import {schoolPartnerTech, schoolTech} from "@/js/constants/schoolTech";
 
 // techUsed is the technology selected on the selector
@@ -53,9 +55,12 @@ if (props.techLandscape && props.techLandscape.length > 0) {
 
 const handleTinyMceContent = (name, data) => {
     howToUseData.value.filter(item => item.name === name)[0].text = data
+    console.log(name)
+    console.log(howToUseData.value.filter(item => item.name === name)[0])
 }
 const handleUploadedImageUrls = (name, urlsData) => {
-
+    console.log(name)
+    console.log(howToUseData.value.filter(item => item.name === name)[0])
     howToUseData.value.filter(item => item.name === name)[0].images = urlsData.map(item => item.remoteUrl)
 }
 
@@ -63,18 +68,6 @@ const activeHowToUseTechItem = computed(() => {
     return howToUseData.value.filter(htuitem => props.techUsed.map(tuItem => tuItem.name).includes(htuitem.name))
 })
 
-const displayTitle = (code) => {
-    switch (code) {
-    case "IoT":
-        return "Internet of Things"
-    case "VR":
-        return "Virtual Reality"
-    case "AR":
-        return "Augmented Reality"
-    default:
-        return code
-    }
-}
 
 const emits = defineEmits(['emitTechLandscape'])
 
@@ -97,26 +90,31 @@ watchDebounced(howToUseData, () =>{
             :key="index"
             class="HowToUseItem border-[1px] flex justify-center flex-col mt-6 p-4 rounded w-full"
         >
-            <div class="HowToUseText richTextContentContainer w-full">
-                <div class="font-semibold howToTitle mb-6 text-xl">
-                    {{ displayTitle(item.name) }}
-                </div>
-                <TinyMceRichTextInput
-                    :src-content="item.text"
-                    @emit-tiny-rich-content="(data) => handleTinyMceContent(item.name,data)"
-                />
-            </div>
-            <div class="HowToUseImage flex justify-center items-center flex-col h-full mt-2 w-full">
-                <div class="flex mb-4 self-start">
-                    Image gallery (Up to 5 images)
-                </div>
-                <ImageUploaderInput
-                    :item-type="'HowToUseTech'"
-                    :current-media="''"
-                    :max="5"
-                    @emit-uploaded-media="(urlsArray)=>handleUploadedImageUrls(item.name, urlsArray)"
-                />
-            </div>
+            <SchoolHowToUseTechEditableRow
+                :how-to-use-tech-item="item"
+                @emit-tiny-mce-content="(name,data) => handleTinyMceContent(name,data)"
+                @emit-images-array="(name, urls) => handleUploadedImageUrls(name,urls)"
+            />
+            <!--            <div class="HowToUseText richTextContentContainer w-full">-->
+            <!--                <div class="font-semibold howToTitle mb-6 text-xl">-->
+            <!--                    {{ displayTitle(item.name) }}-->
+            <!--                </div>-->
+            <!--                <TinyMceRichTextInput-->
+            <!--                    :src-content="item.text"-->
+            <!--                    @emit-tiny-rich-content="(data) => handleTinyMceContent(item.name,data)"-->
+            <!--                />-->
+            <!--            </div>-->
+            <!--            <div class="HowToUseImage flex justify-center items-center flex-col h-full mt-2 w-full">-->
+            <!--                <div class="flex mb-4 self-start">-->
+            <!--                    Image gallery (Up to 5 images)-->
+            <!--                </div>-->
+            <!--                <ImageUploaderInput-->
+            <!--                    :item-type="'HowToUseTech'"-->
+            <!--                    :current-media="item.images"-->
+            <!--                    :max="5"-->
+            <!--                    @emit-uploaded-media="(urlsArray)=>handleUploadedImageUrls(item.name, urlsArray)"-->
+            <!--                />-->
+            <!--            </div>-->
         </div>
     </div>
 </template>

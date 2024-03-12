@@ -131,7 +131,6 @@ const handleSchoolTech = (techData): void => {
 }
 
 const handleReceiveTechLandscape = (data) => {
-    console.log(JSON.stringify(data))
     newTechLandscape.value = data
 }
 
@@ -157,7 +156,6 @@ const handleReceivePhotoFromImageChange = (type, file): void => {
 onMounted(async () => {
     if (!props.isPreviewMode) {
         await schoolService.checkIfUserCanEdit(props.schoolContent.site.site_id, props.schoolContent.school_id).then(res => {
-            console.log(res)
             currentUserCanEdit.value = Boolean(res.data.status && res.data.result)
             currentUserCanNominate.value = Boolean(res.data.status && res.data.canNominate)
             currentUserCanPublish.value = Boolean(res.data.status && res.data.canPublish)
@@ -437,11 +435,6 @@ onBeforeRouteLeave(() =>{
             />
         </template>
         <template v-if="props.activeSubmenu === 'how-to-use-tech'">
-            <!--            <SchoolHowToUseTech-->
-            <!--                :tech-used="props.schoolContent.tech_used"-->
-            <!--                :tech-landscape="props.schoolContent.tech_landscape"-->
-            <!--            />-->
-            <!--  swap to renderer here -->
             <SchoolHowToUseTechRenderer
                 :tech-landscape="props.schoolContent.tech_landscape"
                 :tech-used="props.schoolContent.tech_used"
