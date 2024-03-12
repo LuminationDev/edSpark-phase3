@@ -11,6 +11,10 @@ import WarningModal from "@/js/components/dma/WarningModal.vue";
 import Spinner from "@/js/components/spinner/Spinner.vue";
 import {dmaService} from "@/js/service/dmaService";
 
+
+import PDFBuilder from "@/js/components/global/PDFBuilder.vue";
+
+
 const props = defineProps({
     domains: {
         type: Array,
@@ -374,6 +378,9 @@ const handleCloseReport = () => {
                             These elements will be highlighted on your profile.
                         </p>
                     </div>
+
+                    <PDFBuilder/>
+
 
                     <div class="flex lg:flex-row flex-col gap-10">
                         <div

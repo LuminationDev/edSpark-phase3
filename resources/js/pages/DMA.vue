@@ -15,8 +15,7 @@ import WarningModal from "@/js/components/dma/WarningModal.vue";
 import InspirationAndGuidesRobot from "@/js/components/inspirationandguides/InspirationAndGuidesRobot.vue";
 import {LandingHeroText} from "@/js/constants/PageBlurb";
 import {dmaService} from "@/js/service/dmaService";
-
-import PDFBuilder from "@/js/components/global/PDFBuilder.vue";
+import GenericButton from '@/js/components/button/GenericButton.vue';
 
 const showSurveyModal = ref(false);
 const showReportModal = ref(false);
@@ -257,7 +256,7 @@ const handleResetSurvey = async () => {
                                     <RoundButton
                                         v-if="isCompleted"
                                         @click="showReportModal = true"
-                                        class="capitalize"
+                                        class="!normal-case  hover:!brightness-[1.1] hover:!bg-secondary-coolGrey"
                                     >
                                         View assessment report
                                     </RoundButton>
@@ -265,22 +264,35 @@ const handleResetSurvey = async () => {
                             </div>
                             <p class="text-lg font-thin px-4 md:!px-5 lg:!px-0">
                                 <!-- TODO correct this information -->
-                                <PDFBuilder>
-                                   The tool is for you and your school. Your data is stored on the edSpark platform. 
+                              
+                                The tool is for you and your school. Your data is stored on the edSpark platform. 
                                 You can generate a PDF report below for sharing within your school or including in your next
                                 round of School Improvement planning.
-                                </PDFBuilder>
 
+
+                                <!-- <span class="flex flex-row w-full gap-10 justify-between mt-6"> -->
+                                
 
                                 <span class="block h-6 mt-7">
-                                    <button
+                                    <GenericButton
                                         v-if="isInProgress && !isDomainResetting()"
-                                        class="block font-semibold underline"
+                                        class="
+                                            !text-black
+                                            hover:!brightness-[1.2]
+                                            hover:!bg-secondary-coolGrey
+                                            bg-secondary-coolGrey
+                                            brightness-[1.1]
+                                            font-medium
+                                            px-12
+                                            py-2
+                                            text-lg"
                                         @click="showResetModal = true"
                                     >
                                         Reset progress
-                                    </button>
+                                    </GenericButton>
                                 </span>
+
+                            <!-- </span> -->
                             </p>
                         </div>
 
