@@ -9729,29 +9729,6 @@ color: blue !important;
   color: rgb(107 114 128 / var(--tw-text-opacity));
 }
 
-@media not all and (min-width: 1024px) {
-  .max-lg\:mx-auto {
-    margin-left: auto;
-    margin-right: auto;
-  }
-
-  .max-lg\:hidden {
-    display: none;
-  }
-}
-
-@media not all and (min-width: 768px) {
-  .max-md\:h-96 {
-    height: 24rem;
-  }
-}
-
-@media not all and (min-width: 640px) {
-  .max-sm\:pt-16 {
-    padding-top: 4rem;
-  }
-}
-
 @media (min-width: 640px) {
   .sm\:relative {
     position: relative;
@@ -9847,6 +9824,10 @@ color: blue !important;
 
   .sm\:h-32 {
     height: 8rem;
+  }
+
+  .sm\:\!w-40 {
+    width: 10rem !important;
   }
 
   .sm\:\!w-40 {
