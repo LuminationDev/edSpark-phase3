@@ -2,12 +2,10 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Notification extends Model
 {
-    use HasFactory;
 
     /**
      * The table associated with the model
@@ -19,13 +17,16 @@ class Notification extends Model
     /**
      * The attributes that are mass assignable
      *
-     * @var array
      */
     protected $fillable = [
-        'type',
-        'user_id',
         'data',
+        'type',
         'read_at',
-        'status'
+        'notifiable_type',
+        'notifiable_id'
     ];
+    public function notifiable()
+    {
+        return $this->morphTo();
+    }
 }

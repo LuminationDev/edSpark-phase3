@@ -9852,8 +9852,8 @@ color: blue !important;
     height: 8rem;
   }
 
-  .sm\:\!w-1\/2 {
-    width: 50% !important;
+  .sm\:\!w-40 {
+    width: 10rem !important;
   }
 
   .sm\:\!w-40 {
@@ -9959,13 +9959,6 @@ color: blue !important;
     grid-template-columns: repeat(auto-fit,minmax(0,1fr));
   }
 
-  .sm\:grid-rows-\[1fr_auto_3fr\] {
-    grid-template-rows: 1fr auto 3fr;
-  }
-
-  .sm\:\!flex-row {
-    flex-direction: row !important;
-  }
 
   .sm\:flex-row {
     flex-direction: row;
@@ -10963,8 +10956,16 @@ color: blue !important;
     width: 33.333333% !important;
   }
 
+  .lg\:\!w-1\/4 {
+    width: 25% !important;
+  }
+
   .lg\:\!w-2\/3 {
     width: 66.666667% !important;
+  }
+
+  .lg\:\!w-3\/4 {
+    width: 75% !important;
   }
 
   .lg\:\!w-36 {
@@ -10981,6 +10982,10 @@ color: blue !important;
 
   .lg\:\!w-auto {
     width: auto !important;
+  }
+
+  .lg\:\!w-full {
+    width: 100% !important;
   }
 
   .lg\:w-1\/2 {
@@ -11399,6 +11404,10 @@ color: blue !important;
     width: 66.666667% !important;
   }
 
+  .xl\:\!w-3\/4 {
+    width: 75% !important;
+  }
+
   .xl\:\!w-44 {
     width: 11rem !important;
   }
@@ -11556,6 +11565,10 @@ color: blue !important;
     display: none;
   }
 
+  .\32xl\:\!w-1\/2 {
+    width: 50% !important;
+  }
+
   .\32xl\:columns-\[--cols-2xl\] {
     -moz-columns: var(--cols-2xl);
          columns: var(--cols-2xl);
@@ -11575,6 +11588,10 @@ color: blue !important;
 
   .\32xl\:grid-cols-\[--cols-2xl\] {
     grid-template-columns: var(--cols-2xl);
+  }
+
+  .\32xl\:\!flex-row {
+    flex-direction: row !important;
   }
 
   .\32xl\:flex-row {

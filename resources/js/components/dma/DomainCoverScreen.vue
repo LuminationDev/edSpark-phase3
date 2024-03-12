@@ -38,13 +38,7 @@ const domainVideos = {
     managing: vidManaging
 };
 
-const showResetModal = ref(false);
 const showVideoModal = ref(false);
-
-const handleResetDomain = () => {
-    showResetModal.value = false;
-    emit('reset');
-}
 
 const domainStarted = computed(() => {
     return props.domain.completed_question_count > 0;
@@ -173,28 +167,12 @@ const elements = computed(() => {
                 <TextButton
                     class="text-small"
                     :class="{'invisible': !domainStarted}"
-                    @click="showResetModal = true"
+                    @click="emit('reset')"
                 >
                     Reset progress
                 </TextButton>
             </div>
         </div>
-        <WarningModal
-            v-if="showResetModal"
-            embed
-            @cancel="showResetModal=false"
-            @confirm="handleResetDomain"
-        >
-            <template #title>
-                Are you sure?
-            </template>
-            <template #message>
-                Resetting will erase all your progress made on this domain. Other domains won't be affected.
-            </template>
-            <template #confirm>
-                Reset
-            </template>
-        </WarningModal>
     </div>
 </template>
 
