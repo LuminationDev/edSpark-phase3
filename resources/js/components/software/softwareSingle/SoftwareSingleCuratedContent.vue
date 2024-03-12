@@ -16,10 +16,10 @@ const { relatedSoftware } = storeToRefs(softwareStore)
         v-if="relatedSoftware && relatedSoftware.length > 0"
         class="flex flex-col mt-8 py-6 rounded softwareSingleCuratedContentContainer"
     >
-        <div class="curatedResourcesTitle font-bold pb-4 text-2xl">
+        <div class="curatedResourcesTitle font-bold pb-4 text-2xl text-center md:!text-left">
             Other similar resources
         </div>
-        <div class="flex flex-row gap-10">
+        <div class="flex flex-col md:flex-row gap-10 items-center md:items-start">
             <SoftwareCard
                 v-for="software in relatedSoftware"
                 :key="software.guid"
@@ -29,6 +29,6 @@ const { relatedSoftware } = storeToRefs(softwareStore)
         </div>
     </div>
     <div v-else>
-        Loading
+        Loading...
     </div>
 </template>

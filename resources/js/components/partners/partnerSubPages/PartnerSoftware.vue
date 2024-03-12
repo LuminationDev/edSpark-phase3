@@ -17,7 +17,7 @@ console.log(props.data)
     <div class="flex flex-col px-10 softwareSubPageContainer">
         <div class="Title softwareSubpage">
             <div class="font-semibold pb-6 text-2xl text-center">
-                Explore available software
+                Explore available apps
             </div>
         </div>
         <div class="flex justify-center lg:justify-start flex-row flex-wrap gap-6">

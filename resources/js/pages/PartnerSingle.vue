@@ -30,7 +30,12 @@ const formattedSubmenuData = computed(() => {
 
             if (menu === 'curriculum') {
                 return {
-                    displayText: 'Inspiration',
+                    displayText: 'Guides',
+                    value: menu
+                }
+            } else if (menu === 'software') {
+                return {
+                    displayText: 'Apps',
                     value: menu
                 }
             }
