@@ -17,6 +17,8 @@ import ProfileInfo from '@/js/components/userprofile/ProfileInfo.vue'
 import ProfileMessages from '@/js/components/userprofile/ProfileMessages.vue'
 import ProfileWork from '@/js/components/userprofile/ProfileWork.vue'
 import UserProfile from '@/js/components/userprofile/UserProfile.vue';
+import UserNotificationPage
+    from "@/js/components/userprofile/userprofileupdate/usernotification/UserNotificationPage.vue";
 import AdviceSingle from "@/js/pages/AdviceSingle.vue";
 import CatalogueSingle from "@/js/pages/CatalogueSingle.vue";
 import DMA from "@/js/pages/DMA.vue";
@@ -414,7 +416,7 @@ const routes: any = [
     {
         name: 'userProfile',
         path: '/profile/:userId?',
-        component: UserProfile,     
+        component: UserProfile,
         children: [
             {
                 path: '',
@@ -463,7 +465,17 @@ const routes: any = [
         path: '/:pathMatch(.*)*',
         name: 'not-found',
         component: EdsparkPageNotFound
-    }]
+    },
+    {
+        name: 'notificationListPage',
+        path: '/notifications/:userId?',
+        component: UserNotificationPage,
+        meta: {
+            // skipScrollTop: false,
+            // requiresAuth: false
+        }
+    },
+]
 
 const router = createRouter({
     history: createWebHistory(),

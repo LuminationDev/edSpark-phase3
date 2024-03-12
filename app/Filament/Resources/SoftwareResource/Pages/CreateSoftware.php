@@ -3,7 +3,13 @@
 namespace App\Filament\Resources\SoftwareResource\Pages;
 
 use App\Filament\Resources\SoftwareResource;
+use App\Helpers\NotificationActionType;
+use App\Helpers\NotificationResource;
+use App\Helpers\NotificationResourceType;
 use App\Models\Software;
+use App\Models\User;
+use App\Notifications\ResourceCreated;
+use App\Traits\UseNotification;
 use Filament\Pages\Actions;
 use Filament\Resources\Pages\CreateRecord;
 
@@ -13,7 +19,11 @@ use Illuminate\Database\Eloquent\Model;
 
 class CreateSoftware extends CreateRecord
 {
+    use useNotification;
+
     protected static string $resource = SoftwareResource::class;
+
+    private string $notificationResourceType = NotificationResourceType::SOFTWARE;
 
 
     protected function mutateFormDataBeforeCreate(array $data): array
@@ -32,6 +42,15 @@ class CreateSoftware extends CreateRecord
             $thatEvent = Software::find($record->id);
             $thatEvent->attachTags($data['tags']);
         }
+
+        // send notification here
+        $currentUser = Auth::user();
+        $usersExceptCurrent = User::whereKeyNot($currentUser)->get();
+
+        foreach ($usersExceptCurrent as $eachUser){
+            $this->sendNotification($eachUser, $record->id, $record->post_title, $currentUser->id, $this->notificationResourceType, NotificationActionType::PUBLISHED);
+        }
+
         return $record;
     }
 

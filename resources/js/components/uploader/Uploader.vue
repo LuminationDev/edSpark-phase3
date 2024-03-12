@@ -2,6 +2,8 @@
 import axios from 'axios'
 import {computed, onMounted, ref, watch} from "vue";
 
+import {guid} from "@/js/helpers/guidGenerator";
+
 import Loader from './loader/index.vue';
 
 const props = defineProps({
@@ -238,6 +240,7 @@ const removeSavedMedia = (index) => {
                 class="mu-mt-1"
             >
                 <input
+                    :id="guid()"
                     type="text"
                     name="added_media[]"
                     :value="image.name"
@@ -249,6 +252,7 @@ const removeSavedMedia = (index) => {
                 class="mu-mt-1"
             >
                 <input
+                    :id="guid()"
                     type="text"
                     name="media"
                     value="1"

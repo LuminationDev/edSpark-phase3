@@ -60,7 +60,7 @@ const customBackground = computed(() => {
 </script>
 <template>
     <div class="genericSelectorContainer">
-        <div class="font-semibold text-lg underline">
+        <div class="font-semibold text-center">
             {{ props.title }}
         </div>
         <div

@@ -106,11 +106,11 @@ const fetchSchoolByNameAsync = async (schoolName): Promise<void> => {
 }
 
 
-const handleSaveNewSchoolInfo = async (contentBlocks, techUsed) => {
+const handleSaveNewSchoolInfo = async (contentBlocks, techUsed, techLandscape) => {
     try {
         // update school might return some stuff.
         await schoolService.updateSchool(
-            schoolContent.value, contentBlocks, techUsed, logoStorage.value, coverImageStorage.value, colorTheme.value
+            schoolContent.value, contentBlocks, techUsed,techLandscape, logoStorage.value, coverImageStorage.value, colorTheme.value
         );
     } catch (err) {
         console.log('Something wrong while attempting to post');

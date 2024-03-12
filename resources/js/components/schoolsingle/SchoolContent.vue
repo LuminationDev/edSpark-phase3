@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import {storeToRefs} from "pinia";
-import {computed, onBeforeMount, onBeforeUnmount, onMounted, Ref, ref} from 'vue'
+import {computed, onBeforeMount,  onMounted, Ref, ref} from 'vue'
 import {onBeforeRouteLeave, useRoute} from "vue-router";
 import {toast} from "vue3-toastify";
 
@@ -9,7 +9,8 @@ import GenericButton from "@/js/components/button/GenericButton.vue";
 import SchoolContact from "@/js/components/schoolsingle/SchoolContact.vue";
 import SchoolColorPicker from "@/js/components/schoolsingle/schoolContent/SchoolColorPicker.vue";
 import SchoolImageChange from "@/js/components/schoolsingle/schoolContent/SchoolImageChange.vue";
-import SchoolHowToUseTech from "@/js/components/schoolsingle/SchoolHowToUseTech.vue";
+import SchoolHowToUseTech from "@/js/components/schoolsingle/schoolhowtousetech/SchoolHowToUseTech.vue";
+import SchoolHowToUseTechRenderer from "@/js/components/schoolsingle/schoolhowtousetech/SchoolHowToUseTechRenderer.vue";
 import SchoolTech from "@/js/components/schoolsingle/SchoolTech.vue";
 import SchoolWhatsNew from "@/js/components/schoolsingle/SchoolWhatsNew.vue";
 import TechSelector from "@/js/components/selector/TechSelector.vue";
@@ -67,6 +68,7 @@ const newSchoolContent: Ref<string> = ref("")
 const pendingSchoolContent: Ref<SchoolDataType | null> = ref(null)
 const schoolContentState = ref(SchoolContentState.New)
 const newTechUsed: Ref<TechUsed[] | null> = ref(null)
+const newTechLandscape = ref(null)
 
 const currentUserCanEdit = ref<boolean>(false)
 const currentUserCanNominate = ref<boolean>(false)
@@ -88,6 +90,7 @@ const forceRefreshTinyMce = () => {
 onBeforeMount(() => {
     newSchoolContent.value = props.schoolContent.content_blocks
     newTechUsed.value = _.cloneDeep(props.schoolContent.tech_used)
+    newTechLandscape.value = props.schoolContent.tech_landscape
 })
 
 const handleEditButton = async () => {
@@ -96,6 +99,7 @@ const handleEditButton = async () => {
     }
     newSchoolContent.value = props.schoolContent.content_blocks
     newTechUsed.value = _.cloneDeep(props.schoolContent.tech_used)
+    newTechLandscape.value = props.schoolContent.tech_landscape
     editMode.value = true
     // pressing the revert button
     if (schoolContentState.value === 'pending_loaded') {
@@ -126,8 +130,12 @@ const handleSchoolTech = (techData): void => {
     newTechUsed.value = techData
 }
 
+const handleReceiveTechLandscape = (data) => {
+    newTechLandscape.value = data
+}
+
 const handleAllSaveButton = (): void => {
-    emits('sendInfoToSchoolSingle', newSchoolContent.value, newTechUsed.value)
+    emits('sendInfoToSchoolSingle', newSchoolContent.value, newTechUsed.value, newTechLandscape.value)
     editMode.value = false
     schoolContentState.value = SchoolContentState.New
     // reset color here
@@ -148,7 +156,6 @@ const handleReceivePhotoFromImageChange = (type, file): void => {
 onMounted(async () => {
     if (!props.isPreviewMode) {
         await schoolService.checkIfUserCanEdit(props.schoolContent.site.site_id, props.schoolContent.school_id).then(res => {
-            console.log(res)
             currentUserCanEdit.value = Boolean(res.data.status && res.data.result)
             currentUserCanNominate.value = Boolean(res.data.status && res.data.canNominate)
             currentUserCanPublish.value = Boolean(res.data.status && res.data.canPublish)
@@ -173,6 +180,7 @@ const checkIfPendingAvailable = async (): Promise<void> => {
 const handleClickEditPendingContent = (): void => {
     newSchoolContent.value = pendingSchoolContent.value.content_blocks
     newTechUsed.value = pendingSchoolContent.value.tech_used
+    newTechLandscape.value = pendingSchoolContent.value.tech_landscape || ""
     schoolContentState.value = SchoolContentState.PendingLoaded
     forceRefreshTinyMce()
 }
@@ -197,6 +205,8 @@ const moderationStatusMessage = computed(() => {
     }
 })
 
+
+
 onBeforeRouteLeave(() =>{
     if(requiresConfirmationBeforeExit.value){
         if (!confirm("You have unsaved changes. Are you sure you want to leave?")) {
@@ -211,11 +221,10 @@ onBeforeRouteLeave(() =>{
         <template v-if="props.activeSubmenu === 'detail'">
             <div
                 v-if="Object.keys(schoolContent).length > 1"
-                class="flex px-5 py-2 school-content w-full lg:!px-10"
+                class="flex flex-col px-5 py-2 school-content w-full lg:!px-10"
             >
                 <div class="flex flex-row w-full">
                     <div
-
                         class="flex justify-between flex-col gap-12 schoolContent w-full lg:!flex-row"
                     >
                         <!--        Beginning of Edit mode                -->
@@ -223,6 +232,9 @@ onBeforeRouteLeave(() =>{
                             v-if="editMode"
                             class="flex flex-col w-full lg:!basis-2/3"
                         >
+                            <div class="border-b-2 border-black mb-4 mt-2 text-2xl w-full">
+                                School Profile
+                            </div>
                             <TinyMceRichTextInput
                                 :key="tinyMceRefreshKey"
                                 :src-content="newSchoolContent"
@@ -343,20 +355,10 @@ onBeforeRouteLeave(() =>{
                                         :current-cover-image="props.schoolContent.cover_image"
                                         @send-uploaded-photo-to-content="handleReceivePhotoFromImageChange"
                                     />
-                                    <p class="font-semibold mb-5 text-xl">
-                                        Tech Selector:
-                                    </p>
-                                    <div class="px-4 techSelectorContainer">
-                                        <TechSelector
-                                            :existing-tech-used="newTechUsed"
-                                            :color-theme="colorTheme"
-                                            @send-school-tech="handleSchoolTech"
-                                        />
-                                    </div>
                                 </template>
                                 <template v-else>
                                     <GenericButton
-                                        v-if="!editMode "
+                                        v-if="!editMode"
                                         class="
                                             bg-blue-600
                                             hover:bg-blue-400
@@ -382,6 +384,7 @@ onBeforeRouteLeave(() =>{
                                 class="contentDisplay flex items-center flex-col schoolContent w-full"
                             >
                                 <SchoolTech
+                                    v-if="!editMode"
                                     :tech-list="schoolContent.tech_used"
                                     :color-theme="colorTheme"
                                 />
@@ -389,6 +392,35 @@ onBeforeRouteLeave(() =>{
                         </div>
                     </div>
                     <!--    Display Content     -->
+                </div>
+                <div
+                    v-if="editMode"
+                    class="flex flex-col w-full"
+                >
+                    <div class="border-b-2 border-black mb-4 mt-6 text-2xl w-full">
+                        How to use tech
+                    </div>
+                    <div class="mb-4">
+                        Select technologies being used at your schools from the selector and provide more information in the text box with few related images. This information will be showed on the "How to use tech" tab.
+                    </div>
+                    <div class="flex flex-col px-4">
+                        <div class="flex flex-col lg:!flex-row">
+                            <div class="w-full lg:!w-1/4">
+                                <TechSelector
+                                    :existing-tech-used="newTechUsed"
+                                    :color-theme="colorTheme"
+                                    @send-school-tech="handleSchoolTech"
+                                />
+                            </div>
+                            <div class="w-full lg:!w-3/4">
+                                <SchoolHowToUseTech
+                                    :tech-used="newTechUsed"
+                                    :tech-landscape="props.schoolContent.tech_landscape"
+                                    @emit-tech-landscape="handleReceiveTechLandscape"
+                                />
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </template>
@@ -403,9 +435,9 @@ onBeforeRouteLeave(() =>{
             />
         </template>
         <template v-if="props.activeSubmenu === 'how-to-use-tech'">
-            <SchoolHowToUseTech
-                :tech-used="props.schoolContent.tech_used"
+            <SchoolHowToUseTechRenderer
                 :tech-landscape="props.schoolContent.tech_landscape"
+                :tech-used="props.schoolContent.tech_used"
             />
         </template>
     </div>
