@@ -6,8 +6,14 @@ export const notificationService = {
     getNotifications: async (currentUserId) : Promise<AxiosResponse<any>> =>{
         return axios.get(API_ENDPOINTS.NOTIFICATION.GET_NOTIFICATIONS + currentUserId);
     },
+    getAllNotifications: async (currentUserId) : Promise<AxiosResponse<any>> =>{
+        return axios.get(API_ENDPOINTS.NOTIFICATION.GET_ALL_NOTIFICATIONS + currentUserId);
+    },
     readNotification: async (notificationId): Promise<any> =>{
         return axios.post(API_ENDPOINTS.NOTIFICATION.READ_NOTIFICATION + notificationId)
+    },
+    readAllNotifications: async (currentUserId): Promise<AxiosResponse<any>> => {
+        return axios.post(API_ENDPOINTS.NOTIFICATION.READ_ALL_NOTIFICATIONS + currentUserId);
     }
-    
+
 }

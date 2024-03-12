@@ -128,7 +128,7 @@ export const API_ENDPOINTS: Endpoints = appendServerURL({
         GET_NOTIFICATIONS : '/getNotifications/',
         GET_ALL_NOTIFICATIONS : '/getAllNotifications/',
         READ_NOTIFICATION: '/readNotification/',
-        READ_ALL_NOTIFICATIONS: '/readAllNotification/'
+        READ_ALL_NOTIFICATIONS: '/readAllNotifications/'
     },
 
     LABEL: {
