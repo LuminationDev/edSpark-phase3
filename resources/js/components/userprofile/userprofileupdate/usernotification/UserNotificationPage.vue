@@ -2,26 +2,75 @@
 
 
 import {storeToRefs} from "pinia";
-import {ref} from "vue";
+import {computed, onMounted, ref} from "vue";
 
 import Loader from "@/js/components/spinner/Loader.vue";
 import UserNotificationLinearLayout
     from "@/js/components/userprofile/userprofileupdate/usernotification/UserNotificationLinearLayout.vue";
 import UserProfileContentContainer from "@/js/components/userprofile/userprofileupdate/UserProfileContentContainer.vue";
+import {notificationService} from "@/js/service/notificationService";
 import {useUserStore} from "@/js/stores/useUserStore";
-const isLoading  = ref
+
+
 const {currentUser} = storeToRefs(useUserStore())
 const leftHeadingNotification = ref('Notifications')
 const leftDescriptionNotification = ref('Stay up to date with the latest activities.')
 const reloadKey = ref(0)
-const markAllAsRead = ref()
+// const markAllAsRead = ref()
+const isLoading = ref(true);
+// const notificationUnread = ref();
+const unreadNotification = ref([])
+const readNotification = ref([])
 
-const handleReceiveMarkAllAsRead = (value) => {
-    markAllAsRead.value = value
-}
-const handleReceiveIsLoading = (value) => {
-    isLoading.value = value
-}
+// const handleReceiveIsLoading = (value) => {
+//     isLoading.value = value
+// }
+
+onMounted(() => {
+    notificationService.getNotifications(currentUser.value.id).then(res => {
+        unreadNotification.value = res.data.data
+        isLoading.value = false
+    }).catch(err => {
+        console.log(err.message)
+        isLoading.value = false
+    })
+    notificationService.getAllNotifications(currentUser.value.id).then(res =>{
+        readNotification.value = res.data.data.filter(notification => notification.read_at)
+        console.log(readNotification)
+        isLoading.value = false
+    }).catch(err => {
+        console.log(err.message)
+        isLoading.value = false
+    })
+    //  emits('sendMarkAllAsReadButton', handleMarkAllAsRead)
+});
+
+const handleMarkAllAsRead = () => {
+    isLoading.value = true;
+    notificationService.readAllNotifications(currentUser.value.id)
+        .then(() => {
+            refreshNotifications();
+            console.log("Mark All as read button is pressed!")
+        })
+        .catch((error) => {
+            console.error("Error marking all notifications as read:", error.message);
+            isLoading.value = false;
+        });
+};
+
+const refreshNotifications = async () => {
+    isLoading.value = true;
+    try {
+        notificationService.getAllNotifications(currentUser.value.id).then(res => {
+            readNotification.value = res.data.data.filter(notification => notification.read_at);
+            unreadNotification.value = res.data.data.filter(notification => !notification.read_at)
+        })
+    } catch (error) {
+        console.error("Error refreshing notifications:", error.message);
+    } finally {
+        isLoading.value = false;
+    }
+};
 </script>
 
 <template>
@@ -40,7 +89,19 @@ const handleReceiveIsLoading = (value) => {
                             :left-description="leftDescriptionNotification"
                         >
                             <template #content>
-                                <div class="flex flex-col gap-10">
+                                <div
+                                    v-if="isLoading"
+                                    class="loader"
+                                >
+                                    <Loader
+                                        loader-type="small"
+                                        loader-message="Fetching your notifications"
+                                    />
+                                </div>
+                                <div
+                                    v-else
+                                    class="flex flex-col gap-10"
+                                >
                                     <div
 
                                         class="ml-4 mt-2"
@@ -51,34 +112,32 @@ const handleReceiveIsLoading = (value) => {
                                             </div>
                                             <button
                                                 class="ml-auto mr-4 underline"
-                                                @click="markAllAsRead"
+                                                @click="handleMarkAllAsRead"
                                             >
                                                 Mark all as read
                                             </button>
                                         </div>
                                         <div>
-                                            <UserNotificationLinearLayout
-                                                notification-size="large"
-                                                notification-status="unread"
-                                                @send-mark-all-as-read-button="handleReceiveMarkAllAsRead"
-                                                @send-is-loading="handleReceiveIsLoading"
-                                            />
-                                        </div>
-                                    </div>
-                                    <div
+                                            <div>
+                                                <UserNotificationLinearLayout
+                                                    notification-size="large"
+                                                    notification-status="unread"
 
-                                        class="ml-4 mt-2"
-                                    >
-                                        <div class="flex flex-row">
-                                            <div class="ml-1">
-                                                Read Notifications
+                                                    @send-is-loading="handleReceiveIsLoading"
+                                                />
                                             </div>
-                                        </div>
-                                        <div>
-                                            <UserNotificationLinearLayout
-                                                notification-size="large"
-                                                notification-status="read"
-                                            />
+                                            <div class="flex flex-row mt-10">
+                                                <div class="ml-1">
+                                                    Read Notifications
+                                                </div>
+                                            </div>
+                                            <div>
+                                                <UserNotificationLinearLayout
+                                                    notification-size="large"
+                                                    notification-status="read"
+                                                    @send-is-loading="handleReceiveIsLoading"
+                                                />
+                                            </div>
                                         </div>
                                     </div>
                                 </div>

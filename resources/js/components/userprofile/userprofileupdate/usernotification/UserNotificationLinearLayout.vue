@@ -52,7 +52,7 @@ onMounted(() => {
         console.log(err.message)
         isLoading.value = false
     })
-    emits('sendMarkAllAsReadButton', handleMarkAllAsRead)
+    //  emits('sendMarkAllAsReadButton', handleMarkAllAsRead)
 });
 
 console.log(notificationService.getNotifications(unreadNotification.value))
@@ -81,6 +81,7 @@ const handleClickNotification = (notificationId,resourceId, resourceType, resour
     }
 }
 
+
 const filteredNotifications = computed(() => {
     if (notificationUnread.value === 'unread') {
         return unreadNotification.value;
@@ -90,87 +91,69 @@ const filteredNotifications = computed(() => {
 });
 
 
-const handleMarkAllAsRead = () => {
-    isLoading.value = true;
-    notificationService.readAllNotifications(currentUser.value.id)
-        .then(() => {
-            refreshNotifications();
-        })
-        .catch((error) => {
-            console.error("Error marking all notifications as read:", error.message);
-            isLoading.value = false;
-        });
-};
-const refreshNotifications = async () => {
-    isLoading.value = true;
-    try {
-        // notificationService.getNotifications(currentUser.value.id).then(res => {
-        //     notifications.value = res.data.data;
-        // }),
-        notificationService.getAllNotifications(currentUser.value.id).then(res => {
-            readNotification.value = res.data.data.filter(notification => notification.read_at);
-            unreadNotification.value = res.data.data.filter(notification => !notification.read_at)
-        })
-    } catch (error) {
-        console.error("Error refreshing notifications:", error.message);
-    } finally {
-        isLoading.value = false;
-    }
-};
+
 
 </script>
 
 <template>
-    <div
-        v-if="isLoading"
-        class="loader"
-    >
-        <Loader
-            loader-type="small"
-            loader-message="Fetching your notifications"
-        />
-    </div>
-    <div
-        v-else-if="unreadNotification.length && notificationUnread === 'unread' || notificationUnread === 'read'"
-        class="ListingNotificationLayout"
-    >
+    <div class="UnreadNotifications-UserProfile">
         <div
-            v-for="(notification, index) in filteredNotifications"
-            :key="index"
-            class="mr-4"
+            v-if="isLoading"
+            class="loader"
         >
-            <UserNotificationItemSmall
-                v-if="notificationSize === 'small'"
-                :display-heading="notification.title"
-                :time-date="notification.updated_at"
-                :category-text="notification.type"
-                :click-callback="() => handleClickNotification(notification.id,notification.resource_id, notification.type,notification.title )"
+            <Loader
+                loader-type="small"
+                loader-message="Fetching your notifications"
             />
-            <UserNotificationItemLarge
-                v-else-if="notificationSize === 'large'"
-                :display-heading="notification.title"
-                :time-date="notification.updated_at"
-                :display-author="notification.author_name"
-                :display-action="notification.action"
-                :category-text="notification.type"
-                :click-callback="() => handleClickNotification(notification.id,notification.resource_id, notification.type,notification.title )"
-            />
+        </div>
+        <div
+            v-else-if="unreadNotification.length && notificationUnread === 'unread' || notificationUnread === 'read'"
+            class="ListingNotificationLayout"
+        >
+            <div
+                v-for="(notification, index) in filteredNotifications"
+                :key="index"
+                class="mr-4"
+            >
+                <UserNotificationItemSmall
+                    v-if="notificationSize === 'small'"
+                    :display-heading="notification.title"
+                    :time-date="notification.updated_at"
+                    :category-text="notification.type"
+                    :click-callback="() => handleClickNotification(notification.id,notification.resource_id, notification.type,notification.title )"
+                />
+            </div>
+        </div>
+        <div v-else>
+            <p class="ml-1 mt-10">
+                No unread notifications available
+            </p>
         </div>
     </div>
 
-    <div v-else>
-        <p class="ml-1 mt-10">
-            No unreadNotification available
-        </p>
+
+    <div class="AllNotifications-UserNotificationPage">
+        <div
+            v-if="unreadNotification.length && notificationUnread === 'unread' || notificationUnread === 'read'"
+            class="ListingNotificationLayout"
+        >
+            <div
+                v-for="(notification, index) in filteredNotifications"
+                :key="index"
+                class="mr-4"
+            >
+                <UserNotificationItemLarge
+                    v-if="notificationSize === 'large'"
+                    :display-heading="notification.title"
+                    :time-date="notification.updated_at"
+                    :display-author="notification.author_name"
+                    :display-action="notification.action"
+                    :category-text="notification.type"
+                    :click-callback="() => handleClickNotification(notification.id,notification.resource_id, notification.type,notification.title )"
+                />
+            </div>
+        </div>
     </div>
-<!--    <div class="mt-20">-->
-<!--        <button-->
-<!--            class="mark-all-as-read-button"-->
-<!--            @click="handleMarkAllAsRead"-->
-<!--        >-->
-<!--            Mark All as Read-->
-<!--        </button>-->
-<!--    </div>-->
 </template>
 
 <style scoped>
