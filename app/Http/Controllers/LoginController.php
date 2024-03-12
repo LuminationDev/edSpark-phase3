@@ -50,12 +50,21 @@ class LoginController extends Controller
         // with user's email check for edSpark's Id
         $userEdSparkId = User::where('email', $user->email)->first()->id;
 
+        if($userEdSparkId){
+            $isSuperAdminMeta = Usermeta::where('user_id', $userEdSparkId)
+                ->where('user_meta_key', 'is_super_admin')
+                ->where('user_meta_value', 1)
+                ->first();
+            $isSuperAdmin = (bool)$isSuperAdminMeta;
+        } else{
+            $isSuperAdmin = false;
+        }
         // Manually find the user meta based on conditions
-        $isSuperAdminMeta = Usermeta::where('user_id', $userEdSparkId)
-            ->where('user_meta_key', 'is_super_admin')
-            ->where('user_meta_value', 1)
-            ->first();
-        $isSuperAdmin = (bool)$isSuperAdminMeta;
+//        $isSuperAdminMeta = Usermeta::where('user_id', $userEdSparkId)
+//            ->where('user_meta_key', 'is_super_admin')
+//            ->where('user_meta_value', 1)
+//            ->first();
+//        $isSuperAdmin = (bool)$isSuperAdminMeta;
 
         // $role = Role::where('role_name', $user->user['mainrolecode'])->first() ?? Role::find(4);
         $role = $isSuperAdmin ? Role::find(1) : Role::where('role_name', $user->user['mainrolecode'])->first() ?? Role::find(4);

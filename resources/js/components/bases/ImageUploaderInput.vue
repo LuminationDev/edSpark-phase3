@@ -53,7 +53,7 @@ const handleChangeMedia = (allMedia): void => {
 }
 
 const formatStringMediaToMediaType = computed((): MediaType[] => {
-    if (props.currentMedia) {
+    if (props.currentMedia && props.currentMedia.length == 1) {
         const fullUrl = imageURL + "/" + props.currentMedia
         return [{
             url: fullUrl,
@@ -62,7 +62,20 @@ const formatStringMediaToMediaType = computed((): MediaType[] => {
             size: 0,
             type: ''
         }]
-    } else {
+    } else if(Array.isArray(props.currentMedia) && props.currentMedia.length > 1){
+        return props.currentMedia.map(image =>{
+            const fullUrl = imageURL + "/" + image
+            return {
+                url: fullUrl,
+                remoteUrl: fullUrl,
+                name: guid(),
+                size: 0,
+                type: ''
+            }
+        })
+    }
+
+    else {
         return []
     }
 })
