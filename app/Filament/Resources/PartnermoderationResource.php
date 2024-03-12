@@ -35,10 +35,8 @@ class PartnermoderationResource extends Resource
                 Forms\Components\Card::make()->schema([
                     Forms\Components\TextInput::make('introduction')
                         ->label('Introduction')
-                        ->required()
                         ->maxLength(255),
                     Forms\Components\TextInput::make('motto')
-                        ->label('Motto')
                         ->maxLength(255),
                     TinyEditor::make('content')
                         ->label('Partner profile')
