@@ -261,7 +261,7 @@ const handleResetDomain = () => {
                 <div
                     class="flex flex-col h-full w-full"
                 >
-                    <h2 class="text-h2-caps md:text-h3-caps lg:text-h2-caps">
+                    <h2 class="mb-3 text-h2-caps md:text-h3-caps lg:text-h2-caps">
                         {{ elementCompleted }} is {{ getScoreLabel(elementCompleted) }}
                     </h2>
                     <ScrollableContent>
@@ -270,7 +270,7 @@ const handleResetDomain = () => {
                             :key="`${result.element}_${result.indicator}`"
                         >
                             <div
-                                class="max-w-[900px] mt-10 text-base md:text-medium lg:text-large"
+                                class="max-w-[900px] mt-5 text-base md:text-medium lg:text-large"
                                 v-html="result.description"
                             />
                         </template>

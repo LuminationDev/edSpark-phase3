@@ -27,14 +27,14 @@ const handleScroll = () => {
     <div class="flex-1 overflow-hidden scroll-fade">
         <div
             ref="scrollArea"
-            class="h-full pb-10 relative z-50 md:overflow-x-none md:overflow-y-scroll"
+            class="h-full pb-10 relative scroll-area z-50 md:overflow-x-none md:overflow-y-scroll"
             @scroll="handleScroll"
         >
             <slot />
         </div>
     </div>
     <div
-        class="absolute bottom-0 align-middle duration-500 opacity-0 scroll-notice transition-opacity"
+        class="absolute align-middle duration-500 flex flex-row gap-2 opacity-0 pl-4 pr-3 py-2 rounded-lg scroll-notice transition-opacity"
         :class="{'opacity-100': showScrollNotice}"
     >
         Scroll for more
@@ -46,11 +46,21 @@ const handleScroll = () => {
 </template>
 
 <style scoped lang="scss">
+
 @media screen and (min-width: 768px) {
+    .scroll-notice {
+        background-color: #fff2;
+        backdrop-filter: blur(40px);
+        bottom: -10px
+    }
+
     .scroll-fade {
         position: relative;
         mask-image: linear-gradient(transparent, black 5%, black 90%, transparent);
     }
+
+    .scroll-area::-webkit-scrollbar-thumb {
+        background-color: rgba(255, 255, 255, 0.4);
+    }
 }
 </style>
-
