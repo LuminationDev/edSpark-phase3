@@ -65,3 +65,15 @@ const handleImageGallery = (index) => {
         </div>
     </div>
 </template>
+
+<style scoped>
+
+.carousel__pagination-button::after,
+:deep(.carousel__pagination-button::after) {
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+    }
+
+
+</style>

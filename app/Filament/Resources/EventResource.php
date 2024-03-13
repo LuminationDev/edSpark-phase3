@@ -94,17 +94,21 @@ class EventResource extends Resource
                             ]),
                         Forms\Components\Grid::make(3)
                             ->schema([
+                                Forms\Components\Select::make('event_format')
+                                    ->label('Event format')
+                                    ->required()
+                                    ->reactive()
+                                    ->relationship('event_format', 'event_format_name'),
+                                Forms\Components\TextInput::make('url')
+                                    ->label('URL')
+                                    ->hidden(fn(\Filament\Forms\Get $get) => $get('event_format') === null || $get('event_format') == '2'),
+                                Forms\Components\TextInput::make('address')
+                                    ->label('Address')
+                                    ->hidden(fn(\Filament\Forms\Get $get) => $get('event_format') === null || $get('event_format') == '1'),
                                 Forms\Components\BelongsToSelect::make('event_type')
                                     ->label('Event type')
                                     ->required()
-                                    ->reactive()
                                     ->relationship('eventtype', 'event_type_name'),
-                                Forms\Components\TextInput::make('url')
-                                    ->label('URL')
-                                    ->hidden(fn(\Filament\Forms\Get $get) => $get('event_type') === null || $get('event_type') == '7'),
-                                Forms\Components\TextInput::make('address')
-                                    ->label('Address')
-                                    ->hidden(fn(\Filament\Forms\Get $get) => $get('event_type') === null || $get('event_type') == '6'),
                             ]),
                         Forms\Components\Card::make()
                             ->schema([

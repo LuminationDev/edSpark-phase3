@@ -164,6 +164,7 @@ p {
             image_advtab: true,
             browser_spellcheck : true,
             content_css: '/css/filament/font/font.css',
+            link_default_target:'_blank',
             skin: false,
             content_style: `body {font-family: MuseoSans;} html {font-family: MuseoSans;} .mce-offscreen-selection{display: none;} ${fontStyling}`,
             style_formats: editorStyleFormat,

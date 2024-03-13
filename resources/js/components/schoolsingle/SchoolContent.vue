@@ -115,9 +115,7 @@ const handleCancelEditButton = (): void => {
         schoolContentState.value = SchoolContentState.PendingAvailable
     } else {
         schoolContentState.value = SchoolContentState.New
-
     }
-
 }
 
 const handleSchoolData = (data): void => {

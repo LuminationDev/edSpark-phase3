@@ -33,6 +33,11 @@ class CreateEvent extends CreateRecord
         $data['event_location'] = isset($data['event_location']) ? json_encode($data['event_location']) : "";
         $data['post_date'] = Carbon::now();
         $data['post_modified'] = Carbon::now();
+        $data['eventtype_id'] = $data['event_type'];
+        $data['event_format_id'] = $data['event_format'];
+
+
+        // handle event typ
         return $data;
     }
 
