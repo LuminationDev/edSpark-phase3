@@ -170,7 +170,10 @@ p {
             contextmenu: 'copy cut paste image link'
         }"
     />
-    <ErrorMessages :v$="props.v$" />
+    <ErrorMessages
+        v-if="props.v$"
+        :v$="props.v$"
+    />
 </template>
 <style>
 .tox-tinymce{

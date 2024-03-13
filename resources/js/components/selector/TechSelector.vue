@@ -35,7 +35,10 @@ const handleDataFromChildren = (techUsedList) =>{
                 :key="index"
                 #[`selectorItem_${index}`]
             >
-                <TechSelectorItem :item="item" />
+                <TechSelectorItem
+                    :item="item"
+                    :color-theme="colorTheme"
+                />
             </template>
         </GenericSelector>
         <GenericSelector
@@ -50,7 +53,10 @@ const handleDataFromChildren = (techUsedList) =>{
                 :key="index"
                 #[`selectorItem_${index}`]
             >
-                <TechSelectorItem :item="item" />
+                <TechSelectorItem
+                    :item="item"
+                    :color-theme="colorTheme"
+                />
             </template>
         </GenericSelector>
     </div>

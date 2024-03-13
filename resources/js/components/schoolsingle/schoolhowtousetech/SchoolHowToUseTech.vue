@@ -58,7 +58,8 @@ const handleTinyMceContent = (name, data) => {
     console.log(name)
     console.log(howToUseData.value.filter(item => item.name === name)[0])
 }
-const handleUploadedImageUrls = (name, urlsData) => {
+const handleUploadedImageUrls = (name, urlsData,index)=> {
+    console.log(index)
     console.log(name)
     console.log(howToUseData.value.filter(item => item.name === name)[0])
     howToUseData.value.filter(item => item.name === name)[0].images = urlsData.map(item => item.remoteUrl)
@@ -91,8 +92,9 @@ watchDebounced(howToUseData, () =>{
         >
             <SchoolHowToUseTechEditableRow
                 :how-to-use-tech-item="item"
+                :index="index"
                 @emit-tiny-mce-content="(name,data) => handleTinyMceContent(name,data)"
-                @emit-images-array="(name, urls) => handleUploadedImageUrls(name,urls)"
+                @emit-images-array="(name, urls) => handleUploadedImageUrls(name,urls,index)"
             />
             <!--            <div class="HowToUseText richTextContentContainer w-full">-->
             <!--                <div class="font-semibold howToTitle mb-6 text-xl">-->
