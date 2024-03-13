@@ -24,13 +24,21 @@ const props = defineProps({
         type: Number, required: false, default: 1
     },
     currentMedia: {
-        type: String, required: false, default: ''
+        type: [String,Array],
+        required:
+            false,
+        default: ''
     },
     v$: {
         type: Object,
         required: false,
         default: () => {
         }
+    },
+    index:{
+        type: Number,
+        required: false,
+        default: 0
     }
 })
 
@@ -52,9 +60,17 @@ const handleChangeMedia = (allMedia): void => {
     }
 }
 
+const appendServerImageUrlIfMissing = (url) =>{
+    if(!url.includes(imageURL)){
+        return `${imageURL}/${url}`
+    }else{
+        return url
+    }
+}
+
 const formatStringMediaToMediaType = computed((): MediaType[] => {
     if (props.currentMedia && props.currentMedia.length == 1) {
-        const fullUrl = imageURL + "/" + props.currentMedia
+        const fullUrl = appendServerImageUrlIfMissing(props.currentMedia)
         return [{
             url: fullUrl,
             remoteUrl: fullUrl,
@@ -64,7 +80,7 @@ const formatStringMediaToMediaType = computed((): MediaType[] => {
         }]
     } else if(Array.isArray(props.currentMedia) && props.currentMedia.length > 1){
         return props.currentMedia.map(image =>{
-            const fullUrl = imageURL + "/" + image
+            const fullUrl = appendServerImageUrlIfMissing(image)
             return {
                 url: fullUrl,
                 remoteUrl: fullUrl,
@@ -86,9 +102,13 @@ const formatStringMediaToMediaType = computed((): MediaType[] => {
         :server="IMAGE_ENDPOINTS.IMAGE.UPLOAD_IMAGE + '/' + props.itemType"
         :max="props.max"
         :media="formatStringMediaToMediaType"
+        :index="index"
         @change="handleChangeMedia"
     />
-    <ErrorMessages :v$="props.v$" />
+    <ErrorMessages
+        v-if="props.v$"
+        :v$="props.v$"
+    />
 </template>
 <style scoped>
 :deep(.mu-container) {
