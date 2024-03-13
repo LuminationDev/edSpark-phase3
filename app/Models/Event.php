@@ -48,7 +48,7 @@ class Event extends Model
     {
         return $this->belongsTo(Eventtype::class);
     }
-    public function eventformat()
+    public function event_format()
     {
         return $this->belongsTo(Eventformat::class);
     }
