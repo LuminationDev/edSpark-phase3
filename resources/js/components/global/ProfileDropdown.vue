@@ -160,7 +160,7 @@ onMounted(fetchNotificationsAndUpdate);
                             class="bg-red-700 h-7 ml-auto notification-element rounded-2xl w-7"
                         >
                             <div class="text-white">
-                                {{ fetchNotificationsAndUpdate }}
+                                {{ notificationsNumber }}
                             </div>
                         </div>
                     </ProfileDropdownItem>
