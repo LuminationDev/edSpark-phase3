@@ -33,6 +33,7 @@ class EditEvent extends EditRecord
             $tagNames = $data['tags']->pluck('name');
             $data['tags'] = $tagNames;
         }
+        $data['event_format'] = $data['event_format_id'];
 
         //author
 //        if (isset($data['author_id'])) {
@@ -71,6 +72,7 @@ class EditEvent extends EditRecord
             $data['event_location']['address'] = $data['address'];
         }
         $data['event_location'] = json_encode($data['event_location']);
+        $data['event_format_id'] = $data['event_format'];
 
         return $data;
     }
