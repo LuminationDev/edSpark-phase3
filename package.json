@@ -50,7 +50,7 @@
         "@fortawesome/free-regular-svg-icons": "^6.5.1",
         "@fortawesome/free-solid-svg-icons": "^6.5.1",
         "@fortawesome/vue-fontawesome": "^3.0.3",
-        "@googlemaps/js-api-loader": "^1.15.1",
+        "@googlemaps/js-api-loader": "^1.16.6",
         "@hennge/vue3-pagination": "^1.0.17",
         "@popperjs/core": "^2.11.8",
         "@tinymce/tinymce-vue": "^5.1.1",
