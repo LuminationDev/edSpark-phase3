@@ -51,7 +51,7 @@ export const isEmptyFunction = (func): boolean => {
 export const edSparkContentSanitizer = (dirty) => {
     return purify.sanitize(dirty, {
         ADD_TAGS: ["iframe"],
-        ADD_ATTR: ['allow', 'allowfullscreen', 'frameborder', 'scrolling']
+        ADD_ATTR: ['allow', 'allowfullscreen', 'frameborder', 'scrolling', 'target']
     })
 }
 
