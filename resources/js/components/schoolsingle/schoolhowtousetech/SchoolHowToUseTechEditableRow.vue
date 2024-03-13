@@ -9,6 +9,11 @@ const props = defineProps({
     howToUseTechItem: {
         type: Object,
         required: true
+    },
+    index:{
+        type: Number,
+        required: false,
+        default: 0
     }
 })
 
@@ -28,7 +33,6 @@ const displayTitle = (code) => {
 }
 
 const handleEmitImage = (itemName, urlsArray) =>{
-    console.log( 'emmitting ' + itemName )
     emits('emitImagesArray',itemName, urlsArray)
 }
 
@@ -36,25 +40,27 @@ const handleEmitImage = (itemName, urlsArray) =>{
 </script>
 
 <template>
-    <div class="HowToUseText richTextContentContainer w-full">
-        <div class="font-semibold howToTitle mb-6 text-xl">
-            {{ displayTitle(howToUseTechItem.name) }}
+    <div class="SchoolHowToUseTechRowContainer w-full">
+        <div class="HowToUseText richTextContentContainer w-full">
+            <div class="font-semibold howToTitle mb-6 text-xl">
+                {{ displayTitle(howToUseTechItem.name) }}
+            </div>
+            <TinyMceRichTextInput
+                :src-content="howToUseTechItem.text"
+                @emit-tiny-rich-content="(data) => emits('emitTinyMceContent',howToUseTechItem.name,data)"
+            />
         </div>
-        <TinyMceRichTextInput
-            :src-content="howToUseTechItem.text"
-            @emit-tiny-rich-content="(data) => emits('emitTinyMceContent',howToUseTechItem.name,data)"
-        />
-    </div>
-    <div class="HowToUseImage flex justify-center items-center flex-col h-full mt-2 w-full">
-        <div class="flex mb-4 self-start">
-            Image gallery (Up to 5 images)
+        <div class="HowToUseImage flex justify-center items-center flex-col h-full mt-2 w-full">
+            <div class="flex mb-4 self-start">
+                Image gallery (Up to 5 images)
+            </div>
+            <ImageUploaderInput
+                :index="index"
+                :item-type="'HowToUseTech'"
+                :current-media="howToUseTechItem.images"
+                :max="5"
+                @emit-uploaded-media="(urlsArray)=> handleEmitImage(howToUseTechItem.name, urlsArray)"
+            />
         </div>
-        <ImageUploaderInput
-            :key="guid()"
-            :item-type="'HowToUseTech'"
-            :current-media="howToUseTechItem.images"
-            :max="5"
-            @emit-uploaded-media="(urlsArray)=> handleEmitImage(howToUseTechItem.name, urlsArray)"
-        />
     </div>
 </template>

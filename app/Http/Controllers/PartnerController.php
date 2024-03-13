@@ -4,11 +4,14 @@ namespace App\Http\Controllers;
 
 use App\Helpers\JsonHelper;
 use App\Helpers\Metahelper;
+use App\Helpers\RoleHelpers;
+use App\Helpers\UserRole;
 use App\Models\Advice;
 use App\Models\Hardware;
 use App\Models\Partner;
 use App\Models\Partnermeta;
 use App\Models\Partnerprofile;
+use App\Models\Role;
 use App\Models\Software;
 use App\Services\ResponseService;
 use Illuminate\Http\Request;
@@ -72,7 +75,8 @@ class PartnerController extends Controller
             'metadata' => $partnerMeta,
             'isLikedByUser' => $isLikedByUser,
             'isBookmarkedByUser' => $isBookmarkedByUser,
-            'profile' => JsonHelper::safelyDecodeString($partnerProfile->content)
+            'profile' => JsonHelper::safelyDecodeString($partnerProfile->content),
+            'updated_at' => $partnerProfile->updated_at,
         ];
     }
 
@@ -180,6 +184,9 @@ class PartnerController extends Controller
                 'content' => 'required',
                 'partner_id' => 'required'
             ]);
+            if(Auth::user()->id !== $validatedData['partner_id'] && !RoleHelpers::has_minimum_privilege(UserRole::ADMIN)){
+                return response()->json(['error' => 'Not authorised to edit this profile'], Response::HTTP_UNAUTHORIZED);
+            }
 
             // Fetch the partner based on the provided ID
             $partner = Partner::where('user_id', $request->partner_id)->first();
@@ -218,13 +225,23 @@ class PartnerController extends Controller
                 'partner_id' => 'required'
             ]);
 
-            if (Auth()->id() == $validatedData['partner_id']) {
+            if (Auth::user()->id === $validatedData['partner_id']) {
                 return response()->json([
                     "status" => 200,
                     "result" => true,
-                    "canNominate" => false
+                    "canNominate" => false,
+                    "message" => "You are editing as a Partner"
                 ]);
-            } else {
+            }
+            if(RoleHelpers::has_minimum_privilege(UserRole::ADMIN)){
+                return response()->json([
+                    "status" => 200,
+                    "result" => true,
+                    "canNominate" => false,
+                    "message" => "You are editing as a Superadmin"
+                ]);
+            }
+            else {
                 return response()->json([
                     "status" => 401,
                     "result" => false,

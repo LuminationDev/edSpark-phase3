@@ -7,6 +7,11 @@ import { schoolColorKeys,schoolColorTheme} from "@/js/constants/schoolColorTheme
 const props = defineProps({
     item: {
         type: Object, required: true
+    },
+    colorTheme:{
+        type: String,
+        required: false,
+        default:'teal'
     }
 })
 
