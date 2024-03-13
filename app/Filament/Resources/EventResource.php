@@ -98,7 +98,7 @@ class EventResource extends Resource
                                     ->label('Event format')
                                     ->required()
                                     ->reactive()
-                                    ->relationship('eventformat', 'event_format_name'),
+                                    ->relationship('event_format', 'event_format_name'),
                                 Forms\Components\TextInput::make('url')
                                     ->label('URL')
                                     ->hidden(fn(\Filament\Forms\Get $get) => $get('event_format') === null || $get('event_format') == '2'),
