@@ -76,7 +76,7 @@
     .text-h3-caps::first-letter,
     .text-h4-caps::first-letter,
     .text-h5-caps::first-letter { 
-        text-transform: uppercase 
+        text-transform: uppercase !important;
     }
 
     .text-xLarge {

@@ -106,7 +106,7 @@ const elements = computed(() => {
         >
             <div class="mb-14 mt-4 text-center md:!mt-0">
                 <h3 class="text-h2 md:text-h3">
-                    <span class="text-h5-caps">
+                    <span class="text-h5-caps normal-case">
                         Domain
                     </span> <br>
                     Breakdown
