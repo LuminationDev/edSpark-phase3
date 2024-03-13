@@ -342,7 +342,7 @@ const handleCloseReport = () => {
             <div
                 v-else
                 ref="scrollableRef"
-                class="bg-main-teal/10 h-full overflow-y-scroll scroll-smooth text-black"
+                class="bg-main-teal/5 h-full overflow-y-scroll scroll-smooth text-black"
             >
                 <div
                     class="max-sm:pt-16 p-5 md:p-20"
@@ -350,7 +350,7 @@ const handleCloseReport = () => {
                     <div class="flex items-center flex-col text-center">
                         <h1 class="text-h3-caps">
                             <span>Your Digital Capability</span><br>
-                            <span class="text-h1-caps">Profile</span>
+                            <span class="text-h1-caps uppercase">Profile</span>
                         </h1>
                     </div>
                     <div class="max-w-[800px] mx-auto my-10 text-left">
@@ -435,7 +435,7 @@ const handleCloseReport = () => {
                                     >
                                         <h3
                                             class="
-                                                bg-black/10
+                                                bg-secondary-coolGrey
                                                 flex
                                                 items-center
                                                 flex-row
@@ -443,15 +443,17 @@ const handleCloseReport = () => {
                                                 pl-4
                                                 rounded
                                                 text-h4
+                                                bg-secondary-coolGrey 
+                                                mt-10 mb-6
                                                 "
-                                            :class="{'bg-black/30': selectedElement === `${domain.domain}|${element.element}`}"
+                                            :class="{'brightness-75': selectedElement === `${domain.domain}|${element.element}`}"
                                         >
                                             <span class="flex-1 mr-2">{{ element.element }} is {{ element.label }}</span>
                                             <TextButton
                                                 class="!text-xs underline"
                                                 @click="() => toggleShowAdvice(element.domain, element.element)"
                                             >
-                                                <span class="hidden md:block">{{ actionPlan[domain.domain][element.element].expanded ? 'Hide' : 'Show' }} advice & action plan</span>
+                                                <span class="hidden md:block !normal-case text-sm">{{ actionPlan[domain.domain][element.element].expanded ? 'Hide' : 'Show' }} advice & action plan</span>
                                                 <span class="md:hidden">advice & plan</span>
                                             </TextButton>
                                             <img
@@ -534,7 +536,11 @@ const handleCloseReport = () => {
                         </div>
                     </div>
                     <div class="mt-10 text-center">
-                        <RoundButton @click="handleCloseReport">
+                        <RoundButton                         
+                        color="bg-white"
+                        text-color="black"
+                        class="hover:!bg-secondary-coolGrey hover:!brightness-100"
+                        @click="handleCloseReport">
                             Close
                         </RoundButton>
                     </div>

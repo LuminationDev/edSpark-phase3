@@ -330,16 +330,16 @@ const handleResetSurvey = async () => {
             <BaseLandingSection>
                 <template #title>
                     <h2 class="px-4 text-h3 md:!px-5 lg:!px-0">
-                        Frequently Asked
+                        Frequently asked
                     </h2>
                 </template>
-                <template #subtitle>
+                <!-- <template #subtitle>
                     <div class="mb-10 px-4 md:!px-5 lg:!px-0">
                         The Digital Adoption Group (DAG) offers comprehensive guidance on digital technologies,
                         providing practical, system-wide advice for purchasing and adopting high-impact technologies
                         that enhance teaching and learning.
                     </div>
-                </template>
+                </template> -->
                 <template #content>
                     <div class="flex flex-col gap-5 lg:gap-7 px-4 md:!px-5 lg:!px-0">
                         <FaqEntry>
