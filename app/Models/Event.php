@@ -35,6 +35,7 @@ class Event extends Model
         'event_status',
         'cover_image',
         'eventtype_id',
+        'event_format_id',
         'extra_content',
     ];
 
@@ -46,6 +47,10 @@ class Event extends Model
     public function eventtype()
     {
         return $this->belongsTo(Eventtype::class);
+    }
+    public function eventformat()
+    {
+        return $this->belongsTo(Eventformat::class);
     }
 
     public function likes(): \Illuminate\Database\Eloquent\Relations\HasMany
