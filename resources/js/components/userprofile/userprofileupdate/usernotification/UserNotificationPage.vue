@@ -79,11 +79,13 @@ const refreshNotifications = async () => {
         notificationService.getAllNotifications(currentUser.value.id).then(res => {
             readNotification.value = res.data.data.filter(notification => notification.read_at);
             unreadNotification.value = res.data.data.filter(notification => !notification.read_at)
+        }).catch(() =>{
+            console.error('Error fetching notifications')
+        }).finally(() =>{
+            isLoading.value = false
         })
     } catch (error) {
         console.error("Error refreshing notifications:", error.message)
-    } finally {
-        isLoading.value = false
     }
 }
 

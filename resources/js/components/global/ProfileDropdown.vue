@@ -108,7 +108,7 @@ onMounted(fetchNotificationsAndUpdate);
     <div class="absolute h-12 hidden w-12 lg:!right-5 lg:!top-4 lg:block xl:!right-5 xl:!top-4">
         <div
             v-show="notificationsNumber!==0"
-            class="absolute bottom-8 left-8 bg-red-700 h-4 rounded-2xl w-4 z-50"
+            class="absolute bottom-8 left-8 bg-red-700 h-4 rounded-full w-4 z-50"
         />
         <div
             class="bg-slate-200 cursor-pointer flex h-full overflow-hidden relative rounded-full w-full z-40 hover:shadow-2xl"
