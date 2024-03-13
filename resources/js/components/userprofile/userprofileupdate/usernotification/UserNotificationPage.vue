@@ -25,13 +25,14 @@ const leftHeadingNotification = ref('Notifications')
 const leftDescriptionNotification = ref('Stay up to date with the latest activities.')
 const reloadKey = ref(0)
 
+
+
 onMounted(() => {
     notificationService.getAllNotifications(currentUser.value.id).then(res => {
         readNotification.value = res.data.data.filter(notification => notification.read_at);
         unreadNotification.value = res.data.data.filter(notification => !notification.read_at)
         isLoading.value = false
     })
-    //  emits('sendMarkAllAsReadButton', handleMarkAllAsRead)
 });
 
 console.log(notificationService.getNotifications(unreadNotification.value))

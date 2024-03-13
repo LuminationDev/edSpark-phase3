@@ -1,9 +1,10 @@
 <script setup lang="ts">
 
 import {storeToRefs} from "pinia";
-import {computed, ref} from "vue";
+import {computed, onMounted, ref, watch, watchEffect} from "vue";
 
 import ProfileDropdownItem from "@/js/components/global/ProfileDropdownItem.vue";
+import NotificationIcon from "@/js/components/svg/NotificationIcon.vue";
 import Profile from "@/js/components/svg/Profile.vue";
 import AdminIcon from "@/js/components/svg/profileDropdown/AdminIcon.vue";
 import CreateIcon from "@/js/components/svg/profileDropdown/CreateIcon.vue";
@@ -11,6 +12,7 @@ import MessageIcon from "@/js/components/svg/profileDropdown/MessageIcon.vue";
 import SchoolGradHat from "@/js/components/svg/SchoolGradHat.vue";
 import {APP_ENDPOINTS} from "@/js/constants/API_ENDPOINTS";
 import {avatarUIFallbackURL} from "@/js/constants/serverUrl";
+import {notificationService} from "@/js/service/notificationService";
 import {useUserStore} from "@/js/stores/useUserStore";
 
 const props = defineProps({
@@ -20,7 +22,7 @@ const props = defineProps({
     },
 });
 
-
+const notificationsNumber = ref(0)
 const userStore = useUserStore();
 const {currentUser} = storeToRefs(userStore);
 const showDropdownMenu = ref(false)
@@ -84,12 +86,32 @@ const handleImageLoadError = () => {
     imageError.value = true
 }
 
+const fetchNotificationsAndUpdate = async () => {
+    try {
+        const res = await notificationService.getAllNotifications(currentUser.value.id);
+        const unreadNotification = res.data.data.filter(notification => !notification.read_at);
+        notificationsNumber.value = unreadNotification.length;
+    } catch (error) {
+        console.error('Error fetching notifications:', error);
+    }
+};
+
+onMounted(fetchNotificationsAndUpdate);
+
+
+
+
+
 </script>
 
 <template>
     <div class="absolute h-12 hidden w-12 lg:!right-5 lg:!top-4 lg:block xl:!right-5 xl:!top-4">
         <div
-            class="bg-slate-200 cursor-pointer flex h-full overflow-hidden relative rounded-full w-full z-50 hover:shadow-2xl"
+            v-show="notificationsNumber!==0"
+            class="absolute bottom-8 left-8 bg-red-700 h-4 rounded-2xl w-4 z-50"
+        />
+        <div
+            class="bg-slate-200 cursor-pointer flex h-full overflow-hidden relative rounded-full w-full z-40 hover:shadow-2xl"
             @click="toggleDropdownMenu"
         >
             <img
@@ -127,6 +149,21 @@ const handleImageLoadError = () => {
                     <h5>{{ currentUser.full_name }}</h5>
                 </div>
                 <div class="border-b-2 border-slate-100 flex flex-col py-3  gap-3">
+                    <ProfileDropdownItem
+                        :is-router-link="true"
+                        target-path="/notifications"
+                    >
+                        <NotificationIcon />
+                        Notification
+                        <div
+                            id="notification-element"
+                            class="bg-red-700 h-7 ml-auto notification-element rounded-2xl w-7"
+                        >
+                            <div class="text-white">
+                                {{ fetchNotificationsAndUpdate }}
+                            </div>
+                        </div>
+                    </ProfileDropdownItem>
                     <ProfileDropdownItem
                         v-if="profileTargetPath"
                         :is-router-link="true"
