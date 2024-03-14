@@ -16,7 +16,6 @@ const props = defineProps({
 
 const emits = defineEmits(['sendSchoolTech'])
 const handleDataFromChildren = (techUsedList) =>{
-    console.log(techUsedList)
     emits('sendSchoolTech', techUsedList)
 }
 
