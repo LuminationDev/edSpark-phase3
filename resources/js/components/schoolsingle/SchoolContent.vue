@@ -139,6 +139,8 @@ const handleAllSaveButton = (): void => {
     // reset color here
     emits('resetColorTheme');
     toast('Submitted your new profile for moderation. View will update automatically once approved')
+    checkIfPendingAvailable()
+
 }
 
 const handleColorSelected = (newColor): void => {
@@ -208,7 +210,7 @@ const moderationStatusMessage = computed(() => {
 onBeforeRouteLeave(() =>{
     if(requiresConfirmationBeforeExit.value){
         if (!confirm("You have unsaved changes. Are you sure you want to leave?")) {
-            // Prevent component from unmounting
+            // Prevent route from leaving
             return false;
         }
     }
