@@ -22,8 +22,7 @@ const handleClickBookmark = (postType, postId, postTitle) => {
     case "school":
         targetUrl = '/schools/' + postTitle
         router.push(targetUrl)
-        // return;
-        break;
+        return;
     case "advice":
         targetUrl = '/advice/resources/'
         break;
@@ -48,8 +47,6 @@ const fetchBookmarksWithTitle = () => {
     const userId = currentUser.value.id;
     axios.post(API_ENDPOINTS.BOOKMARK.FETCH_ALL_BOOKMARKS_WITH_TITLE, { user_id: userId })
         .then(response => {
-            console.log(currentUser.value.id)
-            console.log(userBookmarks)
             userBookmarks.value = response.data.data;
             count.value = response.data.count;
             isLoading.value = false
