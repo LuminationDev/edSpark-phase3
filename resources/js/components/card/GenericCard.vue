@@ -103,7 +103,7 @@ const shareTippyMessage: Ref<string> = ref('Copy link');
 
 const stripHTML = (value) => {
     const div = document.createElement('div');
-    var content = value.replace(/<[hH]?[1-6]>/g, ' '); //replace start tags with a space
+    let content = value.replace(/<[hH]?[1-6]>/g, ' '); //replace start tags with a space
     content = value.replace(/<\/[hH]?[1-6]>/g, '. '); //and end tags with a fullstop and space
     div.innerHTML = content;
     return div.textContent;
@@ -224,7 +224,8 @@ const cardHoverToggle: Ref<boolean> = ref(false);
             <div
                 class="
                     bg-center
-                    bg-cover
+                    bg-contain
+                    bg-no-repeat
                     cardTopCoverImage
                     filter
                     group-hover:brightness-75
