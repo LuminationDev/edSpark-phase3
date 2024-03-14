@@ -224,8 +224,7 @@ const cardHoverToggle: Ref<boolean> = ref(false);
             <div
                 class="
                     bg-center
-                    bg-contain
-                    bg-no-repeat
+                    bg-cover
                     cardTopCoverImage
                     filter
                     group-hover:brightness-75
