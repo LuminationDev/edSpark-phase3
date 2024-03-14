@@ -45,7 +45,7 @@ const handleClickCard = () => {
         :id="data.id"
         :key="data.guid"
         :title="data.title"
-        :display-content="data.content"
+        :display-content="data.excerpt"
         :display-author="data.author"
         :display-date="data.modified_at"
         :cover-image="data.cover_image"
