@@ -14,6 +14,11 @@ const props = defineProps({
         type: Number,
         required: false,
         default: 0
+    },
+    tinyMceRefreshKey:{
+        type: Number,
+        required: false,
+        default: 0
     }
 })
 
@@ -46,6 +51,7 @@ const handleEmitImage = (itemName, urlsArray) =>{
                 {{ displayTitle(howToUseTechItem.name) }}
             </div>
             <TinyMceRichTextInput
+                :key="tinyMceRefreshKey"
                 :src-content="howToUseTechItem.text"
                 @emit-tiny-rich-content="(data) => emits('emitTinyMceContent',howToUseTechItem.name,data)"
             />
@@ -55,6 +61,7 @@ const handleEmitImage = (itemName, urlsArray) =>{
                 Image gallery (Up to 5 images)
             </div>
             <ImageUploaderInput
+                :key="tinyMceRefreshKey"
                 :index="index"
                 :item-type="'HowToUseTech'"
                 :current-media="howToUseTechItem.images"
