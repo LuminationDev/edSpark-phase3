@@ -87,8 +87,8 @@ const refreshNotifications = async () => {
 <template>
     <div class="UnreadNotifications-UserProfile h-full w-full">
         <BaseLandingHero
-            :title="LandingHeroText['profile']['title']"
-            :title-paragraph="LandingHeroText['profile']['subtitle']"
+            :title="LandingHeroText['notification']['title']"
+            :title-paragraph="LandingHeroText['notification']['subtitle']"
             swoosh-color="teal"
         >
             <template #robotIllustration>
