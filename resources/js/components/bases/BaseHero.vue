@@ -70,7 +70,7 @@ onMounted(() => {
         + (useCustomColor ? schoolColorTheme[props.swooshColorTheme]['dark'] : schoolColorTheme['teal']['dark'])
         + ");";
 
-        console.log(gradientBg.value)
+    console.log(gradientBg.value)
 })
 
 const windowStore = useWindowStore()
@@ -106,7 +106,7 @@ const heroBackgroundColor = computed(() => {
 
     // case 'blue':
     case 'partnerBlue':
-    // case 'blueberry':
+        // case 'blueberry':
         return 'bg-secondary-blueberry'
 
     case 'teal':
@@ -146,17 +146,7 @@ const heroBackgroundColor = computed(() => {
             class="flex flex-row h-full relative"
         >
             <div
-                class="
-                    HeroSolidColor
-                    bg-center
-                    bg-contain
-                    bg-no-repeat
-                    col-span-10
-                    h-[500px]
-                    pt-14
-                    px-11
-                    lg:!col-span-6
-                    "
+                class="HeroSolidColor bg-center bg-contain bg-no-repeat col-span-10 h-[500px] pt-14 px-11 lg:!col-span-6"
                 style="flex:1"
                 :style="heroBackgroundSwitch"
                 :class="heroBackgroundColor"
@@ -208,17 +198,15 @@ const heroBackgroundColor = computed(() => {
 
                     <div
                         v-if="$slots.subtitleText2"
-                        class="font-normal h-auto mt-4 pb-4 text-base text-white hidden"
+                        class="font-normal h-auto mt-4 pb-4 text-base text-white"
                     >
-                        <p class="">
-                            <slot name="subtitleText2" />
-                        </p>
+                        <slot name="subtitleText2" />
                         <slot name="subtitleContent" />
                     </div>
                 </div>
             </div>
             <div
-                class="bg-center bg-cover bg-no-repeat bg-white h-[500px] w-[500px] hidden imageCover lg:!block lg:!col-span-4"
+                class="bg-center bg-cover bg-no-repeat bg-white h-[500px] hidden imageCover w-[500px] lg:!block lg:!col-span-4"
                 :style="'background-image: url(' + heroBackgroundLinkOnly +')'"
             />
         </div>

@@ -10,6 +10,7 @@ use Laravel\Socialite\Facades\Socialite;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Log;
 
 
 class LoginController extends Controller
@@ -35,7 +36,7 @@ class LoginController extends Controller
 
             return redirect('/dashboard');
         } catch (\Throwable $e) {
-            return redirect('/login');
+            return redirect('/error?errtype=failed+login', 302, ['message' => 'tompel']);
         }
     }
 
@@ -46,35 +47,71 @@ class LoginController extends Controller
 
     private function updateOrCreateLocalUser($user)
     {
-        $idToken = $user->token;
-        // with user's email check for edSpark's Id
-        $userEdSparkId = User::where('email', $user->email)->first()->id;
+        try {
+            $idToken = $user->token;
 
-        // Manually find the user meta based on conditions
-        $isSuperAdminMeta = Usermeta::where('user_id', $userEdSparkId)
-            ->where('user_meta_key', 'is_super_admin')
-            ->where('user_meta_value', 1)
-            ->first();
-        $isSuperAdmin = (bool)$isSuperAdminMeta;
+            // Get the user's edSpark profile/data
+            $userEdSpark = User::where('email', $user->email)->first();
+            $userEdSparkId = isset($userEdSpark) ? $userEdSpark->id : false;
 
-        // $role = Role::where('role_name', $user->user['mainrolecode'])->first() ?? Role::find(4);
-        $role = $isSuperAdmin ? Role::find(1) : Role::where('role_name', $user->user['mainrolecode'])->first() ?? Role::find(4);
+            // If user exists in edSpark, check if Superadmin or not
+            if ($userEdSparkId) {
+                $isSuperAdminMeta = Usermeta::where('user_id', $userEdSparkId)
+                    ->where('user_meta_key', 'is_super_admin')
+                    ->where('user_meta_value', 1)
+                    ->first();
+                $isSuperAdmin = (bool)$isSuperAdminMeta;
+            } else {
+                // New user here. Not superadmin, default role from Okta
+                $isSuperAdmin = false;
+            }
 
-        $siteId = $user->user['mainsiteid'];
-        $site = Site::where('site_id', $siteId)->first();
-
-        return User::updateOrCreate(
-            ['email' => $user->email],
-            [
+            $dataToBeUpdatedOrCreated = [
                 'full_name' => $user->name,
-                'role_id' => $isSuperAdmin ? 1 : $role->id,
-                'site_id' => $site ? $siteId : 10000,
                 'remember_token' => Str::random(15),
-                'token' => $idToken ?? $user->token,
+                'token' => $idToken ?? "",
                 'isFirstTimeVisit' => false,
                 'status' => 'Active',
-            ]
-        );
+            ];
+
+            // Do role here
+            // If user is super admin, re-iterate role as superadmin
+            // If user is not superadmin, check if existing user
+            // For existing user, do not update role. For new user, update role based on `mainrolecode` from Okta
+            if ($isSuperAdmin) {
+                $role = Role::find(1);
+                $dataToBeUpdatedOrCreated['role_id'] = $role->id;
+            } else if (!$userEdSparkId) { // User has no current account, get role from Okta or default to viewer
+                try {
+                    $role = Role::where('role_name', $user->user['mainrolecode'])->first() ?? Role::where('role_name', 'Viewer')->first();
+                    $dataToBeUpdatedOrCreated['role_id'] = $role->id;
+                } catch (\Exception $e) {
+                    // Handle failure to get role
+                    Log::error('Failed to fetch role: ' . $e->getMessage());
+                }
+            }
+
+            // Determine site here
+            if (!$userEdSparkId) {
+                try {
+                    $userOktaSiteId = $user->user['mainsiteid'];
+                    $userOktaSite = Site::where('site_id', $userOktaSiteId)->first();
+                    $dataToBeUpdatedOrCreated['site_id'] = isset($userOktaSite) ? $userOktaSite->site_id : 9999;
+                } catch (\Exception $e) {
+                    // Handle failure to get site
+                    Log::error('Failed to fetch site: ' . $e->getMessage());
+                }
+            }
+
+            return User::updateOrCreate(
+                ['email' => $user->email],
+                $dataToBeUpdatedOrCreated
+            );
+        } catch (\Exception $ex) {
+            // Handle any unexpected exceptions
+            Log::error('Error in updateOrCreateLocalUser: ' . $ex->getMessage());
+            return null;
+        }
     }
 
     public function logout()

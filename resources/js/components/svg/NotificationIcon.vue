@@ -4,9 +4,9 @@
 <template>
     <svg
         xmlns="http://www.w3.org/2000/svg"
-        class="icon icon-tabler icon-tabler-trash-x"
-        width="28"
-        height="28"
+        class="icon icon-tabler icon-tabler-bell-ringing"
+        width="30"
+        height="30"
         viewBox="0 0 24 24"
         stroke-width="2"
         stroke="currentColor"
@@ -19,9 +19,9 @@
             d="M0 0h24v24H0z"
             fill="none"
         />
-        <path d="M4 7h16" />
-        <path d="M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2 -2l1 -12" />
-        <path d="M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3" />
-        <path d="M10 12l4 4m0 -4l-4 4" />
+        <path d="M10 5a2 2 0 0 1 4 0a7 7 0 0 1 4 6v3a4 4 0 0 0 2 3h-16a4 4 0 0 0 2 -3v-3a7 7 0 0 1 4 -6" />
+        <path d="M9 17v1a3 3 0 0 0 6 0v-1" />
+        <path d="M21 6.727a11.05 11.05 0 0 0 -2.794 -3.727" />
+        <path d="M3 6.727a11.05 11.05 0 0 1 2.792 -3.727" />
     </svg>
 </template>

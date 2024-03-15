@@ -126,7 +126,7 @@ const fetchContent = async () => {
     await axios.post(byIdAPILink, requestData).then(res => {
         singleContent.value = res.data.data
         if (singleContent.value.content && typeof singleContent.value.content === 'string') {
-            singleContent.value.content = convertLinksToEmbeds(singleContent.value.content)
+            // singleContent.value.content = convertLinksToEmbeds(singleContent.value.content)
         }
     }).catch(err => {
         console.log(err)
