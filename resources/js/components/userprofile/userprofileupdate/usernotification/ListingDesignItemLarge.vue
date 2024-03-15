@@ -80,7 +80,7 @@ const formattedCategoryTextString = computed(() => {
         @click="clickCallback"
     >
         <div
-            class="bg-blue-50 border-2 border-adminTeal ml-6 p-2 rounded-3xl"
+            class="bg-blue-50 border-2 border-adminTeal ml-4 p-2 rounded-3xl"
             :class="['border', getCategoryStyling(categoryText)]"
         >
             <div class="text-center w-16 sm:!w-32">
