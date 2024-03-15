@@ -108,7 +108,7 @@ onBeforeUnmount(() => {
         </div>
         <div class="p-2 w-auto">
             <div class="ml-6 mr-0 text-gray-500 w-16 sm:!mr-0 sm:!w-48 md:!mr-6">
-                {{ formatDateToDayTime(timeDate) }}
+                {{ formatDateToDayTime(timeDate).includes('Invalid') ? "" : formatDateToDayTime(timeDate) }}
             </div>
         </div>
         <div class="p-2 w-auto">

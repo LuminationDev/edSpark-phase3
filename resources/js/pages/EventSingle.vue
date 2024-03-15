@@ -112,49 +112,48 @@ const colorTheme = ref('partnerBlue')
 
                 <template #subtitleText2>
                     <div class="eventDetails flex flex-col gap-2">
-                        <div class="flex items-start flex-col sm:flex-row gap-4 mb-2 mt-8">
-                        <div class="flex items-center flex-row">
-                            <CalendarIcon class="fill-white mr-2" />
-                            {{
-                                new Date(Date.parse(contentFromBase['start_date'])).toLocaleDateString('en-GB', {
-                                    day: '2-digit', month: 'long', year: 'numeric'
-                                })
-                            }}
-                        </div>
-                        <div class="flex items-center flex-row">
-                            <TimeIcon class="fill-white flex justify-center items-center mr-2" />
-                            {{
-                                new Date(Date.parse(contentFromBase['start_date'])).toLocaleString('en-US', {
-                                    hour: 'numeric',
-                                    minute: 'numeric',
-                                    hour12: true
-                                })
-                            }}
-                            {{ "-" }}
-                            {{
-                                new Date(Date.parse(contentFromBase['end_date'])).toLocaleString('en-US', {
-                                    hour: 'numeric',
-                                    minute: 'numeric',
-                                    hour12: true
-                                })
-                            }}
-                        </div>
+                        <div class="flex sm:flex-row items-start flex-col gap-4 mb-2 mt-8">
+                            <div class="flex items-center flex-row">
+                                <CalendarIcon class="fill-white mr-2" />
+                                {{
+                                    new Date(Date.parse(contentFromBase['start_date'])).toLocaleDateString('en-GB', {
+                                        day: '2-digit', month: 'long', year: 'numeric'
+                                    })
+                                }}
+                            </div>
+                            <div class="flex items-center flex-row">
+                                <TimeIcon class="fill-white flex justify-center items-center mr-2" />
+                                {{
+                                    new Date(Date.parse(contentFromBase['start_date'])).toLocaleString('en-US', {
+                                        hour: 'numeric',
+                                        minute: 'numeric',
+                                        hour12: true
+                                    })
+                                }}
+                                {{ "-" }}
+                                {{
+                                    new Date(Date.parse(contentFromBase['end_date'])).toLocaleString('en-US', {
+                                        hour: 'numeric',
+                                        minute: 'numeric',
+                                        hour12: true
+                                    })
+                                }}
+                            </div>
                         </div>
 
-                        <div class="flex items-start justify-between flex-row sm:flex-col gap-4 mb-2 w-full">
-                        <div class="flex items-center flex-row">
-                            <LocationIcon class="fill-white mr-2" />
-                            {{
-                                contentFromBase['location'] ? (contentFromBase['location']['address'] ? contentFromBase['location']['address'] : 'Online') : ""
-                            }}
-                        </div>
+                        <div class="flex sm:flex-col justify-between items-start flex-row gap-4 mb-2 w-full">
+                            <div class="flex items-center flex-row">
+                                <LocationIcon class="fill-white mr-2" />
+                                {{
+                                    contentFromBase['location'] ? (contentFromBase['location']['address'] ? contentFromBase['location']['address'] : 'Online') : ""
+                                }}
+                            </div> 
 
                        
                             <EventTypeTag
                                 class="!mx-0 !my-0 sm:!my-4 bg-white border-2 font-medium hidden sm:flex"
                                 :event-type="contentFromBase['type']"
                             />
-
                         </div>
 
                         <!-- <LabelRowContentDisplay :labels-array="contentFromBase['labels']" /> -->

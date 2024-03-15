@@ -21,12 +21,22 @@ import {LandingHeroText} from "@/js/constants/PageBlurb";
         </BaseLandingHero>
 
 
-        <div class="flex flex-col profileBodyContainer w-full">
-            <div class="bg-slate-50 flex flex-col min-h-[70vh] pb-10 px-4 md:!px-8 lg:!px-24">
-                <div class="UserProfileSelectionMenuContainer flex flex-col mt-1">
-                    <UserProfileSelectionMenu />
-                </div>
-            </div>
+        <div
+            class="UserProfileSelectionMenuContainer
+                flex
+                flex-col
+                min-h-[70vh]
+                mt-5
+                pb-5
+                profileBodyContainer
+                px-4
+                w-full
+                
+                
+                lg:!mt-10
+                lg:!px-10"
+        >
+            <UserProfileSelectionMenu />
         </div>
     </div>
 </template>
