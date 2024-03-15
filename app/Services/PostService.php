@@ -175,6 +175,7 @@ class PostService
             'end_date' => $event->end_date,
             'status' => $event->event_status,
             'type' => ($event->eventtype) ? $event->eventtype->event_type_name : NULL,
+            'format' => ($event->event_format) ? $event->event_format->event_format_name : NULL,
             'post_type' => 'event',
             'created_at' => $event->created_at,
             'updated_at' => $event->updated_at,
