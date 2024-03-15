@@ -135,14 +135,6 @@ const handleImageLoadError = () => {
                         <Profile />
                         Profile
                     </ProfileDropdownItem>
-                    <!--                    <ProfileDropdownItem-->
-                    <!--                        v-if="messageTargetPath"-->
-                    <!--                        :is-router-link="true"-->
-                    <!--                        :target-path="messageTargetPath"-->
-                    <!--                    >-->
-                    <!--                        <MessageIcon />-->
-                    <!--                        Messages-->
-                    <!--                    </ProfileDropdownItem>-->
                     <ProfileDropdownItem
                         :is-router-link="true"
                         target-path="/create"
