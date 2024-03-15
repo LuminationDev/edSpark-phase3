@@ -4,12 +4,15 @@ import {storeToRefs} from "pinia";
 import {onMounted, ref} from "vue";
 import {useRouter} from "vue-router";
 
+import BaseLandingHero from "@/js/components/bases/BaseLandingHero.vue";
 import Loader from "@/js/components/spinner/Loader.vue";
+import NotificationRobot from "@/js/components/svg/NotificationRobot/NotificationRobot.vue";
 import UserNotificationItemLarge
     from "@/js/components/userprofile/userprofileupdate/usernotification/ListingDesignItemLarge.vue";
 import ListingDesignItemLarge
     from "@/js/components/userprofile/userprofileupdate/usernotification/ListingDesignItemLarge.vue";
 import UserProfileContentContainer from "@/js/components/userprofile/userprofileupdate/UserProfileContentContainer.vue";
+import {LandingHeroText} from "@/js/constants/PageBlurb";
 import {lowerSlugify} from "@/js/helpers/stringHelpers";
 import {notificationService} from "@/js/service/notificationService";
 import {useNotificationStore} from "@/js/stores/useNotificationStore";
@@ -82,98 +85,110 @@ const refreshNotifications = async () => {
 </script>
 
 <template>
-    <div class="UnreadNotifications-UserProfile">
-        <div class="UserProfilePage h-full w-full">
-            <div
-                class="bg-bottom bg-cover border-b-[1px] h-[12vh] profileCoverImage relative top-0 left-0 w-full"
-            />
-            <div class="flex flex-col profileBodyContainer w-full">
-                <div class="flex flex-col min-h-[70vh] pb-10 px-4 md:!px-8 lg:!px-24">
-                    <div class="UserProfileSelectionMenuContainer flex flex-col mt-1">
-                        <div>
-                            <UserProfileContentContainer
-                                id="reloadableDiv"
-                                :key="reloadKey"
-                                :left-heading="leftHeadingNotification"
-                                :left-description="leftDescriptionNotification"
+    <div class="UnreadNotifications-UserProfile h-full w-full">
+        <BaseLandingHero
+            :title="LandingHeroText['notification']['title']"
+            :title-paragraph="LandingHeroText['notification']['subtitle']"
+            swoosh-color="teal"
+        >
+            <template #robotIllustration>
+                <NotificationRobot class="absolute top-16 left-36 scale-125" />
+            </template>
+        </BaseLandingHero>
+        <div
+            class="
+                UserProfileSelectionMenuContainer
+                flex
+                flex-col
+                min-h-[70vh]
+                mt-5
+                pb-5
+                profileBodyContainer
+                px-4
+                w-full
+                lg:!mt-10
+                lg:!px-10
+                "
+        >
+            <UserProfileContentContainer
+                id="reloadableDiv"
+                :key="reloadKey"
+                :left-heading="leftHeadingNotification"
+                :left-description="leftDescriptionNotification"
+            >
+                <template #content>
+                    <div
+                        v-if="isLoading"
+                        class="loader"
+                    >
+                        <Loader
+                            loader-type="small"
+                            loader-message="Fetching your notifications"
+                        />
+                    </div>
+                    <div v-else-if="!isLoading">
+                        <div class="flex flex-row">
+                            <div class="ml-1">
+                                Unread Notifications
+                            </div>
+                            <button
+                                class="ml-auto mr-4 underline"
+                                @click="handleMarkAllAsRead"
                             >
-                                <template #content>
-                                    <div
-                                        v-if="isLoading"
-                                        class="loader"
-                                    >
-                                        <Loader
-                                            loader-type="small"
-                                            loader-message="Fetching your notifications"
-                                        />
-                                    </div>
-                                    <div v-else-if="!isLoading">
-                                        <div class="flex flex-row">
-                                            <div class="ml-1">
-                                                Unread Notifications
-                                            </div>
-                                            <button
-                                                class="ml-auto mr-4 underline"
-                                                @click="handleMarkAllAsRead"
-                                            >
-                                                Mark all as read
-                                            </button>
-                                        </div>
-                                        <div
-                                            v-if="unreadNotifications.length"
-                                            class="ListingNotificationLayout"
-                                        >
-                                            <div
-                                                v-for="(notification, index) in unreadNotifications"
-                                                :key="index"
-                                                class="mr-4"
-                                            >
-                                                <UserNotificationItemLarge
-                                                    :display-heading="notification.title"
-                                                    :time-date="notification.updated_at"
-                                                    :display-author="notification.author_name"
-                                                    :display-action="notification.action"
-                                                    :category-text="notification.type"
-                                                    :click-callback="() => handleClickNotification(notification.id,notification.resource_id, notification.type,notification.title )"
-                                                />
-                                            </div>
-                                        </div>
-                                        <div v-else>
-                                            <p class="ml-1 mt-10">
-                                                No unread notifications available
-                                            </p>
-                                        </div>
-                                        <div class="flex flex-row mt-10">
-                                            <div class="ml-1">
-                                                Read Notifications
-                                            </div>
-                                        </div>
-                                        <div
-                                            v-if="readNotifications.length"
-                                            class="ListingNotificationLayout"
-                                        >
-                                            <div
-                                                v-for="(notification, index) in readNotifications"
-                                                :key="index"
-                                                class="mr-4"
-                                            >
-                                                <ListingDesignItemLarge
-                                                    :display-heading="notification.title"
-                                                    :time-date="notification.updated_at"
-                                                    :display-author="notification.author_name"
-                                                    :display-action="notification.action"
-                                                    :category-text="notification.type"
-                                                    :click-callback="() => handleClickNotification(notification.id,notification.resource_id, notification.type,notification.title )"
-                                                />
-                                            </div>
-                                        </div>
-                                    </div>
-                                </template>
-                            </UserProfileContentContainer>
+                                Mark all as read
+                            </button>
+                        </div>
+                        <div
+                            v-if="unreadNotifications.length"
+                            class="ListingNotificationLayout"
+                        >
+                            <div
+                                v-for="(notification, index) in unreadNotifications"
+                                :key="index"
+                                class="mr-4"
+                            >
+                                <UserNotificationItemLarge
+                                    :display-heading="notification.title"
+                                    :time-date="notification.updated_at"
+                                    :display-author="notification.author_name"
+                                    :display-action="notification.action"
+                                    :category-text="notification.type"
+                                    :click-callback="() => handleClickNotification(notification.id,notification.resource_id, notification.type,notification.title )"
+                                />
+                            </div>
+                        </div>
+                        <div v-else>
+                            <p class="ml-1 mt-10">
+                                No unread notifications available
+                            </p>
+                        </div>
+                        <div class="flex flex-row mt-10">
+                            <div class="ml-1">
+                                Read Notifications
+                            </div>
+                        </div>
+                        <div
+                            v-if="readNotifications.length"
+                            class="ListingNotificationLayout"
+                        >
+                            <div
+                                v-for="(notification, index) in readNotifications"
+                                :key="index"
+                                class="mr-4"
+                            >
+                                <ListingDesignItemLarge
+                                    :display-heading="notification.title"
+                                    :time-date="notification.updated_at"
+                                    :display-author="notification.author_name"
+                                    :display-action="notification.action"
+                                    :category-text="notification.type"
+                                    :click-callback="() => handleClickNotification(notification.id,notification.resource_id, notification.type,notification.title )"
+                                />
+                            </div>
                         </div>
                     </div>
-                </div>
-            </div>
+                </template>
+            </UserProfileContentContainer>
         </div>
     </div>
 </template>

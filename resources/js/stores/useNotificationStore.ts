@@ -17,7 +17,6 @@ export const useNotificationStore = defineStore('notification', {
         async fetchNotifications(userId) {
             try {
                 const res = await notificationService.getAllNotifications(userId)
-                console.log(res.data.data)
                 this.readNotifications = res.data.data.filter(notification => notification.read_at)
                 this.unreadNotifications = res.data.data.filter(notification => !notification.read_at)
             } catch (error) {

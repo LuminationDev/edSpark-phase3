@@ -23,8 +23,7 @@ const handleClickBookmark = (postType, postId, postTitle) => {
     case "school":
         targetUrl = '/schools/' + postTitle
         router.push(targetUrl)
-        // return;
-        break;
+        return;
     case "advice":
         targetUrl = '/advice/resources/'
         break;

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import {useRouter} from "vue-router";
+import {useRoute, useRouter} from "vue-router";
 
 import GenericButton from "@/js/components/button/GenericButton.vue";
 
@@ -21,6 +21,7 @@ const props = defineProps({
     }
 })
 const router = useRouter();
+const route = useRoute()
 
 const handleButtonClick = (): void => {
     if (props.buttonCallback) {
@@ -29,6 +30,8 @@ const handleButtonClick = (): void => {
         router.push({name: "dashboard"});
     }
 }
+
+console.log(route.query)
 </script>
 
 
