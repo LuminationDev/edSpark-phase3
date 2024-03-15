@@ -57,7 +57,6 @@ class LoginController extends Controller
             ->first();
         $isSuperAdmin = (bool)$isSuperAdminMeta;
 
-        // $role = Role::where('role_name', $user->user['mainrolecode'])->first() ?? Role::find(4);
         $role = $isSuperAdmin ? Role::find(1) : Role::where('role_name', $user->user['mainrolecode'])->first() ?? Role::find(4);
 
         $siteId = $user->user['mainsiteid'];
