@@ -38,6 +38,7 @@ const showUnsavedWarningModal = ref(false);
 const selectedElement = ref(null);
 
 const questionData = ref([]);
+const elementData = ref([]);
 
 const showErrorModal = ref(false);
 const closeOnError = ref(false);
@@ -45,12 +46,17 @@ const closeOnError = ref(false);
 onMounted(async () => {
     // get questions for all domains, for cross-domain dependency checks
     const data = [];
+    const data_desc = [];
     try {
         for (const domain of props.domains) {
-            const result = await dmaService.getQuestions(domain.id);
-            data.push({domain: domain.domain, questions: result.domain_questions});
+            const result = await dmaService.getQuestions(domain.id);            
+            data.push({domain: domain.domain, domainId: domain.id, questions: result.domain_questions});
+
+            const result_desc = await dmaService.getElementDescriptions(domain.id);
+            data_desc.push({ domain: domain.id, domain_label: domain.domain, elements: result_desc });
         }
         questionData.value = data;
+        elementData.value = data_desc;
 
         // load action plan
         actionPlanData.value = await dmaService.getActionPlans();
@@ -114,8 +120,10 @@ const getElementResults = (domainName) => {
             else if (item.score === 4) scoreLabel = 'Excelling';
 
             const dependency = checkElementDependencies(domainName, item.element);
+            const test = 'test';
 
-            elements.push({...item, label: scoreLabel, dependency});
+
+            elements.push({...item, label: scoreLabel, dependency, test});
         }
         return elements;
     }, []);
@@ -379,7 +387,12 @@ const handleCloseReport = () => {
                         </p>
                     </div>
 
-                    <PDFBuilder/>
+                    <PDFBuilder
+                        :domains="domains"
+                        :questionData="questionData"
+                        :reportData="reportData"
+                        :elementData="elementData"
+                        />
 
 
                     <div class="flex lg:flex-row flex-col gap-10">
@@ -448,7 +461,7 @@ const handleCloseReport = () => {
                                                 "
                                             :class="{'brightness-75': selectedElement === `${domain.domain}|${element.element}`}"
                                         >
-                                            <span class="flex-1 mr-2">{{ element.element }} is {{ element.label }}</span>
+                                            <span class="flex-1 mr-2 text-h4-caps">{{ element.element }} is {{ element.label }}</span>
                                             <TextButton
                                                 class="!text-xs underline"
                                                 @click="() => toggleShowAdvice(element.domain, element.element)"

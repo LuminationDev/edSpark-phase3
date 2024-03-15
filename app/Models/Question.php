@@ -18,7 +18,7 @@ class Question extends Model
         "domain_print",
         "variable_suffix",
         "phase_description",
-        "element_description",
+        // "element_description", //need this for PDF generation
     ];
 
     public static array $DOMAINS = ['triage', 'teaching', 'managing', 'leading', 'learning'];

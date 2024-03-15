@@ -14,6 +14,11 @@ export const dmaService = {
             return res.data.data;
         })
     },
+    getElementDescriptions: async (domainId: string):Promise<AxiosResponse<any>> => {
+        return axios.get(`${API_ENDPOINTS.DMA.USER_SURVEY}/domain/${domainId}/elements`).then(res => {
+            return res.data.data;
+        })
+    },
     postAnswer: async(
         domainId: string,
         questionId: string,
