@@ -12,12 +12,12 @@ import ListingDesignItemLarge
 import UserProfileContentContainer from "@/js/components/userprofile/userprofileupdate/UserProfileContentContainer.vue";
 import {lowerSlugify} from "@/js/helpers/stringHelpers";
 import {notificationService} from "@/js/service/notificationService";
+import {useNotificationStore} from "@/js/stores/useNotificationStore";
 import {useUserStore} from "@/js/stores/useUserStore";
 
 const isLoading = ref(true);
-const unreadNotification = ref([])
-const readNotification = ref([])
-
+const notificationStore = useNotificationStore()
+const {unreadNotifications, readNotifications} = storeToRefs(notificationStore)
 const {currentUser} = storeToRefs(useUserStore())
 const router = useRouter()
 
@@ -25,16 +25,15 @@ const leftHeadingNotification = ref('Notifications')
 const leftDescriptionNotification = ref('Stay up to date with the latest activities.')
 const reloadKey = ref(0)
 
-onMounted(() => {
-    notificationService.getAllNotifications(currentUser.value.id).then(res => {
-        readNotification.value = res.data.data.filter(notification => notification.read_at);
-        unreadNotification.value = res.data.data.filter(notification => !notification.read_at)
+onMounted(async () => {
+    try {
+        await notificationStore.fetchNotifications(currentUser.value.id);
         isLoading.value = false
-    })
-    //  emits('sendMarkAllAsReadButton', handleMarkAllAsRead)
+    } catch (error) {
+        console.error("Error fetching notifications:", error);
+    }
 });
 
-console.log(notificationService.getNotifications(unreadNotification.value))
 const handleClickNotification = (notificationId, resourceId, resourceType, resourceTitle) => {
     const routeInfo = {
         name: '',
@@ -51,7 +50,6 @@ const handleClickNotification = (notificationId, resourceId, resourceType, resou
         routeInfo.name = 'software-single'
     }
     if (!routeInfo.name) {
-        console.log('Resource Type is not recognized')
         return
     } else {
         notificationService.readNotification(notificationId)
@@ -64,7 +62,6 @@ const handleMarkAllAsRead = () => {
     notificationService.readAllNotifications(currentUser.value.id)
         .then(() => {
             refreshNotifications();
-            console.log("Mark All as read button is pressed!")
         })
         .catch((error) => {
             console.error("Error marking all notifications as read:", error.message);
@@ -75,14 +72,10 @@ const handleMarkAllAsRead = () => {
 const refreshNotifications = async () => {
     isLoading.value = true;
     try {
-        notificationService.getAllNotifications(currentUser.value.id).then(res => {
-            readNotification.value = res.data.data.filter(notification => notification.read_at);
-            unreadNotification.value = res.data.data.filter(notification => !notification.read_at)
-        })
+        await notificationStore.fetchNotifications(currentUser.value.id);
+        isLoading.value = false;
     } catch (error) {
         console.error("Error refreshing notifications:", error.message)
-    } finally {
-        isLoading.value = false
     }
 }
 
@@ -127,11 +120,11 @@ const refreshNotifications = async () => {
                                             </button>
                                         </div>
                                         <div
-                                            v-if="unreadNotification.length"
+                                            v-if="unreadNotifications.length"
                                             class="ListingNotificationLayout"
                                         >
                                             <div
-                                                v-for="(notification, index) in unreadNotification"
+                                                v-for="(notification, index) in unreadNotifications"
                                                 :key="index"
                                                 class="mr-4"
                                             >
@@ -156,11 +149,11 @@ const refreshNotifications = async () => {
                                             </div>
                                         </div>
                                         <div
-                                            v-if="readNotification.length"
+                                            v-if="readNotifications.length"
                                             class="ListingNotificationLayout"
                                         >
                                             <div
-                                                v-for="(notification, index) in readNotification"
+                                                v-for="(notification, index) in readNotifications"
                                                 :key="index"
                                                 class="mr-4"
                                             >

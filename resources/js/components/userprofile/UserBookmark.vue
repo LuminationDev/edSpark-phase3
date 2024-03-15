@@ -4,6 +4,7 @@ import {onMounted, ref} from 'vue'
 import {useRouter} from "vue-router";
 
 import Loader from "@/js/components/spinner/Loader.vue";
+import Trash from "@/js/components/svg/Trash.vue";
 import ListingDesignItemSmall
     from "@/js/components/userprofile/userprofileupdate/usernotification/ListingDesignItemSmall.vue";
 import {API_ENDPOINTS} from "@/js/constants/API_ENDPOINTS";
@@ -48,8 +49,6 @@ const fetchBookmarksWithTitle = () => {
     const userId = currentUser.value.id;
     axios.post(API_ENDPOINTS.BOOKMARK.FETCH_ALL_BOOKMARKS_WITH_TITLE, { user_id: userId })
         .then(response => {
-            console.log(currentUser.value.id)
-            console.log(userBookmarks)
             userBookmarks.value = response.data.data;
             count.value = response.data.count;
             isLoading.value = false
@@ -100,9 +99,11 @@ onMounted(() => {
                 :category-text="singleBookmark.post_type"
                 :click-callback="() => handleClickBookmark(singleBookmark.post_type, singleBookmark.post_id,singleBookmark.post_title)"
             />
-            <button @click="deleteBookmark(index)">
-                Delete
-            </button>
+
+            <Trash
+                class="cursor-pointer m-auto hover:text-red-700"
+                @click="deleteBookmark(index)"
+            />
         </div>
     </div>
 </template>
