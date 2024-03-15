@@ -103,7 +103,8 @@ onMounted(() => {
             />
 
             <Trash
-                class="cursor-pointer m-auto"
+
+                class="cursor-pointer m-auto hover:text-red-700"
                 @click="deleteBookmark(index)"
             />
         </div>
