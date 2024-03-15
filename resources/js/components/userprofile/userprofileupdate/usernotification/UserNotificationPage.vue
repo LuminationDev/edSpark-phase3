@@ -31,12 +31,9 @@ onMounted(async () => {
         isLoading.value = false
     } catch (error) {
         console.error("Error fetching notifications:", error);
-    } finally {
-
     }
 });
 
-console.log(notificationService.getNotifications(unreadNotifications.value))
 const handleClickNotification = (notificationId, resourceId, resourceType, resourceTitle) => {
     const routeInfo = {
         name: '',
@@ -53,7 +50,6 @@ const handleClickNotification = (notificationId, resourceId, resourceType, resou
         routeInfo.name = 'software-single'
     }
     if (!routeInfo.name) {
-        console.log('Resource Type is not recognized')
         return
     } else {
         notificationService.readNotification(notificationId)
@@ -66,7 +62,6 @@ const handleMarkAllAsRead = () => {
     notificationService.readAllNotifications(currentUser.value.id)
         .then(() => {
             refreshNotifications();
-            console.log("Mark All as read button is pressed!")
         })
         .catch((error) => {
             console.error("Error marking all notifications as read:", error.message);

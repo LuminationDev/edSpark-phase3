@@ -41,11 +41,8 @@ const handleLogoutUser = async () => {
             method: 'POST',
         });
         // Handle the response from the server
-        const data = await response.json();
-        console.log(data.message);
-
+        await response.json();
         userStore.clearStore();
-
         window.location.href = '/';
 
     } catch (error) {
@@ -65,7 +62,6 @@ const profileTargetPath = computed(() => {
 
 const messageTargetPath = computed(() => {
     if (currentUser.value.id) {
-        // return `/message/${currentUser.value.id}`
         return `/profile/${currentUser.value.id}/messages`
     } else return ''
 })
@@ -76,10 +72,10 @@ const mySchoolTargetPath = computed(() => {
     } else return ''
 })
 
-const avatarUrlWithFallback  = computed(() =>{
-    if(imageError.value){
+const avatarUrlWithFallback = computed(() => {
+    if (imageError.value) {
         return avatarUIFallbackURL + currentUser.value.display_name
-    } else{
+    } else {
         return `${imageURL}/${props.avatarUrl}`
     }
 })
@@ -93,10 +89,8 @@ onMounted(async () => {
         await notificationStore.fetchNotifications(currentUser.value.id);
     } catch (error) {
         console.error("Error fetching notifications:", error);
-    } finally {
     }
 });
-
 
 
 </script>
@@ -104,7 +98,7 @@ onMounted(async () => {
 <template>
     <div class="absolute h-12 hidden w-12 lg:!right-5 lg:!top-4 lg:block xl:!right-5 xl:!top-4">
         <div
-            v-show="unreadNotifications.length!==0"
+            v-show="unreadNotifications.length"
             class="absolute bottom-8 left-8 bg-adminTeal border-2 border-white h-4 rounded-full w-4 z-50"
         />
         <div
@@ -153,9 +147,9 @@ onMounted(async () => {
                         <NotificationIcon />
                         Notification
                         <div
-                            v-show="unreadNotifications.length!==0"
+                            v-show="unreadNotifications.length"
                             id="notification-element"
-                            class="bg-adminTeal h-7 ml-auto notification-element rounded-2xl w-7"
+                            class="bg-adminTeal h-7 ml-auto notification-count-dot rounded-full w-7"
                         >
                             <div class="text-white">
                                 {{ unreadNotifications.length }}

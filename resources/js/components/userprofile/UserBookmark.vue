@@ -49,8 +49,6 @@ const fetchBookmarksWithTitle = () => {
     const userId = currentUser.value.id;
     axios.post(API_ENDPOINTS.BOOKMARK.FETCH_ALL_BOOKMARKS_WITH_TITLE, { user_id: userId })
         .then(response => {
-            console.log(currentUser.value.id)
-            console.log(userBookmarks)
             userBookmarks.value = response.data.data;
             count.value = response.data.count;
             isLoading.value = false
@@ -103,7 +101,6 @@ onMounted(() => {
             />
 
             <Trash
-
                 class="cursor-pointer m-auto hover:text-red-700"
                 @click="deleteBookmark(index)"
             />
