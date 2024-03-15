@@ -12,12 +12,12 @@ import ListingDesignItemLarge
 import UserProfileContentContainer from "@/js/components/userprofile/userprofileupdate/UserProfileContentContainer.vue";
 import {lowerSlugify} from "@/js/helpers/stringHelpers";
 import {notificationService} from "@/js/service/notificationService";
+import {useNotificationStore} from "@/js/stores/useNotificationStore";
 import {useUserStore} from "@/js/stores/useUserStore";
 
 const isLoading = ref(true);
-const unreadNotification = ref([])
-const readNotification = ref([])
-
+const notificationStore = useNotificationStore()
+const {unreadNotifications, readNotifications} = storeToRefs(notificationStore)
 const {currentUser} = storeToRefs(useUserStore())
 const router = useRouter()
 
@@ -27,15 +27,18 @@ const reloadKey = ref(0)
 
 
 
-onMounted(() => {
-    notificationService.getAllNotifications(currentUser.value.id).then(res => {
-        readNotification.value = res.data.data.filter(notification => notification.read_at);
-        unreadNotification.value = res.data.data.filter(notification => !notification.read_at)
+onMounted(async () => {
+    try {
+        await notificationStore.fetchNotifications(currentUser.value.id);
         isLoading.value = false
-    })
+    } catch (error) {
+        console.error("Error fetching notifications:", error);
+    } finally {
+
+    }
 });
 
-console.log(notificationService.getNotifications(unreadNotification.value))
+console.log(notificationService.getNotifications(unreadNotifications.value))
 const handleClickNotification = (notificationId, resourceId, resourceType, resourceTitle) => {
     const routeInfo = {
         name: '',
@@ -76,14 +79,8 @@ const handleMarkAllAsRead = () => {
 const refreshNotifications = async () => {
     isLoading.value = true;
     try {
-        notificationService.getAllNotifications(currentUser.value.id).then(res => {
-            readNotification.value = res.data.data.filter(notification => notification.read_at);
-            unreadNotification.value = res.data.data.filter(notification => !notification.read_at)
-        }).catch(() =>{
-            console.error('Error fetching notifications')
-        }).finally(() =>{
-            isLoading.value = false
-        })
+        await notificationStore.fetchNotifications(currentUser.value.id);
+        isLoading.value = false;
     } catch (error) {
         console.error("Error refreshing notifications:", error.message)
     }
@@ -130,11 +127,11 @@ const refreshNotifications = async () => {
                                             </button>
                                         </div>
                                         <div
-                                            v-if="unreadNotification.length"
+                                            v-if="unreadNotifications.length"
                                             class="ListingNotificationLayout"
                                         >
                                             <div
-                                                v-for="(notification, index) in unreadNotification"
+                                                v-for="(notification, index) in unreadNotifications"
                                                 :key="index"
                                                 class="mr-4"
                                             >
@@ -159,11 +156,11 @@ const refreshNotifications = async () => {
                                             </div>
                                         </div>
                                         <div
-                                            v-if="readNotification.length"
+                                            v-if="readNotifications.length"
                                             class="ListingNotificationLayout"
                                         >
                                             <div
-                                                v-for="(notification, index) in readNotification"
+                                                v-for="(notification, index) in readNotifications"
                                                 :key="index"
                                                 class="mr-4"
                                             >

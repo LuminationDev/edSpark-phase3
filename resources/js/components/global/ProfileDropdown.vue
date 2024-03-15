@@ -1,7 +1,7 @@
 <script setup lang="ts">
 
 import {storeToRefs} from "pinia";
-import {computed, onMounted, ref, watch, watchEffect} from "vue";
+import {computed, onMounted, ref} from "vue";
 
 import ProfileDropdownItem from "@/js/components/global/ProfileDropdownItem.vue";
 import NotificationIcon from "@/js/components/svg/NotificationIcon.vue";
@@ -12,7 +12,7 @@ import MessageIcon from "@/js/components/svg/profileDropdown/MessageIcon.vue";
 import SchoolGradHat from "@/js/components/svg/SchoolGradHat.vue";
 import {APP_ENDPOINTS} from "@/js/constants/API_ENDPOINTS";
 import {avatarUIFallbackURL} from "@/js/constants/serverUrl";
-import {notificationService} from "@/js/service/notificationService";
+import {useNotificationStore} from "@/js/stores/useNotificationStore";
 import {useUserStore} from "@/js/stores/useUserStore";
 
 const props = defineProps({
@@ -22,7 +22,9 @@ const props = defineProps({
     },
 });
 
-const notificationsNumber = ref(0)
+const notificationStore = useNotificationStore()
+const {unreadNotifications} = storeToRefs(notificationStore)
+
 const userStore = useUserStore();
 const {currentUser} = storeToRefs(userStore);
 const showDropdownMenu = ref(false)
@@ -86,19 +88,14 @@ const handleImageLoadError = () => {
     imageError.value = true
 }
 
-const fetchNotificationsAndUpdate = async () => {
+onMounted(async () => {
     try {
-        const res = await notificationService.getAllNotifications(currentUser.value.id);
-        const unreadNotification = res.data.data.filter(notification => !notification.read_at);
-        notificationsNumber.value = unreadNotification.length;
+        await notificationStore.fetchNotifications(currentUser.value.id);
     } catch (error) {
-        console.error('Error fetching notifications:', error);
+        console.error("Error fetching notifications:", error);
+    } finally {
     }
-};
-
-onMounted(fetchNotificationsAndUpdate);
-
-
+});
 
 
 
@@ -107,8 +104,8 @@ onMounted(fetchNotificationsAndUpdate);
 <template>
     <div class="absolute h-12 hidden w-12 lg:!right-5 lg:!top-4 lg:block xl:!right-5 xl:!top-4">
         <div
-            v-show="notificationsNumber!==0"
-            class="absolute bottom-8 left-8 bg-red-700 h-4 rounded-full w-4 z-50"
+            v-show="unreadNotifications.length!==0"
+            class="absolute bottom-8 left-8 bg-adminTeal h-4 rounded-full w-4 z-50"
         />
         <div
             class="bg-slate-200 cursor-pointer flex h-full overflow-hidden relative rounded-full w-full z-40 hover:shadow-2xl"
@@ -157,10 +154,10 @@ onMounted(fetchNotificationsAndUpdate);
                         Notification
                         <div
                             id="notification-element"
-                            class="bg-red-700 h-7 ml-auto notification-element rounded-2xl w-7"
+                            class="bg-adminTeal h-7 ml-auto notification-element rounded-2xl w-7"
                         >
                             <div class="text-white">
-                                {{ notificationsNumber }}
+                                {{ unreadNotifications.length }}
                             </div>
                         </div>
                     </ProfileDropdownItem>
