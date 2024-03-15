@@ -153,6 +153,7 @@ onMounted(async () => {
                         <NotificationIcon />
                         Notification
                         <div
+                            v-show="unreadNotifications.length!==0"
                             id="notification-element"
                             class="bg-adminTeal h-7 ml-auto notification-element rounded-2xl w-7"
                         >
