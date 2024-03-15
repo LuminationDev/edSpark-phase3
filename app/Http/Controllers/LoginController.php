@@ -48,7 +48,7 @@ class LoginController extends Controller
     private function updateOrCreateLocalUser($user)
     {
         try {
-            $idToken = $user->token->token->token;
+            $idToken = $user->token;
 
             // Get the user's edSpark profile/data
             $userEdSpark = User::where('email', $user->email)->first();
