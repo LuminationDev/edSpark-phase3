@@ -69,9 +69,9 @@ const formattedCategoryTextString = computed(() => {
             flex
             items-center
             flex-row
-            h-20
+            h-auto
             mt-4
-            notificationItemSmallContainer
+            notificationItemLargeContainer
             rounded-[43px]
             rounded-r-xl
             w-full
@@ -83,23 +83,23 @@ const formattedCategoryTextString = computed(() => {
             class="bg-blue-50 border-2 border-adminTeal ml-6 p-2 rounded-3xl"
             :class="['border', getCategoryStyling(categoryText)]"
         >
-            <div class="text-center w-32">
+            <div class="text-center w-16 sm:!w-32">
                 {{ formattedCategoryTextString }}
             </div>
         </div>
-        <div class="p-2">
-            <div class="m-1 ml-6 mr-6 text-gray-500">
+        <div class="ml-6 mr-2 p-2 text-sm">
+            <div class="m-1 text-gray-500">
                 {{ formatDateToDayTime(timeDate) }}
             </div>
-            <div class="m-1 ml-6 mr-6 text-gray-500">
+            <div class="m-1 text-gray-500">
                 Created by: {{ displayAuthor }}
             </div>
         </div>
-        <div class="p-2">
-            <div class="ml-8 mr-6">
+        <div class="ml-8 p-2 text-sm w-auto">
+            <div class="">
                 {{ displayHeading }}
             </div>
-            <div class="ml-8 mr-6 text-gray-500">
+            <div class="text-gray-500">
                 {{ formattedString }}
             </div>
         </div>

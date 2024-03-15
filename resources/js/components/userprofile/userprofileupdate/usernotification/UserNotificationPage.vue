@@ -25,8 +25,6 @@ const leftHeadingNotification = ref('Notifications')
 const leftDescriptionNotification = ref('Stay up to date with the latest activities.')
 const reloadKey = ref(0)
 
-
-
 onMounted(async () => {
     try {
         await notificationStore.fetchNotifications(currentUser.value.id);
