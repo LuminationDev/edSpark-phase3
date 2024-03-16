@@ -60,6 +60,12 @@ export const dmaService = {
         })
     },
 
+    getReflection: async():Promise<AxiosResponse<any>> => {
+        return axios.get(`${API_ENDPOINTS.DMA.USER_SURVEY}/reflection`).then(res => {
+            return res.data.data;
+        })
+    },
+
     getActionPlans: async():Promise<AxiosResponse<any>> => {
         return axios.get(`${API_ENDPOINTS.DMA.USER_SURVEY}/actionplans`).then(res => {
             return res.data.data;

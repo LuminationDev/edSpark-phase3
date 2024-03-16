@@ -121,6 +121,40 @@ class SurveyController extends Controller
     }
 
 
+
+    public function getUserReflection(Request $request): JsonResponse
+    {
+        $user = User::find(Auth::user()->id);
+        $userSurvey = UserSurvey::where('user_id', $user->id)
+            ->where('status', '<>', 'Abandoned')
+            ->first();
+
+        if ($userSurvey == null) {
+            return $this->surveyNotFound();
+        }
+
+        $survey_domains = UserSurveyDomain::where('user_survey_id', $userSurvey->id)
+            ->where('status', '<>', 'Abandoned')
+            ->get();
+
+        foreach ($survey_domains as $survey_domain) {
+            $results[$survey_domain->domain] = UserSurveyReflection::where('user_survey_domain_id', $survey_domain->id)->get();
+        }
+
+        return response()->json(
+            [
+                'success' => true,
+                'message' => 'OK',
+                'code' => 0,
+                'locale' => 'en',
+                'data' => [
+                    'reflection' => $results,
+                ],
+            ]
+        );
+    }
+
+
     public function getUserActionPlan(Request $request): JsonResponse
     {
         $user = User::find(Auth::user()->id);

@@ -80,25 +80,17 @@ const props = defineProps({
     elementData: {
         type: Array,
         required: true,
-    },
-    // actionData: {
-    //     type: Array,
-    //     required: true,
-    // }
+    }
 })
 
 
 import { dmaService } from "@/js/service/dmaService";
 const actionData = ref(null);
-
-onMounted(async () => {
-    // load action plan
-    // actionData.value = await dmaService.getActionPlans();
-    // console.log("DONE!! actioooons");
-});
+const reflectionData = ref(null);
 
 
 const domainColors = ['#223c91', '#5eadb2', '#d8747f', '#f4b07e'];
+const domainColorsBg = ['#dce3f1', '#c7e1e3', '#f5e0e2', '#f6e6dd'];
 
 var imagesLoaded = false;
 
@@ -166,18 +158,24 @@ const newPage = () => {
     sectionOffset = textOffset;
 }
 
-const drawActionsBlock = (boxColor, topY, thisText) => {
+const drawActionsBlock = (title, boxColor, bgColor, topY, thisText) => {
     var textHeight = (thisText.length * 0.48) + 1.2;
 
     doc.setFillColor(boxColor);
     doc.setLineWidth(0.1);
-    doc.rect(leftMargin, topY, pageWidth - leftMargin, 1, 'FD'); //title box                      
+    doc.rect(leftMargin, topY, pageWidth - leftMargin, 1, 'FD'); //title box     
+    
+    doc.setFillColor(bgColor);                 
+    doc.rect(leftMargin, topY + 0.8, pageWidth - leftMargin, textHeight, 'F'); //text box border 
+    
+    doc.setFillColor(boxColor); 
     doc.rect(leftMargin, topY + 0.8, pageWidth - leftMargin, textHeight, 'S'); //text box border   
+
 
     doc.setTextColor('#FFFFFF');
     doc.setFont("MuseoSans-700");
     doc.setFontSize(16);
-    doc.text("Action plan", leftMargin + 0.5, topY + 0.7, 'left'); //title
+    doc.text(title, leftMargin + 0.5, topY + 0.6, 'left'); //title
 
     setBodyText();
     doc.text(thisText, leftMargin + 0.5, topY + 1.7, 'left'); //text
@@ -241,7 +239,9 @@ const generatePDF = async () => {
     console.log("Generating! " + imagesLoaded);
 
     actionData.value = await dmaService.getActionPlans();
-    console.log("DONE!! actioooons");
+
+    reflectionData.value = await dmaService.getReflection();
+    console.log("REFLECTING UP!", reflectionData.value);
 
     doc.addImage(bg_ptitle, 'png', 0, 0, 21, 29.7);
     doc.addImage(legend, 'png', 0.65, 26.1, 2.4, 3.1);
@@ -445,12 +445,10 @@ const generatePDF = async () => {
 
 
                     //draw the action plan block
-                    console.log("ACTION", actionData.value);
                     const actionPlan = actionData.value.action_plan[props.elementData[i].domain_label];
                     const currentPlan = actionPlan?.find(e => e.element === element.element);
 
                     if (currentPlan) {
-                        console.log(element.element, currentPlan.action);
                         var thisText = doc.splitTextToSize(currentPlan.action, 17);
 
                         //do we need to start a new page?
@@ -473,7 +471,7 @@ const generatePDF = async () => {
                                 if (thisChunk[0] == '') {
                                     thisChunk.splice(0, 1);
                                 }
-                                textOffset = textOffset + drawActionsBlock(domainColors[i], textOffset, thisChunk);
+                                textOffset = textOffset + drawActionsBlock("Action plan for "+elementTitle.toLowerCase(), domainColors[i], '#FFFFFF', textOffset, thisChunk);
 
                                 if (counter < chunks.length) {
                                     newPage();
@@ -481,14 +479,10 @@ const generatePDF = async () => {
                             }
 
                         } else {
-                            textOffset = textOffset + drawActionsBlock(domainColors[i], textOffset, thisText);
+                            textOffset = textOffset + drawActionsBlock("Action plan for "+elementTitle.toLowerCase(), domainColors[i], '#FFFFFF', textOffset, thisText);
                         }
 
                     }
-
-                    //prepare text and estimate height
-
-
 
                     // new section
                     if (j < elementCount - 1) {
@@ -497,14 +491,53 @@ const generatePDF = async () => {
 
                 }
 
-            }
+                //draw the reflection block
+                const reflection = reflectionData.value.reflection[props.elementData[i].domain_label];
+                const currentReflection = reflection[0];
 
-            doc.save("DMA-Report_" + siteName.replace(" ", "-") + "_" + date + ".pdf"); //download as PDF
+                if (currentReflection && currentReflection.reflection) {
+                    var thisText = doc.splitTextToSize(currentReflection.reflection, 17);
 
-            console.log("DONE!");
-        };
+                    //do we need to start a new page?
+                    var box_spacing = 1.5 + 0.7 + 0.4;
+                    predictedHeight = textOffset + (thisText.length * 0.48) + 1 + box_spacing;
 
-    }
+                    textOffset = textOffset + 1; //gap from element previous
+
+                    if (predictedHeight > pageHeight) {
+                        newPage();
+                    }
+
+
+                    if (thisText.length > 39) {
+                        var counter = 0;
+                        var chunks = chunk(thisText, 39);
+                        for (const thisChunk of chunks) {
+                            counter++;
+                            //if it starts with an empty cell, remove that cell
+                            if (thisChunk[0] == '') {
+                                thisChunk.splice(0, 1);
+                            }
+                            textOffset = textOffset + drawActionsBlock("Reflection for "+domainTitle.toLowerCase()+" domain", domainColors[i], domainColorsBg[i], textOffset, thisChunk);
+
+                            if (counter < chunks.length) {
+                                newPage();
+                            }
+                        }
+
+                    } else {
+                        textOffset = textOffset + drawActionsBlock("Reflection for "+domainTitle.toLowerCase()+" domain", domainColors[i], domainColorsBg[i], textOffset, thisText);
+                    }
+
+                }
+                }
+
+                doc.save("DMA-Report_" + siteName.replace(" ", "-") + "_" + date + ".pdf"); //download as PDF
+
+                console.log("DONE!");
+            };
+
+        }
     )
 
 };
