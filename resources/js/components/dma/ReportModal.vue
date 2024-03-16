@@ -195,6 +195,7 @@ const checkIndicatorDependencies = (domainName, elementName, indicatorName, scor
             // check score for dependency question
             if (depQuestion) {
                 const depResult = getIndicatorResults(depQuestion.domain, depQuestion.element_print).find(r => r.indicator === depQuestion.indicator_print);
+                console.log("DEPRES", depResult);
                 if (!depResult || depResult.value < depQuestion.phase) {
                     return {domain: depQuestion.domain, element: depQuestion.element_print};
                 }
