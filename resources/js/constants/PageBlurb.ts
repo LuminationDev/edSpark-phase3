@@ -55,6 +55,10 @@ export const LandingHeroText = {
     dma:{
         title: 'Digital Capability Leadership Reflection Tool',
         subtitle: '',
+    },
+    notification:{
+        title: 'Your notifications',
+        subtitle: 'Keep up with what has been happening on edSpark',
     }
 }
 

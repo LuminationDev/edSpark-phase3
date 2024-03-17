@@ -7,6 +7,12 @@ import useIsLoading from "@/js/composables/useIsLoading";
 import {formService} from "@/js/service/formService";
 import {GroupedLabel, LabelSelectorItem} from "@/js/types/GlobalLabelTypes";
 
+const props = defineProps({
+    labelsType:{
+        type: String,
+        required: true
+    }
+})
 
 const allLabels: Ref<LabelSelectorItem[] > = ref([])
 const groupedLabels : Ref<GroupedLabel|null> = ref(null)
@@ -18,6 +24,28 @@ const initFetchAllLabels = () : Promise<any> =>  {
         groupedLabels.value = formService.groupLabelByType(allLabels.value)
     })
 }
+
+// use to determine what labels shown for filtering in search
+const filterForEachResource = {
+    advice: ['category','learning','capability','year'],
+    software: ['category','learning','capability','year'],
+    event: ['category','learning','capability','year', 'partnerships']
+}
+
+const  filterObjectByKeys = (obj, keys) => {
+    return Object.fromEntries(
+        Object.entries(obj).filter(([key, value]) => keys.includes(key))
+    );
+}
+
+const filteredGroupedLabels = computed(() =>{
+    if(!props.labelsType || !Object.keys(filterForEachResource).includes(props.labelsType)) return groupedLabels.value
+    if(groupedLabels.value){
+        return filterObjectByKeys(groupedLabels.value , filterForEachResource[props.labelsType])
+    }
+
+})
+
 
 const {isLoading } = useIsLoading(initFetchAllLabels)
 
@@ -31,7 +59,7 @@ const handleTransmittedFromGenericMultiSelectFilter = (selectedValue, dataPath) 
 <template>
     <div
         v-if="isLoading"
-        class="mt-6 font-thin"
+        class="font-thin mt-6"
     >
         <Loader
             :loader-color="'#0072DA'"
@@ -41,7 +69,7 @@ const handleTransmittedFromGenericMultiSelectFilter = (selectedValue, dataPath) 
     </div>
     <template v-else>
         <div
-            v-for="(value,key) in groupedLabels"
+            v-for="(value,key) in filteredGroupedLabels"
             :key="key"
         >
             <GenericMultiSelectFilter

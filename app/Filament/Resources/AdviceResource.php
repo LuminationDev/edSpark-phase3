@@ -30,8 +30,6 @@ use SplFileInfo;
 use App\Helpers\EdSparkRolesHelpers;
 
 
-
-
 class AdviceResource extends Resource
 {
     protected static ?string $model = Advice::class;
@@ -50,16 +48,24 @@ class AdviceResource extends Resource
         $groupedLabels = Label::all()->groupBy('type');
 
         $labelColumns = [];
+        // categories to include inside advice creation page
+        $categoriesToInclude = ['category', 'learning', 'capability', 'year'];
 
         foreach ($groupedLabels as $category => $labels) {
-            $labelColumns[] = Forms\Components\CheckboxList::make("labels")
-                ->label("Labels - {$category}")
-                ->extraAttributes(['class' => 'text-primary-600'])
-                ->options($labels->pluck('value', 'id')->toArray())
-                ->relationship('labels', 'value', function ($query) use ($category) {
-                    $query->where('type', $category)->orderByRaw('CAST(labels.id AS SIGNED)');
-                })
-                ->columns(3);
+            if (in_array($category, $categoriesToInclude)) {
+                $labelColumns[] =
+                    Forms\Components\Section::make(ucfirst($category))
+                        ->schema([
+                            Forms\Components\CheckboxList::make("labels")
+                                ->label("")
+                                ->extraAttributes(['class' => 'text-primary-600'])
+                                ->options($labels->pluck('value', 'id')->toArray())
+                                ->relationship('labels', 'value', function ($query) use ($category) {
+                                    $query->where('type', $category)->orderByRaw('CAST(labels.id AS SIGNED)');
+                                })
+                                ->columns(3)
+                        ]);
+            }
         }
         return $form->schema([
             Forms\Components\Card::make()->schema([

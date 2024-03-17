@@ -5,6 +5,7 @@ import CoverScreen from "@/js/components/dma/CoverScreen.vue";
 import DomainCoverScreen from "@/js/components/dma/DomainCoverScreen.vue";
 import ProgressBar from "@/js/components/dma/ProgressBar.vue";
 import QuestionScreen from "@/js/components/dma/QuestionScreen.vue";
+import ScrollableContent from "@/js/components/dma/ScrollableContent.vue";
 import WarningModal from "@/js/components/dma/WarningModal.vue";
 import Spinner from "@/js/components/spinner/Spinner.vue";
 import {dmaService} from "@/js/service/dmaService";
@@ -260,24 +261,20 @@ const handleResetDomain = () => {
                 <div
                     class="flex flex-col h-full w-full"
                 >
-                    <h2 class="text-h2-caps md:text-h3-caps lg:text-h2-caps">
+                    <h2 class="mb-3 text-h2-caps md:text-h3-caps lg:text-h2-caps">
                         {{ elementCompleted }} is {{ getScoreLabel(elementCompleted) }}
                     </h2>
-                    <div class="flex-1 overflow-hidden scroll-fade">
-                        <div
-                            class="h-full pb-10 relative z-50 md:overflow-x-none md:overflow-y-scroll"
+                    <ScrollableContent>
+                        <template
+                            v-for="result of getElementResults(elementCompleted)"
+                            :key="`${result.element}_${result.indicator}`"
                         >
-                            <template
-                                v-for="result of getElementResults(elementCompleted)"
-                                :key="`${result.element}_${result.indicator}`"
-                            >
-                                <div
-                                    class="max-w-[900px] mt-10 text-base md:text-medium lg:text-large"
-                                    v-html="result.description"
-                                />
-                            </template>
-                        </div>
-                    </div>
+                            <div
+                                class="max-w-[900px] mt-5 text-base md:text-medium lg:text-large"
+                                v-html="result.description"
+                            />
+                        </template>
+                    </ScrollableContent>
                 </div>
             </template>
             <template #primaryAction>
@@ -387,57 +384,53 @@ const handleResetDomain = () => {
                     <h2 class="text-h2-caps md:text-h3-caps lg:text-h2-caps">
                         {{ props.domain.domain }}
                     </h2>
-                    <div class="flex-1 overflow-hidden scroll-fade">
-                        <div
-                            class="h-full pb-10 px-1 relative z-50 md:overflow-x-none md:overflow-y-scroll"
+                    <ScrollableContent>
+                        <template
+                            v-for="element of displayElements"
+                            :key="`${element}`"
                         >
+                            <h2 class="mt-10 text-h3-caps md:text-h4-caps lg:text-h3-caps">
+                                {{ element }} is {{ getScoreLabel(element) }}
+                            </h2>
                             <template
-                                v-for="element of displayElements"
-                                :key="`${element}`"
+                                v-for="result of getElementResults(element)"
+                                :key="`${result.element}_${result.indicator}`"
                             >
-                                <h2 class="mt-10 text-h3-caps md:text-h4-caps lg:text-h3-caps">
-                                    {{ element }} is {{ getScoreLabel(element) }}
-                                </h2>
-                                <template
-                                    v-for="result of getElementResults(element)"
-                                    :key="`${result.element}_${result.indicator}`"
-                                >
-                                    <div
-                                        class="max-w-[900px] mt-10 text-base md:text-medium lg:text-large"
-                                        v-html="result.description"
-                                    />
-                                </template>
+                                <div
+                                    class="max-w-[900px] mt-10 text-base md:text-medium lg:text-large"
+                                    v-html="result.description"
+                                />
                             </template>
+                        </template>
 
-                            <textarea
-                                v-model="reflection"
-                                rows="7"
-                                :disabled="props.disabled"
-                                class="
-                                    bg-black/50
-                                    border-none
-                                    max-md:h-96
-                                    mt-10
-                                    px-6
-                                    py-5
-                                    resize-none
-                                    rounded-2xl
-                                    text-medium
-                                    focus:outline-none
-                                    focus:ring
-                                    md:!px-8
-                                    md:!py-7
-                                    "
-                                placeholder="Add your reflection here.
+                        <textarea
+                            v-model="reflection"
+                            rows="7"
+                            :disabled="props.disabled"
+                            class="
+                                bg-black/50
+                                border-none
+                                max-md:h-96
+                                mt-10
+                                px-6
+                                py-5
+                                resize-none
+                                rounded-2xl
+                                text-medium
+                                focus:outline-none
+                                focus:ring
+                                md:!px-8
+                                md:!py-7
+                                "
+                            placeholder="Add your reflection here.
 Does this result align with your expectations?
 What practices are working well and why?
 What areas of success have been highlighted?
 What aspects need to be prioritised?
 In what way will existing practices and ways of working need to change?
                                 "
-                            />
-                        </div>
-                    </div>
+                        />
+                    </ScrollableContent>
                 </div>
             </template>
             <template #primaryAction>
@@ -492,11 +485,3 @@ In what way will existing practices and ways of working need to change?
         <Spinner />
     </div>
 </template>
-
-<style scoped lang="scss">
-@media screen and (min-width: 768px) {
-    .scroll-fade {
-        mask-image: linear-gradient(transparent, black 5%, black 95%, transparent);
-    }
-}
-</style>

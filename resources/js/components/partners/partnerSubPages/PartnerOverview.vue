@@ -72,7 +72,9 @@ onMounted(async () => {
         currentUserCanEdit.value = Boolean(res.data.result)
         currentUserAdminMessage.value = res.data.message
         console.log(res.data.result)
-
+        toast(
+            "You have successfully submitted content for moderation. Content will update once moderator approved your submission"
+        )
 
         if (currentUserCanEdit.value) {
             fetchPendingContent();
@@ -87,9 +89,6 @@ const forceRefreshTinyMce = () => {
 const fetchPendingContent = async () => {
     try {
         const {data} = await partnerService.fetchPendingPartnerProfile(+partnerId, currentUser.value.id)
-        toast(
-            "You have successfully submitted content for moderation. Content will update once moderator approved your submission"
-        )
         if (data.pending_available) {
             partnerContentState.value = 'pending_available'
             pendingPartnerProfile.value = data.result.profile
@@ -133,7 +132,7 @@ const handleEditButton = async (): Promise<void> => {
 // }
 
 const handleAllSaveButton = () =>{
-    partnerService.updatePartnerContent(+partnerId, currentUser.value.id, newPartnerContent.value).then(res => {
+    return partnerService.updatePartnerContent(+partnerId, currentUser.value.id, newPartnerContent.value).then(res => {
         if (res.status === 200) {
             partnerContentState.value = 'submitted_pending'
             editMode.value = false
@@ -188,7 +187,7 @@ const moderationStatusMessage = computed(() => {
         >
             <div
                 v-if="currentUserCanEdit && editMode"
-                class="w-full"
+                class="w-full lg:!basis-2/3"
             >
                 <TinyMceRichTextInput
                     :key="tinyMceRefreshKey"
@@ -199,7 +198,7 @@ const moderationStatusMessage = computed(() => {
             </div>
             <div v-else>
                 <div
-                    class="partnerOverviewContentRenderer"
+                    class="partnerOverviewContentRenderer w-full lg:!basis-2/3"
                 >
                     <!--            <EditorJsContentDisplay :content-blocks="props.contentFromBase.profile" />-->
                     <div
@@ -294,11 +293,6 @@ const moderationStatusMessage = computed(() => {
     </div>
 </template>
 <style scoped>
-
-:deep(p) {
-    margin-top: 16px;
-    text-align: justify;
-}
 </style>
 
 
