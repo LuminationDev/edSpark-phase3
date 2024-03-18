@@ -7,7 +7,6 @@ import TinyMceRichTextInput from "@/js/components/bases/frontendform/TinyMceEdit
 import IconPickerInput from "@/js/components/bases/IconPickerInput.vue";
 import NumberInput from "@/js/components/bases/NumberInput.vue";
 import TextInput from "@/js/components/bases/TextInput.vue";
-import TrixRichEditorInput from "@/js/components/bases/TrixRichEditorInput.vue";
 import GenericButton from "@/js/components/button/GenericButton.vue";
 import Add from "@/js/components/svg/Add.vue";
 import {formService} from "@/js/service/formService";

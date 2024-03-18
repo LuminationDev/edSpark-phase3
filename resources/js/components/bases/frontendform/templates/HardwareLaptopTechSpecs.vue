@@ -89,12 +89,12 @@ const handleClickDeleteItem = (templateIndex, itemIndex) =>{
                             </template>
                         </TextInput>
                         <div class="ContainerTemp my-2 richContent">
-                            <TrixRichEditorInput
-                                label="Content"
-                                :src-content="item.content"
-                                class="border-gray-300"
-                                @input="(contentData) => item.content = contentData"
-                            />
+                            <!--                            <TrixRichEditorInput-->
+                            <!--                                label="Content"-->
+                            <!--                                :src-content="item.content"-->
+                            <!--                                class="border-gray-300"-->
+                            <!--                                @input="(contentData) => item.content = contentData"-->
+                            <!--                            />-->
                         </div>
                     </div>
                 </div>

@@ -1,26 +1,19 @@
 <script setup>
-import { ref, onMounted } from 'vue';
-import jsPDF from 'jsPDF';
-// import autoTable from 'jspdf-autotable'
-// import html2canvas from 'html2canvas';
-// import html2pdf from 'html2pdf.js'
-// import download from 'downloadjs'
-import GenericButton from '../button/GenericButton.vue';
-import { useUserStore } from "@/js/stores/useUserStore";
+import * as htmlToImage from 'html-to-image';
+import {jsPDF} from 'jspdf';
 import moment from 'moment';
-// import LatoFontReg from './Lato-Regular-normal.js';
+import { ref } from 'vue';
+
+import { useUserStore } from "@/js/stores/useUserStore";
+
+import GenericButton from '../button/GenericButton.vue';
+import bgImageTitle from './../../../../resources/assets/images/DMA-Report-bg-title.png';
+import dfeLogo from './../../../../resources/assets/images/DMA-Report-dfe-logo.png';
+import dmaLegend from './../../../../resources/assets/images/DMA-Report-legend.png';
 import MuseoSans100 from './MuseoSans-100-normal.js';
 import MuseoSans300 from './MuseoSans-300-normal.js';
 import MuseoSans500 from './MuseoSans-500-normal.js';
 import MuseoSans700 from './MuseoSans-700-normal.js';
-
-// import bgImagePages from './../../../../resources/assets/images/DMA-Report-bg-1.png';
-import bgImageTitle from './../../../../resources/assets/images/DMA-Report-bg-title.png';
-import dmaLegend from './../../../../resources/assets/images/DMA-Report-legend.png';
-import dfeLogo from './../../../../resources/assets/images/DMA-Report-dfe-logo.png';
-
-
-import * as htmlToImage from 'html-to-image';
 
 const userStore = useUserStore()
 
@@ -92,7 +85,7 @@ const reflectionData = ref(null);
 const domainColors = ['#223c91', '#5eadb2', '#d8747f', '#f4b07e'];
 const domainColorsBg = ['#dce3f1', '#c7e1e3', '#f5e0e2', '#f6e6dd'];
 
-var imagesLoaded = false;
+let imagesLoaded = false;
 
 const bg_ptitle = new Image();
 const bg_p1 = new Image();
@@ -159,7 +152,7 @@ const newPage = () => {
 }
 
 const drawActionsBlock = (title, boxColor, bgColor, topY, thisText) => {
-    var textHeight = (thisText.length * 0.48) + 1.2;
+    const textHeight = (thisText.length * 0.48) + 1.2;
 
     doc.setFillColor(boxColor);
     doc.setLineWidth(0.1);
@@ -183,10 +176,10 @@ const drawActionsBlock = (title, boxColor, bgColor, topY, thisText) => {
     return textHeight + 0.4;
 }
 
-var total_spacing = 0.9 + 1.2;
+const total_spacing = 0.9 + 1.2;
 const drawSuggestionsBlock = (i, topY, introText, listItems) => {
 
-    var tmpOffset = 0;
+    let tmpOffset = 0;
 
     setBodyText();
     doc.setFont("MuseoSans-100");
@@ -199,7 +192,7 @@ const drawSuggestionsBlock = (i, topY, introText, listItems) => {
     doc.setFont("MuseoSans-700");
     doc.text("Suggested strategies for further school development include:", leftMargin + 1, topY + tmpOffset, 'left');
 
-    var topOffset = tmpOffset - 0.4;
+    const topOffset = tmpOffset - 0.4;
 
     doc.setFont("MuseoSans-100");
     tmpOffset = tmpOffset + 1.1;
@@ -277,7 +270,7 @@ const generatePDF = async () => {
             //intro text
             setBodyText();
 
-            var introTextY = 8;
+            const introTextY = 8;
             doc.text(doc.splitTextToSize("Congratulations on completing the Digital Capability Leadership Reflection Tool.", 17), leftMargin, introTextY);
             doc.text(doc.splitTextToSize("Your school’s personalised Digital Capability Profile has been generated based on your reflections across the 13 elements within the 4 domains of the Digital Capability Framework.", 17), leftMargin, introTextY + 0.8);
             doc.text(doc.splitTextToSize("The school’s current digital capability in each element has been positioned on a continuum ranging from emerging to developing, achieving or excelling.", 17), leftMargin, introTextY + 2.6);
@@ -285,8 +278,8 @@ const generatePDF = async () => {
 
 
             // radial chart
-            var imageOffset = 14.5; //top of image
-            var leftOffset = 0.5;
+            const imageOffset = 14.5; //top of image
+            const leftOffset = 0.5;
             doc.addImage(img, "png", leftOffset + 3, imageOffset + 0.2, 12, 12);
 
             doc.setFont("MuseoSans-300");
@@ -316,7 +309,7 @@ const generatePDF = async () => {
 
 
             //REPORT PAGES
-            for (var i = 0; i < props.elementData.length; i++) {
+            for (let i = 0; i < props.elementData.length; i++) {
                 newPage();
 
                 // domain title
@@ -326,19 +319,19 @@ const generatePDF = async () => {
                 doc.setFont("MuseoSans-700");
                 doc.setFontSize(24);
 
-                var domainTitle = capitalizeFirstLetter(props.elementData[i].domain_label);
+                const domainTitle = capitalizeFirstLetter(props.elementData[i].domain_label);
                 doc.text(domainTitle, leftMargin, 6.3, 'left');
                 doc.setFont("MuseoSans-300");
 
-                var titleOffset = doc.getTextWidth(domainTitle);
+                const titleOffset = doc.getTextWidth(domainTitle);
                 doc.text("domain", leftMargin + titleOffset + 0.4, 6.3, 'left');
 
                 // loop through elements
                 sectionOffset = 8;
-                var elementCount = props.elementData[i].elements.element.length;
-                for (var j = 0; j < elementCount; j++) {
-                    var elementTitle = capitalizeFirstLetter(props.elementData[i].elements.element[j].element_print);
-                    var elementLabel = props.reportData[i].elements[j].label;
+                const elementCount = props.elementData[i].elements.element.length;
+                for (let j = 0; j < elementCount; j++) {
+                    const elementTitle = capitalizeFirstLetter(props.elementData[i].elements.element[j].element_print);
+                    const elementLabel = props.reportData[i].elements[j].label;
 
                     //element line
                     doc.setDrawColor(domainColors[i]);
@@ -358,14 +351,16 @@ const generatePDF = async () => {
 
                     ///SEE https://codepen.io/cat_developer/pen/mdxGYvM
 
-                    var tmpHTML = document.createElement('div');
+                    const tmpHTML = document.createElement('div');
                     tmpHTML.innerHTML = props.elementData[i].elements.element[j].element_description;
 
                     var introP = tmpHTML.getElementsByTagName('p');
                     textOffset = sectionOffset + 1;
                     for (const para of introP) {
-                        doc.text(para.outerText, leftMargin, textOffset, 'left');
-                        textOffset = textOffset + 0.8;
+                        var thisText = doc.splitTextToSize(para.outerText, 16);
+                        doc.text(thisText, leftMargin, textOffset, 'left');
+                        textOffset = textOffset + (thisText.length * 0.4) + 0.4;
+
                     }
 
                     var introP = tmpHTML.getElementsByTagName('li');
@@ -389,9 +384,9 @@ const generatePDF = async () => {
 
 
                     var element = props.reportData[i].elements[j];
-                    var indicatorsForSection = element.indicators.length;
-                    var indicatorCount = 0;
-                    var inset = 0;
+                    const indicatorsForSection = element.indicators.length;
+                    let indicatorCount = 0;
+                    const inset = 0;
 
                     // loop through indicators
 
@@ -403,12 +398,12 @@ const generatePDF = async () => {
                         setBodyText();
                         //description of indicator
                         tmpHTML.innerHTML = indicator.description;
-                        var introText = doc.splitTextToSize(tmpHTML.outerText, 16);
+                        const introText = doc.splitTextToSize(tmpHTML.outerText, 16);
 
 
                         tmpHTML.innerHTML = indicator.advice;
                         var introP = tmpHTML.getElementsByTagName('li');
-                        var listItems = [];
+                        const listItems = [];
                         for (const listItem of introP) {
                             var thisText = doc.splitTextToSize(listItem.outerText, 16);
                             listItems.push(thisText);
@@ -530,14 +525,14 @@ const generatePDF = async () => {
                     }
 
                 }
-                }
+            }
 
-                doc.save("DMA-Report_" + siteName.replace(" ", "-") + "_" + date + ".pdf"); //download as PDF
+            doc.save("DMA-Report_" + siteName.replace(" ", "-") + "_" + date + ".pdf"); //download as PDF
 
-                console.log("DONE!");
-            };
+            console.log("DONE!");
+        };
 
-        }
+    }
     )
 
 };
@@ -552,16 +547,12 @@ const generatePDF = async () => {
 
 
 <template>
-    <div class="flex flex-row justify-end max-w-[800px] m-auto">
-        <GenericButton :callback="generatePDF" button-id="pdfDownload" class="
-                text-white
-                hover:!brightness-[1.1]
-                font-medium
-                px-12
-                py-2
-                text-lg
-                mb-10
-                ">
+    <div class="flex justify-end flex-row m-auto max-w-[800px]">
+        <GenericButton
+            :callback="generatePDF"
+            button-id="pdfDownload"
+            class="font-medium mb-10 px-12 py-2 text-lg text-white hover:!brightness-[1.1]"
+        >
             Download report
         </GenericButton>
     </div>
