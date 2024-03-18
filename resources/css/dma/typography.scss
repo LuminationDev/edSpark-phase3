@@ -64,9 +64,19 @@
     .text-h3-caps,
     .text-h4-caps,
     .text-h5-caps {
-        text-transform: uppercase;
-        letter-spacing: 0.04em;
+        // text-transform: uppercase;
+        text-transform: lowercase;
+        // letter-spacing: 0.04em;
         font-weight: 700;
+    }
+
+    
+    .text-h1-caps::first-letter,
+    .text-h2-caps::first-letter,
+    .text-h3-caps::first-letter,
+    .text-h4-caps::first-letter,
+    .text-h5-caps::first-letter { 
+        text-transform: uppercase !important;
     }
 
     .text-xLarge {
@@ -119,13 +129,18 @@
     // Specific to button components
     .text-button {
         font-size: 18px;
-        text-transform: uppercase;
+        // text-transform: uppercase;
+        text-transform: lowercase;
         font-weight: 700;
         line-height: 1.5;
 
         @media screen and (min-width: $md-start) {
             font-size: 20px;
         }
+    }
+
+    .text-button::first-letter {
+        text-transform: uppercase;
     }
 
     @media screen and (min-width: $md-start) {

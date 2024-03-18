@@ -11,6 +11,10 @@ import WarningModal from "@/js/components/dma/WarningModal.vue";
 import Spinner from "@/js/components/spinner/Spinner.vue";
 import {dmaService} from "@/js/service/dmaService";
 
+
+import PDFBuilder from "@/js/components/global/PDFBuilder.vue";
+
+
 const props = defineProps({
     domains: {
         type: Array,
@@ -34,6 +38,7 @@ const showUnsavedWarningModal = ref(false);
 const selectedElement = ref(null);
 
 const questionData = ref([]);
+const elementData = ref([]);
 
 const showErrorModal = ref(false);
 const closeOnError = ref(false);
@@ -41,12 +46,17 @@ const closeOnError = ref(false);
 onMounted(async () => {
     // get questions for all domains, for cross-domain dependency checks
     const data = [];
+    const data_desc = [];
     try {
         for (const domain of props.domains) {
-            const result = await dmaService.getQuestions(domain.id);
-            data.push({domain: domain.domain, questions: result.domain_questions});
+            const result = await dmaService.getQuestions(domain.id);            
+            data.push({domain: domain.domain, domainId: domain.id, questions: result.domain_questions});
+
+            const result_desc = await dmaService.getElementDescriptions(domain.id);
+            data_desc.push({ domain: domain.id, domain_label: domain.domain, elements: result_desc });
         }
         questionData.value = data;
+        elementData.value = data_desc;
 
         // load action plan
         actionPlanData.value = await dmaService.getActionPlans();
@@ -110,8 +120,10 @@ const getElementResults = (domainName) => {
             else if (item.score === 4) scoreLabel = 'Excelling';
 
             const dependency = checkElementDependencies(domainName, item.element);
+            const test = 'test';
 
-            elements.push({...item, label: scoreLabel, dependency});
+
+            elements.push({...item, label: scoreLabel, dependency, test});
         }
         return elements;
     }, []);
@@ -183,6 +195,7 @@ const checkIndicatorDependencies = (domainName, elementName, indicatorName, scor
             // check score for dependency question
             if (depQuestion) {
                 const depResult = getIndicatorResults(depQuestion.domain, depQuestion.element_print).find(r => r.indicator === depQuestion.indicator_print);
+                console.log("DEPRES", depResult);
                 if (!depResult || depResult.value < depQuestion.phase) {
                     return {domain: depQuestion.domain, element: depQuestion.element_print};
                 }
@@ -340,7 +353,7 @@ const handleCloseReport = () => {
             <div
                 v-else
                 ref="scrollableRef"
-                class="bg-main-teal/10 h-full overflow-y-scroll scroll-smooth text-black"
+                class="bg-main-teal/5 h-full overflow-y-scroll scroll-smooth text-black"
             >
                 <div
                     class="max-sm:pt-16 p-5 md:p-20"
@@ -348,7 +361,7 @@ const handleCloseReport = () => {
                     <div class="flex items-center flex-col text-center">
                         <h1 class="text-h3-caps">
                             <span>Your Digital Capability</span><br>
-                            <span class="text-h1-caps">Profile</span>
+                            <span class="text-h1-caps uppercase">Profile</span>
                         </h1>
                     </div>
                     <div class="max-w-[800px] mx-auto my-10 text-left">
@@ -376,6 +389,14 @@ const handleCloseReport = () => {
                             These elements will be highlighted on your profile.
                         </p>
                     </div>
+
+                    <PDFBuilder
+                        :domains="domains"
+                        :questionData="questionData"
+                        :reportData="reportData"
+                        :elementData="elementData"
+                        />
+
 
                     <div class="flex lg:flex-row flex-col gap-10">
                         <div
@@ -430,7 +451,7 @@ const handleCloseReport = () => {
                                     >
                                         <h3
                                             class="
-                                                bg-black/10
+                                                bg-secondary-coolGrey
                                                 flex
                                                 items-center
                                                 flex-row
@@ -438,15 +459,17 @@ const handleCloseReport = () => {
                                                 pl-4
                                                 rounded
                                                 text-h4
+                                                bg-secondary-coolGrey 
+                                                mt-10 mb-6
                                                 "
-                                            :class="{'bg-black/30': selectedElement === `${domain.domain}|${element.element}`}"
+                                            :class="{'brightness-75': selectedElement === `${domain.domain}|${element.element}`}"
                                         >
-                                            <span class="flex-1 mr-2">{{ element.element }} is {{ element.label }}</span>
+                                            <span class="flex-1 mr-2 text-h4-caps">{{ element.element }} is {{ element.label }}</span>
                                             <TextButton
                                                 class="!text-xs underline"
                                                 @click="() => toggleShowAdvice(element.domain, element.element)"
                                             >
-                                                <span class="hidden md:block">{{ actionPlan[domain.domain][element.element].expanded ? 'Hide' : 'Show' }} advice & action plan</span>
+                                                <span class="hidden md:block !normal-case text-sm">{{ actionPlan[domain.domain][element.element].expanded ? 'Hide' : 'Show' }} advice & action plan</span>
                                                 <span class="md:hidden">advice & plan</span>
                                             </TextButton>
                                             <img
@@ -529,7 +552,11 @@ const handleCloseReport = () => {
                         </div>
                     </div>
                     <div class="mt-10 text-center">
-                        <RoundButton @click="handleCloseReport">
+                        <RoundButton                         
+                        color="bg-white"
+                        text-color="black"
+                        class="hover:!bg-secondary-coolGrey hover:!brightness-100"
+                        @click="handleCloseReport">
                             Close
                         </RoundButton>
                     </div>
