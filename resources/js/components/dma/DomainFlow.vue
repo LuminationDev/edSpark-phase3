@@ -305,6 +305,7 @@ const handleResetDomain = () => {
             >
                 <template #content>
                     <div
+                        id="stage-cover-content"
                         class="w-full"
                     >
                         <div class="mb-2 text-h5-caps">
@@ -485,3 +486,11 @@ In what way will existing practices and ways of working need to change?
         <Spinner />
     </div>
 </template>
+
+<style scoped>
+@media screen and (max-height: 520px) {
+    #stage-cover-content {
+        padding-top: 50px;
+    }
+}
+</style>
