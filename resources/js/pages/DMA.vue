@@ -15,6 +15,7 @@ import WarningModal from "@/js/components/dma/WarningModal.vue";
 import InspirationAndGuidesRobot from "@/js/components/inspirationandguides/InspirationAndGuidesRobot.vue";
 import {LandingHeroText} from "@/js/constants/PageBlurb";
 import {dmaService} from "@/js/service/dmaService";
+import GenericButton from '@/js/components/button/GenericButton.vue';
 
 const showSurveyModal = ref(false);
 const showReportModal = ref(false);
@@ -255,7 +256,7 @@ const handleResetSurvey = async () => {
                                     <RoundButton
                                         v-if="isCompleted"
                                         @click="showReportModal = true"
-                                        class="capitalize"
+                                        class="!normal-case  hover:!brightness-[1.1] hover:!bg-secondary-coolGrey"
                                     >
                                         View assessment report
                                     </RoundButton>
@@ -263,19 +264,35 @@ const handleResetSurvey = async () => {
                             </div>
                             <p class="text-lg font-thin px-4 md:!px-5 lg:!px-0">
                                 <!-- TODO correct this information -->
+                              
                                 The tool is for you and your school. Your data is stored on the edSpark platform. 
                                 You can generate a PDF report below for sharing within your school or including in your next
                                 round of School Improvement planning.
 
+
+                                <!-- <span class="flex flex-row w-full gap-10 justify-between mt-6"> -->
+                                
+
                                 <span class="block h-6 mt-7">
-                                    <button
+                                    <GenericButton
                                         v-if="isInProgress && !isDomainResetting()"
-                                        class="block font-semibold underline"
+                                        class="
+                                            !text-black
+                                            hover:!brightness-[1.2]
+                                            hover:!bg-secondary-coolGrey
+                                            bg-secondary-coolGrey
+                                            brightness-[1.1]
+                                            font-medium
+                                            px-12
+                                            py-2
+                                            text-lg"
                                         @click="showResetModal = true"
                                     >
                                         Reset progress
-                                    </button>
+                                    </GenericButton>
                                 </span>
+
+                            <!-- </span> -->
                             </p>
                         </div>
 
@@ -286,6 +303,7 @@ const handleResetSurvey = async () => {
                                 v-for="domain of domains"
                                 :key="domain.id"
                                 :domain="domain"
+                                id="DomainSummary"
                                 :resetting="isDomainResetting(domain.id)"
                                 @click="handleLaunchSurvey(domain.id)"
                             />
@@ -312,16 +330,16 @@ const handleResetSurvey = async () => {
             <BaseLandingSection>
                 <template #title>
                     <h2 class="px-4 text-h3 md:!px-5 lg:!px-0">
-                        Frequently Asked
+                        Frequently asked
                     </h2>
                 </template>
-                <template #subtitle>
+                <!-- <template #subtitle>
                     <div class="mb-10 px-4 md:!px-5 lg:!px-0">
                         The Digital Adoption Group (DAG) offers comprehensive guidance on digital technologies,
                         providing practical, system-wide advice for purchasing and adopting high-impact technologies
                         that enhance teaching and learning.
                     </div>
-                </template>
+                </template> -->
                 <template #content>
                     <div class="flex flex-col gap-5 lg:gap-7 px-4 md:!px-5 lg:!px-0">
                         <FaqEntry>

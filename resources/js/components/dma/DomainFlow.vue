@@ -447,7 +447,7 @@ In what way will existing practices and ways of working need to change?
                 <div class="flex items-center flex-col text-center">
                     <h1 class="text-h3-caps">
                         <span>Domain</span><br>
-                        <span class="text-h1-caps">Complete</span>
+                        <span class="text-h1-caps normal-case">Complete</span>
                     </h1>
                     <p class="max-w-[400px] mt-9 text-medium md:text-large">
                         You did great. Let's start another domain when you're ready.
