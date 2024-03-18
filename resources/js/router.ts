@@ -459,11 +459,6 @@ const routes: any = [
         component: TheForbidden,
     },
     {
-        path: '/:pathMatch(.*)*',
-        name: 'not-found',
-        component: EdsparkPageNotFound
-    },
-    {
         name: 'notificationListPage',
         path: '/notifications/:userId?',
         component: UserNotificationPage,
@@ -471,6 +466,11 @@ const routes: any = [
             // skipScrollTop: false,
             // requiresAuth: false
         }
+    },
+    {
+        path: '/:pathMatch(.*)*',
+        name: 'not-found',
+        component: EdsparkPageNotFound
     },
 ]
 

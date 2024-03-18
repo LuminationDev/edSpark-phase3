@@ -307,12 +307,14 @@ const handleErrorDismissed = () => {
 }
 
 const handleCloseReport = () => {
-    // check for unsaved changes
-    for(const domainData of Object.values(actionPlan.value)) {
-        for(const plan of Object.values(domainData)) {
-            if (plan.edited) {
-                showUnsavedWarningModal.value = true;
-                return;
+    if (actionPlan.value) {
+        // check for unsaved changes
+        for (const domainData of Object.values(actionPlan.value)) {
+            for (const plan of Object.values(domainData)) {
+                if (plan.edited) {
+                    showUnsavedWarningModal.value = true;
+                    return;
+                }
             }
         }
     }

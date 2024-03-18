@@ -47,16 +47,24 @@ class EventResource extends Resource
 
         $groupedLabels = Label::all()->groupBy('type');
         $labelColumns = [];
+        $categoriesToInclude = ['category', 'learning', 'capability', 'year', 'partnerships'];
         foreach ($groupedLabels as $category => $labels) {
-            $labelColumns[] = Forms\Components\CheckboxList::make("labels")
-                ->label("Labels - {$category}")
-                ->extraAttributes(['class' => 'text-primary-600'])
-                ->options($labels->pluck('value', 'id')->toArray())
-                ->relationship('labels', 'value', function ($query) use ($category) {
-                    $query->where('type', $category)->orderByRaw('CAST(labels.id AS SIGNED)');
-                })
-                ->columns(3);
+            if (in_array($category, $categoriesToInclude)) {
+                $labelColumns[] =
+                    Forms\Components\Section::make(ucfirst($category))
+                    ->schema([
+                        Forms\Components\CheckboxList::make("labels")
+                            ->label("")
+                            ->extraAttributes(['class' => 'text-primary-600'])
+                            ->options($labels->pluck('value', 'id')->toArray())
+                            ->relationship('labels', 'value', function ($query) use ($category) {
+                                $query->where('type', $category)->orderByRaw('CAST(labels.id AS SIGNED)');
+                            })
+                            ->columns(3)
+                    ]);
+            }
         }
+
         return $form
             ->schema([
                 Forms\Components\Card::make()
@@ -110,7 +118,7 @@ class EventResource extends Resource
                                     ->required()
                                     ->relationship('eventtype', 'event_type_name'),
                             ]),
-                        Forms\Components\Card::make()
+                        Forms\Components\Section::make()
                             ->schema([
                                 ...$labelColumns
                             ]),

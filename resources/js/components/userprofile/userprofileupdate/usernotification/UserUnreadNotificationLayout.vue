@@ -9,23 +9,27 @@ import UserNotificationItemSmall
     from "@/js/components/userprofile/userprofileupdate/usernotification/ListingDesignItemSmall.vue";
 import {lowerSlugify} from "@/js/helpers/stringHelpers";
 import {notificationService} from "@/js/service/notificationService";
+import {useNotificationStore} from "@/js/stores/useNotificationStore";
 import {useUserStore} from "@/js/stores/useUserStore";
 
 const isLoading = ref(true);
-const unreadNotification = ref([])
 
 const {currentUser} = storeToRefs(useUserStore())
 const router = useRouter()
 
-onMounted(() => {
-    notificationService.getAllNotifications(currentUser.value.id).then(res => {
-        unreadNotification.value = res.data.data.filter(notification => !notification.read_at)
+const notificationStore = useNotificationStore()
+const {unreadNotifications} = storeToRefs(notificationStore)
+
+onMounted(async () => {
+    try {
+        await notificationStore.fetchNotifications(currentUser.value.id);
         isLoading.value = false
-    })
-    //  emits('sendMarkAllAsReadButton', handleMarkAllAsRead)
+    } catch (error) {
+        console.error("Error fetching notifications:", error);
+    }
 });
 
-console.log(notificationService.getNotifications(unreadNotification.value))
+console.log(notificationService.getNotifications(unreadNotifications.value))
 const handleClickNotification = (notificationId, resourceId, resourceType, resourceTitle) => {
     const routeInfo = {
         name: '',
@@ -64,11 +68,11 @@ const handleClickNotification = (notificationId, resourceId, resourceType, resou
             />
         </div>
         <div
-            v-else-if="unreadNotification.length"
+            v-else-if="unreadNotifications.length"
             class="ListingNotificationLayout"
         >
             <div
-                v-for="(notification, index) in unreadNotification"
+                v-for="(notification, index) in unreadNotifications"
                 :key="index"
                 class="mr-4"
             >

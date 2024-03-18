@@ -530,7 +530,7 @@ const userNotificationLargeLayout = computed(() =>
                         </div>
                     </div>
                 </template>
-            </userprofilecontentcontainer>
+            </UserProfileContentContainer>
             <UserProfileContentContainer
                 id="reloadableDiv"
                 :key="reloadKey"

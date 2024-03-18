@@ -1,6 +1,6 @@
 <script setup>
 import {watchDebounced} from "@vueuse/core";
-import {computed, ref} from 'vue'
+import {computed, ref, watch} from 'vue'
 
 import TinyMceRichTextInput from "@/js/components/bases/frontendform/TinyMceEditor/TinyMceRichTextInput.vue";
 import ImageUploaderInput from "@/js/components/bases/ImageUploaderInput.vue";
@@ -33,6 +33,7 @@ const createHowToDataStructure = item => {
 }
 const howToUseData = ref([])
 const allTechnologyList = [...schoolTech, ...schoolPartnerTech]
+const tinyMceRefreshKey = ref(0)
 
 
 // initialise howToUseData,
@@ -81,6 +82,9 @@ watchDebounced(howToUseData, () =>{
     sendDataToParent()
 }, {deep: true})
 
+watch(()=> props.techUsed.length , () =>{
+    tinyMceRefreshKey.value++
+})
 </script>
 
 <template>
@@ -91,6 +95,7 @@ watchDebounced(howToUseData, () =>{
             class="HowToUseItem border-[1px] flex justify-center flex-col mt-6 p-4 rounded w-full"
         >
             <SchoolHowToUseTechEditableRow
+                :tiny-mce-refresh-key="tinyMceRefreshKey"
                 :how-to-use-tech-item="item"
                 :index="index"
                 @emit-tiny-mce-content="(name,data) => handleTinyMceContent(name,data)"
