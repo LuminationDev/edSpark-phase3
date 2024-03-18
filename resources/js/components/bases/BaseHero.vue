@@ -58,11 +58,9 @@ onMounted(() => {
     let useCustomColor = false;
 
     if (schoolColorKeys.includes(props.swooshColorTheme)) {
-        console.log(props.swooshColorTheme);
         useCustomColor = true
     }
 
-    console.log("Custom? "+useCustomColor+", "+props.swooshColorTheme);
 
     gradientBg.value = "background-image: linear-gradient(to left, "
         + (useCustomColor ? schoolColorTheme[props.swooshColorTheme]['med'] : schoolColorTheme['teal']['med']) + ","
@@ -70,7 +68,6 @@ onMounted(() => {
         + (useCustomColor ? schoolColorTheme[props.swooshColorTheme]['dark'] : schoolColorTheme['teal']['dark'])
         + ");";
 
-    console.log(gradientBg.value)
 })
 
 const windowStore = useWindowStore()
