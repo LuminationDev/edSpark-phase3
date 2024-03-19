@@ -7,7 +7,6 @@ import iconInfoCircle from '@/assets/images/dma/icons/info-circle.svg';
 import AnswerButton from "@/js/components/dma/AnswerButton.vue";
 import BackButton from "@/js/components/dma/BackButton.vue";
 import PrimaryActionButton from "@/js/components/dma/PrimaryActionButton.vue";
-import RoundButton from "@/js/components/dma/RoundButton.vue";
 
 
 const props = defineProps({
@@ -47,8 +46,7 @@ const keyList = ['1','2','3','4'];
 let questionObserver = null;
 
 const isUnsure = ref(false);
-const reasonInputText = ref(null);
-const unsureReason = ref(null);
+const answerText = ref(null);
 
 const scrollableRef = ref(null);
 const questionRef = ref(null);
@@ -63,22 +61,22 @@ const activeKey = ref(null);
 
 
 const handleKeyDown = (event) => {
-    if (!props.disabled && unsureReason.value == null && keyList.includes(event.key)) {
+    if (!props.disabled && answerText.value == null && keyList.includes(event.key)) {
         activeKey.value = event.key;
     }
 }
 const handleKeyUp = (event) => {
     // capture keypresses if screen is not disabled and not currently typing an answer
-    if (!props.disabled && unsureReason.value == null && keyList.includes(event.key)) {
+    if (!props.disabled && answerText.value == null && keyList.includes(event.key)) {
         if(!isUnsure.value) {
             if (event.key === '1') handleAnswer(1);
             if (event.key === '2') handleAnswer(0);
             if (event.key === '3') isUnsure.value = true;
         } else {
-            if (event.key === '1') unsureReason.value = REASON.NOT_APPLICABLE;
-            if (event.key === '2') unsureReason.value = REASON.AMBIGUOUS;
-            if (event.key === '3') unsureReason.value = REASON.NOT_HELPFUL;
-            if (event.key === '4') handleShowReasonInputField();
+            if (event.key === '1') handleAnswer(2, REASON.NOT_APPLICABLE);
+            if (event.key === '2') handleAnswer(2, REASON.AMBIGUOUS);
+            if (event.key === '3') handleAnswer(2, REASON.NOT_HELPFUL);
+            if (event.key === '4') handleShowAnswerField();
         }
         activeKey.value = null;
     }
@@ -86,8 +84,7 @@ const handleKeyUp = (event) => {
 
 const handleShowUnsure = (show = true, scrollDown = true) => {
     isUnsure.value = show;
-    unsureReason.value = null;
-    handleShowReasonInputField(false);
+    handleShowAnswerField(false);
     setTimeout(() => {
         if(scrollDown) {
             bottomRef.value.scrollIntoView({behavior: 'smooth'});
@@ -97,38 +94,28 @@ const handleShowUnsure = (show = true, scrollDown = true) => {
     },10)
 }
 
-const handleShowReasonInputField = (show = true) => {
-    reasonInputText.value = show ? '' : null;
+const handleShowAnswerField = (show = true) => {
+    answerText.value = show ? '' : null;
 }
 
 const handlePrevious = () => {
     emit('previous');
 }
 
-const handleAnswer = (answer, text = null) => {
+const handleAnswer = (answer, text) => {
     emit('answer', answer, text);
-}
-
-const handleSubmitReasonInput = () => {
-    unsureReason.value = reasonInputText.value;
-}
-
-const handleAnswerUnsure = () => {
-    emit('answer', 2, unsureReason.value);
-    isUnsure.value = false;
-    unsureReason.value = null;
-    reasonInputText.value = null;
 }
 
 const handleQuestionChange =() => {
     handleShowUnsure(false, false);
-    handleShowReasonInputField(false);
+    handleShowAnswerField(false);
 
     const anchors = document.querySelectorAll('[data-bs-toggle="tooltip"]');
     anchors.forEach(anchor => {
         // prevent clicking on anchors from scrolling page to top
         anchor.addEventListener('click', (event) => { event.preventDefault() });
         // add tooltip handler
+        const tooltip = anchor.dataset.bsTitle;
         anchor.addEventListener('mouseover', (event) => handleShowTooltip(event));
         anchor.addEventListener('focus', (event) => handleShowTooltip(event));
         anchor.addEventListener('mouseout', (event) => handleHideTooltip(event));
@@ -205,50 +192,10 @@ onBeforeUnmount(() => {
                 </div>
             </div>
         </div>
-
         <div
-            v-if="unsureReason"
             class="bg-black-1 flex flex-1 flex-col pt-4 w-full md:!pt-10 md:!w-auto md:basis-3/4 md:h-full lg:basis-2/3"
         >
-            <div class="flex flex-1 flex-col mt-[52px] relative md:overflow-hidden">
-                <div
-                    ref="scrollableRef"
-                    class="flex flex-1 flex-col pb-6 px-4 md:!pb-16 md:!px-16"
-                >
-                    <div class="flex-1">
-                        <div
-                            class="mb-6 question text-xLarge md:text-medium lg:text-xLarge"
-                        >
-                            Thank you for your feedback.
-                        </div>
-                        <div class="text-medium">
-                            <p class="font-light mb-4">
-                                It has been saved and will be used to inform continuous improvement of the Digital Maturity Assessment tool.
-                            </p>
-                            <p class="font-light mb-4">
-                                Please continue to the next statement.
-                            </p>
-                        </div>
-                    </div>
-                    <div class="flex justify-end mt-5">
-                        <PrimaryActionButton
-                            :auto-submit="4"
-                            @click="handleAnswerUnsure"
-                        >
-                            Continue
-                        </PrimaryActionButton>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div
-            v-else
-            class="bg-black-1 flex flex-1 flex-col pt-4 w-full md:!pt-10 md:!w-auto md:basis-3/4 md:h-full lg:basis-2/3"
-        >
-            <div
-                class="flex justify-between items-center h-[52px] mb-5 op px-4 question-controls md:!px-16"
-                :class="{'opacity-20': props.disabled}"
-            >
+            <div class="flex justify-between items-center h-[52px] mb-5 px-4 question-controls md:!px-16">
                 <span class="flex items-center h-full">
                     <BackButton
                         v-if="isUnsure"
@@ -263,7 +210,7 @@ onBeforeUnmount(() => {
                     </button>
                 </span>
                 <a
-                    v-if="$slots.info && !isUnsure"
+                    v-if="$slots.info"
                     class="cursor-help flex items-center h-full info-icon relative z-10"
                     href="#"
                 >
@@ -318,20 +265,10 @@ onBeforeUnmount(() => {
                     class="flex flex-1 flex-col pb-6 px-4 md:!pb-16 md:!px-16 md:overflow-x-none md:overflow-y-scroll"
                 >
                     <div
-                        v-if="!isUnsure"
                         ref="questionRef"
                         class="flex-1 mb-6 question text-xLarge md:text-medium lg:text-xLarge"
-                        :class="{'opacity-0': props.disabled}"
                     >
-                        <slot
-                            name="question"
-                        />
-                    </div>
-                    <div
-                        v-else
-                        class="flex-1 mb-6 question text-xLarge md:text-medium lg:text-xLarge"
-                    >
-                        Why do you feel unsure with the statement?
+                        <slot name="question" />
                     </div>
                     <div
                         v-if="!isUnsure"
@@ -369,7 +306,7 @@ onBeforeUnmount(() => {
                         </AnswerButton>
                     </div>
                     <div
-                        v-else-if="reasonInputText === null"
+                        v-else-if="answerText === null"
                         class="answers"
                     >
                         <AnswerButton
@@ -377,7 +314,7 @@ onBeforeUnmount(() => {
                             class="font-semibold"
                             :highlighted="activeKey === '1'"
                             :disabled="props.disabled"
-                            @click="unsureReason = REASON.NOT_APPLICABLE"
+                            @click="handleAnswer(2, REASON.NOT_APPLICABLE)"
                         >
                             {{ REASON.NOT_APPLICABLE }}
                         </AnswerButton>
@@ -386,7 +323,7 @@ onBeforeUnmount(() => {
                             class="font-semibold"
                             :highlighted="activeKey === '2'"
                             :disabled="props.disabled"
-                            @click="unsureReason = REASON.AMBIGUOUS"
+                            @click="handleAnswer(2, REASON.AMBIGUOUS)"
                         >
                             {{ REASON.AMBIGUOUS }}
                         </AnswerButton>
@@ -395,7 +332,7 @@ onBeforeUnmount(() => {
                             class="font-semibold"
                             :highlighted="activeKey === '3'"
                             :disabled="props.disabled"
-                            @click="unsureReason = REASON.NOT_HELPFUL"
+                            @click="handleAnswer(2, REASON.NOT_HELPFUL)"
                         >
                             {{ REASON.NOT_HELPFUL }}
                         </AnswerButton>
@@ -404,14 +341,14 @@ onBeforeUnmount(() => {
                             class="font-semibold"
                             :highlighted="activeKey === '4'"
                             :disabled="props.disabled"
-                            @click="handleShowReasonInputField"
+                            @click="handleShowAnswerField"
                         >
                             Other
                         </AnswerButton>
                     </div>
                     <div v-else>
                         <textarea
-                            v-model="reasonInputText"
+                            v-model="answerText"
                             rows="7"
                             :disabled="props.disabled"
                             class="
@@ -430,12 +367,12 @@ onBeforeUnmount(() => {
                             placeholder="Your explanation"
                         />
                         <div class="flex justify-end mt-5">
-                            <RoundButton
+                            <PrimaryActionButton
                                 :disabled="props.disabled"
-                                @click="handleSubmitReasonInput"
+                                @click="handleAnswer(2, answerText)"
                             >
                                 Continue
-                            </RoundButton>
+                            </PrimaryActionButton>
                         </div>
                     </div>
                     <div ref="bottomRef" />
