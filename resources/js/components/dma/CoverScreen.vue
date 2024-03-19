@@ -40,7 +40,7 @@ const emit = defineEmits(['primary', 'secondary']);
         <div
             class="flex justify-start items-center flex-col gap-10 pb-10 pt-32 px-6 w-full md:!pt-20 md:!px-24 md:!py-20 md:h-full"
         >
-            <div class="flex justify-center items-center flex-1 w-full md:h-0">
+            <div class="flex justify-center items-center flex-1 overflow-auto w-full">
                 <slot name="content" />
             </div>
 
