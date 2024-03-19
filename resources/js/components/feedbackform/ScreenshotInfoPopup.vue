@@ -4,7 +4,7 @@
 
 <template>
     <div
-        class="bg-gray-50 border-2 overflow-y-auto rounded-2xl w-[40%] fixed right-32 z-[80]"
+        class="bg-gray-50 border-2 overflow-y-auto rounded-2xl w-[40%] fixed right-32 z-[99]"
     >
         <div class="m-6">
             <p class="h3">Windows</p>

@@ -28,7 +28,7 @@ const showAnswer = ref(false);
         </div>
         <div
             v-if="showAnswer"
-            class="font-thin mt-5 text-left"
+            class="font-thin mt-5 text-left text-lg"
         >
             <slot name="answer" />
         </div>
