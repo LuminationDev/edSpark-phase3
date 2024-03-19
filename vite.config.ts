@@ -44,7 +44,6 @@ export default defineConfig({
         include: [
             "vue-google-maps-community-fork",
             "fast-deep-equal",
-            'ckeditor5-custom-build'
         ],
     },
     esbuild: {

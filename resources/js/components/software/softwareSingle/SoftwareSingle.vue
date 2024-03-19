@@ -99,16 +99,16 @@ const colorTheme = ref('technologyPurple')
                                     {{ contentFromBase['author']['author_name'] }}
                                 </div>
                                 <!--   For now, Only non-user (partners only) can be viewed. Still working on Partner Profile   -->
-                                <div
-                                    v-if="!(contentFromBase['author']['author_type'] === 'user')"
-                                    class="hover:cursor-pointer hover:text-red-200"
-                                >
-                                    <button
-                                        @click="() => handleClickViewProfile(contentFromBase['author']['author_id'],contentFromBase['author']['author_type'])"
-                                    >
-                                        View profile
-                                    </button>
-                                </div>
+                                <!--                                <div-->
+                                <!--                                    v-if="!(contentFromBase['author']['author_type'] === 'user')"-->
+                                <!--                                    class="hover:cursor-pointer hover:text-red-200"-->
+                                <!--                                >-->
+                                <!--                                    <button-->
+                                <!--                                        @click="() => handleClickViewProfile(contentFromBase['author']['author_id'],contentFromBase['author']['author_type'])"-->
+                                <!--                                    >-->
+                                <!--                                        View profile-->
+                                <!--                                    </button>-->
+                                <!--                                </div>-->
                             </div>
                         </div>
                     </div>
