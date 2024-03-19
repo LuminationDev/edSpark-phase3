@@ -147,6 +147,9 @@ const fetchUserMetadata = async () => {
     }
 }
 
+console.log("User Profile is here...")
+console.log(userStore.getIfUserIsAdmin)
+
 onMounted(fetchUserMetadata);
 
 //handle submit data on click, posts the data to api and then store to the database.

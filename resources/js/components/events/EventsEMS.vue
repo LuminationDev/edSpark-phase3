@@ -10,8 +10,12 @@ import EventEMSNoOwnerNoEMSLink from "@/js/components/events/EMSForms/EventEMSNo
 import EventEMSOwnerEMSLink from "@/js/components/events/EMSForms/EventEMSOwnerEMSLink.vue";
 import EventEMSOwnerNoEMSLink from "@/js/components/events/EMSForms/EventEMSOwnerNoEMSLink.vue";
 import EventSubmitRecording from "@/js/components/events/EventSubmitRecording.vue";
+import Loader from "@/js/components/spinner/Loader.vue";
 import {API_ENDPOINTS} from "@/js/constants/API_ENDPOINTS";
 import {simpleValidateUrl} from "@/js/helpers/stringHelpers";
+import {useUserStore} from "@/js/stores/useUserStore";
+
+const userStore = useUserStore()
 
 const props = defineProps({
     locationType: {
@@ -38,6 +42,8 @@ const props = defineProps({
     }
 })
 
+const isLoadingTemplate = ref(true)
+const currentUserIsSuperuser = ref(userStore.getIfUserIsAdmin)
 const currentUserIsOwner = ref(false)
 const currentUserHasProvidedEMSLink = ref(false)
 const editingEMSlink = ref(false)
@@ -48,7 +54,7 @@ const state = reactive({
     currentUserEMSLink: ''
 })
 
-const isLoading = ref(false)
+const isLoadingButton = ref(false)
 const tempLink = ref('')
 
 const rules = {
@@ -74,19 +80,23 @@ const eventStatus = computed(() => {
 
 
 const getEMSLink = () => {
-    const urlWithEventID = `${API_ENDPOINTS.EVENT.FETCH_EMS_LINK}${route.params.id}`;
+    const urlWithEventID = `${API_ENDPOINTS.EVENT.FETCH_EMS_LINK}${route.params.id}`
     axios.get(urlWithEventID)
         .then(res => {
-            tempLink.value = res.data.data.ems_link;
-            state.currentUserEMSLink = res.data.data.ems_link;
-            //currentUserIsOwner.value = res.data.data.is_owner;
-            currentUserIsOwner.value = Boolean(res.data.data.is_owner);
-            currentUserHasProvidedEMSLink.value = true;
+            currentUserIsOwner.value = Boolean(res.data.data.is_owner)
+            console.log(currentUserIsOwner.value)
+            tempLink.value = res.data.data.ems_link
+            state.currentUserEMSLink = res.data.data.ems_link
+            currentUserHasProvidedEMSLink.value = true
+            isLoadingTemplate.value = false
+            console.log(currentUserIsSuperuser.value ? "" : (currentUserIsOwner.value ? "" : (state.currentUserEMSLink)))
         })
         .catch(err => {
-            rsvpError.value = err.message;
-        });
-};
+            err.response?.status === 404 ? isLoadingTemplate.value = false : rsvpError.value = err.message;
+
+        })
+}
+
 
 onMounted(() => {
     getEMSLink()
@@ -114,7 +124,7 @@ const handleClickSubmitLink = () => {
         rsvpError.value = 'Please enter a valid URL'
         return;
     }
-    isLoading.value = true;
+    isLoadingButton.value = true;
     rsvpError.value = false
     tempLink.value = state.currentUserEMSLink
 
@@ -131,7 +141,7 @@ const handleClickSubmitLink = () => {
             rsvpError.value = err.message;
         })
         .finally(() => {
-            isLoading.value = false;
+            isLoadingButton.value = false;
         });
 
 };
@@ -165,55 +175,64 @@ const handleInvalidUrlFromServer = () => {
         </div>
 
         <!--        Fo>rm no 2 - conditional, user = owner && EMS = No-->
-        <template
-            v-if="(currentUserIsOwner && !currentUserHasProvidedEMSLink && eventStatus !== 'ENDED') || editingEMSlink"
-        >
-            <EventEMSOwnerNoEMSLink
-                :current-user-e-m-s-link="state.currentUserEMSLink"
-                :button-callback="handleClickSubmitLink"
-                :button-cancelback="handleCancelLink"
-                :error-message="rsvpError"
-                :v$="v$.currentUserEMSLink"
-                :is-loading="isLoading"
-                @send-new-link="handleAcceptNewLink"
-                @send-empty-error-message="handleEmptyErrorMessage"
+        <div>
+            <Loader
+                v-if="isLoadingTemplate"
+                loader-message="Fetching your event data. Please wait!"
+                class="!min-h-24 border-b-2 border-white flex flex-col gap-2 p-14 py-8"
             />
-        </template>
+            <div v-else-if="!isLoadingTemplate && eventStatus !== 'ENDED'">
+                <template
+                    v-if="((currentUserIsOwner || currentUserIsSuperuser) && !currentUserHasProvidedEMSLink) || editingEMSlink"
+                >
+                    <EventEMSOwnerNoEMSLink
+                        :current-user-e-m-s-link="state.currentUserEMSLink"
+                        :button-callback="handleClickSubmitLink"
+                        :button-cancelback="handleCancelLink"
+                        :error-message="rsvpError"
+                        :v$="v$.currentUserEMSLink"
+                        :is-loading="isLoadingButton"
+                        @send-new-link="handleAcceptNewLink"
+                        @send-empty-error-message="handleEmptyErrorMessage"
+                    />
+                </template>
 
-        <!--    Form no 1 - conditional, user=owner && EMS=yes-->
-        <template
-            v-else-if="(currentUserIsOwner && currentUserHasProvidedEMSLink && eventStatus !== 'ENDED') || editingEMSlink"
-        >
-            <EventEMSOwnerEMSLink
-                :current-user-e-m-s-link="v$.currentUserEMSLink.$model"
-                :button-callback="handleClickEditLink"
-                :error-message="rsvpError"
-                :v$="v$.currentUserEMSLink"
-                @send-new-link="handleAcceptNewLink"
-                @send-empty-error-message="handleEmptyErrorMessage"
-            />
-        </template>
+                <!--    Form no 1 - conditional, user=owner && EMS=yes-->
+                <template
+                    v-else-if="((currentUserIsOwner || currentUserIsSuperuser) && currentUserHasProvidedEMSLink) || editingEMSlink"
+                >
+                    <EventEMSOwnerEMSLink
+                        :current-user-e-m-s-link="v$.currentUserEMSLink.$model"
+                        :button-callback="handleClickEditLink"
+                        :error-message="rsvpError"
+                        :v$="v$.currentUserEMSLink"
+                        @send-new-link="handleAcceptNewLink"
+                        @send-empty-error-message="handleEmptyErrorMessage"
+                    />
+                </template>
 
-        <!--    Form no 4 - conditional, user = no owner && EMS = yes-->
-        <template
-            v-else-if="(!currentUserIsOwner && currentUserHasProvidedEMSLink && eventStatus !== 'ENDED') || editingEMSlink"
-        >
-            <EventEMSNoOwnerEMSLink
-                :current-user-e-m-s-link="state.currentUserEMSLink"
-                :error-message="rsvpError"
-                :v$="v$.currentUserEMSLink"
-                @send-new-link="handleAcceptNewLink"
-                @send-empty-error-message="handleEmptyErrorMessage"
-                @send-url-from-server-invalid="handleInvalidUrlFromServer"
-            />
-        </template>
+                <!--    Form no 4 - conditional, user = no owner && EMS = yes-->
+                <template
+                    v-else-if="(!(currentUserIsOwner || currentUserIsSuperuser) && currentUserHasProvidedEMSLink) || editingEMSlink"
+                >
+                    <EventEMSNoOwnerEMSLink
+                        :current-user-e-m-s-link="state.currentUserEMSLink"
+                        :error-message="rsvpError"
+                        :v$="v$.currentUserEMSLink"
+                        @send-new-link="handleAcceptNewLink"
+                        @send-empty-error-message="handleEmptyErrorMessage"
+                        @send-url-from-server-invalid="handleInvalidUrlFromServer"
+                    />
+                </template>
 
-        <!--    Form no 3 - conditional, user = no owner && EMS = no-->
-        <template
-            v-else-if="(!currentUserIsOwner && !currentUserHasProvidedEMSLink && eventStatus !== 'ENDED') || editingEMSlink"
-        >
-            <EventEMSNoOwnerNoEMSLink />
-        </template>
+                <!--    Form no 3 - conditional, user = no owner && EMS = no-->
+                <template
+                    v-else-if="(!(currentUserIsOwner || currentUserIsSuperuser) && !currentUserHasProvidedEMSLink) || editingEMSlink"
+                >
+                    <EventEMSNoOwnerNoEMSLink />
+                </template>
+            </div>
+        </div>
         <div
             v-if="(eventStatus === 'ENDED') "
             class="border-b-2 border-b-white flex flex-col py-4 text-lg"
