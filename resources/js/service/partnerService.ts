@@ -26,7 +26,7 @@ export const partnerService = {
                 content: content,
                 partner_id: partnerId,
                 introduction: introduction,
-                motto: motto
+                motto: motto,
             }
             return axios.post(API_ENDPOINTS.PARTNER.UPDATE_PARTNER_CONTENT, data)
 
