@@ -1,6 +1,6 @@
 <script setup>
 import * as htmlToImage from 'html-to-image';
-import {jsPDF} from 'jspdf';
+import { jsPDF } from 'jspdf';
 import moment from 'moment';
 import { ref } from 'vue';
 
@@ -157,11 +157,11 @@ const drawActionsBlock = (title, boxColor, bgColor, topY, thisText) => {
     doc.setFillColor(boxColor);
     doc.setLineWidth(0.1);
     doc.rect(leftMargin, topY, pageWidth - leftMargin, 1, 'FD'); //title box     
-    
-    doc.setFillColor(bgColor);                 
+
+    doc.setFillColor(bgColor);
     doc.rect(leftMargin, topY + 0.8, pageWidth - leftMargin, textHeight, 'F'); //text box border 
-    
-    doc.setFillColor(boxColor); 
+
+    doc.setFillColor(boxColor);
     doc.rect(leftMargin, topY + 0.8, pageWidth - leftMargin, textHeight, 'S'); //text box border   
 
 
@@ -177,7 +177,7 @@ const drawActionsBlock = (title, boxColor, bgColor, topY, thisText) => {
 }
 
 const total_spacing = 0.9 + 1.2;
-const drawSuggestionsBlock = (i, topY, introText, listItems) => {
+const drawSuggestionsBlock = (i, topY, introText, listItems, selected) => {
 
     let tmpOffset = 0;
 
@@ -187,28 +187,31 @@ const drawSuggestionsBlock = (i, topY, introText, listItems) => {
 
 
     tmpOffset = tmpOffset + (introText.length * 0.45); // allow for text block
-    tmpOffset = tmpOffset + 0.9; //add paragraph space
 
-    doc.setFont("MuseoSans-700");
-    doc.text("Suggested strategies for further school development include:", leftMargin + 1, topY + tmpOffset, 'left');
+    if (selected) {
+        tmpOffset = tmpOffset + 0.9; //add paragraph space
 
-    const topOffset = tmpOffset - 0.4;
+        doc.setFont("MuseoSans-700");
+        doc.text("Suggested strategies for further school development include:", leftMargin + 1, topY + tmpOffset, 'left');
 
-    doc.setFont("MuseoSans-100");
-    tmpOffset = tmpOffset + 1.1;
+        const topOffset = tmpOffset - 0.4;
+
+        doc.setFont("MuseoSans-100");
+        tmpOffset = tmpOffset + 1.1;
 
 
-    //render the list
-    for (const listItem of listItems) {
-        doc.text('•  ', leftMargin + 1.2, topY + tmpOffset, 'left');
-        doc.text(listItem, leftMargin + 1.6, topY + tmpOffset, 'left');
-        tmpOffset = tmpOffset + (listItem.length * 0.45) + 0.4;
+        //render the list
+        for (const listItem of listItems) {
+            doc.text('•  ', leftMargin + 1.2, topY + tmpOffset, 'left');
+            doc.text(listItem, leftMargin + 1.6, topY + tmpOffset, 'left');
+            tmpOffset = tmpOffset + (listItem.length * 0.45) + 0.4;
+        }
+
+        //element line
+        doc.setDrawColor(domainColors[i]);
+        doc.setLineWidth(0.15);
+        doc.line(leftMargin + 0.5, topY + topOffset, leftMargin + 0.5, topY + tmpOffset - 0.5);
     }
-
-    //element line
-    doc.setDrawColor(domainColors[i]);
-    doc.setLineWidth(0.15);
-    doc.line(leftMargin + 0.5, topY + topOffset, leftMargin + 0.5, topY + tmpOffset - 0.5);
 
     return tmpOffset;
 }
@@ -234,13 +237,52 @@ const generatePDF = async () => {
     actionData.value = await dmaService.getActionPlans();
 
     reflectionData.value = await dmaService.getReflection();
-    console.log("REFLECTING UP!", reflectionData.value);
+    // console.log("REFLECTING UP!", reflectionData.value);
 
     doc.addImage(bg_ptitle, 'png', 0, 0, 21, 29.7);
     doc.addImage(legend, 'png', 0.65, 26.1, 2.4, 3.1);
 
     const elementForImage = document.getElementsByClassName('radial-chart')[0];
-    elementForImage.style = "stroke: #e5e5e5; stroke-width: 0.7px;";
+
+    // console.log("Mask", elementForImage.getElementsByTagName('mask'));
+    // elementForImage.getElementsByTagName('g')[0].setAttribute('mask', '');
+    // console.log(elementForImage);
+    elementForImage.style = "stroke: #e5e5e5; stroke-width: 0.5px; stroke-order: fill stroke;";
+
+    // var highlights = elementForImage.getElementsByTagName('path'); //empty
+    // // console.log("radial", elementForImage);
+    // // console.log("highlights", highlights);
+    // // console.log("technical skills", highlights.)
+
+    // //TODO when selected is available, loop around and apply domain colours 
+    // var emptyCount = 0;
+    // var elementCellCount = 0;
+    // for (const emptyCell of highlights) {
+    //     elementCellCount++;
+    //     if (emptyCell.getAttribute("data-label").toLowerCase() == "Technical skills".toLowerCase()) {
+    //         // console.log(emptyCell);
+    //         emptyCell.setAttribute("style", "");
+    //         if (emptyCell.classList.contains('empty') && emptyCount == 0) {
+    //             emptyCount++;
+    //             emptyCell.setAttribute("style", "fill: white !important; stroke: " + domainColors[0] + " !important; stroke-width: 1px; stroke-order: fill stroke;"); //fill with 10% of domain colour
+
+    //         } else if (!emptyCell.classList.contains('empty')) {
+    //             emptyCell.setAttribute("style", "fill: " + domainColors[0] + " !important; stroke: " + domainColors[0] + " !important; stroke-width: 1px; stroke-order: fill stroke;"); //fill with 10% of domain colour 
+    //         } else {
+    //             emptyCell.setAttribute("style", "stroke: #e5e5e5 !important;  stroke-width: 0.5px"); //fill with 10% of domain colour
+    //         }
+    //     } else {
+    //         if (!emptyCell.classList.contains('empty')) {
+    //             emptyCell.setAttribute("style", "stroke: #000000 !important;  stroke-width: 0.5px; stroke-order: fill stroke;"); //fill with 10% of domain colour
+    //         } else {
+    //             emptyCell.setAttribute("style", "stroke: #e5e5e5 !important;  stroke-width: 0.5px; stroke-order: fill stroke;"); //fill with 10% of domain colour
+    //         }
+    //     }
+    //     if (elementCellCount == 4) {
+    //         elementCellCount = 0; //reset
+    //         emptyCount = 0;
+    //     }
+    // }
 
     htmlToImage.toPng(elementForImage, { skipFonts: true, quality: 1.0 }).then(function (dataUrl) {
         const img = new Image();
@@ -282,10 +324,11 @@ const generatePDF = async () => {
             const leftOffset = 0.5;
             doc.addImage(img, "png", leftOffset + 3, imageOffset + 0.2, 12, 12);
 
-            doc.setFont("MuseoSans-300");
+            doc.setFont("MuseoSans-500");
             doc.setFontSize(10);
 
-            //teaching domain labels
+            //teaching domain labels            
+            doc.setTextColor(domainColors[0]);
             doc.text("Technical skills", leftOffset + 12, imageOffset, 'center');
             doc.text("Pedagogy", leftOffset + 14.2, imageOffset + 1.35, 'center');
             doc.text("Assessment", leftOffset + 16.1, imageOffset + 4, 'center');
@@ -293,15 +336,18 @@ const generatePDF = async () => {
             doc.text("Professional\nlearning", leftOffset + 15.3, imageOffset + 9.8, 'center');
 
             //learning domain labels
+            doc.setTextColor(domainColors[1]);
             doc.text("Digital\ntechnologies", leftOffset + 12.5, imageOffset + 12.2, 'center');
             doc.text("Digital\nliteracy", leftOffset + 9, imageOffset + 12.8, 'center');
             doc.text("Environment", leftOffset + 5.1, imageOffset + 12, 'center');
 
             //leading domain labels
+            doc.setTextColor(domainColors[2]);
             doc.text("Culture", leftOffset + 3, imageOffset + 9.8, 'center');
             doc.text("Connections", leftOffset + 1.6, imageOffset + 6.8, 'center');
 
             //managing domain labels
+            doc.setTextColor(domainColors[3]);
             doc.text("Practices", leftOffset + 2.45, imageOffset + 4, 'center');
             doc.text("Resources", leftOffset + 4, imageOffset + 1.35, 'center');
             doc.text("Administration", leftOffset + 6.5, imageOffset, 'center');
@@ -382,8 +428,15 @@ const generatePDF = async () => {
 
                     // textOffset = textOffset + 0.4; // space after heading
 
-
+                    //get element
                     var element = props.reportData[i].elements[j];
+
+                    //get action plan data
+                    const actionPlan = actionData.value.action_plan[props.elementData[i].domain_label];
+                    const currentPlan = actionPlan?.find(e => e.element === element.element);
+                    console.log("PLAN", currentPlan);
+
+                    //get indicator data
                     const indicatorsForSection = element.indicators.length;
                     let indicatorCount = 0;
                     const inset = 0;
@@ -433,17 +486,15 @@ const generatePDF = async () => {
                         }
 
                         //draw the suggestions block
-                        textOffset = textOffset + drawSuggestionsBlock(i, textOffset, introText, listItems);
+                        var isSelected = true; //currentPlan.selected;
+                        textOffset = textOffset + drawSuggestionsBlock(i, textOffset, introText, listItems, isSelected);
 
                     }
 
 
 
-                    //draw the action plan block
-                    const actionPlan = actionData.value.action_plan[props.elementData[i].domain_label];
-                    const currentPlan = actionPlan?.find(e => e.element === element.element);
-
-                    if (currentPlan) {
+                    var isSelected = true; //currentPlan.selected;
+                    if (currentPlan && isSelected) {
                         var thisText = doc.splitTextToSize(currentPlan.action, 17);
 
                         //do we need to start a new page?
@@ -466,7 +517,7 @@ const generatePDF = async () => {
                                 if (thisChunk[0] == '') {
                                     thisChunk.splice(0, 1);
                                 }
-                                textOffset = textOffset + drawActionsBlock("Action plan for "+elementTitle.toLowerCase(), domainColors[i], '#FFFFFF', textOffset, thisChunk);
+                                textOffset = textOffset + drawActionsBlock("Action plan for " + elementTitle.toLowerCase(), domainColors[i], '#FFFFFF', textOffset, thisChunk);
 
                                 if (counter < chunks.length) {
                                     newPage();
@@ -474,7 +525,7 @@ const generatePDF = async () => {
                             }
 
                         } else {
-                            textOffset = textOffset + drawActionsBlock("Action plan for "+elementTitle.toLowerCase(), domainColors[i], '#FFFFFF', textOffset, thisText);
+                            textOffset = textOffset + drawActionsBlock("Action plan for " + elementTitle.toLowerCase(), domainColors[i], '#FFFFFF', textOffset, thisText);
                         }
 
                     }
@@ -513,7 +564,7 @@ const generatePDF = async () => {
                             if (thisChunk[0] == '') {
                                 thisChunk.splice(0, 1);
                             }
-                            textOffset = textOffset + drawActionsBlock("Reflection for "+domainTitle.toLowerCase()+" domain", domainColors[i], domainColorsBg[i], textOffset, thisChunk);
+                            textOffset = textOffset + drawActionsBlock("Reflection for " + domainTitle.toLowerCase() + " domain", domainColors[i], domainColorsBg[i], textOffset, thisChunk);
 
                             if (counter < chunks.length) {
                                 newPage();
@@ -521,7 +572,7 @@ const generatePDF = async () => {
                         }
 
                     } else {
-                        textOffset = textOffset + drawActionsBlock("Reflection for "+domainTitle.toLowerCase()+" domain", domainColors[i], domainColorsBg[i], textOffset, thisText);
+                        textOffset = textOffset + drawActionsBlock("Reflection for " + domainTitle.toLowerCase() + " domain", domainColors[i], domainColorsBg[i], textOffset, thisText);
                     }
 
                 }
@@ -548,11 +599,8 @@ const generatePDF = async () => {
 
 <template>
     <div class="flex justify-end flex-row m-auto max-w-[800px]">
-        <GenericButton
-            :callback="generatePDF"
-            button-id="pdfDownload"
-            class="font-medium mb-10 px-12 py-2 text-lg text-white hover:!brightness-[1.1]"
-        >
+        <GenericButton :callback="generatePDF" button-id="pdfDownload"
+            class="font-medium mb-10 px-12 py-2 text-lg text-white hover:!brightness-[1.1]">
             Download report
         </GenericButton>
     </div>
