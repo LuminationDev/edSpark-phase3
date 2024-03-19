@@ -65,10 +65,12 @@ export const dmaService = {
         domainId: string,
         element: string,
         action: string,
+        selected: boolean,
     ):Promise<AxiosResponse<any>> => {
         return axios.put(`${API_ENDPOINTS.DMA.USER_SURVEY}/domain/${domainId}/actionplan`, {
             element,
             action,
+            selected
         }).then(res => {
             return res.data;
         })
