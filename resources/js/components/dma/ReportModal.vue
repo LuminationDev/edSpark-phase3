@@ -7,10 +7,13 @@ import CloseButton from "@/js/components/dma/CloseButton.vue";
 import OverlayModal from "@/js/components/dma/OverlayModal.vue";
 import RoundButton from "@/js/components/dma/RoundButton.vue";
 import TextButton from "@/js/components/dma/TextButton.vue";
-import ToggleButton from "@/js/components/dma/ToggleButton.vue";
 import WarningModal from "@/js/components/dma/WarningModal.vue";
 import Spinner from "@/js/components/spinner/Spinner.vue";
 import {dmaService} from "@/js/service/dmaService";
+
+
+import PDFBuilder from "@/js/components/global/PDFBuilder.vue";
+
 
 const props = defineProps({
     domains: {
@@ -22,9 +25,8 @@ const props = defineProps({
         required: true,
     }
 })
-const emit = defineEmits(['close']);
 
-const showSelectionWarning = ref(false);
+const emit = defineEmits(['close']);
 
 const scrollableRef = ref(null);
 const circleRef = ref(null);
@@ -36,6 +38,7 @@ const showUnsavedWarningModal = ref(false);
 const selectedElement = ref(null);
 
 const questionData = ref([]);
+const elementData = ref([]);
 
 const showErrorModal = ref(false);
 const closeOnError = ref(false);
@@ -43,12 +46,17 @@ const closeOnError = ref(false);
 onMounted(async () => {
     // get questions for all domains, for cross-domain dependency checks
     const data = [];
+    const data_desc = [];
     try {
         for (const domain of props.domains) {
-            const result = await dmaService.getQuestions(domain.id);
-            data.push({domain: domain.domain, questions: result.domain_questions});
+            const result = await dmaService.getQuestions(domain.id);            
+            data.push({domain: domain.domain, domainId: domain.id, questions: result.domain_questions});
+
+            const result_desc = await dmaService.getElementDescriptions(domain.id);
+            data_desc.push({ domain: domain.id, domain_label: domain.domain, elements: result_desc });
         }
         questionData.value = data;
+        elementData.value = data_desc;
 
         // load action plan
         actionPlanData.value = await dmaService.getActionPlans();
@@ -77,7 +85,7 @@ const highlightedScores = computed(() => {
         return {
             ...score,
             highlighted: selectedElement.value === `${score.domain}|${score.element}`,
-            selected: actionPlan.value ? actionPlan.value[score.domain][score.element].selected : false,
+            selected: actionPlan.value ? actionPlan.value[score.domain][score.element].expanded : false,
         }
     });
 });
@@ -112,8 +120,10 @@ const getElementResults = (domainName) => {
             else if (item.score === 4) scoreLabel = 'Excelling';
 
             const dependency = checkElementDependencies(domainName, item.element);
+            const test = 'test';
 
-            elements.push({...item, label: scoreLabel, dependency});
+
+            elements.push({...item, label: scoreLabel, dependency, test});
         }
         return elements;
     }, []);
@@ -185,6 +195,7 @@ const checkIndicatorDependencies = (domainName, elementName, indicatorName, scor
             // check score for dependency question
             if (depQuestion) {
                 const depResult = getIndicatorResults(depQuestion.domain, depQuestion.element_print).find(r => r.indicator === depQuestion.indicator_print);
+                console.log("DEPRES", depResult);
                 if (!depResult || depResult.value < depQuestion.phase) {
                     return {domain: depQuestion.domain, element: depQuestion.element_print};
                 }
@@ -237,27 +248,14 @@ watch([reportData, actionPlanData], async([data, planData]) => {
                 const currentPlan = planData.action_plan[domain.domain]?.find(e => e.element === element.element);
                 if (currentPlan) {
                     // map loaded action plan
-                    plan[domain.domain][element.element] = {
-                        selected: !!currentPlan.selected,
-                        expanded: false,
-                        action_plan: currentPlan.action,
-                        edited: false
-                    };
+                    plan[domain.domain][element.element] = { expanded: !!currentPlan.action, action_plan: currentPlan.action, edited: false};
                 } else {
-                    plan[domain.domain][element.element] = {selected: false, expanded: false, action_plan: null, edited: false};
+                    plan[domain.domain][element.element] = {expanded: false, action_plan: null, edited: false};
                 }
             }
         }
         actionPlan.value = plan;
     }
-});
-
-const selectedCount = computed(() => {
-    return Object.values(actionPlan.value).reduce((total, domain) => {
-        return total + Object.values(domain).reduce((count,plan) => {
-            return plan.selected ? count + 1 : count;
-        },0);
-    },0);
 });
 
 const handleScrollToElement = async (item) => {
@@ -284,8 +282,8 @@ const handleScrollToElement = async (item) => {
 const handleSaveActionPlan = async (domain, elementName) => {
     const plan = actionPlan.value[domain.domain][elementName];
     try {
-        if (plan.action_plan || plan.selected) {
-            await dmaService.putActionPlan(domain.id, elementName, plan.action_plan, plan.selected);
+        if (plan.action_plan) {
+            await dmaService.putActionPlan(domain.id, elementName, plan.action_plan);
         } else {
             await dmaService.deleteActionPlan(domain.id, elementName);
         }
@@ -293,17 +291,6 @@ const handleSaveActionPlan = async (domain, elementName) => {
     } catch(error) {
         console.log("error saving action plan", error);
         showErrorModal.value = true;
-    }
-}
-
-const handleTogglePlan = (domain, elementName) => {
-    const plan = actionPlan.value[domain.domain][elementName];
-    if (plan.selected && selectedCount.value > 3) {
-        plan.selected = false;
-        showSelectionWarning.value = true;
-        setTimeout(() => { showSelectionWarning.value = false}, 10);
-    } else {
-        handleSaveActionPlan(domain, elementName)
     }
 }
 
@@ -357,14 +344,6 @@ const handleCloseReport = () => {
                 class="absolute top-6 left-4 z-50 md:!left-10 md:!top-10"
                 @click="handleCloseReport"
             />
-            <div class="absolute top-0 flex justify-center items-center p-4 pointer-events-none selection-warning w-full">
-                <div
-                    class="bg-red-200 drop-shadow-lg opacity-0 p-5 rounded-lg text-red-700"
-                    :class="showSelectionWarning ? 'transition-none opacity-100' : 'transition-all duration-500 delay-[3000ms]'"
-                >
-                    You can select maximum 3 items.
-                </div>
-            </div>
             <div
                 v-if="!actionPlan"
                 class="flex justify-center items-center min-h-full w-full md:h-full"
@@ -374,7 +353,7 @@ const handleCloseReport = () => {
             <div
                 v-else
                 ref="scrollableRef"
-                class="bg-main-teal/10 h-full overflow-y-scroll scroll-smooth text-black"
+                class="bg-main-teal/5 h-full overflow-y-scroll scroll-smooth text-black"
             >
                 <div
                     class="max-sm:pt-16 p-5 md:p-20"
@@ -382,7 +361,7 @@ const handleCloseReport = () => {
                     <div class="flex items-center flex-col text-center">
                         <h1 class="text-h3-caps">
                             <span>Your Digital Capability</span><br>
-                            <span class="text-h1-caps">Profile</span>
+                            <span class="text-h1-caps uppercase">Profile</span>
                         </h1>
                     </div>
                     <div class="max-w-[800px] mx-auto my-10 text-left">
@@ -406,11 +385,18 @@ const handleCloseReport = () => {
                     <div class="max-w-[800px] mx-auto my-10 text-left">
                         <p>
                             Please select between 1 and 3 elements that your school would like to focus on
-                            by checking the boxes next to your chosen elements.
-                            These will be highlighted on your profile, and your actions plans associated
-                            with these elements will appear in your printed report.
+                            by clicking 'Show advice & action plan' and filling in your action plan in the box provided.
+                            These elements will be highlighted on your profile.
                         </p>
                     </div>
+
+                    <PDFBuilder
+                        :domains="domains"
+                        :questionData="questionData"
+                        :reportData="reportData"
+                        :elementData="elementData"
+                        />
+
 
                     <div class="flex lg:flex-row flex-col gap-10">
                         <div
@@ -465,7 +451,7 @@ const handleCloseReport = () => {
                                     >
                                         <h3
                                             class="
-                                                bg-black/10
+                                                bg-secondary-coolGrey
                                                 flex
                                                 items-center
                                                 flex-row
@@ -473,25 +459,17 @@ const handleCloseReport = () => {
                                                 pl-4
                                                 rounded
                                                 text-h4
+                                                bg-secondary-coolGrey 
+                                                mt-10 mb-6
                                                 "
-                                            :class="{'bg-black/30': selectedElement === `${domain.domain}|${element.element}`}"
+                                            :class="{'brightness-75': selectedElement === `${domain.domain}|${element.element}`}"
                                         >
-                                            <ToggleButton
-                                                v-model="actionPlan[domain.domain][element.element].selected"
-                                                @click="handleTogglePlan(domain, element.element)"
-                                            />
-                                            <span class="flex-1 mr-2">{{ element.element }} is {{ element.label }}</span>
-                                            <i
-                                                v-if="actionPlan[domain.domain][element.element].action_plan"
-                                                class="fa-pen-to-square fas mr-2 text-sm"
-                                            />
+                                            <span class="flex-1 mr-2 text-h4-caps">{{ element.element }} is {{ element.label }}</span>
                                             <TextButton
                                                 class="!text-xs underline"
                                                 @click="() => toggleShowAdvice(element.domain, element.element)"
                                             >
-                                                <span class="hidden md:block">
-                                                    {{ actionPlan[domain.domain][element.element].expanded ? 'Hide' : 'Show' }}
-                                                    advice & action plan</span>
+                                                <span class="hidden md:block !normal-case text-sm">{{ actionPlan[domain.domain][element.element].expanded ? 'Hide' : 'Show' }} advice & action plan</span>
                                                 <span class="md:hidden">advice & plan</span>
                                             </TextButton>
                                             <img
@@ -574,7 +552,11 @@ const handleCloseReport = () => {
                         </div>
                     </div>
                     <div class="mt-10 text-center">
-                        <RoundButton @click="handleCloseReport">
+                        <RoundButton                         
+                        color="bg-white"
+                        text-color="black"
+                        class="hover:!bg-secondary-coolGrey hover:!brightness-100"
+                        @click="handleCloseReport">
                             Close
                         </RoundButton>
                     </div>

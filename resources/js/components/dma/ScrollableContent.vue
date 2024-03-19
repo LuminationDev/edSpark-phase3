@@ -51,7 +51,7 @@ const handleScroll = () => {
     .scroll-notice {
         background-color: #fff2;
         backdrop-filter: blur(40px);
-        bottom: 0;
+        bottom: -10px
     }
 
     .scroll-fade {
