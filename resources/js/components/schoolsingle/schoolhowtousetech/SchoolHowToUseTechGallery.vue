@@ -17,6 +17,7 @@ const handleClickThumbnail = (imageUrl) =>{
 }
 
 const appendServerImageUrlIfMissing = (url) =>{
+    if(!url) return;
     if(!url.includes(imageURL)){
         return `${imageURL}/${url}`
     }else{
@@ -26,7 +27,10 @@ const appendServerImageUrlIfMissing = (url) =>{
 </script>
 
 <template>
-    <div class="flex items-center flex-col imageDisplayLarge w-full">
+    <div
+        v-if="mainImageUrl"
+        class="flex items-center flex-col imageDisplayLarge w-full"
+    >
         <img
             :src="appendServerImageUrlIfMissing(mainImageUrl)"
             alt="how to use image sample picture"
@@ -37,13 +41,15 @@ const appendServerImageUrlIfMissing = (url) =>{
                 v-for="(image,index) in imageArray"
                 :key="index"
                 class="cursor-pointer flex justify-center items-center h-20 mt-6 thumbnailSmallImage w-20"
-                @click="() =>handleClickThumbnail(image)"
+                @click="() => handleClickThumbnail(image)"
             >
-                <img
-                    :src="appendServerImageUrlIfMissing(image)"
-                    alt="how to use image sample picture"
-                    class="h-full object-contain"
-                >
+                <template v-if="image">
+                    <img
+                        :src="appendServerImageUrlIfMissing(image)"
+                        alt="how to use image sample picture"
+                        class="h-full object-contain"
+                    >
+                </template>
             </div>
         </div>
     </div>
