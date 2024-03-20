@@ -9,7 +9,9 @@ import {toast} from "vue3-toastify";
 import TinyMceRichTextInput from "@/js/components/bases/frontendform/TinyMceEditor/TinyMceRichTextInput.vue";
 import TextInput from "@/js/components/bases/TextInput.vue";
 import GenericButton from "@/js/components/button/GenericButton.vue";
+import PartnerImageChange from "@/js/components/partners/PartnerContent/PartnerImageChange.vue";
 import SchoolImageChange from "@/js/components/schoolsingle/schoolContent/SchoolImageChange.vue";
+import UserAvatarChange from "@/js/components/userprofile/userprofileupdate/UserAvatarChange.vue";
 import {formatDateToDayTime} from "@/js/helpers/dateHelper";
 import {edSparkContentSanitizer} from "@/js/helpers/objectHelpers";
 import {partnerService} from "@/js/service/partnerService";
@@ -36,13 +38,9 @@ const props = defineProps({
 })
 const logoStorage = ref(null)
 const coverImageStorage = ref(null)
-const handleReceivePhotoFromContent = (type, file) => {
-    if (type === 'logo') {
-        logoStorage.value = file;
-    }
-};
 
 
+console.log(props.contentFromBase)
 
 enum PartnerContentState {
     New = "new",
@@ -75,7 +73,7 @@ const pendingPartnerProfile: Ref<any> = ref(null)
 const partnerContentState = ref('new')
 const currentUserAdminMessage = ref('')
 const tinyMceRefreshKey = ref(0)
-
+const uploadImageInstance = ref(false)
 
 const state = {
     introduction: '',
@@ -140,19 +138,15 @@ const handleEditButton = async (): Promise<void> => {
 
 }
 
-console.log(logoStorage)
-
-
 const handleAllSaveButton = () => {
-    return partnerService.updatePartnerContent(+partnerId, currentUser.value.id, newPartnerContent.value, v$.value.introduction.$model, v$.value.motto.$model, logoStorage.value
-    ).then(res => {
+    return partnerService.updatePartnerContent(+partnerId, currentUser.value.id, newPartnerContent.value, v$.value.introduction.$model, v$.value.motto.$model, logoStorage.value , coverImageStorage.value).then(res => {
         if (res.status === 200) {
             partnerContentState.value = 'submitted_pending'
             editMode.value = false
+            uploadImageInstance.value = true
             toast(
                 "You have successfully submitted content for moderation. Content will update once moderator approved your submission"
             )
-
         } else {
             console.error('Failed to save profile')
         }
@@ -197,6 +191,15 @@ const moderationStatusMessage = computed(() => {
         return "Your latest profile has been approved on " + formatDateToDayTime(props.contentFromBase.updated_at)
     }
 })
+
+const handleUploadedPhotoPartner =(type, file) =>{
+    if(type === 'logo'){
+        logoStorage.value = file
+    } else if(type==='coverImage'){
+        coverImageStorage.value = file
+    }
+
+}
 
 </script>
 
@@ -331,17 +334,24 @@ const moderationStatusMessage = computed(() => {
                     </template>
                     <template v-if="editMode">
                         <SchoolImageChange
-                            class="mb-6"
-                            :current-logo="props.contentFromBase.logo"
-                            :current-cover-image="props.contentFromBase.cover_image"
-                            @send-uploaded-photo-to-content="handleReceivePhotoFromContent"
+                            :current-logo="contentFromBase['logo']"
+                            :current-cover-image="contentFromBase['cover_image']"
+                            @send-uploaded-photo-to-content="handleUploadedPhotoPartner"
                         />
-                        <button
-                            class="border-2 h6 p-4 w-32"
-                            @click="handleUploadLogo"
+                        <!--
+                            <PartnerImageChange--
                         >
-                            Upload logo
-                        </button>
+                        <!--                            class="mt-6"-->
+                        <!--                            :send-image-upload-instance="uploadImageInstance"-->
+                        <!--                            @send-handle-file-dropped-instance="handleReceiveFileDroppedInstance"-->
+                        <!--                            @reset-image-upload-boolean="uploadImageInstance = false"-->
+                        <!--                        />-->
+                        <!--                        <button-->
+                        <!--                            class="border-2 h6 p-4 w-32"-->
+                        <!--                            @click="handleUploadLogo"-->
+                        <!--                        >-->
+                        <!--                            Upload logo-->
+                        <!--                        </button>-->
                     </template>
                 </div>
             </div>

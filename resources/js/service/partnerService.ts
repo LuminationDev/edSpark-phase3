@@ -21,13 +21,14 @@ export const partnerService = {
             data
         )
     },
-    updatePartnerContent: async (partnerId: number, currentUserId: number, content: string, introduction: string, motto: string, logo: any): Promise<AxiosResponse<any>> => {
+    updatePartnerContent: async (partnerId: number, currentUserId: number, content: string, introduction: string, motto: string, logo: any, coverImage): Promise<AxiosResponse<any>> => {
         const data = new FormData();
         data.append('content', content);
         data.append('partner_id', String(partnerId));
         data.append('introduction', introduction);
         data.append('motto', motto);
         data.append('logo', logo);
+        data.append('coverImage', coverImage)
 
         return axios.post(API_ENDPOINTS.PARTNER.UPDATE_PARTNER_CONTENT, data);
     },
