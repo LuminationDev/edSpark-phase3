@@ -58,9 +58,9 @@ class EventResource extends Resource
                             ->extraAttributes(['class' => 'text-primary-600'])
                             ->options($labels->pluck('value', 'id')->toArray())
                             ->relationship('labels', 'value', function ($query) use ($category) {
-                                $query->from(function ($subquery) use ($category) {
-                                    $subquery->from('labels')
-                                        ->select('labels.*')
+                                $query->fromSub(function ($subquery) use ($category) {
+                                    $subquery->select('labels.*')
+                                        ->from('labels')
                                         ->where('type', $category)
                                         ->distinct();
                                 }, 'sub')
