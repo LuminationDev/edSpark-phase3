@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import {useRouter} from "vue-router";
+import {useRoute, useRouter} from "vue-router";
 
 import GenericButton from "@/js/components/button/GenericButton.vue";
 
@@ -21,6 +21,7 @@ const props = defineProps({
     }
 })
 const router = useRouter();
+const route = useRoute()
 
 const handleButtonClick = (): void => {
     if (props.buttonCallback) {
@@ -29,11 +30,13 @@ const handleButtonClick = (): void => {
         router.push({name: "dashboard"});
     }
 }
+
+console.log(route.query)
 </script>
 
 
 <template>
-    <div class="flex justify-center items-center flex-col font-semibold mt-20 text-black text-center text-xl">
+    <div class="flex justify-center items-center flex-col font-medium mt-20 text-black text-center text-xl">
         {{ props.errorMessage }}
         <GenericButton
             :callback="handleButtonClick"

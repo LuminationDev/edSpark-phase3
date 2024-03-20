@@ -2,7 +2,7 @@ export const schoolColorTheme = {
     banana: {
         light: '#FFF1CB',
         med: '#FFC836',
-        dark: '#965A00',
+        dark: '#a06610', //'#c67f14',
     },
     cherry: {
         light: '#FECCD0',
@@ -12,7 +12,7 @@ export const schoolColorTheme = {
     peach: {
         light: '#FFDECF',
         med: '#FF8D78',
-        dark: '#A43D18',
+        dark: '#f0866f', //was '#b84921', //was da5525
     },
     grape: {
         light: '#DBCCF5',
@@ -20,7 +20,7 @@ export const schoolColorTheme = {
         dark: '#6D479B',
     },
     blueberry: {
-        light: '#AEDCF3',
+        light: '#44B8F3', // light: '#AEDCF3',
         med: '#0072DA',
         dark: '#03369A',
     },
@@ -29,22 +29,28 @@ export const schoolColorTheme = {
         med: '#319795',
         dark: '#185E69',
     },
+    darkTeal: {
+        light: '#B2F5EA',
+        med: '#319795',
+        dark: '#185E69',
+    },
+
     navy: {
         light: '#6e99ce', //was #3d6ba3
         med: '#002858',
-        dark: '#002858',
+        dark: '#001c3d',
     },
 
-    softwarePurple: {
-        light: "#9F7AEA",
-        med:"#4338CA",
-        dark:"#2D1E91",
+    technologyPurple: {
+        light: "#8866C5",
+        med:"#8866C5",
+        dark:"#002858",
     },
 
     hardwareGreen: {
         light: '#C6F6D5',
         med: '#38A169',
-        dark: '#234E52',
+        dark: '#002858',
     },
 
     partnerBlue: {
@@ -74,7 +80,7 @@ export const schoolColorTheme = {
    
 }
 
-export const schoolColorKeys = ["banana", "cherry", "peach", "grape", "blueberry", "teal", "navy", "softwarePurple", "hardwareGreen", "partnerBlue", "eventRed", "eventBlue", "eventPurple"]
+export const schoolColorKeys = ["banana", "cherry", "peach", "grape", "blueberry", "teal", "navy", "technologyPurple", "hardwareGreen", "partnerBlue", "eventRed", "eventBlue", "eventPurple"]
     
     // ,     
     // black: {

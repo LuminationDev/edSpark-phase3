@@ -23,6 +23,7 @@ use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 use Mohamedsabil83\FilamentFormsTinyeditor\Components\TinyEditor;
+use PhpOffice\PhpSpreadsheet\Calculation\Statistical\Distributions\F;
 use SplFileInfo;
 
 
@@ -44,16 +45,26 @@ class SoftwareResource extends Resource
         $groupedLabels = Label::all()->groupBy('type');
 
         $labelColumns = [];
+        $categoriesToInclude = ['category', 'learning', 'capability', 'year'];
+
 
         foreach ($groupedLabels as $category => $labels) {
-            $labelColumns[] = Forms\Components\CheckboxList::make("labels")
-                ->label("Labels - {$category}")
-                ->extraAttributes(['class' => 'text-primary-600'])
-                ->options($labels->pluck('value', 'id')->toArray())
-                ->relationship('labels', 'value',function ($query) use ($category) {
-                    $query->where('type', $category)->orderByRaw('CAST(labels.id AS SIGNED)');
-                })
-                ->columns(3);
+            if (in_array($category, $categoriesToInclude)) {
+
+                $labelColumns[] =
+                    Forms\Components\Section::make(ucfirst($category))
+                        ->schema([
+                            Forms\Components\CheckboxList::make("labels")
+                                ->label("")
+                                ->extraAttributes(['class' => 'text-primary-600'])
+                                ->options($labels->pluck('value', 'id')->toArray())
+                                ->relationship('labels', 'value', function ($query) use ($category) {
+                                    $query->where('type', $category)->orderByRaw('CAST(labels.id AS SIGNED)');
+                                })
+                                ->columns(3)
+                        ]);
+
+            }
         }
         return $form
             ->schema([
@@ -83,7 +94,7 @@ class SoftwareResource extends Resource
                                 return (string)str($file->getClientOriginalName())->prepend('edSpark-software-');
                             }),
 
-                        Forms\Components\Card::make()
+                        Forms\Components\Section::make()
                             ->schema([
                                 Forms\Components\Select::make('software_type')
                                     ->label('Software type')
@@ -116,7 +127,14 @@ class SoftwareResource extends Resource
                             ->placeholder('Add or create tags')
                             ->helperText('Press enter after each tag')
                     ]),
-
+                Forms\Components\Card::make()
+                    ->schema([
+                        TinyEditor::make('how_to_access')
+                            ->label('How to access')
+                            ->fileAttachmentsDisk('local')
+                            ->fileAttachmentsVisibility('public')
+                            ->fileAttachmentsDirectory('public/uploads/software'),
+                    ]),
                 Forms\Components\Card::make()
                     ->schema([
                         Forms\Components\Builder::make('extra_content')
@@ -124,7 +142,7 @@ class SoftwareResource extends Resource
                                     Forms\Components\Builder\Block::make('templates')
                                         ->schema([
                                             Forms\Components\Select::make('template')
-                                                ->label('Choose a Template')
+                                                ->label('Choose a template')
                                                 ->reactive()
                                                 ->options(static::getTemplates()),
                                             ...static::getTemplateSchemas()
@@ -134,6 +152,7 @@ class SoftwareResource extends Resource
                             ->label('Extra content')
 
                     ])
+
 
             ]);
     }
@@ -194,9 +213,9 @@ class SoftwareResource extends Resource
                     ->label('Status')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('created_at')
-                    ->dateTime(),
+                    ->dateTime('j M y, h:i a'),
                 Tables\Columns\TextColumn::make('updated_at')
-                    ->dateTime(),
+                    ->dateTime('j M y, h:i a'),
             ])
             ->filters([
                 Tables\Filters\SelectFilter::make('status')

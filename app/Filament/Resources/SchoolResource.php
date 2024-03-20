@@ -6,8 +6,10 @@ use App\Filament\Resources\SchoolResource\Pages;
 use App\Filament\Resources\SchoolResource\RelationManagers;
 use App\Helpers\RoleHelpers;
 use App\Models\School;
+use App\Models\Site;
 use Filament\Forms;
 use Filament\Forms\Form;
+use Filament\Resources\Pages\EditRecord;
 use Filament\Resources\Resource;
 use Filament\Tables\Table;
 use Filament\Tables;
@@ -36,11 +38,22 @@ class SchoolResource extends Resource
             ->schema([
                 Forms\Components\Card::make()
                     ->schema([
-                        Forms\Components\TextInput::make('name')
+                        Forms\Components\Select::make('name')
+                            ->disabled(fn ($livewire) => $livewire instanceof EditRecord)
+                            ->searchable()
+                            ->getSearchResultsUsing(function (string $search) {
+                                return Site::leftJoin('schools', 'sites.site_id', '=', 'schools.site_id')
+                                    ->whereNull('schools.site_id')
+                                    ->where('sites.site_name', 'like', "%{$search}%")
+                                    ->limit(50)
+                                    ->pluck('sites.site_name', 'sites.site_id')
+                                    ->toArray();
+                            })
+                            ->getOptionLabelUsing(function ($value) {
+                                return $value;
+                            })
                             ->label('School Name')
-                            ->required()
-                            ->disabled()
-                            ->maxLength(255),
+                            ->required(),
                         TinyEditor::make('content_blocks')
                             ->label('School profile')
                             ->fileAttachmentsDisk('local')
@@ -73,16 +86,32 @@ class SchoolResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('site_id'),
-                Tables\Columns\TextColumn::make('name'),
-                Tables\Columns\TextColumn::make('owner.full_name')->label('Owner'),
+                Tables\Columns\TextColumn::make('name')
+                    ->limit(35)
+                ,
+//                Tables\Columns\TextColumn::make('owner.full_name')->label('Owner')
+//                    ->limit(15)
+//                ,
                 Tables\Columns\ToggleColumn::make('isFeatured'),
-                Tables\Columns\TextColumn::make('created_at')
-                    ->dateTime(),
                 Tables\Columns\TextColumn::make('updated_at')
-                    ->dateTime(),
+                    ->sortable()
+                    ->dateTime('j M y, h:i a'),
+
+                Tables\Columns\TextColumn::make('created_at')
+                    ->dateTime('j M y, h:i a'),
             ])
             ->filters([
-                //
+                Tables\Filters\SelectFilter::make('status')
+                    ->options([
+                        'published' => 'Published',
+                        'pending' => 'Pending Moderation',
+                        'archived' => 'Archived',
+                        'draft' => 'Draft/Incomplete',
+                        'unpublished' => 'Deleted'
+                    ])
+                    ->label('Guide status')
+                    ->default('published')
+                    ->attribute('status'),
             ])
             ->actions([
                 // Tables\Actions\ViewAction::make(),

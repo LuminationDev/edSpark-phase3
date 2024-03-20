@@ -17,11 +17,13 @@ import {
 </script>
 
 <template>
+    
+
     <BaseLandingHero
         :title="LandingHeroText['dashboard']['title']"
         :title-paragraph="LandingHeroText['dashboard']['subtitle']"
         background-color="navy"
-        swoosh-color="blue"
+        swoosh-color="teal"
     >
         <template #robotIllustration>
             <div class="welcomeRobot">

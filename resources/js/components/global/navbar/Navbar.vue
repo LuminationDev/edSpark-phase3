@@ -68,18 +68,18 @@ const logoClass = computed(() => {
     return {
         'absolute nav-logo transition-all -top-4 w-28 h-28 z-30': true,
         'md:!w-36 md:!h-36 lg:left-10 lg:visible xl:!w-44 xl:!h-44': scrollPosition.value === 0,
-        '!w-14 !h-14 !top-1 !left-12': scrollPosition.value > 0,
+        '!w-16 !h-16 !top-2 !left-12': scrollPosition.value > 0,
     };
 })
 </script>
 
 <template>
-    <div class="h-[84px] hidden relative w-full z-50 lg:block">
+    <div class="h-24 hidden relative w-full z-50 lg:block">
         <nav
             v-if="isAuthenticated"
             id="navbarFullsize"
             :class="{ 'navbarScrolled' : scrollPosition > 0 }"
-            class="bg-white container h-16 hidden navbarFullsize px-12 text-main-darkGrey  lg:block lg:z-20"
+            class="bg-white container h-20 hidden navbarFullsize px-12 text-main-darkGrey  lg:block lg:z-20"
         >
             <ul
                 class="
@@ -87,6 +87,7 @@ const logoClass = computed(() => {
                     h-full
                     hidden
                     ml-32
+                    pl-
                     lg:ml-36
                     xl:ml-48
                     gap-2
@@ -105,7 +106,7 @@ const logoClass = computed(() => {
                     :route="route"
                 />
                 <li
-                    class="cursor-pointer flex items-center flex-row gap-2 ml-auto mr-8"
+                    class="cursor-pointer flex items-center flex-row gap-2 ml-auto mr-12"
                     @click="handleGlobalsearchClick"
                 >
                     <div class="hidden searchText xl:!block">
@@ -119,12 +120,12 @@ const logoClass = computed(() => {
                     </div>
                 </li>
 
-                <ProfileDropdown
+                <li><ProfileDropdown
                     v-if="isAuthenticated"
                     :key="currentUser"
                     :current-user="currentUser"
                     :avatar-url="avatarUrl"
-                />
+                /></li>
             </ul>
 
             <div
@@ -135,9 +136,11 @@ const logoClass = computed(() => {
                     :to="{name: 'dashboard'}"
                     title="Go to dashboard"
                 >
-                    <Logo
+                    <img
                         :class="logoClass"
-                    />
+                        src="@/assets/images/edSparkLogoNew.png"
+                        alt="edSpark logo"
+                    >
                 </router-link>
             </div>
         </nav>
@@ -162,7 +165,8 @@ const logoClass = computed(() => {
 }
 
 .nav-logo:hover {
-    filter: drop-shadow(0px 0px 15px rgba(0, 0, 0, 0.5));
+    /* filter: drop-shadow(0px 0px 15px rgba(0, 0, 0, 0.5)); */
+    filter: drop-shadow(0px 4px 5px rgba(0, 0, 0, 0.5));
 }
 
 /*.navbarFullsize {*/

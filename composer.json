@@ -9,6 +9,7 @@
     "license": "MIT",
     "require": {
         "php": "^8.0.2",
+        "coolsam/flatpickr": "^3.0",
         "filament/filament": "^3.0-stable",
         "firebase/php-jwt": "^5.2",
         "flowframe/laravel-trend": "^0.1.3",

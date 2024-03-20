@@ -6,6 +6,8 @@ import VPagination from "@hennge/vue3-pagination";
 import {computed, ref, watch} from 'vue'
 
 import AdviceCard from "@/js/components/advice/AdviceCard.vue";
+import InspirationAndGuidesRobot from "@/js/components/inspirationandguides/InspirationAndGuidesRobot.vue";
+
 import BaseLandingHero from "@/js/components/bases/BaseLandingHero.vue";
 import SearchBar from "@/js/components/browseschools/SearchBar.vue";
 import CardLoading from "@/js/components/card/CardLoading.vue";
@@ -43,7 +45,7 @@ const props = defineProps({
     heroBackgroundColor: {
         type: String,
         required: false,
-        default: 'teal'
+        default: 'darkTeal'
     },
     customView:{
         type: Boolean,
@@ -153,8 +155,7 @@ const formattedSearchBlurb = computed(() => {
             "embracing digital technology, and draw inspiration " +
             "for your own classroom."
 
-
-    else return "Discover inspiration for your own classroom."
+    else return "Discover inspiration for your own classroom"
 
 
 })
@@ -168,9 +169,7 @@ const formattedSearchBlurb = computed(() => {
         :background-color="props.heroBackgroundColor"
         :swoosh-color="heroBackgroundColor"
     >
-        <template #robotIllustration>
-            <slot name="robot" />
-        </template>
+
     </BaseLandingHero>
     <div
         class="browse-schools-container flex items-center flex-col px-12 py-16"
@@ -180,14 +179,15 @@ const formattedSearchBlurb = computed(() => {
                 <h3 class="font-semibold text-3xl">
                     Browse all {{ formattedSearchTitle }}
                 </h3>
-                <p class="pr-10 pt-6">
+                <p class="pr-10 pt-6 text-lg">
                     {{ formattedSearchBlurb }}
                 </p>
             </div>
-            <div class="grid grid-cols-3 gap-4 w-full">
+            <div class="grid grid-cols-1 gap-4 w-full lg:!grid-cols-3">
                 <div class="flex flex-col search-filter-components">
                     <SearchBar
                         :placeholder="`Type in ${searchType} name`"
+                        class="[&>p]:font-medium [&>p]:text-lg md:[&>p]:text-xl [&>p]:!ml-0 mb-4 lg:mb-0"
                         @emit-search-term="handleSearchTerm"
                     />
                 </div>
@@ -195,10 +195,10 @@ const formattedSearchBlurb = computed(() => {
                 <slot name="additionalFilters" />
             </div>
             <div class="my-4 searchResults text-base text-center">
-                {{ String(filteredData.length) + " search " + (filteredData.length > 1 ? "results" : "result") }}
+              <span  v-if="resourceList">  {{ String(filteredData.length) + " search " + (filteredData.length > 1 ? "results" : "result") }}</span>
             </div>
             <div
-                v-if="resourceList&&
+                v-if="resourceList && resourceList.length &&
                     props.customView"
                 class="customViewContainer"
             >
@@ -208,7 +208,7 @@ const formattedSearchBlurb = computed(() => {
                 />
             </div>
             <div
-                v-else-if="resourceList && !props.customView"
+                v-else-if="resourceList && resourceList.length && !props.customView"
                 id="resourceResult"
                 class="
                     grid
@@ -266,15 +266,7 @@ const formattedSearchBlurb = computed(() => {
                     <template v-else-if="searchType === 'school'">
                         <div
                             :key="data.id"
-                            class="
-                                group
-                                h-[470px]
-                                max-w-[350px]
-                                transition-all
-                                w-full
-                                hover:shadow-2xl
-                                lg:!max-w-[400px]]
-                                "
+                            class="group h-[470px] max-w-[350px] transition-all w-full hover:shadow-2xl lg:!max-w-[400px]"
                         >
                             <SchoolCard
                                 class="mx-auto"
@@ -356,6 +348,12 @@ const formattedSearchBlurb = computed(() => {
     }
 }
 
+// @media screen and (max-width: 510px) {
+//     #searchIcon {
+//         margin-left: 0.5rem !important;
+//         top: 0.1rem !important;
+//     }
+// }
 
 .BaseSearchPaginationContainer {
 

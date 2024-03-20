@@ -6,7 +6,6 @@ import AdviceForm from "@/js/components/bases/frontendform/types/AdviceForm.vue"
 import EventForm from "@/js/components/bases/frontendform/types/EventForm.vue";
 import SoftwareForm from "@/js/components/bases/frontendform/types/SoftwareForm.vue";
 import UserPosts from "@/js/components/create/UserPosts.vue";
-import InspirationAndGuidesRobot from "@/js/components/inspirationandguides/InspirationAndGuidesRobot.vue";
 import AdviceSearch from "@/js/components/search/AdviceSearch.vue";
 import EventSearch from "@/js/components/search/EventSearch.vue";
 import HardwareSearch from "@/js/components/search/HardwareSearch.vue";
@@ -18,6 +17,8 @@ import ProfileInfo from '@/js/components/userprofile/ProfileInfo.vue'
 import ProfileMessages from '@/js/components/userprofile/ProfileMessages.vue'
 import ProfileWork from '@/js/components/userprofile/ProfileWork.vue'
 import UserProfile from '@/js/components/userprofile/UserProfile.vue';
+import UserNotificationPage
+    from "@/js/components/userprofile/userprofileupdate/usernotification/UserNotificationPage.vue";
 import AdviceSingle from "@/js/pages/AdviceSingle.vue";
 import CatalogueSingle from "@/js/pages/CatalogueSingle.vue";
 import DMA from "@/js/pages/DMA.vue";
@@ -27,10 +28,8 @@ import HardwareSingle from '@/js/pages/HardwareSingle.vue';
 import InspirationAndGuides from "@/js/pages/InspirationAndGuides.vue";
 import InspirationLanding from "@/js/pages/InspirationLanding.vue";
 import PartnerSingle from "@/js/pages/PartnerSingle.vue";
-import PlaceholderParentPage from "@/js/pages/PlaceholderParentPage.vue";
 import SchoolSingle from "@/js/pages/SchoolSingle.vue";
 import TechnologyLanding from "@/js/pages/TechnologyLanding.vue";
-import TheAdvice from "@/js/pages/TheAdvice.vue";
 import TheCatalogue from "@/js/pages/TheCatalogue.vue";
 import TheCreator from "@/js/pages/TheCreator.vue";
 import TheEvent from "@/js/pages/TheEvent.vue";
@@ -40,7 +39,6 @@ import TheHome from "@/js/pages/TheHome.vue";
 import ThePartner from "@/js/pages/ThePartner.vue";
 import ThePartnerWelcome from "@/js/pages/ThePartnerWelcome.vue";
 import TheSchool from "@/js/pages/TheSchool.vue";
-import TheSoftware from "@/js/pages/TheSoftware.vue";
 import TheTechnology from "@/js/pages/TheTechnology.vue";
 import {useAuthStore} from '@/js/stores/useAuthStore';
 import {useUserStore} from "@/js/stores/useUserStore";
@@ -99,7 +97,8 @@ const routes: any = [
                     skipScrollTop: true
 
                 } as RouteMeta
-            }, {
+            },
+             {
                 name: 'createGuide',
                 path: 'guide',
                 component: AdviceForm,
@@ -130,7 +129,7 @@ const routes: any = [
         },
         children: [
             {
-                name: "InspirationGuides",
+                name: "Inspiration hub",
                 path: "",
                 component: InspirationAndGuides,
                 meta: {
@@ -157,7 +156,7 @@ const routes: any = [
                 component: DMA,
                 meta: {
                     requiresAuth: true,
-                    customText: 'Assess your digital maturity (coming soon)',
+                    customText: 'Assess your digital maturity',
                     navigation: true
 
                 } as RouteMeta
@@ -181,7 +180,7 @@ const routes: any = [
         },
         children: [
             {
-                name: "TechnologyHome",
+                name: "Technology hub",
                 path: "",
                 component: TheTechnology,
                 meta: {
@@ -217,7 +216,7 @@ const routes: any = [
         path: '/ai-hub',
         component: DashboardNew,
         meta: {
-            navigation: true
+            navigation: false
         }
 
     },
@@ -226,6 +225,7 @@ const routes: any = [
         path: '/events',
         component: TheEvent,
         meta: {
+            customText: 'Providers and events',
             navigation: true
         }
     },
@@ -289,7 +289,7 @@ const routes: any = [
     },
     {
         name: 'school-single',
-        path: '/schools/:name',
+        path: '/schools/:name?',
         component: SchoolSingle,
         meta: {
             requiresAuth: true,
@@ -412,7 +412,7 @@ const routes: any = [
     },
     {
         name: 'userProfile',
-        path: '/profile/:userId',
+        path: '/profile/:userId?',
         component: UserProfile,
         children: [
             {
@@ -459,10 +459,20 @@ const routes: any = [
         component: TheForbidden,
     },
     {
+        name: 'notificationListPage',
+        path: '/notifications/:userId?',
+        component: UserNotificationPage,
+        meta: {
+            // skipScrollTop: false,
+            // requiresAuth: false
+        }
+    },
+    {
         path: '/:pathMatch(.*)*',
         name: 'not-found',
         component: EdsparkPageNotFound
-    }]
+    },
+]
 
 const router = createRouter({
     history: createWebHistory(),

@@ -42,14 +42,14 @@ const items = ref(<SelectorItemType[]>[
         strokeClass: "stroke-secondary-blue",
         link: "/create/software"
     },
-    {
-        type: "Hardware",
-        name: "createHardware",
-        bgClass: "bg-adviceGreen/60",
-        iconComponent: markRaw(HardwareBackgroundIcon),
-        strokeClass: "stroke-adviceGreen",
-        link: "/create/hardware"
-    },
+    // {
+    //     type: "Hardware",
+    //     name: "createHardware",
+    //     bgClass: "bg-adviceGreen/60",
+    //     iconComponent: markRaw(HardwareBackgroundIcon),
+    //     strokeClass: "stroke-adviceGreen",
+    //     link: "/create/hardware"
+    // },
     {
         type: "Event",
         name: "createEvent",
@@ -76,12 +76,12 @@ const isDisabled = (item: SelectorItemType) => {
 </script>
 
 <template>
-    <div class="grid grid-cols-2 gap-4 mt-4">
+    <div class="flex flex-col lg:flex-row margin-auto gap-4 mt-4">
 
         <button
             v-for="(item,index) in items"
             :key="index"
-            class="border-2 cursor-pointer popularGuideItem px-8 py-4 rounded text-2xl bg-white hover:text-white w-full border-main-teal hover:bg-main-teal"
+            class=" max-w-[500px] m-auto border-2 cursor-pointer popularGuideItem px-8 py-4 rounded text-2xl bg-white hover:text-white w-full border-main-teal hover:bg-main-teal"
             @click="() => handleClickSelector(item.link)"
         >
             <div class="flex justify-between flex-row w-full">

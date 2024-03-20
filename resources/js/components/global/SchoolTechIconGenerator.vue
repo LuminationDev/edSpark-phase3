@@ -63,9 +63,9 @@ const schoolTechIconComponents = {
         <div
             class="
                 !pr-[10px]
-                bg-secondary-blue/10
+                bg-secondary-blueberry/5
                 border
-                border-secondary-blue
+                border-secondary-blueberryWeb
                 border-solid
                 fill-none
                 flex
@@ -75,14 +75,15 @@ const schoolTechIconComponents = {
                 min-w-fit
                 rounded-full
                 schoolCardIcons
-                text-secondary-blue
+                text-secondary-blueberryWeb
                 text-sm
+                font-light
                 w-[200px]
                 w-fit
                 "
         >
             <BaseIconGenerator
-                class="max-h-[25px] max-w-[30px] min-w-fit"
+                class="!max-w-[30px] max-h-[25px]"
                 :icon-path="techName"
                 :components-object="schoolTechIconComponents"
             /> 
@@ -94,7 +95,7 @@ const schoolTechIconComponents = {
 <style>
 
 .schoolCardIcons path {
-    fill: #0072da !important;
+    fill: #006ccf !important;
     stroke: transparent !important;
 }
 

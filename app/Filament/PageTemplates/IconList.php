@@ -19,6 +19,9 @@ final class IconList
     public static function schema()
     {
         return [
+            Forms\Components\TextInput::make('title')
+                ->label('Resource title')
+                ->maxLength(255),
             Repeater::make('item')->schema([
                 IconPicker::make('icon')
                     ->columns(4)

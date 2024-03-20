@@ -2,7 +2,7 @@
 import {computed} from 'vue'
 
 import AdviceCaseStudyIcon from "@/js/components/svg/AdviceCaseStudyIcon.vue";
-import IconDAG from "@/js/components/svg/AdviceDAG.vue";
+import AdviceDAG from "@/js/components/svg/AdviceDAG.vue";
 import IconOther from "@/js/components/svg/AdviceOther.vue";
 import IconWork from "@/js/components/svg/AdviceWork.vue";
 import {schoolColorKeys, schoolColorTheme} from "@/js/constants/schoolColorTheme";
@@ -16,9 +16,9 @@ const props = defineProps({
 
 const typeTagColor = computed(() => {
     if (props.typeTag[0] === 'DAG') {
-        return 'text-main-teal border-main-teal bg-main-teal/10 [&>svg]:fill-main-teal [&>svg]:stroke-main-teal';
+        return 'text-main-darkTeal border-main-darkTeal bg-main-teal/10 [&>svg]:fill-main-darkTeal [&>svg]:stroke-main-darkTeal';
     } else {
-        return 'text-secondary-bananadark border-secondary-bananadark bg-secondary-banana/10 [&>svg]:fill-secondary-bananadark/10 [&>svg]:stroke-secondary-bananadark';
+        return 'text-secondary-bananaDark border-secondary-bananaDark bg-secondary-banana/10 [&>svg]:fill-secondary-bananaDark/10 [&>svg]:stroke-secondary-bananaDark';
     }
 })
 </script>
@@ -30,7 +30,7 @@ const typeTagColor = computed(() => {
         :class="typeTagColor"
     >
         <template v-if="props.typeTag[0] === 'DAG'">
-            <IconDAG />
+            <AdviceDAG />
         </template>
 
         <template v-else-if="props.typeTag[0] === 'Your Work'">

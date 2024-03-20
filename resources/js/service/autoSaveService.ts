@@ -30,13 +30,13 @@ export const autoSaveService = {
     },
     getAutoSave: (user_id: number, type: string): Promise<AxiosResponse<any>> => {
         const url = API_ENDPOINTS.AUTOSAVE.AUTOSAVE;
-
         return axios.get(url, {
             params: {
                 user_id: user_id,
                 post_type: type
             }
         })
+
     },
     getAllUserDraftPost: (user_id: number): Promise<AxiosResponse<any>> => {
         const url = API_ENDPOINTS.USER.GET_USER_DRAFT_POSTS;

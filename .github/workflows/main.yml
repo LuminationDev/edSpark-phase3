@@ -25,11 +25,11 @@ jobs:
             git pull
             git branch -D ${{github.ref_name}}
             git checkout ${{github.ref_name}}
-            php artisan migrate
+            php artisan migrate --force
             composer update
             npm install
             npm run prod
-          host: 'edspark.sa.edu.au'
+          host: '207.148.85.120'
           username: 'luminationdev'
           password: ${{ secrets.EDSPARK_DIGITAL_HUB }}
 
@@ -54,11 +54,11 @@ jobs:
             git pull
             git branch -D ${{github.ref_name}}
             git checkout ${{github.ref_name}}
-            php artisan migrate
+            php artisan migrate --force
             composer update
             npm install
             npm run prod
-          host: 'edspark.sa.edu.au'
+          host: '207.148.85.120'
           username: 'luminationdev'
           password: ${{ secrets.EDSPARK_DIGITAL_HUB }}
 

@@ -27,11 +27,11 @@
     }
 
     .cardAuthor {
-        @apply text-base font-semibold mt-2 transition-all;
+        @apply text-base font-normal mt-2 transition-all;
     }
 
     .cardDate {
-        @apply text-base mb-2 transition-all;
+        @apply text-base font-normal mb-2 transition-all;
     }
 
     .cardDisplayPreview {
@@ -223,49 +223,104 @@ select {
 }
 
 .fi-btn {
-    background-color: teal !important;
-    color: white !important;
+    /* background-color: teal !important;
+    color: white !important; */
     border: none;
     padding: 10px 20px;
 }
 
+.fi-btn-label {
+    background: transparent;
+}
+
+.fi-fo-builder-block-picker .fi-btn {
+    background-color: teal !important;
+    color: white !important;
+}
+
 .fi-btn:hover {
-    background-color: blue !important;
+    /* background-color: blue !important; */
+    -webkit-filter: brightness(1.1);
+}
+
+.fi-btn.bg-white {
+    background-color: #fbfbfb;
 }
 
 .time_elapsed-counter {
     width: 50px;
 }
 
+.richTextContentContainer {
+    margin-top: 20px;
+}
+
+.richTextContentContainer img {
+    /* border: 1px solid black; */
+    margin: 24px auto;
+}
+
+.extraResourcesContainer p,
+.richTextContentContainer li,
+.richTextContentContainer p {
+    font-weight: 100;
+    padding-bottom: 16px;
+    line-height: 1.5;
+    font-size: large;
+}
+
+
+.extraResourcesContainer a,
+.richTextContentContainer a {
+    font-weight: 300;
+    text-underline-offset: 4px;
+}
+
+.extraResourcesContainer a:hover,
+.richTextContentContainer a:hover {
+    text-decoration: underline;
+    text-decoration-thickness: 2px;
+}
+
 .richTextContentContainer h1 {
     display: block;
-    font-size: 2em;
+    /* font-size: 2em; */
     margin-block-start: 0.67em;
     margin-block-end: 0.67em;
     margin-inline-start: 0px;
     margin-inline-end: 0px;
     font-weight: bold;
+    margin-top: 32px;
+    margin-bottom: 16px;
+    font-size: xx-large;
 }
 
 .richTextContentContainer h2 {
     display: block;
-    font-size: 1.5em;
+    /* font-size: 1.5em; */
     margin-block-start: 0.83em;
     margin-block-end: 0.83em;
     margin-inline-start: 0px;
     margin-inline-end: 0px;
     font-weight: bold;
+    margin-top: 28px;
+    margin-bottom: 16px;
+    font-size: x-large;
 }
 
 .richTextContentContainer h3 {
     display: block;
-    font-size: 1.17em;
+    /* font-size: 1.17em; */
     margin-block-start: 1em;
     margin-block-end: 1em;
     margin-inline-start: 0px;
     margin-inline-end: 0px;
     font-weight: bold;
+    margin-top: 24px;
+    margin-bottom: 16px;
+    font-size: larger;
 }
+
 .richTextContentContainer h4 {
     display: block;
     margin-block-start: 1.33em;
@@ -273,25 +328,37 @@ select {
     margin-inline-start: 0px;
     margin-inline-end: 0px;
     font-weight: bold;
+    margin-top: 20px;
+    margin-bottom: 14px;
+    font-size: large;
 }
+
 .richTextContentContainer h5 {
     display: block;
-    font-size: 0.83em;
+    /* font-size: 0.83em; */
     margin-block-start: 1.67em;
     margin-block-end: 1.67em;
     margin-inline-start: 0px;
     margin-inline-end: 0px;
-    font-weight: bold;
+    font-weight: 500;
+    margin-top: 20px;
+    margin-bottom: 14px;
+    font-size: large;
 }
+
 .richTextContentContainer h6 {
     display: block;
-    font-size: 0.67em;
+    /* font-size: 0.67em; */
     margin-block-start: 2.33em;
     margin-block-end: 2.33em;
     margin-inline-start: 0px;
     margin-inline-end: 0px;
-    font-weight: bold;
+    font-weight: 500;
+    margin-top: 20px;
+    margin-bottom: 14px;
+    font-size: medium;
 }
+
 .richTextContentContainer table {
     display: table;
     border-collapse: separate;
@@ -299,17 +366,21 @@ select {
     text-indent: initial;
     border-spacing: 2px;
     border-color: gray;
+    margin: 20px 0px 42px;
 }
+
 .richTextContentContainer tbody {
     display: table-row-group;
     vertical-align: middle;
     border-color: inherit;
 }
+
 .richTextContentContainer tr {
     display: table-row;
     vertical-align: inherit;
     border-color: inherit;
 }
+
 .richTextContentContainer td {
     display: table-cell;
     vertical-align: inherit;
@@ -340,6 +411,7 @@ table[border]:not([border="0"]):not([style*="border-style"]) th {
 table[border]:not([border="0"]):not([style*="border-color"]) th {
     border-color: #ccc;
 }
+
 .richTextContentContainer ul {
     display: block;
     list-style-type: disc;
@@ -349,6 +421,7 @@ table[border]:not([border="0"]):not([style*="border-color"]) th {
     margin-inline-end: 0px;
     padding-inline-start: 40px;
 }
+
 .richTextContentContainer ol {
     display: block;
     list-style-type: decimal;
@@ -361,6 +434,7 @@ table[border]:not([border="0"]):not([style*="border-color"]) th {
 
 .richTextContentContainer figure {
     display: table;
+    margin: auto;
 }
 
 .richTextContentContainer figure figcaption {
@@ -389,6 +463,7 @@ table[border]:not([border="0"]):not([style*="border-color"]) th {
     border-left: 2px solid #ccc;
     margin-left: 1.5rem;
     padding-left: 1rem;
+    margin: 20px 0px 42px;
 }
 
 .richTextContentContainer pre[class*="language-"] {
@@ -403,4 +478,135 @@ table[border]:not([border="0"]):not([style*="border-color"]) th {
     white-space: -pre-wrap; /* Opera 4-6 */
     white-space: -o-pre-wrap; /* Opera 7 */
     word-wrap: break-word; /* Internet Explorer 5.5+ */
+    margin: 20px 0px 42px;
+}
+
+.richTextContentContainer p:has(iframe){
+    position: relative;
+    overflow: hidden;
+    width: 100%;
+    padding-top: 56.25%; /* 16:9 Aspect Ratio (divide 9 by 16 = 0.5625) */
+    margin: 20px 0px 42px;
+}
+
+.richTextContentContainer iframe{
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    width: 100%;
+    height: 100%;
+}
+
+#navbarFullsize > ul > li > a:hover{
+    text-decoration: underline 3px #B8E2DC;
+    text-underline-offset: 12px;
+}
+
+#navbarFullsize > ul > li > a {
+    font-weight: 500;
+    font-size: 18px;
+}
+
+#navbarFullsize > ul > li > div > div > li > a {
+    font-weight: 100;
+    font-size: 16px;
+}
+
+
+#navbarFullsize > ul > li > div > div > li > a:hover {
+    font-weight: 500;
+    font-size: 16px;
+}
+
+#navbarFullsize .searchText {
+    font-weight: 500;
+}
+
+.searchText {
+    font-weight: 300;
+    font-size: large;
+}
+
+/* textarea + .tox.tox-tinymce p {
+font-weight: 100; 
+color: blue !important;
+} */
+
+/* .tox.tox-tinymce * {
+    font-weight: 100 !important;
+    color: red !important;
+} */
+
+
+
+@media screen and (max-width: 620px) {
+    .calendarWrapper .vc-dots {
+        display:none !important;
+    }
+
+    .calendarWrapper .vc-day-box-center-center {
+        height: 48px !important;
+    }
+}
+
+.eventCalendarContainer .weekday-1 > div.vc-highlights.vc-day-layer  {
+    border-top-left-radius: 29px !important;
+    border-bottom-left-radius: 29px !important;
+    height: 28px;
+    margin: auto;
+}
+
+.eventCalendarContainer .day-from-end-1 > div.vc-highlights.vc-day-layer {
+    border-top-right-radius: 29px !important;
+    border-bottom-right-radius: 29px !important;
+    height: 28px;
+    margin: auto;
+}
+
+.eventCalendarContainer .weekday-1 > div.vc-highlights.vc-day-layer > div,
+.eventCalendarContainer .day-from-end-1 > div.vc-highlights.vc-day-layer > div {
+    height: 28px;
+    margin: auto;
+}
+
+ /* vc-day-box-center-center  */
+.eventCalendarContainer .day-1.week-1 .vc-highlight-base-middle, 
+.eventCalendarContainer .weekday-position-1 .vc-highlight-bg-light { 
+    border-top-left-radius: 29px !important;
+    border-bottom-left-radius: 29px !important;
+}
+
+.eventCalendarContainer .day-from-end-1 .vc-highlight-bg-light,
+.eventCalendarContainer .weekday-position-7 .vc-highlight-bg-light {
+    border-top-right-radius: 29px !important;
+    border-bottom-right-radius: 29px !important;
+}
+
+.vc-container.vc-monthly {
+    border-radius: 16px;
+    padding: 16px;
+}
+
+.vc-container .vc-weeks {
+    padding: 24px;
+}
+
+.vc-container .vc-week {
+    align-items: center;
+}
+/* 
+.vc-container .is-today .vc-focusable.vc-focus {
+    filter: brightness(1.5);
+} */
+
+.vc-container .vc-focusable.vc-focus:focus-within {
+    box-shadow: none !important;
+}
+
+.vc-container .vc-focusable.vc-focus:focus-within,
+.calendarWrapper .vc-focus:focus-within {
+    color: black !important;
+    background-color: #e5f1fb !important;
 }

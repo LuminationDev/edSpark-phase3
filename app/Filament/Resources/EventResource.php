@@ -8,6 +8,7 @@ use App\Helpers\RoleHelpers;
 use App\Helpers\UserRole;
 use App\Models\Event;
 use App\Models\Label;
+use Coolsam\FilamentFlatpickr\Forms\Components\Flatpickr;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -46,16 +47,24 @@ class EventResource extends Resource
 
         $groupedLabels = Label::all()->groupBy('type');
         $labelColumns = [];
+        $categoriesToInclude = ['category', 'learning', 'capability', 'year', 'partnerships'];
         foreach ($groupedLabels as $category => $labels) {
-            $labelColumns[] = Forms\Components\CheckboxList::make("labels")
-                ->label("Labels - {$category}")
-                ->extraAttributes(['class' => 'text-primary-600'])
-                ->options($labels->pluck('value', 'id')->toArray())
-                ->relationship('labels', 'value', function ($query) use ($category) {
-                    $query->where('type', $category)->orderByRaw('CAST(labels.id AS SIGNED)');
-                })
-                ->columns(3);
+            if (in_array($category, $categoriesToInclude)) {
+                $labelColumns[] =
+                    Forms\Components\Section::make(ucfirst($category))
+                    ->schema([
+                        Forms\Components\CheckboxList::make("labels")
+                            ->label("")
+                            ->extraAttributes(['class' => 'text-primary-600'])
+                            ->options($labels->pluck('value', 'id')->toArray())
+                            ->relationship('labels', 'value', function ($query) use ($category) {
+                                $query->where('type', $category)->orderByRaw('CAST(labels.id AS SIGNED)');
+                            })
+                            ->columns(3)
+                    ]);
+            }
         }
+
         return $form
             ->schema([
                 Forms\Components\Card::make()
@@ -75,7 +84,6 @@ class EventResource extends Resource
                         Forms\Components\FileUpload::make('cover_image')
                             ->label(new CustomHtmlable("Cover Image <span class='text-xs italic'> (500px * 500px / 1:1 aspect ratio] </span>"))
                             ->validationAttribute('cover image')
-                            ->required()
                             ->preserveFilenames()
                             ->disk('public')
                             ->directory('uploads/event')
@@ -85,26 +93,32 @@ class EventResource extends Resource
                             }),
                         Forms\Components\Grid::make(2)
                             ->schema([
-                                Forms\Components\DateTimePicker::make('start_date')
+                                Flatpickr::make('start_date')
+                                    ->enableTime()
                                     ->required(),
-                                Forms\Components\DateTimePicker::make('end_date')
+                                Flatpickr::make('end_date')
+                                    ->enableTime()
                                     ->required(),
                             ]),
                         Forms\Components\Grid::make(3)
                             ->schema([
+                                Forms\Components\Select::make('event_format')
+                                    ->label('Event format')
+                                    ->required()
+                                    ->reactive()
+                                    ->relationship('event_format', 'event_format_name'),
+                                Forms\Components\TextInput::make('url')
+                                    ->label('URL')
+                                    ->hidden(fn(\Filament\Forms\Get $get) => $get('event_format') === null || $get('event_format') == '2'),
+                                Forms\Components\TextInput::make('address')
+                                    ->label('Address')
+                                    ->hidden(fn(\Filament\Forms\Get $get) => $get('event_format') === null || $get('event_format') == '1'),
                                 Forms\Components\BelongsToSelect::make('event_type')
                                     ->label('Event type')
                                     ->required()
-                                    ->reactive()
                                     ->relationship('eventtype', 'event_type_name'),
-                                Forms\Components\TextInput::make('url')
-                                    ->label('URL')
-                                    ->hidden(fn(\Filament\Forms\Get $get) => $get('event_type') === null || $get('event_type') == '7'),
-                                Forms\Components\TextInput::make('address')
-                                    ->label('Address')
-                                    ->hidden(fn(\Filament\Forms\Get $get) => $get('event_type') === null || $get('event_type') == '6'),
                             ]),
-                        Forms\Components\Card::make()
+                        Forms\Components\Section::make()
                             ->schema([
                                 ...$labelColumns
                             ]),
@@ -136,7 +150,7 @@ class EventResource extends Resource
                                         Forms\Components\Builder\Block::make('templates')
                                             ->schema([
                                                 Forms\Components\Select::make('template')
-                                                    ->label('Choose a Template')
+                                                    ->label('Choose a template')
                                                     ->reactive()
                                                     ->options(static::getTemplates()),
                                                 ...static::getTemplateSchemas()
@@ -199,7 +213,7 @@ class EventResource extends Resource
                     ->label('Status')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('updated_at')
-                    ->dateTime(),
+                    ->dateTime('j M y, h:i a'),
             ])
             ->filters([
                 Tables\Filters\SelectFilter::make('event_status')
@@ -220,7 +234,7 @@ class EventResource extends Resource
                         'upcoming' => 'Upcoming Events',
                     ])
                     ->label('Event Date')
-                    ->default('all')
+                    ->default('upcoming')
                     ->attribute('start_date')
                     ->query(function (Builder $query, array $data): Builder {
                         $today = now()->toDateString();

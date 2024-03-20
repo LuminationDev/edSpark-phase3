@@ -111,7 +111,7 @@ const handleClearSearchbar = () => {
                     <Loader
                         :loader-color="'#0072DA'"
                         :loader-message="'Results loading'"
-                        loader-message-class="text-base font-semibold"
+                        loader-message-class="text-base font-thin"
                         class="!text-sm mt-10"
                     />
                 </template>

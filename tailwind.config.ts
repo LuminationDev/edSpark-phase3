@@ -45,6 +45,17 @@ const edsparkColor = [
     '#0072DA',
     '#AEDCF3',
     '#965A00',
+    '#9B2749',
+    '#A43D18',
+    '#6D479B',
+    '#03369A',
+    '#002858',
+    '#001c3d',
+    // '#c67f14',
+    '#a06610',
+    '#da5525',
+    '#006ccf',
+    '#8160bb',
 
     // new secondary color style guide
     '#FFC836',
@@ -55,6 +66,14 @@ const edsparkColor = [
     '#0072DA',
     '#319795',
     '#002858',
+    '#D9DAE4',
+    '#b84921',
+    '#f0866f',
+    '#44B8F3',
+    '#acafc6', //school logo bg dark cool grey
+
+    '#344054', // Dark Greyish
+    '#0A7982', // Dark teal (main)
 
 ];
 
@@ -71,7 +90,7 @@ const generateSafeList = (colors) : Array<string> => {
 
 
 
-module.exports = {
+export default {
     darkMode: 'class',
     content: [
         './resources/**/*.blade.php',
@@ -88,11 +107,11 @@ module.exports = {
                 main: {
                     navy: '#002858', //was rgba(0, 40, 88, 1)',
                     darkTeal: '#0A7982',
-                    teal: '#097982', //was '#339999',
+                    teal: '#339999', //was '#339999',
                     lightTeal: '#28D5CB',
                     darkGrey: '#232323'
                 },
-                secondary: {
+               secondary: {
                     blue: '#0072DA',
                     lightBlue: '#44B8F3',
                     darkBlue: '#1C5CA9',
@@ -106,16 +125,21 @@ module.exports = {
                     mbRose: '#be123c',
                     mbIcons: 'green',
                     coolGrey: '#D9DAE4',
+                    coolGreyDark: '#acafc6',
                     // new style guide
                     banana: '#FFC836',
-                    bananadark: '#965A00',
+                    bananaMed: '#d4a426',
+                    bananaDark: '#a06610', //'#c67f14',
                     cherry:  '#DE4668',
+                    cherryMed:  '#be2145',
                     peach: '#FF8D78',
+                    peachMed: '#be2145',
                     grape:  '#8866C5',
+                    grapeWeb: '#8160bb',
+                    grapeDark: '#6D469C',
                     blueberry: '#0072DA',
-                    teal: '#319795',
-                    navy: '#002858',
-                    grapeDark: '#6d469c'
+                    blueberryMed: '#1C5CA9',
+                    blueberryWeb: '#006ccf'
 
                 },
                 custom: {
@@ -124,9 +148,9 @@ module.exports = {
                     genericScrollbarDark: '#0A0045', // only repeated coz i screwed something up with scrollbar customisation
                 },
                 event: {
-                    virtual: '#DE4668', // same as cherry
-                    hybrid: '#8866C5', // same as grape
-                    inPerson: '#0072DA', // same as blueberry
+                    virtual: '#319795', // teal now, was cherry
+                    hybrid: '#002858', // navy now, was grape
+                    inPerson: '#006ccf', // same as blueberry
                     virtualTag: '#ffd5de'
                 },
 
@@ -146,10 +170,17 @@ module.exports = {
                 extraLarge: '48px',
                 huge: '81px',
                 extraHuge: '140px',
-                mainHero: '500px'
+                mainHero: '508px'
             },
             screens: {
                 'ml': '860px',
+                'xs': '500px',
+                'portrait': {
+                    'raw': '(orientation: portrait)'
+                },
+                'landscape': {
+                    'raw': '(orientation: landscape)'
+                }
             },
             scale: {
                 '90': '0.9',

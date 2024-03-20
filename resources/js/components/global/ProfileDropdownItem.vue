@@ -28,13 +28,12 @@ const props = defineProps({
                 flex
                 justify-start
                 flex-row
-                font-medium
+                font-light
                 place-items-center
                 px-2
                 py-3
                 text-[18px]
                 hover:text-white
-                text-main-darkGrey
                 w-full
                 gap-4
                 hover:bg-main-teal
@@ -51,13 +50,12 @@ const props = defineProps({
             flex
             justify-start
             flex-row
-            font-medium
+            font-light
             place-items-center
             px-2
             py-3
             text-[18px]
             hover:text-white
-            text-main-darkGrey
             w-full
             gap-4
             hover:bg-main-teal

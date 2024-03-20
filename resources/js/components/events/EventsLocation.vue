@@ -23,7 +23,11 @@ const mapOptions = {
         lng: 138.572068
     },
     zoom: 16,
+    
+    // width: '100%',
+    // height: '600px',
     options: {
+        // map.controls[google.maps.ControlPosition.CENTER].push(centerControlDiv);
         zoomControl: false,
         mapTypeControl: false,
         scaleControl: false,
@@ -40,7 +44,7 @@ const markerCenter = ref({
 })
 
 onMounted(() => {
-    if (props.locationInfo.length && (props.locationType.toLowerCase() === 'in person' || props.locationType.toLowerCase() === 'hybrid') && props.locationInfo.address) {
+    if (props.locationInfo && props.locationInfo.length && (props.locationType.toLowerCase() === 'in person' || props.locationType.toLowerCase() === 'hybrid') && props.locationInfo.address) {
         const {address} = props.locationInfo
         axios.get(`https://geocode.maps.co/search?q={${address}}`).then(res => {
             if (res.data[0]['lat'] && res.data[0]['lon']) {
@@ -65,7 +69,7 @@ const formattedUrl = computed(() => {
 
 <template>
     <div v-if="props.locationType && props.locationType.toLowerCase() === 'in person'">
-        <div class="bg-blue-900 border-2 border-black p-4 text-white">
+        <div class="bg-secondary-blueberry p-4 text-white">
             <div class="EventAddressTitle">
                 This event is being held in-person at
             </div>
@@ -87,12 +91,28 @@ const formattedUrl = computed(() => {
                     :options="{ position: markerCenter }"
                 />
             </GoogleMap>
+
+            <!-- <div class="schoolContactMapContainer w-full"> -->
+            <!-- <GoogleMap
+                api-key="AIzaSyAFbqxGQntzgzfzKFh6bArwU14MJhcV1Wc"
+                style="width: 100%; height: 700px"
+                :options="mapOptions.options"
+                :center="mapOptions.center"
+                :zoom="mapOptions.zoom"
+            >
+                <Marker
+                    class="relative"
+                    :options="{ position: { lat: props.markerCenter.lat, lng: props.markerCenter.lng } }"
+                />
+            </GoogleMap> -->
+        <!-- </div> -->
+
         </div>
     </div>
     <div v-else-if="props.locationType && props.locationType.toLowerCase() === 'virtual'" />
     <div v-else-if="props.locationType && props.locationType.toLowerCase() === 'hybrid'">
         <template v-if="props.locationInfo.address">
-            <div class="bg-blue-900 border-2 border-black p-4 text-white">
+            <div class="bg-secondary-blueberry p-4 text-white">
                 <div class="EventAddressTitle">
                     This event is being held in-person at
                 </div>
@@ -119,7 +139,7 @@ const formattedUrl = computed(() => {
 
         <div
             v-if="props.locationInfo.url"
-            class="bg-blue-900 border-2 border-black p-4 text-white"
+            class="bg-secondary-blueberry p-4 text-white"
         >
             <div class="EventUrlTitle">
                 Or via the link below
@@ -134,4 +154,12 @@ const formattedUrl = computed(() => {
     </div>
 </template>
 
+<!-- 
+<style>
+/* fix for off center guide text */
+.gm-style-mot,
+.eventSingleContent[data-v-d30c4087] p {
+    text-align: center !important;
+}
 
+</style> -->

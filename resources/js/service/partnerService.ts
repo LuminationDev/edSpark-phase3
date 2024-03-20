@@ -22,15 +22,11 @@ export const partnerService = {
         )
     },
     updatePartnerContent: async (partnerId: number, currentUserId: number, content): Promise<AxiosResponse<any>> => {
-        if (partnerId === currentUserId) {
             const data = {
                 content: content,
                 partner_id: partnerId
             }
             return axios.post(API_ENDPOINTS.PARTNER.UPDATE_PARTNER_CONTENT, data)
-        } else {
-            throw(new Error('Not authorized to edit this user'))
-        }
 
 
     },

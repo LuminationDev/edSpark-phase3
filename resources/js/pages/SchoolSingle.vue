@@ -27,7 +27,10 @@ import {SchoolDataType} from "@/js/types/SchoolTypes";
 const route = useRoute();
 const imageURL = import.meta.env.VITE_SERVER_IMAGE_API
 const schoolContent: Ref<SchoolDataType | null> = ref(null)
-const colorTheme = ref('teal') // default color theme
+
+const originalColorTheme = ref('teal')
+const colorTheme = ref('darkTeal') // default color theme
+
 const showSchoolNotAvailable = ref(false)
 const schoolNotAvailableMessage = ref('')
 
@@ -68,6 +71,7 @@ const fetchSchoolByNameAsync = async (schoolName): Promise<void> => {
                     const colorThemeMeta = schoolContent.value['metadata'].filter(meta => meta['schoolmeta_key'] === 'school_color_theme');
                     if (colorThemeMeta.length > 0) {
                         colorTheme.value = colorThemeMeta[0]['schoolmeta_value'];
+                        originalColorTheme.value = colorThemeMeta[0]['schoolmeta_value'];
                     }
                 }
             } else {
@@ -87,6 +91,7 @@ const fetchSchoolByNameAsync = async (schoolName): Promise<void> => {
                 const colorThemeMeta = schoolContent.value['metadata'].filter(meta => meta['schoolmeta_key'] === 'school_color_theme');
                 if (colorThemeMeta.length > 0) {
                     colorTheme.value = colorThemeMeta[0]['schoolmeta_value'];
+                    originalColorTheme.value = colorThemeMeta[0]['schoolmeta_value'];
                 }
             }
 
@@ -101,10 +106,11 @@ const fetchSchoolByNameAsync = async (schoolName): Promise<void> => {
 }
 
 
-const handleSaveNewSchoolInfo = async (contentBlocks, techUsed) => {
+const handleSaveNewSchoolInfo = async (contentBlocks, techUsed, techLandscape) => {
     try {
+        // update school might return some stuff.
         await schoolService.updateSchool(
-            schoolContent.value, contentBlocks, techUsed, logoStorage.value, coverImageStorage.value, colorTheme.value
+            schoolContent.value, contentBlocks, techUsed,techLandscape, logoStorage.value, coverImageStorage.value, colorTheme.value
         );
     } catch (err) {
         console.log('Something wrong while attempting to post');
@@ -114,6 +120,10 @@ const handleSaveNewSchoolInfo = async (contentBlocks, techUsed) => {
 const handleChangeColorTheme = (newColor) => {
     // console.log('received command to swap color ' + colorTheme.value + ' to -> ' + 'newColor: ' + newColor)
     colorTheme.value = newColor
+}
+
+const handleResetColorTheme = () =>{
+    colorTheme.value = originalColorTheme.value
 }
 
 
@@ -154,8 +164,8 @@ const schoolSubmenu = [
         value: 'detail'
     },
     {
-        displayText: "What's new",
-        value: 'new'
+        displayText: "How to use tech",
+        value: 'how-to-use-tech'
     },
     {
         displayText: 'Contact',
@@ -226,7 +236,6 @@ const handleCloseModerationTab = (): void => {
                                             ">
                                         <div
                                             class="
-                                                bg-white
                                                 flex
                                                 justify-center
                                                 items-center
@@ -241,7 +250,6 @@ const handleCloseModerationTab = (): void => {
                                                 :src="`${imageURL}/${schoolContent.logo}`"
                                                 :alt="`school logo`"
                                                 class="
-                                                    bg-white
                                                     h-52
                                                     max-h-full
                                                     object-contain
@@ -253,7 +261,7 @@ const handleCloseModerationTab = (): void => {
                                             >
                                         </div>
 
-                                        <div class="flex flex-col hidden pl-8 lg:pl-0 md:block">
+                                        <div class="flex flex-col hidden md:block lg:pl-0">
                                             <h1 class="font-bold pb-4 text-white">
                                                 {{ schoolContent.name }}
                                             </h1>
@@ -288,7 +296,7 @@ const handleCloseModerationTab = (): void => {
                     </BaseHero>
                 </template>
                 <template #content>
-                    <div class="flex flex-col mt-6 w-full">
+                    <div class="flex flex-col w-full">
                         <div
                             v-if="isPreviewMode && schoolContent.name"
                             class="flex justify-center flex-row"
@@ -303,8 +311,11 @@ const handleCloseModerationTab = (): void => {
                                 </div>
                             </div>
                             <div class="basis-1/5 flex p-2">
-                                <GenericButton :callback="handleCloseModerationTab">
-                                    Back to moderation
+                                <GenericButton
+                                    class="px-4"
+                                    :callback="handleCloseModerationTab"
+                                >
+                                    Close preview
                                 </GenericButton>
                             </div>
                         </div>
@@ -316,6 +327,7 @@ const handleCloseModerationTab = (): void => {
                             @send-info-to-school-single="handleSaveNewSchoolInfo"
                             @send-color-to-school-single="handleChangeColorTheme"
                             @send-photo-to-school-single="handleReceivePhotoFromContent"
+                            @reset-color-theme="handleResetColorTheme"
                         >
                             <template #additionalContentActions>
                                 <div class="DelegationPanelOuterContainer flex flex-col mt-4 w-full">
@@ -342,7 +354,7 @@ const handleCloseModerationTab = (): void => {
 
     <div
         v-else
-        class="font-semibold mt-20 text-xl"
+        class="font-thin mt-20 text-xl"
     >
         <Loader
             :loader-color="'#0072DA'"

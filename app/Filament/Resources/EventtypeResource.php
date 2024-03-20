@@ -55,9 +55,9 @@ class EventtypeResource extends Resource
                     ->label('value')
                     ->limit(50),
                 Tables\Columns\TextColumn::make('created_at')
-                    ->dateTime(),
+                    ->dateTime('j M y, h:i a'),
                 Tables\Columns\TextColumn::make('updated_at')
-                    ->dateTime(),
+                    ->dateTime('j M y, h:i a'),
             ])
             ->filters([
                 //

@@ -58,15 +58,16 @@ onMounted(() => {
     let useCustomColor = false;
 
     if (schoolColorKeys.includes(props.swooshColorTheme)) {
-        console.log(props.swooshColorTheme);
         useCustomColor = true
     }
 
+
     gradientBg.value = "background-image: linear-gradient(to left, "
-        + (useCustomColor ? schoolColorTheme[props.swooshColorTheme]['light'] : schoolColorTheme['teal']['light']) + ","
+        + (useCustomColor ? schoolColorTheme[props.swooshColorTheme]['med'] : schoolColorTheme['teal']['med']) + ","
         + (useCustomColor ? schoolColorTheme[props.swooshColorTheme]['med'] : schoolColorTheme['teal']['med']) + ","
         + (useCustomColor ? schoolColorTheme[props.swooshColorTheme]['dark'] : schoolColorTheme['teal']['dark'])
         + ");";
+
 })
 
 const windowStore = useWindowStore()
@@ -79,28 +80,73 @@ const heroBackgroundSwitch = computed(() => {
         return ''
     }
 })
+
+const heroBackgroundColor = computed(() => {
+    switch (props.swooshColorTheme) {
+    
+    // case 'banana':
+    //     return 'bg-secondary-banana'
+
+    // case 'cherry':
+    //     return 'bg-secondary-cherry'
+
+    //     case 'peach':
+    //         return 'bg-secondary-peach'
+
+    // case 'navy':
+    //     return 'bg-main-navy'
+        
+    // case 'grape':
+    // case 'purple':
+    case 'technologyPurple':
+        return 'bg-secondary-grapeWeb'
+
+    // case 'blue':
+    case 'partnerBlue':
+        // case 'blueberry':
+        return 'bg-secondary-blueberry'
+
+    case 'teal':
+    case 'darkTeal':
+    default:
+        return 'bg-main-darkTeal'
+    }
+})
+
+// const heroBackgroundColor = computed(() => {
+//     switch (props.swooshColorTheme) {
+    
+//     case 'navy':
+//         return 'bg-main-navy'
+//     case 'purple':
+//     case 'technologyPurple':
+//         return 'bg-secondary-grapeDark'
+//     case 'blue':
+//     case 'partnerBlue':
+//         return 'bg-secondary-blueberry'
+//     case 'teal':
+//     case 'darkTeal':
+//     default:
+//         return 'bg-main-darkTeal'
+//     }
+// })
 </script>
 
+
+
+<!-- :class="heroBackgroundColor" -->
+<!-- grid grid-cols-10 -->
 
 <template>
     <div class="BaseHeroContainer h-mainHero max-h-mainHero mb-0 overflow-y-hidden relative z-10">
         <div
-            class="grid grid-cols-10 h-full relative"
+            class="flex flex-row h-full relative"
         >
             <div
-                class="
-                    HeroSolidColor
-                    bg-center
-                    bg-contain
-                    bg-no-repeat
-                    bg-secondary-blueberry
-                    col-span-10
-                    h-full
-                    pt-14
-                    px-11
-                    lg:!col-span-6
-                    "
+                class="HeroSolidColor bg-center bg-contain bg-no-repeat col-span-10 h-[500px] pt-14 px-11 lg:!col-span-6"
+                style="flex:1"
                 :style="heroBackgroundSwitch"
+                :class="heroBackgroundColor"
             >
                 <div
                     v-if="$slots.titleText || $slots.subtitleText1 || $slots.subtitleText2"
@@ -128,7 +174,7 @@ const heroBackgroundSwitch = computed(() => {
 
                     <p
                         v-if="$slots.contentDate"
-                        class="flex flex-col font-thin gap-4 mb-0 lg:mb-4 text-base text-white"
+                        class="flex flex-col font-light gap-4 mb-0 lg:mb-4 text-base text-white"
                     >
                         <slot name="contentDate" />
                     </p>
@@ -151,15 +197,13 @@ const heroBackgroundSwitch = computed(() => {
                         v-if="$slots.subtitleText2"
                         class="font-normal h-auto mt-4 pb-4 text-base text-white"
                     >
-                        <p class="">
-                            <slot name="subtitleText2" />
-                        </p>
+                        <slot name="subtitleText2" />
                         <slot name="subtitleContent" />
                     </div>
                 </div>
             </div>
             <div
-                class="bg-center bg-cover bg-no-repeat bg-white hidden imageCover lg:!block lg:!col-span-4"
+                class="bg-center bg-cover bg-no-repeat bg-white h-[500px] hidden imageCover w-[500px] lg:!block lg:!col-span-4"
                 :style="'background-image: url(' + heroBackgroundLinkOnly +')'"
             />
         </div>
@@ -183,9 +227,12 @@ const heroBackgroundSwitch = computed(() => {
             v-else
             class="BaseHeroSwooshPositioningContainer absolute -top-20 h-[120px] hidden w-full z-20 md:block xl:!-top-24"
         >
-            <EdSparkSlimSwoosh color-theme="teal" />
+            <EdSparkSlimSwoosh :color-theme="swooshColorTheme" />
         </div>
-        <div class="-top-1 md:!pl-12 md:!text-2xl flex h-16 pl-4 pt-2 text-white text-xl w-full">
+        <div
+            v-if="$slots.submenu"
+            class="-top-1 md:!pl-12 md:!text-2xl flex h-16 pl-4 pt-2 text-white text-xl w-full"
+        >
             <slot
                 name="submenu"
             />

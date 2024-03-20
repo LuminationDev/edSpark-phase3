@@ -5,6 +5,9 @@ import AdviceCard from "@/js/components/advice/AdviceCard.vue";
 import CardLoading from "@/js/components/card/CardLoading.vue";
 import {getNRandomElementsFromArray} from "@/js/helpers/cardDataHelper";
 
+import {useWindowStore} from "@/js/stores/useWindowStore";
+const windowStore = useWindowStore()
+
 const props = defineProps({
     adviceList:{
         type: Array,
@@ -20,8 +23,16 @@ const DAGAdviceList = computed(() =>{
 </script>
 
 <template>
-    <div class=":!grid-cols-2 EduAdviceCards grid grid-cols-1 gap-10 place-items-center mt-10 lg:!grid-cols-3">
-        <template v-if="props.adviceList && props.adviceList.length">
+    <div class=":!grid-cols-2 EduAdviceCards grid grid-cols-1 gap-10 place-items-center md:!grid-cols-2 lg:!grid-cols-3">
+        <template v-if="props.adviceList && props.adviceList.length && windowStore.isMed">
+            <AdviceCard
+                v-for="advice in getNRandomElementsFromArray(DAGAdviceList,2)"
+                :key="advice.guid"
+                :data="advice"
+                :show-icon="true"
+            />
+        </template>
+        <template v-else-if="props.adviceList && props.adviceList.length && !windowStore.isMed">
             <AdviceCard
                 v-for="advice in getNRandomElementsFromArray(DAGAdviceList,3)"
                 :key="advice.guid"

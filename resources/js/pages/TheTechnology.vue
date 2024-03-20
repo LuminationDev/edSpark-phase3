@@ -15,7 +15,7 @@ import SoftwareIllustration from "@/js/components/dashboard/SoftwareIllustration
 import HardwareCard from "@/js/components/hardware/HardwareCard.vue";
 import SoftwareCard from "@/js/components/software/SoftwareCard.vue";
 import Loader from "@/js/components/spinner/Loader.vue";
-import SoftwareRobot from "@/js/components/svg/software/SoftwareRobot.vue";
+import HardwareRobot from "@/js/components/svg/hardwareRobot/HardwareRobot.vue";
 import {API_ENDPOINTS} from "@/js/constants/API_ENDPOINTS";
 import {LandingHeroText} from "@/js/constants/PageBlurb";
 import {cardDataWithGuid, getNRandomElementsFromArray} from "@/js/helpers/cardDataHelper";
@@ -31,6 +31,10 @@ const {allSoftware} = storeToRefs(useSoftwareStore())
 const {allHardware} = storeToRefs(useHardwareStore())
 const {allAdvice} = storeToRefs(useAdviceStore())
 
+
+import {useWindowStore} from "@/js/stores/useWindowStore";
+const windowStore = useWindowStore()
+
 onMounted(() => {
     softwareService.fetchAllSoftware().then(res => {
         allSoftware.value = res
@@ -45,6 +49,7 @@ onMounted(() => {
 })
 
 
+
 const handleClickPopularTech = (techId, title) => {
     return router.push({
         name: "software-single",
@@ -57,39 +62,42 @@ const handleClickPopularTech = (techId, title) => {
     <BaseLandingHero
         :title="LandingHeroText['technology']['title']"
         :title-paragraph="LandingHeroText['technology']['subtitle']"
-        background-color="purple"
-        swoosh-color="purple"
+        background-color="technologyPurple"
+        swoosh-color="technologyPurple"
     >
         <template #robotIllustration>
-            <SoftwareRobot class="absolute top-10 left-36" />
+            <HardwareRobot 
+                class="absolute top-16 left-32 py-4 scale-125"
+            />
         </template>
     </BaseLandingHero>
     <BaseLandingSection background-color="white">
         <template #title>
-            Popular Technology
+            Popular technology
         </template>
         <template #content>
             <PopularResourceShortcuts
                 v-if="allSoftware && allSoftware.length"
                 :resource-list="allSoftware"
-                border-color="purple"
+                border-color="technologyPurple"
                 :resource-click-callback="handleClickPopularTech"
             />
             <Loader
                 v-else
-                loader-message="loading popular resource"
+                loader-message="Loading popular resources"
                 loader-type="small"
             />
         </template>
     </BaseLandingSection>
     <BaseLandingSection
-        background-color="purple"
+        background-color="technologyPurple"
     >
         <template #title>
             Latest technology
         </template>
         <template #button>
             <GenericButton
+                :id="appsBtn"
                 :callback="() => router.push('browse/software')"
                 :type="'purple'"
             >
@@ -145,6 +153,7 @@ const handleClickPopularTech = (techId, title) => {
         </template>
         <template #button>
             <GenericButton
+                :id="equipBtn"
                 :callback="() => router.push('/browse/hardware')"
                 :type="'purple'"
             >
@@ -152,7 +161,22 @@ const handleClickPopularTech = (techId, title) => {
             </GenericButton>
         </template>
         <template #content>
-            <BaseLandingCardRow :resource-list="allHardware">
+            <BaseLandingCardRow
+                v-if="windowStore.isMed"
+                :resource-list="allHardware"
+            >
+                <template #rowContent>
+                    <HardwareCard
+                        v-for="(hardware,index) in getNRandomElementsFromArray(allHardware,2)"
+                        :key="index"
+                        :data="hardware"
+                    />
+                </template>
+            </BaseLandingCardRow>
+            <BaseLandingCardRow
+                v-if="!windowStore.isMed"
+                :resource-list="allHardware"
+            >
                 <template #rowContent>
                     <HardwareCard
                         v-for="(hardware,index) in getNRandomElementsFromArray(allHardware,3)"
@@ -164,12 +188,13 @@ const handleClickPopularTech = (techId, title) => {
         </template>
     </BaseLandingSection>
 
-    <BaseLandingSection background-color="purple">
+    <BaseLandingSection background-color="technologyPurple">
         <template #title>
             Technology guides and resources
         </template>
         <template #button>
             <GenericButton
+                id="guidesBtn"
                 :callback="() => router.push('/browse/guide/dag')"
                 :type="'purple'"
             >
@@ -177,7 +202,22 @@ const handleClickPopularTech = (techId, title) => {
             </GenericButton>
         </template>
         <template #content>
-            <BaseLandingCardRow :resource-list="allAdvice">
+            <BaseLandingCardRow
+                v-if="windowStore.isMed"
+                :resource-list="allAdvice"
+            >
+                <template #rowContent>
+                    <HardwareCard
+                        v-for="(advice,index) in getNRandomElementsFromArray(allAdvice,2)"
+                        :key="index"
+                        :data="advice"
+                    />
+                </template>
+            </BaseLandingCardRow>
+            <BaseLandingCardRow
+                v-if="!windowStore.isMed"
+                :resource-list="allAdvice"
+            >
                 <template #rowContent>
                     <HardwareCard
                         v-for="(advice,index) in getNRandomElementsFromArray(allAdvice,3)"

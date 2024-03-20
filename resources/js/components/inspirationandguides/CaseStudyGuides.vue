@@ -5,12 +5,18 @@ import {computed} from "vue";
 import AdviceCard from "@/js/components/advice/AdviceCard.vue";
 import CardLoading from "@/js/components/card/CardLoading.vue";
 import {getNRandomElementsFromArray} from "@/js/helpers/cardDataHelper";
+
+
+import {useWindowStore} from "@/js/stores/useWindowStore";
+const windowStore = useWindowStore()
+
 const props = defineProps({
     adviceList:{
         type: Array,
         required: true
     }
 })
+
 const CaseStudyAdviceList = computed(() =>{
     if(!props.adviceList || props.adviceList.length < 1 ) return []
     return props.adviceList.filter(advice => advice.type[0] === 'Case Study')
@@ -18,8 +24,16 @@ const CaseStudyAdviceList = computed(() =>{
 </script>
 
 <template>
-    <div class="EduAdviceCards grid grid-cols-1 gap-10 place-items-center mt-10 md:!grid-cols-2 lg:!grid-cols-3">
-        <template v-if="props.adviceList && props.adviceList.length">
+    <div class="EduAdviceCards grid grid-cols-1 gap-10 place-items-center md:!grid-cols-2 lg:!grid-cols-3">
+        <template v-if="props.adviceList && props.adviceList.length && windowStore.isMed">
+            <AdviceCard
+                v-for="advice in getNRandomElementsFromArray(CaseStudyAdviceList,2)"
+                :key="advice.guid"
+                :data="advice"
+                :show-icon="true"
+            />
+        </template>
+        <template v-else-if="props.adviceList && props.adviceList.length && !windowStore.isMed">
             <AdviceCard
                 v-for="advice in getNRandomElementsFromArray(CaseStudyAdviceList,3)"
                 :key="advice.guid"

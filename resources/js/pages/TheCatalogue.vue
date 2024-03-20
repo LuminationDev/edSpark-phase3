@@ -213,7 +213,7 @@ const handleClickCatalogueCard = (reference) => {
             <div class="my-4 text-center totalItems">
                 Total Items: {{ totalItems }}
             </div>
-            <div class="grid grid-cols-2 gap-4 place-items-center lg:!grid-cols-3 xl:!grid-cols-4">
+            <div class="2xl:!grid-cols-4 grid grid-cols-1 gap-4 place-items-center lg:!grid-cols-2 xl:!grid-cols-3">
                 <div
                     v-for="(item,index) in catalogueList"
                     :key="index"
@@ -286,7 +286,7 @@ const handleClickCatalogueCard = (reference) => {
         >
             <Loader
                 loader-type="small"
-                loader-message="loading products"
+                loader-message="Loading products"
             />
         </div>
     </div>

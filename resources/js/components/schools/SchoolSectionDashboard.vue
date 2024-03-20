@@ -53,7 +53,7 @@ onBeforeMount(async () => {
 
     <div
         v-else-if="showLoading"
-        class="flex w-full"
+        class="flex w-full font-thin"
     >
         <Loader
             :loader-color="'#0072DA'"

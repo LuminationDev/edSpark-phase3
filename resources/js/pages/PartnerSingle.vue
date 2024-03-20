@@ -1,7 +1,7 @@
 <script setup>
-import {storeToRefs} from "pinia";
-import {computed, reactive, ref} from 'vue'
-import {useRoute} from "vue-router";
+import { storeToRefs } from "pinia";
+import { computed, reactive, ref } from 'vue'
+import { useRoute } from "vue-router";
 
 import BaseBreadcrumb from "@/js/components/bases/BaseBreadcrumb.vue";
 import BaseHero from "@/js/components/bases/BaseHero.vue";
@@ -13,12 +13,12 @@ import PartnerHardware from "@/js/components/partners/partnerSubPages/PartnerHar
 import PartnerOverview from "@/js/components/partners/partnerSubPages/PartnerOverview.vue";
 import PartnerSoftware from "@/js/components/partners/partnerSubPages/PartnerSoftware.vue";
 import Loader from "@/js/components/spinner/Loader.vue";
-import {imageURL} from "@/js/constants/serverUrl";
-import {partnerService} from "@/js/service/partnerService";
-import {useUserStore} from "@/js/stores/useUserStore";
+import { imageURL } from "@/js/constants/serverUrl";
+import { partnerService } from "@/js/service/partnerService";
+import { useUserStore } from "@/js/stores/useUserStore";
 
 
-const {currentUser} = storeToRefs(useUserStore())
+const { currentUser } = storeToRefs(useUserStore())
 const availableSubmenu = ref(['overview', 'access'])
 const route = useRoute()
 
@@ -27,6 +27,19 @@ const formattedSubmenuData = computed(() => {
         return []
     } else {
         return availableSubmenu.value.map(menu => {
+
+            if (menu === 'curriculum') {
+                return {
+                    displayText: 'Guides',
+                    value: menu
+                }
+            } else if (menu === 'software') {
+                return {
+                    displayText: 'Apps',
+                    value: menu
+                }
+            }
+
             return {
                 displayText: menu.charAt(0).toUpperCase() + menu.slice(1),
                 value: menu
@@ -50,7 +63,7 @@ const fetchSubmenuData = async () => {
     for (const submenu of availableSubmenu.value) {
         switch (submenu) {
         case 'overview':
-            partnerData[submenu] = {data: 'this is temporary string for partner overview'}
+            partnerData[submenu] = { data: 'this is temporary string for partner overview' }
             break;
         case 'software':
             partnerData[submenu] = partnerService.fetchPartnerSoftware(partnerId).then(res => res)
@@ -62,7 +75,7 @@ const fetchSubmenuData = async () => {
             partnerData[submenu] = partnerService.fetchPartnerAdvice(partnerId).then(res => res)
             break;
         case 'access':
-            partnerData[submenu] = {overview: 'access here'}
+            partnerData[submenu] = { overview: 'access here' }
             break;
         }
     }
@@ -129,7 +142,7 @@ const colorTheme = ref('partnerBlue')
         content-type="partner"
         @emit-available-submenu="handleEmittedAvailableSubmenu"
     >
-        <template #hero="{contentFromBase}">
+        <template #hero="{ contentFromBase }">
             <BaseHero
                 :background-url="contentFromBase['cover_image']"
                 :swoosh-color-theme="colorTheme"
@@ -171,9 +184,9 @@ const colorTheme = ref('partnerBlue')
                 </template>
             </BaseHero>
         </template>
-        <template #content="{contentFromBase,recommendationFromBase}">
-            <div class="mt-20 partnerSingleContentContainer px-5 lg:!px-10">
-                <Suspense timeout="0">
+        <template #content="{ contentFromBase, recommendationFromBase }">
+            <div class="partnerSingleContentContainer px-5 lg:!px-10">
+                <Suspense timeout="0"> 
                     <component
                         :is="partnerSubPageComponent"
                         :data="dynamicProps"
@@ -181,7 +194,7 @@ const colorTheme = ref('partnerBlue')
                         :recommendation-from-base="recommendationFromBase"
                     />
                     <template #fallback>
-                        <div class="flex justify-center items-center">
+                        <div class="flex justify-center items-center font-thin">
                             <Loader
                                 :loader-color="'#0072DA'"
                                 :loader-message="'Data loading'"

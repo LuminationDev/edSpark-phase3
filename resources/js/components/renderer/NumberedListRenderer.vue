@@ -5,6 +5,11 @@ const props = defineProps({
     itemArray: {
         type: Array,
         required: true
+    },
+    itemTitle:{
+        type: String,
+        required: false,
+        default: ""
     }
 });
 
@@ -45,6 +50,8 @@ const calculatePositions = () => {
     return {firstEl, lastEl, distance, newTop};
 };
 
+var halfItemHeight = 0;
+
 const getDistanceBetweenElements = (a, b) => {
     const {x: ax, y: ay} = getPositionAtCenter(a);
     const {x: bx, y: by} = getPositionAtCenter(b);
@@ -53,61 +60,79 @@ const getDistanceBetweenElements = (a, b) => {
 
 const getPositionAtCenter = (element) => {
     const {top, left, width, height} = element.getBoundingClientRect();
+    halfItemHeight = height/2;
     return {
         x: left + width / 2,
-        y: top + height / 2
+        y: top // only top to start-align the icons
+        // y: top + height / 2
     };
 };
 
 </script>
 
+<!-- margin-top: ${top+halfItemHeight}px; -->
 <template>
-    <div class="extraContent relative">
-        <div
-            class="absolute left-[12.4%] bg-black connectingLine hidden w-1 z-10 md:!flex"
-            :style="`height: ${distanceBetweenEls}px; top: ${top}px;`"
-        />
-        <div
-            v-for="(item,index) in numberedListContent"
-            :key="index"
-            class="eachContent py-2 w-full"
-        >
-            <div class="flex flex-row w-full">
-                <div class="extraContentIcon hidden relative w-1/4  items-center justify-center md:!flex">
-                    <div
-                        class="
-                            absolute
-                            bg-white
-                            border-4
-                            border-black
-                            font-bold
-                            grid
-                            place-items-center
-                            h-16
-                            p-4
-                            rounded-full
-                            text-2xl
-                            w-16
-                            z-20
-                            md:!h-24
-                            md:!w-24
-                            "
-                        :class="uniqueContainerClass"
-                    >
-                        {{ index + 1 }}
-                    </div>
-                </div>
-                <div
-                    class="flex flex-col w-full md:!w-3/4"
+    <div class="extraContent mb-10 relative">
+        <div class="flex flex-col">
+            <div
+                v-if="props.itemTitle"
+                class="flex flex-row mb-5 place-items-baseline  gap-4"
+            >
+                <h1
+                    class="font-bold text-3xl whitespace-nowrap"
                 >
-                    <div class="font-semibold heading mb-2 mt-6 text-xl">
-                        {{ item.heading }}
+                    {{ props.itemTitle }}
+                </h1>
+                <div class="bg-black h-1 w-full" />
+            </div>
+            </div>
+            
+        <div class="flex flex-col">
+        <div
+            class="absolute left-[12.4%] bg-black bg-secondary-blueberry connectingLine hidden w-0.5 z-10 md:!flex"
+            :style="`height: ${distanceBetweenEls-top+halfItemHeight}px; top: ${top+halfItemHeight}px;`"
+        />
+            <div
+                v-for="(item,index) in numberedListContent"
+                :key="index"
+                class="eachContent py-2 w-full"
+            >
+                <div class="flex flex-row w-full">
+                    <div class="extraContentIcon hidden mt-6 relative w-1/4   justify-center md:!flex">
+                        <div
+                            class="
+                                absolute
+                                bg-secondary-blueberry
+                                font-extrabold
+                                grid
+                                place-items-center
+                                h-16
+                                p-4
+                                rounded-full
+                                text-5xl
+                                text-white
+                                w-16
+                                z-20
+                                md:!h-24
+                                md:!w-24
+                                "
+                            :class="uniqueContainerClass"
+                        >
+                            {{ index + 1 }}
+                        </div>
                     </div>
-
                     <div
-                        class="flex flex-col htmlRenderer"
-                        v-html="item.content"
-                    />
+                        class="flex flex-col w-full md:!w-3/4"
+                    >
+                        <div class="font-semibold heading mb-2 mt-6 text-xl">
+                            {{ item.heading }}
+                        </div>
+
+                        <div
+                            class="flex flex-col htmlRenderer"
+                            v-html="item.content"
+                        />
+                    </div>
                 </div>
             </div>
         </div>

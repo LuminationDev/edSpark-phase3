@@ -52,7 +52,7 @@ const handleClickEventCard = () => {
         <template #typeTag>
             <EventTypeTag
                 class="sm:!-right-4 md:!-right-6"
-                :event-type="data.type"
+                :event-type="data.format"
             />
         </template>
     </GenericCard>

@@ -19,16 +19,16 @@ const props = defineProps({
     backgroundColor: {
         type: String as ValidLandingHeroBackgroundColor,
         required: false,
-        default: 'teal'
+        default: 'darkTeal'
     },
     swooshColor:{
         type: String,
         required: false,
-        default: 'teal'
+        default: 'darkTeal'
     }
 })
 
-const backgroudColorClass = computed(() => {
+const backgroundColorClass = computed(() => {
     switch (props.backgroundColor) {
     case 'teal':
         return 'bg-main-teal'
@@ -37,11 +37,13 @@ const backgroudColorClass = computed(() => {
     case 'navy':
         return 'bg-main-navy'
     case 'purple':
-        return 'bg-secondary-grapeDark'
+    case 'technologyPurple':
+        return 'bg-secondary-grapeWeb'
     case 'blue':
+    case 'partnerBlue':
         return 'bg-secondary-blueberry'
     default:
-        return 'teal'
+        return 'bg-main-darkTeal'
     }
 })
 
@@ -49,23 +51,24 @@ const backgroudColorClass = computed(() => {
 
 <template>
     <div
-        class="h-mainHero relative"
-        :class="backgroudColorClass"
+        class="h-mainHero mb-4 relative"
+        :class="backgroundColorClass"
     >
-        <div class="grid grid-cols-6 h-full px-16 md:px-16">
-            <div class="col-span-6 flex justify-center flex-col gap-2 h-full md:!col-span-3">
+        <div class="grid grid-cols-6 h-full px-12 md:px-16">
+            <div class="col-span-6 flex justify-center portrait:pt-10 flex-col gap-2 h-full md:!col-span-3">
                 <h1
                     class="font-semibold pb-8 text-3xl text-white md:!text-[2.5rem] lg:!text-5xl lg:!text-[48px]"
                 >
                     {{ props.title }}
                 </h1>
 
-                <p class="font-normal grid place-items-start text-white text-xl">
+                <p class="font-thin grid place-items-start text-white text-md xs:text-lg md:text-xl lg:!text-[21px]">
                     {{ props.titleParagraph }}
                 </p>
             </div>
             <div
-                class="hidden relative welcomeRobot z-10 md:!col-span-2 md:block md:scale-75 lg:!ml-0 lg:!scale-100"
+                class="hidden relative 
+                welcomeRobot z-10 md:!col-span-2 md:block md:scale-75 lg:!ml-0 lg:!scale-100"
             >
                 <slot name="robotIllustration" />
             </div>

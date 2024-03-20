@@ -13,6 +13,7 @@ import ExtraResourceTemplateDisplay from "@/js/components/renderer/ExtraResource
 import SoftwareIconGenerator from "@/js/components/software/SoftwareIconGenerator.vue";
 import SoftwareSingleCuratedContent from "@/js/components/software/softwareSingle/SoftwareSingleCuratedContent.vue";
 import {formatDateToDayTime} from "@/js/helpers/dateHelper";
+import {edSparkContentSanitizer} from "@/js/helpers/objectHelpers";
 /**
  *  type softwareSingleContent = {
  *      post_id: number
@@ -38,7 +39,6 @@ const softwareSubmenu = [
         value: 'detail'
     },
     {
-
         displayText: 'How to access',
         value: 'access'
     }]
@@ -59,7 +59,7 @@ const handleClickViewProfile = (author_id, author_type) => {
 /**
  * End of submenu specific code  plus @emit-active-tab-to-specific-page in BaseSingle
  * */
-const colorTheme = ref('softwarePurple')
+const colorTheme = ref('technologyPurple')
 
 </script>
 
@@ -99,40 +99,29 @@ const colorTheme = ref('softwarePurple')
                                     {{ contentFromBase['author']['author_name'] }}
                                 </div>
                                 <!--   For now, Only non-user (partners only) can be viewed. Still working on Partner Profile   -->
-                                <div
-                                    v-if="!(contentFromBase['author']['author_type'] === 'user')"
-                                    class="hover:cursor-pointer hover:text-red-200"
-                                >
-                                    <button
-                                        @click="() => handleClickViewProfile(contentFromBase['author']['author_id'],contentFromBase['author']['author_type'])"
-                                    >
-                                        View profile
-                                    </button>
-                                </div>
+                                <!--                                <div-->
+                                <!--                                    v-if="!(contentFromBase['author']['author_type'] === 'user')"-->
+                                <!--                                    class="hover:cursor-pointer hover:text-red-200"-->
+                                <!--                                >-->
+                                <!--                                    <button-->
+                                <!--                                        @click="() => handleClickViewProfile(contentFromBase['author']['author_id'],contentFromBase['author']['author_type'])"-->
+                                <!--                                    >-->
+                                <!--                                        View profile-->
+                                <!--                                    </button>-->
+                                <!--                                </div>-->
                             </div>
                         </div>
                     </div>
                 </template>
                 <template #contentDate>
-                    <div class="font-semibold my-4">
+                    <div class="font-light my-4">
                         {{ formatDateToDayTime(contentFromBase['modified_at']) }}
                     </div>
                 </template>
                 <template #subtitleText2>
-                    <!--                    <div v-html="contentFromBase['excerpt']" />-->
                     <LabelRowContentDisplay :labels-array="contentFromBase['labels']" />
                 </template>
-                <!--                <template #subtitleContent>-->
-                <!--                    <div class="SoftwareTypeInfoInHero flex flex-row gap-4 mt-8">-->
-                <!--                        <SoftwareIconGenerator-->
-                <!--                            :icon-name="contentFromBase['type'][0]"-->
-                <!--                            class="h-14 w-14"-->
-                <!--                        />-->
-                <!--                        <p class="flex justify-center items-center font-light">-->
-                <!--                            {{ contentFromBase['type'][0] }}-->
-                <!--                        </p>-->
-                <!--                    </div>-->
-                <!--                </template>-->
+
 
                 <!--  Selectable sub menu    -->
                 <template #submenu>
@@ -148,12 +137,12 @@ const colorTheme = ref('softwarePurple')
         </template>
         <template #content="{contentFromBase}">
             <div
-                class="flex flex-col overflow-hidden pt-0 px-5 softwareSingleContent w-full lg:!px-10 xl:!flex-row"
+                class="flex flex-col overflow-hidden pt-0 px-5 softwareSingleContent w-full lg:!px-10"
             >
                 <template
                     v-if="activeSubmenu === 'detail'"
                 >
-                    <div class="flex flex-col flex-wrap mr-10 px-2 py-4 w-full xl:!w-2/3">
+                    <div class="flex flex-col mr-10 px-2 py-4 w-full">
                         <div
                             class="flex flex-col max-w-full overflow-hidden text-lg"
                         >
@@ -166,14 +155,30 @@ const colorTheme = ref('softwarePurple')
                             <ExtraResourceTemplateDisplay :content="contentFromBase['extra_content']" />
                         </div>
                     </div>
-                    <div class="flex flex-col w-full xl:!w-1/3">
+                    <div class="flex flex-col w-full">
                         <SoftwareSingleCuratedContent />
                     </div>
                 </template>
                 <template v-else-if="activeSubmenu === 'access'">
-                    <div class="flex flex-col mt-10 overflow-hidden pt-0 px-5 softwareSingleHowToAccess">
-                        Welcome to how to
-                        access sub page
+                    <div
+                        v-if="contentFromBase['how_to_access']"
+                        class="
+                            flex
+                            flex-col
+                            mt-10
+                            overflow-hidden
+                            pt-0
+                            px-5
+                            richTextContentContainer
+                            softwareSingleHowToAccess
+                            "
+                        v-html="edSparkContentSanitizer(contentFromBase['how_to_access'])"
+                    />
+                    <div
+                        v-else
+                        class="flex flex-col mt-10 overflow-hidden pt-0 px-5 softwareSingleHowToAccess"
+                    >
+                        No information provided.
                     </div>
                 </template>
             </div>

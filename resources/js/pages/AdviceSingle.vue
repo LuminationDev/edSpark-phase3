@@ -66,29 +66,28 @@ const timeFormatter = (originalFormat) => {
                                 <div class="mb-2 text-xl">
                                     {{ contentFromBase['author']['author_name'] }}
                                 </div>
-                                <!--   For now, Only non-user (partners only) can be viewed. Still working on Partner Profile   -->
                             </div>
                         </div>
                     </div>
                 </template>
                 <template #contentDate>
-                    <div class="font-semibold my-4">
+                    <div class="font-light my-4">
                         {{ formatDateToDayTime(contentFromBase['modified_at']) }}
                     </div>
                 </template>
                 <template #subtitleText2>
-                    <div
-                        v-html="edSparkContentSanitizer(contentFromBase['excerpt'])"
-                    />
+                    <!--                    <div-->
+                    <!--                        v-html="edSparkContentSanitizer(contentFromBase['excerpt'])"-->
+                    <!--                    />-->
                     <LabelRowContentDisplay :labels-array="contentFromBase['labels']" />
                 </template>
             </BaseHero>
         </template>
 
         <template #content="{ contentFromBase }">
-            <div class="adviceSingleContent flex flex-col overflow-hidden px-8 w-full xl:!flex-row">
+            <div class="adviceSingleContent flex flex-col overflow-hidden px-8 w-full">
                 <!--    Content of the Advice    -->
-                <div class="flex flex-col flex-wrap mr-10 px-2 py-2 richTextContentContainer w-full xl:!w-2/3">
+                <div class="flex flex-col flex-wrap mb-10 mr-10 px-2 py-2 richTextContentContainer w-full">
                     <div
                         class="flex flex-col max-w-full overflow-hidden text-lg"
                     >
@@ -102,7 +101,7 @@ const timeFormatter = (originalFormat) => {
                     </div>
                 </div>
                 <!--      Curated Content      -->
-                <div class="flex flex-col w-full xl:!w-1/3">
+                <div class="flex flex-col w-full">
                     <AdviceSingleCuratedContent />
                 </div>
             </div>

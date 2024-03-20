@@ -14,6 +14,7 @@ import VueDragsScroll from 'vue-dragscroll'
 import VueGoogleMaps from 'vue-google-maps-community-fork';
 import VueTippy from 'vue-tippy'
 import Vue3Toastify, {ToastContainerOptions} from "vue3-toastify";
+import VueHTML2pdf from 'vue-html2pdf';
 
 import {IMAGE_ENDPOINTS} from "@/js/constants/API_ENDPOINTS";
 
@@ -42,7 +43,10 @@ window.addEventListener('DOMContentLoaded', () => {
         toolbar_sticky_offset: 45,
         image_caption: true,
         image_advtab: true,
-        content_css: false, skin: false
+        browser_spellcheck : true,
+        context_menu : false,
+        content_css: false, 
+        skin: false
     });
 
 });

@@ -19,9 +19,14 @@ const props = defineProps({
     }
 });
 
+onMounted(() => {
+    document.getElementsByClassName('vc-next')[0].setAttribute("aria-label", "Next");
+    document.getElementsByClassName('vc-prev')[0].setAttribute("aria-label", "Previous");
+})
+
 const attributes = computed(() =>
     props.events.map(event => {
-        const backgroundColor = event.type === 'Virtual' ? 'cherry' : event.type === 'Hybrid' ? 'grape' : 'blueberry';
+        const backgroundColor = event.type === 'Virtual' ? 'teal' : event.type === 'Hybrid' ? 'navy' : 'blueberry';
         return {
             dates: [[event.start_date, event.end_date]],
             key: event.id,
@@ -110,6 +115,7 @@ const handleClickTodayButton = () => {
                 Today
             </button>
         </div>
+
         <Calendar
             ref="eventCalendarRef"
             borderless
@@ -130,7 +136,7 @@ const handleClickTodayButton = () => {
     />
     <div
         v-if="showPopup"
-        class="absolute top-0 right-0 bottom-0 left-0 bg-black/30 z-40"
+        class="absolute top-0 right-0 bottom-0 left-0 bg-black/30 z-40 w-screen min-w-[270px]"
     />
 </template>
 
@@ -141,6 +147,13 @@ const handleClickTodayButton = () => {
 /*
  vc-highlight-base-middle vc-highlight-bg-solid
 */
+
+/* @media screen and (max-width: 620px) { */
+    /* .vc-dots {
+        display:none;
+    } */
+/* } */
+
 .vc-highlight.vc-highlight-base-middle.vc-highlight-bg-solid {
     border-radius: 10px 0 0 10px !important;
 }

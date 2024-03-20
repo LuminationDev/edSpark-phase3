@@ -56,13 +56,14 @@ const handleClickSchoolCard = () => {
             <div class="card-content_title min-h-[72px] px-2">
                 <!-- CARD CONTENT HEADER -->
                 <h5
-                    class="flex justify-start font-semibold text-2xl text-left"
+                    class="flex justify-start font-semibold text-xl text-left line-clamp-title"
                 >
                     {{ data.name }}
                 </h5>
-                <div class="cardDisplayPreview line-clamp school-card-body text-left">
-                    {{ "School" }}
-                </div>
+                <div
+                    class="cardDisplayPreview line-clamp-2 school-card-body text-left"
+                    v-html="stripHTML(data.content_blocks)"
+                />
             </div>
         </template>
         <template
@@ -70,7 +71,7 @@ const handleClickSchoolCard = () => {
             #typeTag
         >
             <div
-                class="fill-secondary-blue flex content-end flex-wrap gap-2 h-full min-h-[130px] px-6 py-4 w-full"
+                class="fill-secondary-blue flex content-end flex-wrap gap-2 h-full min-h-[130px] px-6 pb-4 w-full"
             >
                 <SchoolCardIconList
                     :tech-list="data.tech_used"
@@ -82,6 +83,33 @@ const handleClickSchoolCard = () => {
 </template>
 
 <style scoped>
+.cardFooter {
+    padding-top: 0rem;
+}
+.line-clamp-title {
+    overflow: hidden;
+    /* text-overflow: ellipsis; */
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    height: 1.1lh;
+    -webkit-box-orient: vertical;
+}
 
+ .line-clamp-2 {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    height: 3.1lh;
+    -webkit-box-orient: vertical;
+    margin: 0 auto;
+    width: 99%;
+    font-size: 16px;
+}
+
+.GenericCardContainer:hover .line-clamp-2 {
+    -webkit-line-clamp: 6;
+    height: 6.2lh;
+}
 
 </style>

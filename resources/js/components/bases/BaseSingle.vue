@@ -126,7 +126,7 @@ const fetchContent = async () => {
     await axios.post(byIdAPILink, requestData).then(res => {
         singleContent.value = res.data.data
         if (singleContent.value.content && typeof singleContent.value.content === 'string') {
-            singleContent.value.content = convertLinksToEmbeds(singleContent.value.content)
+            // singleContent.value.content = convertLinksToEmbeds(singleContent.value.content)
         }
     }).catch(err => {
         console.log(err)
@@ -164,7 +164,7 @@ const handleEmitFromSubmenu = (value) => {
         v-if="baseIsLoading"
         class="flex justify-center py-10"
     >
-        <div class="font-semibold text-xl">
+        <div class="font-thin text-xl">
             <Loader
                 :loader-color="'#0072DA'"
                 :loader-message="'Data loading'"
@@ -211,11 +211,13 @@ const handleEmitFromSubmenu = (value) => {
                 </div>
             </div>
         </div>
-        <slot
-            name="content"
-            :content-from-base="singleContent"
-            :recommendation-from-base="recommendedContent"
-        />
+        <div class="baseSingleContentContainer mt-10">
+            <slot
+                name="content"
+                :content-from-base="singleContent"
+                :recommendation-from-base="recommendedContent"
+            />
+        </div>
     </div>
 </template>
 

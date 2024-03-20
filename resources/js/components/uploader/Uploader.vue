@@ -2,6 +2,8 @@
 import axios from 'axios'
 import {computed, onMounted, ref, watch} from "vue";
 
+import {guid} from "@/js/helpers/guidGenerator";
+
 import Loader from './loader/index.vue';
 
 const props = defineProps({
@@ -32,6 +34,11 @@ const props = defineProps({
     warnings: {
         type: Boolean,
         default: true
+    },
+    index: {
+        type: Number,
+        required: false,
+        default: 0
     }
 })
 
@@ -166,30 +173,32 @@ const removeSavedMedia = (index) => {
                 <!--UPLOAD BUTTON-->
                 <div
                     v-if="allMedia.length < props.max"
-                    class="mu-plusbox-container"
+                    class="flex flex-col mu-plusbox-container"
                 >
                     <label
-                        for="mu-file-input"
-                        class="mu-plusbox"
+                        :for="`mu-file-input${index}`"
+                        class="flex flex-col mu-plusbox"
                     >
                         <svg
-                            class="mu-plus-icon"
+                            class="h-8 mb-4 text-gray-500 dark:text-gray-400 w-8"
+                            aria-hidden="true"
                             xmlns="http://www.w3.org/2000/svg"
-                            width="1em"
-                            height="1em"
-                            preserveAspectRatio="xMidYMid meet"
-                            viewBox="0 0 24 24"
+                            fill="none"
+                            viewBox="0 0 20 16"
                         >
-                            <g fill="none">
-                                <path
-                                    d="M12 1C5.925 1 1 5.925 1 12s4.925 11 11 11s11-4.925 11-11S18.075 1 12 1zm1 15a1 1 0 1 1-2 0v-3H8a1 1 0 1 1 0-2h3V8a1 1 0 1 1 2 0v3h3a1 1 0 1 1 0 2h-3v3z"
-                                    fill="currentColor"
-                                />
-                            </g>
+                            <path
+                                stroke="currentColor"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                stroke-width="2"
+                                d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2"
+                            />
                         </svg>
+                        <p class="text-center dark:text-gray-400 text-gray-500 text-xs">SVG, PNG or JPG</p>
+                        <p class="text-center dark:text-gray-400 text-gray-500 text-xs">500px * 500px </p>
                     </label>
                     <input
-                        id="mu-file-input"
+                        :id="`mu-file-input${index}`"
                         type="file"
                         accept="image/*"
                         multiple
@@ -236,6 +245,7 @@ const removeSavedMedia = (index) => {
                 class="mu-mt-1"
             >
                 <input
+                    :id="guid()"
                     type="text"
                     name="added_media[]"
                     :value="image.name"
@@ -247,6 +257,7 @@ const removeSavedMedia = (index) => {
                 class="mu-mt-1"
             >
                 <input
+                    :id="guid()"
                     type="text"
                     name="media"
                     value="1"
@@ -296,7 +307,8 @@ const removeSavedMedia = (index) => {
     flex-wrap: wrap !important;
     align-items: center !important;
     width: 140px !important;
-    height: 90px !important;
+    height: 100px !important;
+    padding: 8px !important
 }
 
 .mu-plusbox:hover {
