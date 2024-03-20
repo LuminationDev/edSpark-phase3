@@ -212,7 +212,6 @@ class SurveyController extends Controller
             ->where('element_print', $element)
             ->get();
 
-        Log::info(print_r($domainQuestions, true));
         if (empty($domainQuestions) || $domainQuestions->isEmpty()) {
             return $this->elementNotFound();
         }
@@ -227,7 +226,8 @@ class SurveyController extends Controller
             $userActionPlan->user_survey_domain_id = $user_domain_id;
             $userActionPlan->element = $element;
         }
-        $userActionPlan->action = $request['action'];
+        $userActionPlan->action = $request->has('action') && $request['action'] != null ? $request['action'] : '';
+        $userActionPlan->selected = $request->has('selected') ? $request['selected'] : false;
         $userActionPlan->save();
 
         return response()->json(
@@ -266,7 +266,6 @@ class SurveyController extends Controller
             ->where('element_print', $element)
             ->get();
 
-        Log::info(print_r($domainQuestions, true));
         if (empty($domainQuestions) || $domainQuestions->isEmpty()) {
             return $this->elementNotFound();
         }
