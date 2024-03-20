@@ -18,6 +18,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
 
 class PartnerController extends Controller
@@ -78,6 +79,16 @@ class PartnerController extends Controller
             'profile' => JsonHelper::safelyDecodeString($partnerProfile->content),
             'updated_at' => $partnerProfile->updated_at,
         ];
+    }
+
+    private function handleImageUpload($image, $prefix, $folder)
+    {
+        if (isset($image) && is_string($image) === false) {
+            $imgName = $prefix . '-' . md5(Str::random(30) . time() . '_' . $image) . '.' . $image->getClientOriginalExtension();
+            $image->storeAs('public/uploads/partner/' . $folder, $imgName);
+            return "uploads/partner/$folder/" . $imgName;
+        }
+        return null;
     }
 
     public function fetchAllPartners(Request $request)
@@ -195,8 +206,9 @@ class PartnerController extends Controller
             }
             $newIntro = $request->input('introduction') ?? '';
             $newMotto = $request->input('motto') ?? '';
-            $newLogo = $request->input('logo') ?? '';
-            $newCoverImage = $request->input('cover_image') ?? '';
+            $prefix = "edSpark-partner";
+            $partnerLogoUrl = $this->handleImageUpload($request->input('logo') ?? null, $prefix, 'logo');
+            $coverImageUrl = $this->handleImageUpload($request->input('cover_image') ?? null, $prefix, '');
 
             // Create a new PartnerProfile entry with the content and status as "Pending"
             Partnerprofile::create([
@@ -205,8 +217,8 @@ class PartnerController extends Controller
                 'content' => JsonHelper::safelyEncodeData($validatedData['content']),
                 'introduction' => $newIntro,
                 'motto' => $newMotto,
-                'logo' => $newLogo,
-                'cover_image' => $newCoverImage,
+                'logo' => $partnerLogoUrl,
+                'cover_image' => $coverImageUrl,
                 'status' => 'Pending'
             ]);
 
