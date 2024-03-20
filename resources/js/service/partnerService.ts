@@ -21,10 +21,12 @@ export const partnerService = {
             data
         )
     },
-    updatePartnerContent: async (partnerId: number, currentUserId: number, content): Promise<AxiosResponse<any>> => {
+    updatePartnerContent: async (partnerId: number, currentUserId: number, content, introduction, motto): Promise<AxiosResponse<any>> => {
             const data = {
                 content: content,
-                partner_id: partnerId
+                partner_id: partnerId,
+                introduction: introduction,
+                motto: motto
             }
             return axios.post(API_ENDPOINTS.PARTNER.UPDATE_PARTNER_CONTENT, data)
 

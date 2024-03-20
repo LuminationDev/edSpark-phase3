@@ -197,6 +197,7 @@ class PartnerController extends Controller
             $newMotto = $request->input('motto') ?? '';
             $newLogo = $request->input('logo') ?? '';
             $newCoverImage = $request->input('cover_image') ?? '';
+
             // Create a new PartnerProfile entry with the content and status as "Pending"
             Partnerprofile::create([
                 'partner_id' => $partner->id,
