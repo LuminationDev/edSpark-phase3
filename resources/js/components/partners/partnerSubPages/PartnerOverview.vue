@@ -1,18 +1,17 @@
 <script setup lang="ts">
 import {storeToRefs} from "pinia";
-import {onBeforeMount, onMounted, Ref, ref} from 'vue'
+import {computed,onBeforeMount, onMounted, Ref, ref} from 'vue'
 import {useRoute} from "vue-router";
+import {toast} from "vue3-toastify";
 
-import EditorJsControl from "@/js/components/bases/EditorJsControl.vue";
-import EditorJsInput from "@/js/components/bases/EditorJsInput.vue";
 import TinyMceRichTextInput from "@/js/components/bases/frontendform/TinyMceEditor/TinyMceRichTextInput.vue";
-import EditorJsContentDisplay from "@/js/components/schoolsingle/EditorJsContentDisplay.vue";
+import GenericButton from "@/js/components/button/GenericButton.vue";
+import {formatDateToDayTime} from "@/js/helpers/dateHelper";
 import {edSparkContentSanitizer} from "@/js/helpers/objectHelpers";
 import {partnerService} from "@/js/service/partnerService";
 import {useUserStore} from "@/js/stores/useUserStore";
 import {EditorJSDataType} from "@/js/types/EditorJsTypes";
 import {PartnerDataType} from "@/js/types/PartnerTypes";
-import {SchoolDataType} from "@/js/types/SchoolTypes";
 
 const props = defineProps({
     data: {
@@ -31,10 +30,16 @@ const props = defineProps({
     }
 })
 
+enum PartnerContentState {
+    New = "new",
+    PendingAvailable = "pending_available",
+    PendingLoaded = "pending_loaded",
+}
+console.log(props.contentFromBase)
 
 const partnerContentStateDescription = {
     new: "",
-    pending_available: "You have a pending content available. Submitting new content will replace your current pending content",
+    pending_available: "You have a pending profile awaiting for moderation from ",
     pending_loaded: "You are editing your pending content",
     submitted_pending: "You have successfully submitted content for moderation. Content will update once moderator approved your submission"
 }
@@ -45,6 +50,8 @@ const buttonDescriptionByState = {
     pending_loaded: "Submit modified pending content",
     submitted_pending: "Save & replace pending content"
 }
+
+
 const {currentUser} = storeToRefs(useUserStore())
 const route = useRoute()
 const partnerId = route.params.id
@@ -53,6 +60,8 @@ const editMode = ref<boolean>(false)
 const newPartnerContent: Ref<string> = ref(null)
 const pendingPartnerProfile: Ref<any> = ref(null)
 const partnerContentState = ref('new')
+const currentUserAdminMessage = ref('')
+const tinyMceRefreshKey = ref(0)
 
 onBeforeMount(() => {
     newPartnerContent.value = props.contentFromBase.profile
@@ -60,15 +69,22 @@ onBeforeMount(() => {
 
 onMounted(async () => {
     partnerService.checkIfUserCanEditPartner(currentUser.value.id, +partnerId).then(res => {
-        // currentUserCanEdit.value = Boolean(res.data.result)
-        currentUserCanEdit.value = true
+        currentUserCanEdit.value = Boolean(res.data.result)
+        currentUserAdminMessage.value = res.data.message
+        console.log(res.data.result)
+        toast(
+            "You have successfully submitted content for moderation. Content will update once moderator approved your submission"
+        )
+
         if (currentUserCanEdit.value) {
             fetchPendingContent();
         }
     })
 
 })
-
+const forceRefreshTinyMce = () => {
+    tinyMceRefreshKey.value++
+}
 
 const fetchPendingContent = async () => {
     try {
@@ -79,24 +95,25 @@ const fetchPendingContent = async () => {
         }
     } catch (e) {
         if (e.status === "404") {
+            console.log('Not found')
         } else {
         }
     }
 }
 const handlePartnerDataFromEditor = (data) => {
-    console.log(data)
     newPartnerContent.value = data
 }
 
 const handleEditButton = async (): Promise<void> => {
-    if (pendingPartnerProfile.value) {
-        await fetchPendingContent()
+    if(partnerContentState.value === PartnerContentState.New){
+        fetchPendingContent()
     }
     newPartnerContent.value = props.contentFromBase.profile
     editMode.value = true
     if (partnerContentState.value === 'pending_loaded') {
         partnerContentState.value = 'pending_available'
     }
+    forceRefreshTinyMce()
 
 }
 
@@ -114,44 +131,74 @@ const handleEditButton = async (): Promise<void> => {
 //     })
 // }
 
+const handleAllSaveButton = () =>{
+    return partnerService.updatePartnerContent(+partnerId, currentUser.value.id, newPartnerContent.value).then(res => {
+        if (res.status === 200) {
+            partnerContentState.value = 'submitted_pending'
+            editMode.value = false
+        } else {
+            console.error('Failed to save profile')
+        }
+    }).catch((e) => {
+        console.error(e)
+    })
+}
 const handleClickEditPendingContent = (): void => {
     newPartnerContent.value = pendingPartnerProfile.value
     partnerContentState.value = 'pending_loaded'
 }
 
+const handleCancelEditButton = (): void => {
+    editMode.value = false
+    if(pendingPartnerProfile.value){
+        partnerContentState.value = PartnerContentState.PendingAvailable
+    } else {
+        partnerContentState.value = PartnerContentState.New
+    }
+
+}
+
+const userEditRole = computed(() => {
+    if (currentUserAdminMessage.value.includes('Superadmin')) {
+        return "Superadmin"
+    } else if (currentUserAdminMessage.value.includes('partner')) {
+        return 'Partner'
+    }
+})
+
+
+const moderationStatusMessage = computed(() => {
+    if(partnerContentState.value === PartnerContentState.PendingLoaded){
+        return partnerContentStateDescription[partnerContentState.value]
+    }
+    else if (pendingPartnerProfile.value) {
+        return partnerContentStateDescription[partnerContentState.value] + formatDateToDayTime(pendingPartnerProfile.value.updated_at)
+    } else {
+        return "Your latest profile has been approved on " + formatDateToDayTime(props.contentFromBase.updated_at)
+    }
+})
+
 </script>
 
 <template>
-    <div class="PartnerOverviewContainer flex flex-row w-full">
+    <div class="PartnerOverviewContainer flex flex-col w-full lg:!flex-row">
         <div
-            class="flex flex-col partnerOverviewContent w-full lg:!basis-2/3"
+            class="flex justify-between flex-col gap-12 schoolContent w-full lg:!flex-row"
         >
-            <!--            <EditorJsInput-->
-            <!--                ref="partnerEditorRef"-->
-            <!--                :existing-data="newPartnerContent"-->
-            <!--                @send-editorjs-data="handlePartnerDataFromEditor"-->
-            <!--            >-->
-            <!--                <template #editorjsControl>-->
-            <!--                    <EditorJsControl-->
-            <!--                        :load-pending-function="handleClickEditPendingContent"-->
-            <!--                        :edit-function="handleEditButton"-->
-            <!--                        :save-function="handleAllSaveButton"-->
-            <!--                        :button-description-by-state="buttonDescriptionByState"-->
-            <!--                        :editor-description-by-state="partnerContentStateDescription"-->
-            <!--                        :current-state="partnerContentState"-->
-            <!--                    />-->
-            <!--                </template>-->
-            <!--            </EditorJsInput>-->
-            <template v-if="currentUserCanEdit && editMode">
+            <div
+                v-if="currentUserCanEdit && editMode"
+                class="w-full lg:!basis-2/3"
+            >
                 <TinyMceRichTextInput
+                    :key="tinyMceRefreshKey"
                     :src-content="newPartnerContent"
                     :min-height="600"
                     @emit-tiny-rich-content="handlePartnerDataFromEditor"
                 />
-            </template>
-            <template v-else>
+            </div>
+            <div v-else>
                 <div
-                    class="partnerOverviewContentRenderer"
+                    class="partnerOverviewContentRenderer w-full lg:!basis-2/3"
                 >
                     <!--            <EditorJsContentDisplay :content-blocks="props.contentFromBase.profile" />-->
                     <div
@@ -159,31 +206,93 @@ const handleClickEditPendingContent = (): void => {
                         v-html="edSparkContentSanitizer(props.contentFromBase.profile)"
                     />
                 </div>
-            </template>
-        </div>
-        <div
-            v-if="currentUserCanEdit && !editMode"
-            class="border-[1px] border-black flex items-center flex-col mb-2 px-4 py-4 w-full  lg:!basis-1/3"
-        >
-            <h2 class="font-semibold mb-2 text-genericDark text-lg">
-                Admin Sections
-            </h2>
-            <button
-                v-if="!editMode "
-                class="bg-secondary-blueberry hover:bg-blue-400 px-6 py-2 rounded text-white w-48"
-                @click="handleEditButton"
+            </div>
+            <div
+                v-if="currentUserCanEdit"
+                class="flex items-center flex-col gap-4 mt-6 px-4 w-full lg:!basis-1/3 lg:!mt-0"
             >
-                Edit this page
-            </button>
+                <h2
+                    v-if="currentUserCanEdit"
+                    class="font-semibold text-center text-genericDark text-lg w-full"
+                >
+                    Admin Sections
+                </h2>
+                <div
+                    v-if="currentUserCanEdit"
+                    class="
+                        border-[1px]
+                        border-gray-300
+                        flex
+                        items-center
+                        flex-col
+                        mb-2
+                        pb-4
+                        pt-2
+                        px-4
+                        rounded
+                        schoolAdminSection
+                        w-full
+                        "
+                >
+                    <p>
+                        Your Role
+                    </p>
+                    <p class="font-semibold mb-4">
+                        {{ userEditRole }}
+                    </p>
+                    <p>
+                        Moderation status
+                    </p>
+                    <p class="font-semibold mb-4 text-center">
+                        {{ moderationStatusMessage }}
+                    </p>
+                    <template
+                        v-if="editMode"
+                    >
+                        <div class="2xl:!grid-cols-2 grid grid-cols-1 gap-2 mb-4">
+                            <GenericButton
+                                v-if="partnerContentState === PartnerContentState.PendingAvailable"
+                                class="bg-blue-500 hover:bg-blue-600 rounded text-base text-white w-48"
+                                :callback="handleClickEditPendingContent"
+                            >
+                                View pending profile
+                            </GenericButton>
+                            <GenericButton
+                                class="bg-blue-500 hover:bg-blue-600 rounded text-base text-white w-48"
+                                :callback="handleAllSaveButton"
+                            >
+                                {{ buttonDescriptionByState[partnerContentState] }}
+                            </GenericButton>
+                            <GenericButton
+                                class="px-6 py-2 rounded text-white w-48"
+                                :callback="handleCancelEditButton"
+                            >
+                                Cancel edit
+                            </GenericButton>
+                            <GenericButton
+                                v-if="partnerContentState === PartnerContentState.PendingLoaded"
+                                class="!bg-secondary-mbRose mb-4 px-6 py-2 rounded-lg text-white w-48"
+                                :callback="handleEditButton"
+                            >
+                                Revert to current
+                            </GenericButton>
+                        </div>
+                    </template>
+                    <template v-else>
+                        <GenericButton
+                            v-if="!editMode "
+                            class="bg-blue-600 hover:bg-blue-400 mb-4 px-6 py-2 rounded text-white w-48"
+                            :callback="handleEditButton"
+                        >
+                            Edit this page
+                        </GenericButton>
+                    </template>
+                </div>
+            </div>
         </div>
     </div>
 </template>
 <style scoped>
-
-:deep(p) {
-    margin-top: 16px;
-    text-align: justify;
-}
 </style>
 
 

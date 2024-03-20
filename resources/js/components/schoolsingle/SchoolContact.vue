@@ -119,7 +119,7 @@ const mapOptions = {
             <div v-if="isLoading">
                 <Loader
                     :loader-color="'#0072DA'"
-                    class="pt-4 font-thin"
+                    class="font-thin pt-4"
                     :loader-message="'Contact detail loading'"
                 />
             </div>
@@ -224,7 +224,7 @@ const mapOptions = {
                 class="mt-2"
             >
                 <template #default>
-                    {{ editMode ? "Cancel Edit" : "Edit Contact" }}
+                    {{ editMode ? "Cancel edit" : "Edit contact" }}
                 </template>
             </GenericButton>
         </div>

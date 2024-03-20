@@ -242,9 +242,7 @@ class EventController extends Controller
         $user = Auth::user();
 
 
-//        if (strtolower($user->role->role_name) !== 'partner' || $event->author->id != $user->id) {
-//            return ResponseService::error('User is not a partner', 'Forbidden', 403);
-//        }
+
         if (!isset($emsLink)) {
             return ResponseService::error('EMS Link is not provided', "Missing Data", 422);
         }

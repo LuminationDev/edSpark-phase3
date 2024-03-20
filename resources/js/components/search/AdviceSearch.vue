@@ -62,7 +62,6 @@ if (route.params || route.params.filter) {
         :hero-title="LandingHeroText['guideSearch']['title']"
         :hero-subtitle="LandingHeroText['guideSearch']['subtitle']"
     >
-    
         <template #filterBar>
             <GenericMultiSelectFilter
                 id="adviceFilter"
@@ -74,7 +73,10 @@ if (route.params || route.params.filter) {
             />
         </template>
         <template #additionalFilters>
-            <LabelFiltersSearchPage @emit-filter-to-individual-search-page="handleFilter" />
+            <LabelFiltersSearchPage
+                labels-type="advice"
+                @emit-filter-to-individual-search-page="handleFilter"
+            />
         </template>
     </BaseSearch>
 </template>

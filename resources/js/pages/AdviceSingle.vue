@@ -66,7 +66,6 @@ const timeFormatter = (originalFormat) => {
                                 <div class="mb-2 text-xl">
                                     {{ contentFromBase['author']['author_name'] }}
                                 </div>
-                                <!--   For now, Only non-user (partners only) can be viewed. Still working on Partner Profile   -->
                             </div>
                         </div>
                     </div>
@@ -77,9 +76,9 @@ const timeFormatter = (originalFormat) => {
                     </div>
                 </template>
                 <template #subtitleText2>
-                    <div
-                        v-html="edSparkContentSanitizer(contentFromBase['excerpt'])"
-                    />
+                    <!--                    <div-->
+                    <!--                        v-html="edSparkContentSanitizer(contentFromBase['excerpt'])"-->
+                    <!--                    />-->
                     <LabelRowContentDisplay :labels-array="contentFromBase['labels']" />
                 </template>
             </BaseHero>

@@ -14,6 +14,11 @@ export const dmaService = {
             return res.data.data;
         })
     },
+    getElementDescriptions: async (domainId: string):Promise<AxiosResponse<any>> => {
+        return axios.get(`${API_ENDPOINTS.DMA.USER_SURVEY}/domain/${domainId}/elements`).then(res => {
+            return res.data.data;
+        })
+    },
     postAnswer: async(
         domainId: string,
         questionId: string,
@@ -55,6 +60,12 @@ export const dmaService = {
         })
     },
 
+    getReflection: async():Promise<AxiosResponse<any>> => {
+        return axios.get(`${API_ENDPOINTS.DMA.USER_SURVEY}/reflection`).then(res => {
+            return res.data.data;
+        })
+    },
+
     getActionPlans: async():Promise<AxiosResponse<any>> => {
         return axios.get(`${API_ENDPOINTS.DMA.USER_SURVEY}/actionplans`).then(res => {
             return res.data.data;
@@ -65,10 +76,12 @@ export const dmaService = {
         domainId: string,
         element: string,
         action: string,
+        selected: boolean,
     ):Promise<AxiosResponse<any>> => {
         return axios.put(`${API_ENDPOINTS.DMA.USER_SURVEY}/domain/${domainId}/actionplan`, {
             element,
             action,
+            selected
         }).then(res => {
             return res.data;
         })

@@ -1,4 +1,37 @@
 {
+  "node_modules/canvg/lib/index.es.js": {
+    "css": [
+      "assets/app-c32dbd73.css"
+    ],
+    "file": "assets/index.es-fc50885c.js",
+    "imports": [
+      "resources/js/app.ts"
+    ],
+    "isDynamicEntry": true,
+    "src": "node_modules/canvg/lib/index.es.js"
+  },
+  "node_modules/html2canvas/dist/html2canvas.esm.js": {
+    "file": "assets/html2canvas.esm-e0a7d97b.js",
+    "isDynamicEntry": true,
+    "src": "node_modules/html2canvas/dist/html2canvas.esm.js"
+  },
+  "node_modules/jspdf/node_modules/dompurify/dist/purify.es.js": {
+    "file": "assets/purify.es-cf254a40.js",
+    "isDynamicEntry": true,
+    "src": "node_modules/jspdf/node_modules/dompurify/dist/purify.es.js"
+  },
+  "resources/assets/images/DMA-Report-bg-title.png": {
+    "file": "assets/DMA-Report-bg-title-60c7ce18.png",
+    "src": "resources/assets/images/DMA-Report-bg-title.png"
+  },
+  "resources/assets/images/DMA-Report-dfe-logo.png": {
+    "file": "assets/DMA-Report-dfe-logo-e959564a.png",
+    "src": "resources/assets/images/DMA-Report-dfe-logo.png"
+  },
+  "resources/assets/images/DMA-Report-legend.png": {
+    "file": "assets/DMA-Report-legend-5e155ffc.png",
+    "src": "resources/assets/images/DMA-Report-legend.png"
+  },
   "resources/assets/images/Feedback-MSG-icon.png": {
     "file": "assets/Feedback-MSG-icon-fa72a2c2.png",
     "src": "resources/assets/images/Feedback-MSG-icon.png"
@@ -112,7 +145,7 @@
     "src": "resources/assets/video/temporary.mp4"
   },
   "resources/css/app.css": {
-    "file": "assets/app-ce81d578.css",
+    "file": "assets/app-c32dbd73.css",
     "isEntry": true,
     "src": "resources/css/output.css"
   },
@@ -186,12 +219,12 @@
     "src": "resources/css/font/museosans-700-webfont.woff2"
   },
   "resources/css/output.css": {
-    "file": "assets/app-ce81d578.css",
+    "file": "assets/app-c32dbd73.css",
     "isEntry": true,
     "src": "resources/css/output.css"
   },
   "resources/js/app.css": {
-    "file": "assets/app-9dedac3d.css",
+    "file": "assets/app-2bd2150f.css",
     "src": "resources/js/app.css"
   },
   "resources/js/app.ts": {
@@ -210,6 +243,9 @@
       "assets/illustration-teaching-130e321b.png",
       "assets/chevron-right-7ec8c5ff.svg",
       "assets/x-a2a415f2.svg",
+      "assets/DMA-Report-bg-title-60c7ce18.png",
+      "assets/DMA-Report-legend-5e155ffc.png",
+      "assets/DMA-Report-dfe-logo-e959564a.png",
       "assets/temporary-71944d74.mp4",
       "assets/play-7bbc71f2.svg",
       "assets/arrow-circle-left-a4211f62.svg",
@@ -240,10 +276,15 @@
       "assets/bg-cover-triage-16975a06.jpg"
     ],
     "css": [
-      "assets/app-9dedac3d.css",
-      "assets/app-ce81d578.css"
+      "assets/app-2bd2150f.css",
+      "assets/app-c32dbd73.css"
     ],
-    "file": "assets/app-817cd2f2.js",
+    "dynamicImports": [
+      "node_modules/html2canvas/dist/html2canvas.esm.js",
+      "node_modules/jspdf/node_modules/dompurify/dist/purify.es.js",
+      "node_modules/canvg/lib/index.es.js"
+    ],
+    "file": "assets/app-a6da87aa.js",
     "isEntry": true,
     "src": "resources/js/app.ts"
   }

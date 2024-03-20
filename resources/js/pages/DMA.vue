@@ -15,6 +15,7 @@ import WarningModal from "@/js/components/dma/WarningModal.vue";
 import InspirationAndGuidesRobot from "@/js/components/inspirationandguides/InspirationAndGuidesRobot.vue";
 import {LandingHeroText} from "@/js/constants/PageBlurb";
 import {dmaService} from "@/js/service/dmaService";
+import GenericButton from '@/js/components/button/GenericButton.vue';
 
 const showSurveyModal = ref(false);
 const showReportModal = ref(false);
@@ -137,8 +138,9 @@ const handleCloseReportModal = () => {
 
 const showResetting = async () => {
     resetting.value = true;
-    await new Promise(r => setTimeout(r, 4000));
+    await new Promise(r => setTimeout(r, 3500));
     await fetchUserSurvey();
+    await new Promise(r => setTimeout(r, 500));
     resetting.value = false
 }
 
@@ -159,6 +161,8 @@ const isDomainResetting = (domainId = null) => {
 
 const handleResetSurvey = async () => {
     showResetModal.value = false;
+
+
     dmaService.resetSurveyProgress().then(() => {
         showResetting();
     }).catch((error) => {
@@ -232,13 +236,13 @@ const handleResetSurvey = async () => {
                                     </h3>
                                     <p
                                         v-if="isCompleted"
-                                        class="text-base"
+                                        class="text-lg font-thin"
                                     >
                                         This chart shows your performance in each of the assessed elements.
                                     </p>
                                     <p
                                         v-else
-                                        class="text-base"
+                                        class="text-lg font-thin"
                                     >
                                         After completing your evaluation, this
                                         chart will be updated with your
@@ -252,27 +256,43 @@ const handleResetSurvey = async () => {
                                     <RoundButton
                                         v-if="isCompleted"
                                         @click="showReportModal = true"
+                                        class="!normal-case  hover:!brightness-[1.1] hover:!bg-secondary-coolGrey"
                                     >
                                         View assessment report
                                     </RoundButton>
                                 </div>
                             </div>
-                            <p class="px-4 text-base md:!px-5 lg:!px-0">
+                            <p class="text-lg font-thin px-4 md:!px-5 lg:!px-0">
                                 <!-- TODO correct this information -->
-                                The tool is for you and your school. Your data is only stored locally in the
-                                current profile of your web browser. You can generate a PDF report for sharing within
-                                your school or including in your next
+                              
+                                The tool is for you and your school. Your data is stored on the edSpark platform. 
+                                You can generate a PDF report below for sharing within your school or including in your next
                                 round of School Improvement planning.
 
+
+                                <!-- <span class="flex flex-row w-full gap-10 justify-between mt-6"> -->
+                                
+
                                 <span class="block h-6 mt-7">
-                                    <button
+                                    <GenericButton
                                         v-if="isInProgress && !isDomainResetting()"
-                                        class="block font-semibold underline"
+                                        class="
+                                            !text-black
+                                            hover:!brightness-[1.2]
+                                            hover:!bg-secondary-coolGrey
+                                            bg-secondary-coolGrey
+                                            brightness-[1.1]
+                                            font-medium
+                                            px-12
+                                            py-2
+                                            text-lg"
                                         @click="showResetModal = true"
                                     >
                                         Reset progress
-                                    </button>
+                                    </GenericButton>
                                 </span>
+
+                            <!-- </span> -->
                             </p>
                         </div>
 
@@ -283,6 +303,7 @@ const handleResetSurvey = async () => {
                                 v-for="domain of domains"
                                 :key="domain.id"
                                 :domain="domain"
+                                id="DomainSummary"
                                 :resetting="isDomainResetting(domain.id)"
                                 @click="handleLaunchSurvey(domain.id)"
                             />
@@ -309,16 +330,16 @@ const handleResetSurvey = async () => {
             <BaseLandingSection>
                 <template #title>
                     <h2 class="px-4 text-h3 md:!px-5 lg:!px-0">
-                        Frequently Asked
+                        Frequently asked
                     </h2>
                 </template>
-                <template #subtitle>
-                    <div class="mb-10 px-4 text-medium md:!px-5 lg:!px-0">
+                <!-- <template #subtitle>
+                    <div class="mb-10 px-4 md:!px-5 lg:!px-0">
                         The Digital Adoption Group (DAG) offers comprehensive guidance on digital technologies,
                         providing practical, system-wide advice for purchasing and adopting high-impact technologies
                         that enhance teaching and learning.
                     </div>
-                </template>
+                </template> -->
                 <template #content>
                     <div class="flex flex-col gap-5 lg:gap-7 px-4 md:!px-5 lg:!px-0">
                         <FaqEntry>
@@ -347,8 +368,9 @@ const handleResetSurvey = async () => {
                                 Where is my data stored?
                             </template>
                             <template #answer>
-                                <!-- TODO add answer -->
-                                ...
+                                Your Digital Maturity Assessment data is stored on the edSpark platform, which is managed by the SA Department for Education
+                                in accordance with the <a href="https://www.education.sa.gov.au/your-privacy" target="_blank">privacy policy</a>. The edSpark 
+                                platform is integrated with edPass, and makes use of relevant information including but not limited to your role, site name and other details on an as-needed basis.
                             </template>
                         </FaqEntry>
                     </div>

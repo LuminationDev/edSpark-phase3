@@ -103,7 +103,9 @@ const shareTippyMessage: Ref<string> = ref('Copy link');
 
 const stripHTML = (value) => {
     const div = document.createElement('div');
-    div.innerHTML = value;
+    let content = value.replace(/<[hH]?[1-6]>/g, ' '); //replace start tags with a space
+    content = value.replace(/<\/[hH]?[1-6]>/g, '. '); //and end tags with a fullstop and space
+    div.innerHTML = content;
     return div.textContent;
 };
 

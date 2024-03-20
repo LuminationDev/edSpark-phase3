@@ -11,6 +11,7 @@ import ErrorMessages from "@/js/components/bases/ErrorMessages.vue";
 import GenericButton from "@/js/components/button/GenericButton.vue";
 import CustomErrorMessages from "@/js/components/feedbackform/CustomErrorMessages.vue";
 import Loader from "@/js/components/spinner/Loader.vue";
+import UserBookmark from "@/js/components/userprofile/UserBookmark.vue";
 import UserAvatarChange from "@/js/components/userprofile/userprofileupdate/UserAvatarChange.vue";
 import UserCardItemSelector from "@/js/components/userprofile/userprofileupdate/UserCardItemSelector.vue";
 import UserChecklistSelector from "@/js/components/userprofile/userprofileupdate/UserChecklistSelector.vue";
@@ -19,6 +20,8 @@ import {
     AvailableSchoolYearList,
     AvailableSubjectsList
 } from "@/js/components/userprofile/userprofileupdate/userListing";
+import UserUnreadNotificationLayout
+    from "@/js/components/userprofile/userprofileupdate/usernotification/UserUnreadNotificationLayout.vue";
 import UserProfileContentContainer from "@/js/components/userprofile/userprofileupdate/UserProfileContentContainer.vue";
 import {API_ENDPOINTS} from "@/js/constants/API_ENDPOINTS";
 import {useUserStore} from "@/js/stores/useUserStore";
@@ -29,8 +32,12 @@ const {currentUser} = storeToRefs(userStore)
 //All sting defined constants
 const leftHeadingPersonal = ref('Personal info')
 const leftDescriptionPersonal = ref('Update your photo and personal details.')
+const leftHeadingBookmark = ref('Bookmarks')
+const leftDescriptionBookmark = ref('Your favourite bookmarks are here')
 const leftHeadingProfile = ref('Profile')
 const leftDescriptionProfile = ref('Update your subjects and interests.')
+const leftHeadingNotification = ref('Notifications')
+const leftDescriptionNotification = ref('Stay up to date with the latest activities.')
 const disabledTippyMessage = "This information is retrieved from EdPass and cannot be changed through edSpark. Please change on EdPass if necessary."
 const displayErrorMessageText = "Value is required"
 const disabled = ref(true)
@@ -219,6 +226,15 @@ const handleProfileCancelButton = () => {
     reloadKey.value++
 }
 
+const userNotificationLargeLayout = computed(() =>
+{
+    if (currentUser.value.id) {
+        console.log("View all button pressed")
+        return `/notifications/${currentUser.value.id}`
+    } else return ''
+})
+
+
 </script>
 
 <template>
@@ -276,7 +292,6 @@ const handleProfileCancelButton = () => {
                             class="mb-6 mt-2"
                         />
                     </span>
-
                     <!--                    For the School name-->
                     <div class="ml-4 mt-2">
                         School name
@@ -289,7 +304,6 @@ const handleProfileCancelButton = () => {
                         >
                     </tippy>
                     <span>
-
                         <ErrorMessages
                             :v$="vPersonal$.siteName"
                             class="mb-6 mt-2"
@@ -348,6 +362,7 @@ const handleProfileCancelButton = () => {
                         @send-handle-file-dropped-instance="handleReceiveFileDroppedInstance"
                         @reset-image-upload-boolean="uploadImageInstance = false"
                     />
+                    <div class="border-[1px] border-gray-200 mt-10" />
                 </template>
                 <template #buttons>
                     <GenericButton
@@ -455,6 +470,7 @@ const handleProfileCancelButton = () => {
                             </span>
                         </div>
                     </div>
+                    <div class="border-[1px] border-gray-200 mt-10" />
                 </template>
                 <template #buttons>
                     <GenericButton
@@ -486,6 +502,49 @@ const handleProfileCancelButton = () => {
                             Save changes
                         </template>
                     </GenericButton>
+                </template>
+            </UserProfileContentContainer>
+            <div class="border-[1px] border-gray-100" />
+            <UserProfileContentContainer
+                id="reloadableDiv"
+                :key="reloadKey"
+                :left-heading="leftHeadingNotification"
+                :left-description="leftDescriptionNotification"
+            >
+                <template #content>
+                    <div class="ml-4 mt-2">
+                        <div class="flex flex-row">
+                            <div class="ml-1">
+                                Recent Activities
+                            </div>
+                            <div class="cursor-pointer ml-auto mr-4 underline">
+                                <router-link
+                                    :to="userNotificationLargeLayout"
+                                >
+                                    View all
+                                </router-link>
+                            </div>
+                        </div>
+                        <div>
+                            <UserUnreadNotificationLayout />
+                        </div>
+                    </div>
+                </template>
+            </UserProfileContentContainer>
+            <UserProfileContentContainer
+                id="reloadableDiv"
+                :key="reloadKey"
+                :left-heading="leftHeadingBookmark"
+                :left-description="leftDescriptionBookmark"
+                class="UserBookmarkListContainer flex flex-col pt-12"
+            >
+                <template #content>
+                    <div class="flex flex-row mb-6 ml-4 mt-2">
+                        Your Bookmarks
+                    </div>
+                    <div class="ml-4">
+                        <UserBookmark />
+                    </div>
                 </template>
             </UserProfileContentContainer>
         </div>

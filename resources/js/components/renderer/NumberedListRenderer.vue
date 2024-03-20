@@ -70,6 +70,7 @@ const getPositionAtCenter = (element) => {
 
 </script>
 
+<!-- margin-top: ${top+halfItemHeight}px; -->
 <template>
     <div class="extraContent mb-10 relative">
         <div class="flex flex-col">
@@ -89,7 +90,7 @@ const getPositionAtCenter = (element) => {
         <div class="flex flex-col">
         <div
             class="absolute left-[12.4%] bg-black bg-secondary-blueberry connectingLine hidden w-0.5 z-10 md:!flex"
-            :style="`height: ${distanceBetweenEls-top+halfItemHeight}px; top: ${top+halfItemHeight}px; margin-top: ${top+halfItemHeight}px;`"
+            :style="`height: ${distanceBetweenEls-top+halfItemHeight}px; top: ${top+halfItemHeight}px;`"
         />
             <div
                 v-for="(item,index) in numberedListContent"

@@ -16,7 +16,6 @@ const props = defineProps({
 
 const emits = defineEmits(['sendSchoolTech'])
 const handleDataFromChildren = (techUsedList) =>{
-    console.log(techUsedList)
     emits('sendSchoolTech', techUsedList)
 }
 
@@ -35,7 +34,10 @@ const handleDataFromChildren = (techUsedList) =>{
                 :key="index"
                 #[`selectorItem_${index}`]
             >
-                <TechSelectorItem :item="item" />
+                <TechSelectorItem
+                    :item="item"
+                    :color-theme="colorTheme"
+                />
             </template>
         </GenericSelector>
         <GenericSelector
@@ -50,7 +52,10 @@ const handleDataFromChildren = (techUsedList) =>{
                 :key="index"
                 #[`selectorItem_${index}`]
             >
-                <TechSelectorItem :item="item" />
+                <TechSelectorItem
+                    :item="item"
+                    :color-theme="colorTheme"
+                />
             </template>
         </GenericSelector>
     </div>

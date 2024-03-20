@@ -112,9 +112,10 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('fetchAllBookmarksByType', [LikeBookmarkController::class, 'fetchAllBookmarksByType']);
 
     // Notifications
-    Route::get('fetchAllNotifications/{userId}', [NotificationController::class, 'getAllNotifications']);
-    Route::get('fetchSingleNotification', [NotificationController::class, 'getSingleNotification']);
-    Route::get('fetchNotificationByType', [NotificationController::class, 'getNotificationByType']);
+    Route::get('getNotifications/{userId}', [NotificationController::class, 'getNotifications']);
+    Route::get('getAllNotifications/{userId}', [NotificationController::class, 'getAllNotifications']);
+    Route::post('readNotification/{notificationId}', [NotificationController::class, 'readNotification']);
+    Route::post('readAllNotifications/{userId}', [NotificationController::class, 'readAllNotifications']);
 
     // Partners API
     Route::get('fetchAllPartners', [PartnerController::class, 'fetchAllPartners']);
@@ -170,11 +171,19 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('updateOrCreateUserAvatar/{user_id}', [UserController::class, 'updateOrCreateUserAvatar']);
 
 
+
+    // Notification
+//    Route::get('user/notification/{user_id}', [NotificationController::class,'getUserNotification']);
+//    Route::get('user/notification/{user_id}', [NotificationController::class,'getUserNotification']);
+
+
     Route::group(['prefix' => 'user/survey'], function () {
         Route::get('/', [SurveyController::class, 'getUserSurvey']);
         Route::delete('/', [SurveyController::class, 'resetUserSurvey']);
         Route::get('/domain/{domain_id}/questions', [SurveyController::class, 'getSurveyQuestionsForDomain']);
+        Route::get('/domain/{domain_id}/elements', [SurveyController::class, 'getDescriptionForElements']);
         Route::put('/domain/{domain_id}/reflection', [SurveyController::class, 'saveUserReflection']);
+        Route::get('/reflection', [SurveyController::class, 'getUserReflection']);
         Route::put('/domain/{domain_id}/actionplan', [SurveyController::class, 'saveUserActionPlan']);
         Route::delete('/domain/{domain_id}/actionplan', [SurveyController::class, 'deleteUserActionPlan']);
         Route::get('/actionplans', [SurveyController::class, 'getUserActionPlan']);

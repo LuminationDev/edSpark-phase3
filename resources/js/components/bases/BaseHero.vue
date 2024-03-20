@@ -58,11 +58,9 @@ onMounted(() => {
     let useCustomColor = false;
 
     if (schoolColorKeys.includes(props.swooshColorTheme)) {
-        console.log(props.swooshColorTheme);
         useCustomColor = true
     }
 
-    console.log("Custom? "+useCustomColor+", "+props.swooshColorTheme);
 
     gradientBg.value = "background-image: linear-gradient(to left, "
         + (useCustomColor ? schoolColorTheme[props.swooshColorTheme]['med'] : schoolColorTheme['teal']['med']) + ","
@@ -70,7 +68,6 @@ onMounted(() => {
         + (useCustomColor ? schoolColorTheme[props.swooshColorTheme]['dark'] : schoolColorTheme['teal']['dark'])
         + ");";
 
-        console.log(gradientBg.value)
 })
 
 const windowStore = useWindowStore()
@@ -106,7 +103,7 @@ const heroBackgroundColor = computed(() => {
 
     // case 'blue':
     case 'partnerBlue':
-    // case 'blueberry':
+        // case 'blueberry':
         return 'bg-secondary-blueberry'
 
     case 'teal':
@@ -138,24 +135,16 @@ const heroBackgroundColor = computed(() => {
 
 
 <!-- :class="heroBackgroundColor" -->
+<!-- grid grid-cols-10 -->
 
 <template>
     <div class="BaseHeroContainer h-mainHero max-h-mainHero mb-0 overflow-y-hidden relative z-10">
         <div
-            class="grid grid-cols-10 h-full relative"
+            class="flex flex-row h-full relative"
         >
             <div
-                class="
-                    HeroSolidColor
-                    bg-center
-                    bg-contain
-                    bg-no-repeat
-                    col-span-10
-                    h-full
-                    pt-14
-                    px-11
-                    lg:!col-span-6
-                    "
+                class="HeroSolidColor bg-center bg-contain bg-no-repeat col-span-10 h-[500px] pt-14 px-11 lg:!col-span-6"
+                style="flex:1"
                 :style="heroBackgroundSwitch"
                 :class="heroBackgroundColor"
             >
@@ -206,17 +195,15 @@ const heroBackgroundColor = computed(() => {
 
                     <div
                         v-if="$slots.subtitleText2"
-                        class="font-normal h-auto mt-4 pb-4 text-base text-white hidden"
+                        class="font-normal h-auto mt-4 pb-4 text-base text-white"
                     >
-                        <p class="">
-                            <slot name="subtitleText2" />
-                        </p>
+                        <slot name="subtitleText2" />
                         <slot name="subtitleContent" />
                     </div>
                 </div>
             </div>
             <div
-                class="bg-center bg-cover bg-no-repeat bg-white hidden imageCover lg:!block lg:!col-span-4"
+                class="bg-center bg-cover bg-no-repeat bg-white h-[500px] hidden imageCover w-[500px] lg:!block lg:!col-span-4"
                 :style="'background-image: url(' + heroBackgroundLinkOnly +')'"
             />
         </div>

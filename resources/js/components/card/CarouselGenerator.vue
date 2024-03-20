@@ -164,6 +164,14 @@ const controlledDataArray = computed(() => {
     scrollbar-width: none;
 }
 
+
+.carousel__pagination-button::after,
+:deep(.carousel__pagination-button::after) {
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+    }
+
 @media screen and (max-width: 400px) {
     .carousel__wrapper {
         max-width: 100%;
@@ -196,6 +204,7 @@ const controlledDataArray = computed(() => {
     }
 
     :deep(.carousel__pagination-button::after) {
+        width: 12px;
         height: 12px;
         border-radius: 50%;
     }

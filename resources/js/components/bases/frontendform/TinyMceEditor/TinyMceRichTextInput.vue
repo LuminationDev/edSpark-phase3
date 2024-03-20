@@ -164,13 +164,17 @@ p {
             image_advtab: true,
             browser_spellcheck : true,
             content_css: '/css/filament/font/font.css',
+            link_default_target:'_blank',
             skin: false,
             content_style: `body {font-family: MuseoSans;} html {font-family: MuseoSans;} .mce-offscreen-selection{display: none;} ${fontStyling}`,
             style_formats: editorStyleFormat,
             contextmenu: 'copy cut paste image link'
         }"
     />
-    <ErrorMessages :v$="props.v$" />
+    <ErrorMessages
+        v-if="props.v$"
+        :v$="props.v$"
+    />
 </template>
 <style>
 .tox-tinymce{

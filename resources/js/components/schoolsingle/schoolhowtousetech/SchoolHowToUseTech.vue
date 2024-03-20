@@ -1,6 +1,6 @@
 <script setup>
 import {watchDebounced} from "@vueuse/core";
-import {computed, ref} from 'vue'
+import {computed, ref, watch} from 'vue'
 
 import TinyMceRichTextInput from "@/js/components/bases/frontendform/TinyMceEditor/TinyMceRichTextInput.vue";
 import ImageUploaderInput from "@/js/components/bases/ImageUploaderInput.vue";
@@ -33,6 +33,7 @@ const createHowToDataStructure = item => {
 }
 const howToUseData = ref([])
 const allTechnologyList = [...schoolTech, ...schoolPartnerTech]
+const tinyMceRefreshKey = ref(0)
 
 
 // initialise howToUseData,
@@ -55,12 +56,8 @@ if (props.techLandscape && props.techLandscape.length > 0) {
 
 const handleTinyMceContent = (name, data) => {
     howToUseData.value.filter(item => item.name === name)[0].text = data
-    console.log(name)
-    console.log(howToUseData.value.filter(item => item.name === name)[0])
 }
-const handleUploadedImageUrls = (name, urlsData) => {
-    console.log(name)
-    console.log(howToUseData.value.filter(item => item.name === name)[0])
+const handleUploadedImageUrls = (name, urlsData,index)=> {
     howToUseData.value.filter(item => item.name === name)[0].images = urlsData.map(item => item.remoteUrl)
 }
 
@@ -80,10 +77,12 @@ watchDebounced(howToUseData, () =>{
     sendDataToParent()
 }, {deep: true})
 
+watch(()=> props.techUsed.length , () =>{
+    tinyMceRefreshKey.value++
+})
 </script>
 
 <template>
-    <pre>{{ activeHowToUseTechItem }}</pre>
     <div class="HowToUseTechContainer flex justify-center items-center flex-col px-5 py-2 text-genericDark">
         <div
             v-for="(item,index) in activeHowToUseTechItem"
@@ -91,30 +90,12 @@ watchDebounced(howToUseData, () =>{
             class="HowToUseItem border-[1px] flex justify-center flex-col mt-6 p-4 rounded w-full"
         >
             <SchoolHowToUseTechEditableRow
+                :tiny-mce-refresh-key="tinyMceRefreshKey"
                 :how-to-use-tech-item="item"
+                :index="index"
                 @emit-tiny-mce-content="(name,data) => handleTinyMceContent(name,data)"
-                @emit-images-array="(name, urls) => handleUploadedImageUrls(name,urls)"
+                @emit-images-array="(name, urls) => handleUploadedImageUrls(name,urls,index)"
             />
-            <!--            <div class="HowToUseText richTextContentContainer w-full">-->
-            <!--                <div class="font-semibold howToTitle mb-6 text-xl">-->
-            <!--                    {{ displayTitle(item.name) }}-->
-            <!--                </div>-->
-            <!--                <TinyMceRichTextInput-->
-            <!--                    :src-content="item.text"-->
-            <!--                    @emit-tiny-rich-content="(data) => handleTinyMceContent(item.name,data)"-->
-            <!--                />-->
-            <!--            </div>-->
-            <!--            <div class="HowToUseImage flex justify-center items-center flex-col h-full mt-2 w-full">-->
-            <!--                <div class="flex mb-4 self-start">-->
-            <!--                    Image gallery (Up to 5 images)-->
-            <!--                </div>-->
-            <!--                <ImageUploaderInput-->
-            <!--                    :item-type="'HowToUseTech'"-->
-            <!--                    :current-media="item.images"-->
-            <!--                    :max="5"-->
-            <!--                    @emit-uploaded-media="(urlsArray)=>handleUploadedImageUrls(item.name, urlsArray)"-->
-            <!--                />-->
-            <!--            </div>-->
         </div>
     </div>
 </template>

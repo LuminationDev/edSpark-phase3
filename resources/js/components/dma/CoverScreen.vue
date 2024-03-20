@@ -1,6 +1,7 @@
 <script setup>
 
 import PrimaryActionButton from "@/js/components/dma/PrimaryActionButton.vue";
+import RoundButton from "@/js/components/dma/RoundButton.vue";
 import TextButton from "@/js/components/dma/TextButton.vue";
 
 const props = defineProps({
@@ -19,6 +20,10 @@ const props = defineProps({
     disabled: {
         type: Boolean,
         default: false,
+    },
+    primaryOnEnter: {
+        type: Boolean,
+        default: true,
     }
 })
 
@@ -35,7 +40,7 @@ const emit = defineEmits(['primary', 'secondary']);
         <div
             class="flex justify-start items-center flex-col gap-10 pb-10 pt-32 px-6 w-full md:!pt-20 md:!px-24 md:!py-20 md:h-full"
         >
-            <div class="flex justify-center items-center flex-1 w-full md:h-0">
+            <div class="flex justify-center items-center flex-1 overflow-auto w-full">
                 <slot name="content" />
             </div>
 
@@ -43,14 +48,24 @@ const emit = defineEmits(['primary', 'secondary']);
                 v-if="props.cornerControls"
                 class="flex md:justify-between items-center flex-col gap-6 w-full md:!flex-row"
             >
-                <PrimaryActionButton
-                    v-if="$slots.primaryAction"
-                    class="order-0 md:order-1"
-                    :disabled="disabled"
-                    @click="emit('primary')"
-                >
-                    <slot name="primaryAction" />
-                </PrimaryActionButton>
+                <template v-if="$slots.primaryAction">
+                    <PrimaryActionButton
+                        v-if="props.primaryOnEnter"
+                        class="order-0 md:order-1"
+                        :disabled="disabled"
+                        @click="emit('primary')"
+                    >
+                        <slot name="primaryAction" />
+                    </PrimaryActionButton>
+                    <RoundButton
+                        v-else
+                        class="order-0 md:order-1"
+                        :disabled="disabled"
+                        @click="emit('primary')"
+                    >
+                        <slot name="primaryAction" />
+                    </RoundButton>
+                </template>
                 <TextButton
                     v-if="$slots.secondaryAction"
                     :disabled="disabled"
@@ -68,13 +83,22 @@ const emit = defineEmits(['primary', 'secondary']);
                 v-else
                 class="flex justify-center items-center flex-col gap-6 w-full md:!gap-10"
             >
-                <PrimaryActionButton
-                    v-if="$slots.primaryAction"
-                    :disabled="disabled"
-                    @click="emit('primary')"
-                >
-                    <slot name="primaryAction" />
-                </PrimaryActionButton>
+                <template v-if="$slots.primaryAction">
+                    <PrimaryActionButton
+                        v-if="props.primaryOnEnter"
+                        :disabled="disabled"
+                        @click="emit('primary')"
+                    >
+                        <slot name="primaryAction" />
+                    </PrimaryActionButton>
+                    <RoundButton
+                        v-else
+                        :disabled="disabled"
+                        @click="emit('primary')"
+                    >
+                        <slot name="primaryAction" />
+                    </RoundButton>
+                </template>
                 <TextButton
                     v-if="$slots.secondaryAction"
                     :disabled="disabled"

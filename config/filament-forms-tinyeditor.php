@@ -46,7 +46,7 @@ return [
         'template' => [
             'plugins' => 'autoresize template',
             'toolbar' => 'template',
-            'upload_directory' => null,
+            '-upload_directory' => null,
         ],
         /*
         |--------------------------------------------------------------------------

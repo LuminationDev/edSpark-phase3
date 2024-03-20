@@ -47,16 +47,24 @@ class EventResource extends Resource
 
         $groupedLabels = Label::all()->groupBy('type');
         $labelColumns = [];
+        $categoriesToInclude = ['category', 'learning', 'capability', 'year', 'partnerships'];
         foreach ($groupedLabels as $category => $labels) {
-            $labelColumns[] = Forms\Components\CheckboxList::make("labels")
-                ->label("Labels - {$category}")
-                ->extraAttributes(['class' => 'text-primary-600'])
-                ->options($labels->pluck('value', 'id')->toArray())
-                ->relationship('labels', 'value', function ($query) use ($category) {
-                    $query->where('type', $category)->orderByRaw('CAST(labels.id AS SIGNED)');
-                })
-                ->columns(3);
+            if (in_array($category, $categoriesToInclude)) {
+                $labelColumns[] =
+                    Forms\Components\Section::make(ucfirst($category))
+                    ->schema([
+                        Forms\Components\CheckboxList::make("labels")
+                            ->label("")
+                            ->extraAttributes(['class' => 'text-primary-600'])
+                            ->options($labels->pluck('value', 'id')->toArray())
+                            ->relationship('labels', 'value', function ($query) use ($category) {
+                                $query->where('type', $category)->orderByRaw('CAST(labels.id AS SIGNED)');
+                            })
+                            ->columns(3)
+                    ]);
+            }
         }
+
         return $form
             ->schema([
                 Forms\Components\Card::make()
@@ -94,19 +102,23 @@ class EventResource extends Resource
                             ]),
                         Forms\Components\Grid::make(3)
                             ->schema([
+                                Forms\Components\Select::make('event_format')
+                                    ->label('Event format')
+                                    ->required()
+                                    ->reactive()
+                                    ->relationship('event_format', 'event_format_name'),
+                                Forms\Components\TextInput::make('url')
+                                    ->label('URL')
+                                    ->hidden(fn(\Filament\Forms\Get $get) => $get('event_format') === null || $get('event_format') == '2'),
+                                Forms\Components\TextInput::make('address')
+                                    ->label('Address')
+                                    ->hidden(fn(\Filament\Forms\Get $get) => $get('event_format') === null || $get('event_format') == '1'),
                                 Forms\Components\BelongsToSelect::make('event_type')
                                     ->label('Event type')
                                     ->required()
-                                    ->reactive()
                                     ->relationship('eventtype', 'event_type_name'),
-                                Forms\Components\TextInput::make('url')
-                                    ->label('URL')
-                                    ->hidden(fn(\Filament\Forms\Get $get) => $get('event_type') === null || $get('event_type') == '7'),
-                                Forms\Components\TextInput::make('address')
-                                    ->label('Address')
-                                    ->hidden(fn(\Filament\Forms\Get $get) => $get('event_type') === null || $get('event_type') == '6'),
                             ]),
-                        Forms\Components\Card::make()
+                        Forms\Components\Section::make()
                             ->schema([
                                 ...$labelColumns
                             ]),

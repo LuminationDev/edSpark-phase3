@@ -34,6 +34,11 @@ const props = defineProps({
     warnings: {
         type: Boolean,
         default: true
+    },
+    index: {
+        type: Number,
+        required: false,
+        default: 0
     }
 })
 
@@ -171,7 +176,7 @@ const removeSavedMedia = (index) => {
                     class="flex flex-col mu-plusbox-container"
                 >
                     <label
-                        for="mu-file-input"
+                        :for="`mu-file-input${index}`"
                         class="flex flex-col mu-plusbox"
                     >
                         <svg
@@ -193,7 +198,7 @@ const removeSavedMedia = (index) => {
                         <p class="text-center dark:text-gray-400 text-gray-500 text-xs">500px * 500px </p>
                     </label>
                     <input
-                        id="mu-file-input"
+                        :id="`mu-file-input${index}`"
                         type="file"
                         accept="image/*"
                         multiple

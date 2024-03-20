@@ -80,6 +80,7 @@ const fontAwesomeDefaultColor = (itemColor) => {
 }
 </script>
 
+<!-- margin-top: ${top+halfItemHeight}px; -->
 
 <template>
     <div class="extraContent mb-10 relative">
@@ -100,7 +101,7 @@ const fontAwesomeDefaultColor = (itemColor) => {
         <div class="flex flex-col">
         <div
             class="absolute left-[12.4%] bg-transparent border-[#0072DA] border connectingLine hidden w-0 z-10 md:!flex"
-            :style="`height: ${distanceBetweenEls-top+halfItemHeight}px; top: ${top+halfItemHeight}px; margin-top: ${top+halfItemHeight}px;`"
+            :style="`height: ${distanceBetweenEls-top+halfItemHeight}px; top: ${top+halfItemHeight}px;`"
         />
             <div
                 v-for="(item,index) in iconListContent"
