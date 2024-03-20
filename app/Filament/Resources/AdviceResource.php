@@ -61,7 +61,7 @@ class AdviceResource extends Resource
                                 ->extraAttributes(['class' => 'text-primary-600'])
                                 ->options($labels->pluck('value', 'id')->toArray())
                                 ->relationship('labels', 'value', function ($query) use ($category) {
-                                    $query->where('type', $category)->orderByRaw('CAST(labels.id AS SIGNED)');
+                                    $query->where('type', $category);
                                 })
                                 ->columns(3)
                         ]);
