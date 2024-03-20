@@ -175,7 +175,6 @@ class PartnerController extends Controller
         }
     }
 
-
     public function updatePartnerContent(Request $request)
     {
         try {

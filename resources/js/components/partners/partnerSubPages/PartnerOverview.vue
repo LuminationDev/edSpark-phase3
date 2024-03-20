@@ -6,12 +6,14 @@ import {toast} from "vue3-toastify";
 
 import TinyMceRichTextInput from "@/js/components/bases/frontendform/TinyMceEditor/TinyMceRichTextInput.vue";
 import GenericButton from "@/js/components/button/GenericButton.vue";
+import SchoolImageChange from "@/js/components/schoolsingle/schoolContent/SchoolImageChange.vue";
 import {formatDateToDayTime} from "@/js/helpers/dateHelper";
 import {edSparkContentSanitizer} from "@/js/helpers/objectHelpers";
 import {partnerService} from "@/js/service/partnerService";
 import {useUserStore} from "@/js/stores/useUserStore";
 import {EditorJSDataType} from "@/js/types/EditorJsTypes";
 import {PartnerDataType} from "@/js/types/PartnerTypes";
+
 
 const props = defineProps({
     data: {
@@ -29,6 +31,38 @@ const props = defineProps({
         required: true
     }
 })
+const logoStorage = ref(null)
+const coverImageStorage = ref(null)
+const handleReceivePhotoFromContent = (type, file) => {
+    if (type === 'logo') {
+        logoStorage.value = file;
+    }
+};
+
+const handleUploadLogo = async () => {
+    try {
+        if (!logoStorage.value) {
+            throw new Error('No logo selected for upload');
+        }
+
+        const logoFile = logoStorage.value;
+        if (!logoFile instanceof File) {
+            throw new Error('Invalid logo file');
+        }
+
+        console.log('Uploading logo:', logoFile);
+
+        const response = await partnerService.fetchUploadLogo(logoFile);
+        console.log('Logo uploaded successfully:', response);
+        // Optionally, you can reset the logo storage after successful upload
+        logoStorage.value = null;
+        // Add any additional logic here, such as updating UI or displaying a success message
+    } catch (error) {
+        console.error('Error uploading logo:', error);
+        // Add logic to handle errors, such as displaying an error message to the user
+    }
+};
+
 
 enum PartnerContentState {
     New = "new",
@@ -143,6 +177,10 @@ const handleAllSaveButton = () =>{
         console.error(e)
     })
 }
+
+
+
+
 const handleClickEditPendingContent = (): void => {
     newPartnerContent.value = pendingPartnerProfile.value
     partnerContentState.value = 'pending_loaded'
@@ -286,6 +324,20 @@ const moderationStatusMessage = computed(() => {
                         >
                             Edit this page
                         </GenericButton>
+                    </template>
+                    <template v-if="editMode">
+                        <SchoolImageChange
+                            class="mb-6"
+                            :current-logo="props.contentFromBase.logo"
+                            :current-cover-image="props.contentFromBase.cover_image"
+                            @send-uploaded-photo-to-content="handleReceivePhotoFromContent"
+                        />
+                        <button
+                            class="border-2 h6 p-4 w-32"
+                            @click="handleUploadLogo"
+                        >
+                            Upload logo
+                        </button>
                     </template>
                 </div>
             </div>

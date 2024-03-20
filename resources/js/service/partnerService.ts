@@ -68,6 +68,25 @@ export const partnerService = {
         })
 
     },
+    fetchUploadLogo: async (logoData: any): Promise<AxiosResponse<any>> => {
+    const formData = new FormData();
+    formData.append('logo', logoData);
+
+    try {
+        const response = await axios.post(
+            API_ENDPOINTS.PARTNER.UPDATE_PARTNER_CONTENT,
+            formData,
+            {
+                headers: {
+                    'Content-Type': 'multipart/form-data'
+                }
+            }
+        );
+        return response;
+    } catch (error) {
+        throw error;
+    }
+    },
     fetchPartnerAdvice: async (partnerId): Promise<any> => {
         const data = {
             params: {
