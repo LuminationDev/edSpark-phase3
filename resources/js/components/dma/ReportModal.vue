@@ -499,8 +499,6 @@ const handleCloseReport = () => {
                                                 "
                                             :class="{'brightness-75': selectedElement === `${domain.domain}|${element.element}`}"
                                         >
-										
-                                            <!--span class="flex-1 mr-2 text-h4-caps">{{ element.element }} is {{ element.label }}</span-->
 
                                             <ToggleButton
                                                 v-model="actionPlan[domain.domain][element.element].selected"
@@ -512,10 +510,13 @@ const handleCloseReport = () => {
                                                 class="fa-pen-to-square fas mr-2 text-sm"
                                             />
 
+
+
                                             <TextButton
                                                 class="!text-xs underline"
                                                 @click="() => toggleShowAdvice(element.domain, element.element)"
                                             >
+
 
                                                 <!--span class="hidden md:block !normal-case text-sm">{{ actionPlan[domain.domain][element.element].expanded ? 'Hide' : 'Show' }} advice & action plan</span-->
 
