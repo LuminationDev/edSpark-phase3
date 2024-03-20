@@ -42,29 +42,6 @@ const handleReceivePhotoFromContent = (type, file) => {
     }
 };
 
-const handleUploadLogo = async () => {
-    try {
-        if (!logoStorage.value) {
-            throw new Error('No logo selected for upload');
-        }
-
-        const logoFile = logoStorage.value;
-        if (!logoFile instanceof File) {
-            throw new Error('Invalid logo file');
-        }
-
-        console.log('Uploading logo:', logoFile);
-
-        const response = await partnerService.fetchUploadLogo(logoFile);
-        console.log('Logo uploaded successfully:', response);
-        // Optionally, you can reset the logo storage after successful upload
-        logoStorage.value = null;
-        // Add any additional logic here, such as updating UI or displaying a success message
-    } catch (error) {
-        console.error('Error uploading logo:', error);
-        // Add logic to handle errors, such as displaying an error message to the user
-    }
-};
 
 
 enum PartnerContentState {
@@ -163,8 +140,12 @@ const handleEditButton = async (): Promise<void> => {
 
 }
 
+console.log(logoStorage)
+
+
 const handleAllSaveButton = () => {
-    return partnerService.updatePartnerContent(+partnerId, currentUser.value.id, newPartnerContent.value, v$.value.introduction.$model, v$.value.motto.$model).then(res => {
+    return partnerService.updatePartnerContent(+partnerId, currentUser.value.id, newPartnerContent.value, v$.value.introduction.$model, v$.value.motto.$model, logoStorage.value
+    ).then(res => {
         if (res.status === 200) {
             partnerContentState.value = 'submitted_pending'
             editMode.value = false
