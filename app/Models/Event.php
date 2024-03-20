@@ -93,7 +93,6 @@ class Event extends Model
 
     protected $with = ['tags'];
     protected $casts = [
-        'cover_image' => 'array',
         'extra_content' => 'array'
     ];
 

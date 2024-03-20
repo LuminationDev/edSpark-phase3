@@ -85,7 +85,6 @@ class Software extends Model
     }
 
     protected $casts = [
-        'cover_image' => 'array',
         'extra_content' => 'array'
     ];
 
