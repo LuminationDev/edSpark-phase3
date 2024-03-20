@@ -91,6 +91,13 @@ class PartnerController extends Controller
         return null;
     }
 
+    private function replacePreviousPendingPartnerProfileEntry($partnerId)
+    {
+        Partnerprofile::where('partner_id', $partnerId)
+            ->where('status', 'Pending')
+            ->update(['status' => 'Archived']);
+    }
+
     public function fetchAllPartners(Request $request)
     {
         try {
@@ -190,37 +197,37 @@ class PartnerController extends Controller
     {
         try {
             // Validate the request data
-            $validatedData = $request->validate([
-                'content' => 'required',
-                'partner_id' => 'required'
-            ]);
-            if(Auth::user()->id !== $validatedData['partner_id'] && !RoleHelpers::has_minimum_privilege(UserRole::ADMIN)){
+            $data = $request->all();
+            if(Auth::user()->id !== $data['partner_id'] && !RoleHelpers::has_minimum_privilege(UserRole::ADMIN)){
                 return response()->json(['error' => 'Not authorised to edit this profile'], Response::HTTP_UNAUTHORIZED);
             }
 
             // Fetch the partner based on the provided ID
             $partner = Partner::where('user_id', $request->partner_id)->first();
-
             if (!$partner) {
                 return response()->json(['error' => 'Partner not found'], Response::HTTP_NOT_FOUND);
             }
-            $newIntro = $request->input('introduction') ?? '';
-            $newMotto = $request->input('motto') ?? '';
+            $newIntro = $data['introduction'] ?? '';
+            $newMotto = $data['motto'] ?? '';
             $prefix = "edSpark-partner";
-            $partnerLogoUrl = $this->handleImageUpload($request->input('logo') ?? null, $prefix, 'logo');
-            $coverImageUrl = $this->handleImageUpload($request->input('cover_image') ?? null, $prefix, '');
+            $partnerLogoUrl = $this->handleImageUpload($data['logo'] ?? null, $prefix, 'logo');
+            $coverImageUrl = $this->handleImageUpload($data['cover_image'] ?? null, $prefix, '');
+
+            // mark prev listing archived before entering a new entry
+            $this->replacePreviousPendingPartnerProfileEntry($partner->id);
 
             // Create a new PartnerProfile entry with the content and status as "Pending"
             Partnerprofile::create([
                 'partner_id' => $partner->id,
                 'user_id' => $partner->user_id,
-                'content' => JsonHelper::safelyEncodeData($validatedData['content']),
+                'content' => JsonHelper::safelyEncodeData($data['content']),
                 'introduction' => $newIntro,
                 'motto' => $newMotto,
                 'logo' => $partnerLogoUrl,
                 'cover_image' => $coverImageUrl,
                 'status' => 'Pending'
             ]);
+
 
             return response()->json(['message' => 'Content added successfully']);
 

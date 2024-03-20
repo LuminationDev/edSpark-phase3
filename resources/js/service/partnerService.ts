@@ -28,7 +28,7 @@ export const partnerService = {
         data.append('introduction', introduction);
         data.append('motto', motto);
         data.append('logo', logo);
-        data.append('coverImage', coverImage)
+        data.append('cover_image', coverImage)
 
         return axios.post(API_ENDPOINTS.PARTNER.UPDATE_PARTNER_CONTENT, data);
     },
