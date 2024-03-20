@@ -58,8 +58,15 @@ class EventResource extends Resource
                             ->extraAttributes(['class' => 'text-primary-600'])
                             ->options($labels->pluck('value', 'id')->toArray())
                             ->relationship('labels', 'value', function ($query) use ($category) {
-                                $query->where('type', $category)->orderByRaw('CAST(labels.id AS SIGNED)');
+                                $query->from(function ($subquery) use ($category) {
+                                    $subquery->from('labels')
+                                        ->select('labels.*')
+                                        ->where('type', $category)
+                                        ->distinct();
+                                }, 'sub')
+                                    ->orderByRaw("CASE WHEN ISNUMERIC(sub.id) = 1 THEN CAST(sub.id AS INT) ELSE 0 END");
                             })
+
                             ->columns(3)
                     ]);
             }
