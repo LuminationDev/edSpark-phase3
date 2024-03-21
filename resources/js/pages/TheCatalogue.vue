@@ -43,6 +43,8 @@ const showPagination = computed(() => {
     return totalPages.value > 1
 })
 
+
+
 // have a primary filte rhere
 const primaryFilter: Ref<CatalogueFilterField | null> = ref(null)
 
@@ -179,7 +181,7 @@ const handleClickCatalogueCard = (reference) => {
 
 }
 
-
+console.log(currentPage.value)
 </script>
 
 <template>

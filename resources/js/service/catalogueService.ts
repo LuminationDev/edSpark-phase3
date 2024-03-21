@@ -33,17 +33,14 @@ export const catalogueService = {
         const body = { unique_reference: reference };
         return axios.post(API_ENDPOINTS.CATALOGUE.FETCH_SINGLE_PRODUCT_BY_REFERENCE, body);
     },
-
     fetchUpgradesSingleProduct: (name: string) => {
         const body = { name: name };
         return axios.post(API_ENDPOINTS.CATALOGUE.FETCH_UPGRADES_SINGLE_PRODUCT, body);
     },
-
     fetchBundlesSingleProduct: (name: string) => {
         const body = { name: name };
         return axios.post(API_ENDPOINTS.CATALOGUE.FETCH_BUNDLES_SINGLE_PRODUCT, body);
     },
-
     fetchAllCategories: () =>{
         return axios.get(API_ENDPOINTS.CATALOGUE.FETCH_ALL_CATALOGUE_CATEGORIES)
     },

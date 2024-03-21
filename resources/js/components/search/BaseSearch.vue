@@ -6,20 +6,19 @@ import VPagination from "@hennge/vue3-pagination";
 import {computed, ref, watch} from 'vue'
 
 import AdviceCard from "@/js/components/advice/AdviceCard.vue";
-import InspirationAndGuidesRobot from "@/js/components/inspirationandguides/InspirationAndGuidesRobot.vue";
-
 import BaseLandingHero from "@/js/components/bases/BaseLandingHero.vue";
 import SearchBar from "@/js/components/browseschools/SearchBar.vue";
 import CardLoading from "@/js/components/card/CardLoading.vue";
 import EventsCard from "@/js/components/events/EventsCard.vue";
 import HardwareCard from "@/js/components/hardware/HardwareCard.vue";
+import InspirationAndGuidesRobot from "@/js/components/inspirationandguides/InspirationAndGuidesRobot.vue";
 import PartnerCard from "@/js/components/partners/PartnerCard.vue";
 import SchoolCard from "@/js/components/schools/SchoolCard.vue";
 import SoftwareCard from "@/js/components/software/SoftwareCard.vue";
+import usePagination from "@/js/composables/usePagination";
 import {LandingHeroText, SearchTitleByType} from "@/js/constants/PageBlurb";
 import {guid} from "@/js/helpers/guidGenerator";
-import {findNestedKeyValue} from "@/js/helpers/objectHelpers";
-
+import {findNestedKeyValue} from "@/js/helpers/objectHelpers"
 
 const props = defineProps({
     resourceList: {
@@ -47,25 +46,22 @@ const props = defineProps({
         required: false,
         default: 'darkTeal'
     },
-    customView:{
+    customView: {
         type: Boolean,
         required: false,
         default: false
     }
-})
+});
 
-const filterTerm = ref('')
+const filterTerm = ref('');
 
 const filteredTermData = computed(() => {
     if (!props.resourceList) return [];
 
     return props.resourceList.reduce((acc, resource) => {
-        // List of possible attribute names to check - here because different objects has different field
         const attributesToCheck = ['name', 'title'];
 
-        // If filterTerm is empty or any attribute matches, add the resource to the accumulated array
         if (filterTerm.value.length < 1 || attributesToCheck.some(attr => resource[attr] && resource[attr].toLowerCase().includes(filterTerm.value))) {
-            // Generate a key for each resource
             resource['key'] = guid();
             acc.push(resource);
         }
@@ -73,93 +69,35 @@ const filteredTermData = computed(() => {
     }, []);
 });
 
-
 const handleSearchTerm = (term) => {
-    filterTerm.value = term.toLowerCase()
+    filterTerm.value = term.toLowerCase();
 }
 
+const { currentPage, perPage, totalItems, totalPages, handleChangePageNumber } = usePagination(1, 9);
 
-// Function to filter the products based on the filterBy object
-const filterProducts = (products, filterBy) => {
-    // Check if filterBy object is empty
-    const totalValuesCount = [].concat(...Object.values(filterBy)).length;
-    if (totalValuesCount === 0) {
-        return products;
-    }
-    return products.filter(product => {
-        return Object.entries(filterBy).every(([key, filterValues]) => {
-            // If filterValues is empty for this key, then move on to next key
-            if (filterValues.length === 0) return true;
-
-            const productValue = findNestedKeyValue(product, key).flat();
-
-            // Check if any product value matches the filter values
-            return productValue.some(value => {
-                return filterValues.includes(value) || (value ? filterValues.includes(value.name) : false);
-            });
-        });
-    });
-
-}
-
-// set a watcher to reset page to the first page when filters are changed
 watch(props.liveFilterObject, () => {
-    page.value = 1
-})
-
-const filteredData = computed(() => {
-    if (Object.values(props.liveFilterObject).length === 0) return filteredTermData.value
-    return filterProducts(filteredTermData.value, props.liveFilterObject)
-})
-
-// pagination code below
-const page = ref(1)
-const numberOfItemsPerPage = 9
-
-const handleChangePageNumber = (newPageNumber) => {
-    page.value = newPageNumber
-    const scrollToTop = () => {
-        window.scrollTo({top: 0, behavior: 'smooth'})
-    }
-    scrollToTop()
-
-}
-
-const numberOfAvailablePages = computed(() => {
-    return Math.ceil(filteredData.value.length / numberOfItemsPerPage)
-})
+    currentPage.value = 1;
+});
 
 const paginatedFilteredData = computed(() => {
-    if (page.value === numberOfAvailablePages.value) {
-        //show the rest without hard limit
-        return filteredData.value.slice((page.value - 1) * numberOfItemsPerPage)
-    } else {
-
-        return filteredData.value.slice((page.value - 1) * numberOfItemsPerPage, page.value * numberOfItemsPerPage)
-    }
-})
+    const startIndex = (currentPage.value - 1) * perPage.value;
+    return filteredTermData.value.slice(startIndex, startIndex + perPage.value);
+});
 
 const showPagination = computed(() => {
-    return filteredData.value.length > numberOfItemsPerPage
-})
+    return filteredTermData.value.length > perPage.value;
+});
 
 const formattedSearchTitle = computed(() => {
-    return SearchTitleByType[props.searchType]
-})
-
+    return SearchTitleByType[props.searchType];
+});
 
 const formattedSearchBlurb = computed(() => {
-
     if (['school'].includes(props.searchType))
-        return "Discover more about how schools in your area are " +
-            "embracing digital technology, and draw inspiration " +
-            "for your own classroom."
-
-    else return "Discover inspiration for your own classroom"
-
-
-})
-
+        return "Discover more about how schools in your area are embracing digital technology, and draw inspiration for your own classroom.";
+    else
+        return "Discover inspiration for your own classroom";
+});
 </script>
 
 <template>
@@ -168,9 +106,7 @@ const formattedSearchBlurb = computed(() => {
         :title-paragraph="props.heroSubtitle"
         :background-color="props.heroBackgroundColor"
         :swoosh-color="heroBackgroundColor"
-    >
-
-    </BaseLandingHero>
+    />
     <div
         class="browse-schools-container flex items-center flex-col px-12 py-16"
     >
@@ -187,7 +123,7 @@ const formattedSearchBlurb = computed(() => {
                 <div class="flex flex-col search-filter-components">
                     <SearchBar
                         :placeholder="`Type in ${searchType} name`"
-                        class="[&>p]:font-medium [&>p]:text-lg md:[&>p]:text-xl [&>p]:!ml-0 mb-4 lg:mb-0"
+                        class="[&>p]:!ml-0 [&>p]:font-medium [&>p]:text-lg mb-4 lg:mb-0 md:[&>p]:text-xl"
                         @emit-search-term="handleSearchTerm"
                     />
                 </div>
@@ -195,7 +131,12 @@ const formattedSearchBlurb = computed(() => {
                 <slot name="additionalFilters" />
             </div>
             <div class="my-4 searchResults text-base text-center">
-              <span  v-if="resourceList">  {{ String(filteredData.length) + " search " + (filteredData.length > 1 ? "results" : "result") }}</span>
+                <span v-if="filteredData">
+                    {{ String(filteredData.length) + " search " + (filteredData.length > 1 ? "results" : "result") }}
+                </span>
+                <span v-else>
+                    Filtered data is not available
+                </span>
             </div>
             <div
                 v-if="resourceList && resourceList.length &&
@@ -307,7 +248,7 @@ const formattedSearchBlurb = computed(() => {
                 </template>
 
                 <div
-                    v-if="filteredData.length <= 0"
+                    v-if="filteredData && filteredData.length <= 0"
                     class="col-span-1 font-semibold text-xl md:!col-span-2 lg:!col-span-3"
                 >
                     No search result
@@ -329,9 +270,9 @@ const formattedSearchBlurb = computed(() => {
             class="BaseSearchPaginationContainer flex justify-center mt-12 text-lg"
         >
             <v-pagination
-                v-model="page"
+                v-model="currentPage"
                 :range-size="1"
-                :pages="numberOfAvailablePages"
+                :pages="totalPages"
                 active-color="#DCEDFF"
                 @update:model-value="handleChangePageNumber"
             />
