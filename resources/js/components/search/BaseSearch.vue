@@ -11,14 +11,12 @@ import SearchBar from "@/js/components/browseschools/SearchBar.vue";
 import CardLoading from "@/js/components/card/CardLoading.vue";
 import EventsCard from "@/js/components/events/EventsCard.vue";
 import HardwareCard from "@/js/components/hardware/HardwareCard.vue";
-import InspirationAndGuidesRobot from "@/js/components/inspirationandguides/InspirationAndGuidesRobot.vue";
 import PartnerCard from "@/js/components/partners/PartnerCard.vue";
 import SchoolCard from "@/js/components/schools/SchoolCard.vue";
 import SoftwareCard from "@/js/components/software/SoftwareCard.vue";
 import usePagination from "@/js/composables/usePagination";
-import {LandingHeroText, SearchTitleByType} from "@/js/constants/PageBlurb";
+import {SearchTitleByType} from "@/js/constants/PageBlurb";
 import {guid} from "@/js/helpers/guidGenerator";
-import {findNestedKeyValue} from "@/js/helpers/objectHelpers"
 
 const props = defineProps({
     resourceList: {
@@ -53,6 +51,7 @@ const props = defineProps({
     }
 });
 
+const { currentPage, perPage, handleChangePageNumber, updatePaginationData } = usePagination(1, 9);
 const filterTerm = ref('');
 
 const filteredTermData = computed(() => {
@@ -73,8 +72,6 @@ const handleSearchTerm = (term) => {
     filterTerm.value = term.toLowerCase();
 }
 
-const { currentPage, perPage, totalItems, totalPages, handleChangePageNumber } = usePagination(1, 9);
-
 watch(props.liveFilterObject, () => {
     currentPage.value = 1;
 });
@@ -82,6 +79,12 @@ watch(props.liveFilterObject, () => {
 const paginatedFilteredData = computed(() => {
     const startIndex = (currentPage.value - 1) * perPage.value;
     return filteredTermData.value.slice(startIndex, startIndex + perPage.value);
+
+});
+
+// Compute total pages based on filtered data and items per page
+const totalPages = computed(() => {
+    return Math.ceil(filteredTermData.value.length / perPage.value);
 });
 
 const showPagination = computed(() => {
@@ -98,6 +101,9 @@ const formattedSearchBlurb = computed(() => {
     else
         return "Discover inspiration for your own classroom";
 });
+
+console.log("Here is the value for: " + currentPage.value)
+console.log("Here is the value for: " + totalPages.value)
 </script>
 
 <template>
@@ -131,8 +137,8 @@ const formattedSearchBlurb = computed(() => {
                 <slot name="additionalFilters" />
             </div>
             <div class="my-4 searchResults text-base text-center">
-                <span v-if="filteredData">
-                    {{ String(filteredData.length) + " search " + (filteredData.length > 1 ? "results" : "result") }}
+                <span v-if="filteredTermData">
+                    {{ String(filteredTermData.length) + " search " + (filteredTermData.length > 1 ? "results" : "result") }}
                 </span>
                 <span v-else>
                     Filtered data is not available
@@ -145,7 +151,7 @@ const formattedSearchBlurb = computed(() => {
             >
                 <slot
                     name="customViewSlot"
-                    :filtered-data="filteredData"
+                    :filtered-data="filteredTermData"
                 />
             </div>
             <div
@@ -248,7 +254,7 @@ const formattedSearchBlurb = computed(() => {
                 </template>
 
                 <div
-                    v-if="filteredData && filteredData.length <= 0"
+                    v-if="filteredTermData && filteredTermData.length <= 0"
                     class="col-span-1 font-semibold text-xl md:!col-span-2 lg:!col-span-3"
                 >
                     No search result

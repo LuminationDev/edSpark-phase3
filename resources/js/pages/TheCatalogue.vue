@@ -74,6 +74,8 @@ onMounted(async () => {
         catalogueList.value = cataloguesResult.items
         if (cataloguesResult.pagination) {
             updatePaginationData(cataloguesResult.pagination)
+            console.log(currentPage.value)
+            console.log(totalPages.value)
         }
     } catch (error) {
         // Handle errors here
@@ -139,6 +141,7 @@ watch(selectedCategory, () => {
     if (selectedBrand.value.length === 0 && selectedType.value.length === 0 && selectedVendor.value.length === 0) {
         primaryFilter.value = CatalogueFilterField.Category
         fetchCatalogueAndUpdateOtherFilters(CatalogueFilterField.Category, selectedCategory.value, currentPage.value, perPage.value)
+
     }
 })
 
@@ -181,7 +184,6 @@ const handleClickCatalogueCard = (reference) => {
 
 }
 
-console.log(currentPage.value)
 </script>
 
 <template>
