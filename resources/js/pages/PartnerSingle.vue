@@ -186,7 +186,7 @@ const colorTheme = ref('partnerBlue')
         </template>
         <template #content="{ contentFromBase, recommendationFromBase }">
             <div class="partnerSingleContentContainer px-5 lg:!px-10">
-                <Suspense timeout="0"> 
+                <Suspense timeout="0">
                     <component
                         :is="partnerSubPageComponent"
                         :data="dynamicProps"

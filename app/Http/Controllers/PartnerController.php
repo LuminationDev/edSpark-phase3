@@ -18,6 +18,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
 
 class PartnerController extends Controller
@@ -78,6 +79,23 @@ class PartnerController extends Controller
             'profile' => JsonHelper::safelyDecodeString($partnerProfile->content),
             'updated_at' => $partnerProfile->updated_at,
         ];
+    }
+
+    private function handleImageUpload($image, $prefix, $folder)
+    {
+        if (isset($image) && is_string($image) === false) {
+            $imgName = $prefix . '-' . md5(Str::random(30) . time() . '_' . $image) . '.' . $image->getClientOriginalExtension();
+            $image->storeAs('public/uploads/partner/' . $folder, $imgName);
+            return "uploads/partner/$folder/" . $imgName;
+        }
+        return null;
+    }
+
+    private function replacePreviousPendingPartnerProfileEntry($partnerId)
+    {
+        Partnerprofile::where('partner_id', $partnerId)
+            ->where('status', 'Pending')
+            ->update(['status' => 'Archived']);
     }
 
     public function fetchAllPartners(Request $request)
@@ -175,40 +193,41 @@ class PartnerController extends Controller
         }
     }
 
-
     public function updatePartnerContent(Request $request)
     {
         try {
             // Validate the request data
-            $validatedData = $request->validate([
-                'content' => 'required',
-                'partner_id' => 'required'
-            ]);
-            if(Auth::user()->id !== $validatedData['partner_id'] && !RoleHelpers::has_minimum_privilege(UserRole::ADMIN)){
+            $data = $request->all();
+            if(Auth::user()->id !== $data['partner_id'] && !RoleHelpers::has_minimum_privilege(UserRole::ADMIN)){
                 return response()->json(['error' => 'Not authorised to edit this profile'], Response::HTTP_UNAUTHORIZED);
             }
 
             // Fetch the partner based on the provided ID
             $partner = Partner::where('user_id', $request->partner_id)->first();
-
             if (!$partner) {
                 return response()->json(['error' => 'Partner not found'], Response::HTTP_NOT_FOUND);
             }
-            $newIntro = $request->input('introduction') ?? '';
-            $newMotto = $request->input('motto') ?? '';
-            $newLogo = $request->input('logo') ?? '';
-            $newCoverImage = $request->input('cover_image') ?? '';
+            $newIntro = $data['introduction'] ?? '';
+            $newMotto = $data['motto'] ?? '';
+            $prefix = "edSpark-partner";
+            $partnerLogoUrl = $this->handleImageUpload($data['logo'] ?? null, $prefix, 'logo');
+            $coverImageUrl = $this->handleImageUpload($data['cover_image'] ?? null, $prefix, '');
+
+            // mark prev listing archived before entering a new entry
+            $this->replacePreviousPendingPartnerProfileEntry($partner->id);
+
             // Create a new PartnerProfile entry with the content and status as "Pending"
             Partnerprofile::create([
                 'partner_id' => $partner->id,
                 'user_id' => $partner->user_id,
-                'content' => JsonHelper::safelyEncodeData($validatedData['content']),
+                'content' => JsonHelper::safelyEncodeData($data['content']),
                 'introduction' => $newIntro,
                 'motto' => $newMotto,
-                'logo' => $newLogo,
-                'cover_image' => $newCoverImage,
+                'logo' => $partnerLogoUrl,
+                'cover_image' => $coverImageUrl,
                 'status' => 'Pending'
             ]);
+
 
             return response()->json(['message' => 'Content added successfully']);
 
