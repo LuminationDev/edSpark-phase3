@@ -5871,6 +5871,10 @@ select {
   background-color: rgb(51 153 153 / 0.1);
 }
 
+.bg-main-teal\/5 {
+  background-color: rgb(51 153 153 / 0.05);
+}
+
 .bg-main-teal\/80 {
   background-color: rgb(51 153 153 / 0.8);
 }
@@ -6021,10 +6025,6 @@ select {
 
 .bg-yellow-600\/5 {
   background-color: rgb(202 138 4 / 0.05);
-}
-
-.bg-main-teal\/5 {
-  background-color: rgb(51 153 153 / 0.05);
 }
 
 .bg-gradient-to-b {
@@ -9477,6 +9477,11 @@ color: blue !important;
   box-shadow: var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow, 0 0 #0000);
 }
 
+.hover\:\!brightness-100:hover {
+  --tw-brightness: brightness(1) !important;
+  filter: var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow) !important;
+}
+
 .hover\:\!brightness-\[1\.1\]:hover {
   --tw-brightness: brightness(1.1) !important;
   filter: var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow) !important;
@@ -9490,11 +9495,6 @@ color: blue !important;
 .hover\:brightness-90:hover {
   --tw-brightness: brightness(.9);
   filter: var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow);
-}
-
-.hover\:\!brightness-100:hover {
-  --tw-brightness: brightness(1) !important;
-  filter: var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow) !important;
 }
 
 .hover\:\!grayscale-0:hover {
@@ -10485,10 +10485,6 @@ color: blue !important;
 
   .md\:h-full {
     height: 100%;
-  }
-
-  .md\:h-0 {
-    height: 0px;
   }
 
   .md\:\!max-h-\[90\%\] {

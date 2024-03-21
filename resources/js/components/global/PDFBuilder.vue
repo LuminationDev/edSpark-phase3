@@ -78,6 +78,7 @@ const props = defineProps({
 
 
 import { dmaService } from "@/js/service/dmaService";
+import { current } from 'tailwindcss/colors';
 const actionData = ref(null);
 const reflectionData = ref(null);
 
@@ -236,266 +237,335 @@ const generatePDF = async () => {
 
     actionData.value = await dmaService.getActionPlans();
 
-    reflectionData.value = await dmaService.getReflection();
-    // console.log("REFLECTING UP!", reflectionData.value);
+    const selectedPlans = ref([]);
+    for (const domain of props.domains) {
+        const actionPlans = actionData.value.action_plan[domain.domain];
+        //do action plans exist?
+        if (actionPlans.length > 0) {
+            for (const plan of actionPlans) {
+                // which ones are selected?
+                if (plan.selected) {
+                    selectedPlans.value.push(plan.element);
+                }
+            }
+        }
+    }
 
-    doc.addImage(bg_ptitle, 'png', 0, 0, 21, 29.7);
-    doc.addImage(legend, 'png', 0.65, 26.1, 2.4, 3.1);
+    console.log("SELECTED", selectedPlans);
 
-    const elementForImage = document.getElementsByClassName('radial-chart')[0];
+        reflectionData.value = await dmaService.getReflection();
+        // console.log("REFLECTING UP!", reflectionData.value);
 
-    // console.log("Mask", elementForImage.getElementsByTagName('mask'));
-    // elementForImage.getElementsByTagName('g')[0].setAttribute('mask', '');
-    // console.log(elementForImage);
-    elementForImage.style = "stroke: #e5e5e5; stroke-width: 0.5px; stroke-order: fill stroke;";
+        doc.addImage(bg_ptitle, 'png', 0, 0, 21, 29.7);
+        doc.addImage(legend, 'png', 0.65, 26.1, 2.4, 3.1);
 
-    // var highlights = elementForImage.getElementsByTagName('path'); //empty
-    // // console.log("radial", elementForImage);
-    // // console.log("highlights", highlights);
-    // // console.log("technical skills", highlights.)
+        const elementForImage = document.getElementsByClassName('radial-chart')[0];
 
-    // //TODO when selected is available, loop around and apply domain colours 
-    // var emptyCount = 0;
-    // var elementCellCount = 0;
-    // for (const emptyCell of highlights) {
-    //     elementCellCount++;
-    //     if (emptyCell.getAttribute("data-label").toLowerCase() == "Technical skills".toLowerCase()) {
-    //         // console.log(emptyCell);
-    //         emptyCell.setAttribute("style", "");
-    //         if (emptyCell.classList.contains('empty') && emptyCount == 0) {
-    //             emptyCount++;
-    //             emptyCell.setAttribute("style", "fill: white !important; stroke: " + domainColors[0] + " !important; stroke-width: 1px; stroke-order: fill stroke;"); //fill with 10% of domain colour
-
-    //         } else if (!emptyCell.classList.contains('empty')) {
-    //             emptyCell.setAttribute("style", "fill: " + domainColors[0] + " !important; stroke: " + domainColors[0] + " !important; stroke-width: 1px; stroke-order: fill stroke;"); //fill with 10% of domain colour 
-    //         } else {
-    //             emptyCell.setAttribute("style", "stroke: #e5e5e5 !important;  stroke-width: 0.5px"); //fill with 10% of domain colour
-    //         }
-    //     } else {
-    //         if (!emptyCell.classList.contains('empty')) {
-    //             emptyCell.setAttribute("style", "stroke: #000000 !important;  stroke-width: 0.5px; stroke-order: fill stroke;"); //fill with 10% of domain colour
-    //         } else {
-    //             emptyCell.setAttribute("style", "stroke: #e5e5e5 !important;  stroke-width: 0.5px; stroke-order: fill stroke;"); //fill with 10% of domain colour
-    //         }
-    //     }
-    //     if (elementCellCount == 4) {
-    //         elementCellCount = 0; //reset
-    //         emptyCount = 0;
-    //     }
-    // }
-
-    htmlToImage.toPng(elementForImage, { skipFonts: true, quality: 1.0 }).then(function (dataUrl) {
-        const img = new Image();
-        img.src = dataUrl;
-
-        img.onload = () => {
-            // wait for all images to be fully loaded
-
-            //TITLE PAGE
-            doc.setTextColor('#339999');
-            doc.setFont("MuseoSans-500");
-            doc.setFontSize(24);
-            doc.text("Your digital capability", leftMargin, 2, 'left');
-            doc.setFontSize(60);
-            doc.setFont("MuseoSans-700");
-            doc.text("PROFILE", leftMargin, 4.1, 'left');
-
-            doc.setTextColor('#000000');
-
-            doc.setFont("MuseoSans-300");
-            doc.setFontSize(18);
-            doc.text(siteName, leftMargin, 6, "left");
-            doc.setFontSize(12);
-            doc.text(date, leftMargin, 6.7, "left");
-
-
-            //intro text
-            setBodyText();
-
-            const introTextY = 8;
-            doc.text(doc.splitTextToSize("Congratulations on completing the Digital Capability Leadership Reflection Tool.", 17), leftMargin, introTextY);
-            doc.text(doc.splitTextToSize("Your school’s personalised Digital Capability Profile has been generated based on your reflections across the 13 elements within the 4 domains of the Digital Capability Framework.", 17), leftMargin, introTextY + 0.8);
-            doc.text(doc.splitTextToSize("The school’s current digital capability in each element has been positioned on a continuum ranging from emerging to developing, achieving or excelling.", 17), leftMargin, introTextY + 2.6);
-            doc.text(doc.splitTextToSize("To continue on your digital improvement journey, tailored recommendations have been compiled for your identified focus areas.", 17), leftMargin, introTextY + 3.9);
-
-
-            // radial chart
-            const imageOffset = 14.5; //top of image
-            const leftOffset = 0.5;
-            doc.addImage(img, "png", leftOffset + 3, imageOffset + 0.2, 12, 12);
-
-            doc.setFont("MuseoSans-500");
-            doc.setFontSize(10);
-
-            //teaching domain labels            
-            doc.setTextColor(domainColors[0]);
-            doc.text("Technical skills", leftOffset + 12, imageOffset, 'center');
-            doc.text("Pedagogy", leftOffset + 14.2, imageOffset + 1.35, 'center');
-            doc.text("Assessment", leftOffset + 16.1, imageOffset + 4, 'center');
-            doc.text("Curriculum", leftOffset + 16.2, imageOffset + 6.8, 'center');
-            doc.text("Professional\nlearning", leftOffset + 15.3, imageOffset + 9.8, 'center');
-
-            //learning domain labels
-            doc.setTextColor(domainColors[1]);
-            doc.text("Digital\ntechnologies", leftOffset + 12.5, imageOffset + 12.2, 'center');
-            doc.text("Digital\nliteracy", leftOffset + 9, imageOffset + 12.8, 'center');
-            doc.text("Environment", leftOffset + 5.1, imageOffset + 12, 'center');
-
-            //leading domain labels
-            doc.setTextColor(domainColors[2]);
-            doc.text("Culture", leftOffset + 3, imageOffset + 9.8, 'center');
-            doc.text("Connections", leftOffset + 1.6, imageOffset + 6.8, 'center');
-
-            //managing domain labels
-            doc.setTextColor(domainColors[3]);
-            doc.text("Practices", leftOffset + 2.45, imageOffset + 4, 'center');
-            doc.text("Resources", leftOffset + 4, imageOffset + 1.35, 'center');
-            doc.text("Administration", leftOffset + 6.5, imageOffset, 'center');
+        // console.log("Mask", elementForImage.getElementsByTagName('mask'));
+        // elementForImage.getElementsByTagName('g')[0].setAttribute('mask', '');
+        // console.log(elementForImage);
+        elementForImage.style = "stroke: #e5e5e5; stroke-width: 0.5px; stroke-order: fill stroke;";
 
 
 
-            //REPORT PAGES
-            for (let i = 0; i < props.elementData.length; i++) {
-                newPage();
+        // var highlights = elementForImage.getElementsByTagName('path'); //empty
+        // // console.log("radial", elementForImage);
+        // // console.log("highlights", highlights);
+        // // console.log("technical skills", highlights.)
 
-                // domain title
-                doc.setFillColor(domainColors[i]);
-                doc.rect(0, 5.3, pageWidth + leftMargin, 1.5, 'F');
-                doc.setTextColor('#FFFFFF');
-                doc.setFont("MuseoSans-700");
+        // //TODO when selected is available, loop around and apply domain colours 
+        // var emptyCount = 0;
+        // var elementCellCount = 0;
+        // for (const emptyCell of highlights) {
+        //     elementCellCount++;
+        //     if (emptyCell.getAttribute("data-label").toLowerCase() == "Technical skills".toLowerCase()) {
+        //         // console.log(emptyCell);
+        //         emptyCell.setAttribute("style", "");
+        //         if (emptyCell.classList.contains('empty') && emptyCount == 0) {
+        //             emptyCount++;
+        //             emptyCell.setAttribute("style", "fill: white !important; stroke: " + domainColors[0] + " !important; stroke-width: 1px; stroke-order: fill stroke;"); //fill with 10% of domain colour
+
+        //         } else if (!emptyCell.classList.contains('empty')) {
+        //             emptyCell.setAttribute("style", "fill: " + domainColors[0] + " !important; stroke: " + domainColors[0] + " !important; stroke-width: 1px; stroke-order: fill stroke;"); //fill with 10% of domain colour 
+        //         } else {
+        //             emptyCell.setAttribute("style", "stroke: #e5e5e5 !important;  stroke-width: 0.5px"); //fill with 10% of domain colour
+        //         }
+        //     } else {
+        //         if (!emptyCell.classList.contains('empty')) {
+        //             emptyCell.setAttribute("style", "stroke: #000000 !important;  stroke-width: 0.5px; stroke-order: fill stroke;"); //fill with 10% of domain colour
+        //         } else {
+        //             emptyCell.setAttribute("style", "stroke: #e5e5e5 !important;  stroke-width: 0.5px; stroke-order: fill stroke;"); //fill with 10% of domain colour
+        //         }
+        //     }
+        //     if (elementCellCount == 4) {
+        //         elementCellCount = 0; //reset
+        //         emptyCount = 0;
+        //     }
+        // }
+
+        htmlToImage.toPng(elementForImage, { skipFonts: true, quality: 1.0 }).then(function (dataUrl) {
+            const img = new Image();
+            img.src = dataUrl;
+
+            img.onload = () => {
+                // wait for all images to be fully loaded
+
+                //TITLE PAGE
+                doc.setTextColor('#339999');
+                doc.setFont("MuseoSans-500");
                 doc.setFontSize(24);
+                doc.text("Your digital capability", leftMargin, 2, 'left');
+                doc.setFontSize(60);
+                doc.setFont("MuseoSans-700");
+                doc.text("PROFILE", leftMargin, 4.1, 'left');
 
-                const domainTitle = capitalizeFirstLetter(props.elementData[i].domain_label);
-                doc.text(domainTitle, leftMargin, 6.3, 'left');
+                doc.setTextColor('#000000');
+
                 doc.setFont("MuseoSans-300");
+                doc.setFontSize(18);
+                doc.text(siteName, leftMargin, 6, "left");
+                doc.setFontSize(12);
+                doc.text(date, leftMargin, 6.7, "left");
 
-                const titleOffset = doc.getTextWidth(domainTitle);
-                doc.text("domain", leftMargin + titleOffset + 0.4, 6.3, 'left');
 
-                // loop through elements
-                sectionOffset = 8;
-                const elementCount = props.elementData[i].elements.element.length;
-                for (let j = 0; j < elementCount; j++) {
-                    const elementTitle = capitalizeFirstLetter(props.elementData[i].elements.element[j].element_print);
-                    const elementLabel = props.reportData[i].elements[j].label;
+                //intro text
+                setBodyText();
 
-                    //element line
-                    doc.setDrawColor(domainColors[i]);
-                    doc.setLineWidth(0.3);
-                    doc.line(leftMargin, sectionOffset - 0.6, leftMargin, sectionOffset + 0.1);
+                const introTextY = 8;
+                doc.text(doc.splitTextToSize("Congratulations on completing the Digital Capability Leadership Reflection Tool.", 17), leftMargin, introTextY);
+                doc.text(doc.splitTextToSize("Your school’s personalised Digital Capability Profile has been generated based on your reflections across the 13 elements within the 4 domains of the Digital Capability Framework.", 17), leftMargin, introTextY + 0.8);
+                doc.text(doc.splitTextToSize("The school’s current digital capability in each element has been positioned on a continuum ranging from emerging to developing, achieving or excelling.", 17), leftMargin, introTextY + 2.6);
+                doc.text(doc.splitTextToSize("To continue on your digital improvement journey, tailored recommendations have been compiled for your identified focus areas.", 17), leftMargin, introTextY + 3.9);
 
-                    //element title
-                    doc.setTextColor(domainColors[i]);
+
+                // radial chart
+                const imageOffset = 14.5; //top of image
+                const leftOffset = 0.5;
+                doc.addImage(img, "png", leftOffset + 3, imageOffset + 0.2, 12, 12);
+
+                doc.setFont("MuseoSans-500");
+                doc.setFontSize(10);
+
+                //teaching domain labels            
+                doc.setTextColor(domainColors[0]);
+                doc.text("Technical skills", leftOffset + 12, imageOffset, 'center');
+                doc.text("Pedagogy", leftOffset + 14.2, imageOffset + 1.35, 'center');
+                doc.text("Assessment", leftOffset + 16.1, imageOffset + 4, 'center');
+                doc.text("Curriculum", leftOffset + 16.2, imageOffset + 6.8, 'center');
+                doc.text("Professional\nlearning", leftOffset + 15.3, imageOffset + 9.8, 'center');
+
+                //learning domain labels
+                doc.setTextColor(domainColors[1]);
+                doc.text("Digital\ntechnologies", leftOffset + 12.5, imageOffset + 12.2, 'center');
+                doc.text("Digital\nliteracy", leftOffset + 9, imageOffset + 12.8, 'center');
+                doc.text("Environment", leftOffset + 5.1, imageOffset + 12, 'center');
+
+                //leading domain labels
+                doc.setTextColor(domainColors[2]);
+                doc.text("Culture", leftOffset + 3, imageOffset + 9.8, 'center');
+                doc.text("Connections", leftOffset + 1.6, imageOffset + 6.8, 'center');
+
+                //managing domain labels
+                doc.setTextColor(domainColors[3]);
+                doc.text("Practices", leftOffset + 2.45, imageOffset + 4, 'center');
+                doc.text("Resources", leftOffset + 4, imageOffset + 1.35, 'center');
+                doc.text("Administration", leftOffset + 6.5, imageOffset, 'center');
+
+
+
+                //REPORT PAGES
+                for (let i = 0; i < props.elementData.length; i++) {
+                    newPage();
+
+                    // domain title
+                    doc.setFillColor(domainColors[i]);
+                    doc.rect(0, 5.3, pageWidth + leftMargin, 1.5, 'F');
+                    doc.setTextColor('#FFFFFF');
                     doc.setFont("MuseoSans-700");
-                    doc.setFontSize(20);
-                    doc.text(elementTitle, leftMargin + 0.5, sectionOffset, 'left');
+                    doc.setFontSize(24);
 
-
-                    //body text
-                    setBodyText();
-
-
-                    ///SEE https://codepen.io/cat_developer/pen/mdxGYvM
-
-                    const tmpHTML = document.createElement('div');
-                    tmpHTML.innerHTML = props.elementData[i].elements.element[j].element_description;
-
-                    var introP = tmpHTML.getElementsByTagName('p');
-                    textOffset = sectionOffset + 1;
-                    for (const para of introP) {
-                        var thisText = doc.splitTextToSize(para.outerText, 16);
-                        doc.text(thisText, leftMargin, textOffset, 'left');
-                        textOffset = textOffset + (thisText.length * 0.4) + 0.4;
-
-                    }
-
-                    var introP = tmpHTML.getElementsByTagName('li');
-                    for (const listItem of introP) {
-                        doc.text('•  ', leftMargin + 1, textOffset, 'left');
-                        var thisText = doc.splitTextToSize(listItem.outerText, 16);
-                        doc.text(thisText, leftMargin + 1.4, textOffset, 'left');
-                        textOffset = textOffset + (thisText.length * 0.4) + 0.4;
-                    }
-
-                    // element achievement level
-                    textOffset = textOffset + 1;
-                    doc.setTextColor(domainColors[i]);
+                    const domainTitle = capitalizeFirstLetter(props.elementData[i].domain_label);
+                    doc.text(domainTitle, leftMargin, 6.3, 'left');
                     doc.setFont("MuseoSans-300");
-                    doc.setFontSize(20);
-                    doc.text("Phase of capability: ", leftMargin, textOffset, 'left');
-                    doc.setFont("MuseoSans-700");
-                    doc.text(elementLabel, leftMargin + 6.4, textOffset, 'left');
 
-                    // textOffset = textOffset + 0.4; // space after heading
+                    const titleOffset = doc.getTextWidth(domainTitle);
+                    doc.text("domain", leftMargin + titleOffset + 0.4, 6.3, 'left');
 
-                    //get element
-                    var element = props.reportData[i].elements[j];
+                    // loop through elements
+                    sectionOffset = 8;
+                    const elementCount = props.elementData[i].elements.element.length;
+                    for (let j = 0; j < elementCount; j++) {
+                        const elementTitle = capitalizeFirstLetter(props.elementData[i].elements.element[j].element_print);
+                        const elementLabel = props.reportData[i].elements[j].label;
 
-                    //get action plan data
-                    const actionPlan = actionData.value.action_plan[props.elementData[i].domain_label];
-                    const currentPlan = actionPlan?.find(e => e.element === element.element);
-                    console.log("PLAN", currentPlan);
+                        //element line
+                        doc.setDrawColor(domainColors[i]);
+                        doc.setLineWidth(0.3);
+                        doc.line(leftMargin, sectionOffset - 0.6, leftMargin, sectionOffset + 0.1);
 
-                    //get indicator data
-                    const indicatorsForSection = element.indicators.length;
-                    let indicatorCount = 0;
-                    const inset = 0;
+                        //element title
+                        doc.setTextColor(domainColors[i]);
+                        doc.setFont("MuseoSans-700");
+                        doc.setFontSize(20);
+                        doc.text(elementTitle, leftMargin + 0.5, sectionOffset, 'left');
 
-                    // loop through indicators
 
-                    for (const indicator of element.indicators) {
-                        pageUsage = textOffset; //account for element descriptors before this
-                        lineCount = 0;
-
-                        indicatorCount++;
+                        //body text
                         setBodyText();
-                        //description of indicator
-                        tmpHTML.innerHTML = indicator.description;
-                        const introText = doc.splitTextToSize(tmpHTML.outerText, 16);
 
 
-                        tmpHTML.innerHTML = indicator.advice;
+                        ///SEE https://codepen.io/cat_developer/pen/mdxGYvM
+
+                        const tmpHTML = document.createElement('div');
+                        tmpHTML.innerHTML = props.elementData[i].elements.element[j].element_description;
+
+                        var introP = tmpHTML.getElementsByTagName('p');
+                        textOffset = sectionOffset + 1;
+                        for (const para of introP) {
+                            var thisText = doc.splitTextToSize(para.outerText, 16);
+                            doc.text(thisText, leftMargin, textOffset, 'left');
+                            textOffset = textOffset + (thisText.length * 0.4) + 0.4;
+
+                        }
+
                         var introP = tmpHTML.getElementsByTagName('li');
-                        const listItems = [];
                         for (const listItem of introP) {
+                            doc.text('•  ', leftMargin + 1, textOffset, 'left');
                             var thisText = doc.splitTextToSize(listItem.outerText, 16);
-                            listItems.push(thisText);
-                            lineCount = lineCount + thisText.length + 1 + 1; //1 for heading, 1 for space
+                            doc.text(thisText, leftMargin + 1.4, textOffset, 'left');
+                            textOffset = textOffset + (thisText.length * 0.4) + 0.4;
+                        }
+
+                        // element achievement level
+                        textOffset = textOffset + 1;
+                        doc.setTextColor(domainColors[i]);
+                        doc.setFont("MuseoSans-300");
+                        doc.setFontSize(20);
+                        doc.text("Phase of capability: ", leftMargin, textOffset, 'left');
+                        doc.setFont("MuseoSans-700");
+                        doc.text(elementLabel, leftMargin + 6.4, textOffset, 'left');
+
+                        // textOffset = textOffset + 0.4; // space after heading
+
+                        //get element
+                        var element = props.reportData[i].elements[j];
+
+                        //get action plan data
+                        const actionPlan = actionData.value.action_plan[props.elementData[i].domain_label];
+                        const currentPlan = actionPlan?.find(e => e.element === element.element);
+                        console.log("PLAN", currentPlan);
+
+                        //get indicator data
+                        const indicatorsForSection = element.indicators.length;
+                        let indicatorCount = 0;
+                        const inset = 0;
+
+                        // loop through indicators
+
+                        for (const indicator of element.indicators) {
+                            pageUsage = textOffset; //account for element descriptors before this
+                            lineCount = 0;
+
+                            indicatorCount++;
+                            setBodyText();
+                            //description of indicator
+                            tmpHTML.innerHTML = indicator.description;
+                            const introText = doc.splitTextToSize(tmpHTML.outerText, 16);
+
+
+                            tmpHTML.innerHTML = indicator.advice;
+                            var introP = tmpHTML.getElementsByTagName('li');
+                            const listItems = [];
+                            for (const listItem of introP) {
+                                var thisText = doc.splitTextToSize(listItem.outerText, 16);
+                                listItems.push(thisText);
+                                lineCount = lineCount + thisText.length + 1 + 1; //1 for heading, 1 for space
+                            }
+
+
+                            //check if we need a new page to fit this
+                            var predictedHeight = pageUsage + (lineCount * 0.45) + total_spacing + 1; //35
+
+                            // doc.setLineWidth(0.1);
+                            // doc.setDrawColor('#FF00FF');
+                            // doc.line(leftMargin, 0.1, leftMargin, pageHeight);
+
+                            // doc.setDrawColor('#00FFFF');
+                            // doc.line(leftMargin + inset, 0.1, leftMargin + inset, pageUsage);
+
+                            // doc.setDrawColor('#FF0000'); //red
+                            // doc.line(leftMargin + 0.5 + inset, 0.1, leftMargin + 0.5 + inset, predictedHeight);
+                            // inset = inset + 0.3;
+
+                            textOffset = textOffset + 1; //space between last item and this one
+
+                            //new page needed - run out of space
+                            if (predictedHeight > pageHeight) {
+                                newPage();
+                            }
+
+                            //draw the suggestions block
+                            var isSelected = currentPlan && currentPlan.selected; //currentPlan.selected;
+                            textOffset = textOffset + drawSuggestionsBlock(i, textOffset, introText, listItems, isSelected);
+
                         }
 
 
-                        //check if we need a new page to fit this
-                        var predictedHeight = pageUsage + (lineCount * 0.45) + total_spacing + 1; //35
 
-                        // doc.setLineWidth(0.1);
-                        // doc.setDrawColor('#FF00FF');
-                        // doc.line(leftMargin, 0.1, leftMargin, pageHeight);
+                        // var isSelected = true; //currentPlan.selected;
+                        if (currentPlan && currentPlan.selected) {
+                            if(!currentPlan.action || currentPlan.action.trim().length == 0){
+                                currentPlan.action = "No action plan entered yet"
+                            }
+                            var thisText = doc.splitTextToSize(currentPlan.action, 17);
 
-                        // doc.setDrawColor('#00FFFF');
-                        // doc.line(leftMargin + inset, 0.1, leftMargin + inset, pageUsage);
+                            //do we need to start a new page?
+                            var box_spacing = 1.5 + 0.7 + 0.4;
+                            predictedHeight = textOffset + (thisText.length * 0.48) + 1 + box_spacing;
 
-                        // doc.setDrawColor('#FF0000'); //red
-                        // doc.line(leftMargin + 0.5 + inset, 0.1, leftMargin + 0.5 + inset, predictedHeight);
-                        // inset = inset + 0.3;
+                            textOffset = textOffset + 1; //gap from element previous
 
-                        textOffset = textOffset + 1; //space between last item and this one
+                            if (predictedHeight > pageHeight) {
+                                newPage();
+                            }
 
-                        //new page needed - run out of space
-                        if (predictedHeight > pageHeight) {
+
+                            if (thisText.length > 39) {
+                                var counter = 0;
+                                var chunks = chunk(thisText, 39);
+                                for (const thisChunk of chunks) {
+                                    counter++;
+                                    //if it starts with an empty cell, remove that cell
+                                    if (thisChunk[0] == '') {
+                                        thisChunk.splice(0, 1);
+                                    }
+                                    textOffset = textOffset + drawActionsBlock("Action plan for " + elementTitle.toLowerCase(), domainColors[i], '#FFFFFF', textOffset, thisChunk);
+
+                                    if (counter < chunks.length) {
+                                        newPage();
+                                    }
+                                }
+
+                            } else {
+                                textOffset = textOffset + drawActionsBlock("Action plan for " + elementTitle.toLowerCase(), domainColors[i], '#FFFFFF', textOffset, thisText);
+                            }
+
+                        }
+
+                        // new section
+                        if (j < elementCount - 1) {
                             newPage();
                         }
 
-                        //draw the suggestions block
-                        var isSelected = true; //currentPlan.selected;
-                        textOffset = textOffset + drawSuggestionsBlock(i, textOffset, introText, listItems, isSelected);
-
                     }
 
+                    //draw the reflection block
+                    const reflection = reflectionData.value.reflection[props.elementData[i].domain_label];
+                    // console.log("REFLECTION", reflection);
+                    const currentReflection = reflection[0];
 
-
-                    var isSelected = true; //currentPlan.selected;
-                    if (currentPlan && isSelected) {
-                        var thisText = doc.splitTextToSize(currentPlan.action, 17);
+                    if (currentReflection && currentReflection.reflection && currentReflection.reflection.trim().length > 0) {
+                        var thisText = doc.splitTextToSize(currentReflection.reflection, 17);
 
                         //do we need to start a new page?
                         var box_spacing = 1.5 + 0.7 + 0.4;
@@ -517,7 +587,7 @@ const generatePDF = async () => {
                                 if (thisChunk[0] == '') {
                                     thisChunk.splice(0, 1);
                                 }
-                                textOffset = textOffset + drawActionsBlock("Action plan for " + elementTitle.toLowerCase(), domainColors[i], '#FFFFFF', textOffset, thisChunk);
+                                textOffset = textOffset + drawActionsBlock("Reflection for " + domainTitle.toLowerCase() + " domain", domainColors[i], domainColorsBg[i], textOffset, thisChunk);
 
                                 if (counter < chunks.length) {
                                     newPage();
@@ -525,68 +595,21 @@ const generatePDF = async () => {
                             }
 
                         } else {
-                            textOffset = textOffset + drawActionsBlock("Action plan for " + elementTitle.toLowerCase(), domainColors[i], '#FFFFFF', textOffset, thisText);
+                            textOffset = textOffset + drawActionsBlock("Reflection for " + domainTitle.toLowerCase() + " domain", domainColors[i], domainColorsBg[i], textOffset, thisText);
                         }
 
                     }
-
-                    // new section
-                    if (j < elementCount - 1) {
-                        newPage();
-                    }
-
                 }
 
-                //draw the reflection block
-                const reflection = reflectionData.value.reflection[props.elementData[i].domain_label];
-                const currentReflection = reflection[0];
+                doc.save("DMA-Report_" + siteName.replace(" ", "-") + "_" + date + ".pdf"); //download as PDF
 
-                if (currentReflection && currentReflection.reflection) {
-                    var thisText = doc.splitTextToSize(currentReflection.reflection, 17);
+                console.log("DONE!");
+            };
 
-                    //do we need to start a new page?
-                    var box_spacing = 1.5 + 0.7 + 0.4;
-                    predictedHeight = textOffset + (thisText.length * 0.48) + 1 + box_spacing;
+        }
+        )
 
-                    textOffset = textOffset + 1; //gap from element previous
-
-                    if (predictedHeight > pageHeight) {
-                        newPage();
-                    }
-
-
-                    if (thisText.length > 39) {
-                        var counter = 0;
-                        var chunks = chunk(thisText, 39);
-                        for (const thisChunk of chunks) {
-                            counter++;
-                            //if it starts with an empty cell, remove that cell
-                            if (thisChunk[0] == '') {
-                                thisChunk.splice(0, 1);
-                            }
-                            textOffset = textOffset + drawActionsBlock("Reflection for " + domainTitle.toLowerCase() + " domain", domainColors[i], domainColorsBg[i], textOffset, thisChunk);
-
-                            if (counter < chunks.length) {
-                                newPage();
-                            }
-                        }
-
-                    } else {
-                        textOffset = textOffset + drawActionsBlock("Reflection for " + domainTitle.toLowerCase() + " domain", domainColors[i], domainColorsBg[i], textOffset, thisText);
-                    }
-
-                }
-            }
-
-            doc.save("DMA-Report_" + siteName.replace(" ", "-") + "_" + date + ".pdf"); //download as PDF
-
-            console.log("DONE!");
-        };
-
-    }
-    )
-
-};
+    };
 
 
 
