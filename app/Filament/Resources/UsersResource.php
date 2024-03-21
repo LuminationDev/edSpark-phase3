@@ -46,7 +46,7 @@ class UsersResource extends Resource
                         Forms\Components\Grid::make(3)
                             ->schema([
                                 Forms\Components\BelongsToSelect::make('role_id')
-                                    ->relationship('role', 'role_name', fn (Builder $query) => $query->where('role_name','!=' ,'superadmin')),
+                                    ->relationship('role', 'role_name'),
                                 Forms\Components\BelongsToSelect::make('site_id')
                                     ->relationship('site', 'site_name'),
                                 Forms\Components\Select::make('status')

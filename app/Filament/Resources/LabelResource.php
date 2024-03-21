@@ -25,6 +25,10 @@ class LabelResource extends Resource
 
     public static function form(Form $form): Form
     {
+        $labelTypes = Label::distinct()->pluck('type')->toArray();
+        $formatedLabelTypes = array_combine($labelTypes, $labelTypes);
+        $formatedLabelTypes['create_new'] = "Create a new type";
+
         return $form
             ->schema([
                 Forms\Components\Card::make()
@@ -37,21 +41,27 @@ class LabelResource extends Resource
                             ->label('Label description')
                             ->required()
                             ->maxLength(255),
+                        Forms\Components\Section::make("Label type")
+                            ->description('Select an existing type or create a new one')
+                        ->schema([
                         Forms\Components\Select::make('type')
-                            ->label('Label type')
                             ->required()
-                            ->options([
-                                'year' => 'Year',
-                                'learning' => 'Learning',
-                                'capability' => 'Capability',
-                                'category' => "Category"
-                            ]),
+                            ->reactive()
+                            ->options($formatedLabelTypes),
+                        Forms\Components\TextInput::make('new_type')
+                            ->label('Enter a new type')
+                            ->hidden(fn(\Filament\Forms\Get $get) => $get('type') !== 'create_new' )
+                            ->required(fn(\Filament\Forms\Get $get) => $get('type') === 'create_new' ),
                     ])
+
+            ])
             ]);
     }
 
     public static function table(Table $table): Table
     {
+        $labelTypes = Label::distinct()->pluck('type')->toArray();
+
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('value')
@@ -63,12 +73,7 @@ class LabelResource extends Resource
             ])
             ->filters([
                 Tables\Filters\SelectFilter::make('type')
-                    ->options([
-                        'year' => 'Year',
-                        'learning' => 'Learning',
-                        'capability' => 'Capability',
-                        'category' => "Category"
-                    ])
+                    ->options($labelTypes)
                     ->label('Label type')
                     ->attribute('type'),
             ])
