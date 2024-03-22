@@ -13,20 +13,11 @@ import {axiosFetcher} from "@/js/helpers/fetcher";
 
 const route = useRoute()
 const router = useRouter()
-const currentPage = ref()
-const perPage = ref()
 
 const {
     data: adviceList,
     error: adviceError
 } = useSWRV(API_ENDPOINTS.ADVICE.FETCH_ADVICE_POSTS, axiosFetcher, swrvOptions)
-
-const { data: fetchedData, error } = useSWRV([API_ENDPOINTS.ADVICE.FETCH_ADVICE_POSTS, currentPage.value, perPage.value],
-                                             async () => {
-                                                 const response = await fetch(`${API_ENDPOINTS.ADVICE.FETCH_ADVICE_POSTS}?page=${currentPage.value}&perPage=${perPage.value}`);
-                                                 return await response.json();
-                                             }
-);
 
 const adviceFilterList = [
     {name: "Digital Adoption Group", value: "DAG"},
@@ -36,22 +27,13 @@ const adviceFilterList = [
     {name: "Your Learning", value: "Your Learning"},
 ]
 
-const handleUpdateCurrentPage = (newPage) => {
-    currentPage.value = newPage;
-    // Perform any additional actions needed when currentPage changes
-};
-
-const handleUpdatePerPage = (newPerPage) => {
-    perPage.value = newPerPage;
-    // Perform any additional actions needed when perPage changes
-};
-
 const filterObject = ref({})
 
 const handleFilter = (filters, dataPath) => {
     console.log('handlefilter called ' + filters + dataPath)
     filterObject.value[dataPath] = filters.map(filter => filter.value).flat(1)
 }
+
 
 const preselectedFilterObject = ref(null as {name: string, value: string | string[]} | null);
 
@@ -79,11 +61,6 @@ if (route.params || route.params.filter) {
         :live-filter-object="filterObject"
         :hero-title="LandingHeroText['guideSearch']['title']"
         :hero-subtitle="LandingHeroText['guideSearch']['subtitle']"
-        :current-page="currentPage"
-        :per-page="perPage"
-        :fetched-data="fetchedData"
-        @update:current-page="handleUpdateCurrentPage"
-        @update:per-page="handleUpdatePerPage"
     >
         <template #filterBar>
             <GenericMultiSelectFilter

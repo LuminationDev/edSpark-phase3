@@ -18,13 +18,11 @@ import SoftwareCard from "@/js/components/software/SoftwareCard.vue";
 import usePagination from "@/js/composables/usePagination";
 import {API_ENDPOINTS} from "@/js/constants/API_ENDPOINTS";
 import {SearchTitleByType} from "@/js/constants/PageBlurb";
+import {swrvOptions} from "@/js/constants/swrvConstants";
+import {axiosFetcher} from "@/js/helpers/fetcher";
 import {guid} from "@/js/helpers/guidGenerator";
 
 const props = defineProps({
-    fetchedData: {
-        type: Object,
-        required: true
-    },
     resourceList: {
         type: Array,
         required: true
@@ -54,18 +52,9 @@ const props = defineProps({
         type: Boolean,
         required: false,
         default: false
-    },
-    currentPage: {
-        type: Number,
-        required: true
-    },
-    perPage: {
-        type: Number,
-        required: true
     }
 });
 
-const emits = defineEmits('update:currentPage', 'update:perPage')
 
 const { currentPage, perPage, handleChangePageNumber, updatePaginationData } = usePagination(1, 9)
 const filterTerm = ref('')
@@ -83,19 +72,19 @@ const filteredTermData = computed(() => {
     }, [])
 })
 
-// const { data: fetchedData, error } = useSWRV([API_ENDPOINTS.ADVICE.FETCH_ADVICE_POSTS, currentPage.value, perPage.value],
-//                                              async () => {
-//                                                  const response = await fetch(`${API_ENDPOINTS.ADVICE.FETCH_ADVICE_POSTS}?page=${currentPage.value}&perPage=${perPage.value}`);
-//                                                  return await response.json();
-//                                              }
-// );
+const { data: fetchedData, error } = useSWRV([API_ENDPOINTS.ADVICE.FETCH_ADVICE_POSTS, currentPage.value, perPage.value],
+                                             async () => {
+                                                 const response = await fetch(`${API_ENDPOINTS.ADVICE.FETCH_ADVICE_POSTS}?page=${currentPage.value}&perPage=${perPage.value}`);
+                                                 return await response.json();
+                                             }
+);
 
 onMounted(() => {
     updatePaginationData({
         current_page: currentPage.value,
         per_page: perPage.value,
-        // total_items: fetchedData.value?.total_items || 0,
-        // total_pages: fetchedData.value?.total_pages || 0
+        total_items: fetchedData.value?.total_items || 0,
+        total_pages: fetchedData.value?.total_pages || 0
     });
 });
 
@@ -110,19 +99,8 @@ const handleSearchTerm = (term) => {
 
 watch(props.liveFilterObject, () => {
     currentPage.value = 1;
+
 })
-
-watch(() => currentPage.value, (newValue, oldValue) => {
-    if (newValue !== oldValue) {
-        emit('update:currentPage', newValue);
-    }
-});
-
-watch(() => perPage.value, (newValue, oldValue) => {
-    if (newValue !== oldValue) {
-        emit('update:perPage', newValue);
-    }
-});
 
 const paginatedFilteredData = computed(() => {
     const startIndex = (currentPage.value - 1) * perPage.value;
