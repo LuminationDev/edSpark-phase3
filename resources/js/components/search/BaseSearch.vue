@@ -3,7 +3,8 @@ import
     "@hennge/vue3-pagination/dist/vue3-pagination.css";
 
 import VPagination from "@hennge/vue3-pagination";
-import {computed, ref, watch} from 'vue'
+import useSWRV from "swrv";
+import {computed, onMounted, ref, watch} from 'vue'
 
 import AdviceCard from "@/js/components/advice/AdviceCard.vue";
 import BaseLandingHero from "@/js/components/bases/BaseLandingHero.vue";
@@ -15,7 +16,10 @@ import PartnerCard from "@/js/components/partners/PartnerCard.vue";
 import SchoolCard from "@/js/components/schools/SchoolCard.vue";
 import SoftwareCard from "@/js/components/software/SoftwareCard.vue";
 import usePagination from "@/js/composables/usePagination";
+import {API_ENDPOINTS} from "@/js/constants/API_ENDPOINTS";
 import {SearchTitleByType} from "@/js/constants/PageBlurb";
+import {swrvOptions} from "@/js/constants/swrvConstants";
+import {axiosFetcher} from "@/js/helpers/fetcher";
 import {guid} from "@/js/helpers/guidGenerator";
 
 const props = defineProps({
@@ -51,22 +55,43 @@ const props = defineProps({
     }
 });
 
-const { currentPage, perPage, handleChangePageNumber, updatePaginationData } = usePagination(1, 9);
-const filterTerm = ref('');
+
+const { currentPage, perPage, handleChangePageNumber, updatePaginationData } = usePagination(1, 9)
+const filterTerm = ref('')
+
 
 const filteredTermData = computed(() => {
     if (!props.resourceList) return [];
-
     return props.resourceList.reduce((acc, resource) => {
         const attributesToCheck = ['name', 'title'];
-
         if (filterTerm.value.length < 1 || attributesToCheck.some(attr => resource[attr] && resource[attr].toLowerCase().includes(filterTerm.value))) {
             resource['key'] = guid();
             acc.push(resource);
         }
         return acc;
-    }, []);
+    }, [])
+})
+
+const { data: fetchedData, error } = useSWRV([API_ENDPOINTS.ADVICE.FETCH_ADVICE_POSTS, currentPage.value, perPage.value],
+                                             async () => {
+                                                 const response = await fetch(`${API_ENDPOINTS.ADVICE.FETCH_ADVICE_POSTS}?page=${currentPage.value}&perPage=${perPage.value}`);
+                                                 return await response.json();
+                                             }
+);
+
+onMounted(() => {
+    updatePaginationData({
+        current_page: currentPage.value,
+        per_page: perPage.value,
+        total_items: fetchedData.value?.total_items || 0,
+        total_pages: fetchedData.value?.total_pages || 0
+    });
 });
+
+// updatePaginationData({
+//     current_page: 1,
+//     per_page: 9
+// })
 
 const handleSearchTerm = (term) => {
     filterTerm.value = term.toLowerCase();
@@ -74,21 +99,21 @@ const handleSearchTerm = (term) => {
 
 watch(props.liveFilterObject, () => {
     currentPage.value = 1;
-});
+
+})
 
 const paginatedFilteredData = computed(() => {
     const startIndex = (currentPage.value - 1) * perPage.value;
     return filteredTermData.value.slice(startIndex, startIndex + perPage.value);
+})
 
-});
-
-// Compute total pages based on filtered data and items per page
 const totalPages = computed(() => {
     return Math.ceil(filteredTermData.value.length / perPage.value);
 });
 
 const showPagination = computed(() => {
     return filteredTermData.value.length > perPage.value;
+
 });
 
 const formattedSearchTitle = computed(() => {
