@@ -72,9 +72,19 @@ const filteredTermData = computed(() => {
     }, [])
 })
 
-const { data: fetchedData, error } = useSWRV([API_ENDPOINTS.ADVICE.FETCH_ADVICE_POSTS, currentPage.value, perPage.value],
+
+
+const { data: fetchedData, error } = useSWRV([API_ENDPOINTS.ADVICE.FETCH_ADVICE_POSTS, perPage.value],
                                              async () => {
-                                                 const response = await fetch(`${API_ENDPOINTS.ADVICE.FETCH_ADVICE_POSTS}?page=${currentPage.value}&perPage=${perPage.value}`);
+                                                 const response = await fetch(API_ENDPOINTS.ADVICE.FETCH_ADVICE_POSTS, {
+                                                     method: 'POST',
+                                                     headers: {
+                                                         'Content-Type': 'application/json'
+                                                     },
+                                                     body: JSON.stringify({
+                                                         perPage: perPage.value
+                                                     })
+                                                 });
                                                  return await response.json();
                                              }
 );
@@ -88,10 +98,7 @@ onMounted(() => {
     });
 });
 
-// updatePaginationData({
-//     current_page: 1,
-//     per_page: 9
-// })
+
 
 const handleSearchTerm = (term) => {
     filterTerm.value = term.toLowerCase();
@@ -99,8 +106,11 @@ const handleSearchTerm = (term) => {
 
 watch(props.liveFilterObject, () => {
     currentPage.value = 1;
+});
 
-})
+if (error) {
+    console.error('Error fetching data:', error);
+}
 
 const paginatedFilteredData = computed(() => {
     const startIndex = (currentPage.value - 1) * perPage.value;
