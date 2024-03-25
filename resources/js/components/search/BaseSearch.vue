@@ -14,7 +14,6 @@ import PartnerCard from "@/js/components/partners/PartnerCard.vue";
 import SchoolCard from "@/js/components/schools/SchoolCard.vue";
 import SoftwareCard from "@/js/components/software/SoftwareCard.vue";
 import usePagination from "@/js/composables/usePagination";
-import {API_ENDPOINTS} from "@/js/constants/API_ENDPOINTS";
 import {SearchTitleByType} from "@/js/constants/PageBlurb";
 import {guid} from "@/js/helpers/guidGenerator";
 
@@ -50,10 +49,6 @@ const props = defineProps({
         type: Boolean,
         required: false,
         default: false,
-    },
-    fetchError: {
-        type: Object,
-        default: null,
     },
 });
 

@@ -1,6 +1,5 @@
 <script setup>
-import useSWRV from "swrv";
-import {ref} from "vue";
+import {onMounted, ref} from "vue";
 import {useRoute} from "vue-router";
 
 import BaseSearch from "@/js/components/search/BaseSearch.vue";
@@ -8,18 +7,12 @@ import GenericMultiSelectFilter from "@/js/components/search/hardware/GenericMul
 import LabelFiltersSearchPage from "@/js/components/search/LabelFiltersSearchPage.vue";
 import {API_ENDPOINTS} from "@/js/constants/API_ENDPOINTS";
 import {LandingHeroText} from "@/js/constants/PageBlurb";
-import {swrvOptions} from "@/js/constants/swrvConstants";
-import {axiosFetcher} from "@/js/helpers/fetcher";
 import router from "@/js/router";
-import {useUserStore} from "@/js/stores/useUserStore";
 
 const route = useRoute()
 
-
-const {
-    data: softwareList,
-    error: softwareError
-} = useSWRV(API_ENDPOINTS.SOFTWARE.FETCH_SOFTWARE_POSTS, axiosFetcher, swrvOptions)
+const currentPage = ref(1)
+const perPage = ref(9)
 
 const softwareFilterList = [
     {name: "No cost", value: "No cost"},
@@ -56,16 +49,38 @@ if (route.params || route.params.filter) {
     }
 }
 
+onMounted(() => {
+    fetchData(perPage.value, currentPage.value);
+});
+
+const fetchData = async (perPage, currentPage) => {
+    const response = await fetch(API_ENDPOINTS.SOFTWARE.FETCH_SOFTWARE_POSTS, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            perPage: perPage,
+            currentPage: currentPage
+        })
+    });
+    return await response.json();
+};
+
+const handlePaginationChange = ({ perPage, currentPage }) => {
+    fetchData(perPage, currentPage);
+};
+
 </script>
 
 <template>
     <BaseSearch
         search-type="software"
-        :resource-list="softwareList"
         :live-filter-object="filterObject"
         :hero-title="LandingHeroText['apps']['title']"
         :hero-subtitle="LandingHeroText['apps']['subtitle']"
         hero-background-color="technologyPurple"
+        @pagination-change="handlePaginationChange"
     >
         <template #filterBar>
             <GenericMultiSelectFilter

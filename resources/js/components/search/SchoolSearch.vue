@@ -9,6 +9,7 @@ import GenericMultiSelectFilter from "@/js/components/search/hardware/GenericMul
 import SchoolSearchListViewIcon from "@/js/components/svg/schoolMapView/SchoolSearchListViewIcon.vue";
 import SchoolSearchMapViewIcon from "@/js/components/svg/schoolMapView/SchoolSearchMapViewIcon.vue";
 import SchoolsRobot from "@/js/components/svg/schoolsRobot/schoolsRobot.vue";
+import {API_ENDPOINTS} from "@/js/constants/API_ENDPOINTS";
 import {LandingHeroText} from "@/js/constants/PageBlurb";
 import {schoolPartnerTech,schoolTech} from "@/js/constants/schoolTech";
 import {lowerSlugify} from "@/js/helpers/stringHelpers";
@@ -18,16 +19,29 @@ import {useSchoolsStore} from "@/js/stores/useSchoolsStore";
 const route = useRoute()
 const router = useRouter()
 
+const currentPage = ref(1)
+const perPage = ref(9)
+
 const combinedSchoolTech = [...schoolTech,...schoolPartnerTech];
 const {allSchools} = storeToRefs(useSchoolsStore())
 
 onMounted(() =>{
-    schoolService.fetchAllSchools().then(res =>{
-        console.log(res)
-        allSchools.value = res
-    })
-
+    fetchData(perPage.value, currentPage.value);
 })
+
+const fetchData = async (perPage, currentPage) => {
+    const response = await fetch(API_ENDPOINTS.SCHOOL.FETCH_ALL_SCHOOLS, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            perPage: perPage,
+            currentPage: currentPage
+        })
+    });
+    return await response.json();
+};
 
 const currentSearchResultView = ref('list')
 const filterObject = ref({})
@@ -66,6 +80,10 @@ const handleClickSearchResultView = (viewType) =>{
     currentSearchResultView.value = viewType
 }
 
+const handlePaginationChange = ({ perPage, currentPage }) => {
+    fetchData(perPage, currentPage);
+};
+
 </script>
 
 <template>
@@ -76,6 +94,7 @@ const handleClickSearchResultView = (viewType) =>{
         :hero-title="LandingHeroText['school']['title']"
         :hero-subtitle="LandingHeroText['school']['subtitle']"
         :custom-view="isCurrentViewCustomView"
+        @pagination-change="handlePaginationChange"
     >
         <template #filterBar>
             <GenericMultiSelectFilter
