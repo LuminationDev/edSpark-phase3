@@ -43,7 +43,7 @@ const props = defineProps({
 //     },
 // }
 
-console.log(props.colorTheme)
+// console.log(props.colorTheme)
 
 </script>
 

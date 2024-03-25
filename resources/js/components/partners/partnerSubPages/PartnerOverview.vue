@@ -1,17 +1,24 @@
 <script setup lang="ts">
+import useVuelidate from "@vuelidate/core";
+import {required} from "@vuelidate/validators";
 import {storeToRefs} from "pinia";
-import {computed,onBeforeMount, onMounted, Ref, ref} from 'vue'
+import {computed, onBeforeMount, onMounted, Ref, ref, watch} from 'vue'
 import {useRoute} from "vue-router";
 import {toast} from "vue3-toastify";
 
 import TinyMceRichTextInput from "@/js/components/bases/frontendform/TinyMceEditor/TinyMceRichTextInput.vue";
+import TextInput from "@/js/components/bases/TextInput.vue";
 import GenericButton from "@/js/components/button/GenericButton.vue";
+import PartnerImageChange from "@/js/components/partners/PartnerContent/PartnerImageChange.vue";
+import SchoolImageChange from "@/js/components/schoolsingle/schoolContent/SchoolImageChange.vue";
+import UserAvatarChange from "@/js/components/userprofile/userprofileupdate/UserAvatarChange.vue";
 import {formatDateToDayTime} from "@/js/helpers/dateHelper";
 import {edSparkContentSanitizer} from "@/js/helpers/objectHelpers";
 import {partnerService} from "@/js/service/partnerService";
 import {useUserStore} from "@/js/stores/useUserStore";
 import {EditorJSDataType} from "@/js/types/EditorJsTypes";
 import {PartnerDataType} from "@/js/types/PartnerTypes";
+
 
 const props = defineProps({
     data: {
@@ -29,13 +36,17 @@ const props = defineProps({
         required: true
     }
 })
+const logoStorage = ref(null)
+const coverImageStorage = ref(null)
+
+
+console.log(props.contentFromBase)
 
 enum PartnerContentState {
     New = "new",
     PendingAvailable = "pending_available",
     PendingLoaded = "pending_loaded",
 }
-console.log(props.contentFromBase)
 
 const partnerContentStateDescription = {
     new: "",
@@ -62,9 +73,23 @@ const pendingPartnerProfile: Ref<any> = ref(null)
 const partnerContentState = ref('new')
 const currentUserAdminMessage = ref('')
 const tinyMceRefreshKey = ref(0)
+const uploadImageInstance = ref(false)
+
+const state = {
+    introduction: '',
+    motto: ''
+}
+const rules = {
+    introduction: required,
+    motto: required
+}
+
+const v$ = useVuelidate(rules, state)
 
 onBeforeMount(() => {
     newPartnerContent.value = props.contentFromBase.profile
+    v$.value.introduction.$model = props.contentFromBase.introduction
+    v$.value.motto.$model = props.contentFromBase.motto
 })
 
 onMounted(async () => {
@@ -72,10 +97,6 @@ onMounted(async () => {
         currentUserCanEdit.value = Boolean(res.data.result)
         currentUserAdminMessage.value = res.data.message
         console.log(res.data.result)
-        toast(
-            "You have successfully submitted content for moderation. Content will update once moderator approved your submission"
-        )
-
         if (currentUserCanEdit.value) {
             fetchPendingContent();
         }
@@ -88,7 +109,7 @@ const forceRefreshTinyMce = () => {
 
 const fetchPendingContent = async () => {
     try {
-        const {data} = await partnerService.fetchPendingPartnerProfile(+partnerId, currentUser.value.id)
+        const {data} = await partnerService.fetchPendingPartnerProfile(+partnerId, currentUser.value.id).catch(err => console.log('No pending profile'))
         if (data.pending_available) {
             partnerContentState.value = 'pending_available'
             pendingPartnerProfile.value = data.result.profile
@@ -105,7 +126,7 @@ const handlePartnerDataFromEditor = (data) => {
 }
 
 const handleEditButton = async (): Promise<void> => {
-    if(partnerContentState.value === PartnerContentState.New){
+    if (partnerContentState.value === PartnerContentState.New) {
         fetchPendingContent()
     }
     newPartnerContent.value = props.contentFromBase.profile
@@ -117,25 +138,15 @@ const handleEditButton = async (): Promise<void> => {
 
 }
 
-// const handleAllSaveButton = async (): Promise<void> => {
-//     await partnerEditorRef.value.handleEditorSave()
-//     partnerService.updatePartnerContent(+partnerId, currentUser.value.id, newPartnerContent.value).then(res => {
-//         if (res.status === 200) {
-//             partnerContentState.value = 'submitted_pending'
-//             editMode.value = false
-//         } else {
-//             console.error('Failed to save profile')
-//         }
-//     }).catch((e) => {
-//         console.error(e)
-//     })
-// }
-
-const handleAllSaveButton = () =>{
-    return partnerService.updatePartnerContent(+partnerId, currentUser.value.id, newPartnerContent.value).then(res => {
+const handleAllSaveButton = () => {
+    return partnerService.updatePartnerContent(+partnerId, currentUser.value.id, newPartnerContent.value, v$.value.introduction.$model, v$.value.motto.$model, logoStorage.value , coverImageStorage.value).then(res => {
         if (res.status === 200) {
             partnerContentState.value = 'submitted_pending'
             editMode.value = false
+            uploadImageInstance.value = true
+            toast(
+                "You have successfully submitted content for moderation. Content will update once moderator approved your submission"
+            )
         } else {
             console.error('Failed to save profile')
         }
@@ -143,6 +154,10 @@ const handleAllSaveButton = () =>{
         console.error(e)
     })
 }
+
+
+
+
 const handleClickEditPendingContent = (): void => {
     newPartnerContent.value = pendingPartnerProfile.value
     partnerContentState.value = 'pending_loaded'
@@ -150,7 +165,7 @@ const handleClickEditPendingContent = (): void => {
 
 const handleCancelEditButton = (): void => {
     editMode.value = false
-    if(pendingPartnerProfile.value){
+    if (pendingPartnerProfile.value) {
         partnerContentState.value = PartnerContentState.PendingAvailable
     } else {
         partnerContentState.value = PartnerContentState.New
@@ -168,15 +183,23 @@ const userEditRole = computed(() => {
 
 
 const moderationStatusMessage = computed(() => {
-    if(partnerContentState.value === PartnerContentState.PendingLoaded){
+    if (partnerContentState.value === PartnerContentState.PendingLoaded) {
         return partnerContentStateDescription[partnerContentState.value]
-    }
-    else if (pendingPartnerProfile.value) {
+    } else if (pendingPartnerProfile.value) {
         return partnerContentStateDescription[partnerContentState.value] + formatDateToDayTime(pendingPartnerProfile.value.updated_at)
     } else {
         return "Your latest profile has been approved on " + formatDateToDayTime(props.contentFromBase.updated_at)
     }
 })
+
+const handleUploadedPhotoPartner =(type, file) =>{
+    if(type === 'logo'){
+        logoStorage.value = file
+    } else if(type==='coverImage'){
+        coverImageStorage.value = file
+    }
+
+}
 
 </script>
 
@@ -187,8 +210,30 @@ const moderationStatusMessage = computed(() => {
         >
             <div
                 v-if="currentUserCanEdit && editMode"
-                class="w-full lg:!basis-2/3"
+                class="flex flex-col w-full lg:!basis-2/3"
             >
+                <TextInput
+                    v-model="v$.introduction.$model"
+                    field-id="introInput"
+                    :v$="v$.introduction"
+                    class="my-2"
+                    placeholder="Enter a short introduction of your company"
+                >
+                    <template #label>
+                        Introduction
+                    </template>
+                </TextInput>
+                <TextInput
+                    v-model="v$.motto.$model"
+                    field-id="Motto input"
+                    :v$="v$.motto"
+                    class="my-2"
+                    placeholder="Enter your company motto. Be short and concise"
+                >
+                    <template #label>
+                        Motto
+                    </template>
+                </TextInput>
                 <TinyMceRichTextInput
                     :key="tinyMceRefreshKey"
                     :src-content="newPartnerContent"
@@ -286,6 +331,27 @@ const moderationStatusMessage = computed(() => {
                         >
                             Edit this page
                         </GenericButton>
+                    </template>
+                    <template v-if="editMode">
+                        <SchoolImageChange
+                            :current-logo="contentFromBase['logo']"
+                            :current-cover-image="contentFromBase['cover_image']"
+                            @send-uploaded-photo-to-content="handleUploadedPhotoPartner"
+                        />
+                        <!--
+                            <PartnerImageChange--
+                        >
+                        <!--                            class="mt-6"-->
+                        <!--                            :send-image-upload-instance="uploadImageInstance"-->
+                        <!--                            @send-handle-file-dropped-instance="handleReceiveFileDroppedInstance"-->
+                        <!--                            @reset-image-upload-boolean="uploadImageInstance = false"-->
+                        <!--                        />-->
+                        <!--                        <button-->
+                        <!--                            class="border-2 h6 p-4 w-32"-->
+                        <!--                            @click="handleUploadLogo"-->
+                        <!--                        >-->
+                        <!--                            Upload logo-->
+                        <!--                        </button>-->
                     </template>
                 </div>
             </div>

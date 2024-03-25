@@ -7,6 +7,7 @@ import CloseButton from "@/js/components/dma/CloseButton.vue";
 import OverlayModal from "@/js/components/dma/OverlayModal.vue";
 import RoundButton from "@/js/components/dma/RoundButton.vue";
 import TextButton from "@/js/components/dma/TextButton.vue";
+import ToggleButton from "@/js/components/dma/ToggleButton.vue";
 import WarningModal from "@/js/components/dma/WarningModal.vue";
 import Spinner from "@/js/components/spinner/Spinner.vue";
 import {dmaService} from "@/js/service/dmaService";
@@ -25,8 +26,9 @@ const props = defineProps({
         required: true,
     }
 })
-
 const emit = defineEmits(['close']);
+
+const showSelectionWarning = ref(false);
 
 const scrollableRef = ref(null);
 const circleRef = ref(null);
@@ -85,7 +87,7 @@ const highlightedScores = computed(() => {
         return {
             ...score,
             highlighted: selectedElement.value === `${score.domain}|${score.element}`,
-            selected: actionPlan.value ? actionPlan.value[score.domain][score.element].expanded : false,
+            selected: actionPlan.value ? actionPlan.value[score.domain][score.element].selected : false,
         }
     });
 });
@@ -248,14 +250,27 @@ watch([reportData, actionPlanData], async([data, planData]) => {
                 const currentPlan = planData.action_plan[domain.domain]?.find(e => e.element === element.element);
                 if (currentPlan) {
                     // map loaded action plan
-                    plan[domain.domain][element.element] = { expanded: !!currentPlan.action, action_plan: currentPlan.action, edited: false};
+                    plan[domain.domain][element.element] = {
+                        selected: !!currentPlan.selected,
+                        expanded: false,
+                        action_plan: currentPlan.action,
+                        edited: false
+                    };
                 } else {
-                    plan[domain.domain][element.element] = {expanded: false, action_plan: null, edited: false};
+                    plan[domain.domain][element.element] = {selected: false, expanded: false, action_plan: null, edited: false};
                 }
             }
         }
         actionPlan.value = plan;
     }
+});
+
+const selectedCount = computed(() => {
+    return Object.values(actionPlan.value).reduce((total, domain) => {
+        return total + Object.values(domain).reduce((count,plan) => {
+            return plan.selected ? count + 1 : count;
+        },0);
+    },0);
 });
 
 const handleScrollToElement = async (item) => {
@@ -282,8 +297,8 @@ const handleScrollToElement = async (item) => {
 const handleSaveActionPlan = async (domain, elementName) => {
     const plan = actionPlan.value[domain.domain][elementName];
     try {
-        if (plan.action_plan) {
-            await dmaService.putActionPlan(domain.id, elementName, plan.action_plan);
+        if (plan.action_plan || plan.selected) {
+            await dmaService.putActionPlan(domain.id, elementName, plan.action_plan, plan.selected);
         } else {
             await dmaService.deleteActionPlan(domain.id, elementName);
         }
@@ -291,6 +306,17 @@ const handleSaveActionPlan = async (domain, elementName) => {
     } catch(error) {
         console.log("error saving action plan", error);
         showErrorModal.value = true;
+    }
+}
+
+const handleTogglePlan = (domain, elementName) => {
+    const plan = actionPlan.value[domain.domain][elementName];
+    if (plan.selected && selectedCount.value > 3) {
+        plan.selected = false;
+        showSelectionWarning.value = true;
+        setTimeout(() => { showSelectionWarning.value = false}, 10);
+    } else {
+        handleSaveActionPlan(domain, elementName)
     }
 }
 
@@ -344,6 +370,14 @@ const handleCloseReport = () => {
                 class="absolute top-6 left-4 z-50 md:!left-10 md:!top-10"
                 @click="handleCloseReport"
             />
+            <div class="absolute top-0 flex justify-center items-center p-4 pointer-events-none selection-warning w-full">
+                <div
+                    class="bg-red-200 drop-shadow-lg opacity-0 p-5 rounded-lg text-red-700"
+                    :class="showSelectionWarning ? 'transition-none opacity-100' : 'transition-all duration-500 delay-[3000ms]'"
+                >
+                    You can select maximum 3 items.
+                </div>
+            </div>
             <div
                 v-if="!actionPlan"
                 class="flex justify-center items-center min-h-full w-full md:h-full"
@@ -385,8 +419,9 @@ const handleCloseReport = () => {
                     <div class="max-w-[800px] mx-auto my-10 text-left">
                         <p>
                             Please select between 1 and 3 elements that your school would like to focus on
-                            by clicking 'Show advice & action plan' and filling in your action plan in the box provided.
-                            These elements will be highlighted on your profile.
+                            by checking the boxes next to your chosen elements.
+                            These will be highlighted on your profile, and your actions plans associated
+                            with these elements will appear in your printed report.
                         </p>
                     </div>
 
@@ -464,12 +499,31 @@ const handleCloseReport = () => {
                                                 "
                                             :class="{'brightness-75': selectedElement === `${domain.domain}|${element.element}`}"
                                         >
-                                            <span class="flex-1 mr-2 text-h4-caps">{{ element.element }} is {{ element.label }}</span>
+
+                                            <ToggleButton
+                                                v-model="actionPlan[domain.domain][element.element].selected"
+                                                @click="handleTogglePlan(domain, element.element)"
+                                            />
+                                            <span class="flex-1 mr-2">{{ element.element }} is {{ element.label }}</span>
+                                            <i
+                                                v-if="actionPlan[domain.domain][element.element].action_plan"
+                                                class="fa-pen-to-square fas mr-2 text-sm"
+                                            />
+
+
+
                                             <TextButton
                                                 class="!text-xs underline"
                                                 @click="() => toggleShowAdvice(element.domain, element.element)"
                                             >
-                                                <span class="hidden md:block !normal-case text-sm">{{ actionPlan[domain.domain][element.element].expanded ? 'Hide' : 'Show' }} advice & action plan</span>
+
+
+                                                <!--span class="hidden md:block !normal-case text-sm">{{ actionPlan[domain.domain][element.element].expanded ? 'Hide' : 'Show' }} advice & action plan</span-->
+
+                                                <span class="hidden md:block">
+                                                    {{ actionPlan[domain.domain][element.element].expanded ? 'Hide' : 'Show' }}
+                                                    advice & action plan</span>
+
                                                 <span class="md:hidden">advice & plan</span>
                                             </TextButton>
                                             <img

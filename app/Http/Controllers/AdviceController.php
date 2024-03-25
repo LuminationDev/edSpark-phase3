@@ -95,6 +95,8 @@ class AdviceController extends Controller
 
     public function fetchAllAdvicePosts(Request $request): \Illuminate\Http\JsonResponse
     {
+
+
         $advices = Advice::where('post_status', 'Published')->orderBy('created_at', 'DESC')->get();
         $data = [];
 

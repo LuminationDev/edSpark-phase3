@@ -20,7 +20,7 @@ class UserSurveyActionPlan extends Model
     protected $fillable = [
         'user_survey_domain_id',
         'action',
-        'element'
+        'element',
+        'selected',
     ];
-
 }

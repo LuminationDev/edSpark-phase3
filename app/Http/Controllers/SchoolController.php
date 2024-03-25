@@ -401,7 +401,7 @@ class SchoolController extends Controller
     public function fetchFeaturedSchools(Request $request)
     {
 //        $schools = School::where('isFeatured', 1)->inRandomOrder()->->inRandomOrder()->limit(4)->get();
-        $schools = School::where('isFeatured', 1)->inRandomOrder()->limit(4)->get();
+        $schools = School::where('isFeatured', 1)->inRandomOrder()->limit(3)->get();
         $data = [];
 
         foreach ($schools as $school) {
