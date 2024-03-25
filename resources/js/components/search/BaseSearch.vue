@@ -1,10 +1,8 @@
 <script setup>
-import
-    "@hennge/vue3-pagination/dist/vue3-pagination.css";
+import "@hennge/vue3-pagination/dist/vue3-pagination.css";
 
 import VPagination from "@hennge/vue3-pagination";
-import useSWRV from "swrv";
-import {computed, onMounted, ref, watch} from 'vue'
+import { computed, onMounted,ref, watch } from "vue";
 
 import AdviceCard from "@/js/components/advice/AdviceCard.vue";
 import BaseLandingHero from "@/js/components/bases/BaseLandingHero.vue";
@@ -18,112 +16,127 @@ import SoftwareCard from "@/js/components/software/SoftwareCard.vue";
 import usePagination from "@/js/composables/usePagination";
 import {API_ENDPOINTS} from "@/js/constants/API_ENDPOINTS";
 import {SearchTitleByType} from "@/js/constants/PageBlurb";
-import {swrvOptions} from "@/js/constants/swrvConstants";
-import {axiosFetcher} from "@/js/helpers/fetcher";
 import {guid} from "@/js/helpers/guidGenerator";
 
 const props = defineProps({
     resourceList: {
         type: Array,
-        required: true
+        required: true,
     },
     searchType: {
         type: String,
-        required: true
+        required: true,
     },
     liveFilterObject: {
         type: Object,
-        required: true
+        required: true,
     },
     heroTitle: {
         type: String,
-        required: true
+        required: true,
     },
     heroSubtitle: {
         type: String,
-        required: true
+        required: true,
     },
     heroBackgroundColor: {
         type: String,
         required: false,
-        default: 'darkTeal'
+        default: "darkTeal",
     },
     customView: {
         type: Boolean,
         required: false,
-        default: false
-    }
+        default: false,
+    },
+    fetchError: {
+        type: Object,
+        default: null,
+    },
 });
 
+const { currentPage, perPage, handleChangePageNumber, updatePaginationData } =
+    usePagination(1, 9);
 
-const { currentPage, perPage, handleChangePageNumber, updatePaginationData } = usePagination(1, 9)
-const filterTerm = ref('')
+handleChangePageNumber.value = (newPage) => {
+    currentPage.value = newPage;
+};
 
+const filterTerm = ref("");
+
+watch(currentPage, () => {
+    fetchData();
+});
+
+const fetchData = async () => {
+    const response = await fetch(API_ENDPOINTS.ADVICE.FETCH_ADVICE_POSTS, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            perPage: perPage.value,
+            currentPage: currentPage.value
+        })
+    });
+    return await response.json();
+};
 
 const filteredTermData = computed(() => {
     if (!props.resourceList) return [];
     return props.resourceList.reduce((acc, resource) => {
-        const attributesToCheck = ['name', 'title'];
-        if (filterTerm.value.length < 1 || attributesToCheck.some(attr => resource[attr] && resource[attr].toLowerCase().includes(filterTerm.value))) {
-            resource['key'] = guid();
+        const attributesToCheck = ["name", "title"];
+        if (
+            filterTerm.value.length < 1 ||
+            attributesToCheck.some(
+                (attr) =>
+                    resource[attr] &&
+                    resource[attr].toLowerCase().includes(filterTerm.value)
+            )
+        ) {
+            resource["key"] = guid();
             acc.push(resource);
         }
         return acc;
-    }, [])
-})
-
-
-
-const { data: fetchedData, error } = useSWRV([API_ENDPOINTS.ADVICE.FETCH_ADVICE_POSTS, perPage.value],
-                                             async () => {
-                                                 const response = await fetch(API_ENDPOINTS.ADVICE.FETCH_ADVICE_POSTS, {
-                                                     method: 'POST',
-                                                     headers: {
-                                                         'Content-Type': 'application/json'
-                                                     },
-                                                     body: JSON.stringify({
-                                                         perPage: perPage.value
-                                                     })
-                                                 });
-                                                 return await response.json();
-                                             }
-);
-
-onMounted(() => {
-    updatePaginationData({
-        current_page: currentPage.value,
-        per_page: perPage.value,
-        total_items: fetchedData.value?.total_items || 0,
-        total_pages: fetchedData.value?.total_pages || 0
-    });
+    }, []);
 });
 
+onMounted(fetchData)
 
+updatePaginationData({
+    current_page: currentPage.value,
+    per_page: perPage.value,
+    total_items: props.resourceList?.total_items || 0,
+    total_pages: props.resourceList?.total_pages || 0,
+});
 
 const handleSearchTerm = (term) => {
     filterTerm.value = term.toLowerCase();
-}
+};
 
 watch(props.liveFilterObject, () => {
     currentPage.value = 1;
 });
 
-if (error) {
-    console.error('Error fetching data:', error);
+if (props.fetchError) {
+    console.error("Error fetching data:", props.fetchError);
 }
 
 const paginatedFilteredData = computed(() => {
     const startIndex = (currentPage.value - 1) * perPage.value;
-    return filteredTermData.value.slice(startIndex, startIndex + perPage.value);
-})
+    return filteredTermData.value.slice(
+        startIndex,
+        startIndex + perPage.value
+    );
+});
 
 const totalPages = computed(() => {
     return Math.ceil(filteredTermData.value.length / perPage.value);
 });
 
 const showPagination = computed(() => {
-    return filteredTermData.value.length > perPage.value;
-
+    return true
+    // return filteredTermData.value.length > perPage.value;
 });
 
 const formattedSearchTitle = computed(() => {
@@ -131,14 +144,16 @@ const formattedSearchTitle = computed(() => {
 });
 
 const formattedSearchBlurb = computed(() => {
-    if (['school'].includes(props.searchType))
-        return "Discover more about how schools in your area are embracing digital technology, and draw inspiration for your own classroom.";
-    else
-        return "Discover inspiration for your own classroom";
+    if (["school"].includes(props.searchType))
+        return (
+            "Discover more about how schools in your area are embracing digital technology, and draw inspiration for your own classroom."
+        );
+    else return "Discover inspiration for your own classroom";
 });
 
-console.log("Here is the value for: " + currentPage.value)
-console.log("Here is the value for: " + totalPages.value)
++ console.log("Here is the value for: " + currentPage.value);
++ console.log("Here is the value for: " + totalPages.value);
+
 </script>
 
 <template>
@@ -148,9 +163,7 @@ console.log("Here is the value for: " + totalPages.value)
         :background-color="props.heroBackgroundColor"
         :swoosh-color="heroBackgroundColor"
     />
-    <div
-        class="browse-schools-container flex items-center flex-col px-12 py-16"
-    >
+    <div class="browse-schools-container flex items-center flex-col px-12 py-16">
         <div class="flex flex-col search-filter-element w-full">
             <div class="mb-8 pr-4 search-filter-heading">
                 <h3 class="font-semibold text-3xl">
@@ -175,13 +188,12 @@ console.log("Here is the value for: " + totalPages.value)
                 <span v-if="filteredTermData">
                     {{ String(filteredTermData.length) + " search " + (filteredTermData.length > 1 ? "results" : "result") }}
                 </span>
-                <span v-else>
-                    Filtered data is not available
-                </span>
+                <span v-else>Filtered data is not available</span>
             </div>
             <div
-                v-if="resourceList && resourceList.length &&
-                    props.customView"
+                v-if="
+                    resourceList && resourceList.length && props.customView
+                "
                 class="customViewContainer"
             >
                 <slot
@@ -190,7 +202,9 @@ console.log("Here is the value for: " + totalPages.value)
                 />
             </div>
             <div
-                v-else-if="resourceList && resourceList.length && !props.customView"
+                v-else-if="
+                    resourceList && resourceList.length && !props.customView
+                "
                 id="resourceResult"
                 class="
                     grid
@@ -209,9 +223,7 @@ console.log("Here is the value for: " + totalPages.value)
                     v-for="(data) in paginatedFilteredData"
                     :key="data['key']"
                 >
-                    <template
-                        v-if="searchType === 'guide'"
-                    >
+                    <template v-if="searchType === 'guide'">
                         <div
                             :key="data.id"
                             class="group h-[470px] max-w-[350px] transition-all w-full hover:shadow-2xl lg:!max-w-[400px]"
@@ -261,9 +273,7 @@ console.log("Here is the value for: " + totalPages.value)
                             :key="data.id"
                             class="group h-[470px] max-w-[350px] transition-all w-full hover:shadow-2xl lg:!max-w-[400px]"
                         >
-                            <PartnerCard
-                                :data="data"
-                            />
+                            <PartnerCard :data="data" />
                         </div>
                     </template>
                     <template v-else-if="searchType === 'event'">
@@ -287,7 +297,6 @@ console.log("Here is the value for: " + totalPages.value)
                         </div>
                     </template>
                 </template>
-
                 <div
                     v-if="filteredTermData && filteredTermData.length <= 0"
                     class="col-span-1 font-semibold text-xl md:!col-span-2 lg:!col-span-3"
@@ -313,7 +322,7 @@ console.log("Here is the value for: " + totalPages.value)
             <v-pagination
                 v-model="currentPage"
                 :range-size="1"
-                :pages="totalPages"
+                :pages="3"
                 active-color="#DCEDFF"
                 @update:model-value="handleChangePageNumber"
             />
@@ -321,8 +330,6 @@ console.log("Here is the value for: " + totalPages.value)
     </div>
 </template>
 <style lang="scss">
-
-
 /* MB added the below to tidy up responsive nav bars */
 @media screen and (max-width: 767px) {
     .search-filter-element {
@@ -330,20 +337,11 @@ console.log("Here is the value for: " + totalPages.value)
     }
 }
 
-// @media screen and (max-width: 510px) {
-//     #searchIcon {
-//         margin-left: 0.5rem !important;
-//         top: 0.1rem !important;
-//     }
-// }
-
 .BaseSearchPaginationContainer {
-
     .Pagination {
         font-size: large;
 
         .PaginationControl {
-
             .Control {
                 height: 35px;
                 width: 35px;
@@ -351,12 +349,10 @@ console.log("Here is the value for: " + totalPages.value)
         }
 
         li {
-
             button {
                 font-size: 24px;
                 margin-left: 16px;
                 margin-right: 16px;
-
             }
 
             .Page,
@@ -367,10 +363,7 @@ console.log("Here is the value for: " + totalPages.value)
 
             .Page:hover {
                 border: 1px #339999 solid;
-
             }
-
-
         }
     }
 }
