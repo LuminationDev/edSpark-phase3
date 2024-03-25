@@ -1,4 +1,5 @@
 <script setup>
+import axios from "axios";
 import {onMounted, ref} from "vue";
 import {useRoute} from "vue-router";
 
@@ -11,9 +12,6 @@ import router from "@/js/router";
 
 const route = useRoute()
 
-const currentPage = ref(1)
-const perPage = ref(9)
-
 const softwareFilterList = [
     {name: "No cost", value: "No cost"},
     {name: "Cyber Assessed", value: "Cyber Assessed"},
@@ -22,54 +20,48 @@ const softwareFilterList = [
 
 const filterObject = ref({})
 
-
-// Handle Emit that is emitted by GenericMultiSelectFilter
 const handleFilter = (filters, dataPath) => {
     filterObject.value[dataPath] = filters.map(filter => filter.value).flat(1)
 }
 
-const preselectedFilterObject = ref('');
+const preselectedFilterObject = ref('')
 
 if (route.params || route.params.filter) {
     switch (route.params.filter) {
     case "provided":
         preselectedFilterObject.value = {name: "Department Provided", value: "Department Provided"}
-        break;
+        break
     case "approved":
         preselectedFilterObject.value = {name: "Department Approved", value: "Department Approved"}
-        break;
+        break
     case "negotiated":
         preselectedFilterObject.value = {
             name: "Department Approved and Negotiated",
             value: "Approved and Negotiated"
         }
-        break;
+        break
     default:
         router.push('/browse/software')
     }
 }
 
 onMounted(() => {
-    fetchData(perPage.value, currentPage.value);
-});
+    fetchData(9,1)
+})
 
 const fetchData = async (perPage, currentPage) => {
-    const response = await fetch(API_ENDPOINTS.SOFTWARE.FETCH_SOFTWARE_POSTS, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-            perPage: perPage,
-            currentPage: currentPage
-        })
-    });
-    return await response.json();
-};
+    const body = {
+        perPage: perPage,
+        currentPage: currentPage
+    }
+    const response = await axios.post(API_ENDPOINTS.SOFTWARE.FETCH_SOFTWARE_POSTS, body).then(res =>res.data)
+    console.log(response)
+    return response
+}
 
 const handlePaginationChange = ({ perPage, currentPage }) => {
-    fetchData(perPage, currentPage);
-};
+    fetchData(perPage, currentPage)
+}
 
 </script>
 

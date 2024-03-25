@@ -2,7 +2,7 @@
 import "@hennge/vue3-pagination/dist/vue3-pagination.css";
 
 import VPagination from "@hennge/vue3-pagination";
-import { computed, onMounted,ref, watch } from "vue";
+import { computed, ref, watch } from "vue";
 
 import AdviceCard from "@/js/components/advice/AdviceCard.vue";
 import BaseLandingHero from "@/js/components/bases/BaseLandingHero.vue";
@@ -50,24 +50,23 @@ const props = defineProps({
         required: false,
         default: false,
     },
-});
+})
 
-const { currentPage, perPage, handleChangePageNumber, updatePaginationData } = usePagination(1, 9);
+const { currentPage, perPage, handleChangePageNumber, updatePaginationData } = usePagination(1, 9)
 
 handleChangePageNumber.value = (newPage) => {
-    currentPage.value = newPage;
-};
+    currentPage.value = newPage
+}
 
-const filterTerm = ref("");
+const filterTerm = ref("")
 
 const emitPaginationChange = () => {
-    emit('pagination-change', { perPage: perPage.value, currentPage: currentPage.value });
-};
+    emit('pagination-change', { perPage: perPage.value, currentPage: currentPage.value })
+}
 
 watch([currentPage, perPage], () => {
-    emitPaginationChange();
-});
-
+    emitPaginationChange()
+})
 
 const filteredTermData = computed(() => {
     if (!props.resourceList) return [];
@@ -85,55 +84,55 @@ const filteredTermData = computed(() => {
             acc.push(resource);
         }
         return acc;
-    }, []);
-});
+    }, [])
+})
 
 updatePaginationData({
     current_page: currentPage.value,
     per_page: perPage.value,
     total_items: props.resourceList?.total_items || 0,
     total_pages: props.resourceList?.total_pages || 0,
-});
+})
 
 const handleSearchTerm = (term) => {
     filterTerm.value = term.toLowerCase();
-};
+}
 
 watch(props.liveFilterObject, () => {
-    currentPage.value = 1;
-});
+    currentPage.value = 1
+})
 
 if (props.fetchError) {
-    console.error("Error fetching data:", props.fetchError);
+    console.error("Error fetching data:", props.fetchError)
 }
 
 const paginatedFilteredData = computed(() => {
-    const startIndex = (currentPage.value - 1) * perPage.value;
+    const startIndex = (currentPage.value - 1) * perPage.value
     return filteredTermData.value.slice(
         startIndex,
         startIndex + perPage.value
-    );
-});
+    )
+})
 
 const totalPages = computed(() => {
-    return Math.ceil(filteredTermData.value.length / perPage.value);
-});
+    return Math.ceil(filteredTermData.value.length / perPage.value)
+})
 
 const showPagination = computed(() => {
     return true
     // return filteredTermData.value.length > perPage.value;
-});
+})
 
 const formattedSearchTitle = computed(() => {
-    return SearchTitleByType[props.searchType];
-});
+    return SearchTitleByType[props.searchType]
+})
 
 const formattedSearchBlurb = computed(() => {
     if (["school"].includes(props.searchType))
         return (
             "Discover more about how schools in your area are embracing digital technology, and draw inspiration for your own classroom."
-        );
-    else return "Discover inspiration for your own classroom";
+        )
+    else return "Discover inspiration for your own classroom"
 });
 
 + console.log("Here is the value for: " + currentPage.value);
@@ -353,4 +352,3 @@ const formattedSearchBlurb = computed(() => {
     }
 }
 </style>
-

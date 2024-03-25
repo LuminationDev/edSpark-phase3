@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import axios from "axios";
 import {storeToRefs} from "pinia";
 import {computed, onMounted, ref} from "vue";
 import {useRoute, useRouter} from "vue-router";
@@ -19,29 +20,22 @@ import {useSchoolsStore} from "@/js/stores/useSchoolsStore";
 const route = useRoute()
 const router = useRouter()
 
-const currentPage = ref(1)
-const perPage = ref(9)
-
-const combinedSchoolTech = [...schoolTech,...schoolPartnerTech];
+const combinedSchoolTech = [...schoolTech,...schoolPartnerTech]
 const {allSchools} = storeToRefs(useSchoolsStore())
 
 onMounted(() =>{
-    fetchData(perPage.value, currentPage.value);
+    fetchData(9, 1)
 })
 
 const fetchData = async (perPage, currentPage) => {
-    const response = await fetch(API_ENDPOINTS.SCHOOL.FETCH_ALL_SCHOOLS, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-            perPage: perPage,
-            currentPage: currentPage
-        })
-    });
-    return await response.json();
-};
+    const body = {
+        perPage: perPage,
+        currentPage: currentPage
+    }
+    const response = await axios.post(API_ENDPOINTS.SCHOOL.FETCH_ALL_SCHOOLS, body).then(res =>res.data)
+    console.log(response)
+    return response
+}
 
 const currentSearchResultView = ref('list')
 const filterObject = ref({})
@@ -50,7 +44,7 @@ const preselectedFilterObject = ref(null as {name: string, value: string | strin
 const schoolFilterList = schoolService.getSchoolFilterList()
 
 const isCurrentViewCustomView = computed(() =>{
-    return currentSearchResultView.value !== 'list';
+    return currentSearchResultView.value !== 'list'
 })
 
 const schoolTechFilterList = computed(() =>{
@@ -65,14 +59,14 @@ const handleFilter = (filters, dataPath) => {
 
 
 if (route.params && route.params.filter) {
-    const filterNameSlug = lowerSlugify(route.params.filter);
+    const filterNameSlug = lowerSlugify(route.params.filter)
 
-    const matchingFilter = schoolFilterList.find(filter => filterNameSlug === lowerSlugify(filter.name));
+    const matchingFilter = schoolFilterList.find(filter => filterNameSlug === lowerSlugify(filter.name))
 
     if (matchingFilter) {
-        preselectedFilterObject.value = matchingFilter;
+        preselectedFilterObject.value = matchingFilter
     } else {
-        router.push('/browse/school');
+        router.push('/browse/school')
     }
 }
 
@@ -81,8 +75,8 @@ const handleClickSearchResultView = (viewType) =>{
 }
 
 const handlePaginationChange = ({ perPage, currentPage }) => {
-    fetchData(perPage, currentPage);
-};
+    fetchData(perPage, currentPage)
+}
 
 </script>
 
