@@ -18,6 +18,8 @@ import {API_ENDPOINTS} from "@/js/constants/API_ENDPOINTS";
 import {SearchTitleByType} from "@/js/constants/PageBlurb";
 import {guid} from "@/js/helpers/guidGenerator";
 
+const emit = defineEmits(['pagination-change'])
+
 const props = defineProps({
     resourceList: {
         type: Array,
@@ -55,8 +57,7 @@ const props = defineProps({
     },
 });
 
-const { currentPage, perPage, handleChangePageNumber, updatePaginationData } =
-    usePagination(1, 9);
+const { currentPage, perPage, handleChangePageNumber, updatePaginationData } = usePagination(1, 9);
 
 handleChangePageNumber.value = (newPage) => {
     currentPage.value = newPage;
@@ -64,23 +65,14 @@ handleChangePageNumber.value = (newPage) => {
 
 const filterTerm = ref("");
 
-watch(currentPage, () => {
-    fetchData();
+const emitPaginationChange = () => {
+    emit('pagination-change', { perPage: perPage.value, currentPage: currentPage.value });
+};
+
+watch([currentPage, perPage], () => {
+    emitPaginationChange();
 });
 
-const fetchData = async () => {
-    const response = await fetch(API_ENDPOINTS.ADVICE.FETCH_ADVICE_POSTS, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-            perPage: perPage.value,
-            currentPage: currentPage.value
-        })
-    });
-    return await response.json();
-};
 
 const filteredTermData = computed(() => {
     if (!props.resourceList) return [];
@@ -100,8 +92,6 @@ const filteredTermData = computed(() => {
         return acc;
     }, []);
 });
-
-onMounted(fetchData)
 
 updatePaginationData({
     current_page: currentPage.value,

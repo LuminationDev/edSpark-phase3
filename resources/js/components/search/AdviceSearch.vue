@@ -1,7 +1,5 @@
 <script setup lang="ts">
-import axios from "axios";
-import useSWRV from "swrv";
-import { ref } from "vue";
+import {onMounted, ref} from "vue";
 import { useRoute, useRouter } from "vue-router";
 
 import BaseSearch from "@/js/components/search/BaseSearch.vue";
@@ -13,26 +11,8 @@ import { LandingHeroText } from "@/js/constants/PageBlurb";
 const route = useRoute();
 const router = useRouter();
 
-// const perPage = ref(9); // Define perPage with an initial value
-//
-// const {
-//     data: adviceList,
-//     error: adviceError
-// } = useSWRV(
-//     [API_ENDPOINTS.ADVICE.FETCH_ADVICE_POSTS, perPage.value], // Pass perPage as part of the key
-//     async () => {
-//         const response = await fetch(API_ENDPOINTS.ADVICE.FETCH_ADVICE_POSTS, {
-//             method: 'POST',
-//             headers: {
-//                 'Content-Type': 'application/json'
-//             },
-//             body: JSON.stringify({
-//                 perPage: perPage.value
-//             })
-//         });
-//         return await response.json();
-//     }
-// );
+const currentPage = ref(1)
+const perPage = ref(9)
 
 const adviceFilterList = [
     { name: "Digital Adoption Group", value: "DAG" },
@@ -74,16 +54,42 @@ if (route.params || route.params.filter) {
         router.push("/browse/guide");
     }
 }
+
+
+onMounted(() => {
+    fetchData(perPage.value, currentPage.value);
+});
+
+const fetchData = async (perPage, currentPage) => {
+    const response = await fetch(API_ENDPOINTS.ADVICE.FETCH_ADVICE_POSTS, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            perPage: perPage,
+            currentPage: currentPage
+        })
+    });
+    return await response.json();
+};
+
+const handlePaginationChange = ({ perPage, currentPage }) => {
+    fetchData(perPage, currentPage);
+};
+
+
+
+
 </script>
 
 <template>
     <BaseSearch
         search-type="guide"
-        :resource-list="adviceList"
         :live-filter-object="filterObject"
         :hero-title="LandingHeroText['guideSearch']['title']"
         :hero-subtitle="LandingHeroText['guideSearch']['subtitle']"
-        :fetch-error="adviceError"
+        @pagination-change="handlePaginationChange"
     >
         <template #filterBar>
             <GenericMultiSelectFilter
