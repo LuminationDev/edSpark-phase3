@@ -6,6 +6,7 @@ import AdviceForm from "@/js/components/bases/frontendform/types/AdviceForm.vue"
 import EventForm from "@/js/components/bases/frontendform/types/EventForm.vue";
 import SoftwareForm from "@/js/components/bases/frontendform/types/SoftwareForm.vue";
 import UserPosts from "@/js/components/create/UserPosts.vue";
+import PdfExtractionPage from "@/js/components/pdfExtraction/PdfExtractionPage.vue";
 import AdviceSearch from "@/js/components/search/AdviceSearch.vue";
 import EventSearch from "@/js/components/search/EventSearch.vue";
 import HardwareSearch from "@/js/components/search/HardwareSearch.vue";
@@ -367,6 +368,15 @@ const routes: any = [
         name: 'catalogue',
         path: '/catalogue',
         component: TheCatalogue,
+        meta: {
+            navigation: false,
+            requiresAuth: true,
+        }
+    },
+    {
+        name: 'pdfextraction',
+        path: '/pdfextraction',
+        component: PdfExtractionPage,
         meta: {
             navigation: false,
             requiresAuth: true,

@@ -9,7 +9,6 @@ import {toast} from "vue3-toastify";
 import TinyMceRichTextInput from "@/js/components/bases/frontendform/TinyMceEditor/TinyMceRichTextInput.vue";
 import TextInput from "@/js/components/bases/TextInput.vue";
 import GenericButton from "@/js/components/button/GenericButton.vue";
-import PartnerImageChange from "@/js/components/partners/PartnerContent/PartnerImageChange.vue";
 import SchoolImageChange from "@/js/components/schoolsingle/schoolContent/SchoolImageChange.vue";
 import UserAvatarChange from "@/js/components/userprofile/userprofileupdate/UserAvatarChange.vue";
 import {formatDateToDayTime} from "@/js/helpers/dateHelper";
