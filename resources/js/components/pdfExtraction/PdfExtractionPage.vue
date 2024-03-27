@@ -21,12 +21,19 @@
         >
             Download HTML
         </button>
+        <button
+            v-if="htmlContent"
+            class="ml-20"
+            @click="downloadJson"
+        >
+            Download JSON
+        </button>
     </div>
 </template>
 
 <script setup>
 import mammoth from 'mammoth';
-import {ref} from 'vue';
+import { ref } from 'vue';
 
 const htmlContent = ref('');
 const error = ref('');
@@ -54,12 +61,12 @@ const convertToHtml = async (file) => {
         reader.readAsArrayBuffer(file);
     });
 
-    const result = await mammoth.convertToHtml({arrayBuffer: buffer});
+    const result = await mammoth.convertToHtml({ arrayBuffer: buffer });
     return result.value;
 };
 
 const downloadHtml = () => {
-    const blob = new Blob([htmlContent.value], {type: 'text/html'});
+    const blob = new Blob([htmlContent.value], { type: 'text/html' });
     const url = window.URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
@@ -68,6 +75,25 @@ const downloadHtml = () => {
     a.click();
     window.URL.revokeObjectURL(url);
     document.body.removeChild(a);
+};
+
+const downloadJson = () => {
+    const text = stripHtml(htmlContent.value);
+    const jsonContent = JSON.stringify({ content: text }, null, 2);
+    const blob = new Blob([jsonContent], { type: 'application/json' });
+    const url = window.URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'document.json';
+    document.body.appendChild(a);
+    a.click();
+    window.URL.revokeObjectURL(url);
+    document.body.removeChild(a);
+};
+
+const stripHtml = (html) => {
+    const doc = new DOMParser().parseFromString(html, 'text/html');
+    return doc.body.textContent || '';
 };
 </script>
 
