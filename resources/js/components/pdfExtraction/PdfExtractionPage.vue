@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="ml-10 mt-24">
         <input
             type="file"
             accept=".doc,.docx"
@@ -15,12 +15,18 @@
         >
             {{ error }}
         </div>
+        <button
+            v-if="htmlContent"
+            @click="downloadHtml"
+        >
+            Download HTML
+        </button>
     </div>
 </template>
 
 <script setup>
 import mammoth from 'mammoth';
-import { ref } from 'vue';
+import {ref} from 'vue';
 
 const htmlContent = ref('');
 const error = ref('');
@@ -48,9 +54,20 @@ const convertToHtml = async (file) => {
         reader.readAsArrayBuffer(file);
     });
 
-    const result = await mammoth.convertToHtml({ arrayBuffer: buffer });
-    console.log(result.value)
+    const result = await mammoth.convertToHtml({arrayBuffer: buffer});
     return result.value;
+};
+
+const downloadHtml = () => {
+    const blob = new Blob([htmlContent.value], {type: 'text/html'});
+    const url = window.URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'document.html';
+    document.body.appendChild(a);
+    a.click();
+    window.URL.revokeObjectURL(url);
+    document.body.removeChild(a);
 };
 </script>
 
