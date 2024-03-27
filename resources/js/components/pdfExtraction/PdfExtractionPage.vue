@@ -28,7 +28,7 @@
             Download JSON
         </button>
         <button
-            v-if="criteriaSections.length > 0"
+            v-if="Object.keys(criteriaSections).length > 0"
             @click="downloadCriteriaJson"
         >
             Download Criteria JSON
@@ -99,7 +99,7 @@ const downloadJson = () => {
 };
 
 const downloadCriteriaJson = () => {
-    const jsonContent = JSON.stringify(criteriaSections.value, null, 2);
+    const jsonContent = JSON.stringify({ "Success criteria": criteriaSections.value }, null, 2);
     const blob = new Blob([jsonContent], { type: 'application/json' });
     const url = window.URL.createObjectURL(blob);
     const a = document.createElement('a');
@@ -131,17 +131,17 @@ const extractCriteriaSections = (html) => {
             if (element.tagName === 'H1' || element.tagName === 'H2' || element.tagName === 'H3' || element.tagName === 'H4' || element.tagName === 'H5' || element.tagName === 'H6') {
                 criteriaFound = false;
                 if (criteriaSection !== '') {
-                    criteriaSections.value.push(criteriaSection.trim());
+                    criteriaSections.value.push({ content: criteriaSection.trim() });
                 }
                 criteriaSection = '';
             } else {
-                criteriaSection += element.textContent;
+                criteriaSection += element.outerHTML;
             }
         }
     }
 
     if (criteriaSection !== '') {
-        criteriaSections.value.push(criteriaSection.trim());
+        criteriaSections.value.push({ content: criteriaSection.trim() });
     }
 };
 </script>
