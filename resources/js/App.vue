@@ -26,7 +26,6 @@ const {isMobile, windowWidth, showGlobalSearch} = storeToRefs(windowStore)
 
 const authStore = useAuthStore()
 
-
 const setWindowWidth = () => {
     windowWidth.value = window.innerWidth
     windowStore.updateIsMobile()
