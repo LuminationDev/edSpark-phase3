@@ -43,6 +43,9 @@ import { ref } from 'vue';
 const htmlContent = ref('');
 const error = ref('');
 const criteriaSections = ref([]);
+const digitalTechnologiesSections = ref([]);
+const requiredResourcesSections = ref([]);
+const otherResourcesSections = ref([]);
 
 const handleFileUpload = async (event) => {
     const file = event.target.files[0];
@@ -53,6 +56,10 @@ const handleFileUpload = async (event) => {
         htmlContent.value = html;
         error.value = ''; // Clear any previous errors
         extractCriteriaSections(html);
+        extractDigitalTechnologiesSections(html)
+        extractRequiredResourcesSections(html)
+        extractOtherResourcesSections(html)
+
     } catch (error) {
         console.error('Error processing file:', error);
         htmlContent.value = ''; // Clear content in case of error
@@ -99,12 +106,22 @@ const downloadJson = () => {
 };
 
 const downloadCriteriaJson = () => {
-    const jsonContent = JSON.stringify({ "Success criteria": criteriaSections.value }, null, 2);
+    const jsonContent = JSON.stringify({
+        "Success criteria": criteriaSections.value,
+        "Digital Technologies": digitalTechnologiesSections.value,
+        "Required Resources": requiredResourcesSections.value,
+        "Other resources to try (optional)": otherResourcesSections.value
+    }, (key, value) => {
+        if (key === 'content') {
+            return stripHtml(value); // Strips HTML tags
+        }
+        return value;
+    }, 2);
     const blob = new Blob([jsonContent], { type: 'application/json' });
     const url = window.URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
-    a.download = 'criteria.json';
+    a.download = 'document.json';
     document.body.appendChild(a);
     a.click();
     window.URL.revokeObjectURL(url);
@@ -116,33 +133,49 @@ const stripHtml = (html) => {
     return doc.body.textContent || '';
 };
 
-const extractCriteriaSections = (html) => {
+const extractSections = (html, keyword, sectionsRef) => {
     const doc = new DOMParser().parseFromString(html, 'text/html');
     const elements = doc.querySelectorAll('*');
-    let criteriaFound = false;
-    let criteriaSection = '';
+    let found = false;
+    let section = '';
 
     for (let i = 0; i < elements.length; i++) {
         const element = elements[i];
-        if (element.textContent.trim().toLowerCase() === 'success criteria') {
-            criteriaFound = true;
-            criteriaSection = '';
-        } else if (criteriaFound) {
+        if (element.textContent.trim().toLowerCase() === keyword.toLowerCase()) {
+            found = true;
+            section = '';
+        } else if (found) {
             if (element.tagName === 'H1' || element.tagName === 'H2' || element.tagName === 'H3' || element.tagName === 'H4' || element.tagName === 'H5' || element.tagName === 'H6') {
-                criteriaFound = false;
-                if (criteriaSection !== '') {
-                    criteriaSections.value.push({ content: criteriaSection.trim() });
+                found = false;
+                if (section !== '') {
+                    sectionsRef.value.push({ content: section.trim() });
                 }
-                criteriaSection = '';
+                section = '';
             } else {
-                criteriaSection += element.outerHTML;
+                section += element.outerHTML;
             }
         }
     }
 
-    if (criteriaSection !== '') {
-        criteriaSections.value.push({ content: criteriaSection.trim() });
+    if (section !== '') {
+        sectionsRef.value.push({ content: section.trim() });
     }
+};
+
+const extractCriteriaSections = (html) => {
+    extractSections(html, 'Success Criteria', criteriaSections);
+};
+
+const extractDigitalTechnologiesSections = (html) => {
+    extractSections(html, 'Digital Technologies', digitalTechnologiesSections);
+};
+
+const extractRequiredResourcesSections = (html) => {
+    extractSections(html, 'Required Resources', requiredResourcesSections);
+};
+
+const extractOtherResourcesSections = (html) => {
+    extractSections(html, 'Other Resources to Try (Optional)', otherResourcesSections);
 };
 </script>
 
