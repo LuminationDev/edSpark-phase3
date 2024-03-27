@@ -84,12 +84,10 @@ const getEMSLink = () => {
     axios.get(urlWithEventID)
         .then(res => {
             currentUserIsOwner.value = Boolean(res.data.data.is_owner)
-            console.log(currentUserIsOwner.value)
             tempLink.value = res.data.data.ems_link
             state.currentUserEMSLink = res.data.data.ems_link
             currentUserHasProvidedEMSLink.value = true
             isLoadingTemplate.value = false
-            console.log(currentUserIsSuperuser.value ? "" : (currentUserIsOwner.value ? "" : (state.currentUserEMSLink)))
         })
         .catch(err => {
             err.response?.status === 404 ? isLoadingTemplate.value = false : rsvpError.value = err.message;
@@ -197,7 +195,6 @@ const handleInvalidUrlFromServer = () => {
                     />
                 </template>
 
-                <!--    Form no 1 - conditional, user=owner && EMS=yes-->
                 <template
                     v-else-if="((currentUserIsOwner || currentUserIsSuperuser) && currentUserHasProvidedEMSLink) || editingEMSlink"
                 >
@@ -211,9 +208,8 @@ const handleInvalidUrlFromServer = () => {
                     />
                 </template>
 
-                <!--    Form no 4 - conditional, user = no owner && EMS = yes-->
                 <template
-                    v-else-if="(!(currentUserIsOwner || currentUserIsSuperuser) && currentUserHasProvidedEMSLink) || editingEMSlink"
+                    v-else-if="!(currentUserIsOwner && currentUserHasProvidedEMSLink) || editingEMSlink"
                 >
                     <EventEMSNoOwnerEMSLink
                         :current-user-e-m-s-link="state.currentUserEMSLink"
@@ -225,7 +221,6 @@ const handleInvalidUrlFromServer = () => {
                     />
                 </template>
 
-                <!--    Form no 3 - conditional, user = no owner && EMS = no-->
                 <template
                     v-else-if="(!(currentUserIsOwner || currentUserIsSuperuser) && !currentUserHasProvidedEMSLink) || editingEMSlink"
                 >
