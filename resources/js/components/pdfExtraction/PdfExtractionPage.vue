@@ -15,24 +15,53 @@
         >
             {{ error }}
         </div>
-        <button
-            v-if="htmlContent"
-            @click="downloadHtml"
-        >
-            Download HTML
-        </button>
-        <button
-            v-if="htmlContent"
-            @click="downloadJson"
-        >
-            Download JSON
-        </button>
-        <button
-            v-if="Object.keys(criteriaSections).length > 0"
-            @click="downloadCriteriaJson"
-        >
-            Download Criteria JSON
-        </button>
+        <div class="mt-20">
+            <button
+                v-if="htmlContent"
+                class="border-2 border-black p-2"
+                @click="downloadHtml"
+            >
+                Download HTML
+            </button>
+            <button
+                v-if="htmlContent"
+                class="border-2 border-black ml-20 p-2"
+                @click="downloadJson"
+            >
+                Download JSON
+            </button>
+            <button
+                v-if="Object.keys(criteriaSections).length > 0"
+                class="border-2 border-black ml-20 p-2"
+                @click="downloadCriteriaJson"
+            >
+                Download Criteria JSON
+            </button>
+            <button
+                v-if="Object.keys(jsonContent).length > 0"
+                @click="displayContent"
+            >
+                Display Content
+            </button>
+        </div>
+    </div>
+    <div />
+    <div
+        v-if="displayedContent"
+        class="mt-14"
+    >
+        <div class="content1">
+            {{ displayedContent['Success criteria'] }}
+        </div>
+        <div class="content2">
+            {{ displayedContent['Digital Technologies'] }}
+        </div>
+        <div class="content3">
+            {{ displayedContent['Required Resources'] }}
+        </div>
+        <div class="content4">
+            {{ displayedContent['Other resources to try (optional)'] }}
+        </div>
     </div>
 </template>
 
@@ -42,6 +71,9 @@ import { ref } from 'vue';
 
 const htmlContent = ref('');
 const error = ref('');
+const jsonContent = ref({});
+const displayedContent = ref({});
+// we can add some more variables here for those keywords
 const criteriaSections = ref([]);
 const digitalTechnologiesSections = ref([]);
 const requiredResourcesSections = ref([]);
@@ -55,6 +87,7 @@ const handleFileUpload = async (event) => {
         const html = await convertToHtml(file);
         htmlContent.value = html;
         error.value = ''; // Clear any previous errors
+        // we can add some more keywords functions here
         extractCriteriaSections(html);
         extractDigitalTechnologiesSections(html)
         extractRequiredResourcesSections(html)
@@ -106,7 +139,8 @@ const downloadJson = () => {
 };
 
 const downloadCriteriaJson = () => {
-    const jsonContent = JSON.stringify({
+    jsonContent.value = JSON.stringify({
+        // we can add more keywords here if we need
         "Success criteria": criteriaSections.value,
         "Digital Technologies": digitalTechnologiesSections.value,
         "Required Resources": requiredResourcesSections.value,
@@ -117,7 +151,7 @@ const downloadCriteriaJson = () => {
         }
         return value;
     }, 2);
-    const blob = new Blob([jsonContent], { type: 'application/json' });
+    const blob = new Blob([jsonContent.value], { type: 'application/json' });
     const url = window.URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
@@ -126,6 +160,12 @@ const downloadCriteriaJson = () => {
     a.click();
     window.URL.revokeObjectURL(url);
     document.body.removeChild(a);
+    //the actual content with keywords is inside jsonContent
+    console.log(jsonContent.value)
+};
+
+const displayContent = () => {
+    displayedContent.value = { ...jsonContent.value };
 };
 
 const stripHtml = (html) => {
@@ -162,6 +202,7 @@ const extractSections = (html, keyword, sectionsRef) => {
     }
 };
 
+// All the keywords functions can be added here
 const extractCriteriaSections = (html) => {
     extractSections(html, 'Success Criteria', criteriaSections);
 };
