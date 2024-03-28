@@ -60,7 +60,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('fetchAdvicePostByType/{type}', [AdviceController::class, 'fetchAdvicePostByType']);
     Route::post('fetchRelatedAdvice', [AdviceController::class, 'fetchRelatedAdvice']);
     Route::get('fetchAdviceTypes', [AdviceController::class, 'fetchAdviceTypes']);
-    Route::get('fetchUserAdvice', [AdviceController::class, 'fetchUserAdvicePosts']);
+    Route::get('fetchUserAdvice', [AdviceController::class, 'handleFetchAdvicePosts']);
 
     // Software APIs
     Route::post('createSoftwarePost', [SoftwareController::class, 'createSoftwarePost']);

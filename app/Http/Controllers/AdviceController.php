@@ -6,6 +6,7 @@ use App\Helpers\RoleHelpers;
 use App\Helpers\UserRole;
 use App\Http\Middleware\ResourceAccessControl;
 use App\Models\Advicetype;
+use App\Models\User;
 use App\Services\PostService;
 use App\Services\ResponseService;
 use Illuminate\Http\JsonResponse;
@@ -86,7 +87,12 @@ class AdviceController extends Controller
 
     public function handleFetchAdvicePosts(Request $request)
     {
-        if (Auth::user()->isPartner()) {
+        $request_user_id = $request->input('user_id');
+        if(isset($request_user_id)){
+            $is_requesting_partner_advice = User::find($request_user_id)->isPartner();
+        } else $is_requesting_partner_advice = false;
+
+        if (Auth::user()->isPartner() || $is_requesting_partner_advice) {
             return $this->fetchUserAdvicePosts($request);
         } else {
             return $this->fetchAllAdvicePosts($request);
@@ -112,7 +118,7 @@ class AdviceController extends Controller
     public function fetchUserAdvicePosts(Request $request): JsonResponse
     {
         try {
-            $userId = Auth::user()->id;
+            $userId = $request->input('user_id');
             $advices = Advice::where('post_status', 'Published')
                 ->where('author_id', $userId)  // Filter by partner (author) ID
                 ->orderBy('created_at', 'DESC')

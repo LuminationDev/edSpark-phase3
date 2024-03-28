@@ -272,7 +272,7 @@ const routes: any = [
                 } as RouteMeta
             }, {
                 name: 'browsePartners',
-                path: 'partner',
+                path: 'provider',
                 component: PartnerSearch,
                 meta: {
                     requiresAuth: true,
