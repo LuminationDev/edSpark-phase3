@@ -45,39 +45,34 @@
             </button>
         </div>
     </div>
-    <div />
-    <div
-        v-if="displayedContent"
-        class="mt-14"
-    >
-        <div class="content1">
-            {{ displayedContent['Success criteria'] }}
-        </div>
-        <div class="content2">
-            {{ displayedContent['Digital Technologies'] }}
-        </div>
-        <div class="content3">
-            {{ displayedContent['Required Resources'] }}
-        </div>
-        <div class="content4">
-            {{ displayedContent['Other resources to try (optional)'] }}
+    <div>
+        <div
+            v-if="displayedContent"
+            class="mt-14"
+        >
+            <div
+                id="successCriteria"
+                v-html="displayedContent"
+            />
         </div>
     </div>
 </template>
 
 <script setup>
 import mammoth from 'mammoth';
-import { ref } from 'vue';
+import {ref} from 'vue';
 
 const htmlContent = ref('');
 const error = ref('');
 const jsonContent = ref({});
-const displayedContent = ref({});
+const displayedContent = ref('');
 // we can add some more variables here for those keywords
 const criteriaSections = ref([]);
 const digitalTechnologiesSections = ref([]);
 const requiredResourcesSections = ref([]);
 const otherResourcesSections = ref([]);
+
+console.log("jsonContent:", jsonContent.value);
 
 const handleFileUpload = async (event) => {
     const file = event.target.files[0];
@@ -108,12 +103,12 @@ const convertToHtml = async (file) => {
         reader.readAsArrayBuffer(file);
     });
 
-    const result = await mammoth.convertToHtml({ arrayBuffer: buffer });
+    const result = await mammoth.convertToHtml({arrayBuffer: buffer});
     return result.value;
 };
 
 const downloadHtml = () => {
-    const blob = new Blob([htmlContent.value], { type: 'text/html' });
+    const blob = new Blob([htmlContent.value], {type: 'text/html'});
     const url = window.URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
@@ -126,8 +121,8 @@ const downloadHtml = () => {
 
 const downloadJson = () => {
     const text = stripHtml(htmlContent.value);
-    const jsonContent = JSON.stringify({ content: text }, null, 2);
-    const blob = new Blob([jsonContent], { type: 'application/json' });
+    const jsonContent = JSON.stringify({content: text}, null, 2);
+    const blob = new Blob([jsonContent], {type: 'application/json'});
     const url = window.URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
@@ -151,7 +146,7 @@ const downloadCriteriaJson = () => {
         }
         return value;
     }, 2);
-    const blob = new Blob([jsonContent.value], { type: 'application/json' });
+    const blob = new Blob([jsonContent.value], {type: 'application/json'});
     const url = window.URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
@@ -162,10 +157,42 @@ const downloadCriteriaJson = () => {
     document.body.removeChild(a);
     //the actual content with keywords is inside jsonContent
     console.log(jsonContent.value)
+
 };
 
+//displayes "Success criteria section not found in the JSON content."
+// const displayContent = () => {
+//     console.log("jsonContent:", jsonContent.value);
+//
+//     if (jsonContent.value && jsonContent.value.hasOwnProperty("Success criteria")) {
+//         const successCriteriaArray = jsonContent.value["Success criteria"];
+//         if (successCriteriaArray.length > 0) {
+//             displayedContent.value = successCriteriaArray[0].content;
+//         } else {
+//             displayedContent.value = "Success criteria section is empty.";
+//         }
+//     } else {
+//         displayedContent.value = "Success criteria section not found in the JSON content.";
+//     }
+// };
+
+//displayes "Success criteria section not found in the JSON content."
+// const displayContent = () => {
+//     if (jsonContent.value && jsonContent.value.hasOwnProperty("Success criteria")) {
+//         const successCriteriaArray = jsonContent.value["Success criteria"];
+//         if (successCriteriaArray.length > 0) {
+//             displayedContent.value = successCriteriaArray[0].content;
+//         } else {
+//             displayedContent.value = "Success criteria section is empty.";
+//         }
+//     } else {
+//         displayedContent.value = "Success criteria section not found in the JSON content.";
+//     }
+// };
+
+//displays the content in json but not in a format
 const displayContent = () => {
-    displayedContent.value = { ...jsonContent.value };
+    displayedContent.value = jsonContent.value;
 };
 
 const stripHtml = (html) => {
@@ -188,7 +215,7 @@ const extractSections = (html, keyword, sectionsRef) => {
             if (element.tagName === 'H1' || element.tagName === 'H2' || element.tagName === 'H3' || element.tagName === 'H4' || element.tagName === 'H5' || element.tagName === 'H6') {
                 found = false;
                 if (section !== '') {
-                    sectionsRef.value.push({ content: section.trim() });
+                    sectionsRef.value.push({content: section.trim()});
                 }
                 section = '';
             } else {
@@ -198,7 +225,7 @@ const extractSections = (html, keyword, sectionsRef) => {
     }
 
     if (section !== '') {
-        sectionsRef.value.push({ content: section.trim() });
+        sectionsRef.value.push({content: section.trim()});
     }
 };
 
@@ -222,6 +249,6 @@ const extractOtherResourcesSections = (html) => {
 
 <style scoped>
 .error {
-  color: red;
+    color: red;
 }
 </style>
