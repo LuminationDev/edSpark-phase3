@@ -38,6 +38,11 @@ const formattedSubmenuData = computed(() => {
                     displayText: 'Apps',
                     value: menu
                 }
+            }else if (menu === 'hardware') {
+                return {
+                    displayText: 'Equipment',
+                    value: menu
+                }
             }
 
             return {

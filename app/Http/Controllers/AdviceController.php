@@ -9,6 +9,7 @@ use App\Models\Advicetype;
 use App\Models\User;
 use App\Services\PostService;
 use App\Services\ResponseService;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use App\Models\Advice;
@@ -93,7 +94,7 @@ class AdviceController extends Controller
         } else $is_requesting_partner_advice = false;
 
         if (Auth::user()->isPartner() || $is_requesting_partner_advice) {
-            return $this->fetchUserAdvicePosts($request);
+            return $this->fetchUserPostsAndRelated($request);
         } else {
             return $this->fetchAllAdvicePosts($request);
         }
@@ -113,6 +114,42 @@ class AdviceController extends Controller
 
         return response()->json($data);
 
+    }
+
+    public function fetchUserPostsAndRelated(Request $request):JsonResponse
+    {
+        try {
+            $userId = $request->input('user_id');
+            $user = User::find($userId);
+            $tag = $user->full_name;
+
+            // First Query
+            $advices = Advice::where('post_status', 'Published')
+                ->where('author_id', $userId)  // Filter by partner (author) ID
+                ->orderBy('created_at', 'DESC')
+                ->get();
+
+            // Second Query
+            $relatedAdvices = Advice::withAnyTags($tag)
+                ->where('post_status', 'Published')
+                ->where('author_id', '!=', $userId) // Exclude the same user's posts
+                ->orderBy('created_at', 'DESC')
+                ->get();
+
+            // Merge and remove duplicates
+            $mergedAdvices = $advices->merge($relatedAdvices)->unique('id');
+
+            $data = [];
+
+            foreach ($mergedAdvices as $advice) {
+                $result = $this->postService->adviceModelToJson($advice, $request);
+                $data[] = $result;
+            }
+
+            return response()->json($data);
+        } catch (\Exception $e) {
+            return response()->json(['error' => "An error occurred: " . $e->getMessage()], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
     }
 
     public function fetchUserAdvicePosts(Request $request): JsonResponse
