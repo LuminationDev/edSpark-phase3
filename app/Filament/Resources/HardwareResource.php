@@ -69,8 +69,7 @@ class HardwareResource extends Resource
                             })
                             ->enableReordering()
                             ->maxFiles(5),
-                        Forms\Components\TextInput::make('price')
-                            ->required(),
+                        Forms\Components\TextInput::make('price'),
                         Forms\Components\BelongsToSelect::make('brand')
                             ->relationship('brand', 'product_brand_name'),
                         Forms\Components\BelongsToSelect::make('category')
@@ -107,12 +106,21 @@ class HardwareResource extends Resource
     {
         $filesystem = app(Filesystem::class);
 
-        return collect($filesystem->allFiles(app_path('Filament/PageTemplates')))
-            ->map(function (SplFileInfo $file): string {
+        $pageTemplateFiles = collect($filesystem->allFiles(app_path('Filament/PageTemplates')));
+        $hardwareFiles = collect($filesystem->allFiles(app_path('Filament/AdditionalFilters/Hardware')));
+
+
+        $pageTemplateArray = $pageTemplateFiles->map(function (SplFileInfo $file): string {
                 return (string)Str::of('App\\Filament\\PageTemplates')
                     ->append('\\', $file->getRelativePathname())
                     ->replace(['/', '.php'], ['\\', '']);
             });
+        $hardwareTemplateArray = $hardwareFiles->map(function (SplFileInfo $file): string {
+            return (string)Str::of('App\\Filament\\AdditionalFilters\\Hardware')
+                ->append('\\', $file->getRelativePathname())
+                ->replace(['/', '.php'], ['\\', '']);
+        });
+        return $pageTemplateArray->merge($hardwareTemplateArray);
     }
 
     public static function getTemplateSchemas(): array

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Filament\atemp\Hardware;
+namespace App\Filament\AdditionalFilters\Hardware;
 
 use Filament\Forms\Components\Repeater;
 use Filament\Forms\Components\Select;

@@ -26,7 +26,7 @@ onMounted(() => {
 
 const attributes = computed(() =>
     props.events.map(event => {
-        const backgroundColor = event.type === 'Virtual' ? 'teal' : event.type === 'Hybrid' ? 'navy' : 'blueberry';
+        const backgroundColor = event.format === 'Virtual' ? 'teal' : event.type === 'Hybrid' ? 'navy' : 'blueberry';
         return {
             dates: [[event.start_date, event.end_date]],
             key: event.id,
@@ -123,6 +123,7 @@ const handleClickTodayButton = () => {
             :attributes="attributes"
             show-weeknumbers="left-outside"
             :initial-page="initialCalendarPage"
+            :first-day-of-week="1"
             @dayclick="handleDayClick"
         />
     </div>
@@ -136,7 +137,7 @@ const handleClickTodayButton = () => {
     />
     <div
         v-if="showPopup"
-        class="absolute top-0 right-0 bottom-0 left-0 bg-black/30 z-40 w-screen min-w-[270px]"
+        class="absolute top-0 right-0 bottom-0 left-0 bg-black/30 min-w-[270px] w-screen z-40"
     />
 </template>
 

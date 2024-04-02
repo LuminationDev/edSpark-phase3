@@ -18,6 +18,8 @@ use Illuminate\Support\Facades\Auth;
 
 class ProductController extends Controller
 {
+    private $arr;
+
     public function fetchAllBrands()
     {
         $brands = Brand::all();
@@ -60,7 +62,7 @@ class ProductController extends Controller
         $userId = Auth::user()->id;
         $isLikedByUser = $hardware->likes()->where('user_id', $userId)->exists();
         $isBookmarkedByUser = $hardware->bookmarks()->where('user_id', $userId)->exists();
-        return [
+        $this->arr = [
             'id' => $hardware->id,
             'author' => [
                 'author_id' => $hardware->owner_id,
@@ -69,7 +71,7 @@ class ProductController extends Controller
             'title' => $hardware->product_name,
             'content' => $hardware->product_content,
             'excerpt' => $hardware->product_excerpt,
-            'price' => $hardware->price,
+            'price' => $hardware->price ?? NULL,
             'cover_image' => $hardware->cover_image ?? NULL,
             'gallery' => $hardware->gallery ?? NULL,
             'SKU' => $hardware->product_SKU,
@@ -87,6 +89,7 @@ class ProductController extends Controller
             'isLikedByUser' => $isLikedByUser,
             'isBookmarkedByUser' => $isBookmarkedByUser,
         ];
+        return $this->arr;
     }
 
 
@@ -108,7 +111,7 @@ class ProductController extends Controller
     public function fetchUserProductPosts(Request $request): JsonResponse
     {
         try {
-            $userId = Auth::user()->id;
+            $userId = $request->input('user_id');
 
             $hardwares = Hardware::where('owner_id', $userId)  // Filter by partner (author) ID
             ->orderBy('created_at', 'DESC')

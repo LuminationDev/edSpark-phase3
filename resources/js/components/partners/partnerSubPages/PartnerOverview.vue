@@ -9,7 +9,6 @@ import {toast} from "vue3-toastify";
 import TinyMceRichTextInput from "@/js/components/bases/frontendform/TinyMceEditor/TinyMceRichTextInput.vue";
 import TextInput from "@/js/components/bases/TextInput.vue";
 import GenericButton from "@/js/components/button/GenericButton.vue";
-import PartnerImageChange from "@/js/components/partners/PartnerContent/PartnerImageChange.vue";
 import SchoolImageChange from "@/js/components/schoolsingle/schoolContent/SchoolImageChange.vue";
 import UserAvatarChange from "@/js/components/userprofile/userprofileupdate/UserAvatarChange.vue";
 import {formatDateToDayTime} from "@/js/helpers/dateHelper";
@@ -139,7 +138,7 @@ const handleEditButton = async (): Promise<void> => {
 }
 
 const handleAllSaveButton = () => {
-    return partnerService.updatePartnerContent(+partnerId, currentUser.value.id, newPartnerContent.value, v$.value.introduction.$model, v$.value.motto.$model, logoStorage.value , coverImageStorage.value).then(res => {
+    return partnerService.updatePartnerContent(props.contentFromBase, +partnerId, currentUser.value.id, newPartnerContent.value, v$.value.introduction.$model, v$.value.motto.$model, logoStorage.value , coverImageStorage.value).then(res => {
         if (res.status === 200) {
             partnerContentState.value = 'submitted_pending'
             editMode.value = false
@@ -241,17 +240,16 @@ const handleUploadedPhotoPartner =(type, file) =>{
                     @emit-tiny-rich-content="handlePartnerDataFromEditor"
                 />
             </div>
-            <div v-else>
+            <template v-else>
                 <div
                     class="partnerOverviewContentRenderer w-full lg:!basis-2/3"
                 >
-                    <!--            <EditorJsContentDisplay :content-blocks="props.contentFromBase.profile" />-->
                     <div
                         class="richTextContentContainer"
                         v-html="edSparkContentSanitizer(props.contentFromBase.profile)"
                     />
                 </div>
-            </div>
+            </template>
             <div
                 v-if="currentUserCanEdit"
                 class="flex items-center flex-col gap-4 mt-6 px-4 w-full lg:!basis-1/3 lg:!mt-0"
@@ -338,20 +336,6 @@ const handleUploadedPhotoPartner =(type, file) =>{
                             :current-cover-image="contentFromBase['cover_image']"
                             @send-uploaded-photo-to-content="handleUploadedPhotoPartner"
                         />
-                        <!--
-                            <PartnerImageChange--
-                        >
-                        <!--                            class="mt-6"-->
-                        <!--                            :send-image-upload-instance="uploadImageInstance"-->
-                        <!--                            @send-handle-file-dropped-instance="handleReceiveFileDroppedInstance"-->
-                        <!--                            @reset-image-upload-boolean="uploadImageInstance = false"-->
-                        <!--                        />-->
-                        <!--                        <button-->
-                        <!--                            class="border-2 h6 p-4 w-32"-->
-                        <!--                            @click="handleUploadLogo"-->
-                        <!--                        >-->
-                        <!--                            Upload logo-->
-                        <!--                        </button>-->
                     </template>
                 </div>
             </div>
