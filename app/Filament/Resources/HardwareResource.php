@@ -69,8 +69,7 @@ class HardwareResource extends Resource
                             })
                             ->enableReordering()
                             ->maxFiles(5),
-                        Forms\Components\TextInput::make('price')
-                            ->required(),
+                        Forms\Components\TextInput::make('price'),
                         Forms\Components\BelongsToSelect::make('brand')
                             ->relationship('brand', 'product_brand_name'),
                         Forms\Components\BelongsToSelect::make('category')

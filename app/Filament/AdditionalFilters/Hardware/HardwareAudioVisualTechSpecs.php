@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Filament\atemp\Hardware;
+namespace App\Filament\AdditionalFilters\Hardware;
 
 use Filament\Forms\Components\Repeater;
 use Filament\Forms\Components\TextInput;
@@ -10,7 +10,7 @@ final class HardwareAudioVisualTechSpecs
 {
     public static function title()
     {
-        return 'Audiovisual tech specs';
+        return 'Audio visual (AV) tech specs';
     }
 
     public static function schema()

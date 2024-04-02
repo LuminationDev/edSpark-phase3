@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Filament\atemp\Hardware;
+namespace App\Filament\AdditionalFilters\Hardware;
 
 use Filament\Forms;
 use Filament\Forms\Components\Repeater;
