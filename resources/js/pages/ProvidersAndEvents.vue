@@ -69,7 +69,7 @@ onMounted(() => {
         </template>
         <template #button>
             <GenericButton
-                :id="eventsBtn"
+                id="eventsBtn"
                 :callback="() => router.push('/browse/event')"
                 :type="'blue'"
             >
@@ -117,7 +117,7 @@ onMounted(() => {
         </template>
         <template #button>
             <GenericButton
-                :id="partnersBtn"
+                id="partnersBtn"
                 :callback="() => router.push('/browse/provider')"
                 :type="'blue'"
             >
