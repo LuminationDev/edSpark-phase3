@@ -210,7 +210,6 @@ const extractSections = (html, keyword, sectionsRef) => {
     let listCount = 1;
 
     const renameTag = (tagName, currentSection) => {
-
         if (currentSection === 'Success Criteria' && tagName === 'p') {
             return `paragraph${paragraphCount++}`;
         } else if (currentSection === 'Digital Technologies' && tagName === 'p') {
@@ -219,8 +218,7 @@ const extractSections = (html, keyword, sectionsRef) => {
             return `List${listCount++}`;
         } else if (currentSection === 'Required Resources' && tagName === 'p') {
             return `paragraph${paragraphCount++}`;
-        }
-        else {
+        } else {
             return tagName;
         }
     };
@@ -239,12 +237,19 @@ const extractSections = (html, keyword, sectionsRef) => {
             } else {
                 const tagName = element.tagName.toLowerCase();
                 const customTagName = renameTag(tagName, currentSection);
-                if (!section[customTagName]) {
-                    section[customTagName] = [];
+                if (tagName === 'a') {
+                    if (!section.links) {
+                        section.links = [];
+                    }
+                    section.links.push({ href: element.getAttribute('href'), text: element.textContent.trim() });
+                } else {
+                    if (!section[customTagName]) {
+                        section[customTagName] = [];
+                    }
+                    const childSection = {};
+                    childSection[customTagName] = element.textContent.trim();
+                    section[customTagName].push(childSection);
                 }
-                const childSection = {};
-                childSection[customTagName] = element.textContent.trim();
-                section[customTagName].push(childSection);
             }
         }
     }
@@ -252,6 +257,7 @@ const extractSections = (html, keyword, sectionsRef) => {
         sectionsRef.value.push(section);
     }
 };
+
 
 
 
