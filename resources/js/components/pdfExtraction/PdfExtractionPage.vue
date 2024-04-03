@@ -8,6 +8,9 @@ const htmlContent = ref('');
 const error = ref('');
 const jsonContent = ref({});
 const displayedContent = ref('');
+const displayedObjectJson_1 = ref('')
+const displayedObjectJson_2 = ref('')
+const displayedObjectJson_3 = ref('')
 // we can add some more variables here for those keywords
 const criteriaSections = ref([]);
 const digitalTechnologiesSections = ref([]);
@@ -214,11 +217,6 @@ const extractSections = (html, keyword, sectionsRef) => {
     }
 };
 
-
-
-
-
-
 // All the keywords functions can be added here
 const extractCriteriaSections = (html) => {
     extractSections(html, 'Success Criteria', criteriaSections);
@@ -240,17 +238,42 @@ const displayStrongContent = () => {
     if (data && data['Success criteria']) {
         const successCriteriaArray = data['Success criteria'];
         if (successCriteriaArray.length > 0) {
-            const strongContent = successCriteriaArray[0].strong_1;
+            const strongContent = successCriteriaArray[0].paragraph_1;
             if (strongContent && strongContent.length > 0) {
-                displayedContent.value = strongContent[0].strong_1;
+                displayedObjectJson_1.value = strongContent[0].paragraph_1;
             } else {
-                displayedContent.value = "Strong content not found in Success criteria section.";
+                displayedObjectJson_1.value = "Strong content not found in Success criteria section.";
             }
         } else {
-            displayedContent.value = "Success criteria section is empty.";
+            displayedObjectJson_1.value = "Success criteria section is empty.";
         }
     } else {
-        displayedContent.value = "Success criteria section not found in the JSON content.";
+        displayedObjectJson_1.value = "Success criteria section not found in the JSON content.";
+    }
+    if (data && data['Digital Technologies']) {
+        const digitalTechnologiesArray = data['Digital Technologies'];
+        if (digitalTechnologiesArray.length > 0) {
+            const listContent_3 = digitalTechnologiesArray[0].list_3;
+            const listContent_5 = digitalTechnologiesArray[0].list_5;
+            let content1 = '';
+            let content2 = '';
+            if (listContent_3 && listContent_3.length > 0) {
+                content1 += 'List 3: ' + listContent_3[0].list_3 + '<br>';
+            } else {
+                content1 += "List 3 content not found in Digital Technologies section.<br>";
+            }
+            if (listContent_5 && listContent_5.length > 0) {
+                content2 += 'List 5: ' + listContent_5[0].list_5;
+            } else {
+                content2 += "List 5 content not found in Digital Technologies section.";
+            }
+            displayedObjectJson_2.value = content1;
+            displayedObjectJson_3.value = content2;
+        } else {
+            displayedObjectJson_2.value = "Digital Technologies section is empty.";
+        }
+    } else {
+        displayedObjectJson_2.value = "Digital Technologies section not found in the JSON content.";
     }
 };
 
@@ -316,11 +339,42 @@ const displayStrongContent = () => {
     </div>
     <div>
         <button
-            v-if="displayedContent && data['Success criteria'] && data['Success criteria'].length > 0"
             @click="displayStrongContent"
         >
             Display Strong Content from Success Criteria
         </button>
+        <div>
+            <div
+                class="flex flex-row gap-20 mt-14"
+            >
+                <div>
+                    <div>Session1 of Success Criteria:</div>
+                    <div
+                        id="successCriteria"
+                        class="border-2 border-black p-4"
+                        v-html="displayedObjectJson_1"
+                    />
+                </div>
+                <div>
+                    <div>List 3 of Digital Technologies:</div>
+                    <div
+                        id="successCriteria"
+                        class="border-2 border-black ml-20 p-4 w-32"
+                        v-html="displayedObjectJson_2"
+                    />
+                </div>
+
+
+                <div>
+                    <div>List 5 of Digital Technologies:</div>
+                    <div
+                        id="successCriteria"
+                        class="border-2 border-black ml-20 p-4 w-32"
+                        v-html="displayedObjectJson_3"
+                    />
+                </div>
+            </div>
+        </div>
     </div>
 </template>
 
