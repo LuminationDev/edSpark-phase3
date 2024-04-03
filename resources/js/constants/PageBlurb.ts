@@ -59,7 +59,12 @@ export const LandingHeroText = {
     notification:{
         title: 'Your notifications',
         subtitle: 'Keep up with what has been happening on edSpark',
+    },
+    '404':{
+        title: "404 | Oops! Page you were looking for does not exist",
+        subtitle: "If you believe this was a mistake, please tell us by using the 'Feedbacks & suggestions' button on the bottom right corner of the page"
     }
+
 }
 
 export const SearchTitleByType = {
