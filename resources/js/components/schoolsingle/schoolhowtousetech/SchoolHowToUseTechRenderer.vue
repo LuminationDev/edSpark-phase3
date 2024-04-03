@@ -1,6 +1,6 @@
 <script setup>
 
-import {computed} from "vue";
+import {computed, ref} from "vue";
 
 import SchoolHowToUseTechGallery from "@/js/components/schoolsingle/schoolhowtousetech/SchoolHowToUseTechGallery.vue";
 import {stripHtmlTags} from "@/js/helpers/stringHelpers";
@@ -36,6 +36,14 @@ const activeHowToUseTechItem = computed(() => {
     return props.techLandscape.filter(htuitem => props.techUsed.map(tuItem => tuItem.name).includes(htuitem.name)).filter(techLandscapeItem => howToUseTechHasContent(techLandscapeItem.text))
 })
 
+const selectedIndex = ref(0)
+const galleryKey = ref(0)
+
+const handleClickTechItem = (index) =>{
+    selectedIndex.value = index
+    galleryKey.value++
+}
+
 const displayTitle = (code) => {
     switch (code) {
     case "IoT":
@@ -58,24 +66,58 @@ const displayTitle = (code) => {
             v-if="activeHowToUseTechItem.length"
             class="flex flex-col"
         >
+            <div class="TechItemRow flex flex-row gap-4 px-10">
+                <div
+                    v-for="(landscapeItem, index) in activeHowToUseTechItem"
+                    :key="index"
+                    class="border-[1px] cursor-pointer px-6 py-2 rounded hover:!bg-main-teal hover:!text-white"
+                    :class="{'bg-main-teal text-white': selectedIndex === index }"
+                    @click="() => handleClickTechItem(index)"
+                >
+                    {{ displayTitle(landscapeItem.name) }}
+                </div>
+            </div>
             <div
-                v-for="(landscapeItem, index) in activeHowToUseTechItem"
-                :key="index"
-                class="EachTechItemRow flex flex-row px-10 py-4 w-full   even:bg-slate-50 odd:bg-white"
+                class="EachTechItemRow flex flex-row px-10 py-4 w-full"
             >
                 <div class="flex flex-col textColumn w-full  lg:!w-1/2">
                     <div class="font-semibold pt-4 text-2xl">
-                        {{ displayTitle(landscapeItem.name) }}
+                        {{ displayTitle(activeHowToUseTechItem[selectedIndex].name) }}
                     </div>
                     <div
                         class="richTextContentContainer text"
-                        v-html="landscapeItem.text"
+                        v-html="activeHowToUseTechItem[selectedIndex].text"
                     />
                 </div>
                 <div class="flex flex-col imageGallery w-full  lg:!w-1/2">
-                    <SchoolHowToUseTechGallery :image-array="landscapeItem.images" />
+                    <SchoolHowToUseTechGallery
+                        :key="galleryKey"
+                        :image-array="activeHowToUseTechItem[selectedIndex].images"
+                    />
                 </div>
             </div>
+
+
+
+
+            <!--            <div-->
+            <!--                v-for="(landscapeItem, index) in activeHowToUseTechItem"-->
+            <!--                :key="index"-->
+            <!--                class="EachTechItemRow flex flex-row px-10 py-4 w-full   even:bg-slate-50 odd:bg-white"-->
+            <!--            >-->
+            <!--                <div class="flex flex-col textColumn w-full  lg:!w-1/2">-->
+            <!--                    <div class="font-semibold pt-4 text-2xl">-->
+            <!--                        {{ displayTitle(landscapeItem.name) }}-->
+            <!--                    </div>-->
+            <!--                    <div-->
+            <!--                        class="richTextContentContainer text"-->
+            <!--                        v-html="landscapeItem.text"-->
+            <!--                    />-->
+            <!--                </div>-->
+            <!--                <div class="flex flex-col imageGallery w-full  lg:!w-1/2">-->
+            <!--                    <SchoolHowToUseTechGallery :image-array="landscapeItem.images" />-->
+            <!--                </div>-->
+            <!--            </div>-->
         </div>
         <div
             v-else
