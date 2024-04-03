@@ -171,8 +171,7 @@ const extractSections = (html, keyword, sectionsRef) => {
             return `strong_${strongCount++}`;
         } else if (tagName === 'ul') {
             return `ul_${ulCount++}`;
-        }
-        else {
+        } else {
             return tagName;
         }
     };
@@ -212,10 +211,19 @@ const extractSections = (html, keyword, sectionsRef) => {
             }
         }
     }
+
+    // Check if there are no href links in the section and set href=null accordingly
+    if (!section['a_links'] || section['a_links'].length === 0) {
+        delete section['a_links']; // Remove the placeholder link
+    }
+
     if (Object.keys(section).length > 0) {
         sectionsRef.value.push(section);
     }
 };
+
+
+
 
 // All the keywords functions can be added here
 const extractCriteriaSections = (html) => {
@@ -234,6 +242,7 @@ const extractOtherResourcesSections = (html) => {
     extractSections(html, 'Other Resources to Try (Optional)', otherResourcesSections);
 };
 
+// function to filter required content
 const displayStrongContent = () => {
     if (data && data['Success criteria']) {
         const successCriteriaArray = data['Success criteria'];
