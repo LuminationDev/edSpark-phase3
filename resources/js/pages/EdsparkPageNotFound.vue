@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import {useRoute, useRouter} from "vue-router";
+import { useRouter} from "vue-router";
 
 import BaseLandingHero from "@/js/components/bases/BaseLandingHero.vue";
 import FourOFourRobot from "@/js/components/svg/404Robot/FourOFourRobot.vue";
