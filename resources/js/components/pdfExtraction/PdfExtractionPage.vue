@@ -351,7 +351,7 @@ const displayStrongContent = () => {
                     <div>Session1 of Success Criteria:</div>
                     <div
                         id="successCriteria"
-                        class="border-2 border-black p-4"
+                        class="bg-adminTeal border-2 border-black p-4 text-white"
                         v-html="displayedObjectJson_1"
                     />
                 </div>
@@ -359,7 +359,7 @@ const displayStrongContent = () => {
                     <div>List 3 of Digital Technologies:</div>
                     <div
                         id="successCriteria"
-                        class="border-2 border-black ml-20 p-4 w-32"
+                        class="bg-yellow-200 border-2 border-black p-4"
                         v-html="displayedObjectJson_2"
                     />
                 </div>
@@ -369,7 +369,7 @@ const displayStrongContent = () => {
                     <div>List 5 of Digital Technologies:</div>
                     <div
                         id="successCriteria"
-                        class="border-2 border-black ml-20 p-4 w-32"
+                        class="bg-red-400 border-2 border-black p-4"
                         v-html="displayedObjectJson_3"
                     />
                 </div>
