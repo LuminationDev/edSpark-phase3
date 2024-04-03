@@ -1,66 +1,8 @@
-<template>
-    <div class="ml-10 mt-24">
-        <input
-            type="file"
-            accept=".doc,.docx"
-            @change="handleFileUpload"
-        >
-        <div
-            v-if="htmlContent"
-            v-html="htmlContent"
-        />
-        <div
-            v-if="error"
-            class="error"
-        >
-            {{ error }}
-        </div>
-        <div class="mt-20">
-            <button
-                v-if="htmlContent"
-                class="border-2 border-black p-2"
-                @click="downloadHtml"
-            >
-                Download HTML
-            </button>
-            <button
-                v-if="htmlContent"
-                class="border-2 border-black ml-20 p-2"
-                @click="downloadJson"
-            >
-                Download JSON
-            </button>
-            <button
-                v-if="Object.keys(criteriaSections).length > 0"
-                class="border-2 border-black ml-20 p-2"
-                @click="downloadCriteriaJson"
-            >
-                Download Criteria JSON
-            </button>
-            <button
-                v-if="Object.keys(jsonContent).length > 0"
-                @click="displayContent"
-            >
-                Display Content
-            </button>
-        </div>
-    </div>
-    <div>
-        <div
-            v-if="displayedContent"
-            class="mt-14"
-        >
-            <div
-                id="successCriteria"
-                v-html="displayedContent"
-            />
-        </div>
-    </div>
-</template>
-
 <script setup>
 import mammoth from 'mammoth';
 import {ref} from 'vue';
+
+import { data } from './dataJson'
 
 const htmlContent = ref('');
 const error = ref('');
@@ -208,19 +150,32 @@ const extractSections = (html, keyword, sectionsRef) => {
     let currentSection = null;
     let paragraphCount = 1;
     let listCount = 1;
+    let thCount = 1;
+    let trCount = 1;
+    let strongCount = 1;
+    let ulCount = 1;
 
-    const renameTag = (tagName, currentSection) => {
-        if (currentSection === 'Success Criteria' && tagName === 'p') {
-            return `paragraph${paragraphCount++}`;
-        } else if (currentSection === 'Digital Technologies' && tagName === 'p') {
-            return `paragraph${paragraphCount++}`;
-        } else if (currentSection === 'Digital Technologies' && tagName === 'li') {
-            return `List${listCount++}`;
-        } else if (currentSection === 'Required Resources' && tagName === 'p') {
-            return `paragraph${paragraphCount++}`;
-        } else {
+    const renameTag = (tagName) => {
+        if (tagName === 'p') {
+            return `paragraph_${paragraphCount++}`;
+        } else if (tagName === 'li') {
+            return `list_${listCount++}`;
+        } else if (tagName === 'th') {
+            return `th_${thCount++}`;
+        } else if (tagName === 'tr') {
+            return `tr_${trCount++}`;
+        } else if (tagName === 'strong') {
+            return `strong_${strongCount++}`;
+        } else if (tagName === 'ul') {
+            return `ul_${ulCount++}`;
+        }
+        else {
             return tagName;
         }
+    };
+
+    const generateLinkName = (currentSection, linkIndex) => {
+        return `${currentSection}_link${linkIndex}`;
     };
 
     for (let i = 0; i < elements.length; i++) {
@@ -238,10 +193,11 @@ const extractSections = (html, keyword, sectionsRef) => {
                 const tagName = element.tagName.toLowerCase();
                 const customTagName = renameTag(tagName, currentSection);
                 if (tagName === 'a') {
-                    if (!section.links) {
-                        section.links = [];
+                    const linkName = generateLinkName(currentSection, section[customTagName + '_links'] ? section[customTagName + '_links'].length + 1 : 1); // Generate unique link name
+                    if (!section[customTagName + '_links']) {
+                        section[customTagName + '_links'] = [];
                     }
-                    section.links.push({ href: element.getAttribute('href'), text: element.textContent.trim() });
+                    section[customTagName + '_links'].push({ name: linkName, href: element.getAttribute('href'), text: element.textContent.trim() });
                 } else {
                     if (!section[customTagName]) {
                         section[customTagName] = [];
@@ -279,7 +235,94 @@ const extractRequiredResourcesSections = (html) => {
 const extractOtherResourcesSections = (html) => {
     extractSections(html, 'Other Resources to Try (Optional)', otherResourcesSections);
 };
+
+const displayStrongContent = () => {
+    if (data && data['Success criteria']) {
+        const successCriteriaArray = data['Success criteria'];
+        if (successCriteriaArray.length > 0) {
+            const strongContent = successCriteriaArray[0].strong_1;
+            if (strongContent && strongContent.length > 0) {
+                displayedContent.value = strongContent[0].strong_1;
+            } else {
+                displayedContent.value = "Strong content not found in Success criteria section.";
+            }
+        } else {
+            displayedContent.value = "Success criteria section is empty.";
+        }
+    } else {
+        displayedContent.value = "Success criteria section not found in the JSON content.";
+    }
+};
+
 </script>
+
+<template>
+    <div class="ml-10 mt-24">
+        <input
+            type="file"
+            accept=".doc,.docx"
+            @change="handleFileUpload"
+        >
+        <div
+            v-if="htmlContent"
+            v-html="htmlContent"
+        />
+        <div
+            v-if="error"
+            class="error"
+        >
+            {{ error }}
+        </div>
+        <div class="mt-20">
+            <button
+                v-if="htmlContent"
+                class="border-2 border-black p-2"
+                @click="downloadHtml"
+            >
+                Download HTML
+            </button>
+            <button
+                v-if="htmlContent"
+                class="border-2 border-black ml-20 p-2"
+                @click="downloadJson"
+            >
+                Download JSON
+            </button>
+            <button
+                v-if="Object.keys(criteriaSections).length > 0"
+                class="border-2 border-black ml-20 p-2"
+                @click="downloadCriteriaJson"
+            >
+                Download Criteria JSON
+            </button>
+            <button
+                v-if="Object.keys(jsonContent).length > 0"
+                @click="displayContent"
+            >
+                Display Content
+            </button>
+        </div>
+    </div>
+    <div>
+        <div
+            v-if="displayedContent"
+            class="mt-14"
+        >
+            <div
+                id="successCriteria"
+                v-html="displayedContent"
+            />
+        </div>
+    </div>
+    <div>
+        <button
+            v-if="displayedContent && data['Success criteria'] && data['Success criteria'].length > 0"
+            @click="displayStrongContent"
+        >
+            Display Strong Content from Success Criteria
+        </button>
+    </div>
+</template>
 
 <style scoped>
 .error {
