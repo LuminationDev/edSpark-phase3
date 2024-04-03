@@ -11,6 +11,7 @@ const displayedContent = ref('');
 const displayedObjectJson_1 = ref('')
 const displayedObjectJson_2 = ref('')
 const displayedObjectJson_3 = ref('')
+const displayHref = ref('')
 // we can add some more variables here for those keywords
 const criteriaSections = ref([]);
 const digitalTechnologiesSections = ref([]);
@@ -92,20 +93,17 @@ const downloadCriteriaJson = () => {
         return value;
     }, 2);
     const dataExportedJson = 'export const data = ' + jsonContent.value; // Adding export statement
-
-    const blob = new Blob([dataExportedJson], {type: 'application/json'});
+    const blob = new Blob([dataExportedJson], {type: 'text/javascript'});
     const url = window.URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
-    a.download = 'document.json';
+    a.download = 'dataJson.ts'; // Setting download filename
     document.body.appendChild(a);
     a.click();
     window.URL.revokeObjectURL(url);
     document.body.removeChild(a);
-    //the actual content with keywords is inside jsonContent
-    console.log(jsonContent.value)
-
 };
+
 
 //displayes "Success criteria section not found in the JSON content."
 // const displayContent = () => {
@@ -277,6 +275,21 @@ const displayStrongContent = () => {
     } else {
         displayedObjectJson_2.value = "Digital Technologies section not found in the JSON content.";
     }
+    if (data && data['Required Resources']) {
+        const requiredResourcesArray = data['Required Resources'];
+        if (requiredResourcesArray.length > 0) {
+            const hrefWithName = requiredResourcesArray[0].a_links.find(link => link.name === 'Required Resources_link5');
+            if (hrefWithName) {
+                displayHref.value = `${hrefWithName.href}`;
+            } else {
+                displayHref.value = "Href with Name 'Required Resources_link5' not found.";
+            }
+        } else {
+            displayHref.value = "Required Resources section is empty.";
+        }
+    } else {
+        displayHref.value = "Required Resources section not found in the JSON content.";
+    }
 };
 
 </script>
@@ -376,6 +389,14 @@ const displayStrongContent = () => {
                         v-html="displayedObjectJson_3"
                     />
                 </div>
+            </div>
+            <div class="mt-10">
+                <div>HREF: link5</div>
+                <div
+                    id="successCriteria"
+                    class="bg-blue-700 border-2 border-black p-4 text-white"
+                    v-html="displayHref"
+                />
             </div>
         </div>
     </div>
