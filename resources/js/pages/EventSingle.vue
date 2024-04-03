@@ -55,7 +55,7 @@ const colorTheme = ref('partnerBlue')
                         <div class="bg-white h-fit rounded-full w-fit">
                             <EventTypeTag
                                 class="!m-0"
-                                :event-type="contentFromBase.type"
+                                :event-type="contentFromBase.format"
                             />
                         </div>
 
@@ -152,7 +152,7 @@ const colorTheme = ref('partnerBlue')
                        
                             <EventTypeTag
                                 class="!mx-0 !my-0 sm:!my-4 bg-white border-2 font-medium hidden sm:flex"
-                                :event-type="contentFromBase['type']"
+                                :event-type="contentFromBase['format']"
                             />
                         </div>
 
@@ -182,13 +182,13 @@ const colorTheme = ref('partnerBlue')
                 <!--      Curated Content      -->
                 <div class="flex flex-col p-4 w-full lg:!w-1/3">
                     <EventsLocation
-                        :location-type="contentFromBase['type']"
+                        :location-type="contentFromBase['format']"
                         :location-info="contentFromBase['location']"
                     />
                     <EventsEMS
                         :author-info="contentFromBase['author']"
                         :event-id="contentFromBase['id']"
-                        :location-type="contentFromBase['type']"
+                        :location-type="contentFromBase['format']"
                         :event-start-date="contentFromBase['start_date']"
                         :event-end-date="contentFromBase['end_date']"
                     />
@@ -197,15 +197,3 @@ const colorTheme = ref('partnerBlue')
         </template>
     </BaseSingle>
 </template>
-
-
-<!-- <style scoped>
-    
-/* commenting this out fixes off center guide text */
-.eventSingleContent :deep(p) {
-    margin-top: 16px;
-    text-align: justify;
-}
-
-
-</style> -->

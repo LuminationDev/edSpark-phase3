@@ -205,6 +205,7 @@ class EventResource extends Resource
             ->columns([
                 Tables\Columns\TextColumn::make('event_title')
                     ->label('Title')
+                    ->sortable()
                     ->limit(30)
                     ->searchable(),
 

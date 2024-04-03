@@ -56,13 +56,8 @@ onMounted(() => {
     >
         <template #robotIllustration>
             <RobotEvents
-                class="absolute top-16 left-32 scale-120 py-4"
+                class="absolute top-16 left-32 py-4 scale-120"
             />
-            <!--            <img-->
-            <!--                class="absolute top-32 left-36 scale-150"-->
-            <!--                src="@/assets/images/PartnersPuzzle.png"-->
-            <!--                alt="Industry Partners connecting pieces of the puzzle"-->
-            <!--            >-->
         </template>
     </BaseLandingHero>
     <BaseLandingSection background-color="blue">
@@ -74,18 +69,20 @@ onMounted(() => {
         </template>
         <template #button>
             <GenericButton
+                id="eventsBtn"
                 :callback="() => router.push('/browse/event')"
                 :type="'blue'"
-                :id="eventsBtn"
             >
                 View all events
             </GenericButton>
         </template>
         <template #sectionAction />
         <template #content>
-
-            <BaseLandingCardRow :resource-list="allEvents" v-if="windowStore.isMed">
-                    <template #rowContent>
+            <BaseLandingCardRow
+                v-if="windowStore.isMed"
+                :resource-list="allEvents"
+            >
+                <template #rowContent>
                     <EventCard
                         v-for="event in allEvents.filter((event,index) => index < 2)"
                         :key="event.guid"
@@ -95,8 +92,11 @@ onMounted(() => {
                 </template>
             </BaseLandingCardRow>
 
-            <BaseLandingCardRow :resource-list="allEvents" v-if="!windowStore.isMed">
-                    <template #rowContent>
+            <BaseLandingCardRow
+                v-if="!windowStore.isMed"
+                :resource-list="allEvents"
+            >
+                <template #rowContent>
                     <EventCard
                         v-for="event in allEvents.filter((event,index) => index < 3)"
                         :key="event.guid"
@@ -110,23 +110,26 @@ onMounted(() => {
 
     <BaseLandingSection background-color="white">
         <template #title>
-            Industry providers
+            Providers
         </template>
         <template #subtitle>
-            Explore the profiles of our educational industry providers
+            Explore the profiles of our educational providers
         </template>
         <template #button>
             <GenericButton
-                :callback="() => router.push('/browse/partner')"
+                id="partnersBtn"
+                :callback="() => router.push('/browse/provider')"
                 :type="'blue'"
-                :id="partnersBtn"
             >
-                View all partners
+                View all providers
             </GenericButton>
         </template>
         <template #sectionAction />
         <template #content>
-            <BaseLandingCardRow :resource-list="allPartners" v-if="windowStore.isMed">
+            <BaseLandingCardRow
+                v-if="windowStore.isMed"
+                :resource-list="allPartners"
+            >
                 <template #rowContent>
                     <PartnerCard
                         v-for="(partner,index) in allPartners.filter((event,index) => index < 2)"
@@ -135,7 +138,10 @@ onMounted(() => {
                     />
                 </template>
             </BaseLandingCardRow>
-            <BaseLandingCardRow :resource-list="allPartners" v-if="!windowStore.isMed">
+            <BaseLandingCardRow
+                v-if="!windowStore.isMed"
+                :resource-list="allPartners"
+            >
                 <template #rowContent>
                     <PartnerCard
                         v-for="(partner,index) in allPartners.filter((event,index) => index < 3)"
@@ -160,11 +166,11 @@ onMounted(() => {
                     v-if="allEvents && allEvents.length > 0"
                     class="flex lg:flex-row flex-col flex-wrap"
                 >
-                    <div class="pl-4 pr-4 lg:pr-16 lg:pl-8 sm:pr-8 sm:pl-8  w-full lg:!w-2/3 max-h-[850px]">
+                    <div class="max-h-[850px] pl-4 sm:pl-8 lg:pl-8 pr-4 sm:pr-8 lg:pr-16 w-full  lg:!w-2/3">
                         <EventsCalendar
                             :events="allEvents"
                         />
-                        <div class="calendarColorLegend flex shrink flex-col gap-2 pt-5 mb-6">
+                        <div class="calendarColorLegend flex shrink flex-col gap-2 mb-6 pt-5">
                             <div class="colorLegendTitle font-semibold">
                                 Calendar legend
                             </div>
@@ -183,7 +189,10 @@ onMounted(() => {
                             </div>
                         </div>
                     </div>
-                    <div class="w-full lg:!w-1/3 md:max-h-[500px] lg:max-h-[850px] overflow-y-auto" tabindex="0">
+                    <div
+                        class="overflow-y-auto w-full md:max-h-[500px] lg:!w-1/3 lg:max-h-[850px]"
+                        tabindex="0"
+                    >
                         <EventsView
                             :events="allEvents"
                             tabindex="0"

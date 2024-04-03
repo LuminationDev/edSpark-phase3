@@ -2,7 +2,7 @@
 import axios from "axios";
 import {debounce} from "lodash";
 import {storeToRefs} from "pinia";
-import {computed, ComputedRef, defineProps, Ref, ref} from "vue";
+import {computed, ComputedRef, Ref, ref} from "vue";
 
 import BookMark from "@/js/components/svg/BookMark.vue";
 import BookmarkFull from "@/js/components/svg/BookmarkFull.vue";
@@ -14,7 +14,6 @@ import {cardLinkGenerator} from "@/js/helpers/cardDataHelper";
 import {useUserStore} from "@/js/stores/useUserStore";
 
 const {currentUser} = storeToRefs(useUserStore())
-import purify from "dompurify";
 import {Tippy} from "vue-tippy";
 import {toast} from "vue3-toastify";
 

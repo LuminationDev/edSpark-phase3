@@ -6,15 +6,15 @@ use App\Helpers\Metahelper;
 use App\Helpers\RoleHelpers;
 use App\Helpers\UserRole;
 use App\Http\Middleware\ResourceAccessControl;
-use App\Models\Advice;
+use App\Models\Software;
 use App\Models\Softwaretype;
+use App\Models\User;
 use App\Services\PostService;
 use App\Services\ResponseService;
 
 use Illuminate\Http\Response;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
-use App\Models\Software;
 use App\Models\Softwaremeta;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
@@ -26,7 +26,7 @@ class SoftwareController extends Controller
     public function __construct(PostService $postService)
     {
         $this->postService = $postService;
-        $this->middleware(ResourceAccessControl::class . ':partner,handleFetchAdvicePosts,createAdvicePost,fetchAdvicePostById,fetchRelatedAdvice');
+        $this->middleware(ResourceAccessControl::class . ':partner,handleFetchSoftwarePosts,createSoftwarePost,fetchSoftwarePostById,fetchRelatedSoftware');
 
     }
 
@@ -88,7 +88,12 @@ class SoftwareController extends Controller
 
     public function handleFetchSoftwarePosts(Request $request)
     {
-        if (Auth::user()->isPartner()) {
+
+        $request_user_id = $request->input('user_id');
+        if(isset($request_user_id)){
+            $is_requesting_partner_software = User::find($request_user_id)->isPartner();
+        } else $is_requesting_partner_software = false;
+        if (Auth::user()->isPartner() || $is_requesting_partner_software) {
             return $this->fetchUserSoftwarePosts($request);
         } else {
             return $this->fetchSoftwarePosts($request);
@@ -125,7 +130,7 @@ class SoftwareController extends Controller
     public function fetchUserSoftwarePosts(Request $request): JsonResponse
     {
         try {
-            $userId = Auth::user()->id;
+            $userId = $request->input('user_id');
             $softwares = Software::where('post_status', 'Published')
                 ->where('author_id', $userId)  // Filter by partner (author) ID
                 ->orderBy('created_at', 'DESC')
@@ -215,7 +220,7 @@ class SoftwareController extends Controller
 
         $id = $request->input('id');
         if (RoleHelpers::has_minimum_privilege(UserRole::MODERATOR)) {
-            // Find the advice by ID
+            // Find the software by ID
             $software = Software::find($id);
 
         } else {

@@ -28,11 +28,11 @@ import HardwareSingle from '@/js/pages/HardwareSingle.vue';
 import InspirationAndGuides from "@/js/pages/InspirationAndGuides.vue";
 import InspirationLanding from "@/js/pages/InspirationLanding.vue";
 import PartnerSingle from "@/js/pages/PartnerSingle.vue";
+import ProvidersAndEvents from "@/js/pages/ProvidersAndEvents.vue";
 import SchoolSingle from "@/js/pages/SchoolSingle.vue";
 import TechnologyLanding from "@/js/pages/TechnologyLanding.vue";
 import TheCatalogue from "@/js/pages/TheCatalogue.vue";
 import TheCreator from "@/js/pages/TheCreator.vue";
-import TheEvent from "@/js/pages/TheEvent.vue";
 import TheForbidden from "@/js/pages/TheForbidden.vue";
 import TheHardware from "@/js/pages/TheHardware.vue";
 import TheHome from "@/js/pages/TheHome.vue";
@@ -98,7 +98,7 @@ const routes: any = [
 
                 } as RouteMeta
             },
-             {
+            {
                 name: 'createGuide',
                 path: 'guide',
                 component: AdviceForm,
@@ -222,12 +222,44 @@ const routes: any = [
     },
     {
         name: 'Providers and events',
-        path: '/events',
-        component: TheEvent,
+        path: '/industry',
+        component: InspirationLanding,
         meta: {
             customText: 'Providers and events',
             navigation: true
-        }
+        },
+        children: [
+            {
+                name: 'Providers and events',
+                path: '',
+                component: ProvidersAndEvents,
+                meta: {
+                    navigation: false
+                },
+            },
+            {
+                name: "Providers",
+                path: "providers",
+                component: PartnerSearch,
+                meta: {
+                    requiresAuth: true,
+                    skipScrollTop: true,
+                    navigation: true
+
+                } as RouteMeta
+            },
+            {
+                name: "Events",
+                path: "events",
+                component: EventSearch,
+                meta: {
+                    requiresAuth: true,
+                    navigation: true
+
+                } as RouteMeta
+            },
+
+        ]
     },
 
     {
@@ -272,7 +304,7 @@ const routes: any = [
                 } as RouteMeta
             }, {
                 name: 'browsePartners',
-                path: 'partner',
+                path: 'provider',
                 component: PartnerSearch,
                 meta: {
                     requiresAuth: true,

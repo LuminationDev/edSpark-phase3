@@ -192,14 +192,15 @@ class AdviceResource extends Resource
                 Tables\Columns\TextColumn::make('post_title')
                     ->label('Title')
                     ->limit(25)
+                    ->sortable()
                     ->searchable(),
                 Tables\Columns\ImageColumn::make('cover_image')
                     ->limit(15)
                 ,
                 Tables\Columns\TextColumn::make('advicetypes.advice_type_name')
+                    ->sortable()
                     ->label('Type')
-                    ->searchable()
-                    ->wrap(),
+                    ->searchable(),
                 Tables\Columns\TextColumn::make('author.display_name')->label('Author')
                     ->searchable()
                     ->limit(15)
@@ -209,8 +210,10 @@ class AdviceResource extends Resource
                     ->searchable(),
                 Tables\Columns\TextColumn::make('post_modified')
                     ->date()
-                    ->label('Last modified'),
+                    ->label('Last modified')
+                    ->sortable()
             ])
+            ->defaultSort('post_modified', 'desc')
             ->filters([
                 Tables\Filters\SelectFilter::make('status')
                     ->options([
@@ -245,12 +248,6 @@ class AdviceResource extends Resource
             'create' => Pages\CreateAdvice::route('/create'),
             'edit' => Pages\EditAdvice::route('/{record}/edit'),
         ];
-    }
-
-    public static function getEloquentQuery(): Builder
-    {
-        // return parent::getEloquentQuery()->where('post_status', 'Published');
-        return parent::getEloquentQuery()->orderBy('created_at', 'DESC');
     }
 
     public static function shouldRegisterNavigation(): bool
