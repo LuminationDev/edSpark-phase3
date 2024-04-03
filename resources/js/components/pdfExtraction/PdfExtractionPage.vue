@@ -258,12 +258,12 @@ const displayStrongContent = () => {
             let content1 = '';
             let content2 = '';
             if (listContent_3 && listContent_3.length > 0) {
-                content1 += 'List 3: ' + listContent_3[0].list_3 + '<br>';
+                content1 += listContent_3[0].list_3 + '<br>';
             } else {
                 content1 += "List 3 content not found in Digital Technologies section.<br>";
             }
             if (listContent_5 && listContent_5.length > 0) {
-                content2 += 'List 5: ' + listContent_5[0].list_5;
+                content2 += listContent_5[0].list_5;
             } else {
                 content2 += "List 5 content not found in Digital Technologies section.";
             }
@@ -341,7 +341,7 @@ const displayStrongContent = () => {
         <button
             @click="displayStrongContent"
         >
-            Display Strong Content from Success Criteria
+            Display required content from json file
         </button>
         <div>
             <div
