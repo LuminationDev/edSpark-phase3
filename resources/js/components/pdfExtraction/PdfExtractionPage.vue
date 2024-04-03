@@ -91,7 +91,9 @@ const downloadCriteriaJson = () => {
         }
         return value;
     }, 2);
-    const blob = new Blob([jsonContent.value], {type: 'application/json'});
+    const dataExportedJson = 'export const data = ' + jsonContent.value; // Adding export statement
+
+    const blob = new Blob([dataExportedJson], {type: 'application/json'});
     const url = window.URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
@@ -339,6 +341,7 @@ const displayStrongContent = () => {
     </div>
     <div>
         <button
+            class="border-2 border-black p-2 rounded-2xl"
             @click="displayStrongContent"
         >
             Display required content from json file
