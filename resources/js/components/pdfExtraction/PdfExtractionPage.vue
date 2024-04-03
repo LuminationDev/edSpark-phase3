@@ -206,29 +206,55 @@ const extractSections = (html, keyword, sectionsRef) => {
     let found = false;
     let section = {};
     let currentSection = null;
+    let paragraphCount = 1;
+    let listCount = 1;
+
+    const renameTag = (tagName, currentSection) => {
+
+        if (currentSection === 'Success Criteria' && tagName === 'p') {
+            return `paragraph${paragraphCount++}`;
+        } else if (currentSection === 'Digital Technologies' && tagName === 'p') {
+            return `paragraph${paragraphCount++}`;
+        } else if (currentSection === 'Digital Technologies' && tagName === 'li') {
+            return `List${listCount++}`;
+        } else if (currentSection === 'Required Resources' && tagName === 'p') {
+            return `paragraph${paragraphCount++}`;
+        }
+        else {
+            return tagName;
+        }
+    };
 
     for (let i = 0; i < elements.length; i++) {
         const element = elements[i];
         if (element.textContent.trim().toLowerCase() === keyword.toLowerCase()) {
             found = true;
-            currentSection = section;
+            currentSection = keyword;
         } else if (found) {
             if (element.tagName === 'H1' || element.tagName === 'H2' || element.tagName === 'H3' || element.tagName === 'H4' || element.tagName === 'H5' || element.tagName === 'H6') {
                 found = false;
                 sectionsRef.value.push(section);
                 section = {};
+                currentSection = null;
             } else {
                 const tagName = element.tagName.toLowerCase();
-                if (!currentSection[tagName]) {
-                    currentSection[tagName] = [];
+                const customTagName = renameTag(tagName, currentSection);
+                if (!section[customTagName]) {
+                    section[customTagName] = [];
                 }
                 const childSection = {};
-                childSection[tagName] = element.textContent.trim();
-                currentSection[tagName].push(childSection);
+                childSection[customTagName] = element.textContent.trim();
+                section[customTagName].push(childSection);
             }
         }
     }
+    if (Object.keys(section).length > 0) {
+        sectionsRef.value.push(section);
+    }
 };
+
+
+
 
 
 // All the keywords functions can be added here
