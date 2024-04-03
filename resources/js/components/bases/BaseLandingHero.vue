@@ -21,7 +21,7 @@ const props = defineProps({
         required: false,
         default: 'darkTeal'
     },
-    swooshColor:{
+    swooshColor: {
         type: String,
         required: false,
         default: 'darkTeal'
@@ -55,20 +55,20 @@ const backgroundColorClass = computed(() => {
         :class="backgroundColorClass"
     >
         <div class="grid grid-cols-6 h-full px-12 md:px-16">
-            <div class="col-span-6 flex justify-center portrait:pt-10 flex-col gap-2 h-full md:!col-span-3">
+            <div class="col-span-6 flex justify-center flex-col gap-2 h-full portrait:pt-10 md:!col-span-3">
                 <h1
                     class="font-semibold pb-8 text-3xl text-white md:!text-[2.5rem] lg:!text-5xl lg:!text-[48px]"
                 >
                     {{ props.title }}
                 </h1>
 
-                <p class="font-thin grid place-items-start text-white text-md xs:text-lg md:text-xl lg:!text-[21px]">
+                <p class="font-thin grid place-items-start text-md xs:text-lg md:text-xl text-white lg:!text-[21px]">
                     {{ props.titleParagraph }}
                 </p>
+                <slot name="additionalText" />
             </div>
             <div
-                class="hidden relative 
-                welcomeRobot z-10 md:!col-span-2 md:block md:scale-75 lg:!ml-0 lg:!scale-100"
+                class="hidden relative welcomeRobot z-10 md:!col-span-2 md:block md:scale-75 lg:!ml-0 lg:!scale-100"
             >
                 <slot name="robotIllustration" />
             </div>
