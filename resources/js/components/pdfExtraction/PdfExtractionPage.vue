@@ -204,30 +204,32 @@ const extractSections = (html, keyword, sectionsRef) => {
     const doc = new DOMParser().parseFromString(html, 'text/html');
     const elements = doc.querySelectorAll('*');
     let found = false;
-    let section = '';
+    let section = {};
+    let currentSection = null;
 
     for (let i = 0; i < elements.length; i++) {
         const element = elements[i];
         if (element.textContent.trim().toLowerCase() === keyword.toLowerCase()) {
             found = true;
-            section = '';
+            currentSection = section;
         } else if (found) {
             if (element.tagName === 'H1' || element.tagName === 'H2' || element.tagName === 'H3' || element.tagName === 'H4' || element.tagName === 'H5' || element.tagName === 'H6') {
                 found = false;
-                if (section !== '') {
-                    sectionsRef.value.push({content: section.trim()});
-                }
-                section = '';
+                sectionsRef.value.push(section);
+                section = {};
             } else {
-                section += element.outerHTML;
+                const tagName = element.tagName.toLowerCase();
+                if (!currentSection[tagName]) {
+                    currentSection[tagName] = [];
+                }
+                const childSection = {};
+                childSection[tagName] = element.textContent.trim();
+                currentSection[tagName].push(childSection);
             }
         }
     }
-
-    if (section !== '') {
-        sectionsRef.value.push({content: section.trim()});
-    }
 };
+
 
 // All the keywords functions can be added here
 const extractCriteriaSections = (html) => {
