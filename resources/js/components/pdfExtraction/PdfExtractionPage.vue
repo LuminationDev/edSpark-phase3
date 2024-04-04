@@ -79,6 +79,7 @@ const downloadJson = () => {
     document.body.removeChild(a);
 };
 
+//downloads the json/ts file with objects formatted content
 const downloadCriteriaJson = () => {
     jsonContent.value = JSON.stringify({
         // we can add more keywords here if we need
@@ -243,7 +244,7 @@ const extractOtherResourcesSections = (html) => {
 };
 
 // function to filter required content
-const displayStrongContent = () => {
+const displaySelectedContent = () => {
     if (data && data['Success criteria']) {
         const successCriteriaArray = data['Success criteria'];
         if (successCriteriaArray.length > 0) {
@@ -287,7 +288,7 @@ const displayStrongContent = () => {
     if (data && data['Required Resources']) {
         const requiredResourcesArray = data['Required Resources'];
         if (requiredResourcesArray.length > 0) {
-            const hrefWithName = requiredResourcesArray[0].a_links.find(link => link.name === 'Required Resources_link5');
+            const hrefWithName = requiredResourcesArray[0].a_links.find(link => link.name === 'Required Resources_link4');
             if (hrefWithName) {
                 displayHref.value = `${hrefWithName.href}`;
             } else {
@@ -299,6 +300,20 @@ const displayStrongContent = () => {
     } else {
         displayHref.value = "Required Resources section not found in the JSON content.";
     }
+};
+
+
+// Function to extract video ID from YouTube URL
+const extractVideoId = (url) => {
+    const youtubeMatch = url.match(/(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|watch\?v=|watch\?.+&v=))([^&#?]+)/);
+    return youtubeMatch ? youtubeMatch[1] : null;
+};
+
+// Function to generate YouTube embed URL from video ID
+const getYouTubeEmbedUrl = (videoId) => {
+    if (!videoId) return ''; // If no videoId provided, return empty string
+
+    return `https://www.youtube.com/embed/${videoId}`;
 };
 
 </script>
@@ -364,7 +379,7 @@ const displayStrongContent = () => {
     <div>
         <button
             class="border-2 border-black p-2 rounded-2xl"
-            @click="displayStrongContent"
+            @click="displaySelectedContent"
         >
             Display required content from json file
         </button>
@@ -405,6 +420,17 @@ const displayStrongContent = () => {
                     id="successCriteria"
                     class="bg-blue-700 border-2 border-black p-4 text-white"
                     v-html="displayHref"
+                />
+                <iframe
+                    class="mt-1"
+                    width="480"
+                    height="360"
+                    :src="getYouTubeEmbedUrl(extractVideoId(displayHref))"
+                    title="Mitosis in an animal cell Under the Microscope"
+                    frameborder="0"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                    referrerpolicy="strict-origin-when-cross-origin"
+                    allowfullscreen
                 />
             </div>
         </div>
