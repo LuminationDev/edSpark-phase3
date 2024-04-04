@@ -8,19 +8,26 @@ return new class extends Migration
 {
     /**
      * Run the migrations.
+     *
+     * @return void
      */
-    public function up(): void
+    public function up()
     {
         Schema::create('hardware_metas', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('hardware_id')->nullable();
+            $table->string('meta_key');
+            $table->text('meta_value');
             $table->timestamps();
         });
     }
 
     /**
      * Reverse the migrations.
+     *
+     * @return void
      */
-    public function down(): void
+    public function down()
     {
         Schema::dropIfExists('hardware_metas');
     }

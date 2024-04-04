@@ -4,17 +4,16 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
-{
+return new class extends Migration {
     /**
      * Run the migrations.
      */
     public function up(): void
     {
-        Schema::create('software_types', function (Blueprint $table) {
+        Schema::create('event_formats', function (Blueprint $table) {
             $table->id();
-            $table->string('software_type_name');
-            $table->text('software_type_value');
+            $table->string('format_name');
+            $table->text('format_value')->nullable();
             $table->timestamps();
         });
     }
@@ -24,6 +23,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('software_types');
+        Schema::dropIfExists('event_formats');
     }
 };

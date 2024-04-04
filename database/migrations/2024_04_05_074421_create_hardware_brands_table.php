@@ -8,19 +8,25 @@ return new class extends Migration
 {
     /**
      * Run the migrations.
+     *
+     * @return void
      */
-    public function up(): void
+    public function up()
     {
         Schema::create('hardware_brands', function (Blueprint $table) {
             $table->id();
+            $table->string('brand_name');
+            $table->text('brand_description')->nullable();
             $table->timestamps();
         });
     }
 
     /**
      * Reverse the migrations.
+     *
+     * @return void
      */
-    public function down(): void
+    public function down()
     {
         Schema::dropIfExists('hardware_brands');
     }

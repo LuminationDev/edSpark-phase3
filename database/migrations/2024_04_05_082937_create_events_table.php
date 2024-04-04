@@ -8,16 +8,20 @@ return new class extends Migration
 {
     /**
      * Run the migrations.
+     *
+     * @return void
      */
-    public function up(): void
+    public function up()
     {
-        Schema::create('advices', function (Blueprint $table) {
+        Schema::create('events', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('author_id');
             $table->string('title');
-            $table->longText('content')->nullable();
+            $table->longText('content');
             $table->text('excerpt')->nullable();
             $table->string('cover_image')->nullable();
+            $table->dateTime('start_date');
+            $table->dateTime('end_date')->nullable();
             $table->enum('status', ['DRAFT', 'PENDING', 'UNPUBLISHED', 'PUBLISHED', 'ARCHIVED', 'REJECTED'])->default('DRAFT');;
             $table->timestamps();
         });
@@ -25,9 +29,11 @@ return new class extends Migration
 
     /**
      * Reverse the migrations.
+     *
+     * @return void
      */
-    public function down(): void
+    public function down()
     {
-        Schema::dropIfExists('advices');
+        Schema::dropIfExists('events');
     }
 };
