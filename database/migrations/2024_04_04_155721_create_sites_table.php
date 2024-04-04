@@ -13,6 +13,15 @@ return new class extends Migration
     {
         Schema::create('sites', function (Blueprint $table) {
             $table->id();
+            $table->string('site_id')->unique()->nullable();
+            $table->string('site_name');
+            $table->text('site_value')->nullable();
+            $table->string('category_code')->nullable();
+            $table->string('category_desc')->nullable();
+            $table->string('site_type_code')->nullable();
+            $table->text('site_type_desc')->nullable();
+            $table->string('site_sub_type_code')->nullable();
+            $table->text('site_sub_type_desc')->nullable();
             $table->timestamps();
         });
     }

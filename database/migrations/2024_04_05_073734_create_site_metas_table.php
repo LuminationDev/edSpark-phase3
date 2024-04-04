@@ -8,22 +8,27 @@ return new class extends Migration
 {
     /**
      * Run the migrations.
+     *
+     * @return void
      */
-    public function up(): void
+    public function up()
     {
-        Schema::create('roles', function (Blueprint $table) {
+        Schema::create('site_metas', function (Blueprint $table) {
             $table->id();
-            $table->string('role_name');
-            $table->string('role_value')->nullable();
+            $table->unsignedBigInteger('site_id');
+            $table->string('meta_key');
+            $table->text('meta_value')->nullable();
             $table->timestamps();
         });
     }
 
     /**
      * Reverse the migrations.
+     *
+     * @return void
      */
-    public function down(): void
+    public function down()
     {
-        Schema::dropIfExists('roles');
+        Schema::dropIfExists('site_metas');
     }
 };
