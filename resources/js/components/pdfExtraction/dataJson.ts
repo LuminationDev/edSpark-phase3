@@ -6,11 +6,19 @@ export const data = {
                     "name": "Success Criteria_link1",
                     "href": null,
                     "text": ""
+                },
+                {
+                    "name": "Success Criteria_link2",
+                    "href": null,
+                    "text": ""
                 }
             ],
-            "th_1": [
+            "td": [
                 {
-                    "th_1": "Session 1: Students can recognise and understand the scale of a plant and an animal cell using Virtual Reality (VR).Session 2 (Optional): Students can identify and create a model of a cell in a three dimensional (3D) format and explain their representation."
+                    "td": "Session 1: Students can recognise and understand the scale of a plant and an animal cell using Virtual Reality (VR).Session 2 (Optional): Students can identify and create a model of a cell in a three dimensional (3D) format and explain their representation."
+                },
+                {
+                    "td": "Digital Technologies"
                 }
             ],
             "paragraph_1": [
@@ -37,26 +45,17 @@ export const data = {
                 {
                     "tr_1": "Digital TechnologiesVRARRoboticsDronesOther _______________"
                 }
-            ],
-            "th_2": [
-                {
-                    "th_2": "Digital Technologies"
-                }
             ]
         }
     ],
     "Digital Technologies": [
         {
-            "a_links": [
+            "td": [
                 {
-                    "name": "Digital Technologies_link1",
-                    "href": null,
-                    "text": ""
-                }
-            ],
-            "th_1": [
+                    "td": "VRARRoboticsDronesOther _______________"
+                },
                 {
-                    "th_1": "VRARRoboticsDronesOther _______________"
+                    "td": "Required Resources"
                 }
             ],
             "ul_1": [
@@ -93,16 +92,24 @@ export const data = {
                 {
                     "tr_1": "Required ResourcesHardware:Handheld VR headsets (HHVR)Mobile DevicesVR Videos:Virtual Plant Cell: Cell Explore, 2018. VPC 360° video by Plant Energy Biology(5:58)Chapter 1: Introduction to the Animal Cell (5:31)Suggested Videos:Microscope View of Plant Cells (0:31)Mitosis in an animal cell Under the Microscope(0:31)Apps:YouTube - This needs to be whitelisted and downloaded on your mobile devices. For Session 2: Tinkercad accounts - For creating 3D assets; and/or CoSpaces EDU (Download via Google Play or Apple App Store) / CoSpaces accounts (Free or Pro*)  Teaching Resources:1 - Cells In Focus Teaching Deck - Download a copy for your own use.1 - Cells In Focus - Student Digital Notebook  - Download a copy and distribute it to students via email or learning management system.1 - Cells In Focus - Learning Task Pt 2 Checklist- If proceeding with Session 2, teachers may use this as a checklist when marking the 3D cells modelling task."
                 }
-            ],
-            "th_2": [
-                {
-                    "th_2": "Required Resources"
-                }
             ]
         }
     ],
     "Required Resources": [
         {
+            "td": [
+                {
+                    "td": "Hardware:Handheld VR headsets (HHVR)Mobile DevicesVR Videos:Virtual Plant Cell: Cell Explore, 2018. VPC 360° video by Plant Energy Biology(5:58)Chapter 1: Introduction to the Animal Cell (5:31)Suggested Videos:Microscope View of Plant Cells (0:31)Mitosis in an animal cell Under the Microscope(0:31)Apps:YouTube - This needs to be whitelisted and downloaded on your mobile devices. For Session 2: Tinkercad accounts - For creating 3D assets; and/or CoSpaces EDU (Download via Google Play or Apple App Store) / CoSpaces accounts (Free or Pro*)  Teaching Resources:1 - Cells In Focus Teaching Deck - Download a copy for your own use.1 - Cells In Focus - Student Digital Notebook  - Download a copy and distribute it to students via email or learning management system.1 - Cells In Focus - Learning Task Pt 2 Checklist- If proceeding with Session 2, teachers may use this as a checklist when marking the 3D cells modelling task."
+                },
+                {
+                    "td": "Other resources to try (optional)"
+                }
+            ],
+            "paragraph_1": [
+                {
+                    "paragraph_1": "Hardware:"
+                }
+            ],
             "a_links": [
                 {
                     "name": "Required Resources_link1",
@@ -163,16 +170,6 @@ export const data = {
                     "name": "Required Resources_link12",
                     "href": "https://docs.google.com/document/d/1L4cnanlImJ9c0h6XDvOwE_LIHg62xHYnsglm2vwvy1g/edit?usp=sharing",
                     "text": "1 - Cells In Focus - Learning Task Pt 2 Checklist"
-                }
-            ],
-            "th_1": [
-                {
-                    "th_1": "Hardware:Handheld VR headsets (HHVR)Mobile DevicesVR Videos:Virtual Plant Cell: Cell Explore, 2018. VPC 360° video by Plant Energy Biology(5:58)Chapter 1: Introduction to the Animal Cell (5:31)Suggested Videos:Microscope View of Plant Cells (0:31)Mitosis in an animal cell Under the Microscope(0:31)Apps:YouTube - This needs to be whitelisted and downloaded on your mobile devices. For Session 2: Tinkercad accounts - For creating 3D assets; and/or CoSpaces EDU (Download via Google Play or Apple App Store) / CoSpaces accounts (Free or Pro*)  Teaching Resources:1 - Cells In Focus Teaching Deck - Download a copy for your own use.1 - Cells In Focus - Student Digital Notebook  - Download a copy and distribute it to students via email or learning management system.1 - Cells In Focus - Learning Task Pt 2 Checklist- If proceeding with Session 2, teachers may use this as a checklist when marking the 3D cells modelling task."
-                }
-            ],
-            "paragraph_1": [
-                {
-                    "paragraph_1": "Hardware:"
                 }
             ],
             "strong_1": [
@@ -334,16 +331,24 @@ export const data = {
                 {
                     "tr_1": "Other resources to try (optional)Hardware:Immersive Virtual Reality Headsets  (for IMVR experiences)HHVR App:Inside Cell VR (via Google Play Store) - This needs to be whitelisted and downloaded on mobile devices. IMVR Apps (via Steam):Journey To The Centre of the Cell (simulation; Free) - This needs to be downloaded from Steam and installed on your IMVR system.The Body VR: Journey Inside a Cell (simulation; Free) -  This needs to be downloaded from Steam and installed on your IMVR system.Digital 3D Cell Models:Sketchfab 3D animal cell - A pre-made downloadable model of an animal cell that students can use.Sketchfab 3D plant cell - A pre-made downloadable model of a plant cell that students can use.Articles:The Use of Virtual Reality in the Teaching of Challenging Concepts in Virology, Cell Culture and Molecular BiologyTutorials:Getting Started with CoSpaces For TeachersHow To Sign Up For A CoSpaces Teacher AccountHow To Create Classrooms and Assignments In CoSpacesGetting Started with CoSpaces For StudentsHow To Introduce Students To Basic World Building In CoSpacesHow To Customise and Animate Objects in CoSpacesIntroduction To The CoBlocks DashboardGetting Started with Tinkercad Tinkercad In 9 minutesMiscellaneous:VR/AR Safety PosterNo Tech Creation:It’s also possible to create a physical 3D plant or animal cell using materials like paper mache, plasticine, clay, plastic bricks (Lego), foam craft balls, or edible materials (e.g., cake, fruits, etc)."
                 }
-            ],
-            "th_2": [
-                {
-                    "th_2": "Other resources to try (optional)"
-                }
             ]
         }
     ],
     "Other resources to try (optional)": [
         {
+            "td": [
+                {
+                    "td": "Hardware:Immersive Virtual Reality Headsets  (for IMVR experiences)HHVR App:Inside Cell VR (via Google Play Store) - This needs to be whitelisted and downloaded on mobile devices. IMVR Apps (via Steam):Journey To The Centre of the Cell (simulation; Free) - This needs to be downloaded from Steam and installed on your IMVR system.The Body VR: Journey Inside a Cell (simulation; Free) -  This needs to be downloaded from Steam and installed on your IMVR system.Digital 3D Cell Models:Sketchfab 3D animal cell - A pre-made downloadable model of an animal cell that students can use.Sketchfab 3D plant cell - A pre-made downloadable model of a plant cell that students can use.Articles:The Use of Virtual Reality in the Teaching of Challenging Concepts in Virology, Cell Culture and Molecular BiologyTutorials:Getting Started with CoSpaces For TeachersHow To Sign Up For A CoSpaces Teacher AccountHow To Create Classrooms and Assignments In CoSpacesGetting Started with CoSpaces For StudentsHow To Introduce Students To Basic World Building In CoSpacesHow To Customise and Animate Objects in CoSpacesIntroduction To The CoBlocks DashboardGetting Started with Tinkercad Tinkercad In 9 minutesMiscellaneous:VR/AR Safety PosterNo Tech Creation:It’s also possible to create a physical 3D plant or animal cell using materials like paper mache, plasticine, clay, plastic bricks (Lego), foam craft balls, or edible materials (e.g., cake, fruits, etc)."
+                },
+                {
+                    "td": "Planning and PreparationNOTE: This learning task may be introduced in the middle or at the end of the unit."
+                }
+            ],
+            "paragraph_1": [
+                {
+                    "paragraph_1": "Hardware:"
+                }
+            ],
             "a_links": [
                 {
                     "name": "Other Resources to Try (Optional)_link1",
@@ -414,16 +419,6 @@ export const data = {
                     "name": "Other Resources to Try (Optional)_link14",
                     "href": "https://drive.google.com/file/d/1vMsHdVpuF-DnnHzKcPd3-yFeMyBEpmNs/view?usp=sharing",
                     "text": "VR/AR Safety Poster"
-                }
-            ],
-            "th_1": [
-                {
-                    "th_1": "Hardware:Immersive Virtual Reality Headsets  (for IMVR experiences)HHVR App:Inside Cell VR (via Google Play Store) - This needs to be whitelisted and downloaded on mobile devices. IMVR Apps (via Steam):Journey To The Centre of the Cell (simulation; Free) - This needs to be downloaded from Steam and installed on your IMVR system.The Body VR: Journey Inside a Cell (simulation; Free) -  This needs to be downloaded from Steam and installed on your IMVR system.Digital 3D Cell Models:Sketchfab 3D animal cell - A pre-made downloadable model of an animal cell that students can use.Sketchfab 3D plant cell - A pre-made downloadable model of a plant cell that students can use.Articles:The Use of Virtual Reality in the Teaching of Challenging Concepts in Virology, Cell Culture and Molecular BiologyTutorials:Getting Started with CoSpaces For TeachersHow To Sign Up For A CoSpaces Teacher AccountHow To Create Classrooms and Assignments In CoSpacesGetting Started with CoSpaces For StudentsHow To Introduce Students To Basic World Building In CoSpacesHow To Customise and Animate Objects in CoSpacesIntroduction To The CoBlocks DashboardGetting Started with Tinkercad Tinkercad In 9 minutesMiscellaneous:VR/AR Safety PosterNo Tech Creation:It’s also possible to create a physical 3D plant or animal cell using materials like paper mache, plasticine, clay, plastic bricks (Lego), foam craft balls, or edible materials (e.g., cake, fruits, etc)."
-                }
-            ],
-            "paragraph_1": [
-                {
-                    "paragraph_1": "Hardware:"
                 }
             ],
             "strong_1": [
@@ -659,11 +654,6 @@ export const data = {
             "tr_1": [
                 {
                     "tr_1": "Planning and PreparationNOTE: This learning task may be introduced in the middle or at the end of the unit.Assumptions For Session 1, students should have...Prior lessons in the topic of ‘Cells’ in the sub-strand of biological sciences. Preferably, they have been able to view cells under a microscope in the lab. If not, make sure to watch a relevant video. Suggested videos: Microscope View of Plant Cells (0:31)Mitosis in an animal cell Under the Microscope(0:31)Familiarity with the use of VR devices (HHVR and/or IMVR).For Session 2, students should have the following if they’re building a digital 3D model...Basic CoSpaces building skills for AR/VR experiences. Make sure to allocate 1 to 2 lessons to introduce CoSpaces if students have no background with the tool. Basic Tinkercad building skills for creating additional 3D assets. Otherwise, allocate at least 1 lesson to introduce Tinkercad skills.CoSpaces accounts (Free or Paid)Tinkercad accounts (Free)If students are building a physical model, they should have access to materials like paper mache, plasticine, clay, plastic bricks (Lego), foam craft balls, or edible materials (e.g., cake, fruits, etc).Additional Preparations for Teachers Make sure that HHVR and/or IMVR devices have the necessary apps and videos installed. Teachers should watch the videos and/or test the VR apps/games in advance to make sure that they are appropriate for their respective classes and devices.  Make sure all devices are fully charged and set-up appropriately before the lesson, with all apps installed and working.Download and distribute copies of the 1 - Cells In Focus - Student Digital Notebook  to students via email or a learning management system."
-                }
-            ],
-            "th_2": [
-                {
-                    "th_2": "Planning and PreparationNOTE: This learning task may be introduced in the middle or at the end of the unit."
                 }
             ]
         }

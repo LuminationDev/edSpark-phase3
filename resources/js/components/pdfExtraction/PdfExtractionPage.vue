@@ -4,6 +4,7 @@ import {ref} from 'vue';
 
 import { data } from './dataJson'
 
+//all initial variables are here
 const htmlContent = ref('');
 const error = ref('');
 const jsonContent = ref({});
@@ -18,8 +19,10 @@ const digitalTechnologiesSections = ref([]);
 const requiredResourcesSections = ref([]);
 const otherResourcesSections = ref([]);
 
+//just to debug
 console.log("jsonContent:", jsonContent.value);
 
+//handle file upload
 const handleFileUpload = async (event) => {
     const file = event.target.files[0];
     if (!file) return;
@@ -41,6 +44,7 @@ const handleFileUpload = async (event) => {
     }
 };
 
+//creates html content out of doc file
 const convertToHtml = async (file) => {
     const reader = new FileReader();
     const buffer = await new Promise((resolve, reject) => {
@@ -53,6 +57,7 @@ const convertToHtml = async (file) => {
     return result.value;
 };
 
+//downloads extracted content in html format
 const downloadHtml = () => {
     const blob = new Blob([htmlContent.value], {type: 'text/html'});
     const url = window.URL.createObjectURL(blob);
@@ -65,6 +70,7 @@ const downloadHtml = () => {
     document.body.removeChild(a);
 };
 
+//downloads the json file with extracted content from html without formatting
 const downloadJson = () => {
     const text = stripHtml(htmlContent.value);
     const jsonContent = JSON.stringify({content: text}, null, 2);
@@ -79,7 +85,7 @@ const downloadJson = () => {
     document.body.removeChild(a);
 };
 
-//downloads the json/ts file with objects formatted content
+//downloads the json/ts file with objects formatted content out of html
 const downloadCriteriaJson = () => {
     jsonContent.value = JSON.stringify({
         // we can add more keywords here if we need
@@ -98,54 +104,25 @@ const downloadCriteriaJson = () => {
     const url = window.URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
-    a.download = 'dataJson.ts'; // Setting download filename
+    a.download = 'dataJson.ts'; // Setting download filename with extension
     document.body.appendChild(a);
     a.click();
     window.URL.revokeObjectURL(url);
     document.body.removeChild(a);
 };
 
-
-//displayes "Success criteria section not found in the JSON content."
-// const displayContent = () => {
-//     console.log("jsonContent:", jsonContent.value);
-//
-//     if (jsonContent.value && jsonContent.value.hasOwnProperty("Success criteria")) {
-//         const successCriteriaArray = jsonContent.value["Success criteria"];
-//         if (successCriteriaArray.length > 0) {
-//             displayedContent.value = successCriteriaArray[0].content;
-//         } else {
-//             displayedContent.value = "Success criteria section is empty.";
-//         }
-//     } else {
-//         displayedContent.value = "Success criteria section not found in the JSON content.";
-//     }
-// };
-
-//displayes "Success criteria section not found in the JSON content."
-// const displayContent = () => {
-//     if (jsonContent.value && jsonContent.value.hasOwnProperty("Success criteria")) {
-//         const successCriteriaArray = jsonContent.value["Success criteria"];
-//         if (successCriteriaArray.length > 0) {
-//             displayedContent.value = successCriteriaArray[0].content;
-//         } else {
-//             displayedContent.value = "Success criteria section is empty.";
-//         }
-//     } else {
-//         displayedContent.value = "Success criteria section not found in the JSON content.";
-//     }
-// };
-
 //displays the content in json but not in a format
 const displayContent = () => {
     displayedContent.value = jsonContent.value;
 };
 
+//filters only text content out-of html data
 const stripHtml = (html) => {
     const doc = new DOMParser().parseFromString(html, 'text/html');
     return doc.body.textContent || '';
 };
 
+//extraction of content and json formatting
 const extractSections = (html, keyword, sectionsRef) => {
     const doc = new DOMParser().parseFromString(html, 'text/html');
     const elements = doc.querySelectorAll('*');
@@ -159,6 +136,7 @@ const extractSections = (html, keyword, sectionsRef) => {
     let strongCount = 1;
     let ulCount = 1;
 
+    //renaming of tag objects in json file
     const renameTag = (tagName) => {
         if (tagName === 'p') {
             return `paragraph_${paragraphCount++}`;
@@ -177,10 +155,12 @@ const extractSections = (html, keyword, sectionsRef) => {
         }
     };
 
+    //creates href link naming
     const generateLinkName = (currentSection, linkIndex) => {
         return `${currentSection}_link${linkIndex}`;
     };
 
+    //conditions for formatting objects in json file
     for (let i = 0; i < elements.length; i++) {
         const element = elements[i];
         if (element.textContent.trim().toLowerCase() === keyword.toLowerCase()) {
@@ -217,7 +197,6 @@ const extractSections = (html, keyword, sectionsRef) => {
     if (!section['a_links'] || section['a_links'].length === 0) {
         delete section['a_links']; // Remove the placeholder link
     }
-
     if (Object.keys(section).length > 0) {
         sectionsRef.value.push(section);
     }
@@ -230,21 +209,19 @@ const extractSections = (html, keyword, sectionsRef) => {
 const extractCriteriaSections = (html) => {
     extractSections(html, 'Success Criteria', criteriaSections);
 };
-
 const extractDigitalTechnologiesSections = (html) => {
     extractSections(html, 'Digital Technologies', digitalTechnologiesSections);
 };
-
 const extractRequiredResourcesSections = (html) => {
     extractSections(html, 'Required Resources', requiredResourcesSections);
 };
-
 const extractOtherResourcesSections = (html) => {
     extractSections(html, 'Other Resources to Try (Optional)', otherResourcesSections);
 };
 
 // function to filter required content
 const displaySelectedContent = () => {
+    //filters Success Criteria and their required contents
     if (data && data['Success criteria']) {
         const successCriteriaArray = data['Success criteria'];
         if (successCriteriaArray.length > 0) {
@@ -260,6 +237,7 @@ const displaySelectedContent = () => {
     } else {
         displayedObjectJson_1.value = "Success criteria section not found in the JSON content.";
     }
+    //filters Digital Technologies and their required contents
     if (data && data['Digital Technologies']) {
         const digitalTechnologiesArray = data['Digital Technologies'];
         if (digitalTechnologiesArray.length > 0) {
@@ -285,6 +263,7 @@ const displaySelectedContent = () => {
     } else {
         displayedObjectJson_2.value = "Digital Technologies section not found in the JSON content.";
     }
+    //filters Required Resources and their required contents
     if (data && data['Required Resources']) {
         const requiredResourcesArray = data['Required Resources'];
         if (requiredResourcesArray.length > 0) {
@@ -302,13 +281,11 @@ const displaySelectedContent = () => {
     }
 };
 
-
 // Function to extract video ID from YouTube URL
 const extractVideoId = (url) => {
     const youtubeMatch = url.match(/(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|watch\?v=|watch\?.+&v=))([^&#?]+)/);
     return youtubeMatch ? youtubeMatch[1] : null;
 };
-
 // Function to generate YouTube embed URL from video ID
 const getYouTubeEmbedUrl = (videoId) => {
     if (!videoId) return ''; // If no videoId provided, return empty string
