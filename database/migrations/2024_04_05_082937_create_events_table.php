@@ -24,6 +24,7 @@ return new class extends Migration
             $table->json('extra_content')->nullable();
             $table->dateTime('start_date');
             $table->dateTime('end_date')->nullable();
+            $table->unsignedBigInteger('event_type_id')->nullable();
             $table->unsignedBigInteger('event_format_id')->nullable();
             $table->enum('status', ['DRAFT', 'PENDING', 'UNPUBLISHED', 'PUBLISHED', 'ARCHIVED', 'REJECTED'])->default('DRAFT');;
             $table->timestamps();

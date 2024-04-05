@@ -18,6 +18,10 @@ return new class extends Migration
                 ->references('id')
                 ->on('event_formats')
                 ->onDelete('set null');
+            $table->foreign('event_type_id')
+                ->references('id')
+                ->on('event_types')
+                ->onDelete('set null');
         });
     }
 
@@ -29,6 +33,7 @@ return new class extends Migration
         Schema::table('events', function (Blueprint $table) {
             $table->dropForeign(['author_id']);
             $table->dropForeign(['event_format_id']);
+            $table->dropForeign(['event_type_id']);
         });
     }
 };
