@@ -223,72 +223,27 @@ const extractOtherResourcesSections = (html) => {
 
 // function to filter required content
 const displaySelectedContent = () => {
-    //filters Success Criteria and their required contents
-    if (data && data['Success criteria']) {
-        const successCriteriaArray = data['Success criteria'];
-        if (successCriteriaArray.length > 0) {
-            const strongContent = successCriteriaArray[0].paragraph_1;
-            if (strongContent && strongContent.length > 0) {
-                displayedObjectJson_1.value = strongContent[0].paragraph_1;
-            } else {
-                displayedObjectJson_1.value = "Strong content not found in Success criteria section.";
-            }
-        } else {
-            displayedObjectJson_1.value = "Success criteria section is empty.";
-        }
-    } else {
-        displayedObjectJson_1.value = "Success criteria section not found in the JSON content.";
-    }
-    //filters Digital Technologies and their required contents
-    if (data && data['Digital Technologies']) {
-        const digitalTechnologiesArray = data['Digital Technologies'];
-        if (digitalTechnologiesArray.length > 0) {
-            const listContent_3 = digitalTechnologiesArray[0].list_3;
-            const listContent_5 = digitalTechnologiesArray[0].list_5;
-            let content1 = '';
-            let content2 = '';
-            if (listContent_3 && listContent_3.length > 0) {
-                content1 += listContent_3[0].list_3 + '<br>';
-            } else {
-                content1 += "List 3 content not found in Digital Technologies section.<br>";
-            }
-            if (listContent_5 && listContent_5.length > 0) {
-                content2 += listContent_5[0].list_5;
-            } else {
-                content2 += "List 5 content not found in Digital Technologies section.";
-            }
-            displayedObjectJson_2.value = content1;
-            displayedObjectJson_3.value = content2;
-        } else {
-            displayedObjectJson_2.value = "Digital Technologies section is empty.";
-        }
-    } else {
-        displayedObjectJson_2.value = "Digital Technologies section not found in the JSON content.";
-    }
-    //filters Required Resources and their required contents
-    if (data && data['Required Resources']) {
-        const requiredResourcesArray = data['Required Resources'];
-        if (requiredResourcesArray.length > 0) {
-            const hrefWithName = requiredResourcesArray[0].a_links.find(link => link.name === 'Required Resources_link4');
-            if (hrefWithName) {
-                displayHref.value = `${hrefWithName.href}`;
-            } else {
-                displayHref.value = "Href with Name 'Required Resources_link5' not found.";
-            }
-        } else {
-            displayHref.value = "Required Resources section is empty.";
-        }
-    } else {
-        displayHref.value = "Required Resources section not found in the JSON content.";
-    }
+    //get the content from the object's array
+    const paragraphContent_0 = data['Success criteria'][0]?.paragraph?.[0] || "Paragraph content not found.";
+    const strongContent = data['Success criteria'][0]?.strong?.[1] || "Strong content not found.";
+    const content_1 = data['Digital Technologies'][0]?.list?.[2] || "Content1 not found.";
+    //get the content for href from the object's array on the basis of name
+    const requiredResourceLink4 = data['Required Resources'][0]?.["Required Resources_link"]?.find(link => link.name === 'Required Resources_link4');
+    const linkHref = requiredResourceLink4 ? requiredResourceLink4.href : "Link not found.";
+
+    //assign the extracted content to the variables
+    displayedObjectJson_1.value = paragraphContent_0;
+    displayedObjectJson_2.value = strongContent;
+    displayedObjectJson_3.value = content_1;
+    displayHref.value = linkHref;
 };
 
-// Function to extract video ID from YouTube URL
+// function to extract video ID from YouTube URL
 const extractVideoId = (url) => {
     const youtubeMatch = url.match(/(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|watch\?v=|watch\?.+&v=))([^&#?]+)/);
     return youtubeMatch ? youtubeMatch[1] : null;
 };
-// Function to generate YouTube embed URL from video ID
+// function to generate YouTube embed URL from video ID
 const getYouTubeEmbedUrl = (videoId) => {
     if (!videoId) return ''; // If no videoId provided, return empty string
 

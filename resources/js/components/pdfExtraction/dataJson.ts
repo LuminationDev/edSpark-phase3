@@ -1,7 +1,7 @@
 export const data = {
     "Success criteria": [
         {
-            "a_links": [
+            "Success Criteria_link": [
                 {
                     "name": "Success Criteria_link1",
                     "href": null,
@@ -14,103 +14,57 @@ export const data = {
                 }
             ],
             "td": [
-                {
-                    "td": "Session 1: Students can recognise and understand the scale of a plant and an animal cell using Virtual Reality (VR).Session 2 (Optional): Students can identify and create a model of a cell in a three dimensional (3D) format and explain their representation."
-                },
-                {
-                    "td": "Digital Technologies"
-                }
+                "Session 1: Students can recognise and understand the scale of a plant and an animal cell using Virtual Reality (VR).Session 2 (Optional): Students can identify and create a model of a cell in a three dimensional (3D) format and explain their representation.",
+                "Digital Technologies"
             ],
-            "paragraph_1": [
-                {
-                    "paragraph_1": "Session 1: Students can recognise and understand the scale of a plant and an animal cell using Virtual Reality (VR)."
-                }
+            "paragraph": [
+                "Session 1: Students can recognise and understand the scale of a plant and an animal cell using Virtual Reality (VR).",
+                "Session 2 (Optional): Students can identify and create a model of a cell in a three dimensional (3D) format and explain their representation."
             ],
-            "strong_1": [
-                {
-                    "strong_1": "Session 1:"
-                }
+            "strong": [
+                "Session 1:",
+                "Session 2 (Optional):"
             ],
-            "paragraph_2": [
-                {
-                    "paragraph_2": "Session 2 (Optional): Students can identify and create a model of a cell in a three dimensional (3D) format and explain their representation."
-                }
-            ],
-            "strong_2": [
-                {
-                    "strong_2": "Session 2 (Optional):"
-                }
-            ],
-            "tr_1": [
-                {
-                    "tr_1": "Digital TechnologiesVRARRoboticsDronesOther _______________"
-                }
+            "tr": [
+                "Digital TechnologiesVRARRoboticsDronesOther _______________"
             ]
         }
     ],
     "Digital Technologies": [
         {
             "td": [
-                {
-                    "td": "VRARRoboticsDronesOther _______________"
-                },
-                {
-                    "td": "Required Resources"
-                }
+                "VRARRoboticsDronesOther _______________",
+                "Required Resources"
             ],
-            "ul_1": [
-                {
-                    "ul_1": "VRARRoboticsDronesOther _______________"
-                }
+            "ul": [
+                "VRARRoboticsDronesOther _______________"
             ],
-            "list_1": [
-                {
-                    "list_1": "VR"
-                }
+            "list": [
+                "VR",
+                "AR",
+                "Robotics",
+                "Drones",
+                "Other _______________"
             ],
-            "list_2": [
-                {
-                    "list_2": "AR"
-                }
-            ],
-            "list_3": [
-                {
-                    "list_3": "Robotics"
-                }
-            ],
-            "list_4": [
-                {
-                    "list_4": "Drones"
-                }
-            ],
-            "list_5": [
-                {
-                    "list_5": "Other _______________"
-                }
-            ],
-            "tr_1": [
-                {
-                    "tr_1": "Required ResourcesHardware:Handheld VR headsets (HHVR)Mobile DevicesVR Videos:Virtual Plant Cell: Cell Explore, 2018. VPC 360° video by Plant Energy Biology(5:58)Chapter 1: Introduction to the Animal Cell (5:31)Suggested Videos:Microscope View of Plant Cells (0:31)Mitosis in an animal cell Under the Microscope(0:31)Apps:YouTube - This needs to be whitelisted and downloaded on your mobile devices. For Session 2: Tinkercad accounts - For creating 3D assets; and/or CoSpaces EDU (Download via Google Play or Apple App Store) / CoSpaces accounts (Free or Pro*)  Teaching Resources:1 - Cells In Focus Teaching Deck - Download a copy for your own use.1 - Cells In Focus - Student Digital Notebook  - Download a copy and distribute it to students via email or learning management system.1 - Cells In Focus - Learning Task Pt 2 Checklist- If proceeding with Session 2, teachers may use this as a checklist when marking the 3D cells modelling task."
-                }
+            "tr": [
+                "Required ResourcesHardware:Handheld VR headsets (HHVR)Mobile DevicesVR Videos:Virtual Plant Cell: Cell Explore, 2018. VPC 360° video by Plant Energy Biology(5:58)Chapter 1: Introduction to the Animal Cell (5:31)Suggested Videos:Microscope View of Plant Cells (0:31)Mitosis in an animal cell Under the Microscope(0:31)Apps:YouTube - This needs to be whitelisted and downloaded on your mobile devices. For Session 2: Tinkercad accounts - For creating 3D assets; and/or CoSpaces EDU (Download via Google Play or Apple App Store) / CoSpaces accounts (Free or Pro*)  Teaching Resources:1 - Cells In Focus Teaching Deck - Download a copy for your own use.1 - Cells In Focus - Student Digital Notebook  - Download a copy and distribute it to students via email or learning management system.1 - Cells In Focus - Learning Task Pt 2 Checklist- If proceeding with Session 2, teachers may use this as a checklist when marking the 3D cells modelling task."
             ]
         }
     ],
     "Required Resources": [
         {
             "td": [
-                {
-                    "td": "Hardware:Handheld VR headsets (HHVR)Mobile DevicesVR Videos:Virtual Plant Cell: Cell Explore, 2018. VPC 360° video by Plant Energy Biology(5:58)Chapter 1: Introduction to the Animal Cell (5:31)Suggested Videos:Microscope View of Plant Cells (0:31)Mitosis in an animal cell Under the Microscope(0:31)Apps:YouTube - This needs to be whitelisted and downloaded on your mobile devices. For Session 2: Tinkercad accounts - For creating 3D assets; and/or CoSpaces EDU (Download via Google Play or Apple App Store) / CoSpaces accounts (Free or Pro*)  Teaching Resources:1 - Cells In Focus Teaching Deck - Download a copy for your own use.1 - Cells In Focus - Student Digital Notebook  - Download a copy and distribute it to students via email or learning management system.1 - Cells In Focus - Learning Task Pt 2 Checklist- If proceeding with Session 2, teachers may use this as a checklist when marking the 3D cells modelling task."
-                },
-                {
-                    "td": "Other resources to try (optional)"
-                }
+                "Hardware:Handheld VR headsets (HHVR)Mobile DevicesVR Videos:Virtual Plant Cell: Cell Explore, 2018. VPC 360° video by Plant Energy Biology(5:58)Chapter 1: Introduction to the Animal Cell (5:31)Suggested Videos:Microscope View of Plant Cells (0:31)Mitosis in an animal cell Under the Microscope(0:31)Apps:YouTube - This needs to be whitelisted and downloaded on your mobile devices. For Session 2: Tinkercad accounts - For creating 3D assets; and/or CoSpaces EDU (Download via Google Play or Apple App Store) / CoSpaces accounts (Free or Pro*)  Teaching Resources:1 - Cells In Focus Teaching Deck - Download a copy for your own use.1 - Cells In Focus - Student Digital Notebook  - Download a copy and distribute it to students via email or learning management system.1 - Cells In Focus - Learning Task Pt 2 Checklist- If proceeding with Session 2, teachers may use this as a checklist when marking the 3D cells modelling task.",
+                "Other resources to try (optional)"
             ],
-            "paragraph_1": [
-                {
-                    "paragraph_1": "Hardware:"
-                }
+            "paragraph": [
+                "Hardware:",
+                "VR Videos:",
+                "Suggested Videos:",
+                "Apps:",
+                "Teaching Resources:"
             ],
-            "a_links": [
+            "Required Resources_link": [
                 {
                     "name": "Required Resources_link1",
                     "href": null,
@@ -172,184 +126,61 @@ export const data = {
                     "text": "1 - Cells In Focus - Learning Task Pt 2 Checklist"
                 }
             ],
-            "strong_1": [
-                {
-                    "strong_1": "Hardware:"
-                }
+            "strong": [
+                "Hardware:",
+                "VR Videos:",
+                "Suggested Videos:",
+                "Apps:",
+                "YouTube",
+                "Tinkercad",
+                "CoSpaces EDU",
+                "Teaching Resources"
             ],
-            "ul_1": [
-                {
-                    "ul_1": "Handheld VR headsets (HHVR)Mobile Devices"
-                }
+            "ul": [
+                "Handheld VR headsets (HHVR)Mobile Devices",
+                "Virtual Plant Cell: Cell Explore, 2018. VPC 360° video by Plant Energy Biology(5:58)Chapter 1: Introduction to the Animal Cell (5:31)",
+                "Microscope View of Plant Cells (0:31)Mitosis in an animal cell Under the Microscope(0:31)",
+                "YouTube - This needs to be whitelisted and downloaded on your mobile devices. For Session 2: Tinkercad accounts - For creating 3D assets; and/or CoSpaces EDU (Download via Google Play or Apple App Store) / CoSpaces accounts (Free or Pro*)",
+                "Tinkercad accounts - For creating 3D assets; and/or CoSpaces EDU (Download via Google Play or Apple App Store) / CoSpaces accounts (Free or Pro*)",
+                "1 - Cells In Focus Teaching Deck - Download a copy for your own use.1 - Cells In Focus - Student Digital Notebook  - Download a copy and distribute it to students via email or learning management system.1 - Cells In Focus - Learning Task Pt 2 Checklist- If proceeding with Session 2, teachers may use this as a checklist when marking the 3D cells modelling task."
             ],
-            "list_1": [
-                {
-                    "list_1": "Handheld VR headsets (HHVR)"
-                }
+            "list": [
+                "Handheld VR headsets (HHVR)",
+                "Mobile Devices",
+                "Virtual Plant Cell: Cell Explore, 2018. VPC 360° video by Plant Energy Biology(5:58)",
+                "Chapter 1: Introduction to the Animal Cell (5:31)",
+                "Microscope View of Plant Cells (0:31)",
+                "Mitosis in an animal cell Under the Microscope(0:31)",
+                "YouTube - This needs to be whitelisted and downloaded on your mobile devices.",
+                "For Session 2: Tinkercad accounts - For creating 3D assets; and/or CoSpaces EDU (Download via Google Play or Apple App Store) / CoSpaces accounts (Free or Pro*)",
+                "Tinkercad accounts - For creating 3D assets; and/or",
+                "CoSpaces EDU (Download via Google Play or Apple App Store) / CoSpaces accounts (Free or Pro*)",
+                "1 - Cells In Focus Teaching Deck - Download a copy for your own use.",
+                "1 - Cells In Focus - Student Digital Notebook  - Download a copy and distribute it to students via email or learning management system.",
+                "1 - Cells In Focus - Learning Task Pt 2 Checklist- If proceeding with Session 2, teachers may use this as a checklist when marking the 3D cells modelling task."
             ],
-            "list_2": [
-                {
-                    "list_2": "Mobile Devices"
-                }
-            ],
-            "paragraph_2": [
-                {
-                    "paragraph_2": "VR Videos:"
-                }
-            ],
-            "strong_2": [
-                {
-                    "strong_2": "VR Videos:"
-                }
-            ],
-            "ul_2": [
-                {
-                    "ul_2": "Virtual Plant Cell: Cell Explore, 2018. VPC 360° video by Plant Energy Biology(5:58)Chapter 1: Introduction to the Animal Cell (5:31)"
-                }
-            ],
-            "list_3": [
-                {
-                    "list_3": "Virtual Plant Cell: Cell Explore, 2018. VPC 360° video by Plant Energy Biology(5:58)"
-                }
-            ],
-            "list_4": [
-                {
-                    "list_4": "Chapter 1: Introduction to the Animal Cell (5:31)"
-                }
-            ],
-            "paragraph_3": [
-                {
-                    "paragraph_3": "Suggested Videos:"
-                }
-            ],
-            "strong_3": [
-                {
-                    "strong_3": "Suggested Videos:"
-                }
-            ],
-            "ul_3": [
-                {
-                    "ul_3": "Microscope View of Plant Cells (0:31)Mitosis in an animal cell Under the Microscope(0:31)"
-                }
-            ],
-            "list_5": [
-                {
-                    "list_5": "Microscope View of Plant Cells (0:31)"
-                }
-            ],
-            "list_6": [
-                {
-                    "list_6": "Mitosis in an animal cell Under the Microscope(0:31)"
-                }
-            ],
-            "paragraph_4": [
-                {
-                    "paragraph_4": "Apps:"
-                }
-            ],
-            "strong_4": [
-                {
-                    "strong_4": "Apps:"
-                }
-            ],
-            "ul_4": [
-                {
-                    "ul_4": "YouTube - This needs to be whitelisted and downloaded on your mobile devices. For Session 2: Tinkercad accounts - For creating 3D assets; and/or CoSpaces EDU (Download via Google Play or Apple App Store) / CoSpaces accounts (Free or Pro*)"
-                }
-            ],
-            "list_7": [
-                {
-                    "list_7": "YouTube - This needs to be whitelisted and downloaded on your mobile devices."
-                }
-            ],
-            "strong_5": [
-                {
-                    "strong_5": "YouTube"
-                }
-            ],
-            "list_8": [
-                {
-                    "list_8": "For Session 2: Tinkercad accounts - For creating 3D assets; and/or CoSpaces EDU (Download via Google Play or Apple App Store) / CoSpaces accounts (Free or Pro*)"
-                }
-            ],
-            "ul_5": [
-                {
-                    "ul_5": "Tinkercad accounts - For creating 3D assets; and/or CoSpaces EDU (Download via Google Play or Apple App Store) / CoSpaces accounts (Free or Pro*)"
-                }
-            ],
-            "list_9": [
-                {
-                    "list_9": "Tinkercad accounts - For creating 3D assets; and/or"
-                }
-            ],
-            "strong_6": [
-                {
-                    "strong_6": "Tinkercad"
-                }
-            ],
-            "list_10": [
-                {
-                    "list_10": "CoSpaces EDU (Download via Google Play or Apple App Store) / CoSpaces accounts (Free or Pro*)"
-                }
-            ],
-            "strong_7": [
-                {
-                    "strong_7": "CoSpaces EDU"
-                }
-            ],
-            "paragraph_5": [
-                {
-                    "paragraph_5": "Teaching Resources:"
-                }
-            ],
-            "strong_8": [
-                {
-                    "strong_8": "Teaching Resources"
-                }
-            ],
-            "ul_6": [
-                {
-                    "ul_6": "1 - Cells In Focus Teaching Deck - Download a copy for your own use.1 - Cells In Focus - Student Digital Notebook  - Download a copy and distribute it to students via email or learning management system.1 - Cells In Focus - Learning Task Pt 2 Checklist- If proceeding with Session 2, teachers may use this as a checklist when marking the 3D cells modelling task."
-                }
-            ],
-            "list_11": [
-                {
-                    "list_11": "1 - Cells In Focus Teaching Deck - Download a copy for your own use."
-                }
-            ],
-            "list_12": [
-                {
-                    "list_12": "1 - Cells In Focus - Student Digital Notebook  - Download a copy and distribute it to students via email or learning management system."
-                }
-            ],
-            "list_13": [
-                {
-                    "list_13": "1 - Cells In Focus - Learning Task Pt 2 Checklist- If proceeding with Session 2, teachers may use this as a checklist when marking the 3D cells modelling task."
-                }
-            ],
-            "tr_1": [
-                {
-                    "tr_1": "Other resources to try (optional)Hardware:Immersive Virtual Reality Headsets  (for IMVR experiences)HHVR App:Inside Cell VR (via Google Play Store) - This needs to be whitelisted and downloaded on mobile devices. IMVR Apps (via Steam):Journey To The Centre of the Cell (simulation; Free) - This needs to be downloaded from Steam and installed on your IMVR system.The Body VR: Journey Inside a Cell (simulation; Free) -  This needs to be downloaded from Steam and installed on your IMVR system.Digital 3D Cell Models:Sketchfab 3D animal cell - A pre-made downloadable model of an animal cell that students can use.Sketchfab 3D plant cell - A pre-made downloadable model of a plant cell that students can use.Articles:The Use of Virtual Reality in the Teaching of Challenging Concepts in Virology, Cell Culture and Molecular BiologyTutorials:Getting Started with CoSpaces For TeachersHow To Sign Up For A CoSpaces Teacher AccountHow To Create Classrooms and Assignments In CoSpacesGetting Started with CoSpaces For StudentsHow To Introduce Students To Basic World Building In CoSpacesHow To Customise and Animate Objects in CoSpacesIntroduction To The CoBlocks DashboardGetting Started with Tinkercad Tinkercad In 9 minutesMiscellaneous:VR/AR Safety PosterNo Tech Creation:It’s also possible to create a physical 3D plant or animal cell using materials like paper mache, plasticine, clay, plastic bricks (Lego), foam craft balls, or edible materials (e.g., cake, fruits, etc)."
-                }
+            "tr": [
+                "Other resources to try (optional)Hardware:Immersive Virtual Reality Headsets  (for IMVR experiences)HHVR App:Inside Cell VR (via Google Play Store) - This needs to be whitelisted and downloaded on mobile devices. IMVR Apps (via Steam):Journey To The Centre of the Cell (simulation; Free) - This needs to be downloaded from Steam and installed on your IMVR system.The Body VR: Journey Inside a Cell (simulation; Free) -  This needs to be downloaded from Steam and installed on your IMVR system.Digital 3D Cell Models:Sketchfab 3D animal cell - A pre-made downloadable model of an animal cell that students can use.Sketchfab 3D plant cell - A pre-made downloadable model of a plant cell that students can use.Articles:The Use of Virtual Reality in the Teaching of Challenging Concepts in Virology, Cell Culture and Molecular BiologyTutorials:Getting Started with CoSpaces For TeachersHow To Sign Up For A CoSpaces Teacher AccountHow To Create Classrooms and Assignments In CoSpacesGetting Started with CoSpaces For StudentsHow To Introduce Students To Basic World Building In CoSpacesHow To Customise and Animate Objects in CoSpacesIntroduction To The CoBlocks DashboardGetting Started with Tinkercad Tinkercad In 9 minutesMiscellaneous:VR/AR Safety PosterNo Tech Creation:It’s also possible to create a physical 3D plant or animal cell using materials like paper mache, plasticine, clay, plastic bricks (Lego), foam craft balls, or edible materials (e.g., cake, fruits, etc)."
             ]
         }
     ],
     "Other resources to try (optional)": [
         {
             "td": [
-                {
-                    "td": "Hardware:Immersive Virtual Reality Headsets  (for IMVR experiences)HHVR App:Inside Cell VR (via Google Play Store) - This needs to be whitelisted and downloaded on mobile devices. IMVR Apps (via Steam):Journey To The Centre of the Cell (simulation; Free) - This needs to be downloaded from Steam and installed on your IMVR system.The Body VR: Journey Inside a Cell (simulation; Free) -  This needs to be downloaded from Steam and installed on your IMVR system.Digital 3D Cell Models:Sketchfab 3D animal cell - A pre-made downloadable model of an animal cell that students can use.Sketchfab 3D plant cell - A pre-made downloadable model of a plant cell that students can use.Articles:The Use of Virtual Reality in the Teaching of Challenging Concepts in Virology, Cell Culture and Molecular BiologyTutorials:Getting Started with CoSpaces For TeachersHow To Sign Up For A CoSpaces Teacher AccountHow To Create Classrooms and Assignments In CoSpacesGetting Started with CoSpaces For StudentsHow To Introduce Students To Basic World Building In CoSpacesHow To Customise and Animate Objects in CoSpacesIntroduction To The CoBlocks DashboardGetting Started with Tinkercad Tinkercad In 9 minutesMiscellaneous:VR/AR Safety PosterNo Tech Creation:It’s also possible to create a physical 3D plant or animal cell using materials like paper mache, plasticine, clay, plastic bricks (Lego), foam craft balls, or edible materials (e.g., cake, fruits, etc)."
-                },
-                {
-                    "td": "Planning and PreparationNOTE: This learning task may be introduced in the middle or at the end of the unit."
-                }
+                "Hardware:Immersive Virtual Reality Headsets  (for IMVR experiences)HHVR App:Inside Cell VR (via Google Play Store) - This needs to be whitelisted and downloaded on mobile devices. IMVR Apps (via Steam):Journey To The Centre of the Cell (simulation; Free) - This needs to be downloaded from Steam and installed on your IMVR system.The Body VR: Journey Inside a Cell (simulation; Free) -  This needs to be downloaded from Steam and installed on your IMVR system.Digital 3D Cell Models:Sketchfab 3D animal cell - A pre-made downloadable model of an animal cell that students can use.Sketchfab 3D plant cell - A pre-made downloadable model of a plant cell that students can use.Articles:The Use of Virtual Reality in the Teaching of Challenging Concepts in Virology, Cell Culture and Molecular BiologyTutorials:Getting Started with CoSpaces For TeachersHow To Sign Up For A CoSpaces Teacher AccountHow To Create Classrooms and Assignments In CoSpacesGetting Started with CoSpaces For StudentsHow To Introduce Students To Basic World Building In CoSpacesHow To Customise and Animate Objects in CoSpacesIntroduction To The CoBlocks DashboardGetting Started with Tinkercad Tinkercad In 9 minutesMiscellaneous:VR/AR Safety PosterNo Tech Creation:It’s also possible to create a physical 3D plant or animal cell using materials like paper mache, plasticine, clay, plastic bricks (Lego), foam craft balls, or edible materials (e.g., cake, fruits, etc).",
+                "Planning and PreparationNOTE: This learning task may be introduced in the middle or at the end of the unit."
             ],
-            "paragraph_1": [
-                {
-                    "paragraph_1": "Hardware:"
-                }
+            "paragraph": [
+                "Hardware:",
+                "HHVR App:",
+                "IMVR Apps (via Steam):",
+                "Digital 3D Cell Models:",
+                "Articles:",
+                "Tutorials:",
+                "Miscellaneous:",
+                "No Tech Creation:"
             ],
-            "a_links": [
+            "Other Resources to Try (Optional)_link": [
                 {
                     "name": "Other Resources to Try (Optional)_link1",
                     "href": null,
@@ -421,240 +252,53 @@ export const data = {
                     "text": "VR/AR Safety Poster"
                 }
             ],
-            "strong_1": [
-                {
-                    "strong_1": "Hardware:"
-                }
+            "strong": [
+                "Hardware:",
+                "HHVR App:",
+                "Inside Cell VR",
+                "",
+                "IMVR Apps",
+                "Digital 3D Cell Models:",
+                "Articles:",
+                "Tutorials:",
+                "Miscellaneous:",
+                "No Tech Creation:"
             ],
-            "ul_1": [
-                {
-                    "ul_1": "Immersive Virtual Reality Headsets  (for IMVR experiences)"
-                }
+            "ul": [
+                "Immersive Virtual Reality Headsets  (for IMVR experiences)",
+                "Inside Cell VR (via Google Play Store) - This needs to be whitelisted and downloaded on mobile devices.",
+                "Journey To The Centre of the Cell (simulation; Free) - This needs to be downloaded from Steam and installed on your IMVR system.The Body VR: Journey Inside a Cell (simulation; Free) -  This needs to be downloaded from Steam and installed on your IMVR system.",
+                "Sketchfab 3D animal cell - A pre-made downloadable model of an animal cell that students can use.Sketchfab 3D plant cell - A pre-made downloadable model of a plant cell that students can use.",
+                "The Use of Virtual Reality in the Teaching of Challenging Concepts in Virology, Cell Culture and Molecular Biology",
+                "Getting Started with CoSpaces For TeachersHow To Sign Up For A CoSpaces Teacher AccountHow To Create Classrooms and Assignments In CoSpacesGetting Started with CoSpaces For StudentsHow To Introduce Students To Basic World Building In CoSpacesHow To Customise and Animate Objects in CoSpacesIntroduction To The CoBlocks DashboardGetting Started with Tinkercad Tinkercad In 9 minutes",
+                "How To Sign Up For A CoSpaces Teacher AccountHow To Create Classrooms and Assignments In CoSpaces",
+                "How To Introduce Students To Basic World Building In CoSpacesHow To Customise and Animate Objects in CoSpacesIntroduction To The CoBlocks Dashboard",
+                "Tinkercad In 9 minutes",
+                "VR/AR Safety Poster",
+                "It’s also possible to create a physical 3D plant or animal cell using materials like paper mache, plasticine, clay, plastic bricks (Lego), foam craft balls, or edible materials (e.g., cake, fruits, etc)."
             ],
-            "list_1": [
-                {
-                    "list_1": "Immersive Virtual Reality Headsets  (for IMVR experiences)"
-                }
+            "list": [
+                "Immersive Virtual Reality Headsets  (for IMVR experiences)",
+                "Inside Cell VR (via Google Play Store) - This needs to be whitelisted and downloaded on mobile devices.",
+                "Journey To The Centre of the Cell (simulation; Free) - This needs to be downloaded from Steam and installed on your IMVR system.",
+                "The Body VR: Journey Inside a Cell (simulation; Free) -  This needs to be downloaded from Steam and installed on your IMVR system.",
+                "Sketchfab 3D animal cell - A pre-made downloadable model of an animal cell that students can use.",
+                "Sketchfab 3D plant cell - A pre-made downloadable model of a plant cell that students can use.",
+                "The Use of Virtual Reality in the Teaching of Challenging Concepts in Virology, Cell Culture and Molecular Biology",
+                "Getting Started with CoSpaces For TeachersHow To Sign Up For A CoSpaces Teacher AccountHow To Create Classrooms and Assignments In CoSpaces",
+                "How To Sign Up For A CoSpaces Teacher Account",
+                "How To Create Classrooms and Assignments In CoSpaces",
+                "Getting Started with CoSpaces For StudentsHow To Introduce Students To Basic World Building In CoSpacesHow To Customise and Animate Objects in CoSpacesIntroduction To The CoBlocks Dashboard",
+                "How To Introduce Students To Basic World Building In CoSpaces",
+                "How To Customise and Animate Objects in CoSpaces",
+                "Introduction To The CoBlocks Dashboard",
+                "Getting Started with Tinkercad Tinkercad In 9 minutes",
+                "Tinkercad In 9 minutes",
+                "VR/AR Safety Poster",
+                "It’s also possible to create a physical 3D plant or animal cell using materials like paper mache, plasticine, clay, plastic bricks (Lego), foam craft balls, or edible materials (e.g., cake, fruits, etc)."
             ],
-            "paragraph_2": [
-                {
-                    "paragraph_2": "HHVR App:"
-                }
-            ],
-            "strong_2": [
-                {
-                    "strong_2": "HHVR App:"
-                }
-            ],
-            "ul_2": [
-                {
-                    "ul_2": "Inside Cell VR (via Google Play Store) - This needs to be whitelisted and downloaded on mobile devices."
-                }
-            ],
-            "list_2": [
-                {
-                    "list_2": "Inside Cell VR (via Google Play Store) - This needs to be whitelisted and downloaded on mobile devices."
-                }
-            ],
-            "strong_3": [
-                {
-                    "strong_3": "Inside Cell VR"
-                }
-            ],
-            "strong_4": [
-                {
-                    "strong_4": ""
-                }
-            ],
-            "paragraph_3": [
-                {
-                    "paragraph_3": "IMVR Apps (via Steam):"
-                }
-            ],
-            "strong_5": [
-                {
-                    "strong_5": "IMVR Apps"
-                }
-            ],
-            "ul_3": [
-                {
-                    "ul_3": "Journey To The Centre of the Cell (simulation; Free) - This needs to be downloaded from Steam and installed on your IMVR system.The Body VR: Journey Inside a Cell (simulation; Free) -  This needs to be downloaded from Steam and installed on your IMVR system."
-                }
-            ],
-            "list_3": [
-                {
-                    "list_3": "Journey To The Centre of the Cell (simulation; Free) - This needs to be downloaded from Steam and installed on your IMVR system."
-                }
-            ],
-            "list_4": [
-                {
-                    "list_4": "The Body VR: Journey Inside a Cell (simulation; Free) -  This needs to be downloaded from Steam and installed on your IMVR system."
-                }
-            ],
-            "paragraph_4": [
-                {
-                    "paragraph_4": "Digital 3D Cell Models:"
-                }
-            ],
-            "strong_6": [
-                {
-                    "strong_6": "Digital 3D Cell Models:"
-                }
-            ],
-            "ul_4": [
-                {
-                    "ul_4": "Sketchfab 3D animal cell - A pre-made downloadable model of an animal cell that students can use.Sketchfab 3D plant cell - A pre-made downloadable model of a plant cell that students can use."
-                }
-            ],
-            "list_5": [
-                {
-                    "list_5": "Sketchfab 3D animal cell - A pre-made downloadable model of an animal cell that students can use."
-                }
-            ],
-            "list_6": [
-                {
-                    "list_6": "Sketchfab 3D plant cell - A pre-made downloadable model of a plant cell that students can use."
-                }
-            ],
-            "paragraph_5": [
-                {
-                    "paragraph_5": "Articles:"
-                }
-            ],
-            "strong_7": [
-                {
-                    "strong_7": "Articles:"
-                }
-            ],
-            "ul_5": [
-                {
-                    "ul_5": "The Use of Virtual Reality in the Teaching of Challenging Concepts in Virology, Cell Culture and Molecular Biology"
-                }
-            ],
-            "list_7": [
-                {
-                    "list_7": "The Use of Virtual Reality in the Teaching of Challenging Concepts in Virology, Cell Culture and Molecular Biology"
-                }
-            ],
-            "paragraph_6": [
-                {
-                    "paragraph_6": "Tutorials:"
-                }
-            ],
-            "strong_8": [
-                {
-                    "strong_8": "Tutorials:"
-                }
-            ],
-            "ul_6": [
-                {
-                    "ul_6": "Getting Started with CoSpaces For TeachersHow To Sign Up For A CoSpaces Teacher AccountHow To Create Classrooms and Assignments In CoSpacesGetting Started with CoSpaces For StudentsHow To Introduce Students To Basic World Building In CoSpacesHow To Customise and Animate Objects in CoSpacesIntroduction To The CoBlocks DashboardGetting Started with Tinkercad Tinkercad In 9 minutes"
-                }
-            ],
-            "list_8": [
-                {
-                    "list_8": "Getting Started with CoSpaces For TeachersHow To Sign Up For A CoSpaces Teacher AccountHow To Create Classrooms and Assignments In CoSpaces"
-                }
-            ],
-            "ul_7": [
-                {
-                    "ul_7": "How To Sign Up For A CoSpaces Teacher AccountHow To Create Classrooms and Assignments In CoSpaces"
-                }
-            ],
-            "list_9": [
-                {
-                    "list_9": "How To Sign Up For A CoSpaces Teacher Account"
-                }
-            ],
-            "list_10": [
-                {
-                    "list_10": "How To Create Classrooms and Assignments In CoSpaces"
-                }
-            ],
-            "list_11": [
-                {
-                    "list_11": "Getting Started with CoSpaces For StudentsHow To Introduce Students To Basic World Building In CoSpacesHow To Customise and Animate Objects in CoSpacesIntroduction To The CoBlocks Dashboard"
-                }
-            ],
-            "ul_8": [
-                {
-                    "ul_8": "How To Introduce Students To Basic World Building In CoSpacesHow To Customise and Animate Objects in CoSpacesIntroduction To The CoBlocks Dashboard"
-                }
-            ],
-            "list_12": [
-                {
-                    "list_12": "How To Introduce Students To Basic World Building In CoSpaces"
-                }
-            ],
-            "list_13": [
-                {
-                    "list_13": "How To Customise and Animate Objects in CoSpaces"
-                }
-            ],
-            "list_14": [
-                {
-                    "list_14": "Introduction To The CoBlocks Dashboard"
-                }
-            ],
-            "list_15": [
-                {
-                    "list_15": "Getting Started with Tinkercad Tinkercad In 9 minutes"
-                }
-            ],
-            "ul_9": [
-                {
-                    "ul_9": "Tinkercad In 9 minutes"
-                }
-            ],
-            "list_16": [
-                {
-                    "list_16": "Tinkercad In 9 minutes"
-                }
-            ],
-            "paragraph_7": [
-                {
-                    "paragraph_7": "Miscellaneous:"
-                }
-            ],
-            "strong_9": [
-                {
-                    "strong_9": "Miscellaneous:"
-                }
-            ],
-            "ul_10": [
-                {
-                    "ul_10": "VR/AR Safety Poster"
-                }
-            ],
-            "list_17": [
-                {
-                    "list_17": "VR/AR Safety Poster"
-                }
-            ],
-            "paragraph_8": [
-                {
-                    "paragraph_8": "No Tech Creation:"
-                }
-            ],
-            "strong_10": [
-                {
-                    "strong_10": "No Tech Creation:"
-                }
-            ],
-            "ul_11": [
-                {
-                    "ul_11": "It’s also possible to create a physical 3D plant or animal cell using materials like paper mache, plasticine, clay, plastic bricks (Lego), foam craft balls, or edible materials (e.g., cake, fruits, etc)."
-                }
-            ],
-            "list_18": [
-                {
-                    "list_18": "It’s also possible to create a physical 3D plant or animal cell using materials like paper mache, plasticine, clay, plastic bricks (Lego), foam craft balls, or edible materials (e.g., cake, fruits, etc)."
-                }
-            ],
-            "tr_1": [
-                {
-                    "tr_1": "Planning and PreparationNOTE: This learning task may be introduced in the middle or at the end of the unit.Assumptions For Session 1, students should have...Prior lessons in the topic of ‘Cells’ in the sub-strand of biological sciences. Preferably, they have been able to view cells under a microscope in the lab. If not, make sure to watch a relevant video. Suggested videos: Microscope View of Plant Cells (0:31)Mitosis in an animal cell Under the Microscope(0:31)Familiarity with the use of VR devices (HHVR and/or IMVR).For Session 2, students should have the following if they’re building a digital 3D model...Basic CoSpaces building skills for AR/VR experiences. Make sure to allocate 1 to 2 lessons to introduce CoSpaces if students have no background with the tool. Basic Tinkercad building skills for creating additional 3D assets. Otherwise, allocate at least 1 lesson to introduce Tinkercad skills.CoSpaces accounts (Free or Paid)Tinkercad accounts (Free)If students are building a physical model, they should have access to materials like paper mache, plasticine, clay, plastic bricks (Lego), foam craft balls, or edible materials (e.g., cake, fruits, etc).Additional Preparations for Teachers Make sure that HHVR and/or IMVR devices have the necessary apps and videos installed. Teachers should watch the videos and/or test the VR apps/games in advance to make sure that they are appropriate for their respective classes and devices.  Make sure all devices are fully charged and set-up appropriately before the lesson, with all apps installed and working.Download and distribute copies of the 1 - Cells In Focus - Student Digital Notebook  to students via email or a learning management system."
-                }
+            "tr": [
+                "Planning and PreparationNOTE: This learning task may be introduced in the middle or at the end of the unit.Assumptions For Session 1, students should have...Prior lessons in the topic of ‘Cells’ in the sub-strand of biological sciences. Preferably, they have been able to view cells under a microscope in the lab. If not, make sure to watch a relevant video. Suggested videos: Microscope View of Plant Cells (0:31)Mitosis in an animal cell Under the Microscope(0:31)Familiarity with the use of VR devices (HHVR and/or IMVR).For Session 2, students should have the following if they’re building a digital 3D model...Basic CoSpaces building skills for AR/VR experiences. Make sure to allocate 1 to 2 lessons to introduce CoSpaces if students have no background with the tool. Basic Tinkercad building skills for creating additional 3D assets. Otherwise, allocate at least 1 lesson to introduce Tinkercad skills.CoSpaces accounts (Free or Paid)Tinkercad accounts (Free)If students are building a physical model, they should have access to materials like paper mache, plasticine, clay, plastic bricks (Lego), foam craft balls, or edible materials (e.g., cake, fruits, etc).Additional Preparations for Teachers Make sure that HHVR and/or IMVR devices have the necessary apps and videos installed. Teachers should watch the videos and/or test the VR apps/games in advance to make sure that they are appropriate for their respective classes and devices.  Make sure all devices are fully charged and set-up appropriately before the lesson, with all apps installed and working.Download and distribute copies of the 1 - Cells In Focus - Student Digital Notebook  to students via email or a learning management system."
             ]
         }
     ]
