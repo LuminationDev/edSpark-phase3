@@ -122,35 +122,32 @@ const stripHtml = (html) => {
     return doc.body.textContent || '';
 };
 
-//extraction of content and json formatting
+//extraction of content and json formatting in a proper Arrays format
 const extractSections = (html, keyword, sectionsRef) => {
     const doc = new DOMParser().parseFromString(html, 'text/html');
     const elements = doc.querySelectorAll('*');
     let found = false;
     let section = {};
     let currentSection = null;
-    let paragraphCount = 1;
-    let listCount = 1;
-    let thCount = 1;
-    let trCount = 1;
-    let strongCount = 1;
-    let ulCount = 1;
 
     //renaming of tag objects in json file
-    const renameTag = (tagName) => {
-        if (tagName === 'p') {
-            return `paragraph_${paragraphCount++}`;
-        } else if (tagName === 'li') {
-            return `list_${listCount++}`;
-        } else if (tagName === 'th') {
-            return `th_${thCount++}`;
-        } else if (tagName === 'tr') {
-            return `tr_${trCount++}`;
-        } else if (tagName === 'strong') {
-            return `strong_${strongCount++}`;
-        } else if (tagName === 'ul') {
-            return `ul_${ulCount++}`;
-        } else {
+    const renameTag = (tagName, currentSection) => {
+        switch (tagName) {
+        case 'p':
+            return 'paragraph';
+        case 'td':
+            return 'td';
+        case 'strong':
+            return 'strong';
+        case 'li':
+            return 'list';
+        case 'ul':
+            return 'ul';
+        case 'tr':
+            return 'tr';
+        case 'a':
+            return `${currentSection}_link`;
+        default:
             return tagName;
         }
     };
@@ -176,32 +173,37 @@ const extractSections = (html, keyword, sectionsRef) => {
                 const tagName = element.tagName.toLowerCase();
                 const customTagName = renameTag(tagName, currentSection);
                 if (tagName === 'a') {
-                    const linkName = generateLinkName(currentSection, section[customTagName + '_links'] ? section[customTagName + '_links'].length + 1 : 1); // Generate unique link name
-                    if (!section[customTagName + '_links']) {
-                        section[customTagName + '_links'] = [];
+                    const linkName = generateLinkName(currentSection, section[customTagName] ? section[customTagName].length + 1 : 1); // Generate unique link name
+                    if (!section[customTagName]) {
+                        section[customTagName] = [];
                     }
-                    section[customTagName + '_links'].push({ name: linkName, href: element.getAttribute('href'), text: element.textContent.trim() });
+                    section[customTagName].push({ name: linkName, href: element.getAttribute('href'), text: element.textContent.trim() });
                 } else {
                     if (!section[customTagName]) {
                         section[customTagName] = [];
                     }
-                    const childSection = {};
-                    childSection[customTagName] = element.textContent.trim();
-                    section[customTagName].push(childSection);
+                    // Update here to merge paragraphs into a single object
+                    if (customTagName === 'paragraph' || customTagName === 'strong' || customTagName === 'tr' || customTagName === 'td' || customTagName === 'list' || customTagName === 'ul') {
+                        section[customTagName] = section[customTagName] || [];
+                        section[customTagName].push(element.textContent.trim());
+                    } else {
+                        const childSection = {};
+                        childSection[customTagName] = element.textContent.trim();
+                        section[customTagName].push(childSection);
+                    }
                 }
             }
         }
     }
 
     // Check if there are no href links in the section and set href=null accordingly
-    if (!section['a_links'] || section['a_links'].length === 0) {
+    if (currentSection === 'a_links' && (!section['a_links'] || section['a_links'].length === 0)) {
         delete section['a_links']; // Remove the placeholder link
     }
     if (Object.keys(section).length > 0) {
         sectionsRef.value.push(section);
     }
 };
-
 
 
 
