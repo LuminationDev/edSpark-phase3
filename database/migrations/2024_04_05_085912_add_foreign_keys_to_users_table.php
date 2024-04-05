@@ -8,34 +8,25 @@ return new class extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
         Schema::table('users', function (Blueprint $table) {
-            // FOREIGN KEYS
             $table->foreign('role_id')
-                ->references('id')->on('roles')->onDelete('cascade');
+                ->references('id')->on('roles')->onDelete('no action');
             $table->foreign('site_id')
-                ->references('id')->on('sites')->onDelete('cascade');
-            $table->foreign('usertype_id')
-                ->references('id')->on('user_types')->onDelete('cascade');
+                ->references('id')->on('sites')->onDelete('no action');
         });
     }
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
         Schema::table('users', function (Blueprint $table) {
             $table->dropForeign(['role_id']);
             $table->dropForeign(['site_id']);
-            $table->dropForeign(['usertype_id']);
         });
     }
 };
-

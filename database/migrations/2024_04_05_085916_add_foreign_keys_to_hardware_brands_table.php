@@ -11,11 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('event_types', function (Blueprint $table) {
-            $table->id();
-            $table->string('type_name');
-            $table->text('type_value')->nullable();
-            $table->timestamps();
+        Schema::table('hardware_brands', function (Blueprint $table) {
+            //
         });
     }
 
@@ -24,6 +21,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('event_types');
+        Schema::table('hardware_brands', function (Blueprint $table) {
+            //
+        });
     }
 };

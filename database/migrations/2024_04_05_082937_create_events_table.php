@@ -20,6 +20,7 @@ return new class extends Migration
             $table->longText('content');
             $table->text('excerpt')->nullable();
             $table->string('cover_image')->nullable();
+            $table->json('extra_content')->nullable();
             $table->dateTime('start_date');
             $table->dateTime('end_date')->nullable();
             $table->enum('status', ['DRAFT', 'PENDING', 'UNPUBLISHED', 'PUBLISHED', 'ARCHIVED', 'REJECTED'])->default('DRAFT');;

@@ -11,11 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('event_types', function (Blueprint $table) {
-            $table->id();
-            $table->string('type_name');
-            $table->text('type_value')->nullable();
-            $table->timestamps();
+        Schema::table('software_metas', function (Blueprint $table) {
+            $table->foreign('software_id')
+                ->references('id')->on('users')->onDelete('cascade');
         });
     }
 
@@ -24,6 +22,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('event_types');
+        Schema::table('software_metas', function (Blueprint $table) {
+            $table->dropForeign(['software_id']);
+        });
     }
 };

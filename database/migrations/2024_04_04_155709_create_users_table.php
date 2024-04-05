@@ -18,8 +18,8 @@ return new class extends Migration
             $table->string('email');
             $table->string('password')->nullable();
             $table->string('status')->nullable();
-            $table->unsignedInteger('role_id')->nullable();
-            $table->unsignedInteger('site_id')->nullable();
+            $table->unsignedBigInteger('role_id')->nullable();
+            $table->unsignedBigInteger('site_id')->nullable();
             $table->timestamps();
 
         });
