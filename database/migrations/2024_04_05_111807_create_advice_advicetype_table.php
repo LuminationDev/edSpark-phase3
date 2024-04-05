@@ -11,19 +11,17 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('site_metas', function (Blueprint $table) {
-            $table->foreign('site_id')
-                ->references('id')->on('sites')->onDelete('cascade');
+        Schema::create('advice_advicetype', function (Blueprint $table) {
+            $table->unsignedBigInteger('advice_id');
+            $table->unsignedBigInteger('advicetype_id');
+            $table->timestamps();
         });
     }
-
     /**
      * Reverse the migrations.
      */
     public function down(): void
     {
-        Schema::table('site_metas', function (Blueprint $table) {
-            $table->dropForeign(['site_id']);
-        });
+        Schema::dropIfExists('advice_advicetype');
     }
 };

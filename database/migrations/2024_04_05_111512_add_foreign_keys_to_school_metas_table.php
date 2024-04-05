@@ -11,9 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('site_metas', function (Blueprint $table) {
-            $table->foreign('site_id')
-                ->references('id')->on('sites')->onDelete('cascade');
+        Schema::table('school_metas', function (Blueprint $table) {
+            $table->foreign('school_id')
+                ->references('id')->on('school_profiles')->onDelete('no action');
         });
     }
 
@@ -22,8 +22,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('site_metas', function (Blueprint $table) {
-            $table->dropForeign(['site_id']);
+        Schema::table('school_metas', function (Blueprint $table) {
+            $table->dropForeign(['school_id']);
         });
     }
 };

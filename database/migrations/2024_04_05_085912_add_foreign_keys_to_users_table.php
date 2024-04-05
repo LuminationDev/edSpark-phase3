@@ -15,7 +15,7 @@ return new class extends Migration
             $table->foreign('role_id')
                 ->references('id')->on('roles')->onDelete('no action');
             $table->foreign('site_id')
-                ->references('id')->on('sites')->onDelete('no action');
+                ->references('site_id')->on('sites')->onDelete('no action');
         });
     }
 
