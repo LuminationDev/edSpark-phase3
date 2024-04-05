@@ -17,9 +17,12 @@ return new class extends Migration
             $table->string('display_name')->nullable();
             $table->string('email');
             $table->string('password')->nullable();
-            $table->string('status')->nullable();
             $table->unsignedBigInteger('role_id')->nullable();
             $table->unsignedBigInteger('site_id')->nullable();
+            $table->string('status')->nullable();
+            $table->string('remember_token', 100)->nullable();
+            $table->longText('token')->nullable();
+            $table->boolean('first_visit')->nullable(); //1 True 0 False
             $table->timestamps();
 
         });

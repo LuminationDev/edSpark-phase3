@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('school_profiles', function (Blueprint $table) {
                 $table->id();
-                $table->unsignedInteger('school_id')->after('id');
+                $table->unsignedInteger('school_id');
                 $table->unsignedBigInteger('site_id')->nullable();
                 $table->string('name');
                 $table->longText('content_blocks')->nullable();
@@ -23,6 +23,7 @@ return new class extends Migration
                 $table->longText('pedagogical_approaches')->nullable();
                 $table->longText('tech_landscape')->nullable();
                 $table->boolean('is_featured')->default(0);
+                $table->enum('status', ['DRAFT', 'PENDING', 'UNPUBLISHED', 'PUBLISHED', 'ARCHIVED', 'REJECTED'])->default('DRAFT');;
                 $table->timestamps();
         });
     }
