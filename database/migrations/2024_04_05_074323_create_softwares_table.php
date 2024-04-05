@@ -19,6 +19,7 @@ return new class extends Migration
             $table->text('excerpt')->nullable();
             $table->string('cover_image')->nullable();
             $table->json('extra_content')->nullable();
+            $table->longText('how_to_access')->nullable();
             $table->enum('status', ['DRAFT', 'PENDING', 'UNPUBLISHED', 'PUBLISHED', 'ARCHIVED', 'REJECTED'])->default('DRAFT');;
             $table->timestamps();
         });

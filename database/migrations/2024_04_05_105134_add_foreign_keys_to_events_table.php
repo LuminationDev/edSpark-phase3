@@ -14,6 +14,10 @@ return new class extends Migration
         Schema::table('events', function (Blueprint $table) {
             $table->foreign('author_id')
                 ->references('id')->on('users')->onDelete('no action');
+            $table->foreign('event_format_id')
+                ->references('id')
+                ->on('event_formats')
+                ->onDelete('set null');
         });
     }
 
@@ -24,6 +28,7 @@ return new class extends Migration
     {
         Schema::table('events', function (Blueprint $table) {
             $table->dropForeign(['author_id']);
+            $table->dropForeign(['event_format_id']);
         });
     }
 };
