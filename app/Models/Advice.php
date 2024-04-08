@@ -25,17 +25,17 @@ class Advice extends Model
      * @var array
      */
     protected $fillable = [
-        'post_title',
-        'post_content',
-        'post_excerpt',
-        'post_status',
-        'post_date',
-        'post_modified',
+        'title',
+        'content',
+        'excerpt',
+        'status',
         'author_id',
         'cover_image',
         'advicetype_id',
         'template',
-        'extra_content'
+        'extra_content',
+        'created_at',
+        'modified_at'
     ];
 
     public function author()
@@ -66,8 +66,8 @@ class Advice extends Model
 
     public function getSearchResult() {
         return [
-            'title' => $this->post_title,
-            'content' => strip_tags($this->post_content),
+            'title' => $this->title,
+            'content' => strip_tags($this->content),
             'tags' => $this->tags,
             'author' =>[
                 'author_id' => $this->author->id ?? '',
@@ -80,9 +80,9 @@ class Advice extends Model
     public function toSearchableArray(): array
     {
         return [
-            'title' => $this->post_title,
-            'slug' => $this->post_title,
-            'content' => $this->post_content,
+            'title' => $this->title,
+            'slug' => $this->title,
+            'content' => $this->content,
         ];
     }
     protected $with = ['tags'];

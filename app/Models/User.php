@@ -37,7 +37,7 @@ class User extends Authenticatable implements FilamentUser, HasName
         'status',
         'remember_token',
         'token',
-        'isFirstTimeVisit',
+        'first_visit',
         'role_id',
         'site_id'
 

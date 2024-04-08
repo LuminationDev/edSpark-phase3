@@ -27,18 +27,16 @@ class Software extends Model
      * @var array
      */
     protected $fillable = [
-        'post_title',
-        'post_content',
-        'post_excerpt',
-        'post_date',
-        'post_modified',
-        'post_status',
         'author_id',
+        'title',
+        'content',
+        'excerpt',
         'cover_image',
-        'softwaretype_id',
-        'template',
         'extra_content',
-        'how_to_access'
+        'how_to_access',
+        'status',
+        'created_at',
+        'modified_at'
     ];
 
     public function author()

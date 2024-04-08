@@ -23,7 +23,7 @@ class Softwaremeta extends Model
      */
     protected $fillable = [
         'software_id',
-        'software_meta_key',
-        'software_meta_value'
+        'meta_key',
+        'meta_value'
     ];
 }

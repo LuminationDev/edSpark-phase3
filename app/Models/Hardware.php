@@ -26,18 +26,18 @@ class Hardware extends Model
      */
     protected $fillable = [
         'owner_id',
-        'product_name',
-        'product_content',
-        'product_excerpt',
+        'name',
+        'content',
+        'excerpt',
         'price',
-        'product_SKU',
-        'created',
-        'modified',
+        'SKU',
         'cover_image',
         'gallery',
-        'product_isLoan',
-        'template',
-        'extra_content'
+        'extra_content',
+        'brand_id',
+        'category_id',
+        'created_at',
+        'modified_at'
 
     ];
 
