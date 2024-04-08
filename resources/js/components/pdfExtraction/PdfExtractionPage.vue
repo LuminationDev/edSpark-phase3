@@ -32,6 +32,8 @@ const handleFileUpload = async (event) => {
         const html = await convertToHtml(file);
         htmlContent.value = html;
         error.value = ''; // Clear any previous errors
+        // After HTML content is retrieved
+        extractContentById(htmlContent.value, '_1gy27kj6jprf');
         // we can add some more keywords functions here
         extractSessionOverview(html);
         extractDigitalTechnologiesSections(html)
@@ -121,6 +123,17 @@ const displayContent = () => {
 const stripHtml = (html) => {
     const doc = new DOMParser().parseFromString(html, 'text/html');
     return doc.body.textContent || '';
+};
+
+// Function to extract content with specified ID from HTML
+const extractContentById = (html, id) => {
+    const doc = new DOMParser().parseFromString(html, 'text/html');
+    const element = doc.getElementById(id);
+    if (element && element.parentNode) {
+        displayTopicHeading.value = element.parentNode.textContent.trim();
+    } else {
+        displayTopicHeading.value = `Content with ID ${id} not found.`;
+    }
 };
 
 //extraction of content and json formatting in a proper Arrays format
