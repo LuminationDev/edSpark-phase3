@@ -44,7 +44,7 @@ class Event extends Model
         return $this->belongsTo(User::class);
     }
 
-    public function eventtype()
+    public function event_type()
     {
         return $this->belongsTo(Eventtype::class);
     }

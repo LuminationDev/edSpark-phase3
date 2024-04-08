@@ -37,12 +37,12 @@ class CommunitymoderationResource extends Resource
             ->schema([
                 Forms\Components\Card::make()
                     ->schema([
-                        Forms\Components\TextInput::make('post_title')
+                        Forms\Components\TextInput::make('title')
                             ->required()
                             ->maxLength(255),
-                        Forms\Components\RichEditor::make('post_content')
+                        Forms\Components\RichEditor::make('content')
                             ->required(),
-                        Forms\Components\RichEditor::make('post_excerpt')
+                        Forms\Components\RichEditor::make('excerpt')
                             ->maxLength(65535)
                             ->disableToolbarButtons([
                                 'attachFiles',
@@ -73,12 +73,12 @@ class CommunitymoderationResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('post_title')
+                Tables\Columns\TextColumn::make('title')
                     ->label('Title')
                     ->limit(20)
                     ->sortable()
                     ->searchable(),
-                Tables\Columns\TextColumn::make('post_content')
+                Tables\Columns\TextColumn::make('content')
                     ->label('Content')
                     ->limit(50),
                 Tables\Columns\TextColumn::make('author.full_name')->label('Author'),

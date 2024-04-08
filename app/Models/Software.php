@@ -44,7 +44,7 @@ class Software extends Model
         return $this->belongsTo(User::class);
     }
 
-    public function softwaretypes()
+    public function software_types()
     {
         return $this->belongsToMany(Softwaretype::class);
     }
@@ -62,8 +62,8 @@ class Software extends Model
     public function getSearchResult()
     {
         return [
-            'title' => $this->post_title,
-            'content' => strip_tags($this->post_content),
+            'title' => $this->title,
+            'content' => strip_tags($this->content),
             'tags' => $this->tags,
             'author' => [
                 'author_id' => $this->author->id ?? '',
@@ -76,9 +76,9 @@ class Software extends Model
     public function toSearchableArray(): array
     {
         return [
-            'title' => $this->post_title,
-            'slug' => $this->post_title,
-            'content' => $this->post_content,
+            'title' => $this->title,
+            'slug' => $this->title,
+            'content' => $this->content,
         ];
     }
 

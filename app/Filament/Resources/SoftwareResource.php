@@ -70,15 +70,15 @@ class SoftwareResource extends Resource
             ->schema([
                 Forms\Components\Card::make()
                     ->schema([
-                        Forms\Components\TextInput::make('post_title')
+                        Forms\Components\TextInput::make('title')
                             ->label('Title')
                             ->required()
                             ->maxLength(255),
-                        Forms\Components\TextInput::make('post_excerpt')
+                        Forms\Components\TextInput::make('excerpt')
                             ->label('Tagline')
                             ->placeholder('150 characters or less')
                             ->maxLength(150),
-                        TinyEditor::make('post_content')
+                        TinyEditor::make('content')
                             ->label('Content')->fileAttachmentsDisk('local')
                             ->fileAttachmentsVisibility('public')
                             ->fileAttachmentsDirectory('public/uploads/software')
@@ -197,7 +197,7 @@ class SoftwareResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('post_title')
+                Tables\Columns\TextColumn::make('title')
                     ->label('Title')
                     ->sortable()
                     ->limit(30)

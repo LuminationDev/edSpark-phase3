@@ -26,8 +26,8 @@ class CreateAdvice extends CreateRecord
 
     protected function mutateFormDataBeforeCreate(array $data): array
     {
-        $data['post_date'] = Carbon::now();
-        $data['post_modified'] = Carbon::now();
+        $data['created_at'] = Carbon::now();
+        $data['modified_at'] = Carbon::now();
         return $data;
     }
 
@@ -46,10 +46,10 @@ class CreateAdvice extends CreateRecord
         $usersExceptCurrent = User::whereKeyNot($currentUser)->get();
 
         foreach ($usersExceptCurrent as $eachUser){
-            $this->sendNotification($eachUser, $record->id, $record->post_title, $currentUser->id, $this->notificationResourceType, NotificationActionType::PUBLISHED);
+            $this->sendNotification($eachUser, $record->id, $record->title, $currentUser->id, $this->notificationResourceType, NotificationActionType::PUBLISHED);
         }
 
-//        $notificationObject = new NotificationResource($record->id, $record->post_title, $currentUser->id, NotificationResourceType::ADVICE, NotificationActionType::PUBLISHED);
+//        $notificationObject = new NotificationResource($record->id, $record->title, $currentUser->id, NotificationResourceType::ADVICE, NotificationActionType::PUBLISHED);
 //        foreach ($usersExceptCurrent as $eachUser){
 //            $eachUser->notify(new ResourceCreated($notificationObject));
 //        }

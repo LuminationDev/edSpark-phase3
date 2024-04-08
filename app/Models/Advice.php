@@ -48,7 +48,7 @@ class Advice extends Model
 //        return $this->belongsTo(Advicetype::class);
 //    }
 
-    public function advicetypes()
+    public function advice_types()
     {
         return $this->belongsToMany(Advicetype::class);
     }

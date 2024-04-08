@@ -33,7 +33,7 @@ class SoftwaremoderationResource extends Resource
     {
         return $form->schema([
             Forms\Components\Card::make()->schema([
-                Forms\Components\TextInput::make('post_title')
+                Forms\Components\TextInput::make('title')
                     ->label('Title')
                     ->required()
                     ->maxLength(255),
@@ -54,7 +54,7 @@ class SoftwaremoderationResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('post_title')
+                Tables\Columns\TextColumn::make('title')
                     ->label('Title')
                     ->sortable()
                     ->searchable(),
@@ -63,10 +63,10 @@ class SoftwaremoderationResource extends Resource
                     ->sortable()
                     ->searchable(),
                 Tables\Columns\TextColumn::make('author.full_name')->label('Author'),
-                Tables\Columns\TextColumn::make('post_date')
+                Tables\Columns\TextColumn::make('created_at')
                     ->date()
                     ->label('Created At'),
-                Tables\Columns\TextColumn::make('post_modified')
+                Tables\Columns\TextColumn::make('modified_at')
                     ->date()
                     ->label('Modified At'),
                 Tables\Columns\TextColumn::make('post_status')

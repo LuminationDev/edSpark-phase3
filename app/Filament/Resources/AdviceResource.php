@@ -69,15 +69,15 @@ class AdviceResource extends Resource
         }
         return $form->schema([
             Forms\Components\Card::make()->schema([
-                Forms\Components\TextInput::make('post_title')
+                Forms\Components\TextInput::make('title')
                     ->label('Title')
                     ->required()
                     ->maxLength(255),
-                Forms\Components\TextInput::make('post_excerpt')
+                Forms\Components\TextInput::make('excerpt')
                     ->label('Tagline')
                     ->placeholder('150 characters or less')
                     ->maxLength(150),
-                TinyEditor::make('post_content')
+                TinyEditor::make('content')
                     ->label('Content')->fileAttachmentsDisk('local')
                     ->fileAttachmentsVisibility('public')
                     ->fileAttachmentsDirectory('public/uploads/advice')
@@ -189,7 +189,7 @@ class AdviceResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('post_title')
+                Tables\Columns\TextColumn::make('title')
                     ->label('Title')
                     ->limit(25)
                     ->sortable()
@@ -208,12 +208,12 @@ class AdviceResource extends Resource
                 Tables\Columns\TextColumn::make('post_status')
                     ->label('Status')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('post_modified')
+                Tables\Columns\TextColumn::make('modified_at')
                     ->date()
                     ->label('Last modified')
                     ->sortable()
             ])
-            ->defaultSort('post_modified', 'desc')
+            ->defaultSort('modified_at', 'desc')
             ->filters([
                 Tables\Filters\SelectFilter::make('status')
                     ->options([

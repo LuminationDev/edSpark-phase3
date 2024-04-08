@@ -63,7 +63,7 @@ class EditEvent extends EditRecord
             $targetData->syncTags($data['tags']);
         }
         //others
-        $data['post_modified'] = Carbon::now();
+        $data['modified_at'] = Carbon::now();
         $data['event_location'] = [];
         if (isset($data['url'])) {
             $data['event_location']['url'] = $data['url'];
