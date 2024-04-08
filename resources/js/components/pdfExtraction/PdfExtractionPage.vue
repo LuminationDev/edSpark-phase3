@@ -13,8 +13,9 @@ const displayedObjectJson_1 = ref('')
 const displayedObjectJson_2 = ref('')
 const displayedObjectJson_3 = ref('')
 const displayHref = ref('')
+const displayTopicHeading = ref('')
 // we can add some more variables here for those keywords
-const criteriaSections = ref([]);
+const sessionOverview = ref([]);
 const digitalTechnologiesSections = ref([]);
 const requiredResourcesSections = ref([]);
 const otherResourcesSections = ref([]);
@@ -32,7 +33,7 @@ const handleFileUpload = async (event) => {
         htmlContent.value = html;
         error.value = ''; // Clear any previous errors
         // we can add some more keywords functions here
-        extractCriteriaSections(html);
+        extractSessionOverview(html);
         extractDigitalTechnologiesSections(html)
         extractRequiredResourcesSections(html)
         extractOtherResourcesSections(html)
@@ -89,7 +90,7 @@ const downloadJson = () => {
 const downloadCriteriaJson = () => {
     jsonContent.value = JSON.stringify({
         // we can add more keywords here if we need
-        "Session overview": criteriaSections.value,
+        "Session overview": sessionOverview.value,
         "Digital Technologies": digitalTechnologiesSections.value,
         "Required Resources": requiredResourcesSections.value,
         "Other resources to try (optional)": otherResourcesSections.value
@@ -210,8 +211,8 @@ const extractSections = (html, keyword, sectionsRef) => {
 
 
 // All the keywords functions can be added here
-const extractCriteriaSections = (html) => {
-    extractSections(html, 'Session Overview', criteriaSections);
+const extractSessionOverview = (html) => {
+    extractSections(html, 'Session Overview', sessionOverview);
 };
 const extractDigitalTechnologiesSections = (html) => {
     extractSections(html, 'Digital Technologies', digitalTechnologiesSections);
@@ -277,21 +278,21 @@ const getYouTubeEmbedUrl = (videoId) => {
                 class="border-2 border-black p-2"
                 @click="downloadHtml"
             >
-                Download HTML
+                Download complete HTML
             </button>
             <button
                 v-if="htmlContent"
                 class="border-2 border-black ml-20 p-2"
                 @click="downloadJson"
             >
-                Download JSON
+                Download only Content JSON
             </button>
             <button
-                v-if="Object.keys(criteriaSections).length > 0"
+                v-if="Object.keys(sessionOverview).length > 0"
                 class="border-2 border-black ml-20 p-2"
                 @click="downloadCriteriaJson"
             >
-                Download Criteria JSON
+                Download Selected Content JSON
             </button>
             <button
                 v-if="Object.keys(jsonContent).length > 0"
@@ -312,9 +313,9 @@ const getYouTubeEmbedUrl = (videoId) => {
             />
         </div>
     </div>
-    <div>
+    <div class="border-2 border-black h-full">
         <button
-            class="border-2 border-black p-2 rounded-2xl"
+            class="border-2 border-black mt-6 p-2 rounded-2xl"
             @click="displaySelectedContent"
         >
             Display required content from json file
@@ -358,6 +359,7 @@ const getYouTubeEmbedUrl = (videoId) => {
                     v-html="displayHref"
                 />
                 <iframe
+                    v-if="displayHref"
                     class="mt-1"
                     width="480"
                     height="360"
@@ -368,6 +370,162 @@ const getYouTubeEmbedUrl = (videoId) => {
                     referrerpolicy="strict-origin-when-cross-origin"
                     allowfullscreen
                 />
+            </div>
+        </div>
+    </div>
+    <div class="border-2 border-gray-300 mt-10 p-6">
+        <div
+            class="mt-2 text-4xl"
+        >
+            Topic Heading
+            <div
+                v-html="displayTopicHeading"
+            />
+        </div>
+        <div class="grid grid-cols-2 mt-2">
+            <div>
+                <div class="mt-2 text-lg">
+                    AR/VR Learning Tasks
+                </div>
+            </div>
+            <div class="flex flex-col gap-4 text-lg">
+                <div class="flex flex-row">
+                    <div>Year Level: </div><div>Year level will come here.</div>
+                </div>
+                <div class="flex flex-row">
+                    <div>Learning Area: </div><div>Learning area will come here.</div>
+                </div>
+                <div class="flex flex-row">
+                    <div>Duration: </div><div>Duration will come here.</div>
+                </div>
+            </div>
+        </div>
+        <div class="mt-10">
+            <div class="text-3xl">
+                Task Summary
+            </div>
+            <div class="mt-4 text-xl">
+                Task Summary paragraph will come here.
+            </div>
+        </div>
+        <div class="flex flex-col gap-2 mt-10">
+            <div class="border-2 border-gray-300 p-4 w-full">
+                <div class="text-3xl">
+                    Session Overview
+                </div>
+                <div class="mt-4 text-xl">
+                    Session Overview paragraph will come here.
+                </div>
+            </div>
+            <div class="border-2 border-gray-300 p-4 w-full">
+                <div class="text-3xl">
+                    Digital Technologies
+                </div>
+                <div class="mt-4 text-xl">
+                    Digital technologies paragraph will come here.
+                </div>
+            </div>
+            <div class="border-2 border-gray-300 p-4 w-full">
+                <div class="text-3xl">
+                    Required Resources
+                </div>
+                <div class="mt-4 text-xl">
+                    Required resources paragraph will come here.
+                </div>
+            </div>
+            <div class="border-2 border-gray-300 p-4 w-full">
+                <div class="text-3xl">
+                    Other Resources to try
+                </div>
+                <div class="mt-4 text-xl">
+                    Other resources paragraph will come here.
+                </div>
+            </div>
+            <div class="border-2 border-gray-300 p-4 w-full">
+                <div class="text-3xl">
+                    Planning and preparation
+                </div>
+                <div class="mt-4 text-xl">
+                    Planning Preparation paragraph will come here.
+                </div>
+            </div>
+        </div>
+        <div class="mt-6 p-4">
+            <div class="text-3xl">
+                Task Sequence
+            </div>
+            <div class="grid grid-cols-2 gap-6">
+                <div class="border-2 border-gray-300 mt-4 p-4 rounded-2xl">
+                    <div class="text-2xl">
+                        Task No. 1
+                    </div>
+                    <div class="mt-2 text-xl">
+                        Task No. 1 content will come here
+                    </div>
+                </div>
+                <div class="border-2 border-gray-300 p-4 rounded-2xl">
+                    <div class="text-2xl">
+                        Task No. 2
+                    </div>
+                    <div class="mt-2 text-xl">
+                        Task No. 2 content will come here
+                    </div>
+                </div>
+                <div class="border-2 border-gray-300 p-4 rounded-2xl">
+                    <div class="text-2xl">
+                        Task No. 3
+                    </div>
+                    <div class="mt-2 text-xl">
+                        Task No. 3 content will come here
+                    </div>
+                </div>
+                <div class="border-2 border-gray-300 p-4 rounded-2xl">
+                    <div class="text-2xl">
+                        Task No. 4
+                    </div>
+                    <div class="mt-2 text-xl">
+                        Task No. 4 content will come here
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="mt-6 p-4">
+            <div class="text-3xl">
+                Curriculum Connections
+            </div>
+            <div class="grid grid-cols-2 gap-6">
+                <div class="border-2 border-gray-300 mt-4 p-4 rounded-2xl">
+                    <div class="text-2xl">
+                        Curriculum Connections No. 1
+                    </div>
+                    <div class="mt-2 text-xl">
+                        Curriculum Connections No. 1 content/lists will come here
+                    </div>
+                </div>
+                <div class="border-2 border-gray-300 p-4 rounded-2xl">
+                    <div class="text-2xl">
+                        Curriculum Connections No. 2
+                    </div>
+                    <div class="mt-2 text-xl">
+                        Curriculum Connections No. 2 content/lists will come here
+                    </div>
+                </div>
+                <div class="border-2 border-gray-300 p-4 rounded-2xl">
+                    <div class="text-2xl">
+                        Curriculum Connections No. 3
+                    </div>
+                    <div class="mt-2 text-xl">
+                        Curriculum Connections No. 3 content/lists will come here
+                    </div>
+                </div>
+                <div class="border-2 border-gray-300 p-4 rounded-2xl">
+                    <div class="text-2xl">
+                        Curriculum Connections No. 4
+                    </div>
+                    <div class="mt-2 text-xl">
+                        Curriculum Connections No. 4 content/lists will come here
+                    </div>
+                </div>
             </div>
         </div>
     </div>
