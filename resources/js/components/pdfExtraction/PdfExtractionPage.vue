@@ -89,7 +89,7 @@ const downloadJson = () => {
 const downloadCriteriaJson = () => {
     jsonContent.value = JSON.stringify({
         // we can add more keywords here if we need
-        "Success criteria": criteriaSections.value,
+        "Session overview": criteriaSections.value,
         "Digital Technologies": digitalTechnologiesSections.value,
         "Required Resources": requiredResourcesSections.value,
         "Other resources to try (optional)": otherResourcesSections.value
@@ -137,6 +137,8 @@ const extractSections = (html, keyword, sectionsRef) => {
             return 'paragraph';
         case 'td':
             return 'td';
+        case 'th':
+            return 'th';
         case 'strong':
             return 'strong';
         case 'li':
@@ -183,7 +185,7 @@ const extractSections = (html, keyword, sectionsRef) => {
                         section[customTagName] = [];
                     }
                     // Update here to merge paragraphs into a single object
-                    if (customTagName === 'paragraph' || customTagName === 'strong' || customTagName === 'tr' || customTagName === 'td' || customTagName === 'list' || customTagName === 'ul') {
+                    if (customTagName === 'paragraph' || customTagName === 'strong' || customTagName === 'tr' || customTagName === 'th' || customTagName === 'td' || customTagName === 'list' || customTagName === 'ul') {
                         section[customTagName] = section[customTagName] || [];
                         section[customTagName].push(element.textContent.trim());
                     } else {
@@ -209,7 +211,7 @@ const extractSections = (html, keyword, sectionsRef) => {
 
 // All the keywords functions can be added here
 const extractCriteriaSections = (html) => {
-    extractSections(html, 'Success Criteria', criteriaSections);
+    extractSections(html, 'Session Overview', criteriaSections);
 };
 const extractDigitalTechnologiesSections = (html) => {
     extractSections(html, 'Digital Technologies', digitalTechnologiesSections);
@@ -224,8 +226,8 @@ const extractOtherResourcesSections = (html) => {
 // function to filter required content
 const displaySelectedContent = () => {
     //get the content from the object's array
-    const paragraphContent_0 = data['Success criteria'][0]?.paragraph?.[0] || "Paragraph content not found.";
-    const strongContent = data['Success criteria'][0]?.strong?.[1] || "Strong content not found.";
+    const paragraphContent_0 = data['Session overview'][0]?.paragraph?.[0] || "Paragraph content not found.";
+    const strongContent = data['Session overview'][0]?.strong?.[1] || "Strong content not found.";
     const content_1 = data['Digital Technologies'][0]?.list?.[2] || "Content1 not found.";
     //get the content for href from the object's array on the basis of name
     const requiredResourceLink4 = data['Required Resources'][0]?.["Required Resources_link"]?.find(link => link.name === 'Required Resources_link4');
@@ -305,7 +307,7 @@ const getYouTubeEmbedUrl = (videoId) => {
             class="mt-14"
         >
             <div
-                id="successCriteria"
+                id="sessionOverview"
                 v-html="displayedContent"
             />
         </div>
@@ -322,9 +324,9 @@ const getYouTubeEmbedUrl = (videoId) => {
                 class="flex flex-row gap-20 mt-14"
             >
                 <div>
-                    <div>Session1 of Success Criteria:</div>
+                    <div>Session1 of Session Overview:</div>
                     <div
-                        id="successCriteria"
+                        id="sessionOverview"
                         class="bg-adminTeal border-2 border-black p-4 text-white"
                         v-html="displayedObjectJson_1"
                     />
@@ -332,7 +334,7 @@ const getYouTubeEmbedUrl = (videoId) => {
                 <div>
                     <div>List 3 of Digital Technologies:</div>
                     <div
-                        id="successCriteria"
+                        id="sessionOverview"
                         class="bg-yellow-200 border-2 border-black p-4"
                         v-html="displayedObjectJson_2"
                     />
@@ -342,7 +344,7 @@ const getYouTubeEmbedUrl = (videoId) => {
                 <div>
                     <div>List 5 of Digital Technologies:</div>
                     <div
-                        id="successCriteria"
+                        id="sessionOverview"
                         class="bg-red-400 border-2 border-black p-4"
                         v-html="displayedObjectJson_3"
                     />
@@ -351,7 +353,7 @@ const getYouTubeEmbedUrl = (videoId) => {
             <div class="mt-10">
                 <div>HREF: link5</div>
                 <div
-                    id="successCriteria"
+                    id="sessionOverview"
                     class="bg-blue-700 border-2 border-black p-4 text-white"
                     v-html="displayHref"
                 />
