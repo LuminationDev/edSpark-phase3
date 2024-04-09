@@ -9,21 +9,28 @@ const htmlContent = ref('');
 const error = ref('');
 const jsonContent = ref({});
 
+//variables used to store json format value
+const topicHeading = ref('')
+const topicCategory = ref('')
+
 //variable to display content on layout without json (Test-Phase)
 const displayedJsonContent = ref('');
 
 //variable to display content on layout from json file on button press
+const displayHeading = ref('')
+const displayCategory = ref('')
 const displayTaskSummary = ref('')
+const displaySessionOverview = ref('')
+const displayDigitalTechnologies = ref('')
+
+
 const displayedObjectJson_2 = ref('')
 const displayedObjectJson_3 = ref('')
 const displayHref = ref('')
-const topicHeading = ref('')
-const topicCategory = ref('')
-const displayTopicHeading1 = ref('')
-const displayTopicCategory1 = ref('')
 
 // we can add some more variables here to store children's content in array for json file.
-const sessionOverview = ref([]);
+const taskSummarySections = ref([]);
+const sessionOverviewSections = ref([]);
 const digitalTechnologiesSections = ref([]);
 const requiredResourcesSections = ref([]);
 const otherResourcesSections = ref([]);
@@ -44,7 +51,8 @@ const handleFileUpload = async (event) => {
         extractTopicCategoryById(htmlContent.value, '_1p99sr8cjimz');
         extractTopicHeadingById(htmlContent.value, '_1gy27kj6jprf');
         //extract child elements on the basis of content heading
-        extractSessionOverview(html);
+        extractTaskSummarySections(html)
+        extractSessionOverviewSections(html);
         extractDigitalTechnologiesSections(html)
         extractRequiredResourcesSections(html)
         extractOtherResourcesSections(html)
@@ -101,10 +109,11 @@ const downloadJson = () => {
 //downloads the json/ts file with objects formatted content out of html
 const downloadFormattedJson = () => {
     jsonContent.value = JSON.stringify({
-        // we can add more keywords here if we need
+        //arrange the formatting of the json file
         "Topic Heading": topicHeading.value,
         "Topic Category": topicCategory.value,
-        "Session Overview": sessionOverview.value,
+        "Task Summary": taskSummarySections.value,
+        "Session Overview": sessionOverviewSections.value,
         "Digital Technologies": digitalTechnologiesSections.value,
         "Required Resources": requiredResourcesSections.value,
         "Other resources to try (optional)": otherResourcesSections.value
@@ -364,8 +373,11 @@ const extractSectionsById = (html, id, sectionsRef) => {
 
 
 //All the keywords functions can be added here
-const extractSessionOverview = (html) => {
-    extractSections(html, 'Session Overview', sessionOverview);
+const extractTaskSummarySections = (html) => {
+    extractSectionsById(html, '_r9sioprybg6g', taskSummarySections);
+};
+const extractSessionOverviewSections = (html) => {
+    extractSections(html, 'Session Overview', sessionOverviewSections);
 };
 const extractDigitalTechnologiesSections = (html) => {
     extractSectionsById(html, '_jhqnd16qn0md', digitalTechnologiesSections);
@@ -379,36 +391,48 @@ const extractOtherResourcesSections = (html) => {
 
 //function to filter required content and display on the layout
 const displaySelectedContent = () => {
-    //get the content from the object's array
-    const displayHeading = data['Topic Heading'] || "Heading not found"
-    const displayCategory = data['Topic Category'] || "Category not found"
-
     //get the content from the object's array that has lists of contents - "Session Overview"
-    let summary = "";
+    let summarySO = "";
     if (data['Session Overview'][0]?.paragraph) {
-        summary += "<ul>";
+        summarySO += "<ul>";
         data['Session Overview'][0].paragraph.forEach((sentence, index) => {
-            summary += "<li>"+ sentence + "</li>";
+            summarySO += "<li>"+ sentence + "</li>";
+            // Add <br> tags after each list item except for the last one
             if (index !== data['Session Overview'][0].paragraph.length - 1) {
-                summary += "<br><br>";
+                summarySO += "<br>";
             }
         });
-        summary += "</ul>";
-        displayTaskSummary.value = summary.trim();
+        summarySO += "</ul>";
+        displaySessionOverview.value = summarySO.trim();
     } else {
-        displayTaskSummary.value = "Paragraph content not found.";
+        displaySessionOverview.value = "Session Overview content not found.";
     }
-
+    //get the content from the object's array that has lists of contents - "Session Overview"
+    let summaryDT = "";
+    if (data['Digital Technologies'][0]?.list) {
+        summaryDT += "<ul>";
+        data['Digital Technologies'][0].list.forEach((sentence, index) => {
+            summaryDT += "<li>"+ sentence + "</li>";
+            // Add <br> tags after each list item except for the last one
+            if (index !== data['Digital Technologies'][0].list.length - 1) {
+                summaryDT += "<br>";
+            }
+        });
+        summaryDT += "</ul>";
+        displayDigitalTechnologies.value = summaryDT.trim();
+    } else {
+        displayDigitalTechnologies.value = "Digital Technologies content not found.";
+    }
+    //get the content from the object's array
+    displayHeading.value = data['Topic Heading'] || "Heading not found"
+    displayCategory.value = data['Topic Category'] || "Category not found"
+    displayTaskSummary.value = data['Task Summary'][0]?.paragraph || "Task Summary not found"
     const strongContent = data['Session Overview'][0]?.strong?.[1] || "Strong content not found.";
-    const content_1 = data['Digital Technologies'][0]?.list?.[2] || "Content1 not found.";
     //get the content for href from the object's array on the basis of name
     const requiredResourceLink4 = data['Required Resources'][0]?.["Required Resources_link"]?.find(link => link.name === 'Required Resources_link4');
     const linkHref = requiredResourceLink4 ? requiredResourceLink4.href : "Link not found.";
 
     //assign the extracted content to the variables
-    displayTopicHeading1.value = displayHeading;
-    displayTopicCategory1.value = displayCategory;
-    // displayTaskSummary.value = taskSummary;
     displayedObjectJson_2.value = strongContent;
     displayedObjectJson_3.value = content_1;
     displayHref.value = linkHref;
@@ -462,7 +486,7 @@ const getYouTubeEmbedUrl = (videoId) => {
                 Download only Content JSON
             </button>
             <button
-                v-if="Object.keys(sessionOverview).length > 0"
+                v-if="Object.keys(sessionOverviewSections).length > 0"
                 class="border-2 border-black ml-20 p-2"
                 @click="downloadFormattedJson"
             >
@@ -503,7 +527,7 @@ const getYouTubeEmbedUrl = (videoId) => {
                     <div
                         id="sessionOverview"
                         class="bg-adminTeal border-2 border-black p-4 text-white"
-                        v-html="displayTaskSummary"
+                        v-html="displaySessionOverview"
                     />
                 </div>
                 <div>
@@ -552,8 +576,8 @@ const getYouTubeEmbedUrl = (videoId) => {
             class="mt-2 text-4xl"
         >
             <div
-                v-if="displayTopicHeading1"
-                v-html="displayTopicHeading1"
+                v-if="displayHeading"
+                v-html="displayHeading"
             />
             <div v-else>
                 Topic Heading
@@ -562,8 +586,8 @@ const getYouTubeEmbedUrl = (videoId) => {
         <div class="grid grid-cols-2 mt-2">
             <div class="mt-2 text-lg">
                 <div
-                    v-if="displayTopicCategory1"
-                    v-html="displayTopicCategory1"
+                    v-if="displayCategory"
+                    v-html="displayCategory"
                 />
                 <div v-else>
                     AR/VR Learning Tasks
@@ -601,7 +625,13 @@ const getYouTubeEmbedUrl = (videoId) => {
                     Session Overview
                 </div>
                 <div class="mt-4 text-xl">
-                    Session Overview paragraph will come here.
+                    <div
+                        v-if="displaySessionOverview"
+                        v-html="displaySessionOverview"
+                    />
+                    <div v-else>
+                        Session Overview paragraph will come here.
+                    </div>
                 </div>
             </div>
             <div class="border-2 border-gray-300 p-4 w-full">
@@ -609,7 +639,13 @@ const getYouTubeEmbedUrl = (videoId) => {
                     Digital Technologies
                 </div>
                 <div class="mt-4 text-xl">
-                    Digital technologies paragraph will come here.
+                    <div
+                        v-if="displayDigitalTechnologies"
+                        v-html="displayDigitalTechnologies"
+                    />
+                    <div v-else>
+                        Digital technologies paragraph will come here.
+                    </div>
                 </div>
             </div>
             <div class="border-2 border-gray-300 p-4 w-full">
