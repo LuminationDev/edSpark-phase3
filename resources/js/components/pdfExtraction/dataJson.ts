@@ -1,4 +1,6 @@
 export const data = {
+    "displayTopicHeading": "Cells in Focus",
+    "displayTopicCategory": "VR LEARNING TASK",
     "Session overview": [
         {
             "Session Overview_link": [

@@ -14,6 +14,10 @@ const displayedObjectJson_2 = ref('')
 const displayedObjectJson_3 = ref('')
 const displayHref = ref('')
 const displayTopicHeading = ref('')
+const displayTopicCategory = ref('')
+const displayTopicHeading1 = ref('')
+const displayTopicCategory1 = ref('')
+
 // we can add some more variables here for those keywords
 const sessionOverview = ref([]);
 const digitalTechnologiesSections = ref([]);
@@ -32,9 +36,10 @@ const handleFileUpload = async (event) => {
         const html = await convertToHtml(file);
         htmlContent.value = html;
         error.value = ''; // Clear any previous errors
-        // After HTML content is retrieved
-        extractContentById(htmlContent.value, '_1gy27kj6jprf');
-        // we can add some more keywords functions here
+        //On the basis of ID
+        extractTopicCategoryById(htmlContent.value, '_1p99sr8cjimz');
+        extractTopicHeadingById(htmlContent.value, '_1gy27kj6jprf');
+        //On the basis of content heading
         extractSessionOverview(html);
         extractDigitalTechnologiesSections(html)
         extractRequiredResourcesSections(html)
@@ -92,6 +97,8 @@ const downloadJson = () => {
 const downloadCriteriaJson = () => {
     jsonContent.value = JSON.stringify({
         // we can add more keywords here if we need
+        "displayTopicHeading": displayTopicHeading.value,
+        "displayTopicCategory": displayTopicCategory.value,
         "Session overview": sessionOverview.value,
         "Digital Technologies": digitalTechnologiesSections.value,
         "Required Resources": requiredResourcesSections.value,
@@ -114,6 +121,37 @@ const downloadCriteriaJson = () => {
     document.body.removeChild(a);
 };
 
+//another approach to download the json file with objects formatted content out of html (Not Currently Used)
+const downloadCriteriaJson1 = () => {
+    //Create a new object to include displayTopicHeading
+    const fullJsonContent = {
+        "displayTopicHeading": displayTopicHeading.value,
+        "data": {
+            // Your existing data structure here...
+            "Session overview": sessionOverview.value,
+            "Digital Technologies": digitalTechnologiesSections.value,
+            "Required Resources": requiredResourcesSections.value,
+            "Other resources to try (optional)": otherResourcesSections.value
+        }
+    };
+    //Convert the full JSON content to string with proper indentation
+    const jsonString = JSON.stringify(fullJsonContent, null, 2);
+    //Create a blob from the JSON string
+    const blob = new Blob([jsonString], { type: 'application/json' });
+    //Create a URL for the blob
+    const url = window.URL.createObjectURL(blob);
+    //Create a link element to trigger download
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'dataJson.json'; // Change the filename if needed
+    //Append the link to the body and trigger click
+    document.body.appendChild(a);
+    a.click();
+    //Clean up
+    window.URL.revokeObjectURL(url);
+    document.body.removeChild(a);
+};
+
 //displays the content in json but not in a format
 const displayContent = () => {
     displayedContent.value = jsonContent.value;
@@ -125,14 +163,25 @@ const stripHtml = (html) => {
     return doc.body.textContent || '';
 };
 
-// Function to extract content with specified ID from HTML
-const extractContentById = (html, id) => {
+//Function to extract content with specified ID from HTML
+const extractTopicHeadingById = (html, id) => {
     const doc = new DOMParser().parseFromString(html, 'text/html');
     const element = doc.getElementById(id);
     if (element && element.parentNode) {
         displayTopicHeading.value = element.parentNode.textContent.trim();
     } else {
-        displayTopicHeading.value = `Content with ID ${id} not found.`;
+        // displayTopicHeading.value = `Content with ID ${id} not found.`;
+    }
+};
+
+//Function to extract content with specified ID from HTML
+const extractTopicCategoryById = (html, id) => {
+    const doc = new DOMParser().parseFromString(html, 'text/html');
+    const element = doc.getElementById(id);
+    if (element && element.parentNode) {
+        displayTopicCategory.value = element.parentNode.textContent.trim();
+    } else {
+        // displayTopicHeading.value = `Content with ID ${id} not found.`;
     }
 };
 
@@ -223,7 +272,7 @@ const extractSections = (html, keyword, sectionsRef) => {
 
 
 
-// All the keywords functions can be added here
+//All the keywords functions can be added here
 const extractSessionOverview = (html) => {
     extractSections(html, 'Session Overview', sessionOverview);
 };
@@ -237,9 +286,11 @@ const extractOtherResourcesSections = (html) => {
     extractSections(html, 'Other Resources to Try (Optional)', otherResourcesSections);
 };
 
-// function to filter required content
+//function to filter required content
 const displaySelectedContent = () => {
     //get the content from the object's array
+    const displayHeading = data['displayTopicHeading'] || "Heading not found"
+    const displayCategory = data['displayTopicCategory'] || "Category not found"
     const paragraphContent_0 = data['Session overview'][0]?.paragraph?.[0] || "Paragraph content not found.";
     const strongContent = data['Session overview'][0]?.strong?.[1] || "Strong content not found.";
     const content_1 = data['Digital Technologies'][0]?.list?.[2] || "Content1 not found.";
@@ -248,18 +299,20 @@ const displaySelectedContent = () => {
     const linkHref = requiredResourceLink4 ? requiredResourceLink4.href : "Link not found.";
 
     //assign the extracted content to the variables
+    displayTopicHeading1.value = displayHeading;
+    displayTopicCategory1.value = displayCategory;
     displayedObjectJson_1.value = paragraphContent_0;
     displayedObjectJson_2.value = strongContent;
     displayedObjectJson_3.value = content_1;
     displayHref.value = linkHref;
 };
 
-// function to extract video ID from YouTube URL
+//function to extract video ID from YouTube URL
 const extractVideoId = (url) => {
     const youtubeMatch = url.match(/(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|watch\?v=|watch\?.+&v=))([^&#?]+)/);
     return youtubeMatch ? youtubeMatch[1] : null;
 };
-// function to generate YouTube embed URL from video ID
+//function to generate YouTube embed URL from video ID
 const getYouTubeEmbedUrl = (videoId) => {
     if (!videoId) return ''; // If no videoId provided, return empty string
 
@@ -390,14 +443,21 @@ const getYouTubeEmbedUrl = (videoId) => {
         <div
             class="mt-2 text-4xl"
         >
-            Topic Heading
             <div
-                v-html="displayTopicHeading"
+                v-if="displayTopicHeading1"
+                v-html="displayTopicHeading1"
             />
+            <div v-else>
+                Topic Heading
+            </div>
         </div>
         <div class="grid grid-cols-2 mt-2">
-            <div>
-                <div class="mt-2 text-lg">
+            <div class="mt-2 text-lg">
+                <div
+                    v-if="displayTopicCategory1"
+                    v-html="displayTopicCategory1"
+                />
+                <div v-else>
                     AR/VR Learning Tasks
                 </div>
             </div>
