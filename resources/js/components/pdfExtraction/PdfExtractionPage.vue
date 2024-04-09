@@ -427,14 +427,11 @@ const displaySelectedContent = () => {
     displayHeading.value = data['Topic Heading'] || "Heading not found"
     displayCategory.value = data['Topic Category'] || "Category not found"
     displayTaskSummary.value = data['Task Summary'][0]?.paragraph || "Task Summary not found"
-    const strongContent = data['Session Overview'][0]?.strong?.[1] || "Strong content not found.";
     //get the content for href from the object's array on the basis of name
     const requiredResourceLink4 = data['Required Resources'][0]?.["Required Resources_link"]?.find(link => link.name === 'Required Resources_link4');
     const linkHref = requiredResourceLink4 ? requiredResourceLink4.href : "Link not found.";
 
     //assign the extracted content to the variables
-    displayedObjectJson_2.value = strongContent;
-    displayedObjectJson_3.value = content_1;
     displayHref.value = linkHref;
 };
 
@@ -519,36 +516,6 @@ const getYouTubeEmbedUrl = (videoId) => {
             Display required content from json file
         </button>
         <div>
-            <div
-                class="flex flex-row gap-20 mt-14"
-            >
-                <div>
-                    <div>Session1 of Session Overview:</div>
-                    <div
-                        id="sessionOverview"
-                        class="bg-adminTeal border-2 border-black p-4 text-white"
-                        v-html="displaySessionOverview"
-                    />
-                </div>
-                <div>
-                    <div>List 3 of Digital Technologies:</div>
-                    <div
-                        id="sessionOverview"
-                        class="bg-yellow-200 border-2 border-black p-4"
-                        v-html="displayedObjectJson_2"
-                    />
-                </div>
-
-
-                <div>
-                    <div>List 5 of Digital Technologies:</div>
-                    <div
-                        id="sessionOverview"
-                        class="bg-red-400 border-2 border-black p-4"
-                        v-html="displayedObjectJson_3"
-                    />
-                </div>
-            </div>
             <div class="mt-10">
                 <div>HREF: link5</div>
                 <div
