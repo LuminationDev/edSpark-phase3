@@ -185,7 +185,7 @@ const extractTopicCategoryById = (html, id) => {
     }
 };
 
-//extraction of content and json formatting in a proper Arrays format
+//extraction of content and json formatting in a proper Arrays format on the basis of keyword
 const extractSections = (html, keyword, sectionsRef) => {
     const doc = new DOMParser().parseFromString(html, 'text/html');
     const elements = doc.querySelectorAll('*');
@@ -270,6 +270,90 @@ const extractSections = (html, keyword, sectionsRef) => {
     }
 };
 
+//extraction of content and json formatting in a proper Arrays format on the basis of ID
+const extractSectionsById = (html, id, sectionsRef) => {
+    const doc = new DOMParser().parseFromString(html, 'text/html');
+    const elements = doc.querySelectorAll('*');
+    let found = false;
+    let section = {};
+    let currentSection = null;
+
+    //renaming of tag objects in json file
+    const renameTag = (tagName, currentSection) => {
+        switch (tagName) {
+        case 'p':
+            return 'paragraph';
+        case 'td':
+            return 'td';
+        case 'th':
+            return 'th';
+        case 'strong':
+            return 'strong';
+        case 'li':
+            return 'list';
+        case 'ul':
+            return 'ul';
+        case 'tr':
+            return 'tr';
+        case 'a':
+            return `${currentSection}_link`;
+        default:
+            return tagName;
+        }
+    };
+
+    //creates href link naming
+    const generateLinkName = (currentSection, linkIndex) => {
+        return `${currentSection}_link${linkIndex}`;
+    };
+
+    //conditions for formatting objects in json file
+    for (let i = 0; i < elements.length; i++) {
+        const element = elements[i];
+        if (element.id === id) {
+            found = true;
+            currentSection = id;
+        } else if (found) {
+            if (element.tagName === 'H1' || element.tagName === 'H2' || element.tagName === 'H3' || element.tagName === 'H4' || element.tagName === 'H5' || element.tagName === 'H6') {
+                found = false;
+                sectionsRef.value.push(section);
+                section = {};
+                currentSection = null;
+            } else {
+                const tagName = element.tagName.toLowerCase();
+                const customTagName = renameTag(tagName, currentSection);
+                if (tagName === 'a') {
+                    const linkName = generateLinkName(currentSection, section[customTagName] ? section[customTagName].length + 1 : 1); // Generate unique link name
+                    if (!section[customTagName]) {
+                        section[customTagName] = [];
+                    }
+                    section[customTagName].push({ name: linkName, href: element.getAttribute('href'), text: element.textContent.trim() });
+                } else {
+                    if (!section[customTagName]) {
+                        section[customTagName] = [];
+                    }
+                    // Update here to merge paragraphs into a single object
+                    if (customTagName === 'paragraph' || customTagName === 'strong' || customTagName === 'tr' || customTagName === 'th' || customTagName === 'td' || customTagName === 'list' || customTagName === 'ul') {
+                        section[customTagName] = section[customTagName] || [];
+                        section[customTagName].push(element.textContent.trim());
+                    } else {
+                        const childSection = {};
+                        childSection[customTagName] = element.textContent.trim();
+                        section[customTagName].push(childSection);
+                    }
+                }
+            }
+        }
+    }
+
+    // Check if there are no href links in the section and set href=null accordingly
+    if (currentSection === 'a_links' && (!section['a_links'] || section['a_links'].length === 0)) {
+        delete section['a_links']; // Remove the placeholder link
+    }
+    if (Object.keys(section).length > 0) {
+        sectionsRef.value.push(section);
+    }
+};
 
 
 //All the keywords functions can be added here
@@ -277,7 +361,7 @@ const extractSessionOverview = (html) => {
     extractSections(html, 'Session Overview', sessionOverview);
 };
 const extractDigitalTechnologiesSections = (html) => {
-    extractSections(html, 'Digital Technologies', digitalTechnologiesSections);
+    extractSectionsById(html, '_jhqnd16qn0md', digitalTechnologiesSections);
 };
 const extractRequiredResourcesSections = (html) => {
     extractSections(html, 'Required Resources', requiredResourcesSections);
