@@ -22,10 +22,10 @@ const displayCategory = ref('')
 const displayTaskSummary = ref('')
 const displaySessionOverview = ref('')
 const displayDigitalTechnologies = ref('')
+const displayRequiredResourcesParagraph = ref('')
+const displayRequiredResourcesHeadings = ref([])
 
 
-const displayedObjectJson_2 = ref('')
-const displayedObjectJson_3 = ref('')
 const displayHref = ref('')
 
 // we can add some more variables here to store children's content in array for json file.
@@ -423,16 +423,34 @@ const displaySelectedContent = () => {
     } else {
         displayDigitalTechnologies.value = "Digital Technologies content not found.";
     }
+    //the logic to populate displayRequiredResourcesHeadings and removing the colon after list content
+    let summaryRR_Headings = "";
+    if (data['Required Resources'][0]?.strong) {
+        data['Required Resources'][0].strong.forEach((sentence) => {
+            // Remove colons from the sentence
+            sentence = sentence.replace(/:/g, '');
+            summaryRR_Headings += sentence;
+            displayRequiredResourcesHeadings.value.push({ title: "Title Text will be here", content: summaryRR_Headings.trim() });
+            summaryRR_Headings = ""; // Reset summaryRR_Headings for the next item
+
+        });
+    } else {
+        displayRequiredResourcesHeadings.value.push({ title: "Title Text will be here", content: "Digital Technologies content not found." });
+    }
     //get the content from the object's array
     displayHeading.value = data['Topic Heading'] || "Heading not found"
     displayCategory.value = data['Topic Category'] || "Category not found"
     displayTaskSummary.value = data['Task Summary'][0]?.paragraph || "Task Summary not found"
+    displayRequiredResourcesParagraph.value = data['Required Resources'][0]?.paragraph[0]
     //get the content for href from the object's array on the basis of name
     const requiredResourceLink4 = data['Required Resources'][0]?.["Required Resources_link"]?.find(link => link.name === 'Required Resources_link4');
     const linkHref = requiredResourceLink4 ? requiredResourceLink4.href : "Link not found.";
 
     //assign the extracted content to the variables
     displayHref.value = linkHref;
+
+    //console
+    console.log(displayRequiredResourcesHeadings)
 };
 
 //function to extract video ID from YouTube URL
@@ -517,7 +535,7 @@ const getYouTubeEmbedUrl = (videoId) => {
         </button>
         <div>
             <div class="mt-10">
-                <div>HREF: link5</div>
+                <div>HREF: link4</div>
                 <div
                     id="sessionOverview"
                     class="bg-blue-700 border-2 border-black p-4 text-white"
@@ -620,7 +638,23 @@ const getYouTubeEmbedUrl = (videoId) => {
                     Required Resources
                 </div>
                 <div class="mt-4 text-xl">
-                    Required resources paragraph will come here.
+                    <div
+                        v-if="displayRequiredResourcesParagraph"
+                        v-html="displayRequiredResourcesParagraph"
+                    />
+                    <div v-else>
+                        Required resources paragraph will come here.
+                    </div>
+                    <div
+                        v-for="(heading, index) in displayRequiredResourcesHeadings"
+                        :key="index"
+                        class="border-2 border-gray-300 mt-4 p-4 rounded-2xl"
+                    >
+                        <div
+                            class="mt-2 text-xl"
+                            v-html="heading.content"
+                        />
+                    </div>
                 </div>
             </div>
             <div class="border-2 border-gray-300 p-4 w-full">
