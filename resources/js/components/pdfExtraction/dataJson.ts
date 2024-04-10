@@ -76,108 +76,114 @@ export const data = {
             ]
         }
     ],
-    "Required Resources": [
-        {
-            "Required Resources_link": [
-                {
-                    "name": "Required Resources_link1",
-                    "href": null,
-                    "text": ""
-                },
-                {
-                    "name": "Required Resources_link2",
-                    "href": "https://youtu.be/rmgf0VDDlH8?si=lY9lEUWkzq_J1hd7",
-                    "text": "Virtual Plant Cell: Cell Explore, 2018. VPC 360° video by Plant Energy Biology"
-                },
-                {
-                    "name": "Required Resources_link3",
-                    "href": "https://youtu.be/PzxxEVdM1xI?si=_KdhMB_PXyaPxL6r",
-                    "text": "Chapter 1: Introduction to the Animal Cell"
-                },
-                {
-                    "name": "Required Resources_link4",
-                    "href": "https://www.youtube.com/watch?v=flLN3z9ExRc",
-                    "text": "Microscope View of Plant Cells"
-                },
-                {
-                    "name": "Required Resources_link5",
-                    "href": "https://www.youtube.com/watch?v=DDqDmsQwfLU",
-                    "text": "Mitosis in an animal cell Under the Microscope"
-                },
-                {
-                    "name": "Required Resources_link6",
-                    "href": "https://www.tinkercad.com/",
-                    "text": "Tinkercad"
-                },
-                {
-                    "name": "Required Resources_link7",
-                    "href": "https://play.google.com/store/apps/details?id=delightex.cospaces.edu&hl=en_AU&gl=US",
-                    "text": "Google Play"
-                },
-                {
-                    "name": "Required Resources_link8",
-                    "href": "https://apps.apple.com/au/app/cospaces-edu/id1224622426",
-                    "text": "Apple App Store"
-                },
-                {
-                    "name": "Required Resources_link9",
-                    "href": "https://cospaces.io/edu/",
-                    "text": "CoSpaces"
-                }
-            ],
-            "th": [
-                "For detailed information on how to access the apps mentioned in this learning task, please visit the edSpark apps page <insert link>.Hardware:Handheld VR headsets (HHVR)Mobile DevicesVR videos:Virtual Plant Cell: Cell Explore, 2018. VPC 360° video by Plant Energy Biology(5:58)Chapter 1: Introduction to the Animal Cell (5:31)Suggested videos:Microscope View of Plant Cells (0:31)Mitosis in an animal cell Under the Microscope(0:31)Apps:YouTube - For viewing VR videos. This needs to be whitelisted and downloaded on your mobile devices. For session 2: Tinkercad accounts - For creating 3D assets; and/or CoSpaces EDU (Download via Google Play or Apple App Store) / CoSpaces accounts (Free or Pro*)  Teaching resources:<placeholder link for 1 - Teaching Deck> - Download a copy for your own use.<placeholder link for 1 - Student Digital Notebook> - Download a copy and distribute it to students via email or learning management system.<placeholder link for 1 - Session 2 Checklist> - If proceeding with Session 2, teachers may use this as a checklist when marking the 3D cells modelling task.",
-                "Other resources to try (optional)"
-            ],
-            "paragraph": [
-                "For detailed information on how to access the apps mentioned in this learning task, please visit the edSpark apps page <insert link>.",
-                "Hardware:",
-                "VR videos:",
-                "Suggested videos:",
-                "Apps:",
-                "For session 2:",
-                "Teaching resources:"
-            ],
-            "strong": [
-                "Hardware:",
-                "VR videos:",
-                "Suggested videos:",
-                "Apps:",
-                "YouTube",
-                "For session 2:",
-                "Tinkercad",
-                "CoSpaces EDU",
-                "Teaching resources"
-            ],
-            "ul": [
-                "Handheld VR headsets (HHVR)Mobile Devices",
-                "Virtual Plant Cell: Cell Explore, 2018. VPC 360° video by Plant Energy Biology(5:58)Chapter 1: Introduction to the Animal Cell (5:31)",
-                "Microscope View of Plant Cells (0:31)Mitosis in an animal cell Under the Microscope(0:31)",
-                "YouTube - For viewing VR videos. This needs to be whitelisted and downloaded on your mobile devices.",
-                "Tinkercad accounts - For creating 3D assets; and/or CoSpaces EDU (Download via Google Play or Apple App Store) / CoSpaces accounts (Free or Pro*)",
-                "Tinkercad accounts - For creating 3D assets; and/or CoSpaces EDU (Download via Google Play or Apple App Store) / CoSpaces accounts (Free or Pro*)",
-                "<placeholder link for 1 - Teaching Deck> - Download a copy for your own use.<placeholder link for 1 - Student Digital Notebook> - Download a copy and distribute it to students via email or learning management system.<placeholder link for 1 - Session 2 Checklist> - If proceeding with Session 2, teachers may use this as a checklist when marking the 3D cells modelling task."
-            ],
-            "list": [
-                "Handheld VR headsets (HHVR)",
-                "Mobile Devices",
-                "Virtual Plant Cell: Cell Explore, 2018. VPC 360° video by Plant Energy Biology(5:58)",
-                "Chapter 1: Introduction to the Animal Cell (5:31)",
-                "Microscope View of Plant Cells (0:31)",
-                "Mitosis in an animal cell Under the Microscope(0:31)",
-                "YouTube - For viewing VR videos. This needs to be whitelisted and downloaded on your mobile devices.",
-                "Tinkercad accounts - For creating 3D assets; and/or CoSpaces EDU (Download via Google Play or Apple App Store) / CoSpaces accounts (Free or Pro*)",
-                "Tinkercad accounts - For creating 3D assets; and/or",
-                "CoSpaces EDU (Download via Google Play or Apple App Store) / CoSpaces accounts (Free or Pro*)",
-                "<placeholder link for 1 - Teaching Deck> - Download a copy for your own use.",
-                "<placeholder link for 1 - Student Digital Notebook> - Download a copy and distribute it to students via email or learning management system.",
-                "<placeholder link for 1 - Session 2 Checklist> - If proceeding with Session 2, teachers may use this as a checklist when marking the 3D cells modelling task."
-            ],
-            "tr": [
-                "Other resources to try (optional)For detailed information on how to access the apps mentioned in this learning task, please visit the edSpark apps page <insert link>.Hardware:Immersive Virtual Reality Headsets  (for IMVR experiences)HHVR app:Inside Cell VR (via Google Play Store) - This needs to be whitelisted and downloaded on mobile devices. IMVR apps (via Steam):Journey To The Centre of the Cell (simulation; Free) - This needs to be downloaded from Steam and installed on your IMVR system.The Body VR: Journey Inside a Cell (simulation; Free) - This needs to be downloaded from Steam and installed on your IMVR system.Digital 3D cell models:Sketchfab 3D animal cell - A pre-made downloadable model of an animal cell that students can use.Sketchfab 3D plant cell - A pre-made downloadable model of a plant cell that students can use.Articles:The Use of Virtual Reality in the Teaching of Challenging Concepts in Virology, Cell Culture and Molecular BiologyMiscellaneous:VR/AR Safety Poster (PDF)No tech creation:It’s also possible to create a physical 3D plant or animal cell using materials like paper mache, plasticine, clay, plastic bricks (Lego), foam craft balls, or edible materials (e.g., cake, fruits, etc)."
-            ]
-        }
-    ],
+    "Required Resources": {
+        "Hardware": [
+            "Handheld VR headsets (HHVR)",
+            "Mobile Devices"
+        ],
+        "Required Resources": [
+            {
+                "Required Resources_link": [
+                    {
+                        "name": "Required Resources_link1",
+                        "href": null,
+                        "text": ""
+                    },
+                    {
+                        "name": "Required Resources_link2",
+                        "href": "https://youtu.be/rmgf0VDDlH8?si=lY9lEUWkzq_J1hd7",
+                        "text": "Virtual Plant Cell: Cell Explore, 2018. VPC 360° video by Plant Energy Biology"
+                    },
+                    {
+                        "name": "Required Resources_link3",
+                        "href": "https://youtu.be/PzxxEVdM1xI?si=_KdhMB_PXyaPxL6r",
+                        "text": "Chapter 1: Introduction to the Animal Cell"
+                    },
+                    {
+                        "name": "Required Resources_link4",
+                        "href": "https://www.youtube.com/watch?v=flLN3z9ExRc",
+                        "text": "Microscope View of Plant Cells"
+                    },
+                    {
+                        "name": "Required Resources_link5",
+                        "href": "https://www.youtube.com/watch?v=DDqDmsQwfLU",
+                        "text": "Mitosis in an animal cell Under the Microscope"
+                    },
+                    {
+                        "name": "Required Resources_link6",
+                        "href": "https://www.tinkercad.com/",
+                        "text": "Tinkercad"
+                    },
+                    {
+                        "name": "Required Resources_link7",
+                        "href": "https://play.google.com/store/apps/details?id=delightex.cospaces.edu&hl=en_AU&gl=US",
+                        "text": "Google Play"
+                    },
+                    {
+                        "name": "Required Resources_link8",
+                        "href": "https://apps.apple.com/au/app/cospaces-edu/id1224622426",
+                        "text": "Apple App Store"
+                    },
+                    {
+                        "name": "Required Resources_link9",
+                        "href": "https://cospaces.io/edu/",
+                        "text": "CoSpaces"
+                    }
+                ],
+                "th": [
+                    "For detailed information on how to access the apps mentioned in this learning task, please visit the edSpark apps page <insert link>.Hardware:Handheld VR headsets (HHVR)Mobile DevicesVR videos:Virtual Plant Cell: Cell Explore, 2018. VPC 360° video by Plant Energy Biology(5:58)Chapter 1: Introduction to the Animal Cell (5:31)Suggested videos:Microscope View of Plant Cells (0:31)Mitosis in an animal cell Under the Microscope(0:31)Apps:YouTube - For viewing VR videos. This needs to be whitelisted and downloaded on your mobile devices. For session 2: Tinkercad accounts - For creating 3D assets; and/or CoSpaces EDU (Download via Google Play or Apple App Store) / CoSpaces accounts (Free or Pro*)  Teaching resources:<placeholder link for 1 - Teaching Deck> - Download a copy for your own use.<placeholder link for 1 - Student Digital Notebook> - Download a copy and distribute it to students via email or learning management system.<placeholder link for 1 - Session 2 Checklist> - If proceeding with Session 2, teachers may use this as a checklist when marking the 3D cells modelling task.",
+                    "Other resources to try (optional)"
+                ],
+                "paragraph": [
+                    "For detailed information on how to access the apps mentioned in this learning task, please visit the edSpark apps page <insert link>.",
+                    "Hardware:",
+                    "VR videos:",
+                    "Suggested videos:",
+                    "Apps:",
+                    "For session 2:",
+                    "Teaching resources:"
+                ],
+                "strong": [
+                    "Hardware:",
+                    "VR videos:",
+                    "Suggested videos:",
+                    "Apps:",
+                    "YouTube",
+                    "For session 2:",
+                    "Tinkercad",
+                    "CoSpaces EDU",
+                    "Teaching resources"
+                ],
+                "ul": [
+                    "Handheld VR headsets (HHVR)Mobile Devices",
+                    "Virtual Plant Cell: Cell Explore, 2018. VPC 360° video by Plant Energy Biology(5:58)Chapter 1: Introduction to the Animal Cell (5:31)",
+                    "Microscope View of Plant Cells (0:31)Mitosis in an animal cell Under the Microscope(0:31)",
+                    "YouTube - For viewing VR videos. This needs to be whitelisted and downloaded on your mobile devices.",
+                    "Tinkercad accounts - For creating 3D assets; and/or CoSpaces EDU (Download via Google Play or Apple App Store) / CoSpaces accounts (Free or Pro*)",
+                    "Tinkercad accounts - For creating 3D assets; and/or CoSpaces EDU (Download via Google Play or Apple App Store) / CoSpaces accounts (Free or Pro*)",
+                    "<placeholder link for 1 - Teaching Deck> - Download a copy for your own use.<placeholder link for 1 - Student Digital Notebook> - Download a copy and distribute it to students via email or learning management system.<placeholder link for 1 - Session 2 Checklist> - If proceeding with Session 2, teachers may use this as a checklist when marking the 3D cells modelling task."
+                ],
+                "list": [
+                    "Handheld VR headsets (HHVR)",
+                    "Mobile Devices",
+                    "Virtual Plant Cell: Cell Explore, 2018. VPC 360° video by Plant Energy Biology(5:58)",
+                    "Chapter 1: Introduction to the Animal Cell (5:31)",
+                    "Microscope View of Plant Cells (0:31)",
+                    "Mitosis in an animal cell Under the Microscope(0:31)",
+                    "YouTube - For viewing VR videos. This needs to be whitelisted and downloaded on your mobile devices.",
+                    "Tinkercad accounts - For creating 3D assets; and/or CoSpaces EDU (Download via Google Play or Apple App Store) / CoSpaces accounts (Free or Pro*)",
+                    "Tinkercad accounts - For creating 3D assets; and/or",
+                    "CoSpaces EDU (Download via Google Play or Apple App Store) / CoSpaces accounts (Free or Pro*)",
+                    "<placeholder link for 1 - Teaching Deck> - Download a copy for your own use.",
+                    "<placeholder link for 1 - Student Digital Notebook> - Download a copy and distribute it to students via email or learning management system.",
+                    "<placeholder link for 1 - Session 2 Checklist> - If proceeding with Session 2, teachers may use this as a checklist when marking the 3D cells modelling task."
+                ],
+                "tr": [
+                    "Other resources to try (optional)For detailed information on how to access the apps mentioned in this learning task, please visit the edSpark apps page <insert link>.Hardware:Immersive Virtual Reality Headsets  (for IMVR experiences)HHVR app:Inside Cell VR (via Google Play Store) - This needs to be whitelisted and downloaded on mobile devices. IMVR apps (via Steam):Journey To The Centre of the Cell (simulation; Free) - This needs to be downloaded from Steam and installed on your IMVR system.The Body VR: Journey Inside a Cell (simulation; Free) - This needs to be downloaded from Steam and installed on your IMVR system.Digital 3D cell models:Sketchfab 3D animal cell - A pre-made downloadable model of an animal cell that students can use.Sketchfab 3D plant cell - A pre-made downloadable model of a plant cell that students can use.Articles:The Use of Virtual Reality in the Teaching of Challenging Concepts in Virology, Cell Culture and Molecular BiologyMiscellaneous:VR/AR Safety Poster (PDF)No tech creation:It’s also possible to create a physical 3D plant or animal cell using materials like paper mache, plasticine, clay, plastic bricks (Lego), foam craft balls, or edible materials (e.g., cake, fruits, etc)."
+                ]
+            }
+        ]
+    },
     "Other resources to try (optional)": [
         {
             "Other Resources to Try (Optional)_link": [

@@ -57,6 +57,9 @@ const handleFileUpload = async (event) => {
         extractRequiredResourcesSections(html)
         extractOtherResourcesSections(html)
         //console.log(htmlContent.value)
+        // Call this function to extract hardware items from HTML content
+        extractHardwareItems(htmlContent.value);
+        console.log('Hardware Items:', extractHardwareItems(htmlContent.value));
 
     } catch (error) {
         console.error('Error processing file:', error);
@@ -115,7 +118,11 @@ const downloadFormattedJson = () => {
         "Task Summary": taskSummarySections.value,
         "Session Overview": sessionOverviewSections.value,
         "Digital Technologies": digitalTechnologiesSections.value,
-        "Required Resources": requiredResourcesSections.value,
+        "Required Resources": {
+            "Hardware": extractHardwareItems(htmlContent.value),
+            // You can add other required resources here if needed
+            "Required Resources": requiredResourcesSections.value
+        },
         "Other resources to try (optional)": otherResourcesSections.value
     }, (key, value) => {
         if (key === 'content') {
@@ -425,8 +432,8 @@ const displaySelectedContent = () => {
     }
     //the logic to populate displayRequiredResourcesHeadings and removing the colon after list content
     let summaryRR_Headings = "";
-    if (data['Required Resources'][0]?.strong) {
-        data['Required Resources'][0].strong.forEach((sentence) => {
+    if (data["Required Resources"]?.['Required Resources'][0]?.strong) {
+        data["Required Resources"]?.['Required Resources'][0].strong.forEach((sentence) => {
             // Remove colons from the sentence
             sentence = sentence.replace(/:/g, '');
             summaryRR_Headings += sentence;
@@ -441,9 +448,9 @@ const displaySelectedContent = () => {
     displayHeading.value = data['Topic Heading'] || "Heading not found"
     displayCategory.value = data['Topic Category'] || "Category not found"
     displayTaskSummary.value = data['Task Summary'][0]?.paragraph || "Task Summary not found"
-    displayRequiredResourcesParagraph.value = data['Required Resources'][0]?.paragraph[0]
+    displayRequiredResourcesParagraph.value = data['Required Resources']?.["Required Resources"][0]?.paragraph[0]
     //get the content for href from the object's array on the basis of name
-    const requiredResourceLink4 = data['Required Resources'][0]?.["Required Resources_link"]?.find(link => link.name === 'Required Resources_link4');
+    const requiredResourceLink4 = data['Required Resources']?.["Required Resources"][0]?.["Required Resources_link"]?.find(link => link.name === 'Required Resources_link4');
     const linkHref = requiredResourceLink4 ? requiredResourceLink4.href : "Link not found.";
 
     //assign the extracted content to the variables
@@ -464,6 +471,34 @@ const getYouTubeEmbedUrl = (videoId) => {
 
     return `https://www.youtube.com/embed/${videoId}`;
 };
+
+//raw/test functions are here
+// Function to extract content after the <strong> tag containing "Hardware:"
+const extractHardwareItems = (html) => {
+    const doc = new DOMParser().parseFromString(html, 'text/html');
+    const strongTags = doc.querySelectorAll('p strong');
+
+    const hardwareItems = [];
+    for (let i = 0; i < strongTags.length; i++) {
+        const strongTag = strongTags[i];
+        if (strongTag.textContent.trim() === 'Hardware:') {
+            const pTag = strongTag.parentNode; // Get parent <p> tag
+            const ulTag = pTag.nextElementSibling; // Get next sibling <ul> tag
+            if (ulTag && ulTag.tagName.toLowerCase() === 'ul') {
+                const liTags = ulTag.querySelectorAll('li');
+                liTags.forEach(liTag => {
+                    hardwareItems.push(liTag.textContent.trim());
+                });
+            }
+            break; // No need to continue searching once found
+        }
+    }
+
+    return hardwareItems;
+};
+
+
+
 
 
 </script>
