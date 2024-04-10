@@ -65,7 +65,6 @@ class LoginController extends Controller
                 // New user here. Not superadmin, default role from Okta
                 $isSuperAdmin = false;
             }
-
             $dataToBeUpdatedOrCreated = [
                 'full_name' => $user->name,
                 'remember_token' => Str::random(15),
@@ -83,7 +82,9 @@ class LoginController extends Controller
                 $dataToBeUpdatedOrCreated['role_id'] = $role->id;
             } else if (!$userEdSparkId) { // User has no current account, get role from Okta or default to viewer
                 try {
-                    $role = Role::where('role_name', $user->user['mainrolecode'])->first() ?? Role::where('role_name', 'Viewer')->first();
+                    $userHasMainrolecode = isset($user->user['mainrolecode']);
+                    $userRoleOnEdSpark = $userHasMainrolecode ? Role::where('role_name', $user->user['mainrolecode'])->first() : NULL ;
+                    $role = $userRoleOnEdSpark ?? Role::where('role_name', 'OTHER')->first();
                     $dataToBeUpdatedOrCreated['role_id'] = $role->id;
                 } catch (\Exception $e) {
                     // Handle failure to get role
@@ -94,9 +95,9 @@ class LoginController extends Controller
             // Determine site here
             if (!$userEdSparkId) {
                 try {
-                    $userOktaSiteId = $user->user['mainsiteid'];
-                    $userOktaSite = Site::where('site_id', $userOktaSiteId)->first();
-                    $dataToBeUpdatedOrCreated['site_id'] = isset($userOktaSite) ? $userOktaSite->site_id : 9999;
+                    $userOktaSiteId = $user->user['mainsiteid'] ?? null;
+                    $userOktaSite = $userOktaSiteId ? Site::where('site_id', $userOktaSiteId)->first() : null;
+                    $dataToBeUpdatedOrCreated['site_id'] = $userOktaSite ? $userOktaSite->site_id : 9999;
                 } catch (\Exception $e) {
                     // Handle failure to get site
                     Log::error('Failed to fetch site: ' . $e->getMessage());
