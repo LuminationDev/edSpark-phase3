@@ -28,7 +28,7 @@ export const schoolService = {
         })
     },
     fetchFeaturedSchool: async (): Promise<any> => {
-        return axios.get(API_ENDPOINTS.SCHOOL.FETCH_FEATURED_SCHOOL,).then(res => {
+        return axios.get(API_ENDPOINTS.SCHOOL.FETCH_FEATURED_SCHOOL).then(res => {
             return schoolContentArrParser(res.data)
         })
     },

@@ -12,9 +12,9 @@ import {setupCalendar} from 'v-calendar';
 import {createApp} from 'vue';
 import VueDragsScroll from 'vue-dragscroll'
 import VueGoogleMaps from 'vue-google-maps-community-fork';
+import VueHTML2pdf from 'vue-html2pdf';
 import VueTippy from 'vue-tippy'
 import Vue3Toastify, {ToastContainerOptions} from "vue3-toastify";
-import VueHTML2pdf from 'vue-html2pdf';
 
 import {IMAGE_ENDPOINTS} from "@/js/constants/API_ENDPOINTS";
 
@@ -43,9 +43,9 @@ window.addEventListener('DOMContentLoaded', () => {
         toolbar_sticky_offset: 45,
         image_caption: true,
         image_advtab: true,
-        browser_spellcheck : true,
-        context_menu : false,
-        content_css: false, 
+        browser_spellcheck: true,
+        context_menu: false,
+        content_css: false,
         skin: false
     });
 
@@ -63,7 +63,10 @@ createApp(App)
     })
     .use(setupCalendar, {})
     .use(VueTippy, tippyOptions)
-    .use(Vue3Toastify, {autoClose: 3000} as ToastContainerOptions)
+    .use(Vue3Toastify, {
+        autoClose: 2000,
+        pauseOnFocusLoss: false
+    } as ToastContainerOptions)
     .use(VueDragsScroll)
     .component('font-awesome-icon', FontAwesomeIcon)
     .mount('#app');

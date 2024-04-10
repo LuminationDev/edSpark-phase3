@@ -1,5 +1,6 @@
 <script setup>
-import {ref, computed} from 'vue'
+import {computed,ref} from 'vue'
+
 import HardwareCard from "@/js/components/hardware/HardwareCard.vue";
 
 const props = defineProps({
@@ -18,7 +19,7 @@ const fulfilledData = await props.data
     <div class="flex flex-col hardwareSubPageContainer px-10">
         <div class="Title hardwareSubpage">
             <div class="font-semibold pb-6 text-2xl text-center">
-                Discover hardware offerings
+                Discover equipment and device offerings
             </div>
         </div>
         <div class="flex justify-center lg:justify-start flex-row flex-wrap  gap-4">

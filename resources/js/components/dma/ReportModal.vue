@@ -499,6 +499,7 @@ const handleCloseReport = () => {
                                                 "
                                             :class="{'brightness-75': selectedElement === `${domain.domain}|${element.element}`}"
                                         >
+
                                             <ToggleButton
                                                 v-model="actionPlan[domain.domain][element.element].selected"
                                                 @click="handleTogglePlan(domain, element.element)"
@@ -508,13 +509,21 @@ const handleCloseReport = () => {
                                                 v-if="actionPlan[domain.domain][element.element].action_plan"
                                                 class="fa-pen-to-square fas mr-2 text-sm"
                                             />
+
+
+
                                             <TextButton
                                                 class="!text-xs underline"
                                                 @click="() => toggleShowAdvice(element.domain, element.element)"
                                             >
+
+
+                                                <!--span class="hidden md:block !normal-case text-sm">{{ actionPlan[domain.domain][element.element].expanded ? 'Hide' : 'Show' }} advice & action plan</span-->
+
                                                 <span class="hidden md:block">
                                                     {{ actionPlan[domain.domain][element.element].expanded ? 'Hide' : 'Show' }}
                                                     advice & action plan</span>
+
                                                 <span class="md:hidden">advice & plan</span>
                                             </TextButton>
                                             <img

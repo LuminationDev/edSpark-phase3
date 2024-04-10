@@ -134,7 +134,7 @@ watch(router.currentRoute, () => {
 
     <div
         v-if="showFeedbackForm"
-        class="backdrop-blur-sm blur-overlay bg-main-navy/70 fixed top-0 left-0 h-full w-full z-[60]"
+        class="backdrop-blur-sm bg-main-navy/70 blur-overlay fixed top-0 left-0 h-full w-full z-[60]"
         @click="toggleFeedbackForm(); hideScreenShotInfoPop();"
     />
 
@@ -142,22 +142,21 @@ watch(router.currentRoute, () => {
         v-if="showFeedbackForm"
         id="BaseFormParent_1"
         class="
-            HideScrollBar
             bg-white
             border-[1px]
             fixed
             top-24
             inset-x-0
             max-h-[80vh]
+            max-w-[800px]
             mx-auto
             overflow-auto
             overflow-y-auto
             p-8
             rounded-2xl
             text-black
-            z-[70]
-            max-w-[800px]
             w-[85%]
+            z-[70]
             "
     >
         <div class="Introduction formHeader">
@@ -274,9 +273,6 @@ watch(router.currentRoute, () => {
 </template>
 
 <style>
-.HideScrollBar::-webkit-scrollbar {
-    display: none;
-}
 
 input, p{
     font-weight: 100;

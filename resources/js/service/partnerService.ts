@@ -1,4 +1,4 @@
-import axios, {Axios, AxiosResponse} from "axios";
+import axios, {AxiosResponse} from "axios";
 
 import {API_ENDPOINTS} from "@/js/constants/API_ENDPOINTS";
 
@@ -21,14 +21,18 @@ export const partnerService = {
             data
         )
     },
-    updatePartnerContent: async (partnerId: number, currentUserId: number, content): Promise<AxiosResponse<any>> => {
-            const data = {
-                content: content,
-                partner_id: partnerId
-            }
-            return axios.post(API_ENDPOINTS.PARTNER.UPDATE_PARTNER_CONTENT, data)
+    updatePartnerContent: async (currentPartnerProfile, partnerId: number, currentUserId: number, content: string, introduction: string, motto: string, logo: any, coverImage): Promise<AxiosResponse<any>> => {
+        const data = new FormData();
+        data.append('content', content);
+        data.append('partner_id', String(partnerId));
+        data.append('introduction', introduction);
+        data.append('motto', motto);
+        data.append('logo', logo ? logo: currentPartnerProfile.logo);
+        data.append('cover_image', coverImage ? coverImage: currentPartnerProfile.cover_image)
 
 
+
+        return axios.post(API_ENDPOINTS.PARTNER.UPDATE_PARTNER_CONTENT, data);
     },
     fetchPendingPartnerProfile: async (partnerId: number, currentUserId: number): Promise<AxiosResponse<any>> => {
         const data = {
@@ -67,6 +71,25 @@ export const partnerService = {
 
         })
 
+    },
+    fetchUploadLogo: async (logoData: any): Promise<AxiosResponse<any>> => {
+    const formData = new FormData();
+    formData.append('logo', logoData);
+
+    try {
+        const response = await axios.post(
+            API_ENDPOINTS.PARTNER.UPDATE_PARTNER_CONTENT,
+            formData,
+            {
+                headers: {
+                    'Content-Type': 'multipart/form-data'
+                }
+            }
+        );
+        return response;
+    } catch (error) {
+        throw error;
+    }
     },
     fetchPartnerAdvice: async (partnerId): Promise<any> => {
         const data = {

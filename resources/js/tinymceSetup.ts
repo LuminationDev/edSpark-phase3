@@ -23,7 +23,6 @@ import 'tinymce/plugins/table';
 import 'tinymce/plugins/importcss';
 import 'tinymce/plugins/directionality';
 import 'tinymce/plugins/visualchars';
-import 'tinymce/plugins/template';
 import 'tinymce/plugins/codesample';
 import 'tinymce/plugins/pagebreak';
 import 'tinymce/plugins/nonbreaking';

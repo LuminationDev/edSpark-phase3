@@ -1,12 +1,8 @@
 <script setup lang="ts">
 import { onMounted, ref } from 'vue';
 
-import ChevronRightNavIcon from "@/js/components/svg/ChevronRightNavIcon.vue";
-
-
-
-
 import ProfileDropdownItem from "@/js/components/global/ProfileDropdownItem.vue";
+import ChevronRightNavIcon from "@/js/components/svg/ChevronRightNavIcon.vue";
 import CreateIcon from "@/js/components/svg/profileDropdown/CreateIcon.vue";
 
 
@@ -23,8 +19,9 @@ const props = defineProps({
     },
 });
 
-import { useUserStore } from "@/js/stores/useUserStore";
 import { storeToRefs } from "pinia";
+
+import { useUserStore } from "@/js/stores/useUserStore";
 const userStore = useUserStore()
 const { currentUser } = storeToRefs(userStore);
 
@@ -38,7 +35,9 @@ const handleDropdownToggle = (): void => {
 
 <template>
     <!--    if children exists, do not render router link, render a menu instead.-->
-    <li v-if="hasChildren" class="
+    <li
+        v-if="hasChildren"
+        class="
             cursor-pointer
             decoration-4
             decoration-[#B8E2DC]
@@ -52,12 +51,18 @@ const handleDropdownToggle = (): void => {
             relative
             transition-all
             lg:!py-0
-            " @click="clickCallback">
+            " @click="clickCallback"
+    >
         {{ route.meta.customText ?? route.name }}
         <ChevronRightNavIcon />
 
-        <div v-if="hasChildren && navDropdownOpen" key="dropdown" class="absolute top-0 left-0 w-full z-[60]">
-            <li class="
+        <div
+            v-if="hasChildren && navDropdownOpen"
+            key="dropdown"
+            class="absolute top-0 left-0 w-full z-[60]"
+        >
+            <li
+                class="
                     -mt-6
                     hover:cursor-pointer
                     hover:fill-slate-200
@@ -69,45 +74,73 @@ const handleDropdownToggle = (): void => {
                     ml-2
                     text-xl
                     w-8
-                    " @click="handleDropdownToggle" />
+                    "
+                @click="handleDropdownToggle"
+            />
             <div class="bg-main-navy font-light h-full ml-0">
-                <NavItemsMobileMenu v-for="(child, index) in props.route.children" :key="index"
-                    class="first-letter:uppercase text-xl text-white transition" :to="{ name: child.name }"
-                    :route="child" />
+                <NavItemsMobileMenu
+                    v-for="(child, index) in props.route.children"
+                    :key="index"
+                    class="first-letter:uppercase text-white text-xl transition"
+                    :to="{ name: child.name }"
+                    :route="child"
+                />
             </div>
         </div>
     </li>
     <!--     if it doesn't have children, renders a router link to route.        -->
     <li v-else-if="route.type === 'signout'">
-
-
-    <li>
         <div class="bg-white h-px my-6" />
-    </li>
-    <div class="mt-4 pb-4 " @click="route.clickCallback">
-        {{ route.name ?? route.name }}
-    </div>
+
+        <div
+            class="mt-4 pb-4"
+            @click="route.clickCallback"
+        >
+            {{ route.name ?? route.name }}
+        </div>
     </li>
     <li v-else-if="route.type === 'admin'">
-        <div class="mt-4 pb-4 " @click="route.clickCallback">
+        <div
+            v-if="userStore.getIfUserIsModerator"
+            class="mt-4 pb-4"
+            @click="route.clickCallback"
+        >
             {{ route.name ?? route.name }}
         </div>
     </li>
 
-    <li v-else-if="route.name === 'create-pages'" @click="props.clickCallback">
+    <li
+        v-else-if="route.name === 'create-pages'"
+        @click="props.clickCallback"
+    >
         <!-- I don't really understand why hard coding the /create path works but putting the variable in doesn't -->
-        <router-link :to='"/create"' class="flex py-4 font-light">
+        <router-link
+            :to="&quot;/create&quot;"
+            class="flex font-light py-4"
+        >
             {{ route.meta.customText ?? route.name }}
         </router-link>
     </li>
 
-    <li v-else-if="route.name === 'school-single'" @click="props.clickCallback">
-        <router-link :to="{ name: route.name, params: { name: currentUser.site.site_name } }" class="flex py-4 font-light">
+    <li
+        v-else-if="route.name === 'school-single'"
+        @click="props.clickCallback"
+    >
+        <router-link
+            :to="{ name: route.name, params: { name: currentUser.site.site_name } }"
+            class="flex font-light py-4"
+        >
             {{ route.meta.customText ?? route.name }}
         </router-link>
     </li>
-    <li v-else @click="props.clickCallback">
-        <router-link :to="{ name: route.name, params: { userId: currentUser.id } }" class="flex py-4 font-light">
+    <li
+        v-else
+        @click="props.clickCallback"
+    >
+        <router-link
+            :to="{ name: route.name, params: { userId: currentUser.id } }"
+            class="flex font-light py-4"
+        >
             {{ route.meta.customText ?? route.name }}
         </router-link>
     </li>

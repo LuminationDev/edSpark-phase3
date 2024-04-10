@@ -1,7 +1,10 @@
 <script setup lang="ts">
-import {useRoute, useRouter} from "vue-router";
+import { useRouter} from "vue-router";
 
-import GenericButton from "@/js/components/button/GenericButton.vue";
+import BaseLandingHero from "@/js/components/bases/BaseLandingHero.vue";
+import FourOFourRobot from "@/js/components/svg/404Robot/FourOFourRobot.vue";
+import ChevronLeftNavIcon from "@/js/components/svg/ChevronLeftNavIcon.vue";
+import {LandingHeroText} from "@/js/constants/PageBlurb";
 
 const props = defineProps({
     errorMessage: {
@@ -21,7 +24,6 @@ const props = defineProps({
     }
 })
 const router = useRouter();
-const route = useRoute()
 
 const handleButtonClick = (): void => {
     if (props.buttonCallback) {
@@ -31,21 +33,28 @@ const handleButtonClick = (): void => {
     }
 }
 
-console.log(route.query)
 </script>
 
 
 <template>
-    <div class="flex justify-center items-center flex-col font-medium mt-20 text-black text-center text-xl">
-        {{ props.errorMessage }}
-        <GenericButton
-            :callback="handleButtonClick"
-            type="school"
-        >
-            <div class="font-semibold px-4 py-2 text-md">
-                {{ buttonMessage }}
-            </div>
-        </GenericButton>
-    </div>
+    <BaseLandingHero
+        :title="LandingHeroText['404']['title']"
+        :title-paragraph="LandingHeroText['404']['subtitle']"
+        :background-color="'navy'"
+    >
+        <template #additionalText>
+            <span
+                class="cursor-pointer flex items-end flex-row text-white underline"
+                @click="handleButtonClick"
+            >
+                <chevron-left-nav-icon class="h-5 pb-1 w-5" />
+                {{ `Go back to dashboard` }}
+
+            </span>
+        </template>
+        <template #robotIllustration>
+            <FourOFourRobot class="absolute top-16 left-36" />
+        </template>
+    </BaseLandingHero>
 </template>
 

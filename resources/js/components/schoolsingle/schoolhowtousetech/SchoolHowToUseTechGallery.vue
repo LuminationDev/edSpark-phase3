@@ -1,6 +1,6 @@
 <script setup>
 
-import {ref} from "vue";
+import {onMounted, ref, watch} from "vue";
 
 import {imageURL} from "@/js/constants/serverUrl";
 
@@ -24,6 +24,7 @@ const appendServerImageUrlIfMissing = (url) =>{
         return url
     }
 }
+
 </script>
 
 <template>

@@ -38,6 +38,11 @@ const formattedSubmenuData = computed(() => {
                     displayText: 'Apps',
                     value: menu
                 }
+            }else if (menu === 'hardware') {
+                return {
+                    displayText: 'Equipment',
+                    value: menu
+                }
             }
 
             return {
@@ -150,8 +155,8 @@ const colorTheme = ref('partnerBlue')
                 <template #breadcrumb>
                     <BaseBreadcrumb
                         :child-page="contentFromBase.name"
-                        parent-page="Partners"
-                        :parent-page-link="'browse/partner'"
+                        parent-page="Providers"
+                        :parent-page-link="'browse/provider'"
                         :color-theme="colorTheme"
                     />
                 </template>
@@ -186,7 +191,7 @@ const colorTheme = ref('partnerBlue')
         </template>
         <template #content="{ contentFromBase, recommendationFromBase }">
             <div class="partnerSingleContentContainer px-5 lg:!px-10">
-                <Suspense timeout="0"> 
+                <Suspense timeout="0">
                     <component
                         :is="partnerSubPageComponent"
                         :data="dynamicProps"

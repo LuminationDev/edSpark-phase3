@@ -329,7 +329,7 @@ setupRoutes();
                     :key="i"
                     :route="route"
                     :click-callback="() => handleClickMobileNavItems(route)"
-                    class="text-lg"
+                    class="cursor-pointer text-lg"
                 />
 
                 <li
