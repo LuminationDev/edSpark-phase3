@@ -23,7 +23,7 @@ const displayTaskSummary = ref('')
 const displaySessionOverview = ref('')
 const displayDigitalTechnologies = ref('')
 const displayRequiredResourcesParagraph = ref('')
-const displayRequiredResourcesHeadings = ref([])
+const displayRequiredResourcesHeadings = ref([]) //in arrays form
 
 
 const displayHref = ref('')
