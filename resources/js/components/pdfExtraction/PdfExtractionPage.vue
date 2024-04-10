@@ -23,6 +23,7 @@ const displayTaskSummary = ref('')
 const displaySessionOverview = ref('')
 const displayDigitalTechnologies = ref('')
 const displayRequiredResourcesParagraph = ref('')
+const displayRRHardwareList = ref('')
 const displayRequiredResourcesHeadings = ref([]) //in arrays form
 
 
@@ -58,8 +59,9 @@ const handleFileUpload = async (event) => {
         extractOtherResourcesSections(html)
         //console.log(htmlContent.value)
         // Call this function to extract hardware items from HTML content
-        extractHardwareItems(htmlContent.value);
-        console.log('Hardware Items:', extractHardwareItems(htmlContent.value));
+        const hardwareItems = extractHardwareItems(htmlContent.value);
+        console.log('Hardware 1 Items:', hardwareItems.hardware1);
+        console.log('Hardware 2 Items:', hardwareItems.hardware2);
 
     } catch (error) {
         console.error('Error processing file:', error);
@@ -119,11 +121,15 @@ const downloadFormattedJson = () => {
         "Session Overview": sessionOverviewSections.value,
         "Digital Technologies": digitalTechnologiesSections.value,
         "Required Resources": {
-            "Hardware": extractHardwareItems(htmlContent.value),
+            "Hardware": extractHardwareItems(htmlContent.value).hardware1,
             // You can add other required resources here if needed
             "Required Resources": requiredResourcesSections.value
         },
-        "Other resources to try (optional)": otherResourcesSections.value
+        "Other resources to try (optional)": {
+            "Hardware": extractHardwareItems(htmlContent.value).hardware2,
+            // You can add other required resources here if needed
+            "Other resources to try (optional)": otherResourcesSections.value
+        }
     }, (key, value) => {
         if (key === 'content') {
             return stripHtml(value); // Strips HTML tags
@@ -444,11 +450,28 @@ const displaySelectedContent = () => {
     } else {
         displayRequiredResourcesHeadings.value.push({ title: "Title Text will be here", content: "Digital Technologies content not found." });
     }
+    //get the content from the object's array that has lists of contents - "Session Overview"
+    let summaryRR_Hardware = "";
+    if (data["Required Resources"]?.Hardware) {
+        summaryRR_Hardware += "<ul>";
+        data["Required Resources"].Hardware.forEach((sentence, index) => {
+            summaryRR_Hardware += "<li>"+ sentence + "</li>";
+            // Add <br> tags after each list item except for the last one
+            if (index !== data['Required Resources'].Hardware.length - 1) {
+                summaryRR_Hardware += "<br>";
+            }
+        });
+        summaryRR_Hardware += "</ul>";
+        displayRRHardwareList.value = summaryRR_Hardware.trim();
+    } else {
+        displayRRHardwareList.value = "Digital Technologies content not found.";
+    }
     //get the content from the object's array
     displayHeading.value = data['Topic Heading'] || "Heading not found"
     displayCategory.value = data['Topic Category'] || "Category not found"
     displayTaskSummary.value = data['Task Summary'][0]?.paragraph || "Task Summary not found"
     displayRequiredResourcesParagraph.value = data['Required Resources']?.["Required Resources"][0]?.paragraph[0]
+
     //get the content for href from the object's array on the basis of name
     const requiredResourceLink4 = data['Required Resources']?.["Required Resources"][0]?.["Required Resources_link"]?.find(link => link.name === 'Required Resources_link4');
     const linkHref = requiredResourceLink4 ? requiredResourceLink4.href : "Link not found.";
@@ -473,29 +496,49 @@ const getYouTubeEmbedUrl = (videoId) => {
 };
 
 //raw/test functions are here
-// Function to extract content after the <strong> tag containing "Hardware:"
+// Function to extract content on the basis of "Hardware" keyword iteration.
 const extractHardwareItems = (html) => {
     const doc = new DOMParser().parseFromString(html, 'text/html');
     const strongTags = doc.querySelectorAll('p strong');
 
-    const hardwareItems = [];
+    const hardware1Item = [];
+    const hardware2Item = [];
+    let hardwareCount = 0; // Track the number of "Hardware:" occurrences found
     for (let i = 0; i < strongTags.length; i++) {
         const strongTag = strongTags[i];
         if (strongTag.textContent.trim() === 'Hardware:') {
-            const pTag = strongTag.parentNode; // Get parent <p> tag
-            const ulTag = pTag.nextElementSibling; // Get next sibling <ul> tag
-            if (ulTag && ulTag.tagName.toLowerCase() === 'ul') {
-                const liTags = ulTag.querySelectorAll('li');
-                liTags.forEach(liTag => {
-                    hardwareItems.push(liTag.textContent.trim());
-                });
+            hardwareCount++; // Increment the count
+            if (hardwareCount === 1) {
+                // First occurrence, add items with prefix Hardware1
+                const pTag = strongTag.parentNode; // Get parent <p> tag
+                const ulTag = pTag.nextElementSibling; // Get next sibling <ul> tag
+                if (ulTag && ulTag.tagName.toLowerCase() === 'ul') {
+                    const liTags = ulTag.querySelectorAll('li');
+                    liTags.forEach(liTag => {
+                        hardware1Item.push( liTag.textContent.trim());
+                    });
+                }
+            } else if (hardwareCount === 2) {
+                // Second occurrence, add items with prefix Hardware2
+                const pTag = strongTag.parentNode; // Get parent <p> tag
+                const ulTag = pTag.nextElementSibling; // Get next sibling <ul> tag
+                if (ulTag && ulTag.tagName.toLowerCase() === 'ul') {
+                    const liTags = ulTag.querySelectorAll('li');
+                    liTags.forEach(liTag => {
+                        hardware2Item.push( liTag.textContent.trim());
+                    });
+                }
+                break;
             }
-            break; // No need to continue searching once found
         }
     }
 
-    return hardwareItems;
+    return {
+        hardware1: hardware1Item,
+        hardware2: hardware2Item
+    };
 };
+
 
 
 
@@ -689,100 +732,103 @@ const extractHardwareItems = (html) => {
                             class="mt-2 text-xl"
                             v-html="heading.content"
                         />
+                        <div
+                            v-html="displayRRHardwareList"
+                        />
+                    </div>
+                </div>
+                <div class="border-2 border-gray-300 p-4 w-full">
+                    <div class="text-3xl">
+                        Other Resources to try
+                    </div>
+                    <div class="mt-4 text-xl">
+                        Other resources paragraph will come here.
+                    </div>
+                </div>
+                <div class="border-2 border-gray-300 p-4 w-full">
+                    <div class="text-3xl">
+                        Planning and preparation
+                    </div>
+                    <div class="mt-4 text-xl">
+                        Planning Preparation paragraph will come here.
                     </div>
                 </div>
             </div>
-            <div class="border-2 border-gray-300 p-4 w-full">
+            <div class="mt-6 p-4">
                 <div class="text-3xl">
-                    Other Resources to try
+                    Task Sequence
                 </div>
-                <div class="mt-4 text-xl">
-                    Other resources paragraph will come here.
+                <div class="grid grid-cols-2 gap-6">
+                    <div class="border-2 border-gray-300 mt-4 p-4 rounded-2xl">
+                        <div class="text-2xl">
+                            Task No. 1
+                        </div>
+                        <div class="mt-2 text-xl">
+                            Task No. 1 content will come here
+                        </div>
+                    </div>
+                    <div class="border-2 border-gray-300 p-4 rounded-2xl">
+                        <div class="text-2xl">
+                            Task No. 2
+                        </div>
+                        <div class="mt-2 text-xl">
+                            Task No. 2 content will come here
+                        </div>
+                    </div>
+                    <div class="border-2 border-gray-300 p-4 rounded-2xl">
+                        <div class="text-2xl">
+                            Task No. 3
+                        </div>
+                        <div class="mt-2 text-xl">
+                            Task No. 3 content will come here
+                        </div>
+                    </div>
+                    <div class="border-2 border-gray-300 p-4 rounded-2xl">
+                        <div class="text-2xl">
+                            Task No. 4
+                        </div>
+                        <div class="mt-2 text-xl">
+                            Task No. 4 content will come here
+                        </div>
+                    </div>
                 </div>
             </div>
-            <div class="border-2 border-gray-300 p-4 w-full">
+            <div class="mt-6 p-4">
                 <div class="text-3xl">
-                    Planning and preparation
+                    Curriculum Connections
                 </div>
-                <div class="mt-4 text-xl">
-                    Planning Preparation paragraph will come here.
-                </div>
-            </div>
-        </div>
-        <div class="mt-6 p-4">
-            <div class="text-3xl">
-                Task Sequence
-            </div>
-            <div class="grid grid-cols-2 gap-6">
-                <div class="border-2 border-gray-300 mt-4 p-4 rounded-2xl">
-                    <div class="text-2xl">
-                        Task No. 1
+                <div class="grid grid-cols-2 gap-6">
+                    <div class="border-2 border-gray-300 mt-4 p-4 rounded-2xl">
+                        <div class="text-2xl">
+                            Curriculum Connections No. 1
+                        </div>
+                        <div class="mt-2 text-xl">
+                            Curriculum Connections No. 1 content/lists will come here
+                        </div>
                     </div>
-                    <div class="mt-2 text-xl">
-                        Task No. 1 content will come here
+                    <div class="border-2 border-gray-300 p-4 rounded-2xl">
+                        <div class="text-2xl">
+                            Curriculum Connections No. 2
+                        </div>
+                        <div class="mt-2 text-xl">
+                            Curriculum Connections No. 2 content/lists will come here
+                        </div>
                     </div>
-                </div>
-                <div class="border-2 border-gray-300 p-4 rounded-2xl">
-                    <div class="text-2xl">
-                        Task No. 2
+                    <div class="border-2 border-gray-300 p-4 rounded-2xl">
+                        <div class="text-2xl">
+                            Curriculum Connections No. 3
+                        </div>
+                        <div class="mt-2 text-xl">
+                            Curriculum Connections No. 3 content/lists will come here
+                        </div>
                     </div>
-                    <div class="mt-2 text-xl">
-                        Task No. 2 content will come here
-                    </div>
-                </div>
-                <div class="border-2 border-gray-300 p-4 rounded-2xl">
-                    <div class="text-2xl">
-                        Task No. 3
-                    </div>
-                    <div class="mt-2 text-xl">
-                        Task No. 3 content will come here
-                    </div>
-                </div>
-                <div class="border-2 border-gray-300 p-4 rounded-2xl">
-                    <div class="text-2xl">
-                        Task No. 4
-                    </div>
-                    <div class="mt-2 text-xl">
-                        Task No. 4 content will come here
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="mt-6 p-4">
-            <div class="text-3xl">
-                Curriculum Connections
-            </div>
-            <div class="grid grid-cols-2 gap-6">
-                <div class="border-2 border-gray-300 mt-4 p-4 rounded-2xl">
-                    <div class="text-2xl">
-                        Curriculum Connections No. 1
-                    </div>
-                    <div class="mt-2 text-xl">
-                        Curriculum Connections No. 1 content/lists will come here
-                    </div>
-                </div>
-                <div class="border-2 border-gray-300 p-4 rounded-2xl">
-                    <div class="text-2xl">
-                        Curriculum Connections No. 2
-                    </div>
-                    <div class="mt-2 text-xl">
-                        Curriculum Connections No. 2 content/lists will come here
-                    </div>
-                </div>
-                <div class="border-2 border-gray-300 p-4 rounded-2xl">
-                    <div class="text-2xl">
-                        Curriculum Connections No. 3
-                    </div>
-                    <div class="mt-2 text-xl">
-                        Curriculum Connections No. 3 content/lists will come here
-                    </div>
-                </div>
-                <div class="border-2 border-gray-300 p-4 rounded-2xl">
-                    <div class="text-2xl">
-                        Curriculum Connections No. 4
-                    </div>
-                    <div class="mt-2 text-xl">
-                        Curriculum Connections No. 4 content/lists will come here
+                    <div class="border-2 border-gray-300 p-4 rounded-2xl">
+                        <div class="text-2xl">
+                            Curriculum Connections No. 4
+                        </div>
+                        <div class="mt-2 text-xl">
+                            Curriculum Connections No. 4 content/lists will come here
+                        </div>
                     </div>
                 </div>
             </div>
