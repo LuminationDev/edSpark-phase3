@@ -6,6 +6,7 @@ import {defineConfig} from 'vite';
 
 
 export default defineConfig({
+    server: {https:true},
     build: {
         outDir: './public/build',
         commonjsOptions: {
