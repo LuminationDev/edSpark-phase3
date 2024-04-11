@@ -49,10 +49,9 @@ class LoginController extends Controller
     {
         try {
             $idToken = $user->token;
-            Log::info($user);
 
             // Get the user's edSpark profile/data
-            $userEdSpark = User::where('email', $user->email)->first();
+            $userEdSpark = isset($user->email) ? User::where('email', $user->email)->first() : NULL;
             $userEdSparkId = isset($userEdSpark) ? $userEdSpark->id : false;
 
             // If user exists in edSpark, check if Superadmin or not
