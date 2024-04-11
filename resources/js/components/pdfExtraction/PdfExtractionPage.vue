@@ -9,6 +9,9 @@ const htmlContent = ref('');
 const error = ref('');
 const jsonContent = ref({});
 
+//other global variables
+const hardwaresItemsList = ref('')
+
 //variables used to store json format value
 const topicHeading = ref('')
 const topicCategory = ref('')
@@ -59,9 +62,11 @@ const handleFileUpload = async (event) => {
         extractOtherResourcesSections(html)
         //console.log(htmlContent.value)
         // Call this function to extract hardware items from HTML content
-        const hardwareItems = extractHardwareItems(htmlContent.value);
-        console.log('Hardware 1 Items:', hardwareItems.hardware1);
-        console.log('Hardware 2 Items:', hardwareItems.hardware2);
+        hardwaresItemsList.value = extractHardwareItems(htmlContent.value);
+        console.log('Hardware Required Resources with Session1', hardwaresItemsList.value.hardwareItemsForRR_1);
+        console.log('Hardware Required Resources with Session2', hardwaresItemsList.value.hardwareItemsForRR_2);
+        console.log('Hardware Other Resources with Session1', hardwaresItemsList.value.hardwareItemsForOR_1);
+        console.log('Hardware Other Resources with Session2', hardwaresItemsList.value.hardwareItemsForOR_2);
 
     } catch (error) {
         console.error('Error processing file:', error);
@@ -499,48 +504,94 @@ const getYouTubeEmbedUrl = (videoId) => {
 // Function to extract content on the basis of "Hardware" keyword iteration.
 const extractHardwareItems = (html) => {
     const doc = new DOMParser().parseFromString(html, 'text/html');
-    const strongTags = doc.querySelectorAll('p strong');
+    const trTags = doc.querySelectorAll('tr');
+    const hardwareItemsForRR_1 = [];
+    const hardwareItemsForRR_2 = [];
+    const hardwareItemsForOR_1 = [];
+    const hardwareItemsForOR_2 = [];
+    let inSession1 = false; // Flag to track if currently in Session 1
+    let inSession2 = false; // Flag to track if currently in Session 2
+    for (let i = 0; i < trTags.length; i++) {
+        const trTag = trTags[i];
+        const h1Tags = trTag.querySelectorAll('h1');
+        const strongTags = trTag.querySelectorAll('p strong');
+        // Check if both 'h1' and 'p strong' belong to the same <tr> tag
+        if (h1Tags.length > 0 && strongTags.length > 0) {
+            const sessionText = h1Tags[0].textContent.trim(); // Text content of the h1 tag
+            if (sessionText.includes('Required resources')) {
+                let sessionFound = false; // Flag to track if session keywords are found
+                for (let j = 0; j < strongTags.length; j++) {
+                    const strongTag = strongTags[j];
+                    const sessionText = strongTag.parentNode.textContent.trim(); // Text content of the parent node
+                    if (sessionText.includes('Session 1:')) {
+                        inSession1 = true; // Set flag for Session 1
+                        inSession2 = false; // Reset flag for Session 2
+                        sessionFound = true;
+                    } else if (sessionText.includes('Session 2 (optional):')) {
+                        inSession1 = false; // Reset flag for Session 1
+                        inSession2 = true; // Set flag for Session 2
+                        sessionFound = true;
+                    }
+                    if (!sessionFound) {
+                        // If neither session keyword found, consider it as a default session
+                        inSession1 = true;
+                        inSession2 = false;
+                    }
+                    if (strongTag.textContent.trim() === 'Hardware:' || strongTag.textContent.trim() === 'Hardware') {
+                        const hardwarePrefix = inSession1 ? '1' : '2'; // Determine the session prefix
+                        const pTag = strongTag.parentNode; // Get parent <p> tag
+                        const ulTag = pTag.nextElementSibling; // Get next sibling <ul> tag
 
-    const hardware1Item = [];
-    const hardware2Item = [];
-    let hardwareCount = 0; // Track the number of "Hardware:" occurrences found
-    for (let i = 0; i < strongTags.length; i++) {
-        const strongTag = strongTags[i];
-        if (strongTag.textContent.trim() === 'Hardware:') {
-            hardwareCount++; // Increment the count
-            if (hardwareCount === 1) {
-                // First occurrence, add items with prefix Hardware1
-                const pTag = strongTag.parentNode; // Get parent <p> tag
-                const ulTag = pTag.nextElementSibling; // Get next sibling <ul> tag
-                if (ulTag && ulTag.tagName.toLowerCase() === 'ul') {
-                    const liTags = ulTag.querySelectorAll('li');
-                    liTags.forEach(liTag => {
-                        hardware1Item.push( liTag.textContent.trim());
-                    });
+                        if (ulTag && ulTag.tagName.toLowerCase() === 'ul') {
+                            const liTags = ulTag.querySelectorAll('li');
+                            liTags.forEach((liTag, index) => {
+                                if (inSession1) {
+                                    hardwareItemsForRR_1.push(hardwarePrefix + '_' + (index + 1) + ': ' + liTag.textContent.trim());
+                                } else if (inSession2) {
+                                    hardwareItemsForRR_2.push(hardwarePrefix + '_' + (index + 1) + ': ' + liTag.textContent.trim());
+                                }
+                            });
+                        }
+                    }
                 }
-            } else if (hardwareCount === 2) {
-                // Second occurrence, add items with prefix Hardware2
-                const pTag = strongTag.parentNode; // Get parent <p> tag
-                const ulTag = pTag.nextElementSibling; // Get next sibling <ul> tag
-                if (ulTag && ulTag.tagName.toLowerCase() === 'ul') {
-                    const liTags = ulTag.querySelectorAll('li');
-                    liTags.forEach(liTag => {
-                        hardware2Item.push( liTag.textContent.trim());
-                    });
+            } else if (sessionText.includes('Other resources to try (optional)')) {
+                for (let j = 0; j < strongTags.length; j++) {
+                    const strongTag = strongTags[j];
+                    const sessionText = strongTag.parentNode.textContent.trim(); // Text content of the parent node
+                    if (sessionText.includes('Session 1:')) {
+                        inSession1 = true; // Set flag for Session 1
+                        inSession2 = false; // Reset flag for Session 2
+                    } else if (sessionText.includes('Session 2 (optional):')) {
+                        inSession1 = false; // Reset flag for Session 1
+                        inSession2 = true; // Set flag for Session 2
+                    }
+                    if (strongTag.textContent.trim() === 'Hardware:' || strongTag.textContent.trim() === 'Hardware') {
+                        const hardwarePrefix = inSession1 ? '1' : '2'; // Determine the session prefix
+                        const pTag = strongTag.parentNode; // Get parent <p> tag
+                        const ulTag = pTag.nextElementSibling; // Get next sibling <ul> tag
+
+                        if (ulTag && ulTag.tagName.toLowerCase() === 'ul') {
+                            const liTags = ulTag.querySelectorAll('li');
+                            liTags.forEach((liTag, index) => {
+                                if (inSession1) {
+                                    hardwareItemsForOR_1.push(hardwarePrefix + '_' + (index + 1) + ': ' + liTag.textContent.trim());
+                                } else if (inSession2) {
+                                    hardwareItemsForOR_2.push(hardwarePrefix + '_' + (index + 1) + ': ' + liTag.textContent.trim());
+                                }
+                            });
+                        }
+                    }
                 }
-                break;
             }
         }
     }
-
     return {
-        hardware1: hardware1Item,
-        hardware2: hardware2Item
+        hardwareItemsForRR_1: hardwareItemsForRR_1,
+        hardwareItemsForRR_2: hardwareItemsForRR_2,
+        hardwareItemsForOR_1: hardwareItemsForOR_1,
+        hardwareItemsForOR_2: hardwareItemsForOR_2
     };
 };
-
-
-
 
 
 
