@@ -1,6 +1,6 @@
 export const data = {
-    "Topic Heading": "Wondrous Ancient Worlds",
-    "Topic Category": "AR LEARNING TASK",
+    "Topic Heading": "Cells in Focus",
+    "Topic Category": "VR LEARNING TASK",
     "Task Summary": [
         {
             "br": [
@@ -9,20 +9,20 @@ export const data = {
                 }
             ],
             "paragraph": [
-                "In session 1 of this learning task, students will explore different ancient artefacts using Augmented Reality (AR) and consider how each one is related to a significant historical figure. In session 2, students will share what they know about a chosen historical figure by creating a profile using AR technologies."
+                "The primary task aims to give students the opportunity to explore and ‘zoom in’ on a plant and an animal cell using Virtual Reality (VR) to understand the scale of cells. The secondary task enables students to design a physical or digital model of a cell in a three-dimensional format and explain how the representation models the cell."
             ],
             "table": [
                 {
-                    "table": "Session overviewSession 1: Students can identify artefacts from ancient societies and share key information about each one.Session 2: Students can create an AR experience, or a Merge Cube, demonstrating their knowledge about a significant historical figure from their chosen ancient world.Digital technologiesVRARRoboticsDronesOther _______________Required resourcesFor detailed information on how to access the apps mentioned in this learning task, please visit the edSpark apps page <insert link>.Session 1:Hardware:AR-enabled mobile devices / iPadsApps:Merge Object Viewer (Download via Google Play or Apple App Store) - For viewing and learning about various artefacts in Augmented Reality (AR).  Make sure to log-in for each individual device prior to the lesson, as this will take some time to do. This usually just needs to be done once, unless the app is updated. Teaching resources:<placeholder link for 4 - Teaching Deck> - This is a slide deck template that teachers can download and use for this learning task. <placeholder link for 4 - Task Sheet> - This task sheet needs to be downloaded and distributed to students either as a digital or printed resource. ‘Think Puzzle Explore’ template via Canva - Students can access this Thinking Routine template for their brainstorming session.Session 2 (optional):Hardware:Mobile devices / iPadsMerge Cubes Laptops or iPad tablets for students Apps:CoSpaces EDU (Available via Google Play or Apple App Store) / CoSpaces accounts (Free or Pro*)  (OPTIONAL: If you would like to create with Merge Cubes, you will need Pro accounts with the Merge Cube add-on for your students)CoSpaces Experiences:Ancient Egypt - Cleopatra Profile (Merge Cube AR version): https://edu.cospaces.io/KLK-YKD  Ancient Egypt - Cleopatra Profile (AR version): https://edu.cospaces.io/GUB-URQ Teaching resources:<placeholder link for 4 - Teaching Deck> - This is a slide deck template that teachers can download and use for this learning task. <placeholder link for 4 - AR Planning Sheet> - If continuing this learning task to part 2, students may use this planning sheet when creating their AR experiences or physical world model. Other resources to try (optional)3D models repository sites:Poly.Pizza - Students can download additional 3D models from this site, with attribution (for free accounts).Sketchfab - Students can download 3D models from this site as royalty free assets.No tech creation:Students may opt to create a physical cardboard cube where they can attach photos, illustrations and text about their chosen ancient historical figure. They can print out the 3D net found in this document <placeholder link for 4 - AR Planning Sheet>.Planning and preparationAssumptions For session 1:Students are expected to have:Completed some lessons about ancient worlds.A basic understanding of Augmented Reality (AR) technology.The knowledge and skills to take screenshots using their devices.For session 2:Students are expected to have:Selected their significant historical figure from one of the ancient worlds and completed their basic planning and research. Completed the <placeholder link for 4 - AR Planning Sheet> in conjunction with selecting their historical figures.If completing the AR experience - Some background in creating in CoSpaces (and Merge Cubes, if choosing this option). Otherwise, please add 1 to 2 lessons to introduce this skill.If completing the physical model - Access to relevant materials, such as cardboard and printer.Additional preparations for teachers Check the following -For session 1:Download a copy of the following teaching resources:<placeholder link for 4 - Teaching Deck>‘Think Puzzle Explore’ template via Canva  <placeholder link for 4 - Task Sheet>Students have access to the Think Puzzle Explore’ template via Canva  and <placeholder link for 4 - Task Sheet>. These resources may be printed or distributed digitally via email or the school’s learning management system.Make sure the Merge Object Viewer app is downloaded and installed on the school’s mobile devices / iPads (available via Google Play or Apple App Store). Each device will need to be individually logged in using your preferred account.Make sure to launch the apps and check that the Ancient Egypt* and The Museum Collection* resources are loading properly. If the app doesn’t work, please check if the app has been added to the school’s whitelist. For session 2:Recommended apps are installed and working on all devices.All students have the required logins to CoSpaces.To use the Merge Cubes experience, make sure students have access to an adequate amount. Ideally, 1 cube per student**, however 2 to 3 students may be able to share 1. There is a non-Merge Cube option, so this is optional.*NOTE: Merge Object Viewer resources are accessible either in 3D format (no Merge Cubes required) or in Cube format (with Merge Cubes). You and your students will need an active internet connection on the devices to view the resources.**If you do not have access to an adequate number of Merge Cubes, you can download the following resource and create your own paper Merge Cube: Merge Cube (PDF)"
+                    "table": "Session overviewSession 1: Students can recognise and understand the scale of a plant and an animal cell using Virtual Reality (VR).Session 2 (optional): Students can identify and create a model of a cell in a three-dimensional (3D) format and explain their representation. Digital technologiesVRARRoboticsDronesOther _______________Required resourcesFor detailed information on how to access the apps mentioned in this learning task, please visit the edSpark apps page <insert link>.Hardware:Handheld VR headsets (HHVR)Mobile DevicesVR videos:Virtual Plant Cell: Cell Explore, 2018. VPC 360° video by Plant Energy Biology(5:58)Chapter 1: Introduction to the Animal Cell (5:31)Suggested videos:Microscope View of Plant Cells (0:31)Mitosis in an animal cell Under the Microscope(0:31)Apps:YouTube - For viewing VR videos. This needs to be whitelisted and downloaded on your mobile devices. For session 2: Tinkercad accounts - For creating 3D assets; and/or CoSpaces EDU (Download via Google Play or Apple App Store) / CoSpaces accounts (Free or Pro*)  Teaching resources:<placeholder link for 1 - Teaching Deck> - Download a copy for your own use.<placeholder link for 1 - Student Digital Notebook> - Download a copy and distribute it to students via email or learning management system.<placeholder link for 1 - Session 2 Checklist> - If proceeding with Session 2, teachers may use this as a checklist when marking the 3D cells modelling task.Other resources to try (optional)For detailed information on how to access the apps mentioned in this learning task, please visit the edSpark apps page <insert link>.Hardware:Immersive Virtual Reality Headsets  (for IMVR experiences)HHVR app:Inside Cell VR (via Google Play Store) - This needs to be whitelisted and downloaded on mobile devices. IMVR apps (via Steam):Journey To The Centre of the Cell (simulation; Free) - This needs to be downloaded from Steam and installed on your IMVR system.The Body VR: Journey Inside a Cell (simulation; Free) - This needs to be downloaded from Steam and installed on your IMVR system.Digital 3D cell models:Sketchfab 3D animal cell - A pre-made downloadable model of an animal cell that students can use.Sketchfab 3D plant cell - A pre-made downloadable model of a plant cell that students can use.Articles:The Use of Virtual Reality in the Teaching of Challenging Concepts in Virology, Cell Culture and Molecular BiologyMiscellaneous:VR/AR Safety Poster (PDF)No tech creation:It’s also possible to create a physical 3D plant or animal cell using materials like paper mache, plasticine, clay, plastic bricks (Lego), foam craft balls, or edible materials (e.g., cake, fruits, etc).Planning and preparationNOTE: This learning task may be introduced in the middle or at the end of the unit.Assumptions For session 1, students should have...Prior lessons in the topic of ‘Cells’ in the sub-strand of biological sciences. Preferably, they have been able to view cells under a microscope in the lab. If not, make sure to watch a relevant video. Suggested videos: Microscope View of Plant Cells (0:31)Mitosis in an animal cell Under the Microscope(0:31)Familiarity with the use of VR devices (HHVR and/or IMVR).For session 2, students should have the following if they’re building a digital 3D model...Basic CoSpaces building skills for AR/VR experiences. Make sure to allocate 1 to 2 lessons to introduce CoSpaces if students have no background with the tool. Basic Tinkercad building skills for creating additional 3D assets. Otherwise, allocate at least 1 lesson to introduce Tinkercad skills.CoSpaces accounts (free or paid)Tinkercad accounts (free)If students are building a physical model, they should have access to materials like papier-mache, plasticine, clay, plastic bricks (Lego), foam craft balls, or edible materials (e.g., cake, fruits, etc).Additional preparations for teachers Make sure that HHVR and/or IMVR devices have the necessary apps and videos installed. Teachers should watch the videos and/or test the VR apps/games in advance to make sure that they are appropriate for their respective classes and devices.  Make sure all devices are fully charged and set-up appropriately before the lesson, with all apps installed and working.Download and distribute copies of the student digital notebook to students via email or a learning management system."
                 }
             ],
             "thead": [
                 {
-                    "thead": "Session overviewSession 1: Students can identify artefacts from ancient societies and share key information about each one.Session 2: Students can create an AR experience, or a Merge Cube, demonstrating their knowledge about a significant historical figure from their chosen ancient world.Digital technologiesVRARRoboticsDronesOther _______________Required resourcesFor detailed information on how to access the apps mentioned in this learning task, please visit the edSpark apps page <insert link>.Session 1:Hardware:AR-enabled mobile devices / iPadsApps:Merge Object Viewer (Download via Google Play or Apple App Store) - For viewing and learning about various artefacts in Augmented Reality (AR).  Make sure to log-in for each individual device prior to the lesson, as this will take some time to do. This usually just needs to be done once, unless the app is updated. Teaching resources:<placeholder link for 4 - Teaching Deck> - This is a slide deck template that teachers can download and use for this learning task. <placeholder link for 4 - Task Sheet> - This task sheet needs to be downloaded and distributed to students either as a digital or printed resource. ‘Think Puzzle Explore’ template via Canva - Students can access this Thinking Routine template for their brainstorming session.Session 2 (optional):Hardware:Mobile devices / iPadsMerge Cubes Laptops or iPad tablets for students Apps:CoSpaces EDU (Available via Google Play or Apple App Store) / CoSpaces accounts (Free or Pro*)  (OPTIONAL: If you would like to create with Merge Cubes, you will need Pro accounts with the Merge Cube add-on for your students)CoSpaces Experiences:Ancient Egypt - Cleopatra Profile (Merge Cube AR version): https://edu.cospaces.io/KLK-YKD  Ancient Egypt - Cleopatra Profile (AR version): https://edu.cospaces.io/GUB-URQ Teaching resources:<placeholder link for 4 - Teaching Deck> - This is a slide deck template that teachers can download and use for this learning task. <placeholder link for 4 - AR Planning Sheet> - If continuing this learning task to part 2, students may use this planning sheet when creating their AR experiences or physical world model. Other resources to try (optional)3D models repository sites:Poly.Pizza - Students can download additional 3D models from this site, with attribution (for free accounts).Sketchfab - Students can download 3D models from this site as royalty free assets.No tech creation:Students may opt to create a physical cardboard cube where they can attach photos, illustrations and text about their chosen ancient historical figure. They can print out the 3D net found in this document <placeholder link for 4 - AR Planning Sheet>.Planning and preparationAssumptions For session 1:Students are expected to have:Completed some lessons about ancient worlds.A basic understanding of Augmented Reality (AR) technology.The knowledge and skills to take screenshots using their devices.For session 2:Students are expected to have:Selected their significant historical figure from one of the ancient worlds and completed their basic planning and research. Completed the <placeholder link for 4 - AR Planning Sheet> in conjunction with selecting their historical figures.If completing the AR experience - Some background in creating in CoSpaces (and Merge Cubes, if choosing this option). Otherwise, please add 1 to 2 lessons to introduce this skill.If completing the physical model - Access to relevant materials, such as cardboard and printer.Additional preparations for teachers Check the following -For session 1:Download a copy of the following teaching resources:<placeholder link for 4 - Teaching Deck>‘Think Puzzle Explore’ template via Canva  <placeholder link for 4 - Task Sheet>Students have access to the Think Puzzle Explore’ template via Canva  and <placeholder link for 4 - Task Sheet>. These resources may be printed or distributed digitally via email or the school’s learning management system.Make sure the Merge Object Viewer app is downloaded and installed on the school’s mobile devices / iPads (available via Google Play or Apple App Store). Each device will need to be individually logged in using your preferred account.Make sure to launch the apps and check that the Ancient Egypt* and The Museum Collection* resources are loading properly. If the app doesn’t work, please check if the app has been added to the school’s whitelist. For session 2:Recommended apps are installed and working on all devices.All students have the required logins to CoSpaces.To use the Merge Cubes experience, make sure students have access to an adequate amount. Ideally, 1 cube per student**, however 2 to 3 students may be able to share 1. There is a non-Merge Cube option, so this is optional.*NOTE: Merge Object Viewer resources are accessible either in 3D format (no Merge Cubes required) or in Cube format (with Merge Cubes). You and your students will need an active internet connection on the devices to view the resources.**If you do not have access to an adequate number of Merge Cubes, you can download the following resource and create your own paper Merge Cube: Merge Cube (PDF)"
+                    "thead": "Session overviewSession 1: Students can recognise and understand the scale of a plant and an animal cell using Virtual Reality (VR).Session 2 (optional): Students can identify and create a model of a cell in a three-dimensional (3D) format and explain their representation. Digital technologiesVRARRoboticsDronesOther _______________Required resourcesFor detailed information on how to access the apps mentioned in this learning task, please visit the edSpark apps page <insert link>.Hardware:Handheld VR headsets (HHVR)Mobile DevicesVR videos:Virtual Plant Cell: Cell Explore, 2018. VPC 360° video by Plant Energy Biology(5:58)Chapter 1: Introduction to the Animal Cell (5:31)Suggested videos:Microscope View of Plant Cells (0:31)Mitosis in an animal cell Under the Microscope(0:31)Apps:YouTube - For viewing VR videos. This needs to be whitelisted and downloaded on your mobile devices. For session 2: Tinkercad accounts - For creating 3D assets; and/or CoSpaces EDU (Download via Google Play or Apple App Store) / CoSpaces accounts (Free or Pro*)  Teaching resources:<placeholder link for 1 - Teaching Deck> - Download a copy for your own use.<placeholder link for 1 - Student Digital Notebook> - Download a copy and distribute it to students via email or learning management system.<placeholder link for 1 - Session 2 Checklist> - If proceeding with Session 2, teachers may use this as a checklist when marking the 3D cells modelling task.Other resources to try (optional)For detailed information on how to access the apps mentioned in this learning task, please visit the edSpark apps page <insert link>.Hardware:Immersive Virtual Reality Headsets  (for IMVR experiences)HHVR app:Inside Cell VR (via Google Play Store) - This needs to be whitelisted and downloaded on mobile devices. IMVR apps (via Steam):Journey To The Centre of the Cell (simulation; Free) - This needs to be downloaded from Steam and installed on your IMVR system.The Body VR: Journey Inside a Cell (simulation; Free) - This needs to be downloaded from Steam and installed on your IMVR system.Digital 3D cell models:Sketchfab 3D animal cell - A pre-made downloadable model of an animal cell that students can use.Sketchfab 3D plant cell - A pre-made downloadable model of a plant cell that students can use.Articles:The Use of Virtual Reality in the Teaching of Challenging Concepts in Virology, Cell Culture and Molecular BiologyMiscellaneous:VR/AR Safety Poster (PDF)No tech creation:It’s also possible to create a physical 3D plant or animal cell using materials like paper mache, plasticine, clay, plastic bricks (Lego), foam craft balls, or edible materials (e.g., cake, fruits, etc).Planning and preparationNOTE: This learning task may be introduced in the middle or at the end of the unit.Assumptions For session 1, students should have...Prior lessons in the topic of ‘Cells’ in the sub-strand of biological sciences. Preferably, they have been able to view cells under a microscope in the lab. If not, make sure to watch a relevant video. Suggested videos: Microscope View of Plant Cells (0:31)Mitosis in an animal cell Under the Microscope(0:31)Familiarity with the use of VR devices (HHVR and/or IMVR).For session 2, students should have the following if they’re building a digital 3D model...Basic CoSpaces building skills for AR/VR experiences. Make sure to allocate 1 to 2 lessons to introduce CoSpaces if students have no background with the tool. Basic Tinkercad building skills for creating additional 3D assets. Otherwise, allocate at least 1 lesson to introduce Tinkercad skills.CoSpaces accounts (free or paid)Tinkercad accounts (free)If students are building a physical model, they should have access to materials like papier-mache, plasticine, clay, plastic bricks (Lego), foam craft balls, or edible materials (e.g., cake, fruits, etc).Additional preparations for teachers Make sure that HHVR and/or IMVR devices have the necessary apps and videos installed. Teachers should watch the videos and/or test the VR apps/games in advance to make sure that they are appropriate for their respective classes and devices.  Make sure all devices are fully charged and set-up appropriately before the lesson, with all apps installed and working.Download and distribute copies of the student digital notebook to students via email or a learning management system."
                 }
             ],
             "tr": [
-                "Session overviewSession 1: Students can identify artefacts from ancient societies and share key information about each one.Session 2: Students can create an AR experience, or a Merge Cube, demonstrating their knowledge about a significant historical figure from their chosen ancient world."
+                "Session overviewSession 1: Students can recognise and understand the scale of a plant and an animal cell using Virtual Reality (VR).Session 2 (optional): Students can identify and create a model of a cell in a three-dimensional (3D) format and explain their representation."
             ],
             "th": [
                 "Session overview"
@@ -39,16 +39,16 @@ export const data = {
                 }
             ],
             "th": [
-                "Session 1: Students can identify artefacts from ancient societies and share key information about each one.Session 2: Students can create an AR experience, or a Merge Cube, demonstrating their knowledge about a significant historical figure from their chosen ancient world.",
+                "Session 1: Students can recognise and understand the scale of a plant and an animal cell using Virtual Reality (VR).Session 2 (optional): Students can identify and create a model of a cell in a three-dimensional (3D) format and explain their representation.",
                 "Digital technologies"
             ],
             "paragraph": [
-                "Session 1: Students can identify artefacts from ancient societies and share key information about each one.",
-                "Session 2: Students can create an AR experience, or a Merge Cube, demonstrating their knowledge about a significant historical figure from their chosen ancient world."
+                "Session 1: Students can recognise and understand the scale of a plant and an animal cell using Virtual Reality (VR).",
+                "Session 2 (optional): Students can identify and create a model of a cell in a three-dimensional (3D) format and explain their representation."
             ],
             "strong": [
                 "Session 1:",
-                "Session 2"
+                "Session 2 (optional):"
             ],
             "tr": [
                 "Digital technologiesVRARRoboticsDronesOther _______________"
@@ -72,19 +72,16 @@ export const data = {
                 "Other _______________"
             ],
             "tr": [
-                "Required resourcesFor detailed information on how to access the apps mentioned in this learning task, please visit the edSpark apps page <insert link>.Session 1:Hardware:AR-enabled mobile devices / iPadsApps:Merge Object Viewer (Download via Google Play or Apple App Store) - For viewing and learning about various artefacts in Augmented Reality (AR).  Make sure to log-in for each individual device prior to the lesson, as this will take some time to do. This usually just needs to be done once, unless the app is updated. Teaching resources:<placeholder link for 4 - Teaching Deck> - This is a slide deck template that teachers can download and use for this learning task. <placeholder link for 4 - Task Sheet> - This task sheet needs to be downloaded and distributed to students either as a digital or printed resource. ‘Think Puzzle Explore’ template via Canva - Students can access this Thinking Routine template for their brainstorming session.Session 2 (optional):Hardware:Mobile devices / iPadsMerge Cubes Laptops or iPad tablets for students Apps:CoSpaces EDU (Available via Google Play or Apple App Store) / CoSpaces accounts (Free or Pro*)  (OPTIONAL: If you would like to create with Merge Cubes, you will need Pro accounts with the Merge Cube add-on for your students)CoSpaces Experiences:Ancient Egypt - Cleopatra Profile (Merge Cube AR version): https://edu.cospaces.io/KLK-YKD  Ancient Egypt - Cleopatra Profile (AR version): https://edu.cospaces.io/GUB-URQ Teaching resources:<placeholder link for 4 - Teaching Deck> - This is a slide deck template that teachers can download and use for this learning task. <placeholder link for 4 - AR Planning Sheet> - If continuing this learning task to part 2, students may use this planning sheet when creating their AR experiences or physical world model."
+                "Required resourcesFor detailed information on how to access the apps mentioned in this learning task, please visit the edSpark apps page <insert link>.Hardware:Handheld VR headsets (HHVR)Mobile DevicesVR videos:Virtual Plant Cell: Cell Explore, 2018. VPC 360° video by Plant Energy Biology(5:58)Chapter 1: Introduction to the Animal Cell (5:31)Suggested videos:Microscope View of Plant Cells (0:31)Mitosis in an animal cell Under the Microscope(0:31)Apps:YouTube - For viewing VR videos. This needs to be whitelisted and downloaded on your mobile devices. For session 2: Tinkercad accounts - For creating 3D assets; and/or CoSpaces EDU (Download via Google Play or Apple App Store) / CoSpaces accounts (Free or Pro*)  Teaching resources:<placeholder link for 1 - Teaching Deck> - Download a copy for your own use.<placeholder link for 1 - Student Digital Notebook> - Download a copy and distribute it to students via email or learning management system.<placeholder link for 1 - Session 2 Checklist> - If proceeding with Session 2, teachers may use this as a checklist when marking the 3D cells modelling task."
             ]
         }
     ],
     "Required Resources": {
         "HardwareS1": [
-            "AR-enabled mobile devices / iPads"
+            "Handheld VR headsets (HHVR)",
+            "Mobile Devices"
         ],
-        "HardwareS2": [
-            "Mobile devices / iPads",
-            "Merge Cubes",
-            "Laptops or iPad tablets for students"
-        ],
+        "HardwareS2": [],
         "Required Resources": [
             {
                 "Required Resources_link": [
@@ -95,111 +92,103 @@ export const data = {
                     },
                     {
                         "name": "Required Resources_link2",
-                        "href": "https://play.google.com/store/apps/details?id=com.MergeCube.ObjectViewer&hl=en&gl=US",
-                        "text": "Google Play"
+                        "href": "https://youtu.be/rmgf0VDDlH8?si=lY9lEUWkzq_J1hd7",
+                        "text": "Virtual Plant Cell: Cell Explore, 2018. VPC 360° video by Plant Energy Biology"
                     },
                     {
                         "name": "Required Resources_link3",
-                        "href": "https://apps.apple.com/au/app/merge-object-viewer/id1367544362",
-                        "text": "Apple App Store"
+                        "href": "https://youtu.be/PzxxEVdM1xI?si=_KdhMB_PXyaPxL6r",
+                        "text": "Chapter 1: Introduction to the Animal Cell"
                     },
                     {
                         "name": "Required Resources_link4",
-                        "href": "https://www.canva.com/design/DAF1aNUqACI/t2MBpoPgHv1KBdVRhSSuCQ/view?utm_content=DAF1aNUqACI&utm_campaign=designshare&utm_medium=link&utm_source=publishsharelink&mode=preview",
-                        "text": "Think Puzzle Explore’ template via Canva"
+                        "href": "https://www.youtube.com/watch?v=flLN3z9ExRc",
+                        "text": "Microscope View of Plant Cells"
                     },
                     {
                         "name": "Required Resources_link5",
+                        "href": "https://www.youtube.com/watch?v=DDqDmsQwfLU",
+                        "text": "Mitosis in an animal cell Under the Microscope"
+                    },
+                    {
+                        "name": "Required Resources_link6",
+                        "href": "https://www.tinkercad.com/",
+                        "text": "Tinkercad"
+                    },
+                    {
+                        "name": "Required Resources_link7",
                         "href": "https://play.google.com/store/apps/details?id=delightex.cospaces.edu&hl=en_AU&gl=US",
                         "text": "Google Play"
                     },
                     {
-                        "name": "Required Resources_link6",
+                        "name": "Required Resources_link8",
                         "href": "https://apps.apple.com/au/app/cospaces-edu/id1224622426",
                         "text": "Apple App Store"
                     },
                     {
-                        "name": "Required Resources_link7",
+                        "name": "Required Resources_link9",
                         "href": "https://cospaces.io/edu/",
                         "text": "CoSpaces"
-                    },
-                    {
-                        "name": "Required Resources_link8",
-                        "href": "https://edu.cospaces.io/KLK-YKD",
-                        "text": "https://edu.cospaces.io/KLK-YKD"
-                    },
-                    {
-                        "name": "Required Resources_link9",
-                        "href": "https://edu.cospaces.io/GUB-URQ",
-                        "text": "https://edu.cospaces.io/GUB-URQ"
                     }
                 ],
                 "th": [
-                    "For detailed information on how to access the apps mentioned in this learning task, please visit the edSpark apps page <insert link>.Session 1:Hardware:AR-enabled mobile devices / iPadsApps:Merge Object Viewer (Download via Google Play or Apple App Store) - For viewing and learning about various artefacts in Augmented Reality (AR).  Make sure to log-in for each individual device prior to the lesson, as this will take some time to do. This usually just needs to be done once, unless the app is updated. Teaching resources:<placeholder link for 4 - Teaching Deck> - This is a slide deck template that teachers can download and use for this learning task. <placeholder link for 4 - Task Sheet> - This task sheet needs to be downloaded and distributed to students either as a digital or printed resource. ‘Think Puzzle Explore’ template via Canva - Students can access this Thinking Routine template for their brainstorming session.Session 2 (optional):Hardware:Mobile devices / iPadsMerge Cubes Laptops or iPad tablets for students Apps:CoSpaces EDU (Available via Google Play or Apple App Store) / CoSpaces accounts (Free or Pro*)  (OPTIONAL: If you would like to create with Merge Cubes, you will need Pro accounts with the Merge Cube add-on for your students)CoSpaces Experiences:Ancient Egypt - Cleopatra Profile (Merge Cube AR version): https://edu.cospaces.io/KLK-YKD  Ancient Egypt - Cleopatra Profile (AR version): https://edu.cospaces.io/GUB-URQ Teaching resources:<placeholder link for 4 - Teaching Deck> - This is a slide deck template that teachers can download and use for this learning task. <placeholder link for 4 - AR Planning Sheet> - If continuing this learning task to part 2, students may use this planning sheet when creating their AR experiences or physical world model.",
+                    "For detailed information on how to access the apps mentioned in this learning task, please visit the edSpark apps page <insert link>.Hardware:Handheld VR headsets (HHVR)Mobile DevicesVR videos:Virtual Plant Cell: Cell Explore, 2018. VPC 360° video by Plant Energy Biology(5:58)Chapter 1: Introduction to the Animal Cell (5:31)Suggested videos:Microscope View of Plant Cells (0:31)Mitosis in an animal cell Under the Microscope(0:31)Apps:YouTube - For viewing VR videos. This needs to be whitelisted and downloaded on your mobile devices. For session 2: Tinkercad accounts - For creating 3D assets; and/or CoSpaces EDU (Download via Google Play or Apple App Store) / CoSpaces accounts (Free or Pro*)  Teaching resources:<placeholder link for 1 - Teaching Deck> - Download a copy for your own use.<placeholder link for 1 - Student Digital Notebook> - Download a copy and distribute it to students via email or learning management system.<placeholder link for 1 - Session 2 Checklist> - If proceeding with Session 2, teachers may use this as a checklist when marking the 3D cells modelling task.",
                     "Other resources to try (optional)"
                 ],
                 "paragraph": [
                     "For detailed information on how to access the apps mentioned in this learning task, please visit the edSpark apps page <insert link>.",
-                    "Session 1:",
                     "Hardware:",
+                    "VR videos:",
+                    "Suggested videos:",
                     "Apps:",
-                    "Teaching resources:",
-                    "Session 2 (optional):",
-                    "Hardware:",
-                    "Apps:",
+                    "For session 2:",
                     "Teaching resources:"
                 ],
                 "strong": [
-                    "Session 1:",
                     "Hardware:",
+                    "VR videos:",
+                    "Suggested videos:",
                     "Apps:",
-                    "Merge Object Viewer",
-                    "Teaching resources",
-                    "Session 2 (optional):",
-                    "Hardware",
-                    "Apps:",
+                    "YouTube",
+                    "For session 2:",
+                    "Tinkercad",
                     "CoSpaces EDU",
                     "Teaching resources"
                 ],
                 "ul": [
-                    "AR-enabled mobile devices / iPads",
-                    "Merge Object Viewer (Download via Google Play or Apple App Store) - For viewing and learning about various artefacts in Augmented Reality (AR).  Make sure to log-in for each individual device prior to the lesson, as this will take some time to do. This usually just needs to be done once, unless the app is updated.",
-                    "<placeholder link for 4 - Teaching Deck> - This is a slide deck template that teachers can download and use for this learning task. <placeholder link for 4 - Task Sheet> - This task sheet needs to be downloaded and distributed to students either as a digital or printed resource. ‘Think Puzzle Explore’ template via Canva - Students can access this Thinking Routine template for their brainstorming session.",
-                    "Mobile devices / iPadsMerge Cubes Laptops or iPad tablets for students",
-                    "CoSpaces EDU (Available via Google Play or Apple App Store) / CoSpaces accounts (Free or Pro*)  (OPTIONAL: If you would like to create with Merge Cubes, you will need Pro accounts with the Merge Cube add-on for your students)CoSpaces Experiences:Ancient Egypt - Cleopatra Profile (Merge Cube AR version): https://edu.cospaces.io/KLK-YKD  Ancient Egypt - Cleopatra Profile (AR version): https://edu.cospaces.io/GUB-URQ",
-                    "CoSpaces Experiences:Ancient Egypt - Cleopatra Profile (Merge Cube AR version): https://edu.cospaces.io/KLK-YKD  Ancient Egypt - Cleopatra Profile (AR version): https://edu.cospaces.io/GUB-URQ",
-                    "Ancient Egypt - Cleopatra Profile (Merge Cube AR version): https://edu.cospaces.io/KLK-YKD  Ancient Egypt - Cleopatra Profile (AR version): https://edu.cospaces.io/GUB-URQ",
-                    "<placeholder link for 4 - Teaching Deck> - This is a slide deck template that teachers can download and use for this learning task. <placeholder link for 4 - AR Planning Sheet> - If continuing this learning task to part 2, students may use this planning sheet when creating their AR experiences or physical world model."
+                    "Handheld VR headsets (HHVR)Mobile Devices",
+                    "Virtual Plant Cell: Cell Explore, 2018. VPC 360° video by Plant Energy Biology(5:58)Chapter 1: Introduction to the Animal Cell (5:31)",
+                    "Microscope View of Plant Cells (0:31)Mitosis in an animal cell Under the Microscope(0:31)",
+                    "YouTube - For viewing VR videos. This needs to be whitelisted and downloaded on your mobile devices.",
+                    "Tinkercad accounts - For creating 3D assets; and/or CoSpaces EDU (Download via Google Play or Apple App Store) / CoSpaces accounts (Free or Pro*)",
+                    "Tinkercad accounts - For creating 3D assets; and/or CoSpaces EDU (Download via Google Play or Apple App Store) / CoSpaces accounts (Free or Pro*)",
+                    "<placeholder link for 1 - Teaching Deck> - Download a copy for your own use.<placeholder link for 1 - Student Digital Notebook> - Download a copy and distribute it to students via email or learning management system.<placeholder link for 1 - Session 2 Checklist> - If proceeding with Session 2, teachers may use this as a checklist when marking the 3D cells modelling task."
                 ],
                 "list": [
-                    "AR-enabled mobile devices / iPads",
-                    "Merge Object Viewer (Download via Google Play or Apple App Store) - For viewing and learning about various artefacts in Augmented Reality (AR).  Make sure to log-in for each individual device prior to the lesson, as this will take some time to do. This usually just needs to be done once, unless the app is updated.",
-                    "<placeholder link for 4 - Teaching Deck> - This is a slide deck template that teachers can download and use for this learning task.",
-                    "<placeholder link for 4 - Task Sheet> - This task sheet needs to be downloaded and distributed to students either as a digital or printed resource.",
-                    "‘Think Puzzle Explore’ template via Canva - Students can access this Thinking Routine template for their brainstorming session.",
-                    "Mobile devices / iPads",
-                    "Merge Cubes",
-                    "Laptops or iPad tablets for students",
-                    "CoSpaces EDU (Available via Google Play or Apple App Store) / CoSpaces accounts (Free or Pro*)  (OPTIONAL: If you would like to create with Merge Cubes, you will need Pro accounts with the Merge Cube add-on for your students)CoSpaces Experiences:Ancient Egypt - Cleopatra Profile (Merge Cube AR version): https://edu.cospaces.io/KLK-YKD  Ancient Egypt - Cleopatra Profile (AR version): https://edu.cospaces.io/GUB-URQ",
-                    "CoSpaces Experiences:Ancient Egypt - Cleopatra Profile (Merge Cube AR version): https://edu.cospaces.io/KLK-YKD  Ancient Egypt - Cleopatra Profile (AR version): https://edu.cospaces.io/GUB-URQ",
-                    "Ancient Egypt - Cleopatra Profile (Merge Cube AR version): https://edu.cospaces.io/KLK-YKD",
-                    "Ancient Egypt - Cleopatra Profile (AR version): https://edu.cospaces.io/GUB-URQ",
-                    "<placeholder link for 4 - Teaching Deck> - This is a slide deck template that teachers can download and use for this learning task.",
-                    "<placeholder link for 4 - AR Planning Sheet> - If continuing this learning task to part 2, students may use this planning sheet when creating their AR experiences or physical world model."
-                ],
-                "em": [
-                    {
-                        "em": "(OPTIONAL: If you would like to create with Merge Cubes, you will need Pro accounts with the Merge Cube add-on for your students)"
-                    }
+                    "Handheld VR headsets (HHVR)",
+                    "Mobile Devices",
+                    "Virtual Plant Cell: Cell Explore, 2018. VPC 360° video by Plant Energy Biology(5:58)",
+                    "Chapter 1: Introduction to the Animal Cell (5:31)",
+                    "Microscope View of Plant Cells (0:31)",
+                    "Mitosis in an animal cell Under the Microscope(0:31)",
+                    "YouTube - For viewing VR videos. This needs to be whitelisted and downloaded on your mobile devices.",
+                    "Tinkercad accounts - For creating 3D assets; and/or CoSpaces EDU (Download via Google Play or Apple App Store) / CoSpaces accounts (Free or Pro*)",
+                    "Tinkercad accounts - For creating 3D assets; and/or",
+                    "CoSpaces EDU (Download via Google Play or Apple App Store) / CoSpaces accounts (Free or Pro*)",
+                    "<placeholder link for 1 - Teaching Deck> - Download a copy for your own use.",
+                    "<placeholder link for 1 - Student Digital Notebook> - Download a copy and distribute it to students via email or learning management system.",
+                    "<placeholder link for 1 - Session 2 Checklist> - If proceeding with Session 2, teachers may use this as a checklist when marking the 3D cells modelling task."
                 ],
                 "tr": [
-                    "Other resources to try (optional)3D models repository sites:Poly.Pizza - Students can download additional 3D models from this site, with attribution (for free accounts).Sketchfab - Students can download 3D models from this site as royalty free assets.No tech creation:Students may opt to create a physical cardboard cube where they can attach photos, illustrations and text about their chosen ancient historical figure. They can print out the 3D net found in this document <placeholder link for 4 - AR Planning Sheet>."
+                    "Other resources to try (optional)For detailed information on how to access the apps mentioned in this learning task, please visit the edSpark apps page <insert link>.Hardware:Immersive Virtual Reality Headsets  (for IMVR experiences)HHVR app:Inside Cell VR (via Google Play Store) - This needs to be whitelisted and downloaded on mobile devices. IMVR apps (via Steam):Journey To The Centre of the Cell (simulation; Free) - This needs to be downloaded from Steam and installed on your IMVR system.The Body VR: Journey Inside a Cell (simulation; Free) - This needs to be downloaded from Steam and installed on your IMVR system.Digital 3D cell models:Sketchfab 3D animal cell - A pre-made downloadable model of an animal cell that students can use.Sketchfab 3D plant cell - A pre-made downloadable model of a plant cell that students can use.Articles:The Use of Virtual Reality in the Teaching of Challenging Concepts in Virology, Cell Culture and Molecular BiologyMiscellaneous:VR/AR Safety Poster (PDF)No tech creation:It’s also possible to create a physical 3D plant or animal cell using materials like paper mache, plasticine, clay, plastic bricks (Lego), foam craft balls, or edible materials (e.g., cake, fruits, etc)."
                 ]
             }
         ]
     },
     "Other resources to try (optional)": {
-        "HardwareS1": [],
+        "HardwareS1": [
+            "Immersive Virtual Reality Headsets  (for IMVR experiences)"
+        ],
         "HardwareS2": [],
         "Other resources to try (optional)": [
             {
@@ -211,40 +200,86 @@ export const data = {
                     },
                     {
                         "name": "Other Resources to Try (Optional)_link2",
-                        "href": "https://poly.pizza/",
-                        "text": "Poly.Pizza"
+                        "href": "https://play.google.com/store/apps/details?id=com.scientificanimations.insidecellvrv2&hl=en_US",
+                        "text": "Inside Cell VR"
                     },
                     {
                         "name": "Other Resources to Try (Optional)_link3",
-                        "href": "https://sketchfab.com/features/free-3d-models",
-                        "text": "Sketchfab"
+                        "href": "https://store.steampowered.com/app/1308470/Journey_to_the_Centre_of_the_Cell/",
+                        "text": "Journey To The Centre of the Cell"
+                    },
+                    {
+                        "name": "Other Resources to Try (Optional)_link4",
+                        "href": "https://store.steampowered.com/app/451980/The_Body_VR_Journey_Inside_a_Cell/",
+                        "text": "The Body VR: Journey Inside a Cell"
+                    },
+                    {
+                        "name": "Other Resources to Try (Optional)_link5",
+                        "href": "https://sketchfab.com/3d-models/animal-cell-downloadable-ddc40bb0900544959f02d3ff83c32615",
+                        "text": "Sketchfab 3D animal cell"
+                    },
+                    {
+                        "name": "Other Resources to Try (Optional)_link6",
+                        "href": "https://sketchfab.com/3d-models/plant-cell-cell-structure-1c5ce80d03d149208d30cc5aeb6e42fb",
+                        "text": "Sketchfab 3D plant cell"
+                    },
+                    {
+                        "name": "Other Resources to Try (Optional)_link7",
+                        "href": "https://www.frontiersin.org/articles/10.3389/frvir.2021.670909/full",
+                        "text": "The Use of Virtual Reality in the Teaching of Challenging Concepts in Virology, Cell Culture and Molecular Biology"
+                    },
+                    {
+                        "name": "Other Resources to Try (Optional)_link8",
+                        "href": "https://drive.google.com/file/d/1vMsHdVpuF-DnnHzKcPd3-yFeMyBEpmNs/view?usp=sharing",
+                        "text": "VR/AR Safety Poster"
                     }
                 ],
                 "th": [
-                    "3D models repository sites:Poly.Pizza - Students can download additional 3D models from this site, with attribution (for free accounts).Sketchfab - Students can download 3D models from this site as royalty free assets.No tech creation:Students may opt to create a physical cardboard cube where they can attach photos, illustrations and text about their chosen ancient historical figure. They can print out the 3D net found in this document <placeholder link for 4 - AR Planning Sheet>.",
-                    "Planning and preparation"
+                    "For detailed information on how to access the apps mentioned in this learning task, please visit the edSpark apps page <insert link>.Hardware:Immersive Virtual Reality Headsets  (for IMVR experiences)HHVR app:Inside Cell VR (via Google Play Store) - This needs to be whitelisted and downloaded on mobile devices. IMVR apps (via Steam):Journey To The Centre of the Cell (simulation; Free) - This needs to be downloaded from Steam and installed on your IMVR system.The Body VR: Journey Inside a Cell (simulation; Free) - This needs to be downloaded from Steam and installed on your IMVR system.Digital 3D cell models:Sketchfab 3D animal cell - A pre-made downloadable model of an animal cell that students can use.Sketchfab 3D plant cell - A pre-made downloadable model of a plant cell that students can use.Articles:The Use of Virtual Reality in the Teaching of Challenging Concepts in Virology, Cell Culture and Molecular BiologyMiscellaneous:VR/AR Safety Poster (PDF)No tech creation:It’s also possible to create a physical 3D plant or animal cell using materials like paper mache, plasticine, clay, plastic bricks (Lego), foam craft balls, or edible materials (e.g., cake, fruits, etc).",
+                    "Planning and preparationNOTE: This learning task may be introduced in the middle or at the end of the unit."
                 ],
                 "paragraph": [
-                    "3D models repository sites:",
+                    "For detailed information on how to access the apps mentioned in this learning task, please visit the edSpark apps page <insert link>.",
+                    "Hardware:",
+                    "HHVR app:",
+                    "IMVR apps (via Steam):",
+                    "Digital 3D cell models:",
+                    "Articles:",
+                    "Miscellaneous:",
                     "No tech creation:"
                 ],
                 "strong": [
-                    "3D models repository sites:",
-                    "Poly.Pizza",
-                    "Sketchfab",
+                    "Hardware:",
+                    "HHVR app:",
+                    "",
+                    "IMVR apps",
+                    "Digital 3D cell models:",
+                    "Articles:",
+                    "Miscellaneous:",
                     "No tech creation:"
                 ],
                 "ul": [
-                    "Poly.Pizza - Students can download additional 3D models from this site, with attribution (for free accounts).Sketchfab - Students can download 3D models from this site as royalty free assets.",
-                    "Students may opt to create a physical cardboard cube where they can attach photos, illustrations and text about their chosen ancient historical figure. They can print out the 3D net found in this document <placeholder link for 4 - AR Planning Sheet>."
+                    "Immersive Virtual Reality Headsets  (for IMVR experiences)",
+                    "Inside Cell VR (via Google Play Store) - This needs to be whitelisted and downloaded on mobile devices.",
+                    "Journey To The Centre of the Cell (simulation; Free) - This needs to be downloaded from Steam and installed on your IMVR system.The Body VR: Journey Inside a Cell (simulation; Free) - This needs to be downloaded from Steam and installed on your IMVR system.",
+                    "Sketchfab 3D animal cell - A pre-made downloadable model of an animal cell that students can use.Sketchfab 3D plant cell - A pre-made downloadable model of a plant cell that students can use.",
+                    "The Use of Virtual Reality in the Teaching of Challenging Concepts in Virology, Cell Culture and Molecular Biology",
+                    "VR/AR Safety Poster (PDF)",
+                    "It’s also possible to create a physical 3D plant or animal cell using materials like paper mache, plasticine, clay, plastic bricks (Lego), foam craft balls, or edible materials (e.g., cake, fruits, etc)."
                 ],
                 "list": [
-                    "Poly.Pizza - Students can download additional 3D models from this site, with attribution (for free accounts).",
-                    "Sketchfab - Students can download 3D models from this site as royalty free assets.",
-                    "Students may opt to create a physical cardboard cube where they can attach photos, illustrations and text about their chosen ancient historical figure. They can print out the 3D net found in this document <placeholder link for 4 - AR Planning Sheet>."
+                    "Immersive Virtual Reality Headsets  (for IMVR experiences)",
+                    "Inside Cell VR (via Google Play Store) - This needs to be whitelisted and downloaded on mobile devices.",
+                    "Journey To The Centre of the Cell (simulation; Free) - This needs to be downloaded from Steam and installed on your IMVR system.",
+                    "The Body VR: Journey Inside a Cell (simulation; Free) - This needs to be downloaded from Steam and installed on your IMVR system.",
+                    "Sketchfab 3D animal cell - A pre-made downloadable model of an animal cell that students can use.",
+                    "Sketchfab 3D plant cell - A pre-made downloadable model of a plant cell that students can use.",
+                    "The Use of Virtual Reality in the Teaching of Challenging Concepts in Virology, Cell Culture and Molecular Biology",
+                    "VR/AR Safety Poster (PDF)",
+                    "It’s also possible to create a physical 3D plant or animal cell using materials like paper mache, plasticine, clay, plastic bricks (Lego), foam craft balls, or edible materials (e.g., cake, fruits, etc)."
                 ],
                 "tr": [
-                    "Planning and preparationAssumptions For session 1:Students are expected to have:Completed some lessons about ancient worlds.A basic understanding of Augmented Reality (AR) technology.The knowledge and skills to take screenshots using their devices.For session 2:Students are expected to have:Selected their significant historical figure from one of the ancient worlds and completed their basic planning and research. Completed the <placeholder link for 4 - AR Planning Sheet> in conjunction with selecting their historical figures.If completing the AR experience - Some background in creating in CoSpaces (and Merge Cubes, if choosing this option). Otherwise, please add 1 to 2 lessons to introduce this skill.If completing the physical model - Access to relevant materials, such as cardboard and printer.Additional preparations for teachers Check the following -For session 1:Download a copy of the following teaching resources:<placeholder link for 4 - Teaching Deck>‘Think Puzzle Explore’ template via Canva  <placeholder link for 4 - Task Sheet>Students have access to the Think Puzzle Explore’ template via Canva  and <placeholder link for 4 - Task Sheet>. These resources may be printed or distributed digitally via email or the school’s learning management system.Make sure the Merge Object Viewer app is downloaded and installed on the school’s mobile devices / iPads (available via Google Play or Apple App Store). Each device will need to be individually logged in using your preferred account.Make sure to launch the apps and check that the Ancient Egypt* and The Museum Collection* resources are loading properly. If the app doesn’t work, please check if the app has been added to the school’s whitelist. For session 2:Recommended apps are installed and working on all devices.All students have the required logins to CoSpaces.To use the Merge Cubes experience, make sure students have access to an adequate amount. Ideally, 1 cube per student**, however 2 to 3 students may be able to share 1. There is a non-Merge Cube option, so this is optional.*NOTE: Merge Object Viewer resources are accessible either in 3D format (no Merge Cubes required) or in Cube format (with Merge Cubes). You and your students will need an active internet connection on the devices to view the resources.**If you do not have access to an adequate number of Merge Cubes, you can download the following resource and create your own paper Merge Cube: Merge Cube (PDF)"
+                    "Planning and preparationNOTE: This learning task may be introduced in the middle or at the end of the unit.Assumptions For session 1, students should have...Prior lessons in the topic of ‘Cells’ in the sub-strand of biological sciences. Preferably, they have been able to view cells under a microscope in the lab. If not, make sure to watch a relevant video. Suggested videos: Microscope View of Plant Cells (0:31)Mitosis in an animal cell Under the Microscope(0:31)Familiarity with the use of VR devices (HHVR and/or IMVR).For session 2, students should have the following if they’re building a digital 3D model...Basic CoSpaces building skills for AR/VR experiences. Make sure to allocate 1 to 2 lessons to introduce CoSpaces if students have no background with the tool. Basic Tinkercad building skills for creating additional 3D assets. Otherwise, allocate at least 1 lesson to introduce Tinkercad skills.CoSpaces accounts (free or paid)Tinkercad accounts (free)If students are building a physical model, they should have access to materials like papier-mache, plasticine, clay, plastic bricks (Lego), foam craft balls, or edible materials (e.g., cake, fruits, etc).Additional preparations for teachers Make sure that HHVR and/or IMVR devices have the necessary apps and videos installed. Teachers should watch the videos and/or test the VR apps/games in advance to make sure that they are appropriate for their respective classes and devices.  Make sure all devices are fully charged and set-up appropriately before the lesson, with all apps installed and working.Download and distribute copies of the student digital notebook to students via email or a learning management system."
                 ]
             }
         ]

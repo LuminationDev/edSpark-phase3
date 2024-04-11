@@ -483,6 +483,7 @@ const displaySelectedContent = () => {
     } else {
         displayRRHardwareListS1.value = "Digital Technologies content not found.";
     }
+    console.log(displayRRHardwareListS1.value)
     //get the content from the object's array that has lists of contents in RR Session2
     let summaryRR_HardwareS2 = "";
     if (data["Required Resources"]?.HardwareS2) {
@@ -496,9 +497,11 @@ const displaySelectedContent = () => {
         });
         summaryRR_HardwareS2 += "</ul>";
         displayRRHardwareListS2.value = summaryRR_HardwareS2.trim();
+
     } else {
         displayRRHardwareListS2.value = "Digital Technologies content not found.";
     }
+    console.log(displayRRHardwareListS2.value)
     //get the content from the object's array that has lists of contents in RR Session1
     let summaryOR_HardwareS1 = "";
     if (data["Other resources to try (optional)"]?.HardwareS1) {
@@ -835,7 +838,7 @@ const extractHardwareItems = (html) => {
                                         v-if="displayRRHardwareListS2"
                                         class="mb-1"
                                     >
-                                        Sessions 1:
+                                        Sessions 1:&nbsp;&nbsp;
                                     </div>
                                     <div v-html="displayRRHardwareListS1" />
                                 </div>
@@ -844,7 +847,7 @@ const extractHardwareItems = (html) => {
                                         v-if="displayRRHardwareListS2"
                                         class="mb-1"
                                     >
-                                        Sessions 2:
+                                        Sessions 2:&nbsp;&nbsp;
                                     </div>
                                     <div v-html="displayRRHardwareListS2" />
                                 </div>
