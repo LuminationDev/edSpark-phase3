@@ -475,6 +475,22 @@ const displaySelectedContent = () => {
     } else {
         displayRRHardwareListS1.value = "Digital Technologies content not found.";
     }
+    //get the content from the object's array that has lists of contents in RR Session2
+    let summaryRR_HardwareS2 = "";
+    if (data["Required Resources"]?.HardwareS2) {
+        summaryRR_HardwareS2 += "<ul>";
+        data["Required Resources"].HardwareS2.forEach((sentence, index) => {
+            summaryRR_HardwareS2 += "<li>"+ sentence + "</li>";
+            // Add <br> tags after each list item except for the last one
+            if (index !== data['Required Resources'].HardwareS2.length - 1) {
+                summaryRR_HardwareS2 += "";
+            }
+        });
+        summaryRR_HardwareS2 += "</ul>";
+        displayRRHardwareListS2.value = summaryRR_HardwareS2.trim();
+    } else {
+        displayRRHardwareListS2.value = "Digital Technologies content not found.";
+    }
     //get the content from the object's array that has lists of contents in RR Session1
     let summaryOR_HardwareS1 = "";
     if (data["Other resources to try (optional)"]?.HardwareS1) {
@@ -805,7 +821,26 @@ const extractHardwareItems = (html) => {
                         />
                         <!-- Check if the current heading is "Hardware" -->
                         <template v-if="heading.content === 'Hardware'">
-                            <div v-html="displayRRHardwareListS1" />
+                            <div class="grid grid-cols-2 gap-10">
+                                <div class="flex flex-row">
+                                    <div
+                                        v-if="displayRRHardwareListS2"
+                                        class="mb-1"
+                                    >
+                                        Sessions 1:
+                                    </div>
+                                    <div v-html="displayRRHardwareListS1" />
+                                </div>
+                                <div class="flex flex-row">
+                                    <div
+                                        v-if="displayRRHardwareListS2"
+                                        class="mb-1"
+                                    >
+                                        Sessions 2:
+                                    </div>
+                                    <div v-html="displayRRHardwareListS2" />
+                                </div>
+                            </div>
                         </template>
                     </div>
                 </div>
