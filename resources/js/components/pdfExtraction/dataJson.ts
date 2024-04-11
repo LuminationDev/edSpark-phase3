@@ -77,10 +77,11 @@ export const data = {
         }
     ],
     "Required Resources": {
-        "Hardware": [
+        "HardwareS1": [
             "Handheld VR headsets (HHVR)",
             "Mobile Devices"
         ],
+        "HardwareS2": [],
         "Required Resources": [
             {
                 "Required Resources_link": [
@@ -185,9 +186,10 @@ export const data = {
         ]
     },
     "Other resources to try (optional)": {
-        "Hardware": [
+        "HardwareS1": [
             "Immersive Virtual Reality Headsets  (for IMVR experiences)"
         ],
+        "HardwareS2": [],
         "Other resources to try (optional)": [
             {
                 "Other Resources to Try (Optional)_link": [

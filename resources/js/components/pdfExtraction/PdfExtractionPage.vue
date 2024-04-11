@@ -26,7 +26,10 @@ const displayTaskSummary = ref('')
 const displaySessionOverview = ref('')
 const displayDigitalTechnologies = ref('')
 const displayRequiredResourcesParagraph = ref('')
-const displayRRHardwareList = ref('')
+const displayRRHardwareListS1 = ref('')
+const displayRRHardwareListS2 = ref('')
+const displayORHardwareListS1 = ref('')
+const displayORHardwareListS2 = ref('')
 const displayRequiredResourcesHeadings = ref([]) //in arrays form
 
 
@@ -46,7 +49,6 @@ const otherResourcesSections = ref([]);
 const handleFileUpload = async (event) => {
     const file = event.target.files[0];
     if (!file) return;
-
     try {
         const html = await convertToHtml(file);
         htmlContent.value = html;
@@ -63,11 +65,11 @@ const handleFileUpload = async (event) => {
         //console.log(htmlContent.value)
         // Call this function to extract hardware items from HTML content
         hardwaresItemsList.value = extractHardwareItems(htmlContent.value);
+        // using this for debugging
         console.log('Hardware Required Resources with Session1', hardwaresItemsList.value.hardwareItemsForRR_1);
         console.log('Hardware Required Resources with Session2', hardwaresItemsList.value.hardwareItemsForRR_2);
         console.log('Hardware Other Resources with Session1', hardwaresItemsList.value.hardwareItemsForOR_1);
         console.log('Hardware Other Resources with Session2', hardwaresItemsList.value.hardwareItemsForOR_2);
-
     } catch (error) {
         console.error('Error processing file:', error);
         htmlContent.value = ''; // Clear content in case of error
@@ -126,12 +128,14 @@ const downloadFormattedJson = () => {
         "Session Overview": sessionOverviewSections.value,
         "Digital Technologies": digitalTechnologiesSections.value,
         "Required Resources": {
-            "Hardware": extractHardwareItems(htmlContent.value).hardware1,
+            "HardwareS1": hardwaresItemsList.value.hardwareItemsForRR_1,
+            "HardwareS2": hardwaresItemsList.value.hardwareItemsForRR_2,
             // You can add other required resources here if needed
             "Required Resources": requiredResourcesSections.value
         },
         "Other resources to try (optional)": {
-            "Hardware": extractHardwareItems(htmlContent.value).hardware2,
+            "HardwareS1": hardwaresItemsList.value.hardwareItemsForOR_1,
+            "HardwareS2": hardwaresItemsList.value.hardwareItemsForOR_2,
             // You can add other required resources here if needed
             "Other resources to try (optional)": otherResourcesSections.value
         }
@@ -455,21 +459,37 @@ const displaySelectedContent = () => {
     } else {
         displayRequiredResourcesHeadings.value.push({ title: "Title Text will be here", content: "Digital Technologies content not found." });
     }
-    //get the content from the object's array that has lists of contents - "Session Overview"
-    let summaryRR_Hardware = "";
-    if (data["Required Resources"]?.Hardware) {
-        summaryRR_Hardware += "<ul>";
-        data["Required Resources"].Hardware.forEach((sentence, index) => {
-            summaryRR_Hardware += "<li>"+ sentence + "</li>";
+    //get the content from the object's array that has lists of contents in RR Session1
+    let summaryRR_HardwareS1 = "";
+    if (data["Required Resources"]?.HardwareS1) {
+        summaryRR_HardwareS1 += "<ul>";
+        data["Required Resources"].HardwareS1.forEach((sentence, index) => {
+            summaryRR_HardwareS1 += "<li>"+ sentence + "</li>";
             // Add <br> tags after each list item except for the last one
-            if (index !== data['Required Resources'].Hardware.length - 1) {
-                summaryRR_Hardware += "<br>";
+            if (index !== data['Required Resources'].HardwareS1.length - 1) {
+                summaryRR_HardwareS1 += "";
             }
         });
-        summaryRR_Hardware += "</ul>";
-        displayRRHardwareList.value = summaryRR_Hardware.trim();
+        summaryRR_HardwareS1 += "</ul>";
+        displayRRHardwareListS1.value = summaryRR_HardwareS1.trim();
     } else {
-        displayRRHardwareList.value = "Digital Technologies content not found.";
+        displayRRHardwareListS1.value = "Digital Technologies content not found.";
+    }
+    //get the content from the object's array that has lists of contents in RR Session1
+    let summaryOR_HardwareS1 = "";
+    if (data["Other resources to try (optional)"]?.HardwareS1) {
+        summaryOR_HardwareS1 += "<ul>";
+        data["Other resources to try (optional)"].HardwareS1.forEach((sentence, index) => {
+            summaryOR_HardwareS1 += "<li>"+ sentence + "</li>";
+            // Add <br> tags after each list item except for the last one
+            if (index !== data['Other resources to try (optional)'].HardwareS1.length - 1) {
+                summaryOR_HardwareS1 += "";
+            }
+        });
+        summaryOR_HardwareS1 += "</ul>";
+        displayORHardwareListS1.value = summaryOR_HardwareS1.trim();
+    } else {
+        displayORHardwareListS1.value = "Digital Technologies content not found.";
     }
     //get the content from the object's array
     displayHeading.value = data['Topic Heading'] || "Heading not found"
@@ -546,9 +566,9 @@ const extractHardwareItems = (html) => {
                             const liTags = ulTag.querySelectorAll('li');
                             liTags.forEach((liTag, index) => {
                                 if (inSession1) {
-                                    hardwareItemsForRR_1.push(hardwarePrefix + '_' + (index + 1) + ': ' + liTag.textContent.trim());
+                                    hardwareItemsForRR_1.push(liTag.textContent.trim());
                                 } else if (inSession2) {
-                                    hardwareItemsForRR_2.push(hardwarePrefix + '_' + (index + 1) + ': ' + liTag.textContent.trim());
+                                    hardwareItemsForRR_2.push(liTag.textContent.trim());
                                 }
                             });
                         }
@@ -574,9 +594,9 @@ const extractHardwareItems = (html) => {
                             const liTags = ulTag.querySelectorAll('li');
                             liTags.forEach((liTag, index) => {
                                 if (inSession1) {
-                                    hardwareItemsForOR_1.push(hardwarePrefix + '_' + (index + 1) + ': ' + liTag.textContent.trim());
+                                    hardwareItemsForOR_1.push(liTag.textContent.trim());
                                 } else if (inSession2) {
-                                    hardwareItemsForOR_2.push(hardwarePrefix + '_' + (index + 1) + ': ' + liTag.textContent.trim());
+                                    hardwareItemsForOR_2.push(liTag.textContent.trim());
                                 }
                             });
                         }
@@ -780,12 +800,13 @@ const extractHardwareItems = (html) => {
                         class="border-2 border-gray-300 mt-4 p-4 rounded-2xl"
                     >
                         <div
-                            class="mt-2 text-xl"
+                            class="mb-2 mt-2 text-xl"
                             v-html="heading.content"
                         />
-                        <div
-                            v-html="displayRRHardwareList"
-                        />
+                        <!-- Check if the current heading is "Hardware" -->
+                        <template v-if="heading.content === 'Hardware'">
+                            <div v-html="displayRRHardwareListS1" />
+                        </template>
                     </div>
                 </div>
                 <div class="border-2 border-gray-300 p-4 w-full">
@@ -793,7 +814,27 @@ const extractHardwareItems = (html) => {
                         Other Resources to try
                     </div>
                     <div class="mt-4 text-xl">
-                        Other resources paragraph will come here.
+                        <div
+                            v-if="displayRequiredResourcesParagraph"
+                            v-html="displayRequiredResourcesParagraph"
+                        />
+                        <div v-else>
+                            Required resources paragraph will come here.
+                        </div>
+                        <div
+                            v-for="(heading, index) in displayRequiredResourcesHeadings"
+                            :key="index"
+                            class="border-2 border-gray-300 mt-4 p-4 rounded-2xl"
+                        >
+                            <div
+                                class="mb-2 mt-2 text-xl"
+                                v-html="heading.content"
+                            />
+                            <!-- Check if the current heading is "Hardware" -->
+                            <template v-if="heading.content === 'Hardware'">
+                                <div v-html="displayORHardwareListS1" />
+                            </template>
+                        </div>
                     </div>
                 </div>
                 <div class="border-2 border-gray-300 p-4 w-full">
