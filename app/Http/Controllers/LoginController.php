@@ -49,6 +49,7 @@ class LoginController extends Controller
     {
         try {
             $idToken = $user->token;
+            Log::info($user);
 
             // Get the user's edSpark profile/data
             $userEdSpark = User::where('email', $user->email)->first();
