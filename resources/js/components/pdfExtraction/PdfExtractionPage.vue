@@ -451,10 +451,18 @@ const displaySelectedContent = () => {
         data["Required Resources"]?.['Required Resources'][0].strong.forEach((sentence) => {
             // Remove colons from the sentence
             sentence = sentence.replace(/:/g, '');
-            summaryRR_Headings += sentence;
-            displayRequiredResourcesHeadings.value.push({ title: "Title Text will be here", content: summaryRR_Headings.trim() });
-            summaryRR_Headings = ""; // Reset summaryRR_Headings for the next item
+            if (!sentence.includes("Session 1") && !sentence.includes("Session 2")) {
+                summaryRR_Headings += sentence;
+            }
+            // summaryRR_Headings += sentence;
+            if (summaryRR_Headings.trim().length > 0) { // Check if there is any content to add
 
+                displayRequiredResourcesHeadings.value.push({
+                    title: "Title Text will be here",
+                    content: summaryRR_Headings.trim()
+                });
+                summaryRR_Headings = ""; // Reset summaryRR_Headings for the next item
+            }
         });
     } else {
         displayRequiredResourcesHeadings.value.push({ title: "Title Text will be here", content: "Digital Technologies content not found." });
@@ -844,41 +852,41 @@ const extractHardwareItems = (html) => {
                         </template>
                     </div>
                 </div>
-                <div class="border-2 border-gray-300 p-4 w-full">
-                    <div class="text-3xl">
-                        Other Resources to try
+            </div>
+            <div class="border-2 border-gray-300 p-4 w-full">
+                <div class="text-3xl">
+                    Other Resources to try
+                </div>
+                <div class="mt-4 text-xl">
+                    <div
+                        v-if="displayRequiredResourcesParagraph"
+                        v-html="displayRequiredResourcesParagraph"
+                    />
+                    <div v-else>
+                        Required resources paragraph will come here.
                     </div>
-                    <div class="mt-4 text-xl">
+                    <div
+                        v-for="(heading, index) in displayRequiredResourcesHeadings"
+                        :key="index"
+                        class="border-2 border-gray-300 mt-4 p-4 rounded-2xl"
+                    >
                         <div
-                            v-if="displayRequiredResourcesParagraph"
-                            v-html="displayRequiredResourcesParagraph"
+                            class="mb-2 mt-2 text-xl"
+                            v-html="heading.content"
                         />
-                        <div v-else>
-                            Required resources paragraph will come here.
-                        </div>
-                        <div
-                            v-for="(heading, index) in displayRequiredResourcesHeadings"
-                            :key="index"
-                            class="border-2 border-gray-300 mt-4 p-4 rounded-2xl"
-                        >
-                            <div
-                                class="mb-2 mt-2 text-xl"
-                                v-html="heading.content"
-                            />
-                            <!-- Check if the current heading is "Hardware" -->
-                            <template v-if="heading.content === 'Hardware'">
-                                <div v-html="displayORHardwareListS1" />
-                            </template>
-                        </div>
+                        <!-- Check if the current heading is "Hardware" -->
+                        <template v-if="heading.content === 'Hardware'">
+                            <div v-html="displayORHardwareListS1" />
+                        </template>
                     </div>
                 </div>
-                <div class="border-2 border-gray-300 p-4 w-full">
-                    <div class="text-3xl">
-                        Planning and preparation
-                    </div>
-                    <div class="mt-4 text-xl">
-                        Planning Preparation paragraph will come here.
-                    </div>
+            </div>
+            <div class="border-2 border-gray-300 p-4 w-full">
+                <div class="text-3xl">
+                    Planning and preparation
+                </div>
+                <div class="mt-4 text-xl">
+                    Planning Preparation paragraph will come here.
                 </div>
             </div>
             <div class="mt-6 p-4">
