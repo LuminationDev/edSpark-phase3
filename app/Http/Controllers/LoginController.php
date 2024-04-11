@@ -42,7 +42,13 @@ class LoginController extends Controller
 
     private function getOktaUser()
     {
-        return Socialite::driver('okta')->user();
+        try{
+            return Socialite::driver('okta')->user();
+
+        } catch (\Exception $e){
+            Log::error('Failed to getOktaUser from Socialiate Driver ' .  $e->getMessage());
+            return NULL;
+        }
     }
 
     private function updateOrCreateLocalUser($user)
