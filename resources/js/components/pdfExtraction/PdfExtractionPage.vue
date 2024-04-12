@@ -39,6 +39,7 @@ const displayTeachingResourcesListS1 = ref('')
 const displayTeachingResourcesListS2 = ref('')
 const displayVRVideosListS1 = ref('')
 const displayVRVideosListS1Link = ref('')
+const displayVRVideosListText = ref('')
 const displayRequiredResourcesHeadings = ref([]) //in arrays form
 
 
@@ -635,12 +636,16 @@ const displaySelectedContent = () => {
     const displayVRVideosLinks = data['Required Resources']?.["VR_Videos"];
     if (displayVRVideosLinks) {
         const videoArray = displayVRVideosLinks.map(video => video.href);
+        const textArray = displayVRVideosLinks.map(text => text.text);
         displayVRVideosListS1Link.value = videoArray; // Storing array directly
+        displayVRVideosListText.value = textArray;
     } else {
         displayVRVideosListS1Link.value = []; // Empty array if links not found
+        displayVRVideosListText.value = [];   // Empty array if texts not found
     }
+    console.log(displayVRVideosListText.value)   //to check the texts are stored in array format
     console.log(displayVRVideosListS1Link.value) //to check the links are stored in array format
-    //console.log(displayVRVideosListS1.value)
+    console.log(displayVRVideosListS1.value)
     //get the content from the object's array
     displayHeading.value = data['Topic Heading'] || "Heading not found"
     displayCategory.value = data['Topic Category'] || "Category not found"
@@ -948,7 +953,7 @@ const extractVRvideosItems = (html) => {
 </script>
 
 <template>
-    <div class="ml-10 mt-24">
+    <div class="ml-10 mt-36">
         <input
             type="file"
             accept=".doc,.docx"
@@ -956,42 +961,15 @@ const extractVRvideosItems = (html) => {
         >
         <div
             v-if="htmlContent"
-            v-html="htmlContent"
-        />
+            class="mt-12 text-xl"
+        >
+            Html content generated Successfully!!
+        </div>
         <div
             v-if="error"
             class="error"
         >
             {{ error }}
-        </div>
-        <div class="mt-20">
-            <button
-                v-if="htmlContent"
-                class="border-2 border-black p-2"
-                @click="downloadHtml"
-            >
-                Download complete HTML
-            </button>
-            <button
-                v-if="htmlContent"
-                class="border-2 border-black ml-20 p-2"
-                @click="downloadJson"
-            >
-                Download only Content JSON
-            </button>
-            <button
-                v-if="Object.keys(sessionOverviewSections).length > 0"
-                class="border-2 border-black ml-20 p-2"
-                @click="downloadFormattedJson"
-            >
-                Download Selected Content JSON
-            </button>
-            <button
-                v-if="Object.keys(jsonContent).length > 0"
-                @click="displayRawJsonContent"
-            >
-                Display Content
-            </button>
         </div>
     </div>
     <div>
@@ -1005,332 +983,360 @@ const extractVRvideosItems = (html) => {
             />
         </div>
     </div>
-    <div class="border-2 border-black h-full">
+    <div class="border-2 border-black border-dashed h-full mt-12 p-6">
         <button
-            class="border-2 border-black mt-6 p-2 rounded-2xl"
+            class="border-2 border-black border-dashed p-2 rounded-2xl"
             @click="displaySelectedContent"
         >
-            Display required content from json file
+            Display required content from JSON file
         </button>
-        <div>
-            <div class="mt-10">
-                <div>HREF: link4</div>
+        <div
+            v-if="htmlContent"
+            class="mt-10"
+        >
+            <div class="flex flex-row">
+                <div class="w-[35%]">
+                    Below buttons are for debuging purpose only.
+                </div>
                 <div
-                    id="sessionOverview"
-                    class="bg-blue-700 border-2 border-black p-4 text-white"
-                    v-html="displayHref"
+                    v-if="htmlContent"
+                    class="border-2 border-dashed border-gray-400 h-[0.5px] mt-3 w-full"
                 />
-                <iframe
-                    v-if="displayHref"
-                    class="mt-1"
-                    width="480"
-                    height="360"
-                    :src="getYouTubeEmbedUrl(extractVideoId(displayHref))"
-                    title="Mitosis in an animal cell Under the Microscope"
-                    frameborder="0"
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                    referrerpolicy="strict-origin-when-cross-origin"
-                    allowfullscreen
-                />
+            </div>
+            <div>
+                <div class="mt-10">
+                    <button
+                        v-if="htmlContent"
+                        class="border-2 border-black p-2"
+                        @click="downloadHtml"
+                    >
+                        Download complete HTML
+                    </button>
+                    <button
+                        v-if="htmlContent"
+                        class="border-2 border-black ml-20 p-2"
+                        @click="downloadJson"
+                    >
+                        Download row content JSON
+                    </button>
+                    <button
+                        v-if="Object.keys(sessionOverviewSections).length > 0"
+                        class="border-2 border-black ml-20 p-2"
+                        @click="downloadFormattedJson"
+                    >
+                        Download required content in JSON
+                    </button>
+                    <button
+                        v-if="Object.keys(jsonContent).length > 0"
+                        class="border-2 border-black ml-20 p-2"
+                        @click="displayRawJsonContent"
+                    >
+                        Display content below
+                    </button>
+                </div>
             </div>
         </div>
     </div>
-    <div class="border-2 border-gray-300 mt-10 p-6">
-        <div
-            class="mt-2 text-4xl"
-        >
+    <div
+        class="border-2 border-gray-200 mt-10"
+    />
+    <div>
+        <div class="border-2 border-gray-300 mt-10 p-6">
             <div
-                v-if="displayHeading"
-                v-html="displayHeading"
-            />
-            <div v-else>
-                Topic Heading
-            </div>
-        </div>
-        <div class="grid grid-cols-2 mt-2">
-            <div class="mt-2 text-lg">
+                class="mt-2 text-4xl"
+            >
                 <div
-                    v-if="displayCategory"
-                    v-html="displayCategory"
+                    v-if="displayHeading"
+                    v-html="displayHeading"
                 />
                 <div v-else>
-                    AR/VR Learning Tasks
+                    Topic Heading
                 </div>
             </div>
-            <div class="flex flex-col gap-4 text-lg">
-                <div class="flex flex-row">
-                    <div>Year Level: </div><div>Year level will come here.</div>
-                </div>
-                <div class="flex flex-row">
-                    <div>Learning Area: </div><div>Learning area will come here.</div>
-                </div>
-                <div class="flex flex-row">
-                    <div>Duration: </div><div>Duration will come here.</div>
-                </div>
-            </div>
-        </div>
-        <div class="mt-10">
-            <div class="text-3xl">
-                Task Summary
-            </div>
-            <div class="mt-4 text-xl">
-                <div
-                    v-if="displayTaskSummary"
-                    v-html="displayTaskSummary"
-                />
-                <div v-else>
-                    Task Summary paragraph will come here.
-                </div>
-            </div>
-        </div>
-        <div class="flex flex-col gap-2 mt-10">
-            <div class="border-2 border-blue-600 p-4 rounded-2xl w-full">
-                <div class="text-3xl">
-                    Session Overview
-                </div>
-                <div class="mt-4 text-xl">
+            <div class="grid grid-cols-2 mt-2">
+                <div class="mt-2 text-lg">
                     <div
-                        v-if="displaySessionOverview"
-                        v-html="displaySessionOverview"
+                        v-if="displayCategory"
+                        v-html="displayCategory"
                     />
                     <div v-else>
-                        Session Overview paragraph will come here.
+                        AR/VR Learning Tasks
+                    </div>
+                </div>
+                <div class="flex flex-col gap-4 text-lg">
+                    <div class="flex flex-row">
+                        <div>Year Level: </div><div>Year level will come here.</div>
+                    </div>
+                    <div class="flex flex-row">
+                        <div>Learning Area: </div><div>Learning area will come here.</div>
+                    </div>
+                    <div class="flex flex-row">
+                        <div>Duration: </div><div>Duration will come here.</div>
                     </div>
                 </div>
             </div>
-            <div class="border-2 border-green-600 p-4 rounded-2xl w-full">
+            <div class="mt-10">
                 <div class="text-3xl">
-                    Digital Technologies
+                    Task Summary
                 </div>
                 <div class="mt-4 text-xl">
                     <div
-                        v-if="displayDigitalTechnologies"
-                        v-html="displayDigitalTechnologies"
+                        v-if="displayTaskSummary"
+                        v-html="displayTaskSummary"
                     />
                     <div v-else>
-                        Digital technologies paragraph will come here.
+                        Task Summary paragraph will come here.
                     </div>
                 </div>
             </div>
-            <div class="border-2 border-red-600 p-4 rounded-2xl w-full">
-                <div class="text-3xl">
-                    Required Resources
-                </div>
-                <div class="mt-4 text-xl">
-                    <div
-                        v-if="displayRequiredResourcesParagraph"
-                        v-html="displayRequiredResourcesParagraph"
-                    />
-                    <div v-else>
-                        Required resources paragraph will come here.
+            <div class="flex flex-col gap-2 mt-10">
+                <div class="border-2 border-blue-600 p-4 rounded-2xl w-full">
+                    <div class="text-3xl">
+                        Session Overview
                     </div>
-                    <div
-                        v-for="(heading, index) in displayRequiredResourcesHeadings"
-                        :key="index"
-                        class="border-2 border-red-200 mt-4 p-4 rounded-2xl"
-                    >
+                    <div class="mt-4 text-xl">
                         <div
-                            class="font-bold mb-2 mt-2 text-2xl"
-                            v-html="heading.content"
+                            v-if="displaySessionOverview"
+                            v-html="displaySessionOverview"
                         />
-                        <!-- Check if the current heading is "Hardware" -->
-                        <template v-if="heading.content === 'Hardware'">
-                            <div class="grid grid-cols-2 gap-10">
-                                <div class="flex flex-row">
-                                    <div
-                                        v-if="displayRRHardwareListS2"
-                                        class="mb-1"
-                                    />
-                                    <div v-html="displayRRHardwareListS1" />
-                                </div>
-                                <div class="flex flex-row">
-                                    <div
-                                        v-if="displayRRHardwareListS2"
-                                        class="mb-1"
-                                    />
-                                    <div v-html="displayRRHardwareListS2" />
-                                </div>
-                            </div>
-                        </template>
-                        <!-- Check if the current heading is "Apps" -->
-                        <template v-if="heading.content === 'Apps' || heading.content === 'App'">
-                            <div class="flex flex-col gap-10">
-                                <div class="flex flex-row">
-                                    <div
-                                        v-if="displayAppsListS1"
-                                        class="mb-1"
-                                    />
-                                    <div v-html="displayAppsListS1" />
-                                </div>
-                                <div class="flex flex-row">
-                                    <div
-                                        v-if="displayAppsListS2"
-                                    />
-                                    <div v-html="displayAppsListS2" />
-                                </div>
-                            </div>
-                        </template>
-                        <!-- Check if the current heading is "Teaching Resources" -->
-                        <template v-if="heading.content === 'Teaching resources'">
-                            <div class="flex flex-col gap-10">
-                                <div class="flex flex-row">
-                                    <div
-                                        v-if="displayTeachingResourcesListS1"
-                                    />
-                                    <div v-html="displayTeachingResourcesListS1" />
-                                </div>
-                                <div class="flex flex-row">
-                                    <div
-                                        v-if="displayTeachingResourcesListS2"
-                                    />
-                                    <div v-html="displayTeachingResourcesListS2" />
-                                </div>
-                            </div>
-                        </template>
-                        <!-- Check if the current heading is "Teaching Resources" -->
-                        <template v-if="heading.content === 'VR videos' || heading.content === 'Videos'">
-                            <div class="flex flex-col gap-10">
-                                <div class="flex flex-row">
-                                    <div
-                                        v-if="displayVRVideosListS1"
-                                    />
-                                    <div v-html="displayVRVideosListS1" />
-                                </div>
-                                <div class="mt-10">
-                                    <!-- Loop over video links -->
-                                    <div
-                                        v-for="(link, index) in displayVRVideosListS1Link"
-                                        :key="index"
-                                    >
-                                        <iframe
-                                            :key="index"
-                                            class="border-2 border-red-200 mt-4 p-4 rounded-2xl"
-                                            width="480"
-                                            height="360"
-                                            :src="getYouTubeEmbedUrl(extractVideoId(link))"
-                                            title="Mitosis in an animal cell Under the Microscope"
-                                            frameborder="0"
-                                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                                            referrerpolicy="strict-origin-when-cross-origin"
-                                            allowfullscreen
+                        <div v-else>
+                            Session Overview paragraph will come here.
+                        </div>
+                    </div>
+                </div>
+                <div class="border-2 border-green-600 p-4 rounded-2xl w-full">
+                    <div class="text-3xl">
+                        Digital Technologies
+                    </div>
+                    <div class="mt-4 text-xl">
+                        <div
+                            v-if="displayDigitalTechnologies"
+                            v-html="displayDigitalTechnologies"
+                        />
+                        <div v-else>
+                            Digital technologies paragraph will come here.
+                        </div>
+                    </div>
+                </div>
+                <div class="border-2 border-red-600 p-4 rounded-2xl w-full">
+                    <div class="text-3xl">
+                        Required Resources
+                    </div>
+                    <div class="mt-4 text-xl">
+                        <div
+                            v-if="displayRequiredResourcesParagraph"
+                            v-html="displayRequiredResourcesParagraph"
+                        />
+                        <div v-else>
+                            Required resources paragraph will come here.
+                        </div>
+                        <div
+                            v-for="(heading, index) in displayRequiredResourcesHeadings"
+                            :key="index"
+                            class="border-2 border-red-200 mt-4 p-4 rounded-2xl"
+                        >
+                            <div
+                                class="font-bold mb-2 mt-2 text-2xl"
+                                v-html="heading.content"
+                            />
+                            <!-- Check if the current heading is "Hardware" -->
+                            <template v-if="heading.content === 'Hardware'">
+                                <div class="grid grid-cols-2 gap-10">
+                                    <div class="flex flex-row">
+                                        <div
+                                            v-if="displayRRHardwareListS2"
+                                            class="mb-1"
                                         />
+                                        <div v-html="displayRRHardwareListS1" />
+                                    </div>
+                                    <div class="flex flex-row">
+                                        <div
+                                            v-if="displayRRHardwareListS2"
+                                            class="mb-1"
+                                        />
+                                        <div v-html="displayRRHardwareListS2" />
                                     </div>
                                 </div>
-                            </div>
-                        </template>
+                            </template>
+                            <!-- Check if the current heading is "Apps" -->
+                            <template v-if="heading.content === 'Apps' || heading.content === 'App'">
+                                <div class="flex flex-col gap-10">
+                                    <div class="flex flex-row">
+                                        <div
+                                            v-if="displayAppsListS1"
+                                            class="mb-1"
+                                        />
+                                        <div v-html="displayAppsListS1" />
+                                    </div>
+                                    <div class="flex flex-row">
+                                        <div
+                                            v-if="displayAppsListS2"
+                                        />
+                                        <div v-html="displayAppsListS2" />
+                                    </div>
+                                </div>
+                            </template>
+                            <!-- Check if the current heading is "Teaching Resources" -->
+                            <template v-if="heading.content === 'Teaching resources'">
+                                <div class="flex flex-col gap-10">
+                                    <div class="flex flex-row">
+                                        <div
+                                            v-if="displayTeachingResourcesListS1"
+                                        />
+                                        <div v-html="displayTeachingResourcesListS1" />
+                                    </div>
+                                    <div class="flex flex-row">
+                                        <div
+                                            v-if="displayTeachingResourcesListS2"
+                                        />
+                                        <div v-html="displayTeachingResourcesListS2" />
+                                    </div>
+                                </div>
+                            </template>
+                            <!-- Check if the current heading is "Teaching Resources" -->
+                            <template v-if="heading.content === 'VR videos' || heading.content === 'Videos'">
+                                <div class="flex flex-col gap-10">
+                                    <div class="flex flex-row">
+                                        <!-- Loop over video titles -->
+                                        <div v-if="displayVRVideosListText">
+                                            <div
+                                                v-for="(videoTitle, index) in displayVRVideosListText"
+                                                :key="index"
+                                            >
+                                                <div v-html="videoTitle" />
+                                                <!-- Display corresponding video link -->
+                                                <iframe
+                                                    v-if="displayVRVideosListS1Link[index]"
+                                                    :key="'video_' + index"
+                                                    class="bg-black mb-20 mt-4 rounded-3xl"
+                                                    width="480"
+                                                    height="360"
+                                                    :src="getYouTubeEmbedUrl(extractVideoId(displayVRVideosListS1Link[index]))"
+                                                    title="Mitosis in an animal cell Under the Microscope"
+                                                    frameborder="0"
+                                                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                                                    referrerpolicy="strict-origin-when-cross-origin"
+                                                    allowfullscreen
+                                                />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </template>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="border-2 border-blue-600 p-4 rounded-2xl w-full">
-                <div class="text-3xl">
-                    Other Resources to try
-                </div>
-                <div class="mt-4 text-xl">
-                    <div
-                        v-if="displayRequiredResourcesParagraph"
-                        v-html="displayRequiredResourcesParagraph"
-                    />
-                    <div v-else>
-                        Required resources paragraph will come here.
+                <div class="border-2 border-blue-600 p-4 rounded-2xl w-full">
+                    <div class="text-3xl">
+                        Other Resources to try
                     </div>
-                    <div
-                        v-for="(heading, index) in displayRequiredResourcesHeadings"
-                        :key="index"
-                        class="border-2 border-blue-200 mt-4 p-4 rounded-2xl"
-                    >
+                    <div class="mt-4 text-xl">
                         <div
-                            class="font-bold mb-2 mt-2 text-2xl"
-                            v-html="heading.content"
+                            v-if="displayRequiredResourcesParagraph"
+                            v-html="displayRequiredResourcesParagraph"
                         />
-                        <!-- Check if the current heading is "Hardware" -->
-                        <template v-if="heading.content === 'Hardware'">
-                            <div v-html="displayORHardwareListS1" />
-                        </template>
-                    </div>
-                </div>
-            </div>
-            <div class="border-2 border-gray-300 p-4 w-full">
-                <div class="text-3xl">
-                    Planning and preparation
-                </div>
-                <div class="mt-4 text-xl">
-                    Planning Preparation paragraph will come here.
-                </div>
-            </div>
-            <div class="mt-6 p-4">
-                <div class="text-3xl">
-                    Task Sequence
-                </div>
-                <div class="grid grid-cols-2 gap-6">
-                    <div class="border-2 border-gray-300 mt-4 p-4 rounded-2xl">
-                        <div class="text-2xl">
-                            Task No. 1
+                        <div v-else>
+                            Required resources paragraph will come here.
                         </div>
-                        <div class="mt-2 text-xl">
-                            Task No. 1 content will come here
-                        </div>
-                    </div>
-                    <div class="border-2 border-gray-300 p-4 rounded-2xl">
-                        <div class="text-2xl">
-                            Task No. 2
-                        </div>
-                        <div class="mt-2 text-xl">
-                            Task No. 2 content will come here
-                        </div>
-                    </div>
-                    <div class="border-2 border-gray-300 p-4 rounded-2xl">
-                        <div class="text-2xl">
-                            Task No. 3
-                        </div>
-                        <div class="mt-2 text-xl">
-                            Task No. 3 content will come here
-                        </div>
-                    </div>
-                    <div class="border-2 border-gray-300 p-4 rounded-2xl">
-                        <div class="text-2xl">
-                            Task No. 4
-                        </div>
-                        <div class="mt-2 text-xl">
-                            Task No. 4 content will come here
+                        <div
+                            v-for="(heading, index) in displayRequiredResourcesHeadings"
+                            :key="index"
+                            class="border-2 border-blue-200 mt-4 p-4 rounded-2xl"
+                        >
+                            <div
+                                class="font-bold mb-2 mt-2 text-2xl"
+                                v-html="heading.content"
+                            />
+                            <!-- Check if the current heading is "Hardware" -->
+                            <template v-if="heading.content === 'Hardware'">
+                                <div v-html="displayORHardwareListS1" />
+                            </template>
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class="mt-6 p-4">
-                <div class="text-3xl">
-                    Curriculum Connections
+                <div class="border-2 border-gray-300 p-4 w-full">
+                    <div class="text-3xl">
+                        Planning and preparation
+                    </div>
+                    <div class="mt-4 text-xl">
+                        Planning Preparation paragraph will come here.
+                    </div>
                 </div>
-                <div class="grid grid-cols-2 gap-6">
-                    <div class="border-2 border-gray-300 mt-4 p-4 rounded-2xl">
-                        <div class="text-2xl">
-                            Curriculum Connections No. 1
+                <div class="mt-6 p-4">
+                    <div class="text-3xl">
+                        Task Sequence
+                    </div>
+                    <div class="grid grid-cols-2 gap-6">
+                        <div class="border-2 border-gray-300 mt-4 p-4 rounded-2xl">
+                            <div class="text-2xl">
+                                Task No. 1
+                            </div>
+                            <div class="mt-2 text-xl">
+                                Task No. 1 content will come here
+                            </div>
                         </div>
-                        <div class="mt-2 text-xl">
-                            Curriculum Connections No. 1 content/lists will come here
+                        <div class="border-2 border-gray-300 p-4 rounded-2xl">
+                            <div class="text-2xl">
+                                Task No. 2
+                            </div>
+                            <div class="mt-2 text-xl">
+                                Task No. 2 content will come here
+                            </div>
+                        </div>
+                        <div class="border-2 border-gray-300 p-4 rounded-2xl">
+                            <div class="text-2xl">
+                                Task No. 3
+                            </div>
+                            <div class="mt-2 text-xl">
+                                Task No. 3 content will come here
+                            </div>
+                        </div>
+                        <div class="border-2 border-gray-300 p-4 rounded-2xl">
+                            <div class="text-2xl">
+                                Task No. 4
+                            </div>
+                            <div class="mt-2 text-xl">
+                                Task No. 4 content will come here
+                            </div>
                         </div>
                     </div>
-                    <div class="border-2 border-gray-300 p-4 rounded-2xl">
-                        <div class="text-2xl">
-                            Curriculum Connections No. 2
-                        </div>
-                        <div class="mt-2 text-xl">
-                            Curriculum Connections No. 2 content/lists will come here
-                        </div>
+                </div>
+                <div class="mt-6 p-4">
+                    <div class="text-3xl">
+                        Curriculum Connections
                     </div>
-                    <div class="border-2 border-gray-300 p-4 rounded-2xl">
-                        <div class="text-2xl">
-                            Curriculum Connections No. 3
+                    <div class="grid grid-cols-2 gap-6">
+                        <div class="border-2 border-gray-300 mt-4 p-4 rounded-2xl">
+                            <div class="text-2xl">
+                                Curriculum Connections No. 1
+                            </div>
+                            <div class="mt-2 text-xl">
+                                Curriculum Connections No. 1 content/lists will come here
+                            </div>
                         </div>
-                        <div class="mt-2 text-xl">
-                            Curriculum Connections No. 3 content/lists will come here
+                        <div class="border-2 border-gray-300 p-4 rounded-2xl">
+                            <div class="text-2xl">
+                                Curriculum Connections No. 2
+                            </div>
+                            <div class="mt-2 text-xl">
+                                Curriculum Connections No. 2 content/lists will come here
+                            </div>
                         </div>
-                    </div>
-                    <div class="border-2 border-gray-300 p-4 rounded-2xl">
-                        <div class="text-2xl">
-                            Curriculum Connections No. 4
+                        <div class="border-2 border-gray-300 p-4 rounded-2xl">
+                            <div class="text-2xl">
+                                Curriculum Connections No. 3
+                            </div>
+                            <div class="mt-2 text-xl">
+                                Curriculum Connections No. 3 content/lists will come here
+                            </div>
                         </div>
-                        <div class="mt-2 text-xl">
-                            Curriculum Connections No. 4 content/lists will come here
+                        <div class="border-2 border-gray-300 p-4 rounded-2xl">
+                            <div class="text-2xl">
+                                Curriculum Connections No. 4
+                            </div>
+                            <div class="mt-2 text-xl">
+                                Curriculum Connections No. 4 content/lists will come here
+                            </div>
                         </div>
                     </div>
                 </div>
