@@ -11,6 +11,9 @@ const jsonContent = ref({});
 
 //other global variables
 const hardwaresItemsList = ref('')
+const appsItemsList = ref('')
+const teachingResourcesItemsList = ref('')
+const vrVideosItemsList = ref('')
 
 //variables used to store json format value
 const topicHeading = ref('')
@@ -30,6 +33,12 @@ const displayRRHardwareListS1 = ref('')
 const displayRRHardwareListS2 = ref('')
 const displayORHardwareListS1 = ref('')
 const displayORHardwareListS2 = ref('')
+const displayAppsListS1 = ref('')
+const displayAppsListS2 = ref('')
+const displayTeachingResourcesListS1 = ref('')
+const displayTeachingResourcesListS2 = ref('')
+const displayVRVideosListS1 = ref('')
+const displayVRVideosListS1Link = ref('')
 const displayRequiredResourcesHeadings = ref([]) //in arrays form
 
 
@@ -65,11 +74,22 @@ const handleFileUpload = async (event) => {
         //console.log(htmlContent.value)
         // Call this function to extract hardware items from HTML content
         hardwaresItemsList.value = extractHardwareItems(htmlContent.value);
-        // using this for debugging
-        console.log('Hardware Required Resources with Session1', hardwaresItemsList.value.hardwareItemsForRR_1);
-        console.log('Hardware Required Resources with Session2', hardwaresItemsList.value.hardwareItemsForRR_2);
-        console.log('Hardware Other Resources with Session1', hardwaresItemsList.value.hardwareItemsForOR_1);
-        console.log('Hardware Other Resources with Session2', hardwaresItemsList.value.hardwareItemsForOR_2);
+        // using this for debugging hardware listing
+        // console.log('Hardware Required Resources with Session1', hardwaresItemsList.value.hardwareItemsForRR_1);
+        // console.log('Hardware Required Resources with Session2', hardwaresItemsList.value.hardwareItemsForRR_2);
+        // console.log('Hardware Other Resources with Session1', hardwaresItemsList.value.hardwareItemsForOR_1);
+        // console.log('Hardware Other Resources with Session2', hardwaresItemsList.value.hardwareItemsForOR_2);
+        // Call this function to extract hardware items from HTML content
+        appsItemsList.value = extractAppsItems(htmlContent.value);
+        // using this for debugging Apps listing
+        // console.log('Apps lisitng', appsItemsList.value.appsItemsForRR_1);
+        // console.log('Apps lisitng', appsItemsList.value.appsItemsForRR_2);
+        // Call this function to extract hardware items from HTML content
+        teachingResourcesItemsList.value = extractTeachingResourcesItems(htmlContent.value);
+        // using this for debugging Apps listing
+        // console.log('Teaching Resources lisitng', teachingResourcesItemsList.value.teachingResourcesItemsForRR_1);
+        // console.log('Teaching Resources lisitng', teachingResourcesItemsList.value.teachingResourcesItemsForRR_2);
+        vrVideosItemsList.value = extractVRvideosItems(htmlContent.value)
     } catch (error) {
         console.error('Error processing file:', error);
         htmlContent.value = ''; // Clear content in case of error
@@ -130,6 +150,11 @@ const downloadFormattedJson = () => {
         "Required Resources": {
             "HardwareS1": hardwaresItemsList.value.hardwareItemsForRR_1,
             "HardwareS2": hardwaresItemsList.value.hardwareItemsForRR_2,
+            "AppsS1": appsItemsList.value.appsItemsForRR_1,
+            "AppsS2": appsItemsList.value.appsItemsForRR_2,
+            "TeachingResourcesS1": teachingResourcesItemsList.value.teachingResourcesItemsForRR_1,
+            "TeachingResourcesS2": teachingResourcesItemsList.value.teachingResourcesItemsForRR_2,
+            "VR_Videos": vrVideosItemsList.value.vrVideosItemsForRR_1,
             // You can add other required resources here if needed
             "Required Resources": requiredResourcesSections.value
         },
@@ -481,9 +506,9 @@ const displaySelectedContent = () => {
         summaryRR_HardwareS1 += "</ul>";
         displayRRHardwareListS1.value = summaryRR_HardwareS1.trim();
     } else {
-        displayRRHardwareListS1.value = "Digital Technologies content not found.";
+        displayRRHardwareListS1.value = "RR Hardware List Session 1 content not found.";
     }
-    console.log(displayRRHardwareListS1.value)
+    //console.log(displayRRHardwareListS1.value)
     //get the content from the object's array that has lists of contents in RR Session2
     let summaryRR_HardwareS2 = "";
     if (data["Required Resources"]?.HardwareS2) {
@@ -499,10 +524,10 @@ const displaySelectedContent = () => {
         displayRRHardwareListS2.value = summaryRR_HardwareS2.trim();
 
     } else {
-        displayRRHardwareListS2.value = "Digital Technologies content not found.";
+        displayRRHardwareListS2.value = "RR Hardware List Session 2 content not found.";
     }
-    console.log(displayRRHardwareListS2.value)
-    //get the content from the object's array that has lists of contents in RR Session1
+    //console.log(displayRRHardwareListS2.value)
+    //get the content from the object's array that has lists of contents in OR Session1
     let summaryOR_HardwareS1 = "";
     if (data["Other resources to try (optional)"]?.HardwareS1) {
         summaryOR_HardwareS1 += "<ul>";
@@ -516,8 +541,106 @@ const displaySelectedContent = () => {
         summaryOR_HardwareS1 += "</ul>";
         displayORHardwareListS1.value = summaryOR_HardwareS1.trim();
     } else {
-        displayORHardwareListS1.value = "Digital Technologies content not found.";
+        displayORHardwareListS1.value = "OR Hardware List Session content 1 not found.";
     }
+    //get the content from the object's array that has lists of contents in Apps Session1
+    let summaryAppsS1 = "";
+    if (data["Required Resources"]?.AppsS1) {
+        summaryAppsS1 += "<ul>";
+        data["Required Resources"].AppsS1.forEach((sentence, index) => {
+            summaryAppsS1 += "<li>"+ sentence + "</li>";
+            // Add <br> tags after each list item except for the last one
+            if (index !== data['Required Resources'].AppsS1.length - 1) {
+                summaryAppsS1 += "";
+            }
+        });
+        summaryAppsS1 += "</ul>";
+        displayAppsListS1.value = summaryAppsS1.trim();
+    } else {
+        displayAppsListS1.value = "Apps Session 1 content not found.";
+    }
+    //console.log(displayAppsListS1.value)
+    //get the content from the object's array that has lists of contents in Apps Session2
+    let summaryAppsS2 = "";
+    if (data["Required Resources"]?.AppsS2) {
+        summaryAppsS2 += "<ul>";
+        data["Required Resources"].AppsS2.forEach((sentence, index) => {
+            summaryAppsS2 += "<li>"+ sentence + "</li>";
+            // Add <br> tags after each list item except for the last one
+            if (index !== data['Required Resources'].AppsS2.length - 1) {
+                summaryAppsS2 += "";
+            }
+        });
+        summaryAppsS2 += "</ul>";
+        displayAppsListS2.value = summaryAppsS2.trim();
+    } else {
+        displayAppsListS2.value = "Apps Session 2 content not found.";
+    }
+    //console.log(displayAppsListS2.value)
+    //get the content from the object's array that has lists of contents in Teaching Resources Session1
+    let summaryTeachingResourcesS1 = "";
+    if (data["Required Resources"]?.TeachingResourcesS1) {
+        summaryTeachingResourcesS1 += "<ul>";
+        data["Required Resources"].TeachingResourcesS1.forEach((sentence, index) => {
+            summaryTeachingResourcesS1 += "<li>"+ sentence + "</li>";
+            // Add <br> tags after each list item except for the last one
+            if (index !== data['Required Resources'].TeachingResourcesS1.length - 1) {
+                summaryTeachingResourcesS1 += "";
+            }
+        });
+        summaryTeachingResourcesS1 += "</ul>";
+        displayTeachingResourcesListS1.value = summaryTeachingResourcesS1.trim();
+    } else {
+        displayTeachingResourcesListS1.value = "Teaching Resources Session 1 content not found.";
+    }
+    //get the content from the object's array that has lists of contents in Teaching Resources Session2
+    let summaryTeachingResourcesS2 = "";
+    if (data["Required Resources"]?.TeachingResourcesS2) {
+        summaryTeachingResourcesS2 += "<ul>";
+        data["Required Resources"].TeachingResourcesS2.forEach((sentence, index) => {
+            summaryTeachingResourcesS2 += "<li>"+ sentence + "</li>";
+            // Add <br> tags after each list item except for the last one
+            if (index !== data['Required Resources'].TeachingResourcesS2.length - 1) {
+                summaryTeachingResourcesS2 += "";
+            }
+        });
+        summaryTeachingResourcesS2 += "</ul>";
+        displayTeachingResourcesListS2.value = summaryTeachingResourcesS2.trim();
+    } else {
+        displayTeachingResourcesListS2.value = "Teaching Resources Session 2 content not found.";
+    }
+    //console.log(displayAppsListS1.value)
+    //get the content from the object's array that has lists of contents in Teaching Resources Session2
+    let summaryVRVideosS1 = "";
+    let summaryVRVideosS1Link = "";
+    if (data["Required Resources"]?.VR_Videos) {
+        summaryVRVideosS1Link += "<ul>"
+        summaryVRVideosS1 += "<ul>";
+        data["Required Resources"].VR_Videos.forEach((video, index) => {
+            summaryVRVideosS1 += "<li>"+ video.text + "</li>";
+            summaryVRVideosS1Link += "<li>"+ video.href + "</li>";
+            // Add <br> tags after each list item except for the last one
+            if (index !== data['Required Resources'].VR_Videos.length - 1) {
+                summaryVRVideosS1 += "";
+                summaryVRVideosS1Link += "";
+            }
+        });
+        summaryVRVideosS1Link += "</ul>"
+        summaryVRVideosS1 += "</ul>";
+        displayVRVideosListS1.value = summaryVRVideosS1.trim();
+    } else {
+        displayVRVideosListS1.value = "VR Videos Session 1 content not found.";
+    }
+    //coverting the string into the array format
+    const displayVRVideosLinks = data['Required Resources']?.["VR_Videos"];
+    if (displayVRVideosLinks) {
+        const videoArray = displayVRVideosLinks.map(video => video.href);
+        displayVRVideosListS1Link.value = videoArray; // Storing array directly
+    } else {
+        displayVRVideosListS1Link.value = []; // Empty array if links not found
+    }
+    console.log(displayVRVideosListS1Link.value) //to check the links are stored in array format
+    //console.log(displayVRVideosListS1.value)
     //get the content from the object's array
     displayHeading.value = data['Topic Heading'] || "Heading not found"
     displayCategory.value = data['Topic Category'] || "Category not found"
@@ -530,9 +653,8 @@ const displaySelectedContent = () => {
 
     //assign the extracted content to the variables
     displayHref.value = linkHref;
-
     //console
-    console.log(displayRequiredResourcesHeadings)
+    //console.log(displayRequiredResourcesHeadings)
 };
 
 //function to extract video ID from YouTube URL
@@ -547,7 +669,6 @@ const getYouTubeEmbedUrl = (videoId) => {
     return `https://www.youtube.com/embed/${videoId}`;
 };
 
-//raw/test functions are here
 // Function to extract content on the basis of "Hardware" keyword iteration.
 const extractHardwareItems = (html) => {
     const doc = new DOMParser().parseFromString(html, 'text/html');
@@ -641,7 +762,189 @@ const extractHardwareItems = (html) => {
 };
 
 
+// Function to extract content on the basis of "Apps" keyword iteration.
+const extractAppsItems = (html) => {
+    const doc = new DOMParser().parseFromString(html, 'text/html');
+    const trTags = doc.querySelectorAll('tr');
+    const appsItemsForRR_1 = [];
+    const appsItemsForRR_2 = [];
+    let inSession1 = false; // Flag to track if currently in Session 1
+    let inSession2 = false; // Flag to track if currently in Session 2
+    for (let i = 0; i < trTags.length; i++) {
+        const trTag = trTags[i];
+        const h1Tags = trTag.querySelectorAll('h1');
+        const strongTags = trTag.querySelectorAll('p strong');
+        // Check if both 'h1' and 'p strong' belong to the same <tr> tag
+        if (h1Tags.length > 0 && strongTags.length > 0) {
+            const sessionText = h1Tags[0].textContent.trim(); // Text content of the h1 tag
+            if (sessionText.includes('Required resources')) {
+                let sessionFound = false; // Flag to track if session keywords are found
+                for (let j = 0; j < strongTags.length; j++) {
+                    const strongTag = strongTags[j];
+                    const sessionText = strongTag.parentNode.textContent.trim(); // Text content of the parent node
+                    if (sessionText.includes('Session 1:')) {
+                        inSession1 = true; // Set flag for Session 1
+                        inSession2 = false; // Reset flag for Session 2
+                        sessionFound = true;
+                    } else if (sessionText.includes('Session 2 (optional):')) {
+                        inSession1 = false; // Reset flag for Session 1
+                        inSession2 = true; // Set flag for Session 2
+                        sessionFound = true;
+                    }
+                    if (!sessionFound) {
+                        // If neither session keyword found, consider it as a default session
+                        inSession1 = true;
+                        inSession2 = false;
+                    }
+                    if (strongTag.textContent.trim() === 'Apps:' || strongTag.textContent.trim() === 'App:') {
+                        const appsPrefix = inSession1 ? '1' : '2'; // Determine the session prefix
+                        const pTag = strongTag.parentNode; // Get parent <p> tag
+                        const ulTag = pTag.nextElementSibling; // Get next sibling <ul> tag
 
+                        if (ulTag && ulTag.tagName.toLowerCase() === 'ul') {
+                            const liTags = ulTag.querySelectorAll('li');
+                            liTags.forEach((liTag, index) => {
+                                if (inSession1) {
+                                    appsItemsForRR_1.push(' ● ' + " " + liTag.textContent.trim());
+                                } else if (inSession2) {
+                                    appsItemsForRR_2.push(' ● ' + " " + liTag.textContent.trim());
+                                }
+                            });
+                        }
+                    }
+                }
+            }
+        }
+    }
+    return {
+        appsItemsForRR_1: appsItemsForRR_1,
+        appsItemsForRR_2: appsItemsForRR_2
+    };
+};
+
+const extractTeachingResourcesItems = (html) => {
+    const doc = new DOMParser().parseFromString(html, 'text/html');
+    const trTags = doc.querySelectorAll('tr');
+    const teachingResourcesItemsForRR_1 = [];
+    const teachingResourcesItemsForRR_2 = [];
+    let inSession1 = false; // Flag to track if currently in Session 1
+    let inSession2 = false; // Flag to track if currently in Session 2
+    for (let i = 0; i < trTags.length; i++) {
+        const trTag = trTags[i];
+        const h1Tags = trTag.querySelectorAll('h1');
+        const strongTags = trTag.querySelectorAll('p strong');
+        // Check if both 'h1' and 'p strong' belong to the same <tr> tag
+        if (h1Tags.length > 0 && strongTags.length > 0) {
+            const sessionText = h1Tags[0].textContent.trim(); // Text content of the h1 tag
+            if (sessionText.includes('Required resources')) {
+                let sessionFound = false; // Flag to track if session keywords are found
+                for (let j = 0; j < strongTags.length; j++) {
+                    const strongTag = strongTags[j];
+                    const sessionText = strongTag.parentNode.textContent.trim(); // Text content of the parent node
+                    if (sessionText.includes('Session 1:')) {
+                        inSession1 = true; // Set flag for Session 1
+                        inSession2 = false; // Reset flag for Session 2
+                        sessionFound = true;
+                    } else if (sessionText.includes('Session 2 (optional):')) {
+                        inSession1 = false; // Reset flag for Session 1
+                        inSession2 = true; // Set flag for Session 2
+                        sessionFound = true;
+                    }
+                    if (!sessionFound) {
+                        // If neither session keyword found, consider it as a default session
+                        inSession1 = true;
+                        inSession2 = false;
+                    }
+                    if (strongTag.textContent.trim() === 'Teaching resources' || strongTag.textContent.trim() === 'Teaching resources') {
+                        const appsPrefix = inSession1 ? '1' : '2'; // Determine the session prefix
+                        const pTag = strongTag.parentNode; // Get parent <p> tag
+                        const ulTag = pTag.nextElementSibling; // Get next sibling <ul> tag
+
+                        if (ulTag && ulTag.tagName.toLowerCase() === 'ul') {
+                            const liTags = ulTag.querySelectorAll('li');
+                            liTags.forEach((liTag, index) => {
+                                if (inSession1) {
+                                    teachingResourcesItemsForRR_1.push(liTag.textContent.trim());
+                                } else if (inSession2) {
+                                    teachingResourcesItemsForRR_2.push(liTag.textContent.trim());
+                                }
+                            });
+                        }
+                    }
+                }
+            }
+        }
+    }
+    return {
+        teachingResourcesItemsForRR_1: teachingResourcesItemsForRR_1,
+        teachingResourcesItemsForRR_2: teachingResourcesItemsForRR_2
+    };
+};
+
+const extractVRvideosItems = (html) => {
+    const doc = new DOMParser().parseFromString(html, 'text/html');
+    const trTags = doc.querySelectorAll('tr');
+    const vrVideosItemsForRR_1 = [];
+    let inSession1 = false; // Flag to track if currently in Session 1
+    let inSession2 = false; // Flag to track if currently in Session 2
+    for (let i = 0; i < trTags.length; i++) {
+        const trTag = trTags[i];
+        const h1Tags = trTag.querySelectorAll('h1');
+        const strongTags = trTag.querySelectorAll('p strong');
+        // Check if both 'h1' and 'p strong' belong to the same <tr> tag
+        if (h1Tags.length > 0 && strongTags.length > 0) {
+            const sessionText = h1Tags[0].textContent.trim(); // Text content of the h1 tag
+            if (sessionText.includes('Required resources')) {
+                let sessionFound = false; // Flag to track if session keywords are found
+                for (let j = 0; j < strongTags.length; j++) {
+                    const strongTag = strongTags[j];
+                    const sessionText = strongTag.parentNode.textContent.trim(); // Text content of the parent node
+                    if (sessionText.includes('Session 1:')) {
+                        inSession1 = true; // Set flag for Session 1
+                        inSession2 = false; // Reset flag for Session 2
+                        sessionFound = true;
+                    } else if (sessionText.includes('Session 2 (optional):')) {
+                        inSession1 = false; // Reset flag for Session 1
+                        inSession2 = true; // Set flag for Session 2
+                        sessionFound = true;
+                    }
+                    if (!sessionFound) {
+                        // If neither session keyword found, consider it as a default session
+                        inSession1 = true;
+                        inSession2 = false;
+                    }
+                    if (strongTag.textContent.trim() === 'VR videos:' || strongTag.textContent.trim() === 'Videos:') {
+                        const appsPrefix = inSession1 ? '1' : '2'; // Determine the session prefix
+                        const pTag = strongTag.parentNode; // Get parent <p> tag
+                        const ulTag = pTag.nextElementSibling; // Get next sibling <ul> tag
+
+                        if (ulTag && ulTag.tagName.toLowerCase() === 'ul') {
+                            const liTags = ulTag.querySelectorAll('li');
+                            liTags.forEach((liTag, index) => {
+                                const aTag = liTag.querySelector('a'); // Get the <a> tag within <li>
+                                if (aTag) {
+                                    const href = aTag.getAttribute('href'); // Get the href attribute value
+                                    const text = aTag.textContent.trim(); // Get the text content
+                                    if (inSession1) {
+                                        vrVideosItemsForRR_1.push({ text, href }); // Push an object with text and href
+                                    } else if (inSession2) {
+                                        vrVideosItemsForRR_1.push({ text, href }); // Push an object with text and href
+                                    }
+                                }
+                            });
+                        }
+                    }
+
+                }
+            }
+        }
+    }
+    return {
+        vrVideosItemsForRR_1: vrVideosItemsForRR_1,
+    };
+};
+
+//raw/test functions are here
 </script>
 
 <template>
@@ -781,7 +1084,7 @@ const extractHardwareItems = (html) => {
             </div>
         </div>
         <div class="flex flex-col gap-2 mt-10">
-            <div class="border-2 border-gray-300 p-4 w-full">
+            <div class="border-2 border-blue-600 p-4 rounded-2xl w-full">
                 <div class="text-3xl">
                     Session Overview
                 </div>
@@ -795,7 +1098,7 @@ const extractHardwareItems = (html) => {
                     </div>
                 </div>
             </div>
-            <div class="border-2 border-gray-300 p-4 w-full">
+            <div class="border-2 border-green-600 p-4 rounded-2xl w-full">
                 <div class="text-3xl">
                     Digital Technologies
                 </div>
@@ -809,7 +1112,7 @@ const extractHardwareItems = (html) => {
                     </div>
                 </div>
             </div>
-            <div class="border-2 border-gray-300 p-4 w-full">
+            <div class="border-2 border-red-600 p-4 rounded-2xl w-full">
                 <div class="text-3xl">
                     Required Resources
                 </div>
@@ -824,10 +1127,10 @@ const extractHardwareItems = (html) => {
                     <div
                         v-for="(heading, index) in displayRequiredResourcesHeadings"
                         :key="index"
-                        class="border-2 border-gray-300 mt-4 p-4 rounded-2xl"
+                        class="border-2 border-red-200 mt-4 p-4 rounded-2xl"
                     >
                         <div
-                            class="mb-2 mt-2 text-xl"
+                            class="font-bold mb-2 mt-2 text-2xl"
                             v-html="heading.content"
                         />
                         <!-- Check if the current heading is "Hardware" -->
@@ -837,26 +1140,88 @@ const extractHardwareItems = (html) => {
                                     <div
                                         v-if="displayRRHardwareListS2"
                                         class="mb-1"
-                                    >
-                                        Sessions 1:&nbsp;&nbsp;
-                                    </div>
+                                    />
                                     <div v-html="displayRRHardwareListS1" />
                                 </div>
                                 <div class="flex flex-row">
                                     <div
                                         v-if="displayRRHardwareListS2"
                                         class="mb-1"
-                                    >
-                                        Sessions 2:&nbsp;&nbsp;
-                                    </div>
+                                    />
                                     <div v-html="displayRRHardwareListS2" />
+                                </div>
+                            </div>
+                        </template>
+                        <!-- Check if the current heading is "Apps" -->
+                        <template v-if="heading.content === 'Apps' || heading.content === 'App'">
+                            <div class="flex flex-col gap-10">
+                                <div class="flex flex-row">
+                                    <div
+                                        v-if="displayAppsListS1"
+                                        class="mb-1"
+                                    />
+                                    <div v-html="displayAppsListS1" />
+                                </div>
+                                <div class="flex flex-row">
+                                    <div
+                                        v-if="displayAppsListS2"
+                                    />
+                                    <div v-html="displayAppsListS2" />
+                                </div>
+                            </div>
+                        </template>
+                        <!-- Check if the current heading is "Teaching Resources" -->
+                        <template v-if="heading.content === 'Teaching resources'">
+                            <div class="flex flex-col gap-10">
+                                <div class="flex flex-row">
+                                    <div
+                                        v-if="displayTeachingResourcesListS1"
+                                    />
+                                    <div v-html="displayTeachingResourcesListS1" />
+                                </div>
+                                <div class="flex flex-row">
+                                    <div
+                                        v-if="displayTeachingResourcesListS2"
+                                    />
+                                    <div v-html="displayTeachingResourcesListS2" />
+                                </div>
+                            </div>
+                        </template>
+                        <!-- Check if the current heading is "Teaching Resources" -->
+                        <template v-if="heading.content === 'VR videos' || heading.content === 'Videos'">
+                            <div class="flex flex-col gap-10">
+                                <div class="flex flex-row">
+                                    <div
+                                        v-if="displayVRVideosListS1"
+                                    />
+                                    <div v-html="displayVRVideosListS1" />
+                                </div>
+                                <div class="mt-10">
+                                    <!-- Loop over video links -->
+                                    <div
+                                        v-for="(link, index) in displayVRVideosListS1Link"
+                                        :key="index"
+                                    >
+                                        <iframe
+                                            :key="index"
+                                            class="border-2 border-red-200 mt-4 p-4 rounded-2xl"
+                                            width="480"
+                                            height="360"
+                                            :src="getYouTubeEmbedUrl(extractVideoId(link))"
+                                            title="Mitosis in an animal cell Under the Microscope"
+                                            frameborder="0"
+                                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                                            referrerpolicy="strict-origin-when-cross-origin"
+                                            allowfullscreen
+                                        />
+                                    </div>
                                 </div>
                             </div>
                         </template>
                     </div>
                 </div>
             </div>
-            <div class="border-2 border-gray-300 p-4 w-full">
+            <div class="border-2 border-blue-600 p-4 rounded-2xl w-full">
                 <div class="text-3xl">
                     Other Resources to try
                 </div>
@@ -871,10 +1236,10 @@ const extractHardwareItems = (html) => {
                     <div
                         v-for="(heading, index) in displayRequiredResourcesHeadings"
                         :key="index"
-                        class="border-2 border-gray-300 mt-4 p-4 rounded-2xl"
+                        class="border-2 border-blue-200 mt-4 p-4 rounded-2xl"
                     >
                         <div
-                            class="mb-2 mt-2 text-xl"
+                            class="font-bold mb-2 mt-2 text-2xl"
                             v-html="heading.content"
                         />
                         <!-- Check if the current heading is "Hardware" -->

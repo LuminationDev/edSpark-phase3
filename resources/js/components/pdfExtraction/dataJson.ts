@@ -82,6 +82,26 @@ export const data = {
             "Mobile Devices"
         ],
         "HardwareS2": [],
+        "AppsS1": [
+            " ●  YouTube - For viewing VR videos. This needs to be whitelisted and downloaded on your mobile devices."
+        ],
+        "AppsS2": [],
+        "TeachingResourcesS1": [
+            "<placeholder link for 1 - Teaching Deck> - Download a copy for your own use.",
+            "<placeholder link for 1 - Student Digital Notebook> - Download a copy and distribute it to students via email or learning management system.",
+            "<placeholder link for 1 - Session 2 Checklist> - If proceeding with Session 2, teachers may use this as a checklist when marking the 3D cells modelling task."
+        ],
+        "TeachingResourcesS2": [],
+        "VR_Videos": [
+            {
+                "text": "Virtual Plant Cell: Cell Explore, 2018. VPC 360° video by Plant Energy Biology",
+                "href": "https://youtu.be/rmgf0VDDlH8?si=lY9lEUWkzq_J1hd7"
+            },
+            {
+                "text": "Chapter 1: Introduction to the Animal Cell",
+                "href": "https://youtu.be/PzxxEVdM1xI?si=_KdhMB_PXyaPxL6r"
+            }
+        ],
         "Required Resources": [
             {
                 "Required Resources_link": [
