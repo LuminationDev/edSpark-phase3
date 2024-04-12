@@ -1193,8 +1193,8 @@ const extractVRvideosItems = (html) => {
                                     </div>
                                 </div>
                             </template>
-                            <!-- Check if the current heading is "Teaching Resources" -->
-                            <template v-if="heading.content === 'VR videos' || heading.content === 'Videos'">
+                            <!-- Check if the current heading is "VR videos" -->
+                            <template v-if="heading.content === 'VR videos' || heading.content === 'Videos' || heading.content === 'VR Videos'">
                                 <div class="flex flex-col gap-10">
                                     <div class="flex flex-row">
                                         <!-- Loop over video titles -->
