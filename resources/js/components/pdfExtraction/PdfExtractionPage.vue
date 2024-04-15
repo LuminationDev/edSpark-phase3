@@ -989,10 +989,23 @@ const extractItemsByKeyword = (html, keyword1, keyword2) => {
                         if (ulTag && ulTag.tagName.toLowerCase() === 'ul') {
                             const liTags = ulTag.querySelectorAll('li');
                             liTags.forEach((liTag, index) => {
-                                if (inSession1) {
-                                    ItemsForRR_1.push(liTag.textContent.trim());
-                                } else if (inSession2) {
-                                    ItemsForRR_2.push(liTag.textContent.trim());
+                                const aTag = liTag.querySelector('a'); // Get the <a> tag within <li>
+                                if (aTag) {
+                                    const href = aTag.getAttribute('href'); // Get the href attribute value
+                                    const text = aTag.textContent.trim(); // Get the text content
+                                    const list_text = liTag.textContent.trim();
+                                    if (inSession1) {
+                                        ItemsForRR_1.push({ text, href, list_text }); // Push an object with text and href
+                                    } else if (inSession2) {
+                                        ItemsForRR_2.push({ text, href, list_text }); // Push an object with text and href
+                                    }
+                                }
+                                else {
+                                    if (inSession1) {
+                                        ItemsForRR_1.push(liTag.textContent.trim());
+                                    } else if (inSession2) {
+                                        ItemsForRR_2.push(liTag.textContent.trim());
+                                    }
                                 }
                             });
                         }
@@ -1017,10 +1030,23 @@ const extractItemsByKeyword = (html, keyword1, keyword2) => {
                         if (ulTag && ulTag.tagName.toLowerCase() === 'ul') {
                             const liTags = ulTag.querySelectorAll('li');
                             liTags.forEach((liTag, index) => {
-                                if (inSession1) {
-                                    ItemsForOR_1.push(liTag.textContent.trim());
-                                } else if (inSession2) {
-                                    ItemsForOR_2.push(liTag.textContent.trim());
+                                const aTag = liTag.querySelector('a'); // Get the <a> tag within <li>
+                                if (aTag) {
+                                    const href = aTag.getAttribute('href'); // Get the href attribute value
+                                    const text = aTag.textContent.trim(); // Get the text content
+                                    const list_text = liTag.textContent.trim();
+                                    if (inSession1) {
+                                        ItemsForOR_1.push({ text, href, list_text }); // Push an object with text and href
+                                    } else if (inSession2) {
+                                        ItemsForOR_2.push({ text, href, list_text }); // Push an object with text and href
+                                    }
+                                }
+                                else {
+                                    if (inSession1) {
+                                        ItemsForOR_1.push(liTag.textContent.trim());
+                                    } else if (inSession2) {
+                                        ItemsForOR_2.push(liTag.textContent.trim());
+                                    }
                                 }
                             });
                         }
