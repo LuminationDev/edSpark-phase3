@@ -106,13 +106,10 @@ class AdviceResource extends Resource
 
                 Forms\Components\Grid::make(2)->schema([
                     Forms\Components\Select::make('author_id')
-                        ->relationship(name: 'author', titleAttribute: 'display_name')
+                        ->relationship(name: 'author', titleAttribute: 'full_name')
                         ->disabled(fn() => !RoleHelpers::has_minimum_privilege(UserRole::ADMIN))
                         ->required()
-                        ->searchable()
-                        ->preload(),
-
-
+                        ->searchable(),
                     Forms\Components\Select::make('post_status')
                         ->options([
                             'Published' => 'Published',
