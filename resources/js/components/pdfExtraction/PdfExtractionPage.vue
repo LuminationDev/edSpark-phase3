@@ -1022,7 +1022,7 @@ const extractItemsByKeyword = (html, keyword1, keyword2) => {
                         inSession1 = false; // Reset flag for Session 1
                         inSession2 = true; // Set flag for Session 2
                     }
-                    if (strongTag.textContent.trim() === keyword2 + ':' || strongTag.textContent.trim() === keyword1 || strongTag.textContent.trim() === keyword2) {
+                    if (strongTag.textContent.trim() === keyword1 + ':' || strongTag.textContent.trim() === keyword1 || strongTag.textContent.trim() === keyword2) {
                         const hardwarePrefix = inSession1 ? '1' : '2'; // Determine the session prefix
                         const pTag = strongTag.parentNode; // Get parent <p> tag
                         const ulTag = pTag.nextElementSibling; // Get next sibling <ul> tag
