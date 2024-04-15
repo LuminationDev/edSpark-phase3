@@ -76,9 +76,9 @@ const handleFileUpload = async (event) => {
         //hardwaresItemsList.value = extractHardwareItems(htmlContent.value);
         //appsItemsList.value = extractAppsItems(htmlContent.value);
         hardwaresItemsList.value = extractItemsByKeyword(htmlContent.value, 'Hardware');
-        appsItemsList.value = extractItemsByKeyword(htmlContent.value, 'Apps');
+        appsItemsList.value = extractItemsByKeyword(htmlContent.value, 'Apps', 'App:');
         console.log(hardwaresItemsList.value)
-        console.log(appsItemsList.value)
+        console.log(appsItemsList.value.ItemsForRR_2.text)
         teachingResourcesItemsList.value = extractItemsByKeyword(htmlContent.value, 'Teaching resources');
 
         vrVideosItemsList.value = extractItemsByKeyword(htmlContent.value, 'VR videos:', 'Videos:');
@@ -146,8 +146,9 @@ const downloadFormattedJson = () => {
             "HardwareS2": hardwaresItemsList.value.ItemsForRR_2,
             "AppsS1": appsItemsList.value.ItemsForRR_1,
             "AppsS2": appsItemsList.value.ItemsForRR_2,
-            "TeachingResourcesS1": teachingResourcesItemsList.value.teachingResourcesItemsForRR_1,
-            "TeachingResourcesS2": teachingResourcesItemsList.value.teachingResourcesItemsForRR_2,
+            "Links": appsItemsList.value.LinksForAll,
+            "TeachingResourcesS1": teachingResourcesItemsList.value.ItemsForRR_1,
+            "TeachingResourcesS2": teachingResourcesItemsList.value.ItemsForRR_2,
             "VR_Videos": vrVideosItemsList.value.ItemsForRR_1,
             // You can add other required resources here if needed
             "Required Resources": requiredResourcesSections.value
@@ -559,7 +560,7 @@ const displaySelectedContent = () => {
     if (data["Required Resources"]?.AppsS2) {
         summaryAppsS2 += "<ul>";
         data["Required Resources"].AppsS2.forEach((sentence, index) => {
-            summaryAppsS2 += "<li>"+ sentence + "</li>";
+            summaryAppsS2 += "<li>"+ sentence.list_text + "</li>";
             // Add <br> tags after each list item except for the last one
             if (index !== data['Required Resources'].AppsS2.length - 1) {
                 summaryAppsS2 += "";
@@ -667,281 +668,6 @@ const getYouTubeEmbedUrl = (videoId) => {
     return `https://www.youtube.com/embed/${videoId}`;
 };
 
-// Function to extract content on the basis of "Hardware" keyword iteration.
-const extractHardwareItems = (html) => {
-    const doc = new DOMParser().parseFromString(html, 'text/html');
-    const trTags = doc.querySelectorAll('tr');
-    const hardwareItemsForRR_1 = [];
-    const hardwareItemsForRR_2 = [];
-    const hardwareItemsForOR_1 = [];
-    const hardwareItemsForOR_2 = [];
-    let inSession1 = false; // Flag to track if currently in Session 1
-    let inSession2 = false; // Flag to track if currently in Session 2
-    for (let i = 0; i < trTags.length; i++) {
-        const trTag = trTags[i];
-        const h1Tags = trTag.querySelectorAll('h1');
-        const strongTags = trTag.querySelectorAll('p strong');
-        // Check if both 'h1' and 'p strong' belong to the same <tr> tag
-        if (h1Tags.length > 0 && strongTags.length > 0) {
-            const sessionText = h1Tags[0].textContent.trim(); // Text content of the h1 tag
-            if (sessionText.includes('Required resources')) {
-                let sessionFound = false; // Flag to track if session keywords are found
-                for (let j = 0; j < strongTags.length; j++) {
-                    const strongTag = strongTags[j];
-                    const sessionText = strongTag.parentNode.textContent.trim(); // Text content of the parent node
-                    if (sessionText.includes('Session 1:')) {
-                        inSession1 = true; // Set flag for Session 1
-                        inSession2 = false; // Reset flag for Session 2
-                        sessionFound = true;
-                    } else if (sessionText.includes('Session 2 (optional):')) {
-                        inSession1 = false; // Reset flag for Session 1
-                        inSession2 = true; // Set flag for Session 2
-                        sessionFound = true;
-                    }
-                    if (!sessionFound) {
-                        // If neither session keyword found, consider it as a default session
-                        inSession1 = true;
-                        inSession2 = false;
-                    }
-                    if (strongTag.textContent.trim() === 'Hardware:' || strongTag.textContent.trim() === 'Hardware') {
-                        const hardwarePrefix = inSession1 ? '1' : '2'; // Determine the session prefix
-                        const pTag = strongTag.parentNode; // Get parent <p> tag
-                        const ulTag = pTag.nextElementSibling; // Get next sibling <ul> tag
-
-                        if (ulTag && ulTag.tagName.toLowerCase() === 'ul') {
-                            const liTags = ulTag.querySelectorAll('li');
-                            liTags.forEach((liTag, index) => {
-                                if (inSession1) {
-                                    hardwareItemsForRR_1.push(liTag.textContent.trim());
-                                } else if (inSession2) {
-                                    hardwareItemsForRR_2.push(liTag.textContent.trim());
-                                }
-                            });
-                        }
-                    }
-                }
-            } else if (sessionText.includes('Other resources to try (optional)')) {
-                for (let j = 0; j < strongTags.length; j++) {
-                    const strongTag = strongTags[j];
-                    const sessionText = strongTag.parentNode.textContent.trim(); // Text content of the parent node
-                    if (sessionText.includes('Session 1:')) {
-                        inSession1 = true; // Set flag for Session 1
-                        inSession2 = false; // Reset flag for Session 2
-                    } else if (sessionText.includes('Session 2 (optional):')) {
-                        inSession1 = false; // Reset flag for Session 1
-                        inSession2 = true; // Set flag for Session 2
-                    }
-                    if (strongTag.textContent.trim() === 'Hardware:' || strongTag.textContent.trim() === 'Hardware') {
-                        const hardwarePrefix = inSession1 ? '1' : '2'; // Determine the session prefix
-                        const pTag = strongTag.parentNode; // Get parent <p> tag
-                        const ulTag = pTag.nextElementSibling; // Get next sibling <ul> tag
-
-                        if (ulTag && ulTag.tagName.toLowerCase() === 'ul') {
-                            const liTags = ulTag.querySelectorAll('li');
-                            liTags.forEach((liTag, index) => {
-                                if (inSession1) {
-                                    hardwareItemsForOR_1.push(liTag.textContent.trim());
-                                } else if (inSession2) {
-                                    hardwareItemsForOR_2.push(liTag.textContent.trim());
-                                }
-                            });
-                        }
-                    }
-                }
-            }
-        }
-    }
-    return {
-        hardwareItemsForRR_1: hardwareItemsForRR_1,
-        hardwareItemsForRR_2: hardwareItemsForRR_2,
-        hardwareItemsForOR_1: hardwareItemsForOR_1,
-        hardwareItemsForOR_2: hardwareItemsForOR_2
-    };
-};
-
-
-// Function to extract content on the basis of "Apps" keyword iteration.
-const extractAppsItems = (html) => {
-    const doc = new DOMParser().parseFromString(html, 'text/html');
-    const trTags = doc.querySelectorAll('tr');
-    const appsItemsForRR_1 = [];
-    const appsItemsForRR_2 = [];
-    let inSession1 = false; // Flag to track if currently in Session 1
-    let inSession2 = false; // Flag to track if currently in Session 2
-    for (let i = 0; i < trTags.length; i++) {
-        const trTag = trTags[i];
-        const h1Tags = trTag.querySelectorAll('h1');
-        const strongTags = trTag.querySelectorAll('p strong');
-        // Check if both 'h1' and 'p strong' belong to the same <tr> tag
-        if (h1Tags.length > 0 && strongTags.length > 0) {
-            const sessionText = h1Tags[0].textContent.trim(); // Text content of the h1 tag
-            if (sessionText.includes('Required resources')) {
-                let sessionFound = false; // Flag to track if session keywords are found
-                for (let j = 0; j < strongTags.length; j++) {
-                    const strongTag = strongTags[j];
-                    const sessionText = strongTag.parentNode.textContent.trim(); // Text content of the parent node
-                    if (sessionText.includes('Session 1:')) {
-                        inSession1 = true; // Set flag for Session 1
-                        inSession2 = false; // Reset flag for Session 2
-                        sessionFound = true;
-                    } else if (sessionText.includes('Session 2 (optional):')) {
-                        inSession1 = false; // Reset flag for Session 1
-                        inSession2 = true; // Set flag for Session 2
-                        sessionFound = true;
-                    }
-                    if (!sessionFound) {
-                        // If neither session keyword found, consider it as a default session
-                        inSession1 = true;
-                        inSession2 = false;
-                    }
-                    if (strongTag.textContent.trim() === 'Apps:' || strongTag.textContent.trim() === 'App:') {
-                        const appsPrefix = inSession1 ? '1' : '2'; // Determine the session prefix
-                        const pTag = strongTag.parentNode; // Get parent <p> tag
-                        const ulTag = pTag.nextElementSibling; // Get next sibling <ul> tag
-
-                        if (ulTag && ulTag.tagName.toLowerCase() === 'ul') {
-                            const liTags = ulTag.querySelectorAll('li');
-                            liTags.forEach((liTag, index) => {
-                                if (inSession1) {
-                                    appsItemsForRR_1.push(' ● ' + " " + liTag.textContent.trim());
-                                } else if (inSession2) {
-                                    appsItemsForRR_2.push(' ● ' + " " + liTag.textContent.trim());
-                                }
-                            });
-                        }
-                    }
-                }
-            }
-        }
-    }
-    return {
-        appsItemsForRR_1: appsItemsForRR_1,
-        appsItemsForRR_2: appsItemsForRR_2
-    };
-};
-
-const extractTeachingResourcesItems = (html) => {
-    const doc = new DOMParser().parseFromString(html, 'text/html');
-    const trTags = doc.querySelectorAll('tr');
-    const teachingResourcesItemsForRR_1 = [];
-    const teachingResourcesItemsForRR_2 = [];
-    let inSession1 = false; // Flag to track if currently in Session 1
-    let inSession2 = false; // Flag to track if currently in Session 2
-    for (let i = 0; i < trTags.length; i++) {
-        const trTag = trTags[i];
-        const h1Tags = trTag.querySelectorAll('h1');
-        const strongTags = trTag.querySelectorAll('p strong');
-        // Check if both 'h1' and 'p strong' belong to the same <tr> tag
-        if (h1Tags.length > 0 && strongTags.length > 0) {
-            const sessionText = h1Tags[0].textContent.trim(); // Text content of the h1 tag
-            if (sessionText.includes('Required resources')) {
-                let sessionFound = false; // Flag to track if session keywords are found
-                for (let j = 0; j < strongTags.length; j++) {
-                    const strongTag = strongTags[j];
-                    const sessionText = strongTag.parentNode.textContent.trim(); // Text content of the parent node
-                    if (sessionText.includes('Session 1:')) {
-                        inSession1 = true; // Set flag for Session 1
-                        inSession2 = false; // Reset flag for Session 2
-                        sessionFound = true;
-                    } else if (sessionText.includes('Session 2 (optional):')) {
-                        inSession1 = false; // Reset flag for Session 1
-                        inSession2 = true; // Set flag for Session 2
-                        sessionFound = true;
-                    }
-                    if (!sessionFound) {
-                        // If neither session keyword found, consider it as a default session
-                        inSession1 = true;
-                        inSession2 = false;
-                    }
-                    if (strongTag.textContent.trim() === 'Teaching resources' || strongTag.textContent.trim() === 'Teaching resources') {
-                        const appsPrefix = inSession1 ? '1' : '2'; // Determine the session prefix
-                        const pTag = strongTag.parentNode; // Get parent <p> tag
-                        const ulTag = pTag.nextElementSibling; // Get next sibling <ul> tag
-
-                        if (ulTag && ulTag.tagName.toLowerCase() === 'ul') {
-                            const liTags = ulTag.querySelectorAll('li');
-                            liTags.forEach((liTag, index) => {
-                                if (inSession1) {
-                                    teachingResourcesItemsForRR_1.push(liTag.textContent.trim());
-                                } else if (inSession2) {
-                                    teachingResourcesItemsForRR_2.push(liTag.textContent.trim());
-                                }
-                            });
-                        }
-                    }
-                }
-            }
-        }
-    }
-    return {
-        teachingResourcesItemsForRR_1: teachingResourcesItemsForRR_1,
-        teachingResourcesItemsForRR_2: teachingResourcesItemsForRR_2
-    };
-};
-
-const extractVRvideosItems = (html) => {
-    const doc = new DOMParser().parseFromString(html, 'text/html');
-    const trTags = doc.querySelectorAll('tr');
-    const vrVideosItemsForRR_1 = [];
-    let inSession1 = false; // Flag to track if currently in Session 1
-    let inSession2 = false; // Flag to track if currently in Session 2
-    for (let i = 0; i < trTags.length; i++) {
-        const trTag = trTags[i];
-        const h1Tags = trTag.querySelectorAll('h1');
-        const strongTags = trTag.querySelectorAll('p strong');
-        // Check if both 'h1' and 'p strong' belong to the same <tr> tag
-        if (h1Tags.length > 0 && strongTags.length > 0) {
-            const sessionText = h1Tags[0].textContent.trim(); // Text content of the h1 tag
-            if (sessionText.includes('Required resources')) {
-                let sessionFound = false; // Flag to track if session keywords are found
-                for (let j = 0; j < strongTags.length; j++) {
-                    const strongTag = strongTags[j];
-                    const sessionText = strongTag.parentNode.textContent.trim(); // Text content of the parent node
-                    if (sessionText.includes('Session 1:')) {
-                        inSession1 = true; // Set flag for Session 1
-                        inSession2 = false; // Reset flag for Session 2
-                        sessionFound = true;
-                    } else if (sessionText.includes('Session 2 (optional):')) {
-                        inSession1 = false; // Reset flag for Session 1
-                        inSession2 = true; // Set flag for Session 2
-                        sessionFound = true;
-                    }
-                    if (!sessionFound) {
-                        // If neither session keyword found, consider it as a default session
-                        inSession1 = true;
-                        inSession2 = false;
-                    }
-                    if (strongTag.textContent.trim() === 'VR videos:' || strongTag.textContent.trim() === 'Videos:') {
-                        const appsPrefix = inSession1 ? '1' : '2'; // Determine the session prefix
-                        const pTag = strongTag.parentNode; // Get parent <p> tag
-                        const ulTag = pTag.nextElementSibling; // Get next sibling <ul> tag
-
-                        if (ulTag && ulTag.tagName.toLowerCase() === 'ul') {
-                            const liTags = ulTag.querySelectorAll('li');
-                            liTags.forEach((liTag, index) => {
-                                const aTag = liTag.querySelector('a'); // Get the <a> tag within <li>
-                                if (aTag) {
-                                    const href = aTag.getAttribute('href'); // Get the href attribute value
-                                    const text = aTag.textContent.trim(); // Get the text content
-                                    if (inSession1) {
-                                        vrVideosItemsForRR_1.push({ text, href }); // Push an object with text and href
-                                    } else if (inSession2) {
-                                        vrVideosItemsForRR_1.push({ text, href }); // Push an object with text and href
-                                    }
-                                }
-                            });
-                        }
-                    }
-
-                }
-            }
-        }
-    }
-    return {
-        vrVideosItemsForRR_1: vrVideosItemsForRR_1,
-    };
-};
-
 
 //raw/test functions are here
 
@@ -953,6 +679,7 @@ const extractItemsByKeyword = (html, keyword1, keyword2) => {
     const ItemsForRR_2 = [];
     const ItemsForOR_1 = [];
     const ItemsForOR_2 = [];
+    const LinksForAll = [];
     let inSession1 = false; // Flag to track if currently in Session 1
     let inSession2 = false; // Flag to track if currently in Session 2
     for (let i = 0; i < trTags.length; i++) {
@@ -989,7 +716,17 @@ const extractItemsByKeyword = (html, keyword1, keyword2) => {
                         if (ulTag && ulTag.tagName.toLowerCase() === 'ul') {
                             const liTags = ulTag.querySelectorAll('li');
                             liTags.forEach((liTag, index) => {
+                                const aTags = liTag.querySelectorAll('a'); // Get all <a> tags within <li>
                                 const aTag = liTag.querySelector('a'); // Get the <a> tag within <li>
+                                if (aTags.length > 0) {
+                                    aTags.forEach(aTag => {
+                                        const href = aTag.getAttribute('href'); // Get the href attribute value
+                                        const text = aTag.textContent.trim(); // Get the text content
+                                        const list_text = liTag.textContent.trim();
+                                        LinksForAll.push({text, href, list_text})
+
+                                    });
+                                }
                                 if (aTag) {
                                     const href = aTag.getAttribute('href'); // Get the href attribute value
                                     const text = aTag.textContent.trim(); // Get the text content
@@ -1011,16 +748,25 @@ const extractItemsByKeyword = (html, keyword1, keyword2) => {
                         }
                     }
                 }
-            } else if (sessionText.includes('Other resources to try (optional)')) {
+            }
+            else if (sessionText.includes('Other resources to try (optional)')) {
+                let sessionFound = false; // Flag to track if session keywords are found
                 for (let j = 0; j < strongTags.length; j++) {
                     const strongTag = strongTags[j];
                     const sessionText = strongTag.parentNode.textContent.trim(); // Text content of the parent node
                     if (sessionText.includes('Session 1:')) {
                         inSession1 = true; // Set flag for Session 1
                         inSession2 = false; // Reset flag for Session 2
+                        sessionFound = true;
                     } else if (sessionText.includes('Session 2 (optional):')) {
                         inSession1 = false; // Reset flag for Session 1
                         inSession2 = true; // Set flag for Session 2
+                        sessionFound = true;
+                    }
+                    if (!sessionFound) {
+                        // If neither session keyword found, consider it as a default session
+                        inSession1 = true;
+                        inSession2 = false;
                     }
                     if (strongTag.textContent.trim() === keyword1 + ':' || strongTag.textContent.trim() === keyword1 || strongTag.textContent.trim() === keyword2) {
                         const hardwarePrefix = inSession1 ? '1' : '2'; // Determine the session prefix
@@ -1030,7 +776,17 @@ const extractItemsByKeyword = (html, keyword1, keyword2) => {
                         if (ulTag && ulTag.tagName.toLowerCase() === 'ul') {
                             const liTags = ulTag.querySelectorAll('li');
                             liTags.forEach((liTag, index) => {
+                                const aTags = liTag.querySelectorAll('a'); // Get all <a> tags within <li>
                                 const aTag = liTag.querySelector('a'); // Get the <a> tag within <li>
+                                if (aTags.length > 0) {
+                                    aTags.forEach(aTag => {
+                                        const href = aTag.getAttribute('href'); // Get the href attribute value
+                                        const text = aTag.textContent.trim(); // Get the text content
+                                        const list_text = liTag.textContent.trim();
+                                        LinksForAll.push({text, href, list_text})
+
+                                    });
+                                }
                                 if (aTag) {
                                     const href = aTag.getAttribute('href'); // Get the href attribute value
                                     const text = aTag.textContent.trim(); // Get the text content
@@ -1059,73 +815,9 @@ const extractItemsByKeyword = (html, keyword1, keyword2) => {
         ItemsForRR_1: ItemsForRR_1,
         ItemsForRR_2: ItemsForRR_2,
         ItemsForOR_1: ItemsForOR_1,
-        ItemsForOR_2: ItemsForOR_2
+        ItemsForOR_2: ItemsForOR_2,
+        LinksForAll: LinksForAll
     };
-};
-
-
-const extractItemsByKeywords = (html, keyword1, keyword2) => {
-    const doc = new DOMParser().parseFromString(html, 'text/html');
-    const trTags = doc.querySelectorAll('tr');
-    const items = {
-        itemsForRR_1: [],
-        itemsForRR_2: [],
-        itemsForOR_1: [],
-        itemsForOR_2: []
-    };
-    let inSession1 = false; // Flag to track if currently in Session 1
-    let inSession2 = false; // Flag to track if currently in Session 2
-
-    for (let i = 0; i < trTags.length; i++) {
-        const trTag = trTags[i];
-        const h1Tags = trTag.querySelectorAll('h1');
-        const strongTags = trTag.querySelectorAll('p strong');
-
-        if (h1Tags.length > 0 && strongTags.length > 0) {
-            const sessionText = h1Tags[0].textContent.trim(); // Text content of the h1 tag
-            let sessionFound = false; // Flag to track if session keywords are found
-
-            for (let j = 0; j < strongTags.length; j++) {
-                const strongTag = strongTags[j];
-                const sessionText = strongTag.parentNode.textContent.trim(); // Text content of the parent node
-
-                if (sessionText.includes('Session 1:')) {
-                    inSession1 = true;
-                    inSession2 = false;
-                    sessionFound = true;
-                } else if (sessionText.includes('Session 2 (optional):')) {
-                    inSession1 = false;
-                    inSession2 = true;
-                    sessionFound = true;
-                }
-
-                if (!sessionFound) {
-                    inSession1 = true;
-                    inSession2 = false;
-                }
-
-                if (strongTag.textContent.trim() === keyword1 + ':' || strongTag.textContent.trim() === keyword1) {
-                    const prefix = inSession1 ? '1' : '2'; // Determine the session prefix
-                    const pTag = strongTag.parentNode; // Get parent <p> tag
-                    const ulTag = pTag.nextElementSibling; // Get next sibling <ul> tag
-
-                    if (ulTag && ulTag.tagName.toLowerCase() === 'ul') {
-                        const liTags = ulTag.querySelectorAll('li');
-                        liTags.forEach((liTag, index) => {
-                            const key = `itemsFor${inSession1 ? 'RR' : 'OR'}_${prefix}`;
-                            items[key].push(liTag.textContent.trim());
-                            if (inSession1) {
-                                Item.push(liTag.textContent.trim());
-                            } else if (inSession2) {
-                                hardwareItemsForRR_2.push(liTag.textContent.trim());
-                            }
-                        });
-                    }
-                }
-            }
-        }
-    }
-    return items;
 };
 
 
