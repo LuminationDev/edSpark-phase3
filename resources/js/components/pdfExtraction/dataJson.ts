@@ -83,7 +83,7 @@ export const data = {
         ],
         "HardwareS2": [],
         "AppsS1": [
-            " ●  YouTube - For viewing VR videos. This needs to be whitelisted and downloaded on your mobile devices."
+            "YouTube - For viewing VR videos. This needs to be whitelisted and downloaded on your mobile devices."
         ],
         "AppsS2": [],
         "TeachingResourcesS1": [
