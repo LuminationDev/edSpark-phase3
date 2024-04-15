@@ -36,7 +36,7 @@ class LoginController extends Controller
 
             return redirect('/dashboard');
         } catch (\Throwable $e) {
-            return redirect('/error?errtype=failed+login', 302, ['message' => 'tompel']);
+            return redirect('/error?errtype=failed+login', 302);
         }
     }
 
@@ -49,10 +49,10 @@ class LoginController extends Controller
     {
         try {
             $idToken = $user->token;
-            Log::info($user);
+		Log::info(json_encode($user));
 
             // Get the user's edSpark profile/data
-            $userEdSpark = User::where('email', $user->email)->first();
+            $userEdSpark = isset($user->email) ? User::where('email', $user->email)->first() : NULL;
             $userEdSparkId = isset($userEdSpark) ? $userEdSpark->id : false;
 
             // If user exists in edSpark, check if Superadmin or not
