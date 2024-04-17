@@ -31,7 +31,6 @@ class Advice extends Model
         'status',
         'author_id',
         'cover_image',
-        'advicetype_id',
         'template',
         'extra_content',
         'created_at',

@@ -1,8 +1,9 @@
 <script setup>
 import axios from 'axios'
-import {onBeforeMount, ref, computed, onMounted} from 'vue'
-import {serverURL} from "../../constants/serverUrl";
 import {storeToRefs} from "pinia";
+import {computed, onBeforeMount, onMounted,ref} from 'vue'
+
+import {serverURL} from "../../constants/serverUrl";
 import {useUserStore} from "../../stores/useUserStore";
 
 const props = defineProps({
@@ -35,33 +36,33 @@ const formattedKey = computed( () => {
 })
 
 const displayContent = computed(() => {
-    if(currentUser.value.metadata.filter(n => n['user_meta_key'] === camelize(props.contentType))[0]){
-        return currentUser.value.metadata.filter(n => n['user_meta_key'] === camelize(props.contentType))[0]['user_meta_value']
+    if(currentUser.value.metadata.filter(n => n['meta_key'] === camelize(props.contentType))[0]){
+        return currentUser.value.metadata.filter(n => n['meta_key'] === camelize(props.contentType))[0]['meta_value']
     }else return 'No content available'
 })
 
 function handleMetaData() {
     if(currentUser.value) {
         currentUser.value.metadata.forEach(meta => {
-            switch (meta.user_meta_key) {
+            switch (meta.meta_key) {
             case 'biography':
-                if ( typeof meta.user_meta_value === 'string') {
-                    biography.value = meta.user_meta_value
+                if ( typeof meta.meta_value === 'string') {
+                    biography.value = meta.meta_value
                 } else {
-                    biography.value = meta.user_meta_value.join(', ');
+                    biography.value = meta.meta_value.join(', ');
                 }
                 break;
             case 'yearLevels':
-                yearLevels.value = meta.user_meta_value
+                yearLevels.value = meta.meta_value
                 break;
             case 'interests':
-                interests.value = meta.user_meta_value
+                interests.value = meta.meta_value
                 break;
             case 'subjects':
-                subjects.value = meta.user_meta_value
+                subjects.value = meta.meta_value
                 break;
             case 'userAvatar':
-                userAvatar.value = meta.user_meta_value
+                userAvatar.value = meta.meta_value
                 break;
 
             default:

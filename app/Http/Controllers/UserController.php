@@ -124,8 +124,8 @@ class UserController extends Controller
 
         foreach ($userMetaData as $meta) {
             $metaDataArray[] = [
-                'meta_key' => $meta->user_meta_key,
-                'meta_value' => explode(', ', $meta->user_meta_value)
+                'meta_key' => $meta->meta_key,
+                'meta_value' => explode(', ', $meta->meta_value)
             ];
         }
 
@@ -311,8 +311,8 @@ class UserController extends Controller
             if ($result) {
                 foreach ($result as $key => $value) {
                     $result = [
-                        'meta_key' => $value->user_meta_key,
-                        'meta_value' => $value->user_meta_value
+                        'meta_key' => $value->meta_key,
+                        'meta_value' => $value->meta_value
                     ];
                     $userMetaDataToSend[] = $result;
                 }
@@ -474,8 +474,8 @@ class UserController extends Controller
                 // Populate the result into the response array
                 foreach ($result as $value) {
                     $userMetaDataToSend[] = [
-                        'meta_key' => $value->user_meta_key,
-                        'meta_value' => $value->user_meta_value,
+                        'meta_key' => $value->meta_key,
+                        'meta_value' => $value->meta_value,
                     ];
                 }
 

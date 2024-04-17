@@ -117,8 +117,8 @@ const handleClickMobileProfile = () => {
 }
 
 const avatarUrl = computed(() => {
-    const meta = currentUser.value?.metadata?.find(m => m.user_meta_key === 'userAvatar');
-    return meta ? meta.user_meta_value[0].replace(/\\\//g, "/") : '';
+    const meta = currentUser.value?.metadata?.find(m => m.meta_key === 'userAvatar');
+    return meta ? meta.meta_value[0].replace(/\\\//g, "/") : '';
 });
 const handleGlobalSearchClick = () => {
     showGlobalSearch.value = true

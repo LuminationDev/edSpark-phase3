@@ -32,17 +32,17 @@ class SoftwareController extends Controller
 
     public function createSoftwarePost(Request $request)
     {
-        if (strtolower($request->input('post_status')) === 'draft') {
+        if (strtolower($request->input('status')) === 'draft') {
             $validator = Validator::make($request->all(), [
-                'post_content' => 'required|string',
-                'post_title' => 'required|string',
+                'content' => 'required|string',
+                'title' => 'required|string',
             ]);
-        } else if (strtolower($request->input('post_status')) === 'pending') {
+        } else if (strtolower($request->input('status')) === 'pending') {
             $validator = Validator::make($request->all(), [
-                'post_title' => 'required|string',
-                'post_content' => 'required|string',
-                'post_excerpt' => 'sometimes|string',
-                'post_status' => 'required|string',
+                'title' => 'required|string',
+                'content' => 'required|string',
+                'excerpt' => 'sometimes|string',
+                'status' => 'required|string',
                 'author_id' => 'required|integer|exists:users,id',
                 'softwaretype_id' => 'required|array',
                 'softwaretype_id.*' => 'integer|exists:software_types,id',
@@ -78,7 +78,7 @@ class SoftwareController extends Controller
             $existingSoftware = Software::find($request->input('existing_id'));
 
             if ($existingSoftware) {
-                $existingSoftware->update(['post_status' => 'Archived']);
+                $existingSoftware->update(['status' => 'Archived']);
             }
         }
 
@@ -103,7 +103,7 @@ class SoftwareController extends Controller
     public function fetchSoftwarePosts(Request $request): JsonResponse
     {
         try {
-            $softwares = Software::where('post_status', 'Published')
+            $softwares = Software::where('status', 'Published')
                 ->orderBy('created_at', 'DESC')
                 ->get();
 
@@ -131,7 +131,7 @@ class SoftwareController extends Controller
     {
         try {
             $userId = $request->input('user_id');
-            $softwares = Software::where('post_status', 'Published')
+            $softwares = Software::where('status', 'Published')
                 ->where('author_id', $userId)  // Filter by partner (author) ID
                 ->orderBy('created_at', 'DESC')
                 ->get();
@@ -174,14 +174,14 @@ class SoftwareController extends Controller
             // Fetch software posts that have at least one of the current software's tags and don't have the currentSoftwareId
             $relatedSoftwares = Software::withAnyTags($tags)
                 ->where('id', '!=', $currentSoftwareId)
-                ->where('post_status', 'Published')
+                ->where('status', 'Published')
                 ->orderBy('created_at', 'DESC')
                 ->get();
 
             if ($relatedSoftwares->isEmpty()) {
                 // Fetch two random software posts excluding the currentSoftwareId
                 $relatedSoftwares = Software::where('id', '!=', $currentSoftwareId)
-                    ->where('post_status', 'Published')
+                    ->where('status', 'Published')
                     ->inRandomOrder()
                     ->limit(2)
                     ->get();
@@ -224,7 +224,7 @@ class SoftwareController extends Controller
             $software = Software::find($id);
 
         } else {
-            $software = Software::where('id', $id)->where('post_status', "Published")->first();
+            $software = Software::where('id', $id)->where('status', "Published")->first();
         }
         if (!$software) {
             return ResponseService::error('Software not found', 404);

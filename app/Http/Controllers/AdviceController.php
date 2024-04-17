@@ -30,17 +30,17 @@ class AdviceController extends Controller
 
     public function createAdvicePost(Request $request)
     {
-        if (strtolower($request->input('post_status')) === 'draft') {
+        if (strtolower($request->input('status')) === 'draft') {
             $validator = Validator::make($request->all(), [
-                'post_content' => 'required|string',
-                'post_title' => 'required|string',
+                'content' => 'required|string',
+                'title' => 'required|string',
             ]);
-        } else if (strtolower($request->input('post_status')) === 'pending') {
+        } else if (strtolower($request->input('status')) === 'pending') {
             $validator = Validator::make($request->all(), [
-                'post_title' => 'required|string',
-                'post_content' => 'required|string',
-                'post_excerpt' => 'sometimes|string',
-                'post_status' => 'required|string',
+                'title' => 'required|string',
+                'content' => 'required|string',
+                'excerpt' => 'sometimes|string',
+                'status' => 'required|string',
                 'author_id' => 'required|integer|exists:users,id',
                 'advicetype_id' => 'required|array',
                 'advicetype_id.*' => 'integer|exists:advice_types,id',
@@ -78,7 +78,7 @@ class AdviceController extends Controller
             $existingAdvice = Advice::find($request->input('existing_id'));
 
             if ($existingAdvice) {
-                $existingAdvice->update(['post_status' => 'Archived']);
+                $existingAdvice->update(['status' => 'Archived']);
             }
         }
 
@@ -104,7 +104,7 @@ class AdviceController extends Controller
     {
 
 
-        $advices = Advice::where('post_status', 'Published')->orderBy('created_at', 'DESC')->get();
+        $advices = Advice::where('status', 'Published')->orderBy('created_at', 'DESC')->get();
         $data = [];
 
         foreach ($advices as $advice) {
@@ -124,14 +124,14 @@ class AdviceController extends Controller
             $tag = $user->full_name;
 
             // First Query
-            $advices = Advice::where('post_status', 'Published')
+            $advices = Advice::where('status', 'Published')
                 ->where('author_id', $userId)  // Filter by partner (author) ID
                 ->orderBy('created_at', 'DESC')
                 ->get();
 
             // Second Query
             $relatedAdvices = Advice::withAnyTags($tag)
-                ->where('post_status', 'Published')
+                ->where('status', 'Published')
                 ->where('author_id', '!=', $userId) // Exclude the same user's posts
                 ->orderBy('created_at', 'DESC')
                 ->get();
@@ -156,7 +156,7 @@ class AdviceController extends Controller
     {
         try {
             $userId = $request->input('user_id');
-            $advices = Advice::where('post_status', 'Published')
+            $advices = Advice::where('status', 'Published')
                 ->where('author_id', $userId)  // Filter by partner (author) ID
                 ->orderBy('created_at', 'DESC')
                 ->get();
@@ -179,7 +179,7 @@ class AdviceController extends Controller
     {
         try {
             $userId = Auth::user()->id;
-            $advices = Advice::where('post_status', 'Draft')
+            $advices = Advice::where('status', 'Draft')
                 ->where('author_id', $userId)  // Filter by partner (author) ID
                 ->orderBy('created_at', 'DESC')
                 ->get();
@@ -216,7 +216,7 @@ class AdviceController extends Controller
             // Find the advice by ID
             $advice = Advice::find($id);
         } else {
-            $advice = Advice::where('id', $id)->where('post_status', 'Published')->first();
+            $advice = Advice::where('id', $id)->where('status', 'Published')->first();
         }
 
         // Check if advice with the given ID exists
@@ -241,7 +241,7 @@ class AdviceController extends Controller
                 $adviceTypes = Advicetype::where('advice_type_name', $typeItem)->first();
                 $adviceArticles = Advice::whereHas('advicetypes', function ($query) use ($adviceTypes) {
                     $query->where('advice_types.id', $adviceTypes->id);
-                })->where('post_status', 'Published')->orderBy('created_at', 'DESC')->get();
+                })->where('status', 'Published')->orderBy('created_at', 'DESC')->get();
 
                 foreach ($adviceArticles as $advice) {
                     $result = $this->postService->adviceModelToJson($advice, $request);
@@ -254,7 +254,7 @@ class AdviceController extends Controller
             $adviceTypes = Advicetype::where('advice_type_name', $type)->first();
             $adviceArticles = Advice::whereHas('advicetypes', function ($query) use ($adviceTypes) {
                 $query->where('advice_types.id', $adviceTypes->id);
-            })->where('post_status', 'Published')->orderBy('created_at', 'DESC')->get();
+            })->where('status', 'Published')->orderBy('created_at', 'DESC')->get();
 
             foreach ($adviceArticles as $advice) {
                 $result = $this->postService->adviceModelToJson($advice, $request);
@@ -287,7 +287,7 @@ class AdviceController extends Controller
             // Fetch advice posts that have at least one of the current advice's tags and don't have the currentAdviceId
             $relatedAdvices = Advice::withAnyTags($tags)
                 ->where('id', '!=', $currentAdviceId)
-                ->where('post_status', 'Published')
+                ->where('status', 'Published')
                 ->orderBy('created_at', 'DESC')
                 ->limit(2)
                 ->get();
@@ -295,7 +295,7 @@ class AdviceController extends Controller
             // If no related advices are found, fetch two random advice posts
             if ($relatedAdvices->isEmpty()) {
                 $relatedAdvices = Advice::where('id', '!=', $currentAdviceId)
-                    ->where('post_status', 'Published')
+                    ->where('status', 'Published')
                     ->inRandomOrder()
                     ->limit(2)
                     ->get();

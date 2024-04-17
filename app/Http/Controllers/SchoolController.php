@@ -14,6 +14,7 @@ use App\Models\Schoolmeta;
 use App\Models\Site;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 use App\Helpers\Metahelper;
 use stdClass;
@@ -44,8 +45,8 @@ class SchoolController extends Controller
         if ($schoolMetadata) {
             foreach ($schoolMetadata as $key => $value) {
                 $res = [
-                    'schoolmeta_key' => $value->schoolmeta_key,
-                    'schoolmeta_value' => $value->schoolmeta_value
+                    'meta_key' => $value->meta_key,
+                    'meta_value' => $value->meta_value
                 ];
                 $tempMetadata[] = $res;
             }
@@ -70,8 +71,8 @@ class SchoolController extends Controller
 
         // adding schoolType into meta
         $schoolType = [
-            'schoolmeta_key' => 'school_type',
-            'schoolmeta_value' => $school->site->site_sub_type_desc ?? ""
+            'meta_key' => 'school_type',
+            'meta_value' => $school->site->site_sub_type_desc ?? ""
         ];
         $schoolMetadata[] = $schoolType;
 
@@ -81,10 +82,6 @@ class SchoolController extends Controller
                 'site_id' => $school->site->site_id,
                 'site_name' => ($school->site->site_id) ? $school->site->site_name : NULL,
                 'site_type_code' => ($school->site) ? $school->site->site_type_code : NULL
-            ],
-            'owner' => [
-                'owner_id' => $school->owner_id,
-                'owner_name' => ($school->owner_id) ? $school->owner->full_name : NULL
             ],
             'name' => $school->name,
             'content_blocks' => JsonHelper::safelyDecodeString($school->content_blocks) ?: NULL,
@@ -118,17 +115,20 @@ class SchoolController extends Controller
     {
         foreach ($metadata as $key => $value) {
             $valueToInsert = is_string($value) ? $value : implode(', ', $value);
-
-            Schoolmeta::updateOrCreate(
-                [
-                    'school_id' => $schoolId,
-                    'schoolmeta_key' => $key
-                ],
-                [
-                    'schoolmeta_value' => $valueToInsert,
-                    'updated_at' => Carbon::now()
-                ]
-            );
+            try{
+                Schoolmeta::updateOrCreate(
+                    [
+                        'school_id' => $schoolId,
+                        'meta_key' => $key
+                    ],
+                    [
+                        'meta_value' => $valueToInsert,
+                        'updated_at' => Carbon::now()
+                    ]
+                );
+            } catch(\Exception $e){
+                Log::error('Failed to update or create schoolmeta');
+            }
         }
     }
 
@@ -222,7 +222,6 @@ class SchoolController extends Controller
             $school = School::firstOrCreate(
                 ['site_id' => $siteId, 'status' => "Published"],
                 [
-                    'owner_id' => $userId,
                     'school_id' => $nextSchoolId,
                     'name' => $site->site_name,
                     'content_blocks' => $this->defaultSchoolContent,
@@ -476,8 +475,8 @@ class SchoolController extends Controller
 
         $meta_to_insert = [
             "school_id" => $school_id,
-            "schoolmeta_key" => 'nominated_user',
-            'schoolmeta_value' => $nominated_user_id,
+            "meta_key" => 'nominated_user',
+            'meta_value' => $nominated_user_id,
         ];
         Schoolmeta::create($meta_to_insert);
 
@@ -503,8 +502,8 @@ class SchoolController extends Controller
             if ($user_record && $user_record->site_id == $site_id && ($user_record->role->role_name === 'SCHLDR' || $user_record->role->role_name === 'Superadmin')) {
 
                 $deleted = Schoolmeta::where('school_id', $school_id)
-                    ->where('schoolmeta_key', 'nominated_user')
-                    ->where('schoolmeta_value', $nominated_id_delete)
+                    ->where('meta_key', 'nominated_user')
+                    ->where('meta_value', $nominated_id_delete)
                     ->delete();
 
                 if ($deleted) {
@@ -555,8 +554,8 @@ class SchoolController extends Controller
         }
 
         $nominated_users_ids = Schoolmeta::where('school_id', $school_id)
-            ->where('schoolmeta_key', 'nominated_user')
-            ->pluck('schoolmeta_value');
+            ->where('meta_key', 'nominated_user')
+            ->pluck('meta_value');
 
         $nominated_users = User::whereIn('id', $nominated_users_ids)->get();
 
@@ -601,8 +600,8 @@ class SchoolController extends Controller
 
 
             $schoolmeta_record = Schoolmeta::where('school_id', $school_id)
-                ->where('schoolmeta_key', 'nominated_user')
-                ->where('schoolmeta_value', $user_id)
+                ->where('meta_key', 'nominated_user')
+                ->where('meta_value', $user_id)
                 ->first();
 
             if ($schoolmeta_record) {
@@ -668,10 +667,10 @@ class SchoolController extends Controller
         Schoolmeta::updateOrCreate(
             [
                 'school_id' => $school_id,
-                'schoolmeta_key' => 'school_contact'
+                'meta_key' => 'school_contact'
             ],
             [
-                'schoolmeta_value' => $school_contact
+                'meta_value' => $school_contact
             ]
         );
 
@@ -693,14 +692,14 @@ class SchoolController extends Controller
             $school_id = $requestData['school_id'];
 
             $schoolmeta_record = Schoolmeta::where('school_id', $school_id)
-                ->where('schoolmeta_key', 'school_contact')
+                ->where('meta_key', 'school_contact')
                 ->first();
 
             if ($schoolmeta_record) {
                 return response()->json([
                     "status" => 200,
                     "result" => true,
-                    'school_contact' => json_decode($schoolmeta_record->schoolmeta_value)
+                    'school_contact' => json_decode($schoolmeta_record->meta_value)
                 ]);
             }
 

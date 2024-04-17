@@ -32,20 +32,20 @@ class EventController extends Controller
 
     public function createEventPost(Request $request): \Illuminate\Http\JsonResponse
     {
-        if (strtolower($request->input('event_status')) === 'draft') {
+        if (strtolower($request->input('status')) === 'draft') {
             $validator = Validator::make($request->all(), [
-                'event_title' => 'required|string',
-                'event_content' => 'required|string',
+                'title' => 'required|string',
+                'content' => 'required|string',
             ]);
-        } else if (strtolower($request->input('event_status')) === 'pending') {
+        } else if (strtolower($request->input('status')) === 'pending') {
             $validator = Validator::make($request->all(), [
-                'event_title' => 'required|string',
-                'event_content' => 'required|string',
-                'event_excerpt' => 'sometimes|string',
-                'event_location' => 'required|string',
+                'title' => 'required|string',
+                'content' => 'required|string',
+                'excerpt' => 'sometimes|string',
+                'location' => 'required|string',
                 'start_date' => 'required|date',
                 'end_date' => 'required|date|after_or_equal:start_date',
-                'event_status' => 'required|string',
+                'status' => 'required|string',
                 'author_id' => 'required|integer|exists:users,id',
                 'eventtype_id' => 'required|integer|exists:event_types,id',
             ]);
@@ -101,9 +101,9 @@ class EventController extends Controller
         // Get the current date without the time component
         $currentDate = now()->startOfDay();
 
-        $events = Event::where('event_status', 'Published')
+        $events = Event::where('status', 'Published')
             ->where('end_date', '>=', $currentDate)
-            ->where('event_status', 'Published')
+            ->where('status', 'Published')
             ->get();
 
         $data = [];
@@ -120,7 +120,7 @@ class EventController extends Controller
     {
         try {
             $userId = Auth::user()->id;
-            $events = Event::where('event_status', 'Published')
+            $events = Event::where('status', 'Published')
                 ->where('author_id', $userId)  // Filter by partner (author) ID
                 ->orderBy('created_at', 'DESC')
                 ->get();
@@ -156,7 +156,7 @@ class EventController extends Controller
             // Find the advice by ID
             $event = Event::find($id);
         } else {
-            $event = Event::where('id', $id)->where('event_status', "Published")->first();
+            $event = Event::where('id', $id)->where('status', "Published")->first();
         }
 
         if (!$event) {
@@ -187,7 +187,7 @@ class EventController extends Controller
 
         if ($eventRecordingMeta) {
             // Update the existing 'event_recording' meta
-            $eventRecordingMeta->event_meta_value = $recordingLink;
+            $eventRecordingMeta->meta_value = $recordingLink;
             $eventRecordingMeta->save();
         } else {
             // Create a new 'event_recording' meta entry
@@ -211,7 +211,7 @@ class EventController extends Controller
             ->first();
 
         if ($eventRecordingMeta) {
-            $recordingLink = $eventRecordingMeta->event_meta_value;
+            $recordingLink = $eventRecordingMeta->meta_value;
             return response()->json(['event_recording' => $recordingLink]);
         } else {
             return response()->json(['error' => 'Event recording not found.'], 404);
@@ -275,7 +275,7 @@ class EventController extends Controller
             ->first();
 
         if ($eventRecordingMeta) {
-            $recordingLink = $eventRecordingMeta->event_meta_value;
+            $recordingLink = $eventRecordingMeta->meta_value;
             $isOwner = false;
             if ($event->author_id == $user->id) {
                 $isOwner = 'true';
