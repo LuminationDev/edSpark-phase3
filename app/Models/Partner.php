@@ -28,7 +28,7 @@ class Partner extends Authenticatable
         'name',
         'email',
         'created_at',
-        'modified_at'
+        'updated_at'
     ];
 
     public function user()

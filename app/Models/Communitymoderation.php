@@ -28,7 +28,7 @@ class Communitymoderation extends Model
         'post_excerpt',
         'status',
         'created_at',
-        'modified_at',
+        'updated_at',
         'status',
         'communitytype_id'
     ];

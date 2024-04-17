@@ -31,7 +31,7 @@ class Softwaremoderation extends Model
         'how_to_access',
         'status',
         'created_at',
-        'modified_at'
+        'updated_at'
     ];
 
     public function author()

@@ -205,12 +205,12 @@ class AdviceResource extends Resource
                 Tables\Columns\TextColumn::make('status')
                     ->label('Status')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('modified_at')
+                Tables\Columns\TextColumn::make('updated_at')
                     ->date()
                     ->label('Last modified')
                     ->sortable()
             ])
-            ->defaultSort('modified_at', 'desc')
+            ->defaultSort('updated_at', 'desc')
             ->filters([
                 Tables\Filters\SelectFilter::make('status')
                     ->options([

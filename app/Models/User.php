@@ -43,7 +43,8 @@ class User extends Authenticatable implements FilamentUser, HasName
 
     ];
 
-    public function canAccessPanel(Panel $panel): bool {
+    public function canAccessPanel(Panel $panel): bool
+    {
         return RoleHelpers::has_minimum_privilege(UserRole::MODERATOR);
     }
 
@@ -59,15 +60,11 @@ class User extends Authenticatable implements FilamentUser, HasName
 
     public function site()
     {
-        return $this->belongsTo(Site::class,'site_id', 'site_id');
+        return $this->belongsTo(Site::class, 'site_id', 'site_id');
     }
 
-    public function usertype()
+    public function hasRole($roleName)
     {
-        return $this->belongsTo(Usertype::class);
-    }
-
-    public function hasRole($roleName){
         $role = Role::where('role_name', $roleName)->first();
         return User::where('role_id', $role->id)->get();
     }

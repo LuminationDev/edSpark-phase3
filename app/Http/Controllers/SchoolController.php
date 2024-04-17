@@ -220,7 +220,7 @@ class SchoolController extends Controller
             $latestSchool = School::orderBy('school_id', 'desc')->first();
             $nextSchoolId = ($latestSchool ? $latestSchool->school_id + 1 : 1);
             $school = School::firstOrCreate(
-                ['site_id' => $siteId, 'status' => "Published"],
+                ['site_id' => $siteId, 'status' => \App\Helpers\StatusHelpers::PUBLISHED],
                 [
                     'school_id' => $nextSchoolId,
                     'name' => $site->site_name,
@@ -230,7 +230,7 @@ class SchoolController extends Controller
                     'tech_used' => '',
                     'pedagogical_approaches' => '',
                     'tech_landscape' => '',
-                    'status' => 'Published',
+                    'status' => \App\Helpers\StatusHelpers::PUBLISHED,
                     'created_at' => Carbon::now(),
                     'updated_at' => Carbon::now()
                 ]
@@ -333,7 +333,7 @@ class SchoolController extends Controller
 
     public function fetchAllSchools(Request $request)
     {
-        $schools = School::where('status', 'Published')->get();
+        $schools = School::where('status', \App\Helpers\StatusHelpers::PUBLISHED)->get();
         $data = [];
         foreach ($schools as $school) {
             $schoolMetadata = Schoolmeta::where('school_id', $school->school_id)->get();
@@ -349,7 +349,7 @@ class SchoolController extends Controller
     public function fetchSchoolByName(Request $request, $schoolName)
     {
         $schoolName = str_replace('%20', ' ', $schoolName);
-        $school = School::where('name', $schoolName)->where('status', 'Published')->first();
+        $school = School::where('name', $schoolName)->where('status', \App\Helpers\StatusHelpers::PUBLISHED)->first();
         if ($school == null) {
             return response('School Not found', 404);
         } else {

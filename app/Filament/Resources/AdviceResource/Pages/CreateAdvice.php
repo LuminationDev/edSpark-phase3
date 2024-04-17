@@ -1,11 +1,10 @@
 <?php
-
 namespace App\Filament\Resources\AdviceResource\Pages;
-
 use App\Filament\Resources\AdviceResource;
 use App\Helpers\NotificationActionType;
 use App\Helpers\NotificationResource;
 use App\Helpers\NotificationResourceType;
+use App\Helpers\StatusHelpers;
 use App\Models\Advice;
 use App\Models\User;
 use App\Notifications\ResourceCreated;
@@ -16,20 +15,12 @@ use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 
-
 class CreateAdvice extends CreateRecord
 {
     use useNotification;
     private string $notificationResourceType = NotificationResourceType::ADVICE;
 
     protected static string $resource = AdviceResource::class;
-
-    protected function mutateFormDataBeforeCreate(array $data): array
-    {
-        $data['created_at'] = Carbon::now();
-        $data['modified_at'] = Carbon::now();
-        return $data;
-    }
 
     protected function handleRecordCreation(array $data): Model
     {

@@ -83,7 +83,7 @@ class ProductController extends Controller
                 'brandId' => $hardware->brand_id ?? NULL,
                 'brandName' => $hardware->brand->product_brand_name ?? NULL,
             ],
-            'modified_at' => $hardware->modified,
+            'updated_at' => $hardware->modified,
             'isLoan' => $hardware->product_isLoan ?? NULL,
             'extra_content' => $hardware->extra_content ?? NULL,
             'isLikedByUser' => $isLikedByUser,

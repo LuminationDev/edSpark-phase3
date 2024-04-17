@@ -72,7 +72,7 @@ class AdvicemoderationResource extends Resource
                 Tables\Columns\TextColumn::make('created_at')
                     ->date()
                     ->label('Created At'),
-                Tables\Columns\TextColumn::make('modified_at')
+                Tables\Columns\TextColumn::make('updated_at')
                     ->date()
                     ->label('Modified At'),
                 Tables\Columns\TextColumn::make('status')

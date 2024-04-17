@@ -29,7 +29,7 @@ class CreateSoftware extends CreateRecord
     protected function mutateFormDataBeforeCreate(array $data): array
     {
         $data['created_at'] = Carbon::now();
-        $data['modified_at'] = Carbon::now();
+        $data['updated_at'] = Carbon::now();
         return $data;
     }
 

@@ -82,7 +82,7 @@ class PostService
             'template' => ($advice->template) ?: NULL,
             'extra_content' => ($advice->extra_content) ?: NULL,
             'created_at' => $advice->created_at,
-            'modified_at' => $advice->modified_at,
+            'updated_at' => $advice->updated_at,
             'status' => $advice->status,
             'type' => ($advice->advice_types) ? $advice->advice_types->pluck('advice_type_name') : NULL,
             'post_type' => 'advice',
@@ -124,7 +124,7 @@ class PostService
             ],
             'cover_image' => $software->cover_image ?? null,
             'created_at' => $software->created_at ?? null,
-            'modified_at' => $software->modified_at ?? null,
+            'updated_at' => $software->updated_at ?? null,
             'status' => $software->status ?? null,
             'type' => ($software->software_types)
                 ? $software->software_types->pluck('software_type_name')

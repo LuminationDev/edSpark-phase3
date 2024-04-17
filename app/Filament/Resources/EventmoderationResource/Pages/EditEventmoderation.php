@@ -24,7 +24,7 @@ class EditEventmoderation extends EditRecord
 
     protected function mutateFormDataBeforeSave(array $data): array
     {
-        $data['modified_at'] = Carbon::now();
+        $data['updated_at'] = Carbon::now();
         return $data;
     }
 

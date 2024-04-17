@@ -39,14 +39,14 @@ class PartnerController extends Controller
     private function getOrCreatePartnerProfile($partner)
     {
         // Fetch the 'Published' status profile for the partner.
-        $partnerProfile = $partner->profiles()->where('status', 'Published')->latest()->first();
+        $partnerProfile = $partner->profiles()->where('status', \App\Helpers\StatusHelpers::PUBLISHED)->latest()->first();
         // If it doesn't exist, create a new one.
         if (!isset($partnerProfile->partner_id)) {
             $partnerProfile = Partnerprofile::create([
                 'partner_id' => $partner->id,
                 'user_id' => $partner->user_id,
                 'content' => "<p>Welcome to partner profile</p>",
-                'status' => 'Published',
+                'status' => \App\Helpers\StatusHelpers::PUBLISHED,
             ]);
         }
         return $partnerProfile;

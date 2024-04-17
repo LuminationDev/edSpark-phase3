@@ -34,18 +34,13 @@ class Advice extends Model
         'template',
         'extra_content',
         'created_at',
-        'modified_at'
+        'updated_at'
     ];
 
     public function author()
     {
         return $this->belongsTo(User::class);
     }
-
-//    public function advicetype()
-//    {
-//        return $this->belongsTo(Advicetype::class);
-//    }
 
     public function advice_types()
     {

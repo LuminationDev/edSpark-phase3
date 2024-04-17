@@ -35,7 +35,7 @@ class EditSchoolmoderation extends EditRecord
     protected function handleRecordUpdate(Model $record, array $data): Model
     {
         $record->update($data);
-        if($data['status'] == 'Published'){
+        if($data['status'] == \App\Helpers\StatusHelpers::PUBLISHED){
             School::where('school_id', $record->school_id)
                 ->where('id', '!=', $record->id)
                 ->where('status', '!=', 'Draft')

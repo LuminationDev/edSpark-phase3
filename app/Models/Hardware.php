@@ -37,7 +37,7 @@ class Hardware extends Model
         'brand_id',
         'category_id',
         'created_at',
-        'modified_at'
+        'updated_at'
 
     ];
 

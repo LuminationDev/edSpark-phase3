@@ -103,7 +103,7 @@ class SoftwareController extends Controller
     public function fetchSoftwarePosts(Request $request): JsonResponse
     {
         try {
-            $softwares = Software::where('status', 'Published')
+            $softwares = Software::where('status', \App\Helpers\StatusHelpers::PUBLISHED)
                 ->orderBy('created_at', 'DESC')
                 ->get();
 
@@ -131,7 +131,7 @@ class SoftwareController extends Controller
     {
         try {
             $userId = $request->input('user_id');
-            $softwares = Software::where('status', 'Published')
+            $softwares = Software::where('status', \App\Helpers\StatusHelpers::PUBLISHED)
                 ->where('author_id', $userId)  // Filter by partner (author) ID
                 ->orderBy('created_at', 'DESC')
                 ->get();
@@ -174,14 +174,14 @@ class SoftwareController extends Controller
             // Fetch software posts that have at least one of the current software's tags and don't have the currentSoftwareId
             $relatedSoftwares = Software::withAnyTags($tags)
                 ->where('id', '!=', $currentSoftwareId)
-                ->where('status', 'Published')
+                ->where('status', \App\Helpers\StatusHelpers::PUBLISHED)
                 ->orderBy('created_at', 'DESC')
                 ->get();
 
             if ($relatedSoftwares->isEmpty()) {
                 // Fetch two random software posts excluding the currentSoftwareId
                 $relatedSoftwares = Software::where('id', '!=', $currentSoftwareId)
-                    ->where('status', 'Published')
+                    ->where('status', \App\Helpers\StatusHelpers::PUBLISHED)
                     ->inRandomOrder()
                     ->limit(2)
                     ->get();
@@ -224,7 +224,7 @@ class SoftwareController extends Controller
             $software = Software::find($id);
 
         } else {
-            $software = Software::where('id', $id)->where('status', "Published")->first();
+            $software = Software::where('id', $id)->where('status', \App\Helpers\StatusHelpers::PUBLISHED)->first();
         }
         if (!$software) {
             return ResponseService::error('Software not found', 404);

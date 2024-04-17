@@ -47,7 +47,7 @@ class EditAdvice extends EditRecord
             $targetData->syncTags($data['tags']);
         }
 
-        $data['modified_at'] = Carbon::now();
+        $data['updated_at'] = Carbon::now();
         return $data;
     }
 

@@ -101,9 +101,9 @@ class EventController extends Controller
         // Get the current date without the time component
         $currentDate = now()->startOfDay();
 
-        $events = Event::where('status', 'Published')
+        $events = Event::where('status', \App\Helpers\StatusHelpers::PUBLISHED)
             ->where('end_date', '>=', $currentDate)
-            ->where('status', 'Published')
+            ->where('status', \App\Helpers\StatusHelpers::PUBLISHED)
             ->get();
 
         $data = [];
@@ -120,7 +120,7 @@ class EventController extends Controller
     {
         try {
             $userId = Auth::user()->id;
-            $events = Event::where('status', 'Published')
+            $events = Event::where('status', \App\Helpers\StatusHelpers::PUBLISHED)
                 ->where('author_id', $userId)  // Filter by partner (author) ID
                 ->orderBy('created_at', 'DESC')
                 ->get();
@@ -156,7 +156,7 @@ class EventController extends Controller
             // Find the advice by ID
             $event = Event::find($id);
         } else {
-            $event = Event::where('id', $id)->where('status', "Published")->first();
+            $event = Event::where('id', $id)->where('status', \App\Helpers\StatusHelpers::PUBLISHED)->first();
         }
 
         if (!$event) {
