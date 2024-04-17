@@ -98,7 +98,7 @@ class SchoolController extends Controller
             'location' => $siteLocation,
             'isLikedByUser' => $isLikedByUser,
             'isBookmarkedByUser' => $isBookmarkedByUser,
-            'isFeatured' => (bool)$school->isFeatured,
+            'is_featured' => (bool)$school->is_featured,
             'updated_at' => $school->updated_at ?: "",
 
         ];
@@ -400,8 +400,8 @@ class SchoolController extends Controller
 
     public function fetchFeaturedSchools(Request $request)
     {
-//        $schools = School::where('isFeatured', 1)->inRandomOrder()->->inRandomOrder()->limit(4)->get();
-        $schools = School::where('isFeatured', 1)->inRandomOrder()->limit(3)->get();
+//        $schools = School::where('is_featured', 1)->inRandomOrder()->->inRandomOrder()->limit(4)->get();
+        $schools = School::where('is_featured', 1)->inRandomOrder()->limit(3)->get();
         $data = [];
 
         foreach ($schools as $school) {
@@ -436,7 +436,7 @@ class SchoolController extends Controller
         $final_result = [];
         foreach ($all_staff as $staff) {
             $avatarUrl = Usermeta::where('user_id', $staff->id)
-                ->where('user_meta_key', 'userAvatar')
+                ->where('meta_key', 'userAvatar')
                 ->first();
             $result = [
                 'id' => $staff->id,
@@ -563,7 +563,7 @@ class SchoolController extends Controller
         $final_result = [];
         foreach ($nominated_users as $user) {
             $avatarUrl = Usermeta::where('user_id', $user->id)
-                ->where('user_meta_key', 'userAvatar')
+                ->where('meta_key', 'userAvatar')
                 ->first();
 
             $result = [

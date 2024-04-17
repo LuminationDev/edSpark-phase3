@@ -21,7 +21,7 @@ class PostService
         switch ($authorType) {
             case 'user':
                 $avatar = Usermeta::where('user_id', $authorId)
-                    ->where('user_meta_key', 'userAvatar')
+                    ->where('meta_key', 'userAvatar')
                     ->first();
                 return $avatar->user_meta_value ?? '';
 

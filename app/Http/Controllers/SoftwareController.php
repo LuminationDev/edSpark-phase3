@@ -114,8 +114,8 @@ class SoftwareController extends Controller
                     Softwaremeta::class,
                     $software,
                     'software_id',
-                    'software_meta_key',
-                    'software_meta_value'
+                    'meta_key',
+                    'meta_value'
                 );
                 $result = $this->postService->softwareModelToJson($software, $softwareMetadataToSend, $request);
                 $data[] = $result;
@@ -143,8 +143,8 @@ class SoftwareController extends Controller
                     Softwaremeta::class,
                     $software,
                     'software_id',
-                    'software_meta_key',
-                    'software_meta_value'
+                    'meta_key',
+                    'meta_value'
                 );
                 $result = $this->postService->softwareModelToJson($software, $softwareMetadataToSend, $request);
                 $data[] = $result;
@@ -194,8 +194,8 @@ class SoftwareController extends Controller
                     Softwaremeta::class,
                     $software,
                     'software_id',
-                    'software_meta_key',
-                    'software_meta_value'
+                    'meta_key',
+                    'meta_value'
                 );
                 $result = $this->postService->softwareModelToJson($software, $softwareMetadataToSend, $request);
                 $data[] = $result;
@@ -234,8 +234,8 @@ class SoftwareController extends Controller
             Softwaremeta::class,
             $software,
             'software_id',
-            'software_meta_key',
-            'software_meta_value'
+            'meta_key',
+            'meta_value'
         );
         $data = $this->postService->softwareModelToJson($software, $softwareMetadataToSend, $request);
         return ResponseService::success("Successfully retrieved software", $data);

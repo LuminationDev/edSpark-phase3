@@ -182,7 +182,7 @@ class EventController extends Controller
 
         // Check if the event already has an 'event_recording' meta
         $eventRecordingMeta = Eventmeta::where('event_id', $eventId)
-            ->where('event_meta_key', 'event_recording')
+            ->where('meta_key', 'event_recording')
             ->first();
 
         if ($eventRecordingMeta) {
@@ -193,8 +193,8 @@ class EventController extends Controller
             // Create a new 'event_recording' meta entry
             $eventRecordingMeta = new Eventmeta([
                 'event_id' => $eventId,
-                'event_meta_key' => 'event_recording',
-                'event_meta_value' => $recordingLink
+                'meta_key' => 'event_recording',
+                'meta_value' => $recordingLink
             ]);
             $eventRecordingMeta->save();
         }
@@ -207,7 +207,7 @@ class EventController extends Controller
     {
         // Check if the 'event_recording' meta exists for the given event ID
         $eventRecordingMeta = Eventmeta::where('event_id', $eventId)
-            ->where('event_meta_key', 'event_recording')
+            ->where('meta_key', 'event_recording')
             ->first();
 
         if ($eventRecordingMeta) {
@@ -253,10 +253,10 @@ class EventController extends Controller
         $event_link = Eventmeta::updateOrCreate(
             [
                 'event_id' => $eventId,
-                'event_meta_key' => 'ems_link',
+                'meta_key' => 'ems_link',
             ],
             [
-                'event_meta_value' => $emsLink,
+                'meta_value' => $emsLink,
             ]
         );
         return ResponseService::success('EMS link updated successfully.', $event_link);
@@ -271,7 +271,7 @@ class EventController extends Controller
         $user = Auth::user();
         // Check if the 'event_recording' meta exists for the given event ID
         $eventRecordingMeta = Eventmeta::where('event_id', $eventId)
-            ->where('event_meta_key', 'ems_link')
+            ->where('meta_key', 'ems_link')
             ->first();
 
         if ($eventRecordingMeta) {

@@ -92,7 +92,7 @@ class SchoolResource extends Resource
 //                Tables\Columns\TextColumn::make('owner.full_name')->label('Owner')
 //                    ->limit(15)
 //                ,
-                Tables\Columns\ToggleColumn::make('isFeatured')
+                Tables\Columns\ToggleColumn::make('is_featured')
                 ->sortable(),
                 Tables\Columns\TextColumn::make('updated_at')
                     ->sortable()
@@ -118,7 +118,7 @@ class SchoolResource extends Resource
                 // Tables\Actions\ViewAction::make(),
                 // Tables\Actions\EditAction::make(),
             ])
-            ->defaultSort('isFeatured', 'desc')
+            ->defaultSort('is_featured', 'desc')
             ->bulkActions([
                 Tables\Actions\DeleteBulkAction::make(),
             ]);

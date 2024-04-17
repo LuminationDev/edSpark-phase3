@@ -26,13 +26,13 @@ class PartnerController extends Controller
 
     private function initializePartnerMetadata($partner)
     {
-        $partnerMeta = Metahelper::getMeta(Partnermeta::class, $partner, 'partner_id', 'partner_meta_key', 'partner_meta_value');
+        $partnerMeta = Metahelper::getMeta(Partnermeta::class, $partner, 'partner_id', 'meta_key', 'meta_value');
 
-        if (!Metahelper::checkHasMetakey($partnerMeta, 'single_submenu', 'partner_meta_key')) {
-            Metahelper::insert($partner->id, ['single_submenu' => 'overview,access'], 'partner_id', 'partner_meta_key', 'partner_meta_value', Partnermeta::class);
+        if (!Metahelper::checkHasMetakey($partnerMeta, 'single_submenu', 'meta_key')) {
+            Metahelper::insert($partner->id, ['single_submenu' => 'overview,access'], 'partner_id', 'meta_key', 'meta_value', Partnermeta::class);
         }
-        if (!Metahelper::checkHasMetakey($partnerMeta, 'contact_info', 'partner_meta_key')) {
-            Metahelper::insert($partner->id, ['contact_info' => '{}'], 'partner_id', 'partner_meta_key', 'partner_meta_value', Partnermeta::class);
+        if (!Metahelper::checkHasMetakey($partnerMeta, 'contact_info', 'meta_key')) {
+            Metahelper::insert($partner->id, ['contact_info' => '{}'], 'partner_id', 'meta_key', 'meta_value', Partnermeta::class);
         }
     }
 
@@ -58,7 +58,7 @@ class PartnerController extends Controller
         $userId = Auth::user()->id;
         $isLikedByUser = $partner->likes()->where('user_id', $userId)->exists();
         $isBookmarkedByUser = $partner->bookmarks()->where('user_id', $userId)->exists();
-        $partnerMeta = Metahelper::getMeta(Partnermeta::class, $partner, 'partner_id', 'partner_meta_key', 'partner_meta_value');
+        $partnerMeta = Metahelper::getMeta(Partnermeta::class, $partner, 'partner_id', 'meta_key', 'meta_value');
 
         // Fetch or create partner profile.
         $partnerProfile = $this->getOrCreatePartnerProfile($partner);
