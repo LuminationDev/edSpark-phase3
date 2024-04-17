@@ -110,10 +110,9 @@ class SoftwareResource extends Resource
                                     ->relationship(name: 'author', titleAttribute: 'display_name')
                                     ->disabled(fn() => !RoleHelpers::has_minimum_privilege(UserRole::ADMIN))
                                     ->required()
-                                    ->searchable()
-                                    ->preload(),
+                                    ->searchable(),
 
-                                Forms\Components\Select::make('post_status')
+                                Forms\Components\Select::make('status')
                                     ->options([
                                         'Published' => 'Published',
                                         'Unpublished' => 'Unpublished',
@@ -211,7 +210,7 @@ class SoftwareResource extends Resource
                 Tables\Columns\TextColumn::make('author.full_name')
                     ->searchable(),
 
-                Tables\Columns\TextColumn::make('post_status')
+                Tables\Columns\TextColumn::make('status')
                     ->label('Status')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('created_at')
@@ -232,7 +231,7 @@ class SoftwareResource extends Resource
                     ])
                     ->label('Software status')
                     ->default('published')
-                    ->attribute('post_status'),
+                    ->attribute('status'),
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),

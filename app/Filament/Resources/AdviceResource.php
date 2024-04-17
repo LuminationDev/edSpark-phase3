@@ -98,7 +98,7 @@ class AdviceResource extends Resource
                     ->schema([
                         Forms\Components\Select::make('advice_type')
                             ->label('Advice type')
-                            ->relationship('advicetypes', 'advice_type_name')
+                            ->relationship('advice_types', 'advice_type_name')
                             ->required()
                             ->columns(3),
                         ...$labelColumns
@@ -109,11 +109,8 @@ class AdviceResource extends Resource
                         ->relationship(name: 'author', titleAttribute: 'display_name')
                         ->disabled(fn() => !RoleHelpers::has_minimum_privilege(UserRole::ADMIN))
                         ->required()
-                        ->searchable()
-                        ->preload(),
-
-
-                    Forms\Components\Select::make('post_status')
+                        ->searchable(),
+                    Forms\Components\Select::make('status')
                         ->options([
                             'Published' => 'Published',
                             'Unpublished' => 'Unpublished',
@@ -205,7 +202,7 @@ class AdviceResource extends Resource
                     ->searchable()
                     ->limit(15)
                 ,
-                Tables\Columns\TextColumn::make('post_status')
+                Tables\Columns\TextColumn::make('status')
                     ->label('Status')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('modified_at')
@@ -225,7 +222,7 @@ class AdviceResource extends Resource
                     ])
                     ->label('Guide status')
                     ->default('published')
-                    ->attribute('post_status'),
+                    ->attribute('status'),
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),

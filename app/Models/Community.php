@@ -26,10 +26,10 @@ class Community extends Model
         'post_title',
         'post_content',
         'excerpt',
-        'post_status',
+        'status',
         'created_at',
         'post_modified',
-        'post_status',
+        'status',
         'cover_image',
         'communitytype_id'
     ];

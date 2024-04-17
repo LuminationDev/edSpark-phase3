@@ -63,7 +63,7 @@ class CommunityResource extends Resource
                                 Forms\Components\BelongsToSelect::make('community_type')
                                     ->label('Community type')
                                     ->relationship('communitytype', 'community_type_name'),
-                                Forms\Components\Select::make('post_status')
+                                Forms\Components\Select::make('status')
                                     ->options([
                                         'Published' => 'Published',
                                         'Unpublished' => 'Unpublished',
@@ -93,7 +93,7 @@ class CommunityResource extends Resource
                     ->limit(50),
                 Tables\Columns\ImageColumn::make('cover_image'),
                 Tables\Columns\TextColumn::make('author.full_name')->label('Author'),
-                Tables\Columns\TextColumn::make('post_status')
+                Tables\Columns\TextColumn::make('status')
                     ->label('Status')
                     ->sortable()
                     ->searchable(),

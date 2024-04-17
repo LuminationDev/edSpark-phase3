@@ -37,7 +37,7 @@ class EventmoderationResource extends Resource
                     ->label('Title')
                     ->required()
                     ->maxLength(255),
-                Forms\Components\Select::make('event_status')
+                Forms\Components\Select::make('status')
                     ->options([
                         'Published' => 'Published',
                         'Unpublished' => 'Unpublished',
@@ -62,7 +62,7 @@ class EventmoderationResource extends Resource
                 Tables\Columns\TextColumn::make('event_content')
                     ->label('Content')
                     ->limit(20),
-                Tables\Columns\TextColumn::make('event_status')
+                Tables\Columns\TextColumn::make('status')
                     ->label('Status')
                     ->sortable()
                     ->searchable(),
@@ -97,12 +97,12 @@ class EventmoderationResource extends Resource
 
     public static function getEloquentQuery(): Builder
     {
-        return parent::getEloquentQuery()->where('event_status', 'Pending');
+        return parent::getEloquentQuery()->where('status', 'Pending');
     }
 
     public static function getNavigationBadge(): ?string
     {
-        $count = static::getModel()::query()->where('event_status', 'pending')->count();
+        $count = static::getModel()::query()->where('status', 'pending')->count();
         if ($count > 0){
             return $count;
         }else{

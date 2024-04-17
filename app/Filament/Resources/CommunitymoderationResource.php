@@ -55,7 +55,7 @@ class CommunitymoderationResource extends Resource
                                 Forms\Components\BelongsToSelect::make('community_type')
                                     ->label('Community type')
                                     ->relationship('communitytype', 'community_type_name'),
-                                Forms\Components\Select::make('post_status')
+                                Forms\Components\Select::make('status')
                                     ->options([
                                         'Published' => 'Published',
                                         'Unpublished' => 'Unpublished',
@@ -82,7 +82,7 @@ class CommunitymoderationResource extends Resource
                     ->label('Content')
                     ->limit(50),
                 Tables\Columns\TextColumn::make('author.full_name')->label('Author'),
-                Tables\Columns\TextColumn::make('post_status')
+                Tables\Columns\TextColumn::make('status')
                     ->label('Status')
                     ->sortable()
                     ->searchable(),
@@ -121,12 +121,12 @@ class CommunitymoderationResource extends Resource
 
     public static function getEloquentQuery(): Builder
     {
-        return parent::getEloquentQuery()->where('post_status', 'Pending');
+        return parent::getEloquentQuery()->where('status', 'Pending');
     }
 
     public static function getNavigationBadge(): ?string
     {
-        $count = static::getModel()::query()->where('post_status', 'pending')->count();
+        $count = static::getModel()::query()->where('status', 'pending')->count();
         if ($count > 0){
             return $count;
         }else{

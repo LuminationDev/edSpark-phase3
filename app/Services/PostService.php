@@ -38,7 +38,7 @@ class PostService
     {
         $userId = $request->user_id ?? Auth::user()->id;
         if ($model === Event::class) {
-            $posts = $model::where('event_status', 'Draft')
+            $posts = $model::where('status', 'Draft')
                 ->where('author_id', $userId)
                 ->orderBy('created_at', 'DESC')
                 ->get();
@@ -172,7 +172,7 @@ class PostService
             'cover_image' => ($event->cover_image) ?? NULL,
             'start_date' => $event->start_date,
             'end_date' => $event->end_date,
-            'status' => $event->event_status,
+            'status' => $event->status,
             'type' => ($event->event_type) ? $event->event_type->event_type_name : NULL,
             'format' => ($event->event_format) ? $event->event_format->event_format_name : NULL,
             'post_type' => 'event',

@@ -129,9 +129,8 @@ class EventResource extends Resource
                                     ->relationship(name: 'author', titleAttribute: 'display_name')
                                     ->disabled(fn() => !RoleHelpers::has_minimum_privilege(UserRole::ADMIN))
                                     ->required()
-                                    ->searchable()
-                                    ->preload(),
-                                Forms\Components\Select::make('event_status')
+                                    ->searchable(),
+                                Forms\Components\Select::make('status')
                                     ->options([
                                         'Published' => 'Published',
                                         'Unpublished' => 'Unpublished',
@@ -210,14 +209,14 @@ class EventResource extends Resource
                     ->searchable(),
 
                 Tables\Columns\ImageColumn::make('cover_image'),
-                Tables\Columns\TextColumn::make('event_status')
+                Tables\Columns\TextColumn::make('status')
                     ->label('Status')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('updated_at')
                     ->dateTime('j M y, h:i a'),
             ])
             ->filters([
-                Tables\Filters\SelectFilter::make('event_status')
+                Tables\Filters\SelectFilter::make('status')
                     ->options([
                         'published' => 'Published',
                         'pending' => 'Pending Moderation',
@@ -227,7 +226,7 @@ class EventResource extends Resource
                     ])
                     ->label('Event status')
                     ->default('published')
-                    ->attribute('event_status'),
+                    ->attribute('status'),
                 Tables\Filters\SelectFilter::make('event_date')
                     ->options([
                         'all' => 'All Events',

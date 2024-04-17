@@ -37,7 +37,7 @@ class SoftwaremoderationResource extends Resource
                     ->label('Title')
                     ->required()
                     ->maxLength(255),
-                Forms\Components\Select::make('post_status')
+                Forms\Components\Select::make('status')
                     ->options([
                         'Published' => 'Published',
                         'Unpublished' => 'Unpublished',
@@ -69,7 +69,7 @@ class SoftwaremoderationResource extends Resource
                 Tables\Columns\TextColumn::make('modified_at')
                     ->date()
                     ->label('Modified At'),
-                Tables\Columns\TextColumn::make('post_status')
+                Tables\Columns\TextColumn::make('status')
                     ->label('Status')
                     ->sortable()
                     ->searchable(),
@@ -104,12 +104,12 @@ class SoftwaremoderationResource extends Resource
 
     public static function getEloquentQuery(): Builder
     {
-        return parent::getEloquentQuery()->where('post_status', 'Pending');
+        return parent::getEloquentQuery()->where('status', 'Pending');
     }
 
     public static function getNavigationBadge(): ?string
     {
-        $count = static::getModel()::query()->where('post_status', 'pending')->count();
+        $count = static::getModel()::query()->where('status', 'pending')->count();
         if ($count > 0){
             return $count;
         }else{

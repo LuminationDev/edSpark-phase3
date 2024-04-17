@@ -79,7 +79,7 @@ class EventController extends Controller
             $existingEvent = Event::find($request->input('existing_id'));
 
             if ($existingEvent) {
-                $existingEvent->update(['post_status' => 'Archived']);
+                $existingEvent->update(['status' => 'Archived']);
             }
         }
 
