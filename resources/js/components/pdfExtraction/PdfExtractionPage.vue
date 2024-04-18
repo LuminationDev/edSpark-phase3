@@ -51,6 +51,7 @@ const handleFileUpload = async (event) => {
         extractAllContentByEachId(htmlContent.value, '_jhqnd16qn0md')
         extractAllContentByEachId(htmlContent.value, '_2jqga89deyn')
 
+
     } catch (error) {
         console.error('Error processing file:', error);
         htmlContent.value = ''; // Clear content in case of error
@@ -289,7 +290,7 @@ const extractAllContentByEachId = (html, id) => {
                 if (nextUL && nextUL.nodeName === 'UL') {
                     const listItems = nextUL.querySelectorAll('li');
                     listItems.forEach(item => {
-                        // requiredResourcesSubListHeadings.value.push(item.textContent.trim());
+                        requiredResourcesSubListHeadings.value.push(item.textContent.trim());
                     });
                     // Now listContent array contains all the items inside the ul tags
                 }
@@ -298,7 +299,7 @@ const extractAllContentByEachId = (html, id) => {
         }
     }
 
-    //
+    // extracting all the links, text, link text on the basis of id
     const topTrTag = element.parentNode.parentNode.parentNode
     const h1Tags = topTrTag.querySelectorAll('h1');
     const strongTags = topTrTag.querySelectorAll('p strong');
@@ -307,37 +308,45 @@ const extractAllContentByEachId = (html, id) => {
     const sessionText = ref('')
     if(h1Tags.length > 0 && strongTags.length > 0)
     {
+        let idCounter = 0;
         sessionText.value = h1Tags[0].textContent.trim();
-        console.log(h1Tags.length + ' . ' + strongTags.length + ' . ' + sessionText.value);
+        //console.log(h1Tags.length + ' . ' + strongTags.length + ' . ' + sessionText.value);
         for (let j = 0; j < strongTags.length; j++){
             const strongTag = strongTags[j];
             const sessionText = strongTag.parentNode.textContent.trim();
-            console.log(strongTag + (' _ ') + sessionText)
+            //console.log(strongTag + (' _ ') + sessionText)
 
             const pTag = strongTag.parentNode;
             const ulTag = pTag.nextElementSibling;
-            if (ulTag && ulTag.tagName.toLowerCase() === 'ul'){
+
+            if (ulTag && ulTag.tagName.toLowerCase() === 'ul') {
                 const liTags = ulTag.querySelectorAll('li');
                 liTags.forEach((liTag, index) => {
                     const aTags = liTag.querySelectorAll('a');
-                    const aTag = liTag.querySelector('a');
+
                     if (aTags.length > 0) {
                         aTags.forEach(aTag => {
                             const href = aTag.getAttribute('href');
                             const text = aTag.textContent.trim();
                             const list_text = liTag.textContent.trim();
-                            console.log('href' + href)
-                            console.log('text' + text)
-                            console.log('list_text' + list_text)
-                        })
+                            // Increment id counter
+                            const id = idCounter++;
+                            requiredResourcesAllLinks.value.push({ id, text, href, list_text });
+                        });
                     }
-                })
+                });
             }
+
         }
-
     }
-
 }
+
+// raw implementation will be here
+
+
+
+
+
 
 </script>
 
