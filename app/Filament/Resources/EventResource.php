@@ -77,7 +77,7 @@ class EventResource extends Resource
                             ->placeholder('150 characters or less')
                             ->maxLength(150),
                         TinyEditor::make('event_content')
-                            ->label('Content')->fileAttachmentsDisk('local')
+                            ->label('Content')->fileAttachmentsDisk('azure')
                             ->fileAttachmentsVisibility('public')
                             ->fileAttachmentsDirectory('public/uploads/event')
                             ->required(),
@@ -85,7 +85,7 @@ class EventResource extends Resource
                             ->label(new CustomHtmlable("Cover Image <span class='text-xs italic'> (500px * 500px / 1:1 aspect ratio] </span>"))
                             ->validationAttribute('cover image')
                             ->preserveFilenames()
-                            ->disk('public')
+                            ->disk('azure')
                             ->directory('uploads/event')
                             ->acceptedFileTypes(['image/jpeg', 'image/jpg', 'image/png'])
                             ->getUploadedFileNameForStorageUsing(function (TemporaryUploadedFile $file): string {
