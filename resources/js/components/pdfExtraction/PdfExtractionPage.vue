@@ -24,6 +24,7 @@ const requiredResourcesTitle = ref('')
 const requiredResourcesParagraph = ref([])
 const requiredResourcesListHeadings = ref([])
 const requiredResourcesSubListHeadings = ref([])
+const requiredResourcesListingSubListing = ref([])
 const requiredResourcesLinksByListHeading = ref([])
 const requiredResourcesAllLinks = ref([])
 
@@ -133,7 +134,7 @@ const downloadFormattedJson = () => {
                 "Paragraphs": requiredResourcesParagraph.value,
                 "List Headings": requiredResourcesListHeadings.value,
                 "Sub-List Headings": requiredResourcesSubListHeadings.value,
-                "Links By List Heading": requiredResourcesLinksByListHeading.value,
+                "Lists with Sub-Lists": requiredResourcesListingSubListing.value
                 "All Links": requiredResourcesAllLinks.value
             }
         }
@@ -345,7 +346,7 @@ const extractAllContentByEachId = (html, id) => {
 
 // raw implementation will be here
 // Function to extract data
-const extractData = (html, id) => {
+const extractData1 = (html, id) => {
     const listMainHeading = ref ([])
     const listSubHeading = ref ([])
 
@@ -354,11 +355,19 @@ const extractData = (html, id) => {
     if (element && element.parentNode.parentNode.nextElementSibling) {
         const sibling = element.parentNode.parentNode.nextElementSibling;
         if (sibling.nodeName === 'TH'){
-            const strongElements = sibling.querySelectorAll('p strong')
-            strongElements.forEach(strongElementt => {
-                const strongElements = strongElementt.textContent.trim();
-                if (strongElements) {
-                    listMainHeading.value.push({ strongElements });
+            const pStrongElements = sibling.querySelectorAll('p strong')
+            const strongElements = sibling.childNodes
+
+            pStrongElements.forEach(pStrongElement => {
+                const strongElementss = pStrongElement.textContent.trim();
+                const ulElements = strongElements.nextElementSibling;
+                console.log(ulElements)
+                ulElements.forEach(ulElement => {
+                    const subLists = Array.from(ulElement.querySelectorAll('li'))
+                        .map(li => li.textContent.trim());
+                })
+                if (strongElementss && subLists.length > 0) {
+                    listMainHeading.value.push({ [strongElementss]: subLists });
                     console.log(listMainHeading.value)
                 }
             })
@@ -373,6 +382,7 @@ const extractData = (html, id) => {
                     console.log(listSubHeading)
                 }
             })
+
         }
     }
     //
@@ -390,6 +400,81 @@ const extractData = (html, id) => {
     // // Display extracted data
     // console.log(listData.value);
 };
+
+const extractData2 = (html, id) => {
+    const listMainHeading = ref([])
+    const listSubHeading = ref([])
+
+    const doc = new DOMParser().parseFromString(html, 'text/html');
+    const element = doc.getElementById(id);
+    if (element && element.parentNode.parentNode.nextElementSibling) {
+        const sibling = element.parentNode.parentNode.nextElementSibling;
+        if (sibling.nodeName === 'TH'){
+            const pElements = sibling.querySelectorAll('p')
+            const pStrongElements = sibling.querySelectorAll('p strong')
+            pStrongElements.forEach(pStrongElement => {
+                const mainHeading = pStrongElement.textContent.trim();
+                const ulElement = pElements.nextElementSibling;
+                const subLists = Array.from(ulElement.querySelectorAll('li'))
+                    .map(li => li.textContent.trim());
+                if (mainHeading && subLists.length > 0) {
+                    listMainHeading.value.push({ [mainHeading]: subLists });
+                    console.log(listMainHeading.value)
+                }
+            })
+        }
+    }
+};
+
+const extractData = (html, id) => {
+    const result = {
+        "Main Heading": "",
+        "Sub-List Headings": []
+    };
+
+    const doc = new DOMParser().parseFromString(html, 'text/html');
+    const element = doc.getElementById(id);
+
+    if (element && element.parentNode.parentNode.nextElementSibling) {
+        const sibling = element.parentNode.parentNode.nextElementSibling;
+        if (sibling.nodeName === 'TH') {
+            // Extract Main Heading
+            const mainHeading = sibling.querySelector('h1');
+            if (mainHeading) {
+                result["Main Heading"] = mainHeading.textContent.trim();
+            }
+
+            // Extract Sub-List Headings and their respective list items
+            const ulElements = sibling.querySelectorAll('ul');
+            ulElements.forEach(ulElement => {
+                const strongElement = ulElement.previousElementSibling;
+                if (strongElement && strongElement.nodeName === 'P' && strongElement.querySelector('strong')) {
+                    const strongText = strongElement.querySelector('strong').textContent.trim();
+                    const subListItems = Array.from(ulElement.querySelectorAll('li')).map(li => {
+                        const linkElement = li.querySelector('a');
+                        if (linkElement) {
+                            return {
+                                "text": li.textContent.trim(),
+                                "link": linkElement.getAttribute('href')
+                            };
+                        } else {
+                            return {
+                                "text": li.textContent.trim(),
+                                "link": {}
+                            };
+                        }
+                    });
+                    requiredResourcesListingSubListing.value.push({ [strongText]: subListItems });
+                }
+            });
+        }
+    }
+
+    console.log(JSON.stringify(result, null, 2));
+    return result;
+};
+
+
 
 
 
