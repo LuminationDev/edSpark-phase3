@@ -38,7 +38,7 @@ const planningPreparationParagraph = ref([])
 const planningPreparationListHeadings = ref([])
 const planningPreparationSubListHeadings = ref([])
 const planningPreparationListingSubListing = ref([])
-const planningPreparationListingSubListingSubSubListing = ref([])
+const planningPreparationListingTree = ref([])
 const planningPreparationAllLinks = ref([])
 
 
@@ -165,7 +165,7 @@ const downloadFormattedJson = () => {
                 "List Headings": planningPreparationListHeadings.value,
                 "Sub-List Headings": planningPreparationSubListHeadings.value,
                 "Lists with Sub-Lists": planningPreparationListingSubListing.value,
-                "Lists with Sub-Lists with Sub-Sub-Lists": planningPreparationListingSubListingSubSubListing.value,
+                "Lists Tree": planningPreparationListingTree.value,
                 "All Links": planningPreparationAllLinks.value
             }
         }
@@ -493,8 +493,8 @@ const extractAllContentByEachId = (html, id) => {
                     };
                     if(id === "_kv7kogslxlmu")
                     {
-                        planningPreparationListingSubListingSubSubListing.value.push(hierarchicalFormat);
-                        console.log(planningPreparationListingSubListingSubSubListing.value);
+                        planningPreparationListingTree.value.push(hierarchicalFormat);
+                        console.log(planningPreparationListingTree.value);
                     }
                 }
             });
