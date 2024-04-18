@@ -25,10 +25,21 @@ const requiredResourcesParagraph = ref([])
 const requiredResourcesListHeadings = ref([])
 const requiredResourcesSubListHeadings = ref([])
 const requiredResourcesListingSubListing = ref([])
-const requiredResourcesLinksByListHeading = ref([])
 const requiredResourcesAllLinks = ref([])
+const otherResourcesTitle = ref('')
+const otherResourcesParagraph = ref([])
+const otherResourcesListHeadings = ref([])
+const otherResourcesSubListHeadings = ref([])
+const otherResourcesListingSubListing = ref([])
+const otherResourcesAllLinks = ref([])
+const planningPreparationTitle = ref('')
+const planningPreparationSubTitleParagraph = ref([])
+const planningPreparationParagraph = ref([])
+const planningPreparationListHeadings = ref([])
+const planningPreparationSubListHeadings = ref([])
+const planningPreparationListingSubListing = ref([])
+const planningPreparationAllLinks = ref([])
 
-const listData = ref([])
 
 
 //handle file upload
@@ -46,11 +57,15 @@ const handleFileUpload = async (event) => {
         extractTextById(htmlContent.value, '_o25ffby0w0ip')
         extractTextById(htmlContent.value, '_jhqnd16qn0md')
         extractTextById(htmlContent.value, '_2jqga89deyn')
+        extractTextById(htmlContent.value, '_jkhi5jchiyqa')
+        extractTextById(htmlContent.value, '_kv7kogslxlmu')
 
         extractAllContentByEachId(htmlContent.value, '_r9sioprybg6g')
         extractAllContentByEachId(htmlContent.value, '_o25ffby0w0ip')
         extractAllContentByEachId(htmlContent.value, '_jhqnd16qn0md')
         extractAllContentByEachId(htmlContent.value, '_2jqga89deyn')
+        extractAllContentByEachId(htmlContent.value, '_jkhi5jchiyqa')
+        extractAllContentByEachId(htmlContent.value, '_kv7kogslxlmu')
 
     } catch (error) {
         console.error('Error processing file:', error);
@@ -133,6 +148,23 @@ const downloadFormattedJson = () => {
                 "Sub-List Headings": requiredResourcesSubListHeadings.value,
                 "Lists with Sub-Lists": requiredResourcesListingSubListing.value,
                 "All Links": requiredResourcesAllLinks.value
+            },
+            "Other Resources": {
+                "Title": otherResourcesTitle.value,
+                "Paragraphs": otherResourcesParagraph.value,
+                "List Headings": otherResourcesListHeadings.value,
+                "Sub-List Headings": otherResourcesSubListHeadings.value,
+                "Lists with Sub-Lists": otherResourcesListingSubListing.value,
+                "All Links": otherResourcesAllLinks.value
+            },
+            "Planning And Preparation": {
+                "Title": planningPreparationTitle.value,
+                "Sub-Title Paragraph": planningPreparationSubTitleParagraph.value,
+                "Paragraphs": planningPreparationParagraph.value,
+                "List Headings": planningPreparationListHeadings.value,
+                "Sub-List Headings": planningPreparationSubListHeadings.value,
+                "Lists with Sub-Lists": planningPreparationListingSubListing.value,
+                "All Links": planningPreparationAllLinks.value
             }
         }
 
@@ -181,6 +213,12 @@ const extractTextById = (html, id) => {
     if (element && element.parentNode && id === "_2jqga89deyn") {
         requiredResourcesTitle.value = element.parentNode.textContent.trim();
     }
+    if (element && element.parentNode && id === "_jkhi5jchiyqa") {
+        otherResourcesTitle.value = element.parentNode.textContent.trim();
+    }
+    if (element && element.parentNode && id === "_kv7kogslxlmu") {
+        planningPreparationTitle.value = element.parentNode.textContent.trim();
+    }
     else {
         // displayTopicHeading.value = `Content with ID ${id} not found.`;
     }
@@ -189,7 +227,6 @@ const extractTextById = (html, id) => {
 const extractAllContentByEachId = (html, id) => {
     const doc = new DOMParser().parseFromString(html, 'text/html');
     const element = doc.getElementById(id);
-
 
     // paragraph <p> inside the sibling of id element
     if(element && element.parentNode.nextSibling) {
@@ -214,13 +251,18 @@ const extractAllContentByEachId = (html, id) => {
     }
 
     // list of <p> without any children's tags
-    if (element && element.parentNode.parentNode.nextSibling && id==="_2jqga89deyn") {
+    if (element && element.parentNode.parentNode.nextSibling) {
         const sibling = element.parentNode.parentNode.nextSibling;
         if(sibling.nodeName === 'TH') {
             const paragraphElements = sibling.querySelectorAll('p');
             paragraphElements.forEach(paragraph => {
                 if (paragraph.children.length === 0) {
-                    requiredResourcesParagraph.value.push(paragraph.textContent.trim());
+                    if (id==="_2jqga89deyn") {
+                        requiredResourcesParagraph.value.push(paragraph.textContent.trim());
+                    }
+                    if (id==="_jkhi5jchiyqa") {
+                        otherResourcesParagraph.value.push(paragraph.textContent.trim());
+                    }
                 }
             });
         }
@@ -234,13 +276,21 @@ const extractAllContentByEachId = (html, id) => {
             paragraphElements.forEach(paragraph => {
                 const strongElements = paragraph.querySelectorAll('strong');
                 strongElements.forEach(strong => {
-                    if(id === "_o25ffby0w0ip")
+                    if (id === "_o25ffby0w0ip")
                     {
-                        sessionOverviewSubheadings.value.push(strong.textContent.trim());
+                        sessionOverviewSubheadings.value.push(strong.textContent.trim().replace(/:/g, ''));
                     }
-                    if(id === "_2jqga89deyn")
+                    if (id === "_2jqga89deyn")
                     {
-                        requiredResourcesListHeadings.value.push(strong.textContent.trim());
+                        requiredResourcesListHeadings.value.push(strong.textContent.trim().replace(/:/g, ''));
+                    }
+                    if (id === "_jkhi5jchiyqa")
+                    {
+                        otherResourcesListHeadings.value.push(strong.textContent.trim().replace(/:/g, ''));
+                    }
+                    if (id === "_kv7kogslxlmu")
+                    {
+                        planningPreparationListHeadings.value.push(strong.textContent.trim().replace(/:/g, ''));
                     }
                 });
             });
@@ -281,7 +331,7 @@ const extractAllContentByEachId = (html, id) => {
     }
 
     // list of all <li> whose parent <ul> is just next to the list of each <p>
-    if (element && element.parentNode.parentNode.nextSibling && id === '_2jqga89deyn') {
+    if (element && element.parentNode.parentNode.nextSibling) {
         const sibling = element.parentNode.parentNode.nextSibling;
         if (sibling.nodeName === 'TH') {
             const paragraphElements = sibling.querySelectorAll('p');
@@ -290,16 +340,23 @@ const extractAllContentByEachId = (html, id) => {
                 if (nextUL && nextUL.nodeName === 'UL') {
                     const listItems = nextUL.querySelectorAll('li');
                     listItems.forEach(item => {
-                        requiredResourcesSubListHeadings.value.push(item.textContent.trim());
+                        if (id === '_2jqga89deyn'){
+                            requiredResourcesSubListHeadings.value.push(item.textContent.trim());
+                        }
+                        if (id === '_jkhi5jchiyqa'){
+                            otherResourcesSubListHeadings.value.push(item.textContent.trim())
+                        }
+                        if (id === '_kv7kogslxlmu'){
+                            planningPreparationSubListHeadings.value.push(item.textContent.trim())
+                        }
                     });
                     // Now listContent array contains all the items inside the ul tags
                 }
             });
-
         }
     }
 
-    // extracting all the [links, text, link] text on the basis of different id's
+    // extracting all the [links, text, link] on the basis of different id's
     const topTrTag = element.parentNode.parentNode.parentNode
     const h1Tags = topTrTag.querySelectorAll('h1');
     const strongTags = topTrTag.querySelectorAll('p strong');
@@ -308,7 +365,7 @@ const extractAllContentByEachId = (html, id) => {
     const sessionText = ref('')
     if(h1Tags.length > 0 && strongTags.length > 0)
     {
-        let idCounter = 0;
+        let keyCounter = 0;
         sessionText.value = h1Tags[0].textContent.trim();
         //console.log(h1Tags.length + ' . ' + strongTags.length + ' . ' + sessionText.value);
         for (let j = 0; j < strongTags.length; j++){
@@ -330,13 +387,20 @@ const extractAllContentByEachId = (html, id) => {
                             const text = aTag.textContent.trim();
                             const list_text = liTag.textContent.trim();
                             // Increment id counter
-                            const id = idCounter++;
-                            requiredResourcesAllLinks.value.push({ id, text, href, list_text });
+                            const key = keyCounter++;
+                            if (id === '_2jqga89deyn') {
+                                requiredResourcesAllLinks.value.push({ key, text, href, list_text });
+                            }
+                            if (id === '_jkhi5jchiyqa') {
+                                otherResourcesAllLinks.value.push({ key, text, href, list_text });
+                            }
+                            if (id === '_kv7kogslxlmu') {
+                                planningPreparationAllLinks.value.push({ key, text, href, list_text });
+                            }
                         });
                     }
                 });
             }
-
         }
     }
 
@@ -364,11 +428,36 @@ const extractAllContentByEachId = (html, id) => {
                             };
                         }
                     });
-                    requiredResourcesListingSubListing.value.push({ [strongText]: subListItems });
+                    if (id === '_2jqga89deyn'){
+                        requiredResourcesListingSubListing.value.push({ [strongText]: subListItems });
+                    }
+                    if (id === '_jkhi5jchiyqa'){
+                        otherResourcesListingSubListing.value.push({ [strongText]: subListItems });
+                    }
+                    if (id === '_kv7kogslxlmu'){
+                        planningPreparationListingSubListing.value.push({ [strongText]: subListItems });
+                    }
                 }
             });
         }
     }
+
+    // extracting <em> from each parent <p> that is the sibling of <h1>
+    if (element && element.parentNode.nextSibling) {
+        const sibling = element.parentNode.nextSibling;
+        if(sibling.nodeName === 'P') {
+            const emElements = sibling.querySelectorAll('em');
+            emElements.forEach(emElement => {
+                if (id === '_kv7kogslxlmu')
+                {
+                    planningPreparationSubTitleParagraph.value = emElement.textContent.trim();
+                }
+            })
+        }
+    }
+
+
+
 }
 
 
