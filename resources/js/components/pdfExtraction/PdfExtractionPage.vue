@@ -27,7 +27,7 @@ const requiredResourcesSubListHeadings = ref([])
 const requiredResourcesLinksByListHeading = ref([])
 const requiredResourcesAllLinks = ref([])
 
-
+const listData = ref([])
 
 
 //handle file upload
@@ -51,6 +51,8 @@ const handleFileUpload = async (event) => {
         extractAllContentByEachId(htmlContent.value, '_jhqnd16qn0md')
         extractAllContentByEachId(htmlContent.value, '_2jqga89deyn')
 
+        // Extract data
+        extractData(htmlContent.value, '_2jqga89deyn');
 
     } catch (error) {
         console.error('Error processing file:', error);
@@ -342,7 +344,52 @@ const extractAllContentByEachId = (html, id) => {
 }
 
 // raw implementation will be here
+// Function to extract data
+const extractData = (html, id) => {
+    const listMainHeading = ref ([])
+    const listSubHeading = ref ([])
 
+    const doc = new DOMParser().parseFromString(html, 'text/html');
+    const element = doc.getElementById(id);
+    if (element && element.parentNode.parentNode.nextElementSibling) {
+        const sibling = element.parentNode.parentNode.nextElementSibling;
+        if (sibling.nodeName === 'TH'){
+            const strongElements = sibling.querySelectorAll('p strong')
+            strongElements.forEach(strongElementt => {
+                const strongElements = strongElementt.textContent.trim();
+                if (strongElements) {
+                    listMainHeading.value.push({ strongElements });
+                    console.log(listMainHeading.value)
+                }
+            })
+            const ulElements = sibling.querySelectorAll('ul');
+            ulElements.forEach(ulElement => {
+                const strongElements = ulElement.querySelectorAll('strong');
+                const strongElementsName = ulElement.textContent.trim();
+                const subListItems = Array.from(ulElement.querySelectorAll('li'))
+                    .map(li => li.textContent.trim());
+                if (strongElements && subListItems.length > 0) {
+                    listSubHeading.value.push({ [strongElementsName]: subListItems });
+                    console.log(listSubHeading)
+                }
+            })
+        }
+    }
+    //
+    // const thElements = doc.querySelectorAll('th');
+    // thElements.forEach(th => {
+    //     const listHeading = th.querySelector('strong')?.textContent.trim();
+    //     const subListItems = Array.from(th.querySelectorAll('li'))
+    //         .map(li => li.textContent.trim());
+    //
+    //     if (listHeading && subListItems.length > 0) {
+    //         listData.value.push({ [listHeading]: subListItems });
+    //     }
+    // });
+    //
+    // // Display extracted data
+    // console.log(listData.value);
+};
 
 
 
