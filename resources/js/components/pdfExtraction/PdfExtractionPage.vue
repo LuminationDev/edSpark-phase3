@@ -52,9 +52,6 @@ const handleFileUpload = async (event) => {
         extractAllContentByEachId(htmlContent.value, '_jhqnd16qn0md')
         extractAllContentByEachId(htmlContent.value, '_2jqga89deyn')
 
-        // Extract data
-        extractData(htmlContent.value, '_2jqga89deyn');
-
     } catch (error) {
         console.error('Error processing file:', error);
         htmlContent.value = ''; // Clear content in case of error
@@ -134,7 +131,7 @@ const downloadFormattedJson = () => {
                 "Paragraphs": requiredResourcesParagraph.value,
                 "List Headings": requiredResourcesListHeadings.value,
                 "Sub-List Headings": requiredResourcesSubListHeadings.value,
-                "Lists with Sub-Lists": requiredResourcesListingSubListing.value
+                "Lists with Sub-Lists": requiredResourcesListingSubListing.value,
                 "All Links": requiredResourcesAllLinks.value
             }
         }
@@ -302,7 +299,7 @@ const extractAllContentByEachId = (html, id) => {
         }
     }
 
-    // extracting all the links, text, link text on the basis of id
+    // extracting all the [links, text, link] text on the basis of different id's
     const topTrTag = element.parentNode.parentNode.parentNode
     const h1Tags = topTrTag.querySelectorAll('h1');
     const strongTags = topTrTag.querySelectorAll('p strong');
@@ -342,108 +339,11 @@ const extractAllContentByEachId = (html, id) => {
 
         }
     }
-}
 
-// raw implementation will be here
-// Function to extract data
-const extractData1 = (html, id) => {
-    const listMainHeading = ref ([])
-    const listSubHeading = ref ([])
-
-    const doc = new DOMParser().parseFromString(html, 'text/html');
-    const element = doc.getElementById(id);
-    if (element && element.parentNode.parentNode.nextElementSibling) {
-        const sibling = element.parentNode.parentNode.nextElementSibling;
-        if (sibling.nodeName === 'TH'){
-            const pStrongElements = sibling.querySelectorAll('p strong')
-            const strongElements = sibling.childNodes
-
-            pStrongElements.forEach(pStrongElement => {
-                const strongElementss = pStrongElement.textContent.trim();
-                const ulElements = strongElements.nextElementSibling;
-                console.log(ulElements)
-                ulElements.forEach(ulElement => {
-                    const subLists = Array.from(ulElement.querySelectorAll('li'))
-                        .map(li => li.textContent.trim());
-                })
-                if (strongElementss && subLists.length > 0) {
-                    listMainHeading.value.push({ [strongElementss]: subLists });
-                    console.log(listMainHeading.value)
-                }
-            })
-            const ulElements = sibling.querySelectorAll('ul');
-            ulElements.forEach(ulElement => {
-                const strongElements = ulElement.querySelectorAll('strong');
-                const strongElementsName = ulElement.textContent.trim();
-                const subListItems = Array.from(ulElement.querySelectorAll('li'))
-                    .map(li => li.textContent.trim());
-                if (strongElements && subListItems.length > 0) {
-                    listSubHeading.value.push({ [strongElementsName]: subListItems });
-                    console.log(listSubHeading)
-                }
-            })
-
-        }
-    }
-    //
-    // const thElements = doc.querySelectorAll('th');
-    // thElements.forEach(th => {
-    //     const listHeading = th.querySelector('strong')?.textContent.trim();
-    //     const subListItems = Array.from(th.querySelectorAll('li'))
-    //         .map(li => li.textContent.trim());
-    //
-    //     if (listHeading && subListItems.length > 0) {
-    //         listData.value.push({ [listHeading]: subListItems });
-    //     }
-    // });
-    //
-    // // Display extracted data
-    // console.log(listData.value);
-};
-
-const extractData2 = (html, id) => {
-    const listMainHeading = ref([])
-    const listSubHeading = ref([])
-
-    const doc = new DOMParser().parseFromString(html, 'text/html');
-    const element = doc.getElementById(id);
-    if (element && element.parentNode.parentNode.nextElementSibling) {
-        const sibling = element.parentNode.parentNode.nextElementSibling;
-        if (sibling.nodeName === 'TH'){
-            const pElements = sibling.querySelectorAll('p')
-            const pStrongElements = sibling.querySelectorAll('p strong')
-            pStrongElements.forEach(pStrongElement => {
-                const mainHeading = pStrongElement.textContent.trim();
-                const ulElement = pElements.nextElementSibling;
-                const subLists = Array.from(ulElement.querySelectorAll('li'))
-                    .map(li => li.textContent.trim());
-                if (mainHeading && subLists.length > 0) {
-                    listMainHeading.value.push({ [mainHeading]: subLists });
-                    console.log(listMainHeading.value)
-                }
-            })
-        }
-    }
-};
-
-const extractData = (html, id) => {
-    const result = {
-        "Main Heading": "",
-        "Sub-List Headings": []
-    };
-
-    const doc = new DOMParser().parseFromString(html, 'text/html');
-    const element = doc.getElementById(id);
-
+    // extracing Sub-Listing with their each Listing in json format
     if (element && element.parentNode.parentNode.nextElementSibling) {
         const sibling = element.parentNode.parentNode.nextElementSibling;
         if (sibling.nodeName === 'TH') {
-            // Extract Main Heading
-            const mainHeading = sibling.querySelector('h1');
-            if (mainHeading) {
-                result["Main Heading"] = mainHeading.textContent.trim();
-            }
-
             // Extract Sub-List Headings and their respective list items
             const ulElements = sibling.querySelectorAll('ul');
             ulElements.forEach(ulElement => {
@@ -469,10 +369,8 @@ const extractData = (html, id) => {
             });
         }
     }
+}
 
-    console.log(JSON.stringify(result, null, 2));
-    return result;
-};
 
 
 
