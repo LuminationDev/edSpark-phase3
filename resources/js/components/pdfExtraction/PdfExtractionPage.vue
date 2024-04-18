@@ -458,7 +458,7 @@ const extractAllContentByEachId = (html, id) => {
         }
     }
 
-    //
+    // extracting list within another listing - nested listing
     if (element && element.parentNode.parentNode.nextElementSibling) {
         const sibling = element.parentNode.parentNode.nextElementSibling;
         if (sibling.nodeName === 'TH') {
@@ -500,34 +500,6 @@ const extractAllContentByEachId = (html, id) => {
             });
         }
     }
-
-
-
-
-
-    //Raw 2
-    const subSubHeadings = [];
-
-    if (element && element.parentNode.parentNode.nextElementSibling) {
-        const sibling = element.parentNode.parentNode.nextElementSibling;
-        if (sibling.nodeName === 'TH') {
-            const ulElements = sibling.querySelectorAll('ul');
-            ulElements.forEach(ulElement => {
-                const liElements = ulElement.querySelectorAll('li');
-                liElements.forEach(liElement => {
-                    const strongElement = liElement.querySelector('strong');
-                    if (strongElement) {
-                        if (id === '_kv7kogslxlmu')
-                        {
-                            subSubHeadings.push(strongElement.textContent.trim());
-                            console.log(subSubHeadings)
-                        }
-                    }
-                });
-            });
-        }
-    }
-
 
 }
 
