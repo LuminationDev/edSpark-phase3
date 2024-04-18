@@ -5,6 +5,7 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\AdvicemoderationResource\Pages;
 use App\Filament\Resources\AdvicemoderationResource\RelationManagers;
 use App\Helpers\RoleHelpers;
+use App\Helpers\StatusHelpers;
 use App\Helpers\UserRole;
 use App\Models\Advice;
 use App\Models\Advicemoderation;
@@ -41,12 +42,7 @@ class AdvicemoderationResource extends Resource
                     ->required()
                     ->maxLength(255),
                 Forms\Components\Select::make('status')
-                    ->options([
-                        'Published' => 'Published',
-                        'Unpublished' => 'Unpublished',
-                        'Draft' => 'Draft',
-                        'Pending' => 'Pending'
-                    ])
+                    ->options(StatusHelpers::getStatusList())
                     ->label('Status')
                     ->required(),
             ]),

@@ -6,6 +6,7 @@ use App\Filament\Resources\SoftwareResource\Pages;
 use App\Filament\Resources\SoftwareResource\RelationManagers;
 use App\Helpers\CustomHtmlable;
 use App\Helpers\RoleHelpers;
+use App\Helpers\StatusHelpers;
 use App\Helpers\UserRole;
 use App\Models\Label;
 use App\Models\Software;
@@ -113,12 +114,7 @@ class SoftwareResource extends Resource
                                     ->searchable(),
 
                                 Forms\Components\Select::make('status')
-                                    ->options([
-                                        'Published' => 'Published',
-                                        'Unpublished' => 'Unpublished',
-                                        'Draft' => 'Draft',
-                                        'Pending' => 'Pending'
-                                    ])
+                                    ->options(StatusHelpers::getStatusList())
                                     ->label('Status')
                                     ->required(),
                             ]),
@@ -222,13 +218,7 @@ class SoftwareResource extends Resource
             ])
             ->filters([
                 Tables\Filters\SelectFilter::make('status')
-                    ->options([
-                        'published' => 'Published',
-                        'pending' => 'Pending Moderation',
-                        'archived' => 'Archived',
-                        'draft' => 'Draft/Incomplete',
-                        'unpublished' => 'Deleted'
-                    ])
+                    ->options(StatusHelpers::getStatusList())
                     ->label('Software status')
                     ->default('published')
                     ->attribute('status'),

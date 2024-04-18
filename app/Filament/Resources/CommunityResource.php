@@ -5,6 +5,7 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\CommunityResource\Pages;
 use App\Filament\Resources\CommunityResource\RelationManagers;
 use App\Helpers\RoleHelpers;
+use App\Helpers\StatusHelpers;
 use App\Helpers\UserRole;
 use App\Models\Community;
 use Filament\Forms;
@@ -64,12 +65,7 @@ class CommunityResource extends Resource
                                     ->label('Community type')
                                     ->relationship('communitytype', 'community_type_name'),
                                 Forms\Components\Select::make('status')
-                                    ->options([
-                                        'Published' => 'Published',
-                                        'Unpublished' => 'Unpublished',
-                                        'Draft' => 'Draft',
-                                        'Pending' => 'Pending'
-                                    ])
+                                    ->options(StatusHelpers::getStatusList())
                                     ->label('Status')
                                     ->required(),
                                     ]),

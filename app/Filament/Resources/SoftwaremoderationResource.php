@@ -5,6 +5,7 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\SoftwaremoderationResource\Pages;
 use App\Filament\Resources\SoftwaremoderationResource\RelationManagers;
 use App\Helpers\RoleHelpers;
+use App\Helpers\StatusHelpers;
 use App\Helpers\UserRole;
 use App\Models\Softwaremoderation;
 use Filament\Forms;
@@ -38,12 +39,7 @@ class SoftwaremoderationResource extends Resource
                     ->required()
                     ->maxLength(255),
                 Forms\Components\Select::make('status')
-                    ->options([
-                        'Published' => 'Published',
-                        'Unpublished' => 'Unpublished',
-                        'Draft' => 'Draft',
-                        'Pending' => 'Pending'
-                    ])
+                    ->options(StatusHelpers::getStatusList())
                     ->label('Status')
                     ->required(),
             ]),

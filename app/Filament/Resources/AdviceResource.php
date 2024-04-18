@@ -6,6 +6,7 @@ use App\Filament\Resources\AdviceResource\Pages;
 use App\Filament\Resources\AdviceResource\RelationManagers;
 use App\Helpers\CustomHtmlable;
 use App\Helpers\RoleHelpers;
+use App\Helpers\StatusHelpers;
 use App\Helpers\UserRole;
 use App\Models\Advice;
 use App\Models\Label;
@@ -26,8 +27,7 @@ use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 use Mohamedsabil83\FilamentFormsTinyeditor\Components\TinyEditor;
 use SplFileInfo;
-
-use App\Helpers\EdSparkRolesHelpers;
+use const App\Helpers\StatusArray;
 
 
 class AdviceResource extends Resource
@@ -111,12 +111,7 @@ class AdviceResource extends Resource
                         ->required()
                         ->searchable(),
                     Forms\Components\Select::make('status')
-                        ->options([
-                            'Published' => 'Published',
-                            'Unpublished' => 'Unpublished',
-                            'Draft' => 'Draft',
-                            'Pending' => 'Pending',
-                        ])
+                        ->options(StatusHelpers::getStatusList())
                         ->label('Status')
                         ->required(),
                 ]),
@@ -213,13 +208,7 @@ class AdviceResource extends Resource
             ->defaultSort('updated_at', 'desc')
             ->filters([
                 Tables\Filters\SelectFilter::make('status')
-                    ->options([
-                        'published' => 'Published',
-                        'pending' => 'Pending Moderation',
-                        'archived' => 'Archived',
-                        'draft' => 'Draft/Incomplete',
-                        'unpublished' => 'Deleted'
-                    ])
+                    ->options(StatusHelpers::getStatusList())
                     ->label('Guide status')
                     ->default('published')
                     ->attribute('status'),
