@@ -99,7 +99,7 @@ class SoftwareResource extends Resource
                             ->schema([
                                 Forms\Components\Select::make('software_type')
                                     ->label('Software type')
-                                    ->relationship('softwaretypes', 'software_type_name')
+                                    ->relationship('software_types', 'software_type_name')
                                     ->required()
                                     ->columns(3),
                                 ...$labelColumns
@@ -198,7 +198,7 @@ class SoftwareResource extends Resource
                     ->limit(30)
                     ->searchable(),
                 Tables\Columns\ImageColumn::make('cover_image'),
-                Tables\Columns\TextColumn::make('softwaretypes.software_type_name')
+                Tables\Columns\TextColumn::make('software_types.software_type_name')
                     ->label('Type')
                     ->sortable()
                     ->searchable()

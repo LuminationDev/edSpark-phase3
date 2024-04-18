@@ -20,7 +20,7 @@ return new class extends Migration
             $table->longText('content');
             $table->text('excerpt')->nullable();
             $table->string('cover_image')->nullable();
-            $table->longText('event_location')->nullable();
+            $table->longText('location')->nullable();
             $table->json('extra_content')->nullable();
             $table->dateTime('start_date');
             $table->dateTime('end_date')->nullable();

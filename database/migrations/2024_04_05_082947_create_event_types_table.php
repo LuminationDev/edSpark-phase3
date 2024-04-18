@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('event_types', function (Blueprint $table) {
             $table->id();
-            $table->string('type_name');
-            $table->text('type_value')->nullable();
+            $table->string('event_type_name');
+            $table->text('event_type_value')->nullable();
             $table->timestamps();
         });
     }

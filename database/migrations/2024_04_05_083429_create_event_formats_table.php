@@ -12,8 +12,8 @@ return new class extends Migration {
     {
         Schema::create('event_formats', function (Blueprint $table) {
             $table->id();
-            $table->string('format_name');
-            $table->text('format_value')->nullable();
+            $table->string('event_format_name');
+            $table->text('event_format_value')->nullable();
             $table->timestamps();
         });
     }
