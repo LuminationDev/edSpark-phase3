@@ -485,6 +485,7 @@ const extractAllContentByEachId = (html, id) => {
             const ulElements = sibling.querySelectorAll('ul');
             ulElements.forEach(ulElement => {
                 const strongElement = ulElement.previousElementSibling;
+                const strong1Element = ulElement.previousElementSibling ?  ulElement.previousElementSibling.previousElementSibling : null;
                 if (strongElement && strongElement.nodeName === 'P' && strongElement.querySelector('strong')) {
                     const strongText = strongElement.querySelector('strong').textContent.trim();
                     const subListItems = Array.from(ulElement.children).map(listItem => {
