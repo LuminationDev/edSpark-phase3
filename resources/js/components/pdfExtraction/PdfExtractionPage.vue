@@ -358,31 +358,27 @@ const extractAllContentByEachId = (html, id) => {
         }
     }
 
-    // extracting all the [links, text, link] on the basis of different id's
+    // extracting all the [links, text, link] (with assigning keys), on the basis of different id's
     const topTrTag = element.parentNode.parentNode.parentNode
     const h1Tags = topTrTag.querySelectorAll('h1');
-    const strongTags = topTrTag.querySelectorAll('p strong');
+    const pTags = topTrTag.querySelectorAll('p');
     const inSession1 = false; // Flag to track if currently in Session 1
     const inSession2 = false; // Flag to track if currently in Session 2
     const sessionText = ref('')
-    if(h1Tags.length > 0 && strongTags.length > 0)
+    if(h1Tags.length > 0 && pTags.length > 0)
     {
         let keyCounter = 0;
         sessionText.value = h1Tags[0].textContent.trim();
         //console.log(h1Tags.length + ' . ' + strongTags.length + ' . ' + sessionText.value);
-        for (let j = 0; j < strongTags.length; j++){
-            const strongTag = strongTags[j];
-            const sessionText = strongTag.parentNode.textContent.trim();
+        for (let j = 0; j < pTags.length; j++){
+            const pTag = pTags[j];
             //console.log(strongTag + (' _ ') + sessionText)
-
-            const pTag = strongTag.parentNode;
             const ulTag = pTag.nextElementSibling;
 
             if (ulTag && ulTag.tagName.toLowerCase() === 'ul') {
                 const liTags = ulTag.querySelectorAll('li');
                 liTags.forEach((liTag, index) => {
                     const aTags = liTag.querySelectorAll('a');
-
                     if (aTags.length > 0) {
                         aTags.forEach(aTag => {
                             const href = aTag.getAttribute('href');
