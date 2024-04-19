@@ -2,7 +2,7 @@
 import mammoth from 'mammoth';
 import {ref} from 'vue';
 
-import { data } from './dataJson'
+import { data } from '../dataJson'
 
 //all initial variables are here
 const htmlContent = ref('');
