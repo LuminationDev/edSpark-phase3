@@ -93,7 +93,7 @@ const downloadHtml = () => {
     const url = window.URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
-    a.download = 'document.html';
+    a.download = (topicHeading.value + '.html');
     document.body.appendChild(a);
     a.click();
     window.URL.revokeObjectURL(url);
@@ -108,7 +108,7 @@ const downloadJson = () => {
     const url = window.URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
-    a.download = 'document.json';
+    a.download = (topicHeading.value + '.json');
     document.body.appendChild(a);
     a.click();
     window.URL.revokeObjectURL(url);
@@ -184,7 +184,7 @@ const downloadFormattedJson = () => {
     const url = window.URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
-    a.download = 'dataJson.ts'; // Setting download filename with extension
+    a.download = (topicHeading.value + '.ts'); // Setting download filename (Topic Heading) with extension (.ts)
     document.body.appendChild(a);
     a.click();
     window.URL.revokeObjectURL(url);
