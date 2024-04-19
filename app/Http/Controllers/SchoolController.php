@@ -4,10 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Helpers\JsonHelper;
 use App\Helpers\RoleHelpers;
+use App\Helpers\StatusHelpers;
 use App\Helpers\UserRole;
 use App\Models\User;
 use App\Models\Usermeta;
 use App\Services\ResponseService;
+use Exception;
 use Illuminate\Http\Request;
 use App\Models\School;
 use App\Models\Schoolmeta;
@@ -144,15 +146,15 @@ class SchoolController extends Controller
     private function archivePreviousSchoolEntry($schoolId)
     {
         School::where('school_id', $schoolId)
-            ->where('status', '!=', 'Archived')
-            ->update(['status' => 'Archived']);
+            ->where('status', '!=', StatusHelpers::ARCHIVED)
+            ->update(['status' => StatusHelpers::ARCHIVED]);
     }
 
     private function replacePreviousPendingSchoolEntry($schoolId)
     {
         School::where('school_id', $schoolId)
-            ->where('status', 'Pending')
-            ->update(['status' => 'Archived']);
+            ->where('status', StatusHelpers::PENDING)
+            ->update(['status' => StatusHelpers::ARCHIVED]);
     }
 
     private function insertNewSchoolVersion($data, $schoolLogoUrl, $coverImageUrl)
@@ -160,7 +162,6 @@ class SchoolController extends Controller
         return School::create([
             'school_id' => $data['school_id'],
             'site_id' => $data['site_id'],
-            'owner_id' => $data['owner_id'],
             'name' => $data['name'],
             'content_blocks' => $this->safelyEncode($data['content_blocks']),
             'logo' => $schoolLogoUrl ?? $data['logo'],
@@ -168,7 +169,8 @@ class SchoolController extends Controller
             'tech_used' => $this->safelyEncode($data['tech_used']),
             'pedagogical_approaches' => $this->safelyEncode($data['pedagogical_approaches']),
             'tech_landscape' => $this->safelyEncode($data['tech_landscape']),
-            'status' => 'Pending',
+            'is_featured' => 0,
+            'status' => StatusHelpers::PENDING,
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now()
         ]);

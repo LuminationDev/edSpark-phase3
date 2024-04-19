@@ -24,7 +24,6 @@ export const schoolDataFormDataBuilder = (schoolData) =>{
     const schoolFormData = new FormData()
     schoolFormData.append('school_id',schoolData.school_id)
     schoolFormData.append('site_id',schoolData.site.site_id)
-    schoolFormData.append('owner_id', schoolData.owner.owner_id)
     schoolFormData.append('name', schoolData.name)
 
     if(schoolData.content_blocks){
