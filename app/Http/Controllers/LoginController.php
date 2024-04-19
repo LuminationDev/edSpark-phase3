@@ -73,6 +73,7 @@ class LoginController extends Controller
             }
             $dataToBeUpdatedOrCreated = [
                 'full_name' => $user->name,
+                'display_name' => (isset($userEdSpark) && $userEdSpark->display_name) ? $userEdSpark->display_name :$user->name,
                 'remember_token' => Str::random(15),
                 'token' => $idToken ?? "",
                 'first_visit' => false,
