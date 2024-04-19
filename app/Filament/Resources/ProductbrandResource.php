@@ -36,11 +36,11 @@ class ProductbrandResource extends Resource
             ->schema([
                 Forms\Components\Card::make()
                     ->schema([
-                        Forms\Components\TextInput::make('product_brand_name')
+                        Forms\Components\TextInput::make('brand_name')
                             ->required()
                             ->maxLength(255)
                             ->label("Brand Name"),
-                        Forms\Components\Textarea::make('product_brand_description')
+                        Forms\Components\Textarea::make('brand_description')
                             ->maxLength(65535)
                             ->label("Brand Description"),
                     ]),
@@ -52,12 +52,12 @@ class ProductbrandResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('product_brand_name')
+                Tables\Columns\TextColumn::make('brand_name')
                     ->limit(50)
                     ->searchable()
                     ->sortable()
                     ->label('Brand Name'),
-                Tables\Columns\TextColumn::make('product_brand_description')
+                Tables\Columns\TextColumn::make('brand_description')
                     ->limit(50)
                     ->label('Brand Description'),
                 Tables\Columns\TextColumn::make('created_at')

@@ -189,7 +189,7 @@ class AdviceResource extends Resource
                 Tables\Columns\ImageColumn::make('cover_image')
                     ->limit(15)
                 ,
-                Tables\Columns\TextColumn::make('advicetypes.advice_type_name')
+                Tables\Columns\TextColumn::make('advice_types.advice_type_name')
                     ->sortable()
                     ->label('Type')
                     ->searchable(),
