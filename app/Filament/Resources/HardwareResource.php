@@ -40,12 +40,12 @@ class HardwareResource extends Resource
             ->schema([
                 Forms\Components\Card::make()
                     ->schema([
-                        Forms\Components\TextInput::make('product_name')
+                        Forms\Components\TextInput::make('name')
                             ->required()
                             ->maxLength(255),
-                        Forms\Components\RichEditor::make('product_content')
+                        Forms\Components\RichEditor::make('content')
                             ->required(),
-                        Forms\Components\RichEditor::make('product_excerpt')
+                        Forms\Components\RichEditor::make('excerpt')
                             ->maxLength(65535)
                             ->disableToolbarButtons([
                                 'attachFiles'
@@ -71,9 +71,9 @@ class HardwareResource extends Resource
                             ->maxFiles(5),
                         Forms\Components\TextInput::make('price'),
                         Forms\Components\BelongsToSelect::make('brand')
-                            ->relationship('brand', 'product_brand_name'),
+                            ->relationship('brand', 'brand_name'),
                         Forms\Components\BelongsToSelect::make('category')
-                            ->relationship('category', 'product_category_name'),
+                            ->relationship('category', 'category_name'),
                         Forms\Components\TagsInput::make('tags')
                             ->placeholder('Add or create tags')
                             ->helperText('Press enter after each tag')
@@ -146,24 +146,20 @@ class HardwareResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('product_name')
+                Tables\Columns\TextColumn::make('name')
                     ->label("Name")
                     ->limit(25)
                     ->sortable()
                     ->searchable(),
-                Tables\Columns\TextColumn::make('brand.product_brand_name')
+                Tables\Columns\TextColumn::make('brand.brand_name')
                     ->label('Brand')
                     ->sortable()
                     ->searchable(),
-                Tables\Columns\TextColumn::make('category.product_category_name')
+                Tables\Columns\TextColumn::make('category.category_name')
                     ->label('Category')
                     ->sortable()
                     ->searchable(),
-                // Tables\Columns\TextColumn::make('product_inventory'),
                 Tables\Columns\TextColumn::make('price'),
-//                Tables\Columns\IconColumn::make('product_isLoan')
-//                    ->boolean()
-//                    ->label('IsLoan'),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime('j M y, h:i a'),
                 Tables\Columns\TextColumn::make('updated_at')

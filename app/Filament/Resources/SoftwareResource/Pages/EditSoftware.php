@@ -50,7 +50,7 @@ class EditSoftware extends EditRecord
 
     protected function mutateFormDataBeforeSave(array $data): array
     {
-        $data['post_modified'] = Carbon::now();
+        $data['updated_at'] = Carbon::now();
         // tags related
         $record = parent::getRecord();
         $targetData = Software::find($record->id);

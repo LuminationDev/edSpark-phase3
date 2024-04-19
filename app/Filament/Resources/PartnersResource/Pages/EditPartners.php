@@ -25,7 +25,7 @@ class EditPartners extends EditRecord
     {
         $user = User::findOrFail($data['user_id']);
         $data['display_name'] = $user->display_name;
-        $profile = Partnerprofile::where('user_id', $user->id)->where('status', 'Published')->latest()->first();
+        $profile = Partnerprofile::where('user_id', $user->id)->where('status', \App\Helpers\StatusHelpers::PUBLISHED)->latest()->first();
         $data['content'] = JsonHelper::safelyDecodeString($profile['content']);
         $data['cover_image'] = JsonHelper::safelyDecodeString($profile['cover_image']);
         $data['logo'] = JsonHelper::safelyDecodeString($profile['logo']);
@@ -62,7 +62,7 @@ class EditPartners extends EditRecord
         ]);
 
         // When an admin edit PartnerProfile from the backend, edit the last published entry instead
-        $profile = Partnerprofile::where('user_id', $record->user_id)->where('status', 'Published')->latest()->first();
+        $profile = Partnerprofile::where('user_id', $record->user_id)->where('status', \App\Helpers\StatusHelpers::PUBLISHED)->latest()->first();
         $profile->update([
             'motto' => JsonHelper::safelyEncodeData($data['motto']),
             'introduction' => JsonHelper::safelyEncodeData($data['introduction']),

@@ -21,7 +21,7 @@ class CommunityFactory extends Factory
             'post_title' => $this->faker->sentence,
             'post_content' => $this->faker->paragraph,
             'post_excerpt' => $this->faker->text,
-            'post_date' => $this->faker->dateTime,
+            'created_at' => $this->faker->dateTime,
             'post_modified' => $this->faker->dateTime,
             'post_status' => 'Published',
             'cover_image' => $this->faker->imageUrl(),

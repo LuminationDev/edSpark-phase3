@@ -12,8 +12,8 @@ const {schools} = storeToRefs(schoolStore)
 const showLoading = ref(true)
 
 const featuredSites = computed(() =>{
-    console.log(schools.value.filter(school => school['isFeatured']))
-    return schools.value.filter(school => school['isFeatured'])
+    console.log(schools.value.filter(school => school['is_featured']))
+    return schools.value.filter(school => school['is_featured'])
 })
 
 const schoolsAvailable = computed(() => {
@@ -42,7 +42,7 @@ onBeforeMount(async () => {
     </div>
     <div
         v-if="schoolsAvailable"
-        class="px-5 xl:!px-20 mt-10"
+        class="mt-10 px-5 xl:!px-20"
     >
         <SchoolsSearchableMap
             :key="schoolsAvailable"
@@ -53,7 +53,7 @@ onBeforeMount(async () => {
 
     <div
         v-else-if="showLoading"
-        class="flex w-full font-thin"
+        class="flex font-thin w-full"
     >
         <Loader
             :loader-color="'#0072DA'"

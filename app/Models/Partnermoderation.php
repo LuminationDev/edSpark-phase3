@@ -25,11 +25,13 @@ class Partnermoderation extends Model
         'partner_id',
         'user_id',
         'content',
-        'status',
+        'introduction',
+        'motto',
         'cover_image',
         'logo',
-        'introduction',
-        'motto'
+        'status',
+        'created_at',
+        'updated_at'
     ];
 
     /**

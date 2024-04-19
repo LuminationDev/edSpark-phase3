@@ -5,6 +5,7 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\CommunitymoderationResource\Pages;
 use App\Filament\Resources\CommunitymoderationResource\RelationManagers;
 use App\Helpers\RoleHelpers;
+use App\Helpers\StatusHelpers;
 use App\Helpers\UserRole;
 use App\Models\Communitymoderation;
 use Filament\Forms;
@@ -37,12 +38,12 @@ class CommunitymoderationResource extends Resource
             ->schema([
                 Forms\Components\Card::make()
                     ->schema([
-                        Forms\Components\TextInput::make('post_title')
+                        Forms\Components\TextInput::make('title')
                             ->required()
                             ->maxLength(255),
-                        Forms\Components\RichEditor::make('post_content')
+                        Forms\Components\RichEditor::make('content')
                             ->required(),
-                        Forms\Components\RichEditor::make('post_excerpt')
+                        Forms\Components\RichEditor::make('excerpt')
                             ->maxLength(65535)
                             ->disableToolbarButtons([
                                 'attachFiles',
@@ -55,17 +56,12 @@ class CommunitymoderationResource extends Resource
                                 Forms\Components\BelongsToSelect::make('community_type')
                                     ->label('Community type')
                                     ->relationship('communitytype', 'community_type_name'),
-                                Forms\Components\Select::make('post_status')
-                                    ->options([
-                                        'Published' => 'Published',
-                                        'Unpublished' => 'Unpublished',
-                                        'Draft' => 'Draft',
-                                        'Pending' => 'Pending'
-                                    ])
+                                Forms\Components\Select::make('status')
+                                    ->options(StatusHelpers::getStatusList())
                                     ->label('Status')
                                     ->required(),
-                                    ]),
-                                ]),
+                            ]),
+                    ]),
             ]);
     }
 
@@ -73,16 +69,16 @@ class CommunitymoderationResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('post_title')
+                Tables\Columns\TextColumn::make('title')
                     ->label('Title')
                     ->limit(20)
                     ->sortable()
                     ->searchable(),
-                Tables\Columns\TextColumn::make('post_content')
+                Tables\Columns\TextColumn::make('content')
                     ->label('Content')
                     ->limit(50),
                 Tables\Columns\TextColumn::make('author.full_name')->label('Author'),
-                Tables\Columns\TextColumn::make('post_status')
+                Tables\Columns\TextColumn::make('status')
                     ->label('Status')
                     ->sortable()
                     ->searchable(),
@@ -121,15 +117,15 @@ class CommunitymoderationResource extends Resource
 
     public static function getEloquentQuery(): Builder
     {
-        return parent::getEloquentQuery()->where('post_status', 'Pending');
+        return parent::getEloquentQuery()->where('status', StatusHelpers::PENDING);
     }
 
     public static function getNavigationBadge(): ?string
     {
-        $count = static::getModel()::query()->where('post_status', 'pending')->count();
-        if ($count > 0){
+        $count = static::getModel()::query()->where('status', StatusHelpers::PENDING)->count();
+        if ($count > 0) {
             return $count;
-        }else{
+        } else {
             return '';
         }
     }

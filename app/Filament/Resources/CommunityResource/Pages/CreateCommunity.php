@@ -17,8 +17,8 @@ class CreateCommunity extends CreateRecord
     {
         // dd($data);
         $data['author_id'] = Auth::user()->id;
-        $data['post_date'] = Carbon::now();
-        $data['post_modified'] = Carbon::now();
+        $data['created_at'] = Carbon::now();
+        $data['updated_at'] = Carbon::now();
 
         return $data;
     }

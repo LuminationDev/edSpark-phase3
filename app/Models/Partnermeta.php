@@ -23,7 +23,7 @@ class Partnermeta extends Model
      */
     protected $fillable = [
         'partner_id',
-        'partner_meta_key',
-        'partner_meta_value'
+        'meta_key',
+        'meta_value'
     ];
 }

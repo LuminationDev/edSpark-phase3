@@ -35,10 +35,10 @@ class ProductcategoryResource extends Resource
             ->schema([
                 Forms\Components\Card::make()
                     ->schema([
-                        Forms\Components\TextInput::make('product_category_name')
+                        Forms\Components\TextInput::make('category_name')
                             ->required()
                             ->maxLength(255),
-                        Forms\Components\Textarea::make('product_category_description')
+                        Forms\Components\Textarea::make('category_description')
                             ->maxLength(65535),
                     ]),
             ]);
@@ -48,20 +48,14 @@ class ProductcategoryResource extends Resource
     {
         return $table
             ->columns([
-                // Tables\Columns\TextColumn::make('product_brand'),
-                // Tables\Columns\TextColumn::make('product_inventory'),
-                Tables\Columns\TextColumn::make('product_category_name')
+                Tables\Columns\TextColumn::make('category_name')
                     ->label('Category Name')
                     ->limit(20)
                     ->sortable()
                     ->searchable(),
-                Tables\Columns\TextColumn::make('product_category_description')
+                Tables\Columns\TextColumn::make('category_description')
                     ->label('Category Description')
                     ->limit(50),
-                // Tables\Columns\TextColumn::make('product_created_at')
-                //     ->dateTime('j M y, h:i a'),
-                // Tables\Columns\TextColumn::make('product_modified_at')
-                //     ->dateTime('j M y, h:i a'),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime('j M y, h:i a'),
                 Tables\Columns\TextColumn::make('updated_at')

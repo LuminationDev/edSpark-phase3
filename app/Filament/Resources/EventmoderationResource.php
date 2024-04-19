@@ -5,6 +5,7 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\EventmoderationResource\Pages;
 use App\Filament\Resources\EventmoderationResource\RelationManagers;
 use App\Helpers\RoleHelpers;
+use App\Helpers\StatusHelpers;
 use App\Helpers\UserRole;
 use App\Models\Eventmoderation;
 use Filament\Forms;
@@ -37,13 +38,8 @@ class EventmoderationResource extends Resource
                     ->label('Title')
                     ->required()
                     ->maxLength(255),
-                Forms\Components\Select::make('event_status')
-                    ->options([
-                        'Published' => 'Published',
-                        'Unpublished' => 'Unpublished',
-                        'Draft' => 'Draft',
-                        'Pending' => 'Pending'
-                    ])
+                Forms\Components\Select::make('status')
+                    ->options(StatusHelpers::getStatusList())
                     ->label('Status')
                     ->required(),
             ]),
@@ -62,7 +58,7 @@ class EventmoderationResource extends Resource
                 Tables\Columns\TextColumn::make('event_content')
                     ->label('Content')
                     ->limit(20),
-                Tables\Columns\TextColumn::make('event_status')
+                Tables\Columns\TextColumn::make('status')
                     ->label('Status')
                     ->sortable()
                     ->searchable(),
@@ -97,12 +93,12 @@ class EventmoderationResource extends Resource
 
     public static function getEloquentQuery(): Builder
     {
-        return parent::getEloquentQuery()->where('event_status', 'Pending');
+        return parent::getEloquentQuery()->where('status', StatusHelpers::PENDING);
     }
 
     public static function getNavigationBadge(): ?string
     {
-        $count = static::getModel()::query()->where('event_status', 'pending')->count();
+        $count = static::getModel()::query()->where('status', StatusHelpers::PENDING)->count();
         if ($count > 0){
             return $count;
         }else{

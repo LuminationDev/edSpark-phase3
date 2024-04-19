@@ -26,15 +26,15 @@ class Event extends Model
      */
     protected $fillable = [
         'author_id',
-        'event_title',
-        'event_content',
-        'event_excerpt',
-        'event_location',
+        'title',
+        'content',
+        'excerpt',
+        'location',
         'start_date',
         'end_date',
-        'event_status',
+        'status',
         'cover_image',
-        'eventtype_id',
+        'event_type_id',
         'event_format_id',
         'extra_content',
     ];
@@ -44,7 +44,7 @@ class Event extends Model
         return $this->belongsTo(User::class);
     }
 
-    public function eventtype()
+    public function event_type()
     {
         return $this->belongsTo(Eventtype::class);
     }
@@ -66,8 +66,8 @@ class Event extends Model
     public function getSearchResult()
     {
         return [
-            'title' => $this->event_title,
-            'content' => strip_tags($this->event_content),
+            'title' => $this->title,
+            'content' => strip_tags($this->content),
             'tags' => $this->tags,
             'author' => [
                 'author_id' => $this->author->id ?? '',
@@ -85,9 +85,9 @@ class Event extends Model
     public function toSearchableArray(): array
     {
         return [
-            'title' => $this->event_title,
-            'slug' => $this->event_title,
-            'content' => $this->event_content,
+            'title' => $this->title,
+            'slug' => $this->title,
+            'content' => $this->content,
         ];
     }
 

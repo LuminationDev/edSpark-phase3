@@ -26,10 +26,6 @@ class Advicetype extends Model
         'advice_type_value'
     ];
 
-    // public function advice()
-    // {
-    //     return $this->hasMany(Advice::class);
-    // }
 
     public function advices()
     {

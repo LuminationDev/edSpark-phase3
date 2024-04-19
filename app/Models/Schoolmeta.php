@@ -23,7 +23,7 @@ class Schoolmeta extends Model
      */
     protected $fillable = [
         'school_id',
-        'schoolmeta_key',
-        'schoolmeta_value'
+        'meta_key',
+        'meta_value'
     ];
 }
