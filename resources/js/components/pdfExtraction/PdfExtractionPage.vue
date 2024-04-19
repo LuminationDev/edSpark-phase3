@@ -406,7 +406,7 @@ const extractAllContentByEachId = (html, id) => {
         }
     }
 
-    // extracing Sub-Listing with their each Listing in json format
+    // extracting Sub-Listing with their each Listing in json format
     if (element && element.parentNode.parentNode.nextElementSibling) {
         const sibling = element.parentNode.parentNode.nextElementSibling;
         if (sibling.nodeName === 'TH') {
@@ -414,7 +414,10 @@ const extractAllContentByEachId = (html, id) => {
             const ulElements = sibling.querySelectorAll('ul');
             ulElements.forEach(ulElement => {
                 const strongElement = ulElement.previousElementSibling;
-                if (strongElement && strongElement.nodeName === 'P' && strongElement.querySelector('strong')) {
+                const pElement = ulElement.previousElementSibling;
+                // make <strong> that is inside <p> as heading, that is just before <ul>
+                if (strongElement && strongElement.nodeName === 'P' && strongElement.querySelector('strong'))
+                {
                     const strongText = strongElement.querySelector('strong').textContent.trim();
                     const subListItems = Array.from(ulElement.querySelectorAll('li')).map(li => {
                         const linkElement = li.querySelector('a');
@@ -438,6 +441,27 @@ const extractAllContentByEachId = (html, id) => {
                     }
                     if (id === '_kv7kogslxlmu'){
                         planningPreparationListingSubListing.value.push({ [strongText]: subListItems });
+                    }
+                }
+                // make <p> as heading if <strong> inside <p> is not found, just before <ul>
+                else if (pElement && pElement.nodeName === 'P') {
+                    const pText = pElement.textContent.trim();
+                    const subListItems = Array.from(ulElement.querySelectorAll('li')).map(li => {
+                        const linkElement = li.querySelector('a');
+                        if (linkElement) {
+                            return {
+                                "text": li.textContent.trim(),
+                                "link": linkElement.getAttribute('href')
+                            };
+                        } else {
+                            return {
+                                "text": li.textContent.trim(),
+                                "link": {}
+                            };
+                        }
+                    });
+                    if (id === '_kv7kogslxlmu'){
+                        planningPreparationListingSubListing.value.push({ [pText]: subListItems });
                     }
                 }
             });
@@ -494,7 +518,6 @@ const extractAllContentByEachId = (html, id) => {
                     if(id === "_kv7kogslxlmu")
                     {
                         planningPreparationListingTree.value.push(hierarchicalFormat);
-                        console.log(planningPreparationListingTree.value);
                     }
                 }
             });
