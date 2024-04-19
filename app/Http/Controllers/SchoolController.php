@@ -377,7 +377,7 @@ class SchoolController extends Controller
         }
 
         $schoolName = str_replace('%20', ' ', $schoolName);
-        $school = School::where('name', $schoolName)->where('status', 'Pending')->first();
+        $school = School::where('name', $schoolName)->where('status', StatusHelpers::PENDING)->first();
 
         if ($school == null) {
             return response()->json([

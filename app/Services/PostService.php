@@ -38,13 +38,13 @@ class PostService
     {
         $userId = $request->user_id ?? Auth::user()->id;
         if ($model === Event::class) {
-            $posts = $model::where('status', 'Draft')
+            $posts = $model::where('status', StatusHelpers::DRAFT)
                 ->where('author_id', $userId)
                 ->orderBy('created_at', 'DESC')
                 ->get();
         } else {
 
-            $posts = $model::where('status', 'Draft')
+            $posts = $model::where('status', StatusHelpers::DRAFT)
                 ->where('author_id', $userId)
                 ->orderBy('created_at', 'DESC')
                 ->get();

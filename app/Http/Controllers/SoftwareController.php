@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Helpers\Metahelper;
 use App\Helpers\RoleHelpers;
+use App\Helpers\StatusHelpers;
 use App\Helpers\UserRole;
 use App\Http\Middleware\ResourceAccessControl;
 use App\Models\Software;
@@ -32,12 +33,12 @@ class SoftwareController extends Controller
 
     public function createSoftwarePost(Request $request)
     {
-        if (strtolower($request->input('status')) === 'draft') {
+        if (strtoupper($request->input('status')) === StatusHelpers::DRAFT) {
             $validator = Validator::make($request->all(), [
                 'content' => 'required|string',
                 'title' => 'required|string',
             ]);
-        } else if (strtolower($request->input('status')) === 'pending') {
+        } else if (strtoupper($request->input('status')) === StatusHelpers::PENDING) {
             $validator = Validator::make($request->all(), [
                 'title' => 'required|string',
                 'content' => 'required|string',
@@ -78,7 +79,7 @@ class SoftwareController extends Controller
             $existingSoftware = Software::find($request->input('existing_id'));
 
             if ($existingSoftware) {
-                $existingSoftware->update(['status' => 'Archived']);
+                $existingSoftware->update(['status' => StatusHelpers::ARCHIVED]);
             }
         }
 

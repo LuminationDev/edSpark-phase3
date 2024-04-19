@@ -60,8 +60,8 @@ class CommunitymoderationResource extends Resource
                                     ->options(StatusHelpers::getStatusList())
                                     ->label('Status')
                                     ->required(),
-                                    ]),
-                                ]),
+                            ]),
+                    ]),
             ]);
     }
 
@@ -117,15 +117,15 @@ class CommunitymoderationResource extends Resource
 
     public static function getEloquentQuery(): Builder
     {
-        return parent::getEloquentQuery()->where('status', 'Pending');
+        return parent::getEloquentQuery()->where('status', StatusHelpers::PENDING);
     }
 
     public static function getNavigationBadge(): ?string
     {
-        $count = static::getModel()::query()->where('status', 'pending')->count();
-        if ($count > 0){
+        $count = static::getModel()::query()->where('status', StatusHelpers::PENDING)->count();
+        if ($count > 0) {
             return $count;
-        }else{
+        } else {
             return '';
         }
     }

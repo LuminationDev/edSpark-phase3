@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Helpers\RoleHelpers;
+use App\Helpers\StatusHelpers;
 use App\Helpers\UserRole;
 use App\Http\Middleware\ResourceAccessControl;
 use App\Models\Advicetype;
@@ -29,12 +30,12 @@ class AdviceController extends Controller
 
     public function createAdvicePost(Request $request)
     {
-        if (strtolower($request->input('status')) === 'draft') {
+        if (strtoupper($request->input('status')) === StatusHelpers::DRAFT) {
             $validator = Validator::make($request->all(), [
                 'content' => 'required|string',
                 'title' => 'required|string',
             ]);
-        } else if (strtolower($request->input('status')) === 'pending') {
+        } else if (strtoupper($request->input('status')) === StatusHelpers::PENDING) {
             $validator = Validator::make($request->all(), [
                 'title' => 'required|string',
                 'content' => 'required|string',
@@ -77,7 +78,7 @@ class AdviceController extends Controller
             $existingAdvice = Advice::find($request->input('existing_id'));
 
             if ($existingAdvice) {
-                $existingAdvice->update(['status' => 'Archived']);
+                $existingAdvice->update(['status' => StatusHelpers::ARCHIVED]);
             }
         }
 
@@ -178,7 +179,7 @@ class AdviceController extends Controller
     {
         try {
             $userId = Auth::user()->id;
-            $advices = Advice::where('status', 'Draft')
+            $advices = Advice::where('status', StatusHelpers::DRAFT)
                 ->where('author_id', $userId)  // Filter by partner (author) ID
                 ->orderBy('created_at', 'DESC')
                 ->get();

@@ -105,7 +105,7 @@ class PartnermoderationResource extends Resource
 
     public static function getEloquentQuery(): Builder
     {
-        return parent::getEloquentQuery()->where('status', 'Pending');
+        return parent::getEloquentQuery()->where('status', StatusHelpers::PENDING);
     }
 
     public static function getPages(): array
@@ -119,7 +119,7 @@ class PartnermoderationResource extends Resource
 
     public static function getNavigationBadge(): ?string
     {
-        $count = static::getModel()::query()->where('status', 'pending')->count();
+        $count = static::getModel()::query()->where('status', StatusHelpers::PENDING)->count();
         if ($count > 0) {
             return $count;
         } else {

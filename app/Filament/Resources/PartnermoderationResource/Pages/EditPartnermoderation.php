@@ -4,6 +4,7 @@ namespace App\Filament\Resources\PartnermoderationResource\Pages;
 
 use App\Filament\Resources\PartnermoderationResource;
 use App\Helpers\JsonHelper;
+use App\Helpers\StatusHelpers;
 use App\Models\Partnerprofile;
 use Filament\Actions;
 use Filament\Actions\Action;
@@ -48,8 +49,8 @@ class EditPartnermoderation extends EditRecord
         if($data['status'] == \App\Helpers\StatusHelpers::PUBLISHED){
             Partnerprofile::where('partner_id', $record->partner_id)
                 ->where('id', '!=', $record->id)
-                ->where('status', '!=', 'Draft')
-                ->update(['status' => 'Archived']);
+                ->where('status', '!=', StatusHelpers::DRAFT)
+                ->update(['status' => StatusHelpers::ARCHIVED]);
         }
         $record->update($data);
 

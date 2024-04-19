@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Helpers\RoleHelpers;
+use App\Helpers\StatusHelpers;
 use App\Helpers\UserRole;
 use App\Http\Middleware\ResourceAccessControl;
 use App\Models\Advice;
@@ -32,12 +33,12 @@ class EventController extends Controller
 
     public function createEventPost(Request $request): \Illuminate\Http\JsonResponse
     {
-        if (strtolower($request->input('status')) === 'draft') {
+        if (strtoupper($request->input('status')) === StatusHelpers::DRAFT) {
             $validator = Validator::make($request->all(), [
                 'title' => 'required|string',
                 'content' => 'required|string',
             ]);
-        } else if (strtolower($request->input('status')) === 'pending') {
+        } else if (strtoupper($request->input('status')) === StatusHelpers::PENDING) {
             $validator = Validator::make($request->all(), [
                 'title' => 'required|string',
                 'content' => 'required|string',
@@ -79,7 +80,7 @@ class EventController extends Controller
             $existingEvent = Event::find($request->input('existing_id'));
 
             if ($existingEvent) {
-                $existingEvent->update(['status' => 'Archived']);
+                $existingEvent->update(['status' => StatusHelpers::ARCHIVED]);
             }
         }
 
