@@ -484,54 +484,81 @@ const extractAllContentByEachId = (html, id) => {
         if (sibling.nodeName === 'TH') {
             const ulElements = sibling.querySelectorAll('ul');
             ulElements.forEach(ulElement => {
-                const strongElement = ulElement.previousElementSibling;
-                const strong1Element = ulElement.previousElementSibling ?  ulElement.previousElementSibling.previousElementSibling : null;
-                if (strongElement && strongElement.nodeName === 'P' && strongElement.querySelector('strong')) {
-                    const strongText = strongElement.querySelector('strong').textContent.trim();
+                const strong1Element = ulElement.previousElementSibling;
+                const strong2Element = ulElement.previousElementSibling ?  ulElement.previousElementSibling.previousElementSibling : null;
+                //const previousUlElement = strong2Element ? strong2Element.nodeName === 'UL' : null;
+                const previousPelement = strong1Element ? strong1Element.previousElementSibling.nodeName === 'P' : null;
+                const previousPStrongElement = strong1Element ? strong1Element.previousElementSibling.querySelector('p strong') : null;
+                if (strong1Element && strong1Element.nodeName === 'P' && strong1Element.querySelector('strong')) {
+                    const strongText = strong1Element.querySelector('strong').textContent.trim();
+                    console.log(strongText)
                     const subListItems = Array.from(ulElement.children).map(listItem => {
                         const subList = listItem.querySelector('ul');
                         if (subList) {
                             const subListItems = Array.from(subList.querySelectorAll('li')).map(subListItem => {
                                 return {
-                                    "text": subListItem.textContent.trim(),
-                                    "subSubListItems": []
+                                    "Text:": subListItem.textContent.trim(),
+                                    "List Items:": []
                                 };
                             });
                             return {
-                                "text": listItem.textContent.trim(),
-                                "subSubListItems": subListItems
+                                "Layer 2 Text:": listItem.textContent.trim(),
+                                "Layer 2 List Items:": subListItems
                             };
                         } else {
                             return {
-                                "text": listItem.textContent.trim(),
-                                "subSubListItems": []
+                                "Text:": listItem.textContent.trim(),
+                                "List Items:": []
                             };
                         }
                     });
                     const hierarchicalFormat = {
-                        "strongText": strongText,
-                        "subListItems": subListItems
+                        "Layer 1 Text:": strongText,
+                        "Layer 1 List Items:": subListItems
                     };
                     if(id === "_kv7kogslxlmu")
                     {
                         planningPreparationListingTree.value.push(hierarchicalFormat);
                     }
                 }
+                if (strong2Element && strong2Element.nodeName === 'P' && strong2Element.querySelector('strong')) {
+                    const strongText = strong2Element ? strong2Element.querySelector('strong').textContent.trim() : null;
+                    const pText =  strong2Element ? strong2Element.nextElementSibling.textContent.trim() : null;
+                    const subListItems = Array.from(ulElement.children).map(listItem => {
+                        const subList = listItem.querySelector('ul');
+                        if (subList) {
+                            const subListItems = Array.from(subList.querySelectorAll('li')).map(subListItem => {
+                                return {
+                                    "Text": subListItem.textContent.trim(),
+                                    "List Items": []
+                                };
+                            });
+                            return {
+                                "Layer 3 Text": listItem.textContent.trim(),
+                                "Layer 3 List Items": subListItems
+                            };
+                        } else {
+                            return {
+                                "Text": listItem.textContent.trim(),
+                                "List Items": []
+                            };
+                        }
+                    });
+                    const hierarchicalLayer2 = {
+                        "Layer 2 Text": pText,
+                        "Layer 2 List Items": subListItems
+                    };
+                    const hierarchicalLayer1 = {
+                        "Layer 1 Text": strongText,
+                        "Layer 1 List Items": hierarchicalLayer2
+                    };
+                    if(id === "_kv7kogslxlmu")
+                    {
+                        planningPreparationListingTree.value.push(hierarchicalLayer1);
+                    }
+                }
             });
         }
-    }
-
-    const ulElement = element.querySelector('ul');
-    if (ulElement.previousElementSibling !== null) {
-        const strong1Element = ulElement.previousElementSibling.previousElementSibling;
-
-        if (strong1Element && strong1Element.nodeName === 'P' && strong1Element.querySelector('strong')) {
-            const strong1Text = strong1Element.querySelector('strong').textContent.trim();
-
-            console.log(strong1Text);
-        }
-    } else {
-        console.log("No previous sibling element found.");
     }
 
 }
