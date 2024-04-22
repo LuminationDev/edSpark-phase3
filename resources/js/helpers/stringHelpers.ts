@@ -39,7 +39,7 @@ export const convertStringValuesToIntRecursive = (obj) => {
                 obj[key] = convertStringValuesToIntRecursive(obj[key]);
             }
         }
-    } else if (typeof obj === 'string' && /^\d+$/.test(obj)) {
+    } else if (typeof obj === 'string' && /^-?\d+$/.test(obj)) {
         obj = parseInt(obj);
     }
     return obj;
