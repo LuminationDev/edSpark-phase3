@@ -29,7 +29,7 @@ class EditCommunity extends EditRecord
 
     protected function mutateFormDataBeforeSave(array $data): array
     {
-        $data['post_modified'] = Carbon::now();
+        $data['updated_at'] = Carbon::now();
         return $data;
     }
 

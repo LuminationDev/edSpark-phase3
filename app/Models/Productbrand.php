@@ -14,7 +14,7 @@ class Productbrand extends Model
      *
      * @var string
      */
-    protected $table = 'product_brands';
+    protected $table = 'hardware_brands';
 
     /**
      * The attributes that are mass assignable
@@ -22,7 +22,7 @@ class Productbrand extends Model
      * @var array
      */
     protected $fillable = [
-        'product_brand_name',
-        'product_brand_description',
+        'brand_name',
+        'brand_description',
     ];
 }

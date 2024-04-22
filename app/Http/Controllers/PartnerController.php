@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Helpers\JsonHelper;
 use App\Helpers\Metahelper;
 use App\Helpers\RoleHelpers;
+use App\Helpers\StatusHelpers;
 use App\Helpers\UserRole;
 use App\Models\Advice;
 use App\Models\Hardware;
@@ -26,27 +27,27 @@ class PartnerController extends Controller
 
     private function initializePartnerMetadata($partner)
     {
-        $partnerMeta = Metahelper::getMeta(Partnermeta::class, $partner, 'partner_id', 'partner_meta_key', 'partner_meta_value');
+        $partnerMeta = Metahelper::getMeta(Partnermeta::class, $partner, 'partner_id', 'meta_key', 'meta_value');
 
-        if (!Metahelper::checkHasMetakey($partnerMeta, 'single_submenu', 'partner_meta_key')) {
-            Metahelper::insert($partner->id, ['single_submenu' => 'overview,access'], 'partner_id', 'partner_meta_key', 'partner_meta_value', Partnermeta::class);
+        if (!Metahelper::checkHasMetakey($partnerMeta, 'single_submenu', 'meta_key')) {
+            Metahelper::insert($partner->id, ['single_submenu' => 'overview,access'], 'partner_id', 'meta_key', 'meta_value', Partnermeta::class);
         }
-        if (!Metahelper::checkHasMetakey($partnerMeta, 'contact_info', 'partner_meta_key')) {
-            Metahelper::insert($partner->id, ['contact_info' => '{}'], 'partner_id', 'partner_meta_key', 'partner_meta_value', Partnermeta::class);
+        if (!Metahelper::checkHasMetakey($partnerMeta, 'contact_info', 'meta_key')) {
+            Metahelper::insert($partner->id, ['contact_info' => '{}'], 'partner_id', 'meta_key', 'meta_value', Partnermeta::class);
         }
     }
 
     private function getOrCreatePartnerProfile($partner)
     {
         // Fetch the 'Published' status profile for the partner.
-        $partnerProfile = $partner->profiles()->where('status', 'Published')->latest()->first();
+        $partnerProfile = $partner->profiles()->where('status', \App\Helpers\StatusHelpers::PUBLISHED)->latest()->first();
         // If it doesn't exist, create a new one.
         if (!isset($partnerProfile->partner_id)) {
             $partnerProfile = Partnerprofile::create([
                 'partner_id' => $partner->id,
                 'user_id' => $partner->user_id,
                 'content' => "<p>Welcome to partner profile</p>",
-                'status' => 'Published',
+                'status' => \App\Helpers\StatusHelpers::PUBLISHED,
             ]);
         }
         return $partnerProfile;
@@ -58,7 +59,7 @@ class PartnerController extends Controller
         $userId = Auth::user()->id;
         $isLikedByUser = $partner->likes()->where('user_id', $userId)->exists();
         $isBookmarkedByUser = $partner->bookmarks()->where('user_id', $userId)->exists();
-        $partnerMeta = Metahelper::getMeta(Partnermeta::class, $partner, 'partner_id', 'partner_meta_key', 'partner_meta_value');
+        $partnerMeta = Metahelper::getMeta(Partnermeta::class, $partner, 'partner_id', 'meta_key', 'meta_value');
 
         // Fetch or create partner profile.
         $partnerProfile = $this->getOrCreatePartnerProfile($partner);
@@ -93,8 +94,8 @@ class PartnerController extends Controller
     private function replacePreviousPendingPartnerProfileEntry($partnerId)
     {
         Partnerprofile::where('partner_id', $partnerId)
-            ->where('status', 'Pending')
-            ->update(['status' => 'Archived']);
+            ->where('status', StatusHelpers::PENDING)
+            ->update(['status' => StatusHelpers::ARCHIVED]);
     }
 
     public function fetchAllPartners(Request $request)
@@ -158,7 +159,7 @@ class PartnerController extends Controller
                 return response()->json(['error' => 'Partner not found'], Response::HTTP_NOT_FOUND);
             }
 
-            $partnerProfile = $partner->profiles()->where('status', 'Pending')->latest()->first();
+            $partnerProfile = $partner->profiles()->where('status', StatusHelpers::PENDING)->latest()->first();
 
             // If there's no pending profile, return a message
             if (!$partnerProfile) {
@@ -174,7 +175,7 @@ class PartnerController extends Controller
             // Update all other profiles with the same partner_id to "Archived"
             Partnerprofile::where('user_id', $partnerId)
                 ->where('id', '!=', $partnerProfile->id)
-                ->update(['status' => 'Archived']);
+                ->update(['status' => StatusHelpers::ARCHIVED]);
 
             return response()->json([
                 'message' => 'Pending profile found',
@@ -224,7 +225,7 @@ class PartnerController extends Controller
                 'motto' => $newMotto,
                 'logo' => $partnerLogoUrl ?? $data['logo'],
                 'cover_image' => $coverImageUrl ?? $data['cover_image'],
-                'status' => 'Pending'
+                'status' => StatusHelpers::PENDING
             ]);
 
 

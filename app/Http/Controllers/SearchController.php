@@ -34,9 +34,9 @@ class SearchController extends Controller
             foreach ($searchResults as $result){
                 $stdResult = [
                     'id' => $result->id,
-                    'title' => $result->post_title ?? $result->product_name ?? $result->event_title,
-                    'content' => $result->post_content?? $result->product_content ?? $result->event_content,
-                    'excerpt' => $result->post_excerpt ?? $result->product_excerpt ?? $result->event_excerpt,
+                    'title' => $result->title ?? $result->product_name ?? $result->event_title,
+                    'content' => $result->content?? $result->product_content ?? $result->event_content,
+                    'excerpt' => $result->excerpt ?? $result->product_excerpt ?? $result->event_excerpt,
                     'author' =>[
                         'author_id' => $result->author->id ?? '',
                         'author_name' => $result->author->full_name ?? '',

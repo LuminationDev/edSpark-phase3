@@ -6,6 +6,7 @@ use App\Filament\Resources\SoftwareResource\Pages;
 use App\Filament\Resources\SoftwareResource\RelationManagers;
 use App\Helpers\CustomHtmlable;
 use App\Helpers\RoleHelpers;
+use App\Helpers\StatusHelpers;
 use App\Helpers\UserRole;
 use App\Models\Label;
 use App\Models\Software;
@@ -70,15 +71,15 @@ class SoftwareResource extends Resource
             ->schema([
                 Forms\Components\Card::make()
                     ->schema([
-                        Forms\Components\TextInput::make('post_title')
+                        Forms\Components\TextInput::make('title')
                             ->label('Title')
                             ->required()
                             ->maxLength(255),
-                        Forms\Components\TextInput::make('post_excerpt')
+                        Forms\Components\TextInput::make('excerpt')
                             ->label('Tagline')
                             ->placeholder('150 characters or less')
                             ->maxLength(150),
-                        TinyEditor::make('post_content')
+                        TinyEditor::make('content')
                             ->label('Content')->fileAttachmentsDisk('local')
                             ->fileAttachmentsVisibility('public')
                             ->fileAttachmentsDirectory('public/uploads/software')
@@ -98,7 +99,7 @@ class SoftwareResource extends Resource
                             ->schema([
                                 Forms\Components\Select::make('software_type')
                                     ->label('Software type')
-                                    ->relationship('softwaretypes', 'software_type_name')
+                                    ->relationship('software_types', 'software_type_name')
                                     ->required()
                                     ->columns(3),
                                 ...$labelColumns
@@ -107,17 +108,13 @@ class SoftwareResource extends Resource
                         Forms\Components\Grid::make(2)
                             ->schema([
                                 Forms\Components\Select::make('author_id')
-                                    ->relationship(name: 'author', titleAttribute: 'full_name')
+                                    ->relationship(name: 'author', titleAttribute: 'display_name')
                                     ->disabled(fn() => !RoleHelpers::has_minimum_privilege(UserRole::ADMIN))
                                     ->required()
                                     ->searchable(),
-                                Forms\Components\Select::make('post_status')
-                                    ->options([
-                                        'Published' => 'Published',
-                                        'Unpublished' => 'Unpublished',
-                                        'Draft' => 'Draft',
-                                        'Pending' => 'Pending'
-                                    ])
+
+                                Forms\Components\Select::make('status')
+                                    ->options(StatusHelpers::getStatusList())
                                     ->label('Status')
                                     ->required(),
                             ]),
@@ -195,13 +192,13 @@ class SoftwareResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('post_title')
+                Tables\Columns\TextColumn::make('title')
                     ->label('Title')
                     ->sortable()
                     ->limit(30)
                     ->searchable(),
                 Tables\Columns\ImageColumn::make('cover_image'),
-                Tables\Columns\TextColumn::make('softwaretypes.software_type_name')
+                Tables\Columns\TextColumn::make('software_types.software_type_name')
                     ->label('Type')
                     ->sortable()
                     ->searchable()
@@ -209,7 +206,7 @@ class SoftwareResource extends Resource
                 Tables\Columns\TextColumn::make('author.full_name')
                     ->searchable(),
 
-                Tables\Columns\TextColumn::make('post_status')
+                Tables\Columns\TextColumn::make('status')
                     ->label('Status')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('created_at')
@@ -221,16 +218,10 @@ class SoftwareResource extends Resource
             ])
             ->filters([
                 Tables\Filters\SelectFilter::make('status')
-                    ->options([
-                        'published' => 'Published',
-                        'pending' => 'Pending Moderation',
-                        'archived' => 'Archived',
-                        'draft' => 'Draft/Incomplete',
-                        'unpublished' => 'Deleted'
-                    ])
+                    ->options(StatusHelpers::getStatusList())
                     ->label('Software status')
                     ->default('published')
-                    ->attribute('post_status'),
+                    ->attribute('status'),
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),

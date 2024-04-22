@@ -25,15 +25,15 @@ class CreateEvent extends CreateRecord
     {
 
         if(isset($data['url'])){
-            $data['event_location']['url'] = $data['url'];
+            $data['location']['url'] = $data['url'];
         }
         if(isset($data['address'])){
-            $data['event_location']['address'] = $data['address'];
+            $data['location']['address'] = $data['address'];
         }
-        $data['event_location'] = isset($data['event_location']) ? json_encode($data['event_location']) : "";
-        $data['post_date'] = Carbon::now();
-        $data['post_modified'] = Carbon::now();
-        $data['eventtype_id'] = $data['event_type'];
+        $data['location'] = isset($data['location']) ? json_encode($data['location']) : "";
+        $data['created_at'] = Carbon::now();
+        $data['updated_at'] = Carbon::now();
+        $data['event_type_id'] = $data['event_type'];
         $data['event_format_id'] = $data['event_format'];
 
 

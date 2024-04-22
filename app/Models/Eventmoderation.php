@@ -23,13 +23,13 @@ class Eventmoderation extends Model
      */
     protected $fillable = [
         'author_id',
-        'event_title',
-        'event_content',
-        'event_excerpt',
+        'title',
+        'content',
+        'excerpt',
         'start_date',
         'end_date',
-        'event_status',
-        'eventtype_id',
+        'status',
+        'event_type_id',
     ];
 
     public function author()

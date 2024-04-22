@@ -5,8 +5,10 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\EventResource\Pages;
 use App\Helpers\CustomHtmlable;
 use App\Helpers\RoleHelpers;
+use App\Helpers\StatusHelpers;
 use App\Helpers\UserRole;
 use App\Models\Event;
+use App\Models\Eventformat;
 use App\Models\Label;
 use Coolsam\FilamentFlatpickr\Forms\Components\Flatpickr;
 use Filament\Forms;
@@ -69,14 +71,14 @@ class EventResource extends Resource
             ->schema([
                 Forms\Components\Card::make()
                     ->schema([
-                        Forms\Components\TextInput::make('event_title')
+                        Forms\Components\TextInput::make('title')
                             ->required()
                             ->maxLength(255),
-                        Forms\Components\TextInput::make('event_excerpt')
+                        Forms\Components\TextInput::make('excerpt')
                             ->label('Tagline')
                             ->placeholder('150 characters or less')
                             ->maxLength(150),
-                        TinyEditor::make('event_content')
+                        TinyEditor::make('content')
                             ->label('Content')->fileAttachmentsDisk('local')
                             ->fileAttachmentsVisibility('public')
                             ->fileAttachmentsDirectory('public/uploads/event')
@@ -109,14 +111,28 @@ class EventResource extends Resource
                                     ->relationship('event_format', 'event_format_name'),
                                 Forms\Components\TextInput::make('url')
                                     ->label('URL')
-                                    ->hidden(fn(\Filament\Forms\Get $get) => $get('event_format') === null || $get('event_format') == '2'),
+                                    ->hidden(function (\Filament\Forms\Get $get) {
+                                        $eventFormatId = $get('event_format');
+                                        if ($eventFormatId !== null && Eventformat::find($eventFormatId)) {
+                                            $eventFormatName = Eventformat::find($eventFormatId)->event_format_name;
+                                            return $eventFormatName === 'In Person';
+                                        }
+                                        return true;
+                                    }),
                                 Forms\Components\TextInput::make('address')
                                     ->label('Address')
-                                    ->hidden(fn(\Filament\Forms\Get $get) => $get('event_format') === null || $get('event_format') == '1'),
+                                    ->hidden(function (\Filament\Forms\Get $get) {
+                                        $eventFormatId = $get('event_format');
+                                        if ($eventFormatId !== null && Eventformat::find($eventFormatId)) {
+                                            $eventFormatName = Eventformat::find($eventFormatId)->event_format_name;
+                                            return $eventFormatName === 'Virtual';
+                                        }
+                                        return true;
+                                    }),
                                 Forms\Components\BelongsToSelect::make('event_type')
                                     ->label('Event type')
                                     ->required()
-                                    ->relationship('eventtype', 'event_type_name'),
+                                    ->relationship('event_type', 'event_type_name'),
                             ]),
                         Forms\Components\Section::make()
                             ->schema([
@@ -126,17 +142,12 @@ class EventResource extends Resource
                         Forms\Components\Grid::make(2)
                             ->schema([
                                 Forms\Components\Select::make('author_id')
-                                    ->relationship(name: 'author', titleAttribute: 'full_name')
+                                    ->relationship(name: 'author', titleAttribute: 'display_name')
                                     ->disabled(fn() => !RoleHelpers::has_minimum_privilege(UserRole::ADMIN))
                                     ->required()
                                     ->searchable(),
-                                Forms\Components\Select::make('event_status')
-                                    ->options([
-                                        'Published' => 'Published',
-                                        'Unpublished' => 'Unpublished',
-                                        'Draft' => 'Draft',
-                                        'Pending' => 'Pending'
-                                    ])
+                                Forms\Components\Select::make('status')
+                                    ->options(StatusHelpers::getStatusList())
                                     ->required(),
                             ]),
                         Forms\Components\TagsInput::make('tags')
@@ -202,31 +213,25 @@ class EventResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('event_title')
+                Tables\Columns\TextColumn::make('title')
                     ->label('Title')
                     ->sortable()
                     ->limit(30)
                     ->searchable(),
 
                 Tables\Columns\ImageColumn::make('cover_image'),
-                Tables\Columns\TextColumn::make('event_status')
+                Tables\Columns\TextColumn::make('status')
                     ->label('Status')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('updated_at')
                     ->dateTime('j M y, h:i a'),
             ])
             ->filters([
-                Tables\Filters\SelectFilter::make('event_status')
-                    ->options([
-                        'published' => 'Published',
-                        'pending' => 'Pending Moderation',
-                        'archived' => 'Archived',
-                        'draft' => 'Draft/Incomplete',
-                        'unpublished' => 'Deleted'
-                    ])
+                Tables\Filters\SelectFilter::make('status')
+                    ->options(StatusHelpers::getStatusList())
                     ->label('Event status')
                     ->default('published')
-                    ->attribute('event_status'),
+                    ->attribute('status'),
                 Tables\Filters\SelectFilter::make('event_date')
                     ->options([
                         'all' => 'All Events',

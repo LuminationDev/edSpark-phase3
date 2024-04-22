@@ -30,7 +30,7 @@ class CreateSchool extends CreateRecord
         $nextSchoolId = ($latestSchool ? $latestSchool->school_id + 1 : 1);
         $data['school_id'] = $nextSchoolId;
         $data['owner_id'] = Auth::user()->id;
-        $data['status'] = 'Published';
+        $data['status'] = \App\Helpers\StatusHelpers::PUBLISHED;
         $data['created_at'] =Carbon::now() ;
         $data['updated_at'] =  Carbon::now();
         return $data;

@@ -24,6 +24,7 @@ import UserUnreadNotificationLayout
     from "@/js/components/userprofile/userprofileupdate/usernotification/UserUnreadNotificationLayout.vue";
 import UserProfileContentContainer from "@/js/components/userprofile/userprofileupdate/UserProfileContentContainer.vue";
 import {API_ENDPOINTS} from "@/js/constants/API_ENDPOINTS";
+import {parseToJsonIfString} from "@/js/helpers/jsonHelpers";
 import {useUserStore} from "@/js/stores/useUserStore";
 
 const userStore = useUserStore()
@@ -118,19 +119,19 @@ const fetchUserMetadata = async () => {
     try {
         const response = await axios.get(API_ENDPOINTS.USER.GET_USER_PROFILE_METADATA + currentUser.value.id)
         const metadata = response.data.data;
-        statePersonal.biography = metadata.find(item => item.user_meta_key === 'biography')
-        const biography = statePersonal.biography ? statePersonal.biography.user_meta_value.replace(/^"(.*)"$/, '$1') : '';
+        statePersonal.biography = metadata.find(item => item.meta_key === 'biography')
+        const biography = statePersonal.biography ? statePersonal.biography.meta_value.replace(/^"(.*)"$/, '$1') : '';
         statePersonal.biography = biography || '';
         initialPersonalState.biography = biography || '';
 
         // converting string to an array.
-        const yearLevelMetadataString = metadata.find(item => item.user_meta_key === 'yearLevels')?.user_meta_value || [];
-        const subjectMetadataString = metadata.find(item => item.user_meta_key === 'subjects')?.user_meta_value || [];
-        const interestMetadataString = metadata.find(item => item.user_meta_key === 'interest')?.user_meta_value || [];
+        const yearLevelMetadataString = metadata.find(item => item.meta_key === 'yearLevels')?.meta_value || [];
+        const subjectMetadataString = metadata.find(item => item.meta_key === 'subjects')?.meta_value || [];
+        const interestMetadataString = metadata.find(item => item.meta_key === 'interest')?.meta_value || [];
 
-        const yearLevelMetadataArray = JSON.parse(yearLevelMetadataString)
-        const subjectMetadataArray = JSON.parse(subjectMetadataString)
-        const interestMetadataArray = JSON.parse(interestMetadataString)
+        const yearLevelMetadataArray = parseToJsonIfString(yearLevelMetadataString)
+        const subjectMetadataArray = parseToJsonIfString(subjectMetadataString)
+        const interestMetadataArray = parseToJsonIfString(interestMetadataString)
         // these are modified by the UI as we use the form
         stateProfile.yearLevelSelect = yearLevelMetadataArray
         stateProfile.subjectSelect = subjectMetadataArray
@@ -147,8 +148,6 @@ const fetchUserMetadata = async () => {
     }
 }
 
-console.log("User Profile is here...")
-console.log(userStore.getIfUserIsAdmin)
 
 onMounted(fetchUserMetadata);
 
@@ -229,10 +228,9 @@ const handleProfileCancelButton = () => {
     reloadKey.value++
 }
 
-const userNotificationLargeLayout = computed(() =>
+const userAllNotificationLink = computed(() =>
 {
     if (currentUser.value.id) {
-        console.log("View all button pressed")
         return `/notifications/${currentUser.value.id}`
     } else return ''
 })
@@ -522,7 +520,7 @@ const userNotificationLargeLayout = computed(() =>
                             </div>
                             <div class="cursor-pointer ml-auto mr-4 underline">
                                 <router-link
-                                    :to="userNotificationLargeLayout"
+                                    :to="userAllNotificationLink"
                                 >
                                     View all
                                 </router-link>

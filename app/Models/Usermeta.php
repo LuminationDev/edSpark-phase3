@@ -23,7 +23,7 @@ class Usermeta extends Model
      */
     protected $fillable = [
         'user_id',
-        'user_meta_key',
-        'user_meta_value'
+        'meta_key',
+        'meta_value'
     ];
 }

@@ -27,18 +27,16 @@ class Software extends Model
      * @var array
      */
     protected $fillable = [
-        'post_title',
-        'post_content',
-        'post_excerpt',
-        'post_date',
-        'post_modified',
-        'post_status',
         'author_id',
+        'title',
+        'content',
+        'excerpt',
         'cover_image',
-        'softwaretype_id',
-        'template',
         'extra_content',
-        'how_to_access'
+        'how_to_access',
+        'status',
+        'created_at',
+        'updated_at'
     ];
 
     public function author()
@@ -46,7 +44,7 @@ class Software extends Model
         return $this->belongsTo(User::class);
     }
 
-    public function softwaretypes()
+    public function software_types()
     {
         return $this->belongsToMany(Softwaretype::class);
     }
@@ -64,8 +62,8 @@ class Software extends Model
     public function getSearchResult()
     {
         return [
-            'title' => $this->post_title,
-            'content' => strip_tags($this->post_content),
+            'title' => $this->title,
+            'content' => strip_tags($this->content),
             'tags' => $this->tags,
             'author' => [
                 'author_id' => $this->author->id ?? '',
@@ -78,9 +76,9 @@ class Software extends Model
     public function toSearchableArray(): array
     {
         return [
-            'title' => $this->post_title,
-            'slug' => $this->post_title,
-            'content' => $this->post_content,
+            'title' => $this->title,
+            'slug' => $this->title,
+            'content' => $this->content,
         ];
     }
 

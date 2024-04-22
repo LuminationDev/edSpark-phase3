@@ -185,7 +185,7 @@ class LikeBookmarkController extends Controller
                     $result = [
                         'post_id' => $bookmark->post_id,
                         'post_type' => $bookmark->post_type,
-                        'post_title' => $post_info['post_title'],
+                        'title' => $post_info['title'],
                         'cover_image' => $post_info['cover_image'],
                     ];
                     $dataToSend[] = $result;

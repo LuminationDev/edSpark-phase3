@@ -23,7 +23,7 @@ return new class extends Migration
             $table->dateTime('post_date')->nullable();
             $table->dateTime('post_modified')->nullable();
             $table->string('post_status');
-            $table->unsignedBigInteger('advicetype_id')->nullable();
+            $table->unsignedBigInteger('advicetype_id')->nullable(); // not needed
             //TODO: Terms and Taxonomy relations
             $table->timestamps();
         });

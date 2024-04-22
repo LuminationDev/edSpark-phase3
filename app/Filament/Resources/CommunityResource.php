@@ -5,6 +5,7 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\CommunityResource\Pages;
 use App\Filament\Resources\CommunityResource\RelationManagers;
 use App\Helpers\RoleHelpers;
+use App\Helpers\StatusHelpers;
 use App\Helpers\UserRole;
 use App\Models\Community;
 use Filament\Forms;
@@ -37,15 +38,15 @@ class CommunityResource extends Resource
             ->schema([
                 Forms\Components\Card::make()
                     ->schema([
-                        Forms\Components\TextInput::make('post_title')
+                        Forms\Components\TextInput::make('title')
                             ->required()
                             ->maxLength(255),
-                        Forms\Components\RichEditor::make('post_content')
+                        Forms\Components\RichEditor::make('content')
                             ->required()
                             ->disableToolbarButtons([
                                 'attachFiles',
                             ]),
-                        Forms\Components\RichEditor::make('post_excerpt')
+                        Forms\Components\RichEditor::make('excerpt')
                             ->maxLength(65535),
                         Forms\Components\FileUpload::make('cover_image')
                             ->preserveFilenames()
@@ -63,13 +64,8 @@ class CommunityResource extends Resource
                                 Forms\Components\BelongsToSelect::make('community_type')
                                     ->label('Community type')
                                     ->relationship('communitytype', 'community_type_name'),
-                                Forms\Components\Select::make('post_status')
-                                    ->options([
-                                        'Published' => 'Published',
-                                        'Unpublished' => 'Unpublished',
-                                        'Draft' => 'Draft',
-                                        'Pending' => 'Pending'
-                                    ])
+                                Forms\Components\Select::make('status')
+                                    ->options(StatusHelpers::getStatusList())
                                     ->label('Status')
                                     ->required(),
                                     ]),
@@ -83,17 +79,17 @@ class CommunityResource extends Resource
             ->columns([
                 // Tables\Columns\TextColumn::make('author_id'),
                 // Tables\Columns\TextColumn::make('communitytype_id'),
-                Tables\Columns\TextColumn::make('post_title')
+                Tables\Columns\TextColumn::make('title')
                     ->label('Title')
                     ->limit(20)
                     ->sortable()
                     ->searchable(),
-                Tables\Columns\TextColumn::make('post_content')
+                Tables\Columns\TextColumn::make('content')
                     ->label('Content')
                     ->limit(50),
                 Tables\Columns\ImageColumn::make('cover_image'),
                 Tables\Columns\TextColumn::make('author.full_name')->label('Author'),
-                Tables\Columns\TextColumn::make('post_status')
+                Tables\Columns\TextColumn::make('status')
                     ->label('Status')
                     ->sortable()
                     ->searchable(),

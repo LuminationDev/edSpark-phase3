@@ -5,6 +5,7 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\SchoolmoderationResource\Pages;
 use App\Filament\Resources\SchoolmoderationResource\RelationManagers;
 use App\Helpers\RoleHelpers;
+use App\Helpers\StatusHelpers;
 use App\Helpers\UserRole;
 use App\Models\Schoolmoderation;
 use Filament\Forms;
@@ -37,12 +38,7 @@ class SchoolmoderationResource extends Resource
                             ->required()
                             ->maxLength(255),
                         Forms\Components\Select::make('status')
-                            ->options([
-                                'Published' => 'Published',
-                                'Unpublished' => 'Unpublished',
-                                'Draft' => 'Draft',
-                                'Pending' => 'Pending'
-                            ])
+                            ->options(StatusHelpers::getStatusList())
                             ->label('Status')
                             ->required(),
                     ]),
@@ -91,12 +87,12 @@ class SchoolmoderationResource extends Resource
     }
     public static function getEloquentQuery(): Builder
     {
-        return parent::getEloquentQuery()->where('status', 'Pending');
+        return parent::getEloquentQuery()->where('status', StatusHelpers::PENDING);
     }
 
     public static function getNavigationBadge(): ?string
     {
-        $count = static::getModel()::query()->where('status', 'pending')->count();
+        $count = static::getModel()::query()->where('status', StatusHelpers::PENDING)->count();
         if ($count > 0) {
             return $count;
         } else {

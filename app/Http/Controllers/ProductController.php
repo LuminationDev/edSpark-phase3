@@ -28,8 +28,8 @@ class ProductController extends Controller
         if ($brands) {
             foreach ($brands as $brand) {
                 $result = [
-                    'brandName' => $brand->product_brand_name,
-                    'brandDescription' => $brand->product_brand_description
+                    'brandName' => $brand->brand_name,
+                    'brandDescription' => $brand->brand_description
                 ];
                 $data[] = $result;
             }
@@ -47,8 +47,8 @@ class ProductController extends Controller
         if ($categories) {
             foreach ($categories as $category) {
                 $result = [
-                    'categoryName' => $category->product_category_name,
-                    'categoryDescription' => $category->product_category_description,
+                    'categoryName' => $category->category_name,
+                    'categoryDescription' => $category->category_description,
                 ];
                 $data[] = $result;
             }
@@ -68,23 +68,22 @@ class ProductController extends Controller
                 'author_id' => $hardware->owner_id,
                 'author_name' => $hardware->owner->full_name ?? NULL,
             ],
-            'title' => $hardware->product_name,
-            'content' => $hardware->product_content,
-            'excerpt' => $hardware->product_excerpt,
+            'title' => $hardware->name,
+            'content' => $hardware->content,
+            'excerpt' => $hardware->excerpt,
             'price' => $hardware->price ?? NULL,
             'cover_image' => $hardware->cover_image ?? NULL,
             'gallery' => $hardware->gallery ?? NULL,
-            'SKU' => $hardware->product_SKU,
+            'SKU' => $hardware->SKU,
             'category' => [
                 'categoryId' => $hardware->category_id ?? NULL,
-                'categoryName' => $hardware->category->product_category_name ?? NULL,
+                'categoryName' => $hardware->category->category_name ?? NULL,
             ],
             'brand' => [
                 'brandId' => $hardware->brand_id ?? NULL,
-                'brandName' => $hardware->brand->product_brand_name ?? NULL,
+                'brandName' => $hardware->brand->brand_name ?? NULL,
             ],
-            'modified_at' => $hardware->modified,
-            'isLoan' => $hardware->product_isLoan ?? NULL,
+            'updated_at' => $hardware->updated_at,
             'extra_content' => $hardware->extra_content ?? NULL,
             'isLikedByUser' => $isLikedByUser,
             'isBookmarkedByUser' => $isBookmarkedByUser,

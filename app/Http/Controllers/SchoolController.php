@@ -4,16 +4,19 @@ namespace App\Http\Controllers;
 
 use App\Helpers\JsonHelper;
 use App\Helpers\RoleHelpers;
+use App\Helpers\StatusHelpers;
 use App\Helpers\UserRole;
 use App\Models\User;
 use App\Models\Usermeta;
 use App\Services\ResponseService;
+use Exception;
 use Illuminate\Http\Request;
 use App\Models\School;
 use App\Models\Schoolmeta;
 use App\Models\Site;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 use App\Helpers\Metahelper;
 use stdClass;
@@ -44,8 +47,8 @@ class SchoolController extends Controller
         if ($schoolMetadata) {
             foreach ($schoolMetadata as $key => $value) {
                 $res = [
-                    'schoolmeta_key' => $value->schoolmeta_key,
-                    'schoolmeta_value' => $value->schoolmeta_value
+                    'meta_key' => $value->meta_key,
+                    'meta_value' => $value->meta_value
                 ];
                 $tempMetadata[] = $res;
             }
@@ -70,8 +73,8 @@ class SchoolController extends Controller
 
         // adding schoolType into meta
         $schoolType = [
-            'schoolmeta_key' => 'school_type',
-            'schoolmeta_value' => $school->site->site_sub_type_desc ?? ""
+            'meta_key' => 'school_type',
+            'meta_value' => $school->site->site_sub_type_desc ?? ""
         ];
         $schoolMetadata[] = $schoolType;
 
@@ -81,10 +84,6 @@ class SchoolController extends Controller
                 'site_id' => $school->site->site_id,
                 'site_name' => ($school->site->site_id) ? $school->site->site_name : NULL,
                 'site_type_code' => ($school->site) ? $school->site->site_type_code : NULL
-            ],
-            'owner' => [
-                'owner_id' => $school->owner_id,
-                'owner_name' => ($school->owner_id) ? $school->owner->full_name : NULL
             ],
             'name' => $school->name,
             'content_blocks' => JsonHelper::safelyDecodeString($school->content_blocks) ?: NULL,
@@ -98,7 +97,7 @@ class SchoolController extends Controller
             'location' => $siteLocation,
             'isLikedByUser' => $isLikedByUser,
             'isBookmarkedByUser' => $isBookmarkedByUser,
-            'isFeatured' => (bool)$school->isFeatured,
+            'is_featured' => (bool)$school->is_featured,
             'updated_at' => $school->updated_at ?: "",
 
         ];
@@ -118,17 +117,20 @@ class SchoolController extends Controller
     {
         foreach ($metadata as $key => $value) {
             $valueToInsert = is_string($value) ? $value : implode(', ', $value);
-
-            Schoolmeta::updateOrCreate(
-                [
-                    'school_id' => $schoolId,
-                    'schoolmeta_key' => $key
-                ],
-                [
-                    'schoolmeta_value' => $valueToInsert,
-                    'updated_at' => Carbon::now()
-                ]
-            );
+            try{
+                Schoolmeta::updateOrCreate(
+                    [
+                        'school_id' => $schoolId,
+                        'meta_key' => $key
+                    ],
+                    [
+                        'meta_value' => $valueToInsert,
+                        'updated_at' => Carbon::now()
+                    ]
+                );
+            } catch(\Exception $e){
+                Log::error('Failed to update or create schoolmeta');
+            }
         }
     }
 
@@ -144,15 +146,15 @@ class SchoolController extends Controller
     private function archivePreviousSchoolEntry($schoolId)
     {
         School::where('school_id', $schoolId)
-            ->where('status', '!=', 'Archived')
-            ->update(['status' => 'Archived']);
+            ->where('status', '!=', StatusHelpers::ARCHIVED)
+            ->update(['status' => StatusHelpers::ARCHIVED]);
     }
 
     private function replacePreviousPendingSchoolEntry($schoolId)
     {
         School::where('school_id', $schoolId)
-            ->where('status', 'Pending')
-            ->update(['status' => 'Archived']);
+            ->where('status', StatusHelpers::PENDING)
+            ->update(['status' => StatusHelpers::ARCHIVED]);
     }
 
     private function insertNewSchoolVersion($data, $schoolLogoUrl, $coverImageUrl)
@@ -160,7 +162,6 @@ class SchoolController extends Controller
         return School::create([
             'school_id' => $data['school_id'],
             'site_id' => $data['site_id'],
-            'owner_id' => $data['owner_id'],
             'name' => $data['name'],
             'content_blocks' => $this->safelyEncode($data['content_blocks']),
             'logo' => $schoolLogoUrl ?? $data['logo'],
@@ -168,7 +169,8 @@ class SchoolController extends Controller
             'tech_used' => $this->safelyEncode($data['tech_used']),
             'pedagogical_approaches' => $this->safelyEncode($data['pedagogical_approaches']),
             'tech_landscape' => $this->safelyEncode($data['tech_landscape']),
-            'status' => 'Pending',
+            'is_featured' => 0,
+            'status' => StatusHelpers::PENDING,
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now()
         ]);
@@ -220,9 +222,8 @@ class SchoolController extends Controller
             $latestSchool = School::orderBy('school_id', 'desc')->first();
             $nextSchoolId = ($latestSchool ? $latestSchool->school_id + 1 : 1);
             $school = School::firstOrCreate(
-                ['site_id' => $siteId, 'status' => "Published"],
+                ['site_id' => $siteId, 'status' => \App\Helpers\StatusHelpers::PUBLISHED],
                 [
-                    'owner_id' => $userId,
                     'school_id' => $nextSchoolId,
                     'name' => $site->site_name,
                     'content_blocks' => $this->defaultSchoolContent,
@@ -231,7 +232,7 @@ class SchoolController extends Controller
                     'tech_used' => '',
                     'pedagogical_approaches' => '',
                     'tech_landscape' => '',
-                    'status' => 'Published',
+                    'status' => \App\Helpers\StatusHelpers::PUBLISHED,
                     'created_at' => Carbon::now(),
                     'updated_at' => Carbon::now()
                 ]
@@ -334,7 +335,7 @@ class SchoolController extends Controller
 
     public function fetchAllSchools(Request $request)
     {
-        $schools = School::where('status', 'Published')->get();
+        $schools = School::where('status', \App\Helpers\StatusHelpers::PUBLISHED)->get();
         $data = [];
         foreach ($schools as $school) {
             $schoolMetadata = Schoolmeta::where('school_id', $school->school_id)->get();
@@ -350,7 +351,7 @@ class SchoolController extends Controller
     public function fetchSchoolByName(Request $request, $schoolName)
     {
         $schoolName = str_replace('%20', ' ', $schoolName);
-        $school = School::where('name', $schoolName)->where('status', 'Published')->first();
+        $school = School::where('name', $schoolName)->where('status', \App\Helpers\StatusHelpers::PUBLISHED)->first();
         if ($school == null) {
             return response('School Not found', 404);
         } else {
@@ -376,7 +377,7 @@ class SchoolController extends Controller
         }
 
         $schoolName = str_replace('%20', ' ', $schoolName);
-        $school = School::where('name', $schoolName)->where('status', 'Pending')->first();
+        $school = School::where('name', $schoolName)->where('status', StatusHelpers::PENDING)->first();
 
         if ($school == null) {
             return response()->json([
@@ -400,8 +401,8 @@ class SchoolController extends Controller
 
     public function fetchFeaturedSchools(Request $request)
     {
-//        $schools = School::where('isFeatured', 1)->inRandomOrder()->->inRandomOrder()->limit(4)->get();
-        $schools = School::where('isFeatured', 1)->inRandomOrder()->limit(3)->get();
+//        $schools = School::where('is_featured', 1)->inRandomOrder()->->inRandomOrder()->limit(4)->get();
+        $schools = School::where('is_featured', 1)->inRandomOrder()->limit(3)->get();
         $data = [];
 
         foreach ($schools as $school) {
@@ -436,7 +437,7 @@ class SchoolController extends Controller
         $final_result = [];
         foreach ($all_staff as $staff) {
             $avatarUrl = Usermeta::where('user_id', $staff->id)
-                ->where('user_meta_key', 'userAvatar')
+                ->where('meta_key', 'userAvatar')
                 ->first();
             $result = [
                 'id' => $staff->id,
@@ -476,8 +477,8 @@ class SchoolController extends Controller
 
         $meta_to_insert = [
             "school_id" => $school_id,
-            "schoolmeta_key" => 'nominated_user',
-            'schoolmeta_value' => $nominated_user_id,
+            "meta_key" => 'nominated_user',
+            'meta_value' => $nominated_user_id,
         ];
         Schoolmeta::create($meta_to_insert);
 
@@ -503,8 +504,8 @@ class SchoolController extends Controller
             if ($user_record && $user_record->site_id == $site_id && ($user_record->role->role_name === 'SCHLDR' || $user_record->role->role_name === 'Superadmin')) {
 
                 $deleted = Schoolmeta::where('school_id', $school_id)
-                    ->where('schoolmeta_key', 'nominated_user')
-                    ->where('schoolmeta_value', $nominated_id_delete)
+                    ->where('meta_key', 'nominated_user')
+                    ->where('meta_value', $nominated_id_delete)
                     ->delete();
 
                 if ($deleted) {
@@ -555,15 +556,15 @@ class SchoolController extends Controller
         }
 
         $nominated_users_ids = Schoolmeta::where('school_id', $school_id)
-            ->where('schoolmeta_key', 'nominated_user')
-            ->pluck('schoolmeta_value');
+            ->where('meta_key', 'nominated_user')
+            ->pluck('meta_value');
 
         $nominated_users = User::whereIn('id', $nominated_users_ids)->get();
 
         $final_result = [];
         foreach ($nominated_users as $user) {
             $avatarUrl = Usermeta::where('user_id', $user->id)
-                ->where('user_meta_key', 'userAvatar')
+                ->where('meta_key', 'userAvatar')
                 ->first();
 
             $result = [
@@ -601,8 +602,8 @@ class SchoolController extends Controller
 
 
             $schoolmeta_record = Schoolmeta::where('school_id', $school_id)
-                ->where('schoolmeta_key', 'nominated_user')
-                ->where('schoolmeta_value', $user_id)
+                ->where('meta_key', 'nominated_user')
+                ->where('meta_value', $user_id)
                 ->first();
 
             if ($schoolmeta_record) {
@@ -668,10 +669,10 @@ class SchoolController extends Controller
         Schoolmeta::updateOrCreate(
             [
                 'school_id' => $school_id,
-                'schoolmeta_key' => 'school_contact'
+                'meta_key' => 'school_contact'
             ],
             [
-                'schoolmeta_value' => $school_contact
+                'meta_value' => $school_contact
             ]
         );
 
@@ -693,14 +694,14 @@ class SchoolController extends Controller
             $school_id = $requestData['school_id'];
 
             $schoolmeta_record = Schoolmeta::where('school_id', $school_id)
-                ->where('schoolmeta_key', 'school_contact')
+                ->where('meta_key', 'school_contact')
                 ->first();
 
             if ($schoolmeta_record) {
                 return response()->json([
                     "status" => 200,
                     "result" => true,
-                    'school_contact' => json_decode($schoolmeta_record->schoolmeta_value)
+                    'school_contact' => json_decode($schoolmeta_record->meta_value)
                 ]);
             }
 
