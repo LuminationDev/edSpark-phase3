@@ -521,6 +521,19 @@ const extractAllContentByEachId = (html, id) => {
         }
     }
 
+    const ulElement = element.querySelector('ul');
+    if (ulElement.previousElementSibling !== null) {
+        const strong1Element = ulElement.previousElementSibling.previousElementSibling;
+
+        if (strong1Element && strong1Element.nodeName === 'P' && strong1Element.querySelector('strong')) {
+            const strong1Text = strong1Element.querySelector('strong').textContent.trim();
+
+            console.log(strong1Text);
+        }
+    } else {
+        console.log("No previous sibling element found.");
+    }
+
 }
 
 
