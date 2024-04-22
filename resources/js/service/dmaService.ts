@@ -1,26 +1,23 @@
 import axios, {AxiosResponse} from "axios";
 
 import {API_ENDPOINTS} from "@/js/constants/API_ENDPOINTS";
+import {convertStringValuesToIntRecursive} from "@/js/helpers/stringHelpers";
 
 export const dmaService = {
     // TODO proper typing on APIs
     getSurvey: async ():Promise<AxiosResponse<any>> => {
         return axios.get(API_ENDPOINTS.DMA.USER_SURVEY, {}).then(res => {
-            return res.data.data;
+            return convertStringValuesToIntRecursive(res.data.data);
         })
     },
     getQuestions: async (domainId: string):Promise<AxiosResponse<any>> => {
         return axios.get(`${API_ENDPOINTS.DMA.USER_SURVEY}/domain/${domainId}/questions`).then(res => {
-            const domainData = res.data.data;
-            domainData.domain_questions.forEach(question => {
-                question.phase = +question.phase;
-            });
-            return domainData;
+            return  convertStringValuesToIntRecursive(res.data.data);
         })
     },
     getElementDescriptions: async (domainId: string):Promise<AxiosResponse<any>> => {
         return axios.get(`${API_ENDPOINTS.DMA.USER_SURVEY}/domain/${domainId}/elements`).then(res => {
-            return res.data.data;
+            return convertStringValuesToIntRecursive(res.data.data);
         })
     },
     postAnswer: async(
