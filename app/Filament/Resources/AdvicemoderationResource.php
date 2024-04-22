@@ -5,6 +5,7 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\AdvicemoderationResource\Pages;
 use App\Filament\Resources\AdvicemoderationResource\RelationManagers;
 use App\Helpers\RoleHelpers;
+use App\Helpers\StatusHelpers;
 use App\Helpers\UserRole;
 use App\Models\Advice;
 use App\Models\Advicemoderation;
@@ -36,17 +37,12 @@ class AdvicemoderationResource extends Resource
 
         return $form->schema([
             Forms\Components\Card::make()->schema([
-                Forms\Components\TextInput::make('post_title')
+                Forms\Components\TextInput::make('title')
                     ->label('Title')
                     ->required()
                     ->maxLength(255),
-                Forms\Components\Select::make('post_status')
-                    ->options([
-                        'Published' => 'Published',
-                        'Unpublished' => 'Unpublished',
-                        'Draft' => 'Draft',
-                        'Pending' => 'Pending'
-                    ])
+                Forms\Components\Select::make('status')
+                    ->options(StatusHelpers::getStatusList())
                     ->label('Status')
                     ->required(),
             ]),
@@ -60,7 +56,7 @@ class AdvicemoderationResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('post_title')
+                Tables\Columns\TextColumn::make('title')
                     ->label('Title')
                     ->sortable()
                     ->searchable(),
@@ -69,13 +65,13 @@ class AdvicemoderationResource extends Resource
                     ->sortable()
                     ->searchable(),
                 Tables\Columns\TextColumn::make('author.full_name')->label('Author'),
-                Tables\Columns\TextColumn::make('post_date')
+                Tables\Columns\TextColumn::make('created_at')
                     ->date()
                     ->label('Created At'),
-                Tables\Columns\TextColumn::make('post_modified')
+                Tables\Columns\TextColumn::make('updated_at')
                     ->date()
                     ->label('Modified At'),
-                Tables\Columns\TextColumn::make('post_status')
+                Tables\Columns\TextColumn::make('status')
                     ->label('Status')
                     ->sortable()
                     ->searchable(),
@@ -103,12 +99,12 @@ class AdvicemoderationResource extends Resource
 
     public static function getEloquentQuery(): Builder
     {
-        return parent::getEloquentQuery()->where('post_status', 'Pending');
+        return parent::getEloquentQuery()->where('status', StatusHelpers::PENDING);
     }
 
     public static function getNavigationBadge(): ?string
     {
-        $count = static::getModel()::query()->where('post_status', 'pending')->count();
+        $count = static::getModel()::query()->where('status', StatusHelpers::PENDING)->count();
         if ($count > 0) {
             return $count;
         } else {

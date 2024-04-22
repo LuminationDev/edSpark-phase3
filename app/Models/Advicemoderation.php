@@ -25,17 +25,17 @@ class Advicemoderation extends Model
      * @var array
      */
     protected $fillable = [
-        'post_title',
-        'post_content',
-        'post_excerpt',
-        'post_status',
-        'post_date',
-        'post_modified',
+        'title',
+        'content',
+        'excerpt',
+        'status',
         'author_id',
         'cover_image',
         'advicetype_id',
         'template',
-        'extra_content'
+        'extra_content',
+        'created_at',
+        'modified_at'
     ];
 
 }

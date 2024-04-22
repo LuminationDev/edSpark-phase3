@@ -23,7 +23,7 @@ class Eventmeta extends Model
      */
     protected $fillable = [
         'event_id',
-        'event_meta_key',
-        'event_meta_value'
+        'meta_key',
+        'meta_value'
     ];
 }

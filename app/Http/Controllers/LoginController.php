@@ -63,8 +63,8 @@ class LoginController extends Controller
             // If user exists in edSpark, check if Superadmin or not
             if ($userEdSparkId) {
                 $isSuperAdminMeta = Usermeta::where('user_id', $userEdSparkId)
-                    ->where('user_meta_key', 'is_super_admin')
-                    ->where('user_meta_value', 1)
+                    ->where('meta_key', 'is_super_admin')
+                    ->where('meta_value', 1)
                     ->first();
                 $isSuperAdmin = (bool)$isSuperAdminMeta;
             } else {
@@ -73,9 +73,10 @@ class LoginController extends Controller
             }
             $dataToBeUpdatedOrCreated = [
                 'full_name' => $user->name,
+                'display_name' => (isset($userEdSpark) && $userEdSpark->display_name) ? $userEdSpark->display_name :$user->name,
                 'remember_token' => Str::random(15),
                 'token' => $idToken ?? "",
-                'isFirstTimeVisit' => false,
+                'first_visit' => false,
                 'status' => 'Active',
             ];
 

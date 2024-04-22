@@ -19,14 +19,14 @@ class EditAdvicemoderation extends EditRecord
         $baseUrl = env('APP_URL');
         return [
             Action::make('preview')
-                ->url(fn ($record) => rtrim($baseUrl, '/') . '/guide/resources/'. $record->id . '/' . $record->post_title .'?preview=true&source=filament')
+                ->url(fn ($record) => rtrim($baseUrl, '/') . '/guide/resources/'. $record->id . '/' . $record->title .'?preview=true&source=filament')
                 ->openUrlInNewTab()
         ];
     }
 
     protected function mutateFormDataBeforeSave(array $data): array
     {
-        $data['post_modified'] = Carbon::now();
+        $data['updated_at'] = Carbon::now();
         return $data;
     }
 

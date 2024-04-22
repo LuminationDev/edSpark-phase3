@@ -31,7 +31,7 @@ class PostHelper
             case 'advice':
                 $advice = Advice::where('id', $post_id)->first();
                 if ($advice) {
-                    $postTitle = $advice->post_title;
+                    $postTitle = $advice->title;
                     $coverImage = $advice->cover_image;
                 }
                 break;
@@ -39,7 +39,7 @@ class PostHelper
             case 'software':
                 $software = Software::where('id', $post_id)->first();
                 if ($software) {
-                    $postTitle = $software->post_title;
+                    $postTitle = $software->title;
                     $coverImage = $software->cover_image;
                 }
                 break;
@@ -63,7 +63,7 @@ class PostHelper
                 break;
         }
         return [
-            'post_title' => $postTitle,
+            'title' => $postTitle,
             'cover_image' => $coverImage
         ];
     }

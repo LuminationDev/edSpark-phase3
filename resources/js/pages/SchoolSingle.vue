@@ -68,10 +68,10 @@ const fetchSchoolByNameAsync = async (schoolName): Promise<void> => {
             if (pendingData) {
                 schoolContent.value = pendingData
                 if (schoolContent.value['metadata']) {
-                    const colorThemeMeta = schoolContent.value['metadata'].filter(meta => meta['schoolmeta_key'] === 'school_color_theme');
+                    const colorThemeMeta = schoolContent.value['metadata'].filter(meta => meta['meta_key'] === 'school_color_theme');
                     if (colorThemeMeta.length > 0) {
-                        colorTheme.value = colorThemeMeta[0]['schoolmeta_value'];
-                        originalColorTheme.value = colorThemeMeta[0]['schoolmeta_value'];
+                        colorTheme.value = colorThemeMeta[0]['meta_value'];
+                        originalColorTheme.value = colorThemeMeta[0]['meta_value'];
                     }
                 }
             } else {
@@ -88,10 +88,10 @@ const fetchSchoolByNameAsync = async (schoolName): Promise<void> => {
         try {
             schoolContent.value = await schoolService.fetchSchoolByName(schoolName)
             if (schoolContent.value['metadata']) {
-                const colorThemeMeta = schoolContent.value['metadata'].filter(meta => meta['schoolmeta_key'] === 'school_color_theme');
+                const colorThemeMeta = schoolContent.value['metadata'].filter(meta => meta['meta_key'] === 'school_color_theme');
                 if (colorThemeMeta.length > 0) {
-                    colorTheme.value = colorThemeMeta[0]['schoolmeta_value'];
-                    originalColorTheme.value = colorThemeMeta[0]['schoolmeta_value'];
+                    colorTheme.value = colorThemeMeta[0]['meta_value'];
+                    originalColorTheme.value = colorThemeMeta[0]['meta_value'];
                 }
             }
 

@@ -23,7 +23,7 @@ class Advicemeta extends Model
      */
     protected $fillabel = [
         'advice_id',
-        'advice_meta_key',
-        'advice_meta_value'
+        'meta_key',
+        'meta_value'
     ];
 }

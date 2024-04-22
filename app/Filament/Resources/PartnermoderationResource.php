@@ -5,6 +5,7 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\PartnermoderationResource\Pages;
 use App\Filament\Resources\PartnermoderationResource\RelationManagers;
 use App\Helpers\RoleHelpers;
+use App\Helpers\StatusHelpers;
 use App\Helpers\UserRole;
 use App\Models\Partnermoderation;
 use Filament\Forms;
@@ -61,12 +62,7 @@ class PartnermoderationResource extends Resource
                             return (string)str($file->getClientOriginalName())->prepend('edSpark-partner-');
                         }),
                     Forms\Components\Select::make('status')
-                        ->options([
-                            'Published' => 'Published',
-                            'Unpublished' => 'Unpublished',
-                            'Draft' => 'Draft',
-                            'Pending' => 'Pending'
-                        ])
+                        ->options(StatusHelpers::getStatusList())
                         ->label('Status')
                         ->required(),
                 ]),
@@ -109,7 +105,7 @@ class PartnermoderationResource extends Resource
 
     public static function getEloquentQuery(): Builder
     {
-        return parent::getEloquentQuery()->where('status', 'Pending');
+        return parent::getEloquentQuery()->where('status', StatusHelpers::PENDING);
     }
 
     public static function getPages(): array
@@ -123,7 +119,7 @@ class PartnermoderationResource extends Resource
 
     public static function getNavigationBadge(): ?string
     {
-        $count = static::getModel()::query()->where('status', 'pending')->count();
+        $count = static::getModel()::query()->where('status', StatusHelpers::PENDING)->count();
         if ($count > 0) {
             return $count;
         } else {

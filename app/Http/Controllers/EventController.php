@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Helpers\RoleHelpers;
+use App\Helpers\StatusHelpers;
 use App\Helpers\UserRole;
 use App\Http\Middleware\ResourceAccessControl;
 use App\Models\Advice;
@@ -32,20 +33,20 @@ class EventController extends Controller
 
     public function createEventPost(Request $request): \Illuminate\Http\JsonResponse
     {
-        if (strtolower($request->input('event_status')) === 'draft') {
+        if (strtoupper($request->input('status')) === StatusHelpers::DRAFT) {
             $validator = Validator::make($request->all(), [
-                'event_title' => 'required|string',
-                'event_content' => 'required|string',
+                'title' => 'required|string',
+                'content' => 'required|string',
             ]);
-        } else if (strtolower($request->input('event_status')) === 'pending') {
+        } else if (strtoupper($request->input('status')) === StatusHelpers::PENDING) {
             $validator = Validator::make($request->all(), [
-                'event_title' => 'required|string',
-                'event_content' => 'required|string',
-                'event_excerpt' => 'sometimes|string',
-                'event_location' => 'required|string',
+                'title' => 'required|string',
+                'content' => 'required|string',
+                'excerpt' => 'sometimes|string',
+                'location' => 'required|string',
                 'start_date' => 'required|date',
                 'end_date' => 'required|date|after_or_equal:start_date',
-                'event_status' => 'required|string',
+                'status' => 'required|string',
                 'author_id' => 'required|integer|exists:users,id',
                 'eventtype_id' => 'required|integer|exists:event_types,id',
             ]);
@@ -79,7 +80,7 @@ class EventController extends Controller
             $existingEvent = Event::find($request->input('existing_id'));
 
             if ($existingEvent) {
-                $existingEvent->update(['post_status' => 'Archived']);
+                $existingEvent->update(['status' => StatusHelpers::ARCHIVED]);
             }
         }
 
@@ -101,9 +102,9 @@ class EventController extends Controller
         // Get the current date without the time component
         $currentDate = now()->startOfDay();
 
-        $events = Event::where('event_status', 'Published')
+        $events = Event::where('status', \App\Helpers\StatusHelpers::PUBLISHED)
             ->where('end_date', '>=', $currentDate)
-            ->where('event_status', 'Published')
+            ->where('status', \App\Helpers\StatusHelpers::PUBLISHED)
             ->get();
 
         $data = [];
@@ -120,7 +121,7 @@ class EventController extends Controller
     {
         try {
             $userId = Auth::user()->id;
-            $events = Event::where('event_status', 'Published')
+            $events = Event::where('status', \App\Helpers\StatusHelpers::PUBLISHED)
                 ->where('author_id', $userId)  // Filter by partner (author) ID
                 ->orderBy('created_at', 'DESC')
                 ->get();
@@ -156,7 +157,7 @@ class EventController extends Controller
             // Find the advice by ID
             $event = Event::find($id);
         } else {
-            $event = Event::where('id', $id)->where('event_status', "Published")->first();
+            $event = Event::where('id', $id)->where('status', \App\Helpers\StatusHelpers::PUBLISHED)->first();
         }
 
         if (!$event) {
@@ -182,19 +183,19 @@ class EventController extends Controller
 
         // Check if the event already has an 'event_recording' meta
         $eventRecordingMeta = Eventmeta::where('event_id', $eventId)
-            ->where('event_meta_key', 'event_recording')
+            ->where('meta_key', 'event_recording')
             ->first();
 
         if ($eventRecordingMeta) {
             // Update the existing 'event_recording' meta
-            $eventRecordingMeta->event_meta_value = $recordingLink;
+            $eventRecordingMeta->meta_value = $recordingLink;
             $eventRecordingMeta->save();
         } else {
             // Create a new 'event_recording' meta entry
             $eventRecordingMeta = new Eventmeta([
                 'event_id' => $eventId,
-                'event_meta_key' => 'event_recording',
-                'event_meta_value' => $recordingLink
+                'meta_key' => 'event_recording',
+                'meta_value' => $recordingLink
             ]);
             $eventRecordingMeta->save();
         }
@@ -207,11 +208,11 @@ class EventController extends Controller
     {
         // Check if the 'event_recording' meta exists for the given event ID
         $eventRecordingMeta = Eventmeta::where('event_id', $eventId)
-            ->where('event_meta_key', 'event_recording')
+            ->where('meta_key', 'event_recording')
             ->first();
 
         if ($eventRecordingMeta) {
-            $recordingLink = $eventRecordingMeta->event_meta_value;
+            $recordingLink = $eventRecordingMeta->meta_value;
             return response()->json(['event_recording' => $recordingLink]);
         } else {
             return response()->json(['error' => 'Event recording not found.'], 404);
@@ -253,10 +254,10 @@ class EventController extends Controller
         $event_link = Eventmeta::updateOrCreate(
             [
                 'event_id' => $eventId,
-                'event_meta_key' => 'ems_link',
+                'meta_key' => 'ems_link',
             ],
             [
-                'event_meta_value' => $emsLink,
+                'meta_value' => $emsLink,
             ]
         );
         return ResponseService::success('EMS link updated successfully.', $event_link);
@@ -271,11 +272,11 @@ class EventController extends Controller
         $user = Auth::user();
         // Check if the 'event_recording' meta exists for the given event ID
         $eventRecordingMeta = Eventmeta::where('event_id', $eventId)
-            ->where('event_meta_key', 'ems_link')
+            ->where('meta_key', 'ems_link')
             ->first();
 
         if ($eventRecordingMeta) {
-            $recordingLink = $eventRecordingMeta->event_meta_value;
+            $recordingLink = $eventRecordingMeta->meta_value;
             $isOwner = false;
             if ($event->author_id == $user->id) {
                 $isOwner = 'true';

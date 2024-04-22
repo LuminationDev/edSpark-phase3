@@ -110,7 +110,6 @@ class UserController extends Controller
             'site_id' => $user->site_id ?: NULL,
             'status' => $user->status,
             'role' => $user->role ? $user->role->role_name : NULL,
-            'permissions' => $user->role ? $user->role->permissions->pluck('permission_name') : NULL,
             'site' => [
                 'site_name' => $user->site ? $user->site->site_name : null,
                 'site_id' => $user->site_id ?: NULL,
@@ -125,8 +124,8 @@ class UserController extends Controller
 
         foreach ($userMetaData as $meta) {
             $metaDataArray[] = [
-                'user_meta_key' => $meta->user_meta_key,
-                'user_meta_value' => explode(', ', $meta->user_meta_value)
+                'meta_key' => $meta->meta_key,
+                'meta_value' => explode(', ', $meta->meta_value)
             ];
         }
 
@@ -218,7 +217,7 @@ class UserController extends Controller
             'status' => 'Active',
             'role_id' => $data['role_id'],
             'site_id' => intval($data['site_id']),
-            'isFirstTimeVisit' => FALSE,
+            'first_visit' => FALSE,
             'updated_at' => Carbon::now()
         ];
         $user->update($dataToUpdate);
@@ -228,7 +227,7 @@ class UserController extends Controller
     {
         $metadata = json_decode($metadata);
         foreach ($metadata as $metakey => $metavalue) {
-            $meta = Usermeta::firstOrNew(['user_id' => $user->id, 'user_meta_key' => $metakey]);
+            $meta = Usermeta::firstOrNew(['user_id' => $user->id, 'meta_key' => $metakey]);
             $meta->user_meta_value = (is_string($metavalue)) ? $metavalue : implode(', ', $metavalue);
             $meta->save();
         }
@@ -243,8 +242,8 @@ class UserController extends Controller
             $imageUrl = "uploads\/user\/" . $imgName;
 
             Usermeta::updateOrCreate(
-                ['user_id' => $user->id, 'user_meta_key' => 'userAvatar'],
-                ['user_meta_value' => $imageUrl]
+                ['user_id' => $user->id, 'meta_key' => 'userAvatar'],
+                ['meta_value' => $imageUrl]
             );
 
             return $imageUrl;
@@ -297,7 +296,7 @@ class UserController extends Controller
 
     private function handleUserMetaDataUpdate($metaData, $userId)
     {
-        $meta = Usermeta::firstOrNew(['user_id' => $userId, 'user_meta_key' => $metaData['updateField']]);
+        $meta = Usermeta::firstOrNew(['user_id' => $userId, 'meta_key' => $metaData['updateField']]);
         $meta->user_meta_value = (is_string($metaData['updateValue'])) ? $metaData['updateValue'] : implode(', ', $metaData['updateValue']);
         $meta->save();
     }
@@ -308,12 +307,12 @@ class UserController extends Controller
             $userMetaDataToSend = [];
             $userId = $request->id;
             $userMetakey = $request->userMetakey;
-            $result = Usermeta::where([['user_id', $userId], ['user_meta_key', $userMetakey]])->get();
+            $result = Usermeta::where([['user_id', $userId], ['meta_key', $userMetakey]])->get();
             if ($result) {
                 foreach ($result as $key => $value) {
                     $result = [
-                        'user_meta_key' => $value->user_meta_key,
-                        'user_meta_value' => $value->user_meta_value
+                        'meta_key' => $value->meta_key,
+                        'meta_value' => $value->meta_value
                     ];
                     $userMetaDataToSend[] = $result;
                 }
@@ -350,11 +349,11 @@ class UserController extends Controller
             ], 404);
         }
 
-        if ($userEmailDetails->isFirstTimeVisit == 1) {
+        if ($userEmailDetails->first_visit == 1) {
             return response()->json([
                 "message" => "The email exists but not activated",
                 "status" => TRUE,
-                "isFirstTimeVisit" => TRUE,
+                "first_visit" => TRUE,
                 "userdata" => [
                     'user_id' => $userEmailDetails->id,
                     'user_name' => $userEmailDetails->full_name,
@@ -365,7 +364,7 @@ class UserController extends Controller
             return response()->json([
                 "message" => "The email is activated",
                 "status" => TRUE,
-                "isFirstTimeVisit" => FALSE,
+                "first_visit" => FALSE,
                 "userdata" => [
                     'user_id' => $userEmailDetails->id,
                     'user_name' => $userEmailDetails->full_name,
@@ -414,10 +413,10 @@ class UserController extends Controller
                 Usermeta::updateOrCreate(
                     [
                         'user_id' => $user->id,
-                        'user_meta_key' => $key,
+                        'meta_key' => $key,
                     ],
                     [
-                        'user_meta_value' => JsonHelper::safelyEncodeData($value),
+                        'meta_value' => JsonHelper::safelyEncodeData($value),
                     ]
                 );
             }
@@ -467,7 +466,7 @@ class UserController extends Controller
 
                 // Retrieve user metadata for the specified keys
                 $result = Usermeta::where('user_id', $userId)
-                    ->whereIn('user_meta_key', $this->userProfileMetaKeys)
+                    ->whereIn('meta_key', $this->userProfileMetaKeys)
                     ->get();
 
                 $userMetaDataToSend = [];
@@ -475,8 +474,8 @@ class UserController extends Controller
                 // Populate the result into the response array
                 foreach ($result as $value) {
                     $userMetaDataToSend[] = [
-                        'user_meta_key' => $value->user_meta_key,
-                        'user_meta_value' => $value->user_meta_value,
+                        'meta_key' => $value->meta_key,
+                        'meta_value' => $value->meta_value,
                     ];
                 }
 

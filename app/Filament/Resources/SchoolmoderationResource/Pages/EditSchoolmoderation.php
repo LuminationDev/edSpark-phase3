@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\SchoolmoderationResource\Pages;
 
+use App\Helpers\StatusHelpers;
 use App\Models\School;
 use Illuminate\Database\Eloquent\Model;
 use App\Filament\Resources\SchoolmoderationResource;
@@ -35,11 +36,11 @@ class EditSchoolmoderation extends EditRecord
     protected function handleRecordUpdate(Model $record, array $data): Model
     {
         $record->update($data);
-        if($data['status'] == 'Published'){
+        if($data['status'] == \App\Helpers\StatusHelpers::PUBLISHED){
             School::where('school_id', $record->school_id)
                 ->where('id', '!=', $record->id)
-                ->where('status', '!=', 'Draft')
-                ->update(['status' => 'Archived']);
+                ->where('status', '!=', StatusHelpers::DRAFT)
+                ->update(['status' => StatusHelpers::ARCHIVED]);
         }
 
 

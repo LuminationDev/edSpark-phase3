@@ -28,8 +28,8 @@ class CreateSoftware extends CreateRecord
 
     protected function mutateFormDataBeforeCreate(array $data): array
     {
-        $data['post_date'] = Carbon::now();
-        $data['post_modified'] = Carbon::now();
+        $data['created_at'] = Carbon::now();
+        $data['updated_at'] = Carbon::now();
         return $data;
     }
 
@@ -48,7 +48,7 @@ class CreateSoftware extends CreateRecord
         $usersExceptCurrent = User::whereKeyNot($currentUser)->get();
 
         foreach ($usersExceptCurrent as $eachUser){
-            $this->sendNotification($eachUser, $record->id, $record->post_title, $currentUser->id, $this->notificationResourceType, NotificationActionType::PUBLISHED);
+            $this->sendNotification($eachUser, $record->id, $record->title, $currentUser->id, $this->notificationResourceType, NotificationActionType::PUBLISHED);
         }
 
         return $record;
