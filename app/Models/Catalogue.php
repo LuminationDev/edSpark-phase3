@@ -11,14 +11,16 @@ use Illuminate\Database\Eloquent\Model;
 class Catalogue extends Model
 {
     use HasFactory;
+
     protected $table = 'catalogues';
     protected $fillable = [
-        'unique_reference', 'type', 'brand', 'name', 'vendor', 'category', 'price_inc_gst',
+        'version_id', 'unique_reference', 'type', 'brand', 'name', 'vendor', 'category', 'price_inc_gst',
         'processor', 'storage', 'memory', 'form_factor', 'display', 'graphics',
         'wireless', 'webcam', 'operating_system', 'warranty', 'battery_life',
         'weight', 'stylus', 'other', 'available_now', 'corporate', 'administration',
         'curriculum', 'image', 'product_number', 'price_expiry',
     ];
+
     public static function deleteAll()
     {
         // Ensure you have a proper mechanism to handle deletion,
@@ -43,7 +45,8 @@ class Catalogue extends Model
         return trim($value);
     }
 
-    public function getBrandAttribute($value){
+    public function getBrandAttribute($value)
+    {
         return trim($value);
     }
 }

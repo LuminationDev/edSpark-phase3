@@ -1,15 +1,13 @@
 <?php
 
 namespace App\Filament\Imports;
-use Filament\Forms\Components\Checkbox;
 
 use App\Models\Catalogue;
-use App\Models\Catalogueversion;
 use Filament\Actions\Imports\ImportColumn;
 use Filament\Actions\Imports\Importer;
 use Filament\Actions\Imports\Models\Import;
 
-class CatalogueImporter extends Importer
+class CatalogueUpdater extends Importer
 {
     protected static ?string $model = Catalogue::class;
     /**
@@ -18,12 +16,6 @@ class CatalogueImporter extends Importer
      * @var int
      */
     public $tries = 5;
-
-    protected function beforeValidate()
-    {
-
-    }
-
 
     public static function getColumns(): array
     {
@@ -91,16 +83,12 @@ class CatalogueImporter extends Importer
 
     public function resolveRecord(): ?Catalogue
     {
-        dd($this->data);
-        return new Catalogue();
-    }
+        // return Catalogue::firstOrNew([
+        //     // Update existing records, matching them by `$this->data['column_name']`
+        //     'email' => $this->data['email'],
+        // ]);
 
-    public static function getOptionsFormComponents(): array
-    {
-        return [
-            Checkbox::make('updateExisting')
-                ->label('Update existing records'),
-        ];
+        return new Catalogue();
     }
 
     public static function getCompletedNotificationBody(Import $import): string
