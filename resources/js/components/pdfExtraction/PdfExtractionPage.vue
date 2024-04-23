@@ -486,12 +486,17 @@ const extractAllContentByEachId = (html, id) => {
             ulElements.forEach(ulElement => {
                 const strong1Element = ulElement.previousElementSibling;
                 const strong2Element = ulElement.previousElementSibling ?  ulElement.previousElementSibling.previousElementSibling : null;
+                const strong1 = strong1Element ? strong1Element.nodeName === 'ul' : null;
+                const strong2 = strong2Element ? strong2Element.querySelector('strong') : null;
+
                 //const previousUlElement = strong2Element ? strong2Element.nodeName === 'UL' : null;
-                const previousPelement = strong1Element ? strong1Element.previousElementSibling.nodeName === 'P' : null;
-                const previousPStrongElement = strong1Element ? strong1Element.previousElementSibling.querySelector('p strong') : null;
-                if (strong1Element && strong1Element.nodeName === 'P' && strong1Element.querySelector('strong')) {
+                //const previousPelement = strong1Element ? strong1Element.previousElementSibling.nodeName === 'P' : null;
+                //const previousPStrongElement = strong1Element ? strong1Element.previousElementSibling.querySelector('p strong') : null;
+
+                // extracting <p><strong> that are 1 previous sibling to the each <ul>, but should not have two <p><strong> before <ul>
+                if (strong1Element && strong1Element.nodeName === 'P' && strong1Element.querySelector('strong') && (strong1 || !strong2)) {
                     const strongText = strong1Element.querySelector('strong').textContent.trim();
-                    console.log(strongText)
+                    //console.log("Strong Text" + strongText)
                     const subListItems = Array.from(ulElement.children).map(listItem => {
                         const subList = listItem.querySelector('ul');
                         if (subList) {
@@ -521,6 +526,7 @@ const extractAllContentByEachId = (html, id) => {
                         planningPreparationListingTree.value.push(hierarchicalFormat);
                     }
                 }
+                // extracting <p><strong> that are 2 preivous sibling to the each <ul>
                 if (strong2Element && strong2Element.nodeName === 'P' && strong2Element.querySelector('strong')) {
                     const strongText = strong2Element ? strong2Element.querySelector('strong').textContent.trim() : null;
                     const pText =  strong2Element ? strong2Element.nextElementSibling.textContent.trim() : null;
