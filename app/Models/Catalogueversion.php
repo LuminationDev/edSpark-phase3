@@ -29,5 +29,10 @@ class Catalogueversion extends Model
         });
     }
 
+    public static function getActiveCatalogueId(): int
+    {
+        return Catalogueversion::where('is_active', true)->first()->version;
+    }
+
 
 }

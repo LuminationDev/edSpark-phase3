@@ -32,4 +32,5 @@ class ListCatalogues extends ListRecords
                 ->importer(CatalogueUpdater::class)
         ];
     }
+
 }

@@ -57,44 +57,7 @@ class CreateCatalogueversion extends CreateRecord
         set_time_limit(300);
         // Insert data to Catalogue table
         try {
-            $savedItem = [];
-//            foreach($data as $catalogueItem){
-//                $catalogue = new Catalogue;
-//                $catalogue->unique_reference = $catalogueItem['Unique Reference'];
-//                $catalogue->version_id = $currentVersion;
-//                $catalogue->type = $catalogueItem['Type'];
-//                $catalogue->brand = $catalogueItem['Brand'];
-//                $catalogue->name = $catalogueItem['Name'];
-//                $catalogue->vendor = $catalogueItem['Vendor'];
-//                $catalogue->category = $catalogueItem['Category'];
-//                $catalogue->price_inc_gst = $catalogueItem['Price inc gst'];
-//                $catalogue->processor = $catalogueItem['Processor'];
-//                $catalogue->storage = $catalogueItem['Storage'];
-//                $catalogue->memory = $catalogueItem['Memory'];
-//                $catalogue->form_factor = $catalogueItem['Form Factor'];
-//                $catalogue->display = $catalogueItem['Display'];
-//                $catalogue->graphics = $catalogueItem['Graphics'];
-//                $catalogue->wireless = $catalogueItem['Wireless'];
-//                $catalogue->webcam = $catalogueItem['Webcam'];
-//                $catalogue->operating_system = $catalogueItem['Operating System'];
-//                $catalogue->warranty = $catalogueItem['Warranty'];
-//                $catalogue->battery_life = $catalogueItem['Battery Life'];
-//                $catalogue->weight = $catalogueItem['Weight'];
-//                $catalogue->stylus = $catalogueItem['Stylus'];
-//                $catalogue->other = $catalogueItem['Other'];
-//                $catalogue->available_now = $catalogueItem['Available now'];
-//                $catalogue->corporate = $catalogueItem['Corporate'];
-//                $catalogue->administration = $catalogueItem['Administration'];
-//                $catalogue->curriculum = $catalogueItem['Curriculum'];
-//                $catalogue->image = $catalogueItem['Image'];
-//                $catalogue->product_number = $catalogueItem['Product Number'];
-//                $catalogue->price_expiry = $catalogueItem['Price Expiry'];
-//                $catalogue->cover_image = $catalogueItem['Image'];
-//
-//                $catalogue->save();
-//                $savedItem[] = $catalogue;
-//
-//            }
+
             foreach ($data as $catalogueItem) {
                 $catalogueItems[] = [
                     'unique_reference' => $catalogueItem['Unique Reference'],

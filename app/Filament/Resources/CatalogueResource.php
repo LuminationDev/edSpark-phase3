@@ -5,6 +5,7 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\CatalogueResource\Pages;
 use App\Filament\Resources\CatalogueResource\RelationManagers;
 use App\Models\Catalogue;
+use App\Models\Catalogueversion;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -52,15 +53,13 @@ class CatalogueResource extends Resource
                     ->searchable(),
 
             ])
-            ->filters([
-                //
-            ])
-            ->actions([
-            ])
+            ->modifyQueryUsing(function (Builder $query) {
+                return $query->where('version_id', Catalogueversion::getActiveCatalogueId());
+            })
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
-                ]),
+                ])
             ]);
     }
 
