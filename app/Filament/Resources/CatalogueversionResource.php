@@ -27,7 +27,12 @@ class CatalogueversionResource extends Resource
     {
         return $form
             ->schema([
-                //
+                Forms\Components\Section::make()->schema([
+                    Forms\Components\FileUpload::make('csv_file')
+                        ->acceptedFileTypes(['text/csv'])
+                        ->storeFiles(false)
+                        ->required(),
+                ])
             ]);
     }
 
@@ -69,7 +74,6 @@ class CatalogueversionResource extends Resource
         return [
             'index' => Pages\ListCatalogueversions::route('/'),
             'create' => Pages\CreateCatalogueversion::route('/create'),
-            'edit' => Pages\EditCatalogueversion::route('/{record}/edit'),
         ];
     }
 }

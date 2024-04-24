@@ -16,14 +16,7 @@ class ListCatalogueversions extends ListRecords
     protected function getHeaderActions(): array
     {
         return [
-            ImportAction::make()
-                ->importer(CatalogueImporter::class)
-                ->job(EdSparkImportCsv::class)
-                ->label('New catalogue')
-                ->options([
-                        'catalogue_id' => 20,
-                    ])
-            ,
+            Actions\CreateAction::make()->label('New catalogue')->requiresConfirmation()->modalDescription('This will replace the entire catalogue'),
         ];
     }
 }
