@@ -5,7 +5,9 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\CatalogueResource\Pages;
 use App\Filament\Resources\CatalogueResource\RelationManagers;
 use App\Models\Catalogue;
+use App\Models\Catalogueversion;
 use Filament\Forms;
+use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
@@ -23,7 +25,36 @@ class CatalogueResource extends Resource
     {
         return $form
             ->schema([
-                //
+                TextInput::make('unique_reference'),
+                TextInput::make('version_id'),
+                TextInput::make('type'),
+                TextInput::make('brand'),
+                TextInput::make('name'),
+                TextInput::make('vendor'),
+                TextInput::make('category'),
+                TextInput::make('price_inc_gst'),
+                TextInput::make('processor'),
+                TextInput::make('storage'),
+                TextInput::make('memory'),
+                TextInput::make('form_factor'),
+                TextInput::make('display'),
+                TextInput::make('graphics'),
+                TextInput::make('wireless'),
+                TextInput::make('webcam'),
+                TextInput::make('operating_system'),
+                TextInput::make('warranty'),
+                TextInput::make('battery_life'),
+                TextInput::make('weight'),
+                TextInput::make('stylus'),
+                TextInput::make('other'),
+                TextInput::make('available_now'),
+                TextInput::make('corporate'),
+                TextInput::make('administration'),
+                TextInput::make('curriculum'),
+                TextInput::make('image'),
+                TextInput::make('product_number'),
+                TextInput::make('price_expiry'),
+                TextInput::make('cover_image'),
             ]);
     }
 
@@ -52,15 +83,13 @@ class CatalogueResource extends Resource
                     ->searchable(),
 
             ])
-            ->filters([
-                //
-            ])
-            ->actions([
-            ])
+            ->modifyQueryUsing(function (Builder $query) {
+                return $query->where('version_id', Catalogueversion::getActiveCatalogueId());
+            })
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
-                ]),
+                ])
             ]);
     }
 
