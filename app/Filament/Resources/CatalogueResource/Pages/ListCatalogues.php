@@ -18,6 +18,12 @@ use Illuminate\Support\Facades\Log;
 class ListCatalogues extends ListRecords
 {
     protected static string $resource = CatalogueResource::class;
+    protected ?string $subheading;
+
+    public function __construct()
+    {
+        $this->subheading = 'Catalogue version: ' . strval(CatalogueVersion::getActiveCatalogueId());
+    }
 
     protected function getHeaderActions(): array
     {
@@ -142,7 +148,7 @@ class ListCatalogues extends ListRecords
                         }
 
                         // Bulk update
-                        if(!empty($updateRecords)){
+                        if (!empty($updateRecords)) {
                             foreach ($updateRecords as $record) {
                                 DB::table('catalogues')
                                     ->where('id', $record['id'])
