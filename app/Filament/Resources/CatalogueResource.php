@@ -26,7 +26,6 @@ class CatalogueResource extends Resource
         return $form
             ->schema([
                 TextInput::make('unique_reference'),
-                TextInput::make('version_id'),
                 TextInput::make('type'),
                 TextInput::make('brand'),
                 TextInput::make('name'),
@@ -67,6 +66,9 @@ class CatalogueResource extends Resource
                     ->sortable()
                     ->limit(30)
                     ->searchable(),
+                Tables\Columns\TextColumn::make('version_id')
+                    ->label('Version')
+                    ->limit(3),
                 Tables\Columns\TextColumn::make('vendor')
                     ->label('Vendor')
                     ->limit(30)->sortable()
