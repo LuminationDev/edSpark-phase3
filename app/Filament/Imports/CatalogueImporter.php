@@ -91,17 +91,10 @@ class CatalogueImporter extends Importer
 
     public function resolveRecord(): ?Catalogue
     {
-        dd($this->data);
         return new Catalogue();
     }
 
-    public static function getOptionsFormComponents(): array
-    {
-        return [
-            Checkbox::make('updateExisting')
-                ->label('Update existing records'),
-        ];
-    }
+
 
     public static function getCompletedNotificationBody(Import $import): string
     {
