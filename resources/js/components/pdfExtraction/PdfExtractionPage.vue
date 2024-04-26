@@ -488,6 +488,7 @@ const extractAllContentByEachId = (html, id) => {
                 const strong2Element = ulElement.previousElementSibling ?  ulElement.previousElementSibling.previousElementSibling : null;
                 const strong1 = strong1Element ? strong1Element.nodeName === 'ul' : null;
                 const strong2 = strong2Element ? strong2Element.querySelector('strong') : null;
+                let hierarchicalFormat;
 
                 //const previousUlElement = strong2Element ? strong2Element.nodeName === 'UL' : null;
                 //const previousPelement = strong1Element ? strong1Element.previousElementSibling.nodeName === 'P' : null;
@@ -502,24 +503,20 @@ const extractAllContentByEachId = (html, id) => {
                         if (subList) {
                             const subListItems = Array.from(subList.querySelectorAll('li')).map(subListItem => {
                                 return {
-                                    "Text:": subListItem.textContent.trim(),
-                                    "List Items:": []
+                                    [subListItem.textContent.trim() ]: { "List Items:": [] }
                                 };
                             });
                             return {
-                                "Layer 2 Text:": listItem.textContent.trim(),
-                                "Layer 2 List Items:": subListItems
+                                [ listItem.textContent.trim() ]: { "Layer 2 List Items:": subListItems }
                             };
                         } else {
                             return {
-                                "Text:": listItem.textContent.trim(),
-                                "List Items:": []
+                                [ listItem.textContent.trim() ]: { "List Items:": [] }
                             };
                         }
                     });
-                    const hierarchicalFormat = {
-                        "Layer 1 Text:": strongText,
-                        "Layer 1 List Items:": subListItems
+                    hierarchicalFormat = {
+                        [ strongText ]: { "List Items:": subListItems }
                     };
                     if(id === "_kv7kogslxlmu")
                     {
@@ -535,28 +532,23 @@ const extractAllContentByEachId = (html, id) => {
                         if (subList) {
                             const subListItems = Array.from(subList.querySelectorAll('li')).map(subListItem => {
                                 return {
-                                    "Text": subListItem.textContent.trim(),
-                                    "List Items": []
+                                    [subListItem.textContent.trim()]: {"List Items": []}
                                 };
                             });
                             return {
-                                "Layer 3 Text": listItem.textContent.trim(),
-                                "Layer 3 List Items": subListItems
+                                [listItem.textContent.trim()]: {"List Items": subListItems}
                             };
                         } else {
                             return {
-                                "Text": listItem.textContent.trim(),
-                                "List Items": []
+                                [listItem.textContent.trim()]:{"List Items": []}
                             };
                         }
                     });
                     const hierarchicalLayer2 = {
-                        "Layer 2 Text": pText,
-                        "Layer 2 List Items": subListItems
+                        "List Items": subListItems
                     };
                     const hierarchicalLayer1 = {
-                        "Layer 1 Text": strongText,
-                        "Layer 1 List Items": hierarchicalLayer2
+                        [strongText]: { [pText]: hierarchicalLayer2}
                     };
                     if(id === "_kv7kogslxlmu")
                     {
