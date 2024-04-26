@@ -14,6 +14,7 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Outerweb\FilamentImageLibrary\Filament\Forms\Components\ImageLibraryPicker;
 
 class CatalogueResource extends Resource
 {
@@ -53,7 +54,7 @@ class CatalogueResource extends Resource
                 TextInput::make('image'),
                 TextInput::make('product_number'),
                 TextInput::make('price_expiry'),
-                TextInput::make('cover_image'),
+                ImageLibraryPicker::make('cover_image')
             ]);
     }
 
