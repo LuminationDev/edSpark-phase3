@@ -485,19 +485,28 @@ const extractAllContentByEachId = (html, id) => {
             const ulElements = sibling.querySelectorAll('ul');
             ulElements.forEach(ulElement => {
                 const strong1Element = ulElement.previousElementSibling;
-                const strong2Element = ulElement.previousElementSibling ?  ulElement.previousElementSibling.previousElementSibling : null;
+                const strong2Element = ulElement.previousElementSibling ? ulElement.previousElementSibling.previousElementSibling : null;
                 const strong1 = strong1Element ? strong1Element.nodeName === 'ul' : null;
                 const strong2 = strong2Element ? strong2Element.querySelector('strong') : null;
                 let hierarchicalFormat;
+                // all paragraphs text (without <strong>) under the id element.
+                const paragraphTextOnly = [];
+                for (const child of sibling.children) {
+                    if (child.nodeName === 'P' && !child.querySelector('strong')) {
+                        paragraphTextOnly.push(child.textContent.trim());
+                    }
+                }
 
                 //const previousUlElement = strong2Element ? strong2Element.nodeName === 'UL' : null;
                 //const previousPelement = strong1Element ? strong1Element.previousElementSibling.nodeName === 'P' : null;
                 //const previousPStrongElement = strong1Element ? strong1Element.previousElementSibling.querySelector('p strong') : null;
 
-                // extracting <p><strong> that are 1 previous sibling to the each <ul>, but should not have two <p><strong> before <ul>
+                // extracting <p><strong> that are 1 previous sibling to the each <ul>, but should not have two <p><strong> above the each <ul>
                 if (strong1Element && strong1Element.nodeName === 'P' && strong1Element.querySelector('strong') && (strong1 || !strong2)) {
                     const strongText = strong1Element.querySelector('strong').textContent.trim();
                     const pText = strong1Element ? strong1Element.textContent.trim() : null;
+                    const nodeNameFound = strong1Element.previousElementSibling ? strong1Element.previousElementSibling.nodeName === 'P' : null;
+                    const paragraphTextBeforeStrong1Element = nodeNameFound ? strong1Element.previousElementSibling.textContent.trim() : null;
                     //console.log("Strong Text" + strongText)
                     const subListItems = Array.from(ulElement.children).map(listItem => {
                         const subList = listItem.querySelector('ul');
@@ -516,20 +525,27 @@ const extractAllContentByEachId = (html, id) => {
                             };
                         }
                     });
+                    console.log(paragraphTextBeforeStrong1Element)
+                    planningPreparationParagraph.value = paragraphTextOnly;
                     hierarchicalFormat = {
                         [ strongText ]: { "List Items:": subListItems }
                     };
                     if (strongText === 'session 2') {
                         hierarchicalFormat[pText] = hierarchicalFormat[strongText];
                         delete hierarchicalFormat[strongText];
-                        console.log(hierarchicalFormat[pText]);
                     }
-                    if(id === "_kv7kogslxlmu")
+                    if (strongText.startsWith('Additional'))
+                    {
+                        //console.log(paragraphTextBeforeStrong1Element)
+                    }
+
+                    if (id === "_kv7kogslxlmu")
                     {
                         planningPreparationListingTree.value.push(hierarchicalFormat);
+                        //console.log(paragraphTextOnly)
                     }
                 }
-                // extracting <p><strong> that are 2 preivous sibling to the each <ul>
+                // extracting <p><strong> that are 2 previous sibling to the each <ul>
                 if (strong2Element && strong2Element.nodeName === 'P' && strong2Element.querySelector('strong')) {
                     const strongText = strong2Element ? strong2Element.querySelector('strong').textContent.trim() : null;
                     const pText =  strong2Element ? strong2Element.nextElementSibling.textContent.trim() : null;
@@ -564,7 +580,6 @@ const extractAllContentByEachId = (html, id) => {
             });
         }
     }
-
 }
 
 
