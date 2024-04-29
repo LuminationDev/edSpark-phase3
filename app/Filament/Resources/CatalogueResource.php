@@ -65,11 +65,11 @@ class CatalogueResource extends Resource
                 Tables\Columns\TextColumn::make('name')
                     ->label('Name')
                     ->sortable()
-                    ->limit(30)
+                    ->limit(20)
                     ->searchable(),
-                Tables\Columns\TextColumn::make('version_id')
-                    ->label('Version')
-                    ->limit(3),
+                Tables\Columns\ImageColumn::make('cover_image')
+                    ->limit(15)
+                ,
                 Tables\Columns\TextColumn::make('vendor')
                     ->label('Vendor')
                     ->limit(30)->sortable()
@@ -81,7 +81,7 @@ class CatalogueResource extends Resource
                     ->searchable(),
                 Tables\Columns\TextColumn::make('category')
                     ->label('Category')
-                    ->limit(50)
+                    ->limit(20)
                     ->sortable()
                     ->searchable(),
 
