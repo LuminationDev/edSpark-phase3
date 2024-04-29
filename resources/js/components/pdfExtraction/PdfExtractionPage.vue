@@ -1,5 +1,6 @@
 <script setup>
 import mammoth from 'mammoth';
+import {list} from "postcss";
 import {ref} from "vue";
 
 
@@ -509,6 +510,16 @@ const extractAllContentByEachId = (html, id) => {
                     const paragraphTextBeforeStrong1Element = nodeNameFound ? strong1Element.previousElementSibling.textContent.trim() : null;
                     //console.log("Strong Text" + strongText)
                     const subListItems = Array.from(ulElement.children).map(listItem => {
+                        let textContent = '';
+                        // extract <li> text without nested <ul>
+                        if (listItem.nodeName === 'LI' && listItem.querySelector('ul')) {
+                            listItem.childNodes.forEach(ulNode => {
+                                if (ulNode.nodeName !== 'UL') {
+                                    textContent = ulNode.textContent.trim();
+                                    console.log(textContent)
+                                }
+                            })
+                        }
                         const subList = listItem.querySelector('ul');
                         if (subList) {
                             const subListItems = Array.from(subList.querySelectorAll('li')).map(subListItem => {
