@@ -67,23 +67,28 @@ class CatalogueResource extends Resource
                     ->sortable()
                     ->limit(20)
                     ->searchable(),
-                Tables\Columns\ImageColumn::make('cover_image')
-                    ->limit(15)
-                ,
                 Tables\Columns\TextColumn::make('vendor')
                     ->label('Vendor')
-                    ->limit(30)->sortable()
+                    ->limit(15)
+                    ->sortable()
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('type')
+                    ->label('Type')
+                    ->limit(10)
+                    ->sortable()
                     ->searchable(),
                 Tables\Columns\TextColumn::make('brand')
                     ->label('Brand')
-                    ->limit(30)
+                    ->limit(10)
                     ->sortable()
                     ->searchable(),
                 Tables\Columns\TextColumn::make('category')
                     ->label('Category')
-                    ->limit(20)
+                    ->limit(10)
                     ->sortable()
                     ->searchable(),
+                Tables\Columns\ImageColumn::make('cover_image')
+                    ->limit(15)
 
             ])
             ->modifyQueryUsing(function (Builder $query) {

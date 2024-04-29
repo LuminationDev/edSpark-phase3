@@ -89,7 +89,7 @@ class CreateCatalogueversion extends CreateRecord
                     'image' => $catalogueItem['Image'],
                     'product_number' => $catalogueItem['Product Number'],
                     'price_expiry' => $catalogueItem['Price Expiry'],
-                    'cover_image' => $catalogueItem['Image'],
+                    'cover_image' => '',
                     'created_at' => now(), // Assuming you want to set creation timestamps
                     'updated_at' => now(), // Assuming you want to set update timestamps
                 ];
