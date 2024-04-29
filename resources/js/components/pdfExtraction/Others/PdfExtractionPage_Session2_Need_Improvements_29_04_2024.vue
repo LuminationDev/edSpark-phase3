@@ -40,7 +40,7 @@ const planningPreparationSubListHeadings = ref([])
 const planningPreparationListingSubListing = ref([])
 const planningPreparationListingTree = ref([])
 const planningPreparationAllLinks = ref([])
-
+const session2 = ref([]);
 
 
 //handle file upload
@@ -488,7 +488,7 @@ const extractAllContentByEachId = (html, id) => {
                 const strong2Element = ulElement.previousElementSibling ?  ulElement.previousElementSibling.previousElementSibling : null;
                 const strong1 = strong1Element ? strong1Element.nodeName === 'ul' : null;
                 const strong2 = strong2Element ? strong2Element.querySelector('strong') : null;
-                let hierarchicalFormat;
+
 
                 //const previousUlElement = strong2Element ? strong2Element.nodeName === 'UL' : null;
                 //const previousPelement = strong1Element ? strong1Element.previousElementSibling.nodeName === 'P' : null;
@@ -497,7 +497,6 @@ const extractAllContentByEachId = (html, id) => {
                 // extracting <p><strong> that are 1 previous sibling to the each <ul>, but should not have two <p><strong> before <ul>
                 if (strong1Element && strong1Element.nodeName === 'P' && strong1Element.querySelector('strong') && (strong1 || !strong2)) {
                     const strongText = strong1Element.querySelector('strong').textContent.trim();
-                    const pText = strong1Element ? strong1Element.textContent.trim() : null;
                     //console.log("Strong Text" + strongText)
                     const subListItems = Array.from(ulElement.children).map(listItem => {
                         const subList = listItem.querySelector('ul');
@@ -516,23 +515,31 @@ const extractAllContentByEachId = (html, id) => {
                             };
                         }
                     });
-                    hierarchicalFormat = {
+                    const hierarchicalFormat = {
                         [ strongText ]: { "List Items:": subListItems }
                     };
-                    if (strongText === 'session 2') {
-                        hierarchicalFormat[pText] = hierarchicalFormat[strongText];
-                        delete hierarchicalFormat[strongText];
-                        console.log(hierarchicalFormat[pText]);
-                    }
-                    if(id === "_kv7kogslxlmu")
+                    if (strongText !== "session 2")
                     {
-                        planningPreparationListingTree.value.push(hierarchicalFormat);
+                        if(id === "_kv7kogslxlmu")
+                        {
+                            planningPreparationListingTree.value.push(hierarchicalFormat);
+                            console.log(hierarchicalFormat)
+                        }
+                    }
+                    if (strongText === "session 2")
+                    {
+                        if(id === "_kv7kogslxlmu")
+                        {
+                            session2.value.push(hierarchicalFormat);
+                            console.log(session2.value)
+                        }
                     }
                 }
                 // extracting <p><strong> that are 2 preivous sibling to the each <ul>
                 if (strong2Element && strong2Element.nodeName === 'P' && strong2Element.querySelector('strong')) {
                     const strongText = strong2Element ? strong2Element.querySelector('strong').textContent.trim() : null;
-                    const pText =  strong2Element ? strong2Element.nextElementSibling.textContent.trim() : null;
+                    const pText1 =  strong2Element ? strong2Element.nextElementSibling.textContent.trim() : null;
+                    const pText2 = strong1Element ? strong1Element.textContent.trim() : null;
                     const subListItems = Array.from(ulElement.children).map(listItem => {
                         const subList = listItem.querySelector('ul');
                         if (subList) {
@@ -542,7 +549,7 @@ const extractAllContentByEachId = (html, id) => {
                                 };
                             });
                             return {
-                                [listItem.textContent.trim()]: {"List Items": subListItems}
+                                [listItem.textContent.trim()]: {"List Items": subListItems, "Session 2": session2.value}
                             };
                         } else {
                             return {
@@ -553,8 +560,11 @@ const extractAllContentByEachId = (html, id) => {
                     const hierarchicalLayer2 = {
                         "List Items": subListItems
                     };
+                    console.log(session2.value)
+                    console.log(pText1)
+                    console.log(pText2)
                     const hierarchicalLayer1 = {
-                        [strongText]: { [pText]: hierarchicalLayer2}
+                        [strongText]: { [pText1]: hierarchicalLayer2}
                     };
                     if(id === "_kv7kogslxlmu")
                     {
@@ -564,7 +574,6 @@ const extractAllContentByEachId = (html, id) => {
             });
         }
     }
-
 }
 
 
