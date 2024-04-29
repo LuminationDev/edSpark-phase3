@@ -26,12 +26,12 @@ return new class extends Migration
             // Foreign key constraints.
             $table->foreign('partner_id')
                 ->references('id')->on('partners')
-                ->onDelete('cascade');
+                ->onDelete('no action');
 
 
             $table->foreign('user_id')
                 ->references('id')->on('users')
-                ->onDelete('cascade');
+                ->onDelete('no action');
         });
     }
 

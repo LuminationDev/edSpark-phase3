@@ -97,6 +97,7 @@ export default {
         './resources/**/*.js',
         './resources/**/*.vue',
         './vendor/filament/**/*.blade.php',
+        "./vendor/outerweb/filament-image-library/resources/views/**/*.blade.php",
     ],
     safelist: [
         ...generateSafeList(edsparkColor)

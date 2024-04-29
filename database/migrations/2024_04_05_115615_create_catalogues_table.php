@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('catalogues', function (Blueprint $table) {
             $table->id();
-            $table->string('unique_reference')->unique();
+            $table->string('unique_reference');
             $table->string('type');
             $table->string('brand');
             $table->string('name');
