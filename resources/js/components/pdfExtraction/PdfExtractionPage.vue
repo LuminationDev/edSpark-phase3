@@ -525,7 +525,6 @@ const extractAllContentByEachId = (html, id) => {
                             };
                         }
                     });
-                    console.log(paragraphTextBeforeStrong1Element)
                     planningPreparationParagraph.value = paragraphTextOnly;
                     hierarchicalFormat = {
                         [ strongText ]: { "List Items:": subListItems }
@@ -536,13 +535,13 @@ const extractAllContentByEachId = (html, id) => {
                     }
                     if (strongText.startsWith('Additional'))
                     {
-                        //console.log(paragraphTextBeforeStrong1Element)
+                        console.log(paragraphTextBeforeStrong1Element)
                     }
 
                     if (id === "_kv7kogslxlmu")
                     {
                         planningPreparationListingTree.value.push(hierarchicalFormat);
-                        //console.log(paragraphTextOnly)
+
                     }
                 }
                 // extracting <p><strong> that are 2 previous sibling to the each <ul>
