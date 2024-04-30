@@ -41,6 +41,15 @@ const planningPreparationSubListHeadings = ref([])
 const planningPreparationListingSubListing = ref([])
 const planningPreparationListingTree = ref([])
 const planningPreparationAllLinks = ref([])
+const taskSequenceText = ref('')
+const component2Numbering = ref([])
+const introductoryTitle = ref("")
+const introductoryTime = ref("")
+const introductoryParagraph = ref([])
+const introductoryHeading = ref("")
+const introductoryListing = ref([])
+const introductoryLinks = ref([])
+
 
 
 
@@ -169,11 +178,19 @@ const downloadFormattedJson = () => {
                 "Lists Tree": planningPreparationListingTree.value,
                 "All Links": planningPreparationAllLinks.value
             }
+        },
+        "Component2": {
+            "Main Heading": taskSequenceText.value,
+            "Introductory Activity": {
+                "Number": component2Numbering.value,
+                "Title": introductoryTitle.value,
+                "Time": introductoryTime.value,
+                "Paragraphs": introductoryParagraph.value,
+                "List Headings": introductoryHeading.value,
+                "Listings": introductoryListing.value,
+                "All Links": introductoryLinks.value,
+            }
         }
-
-
-
-
     }, (key, value) => {
         if (key === 'content') {
             return stripHtml(value); // Strips HTML tags
