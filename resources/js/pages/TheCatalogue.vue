@@ -6,6 +6,7 @@ import {computed, onMounted, Ref, ref, watch} from "vue";
 import {useRouter} from "vue-router";
 
 import BaseLandingHero from "@/js/components/bases/BaseLandingHero.vue";
+import CatalogueCard from "@/js/components/catalogue/CatalogueCard.vue";
 import CatalogueFilterColumn from "@/js/components/catalogue/CatalogueFilterColumn.vue";
 import CataloguePerPageSelector from "@/js/components/catalogue/CataloguePerPageSelector.vue";
 import Loader from "@/js/components/spinner/Loader.vue";
@@ -212,57 +213,63 @@ const handleClickCatalogueCard = (reference) => {
             <div class="my-4 text-center totalItems">
                 Total Items: {{ totalItems }}
             </div>
-            <div class="2xl:!grid-cols-4 grid grid-cols-1 gap-4 place-items-center lg:!grid-cols-2 xl:!grid-cols-3">
-                <div
+            <div class="2xl:!grid-cols-4 grid grid-cols-1 gap-2 place-items-center lg:!grid-cols-2 xl:!grid-cols-3">
+                <template
                     v-for="(item,index) in catalogueList"
                     :key="index"
-                    class="border-[1px] catalogueCard cursor-pointer grid place-items-center rounded w-72"
-                    @click="() => handleClickCatalogueCard(item.unique_reference)"
                 >
-                    <img
-                        :src="catalogueImageURL + item.image"
-                        class="h-32 w-auto"
-                        :alt="'Photo of ' + item.name"
-                    >
-                    <div class="grid grid-cols-2 place-items-start p-4 productInformationSection w-full">
-                        <div class="font-medium">
-                            Product Name:
-                        </div>
-                        <div class="font-light">
-                            {{ item.name }}
-                        </div>
-                        <div class="font-medium">
-                            Brand:
-                        </div>
-                        <div class="font-light">
-                            {{ item.brand }}
-                        </div>
-                        <div class="font-medium">
-                            Category:
-                        </div>
-                        <div class="font-light">
-                            {{ item.category }}
-                        </div>
-                        <div class="font-medium">
-                            Type:
-                        </div>
-                        <div class="font-light">
-                            {{ item.type }}
-                        </div>
-                        <div class="font-medium">
-                            Price inc gst:
-                        </div>
-                        <div class="font-light">
-                            {{ '$' + item.price_inc_gst }}
-                        </div>
-                        <div class="font-medium">
-                            Vendor:
-                        </div>
-                        <div class="font-light">
-                            {{ item.vendor }}
-                        </div>
-                    </div>
-                </div>
+                    <CatalogueCard :cat-item="item" />
+                </template>
+                <!--                <div-->
+                <!--                    v-for="(item,index) in catalogueList"-->
+                <!--                    :key="index"-->
+                <!--                    class="border-[1px] catalogueCard cursor-pointer grid place-items-center rounded w-72"-->
+                <!--                    @click="() => handleClickCatalogueCard(item.unique_reference)"-->
+                <!--                >-->
+                <!--                    <img-->
+                <!--                        :src="catalogueImageURL + item.image"-->
+                <!--                        class="h-32 w-auto"-->
+                <!--                        :alt="'Photo of ' + item.name"-->
+                <!--                    >-->
+                <!--                    <div class="grid grid-cols-2 place-items-start p-4 productInformationSection w-full">-->
+                <!--                        <div class="font-medium">-->
+                <!--                            Product Name:-->
+                <!--                        </div>-->
+                <!--                        <div class="font-light">-->
+                <!--                            {{ item.name }}-->
+                <!--                        </div>-->
+                <!--                        <div class="font-medium">-->
+                <!--                            Brand:-->
+                <!--                        </div>-->
+                <!--                        <div class="font-light">-->
+                <!--                            {{ item.brand }}-->
+                <!--                        </div>-->
+                <!--                        <div class="font-medium">-->
+                <!--                            Category:-->
+                <!--                        </div>-->
+                <!--                        <div class="font-light">-->
+                <!--                            {{ item.category }}-->
+                <!--                        </div>-->
+                <!--                        <div class="font-medium">-->
+                <!--                            Type:-->
+                <!--                        </div>-->
+                <!--                        <div class="font-light">-->
+                <!--                            {{ item.type }}-->
+                <!--                        </div>-->
+                <!--                        <div class="font-medium">-->
+                <!--                            Price inc gst:-->
+                <!--                        </div>-->
+                <!--                        <div class="font-light">-->
+                <!--                            {{ '$' + item.price_inc_gst }}-->
+                <!--                        </div>-->
+                <!--                        <div class="font-medium">-->
+                <!--                            Vendor:-->
+                <!--                        </div>-->
+                <!--                        <div class="font-light">-->
+                <!--                            {{ item.vendor }}-->
+                <!--                        </div>-->
+                <!--                    </div>-->
+                <!--                </div>-->
             </div>
 
             <div

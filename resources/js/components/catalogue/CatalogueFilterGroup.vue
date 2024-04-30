@@ -10,10 +10,15 @@ const props = defineProps({
     title: {
         type: String,
         required: true
+    },
+    defaultShowFilter :{
+        type: Boolean,
+        required: false,
+        default: false
     }
 })
 
-const isFilterShown = ref(false)
+const isFilterShown = ref(props.defaultShowFilter)
 
 const toggleShowFilter = () => {
     isFilterShown.value = !isFilterShown.value

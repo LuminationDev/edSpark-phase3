@@ -68,24 +68,30 @@ const priceSliderConfig = {
             v-model="typeList"
             v-model:selected="selectedType"
             title="Type"
+            :default-show-filter="true"
         />
         <CatalogueFilterGroup
             v-if="categoryList.length"
             v-model="categoryList"
             v-model:selected="selectedCategory"
             title="Category"
+            :default-show-filter="true"
+
         />
         <CatalogueFilterGroup
             v-if="brandList.length"
             v-model="brandList"
             v-model:selected="selectedBrand"
             title="Brand"
+            :default-show-filter="false"
+
         />
         <CatalogueFilterGroup
             v-if="vendorList.length"
             v-model="vendorList"
             v-model:selected="selectedVendor"
             title="Vendor"
+            :default-show-filter="false"
         />
     </div>
 </template>
