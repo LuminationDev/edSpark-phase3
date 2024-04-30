@@ -42,15 +42,34 @@ const planningPreparationListingSubListing = ref([])
 const planningPreparationListingTree = ref([])
 const planningPreparationAllLinks = ref([])
 const taskSequenceText = ref('')
-const component2Numbering = ref([])
+const introductoryNumbering = ref("")
 const introductoryTitle = ref("")
 const introductoryTime = ref("")
 const introductoryParagraph = ref([])
 const introductoryHeading = ref("")
 const introductoryListing = ref([])
 const introductoryLinks = ref([])
-
-
+const priorKnowledgeNumbering = ref("")
+const priorKnowledgeTitle = ref("")
+const priorKnowledgeTime = ref("")
+const priorKnowledgeParagraph = ref([])
+const priorKnowledgeHeading = ref("")
+const priorKnowledgeListing = ref([])
+const priorKnowledgeLinks = ref([])
+const activitiesNumbering = ref("")
+const activitiesTitle = ref("")
+const activitiesTime = ref("")
+const activitiesParagraph = ref([])
+const activitiesHeading = ref("")
+const activitiesListing = ref([])
+const activitiesLinks = ref([])
+const checkUnderstandingNumbering = ref("")
+const checkUnderstandingTitle = ref("")
+const checkUnderstandingTime = ref("")
+const checkUnderstandingParagraph = ref([])
+const checkUnderstandingHeading = ref("")
+const checkUnderstandingListing = ref([])
+const checkUnderstandingLinks = ref([])
 
 
 //handle file upload
@@ -184,13 +203,40 @@ const downloadFormattedJson = () => {
         "Component2": {
             "Main Heading": taskSequenceText.value,
             "Introductory Activity": {
-                "Number": component2Numbering.value,
+                "Number": introductoryNumbering.value,
                 "Title": introductoryTitle.value,
                 "Time": introductoryTime.value,
                 "Paragraphs": introductoryParagraph.value,
                 "List Headings": introductoryHeading.value,
                 "Listings": introductoryListing.value,
-                "All Links": introductoryLinks.value,
+                "All Links": introductoryLinks.value
+            },
+            "Prior Knowledge Check": {
+                "Number": priorKnowledgeNumbering.value,
+                "Title": priorKnowledgeTitle.value,
+                "Time": priorKnowledgeTime.value,
+                "Paragraphs": priorKnowledgeParagraph.value,
+                "List Headings": priorKnowledgeHeading.value,
+                "Listings": priorKnowledgeListing.value,
+                "All Links": priorKnowledgeLinks.value
+            },
+            "Activities": {
+                "Number": activitiesNumbering.value,
+                "Title": activitiesTitle.value,
+                "Time": activitiesTime.value,
+                "Paragraphs": activitiesParagraph.value,
+                "List Headings": activitiesHeading.value,
+                "Listings": activitiesListing.value,
+                "All Links": activitiesLinks.value
+            },
+            "Check Understanding": {
+                "Number": checkUnderstandingNumbering.value,
+                "Title": checkUnderstandingTitle.value,
+                "Time": checkUnderstandingTime.value,
+                "Paragraphs": checkUnderstandingParagraph.value,
+                "List Headings": checkUnderstandingHeading.value,
+                "Listings": checkUnderstandingListing.value,
+                "All Links": checkUnderstandingLinks.value
             }
         }
     }, (key, value) => {
@@ -243,7 +289,6 @@ const extractTextById = (html, id) => {
     }
     if (element && element.parentNode && id === "_8hqu05q343sr") {
         taskSequenceText.value = element.parentNode.textContent.trim();
-        console.log(taskSequenceText.value)
     }
     else {
         // displayTopicHeading.value = `Content with ID ${id} not found.`;
@@ -539,7 +584,7 @@ const extractAllContentByEachId = (html, id) => {
                             listItem.childNodes.forEach(ulNode => {
                                 if (ulNode.nodeName !== 'UL') {
                                     textContent = ulNode.textContent.trim();
-                                    console.log(textContent)
+                                    //console.log(textContent)
                                 }
                             })
                         }
@@ -614,34 +659,117 @@ const extractAllContentByEachId = (html, id) => {
         }
     }
 
-    //
+    // extracts the Number, Title, and Duration of Task Sequence on the basis of <br> inside <p> inside <th> inside <tr> inside <thead> inside <table> that is sibling of parent element of the ID Element
     if (element && element.parentElement.nextElementSibling) {
         const siblingTable = element.parentElement.nextElementSibling;
         if (siblingTable.nodeName === 'TABLE') {
             const theadElement = siblingTable.querySelector('thead');
             const trElement = theadElement.querySelectorAll('tr');
             trElement.forEach(tr => {
-                let textContent1 = '';
                 tr.childNodes.forEach(th => {
-                    let textContent2 = [];
                     th.childNodes.forEach(p => {
                         const pText = p.textContent.trim();
-                        if (pText.startsWith('1')){
-                            textContent2.push(p.textContent.trim());
-                            console.log("Text 1:    " + textContent2)
-                        }
-                        if (pText.startsWith('2')){
-                            textContent2.push(p.textContent.trim());
-                            console.log("Text 2:    " + textContent2)
-                        }
-                        if (pText.startsWith('3')){
-                            textContent2.push(p.textContent.trim());
-                            console.log("Text 3:    " + textContent2)
-                        }
-                        if (pText.startsWith('4')){
-                            textContent2.push(p.textContent.trim());
-                            console.log("Text 4:    " + textContent2)
-                        }
+                        const nextSib = p ? p.nextSibling : null;
+                        const nextSibP = nextSib ? (p.nextSibling.nodeName === "P" ? p.nextSibling.textContent.trim() : null) : null;
+                        const previousSib = p ? p.previousSibling : null;
+                        const previousSibP = previousSib ? ((p.previousSibling.nodeName === "P") ? p.previousSibling.textContent.trim() : null) : null;
+                        let count = 0;
+                        p.childNodes.forEach(br => {
+                            const brText = br.textContent.trim();
+                            count++;
+                            if (pText.toLowerCase().includes('provocation')) {
+                                if (count === 1  && !previousSibP) {
+                                    introductoryNumbering.value = brText;
+                                }
+                                if (previousSibP) {
+                                    introductoryNumbering.value = previousSibP;
+                                }
+                                if (count === 3 && !previousSibP) {
+                                    introductoryTitle.value = brText;
+                                }
+                                if (count === 1 && previousSibP) {
+                                    introductoryTitle.value = brText;
+                                }
+                                if (count === 5  && !previousSibP) {
+                                    introductoryTime.value = brText;
+                                }
+                                if (count === 3 && previousSibP) {
+                                    introductoryTime.value = brText;
+                                }
+                                if (nextSibP) {
+                                    introductoryTime.value = nextSibP;
+                                }
+                            }
+                            if (pText.toLowerCase().includes('prior') || pText.toLowerCase().includes('pre') || pText.toLowerCase().includes('discussion')) {
+                                if (count === 1  && !previousSibP) {
+                                    priorKnowledgeNumbering.value = brText;
+                                }
+                                if (previousSibP) {
+                                    priorKnowledgeNumbering.value = previousSibP;
+                                }
+                                if (count === 3 && !previousSibP) {
+                                    priorKnowledgeTitle.value = brText;
+                                }
+                                if (count === 1 && previousSibP) {
+                                    priorKnowledgeTitle.value = brText;
+                                }
+                                if (count === 5  && !previousSibP) {
+                                    priorKnowledgeTime.value = brText;
+                                }
+                                if (count === 3 && previousSibP) {
+                                    priorKnowledgeTime.value = brText;
+                                }
+                                if (nextSibP) {
+                                    priorKnowledgeTime.value = nextSibP;
+                                }
+                            }
+                            if (pText.toLowerCase().includes('activities')) {
+                                if (count === 1  && !previousSibP) {
+                                    activitiesNumbering.value = brText;
+                                }
+                                if (previousSibP) {
+                                    activitiesNumbering.value = previousSibP;
+                                }
+                                if (count === 3 && !previousSibP) {
+                                    activitiesTitle.value = brText;
+                                }
+                                if (count === 1 && previousSibP) {
+                                    activitiesTitle.value = brText;
+                                }
+                                if (count === 5  && !previousSibP) {
+                                    activitiesTime.value = brText;
+                                }
+                                if (count === 3 && previousSibP) {
+                                    activitiesTime.value = brText;
+                                }
+                                if (nextSibP) {
+                                    activitiesTime.value = nextSibP;
+                                }
+                            }
+                            if (pText.toLowerCase().includes('understanding')) {
+                                if (count === 1  && !previousSibP) {
+                                    checkUnderstandingNumbering.value = brText;
+                                }
+                                if (previousSibP) {
+                                    checkUnderstandingNumbering.value = previousSibP;
+                                }
+                                if (count === 3 && !previousSibP) {
+                                    checkUnderstandingTitle.value = brText;
+                                }
+                                if (count === 1 && previousSibP) {
+                                    checkUnderstandingTitle.value = brText;
+                                }
+                                if (count === 5  && !previousSibP) {
+                                    checkUnderstandingTime.value = brText;
+                                }
+                                if (count === 3 && previousSibP) {
+                                    checkUnderstandingTime.value = brText;
+                                }
+                                if (nextSibP) {
+                                    checkUnderstandingTime.value = nextSibP;
+                                }
+                            }
+                        })
                     })
                 })
             })
