@@ -70,6 +70,7 @@ const handleFileUpload = async (event) => {
         extractTextById(htmlContent.value, '_2jqga89deyn')
         extractTextById(htmlContent.value, '_jkhi5jchiyqa')
         extractTextById(htmlContent.value, '_kv7kogslxlmu')
+        extractTextById(htmlContent.value, '_8hqu05q343sr')
 
         extractAllContentByEachId(htmlContent.value, '_r9sioprybg6g')
         extractAllContentByEachId(htmlContent.value, '_o25ffby0w0ip')
@@ -77,6 +78,7 @@ const handleFileUpload = async (event) => {
         extractAllContentByEachId(htmlContent.value, '_2jqga89deyn')
         extractAllContentByEachId(htmlContent.value, '_jkhi5jchiyqa')
         extractAllContentByEachId(htmlContent.value, '_kv7kogslxlmu')
+        extractAllContentByEachId(htmlContent.value, '_8hqu05q343sr')
 
     } catch (error) {
         console.error('Error processing file:', error);
@@ -238,6 +240,10 @@ const extractTextById = (html, id) => {
     }
     if (element && element.parentNode && id === "_kv7kogslxlmu") {
         planningPreparationTitle.value = element.parentNode.textContent.trim();
+    }
+    if (element && element.parentNode && id === "_8hqu05q343sr") {
+        taskSequenceText.value = element.parentNode.textContent.trim();
+        console.log(taskSequenceText.value)
     }
     else {
         // displayTopicHeading.value = `Content with ID ${id} not found.`;
@@ -563,7 +569,7 @@ const extractAllContentByEachId = (html, id) => {
                     }
                     if (strongText.startsWith('Additional'))
                     {
-                        console.log(paragraphTextBeforeStrong1Element)
+                        //console.log(paragraphTextBeforeStrong1Element)
                     }
 
                     if (id === "_kv7kogslxlmu")
@@ -607,6 +613,44 @@ const extractAllContentByEachId = (html, id) => {
             });
         }
     }
+
+    //
+    if (element && element.parentElement.nextElementSibling) {
+        const siblingTable = element.parentElement.nextElementSibling;
+        if (siblingTable.nodeName === 'TABLE') {
+            const theadElement = siblingTable.querySelector('thead');
+            const trElement = theadElement.querySelectorAll('tr');
+            trElement.forEach(tr => {
+                let textContent1 = '';
+                tr.childNodes.forEach(th => {
+                    let textContent2 = [];
+                    th.childNodes.forEach(p => {
+                        const pText = p.textContent.trim();
+                        if (pText.startsWith('1')){
+                            textContent2.push(p.textContent.trim());
+                            console.log("Text 1:    " + textContent2)
+                        }
+                        if (pText.startsWith('2')){
+                            textContent2.push(p.textContent.trim());
+                            console.log("Text 2:    " + textContent2)
+                        }
+                        if (pText.startsWith('3')){
+                            textContent2.push(p.textContent.trim());
+                            console.log("Text 3:    " + textContent2)
+                        }
+                        if (pText.startsWith('4')){
+                            textContent2.push(p.textContent.trim());
+                            console.log("Text 4:    " + textContent2)
+                        }
+                    })
+                })
+            })
+        }
+        else {
+            return null;
+        }
+    }
+
 }
 
 
