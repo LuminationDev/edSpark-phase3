@@ -85,7 +85,6 @@ const fetchCatalogue = async (field, category, page, perPage = 24) => {
     isProductsLoading.value = true
     return catalogueService.fetchCatalogueByField(field, category, page, perPage)
         .then(res => {
-            console.log('here resolved')
             return res.data.data
 
         })
@@ -188,8 +187,8 @@ const handleClickCatalogueCard = (reference) => {
         :title-paragraph="LandingHeroText['catalogue']['subtitle']"
         swoosh-color="teal"
     />
-    <div class="cataloguePageOuterContainer grid grid-cols-4 mt-10">
-        <div class="col-span-1 flex items-center flex-col gap-2">
+    <div class="cataloguePageOuterContainer grid grid-cols-4 mt-16">
+        <div class="col-span-1 flex flex-col gap-2 ml-8 pr-8">
             <CataloguePerPageSelector v-model="perPage" />
             <CatalogueFilterColumn
                 v-model:brand-list="brandList"

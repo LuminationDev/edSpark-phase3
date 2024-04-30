@@ -1,4 +1,8 @@
 <script setup>
+import {ref} from "vue";
+
+import ChevronDownIcon from "@/js/components/svg/chevron/ChevronDownIcon.vue";
+
 const filterList = defineModel()
 const selectedList = defineModel('selected')
 
@@ -8,25 +12,53 @@ const props = defineProps({
         required: true
     }
 })
+
+const isFilterShown = ref(false)
+
+const toggleShowFilter = () => {
+    isFilterShown.value = !isFilterShown.value
+}
 </script>
 
 <template>
-    <div class="border-b-[1px] border-slate-500 fitlerTitle font-semibold mb-2 mt-4 text-center w-full">
-        {{ title }}
+    <div class="fitlerHeader flex flex-row mb-2 mt-8 text-lg w-full">
+        <div class="filterTitle">
+            {{ title }}
+        </div>
+        <div class="ml-auto">
+            <ChevronDownIcon
+                class="cursor-pointer transition-transform"
+                :class="{'rotate-180' : isFilterShown}"
+                @click="toggleShowFilter"
+            />
+        </div>
     </div>
     <div
-        v-for="(filter,index) in filterList"
-        :key="index"
-        class="flex-start w-full"
+        class="flex flex-col transition transition-all"
     >
-        <input
-            :id="filter + index"
-            v-model="selectedList"
-            type="checkbox"
-            class="border-2 catalogueCategoryItem mx-4 rounded"
-            :name="filter"
-            :value="filter"
-        >
-        <label :for="filter + index"> {{ filter }}</label>
+        <TransitionGroup>
+            <template
+                v-if="isFilterShown"
+            >
+                <div
+                    v-for="(filter,index) in filterList"
+                    :key="index"
+                    class="flex items-center flex-row h-full mt-2 text-lg w-full"
+                >
+                    <input
+                        :id="filter + index"
+                        v-model="selectedList"
+                        type="checkbox"
+                        class="!p-2.5 border-[1px] border-slate-300 catalogueCategoryItem mr-3 rounded shadow"
+                        :name="filter"
+                        :value="filter"
+                    >
+                    <label
+                        class="flex h-full"
+                        :for="filter + index"
+                    > {{ filter }}</label>
+                </div>
+            </template>
+        </TransitionGroup>
     </div>
 </template>

@@ -1,6 +1,7 @@
 <script setup>
 
 import CatalogueFilterGroup from "@/js/components/catalogue/CatalogueFilterGroup.vue";
+import VueNoUiSlider from "@/js/components/slider/VueNoUiSlider.vue";
 import Loader from "@/js/components/spinner/Loader.vue";
 
 const props = defineProps({
@@ -21,6 +22,26 @@ const selectedBrand = defineModel('selectedBrand')
 const selectedType = defineModel('selectedType')
 const selectedVendor = defineModel('selectedVendor')
 
+const priceSliderValues = [100,200,300,400,500,600,700,800,900];
+
+const format = {
+    to: function(value) {
+        return priceSliderValues[Math.round(value)];
+    },
+    from: function (value) {
+        return priceSliderValues.indexOf(Number(value));
+    }
+};
+const priceSliderConfig = {
+    start: [100, 200],
+    range: { min: 0, max: priceSliderValues.length - 1 },
+    step: 1,
+    tooltips: true,
+    format: format,
+    // pips: { mode: 'steps', format: format },
+}
+
+
 
 </script>
 
@@ -36,19 +57,23 @@ const selectedVendor = defineModel('selectedVendor')
     </div>
     <div
         v-else
-        class="flex justify-center items-center flex-col"
+        class="flex flex-col"
     >
-        <CatalogueFilterGroup
-            v-if="categoryList.length"
-            v-model="categoryList"
-            v-model:selected="selectedCategory"
-            title="Category"
+        <VueNoUiSlider
+            :values="priceSliderValues"
+            :config="priceSliderConfig"
         />
         <CatalogueFilterGroup
             v-if="typeList.length"
             v-model="typeList"
             v-model:selected="selectedType"
             title="Type"
+        />
+        <CatalogueFilterGroup
+            v-if="categoryList.length"
+            v-model="categoryList"
+            v-model:selected="selectedCategory"
+            title="Category"
         />
         <CatalogueFilterGroup
             v-if="brandList.length"
