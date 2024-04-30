@@ -13,8 +13,8 @@ const props = defineProps({
 })
 
 const ComputerTypes = ['all-in-one', 'chromebook', 'desktop', 'notebook']
-const DisplayTypes = ['Monitor', 'Tablet']
-const {brand, type, name, image, processor, memory, storage, display, other} = props.catItem
+const DisplayTypes = ['monitor', 'tablet']
+const {brand, type, name, image, processor, memory, storage, display, other, price_inc_gst} = props.catItem
 
 const catCoverImageUrl = computed(() => {
     return catalogueImageURL + image
@@ -49,16 +49,31 @@ const catCardShortSpec = computed(() =>{
                 alt=""
             >
         </div>
-        <div class="cardBody flex flex-col w-full">
-            <div class="brandType tag text-main-darkTeal">
+        <div class="cardBody flex flex-col h-[200px] w-full">
+            <div class="brandType mb-2 tag text-main-darkTeal">
                 {{ brand }} • {{ type }}
             </div>
             <div class="catItemName mb-2 text-xl">
                 {{ name }}
             </div>
-            <CatalogueCardDescGenerator
-                :card-desc-obj="catCardShortSpec"
-            />
+            <div class="mb-4">
+                <CatalogueCardDescGenerator
+                    :card-desc-obj="catCardShortSpec"
+                />
+            </div>
+            <div class="flex flex-row mb-2 mt-auto priceAndCompareRow">
+                <div class="price text-xl">
+                    {{ "$" + price_inc_gst }} <span
+                        class="font-light text-base"
+                    > inc. GST</span>
+                </div>
+                <div class="compareTickBox ml-auto">
+                    <input
+                        type="checkbox"
+                        class="p-2 rounded shadow"
+                    >
+                </div>
+            </div>
         </div>
     </div>
 </template>

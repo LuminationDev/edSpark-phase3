@@ -1,5 +1,4 @@
 <script setup>
-import {computed, ref} from 'vue'
 
 const props = defineProps({
     cardDescObj: {
@@ -8,19 +7,19 @@ const props = defineProps({
     }
 })
 
-
 const descEntries = Object.entries(props.cardDescObj)
 </script>
 
 <template>
-    <div class="catCardDesc">
+    <div class="catCardDesc line-clamp-2 text-gray-600">
         <template
             v-for="(desc,index) in descEntries"
             :key="index"
         >
             <span
+                v-if="desc[1]"
                 class="capitalize font-semibold"
-            > {{ desc[0] }}</span> {{ desc[1] + " " }}
+            > {{ desc[0] + ":" }}</span> {{ desc[1] + " " }}
         </template>
     </div>
 </template>
