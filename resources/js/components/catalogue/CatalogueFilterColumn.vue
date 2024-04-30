@@ -5,7 +5,7 @@ import VueNoUiSlider from "@/js/components/slider/VueNoUiSlider.vue";
 import Loader from "@/js/components/spinner/Loader.vue";
 
 const props = defineProps({
-    isFilterLoading:{
+    isFilterLoading: {
         type: Boolean,
         required: false,
         default: false
@@ -22,10 +22,10 @@ const selectedBrand = defineModel('selectedBrand')
 const selectedType = defineModel('selectedType')
 const selectedVendor = defineModel('selectedVendor')
 
-const priceSliderValues = [100,200,300,400,500,600,700,800,900];
+const priceSliderValues = [0, 25, 50, 100, 250, 400, 500, 1000, 1500, 2000];
 
 const format = {
-    to: function(value) {
+    to: function (value) {
         return priceSliderValues[Math.round(value)];
     },
     from: function (value) {
@@ -33,14 +33,14 @@ const format = {
     }
 };
 const priceSliderConfig = {
-    start: [100, 200],
-    range: { min: 0, max: priceSliderValues.length - 1 },
-    step: 1,
+    start: [0, 250],
+    range: {min: 0, max: priceSliderValues.length - 1},
+    connect: [false, true,false],
     tooltips: true,
+    step: 1,
     format: format,
-    // pips: { mode: 'steps', format: format },
+    pips: {mode: 'values', values: priceSliderValues, stepped: false, density: 15},
 }
-
 
 
 </script>
