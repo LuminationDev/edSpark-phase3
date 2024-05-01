@@ -205,7 +205,7 @@ const downloadFormattedJson = () => {
             "Introductory Activity": {
                 "Number": introductoryNumbering.value,
                 "Title": introductoryTitle.value,
-                "Time": introductoryTime.value,
+                "Duration": introductoryTime.value,
                 "Paragraphs": introductoryParagraph.value,
                 "List Headings": introductoryHeading.value,
                 "Listings": introductoryListing.value,
@@ -214,7 +214,7 @@ const downloadFormattedJson = () => {
             "Prior Knowledge Check": {
                 "Number": priorKnowledgeNumbering.value,
                 "Title": priorKnowledgeTitle.value,
-                "Time": priorKnowledgeTime.value,
+                "Duration": priorKnowledgeTime.value,
                 "Paragraphs": priorKnowledgeParagraph.value,
                 "List Headings": priorKnowledgeHeading.value,
                 "Listings": priorKnowledgeListing.value,
@@ -223,7 +223,7 @@ const downloadFormattedJson = () => {
             "Activities": {
                 "Number": activitiesNumbering.value,
                 "Title": activitiesTitle.value,
-                "Time": activitiesTime.value,
+                "Duration": activitiesTime.value,
                 "Paragraphs": activitiesParagraph.value,
                 "List Headings": activitiesHeading.value,
                 "Listings": activitiesListing.value,
@@ -232,7 +232,7 @@ const downloadFormattedJson = () => {
             "Check Understanding": {
                 "Number": checkUnderstandingNumbering.value,
                 "Title": checkUnderstandingTitle.value,
-                "Time": checkUnderstandingTime.value,
+                "Duration": checkUnderstandingTime.value,
                 "Paragraphs": checkUnderstandingParagraph.value,
                 "List Headings": checkUnderstandingHeading.value,
                 "Listings": checkUnderstandingListing.value,
@@ -706,7 +706,6 @@ const extractAllContentByEachId = (html, id) => {
                                 if (pText.toLowerCase().includes('prior') || pText.toLowerCase().includes('pre') || pText.toLowerCase().includes('discussion')) {
                                     if (count === 1  && !previousSibP) {
                                         priorKnowledgeNumbering.value = brText;
-                                        console.log(priorKnowledgeNumbering.value)
                                     }
                                     if (previousSibP) {
                                         priorKnowledgeNumbering.value = previousSibP;
@@ -775,6 +774,48 @@ const extractAllContentByEachId = (html, id) => {
                                 }
                             }
                         })
+                    })
+                })
+            })
+        }
+        else {
+            return null; // will not throw error if there is any null value in the doc as per the conditions.
+        }
+    }
+
+    //
+    if (element && element.parentElement.nextElementSibling) {
+        const siblingTable = element.parentElement.nextElementSibling;
+        if (siblingTable.nodeName === 'TABLE') {
+            const theadElement = siblingTable.querySelector('thead');
+            const trElement = theadElement.querySelectorAll('tr');
+            trElement.forEach(tr => {
+                let countTH = 0;
+                tr.childNodes.forEach(th => {
+                    countTH++;
+                    th.childNodes.forEach(p => {        // checks all <p> text on the basis of ID
+                        const pText = p.textContent.trim();
+                        const parentTH = p.parentElement ? (p.parentElement.nodeName === 'TH' ? (p.parentElement.nextElementSibling ? (p.parentElement.nextElementSibling.nodeName === 'TH' ? p.parentElement.nextElementSibling.querySelectorAll('p') : null) : null) : null) : null;
+                        if (countTH === 1 && pText.toLowerCase().includes('provocation')) {       // checks all the <p> text on the basis of text
+                            parentTH.forEach(nextElementP => {
+                                introductoryParagraph.value.push(nextElementP.textContent.trim());
+                            })
+                        }
+                        if (countTH === 1 && (pText.toLowerCase().includes('prior') || pText.toLowerCase().includes('pre') || pText.toLowerCase().includes('discussion'))) {       // checks all the <p> text on the basis of text
+                            parentTH.forEach(nextElementP => {
+                                priorKnowledgeParagraph.value.push(nextElementP.textContent.trim());
+                            })
+                        }
+                        if (countTH === 1 && pText.toLowerCase().includes('activities')) {       // checks all the <p> text on the basis of text
+                            parentTH.forEach(nextElementP => {
+                                activitiesParagraph.value.push(nextElementP.textContent.trim());
+                            })
+                        }
+                        if (countTH === 1 && pText.toLowerCase().includes('understanding')) {       // checks all the <p> text on the basis of text
+                            parentTH.forEach(nextElementP => {
+                                checkUnderstandingParagraph.value.push(nextElementP.textContent.trim());
+                            })
+                        }
                     })
                 })
             })
