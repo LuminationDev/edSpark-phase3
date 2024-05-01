@@ -46,28 +46,28 @@ const introductoryNumbering = ref("")
 const introductoryTitle = ref("")
 const introductoryTime = ref("")
 const introductoryParagraph = ref([])
-const introductoryHeading = ref("")
+const introductoryHeading = ref([])
 const introductoryListing = ref([])
 const introductoryLinks = ref([])
 const priorKnowledgeNumbering = ref("")
 const priorKnowledgeTitle = ref("")
 const priorKnowledgeTime = ref("")
 const priorKnowledgeParagraph = ref([])
-const priorKnowledgeHeading = ref("")
+const priorKnowledgeHeading = ref([])
 const priorKnowledgeListing = ref([])
 const priorKnowledgeLinks = ref([])
 const activitiesNumbering = ref("")
 const activitiesTitle = ref("")
 const activitiesTime = ref("")
 const activitiesParagraph = ref([])
-const activitiesHeading = ref("")
+const activitiesHeading = ref([])
 const activitiesListing = ref([])
 const activitiesLinks = ref([])
 const checkUnderstandingNumbering = ref("")
 const checkUnderstandingTitle = ref("")
 const checkUnderstandingTime = ref("")
 const checkUnderstandingParagraph = ref([])
-const checkUnderstandingHeading = ref("")
+const checkUnderstandingHeading = ref([])
 const checkUnderstandingListing = ref([])
 const checkUnderstandingLinks = ref([])
 
@@ -795,25 +795,32 @@ const extractAllContentByEachId = (html, id) => {
                     countTH++;
                     th.childNodes.forEach(p => {        // checks all <p> text on the basis of ID
                         const pText = p.textContent.trim();
-                        const parentTH = p.parentElement ? (p.parentElement.nodeName === 'TH' ? (p.parentElement.nextElementSibling ? (p.parentElement.nextElementSibling.nodeName === 'TH' ? p.parentElement.nextElementSibling.querySelectorAll('p') : null) : null) : null) : null;
-                        if (countTH === 1 && pText.toLowerCase().includes('provocation')) {       // checks all the <p> text on the basis of text
+                        const parentTH = p ? (p.parentElement ? (p.parentElement.nodeName === 'TH' ? (p.parentElement.nextElementSibling ? (p.parentElement.nextElementSibling.nodeName === 'TH' ? p.parentElement.nextElementSibling.querySelectorAll('p') : null) : null) : null) : null) : null;
+                        if (countTH === 1) {
                             parentTH.forEach(nextElementP => {
-                                introductoryParagraph.value.push(nextElementP.textContent.trim());
-                            })
-                        }
-                        if (countTH === 1 && (pText.toLowerCase().includes('prior') || pText.toLowerCase().includes('pre') || pText.toLowerCase().includes('discussion'))) {       // checks all the <p> text on the basis of text
-                            parentTH.forEach(nextElementP => {
-                                priorKnowledgeParagraph.value.push(nextElementP.textContent.trim());
-                            })
-                        }
-                        if (countTH === 1 && pText.toLowerCase().includes('activities')) {       // checks all the <p> text on the basis of text
-                            parentTH.forEach(nextElementP => {
-                                activitiesParagraph.value.push(nextElementP.textContent.trim());
-                            })
-                        }
-                        if (countTH === 1 && pText.toLowerCase().includes('understanding')) {       // checks all the <p> text on the basis of text
-                            parentTH.forEach(nextElementP => {
-                                checkUnderstandingParagraph.value.push(nextElementP.textContent.trim());
+                                let strongContent = '';
+                                nextElementP.childNodes.forEach(strongNode => {
+                                    if (strongNode.nodeName === 'STRONG') {
+                                        strongContent += strongNode.textContent.trim();
+                                    }
+                                })
+                                if (pText.toLowerCase().includes('provocation')) {       // checks all the <p> text on the basis of text
+                                    introductoryParagraph.value.push(nextElementP.textContent.trim());
+                                    introductoryHeading.value.push(strongContent);
+                                }
+                                if ((pText.toLowerCase().includes('prior') || pText.toLowerCase().includes('pre') || pText.toLowerCase().includes('discussion'))) {       // checks all the <p> text on the basis of text
+                                    priorKnowledgeParagraph.value.push(nextElementP.textContent.trim());
+                                    priorKnowledgeHeading.value.push(strongContent);
+                                }
+                                if (pText.toLowerCase().includes('activities')) {       // checks all the <p> text on the basis of text
+                                    activitiesParagraph.value.push(nextElementP.textContent.trim());
+                                    activitiesHeading.value.push(strongContent);
+                                    console.log(strongContent)
+                                }
+                                if (pText.toLowerCase().includes('understanding')) {       // checks all the <p> text on the basis of text
+                                    checkUnderstandingParagraph.value.push(nextElementP.textContent.trim());
+                                    checkUnderstandingHeading.value.push(strongContent);
+                                }
                             })
                         }
                     })
