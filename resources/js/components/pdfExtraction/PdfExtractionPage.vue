@@ -780,7 +780,7 @@ const extractAllContentByEachId = (html, id) => {
             })
         }
         else {
-            return null;
+            return null; // will not throw error if there is any null value in the doc as per the conditions.
         }
     }
 
