@@ -666,107 +666,112 @@ const extractAllContentByEachId = (html, id) => {
             const theadElement = siblingTable.querySelector('thead');
             const trElement = theadElement.querySelectorAll('tr');
             trElement.forEach(tr => {
+                let countTH = 0;
                 tr.childNodes.forEach(th => {
+                    countTH++;
                     th.childNodes.forEach(p => {
                         const pText = p.textContent.trim();
                         const nextSib = p ? p.nextSibling : null;
                         const nextSibP = nextSib ? (p.nextSibling.nodeName === "P" ? p.nextSibling.textContent.trim() : null) : null;
                         const previousSib = p ? p.previousSibling : null;
-                        const previousSibP = previousSib ? ((p.previousSibling.nodeName === "P") ? p.previousSibling.textContent.trim() : null) : null;
+                        const previousSibP = previousSib ? ((p.previousSibling.nodeName === "P" && p.previousSibling.textContent.length === 1) ? p.previousSibling.textContent.trim() : null) : null;
                         let count = 0;
                         p.childNodes.forEach(br => {
                             const brText = br.textContent.trim();
                             count++;
-                            if (pText.toLowerCase().includes('provocation')) {
-                                if (count === 1  && !previousSibP) {
-                                    introductoryNumbering.value = brText;
+                            if (countTH === 1) {        // checks for the first TH only that has numbers, title, and duration of task sequence
+                                if (pText.toLowerCase().includes('provocation')) {
+                                    if (count === 1  && !previousSibP) {
+                                        introductoryNumbering.value = brText;
+                                    }
+                                    if (previousSibP) {
+                                        introductoryNumbering.value = previousSibP;
+                                    }
+                                    if (count === 3 && !previousSibP) {
+                                        introductoryTitle.value = brText;
+                                    }
+                                    if (count === 1 && previousSibP) {
+                                        introductoryTitle.value = brText;
+                                    }
+                                    if (count === 5  && !previousSibP) {
+                                        introductoryTime.value = brText;
+                                    }
+                                    if (count === 3 && previousSibP) {
+                                        introductoryTime.value = brText;
+                                    }
+                                    if (nextSibP) {
+                                        introductoryTime.value = nextSibP;
+                                    }
                                 }
-                                if (previousSibP) {
-                                    introductoryNumbering.value = previousSibP;
+                                if (pText.toLowerCase().includes('prior') || pText.toLowerCase().includes('pre') || pText.toLowerCase().includes('discussion')) {
+                                    if (count === 1  && !previousSibP) {
+                                        priorKnowledgeNumbering.value = brText;
+                                        console.log(priorKnowledgeNumbering.value)
+                                    }
+                                    if (previousSibP) {
+                                        priorKnowledgeNumbering.value = previousSibP;
+                                    }
+                                    if (count === 3 && !previousSibP) {
+                                        priorKnowledgeTitle.value = brText;
+                                    }
+                                    if (count === 1 && previousSibP) {
+                                        priorKnowledgeTitle.value = brText;
+                                    }
+                                    if (count === 5  && !previousSibP) {
+                                        priorKnowledgeTime.value = brText;
+                                    }
+                                    if (count === 3 && previousSibP) {
+                                        priorKnowledgeTime.value = brText;
+                                    }
+                                    if (nextSibP) {
+                                        priorKnowledgeTime.value = nextSibP;
+                                    }
                                 }
-                                if (count === 3 && !previousSibP) {
-                                    introductoryTitle.value = brText;
+                                if (pText.toLowerCase().includes('activities')) {
+                                    if (count === 1  && !previousSibP) {
+                                        activitiesNumbering.value = brText;
+                                    }
+                                    if (previousSibP) {
+                                        activitiesNumbering.value = previousSibP;
+                                    }
+                                    if (count === 3 && !previousSibP) {
+                                        activitiesTitle.value = brText;
+                                    }
+                                    if (count === 1 && previousSibP) {
+                                        activitiesTitle.value = brText;
+                                    }
+                                    if (count === 5  && !previousSibP) {
+                                        activitiesTime.value = brText;
+                                    }
+                                    if (count === 3 && previousSibP) {
+                                        activitiesTime.value = brText;
+                                    }
+                                    if (nextSibP) {
+                                        activitiesTime.value = nextSibP;
+                                    }
                                 }
-                                if (count === 1 && previousSibP) {
-                                    introductoryTitle.value = brText;
-                                }
-                                if (count === 5  && !previousSibP) {
-                                    introductoryTime.value = brText;
-                                }
-                                if (count === 3 && previousSibP) {
-                                    introductoryTime.value = brText;
-                                }
-                                if (nextSibP) {
-                                    introductoryTime.value = nextSibP;
-                                }
-                            }
-                            if (pText.toLowerCase().includes('prior') || pText.toLowerCase().includes('pre') || pText.toLowerCase().includes('discussion')) {
-                                if (count === 1  && !previousSibP) {
-                                    priorKnowledgeNumbering.value = brText;
-                                }
-                                if (previousSibP) {
-                                    priorKnowledgeNumbering.value = previousSibP;
-                                }
-                                if (count === 3 && !previousSibP) {
-                                    priorKnowledgeTitle.value = brText;
-                                }
-                                if (count === 1 && previousSibP) {
-                                    priorKnowledgeTitle.value = brText;
-                                }
-                                if (count === 5  && !previousSibP) {
-                                    priorKnowledgeTime.value = brText;
-                                }
-                                if (count === 3 && previousSibP) {
-                                    priorKnowledgeTime.value = brText;
-                                }
-                                if (nextSibP) {
-                                    priorKnowledgeTime.value = nextSibP;
-                                }
-                            }
-                            if (pText.toLowerCase().includes('activities')) {
-                                if (count === 1  && !previousSibP) {
-                                    activitiesNumbering.value = brText;
-                                }
-                                if (previousSibP) {
-                                    activitiesNumbering.value = previousSibP;
-                                }
-                                if (count === 3 && !previousSibP) {
-                                    activitiesTitle.value = brText;
-                                }
-                                if (count === 1 && previousSibP) {
-                                    activitiesTitle.value = brText;
-                                }
-                                if (count === 5  && !previousSibP) {
-                                    activitiesTime.value = brText;
-                                }
-                                if (count === 3 && previousSibP) {
-                                    activitiesTime.value = brText;
-                                }
-                                if (nextSibP) {
-                                    activitiesTime.value = nextSibP;
-                                }
-                            }
-                            if (pText.toLowerCase().includes('understanding')) {
-                                if (count === 1  && !previousSibP) {
-                                    checkUnderstandingNumbering.value = brText;
-                                }
-                                if (previousSibP) {
-                                    checkUnderstandingNumbering.value = previousSibP;
-                                }
-                                if (count === 3 && !previousSibP) {
-                                    checkUnderstandingTitle.value = brText;
-                                }
-                                if (count === 1 && previousSibP) {
-                                    checkUnderstandingTitle.value = brText;
-                                }
-                                if (count === 5  && !previousSibP) {
-                                    checkUnderstandingTime.value = brText;
-                                }
-                                if (count === 3 && previousSibP) {
-                                    checkUnderstandingTime.value = brText;
-                                }
-                                if (nextSibP) {
-                                    checkUnderstandingTime.value = nextSibP;
+                                if (pText.toLowerCase().includes('understanding')) {
+                                    if (count === 1  && !previousSibP) {
+                                        checkUnderstandingNumbering.value = brText;
+                                    }
+                                    if (previousSibP) {
+                                        checkUnderstandingNumbering.value = previousSibP;
+                                    }
+                                    if (count === 3 && !previousSibP) {
+                                        checkUnderstandingTitle.value = brText;
+                                    }
+                                    if (count === 1 && previousSibP) {
+                                        checkUnderstandingTitle.value = brText;
+                                    }
+                                    if (count === 5  && !previousSibP) {
+                                        checkUnderstandingTime.value = brText;
+                                    }
+                                    if (count === 3 && previousSibP) {
+                                        checkUnderstandingTime.value = brText;
+                                    }
+                                    if (nextSibP) {
+                                        checkUnderstandingTime.value = nextSibP;
+                                    }
                                 }
                             }
                         })
