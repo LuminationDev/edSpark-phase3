@@ -36,7 +36,6 @@ const contactInfoAvailable = ref(false)
 
 
 const initiateFetchSchoolContact = (): Promise<any> => {
-    console.log('init fetch school contact')
     return schoolContactService.fetchSchoolContact(+props.schoolId).then(res => {
         state['location'] = res.location
         state['website'] = res.website

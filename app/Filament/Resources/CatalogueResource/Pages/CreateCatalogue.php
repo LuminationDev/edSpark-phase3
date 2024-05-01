@@ -69,7 +69,7 @@ class CreateCatalogue extends CreateRecord
                     'image' => $catalogueItem['Image'] ?? '',
                     'product_number' => $catalogueItem['Product Number'] ?? '',
                     'price_expiry' => $catalogueItem['Price Expiry'] ?? '',
-                    'cover_image' => $catalogueItem['Image'] ?? '',
+                    'cover_image' => '',
                     'created_at' => now(),
                     'updated_at' => now(),
                 ];
