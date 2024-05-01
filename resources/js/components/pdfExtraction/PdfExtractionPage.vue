@@ -783,7 +783,7 @@ const extractAllContentByEachId = (html, id) => {
         }
     }
 
-    //
+    // extracts the RHS, list of <p> text and <strong> text.
     if (element && element.parentElement.nextElementSibling) {
         const siblingTable = element.parentElement.nextElementSibling;
         if (siblingTable.nodeName === 'TABLE') {
@@ -799,27 +799,33 @@ const extractAllContentByEachId = (html, id) => {
                         if (countTH === 1) {
                             parentTH.forEach(nextElementP => {
                                 let strongContent = '';
-                                nextElementP.childNodes.forEach(strongNode => {
-                                    if (strongNode.nodeName === 'STRONG') {
-                                        strongContent += strongNode.textContent.trim();
-                                    }
+                                const strongElements = nextElementP.querySelectorAll('strong');
+                                strongElements.forEach(strong => {
+                                    strongContent = strong.textContent.trim();
                                 })
                                 if (pText.toLowerCase().includes('provocation')) {       // checks all the <p> text on the basis of text
                                     introductoryParagraph.value.push(nextElementP.textContent.trim());
-                                    introductoryHeading.value.push(strongContent);
+                                    if (strongContent !== "" ) {        // checks if the <strong> is empty
+                                        introductoryHeading.value.push(strongContent);
+                                    }
                                 }
                                 if ((pText.toLowerCase().includes('prior') || pText.toLowerCase().includes('pre') || pText.toLowerCase().includes('discussion'))) {       // checks all the <p> text on the basis of text
                                     priorKnowledgeParagraph.value.push(nextElementP.textContent.trim());
-                                    priorKnowledgeHeading.value.push(strongContent);
+                                    if (strongContent !== "" ) {        // checks if the <strong> is empty
+                                        priorKnowledgeHeading.value.push(strongContent);
+                                    }
                                 }
                                 if (pText.toLowerCase().includes('activities')) {       // checks all the <p> text on the basis of text
                                     activitiesParagraph.value.push(nextElementP.textContent.trim());
-                                    activitiesHeading.value.push(strongContent);
-                                    console.log(strongContent)
+                                    if (strongContent !== "" ) {        // checks if the <strong> is empty
+                                        activitiesHeading.value.push(strongContent);
+                                    }
                                 }
                                 if (pText.toLowerCase().includes('understanding')) {       // checks all the <p> text on the basis of text
                                     checkUnderstandingParagraph.value.push(nextElementP.textContent.trim());
-                                    checkUnderstandingHeading.value.push(strongContent);
+                                    if (strongContent !== "" ) {        // checks if the <strong> is empty
+                                        checkUnderstandingHeading.value.push(strongContent);
+                                    }
                                 }
                             })
                         }
@@ -830,6 +836,11 @@ const extractAllContentByEachId = (html, id) => {
         else {
             return null; // will not throw error if there is any null value in the doc as per the conditions.
         }
+    }
+
+    //
+    if (element && element.parentElement.nextElementSibling) {
+        
     }
 
 }
