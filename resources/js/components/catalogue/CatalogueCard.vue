@@ -41,7 +41,7 @@ const catCardShortSpec = computed(() =>{
 </script>
 
 <template>
-    <div class="catalogueCardOuter flex flex-col h-catH w-catW">
+    <div class="catalogueCardOuter flex flex-col h-catH mb-6 w-catW">
         <div class="border-[1px] border-slate-300 catCardImageContainer flex justify-center items-center h-[200px] mb-4 p-4 rounded-xl w-catW">
             <img
                 class="catalogueCoverImage h-full object-contain rounded"
@@ -67,11 +67,14 @@ const catCardShortSpec = computed(() =>{
                         class="font-light text-base"
                     > inc. GST</span>
                 </div>
-                <div class="compareTickBox ml-auto">
+                <div class="compareTickBox flex flex-row gap-2 ml-auto">
                     <input
                         type="checkbox"
                         class="p-2 rounded shadow"
                     >
+                    <div class="compareLabel">
+                        Compare
+                    </div>
                 </div>
             </div>
         </div>

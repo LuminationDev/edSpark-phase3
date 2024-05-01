@@ -2,12 +2,24 @@
 import './noUiSlider.css'
 
 import noUiSlider from 'nouislider';
-import {computed, defineEmits, defineProps, onMounted,  ref} from 'vue';
+import {computed, defineEmits, defineProps, onMounted, ref} from 'vue';
 
 const props = defineProps({
-    config: {type: Object, required: true},
-    values: {type: Array, required: true},
-    id: {type: String, default: () => Math.random().toString(36).substr(2, 4)}
+    config: {
+        type: Object,
+        required: true
+    },
+    values:
+        {
+            type: Array,
+            required: true
+        },
+    id:
+        {
+            type: String,
+            required: false,
+            default: () => Math.random().toString(36).substr(2, 4)
+        }
 });
 
 const emit = defineEmits(['update:values']);
@@ -26,9 +38,9 @@ onMounted(() => {
 });
 
 const updateValue = (value, handle) => {
-    console.log('update value called' , value, handle)
+    console.log('update value called', value, handle)
     currentValues.value[handle] = value[handle];
-    emit('update:values', props.values);
+    emit('update:values', currentValues.value);
 };
 
 const uniqueId = () => {
@@ -42,9 +54,9 @@ const uniqueId = () => {
 </script>
 
 <template>
-    <div class="my-16 slider-wrapper">
+    <div class="my-4 slider-wrapper">
         <div
-            :id="sliderId"
+            id="slider-round"
             ref="slider"
             class="vue-nouislider"
         />

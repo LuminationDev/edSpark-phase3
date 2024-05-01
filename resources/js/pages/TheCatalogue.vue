@@ -188,8 +188,8 @@ const handleClickCatalogueCard = (reference) => {
         :title-paragraph="LandingHeroText['catalogue']['subtitle']"
         swoosh-color="teal"
     />
-    <div class="cataloguePageOuterContainer grid grid-cols-4 mt-16">
-        <div class="col-span-1 flex flex-col gap-2 ml-8 pr-8">
+    <div class="cataloguePageOuterContainer grid grid-cols-10 mt-16">
+        <div class="col-span-2 flex flex-col gap-2 ml-8 pr-8">
             <CataloguePerPageSelector v-model="perPage" />
             <CatalogueFilterColumn
                 v-model:brand-list="brandList"
@@ -208,7 +208,7 @@ const handleClickCatalogueCard = (reference) => {
         </div>
         <div
             v-else-if="!isProductsLoading && !error.status"
-            class="col-span-3 productPanel"
+            class="col-span-8 productPanel"
         >
             <div class="my-4 text-center totalItems">
                 Total Items: {{ totalItems }}
