@@ -659,7 +659,7 @@ const extractAllContentByEachId = (html, id) => {
         }
     }
 
-    // extracts the Number, Title, and Duration of Task Sequence on the basis of <br> inside <p> inside <th> inside <tr> inside <thead> inside <table> that is sibling of parent element of the ID Element
+    // extracts the Number, Title, and Duration of 'Task Sequence' on the basis of <br> inside <p> inside <th> inside <tr> inside <thead> inside <table> that is sibling of parent element of the ID Element
     if (element && element.parentElement.nextElementSibling) {
         const siblingTable = element.parentElement.nextElementSibling;
         if (siblingTable.nodeName === 'TABLE') {
