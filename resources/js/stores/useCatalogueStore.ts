@@ -1,9 +1,10 @@
 import {useStorage} from "@vueuse/core";
 import {defineStore} from "pinia";
 
-export const CatalogueStore = defineStore('catalogue', {
+export const useCatalogueStore = defineStore('catalogue', {
     state: () => ({
         cart: useStorage('EDSPARK_CATALOGUE_CART', [], localStorage, {mergeDefaults: true}),
+        compareBasket: useStorage('EDSPARK_COMPARE_BASKET', [])
     }),
     getters: {
         getCatalogue() {
@@ -27,6 +28,13 @@ export const CatalogueStore = defineStore('catalogue', {
             // Check if a specific item is in the cart
             return this.cart.some(item => item.id === itemId);
         },
+        getCompareBasketItem(){
+            return this.compareBasket;
+        },
+        showCompareBanner(){
+            return true
+            // return Boolean(this.compareBasket.length)
+        }
     },
     actions: {
 

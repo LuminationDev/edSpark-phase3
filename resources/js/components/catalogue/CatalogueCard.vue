@@ -1,9 +1,11 @@
 <script setup lang="ts">
-import {computed, ref} from 'vue'
+import {storeToRefs} from "pinia";
+import {computed, onMounted, ref, watch} from 'vue'
 
 import CatalogueCardDescGenerator from "@/js/components/catalogue/CatalogueCardDescGenerator.vue";
 import {catalogueImageURL} from "@/js/constants/serverUrl";
 import {catalogueService} from "@/js/service/catalogueService";
+import {useCatalogueStore} from "@/js/stores/useCatalogueStore";
 import {CatalogueItemType} from "@/js/types/catalogueTypes";
 
 const props = defineProps({
@@ -17,8 +19,34 @@ const props = defineProps({
     }
 })
 
-const ComputerTypes = ['all-in-one', 'chromebook', 'desktop', 'notebook']
-const DisplayTypes = ['monitor', 'tablet']
+const emits = defineEmits(['addItemToCompareBasket'])
+
+const catalogueStore = useCatalogueStore()
+const {compareBasket} = storeToRefs(catalogueStore)
+
+// handle adding item to compare list
+const itemCompareStatus = ref(false)
+watch(itemCompareStatus, () => {
+    if (itemCompareStatus.value) {
+        compareBasket.value.push(props.catItem) // add if the compare becomes true
+    } else {
+        compareBasket.value = compareBasket.value.filter(item => item.unique_reference !== props.catItem.unique_reference) // remove it the compare becomes false
+    }
+})
+const disableCompareButton = computed(() => {
+    return compareBasket.value.length >= 3 && !itemCompareStatus.value
+})
+
+// onMounted, check if the compare basket has anything
+onMounted(() => {
+    if (compareBasket.value.length) {
+        if (compareBasket.value.some(element => element.unique_reference == props.catItem.unique_reference)) {
+            itemCompareStatus.value = true
+        }
+    }
+})
+
+
 const {
     unique_reference,
     brand,
@@ -36,7 +64,10 @@ const catCardShortSpec = computed(() => {
     return catalogueService.getCatalogueShortSpecObj(props.catItem)
 })
 
-// image in card 270*200
+const handleInputCompareItem = () => {
+    console.log('hehe')
+}
+
 </script>
 
 <template>
@@ -89,10 +120,15 @@ const catCardShortSpec = computed(() => {
                         class="font-light text-base"
                     > inc. GST</span>
                 </div>
-                <div class="compareTickBox flex flex-row gap-2 ml-auto">
+                <div
+                    class="compareTickBox flex flex-row gap-2 ml-auto"
+                    :class="{'opacity-50 cursor-not-allowed' : disableCompareButton }"
+                >
                     <input
+                        v-model="itemCompareStatus"
                         type="checkbox"
                         class="p-2 rounded shadow"
+                        :disabled="disableCompareButton"
                     >
                     <div class="compareLabel">
                         Compare

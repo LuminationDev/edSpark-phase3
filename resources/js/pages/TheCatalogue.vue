@@ -7,6 +7,7 @@ import {useRouter} from "vue-router";
 
 import BaseLandingHero from "@/js/components/bases/BaseLandingHero.vue";
 import CatalogueCard from "@/js/components/catalogue/CatalogueCard.vue";
+import CatalogueComparisonBanner from "@/js/components/catalogue/cataloguecomparison/CatalogueComparisonBanner.vue";
 import CatalogueFilterColumn from "@/js/components/catalogue/CatalogueFilterColumn.vue";
 import CataloguePerPageSelector from "@/js/components/catalogue/CataloguePerPageSelector.vue";
 import Loader from "@/js/components/spinner/Loader.vue";
@@ -54,8 +55,6 @@ const primarySelectedValues = computed(() => {
 })
 
 onMounted(async () => {
-
-
     try {
         isFilterLoading.value = true
         const [categoriesResponse, typesResponse, brandsResponse, vendorsResponse, cataloguesResult] = await Promise.all([
@@ -179,6 +178,7 @@ const handleClickCatalogueCard = (reference) => {
 }
 
 
+
 </script>
 
 <template>
@@ -220,6 +220,7 @@ const handleClickCatalogueCard = (reference) => {
                     />
                 </template>
             </div>
+            <CatalogueComparisonBanner />
 
             <div
                 v-if="showPagination"
