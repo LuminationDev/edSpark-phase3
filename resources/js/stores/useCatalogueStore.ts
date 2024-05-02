@@ -28,15 +28,38 @@ export const useCatalogueStore = defineStore('catalogue', {
             // Check if a specific item is in the cart
             return this.cart.some(item => item.id === itemId);
         },
-        getCompareBasketItem(){
+        getCompareBasketItem() {
             return this.compareBasket;
         },
-        showCompareBanner(){
+        getCompareBasketLength() {
+            if (!this.compareBasket) return 0
+            else return this.compareBasket.length
+        },
+        showCompareBanner() {
             return true
             // return Boolean(this.compareBasket.length)
         }
     },
     actions: {
+        // comparisons
+        addItemToComparisonBasket(item) {
+            if (!this.compareBasket.some(currentItem => currentItem.unique_reference == item.unique_reference)) {
+                this.compareBasket.push(item)
+            } else{
+                console.log('eh heh almost added the same itemm twice')
+            }
+        },
+        removeItemFromComparisonBasket(itemUniqueRef) {
+            this.compareBasket = this.compareBasket.filter(item => item.unique_reference !== itemUniqueRef)
+        },
+        clearComparisonBasket() {
+            this.compareBasket = []
+        },
+
+
+        // end of comparisons
+
+        // start quotes
 
         addToCart(item) {
             const existingItem = this.cart.find(cartItem => cartItem.id === item.id);

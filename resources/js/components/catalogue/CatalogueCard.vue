@@ -26,11 +26,14 @@ const {compareBasket} = storeToRefs(catalogueStore)
 
 // handle adding item to compare list
 const itemCompareStatus = ref(false)
+
 watch(itemCompareStatus, () => {
     if (itemCompareStatus.value) {
-        compareBasket.value.push(props.catItem) // add if the compare becomes true
-    } else {
-        compareBasket.value = compareBasket.value.filter(item => item.unique_reference !== props.catItem.unique_reference) // remove it the compare becomes false
+        // compareBasket.value.push(props.catItem) // add if the compare becomes true
+        catalogueStore.addItemToComparisonBasket(props.catItem)// add if the compare becomes true
+    } else {// remove it the compare becomes false
+        // compareBasket.value = compareBasket.value.filter(item => item.unique_reference !== props.catItem.unique_reference)
+        catalogueStore.removeItemFromComparisonBasket(props.catItem.unique_reference)
     }
 })
 const disableCompareButton = computed(() => {
@@ -63,10 +66,6 @@ const catCoverImageUrl = computed(() => {
 const catCardShortSpec = computed(() => {
     return catalogueService.getCatalogueShortSpecObj(props.catItem)
 })
-
-const handleInputCompareItem = () => {
-    console.log('hehe')
-}
 
 </script>
 

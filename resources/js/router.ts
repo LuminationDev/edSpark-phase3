@@ -5,6 +5,7 @@ import {createRouter, createWebHistory} from 'vue-router';
 import AdviceForm from "@/js/components/bases/frontendform/types/AdviceForm.vue";
 import EventForm from "@/js/components/bases/frontendform/types/EventForm.vue";
 import SoftwareForm from "@/js/components/bases/frontendform/types/SoftwareForm.vue";
+import CatalogueComparisonPage from "@/js/components/catalogue/cataloguecomparison/CatalogueComparisonPage.vue";
 import UserPosts from "@/js/components/create/UserPosts.vue";
 import AdviceSearch from "@/js/components/search/AdviceSearch.vue";
 import EventSearch from "@/js/components/search/EventSearch.vue";
@@ -402,8 +403,17 @@ const routes: any = [
         meta: {
             navigation: false,
             requiresAuth: true,
-        }
+        },
     },
+    {
+        name: 'compare-item',
+        path: '/catalogue/compare?',
+        component: CatalogueComparisonPage,
+        meta: {
+            requiresAuth: true,
+        } as RouteMeta
+    },
+
     {
         name: 'catalogue-single',
         path: '/catalogue/resources/:ref/:name?',
