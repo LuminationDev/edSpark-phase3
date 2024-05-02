@@ -788,59 +788,62 @@ const extractAllContentByEachId = (html, id) => {
         const siblingTable = element.parentElement.nextElementSibling;
         if (siblingTable.nodeName === 'TABLE') {
             const theadElement = siblingTable.querySelector('thead');
-            const trElement = theadElement.querySelectorAll('tr');
-            trElement.forEach(tr => {
-                let countTH = 0;
-                tr.childNodes.forEach(th => {
-                    countTH++;
-                    th.childNodes.forEach(p => {        // checks all <p> text on the basis of ID
-                        const pText = p.textContent.trim();
-                        const parentTH = p ? (p.parentElement ? (p.parentElement.nodeName === 'TH' ? (p.parentElement.nextElementSibling ? (p.parentElement.nextElementSibling.nodeName === 'TH' ? p.parentElement.nextElementSibling.querySelectorAll('p') : null) : null) : null) : null) : null;
-                        if (countTH === 1) {
-                            parentTH.forEach(nextElementP => {
-                                let strongContent = '';
-                                const strongElements = nextElementP.querySelectorAll('strong');
-                                strongElements.forEach(strong => {
-                                    strongContent = strong.textContent.trim();
-                                })
-                                if (pText.toLowerCase().includes('provocation')) {       // checks all the <p> text on the basis of text
-                                    introductoryParagraph.value.push(nextElementP.textContent.trim());
-                                    if (strongContent !== "" ) {        // checks if the <strong> is empty
-                                        introductoryHeading.value.push(strongContent);
-                                    }
-                                }
-                                if ((pText.toLowerCase().includes('prior') || pText.toLowerCase().includes('pre') || pText.toLowerCase().includes('discussion'))) {       // checks all the <p> text on the basis of text
-                                    priorKnowledgeParagraph.value.push(nextElementP.textContent.trim());
-                                    if (strongContent !== "" ) {        // checks if the <strong> is empty
-                                        priorKnowledgeHeading.value.push(strongContent);
-                                    }
-                                }
-                                if (pText.toLowerCase().includes('activities')) {       // checks all the <p> text on the basis of text
-                                    activitiesParagraph.value.push(nextElementP.textContent.trim());
-                                    if (strongContent !== "" ) {        // checks if the <strong> is empty
-                                        activitiesHeading.value.push(strongContent);
-                                    }
-                                }
-                                if (pText.toLowerCase().includes('understanding')) {       // checks all the <p> text on the basis of text
-                                    checkUnderstandingParagraph.value.push(nextElementP.textContent.trim());
-                                    if (strongContent !== "" ) {        // checks if the <strong> is empty
-                                        checkUnderstandingHeading.value.push(strongContent);
-                                    }
-                                }
-                            })
+            if (!theadElement) return null; // No <thead> found in sibling table
+
+            const traverse = (node) => {
+                if (!node) return;
+
+                if (node.nodeName === 'P' && node.parentElement.nodeName === 'TH') {
+                    const pText = node.textContent.trim().toLowerCase();
+                    // Your conditions for extracting text
+                    if (pText.includes('provocation')) {
+                        // Extract text for Provocation
+                        introductoryParagraph.value.push(node.textContent.trim());
+                        const strongContent = node.querySelector('strong');
+                        if (strongContent) {
+                            introductoryHeading.value.push(strongContent.textContent.trim());
                         }
-                    })
-                })
-            })
-        }
-        else {
-            return null; // will not throw error if there is any null value in the doc as per the conditions.
+                    } else if (pText.includes('prior') || pText.includes('pre') || pText.includes('discussion')) {
+                        // Extract text for Prior knowledge check
+                        priorKnowledgeParagraph.value.push(node.textContent.trim());
+                        const strongContent = node.querySelector('strong');
+                        if (strongContent) {
+                            priorKnowledgeHeading.value.push(strongContent.textContent.trim());
+                        }
+                    } else if (pText.includes('activities')) {
+                        // Extract text for Activities
+                        activitiesParagraph.value.push(node.textContent.trim());
+                        const strongContent = node.querySelector('strong');
+                        if (strongContent) {
+                            activitiesHeading.value.push(strongContent.textContent.trim());
+                        }
+                    } else if (pText.includes('understanding')) {
+                        // Extract text for Check for understanding
+                        checkUnderstandingParagraph.value.push(node.textContent.trim());
+                        const strongContent = node.querySelector('strong');
+                        if (strongContent) {
+                            checkUnderstandingHeading.value.push(strongContent.textContent.trim());
+                        }
+                    }
+                }
+
+                // Continue traversing only if it's not a nested table
+                if (node.nodeName !== 'TABLE') {
+                    for (const child of node.childNodes) {
+                        traverse(child);
+                    }
+                }
+            };
+
+            traverse(theadElement);
+        } else {
+            return null; // No nested table, return null
         }
     }
 
     //
     if (element && element.parentElement.nextElementSibling) {
-        
+
     }
 
 }
