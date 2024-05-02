@@ -13,7 +13,6 @@ import Loader from "@/js/components/spinner/Loader.vue";
 import useErrorMessage from "@/js/composables/useErrorMessage";
 import usePagination from "@/js/composables/usePagination";
 import {LandingHeroText} from "@/js/constants/PageBlurb";
-import {catalogueImageURL} from "@/js/constants/serverUrl";
 import {catalogueService} from "@/js/service/catalogueService";
 import {CatalogueFilterField, CatalogueItemType} from "@/js/types/catalogueTypes";
 
@@ -220,67 +219,19 @@ const handleClickCatalogueCard = (reference) => {
                         :click-callback="handleClickCatalogueCard"
                     />
                 </template>
-                <!--                <div-->
-                <!--                    v-for="(item,index) in catalogueList"-->
-                <!--                    :key="index"-->
-                <!--                    class="border-[1px] catalogueCard cursor-pointer grid place-items-center rounded w-72"-->
-                <!--                    @click="() => handleClickCatalogueCard(item.unique_reference)"-->
-                <!--                >-->
-                <!--                    <img-->
-                <!--                        :src="catalogueImageURL + item.image"-->
-                <!--                        class="h-32 w-auto"-->
-                <!--                        :alt="'Photo of ' + item.name"-->
-                <!--                    >-->
-                <!--                    <div class="grid grid-cols-2 place-items-start p-4 productInformationSection w-full">-->
-                <!--                        <div class="font-medium">-->
-                <!--                            Product Name:-->
-                <!--                        </div>-->
-                <!--                        <div class="font-light">-->
-                <!--                            {{ item.name }}-->
-                <!--                        </div>-->
-                <!--                        <div class="font-medium">-->
-                <!--                            Brand:-->
-                <!--                        </div>-->
-                <!--                        <div class="font-light">-->
-                <!--                            {{ item.brand }}-->
-                <!--                        </div>-->
-                <!--                        <div class="font-medium">-->
-                <!--                            Category:-->
-                <!--                        </div>-->
-                <!--                        <div class="font-light">-->
-                <!--                            {{ item.category }}-->
-                <!--                        </div>-->
-                <!--                        <div class="font-medium">-->
-                <!--                            Type:-->
-                <!--                        </div>-->
-                <!--                        <div class="font-light">-->
-                <!--                            {{ item.type }}-->
-                <!--                        </div>-->
-                <!--                        <div class="font-medium">-->
-                <!--                            Price inc gst:-->
-                <!--                        </div>-->
-                <!--                        <div class="font-light">-->
-                <!--                            {{ '$' + item.price_inc_gst }}-->
-                <!--                        </div>-->
-                <!--                        <div class="font-medium">-->
-                <!--                            Vendor:-->
-                <!--                        </div>-->
-                <!--                        <div class="font-light">-->
-                <!--                            {{ item.vendor }}-->
-                <!--                        </div>-->
-                <!--                    </div>-->
-                <!--                </div>-->
             </div>
 
             <div
                 v-if="showPagination"
-                class="flex justify-center mt-12 text-lg"
+                class="cataloguePagination flex justify-center mt-12 text-lg"
             >
                 <v-pagination
                     v-model="currentPage"
                     :range-size="1"
                     :pages="totalPages"
                     active-color="#DCEDFF"
+                    :hide-first-button="true"
+                    :hide-last-button="true"
                     @update:model-value="handleChangePageNumber"
                 />
             </div>
@@ -297,3 +248,25 @@ const handleClickCatalogueCard = (reference) => {
         </div>
     </div>
 </template>
+<style lang="scss">
+
+.cataloguePagination{
+    .Pagination {
+        padding-left: 16px;
+        padding-right: 16px;
+        .PaginationControl:first-of-type{
+            margin-right: auto;
+        }
+        .PaginationControl:last-of-type{
+            margin-left: auto;
+        }
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        width: 100%;
+
+        .Page {
+        }
+    }
+}
+</style>
