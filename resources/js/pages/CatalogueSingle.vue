@@ -3,6 +3,7 @@ import {computed, onMounted, Ref, ref,} from 'vue'
 import {RouteParamValue, useRoute} from "vue-router";
 
 import BaseHero from "@/js/components/bases/BaseHero.vue";
+import CatalogueAddToQuoteButton from "@/js/components/catalogue/CatalogueAddToQuoteButton.vue";
 import CataloguePriceDisplay from "@/js/components/catalogue/CataloguePriceDisplay.vue";
 import CatalogueSingleShortSpec from "@/js/components/catalogue/cataloguesingle/CatalogueSingleShortSpec.vue";
 import Loader from "@/js/components/spinner/Loader.vue";
@@ -262,18 +263,21 @@ const shortSpecEntries = computed(() => {
                     :short-spec-entries="shortSpecEntries"
                 />
                 <CataloguePriceDisplay
+                    class="mb-4"
+
                     :price-value="+itemData.price_inc_gst"
                     :include-gst="true"
                 />
+                <CatalogueAddToQuoteButton />
             </div>
         </div>
-        <div class="CatalogueSingleOuter mt-16 mx-8">
+        <div class="CatalogueSingleOuter grid grid-cols-2 gap-4 mt-16 mx-8">
             <template
                 v-for="(header,index) in tableHeaders"
                 :key="index"
             >
                 <!--                turning this into component and have the props hidable-->
-                <div class="border-[1px] border-slate-300 flex flex-col mb-4 rounded-lg tableOuter w-1/2">
+                <div class="border-[1px] border-slate-300 flex flex-col h-fit mb-4 rounded-lg tableOuter w-full">
                     <div class="capitalize px-4 py-2 text-lg text-main-darkTeal">
                         {{ header.replace(/_/g, " ") }}
                     </div>
