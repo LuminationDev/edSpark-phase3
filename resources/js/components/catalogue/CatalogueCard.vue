@@ -3,6 +3,7 @@ import {computed, ref} from 'vue'
 
 import CatalogueCardDescGenerator from "@/js/components/catalogue/CatalogueCardDescGenerator.vue";
 import {catalogueImageURL} from "@/js/constants/serverUrl";
+import {catalogueService} from "@/js/service/catalogueService";
 import {CatalogueItemType} from "@/js/types/catalogueTypes";
 
 const props = defineProps({
@@ -24,11 +25,6 @@ const {
     type,
     name,
     image,
-    processor,
-    memory,
-    storage,
-    display,
-    other,
     price_inc_gst
 } = props.catItem
 
@@ -37,20 +33,7 @@ const catCoverImageUrl = computed(() => {
 })
 
 const catCardShortSpec = computed(() => {
-    if (ComputerTypes.includes(type.toLowerCase())) {
-        return {
-            'processor': processor,
-            'memory': memory,
-            'storage': storage
-        }
-    } else if (DisplayTypes.includes(type.toLowerCase())) {
-        return {
-            'display': display,
-            'other': other
-        }
-    } else {
-        return {}
-    }
+    return catalogueService.getCatalogueShortSpecObj(props.catItem)
 })
 
 // image in card 270*200

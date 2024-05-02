@@ -59,5 +59,24 @@ export const catalogueService = {
     fetchAllCatalogue: (per_page)=>{
         const body = {per_page: per_page}
         return axios.post(API_ENDPOINTS.CATALOGUE.FETCH_ALL_CATALOGUE,body)
+    },
+    getCatalogueShortSpecObj: (catItem) =>{
+        const ComputerTypes = ['all-in-one', 'chromebook', 'desktop', 'notebook']
+        const DisplayTypes = ['monitor', 'tablet']
+        if(!catItem.type) return {}
+        if (ComputerTypes.includes(catItem.type.toLowerCase())) {
+            return {
+                'processor': catItem.processor,
+                'memory': catItem.memory,
+                'storage': catItem.storage
+            }
+        } else if (DisplayTypes.includes(catItem.type.toLowerCase())) {
+            return {
+                'display': catItem.display,
+                'other': catItem.other
+            }
+        } else {
+            return {}
+        }
     }
 }

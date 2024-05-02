@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import {computed, onMounted, Ref, ref, toRefs} from 'vue'
+import {computed, onMounted, Ref, ref,} from 'vue'
 import {RouteParamValue, useRoute} from "vue-router";
 
 import BaseHero from "@/js/components/bases/BaseHero.vue";
-import BaseSingle from "@/js/components/bases/BaseSingle.vue";
+import CataloguePriceDisplay from "@/js/components/catalogue/CataloguePriceDisplay.vue";
+import CatalogueSingleShortSpec from "@/js/components/catalogue/cataloguesingle/CatalogueSingleShortSpec.vue";
 import Loader from "@/js/components/spinner/Loader.vue";
-import useIsLoading from "@/js/composables/useIsLoading";
 import {catalogueImageURL} from "@/js/constants/serverUrl";
 import {catalogueService} from "@/js/service/catalogueService";
 import {CatalogueItemType} from "@/js/types/catalogueTypes";
@@ -15,7 +15,7 @@ const props = defineProps({})
 
 const route = useRoute()
 const uniqueRef: string | RouteParamValue[] = route.params.ref
-const isLoading = ref(false)
+const isLoading = ref(true)
 const itemData: Ref<CatalogueItemType> = ref({})
 onMounted(() => {
     isLoading.value = true
@@ -209,38 +209,72 @@ const structuredCatItemData = computed(() => {
 });
 
 const tableHeaders = ['overview', 'specs', 'hardware', 'availability', 'more_info']
+const imageUrl = computed(() => {
+    return catalogueImageURL + itemData.value.image
+})
+
+const catItemShortSpec = computed(() => {
+    if (itemData.value.type) {
+        return catalogueService.getCatalogueShortSpecObj(itemData.value)
+
+    } else {
+        return {}
+    }
+})
+
+const shortSpecEntries = computed(() => {
+    return Object.entries(catItemShortSpec.value)
+})
+
 
 </script>
 
 <template>
-    <template v-if="isLoading">
+    <template v-if="isLoading && itemData">
         <Loader
             loader-type="page"
             loader-message="Fetching product"
         />
     </template>
     <template v-else>
-        <BaseHero
-            :background-url="itemData.image"
-            :background-server-url="catalogueImageURL"
-        >
-            <!--            <template #titleText>-->
-            <!--                {{ itemData.name }}-->
-            <!--            </template>-->
-            <!--            <template #hardwareProvider>-->
-            <!--                {{ itemData.vendor }}-->
-            <!--            </template>-->
-            <!--            <template #subtitleText2>-->
-            <!--                Brand: {{ itemData.brand }}-->
-            <!--            </template>-->
-        </BaseHero>
+        <div class="flex flex-row gap-16 mt-24 px-8 w-full">
+            <div
+                class="ImageDisplayContainer border-[1px] border-slate-300 flex justify-center items-center rounded-lg w-1/2"
+            >
+                <img
+                    class=""
+                    :src="imageUrl"
+                    alt="image"
+                >
+            </div>
+            <div class="InfoDisplayContainter flex flex-col w-1/2">
+                <div class="mb-4 text-main-teal">
+                    Home / Catalogue / Product (disabled)
+                </div>
+                <div class="brandType mb-4 tag text-main-darkTeal">
+                    {{ itemData.brand }} • {{ itemData.type }}
+                </div>
+                <div class="border-b-[1px] border-slate-300 catItemName mb-4 text-2xl">
+                    {{ itemData.name }}
+                </div>
+                <CatalogueSingleShortSpec
+                    class="mb-4"
+                    :short-spec-entries="shortSpecEntries"
+                />
+                <CataloguePriceDisplay
+                    :price-value="+itemData.price_inc_gst"
+                    :include-gst="true"
+                />
+            </div>
+        </div>
         <div class="CatalogueSingleOuter mt-16 mx-8">
             <template
                 v-for="(header,index) in tableHeaders"
                 :key="index"
             >
+                <!--                turning this into component and have the props hidable-->
                 <div class="border-[1px] border-slate-300 flex flex-col mb-4 rounded-lg tableOuter w-1/2">
-                    <div class="capitalize px-4 py-2 text-lg text-main-teal">
+                    <div class="capitalize px-4 py-2 text-lg text-main-darkTeal">
                         {{ header.replace(/_/g, " ") }}
                     </div>
                     <div
@@ -248,11 +282,13 @@ const tableHeaders = ['overview', 'specs', 'hardware', 'availability', 'more_inf
                         :key="`${index}-row`"
                         class="px-4 py-2 even:bg-main-teal/5"
                     >
-                        <div class="grid grid-cols-2 w-full">
+                        <div class="grid grid-cols-2 py-1 w-full">
                             <div>
                                 {{ row.display_text }}
                             </div>
-                            <div>{{ row.value }}</div>
+                            <div class="text-center text-slate-600">
+                                {{ row.value }}
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -261,14 +297,4 @@ const tableHeaders = ['overview', 'specs', 'hardware', 'availability', 'more_inf
     </template>
 </template>
 <style scoped>
-table {
-    width: 50%;
-    border-collapse: collapse;
-}
-
-th, td {
-    padding: 8px;
-    text-align: left;
-    border-bottom: 1px solid teal;
-}
 </style>
