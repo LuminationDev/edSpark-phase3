@@ -4,6 +4,7 @@ import {computed, onMounted, ref} from 'vue'
 import {useRoute} from "vue-router";
 
 import BaseLandingHero from "@/js/components/bases/BaseLandingHero.vue";
+import CatalogueComparisonTable from "@/js/components/catalogue/cataloguecomparison/CatalogueComparisonTable.vue";
 import Loader from "@/js/components/spinner/Loader.vue";
 import {catalogueImageURL} from "@/js/constants/serverUrl";
 import {catalogueService} from "@/js/service/catalogueService";
@@ -14,39 +15,39 @@ const catalogueStore = useCatalogueStore()
 const {compareBasket} = storeToRefs(catalogueStore)
 console.log('welcoem to comparison page')
 console.log(route.query.sku)
-const skusList= ref(route.query.sku)
+const skusList = ref(route.query.sku)
 const isLoading = ref(true)
 
-onMounted(() =>{
+onMounted(() => {
     // perform checking if the sku in url are inside storage
     // filter out what is not inside the storage and fetch the missing
     console.log(skusList.value)
     const missingDataReference = []
     skusList.value.forEach(sku => {
-        if(!compareBasket.value.some(item => item.unique_reference === sku)){
+        if (!compareBasket.value.some(item => item.unique_reference === sku)) {
             missingDataReference.push(sku)
         }
     })
-    if(missingDataReference.length){// means has missing
+    if (missingDataReference.length || compareBasket.value.length > 3) {// means has missing and or more than 3 items
         console.log('has missing item')
         // remove unwanted items from basket
-        compareBasket.value.filter(item => skusList.value.includes(item.unique_reference))
+        compareBasket.value = compareBasket.value.filter(item => skusList.value.includes(item.unique_reference))
         // fetch item data
-        missingDataReference.forEach(data =>{
+        missingDataReference.forEach(data => {
             catalogueService.fetchSingleProductByReference(data).then(res => {
                 console.log(res.data.data)
                 catalogueStore.addItemToComparisonBasket(res.data.data)
                 isLoading.value = false
             })
         })
-    } else{
+    } else {
         console.log('no missing')
         isLoading.value = false
     }
 })
-const groupedData = computed(() =>{
-    if(isLoading.value)return []
-    else{
+const groupedData = computed(() => {
+    if (isLoading.value) return []
+    else {
         return compareBasket.value.map(item => catalogueService.getGroupedItemData(item))
     }
 })
@@ -76,20 +77,30 @@ const groupedData = computed(() =>{
                     {{ item.name }}
                 </div>
             </div>
-            <div />
+            <div class="comparisonTitles">
+                <div
+                    v-for="(row, index) in groupedData[0]"
+                    :key="`${index}-title-row`"
+                    class="px-4 py-2 even:bg-main-teal/5"
+                >
+                    <div class="grid place-items-center h-8 w-full">
+                        <div class="text-center text-slate-600">
+                            {{ row.display_text }}
+                        </div>
+                    </div>
+                </div>
+            </div>
             <div
                 v-for="(eachItem, index) in groupedData"
                 :key="index"
+                class="compareSpecColumn"
             >
                 <div
                     v-for="(row, index) in eachItem"
                     :key="`${index}-row`"
                     class="px-4 py-2 even:bg-main-teal/5"
                 >
-                    <div class="grid grid-cols-2 py-1 w-full">
-                        <div>
-                            {{ row.display_text }}
-                        </div>
+                    <div class="grid place-items-center h-8 w-full">
                         <div class="text-center text-slate-600">
                             {{ row.value }}
                         </div>
@@ -97,7 +108,10 @@ const groupedData = computed(() =>{
                 </div>
             </div>
         </div>
+        <pre>{{ groupedData }}</pre>
+        <CatalogueComparisonTable :data="groupedData" />
     </div>
+
     <div v-else>
         <Loader
             loader-type="page"

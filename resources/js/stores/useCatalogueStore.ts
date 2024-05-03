@@ -36,8 +36,7 @@ export const useCatalogueStore = defineStore('catalogue', {
             else return this.compareBasket.length
         },
         showCompareBanner() {
-            return true
-            // return Boolean(this.compareBasket.length)
+            return Boolean(this.compareBasket.length)
         }
     },
     actions: {

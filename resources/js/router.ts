@@ -407,7 +407,7 @@ const routes: any = [
     },
     {
         name: 'compare-item',
-        path: '/catalogue/compare?',
+        path: '/catalogue/compare/:sku?',
         component: CatalogueComparisonPage,
         meta: {
             requiresAuth: true,

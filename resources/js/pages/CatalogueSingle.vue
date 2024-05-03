@@ -9,7 +9,7 @@ import CatalogueSingleShortSpec from "@/js/components/catalogue/cataloguesingle/
 import Loader from "@/js/components/spinner/Loader.vue";
 import {catalogueImageURL} from "@/js/constants/serverUrl";
 import {catalogueService} from "@/js/service/catalogueService";
-import {CatalogueItemType} from "@/js/types/catalogueTypes";
+import {CatalogueItemType, catalogueTableHeaders} from "@/js/types/catalogueTypes";
 
 const props = defineProps({})
 
@@ -209,7 +209,6 @@ const structuredCatItemData = computed(() => {
     ]
 });
 
-const tableHeaders = ['overview', 'specs', 'hardware', 'availability', 'more_info']
 const imageUrl = computed(() => {
     return catalogueImageURL + itemData.value.image
 })
@@ -273,7 +272,7 @@ const shortSpecEntries = computed(() => {
         </div>
         <div class="CatalogueSingleOuter grid grid-cols-2 gap-4 mt-16 mx-8">
             <template
-                v-for="(header,index) in tableHeaders"
+                v-for="(header,index) in catalogueTableHeaders"
                 :key="index"
             >
                 <!--                turning this into component and have the props hidable-->
