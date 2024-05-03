@@ -6,14 +6,24 @@ use App\Filament\Imports\CatalogueUpdater;
 use App\Filament\Resources\CatalogueResource;
 use App\Models\Catalogue;
 use Filament\Actions\Action;
+use Filament\Actions\CreateAction;
 use Filament\Actions\ImportAction;
+use Filament\Forms\Components\FileUpload;
 use Filament\Resources\Pages\ListRecords;
 use Filament\Support\Colors\Color;
-
+use App\Models\Catalogueversion;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class ListCatalogues extends ListRecords
 {
     protected static string $resource = CatalogueResource::class;
+    protected ?string $subheading;
+
+    public function __construct()
+    {
+        $this->subheading = 'Catalogue version: ' . strval(Catalogueversion::getActiveCatalogueId());
+    }
 
     protected function getHeaderActions(): array
     {
@@ -25,11 +35,143 @@ class ListCatalogues extends ListRecords
                 ->action(function () {
                     Catalogue::deleteAll();
                 }),
+            Action::make("Bulk update via csv")
+                ->form([
+                    FileUpload::make('csv_file')
+                        ->acceptedFileTypes(['text/csv'])
+                        ->storeFiles(false)
+                        ->required(),
+                ])
+                ->action(function (array $data, $record): void {
+                    DB::beginTransaction();
+                    $updatedCount = 0;
+                    $createdCount = 0;
+                    try {
+                        $activeCatalogueId = Catalogueversion::getActiveCatalogueId();
 
+                        // Read CSV
+                        $csvFile = $data['csv_file']->get();
+                        $rows = explode("\n", $csvFile); // Split the string into lines
+                        $headers = str_getcsv(array_shift($rows));
 
-            ImportAction::make()
-                ->label('Bulk update')
-                ->importer(CatalogueUpdater::class)
+                        // Format CSV into array
+                        $catalogueItems = [];
+                        foreach ($rows as $row) {
+                            $values = str_getcsv($row, ",");
+                            if (count($values) === count($headers)) {
+                                $rowData = array_combine($headers, $values);
+                                $catalogueItems[] = $rowData;
+                            }
+                        }
+
+                        foreach ($catalogueItems as $catalogueItem) {
+                            // Check if the record exists based on unique reference
+                            $existingRecord = DB::table('catalogues')
+                                ->where('unique_reference', $catalogueItem['Unique Reference'])
+                                ->where('version_id', $activeCatalogueId)
+                                ->first();
+
+                            if ($existingRecord) {
+                                $updateRecords[] = [
+                                    'id' => $existingRecord->id,
+                                    'data' => [
+                                        'type' => $catalogueItem['Type'] ?? '',
+                                        'brand' => $catalogueItem['Brand'] ?? '',
+                                        'name' => $catalogueItem['Name'] ?? '',
+                                        'vendor' => $catalogueItem['Vendor'] ?? '',
+                                        'category' => $catalogueItem['Category'] ?? '',
+                                        'price_inc_gst' => $catalogueItem['Price inc gst'] ?? '',
+                                        'processor' => $catalogueItem['Processor'] ?? '',
+                                        'storage' => $catalogueItem['Storage'] ?? '',
+                                        'memory' => $catalogueItem['Memory'] ?? '',
+                                        'form_factor' => $catalogueItem['Form Factor'] ?? '',
+                                        'display' => $catalogueItem['Display'] ?? '',
+                                        'graphics' => $catalogueItem['Graphics'] ?? '',
+                                        'wireless' => $catalogueItem['Wireless'] ?? '',
+                                        'webcam' => $catalogueItem['Webcam'] ?? '',
+                                        'operating_system' => $catalogueItem['Operating System'] ?? '',
+                                        'warranty' => $catalogueItem['Warranty'] ?? '',
+                                        'battery_life' => $catalogueItem['Battery Life'] ?? '',
+                                        'weight' => $catalogueItem['Weight'] ?? '',
+                                        'stylus' => $catalogueItem['Stylus'] ?? '',
+                                        'other' => $catalogueItem['Other'] ?? '',
+                                        'available_now' => $catalogueItem['Available now'] ?? '',
+                                        'corporate' => $catalogueItem['Corporate'] ?? '',
+                                        'administration' => $catalogueItem['Administration'] ?? '',
+                                        'curriculum' => $catalogueItem['Curriculum'] ?? '',
+                                        'image' => $catalogueItem['Image'] ?? '',
+                                        'product_number' => $catalogueItem['Product Number'] ?? '',
+                                        'price_expiry' => $catalogueItem['Price Expiry'] ?? '',
+                                        'cover_image' => $catalogueItem['Image'] ?? '',
+                                        'updated_at' => now(),
+                                    ]
+                                ];
+                                $updatedCount++;
+                            } else {
+                                // Insert new record if not found
+                                $newRecords[] = [
+                                    'unique_reference' => $catalogueItem['Unique Reference'] ?? '',
+                                    'version_id' => $activeCatalogueId,
+                                    'type' => $catalogueItem['Type'] ?? '',
+                                    'brand' => $catalogueItem['Brand'] ?? '',
+                                    'name' => $catalogueItem['Name'] ?? '',
+                                    'vendor' => $catalogueItem['Vendor'] ?? '',
+                                    'category' => $catalogueItem['Category'] ?? '',
+                                    'price_inc_gst' => $catalogueItem['Price inc gst'] ?? '',
+                                    'processor' => $catalogueItem['Processor'] ?? '',
+                                    'storage' => $catalogueItem['Storage'] ?? '',
+                                    'memory' => $catalogueItem['Memory'] ?? '',
+                                    'form_factor' => $catalogueItem['Form Factor'] ?? '',
+                                    'display' => $catalogueItem['Display'] ?? '',
+                                    'graphics' => $catalogueItem['Graphics'] ?? '',
+                                    'wireless' => $catalogueItem['Wireless'] ?? '',
+                                    'webcam' => $catalogueItem['Webcam'] ?? '',
+                                    'operating_system' => $catalogueItem['Operating System'] ?? '',
+                                    'warranty' => $catalogueItem['Warranty'] ?? '',
+                                    'battery_life' => $catalogueItem['Battery Life'] ?? '',
+                                    'weight' => $catalogueItem['Weight'] ?? '',
+                                    'stylus' => $catalogueItem['Stylus'] ?? '',
+                                    'other' => $catalogueItem['Other'] ?? '',
+                                    'available_now' => $catalogueItem['Available now'] ?? '',
+                                    'corporate' => $catalogueItem['Corporate'] ?? '',
+                                    'administration' => $catalogueItem['Administration'] ?? '',
+                                    'curriculum' => $catalogueItem['Curriculum'] ?? '',
+                                    'image' => $catalogueItem['Image'] ?? '',
+                                    'product_number' => $catalogueItem['Product Number'] ?? '',
+                                    'price_expiry' => $catalogueItem['Price Expiry'] ?? '',
+                                    'cover_image' => $catalogueItem['Image'] ?? '',
+                                    'created_at' => now(),
+                                    'updated_at' => now(),
+                                ];
+                                $createdCount++;
+                            }
+                        }
+
+                        // Bulk update
+                        if (!empty($updateRecords)) {
+                            foreach ($updateRecords as $record) {
+                                DB::table('catalogues')
+                                    ->where('id', $record['id'])
+                                    ->update($record['data']);
+                            }
+
+                        }
+
+                        // Bulk insert
+                        if (!empty($newRecords)) {
+                            DB::table('catalogues')->insert($newRecords);
+                        }
+
+                        DB::commit();
+                        Log::info('Created ' . strval($createdCount) . ' records');
+                        Log::info('Updated ' . strval($updatedCount) . ' records');
+                    } catch (\Exception $e) {
+                        DB::rollBack();
+                        Log::error("Failed bulk update: " . $e->getMessage());
+                        throw $e;
+                    }
+                })
+
         ];
     }
 

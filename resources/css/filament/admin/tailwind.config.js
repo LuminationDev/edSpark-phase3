@@ -6,6 +6,7 @@ export default {
         './app/Filament/**/*.php',
         './resources/views/filament/**/*.blade.php',
         './vendor/filament/**/*.blade.php',
+        "./vendor/outerweb/filament-image-library/resources/views/**/*.blade.php",
     ],
     extend: {
         colors: {
