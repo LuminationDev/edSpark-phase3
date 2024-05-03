@@ -59,8 +59,8 @@ return [
      * - mime_types: The supported mime types.
      */
     'support' => [
-        'webp' => true,
-        'responsive_variants' => true,
+        'webp' => false,
+        'responsive_variants' => false,
         'mime_types' => [
             'image/apng',
             'image/avif',

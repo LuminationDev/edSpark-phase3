@@ -2,23 +2,26 @@
 import "@hennge/vue3-pagination/dist/vue3-pagination.css";
 
 import VPagination from "@hennge/vue3-pagination";
+import {storeToRefs} from "pinia";
 import {computed, onMounted, Ref, ref, watch} from "vue";
 import {useRouter} from "vue-router";
 
 import BaseLandingHero from "@/js/components/bases/BaseLandingHero.vue";
+import CatalogueCard from "@/js/components/catalogue/CatalogueCard.vue";
+import CatalogueComparisonBanner from "@/js/components/catalogue/cataloguecomparison/CatalogueComparisonBanner.vue";
 import CatalogueFilterColumn from "@/js/components/catalogue/CatalogueFilterColumn.vue";
 import CataloguePerPageSelector from "@/js/components/catalogue/CataloguePerPageSelector.vue";
 import Loader from "@/js/components/spinner/Loader.vue";
 import useErrorMessage from "@/js/composables/useErrorMessage";
 import usePagination from "@/js/composables/usePagination";
 import {LandingHeroText} from "@/js/constants/PageBlurb";
-import {catalogueImageURL} from "@/js/constants/serverUrl";
 import {catalogueService} from "@/js/service/catalogueService";
+import {useCatalogueStore} from "@/js/stores/useCatalogueStore";
 import {CatalogueFilterField, CatalogueItemType} from "@/js/types/catalogueTypes";
 
 
-const catalogueList: Ref<CatalogueItemType[] | []> = ref([]);
-
+// const catalogueList: Ref<CatalogueItemType[] | []> = ref([]);
+const {catalogueList} = storeToRefs(useCatalogueStore())
 const categoryList = ref([])
 const brandList = ref([])
 const typeList = ref([])
@@ -54,8 +57,6 @@ const primarySelectedValues = computed(() => {
 })
 
 onMounted(async () => {
-
-
     try {
         isFilterLoading.value = true
         const [categoriesResponse, typesResponse, brandsResponse, vendorsResponse, cataloguesResult] = await Promise.all([
@@ -82,10 +83,11 @@ onMounted(async () => {
 })
 
 const fetchCatalogue = async (field, category, page, perPage = 24) => {
-    isProductsLoading.value = true
+    if (!catalogueList.value.length) {
+        isProductsLoading.value = true
+    }
     return catalogueService.fetchCatalogueByField(field, category, page, perPage)
         .then(res => {
-            console.log('here resolved')
             return res.data.data
 
         })
@@ -103,7 +105,6 @@ const fetchCatalogueAndUpdateOtherFilters = async (field, category, page, perPag
     isProductsLoading.value = true
     clearError()
     const catalogueFetchResult = await fetchCatalogue(field, category, page, perPage)
-    console.log('after await')
     catalogueList.value = catalogueFetchResult.items
     isProductsLoading.value = false
     if (catalogueFetchResult.pagination) {
@@ -112,7 +113,6 @@ const fetchCatalogueAndUpdateOtherFilters = async (field, category, page, perPag
 
     if (catalogueFetchResult.available_fields) {
         updateOtherFilters(catalogueFetchResult.available_fields)
-
     }
 
 }
@@ -133,36 +133,36 @@ const updateOtherFilters = (available_fields) => {
     })
 }
 
-watch(selectedCategory, () => {
+watch(selectedCategory, async () => {
     if (selectedBrand.value.length === 0 && selectedType.value.length === 0 && selectedVendor.value.length === 0) {
         primaryFilter.value = CatalogueFilterField.Category
-        fetchCatalogueAndUpdateOtherFilters(CatalogueFilterField.Category, selectedCategory.value, currentPage.value, perPage.value)
+        await fetchCatalogueAndUpdateOtherFilters(CatalogueFilterField.Category, selectedCategory.value, currentPage.value, perPage.value)
     }
 })
 
-watch(selectedBrand, () => {
+watch(selectedBrand, async () => {
     if (selectedVendor.value.length === 0 && selectedType.value.length === 0 && selectedCategory.value.length === 0) {
         primaryFilter.value = CatalogueFilterField.Brand;
-        fetchCatalogueAndUpdateOtherFilters(CatalogueFilterField.Brand, selectedBrand.value, currentPage.value, perPage.value)
+        await fetchCatalogueAndUpdateOtherFilters(CatalogueFilterField.Brand, selectedBrand.value, currentPage.value, perPage.value)
     }
 })
-watch(selectedType, () => {
+watch(selectedType, async () => {
     if (selectedBrand.value.length === 0 && selectedVendor.value.length === 0 && selectedCategory.value.length === 0) {
         primaryFilter.value = CatalogueFilterField.Type;
-        fetchCatalogueAndUpdateOtherFilters(CatalogueFilterField.Type, selectedType.value, currentPage.value, perPage.value)
+        await fetchCatalogueAndUpdateOtherFilters(CatalogueFilterField.Type, selectedType.value, currentPage.value, perPage.value)
     }
 })
-watch(selectedVendor, () => {
+watch(selectedVendor, async () => {
     if (selectedBrand.value.length === 0 && selectedType.value.length === 0 && selectedCategory.value.length === 0) {
         primaryFilter.value = CatalogueFilterField.Vendor;
-        fetchCatalogueAndUpdateOtherFilters(CatalogueFilterField.Vendor, selectedVendor.value, currentPage.value, perPage.value)
+        await fetchCatalogueAndUpdateOtherFilters(CatalogueFilterField.Vendor, selectedVendor.value, currentPage.value, perPage.value)
     }
 })
 
 
-watch([currentPage, perPage], () => {
+watch([currentPage, perPage], async () => {
     console.log('primary filter is  ' + primaryFilter.value)
-    fetchCatalogueAndUpdateOtherFilters(primaryFilter.value, primarySelectedValues.value, currentPage.value, perPage.value)
+    await fetchCatalogueAndUpdateOtherFilters(primaryFilter.value, primarySelectedValues.value, currentPage.value, perPage.value)
 })
 
 watch(primaryFilter.value, () => {
@@ -188,8 +188,8 @@ const handleClickCatalogueCard = (reference) => {
         :title-paragraph="LandingHeroText['catalogue']['subtitle']"
         swoosh-color="teal"
     />
-    <div class="cataloguePageOuterContainer grid grid-cols-4 mt-10">
-        <div class="col-span-1 flex items-center flex-col gap-2">
+    <div class="cataloguePageOuterContainer grid grid-cols-10 mt-16">
+        <div class="col-span-2 flex flex-col gap-2 ml-8 pr-8">
             <CataloguePerPageSelector v-model="perPage" />
             <CatalogueFilterColumn
                 v-model:brand-list="brandList"
@@ -208,73 +208,32 @@ const handleClickCatalogueCard = (reference) => {
         </div>
         <div
             v-else-if="!isProductsLoading && !error.status"
-            class="col-span-3 productPanel"
+            class="col-span-8 productPanel"
         >
-            <div class="my-4 text-center totalItems">
-                Total Items: {{ totalItems }}
-            </div>
-            <div class="2xl:!grid-cols-4 grid grid-cols-1 gap-4 place-items-center lg:!grid-cols-2 xl:!grid-cols-3">
-                <div
+            <div class="2xl:!grid-cols-4 grid grid-cols-1 gap-2 place-items-center lg:!grid-cols-2 xl:!grid-cols-3">
+                <template
                     v-for="(item,index) in catalogueList"
-                    :key="index"
-                    class="border-[1px] catalogueCard cursor-pointer grid place-items-center rounded w-72"
-                    @click="() => handleClickCatalogueCard(item.unique_reference)"
+                    :key="item.unique_reference + index"
                 >
-                    <img
-                        :src="catalogueImageURL + item.image"
-                        class="h-32 w-auto"
-                        :alt="'Photo of ' + item.name"
-                    >
-                    <div class="grid grid-cols-2 place-items-start p-4 productInformationSection w-full">
-                        <div class="font-medium">
-                            Product Name:
-                        </div>
-                        <div class="font-light">
-                            {{ item.name }}
-                        </div>
-                        <div class="font-medium">
-                            Brand:
-                        </div>
-                        <div class="font-light">
-                            {{ item.brand }}
-                        </div>
-                        <div class="font-medium">
-                            Category:
-                        </div>
-                        <div class="font-light">
-                            {{ item.category }}
-                        </div>
-                        <div class="font-medium">
-                            Type:
-                        </div>
-                        <div class="font-light">
-                            {{ item.type }}
-                        </div>
-                        <div class="font-medium">
-                            Price inc gst:
-                        </div>
-                        <div class="font-light">
-                            {{ '$' + item.price_inc_gst }}
-                        </div>
-                        <div class="font-medium">
-                            Vendor:
-                        </div>
-                        <div class="font-light">
-                            {{ item.vendor }}
-                        </div>
-                    </div>
-                </div>
+                    <CatalogueCard
+                        :cat-item="item"
+                        :click-callback="handleClickCatalogueCard"
+                    />
+                </template>
             </div>
+            <CatalogueComparisonBanner />
 
             <div
                 v-if="showPagination"
-                class="flex justify-center mt-12 text-lg"
+                class="cataloguePagination flex justify-center mt-12 text-lg"
             >
                 <v-pagination
                     v-model="currentPage"
                     :range-size="1"
                     :pages="totalPages"
                     active-color="#DCEDFF"
+                    :hide-first-button="true"
+                    :hide-last-button="true"
                     @update:model-value="handleChangePageNumber"
                 />
             </div>
@@ -282,7 +241,7 @@ const handleClickCatalogueCard = (reference) => {
 
         <div
             v-else
-            class="col-span-3 flex justify-center items-start flex-row mt-24"
+            class="col-span-8 flex justify-center items-start flex-row mt-24"
         >
             <Loader
                 loader-type="small"
@@ -291,3 +250,28 @@ const handleClickCatalogueCard = (reference) => {
         </div>
     </div>
 </template>
+<style lang="scss">
+
+.cataloguePagination {
+    .Pagination {
+        padding-left: 16px;
+        padding-right: 16px;
+
+        .PaginationControl:first-of-type {
+            margin-right: auto;
+        }
+
+        .PaginationControl:last-of-type {
+            margin-left: auto;
+        }
+
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        width: 100%;
+
+        .Page {
+        }
+    }
+}
+</style>
