@@ -3,9 +3,6 @@ import {computed,  ref,  watchEffect} from 'vue';
 import {useRouter} from 'vue-router';
 import {GoogleMap, InfoWindow,Marker, MarkerCluster} from 'vue3-google-map'
 
-import SchoolsMapFilterName from './SchoolsMapFilterName.vue';
-import SchoolsMapFilterTech from './SchoolsMapFilterTech.vue';
-import SchoolsMapFilterType from './SchoolsMapFilterType.vue';
 /**
  * Components
  */

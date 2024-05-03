@@ -14,6 +14,7 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Outerweb\FilamentImageLibrary\Filament\Forms\Components\ImageLibraryPicker;
 
 class CatalogueResource extends Resource
 {
@@ -26,7 +27,6 @@ class CatalogueResource extends Resource
         return $form
             ->schema([
                 TextInput::make('unique_reference'),
-                TextInput::make('version_id'),
                 TextInput::make('type'),
                 TextInput::make('brand'),
                 TextInput::make('name'),
@@ -54,7 +54,7 @@ class CatalogueResource extends Resource
                 TextInput::make('image'),
                 TextInput::make('product_number'),
                 TextInput::make('price_expiry'),
-                TextInput::make('cover_image'),
+                ImageLibraryPicker::make('cover_image')
             ]);
     }
 
@@ -65,22 +65,30 @@ class CatalogueResource extends Resource
                 Tables\Columns\TextColumn::make('name')
                     ->label('Name')
                     ->sortable()
-                    ->limit(30)
+                    ->limit(20)
                     ->searchable(),
                 Tables\Columns\TextColumn::make('vendor')
                     ->label('Vendor')
-                    ->limit(30)->sortable()
+                    ->limit(15)
+                    ->sortable()
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('type')
+                    ->label('Type')
+                    ->limit(10)
+                    ->sortable()
                     ->searchable(),
                 Tables\Columns\TextColumn::make('brand')
                     ->label('Brand')
-                    ->limit(30)
+                    ->limit(10)
                     ->sortable()
                     ->searchable(),
                 Tables\Columns\TextColumn::make('category')
                     ->label('Category')
-                    ->limit(50)
+                    ->limit(10)
                     ->sortable()
                     ->searchable(),
+                Tables\Columns\ImageColumn::make('cover_image')
+                    ->limit(15)
 
             ])
             ->modifyQueryUsing(function (Builder $query) {
