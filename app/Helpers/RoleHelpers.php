@@ -73,6 +73,11 @@ class RoleHelpers
 
     public static function get_current_user_access_level(): string
     {
+
+        if(!Auth::user()->role){
+            return UserRole::ADMIN;
+        }
+
         $user_role = Auth::user()->role->role_name;
 
         if (in_array($user_role, self::$god_key)) {

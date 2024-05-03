@@ -53,8 +53,29 @@ return [
     'channels' => [
         'stack' => [
             'driver' => 'stack',
-            'channels' => ['single'],
+            'channels' => ['single','daily', 'errors', 'notices', 'info'],
             'ignore_exceptions' => false,
+        ],
+
+        'errors' => [
+            'driver' => 'daily',
+            'path' => storage_path('logs/errors.log'),
+            'level' => 'error',
+            'days' => 30,
+        ],
+
+        'notices' => [
+            'driver' => 'daily',
+            'path' => storage_path('logs/notices.log'),
+            'level' => 'notice',
+            'days' => 30,
+        ],
+
+        'info' => [
+            'driver' => 'daily',
+            'path' => storage_path('logs/info.log'),
+            'level' => 'info',
+            'days' => 30,
         ],
 
         'single' => [
@@ -67,7 +88,7 @@ return [
             'driver' => 'daily',
             'path' => storage_path('logs/laravel.log'),
             'level' => env('LOG_LEVEL', 'debug'),
-            'days' => 14,
+            'days' => 30,
         ],
 
         'slack' => [

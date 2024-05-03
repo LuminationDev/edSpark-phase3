@@ -14,7 +14,7 @@ class Productcategory extends Model
      *
      * @var string
      */
-    protected $table = 'product_categories';
+    protected $table = 'hardware_categories';
 
     /**
      * The attributes that are mass assignable
@@ -22,7 +22,7 @@ class Productcategory extends Model
      * @var array
      */
     protected $fillable = [
-        'product_category_name',
-        'product_category_description',
+        'category_name',
+        'category_description',
     ];
 }

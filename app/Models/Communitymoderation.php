@@ -26,10 +26,10 @@ class Communitymoderation extends Model
         'post_title',
         'post_content',
         'post_excerpt',
-        'post_status',
-        'post_date',
-        'post_modified',
-        'post_status',
+        'status',
+        'created_at',
+        'updated_at',
+        'status',
         'communitytype_id'
     ];
 

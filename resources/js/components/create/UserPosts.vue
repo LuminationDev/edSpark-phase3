@@ -63,7 +63,7 @@ const unflattenLabelsForFrontendForm = (flattenedLabels) => {
 
 const formatDataFromAutoSaveAndPostToDraft = (dataArray): BasePostType[] => {
     return dataArray.map(item => {
-        if (item["post_status"] === 'Draft' || item["status"] === 'Draft') {
+        if (item["status"] === 'Draft' || item["status"] === 'Draft') {
             return ({
                 content: item.content,
                 title: item.title,

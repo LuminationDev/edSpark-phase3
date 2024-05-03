@@ -29,7 +29,6 @@ onMounted(async () => {
     }
 });
 
-console.log(notificationService.getNotifications(unreadNotifications.value))
 const handleClickNotification = (notificationId, resourceId, resourceType, resourceTitle) => {
     const routeInfo = {
         name: '',

@@ -48,7 +48,7 @@ class EditEvent extends EditRecord
 //        }
 
 
-        $location = json_decode($data['event_location']);
+        $location = json_decode($data['location']);
         $data['url'] = $location && isset($location->url) ? $location->url : '';
         $data['address'] = $location && isset($location->address) ? $location->address : '';
         return $data;
@@ -59,19 +59,19 @@ class EditEvent extends EditRecord
         // tags
         $record = parent::getRecord();
         $targetData = Event::find($record->id);
-        if(isset($data['tags'])){
+        if (isset($data['tags'])) {
             $targetData->syncTags($data['tags']);
         }
         //others
-        $data['post_modified'] = Carbon::now();
-        $data['event_location'] = [];
+        $data['updated_at'] = Carbon::now();
+        $data['location'] = [];
         if (isset($data['url'])) {
-            $data['event_location']['url'] = $data['url'];
+            $data['location']['url'] = $data['url'];
         }
         if (isset($data['address'])) {
-            $data['event_location']['address'] = $data['address'];
+            $data['location']['address'] = $data['address'];
         }
-        $data['event_location'] = json_encode($data['event_location']);
+        $data['location'] = json_encode($data['location']);
         $data['event_format_id'] = $data['event_format'];
 
         return $data;

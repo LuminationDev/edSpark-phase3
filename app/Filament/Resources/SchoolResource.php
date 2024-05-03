@@ -5,6 +5,7 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\SchoolResource\Pages;
 use App\Filament\Resources\SchoolResource\RelationManagers;
 use App\Helpers\RoleHelpers;
+use App\Helpers\StatusHelpers;
 use App\Models\School;
 use App\Models\Site;
 use Filament\Forms;
@@ -92,7 +93,7 @@ class SchoolResource extends Resource
 //                Tables\Columns\TextColumn::make('owner.full_name')->label('Owner')
 //                    ->limit(15)
 //                ,
-                Tables\Columns\ToggleColumn::make('isFeatured')
+                Tables\Columns\ToggleColumn::make('is_featured')
                 ->sortable(),
                 Tables\Columns\TextColumn::make('updated_at')
                     ->sortable()
@@ -103,13 +104,7 @@ class SchoolResource extends Resource
             ])
             ->filters([
                 Tables\Filters\SelectFilter::make('status')
-                    ->options([
-                        'published' => 'Published',
-                        'pending' => 'Pending Moderation',
-                        'archived' => 'Archived',
-                        'draft' => 'Draft/Incomplete',
-                        'unpublished' => 'Deleted'
-                    ])
+                    ->options(StatusHelpers::getStatusList())
                     ->label('Guide status')
                     ->default('published')
                     ->attribute('status'),
@@ -118,7 +113,7 @@ class SchoolResource extends Resource
                 // Tables\Actions\ViewAction::make(),
                 // Tables\Actions\EditAction::make(),
             ])
-            ->defaultSort('isFeatured', 'desc')
+            ->defaultSort('is_featured', 'desc')
             ->bulkActions([
                 Tables\Actions\DeleteBulkAction::make(),
             ]);

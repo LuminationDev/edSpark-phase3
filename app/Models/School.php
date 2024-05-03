@@ -15,7 +15,7 @@ class School extends Model
      *
      * @var string
      */
-    protected $table = 'schools';
+    protected $table = 'school_profiles';
 
     /**
      * The attributes that are mass assignable
@@ -25,17 +25,15 @@ class School extends Model
     protected $fillable = [
         'school_id',
         'site_id',
-        'owner_id',
-        'allowEditIds',
         'name',
         'content_blocks',
         'logo',
         'cover_image',
         'tech_used',
-        'status',
         'pedagogical_approaches',
         'tech_landscape',
-        'isFeatured',
+        'is_featured',
+        'status',
         'created_at',
         'updated_at',
     ];

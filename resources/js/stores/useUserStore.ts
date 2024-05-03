@@ -8,8 +8,8 @@ import {serverURL} from "@/js/constants/serverUrl";
 import {SchoolDataType} from "@/js/types/SchoolTypes";
 
 interface UserMetaData {
-    user_meta_key: string;
-    user_meta_value: string;
+    meta_key: string;
+    meta_value: string;
 }
 
 interface Site {

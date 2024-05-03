@@ -28,3 +28,19 @@ export const simpleValidateUrl = (url: string) : boolean =>{
     const validUrlRegex = /^(https?:\/\/)?(www\.)?([-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*))$/;
     return validUrlRegex.test(url)
 }
+export const convertStringValuesToIntRecursive = (obj) => {
+    if (typeof obj === 'object') {
+        if (Array.isArray(obj)) {
+            obj.forEach((value, index) => {
+                obj[index] = convertStringValuesToIntRecursive(value);
+            });
+        } else {
+            for (const key in obj) {
+                obj[key] = convertStringValuesToIntRecursive(obj[key]);
+            }
+        }
+    } else if (typeof obj === 'string' && /^-?\d+$/.test(obj)) {
+        obj = parseInt(obj);
+    }
+    return obj;
+}

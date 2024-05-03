@@ -21,7 +21,7 @@ class PostService
         switch ($authorType) {
             case 'user':
                 $avatar = Usermeta::where('user_id', $authorId)
-                    ->where('user_meta_key', 'userAvatar')
+                    ->where('meta_key', 'userAvatar')
                     ->first();
                 return $avatar->user_meta_value ?? '';
 
@@ -38,13 +38,13 @@ class PostService
     {
         $userId = $request->user_id ?? Auth::user()->id;
         if ($model === Event::class) {
-            $posts = $model::where('event_status', 'Draft')
+            $posts = $model::where('status', StatusHelpers::DRAFT)
                 ->where('author_id', $userId)
                 ->orderBy('created_at', 'DESC')
                 ->get();
         } else {
 
-            $posts = $model::where('post_status', 'Draft')
+            $posts = $model::where('status', StatusHelpers::DRAFT)
                 ->where('author_id', $userId)
                 ->orderBy('created_at', 'DESC')
                 ->get();
@@ -70,22 +70,21 @@ class PostService
 
         return [
             'id' => $advice->id,
-            'title' => $advice->post_title,
-            'content' => $advice->post_content,
-            'excerpt' => $advice->post_excerpt,
+            'title' => $advice->title,
+            'content' => $advice->content,
+            'excerpt' => $advice->excerpt,
             'author' => [
                 'author_id' => $author->id,
                 'author_name' => $author->full_name,
                 'author_logo' => $authorLogo
-
             ],
             'cover_image' => ($advice->cover_image) ?: NULL,
             'template' => ($advice->template) ?: NULL,
             'extra_content' => ($advice->extra_content) ?: NULL,
             'created_at' => $advice->created_at,
-            'modified_at' => $advice->post_modified,
-            'status' => $advice->post_status,
-            'type' => ($advice->advicetypes) ? $advice->advicetypes->pluck('advice_type_name') : NULL,
+            'updated_at' => $advice->updated_at,
+            'status' => $advice->status,
+            'type' => ($advice->advice_types) ? $advice->advice_types->pluck('advice_type_name') : NULL,
             'post_type' => 'advice',
             'isLikedByUser' => $isLikedByUser,
             'isBookmarkedByUser' => $isBookmarkedByUser,
@@ -113,9 +112,9 @@ class PostService
         $authorLogo = $this->getAuthorLogo($author);
         return [
             'id' => $software->id,
-            'title' => $software->post_title,
-            'content' => $software->post_content,
-            'excerpt' => $software->post_excerpt,
+            'title' => $software->title,
+            'content' => $software->content,
+            'excerpt' => $software->excerpt,
             'author' => [
                 'author_id' => $author->id ?? '',
                 'author_name' => $author->full_name ?? '',
@@ -125,10 +124,10 @@ class PostService
             ],
             'cover_image' => $software->cover_image ?? null,
             'created_at' => $software->created_at ?? null,
-            'modified_at' => $software->post_modified ?? null,
-            'status' => $software->post_status ?? null,
-            'type' => ($software->softwaretypes)
-                ? $software->softwaretypes->pluck('software_type_name')
+            'updated_at' => $software->updated_at ?? null,
+            'status' => $software->status ?? null,
+            'type' => ($software->software_types)
+                ? $software->software_types->pluck('software_type_name')
                 : null,
             'post_type' => 'software',
             'template' => $software->template ?? null,
@@ -159,10 +158,10 @@ class PostService
         $isBookmarkedByUser = $event->bookmarks()->where('user_id', $userId)->exists();
         return [
             'id' => $event->id,
-            'title' => $event->event_title,
-            'content' => $event->event_content,
-            'excerpt' => $event->event_excerpt,
-            'location' => json_decode($event->event_location),
+            'title' => $event->title,
+            'content' => $event->content,
+            'excerpt' => $event->excerpt,
+            'location' => json_decode($event->location),
             'author' => [
                 'author_id' => $event->author->id,
                 'author_name' => $event->author->full_name,
@@ -173,8 +172,8 @@ class PostService
             'cover_image' => ($event->cover_image) ?? NULL,
             'start_date' => $event->start_date,
             'end_date' => $event->end_date,
-            'status' => $event->event_status,
-            'type' => ($event->eventtype) ? $event->eventtype->event_type_name : NULL,
+            'status' => $event->status,
+            'type' => ($event->event_type) ? $event->event_type->event_type_name : NULL,
             'format' => ($event->event_format) ? $event->event_format->event_format_name : NULL,
             'post_type' => 'event',
             'created_at' => $event->created_at,

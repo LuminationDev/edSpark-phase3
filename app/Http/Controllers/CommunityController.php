@@ -9,7 +9,7 @@ class CommunityController extends Controller
 {
     public function fetchCommunityPosts()
     {
-        $communities = Community::where('post_status', 'Published')->get();
+        $communities = Community::where('status', \App\Helpers\StatusHelpers::PUBLISHED)->get();
 
         $data = [];
 
@@ -17,11 +17,11 @@ class CommunityController extends Controller
             $result = [
                 'community_id' => $community->id,
                 'post_title' => $community->post_title,
-                'post_content' => $community->post_content,
-                'post_excerpt' => $community->post_excerpt,
+                'content' => $community->content,
+                'post_excerpt' => $community->excerpt,
                 'author' => ($community->author) ? $community->author->full_name : '',
                 'cover_image' => ($community->cover_image) ? $community->cover_image : NULL,
-                'post_status' => $community->post_status,
+                'status' => $community->status,
                 'community_type' => ($community->communitytype) ? $community->communitytype->community_type_name : NULL,
                 'created_at' => $community->created_at,
                 'updated_at' => $community->updated_at

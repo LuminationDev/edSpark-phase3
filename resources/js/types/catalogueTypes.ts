@@ -30,7 +30,12 @@ export interface CatalogueItemType {
     price_expiry: string | null;
 }
 
-
+export interface CatalogueGroupedItemType {
+    name: string,
+    value: string,
+    display_text: string,
+    group: string
+}
 export enum CatalogueFilterField{
     All= 'all',
     Type = 'type',
@@ -38,3 +43,5 @@ export enum CatalogueFilterField{
     Vendor = 'vendor',
     Category = 'category',
 }
+
+export const catalogueTableHeaders = ['overview', 'specs', 'hardware', 'availability', 'more_info']

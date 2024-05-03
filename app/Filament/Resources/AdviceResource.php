@@ -6,6 +6,7 @@ use App\Filament\Resources\AdviceResource\Pages;
 use App\Filament\Resources\AdviceResource\RelationManagers;
 use App\Helpers\CustomHtmlable;
 use App\Helpers\RoleHelpers;
+use App\Helpers\StatusHelpers;
 use App\Helpers\UserRole;
 use App\Models\Advice;
 use App\Models\Label;
@@ -26,8 +27,7 @@ use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 use Mohamedsabil83\FilamentFormsTinyeditor\Components\TinyEditor;
 use SplFileInfo;
-
-use App\Helpers\EdSparkRolesHelpers;
+use const App\Helpers\StatusArray;
 
 
 class AdviceResource extends Resource
@@ -69,15 +69,15 @@ class AdviceResource extends Resource
         }
         return $form->schema([
             Forms\Components\Card::make()->schema([
-                Forms\Components\TextInput::make('post_title')
+                Forms\Components\TextInput::make('title')
                     ->label('Title')
                     ->required()
                     ->maxLength(255),
-                Forms\Components\TextInput::make('post_excerpt')
+                Forms\Components\TextInput::make('excerpt')
                     ->label('Tagline')
                     ->placeholder('150 characters or less')
                     ->maxLength(150),
-                TinyEditor::make('post_content')
+                TinyEditor::make('content')
                     ->label('Content')->fileAttachmentsDisk('local')
                     ->fileAttachmentsVisibility('public')
                     ->fileAttachmentsDirectory('public/uploads/advice')
@@ -98,7 +98,7 @@ class AdviceResource extends Resource
                     ->schema([
                         Forms\Components\Select::make('advice_type')
                             ->label('Advice type')
-                            ->relationship('advicetypes', 'advice_type_name')
+                            ->relationship('advice_types', 'advice_type_name')
                             ->required()
                             ->columns(3),
                         ...$labelColumns
@@ -109,17 +109,9 @@ class AdviceResource extends Resource
                         ->relationship(name: 'author', titleAttribute: 'display_name')
                         ->disabled(fn() => !RoleHelpers::has_minimum_privilege(UserRole::ADMIN))
                         ->required()
-                        ->searchable()
-                        ->preload(),
-
-
-                    Forms\Components\Select::make('post_status')
-                        ->options([
-                            'Published' => 'Published',
-                            'Unpublished' => 'Unpublished',
-                            'Draft' => 'Draft',
-                            'Pending' => 'Pending',
-                        ])
+                        ->searchable(),
+                    Forms\Components\Select::make('status')
+                        ->options(StatusHelpers::getStatusList())
                         ->label('Status')
                         ->required(),
                 ]),
@@ -189,7 +181,7 @@ class AdviceResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('post_title')
+                Tables\Columns\TextColumn::make('title')
                     ->label('Title')
                     ->limit(25)
                     ->sortable()
@@ -197,7 +189,7 @@ class AdviceResource extends Resource
                 Tables\Columns\ImageColumn::make('cover_image')
                     ->limit(15)
                 ,
-                Tables\Columns\TextColumn::make('advicetypes.advice_type_name')
+                Tables\Columns\TextColumn::make('advice_types.advice_type_name')
                     ->sortable()
                     ->label('Type')
                     ->searchable(),
@@ -205,27 +197,21 @@ class AdviceResource extends Resource
                     ->searchable()
                     ->limit(15)
                 ,
-                Tables\Columns\TextColumn::make('post_status')
+                Tables\Columns\TextColumn::make('status')
                     ->label('Status')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('post_modified')
+                Tables\Columns\TextColumn::make('updated_at')
                     ->date()
                     ->label('Last modified')
                     ->sortable()
             ])
-            ->defaultSort('post_modified', 'desc')
+            ->defaultSort('updated_at', 'desc')
             ->filters([
                 Tables\Filters\SelectFilter::make('status')
-                    ->options([
-                        'published' => 'Published',
-                        'pending' => 'Pending Moderation',
-                        'archived' => 'Archived',
-                        'draft' => 'Draft/Incomplete',
-                        'unpublished' => 'Deleted'
-                    ])
+                    ->options(StatusHelpers::getStatusList())
                     ->label('Guide status')
                     ->default('published')
-                    ->attribute('post_status'),
+                    ->attribute('status'),
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),

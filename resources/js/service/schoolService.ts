@@ -90,7 +90,6 @@ export const schoolService = {
         const newUpdatedSchoolFormData = schoolDataFormDataBuilder(schoolData)
         newUpdatedSchoolFormData.append('logo', logoStorage ? logoStorage : schoolData.logo)
         newUpdatedSchoolFormData.append('cover_image', coverImageStorage ? coverImageStorage : schoolData.cover_image)
-
         const schoolMetadata = {school_color_theme: colorTheme};
         newUpdatedSchoolFormData.append('metadata', JSON.stringify(schoolMetadata));
 
@@ -111,7 +110,6 @@ export const schoolService = {
             return null;
         } catch (err) {
             console.error('Error while attempting to update school:', err);
-            throw err;
         }
     },
     getAllStaffBySiteId: async (siteId: number, currentUserId: number): Promise<Array<any>> => {

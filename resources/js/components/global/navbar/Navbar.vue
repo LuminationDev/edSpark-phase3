@@ -24,8 +24,8 @@ const {showGlobalSearch} = storeToRefs(windowStore);
 const navLinks = ref([]);
 
 const avatarUrl = computed(() => {
-    const meta = currentUser.value?.metadata?.find(m => m.user_meta_key === 'userAvatar');
-    return meta ? meta.user_meta_value[0].replace(/\\\//g, "/") : '';
+    const meta = currentUser.value?.metadata?.find(m => m.meta_key === 'userAvatar');
+    return meta ? meta.meta_value[0].replace(/\\\//g, "/") : '';
 });
 
 const handleGlobalsearchClick = () => {
@@ -87,9 +87,9 @@ const logoClass = computed(() => {
                     h-full
                     hidden
                     ml-32
-                    pl-
                     lg:ml-36
                     xl:ml-48
+                    pl-
                     gap-2
                     lg:flex
                     lg:flex-row
@@ -120,12 +120,14 @@ const logoClass = computed(() => {
                     </div>
                 </li>
 
-                <li><ProfileDropdown
-                    v-if="isAuthenticated"
-                    :key="currentUser"
-                    :current-user="currentUser"
-                    :avatar-url="avatarUrl"
-                /></li>
+                <li>
+                    <ProfileDropdown
+                        v-if="isAuthenticated"
+                        :key="currentUser"
+                        :current-user="currentUser"
+                        :avatar-url="avatarUrl"
+                    />
+                </li>
             </ul>
 
             <div

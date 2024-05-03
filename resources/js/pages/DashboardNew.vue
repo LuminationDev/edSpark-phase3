@@ -21,7 +21,6 @@ import {schoolService} from "@/js/service/schoolService";
 import {softwareService} from "@/js/service/softwareService";
 import {useSchoolsStore} from "@/js/stores/useSchoolsStore";
 import {useSoftwareStore} from "@/js/stores/useSoftwareStore";
-import {useUserStore} from '@/js/stores/useUserStore';
 import {useWindowStore} from "@/js/stores/useWindowStore";
 
 const router = useRouter()
