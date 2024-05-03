@@ -102,6 +102,7 @@ const fetchCatalogueAndUpdateOtherFilters = async (field, category, page, perPag
     clearError()
     const catalogueFetchResult = await fetchCatalogue(field, category, page, perPage)
     console.log('after await')
+    console.log(catalogueFetchResult)
     catalogueList.value = catalogueFetchResult.items
     isProductsLoading.value = false
     if (catalogueFetchResult.pagination) {
@@ -110,7 +111,6 @@ const fetchCatalogueAndUpdateOtherFilters = async (field, category, page, perPag
 
     if (catalogueFetchResult.available_fields) {
         updateOtherFilters(catalogueFetchResult.available_fields)
-
     }
 
 }
@@ -131,36 +131,36 @@ const updateOtherFilters = (available_fields) => {
     })
 }
 
-watch(selectedCategory, () => {
+watch(selectedCategory, async () => {
     if (selectedBrand.value.length === 0 && selectedType.value.length === 0 && selectedVendor.value.length === 0) {
         primaryFilter.value = CatalogueFilterField.Category
-        fetchCatalogueAndUpdateOtherFilters(CatalogueFilterField.Category, selectedCategory.value, currentPage.value, perPage.value)
+        await fetchCatalogueAndUpdateOtherFilters(CatalogueFilterField.Category, selectedCategory.value, currentPage.value, perPage.value)
     }
 })
 
-watch(selectedBrand, () => {
+watch(selectedBrand, async () => {
     if (selectedVendor.value.length === 0 && selectedType.value.length === 0 && selectedCategory.value.length === 0) {
         primaryFilter.value = CatalogueFilterField.Brand;
-        fetchCatalogueAndUpdateOtherFilters(CatalogueFilterField.Brand, selectedBrand.value, currentPage.value, perPage.value)
+        await fetchCatalogueAndUpdateOtherFilters(CatalogueFilterField.Brand, selectedBrand.value, currentPage.value, perPage.value)
     }
 })
-watch(selectedType, () => {
+watch(selectedType, async() => {
     if (selectedBrand.value.length === 0 && selectedVendor.value.length === 0 && selectedCategory.value.length === 0) {
         primaryFilter.value = CatalogueFilterField.Type;
-        fetchCatalogueAndUpdateOtherFilters(CatalogueFilterField.Type, selectedType.value, currentPage.value, perPage.value)
+        await fetchCatalogueAndUpdateOtherFilters(CatalogueFilterField.Type, selectedType.value, currentPage.value, perPage.value)
     }
 })
-watch(selectedVendor, () => {
+watch(selectedVendor, async() => {
     if (selectedBrand.value.length === 0 && selectedType.value.length === 0 && selectedCategory.value.length === 0) {
         primaryFilter.value = CatalogueFilterField.Vendor;
-        fetchCatalogueAndUpdateOtherFilters(CatalogueFilterField.Vendor, selectedVendor.value, currentPage.value, perPage.value)
+        await fetchCatalogueAndUpdateOtherFilters(CatalogueFilterField.Vendor, selectedVendor.value, currentPage.value, perPage.value)
     }
 })
 
 
-watch([currentPage, perPage], () => {
+watch([currentPage, perPage], async () => {
     console.log('primary filter is  ' + primaryFilter.value)
-    fetchCatalogueAndUpdateOtherFilters(primaryFilter.value, primarySelectedValues.value, currentPage.value, perPage.value)
+    await fetchCatalogueAndUpdateOtherFilters(primaryFilter.value, primarySelectedValues.value, currentPage.value, perPage.value)
 })
 
 watch(primaryFilter.value, () => {
@@ -212,7 +212,7 @@ const handleClickCatalogueCard = (reference) => {
             <div class="2xl:!grid-cols-4 grid grid-cols-1 gap-2 place-items-center lg:!grid-cols-2 xl:!grid-cols-3">
                 <template
                     v-for="(item,index) in catalogueList"
-                    :key="index"
+                    :key="item.unique_reference + index"
                 >
                     <CatalogueCard
                         :cat-item="item"
