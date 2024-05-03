@@ -800,7 +800,6 @@ const extractAllContentByEachId = (html, id) => {
                             p.textContent.trim();
                             // console.log(p.textContent.trim())
                         }
-
                         if (countTH === 1) {
                             parentTH.forEach(nextElementP => {
                                 let strongContent = '';
@@ -843,7 +842,7 @@ const extractAllContentByEachId = (html, id) => {
         }
     }
 
-    //test of the above condition
+    // extracting text from the nested <table>
     if (element && element.parentElement.nextElementSibling) {
         const siblingTableThead = element.parentElement.nextElementSibling ? (element.parentElement.nextElementSibling.nodeName === 'TABLE' ? element.parentElement.nextElementSibling.querySelectorAll('thead') : null) : null;
         siblingTableThead.forEach(tr => {
