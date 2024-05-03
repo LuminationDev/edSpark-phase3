@@ -796,6 +796,11 @@ const extractAllContentByEachId = (html, id) => {
                     th.childNodes.forEach(p => {        // checks all <p> text on the basis of ID
                         const pText = p.textContent.trim();
                         const parentTH = p ? (p.parentElement ? (p.parentElement.nodeName === 'TH' ? (p.parentElement.nextElementSibling ? (p.parentElement.nextElementSibling.nodeName === 'TH' ? p.parentElement.nextElementSibling.querySelectorAll('p') : null) : null) : null) : null) : null;
+                        if (p.nodeName === 'TABLE') {
+                            p.textContent.trim();
+                            // console.log(p.textContent.trim())
+                        }
+
                         if (countTH === 1) {
                             parentTH.forEach(nextElementP => {
                                 let strongContent = '';
@@ -836,6 +841,26 @@ const extractAllContentByEachId = (html, id) => {
         else {
             return null; // will not throw error if there is any null value in the doc as per the conditions.
         }
+    }
+
+    //test of the above condition
+    if (element && element.parentElement.nextElementSibling) {
+        const siblingTableThead = element.parentElement.nextElementSibling ? (element.parentElement.nextElementSibling.nodeName === 'TABLE' ? element.parentElement.nextElementSibling.querySelectorAll('thead') : null) : null;
+        siblingTableThead.forEach(tr => {
+            tr.childNodes.forEach(th => {
+                th.childNodes.forEach(table => {
+                    //console.log(tables.nodeName !== 'TABLE')
+                    // console.log(table.textContent.trim())
+                    table.childNodes.forEach(tables => {
+                        // const tablesNodeName = tables ? (tables.nodeName === 'TABLE' ? tables.textContent.trim() : null) : null;
+                        if (tables.nodeName === 'TABLE') {
+                            console.log(tables.textContent.trim())
+                            // console.log(textContent)
+                        }
+                    })
+                })
+            })
+        })
     }
 
     //
