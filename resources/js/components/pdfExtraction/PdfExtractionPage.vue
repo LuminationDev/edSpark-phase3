@@ -853,7 +853,7 @@ const extractAllContentByEachId = (html, id) => {
                     table.childNodes.forEach(tables => {
                         // const tablesNodeName = tables ? (tables.nodeName === 'TABLE' ? tables.textContent.trim() : null) : null;
                         if (tables.nodeName === 'TABLE') {
-                            console.log(tables.textContent.trim())
+                            // console.log(tables.textContent.trim())
                             // console.log(textContent)
                         }
                     })
