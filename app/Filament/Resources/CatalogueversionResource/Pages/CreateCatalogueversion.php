@@ -55,9 +55,8 @@ class CreateCatalogueversion extends CreateRecord
         }
 
         set_time_limit(300);
-        // Insert data to Catalogue table
-        try {
 
+        try {
             foreach ($data as $catalogueItem) {
                 $catalogueItems[] = [
                     'unique_reference' => $catalogueItem['Unique Reference'],
@@ -89,9 +88,9 @@ class CreateCatalogueversion extends CreateRecord
                     'image' => $catalogueItem['Image'],
                     'product_number' => $catalogueItem['Product Number'],
                     'price_expiry' => $catalogueItem['Price Expiry'],
-                    'cover_image' => $catalogueItem['Image'],
-                    'created_at' => now(), // Assuming you want to set creation timestamps
-                    'updated_at' => now(), // Assuming you want to set update timestamps
+                    'cover_image' => '',
+                    'created_at' => now(),
+                    'updated_at' => now(),
                 ];
             }
             DB::table('catalogues')->insert($catalogueItems);

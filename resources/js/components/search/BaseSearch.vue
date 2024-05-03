@@ -6,13 +6,12 @@ import VPagination from "@hennge/vue3-pagination";
 import {computed, ref, watch} from 'vue'
 
 import AdviceCard from "@/js/components/advice/AdviceCard.vue";
-import InspirationAndGuidesRobot from "@/js/components/inspirationandguides/InspirationAndGuidesRobot.vue";
-
 import BaseLandingHero from "@/js/components/bases/BaseLandingHero.vue";
 import SearchBar from "@/js/components/browseschools/SearchBar.vue";
 import CardLoading from "@/js/components/card/CardLoading.vue";
 import EventsCard from "@/js/components/events/EventsCard.vue";
 import HardwareCard from "@/js/components/hardware/HardwareCard.vue";
+import InspirationAndGuidesRobot from "@/js/components/inspirationandguides/InspirationAndGuidesRobot.vue";
 import PartnerCard from "@/js/components/partners/PartnerCard.vue";
 import SchoolCard from "@/js/components/schools/SchoolCard.vue";
 import SoftwareCard from "@/js/components/software/SoftwareCard.vue";
@@ -168,9 +167,7 @@ const formattedSearchBlurb = computed(() => {
         :title-paragraph="props.heroSubtitle"
         :background-color="props.heroBackgroundColor"
         :swoosh-color="heroBackgroundColor"
-    >
-
-    </BaseLandingHero>
+    />
     <div
         class="browse-schools-container flex items-center flex-col px-12 py-16"
     >
@@ -187,7 +184,7 @@ const formattedSearchBlurb = computed(() => {
                 <div class="flex flex-col search-filter-components">
                     <SearchBar
                         :placeholder="`Type in ${searchType} name`"
-                        class="[&>p]:font-medium [&>p]:text-lg md:[&>p]:text-xl [&>p]:!ml-0 mb-4 lg:mb-0"
+                        class="[&>p]:!ml-0 [&>p]:font-medium [&>p]:text-lg mb-4 lg:mb-0 md:[&>p]:text-xl"
                         @emit-search-term="handleSearchTerm"
                     />
                 </div>
@@ -195,7 +192,7 @@ const formattedSearchBlurb = computed(() => {
                 <slot name="additionalFilters" />
             </div>
             <div class="my-4 searchResults text-base text-center">
-              <span  v-if="resourceList">  {{ String(filteredData.length) + " search " + (filteredData.length > 1 ? "results" : "result") }}</span>
+                <span v-if="resourceList">  {{ String(filteredData.length) + " search " + (filteredData.length > 1 ? "results" : "result") }}</span>
             </div>
             <div
                 v-if="resourceList && resourceList.length &&
@@ -347,13 +344,6 @@ const formattedSearchBlurb = computed(() => {
         flex-direction: column;
     }
 }
-
-// @media screen and (max-width: 510px) {
-//     #searchIcon {
-//         margin-left: 0.5rem !important;
-//         top: 0.1rem !important;
-//     }
-// }
 
 .BaseSearchPaginationContainer {
 
