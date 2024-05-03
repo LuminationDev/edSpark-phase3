@@ -3,6 +3,7 @@ import {defineStore} from "pinia";
 
 export const useCatalogueStore = defineStore('catalogue', {
     state: () => ({
+        catalogueList: useStorage('EDSPARK_CATALOGUE_ITEMS', [], localStorage, {mergeDefaults: true}),
         cart: useStorage('EDSPARK_CATALOGUE_CART', [], localStorage, {mergeDefaults: true}),
         compareBasket: useStorage('EDSPARK_COMPARE_BASKET', [])
     }),
@@ -44,7 +45,7 @@ export const useCatalogueStore = defineStore('catalogue', {
         addItemToComparisonBasket(item) {
             if (!this.compareBasket.some(currentItem => currentItem.unique_reference == item.unique_reference)) {
                 this.compareBasket.push(item)
-            } else{
+            } else {
                 console.log('eh heh almost added the same itemm twice')
             }
         },

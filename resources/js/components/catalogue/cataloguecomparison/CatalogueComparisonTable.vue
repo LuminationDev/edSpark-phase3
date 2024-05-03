@@ -9,11 +9,6 @@ const props = defineProps({
 })
 
 
-const formatItemsToForComparisonPage = () =>{
-    const allDataToCompare  = props.data
-    const formattedData = {}
-
-}
 </script>
 
 <template>

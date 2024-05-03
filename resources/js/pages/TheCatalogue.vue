@@ -2,6 +2,7 @@
 import "@hennge/vue3-pagination/dist/vue3-pagination.css";
 
 import VPagination from "@hennge/vue3-pagination";
+import {storeToRefs} from "pinia";
 import {computed, onMounted, Ref, ref, watch} from "vue";
 import {useRouter} from "vue-router";
 
@@ -15,11 +16,12 @@ import useErrorMessage from "@/js/composables/useErrorMessage";
 import usePagination from "@/js/composables/usePagination";
 import {LandingHeroText} from "@/js/constants/PageBlurb";
 import {catalogueService} from "@/js/service/catalogueService";
+import {useCatalogueStore} from "@/js/stores/useCatalogueStore";
 import {CatalogueFilterField, CatalogueItemType} from "@/js/types/catalogueTypes";
 
 
-const catalogueList: Ref<CatalogueItemType[] | []> = ref([]);
-
+// const catalogueList: Ref<CatalogueItemType[] | []> = ref([]);
+const {catalogueList} = storeToRefs(useCatalogueStore())
 const categoryList = ref([])
 const brandList = ref([])
 const typeList = ref([])
@@ -81,7 +83,9 @@ onMounted(async () => {
 })
 
 const fetchCatalogue = async (field, category, page, perPage = 24) => {
-    isProductsLoading.value = true
+    if (!catalogueList.value.length) {
+        isProductsLoading.value = true
+    }
     return catalogueService.fetchCatalogueByField(field, category, page, perPage)
         .then(res => {
             return res.data.data
@@ -101,8 +105,6 @@ const fetchCatalogueAndUpdateOtherFilters = async (field, category, page, perPag
     isProductsLoading.value = true
     clearError()
     const catalogueFetchResult = await fetchCatalogue(field, category, page, perPage)
-    console.log('after await')
-    console.log(catalogueFetchResult)
     catalogueList.value = catalogueFetchResult.items
     isProductsLoading.value = false
     if (catalogueFetchResult.pagination) {
@@ -144,13 +146,13 @@ watch(selectedBrand, async () => {
         await fetchCatalogueAndUpdateOtherFilters(CatalogueFilterField.Brand, selectedBrand.value, currentPage.value, perPage.value)
     }
 })
-watch(selectedType, async() => {
+watch(selectedType, async () => {
     if (selectedBrand.value.length === 0 && selectedVendor.value.length === 0 && selectedCategory.value.length === 0) {
         primaryFilter.value = CatalogueFilterField.Type;
         await fetchCatalogueAndUpdateOtherFilters(CatalogueFilterField.Type, selectedType.value, currentPage.value, perPage.value)
     }
 })
-watch(selectedVendor, async() => {
+watch(selectedVendor, async () => {
     if (selectedBrand.value.length === 0 && selectedType.value.length === 0 && selectedCategory.value.length === 0) {
         primaryFilter.value = CatalogueFilterField.Vendor;
         await fetchCatalogueAndUpdateOtherFilters(CatalogueFilterField.Vendor, selectedVendor.value, currentPage.value, perPage.value)
@@ -176,7 +178,6 @@ const handleClickCatalogueCard = (reference) => {
     })
 
 }
-
 
 
 </script>
@@ -240,7 +241,7 @@ const handleClickCatalogueCard = (reference) => {
 
         <div
             v-else
-            class="col-span-3 flex justify-center items-start flex-row mt-24"
+            class="col-span-8 flex justify-center items-start flex-row mt-24"
         >
             <Loader
                 loader-type="small"
@@ -251,16 +252,19 @@ const handleClickCatalogueCard = (reference) => {
 </template>
 <style lang="scss">
 
-.cataloguePagination{
+.cataloguePagination {
     .Pagination {
         padding-left: 16px;
         padding-right: 16px;
-        .PaginationControl:first-of-type{
+
+        .PaginationControl:first-of-type {
             margin-right: auto;
         }
-        .PaginationControl:last-of-type{
+
+        .PaginationControl:last-of-type {
             margin-left: auto;
         }
+
         display: flex;
         justify-content: space-between;
         align-items: center;
