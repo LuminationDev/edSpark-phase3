@@ -11,8 +11,6 @@ import {createPinia} from 'pinia';
 import {setupCalendar} from 'v-calendar';
 import {createApp} from 'vue';
 import VueDragsScroll from 'vue-dragscroll'
-import VueGoogleMaps from 'vue-google-maps-community-fork';
-import VueHTML2pdf from 'vue-html2pdf';
 import VueTippy from 'vue-tippy'
 import Vue3Toastify, {ToastContainerOptions} from "vue3-toastify";
 
@@ -55,12 +53,12 @@ library.add(fas)
 createApp(App)
     .use(pinia)
     .use(router)
-    .use(VueGoogleMaps, {
-        load: {
-            key: import.meta.env.VITE_GOOGLE_MAPS_API_KEY,
-        },
-        autobindAllEvents: true,
-    })
+    // .use(VueGoogleMaps, {
+    //     load: {
+    //         key: import.meta.env.VITE_GOOGLE_MAPS_API_KEY,
+    //     },
+    //     autobindAllEvents: true,
+    // })
     .use(setupCalendar, {})
     .use(VueTippy, tippyOptions)
     .use(Vue3Toastify, {

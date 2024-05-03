@@ -38,8 +38,6 @@
         "vite": "^4.5.0"
     },
     "dependencies": {
-        "@codexteam/ajax": "^4.2.0",
-        "@fawmi/vue-google-maps": "^0.9.79",
         "@fortawesome/fontawesome-svg-core": "^6.5.1",
         "@fortawesome/free-brands-svg-icons": "^6.5.1",
         "@fortawesome/free-regular-svg-icons": "^6.5.1",
@@ -62,6 +60,7 @@
         "html-to-image": "^1.11.11",
         "jspdf": "^2.5.1",
         "moment": "^2.30.1",
+        "nouislider": "^15.7.1",
         "pinia": "^2.1.7",
         "sass": "^1.71.1",
         "search-dropdown-vue": "^1.0.3",
@@ -72,7 +71,6 @@
         "v-calendar": "^3.1.1",
         "vue": "3.4.21",
         "vue-dragscroll": "^4.0.5",
-        "vue-google-maps-community-fork": "^0.3.1",
         "vue-media-upload": "^2.2.3",
         "vue-multiselect": "^3.0.0-beta.2",
         "vue-router": "^4.3.0",

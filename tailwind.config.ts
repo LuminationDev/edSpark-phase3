@@ -171,7 +171,9 @@ export default {
                 extraLarge: '48px',
                 huge: '81px',
                 extraHuge: '140px',
-                mainHero: '508px'
+                mainHero: '508px',
+                catW: '270px',
+                catH: '400px'
             },
             screens: {
                 'ml': '860px',

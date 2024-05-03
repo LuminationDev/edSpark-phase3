@@ -11,7 +11,7 @@ use Filament\Actions\ImportAction;
 use Filament\Forms\Components\FileUpload;
 use Filament\Resources\Pages\ListRecords;
 use Filament\Support\Colors\Color;
-use App\Models\CatalogueVersion;
+use App\Models\Catalogueversion;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
@@ -22,7 +22,7 @@ class ListCatalogues extends ListRecords
 
     public function __construct()
     {
-        $this->subheading = 'Catalogue version: ' . strval(CatalogueVersion::getActiveCatalogueId());
+        $this->subheading = 'Catalogue version: ' . strval(Catalogueversion::getActiveCatalogueId());
     }
 
     protected function getHeaderActions(): array
@@ -47,7 +47,7 @@ class ListCatalogues extends ListRecords
                     $updatedCount = 0;
                     $createdCount = 0;
                     try {
-                        $activeCatalogueId = CatalogueVersion::getActiveCatalogueId();
+                        $activeCatalogueId = Catalogueversion::getActiveCatalogueId();
 
                         // Read CSV
                         $csvFile = $data['csv_file']->get();
