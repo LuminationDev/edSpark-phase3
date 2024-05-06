@@ -863,6 +863,58 @@ const extractAllContentByEachId = (html, id) => {
     }
 
     //
+    if (element && element.parentNode.nextElementSibling) {
+        const nextTable = element.parentNode.nextElementSibling;
+        if (nextTable.nodeName === 'TABLE') {
+            const tHeadElement = nextTable.querySelector('thead');
+            const trElements = tHeadElement.querySelectorAll('tr');
+            const result = [];
+            trElements.forEach(tr => {
+                const thElements = tr.querySelectorAll('th');
+                // Check if <th> elements exist before accessing them
+                if (thElements.length >= 2) {
+                    const mainHeading = thElements[0].querySelector('p').textContent.trim();
+                    const subHeadings = [];
+
+                    // Loop through all <p> elements under the second <th>
+                    const pElements = thElements[1].querySelectorAll('p');
+                    pElements.forEach((p, index) => {
+                        const subHeading = p.textContent.trim();
+                        const nextElement = p.nextElementSibling;
+
+                        // Check if the next element is a list (<ul> or <ol>)
+                        if (nextElement && (nextElement.tagName === 'UL' || nextElement.tagName === 'OL')) {
+                            const subSubHeadings = [];
+                            const listItems = Array.from(nextElement.querySelectorAll('li')).map(li => li.textContent.trim());
+                            listItems.forEach(item => {
+                                subSubHeadings.push(item);
+                            });
+                            subHeadings.push({ [subHeading]: subSubHeadings });
+                        } else {
+                            subHeadings.push(subHeading);
+                        }
+                    });
+                    result.push({ [mainHeading]: subHeadings })
+
+                    // console.log('Main Heading:', mainHeading);
+                    // console.log('Sub Headings:', subHeadings);
+
+                }
+            });
+            // Convert result to JSON format
+            introductoryListing.value.push(result);
+            console.log(introductoryListing.value);
+        }
+    }
+
+
+
+
+
+
+
+
+    //
     if (element && element.parentElement.nextElementSibling) {
 
     }
