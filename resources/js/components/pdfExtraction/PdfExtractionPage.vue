@@ -869,6 +869,7 @@ const extractAllContentByEachId = (html, id) => {
             const tHeadElement = nextTable.querySelector('thead');
             const trElements = tHeadElement.querySelectorAll('tr');
             const result = [];
+
             trElements.forEach(tr => {
                 const thElements = tr.querySelectorAll('th');
                 // Check if <th> elements exist before accessing them
@@ -885,27 +886,52 @@ const extractAllContentByEachId = (html, id) => {
                         // Check if the next element is a list (<ul> or <ol>)
                         if (nextElement && (nextElement.tagName === 'UL' || nextElement.tagName === 'OL')) {
                             const subSubHeadings = [];
-                            const listItems = Array.from(nextElement.querySelectorAll('li')).map(li => li.textContent.trim());
-                            listItems.forEach(item => {
-                                subSubHeadings.push(item);
+                            const listItems = Array.from(nextElement.querySelectorAll('li')).map(li => {
+                                const subListItem = li.textContent.trim();
+                                const subList = li.querySelector('ul');
+                                if (subList) {
+                                    const subSubListItems = Array.from(subList.querySelectorAll('li')).map(subLi => subLi.textContent.trim());
+                                    subSubHeadings.push({ [subListItem]: subSubListItems });
+                                } else {
+                                    subSubHeadings.push(subListItem);
+                                }
                             });
-                            subHeadings.push({ [subHeading]: subSubHeadings });
+                            // Check if subSubHeadings are already included in parent subHeading
+                            const isAlreadyIncluded = subHeadings.some(sh => {
+                                if (typeof sh === 'object') {
+                                    const existingSubSubHeadings = Object.values(sh)[0];
+                                    const existingSubSubHeadingsTexts = existingSubSubHeadings.map(ssh => {
+                                        if (typeof ssh === 'object') {
+                                            return Object.keys(ssh)[0];
+                                        } else {
+                                            return ssh;
+                                        }
+                                    });
+                                    return existingSubSubHeadingsTexts.includes(subHeading);
+                                }
+                                return false;
+                            });
+                            if (!isAlreadyIncluded) {
+                                subHeadings.push({ [subHeading]: subSubHeadings });
+                            }
                         } else {
                             subHeadings.push(subHeading);
                         }
                     });
-                    result.push({ [mainHeading]: subHeadings })
 
-                    // console.log('Main Heading:', mainHeading);
-                    // console.log('Sub Headings:', subHeadings);
-
+                    result.push({ [mainHeading]: subHeadings });
                 }
             });
+
             // Convert result to JSON format
-            introductoryListing.value.push(result);
-            console.log(introductoryListing.value);
+            const jsonResult = JSON.stringify(result, null, 2);
+            console.log(result);
         }
     }
+
+
+
+
 
 
 
