@@ -22,8 +22,7 @@ const selectedCategory = defineModel('selectedCategory')
 const selectedBrand = defineModel('selectedBrand')
 const selectedType = defineModel('selectedType')
 const selectedVendor = defineModel('selectedVendor')
-
-
+const priceRange = defineModel('priceRange')
 
 
 </script>
@@ -42,7 +41,7 @@ const selectedVendor = defineModel('selectedVendor')
         v-else
         class="flex flex-col"
     >
-        <CataloguePriceSlider />
+        <CataloguePriceSlider v-model:price-range="priceRange" />
 
         <CatalogueFilterGroup
             v-if="typeList.length"

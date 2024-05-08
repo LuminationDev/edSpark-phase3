@@ -3,8 +3,8 @@ import {computed, ref} from "vue";
 
 import VueNoUiSlider from "@/js/components/slider/VueNoUiSlider.vue";
 
-const priceSliderValues = [0, 25, 50, 100, 250, 400, 500, 1000, 1500, 2000];
-const currentPriceValues = ref([0, 2000])
+const priceSliderValues = [0, 25, 50, 100, 250, 400, 500, 1000, 1500, 2000, 4000, 8000, 10000];
+const currentPriceValues = ref([0, 10000])
 const format = {
     to: function (value) {
         return priceSliderValues[Math.round(value)];
@@ -14,7 +14,7 @@ const format = {
     }
 };
 const priceSliderConfig = {
-    start: [0, 2000],
+    start: [0, 10000],
     range: {min: 0, max: priceSliderValues.length - 1},
     connect: [false, true, false],
     tooltips: false,
@@ -22,8 +22,11 @@ const priceSliderConfig = {
     format: format,
 }
 
+const priceRange =  defineModel('priceRange')
+
 const handleNewValuesFromSlider = (values) => {
     currentPriceValues.value = values
+    priceRange.value = values
 }
 
 const minActivePrice = computed(() => {
@@ -89,7 +92,7 @@ const maxActivePrice = computed(() => {
                 <input
                     id="maxPrice"
                     type="text"
-                    class="border-0 font-normal ml-1 p-0 py-2 rounded-lg text-lg w-14  focus:ring-0"
+                    class="border-0 font-normal ml-1 p-0 py-2 rounded-lg text-lg w-16  focus:ring-0"
                     disabled
                     :value="maxActivePrice"
                 >

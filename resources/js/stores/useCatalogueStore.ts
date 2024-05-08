@@ -5,7 +5,11 @@ export const useCatalogueStore = defineStore('catalogue', {
     state: () => ({
         catalogueList: useStorage('EDSPARK_CATALOGUE_ITEMS', [], localStorage, {mergeDefaults: true}),
         cart: useStorage('EDSPARK_CATALOGUE_CART', [], localStorage, {mergeDefaults: true}),
-        compareBasket: useStorage('EDSPARK_COMPARE_BASKET', [])
+        compareBasket: useStorage('EDSPARK_COMPARE_BASKET', []),
+        categoryList: useStorage('EDSPARK_CATALGUE_CAT',[]),
+        brandList: useStorage('EDSPARK_CATALGUE_BRAND',[]),
+        typeList: useStorage('EDSPARK_CATALGUE_TYPE',[]),
+        vendorList: useStorage('EDSPARK_CATALGUE_VENDOR',[])
     }),
     getters: {
         getCatalogue() {
