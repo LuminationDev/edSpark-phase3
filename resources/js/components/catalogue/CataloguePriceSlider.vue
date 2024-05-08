@@ -92,7 +92,7 @@ const maxActivePrice = computed(() => {
                 <input
                     id="maxPrice"
                     type="text"
-                    class="border-0 font-normal ml-1 p-0 py-2 rounded-lg text-lg w-14  focus:ring-0"
+                    class="border-0 font-normal ml-1 p-0 py-2 rounded-lg text-lg w-16  focus:ring-0"
                     disabled
                     :value="maxActivePrice"
                 >

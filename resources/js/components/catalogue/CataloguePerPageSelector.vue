@@ -13,8 +13,8 @@ const perPage = defineModel()
             name="perPage"
             class="border-[1px] border-slate-300 px-4 py-2 rounded-lg shadow w-full"
         >
-            <option :value="12">
-                12
+            <option :value="16">
+                16
             </option>
             <option :value="24">
                 24

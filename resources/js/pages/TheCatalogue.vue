@@ -40,7 +40,7 @@ const {error, setError, clearError} = useErrorMessage()
 const {
     currentPage, perPage, totalPages, totalItems,
     handleChangePageNumber, updatePaginationData
-} = usePagination(1, 24)
+} = usePagination(1, 16)
 
 const router = useRouter()
 const showPagination = computed(() => {
@@ -101,7 +101,7 @@ onMounted(async () => {
  */
 
 
-const fetchCatalogue = async (field, value, additional, page, perPage = 24) => {
+const fetchCatalogue = async (field, value, additional, page, perPage = 16) => {
     if (!catalogueList.value.length) {
         isProductsLoading.value = true
     }
@@ -121,7 +121,7 @@ const fetchCatalogue = async (field, value, additional, page, perPage = 24) => {
             isProductsLoading.value = false
         })
 }
-const fetchCatalogueAndUpdateOtherFilters = async (field, value, additional, page, perPage = 24) => {
+const fetchCatalogueAndUpdateOtherFilters = async (field, value, additional, page, perPage = 16) => {
     isProductsLoading.value = true
     clearError()
     const catalogueFetchResult = await fetchCatalogue(field, value, additional, page, perPage)
