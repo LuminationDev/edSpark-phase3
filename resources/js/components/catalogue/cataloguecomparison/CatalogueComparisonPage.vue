@@ -45,12 +45,34 @@ onMounted(() => {
         isLoading.value = false
     }
 })
-const groupedData = computed(() => {
+
+const groupedPaddedData = computed(() => {
     if (isLoading.value) return []
     else {
-        return compareBasket.value.map(item => catalogueService.getGroupedItemData(item))
+        const groupedData = compareBasket.value.map(item => catalogueService.getGroupedItemData(item))
+        if(groupedData.length  < 3) {
+            const paddingCount  = 3 - groupedData.length
+            for(let x = 0; x < paddingCount; x++){
+                groupedData.push([{}])
+            }
+            return groupedData;
+        }
+        else{
+            return groupedData
+        }
     }
 })
+
+const getGroupedItemAttribute = (item, attributeName) =>{
+    const result = item.filter(attribute => attribute.name === attributeName)[0]
+    if (result && result.value){
+        return result.value
+    }else {
+        return ""
+    }
+}
+
+
 </script>
 
 <template>
@@ -65,51 +87,52 @@ const groupedData = computed(() => {
         <div class="grid grid-cols-4">
             <div class="emptySpace" />
             <div
-                v-for="(item,index) in compareBasket"
+                v-for="(item,index) in groupedPaddedData"
                 :key="index"
                 class="flex flex-col place-items-center"
             >
                 <img
-                    :src="catalogueImageURL + item.image"
+                    v-if="getGroupedItemAttribute(item,'image')"
+                    :src="catalogueImageURL + getGroupedItemAttribute(item,'image')"
                     class="h-24 w-24"
+                    alt="icon"
                 >
                 <div class="border-b-[1px] border-slate-300 catItemName mb-4 text-2xl">
-                    {{ item.name }}
+                    {{ getGroupedItemAttribute(item,"name") }}
                 </div>
             </div>
-            <div class="comparisonTitles">
-                <div
-                    v-for="(row, index) in groupedData[0]"
-                    :key="`${index}-title-row`"
-                    class="px-4 py-2 even:bg-main-teal/5"
-                >
-                    <div class="grid place-items-center h-8 w-full">
-                        <div class="text-center text-slate-600">
-                            {{ row.display_text }}
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div
-                v-for="(eachItem, index) in groupedData"
-                :key="index"
-                class="compareSpecColumn"
-            >
-                <div
-                    v-for="(row, index) in eachItem"
-                    :key="`${index}-row`"
-                    class="px-4 py-2 even:bg-main-teal/5"
-                >
-                    <div class="grid place-items-center h-8 w-full">
-                        <div class="text-center text-slate-600">
-                            {{ row.value }}
-                        </div>
-                    </div>
-                </div>
-            </div>
+            <!--            <div class="comparisonTitles">-->
+            <!--                <div-->
+            <!--                    v-for="(row, index) in groupedPaddedData[0]"-->
+            <!--                    :key="`${index}-title-row`"-->
+            <!--                    class="px-4 py-2 even:bg-main-teal/5"-->
+            <!--                >-->
+            <!--                    <div class="grid place-items-center h-8 w-full">-->
+            <!--                        <div class="text-center text-slate-600">-->
+            <!--                            {{ row.display_text }}-->
+            <!--                        </div>-->
+            <!--                    </div>-->
+            <!--                </div>-->
+            <!--            </div>-->
+            <!--            <div-->
+            <!--                v-for="(eachItem, index) in groupedPaddedData"-->
+            <!--                :key="index"-->
+            <!--                class="compareSpecColumn"-->
+            <!--            >-->
+            <!--                <div-->
+            <!--                    v-for="(row, index) in eachItem"-->
+            <!--                    :key="`${index}-row`"-->
+            <!--                    class="px-4 py-2 even:bg-main-teal/5"-->
+            <!--                >-->
+            <!--                    <div class="grid place-items-center h-8 w-full">-->
+            <!--                        <div class="text-center text-slate-600">-->
+            <!--                            {{ row.value || '' }}-->
+            <!--                        </div>-->
+            <!--                    </div>-->
+            <!--                </div>-->
+            <!--            </div>-->
         </div>
-        <pre>{{ groupedData }}</pre>
-        <CatalogueComparisonTable :data="groupedData" />
+        <CatalogueComparisonTable :data="groupedPaddedData" />
     </div>
 
     <div v-else>
