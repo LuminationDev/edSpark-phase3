@@ -21,27 +21,30 @@ const isLoading = ref(true)
 onMounted(() => {
     // perform checking if the sku in url are inside storage
     // filter out what is not inside the storage and fetch the missing
-    console.log(skusList.value)
     const missingDataReference = []
-    skusList.value.forEach(sku => {
-        if (!compareBasket.value.some(item => item.unique_reference === sku)) {
-            missingDataReference.push(sku)
-        }
-    })
-    if (missingDataReference.length || compareBasket.value.length > 3) {// means has missing and or more than 3 items
-        console.log('has missing item')
-        // remove unwanted items from basket
-        compareBasket.value = compareBasket.value.filter(item => skusList.value.includes(item.unique_reference))
-        // fetch item data
-        missingDataReference.forEach(data => {
-            catalogueService.fetchSingleProductByReference(data).then(res => {
-                console.log(res.data.data)
-                catalogueStore.addItemToComparisonBasket(res.data.data)
-                isLoading.value = false
-            })
+    if (skusList.value) {
+        skusList.value.forEach(sku => {
+            if (!compareBasket.value.some(item => item.unique_reference === sku)) {
+                missingDataReference.push(sku)
+            }
         })
+        if (missingDataReference.length || compareBasket.value.length > 3) {// means has missing and or more than 3 items
+            console.log('has missing item')
+            // remove unwanted items from basket
+            compareBasket.value = compareBasket.value.filter(item => skusList.value.includes(item.unique_reference))
+            // fetch item data
+            missingDataReference.forEach(data => {
+                catalogueService.fetchSingleProductByReference(data).then(res => {
+                    console.log(res.data.data)
+                    catalogueStore.addItemToComparisonBasket(res.data.data)
+                    isLoading.value = false
+                })
+            })
+        } else {
+            console.log('no missing')
+            isLoading.value = false
+        }
     } else {
-        console.log('no missing')
         isLoading.value = false
     }
 })
@@ -50,24 +53,23 @@ const groupedPaddedData = computed(() => {
     if (isLoading.value) return []
     else {
         const groupedData = compareBasket.value.map(item => catalogueService.getGroupedItemData(item))
-        if(groupedData.length  < 3) {
-            const paddingCount  = 3 - groupedData.length
-            for(let x = 0; x < paddingCount; x++){
+        if (groupedData.length < 3) {
+            const paddingCount = 3 - groupedData.length
+            for (let x = 0; x < paddingCount; x++) {
                 groupedData.push([{}])
             }
             return groupedData;
-        }
-        else{
+        } else {
             return groupedData
         }
     }
 })
 
-const getGroupedItemAttribute = (item, attributeName) =>{
+const getGroupedItemAttribute = (item, attributeName) => {
     const result = item.filter(attribute => attribute.name === attributeName)[0]
-    if (result && result.value){
+    if (result && result.value) {
         return result.value
-    }else {
+    } else {
         return ""
     }
 }
@@ -98,7 +100,7 @@ const getGroupedItemAttribute = (item, attributeName) =>{
                     alt="icon"
                 >
                 <div class="border-b-[1px] border-slate-300 catItemName mb-4 text-2xl">
-                    {{ getGroupedItemAttribute(item,"name") }}
+                    {{ getGroupedItemAttribute(item, "name") }}
                 </div>
             </div>
             <!--            <div class="comparisonTitles">-->
