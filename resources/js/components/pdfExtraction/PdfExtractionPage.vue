@@ -863,6 +863,24 @@ const extractAllContentByEachId = (html, id) => {
                 if (thElements.length >= 2) {
                     const mainHeading = thElements[0].querySelector('p') ? thElements[0].querySelector('p').textContent.trim() : null;
                     const subHeadings = [];
+
+                    const firstUl = thElements[1] ? thElements[1].firstChild.nodeName === 'UL' ? thElements[1].querySelector('ul') : null : null; // Select the first ul element only
+                    const firstOl = thElements[1] ? thElements[1].firstChild.nodeName === 'OL' ? thElements[1].querySelector('ol') : null : null; // Select the first ol element only
+                    if (firstOl) {
+                        const olItems = Array.from(firstOl.querySelectorAll('li')).map(li => li.textContent.trim());
+                        olItems.forEach(item => {
+                            subHeadings.push(item);
+                            console.log(subHeadings)
+                        });
+                    }
+                    if (firstUl) {
+                        const ulItems = Array.from(firstUl.querySelectorAll('li')).map(li => li.textContent.trim());
+                        ulItems.forEach(item => {
+                            subHeadings.push(item);
+                            console.log(subHeadings)
+                        });
+                    }
+
                     // Loop through all <p> elements under the second <th>
                     const pElements = thElements[1].querySelectorAll('p');
                     pElements.forEach((p, index) => {
@@ -919,17 +937,6 @@ const extractAllContentByEachId = (html, id) => {
             });
         }
     }
-
-
-
-
-
-
-
-
-
-
-
 
     //
     if (element && element.parentElement.nextElementSibling) {
