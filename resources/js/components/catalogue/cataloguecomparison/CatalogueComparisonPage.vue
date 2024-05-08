@@ -6,6 +6,8 @@ import {useRoute} from "vue-router";
 import BaseLandingHero from "@/js/components/bases/BaseLandingHero.vue";
 import CatalogueComparisonTable from "@/js/components/catalogue/cataloguecomparison/CatalogueComparisonTable.vue";
 import Loader from "@/js/components/spinner/Loader.vue";
+import ChevronLeftNavIcon from "@/js/components/svg/ChevronLeftNavIcon.vue";
+import {LandingHeroText} from "@/js/constants/PageBlurb";
 import {catalogueImageURL} from "@/js/constants/serverUrl";
 import {catalogueService} from "@/js/service/catalogueService";
 import {useCatalogueStore} from "@/js/stores/useCatalogueStore";
@@ -21,43 +23,76 @@ const isLoading = ref(true)
 onMounted(() => {
     // perform checking if the sku in url are inside storage
     // filter out what is not inside the storage and fetch the missing
-    console.log(skusList.value)
     const missingDataReference = []
-    skusList.value.forEach(sku => {
-        if (!compareBasket.value.some(item => item.unique_reference === sku)) {
-            missingDataReference.push(sku)
-        }
-    })
-    if (missingDataReference.length || compareBasket.value.length > 3) {// means has missing and or more than 3 items
-        console.log('has missing item')
-        // remove unwanted items from basket
-        compareBasket.value = compareBasket.value.filter(item => skusList.value.includes(item.unique_reference))
-        // fetch item data
-        missingDataReference.forEach(data => {
-            catalogueService.fetchSingleProductByReference(data).then(res => {
-                console.log(res.data.data)
-                catalogueStore.addItemToComparisonBasket(res.data.data)
-                isLoading.value = false
-            })
+    if (skusList.value) {
+        skusList.value.forEach(sku => {
+            if (!compareBasket.value.some(item => item.unique_reference === sku)) {
+                missingDataReference.push(sku)
+            }
         })
+        if (missingDataReference.length || compareBasket.value.length > 3) {// means has missing and or more than 3 items
+            console.log('has missing item')
+            // remove unwanted items from basket
+            compareBasket.value = compareBasket.value.filter(item => skusList.value.includes(item.unique_reference))
+            // fetch item data
+            missingDataReference.forEach(data => {
+                catalogueService.fetchSingleProductByReference(data).then(res => {
+                    console.log(res.data.data)
+                    catalogueStore.addItemToComparisonBasket(res.data.data)
+                    isLoading.value = false
+                })
+            })
+        } else {
+            console.log('no missing')
+            isLoading.value = false
+        }
     } else {
-        console.log('no missing')
         isLoading.value = false
     }
 })
-const groupedData = computed(() => {
+
+const groupedPaddedData = computed(() => {
     if (isLoading.value) return []
     else {
-        return compareBasket.value.map(item => catalogueService.getGroupedItemData(item))
+        const groupedData = compareBasket.value.map(item => catalogueService.getGroupedItemData(item))
+        if (groupedData.length < 3) {
+            const paddingCount = 3 - groupedData.length
+            for (let x = 0; x < paddingCount; x++) {
+                groupedData.push([{}])
+            }
+            return groupedData;
+        } else {
+            return groupedData
+        }
     }
 })
+
+const getGroupedItemAttribute = (item, attributeName) => {
+    const result = item.filter(attribute => attribute.name === attributeName)[0]
+    if (result && result.value) {
+        return result.value
+    } else {
+        return ""
+    }
+}
+
+
 </script>
 
 <template>
     <BaseLandingHero
-        title="Compare hardware"
-        title-paragraph="Compare hardware"
-    />
+        :title="LandingHeroText.comparison.title"
+        :title-paragraph="LandingHeroText.comparison.subtitle"
+    >
+        <template #additionalText>
+            <router-link
+                to="/catalogue"
+                class="flex items-end flex-row text-white underline"
+            >
+                <ChevronLeftNavIcon class="h-5 w-5" />Return to catalogue
+            </router-link>
+        </template>
+    </BaseLandingHero>
     <div
         v-if="!isLoading"
         class="comparisonPageOuter mt-10"
@@ -65,51 +100,22 @@ const groupedData = computed(() => {
         <div class="grid grid-cols-4">
             <div class="emptySpace" />
             <div
-                v-for="(item,index) in compareBasket"
+                v-for="(item,index) in groupedPaddedData"
                 :key="index"
                 class="flex flex-col place-items-center"
             >
                 <img
-                    :src="catalogueImageURL + item.image"
-                    class="h-24 w-24"
+                    v-if="getGroupedItemAttribute(item,'image')"
+                    :src="catalogueImageURL + getGroupedItemAttribute(item,'image')"
+                    class="h-[200px] mb-2 p-4 w-catW"
+                    alt="icon"
                 >
                 <div class="border-b-[1px] border-slate-300 catItemName mb-4 text-2xl">
-                    {{ item.name }}
-                </div>
-            </div>
-            <div class="comparisonTitles">
-                <div
-                    v-for="(row, index) in groupedData[0]"
-                    :key="`${index}-title-row`"
-                    class="px-4 py-2 even:bg-main-teal/5"
-                >
-                    <div class="grid place-items-center h-8 w-full">
-                        <div class="text-center text-slate-600">
-                            {{ row.display_text }}
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div
-                v-for="(eachItem, index) in groupedData"
-                :key="index"
-                class="compareSpecColumn"
-            >
-                <div
-                    v-for="(row, index) in eachItem"
-                    :key="`${index}-row`"
-                    class="px-4 py-2 even:bg-main-teal/5"
-                >
-                    <div class="grid place-items-center h-8 w-full">
-                        <div class="text-center text-slate-600">
-                            {{ row.value }}
-                        </div>
-                    </div>
+                    {{ getGroupedItemAttribute(item, "name") }}
                 </div>
             </div>
         </div>
-        <pre>{{ groupedData }}</pre>
-        <CatalogueComparisonTable :data="groupedData" />
+        <CatalogueComparisonTable :data="groupedPaddedData" />
     </div>
 
     <div v-else>
