@@ -26,12 +26,10 @@ const disableCompareButton = computed(() => {
 })
 
 const handleClickCompare = () => {
-    console.log('compare clicked')
     const skusList = compareBasket.value.map(item => item.unique_reference)
     router.push({name: 'compare-item', query: {sku: skusList}})
 }
 const handleClickClearCompare= () =>{
-    console.log('clear clicked')
     catalogueStore.clearComparisonBasket()
 }
 </script>
