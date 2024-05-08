@@ -36,6 +36,14 @@ watch(itemCompareStatus, () => {
         catalogueStore.removeItemFromComparisonBasket(props.catItem.unique_reference)
     }
 })
+
+watch(compareBasket, ()=>{
+    if(!compareBasket.value.some(item => item.unique_reference === props.catItem.unique_reference)){
+        itemCompareStatus.value = false
+    }
+})
+
+
 const disableCompareButton = computed(() => {
     return compareBasket.value.length >= 3 && !itemCompareStatus.value
 })

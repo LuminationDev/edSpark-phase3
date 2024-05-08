@@ -26,12 +26,10 @@ const disableCompareButton = computed(() => {
 })
 
 const handleClickCompare = () => {
-    console.log('compare clicked')
     const skusList = compareBasket.value.map(item => item.unique_reference)
     router.push({name: 'compare-item', query: {sku: skusList}})
 }
 const handleClickClearCompare= () =>{
-    console.log('clear clicked')
     catalogueStore.clearComparisonBasket()
 }
 </script>
@@ -87,7 +85,7 @@ const handleClickClearCompare= () =>{
         </GenericButton>
         <GenericButton
             :callback="handleClickClearCompare"
-            type="plain"
+            class="!cursor-pointer !text-black hover:!text-white bg-transparent hover:!bg-red-600"
         >
             Clear
         </GenericButton>
