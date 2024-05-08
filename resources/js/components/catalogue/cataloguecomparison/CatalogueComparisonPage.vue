@@ -6,6 +6,8 @@ import {useRoute} from "vue-router";
 import BaseLandingHero from "@/js/components/bases/BaseLandingHero.vue";
 import CatalogueComparisonTable from "@/js/components/catalogue/cataloguecomparison/CatalogueComparisonTable.vue";
 import Loader from "@/js/components/spinner/Loader.vue";
+import ChevronLeftNavIcon from "@/js/components/svg/ChevronLeftNavIcon.vue";
+import {LandingHeroText} from "@/js/constants/PageBlurb";
 import {catalogueImageURL} from "@/js/constants/serverUrl";
 import {catalogueService} from "@/js/service/catalogueService";
 import {useCatalogueStore} from "@/js/stores/useCatalogueStore";
@@ -79,9 +81,18 @@ const getGroupedItemAttribute = (item, attributeName) => {
 
 <template>
     <BaseLandingHero
-        title="Compare hardware"
-        title-paragraph="Compare hardware"
-    />
+        :title="LandingHeroText.comparison.title"
+        :title-paragraph="LandingHeroText.comparison.subtitle"
+    >
+        <template #additionalText>
+            <router-link
+                to="/catalogue"
+                class="flex items-end flex-row text-white underline"
+            >
+                <ChevronLeftNavIcon class="h-5 w-5" />Return to catalogue
+            </router-link>
+        </template>
+    </BaseLandingHero>
     <div
         v-if="!isLoading"
         class="comparisonPageOuter mt-10"
@@ -96,43 +107,13 @@ const getGroupedItemAttribute = (item, attributeName) => {
                 <img
                     v-if="getGroupedItemAttribute(item,'image')"
                     :src="catalogueImageURL + getGroupedItemAttribute(item,'image')"
-                    class="h-24 w-24"
+                    class="h-[200px] mb-2 p-4 w-catW"
                     alt="icon"
                 >
                 <div class="border-b-[1px] border-slate-300 catItemName mb-4 text-2xl">
                     {{ getGroupedItemAttribute(item, "name") }}
                 </div>
             </div>
-            <!--            <div class="comparisonTitles">-->
-            <!--                <div-->
-            <!--                    v-for="(row, index) in groupedPaddedData[0]"-->
-            <!--                    :key="`${index}-title-row`"-->
-            <!--                    class="px-4 py-2 even:bg-main-teal/5"-->
-            <!--                >-->
-            <!--                    <div class="grid place-items-center h-8 w-full">-->
-            <!--                        <div class="text-center text-slate-600">-->
-            <!--                            {{ row.display_text }}-->
-            <!--                        </div>-->
-            <!--                    </div>-->
-            <!--                </div>-->
-            <!--            </div>-->
-            <!--            <div-->
-            <!--                v-for="(eachItem, index) in groupedPaddedData"-->
-            <!--                :key="index"-->
-            <!--                class="compareSpecColumn"-->
-            <!--            >-->
-            <!--                <div-->
-            <!--                    v-for="(row, index) in eachItem"-->
-            <!--                    :key="`${index}-row`"-->
-            <!--                    class="px-4 py-2 even:bg-main-teal/5"-->
-            <!--                >-->
-            <!--                    <div class="grid place-items-center h-8 w-full">-->
-            <!--                        <div class="text-center text-slate-600">-->
-            <!--                            {{ row.value || '' }}-->
-            <!--                        </div>-->
-            <!--                    </div>-->
-            <!--                </div>-->
-            <!--            </div>-->
         </div>
         <CatalogueComparisonTable :data="groupedPaddedData" />
     </div>

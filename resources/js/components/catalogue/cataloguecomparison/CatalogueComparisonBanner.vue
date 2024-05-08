@@ -85,7 +85,7 @@ const handleClickClearCompare= () =>{
         </GenericButton>
         <GenericButton
             :callback="handleClickClearCompare"
-            type="plain"
+            class="!cursor-pointer !text-black hover:!text-white bg-transparent hover:!bg-red-600"
         >
             Clear
         </GenericButton>
