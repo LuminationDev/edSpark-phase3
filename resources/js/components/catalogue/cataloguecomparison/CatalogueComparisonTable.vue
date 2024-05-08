@@ -72,8 +72,8 @@ const groupAttrName = computed(() => {
                 :key="idx"
                 class="grid grid-cols-4 place-items-center py-4 text-slate-600 w-full even:bg-main-teal/5"
             >
-                <div>
-                    {{ objectData[0] }}
+                <div class="capitalize font-semibold">
+                    {{ objectData[0].replace(/_/g, " ") }}
                 </div>
                 <div
                     v-for="(value, valueIdx) in objectData[1]"
