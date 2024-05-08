@@ -1,8 +1,6 @@
 <script setup>
 import mammoth from 'mammoth';
-import {list} from "postcss";
 import {ref} from "vue";
-
 
 
 //all initial variables are here
@@ -1013,8 +1011,9 @@ const extractAllContentByEachId = (html, id) => {
         }
     }
 
-    // extracting the Curriculum Connections informations including the links, paragraphs and lists.
+    // extracting the Curriculum Connections informations including the links, paragraphs, title, headings and lists.
     if (element && element.parentElement) {
+        curriculumText.value = element.parentElement.textContent.trim()
         const nextTheadElement = element.parentElement ? element.parentElement.nodeName === 'H1' ? element.parentElement.nextElementSibling ? element.parentElement.nextElementSibling.nodeName === 'TABLE' ? element.parentElement.nextElementSibling.querySelector('thead') ? element.parentElement.nextElementSibling.querySelector('thead').querySelectorAll('tr') : null : null : null : null : null;
         nextTheadElement ? nextTheadElement.forEach(tr => {
             const eachTh = tr.querySelectorAll('th')
@@ -1046,18 +1045,21 @@ const extractAllContentByEachId = (html, id) => {
                     listText.push(li.textContent.trim());
                 }) : null;
                 if (h1Text ? h1Text.toLowerCase().includes('version') : null) {
+                    ausCurriculumTitle.value = h1Text
                     ausCurriculumListing.value.push(listText)
                     ausCurriculumParagraph.value.push(pText)
                     ausCurriculumHeadings.value.push(strongText)
                     ausCurriculumLinks.value.push(link)
                 }
                 if (h1Text ? h1Text.toLowerCase().includes('cross') : null) {
+                    crossCurriculumTitle.value = h1Text
                     crossCurriculumListing.value.push(listText)
                     crossCurriculumParagraph.value.push(pText)
                     crossCurriculumHeadings.value.push(strongText)
                     crossCurriculumLinks.value.push(link)
                 }
                 if (h1Text ? (h1Text.toLowerCase().includes('general') || h1Text.toLowerCase().includes('capab')) : null) {
+                    generalCapabilitiesTitle.value = h1Text
                     generalCapabilitiesListing.value.push(listText)
                     generalCapabilitiesParagraph.value.push(pText)
                     generalCapabilitiesHeadings.value.push(strongText)
