@@ -77,12 +77,14 @@ class CatalogueController extends Controller
         $inputField = $request->input('field');
         $values = $request->input('value');
         $perPage = $request->input('per_page', 20);
+        $additionalFilters = $request->input('additional_filters', null);
         $availableFields = [];
-
 
         // Process data from the request
         $field = $inputField;
         $values = is_array($values) ? $values : [$values];
+
+        unset($additionalFilters[$field]);
 
         // If either value or field is empty, fetch all items without pagination
         if (empty($field) || empty($values)) {
@@ -94,9 +96,17 @@ class CatalogueController extends Controller
                 }
             }
         } else {
-            // Fetch all items without pagination for availableFields
-            $queryResult = Catalogue::whereIn($field, $values);
-            $paginatedQueryResult = $queryResult->paginate($perPage);
+            // start building query here start from primary query
+            $query = Catalogue::whereIn($field, $values);
+
+            // additional filters code
+            // Add additional filters to the query
+            foreach ($additionalFilters as $filterField => $filterValue) {
+                $query->where($filterField, $filterValue);
+            }
+
+            // paginate results
+            $paginatedQueryResult = $query->paginate($perPage);
 
             if ($paginatedQueryResult->isEmpty()) {
                 return ResponseService::error('No results found.', null, 404);
