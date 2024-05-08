@@ -566,10 +566,6 @@ const extractAllContentByEachId = (html, id) => {
                     }
                 }
 
-                //const previousUlElement = strong2Element ? strong2Element.nodeName === 'UL' : null;
-                //const previousPelement = strong1Element ? strong1Element.previousElementSibling.nodeName === 'P' : null;
-                //const previousPStrongElement = strong1Element ? strong1Element.previousElementSibling.querySelector('p strong') : null;
-
                 // extracting <p><strong> that are 1 previous sibling to the each <ul>, but should not have two <p><strong> above the each <ul>
                 if (strong1Element && strong1Element.nodeName === 'P' && strong1Element.querySelector('strong') && (strong1 || !strong2)) {
                     const strongText = strong1Element.querySelector('strong').textContent.trim();
@@ -584,7 +580,6 @@ const extractAllContentByEachId = (html, id) => {
                             listItem.childNodes.forEach(ulNode => {
                                 if (ulNode.nodeName !== 'UL') {
                                     textContent = ulNode.textContent.trim();
-                                    //console.log(textContent)
                                 }
                             })
                         }
@@ -798,7 +793,6 @@ const extractAllContentByEachId = (html, id) => {
                         const parentTH = p ? (p.parentElement ? (p.parentElement.nodeName === 'TH' ? (p.parentElement.nextElementSibling ? (p.parentElement.nextElementSibling.nodeName === 'TH' ? p.parentElement.nextElementSibling.querySelectorAll('p') : null) : null) : null) : null) : null;
                         if (p.nodeName === 'TABLE') {
                             p.textContent.trim();
-                            // console.log(p.textContent.trim())
                         }
                         if (countTH === 1) {
                             parentTH.forEach(nextElementP => {
@@ -829,7 +823,6 @@ const extractAllContentByEachId = (html, id) => {
                                     checkUnderstandingParagraph.value.push(nextElementP.textContent.trim());
                                     if (strongContent !== "" ) {        // checks if the <strong> is empty
                                         checkUnderstandingHeading.value.push(strongContent);
-                                        console.log(checkUnderstandingHeading.value)
                                     }
                                 }
                             })
@@ -849,13 +842,8 @@ const extractAllContentByEachId = (html, id) => {
         siblingTableThead.forEach(tr => {
             tr.childNodes.forEach(th => {
                 th.childNodes.forEach(table => {
-                    //console.log(tables.nodeName !== 'TABLE')
-                    // console.log(table.textContent.trim())
                     table.childNodes.forEach(tables => {
-                        // const tablesNodeName = tables ? (tables.nodeName === 'TABLE' ? tables.textContent.trim() : null) : null;
                         if (tables.nodeName === 'TABLE') {
-                            // console.log(tables.textContent.trim())
-                            // console.log(textContent)
                         }
                     })
                 })
@@ -869,7 +857,6 @@ const extractAllContentByEachId = (html, id) => {
         if (nextTable.nodeName === 'TABLE') {
             const tHeadElement = nextTable.querySelector('thead');
             const trElements = tHeadElement.querySelectorAll('tr');
-            // const result = [];
             trElements.forEach(tr => {
                 const thElements = tr.querySelectorAll('th');
                 // Check if <th> elements exist before accessing them
@@ -915,7 +902,6 @@ const extractAllContentByEachId = (html, id) => {
                         } else {
                             subHeadings.push(subHeading);
                         }
-                        // console.log(subHeading)
                     });
                     if (mainHeading ? mainHeading.toLowerCase().includes('provocation') : null) {
                         introductoryListing.value.push( subHeadings );
@@ -929,14 +915,8 @@ const extractAllContentByEachId = (html, id) => {
                     if (mainHeading ? mainHeading.toLowerCase().includes('understanding') : null) {
                         checkUnderstandingListing.value.push( subHeadings );
                     }
-                    // console.log(mainHeading)
-                    // console.log(pElements0 ? pElements0.textContent.trim() : null);
                 }
             });
-            // Convert result to JSON format
-            // checkUnderstandingListing.value = result;
-            // console.log(result);
-            // const jsonResult = JSON.stringify(result, null, 2);
         }
     }
 
