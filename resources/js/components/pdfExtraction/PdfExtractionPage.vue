@@ -73,6 +73,19 @@ const checkUnderstandingParagraph = ref([])
 const checkUnderstandingHeading = ref([])
 const checkUnderstandingListing = ref([])
 const checkUnderstandingLinks = ref([])
+const curriculumText = ref("")
+const ausCurriculumTitle = ref("")
+const ausCurriculumParagraph = ref([])
+const ausCurriculumHeadings = ref([])
+const ausCurriculumListing = ref([])
+const crossCurriculumTitle = ref("")
+const crossCurriculumParagraph = ref([])
+const crossCurriculumHeadings = ref([])
+const crossCurriculumListing = ref([])
+const generalCapabilitiesTitle = ref("")
+const generalCapabilitiesParagraph = ref([])
+const generalCapabilitiesHeadings = ref([])
+const generalCapabilitiesListing = ref([])
 
 
 //handle file upload
@@ -102,6 +115,7 @@ const handleFileUpload = async (event) => {
         extractAllContentByEachId(htmlContent.value, '_jkhi5jchiyqa')
         extractAllContentByEachId(htmlContent.value, '_kv7kogslxlmu')
         extractAllContentByEachId(htmlContent.value, '_8hqu05q343sr')
+        extractAllContentByEachId(htmlContent.value, '_14z3n7fivubg')
 
     } catch (error) {
         console.error('Error processing file:', error);
@@ -245,6 +259,27 @@ const downloadFormattedJson = () => {
                 "Listings": checkUnderstandingListing.value,
                 "All Links": checkUnderstandingLinks.value
             }
+        },
+        "Component3": {
+            "Main Heading": curriculumText.value,
+            "Australian Curriculum": {
+                "Title": ausCurriculumTitle.value,
+                "Paragraphs": ausCurriculumParagraph.value,
+                "List Headings": ausCurriculumHeadings.value,
+                "Listings": ausCurriculumListing.value
+            },
+            "Cross Curriculum": {
+                "Title": crossCurriculumTitle.value,
+                "Paragraphs": crossCurriculumParagraph.value,
+                "List Headings": crossCurriculumHeadings.value,
+                "Listings": crossCurriculumListing.value
+            },
+            "General Capabilities": {
+                "Title": generalCapabilitiesTitle.value,
+                "Paragraphs": generalCapabilitiesParagraph.value,
+                "List Headings": generalCapabilitiesHeadings.value,
+                "Listings": generalCapabilitiesListing.value
+            }
         }
     }, (key, value) => {
         if (key === 'content') {
@@ -305,6 +340,33 @@ const extractTextById = (html, id) => {
 const extractAllContentByEachId = (html, id) => {
     const doc = new DOMParser().parseFromString(html, 'text/html');
     const element = doc.getElementById(id);
+
+    // extracting Learning Area, Year Level and Duration text.
+    if (element && element.parentElement.parentElement.parentElement) {
+        const next_TH= element.parentElement.nodeName === 'P' ? element.parentElement.parentElement ? element.parentElement.parentElement.nextElementSibling : null : null;
+        const LA_Text = next_TH ? next_TH.querySelector('p') ? next_TH.querySelector('p').textContent.trim() : null : null;
+        const first_TR_Element = element.parentElement.parentElement ? element.parentElement.parentElement.parentElement : null;
+        const second_TR_Element = first_TR_Element.nextElementSibling ? first_TR_Element.nextElementSibling.nodeName === 'TR' ? first_TR_Element.nextElementSibling : null : null;
+        const LA_Text_Result = second_TR_Element ? second_TR_Element.querySelector('th').querySelector('p') ? second_TR_Element.querySelector('th').querySelector('p').textContent.trim() : null : null;
+        const third_TR_Element = second_TR_Element ? second_TR_Element.nextElementSibling ? second_TR_Element.nextElementSibling.nodeName === 'TR' ? second_TR_Element.nextElementSibling : null : null : null;
+        const YL_Text = third_TR_Element ? third_TR_Element.querySelector('th').querySelector('p') ? third_TR_Element.querySelector('th').querySelector('p').textContent.trim() : null : null;
+        const forth_TR_Element = third_TR_Element ? third_TR_Element.nextElementSibling ? third_TR_Element.nextElementSibling.nodeName === 'TR' ? third_TR_Element.nextElementSibling : null : null : null;
+        const YL_Text_Result = forth_TR_Element ? forth_TR_Element.querySelector('th').querySelector('p') ? forth_TR_Element.querySelector('th').querySelector('p').textContent.trim() : null : null;
+        const fifth_TR_Element = forth_TR_Element ? forth_TR_Element.nextElementSibling ? forth_TR_Element.nextElementSibling.nodeName === 'TR' ? forth_TR_Element.nextElementSibling : null : null : null;
+        const Duration_Text = fifth_TR_Element ? fifth_TR_Element.querySelector('th').querySelector('p') ? fifth_TR_Element.querySelector('th').querySelector('p').textContent.trim() : null : null;
+        const sixth_TR_Element = fifth_TR_Element ? fifth_TR_Element.nextElementSibling ? fifth_TR_Element.nextElementSibling.nodeName === 'TR' ? fifth_TR_Element.nextElementSibling : null : null : null;
+        const Duration_Text_Result = sixth_TR_Element ? sixth_TR_Element.querySelector('th').querySelector('p') ? sixth_TR_Element.querySelector('th').querySelector('p').textContent.trim() : null : null;
+        // extracting on different conditions
+        if (LA_Text ? LA_Text.toLowerCase().includes('learning') : null) {
+            learningArea.value = LA_Text_Result;
+        }
+        if (YL_Text ? YL_Text.toLowerCase().includes('year') : null) {
+            yearLevel.value = YL_Text_Result;
+        }
+        if (Duration_Text ? Duration_Text.toLowerCase().includes('duration') : null) {
+            duration.value = Duration_Text_Result;
+        }
+    }
 
     // paragraph <p> inside the sibling of id element
     if(element && element.parentNode.nextSibling) {
@@ -944,35 +1006,6 @@ const extractAllContentByEachId = (html, id) => {
             });
         }
     }
-
-    // extracting Learning Area, Year Level and Duration text.
-    if (element && element.parentElement.parentElement.parentElement) {
-        const next_TH= element.parentElement.nodeName === 'P' ? element.parentElement.parentElement ? element.parentElement.parentElement.nextElementSibling : null : null;
-        const LA_Text = next_TH ? next_TH.querySelector('p') ? next_TH.querySelector('p').textContent.trim() : null : null;
-        const first_TR_Element = element.parentElement.parentElement ? element.parentElement.parentElement.parentElement : null;
-        const second_TR_Element = first_TR_Element.nextElementSibling ? first_TR_Element.nextElementSibling.nodeName === 'TR' ? first_TR_Element.nextElementSibling : null : null;
-        const LA_Text_Result = second_TR_Element ? second_TR_Element.querySelector('th').querySelector('p') ? second_TR_Element.querySelector('th').querySelector('p').textContent.trim() : null : null;
-        const third_TR_Element = second_TR_Element ? second_TR_Element.nextElementSibling ? second_TR_Element.nextElementSibling.nodeName === 'TR' ? second_TR_Element.nextElementSibling : null : null : null;
-        const YL_Text = third_TR_Element ? third_TR_Element.querySelector('th').querySelector('p') ? third_TR_Element.querySelector('th').querySelector('p').textContent.trim() : null : null;
-        const forth_TR_Element = third_TR_Element ? third_TR_Element.nextElementSibling ? third_TR_Element.nextElementSibling.nodeName === 'TR' ? third_TR_Element.nextElementSibling : null : null : null;
-        const YL_Text_Result = forth_TR_Element ? forth_TR_Element.querySelector('th').querySelector('p') ? forth_TR_Element.querySelector('th').querySelector('p').textContent.trim() : null : null;
-        const fifth_TR_Element = forth_TR_Element ? forth_TR_Element.nextElementSibling ? forth_TR_Element.nextElementSibling.nodeName === 'TR' ? forth_TR_Element.nextElementSibling : null : null : null;
-        const Duration_Text = fifth_TR_Element ? fifth_TR_Element.querySelector('th').querySelector('p') ? fifth_TR_Element.querySelector('th').querySelector('p').textContent.trim() : null : null;
-        const sixth_TR_Element = fifth_TR_Element ? fifth_TR_Element.nextElementSibling ? fifth_TR_Element.nextElementSibling.nodeName === 'TR' ? fifth_TR_Element.nextElementSibling : null : null : null;
-        const Duration_Text_Result = sixth_TR_Element ? sixth_TR_Element.querySelector('th').querySelector('p') ? sixth_TR_Element.querySelector('th').querySelector('p').textContent.trim() : null : null;
-        // extracting on different conditions
-        if (LA_Text ? LA_Text.toLowerCase().includes('learning') : null) {
-            learningArea.value = LA_Text_Result;
-        }
-        if (YL_Text ? YL_Text.toLowerCase().includes('year') : null) {
-            yearLevel.value = YL_Text_Result;
-        }
-        if (Duration_Text ? Duration_Text.toLowerCase().includes('duration') : null) {
-            duration.value = Duration_Text_Result;
-        }
-    }
-
-
 
 
 
