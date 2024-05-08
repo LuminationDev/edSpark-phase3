@@ -829,6 +829,7 @@ const extractAllContentByEachId = (html, id) => {
                                     checkUnderstandingParagraph.value.push(nextElementP.textContent.trim());
                                     if (strongContent !== "" ) {        // checks if the <strong> is empty
                                         checkUnderstandingHeading.value.push(strongContent);
+                                        console.log(checkUnderstandingHeading.value)
                                     }
                                 }
                             })
@@ -862,27 +863,24 @@ const extractAllContentByEachId = (html, id) => {
         })
     }
 
-    //
+    // extracting text from nested listing in Task Sequence
     if (element && element.parentNode.nextElementSibling) {
         const nextTable = element.parentNode.nextElementSibling;
         if (nextTable.nodeName === 'TABLE') {
             const tHeadElement = nextTable.querySelector('thead');
             const trElements = tHeadElement.querySelectorAll('tr');
-            const result = [];
-
+            // const result = [];
             trElements.forEach(tr => {
                 const thElements = tr.querySelectorAll('th');
                 // Check if <th> elements exist before accessing them
                 if (thElements.length >= 2) {
-                    const mainHeading = thElements[0].querySelector('p').textContent.trim();
+                    const mainHeading = thElements[0].querySelector('p') ? thElements[0].querySelector('p').textContent.trim() : null;
                     const subHeadings = [];
-
                     // Loop through all <p> elements under the second <th>
                     const pElements = thElements[1].querySelectorAll('p');
                     pElements.forEach((p, index) => {
                         const subHeading = p.textContent.trim();
                         const nextElement = p.nextElementSibling;
-
                         // Check if the next element is a list (<ul> or <ol>)
                         if (nextElement && (nextElement.tagName === 'UL' || nextElement.tagName === 'OL')) {
                             const subSubHeadings = [];
@@ -917,15 +915,28 @@ const extractAllContentByEachId = (html, id) => {
                         } else {
                             subHeadings.push(subHeading);
                         }
+                        // console.log(subHeading)
                     });
-
-                    result.push({ [mainHeading]: subHeadings });
+                    if (mainHeading ? mainHeading.toLowerCase().includes('provocation') : null) {
+                        introductoryListing.value.push( subHeadings );
+                    }
+                    if (mainHeading ? (mainHeading.toLowerCase().includes('prior') || mainHeading.toLowerCase().includes('pre') || mainHeading.toLowerCase().includes('discussion')) : null) {
+                        priorKnowledgeListing.value.push( subHeadings );
+                    }
+                    if (mainHeading ? mainHeading.toLowerCase().includes('activities') : null) {
+                        activitiesListing.value.push( subHeadings );
+                    }
+                    if (mainHeading ? mainHeading.toLowerCase().includes('understanding') : null) {
+                        checkUnderstandingListing.value.push( subHeadings );
+                    }
+                    // console.log(mainHeading)
+                    // console.log(pElements0 ? pElements0.textContent.trim() : null);
                 }
             });
-
             // Convert result to JSON format
-            const jsonResult = JSON.stringify(result, null, 2);
-            console.log(result);
+            // checkUnderstandingListing.value = result;
+            // console.log(result);
+            // const jsonResult = JSON.stringify(result, null, 2);
         }
     }
 
