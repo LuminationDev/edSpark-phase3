@@ -190,8 +190,9 @@ watch(selectedVendor, async () => {
 })
 
 watchDebounced(priceRange, async () => {
+    console.log(priceRange.value)
     await fetchCatalogueAndUpdateOtherFilters(primaryFilter.value, primarySelectedValues.value, additionalFilters.value, currentPage.value, perPage.value)
-}, {deep: true, debounce: 500, maxWait: 1000})
+}, {deep: true, debounce: 800, maxWait: 1000})
 
 watch([currentPage, perPage], async () => {
     console.log('primary filter is  ' + primaryFilter.value)
