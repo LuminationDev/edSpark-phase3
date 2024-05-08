@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import {debounce} from "lodash";
 import {computed, ref} from "vue";
 
 import VueNoUiSlider from "@/js/components/slider/VueNoUiSlider.vue";
@@ -24,10 +25,10 @@ const priceSliderConfig = {
 
 const priceRange =  defineModel('priceRange')
 
-const handleNewValuesFromSlider = (values) => {
+const handleNewValuesFromSlider = debounce((values) => {
     currentPriceValues.value = values
     priceRange.value = values
-}
+},500)
 
 const minActivePrice = computed(() => {
     return currentPriceValues.value[0]
