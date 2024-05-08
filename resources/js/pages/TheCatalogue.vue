@@ -2,6 +2,7 @@
 import "@hennge/vue3-pagination/dist/vue3-pagination.css";
 
 import VPagination from "@hennge/vue3-pagination";
+import {watchDebounced} from "@vueuse/core";
 import {storeToRefs} from "pinia";
 import {computed, onMounted, Ref, ref, watch} from "vue";
 import {useRouter} from "vue-router";
@@ -31,7 +32,7 @@ const selectedCategory = ref([])
 const selectedBrand = ref([])
 const selectedType = ref([])
 const selectedVendor = ref([])
-
+const priceRange = ref([0, 10000])
 
 const isProductsLoading = ref(false)
 const isFilterLoading = ref(false)
@@ -62,6 +63,7 @@ const additionalFilters = computed(() => {
         vendor: selectedVendor.value,
         brand: selectedBrand.value,
         category: selectedCategory.value,
+        price: priceRange.value
     }
 })
 
@@ -187,6 +189,9 @@ watch(selectedVendor, async () => {
     }
 })
 
+watchDebounced(priceRange, async () => {
+    await fetchCatalogueAndUpdateOtherFilters(primaryFilter.value, primarySelectedValues.value, additionalFilters.value, currentPage.value, perPage.value)
+}, {deep: true, debounce: 500, maxWait: 1000})
 
 watch([currentPage, perPage], async () => {
     console.log('primary filter is  ' + primaryFilter.value)
@@ -227,6 +232,7 @@ const handleClickCatalogueCard = (reference) => {
                 v-model:selected-type="selectedType"
                 v-model:selected-vendor="selectedVendor"
                 v-model:selected-category="selectedCategory"
+                v-model:price-range="priceRange"
                 :is-filter-loading="isFilterLoading"
             />
         </div>

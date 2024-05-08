@@ -88,7 +88,16 @@ class CatalogueController extends Controller
 
         // If either value or field is empty, fetch all items without pagination
         if (empty($field) || empty($values)) {
-            $paginatedQueryResult = Catalogue::paginate($perPage);
+            $query = Catalogue::query(); // Get the query builder instance
+
+            foreach ($additionalFilters as $filterField => $filterValue) {
+                if ($filterField === 'price' && is_array($filterValue) && count($filterValue) === 2) {
+                    $minPrice = intval($filterValue[0]);
+                    $maxPrice = intval($filterValue[1]);
+                    $query->whereRaw('CAST(price_inc_gst AS UNSIGNED) BETWEEN ? AND ?', [$minPrice, $maxPrice]);
+                }
+            }
+            $paginatedQueryResult = $query->paginate($perPage);
             $queryResult = $paginatedQueryResult->getCollection();
             foreach (['type', 'brand', 'vendor', 'category'] as $otherField) {
                 if ($otherField != $field) {
@@ -102,7 +111,14 @@ class CatalogueController extends Controller
             // additional filters code
             // Add additional filters to the query
             foreach ($additionalFilters as $filterField => $filterValue) {
-                $query->where($filterField, $filterValue);
+                if ($filterField === 'price' && is_array($filterValue) && count($filterValue) === 2) {
+                    $minPrice = intval($filterValue[0]);
+                    $maxPrice = intval($filterValue[1]);
+                    $query->whereRaw('CAST(price_inc_gst AS UNSIGNED) BETWEEN ? AND ?', [$minPrice, $maxPrice]);
+                } else {
+                    // For other filters
+                    $query->where($filterField, $filterValue);
+                }
             }
 
             // paginate results
