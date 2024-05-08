@@ -78,14 +78,17 @@ const ausCurriculumTitle = ref("")
 const ausCurriculumParagraph = ref([])
 const ausCurriculumHeadings = ref([])
 const ausCurriculumListing = ref([])
+const ausCurriculumLinks = ref([])
 const crossCurriculumTitle = ref("")
 const crossCurriculumParagraph = ref([])
 const crossCurriculumHeadings = ref([])
 const crossCurriculumListing = ref([])
+const crossCurriculumLinks = ref([])
 const generalCapabilitiesTitle = ref("")
 const generalCapabilitiesParagraph = ref([])
 const generalCapabilitiesHeadings = ref([])
 const generalCapabilitiesListing = ref([])
+const generalCapabilitiesLinks = ref([])
 
 
 //handle file upload
@@ -266,19 +269,22 @@ const downloadFormattedJson = () => {
                 "Title": ausCurriculumTitle.value,
                 "Paragraphs": ausCurriculumParagraph.value,
                 "List Headings": ausCurriculumHeadings.value,
-                "Listings": ausCurriculumListing.value
+                "Listings": ausCurriculumListing.value,
+                "Links": ausCurriculumLinks.value
             },
             "Cross Curriculum": {
                 "Title": crossCurriculumTitle.value,
                 "Paragraphs": crossCurriculumParagraph.value,
                 "List Headings": crossCurriculumHeadings.value,
-                "Listings": crossCurriculumListing.value
+                "Listings": crossCurriculumListing.value,
+                "Links": crossCurriculumLinks.value
             },
             "General Capabilities": {
                 "Title": generalCapabilitiesTitle.value,
                 "Paragraphs": generalCapabilitiesParagraph.value,
                 "List Headings": generalCapabilitiesHeadings.value,
-                "Listings": generalCapabilitiesListing.value
+                "Listings": generalCapabilitiesListing.value,
+                "Links": generalCapabilitiesLinks.value
             }
         }
     }, (key, value) => {
@@ -1005,6 +1011,60 @@ const extractAllContentByEachId = (html, id) => {
                 }
             });
         }
+    }
+
+    // extracting the Curriculum Connections informations including the links, paragraphs and lists.
+    if (element && element.parentElement) {
+        const nextTheadElement = element.parentElement ? element.parentElement.nodeName === 'H1' ? element.parentElement.nextElementSibling ? element.parentElement.nextElementSibling.nodeName === 'TABLE' ? element.parentElement.nextElementSibling.querySelector('thead') ? element.parentElement.nextElementSibling.querySelector('thead').querySelectorAll('tr') : null : null : null : null : null;
+        nextTheadElement ? nextTheadElement.forEach(tr => {
+            const eachTh = tr.querySelectorAll('th')
+            const listText = []
+            const pText = [];
+            const strongText = [];
+            const link = [];
+            eachTh.forEach(th => {
+                const h1Text = th.querySelector('h1') ? th.querySelector('h1').textContent.trim() : null;
+                // console.log(h1Text)
+                const pElement = th.querySelectorAll('p');
+                pElement.forEach(p => {
+                    const linkElement = p ? p.querySelectorAll('a') : null;
+                    linkElement.forEach(a => {
+                        const linkDetails = []
+                        linkDetails.push({ "Text:": a.textContent.trim(), "Links": a.getAttribute('href') })
+                        link.push(linkDetails);
+                    })
+                    pText.push(p.textContent.trim())
+                    // console.log(pText)
+                    const strongT = p.querySelector('strong') ? p.querySelector('strong').textContent.trim() : null;
+                    if (strongT !== null) {
+                        strongText.push(strongT);
+                    }
+                })
+                const ulElement = th.querySelector('ul');
+                const liElements = ulElement ? ulElement.querySelectorAll('li') : null;
+                liElements ? liElements.forEach(li => {
+                    listText.push(li.textContent.trim());
+                }) : null;
+                if (h1Text ? h1Text.toLowerCase().includes('version') : null) {
+                    ausCurriculumListing.value.push(listText)
+                    ausCurriculumParagraph.value.push(pText)
+                    ausCurriculumHeadings.value.push(strongText)
+                    ausCurriculumLinks.value.push(link)
+                }
+                if (h1Text ? h1Text.toLowerCase().includes('cross') : null) {
+                    crossCurriculumListing.value.push(listText)
+                    crossCurriculumParagraph.value.push(pText)
+                    crossCurriculumHeadings.value.push(strongText)
+                    crossCurriculumLinks.value.push(link)
+                }
+                if (h1Text ? (h1Text.toLowerCase().includes('general') || h1Text.toLowerCase().includes('capab')) : null) {
+                    generalCapabilitiesListing.value.push(listText)
+                    generalCapabilitiesParagraph.value.push(pText)
+                    generalCapabilitiesHeadings.value.push(strongText)
+                    generalCapabilitiesLinks.value.push(link)
+                }
+            })
+        }) : null;
     }
 
 
