@@ -38,7 +38,6 @@ onMounted(() => {
 });
 
 const updateValue = (value, handle) => {
-    console.log('update value called', value, handle)
     currentValues.value[handle] = value[handle];
     emit('update:values', currentValues.value);
 };

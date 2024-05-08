@@ -89,7 +89,7 @@ const getGroupedItemAttribute = (item, attributeName) => {
                 to="/catalogue"
                 class="flex items-end flex-row text-white underline"
             >
-                <ChevronLeftNavIcon class="h-5 w-5" />Return to catalogue
+                <ChevronLeftNavIcon class="h-5 mb-[1px] w-5" /> <span>Return to catalogue</span>
             </router-link>
         </template>
     </BaseLandingHero>
@@ -107,7 +107,7 @@ const getGroupedItemAttribute = (item, attributeName) => {
                 <img
                     v-if="getGroupedItemAttribute(item,'image')"
                     :src="catalogueImageURL + getGroupedItemAttribute(item,'image')"
-                    class="h-[200px] mb-2 p-4 w-catW"
+                    class="h-[200px] mb-2 object-contain p-4 w-catW"
                     alt="icon"
                 >
                 <div class="border-b-[1px] border-slate-300 catItemName mb-4 text-2xl">

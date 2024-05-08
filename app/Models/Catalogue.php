@@ -18,7 +18,7 @@ class Catalogue extends Model
         'processor', 'storage', 'memory', 'form_factor', 'display', 'graphics',
         'wireless', 'webcam', 'operating_system', 'warranty', 'battery_life',
         'weight', 'stylus', 'other', 'available_now', 'corporate', 'administration',
-        'curriculum', 'image', 'product_number', 'price_expiry','cover_image'
+        'curriculum', 'image', 'product_number', 'price_expiry', 'cover_image'
     ];
 
     public static function deleteAll()
