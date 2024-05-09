@@ -85,7 +85,7 @@ class ListCatalogues extends ListRecords
                                     $query->orWhere("title", strtolower($modifiedTitle));
                                 }
                             })->first()->id ?? '';
-                            
+
 
                             if ($existingRecord) {
                                 $updateRecords[] = [
