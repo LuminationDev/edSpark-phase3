@@ -1,6 +1,6 @@
 <?php
 
-namespace Outerweb\ImageLibrary\Components;
+namespace App\Components\vendor\image-library;
 
 use Closure;
 use Illuminate\Contracts\View\View;
