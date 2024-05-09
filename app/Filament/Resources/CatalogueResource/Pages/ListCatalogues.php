@@ -37,6 +37,7 @@ class ListCatalogues extends ListRecords
                     Catalogue::deleteAll();
                 }),
             Action::make("Bulk update via CSV")
+                ->label('Bulk update via CSV')
                 ->form([
                     FileUpload::make('csv_file')
                         ->label('CSV file')
