@@ -15,6 +15,7 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Outerweb\FilamentImageLibrary\Filament\Forms\Components\ImageLibraryPicker;
+use Outerweb\ImageLibrary\Models\Image;
 
 class CatalogueResource extends Resource
 {
@@ -89,6 +90,15 @@ class CatalogueResource extends Resource
                     ->searchable(),
                 Tables\Columns\ImageColumn::make('cover_image')
                     ->limit(15)
+                    ->square()
+                    ->getStateUsing(function ($record): string {
+                        $imgId = $record->cover_image;
+                        $image = Image::where('id',$imgId)->first();
+                        if($image){
+                            return env('VITE_SERVER_IMAGE_API') . '/' . $image->uuid . "/original.png";
+                        }
+                        return '';
+                    })
 
             ])
             ->modifyQueryUsing(function (Builder $query) {

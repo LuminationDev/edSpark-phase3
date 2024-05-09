@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Mockery\Exception;
+use Outerweb\ImageLibrary\Models\Image;
 
 class CreateCatalogueversion extends CreateRecord
 {
@@ -58,6 +59,18 @@ class CreateCatalogueversion extends CreateRecord
 
         try {
             foreach ($data as $catalogueItem) {
+                $uniqueReference = $catalogueItem['Unique Reference'];
+                $extensions = ['png', 'jpg'];
+                $modifiedTitles = array_map(function ($extension) use ($uniqueReference) {
+                    return strtolower($uniqueReference) . '.' . $extension;
+                }, $extensions);
+
+                $existingImageId = Image::where(function ($query) use ($modifiedTitles) {
+                    foreach ($modifiedTitles as $modifiedTitle) {
+                        $query->orWhere("title", strtolower($modifiedTitle));
+                    }
+                })->first()->id ?? '';
+
                 $catalogueItems[] = [
                     'unique_reference' => $catalogueItem['Unique Reference'],
                     'version_id' => $currentVersion,
@@ -88,7 +101,7 @@ class CreateCatalogueversion extends CreateRecord
                     'image' => $catalogueItem['Image'],
                     'product_number' => $catalogueItem['Product Number'],
                     'price_expiry' => $catalogueItem['Price Expiry'],
-                    'cover_image' => '',
+                    'cover_image' => $existingImageId,
                     'created_at' => now(),
                     'updated_at' => now(),
                 ];

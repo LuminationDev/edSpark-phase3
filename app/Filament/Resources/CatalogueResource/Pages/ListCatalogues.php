@@ -14,6 +14,7 @@ use Filament\Support\Colors\Color;
 use App\Models\Catalogueversion;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Outerweb\ImageLibrary\Models\Image;
 
 class ListCatalogues extends ListRecords
 {
@@ -43,6 +44,7 @@ class ListCatalogues extends ListRecords
                         ->required(),
                 ])
                 ->action(function (array $data, $record): void {
+
                     DB::beginTransaction();
                     $updatedCount = 0;
                     $createdCount = 0;
@@ -70,6 +72,19 @@ class ListCatalogues extends ListRecords
                                 ->where('unique_reference', $catalogueItem['Unique Reference'])
                                 ->where('version_id', $activeCatalogueId)
                                 ->first();
+
+                            $uniqueReference = $catalogueItem['Unique Reference'];
+                            $extensions = ['png', 'jpg'];
+                            $modifiedTitles = array_map(function ($extension) use ($uniqueReference) {
+                                return strtolower($uniqueReference) . '.' . $extension;
+                            }, $extensions);
+
+                            $existingImageId = Image::where(function ($query) use ($modifiedTitles) {
+                                foreach ($modifiedTitles as $modifiedTitle) {
+                                    $query->orWhere("title", strtolower($modifiedTitle));
+                                }
+                            })->first()->id ?? '';
+
 
                             if ($existingRecord) {
                                 $updateRecords[] = [
@@ -102,7 +117,7 @@ class ListCatalogues extends ListRecords
                                         'image' => $catalogueItem['Image'] ?? '',
                                         'product_number' => $catalogueItem['Product Number'] ?? '',
                                         'price_expiry' => $catalogueItem['Price Expiry'] ?? '',
-                                        'cover_image' => $catalogueItem['Image'] ?? '',
+                                        'cover_image' => $existingImageId,
                                         'updated_at' => now(),
                                     ]
                                 ];
@@ -139,7 +154,7 @@ class ListCatalogues extends ListRecords
                                     'image' => $catalogueItem['Image'] ?? '',
                                     'product_number' => $catalogueItem['Product Number'] ?? '',
                                     'price_expiry' => $catalogueItem['Price Expiry'] ?? '',
-                                    'cover_image' => $catalogueItem['Image'] ?? '',
+                                    'cover_image' => $existingImageId,
                                     'created_at' => now(),
                                     'updated_at' => now(),
                                 ];
