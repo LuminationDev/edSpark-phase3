@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\CatalogueResource\Pages;
 
+use App\Components\vendor\image\Image;
 use App\Filament\Resources\CatalogueResource;
 use Filament\Actions;
 use Filament\Resources\Pages\CreateRecord;
@@ -15,6 +16,7 @@ class CreateCatalogue extends CreateRecord
 
     protected function handleRecordCreation(array $data): Model
     {
+
         DB::beginTransaction();
 
         try {

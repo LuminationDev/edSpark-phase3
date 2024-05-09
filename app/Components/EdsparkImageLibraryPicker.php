@@ -48,8 +48,8 @@ class EdsparkImageLibraryPicker extends ImageLibraryPicker
 
                         return ImageLibrary::upload($newFile, $get('disk'),
                             [
-                                'title' => $file->getClientOriginalName(),
-                                'alt' => $file->getClientOriginalName(),
+                                'title' => strtolower($file->getClientOriginalName()),
+                                'alt' => strtolower($file->getClientOriginalName()),
                             ])->id;
                     }),
             ])
