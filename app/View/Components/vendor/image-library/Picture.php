@@ -1,9 +1,11 @@
 <?php
 
-namespace Outerweb\ImageLibrary\Components;
+namespace App\Components\vendor\image-library;
 
-use Closure;
+use App\Components\vendor\imageuse;
 use Illuminate\Contracts\View\View;
+
+Closure;
 
 class Picture extends Image
 {
