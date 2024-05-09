@@ -95,7 +95,12 @@ class CatalogueResource extends Resource
                         $imgId = $record->cover_image;
                         $image = Image::where('id',$imgId)->first();
                         if($image){
-                            return env('VITE_SERVER_IMAGE_API') . '/' . $image->uuid . "/original.png";
+                            if($image->file_extension === 'png'){
+                                return env('VITE_SERVER_IMAGE_API') . '/' . $image->uuid . "/original.png";
+
+                            }else{
+                                return env('VITE_SERVER_IMAGE_API') . '/' . $image->uuid . "/original.jpg";
+                            }
                         }
                         return '';
                     })
