@@ -41,6 +41,18 @@ class CreateCatalogue extends CreateRecord
 
             // Insert data into Catalogue table
             foreach ($catalogueItems as $catalogueItem) {
+                $uniqueReference = $catalogueItem['Unique Reference'];
+                $extensions = ['png', 'jpg'];
+                $modifiedTitles = array_map(function ($extension) use ($uniqueReference) {
+                    return strtolower($uniqueReference) . '.' . $extension;
+                }, $extensions);
+
+                $existingImageId = \Outerweb\ImageLibrary\Models\Image::where(function ($query) use ($modifiedTitles) {
+                    foreach ($modifiedTitles as $modifiedTitle) {
+                        $query->orWhere("title", strtolower($modifiedTitle));
+                    }
+                })->first()->id ?? '';
+
                 $newRecords[] = [
                     'unique_reference' => $catalogueItem['Unique Reference'] ?? '',
                     'version_id' => $currentVersion,
@@ -71,7 +83,7 @@ class CreateCatalogue extends CreateRecord
                     'image' => $catalogueItem['Image'] ?? '',
                     'product_number' => $catalogueItem['Product Number'] ?? '',
                     'price_expiry' => $catalogueItem['Price Expiry'] ?? '',
-                    'cover_image' => '',
+                    'cover_image' => $existingImageId,
                     'created_at' => now(),
                     'updated_at' => now(),
                 ];

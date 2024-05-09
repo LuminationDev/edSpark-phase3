@@ -90,15 +90,14 @@ class CatalogueResource extends Resource
                     ->searchable(),
                 Tables\Columns\ImageColumn::make('cover_image')
                     ->limit(15)
+                    ->square()
                     ->getStateUsing(function ($record): string {
                         $imgId = $record->cover_image;
                         $image = Image::where('id',$imgId)->first();
                         if($image){
-                            return "http://localhost:8000/storage/" . $image->uuid . "/original.png";
+                            return env('VITE_SERVER_IMAGE_API') . '/' . $image->uuid . "/original.png";
                         }
                         return '';
-
-//                        return "https://www.google.com/images/branding/googlelogo/1x/googlelogo_color_272x92dp.png";
                     })
 
             ])
