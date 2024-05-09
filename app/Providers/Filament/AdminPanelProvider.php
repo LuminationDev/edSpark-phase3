@@ -71,6 +71,10 @@ class AdminPanelProvider extends PanelProvider
                 ],
             ])
             ->viteTheme('resources/css/filament/admin/theme.css')
+            ->unsavedChangesAlerts()
+            ->favicon(url(env('VITE_SERVER_IMAGE_API') . '/uploads/image/edsparkLogo.png'))
+            ->brandLogo(url(env('VITE_SERVER_IMAGE_API') . '/uploads/image/edsparkLogo.png'))
+            ->brandLogoHeight('4rem')
             ->plugins([
                 FilamentImageLibraryPlugin::make()
                     ->addAllowedDisk('public')
