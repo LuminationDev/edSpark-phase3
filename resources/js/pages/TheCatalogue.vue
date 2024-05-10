@@ -199,7 +199,7 @@ watch([currentPage, perPage], async () => {
     await fetchCatalogueAndUpdateOtherFilters(primaryFilter.value, primarySelectedValues.value, additionalFilters.value, currentPage.value, perPage.value)
 })
 
-watch(primaryFilter, () => {
+watch([primaryFilter, selectedType, selectedCategory, selectedBrand, selectedVendor], () => {
     currentPage.value = 1
 })
 

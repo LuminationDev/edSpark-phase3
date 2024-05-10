@@ -41,20 +41,11 @@ const priceRange = defineModel('priceRange')
         v-else
         class="flex flex-col"
     >
-        <CataloguePriceSlider v-model:price-range="priceRange" />
-
         <CatalogueFilterGroup
             v-if="typeList.length"
             v-model="typeList"
             v-model:selected="selectedType"
             title="Type"
-            :default-show-filter="true"
-        />
-        <CatalogueFilterGroup
-            v-if="categoryList.length"
-            v-model="categoryList"
-            v-model:selected="selectedCategory"
-            title="Category"
             :default-show-filter="true"
         />
         <CatalogueFilterGroup
@@ -65,11 +56,20 @@ const priceRange = defineModel('priceRange')
             :default-show-filter="false"
         />
         <CatalogueFilterGroup
+            v-if="categoryList.length"
+            v-model="categoryList"
+            v-model:selected="selectedCategory"
+            title="Category"
+            :default-show-filter="true"
+        />
+
+        <CatalogueFilterGroup
             v-if="vendorList.length"
             v-model="vendorList"
             v-model:selected="selectedVendor"
             title="Vendor"
             :default-show-filter="false"
         />
+        <CataloguePriceSlider v-model:price-range="priceRange" />
     </div>
 </template>

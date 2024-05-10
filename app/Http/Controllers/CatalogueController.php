@@ -84,7 +84,7 @@ class CatalogueController extends Controller
     public function fetchCatalogueByField(Request $request): \Illuminate\Http\JsonResponse
     {
         $field = $request->input('field');
-        $values = (array)$request->input('value');
+        $values = $request->input('value') ?? [];
         $perPage = $request->input('per_page', 20);
         $additionalFilters = $request->input('additional_filters', []);
 
@@ -105,7 +105,9 @@ class CatalogueController extends Controller
                 $maxPrice = intval($filterValue[1]);
                 $query->whereRaw('CAST(price_inc_gst AS UNSIGNED) BETWEEN ? AND ?', [$minPrice, $maxPrice]);
             } else {
-                $query->orWhereIn($filterField, $filterValue);
+                if ($field !== $filterField) {
+                    $query->orWhereIn($filterField, is_array($filterValue) ? $filterValue : [$filterValue]);
+                }
             }
         }
 
