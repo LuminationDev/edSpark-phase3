@@ -2,13 +2,15 @@
 import mammoth from 'mammoth';
 import {ref} from "vue";
 
+// linked JSON File
+import { data } from './dataJson'
 
-//all initial variables are here
+// all initial variables are here
 const htmlContent = ref('');
 const error = ref('');
 const jsonContent = ref({});
 
-//variables used to store json format value
+// variables used to store json format value
 const topicHeading = ref('')
 const topicCategory = ref('')
 const learningArea = ref('')
@@ -95,6 +97,32 @@ const generalCapabilitiesListing = ref([])
 const generalCapabilitiesListingTree = ref([])
 const generalCapabilitiesLinks = ref([])
 
+// variables used to display on the template
+const topicHeading_Display = ref('')
+const topicCategory_Display = ref('')
+const learningArea_Display = ref('')
+const yearLevel_Display = ref('')
+const duration_Display = ref('')
+const taskSummaryTitle_Display = ref('')
+const taskSummaryParagraph_Display = ref('')
+const sessionOverviewTitle_Display = ref('')
+const sessionOverivewParagraphs_Display = ref([])
+const sessionOverviewSubheadings_Display = ref([])
+const sessionOverviewParagraph_Display = ref([])
+const digiTechTitle_Display = ref('')
+const digiTechListings_Display = ref([])
+const requiredResourcesTitle_Display = ref('')
+const requiredResourcesParagraph_Display = ref([])
+const requiredResourcesListHeadings_Display = ref([])
+const requiredResourcesSubListHeadings_Display = ref([])
+const requiredResourcesListingSubListing_Display = ref([])
+const requiredResourcesAllLinks_Display = ref([])
+const otherResourcesTitle_Display = ref('')
+const otherResourcesParagraph_Display = ref([])
+const otherResourcesListHeadings_Display = ref([])
+const otherResourcesSubListHeadings_Display = ref([])
+const otherResourcesListingSubListing_Display = ref([])
+const otherResourcesAllLinks_Display = ref([])
 
 //handle file upload
 const handleFileUpload = async (event) => {
@@ -1226,8 +1254,13 @@ const extractAllContentByEachId = (html, id) => {
 
 //function to filter required content from JSON and display on the layout
 const displayRequiredContent = () => {
-
-
+    topicHeading_Display.value  = (data['Topic Heading']);
+    topicCategory_Display.value = (data['Topic Category']);
+    learningArea_Display.value = (data['Learning Area']);
+    yearLevel_Display.value = (data['Year Level']);
+    duration_Display.value = (data['Duration']);
+    taskSummaryTitle_Display.value = (data['Task Summary']?.Title);
+    taskSummaryParagraph_Display.value = (data['Task Summary']?.Paragraphs);
 }
 
 
@@ -1268,7 +1301,7 @@ const displayRequiredContent = () => {
     <div class="border-2 border-black border-dashed h-full mt-12 p-6">
         <button
             class="border-2 border-black border-dashed p-2 rounded-2xl"
-            @click="displaySelectedContent"
+            @click="displayRequiredContent"
         >
             Display required content from JSON file
         </button>
@@ -1327,8 +1360,8 @@ const displayRequiredContent = () => {
                 class="mt-2 text-4xl"
             >
                 <div
-                    v-if="displayHeading"
-                    v-html="displayHeading"
+                    v-if="topicHeading_Display"
+                    v-html="topicHeading_Display"
                 />
                 <div v-else>
                     Topic Heading
@@ -1337,8 +1370,8 @@ const displayRequiredContent = () => {
             <div class="grid grid-cols-2 mt-2">
                 <div class="mt-2 text-lg">
                     <div
-                        v-if="displayCategory"
-                        v-html="displayCategory"
+                        v-if="topicCategory_Display"
+                        v-html="topicCategory_Display"
                     />
                     <div v-else>
                         AR/VR Learning Tasks
@@ -1346,24 +1379,48 @@ const displayRequiredContent = () => {
                 </div>
                 <div class="flex flex-col gap-4 text-lg">
                     <div class="flex flex-row">
-                        <div>Year Level: </div><div>Year level will come here.</div>
+                        <div>Year Level: </div>
+                        <div
+                            v-if="yearLevel_Display"
+                            v-html="yearLevel_Display"
+                        />
+                        <div v-else>
+                            Year level will come here.
+                        </div>
                     </div>
                     <div class="flex flex-row">
-                        <div>Learning Area: </div><div>Learning area will come here.</div>
+                        <div>Learning Area: </div><div
+                            v-if="learningArea_Display"
+                            v-html="learningArea_Display"
+                        />
+                        <div v-else>
+                            Learning area will come here.
+                        </div>
                     </div>
                     <div class="flex flex-row">
-                        <div>Duration: </div><div>Duration will come here.</div>
+                        <div>Duration: </div><div
+                            v-if="duration_Display"
+                            v-html="duration_Display"
+                        />
+                        <div v-else>
+                            Duration will come here.
+                        </div>
                     </div>
                 </div>
             </div>
             <div class="mt-10">
-                <div class="text-3xl">
+                <div
+                    v-if="taskSummaryTitle_Display"
+                    class="text-3xl"
+                    v-html="taskSummaryTitle_Display"
+                />
+                <div v-else>
                     Task Summary
                 </div>
                 <div class="mt-4 text-xl">
                     <div
-                        v-if="displayTaskSummary"
-                        v-html="displayTaskSummary"
+                        v-if="taskSummaryParagraph_Display"
+                        v-html="taskSummaryParagraph_Display"
                     />
                     <div v-else>
                         Task Summary paragraph will come here.
