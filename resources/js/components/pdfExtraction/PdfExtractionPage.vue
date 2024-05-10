@@ -107,6 +107,7 @@ const handleFileUpload = async (event) => {
         extractTextById(htmlContent.value, '_r9sioprybg6g')
         extractTextById(htmlContent.value, '_o25ffby0w0ip')
         extractTextById(htmlContent.value, '_jhqnd16qn0md')
+        extractTextById(htmlContent.value, '_fmhbwmb7feqy')
         extractTextById(htmlContent.value, '_2jqga89deyn')
         extractTextById(htmlContent.value, '_jkhi5jchiyqa')
         extractTextById(htmlContent.value, '_kv7kogslxlmu')
@@ -116,6 +117,7 @@ const handleFileUpload = async (event) => {
         extractAllContentByEachId(htmlContent.value, '_r9sioprybg6g')
         extractAllContentByEachId(htmlContent.value, '_o25ffby0w0ip')
         extractAllContentByEachId(htmlContent.value, '_jhqnd16qn0md')
+        extractAllContentByEachId(htmlContent.value, '_fmhbwmb7feqy')
         extractAllContentByEachId(htmlContent.value, '_2jqga89deyn')
         extractAllContentByEachId(htmlContent.value, '_jkhi5jchiyqa')
         extractAllContentByEachId(htmlContent.value, '_kv7kogslxlmu')
@@ -332,6 +334,9 @@ const extractTextById = (html, id) => {
     if (element && element.parentNode && id === "_jhqnd16qn0md") {
         digiTechTitle.value = element.parentNode.textContent.trim();
     }
+    if (element && element.parentNode && id === "_fmhbwmb7feqy") {
+        digiTechTitle.value = element.parentNode.textContent.trim();
+    }
     if (element && element.parentNode && id === "_2jqga89deyn") {
         requiredResourcesTitle.value = element.parentNode.textContent.trim();
     }
@@ -478,6 +483,10 @@ const extractAllContentByEachId = (html, id) => {
                 {
                     digiTechListings.value.push(item.textContent.trim());
                 }
+                if (id === "_fmhbwmb7feqy")
+                {
+                    digiTechListings.value.push(item.textContent.trim());
+                }
             });
         }
     }
@@ -509,13 +518,13 @@ const extractAllContentByEachId = (html, id) => {
     }
 
     // extracting all the [links, text, link] (with assigning keys), on the basis of different id's
-    const topTrTag = element.parentNode.parentNode.parentNode
-    const h1Tags = topTrTag.querySelectorAll('h1');
-    const pTags = topTrTag.querySelectorAll('p');
+    const topTrTag = element ? element.parentNode ? element.parentNode.parentNode ? element.parentNode.parentNode.parentNode : null : null : null;
+    const h1Tags = topTrTag ? topTrTag.querySelectorAll('h1') : null;
+    const pTags = topTrTag ? topTrTag .querySelectorAll('p') : null;
     const inSession1 = false; // Flag to track if currently in Session 1
     const inSession2 = false; // Flag to track if currently in Session 2
     const sessionText = ref('')
-    if(h1Tags.length > 0 && pTags.length > 0)
+    if((h1Tags ? h1Tags.length > 0 : null) && (pTags ? pTags.length > 0 : null))
     {
         let keyCounter = 0;
         sessionText.value = h1Tags[0].textContent.trim();
@@ -780,7 +789,7 @@ const extractAllContentByEachId = (html, id) => {
                                     }
                                 }
                                 if (pText.toLowerCase().includes('prior') || pText.toLowerCase().includes('pre') || pText.toLowerCase().includes('discussion')) {
-                                    if (count === 1  && !previousSibP) {
+                                    if (count === 1  && !previousSibP && brText) {
                                         priorKnowledgeNumbering.value = brText;
                                     }
                                     if (previousSibP) {
@@ -967,10 +976,10 @@ const extractAllContentByEachId = (html, id) => {
                     pElements.forEach((p, index) => {
                         const subHeading = p.textContent.trim();
                         const nextElement = p.nextElementSibling;
-                        const imageElement = p ? p.querySelector('img') : null;
+                        const imageElement = nextElement ? nextElement.querySelector('img') : null;
                         const imageElementSRC = imageElement ? imageElement.getAttribute('src') : null;
                         if (imageElementSRC !== null) {
-                            imageLinks.push(imageElementSRC)
+                            imageLinks.push({ 'Text': subHeading, 'Image Link': imageElementSRC })
                         }
                         // Check if the next element is a list (<ul> or <ol>)
                         if (nextElement && (nextElement.tagName === 'UL' || nextElement.tagName === 'OL')) {
