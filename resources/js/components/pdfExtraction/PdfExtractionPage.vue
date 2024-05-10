@@ -49,6 +49,7 @@ const introductoryTime = ref("")
 const introductoryParagraph = ref([])
 const introductoryHeading = ref([])
 const introductoryListing = ref([])
+const introductoryImageLinks = ref([])
 const introductoryLinks = ref([])
 const priorKnowledgeNumbering = ref("")
 const priorKnowledgeTitle = ref("")
@@ -56,6 +57,7 @@ const priorKnowledgeTime = ref("")
 const priorKnowledgeParagraph = ref([])
 const priorKnowledgeHeading = ref([])
 const priorKnowledgeListing = ref([])
+const priorKnowledgeImageLinks = ref([])
 const priorKnowledgeLinks = ref([])
 const activitiesNumbering = ref("")
 const activitiesTitle = ref("")
@@ -63,6 +65,7 @@ const activitiesTime = ref("")
 const activitiesParagraph = ref([])
 const activitiesHeading = ref([])
 const activitiesListing = ref([])
+const activitiesImageLinks = ref([])
 const activitiesLinks = ref([])
 const checkUnderstandingNumbering = ref("")
 const checkUnderstandingTitle = ref("")
@@ -70,6 +73,7 @@ const checkUnderstandingTime = ref("")
 const checkUnderstandingParagraph = ref([])
 const checkUnderstandingHeading = ref([])
 const checkUnderstandingListing = ref([])
+const checkUnderstandingImageLinks = ref([])
 const checkUnderstandingLinks = ref([])
 const curriculumText = ref("")
 const ausCurriculumTitle = ref("")
@@ -231,6 +235,7 @@ const downloadFormattedJson = () => {
                 "Paragraphs": introductoryParagraph.value,
                 "List Headings": introductoryHeading.value,
                 "Listings": introductoryListing.value,
+                "Image Links": introductoryImageLinks.value,
                 "All Links": introductoryLinks.value
             },
             "Prior Knowledge Check": {
@@ -240,6 +245,7 @@ const downloadFormattedJson = () => {
                 "Paragraphs": priorKnowledgeParagraph.value,
                 "List Headings": priorKnowledgeHeading.value,
                 "Listings": priorKnowledgeListing.value,
+                "Image Links": priorKnowledgeImageLinks.value,
                 "All Links": priorKnowledgeLinks.value
             },
             "Activities": {
@@ -249,6 +255,7 @@ const downloadFormattedJson = () => {
                 "Paragraphs": activitiesParagraph.value,
                 "List Headings": activitiesHeading.value,
                 "Listings": activitiesListing.value,
+                "Image Links": activitiesImageLinks.value,
                 "All Links": activitiesLinks.value
             },
             "Check Understanding": {
@@ -258,6 +265,7 @@ const downloadFormattedJson = () => {
                 "Paragraphs": checkUnderstandingParagraph.value,
                 "List Headings": checkUnderstandingHeading.value,
                 "Listings": checkUnderstandingListing.value,
+                "Image Links": checkUnderstandingImageLinks.value,
                 "All Links": checkUnderstandingLinks.value
             }
         },
@@ -953,7 +961,7 @@ const extractAllContentByEachId = (html, id) => {
                             // console.log(subHeadings)
                         });
                     }
-
+                    const imageLinks = [];
                     // Loop through all <p> elements under the second <th>
                     const pElements = thElements[1].querySelectorAll('p');
                     pElements.forEach((p, index) => {
@@ -961,7 +969,9 @@ const extractAllContentByEachId = (html, id) => {
                         const nextElement = p.nextElementSibling;
                         const imageElement = p ? p.querySelector('img') : null;
                         const imageElementSRC = imageElement ? imageElement.getAttribute('src') : null;
-                        console.log(imageElementSRC)
+                        if (imageElementSRC !== null) {
+                            imageLinks.push(imageElementSRC)
+                        }
                         // Check if the next element is a list (<ul> or <ol>)
                         if (nextElement && (nextElement.tagName === 'UL' || nextElement.tagName === 'OL')) {
                             const subSubHeadings = [];
@@ -999,15 +1009,19 @@ const extractAllContentByEachId = (html, id) => {
                     });
                     if (mainHeading ? mainHeading.toLowerCase().includes('provocation') : null) {
                         introductoryListing.value.push( subHeadings );
+                        introductoryImageLinks.value.push(imageLinks)
                     }
                     if (mainHeading ? (mainHeading.toLowerCase().includes('prior') || mainHeading.toLowerCase().includes('pre') || mainHeading.toLowerCase().includes('discussion')) : null) {
                         priorKnowledgeListing.value.push( subHeadings );
+                        priorKnowledgeImageLinks.value.push(imageLinks)
                     }
                     if (mainHeading ? mainHeading.toLowerCase().includes('activities') : null) {
                         activitiesListing.value.push( subHeadings );
+                        activitiesImageLinks.value.push(imageLinks)
                     }
                     if (mainHeading ? mainHeading.toLowerCase().includes('understanding') : null) {
                         checkUnderstandingListing.value.push( subHeadings );
+                        checkUnderstandingImageLinks.value.push(imageLinks)
                     }
                 }
             });
