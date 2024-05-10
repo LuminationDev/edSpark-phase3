@@ -23,8 +23,6 @@ class Catalogue extends Model
 
     public static function deleteAll()
     {
-        // Ensure you have a proper mechanism to handle deletion,
-        // such as checking user permissions or confirming the action.
 
         // Delete all entries in the "catalogues" table
         static::query()->delete();
