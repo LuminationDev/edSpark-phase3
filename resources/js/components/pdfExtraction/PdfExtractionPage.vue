@@ -80,16 +80,19 @@ const ausCurriculumTitle = ref("")
 const ausCurriculumParagraph = ref([])
 const ausCurriculumHeadings = ref([])
 const ausCurriculumListing = ref([])
+const ausCurriculumListingTree = ref([])
 const ausCurriculumLinks = ref([])
 const crossCurriculumTitle = ref("")
 const crossCurriculumParagraph = ref([])
 const crossCurriculumHeadings = ref([])
 const crossCurriculumListing = ref([])
+const crossCurriculumListingTree = ref([])
 const crossCurriculumLinks = ref([])
 const generalCapabilitiesTitle = ref("")
 const generalCapabilitiesParagraph = ref([])
 const generalCapabilitiesHeadings = ref([])
 const generalCapabilitiesListing = ref([])
+const generalCapabilitiesListingTree = ref([])
 const generalCapabilitiesLinks = ref([])
 
 
@@ -278,6 +281,7 @@ const downloadFormattedJson = () => {
                 "Paragraphs": ausCurriculumParagraph.value,
                 "List Headings": ausCurriculumHeadings.value,
                 "Listings": ausCurriculumListing.value,
+                "Lists Tree": ausCurriculumListingTree.value,
                 "Links": ausCurriculumLinks.value
             },
             "Cross Curriculum": {
@@ -285,6 +289,7 @@ const downloadFormattedJson = () => {
                 "Paragraphs": crossCurriculumParagraph.value,
                 "List Headings": crossCurriculumHeadings.value,
                 "Listings": crossCurriculumListing.value,
+                "Lists Tree": crossCurriculumListingTree.value,
                 "Links": crossCurriculumLinks.value
             },
             "General Capabilities": {
@@ -292,6 +297,7 @@ const downloadFormattedJson = () => {
                 "Paragraphs": generalCapabilitiesParagraph.value,
                 "List Headings": generalCapabilitiesHeadings.value,
                 "Listings": generalCapabilitiesListing.value,
+                "Lists Tree": generalCapabilitiesListingTree.value,
                 "Links": generalCapabilitiesLinks.value
             }
         }
