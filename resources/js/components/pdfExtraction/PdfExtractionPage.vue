@@ -1058,8 +1058,16 @@ const extractAllContentByEachId = (html, id) => {
                         linkDetails.push({ "Text:": a.textContent.trim(), "Links": a.getAttribute('href') })
                         link.push(linkDetails);
                     })
-                    pText.push(p.textContent.trim())
-                    // console.log(pText)
+                    // eliminating <strong> text from extracted <p> tag
+                    const clonedP = p.cloneNode(true);
+                    const strongTags = clonedP.querySelectorAll('strong')
+                    strongTags.forEach(strong => {
+                        strong.parentNode.removeChild(strong);
+                    })
+                    const textContent = clonedP.textContent.trim()
+                    if (textContent !== "") {
+                        pText.push(textContent)
+                    }
                     const strongT = p.querySelector('strong') ? p.querySelector('strong').textContent.trim() : null;
                     if (strongT !== null) {
                         strongText.push(strongT);
