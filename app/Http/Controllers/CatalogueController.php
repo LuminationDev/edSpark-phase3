@@ -3,14 +3,22 @@
 namespace App\Http\Controllers;
 
 use App\Models\Catalogue;
+use App\Models\Catalogueversion;
 use App\Services\ResponseService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Outerweb\ImageLibrary\Models\Image;
 
 class CatalogueController extends Controller
 {
     private function catalogueModelToJson($item)
     {
+        if ($item->cover_image) {
+            $itemImage = Image::where('id', $item->cover_image)->first();
+            $itemImageUUID = $itemImage->uuid ?? '';
+        } else {
+            $itemImageUUID = '';
+        }
         return [
             'id' => $item->id,
             'unique_reference' => $item->unique_reference,
@@ -41,6 +49,7 @@ class CatalogueController extends Controller
             'image' => $item->image,
             'product_number' => $item->product_number,
             'price_expiry' => $item->price_expiry,
+            'cover_image' => $itemImageUUID
         ];
     }
 
@@ -74,47 +83,55 @@ class CatalogueController extends Controller
     // Accept field and value from request and return list of products matches the query
     public function fetchCatalogueByField(Request $request): \Illuminate\Http\JsonResponse
     {
-        $inputField = $request->input('field');
-        $values = $request->input('value');
+        $field = $request->input('field');
+        $values = $request->input('value') ?? [];
         $perPage = $request->input('per_page', 20);
-        $availableFields = [];
+        $additionalFilters = $request->input('additional_filters', []);
 
+        // Start building the base query
+        $query = Catalogue::query();
+        // filter based on catalogue version id
+        $query->where('version_id', Catalogueversion::getActiveCatalogueId());
 
-        // Process data from the request
-        $field = $inputField;
-        $values = is_array($values) ? $values : [$values];
+        // if field and values is not empty, apply filter query
+        if (!empty($field) && !empty($values)) {
+            $query->whereIn($field, $values);
+        }
 
-        // If either value or field is empty, fetch all items without pagination
-        if (empty($field) || empty($values)) {
-            $paginatedQueryResult = Catalogue::paginate($perPage);
-            $queryResult = $paginatedQueryResult->getCollection();
-            foreach (['type', 'brand', 'vendor', 'category'] as $otherField) {
-                if ($otherField != $field) {
+        // Apply additional filters
+        foreach ($additionalFilters as $filterField => $filterValue) {
+            if ($filterField === 'price' && is_array($filterValue) && count($filterValue) === 2) {
+                $minPrice = intval($filterValue[0]);
+                $maxPrice = intval($filterValue[1]);
+                $query->whereRaw('CAST(price_inc_gst AS UNSIGNED) BETWEEN ? AND ?', [$minPrice, $maxPrice]);
+            } else {
+                if ($field !== $filterField) {
+                    $query->orWhereIn($filterField, is_array($filterValue) ? $filterValue : [$filterValue]);
+                }
+            }
+        }
+
+        // Fetch distinct values for available fields
+        foreach (['type', 'brand', 'vendor', 'category'] as $otherField) {
+            if ($otherField != $field) {
+                // if primary filter has been selected, other filters must be based on the results only
+                if (!empty($field) && !empty($values)) {
+                    $availableFields[$otherField] = $query->pluck($otherField)->unique()->values()->all();
+                } // Get all fields from Catalogue
+                else {
                     $availableFields[$otherField] = Catalogue::distinct($otherField)->pluck($otherField);
-                }
-            }
-        } else {
-            // Fetch all items without pagination for availableFields
-            $queryResult = Catalogue::whereIn($field, $values);
-            $paginatedQueryResult = $queryResult->paginate($perPage);
 
-            if ($paginatedQueryResult->isEmpty()) {
-                return ResponseService::error('No results found.', null, 404);
-            }
-            foreach (['type', 'brand', 'vendor', 'category'] as $otherField) {
-                if ($otherField != $field) {
-                    $availableFields[$otherField] = $paginatedQueryResult->pluck($otherField)->unique()->values()->all();
                 }
             }
         }
 
-        // Get distinct values for each field other than the main field to update filter UI
+        // Paginate the results
+        $paginatedQueryResult = $query->paginate($perPage);
 
-
-        $itemResults = [];
-        foreach ($paginatedQueryResult->items() as $item) {
-            $itemResults[] = $this->catalogueModelToJson($item);
-        }
+        // Transform results to JSON format
+        $itemResults = $paginatedQueryResult->map(function ($item) {
+            return $this->catalogueModelToJson($item);
+        });
 
         return ResponseService::success('Results fetched successfully.', [
             'items' => $itemResults,
@@ -127,7 +144,6 @@ class CatalogueController extends Controller
             ],
         ]);
     }
-
 
 
     public function fetchAllCatalogue(Request $request)

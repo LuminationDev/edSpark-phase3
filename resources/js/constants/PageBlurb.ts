@@ -63,6 +63,10 @@ export const LandingHeroText = {
     '404':{
         title: "404 | Oops! Page you were looking for does not exist",
         subtitle: "If you believe this was a mistake, please tell us by using the 'Feedbacks & suggestions' button on the bottom right corner of the page"
+    },
+    comparison:{
+        title: 'Compare devices',
+        subtitle: 'Compare multiple devices to pick the best devices for your purpose.',
     }
 
 }

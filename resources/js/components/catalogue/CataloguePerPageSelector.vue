@@ -1,21 +1,20 @@
 <script setup>
-import {computed,ref} from 'vue'
 
 const perPage = defineModel()
 </script>
 
 <template>
-    <div class="flex items-center flex-col perPageContainer">
-        <div class="mb-2 mt-4 text-base title">
-            Number of items per page
+    <div class="flex flex-col perPageContainer">
+        <div class="mb-2 mt-4 text-lg title">
+            Items per page
         </div>
         <select
             v-model="perPage"
             name="perPage"
-            class="border-[1px] border-slate-300 px-4 py-2 rounded w-24"
+            class="border-[1px] border-slate-300 px-4 py-2 rounded-lg shadow w-full"
         >
-            <option :value="12">
-                12
+            <option :value="16">
+                16
             </option>
             <option :value="24">
                 24

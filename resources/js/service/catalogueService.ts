@@ -5,26 +5,12 @@ import {API_ENDPOINTS} from "@/js/constants/API_ENDPOINTS";
 type CatalogueFieldTypes = 'brand'|'type'|'vendor'|'category'
 
 export const catalogueService = {
-    fetchCatalogueByField: (fieldType: CatalogueFieldTypes, fieldValue: Array<string> ,nthPage: number = 1, perPage: number = 20) =>{
-        const body = {field : fieldType, value: fieldValue, per_page: perPage}
+    fetchCatalogueByField: (fieldType: CatalogueFieldTypes, fieldValue: Array<string>, additionalFilters, nthPage: number = 1, perPage: number = 20) =>{
+        const body = {field : fieldType, value: fieldValue, additional_filters: additionalFilters, per_page: perPage}
         const params = {page: nthPage }
         return axios.post(API_ENDPOINTS.CATALOGUE.FETCH_CATALOGUE_BY_FIELD, body, {params: params})
     },
-    fetchBrandCatalogue: (value: string, nthPage: number, perPage: number = 20) => {
-        return catalogueService.fetchCatalogueByField('brand', value, nthPage, perPage);
-    },
 
-    fetchTypeCatalogue: (value: string, nthPage: number, perPage: number = 20) => {
-        return catalogueService.fetchCatalogueByField('type', value, nthPage, perPage);
-    },
-
-    fetchVendorCatalogue: (value: string, nthPage: number, perPage: number = 20) => {
-        return catalogueService.fetchCatalogueByField('vendor', value, nthPage, perPage);
-    },
-
-    fetchCategoryCatalogue: (value: string, nthPage: number, perPage: number = 20) => {
-        return catalogueService.fetchCatalogueByField('category', value, nthPage, perPage);
-    },
     fetchSingleProductByName: (name: string) => {
         const body = { name: name };
         return axios.post(API_ENDPOINTS.CATALOGUE.FETCH_SINGLE_PRODUCT_BY_NAME, body);
@@ -59,5 +45,201 @@ export const catalogueService = {
     fetchAllCatalogue: (per_page)=>{
         const body = {per_page: per_page}
         return axios.post(API_ENDPOINTS.CATALOGUE.FETCH_ALL_CATALOGUE,body)
+    },
+    getCatalogueShortSpecObj: (catItem) =>{
+        const ComputerTypes = ['all-in-one', 'chromebook', 'desktop', 'notebook']
+        const DisplayTypes = ['monitor', 'tablet']
+        if(!catItem.type) return {}
+        if (ComputerTypes.includes(catItem.type.toLowerCase())) {
+            return {
+                'processor': catItem.processor,
+                'memory': catItem.memory,
+                'storage': catItem.storage
+            }
+        } else if (DisplayTypes.includes(catItem.type.toLowerCase())) {
+            return {
+                'display': catItem.display,
+                'other': catItem.other
+            }
+        } else {
+            return {}
+        }
+    },
+    getGroupedItemData: (item) =>{
+        return [
+            {
+                name: 'brand',
+                value: item.brand,
+                display_text: "Brand",
+                group: 'overview'
+            },
+            {
+                name: 'type',
+                value: item.type,
+                display_text: "Type",
+                group: 'overview'
+            },
+            {
+                name: 'category',
+                value: item.category,
+                display_text: "Category",
+                group: 'overview'
+            },
+            {
+                name: 'vendor',
+                value: item.vendor,
+                display_text: "Vendor",
+                group: 'availability'
+            },
+            {
+                name: 'warranty',
+                value: item.warranty,
+                display_text: "Warranty",
+                group: 'availability'
+            },
+            {
+                name: 'price_inc_gst',
+                value: item.price_inc_gst,
+                display_text: "Price (incl. GST)",
+                group: 'availability'
+            },
+            {
+                name: 'price_expiry',
+                value: item.price_expiry,
+                display_text: "Price Expiry",
+                group: 'availability'
+            },
+            {
+                name: 'available_now',
+                value: item.available_now,
+                display_text: "Available Now",
+                group: 'availability'
+            },
+            {
+                name: 'storage',
+                value: item.storage,
+                display_text: "Storage",
+                group: 'specs'
+            },
+            {
+                name: 'memory',
+                value: item.memory,
+                display_text: "Memory",
+                group: 'specs'
+            },
+            {
+                name: 'battery_life',
+                value: item.battery_life,
+                display_text: "Battery Life",
+                group: 'specs'
+            },
+            {
+                name: 'processor',
+                value: item.processor,
+                display_text: "Processor",
+                group: 'specs'
+            },
+            {
+                name: 'display',
+                value: item.display,
+                display_text: "Display",
+                group: 'specs'
+            },
+            {
+                name: 'graphics',
+                value: item.graphics,
+                display_text: "Graphics",
+                group: 'specs'
+            },
+            {
+                name: 'operating_system',
+                value: item.operating_system,
+                display_text: "Operating System",
+                group: 'specs'
+            },
+            {
+                name: 'weight',
+                value: item.weight,
+                display_text: "Weight",
+                group: 'hardware'
+            },
+            {
+                name: 'wireless',
+                value: item.wireless,
+                display_text: "Wireless",
+                group: 'hardware'
+            },
+            {
+                name: 'webcam',
+                value: item.webcam,
+                display_text: "Webcam",
+                group: 'hardware'
+            },
+            {
+                name: 'form_factor',
+                value: item.form_factor,
+                display_text: "Form Factor",
+                group: 'hardware'
+            },
+            {
+                name: 'stylus',
+                value: item.stylus,
+                display_text: "Stylus",
+                group: 'hardware'
+            },
+            {
+                name: 'id',
+                value: item.id,
+                display_text: "ID",
+                group: 'more_info'
+            },
+            {
+                name: 'unique_reference',
+                value: item.unique_reference,
+                display_text: "Unique Reference",
+                group: 'more_info'
+            },
+            {
+                name: 'name',
+                value: item.name,
+                display_text: "Name",
+                group: 'more_info'
+            },
+            {
+                name: 'image',
+                value: item.image,
+                display_text: "Image",
+                group: 'more_info'
+            },
+            {
+                name: 'product_number',
+                value: item.product_number,
+                display_text: "Product Number",
+                group: 'more_info'
+            },
+            {
+                name: 'other',
+                value: item.other,
+                display_text: "Other",
+                group: 'more_info'
+            },
+            {
+                name: 'corporate',
+                value: item.corporate,
+                display_text: "Corporate",
+                group: 'more_info'
+            },
+            {
+                name: 'administration',
+                value: item.administration,
+                display_text: "Administration",
+                group: 'more_info'
+            },
+            {
+                name: 'curriculum',
+                value: item.curriculum,
+                display_text: "Curriculum",
+                group: 'more_info'
+            }]
     }
 }

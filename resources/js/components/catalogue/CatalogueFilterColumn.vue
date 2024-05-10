@@ -1,10 +1,12 @@
 <script setup>
 
 import CatalogueFilterGroup from "@/js/components/catalogue/CatalogueFilterGroup.vue";
+import CataloguePriceSlider from "@/js/components/catalogue/CataloguePriceSlider.vue";
+import VueNoUiSlider from "@/js/components/slider/VueNoUiSlider.vue";
 import Loader from "@/js/components/spinner/Loader.vue";
 
 const props = defineProps({
-    isFilterLoading:{
+    isFilterLoading: {
         type: Boolean,
         required: false,
         default: false
@@ -20,6 +22,7 @@ const selectedCategory = defineModel('selectedCategory')
 const selectedBrand = defineModel('selectedBrand')
 const selectedType = defineModel('selectedType')
 const selectedVendor = defineModel('selectedVendor')
+const priceRange = defineModel('priceRange')
 
 
 </script>
@@ -36,31 +39,37 @@ const selectedVendor = defineModel('selectedVendor')
     </div>
     <div
         v-else
-        class="flex justify-center items-center flex-col"
+        class="flex flex-col"
     >
-        <CatalogueFilterGroup
-            v-if="categoryList.length"
-            v-model="categoryList"
-            v-model:selected="selectedCategory"
-            title="Category"
-        />
         <CatalogueFilterGroup
             v-if="typeList.length"
             v-model="typeList"
             v-model:selected="selectedType"
             title="Type"
+            :default-show-filter="true"
         />
         <CatalogueFilterGroup
             v-if="brandList.length"
             v-model="brandList"
             v-model:selected="selectedBrand"
             title="Brand"
+            :default-show-filter="false"
         />
+        <CatalogueFilterGroup
+            v-if="categoryList.length"
+            v-model="categoryList"
+            v-model:selected="selectedCategory"
+            title="Category"
+            :default-show-filter="true"
+        />
+
         <CatalogueFilterGroup
             v-if="vendorList.length"
             v-model="vendorList"
             v-model:selected="selectedVendor"
             title="Vendor"
+            :default-show-filter="false"
         />
+        <CataloguePriceSlider v-model:price-range="priceRange" />
     </div>
 </template>

@@ -34,12 +34,14 @@ return [
             'driver' => 'local',
             'root' => storage_path('app'),
             'throw' => false,
+            'url' => env('APP_URL') . '/storage',
         ],
 
         'public' => [
             'driver' => 'local',
             'root' => storage_path('app/public'),
-            'url' => env('APP_URL').'/storage',
+            'url' => env('APP_URL') . '/storage',
+            'path' => env('APP_URL') . '/storage/app/public',
             'visibility' => 'public',
             'throw' => false,
         ],
@@ -55,7 +57,35 @@ return [
             'use_path_style_endpoint' => env('AWS_USE_PATH_STYLE_ENDPOINT', false),
             'throw' => false,
         ],
-
+        'azure' => [
+            'driver' => 'azure',
+            'name' => env('AZURE_STORAGE_NAME'),
+            'key' => env('AZURE_STORAGE_KEY'),
+            'container' => env('AZURE_STORAGE_CONTAINER'),
+            'url' => env('AZURE_STORAGE_URL'),
+            'prefix' => env('AZURE_STORAGE_PREFIX'),
+            'endpoint' => env("AZURE_STORAGE_ENDPOINT"),
+            'retry' => [
+                'tries' => 3,
+                'interval' => 500,
+                'increase' => 'exponential'
+            ]
+        ],
+        'azure_catalogue' => [
+            'driver' => 'azure',
+            'name' => env('AZURE_STORAGE_NAME'),
+            'key' => env('AZURE_STORAGE_KEY'),
+            'container' => env('AZURE_STORAGE_CONTAINER'),
+            'url' => env('AZURE_STORAGE_URL'),
+            'prefix' => env('AZURE_STORAGE_PREFIX'),
+            'endpoint' => env("AZURE_STORAGE_ENDPOINT"),
+            'path' => env("AZURE_STORAGE_ENDPOINT"),
+            'retry' => [
+                'tries' => 3,
+                'interval' => 500,
+                'increase' => 'exponential'
+            ]
+        ],
     ],
 
     /*

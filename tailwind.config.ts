@@ -97,6 +97,7 @@ export default {
         './resources/**/*.js',
         './resources/**/*.vue',
         './vendor/filament/**/*.blade.php',
+        "./vendor/outerweb/filament-image-library/resources/views/**/*.blade.php",
     ],
     safelist: [
         ...generateSafeList(edsparkColor)
@@ -170,7 +171,9 @@ export default {
                 extraLarge: '48px',
                 huge: '81px',
                 extraHuge: '140px',
-                mainHero: '508px'
+                mainHero: '508px',
+                catW: '270px',
+                catH: '430px'
             },
             screens: {
                 'ml': '860px',

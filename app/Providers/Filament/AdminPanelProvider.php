@@ -18,6 +18,7 @@ use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Session\Middleware\AuthenticateSession;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
+use Outerweb\FilamentImageLibrary\Filament\Plugins\FilamentImageLibraryPlugin;
 
 class AdminPanelProvider extends PanelProvider
 {
@@ -69,6 +70,15 @@ class AdminPanelProvider extends PanelProvider
                     950 => '5, 15, 15',
                 ],
             ])
-            ->viteTheme('resources/css/filament/admin/theme.css');
+            ->viteTheme('resources/css/filament/admin/theme.css')
+            ->unsavedChangesAlerts()
+            ->favicon(url(env('VITE_SERVER_IMAGE_API') . '/uploads/image/edsparkLogo.png'))
+            ->brandLogo(url(env('VITE_SERVER_IMAGE_API') . '/uploads/image/edsparkLogo.png'))
+            ->brandLogoHeight('4rem')
+            ->plugins([
+                FilamentImageLibraryPlugin::make()
+                    ->addAllowedDisk('public')
+
+            ]);
     }
 }
