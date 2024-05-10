@@ -317,7 +317,6 @@ const downloadFormattedJson = () => {
     a.click();
     window.URL.revokeObjectURL(url);
     document.body.removeChild(a);
-    //console.log(jsonContent.value)
 };
 
 const extractTextById = (html, id) => {
@@ -527,17 +526,13 @@ const extractAllContentByEachId = (html, id) => {
     const topTrTag = element ? element.parentNode ? element.parentNode.parentNode ? element.parentNode.parentNode.parentNode : null : null : null;
     const h1Tags = topTrTag ? topTrTag.querySelectorAll('h1') : null;
     const pTags = topTrTag ? topTrTag .querySelectorAll('p') : null;
-    const inSession1 = false; // Flag to track if currently in Session 1
-    const inSession2 = false; // Flag to track if currently in Session 2
     const sessionText = ref('')
     if((h1Tags ? h1Tags.length > 0 : null) && (pTags ? pTags.length > 0 : null))
     {
         let keyCounter = 0;
         sessionText.value = h1Tags[0].textContent.trim();
-        //console.log(h1Tags.length + ' . ' + strongTags.length + ' . ' + sessionText.value);
         for (let j = 0; j < pTags.length; j++){
             const pTag = pTags[j];
-            //console.log(strongTag + (' _ ') + sessionText)
             const ulTag = pTag.nextElementSibling;
 
             if (ulTag && ulTag.tagName.toLowerCase() === 'ul') {
@@ -668,7 +663,6 @@ const extractAllContentByEachId = (html, id) => {
                     const pText = strong1Element ? strong1Element.textContent.trim() : null;
                     const nodeNameFound = strong1Element.previousElementSibling ? strong1Element.previousElementSibling.nodeName === 'P' : null;
                     const paragraphTextBeforeStrong1Element = nodeNameFound ? strong1Element.previousElementSibling.textContent.trim() : null;
-                    //console.log("Strong Text" + strongText)
                     const subListItems = Array.from(ulElement.children).map(listItem => {
                         let textContent = '';
                         // extract <li> text without nested <ul>
@@ -966,14 +960,12 @@ const extractAllContentByEachId = (html, id) => {
                         const olItems = Array.from(firstOl.querySelectorAll('li')).map(li => li.textContent.trim());
                         olItems.forEach(item => {
                             subHeadings.push(item);
-                            // console.log(subHeadings)
                         });
                     }
                     if (firstUl) {
                         const ulItems = Array.from(firstUl.querySelectorAll('li')).map(li => li.textContent.trim());
                         ulItems.forEach(item => {
                             subHeadings.push(item);
-                            // console.log(subHeadings)
                         });
                     }
                     const imageLinks = [];
@@ -1055,7 +1047,6 @@ const extractAllContentByEachId = (html, id) => {
             const link = [];
             eachTh.forEach(th => {
                 const h1Text = th.querySelector('h1') ? th.querySelector('h1').textContent.trim() : null;
-                // console.log(h1Text)
                 const pElement = th.querySelectorAll('p');
                 pElement.forEach(p => {
                     const linkElement = p ? p.querySelectorAll('a') : null;
@@ -1112,9 +1103,7 @@ const extractAllContentByEachId = (html, id) => {
 
     // extracting list within another listing - nested listing - "Curriculum Connections"
     if (element && element.parentElement) {
-        const siblings = element.parentNode.parentNode.nextElementSibling;
         const siblingss = element.parentElement ? element.parentElement.nodeName === 'H1' ? element.parentElement.nextElementSibling ? element.parentElement.nextElementSibling.nodeName === 'TABLE' ? element.parentElement.nextElementSibling.querySelector('thead') ? element.parentElement.nextElementSibling.querySelector('thead').querySelectorAll('tr') : null : null : null : null : null;
-        // console.log(sibling)
         if (siblingss !== null) {
             siblingss.forEach(tr => {
                 const thEach = tr.querySelector('th')
@@ -1140,8 +1129,6 @@ const extractAllContentByEachId = (html, id) => {
                             const strongText = strong1Element.querySelector('strong').textContent.trim();
                             const pText = strong1Element ? strong1Element.textContent.trim() : null;
                             const nodeNameFound = strong1Element.previousElementSibling ? strong1Element.previousElementSibling.nodeName === 'P' : null;
-                            const paragraphTextBeforeStrong1Element = nodeNameFound ? strong1Element.previousElementSibling.textContent.trim() : null;
-                            //console.log("Strong Text" + strongText)
                             const subListItems = Array.from(ulElement.children).map(listItem => {
                                 let textContent = '';
                                 // extract <li> text without nested <ul>
@@ -1236,7 +1223,7 @@ const extractAllContentByEachId = (html, id) => {
     }
 
 
-    
+
 
 
 }
