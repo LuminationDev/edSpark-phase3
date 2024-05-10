@@ -74,7 +74,7 @@ const mySchoolTargetPath = computed(() => {
 
 const avatarUrlWithFallback = computed(() => {
     if (imageError.value) {
-        return avatarUIFallbackURL + currentUser.value.display_name
+        return `${imageURL}/uploads/image/profile.jpg`
     } else {
         return `${imageURL}/${props.avatarUrl}`
     }
