@@ -1120,7 +1120,6 @@ const extractAllContentByEachId = (html, id) => {
                 const thEach = tr.querySelector('th')
                 const sibling = thEach.nextElementSibling
                 const firstTHText = tr.querySelector('th') ? tr.querySelector('th').textContent.trim() : null;
-
                 if (sibling.nodeName === 'TH') {
                     const ulElements = sibling.querySelectorAll('ul');
                     ulElements.forEach(ulElement => {
@@ -1136,7 +1135,6 @@ const extractAllContentByEachId = (html, id) => {
                                 paragraphTextOnly.push(child.textContent.trim());
                             }
                         }
-
                         // extracting <p><strong> that are 1 previous sibling to the each <ul>, but should not have two <p><strong> above the each <ul>
                         if (strong1Element && strong1Element.nodeName === 'P' && strong1Element.querySelector('strong') && (strong1 || !strong2)) {
                             const strongText = strong1Element.querySelector('strong').textContent.trim();
@@ -1233,13 +1231,12 @@ const extractAllContentByEachId = (html, id) => {
                         }
                     });
                 }
-
             })
         }
-
-
     }
 
+
+    
 
 
 }
