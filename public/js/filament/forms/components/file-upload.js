@@ -67,7 +67,7 @@ filepond-plugin-file-validate-size/dist/filepond-plugin-file-validate-size.esm.j
 
 filepond-plugin-file-validate-type/dist/filepond-plugin-file-validate-type.esm.js:
   (*!
-   * FilePondPluginFileValidateType 1.2.8
+   * FilePondPluginFileValidateType 1.2.9
    * Licensed under MIT, https://opensource.org/licenses/MIT/
    * Please visit https://pqina.nl/filepond/ for details.
    *)
@@ -95,7 +95,7 @@ filepond-plugin-image-exif-orientation/dist/filepond-plugin-image-exif-orientati
 
 filepond-plugin-image-preview/dist/filepond-plugin-image-preview.esm.js:
   (*!
-   * FilePondPluginImagePreview 4.6.11
+   * FilePondPluginImagePreview 4.6.12
    * Licensed under MIT, https://opensource.org/licenses/MIT/
    * Please visit https://pqina.nl/filepond/ for details.
    *)

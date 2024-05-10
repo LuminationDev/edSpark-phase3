@@ -1,7 +1,7 @@
 <script setup>
-import FooterSocialMediaIcon from "@/js/components/global/Footer/FooterSocialMediaIcon.vue";
-import FooterCollectionLogos from "@/js/components/global/Footer/FooterCollectionLogos.vue";
 import FooterBottomLinks from "@/js/components/global/Footer/FooterBottomLinks.vue";
+import FooterCollectionLogos from "@/js/components/global/Footer/FooterCollectionLogos.vue";
+import FooterSocialMediaIcon from "@/js/components/global/Footer/FooterSocialMediaIcon.vue";
 import ExternalLink from "@/js/components/svg/externalLink.vue";
 
 
@@ -21,7 +21,10 @@ import ExternalLink from "@/js/components/svg/externalLink.vue";
                     1800 088 158
                 </p>
                 <p class="break-words email font-base text-sm underline">
-                    <a href="mailto:Education.Customers@sa.gov.au">
+                    <a
+                        href="mailto:Education.Customers@sa.gov.au"
+                        target="_blank"
+                    >
                         Education.Customers@sa.gov.au
                     </a>
                 </p>
@@ -32,12 +35,18 @@ import ExternalLink from "@/js/components/svg/externalLink.vue";
                     Feedback and complaints
                 </div>
                 <p class="font-base number phone text-sm underline">
-                    <a href="https://www.education.sa.gov.au/department/feedback-and-complaints/make-complaint-about-school-or-preschool">
+                    <a
+                        target="_blank"
+                        href="https://www.education.sa.gov.au/department/feedback-and-complaints/make-complaint-about-school-or-preschool"
+                    >
                         Schools and preschools
                     </a>
                 </p>
                 <p class="font-base number phone text-sm underline">
-                    <a href="https://www.education.sa.gov.au/department/feedback-and-complaints/feedback-department">
+                    <a
+                        target="_blank"
+                        href="https://www.education.sa.gov.au/department/feedback-and-complaints/feedback-department"
+                    >
                         Other department services
                     </a>
                 </p>
@@ -51,13 +60,14 @@ import ExternalLink from "@/js/components/svg/externalLink.vue";
                         target="_blank"
                         class="flex flex-row gap-1"
                     >
-                        EDi - staff intranet <ExternalLink
+                        EDi - staff intranet
+                        <ExternalLink
                             class="bg-transparent fill-current h-4 pt-1 w-4"
                         />
                     </a>
                 </p>
             </div>
-            
+
             <div class="TalkToUs flex flex-col mt-4 w-1/2 lg:!w-auto">
                 <div class="FooterHeading font-bold mb-4 text-xl">
                     Talk to us

@@ -53,7 +53,7 @@ export const LandingHeroText = {
         subtitle: "Personalise your account information, adjust your preferences and stay informed with notifications"
     },
     dma:{
-        title: 'Digital Capability Leadership Reflection Tool',
+        title: 'Digital Maturity Assessment Tool',
         subtitle: '',
     },
     notification:{
