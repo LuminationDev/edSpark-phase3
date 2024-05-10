@@ -1068,6 +1068,7 @@ const extractAllContentByEachId = (html, id) => {
                     if (textContent !== "") {
                         pText.push(textContent)
                     }
+                    // extracting on the <strong> tag text
                     const strongT = p.querySelector('strong') ? p.querySelector('strong').textContent.trim() : null;
                     if (strongT !== null) {
                         strongText.push(strongT);
