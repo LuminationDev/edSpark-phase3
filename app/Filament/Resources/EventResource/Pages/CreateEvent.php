@@ -57,7 +57,7 @@ class CreateEvent extends CreateRecord
         $usersExceptCurrent = User::whereKeyNot($currentUser)->get();
 
         foreach ($usersExceptCurrent as $eachUser){
-            $this->sendNotification($eachUser, $record->id, $record->event_title, $currentUser->id, $this->notificationResourceType, NotificationActionType::PUBLISHED);
+            $this->sendNotification($eachUser, $record->id, $record->title, $currentUser->id, $this->notificationResourceType, NotificationActionType::PUBLISHED);
         }
 
         return $record;

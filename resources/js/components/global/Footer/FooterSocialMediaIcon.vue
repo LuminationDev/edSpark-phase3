@@ -1,22 +1,22 @@
 <script setup>
 const props = defineProps({
-    fillColor:{
+    fillColor: {
         type: String,
         required: true,
     },
-    targetUrl:{
+    targetUrl: {
         type: String,
         required: true
     },
-    iconName:{
+    iconName: {
         type: String,
         required: false,
         default: 'Social Media Icon'
     }
 })
 
-const handleClickSocialMediaIcon = () =>{
-    window.location = props.targetUrl
+const handleClickSocialMediaIcon = () => {
+    window.open(props.targetUrl, '_blank')
 }
 </script>
 

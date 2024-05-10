@@ -135,7 +135,7 @@ const routes: any = [
                 component: InspirationAndGuides,
                 meta: {
                     requiresAuth: true,
-                    skipScrollTop: true,
+                    skipScrollTop: false,
                     navigation: false
 
                 } as RouteMeta
@@ -186,7 +186,7 @@ const routes: any = [
                 component: TheTechnology,
                 meta: {
                     requiresAuth: true,
-                    skipScrollTop: true,
+                    skipScrollTop: false,
                     navigation: false
 
                 } as RouteMeta
