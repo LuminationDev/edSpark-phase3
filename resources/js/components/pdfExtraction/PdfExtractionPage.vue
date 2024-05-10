@@ -959,6 +959,9 @@ const extractAllContentByEachId = (html, id) => {
                     pElements.forEach((p, index) => {
                         const subHeading = p.textContent.trim();
                         const nextElement = p.nextElementSibling;
+                        const imageElement = p ? p.querySelector('img') : null;
+                        const imageElementSRC = imageElement ? imageElement.getAttribute('src') : null;
+                        console.log(imageElementSRC)
                         // Check if the next element is a list (<ul> or <ol>)
                         if (nextElement && (nextElement.tagName === 'UL' || nextElement.tagName === 'OL')) {
                             const subSubHeadings = [];
