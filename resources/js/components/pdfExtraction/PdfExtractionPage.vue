@@ -1110,6 +1110,136 @@ const extractAllContentByEachId = (html, id) => {
         }) : null;
     }
 
+    // extracting list within another listing - nested listing - "Curriculum Connections"
+    if (element && element.parentElement) {
+        const siblings = element.parentNode.parentNode.nextElementSibling;
+        const siblingss = element.parentElement ? element.parentElement.nodeName === 'H1' ? element.parentElement.nextElementSibling ? element.parentElement.nextElementSibling.nodeName === 'TABLE' ? element.parentElement.nextElementSibling.querySelector('thead') ? element.parentElement.nextElementSibling.querySelector('thead').querySelectorAll('tr') : null : null : null : null : null;
+        // console.log(sibling)
+        if (siblingss !== null) {
+            siblingss.forEach(tr => {
+                const thEach = tr.querySelector('th')
+                const sibling = thEach.nextElementSibling
+                const firstTHText = tr.querySelector('th') ? tr.querySelector('th').textContent.trim() : null;
+
+                if (sibling.nodeName === 'TH') {
+                    const ulElements = sibling.querySelectorAll('ul');
+                    ulElements.forEach(ulElement => {
+                        const strong1Element = ulElement.previousElementSibling;
+                        const strong2Element = ulElement.previousElementSibling ? ulElement.previousElementSibling.previousElementSibling : null;
+                        const strong1 = strong1Element ? strong1Element.nodeName === 'ul' : null;
+                        const strong2 = strong2Element ? strong2Element.querySelector('strong') : null;
+                        let hierarchicalFormat;
+                        // all paragraphs text (without <strong>) under the id element.
+                        const paragraphTextOnly = [];
+                        for (const child of sibling.children) {
+                            if (child.nodeName === 'P' && !child.querySelector('strong')) {
+                                paragraphTextOnly.push(child.textContent.trim());
+                            }
+                        }
+
+                        // extracting <p><strong> that are 1 previous sibling to the each <ul>, but should not have two <p><strong> above the each <ul>
+                        if (strong1Element && strong1Element.nodeName === 'P' && strong1Element.querySelector('strong') && (strong1 || !strong2)) {
+                            const strongText = strong1Element.querySelector('strong').textContent.trim();
+                            const pText = strong1Element ? strong1Element.textContent.trim() : null;
+                            const nodeNameFound = strong1Element.previousElementSibling ? strong1Element.previousElementSibling.nodeName === 'P' : null;
+                            const paragraphTextBeforeStrong1Element = nodeNameFound ? strong1Element.previousElementSibling.textContent.trim() : null;
+                            //console.log("Strong Text" + strongText)
+                            const subListItems = Array.from(ulElement.children).map(listItem => {
+                                let textContent = '';
+                                // extract <li> text without nested <ul>
+                                if (listItem.nodeName === 'LI' && listItem.querySelector('ul')) {
+                                    listItem.childNodes.forEach(ulNode => {
+                                        if (ulNode.nodeName !== 'UL') {
+                                            textContent = ulNode.textContent.trim();
+                                        }
+                                    })
+                                }
+                                const subList = listItem.querySelector('ul');
+                                if (subList) {
+                                    const subListItems = Array.from(subList.querySelectorAll('li')).map(subListItem => {
+                                        return {
+                                            [subListItem.textContent.trim() ]: { "List Items:": [] }
+                                        };
+                                    });
+                                    return {
+                                        [ listItem.textContent.trim() ]: { "Layer 2 List Items:": subListItems }
+                                    };
+                                } else {
+                                    return {
+                                        [ listItem.textContent.trim() ]: { "List Items:": [] }
+                                    };
+                                }
+                            });
+                            planningPreparationParagraph.value = paragraphTextOnly;
+                            hierarchicalFormat = {
+                                [ strongText ]: { "List Items:": subListItems }
+                            };
+                            if (strongText === 'session 2') {
+                                hierarchicalFormat[pText] = hierarchicalFormat[strongText];
+                                delete hierarchicalFormat[strongText];
+                            }
+                            if(id === "_14z3n7fivubg" && firstTHText.toLowerCase().includes('version'))
+                            {
+                                ausCurriculumListingTree.value.push(hierarchicalFormat);
+                            }
+                            if(id === "_14z3n7fivubg" && firstTHText.toLowerCase().includes('cross'))
+                            {
+                                crossCurriculumListingTree.value.push(hierarchicalFormat);
+                            }
+                            if(id === "_14z3n7fivubg" && (firstTHText ? (firstTHText.toLowerCase().includes('general') || firstTHText.toLowerCase().includes('capab')) : null))
+                            {
+                                generalCapabilitiesListingTree.value.push(hierarchicalFormat);
+                            }
+                        }
+                        // extracting <p><strong> that are 2 previous sibling to the each <ul>
+                        if (strong2Element && strong2Element.nodeName === 'P' && strong2Element.querySelector('strong')) {
+                            const strongText = strong2Element ? strong2Element.querySelector('strong').textContent.trim() : null;
+                            const pText =  strong2Element ? strong2Element.nextElementSibling.textContent.trim() : null;
+                            const subListItems = Array.from(ulElement.children).map(listItem => {
+                                const subList = listItem.querySelector('ul');
+                                if (subList) {
+                                    const subListItems = Array.from(subList.querySelectorAll('li')).map(subListItem => {
+                                        return {
+                                            [subListItem.textContent.trim()]: {"List Items": []}
+                                        };
+                                    });
+                                    return {
+                                        [listItem.textContent.trim()]: {"List Items": subListItems}
+                                    };
+                                } else {
+                                    return {
+                                        [listItem.textContent.trim()]:{"List Items": []}
+                                    };
+                                }
+                            });
+                            const hierarchicalLayer2 = {
+                                "List Items": subListItems
+                            };
+                            const hierarchicalLayer1 = {
+                                [strongText]: { [pText]: hierarchicalLayer2}
+                            };
+                            if(id === "_14z3n7fivubg" && firstTHText.toLowerCase().includes('version'))
+                            {
+                                ausCurriculumListingTree.value.push(hierarchicalLayer1);
+                            }
+                            if(id === "_14z3n7fivubg" && firstTHText.toLowerCase().includes('cross'))
+                            {
+                                crossCurriculumListingTree.value.push(hierarchicalLayer1);
+                            }
+                            if(id === "_14z3n7fivubg" && (firstTHText ? (firstTHText.toLowerCase().includes('general') || firstTHText.toLowerCase().includes('capab')) : null))
+                            {
+                                generalCapabilitiesListingTree.value.push(hierarchicalLayer1);
+                            }
+                        }
+                    });
+                }
+
+            })
+        }
+
+
+    }
+
 
 
 }
