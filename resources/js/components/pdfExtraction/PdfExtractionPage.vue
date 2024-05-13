@@ -19,7 +19,7 @@ const duration = ref('')
 const taskSummaryTitle = ref('')
 const taskSummaryParagraph = ref('')
 const sessionOverviewTitle = ref('')
-const sessionOverivewParagraphs = ref([])
+const sessionOverviewParagraphs = ref([])
 const sessionOverviewSubheadings = ref([])
 const sessionOverviewParagraph = ref([])
 const digiTechTitle = ref('')
@@ -122,6 +122,8 @@ const otherResourcesListHeadings_Display = ref([])
 const otherResourcesSubListHeadings_Display = ref('')
 const otherResourcesListingSubListing_Display = ref('')
 const otherResourcesAllLinks_Display = ref([])
+const planningPreparationTitle_Display = ref('')
+const planningPreparationListingTree_Display = ref('')
 
 //handle file upload
 const handleFileUpload = async (event) => {
@@ -223,7 +225,7 @@ const downloadFormattedJson = () => {
         "Component1": {
             "Session Overview": {
                 "Title": sessionOverviewTitle.value,
-                "Paragraphs": sessionOverivewParagraphs.value,
+                "Paragraphs": sessionOverviewParagraphs.value,
                 "Sub Headings": sessionOverviewSubheadings.value,
                 "Contents": sessionOverviewParagraph.value
             },
@@ -433,7 +435,7 @@ const extractAllContentByEachId = (html, id) => {
             paragraphElements.forEach(paragraph => {
                 if(id==="_o25ffby0w0ip")
                 {
-                    sessionOverivewParagraphs.value.push(paragraph.textContent.trim());
+                    sessionOverviewParagraphs.value.push(paragraph.textContent.trim());
                 }
             });
         }
@@ -1264,6 +1266,8 @@ const displayRequiredContent = () => {
     digiTechTitle_Display.value = (data['Component1']?.["Digital Technologies"]?.Title);
     requiredResourcesTitle_Display.value = (data['Component1']?.["Required Resources"]?.Title);
     otherResourcesTitle_Display.value = (data['Component1']?.["Other Resources"]?.Title);
+    planningPreparationTitle_Display.value = (data['Component1']?.["Planning And Preparation"]?.Title);
+
     // Session Overview Paragraphs
     let summarySO = "";
     if (data['Component1']?.["Session Overview"]?.Paragraphs) {
@@ -1329,58 +1333,53 @@ const displayRequiredContent = () => {
         otherResourcesSubListHeadings_Display.value = "Other Resources content not found.";
     }
 
-
-
-    //
-    // Accessing the "Lists with Sub-Lists" array
-    // const listsWithSubLists = data['Component1']?.["Other Resources"]?.["Lists with Sub-Lists"];
-
-    // Displaying each list with sub-lists
-    // if (listsWithSubLists && listsWithSubLists.length > 0) {
-    //     for (let i = 0; i < listsWithSubLists.length; i++) {
-    //         const list = listsWithSubLists[i];
-    //         const listTitle = Object.keys(list)[0]; // Extracting the title of the list
-    //
-    //         otherResourcesListingSubListing_Display.value += listTitle + ":\n"; // Displaying the title of the list
-    //
-    //         const subList = list[listTitle]; // Accessing the sub-lists
-    //
-    //         // Displaying each item in the sub-list
-    //         for (let j = 0; j < subList.length; j++) {
-    //             const listItem = subList[j];
-    //             otherResourcesListingSubListing_Display.value += "   - " + listItem.text + "\n"; // Displaying the text of the item
-    //             otherResourcesListingSubListing_Display.value += "     Link: " + listItem.link + "\n"; // Displaying the link of the item
-    //         }
-    //     }
-    // }
-
-    // Accessing the "Lists with Sub-Lists" array
+    // Other Resources nested listing
     const listsWithSubLists = data['Component1']?.["Other Resources"]?.["Lists with Sub-Lists"];
-
     // Displaying each list with sub-lists
     if (listsWithSubLists && listsWithSubLists.length > 0) {
         for (let i = 0; i < listsWithSubLists.length; i++) {
             const list = listsWithSubLists[i];
             const listTitle = Object.keys(list)[0]; // Extracting the title of the list
-
             // Displaying the title of the list in bold
             otherResourcesListingSubListing_Display.value += `<strong>${listTitle}</strong><br>`;
-
             const subList = list[listTitle]; // Accessing the sub-lists
-
             // Displaying each item in the sub-list
             for (let j = 0; j < subList.length; j++) {
                 const listItem = subList[j];
-
                 otherResourcesListingSubListing_Display.value += `<div style="margin-left: ${20 * (1)}px;">`
                 // Displaying the text of the item
                 otherResourcesListingSubListing_Display.value += `- ${listItem.text}<br><br>`;
-                // Displaying the link of the item
-                // otherResourcesListingSubListing_Display.value += `&emsp;&emsp;Link: <a href="${listItem.link}">${listItem.link}</a><br>`;
                 otherResourcesListingSubListing_Display.value += `</div>`;
             }
         }
     }
+
+    // Accessing the "Lists Tree" array
+    const listsTree = data['Component1']?.["Planning And Preparation"]?.["Lists Tree"];
+    // Define a recursive function to display each item
+    const displayListTree = (listTree, indentLevel) => {
+        for (const item of listTree) {
+            const title = Object.keys(item)[0]; // Extracting the title of the item
+            const content = item[title]; // Extracting the content of the item
+
+            // Displaying the title of the item with appropriate indentation
+            planningPreparationListingTree_Display.value += `<div style="margin-left: ${20 * indentLevel}px;"><strong>${title}</strong></div>`;
+
+            // If the content has sub-items, recursively display them with increased indentation level
+            if (content && Object.keys(content).length > 0) {
+                // Displaying each list with sub-lists
+                planningPreparationListingTree_Display.value += `<div style="margin-left: ${20 * (indentLevel + 1)}px;">`;
+                displayListTree(content["List Items"] || content["List Items:"] || [], indentLevel + 1);
+                planningPreparationListingTree_Display.value += `</div>`;
+            }
+        }
+    };
+    // Displaying each list with sub-lists
+    if (listsTree && listsTree.length > 0) {
+        displayListTree(listsTree, 0); // Starting the recursive display with initial indentation level 0
+    }
+
+
 
 
 
@@ -1747,10 +1746,22 @@ const displayRequiredContent = () => {
                 </div>
                 <div class="border-2 border-gray-300 p-4 w-full">
                     <div class="text-3xl">
-                        Planning and preparation
+                        <div
+                            v-if="planningPreparationTitle_Display"
+                            v-html="planningPreparationTitle_Display"
+                        />
+                        <div v-else>
+                            Planning and Preparation title will come here.
+                        </div>
                     </div>
                     <div class="mt-4 text-xl">
-                        Planning Preparation paragraph will come here.
+                        <div
+                            v-if="planningPreparationListingTree_Display"
+                            v-html="planningPreparationListingTree_Display"
+                        />
+                        <div v-else>
+                            Planning and Preparation listing will come here.
+                        </div>
                     </div>
                 </div>
                 <div class="mt-6 p-4">
