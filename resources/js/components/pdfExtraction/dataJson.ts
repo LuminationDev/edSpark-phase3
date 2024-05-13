@@ -352,7 +352,7 @@ export const data = {
         }
     },
     "Component2": {
-        "Main Heading": "Task sequence",
+        "Main_Heading": "Task sequence",
         "Introductory Activity": {
             "Number": "1",
             "Title": "Introductory activity / Provocation",

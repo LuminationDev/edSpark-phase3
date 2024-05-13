@@ -124,6 +124,7 @@ const otherResourcesListingSubListing_Display = ref('')
 const otherResourcesAllLinks_Display = ref([])
 const planningPreparationTitle_Display = ref('')
 const planningPreparationListingTree_Display = ref('')
+const taskSequenceText_Display = ref('')
 
 //handle file upload
 const handleFileUpload = async (event) => {
@@ -261,7 +262,7 @@ const downloadFormattedJson = () => {
             }
         },
         "Component2": {
-            "Main Heading": taskSequenceText.value,
+            "Main_Heading": taskSequenceText.value,
             "Introductory Activity": {
                 "Number": introductoryNumbering.value,
                 "Title": introductoryTitle.value,
@@ -304,7 +305,7 @@ const downloadFormattedJson = () => {
             }
         },
         "Component3": {
-            "Main Heading": curriculumText.value,
+            "Main_Heading": curriculumText.value,
             "Australian Curriculum": {
                 "Title": ausCurriculumTitle.value,
                 "Paragraphs": ausCurriculumParagraph.value,
@@ -1267,73 +1268,77 @@ const displayRequiredContent = () => {
     requiredResourcesTitle_Display.value = (data['Component1']?.["Required Resources"]?.Title);
     otherResourcesTitle_Display.value = (data['Component1']?.["Other Resources"]?.Title);
     planningPreparationTitle_Display.value = (data['Component1']?.["Planning And Preparation"]?.Title);
+    taskSequenceText_Display.value = (data['Component2']?.Main_Heading);
 
     // Session Overview Paragraphs
-    let summarySO = "";
+    let paragraphsSO = "";
     if (data['Component1']?.["Session Overview"]?.Paragraphs) {
-        summarySO += "<ul>";
+        paragraphsSO += "<ul>";
         data['Component1']?.["Session Overview"]?.Paragraphs.forEach((sentence, index) => {
-            summarySO += "<li>"+ sentence + "</li>";
+            paragraphsSO += "<li>"+ sentence + "</li>";
             // Add <br> tags after each list item except for the last one
             if (index !== data['Component1']?.["Session Overview"]?.Paragraphs.length - 1) {
-                summarySO += "<br>";
+                paragraphsSO += "<br>";
             }
         });
-        summarySO += "</ul>";
-        sessionOverviewParagraphs_Display.value = summarySO.trim();
+        paragraphsSO += "</ul>";
+        sessionOverviewParagraphs_Display.value = paragraphsSO.trim();
     } else {
         sessionOverviewParagraphs_Display.value = "Session Overview content not found.";
     }
+
     // Digital Technologies Paragraphs
-    let summaryDT = "";
+    let listingDT = "";
     if (data['Component1']?.["Digital Technologies"]?.Listings) {
-        summaryDT += "<ul>";
+        listingDT += "<ul>";
         data['Component1']?.["Digital Technologies"]?.Listings.forEach((sentence, index) => {
-            summaryDT += "<li>"+ sentence + "</li>";
+            listingDT += "<li>"+ sentence + "</li>";
             // Add <br> tags after each list item except for the last one
             if (index !== data['Component1']?.["Digital Technologies"]?.Listings.length - 1) {
-                summaryDT += "<br>";
+                listingDT += "<br>";
             }
         });
-        summaryDT += "</ul>";
-        digiTechListings_Display.value = summaryDT.trim();
+        listingDT += "</ul>";
+        digiTechListings_Display.value = listingDT.trim();
     } else {
         digiTechListings_Display.value = "Digital Listing content not found.";
     }
+
     // Required Resources Paragraphs
-    let summaryRR = "";
+    let paragraphsRR = "";
     if (data['Component1']?.["Required Resources"]?.Paragraphs) {
-        summaryRR += "<ul>";
+        paragraphsRR += "<ul>";
         data['Component1']?.["Required Resources"]?.Paragraphs.forEach((sentence, index) => {
-            summaryRR += "<li>"+ sentence + "</li>";
+            paragraphsRR += "<li>"+ sentence + "</li>";
             // Add <br> tags after each list item except for the last one
             if (index !== data['Component1']?.["Required Resources"]?.Paragraphs.length - 1) {
-                summaryRR += "<br>";
+                paragraphsRR += "<br>";
             }
         });
-        summaryRR += "</ul>";
-        requiredResourcesParagraph_Display.value = summaryRR.trim();
+        paragraphsRR += "</ul>";
+        requiredResourcesParagraph_Display.value = paragraphsRR.trim();
     } else {
         requiredResourcesTitle_Display.value = "Required Resources content not found.";
     }
-    // Required Resources Paragraphs
-    let summaryOR = "";
+
+    // Other Resources Sublist Headings
+    let sublistHeadingsOR = "";
     if (data['Component1']?.["Other Resources"]?.["Sub-List Headings"]) {
-        summaryOR += "<ul>";
+        sublistHeadingsOR += "<ul>";
         data['Component1']?.["Other Resources"]?.["Sub-List Headings"].forEach((sentence, index) => {
-            summaryOR += "<li>"+ sentence + "</li>";
+            sublistHeadingsOR += "<li>"+ sentence + "</li>";
             // Add <br> tags after each list item except for the last one
             if (index !== data['Component1']?.["Other Resources"]?.["Sub-List Headings"].length - 1) {
-                summaryOR += "<br>";
+                sublistHeadingsOR += "<br>";
             }
         });
-        summaryOR += "</ul>";
-        otherResourcesSubListHeadings_Display.value = summaryOR.trim();
+        sublistHeadingsOR += "</ul>";
+        otherResourcesSubListHeadings_Display.value = sublistHeadingsOR.trim();
     } else {
         otherResourcesSubListHeadings_Display.value = "Other Resources content not found.";
     }
 
-    // Other Resources nested listing
+    // Other Resources nested listing - two level
     const listsWithSubLists = data['Component1']?.["Other Resources"]?.["Lists with Sub-Lists"];
     // Displaying each list with sub-lists
     if (listsWithSubLists && listsWithSubLists.length > 0) {
@@ -1354,8 +1359,8 @@ const displayRequiredContent = () => {
         }
     }
 
-    // Accessing the "Lists Tree" array
-    const listsTree = data['Component1']?.["Planning And Preparation"]?.["Lists Tree"];
+    // Accessing the "Lists Tree" array - three level
+    const listsTree1 = data['Component1']?.["Planning And Preparation"]?.["Lists Tree"];
     // Define a recursive function to display each item
     const displayListTree = (listTree, indentLevel) => {
         for (const item of listTree) {
@@ -1367,16 +1372,47 @@ const displayRequiredContent = () => {
 
             // If the content has sub-items, recursively display them with increased indentation level
             if (content && Object.keys(content).length > 0) {
-                // Displaying each list with sub-lists
-                planningPreparationListingTree_Display.value += `<div style="margin-left: ${20 * (indentLevel + 1)}px;">`;
-                displayListTree(Object.values(content)[0]["List Items"] || content["List Items:"] || [], indentLevel + 1);
-                planningPreparationListingTree_Display.value += `</div>`;
+                if (content["List Items"] || content["List Items:"]) {
+                    // Check if the content has "List Items" or "List Items:" keys
+                    const listItems = content["List Items"] || content["List Items:"];
+                    displayListTree(listItems, indentLevel + 1); // Recursively display the list items
+                } else {
+                    // If no "List Items" keys found, recursively display the content
+                    displayListTree([content], indentLevel + 1);
+                }
             }
         }
     };
     // Displaying each list with sub-lists
-    if (listsTree && listsTree.length > 0) {
-        displayListTree(listsTree, 0); // Starting the recursive display with initial indentation level 0
+    if (listsTree1 && listsTree1.length > 0) {
+        displayListTree(listsTree1, 0); // Starting the recursive display with initial indentation level 0
+    }
+
+    // Accessing the "Lists Tree" array - two level
+    const listsTree2 = data['Component1']?.["Required Resources"]?.["Lists with Sub-Lists"];
+    // Define a recursive function to display each item
+    const displayListsSubLists = (listsSubLists, indentLevel) => {
+        for (const list of listsSubLists) {
+            const title = Object.keys(list)[0]; // Extracting the title of the list
+            const items = list[title]; // Extracting the items of the list
+            // Displaying the title of the list with appropriate indentation
+            requiredResourcesListingSubListing_Display.value += `<br><div style="margin-left: ${20 * indentLevel}px;"><strong>${title}</strong></div>`;
+            // If the items array is not empty, display each item
+            if (items && items.length > 0) {
+                for (const item of items) {
+                    requiredResourcesListingSubListing_Display.value += `<div style="margin-left: ${20 * (indentLevel + 1)}px;">`;
+                    requiredResourcesListingSubListing_Display.value += (!item.text.startsWith("-")) ? `- ${item.text} <br>` : `${item.text} <br>`;
+                    if (item.link && Object.keys(item.link).length > 0) {
+                        // requiredResourcesListingSubListing_Display.value += `&emsp;&emsp;Link: <a href="${item.link}">${item.link}</a><br>`;
+                    }
+                    requiredResourcesListingSubListing_Display.value += `</div>`;
+                }
+            }
+        }
+    };
+    // Displaying each list with sub-lists
+    if (listsTree2 && listsTree2.length > 0) {
+        displayListsSubLists(listsTree2, 0); // Starting the recursive display with initial indentation level 0
     }
 
 
@@ -1615,6 +1651,10 @@ const displayRequiredContent = () => {
                             Required resources paragraph will come here.
                         </div>
                         <div
+                            v-if="requiredResourcesListingSubListing_Display"
+                            v-html="requiredResourcesListingSubListing_Display"
+                        />
+                        <div
                             v-for="(heading, index) in displayRequiredResourcesHeadings"
                             :key="index"
                             class="border-2 border-red-200 mt-4 p-4 rounded-2xl"
@@ -1766,7 +1806,13 @@ const displayRequiredContent = () => {
                 </div>
                 <div class="mt-6 p-4">
                     <div class="text-3xl">
-                        Task Sequence
+                        <div
+                            v-if="taskSequenceText_Display"
+                            v-html="taskSequenceText_Display"
+                        />
+                        <div v-else>
+                            Task sequence title will come here.
+                        </div>
                     </div>
                     <div class="grid grid-cols-2 gap-6">
                         <div class="border-2 border-gray-300 mt-4 p-4 rounded-2xl">
