@@ -106,13 +106,12 @@ const duration_Display = ref('')
 const taskSummaryTitle_Display = ref('')
 const taskSummaryParagraph_Display = ref('')
 const sessionOverviewTitle_Display = ref('')
-const sessionOverivewParagraphs_Display = ref([])
+const sessionOverviewParagraphs_Display = ref('')
 const sessionOverviewSubheadings_Display = ref([])
-const sessionOverviewParagraph_Display = ref([])
 const digiTechTitle_Display = ref('')
-const digiTechListings_Display = ref([])
+const digiTechListings_Display = ref('')
 const requiredResourcesTitle_Display = ref('')
-const requiredResourcesParagraph_Display = ref([])
+const requiredResourcesParagraph_Display = ref('')
 const requiredResourcesListHeadings_Display = ref([])
 const requiredResourcesSubListHeadings_Display = ref([])
 const requiredResourcesListingSubListing_Display = ref([])
@@ -120,8 +119,8 @@ const requiredResourcesAllLinks_Display = ref([])
 const otherResourcesTitle_Display = ref('')
 const otherResourcesParagraph_Display = ref([])
 const otherResourcesListHeadings_Display = ref([])
-const otherResourcesSubListHeadings_Display = ref([])
-const otherResourcesListingSubListing_Display = ref([])
+const otherResourcesSubListHeadings_Display = ref('')
+const otherResourcesListingSubListing_Display = ref('')
 const otherResourcesAllLinks_Display = ref([])
 
 //handle file upload
@@ -1261,6 +1260,136 @@ const displayRequiredContent = () => {
     duration_Display.value = (data['Duration']);
     taskSummaryTitle_Display.value = (data['Task Summary']?.Title);
     taskSummaryParagraph_Display.value = (data['Task Summary']?.Paragraphs);
+    sessionOverviewTitle_Display.value = (data['Component1']?.["Session Overview"]?.Title);
+    digiTechTitle_Display.value = (data['Component1']?.["Digital Technologies"]?.Title);
+    requiredResourcesTitle_Display.value = (data['Component1']?.["Required Resources"]?.Title);
+    otherResourcesTitle_Display.value = (data['Component1']?.["Other Resources"]?.Title);
+    // Session Overview Paragraphs
+    let summarySO = "";
+    if (data['Component1']?.["Session Overview"]?.Paragraphs) {
+        summarySO += "<ul>";
+        data['Component1']?.["Session Overview"]?.Paragraphs.forEach((sentence, index) => {
+            summarySO += "<li>"+ sentence + "</li>";
+            // Add <br> tags after each list item except for the last one
+            if (index !== data['Component1']?.["Session Overview"]?.Paragraphs.length - 1) {
+                summarySO += "<br>";
+            }
+        });
+        summarySO += "</ul>";
+        sessionOverviewParagraphs_Display.value = summarySO.trim();
+    } else {
+        sessionOverviewParagraphs_Display.value = "Session Overview content not found.";
+    }
+    // Digital Technologies Paragraphs
+    let summaryDT = "";
+    if (data['Component1']?.["Digital Technologies"]?.Listings) {
+        summaryDT += "<ul>";
+        data['Component1']?.["Digital Technologies"]?.Listings.forEach((sentence, index) => {
+            summaryDT += "<li>"+ sentence + "</li>";
+            // Add <br> tags after each list item except for the last one
+            if (index !== data['Component1']?.["Digital Technologies"]?.Listings.length - 1) {
+                summaryDT += "<br>";
+            }
+        });
+        summaryDT += "</ul>";
+        digiTechListings_Display.value = summaryDT.trim();
+    } else {
+        digiTechListings_Display.value = "Digital Listing content not found.";
+    }
+    // Required Resources Paragraphs
+    let summaryRR = "";
+    if (data['Component1']?.["Required Resources"]?.Paragraphs) {
+        summaryRR += "<ul>";
+        data['Component1']?.["Required Resources"]?.Paragraphs.forEach((sentence, index) => {
+            summaryRR += "<li>"+ sentence + "</li>";
+            // Add <br> tags after each list item except for the last one
+            if (index !== data['Component1']?.["Required Resources"]?.Paragraphs.length - 1) {
+                summaryRR += "<br>";
+            }
+        });
+        summaryRR += "</ul>";
+        requiredResourcesParagraph_Display.value = summaryRR.trim();
+    } else {
+        requiredResourcesTitle_Display.value = "Required Resources content not found.";
+    }
+    // Required Resources Paragraphs
+    let summaryOR = "";
+    if (data['Component1']?.["Other Resources"]?.["Sub-List Headings"]) {
+        summaryOR += "<ul>";
+        data['Component1']?.["Other Resources"]?.["Sub-List Headings"].forEach((sentence, index) => {
+            summaryOR += "<li>"+ sentence + "</li>";
+            // Add <br> tags after each list item except for the last one
+            if (index !== data['Component1']?.["Other Resources"]?.["Sub-List Headings"].length - 1) {
+                summaryOR += "<br>";
+            }
+        });
+        summaryOR += "</ul>";
+        otherResourcesSubListHeadings_Display.value = summaryOR.trim();
+    } else {
+        otherResourcesSubListHeadings_Display.value = "Other Resources content not found.";
+    }
+
+
+
+    //
+    // Accessing the "Lists with Sub-Lists" array
+    // const listsWithSubLists = data['Component1']?.["Other Resources"]?.["Lists with Sub-Lists"];
+
+    // Displaying each list with sub-lists
+    // if (listsWithSubLists && listsWithSubLists.length > 0) {
+    //     for (let i = 0; i < listsWithSubLists.length; i++) {
+    //         const list = listsWithSubLists[i];
+    //         const listTitle = Object.keys(list)[0]; // Extracting the title of the list
+    //
+    //         otherResourcesListingSubListing_Display.value += listTitle + ":\n"; // Displaying the title of the list
+    //
+    //         const subList = list[listTitle]; // Accessing the sub-lists
+    //
+    //         // Displaying each item in the sub-list
+    //         for (let j = 0; j < subList.length; j++) {
+    //             const listItem = subList[j];
+    //             otherResourcesListingSubListing_Display.value += "   - " + listItem.text + "\n"; // Displaying the text of the item
+    //             otherResourcesListingSubListing_Display.value += "     Link: " + listItem.link + "\n"; // Displaying the link of the item
+    //         }
+    //     }
+    // }
+
+    // Accessing the "Lists with Sub-Lists" array
+    const listsWithSubLists = data['Component1']?.["Other Resources"]?.["Lists with Sub-Lists"];
+
+    // Displaying each list with sub-lists
+    if (listsWithSubLists && listsWithSubLists.length > 0) {
+        for (let i = 0; i < listsWithSubLists.length; i++) {
+            const list = listsWithSubLists[i];
+            const listTitle = Object.keys(list)[0]; // Extracting the title of the list
+
+            // Displaying the title of the list in bold
+            otherResourcesListingSubListing_Display.value += `<strong>${listTitle}</strong><br>`;
+
+            const subList = list[listTitle]; // Accessing the sub-lists
+
+            // Displaying each item in the sub-list
+            for (let j = 0; j < subList.length; j++) {
+                const listItem = subList[j];
+
+                otherResourcesListingSubListing_Display.value += `<div style="margin-left: ${20 * (1)}px;">`
+                // Displaying the text of the item
+                otherResourcesListingSubListing_Display.value += `- ${listItem.text}<br><br>`;
+                // Displaying the link of the item
+                // otherResourcesListingSubListing_Display.value += `&emsp;&emsp;Link: <a href="${listItem.link}">${listItem.link}</a><br>`;
+                otherResourcesListingSubListing_Display.value += `</div>`;
+            }
+        }
+    }
+
+
+
+
+
+
+
+
+
 }
 
 
@@ -1374,7 +1503,7 @@ const displayRequiredContent = () => {
                         v-html="topicCategory_Display"
                     />
                     <div v-else>
-                        AR/VR Learning Tasks
+                        AR/VR Learning Tasks will come here.
                     </div>
                 </div>
                 <div class="flex flex-col gap-4 text-lg">
@@ -1415,7 +1544,7 @@ const displayRequiredContent = () => {
                     v-html="taskSummaryTitle_Display"
                 />
                 <div v-else>
-                    Task Summary
+                    Task Summary Title will come here.
                 </div>
                 <div class="mt-4 text-xl">
                     <div
@@ -1430,12 +1559,18 @@ const displayRequiredContent = () => {
             <div class="flex flex-col gap-2 mt-10">
                 <div class="border-2 border-blue-600 p-4 rounded-2xl w-full">
                     <div class="text-3xl">
-                        Session Overview
+                        <div
+                            v-if="sessionOverviewTitle_Display"
+                            v-html="sessionOverviewTitle_Display"
+                        />
+                        <div v-else>
+                            Session Overview title will come here.
+                        </div>
                     </div>
                     <div class="mt-4 text-xl">
                         <div
-                            v-if="displaySessionOverview"
-                            v-html="displaySessionOverview"
+                            v-if="sessionOverviewParagraphs_Display"
+                            v-html="sessionOverviewParagraphs_Display"
                         />
                         <div v-else>
                             Session Overview paragraph will come here.
@@ -1444,12 +1579,18 @@ const displayRequiredContent = () => {
                 </div>
                 <div class="border-2 border-green-600 p-4 rounded-2xl w-full">
                     <div class="text-3xl">
-                        Digital Technologies
+                        <div
+                            v-if="digiTechTitle_Display"
+                            v-html="digiTechTitle_Display"
+                        />
+                        <div v-else>
+                            Digital Technologies title will come here.
+                        </div>
                     </div>
                     <div class="mt-4 text-xl">
                         <div
-                            v-if="displayDigitalTechnologies"
-                            v-html="displayDigitalTechnologies"
+                            v-if="digiTechListings_Display"
+                            v-html="digiTechListings_Display"
                         />
                         <div v-else>
                             Digital technologies paragraph will come here.
@@ -1458,12 +1599,18 @@ const displayRequiredContent = () => {
                 </div>
                 <div class="border-2 border-red-600 p-4 rounded-2xl w-full">
                     <div class="text-3xl">
-                        Required Resources
+                        <div
+                            v-if="requiredResourcesTitle_Display"
+                            v-html="requiredResourcesTitle_Display"
+                        />
+                        <div v-else>
+                            Required resources Title will come here.
+                        </div>
                     </div>
                     <div class="mt-4 text-xl">
                         <div
-                            v-if="displayRequiredResourcesParagraph"
-                            v-html="displayRequiredResourcesParagraph"
+                            v-if="requiredResourcesParagraph_Display"
+                            v-html="requiredResourcesParagraph_Display"
                         />
                         <div v-else>
                             Required resources paragraph will come here.
@@ -1566,15 +1713,21 @@ const displayRequiredContent = () => {
                 </div>
                 <div class="border-2 border-blue-600 p-4 rounded-2xl w-full">
                     <div class="text-3xl">
-                        Other Resources to try
+                        <div
+                            v-if="otherResourcesTitle_Display"
+                            v-html="otherResourcesTitle_Display"
+                        />
+                        <div v-else>
+                            Other resources title will come here.
+                        </div>
                     </div>
                     <div class="mt-4 text-xl">
                         <div
-                            v-if="displayRequiredResourcesParagraph"
-                            v-html="displayRequiredResourcesParagraph"
+                            v-if="otherResourcesListingSubListing_Display"
+                            v-html="otherResourcesListingSubListing_Display"
                         />
                         <div v-else>
-                            Required resources paragraph will come here.
+                            Other resources listing will come here.
                         </div>
                         <div
                             v-for="(heading, index) in displayRequiredResourcesHeadings"
