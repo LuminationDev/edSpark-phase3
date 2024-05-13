@@ -125,6 +125,57 @@ const otherResourcesAllLinks_Display = ref([])
 const planningPreparationTitle_Display = ref('')
 const planningPreparationListingTree_Display = ref('')
 const taskSequenceText_Display = ref('')
+const introductoryNumbering_Display = ref('')
+const introductoryTitle_Display = ref("")
+const introductoryTime_Display = ref("")
+const introductoryParagraph_Display = ref([])
+const introductoryHeading_Display = ref([])
+const introductoryListing_Display = ref([])
+const introductoryImageLinks_Display = ref([])
+const introductoryLinks_Display = ref([])
+const priorKnowledgeNumbering_Display = ref("")
+const priorKnowledgeTitle_Display = ref("")
+const priorKnowledgeTime_Display = ref("")
+const priorKnowledgeParagraph_Display = ref([])
+const priorKnowledgeHeading_Display = ref([])
+const priorKnowledgeListing_Display = ref([])
+const priorKnowledgeImageLinks_Display = ref([])
+const priorKnowledgeLinks_Display = ref([])
+const activitiesNumbering_Display = ref("")
+const activitiesTitle_Display = ref("")
+const activitiesTime_Display = ref("")
+const activitiesParagraph_Display = ref([])
+const activitiesHeading_Display = ref([])
+const activitiesListing_Display = ref([])
+const activitiesImageLinks_Display = ref([])
+const activitiesLinks_Display = ref([])
+const checkUnderstandingNumbering_Display = ref("")
+const checkUnderstandingTitle_Display = ref("")
+const checkUnderstandingTime_Display = ref("")
+const checkUnderstandingParagraph_Display = ref([])
+const checkUnderstandingHeading_Display = ref([])
+const checkUnderstandingListing_Display = ref([])
+const checkUnderstandingImageLinks_Display = ref([])
+const checkUnderstandingLinks_Display = ref([])
+const curriculumText_Display = ref("")
+const ausCurriculumTitle_Display = ref("")
+const ausCurriculumParagraph_Display = ref([])
+const ausCurriculumHeadings_Display = ref([])
+const ausCurriculumListing_Display = ref([])
+const ausCurriculumListingTree_Display = ref([])
+const ausCurriculumLinks_Display = ref([])
+const crossCurriculumTitle_Display = ref("")
+const crossCurriculumParagraph_Display = ref([])
+const crossCurriculumHeadings_Display = ref([])
+const crossCurriculumListing_Display = ref([])
+const crossCurriculumListingTree_Display = ref([])
+const crossCurriculumLinks_Display = ref([])
+const generalCapabilitiesTitle_Display = ref("")
+const generalCapabilitiesParagraph_Display = ref([])
+const generalCapabilitiesHeadings_Display = ref([])
+const generalCapabilitiesListing_Display = ref([])
+const generalCapabilitiesListingTree_Display = ref([])
+const generalCapabilitiesLinks_Display = ref([])
 
 //handle file upload
 const handleFileUpload = async (event) => {
@@ -1269,6 +1320,10 @@ const displayRequiredContent = () => {
     otherResourcesTitle_Display.value = (data['Component1']?.["Other Resources"]?.Title);
     planningPreparationTitle_Display.value = (data['Component1']?.["Planning And Preparation"]?.Title);
     taskSequenceText_Display.value = (data['Component2']?.Main_Heading);
+    introductoryNumbering_Display.value = (data['Component2']?.["Introductory Activity"]?.Number)
+    priorKnowledgeNumbering_Display.value = (data['Component2']?.["Prior Knowledge Check"]?.Number)
+    activitiesNumbering_Display.value = (data['Component2']?.["Activities"]?.Number)
+    checkUnderstandingNumbering_Display.value = (data['Component2']?.["Check Understanding"]?.Number)
 
     // Session Overview Paragraphs
     let paragraphsSO = "";
@@ -1359,7 +1414,7 @@ const displayRequiredContent = () => {
         }
     }
 
-    // Accessing the "Lists Tree" array - three level
+    // Accessing the "Lists Tree" array - three level - *** Conditional ***
     const listsTree1 = data['Component1']?.["Planning And Preparation"]?.["Lists Tree"];
     // Define a recursive function to display each item
     const displayListTree = (listTree, indentLevel) => {
@@ -1391,7 +1446,7 @@ const displayRequiredContent = () => {
     // Accessing the "Lists Tree" array - two level
     const listsTree2 = data['Component1']?.["Required Resources"]?.["Lists with Sub-Lists"];
     // Define a recursive function to display each item
-    const displayListsSubLists = (listsSubLists, indentLevel) => {
+    const displayListsSubLists1 = (listsSubLists, indentLevel) => {
         for (const list of listsSubLists) {
             const title = Object.keys(list)[0]; // Extracting the title of the list
             const items = list[title]; // Extracting the items of the list
@@ -1412,7 +1467,32 @@ const displayRequiredContent = () => {
     };
     // Displaying each list with sub-lists
     if (listsTree2 && listsTree2.length > 0) {
-        displayListsSubLists(listsTree2, 0); // Starting the recursive display with initial indentation level 0
+        displayListsSubLists1(listsTree2, 0); // Starting the recursive display with initial indentation level 0
+    }
+
+    // Accessing the "Lists Tree" array - two level
+    const listsTree3 = data['Component2']?.["Introductory Activity"]?.Listings;
+    // console.log(listsTree3)
+    const displayListsSubLists2 = (listsSubLists, indentLevel) => {
+        for (const list of listsSubLists) {
+            const title = list[0]; // Extracting the title of the list
+            const items = list.slice(0); // Extracting the items of the list
+            // Displaying the title of the list with appropriate indentation and bold font weight
+            // introductoryListing_Display.value += `<br><div style="margin-left: ${20 * indentLevel}px;">${title}</div>`;
+            // If the items array is not empty, display each item
+            if (items && items.length > 0) {
+                for (const item of items) {
+                    introductoryListing_Display.value += `<div style="margin-left: ${20 * (indentLevel + 1)}px;">`;
+                    introductoryListing_Display.value += (!item.startsWith("-")) ? `- ${item} <br>` : `${item} <br>`;
+                    // You can add link handling here if needed
+                    introductoryListing_Display.value += `<br></div>`;
+                }
+            }
+        }
+    };
+    // Displaying each list with sub-lists
+    if (listsTree3 && listsTree3.length > 0) {
+        displayListsSubLists2(listsTree3, 0); // Starting the recursive display with initial indentation level 0
     }
 
 
@@ -1817,15 +1897,33 @@ const displayRequiredContent = () => {
                     <div class="grid grid-cols-2 gap-6">
                         <div class="border-2 border-gray-300 mt-4 p-4 rounded-2xl">
                             <div class="text-2xl">
-                                Task No. 1
+                                <div
+                                    v-if="introductoryNumbering_Display"
+                                    v-html="introductoryNumbering_Display"
+                                />
+                                <div v-else>
+                                    Task Sequence number will come here.
+                                </div>
                             </div>
                             <div class="mt-2 text-xl">
-                                Task No. 1 content will come here
+                                <div
+                                    v-if="introductoryListing_Display"
+                                    v-html="introductoryListing_Display"
+                                />
+                                <div v-else>
+                                    Task Sequence content will come here.
+                                </div>
                             </div>
                         </div>
                         <div class="border-2 border-gray-300 p-4 rounded-2xl">
                             <div class="text-2xl">
-                                Task No. 2
+                                <div
+                                    v-if="priorKnowledgeNumbering_Display"
+                                    v-html="priorKnowledgeNumbering_Display"
+                                />
+                                <div v-else>
+                                    Task Sequence number will come here.
+                                </div>
                             </div>
                             <div class="mt-2 text-xl">
                                 Task No. 2 content will come here
@@ -1833,7 +1931,13 @@ const displayRequiredContent = () => {
                         </div>
                         <div class="border-2 border-gray-300 p-4 rounded-2xl">
                             <div class="text-2xl">
-                                Task No. 3
+                                <div
+                                    v-if="activitiesNumbering_Display"
+                                    v-html="activitiesNumbering_Display"
+                                />
+                                <div v-else>
+                                    Task Sequence number will come here.
+                                </div>
                             </div>
                             <div class="mt-2 text-xl">
                                 Task No. 3 content will come here
@@ -1841,7 +1945,13 @@ const displayRequiredContent = () => {
                         </div>
                         <div class="border-2 border-gray-300 p-4 rounded-2xl">
                             <div class="text-2xl">
-                                Task No. 4
+                                <div
+                                    v-if="checkUnderstandingNumbering_Display"
+                                    v-html="checkUnderstandingNumbering_Display"
+                                />
+                                <div v-else>
+                                    Task Sequence number will come here.
+                                </div>
                             </div>
                             <div class="mt-2 text-xl">
                                 Task No. 4 content will come here
