@@ -1369,7 +1369,7 @@ const displayRequiredContent = () => {
             if (content && Object.keys(content).length > 0) {
                 // Displaying each list with sub-lists
                 planningPreparationListingTree_Display.value += `<div style="margin-left: ${20 * (indentLevel + 1)}px;">`;
-                displayListTree(content["List Items"] || content["List Items:"] || [], indentLevel + 1);
+                displayListTree(Object.values(content)[0]["List Items"] || content["List Items:"] || [], indentLevel + 1);
                 planningPreparationListingTree_Display.value += `</div>`;
             }
         }
