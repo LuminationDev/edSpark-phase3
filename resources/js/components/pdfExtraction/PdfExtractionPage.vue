@@ -1473,26 +1473,49 @@ const displayRequiredContent = () => {
     // Accessing the "Lists Tree" array - two level
     const listsTree3 = data['Component2']?.["Introductory Activity"]?.Listings;
     // console.log(listsTree3)
-    const displayListsSubLists2 = (listsSubLists, indentLevel) => {
+    const displayListsSubListsCombined = (listsSubLists, indentLevel) => {
+        let hasTitle = false; // Flag to check if a title is found
         for (const list of listsSubLists) {
-            const title = list[0]; // Extracting the title of the list
-            const items = list.slice(0); // Extracting the items of the list
-            // Displaying the title of the list with appropriate indentation and bold font weight
-            // introductoryListing_Display.value += `<br><div style="margin-left: ${20 * indentLevel}px;">${title}</div>`;
-            // If the items array is not empty, display each item
+            if (typeof list[0] === 'object') {
+                const title = Object.keys(list[0])[0]; // Extracting the title of the list
+                introductoryListing_Display.value += `<br><div style="margin-left: ${20 * indentLevel}px;"><strong>${title}</strong></div>`;
+                hasTitle = true;
+            } else if (!hasTitle) {
+                // If no title is found, display items in list form without a title
+                introductoryListing_Display.value += `<br><div style="margin-left: ${20 * indentLevel}px;"><ul>`;
+                hasTitle = true;
+            }
+            const items = list.slice(0); // Extracting all items of the list
             if (items && items.length > 0) {
                 for (const item of items) {
-                    introductoryListing_Display.value += `<div style="margin-left: ${20 * (indentLevel + 1)}px;">`;
-                    introductoryListing_Display.value += (!item.startsWith("-")) ? `- ${item} <br>` : `${item} <br>`;
-                    // You can add link handling here if needed
-                    introductoryListing_Display.value += `<br></div>`;
+                    if (typeof item === 'string') {
+                        // If item is a string, display it normally
+                        introductoryListing_Display.value += `<div style="margin-left: ${20 * (indentLevel + 1)}px;">`;
+                        introductoryListing_Display.value += (!item.startsWith("-")) ? `- ${item} <br>` : `${item} <br>`;
+                        // You can add link handling here if needed
+                        introductoryListing_Display.value += `</div>`;
+                    } else if (typeof item === 'object') {
+                        // If item is an object, assume it's a question-answer pair and display accordingly
+                        const question = Object.keys(item)[0]; // Extracting the question
+                        const answers = item[question]; // Extracting the answers
+                        introductoryListing_Display.value += `<div style="margin-left: ${20 * (indentLevel + 1)}px;">`;
+                        introductoryListing_Display.value += `- <strong>${question}</strong> <br>`;
+                        for (const answer of answers) {
+                            introductoryListing_Display.value += `${answer} <br>`;
+                        }
+                        introductoryListing_Display.value += `</div>`;
+                    }
                 }
+            }
+            if (!hasTitle) {
+                // Close the list tag if no title is found
+                introductoryListing_Display.value += `</ul></div>`;
             }
         }
     };
     // Displaying each list with sub-lists
     if (listsTree3 && listsTree3.length > 0) {
-        displayListsSubLists2(listsTree3, 0); // Starting the recursive display with initial indentation level 0
+        displayListsSubListsCombined(listsTree3, 0); // Starting the recursive display with initial indentation level 0
     }
 
 
