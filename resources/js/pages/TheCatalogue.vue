@@ -18,11 +18,13 @@ import usePagination from "@/js/composables/usePagination";
 import {LandingHeroText} from "@/js/constants/PageBlurb";
 import {catalogueService} from "@/js/service/catalogueService";
 import {useCatalogueStore} from "@/js/stores/useCatalogueStore";
+import {useQuoteStore} from "@/js/stores/useQuoteStore";
 import {CatalogueFilterField, CatalogueItemType} from "@/js/types/catalogueTypes";
 
 
 // const catalogueList: Ref<CatalogueItemType[] | []> = ref([]);
 const {catalogueList} = storeToRefs(useCatalogueStore())
+const {quote} = storeToRefs(useQuoteStore())
 const categoryList = ref([])
 const brandList = ref([])
 const typeList = ref([])
@@ -223,7 +225,6 @@ const handleClickCatalogueCard = (reference) => {
     />
     <div class="cataloguePageOuterContainer grid grid-cols-10 mt-16">
         <div class="col-span-2 flex flex-col gap-2 ml-8 pr-8">
-            <CataloguePerPageSelector v-model="perPage" />
             <CatalogueFilterColumn
                 v-model:brand-list="brandList"
                 v-model:type-list="typeList"
@@ -236,6 +237,7 @@ const handleClickCatalogueCard = (reference) => {
                 v-model:price-range="priceRange"
                 :is-filter-loading="isFilterLoading"
             />
+            <CataloguePerPageSelector v-model="perPage" />
         </div>
         <div v-if="error.status ">
             {{ error.message }}
@@ -271,6 +273,7 @@ const handleClickCatalogueCard = (reference) => {
                     @update:model-value="handleChangePageNumber"
                 />
             </div>
+            <pre> {{ quote }}</pre>
         </div>
 
         <div
