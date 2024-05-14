@@ -1,6 +1,7 @@
 import axios from "axios";
 
 import {API_ENDPOINTS} from "@/js/constants/API_ENDPOINTS";
+import {catalogueImageURL} from "@/js/constants/serverUrl";
 
 type CatalogueFieldTypes = 'brand'|'type'|'vendor'|'category'
 
@@ -65,6 +66,7 @@ export const catalogueService = {
             return {}
         }
     },
+
     getGroupedItemData: (item) =>{
         return [
             {
@@ -241,5 +243,23 @@ export const catalogueService = {
                 display_text: "Curriculum",
                 group: 'more_info'
             }]
+    },
+
+    getCatalogueCoverImage : ( coverImage: {uuid: string, extension: string}) =>{
+        try {
+            if (coverImage.extension) {
+                return `${catalogueImageURL}/${coverImage.uuid}/original.${coverImage.extension.toLowerCase()}`
+            } else
+                return ''
+        } catch (e) {
+            return ''
+        }
+    },
+    getExcGstPrice : (priceIncGst : number) => {
+        if (priceIncGst) {
+            return (priceIncGst / 1.1).toFixed(2)
+        } else {
+            return 0
+        }
     }
 }

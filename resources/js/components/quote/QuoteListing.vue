@@ -2,6 +2,7 @@
 import {computed, ref} from 'vue'
 
 import QuoteWideCard from "@/js/components/quote/QuoteWideCard.vue";
+import ChevronDownIcon from "@/js/components/svg/chevron/ChevronDownIcon.vue";
 
 const props = defineProps({
     quoteVendor: {
@@ -21,8 +22,8 @@ const emits = defineEmits([])
 
 <template>
     <div class="listingContainer w-full">
-        <div class="mb-8 text-main-darkTeal text-xl">
-            {{ quoteVendor }}
+        <div class="flex flex-row mb-4 text-main-darkTeal text-xl">
+            {{ quoteVendor }} <ChevronDownIcon class="h-6 mt-1 w-6" />
         </div>
         <div class="flex flex-col listingCardList">
             <template

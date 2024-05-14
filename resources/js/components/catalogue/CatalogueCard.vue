@@ -68,28 +68,16 @@ const {
     brand,
     type,
     name,
-    image,
     price_inc_gst,
     cover_image
 } = props.catItem
 
 const catCoverImageUrl = computed(() => {
-    try {
-        if (cover_image.extension) {
-            return `${catalogueImageURL}/${cover_image.uuid}/original.${cover_image.extension.toLowerCase()}`
-        } else
-            return ''
-    } catch (e) {
-        return ''
-    }
+    return catalogueService.getCatalogueCoverImage(cover_image);
 })
 
 const priceExtGst = computed(() => {
-    if (price_inc_gst) {
-        return (price_inc_gst * 1.1).toFixed(2)
-    } else {
-        return 0
-    }
+    return catalogueService.getExcGstPrice(price_inc_gst)
 })
 
 const catCardShortSpec = computed(() => {
