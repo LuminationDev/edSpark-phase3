@@ -69,11 +69,19 @@ const {
     type,
     name,
     image,
-    price_inc_gst
+    price_inc_gst,
+    cover_image
 } = props.catItem
 
 const catCoverImageUrl = computed(() => {
-    return catalogueImageURL + image
+    try {
+        if (cover_image.extension) {
+            return `${catalogueImageURL}/${cover_image.uuid}/original.${cover_image.extension.toLowerCase()}`
+        } else
+            return ''
+    } catch (e) {
+        return ''
+    }
 })
 
 const priceExtGst = computed(() => {
@@ -88,7 +96,7 @@ const catCardShortSpec = computed(() => {
     return catalogueService.getCatalogueShortSpecObj(props.catItem)
 })
 
-const handleClickAddToQuote = () =>{
+const handleClickAddToQuote = () => {
     return quoteStore.addToQuote(props.catItem)
 }
 

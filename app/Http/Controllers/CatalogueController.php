@@ -49,7 +49,10 @@ class CatalogueController extends Controller
             'image' => $item->image,
             'product_number' => $item->product_number,
             'price_expiry' => $item->price_expiry,
-            'cover_image' => $itemImageUUID
+            'cover_image' => [
+                'uuid' => $itemImageUUID,
+                'extension' => $itemImage->file_extension ?? '',
+            ]
         ];
     }
 

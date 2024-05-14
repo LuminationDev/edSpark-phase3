@@ -3,6 +3,7 @@ import {useRouter} from "vue-router";
 
 import BaseLandingHero from "@/js/components/bases/BaseLandingHero.vue";
 import GenericButton from "@/js/components/button/GenericButton.vue";
+import QuoteListing from "@/js/components/quote/QuoteListing.vue";
 import {LandingHeroText} from "@/js/constants/PageBlurb";
 import {useQuoteStore} from "@/js/stores/useQuoteStore";
 
@@ -25,12 +26,17 @@ const handleClearQuote = () => {
         swoosh-color="teal"
     />
     <div class="grid grid-cols-10 ml-8 mt-16 quotePageOuterContainer">
-        <div class="col-span-8 grid listingColumn">
-            listing here
-        </div>
-        <div class="actionColumn col-span-2 grid">
-            some action
-        </div>
+        <template v-for="(products, vendor) in quoteStore.getQuoteGroupedByVendor">
+            <div class="col-span-8 grid listingColumn">
+                <QuoteListing
+                    :quote-vendor="vendor"
+                    :quote-items="products"
+                />
+            </div>
+            <div class="actionColumn col-span-2 grid">
+                some action
+            </div>
+        </template>
         <div class="col-span-10 otherRow">
             <GenericButton
                 :callback="handleClearQuote"
@@ -44,8 +50,6 @@ const handleClearQuote = () => {
             >
                 back to catalogue
             </GenericButton>
-            <!--            <pre> {{ quoteStore.getQuote }} </pre>-->
-            <pre> {{ quoteStore.getQuoteGroupedByVendor }} </pre>
         </div>
     </div>
 </template>
