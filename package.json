@@ -64,7 +64,7 @@
         "moment": "^2.30.1",
         "nouislider": "^15.7.1",
         "pinia": "^2.1.7",
-        "sass": "^1.74.1",
+        "sass": "^1.75.0",
         "search-dropdown-vue": "^1.0.3",
         "slugify": "^1.6.6",
         "swrv": "^1.0.4",
