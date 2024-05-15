@@ -8,14 +8,14 @@ import {ref} from "vue";
 // import { data } from './dataJson3'
 // import { data } from './dataJson4'
 // import { data } from './dataJson5'
-import { data } from './dataJson6'
+// import { data } from './dataJson6'
 // import { data } from './dataJson7'
 // import { data } from './dataJson8'
 // import { data } from './dataJson9'
 // import { data } from './dataJson10'
 // import { data } from './dataJson11'
 // import { data } from './dataJson12'
-// import { data } from './dataJson13'
+ import { data } from './dataJson13'
 // import { data } from './dataJson14'
 
 // all initial variables are here
@@ -1487,18 +1487,19 @@ const displayRequiredContent = () => {
     }
 
     //// Accessing the "Lists Tree" array - two level
-    const listsTree3 = data['Component2']?.["Introductory Activity"]?.Listings;
+    const introductoryListingData = data['Component2']?.["Introductory Activity"]?.Listings;
+    const priorKnowledgeListingData = data['Component2']?.["Prior Knowledge Check"]?.Listings;
     // console.log(listsTree3)
-    const displayListsSubListsCombined = (listsSubLists, indentLevel) => {
+    const displayListsSubListsCombined = (listsSubLists, indentLevel, listingToDisplay) => {
         let hasTitle = false; // Flag to check if a title is found
         for (const list of listsSubLists) {
             if (typeof list[0] === 'object') {
                 const title = Object.keys(list[0])[0]; // Extracting the title of the list
-                introductoryListing_Display.value += `<br><div style="margin-left: ${20 * indentLevel}px;"><strong>${title}</strong></div>`;
+                listingToDisplay.value += `<div style="margin-left: ${20 * indentLevel}px;"><strong>${title}</strong></div>`;
                 hasTitle = true;
             } else if (!hasTitle) {
                 // If no title is found, display items in list form without a title
-                introductoryListing_Display.value += `<br><div style="margin-left: ${20 * indentLevel}px;"><ul>`;
+                listingToDisplay.value += `<div style="margin-left: ${20 * indentLevel}px;"><ul>`;
                 hasTitle = true;
             }
             const items = list.slice(0); // Extracting all items of the list
@@ -1506,33 +1507,36 @@ const displayRequiredContent = () => {
                 for (const item of items) {
                     if (typeof item === 'string') {
                         // If item is a string, display it normally
-                        introductoryListing_Display.value += `<div style="margin-left: ${20 * (indentLevel + 1)}px;">`;
-                        introductoryListing_Display.value += (!item.startsWith("-")) ? `- <strong>${item}</strong> <br>` : `${item} <br>`;
+                        listingToDisplay.value += `<div style="margin-left: ${20 * (indentLevel + 1)}px;">`;
+                        listingToDisplay.value += (!item.startsWith("-")) ? `- <strong>${item}</strong> <br>` : `${item} <br>`;
                         // You can add link handling here if needed
-                        introductoryListing_Display.value += `</div>`;
+                        listingToDisplay.value += `</div>`;
                     } else if (typeof item === 'object') {
                         // If item is an object, assume it's a question-answer pair and display accordingly
                         const question = Object.keys(item)[0]; // Extracting the question
                         const answers = item[question]; // Extracting the answers
-                        introductoryListing_Display.value += `<div style="margin-left: ${20 * (indentLevel + 2)}px;">`;
-                        introductoryListing_Display.value += `&nbsp;&nbsp;- ${question}<br>`;
-                        introductoryListing_Display.value += `<div style="margin-left: ${20 * (indentLevel + 2)}px;">`;
+                        listingToDisplay.value += `<div style="margin-left: ${20 * (indentLevel + 2)}px;">`;
+                        listingToDisplay.value += `&nbsp;&nbsp;- ${question}<br>`;
+                        listingToDisplay.value += `<div style="margin-left: ${20 * (indentLevel + 2)}px;">`;
                         for (const answer of answers) {
-                            introductoryListing_Display.value += `&nbsp;&nbsp; - ${answer} <br>`;
+                            listingToDisplay.value += `&nbsp;&nbsp; - ${answer} <br>`;
                         }
-                        introductoryListing_Display.value += `</div>`;
+                        listingToDisplay.value += `</div>`;
                     }
                 }
             }
             if (!hasTitle) {
                 // Close the list tag if no title is found
-                introductoryListing_Display.value += `</ul></div>`;
+                listingToDisplay.value += `</ul></div>`;
             }
         }
     };
     // Displaying each list with sub-lists
-    if (listsTree3 && listsTree3.length > 0) {
-        displayListsSubListsCombined(listsTree3, 0); // Starting the recursive display with initial indentation level 0
+    if (introductoryListingData && introductoryListingData.length > 0) {
+        displayListsSubListsCombined(introductoryListingData, 0, introductoryListing_Display); // Starting the recursive display with initial indentation level 0
+    }
+    if (priorKnowledgeListingData && priorKnowledgeListingData.length > 0) {
+        displayListsSubListsCombined(priorKnowledgeListingData, 0, priorKnowledgeListing_Display); // Starting the recursive display with initial indentation level 0
     }
 
 
@@ -1933,7 +1937,7 @@ const displayRequiredContent = () => {
                             <div class="text-2xl">
                                 <div
                                     v-if="introductoryNumbering_Display"
-                                    v-html="introductoryNumbering_Display"
+                                    v-html="introductoryNumbering_Display + '. ' + taskSequenceText_Display"
                                 />
                                 <div v-else>
                                     Task Sequence number will come here.
@@ -1953,42 +1957,60 @@ const displayRequiredContent = () => {
                             <div class="text-2xl">
                                 <div
                                     v-if="priorKnowledgeNumbering_Display"
-                                    v-html="priorKnowledgeNumbering_Display"
+                                    v-html="priorKnowledgeNumbering_Display + '. ' + taskSequenceText_Display"
                                 />
                                 <div v-else>
                                     Task Sequence number will come here.
                                 </div>
                             </div>
                             <div class="mt-2 text-xl">
-                                Task No. 2 content will come here
+                                <div
+                                    v-if="priorKnowledgeListing_Display"
+                                    v-html="priorKnowledgeListing_Display"
+                                />
+                                <div v-else>
+                                    Task Sequence content will come here.
+                                </div>
                             </div>
                         </div>
                         <div class="border-2 border-gray-300 p-4 rounded-2xl">
                             <div class="text-2xl">
                                 <div
                                     v-if="activitiesNumbering_Display"
-                                    v-html="activitiesNumbering_Display"
+                                    v-html="activitiesNumbering_Display + '. ' + taskSequenceText_Display"
                                 />
                                 <div v-else>
                                     Task Sequence number will come here.
                                 </div>
                             </div>
                             <div class="mt-2 text-xl">
-                                Task No. 3 content will come here
+                                <div
+                                    v-if="activitiesListing_Display"
+                                    v-html="activitiesListing_Display"
+                                />
+                                <div v-else>
+                                    Task Sequence content will come here.
+                                </div>
                             </div>
                         </div>
                         <div class="border-2 border-gray-300 p-4 rounded-2xl">
                             <div class="text-2xl">
                                 <div
                                     v-if="checkUnderstandingNumbering_Display"
-                                    v-html="checkUnderstandingNumbering_Display"
+                                    v-html="checkUnderstandingNumbering_Display + '. ' + taskSequenceText_Display"
                                 />
                                 <div v-else>
                                     Task Sequence number will come here.
                                 </div>
                             </div>
                             <div class="mt-2 text-xl">
-                                Task No. 4 content will come here
+                                <div
+                                    v-if="checkUnderstandingListing_Display"
+                                    v-html="checkUnderstandingListing_Display"
+                                />
+                                <div v-else>
+                                    Task Sequence content will come here.
+                                </div>
                             </div>
                         </div>
                     </div>
