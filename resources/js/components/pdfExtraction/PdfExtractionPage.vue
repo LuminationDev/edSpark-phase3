@@ -1499,9 +1499,9 @@ const displayRequiredContent = () => {
                         const question = Object.keys(item)[0]; // Extracting the question
                         const answers = item[question]; // Extracting the answers
                         introductoryListing_Display.value += `<div style="margin-left: ${20 * (indentLevel + 1)}px;">`;
-                        introductoryListing_Display.value += `- <strong>${question}</strong> <br>`;
+                        introductoryListing_Display.value += `&nbsp;&nbsp;- <strong>${question}</strong> <br>`;
                         for (const answer of answers) {
-                            introductoryListing_Display.value += `${answer} <br>`;
+                            introductoryListing_Display.value += `&nbsp;&nbsp;&nbsp;&nbsp; - ${answer} <br>`;
                         }
                         introductoryListing_Display.value += `</div>`;
                     }
