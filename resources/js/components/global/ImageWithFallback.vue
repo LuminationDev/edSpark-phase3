@@ -28,7 +28,7 @@ const fallbackUrl = () => {
     case 'profile':
         return `${imageURL}/uploads/image/profile.jpg`
     case 'catalogue':
-        return `${imageURL}/uploads/image/profile.jpg`
+        return `${imageURL}/uploads/image/product.png`
     default:
         return `${imageURL}/uploads/image/profile.jpg`
     }

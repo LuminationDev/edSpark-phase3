@@ -3,7 +3,8 @@ import {useRouter} from "vue-router";
 
 import BaseLandingHero from "@/js/components/bases/BaseLandingHero.vue";
 import GenericButton from "@/js/components/button/GenericButton.vue";
-import QuoteListing from "@/js/components/quote/QuoteListing.vue";
+import QuoteVendorAction from "@/js/components/quote/QuoteVendorAction.vue";
+import QuoteVendorListing from "@/js/components/quote/QuoteVendorListing.vue";
 import {LandingHeroText} from "@/js/constants/PageBlurb";
 import {guid} from "@/js/helpers/guidGenerator";
 import {useQuoteStore} from "@/js/stores/useQuoteStore";
@@ -30,16 +31,19 @@ const handleClearQuote = () => {
         <div
             v-for="(products, vendor) in quoteStore.getQuoteGroupedByVendor"
             :key="vendor + guid()"
-            class="grid grid-cols-10 mb-8"
+            class="grid grid-cols-10 gap-4 mb-8"
         >
             <div class="col-span-8 grid listingColumn">
-                <QuoteListing
+                <QuoteVendorListing
                     :quote-vendor="vendor"
                     :quote-items="products"
                 />
             </div>
             <div class="actionColumn col-span-2 grid">
-                some action
+                <QuoteVendorAction
+                    :quote-vendor="vendor"
+                    :quote-items="products"
+                />
             </div>
         </div>
         <div class="col-span-10 otherRow">
