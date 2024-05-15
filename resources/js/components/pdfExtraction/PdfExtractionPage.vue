@@ -2,8 +2,21 @@
 import mammoth from 'mammoth';
 import {ref} from "vue";
 
-// linked JSON File
-import { data } from './dataJson'
+////////////////// linked JSON File
+// import { data } from './dataJson1'
+// import { data } from './dataJson2'
+// import { data } from './dataJson3'
+// import { data } from './dataJson4'
+// import { data } from './dataJson5'
+import { data } from './dataJson6'
+// import { data } from './dataJson7'
+// import { data } from './dataJson8'
+// import { data } from './dataJson9'
+// import { data } from './dataJson10'
+// import { data } from './dataJson11'
+// import { data } from './dataJson12'
+// import { data } from './dataJson13'
+// import { data } from './dataJson14'
 
 // all initial variables are here
 const htmlContent = ref('');
@@ -1325,7 +1338,7 @@ const displayRequiredContent = () => {
     activitiesNumbering_Display.value = (data['Component2']?.["Activities"]?.Number)
     checkUnderstandingNumbering_Display.value = (data['Component2']?.["Check Understanding"]?.Number)
 
-    // Session Overview Paragraphs
+    //// Session Overview Paragraphs
     let paragraphsSO = "";
     if (data['Component1']?.["Session Overview"]?.Paragraphs) {
         paragraphsSO += "<ul>";
@@ -1342,7 +1355,7 @@ const displayRequiredContent = () => {
         sessionOverviewParagraphs_Display.value = "Session Overview content not found.";
     }
 
-    // Digital Technologies Paragraphs
+    //// Digital Technologies Paragraphs
     let listingDT = "";
     if (data['Component1']?.["Digital Technologies"]?.Listings) {
         listingDT += "<ul>";
@@ -1359,7 +1372,7 @@ const displayRequiredContent = () => {
         digiTechListings_Display.value = "Digital Listing content not found.";
     }
 
-    // Required Resources Paragraphs
+    //// Required Resources Paragraphs
     let paragraphsRR = "";
     if (data['Component1']?.["Required Resources"]?.Paragraphs) {
         paragraphsRR += "<ul>";
@@ -1376,7 +1389,7 @@ const displayRequiredContent = () => {
         requiredResourcesTitle_Display.value = "Required Resources content not found.";
     }
 
-    // Other Resources Sublist Headings
+    //// Other Resources Sublist Headings
     let sublistHeadingsOR = "";
     if (data['Component1']?.["Other Resources"]?.["Sub-List Headings"]) {
         sublistHeadingsOR += "<ul>";
@@ -1393,7 +1406,7 @@ const displayRequiredContent = () => {
         otherResourcesSubListHeadings_Display.value = "Other Resources content not found.";
     }
 
-    // Other Resources nested listing - two level
+    //// Other Resources nested listing - two level
     const listsWithSubLists = data['Component1']?.["Other Resources"]?.["Lists with Sub-Lists"];
     // Displaying each list with sub-lists
     if (listsWithSubLists && listsWithSubLists.length > 0) {
@@ -1414,27 +1427,30 @@ const displayRequiredContent = () => {
         }
     }
 
-    // Accessing the "Lists Tree" array - three level - *** Conditional ***
+    //// Accessing the "Lists Tree" array - three level - *** Conditional ***
     const listsTree1 = data['Component1']?.["Planning And Preparation"]?.["Lists Tree"];
     // Define a recursive function to display each item
-    const displayListTree = (listTree, indentLevel) => {
-        for (const item of listTree) {
+    const displayListTree = (listTree, indentLevel, isMainLevel = true) => {
+        for (let i = 0; i < listTree.length; i++) {
+            const item = listTree[i];
             const title = Object.keys(item)[0]; // Extracting the title of the item
             const content = item[title]; // Extracting the content of the item
-
             // Displaying the title of the item with appropriate indentation
-            planningPreparationListingTree_Display.value += `<div style="margin-left: ${20 * indentLevel}px;"><strong>${title}</strong></div>`;
-
+            planningPreparationListingTree_Display.value += `<div style="margin-left: ${20 * indentLevel}px;">${isMainLevel ? `<strong>${title}</strong>` : ` - ${title}`}</div>`;
             // If the content has sub-items, recursively display them with increased indentation level
             if (content && Object.keys(content).length > 0) {
                 if (content["List Items"] || content["List Items:"]) {
                     // Check if the content has "List Items" or "List Items:" keys
                     const listItems = content["List Items"] || content["List Items:"];
-                    displayListTree(listItems, indentLevel + 1); // Recursively display the list items
+                    displayListTree(listItems, indentLevel + 1, false); // Recursively display the list items without bold
                 } else {
                     // If no "List Items" keys found, recursively display the content
-                    displayListTree([content], indentLevel + 1);
+                    displayListTree([content], indentLevel + 1, false);
                 }
+            }
+            // Add a line break after the last list line
+            if (i === listTree.length - 1) {
+                planningPreparationListingTree_Display.value += `<br>`;
             }
         }
     };
@@ -1443,7 +1459,7 @@ const displayRequiredContent = () => {
         displayListTree(listsTree1, 0); // Starting the recursive display with initial indentation level 0
     }
 
-    // Accessing the "Lists Tree" array - two level
+    //// Accessing the "Lists Tree" array - two level
     const listsTree2 = data['Component1']?.["Required Resources"]?.["Lists with Sub-Lists"];
     // Define a recursive function to display each item
     const displayListsSubLists1 = (listsSubLists, indentLevel) => {
@@ -1470,7 +1486,7 @@ const displayRequiredContent = () => {
         displayListsSubLists1(listsTree2, 0); // Starting the recursive display with initial indentation level 0
     }
 
-    // Accessing the "Lists Tree" array - two level
+    //// Accessing the "Lists Tree" array - two level
     const listsTree3 = data['Component2']?.["Introductory Activity"]?.Listings;
     // console.log(listsTree3)
     const displayListsSubListsCombined = (listsSubLists, indentLevel) => {
@@ -1491,17 +1507,18 @@ const displayRequiredContent = () => {
                     if (typeof item === 'string') {
                         // If item is a string, display it normally
                         introductoryListing_Display.value += `<div style="margin-left: ${20 * (indentLevel + 1)}px;">`;
-                        introductoryListing_Display.value += (!item.startsWith("-")) ? `- ${item} <br>` : `${item} <br>`;
+                        introductoryListing_Display.value += (!item.startsWith("-")) ? `- <strong>${item}</strong> <br>` : `${item} <br>`;
                         // You can add link handling here if needed
                         introductoryListing_Display.value += `</div>`;
                     } else if (typeof item === 'object') {
                         // If item is an object, assume it's a question-answer pair and display accordingly
                         const question = Object.keys(item)[0]; // Extracting the question
                         const answers = item[question]; // Extracting the answers
-                        introductoryListing_Display.value += `<div style="margin-left: ${20 * (indentLevel + 1)}px;">`;
-                        introductoryListing_Display.value += `&nbsp;&nbsp;- <strong>${question}</strong> <br>`;
+                        introductoryListing_Display.value += `<div style="margin-left: ${20 * (indentLevel + 2)}px;">`;
+                        introductoryListing_Display.value += `&nbsp;&nbsp;- ${question}<br>`;
+                        introductoryListing_Display.value += `<div style="margin-left: ${20 * (indentLevel + 2)}px;">`;
                         for (const answer of answers) {
-                            introductoryListing_Display.value += `&nbsp;&nbsp;&nbsp;&nbsp; - ${answer} <br>`;
+                            introductoryListing_Display.value += `&nbsp;&nbsp; - ${answer} <br>`;
                         }
                         introductoryListing_Display.value += `</div>`;
                     }
@@ -1517,12 +1534,6 @@ const displayRequiredContent = () => {
     if (listsTree3 && listsTree3.length > 0) {
         displayListsSubListsCombined(listsTree3, 0); // Starting the recursive display with initial indentation level 0
     }
-
-
-
-
-
-
 
 
 
