@@ -55,6 +55,20 @@ export const useQuoteStore = defineStore('quote', {
             const quoteItem = this.quote.find(item => item.unique_reference === itemReference);
             return quoteItem ? quoteItem.quantity * quoteItem.price : 0;
         },
+        calculateSubtotalPerVendor(vendor: string) {
+            const groupedQuote = this.getQuoteGroupedByVendor
+            if(groupedQuote[vendor]) {
+                const items = groupedQuote[vendor]
+                let subtotal = 0
+                for(const item of items){
+                    subtotal += (+item.price_inc_gst * +item.quantity)
+                }
+                return subtotal.toFixed(2)
+            } else{
+                console.log('vendor not exist')
+                return 0
+            }
+        }
 
     }
 })

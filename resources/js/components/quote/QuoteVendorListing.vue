@@ -18,6 +18,7 @@ const props = defineProps({
 const isMinimised = ref(false)
 
 const emits = defineEmits([])
+
 </script>
 
 <template>

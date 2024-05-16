@@ -2,6 +2,8 @@
 import {computed,ref} from 'vue'
 
 import GenericButton from "@/js/components/button/GenericButton.vue";
+import {catalogueService} from "@/js/service/catalogueService";
+import {useQuoteStore} from "@/js/stores/useQuoteStore";
 
 const props = defineProps({
     quoteVendor: {
@@ -15,6 +17,22 @@ const props = defineProps({
 })
 
 const emits = defineEmits([])
+const quoteStore = useQuoteStore()
+
+const onClickGenerate = () =>{
+    quoteStore.calculateSubtotalPerVendor(props.quoteVendor)
+}
+const subtotalIncGst = computed(() =>{
+    return quoteStore.calculateSubtotalPerVendor(props.quoteVendor)
+})
+
+const subtotalExcGst = computed(() =>{
+    return catalogueService.getExcGstPrice(subtotalIncGst.value)
+})
+
+
+
+
 </script>
 
 <template>
@@ -23,24 +41,29 @@ const emits = defineEmits([])
             Generate quote
         </div>
         <div class="border-[1px] border-slate-300 grid grid-cols-2 innerContainer px-6 py-4 rounded-xl shadow">
-            <div>Subtotal</div>
-            <div>$100</div>
-            <div>inc gst</div>
-            <div>1200</div>
+            <div class="my-4">
+                Total (ex. GST)
+            </div>
+            <div class="my-4">
+                {{ "$ " + subtotalExcGst }}
+            </div>
             <hr class="col-span-2">
-            <div>Total</div>
-            <div class="mb-4">
-                99000
+            <div class="my-4 text-slate-600">
+                Total (inc. GST)
+            </div>
+            <div class="my-4 text-slate-600">
+                {{ "$ " + subtotalIncGst }}
             </div>
             <div class="col-span-2 flex flex-col quoteAction">
                 <GenericButton
-                    :callback="() =>{}"
+                    :callback="onClickGenerate"
+                    class="mb-4"
                 >
                     Generate quote
                 </GenericButton>
                 <GenericButton
                     :callback="() =>{}"
-                    class="!text-black bg-white mb-4"
+                    class="!text-black hover:!text-white bg-white hove mb-4 hover:!bg-red-700"
                 >
                     Cancel Quote
                 </GenericButton>

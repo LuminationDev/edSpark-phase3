@@ -1,9 +1,10 @@
 <script setup lang="ts">
-import {computed, ref} from 'vue'
+import {computed, ref, watch} from 'vue'
 
 import CatalogueCardDescGenerator from "@/js/components/catalogue/CatalogueCardDescGenerator.vue";
 import ImageWithFallback from "@/js/components/global/ImageWithFallback.vue";
 import {catalogueService} from "@/js/service/catalogueService";
+import {useQuoteStore} from "@/js/stores/useQuoteStore";
 import {CatalogueItemType} from "@/js/types/catalogueTypes";
 
 const props = defineProps({
@@ -15,6 +16,8 @@ const props = defineProps({
 
 const emits = defineEmits([])
 
+const itemQuantity = ref(props.itemData.quantity)
+const quoteStore = useQuoteStore()
 
 const catCoverImageUrl = computed(() => {
     return catalogueService.getCatalogueCoverImage(props.itemData.cover_image);
@@ -26,7 +29,7 @@ const catCardShortSpec = computed(() => {
 
 
 const priceExtGst = computed(() => {
-    return catalogueService.getExcGstPrice(props.itemData.price_inc_gst)
+    return catalogueService.getExcGstPrice(+props.itemData.price_inc_gst)
 })
 
 const priceIncGst = computed(() => {
@@ -34,6 +37,29 @@ const priceIncGst = computed(() => {
         return (+props.itemData.price_inc_gst).toFixed(2)
     }
 })
+
+const onClickIncrement = () => {
+    itemQuantity.value++
+}
+const onClickDecrement = () => {
+    // handle negative here
+    itemQuantity.value--
+
+}
+
+
+const onClickRemove = () =>{
+    quoteStore.removeFromQuote(props.itemData.unique_reference)
+}
+
+watch(itemQuantity, () => {
+    quoteStore.changeQuantity(props.itemData, itemQuantity)
+})
+
+const itemQuantitySubtotal = computed(() => {
+    return (+priceExtGst.value * itemQuantity.value).toFixed(2)
+})
+
 </script>
 
 <template>
@@ -47,7 +73,7 @@ const priceIncGst = computed(() => {
             />
         </div>
         <div class="basis-4/5 catalogueInformation place-items-center">
-            <div class="grid grid-cols-4 w-full">
+            <div class="grid grid-cols-4 h-full w-full">
                 <div class="col-span-3 grid nameAndSpec">
                     <span class="font-medium text-xl">
                         {{ props.itemData.brand + " - " + props.itemData.name }}</span>
@@ -56,19 +82,30 @@ const priceIncGst = computed(() => {
                             :card-desc-obj="catCardShortSpec"
                         />
                     </span>
-                    <div class="removeButton text-red-600">
+                    <div
+                        class="cursor-pointer removeButton text-red-600"
+                        @click="onClickRemove"
+                    >
                         Remove
                     </div>
                 </div>
-                <div class="col-span-1 grid ml-auto mr-4 priceAndQuantity text-right">
+                <div class="col-span-1 grid h-full ml-auto mr-4 priceAndQuantity text-right">
                     <span class="priceExcGst text-xl">{{ `\$${priceExtGst} exc. GST` }} </span>
-                    <span class="priceIncGst text-lg text-slate-600">{{ `\$${priceIncGst} inc. GST` }} </span>
-                    <div class="border-[1px] flex justify-self-end flex-row gap-4 itemQuantity rounded-xl w-fit">
-                        <div class="border-r-[1px] border-slate-300 px-2">
+                    <span class="priceIncGst text-lg text-slate-600">{{ `\$${itemQuantitySubtotal}` }} </span>
+                    <div
+                        class="border-[1px] flex justify-self-end flex-row gap-4 itemQuantity mt-auto rounded-xl w-fit"
+                    >
+                        <div
+                            class="border-r-[1px] border-slate-300 cursor-pointer px-2"
+                            @click="onClickDecrement"
+                        >
                             -
                         </div>
-                        <div> {{ props.itemData.quantity }}</div>
-                        <div class="border-l-[1px] border-slate-300 px-2">
+                        <div> {{ itemQuantity }}</div>
+                        <div
+                            class="border-l-[1px] border-slate-300 cursor-pointer px-2"
+                            @click="onClickIncrement"
+                        >
                             +
                         </div>
                     </div>
