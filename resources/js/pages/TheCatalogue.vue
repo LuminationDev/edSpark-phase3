@@ -3,6 +3,7 @@ import "@hennge/vue3-pagination/dist/vue3-pagination.css";
 
 import VPagination from "@hennge/vue3-pagination";
 import {watchDebounced} from "@vueuse/core";
+import axios from "axios";
 import {storeToRefs} from "pinia";
 import {computed, onMounted, Ref, ref, watch} from "vue";
 import {useRouter} from "vue-router";
@@ -213,6 +214,19 @@ const handleClickCatalogueCard = (reference) => {
     })
 
 }
+
+
+onMounted(() =>{
+    axios.get('http://localhost:8000/api/catalogue/cart').then(res =>{
+        console.log(res.data)
+    })
+    const testData  = {
+        unique_reference: "AC-000001"
+    }
+    axios.post('http://localhost:8000/api/catalogue/cart',testData).then(res =>{
+        console.log(res.data)
+    })
+})
 
 
 </script>

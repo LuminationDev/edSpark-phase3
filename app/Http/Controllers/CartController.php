@@ -9,6 +9,7 @@ use App\Models\Catalogueversion;
 use App\Models\Quote;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 
 class CartController extends Controller
 {
@@ -46,14 +47,14 @@ class CartController extends Controller
     public function store(Request $request)
     {
         $user = Auth::user();
-        $catalogue_id = $request->input('catalogue_id');
-        $catalogue = Catalogue::find($catalogue_id);
+        $unique_reference = $request->input('unique_reference');
+        $catalogue = Catalogue::findActiveItemByReference($unique_reference);
 
         if (!$catalogue) {
             return response()->json(['message' => 'Catalogue item not found'], 404);
         }
 
-        $cart = Cart::firstOrCreate(['user_id' => $user->id]);
+        $cart = Cart::getUserCart($user->id);
 
         $cartItem = CartItem::firstOrCreate(
             ['cart_id' => $cart->id, 'catalogue_id' => $catalogue_id],
