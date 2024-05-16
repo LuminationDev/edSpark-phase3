@@ -21,6 +21,7 @@ const props = defineProps({
 const quoteStore = useQuoteStore()
 const showConfirmation = ref(false)
 
+// should be on the card
 const itemAdded = computed(() => {
     return quoteStore.isItemInQuote(props.catItem.unique_reference)
 })
@@ -57,7 +58,7 @@ const onClickAddToQuote = () =>{
         </template>
         <template v-else>
             <GenericButton
-                class="!text-base py-3"
+                class="!text-base py-3 hover:!bg-secondary-cherry"
                 :callback="props.callback"
                 type="red"
             >
