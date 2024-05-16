@@ -6,7 +6,7 @@ import {ref} from "vue";
 // import { data } from './dataJson1'
 // import { data } from './dataJson2'
 // import { data } from './dataJson3'
-// import { data } from './dataJson4'
+import { data } from './dataJson4'
 // import { data } from './dataJson5'
 // import { data } from './dataJson6'
 // import { data } from './dataJson7'
@@ -15,7 +15,7 @@ import {ref} from "vue";
 // import { data } from './dataJson10'
 // import { data } from './dataJson11'
 // import { data } from './dataJson12'
- import { data } from './dataJson13'
+// import { data } from './dataJson13'
 // import { data } from './dataJson14'
 
 // all initial variables are here
@@ -1406,6 +1406,74 @@ const displayRequiredContent = () => {
         otherResourcesSubListHeadings_Display.value = "Other Resources content not found.";
     }
 
+    //// Task Sequence Introductory Activity Paragraphs
+    let paragraphsIA = "";
+    if (data['Component2']?.["Introductory Activity"]?.Paragraphs) {
+        paragraphsIA += "<ul>";
+        data['Component2']?.["Introductory Activity"]?.Paragraphs.forEach((sentence, index) => {
+            paragraphsIA += "<li>"+ sentence + "</li>";
+            // Add <br> tags after each list item except for the last one
+            if (index !== data['Component2']?.["Introductory Activity"]?.Paragraphs.length - 1) {
+                paragraphsIA += "<br>";
+            }
+        });
+        paragraphsIA += "</ul>";
+        introductoryParagraph_Display.value = paragraphsIA.trim();
+    } else {
+        introductoryParagraph_Display.value = "Introductory content not found.";
+    }
+
+    //// Task Sequence Prior Knowledge Paragraphs
+    let paragraphsPK = "";
+    if (data['Component2']?.["Prior Knowledge Check"]?.Paragraphs) {
+        paragraphsPK += "<ul>";
+        data['Component2']?.["Prior Knowledge Check"]?.Paragraphs.forEach((sentence, index) => {
+            paragraphsPK += "<li>"+ sentence + "</li>";
+            // Add <br> tags after each list item except for the last one
+            if (index !== data['Component2']?.["Prior Knowledge Check"]?.Paragraphs.length - 1) {
+                paragraphsPK += "<br>";
+            }
+        });
+        paragraphsPK += "</ul>";
+        introductoryParagraph_Display.value = paragraphsPK.trim();
+    } else {
+        priorKnowledgeParagraph_Display.value = "Prior Knowledge content not found.";
+    }
+
+    //// Task Sequence Activities Paragraphs
+    let paragraphsAc = "";
+    if (data['Component2']?.["Activities"]?.Paragraphs) {
+        paragraphsAc += "<ul>";
+        data['Component2']?.["Activities"]?.Paragraphs.forEach((sentence, index) => {
+            paragraphsAc += "<li>"+ sentence + "</li>";
+            // Add <br> tags after each list item except for the last one
+            if (index !== data['Component2']?.["Activities"]?.Paragraphs.length - 1) {
+                paragraphsAc += "<br>";
+            }
+        });
+        paragraphsAc += "</ul>";
+        activitiesParagraph_Display.value = paragraphsAc.trim();
+    } else {
+        activitiesParagraph_Display.value = "Prior Knowledge content not found.";
+    }
+
+    //// Task Sequence Activities Paragraphs
+    let paragraphsCU = "";
+    if (data['Component2']?.["Check Understanding"]?.Paragraphs) {
+        paragraphsCU += "<ul>";
+        data['Component2']?.["Check Understanding"]?.Paragraphs.forEach((sentence, index) => {
+            paragraphsCU += "<li>"+ sentence + "</li>";
+            // Add <br> tags after each list item except for the last one
+            if (index !== data['Component2']?.["Check Understanding"]?.Paragraphs.length - 1) {
+                paragraphsCU += "<br>";
+            }
+        });
+        paragraphsCU += "</ul>";
+        checkUnderstandingParagraph_Display.value = paragraphsCU.trim();
+    } else {
+        checkUnderstandingParagraph_Display.value = "Prior Knowledge content not found.";
+    }
+
     //// Other Resources nested listing - two level
     const listsWithSubLists = data['Component1']?.["Other Resources"]?.["Lists with Sub-Lists"];
     // Displaying each list with sub-lists
@@ -1489,6 +1557,8 @@ const displayRequiredContent = () => {
     //// Accessing the "Lists Tree" array - two level
     const introductoryListingData = data['Component2']?.["Introductory Activity"]?.Listings;
     const priorKnowledgeListingData = data['Component2']?.["Prior Knowledge Check"]?.Listings;
+    const activitiesListingData = data['Component2']?.["Activities"]?.Listings;
+
     // console.log(listsTree3)
     const displayListsSubListsCombined = (listsSubLists, indentLevel, listingToDisplay) => {
         let hasTitle = false; // Flag to check if a title is found
@@ -1516,7 +1586,9 @@ const displayRequiredContent = () => {
                         const question = Object.keys(item)[0]; // Extracting the question
                         const answers = item[question]; // Extracting the answers
                         listingToDisplay.value += `<div style="margin-left: ${20 * (indentLevel + 2)}px;">`;
-                        listingToDisplay.value += `&nbsp;&nbsp;- ${question}<br>`;
+                        if(!question) {
+                            listingToDisplay.value += `&nbsp;&nbsp;- ${question}<br>`;
+                        }
                         listingToDisplay.value += `<div style="margin-left: ${20 * (indentLevel + 2)}px;">`;
                         for (const answer of answers) {
                             listingToDisplay.value += `&nbsp;&nbsp; - ${answer} <br>`;
@@ -1537,6 +1609,9 @@ const displayRequiredContent = () => {
     }
     if (priorKnowledgeListingData && priorKnowledgeListingData.length > 0) {
         displayListsSubListsCombined(priorKnowledgeListingData, 0, priorKnowledgeListing_Display); // Starting the recursive display with initial indentation level 0
+    }
+    if (activitiesListingData && activitiesListingData.length > 0) {
+        displayListsSubListsCombined(activitiesListingData, 0, activitiesListing_Display); // Starting the recursive display with initial indentation level 0
     }
 
 
@@ -1944,10 +2019,8 @@ const displayRequiredContent = () => {
                                 </div>
                             </div>
                             <div class="mt-2 text-xl">
-                                <div
-                                    v-if="introductoryListing_Display"
-                                    v-html="introductoryListing_Display"
-                                />
+                                <div v-if="introductoryListing_Display && introductoryListing_Display.length > 0" v-html="introductoryListing_Display"></div>
+                                <div v-else-if="introductoryParagraph_Display && introductoryParagraph_Display.length > 0" v-html="introductoryParagraph_Display"></div>
                                 <div v-else>
                                     Task Sequence content will come here.
                                 </div>
@@ -1964,10 +2037,8 @@ const displayRequiredContent = () => {
                                 </div>
                             </div>
                             <div class="mt-2 text-xl">
-                                <div
-                                    v-if="priorKnowledgeListing_Display"
-                                    v-html="priorKnowledgeListing_Display"
-                                />
+                                <div v-if="priorKnowledgeListing_Display && priorKnowledgeListing_Display.length > 0" v-html="priorKnowledgeListing_Display"></div>
+                                <div v-else-if="priorKnowledgeParagraph_Display && priorKnowledgeParagraph_Display.length > 0" v-html="priorKnowledgeParagraph_Display"></div>
                                 <div v-else>
                                     Task Sequence content will come here.
                                 </div>
@@ -1984,10 +2055,8 @@ const displayRequiredContent = () => {
                                 </div>
                             </div>
                             <div class="mt-2 text-xl">
-                                <div
-                                    v-if="activitiesListing_Display"
-                                    v-html="activitiesListing_Display"
-                                />
+                                <div v-if="activitiesListing_Display && activitiesListing_Display.length > 0" v-html="activitiesListing_Display"></div>
+                                <div v-else-if="activitiesParagraph_Display && activitiesParagraph_Display.length > 0" v-html="activitiesParagraph_Display"></div>
                                 <div v-else>
                                     Task Sequence content will come here.
                                 </div>
@@ -2004,10 +2073,8 @@ const displayRequiredContent = () => {
                                 </div>
                             </div>
                             <div class="mt-2 text-xl">
-                                <div
-                                    v-if="checkUnderstandingListing_Display"
-                                    v-html="checkUnderstandingListing_Display"
-                                />
+                                <div v-if="checkUnderstandingListing_Display && checkUnderstandingListing_Display.length > 0" v-html="checkUnderstandingListing_Display"></div>
+                                <div v-else-if="checkUnderstandingParagraph_Display && checkUnderstandingParagraph_Display.length > 0" v-html="checkUnderstandingParagraph_Display"></div>
                                 <div v-else>
                                     Task Sequence content will come here.
                                 </div>
