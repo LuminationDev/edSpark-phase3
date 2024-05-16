@@ -2,9 +2,8 @@
 import {storeToRefs} from "pinia";
 import {computed, onMounted, ref, watch} from 'vue'
 
-import GenericButton from "@/js/components/button/GenericButton.vue";
+import CatalogueAddToQuoteButton from "@/js/components/catalogue/CatalogueAddToQuoteButton.vue";
 import CatalogueCardDescGenerator from "@/js/components/catalogue/CatalogueCardDescGenerator.vue";
-import {catalogueImageURL} from "@/js/constants/serverUrl";
 import {catalogueService} from "@/js/service/catalogueService";
 import {useCatalogueStore} from "@/js/stores/useCatalogueStore";
 import {useQuoteStore} from "@/js/stores/useQuoteStore";
@@ -84,9 +83,7 @@ const catCardShortSpec = computed(() => {
     return catalogueService.getCatalogueShortSpecObj(props.catItem)
 })
 
-const handleClickAddToQuote = () => {
-    return quoteStore.addToQuote(props.catItem)
-}
+
 
 </script>
 
@@ -156,13 +153,9 @@ const handleClickAddToQuote = () => {
                 </div>
             </div>
             <div class="addToQuoteRow flex w-full">
-                <GenericButton
-                    :callback="handleClickAddToQuote"
-                    type="teal"
-                    class="!w-full"
-                >
-                    Add to quote
-                </GenericButton>
+                <CatalogueAddToQuoteButton
+                    :cat-item="props.catItem"
+                />
             </div>
         </div>
     </div>

@@ -68,6 +68,14 @@ export const useQuoteStore = defineStore('quote', {
                 console.log('vendor not exist')
                 return 0
             }
+        },
+        isItemInQuote(itemReference: string) {
+            if (!this.quote || this.quote.length <= 0) {
+                return false
+            }
+            if (this.quote.some(item => item.unique_reference === itemReference)) {
+                return true
+            }
         }
 
     }
