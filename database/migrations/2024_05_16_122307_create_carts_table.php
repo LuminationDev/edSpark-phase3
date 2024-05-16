@@ -16,6 +16,7 @@ return new class extends Migration {
             $table->foreign('user_id')->references('id')->on('users')->onDelete('no action');
             $table->unsignedBigInteger('version_id');
             $table->foreign('version_id')->references('version')->on('catalogue_versions')->onDelete('no action');
+            $table->enum('status', ['ACTIVE', 'ABANDONED', 'COMPLETED'])->default('ACTIVE');
             $table->timestamps();
         });
     }

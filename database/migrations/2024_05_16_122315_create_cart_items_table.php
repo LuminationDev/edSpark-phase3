@@ -17,6 +17,7 @@ return new class extends Migration
             $table->unsignedBigInteger('catalogue_id');
             $table->foreign('cart_id')->references('id')->on('carts')->onDelete('no action');
             $table->foreign('catalogue_id')->references('id')->on('catalogues')->onDelete('no action');
+            $table->integer('quantity')->default(1);
             $table->timestamps();
         });
     }
