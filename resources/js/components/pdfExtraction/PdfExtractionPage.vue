@@ -5,11 +5,11 @@ import {ref} from "vue";
 ////////////////// linked JSON File
 // import { data } from './dataJson1'
 // import { data } from './dataJson2'
-// import { data } from './dataJson3'
+ import { data } from './dataJson3'
 // import { data } from './dataJson4'
 // import { data } from './dataJson5'
 // import { data } from './dataJson6'
-import { data } from './dataJson7'
+// import { data } from './dataJson7'
 // import { data } from './dataJson8'
 // import { data } from './dataJson9'
 // import { data } from './dataJson10'
