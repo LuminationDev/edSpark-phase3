@@ -18,6 +18,7 @@ const route = useRoute()
 const uniqueRef: string | RouteParamValue[] = route.params.ref
 const isLoading = ref(true)
 const itemData: Ref<CatalogueItemType> = ref({})
+
 onMounted(() => {
     isLoading.value = true
     catalogueService.fetchSingleProductByReference(uniqueRef).then(res => {

@@ -23,8 +23,6 @@ class Catalogue extends Model
 
     public static function deleteAll()
     {
-        // Ensure you have a proper mechanism to handle deletion,
-        // such as checking user permissions or confirming the action.
 
         // Delete all entries in the "catalogues" table
         static::query()->delete();
@@ -48,5 +46,13 @@ class Catalogue extends Model
     public function getBrandAttribute($value)
     {
         return trim($value);
+    }
+
+    public static function findActiveItemByReference($unique_reference)
+    {
+        $activeVersionId = Catalogueversion::getActiveCatalogueId(); // Call the method correctly
+        return self::where('unique_reference', $unique_reference)
+            ->where('version_id', $activeVersionId)
+            ->first();
     }
 }

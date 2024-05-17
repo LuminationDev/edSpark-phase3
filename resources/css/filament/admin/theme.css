@@ -242,9 +242,9 @@ input, textarea, select {
     -webkit-filter: brightness(1.1);
 }
 
-.fi-btn.bg-white {
-    background-color: #fbfbfb;
-}
+/*.fi-btn.bg-white {*/
+/*    background-color: #fbfbfb;*/
+/*}*/
 
 .time_elapsed-counter {
     width: 50px;

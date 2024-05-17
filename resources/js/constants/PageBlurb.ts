@@ -45,15 +45,15 @@ export const LandingHeroText = {
         subtitle: "Create guides, case studies and any other resources and share with the edSpark communities from schools, partners and the departments"
     },
     catalogue:{
-        title: 'ICT Catalogue',
-        subtitle: "Explore our curated catalogue featuring products from DfE (Department for Education) approved partners, all accessible on our digital hub. Discover educational resources, tools, and solutions designed to enhance learning experiences for students and educators alike."
+        title: 'Classroom catalogue',
+        subtitle: "Explore our selection of digital devices sourced from the State Government’s approval panel of vendors, conveniently available on our digital platform. Each item has been carefully chosen by vendors to meet the specific needs of classrooms, ensuring schools have access to suitable device."
     },
     profile:{
         title: "User profile",
         subtitle: "Personalise your account information, adjust your preferences and stay informed with notifications"
     },
     dma:{
-        title: 'Digital Capability Leadership Reflection Tool',
+        title: 'Digital Maturity Assessment Tool',
         subtitle: '',
     },
     notification:{
@@ -67,7 +67,11 @@ export const LandingHeroText = {
     comparison:{
         title: 'Compare devices',
         subtitle: 'Compare multiple devices to pick the best devices for your purpose.',
-    }
+    },
+    quote:{
+        title: 'Review quote',
+        subtitle: 'Items in quotes are grouped based on vendors and quote for each vendor must be generated individually. Use the download quote button to access quote for the vendor or the download all button',
+    },
 
 }
 
