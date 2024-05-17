@@ -11,7 +11,7 @@ use Outerweb\ImageLibrary\Models\Image;
 
 class CatalogueController extends Controller
 {
-    private function catalogueModelToJson($item)
+    public static function catalogueModelToJson($item)
     {
         if ($item->cover_image) {
             $itemImage = Image::where('id', $item->cover_image)->first();

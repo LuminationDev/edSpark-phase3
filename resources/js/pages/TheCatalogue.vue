@@ -221,7 +221,8 @@ onMounted(() =>{
         console.log(res.data)
     })
     const testData  = {
-        unique_reference: "AC-000001"
+        unique_reference: "AC-000002",
+        quantity: 2
     }
     axios.post('http://localhost:8000/api/catalogue/cart',testData).then(res =>{
         console.log(res.data)

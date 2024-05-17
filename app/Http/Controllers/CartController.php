@@ -32,6 +32,7 @@ class CartController extends Controller
 
         return $cart;
     }
+
     // GET /cart: Returns the content of the user's cart.
     public function index()
     {
@@ -39,8 +40,14 @@ class CartController extends Controller
         $currentVersionId = Catalogueversion::getActiveCatalogueId();
 
         $cart = $this->getOrCreateCart($user->id, $currentVersionId);
+        $cart_items = $cart->cartItems;
+        $result = $cart_items->map(function ($item) {
+            $catalogueAttributes = CatalogueController::catalogueModelToJson($item->catalogue);
+            $catalogueAttributes['quantity'] = $item->quantity;
+            return $catalogueAttributes;
+        });
 
-        return response()->json($cart->cartItems, 200);
+        return response()->json($result, 200);
     }
 
     // POST /cart: Adds an item to the cart.
@@ -48,6 +55,7 @@ class CartController extends Controller
     {
         $user = Auth::user();
         $unique_reference = $request->input('unique_reference');
+        $quantity = $request->input('quantity');
         $catalogue = Catalogue::findActiveItemByReference($unique_reference);
 
         if (!$catalogue) {
@@ -55,15 +63,27 @@ class CartController extends Controller
         }
 
         $cart = Cart::getUserCart($user->id);
+        $catalogue_id = $catalogue->id;
 
-        $cartItem = CartItem::firstOrCreate(
-            ['cart_id' => $cart->id, 'catalogue_id' => $catalogue_id],
-            ['quantity' => 0]
-        );
-        $cartItem->increment('quantity');
+        // Check if the cart item already exists
+        $cartItem = CartItem::where('cart_id', $cart->id)
+            ->where('catalogue_id', $catalogue_id)
+            ->first();
 
-        return response()->json($cartItem, 201);
+        // If cart item exists, update the quantity
+        if ($cartItem) {
+            $cartItem->update(['quantity' => $quantity]);
+        } else {
+            $cartItem = CartItem::create([
+                'cart_id' => $cart->id,
+                'catalogue_id' => $catalogue_id,
+                'quantity' => $quantity
+            ]);
+        }
+
+        return response()->json($cartItem, $cartItem->wasRecentlyCreated ? 201 : 200);
     }
+
 
     // PUT /cart/:item_id/update: Increment the count of an item inside the cart.
     public function update(Request $request, $item_id)
