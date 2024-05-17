@@ -1,6 +1,7 @@
 import {useStorage} from "@vueuse/core";
 import {defineStore} from "pinia";
 
+import {quoteService} from "@/js/service/quoteService";
 import {CatalogueFilterField, CatalogueItemType} from "@/js/types/catalogueTypes";
 
 export const useQuoteStore = defineStore('quote', {
@@ -28,6 +29,17 @@ export const useQuoteStore = defineStore('quote', {
 
     },
     actions: {
+        async initializeQuote(){
+            try{
+                this.quoteLoading = true;
+                const quoteFromDb = await quoteService.getCart()
+                console.log(quoteFromDb)
+                this.quote = quoteFromDb;
+                this.quoteLoading = false;
+            } catch (e){
+                console.log(e)
+            }
+        },
         addToQuote(item: CatalogueItemType) {
             const existingItem = this.quote.find(currentItem => currentItem.unique_reference === item.unique_reference);
 

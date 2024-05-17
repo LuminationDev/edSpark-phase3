@@ -26,7 +26,12 @@ import {CatalogueFilterField, CatalogueItemType} from "@/js/types/catalogueTypes
 
 // const catalogueList: Ref<CatalogueItemType[] | []> = ref([]);
 const {catalogueList} = storeToRefs(useCatalogueStore())
-const {quote} = storeToRefs(useQuoteStore())
+const quoteStore = useQuoteStore()
+const {quote} = storeToRefs(quoteStore)
+onMounted(async () => {
+    await quoteStore.initializeQuote()
+})
+
 const categoryList = ref([])
 const brandList = ref([])
 const typeList = ref([])
@@ -217,28 +222,15 @@ const handleClickCatalogueCard = (reference) => {
 }
 
 
-onMounted(() =>{
-    axios.get('http://localhost:8000/api/quote/cart').then(res =>{
-        console.log(res.data)
-    })
-    // const testData  = {
-    //     unique_reference: "AC-000002",
-    //     quantity: 2
-    // }
-    // axios.post('http://localhost:8000/api/catalogue/cart',testData).then(res =>{
-    //     console.log(res.data)
-    // })
-})
-
-const handleTestButton = () =>{
-    const testData  = {
+const handleTestButton = () => {
+    const testData = {
         unique_reference: "AC-000002",
         quantity: 20
     }
     // axios.put('http://localhost:8000/api/catalogue/cart/AC-000001/update',testData).then(res =>{
     //     console.log(res.data)
     // })
-    axios.delete('http://localhost:8000/api/catalogue/cart').then(res =>{
+    axios.delete('http://localhost:8000/api/catalogue/cart').then(res => {
         console.log(res.data)
     })
 
