@@ -513,30 +513,72 @@ export const data = {
         }
     },
     "Component3": {
-        "Main_Heading": "Task sequence",
+        "Main_Heading": "Curriculum connections",
         "Australian Curriculum": {
-            "Title": "",
-            "Paragraphs": [],
-            "List Headings": [],
-            "Listings": [],
+            "Title": "Australian Curriculum Version 9.0",
+            "Paragraphs": [
+                [
+                    "identify intertextual references in literary texts and explain how the references enable new understanding of the aesthetic quality of the text (AC9E8LE04)",
+                    "create and edit literary texts that experiment with language features and literary devices for particular purposes and effects (AC9E8LE06)"
+                ]
+            ],
+            "List Headings": [
+                [
+                    "English - Examining literature",
+                    "English - Creating literature"
+                ]
+            ],
+            "Listings": [
+                []
+            ],
             "Lists Tree": [],
-            "Links": []
+            "Links": [
+                []
+            ]
         },
         "Cross Curriculum": {
-            "Title": "",
-            "Paragraphs": [],
-            "List Headings": [],
-            "Listings": [],
+            "Title": "Cross-curriculum priorities",
+            "Paragraphs": [
+                []
+            ],
+            "List Headings": [
+                []
+            ],
+            "Listings": [
+                [
+                    "Aboriginal and Torres Strait Islander Histories and Cultures",
+                    "Asia and Australia's Engagement with Asia",
+                    "Sustainability"
+                ]
+            ],
             "Lists Tree": [],
-            "Links": []
+            "Links": [
+                []
+            ]
         },
         "General Capabilities": {
-            "Title": "",
-            "Paragraphs": [],
-            "List Headings": [],
-            "Listings": [],
+            "Title": "General capabilities",
+            "Paragraphs": [
+                []
+            ],
+            "List Headings": [
+                []
+            ],
+            "Listings": [
+                [
+                    "Literacy",
+                    "Numeracy",
+                    "Digital Literacy",
+                    "Critical and creative thinking",
+                    "Personal and social capability",
+                    "Ethical understanding",
+                    "Intercultural understanding"
+                ]
+            ],
             "Lists Tree": [],
-            "Links": []
+            "Links": [
+                []
+            ]
         }
     }
 }

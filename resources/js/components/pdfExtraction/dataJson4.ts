@@ -531,30 +531,71 @@ export const data = {
         }
     },
     "Component3": {
-        "Main_Heading": "Task sequence",
+        "Main_Heading": "Curriculum Connections",
         "Australian Curriculum": {
-            "Title": "",
-            "Paragraphs": [],
-            "List Headings": [],
-            "Listings": [],
+            "Title": "Australian Curriculum Version 9",
+            "Paragraphs": [
+                [
+                    "Investigate tectonic activity including the formation of geological features at divergent, convergent, and transform plate boundaries, and describe the scientific evidence for the theory of plate tectonics (AC9S8U03)"
+                ]
+            ],
+            "List Headings": [
+                [
+                    "Year 8 - Science",
+                    "Year 8 - Design and Technology"
+                ]
+            ],
+            "Listings": [
+                []
+            ],
             "Lists Tree": [],
-            "Links": []
+            "Links": [
+                []
+            ]
         },
         "Cross Curriculum": {
-            "Title": "",
-            "Paragraphs": [],
-            "List Headings": [],
-            "Listings": [],
+            "Title": "Cross-curriculum priorities",
+            "Paragraphs": [
+                []
+            ],
+            "List Headings": [
+                []
+            ],
+            "Listings": [
+                [
+                    "Aboriginal and Torres Strait Islander Histories and Cultures",
+                    "Asia and Australia's Engagement with Asia",
+                    "Sustainability"
+                ]
+            ],
             "Lists Tree": [],
-            "Links": []
+            "Links": [
+                []
+            ]
         },
         "General Capabilities": {
-            "Title": "",
-            "Paragraphs": [],
-            "List Headings": [],
-            "Listings": [],
+            "Title": "General capabilities",
+            "Paragraphs": [
+                []
+            ],
+            "List Headings": [
+                []
+            ],
+            "Listings": [
+                [
+                    "Literacy",
+                    "Numeracy",
+                    "Digital Literacy",
+                    "Critical and creative thinking",
+                    "Personal and social capability",
+                    "Ethical understanding",
+                    "Intercultural understanding"
+                ]
+            ],
             "Lists Tree": [],
-            "Links": []
+            "Links": [
+                []
+            ]
         }
     }
 }

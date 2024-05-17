@@ -6,10 +6,10 @@ import {ref} from "vue";
 // import { data } from './dataJson1'
 // import { data } from './dataJson2'
 // import { data } from './dataJson3'
-import { data } from './dataJson4'
+// import { data } from './dataJson4'
 // import { data } from './dataJson5'
 // import { data } from './dataJson6'
-// import { data } from './dataJson7'
+import { data } from './dataJson7'
 // import { data } from './dataJson8'
 // import { data } from './dataJson9'
 // import { data } from './dataJson10'
@@ -170,7 +170,7 @@ const checkUnderstandingHeading_Display = ref([])
 const checkUnderstandingListing_Display = ref([])
 const checkUnderstandingImageLinks_Display = ref([])
 const checkUnderstandingLinks_Display = ref([])
-const curriculumText_Display = ref("")
+const curriculumText_Display = ref('')
 const ausCurriculumTitle_Display = ref("")
 const ausCurriculumParagraph_Display = ref([])
 const ausCurriculumHeadings_Display = ref([])
@@ -220,6 +220,8 @@ const handleFileUpload = async (event) => {
         extractAllContentByEachId(htmlContent.value, '_kv7kogslxlmu')
         extractAllContentByEachId(htmlContent.value, '_8hqu05q343sr')
         extractAllContentByEachId(htmlContent.value, '_14z3n7fivubg')
+        extractAllContentByEachId(htmlContent.value, '_hityrsi2yum8')
+        extractAllContentByEachId(htmlContent.value, '_y3jnm6onshu9')
 
     } catch (error) {
         console.error('Error processing file:', error);
@@ -1133,9 +1135,57 @@ const extractAllContentByEachId = (html, id) => {
     if (element && element.parentElement) {
         curriculumText.value = element.parentElement.textContent.trim()
         const nextTheadElement = element.parentElement ? element.parentElement.nodeName === 'H1' ? element.parentElement.nextElementSibling ? element.parentElement.nextElementSibling.nodeName === 'TABLE' ? element.parentElement.nextElementSibling.querySelector('thead') ? element.parentElement.nextElementSibling.querySelector('thead').querySelectorAll('tr') : null : null : null : null : null;
+        const nextTableElement = element.parentElement ? element.parentElement.nodeName === 'H1' ? element.parentElement.nextElementSibling ? element.parentElement.nextSibling.nodeName === 'TABLE' ? element.parentElement.nextElementSibling.nextElementSibling ? element.parentElement.nextElementSibling.nextElementSibling.nodeName === 'TABLE' ? element.parentElement.nextElementSibling.nextElementSibling.querySelector('thead') ? element.parentElement.nextElementSibling.nextElementSibling.querySelector('thead').querySelectorAll('tr') : null : null : null : null : null : null : null;
+        nextTableElement ? nextTableElement.forEach(tr => {
+            const eachTh = tr.querySelectorAll('th')
+            const listText = [];
+            const pText = [];
+            const strongText = [];
+            const link = [];
+            eachTh.forEach(th => {
+                const h1Text = th.querySelector('h1') ? th.querySelector('h1').textContent.trim() : null;
+                const pElement = th.querySelectorAll('p');
+                pElement.forEach(p => {
+                    const linkElement = p ? p.querySelectorAll('a') : null;
+                    linkElement.forEach(a => {
+                        const linkDetails = []
+                        linkDetails.push({ "Text:": a.textContent.trim(), "Links": a.getAttribute('href') })
+                        link.push(linkDetails);
+                    })
+                    // eliminating <strong> text from extracted <p> tag
+                    const clonedP = p.cloneNode(true);
+                    const strongTags = clonedP.querySelectorAll('strong')
+                    strongTags.forEach(strong => {
+                        strong.parentNode.removeChild(strong);
+                    })
+                    const textContent = clonedP.textContent.trim()
+                    if (textContent !== "") {
+                        pText.push(textContent)
+                    }
+                    // extracting on the <strong> tag text
+                    const strongT = p.querySelector('strong') ? p.querySelector('strong').textContent.trim() : null;
+                    if (strongT !== null) {
+                        strongText.push(strongT);
+                    }
+                })
+                const ulElement = th.querySelector('ul');
+                const liElements = ulElement ? ulElement.querySelectorAll('li') : null;
+                liElements ? liElements.forEach(li => {
+                    listText.push(li.textContent.trim());
+                }) : null;
+                if (h1Text ? (h1Text.toLowerCase().includes('general') || h1Text.toLowerCase().includes('capab')) : null) {
+                    generalCapabilitiesTitle.value = h1Text
+                    console.log(generalCapabilitiesTitle.value)
+                    generalCapabilitiesListing.value.push(listText)
+                    generalCapabilitiesParagraph.value.push(pText)
+                    generalCapabilitiesHeadings.value.push(strongText)
+                    generalCapabilitiesLinks.value.push(link)
+                }
+            })
+        }) : null;
         nextTheadElement ? nextTheadElement.forEach(tr => {
             const eachTh = tr.querySelectorAll('th')
-            const listText = []
+            const listText = [];
             const pText = [];
             const strongText = [];
             const link = [];
@@ -1257,15 +1307,15 @@ const extractAllContentByEachId = (html, id) => {
                                 hierarchicalFormat[pText] = hierarchicalFormat[strongText];
                                 delete hierarchicalFormat[strongText];
                             }
-                            if(id === "_14z3n7fivubg" && firstTHText.toLowerCase().includes('version'))
+                            if((id === "_14z3n7fivubg" || id === "_hityrsi2yum8" || id === "_y3jnm6onshu9") && firstTHText.toLowerCase().includes('version'))
                             {
                                 ausCurriculumListingTree.value.push(hierarchicalFormat);
                             }
-                            if(id === "_14z3n7fivubg" && firstTHText.toLowerCase().includes('cross'))
+                            if((id === "_14z3n7fivubg" || id === "_hityrsi2yum8" || id === "_y3jnm6onshu9") && firstTHText.toLowerCase().includes('cross'))
                             {
                                 crossCurriculumListingTree.value.push(hierarchicalFormat);
                             }
-                            if(id === "_14z3n7fivubg" && (firstTHText ? (firstTHText.toLowerCase().includes('general') || firstTHText.toLowerCase().includes('capab')) : null))
+                            if((id === "_14z3n7fivubg" || id === "_hityrsi2yum8" || id === "_y3jnm6onshu9") && (firstTHText ? (firstTHText.toLowerCase().includes('general') || firstTHText.toLowerCase().includes('capab')) : null))
                             {
                                 generalCapabilitiesListingTree.value.push(hierarchicalFormat);
                             }
@@ -1297,15 +1347,15 @@ const extractAllContentByEachId = (html, id) => {
                             const hierarchicalLayer1 = {
                                 [strongText]: { [pText]: hierarchicalLayer2}
                             };
-                            if(id === "_14z3n7fivubg" && firstTHText.toLowerCase().includes('version'))
+                            if((id === "_14z3n7fivubg" || id === "_hityrsi2yum8" || id === "_y3jnm6onshu9") && firstTHText.toLowerCase().includes('version'))
                             {
                                 ausCurriculumListingTree.value.push(hierarchicalLayer1);
                             }
-                            if(id === "_14z3n7fivubg" && firstTHText.toLowerCase().includes('cross'))
+                            if((id === "_14z3n7fivubg" || id === "_hityrsi2yum8" || id === "_y3jnm6onshu9") && firstTHText.toLowerCase().includes('cross'))
                             {
                                 crossCurriculumListingTree.value.push(hierarchicalLayer1);
                             }
-                            if(id === "_14z3n7fivubg" && (firstTHText ? (firstTHText.toLowerCase().includes('general') || firstTHText.toLowerCase().includes('capab')) : null))
+                            if((id === "_14z3n7fivubg" || id === "_hityrsi2yum8" || id === "_y3jnm6onshu9") && (firstTHText ? (firstTHText.toLowerCase().includes('general') || firstTHText.toLowerCase().includes('capab')) : null))
                             {
                                 generalCapabilitiesListingTree.value.push(hierarchicalLayer1);
                             }
@@ -1337,6 +1387,10 @@ const displayRequiredContent = () => {
     priorKnowledgeNumbering_Display.value = (data['Component2']?.["Prior Knowledge Check"]?.Number)
     activitiesNumbering_Display.value = (data['Component2']?.["Activities"]?.Number)
     checkUnderstandingNumbering_Display.value = (data['Component2']?.["Check Understanding"]?.Number)
+    curriculumText_Display.value = (data['Component3']?.Main_Heading)
+    ausCurriculumTitle_Display.value = (data['Component3']?.["Australian Curriculum"]?.Title);
+    crossCurriculumTitle_Display.value = (data['Component3']?.["Cross Curriculum"]?.Title);
+    generalCapabilitiesTitle_Display.value = (data['Component3']?.["General Capabilities"]?.Title);
 
     //// Session Overview Paragraphs
     let paragraphsSO = "";
@@ -1474,6 +1528,57 @@ const displayRequiredContent = () => {
         checkUnderstandingParagraph_Display.value = "Prior Knowledge content not found.";
     }
 
+    //// Australian Curriculum Version Paragraphs
+    let paragraphsACV = "";
+    if (data['Component3']?.["Australian Curriculum"]?.Paragraphs) {
+        paragraphsACV += "<ul>";
+        data['Component3']?.["Australian Curriculum"]?.Paragraphs.forEach((sentence, index) => {
+            paragraphsACV += "<li>"+ sentence + "</li>";
+            // Add <br> tags after each list item except for the last one
+            if (index !== data['Component3']?.["Australian Curriculum"]?.Paragraphs.length - 1) {
+                paragraphsACV += "<br>";
+            }
+        });
+        paragraphsACV += "</ul>";
+        ausCurriculumParagraph_Display.value = paragraphsACV.trim();
+    } else {
+        ausCurriculumParagraph_Display.value = "Australian Curriculum Version content not found.";
+    }
+
+    //// Cross Curriculum Paragraphs
+    let paragraphsCC = "";
+    if (data['Component3']?.["Cross Curriculum"]?.Paragraphs) {
+        paragraphsCC += "<ul>";
+        data['Component3']?.["Cross Curriculum"]?.Paragraphs.forEach((sentence, index) => {
+            paragraphsCC += "<li>"+ sentence + "</li>";
+            // Add <br> tags after each list item except for the last one
+            if (index !== data['Component3']?.["Cross Curriculum"]?.Paragraphs.length - 1) {
+                paragraphsCC += "<br>";
+            }
+        });
+        paragraphsCC += "</ul>";
+        crossCurriculumParagraph_Display.value = paragraphsCC.trim();
+    } else {
+        crossCurriculumParagraph_Display.value = "Cross Curriculum content not found.";
+    }
+
+    //// General Capabilities Paragraphs
+    let paragraphsGC = "";
+    if (data['Component3']?.["General Capabilities"]?.Paragraphs) {
+        paragraphsGC += "<ul>";
+        data['Component3']?.["General Capabilities"]?.Paragraphs.forEach((sentence, index) => {
+            paragraphsGC += "<li>"+ sentence + "</li>";
+            // Add <br> tags after each list item except for the last one
+            if (index !== data['Component3']?.["General Capabilities"]?.Paragraphs.length - 1) {
+                paragraphsGC += "<br>";
+            }
+        });
+        paragraphsGC += "</ul>";
+        generalCapabilitiesParagraph_Display.value = paragraphsGC.trim();
+    } else {
+        generalCapabilitiesParagraph_Display.value = "General capabilities content not found.";
+    }
+
     //// Other Resources nested listing - two level
     const listsWithSubLists = data['Component1']?.["Other Resources"]?.["Lists with Sub-Lists"];
     // Displaying each list with sub-lists
@@ -1553,13 +1658,13 @@ const displayRequiredContent = () => {
     if (listsTree2 && listsTree2.length > 0) {
         displayListsSubLists1(listsTree2, 0); // Starting the recursive display with initial indentation level 0
     }
-
     //// Accessing the "Lists Tree" array - two level
     const introductoryListingData = data['Component2']?.["Introductory Activity"]?.Listings;
     const priorKnowledgeListingData = data['Component2']?.["Prior Knowledge Check"]?.Listings;
     const activitiesListingData = data['Component2']?.["Activities"]?.Listings;
-
-    // console.log(listsTree3)
+    const ausCurriculumListingData = data['Component3']?.['Australian Curriculum']?.Listings;
+    const crossCurriculumListingData = data['Component3']?.['Cross Curriculum']?.Listings;
+    const generalCapabilitiesListingData = data['Component3']?.['General Capabilities']?.Listings;
     const displayListsSubListsCombined = (listsSubLists, indentLevel, listingToDisplay) => {
         let hasTitle = false; // Flag to check if a title is found
         for (const list of listsSubLists) {
@@ -1605,17 +1710,23 @@ const displayRequiredContent = () => {
     };
     // Displaying each list with sub-lists
     if (introductoryListingData && introductoryListingData.length > 0) {
-        displayListsSubListsCombined(introductoryListingData, 0, introductoryListing_Display); // Starting the recursive display with initial indentation level 0
+        displayListsSubListsCombined(introductoryListingData, 0, introductoryListing_Display);
     }
     if (priorKnowledgeListingData && priorKnowledgeListingData.length > 0) {
-        displayListsSubListsCombined(priorKnowledgeListingData, 0, priorKnowledgeListing_Display); // Starting the recursive display with initial indentation level 0
+        displayListsSubListsCombined(priorKnowledgeListingData, 0, priorKnowledgeListing_Display);
     }
     if (activitiesListingData && activitiesListingData.length > 0) {
-        displayListsSubListsCombined(activitiesListingData, 0, activitiesListing_Display); // Starting the recursive display with initial indentation level 0
+        displayListsSubListsCombined(activitiesListingData, 0, activitiesListing_Display);
     }
-
-
-
+    if (ausCurriculumListingData && ausCurriculumListingData.length > 0) {
+        displayListsSubListsCombined(ausCurriculumListingData, 0, ausCurriculumListing_Display);
+    }
+    if (crossCurriculumListingData && crossCurriculumListingData.length > 0) {
+        displayListsSubListsCombined(crossCurriculumListingData, 0, crossCurriculumListing_Display);
+    }
+    if (generalCapabilitiesListingData && generalCapabilitiesListingData.length > 0) {
+        displayListsSubListsCombined(generalCapabilitiesListingData, 0, generalCapabilitiesListing_Display);
+    }
 
 
 }
@@ -2019,8 +2130,14 @@ const displayRequiredContent = () => {
                                 </div>
                             </div>
                             <div class="mt-2 text-xl">
-                                <div v-if="introductoryListing_Display && introductoryListing_Display.length > 0" v-html="introductoryListing_Display"></div>
-                                <div v-else-if="introductoryParagraph_Display && introductoryParagraph_Display.length > 0" v-html="introductoryParagraph_Display"></div>
+                                <div
+                                    v-if="introductoryListing_Display && introductoryListing_Display.length > 0"
+                                    v-html="introductoryListing_Display"
+                                />
+                                <div
+                                    v-else-if="introductoryParagraph_Display && introductoryParagraph_Display.length > 0"
+                                    v-html="introductoryParagraph_Display"
+                                />
                                 <div v-else>
                                     Task Sequence content will come here.
                                 </div>
@@ -2037,8 +2154,14 @@ const displayRequiredContent = () => {
                                 </div>
                             </div>
                             <div class="mt-2 text-xl">
-                                <div v-if="priorKnowledgeListing_Display && priorKnowledgeListing_Display.length > 0" v-html="priorKnowledgeListing_Display"></div>
-                                <div v-else-if="priorKnowledgeParagraph_Display && priorKnowledgeParagraph_Display.length > 0" v-html="priorKnowledgeParagraph_Display"></div>
+                                <div
+                                    v-if="priorKnowledgeListing_Display && priorKnowledgeListing_Display.length > 0"
+                                    v-html="priorKnowledgeListing_Display"
+                                />
+                                <div
+                                    v-else-if="priorKnowledgeParagraph_Display && priorKnowledgeParagraph_Display.length > 0"
+                                    v-html="priorKnowledgeParagraph_Display"
+                                />
                                 <div v-else>
                                     Task Sequence content will come here.
                                 </div>
@@ -2055,8 +2178,14 @@ const displayRequiredContent = () => {
                                 </div>
                             </div>
                             <div class="mt-2 text-xl">
-                                <div v-if="activitiesListing_Display && activitiesListing_Display.length > 0" v-html="activitiesListing_Display"></div>
-                                <div v-else-if="activitiesParagraph_Display && activitiesParagraph_Display.length > 0" v-html="activitiesParagraph_Display"></div>
+                                <div
+                                    v-if="activitiesListing_Display && activitiesListing_Display.length > 0"
+                                    v-html="activitiesListing_Display"
+                                />
+                                <div
+                                    v-else-if="activitiesParagraph_Display && activitiesParagraph_Display.length > 0"
+                                    v-html="activitiesParagraph_Display"
+                                />
                                 <div v-else>
                                     Task Sequence content will come here.
                                 </div>
@@ -2073,8 +2202,14 @@ const displayRequiredContent = () => {
                                 </div>
                             </div>
                             <div class="mt-2 text-xl">
-                                <div v-if="checkUnderstandingListing_Display && checkUnderstandingListing_Display.length > 0" v-html="checkUnderstandingListing_Display"></div>
-                                <div v-else-if="checkUnderstandingParagraph_Display && checkUnderstandingParagraph_Display.length > 0" v-html="checkUnderstandingParagraph_Display"></div>
+                                <div
+                                    v-if="checkUnderstandingListing_Display && checkUnderstandingListing_Display.length > 0"
+                                    v-html="checkUnderstandingListing_Display"
+                                />
+                                <div
+                                    v-else-if="checkUnderstandingParagraph_Display && checkUnderstandingParagraph_Display.length > 0"
+                                    v-html="checkUnderstandingParagraph_Display"
+                                />
                                 <div v-else>
                                     Task Sequence content will come here.
                                 </div>
@@ -2084,39 +2219,72 @@ const displayRequiredContent = () => {
                 </div>
                 <div class="mt-6 p-4">
                     <div class="text-3xl">
-                        Curriculum Connections
+                        <div
+                            v-if="curriculumText_Display"
+                            v-html="curriculumText_Display"
+                        />
+                        <div v-else>
+                            Curriculum Text display will come here.
+                        </div>
                     </div>
                     <div class="grid grid-cols-2 gap-6">
                         <div class="border-2 border-gray-300 mt-4 p-4 rounded-2xl">
                             <div class="text-2xl">
-                                Curriculum Connections No. 1
-                            </div>
-                            <div class="mt-2 text-xl">
-                                Curriculum Connections No. 1 content/lists will come here
-                            </div>
-                        </div>
-                        <div class="border-2 border-gray-300 p-4 rounded-2xl">
-                            <div class="text-2xl">
-                                Curriculum Connections No. 2
-                            </div>
-                            <div class="mt-2 text-xl">
-                                Curriculum Connections No. 2 content/lists will come here
-                            </div>
-                        </div>
-                        <div class="border-2 border-gray-300 p-4 rounded-2xl">
-                            <div class="text-2xl">
-                                Curriculum Connections No. 3
-                            </div>
-                            <div class="mt-2 text-xl">
-                                Curriculum Connections No. 3 content/lists will come here
+                                <div
+                                    v-if="ausCurriculumTitle_Display"
+                                    v-html="ausCurriculumTitle_Display"
+                                />
+                                <div class="mt-2 text-xl">
+                                    <div
+                                        v-if="ausCurriculumParagraph_Display && ausCurriculumParagraph_Display.length > 0"
+                                        v-html="ausCurriculumParagraph_Display"
+                                    />
+                                    <div v-else>
+                                        Australian Curriculum version content will come here.
+                                    </div>
+                                </div>
                             </div>
                         </div>
                         <div class="border-2 border-gray-300 p-4 rounded-2xl">
                             <div class="text-2xl">
-                                Curriculum Connections No. 4
+                                <div
+                                    v-if="crossCurriculumTitle_Display"
+                                    v-html="crossCurriculumTitle_Display"
+                                />
+                                <div class="mt-2 text-xl">
+                                    <div
+                                        v-if="crossCurriculumListing_Display && crossCurriculumListing_Display.length > 0"
+                                        v-html="crossCurriculumListing_Display"
+                                    />
+                                    <div
+                                        v-else-if="crossCurriculumParagraph_Display && crossCurriculumParagraph_Display.length > 0"
+                                        v-html="crossCurriculumParagraph_Display"
+                                    />
+                                    <div v-else>
+                                        Australian Curriculum version content will come here.
+                                    </div>
+                                </div>
                             </div>
-                            <div class="mt-2 text-xl">
-                                Curriculum Connections No. 4 content/lists will come here
+                        </div>
+                        <div class="border-2 border-gray-300 p-4 rounded-2xl">
+                            <div class="text-2xl">
+                                <div
+                                    v-if="generalCapabilitiesTitle_Display"
+                                    v-html="generalCapabilitiesTitle_Display"
+                                />
+                                <div class="mt-2 text-xl">
+                                    <div
+                                        v-if="generalCapabilitiesListing_Display && generalCapabilitiesListing_Display.length > 0"
+                                        v-html="generalCapabilitiesListing_Display"
+                                    />
+                                    <div
+                                        v-else-if="generalCapabilitiesParagraph_Display && generalCapabilitiesParagraph_Display.length > 0"
+                                        v-html="generalCapabilitiesParagraph_Display"
+                                    />
+                                    <div v-else>
+                                        Australian Curriculum version content will come here.
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>

@@ -399,30 +399,73 @@ export const data = {
         }
     },
     "Component3": {
-        "Main_Heading": "Task sequence",
+        "Main_Heading": "Curriculum connections",
         "Australian Curriculum": {
-            "Title": "",
-            "Paragraphs": [],
-            "List Headings": [],
-            "Listings": [],
+            "Title": "Australian Curriculum Version 9.0",
+            "Paragraphs": [
+                [
+                    "Reflect on the ways that they and other artists respond to influences to inform choices they make in their own visual arts practice (AC9AVA8D02)",
+                    "Select and manipulate visual conventions, visual arts processes and/or materials to create artworks that represent ideas, perspectives and/or meaning (AC9AVA8C02)",
+                    "Compose using the elements of music and compositional devices to communicate ideas, perspectives and/or meaning, and notate, document and/or record the music (AC9AMU8C02)"
+                ]
+            ],
+            "List Headings": [
+                [
+                    "Year 7 and 8 - Visual Art",
+                    "Year 7 and 8 - Music"
+                ]
+            ],
+            "Listings": [
+                []
+            ],
             "Lists Tree": [],
-            "Links": []
+            "Links": [
+                []
+            ]
         },
         "Cross Curriculum": {
-            "Title": "",
-            "Paragraphs": [],
-            "List Headings": [],
-            "Listings": [],
+            "Title": "Cross-curriculum priorities",
+            "Paragraphs": [
+                []
+            ],
+            "List Headings": [
+                []
+            ],
+            "Listings": [
+                [
+                    "Aboriginal and Torres Strait Islander Histories and Cultures",
+                    "Asia and Australia's Engagement with Asia",
+                    "Sustainability"
+                ]
+            ],
             "Lists Tree": [],
-            "Links": []
+            "Links": [
+                []
+            ]
         },
         "General Capabilities": {
-            "Title": "",
-            "Paragraphs": [],
-            "List Headings": [],
-            "Listings": [],
+            "Title": "General capabilities",
+            "Paragraphs": [
+                []
+            ],
+            "List Headings": [
+                []
+            ],
+            "Listings": [
+                [
+                    "Literacy",
+                    "Numeracy",
+                    "Digital Literacy",
+                    "Critical and creative thinking",
+                    "Personal and social capability",
+                    "Ethical understanding",
+                    "Intercultural understanding"
+                ]
+            ],
             "Lists Tree": [],
-            "Links": []
+            "Links": [
+                []
+            ]
         }
     }
 }

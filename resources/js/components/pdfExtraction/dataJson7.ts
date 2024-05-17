@@ -595,30 +595,72 @@ export const data = {
         }
     },
     "Component3": {
-        "Main_Heading": "Task sequence",
+        "Main_Heading": "Curriculum connections",
         "Australian Curriculum": {
-            "Title": "",
-            "Paragraphs": [],
-            "List Headings": [],
-            "Listings": [],
+            "Title": "Australian Curriculum Version 9.0",
+            "Paragraphs": [
+                [
+                    "Adapt and modify movement skills across a variety of situations (AC9HP6M01)",
+                    "Transfer familiar movement strategies to different movement situations (AC9HP6M02)",
+                    "Investigate how different movement concepts related to effort, space, time, objects and people can be applied to improve movement outcomes (AC9HP6M03)"
+                ]
+            ],
+            "List Headings": [
+                [
+                    "Year 5/6 - Health and Physical Education"
+                ]
+            ],
+            "Listings": [
+                []
+            ],
             "Lists Tree": [],
-            "Links": []
+            "Links": [
+                []
+            ]
         },
         "Cross Curriculum": {
-            "Title": "",
-            "Paragraphs": [],
-            "List Headings": [],
-            "Listings": [],
+            "Title": "Cross-curriculum priorities",
+            "Paragraphs": [
+                []
+            ],
+            "List Headings": [
+                []
+            ],
+            "Listings": [
+                [
+                    "Aboriginal and Torres Strait Islander Histories and Cultures",
+                    "Asia and Australia's Engagement with Asia",
+                    "Sustainability"
+                ]
+            ],
             "Lists Tree": [],
-            "Links": []
+            "Links": [
+                []
+            ]
         },
         "General Capabilities": {
-            "Title": "",
-            "Paragraphs": [],
-            "List Headings": [],
-            "Listings": [],
+            "Title": "General capabilities",
+            "Paragraphs": [
+                []
+            ],
+            "List Headings": [
+                []
+            ],
+            "Listings": [
+                [
+                    "Literacy",
+                    "Numeracy",
+                    "Digital literacy",
+                    "Critical and creative thinking",
+                    "Personal and social capability",
+                    "Ethical understanding",
+                    "Intercultural understanding"
+                ]
+            ],
             "Lists Tree": [],
-            "Links": []
+            "Links": [
+                []
+            ]
         }
     }
 }

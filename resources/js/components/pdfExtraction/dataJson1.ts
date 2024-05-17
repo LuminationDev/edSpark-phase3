@@ -697,30 +697,71 @@ export const data = {
         }
     },
     "Component3": {
-        "Main_Heading": "Task sequence",
+        "Main_Heading": "Curriculum connections",
         "Australian Curriculum": {
-            "Title": "",
-            "Paragraphs": [],
-            "List Headings": [],
-            "Listings": [],
+            "Title": "Australian Curriculum Version 9.0",
+            "Paragraphs": [
+                [
+                    "Recognise cells as the basic units of living things, compare plant and animal cells, and describe the functions of specialised cell structures and organelles (AC9S8U01)"
+                ]
+            ],
+            "List Headings": [
+                [
+                    "Year 10 - Science"
+                ]
+            ],
+            "Listings": [
+                []
+            ],
             "Lists Tree": [],
-            "Links": []
+            "Links": [
+                []
+            ]
         },
         "Cross Curriculum": {
-            "Title": "",
-            "Paragraphs": [],
-            "List Headings": [],
-            "Listings": [],
+            "Title": "Cross-curriculum priorities",
+            "Paragraphs": [
+                []
+            ],
+            "List Headings": [
+                []
+            ],
+            "Listings": [
+                [
+                    "Aboriginal and Torres Strait Islander Histories and Cultures (for extension)",
+                    "Asia and Australia's Engagement with Asia",
+                    "Sustainability"
+                ]
+            ],
             "Lists Tree": [],
-            "Links": []
+            "Links": [
+                []
+            ]
         },
         "General Capabilities": {
-            "Title": "",
-            "Paragraphs": [],
-            "List Headings": [],
-            "Listings": [],
+            "Title": "General capabilities",
+            "Paragraphs": [
+                []
+            ],
+            "List Headings": [
+                []
+            ],
+            "Listings": [
+                [
+                    "Literacy",
+                    "Numeracy",
+                    "Information and communication technology (ICT) capability",
+                    "Critical and creative thinking",
+                    "Personal and social capability",
+                    "Ethical understanding",
+                    "Intercultural understanding",
+                    "Digital Literacy"
+                ]
+            ],
             "Lists Tree": [],
-            "Links": []
+            "Links": [
+                []
+            ]
         }
     }
 }
