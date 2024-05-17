@@ -218,7 +218,7 @@ const handleClickCatalogueCard = (reference) => {
 
 
 onMounted(() =>{
-    axios.get('http://localhost:8000/api/catalogue/cart').then(res =>{
+    axios.get('http://localhost:8000/api/quote/cart').then(res =>{
         console.log(res.data)
     })
     // const testData  = {
