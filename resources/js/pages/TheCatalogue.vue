@@ -9,6 +9,7 @@ import {computed, onMounted, Ref, ref, watch} from "vue";
 import {useRouter} from "vue-router";
 
 import BaseLandingHero from "@/js/components/bases/BaseLandingHero.vue";
+import GenericButton from "@/js/components/button/GenericButton.vue";
 import CatalogueCard from "@/js/components/catalogue/CatalogueCard.vue";
 import CatalogueComparisonBanner from "@/js/components/catalogue/cataloguecomparison/CatalogueComparisonBanner.vue";
 import CatalogueFilterColumn from "@/js/components/catalogue/CatalogueFilterColumn.vue";
@@ -220,15 +221,28 @@ onMounted(() =>{
     axios.get('http://localhost:8000/api/catalogue/cart').then(res =>{
         console.log(res.data)
     })
-    const testData  = {
-        unique_reference: "AC-000002",
-        quantity: 2
-    }
-    axios.post('http://localhost:8000/api/catalogue/cart',testData).then(res =>{
-        console.log(res.data)
-    })
+    // const testData  = {
+    //     unique_reference: "AC-000002",
+    //     quantity: 2
+    // }
+    // axios.post('http://localhost:8000/api/catalogue/cart',testData).then(res =>{
+    //     console.log(res.data)
+    // })
 })
 
+const handleTestButton = () =>{
+    const testData  = {
+        unique_reference: "AC-000002",
+        quantity: 20
+    }
+    // axios.put('http://localhost:8000/api/catalogue/cart/AC-000001/update',testData).then(res =>{
+    //     console.log(res.data)
+    // })
+    axios.delete('http://localhost:8000/api/catalogue/cart').then(res =>{
+        console.log(res.data)
+    })
+
+}
 
 </script>
 
@@ -240,6 +254,12 @@ onMounted(() =>{
     />
     <div class="cataloguePageOuterContainer grid grid-cols-10 mt-16">
         <div class="col-span-2 flex flex-col gap-2 ml-8 pr-8">
+            <GenericButton
+                type="teal"
+                :callback="handleTestButton"
+            >
+                test
+            </GenericButton>
             <CatalogueFilterColumn
                 v-model:brand-list="brandList"
                 v-model:type-list="typeList"

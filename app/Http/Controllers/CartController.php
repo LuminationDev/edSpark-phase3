@@ -44,6 +44,8 @@ class CartController extends Controller
         $result = $cart_items->map(function ($item) {
             $catalogueAttributes = CatalogueController::catalogueModelToJson($item->catalogue);
             $catalogueAttributes['quantity'] = $item->quantity;
+            $catalogueAttributes['cart_item_id'] = $item->id;
+
             return $catalogueAttributes;
         });
 
@@ -86,13 +88,16 @@ class CartController extends Controller
 
 
     // PUT /cart/:item_id/update: Increment the count of an item inside the cart.
-    public function update(Request $request, $item_id)
+    public function update(Request $request, $item_ref)
     {
         $user = Auth::user();
         $quantity = $request->input('quantity');
         $cartItem = CartItem::whereHas('cart', function ($query) use ($user) {
             $query->where('user_id', $user->id);
-        })->find($item_id);
+        })->whereHas('catalogue', function ($query) use ($item_ref) {
+            $query->where('unique_reference', $item_ref)->where('version_id', Catalogueversion::getActiveCatalogueId());
+        })->first();
+
 
         if (!$cartItem) {
             return response()->json(['message' => 'Cart item not found'], 404);
@@ -104,12 +109,14 @@ class CartController extends Controller
     }
 
     // DELETE /cart/:item_id: Remove a specific item from the cart.
-    public function destroyItem($item_id)
+    public function destroyItem($item_ref)
     {
         $user = Auth::user();
         $cartItem = CartItem::whereHas('cart', function ($query) use ($user) {
             $query->where('user_id', $user->id);
-        })->find($item_id);
+        })->whereHas('catalogue', function ($query) use ($item_ref) {
+            $query->where('unique_reference', $item_ref)->where('version_id', Catalogueversion::getActiveCatalogueId());
+        })->first();
 
         if (!$cartItem) {
             return response()->json(['message' => 'Cart item not found'], 404);

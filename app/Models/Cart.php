@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 
 class Cart extends Model
@@ -46,5 +47,31 @@ class Cart extends Model
                 'status' => 'ACTIVE'
             ]);
         }
+    }
+    public function getTotalIncGst()
+    {
+        $userId = Auth::id();
+        $catalogue_version = Catalogueversion::getActiveCatalogueId();
+        $cart = self::where('user_id', $userId)
+            ->where('version_id', $catalogue_version)
+            ->where('status', 'ACTIVE')
+            ->first();
+        return $cart->cartItems->sum(function($cartItem) {
+            return round($cartItem->quantity * $cartItem->catalogue->price_inc_gst,2);
+        });
+    }
+
+    public function getTotalExGst()
+    {
+        $userId = Auth::id();
+        $catalogue_version = Catalogueversion::getActiveCatalogueId();
+        $cart = self::where('user_id', $userId)
+            ->where('version_id', $catalogue_version)
+            ->where('status', 'ACTIVE')
+            ->first();
+        return $cart->cartItems->sum(function($cartItem) {
+            $price_ext_gst = $cartItem->catalogue->price_inc_gst / 1.1;
+            return round($cartItem->quantity * $price_ext_gst,2);
+        });
     }
 }
