@@ -1,8 +1,8 @@
 <script setup>
 
+import GenericButton from "@/js/components/button/GenericButton.vue";
 import CatalogueFilterGroup from "@/js/components/catalogue/CatalogueFilterGroup.vue";
 import CataloguePriceSlider from "@/js/components/catalogue/CataloguePriceSlider.vue";
-import VueNoUiSlider from "@/js/components/slider/VueNoUiSlider.vue";
 import Loader from "@/js/components/spinner/Loader.vue";
 
 const props = defineProps({
@@ -41,6 +41,15 @@ const priceRange = defineModel('priceRange')
         v-else
         class="flex flex-col"
     >
+        <router-link to="/catalogue/quote">
+            <GenericButton
+                :callback="() => {}"
+                type="teal"
+            >
+                View Quotes
+            </GenericButton>
+        </router-link>
+
         <CatalogueFilterGroup
             v-if="typeList.length"
             v-model="typeList"

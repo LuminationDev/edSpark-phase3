@@ -1,0 +1,116 @@
+<script setup lang="ts">
+import {computed, ref, watch} from 'vue'
+
+import CatalogueCardDescGenerator from "@/js/components/catalogue/CatalogueCardDescGenerator.vue";
+import ImageWithFallback from "@/js/components/global/ImageWithFallback.vue";
+import {catalogueService} from "@/js/service/catalogueService";
+import {useQuoteStore} from "@/js/stores/useQuoteStore";
+import {CatalogueItemType} from "@/js/types/catalogueTypes";
+
+const props = defineProps({
+    itemData: {
+        type: {} as () => CatalogueItemType,
+        required: true
+    }
+})
+
+const emits = defineEmits([])
+
+const itemQuantity = ref(props.itemData.quantity)
+const quoteStore = useQuoteStore()
+
+const catCoverImageUrl = computed(() => {
+    return catalogueService.getCatalogueCoverImage(props.itemData.cover_image);
+})
+
+const catCardShortSpec = computed(() => {
+    return catalogueService.getCatalogueShortSpecObj(props.itemData)
+})
+
+
+const priceExtGst = computed(() => {
+    return catalogueService.getExcGstPrice(+props.itemData.price_inc_gst)
+})
+
+const priceIncGst = computed(() => {
+    if (props.itemData.price_inc_gst) {
+        return (+props.itemData.price_inc_gst).toFixed(2)
+    }
+})
+
+const onClickIncrement = () => {
+    itemQuantity.value++
+}
+const onClickDecrement = () => {
+    // handle negative here
+    itemQuantity.value--
+
+}
+
+
+const onClickRemove = () =>{
+    quoteStore.removeFromQuote(props.itemData.unique_reference)
+}
+
+watch(itemQuantity, () => {
+    quoteStore.changeQuantity(props.itemData, itemQuantity)
+})
+
+const itemQuantitySubtotal = computed(() => {
+    return (+priceExtGst.value * itemQuantity.value).toFixed(2)
+})
+
+</script>
+
+<template>
+    <div class="border-[1px] border-slate-300 flex flex-row h-44 mb-4 px-4 py-4 rounded-xl shadow">
+        <div class="basis-1/5 catalogueItemImage flex justify-center items-center h-full">
+            <ImageWithFallback
+                image-alt="item"
+                :image-url="catCoverImageUrl"
+                image-type="catalogue"
+                class="border-[1px] border-slate-300 catalogueCoverImage h-36 object-contain p-2 rounded-xl w-36"
+            />
+        </div>
+        <div class="basis-4/5 catalogueInformation place-items-center">
+            <div class="grid grid-cols-4 h-full w-full">
+                <div class="col-span-3 grid nameAndSpec">
+                    <span class="font-medium text-xl">
+                        {{ props.itemData.brand + " - " + props.itemData.name }}</span>
+                    <span class="mb-4">
+                        <CatalogueCardDescGenerator
+                            :card-desc-obj="catCardShortSpec"
+                        />
+                    </span>
+                    <div
+                        class="cursor-pointer removeButton text-red-600"
+                        @click="onClickRemove"
+                    >
+                        Remove
+                    </div>
+                </div>
+                <div class="col-span-1 grid h-full ml-auto mr-4 priceAndQuantity text-right">
+                    <span class="priceExcGst text-xl">{{ `\$${priceExtGst} exc. GST` }} </span>
+                    <span class="priceIncGst text-lg text-slate-600">{{ `\$${itemQuantitySubtotal}` }} </span>
+                    <div
+                        class="border-[1px] flex justify-self-end flex-row gap-4 itemQuantity mt-auto rounded-xl w-fit"
+                    >
+                        <div
+                            class="border-r-[1px] border-slate-300 cursor-pointer px-2"
+                            @click="onClickDecrement"
+                        >
+                            -
+                        </div>
+                        <div> {{ itemQuantity }}</div>
+                        <div
+                            class="border-l-[1px] border-slate-300 cursor-pointer px-2"
+                            @click="onClickIncrement"
+                        >
+                            +
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</template>

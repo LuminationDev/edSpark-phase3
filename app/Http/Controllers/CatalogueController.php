@@ -11,7 +11,7 @@ use Outerweb\ImageLibrary\Models\Image;
 
 class CatalogueController extends Controller
 {
-    private function catalogueModelToJson($item)
+    public static function catalogueModelToJson($item)
     {
         if ($item->cover_image) {
             $itemImage = Image::where('id', $item->cover_image)->first();
@@ -49,7 +49,10 @@ class CatalogueController extends Controller
             'image' => $item->image,
             'product_number' => $item->product_number,
             'price_expiry' => $item->price_expiry,
-            'cover_image' => $itemImageUUID
+            'cover_image' => [
+                'uuid' => $itemImageUUID,
+                'extension' => $itemImage->file_extension ?? '',
+            ]
         ];
     }
 
