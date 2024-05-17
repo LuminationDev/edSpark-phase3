@@ -2261,7 +2261,7 @@ const displayRequiredContent = () => {
                                         v-html="crossCurriculumParagraph_Display"
                                     />
                                     <div v-else>
-                                        Australian Curriculum version content will come here.
+                                        Cross Curriculum content will come here.
                                     </div>
                                 </div>
                             </div>
@@ -2282,7 +2282,7 @@ const displayRequiredContent = () => {
                                         v-html="generalCapabilitiesParagraph_Display"
                                     />
                                     <div v-else>
-                                        Australian Curriculum version content will come here.
+                                        General Capabilities content will come here.
                                     </div>
                                 </div>
                             </div>
