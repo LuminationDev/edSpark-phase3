@@ -1175,7 +1175,6 @@ const extractAllContentByEachId = (html, id) => {
                 }) : null;
                 if (h1Text ? (h1Text.toLowerCase().includes('general') || h1Text.toLowerCase().includes('capab')) : null) {
                     generalCapabilitiesTitle.value = h1Text
-                    console.log(generalCapabilitiesTitle.value)
                     generalCapabilitiesListing.value.push(listText)
                     generalCapabilitiesParagraph.value.push(pText)
                     generalCapabilitiesHeadings.value.push(strongText)
@@ -1541,6 +1540,7 @@ const displayRequiredContent = () => {
         });
         paragraphsACV += "</ul>";
         ausCurriculumParagraph_Display.value = paragraphsACV.trim();
+        console.log(ausCurriculumParagraph_Display.value)
     } else {
         ausCurriculumParagraph_Display.value = "Australian Curriculum Version content not found.";
     }
@@ -1658,6 +1658,7 @@ const displayRequiredContent = () => {
     if (listsTree2 && listsTree2.length > 0) {
         displayListsSubLists1(listsTree2, 0); // Starting the recursive display with initial indentation level 0
     }
+
     //// Accessing the "Lists Tree" array - two level
     const introductoryListingData = data['Component2']?.["Introductory Activity"]?.Listings;
     const priorKnowledgeListingData = data['Component2']?.["Prior Knowledge Check"]?.Listings;
