@@ -119,7 +119,7 @@ class CartController extends Controller
         })->first();
 
         if (!$cartItem) {
-            return response()->json(['message' => 'Cart item not found'], 404);
+            return response()->json(['message' => 'Cart item not found'], 410);
         }
 
         $cartItem->delete();

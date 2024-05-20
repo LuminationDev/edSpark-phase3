@@ -249,8 +249,22 @@ const shortSpecEntries = computed(() => {
                 >
             </div>
             <div class="InfoDisplayContainter flex flex-col w-1/2">
-                <div class="mb-4 text-main-teal">
-                    Home / Catalogue / Product (disabled)
+                <div class="flex flex-row gap-2 mb-4 text-main-teal">
+                    <router-link
+                        to="/dashboard"
+                        class="hover:text-main-darkTeal"
+                    >
+                        {{ `Home /` + " " }}
+                    </router-link>
+                    <router-link
+                        to="/catalogue"
+                        class="hover:text-main-darkTeal"
+                    >
+                        {{ `Catalogue /` + " " }}
+                    </router-link>
+                    <div class="text-black">
+                        {{ itemData.name }}
+                    </div>
                 </div>
                 <div class="brandType mb-4 tag text-main-darkTeal">
                     {{ itemData.brand }} • {{ itemData.type }}

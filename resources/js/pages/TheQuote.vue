@@ -1,4 +1,5 @@
 <script setup>
+import {onMounted} from "vue";
 import {useRouter} from "vue-router";
 
 import BaseLandingHero from "@/js/components/bases/BaseLandingHero.vue";
@@ -14,6 +15,10 @@ const props = defineProps({})
 const emits = defineEmits([])
 const router = useRouter()
 const quoteStore = useQuoteStore()
+
+onMounted(() => {
+    quoteStore.initializeQuote()
+})
 const handleClearQuote = () => {
     quoteStore.clearQuote()
 }

@@ -11,7 +11,6 @@ import BaseLandingHero from "@/js/components/bases/BaseLandingHero.vue";
 import CatalogueCard from "@/js/components/catalogue/CatalogueCard.vue";
 import CatalogueComparisonBanner from "@/js/components/catalogue/cataloguecomparison/CatalogueComparisonBanner.vue";
 import CatalogueFilterColumn from "@/js/components/catalogue/CatalogueFilterColumn.vue";
-import CataloguePerPageSelector from "@/js/components/catalogue/CataloguePerPageSelector.vue";
 import Loader from "@/js/components/spinner/Loader.vue";
 import useErrorMessage from "@/js/composables/useErrorMessage";
 import usePagination from "@/js/composables/usePagination";
@@ -239,9 +238,9 @@ const handleClickCatalogueCard = (reference) => {
                 v-model:selected-vendor="selectedVendor"
                 v-model:selected-category="selectedCategory"
                 v-model:price-range="priceRange"
+                v-model:per-page="perPage"
                 :is-filter-loading="isFilterLoading"
             />
-            <CataloguePerPageSelector v-model="perPage" />
         </div>
         <div v-if="error.status ">
             {{ error.message }}

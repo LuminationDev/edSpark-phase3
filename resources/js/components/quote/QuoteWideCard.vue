@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import {useDebounceFn, watchDebounced} from '@vueuse/core'
+import {cloneDeep} from "lodash";
 import {storeToRefs} from "pinia";
 import {computed, ref, watch} from 'vue'
 import {toast} from "vue3-toastify";
@@ -24,7 +25,6 @@ const itemQuantity = ref(props.itemData.quantity)
 
 const quoteStore = useQuoteStore()
 const {quote} = storeToRefs(quoteStore)
-const tempQuote = ref([])
 
 const catCoverImageUrl = computed(() => {
     return catalogueService.getCatalogueCoverImage(props.itemData.cover_image);
@@ -52,18 +52,19 @@ const onClickDecrement = () => {
     if (itemQuantity.value > 0) {
         itemQuantity.value--
     }
-
-}
-const sendUpdateQuantity = async () => {
-    try {
-        const res = await quoteService.updateItemQuantityInCart(props.itemData.unique_reference, itemQuantity.value)
-    } catch (err) {
-        console.error('Failed to update item, reverting to previous value', err.message)
-    }
 }
 
-const onClickRemove = () => {
+const onClickRemove = async () => {
+    const oldQuote = cloneDeep(quoteStore.getQuote)
     quoteStore.removeFromQuote(props.itemData.unique_reference)
+    try {
+        await quoteService.deleteItemInCart(props.itemData.unique_reference)
+    } catch (err) {
+        quote.value = oldQuote
+        console.error('Failed to delete item, reverting to previous value', err.message)
+        toast.error('Failed to delete item. Please try again')
+
+    }
 }
 
 watchDebounced(itemQuantity, async () => {
