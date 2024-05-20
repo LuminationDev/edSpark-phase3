@@ -19,7 +19,7 @@ const quoteStore = useQuoteStore()
 onMounted(() => {
     quoteStore.initializeQuote()
 })
-const handleClearQuote = () => {
+const onClearQuote = () => {
     quoteStore.clearQuote()
 }
 
@@ -53,7 +53,7 @@ const handleClearQuote = () => {
         </div>
         <div class="col-span-10 otherRow">
             <GenericButton
-                :callback="handleClearQuote"
+                :callback="onClearQuote"
                 type="teal"
             >
                 Clear quote

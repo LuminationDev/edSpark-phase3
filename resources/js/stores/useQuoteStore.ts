@@ -1,5 +1,7 @@
 import {useStorage} from "@vueuse/core";
+import {cloneDeep} from "lodash";
 import {defineStore} from "pinia";
+import {toast} from "vue3-toastify";
 
 import {quoteService} from "@/js/service/quoteService";
 import {CatalogueFilterField, CatalogueItemType} from "@/js/types/catalogueTypes";
@@ -52,15 +54,33 @@ export const useQuoteStore = defineStore('quote', {
         removeFromQuote(itemReference) {
             this.quote = this.quote.filter(item => item.unique_reference !== itemReference);
         },
-        changeQuantity(item, newQuantity) {
+        async changeQuantity(item, newQuantity) {
             const quoteItem = this.quote.find(quoteItem => quoteItem.unique_reference === item.unique_reference);
 
             if (quoteItem) {
+                const oldQuantity = quoteItem.quantity;
                 quoteItem.quantity = newQuantity;
+                try {
+                    await quoteService.updateItemQuantityInCart(item.unique_reference, newQuantity)
+                } catch (err) {
+                    console.log(oldQuantity)
+                    quoteItem.quantity = oldQuantity
+                    toast.error("Failed to update item, reverted to previous value")
+                }
             }
+
         },
-        clearQuote() {
+        async clearQuote() {
+            const oldQuote = cloneDeep(this.quote)
             this.quote = [];
+            try {
+                await quoteService.clearCart()
+            } catch (err) {
+                console.log('failed to empty cart ' + err.message)
+                this.quote = cloneDeep(oldQuote)
+                toast.error("Failed to empty cart. Try again")
+            }
+
         },
         calculateSubtotal(itemReference) {
             // Calculate the subtotal for a specific item

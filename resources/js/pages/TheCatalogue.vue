@@ -276,7 +276,6 @@ const handleClickCatalogueCard = (reference) => {
                     @update:model-value="handleChangePageNumber"
                 />
             </div>
-            <pre> {{ quote }}</pre>
         </div>
 
         <div

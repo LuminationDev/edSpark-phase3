@@ -68,19 +68,8 @@ const onClickRemove = async () => {
 }
 
 watchDebounced(itemQuantity, async () => {
-    console.log(props.itemData.quantity)
-    const oldQuantity = props.itemData.quantity
-    quoteStore.changeQuantity(props.itemData, itemQuantity)
-    try {
-        await quoteService.updateItemQuantityInCart(props.itemData.unique_reference, itemQuantity.value)
-    } catch (err) {
-        console.log(oldQuantity)
-        itemQuantity.value = oldQuantity
-        quoteStore.changeQuantity(props.itemData, oldQuantity)
-        toast.error("Failed to update item, reverted to previous value")
-
-    }
-}, {debounce: 200, maxWait: 1000})
+    await quoteStore.changeQuantity(props.itemData, itemQuantity.value)
+}, {debounce: 600, maxWait: 2000})
 
 const itemQuantitySubtotal = computed(() => {
     return (+priceExtGst.value * itemQuantity.value).toFixed(2)
@@ -110,9 +99,13 @@ const itemQuantitySubtotal = computed(() => {
                     </span>
                     <div
                         class="cursor-pointer removeButton text-red-600"
-                        @click="onClickRemove"
                     >
-                        Remove
+                        <button
+                            class="px-4 py-2 rounded-xl hover:!bg-red-600 hover:!text-white"
+                            @click="onClickRemove"
+                        >
+                            Remove
+                        </button>
                     </div>
                 </div>
                 <div class="col-span-1 grid h-full ml-auto mr-4 priceAndQuantity text-right">

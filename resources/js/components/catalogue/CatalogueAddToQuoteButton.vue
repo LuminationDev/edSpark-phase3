@@ -83,9 +83,9 @@ const onClickAddToQuote = () => {
         </template>
         <template v-else>
             <GenericButton
-                class="!text-base py-3 hover:!bg-secondary-cherry"
-                :callback="props.callback"
-                type="red"
+                class="!text-base cursor-not-allowed py-3"
+                :callback="() =>{}"
+                type="blue"
             >
                 <span class="ml-4" />Added to quote! {{ `(${quantityInQuote})` }}
             </GenericButton>
