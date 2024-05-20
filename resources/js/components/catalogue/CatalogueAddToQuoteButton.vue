@@ -75,7 +75,8 @@ const onClickAddToQuote = () => {
                 class="!text-base py-3"
                 :callback="onClickAddToQuote"
                 type="teal"
-                :class="{'disabled ':quoteLoading}"
+                :class="{'disabled cursor-not-allowed pointer-events-none': quoteLoading}"
+                :disabled="quoteLoading"
             >
                 <CatalogueCartIcon />
                 <span class="ml-4" />Add to quote {{ quantityInQuote ? `(${quantityInQuote})` : '' }}

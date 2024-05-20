@@ -4,7 +4,7 @@ import {defineStore} from "pinia";
 import {toast} from "vue3-toastify";
 
 import {quoteService} from "@/js/service/quoteService";
-import {CatalogueFilterField, CatalogueItemType} from "@/js/types/catalogueTypes";
+import {CatalogueItemType} from "@/js/types/catalogueTypes";
 
 export const useQuoteStore = defineStore('quote', {
     state: () => ({
@@ -108,6 +108,15 @@ export const useQuoteStore = defineStore('quote', {
             console.log(this.quote.some(item => item.unique_reference === itemReference))
             if (this.quote.some(item => item.unique_reference === itemReference)) {
                 return true
+            }
+        },
+        async checkoutVendor(vendor) {
+            try {
+                await quoteService.checkoutCart(vendor)
+            } catch (err) {
+                console.log(err.message)
+            } finally{
+               await this.initializeQuote()
             }
         }
 
