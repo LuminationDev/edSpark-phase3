@@ -4,6 +4,7 @@ import {useRouter} from "vue-router";
 
 import BaseLandingHero from "@/js/components/bases/BaseLandingHero.vue";
 import GenericButton from "@/js/components/button/GenericButton.vue";
+import GeneratedQuoteDisplay from "@/js/components/catalogue/quote/GeneratedQuoteDisplay.vue";
 import QuoteVendorAction from "@/js/components/quote/QuoteVendorAction.vue";
 import QuoteVendorListing from "@/js/components/quote/QuoteVendorListing.vue";
 import {LandingHeroText} from "@/js/constants/PageBlurb";
@@ -18,6 +19,7 @@ const quoteStore = useQuoteStore()
 
 onMounted(() => {
     quoteStore.initializeQuote()
+    quoteStore.getUserGenQuote()
 })
 const onClearQuote = () => {
     quoteStore.clearQuote()
@@ -65,5 +67,11 @@ const onClearQuote = () => {
                 back to catalogue
             </GenericButton>
         </div>
+    </div>
+    <div class="flex flex-col generatedQuoteContainer mt-10 mx-8">
+        <div class="font-medium text-main-darkTeal text-xl">
+            Generated Quote
+        </div>
+        <GeneratedQuoteDisplay />
     </div>
 </template>

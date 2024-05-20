@@ -191,6 +191,7 @@ class CartController extends Controller
             } else {
                 $itemImageUUID = '';
             }
+
             return [
                 'cart_id' => $cart->id,
                 'catalogue_id' => $item->catalogue_id,
@@ -228,7 +229,7 @@ class CartController extends Controller
                     'extension' => $itemImage->file_extension ?? '',
                 ],
                 'quantity' => $item->quantity,
-                'total' => $item->quantity * $item->price_inc_gst,
+                'total' => $item->quantity * $item->catalogue->price_inc_gst,
 
             ];
         });
@@ -241,7 +242,7 @@ class CartController extends Controller
             'version_id' => $cart->version_id,
             'quote_content' => $quoteContent->toArray(),
             'total_price_ex_gst' => number_format($totalPrice / 1.1, 2, '.', ''),
-            'status' => 'COMPLETED',
+            'status' => 'ACTIVE',
         ]);
 
         // Remove the checked out items from the cart
@@ -259,6 +260,21 @@ class CartController extends Controller
         }
 
         return response()->json(['message' => 'Checkout completed for vendor', 'quote' => $quote], 201);
+    }
+
+    public function getActiveUserQuotes()
+    {
+        $user = Auth::user();
+
+        $quotes = Quote::where('user_id', $user->id)
+            ->where('version_id', Catalogueversion::getActiveCatalogueId())
+            ->where('status', "ACTIVE")->get();
+
+        if($quotes->isEmpty()){
+            return response()->json(['message' => 'No quotes found'], 410);
+        }
+        return response()->json(['message' => 'Fetch completed', 'quotes' => $quotes], 201);
+
     }
 
 }

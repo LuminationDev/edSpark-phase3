@@ -11,7 +11,8 @@ export const useQuoteStore = defineStore('quote', {
         quote: useStorage('EDSPARK_CATALOGUE_QUOTE', [], localStorage, {mergeDefaults: true}),
         qouteCreationDate: useStorage('EDSPARK_QUOTE_CREATION_DATE', 0, localStorage),
         qouteUpdateDate: useStorage('EDSPARK_QUOTE_UPDATE_DATE', 0, localStorage),
-        quoteLoading: false
+        quoteLoading: false,
+        genQuote: []
 
     }),
     getters: {
@@ -110,13 +111,20 @@ export const useQuoteStore = defineStore('quote', {
                 return true
             }
         },
-        async checkoutVendor(vendor) {
+        async checkoutVendor(vendor: string) {
             try {
                 await quoteService.checkoutCart(vendor)
             } catch (err) {
                 console.log(err.message)
-            } finally{
-               await this.initializeQuote()
+            } finally {
+                await this.initializeQuote()
+            }
+        },
+        async getUserGenQuote() {
+            try {
+                this.genQuote = await quoteService.getGenQuote()
+            } catch (err) {
+                console.error("Failed to fetch generated quotes " + err.message)
             }
         }
 

@@ -16,6 +16,11 @@ const props = defineProps({
     itemData: {
         type: {} as () => CatalogueItemType,
         required: true
+    },
+    displayOnly: {
+        type: Boolean,
+        required: false,
+        default: false
     }
 })
 
@@ -98,6 +103,7 @@ const itemQuantitySubtotal = computed(() => {
                         />
                     </span>
                     <div
+                        v-if="!displayOnly"
                         class="cursor-pointer removeButton text-red-600"
                     >
                         <button
@@ -115,6 +121,7 @@ const itemQuantitySubtotal = computed(() => {
                         class="border-[1px] flex justify-self-end flex-row gap-4 itemQuantity mt-auto rounded-xl w-fit"
                     >
                         <div
+                            v-if="!displayOnly"
                             class="border-r-[1px] border-slate-300 cursor-pointer px-2"
                             @click="onClickDecrement"
                         >
@@ -122,6 +129,7 @@ const itemQuantitySubtotal = computed(() => {
                         </div>
                         <div> {{ itemQuantity }}</div>
                         <div
+                            v-if="!displayOnly"
                             class="border-l-[1px] border-slate-300 cursor-pointer px-2"
                             @click="onClickIncrement"
                         >

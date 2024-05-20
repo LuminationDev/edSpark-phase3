@@ -50,5 +50,8 @@ export const quoteService = {
         return axios.post(`${API_ENDPOINTS.CART.CHECKOUT_CART}`, body).then(res => {
             return res.data
         })
+    },
+    getGenQuote: async () => {
+        return axios.get(API_ENDPOINTS.QUOTE.GET_QUOTE).then(res => res.data.quotes)
     }
 }
