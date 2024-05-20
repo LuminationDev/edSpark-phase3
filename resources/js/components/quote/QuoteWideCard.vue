@@ -1,9 +1,13 @@
 <script setup lang="ts">
+import {useDebounceFn, watchDebounced} from '@vueuse/core'
+import {storeToRefs} from "pinia";
 import {computed, ref, watch} from 'vue'
+import {toast} from "vue3-toastify";
 
 import CatalogueCardDescGenerator from "@/js/components/catalogue/CatalogueCardDescGenerator.vue";
 import ImageWithFallback from "@/js/components/global/ImageWithFallback.vue";
 import {catalogueService} from "@/js/service/catalogueService";
+import {quoteService} from "@/js/service/quoteService";
 import {useQuoteStore} from "@/js/stores/useQuoteStore";
 import {CatalogueItemType} from "@/js/types/catalogueTypes";
 
@@ -17,7 +21,10 @@ const props = defineProps({
 const emits = defineEmits([])
 
 const itemQuantity = ref(props.itemData.quantity)
+
 const quoteStore = useQuoteStore()
+const {quote} = storeToRefs(quoteStore)
+const tempQuote = ref([])
 
 const catCoverImageUrl = computed(() => {
     return catalogueService.getCatalogueCoverImage(props.itemData.cover_image);
@@ -37,24 +44,42 @@ const priceIncGst = computed(() => {
         return (+props.itemData.price_inc_gst).toFixed(2)
     }
 })
-
 const onClickIncrement = () => {
     itemQuantity.value++
+
 }
 const onClickDecrement = () => {
-    // handle negative here
-    itemQuantity.value--
+    if (itemQuantity.value > 0) {
+        itemQuantity.value--
+    }
 
 }
+const sendUpdateQuantity = async () => {
+    try {
+        const res = await quoteService.updateItemQuantityInCart(props.itemData.unique_reference, itemQuantity.value)
+    } catch (err) {
+        console.error('Failed to update item, reverting to previous value', err.message)
+    }
+}
 
-
-const onClickRemove = () =>{
+const onClickRemove = () => {
     quoteStore.removeFromQuote(props.itemData.unique_reference)
 }
 
-watch(itemQuantity, () => {
+watchDebounced(itemQuantity, async () => {
+    console.log(props.itemData.quantity)
+    const oldQuantity = props.itemData.quantity
     quoteStore.changeQuantity(props.itemData, itemQuantity)
-})
+    try {
+        await quoteService.updateItemQuantityInCart(props.itemData.unique_reference, itemQuantity.value)
+    } catch (err) {
+        console.log(oldQuantity)
+        itemQuantity.value = oldQuantity
+        quoteStore.changeQuantity(props.itemData, oldQuantity)
+        toast.error("Failed to update item, reverted to previous value")
+
+    }
+}, {debounce: 200, maxWait: 1000})
 
 const itemQuantitySubtotal = computed(() => {
     return (+priceExtGst.value * itemQuantity.value).toFixed(2)

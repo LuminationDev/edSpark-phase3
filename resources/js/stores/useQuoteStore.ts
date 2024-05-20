@@ -16,7 +16,7 @@ export const useQuoteStore = defineStore('quote', {
         getQuote() {
             return this.quote
         },
-        getQuoteGroupedByVendor: (state) =>{
+        getQuoteGroupedByVendor: (state) => {
             return state.quote.reduce((acc, product) => {
                 const vendor = product.vendor;
                 if (!acc[vendor]) {
@@ -29,14 +29,14 @@ export const useQuoteStore = defineStore('quote', {
 
     },
     actions: {
-        async initializeQuote(){
-            try{
+        async initializeQuote() {
+            try {
                 this.quoteLoading = true;
                 const quoteFromDb = await quoteService.getCart()
                 console.log(quoteFromDb)
                 this.quote = quoteFromDb;
                 this.quoteLoading = false;
-            } catch (e){
+            } catch (e) {
                 console.log(e)
             }
         },
@@ -69,22 +69,23 @@ export const useQuoteStore = defineStore('quote', {
         },
         calculateSubtotalPerVendor(vendor: string) {
             const groupedQuote = this.getQuoteGroupedByVendor
-            if(groupedQuote[vendor]) {
+            if (groupedQuote[vendor]) {
                 const items = groupedQuote[vendor]
                 let subtotal = 0
-                for(const item of items){
+                for (const item of items) {
                     subtotal += (+item.price_inc_gst * +item.quantity)
                 }
                 return subtotal.toFixed(2)
-            } else{
+            } else {
                 console.log('vendor not exist')
                 return 0
             }
         },
         isItemInQuote(itemReference: string) {
-            if (!this.quote || this.quote.length <= 0) {
+            if (this.quote.length <= 0) {
                 return false
             }
+            console.log(this.quote.some(item => item.unique_reference === itemReference))
             if (this.quote.some(item => item.unique_reference === itemReference)) {
                 return true
             }

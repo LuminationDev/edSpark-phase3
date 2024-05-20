@@ -268,7 +268,9 @@ const shortSpecEntries = computed(() => {
                     :price-value="+itemData.price_inc_gst"
                     :include-gst="true"
                 />
-                <CatalogueAddToQuoteButton />
+                <CatalogueAddToQuoteButton
+                    :cat-item="itemData"
+                />
             </div>
         </div>
         <div class="CatalogueSingleOuter grid grid-cols-2 gap-4 mt-16 mx-8">
