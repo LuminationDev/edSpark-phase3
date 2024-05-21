@@ -10,6 +10,9 @@ export default defineConfig({
         outDir: './public/build',
         commonjsOptions: {
             exclude: ['ckeditor5-custom-build']
+        },
+        rollupOptions: {
+            external: ['nouislider']
         }
     },
     plugins: [
