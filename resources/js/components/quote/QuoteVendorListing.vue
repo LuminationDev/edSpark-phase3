@@ -21,14 +21,17 @@ const props = defineProps({
 
 <template>
     <div class="listingContainer w-full">
-        <Accordion
-            :title="quoteVendor"
-        >
-            <template
-                v-for="(item,index) in quoteItems"
-                :key="index"
-            >
-                <QuoteWideCard :item-data="item" />
+        <Accordion :default-open="true">
+            <template #title>
+                {{ quoteVendor }}
+            </template>
+            <template #content>
+                <div
+                    v-for="(item,index) in quoteItems"
+                    :key="index"
+                >
+                    <QuoteWideCard :item-data="item" />
+                </div>
             </template>
         </Accordion>
     </div>

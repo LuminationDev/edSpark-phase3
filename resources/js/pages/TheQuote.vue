@@ -69,7 +69,7 @@ const onClearQuote = () => {
         </div>
     </div>
     <div class="flex flex-col generatedQuoteContainer mt-10 mx-10">
-        <div class="font-medium text-main-darkTeal text-xl">
+        <div class="font-medium mb-4 text-main-darkTeal text-xl">
             Generated Quote
         </div>
         <GeneratedQuoteDisplay />
