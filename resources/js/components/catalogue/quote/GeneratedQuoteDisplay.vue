@@ -21,8 +21,6 @@ const quoteVendor = computed(() => {
 })
 
 const getQuoteVendor = (quote) => {
-    console.log(quote)
-    console.log(quote.quote_content)
     return quote?.quote_content[Object.keys(quote.quote_content)[0]]?.vendor
 }
 </script>

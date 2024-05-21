@@ -2,7 +2,6 @@
 import {computed, onMounted, Ref, ref,} from 'vue'
 import {RouteParamValue, useRoute} from "vue-router";
 
-import BaseHero from "@/js/components/bases/BaseHero.vue";
 import CatalogueAddToQuoteButton from "@/js/components/catalogue/CatalogueAddToQuoteButton.vue";
 import CataloguePriceDisplay from "@/js/components/catalogue/CataloguePriceDisplay.vue";
 import CatalogueSingleShortSpec from "@/js/components/catalogue/cataloguesingle/CatalogueSingleShortSpec.vue";
@@ -10,8 +9,6 @@ import Loader from "@/js/components/spinner/Loader.vue";
 import {catalogueImageURL} from "@/js/constants/serverUrl";
 import {catalogueService} from "@/js/service/catalogueService";
 import {CatalogueItemType, catalogueTableHeaders} from "@/js/types/catalogueTypes";
-
-const props = defineProps({})
 
 
 const route = useRoute()
@@ -210,8 +207,10 @@ const structuredCatItemData = computed(() => {
     ]
 });
 
-const imageUrl = computed(() => {
-    return catalogueImageURL + itemData.value.image
+
+const catCoverImageUrl = computed(() => {
+    console.log(itemData.value.cover_image)
+    return catalogueService.getCatalogueCoverImage(itemData.value.cover_image);
 })
 
 const catItemShortSpec = computed(() => {
@@ -240,11 +239,21 @@ const shortSpecEntries = computed(() => {
     <template v-else>
         <div class="flex flex-row gap-16 mt-24 px-8 w-full">
             <div
-                class="ImageDisplayContainer border-[1px] border-slate-300 flex justify-center items-center rounded-lg w-1/2"
+                class="
+                    ImageDisplayContainer
+                    border-[1px]
+                    border-slate-300
+                    flex
+                    justify-center
+                    items-center
+                    max-h-[400px]
+                    rounded-lg
+                    w-1/2
+                    "
             >
                 <img
-                    class=""
-                    :src="imageUrl"
+                    class="h-full max-h-[400px] max-w-full"
+                    :src="catCoverImageUrl"
                     alt="image"
                 >
             </div>

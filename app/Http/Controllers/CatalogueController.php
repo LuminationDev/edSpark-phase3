@@ -108,8 +108,8 @@ class CatalogueController extends Controller
                 $maxPrice = intval($filterValue[1]);
                 $query->whereRaw('CAST(price_inc_gst AS UNSIGNED) BETWEEN ? AND ?', [$minPrice, $maxPrice]);
             } else {
-                if ($field !== $filterField) {
-                    $query->orWhereIn($filterField, is_array($filterValue) ? $filterValue : [$filterValue]);
+                if ($field !== $filterField && count($filterValue)) {
+                    $query->whereIn($filterField, is_array($filterValue) ? $filterValue : [$filterValue]);
                 }
             }
         }
@@ -213,7 +213,7 @@ class CatalogueController extends Controller
         }
 
         // Fetch the product by name
-        $product = Catalogue::where('unique_reference', $request->input('unique_reference'))->first();
+        $product = Catalogue::where('unique_reference', $request->input('unique_reference'))->where('version_id', Catalogueversion::getActiveCatalogueId())->first();
 
 
         // Check if the product exists
