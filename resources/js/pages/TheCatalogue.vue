@@ -11,18 +11,23 @@ import BaseLandingHero from "@/js/components/bases/BaseLandingHero.vue";
 import CatalogueCard from "@/js/components/catalogue/CatalogueCard.vue";
 import CatalogueComparisonBanner from "@/js/components/catalogue/cataloguecomparison/CatalogueComparisonBanner.vue";
 import CatalogueFilterColumn from "@/js/components/catalogue/CatalogueFilterColumn.vue";
-import CataloguePerPageSelector from "@/js/components/catalogue/CataloguePerPageSelector.vue";
 import Loader from "@/js/components/spinner/Loader.vue";
 import useErrorMessage from "@/js/composables/useErrorMessage";
 import usePagination from "@/js/composables/usePagination";
 import {LandingHeroText} from "@/js/constants/PageBlurb";
 import {catalogueService} from "@/js/service/catalogueService";
 import {useCatalogueStore} from "@/js/stores/useCatalogueStore";
-import {CatalogueFilterField, CatalogueItemType} from "@/js/types/catalogueTypes";
+import {useQuoteStore} from "@/js/stores/useQuoteStore";
+import {CatalogueFilterField} from "@/js/types/catalogueTypes";
 
 
-// const catalogueList: Ref<CatalogueItemType[] | []> = ref([]);
 const {catalogueList} = storeToRefs(useCatalogueStore())
+const quoteStore = useQuoteStore()
+const {quote} = storeToRefs(quoteStore)
+onMounted(async () => {
+    await quoteStore.initializeQuote()
+})
+
 const categoryList = ref([])
 const brandList = ref([])
 const typeList = ref([])
@@ -156,6 +161,7 @@ const updateOtherFilters = (available_fields) => {
 watch(selectedCategory, async () => {
     if (selectedBrand.value.length === 0 && selectedType.value.length === 0 && selectedVendor.value.length === 0) {
         primaryFilter.value = CatalogueFilterField.Category
+        currentPage.value = 1
         await fetchCatalogueAndUpdateOtherFilters(CatalogueFilterField.Category, selectedCategory.value, additionalFilters.value, currentPage.value, perPage.value)
     } else {
         await fetchCatalogueAndUpdateOtherFilters(primaryFilter.value, primarySelectedValues.value, additionalFilters.value, currentPage.value, perPage.value)
@@ -190,19 +196,12 @@ watch(selectedVendor, async () => {
 })
 
 watchDebounced(priceRange, async () => {
-    console.log(priceRange.value)
     await fetchCatalogueAndUpdateOtherFilters(primaryFilter.value, primarySelectedValues.value, additionalFilters.value, currentPage.value, perPage.value)
 }, {deep: true, debounce: 800, maxWait: 1000})
 
 watch([currentPage, perPage], async () => {
-    console.log('primary filter is  ' + primaryFilter.value)
     await fetchCatalogueAndUpdateOtherFilters(primaryFilter.value, primarySelectedValues.value, additionalFilters.value, currentPage.value, perPage.value)
 })
-
-watch([primaryFilter, selectedType, selectedCategory, selectedBrand, selectedVendor], () => {
-    currentPage.value = 1
-})
-
 const handleClickCatalogueCard = (reference) => {
     router.push({
         name: 'catalogue-single', params: {
@@ -223,7 +222,6 @@ const handleClickCatalogueCard = (reference) => {
     />
     <div class="cataloguePageOuterContainer grid grid-cols-10 mt-16">
         <div class="col-span-2 flex flex-col gap-2 ml-8 pr-8">
-            <CataloguePerPageSelector v-model="perPage" />
             <CatalogueFilterColumn
                 v-model:brand-list="brandList"
                 v-model:type-list="typeList"
@@ -234,6 +232,7 @@ const handleClickCatalogueCard = (reference) => {
                 v-model:selected-vendor="selectedVendor"
                 v-model:selected-category="selectedCategory"
                 v-model:price-range="priceRange"
+                v-model:per-page="perPage"
                 :is-filter-loading="isFilterLoading"
             />
         </div>

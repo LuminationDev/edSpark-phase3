@@ -2,7 +2,6 @@
 import {computed, onMounted, Ref, ref,} from 'vue'
 import {RouteParamValue, useRoute} from "vue-router";
 
-import BaseHero from "@/js/components/bases/BaseHero.vue";
 import CatalogueAddToQuoteButton from "@/js/components/catalogue/CatalogueAddToQuoteButton.vue";
 import CataloguePriceDisplay from "@/js/components/catalogue/CataloguePriceDisplay.vue";
 import CatalogueSingleShortSpec from "@/js/components/catalogue/cataloguesingle/CatalogueSingleShortSpec.vue";
@@ -11,13 +10,12 @@ import {catalogueImageURL} from "@/js/constants/serverUrl";
 import {catalogueService} from "@/js/service/catalogueService";
 import {CatalogueItemType, catalogueTableHeaders} from "@/js/types/catalogueTypes";
 
-const props = defineProps({})
-
 
 const route = useRoute()
 const uniqueRef: string | RouteParamValue[] = route.params.ref
 const isLoading = ref(true)
 const itemData: Ref<CatalogueItemType> = ref({})
+
 onMounted(() => {
     isLoading.value = true
     catalogueService.fetchSingleProductByReference(uniqueRef).then(res => {
@@ -209,8 +207,9 @@ const structuredCatItemData = computed(() => {
     ]
 });
 
-const imageUrl = computed(() => {
-    return catalogueImageURL + itemData.value.image
+
+const catCoverImageUrl = computed(() => {
+    return catalogueService.getCatalogueCoverImage(itemData.value.cover_image);
 })
 
 const catItemShortSpec = computed(() => {
@@ -239,17 +238,41 @@ const shortSpecEntries = computed(() => {
     <template v-else>
         <div class="flex flex-row gap-16 mt-24 px-8 w-full">
             <div
-                class="ImageDisplayContainer border-[1px] border-slate-300 flex justify-center items-center rounded-lg w-1/2"
+                class="
+                    ImageDisplayContainer
+                    border-[1px]
+                    border-slate-300
+                    flex
+                    justify-center
+                    items-center
+                    max-h-[400px]
+                    rounded-lg
+                    w-1/2
+                    "
             >
                 <img
-                    class=""
-                    :src="imageUrl"
+                    class="h-full max-h-[400px] max-w-full"
+                    :src="catCoverImageUrl"
                     alt="image"
                 >
             </div>
             <div class="InfoDisplayContainter flex flex-col w-1/2">
-                <div class="mb-4 text-main-teal">
-                    Home / Catalogue / Product (disabled)
+                <div class="flex flex-row gap-2 mb-4 text-main-teal">
+                    <router-link
+                        to="/dashboard"
+                        class="hover:text-main-darkTeal"
+                    >
+                        {{ `Home /` + " " }}
+                    </router-link>
+                    <router-link
+                        to="/catalogue"
+                        class="hover:text-main-darkTeal"
+                    >
+                        {{ `Catalogue /` + " " }}
+                    </router-link>
+                    <div class="text-black">
+                        {{ itemData.name }}
+                    </div>
                 </div>
                 <div class="brandType mb-4 tag text-main-darkTeal">
                     {{ itemData.brand }} • {{ itemData.type }}
@@ -267,7 +290,9 @@ const shortSpecEntries = computed(() => {
                     :price-value="+itemData.price_inc_gst"
                     :include-gst="true"
                 />
-                <CatalogueAddToQuoteButton />
+                <CatalogueAddToQuoteButton
+                    :cat-item="itemData"
+                />
             </div>
         </div>
         <div class="CatalogueSingleOuter grid grid-cols-2 gap-4 mt-16 mx-8">

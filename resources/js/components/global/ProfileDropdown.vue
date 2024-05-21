@@ -3,6 +3,7 @@
 import {storeToRefs} from "pinia";
 import {computed, onMounted, ref} from "vue";
 
+import ImageWithFallback from "@/js/components/global/ImageWithFallback.vue";
 import ProfileDropdownItem from "@/js/components/global/ProfileDropdownItem.vue";
 import NotificationIcon from "@/js/components/svg/NotificationIcon.vue";
 import Profile from "@/js/components/svg/Profile.vue";
@@ -30,7 +31,6 @@ const {currentUser} = storeToRefs(userStore);
 const showDropdownMenu = ref(false)
 
 const imageURL = import.meta.env.VITE_SERVER_IMAGE_API;
-const imageError = ref(false)
 const toggleDropdownMenu = (): void => {
     showDropdownMenu.value = !showDropdownMenu.value
 }
@@ -72,17 +72,10 @@ const mySchoolTargetPath = computed(() => {
     } else return ''
 })
 
-const avatarUrlWithFallback = computed(() => {
-    if (imageError.value) {
-        return `${imageURL}/uploads/image/profile.jpg`
-    } else {
-        return `${imageURL}/${props.avatarUrl}`
-    }
+const avatarUrl = computed(() => {
+    return `${imageURL}/${props.avatarUrl}`
 })
 
-const handleImageLoadError = () => {
-    imageError.value = true
-}
 
 onMounted(async () => {
     try {
@@ -105,12 +98,12 @@ onMounted(async () => {
             class="bg-slate-200 cursor-pointer flex h-full overflow-hidden relative rounded-full w-full z-40 hover:shadow-2xl"
             @click="toggleDropdownMenu"
         >
-            <img
+            <ImageWithFallback
+                :image-url="avatarUrl"
+                image-type="profile"
+                image-alt="profile picture"
                 class="object-center object-cover w-full"
-                :src="avatarUrlWithFallback"
-                alt="profile picture"
-                @error="handleImageLoadError"
-            >
+            />
         </div>
         <div
             v-show="showDropdownMenu"

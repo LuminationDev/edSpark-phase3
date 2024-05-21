@@ -11,7 +11,7 @@ use Outerweb\ImageLibrary\Models\Image;
 
 class CatalogueController extends Controller
 {
-    private function catalogueModelToJson($item)
+    public static function catalogueModelToJson($item)
     {
         if ($item->cover_image) {
             $itemImage = Image::where('id', $item->cover_image)->first();
@@ -49,7 +49,10 @@ class CatalogueController extends Controller
             'image' => $item->image,
             'product_number' => $item->product_number,
             'price_expiry' => $item->price_expiry,
-            'cover_image' => $itemImageUUID
+            'cover_image' => [
+                'uuid' => $itemImageUUID,
+                'extension' => $itemImage->file_extension ?? '',
+            ]
         ];
     }
 
@@ -86,6 +89,7 @@ class CatalogueController extends Controller
         $field = $request->input('field');
         $values = $request->input('value') ?? [];
         $perPage = $request->input('per_page', 20);
+        $requestedPage = $request->query('page', 1);
         $additionalFilters = $request->input('additional_filters', []);
 
         // Start building the base query
@@ -105,8 +109,8 @@ class CatalogueController extends Controller
                 $maxPrice = intval($filterValue[1]);
                 $query->whereRaw('CAST(price_inc_gst AS UNSIGNED) BETWEEN ? AND ?', [$minPrice, $maxPrice]);
             } else {
-                if ($field !== $filterField) {
-                    $query->orWhereIn($filterField, is_array($filterValue) ? $filterValue : [$filterValue]);
+                if ($field !== $filterField && count($filterValue)) {
+                    $query->whereIn($filterField, is_array($filterValue) ? $filterValue : [$filterValue]);
                 }
             }
         }
@@ -125,8 +129,13 @@ class CatalogueController extends Controller
             }
         }
 
-        // Paginate the results
-        $paginatedQueryResult = $query->paginate($perPage);
+        // Paginate the results and handle page overflow
+        $paginatedQueryResult = $query->paginate($perPage, ['*'], 'page', $requestedPage);
+
+        // Adjust the page if the requested page is out of bounds
+        if ($requestedPage > $paginatedQueryResult->lastPage()) {
+            $paginatedQueryResult = $query->paginate($perPage, ['*'], 'page', 1);
+        }
 
         // Transform results to JSON format
         $itemResults = $paginatedQueryResult->map(function ($item) {
@@ -210,7 +219,7 @@ class CatalogueController extends Controller
         }
 
         // Fetch the product by name
-        $product = Catalogue::where('unique_reference', $request->input('unique_reference'))->first();
+        $product = Catalogue::where('unique_reference', $request->input('unique_reference'))->where('version_id', Catalogueversion::getActiveCatalogueId())->first();
 
 
         // Check if the product exists

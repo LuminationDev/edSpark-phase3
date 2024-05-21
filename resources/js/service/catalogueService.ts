@@ -1,55 +1,56 @@
 import axios from "axios";
 
 import {API_ENDPOINTS} from "@/js/constants/API_ENDPOINTS";
+import {catalogueImageURL} from "@/js/constants/serverUrl";
 
-type CatalogueFieldTypes = 'brand'|'type'|'vendor'|'category'
+type CatalogueFieldTypes = 'brand' | 'type' | 'vendor' | 'category'
 
 export const catalogueService = {
-    fetchCatalogueByField: (fieldType: CatalogueFieldTypes, fieldValue: Array<string>, additionalFilters, nthPage: number = 1, perPage: number = 20) =>{
-        const body = {field : fieldType, value: fieldValue, additional_filters: additionalFilters, per_page: perPage}
-        const params = {page: nthPage }
+    fetchCatalogueByField: (fieldType: CatalogueFieldTypes, fieldValue: Array<string>, additionalFilters, nthPage: number = 1, perPage: number = 20) => {
+        const body = {field: fieldType, value: fieldValue, additional_filters: additionalFilters, per_page: perPage}
+        const params = {page: nthPage}
         return axios.post(API_ENDPOINTS.CATALOGUE.FETCH_CATALOGUE_BY_FIELD, body, {params: params})
     },
 
     fetchSingleProductByName: (name: string) => {
-        const body = { name: name };
+        const body = {name: name};
         return axios.post(API_ENDPOINTS.CATALOGUE.FETCH_SINGLE_PRODUCT_BY_NAME, body);
     },
     fetchSingleProductByReference: (reference: string) => {
-        const body = { unique_reference: reference };
+        const body = {unique_reference: reference};
         return axios.post(API_ENDPOINTS.CATALOGUE.FETCH_SINGLE_PRODUCT_BY_REFERENCE, body);
     },
 
     fetchUpgradesSingleProduct: (name: string) => {
-        const body = { name: name };
+        const body = {name: name};
         return axios.post(API_ENDPOINTS.CATALOGUE.FETCH_UPGRADES_SINGLE_PRODUCT, body);
     },
 
     fetchBundlesSingleProduct: (name: string) => {
-        const body = { name: name };
+        const body = {name: name};
         return axios.post(API_ENDPOINTS.CATALOGUE.FETCH_BUNDLES_SINGLE_PRODUCT, body);
     },
 
-    fetchAllCategories: () =>{
+    fetchAllCategories: () => {
         return axios.get(API_ENDPOINTS.CATALOGUE.FETCH_ALL_CATALOGUE_CATEGORIES)
     },
-    fetchAllTypes: () =>{
+    fetchAllTypes: () => {
         return axios.get(API_ENDPOINTS.CATALOGUE.FETCH_ALL_CATALOGUE_TYPES)
     },
-    fetchAllBrands: () =>{
+    fetchAllBrands: () => {
         return axios.get(API_ENDPOINTS.CATALOGUE.FETCH_ALL_CATALOGUE_BRANDS)
     },
-    fetchAllVendors: () =>{
+    fetchAllVendors: () => {
         return axios.get(API_ENDPOINTS.CATALOGUE.FETCH_ALL_CATALOGUE_VENDORS)
     },
-    fetchAllCatalogue: (per_page)=>{
+    fetchAllCatalogue: (per_page) => {
         const body = {per_page: per_page}
-        return axios.post(API_ENDPOINTS.CATALOGUE.FETCH_ALL_CATALOGUE,body)
+        return axios.post(API_ENDPOINTS.CATALOGUE.FETCH_ALL_CATALOGUE, body)
     },
-    getCatalogueShortSpecObj: (catItem) =>{
+    getCatalogueShortSpecObj: (catItem) => {
         const ComputerTypes = ['all-in-one', 'chromebook', 'desktop', 'notebook']
         const DisplayTypes = ['monitor', 'tablet']
-        if(!catItem.type) return {}
+        if (!catItem.type) return {}
         if (ComputerTypes.includes(catItem.type.toLowerCase())) {
             return {
                 'processor': catItem.processor,
@@ -65,7 +66,8 @@ export const catalogueService = {
             return {}
         }
     },
-    getGroupedItemData: (item) =>{
+
+    getGroupedItemData: (item) => {
         return [
             {
                 name: 'brand',
@@ -240,6 +242,31 @@ export const catalogueService = {
                 value: item.curriculum,
                 display_text: "Curriculum",
                 group: 'more_info'
-            }]
+            },
+            {
+                name: 'cover_image',
+                value: item.cover_image,
+                display_text: "Cover Image",
+                group: 'more_info'
+            }
+            ]
+    },
+
+    getCatalogueCoverImage: (coverImage: { uuid: string, extension: string }) => {
+        try {
+            if (coverImage.extension) {
+                return `${catalogueImageURL}/${coverImage.uuid}/original.${coverImage.extension.toLowerCase()}`
+            } else
+                return ''
+        } catch (e) {
+            return ''
+        }
+    },
+    getExcGstPrice: (priceIncGst: number) => {
+        if (priceIncGst) {
+            return (priceIncGst / 1.1).toFixed(2)
+        } else {
+            return 0
+        }
     }
 }

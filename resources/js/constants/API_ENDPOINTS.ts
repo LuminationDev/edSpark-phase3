@@ -113,6 +113,18 @@ export const API_ENDPOINTS: Endpoints = appendServerURL({
         FETCH_ALL_CATALOGUE_VENDORS : '/fetchAllCatalogueVendors',
         FETCH_ALL_CATALOGUE: '/fetchAllCatalogue'
     },
+    CART:{
+        GET_CART: '/quote/cart',
+        ADD_ITEM_TO_CART: '/quote/cart',
+        UPDATE_QUANTITY_CART: '/quote/cart',
+        DELETE_ITEM_CART: '/quote/cart',
+        CLEAR_CART:'/quote/cart',
+        GET_CART_TOTAL:'/quote/cart/total',
+        CHECKOUT_CART: '/quote/cart/checkout'
+    },
+    QUOTE:{
+        GET_QUOTE: '/quote/list'
+    },
     LIKE: {
         LIKE: `/like`,
         FETCH_ALL_LIKES: `/fetchAllLikes`,

@@ -29,13 +29,15 @@ class LoginController extends Controller
             $request->session()->put('state', $state);
 
             $user = $this->getOktaUser();
-
+            Log::info('Attempting login ' . $user->email);
             $localUser = $this->updateOrCreateLocalUser($user);
-
             Auth::login($localUser);
+            Log::info('Success login ' . $user->email);
+
 
             return redirect('/dashboard');
         } catch (\Throwable $e) {
+            Log::error('Failed login ' . $user->email);
             return redirect('/error?errtype=failed+login', 302);
         }
     }

@@ -39,6 +39,7 @@ import TheHardware from "@/js/pages/TheHardware.vue";
 import TheHome from "@/js/pages/TheHome.vue";
 import ThePartner from "@/js/pages/ThePartner.vue";
 import ThePartnerWelcome from "@/js/pages/ThePartnerWelcome.vue";
+import TheQuote from '@/js/pages/TheQuote.vue'
 import TheSchool from "@/js/pages/TheSchool.vue";
 import TheTechnology from "@/js/pages/TheTechnology.vue";
 import {useAuthStore} from '@/js/stores/useAuthStore';
@@ -422,6 +423,15 @@ const routes: any = [
             navigation: false,
             requiresAuth: true,
         }
+    },
+    {
+        name: 'quote',
+        path: '/catalogue/quote',
+        component: TheQuote,
+        meta: {
+            navigation: false,
+            requiresAuth: true,
+        },
     },
 
     {

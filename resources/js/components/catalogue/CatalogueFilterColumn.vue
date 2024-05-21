@@ -1,8 +1,9 @@
 <script setup>
 
+import GenericButton from "@/js/components/button/GenericButton.vue";
 import CatalogueFilterGroup from "@/js/components/catalogue/CatalogueFilterGroup.vue";
+import CataloguePerPageSelector from "@/js/components/catalogue/CataloguePerPageSelector.vue";
 import CataloguePriceSlider from "@/js/components/catalogue/CataloguePriceSlider.vue";
-import VueNoUiSlider from "@/js/components/slider/VueNoUiSlider.vue";
 import Loader from "@/js/components/spinner/Loader.vue";
 
 const props = defineProps({
@@ -23,6 +24,7 @@ const selectedBrand = defineModel('selectedBrand')
 const selectedType = defineModel('selectedType')
 const selectedVendor = defineModel('selectedVendor')
 const priceRange = defineModel('priceRange')
+const perPage = defineModel('perPage')
 
 
 </script>
@@ -41,6 +43,15 @@ const priceRange = defineModel('priceRange')
         v-else
         class="flex flex-col"
     >
+        <router-link to="/catalogue/quote">
+            <GenericButton
+                :callback="() => {}"
+                type="teal"
+            >
+                View Quotes
+            </GenericButton>
+        </router-link>
+
         <CatalogueFilterGroup
             v-if="typeList.length"
             v-model="typeList"
@@ -71,5 +82,6 @@ const priceRange = defineModel('priceRange')
             :default-show-filter="false"
         />
         <CataloguePriceSlider v-model:price-range="priceRange" />
+        <CataloguePerPageSelector v-model="perPage" />
     </div>
 </template>

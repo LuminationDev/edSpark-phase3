@@ -47,4 +47,12 @@ class Catalogue extends Model
     {
         return trim($value);
     }
+
+    public static function findActiveItemByReference($unique_reference)
+    {
+        $activeVersionId = Catalogueversion::getActiveCatalogueId();
+        return self::where('unique_reference', $unique_reference)
+            ->where('version_id', $activeVersionId)
+            ->first();
+    }
 }

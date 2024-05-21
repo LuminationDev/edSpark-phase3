@@ -2,10 +2,11 @@
 import {storeToRefs} from "pinia";
 import {computed, onMounted, ref, watch} from 'vue'
 
+import CatalogueAddToQuoteButton from "@/js/components/catalogue/CatalogueAddToQuoteButton.vue";
 import CatalogueCardDescGenerator from "@/js/components/catalogue/CatalogueCardDescGenerator.vue";
-import {catalogueImageURL} from "@/js/constants/serverUrl";
 import {catalogueService} from "@/js/service/catalogueService";
 import {useCatalogueStore} from "@/js/stores/useCatalogueStore";
+import {useQuoteStore} from "@/js/stores/useQuoteStore";
 import {CatalogueItemType} from "@/js/types/catalogueTypes";
 
 const props = defineProps({
@@ -24,6 +25,9 @@ const emits = defineEmits(['addItemToCompareBasket'])
 const catalogueStore = useCatalogueStore()
 const {compareBasket} = storeToRefs(catalogueStore)
 
+const quoteStore = useQuoteStore()
+
+
 // handle adding item to compare list
 const itemCompareStatus = ref(false)
 
@@ -37,8 +41,8 @@ watch(itemCompareStatus, () => {
     }
 })
 
-watch(compareBasket, ()=>{
-    if(!compareBasket.value.some(item => item.unique_reference === props.catItem.unique_reference)){
+watch(compareBasket, () => {
+    if (!compareBasket.value.some(item => item.unique_reference === props.catItem.unique_reference)) {
         itemCompareStatus.value = false
     }
 })
@@ -63,17 +67,23 @@ const {
     brand,
     type,
     name,
-    image,
-    price_inc_gst
+    price_inc_gst,
+    cover_image
 } = props.catItem
 
 const catCoverImageUrl = computed(() => {
-    return catalogueImageURL + image
+    return catalogueService.getCatalogueCoverImage(cover_image);
+})
+
+const priceExtGst = computed(() => {
+    return catalogueService.getExcGstPrice(price_inc_gst)
 })
 
 const catCardShortSpec = computed(() => {
     return catalogueService.getCatalogueShortSpecObj(props.catItem)
 })
+
+
 
 </script>
 
@@ -123,9 +133,9 @@ const catCardShortSpec = computed(() => {
             </div>
             <div class="flex flex-row mb-2 mt-auto priceAndCompareRow">
                 <div class="price text-xl">
-                    {{ "$" + price_inc_gst }} <span
+                    {{ "$" + priceExtGst }} <span
                         class="font-light text-base"
-                    > inc. GST</span>
+                    > ext. GST</span>
                 </div>
                 <div
                     class="compareTickBox flex flex-row gap-2 ml-auto"
@@ -141,6 +151,11 @@ const catCardShortSpec = computed(() => {
                         Compare
                     </div>
                 </div>
+            </div>
+            <div class="addToQuoteRow flex w-full">
+                <CatalogueAddToQuoteButton
+                    :cat-item="props.catItem"
+                />
             </div>
         </div>
     </div>

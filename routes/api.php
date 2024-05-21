@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AutoSaveController;
+use App\Http\Controllers\CartController;
 use App\Http\Controllers\CatalogueController;
 use App\Http\Controllers\FeedbackController;
 use App\Http\Controllers\LabelController;
@@ -189,6 +190,18 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::get('/actionplans', [SurveyController::class, 'getUserActionPlan']);
         Route::post('/answer', [SurveyController::class, 'saveUserAnswerToQuestion']);
         Route::delete('/domain/{domain_id}', [SurveyController::class, 'resetUserSurveyDomain']);
+    });
+
+    Route::group(['prefix' => 'quote'], function () {
+        Route::get('/cart', [CartController::class, 'index']);
+        Route::post('/cart', [CartController::class, 'store']);
+        Route::put('/cart/{item_ref}/update', [CartController::class, 'update']);
+        Route::delete('/cart/{item_ref}', [CartController::class, 'destroyItem']);
+        Route::delete('/cart', [CartController::class, 'clear']);
+        Route::get('/cart/total', [CartController::class, 'total']);
+        Route::post('/cart/checkout', [CartController::class, 'checkout']);
+
+        Route::get('/list', [CartController::class, 'getActiveUserQuotes']);
     });
 
 
