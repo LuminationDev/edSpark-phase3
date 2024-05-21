@@ -97,7 +97,8 @@ const itemQuantitySubtotal = computed(() => {
                 <div class="col-span-3 grid nameAndSpec">
                     <span class="font-medium text-xl">
                         {{ props.itemData.brand + " - " + props.itemData.name }}</span>
-                    <span class="mb-4">
+                    <span class="mb-4 text-gray-600">
+                        {{ `Vendor: ${props.itemData.vendor}` }}
                         <CatalogueCardDescGenerator
                             :card-desc-obj="catCardShortSpec"
                         />
@@ -118,10 +119,10 @@ const itemQuantitySubtotal = computed(() => {
                     <span class="priceExcGst text-xl">{{ `\$${priceExtGst} exc. GST` }} </span>
                     <span class="priceIncGst text-lg text-slate-600">{{ `\$${itemQuantitySubtotal}` }} </span>
                     <div
+                        v-if="!displayOnly"
                         class="border-[1px] flex justify-self-end flex-row gap-4 itemQuantity mt-auto rounded-xl w-fit"
                     >
                         <div
-                            v-if="!displayOnly"
                             class="border-r-[1px] border-slate-300 cursor-pointer px-2"
                             @click="onClickDecrement"
                         >
@@ -129,12 +130,19 @@ const itemQuantitySubtotal = computed(() => {
                         </div>
                         <div> {{ itemQuantity }}</div>
                         <div
-                            v-if="!displayOnly"
                             class="border-l-[1px] border-slate-300 cursor-pointer px-2"
                             @click="onClickIncrement"
                         >
                             +
                         </div>
+                    </div>
+                    <div
+                        v-else
+                        class="flex justify-end flex-row text-right"
+                    >
+                        <span class="text-xl">{{
+                            `Qty. ${itemQuantity} ` + ((+itemQuantity || +itemQuantity > 1) ? 'unit' : 'units')
+                        }}</span>
                     </div>
                 </div>
             </div>

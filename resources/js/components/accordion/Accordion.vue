@@ -5,6 +5,7 @@ import ChevronDownIcon from "@/js/components/svg/chevron/ChevronDownIcon.vue";
 
 defineProps({
     title: String,
+    titleClasses: String,
 })
 
 const isOpen = ref(true)
@@ -32,7 +33,9 @@ const leave = (el) => {
             class="accordion-header cursor-pointer flex flex-row mb-4 text-main-darkTeal text-xl"
             @click="toggle"
         >
-            <h2>{{ title }}</h2>
+            <h2 :class="titleClasses">
+                {{ title }}
+            </h2>
             <ChevronDownIcon
                 class="h-6 ml-1 mt-0.5 w-6"
                 :class="{'rotate-180' :isOpen}"

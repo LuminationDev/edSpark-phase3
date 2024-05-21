@@ -34,7 +34,7 @@ const onClearQuote = () => {
         :title-paragraph="LandingHeroText['quote']['subtitle']"
         swoosh-color="teal"
     />
-    <div class="ml-8 mt-16 quotePageOuterContainer">
+    <div class="mt-16 mx-10 quotePageOuterContainer">
         <div
             v-for="(products, vendor) in quoteStore.getQuoteGroupedByVendor"
             :key="vendor + guid()"
@@ -53,22 +53,22 @@ const onClearQuote = () => {
                 />
             </div>
         </div>
-        <div class="col-span-10 otherRow">
+        <div class="col-span-10 flex justify-between flex-row otherRow">
+            <GenericButton
+                :callback="() => router.push('/catalogue')"
+                type="teal"
+            >
+                Back to catalogue
+            </GenericButton>
             <GenericButton
                 :callback="onClearQuote"
                 type="teal"
             >
                 Clear quote
             </GenericButton>
-            <GenericButton
-                :callback="() => router.push('/catalogue')"
-                type="teal"
-            >
-                back to catalogue
-            </GenericButton>
         </div>
     </div>
-    <div class="flex flex-col generatedQuoteContainer mt-10 mx-8">
+    <div class="flex flex-col generatedQuoteContainer mt-10 mx-10">
         <div class="font-medium text-main-darkTeal text-xl">
             Generated Quote
         </div>
