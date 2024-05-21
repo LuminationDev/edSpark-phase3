@@ -3,12 +3,16 @@ import {ref} from 'vue'
 
 import ChevronDownIcon from "@/js/components/svg/chevron/ChevronDownIcon.vue";
 
-defineProps({
-    title: String,
-    titleClasses: String,
+
+const props = defineProps({
+    defaultOpen: {
+        type: Boolean,
+        required: false,
+        default: false
+    }
 })
 
-const isOpen = ref(true)
+const isOpen = ref(props.defaultOpen)
 
 const toggle = () => {
     isOpen.value = !isOpen.value
@@ -30,16 +34,22 @@ const leave = (el) => {
 <template>
     <div>
         <div
-            class="accordion-header cursor-pointer flex flex-row mb-4 text-main-darkTeal text-xl"
+            class="accordion-header cursor-pointer flex flex-col text-main-darkTeal text-xl"
             @click="toggle"
         >
-            <h2 :class="titleClasses">
-                {{ title }}
-            </h2>
-            <ChevronDownIcon
-                class="h-6 ml-1 mt-0.5 w-6"
-                :class="{'rotate-180' :isOpen}"
-            />
+            <div class="flex flex-row">
+                <slot name="title" />
+                <ChevronDownIcon
+                    class="h-6 ml-1 mt-0.5 w-6"
+                    :class="{'rotate-180' :isOpen}"
+                />
+            </div>
+            <div
+                v-if="$slots.info"
+                class="!text-sm additionalInfo text-gray-600"
+            >
+                <slot name="info" />
+            </div>
         </div>
         <transition
             name="accordion"
@@ -51,7 +61,7 @@ const leave = (el) => {
                 v-show="isOpen"
                 class="accordion-content"
             >
-                <slot />
+                <slot name="content" />
             </div>
         </transition>
     </div>
