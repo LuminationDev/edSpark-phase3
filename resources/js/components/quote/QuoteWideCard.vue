@@ -140,7 +140,7 @@ const itemQuantitySubtotal = computed(() => {
                         v-else
                         class="flex justify-end flex-row text-right"
                     >
-                        <span class="text-xl">{{
+                        <span class="text-lg">{{
                             `Qty. ${itemQuantity} ` + ((+itemQuantity || +itemQuantity > 1) ? 'unit' : 'units')
                         }}</span>
                     </div>

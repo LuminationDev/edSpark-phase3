@@ -48,16 +48,16 @@ const getQuoteVendor = (quote) => {
                         :display-only="true"
                     />
                 </div>
-                <div class="font-semibold genQuoteTotal ml-auto text-xl">
-                    {{ `Total price (ex. GST): ${quote.total_price_ex_gst}` }}
-                </div>
-                <div>
+                <div class="flex justify-between flex-row">
                     <GenericButton
                         :callback="() => {}"
                         type="teal"
                     >
                         Download quote
                     </GenericButton>
+                    <div class="font-semibold genQuoteTotal text-lg">
+                        {{ `Total price (ex. GST): ${quote.total_price_ex_gst}` }}
+                    </div>
                 </div>
             </Accordion>
         </div>
