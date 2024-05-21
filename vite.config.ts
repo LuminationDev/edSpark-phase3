@@ -41,6 +41,8 @@ export default defineConfig({
         alias: {
             '@': fileURLToPath(new URL('./resources', import.meta.url)),
             '~trix': path.resolve(__dirname, 'node_modules/trix'),
+            'nouislider': path.resolve(__dirname, 'node_modules/nouislider/dist/nouislider.js'),
+
         }
     },
     optimizeDeps: {
