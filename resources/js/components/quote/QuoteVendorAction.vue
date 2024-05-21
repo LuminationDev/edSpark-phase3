@@ -20,7 +20,8 @@ const emits = defineEmits([])
 const quoteStore = useQuoteStore()
 
 const onClickGenerate = () =>{
-    quoteStore.calculateSubtotalPerVendor(props.quoteVendor)
+    // quoteStore.calculateSubtotalPerVendor(props.quoteVendor)
+    quoteStore.checkoutVendor(props.quoteVendor)
 }
 const subtotalIncGst = computed(() =>{
     return quoteStore.calculateSubtotalPerVendor(props.quoteVendor)

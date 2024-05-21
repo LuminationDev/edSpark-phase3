@@ -28,6 +28,11 @@ export interface CatalogueItemType {
     image: string;
     product_number: string | null;
     price_expiry: string | null;
+    cover_image: {
+        uuid: string;
+        extension: string;
+    },
+    quantity?: number;
 }
 
 export interface CatalogueGroupedItemType {

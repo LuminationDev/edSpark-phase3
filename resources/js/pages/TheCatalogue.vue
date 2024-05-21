@@ -3,17 +3,14 @@ import "@hennge/vue3-pagination/dist/vue3-pagination.css";
 
 import VPagination from "@hennge/vue3-pagination";
 import {watchDebounced} from "@vueuse/core";
-import axios from "axios";
 import {storeToRefs} from "pinia";
 import {computed, onMounted, Ref, ref, watch} from "vue";
 import {useRouter} from "vue-router";
 
 import BaseLandingHero from "@/js/components/bases/BaseLandingHero.vue";
-import GenericButton from "@/js/components/button/GenericButton.vue";
 import CatalogueCard from "@/js/components/catalogue/CatalogueCard.vue";
 import CatalogueComparisonBanner from "@/js/components/catalogue/cataloguecomparison/CatalogueComparisonBanner.vue";
 import CatalogueFilterColumn from "@/js/components/catalogue/CatalogueFilterColumn.vue";
-import CataloguePerPageSelector from "@/js/components/catalogue/CataloguePerPageSelector.vue";
 import Loader from "@/js/components/spinner/Loader.vue";
 import useErrorMessage from "@/js/composables/useErrorMessage";
 import usePagination from "@/js/composables/usePagination";
@@ -21,12 +18,16 @@ import {LandingHeroText} from "@/js/constants/PageBlurb";
 import {catalogueService} from "@/js/service/catalogueService";
 import {useCatalogueStore} from "@/js/stores/useCatalogueStore";
 import {useQuoteStore} from "@/js/stores/useQuoteStore";
-import {CatalogueFilterField, CatalogueItemType} from "@/js/types/catalogueTypes";
+import {CatalogueFilterField} from "@/js/types/catalogueTypes";
 
 
-// const catalogueList: Ref<CatalogueItemType[] | []> = ref([]);
 const {catalogueList} = storeToRefs(useCatalogueStore())
-const {quote} = storeToRefs(useQuoteStore())
+const quoteStore = useQuoteStore()
+const {quote} = storeToRefs(quoteStore)
+onMounted(async () => {
+    await quoteStore.initializeQuote()
+})
+
 const categoryList = ref([])
 const brandList = ref([])
 const typeList = ref([])
@@ -160,6 +161,7 @@ const updateOtherFilters = (available_fields) => {
 watch(selectedCategory, async () => {
     if (selectedBrand.value.length === 0 && selectedType.value.length === 0 && selectedVendor.value.length === 0) {
         primaryFilter.value = CatalogueFilterField.Category
+        currentPage.value = 1
         await fetchCatalogueAndUpdateOtherFilters(CatalogueFilterField.Category, selectedCategory.value, additionalFilters.value, currentPage.value, perPage.value)
     } else {
         await fetchCatalogueAndUpdateOtherFilters(primaryFilter.value, primarySelectedValues.value, additionalFilters.value, currentPage.value, perPage.value)
@@ -194,19 +196,12 @@ watch(selectedVendor, async () => {
 })
 
 watchDebounced(priceRange, async () => {
-    console.log(priceRange.value)
     await fetchCatalogueAndUpdateOtherFilters(primaryFilter.value, primarySelectedValues.value, additionalFilters.value, currentPage.value, perPage.value)
 }, {deep: true, debounce: 800, maxWait: 1000})
 
 watch([currentPage, perPage], async () => {
-    console.log('primary filter is  ' + primaryFilter.value)
     await fetchCatalogueAndUpdateOtherFilters(primaryFilter.value, primarySelectedValues.value, additionalFilters.value, currentPage.value, perPage.value)
 })
-
-watch([primaryFilter, selectedType, selectedCategory, selectedBrand, selectedVendor], () => {
-    currentPage.value = 1
-})
-
 const handleClickCatalogueCard = (reference) => {
     router.push({
         name: 'catalogue-single', params: {
@@ -216,33 +211,6 @@ const handleClickCatalogueCard = (reference) => {
 
 }
 
-
-onMounted(() =>{
-    axios.get('http://localhost:8000/api/catalogue/cart').then(res =>{
-        console.log(res.data)
-    })
-    // const testData  = {
-    //     unique_reference: "AC-000002",
-    //     quantity: 2
-    // }
-    // axios.post('http://localhost:8000/api/catalogue/cart',testData).then(res =>{
-    //     console.log(res.data)
-    // })
-})
-
-const handleTestButton = () =>{
-    const testData  = {
-        unique_reference: "AC-000002",
-        quantity: 20
-    }
-    // axios.put('http://localhost:8000/api/catalogue/cart/AC-000001/update',testData).then(res =>{
-    //     console.log(res.data)
-    // })
-    axios.delete('http://localhost:8000/api/catalogue/cart').then(res =>{
-        console.log(res.data)
-    })
-
-}
 
 </script>
 
@@ -254,12 +222,6 @@ const handleTestButton = () =>{
     />
     <div class="cataloguePageOuterContainer grid grid-cols-10 mt-16">
         <div class="col-span-2 flex flex-col gap-2 ml-8 pr-8">
-            <GenericButton
-                type="teal"
-                :callback="handleTestButton"
-            >
-                test
-            </GenericButton>
             <CatalogueFilterColumn
                 v-model:brand-list="brandList"
                 v-model:type-list="typeList"
@@ -270,9 +232,9 @@ const handleTestButton = () =>{
                 v-model:selected-vendor="selectedVendor"
                 v-model:selected-category="selectedCategory"
                 v-model:price-range="priceRange"
+                v-model:per-page="perPage"
                 :is-filter-loading="isFilterLoading"
             />
-            <CataloguePerPageSelector v-model="perPage" />
         </div>
         <div v-if="error.status ">
             {{ error.message }}
@@ -308,7 +270,6 @@ const handleTestButton = () =>{
                     @update:model-value="handleChangePageNumber"
                 />
             </div>
-            <pre> {{ quote }}</pre>
         </div>
 
         <div
