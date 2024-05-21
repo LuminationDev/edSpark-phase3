@@ -111,6 +111,7 @@ class CreateCatalogueversion extends CreateRecord
 
         } catch (\Exception $e) {
             Log::error('failed inserting into database');
+            Log::error($e->getMessage());
         }
 
 
