@@ -27,7 +27,7 @@ return new class extends Migration
             // Assuming the users table is named 'users'. Adjust if different.
             $table->foreign('user_id')
                 ->references('id')->on('users')
-                ->onDelete('cascade');  // If a user is deleted, associated profiles are also deleted. Adjust as needed.
+                ->onDelete('no action');  // If a user is deleted, associated profiles are also deleted. Adjust as needed.
         });
     }
 

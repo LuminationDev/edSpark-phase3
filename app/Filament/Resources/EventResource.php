@@ -54,16 +54,16 @@ class EventResource extends Resource
             if (in_array($category, $categoriesToInclude)) {
                 $labelColumns[] =
                     Forms\Components\Section::make(ucfirst($category))
-                        ->schema([
-                            Forms\Components\CheckboxList::make("labels")
-                                ->label("")
-                                ->extraAttributes(['class' => 'text-primary-600'])
-                                ->options($labels->pluck('value', 'id')->toArray())
-                                ->relationship('labels', 'value', function ($query) use ($category) {
-                                    $query->where('type', $category)->orderByRaw('CAST(labels.id AS SIGNED)');
-                                })
-                                ->columns(3)
-                        ]);
+                    ->schema([
+                        Forms\Components\CheckboxList::make("labels")
+                            ->label("")
+                            ->extraAttributes(['class' => 'text-primary-600'])
+                            ->options($labels->pluck('value', 'id')->toArray())
+                            ->relationship('labels', 'value', function ($query) use ($category) {
+                                $query->where('type', $category);
+                            })
+                            ->columns(3)
+                    ]);
             }
         }
 
