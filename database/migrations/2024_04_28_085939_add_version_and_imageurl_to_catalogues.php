@@ -11,8 +11,8 @@ return new class extends Migration {
     public function up(): void
     {
         Schema::table('catalogues', function (Blueprint $table) {
-            $table->unsignedBigInteger('version_id')->after('id');
-            $table->string('cover_image')->after('vendor');
+            $table->unsignedBigInteger('version_id')->nullable()->after('id');
+            $table->string('cover_image')->nullable()->after('vendor');
         });
     }
 
