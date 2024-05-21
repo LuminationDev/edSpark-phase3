@@ -242,7 +242,14 @@ export const catalogueService = {
                 value: item.curriculum,
                 display_text: "Curriculum",
                 group: 'more_info'
-            }]
+            },
+            {
+                name: 'cover_image',
+                value: item.cover_image,
+                display_text: "Cover Image",
+                group: 'more_info'
+            }
+            ]
     },
 
     getCatalogueCoverImage: (coverImage: { uuid: string, extension: string }) => {
