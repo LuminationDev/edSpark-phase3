@@ -1,8 +1,10 @@
 <script setup>
+import {onMounted} from "vue";
 import {useRouter} from "vue-router";
 
 import BaseLandingHero from "@/js/components/bases/BaseLandingHero.vue";
 import GenericButton from "@/js/components/button/GenericButton.vue";
+import GeneratedQuoteDisplay from "@/js/components/catalogue/quote/GeneratedQuoteDisplay.vue";
 import QuoteVendorAction from "@/js/components/quote/QuoteVendorAction.vue";
 import QuoteVendorListing from "@/js/components/quote/QuoteVendorListing.vue";
 import {LandingHeroText} from "@/js/constants/PageBlurb";
@@ -14,7 +16,12 @@ const props = defineProps({})
 const emits = defineEmits([])
 const router = useRouter()
 const quoteStore = useQuoteStore()
-const handleClearQuote = () => {
+
+onMounted(() => {
+    quoteStore.initializeQuote()
+    quoteStore.getUserGenQuote()
+})
+const onClearQuote = () => {
     quoteStore.clearQuote()
 }
 
@@ -27,7 +34,7 @@ const handleClearQuote = () => {
         :title-paragraph="LandingHeroText['quote']['subtitle']"
         swoosh-color="teal"
     />
-    <div class="ml-8 mt-16 quotePageOuterContainer">
+    <div class="mt-16 mx-10 quotePageOuterContainer">
         <div
             v-for="(products, vendor) in quoteStore.getQuoteGroupedByVendor"
             :key="vendor + guid()"
@@ -46,19 +53,25 @@ const handleClearQuote = () => {
                 />
             </div>
         </div>
-        <div class="col-span-10 otherRow">
-            <GenericButton
-                :callback="handleClearQuote"
-                type="teal"
-            >
-                Clear quote
-            </GenericButton>
+        <div class="col-span-10 flex justify-between flex-row otherRow">
             <GenericButton
                 :callback="() => router.push('/catalogue')"
                 type="teal"
             >
-                back to catalogue
+                Back to catalogue
+            </GenericButton>
+            <GenericButton
+                :callback="onClearQuote"
+                type="teal"
+            >
+                Clear quote
             </GenericButton>
         </div>
+    </div>
+    <div class="flex flex-col generatedQuoteContainer mt-10 mx-10">
+        <div class="font-medium text-main-darkTeal text-xl">
+            Generated Quote
+        </div>
+        <GeneratedQuoteDisplay />
     </div>
 </template>

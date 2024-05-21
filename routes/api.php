@@ -200,6 +200,8 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::delete('/cart', [CartController::class, 'clear']);
         Route::get('/cart/total', [CartController::class, 'total']);
         Route::post('/cart/checkout', [CartController::class, 'checkout']);
+
+        Route::get('/list', [CartController::class, 'getActiveUserQuotes']);
     });
 
 
