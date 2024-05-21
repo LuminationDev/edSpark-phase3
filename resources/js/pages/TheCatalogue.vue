@@ -159,9 +159,6 @@ const updateOtherFilters = (available_fields) => {
 }
 
 watch(selectedCategory, async () => {
-    console.log('inside watcher category')
-    currentPage.value = 1
-
     if (selectedBrand.value.length === 0 && selectedType.value.length === 0 && selectedVendor.value.length === 0) {
         primaryFilter.value = CatalogueFilterField.Category
         currentPage.value = 1
@@ -172,13 +169,8 @@ watch(selectedCategory, async () => {
 })
 
 watch(selectedBrand, async () => {
-    console.log('inside watcher brand')
-    currentPage.value = 1
-
     if (selectedVendor.value.length === 0 && selectedType.value.length === 0 && selectedCategory.value.length === 0) {
         primaryFilter.value = CatalogueFilterField.Brand;
-        currentPage.value = 1
-
         await fetchCatalogueAndUpdateOtherFilters(CatalogueFilterField.Brand, selectedBrand.value, additionalFilters.value, currentPage.value, perPage.value)
     } else {
         await fetchCatalogueAndUpdateOtherFilters(primaryFilter.value, primarySelectedValues.value, additionalFilters.value, currentPage.value, perPage.value)
@@ -186,9 +178,6 @@ watch(selectedBrand, async () => {
     }
 })
 watch(selectedType, async () => {
-    console.log('inside watcher type')
-    currentPage.value = 1
-
     if (selectedBrand.value.length === 0 && selectedVendor.value.length === 0 && selectedCategory.value.length === 0) {
         primaryFilter.value = CatalogueFilterField.Type;
         await fetchCatalogueAndUpdateOtherFilters(CatalogueFilterField.Type, selectedType.value, additionalFilters.value, currentPage.value, perPage.value)
@@ -198,8 +187,6 @@ watch(selectedType, async () => {
     }
 })
 watch(selectedVendor, async () => {
-    console.log('inside watcher  vendor')
-    currentPage.value = 1
     if (selectedBrand.value.length === 0 && selectedType.value.length === 0 && selectedCategory.value.length === 0) {
         primaryFilter.value = CatalogueFilterField.Vendor;
         await fetchCatalogueAndUpdateOtherFilters(CatalogueFilterField.Vendor, selectedVendor.value, additionalFilters.value, currentPage.value, perPage.value)
@@ -209,21 +196,12 @@ watch(selectedVendor, async () => {
 })
 
 watchDebounced(priceRange, async () => {
-    console.log(priceRange.value)
     await fetchCatalogueAndUpdateOtherFilters(primaryFilter.value, primarySelectedValues.value, additionalFilters.value, currentPage.value, perPage.value)
 }, {deep: true, debounce: 800, maxWait: 1000})
 
 watch([currentPage, perPage], async () => {
-    // this receive 4 first so
-    console.log('primary filter is  ' + primaryFilter.value)
-    console.log(currentPage.value)
     await fetchCatalogueAndUpdateOtherFilters(primaryFilter.value, primarySelectedValues.value, additionalFilters.value, currentPage.value, perPage.value)
 })
-
-// watch([primaryFilter, selectedType, selectedCategory, selectedBrand, selectedVendor], () => {
-//     currentPage.value = 1
-// })
-
 const handleClickCatalogueCard = (reference) => {
     router.push({
         name: 'catalogue-single', params: {

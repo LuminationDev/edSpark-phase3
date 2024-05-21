@@ -89,6 +89,7 @@ class CatalogueController extends Controller
         $field = $request->input('field');
         $values = $request->input('value') ?? [];
         $perPage = $request->input('per_page', 20);
+        $requestedPage = $request->query('page', 1);
         $additionalFilters = $request->input('additional_filters', []);
 
         // Start building the base query
@@ -128,8 +129,13 @@ class CatalogueController extends Controller
             }
         }
 
-        // Paginate the results
-        $paginatedQueryResult = $query->paginate($perPage);
+        // Paginate the results and handle page overflow
+        $paginatedQueryResult = $query->paginate($perPage, ['*'], 'page', $requestedPage);
+
+        // Adjust the page if the requested page is out of bounds
+        if ($requestedPage > $paginatedQueryResult->lastPage()) {
+            $paginatedQueryResult = $query->paginate($perPage, ['*'], 'page', 1);
+        }
 
         // Transform results to JSON format
         $itemResults = $paginatedQueryResult->map(function ($item) {
