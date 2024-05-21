@@ -8,8 +8,10 @@ import {useRouter} from "vue-router";
 import GenericButton from "@/js/components/button/GenericButton.vue";
 import CatalogueComparisonEmptySlot
     from "@/js/components/catalogue/cataloguecomparison/CatalogueComparisonEmptySlot.vue";
+import ImageWithFallback from "@/js/components/global/ImageWithFallback.vue";
 import Close from "@/js/components/svg/Close.vue";
 import {catalogueImageURL} from "@/js/constants/serverUrl";
+import {catalogueService} from "@/js/service/catalogueService";
 import {useCatalogueStore} from "@/js/stores/useCatalogueStore";
 
 const catalogueStore = useCatalogueStore()
@@ -29,8 +31,12 @@ const handleClickCompare = () => {
     const skusList = compareBasket.value.map(item => item.unique_reference)
     router.push({name: 'compare-item', query: {sku: skusList}})
 }
-const handleClickClearCompare= () =>{
+const handleClickClearCompare = () => {
     catalogueStore.clearComparisonBasket()
+}
+
+const catCoverImageUrl = (item) => {
+    return catalogueService.getCatalogueCoverImage(item.cover_image);
 }
 </script>
 
@@ -65,11 +71,12 @@ const handleClickClearCompare= () =>{
                     @click="() =>handleRemoveFromCompareBasket(item.unique_reference)"
                 />
             </div>
-            <img
+            <ImageWithFallback
                 class="max-h-full"
-                :src="catalogueImageURL + item.image"
-                alt="''"
-            >
+                image-type="catalogue"
+                :image-url="catCoverImageUrl(item)"
+                image-alt="item"
+            />
         </div>
 
         <CatalogueComparisonEmptySlot

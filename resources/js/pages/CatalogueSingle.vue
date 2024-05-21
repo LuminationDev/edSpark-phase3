@@ -209,7 +209,6 @@ const structuredCatItemData = computed(() => {
 
 
 const catCoverImageUrl = computed(() => {
-    console.log(itemData.value.cover_image)
     return catalogueService.getCatalogueCoverImage(itemData.value.cover_image);
 })
 

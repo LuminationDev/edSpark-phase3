@@ -5,18 +5,16 @@ import {useRoute} from "vue-router";
 
 import BaseLandingHero from "@/js/components/bases/BaseLandingHero.vue";
 import CatalogueComparisonTable from "@/js/components/catalogue/cataloguecomparison/CatalogueComparisonTable.vue";
+import ImageWithFallback from "@/js/components/global/ImageWithFallback.vue";
 import Loader from "@/js/components/spinner/Loader.vue";
 import ChevronLeftNavIcon from "@/js/components/svg/ChevronLeftNavIcon.vue";
 import {LandingHeroText} from "@/js/constants/PageBlurb";
-import {catalogueImageURL} from "@/js/constants/serverUrl";
 import {catalogueService} from "@/js/service/catalogueService";
 import {useCatalogueStore} from "@/js/stores/useCatalogueStore";
 
 const route = useRoute()
 const catalogueStore = useCatalogueStore()
 const {compareBasket} = storeToRefs(catalogueStore)
-console.log('welcoem to comparison page')
-console.log(route.query.sku)
 const skusList = ref(route.query.sku)
 const isLoading = ref(true)
 
@@ -75,7 +73,9 @@ const getGroupedItemAttribute = (item, attributeName) => {
         return ""
     }
 }
-
+const catCoverImageUrl = (item) => {
+    return catalogueService.getCatalogueCoverImage(item);
+}
 
 </script>
 
@@ -89,7 +89,8 @@ const getGroupedItemAttribute = (item, attributeName) => {
                 to="/catalogue"
                 class="flex items-end flex-row text-white underline"
             >
-                <ChevronLeftNavIcon class="h-5 mb-[1px] w-5" /> <span>Return to catalogue</span>
+                <ChevronLeftNavIcon class="h-5 mb-[1px] w-5" />
+                <span>Return to catalogue</span>
             </router-link>
         </template>
     </BaseLandingHero>
@@ -104,12 +105,12 @@ const getGroupedItemAttribute = (item, attributeName) => {
                 :key="index"
                 class="flex flex-col place-items-center"
             >
-                <img
-                    v-if="getGroupedItemAttribute(item,'image')"
-                    :src="catalogueImageURL + getGroupedItemAttribute(item,'image')"
+                <ImageWithFallback
                     class="h-[200px] mb-2 object-contain p-4 w-catW"
-                    alt="icon"
-                >
+                    image-type="catalogue"
+                    :image-url="catCoverImageUrl(getGroupedItemAttribute(item,'cover_image'))"
+                    image-alt="item"
+                />
                 <div class="border-b-[1px] border-slate-300 catItemName mb-4 text-2xl">
                     {{ getGroupedItemAttribute(item, "name") }}
                 </div>
