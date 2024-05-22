@@ -5,7 +5,9 @@ namespace App\Helpers;
 use Filament\Forms\Components\FileUpload;
 use Illuminate\Support\Str;
 use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
-class EdSparkFormComponents {
+
+class EdSparkFormComponents
+{
     public static function createFileUploadComponent(string $directory, string $prependFileName): FileUpload
     {
         return FileUpload::make('cover_image')
@@ -16,7 +18,7 @@ class EdSparkFormComponents {
             ->directory($directory)
             ->acceptedFileTypes(['image/jpeg', 'image/jpg', 'image/png'])
             ->getUploadedFileNameForStorageUsing(function (TemporaryUploadedFile $file) use ($prependFileName): string {
-                return (string)str($prependFileName . Str::random(30) . time() . '.' . $file->getClientOriginalExtension())->prepend('edSpark-event-');
+                return (string)str($prependFileName . Str::random(30) . time() . '.' . $file->getClientOriginalExtension());
             });
     }
 }

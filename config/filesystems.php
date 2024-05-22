@@ -70,7 +70,7 @@ return [
                 'tries' => 3,
                 'interval' => 500,
                 'increase' => 'exponential'
-            ]
+            ],
         ],
         'azure_catalogue' => [
             'driver' => 'azure',
