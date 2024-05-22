@@ -4,6 +4,7 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\EventResource\Pages;
 use App\Helpers\CustomHtmlable;
+use App\Helpers\EdSparkFormComponents;
 use App\Helpers\RoleHelpers;
 use App\Helpers\StatusHelpers;
 use App\Helpers\UserRole;
@@ -26,7 +27,6 @@ use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 use Mohamedsabil83\FilamentFormsTinyeditor\Components\TinyEditor;
-use Outerweb\ImageLibrary\Models\Image;
 use SplFileInfo;
 
 use Closure;
@@ -84,16 +84,7 @@ class EventResource extends Resource
                             ->fileAttachmentsVisibility('public')
                             ->fileAttachmentsDirectory('public/uploads/event')
                             ->required(),
-                        Forms\Components\FileUpload::make('cover_image')
-                            ->label(new CustomHtmlable("Cover Image <span class='text-xs italic'> (500px * 500px / 1:1 aspect ratio] </span>"))
-                            ->validationAttribute('cover image')
-                            ->preserveFilenames()
-                            ->disk('azure')
-                            ->directory('uploads/event')
-                            ->acceptedFileTypes(['image/jpeg', 'image/jpg', 'image/png'])
-                            ->getUploadedFileNameForStorageUsing(function (TemporaryUploadedFile $file): string {
-                                return (string)str(Str::random(30) . time().$file->getClientOriginalExtension())->prepend('edSpark-event-');
-                            }),
+                        EdSparkFormComponents::createFileUploadComponent('uploads/event', 'edSpark-event-' ),
                         Forms\Components\Grid::make(2)
                             ->schema([
                                 Flatpickr::make('start_date')
@@ -228,7 +219,7 @@ class EventResource extends Resource
                             return env('AZURE_STORAGE_ENDPOINT') . env('AZURE_STORAGE_CONTAINER') .'/'. $imgPath;
                         } else {
                             return '';
-                    }
+                        }
                     }),
                 Tables\Columns\TextColumn::make('status')
                     ->label('Status')
