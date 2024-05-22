@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::table('advice_advicetype', function (Blueprint $table) {
             $table->foreign('advice_id')->references('id')->on('advices')->onDelete('cascade');
-            $table->foreign('advicetype_id')->references('id')->on('advice_types')->onDelete('cascade');
+            $table->foreign('advicetype_id')->references('id')->on('advice_types')->onDelete('no action');
         });
     }
 

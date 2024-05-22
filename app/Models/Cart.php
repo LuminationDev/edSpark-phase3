@@ -37,10 +37,8 @@ class Cart extends Model
             ->first();
 
         if ($cart) {
-            Log::info('fetched new cart');
             return $cart;
         } else {
-            Log::info('create new cart');
             return self::create([
                 'user_id' => $userId,
                 'version_id' => $catalogue_version,

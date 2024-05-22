@@ -2,6 +2,7 @@
 
 import GenericButton from "@/js/components/button/GenericButton.vue";
 import CatalogueFilterGroup from "@/js/components/catalogue/CatalogueFilterGroup.vue";
+import CataloguePerPageSelector from "@/js/components/catalogue/CataloguePerPageSelector.vue";
 import CataloguePriceSlider from "@/js/components/catalogue/CataloguePriceSlider.vue";
 import Loader from "@/js/components/spinner/Loader.vue";
 
@@ -23,6 +24,7 @@ const selectedBrand = defineModel('selectedBrand')
 const selectedType = defineModel('selectedType')
 const selectedVendor = defineModel('selectedVendor')
 const priceRange = defineModel('priceRange')
+const perPage = defineModel('perPage')
 
 
 </script>
@@ -80,5 +82,6 @@ const priceRange = defineModel('priceRange')
             :default-show-filter="false"
         />
         <CataloguePriceSlider v-model:price-range="priceRange" />
+        <CataloguePerPageSelector v-model="perPage" />
     </div>
 </template>

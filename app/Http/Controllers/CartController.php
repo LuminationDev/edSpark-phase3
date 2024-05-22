@@ -10,6 +10,7 @@ use App\Models\Quote;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
+use Outerweb\ImageLibrary\Models\Image;
 
 class CartController extends Controller
 {
@@ -100,7 +101,7 @@ class CartController extends Controller
 
 
         if (!$cartItem) {
-            return response()->json(['message' => 'Cart item not found'], 404);
+            return response()->json(['message' => 'Cart item not found'], 410);
         }
 
         $cartItem->update(['quantity' => $quantity]);
@@ -119,7 +120,7 @@ class CartController extends Controller
         })->first();
 
         if (!$cartItem) {
-            return response()->json(['message' => 'Cart item not found'], 404);
+            return response()->json(['message' => 'Cart item not found'], 410);
         }
 
         $cartItem->delete();
@@ -132,7 +133,6 @@ class CartController extends Controller
     {
         $user = Auth::user();
         $cart = Cart::where('user_id', $user->id)->first();
-
         if (!$cart) {
             return response()->json(['message' => 'Cart is already empty'], 200);
         }
@@ -158,45 +158,123 @@ class CartController extends Controller
         return response()->json(['total' => $total], 200);
     }
 
-    public function checkout()
+    public function checkout(Request $request)
     {
         $user = Auth::user();
-        $cart = Cart::with('cartItems.catalogue')->where('user_id', $user->id)->where('status', 'ACTIVE')->first();
+        $vendorName = $request->input('vendor');
+
+        // Retrieve the active cart for the user
+        $cart = Cart::with('cartItems.catalogue')
+            ->where('user_id', $user->id)
+            ->where('status', 'ACTIVE')
+            ->first();
 
         if (!$cart) {
             return response()->json(['message' => 'Cart is empty or already checked out'], 200);
         }
 
-        $quoteContent = $cart->cartItems->map(function ($item) {
+        // Filter cart items to only include those from the specified vendor
+        $vendorCartItems = $cart->cartItems->filter(function ($item) use ($vendorName) {
+            return $item->catalogue->vendor == $vendorName;
+        });
+
+        if ($vendorCartItems->isEmpty()) {
+            return response()->json(['message' => 'No items from the specified vendor in the cart'], 200);
+        }
+
+        // Generate quote content for the filtered items
+        $quoteContent = $vendorCartItems->map(function ($item) use ($cart) {
+            $itemCatalogue = $item->catalogue;
+            if ($itemCatalogue->cover_image) {
+                $itemImage = Image::where('id', $itemCatalogue->cover_image)->first();
+                $itemImageUUID = $itemImage->uuid ?? '';
+            } else {
+                $itemImageUUID = '';
+            }
+
             return [
+                'cart_id' => $cart->id,
                 'catalogue_id' => $item->catalogue_id,
+                'id' => $itemCatalogue->id,
+                'unique_reference' => $itemCatalogue->unique_reference,
+                'type' => $itemCatalogue->type,
+                'brand' => $itemCatalogue->brand,
+                'name' => $itemCatalogue->name,
+                'vendor' => $itemCatalogue->vendor,
+                'category' => $itemCatalogue->category,
+                'price_inc_gst' => $itemCatalogue->price_inc_gst,
+                'processor' => $itemCatalogue->processor,
+                'storage' => $itemCatalogue->storage,
+                'memory' => $itemCatalogue->memory,
+                'form_factor' => $itemCatalogue->form_factor,
+                'display' => $itemCatalogue->display,
+                'graphics' => $itemCatalogue->graphics,
+                'wireless' => $itemCatalogue->wireless,
+                'webcam' => $itemCatalogue->webcam,
+                'operating_system' => $itemCatalogue->operating_system,
+                'warranty' => $itemCatalogue->warranty,
+                'battery_life' => $itemCatalogue->battery_life,
+                'weight' => $itemCatalogue->weight,
+                'stylus' => $itemCatalogue->stylus,
+                'other' => $itemCatalogue->other,
+                'available_now' => $itemCatalogue->available_now,
+                'corporate' => $itemCatalogue->corporate,
+                'administration' => $itemCatalogue->administration,
+                'curriculum' => $itemCatalogue->curriculum,
+                'image' => $itemCatalogue->image,
+                'product_number' => $itemCatalogue->product_number,
+                'price_expiry' => $itemCatalogue->price_expiry,
+                'cover_image' => [
+                    'uuid' => $itemImageUUID,
+                    'extension' => $itemImage->file_extension ?? '',
+                ],
                 'quantity' => $item->quantity,
-                'price' => $item->catalogue->price,
-                'total' => $item->quantity * $item->catalogue->price,
+                'total' => $item->quantity * $item->catalogue->price_inc_gst,
+
             ];
         });
 
         $totalPrice = $quoteContent->sum('total');
 
+        // Create a new quote for the vendor items
         $quote = Quote::create([
             'user_id' => $user->id,
             'version_id' => $cart->version_id,
             'quote_content' => $quoteContent->toArray(),
-            'total_price_ex_gst' => $totalPrice,
-            'status' => 'COMPLETED',
-        ]);
-
-        // Mark the current cart as completed
-        $cart->update(['status' => 'COMPLETED']);
-
-        // Create a new active cart for the user
-        $newCart = Cart::create([
-            'user_id' => $user->id,
-            'version_id' => $cart->version_id,
+            'total_price_ex_gst' => number_format($totalPrice / 1.1, 2, '.', ''),
             'status' => 'ACTIVE',
         ]);
 
+        // Remove the checked out items from the cart
+        $cart->cartItems()->whereIn('id', $vendorCartItems->pluck('id'))->delete();
 
-        return response()->json(['message' => 'Checkout completed', 'quote' => $quote], 201);
+        // If the cart is empty after removing the items, mark it as completed
+        if ($cart->cartItems()->count() == 0) {
+            $cart->update(['status' => 'COMPLETED']);
+            // Create a new active cart for the user
+            $newCart = Cart::create([
+                'user_id' => $user->id,
+                'version_id' => $cart->version_id,
+                'status' => 'ACTIVE',
+            ]);
+        }
+
+        return response()->json(['message' => 'Checkout completed for vendor', 'quote' => $quote], 201);
     }
+
+    public function getActiveUserQuotes()
+    {
+        $user = Auth::user();
+
+        $quotes = Quote::where('user_id', $user->id)
+            ->where('version_id', Catalogueversion::getActiveCatalogueId())
+            ->where('status', "ACTIVE")->get();
+
+        if($quotes->isEmpty()){
+            return response()->json(['message' => 'No quotes found'], 410);
+        }
+        return response()->json(['message' => 'Fetch completed', 'quotes' => $quotes], 201);
+
+    }
+
 }

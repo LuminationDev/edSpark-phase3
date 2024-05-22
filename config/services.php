@@ -43,8 +43,8 @@ return [
         'client_id' => env('OKTA_CLIENT_ID'),
         'client_secret' => env('OKTA_CLIENT_SECRET'),
         'redirect' => env('OKTA_REDIRECT_URI'),
-        'authorization_server_id' => 'default',
-        'auth_server_id' => 'default',
+        'authorization_server_id' => env('OKTA_AUTH_SERVER_URL','default'),
+        'auth_server_id' => env('OKTA_AUTH_SERVER_URL', 'default'),
         'scopes' => ['edspark','email','address']
       ],
 

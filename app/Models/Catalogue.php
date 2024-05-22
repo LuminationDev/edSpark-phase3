@@ -50,7 +50,7 @@ class Catalogue extends Model
 
     public static function findActiveItemByReference($unique_reference)
     {
-        $activeVersionId = Catalogueversion::getActiveCatalogueId(); // Call the method correctly
+        $activeVersionId = Catalogueversion::getActiveCatalogueId();
         return self::where('unique_reference', $unique_reference)
             ->where('version_id', $activeVersionId)
             ->first();

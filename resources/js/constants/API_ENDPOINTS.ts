@@ -122,6 +122,9 @@ export const API_ENDPOINTS: Endpoints = appendServerURL({
         GET_CART_TOTAL:'/quote/cart/total',
         CHECKOUT_CART: '/quote/cart/checkout'
     },
+    QUOTE:{
+        GET_QUOTE: '/quote/list'
+    },
     LIKE: {
         LIKE: `/like`,
         FETCH_ALL_LIKES: `/fetchAllLikes`,
