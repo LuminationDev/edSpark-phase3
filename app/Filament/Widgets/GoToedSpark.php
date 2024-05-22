@@ -2,8 +2,6 @@
 
 namespace App\Filament\Widgets;
 
-use Filament\Tables\Actions\Action;
-use Filament\Tables\Table;
 use Filament\Widgets\Widget;
 
 class GoToedSpark extends Widget
