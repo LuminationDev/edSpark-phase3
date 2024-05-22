@@ -16,9 +16,9 @@ return new class extends Migration
         Schema::table('product_categories', function (Blueprint $table) {
             // FOREIGN KEY
             $table->foreign('brand_id')
-                ->references('id')->on('product_brands')->onDelete('cascade');
+                ->references('id')->on('product_brands')->onDelete('no action');
             $table->foreign('inventory_id')
-                ->references('id')->on('product_inventories')->onDelete('cascade');
+                ->references('id')->on('product_inventories')->onDelete('no action');
         });
     }
 

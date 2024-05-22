@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::table('capacities', function (Blueprint $table) {
             // FOREIGN KEY
             $table->foreign('event_id')
-                ->references('id')->on('events')->onDelete('cascade');
+                ->references('id')->on('events')->onDelete('no action');
         });
     }
 

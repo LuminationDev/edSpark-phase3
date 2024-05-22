@@ -21,6 +21,7 @@ class EventformatResource extends Resource
     protected static ?string $modelLabel= "Event format";
     protected static ?string $navigationGroup = 'Content Management';
     protected static ?string $navigationGroupIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationLabel = 'Event formats';
 
     protected static ?int $navigationSort = 4;
 

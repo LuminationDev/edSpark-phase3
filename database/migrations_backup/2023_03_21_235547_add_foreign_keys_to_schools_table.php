@@ -18,7 +18,7 @@ return new class extends Migration
             $table->foreign('site_id')
                 ->references('id')->on('sites')->onDelete('cascade');
             $table->foreign('owner_id')
-                ->references('id')->on('users')->onDelete('cascade');
+                ->references('id')->on('users')->onDelete('no action');
         });
     }
 

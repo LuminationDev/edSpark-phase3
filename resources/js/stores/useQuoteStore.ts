@@ -1,21 +1,25 @@
 import {useStorage} from "@vueuse/core";
+import {cloneDeep} from "lodash";
 import {defineStore} from "pinia";
+import {toast} from "vue3-toastify";
 
-import {CatalogueFilterField, CatalogueItemType} from "@/js/types/catalogueTypes";
+import {quoteService} from "@/js/service/quoteService";
+import {CatalogueItemType} from "@/js/types/catalogueTypes";
 
 export const useQuoteStore = defineStore('quote', {
     state: () => ({
         quote: useStorage('EDSPARK_CATALOGUE_QUOTE', [], localStorage, {mergeDefaults: true}),
         qouteCreationDate: useStorage('EDSPARK_QUOTE_CREATION_DATE', 0, localStorage),
         qouteUpdateDate: useStorage('EDSPARK_QUOTE_UPDATE_DATE', 0, localStorage),
-        quoteLoading: false
+        quoteLoading: false,
+        genQuote: []
 
     }),
     getters: {
         getQuote() {
             return this.quote
         },
-        getQuoteGroupedByVendor: (state) =>{
+        getQuoteGroupedByVendor: (state) => {
             return state.quote.reduce((acc, product) => {
                 const vendor = product.vendor;
                 if (!acc[vendor]) {
@@ -28,6 +32,17 @@ export const useQuoteStore = defineStore('quote', {
 
     },
     actions: {
+        async initializeQuote() {
+            try {
+                this.quoteLoading = true;
+                const quoteFromDb = await quoteService.getCart()
+                console.log(quoteFromDb)
+                this.quote = quoteFromDb;
+                this.quoteLoading = false;
+            } catch (e) {
+                console.log(e)
+            }
+        },
         addToQuote(item: CatalogueItemType) {
             const existingItem = this.quote.find(currentItem => currentItem.unique_reference === item.unique_reference);
 
@@ -40,15 +55,33 @@ export const useQuoteStore = defineStore('quote', {
         removeFromQuote(itemReference) {
             this.quote = this.quote.filter(item => item.unique_reference !== itemReference);
         },
-        changeQuantity(item, newQuantity) {
+        async changeQuantity(item, newQuantity) {
             const quoteItem = this.quote.find(quoteItem => quoteItem.unique_reference === item.unique_reference);
 
             if (quoteItem) {
+                const oldQuantity = quoteItem.quantity;
                 quoteItem.quantity = newQuantity;
+                try {
+                    await quoteService.updateItemQuantityInCart(item.unique_reference, newQuantity)
+                } catch (err) {
+                    console.log(oldQuantity)
+                    quoteItem.quantity = oldQuantity
+                    toast.error("Failed to update item, reverted to previous value")
+                }
             }
+
         },
-        clearQuote() {
+        async clearQuote() {
+            const oldQuote = cloneDeep(this.quote)
             this.quote = [];
+            try {
+                await quoteService.clearCart()
+            } catch (err) {
+                console.log('failed to empty cart ' + err.message)
+                this.quote = cloneDeep(oldQuote)
+                toast.error("Failed to empty cart. Try again")
+            }
+
         },
         calculateSubtotal(itemReference) {
             // Calculate the subtotal for a specific item
@@ -57,24 +90,41 @@ export const useQuoteStore = defineStore('quote', {
         },
         calculateSubtotalPerVendor(vendor: string) {
             const groupedQuote = this.getQuoteGroupedByVendor
-            if(groupedQuote[vendor]) {
+            if (groupedQuote[vendor]) {
                 const items = groupedQuote[vendor]
                 let subtotal = 0
-                for(const item of items){
+                for (const item of items) {
                     subtotal += (+item.price_inc_gst * +item.quantity)
                 }
                 return subtotal.toFixed(2)
-            } else{
+            } else {
                 console.log('vendor not exist')
                 return 0
             }
         },
         isItemInQuote(itemReference: string) {
-            if (!this.quote || this.quote.length <= 0) {
+            if (this.quote.length <= 0) {
                 return false
             }
+            console.log(this.quote.some(item => item.unique_reference === itemReference))
             if (this.quote.some(item => item.unique_reference === itemReference)) {
                 return true
+            }
+        },
+        async checkoutVendor(vendor: string) {
+            try {
+                await quoteService.checkoutCart(vendor)
+            } catch (err) {
+                console.log(err.message)
+            } finally {
+                await this.initializeQuote()
+            }
+        },
+        async getUserGenQuote() {
+            try {
+                this.genQuote = await quoteService.getGenQuote()
+            } catch (err) {
+                console.error("Failed to fetch generated quotes " + err.message)
             }
         }
 

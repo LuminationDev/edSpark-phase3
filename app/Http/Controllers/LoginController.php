@@ -29,14 +29,16 @@ class LoginController extends Controller
             $request->session()->put('state', $state);
 
             $user = $this->getOktaUser();
-
+            Log::info('Attempting login ' . $user->email);
             $localUser = $this->updateOrCreateLocalUser($user);
-
             Auth::login($localUser);
+            Log::info('Success login ' . $user->email);
+
 
             return redirect('/dashboard');
         } catch (\Throwable $e) {
-            return redirect('/error?errtype=failed+login', 302, ['message' => 'tompel']);
+            Log::error('Failed login ' . $user->email);
+            return redirect('/error?errtype=failed+login', 302);
         }
     }
 
@@ -55,6 +57,7 @@ class LoginController extends Controller
     {
         try {
             $idToken = $user->token;
+	    Log::info(json_encode($user));
 
             // Get the user's edSpark profile/data
             $userEdSpark = isset($user->email) ? User::where('email', $user->email)->first() : NULL;
