@@ -8,6 +8,7 @@ use Mohamedsabil83\FilamentFormsTinyeditor\Components\TinyEditor;
 
 class EdsparkTinyEditor extends TinyEditor
 {
+    //Override from trait HasFileAttachments and remove the visibility checks/assignment due to Azure not supporting
     protected function handleUploadedAttachmentUrlRetrieval(mixed $file): ?string
     {
         /** @var FilesystemAdapter $storage */

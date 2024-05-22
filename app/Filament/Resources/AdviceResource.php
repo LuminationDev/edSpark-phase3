@@ -5,7 +5,7 @@ namespace App\Filament\Resources;
 use App\Components\EdsparkTinyEditor;
 use App\Filament\Resources\AdviceResource\Pages;
 use App\Filament\Resources\AdviceResource\RelationManagers;
-use App\Helpers\EdSparkFormComponents;
+use App\Helpers\EdsparkFormComponents;
 use App\Helpers\RoleHelpers;
 use App\Helpers\StatusHelpers;
 use App\Helpers\UserRole;
@@ -72,11 +72,8 @@ class AdviceResource extends Resource
                     ->label('Tagline')
                     ->placeholder('150 characters or less')
                     ->maxLength(150),
-                EdsparkTinyEditor::make('content')
-                    ->label('Content')->fileAttachmentsDisk('azure')
-                    ->fileAttachmentsDirectory('uploads/content/advice')
-                    ->required(),
-                EdSparkFormComponents::createFileUploadComponent('uploads/advice', 'edSpark-advice-'),
+                EdsparkFormComponents::createContentComponent('uploads/content/advice'),
+                EdsparkFormComponents::createCoverImageComponent('uploads/advice', 'edSpark-advice-'),
                 Forms\Components\Card::make()
                     ->schema([
                         Forms\Components\Select::make('advice_type')

@@ -5,7 +5,7 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\SoftwareResource\Pages;
 use App\Filament\Resources\SoftwareResource\RelationManagers;
 use App\Helpers\CustomHtmlable;
-use App\Helpers\EdSparkFormComponents;
+use App\Helpers\EdsparkFormComponents;
 use App\Helpers\RoleHelpers;
 use App\Helpers\StatusHelpers;
 use App\Helpers\UserRole;
@@ -80,12 +80,9 @@ class SoftwareResource extends Resource
                             ->label('Tagline')
                             ->placeholder('150 characters or less')
                             ->maxLength(150),
-                        TinyEditor::make('content')
-                            ->label('Content')->fileAttachmentsDisk('local')
-                            ->fileAttachmentsVisibility('public')
-                            ->fileAttachmentsDirectory('public/uploads/software')
-                            ->required(),
-                        EdSparkFormComponents::createFileUploadComponent('uploads/software', 'edSpark-software-'),
+
+                        EdsparkFormComponents::createContentComponent('uploads/content/software'),
+                        EdsparkFormComponents::createCoverImageComponent('uploads/software', 'edSpark-software-'),
                         Forms\Components\Section::make()
                             ->schema([
                                 Forms\Components\Select::make('software_type')
