@@ -26,6 +26,7 @@ use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 use Mohamedsabil83\FilamentFormsTinyeditor\Components\TinyEditor;
+use Outerweb\ImageLibrary\Models\Image;
 use SplFileInfo;
 
 use Closure;
@@ -54,16 +55,16 @@ class EventResource extends Resource
             if (in_array($category, $categoriesToInclude)) {
                 $labelColumns[] =
                     Forms\Components\Section::make(ucfirst($category))
-                    ->schema([
-                        Forms\Components\CheckboxList::make("labels")
-                            ->label("")
-                            ->extraAttributes(['class' => 'text-primary-600'])
-                            ->options($labels->pluck('value', 'id')->toArray())
-                            ->relationship('labels', 'value', function ($query) use ($category) {
-                                $query->where('type', $category);
-                            })
-                            ->columns(3)
-                    ]);
+                        ->schema([
+                            Forms\Components\CheckboxList::make("labels")
+                                ->label("")
+                                ->extraAttributes(['class' => 'text-primary-600'])
+                                ->options($labels->pluck('value', 'id')->toArray())
+                                ->relationship('labels', 'value', function ($query) use ($category) {
+                                    $query->where('type', $category);
+                                })
+                                ->columns(3)
+                        ]);
             }
         }
 
@@ -91,7 +92,7 @@ class EventResource extends Resource
                             ->directory('uploads/event')
                             ->acceptedFileTypes(['image/jpeg', 'image/jpg', 'image/png'])
                             ->getUploadedFileNameForStorageUsing(function (TemporaryUploadedFile $file): string {
-                                return (string)str($file->getClientOriginalName())->prepend('edSpark-event-');
+                                return (string)str(Str::random(30) . time().$file->getClientOriginalExtension())->prepend('edSpark-event-');
                             }),
                         Forms\Components\Grid::make(2)
                             ->schema([
@@ -219,7 +220,16 @@ class EventResource extends Resource
                     ->limit(30)
                     ->searchable(),
 
-                Tables\Columns\ImageColumn::make('cover_image'),
+                Tables\Columns\ImageColumn::make('cover_image')
+                    ->square()
+                    ->getStateUsing(function ($record): string {
+                        $imgPath = $record->cover_image;
+                        if ($imgPath) {
+                            return env('AZURE_STORAGE_ENDPOINT') . env('AZURE_STORAGE_CONTAINER') .'/'. $imgPath;
+                        } else {
+                            return '';
+                    }
+                    }),
                 Tables\Columns\TextColumn::make('status')
                     ->label('Status')
                     ->searchable(),
