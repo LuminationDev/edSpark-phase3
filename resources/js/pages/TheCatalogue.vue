@@ -20,7 +20,6 @@ import {useCatalogueStore} from "@/js/stores/useCatalogueStore";
 import {useQuoteStore} from "@/js/stores/useQuoteStore";
 import {CatalogueFilterField} from "@/js/types/catalogueTypes";
 
-
 const {catalogueList} = storeToRefs(useCatalogueStore())
 const quoteStore = useQuoteStore()
 const {quote} = storeToRefs(quoteStore)
