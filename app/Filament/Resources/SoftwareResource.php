@@ -80,7 +80,6 @@ class SoftwareResource extends Resource
                             ->label('Tagline')
                             ->placeholder('150 characters or less')
                             ->maxLength(150),
-
                         EdsparkFormComponents::createContentComponent('uploads/content/software'),
                         EdsparkFormComponents::createCoverImageComponent('uploads/software', 'edSpark-software-'),
                         Forms\Components\Section::make()
