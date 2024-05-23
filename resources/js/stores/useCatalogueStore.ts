@@ -1,5 +1,6 @@
 import {useStorage} from "@vueuse/core";
 import {defineStore} from "pinia";
+import {ref} from "vue";
 
 export const useCatalogueStore = defineStore('catalogue', {
     state: () => ({
@@ -9,7 +10,15 @@ export const useCatalogueStore = defineStore('catalogue', {
         categoryList: useStorage('EDSPARK_CATALOGUE_CAT', [], sessionStorage),
         brandList: useStorage('EDSPARK_CATALOGUE_BRAND', [], sessionStorage),
         typeList: useStorage('EDSPARK_CATALOGUE_TYPE', [], sessionStorage),
-        vendorList: useStorage('EDSPARK_CATALOGUE_VENDOR', [], sessionStorage)
+        vendorList: useStorage('EDSPARK_CATALOGUE_VENDOR', [], sessionStorage),
+        primaryFilter: '',
+        selectedCategory: [],
+        selectedBrand: [],
+        selectedType: [],
+        selectedVendor: [],
+        priceRange: [0, 10000]
+
+
     }),
     getters: {
         getCompareBasketItem() {

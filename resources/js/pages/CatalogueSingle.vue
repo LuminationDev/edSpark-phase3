@@ -295,14 +295,14 @@ const shortSpecEntries = computed(() => {
                 />
             </div>
         </div>
-        <div class="CatalogueSingleOuter grid grid-cols-2 gap-4 mt-16 mx-8">
+        <div class="CatalogueSingleOuter grid grid-cols-1 gap-4 place-items-center mt-16 mx-8">
             <template
                 v-for="(header,index) in catalogueSingleHeaders"
                 :key="index"
             >
                 <!--                turning this into component and have the props hidable-->
                 <div class="border-[1px] border-slate-300 flex flex-col h-fit mb-4 rounded-lg tableOuter w-full">
-                    <div class="capitalize px-4 py-2 text-lg text-main-darkTeal">
+                    <div class="capitalize px-4 py-2 text-main-darkTeal text-xl">
                         {{ header.replace(/_/g, " ") }}
                     </div>
                     <div
@@ -310,7 +310,7 @@ const shortSpecEntries = computed(() => {
                         :key="`${index}-row`"
                         class="px-4 py-2 even:bg-main-teal/5"
                     >
-                        <div class="grid grid-cols-2 py-1 w-full">
+                        <div class="grid grid-cols-2 place-items-center py-1 w-full">
                             <div>
                                 {{ row.display_text }}
                             </div>

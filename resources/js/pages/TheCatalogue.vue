@@ -20,23 +20,29 @@ import {useCatalogueStore} from "@/js/stores/useCatalogueStore";
 import {useQuoteStore} from "@/js/stores/useQuoteStore";
 import {CatalogueFilterField} from "@/js/types/catalogueTypes";
 
-const {catalogueList} = storeToRefs(useCatalogueStore())
+
+const catalogueStore = useCatalogueStore();
 const quoteStore = useQuoteStore()
+
+const {
+    catalogueList,
+    categoryList,
+    brandList,
+    typeList,
+    vendorList,
+    primaryFilter,
+    selectedCategory,
+    selectedBrand,
+    selectedType,
+    selectedVendor,
+    priceRange
+} = storeToRefs(catalogueStore)
+
 const {quote} = storeToRefs(quoteStore)
+
 onMounted(async () => {
     await quoteStore.initializeQuote()
 })
-
-const categoryList = ref([])
-const brandList = ref([])
-const typeList = ref([])
-const vendorList = ref([])
-
-const selectedCategory = ref([])
-const selectedBrand = ref([])
-const selectedType = ref([])
-const selectedVendor = ref([])
-const priceRange = ref([0, 10000])
 
 const isProductsLoading = ref(false)
 const isFilterLoading = ref(false)
@@ -52,7 +58,6 @@ const showPagination = computed(() => {
 })
 
 // have a primary filte rhere
-const primaryFilter: Ref<CatalogueFilterField | null> = ref(null)
 
 const primarySelectedValues = computed(() => {
     if (primaryFilter.value == CatalogueFilterField.Type) return selectedType.value
@@ -73,6 +78,12 @@ const additionalFilters = computed(() => {
 
 onMounted(async () => {
     try {
+        if (primaryFilter.value) {
+            console.log('onMounted init fetch not happening')
+            return;
+        }
+        console.log('onMounted fetch happening')
+
         isFilterLoading.value = true
         const [categoriesResponse, typesResponse, brandsResponse, vendorsResponse, cataloguesResult] = await Promise.all([
             catalogueService.fetchAllCategories(),
@@ -157,7 +168,8 @@ const updateOtherFilters = (available_fields) => {
     })
 }
 
-watch(selectedCategory, async () => {
+watchDebounced(selectedCategory, async () => {
+    console.log('cat')
     if (selectedBrand.value.length === 0 && selectedType.value.length === 0 && selectedVendor.value.length === 0) {
         primaryFilter.value = CatalogueFilterField.Category
         currentPage.value = 1
@@ -165,9 +177,11 @@ watch(selectedCategory, async () => {
     } else {
         await fetchCatalogueAndUpdateOtherFilters(primaryFilter.value, primarySelectedValues.value, additionalFilters.value, currentPage.value, perPage.value)
     }
-})
+},{debounce: 1000})
 
-watch(selectedBrand, async () => {
+watchDebounced(selectedBrand, async () => {
+    console.log('brand')
+
     if (selectedVendor.value.length === 0 && selectedType.value.length === 0 && selectedCategory.value.length === 0) {
         primaryFilter.value = CatalogueFilterField.Brand;
         await fetchCatalogueAndUpdateOtherFilters(CatalogueFilterField.Brand, selectedBrand.value, additionalFilters.value, currentPage.value, perPage.value)
@@ -175,8 +189,9 @@ watch(selectedBrand, async () => {
         await fetchCatalogueAndUpdateOtherFilters(primaryFilter.value, primarySelectedValues.value, additionalFilters.value, currentPage.value, perPage.value)
 
     }
-})
-watch(selectedType, async () => {
+},{debounce: 1000})
+watchDebounced(selectedType, async () => {
+    console.log('type')
     if (selectedBrand.value.length === 0 && selectedVendor.value.length === 0 && selectedCategory.value.length === 0) {
         primaryFilter.value = CatalogueFilterField.Type;
         await fetchCatalogueAndUpdateOtherFilters(CatalogueFilterField.Type, selectedType.value, additionalFilters.value, currentPage.value, perPage.value)
@@ -184,19 +199,20 @@ watch(selectedType, async () => {
         await fetchCatalogueAndUpdateOtherFilters(primaryFilter.value, primarySelectedValues.value, additionalFilters.value, currentPage.value, perPage.value)
 
     }
-})
-watch(selectedVendor, async () => {
+},{debounce: 1000})
+watchDebounced(selectedVendor, async () => {
+    console.log('ven')
     if (selectedBrand.value.length === 0 && selectedType.value.length === 0 && selectedCategory.value.length === 0) {
         primaryFilter.value = CatalogueFilterField.Vendor;
         await fetchCatalogueAndUpdateOtherFilters(CatalogueFilterField.Vendor, selectedVendor.value, additionalFilters.value, currentPage.value, perPage.value)
     } else {
         await fetchCatalogueAndUpdateOtherFilters(primaryFilter.value, primarySelectedValues.value, additionalFilters.value, currentPage.value, perPage.value)
     }
-})
+},{debounce: 1000})
 
-watchDebounced(priceRange, async () => {
-    await fetchCatalogueAndUpdateOtherFilters(primaryFilter.value, primarySelectedValues.value, additionalFilters.value, currentPage.value, perPage.value)
-}, {deep: true, debounce: 800, maxWait: 1000})
+// watchDebounced(priceRange, async () => {
+//     await fetchCatalogueAndUpdateOtherFilters(primaryFilter.value, primarySelectedValues.value, additionalFilters.value, currentPage.value, perPage.value)
+// }, {deep: false, debounce: 800, maxWait: 1000})
 
 watch([currentPage, perPage], async () => {
     await fetchCatalogueAndUpdateOtherFilters(primaryFilter.value, primarySelectedValues.value, additionalFilters.value, currentPage.value, perPage.value)
@@ -210,6 +226,10 @@ const handleClickCatalogueCard = (reference) => {
 
 }
 
+const handlePriceChange = async () => {
+    console.log('hehehhehe')
+    await fetchCatalogueAndUpdateOtherFilters(primaryFilter.value, primarySelectedValues.value, additionalFilters.value, currentPage.value, perPage.value)
+}
 
 </script>
 
@@ -233,6 +253,7 @@ const handleClickCatalogueCard = (reference) => {
                 v-model:price-range="priceRange"
                 v-model:per-page="perPage"
                 :is-filter-loading="isFilterLoading"
+                @price-changed="handlePriceChange"
             />
         </div>
         <div v-if="error.status ">
