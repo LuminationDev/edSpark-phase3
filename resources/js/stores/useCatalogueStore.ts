@@ -1,6 +1,5 @@
 import {useStorage} from "@vueuse/core";
 import {defineStore} from "pinia";
-import {ref} from "vue";
 
 export const useCatalogueStore = defineStore('catalogue', {
     state: () => ({

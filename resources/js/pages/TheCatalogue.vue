@@ -16,6 +16,7 @@ import useErrorMessage from "@/js/composables/useErrorMessage";
 import usePagination from "@/js/composables/usePagination";
 import {LandingHeroText} from "@/js/constants/PageBlurb";
 import {catalogueService} from "@/js/service/catalogueService";
+import {useCataloguePaginationStore} from "@/js/stores/useCataloguePaginationStore";
 import {useCatalogueStore} from "@/js/stores/useCatalogueStore";
 import {useQuoteStore} from "@/js/stores/useQuoteStore";
 import {CatalogueFilterField} from "@/js/types/catalogueTypes";
@@ -39,7 +40,7 @@ const {
 } = storeToRefs(catalogueStore)
 
 const {quote} = storeToRefs(quoteStore)
-
+const cataloguePaginationStore = useCataloguePaginationStore()
 onMounted(async () => {
     await quoteStore.initializeQuote()
 })
@@ -49,8 +50,10 @@ const isFilterLoading = ref(false)
 const {error, setError, clearError} = useErrorMessage()
 const {
     currentPage, perPage, totalPages, totalItems,
-    handleChangePageNumber, updatePaginationData
-} = usePagination(1, 16)
+} = storeToRefs(cataloguePaginationStore)
+
+// handleChangePageNumber, updatePaginationData
+
 
 const router = useRouter()
 const showPagination = computed(() => {
@@ -98,7 +101,7 @@ onMounted(async () => {
         vendorList.value = vendorsResponse.data.data.filter(Boolean);
         catalogueList.value = cataloguesResult.items
         if (cataloguesResult.pagination) {
-            updatePaginationData(cataloguesResult.pagination)
+            cataloguePaginationStore.updatePaginationData(cataloguesResult.pagination)
         }
     } catch (error) {
         // Handle errors here
@@ -143,7 +146,7 @@ const fetchCatalogueAndUpdateOtherFilters = async (field, value, additional, pag
     catalogueList.value = catalogueFetchResult.items
     isProductsLoading.value = false
     if (catalogueFetchResult.pagination) {
-        updatePaginationData(catalogueFetchResult.pagination)
+        cataloguePaginationStore.updatePaginationData(catalogueFetchResult.pagination)
     }
 
     if (catalogueFetchResult.available_fields) {
@@ -177,7 +180,7 @@ watchDebounced(selectedCategory, async () => {
     } else {
         await fetchCatalogueAndUpdateOtherFilters(primaryFilter.value, primarySelectedValues.value, additionalFilters.value, currentPage.value, perPage.value)
     }
-},{debounce: 1000})
+}, {debounce: 1000})
 
 watchDebounced(selectedBrand, async () => {
     console.log('brand')
@@ -189,7 +192,7 @@ watchDebounced(selectedBrand, async () => {
         await fetchCatalogueAndUpdateOtherFilters(primaryFilter.value, primarySelectedValues.value, additionalFilters.value, currentPage.value, perPage.value)
 
     }
-},{debounce: 1000})
+}, {debounce: 1000})
 watchDebounced(selectedType, async () => {
     console.log('type')
     if (selectedBrand.value.length === 0 && selectedVendor.value.length === 0 && selectedCategory.value.length === 0) {
@@ -199,7 +202,7 @@ watchDebounced(selectedType, async () => {
         await fetchCatalogueAndUpdateOtherFilters(primaryFilter.value, primarySelectedValues.value, additionalFilters.value, currentPage.value, perPage.value)
 
     }
-},{debounce: 1000})
+}, {debounce: 1000})
 watchDebounced(selectedVendor, async () => {
     console.log('ven')
     if (selectedBrand.value.length === 0 && selectedType.value.length === 0 && selectedCategory.value.length === 0) {
@@ -208,7 +211,7 @@ watchDebounced(selectedVendor, async () => {
     } else {
         await fetchCatalogueAndUpdateOtherFilters(primaryFilter.value, primarySelectedValues.value, additionalFilters.value, currentPage.value, perPage.value)
     }
-},{debounce: 1000})
+}, {debounce: 1000})
 
 // watchDebounced(priceRange, async () => {
 //     await fetchCatalogueAndUpdateOtherFilters(primaryFilter.value, primarySelectedValues.value, additionalFilters.value, currentPage.value, perPage.value)
@@ -287,7 +290,7 @@ const handlePriceChange = async () => {
                     active-color="#DCEDFF"
                     :hide-first-button="true"
                     :hide-last-button="true"
-                    @update:model-value="handleChangePageNumber"
+                    @update:model-value="cataloguePaginationStore.handleChangePageNumber"
                 />
             </div>
         </div>
