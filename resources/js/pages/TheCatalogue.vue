@@ -13,7 +13,6 @@ import CatalogueComparisonBanner from "@/js/components/catalogue/cataloguecompar
 import CatalogueFilterColumn from "@/js/components/catalogue/CatalogueFilterColumn.vue";
 import Loader from "@/js/components/spinner/Loader.vue";
 import useErrorMessage from "@/js/composables/useErrorMessage";
-import usePagination from "@/js/composables/usePagination";
 import {LandingHeroText} from "@/js/constants/PageBlurb";
 import {catalogueService} from "@/js/service/catalogueService";
 import {useCataloguePaginationStore} from "@/js/stores/useCataloguePaginationStore";
@@ -39,7 +38,6 @@ const {
     priceRange
 } = storeToRefs(catalogueStore)
 
-const {quote} = storeToRefs(quoteStore)
 const cataloguePaginationStore = useCataloguePaginationStore()
 onMounted(async () => {
     await quoteStore.initializeQuote()
@@ -51,9 +49,6 @@ const {error, setError, clearError} = useErrorMessage()
 const {
     currentPage, perPage, totalPages, totalItems,
 } = storeToRefs(cataloguePaginationStore)
-
-// handleChangePageNumber, updatePaginationData
-
 
 const router = useRouter()
 const showPagination = computed(() => {
@@ -180,7 +175,7 @@ watchDebounced(selectedCategory, async () => {
     } else {
         await fetchCatalogueAndUpdateOtherFilters(primaryFilter.value, primarySelectedValues.value, additionalFilters.value, currentPage.value, perPage.value)
     }
-}, {debounce: 1000})
+}, {debounce: 600})
 
 watchDebounced(selectedBrand, async () => {
     console.log('brand')
@@ -192,7 +187,7 @@ watchDebounced(selectedBrand, async () => {
         await fetchCatalogueAndUpdateOtherFilters(primaryFilter.value, primarySelectedValues.value, additionalFilters.value, currentPage.value, perPage.value)
 
     }
-}, {debounce: 1000})
+}, {debounce: 600})
 watchDebounced(selectedType, async () => {
     console.log('type')
     if (selectedBrand.value.length === 0 && selectedVendor.value.length === 0 && selectedCategory.value.length === 0) {
@@ -202,7 +197,7 @@ watchDebounced(selectedType, async () => {
         await fetchCatalogueAndUpdateOtherFilters(primaryFilter.value, primarySelectedValues.value, additionalFilters.value, currentPage.value, perPage.value)
 
     }
-}, {debounce: 1000})
+}, {debounce: 600})
 watchDebounced(selectedVendor, async () => {
     console.log('ven')
     if (selectedBrand.value.length === 0 && selectedType.value.length === 0 && selectedCategory.value.length === 0) {
@@ -211,11 +206,8 @@ watchDebounced(selectedVendor, async () => {
     } else {
         await fetchCatalogueAndUpdateOtherFilters(primaryFilter.value, primarySelectedValues.value, additionalFilters.value, currentPage.value, perPage.value)
     }
-}, {debounce: 1000})
+}, {debounce: 600})
 
-// watchDebounced(priceRange, async () => {
-//     await fetchCatalogueAndUpdateOtherFilters(primaryFilter.value, primarySelectedValues.value, additionalFilters.value, currentPage.value, perPage.value)
-// }, {deep: false, debounce: 800, maxWait: 1000})
 
 watch([currentPage, perPage], async () => {
     await fetchCatalogueAndUpdateOtherFilters(primaryFilter.value, primarySelectedValues.value, additionalFilters.value, currentPage.value, perPage.value)
@@ -325,9 +317,6 @@ const handlePriceChange = async () => {
         justify-content: space-between;
         align-items: center;
         width: 100%;
-
-        .Page {
-        }
     }
 }
 </style>
