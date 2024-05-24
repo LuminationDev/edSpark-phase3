@@ -4,7 +4,7 @@ import "@hennge/vue3-pagination/dist/vue3-pagination.css";
 import VPagination from "@hennge/vue3-pagination";
 import {watchDebounced} from "@vueuse/core";
 import {storeToRefs} from "pinia";
-import {computed, onMounted, Ref, ref, watch} from "vue";
+import {computed, onMounted, ref, watch} from "vue";
 import {useRouter} from "vue-router";
 
 import BaseLandingHero from "@/js/components/bases/BaseLandingHero.vue";
@@ -179,7 +179,6 @@ watchDebounced(selectedCategory, async () => {
 
 watchDebounced(selectedBrand, async () => {
     console.log('brand')
-
     if (selectedVendor.value.length === 0 && selectedType.value.length === 0 && selectedCategory.value.length === 0) {
         primaryFilter.value = CatalogueFilterField.Brand;
         await fetchCatalogueAndUpdateOtherFilters(CatalogueFilterField.Brand, selectedBrand.value, additionalFilters.value, currentPage.value, perPage.value)

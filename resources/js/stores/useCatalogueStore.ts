@@ -46,6 +46,14 @@ export const useCatalogueStore = defineStore('catalogue', {
             this.compareBasket = []
         },
         // end of comparisons
+        resetFilters() {
+            this.primaryFilter = ''
+            this.selectedCategory = []
+            this.selectedBrand = []
+            this.selectedType = []
+            this.selectedVendor = []
+            this.priceRange = [0,10000]
+        },
 
     },
 });

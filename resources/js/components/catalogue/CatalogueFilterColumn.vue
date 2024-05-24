@@ -5,6 +5,7 @@ import CatalogueFilterGroup from "@/js/components/catalogue/CatalogueFilterGroup
 import CataloguePerPageSelector from "@/js/components/catalogue/CataloguePerPageSelector.vue";
 import CataloguePriceSlider from "@/js/components/catalogue/CataloguePriceSlider.vue";
 import Loader from "@/js/components/spinner/Loader.vue";
+import {useCatalogueStore} from "@/js/stores/useCatalogueStore";
 
 const props = defineProps({
     isFilterLoading: {
@@ -28,8 +29,14 @@ const perPage = defineModel('perPage')
 
 const emits = defineEmits(['priceChanged'])
 
-const onReceivePriceChanged = () =>{
+const catalogueStore = useCatalogueStore()
+
+const onReceivePriceChanged = () => {
     emits('priceChanged')
+}
+
+const onClickResetFilters = () => {
+    catalogueStore.resetFilters()
 }
 
 </script>
@@ -90,6 +97,13 @@ const onReceivePriceChanged = () =>{
             v-model:price-range="priceRange"
             @price-changed="onReceivePriceChanged"
         />
+        <GenericButton
+            :callback="onClickResetFilters"
+            type="teal"
+        >
+            Reset filters
+        </GenericButton>
+
         <CataloguePerPageSelector v-model="perPage" />
     </div>
 </template>
