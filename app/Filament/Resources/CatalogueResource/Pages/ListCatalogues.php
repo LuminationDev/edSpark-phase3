@@ -174,9 +174,26 @@ class ListCatalogues extends ListRecords
 
                         }
 
-                        // Bulk insert
+                        // Bulk insert - with batching to resolve too long error
                         if (!empty($newRecords)) {
-                            DB::table('catalogues')->insert($newRecords);
+                            $batchSize = 300;
+                            $tempBatch = [];
+                            if (count($newRecords) > $batchSize) {
+                                foreach ($newRecords as $newRecord) {
+                                    $tempBatch[] = $newRecord;
+                                    if (count($tempBatch) >= $batchSize) {
+                                        DB::table('catalogues')->insert($tempBatch);
+                                        $tempBatch = [];
+                                    }
+                                }
+                                // do the rest
+                                if (!empty($tempBatch)) {
+                                    DB::table('catalogues')->insert($tempBatch);
+                                }
+
+                            } else {
+                                DB::table('catalogues')->insert($newRecords);
+                            }
                         }
 
                         DB::commit();
