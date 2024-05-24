@@ -80,6 +80,11 @@ class CreateCatalogueversion extends CreateRecord
         return $record;
     }
 
+
+    private function findExistingImageId($titles) {
+        return Image::whereIn('title', $titles)->pluck('id')->first() ?? '';
+    }
+
     private function processBatch(array $dataBatch, $currentVersion)
     {
         $catalogueItems = [];
@@ -91,11 +96,11 @@ class CreateCatalogueversion extends CreateRecord
                 return strtolower($uniqueReference) . '.' . $extension;
             }, $extensions);
 
-            $existingImageId = Image::where(function ($query) use ($modifiedTitles) {
-                foreach ($modifiedTitles as $modifiedTitle) {
-                    $query->orWhere("title", strtolower($modifiedTitle));
-                }
-            })->first()->id ?? '';
+            $existingImageId = $this->findExistingImageId($modifiedTitles);
+
+            if (!$existingImageId) {
+                $existingImageId = $this->findExistingImageId([strtolower($catalogueItem['Image'])]);
+            }
 
             $catalogueItems[] = [
                 'unique_reference' => $catalogueItem['Unique Reference'],

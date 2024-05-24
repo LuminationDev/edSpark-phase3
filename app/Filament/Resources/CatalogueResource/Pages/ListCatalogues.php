@@ -26,6 +26,11 @@ class ListCatalogues extends ListRecords
         $this->subheading = 'Catalogue version: ' . strval(Catalogueversion::getActiveCatalogueId());
     }
 
+    private function findExistingImageId($titles)
+    {
+        return Image::whereIn('title', $titles)->pluck('id')->first() ?? '';
+    }
+
     protected function getHeaderActions(): array
     {
         return [
@@ -81,11 +86,11 @@ class ListCatalogues extends ListRecords
                                 return strtolower($uniqueReference) . '.' . $extension;
                             }, $extensions);
 
-                            $existingImageId = Image::where(function ($query) use ($modifiedTitles) {
-                                foreach ($modifiedTitles as $modifiedTitle) {
-                                    $query->orWhere("title", strtolower($modifiedTitle));
-                                }
-                            })->first()->id ?? '';
+                            $existingImageId = $this->findExistingImageId($modifiedTitles);
+
+                            if (!$existingImageId) {
+                                $existingImageId = $this->findExistingImageId([strtolower($catalogueItem['Image'])]);
+                            }
 
 
                             if ($existingRecord) {
