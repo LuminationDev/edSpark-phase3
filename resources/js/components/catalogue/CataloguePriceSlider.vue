@@ -24,6 +24,7 @@ const priceSliderConfig = {
 }
 const emits = defineEmits(['priceChanged'])
 const priceRange = defineModel('priceRange')
+let sliderRefreshKey = 0
 
 const handleNewValuesFromSlider = debounce((values) => {
     currentPriceValues.value = values
@@ -32,9 +33,11 @@ const handleNewValuesFromSlider = debounce((values) => {
 
 watch(priceRange, (newValue, oldValue) => {
     if (JSON.stringify(newValue) !== JSON.stringify(oldValue)) {
+        currentPriceValues.value = newValue
         emits('priceChanged')
+        sliderRefreshKey++;
     }
-})
+}, {deep: true})
 
 const minActivePrice = computed(() => {
     return currentPriceValues.value[0]
@@ -50,11 +53,12 @@ const maxActivePrice = computed(() => {
         Price Range
     </div>
     <VueNoUiSlider
+        :key="sliderRefreshKey"
         :values="priceSliderValues"
         :config="priceSliderConfig"
         @update:values="handleNewValuesFromSlider"
     />
-    <div class="flex justify-between flex-row minMaxPriceDisplay mt-2">
+    <div class="flex justify-between flex-row mb-4 minMaxPriceDisplay mt-2">
         <div
             class="
                 border-[1px]
