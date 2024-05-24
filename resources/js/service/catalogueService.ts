@@ -100,9 +100,15 @@ export const catalogueService = {
                 group: 'overview'
             },
             {
+                name: 'price_ext_gst',
+                value: catalogueService.getExcGstPrice(+item.price_inc_gst),
+                display_text: "Price (exc. GST)",
+                group: 'overview'
+            },
+            {
                 name: 'price_inc_gst',
                 value: item.price_inc_gst,
-                display_text: "Price (incl. GST)",
+                display_text: "Price (inc. GST)",
                 group: 'overview'
             },
             {
@@ -249,7 +255,7 @@ export const catalogueService = {
                 display_text: "Cover Image",
                 group: 'hidden'
             }
-            ]
+        ]
     },
 
     getCatalogueCoverImage: (coverImage: { uuid: string, extension: string }) => {

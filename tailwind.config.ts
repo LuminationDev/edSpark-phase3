@@ -173,7 +173,7 @@ export default {
                 extraHuge: '140px',
                 mainHero: '508px',
                 catW: '270px',
-                catH: '430px'
+                catH: '460px'
             },
             screens: {
                 'ml': '860px',
