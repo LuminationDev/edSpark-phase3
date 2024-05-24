@@ -27,9 +27,6 @@ const emits = defineEmits(['addItemToCompareBasket'])
 const catalogueStore = useCatalogueStore()
 const {compareBasket} = storeToRefs(catalogueStore)
 
-const quoteStore = useQuoteStore()
-
-
 // handle adding item to compare list
 const itemCompareStatus = ref(false)
 
