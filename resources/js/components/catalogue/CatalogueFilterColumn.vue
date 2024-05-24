@@ -1,10 +1,13 @@
 <script setup>
 
+import {computed} from "vue";
+
 import GenericButton from "@/js/components/button/GenericButton.vue";
 import CatalogueFilterGroup from "@/js/components/catalogue/CatalogueFilterGroup.vue";
 import CataloguePerPageSelector from "@/js/components/catalogue/CataloguePerPageSelector.vue";
 import CataloguePriceSlider from "@/js/components/catalogue/CataloguePriceSlider.vue";
 import Loader from "@/js/components/spinner/Loader.vue";
+import {useCatalogueStore} from "@/js/stores/useCatalogueStore";
 
 const props = defineProps({
     isFilterLoading: {
@@ -28,8 +31,18 @@ const perPage = defineModel('perPage')
 
 const emits = defineEmits(['priceChanged'])
 
-const onReceivePriceChanged = () =>{
+const catalogueStore = useCatalogueStore()
+
+const showResetFilterButton = computed(() =>{
+    return selectedVendor.length || selectedCategory.length || selectedType.length ||selectedVendor.length
+})
+
+const onReceivePriceChanged = () => {
     emits('priceChanged')
+}
+
+const onClickResetFilters = () => {
+    catalogueStore.resetFilters()
 }
 
 </script>
@@ -90,6 +103,14 @@ const onReceivePriceChanged = () =>{
             v-model:price-range="priceRange"
             @price-changed="onReceivePriceChanged"
         />
+        <GenericButton
+            v-if="showResetFilterButton"
+            :callback="onClickResetFilters"
+            type="teal"
+        >
+            Reset filters
+        </GenericButton>
+
         <CataloguePerPageSelector v-model="perPage" />
     </div>
 </template>

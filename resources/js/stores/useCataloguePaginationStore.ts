@@ -20,7 +20,7 @@ interface UsePaginationStore {
 
 export const useCataloguePaginationStore = defineStore('cat-pagination', (): UsePaginationStore => {
     const currentPage = ref<number>(1);
-    const perPage = ref<number>(20);
+    const perPage = ref<number>(16);
     const totalItems = ref<number>(0);
     const totalPages = ref<number>(0);
 

@@ -115,17 +115,22 @@ class CatalogueController extends Controller
             }
         }
 
+        // perform check for item is active or not active
+        $query->where('curriculum', 'Yes')->where("available_now", '<>', 'No');
+
         // Fetch distinct values for available fields
         foreach (['type', 'brand', 'vendor', 'category'] as $otherField) {
             if ($otherField != $field) {
                 // if primary filter has been selected, other filters must be based on the results only
-                if (!empty($field) && !empty($values)) {
-                    $availableFields[$otherField] = $query->pluck($otherField)->unique()->values()->all();
-                } // Get all fields from Catalogue
-                else {
-                    $availableFields[$otherField] = Catalogue::distinct($otherField)->pluck($otherField);
+//                if (!empty($field) && !empty($values)) {
+//                    $availableFields[$otherField] = $query->pluck($otherField)->unique()->values()->all();
+//                } // Get all fields from Catalogue
+//                else {
+//                    $availableFields[$otherField] = Catalogue::distinct($otherField)->pluck($otherField);
+//
+//                }
+                $availableFields[$otherField] = $query->pluck($otherField)->unique()->values()->all();
 
-                }
             }
         }
 

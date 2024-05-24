@@ -4,6 +4,7 @@ import {computed, onMounted, ref, watch} from 'vue'
 
 import CatalogueAddToQuoteButton from "@/js/components/catalogue/CatalogueAddToQuoteButton.vue";
 import CatalogueCardDescGenerator from "@/js/components/catalogue/CatalogueCardDescGenerator.vue";
+import ImageWithFallback from "@/js/components/global/ImageWithFallback.vue";
 import {catalogueService} from "@/js/service/catalogueService";
 import {useCatalogueStore} from "@/js/stores/useCatalogueStore";
 import {useQuoteStore} from "@/js/stores/useQuoteStore";
@@ -108,11 +109,12 @@ const catCardShortSpec = computed(() => {
                 "
             @click="() => props.clickCallback(unique_reference)"
         >
-            <img
+            <ImageWithFallback
                 class="catalogueCoverImage h-full object-contain rounded"
-                :src="catCoverImageUrl"
-                alt=""
-            >
+                image-type="catalogue"
+                :image-url="catCoverImageUrl"
+                image-alt=""
+            />
         </div>
         <div class="cardBody flex flex-col h-[200px] w-full">
             <div
