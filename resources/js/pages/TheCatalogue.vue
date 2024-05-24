@@ -13,39 +13,42 @@ import CatalogueComparisonBanner from "@/js/components/catalogue/cataloguecompar
 import CatalogueFilterColumn from "@/js/components/catalogue/CatalogueFilterColumn.vue";
 import Loader from "@/js/components/spinner/Loader.vue";
 import useErrorMessage from "@/js/composables/useErrorMessage";
-import usePagination from "@/js/composables/usePagination";
 import {LandingHeroText} from "@/js/constants/PageBlurb";
 import {catalogueService} from "@/js/service/catalogueService";
+import {useCataloguePaginationStore} from "@/js/stores/useCataloguePaginationStore";
 import {useCatalogueStore} from "@/js/stores/useCatalogueStore";
 import {useQuoteStore} from "@/js/stores/useQuoteStore";
 import {CatalogueFilterField} from "@/js/types/catalogueTypes";
 
 
-const {catalogueList} = storeToRefs(useCatalogueStore())
+const catalogueStore = useCatalogueStore();
 const quoteStore = useQuoteStore()
-const {quote} = storeToRefs(quoteStore)
+
+const {
+    catalogueList,
+    categoryList,
+    brandList,
+    typeList,
+    vendorList,
+    primaryFilter,
+    selectedCategory,
+    selectedBrand,
+    selectedType,
+    selectedVendor,
+    priceRange
+} = storeToRefs(catalogueStore)
+
+const cataloguePaginationStore = useCataloguePaginationStore()
 onMounted(async () => {
     await quoteStore.initializeQuote()
 })
-
-const categoryList = ref([])
-const brandList = ref([])
-const typeList = ref([])
-const vendorList = ref([])
-
-const selectedCategory = ref([])
-const selectedBrand = ref([])
-const selectedType = ref([])
-const selectedVendor = ref([])
-const priceRange = ref([0, 10000])
 
 const isProductsLoading = ref(false)
 const isFilterLoading = ref(false)
 const {error, setError, clearError} = useErrorMessage()
 const {
     currentPage, perPage, totalPages, totalItems,
-    handleChangePageNumber, updatePaginationData
-} = usePagination(1, 16)
+} = storeToRefs(cataloguePaginationStore)
 
 const router = useRouter()
 const showPagination = computed(() => {
@@ -53,7 +56,6 @@ const showPagination = computed(() => {
 })
 
 // have a primary filte rhere
-const primaryFilter: Ref<CatalogueFilterField | null> = ref(null)
 
 const primarySelectedValues = computed(() => {
     if (primaryFilter.value == CatalogueFilterField.Type) return selectedType.value
@@ -74,6 +76,12 @@ const additionalFilters = computed(() => {
 
 onMounted(async () => {
     try {
+        if (primaryFilter.value) {
+            console.log('onMounted init fetch not happening')
+            return;
+        }
+        console.log('onMounted fetch happening')
+
         isFilterLoading.value = true
         const [categoriesResponse, typesResponse, brandsResponse, vendorsResponse, cataloguesResult] = await Promise.all([
             catalogueService.fetchAllCategories(),
@@ -88,7 +96,7 @@ onMounted(async () => {
         vendorList.value = vendorsResponse.data.data.filter(Boolean);
         catalogueList.value = cataloguesResult.items
         if (cataloguesResult.pagination) {
-            updatePaginationData(cataloguesResult.pagination)
+            cataloguePaginationStore.updatePaginationData(cataloguesResult.pagination)
         }
     } catch (error) {
         // Handle errors here
@@ -133,7 +141,7 @@ const fetchCatalogueAndUpdateOtherFilters = async (field, value, additional, pag
     catalogueList.value = catalogueFetchResult.items
     isProductsLoading.value = false
     if (catalogueFetchResult.pagination) {
-        updatePaginationData(catalogueFetchResult.pagination)
+        cataloguePaginationStore.updatePaginationData(catalogueFetchResult.pagination)
     }
 
     if (catalogueFetchResult.available_fields) {
@@ -158,7 +166,8 @@ const updateOtherFilters = (available_fields) => {
     })
 }
 
-watch(selectedCategory, async () => {
+watchDebounced(selectedCategory, async () => {
+    console.log('cat')
     if (selectedBrand.value.length === 0 && selectedType.value.length === 0 && selectedVendor.value.length === 0) {
         primaryFilter.value = CatalogueFilterField.Category
         currentPage.value = 1
@@ -166,9 +175,11 @@ watch(selectedCategory, async () => {
     } else {
         await fetchCatalogueAndUpdateOtherFilters(primaryFilter.value, primarySelectedValues.value, additionalFilters.value, currentPage.value, perPage.value)
     }
-})
+}, {debounce: 600})
 
-watch(selectedBrand, async () => {
+watchDebounced(selectedBrand, async () => {
+    console.log('brand')
+
     if (selectedVendor.value.length === 0 && selectedType.value.length === 0 && selectedCategory.value.length === 0) {
         primaryFilter.value = CatalogueFilterField.Brand;
         await fetchCatalogueAndUpdateOtherFilters(CatalogueFilterField.Brand, selectedBrand.value, additionalFilters.value, currentPage.value, perPage.value)
@@ -176,8 +187,9 @@ watch(selectedBrand, async () => {
         await fetchCatalogueAndUpdateOtherFilters(primaryFilter.value, primarySelectedValues.value, additionalFilters.value, currentPage.value, perPage.value)
 
     }
-})
-watch(selectedType, async () => {
+}, {debounce: 600})
+watchDebounced(selectedType, async () => {
+    console.log('type')
     if (selectedBrand.value.length === 0 && selectedVendor.value.length === 0 && selectedCategory.value.length === 0) {
         primaryFilter.value = CatalogueFilterField.Type;
         await fetchCatalogueAndUpdateOtherFilters(CatalogueFilterField.Type, selectedType.value, additionalFilters.value, currentPage.value, perPage.value)
@@ -185,19 +197,17 @@ watch(selectedType, async () => {
         await fetchCatalogueAndUpdateOtherFilters(primaryFilter.value, primarySelectedValues.value, additionalFilters.value, currentPage.value, perPage.value)
 
     }
-})
-watch(selectedVendor, async () => {
+}, {debounce: 600})
+watchDebounced(selectedVendor, async () => {
+    console.log('ven')
     if (selectedBrand.value.length === 0 && selectedType.value.length === 0 && selectedCategory.value.length === 0) {
         primaryFilter.value = CatalogueFilterField.Vendor;
         await fetchCatalogueAndUpdateOtherFilters(CatalogueFilterField.Vendor, selectedVendor.value, additionalFilters.value, currentPage.value, perPage.value)
     } else {
         await fetchCatalogueAndUpdateOtherFilters(primaryFilter.value, primarySelectedValues.value, additionalFilters.value, currentPage.value, perPage.value)
     }
-})
+}, {debounce: 600})
 
-watchDebounced(priceRange, async () => {
-    await fetchCatalogueAndUpdateOtherFilters(primaryFilter.value, primarySelectedValues.value, additionalFilters.value, currentPage.value, perPage.value)
-}, {deep: true, debounce: 800, maxWait: 1000})
 
 watch([currentPage, perPage], async () => {
     await fetchCatalogueAndUpdateOtherFilters(primaryFilter.value, primarySelectedValues.value, additionalFilters.value, currentPage.value, perPage.value)
@@ -211,6 +221,10 @@ const handleClickCatalogueCard = (reference) => {
 
 }
 
+const handlePriceChange = async () => {
+    console.log('hehehhehe')
+    await fetchCatalogueAndUpdateOtherFilters(primaryFilter.value, primarySelectedValues.value, additionalFilters.value, currentPage.value, perPage.value)
+}
 
 </script>
 
@@ -234,6 +248,7 @@ const handleClickCatalogueCard = (reference) => {
                 v-model:price-range="priceRange"
                 v-model:per-page="perPage"
                 :is-filter-loading="isFilterLoading"
+                @price-changed="handlePriceChange"
             />
         </div>
         <div v-if="error.status ">
@@ -267,7 +282,7 @@ const handleClickCatalogueCard = (reference) => {
                     active-color="#DCEDFF"
                     :hide-first-button="true"
                     :hide-last-button="true"
-                    @update:model-value="handleChangePageNumber"
+                    @update:model-value="cataloguePaginationStore.handleChangePageNumber"
                 />
             </div>
         </div>
@@ -302,9 +317,6 @@ const handleClickCatalogueCard = (reference) => {
         justify-content: space-between;
         align-items: center;
         width: 100%;
-
-        .Page {
-        }
     }
 }
 </style>

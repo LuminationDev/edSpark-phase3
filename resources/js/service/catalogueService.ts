@@ -85,37 +85,37 @@ export const catalogueService = {
                 name: 'category',
                 value: item.category,
                 display_text: "Category",
-                group: 'overview'
+                group: 'hidden'
             },
             {
                 name: 'vendor',
                 value: item.vendor,
                 display_text: "Vendor",
-                group: 'availability'
+                group: 'overview'
             },
             {
                 name: 'warranty',
                 value: item.warranty,
                 display_text: "Warranty",
-                group: 'availability'
+                group: 'overview'
             },
             {
                 name: 'price_inc_gst',
                 value: item.price_inc_gst,
                 display_text: "Price (incl. GST)",
-                group: 'availability'
+                group: 'overview'
             },
             {
                 name: 'price_expiry',
                 value: item.price_expiry,
                 display_text: "Price Expiry",
-                group: 'availability'
+                group: 'overview'
             },
             {
                 name: 'available_now',
                 value: item.available_now,
                 display_text: "Available Now",
-                group: 'availability'
+                group: 'hidden'
             },
             {
                 name: 'storage',
@@ -163,91 +163,91 @@ export const catalogueService = {
                 name: 'weight',
                 value: item.weight,
                 display_text: "Weight",
-                group: 'hardware'
+                group: 'specs'
             },
             {
                 name: 'wireless',
                 value: item.wireless,
                 display_text: "Wireless",
-                group: 'hardware'
+                group: 'specs'
             },
             {
                 name: 'webcam',
                 value: item.webcam,
                 display_text: "Webcam",
-                group: 'hardware'
+                group: 'specs'
             },
             {
                 name: 'form_factor',
                 value: item.form_factor,
                 display_text: "Form Factor",
-                group: 'hardware'
+                group: 'specs'
             },
             {
                 name: 'stylus',
                 value: item.stylus,
                 display_text: "Stylus",
-                group: 'hardware'
+                group: 'specs'
             },
             {
                 name: 'id',
                 value: item.id,
                 display_text: "ID",
-                group: 'more_info'
+                group: 'hidden'
             },
             {
                 name: 'unique_reference',
                 value: item.unique_reference,
                 display_text: "Unique Reference",
-                group: 'more_info'
+                group: 'hidden'
             },
             {
                 name: 'name',
                 value: item.name,
                 display_text: "Name",
-                group: 'more_info'
+                group: 'hidden'
             },
             {
                 name: 'image',
                 value: item.image,
                 display_text: "Image",
-                group: 'more_info'
+                group: 'hidden'
             },
             {
                 name: 'product_number',
                 value: item.product_number,
                 display_text: "Product Number",
-                group: 'more_info'
+                group: 'hidden'
             },
             {
                 name: 'other',
                 value: item.other,
                 display_text: "Other",
-                group: 'more_info'
+                group: 'hidden'
             },
             {
                 name: 'corporate',
                 value: item.corporate,
                 display_text: "Corporate",
-                group: 'more_info'
+                group: 'hidden'
             },
             {
                 name: 'administration',
                 value: item.administration,
                 display_text: "Administration",
-                group: 'more_info'
+                group: 'hidden'
             },
             {
                 name: 'curriculum',
                 value: item.curriculum,
                 display_text: "Curriculum",
-                group: 'more_info'
+                group: 'hidden'
             },
             {
                 name: 'cover_image',
                 value: item.cover_image,
                 display_text: "Cover Image",
-                group: 'more_info'
+                group: 'hidden'
             }
             ]
     },

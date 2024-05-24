@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import {debounce} from "lodash";
-import {computed, ref} from "vue";
+import {computed, ref, watch} from "vue";
 
 import VueNoUiSlider from "@/js/components/slider/VueNoUiSlider.vue";
 
@@ -22,13 +22,19 @@ const priceSliderConfig = {
     step: 1,
     format: format,
 }
-
-const priceRange =  defineModel('priceRange')
+const emits = defineEmits(['priceChanged'])
+const priceRange = defineModel('priceRange')
 
 const handleNewValuesFromSlider = debounce((values) => {
     currentPriceValues.value = values
     priceRange.value = values
-},500)
+}, 500)
+
+watch(priceRange, (newValue, oldValue) => {
+    if (JSON.stringify(newValue) !== JSON.stringify(oldValue)) {
+        emits('priceChanged')
+    }
+})
 
 const minActivePrice = computed(() => {
     return currentPriceValues.value[0]

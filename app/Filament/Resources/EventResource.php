@@ -4,6 +4,7 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\EventResource\Pages;
 use App\Helpers\CustomHtmlable;
+use App\Helpers\EdsparkFormComponents;
 use App\Helpers\RoleHelpers;
 use App\Helpers\StatusHelpers;
 use App\Helpers\UserRole;
@@ -17,15 +18,10 @@ use Filament\Resources\Resource;
 use Filament\Tables\Table;
 use Filament\Tables;
 use Illuminate\Database\Eloquent\Builder;
-
 use Illuminate\Support\Facades\Auth;
-use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
-
-
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
-use Mohamedsabil83\FilamentFormsTinyeditor\Components\TinyEditor;
 use SplFileInfo;
 
 use Closure;
@@ -54,16 +50,16 @@ class EventResource extends Resource
             if (in_array($category, $categoriesToInclude)) {
                 $labelColumns[] =
                     Forms\Components\Section::make(ucfirst($category))
-                    ->schema([
-                        Forms\Components\CheckboxList::make("labels")
-                            ->label("")
-                            ->extraAttributes(['class' => 'text-primary-600'])
-                            ->options($labels->pluck('value', 'id')->toArray())
-                            ->relationship('labels', 'value', function ($query) use ($category) {
-                                $query->where('type', $category);
-                            })
-                            ->columns(3)
-                    ]);
+                        ->schema([
+                            Forms\Components\CheckboxList::make("labels")
+                                ->label("")
+                                ->extraAttributes(['class' => 'text-primary-600'])
+                                ->options($labels->pluck('value', 'id')->toArray())
+                                ->relationship('labels', 'value', function ($query) use ($category) {
+                                    $query->where('type', $category);
+                                })
+                                ->columns(3)
+                        ]);
             }
         }
 
@@ -78,21 +74,8 @@ class EventResource extends Resource
                             ->label('Tagline')
                             ->placeholder('150 characters or less')
                             ->maxLength(150),
-                        TinyEditor::make('content')
-                            ->label('Content')->fileAttachmentsDisk('local')
-                            ->fileAttachmentsVisibility('public')
-                            ->fileAttachmentsDirectory('public/uploads/event')
-                            ->required(),
-                        Forms\Components\FileUpload::make('cover_image')
-                            ->label(new CustomHtmlable("Cover Image <span class='text-xs italic'> (500px * 500px / 1:1 aspect ratio] </span>"))
-                            ->validationAttribute('cover image')
-                            ->preserveFilenames()
-                            ->disk('azure')
-                            ->directory('uploads/event')
-                            ->acceptedFileTypes(['image/jpeg', 'image/jpg', 'image/png'])
-                            ->getUploadedFileNameForStorageUsing(function (TemporaryUploadedFile $file): string {
-                                return (string)str($file->getClientOriginalName())->prepend('edSpark-event-');
-                            }),
+                        EdsparkFormComponents::createContentComponent('uploads/content/event'),
+                        EdsparkFormComponents::createCoverImageComponent('uploads/event', 'edSpark-event-'),
                         Forms\Components\Grid::make(2)
                             ->schema([
                                 Flatpickr::make('start_date')
@@ -219,7 +202,16 @@ class EventResource extends Resource
                     ->limit(30)
                     ->searchable(),
 
-                Tables\Columns\ImageColumn::make('cover_image'),
+                Tables\Columns\ImageColumn::make('cover_image')
+                    ->square()
+                    ->getStateUsing(function ($record): string {
+                        $imgPath = $record->cover_image;
+                        if ($imgPath) {
+                            return env('AZURE_STORAGE_ENDPOINT') . env('AZURE_STORAGE_CONTAINER') . '/' . $imgPath;
+                        } else {
+                            return '';
+                        }
+                    }),
                 Tables\Columns\TextColumn::make('status')
                     ->label('Status')
                     ->searchable(),

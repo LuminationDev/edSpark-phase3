@@ -26,6 +26,11 @@ const selectedVendor = defineModel('selectedVendor')
 const priceRange = defineModel('priceRange')
 const perPage = defineModel('perPage')
 
+const emits = defineEmits(['priceChanged'])
+
+const onReceivePriceChanged = () =>{
+    emits('priceChanged')
+}
 
 </script>
 
@@ -64,7 +69,7 @@ const perPage = defineModel('perPage')
             v-model="brandList"
             v-model:selected="selectedBrand"
             title="Brand"
-            :default-show-filter="false"
+            :default-show-filter="true"
         />
         <CatalogueFilterGroup
             v-if="categoryList.length"
@@ -79,9 +84,12 @@ const perPage = defineModel('perPage')
             v-model="vendorList"
             v-model:selected="selectedVendor"
             title="Vendor"
-            :default-show-filter="false"
+            :default-show-filter="true"
         />
-        <CataloguePriceSlider v-model:price-range="priceRange" />
+        <CataloguePriceSlider
+            v-model:price-range="priceRange"
+            @price-changed="onReceivePriceChanged"
+        />
         <CataloguePerPageSelector v-model="perPage" />
     </div>
 </template>

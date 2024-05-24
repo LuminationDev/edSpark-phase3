@@ -5,6 +5,7 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\SoftwareResource\Pages;
 use App\Filament\Resources\SoftwareResource\RelationManagers;
 use App\Helpers\CustomHtmlable;
+use App\Helpers\EdsparkFormComponents;
 use App\Helpers\RoleHelpers;
 use App\Helpers\StatusHelpers;
 use App\Helpers\UserRole;
@@ -79,22 +80,8 @@ class SoftwareResource extends Resource
                             ->label('Tagline')
                             ->placeholder('150 characters or less')
                             ->maxLength(150),
-                        TinyEditor::make('content')
-                            ->label('Content')->fileAttachmentsDisk('local')
-                            ->fileAttachmentsVisibility('public')
-                            ->fileAttachmentsDirectory('public/uploads/software')
-                            ->required(),
-                        Forms\Components\FileUpload::make('cover_image')
-                            ->label(new CustomHtmlable("Cover Image <span class='text-xs italic'> (500px * 500px / 1:1 aspect ratio] </span>"))
-                            ->validationAttribute('cover image')
-                            ->preserveFilenames()
-                            ->disk('public')
-                            ->directory('uploads/software')
-                            ->acceptedFileTypes(['image/jpeg', 'image/jpg', 'image/png'])
-                            ->getUploadedFileNameForStorageUsing(function (TemporaryUploadedFile $file): string {
-                                return (string)str($file->getClientOriginalName())->prepend('edSpark-software-');
-                            }),
-
+                        EdsparkFormComponents::createContentComponent('uploads/content/software'),
+                        EdsparkFormComponents::createCoverImageComponent('uploads/software', 'edSpark-software-'),
                         Forms\Components\Section::make()
                             ->schema([
                                 Forms\Components\Select::make('software_type')
@@ -197,7 +184,16 @@ class SoftwareResource extends Resource
                     ->sortable()
                     ->limit(30)
                     ->searchable(),
-                Tables\Columns\ImageColumn::make('cover_image'),
+                Tables\Columns\ImageColumn::make('cover_image')
+                    ->square()
+                    ->getStateUsing(function ($record): string {
+                        $imgPath = $record->cover_image;
+                        if ($imgPath) {
+                            return env('AZURE_STORAGE_ENDPOINT') . env('AZURE_STORAGE_CONTAINER') . '/' . $imgPath;
+                        } else {
+                            return '';
+                        }
+                    }),
                 Tables\Columns\TextColumn::make('software_types.software_type_name')
                     ->label('Type')
                     ->sortable()

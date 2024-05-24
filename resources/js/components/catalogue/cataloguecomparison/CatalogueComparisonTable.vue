@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import {computed} from "vue";
 
-import {CatalogueGroupedItemType, catalogueTableHeaders} from "@/js/types/catalogueTypes";
+import {catalogueComparisonHeaders,CatalogueGroupedItemType} from "@/js/types/catalogueTypes";
 
 const props = defineProps({
     data: {
@@ -45,6 +45,7 @@ const processedDataForTable = computed(() => {
 const groupAttrName = computed(() => {
     const result = {}
     tableData.value[0].forEach(attr => {
+        if(attr.group === 'hidden') return;
         if (!result[attr.group]) {
             result[attr.group] = []
         }
@@ -60,7 +61,7 @@ const groupAttrName = computed(() => {
 
 <template>
     <template
-        v-for="(header,index) in catalogueTableHeaders"
+        v-for="(header,index) in catalogueComparisonHeaders"
         :key="index"
     >
         <div class="flex flex-col h-fit mb-4 py-6 rounded-lg tableOuter w-full">
