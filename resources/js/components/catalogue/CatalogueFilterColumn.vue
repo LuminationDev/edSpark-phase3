@@ -1,5 +1,7 @@
 <script setup>
 
+import {computed} from "vue";
+
 import GenericButton from "@/js/components/button/GenericButton.vue";
 import CatalogueFilterGroup from "@/js/components/catalogue/CatalogueFilterGroup.vue";
 import CataloguePerPageSelector from "@/js/components/catalogue/CataloguePerPageSelector.vue";
@@ -30,6 +32,10 @@ const perPage = defineModel('perPage')
 const emits = defineEmits(['priceChanged'])
 
 const catalogueStore = useCatalogueStore()
+
+const showResetFilterButton = computed(() =>{
+    return selectedVendor.length || selectedCategory.length || selectedType.length ||selectedVendor.length
+})
 
 const onReceivePriceChanged = () => {
     emits('priceChanged')
@@ -98,6 +104,7 @@ const onClickResetFilters = () => {
             @price-changed="onReceivePriceChanged"
         />
         <GenericButton
+            v-if="showResetFilterButton"
             :callback="onClickResetFilters"
             type="teal"
         >
