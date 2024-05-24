@@ -65,11 +65,12 @@ return [
             'url' => env('AZURE_STORAGE_URL'),
             'prefix' => env('AZURE_STORAGE_PREFIX'),
             'endpoint' => env("AZURE_STORAGE_ENDPOINT"),
+            'path' => env("AZURE_STORAGE_PATH"),
             'retry' => [
                 'tries' => 3,
                 'interval' => 500,
                 'increase' => 'exponential'
-            ]
+            ],
         ],
         'azure_catalogue' => [
             'driver' => 'azure',
@@ -79,7 +80,7 @@ return [
             'url' => env('AZURE_STORAGE_URL'),
             'prefix' => env('AZURE_STORAGE_PREFIX'),
             'endpoint' => env("AZURE_STORAGE_ENDPOINT"),
-            'path' => env("AZURE_STORAGE_ENDPOINT"),
+            'path' => env("AZURE_STORAGE_PATH"),
             'retry' => [
                 'tries' => 3,
                 'interval' => 500,

@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::table('software_softwaretype', function (Blueprint $table) {
             $table->foreign('software_id')->references('id')->on('softwares')->onDelete('cascade');
-            $table->foreign('softwaretype_id')->references('id')->on('software_types')->onDelete('cascade');
+            $table->foreign('softwaretype_id')->references('id')->on('software_types')->onDelete('no action');
         });
     }
 

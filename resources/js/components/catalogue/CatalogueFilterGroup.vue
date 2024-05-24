@@ -39,7 +39,7 @@ const toggleShowFilter = () => {
         </div>
     </div>
     <div
-        class="flex flex-col transition transition-all"
+        class="flex flex-col transition-all"
     >
         <TransitionGroup>
             <template

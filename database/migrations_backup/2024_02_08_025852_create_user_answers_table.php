@@ -20,7 +20,7 @@ return new class extends Migration
             $table->foreignId('user_survey_domain_id')
                 ->references('id')
                 ->on('user_survey_domains')
-                ->onDelete('cascade');
+                ->onDelete('no action');
             $table->enum('answer', ['0', '1', '2']);
             $table->text('answer_text')->nullable();
 

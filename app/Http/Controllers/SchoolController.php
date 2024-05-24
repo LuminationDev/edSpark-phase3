@@ -87,8 +87,8 @@ class SchoolController extends Controller
             ],
             'name' => $school->name,
             'content_blocks' => JsonHelper::safelyDecodeString($school->content_blocks) ?: NULL,
-            'logo' => ($school->logo) ? $school->logo : NULL,
-            'cover_image' => ($school->cover_image) ? $school->cover_image : NULL,
+            'logo' => JsonHelper::safelyDecodeString(($school->logo)) ?: NULL,
+            'cover_image' => JsonHelper::safelyDecodeString(($school->cover_image)) ?: NULL,
             'tech_used' => ($school->tech_used) ? json_decode($school->tech_used) : NULL,
             'status' => $school->status,
             'pedagogical_approaches' => ($school->pedagogical_approaches) ? json_decode($school->pedagogical_approaches) : NULL,
@@ -107,7 +107,7 @@ class SchoolController extends Controller
     {
         if (isset($image) && is_string($image) === false) {
             $imgName = $prefix . '-' . md5(Str::random(30) . time() . '_' . $image) . '.' . $image->getClientOriginalExtension();
-            $image->storeAs('public/uploads/school/' . $folder, $imgName);
+            $image->storeAs('public/uploads/school/' . $folder, $imgName, 'azure');
             return "uploads/school/$folder/" . $imgName;
         }
         return null;

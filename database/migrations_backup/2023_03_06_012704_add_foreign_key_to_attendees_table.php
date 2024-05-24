@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::table('attendees', function (Blueprint $table) {
             // FOREIGN
             $table->foreign('event_id')
-                ->references('id')->on('events')->onDelete('cascade');
+                ->references('id')->on('events')->onDelete('no action');
         });
     }
 

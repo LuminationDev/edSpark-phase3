@@ -8,7 +8,7 @@ import CatalogueSingleShortSpec from "@/js/components/catalogue/cataloguesingle/
 import Loader from "@/js/components/spinner/Loader.vue";
 import {catalogueImageURL} from "@/js/constants/serverUrl";
 import {catalogueService} from "@/js/service/catalogueService";
-import {CatalogueItemType, catalogueTableHeaders} from "@/js/types/catalogueTypes";
+import {CatalogueItemType, catalogueSingleHeaders} from "@/js/types/catalogueTypes";
 
 
 const route = useRoute()
@@ -46,37 +46,37 @@ const structuredCatItemData = computed(() => {
             name: 'category',
             value: itemData.value.category,
             display_text: "Category",
-            group: 'overview'
+            group: 'hidden'
         },
         {
             name: 'vendor',
             value: itemData.value.vendor,
             display_text: "Vendor",
-            group: 'availability'
+            group: 'overview'
         },
         {
             name: 'warranty',
             value: itemData.value.warranty,
             display_text: "Warranty",
-            group: 'availability'
+            group: 'overview'
         },
         {
             name: 'price_inc_gst',
             value: itemData.value.price_inc_gst,
             display_text: "Price (incl. GST)",
-            group: 'availability'
+            group: 'hidden'
         },
         {
             name: 'price_expiry',
             value: itemData.value.price_expiry,
             display_text: "Price Expiry",
-            group: 'availability'
+            group: 'overview'
         },
         {
             name: 'available_now',
             value: itemData.value.available_now,
             display_text: "Available Now",
-            group: 'availability'
+            group: 'hidden'
         },
         {
             name: 'storage',
@@ -124,85 +124,85 @@ const structuredCatItemData = computed(() => {
             name: 'weight',
             value: itemData.value.weight,
             display_text: "Weight",
-            group: 'hardware'
+            group: 'specs'
         },
         {
             name: 'wireless',
             value: itemData.value.wireless,
             display_text: "Wireless",
-            group: 'hardware'
+            group: 'specs'
         },
         {
             name: 'webcam',
             value: itemData.value.webcam,
             display_text: "Webcam",
-            group: 'hardware'
+            group: 'specs'
         },
         {
             name: 'form_factor',
             value: itemData.value.form_factor,
             display_text: "Form Factor",
-            group: 'hardware'
+            group: 'specs'
         },
         {
             name: 'stylus',
             value: itemData.value.stylus,
             display_text: "Stylus",
-            group: 'hardware'
+            group: 'specs'
         },
         {
             name: 'id',
             value: itemData.value.id,
             display_text: "ID",
-            group: 'more_info'
+            group: 'hidden'
         },
         {
             name: 'unique_reference',
             value: itemData.value.unique_reference,
             display_text: "Unique Reference",
-            group: 'more_info'
+            group: 'hidden'
         },
         {
             name: 'name',
             value: itemData.value.name,
             display_text: "Name",
-            group: 'more_info'
+            group: 'hidden'
         },
         {
             name: 'image',
             value: itemData.value.image,
             display_text: "Image",
-            group: 'more_info'
+            group: 'hidden'
         },
         {
             name: 'product_number',
             value: itemData.value.product_number,
             display_text: "Product Number",
-            group: 'more_info'
+            group: 'hidden'
         },
         {
             name: 'other',
             value: itemData.value.other,
             display_text: "Other",
-            group: 'more_info'
+            group: 'specs'
         },
         {
             name: 'corporate',
             value: itemData.value.corporate,
             display_text: "Corporate",
-            group: 'more_info'
+            group: 'hidden'
         },
         {
             name: 'administration',
             value: itemData.value.administration,
             display_text: "Administration",
-            group: 'more_info'
+            group: 'hidden'
         },
         {
             name: 'curriculum',
             value: itemData.value.curriculum,
             display_text: "Curriculum",
-            group: 'more_info'
+            group: 'hidden'
         }
     ]
 });
@@ -295,14 +295,14 @@ const shortSpecEntries = computed(() => {
                 />
             </div>
         </div>
-        <div class="CatalogueSingleOuter grid grid-cols-2 gap-4 mt-16 mx-8">
+        <div class="CatalogueSingleOuter grid grid-cols-1 gap-4 place-items-center mt-16 mx-8">
             <template
-                v-for="(header,index) in catalogueTableHeaders"
+                v-for="(header,index) in catalogueSingleHeaders"
                 :key="index"
             >
                 <!--                turning this into component and have the props hidable-->
                 <div class="border-[1px] border-slate-300 flex flex-col h-fit mb-4 rounded-lg tableOuter w-full">
-                    <div class="capitalize px-4 py-2 text-lg text-main-darkTeal">
+                    <div class="capitalize px-4 py-2 text-main-darkTeal text-xl">
                         {{ header.replace(/_/g, " ") }}
                     </div>
                     <div
@@ -310,7 +310,7 @@ const shortSpecEntries = computed(() => {
                         :key="`${index}-row`"
                         class="px-4 py-2 even:bg-main-teal/5"
                     >
-                        <div class="grid grid-cols-2 py-1 w-full">
+                        <div class="grid grid-cols-2 place-items-center py-1 w-full">
                             <div>
                                 {{ row.display_text }}
                             </div>
