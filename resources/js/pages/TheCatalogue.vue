@@ -259,7 +259,7 @@ const handlePriceChange = async () => {
             v-else-if="!isProductsLoading && !error.status"
             class="col-span-8 productPanel"
         >
-            <div class="2xl:!grid-cols-4 grid grid-cols-1 gap-2 place-items-center lg:!grid-cols-2 xl:!grid-cols-3">
+            <div class="2xl:!grid-cols-4 grid grid-cols-1 gap-x-2 gap-y-8 place-items-center lg:!grid-cols-2 xl:!grid-cols-3">
                 <template
                     v-for="(item,index) in catalogueList"
                     :key="item.unique_reference + index"
