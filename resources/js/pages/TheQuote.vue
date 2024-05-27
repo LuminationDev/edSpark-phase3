@@ -43,25 +43,25 @@ const handlePrintQuote = async () => {
             return Array.from(styleSheet.cssRules).map(rule => {
                 // Check if the rule applies to the element or its children
                 if (element.matches(rule.selectorText) || element.querySelector(rule.selectorText)) {
-                    return rule.cssText;
+                    return rule.cssText.trim(); // Trim each rule to remove extra spaces and new lines
                 }
-            }).join('\n');
+            }).filter(Boolean).join(' '); // Join rules with a space
         } catch (e) {
             // Handle the SecurityError for cross-origin stylesheets
             console.warn(`Could not access stylesheet: ${styleSheet.href}`);
-
+            return '';
         }
-    }).join('\n');
+    }).join(' '); // Join all styles with a space
 
     const styleElement = document.createElement('style');
     styleElement.textContent = stylesheets;
     clonedElement.appendChild(styleElement);
 
     // Serialize the cloned element to HTML
-    const pageContent = new XMLSerializer().serializeToString(clonedElement);
-    const payload = {html: JSON.stringify({html: pageContent})}
+    const pageContent = clonedElement.innerHTML;
+    const payload = {html: JSON.stringify({html: pageContent})};
     console.log(payload)
-    axios.post('http://localhost:8000/api/quote/generate-pdf', payload, { responseType: 'blob' })
+    axios.post('http://localhost:8000/api/quote/generate-pdf', payload, {responseType: 'blob'})
         .then(response => {
             const url = window.URL.createObjectURL(new Blob([response.data]));
             const a = document.createElement('a');
@@ -85,7 +85,9 @@ const handlePrintQuote = async () => {
         :title-paragraph="LandingHeroText['quote']['subtitle']"
         swoosh-color="teal"
     />
-    <div class="mt-16 mx-10 quotePageOuterContainer">
+    <div
+        class="mt-16 mx-10 quotePageOuterContainer"
+    >
         <div
             v-for="(products, vendor) in quoteStore.getQuoteGroupedByVendor"
             :key="vendor + guid()"
@@ -119,7 +121,10 @@ const handlePrintQuote = async () => {
             </GenericButton>
         </div>
     </div>
-    <div class="flex flex-col generatedQuoteContainer mt-10 mx-10">
+    <div
+        id="quote-template-print"
+        class="flex flex-col generatedQuoteContainer mt-10 mx-10"
+    >
         <div class="font-medium mb-4 text-main-darkTeal text-xl">
             Generated quote
         </div>

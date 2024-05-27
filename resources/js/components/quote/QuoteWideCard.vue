@@ -85,12 +85,12 @@ const itemQuantitySubtotal = computed(() => {
 <template>
     <div class="border-[1px] border-slate-300 flex flex-row h-44 mb-4 px-4 py-4 rounded-xl shadow">
         <div class="basis-1/5 catalogueItemImage flex justify-center items-center h-full">
-            <ImageWithFallback
-                image-alt="item"
-                :image-url="catCoverImageUrl"
-                image-type="catalogue"
-                class="border-[1px] border-slate-300 catalogueCoverImage h-36 object-contain p-2 rounded-xl w-36"
-            />
+            <!--            <ImageWithFallback-->
+            <!--                image-alt="item"-->
+            <!--                :image-url="catCoverImageUrl"-->
+            <!--                image-type="catalogue"-->
+            <!--                class="border-[1px] border-slate-300 catalogueCoverImage h-36 object-contain p-2 rounded-xl w-36"-->
+            <!--            />-->
         </div>
         <div class="basis-4/5 catalogueInformation place-items-center">
             <div class="grid grid-cols-4 h-full w-full">

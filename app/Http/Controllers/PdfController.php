@@ -11,13 +11,17 @@ class PdfController extends Controller
 {
     public function generateQuotePdf(Request $request)
     {
-        $htmlContent = $request->input('html');
-        $pdfPath = storage_path('app/public/' . Str::random(10) . '.pdf');
+        $serializedHtml = $request->input('html');
+        $htmlContent = json_decode($serializedHtml, true)['html'];
+
+        $pdfFileName = Str::random(10) . '.pdf';
+        $pdfPath = storage_path('app/public/' . $pdfFileName);
         $pdf = Pdf::html($htmlContent)
             ->withBrowsershot(function (Browsershot $browsershot) {
                 $browsershot
                     ->setNodeBinary(env('NODE_BINARY_PATH'))
-                    ->setNpmBinary(env('NPM_BINARY_PATH'));
+                    ->setNpmBinary(env('NPM_BINARY_PATH'))
+                    ->timeout(100000);
             })
             ->format('a4')
             ->save($pdfPath);
