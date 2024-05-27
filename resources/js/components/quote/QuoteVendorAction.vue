@@ -1,5 +1,5 @@
 <script setup>
-import {computed,ref} from 'vue'
+import {computed, ref} from 'vue'
 
 import GenericButton from "@/js/components/button/GenericButton.vue";
 import {catalogueService} from "@/js/service/catalogueService";
@@ -19,19 +19,27 @@ const props = defineProps({
 const emits = defineEmits([])
 const quoteStore = useQuoteStore()
 
-const onClickGenerate = () =>{
+const onClickGenerate = () => {
     // quoteStore.calculateSubtotalPerVendor(props.quoteVendor)
-    quoteStore.checkoutVendor(props.quoteVendor)
+    quoteStore.checkoutVendor(props.quoteVendor).then(res =>{
+        console.log('Success generating quoote')
+        toast.success("Quote generated successfully.")
+        quoteStore.initializeQuote()
+    }).catch(err =>{
+        if(err.status === '410'){ console.log(' user do not have any quote')}
+        else{
+            console.log(err.message)
+        }
+
+    })
 }
-const subtotalIncGst = computed(() =>{
+const subtotalIncGst = computed(() => {
     return quoteStore.calculateSubtotalPerVendor(props.quoteVendor)
 })
 
-const subtotalExcGst = computed(() =>{
+const subtotalExcGst = computed(() => {
     return catalogueService.getExcGstPrice(subtotalIncGst.value)
 })
-
-
 
 
 </script>
@@ -69,7 +77,8 @@ const subtotalExcGst = computed(() =>{
                     Cancel Quote
                 </GenericButton>
                 <div class="font-thin genQuote information text-center">
-                    Quotes are generated per vendor and school are responsible for raising PO and contacting the vendor with the PO
+                    Quotes are generated per vendor and school are responsible for raising PO and contacting the vendor
+                    with the PO
                 </div>
             </div>
         </div>
