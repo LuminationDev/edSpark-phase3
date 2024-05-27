@@ -1,5 +1,5 @@
 <script setup>
-import {onMounted} from "vue";
+import {computed, onMounted} from "vue";
 import {useRouter} from "vue-router";
 
 import BaseLandingHero from "@/js/components/bases/BaseLandingHero.vue";
@@ -37,24 +37,35 @@ const handlePrintQuote = async () => {
     // Clone the element to preserve the original state
     const clonedElement = element.cloneNode(true);
 
-    // Get all the stylesheets and apply only relevant rules to the cloned element
-    const stylesheets = Array.from(document.styleSheets).map(styleSheet => {
-        try {
-            return Array.from(styleSheet.cssRules).map(rule => {
-                // Check if the rule applies to the element or its children
-                if (element.matches(rule.selectorText) || element.querySelector(rule.selectorText)) {
-                    return rule.cssText.trim(); // Trim each rule to remove extra spaces and new lines
-                }
-            }).filter(Boolean).join(' '); // Join rules with a space
-        } catch (e) {
-            // Handle the SecurityError for cross-origin stylesheets
-            console.warn(`Could not access stylesheet: ${styleSheet.href}`);
-            return '';
+    const getComputedStyles = (element) => {
+        const computedStyles = window.getComputedStyle(element);
+        console.log(computedStyles)
+        let styles = '';
+
+        for (let i = 0; i < computedStyles.length; i++) {
+            const propertyName = computedStyles[i];
+            const propertyValue = computedStyles.getPropertyValue(propertyName);
+            styles += `${propertyName}: ${propertyValue}; `;
         }
-    }).join(' '); // Join all styles with a space
+
+        return styles.trim();
+    }
+
+    const getAllComputedStyles = (element) => {
+        let styles = getComputedStyles(element);
+        const children = element.querySelectorAll('*');
+
+        children.forEach(child => {
+            styles += ` ${getComputedStyles(child)}`;
+        });
+
+        return styles;
+    }
+
+    const styles = getAllComputedStyles(element);
 
     const styleElement = document.createElement('style');
-    styleElement.textContent = stylesheets;
+    styleElement.textContent = styles;
     clonedElement.appendChild(styleElement);
 
     // Serialize the cloned element to HTML
@@ -122,7 +133,6 @@ const handlePrintQuote = async () => {
         </div>
     </div>
     <div
-        id="quote-template-print"
         class="flex flex-col generatedQuoteContainer mt-10 mx-10"
     >
         <div class="font-medium mb-4 text-main-darkTeal text-xl">
@@ -136,11 +146,4 @@ const handlePrintQuote = async () => {
     >
         invoke print
     </GenericButton>
-
-    <div
-        id="quote-template-print"
-        class="flex flex-row"
-    >
-        <div class="bg-main-darkTeal h-72 w-72" />
-    </div>
 </template>

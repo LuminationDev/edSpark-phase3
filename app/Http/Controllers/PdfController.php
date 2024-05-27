@@ -24,6 +24,7 @@ class PdfController extends Controller
                     ->timeout(100000);
             })
             ->format('a4')
+            ->orientation('Landscape')
             ->save($pdfPath);
 
         return response()->download($pdfPath, 'page.pdf')->deleteFileAfterSend(false);

@@ -4,6 +4,7 @@ import {computed, ref} from 'vue'
 
 import Accordion from "@/js/components/accordion/Accordion.vue";
 import GenericButton from "@/js/components/button/GenericButton.vue";
+import QuotePdfRenderer from "@/js/components/catalogue/quote/QuotePdfRenderer.vue";
 import QuoteWideCard from "@/js/components/quote/QuoteWideCard.vue";
 import {useQuoteStore} from "@/js/stores/useQuoteStore";
 
@@ -54,19 +55,20 @@ const getQuoteCreatedAt = (quote) => {
                             :display-only="true"
                         />
                     </div>
-                    <div class="flex justify-between flex-row">
-                        <GenericButton
-                            :callback="() => {}"
-                            type="teal"
-                        >
-                            Download quote
-                        </GenericButton>
-                        <div class="font-semibold genQuoteTotal text-lg">
-                            {{ `Total price (ex. GST): ${quote.total_price_ex_gst}` }}
-                        </div>
-                    </div>
                 </template>
             </Accordion>
+            <div class="flex justify-between flex-row">
+                <GenericButton
+                    :callback="() => {}"
+                    type="teal"
+                >
+                    Download quote
+                </GenericButton>
+                <div class="font-semibold genQuoteTotal text-lg">
+                    {{ `Total price (ex. GST): ${quote.total_price_ex_gst}` }}
+                </div>
+            </div>
+            <QuotePdfRenderer :quote="quote" />
         </div>
     </div>
 </template>
