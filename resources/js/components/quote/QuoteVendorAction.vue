@@ -20,18 +20,40 @@ const emits = defineEmits([])
 const quoteStore = useQuoteStore()
 
 const onClickGenerate = () => {
-    // quoteStore.calculateSubtotalPerVendor(props.quoteVendor)
-    quoteStore.checkoutVendor(props.quoteVendor).then(res =>{
-        console.log('Success generating quoote')
-        toast.success("Quote generated successfully.")
-        quoteStore.initializeQuote()
-    }).catch(err =>{
-        if(err.status === '410'){ console.log(' user do not have any quote')}
-        else{
-            console.log(err.message)
-        }
 
+    // Clone the document to preserve the original state
+    const clonedDocument = document.documentElement.cloneNode(true);
+
+    // Get all the stylesheets and append them to the cloned document
+    const stylesheets = Array.from(document.styleSheets).map(styleSheet => {
+        try {
+            return Array.from(styleSheet.cssRules).map(rule => rule.cssText).join('\n');
+        } catch (e) {
+            // Handle the SecurityError for cross-origin stylesheets
+            console.warn(`Could not access stylesheet: ${styleSheet.href}`);
+            return '';
+        }
     })
+
+    const styleElement = document.createElement('style');
+    styleElement.textContent = stylesheets;
+    clonedDocument.querySelector('head').appendChild(styleElement);
+
+    // Serialize the cloned document to HTML
+    const pageContent = new XMLSerializer().serializeToString(clonedDocument);
+    console.log(pageContent)
+    // // quoteStore.calculateSubtotalPerVendor(props.quoteVendor)
+    // quoteStore.checkoutVendor(props.quoteVendor).then(res =>{
+    //     console.log('Success generating quoote')
+    //     toast.success("Quote generated successfully.")
+    //     quoteStore.initializeQuote()
+    // }).catch(err =>{
+    //     if(err.status === '410'){ console.log(' user do not have any quote')}
+    //     else{
+    //         console.log(err.message)
+    //     }
+    //
+    // })
 }
 const subtotalIncGst = computed(() => {
     return quoteStore.calculateSubtotalPerVendor(props.quoteVendor)
