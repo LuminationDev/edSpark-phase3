@@ -205,6 +205,10 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::get('/list', [CartController::class, 'getActiveUserQuotes']);
         Route::post('/generate-pdf', [PdfController::class, 'generateQuotePdf']);
     });
+    //vendor
+    Route::get('/vendor/{vendor_name}', [CartController::class, 'getVendorInfo']);
+
+
 
 
 });

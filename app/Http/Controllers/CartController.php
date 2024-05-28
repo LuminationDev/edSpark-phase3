@@ -7,6 +7,7 @@ use App\Models\CartItem;
 use App\Models\Catalogue;
 use App\Models\Catalogueversion;
 use App\Models\Quote;
+use App\Models\Vendor;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
@@ -265,16 +266,33 @@ class CartController extends Controller
     public function getActiveUserQuotes()
     {
         $user = Auth::user();
-
         $quotes = Quote::where('user_id', $user->id)
             ->where('version_id', Catalogueversion::getActiveCatalogueId())
             ->where('status', "ACTIVE")->get();
-
         if($quotes->isEmpty()){
             return response()->json(['message' => 'No quotes found'], 410);
         }
         return response()->json(['message' => 'Fetch completed', 'quotes' => $quotes], 201);
+    }
+
+    public function getVendorInfo(Request $request, $vendorName){
+        $vendor = Vendor::where('vendor_name', $vendorName)->first();
+        if(!$vendor){
+            return response()->json(['message' => 'Vendor not found'], 410);
+        }
+        $result = [
+            'Name' => $vendor->vendor_name,
+            'Address' => $vendor->address,
+            'ABN' => $vendor->abn,
+            'Order Email' => $vendor->order_email,
+            'Phone' => $vendor->phone,
+            "Contact" => $vendor->contact,
+            'Direct Phone' => $vendor->direct_phone,
+            'Email' => $vendor->email,
+        ];
+        return response()->json(['message' => 'Fetch completed', 'vendor' => $result], 201);
 
     }
+
 
 }

@@ -37,34 +37,28 @@ const handlePrintQuote = async () => {
     // Clone the element to preserve the original state
     const clonedElement = element.cloneNode(true);
 
-    // const getComputedStyles = (element) => {
-    //     const computedStyles = window.getComputedStyle(element);
-    //     console.log(computedStyles)
-    //     let styles = '';
-    //
-    //     for (let i = 0; i < computedStyles.length; i++) {
-    //         const propertyName = computedStyles[i];
-    //         const propertyValue = computedStyles.getPropertyValue(propertyName);
-    //         styles += `${propertyName}: ${propertyValue}; `;
-    //     }
-    //
-    //     return styles.trim();
-    // }
-    //
-    // const getAllComputedStyles = (element) => {
-    //     let styles = getComputedStyles(element);
-    //     const children = element.querySelectorAll('*');
-    //
-    //     children.forEach(child => {
-    //         styles += ` ${getComputedStyles(child)}`;
-    //     });
-    //
-    //     return styles;
-    // }
-    //
-    // const styles = getAllComputedStyles(element);
-    function getAllStyles() {
-        const styles = Array.from(document.styleSheets).map(styleSheet => {
+    // Function to fetch the image and convert it to base64
+    const getImageBase64 = async (img) => {
+        const imgUrl = img.src;
+        console.log(imgUrl)
+        const response = await fetch(imgUrl);
+        const blob = await response.blob();
+        return new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.onloadend = () => resolve(reader.result);
+            reader.onerror = reject;
+            reader.readAsDataURL(blob);
+        });
+    };
+
+    // Get all images in the cloned element
+    const images = clonedElement.getElementsByTagName('img');
+    for (const img of images) {
+        const base64Data = await getImageBase64(img);
+        img.src = base64Data;
+    }
+    const getAllStyles = () => {
+        return Array.from(document.styleSheets).map(styleSheet => {
             try {
                 return Array.from(styleSheet.cssRules).map(rule => {
                     return rule.cssText.trim();
@@ -75,8 +69,6 @@ const handlePrintQuote = async () => {
                 return '';
             }
         }).join(' ');
-
-        return styles;
     }
 
     const allStyles = getAllStyles();

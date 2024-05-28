@@ -1,7 +1,9 @@
 <script setup>
-import {computed, ref} from 'vue'
+import {computed, onMounted, ref} from 'vue'
 
-import {catalogueService} from "../../../service/catalogueService";
+import ImageWithFallback from "@/js/components/global/ImageWithFallback.vue";
+import {imageURL, serverURL} from "@/js/constants/serverUrl";
+import {catalogueService} from "@/js/service/catalogueService";
 
 const props = defineProps({
     quote: {
@@ -9,18 +11,17 @@ const props = defineProps({
         required: true
     }
 })
-console.log(props.quote)
 
-const vendorData = {
-    vendor_name: 'CompNow',
-    address: '9 Commercial Street, Marleston SA 5033',
-    abn: '48592886118',
-    order_email: 'sits@compnow.com.au',
-    phone: '0888133800',
-    contact: 'Ben Stratton - SA Education K-12 Sales Manager',
-    direct_phone: '0477730029',
-    email: 'sits@compnow.com.au',
-}
+const vendorName = 'CompNow'
+const vendorData = ref({})
+
+onMounted(() => {
+    axios.get(`${serverURL}/vendor/${vendorName}`).then(res => {
+        console.log(res.data)
+        vendorData.value = res.data.vendor
+    })
+})
+
 </script>
 
 <template>
@@ -28,8 +29,17 @@ const vendorData = {
         id="quote-template-print"
         class="QuotePDFDisplay flex flex-col h-[900px] mt-10 p-4 w-full"
     >
-        <div class="bg-main-teal h-36 header p-6 text-2xl text-white w-full">
-            EdSpark Quote
+        <div class="bg-main-teal flex items-end flex-row h-36 header p-6 text-2xl text-white w-full">
+            <ImageWithFallback
+                class="h-24 w-24"
+                image-alt=""
+                :image-url="`${imageURL}/uploads/image/edsparkLogo.png`"
+                image-type="logo"
+            />
+            <img
+                class="h-20 ml-4"
+                src="@/assets/images/footer/dfe.svg"
+            >
         </div>
         <div class="flex flex-col h-full mt-10 px-4 quote-content">
             <div class="flex flex-row info-row">
