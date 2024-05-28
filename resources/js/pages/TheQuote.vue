@@ -37,35 +37,52 @@ const handlePrintQuote = async () => {
     // Clone the element to preserve the original state
     const clonedElement = element.cloneNode(true);
 
-    const getComputedStyles = (element) => {
-        const computedStyles = window.getComputedStyle(element);
-        console.log(computedStyles)
-        let styles = '';
-
-        for (let i = 0; i < computedStyles.length; i++) {
-            const propertyName = computedStyles[i];
-            const propertyValue = computedStyles.getPropertyValue(propertyName);
-            styles += `${propertyName}: ${propertyValue}; `;
-        }
-
-        return styles.trim();
-    }
-
-    const getAllComputedStyles = (element) => {
-        let styles = getComputedStyles(element);
-        const children = element.querySelectorAll('*');
-
-        children.forEach(child => {
-            styles += ` ${getComputedStyles(child)}`;
-        });
+    // const getComputedStyles = (element) => {
+    //     const computedStyles = window.getComputedStyle(element);
+    //     console.log(computedStyles)
+    //     let styles = '';
+    //
+    //     for (let i = 0; i < computedStyles.length; i++) {
+    //         const propertyName = computedStyles[i];
+    //         const propertyValue = computedStyles.getPropertyValue(propertyName);
+    //         styles += `${propertyName}: ${propertyValue}; `;
+    //     }
+    //
+    //     return styles.trim();
+    // }
+    //
+    // const getAllComputedStyles = (element) => {
+    //     let styles = getComputedStyles(element);
+    //     const children = element.querySelectorAll('*');
+    //
+    //     children.forEach(child => {
+    //         styles += ` ${getComputedStyles(child)}`;
+    //     });
+    //
+    //     return styles;
+    // }
+    //
+    // const styles = getAllComputedStyles(element);
+    function getAllStyles() {
+        const styles = Array.from(document.styleSheets).map(styleSheet => {
+            try {
+                return Array.from(styleSheet.cssRules).map(rule => {
+                    return rule.cssText.trim();
+                }).join(' ');
+            } catch (e) {
+                // Handle the SecurityError for cross-origin stylesheets
+                console.warn(`Could not access stylesheet: ${styleSheet.href}`);
+                return '';
+            }
+        }).join(' ');
 
         return styles;
     }
 
-    const styles = getAllComputedStyles(element);
+    const allStyles = getAllStyles();
 
     const styleElement = document.createElement('style');
-    styleElement.textContent = styles;
+    styleElement.textContent = allStyles;
     clonedElement.appendChild(styleElement);
 
     // Serialize the cloned element to HTML
