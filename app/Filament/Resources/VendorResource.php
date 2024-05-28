@@ -23,7 +23,17 @@ class VendorResource extends Resource
     {
         return $form
             ->schema([
-                //
+                Forms\Components\Section::make()
+                ->schema([
+                    Forms\Components\TextInput::make('vendor_name'),
+                    Forms\Components\TextInput::make('address'),
+                    Forms\Components\TextInput::make('abn')->label('ABN'),
+                    Forms\Components\TextInput::make('order_email'),
+                    Forms\Components\TextInput::make('phone'),
+                    Forms\Components\TextInput::make('contact'),
+                    Forms\Components\TextInput::make('direct_phone'),
+                    Forms\Components\TextInput::make('email'),
+                ])
             ]);
     }
 
@@ -31,7 +41,21 @@ class VendorResource extends Resource
     {
         return $table
             ->columns([
-                //
+                Tables\Columns\TextColumn::make('vendor_name')
+                    ->label('Vendor Name')
+                    ->sortable()
+                    ->limit(30)
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('address')
+                    ->label('Address')
+                    ->sortable()
+                    ->limit(30)
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('contact')
+                    ->label('Contact')
+                    ->sortable()
+                    ->limit(30)
+                    ->searchable(),
             ])
             ->filters([
                 //
