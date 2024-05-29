@@ -147,12 +147,12 @@ const handlePrintQuote = async () => {
         <div class="font-medium mb-4 text-main-darkTeal text-xl">
             Generated quote
         </div>
-        <GeneratedQuoteDisplay />
+        <GeneratedQuoteDisplay :print-function="handlePrintQuote" />
     </div>
-    <GenericButton
-        :callback="handlePrintQuote"
-        type="teal"
-    >
-        invoke print
-    </GenericButton>
+<!--    <GenericButton-->
+<!--        :callback="handlePrintQuote"-->
+<!--        type="teal"-->
+<!--    >-->
+<!--        invoke print-->
+<!--    </GenericButton>-->
 </template>

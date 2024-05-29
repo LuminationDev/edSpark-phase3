@@ -97,9 +97,9 @@ onMounted(async () => {
         // brandList.value = brandsResponse.data.data.filter(Boolean);
         // vendorList.value = vendorsResponse.data.data.filter(Boolean);
         // catalogueList.value = cataloguesResult.items
-        if (cataloguesResult.pagination) {
-            cataloguePaginationStore.updatePaginationData(cataloguesResult.pagination)
-        }
+        // if (cataloguesResult.pagination) {
+        //     cataloguePaginationStore.updatePaginationData(cataloguesResult.pagination)
+        // }
     } catch (error) {
         // Handle errors here
         console.error('Error fetching data:', error);

@@ -19,7 +19,7 @@ class CatalogueversionResource extends Resource
     protected static ?string $modelLabel = 'Catalogue version';
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
-    protected static ?string $navigationGroup = 'Product Management';
+    protected static ?string $navigationGroup = 'Classroom Catalogue';
     protected static ?string $navigationLabel = 'Catalogue versions';
 
 

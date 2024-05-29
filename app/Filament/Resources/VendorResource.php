@@ -18,6 +18,7 @@ class VendorResource extends Resource
     protected static ?string $model = Vendor::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationGroup = 'Classroom Catalogue';
 
     public static function form(Form $form): Form
     {

@@ -12,6 +12,7 @@ export const useQuoteStore = defineStore('quote', {
         qouteCreationDate: useStorage('EDSPARK_QUOTE_CREATION_DATE', 0, localStorage),
         qouteUpdateDate: useStorage('EDSPARK_QUOTE_UPDATE_DATE', 0, localStorage),
         quoteLoading: false,
+        quotePreview: {},
         genQuote: []
 
     }),
@@ -36,7 +37,6 @@ export const useQuoteStore = defineStore('quote', {
             try {
                 this.quoteLoading = true;
                 const quoteFromDb = await quoteService.getCart()
-                console.log(quoteFromDb)
                 this.quote = quoteFromDb;
                 this.quoteLoading = false;
             } catch (e) {

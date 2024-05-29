@@ -164,37 +164,59 @@ class CartController extends Controller
         $user = Auth::user();
         $vendorName = $request->input('vendor');
 
-        // Retrieve the active cart for the user
-        $cart = Cart::with('cartItems.catalogue')
-            ->where('user_id', $user->id)
-            ->where('status', 'ACTIVE')
-            ->first();
-
+        $cart = $this->getActiveCart($user->id);
         if (!$cart) {
             return response()->json(['message' => 'Cart is empty or already checked out'], 200);
         }
 
-        // Filter cart items to only include those from the specified vendor
-        $vendorCartItems = $cart->cartItems->filter(function ($item) use ($vendorName) {
-            return $item->catalogue->vendor == $vendorName;
-        });
-
+        $vendorCartItems = $this->getVendorCartItems($cart, $vendorName);
         if ($vendorCartItems->isEmpty()) {
             return response()->json(['message' => 'No items from the specified vendor in the cart'], 200);
         }
 
-        // Generate quote content for the filtered items
-        $quoteContent = $vendorCartItems->map(function ($item) use ($cart) {
+        $quoteContent = $this->generateQuoteContent($vendorCartItems, $cart->id);
+        $totalPrice = $quoteContent->sum('total');
+
+        $quote = $this->createQuote($user->id, $cart->version_id, $quoteContent->toArray(), $totalPrice);
+
+        $this->removeCheckedOutItems($cart, $vendorCartItems);
+        $this->updateCartStatus($cart);
+
+        return response()->json(['message' => 'Checkout completed for vendor', 'quote' => $quote], 201);
+    }
+
+    private function getActiveCart($userId)
+    {
+        return Cart::with('cartItems.catalogue')
+            ->where('user_id', $userId)
+            ->where('status', 'ACTIVE')
+            ->first();
+    }
+
+    private function getVendorCartItems($cart, $vendorName)
+    {
+        return $cart->cartItems->filter(function ($item) use ($vendorName) {
+            return $item->catalogue->vendor == $vendorName;
+        });
+    }
+
+    private function generateQuoteContent($vendorCartItems, $cartId)
+    {
+        return $vendorCartItems->map(function ($item) use ($cartId) {
             $itemCatalogue = $item->catalogue;
+            $itemImageUUID = '';
+            $itemImageExtension = '';
+
             if ($itemCatalogue->cover_image) {
                 $itemImage = Image::where('id', $itemCatalogue->cover_image)->first();
-                $itemImageUUID = $itemImage->uuid ?? '';
-            } else {
-                $itemImageUUID = '';
+                if ($itemImage) {
+                    $itemImageUUID = $itemImage->uuid ?? '';
+                    $itemImageExtension = $itemImage->file_extension ?? '';
+                }
             }
 
             return [
-                'cart_id' => $cart->id,
+                'cart_id' => $cartId,
                 'catalogue_id' => $item->catalogue_id,
                 'id' => $itemCatalogue->id,
                 'unique_reference' => $itemCatalogue->unique_reference,
@@ -227,40 +249,40 @@ class CartController extends Controller
                 'price_expiry' => $itemCatalogue->price_expiry,
                 'cover_image' => [
                     'uuid' => $itemImageUUID,
-                    'extension' => $itemImage->file_extension ?? '',
+                    'extension' => $itemImageExtension,
                 ],
                 'quantity' => $item->quantity,
                 'total' => $item->quantity * $item->catalogue->price_inc_gst,
-
             ];
         });
+    }
 
-        $totalPrice = $quoteContent->sum('total');
-
-        // Create a new quote for the vendor items
-        $quote = Quote::create([
-            'user_id' => $user->id,
-            'version_id' => $cart->version_id,
-            'quote_content' => $quoteContent->toArray(),
+    private function createQuote($userId, $versionId, $quoteContent, $totalPrice)
+    {
+        return Quote::create([
+            'user_id' => $userId,
+            'version_id' => $versionId,
+            'quote_content' => $quoteContent,
             'total_price_ex_gst' => number_format($totalPrice / 1.1, 2, '.', ''),
             'status' => 'ACTIVE',
         ]);
+    }
 
-        // Remove the checked out items from the cart
+    private function removeCheckedOutItems($cart, $vendorCartItems)
+    {
         $cart->cartItems()->whereIn('id', $vendorCartItems->pluck('id'))->delete();
+    }
 
-        // If the cart is empty after removing the items, mark it as completed
+    private function updateCartStatus($cart)
+    {
         if ($cart->cartItems()->count() == 0) {
             $cart->update(['status' => 'COMPLETED']);
-            // Create a new active cart for the user
-            $newCart = Cart::create([
-                'user_id' => $user->id,
+            Cart::create([
+                'user_id' => $cart->user_id,
                 'version_id' => $cart->version_id,
                 'status' => 'ACTIVE',
             ]);
         }
-
-        return response()->json(['message' => 'Checkout completed for vendor', 'quote' => $quote], 201);
     }
 
     public function getActiveUserQuotes()
@@ -269,15 +291,16 @@ class CartController extends Controller
         $quotes = Quote::where('user_id', $user->id)
             ->where('version_id', Catalogueversion::getActiveCatalogueId())
             ->where('status', "ACTIVE")->get();
-        if($quotes->isEmpty()){
+        if ($quotes->isEmpty()) {
             return response()->json(['message' => 'No quotes found'], 410);
         }
         return response()->json(['message' => 'Fetch completed', 'quotes' => $quotes], 201);
     }
 
-    public function getVendorInfo(Request $request, $vendorName){
+    public function getVendorInfo(Request $request, $vendorName)
+    {
         $vendor = Vendor::where('vendor_name', $vendorName)->first();
-        if(!$vendor){
+        if (!$vendor) {
             return response()->json(['message' => 'Vendor not found'], 410);
         }
         $result = [

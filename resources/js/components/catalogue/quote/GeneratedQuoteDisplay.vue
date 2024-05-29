@@ -6,16 +6,20 @@ import Accordion from "@/js/components/accordion/Accordion.vue";
 import GenericButton from "@/js/components/button/GenericButton.vue";
 import QuotePdfRenderer from "@/js/components/catalogue/quote/QuotePdfRenderer.vue";
 import QuoteWideCard from "@/js/components/quote/QuoteWideCard.vue";
+import {formatDateToDayTime} from "@/js/helpers/dateHelper";
 import {useQuoteStore} from "@/js/stores/useQuoteStore";
 
-import {formatDateToDayTime} from "../../../helpers/dateHelper";
-
-const props = defineProps({})
+const props = defineProps({
+    printFunction:{
+        type: Function,
+        required: true
+    }
+})
 
 const emits = defineEmits([])
 
 const quoteStore = useQuoteStore()
-const {genQuote} = storeToRefs(quoteStore)
+const {genQuote, quotePreview} = storeToRefs(quoteStore)
 
 const quoteVendor = computed(() => {
     const vendor = genQuote.value[0]?.quote_content[0]?.vendor
@@ -26,8 +30,18 @@ const quoteVendor = computed(() => {
 const getQuoteVendor = (quote) => {
     return quote?.quote_content[Object.keys(quote.quote_content)[0]]?.vendor
 }
+
+const getQuoteDisplayVendor = computed(() => {
+    return quotePreview.value?.quote_content[Object.keys(quotePreview.value.quote_content)[0]]?.vendor
+})
 const getQuoteCreatedAt = (quote) => {
     return quote?.created_at
+}
+
+const onClickDownloadQuote = async (quote) =>{
+    quotePreview.value = quote
+    console.log(quote)
+    // await props.printFunction()
 }
 </script>
 
@@ -40,7 +54,7 @@ const getQuoteCreatedAt = (quote) => {
         >
             <Accordion>
                 <template #title>
-                    <h2>{{ `Quote ID #${quote.id} - ${(getQuoteVendor(quote) ? getQuoteVendor(quote) : '') }` }}</h2>
+                    <h2>{{ `Quote ID #${quote.id} - ${(getQuoteVendor(quote) ? getQuoteVendor(quote) : '')}` }}</h2>
                 </template>
                 <template #info>
                     {{ "Generated on " + formatDateToDayTime(getQuoteCreatedAt(quote)) }}
@@ -59,7 +73,7 @@ const getQuoteCreatedAt = (quote) => {
             </Accordion>
             <div class="flex justify-between flex-row">
                 <GenericButton
-                    :callback="() => {}"
+                    :callback=" () => onClickDownloadQuote(quote)"
                     type="teal"
                 >
                     Download quote
@@ -68,7 +82,11 @@ const getQuoteCreatedAt = (quote) => {
                     {{ `Total price (ex. GST): ${quote.total_price_ex_gst}` }}
                 </div>
             </div>
-            <QuotePdfRenderer :quote="quote" />
         </div>
+        <template v-if="Object.keys(quotePreview).length">
+            <QuotePdfRenderer
+                :quote="quotePreview"
+            />
+        </template>
     </div>
 </template>

@@ -1,5 +1,5 @@
 <script setup>
-import {computed, onMounted, ref} from 'vue'
+import {computed, onMounted, ref, watch} from 'vue'
 
 import ImageWithFallback from "@/js/components/global/ImageWithFallback.vue";
 import {imageURL, serverURL} from "@/js/constants/serverUrl";
@@ -7,31 +7,41 @@ import {catalogueService} from "@/js/service/catalogueService";
 
 const props = defineProps({
     quote: {
-        type: Array,
+        type: Object,
         required: true
-    }
+    },
 })
 
-const vendorName = 'CompNow'
 const vendorData = ref({})
 
-onMounted(() => {
-    axios.get(`${serverURL}/vendor/${vendorName}`).then(res => {
+const getQuoteDisplayVendor = computed(() => {
+    return props.quote?.quote_content[Object.keys(props.quote.quote_content)[0]]?.vendor
+})
+const fetchVendorData = () => {
+    axios.get(`${serverURL}/vendor/${getQuoteDisplayVendor.value}`).then(res => {
         console.log(res.data)
         vendorData.value = res.data.vendor
     })
+}
+onMounted(() => {
+    fetchVendorData()
 })
 
+
+watch(getQuoteDisplayVendor, () => {
+    console.log('called')
+    fetchVendorData()
+})
 </script>
 
 <template>
     <div
         id="quote-template-print"
-        class="QuotePDFDisplay flex flex-col h-[900px] mt-10 p-4 w-full"
+        class="QuotePDFDisplay flex flex-col mt-10 p-4 w-full"
     >
         <div class="bg-main-teal flex items-end flex-row h-36 header p-6 text-2xl text-white w-full">
             <ImageWithFallback
-                class="h-24 w-24"
+                class="h-20 w-20"
                 image-alt=""
                 :image-url="`${imageURL}/uploads/image/edsparkLogo.png`"
                 image-type="logo"
@@ -39,9 +49,10 @@ onMounted(() => {
             <img
                 class="h-20 ml-4"
                 src="@/assets/images/footer/dfe.svg"
+                alt="logo"
             >
         </div>
-        <div class="flex flex-col h-full mt-10 px-4 quote-content">
+        <div class="flex flex-col h-full mt-10 px-8 quote-content">
             <div class="flex flex-row info-row">
                 <div class="basis-1/2 flex flex-col left-column vendor-info">
                     <span>SA Department for Education</span>
@@ -167,17 +178,32 @@ onMounted(() => {
                                 {{ item.price_expiry }}
                             </div>
                             <div class="cost-inc-gst flex-1">
-                                {{ item.price_inc_gst }}
+                                {{ `$` + (item.price_inc_gst * item.quantity).toFixed(2) }}
                             </div>
                             <div class="cost-ex-gst flex-1">
-                                {{ catalogueService.getExcGstPrice(item.price_inc_gst) }}
+                                {{
+                                    `$` + (catalogueService.getExcGstPrice(item.price_inc_gst) * item.quantity).toFixed(2)
+                                }}
                             </div>
                         </div>
                     </template>
+                    <div class="flex total-row">
+                        <div class="flex-2" />
+                        <div class="flex-2" />
+                        <div class="flex-2" />
+                        <div class="flex-1" />
+                        <div class="flex-1" />
+                        <div class="flex-1" />
+                        <div class="flex-1">
+                            <div class="flex justify-end items-end font-semibold text-lg">
+                                {{ `Total: $${props.quote.total_price_ex_gst}` }}
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
             <div
-                class="= border-main-darkTeal border-t-2 flex justify-end items-end mt-auto quote-footer"
+                class="= border-main-darkTeal border-t-2 flex justify-end items-end quote-footer"
             >
                 Page 1 of 1
             </div>
@@ -191,5 +217,9 @@ onMounted(() => {
 
 .flex-2 {
     flex: 2;
+}
+
+#quote-template-print {
+    aspect-ratio: 1.41 / 1;
 }
 </style>
