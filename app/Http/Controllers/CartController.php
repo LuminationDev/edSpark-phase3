@@ -163,6 +163,7 @@ class CartController extends Controller
     {
         $user = Auth::user();
         $vendorName = $request->input('vendor');
+        $deliveryInfo = $request->input('delivery_info');
 
         $cart = $this->getActiveCart($user->id);
         if (!$cart) {
@@ -177,7 +178,7 @@ class CartController extends Controller
         $quoteContent = $this->generateQuoteContent($vendorCartItems, $cart->id);
         $totalPrice = $quoteContent->sum('total');
 
-        $quote = $this->createQuote($user->id, $cart->version_id, $quoteContent->toArray(), $totalPrice);
+        $quote = $this->createQuote($user->id, $cart->version_id, $quoteContent->toArray(), $totalPrice, $deliveryInfo);
 
         $this->removeCheckedOutItems($cart, $vendorCartItems);
         $this->updateCartStatus($cart);
@@ -257,13 +258,14 @@ class CartController extends Controller
         });
     }
 
-    private function createQuote($userId, $versionId, $quoteContent, $totalPrice)
+    private function createQuote($userId, $versionId, $quoteContent, $totalPrice, $deliveryInfo)
     {
         return Quote::create([
             'user_id' => $userId,
             'version_id' => $versionId,
             'quote_content' => $quoteContent,
             'total_price_ex_gst' => number_format($totalPrice / 1.1, 2, '.', ''),
+            'delivery_info' => $deliveryInfo,
             'status' => 'ACTIVE',
         ]);
     }
