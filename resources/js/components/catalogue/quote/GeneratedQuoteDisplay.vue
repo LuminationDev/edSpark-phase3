@@ -40,8 +40,7 @@ const getQuoteCreatedAt = (quote) => {
 
 const onClickDownloadQuote = async (quote) =>{
     quotePreview.value = quote
-    console.log(quote)
-    // await props.printFunction()
+    await props.printFunction()
 }
 </script>
 
