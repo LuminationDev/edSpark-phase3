@@ -30,11 +30,17 @@ const {
     brandList,
     typeList,
     vendorList,
+    processorList,
+    memoryList,
+    storageList,
     primaryFilter,
     selectedCategory,
     selectedBrand,
     selectedType,
     selectedVendor,
+    selectedProcessor,
+    selectedMemory,
+    selectedStorage,
     priceRange
 } = storeToRefs(catalogueStore)
 
@@ -70,7 +76,10 @@ const additionalFilters = computed(() => {
         vendor: selectedVendor.value,
         brand: selectedBrand.value,
         category: selectedCategory.value,
-        price: priceRange.value
+        price: priceRange.value,
+        processor: selectedProcessor.value,
+        memory: selectedMemory.value,
+        storage: selectedStorage.value
     }
 })
 
@@ -164,13 +173,24 @@ const updateOtherFilters = (available_fields) => {
             vendorList.value = available_fields[key].filter(Boolean)
         } else if (key === 'category') {
             categoryList.value = available_fields[key].filter(Boolean)
+        } else if (key === 'processor') {
+            processorList.value = available_fields[key].filter(Boolean)
+        } else if (key === 'storage') {
+            storageList.value = available_fields[key].filter(Boolean)
+        } else if (key === 'memory') {
+            memoryList.value = available_fields[key].filter(Boolean)
         }
     })
 }
 
 watchDebounced(selectedCategory, async () => {
-    console.log('cat')
-    if (selectedBrand.value.length === 0 && selectedType.value.length === 0 && selectedVendor.value.length === 0) {
+    if (!selectedBrand.value.length &&
+        !selectedType.value.length &&
+        !selectedVendor.value.length &&
+        !selectedProcessor.value.length &&
+        !selectedMemory.value.length &&
+        !selectedStorage.value.length
+    ) {
         primaryFilter.value = CatalogueFilterField.Category
         currentPage.value = 1
         await fetchCatalogueAndUpdateOtherFilters(CatalogueFilterField.Category, selectedCategory.value, additionalFilters.value, currentPage.value, perPage.value)
@@ -180,8 +200,12 @@ watchDebounced(selectedCategory, async () => {
 }, {debounce: 600})
 
 watchDebounced(selectedBrand, async () => {
-    console.log('brand')
-    if (selectedVendor.value.length === 0 && selectedType.value.length === 0 && selectedCategory.value.length === 0) {
+    if (!selectedVendor.value.length &&
+        !selectedType.value.length &&
+        !selectedCategory.value.length &&
+        !selectedProcessor.value.length &&
+        !selectedMemory.value.length &&
+        !selectedStorage.value.length) {
         primaryFilter.value = CatalogueFilterField.Brand;
         await fetchCatalogueAndUpdateOtherFilters(CatalogueFilterField.Brand, selectedBrand.value, additionalFilters.value, currentPage.value, perPage.value)
     } else {
@@ -190,8 +214,12 @@ watchDebounced(selectedBrand, async () => {
     }
 }, {debounce: 600})
 watchDebounced(selectedType, async () => {
-    console.log('type')
-    if (selectedBrand.value.length === 0 && selectedVendor.value.length === 0 && selectedCategory.value.length === 0) {
+    if (!selectedBrand.value.length &&
+        !selectedVendor.value.length &&
+        !selectedCategory.value.length &&
+        !selectedProcessor.value.length &&
+        !selectedMemory.value.length &&
+        !selectedStorage.value.length) {
         primaryFilter.value = CatalogueFilterField.Type;
         await fetchCatalogueAndUpdateOtherFilters(CatalogueFilterField.Type, selectedType.value, additionalFilters.value, currentPage.value, perPage.value)
     } else {
@@ -200,10 +228,66 @@ watchDebounced(selectedType, async () => {
     }
 }, {debounce: 600})
 watchDebounced(selectedVendor, async () => {
-    console.log('ven')
-    if (selectedBrand.value.length === 0 && selectedType.value.length === 0 && selectedCategory.value.length === 0) {
+    if (!selectedBrand.value.length &&
+        !selectedType.value.length &&
+        !selectedCategory.value.length &&
+        !selectedProcessor.value.length &&
+        !selectedMemory.value.length &&
+        !selectedStorage.value.length
+    ) {
         primaryFilter.value = CatalogueFilterField.Vendor;
         await fetchCatalogueAndUpdateOtherFilters(CatalogueFilterField.Vendor, selectedVendor.value, additionalFilters.value, currentPage.value, perPage.value)
+    } else {
+        await fetchCatalogueAndUpdateOtherFilters(primaryFilter.value, primarySelectedValues.value, additionalFilters.value, currentPage.value, perPage.value)
+    }
+}, {debounce: 600})
+
+
+watchDebounced(selectedProcessor, async () => {
+    if (!selectedBrand.value.length &&
+        !selectedType.value.length &&
+        !selectedVendor.value.length &&
+        !selectedCategory.value.length &&
+        !selectedMemory.value.length &&
+        !selectedStorage.value.length
+    ) {
+        primaryFilter.value = CatalogueFilterField.Processor
+        currentPage.value = 1
+        await fetchCatalogueAndUpdateOtherFilters(CatalogueFilterField.Processor, selectedProcessor.value, additionalFilters.value, currentPage.value, perPage.value)
+    } else {
+        await fetchCatalogueAndUpdateOtherFilters(primaryFilter.value, primarySelectedValues.value, additionalFilters.value, currentPage.value, perPage.value)
+    }
+}, {debounce: 600})
+
+
+watchDebounced(selectedMemory, async () => {
+    if (!selectedBrand.value.length &&
+        !selectedType.value.length &&
+        !selectedVendor.value.length &&
+        !selectedProcessor.value.length &&
+        !selectedCategory.value.length &&
+        !selectedStorage.value.length
+    ) {
+        primaryFilter.value = CatalogueFilterField.Memory
+        currentPage.value = 1
+        await fetchCatalogueAndUpdateOtherFilters(CatalogueFilterField.Memory, selectedMemory.value, additionalFilters.value, currentPage.value, perPage.value)
+    } else {
+        await fetchCatalogueAndUpdateOtherFilters(primaryFilter.value, primarySelectedValues.value, additionalFilters.value, currentPage.value, perPage.value)
+    }
+}, {debounce: 600})
+
+
+watchDebounced(selectedStorage, async () => {
+    if (!selectedBrand.value.length &&
+        !selectedType.value.length &&
+        !selectedVendor.value.length &&
+        !selectedProcessor.value.length &&
+        !selectedMemory.value.length &&
+        !selectedCategory.value.length
+    ) {
+        primaryFilter.value = CatalogueFilterField.Storage
+        currentPage.value = 1
+        await fetchCatalogueAndUpdateOtherFilters(CatalogueFilterField.Storage, selectedStorage.value, additionalFilters.value, currentPage.value, perPage.value)
     } else {
         await fetchCatalogueAndUpdateOtherFilters(primaryFilter.value, primarySelectedValues.value, additionalFilters.value, currentPage.value, perPage.value)
     }
@@ -223,7 +307,6 @@ const handleClickCatalogueCard = (reference) => {
 }
 
 const handlePriceChange = async () => {
-    console.log('hehehhehe')
     await fetchCatalogueAndUpdateOtherFilters(primaryFilter.value, primarySelectedValues.value, additionalFilters.value, currentPage.value, perPage.value)
 }
 
@@ -242,10 +325,16 @@ const handlePriceChange = async () => {
                 v-model:type-list="typeList"
                 v-model:vendor-list="vendorList"
                 v-model:category-list="categoryList"
+                v-model:processor-list="processorList"
+                v-model:memory-list="memoryList"
+                v-model:storage-list="storageList"
                 v-model:selected-brand="selectedBrand"
                 v-model:selected-type="selectedType"
                 v-model:selected-vendor="selectedVendor"
                 v-model:selected-category="selectedCategory"
+                v-model:selected-processor="selectedProcessor"
+                v-model:selected-memory="selectedMemory"
+                v-model:selected-storage="selectedStorage"
                 v-model:price-range="priceRange"
                 v-model:per-page="perPage"
                 :is-filter-loading="isFilterLoading"
@@ -259,7 +348,9 @@ const handlePriceChange = async () => {
             v-else-if="!isProductsLoading && !error.status"
             class="col-span-8 productPanel"
         >
-            <div class="2xl:!grid-cols-4 grid grid-cols-1 gap-x-2 gap-y-8 place-items-center lg:!grid-cols-2 xl:!grid-cols-3">
+            <div
+                class="2xl:!grid-cols-4 grid grid-cols-1 gap-x-2 gap-y-8 place-items-center lg:!grid-cols-2 xl:!grid-cols-3"
+            >
                 <template
                     v-for="(item,index) in catalogueList"
                     :key="item.unique_reference + index"

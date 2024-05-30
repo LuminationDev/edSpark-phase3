@@ -66,6 +66,7 @@ export const quoteService = {
 
         // Clone the element to preserve the original state
         const clonedElement = element.cloneNode(true);
+        clonedElement.classList.remove('hidden')
 
         // Function to fetch the image and convert it to base64
         const getImageBase64 = async (img) => {

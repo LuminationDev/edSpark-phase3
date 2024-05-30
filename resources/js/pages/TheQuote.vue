@@ -78,7 +78,7 @@ const onClearQuote = () => {
         <div class="font-medium mb-4 text-main-darkTeal text-xl">
             Generated quote
         </div>
-        <GeneratedQuoteDisplay :print-function="quoteService.printQuote" />
+        <GeneratedQuoteDisplay />
     </div>
     <!--    <GenericButton-->
     <!--        :callback="handlePrintQuote"-->

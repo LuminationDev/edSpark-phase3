@@ -37,7 +37,7 @@ watch(getQuoteDisplayVendor, () => {
 <template>
     <div
         id="quote-template-print"
-        class="QuotePDFDisplay flex flex-col mt-10 p-4 w-full"
+        class="QuotePDFDisplay flex flex-col hidden mt-10 p-4 w-full"
     >
         <div class="bg-main-teal flex items-end flex-row h-36 header p-6 text-2xl text-white w-full">
             <ImageWithFallback

@@ -7,14 +7,10 @@ import GenericButton from "@/js/components/button/GenericButton.vue";
 import QuotePdfRenderer from "@/js/components/catalogue/quote/QuotePdfRenderer.vue";
 import QuoteWideCard from "@/js/components/quote/QuoteWideCard.vue";
 import {formatDateToDayTime} from "@/js/helpers/dateHelper";
+import {quoteService} from "@/js/service/quoteService";
 import {useQuoteStore} from "@/js/stores/useQuoteStore";
 
-const props = defineProps({
-    printFunction:{
-        type: Function,
-        required: true
-    }
-})
+const props = defineProps({})
 
 const emits = defineEmits([])
 
@@ -38,9 +34,14 @@ const getQuoteCreatedAt = (quote) => {
     return quote?.created_at
 }
 
-const onClickDownloadQuote = async (quote) =>{
+const onClickDownloadQuote = async (quote) => {
     quotePreview.value = quote
-    await props.printFunction()
+    await new Promise((res, rej) =>{
+        setTimeout(() => {
+            res()
+        }, 500)
+    })
+    await quoteService.printQuote()
 }
 </script>
 
