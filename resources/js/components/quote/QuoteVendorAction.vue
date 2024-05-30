@@ -1,8 +1,12 @@
 <script setup>
-import {computed, ref} from 'vue'
+import {useVuelidate} from "@vuelidate/core";
+import {required} from "@vuelidate/validators";
+import {computed, reactive, ref} from 'vue'
 import {toast} from "vue3-toastify";
 
+import TextInput from "@/js/components/bases/TextInput.vue";
 import GenericButton from "@/js/components/button/GenericButton.vue";
+import QuoteDeliveryInfoModal from "@/js/components/quote/QuoteDeliveryInfoModal.vue";
 import {catalogueService} from "@/js/service/catalogueService";
 import {useQuoteStore} from "@/js/stores/useQuoteStore";
 
@@ -19,13 +23,14 @@ const props = defineProps({
 
 const emits = defineEmits([])
 const quoteStore = useQuoteStore()
+const showDeliveryModal = ref(true)
 
-const onClickGenerate = () => {
-
-
-    // quoteStore.calculateSubtotalPerVendor(props.quoteVendor)
+const onClickGenerate = async () => {
+    // make an await that wait for a promise
+    // the promise will be resoluved once we clicked confirm or cancel on the modal
+    // before await make the ref showDeliveryModal = true and once resolved make it false
+    await showModal();
     quoteStore.checkoutVendor(props.quoteVendor).then(res => {
-        console.log('Success generating quoote')
         toast.success("Quote generated successfully.")
         quoteStore.initializeQuote()
     }).catch(err => {
@@ -37,6 +42,43 @@ const onClickGenerate = () => {
 
     })
 }
+
+const handleConfirmModal = () => {
+    // resolve here?
+}
+
+const showModal = () => {
+    return new Promise((resolve, reject) => {
+        const confirmHandler = () => {
+            resolve(true)
+        }
+        const cancelHandler = () => {
+            reject(false)
+        }
+        showDeliveryModal.value = true
+
+        // Attach event listeners
+        const confirmListener = () => {
+            resolve(true)
+            cleanup()
+        }
+        const cancelListener = () => {
+            reject(false)
+            cleanup()
+        }
+
+        const cleanup = () => {
+            showDeliveryModal.value = false
+            window.removeEventListener('confirm', confirmListener)
+            window.removeEventListener('cancel', cancelListener)
+        }
+
+        window.addEventListener('confirm', confirmListener)
+        window.addEventListener('cancel', cancelListener)
+    })
+}
+
+
 const subtotalIncGst = computed(() => {
     return quoteStore.calculateSubtotalPerVendor(props.quoteVendor)
 })
@@ -45,11 +87,69 @@ const subtotalExcGst = computed(() => {
     return catalogueService.getExcGstPrice(subtotalIncGst.value)
 })
 
+const state = reactive({
+    name: '',
+    institution: '',
+    address: ''
+})
 
+const rules = {
+    name: required,
+    institution: required,
+    address: required
+}
+
+
+const v$ = useVuelidate(rules, state)
 </script>
 
 <template>
+    <div
+        v-if="showDeliveryModal"
+        class="relative"
+    >
+        <QuoteDeliveryInfoModal />
+    </div>
     <div class="flex flex-col mr-4 quoteVendorActionContainer">
+        <!--        <div class="deliveryInfoContainer">-->
+        <!--            <div class="mb-2 text-base text-main-darkTeal">-->
+        <!--                Delivery Info-->
+        <!--            </div>-->
+        <!--            <div class="border-[1px] border-slate-300 flex flex-col innerContainer px-4 py-2 rounded-xl shadow">-->
+        <!--                <TextInput-->
+        <!--                    class=""-->
+        <!--                    field-id="deliveryName"-->
+        <!--                    :model-value="v$.name.$model"-->
+        <!--                    :v$="v$.name"-->
+        <!--                    placeholder="Name"-->
+        <!--                >-->
+        <!--                    <template #label>-->
+        <!--                        Full name-->
+        <!--                    </template>-->
+        <!--                </TextInput>-->
+        <!--                <TextInput-->
+        <!--                    field-id="deliveryInstitution"-->
+        <!--                    :model-value="v$.institution.$model"-->
+        <!--                    :v$="v$.institution"-->
+        <!--                    placeholder="Institution"-->
+        <!--                >-->
+        <!--                    <template #label>-->
+        <!--                        Institution Name-->
+        <!--                    </template>-->
+        <!--                </TextInput>-->
+        <!--                <TextInput-->
+        <!--                    field-id="deliveryName"-->
+        <!--                    :model-value="v$.address.$model"-->
+        <!--                    :v$="v$.address"-->
+        <!--                    placeholder="Address"-->
+        <!--                >-->
+        <!--                    <template #label>-->
+        <!--                        Address-->
+        <!--                    </template>-->
+        <!--                </TextInput>-->
+        <!--            </div>-->
+        <!--        </div>-->
+        <!--    </div>-->
         <div class="mb-2 text-base text-main-darkTeal">
             Generate quote
         </div>
