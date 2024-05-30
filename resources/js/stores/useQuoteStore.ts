@@ -60,13 +60,23 @@ export const useQuoteStore = defineStore('quote', {
 
             if (quoteItem) {
                 const oldQuantity = quoteItem.quantity;
-                quoteItem.quantity = newQuantity;
-                try {
-                    await quoteService.updateItemQuantityInCart(item.unique_reference, newQuantity)
-                } catch (err) {
-                    console.log(oldQuantity)
-                    quoteItem.quantity = oldQuantity
-                    toast.error("Failed to update item, reverted to previous value")
+                if (+newQuantity === 0) {
+                    const oldQuote = cloneDeep(this.quote)
+                    this.removeFromQuote(quoteItem.unique_reference)
+                    try {
+                        await quoteService.deleteItemInCart(quoteItem.unique_reference)
+                    } catch (err) {
+                        this.quote = cloneDeep(oldQuote)
+                    }
+                } else {
+                    quoteItem.quantity = newQuantity;
+                    try {
+                        await quoteService.updateItemQuantityInCart(item.unique_reference, newQuantity)
+                    } catch (err) {
+                        console.log(oldQuantity)
+                        quoteItem.quantity = oldQuantity
+                        toast.error("Failed to update item, reverted to previous value")
+                    }
                 }
             }
 

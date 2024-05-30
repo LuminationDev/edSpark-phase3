@@ -108,7 +108,7 @@ const v$ = useVuelidate(rules, state)
         v-if="showDeliveryModal"
         class="relative"
     >
-        <QuoteDeliveryInfoModal />
+        <!--        <QuoteDeliveryInfoModal />-->
     </div>
     <div class="flex flex-col mr-4 quoteVendorActionContainer">
         <!--        <div class="deliveryInfoContainer">-->
