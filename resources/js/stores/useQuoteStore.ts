@@ -23,6 +23,7 @@ export const useQuoteStore = defineStore('quote', {
             return this.quote
         },
         getQuoteGroupedByVendor: (state) => {
+            console.log(state.quote)
             return state.quote.reduce((acc, product) => {
                 const vendor = product.vendor;
                 if (!acc[vendor]) {

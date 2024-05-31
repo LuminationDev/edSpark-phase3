@@ -56,7 +56,7 @@ export const quoteService = {
         return axios.get(API_ENDPOINTS.QUOTE.GET_QUOTE).then(res => res.data.quotes)
     },
     getVendorData: async (vendorName) =>{
-        return axios.get(`${API_ENDPOINTS.QUOTE.GET_VENDOR}/${vendorName}`).then(res => res.data.vendor)
+        return axios.get(`${API_ENDPOINTS.QUOTE.GET_VENDOR}${vendorName}`).then(res => res.data.vendor)
     },
 
     printQuote: async () => {

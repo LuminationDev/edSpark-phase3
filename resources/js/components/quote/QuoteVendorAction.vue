@@ -1,13 +1,16 @@
 <script setup>
 import {useVuelidate} from "@vuelidate/core";
 import {required} from "@vuelidate/validators";
-import {computed, reactive, ref} from 'vue'
+import {storeToRefs} from "pinia";
+import {computed, onMounted, reactive, ref} from 'vue'
 import {toast} from "vue3-toastify";
 
 import TextInput from "@/js/components/bases/TextInput.vue";
 import GenericButton from "@/js/components/button/GenericButton.vue";
 import QuoteDeliveryInfoModal from "@/js/components/quote/QuoteDeliveryInfoModal.vue";
+import Loader from "@/js/components/spinner/Loader.vue";
 import {catalogueService} from "@/js/service/catalogueService";
+import {quoteService} from "@/js/service/quoteService";
 import {useQuoteStore} from "@/js/stores/useQuoteStore";
 
 const props = defineProps({
@@ -21,9 +24,18 @@ const props = defineProps({
     }
 })
 
-const emits = defineEmits([])
 const quoteStore = useQuoteStore()
+const {quoteVendorInfo} = storeToRefs(quoteStore)
 const showDeliveryModal = ref(false)
+const loadingVendorInfo = ref(false)
+
+
+onMounted(async () => {
+    loadingVendorInfo.value = true
+    quoteVendorInfo.value[props.quoteVendor] = await quoteService.getVendorData(props.quoteVendor)
+    loadingVendorInfo.value = false
+
+})
 
 const onClickGenerate = async () => {
     // make an await that wait for a promise
@@ -150,10 +162,29 @@ const onClickClearVendorCart = async () => {
         <div class="mb-2 text-base text-main-darkTeal">
             Vendor Information
         </div>
-        <div class="border-[1px] border-slate-300 grid grid-cols-2 innerContainer px-6 py-4 rounded-xl shadow">
-            <div class="my-4">
-                {{ props.quoteVendor }}
+        <div
+            v-if="!loadingVendorInfo"
+            class="border-[1px] border-slate-300 grids innerContainer px-4 py-2 rounded-xl shadow"
+        >
+            <div class="flex flex-col">
+                <div
+                    v-for="(data,index) in Object.entries(quoteVendorInfo[props.quoteVendor])"
+                    :key="index"
+                    class="flex flex-col mb-2 text-center"
+                >
+                    <span class="font-medium text-main-darkTeal">
+                        {{ data[0] }}
+                    </span>
+                    <span class="font-thin">{{ data[1] }}</span>
+                </div>
             </div>
+        </div>
+        <div v-else>
+            <Loader
+                loader-message="Loading vendor information"
+                loader-type="small"
+                loader-message-class="text-lg"
+            />
         </div>
     </div>
 </template>

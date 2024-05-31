@@ -28,7 +28,9 @@ onMounted(() => {
 const onClearQuote = () => {
     quoteStore.clearQuote()
 }
-
+const showEmptyQuotePage = computed(() =>{
+    return !!Object.keys(quoteStore.getQuoteGroupedByVendor).length;
+})
 
 </script>
 
@@ -42,29 +44,44 @@ const onClearQuote = () => {
     <div
         class="mb-4 mt-16 mx-10 quotePageOuterContainer"
     >
-        <template
-            v-for="(products, vendor) in quoteStore.getQuoteGroupedByVendor"
-            :key="vendor + guid()"
-        >
-            <QuoteVendorGroup
-                :quote-items="products"
-                :quote-vendor="vendor"
-            />
+        <template v-if="showEmptyQuotePage">
+            <div
+                v-for="(products, vendor) in quoteStore.getQuoteGroupedByVendor"
+                :key="vendor + guid()"
+            >
+                <QuoteVendorGroup
+                    :quote-items="products"
+                    :quote-vendor="vendor"
+                />
+            </div>
+            <div class="col-span-10 flex justify-between flex-row otherRow">
+                <GenericButton
+                    :callback="() => router.push('/catalogue')"
+                    type="teal"
+                >
+                    Back to catalogue
+                </GenericButton>
+                <GenericButton
+                    :callback="onClearQuote"
+                    type="teal"
+                >
+                    Cancel all quotes
+                </GenericButton>
+            </div>
         </template>
-        <div class="col-span-10 flex justify-between flex-row otherRow">
-            <GenericButton
-                :callback="() => router.push('/catalogue')"
-                type="teal"
-            >
-                Back to catalogue
-            </GenericButton>
-            <GenericButton
-                :callback="onClearQuote"
-                type="teal"
-            >
-                Cancel all quotes
-            </GenericButton>
-        </div>
+        <template v-else>
+            <div class="flex items-center flex-col">
+                <div class="flex min-h-24 text-main-darkTeal text-xl">
+                    Quote is empty. Please add items from the catalogue.
+                </div>
+                <GenericButton
+                    :callback="() => router.push('/catalogue')"
+                    type="teal"
+                >
+                    Back to catalogue
+                </GenericButton>
+            </div>
+        </template>
     </div>
     <hr>
     <div

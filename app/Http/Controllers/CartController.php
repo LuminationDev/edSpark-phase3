@@ -292,7 +292,9 @@ class CartController extends Controller
         $user = Auth::user();
         $quotes = Quote::where('user_id', $user->id)
             ->where('version_id', Catalogueversion::getActiveCatalogueId())
-            ->where('status', "ACTIVE")->get();
+            ->where('status', "ACTIVE")
+            ->orderBy('created_at', 'desc')
+            ->get();
         if ($quotes->isEmpty()) {
             return response()->json(['message' => 'No quotes found'], 410);
         }
