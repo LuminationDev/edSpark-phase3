@@ -17,19 +17,10 @@ const emits = defineEmits([])
 const quoteStore = useQuoteStore()
 const {genQuote, quotePreview} = storeToRefs(quoteStore)
 
-const quoteVendor = computed(() => {
-    const vendor = genQuote.value[0]?.quote_content[0]?.vendor
-    if (vendor) return vendor
-    else return ''
-})
-
 const getQuoteVendor = (quote) => {
     return quote?.quote_content[Object.keys(quote.quote_content)[0]]?.vendor
 }
 
-const getQuoteDisplayVendor = computed(() => {
-    return quotePreview.value?.quote_content[Object.keys(quotePreview.value.quote_content)[0]]?.vendor
-})
 const getQuoteCreatedAt = (quote) => {
     return quote?.created_at
 }
@@ -43,6 +34,8 @@ const onClickDownloadQuote = async (quote) => {
     })
     await quoteService.printQuote()
 }
+
+
 </script>
 
 <template>

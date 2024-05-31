@@ -72,7 +72,8 @@ const showEmptyQuotePage = computed(() =>{
         <template v-else>
             <div class="flex items-center flex-col">
                 <div class="flex min-h-24 text-main-darkTeal text-xl">
-                    Quote is empty. Please add items from the catalogue.
+                    Quote is current empty. Please add items from the catalogue.<br>
+                    Or, browse the quotes you've generated previously below
                 </div>
                 <GenericButton
                     :callback="() => router.push('/catalogue')"
