@@ -109,7 +109,7 @@ export const useQuoteStore = defineStore('quote', {
             } catch (err) {
                 console.log('Error removing items for vendors')
                 this.quote = cloneDeep(oldQuote)
-                removedItems.forEach((item) =>{
+                removedItems.forEach((item) => {
                     this.addToQuote(item)
                 })
             }
@@ -167,6 +167,15 @@ export const useQuoteStore = defineStore('quote', {
         async getUserGenQuote() {
             try {
                 this.genQuote = await quoteService.getGenQuote()
+                // get vendor info
+                for (const item of this.genQuote) {
+                    const vendorName = item.quote_content[0]?.vendor
+                    if (vendorName) {
+                        if (!this.quoteVendorInfo[vendorName]) {
+                            this.quoteVendorInfo[vendorName] = await quoteService.getVendorData(vendorName)
+                        }
+                    }
+                }
             } catch (err) {
                 console.error("Failed to fetch generated quotes " + err.message)
             }

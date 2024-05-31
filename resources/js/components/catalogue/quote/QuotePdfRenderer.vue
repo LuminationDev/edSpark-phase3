@@ -1,10 +1,11 @@
 <script setup>
+import {storeToRefs} from "pinia";
 import {computed, onMounted, ref, watch} from 'vue'
 
 import ImageWithFallback from "@/js/components/global/ImageWithFallback.vue";
 import {imageURL, serverURL} from "@/js/constants/serverUrl";
 import {catalogueService} from "@/js/service/catalogueService";
-import {quoteService} from "@/js/service/quoteService";
+import {useQuoteStore} from "@/js/stores/useQuoteStore";
 
 const props = defineProps({
     quote: {
@@ -12,24 +13,17 @@ const props = defineProps({
         required: true
     },
 })
-
-const vendorData = ref({})
+const {quoteVendorInfo} = storeToRefs(useQuoteStore())
 
 const getQuoteDisplayVendor = computed(() => {
     return props.quote?.quote_content[Object.keys(props.quote.quote_content)[0]]?.vendor
 })
-const fetchVendorData = async () => {
-    vendorData.value = await quoteService.getVendorData(getQuoteDisplayVendor.value)
-}
 
-onMounted(async () => {
-    await fetchVendorData()
+const vendorData = computed(() => {
+    console.log(quoteVendorInfo.value[getQuoteDisplayVendor.value])
+    return quoteVendorInfo.value[getQuoteDisplayVendor.value]
 })
 
-
-watch(getQuoteDisplayVendor, async () => {
-    await fetchVendorData()
-})
 </script>
 
 <template>
@@ -61,18 +55,20 @@ watch(getQuoteDisplayVendor, async () => {
                         <div class="font-semibold text-2xl text-main-darkTeal vendor-header">
                             Vendor:
                         </div>
-                        <div
-                            v-for="(item, index) in Object.entries(vendorData)"
-                            :key="index"
-                            class="flex flex-row last-of-type:mb-8 mb-1"
-                        >
-                            <div class="flex flex-1">
-                                {{ `${item[0]}:` }}
+                        <template v-if="vendorData && Object.keys(vendorData).length > 0">
+                            <div
+                                v-for="(item, index) in Object.entries(vendorData)"
+                                :key="index"
+                                class="flex flex-row last-of-type:mb-8 mb-1"
+                            >
+                                <div class="flex flex-1">
+                                    {{ `${item[0]}:` }}
+                                </div>
+                                <div class="flex flex-2">
+                                    {{ `${item[1]}` }}
+                                </div>
                             </div>
-                            <div class="flex flex-2">
-                                {{ `${item[1]}` }}
-                            </div>
-                        </div>
+                        </template>
                     </div>
                 </div>
                 <div class="basis-1/2 flex flex-col right-column user-info">
@@ -157,7 +153,7 @@ watch(getQuoteDisplayVendor, async () => {
                         :key="index"
                     >
                         <div class="flex">
-                            <div class="flex-2 item-name">
+                            <div class="flex-2 flex-wrap item-name">
                                 {{ item.name }}
                             </div>
                             <div class="flex-2 item-desc">
