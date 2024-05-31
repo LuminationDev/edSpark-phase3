@@ -10,7 +10,7 @@ const props = defineProps({
     }
 })
 const handleSearchChange = () =>{
-    emits('emitSearchTerm',searchTerm.value)
+    emits('emitSearchTerm', searchTerm.value)
 }
 
 const emits = defineEmits(['emitSearchTerm'])

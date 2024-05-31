@@ -1,6 +1,7 @@
 import axios from "axios";
 
 import {API_ENDPOINTS} from "@/js/constants/API_ENDPOINTS";
+import {serverURL} from "@/js/constants/serverUrl";
 
 export const quoteService = {
     getCart: async () => {
@@ -53,6 +54,9 @@ export const quoteService = {
     },
     getGenQuote: async () => {
         return axios.get(API_ENDPOINTS.QUOTE.GET_QUOTE).then(res => res.data.quotes)
+    },
+    getVendorData: async (vendorName) =>{
+        return axios.get(`${API_ENDPOINTS.QUOTE.GET_VENDOR}/${vendorName}`).then(res => res.data.vendor)
     },
 
     printQuote: async () => {

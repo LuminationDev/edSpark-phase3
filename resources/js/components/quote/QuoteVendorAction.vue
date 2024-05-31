@@ -23,40 +23,36 @@ const props = defineProps({
 
 const emits = defineEmits([])
 const quoteStore = useQuoteStore()
-const showDeliveryModal = ref(true)
+const showDeliveryModal = ref(false)
 
 const onClickGenerate = async () => {
     // make an await that wait for a promise
     // the promise will be resoluved once we clicked confirm or cancel on the modal
     // before await make the ref showDeliveryModal = true and once resolved make it false
-    await showModal();
-    quoteStore.checkoutVendor(props.quoteVendor).then(res => {
-        toast.success("Quote generated successfully.")
-        quoteStore.initializeQuote()
-    }).catch(err => {
-        if (err.status === '410') {
-            console.log(' user do not have any quote')
-        } else {
-            console.log(err.message)
-        }
+    try {
+        await showModal();
+        quoteStore.checkoutVendor(props.quoteVendor).then(res => {
+            toast.success("Quote generated successfully.")
+            quoteStore.initializeQuote()
+        }).catch(err => {
+            if (err.status === '410') {
+                console.log(' user do not have any quote')
+            } else {
+                console.log(err.message)
+            }
 
-    })
-}
+        })
+    } catch (err) {
+        console.log("Cancelled")
+    }
 
-const handleConfirmModal = () => {
-    // resolve here?
 }
+let modalConfirmFunction
+let modalCancelFunction
 
 const showModal = () => {
     return new Promise((resolve, reject) => {
-        const confirmHandler = () => {
-            resolve(true)
-        }
-        const cancelHandler = () => {
-            reject(false)
-        }
         showDeliveryModal.value = true
-
         // Attach event listeners
         const confirmListener = () => {
             resolve(true)
@@ -69,13 +65,23 @@ const showModal = () => {
 
         const cleanup = () => {
             showDeliveryModal.value = false
-            window.removeEventListener('confirm', confirmListener)
-            window.removeEventListener('cancel', cancelListener)
         }
-
-        window.addEventListener('confirm', confirmListener)
-        window.addEventListener('cancel', cancelListener)
+        modalConfirmFunction = confirmListener
+        modalCancelFunction = cancelListener
     })
+}
+
+const handleRecConfirm = () => {
+    if (modalConfirmFunction) {
+        modalConfirmFunction()
+
+    }
+
+}
+const handleRecCancel = () => {
+    if (modalCancelFunction) {
+        modalCancelFunction()
+    }
 }
 
 
@@ -87,20 +93,9 @@ const subtotalExcGst = computed(() => {
     return catalogueService.getExcGstPrice(subtotalIncGst.value)
 })
 
-const state = reactive({
-    name: '',
-    institution: '',
-    address: ''
-})
-
-const rules = {
-    name: required,
-    institution: required,
-    address: required
+const onClickClearVendorCart = async () => {
+    await quoteStore.clearQuoteByVendor(props.quoteVendor)
 }
-
-
-const v$ = useVuelidate(rules, state)
 </script>
 
 <template>
@@ -108,48 +103,12 @@ const v$ = useVuelidate(rules, state)
         v-if="showDeliveryModal"
         class="relative"
     >
-        <!--        <QuoteDeliveryInfoModal />-->
+        <QuoteDeliveryInfoModal
+            @confirm="handleRecConfirm"
+            @cancel="handleRecCancel"
+        />
     </div>
     <div class="flex flex-col mr-4 quoteVendorActionContainer">
-        <!--        <div class="deliveryInfoContainer">-->
-        <!--            <div class="mb-2 text-base text-main-darkTeal">-->
-        <!--                Delivery Info-->
-        <!--            </div>-->
-        <!--            <div class="border-[1px] border-slate-300 flex flex-col innerContainer px-4 py-2 rounded-xl shadow">-->
-        <!--                <TextInput-->
-        <!--                    class=""-->
-        <!--                    field-id="deliveryName"-->
-        <!--                    :model-value="v$.name.$model"-->
-        <!--                    :v$="v$.name"-->
-        <!--                    placeholder="Name"-->
-        <!--                >-->
-        <!--                    <template #label>-->
-        <!--                        Full name-->
-        <!--                    </template>-->
-        <!--                </TextInput>-->
-        <!--                <TextInput-->
-        <!--                    field-id="deliveryInstitution"-->
-        <!--                    :model-value="v$.institution.$model"-->
-        <!--                    :v$="v$.institution"-->
-        <!--                    placeholder="Institution"-->
-        <!--                >-->
-        <!--                    <template #label>-->
-        <!--                        Institution Name-->
-        <!--                    </template>-->
-        <!--                </TextInput>-->
-        <!--                <TextInput-->
-        <!--                    field-id="deliveryName"-->
-        <!--                    :model-value="v$.address.$model"-->
-        <!--                    :v$="v$.address"-->
-        <!--                    placeholder="Address"-->
-        <!--                >-->
-        <!--                    <template #label>-->
-        <!--                        Address-->
-        <!--                    </template>-->
-        <!--                </TextInput>-->
-        <!--            </div>-->
-        <!--        </div>-->
-        <!--    </div>-->
         <div class="mb-2 text-base text-main-darkTeal">
             Generate quote
         </div>
@@ -175,15 +134,25 @@ const v$ = useVuelidate(rules, state)
                     Generate quote
                 </GenericButton>
                 <GenericButton
-                    :callback="() =>{}"
+                    :callback="onClickClearVendorCart"
                     class="!text-black hover:!text-white bg-white hove mb-4 hover:!bg-red-700"
                 >
-                    Cancel Quote
+                    Cancel
                 </GenericButton>
                 <div class="font-thin genQuote information text-center">
                     Quotes are generated per vendor and school are responsible for raising PO and contacting the vendor
                     with the PO
                 </div>
+            </div>
+        </div>
+    </div>
+    <div class="flex flex-col mr-4 quoteVendorActionContainer">
+        <div class="mb-2 text-base text-main-darkTeal">
+            Vendor Information
+        </div>
+        <div class="border-[1px] border-slate-300 grid grid-cols-2 innerContainer px-6 py-4 rounded-xl shadow">
+            <div class="my-4">
+                {{ props.quoteVendor }}
             </div>
         </div>
     </div>

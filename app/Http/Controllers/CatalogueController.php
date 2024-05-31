@@ -188,20 +188,6 @@ class CatalogueController extends Controller
             return ResponseService::error('Product not found.', null, 404);
         }
 
-//        // Check for available upgrades
-//        $upgradeAvailable = Catalogue::where('name', $request->input('name'))
-//            ->where('type', 'Upgrade')
-//            ->exists();
-//
-//        // Check for available bundles
-//        $bundleAvailable = Catalogue::where('name', 'like', $request->input('name') . '%')
-//            ->where('type', 'Bundle')
-//            ->exists();
-//
-//        // Add fields to the product
-//        $product->upgrade_available = $upgradeAvailable;
-//        $product->bundle_available = $bundleAvailable;
-
         return ResponseService::success('Product fetched successfully.', $product);
     }
 

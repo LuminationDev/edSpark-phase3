@@ -4,35 +4,41 @@ import {required} from "@vuelidate/validators";
 import {computed, reactive, ref} from 'vue'
 
 import TextInput from "@/js/components/bases/TextInput.vue";
-import WarningModal from "@/js/components/dma/WarningModal.vue";
+import GenericButton from "@/js/components/button/GenericButton.vue";
 
 const props = defineProps({})
 
-const emits = defineEmits([])
+const emits = defineEmits(['confirm', 'cancel'])
 
 
 const state = reactive({
     name: 'test',
-    institution: '',
-    address: ''
+    institution: null,
+    address: null
 })
 
 const rules = {
-    name: required,
-    institution: required,
-    address: required
+    name: {required},
+    institution: {required},
+    address: {required}
 }
 
 
 const v$ = useVuelidate(rules, state)
 
-const handleModalCancel = () =>{
+const handleModalCancel = () => {
+    emits('cancel')
 
 }
 
-const handleModalConfirm = () =>{
+const handleModalConfirm = async () => {
     console.log('confirmed')
-    v$.value.$validate()
+    await v$.value.$validate()
+    if (!v$.value.$error) {
+        emits('confirm')
+    } else {
+    }
+
 }
 
 </script>
@@ -41,9 +47,10 @@ const handleModalConfirm = () =>{
     <div
         class="absolute top-0 right-0 bottom-0 left-0 globalSearchScreenContainer grid place-items-center h-screen w-screen z-50"
     >
-        <!--        <div-->
-        <!--            class="bg-main-darkTeal/80 fixed top-0 left-0 grayoverlay h-[1000vh] w-full z-40"-->
-        <!--        />-->
+        <div
+            class="bg-main-darkTeal/80 fixed top-0 left-0 grayoverlay h-[1000vh] w-full z-40"
+            @click="handleModalCancel"
+        />
         <div
             class="
                 -translate-x-1/2
@@ -67,7 +74,7 @@ const handleModalConfirm = () =>{
             <div class="mb-2 text-base">
                 Before proceeding with the quote, please ensure this information is correct
             </div>
-            <div class="border-[1px] border-slate-300 flex flex-col innerContainer px-4 py-2 rounded-xl shadow">
+            <div class="border-[1px] border-slate-300 flex flex-col innerContainer mb-4 p-4 rounded-xl shadow">
                 <TextInput
                     v-model="v$.name.$model"
                     class=""
@@ -99,6 +106,20 @@ const handleModalConfirm = () =>{
                         Address
                     </template>
                 </TextInput>
+            </div>
+            <div class="flex justify-around flex-row">
+                <GenericButton
+                    class="bg-yellow-100 px-4 py-2 rounded"
+                    :callback="handleModalConfirm"
+                >
+                    Confirm
+                </GenericButton>
+                <GenericButton
+                    class="bg-yellow-100 px-4 py-2 rounded"
+                    :callback="handleModalCancel"
+                >
+                    Cancel
+                </GenericButton>
             </div>
         </div>
     </div>

@@ -2,6 +2,7 @@
 
 import {computed} from "vue";
 
+import SearchBar from "@/js/components/browseschools/SearchBar.vue";
 import GenericButton from "@/js/components/button/GenericButton.vue";
 import CatalogueFilterGroup from "@/js/components/catalogue/CatalogueFilterGroup.vue";
 import CataloguePerPageSelector from "@/js/components/catalogue/CataloguePerPageSelector.vue";
@@ -80,6 +81,7 @@ const onClickResetFilters = () => {
                 View Quotes
             </GenericButton>
         </router-link>
+        <SearchBar />
 
         <CatalogueFilterGroup
             v-if="typeList.length"

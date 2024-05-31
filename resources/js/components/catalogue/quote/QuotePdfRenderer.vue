@@ -4,6 +4,7 @@ import {computed, onMounted, ref, watch} from 'vue'
 import ImageWithFallback from "@/js/components/global/ImageWithFallback.vue";
 import {imageURL, serverURL} from "@/js/constants/serverUrl";
 import {catalogueService} from "@/js/service/catalogueService";
+import {quoteService} from "@/js/service/quoteService";
 
 const props = defineProps({
     quote: {
@@ -17,20 +18,17 @@ const vendorData = ref({})
 const getQuoteDisplayVendor = computed(() => {
     return props.quote?.quote_content[Object.keys(props.quote.quote_content)[0]]?.vendor
 })
-const fetchVendorData = () => {
-    axios.get(`${serverURL}/vendor/${getQuoteDisplayVendor.value}`).then(res => {
-        console.log(res.data)
-        vendorData.value = res.data.vendor
-    })
+const fetchVendorData = async () => {
+    vendorData.value = await quoteService.getVendorData(getQuoteDisplayVendor.value)
 }
-onMounted(() => {
-    fetchVendorData()
+
+onMounted(async () => {
+    await fetchVendorData()
 })
 
 
-watch(getQuoteDisplayVendor, () => {
-    console.log('called')
-    fetchVendorData()
+watch(getQuoteDisplayVendor, async () => {
+    await fetchVendorData()
 })
 </script>
 

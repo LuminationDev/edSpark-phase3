@@ -2,11 +2,14 @@
 import {computed, onMounted} from "vue";
 import {useRouter} from "vue-router";
 
+import Accordion from "@/js/components/accordion/Accordion.vue";
 import BaseLandingHero from "@/js/components/bases/BaseLandingHero.vue";
 import GenericButton from "@/js/components/button/GenericButton.vue";
 import GeneratedQuoteDisplay from "@/js/components/catalogue/quote/GeneratedQuoteDisplay.vue";
 import QuoteVendorAction from "@/js/components/quote/QuoteVendorAction.vue";
+import QuoteVendorGroup from "@/js/components/quote/QuoteVendorGroup.vue";
 import QuoteVendorListing from "@/js/components/quote/QuoteVendorListing.vue";
+import QuoteWideCard from "@/js/components/quote/QuoteWideCard.vue";
 import {LandingHeroText} from "@/js/constants/PageBlurb";
 import {guid} from "@/js/helpers/guidGenerator";
 import {quoteService} from "@/js/service/quoteService";
@@ -37,26 +40,17 @@ const onClearQuote = () => {
         swoosh-color="teal"
     />
     <div
-        class="mt-16 mx-10 quotePageOuterContainer"
+        class="mb-4 mt-16 mx-10 quotePageOuterContainer"
     >
-        <div
+        <template
             v-for="(products, vendor) in quoteStore.getQuoteGroupedByVendor"
             :key="vendor + guid()"
-            class="grid grid-cols-10 gap-4 mb-8"
         >
-            <div class="col-span-8 grid listingColumn">
-                <QuoteVendorListing
-                    :quote-vendor="vendor"
-                    :quote-items="products"
-                />
-            </div>
-            <div class="actionColumn col-span-2 grid">
-                <QuoteVendorAction
-                    :quote-vendor="vendor"
-                    :quote-items="products"
-                />
-            </div>
-        </div>
+            <QuoteVendorGroup
+                :quote-items="products"
+                :quote-vendor="vendor"
+            />
+        </template>
         <div class="col-span-10 flex justify-between flex-row otherRow">
             <GenericButton
                 :callback="() => router.push('/catalogue')"
@@ -68,22 +62,23 @@ const onClearQuote = () => {
                 :callback="onClearQuote"
                 type="teal"
             >
-                Clear quote
+                Cancel all quotes
             </GenericButton>
         </div>
     </div>
+    <hr>
     <div
         class="flex flex-col generatedQuoteContainer mt-10 mx-10"
     >
-        <div class="font-medium mb-4 text-main-darkTeal text-xl">
-            Generated quote
-        </div>
-        <GeneratedQuoteDisplay />
+        <Accordion :default-open="false">
+            <template #title>
+                <div class="font-medium mb-4 text-main-darkTeal text-xl">
+                    Generated quote
+                </div>
+            </template>
+            <template #content>
+                <GeneratedQuoteDisplay />
+            </template>
+        </Accordion>
     </div>
-    <!--    <GenericButton-->
-    <!--        :callback="handlePrintQuote"-->
-    <!--        type="teal"-->
-    <!--    >-->
-    <!--        invoke print-->
-    <!--    </GenericButton>-->
 </template>
