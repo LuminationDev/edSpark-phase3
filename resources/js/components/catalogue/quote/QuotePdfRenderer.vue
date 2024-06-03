@@ -74,7 +74,7 @@ const contentArrayForPrinting = computed(() => {
                 alt="logo"
             >
         </div>
-        <div class="flex flex-col mt-10 px-8 quote-content">
+        <div class="flex flex-col mt-6 px-8 quote-content">
             <div class="flex flex-row info-row">
                 <div class="basis-1/2 flex flex-col left-column vendor-info">
                     <span>SA Department for Education</span>
@@ -165,7 +165,7 @@ const contentArrayForPrinting = computed(() => {
                         Quantity
                     </div>
                     <div class="flex-1">
-                        Product Number
+                        Product No.
                     </div>
                     <div class="flex-1">
                         Price Expiry
@@ -226,7 +226,7 @@ const contentArrayForPrinting = computed(() => {
                 </div>
             </div>
             <div
-                class="= border-main-darkTeal border-t-1 flex justify-end items-end quote-footer"
+                class="= border-main-darkTeal border-t-[1px] flex justify-end items-end quote-footer"
             >
                 {{ `Page ${idx + 1} of ${numberOfPage}` }}
             </div>
@@ -246,7 +246,4 @@ const contentArrayForPrinting = computed(() => {
     aspect-ratio: 1.41 / 1;
 }
 
-.quote-content {
-    break-inside: avoid;
-}
 </style>

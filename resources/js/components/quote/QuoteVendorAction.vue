@@ -32,8 +32,13 @@ const loadingVendorInfo = ref(false)
 
 onMounted(async () => {
     loadingVendorInfo.value = true
-    quoteVendorInfo.value[props.quoteVendor] = await quoteService.getVendorData(props.quoteVendor)
-    loadingVendorInfo.value = false
+    try{
+        quoteVendorInfo.value[props.quoteVendor] = await quoteService.getVendorData(props.quoteVendor)
+    }catch(err){
+        console.log('vendor not found')
+    } finally{
+        loadingVendorInfo.value = false
+    }
 
 })
 
@@ -178,6 +183,9 @@ const onClickClearVendorCart = async () => {
                     <span class="font-thin">{{ data[1] }}</span>
                 </div>
             </div>
+        </div>
+        <div v-else-if="!quoteVendorInfo[props.quoteVendor]">
+            -
         </div>
         <div v-else>
             <Loader
