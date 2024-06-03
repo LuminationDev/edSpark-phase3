@@ -29,6 +29,8 @@ const numberOfPage = ref(1)
 
 const contentArrayForPrinting = computed(() => {
     const quoteContent = props.quote?.quote_content;
+    console.log(quoteContent)
+    console.log(typeof(quoteContent))
 
     if (!quoteContent || quoteContent.length <= 10) {
         return quoteContent;
@@ -45,6 +47,7 @@ const contentArrayForPrinting = computed(() => {
         const currentSection = quoteContent.slice(start, end);
         result.push(currentSection);
     }
+    console.log(result)
     return result;
 });
 
@@ -223,7 +226,7 @@ const contentArrayForPrinting = computed(() => {
                 </div>
             </div>
             <div
-                class="= border-main-darkTeal border-t-2 flex justify-end items-end quote-footer"
+                class="= border-main-darkTeal border-t-1 flex justify-end items-end quote-footer"
             >
                 {{ `Page ${idx + 1} of ${numberOfPage}` }}
             </div>

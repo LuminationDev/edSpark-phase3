@@ -176,9 +176,12 @@ class CartController extends Controller
         }
 
         $quoteContent = $this->generateQuoteContent($vendorCartItems, $cart->id);
-        $totalPrice = $quoteContent->sum('total');
+        $totalPrice = 0;
+        foreach ($quoteContent as $item) {
+            $totalPrice += $item['total'];
+        }
 
-        $quote = $this->createQuote($user->id, $cart->version_id, $quoteContent->toArray(), $totalPrice, $deliveryInfo);
+        $quote = $this->createQuote($user->id, $cart->version_id, $quoteContent, $totalPrice, $deliveryInfo);
 
         $this->removeCheckedOutItems($cart, $vendorCartItems);
         $this->updateCartStatus($cart);
@@ -255,7 +258,7 @@ class CartController extends Controller
                 'quantity' => $item->quantity,
                 'total' => $item->quantity * $item->catalogue->price_inc_gst,
             ];
-        });
+        })->values()->all();
     }
 
     private function createQuote($userId, $versionId, $quoteContent, $totalPrice, $deliveryInfo)

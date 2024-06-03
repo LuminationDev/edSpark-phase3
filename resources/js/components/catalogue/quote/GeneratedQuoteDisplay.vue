@@ -26,6 +26,7 @@ const getQuoteCreatedAt = (quote) => {
 }
 
 const onClickDownloadQuote = async (quote) => {
+    console.log(quote)
     quotePreview.value = quote
     await new Promise((res, rej) => {
         setTimeout(() => {

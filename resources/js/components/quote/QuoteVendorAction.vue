@@ -163,7 +163,7 @@ const onClickClearVendorCart = async () => {
             Vendor Information
         </div>
         <div
-            v-if="!loadingVendorInfo"
+            v-if="!loadingVendorInfo && quoteVendorInfo[props.quoteVendor]"
             class="border-[1px] border-slate-300 grids innerContainer px-4 py-2 rounded-xl shadow"
         >
             <div class="flex flex-col">
