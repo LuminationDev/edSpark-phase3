@@ -1,4 +1,5 @@
 import {useStorage} from "@vueuse/core";
+import {removed} from "dompurify";
 import {cloneDeep} from "lodash";
 import {defineStore} from "pinia";
 import {toast} from "vue3-toastify";
@@ -6,12 +7,20 @@ import {toast} from "vue3-toastify";
 import {quoteService} from "@/js/service/quoteService";
 import {CatalogueItemType} from "@/js/types/catalogueTypes";
 
+
 export const useQuoteStore = defineStore('quote', {
     state: () => ({
         quote: useStorage('EDSPARK_CATALOGUE_QUOTE', [], localStorage, {mergeDefaults: true}),
         qouteCreationDate: useStorage('EDSPARK_QUOTE_CREATION_DATE', 0, localStorage),
         qouteUpdateDate: useStorage('EDSPARK_QUOTE_UPDATE_DATE', 0, localStorage),
         quoteLoading: false,
+        quoteVendorInfo: {},
+        quotePreview: {},
+        quoteUserInfo: {
+            name: '',
+            institution: "",
+            address: ''
+        },
         genQuote: []
 
     }),
@@ -20,6 +29,7 @@ export const useQuoteStore = defineStore('quote', {
             return this.quote
         },
         getQuoteGroupedByVendor: (state) => {
+            console.log(state.quote)
             return state.quote.reduce((acc, product) => {
                 const vendor = product.vendor;
                 if (!acc[vendor]) {
@@ -36,7 +46,6 @@ export const useQuoteStore = defineStore('quote', {
             try {
                 this.quoteLoading = true;
                 const quoteFromDb = await quoteService.getCart()
-                console.log(quoteFromDb)
                 this.quote = quoteFromDb;
                 this.quoteLoading = false;
             } catch (e) {
@@ -52,23 +61,65 @@ export const useQuoteStore = defineStore('quote', {
                 this.quote.push({...item, quantity: 1});
             }
         },
-        removeFromQuote(itemReference) {
+        async removeFromQuote(itemReference) {
+            const oldQuote = cloneDeep(this.quote)
             this.quote = this.quote.filter(item => item.unique_reference !== itemReference);
+            try {
+                await quoteService.deleteItemInCart(itemReference)
+            } catch (err) {
+                this.quote = oldQuote
+                console.error('Failed to delete item, reverting to previous value', err.message)
+                throw new Error('Failed to delete item, reverting to previous value')
+            }
         },
+
+
         async changeQuantity(item, newQuantity) {
             const quoteItem = this.quote.find(quoteItem => quoteItem.unique_reference === item.unique_reference);
 
             if (quoteItem) {
                 const oldQuantity = quoteItem.quantity;
-                quoteItem.quantity = newQuantity;
-                try {
-                    await quoteService.updateItemQuantityInCart(item.unique_reference, newQuantity)
-                } catch (err) {
-                    console.log(oldQuantity)
-                    quoteItem.quantity = oldQuantity
-                    toast.error("Failed to update item, reverted to previous value")
+                if (+newQuantity === 0) {
+                    const oldQuote = cloneDeep(this.quote)
+                    this.removeFromQuote(quoteItem.unique_reference)
+                    try {
+                        await quoteService.deleteItemInCart(quoteItem.unique_reference)
+                    } catch (err) {
+                        this.quote = cloneDeep(oldQuote)
+                    }
+                } else {
+                    quoteItem.quantity = newQuantity;
+                    try {
+                        await quoteService.updateItemQuantityInCart(item.unique_reference, newQuantity)
+                    } catch (err) {
+                        console.log(oldQuantity)
+                        quoteItem.quantity = oldQuantity
+                    }
                 }
             }
+
+        },
+
+        async clearQuoteByVendor(vendorName) {
+            const oldQuote = cloneDeep(this.quote)
+            const removedItems = []
+            console.log('removing vendor name from cart')
+            try {
+                this.quote.forEach(item => {
+                    if (item.vendor === vendorName) {
+                        this.removeFromQuote(item.unique_reference)
+                        removedItems.push(item)
+                    }
+                })
+
+            } catch (err) {
+                console.log('Error removing items for vendors')
+                this.quote = cloneDeep(oldQuote)
+                removedItems.forEach((item) => {
+                    this.addToQuote(item)
+                })
+            }
+
 
         },
         async clearQuote() {
@@ -106,7 +157,6 @@ export const useQuoteStore = defineStore('quote', {
             if (this.quote.length <= 0) {
                 return false
             }
-            console.log(this.quote.some(item => item.unique_reference === itemReference))
             if (this.quote.some(item => item.unique_reference === itemReference)) {
                 return true
             }
@@ -123,6 +173,15 @@ export const useQuoteStore = defineStore('quote', {
         async getUserGenQuote() {
             try {
                 this.genQuote = await quoteService.getGenQuote()
+                // get vendor info
+                for (const item of this.genQuote) {
+                    const vendorName = item.quote_content[0]?.vendor
+                    if (vendorName) {
+                        if (!this.quoteVendorInfo[vendorName]) {
+                            this.quoteVendorInfo[vendorName] = await quoteService.getVendorData(vendorName)
+                        }
+                    }
+                }
             } catch (err) {
                 console.error("Failed to fetch generated quotes " + err.message)
             }

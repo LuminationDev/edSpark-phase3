@@ -60,15 +60,11 @@ const onClickDecrement = () => {
 }
 
 const onClickRemove = async () => {
-    const oldQuote = cloneDeep(quoteStore.getQuote)
-    quoteStore.removeFromQuote(props.itemData.unique_reference)
+    await quoteStore.removeFromQuote(props.itemData.unique_reference)
     try {
         await quoteService.deleteItemInCart(props.itemData.unique_reference)
     } catch (err) {
-        quote.value = oldQuote
-        console.error('Failed to delete item, reverting to previous value', err.message)
-        toast.error('Failed to delete item. Please try again')
-
+        toast.error(err.message)
     }
 }
 

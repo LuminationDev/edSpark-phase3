@@ -6,8 +6,8 @@ import {catalogueImageURL} from "@/js/constants/serverUrl";
 type CatalogueFieldTypes = 'brand' | 'type' | 'vendor' | 'category'
 
 export const catalogueService = {
-    fetchCatalogueByField: (fieldType: CatalogueFieldTypes, fieldValue: Array<string>, additionalFilters, nthPage: number = 1, perPage: number = 20) => {
-        const body = {field: fieldType, value: fieldValue, additional_filters: additionalFilters, per_page: perPage}
+    fetchCatalogueByField: (fieldType: CatalogueFieldTypes, fieldValue: Array<string>, additionalFilters, nthPage: number = 1, perPage: number = 20, keyword:string='') => {
+        const body = {field: fieldType, value: fieldValue, additional_filters: additionalFilters, per_page: perPage,keyword: keyword};
         const params = {page: nthPage}
         return axios.post(API_ENDPOINTS.CATALOGUE.FETCH_CATALOGUE_BY_FIELD, body, {params: params})
     },

@@ -71,7 +71,6 @@ const {
     available_now
 } = props.catItem
 
-console.log(available_now)
 
 const catCoverImageUrl = computed(() => {
     return catalogueService.getCatalogueCoverImage(cover_image);

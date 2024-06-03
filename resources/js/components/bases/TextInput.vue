@@ -9,7 +9,7 @@ const props = defineProps({
         required: true
     },
     modelValue: {
-        type: String,
+        type: Object,
         required: true
     },
     fieldId: {
