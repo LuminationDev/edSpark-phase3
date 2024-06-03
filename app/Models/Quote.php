@@ -10,7 +10,7 @@ class Quote extends Model
     use HasFactory;
     protected $fillable = [
         'user_id', 'version_id', 'quote_content',
-        'total_price_ex_gst', 'status'
+        'total_price_ex_gst', 'status', 'delivery_info'
     ];
 
     protected $casts = [

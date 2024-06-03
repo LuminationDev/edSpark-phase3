@@ -59,7 +59,6 @@ export const useUserStore = defineStore('user', {
             }
         },
         getUserSiteName(): string {
-            console.log(this.currentUser?.site?.site_name);
             return this.currentUser?.site?.site_name || "";
         },
         getUserRoleName(): string {

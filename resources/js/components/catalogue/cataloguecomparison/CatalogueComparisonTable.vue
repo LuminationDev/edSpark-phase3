@@ -59,7 +59,6 @@ const groupAttrName = computed(() => {
 })
 
 const shouldRenderRow = (objectData) => {
-    console.log(objectData)
     const objectValues = objectData[1]
     let render = false;
     objectValues.forEach(value => {
