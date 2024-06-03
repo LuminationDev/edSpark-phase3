@@ -124,7 +124,8 @@ export const API_ENDPOINTS: Endpoints = appendServerURL({
     },
     QUOTE:{
         GET_QUOTE: '/quote/list',
-        GET_VENDOR: '/vendor/'
+        GET_VENDOR: '/vendor/',
+        GEN_QUOTE_PDF:'/quote/generate-pdf'
     },
     LIKE: {
         LIKE: `/like`,
