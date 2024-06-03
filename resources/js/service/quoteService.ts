@@ -129,7 +129,7 @@ export const quoteService = {
         const payload = {html: JSON.stringify({html: allPageContents})};
         console.log(payload);
 
-        return axios.post('http://localhost:8000/api/quote/generate-pdf', payload, {responseType: 'blob'})
+        return axios.post(API_ENDPOINTS.QUOTE.GEN_QUOTE_PDF, payload, {responseType: 'blob'})
             .then(response => {
                 const url = window.URL.createObjectURL(new Blob([response.data]));
                 const a = document.createElement('a');
