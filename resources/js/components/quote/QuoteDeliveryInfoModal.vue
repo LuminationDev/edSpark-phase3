@@ -38,9 +38,9 @@ const handleModalConfirm = async () => {
     await v$.value.$validate()
     if (!v$.value.$error) {
         console.log(v$.value)
-        quoteUserInfo.value['name'] = v$.value.name
-        quoteUserInfo.value['institution'] = v$.value.institution
-        quoteUserInfo.value['address'] = v$.value.address
+        quoteUserInfo.value['name'] = v$.value.name.$model
+        quoteUserInfo.value['institution'] = v$.value.institution.$model
+        quoteUserInfo.value['address'] = v$.value.address.$model
 
         emits('confirm')
     } else {

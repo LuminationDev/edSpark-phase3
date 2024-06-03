@@ -29,7 +29,6 @@ export const useQuoteStore = defineStore('quote', {
             return this.quote
         },
         getQuoteGroupedByVendor: (state) => {
-            console.log(state.quote)
             return state.quote.reduce((acc, product) => {
                 const vendor = product.vendor;
                 if (!acc[vendor]) {
@@ -45,8 +44,7 @@ export const useQuoteStore = defineStore('quote', {
         async initializeQuote() {
             try {
                 this.quoteLoading = true;
-                const quoteFromDb = await quoteService.getCart()
-                this.quote = quoteFromDb;
+                this.quote = await quoteService.getCart();
                 this.quoteLoading = false;
             } catch (e) {
                 console.log(e)
@@ -92,7 +90,6 @@ export const useQuoteStore = defineStore('quote', {
                     try {
                         await quoteService.updateItemQuantityInCart(item.unique_reference, newQuantity)
                     } catch (err) {
-                        console.log(oldQuantity)
                         quoteItem.quantity = oldQuantity
                     }
                 }
@@ -163,7 +160,7 @@ export const useQuoteStore = defineStore('quote', {
         },
         async checkoutVendor(vendor: string) {
             try {
-                await quoteService.checkoutCart(vendor)
+                return quoteService.checkoutCart(vendor)
             } catch (err) {
                 console.log(err.message)
             } finally {
