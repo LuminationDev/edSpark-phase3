@@ -88,15 +88,9 @@ const showEmptyQuotePage = computed(() =>{
     <div
         class="flex flex-col generatedQuoteContainer mt-10 mx-10"
     >
-        <Accordion :default-open="false">
-            <template #title>
-                <div class="font-medium mb-4 text-main-darkTeal text-xl">
-                    Generated quote
-                </div>
-            </template>
-            <template #content>
-                <GeneratedQuoteDisplay />
-            </template>
-        </Accordion>
+        <div class="font-medium mb-4 text-main-darkTeal text-xl">
+            Generated quote
+        </div>
+        <GeneratedQuoteDisplay />
     </div>
 </template>

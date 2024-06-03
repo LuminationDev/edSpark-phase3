@@ -20,16 +20,44 @@ const getQuoteDisplayVendor = computed(() => {
 })
 
 const vendorData = computed(() => {
-    console.log(quoteVendorInfo.value[getQuoteDisplayVendor.value])
     return quoteVendorInfo.value[getQuoteDisplayVendor.value]
 })
+const currentPage = ref(1)
+const numberOfItemType = ref(0)
+const numberOfPage = ref(1)
+
+
+
+
+const contentArrayForPrinting = computed(() => {
+    const quoteContent = props.quote?.quote_content;
+
+    if (!quoteContent || quoteContent.length <= 10) {
+        return quoteContent;
+    }
+
+    const chunkSize = 10;
+    numberOfPage.value = Math.ceil(quoteContent.length / chunkSize);
+    const result = [];
+
+    for (let i = 0; i < numberOfPage.value; i++) {
+        const start = i * chunkSize;
+        const end = start + chunkSize;
+        const currentSection = quoteContent.slice(start, end);
+        result.push(currentSection);
+    }
+    return result;
+});
+
 
 </script>
 
 <template>
     <div
+        v-for="(quoteItems,idx) in contentArrayForPrinting"
         id="quote-template-print"
-        class="QuotePDFDisplay flex flex-col hidden mt-10 p-4 w-full"
+        :key="idx"
+        class="QuotePDFDisplay flex flex-col mt-10 p-4 w-full"
     >
         <div class="bg-main-teal flex items-end flex-row h-36 header p-6 text-2xl text-white w-full">
             <ImageWithFallback
@@ -149,19 +177,15 @@ const vendorData = computed(() => {
                 </div>
                 <div class="flex flex-col p-2 quote-table-body">
                     <template
-                        v-for="(item, index) in quote.quote_content"
+                        v-for="(item, index) in quoteItems"
                         :key="index"
                     >
                         <div class="flex">
                             <div class="flex-2 flex-wrap item-name">
                                 {{ item.name }}
                             </div>
-                            <div class="flex-2 item-desc">
-                                This item description
-                            </div>
-                            <div class="flex-2 notes">
-                                Test quote do not honor.
-                            </div>
+                            <div class="flex-2 item-desc" />
+                            <div class="flex-2 notes" />
                             <div class="flex-1 quantity">
                                 {{ item.quantity }}
                             </div>
@@ -181,7 +205,10 @@ const vendorData = computed(() => {
                             </div>
                         </div>
                     </template>
-                    <div class="flex total-row">
+                    <div
+                        v-if="idx + 1 === +numberOfPage"
+                        class="flex total-row"
+                    >
                         <div class="flex-2" />
                         <div class="flex-2" />
                         <div class="flex-2" />
@@ -199,7 +226,7 @@ const vendorData = computed(() => {
             <div
                 class="= border-main-darkTeal border-t-2 flex justify-end items-end quote-footer"
             >
-                Page 1 of 1
+                {{ `Page ${idx + 1} of ${numberOfPage}` }}
             </div>
         </div>
     </div>

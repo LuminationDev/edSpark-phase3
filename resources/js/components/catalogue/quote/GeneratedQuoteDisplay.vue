@@ -27,7 +27,7 @@ const getQuoteCreatedAt = (quote) => {
 
 const onClickDownloadQuote = async (quote) => {
     quotePreview.value = quote
-    await new Promise((res, rej) =>{
+    await new Promise((res, rej) => {
         setTimeout(() => {
             res()
         }, 500)
@@ -35,6 +35,10 @@ const onClickDownloadQuote = async (quote) => {
     await quoteService.printQuote()
 }
 
+
+const renderPdfRenderer = computed(() => {
+    return !!Object.keys(quotePreview).length
+})
 
 </script>
 
@@ -76,7 +80,7 @@ const onClickDownloadQuote = async (quote) => {
                 </div>
             </div>
         </div>
-        <template v-if="Object.keys(quotePreview).length">
+        <template v-if="renderPdfRenderer">
             <QuotePdfRenderer
                 :quote="quotePreview"
             />
