@@ -17,7 +17,9 @@ const emits = defineEmits(['emitSearchTerm'])
 </script>
 <template>
     <div class="flex flex-col">
+        <slot name="searchTitle" />
         <p
+            v-if="!$slots.searchTitle"
             id="searchTitle"
             class="text-xl"
         >

@@ -79,7 +79,7 @@ const showEmptyQuotePage = computed(() =>{
                     :callback="() => router.push('/catalogue')"
                     type="teal"
                 >
-                    Back to catalogue
+                    Browse catalogue
                 </GenericButton>
             </div>
         </template>

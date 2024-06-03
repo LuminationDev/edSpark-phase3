@@ -86,29 +86,11 @@ const additionalFilters = computed(() => {
 onMounted(async () => {
     try {
         if (primaryFilter.value) {
-            console.log('onMounted init fetch not happening')
             return;
         }
-        console.log('onMounted fetch happening')
 
         isFilterLoading.value = true
         const cataloguesResult = await fetchCatalogueAndUpdateOtherFilters(CatalogueFilterField.Category, selectedCategory.value, additionalFilters.value, currentPage.value, perPage.value)
-
-        // const [categoriesResponse, typesResponse, brandsResponse, vendorsResponse, cataloguesResult] = await Promise.all([
-        //     catalogueService.fetchAllCategories(),
-        //     catalogueService.fetchAllTypes(),
-        //     catalogueService.fetchAllBrands(),
-        //     catalogueService.fetchAllVendors(),
-        //     fetchCatalogueAndUpdateOtherFilters(CatalogueFilterField.Category, selectedCategory.value, additionalFilters.value, currentPage.value, perPage.value)
-        // ]);
-        // categoryList.value = categoriesResponse.data.data.filter(Boolean)
-        // typeList.value = typesResponse.data.data.filter(Boolean);
-        // brandList.value = brandsResponse.data.data.filter(Boolean);
-        // vendorList.value = vendorsResponse.data.data.filter(Boolean);
-        // catalogueList.value = cataloguesResult.items
-        // if (cataloguesResult.pagination) {
-        //     cataloguePaginationStore.updatePaginationData(cataloguesResult.pagination)
-        // }
     } catch (error) {
         // Handle errors here
         console.error('Error fetching data:', error);

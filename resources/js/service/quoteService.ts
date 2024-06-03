@@ -62,7 +62,6 @@ export const quoteService = {
     printQuote: async () => {
         const elementId = '#quote-template-print'; // Replace with your element's ID
         const elements = document.querySelectorAll(elementId);
-        console.log(elements);
 
         let allPageContents = '';
 
@@ -79,7 +78,6 @@ export const quoteService = {
             // Function to fetch the image and convert it to base64
             const getImageBase64 = async (img) => {
                 const imgUrl = img.src;
-                console.log(imgUrl);
                 const response = await fetch(imgUrl);
                 const blob = await response.blob();
                 return new Promise((resolve, reject) => {

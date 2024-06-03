@@ -17,9 +17,9 @@ const props = defineProps({
 const userStore = useUserStore()
 const {quoteVendorInfo, quoteUserInfo} = storeToRefs(useQuoteStore())
 
-onMounted(() =>{
-    quoteUserInfo.value.name =userStore.getUserFullName ? userStore.getUserFullName : ""
-    quoteUserInfo.value.institution =  userStore.getUserSiteName ? userStore.getUserSiteName : ""
+onMounted(() => {
+    quoteUserInfo.value.name = userStore.getUserFullName ? userStore.getUserFullName : ""
+    quoteUserInfo.value.institution = userStore.getUserSiteName ? userStore.getUserSiteName : ""
 
 })
 const getQuoteDisplayVendor = computed(() => {
@@ -36,14 +36,16 @@ const numberOfPage = ref(1)
 
 const contentArrayForPrinting = computed(() => {
     const quoteContent = props.quote?.quote_content;
-    console.log(quoteContent)
-    console.log(typeof(quoteContent))
+    const chunkSize = 9;
 
-    if (!quoteContent || quoteContent.length <= 10) {
-        return quoteContent;
+    if (!quoteContent) {
+        return []
     }
 
-    const chunkSize = 9;
+    if (quoteContent.length <= chunkSize) {
+        return [quoteContent];
+    }
+
     // eslint-disable-next-line vue/no-side-effects-in-computed-properties
     numberOfPage.value = Math.ceil(quoteContent.length / chunkSize);
     const result = [];
@@ -205,17 +207,17 @@ const contentArrayForPrinting = computed(() => {
                                 {{ item.price_expiry }}
                             </div>
                             <div class="cost-inc-gst flex-1">
-                                {{ `$` + (item.price_inc_gst * item.quantity).toFixed(2) }}
+                                {{ `$` + (+item.price_inc_gst * +item.quantity).toFixed(2) }}
                             </div>
                             <div class="cost-ex-gst flex-1">
                                 {{
-                                    `$` + (catalogueService.getExcGstPrice(item.price_inc_gst) * item.quantity).toFixed(2)
+                                    `$` + (catalogueService.getExcGstPrice(+item.price_inc_gst) * +item.quantity).toFixed(2)
                                 }}
                             </div>
                         </div>
                     </template>
                     <div
-                        v-if="idx + 1 === +numberOfPage"
+                        v-if="idx + 1 === contentArrayForPrinting.length"
                         class="flex total-row"
                     >
                         <div class="flex-2" />
@@ -235,7 +237,7 @@ const contentArrayForPrinting = computed(() => {
             <div
                 class="= border-main-darkTeal border-t-[1px] flex justify-end items-end quote-footer"
             >
-                {{ `Page ${idx + 1} of ${numberOfPage}` }}
+                {{ `Page ${idx + 1} of ${contentArrayForPrinting.length}` }}
             </div>
         </div>
     </div>

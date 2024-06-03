@@ -81,7 +81,11 @@ const onClickResetFilters = () => {
                 View Quotes
             </GenericButton>
         </router-link>
-        <SearchBar />
+        <SearchBar class="mt-8">
+            <template #searchTitle>
+                <span class="font-normal text-lg"> Search</span>
+            </template>
+        </SearchBar>
 
         <CatalogueFilterGroup
             v-if="typeList.length"
