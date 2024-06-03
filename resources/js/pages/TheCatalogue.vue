@@ -307,7 +307,7 @@ const handleSearchTermChanged = async (newTerm) => {
         swoosh-color="teal"
     />
     <div class="cataloguePageOuterContainer grid grid-cols-10 mt-16">
-        <div class="col-span-2 flex flex-col gap-2 ml-8 pr-8">
+        <div class="col-span-10 flex flex-col gap-2 mb-8 ml-8 pr-8 xl:!col-span-2">
             <CatalogueFilterColumn
                 v-model:brand-list="brandList"
                 v-model:type-list="typeList"
@@ -335,10 +335,20 @@ const handleSearchTermChanged = async (newTerm) => {
         </div>
         <div
             v-else-if="!isProductsLoading && !error.status"
-            class="col-span-8 productPanel"
+            class="col-span-10 productPanel xl:!col-span-8"
         >
             <div
-                class="2xl:!grid-cols-4 grid grid-cols-1 gap-x-2 gap-y-8 place-items-center lg:!grid-cols-2 xl:!grid-cols-3"
+                class="2xl:!grid-cols-4
+                    grid
+                    sm:grid-cols-1
+                    md:grid-cols-2
+                    gap-x-2
+                    gap-y-8
+                    place-items-center
+                    
+                    
+                    lg:!grid-cols-2
+                    xl:!grid-cols-3"
             >
                 <template
                     v-for="(item,index) in catalogueList"
