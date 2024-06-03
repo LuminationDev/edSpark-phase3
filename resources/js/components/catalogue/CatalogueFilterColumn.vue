@@ -1,5 +1,6 @@
 <script setup>
 
+import {debounce} from "lodash";
 import {computed} from "vue";
 
 import SearchBar from "@/js/components/browseschools/SearchBar.vue";
@@ -36,7 +37,7 @@ const selectedStorage = defineModel('selectedStorage')
 const priceRange = defineModel('priceRange')
 const perPage = defineModel('perPage')
 
-const emits = defineEmits(['priceChanged'])
+const emits = defineEmits(['priceChanged','searchTermChanged'])
 
 const catalogueStore = useCatalogueStore()
 
@@ -57,6 +58,11 @@ const onClickResetFilters = () => {
     catalogueStore.resetFilters()
 }
 
+const handleSearchTerm = (term) =>{
+    emits('searchTermChanged',term)
+}
+
+const debouncedHandleSearchTerm = debounce(handleSearchTerm,500)
 </script>
 
 <template>
@@ -81,7 +87,10 @@ const onClickResetFilters = () => {
                 View Quotes
             </GenericButton>
         </router-link>
-        <SearchBar class="mt-8">
+        <SearchBar
+            class="mt-8"
+            @emit-search-term="debouncedHandleSearchTerm"
+        >
             <template #searchTitle>
                 <span class="font-normal text-lg"> Search</span>
             </template>

@@ -91,11 +91,25 @@ class CatalogueController extends Controller
         $perPage = $request->input('per_page', 20);
         $requestedPage = $request->query('page', 1);
         $additionalFilters = $request->input('additional_filters', []);
+        $keyword = $request->input('keyword', '');
+
 
         // Start building the base query
         $query = Catalogue::query();
         // filter based on catalogue version id
         $query->where('version_id', Catalogueversion::getActiveCatalogueId());
+
+
+        // Apply keyword filter if provided
+        if (!empty($keyword)) {
+            $query->where(function ($q) use ($keyword) {
+                $q->where('name', 'LIKE', '%' . $keyword . '%')
+                    ->orWhere('category', 'LIKE', '%' . $keyword . '%')
+                    ->orWhere('brand', 'LIKE', '%' . $keyword . '%');
+                // Add other fields as necessary
+            });
+        }
+
 
         // if field and values is not empty, apply filter query
         if (!empty($field) && !empty($values)) {

@@ -21,7 +21,8 @@ export const useCatalogueStore = defineStore('catalogue', {
         selectedProcessor: [],
         selectedMemory: [],
         selectedStorage: [],
-        priceRange: [0, 30000]
+        priceRange: [0, 30000],
+        searchKeyword: '',
 
 
     }),
@@ -62,6 +63,7 @@ export const useCatalogueStore = defineStore('catalogue', {
             this.selectedMemory = []
             this.selectedStorage = []
             this.priceRange = [0, 30000]
+            this.searchKeyword = ''
         },
 
     },

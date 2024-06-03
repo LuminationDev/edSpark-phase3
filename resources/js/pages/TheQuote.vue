@@ -2,22 +2,14 @@
 import {computed, onMounted} from "vue";
 import {useRouter} from "vue-router";
 
-import Accordion from "@/js/components/accordion/Accordion.vue";
 import BaseLandingHero from "@/js/components/bases/BaseLandingHero.vue";
 import GenericButton from "@/js/components/button/GenericButton.vue";
 import GeneratedQuoteDisplay from "@/js/components/catalogue/quote/GeneratedQuoteDisplay.vue";
-import QuoteVendorAction from "@/js/components/quote/QuoteVendorAction.vue";
 import QuoteVendorGroup from "@/js/components/quote/QuoteVendorGroup.vue";
-import QuoteVendorListing from "@/js/components/quote/QuoteVendorListing.vue";
-import QuoteWideCard from "@/js/components/quote/QuoteWideCard.vue";
 import {LandingHeroText} from "@/js/constants/PageBlurb";
 import {guid} from "@/js/helpers/guidGenerator";
-import {quoteService} from "@/js/service/quoteService";
 import {useQuoteStore} from "@/js/stores/useQuoteStore";
 
-const props = defineProps({})
-
-const emits = defineEmits([])
 const router = useRouter()
 const quoteStore = useQuoteStore()
 
@@ -28,7 +20,7 @@ onMounted(() => {
 const onClearQuote = () => {
     quoteStore.clearQuote()
 }
-const showEmptyQuotePage = computed(() =>{
+const showEmptyQuotePage = computed(() => {
     return !!Object.keys(quoteStore.getQuoteGroupedByVendor).length;
 })
 

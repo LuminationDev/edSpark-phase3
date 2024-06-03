@@ -41,7 +41,8 @@ const {
     selectedProcessor,
     selectedMemory,
     selectedStorage,
-    priceRange
+    priceRange,
+    searchKeyword
 } = storeToRefs(catalogueStore)
 
 const cataloguePaginationStore = useCataloguePaginationStore()
@@ -61,7 +62,6 @@ const showPagination = computed(() => {
     return totalPages.value > 1
 })
 
-// have a primary filte rhere
 
 const primarySelectedValues = computed(() => {
     if (primaryFilter.value == CatalogueFilterField.Type) return selectedType.value
@@ -111,7 +111,7 @@ const fetchCatalogue = async (field, value, additional, page, perPage = 16) => {
     if (!catalogueList.value.length) {
         isProductsLoading.value = true
     }
-    return catalogueService.fetchCatalogueByField(field, value, additional, page, perPage)
+    return catalogueService.fetchCatalogueByField(field, value, additional, page, perPage, searchKeyword.value)
         .then(res => {
             clearError()
             return res.data.data
@@ -292,6 +292,12 @@ const handlePriceChange = async () => {
     await fetchCatalogueAndUpdateOtherFilters(primaryFilter.value, primarySelectedValues.value, additionalFilters.value, currentPage.value, perPage.value)
 }
 
+const handleSearchTermChanged = async (newTerm) => {
+    console.log(newTerm)
+    searchKeyword.value = newTerm
+    await fetchCatalogueAndUpdateOtherFilters(primaryFilter.value, primarySelectedValues.value, additionalFilters.value, currentPage.value, perPage.value)
+
+}
 </script>
 
 <template>
@@ -321,6 +327,7 @@ const handlePriceChange = async () => {
                 v-model:per-page="perPage"
                 :is-filter-loading="isFilterLoading"
                 @price-changed="handlePriceChange"
+                @search-term-changed="handleSearchTermChanged"
             />
         </div>
         <div v-if="error.status ">
