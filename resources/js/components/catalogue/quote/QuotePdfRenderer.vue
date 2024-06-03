@@ -6,6 +6,7 @@ import ImageWithFallback from "@/js/components/global/ImageWithFallback.vue";
 import {imageURL, serverURL} from "@/js/constants/serverUrl";
 import {catalogueService} from "@/js/service/catalogueService";
 import {useQuoteStore} from "@/js/stores/useQuoteStore";
+import {useUserStore} from "@/js/stores/useUserStore";
 
 const props = defineProps({
     quote: {
@@ -13,8 +14,14 @@ const props = defineProps({
         required: true
     },
 })
-const {quoteVendorInfo} = storeToRefs(useQuoteStore())
+const userStore = useUserStore()
+const {quoteVendorInfo, quoteUserInfo} = storeToRefs(useQuoteStore())
 
+onMounted(() =>{
+    quoteUserInfo.value.name =userStore.getUserFullName ? userStore.getUserFullName : ""
+    quoteUserInfo.value.institution =  userStore.getUserSiteName ? userStore.getUserSiteName : ""
+
+})
 const getQuoteDisplayVendor = computed(() => {
     return props.quote?.quote_content[Object.keys(props.quote.quote_content)[0]]?.vendor
 })
@@ -137,13 +144,13 @@ const contentArrayForPrinting = computed(() => {
                         class="flex flex-col last-of-type:mb-8 mb-2"
                     >
                         <div class="mb-1">
-                            John Citizen
+                            {{ `${quoteUserInfo.name ? quoteUserInfo.name : ''}` }}
                         </div>
                         <div class="mb-1">
-                            1 Test Street
+                            {{ `${quoteUserInfo.institution ? quoteUserInfo.institution : ''}` }}
                         </div>
                         <div class="mb-1">
-                            Adelaide
+                            {{ `${quoteUserInfo.address ? quoteUserInfo.address : ''}` }}
                         </div>
                     </div>
                 </div>

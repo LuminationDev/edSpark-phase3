@@ -1,11 +1,8 @@
 <script setup>
-import {useVuelidate} from "@vuelidate/core";
-import {required} from "@vuelidate/validators";
 import {storeToRefs} from "pinia";
 import {computed, onMounted, reactive, ref} from 'vue'
 import {toast} from "vue3-toastify";
 
-import TextInput from "@/js/components/bases/TextInput.vue";
 import GenericButton from "@/js/components/button/GenericButton.vue";
 import QuoteDeliveryInfoModal from "@/js/components/quote/QuoteDeliveryInfoModal.vue";
 import Loader from "@/js/components/spinner/Loader.vue";

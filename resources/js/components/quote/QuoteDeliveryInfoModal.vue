@@ -1,20 +1,22 @@
 <script setup>
 import {useVuelidate} from "@vuelidate/core";
 import {required} from "@vuelidate/validators";
+import {storeToRefs} from "pinia";
 import {computed, reactive, ref} from 'vue'
 
 import TextInput from "@/js/components/bases/TextInput.vue";
 import GenericButton from "@/js/components/button/GenericButton.vue";
+import {useQuoteStore} from "@/js/stores/useQuoteStore";
 
 const props = defineProps({})
 
 const emits = defineEmits(['confirm', 'cancel'])
-
+const {quoteUserInfo} = storeToRefs(useQuoteStore())
 
 const state = reactive({
-    name: 'test',
-    institution: null,
-    address: null
+    name: quoteUserInfo.value.name ,
+    institution: quoteUserInfo.value.institution,
+    address: quoteUserInfo.value.address,
 })
 
 const rules = {
@@ -35,6 +37,11 @@ const handleModalConfirm = async () => {
     console.log('confirmed')
     await v$.value.$validate()
     if (!v$.value.$error) {
+        console.log(v$.value)
+        quoteUserInfo.value['name'] = v$.value.name
+        quoteUserInfo.value['institution'] = v$.value.institution
+        quoteUserInfo.value['address'] = v$.value.address
+
         emits('confirm')
     } else {
     }
@@ -93,7 +100,7 @@ const handleModalConfirm = async () => {
                     placeholder="Institution"
                 >
                     <template #label>
-                        Institution Name
+                        Institution name
                     </template>
                 </TextInput>
                 <TextInput
@@ -103,7 +110,7 @@ const handleModalConfirm = async () => {
                     placeholder="Address"
                 >
                     <template #label>
-                        Address
+                        Full address (include suburb and postcode)
                     </template>
                 </TextInput>
             </div>

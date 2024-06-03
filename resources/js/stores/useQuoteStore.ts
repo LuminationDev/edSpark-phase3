@@ -7,6 +7,7 @@ import {toast} from "vue3-toastify";
 import {quoteService} from "@/js/service/quoteService";
 import {CatalogueItemType} from "@/js/types/catalogueTypes";
 
+
 export const useQuoteStore = defineStore('quote', {
     state: () => ({
         quote: useStorage('EDSPARK_CATALOGUE_QUOTE', [], localStorage, {mergeDefaults: true}),
@@ -15,6 +16,11 @@ export const useQuoteStore = defineStore('quote', {
         quoteLoading: false,
         quoteVendorInfo: {},
         quotePreview: {},
+        quoteUserInfo: {
+            name: '',
+            institution: "",
+            address: ''
+        },
         genQuote: []
 
     }),
