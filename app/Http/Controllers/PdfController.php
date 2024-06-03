@@ -19,7 +19,7 @@ class PdfController extends Controller
         $pdf = Pdf::html($htmlContent)
             ->withBrowsershot(function (Browsershot $browsershot) {
                 $browsershot
-                    ->scale(0.7)
+                    ->scale(0.75)
                     ->setNodeBinary(env('NODE_BINARY_PATH'))
                     ->setNpmBinary(env('NPM_BINARY_PATH'))
                     ->timeout(100000);

@@ -27,8 +27,6 @@ const numberOfItemType = ref(0)
 const numberOfPage = ref(1)
 
 
-
-
 const contentArrayForPrinting = computed(() => {
     const quoteContent = props.quote?.quote_content;
 
@@ -36,7 +34,8 @@ const contentArrayForPrinting = computed(() => {
         return quoteContent;
     }
 
-    const chunkSize = 10;
+    const chunkSize = 9;
+    // eslint-disable-next-line vue/no-side-effects-in-computed-properties
     numberOfPage.value = Math.ceil(quoteContent.length / chunkSize);
     const result = [];
 
@@ -72,7 +71,7 @@ const contentArrayForPrinting = computed(() => {
                 alt="logo"
             >
         </div>
-        <div class="flex flex-col h-full mt-10 px-8 quote-content">
+        <div class="flex flex-col mt-10 px-8 quote-content">
             <div class="flex flex-row info-row">
                 <div class="basis-1/2 flex flex-col left-column vendor-info">
                     <span>SA Department for Education</span>
@@ -242,5 +241,9 @@ const contentArrayForPrinting = computed(() => {
 
 #quote-template-print {
     aspect-ratio: 1.41 / 1;
+}
+
+.quote-content {
+    break-inside: avoid;
 }
 </style>
