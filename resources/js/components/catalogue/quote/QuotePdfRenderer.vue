@@ -1,9 +1,9 @@
 <script setup>
 import {storeToRefs} from "pinia";
-import {computed, onMounted, ref, watch} from 'vue'
+import {computed, onMounted, ref} from 'vue'
 
 import ImageWithFallback from "@/js/components/global/ImageWithFallback.vue";
-import {imageURL, serverURL} from "@/js/constants/serverUrl";
+import {imageURL} from "@/js/constants/serverUrl";
 import {formatDateToDateMonth} from "@/js/helpers/dateHelper";
 import {catalogueService} from "@/js/service/catalogueService";
 import {useQuoteStore} from "@/js/stores/useQuoteStore";
@@ -30,8 +30,6 @@ const getQuoteDisplayVendor = computed(() => {
 const vendorData = computed(() => {
     return quoteVendorInfo.value[getQuoteDisplayVendor.value]
 })
-const currentPage = ref(1)
-const numberOfItemType = ref(0)
 const numberOfPage = ref(1)
 
 

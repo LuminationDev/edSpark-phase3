@@ -10,9 +10,6 @@ import {formatDateToDayTime} from "@/js/helpers/dateHelper";
 import {quoteService} from "@/js/service/quoteService";
 import {useQuoteStore} from "@/js/stores/useQuoteStore";
 
-const props = defineProps({})
-
-const emits = defineEmits([])
 
 const quoteStore = useQuoteStore()
 const {genQuote, quotePreview} = storeToRefs(quoteStore)

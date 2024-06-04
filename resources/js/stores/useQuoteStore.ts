@@ -19,7 +19,8 @@ export const useQuoteStore = defineStore('quote', {
         quoteUserInfo: {
             name: '',
             institution: "",
-            address: ''
+            address: '',
+            notes: '',
         },
         genQuote: []
 
