@@ -268,7 +268,7 @@ class CartController extends Controller
             'version_id' => $versionId,
             'quote_content' => $quoteContent,
             'total_price_ex_gst' => number_format($totalPrice / 1.1, 2, '.', ''),
-            'delivery_info' => $deliveryInfo,
+            'delivery_info' => json_encode($deliveryInfo),
             'status' => 'ACTIVE',
         ]);
     }

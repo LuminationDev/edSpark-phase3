@@ -160,7 +160,7 @@ export const useQuoteStore = defineStore('quote', {
         },
         async checkoutVendor(vendor: string) {
             try {
-                return quoteService.checkoutCart(vendor)
+                return quoteService.checkoutCart(vendor, this.quoteUserInfo)
             } catch (err) {
                 console.log(err.message)
             } finally {
@@ -169,18 +169,28 @@ export const useQuoteStore = defineStore('quote', {
         },
         async getUserGenQuote() {
             try {
-                this.genQuote = await quoteService.getGenQuote()
-                // get vendor info
+                this.genQuote = await quoteService.getGenQuote();
+                const fetchedVendor = new Set();
+
+                // Iterate over the quotes to get vendor info
                 for (const item of this.genQuote) {
-                    const vendorName = item.quote_content[0]?.vendor
-                    if (vendorName) {
+                    const vendorName = item.quote_content[0]?.vendor;
+
+                    if (vendorName && !fetchedVendor.has(vendorName)) {
+                        fetchedVendor.add(vendorName);
+
+                        // Fetch vendor data if not already present
                         if (!this.quoteVendorInfo[vendorName]) {
-                            this.quoteVendorInfo[vendorName] = await quoteService.getVendorData(vendorName)
+                            try {
+                                this.quoteVendorInfo[vendorName] = await quoteService.getVendorData(vendorName);
+                            } catch (vendorErr) {
+                                console.error(`Failed to fetch vendor data for ${vendorName}: ${vendorErr.message}`);
+                            }
                         }
                     }
                 }
             } catch (err) {
-                console.error("Failed to fetch generated quotes " + err.message)
+                console.error("Failed to fetch generated quotes: " + err.message);
             }
         }
 

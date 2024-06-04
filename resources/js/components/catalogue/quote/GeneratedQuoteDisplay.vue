@@ -27,13 +27,27 @@ const getQuoteCreatedAt = (quote) => {
 
 const onClickDownloadQuote = async (quote) => {
     console.log(quote)
-    quotePreview.value = quote
-    await new Promise((res, rej) => {
-        setTimeout(() => {
-            res()
-        }, 500)
-    })
-    await quoteService.printQuote()
+    if (quote.pdf_url) {
+        await axios.get(quote.pdf_url,{responseType: 'blob'}).then(response => {
+            const url = window.URL.createObjectURL(new Blob([response.data]));
+            const a = document.createElement('a');
+            a.style.display = 'none';
+            a.href = url;
+            a.download = 'page.pdf';
+            document.body.appendChild(a);
+            a.click();
+            window.URL.revokeObjectURL(url);
+        })
+    }else{
+        quotePreview.value = quote
+        await new Promise((res, rej) => {
+            setTimeout(() => {
+                res()
+            }, 500)
+        })
+        await quoteService.printQuote(quote.id)
+
+    }
 }
 
 
