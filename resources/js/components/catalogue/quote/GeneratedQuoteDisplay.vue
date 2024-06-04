@@ -24,11 +24,12 @@ const getQuoteVendor = (quote) => {
 const getQuoteCreatedAt = (quote) => {
     return quote?.created_at
 }
-
 const onClickDownloadQuote = async (quote) => {
-    console.log(quote)
-    if (quote.pdf_url) {
-        await axios.get(quote.pdf_url,{responseType: 'blob'}).then(response => {
+    console.log(quote);
+
+    const downloadQuotePDF = async (pdfUrl) => {
+        try {
+            const response = await axios.get(pdfUrl, {responseType: 'blob'});
             const url = window.URL.createObjectURL(new Blob([response.data]));
             const a = document.createElement('a');
             a.style.display = 'none';
@@ -37,19 +38,28 @@ const onClickDownloadQuote = async (quote) => {
             document.body.appendChild(a);
             a.click();
             window.URL.revokeObjectURL(url);
-        })
-    }else{
-        quotePreview.value = quote
-        await new Promise((res, rej) => {
-            setTimeout(() => {
-                res()
-            }, 500)
-        })
-        await quoteService.printQuote(quote.id)
+        } catch (err) {
+            console.log(err.message);
+            return false; // failed to get from the url
+        }
+        return true; // success
+    };
 
+    const fallbackToPreviewAndPrint = async (quote) => {
+        quotePreview.value = quote;
+        await new Promise((res) => setTimeout(res, 500));
+        await quoteService.printQuote(quote.id);
+    };
+
+    if (quote.pdf_url) {
+        const success = await downloadQuotePDF(quote.pdf_url);
+        if (!success) {
+            await fallbackToPreviewAndPrint(quote);
+        }
+    } else {
+        await fallbackToPreviewAndPrint(quote);
     }
-}
-
+};
 
 const renderPdfRenderer = computed(() => {
     return !!Object.keys(quotePreview).length
