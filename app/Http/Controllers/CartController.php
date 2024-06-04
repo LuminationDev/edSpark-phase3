@@ -261,16 +261,34 @@ class CartController extends Controller
         })->values()->all();
     }
 
+
     private function createQuote($userId, $versionId, $quoteContent, $totalPrice, $deliveryInfo)
     {
-        return Quote::create([
+        $quote = Quote::create([
             'user_id' => $userId,
             'version_id' => $versionId,
+            'quote_ref' => '',
             'quote_content' => $quoteContent,
             'total_price_ex_gst' => number_format($totalPrice / 1.1, 2, '.', ''),
             'delivery_info' => json_encode($deliveryInfo),
             'status' => 'ACTIVE',
         ]);
+
+        $quoteId = $quote->id;
+
+        $quoteRef = $this->generateQuoteRef($quoteId);
+
+        $quote->quote_ref = $quoteRef;
+        $quote->save();
+
+        return $quote;
+    }
+    private function generateQuoteRef($quoteId)
+    {
+        $date = date('Ymd'); // Get current date in YYYYMMDD format
+        $randomNumber = mt_rand(10000, 99999); // Generate a random 5-digit number
+
+        return "{$date}-{$quoteId}-{$randomNumber}";
     }
 
     private function removeCheckedOutItems($cart, $vendorCartItems)
