@@ -4,6 +4,7 @@ import {computed, onMounted, ref, watch} from 'vue'
 
 import ImageWithFallback from "@/js/components/global/ImageWithFallback.vue";
 import {imageURL, serverURL} from "@/js/constants/serverUrl";
+import {formatDateToDateMonth} from "@/js/helpers/dateHelper";
 import {catalogueService} from "@/js/service/catalogueService";
 import {useQuoteStore} from "@/js/stores/useQuoteStore";
 import {useUserStore} from "@/js/stores/useUserStore";
@@ -88,8 +89,8 @@ const contentArrayForPrinting = computed(() => {
                 <div class="basis-1/2 flex flex-col left-column vendor-info">
                     <span>SA Department for Education</span>
                     <span class="mb-1 text-3xl">Hardware quote</span>
-                    <span class="text-main-darkTeal text-xl">Ref no. 123456789</span>
-                    <span class="mb-8 text-main-darkTeal">28 May 2024</span>
+                    <span class="text-main-darkTeal text-xl">Ref no: {{ props.quote.quote_ref }}</span>
+                    <span class="mb-8 text-main-darkTeal">{{ formatDateToDateMonth(props.quote.created_at) }}</span>
                     <div class="flex flex-col vendor-info">
                         <div class="font-semibold text-2xl text-main-darkTeal vendor-header">
                             Vendor:

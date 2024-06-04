@@ -59,7 +59,8 @@ const onClickGenerate = async () => {
         })
 
         // then trigger the print quote
-        await quoteService.printQuote()
+        console.log(result.quote)
+        await quoteService.printQuote(result.quote.id)
 
         // refresh list
         quoteStore.initializeQuote()
