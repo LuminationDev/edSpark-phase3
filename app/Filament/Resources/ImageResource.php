@@ -2,11 +2,16 @@
 
 namespace App\Filament\Resources;
 
+use App\Components\EdsparkImageLibraryPicker;
 use App\Filament\Resources\ImageResource\Pages;
+use App\Forms\Components\ImagePreview;
+use Filament\Forms\Components\TextInput;
+use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
+use Outerweb\FilamentImageLibrary\Filament\Forms\Components\ImageLibraryPicker;
 use Outerweb\ImageLibrary\Models\Image;
 
 class ImageResource extends Resource
@@ -21,7 +26,14 @@ class ImageResource extends Resource
     {
         return $form
             ->schema([
-                //
+                Forms\Components\Section::make()
+                    ->schema([
+                        TextInput::make('title'),
+                        TextInput::make('alt'),
+                        ImagePreview::make('image preview')
+
+
+                    ])
             ]);
     }
 
@@ -49,12 +61,7 @@ class ImageResource extends Resource
                     ->getStateUsing(function ($record): string {
                         $image = $record;
                         if ($image) {
-                            if ($image->file_extension === 'png') {
-                                return env('VITE_SERVER_IMAGE_API') . '/' . $image->uuid . "/original.png";
-
-                            } else {
-                                return env('VITE_SERVER_IMAGE_API') . '/' . $image->uuid . "/original.jpg";
-                            }
+                            return env('VITE_SERVER_IMAGE_API') . '/' . $image->uuid . "/original." . $image->file_extension;
                         }
                         return '';
                     })
