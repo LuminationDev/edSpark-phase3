@@ -48,7 +48,7 @@
         "@googlemaps/js-api-loader": "^1.15.1",
         "@hennge/vue3-pagination": "^1.0.17",
         "@popperjs/core": "^2.11.8",
-        "@tinymce/tinymce-vue": "^5.1.1",
+        "@tinymce/tinymce-vue": "^6.0.0",
         "@vite/vitejs": "^2.3.19",
         "@vitejs/plugin-vue": "^4.5.2",
         "@vuelidate/core": "^2.0.2",
