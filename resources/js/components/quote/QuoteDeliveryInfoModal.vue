@@ -44,6 +44,7 @@ const handleModalConfirm = async () => {
         quoteUserInfo.value['name'] = v$.value.name.$model
         quoteUserInfo.value['institution'] = v$.value.institution.$model
         quoteUserInfo.value['address'] = v$.value.address.$model
+        quoteUserInfo.value['notes'] = v$.value.notes.$model
 
         // maps the notes to the item on confirmation
         const noteEntries = Object.entries(additionalNotes)
@@ -124,7 +125,7 @@ onUnmounted(() => {
                     placeholder="Name"
                 >
                     <template #label>
-                        Full name
+                        Delivery Contact
                     </template>
                 </TextInput>
                 <TextInput
@@ -134,7 +135,7 @@ onUnmounted(() => {
                     placeholder="Institution"
                 >
                     <template #label>
-                        Institution name
+                        Site Name
                     </template>
                 </TextInput>
                 <TextInput
@@ -144,7 +145,7 @@ onUnmounted(() => {
                     placeholder="Address"
                 >
                     <template #label>
-                        Full address (include suburb and postcode)
+                        Site Address
                     </template>
                 </TextInput>
             </div>
