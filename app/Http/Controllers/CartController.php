@@ -164,6 +164,7 @@ class CartController extends Controller
         $user = Auth::user();
         $vendorName = $request->input('vendor');
         $deliveryInfo = $request->input('delivery_info');
+        $additionalNotes = $request->input('additional_notes');
 
         $cart = $this->getActiveCart($user->id);
         if (!$cart) {
@@ -175,7 +176,7 @@ class CartController extends Controller
             return response()->json(['message' => 'No items from the specified vendor in the cart'], 200);
         }
 
-        $quoteContent = $this->generateQuoteContent($vendorCartItems, $cart->id);
+        $quoteContent = $this->generateQuoteContent($vendorCartItems, $cart->id, $additionalNotes);
         $totalPrice = 0;
         foreach ($quoteContent as $item) {
             $totalPrice += $item['total'];
@@ -204,9 +205,9 @@ class CartController extends Controller
         });
     }
 
-    private function generateQuoteContent($vendorCartItems, $cartId)
+    private function generateQuoteContent($vendorCartItems, $cartId, $additionalNotes)
     {
-        return $vendorCartItems->map(function ($item) use ($cartId) {
+        return $vendorCartItems->map(function ($item) use ($cartId,$additionalNotes) {
             $itemCatalogue = $item->catalogue;
             $itemImageUUID = '';
             $itemImageExtension = '';
@@ -218,6 +219,8 @@ class CartController extends Controller
                     $itemImageExtension = $itemImage->file_extension ?? '';
                 }
             }
+            $uniqueReference= $itemCatalogue->unique_reference;
+            $notes = $additionalNotes[$uniqueReference] ?? '';
 
             return [
                 'cart_id' => $cartId,
@@ -257,20 +260,40 @@ class CartController extends Controller
                 ],
                 'quantity' => $item->quantity,
                 'total' => $item->quantity * $item->catalogue->price_inc_gst,
+                'notes' => $notes
             ];
         })->values()->all();
     }
 
+
     private function createQuote($userId, $versionId, $quoteContent, $totalPrice, $deliveryInfo)
     {
-        return Quote::create([
+        $quote = Quote::create([
             'user_id' => $userId,
             'version_id' => $versionId,
+            'quote_ref' => '',
             'quote_content' => $quoteContent,
             'total_price_ex_gst' => number_format($totalPrice / 1.1, 2, '.', ''),
-            'delivery_info' => $deliveryInfo,
+            'delivery_info' => json_encode($deliveryInfo),
             'status' => 'ACTIVE',
         ]);
+
+        $quoteId = $quote->id;
+
+        $quoteRef = $this->generateQuoteRef($quoteId);
+
+        $quote->quote_ref = $quoteRef;
+        $quote->save();
+
+        return $quote;
+    }
+
+    private function generateQuoteRef($quoteId)
+    {
+        $date = date('Ymd'); // Get current date in YYYYMMDD format
+        $randomNumber = mt_rand(10000, 99999); // Generate a random 5-digit number
+
+        return "{$date}-{$quoteId}-{$randomNumber}";
     }
 
     private function removeCheckedOutItems($cart, $vendorCartItems)
@@ -311,14 +334,14 @@ class CartController extends Controller
             return response()->json(['message' => 'Vendor not found'], 410);
         }
         $result = [
-            'Name' => $vendor->vendor_name,
-            'Address' => $vendor->address,
-            'ABN' => $vendor->abn,
-            'Order Email' => $vendor->order_email,
-            'Phone' => $vendor->phone,
-            "Contact" => $vendor->contact,
-            'Direct Phone' => $vendor->direct_phone,
-            'Email' => $vendor->email,
+            'Name' => $vendor->vendor_name ?? '',
+            'Address' => $vendor->address ?? '',
+            'ABN' => $vendor->abn ?? '',
+            'Order Email' => $vendor->order_email ?? '',
+            'Phone' => $vendor->phone ?? '',
+            "Contact" => $vendor->contact ?? '',
+            'Direct Phone' => $vendor->direct_phone ?? '',
+            'Email' => $vendor->email ?? '',
         ];
         return response()->json(['message' => 'Fetch completed', 'vendor' => $result], 201);
 

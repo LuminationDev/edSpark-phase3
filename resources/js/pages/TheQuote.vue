@@ -13,9 +13,9 @@ import {useQuoteStore} from "@/js/stores/useQuoteStore";
 const router = useRouter()
 const quoteStore = useQuoteStore()
 
-onMounted(() => {
-    quoteStore.initializeQuote()
-    quoteStore.getUserGenQuote()
+onMounted(async() => {
+    await quoteStore.initializeQuote()
+    await quoteStore.getUserGenQuote()
 })
 const onClearQuote = () => {
     quoteStore.clearQuote()

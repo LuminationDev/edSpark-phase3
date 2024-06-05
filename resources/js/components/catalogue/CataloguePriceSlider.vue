@@ -27,8 +27,10 @@ const priceRange = defineModel('priceRange')
 const sliderRefreshKey = 0
 
 const handleNewValuesFromSlider = debounce((values) => {
+    console.log(values)
     currentPriceValues.value = values
     priceRange.value = values
+    emits('priceChanged')
 }, 500)
 
 const minActivePrice = computed(() => {

@@ -22,18 +22,19 @@ const props = defineProps({
 })
 
 const quoteStore = useQuoteStore()
-const {quoteVendorInfo} = storeToRefs(quoteStore)
+const {quoteVendorInfo, quotePreview} = storeToRefs(quoteStore)
 const showDeliveryModal = ref(false)
 const loadingVendorInfo = ref(false)
+const additionalNotes = reactive({})
 
 
 onMounted(async () => {
     loadingVendorInfo.value = true
-    try{
+    try {
         quoteVendorInfo.value[props.quoteVendor] = await quoteService.getVendorData(props.quoteVendor)
-    }catch(err){
+    } catch (err) {
         console.log('vendor not found')
-    } finally{
+    } finally {
         loadingVendorInfo.value = false
     }
 
@@ -45,20 +46,36 @@ const onClickGenerate = async () => {
     // before await make the ref showDeliveryModal = true and once resolved make it false
     try {
         await showModal();
-        quoteStore.checkoutVendor(props.quoteVendor).then(res => {
-            toast.success("Quote generated successfully.")
-            quoteStore.initializeQuote()
-        }).catch(err => {
-            if (err.status === '410') {
-                console.log(' user do not have any quote')
-            } else {
-                console.log(err.message)
-            }
 
+        // checkout perform operation in the DB
+        const result = await quoteStore.checkoutVendor(props.quoteVendor, additionalNotes)
+        toast.success("Quote generated successfully.")
+
+        // need to populate the quote preview here
+        quotePreview.value = result.quote
+        await new Promise((res, rej) => {
+            setTimeout(() => {
+                res()
+            }, 500)
         })
+
+        // then trigger the print quote
+        console.log(result.quote)
+        await quoteService.printQuote(result.quote.id)
+
+        // refresh list
+        quoteStore.initializeQuote()
+        quoteStore.getUserGenQuote()
+
     } catch (err) {
         console.log("Cancelled")
+        if (err.status === '410') {
+            console.log('user do not have any quote')
+        } else {
+            console.log(err.message)
+        }
     }
+
 
 }
 let modalConfirmFunction
@@ -79,6 +96,10 @@ const showModal = () => {
 
         const cleanup = () => {
             showDeliveryModal.value = false
+            modalConfirmFunction = () => {
+            }
+            modalCancelFunction = () => {
+            }
         }
         modalConfirmFunction = confirmListener
         modalCancelFunction = cancelListener
@@ -118,6 +139,7 @@ const onClickClearVendorCart = async () => {
         class="relative"
     >
         <QuoteDeliveryInfoModal
+            v-model="additionalNotes"
             @confirm="handleRecConfirm"
             @cancel="handleRecCancel"
         />
@@ -184,7 +206,10 @@ const onClickClearVendorCart = async () => {
         <div v-else-if="!quoteVendorInfo[props.quoteVendor]">
             -
         </div>
-        <div v-else>
+        <div
+            v-else
+            class="min-h-[470px]"
+        >
             <Loader
                 loader-message="Loading vendor information"
                 loader-type="small"

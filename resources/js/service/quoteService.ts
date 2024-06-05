@@ -44,9 +44,11 @@ export const quoteService = {
             return res.data
         })
     },
-    checkoutCart: async (vendor) => {
+    checkoutCart: async (vendor, userInfo, additionalNotes) => {
         const body = {
-            vendor: vendor
+            vendor: vendor,
+            delivery_info: userInfo,
+            additional_notes: additionalNotes
         }
         return axios.post(`${API_ENDPOINTS.CART.CHECKOUT_CART}`, body).then(res => {
             return res.data
@@ -59,7 +61,7 @@ export const quoteService = {
         return axios.get(`${API_ENDPOINTS.QUOTE.GET_VENDOR}${vendorName}`).then(res => res.data.vendor)
     },
 
-    printQuote: async () => {
+    printQuote: async (quoteId :number) => {
         const elementId = '#quote-template-print'; // Replace with your element's ID
         const elements = document.querySelectorAll(elementId);
 
@@ -126,7 +128,7 @@ export const quoteService = {
             }
         }
 
-        const payload = {html: JSON.stringify({html: allPageContents})};
+        const payload = {html: JSON.stringify({html: allPageContents}), quote_id:quoteId };
         console.log(payload);
 
         return axios.post(API_ENDPOINTS.QUOTE.GEN_QUOTE_PDF, payload, {responseType: 'blob'})
