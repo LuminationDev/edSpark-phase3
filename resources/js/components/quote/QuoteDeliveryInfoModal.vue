@@ -12,6 +12,7 @@ import {useQuoteStore} from "@/js/stores/useQuoteStore";
 
 const emits = defineEmits(['confirm', 'cancel'])
 const {quoteUserInfo, quote} = storeToRefs(useQuoteStore())
+const additionalNotes = defineModel()
 
 const state = reactive({
     name: quoteUserInfo.value.name,
@@ -38,11 +39,25 @@ const handleModalCancel = () => {
 const handleModalConfirm = async () => {
     console.log('confirmed')
     await v$.value.$validate()
+    console.log(v$.value.$error)
     if (!v$.value.$error) {
-        console.log(v$.value)
         quoteUserInfo.value['name'] = v$.value.name.$model
         quoteUserInfo.value['institution'] = v$.value.institution.$model
         quoteUserInfo.value['address'] = v$.value.address.$model
+
+        // maps the notes to the item on confirmation
+        const noteEntries = Object.entries(additionalNotes)
+        const quoteWithNotes = [...quote.value]
+        for (const [key, value] in noteEntries) {
+            quoteWithNotes.forEach(quoteItem => {
+                if (quoteItem.unique_reference === key) {
+                    quoteItem.notes = value;
+                }
+            });
+        }
+        console.log(quoteWithNotes)
+        console.log(quote.value)
+        quote.value = quoteWithNotes;
         emits('confirm')
     } else {
     }
@@ -59,15 +74,12 @@ onUnmounted(() => {
     document.body.style.paddingRight = '0px';
 })
 
-const handleInputNotes = (note, uniqueRef) => {
-    quote.value.forEach(quoteItem => {
-        if (quoteItem.unique_reference === uniqueRef) {
-            quoteItem.notes = note;
-        }
-    });
-}
-
-const debouncedHandleInputNotes = debounce(handleInputNotes, 500)
+// const handleInputNotes = (note, uniqueRef) => {
+//     additionalNotes[uniqueRef] = note
+//     console.log(additionalNotes)
+// }
+//
+// const debouncedHandleInputNotes = debounce(handleInputNotes, 500)
 
 </script>
 
@@ -159,16 +171,15 @@ const debouncedHandleInputNotes = debounce(handleInputNotes, 500)
                     :key="index"
                 >
                     <TextInput
+                        v-model="additionalNotes[item.unique_reference]"
                         :field-id="'deliveryNotes' + item.name"
                         :v$="{}"
-                        @input-update="(note) => debouncedHandleInputNotes(note,item.unique_reference)"
                     >
                         <template #label>
                             {{ item.name }}
                         </template>
                     </TextInput>
                 </div>
-                <pre>{{ quote }}</pre>
             </div>
             <div class="flex justify-around flex-row">
                 <GenericButton

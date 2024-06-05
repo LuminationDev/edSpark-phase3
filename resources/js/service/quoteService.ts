@@ -44,10 +44,11 @@ export const quoteService = {
             return res.data
         })
     },
-    checkoutCart: async (vendor, userInfo) => {
+    checkoutCart: async (vendor, userInfo, additionalNotes) => {
         const body = {
             vendor: vendor,
-            delivery_info: userInfo
+            delivery_info: userInfo,
+            additional_notes: additionalNotes
         }
         return axios.post(`${API_ENDPOINTS.CART.CHECKOUT_CART}`, body).then(res => {
             return res.data

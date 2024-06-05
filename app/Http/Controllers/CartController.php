@@ -164,6 +164,7 @@ class CartController extends Controller
         $user = Auth::user();
         $vendorName = $request->input('vendor');
         $deliveryInfo = $request->input('delivery_info');
+        $additionalNotes = $request->input('additional_notes');
 
         $cart = $this->getActiveCart($user->id);
         if (!$cart) {
@@ -175,7 +176,7 @@ class CartController extends Controller
             return response()->json(['message' => 'No items from the specified vendor in the cart'], 200);
         }
 
-        $quoteContent = $this->generateQuoteContent($vendorCartItems, $cart->id);
+        $quoteContent = $this->generateQuoteContent($vendorCartItems, $cart->id, $additionalNotes);
         $totalPrice = 0;
         foreach ($quoteContent as $item) {
             $totalPrice += $item['total'];
@@ -204,9 +205,9 @@ class CartController extends Controller
         });
     }
 
-    private function generateQuoteContent($vendorCartItems, $cartId)
+    private function generateQuoteContent($vendorCartItems, $cartId, $additionalNotes)
     {
-        return $vendorCartItems->map(function ($item) use ($cartId) {
+        return $vendorCartItems->map(function ($item) use ($cartId,$additionalNotes) {
             $itemCatalogue = $item->catalogue;
             $itemImageUUID = '';
             $itemImageExtension = '';
@@ -218,6 +219,8 @@ class CartController extends Controller
                     $itemImageExtension = $itemImage->file_extension ?? '';
                 }
             }
+            $uniqueReference= $itemCatalogue->unique_reference;
+            $notes = $additionalNotes[$uniqueReference] ?? '';
 
             return [
                 'cart_id' => $cartId,
@@ -257,6 +260,7 @@ class CartController extends Controller
                 ],
                 'quantity' => $item->quantity,
                 'total' => $item->quantity * $item->catalogue->price_inc_gst,
+                'notes' => $notes
             ];
         })->values()->all();
     }
@@ -283,6 +287,7 @@ class CartController extends Controller
 
         return $quote;
     }
+
     private function generateQuoteRef($quoteId)
     {
         $date = date('Ymd'); // Get current date in YYYYMMDD format

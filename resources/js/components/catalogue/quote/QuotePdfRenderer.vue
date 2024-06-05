@@ -153,6 +153,9 @@ const contentArrayForPrinting = computed(() => {
                         <div class="mb-1">
                             {{ `${quoteUserInfo.address ? quoteUserInfo.address : ''}` }}
                         </div>
+                        <div class="mb-1">
+                            {{ `${quoteUserInfo.notes ? quoteUserInfo.notes : ''}` }}
+                        </div>
                     </div>
                 </div>
             </div>
@@ -195,7 +198,9 @@ const contentArrayForPrinting = computed(() => {
                                 {{ item.name }}
                             </div>
                             <div class="flex-2 item-desc" />
-                            <div class="flex-2 notes" />
+                            <div class="flex-2 notes">
+                                {{ item.notes }}
+                            </div>
                             <div class="flex-1 quantity">
                                 {{ item.quantity }}
                             </div>
