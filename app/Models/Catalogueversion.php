@@ -33,8 +33,6 @@ class Catalogueversion extends Model
     {
         $activeCatalogue = Catalogueversion::where('is_active', true)->first();
         return $activeCatalogue->version ?? 0;
-
     }
-
 
 }
