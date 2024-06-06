@@ -28,6 +28,7 @@ class PdfController extends Controller
                     ->setNpmBinary(env('NPM_BINARY_PATH'))
                     ->addChromiumArguments(['no-sandbox'])
                     ->timeout(100000);
+
             })
             ->format('a4')
             ->orientation('Landscape')

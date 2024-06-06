@@ -37,7 +37,6 @@ const handleModalCancel = () => {
 }
 
 const handleModalConfirm = async () => {
-    console.log('confirmed')
     await v$.value.$validate()
     console.log(v$.value.$error)
     if (!v$.value.$error) {

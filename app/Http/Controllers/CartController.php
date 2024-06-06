@@ -287,7 +287,7 @@ class CartController extends Controller
 
         return $quote;
     }
-
+  
     private function generateQuoteRef($quoteId)
     {
         $date = date('Ymd'); // Get current date in YYYYMMDD format
