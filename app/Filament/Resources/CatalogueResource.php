@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources;
 
+use App\Components\EdsparkImageLibraryPicker;
 use App\Filament\Resources\CatalogueResource\Pages;
 use App\Filament\Resources\CatalogueResource\RelationManagers;
 use App\Models\Catalogue;
@@ -21,6 +22,7 @@ class CatalogueResource extends Resource
 {
     protected static ?string $model = Catalogue::class;
     protected static ?string $navigationGroup = 'Classroom Catalogue';
+    protected static ?int $navigationSort = 2;
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
     protected static ?string $navigationLabel = 'Catalogue items';
 
@@ -59,7 +61,7 @@ class CatalogueResource extends Resource
                         TextInput::make('image'),
                         TextInput::make('product_number'),
                         TextInput::make('price_expiry'),
-                        ImageLibraryPicker::make('cover_image')
+                        EdsparkImageLibraryPicker::make('cover_image')
 
                     ])
 
@@ -102,12 +104,7 @@ class CatalogueResource extends Resource
                         $imgId = $record->cover_image;
                         $image = Image::where('id', $imgId)->first();
                         if ($image) {
-                            if ($image->file_extension === 'png') {
-                                return env('VITE_SERVER_IMAGE_API') . '/' . $image->uuid . "/original.png";
-
-                            } else {
-                                return env('VITE_SERVER_IMAGE_API') . '/' . $image->uuid . "/original.jpg";
-                            }
+                            return env('VITE_SERVER_IMAGE_API') . '/' . $image->uuid . "/original." . $image->file_extension;
                         }
                         return '';
                     })

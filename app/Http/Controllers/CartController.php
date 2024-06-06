@@ -201,7 +201,7 @@ class CartController extends Controller
     private function getVendorCartItems($cart, $vendorName)
     {
         return $cart->cartItems->filter(function ($item) use ($vendorName) {
-            return $item->catalogue->vendor == $vendorName;
+            return $item->catalogue->vendor == $vendorName && $item->catalogue->version_id == Catalogueversion::getActiveCatalogueId();
         });
     }
 
