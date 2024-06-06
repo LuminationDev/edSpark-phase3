@@ -8,6 +8,7 @@ use App\Models\Quote;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Tables\Actions\Action;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 
@@ -40,6 +41,9 @@ class QuoteResource extends Resource
                 //
             ])
             ->actions([
+                Action::make('download')
+                    ->url(fn ($record): string => $record->pdf_url)
+                 ->openUrlInNewTab()
             ])
             ->modifyQueryUsing(function (Builder $query) {
                 return $query->orderBy('created_at', 'DESC');
