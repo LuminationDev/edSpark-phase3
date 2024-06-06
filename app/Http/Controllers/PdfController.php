@@ -26,8 +26,9 @@ class PdfController extends Controller
                     ->setOption('title', 'Classroom quote')
                     ->setNodeBinary(env('NODE_BINARY_PATH'))
                     ->setNpmBinary(env('NPM_BINARY_PATH'))
-                    ->timeout(100000)
-                    ->addChromiumArguments(['no-sandbox']);
+                    ->addChromiumArguments(['no-sandbox'])
+                    ->timeout(100000);
+
             })
             ->format('a4')
             ->orientation('Landscape')

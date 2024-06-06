@@ -293,7 +293,6 @@ const handlePriceChange = async () => {
 }
 
 const handleSearchTermChanged = async (newTerm) => {
-    console.log(newTerm)
     searchKeyword.value = newTerm
     await fetchCatalogueAndUpdateOtherFilters(primaryFilter.value, primarySelectedValues.value, additionalFilters.value, currentPage.value, perPage.value)
 

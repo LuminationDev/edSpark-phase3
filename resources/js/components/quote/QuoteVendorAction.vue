@@ -22,9 +22,10 @@ const props = defineProps({
 })
 
 const quoteStore = useQuoteStore()
-const {quoteVendorInfo,quotePreview} = storeToRefs(quoteStore)
+const {quoteVendorInfo, quotePreview} = storeToRefs(quoteStore)
 const showDeliveryModal = ref(false)
 const loadingVendorInfo = ref(false)
+const additionalNotes = reactive({})
 
 
 onMounted(async () => {
@@ -47,7 +48,7 @@ const onClickGenerate = async () => {
         await showModal();
 
         // checkout perform operation in the DB
-        const result = await quoteStore.checkoutVendor(props.quoteVendor)
+        const result = await quoteStore.checkoutVendor(props.quoteVendor, additionalNotes)
         toast.success("Quote generated successfully.")
 
         // need to populate the quote preview here
@@ -95,6 +96,10 @@ const showModal = () => {
 
         const cleanup = () => {
             showDeliveryModal.value = false
+            modalConfirmFunction = () => {
+            }
+            modalCancelFunction = () => {
+            }
         }
         modalConfirmFunction = confirmListener
         modalCancelFunction = cancelListener
@@ -134,6 +139,7 @@ const onClickClearVendorCart = async () => {
         class="relative"
     >
         <QuoteDeliveryInfoModal
+            v-model="additionalNotes"
             @confirm="handleRecConfirm"
             @cancel="handleRecCancel"
         />

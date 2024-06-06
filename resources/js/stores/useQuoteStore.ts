@@ -19,7 +19,8 @@ export const useQuoteStore = defineStore('quote', {
         quoteUserInfo: {
             name: '',
             institution: "",
-            address: ''
+            address: '',
+            notes: '',
         },
         genQuote: []
 
@@ -158,9 +159,9 @@ export const useQuoteStore = defineStore('quote', {
                 return true
             }
         },
-        async checkoutVendor(vendor: string) {
+        async checkoutVendor(vendor: string, additionalNotes: any) {
             try {
-                return quoteService.checkoutCart(vendor, this.quoteUserInfo)
+                return quoteService.checkoutCart(vendor, this.quoteUserInfo, additionalNotes)
             } catch (err) {
                 console.log(err.message)
             } finally {

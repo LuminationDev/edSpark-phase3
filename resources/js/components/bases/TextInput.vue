@@ -9,8 +9,9 @@ const props = defineProps({
         required: true
     },
     modelValue: {
-        type: Object,
-        required: true
+        type: [Object,String],
+        required: false,
+        default: () => {}
     },
     fieldId: {
         type: String,
@@ -39,7 +40,7 @@ const focus = () => {
 const handleInput = (e) => {
     const target = e.target
     emit('update:modelValue', target.value)
-    emit('inputUpdate')
+    emit('inputUpdate', target.value)
 }
 
 defineExpose({

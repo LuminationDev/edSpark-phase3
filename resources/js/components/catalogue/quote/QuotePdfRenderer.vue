@@ -1,9 +1,9 @@
 <script setup>
 import {storeToRefs} from "pinia";
-import {computed, onMounted, ref, watch} from 'vue'
+import {computed, onMounted, ref} from 'vue'
 
 import ImageWithFallback from "@/js/components/global/ImageWithFallback.vue";
-import {imageURL, serverURL} from "@/js/constants/serverUrl";
+import {imageURL} from "@/js/constants/serverUrl";
 import {formatDateToDateMonth} from "@/js/helpers/dateHelper";
 import {catalogueService} from "@/js/service/catalogueService";
 import {useQuoteStore} from "@/js/stores/useQuoteStore";
@@ -30,8 +30,6 @@ const getQuoteDisplayVendor = computed(() => {
 const vendorData = computed(() => {
     return quoteVendorInfo.value[getQuoteDisplayVendor.value]
 })
-const currentPage = ref(1)
-const numberOfItemType = ref(0)
 const numberOfPage = ref(1)
 
 
@@ -155,6 +153,9 @@ const contentArrayForPrinting = computed(() => {
                         <div class="mb-1">
                             {{ `${quoteUserInfo.address ? quoteUserInfo.address : ''}` }}
                         </div>
+                        <div class="mb-1">
+                            {{ `${quoteUserInfo.notes ? quoteUserInfo.notes : ''}` }}
+                        </div>
                     </div>
                 </div>
             </div>
@@ -197,7 +198,9 @@ const contentArrayForPrinting = computed(() => {
                                 {{ item.name }}
                             </div>
                             <div class="flex-2 item-desc" />
-                            <div class="flex-2 notes" />
+                            <div class="flex-2 notes">
+                                {{ item.notes }}
+                            </div>
                             <div class="flex-1 quantity">
                                 {{ item.quantity }}
                             </div>
