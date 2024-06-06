@@ -96,7 +96,7 @@ return [
     'no_images_found' => 'No images found.',
     'page' => [
         'title' => 'Image Library',
-        'navigation_label' => 'Image',
-        'navigation_group' => ''
+        'navigation_label' => 'Image - Grid',
+        'navigation_group' => 'Classroom Catalogue'
     ],
 ];

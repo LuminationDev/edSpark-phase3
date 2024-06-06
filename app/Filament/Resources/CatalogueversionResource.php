@@ -19,6 +19,7 @@ class CatalogueversionResource extends Resource
     protected static ?string $modelLabel = 'Catalogue version';
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?int $navigationSort = 2;
     protected static ?string $navigationGroup = 'Classroom Catalogue';
     protected static ?string $navigationLabel = 'Catalogue versions';
 
@@ -29,6 +30,7 @@ class CatalogueversionResource extends Resource
             ->schema([
                 Forms\Components\Section::make()->schema([
                     Forms\Components\FileUpload::make('csv_file')
+                        ->label('CSV file')
                         ->acceptedFileTypes(['text/csv'])
                         ->storeFiles(false)
                         ->required(),

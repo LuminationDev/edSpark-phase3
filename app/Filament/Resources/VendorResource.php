@@ -6,6 +6,7 @@ use App\Filament\Resources\VendorResource\Pages;
 use App\Filament\Resources\VendorResource\RelationManagers;
 use App\Models\Vendor;
 use Filament\Forms;
+use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
@@ -25,16 +26,25 @@ class VendorResource extends Resource
         return $form
             ->schema([
                 Forms\Components\Section::make()
-                ->schema([
-                    Forms\Components\TextInput::make('vendor_name'),
-                    Forms\Components\TextInput::make('address'),
-                    Forms\Components\TextInput::make('abn')->label('ABN'),
-                    Forms\Components\TextInput::make('order_email'),
-                    Forms\Components\TextInput::make('phone'),
-                    Forms\Components\TextInput::make('contact'),
-                    Forms\Components\TextInput::make('direct_phone'),
-                    Forms\Components\TextInput::make('email'),
-                ])
+                    ->schema([
+                        TextInput::make('vendor'),
+                        TextInput::make('business_name'),
+                        TextInput::make('abn'),
+                        TextInput::make('email_enquiries'),
+                        TextInput::make('name'),
+                        TextInput::make('phone'),
+                        TextInput::make('phone_general_enquiries'),
+                        TextInput::make('fax'),
+                        TextInput::make('address'),
+                        TextInput::make('postal_address'),
+                        TextInput::make('website'),
+                        TextInput::make('portal'),
+                        TextInput::make('email_orders'),
+                        TextInput::make('warranty_support_info'),
+                        TextInput::make('buyers_guide'),
+                        TextInput::make('comments'),
+                        Forms\Components\Toggle::make('confirmed'),
+                    ])
             ]);
     }
 
@@ -42,7 +52,7 @@ class VendorResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('vendor_name')
+                Tables\Columns\TextColumn::make('vendor')
                     ->label('Vendor Name')
                     ->sortable()
                     ->limit(30)
@@ -52,7 +62,12 @@ class VendorResource extends Resource
                     ->sortable()
                     ->limit(30)
                     ->searchable(),
-                Tables\Columns\TextColumn::make('contact')
+                Tables\Columns\TextColumn::make('name')
+                    ->label('Contact')
+                    ->sortable()
+                    ->limit(30)
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('phone')
                     ->label('Contact')
                     ->sortable()
                     ->limit(30)
@@ -62,7 +77,7 @@ class VendorResource extends Resource
                 //
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
+//                Tables\Actions\EditAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

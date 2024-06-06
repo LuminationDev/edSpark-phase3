@@ -22,6 +22,7 @@ class CatalogueResource extends Resource
 {
     protected static ?string $model = Catalogue::class;
     protected static ?string $navigationGroup = 'Classroom Catalogue';
+    protected static ?int $navigationSort = 2;
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
     protected static ?string $navigationLabel = 'Catalogue items';
 
