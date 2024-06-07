@@ -204,6 +204,7 @@ class CartController extends Controller
             dd($item->catalogue->vendor, $vendorName,$item->catalogue->version_id,Catalogueversion::getActiveCatalogueId());
             return $item->catalogue->vendor == $vendorName && intval($item->catalogue->version_id) == intval(Catalogueversion::getActiveCatalogueId());
         });
+    }
 
     private function generateQuoteContent($vendorCartItems, $cartId, $additionalNotes)
     {
