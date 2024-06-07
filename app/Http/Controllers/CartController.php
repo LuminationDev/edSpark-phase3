@@ -329,7 +329,7 @@ class CartController extends Controller
 
     public function getVendorInfo(Request $request, $vendorName)
     {
-        $vendor = Vendor::where('vendor_name', $vendorName)->first();
+        $vendor = Vendor::where('vendor', $vendorName)->first();
         if (!$vendor) {
             return response()->json(['message' => 'Vendor not found'], 410);
         }
