@@ -4,7 +4,7 @@ import "@hennge/vue3-pagination/dist/vue3-pagination.css";
 import VPagination from "@hennge/vue3-pagination";
 import {watchDebounced} from "@vueuse/core";
 import {storeToRefs} from "pinia";
-import {computed, onMounted, Ref, ref, watch} from "vue";
+import {computed, onMounted, ref, watch} from "vue";
 import {useRouter} from "vue-router";
 
 import BaseLandingHero from "@/js/components/bases/BaseLandingHero.vue";
@@ -13,47 +13,55 @@ import CatalogueComparisonBanner from "@/js/components/catalogue/cataloguecompar
 import CatalogueFilterColumn from "@/js/components/catalogue/CatalogueFilterColumn.vue";
 import Loader from "@/js/components/spinner/Loader.vue";
 import useErrorMessage from "@/js/composables/useErrorMessage";
-import usePagination from "@/js/composables/usePagination";
 import {LandingHeroText} from "@/js/constants/PageBlurb";
 import {catalogueService} from "@/js/service/catalogueService";
+import {useCataloguePaginationStore} from "@/js/stores/useCataloguePaginationStore";
 import {useCatalogueStore} from "@/js/stores/useCatalogueStore";
 import {useQuoteStore} from "@/js/stores/useQuoteStore";
 import {CatalogueFilterField} from "@/js/types/catalogueTypes";
 
 
-const {catalogueList} = storeToRefs(useCatalogueStore())
+const catalogueStore = useCatalogueStore();
 const quoteStore = useQuoteStore()
-const {quote} = storeToRefs(quoteStore)
+
+const {
+    catalogueList,
+    categoryList,
+    brandList,
+    typeList,
+    vendorList,
+    processorList,
+    memoryList,
+    storageList,
+    primaryFilter,
+    selectedCategory,
+    selectedBrand,
+    selectedType,
+    selectedVendor,
+    selectedProcessor,
+    selectedMemory,
+    selectedStorage,
+    priceRange,
+    searchKeyword
+} = storeToRefs(catalogueStore)
+
+const cataloguePaginationStore = useCataloguePaginationStore()
 onMounted(async () => {
     await quoteStore.initializeQuote()
 })
-
-const categoryList = ref([])
-const brandList = ref([])
-const typeList = ref([])
-const vendorList = ref([])
-
-const selectedCategory = ref([])
-const selectedBrand = ref([])
-const selectedType = ref([])
-const selectedVendor = ref([])
-const priceRange = ref([0, 10000])
 
 const isProductsLoading = ref(false)
 const isFilterLoading = ref(false)
 const {error, setError, clearError} = useErrorMessage()
 const {
     currentPage, perPage, totalPages, totalItems,
-    handleChangePageNumber, updatePaginationData
-} = usePagination(1, 16)
+} = storeToRefs(cataloguePaginationStore)
 
 const router = useRouter()
 const showPagination = computed(() => {
     return totalPages.value > 1
 })
 
-// have a primary filte rhere
-const primaryFilter: Ref<CatalogueFilterField | null> = ref(null)
 
 const primarySelectedValues = computed(() => {
     if (primaryFilter.value == CatalogueFilterField.Type) return selectedType.value
@@ -68,28 +76,21 @@ const additionalFilters = computed(() => {
         vendor: selectedVendor.value,
         brand: selectedBrand.value,
         category: selectedCategory.value,
-        price: priceRange.value
+        price: priceRange.value,
+        processor: selectedProcessor.value,
+        memory: selectedMemory.value,
+        storage: selectedStorage.value
     }
 })
 
 onMounted(async () => {
     try {
-        isFilterLoading.value = true
-        const [categoriesResponse, typesResponse, brandsResponse, vendorsResponse, cataloguesResult] = await Promise.all([
-            catalogueService.fetchAllCategories(),
-            catalogueService.fetchAllTypes(),
-            catalogueService.fetchAllBrands(),
-            catalogueService.fetchAllVendors(),
-            fetchCatalogue(CatalogueFilterField.Category, selectedCategory.value, additionalFilters.value, currentPage.value, perPage.value)
-        ]);
-        categoryList.value = categoriesResponse.data.data.filter(Boolean)
-        typeList.value = typesResponse.data.data.filter(Boolean);
-        brandList.value = brandsResponse.data.data.filter(Boolean);
-        vendorList.value = vendorsResponse.data.data.filter(Boolean);
-        catalogueList.value = cataloguesResult.items
-        if (cataloguesResult.pagination) {
-            updatePaginationData(cataloguesResult.pagination)
+        if (primaryFilter.value) {
+            return;
         }
+
+        isFilterLoading.value = true
+        const cataloguesResult = await fetchCatalogueAndUpdateOtherFilters(CatalogueFilterField.Category, selectedCategory.value, additionalFilters.value, currentPage.value, perPage.value)
     } catch (error) {
         // Handle errors here
         console.error('Error fetching data:', error);
@@ -110,7 +111,7 @@ const fetchCatalogue = async (field, value, additional, page, perPage = 16) => {
     if (!catalogueList.value.length) {
         isProductsLoading.value = true
     }
-    return catalogueService.fetchCatalogueByField(field, value, additional, page, perPage)
+    return catalogueService.fetchCatalogueByField(field, value, additional, page, perPage, searchKeyword.value)
         .then(res => {
             clearError()
             return res.data.data
@@ -133,7 +134,7 @@ const fetchCatalogueAndUpdateOtherFilters = async (field, value, additional, pag
     catalogueList.value = catalogueFetchResult.items
     isProductsLoading.value = false
     if (catalogueFetchResult.pagination) {
-        updatePaginationData(catalogueFetchResult.pagination)
+        cataloguePaginationStore.updatePaginationData(catalogueFetchResult.pagination)
     }
 
     if (catalogueFetchResult.available_fields) {
@@ -154,50 +155,126 @@ const updateOtherFilters = (available_fields) => {
             vendorList.value = available_fields[key].filter(Boolean)
         } else if (key === 'category') {
             categoryList.value = available_fields[key].filter(Boolean)
+        } else if (key === 'processor') {
+            processorList.value = available_fields[key].filter(Boolean)
+        } else if (key === 'storage') {
+            storageList.value = available_fields[key].filter(Boolean)
+        } else if (key === 'memory') {
+            memoryList.value = available_fields[key].filter(Boolean)
         }
     })
 }
 
-watch(selectedCategory, async () => {
-    if (selectedBrand.value.length === 0 && selectedType.value.length === 0 && selectedVendor.value.length === 0) {
+watchDebounced(selectedCategory, async () => {
+    if (!selectedBrand.value.length &&
+        !selectedType.value.length &&
+        !selectedVendor.value.length &&
+        !selectedProcessor.value.length &&
+        !selectedMemory.value.length &&
+        !selectedStorage.value.length
+    ) {
         primaryFilter.value = CatalogueFilterField.Category
         currentPage.value = 1
         await fetchCatalogueAndUpdateOtherFilters(CatalogueFilterField.Category, selectedCategory.value, additionalFilters.value, currentPage.value, perPage.value)
     } else {
         await fetchCatalogueAndUpdateOtherFilters(primaryFilter.value, primarySelectedValues.value, additionalFilters.value, currentPage.value, perPage.value)
     }
-})
+}, {debounce: 600})
 
-watch(selectedBrand, async () => {
-    if (selectedVendor.value.length === 0 && selectedType.value.length === 0 && selectedCategory.value.length === 0) {
+watchDebounced(selectedBrand, async () => {
+    if (!selectedVendor.value.length &&
+        !selectedType.value.length &&
+        !selectedCategory.value.length &&
+        !selectedProcessor.value.length &&
+        !selectedMemory.value.length &&
+        !selectedStorage.value.length) {
         primaryFilter.value = CatalogueFilterField.Brand;
         await fetchCatalogueAndUpdateOtherFilters(CatalogueFilterField.Brand, selectedBrand.value, additionalFilters.value, currentPage.value, perPage.value)
     } else {
         await fetchCatalogueAndUpdateOtherFilters(primaryFilter.value, primarySelectedValues.value, additionalFilters.value, currentPage.value, perPage.value)
 
     }
-})
-watch(selectedType, async () => {
-    if (selectedBrand.value.length === 0 && selectedVendor.value.length === 0 && selectedCategory.value.length === 0) {
+}, {debounce: 600})
+watchDebounced(selectedType, async () => {
+    if (!selectedBrand.value.length &&
+        !selectedVendor.value.length &&
+        !selectedCategory.value.length &&
+        !selectedProcessor.value.length &&
+        !selectedMemory.value.length &&
+        !selectedStorage.value.length) {
         primaryFilter.value = CatalogueFilterField.Type;
         await fetchCatalogueAndUpdateOtherFilters(CatalogueFilterField.Type, selectedType.value, additionalFilters.value, currentPage.value, perPage.value)
     } else {
         await fetchCatalogueAndUpdateOtherFilters(primaryFilter.value, primarySelectedValues.value, additionalFilters.value, currentPage.value, perPage.value)
 
     }
-})
-watch(selectedVendor, async () => {
-    if (selectedBrand.value.length === 0 && selectedType.value.length === 0 && selectedCategory.value.length === 0) {
+}, {debounce: 600})
+watchDebounced(selectedVendor, async () => {
+    if (!selectedBrand.value.length &&
+        !selectedType.value.length &&
+        !selectedCategory.value.length &&
+        !selectedProcessor.value.length &&
+        !selectedMemory.value.length &&
+        !selectedStorage.value.length
+    ) {
         primaryFilter.value = CatalogueFilterField.Vendor;
         await fetchCatalogueAndUpdateOtherFilters(CatalogueFilterField.Vendor, selectedVendor.value, additionalFilters.value, currentPage.value, perPage.value)
     } else {
         await fetchCatalogueAndUpdateOtherFilters(primaryFilter.value, primarySelectedValues.value, additionalFilters.value, currentPage.value, perPage.value)
     }
-})
+}, {debounce: 600})
 
-watchDebounced(priceRange, async () => {
-    await fetchCatalogueAndUpdateOtherFilters(primaryFilter.value, primarySelectedValues.value, additionalFilters.value, currentPage.value, perPage.value)
-}, {deep: true, debounce: 800, maxWait: 1000})
+
+watchDebounced(selectedProcessor, async () => {
+    if (!selectedBrand.value.length &&
+        !selectedType.value.length &&
+        !selectedVendor.value.length &&
+        !selectedCategory.value.length &&
+        !selectedMemory.value.length &&
+        !selectedStorage.value.length
+    ) {
+        primaryFilter.value = CatalogueFilterField.Processor
+        currentPage.value = 1
+        await fetchCatalogueAndUpdateOtherFilters(CatalogueFilterField.Processor, selectedProcessor.value, additionalFilters.value, currentPage.value, perPage.value)
+    } else {
+        await fetchCatalogueAndUpdateOtherFilters(primaryFilter.value, primarySelectedValues.value, additionalFilters.value, currentPage.value, perPage.value)
+    }
+}, {debounce: 600})
+
+
+watchDebounced(selectedMemory, async () => {
+    if (!selectedBrand.value.length &&
+        !selectedType.value.length &&
+        !selectedVendor.value.length &&
+        !selectedProcessor.value.length &&
+        !selectedCategory.value.length &&
+        !selectedStorage.value.length
+    ) {
+        primaryFilter.value = CatalogueFilterField.Memory
+        currentPage.value = 1
+        await fetchCatalogueAndUpdateOtherFilters(CatalogueFilterField.Memory, selectedMemory.value, additionalFilters.value, currentPage.value, perPage.value)
+    } else {
+        await fetchCatalogueAndUpdateOtherFilters(primaryFilter.value, primarySelectedValues.value, additionalFilters.value, currentPage.value, perPage.value)
+    }
+}, {debounce: 600})
+
+
+watchDebounced(selectedStorage, async () => {
+    if (!selectedBrand.value.length &&
+        !selectedType.value.length &&
+        !selectedVendor.value.length &&
+        !selectedProcessor.value.length &&
+        !selectedMemory.value.length &&
+        !selectedCategory.value.length
+    ) {
+        primaryFilter.value = CatalogueFilterField.Storage
+        currentPage.value = 1
+        await fetchCatalogueAndUpdateOtherFilters(CatalogueFilterField.Storage, selectedStorage.value, additionalFilters.value, currentPage.value, perPage.value)
+    } else {
+        await fetchCatalogueAndUpdateOtherFilters(primaryFilter.value, primarySelectedValues.value, additionalFilters.value, currentPage.value, perPage.value)
+    }
+}, {debounce: 600})
+
 
 watch([currentPage, perPage], async () => {
     await fetchCatalogueAndUpdateOtherFilters(primaryFilter.value, primarySelectedValues.value, additionalFilters.value, currentPage.value, perPage.value)
@@ -211,7 +288,15 @@ const handleClickCatalogueCard = (reference) => {
 
 }
 
+const handlePriceChange = async () => {
+    await fetchCatalogueAndUpdateOtherFilters(primaryFilter.value, primarySelectedValues.value, additionalFilters.value, currentPage.value, perPage.value)
+}
 
+const handleSearchTermChanged = async (newTerm) => {
+    searchKeyword.value = newTerm
+    await fetchCatalogueAndUpdateOtherFilters(primaryFilter.value, primarySelectedValues.value, additionalFilters.value, currentPage.value, perPage.value)
+
+}
 </script>
 
 <template>
@@ -221,19 +306,27 @@ const handleClickCatalogueCard = (reference) => {
         swoosh-color="teal"
     />
     <div class="cataloguePageOuterContainer grid grid-cols-10 mt-16">
-        <div class="col-span-2 flex flex-col gap-2 ml-8 pr-8">
+        <div class="col-span-10 flex flex-col gap-2 mb-8 ml-8 pr-8 xl:!col-span-2">
             <CatalogueFilterColumn
                 v-model:brand-list="brandList"
                 v-model:type-list="typeList"
                 v-model:vendor-list="vendorList"
                 v-model:category-list="categoryList"
+                v-model:processor-list="processorList"
+                v-model:memory-list="memoryList"
+                v-model:storage-list="storageList"
                 v-model:selected-brand="selectedBrand"
                 v-model:selected-type="selectedType"
                 v-model:selected-vendor="selectedVendor"
                 v-model:selected-category="selectedCategory"
+                v-model:selected-processor="selectedProcessor"
+                v-model:selected-memory="selectedMemory"
+                v-model:selected-storage="selectedStorage"
                 v-model:price-range="priceRange"
                 v-model:per-page="perPage"
                 :is-filter-loading="isFilterLoading"
+                @price-changed="handlePriceChange"
+                @search-term-changed="handleSearchTermChanged"
             />
         </div>
         <div v-if="error.status ">
@@ -241,9 +334,21 @@ const handleClickCatalogueCard = (reference) => {
         </div>
         <div
             v-else-if="!isProductsLoading && !error.status"
-            class="col-span-8 productPanel"
+            class="col-span-10 productPanel xl:!col-span-8"
         >
-            <div class="2xl:!grid-cols-4 grid grid-cols-1 gap-2 place-items-center lg:!grid-cols-2 xl:!grid-cols-3">
+            <div
+                class="2xl:!grid-cols-4
+                    grid
+                    sm:grid-cols-1
+                    md:grid-cols-2
+                    gap-x-2
+                    gap-y-8
+                    place-items-center
+                    
+                    
+                    lg:!grid-cols-2
+                    xl:!grid-cols-3"
+            >
                 <template
                     v-for="(item,index) in catalogueList"
                     :key="item.unique_reference + index"
@@ -267,7 +372,7 @@ const handleClickCatalogueCard = (reference) => {
                     active-color="#DCEDFF"
                     :hide-first-button="true"
                     :hide-last-button="true"
-                    @update:model-value="handleChangePageNumber"
+                    @update:model-value="cataloguePaginationStore.handleChangePageNumber"
                 />
             </div>
         </div>
@@ -302,9 +407,6 @@ const handleClickCatalogueCard = (reference) => {
         justify-content: space-between;
         align-items: center;
         width: 100%;
-
-        .Page {
-        }
     }
 }
 </style>

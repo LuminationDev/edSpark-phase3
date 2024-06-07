@@ -33,9 +33,10 @@ class NotificationController extends Controller
         return $formattedNotifications;
     }
 
-    public function getNotifications(Request $request, $userId){
-        $user = User::find($userId);
-        if(!$user){
+    public function getNotifications(Request $request, $userId)
+    {
+        $user = User::find(intval($userId));
+        if (!$user) {
             return ResponseService::error("User not found");
         }
         $userNotifications = $user->unreadNotifications->take(6);
@@ -45,9 +46,10 @@ class NotificationController extends Controller
 
     }
 
-    public function getAllNotifications(Request $request, $userId){
-        $user = User::find($userId);
-        if(!$user){
+    public function getAllNotifications(Request $request, $userId): \Illuminate\Http\JsonResponse
+    {
+        $user = User::find(intval($userId));
+        if (!$user) {
             return ResponseService::error("User not found");
         }
         $userNotifications = $user->notifications;
@@ -58,7 +60,7 @@ class NotificationController extends Controller
 
     public function readNotification(Request $request, $notificationId)
     {
-        $notification = Auth::user()->notifications->find($notificationId);
+        $notification = Auth::user()->notifications->find(intval($notificationId));
         if (!$notification) {
             return ResponseService::error("Notification not found");
         }
@@ -68,17 +70,15 @@ class NotificationController extends Controller
         return ResponseService::success("Notification marked as read");
     }
 
-    public function readAllNotifications($userId){
-        $user = User::find($userId);
-        if(!$user){
+    public function readAllNotifications($userId)
+    {
+        $user = User::find(intval($userId));
+        if (!$user) {
             return ResponseService::error("User not found");
         }
         $user->unreadNotifications->markAsRead();
         return ResponseService::success("All notifications marked as read");
     }
-
-
-
 
 
 }

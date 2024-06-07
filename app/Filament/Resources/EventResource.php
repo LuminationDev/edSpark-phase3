@@ -4,7 +4,7 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\EventResource\Pages;
 use App\Helpers\CustomHtmlable;
-use App\Helpers\EdSparkFormComponents;
+use App\Helpers\EdsparkFormComponents;
 use App\Helpers\RoleHelpers;
 use App\Helpers\StatusHelpers;
 use App\Helpers\UserRole;
@@ -18,15 +18,10 @@ use Filament\Resources\Resource;
 use Filament\Tables\Table;
 use Filament\Tables;
 use Illuminate\Database\Eloquent\Builder;
-
 use Illuminate\Support\Facades\Auth;
-use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
-
-
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
-use Mohamedsabil83\FilamentFormsTinyeditor\Components\TinyEditor;
 use SplFileInfo;
 
 use Closure;
@@ -79,12 +74,8 @@ class EventResource extends Resource
                             ->label('Tagline')
                             ->placeholder('150 characters or less')
                             ->maxLength(150),
-                        TinyEditor::make('content')
-                            ->label('Content')->fileAttachmentsDisk('local')
-                            ->fileAttachmentsVisibility('public')
-                            ->fileAttachmentsDirectory('public/uploads/event')
-                            ->required(),
-                        EdSparkFormComponents::createFileUploadComponent('uploads/event', 'edSpark-event-' ),
+                        EdsparkFormComponents::createContentComponent('uploads/content/event'),
+                        EdsparkFormComponents::createCoverImageComponent('uploads/event', 'edSpark-event-'),
                         Forms\Components\Grid::make(2)
                             ->schema([
                                 Flatpickr::make('start_date')
@@ -216,7 +207,7 @@ class EventResource extends Resource
                     ->getStateUsing(function ($record): string {
                         $imgPath = $record->cover_image;
                         if ($imgPath) {
-                            return env('AZURE_STORAGE_ENDPOINT') . env('AZURE_STORAGE_CONTAINER') .'/'. $imgPath;
+                            return env('AZURE_STORAGE_ENDPOINT') . env('AZURE_STORAGE_CONTAINER') . '/' . $imgPath;
                         } else {
                             return '';
                         }

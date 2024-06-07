@@ -4,6 +4,8 @@ import {computed, onMounted, ref, watch} from 'vue'
 
 import CatalogueAddToQuoteButton from "@/js/components/catalogue/CatalogueAddToQuoteButton.vue";
 import CatalogueCardDescGenerator from "@/js/components/catalogue/CatalogueCardDescGenerator.vue";
+import CatalogueCardTag from "@/js/components/catalogue/CatalogueCardTag.vue";
+import ImageWithFallback from "@/js/components/global/ImageWithFallback.vue";
 import {catalogueService} from "@/js/service/catalogueService";
 import {useCatalogueStore} from "@/js/stores/useCatalogueStore";
 import {useQuoteStore} from "@/js/stores/useQuoteStore";
@@ -24,9 +26,6 @@ const emits = defineEmits(['addItemToCompareBasket'])
 
 const catalogueStore = useCatalogueStore()
 const {compareBasket} = storeToRefs(catalogueStore)
-
-const quoteStore = useQuoteStore()
-
 
 // handle adding item to compare list
 const itemCompareStatus = ref(false)
@@ -68,8 +67,10 @@ const {
     type,
     name,
     price_inc_gst,
-    cover_image
+    cover_image,
+    available_now
 } = props.catItem
+
 
 const catCoverImageUrl = computed(() => {
     return catalogueService.getCatalogueCoverImage(cover_image);
@@ -89,7 +90,7 @@ const catCardShortSpec = computed(() => {
 
 <template>
     <div
-        class="catalogueCardOuter flex flex-col h-catH mb-6 w-catW"
+        class="catalogueCardOuter flex flex-col h-catH w-catW"
     >
         <div
             class="
@@ -103,18 +104,25 @@ const catCardShortSpec = computed(() => {
                 h-[200px]
                 mb-4
                 p-4
+                relative
                 rounded-xl
                 w-catW
                 "
             @click="() => props.clickCallback(unique_reference)"
         >
-            <img
+            <ImageWithFallback
                 class="catalogueCoverImage h-full object-contain rounded"
-                :src="catCoverImageUrl"
-                alt=""
-            >
+                image-type="catalogue"
+                :image-url="catCoverImageUrl"
+                image-alt=""
+            />
+            <CatalogueCardTag
+                v-if="available_now !== 'Yes'"
+                :tag-type="available_now"
+                class="absolute right-1 bottom-1"
+            />
         </div>
-        <div class="cardBody flex flex-col h-[200px] w-full">
+        <div class="cardBody flex flex-col h-[260px] w-full">
             <div
                 class="cardBodyClickableWrapper cursor-pointer flex flex-col"
                 @click="() => props.clickCallback(unique_reference)"
@@ -152,7 +160,7 @@ const catCardShortSpec = computed(() => {
                     </div>
                 </div>
             </div>
-            <div class="addToQuoteRow flex w-full">
+            <div class="addToQuoteRow flex justify-center w-full">
                 <CatalogueAddToQuoteButton
                     :cat-item="props.catItem"
                 />

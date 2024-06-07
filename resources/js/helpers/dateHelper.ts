@@ -9,3 +9,11 @@ export const formatDateToDayTime = (date) =>{
         return newDate
     }
 }
+export const formatDateToDateMonth = (date) =>{
+    const newDate = new Date(date).toLocaleString('en-AU',{ day: '2-digit', month:'short', year:'numeric' } )
+    if(newDate.includes('Invalid')){
+        return ""
+    } else{
+        return newDate
+    }
+}

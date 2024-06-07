@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources;
 
+use App\Components\EdsparkTinyEditor;
 use App\Filament\Resources\AdviceResource\Pages;
 use App\Filament\Resources\AdviceResource\RelationManagers;
 use App\Helpers\CustomHtmlable;
@@ -11,24 +12,18 @@ use App\Helpers\StatusHelpers;
 use App\Helpers\UserRole;
 use App\Models\Advice;
 use App\Models\Label;
-use App\Models\User;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
-use Filament\Tables\Filters\Filter;
 use Filament\Tables\Table;
 use Filament\Tables;
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Auth;
-use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
 
 
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
-use Mohamedsabil83\FilamentFormsTinyeditor\Components\TinyEditor;
 use SplFileInfo;
-use const App\Helpers\StatusArray;
 
 
 class AdviceResource extends Resource
@@ -78,12 +73,8 @@ class AdviceResource extends Resource
                     ->label('Tagline')
                     ->placeholder('150 characters or less')
                     ->maxLength(150),
-                TinyEditor::make('content')
-                    ->label('Content')->fileAttachmentsDisk('local')
-                    ->fileAttachmentsVisibility('public')
-                    ->fileAttachmentsDirectory('public/uploads/advice')
-                    ->required(),
-                EdSparkFormComponents::createFileUploadComponent('uploads/advice', 'edSpark-advice-'),
+                EdsparkFormComponents::createContentComponent('uploads/content/advice'),
+                EdsparkFormComponents::createCoverImageComponent('uploads/advice', 'edSpark-advice-'),
                 Forms\Components\Card::make()
                     ->schema([
                         Forms\Components\Select::make('advice_type')
@@ -181,7 +172,7 @@ class AdviceResource extends Resource
                     ->getStateUsing(function ($record): string {
                         $imgPath = $record->cover_image;
                         if ($imgPath) {
-                            return env('AZURE_STORAGE_ENDPOINT') . env('AZURE_STORAGE_CONTAINER') .'/'. $imgPath;
+                            return env('AZURE_STORAGE_ENDPOINT') . env('AZURE_STORAGE_CONTAINER') . '/' . $imgPath;
                         } else {
                             return '';
                         }

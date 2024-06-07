@@ -29,7 +29,6 @@ const emits = defineEmits([])
 const itemQuantity = ref(props.itemData.quantity)
 
 const quoteStore = useQuoteStore()
-const {quote} = storeToRefs(quoteStore)
 
 const catCoverImageUrl = computed(() => {
     return catalogueService.getCatalogueCoverImage(props.itemData.cover_image);
@@ -44,11 +43,7 @@ const priceExtGst = computed(() => {
     return catalogueService.getExcGstPrice(+props.itemData.price_inc_gst)
 })
 
-const priceIncGst = computed(() => {
-    if (props.itemData.price_inc_gst) {
-        return (+props.itemData.price_inc_gst).toFixed(2)
-    }
-})
+
 const onClickIncrement = () => {
     itemQuantity.value++
 
@@ -60,15 +55,11 @@ const onClickDecrement = () => {
 }
 
 const onClickRemove = async () => {
-    const oldQuote = cloneDeep(quoteStore.getQuote)
-    quoteStore.removeFromQuote(props.itemData.unique_reference)
+    await quoteStore.removeFromQuote(props.itemData.unique_reference)
     try {
         await quoteService.deleteItemInCart(props.itemData.unique_reference)
     } catch (err) {
-        quote.value = oldQuote
-        console.error('Failed to delete item, reverting to previous value', err.message)
-        toast.error('Failed to delete item. Please try again')
-
+        toast.error(err.message)
     }
 }
 
@@ -105,10 +96,10 @@ const itemQuantitySubtotal = computed(() => {
                     </span>
                     <div
                         v-if="!displayOnly"
-                        class="cursor-pointer removeButton text-red-600"
+                        class="removeButton text-red-600"
                     >
                         <button
-                            class="px-4 py-2 rounded-xl hover:!bg-red-600 hover:!text-white"
+                            class="cursor-pointer px-4 py-2 rounded-xl hover:!bg-red-600 hover:!text-white"
                             @click="onClickRemove"
                         >
                             Remove

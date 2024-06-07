@@ -33,6 +33,7 @@ class LoginController extends Controller
             $localUser = $this->updateOrCreateLocalUser($user);
             Auth::login($localUser);
             Log::info('Success login ' . $user->email);
+            Log::info('From ' . $request->ip());
 
 
             return redirect('/dashboard');

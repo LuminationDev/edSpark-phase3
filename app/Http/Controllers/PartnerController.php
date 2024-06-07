@@ -85,7 +85,7 @@ class PartnerController extends Controller
     {
         if (isset($image) && is_string($image) === false) {
             $imgName = $prefix . '-' . md5(Str::random(30) . time() . '_' . $image) . '.' . $image->getClientOriginalExtension();
-            $image->storeAs('public/uploads/partner/' . $folder, $imgName);
+            $image->storeAs('public/uploads/partner/' . $folder, $imgName, 'azure');
             return "uploads/partner/$folder/" . $imgName;
         }
         return null;
