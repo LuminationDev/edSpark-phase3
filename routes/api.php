@@ -5,6 +5,7 @@ use App\Http\Controllers\CartController;
 use App\Http\Controllers\CatalogueController;
 use App\Http\Controllers\FeedbackController;
 use App\Http\Controllers\LabelController;
+use App\Http\Controllers\PdfController;
 use App\Http\Controllers\SurveyController;
 use App\Http\Controllers\TagController;
 use Illuminate\Support\Facades\Route;
@@ -202,7 +203,12 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::post('/cart/checkout', [CartController::class, 'checkout']);
 
         Route::get('/list', [CartController::class, 'getActiveUserQuotes']);
+        Route::post('/generate-pdf', [PdfController::class, 'generateQuotePdf']);
     });
+    //vendor
+    Route::get('/vendor/{vendor_name}', [CartController::class, 'getVendorInfo']);
+
+
 
 
 });

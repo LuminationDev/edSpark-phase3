@@ -27,28 +27,29 @@ class SearchController extends Controller
 
     protected function multiModelSearch(string $query): array
     {
-        $models = [Software::class, Hardware::class, Advice::class, Event::class];
+        $models = [
+            'software' => Software::class,
+            'hardware' => Hardware::class,
+            'guide' => Advice::class,
+            'event' => Event::class
+        ];
+
         $results = [];
-        foreach ($models as $model) {
+        foreach ($models as $type => $model) {
             $searchResults = $model::search($query)->get();
-            foreach ($searchResults as $result){
+            foreach ($searchResults as $result) {
                 $stdResult = [
                     'id' => $result->id,
-                    'title' => $result->title ?? $result->product_name ?? $result->event_title,
-                    'content' => $result->content?? $result->product_content ?? $result->event_content,
-                    'excerpt' => $result->excerpt ?? $result->product_excerpt ?? $result->event_excerpt,
-                    'author' =>[
+                    'title' => $result->title,
+                    'content' => $result->content,
+                    'excerpt' => $result->excerpt,
+                    'author' => [
                         'author_id' => $result->author->id ?? '',
                         'author_name' => $result->author->full_name ?? '',
-                        'author_type' => $result->author->usertype->user_type_name ?? '',
                     ],
-                    'type' => (isset($result->advicetypes) ? 'advice' : NULL)
-                        ?? (isset($result->softwaretypes) ? 'software' : NULL)
-                        ?? (isset($result->product_name) ? 'hardware' : NULL)
-                        ?? (isset($result->event_title) ? 'event' : NULL),
+                    'type' => $type,
                     'tags' => $result->tags->pluck('name'),
                     'cover_image' => $result->cover_image
-
                 ];
                 $results[] = $stdResult;
             }
@@ -57,23 +58,5 @@ class SearchController extends Controller
         return $results;
     }
 
-    // uses query database,slows down meilisearch query. should entirely rely on meilisearch
-//    protected function multiModelSearch(string $query): array
-//    {
-//        $models = [Software::class, Hardware::class, Advice::class, Event::class];
-//        $results = [];
-//
-//        foreach ($models as $model) {
-//            $ids = $model::search($query)->keys();
-////            $searchResults = $model::whereIn('id', $ids)->get();
-//            $searchResults = $model::whereIn('id', $ids)->get();
-//            foreach ($searchResults as $singleModel) {
-//                $singleResult = $singleModel->getSearchResult();
-//                // Do something with $result or store it in an array
-//                $results = array_merge($results, $singleResult);
-//            }
-//        }
-//
-//        return $results;
-//    }
+
 }

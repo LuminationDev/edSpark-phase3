@@ -121,13 +121,20 @@ onBeforeUnmount(() => {
     removeEventListeners()
 })
 
-
+onMounted(()=>{
+    // remove navbar hidden when JS is loaded
+    const navbarWrapper = document.getElementById('navbar-wrapper');
+    if (navbarWrapper) {
+        navbarWrapper.classList.remove('hidden');
+    }
+})
 </script>
 
 <template>
     <div>
         <div
-            class="mobileBody relative w-full z-50"
+            id="navbar-wrapper"
+            class="hidden mobileBody relative w-full z-50"
         >
             <Navbar
                 :key="router.currentRoute.value"

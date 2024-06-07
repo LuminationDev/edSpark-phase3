@@ -61,6 +61,7 @@ class LabelResource extends Resource
     public static function table(Table $table): Table
     {
         $labelTypes = Label::distinct()->pluck('type')->toArray();
+        $labelTypesAssoc = array_combine($labelTypes, $labelTypes);
 
         return $table
             ->columns([
@@ -73,7 +74,7 @@ class LabelResource extends Resource
             ])
             ->filters([
                 Tables\Filters\SelectFilter::make('type')
-                    ->options($labelTypes)
+                    ->options($labelTypesAssoc)
                     ->label('Label type')
                     ->attribute('type'),
             ])
