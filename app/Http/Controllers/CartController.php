@@ -173,7 +173,6 @@ class CartController extends Controller
 
         $vendorCartItems = $this->getVendorCartItems($cart, $vendorName);
 
-        dd($cart,$vendorCartItems,$vendorName);
         if ($vendorCartItems->isEmpty()) {
             return response()->json(['message' => 'No items from the specified vendor in the cart'], 200);
         }
@@ -203,7 +202,6 @@ class CartController extends Controller
     private function getVendorCartItems($cart, $vendorName)
     {
         return $cart->cartItems->filter(function ($item) use ($vendorName) {
-            dd($item->catalogue->vendor, $vendorName,$item->catalogue->version_id,Catalogueversion::getActiveCatalogueId());
             return $item->catalogue->vendor == $vendorName && intval($item->catalogue->version_id) == intval(Catalogueversion::getActiveCatalogueId());
         });
     }
