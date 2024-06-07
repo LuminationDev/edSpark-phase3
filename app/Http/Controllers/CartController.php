@@ -334,14 +334,14 @@ class CartController extends Controller
             return response()->json(['message' => 'Vendor not found'], 410);
         }
         $result = [
-            'Name' => $vendor->vendor_name ?? '',
+            'Name' => $vendor->vendor ?? '',
             'Address' => $vendor->address ?? '',
             'ABN' => $vendor->abn ?? '',
-            'Order Email' => $vendor->order_email ?? '',
-            'Phone' => $vendor->phone ?? '',
-            "Contact" => $vendor->contact ?? '',
-            'Direct Phone' => $vendor->direct_phone ?? '',
-            'Email' => $vendor->email ?? '',
+            'Order Email' => $vendor->email_orders ?? '',
+            'Phone' => $vendor->phone_general_enquiries ?? '',
+            "Contact" => $vendor->name ?? '',
+            'Direct Phone' => $vendor->phone ?? '',
+            'Email' => $vendor->email_enquiries ?? '',
         ];
         return response()->json(['message' => 'Fetch completed', 'vendor' => $result], 201);
 
