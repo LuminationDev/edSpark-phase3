@@ -27,95 +27,118 @@ class CreateCatalogueversion extends CreateRecord
         // Create the main record.
         $record = parent::handleRecordCreation($data);
         $currentVersion = $record['version'];
+        $batchSize = 300; // Define your batch size here
 
-        //Read CSV
+        // Read CSV
         try {
             $csvFile = $data['csv_file']->get();
             $rows = explode("\n", $csvFile); // Split the string into lines
             $headers = str_getcsv(array_shift($rows));
-            $data = [];
-
-
         } catch (\Exception $e) {
             Log::error("Failed reading csv file");
-            throw $e;
-        }
-        // Format CSV into array
-        try {
-            foreach ($rows as $row) {
-                $values = str_getcsv($row, ",");
-
-                if (count($values) === count($headers)) {
-                    $rowData = array_combine($headers, $values);
-                    $data[] = $rowData;
-                }
-            }
-        } catch (\Exception $e) {
-            Log::error("Failed formatting data");
             throw $e;
         }
 
         set_time_limit(300);
 
+        // Initialize variables for batch processing
+        $dataBatch = [];
+        $batchCount = 0;
+
+        DB::beginTransaction();
+
         try {
-            foreach ($data as $catalogueItem) {
-                $uniqueReference = $catalogueItem['Unique Reference'];
-                $extensions = ['png', 'jpg'];
-                $modifiedTitles = array_map(function ($extension) use ($uniqueReference) {
-                    return strtolower($uniqueReference) . '.' . $extension;
-                }, $extensions);
+            foreach ($rows as $row) {
+                $values = str_getcsv($row, ",");
+                if (count($values) === count($headers)) {
+                    $rowData = array_combine($headers, $values);
+                    $dataBatch[] = $rowData;
 
-                $existingImageId = Image::where(function ($query) use ($modifiedTitles) {
-                    foreach ($modifiedTitles as $modifiedTitle) {
-                        $query->orWhere("title", strtolower($modifiedTitle));
+                    if (count($dataBatch) >= $batchSize) {
+                        $this->processBatch($dataBatch, $currentVersion);
+                        $dataBatch = []; // Reset batch
+                        $batchCount++;
                     }
-                })->first()->id ?? '';
-
-                $catalogueItems[] = [
-                    'unique_reference' => $catalogueItem['Unique Reference'],
-                    'version_id' => $currentVersion,
-                    'type' => $catalogueItem['Type'],
-                    'brand' => $catalogueItem['Brand'],
-                    'name' => $catalogueItem['Name'],
-                    'vendor' => $catalogueItem['Vendor'],
-                    'category' => $catalogueItem['Category'],
-                    'price_inc_gst' => $catalogueItem['Price inc gst'],
-                    'processor' => $catalogueItem['Processor'],
-                    'storage' => $catalogueItem['Storage'],
-                    'memory' => $catalogueItem['Memory'],
-                    'form_factor' => $catalogueItem['Form Factor'],
-                    'display' => $catalogueItem['Display'],
-                    'graphics' => $catalogueItem['Graphics'],
-                    'wireless' => $catalogueItem['Wireless'],
-                    'webcam' => $catalogueItem['Webcam'],
-                    'operating_system' => $catalogueItem['Operating System'],
-                    'warranty' => $catalogueItem['Warranty'],
-                    'battery_life' => $catalogueItem['Battery Life'],
-                    'weight' => $catalogueItem['Weight'],
-                    'stylus' => $catalogueItem['Stylus'],
-                    'other' => $catalogueItem['Other'],
-                    'available_now' => $catalogueItem['Available now'],
-                    'corporate' => $catalogueItem['Corporate'],
-                    'administration' => $catalogueItem['Administration'],
-                    'curriculum' => $catalogueItem['Curriculum'],
-                    'image' => $catalogueItem['Image'],
-                    'product_number' => $catalogueItem['Product Number'],
-                    'price_expiry' => $catalogueItem['Price Expiry'],
-                    'cover_image' => $existingImageId,
-                    'created_at' => now(),
-                    'updated_at' => now(),
-                ];
+                }
             }
-            DB::table('catalogues')->insert($catalogueItems);
 
+            // Process any remaining rows
+            if (!empty($dataBatch)) {
+                $this->processBatch($dataBatch, $currentVersion);
+                $batchCount++;
+            }
 
+            DB::commit(); // Commit transaction if all batches processed successfully
         } catch (\Exception $e) {
-            Log::error('failed inserting into database');
-            Log::error($e->getMessage());
+            Log::error("Failed formatting or processing data in batch: " . $e->getMessage());
+            // Rollback if an error occurs
+            DB::rollBack();
+            throw $e;
         }
 
-
+        Log::info("Processed $batchCount batches successfully.");
         return $record;
+    }
+
+
+    private function findExistingImageId($titles) {
+        return Image::whereIn('title', $titles)->pluck('id')->first() ?? '';
+    }
+
+    private function processBatch(array $dataBatch, $currentVersion)
+    {
+        $catalogueItems = [];
+
+        foreach ($dataBatch as $catalogueItem) {
+            $uniqueReference = $catalogueItem['Unique Reference'];
+            $extensions = ['png', 'jpg'];
+            $modifiedTitles = array_map(function ($extension) use ($uniqueReference) {
+                return strtolower($uniqueReference) . '.' . $extension;
+            }, $extensions);
+
+            $existingImageId = $this->findExistingImageId($modifiedTitles);
+
+            if (!$existingImageId) {
+                $existingImageId = $this->findExistingImageId([strtolower($catalogueItem['Image'])]);
+            }
+
+            $catalogueItems[] = [
+                'unique_reference' => $catalogueItem['Unique Reference'],
+                'version_id' => $currentVersion,
+                'type' => $catalogueItem['Type'],
+                'brand' => $catalogueItem['Brand'],
+                'name' => $catalogueItem['Name'],
+                'vendor' => $catalogueItem['Vendor'],
+                'category' => $catalogueItem['Category'],
+                'price_inc_gst' => $catalogueItem['Price inc gst'],
+                'processor' => $catalogueItem['Processor'],
+                'storage' => $catalogueItem['Storage'],
+                'memory' => $catalogueItem['Memory'],
+                'form_factor' => $catalogueItem['Form Factor'],
+                'display' => $catalogueItem['Display'],
+                'graphics' => $catalogueItem['Graphics'],
+                'wireless' => $catalogueItem['Wireless'],
+                'webcam' => $catalogueItem['Webcam'],
+                'operating_system' => $catalogueItem['Operating System'],
+                'warranty' => $catalogueItem['Warranty'],
+                'battery_life' => $catalogueItem['Battery Life'],
+                'weight' => $catalogueItem['Weight'],
+                'stylus' => $catalogueItem['Stylus'],
+                'other' => $catalogueItem['Other'],
+                'available_now' => $catalogueItem['Available now'],
+                'corporate' => $catalogueItem['Corporate'],
+                'administration' => $catalogueItem['Administration'],
+                'curriculum' => $catalogueItem['Curriculum'],
+                'image' => $catalogueItem['Image'],
+                'product_number' => $catalogueItem['Product Number'],
+                'price_expiry' => $catalogueItem['Price Expiry'],
+                'cover_image' => $existingImageId,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ];
+        }
+
+        DB::table('catalogues')->insert($catalogueItems);
     }
 
     protected function getRedirectUrl(): string

@@ -2,32 +2,28 @@
 
 namespace App\Filament\Resources;
 
+use App\Components\EdsparkTinyEditor;
 use App\Filament\Resources\AdviceResource\Pages;
 use App\Filament\Resources\AdviceResource\RelationManagers;
 use App\Helpers\CustomHtmlable;
+use App\Helpers\EdSparkFormComponents;
 use App\Helpers\RoleHelpers;
 use App\Helpers\StatusHelpers;
 use App\Helpers\UserRole;
 use App\Models\Advice;
 use App\Models\Label;
-use App\Models\User;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
-use Filament\Tables\Filters\Filter;
 use Filament\Tables\Table;
 use Filament\Tables;
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Auth;
-use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
 
 
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
-use Mohamedsabil83\FilamentFormsTinyeditor\Components\TinyEditor;
 use SplFileInfo;
-use const App\Helpers\StatusArray;
 
 
 class AdviceResource extends Resource
@@ -77,23 +73,8 @@ class AdviceResource extends Resource
                     ->label('Tagline')
                     ->placeholder('150 characters or less')
                     ->maxLength(150),
-                TinyEditor::make('content')
-                    ->label('Content')->fileAttachmentsDisk('local')
-                    ->fileAttachmentsVisibility('public')
-                    ->fileAttachmentsDirectory('public/uploads/advice')
-                    ->required(),
-
-                Forms\Components\FileUpload::make('cover_image')
-                    ->label(new CustomHtmlable("Cover Image <span class='text-xs italic'> (500px * 500px / 1:1 aspect ratio] </span>"))
-                    ->validationAttribute('cover image')
-                    ->preserveFilenames()
-                    ->disk('public')
-                    ->directory('uploads/advice')
-                    ->acceptedFileTypes(['image/jpeg', 'image/jpg', 'image/png'])
-                    ->getUploadedFileNameForStorageUsing(function (TemporaryUploadedFile $file): string {
-                        return (string)str($file->getClientOriginalName())->prepend('edSpark-advice-');
-                    }),
-
+                EdsparkFormComponents::createContentComponent('uploads/content/advice'),
+                EdsparkFormComponents::createCoverImageComponent('uploads/advice', 'edSpark-advice-'),
                 Forms\Components\Card::make()
                     ->schema([
                         Forms\Components\Select::make('advice_type')
@@ -187,8 +168,15 @@ class AdviceResource extends Resource
                     ->sortable()
                     ->searchable(),
                 Tables\Columns\ImageColumn::make('cover_image')
-                    ->limit(15)
-                ,
+                    ->square()
+                    ->getStateUsing(function ($record): string {
+                        $imgPath = $record->cover_image;
+                        if ($imgPath) {
+                            return env('AZURE_STORAGE_ENDPOINT') . env('AZURE_STORAGE_CONTAINER') . '/' . $imgPath;
+                        } else {
+                            return '';
+                        }
+                    }),
                 Tables\Columns\TextColumn::make('advice_types.advice_type_name')
                     ->sortable()
                     ->label('Type')

@@ -23,7 +23,7 @@ const props = defineProps({
     <div class="listingContainer w-full">
         <Accordion :default-open="true">
             <template #title>
-                {{ quoteVendor }}
+                Vendor: {{ quoteVendor }}
             </template>
             <template #content>
                 <div

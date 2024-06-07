@@ -41,12 +41,19 @@ export interface CatalogueGroupedItemType {
     display_text: string,
     group: string
 }
-export enum CatalogueFilterField{
-    All= 'all',
+
+export enum CatalogueFilterField {
+    All = 'all',
     Type = 'type',
     Brand = 'brand',
     Vendor = 'vendor',
     Category = 'category',
+    Processor = 'processor',
+    Memory = 'memory',
+    Storage = 'storage',
+
 }
 
-export const catalogueTableHeaders = ['overview', 'specs', 'hardware', 'availability', 'more_info']
+export const catalogueComparisonHeaders = ['overview', 'specs']
+export const catalogueSingleHeaders = ['overview', 'specs']
+// export const catalogueSingleHeaders = ['overview', 'specs', 'hardware', 'availability', 'more_info']

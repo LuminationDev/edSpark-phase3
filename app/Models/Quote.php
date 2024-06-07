@@ -9,8 +9,8 @@ class Quote extends Model
 {
     use HasFactory;
     protected $fillable = [
-        'user_id', 'version_id', 'quote_content',
-        'total_price_ex_gst', 'status'
+        'user_id', 'version_id', 'quote_content','quote_ref',
+        'total_price_ex_gst', 'status', 'delivery_info','pdf_url'
     ];
 
     protected $casts = [
@@ -25,6 +25,6 @@ class Quote extends Model
 
     public function version()
     {
-        return $this->belongsTo(CatalogueVersion::class, 'version_id', 'version');
+        return $this->belongsTo(Catalogueversion::class, 'version_id', 'version');
     }
 }

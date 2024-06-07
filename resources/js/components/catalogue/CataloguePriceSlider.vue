@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import {debounce} from "lodash";
-import {computed, ref} from "vue";
+import {computed, ref, watch} from "vue";
 
 import VueNoUiSlider from "@/js/components/slider/VueNoUiSlider.vue";
 
-const priceSliderValues = [0, 25, 50, 100, 250, 400, 500, 1000, 1500, 2000, 4000, 8000, 10000];
-const currentPriceValues = ref([0, 10000])
+const priceSliderValues = [0, 25, 50, 100, 250, 400, 500, 1000, 1500, 2000, 4000, 8000, 10000, 15000, 20000, 30000];
+const currentPriceValues = ref([0, 30000])
 const format = {
     to: function (value) {
         return priceSliderValues[Math.round(value)];
@@ -15,20 +15,23 @@ const format = {
     }
 };
 const priceSliderConfig = {
-    start: [0, 10000],
+    start: [0, 30000],
     range: {min: 0, max: priceSliderValues.length - 1},
     connect: [false, true, false],
     tooltips: false,
     step: 1,
     format: format,
 }
-
-const priceRange =  defineModel('priceRange')
+const emits = defineEmits(['priceChanged'])
+const priceRange = defineModel('priceRange')
+const sliderRefreshKey = 0
 
 const handleNewValuesFromSlider = debounce((values) => {
+    console.log(values)
     currentPriceValues.value = values
     priceRange.value = values
-},500)
+    emits('priceChanged')
+}, 500)
 
 const minActivePrice = computed(() => {
     return currentPriceValues.value[0]
@@ -44,11 +47,12 @@ const maxActivePrice = computed(() => {
         Price Range
     </div>
     <VueNoUiSlider
+        :key="sliderRefreshKey"
         :values="priceSliderValues"
         :config="priceSliderConfig"
         @update:values="handleNewValuesFromSlider"
     />
-    <div class="flex justify-between flex-row minMaxPriceDisplay mt-2">
+    <div class="flex justify-between flex-row mb-4 minMaxPriceDisplay mt-2">
         <div
             class="
                 border-[1px]

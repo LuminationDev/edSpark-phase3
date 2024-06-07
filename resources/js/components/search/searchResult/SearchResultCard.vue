@@ -4,12 +4,13 @@ import {storeToRefs} from "pinia";
 import {computed} from "vue";
 import {useRouter} from "vue-router";
 
+import ImageWithFallback from "@/js/components/global/ImageWithFallback.vue";
 import {imageURL} from "@/js/constants/serverUrl";
 import {lowerSlugify} from "@/js/helpers/stringHelpers";
 import {useWindowStore} from "@/js/stores/useWindowStore";
 
 const props = defineProps({
-    data:{
+    data: {
         type: Object,
         required: true
     }
@@ -18,31 +19,32 @@ const router = useRouter()
 const windowStore = useWindowStore()
 const {showGlobalSearch} = storeToRefs(windowStore)
 
-const colorTheme = computed(() =>{
-    switch(props.data.type){
+
+const colorTheme = computed(() => {
+    switch (props.data.type) {
     case"school":
         return 'bg-main-lightTeal/40'
-    case"advice":
-        return 'bg-adviceGreen/40'
+    case"guide":
+        return 'bg-secondary-green/40'
     case"software":
-        return 'bg-secondary-blue/40'
+        return 'bg-secondary-grape/40'
     case"hardware":
         return 'bg-secondary-green/40'
     case"event":
-        return 'bg-secondary-mbRose/40'
+        return 'bg-secondary-cherry/40'
     default:
         return 'bg-main-lightTeal/40'
     }
 })
 
-const hoverClass = computed(() =>{
+const hoverClass = computed(() => {
     return `!hover:${colorTheme.value}`
 })
 
 const handleClickSearchResultCard = () => {
     let componentName = ''
-    switch(props.data.type) {
-    case"advice":
+    switch (props.data.type) {
+    case"guide":
         componentName = 'guide-single'
         break;
     case"software":
@@ -57,12 +59,12 @@ const handleClickSearchResultCard = () => {
     default:
         return ''
     }
-    if(componentName){
+    if (componentName) {
         showGlobalSearch.value = false
         const targetId = props.data.id
         const slug = lowerSlugify(props.data.title)
 
-        router.push({name: componentName, params:{id: targetId , slug: slug}})
+        router.push({name: componentName, params: {id: targetId, slug: slug}})
     }
 }
 
@@ -77,25 +79,29 @@ const handleClickSearchResultCard = () => {
     >
         <div class="flex justify-center items-center rounded-2xl searchCardResultThumbnail w-1/6">
             <div class="bg-slate-100 border border-[1px] border-gray-300 h-16 overflow-hidden rounded-2xl w-16">
-                <img
-                    :src="`${imageURL}/${props.data.cover_image}`"
+                <ImageWithFallback
+                    :image-url="`${imageURL}/${props.data.cover_image}`"
                     class="h-full object-center object-cover w-full"
-                    :alt="props.data.title + ' thumbnail photo'"
-                >
+                    :image-alt="props.data.title + ' thumbnail photo'"
+                    image-type="default"
+                />
             </div>
         </div>
 
         <div class="flex justify-center flex-col searchCardResultContent w-5/6">
-            <div class="capitalize contentTitle text-base">
+            <div class="capitalize contentTitle text-lg">
                 {{ props.data.title }}
             </div>
-            <div class="contentContent line-clamp-1 text-xs">
+            <div class="contentContent line-clamp-1 mb-2 text-xs">
                 <div v-html="props.data.excerpt " />
             </div>
             <div
-                class="contentTags flex flex-row gap-1 overflow-hidden items-start"
+                class="contentTags flex items-start flex-row gap-1 overflow-hidden"
             >
-                <span class="capitalize mr-2 py-1 rounded-xl text-xs">
+                <span
+                    class="capitalize mr-2 px-2 py-1 py-1 rounded-xl text-xs"
+                    :class="colorTheme"
+                >
                     {{ props.data.type }}
                                         
                 </span>

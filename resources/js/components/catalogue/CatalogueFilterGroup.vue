@@ -28,7 +28,7 @@ const toggleShowFilter = () => {
 <template>
     <div class="fitlerHeader flex flex-row mb-2 mt-8 text-lg w-full">
         <div class="filterTitle">
-            {{ title }}
+            {{ `${title} (${filterList.length})` }}
         </div>
         <div class="ml-auto">
             <ChevronDownIcon
@@ -39,7 +39,7 @@ const toggleShowFilter = () => {
         </div>
     </div>
     <div
-        class="flex flex-col transition transition-all"
+        class="flex flex-col transition-all"
     >
         <TransitionGroup>
             <template

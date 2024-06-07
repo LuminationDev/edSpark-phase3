@@ -5,11 +5,26 @@ export const useCatalogueStore = defineStore('catalogue', {
     state: () => ({
         catalogueList: useStorage('EDSPARK_CATALOGUE_ITEMS', [], localStorage, {mergeDefaults: true}),
         catalogueExpiry: useStorage('EDSPARK_CATALOGUE_EXPIRY', 0, localStorage, {mergeDefaults: true}),
-        compareBasket: useStorage('EDSPARK_COMPARE_BASKET', []),
-        categoryList: useStorage('EDSPARK_CATALGUE_CAT', []),
-        brandList: useStorage('EDSPARK_CATALGUE_BRAND', []),
-        typeList: useStorage('EDSPARK_CATALGUE_TYPE', []),
-        vendorList: useStorage('EDSPARK_CATALGUE_VENDOR', [])
+        compareBasket: useStorage('EDSPARK_COMPARE_BASKET', [], sessionStorage),
+        categoryList: [],
+        brandList: [],
+        typeList: [],
+        vendorList: [],
+        processorList: [],
+        memoryList: [],
+        storageList: [],
+        primaryFilter: '',
+        selectedCategory: [],
+        selectedBrand: [],
+        selectedType: [],
+        selectedVendor: [],
+        selectedProcessor: [],
+        selectedMemory: [],
+        selectedStorage: [],
+        priceRange: [0, 30000],
+        searchKeyword: '',
+
+
     }),
     getters: {
         getCompareBasketItem() {
@@ -38,6 +53,18 @@ export const useCatalogueStore = defineStore('catalogue', {
             this.compareBasket = []
         },
         // end of comparisons
+        resetFilters() {
+            this.primaryFilter = ''
+            this.selectedCategory = []
+            this.selectedBrand = []
+            this.selectedType = []
+            this.selectedVendor = []
+            this.selectedProcessor = []
+            this.selectedMemory = []
+            this.selectedStorage = []
+            this.priceRange = [0, 30000]
+            this.searchKeyword = ''
+        },
 
     },
 });
