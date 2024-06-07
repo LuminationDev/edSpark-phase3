@@ -4,30 +4,64 @@ import {computed, ref} from 'vue'
 
 import Accordion from "@/js/components/accordion/Accordion.vue";
 import GenericButton from "@/js/components/button/GenericButton.vue";
+import QuotePdfRenderer from "@/js/components/catalogue/quote/QuotePdfRenderer.vue";
 import QuoteWideCard from "@/js/components/quote/QuoteWideCard.vue";
+import {formatDateToDayTime} from "@/js/helpers/dateHelper";
+import {quoteService} from "@/js/service/quoteService";
 import {useQuoteStore} from "@/js/stores/useQuoteStore";
 
-import {formatDateToDayTime} from "../../../helpers/dateHelper";
-
-const props = defineProps({})
-
-const emits = defineEmits([])
 
 const quoteStore = useQuoteStore()
-const {genQuote} = storeToRefs(quoteStore)
-
-const quoteVendor = computed(() => {
-    const vendor = genQuote.value[0]?.quote_content[0]?.vendor
-    if (vendor) return vendor
-    else return ''
-})
+const {genQuote, quotePreview} = storeToRefs(quoteStore)
 
 const getQuoteVendor = (quote) => {
     return quote?.quote_content[Object.keys(quote.quote_content)[0]]?.vendor
 }
+
 const getQuoteCreatedAt = (quote) => {
     return quote?.created_at
 }
+const onClickDownloadQuote = async (quote) => {
+    console.log(quote);
+
+    const downloadQuotePDF = async (pdfUrl) => {
+        try {
+            const response = await axios.get(pdfUrl, {responseType: 'blob'});
+            const url = window.URL.createObjectURL(new Blob([response.data]));
+            const a = document.createElement('a');
+            a.style.display = 'none';
+            a.href = url;
+            a.download = 'page.pdf';
+            document.body.appendChild(a);
+            a.click();
+            window.URL.revokeObjectURL(url);
+        } catch (err) {
+            console.log(err.message);
+            return false; // failed to get from the url
+        }
+        return true; // success
+    };
+
+    const fallbackToPreviewAndPrint = async (quote) => {
+        quotePreview.value = quote;
+        await new Promise((res) => setTimeout(res, 500));
+        await quoteService.printQuote(quote.id);
+    };
+
+    if (quote.pdf_url) {
+        const success = await downloadQuotePDF(quote.pdf_url);
+        if (!success) {
+            await fallbackToPreviewAndPrint(quote);
+        }
+    } else {
+        await fallbackToPreviewAndPrint(quote);
+    }
+};
+
+const renderPdfRenderer = computed(() => {
+    return !!Object.keys(quotePreview).length
+})
+
 </script>
 
 <template>
@@ -39,7 +73,7 @@ const getQuoteCreatedAt = (quote) => {
         >
             <Accordion>
                 <template #title>
-                    <h2>{{ `Quote ID #${quote.id} - ${(getQuoteVendor(quote) ? getQuoteVendor(quote) : '') }` }}</h2>
+                    <h2>{{ `Quote ID #${quote.id} - ${(getQuoteVendor(quote) ? getQuoteVendor(quote) : '')}` }}</h2>
                 </template>
                 <template #info>
                     {{ "Generated on " + formatDateToDayTime(getQuoteCreatedAt(quote)) }}
@@ -54,19 +88,24 @@ const getQuoteCreatedAt = (quote) => {
                             :display-only="true"
                         />
                     </div>
-                    <div class="flex justify-between flex-row">
-                        <GenericButton
-                            :callback="() => {}"
-                            type="teal"
-                        >
-                            Download quote
-                        </GenericButton>
-                        <div class="font-semibold genQuoteTotal text-lg">
-                            {{ `Total price (ex. GST): ${quote.total_price_ex_gst}` }}
-                        </div>
-                    </div>
                 </template>
             </Accordion>
+            <div class="flex justify-between flex-row">
+                <GenericButton
+                    :callback=" () => onClickDownloadQuote(quote)"
+                    type="teal"
+                >
+                    Download quote
+                </GenericButton>
+                <div class="font-semibold genQuoteTotal text-lg">
+                    {{ `Total price (ex. GST): ${quote.total_price_ex_gst}` }}
+                </div>
+            </div>
         </div>
+        <template v-if="renderPdfRenderer">
+            <QuotePdfRenderer
+                :quote="quotePreview"
+            />
+        </template>
     </div>
 </template>
