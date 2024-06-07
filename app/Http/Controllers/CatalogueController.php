@@ -121,7 +121,7 @@ class CatalogueController extends Controller
             if ($filterField === 'price' && is_array($filterValue) && count($filterValue) === 2) {
                 $minPrice = intval($filterValue[0]);
                 $maxPrice = intval($filterValue[1]);
-                $query->whereRaw('CAST(price_inc_gst AS UNSIGNED) BETWEEN ? AND ?', [$minPrice, $maxPrice]);
+                $query->whereRaw('CAST(price_inc_gst AS float) BETWEEN ? AND ?', [$minPrice, $maxPrice]);
             } else {
                 if ($field !== $filterField && count($filterValue)) {
                     $query->whereIn($filterField, is_array($filterValue) ? $filterValue : [$filterValue]);

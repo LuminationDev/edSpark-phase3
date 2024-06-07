@@ -27,7 +27,7 @@ class CreateCatalogueversion extends CreateRecord
         // Create the main record.
         $record = parent::handleRecordCreation($data);
         $currentVersion = $record['version'];
-        $batchSize = 300; // Define your batch size here
+        $batchSize = 100; // Define your batch size here
 
         // Read CSV
         try {
