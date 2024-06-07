@@ -172,6 +172,8 @@ class CartController extends Controller
         }
 
         $vendorCartItems = $this->getVendorCartItems($cart, $vendorName);
+
+        dd($cart,$vendorCartItems,$vendorName);
         if ($vendorCartItems->isEmpty()) {
             return response()->json(['message' => 'No items from the specified vendor in the cart'], 200);
         }
