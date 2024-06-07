@@ -49,6 +49,7 @@ export const quoteService = {
             vendor: vendor,
             delivery_info: userInfo,
             additional_notes: additionalNotes
+
         }
         return axios.post(`${API_ENDPOINTS.CART.CHECKOUT_CART}`, body).then(res => {
             return res.data

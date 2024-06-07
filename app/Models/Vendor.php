@@ -17,13 +17,22 @@ class Vendor extends Model
      * @var array
      */
     protected $fillable = [
-        'vendor_name',
-        'address',
+        'vendor',
+        'business_name',
         'abn',
-        'order_email',
+        'email_enquiries',
+        'name',
         'phone',
-        'contact',
-        'direct_phone',
-        'email',
+        'phone_general_enquiries',
+        'fax',
+        'address',
+        'postal_address',
+        'website',
+        'portal',
+        'email_orders',
+        'warranty_support_info',
+        'buyers_guide',
+        'comments',
+        'confirmed',
     ];
 }
