@@ -159,7 +159,7 @@ const routes: any = [
                 meta: {
                     requiresAuth: true,
                     customText: 'Assess your digital maturity',
-                    navigation: true
+                    navigation: false
 
                 } as RouteMeta
             }, {
