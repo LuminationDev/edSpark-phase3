@@ -201,13 +201,13 @@ class CartController extends Controller
     private function getVendorCartItems($cart, $vendorName)
     {
         return $cart->cartItems->filter(function ($item) use ($vendorName) {
-            return $item->catalogue->vendor == $vendorName && $item->catalogue->version_id == Catalogueversion::getActiveCatalogueId();
+            return $item->catalogue->vendor == $vendorName && intval($item->catalogue->version_id) == intval(Catalogueversion::getActiveCatalogueId());
         });
     }
 
     private function generateQuoteContent($vendorCartItems, $cartId, $additionalNotes)
     {
-        return $vendorCartItems->map(function ($item) use ($cartId,$additionalNotes) {
+        return $vendorCartItems->map(function ($item) use ($cartId, $additionalNotes) {
             $itemCatalogue = $item->catalogue;
             $itemImageUUID = '';
             $itemImageExtension = '';
@@ -219,7 +219,7 @@ class CartController extends Controller
                     $itemImageExtension = $itemImage->file_extension ?? '';
                 }
             }
-            $uniqueReference= $itemCatalogue->unique_reference;
+            $uniqueReference = $itemCatalogue->unique_reference;
             $notes = $additionalNotes[$uniqueReference] ?? '';
 
             return [
@@ -287,7 +287,7 @@ class CartController extends Controller
 
         return $quote;
     }
-  
+
     private function generateQuoteRef($quoteId)
     {
         $date = date('Ymd'); // Get current date in YYYYMMDD format
