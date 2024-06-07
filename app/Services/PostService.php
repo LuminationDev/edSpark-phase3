@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Helpers\StatusHelpers;
 use App\Models\Event;
 use App\Models\Partner;
 use App\Models\Usermeta;

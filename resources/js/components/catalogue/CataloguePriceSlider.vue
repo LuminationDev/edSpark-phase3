@@ -4,8 +4,8 @@ import {computed, ref, watch} from "vue";
 
 import VueNoUiSlider from "@/js/components/slider/VueNoUiSlider.vue";
 
-const priceSliderValues = [0, 25, 50, 100, 250, 400, 500, 1000, 1500, 2000, 4000, 8000, 10000];
-const currentPriceValues = ref([0, 10000])
+const priceSliderValues = [0, 25, 50, 100, 250, 400, 500, 1000, 1500, 2000, 4000, 8000, 10000, 15000, 20000, 30000];
+const currentPriceValues = ref([0, 30000])
 const format = {
     to: function (value) {
         return priceSliderValues[Math.round(value)];
@@ -15,7 +15,7 @@ const format = {
     }
 };
 const priceSliderConfig = {
-    start: [0, 10000],
+    start: [0, 30000],
     range: {min: 0, max: priceSliderValues.length - 1},
     connect: [false, true, false],
     tooltips: false,
@@ -24,20 +24,14 @@ const priceSliderConfig = {
 }
 const emits = defineEmits(['priceChanged'])
 const priceRange = defineModel('priceRange')
-let sliderRefreshKey = 0
+const sliderRefreshKey = 0
 
 const handleNewValuesFromSlider = debounce((values) => {
+    console.log(values)
     currentPriceValues.value = values
     priceRange.value = values
+    emits('priceChanged')
 }, 500)
-
-watch(priceRange, (newValue, oldValue) => {
-    if (JSON.stringify(newValue) !== JSON.stringify(oldValue)) {
-        currentPriceValues.value = newValue
-        emits('priceChanged')
-        sliderRefreshKey++;
-    }
-}, {deep: true})
 
 const minActivePrice = computed(() => {
     return currentPriceValues.value[0]
