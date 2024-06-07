@@ -48,6 +48,10 @@ export enum CatalogueFilterField {
     Brand = 'brand',
     Vendor = 'vendor',
     Category = 'category',
+    Processor = 'processor',
+    Memory = 'memory',
+    Storage = 'storage',
+
 }
 
 export const catalogueComparisonHeaders = ['overview', 'specs']

@@ -91,11 +91,25 @@ class CatalogueController extends Controller
         $perPage = $request->input('per_page', 20);
         $requestedPage = $request->query('page', 1);
         $additionalFilters = $request->input('additional_filters', []);
+        $keyword = $request->input('keyword', '');
+
 
         // Start building the base query
         $query = Catalogue::query();
         // filter based on catalogue version id
         $query->where('version_id', Catalogueversion::getActiveCatalogueId());
+
+
+        // Apply keyword filter if provided
+        if (!empty($keyword)) {
+            $query->where(function ($q) use ($keyword) {
+                $q->where('name', 'LIKE', '%' . $keyword . '%')
+                    ->orWhere('category', 'LIKE', '%' . $keyword . '%')
+                    ->orWhere('brand', 'LIKE', '%' . $keyword . '%');
+                // Add other fields as necessary
+            });
+        }
+
 
         // if field and values is not empty, apply filter query
         if (!empty($field) && !empty($values)) {
@@ -119,16 +133,8 @@ class CatalogueController extends Controller
         $query->where('curriculum', 'Yes')->where("available_now", '<>', 'No');
 
         // Fetch distinct values for available fields
-        foreach (['type', 'brand', 'vendor', 'category'] as $otherField) {
+        foreach (['type', 'brand', 'vendor', 'category', 'processor', 'memory', 'storage'] as $otherField) {
             if ($otherField != $field) {
-                // if primary filter has been selected, other filters must be based on the results only
-//                if (!empty($field) && !empty($values)) {
-//                    $availableFields[$otherField] = $query->pluck($otherField)->unique()->values()->all();
-//                } // Get all fields from Catalogue
-//                else {
-//                    $availableFields[$otherField] = Catalogue::distinct($otherField)->pluck($otherField);
-//
-//                }
                 $availableFields[$otherField] = $query->pluck($otherField)->unique()->values()->all();
 
             }
@@ -195,20 +201,6 @@ class CatalogueController extends Controller
         if (!$product) {
             return ResponseService::error('Product not found.', null, 404);
         }
-
-//        // Check for available upgrades
-//        $upgradeAvailable = Catalogue::where('name', $request->input('name'))
-//            ->where('type', 'Upgrade')
-//            ->exists();
-//
-//        // Check for available bundles
-//        $bundleAvailable = Catalogue::where('name', 'like', $request->input('name') . '%')
-//            ->where('type', 'Bundle')
-//            ->exists();
-//
-//        // Add fields to the product
-//        $product->upgrade_available = $upgradeAvailable;
-//        $product->bundle_available = $bundleAvailable;
 
         return ResponseService::success('Product fetched successfully.', $product);
     }

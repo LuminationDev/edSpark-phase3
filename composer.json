@@ -37,6 +37,7 @@
         "socialiteproviders/okta": "^4.2",
         "spatie/eloquent-sortable": "^4.2",
         "spatie/laravel-data": "^4.4",
+        "spatie/laravel-pdf": "^1.5",
         "spatie/laravel-tags": "^4.5",
         "yoeriboven/laravel-log-db": "^1.2"
     },

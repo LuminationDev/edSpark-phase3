@@ -20,11 +20,12 @@ const {
 } = useSWRV(API_ENDPOINTS.ADVICE.FETCH_ADVICE_POSTS, axiosFetcher, swrvOptions)
 
 const adviceFilterList = [
-    {name: "Digital Adoption Group", value: "DAG"},
+    {name: "DAG", value: "DAG"},
     {name: "Partner", value: "Partner"},
     {name: "Your Classroom", value: "Your Classroom"},
     {name: "Your Work", value: "Your Work"},
     {name: "Your Learning", value: "Your Learning"},
+    {name: "Case Study", value: "Case Study"},
 ]
 
 const filterObject = ref({})

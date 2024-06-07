@@ -20,17 +20,17 @@ const globalSearchInputBox = ref(null)
 
 
 const fetchSearchResults = () => {
-    if(searchTerms.value){
+    if (searchTerms.value) {
         searchLoading.value = true
         axios.get(API_ENDPOINTS.SEARCH.SEARCH_ALL, {params: {search: searchTerms.value}}).then(res => {
             searchResults.value = res.data
-        }).catch(e =>{
-        }).finally(() =>{
+        }).catch(e => {
+        }).finally(() => {
             searchLoading.value = false
         })
 
-    }else{
-        searchResults.value =[]
+    } else {
+        searchResults.value = []
     }
 }
 
@@ -40,11 +40,11 @@ const debouncedfetchSearchResults = debounce(() => {
 
 watch(searchTerms, debouncedfetchSearchResults);
 
-watch(showGlobalSearch, () =>{
-    if(showGlobalSearch.value)document.body.style.overflow = 'hidden'
+watch(showGlobalSearch, () => {
+    if (showGlobalSearch.value) document.body.style.overflow = 'hidden'
     else document.body.style.overflow = 'auto'
 })
-onMounted(async () =>{
+onMounted(async () => {
     await nextTick()
     globalSearchInputBox.value.focus();
 
@@ -55,7 +55,7 @@ const handleClickOverlay = () => {
 }
 
 const handleClearSearchbar = () => {
-    if(!searchTerms.value){
+    if (!searchTerms.value) {
         showGlobalSearch.value = false
     }
     searchTerms.value = ''
@@ -64,12 +64,16 @@ const handleClearSearchbar = () => {
 </script>
 
 <template>
-    <div class="absolute top-0 right-0 bottom-0 left-0 globalSearchScreenContainer grid place-items-center h-screen w-screen z-50">
+    <div
+        class="absolute top-0 right-0 bottom-0 left-0 globalSearchScreenContainer grid place-items-center h-screen w-screen z-50"
+    >
         <div
             class="bg-main-navy/80 fixed top-0 left-0 grayoverlay h-[1000vh] w-full z-40"
             @click="handleClickOverlay"
         />
-        <div class="bg-white drop-shadow-xl flex flex-col h-1/2 overflow-y-auto relative rounded-xl searchBox w-10/12 lg:w-1/2 z-50">
+        <div
+            class="bg-white drop-shadow-xl flex flex-col h-1/2 overflow-y-auto relative rounded-xl searchBox w-10/12 lg:w-1/2 z-50"
+        >
             <input
                 ref="globalSearchInputBox"
                 v-model="searchTerms"
@@ -79,13 +83,14 @@ const handleClearSearchbar = () => {
                     !rounded-t-xl
                     border-0
                     border-gray-300
+                    font-medium
                     globalSearchInputBox
                     pt-4
                     px-8
                     sticky
                     top-0
                     text-gray-600
-                    text-lg
+                    text-xl
                     focus:outline-none
                     focus:ring-gray-300
                     "
@@ -110,14 +115,14 @@ const handleClearSearchbar = () => {
                 <template v-else-if="searchLoading">
                     <Loader
                         :loader-color="'#0072DA'"
-                        :loader-message="'Results loading'"
+                        :loader-message="'Result loading'"
                         loader-message-class="text-base font-thin"
                         class="!text-sm mt-10"
                     />
                 </template>
                 <template v-else>
                     <div class="mt-10 text-center text-gray-600">
-                        Results will appear here
+                        Result will appear here
                     </div>
                 </template>
             </div>

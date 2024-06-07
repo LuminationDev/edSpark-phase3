@@ -6,16 +6,23 @@ export const useCatalogueStore = defineStore('catalogue', {
         catalogueList: useStorage('EDSPARK_CATALOGUE_ITEMS', [], localStorage, {mergeDefaults: true}),
         catalogueExpiry: useStorage('EDSPARK_CATALOGUE_EXPIRY', 0, localStorage, {mergeDefaults: true}),
         compareBasket: useStorage('EDSPARK_COMPARE_BASKET', [], sessionStorage),
-        categoryList: useStorage('EDSPARK_CATALOGUE_CAT', [], sessionStorage),
-        brandList: useStorage('EDSPARK_CATALOGUE_BRAND', [], sessionStorage),
-        typeList: useStorage('EDSPARK_CATALOGUE_TYPE', [], sessionStorage),
-        vendorList: useStorage('EDSPARK_CATALOGUE_VENDOR', [], sessionStorage),
+        categoryList: [],
+        brandList: [],
+        typeList: [],
+        vendorList: [],
+        processorList: [],
+        memoryList: [],
+        storageList: [],
         primaryFilter: '',
         selectedCategory: [],
         selectedBrand: [],
         selectedType: [],
         selectedVendor: [],
-        priceRange: [0, 10000]
+        selectedProcessor: [],
+        selectedMemory: [],
+        selectedStorage: [],
+        priceRange: [0, 30000],
+        searchKeyword: '',
 
 
     }),
@@ -52,7 +59,11 @@ export const useCatalogueStore = defineStore('catalogue', {
             this.selectedBrand = []
             this.selectedType = []
             this.selectedVendor = []
-            this.priceRange = [0,10000]
+            this.selectedProcessor = []
+            this.selectedMemory = []
+            this.selectedStorage = []
+            this.priceRange = [0, 30000]
+            this.searchKeyword = ''
         },
 
     },
