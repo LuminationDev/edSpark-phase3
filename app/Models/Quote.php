@@ -25,6 +25,6 @@ class Quote extends Model
 
     public function version()
     {
-        return $this->belongsTo(CatalogueVersion::class, 'version_id', 'version');
+        return $this->belongsTo(Catalogueversion::class, 'version_id', 'version');
     }
 }
