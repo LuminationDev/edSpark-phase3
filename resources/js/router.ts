@@ -574,7 +574,9 @@ router.beforeEach(async (to, from, next) => {
             } else {
                 console.log("Auth promise false");
                 console.log(authStore.isAuthenticated)
-                window.location = '/login'
+                const state = encodeURIComponent(`custom_redirect_url=${userEntryLink.value}`);
+                const loginUrl = `/login?state=${state}`;
+                window.location.href = loginUrl;
             }
         })
     } else { // authStore.isAuthenticated is boolean
@@ -583,7 +585,9 @@ router.beforeEach(async (to, from, next) => {
         } else {
             console.log("Auth bool false");
             console.log(authStore.isAuthenticated)
-            window.location = '/login'
+            const state = encodeURIComponent(`custom_redirect_url=${userEntryLink.value}`);
+            const loginUrl = `/login?state=${state}`;
+            window.location.href = loginUrl;
         }
     }
     // If the route doesn't require authentication, move on.

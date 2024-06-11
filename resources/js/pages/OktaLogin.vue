@@ -17,10 +17,11 @@ const redirectToOkta = () => {
     window.location = '/login';
 }
 
-onBeforeMount(() =>{
-    if(authStore.isAuthenticated && userStore.currentUser.full_name){
-        router.push('/dashboard')
-
+onBeforeMount(async() =>{
+    await authStore.checkAuthenticationStatus()
+    if(authStore.isAuthenticated){
+        console.log('pushing from login page to dashboard')
+        await router.push('/dashboard')
     }
 })
 
@@ -37,9 +38,9 @@ const loginWithOktaButtonPressed = ref(false);
             <h2 class="font-bold mb-4 text-2xl">
                 Welcome to edSpark!
             </h2>
-            <p class="mb-2 font-thin">
+            <p class="font-thin mb-2">
                 edSpark is provided by the Department for Education, South Australia. Access to edSpark is granted through EdPass.
-            </p><p class="mb-4 font-thin">
+            </p><p class="font-thin mb-4">
                 You'll be redirected within a few seconds, or click the button below.
             </p>
             <p />

@@ -58,41 +58,25 @@ const removeEventListeners = () => {
  * @throws Will throw an error if network requests within the function fail.
  */
 const handleAuth = async () => {
-    // // Check if the URL contains the desired origin
-    // if (window.location.origin.includes('test.edspark.sa.edu.au')) return;
-    userStore.fetchCurrentUserAndLoadIntoStore();
+    await userStore.fetchCurrentUserAndLoadIntoStore();
     await authStore.checkAuthenticationStatus(); // populate isAuth with promise
 
     if (!authStore.isAuthenticated) {
-        window.location = '/login';
+        const userEntryLink = sessionStorage.getItem('edspark-entry-link');
+        const state = encodeURIComponent(`custom_redirect_url=${userEntryLink}`);
+        const loginUrl = `/login?state=${state}`;
+        window.location.href = loginUrl;
+        return false; // Indicate that the user is not authenticated
     } else {
         await axios.get(`${appURL}/sanctum/csrf-cookie`);
         await userStore.fetchCurrentUserAndLoadIntoStore();
-        if (userStore.userEntryLink === 'finished') {
-        }
-        // only trigger the redirect if entry link exists and not /
-        else if (userStore.userEntryLink && userStore.userEntryLink !== '/') {
-            let urlObj;
-            try {
-                urlObj = new URL(userStore.userEntryLink).pathname
-            } catch (_) {
-                urlObj = userStore.userEntryLink + ""
-            } finally {
-                userEntryLink.value = "finished" // this will stop redirection
-                await router.push(urlObj)
-            }
-        } else {
-            userEntryLink.value = "finished"
-            await router.push('/dashboard')
-        }
+        return true; // Indicate that the user is authenticated
     }
-
-
 };
 
 
 onBeforeMount(async () => {
-    await handleAuth()
+    await handleAuth();
 });
 
 
@@ -121,7 +105,7 @@ onBeforeUnmount(() => {
     removeEventListeners()
 })
 
-onMounted(()=>{
+onMounted(() => {
     // remove navbar hidden when JS is loaded
     const navbarWrapper = document.getElementById('navbar-wrapper');
     if (navbarWrapper) {
