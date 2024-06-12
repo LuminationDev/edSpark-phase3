@@ -69,7 +69,7 @@
         "slugify": "^1.6.6",
         "swrv": "^1.0.4",
         "tailwind-scrollbar": "^3.0.5",
-        "tinymce": "^7.1.0",
+        "tinymce": "^7.1.1",
         "v-calendar": "^3.1.1",
         "vue": "3.4.27",
         "vue-dragscroll": "^4.0.5",
