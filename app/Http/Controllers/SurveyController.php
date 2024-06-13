@@ -706,9 +706,10 @@ class SurveyController extends Controller
         foreach ($completedSurveys as $userSurvey) {
             $user = User::find($userSurvey->user_id);
             $userData = [
-                'full_name' => $user->full_name,
-                'site' => $user->site->site_name,
+                $user->full_name,
+                $user->site->site_name,
             ];
+            $csvData[] = $userData;
 
             $surveyDomains = UserSurveyDomain::where('user_survey_id', $userSurvey->id)
                 ->where('status', 'Complete')
@@ -722,16 +723,16 @@ class SurveyController extends Controller
 
                     if ($question) {
                         $csvData[] = [
-                            $userData['full_name'],
-                            $userData['site'],
                             $surveyDomain->domain,
                             strip_tags($question->question),
+                            strip_tags($question->element_print),
                             $userAnswer->answer == 1 ? 'Yes' : 'No',
                             $userAnswer->answer_text,
                         ];
                     }
                 }
             }
+            $csvData[] = ['--------------------------------------------------------------'];
         }
         $fileName = Str::random(10);
 
@@ -739,7 +740,7 @@ class SurveyController extends Controller
         $filePath = storage_path($csvFileName);
 
         $file = fopen($filePath, 'w');
-        fputcsv($file, ['Full Name', 'Site', 'Domain', 'Question Text', 'Answer', 'Answer Text']); // Header row
+        fputcsv($file, ['Domain','Element','Question Text', 'Answer', 'Answer Text']); // Header row
 
         foreach ($csvData as $row) {
             fputcsv($file, $row);
