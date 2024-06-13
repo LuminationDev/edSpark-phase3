@@ -15,6 +15,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\DB;
+use Str;
 
 class SurveyController extends Controller
 {
@@ -624,6 +625,129 @@ class SurveyController extends Controller
             'code' => 0,
             'locale' => 'en',
         ]);
+    }
+    public function getAllCompletedSurveysFlat(): array
+    {
+        $completedSurveys = UserSurvey::where('status', 'Complete')->get();
+
+        if ($completedSurveys->isEmpty()) {
+            return [
+                'success' => true,
+                'message' => 'No completed surveys found',
+                'data' => [],
+                'code' => 0,
+                'locale' => 'en',
+            ];
+        }
+        $allData = [];
+
+
+        foreach ($completedSurveys as $userSurvey) {
+            $user = User::find($userSurvey->user_id);
+            $surveysData = [];
+            $userData = [
+                'full_name' => $user->full_name,
+                'site' => $user->site->site_name
+            ];
+
+
+            $surveyDomains = UserSurveyDomain::where('user_survey_id', $userSurvey->id)
+                ->where('status', 'Complete')
+                ->get();
+
+            foreach ($surveyDomains as $surveyDomain) {
+                $userAnswers = UserAnswer::where('user_survey_domain_id', $surveyDomain->id)->get();
+
+                foreach ($userAnswers as $userAnswer) {
+                    $question = Question::find($userAnswer->question_id);
+
+                    if ($question) {
+                        $surveysData[] = [
+                            'domain' => $surveyDomain->domain,
+                            'question_text' => strip_tags($question->question),
+                            'answer' => $userAnswer->answer == 1 ? 'Yes' : 'No',
+                            'answer_text' => $userAnswer->answer_text,
+                        ];
+                    }
+                }
+            }
+            $allData[] =[
+                'user_data' => $userData,
+                'survey_data' => $surveysData,
+            ];
+        }
+
+        return [
+            'success' => true,
+            'message' => 'OK',
+            'data' => $allData,
+            'code' => 0,
+            'locale' => 'en',
+        ];
+    }
+
+    public function getAllCompletedSurveysCSV(): \Symfony\Component\HttpFoundation\BinaryFileResponse
+    {
+        $completedSurveys = UserSurvey::where('status', 'Complete')->get();
+
+        if ($completedSurveys->isEmpty()) {
+            $emptyResponse = [
+                'success' => true,
+                'message' => 'No completed surveys found',
+                'data' => [],
+                'code' => 0,
+                'locale' => 'en',
+            ];
+            return response()->json($emptyResponse);
+        }
+
+        $csvData = [];
+
+        foreach ($completedSurveys as $userSurvey) {
+            $user = User::find($userSurvey->user_id);
+            $userData = [
+                'full_name' => $user->full_name,
+                'site' => $user->site->site_name,
+            ];
+
+            $surveyDomains = UserSurveyDomain::where('user_survey_id', $userSurvey->id)
+                ->where('status', 'Complete')
+                ->get();
+
+            foreach ($surveyDomains as $surveyDomain) {
+                $userAnswers = UserAnswer::where('user_survey_domain_id', $surveyDomain->id)->get();
+
+                foreach ($userAnswers as $userAnswer) {
+                    $question = Question::find($userAnswer->question_id);
+
+                    if ($question) {
+                        $csvData[] = [
+                            $userData['full_name'],
+                            $userData['site'],
+                            $surveyDomain->domain,
+                            strip_tags($question->question),
+                            $userAnswer->answer == 1 ? 'Yes' : 'No',
+                            $userAnswer->answer_text,
+                        ];
+                    }
+                }
+            }
+        }
+        $fileName = Str::random(10);
+
+        $csvFileName =  'survey_' . $fileName .'.csv';
+        $filePath = storage_path($csvFileName);
+
+        $file = fopen($filePath, 'w');
+        fputcsv($file, ['Full Name', 'Site', 'Domain', 'Question Text', 'Answer', 'Answer Text']); // Header row
+
+        foreach ($csvData as $row) {
+            fputcsv($file, $row);
+        }
+
+        fclose($file);
+
+        return response()->download($filePath, $csvFileName)->deleteFileAfterSend(true);
     }
 
 

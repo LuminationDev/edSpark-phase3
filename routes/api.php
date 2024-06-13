@@ -191,7 +191,7 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::get('/actionplans', [SurveyController::class, 'getUserActionPlan']);
         Route::post('/answer', [SurveyController::class, 'saveUserAnswerToQuestion']);
         Route::delete('/domain/{domain_id}', [SurveyController::class, 'resetUserSurveyDomain']);
-        Route::get('/answer', [SurveyController::class, 'getAllCompletedSurveys']);
+        Route::get('/answer', [SurveyController::class, 'getAllCompletedSurveysCSV']);
     });
 
     Route::group(['prefix' => 'quote'], function () {
