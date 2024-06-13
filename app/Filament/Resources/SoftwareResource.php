@@ -6,6 +6,7 @@ use App\Filament\Resources\SoftwareResource\Pages;
 use App\Filament\Resources\SoftwareResource\RelationManagers;
 use App\Helpers\CustomHtmlable;
 use App\Helpers\EdsparkFormComponents;
+use App\Helpers\JsonHelper;
 use App\Helpers\RoleHelpers;
 use App\Helpers\StatusHelpers;
 use App\Helpers\UserRole;
@@ -189,7 +190,7 @@ class SoftwareResource extends Resource
                     ->getStateUsing(function ($record): string {
                         $imgPath = $record->cover_image;
                         if ($imgPath) {
-                            return env('AZURE_STORAGE_ENDPOINT') . env('AZURE_STORAGE_CONTAINER') . '/' . $imgPath;
+                            return env('AZURE_STORAGE_ENDPOINT') . env('AZURE_STORAGE_CONTAINER') . '/' . stripcslashes($imgPath);
                         } else {
                             return '';
                         }
