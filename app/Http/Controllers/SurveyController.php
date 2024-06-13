@@ -516,6 +516,117 @@ class SurveyController extends Controller
         return $result->pluck('generated_variable');
     }
 
+
+    public function getUserAnsweredQuestions(Request $request): JsonResponse
+    {
+        $user = User::find(Auth::user()->id);
+        $userSurvey = UserSurvey::where('user_id', $user->id)
+            ->where('status', '<>', 'Abandoned')
+            ->first();
+
+        if ($userSurvey == null) {
+            return $this->surveyNotFound();
+        }
+
+        $userAnswers = UserAnswer::where('user_survey_domain_id', $userSurvey->id)->get();
+
+        if ($userAnswers->isEmpty()) {
+            return response()->json([
+                'success' => true,
+                'message' => 'No answered questions found',
+                'data' => [],
+                'code' => 0,
+                'locale' => 'en',
+            ]);
+        }
+
+        $answeredQuestions = [];
+        foreach ($userAnswers as $userAnswer) {
+            $question = Question::find($userAnswer->question_id);
+            if ($question) {
+                $answeredQuestions[] = [
+                    'question_id' => $question->id,
+                    'question_text' => $question->question,
+                    'answer' => $userAnswer->answer,
+                    'answer_text' => $userAnswer->answer_text,
+                ];
+            }
+        }
+
+        return response()->json([
+            'success' => true,
+            'message' => 'OK',
+            'data' => $answeredQuestions,
+            'code' => 0,
+            'locale' => 'en',
+        ]);
+    }
+    public function getAllCompletedSurveys(): JsonResponse
+    {
+        $completedSurveys = UserSurvey::where('status', 'Complete')->get();
+
+        if ($completedSurveys->isEmpty()) {
+            return response()->json([
+                'success' => true,
+                'message' => 'No completed surveys found',
+                'data' => [],
+                'code' => 0,
+                'locale' => 'en',
+            ]);
+        }
+
+        $surveysData = [];
+
+        foreach ($completedSurveys as $userSurvey) {
+            $user = User::find($userSurvey->user_id);
+
+            $surveyDomains = UserSurveyDomain::where('user_survey_id', $userSurvey->id)
+                ->where('status', 'Complete')
+                ->get();
+
+            $domainsData = [];
+
+            foreach ($surveyDomains as $surveyDomain) {
+                $userAnswers = UserAnswer::where('user_survey_domain_id', $surveyDomain->id)->get();
+
+                $answersData = [];
+
+                foreach ($userAnswers as $userAnswer) {
+                    $question = Question::find($userAnswer->question_id);
+
+                    if ($question) {
+                        $answersData[] = [
+                            'question_id' => $question->id,
+                            'question_text' => $question->question,
+                            'answer' => $userAnswer->answer == 1 ? 'Yes' : 'No',
+                            'answer_text' => $userAnswer->answer_text,
+                        ];
+                    }
+                }
+
+                $domainsData[] = [
+                    'domain' => $surveyDomain->domain,
+                    'answers' => $answersData
+                ];
+            }
+
+            $surveysData[] = [
+                'user_full_name' => $user->full_name,
+                'survey_id' => $userSurvey->id,
+                'domains' => $domainsData,
+            ];
+        }
+
+        return response()->json([
+            'success' => true,
+            'message' => 'OK',
+            'data' => $surveysData,
+            'code' => 0,
+            'locale' => 'en',
+        ]);
+    }
+
+
     public function domainNotFound(): JsonResponse
     {
         return response()->json([
