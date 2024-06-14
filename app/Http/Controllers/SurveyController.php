@@ -589,7 +589,7 @@ class SurveyController extends Controller
         $time_elapsed_secs = microtime(true) - $start;
         Log::info('Time took for csv export function ' . $time_elapsed_secs);
 
-        return response()->download($filePath, $csvFileName)->deleteFileAfterSend(true);
+        return response()->download($filePath, $csvFileName)->deleteFileAfterSend(false);
     }
 
 
