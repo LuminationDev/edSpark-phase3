@@ -100,12 +100,12 @@ class SurveyController extends Controller
     }
 
     public function getDescriptionForElements(Request $request, $user_domain_id): JsonResponse
-    {        
+    {
         $userDomain = UserSurveyDomain::find($user_domain_id);
 
         $elementDescription = Question::selectRaw('domain, element, element_print, element_description')
             ->where('domain', $userDomain->domain)
-            ->where('element_description', '<>', '')            
+            ->where('element_description', '<>', '')
             ->get();
 
         return response()->json(
@@ -120,7 +120,6 @@ class SurveyController extends Controller
             ]
         );
     }
-
 
 
     public function getUserReflection(Request $request): JsonResponse
@@ -242,6 +241,7 @@ class SurveyController extends Controller
             ]
         );
     }
+
     public function deleteUserActionPlan(Request $request, $user_domain_id): JsonResponse
     {
         $user = User::find(Auth::user()->id);
@@ -382,7 +382,7 @@ class SurveyController extends Controller
                 $currentUserSurveyDomain->save();
 
                 // if there are no other domains In Progress -> set the survey to completed
-                $numInProgress = UserSurveyDomain::where('user_survey_id', $userSurvey->survey_id)
+                $numInProgress = UserSurveyDomain::where('user_survey_id', $userSurvey->id)
                     ->where('status', 'In Progress')
                     ->count();
                 if ($numInProgress == 0) {
@@ -518,176 +518,14 @@ class SurveyController extends Controller
     }
 
 
-    public function getUserAnsweredQuestions(Request $request): JsonResponse
-    {
-        $user = User::find(Auth::user()->id);
-        $userSurvey = UserSurvey::where('user_id', $user->id)
-            ->where('status', '<>', 'Abandoned')
-            ->first();
-
-        if ($userSurvey == null) {
-            return $this->surveyNotFound();
-        }
-
-        $userAnswers = UserAnswer::where('user_survey_domain_id', $userSurvey->id)->get();
-
-        if ($userAnswers->isEmpty()) {
-            return response()->json([
-                'success' => true,
-                'message' => 'No answered questions found',
-                'data' => [],
-                'code' => 0,
-                'locale' => 'en',
-            ]);
-        }
-
-        $answeredQuestions = [];
-        foreach ($userAnswers as $userAnswer) {
-            $question = Question::find($userAnswer->question_id);
-            if ($question) {
-                $answeredQuestions[] = [
-                    'question_id' => $question->id,
-                    'question_text' => $question->question,
-                    'answer' => $userAnswer->answer,
-                    'answer_text' => $userAnswer->answer_text,
-                ];
-            }
-        }
-
-        return response()->json([
-            'success' => true,
-            'message' => 'OK',
-            'data' => $answeredQuestions,
-            'code' => 0,
-            'locale' => 'en',
-        ]);
-    }
-    public function getAllCompletedSurveys(): JsonResponse
-    {
-        $completedSurveys = UserSurvey::where('status', 'Complete')->get();
-
-        if ($completedSurveys->isEmpty()) {
-            return response()->json([
-                'success' => true,
-                'message' => 'No completed surveys found',
-                'data' => [],
-                'code' => 0,
-                'locale' => 'en',
-            ]);
-        }
-
-        $surveysData = [];
-
-        foreach ($completedSurveys as $userSurvey) {
-            $user = User::find($userSurvey->user_id);
-
-            $surveyDomains = UserSurveyDomain::where('user_survey_id', $userSurvey->id)
-                ->where('status', 'Complete')
-                ->get();
-
-            $domainsData = [];
-
-            foreach ($surveyDomains as $surveyDomain) {
-                $userAnswers = UserAnswer::where('user_survey_domain_id', $surveyDomain->id)->get();
-
-                $answersData = [];
-
-                foreach ($userAnswers as $userAnswer) {
-                    $question = Question::find($userAnswer->question_id);
-
-                    if ($question) {
-                        $answersData[] = [
-                            'question_id' => $question->id,
-                            'question_text' => $question->question,
-                            'answer' => $userAnswer->answer == 1 ? 'Yes' : 'No',
-                            'answer_text' => $userAnswer->answer_text,
-                        ];
-                    }
-                }
-
-                $domainsData[] = [
-                    'domain' => $surveyDomain->domain,
-                    'answers' => $answersData
-                ];
-            }
-
-            $surveysData[] = [
-                'user_full_name' => $user->full_name,
-                'survey_id' => $userSurvey->id,
-                'domains' => $domainsData,
-            ];
-        }
-
-        return response()->json([
-            'success' => true,
-            'message' => 'OK',
-            'data' => $surveysData,
-            'code' => 0,
-            'locale' => 'en',
-        ]);
-    }
-    public function getAllCompletedSurveysFlat(): array
-    {
-        $completedSurveys = UserSurvey::where('status', 'Complete')->get();
-
-        if ($completedSurveys->isEmpty()) {
-            return [
-                'success' => true,
-                'message' => 'No completed surveys found',
-                'data' => [],
-                'code' => 0,
-                'locale' => 'en',
-            ];
-        }
-        $allData = [];
-
-
-        foreach ($completedSurveys as $userSurvey) {
-            $user = User::find($userSurvey->user_id);
-            $surveysData = [];
-            $userData = [
-                'full_name' => $user->full_name,
-                'site' => $user->site->site_name
-            ];
-
-
-            $surveyDomains = UserSurveyDomain::where('user_survey_id', $userSurvey->id)
-                ->where('status', 'Complete')
-                ->get();
-
-            foreach ($surveyDomains as $surveyDomain) {
-                $userAnswers = UserAnswer::where('user_survey_domain_id', $surveyDomain->id)->get();
-
-                foreach ($userAnswers as $userAnswer) {
-                    $question = Question::find($userAnswer->question_id);
-
-                    if ($question) {
-                        $surveysData[] = [
-                            'domain' => $surveyDomain->domain,
-                            'question_text' => strip_tags($question->question),
-                            'answer' => $userAnswer->answer == 1 ? 'Yes' : 'No',
-                            'answer_text' => $userAnswer->answer_text,
-                        ];
-                    }
-                }
-            }
-            $allData[] =[
-                'user_data' => $userData,
-                'survey_data' => $surveysData,
-            ];
-        }
-
-        return [
-            'success' => true,
-            'message' => 'OK',
-            'data' => $allData,
-            'code' => 0,
-            'locale' => 'en',
-        ];
-    }
-
+    /**
+     * @return \Symfony\Component\HttpFoundation\BinaryFileResponse
+     * This function takes all completed survey and return a csv containing all answers in completed survey
+     *
+     */
     public function getAllCompletedSurveysCSV(): \Symfony\Component\HttpFoundation\BinaryFileResponse
     {
+        $start = microtime(true);
         $completedSurveys = UserSurvey::where('status', 'Complete')->get();
 
         if ($completedSurveys->isEmpty()) {
@@ -710,6 +548,7 @@ class SurveyController extends Controller
                 $user->site->site_name,
             ];
             $csvData[] = $userData;
+            $csvData[] = ['Domain', 'Element', 'Question Text', 'Answer', 'Answer Text'];
 
             $surveyDomains = UserSurveyDomain::where('user_survey_id', $userSurvey->id)
                 ->where('status', 'Complete')
@@ -721,11 +560,12 @@ class SurveyController extends Controller
                 foreach ($userAnswers as $userAnswer) {
                     $question = Question::find($userAnswer->question_id);
 
-                    if ($question) {
+                    if ($question && $question->question) {
                         $csvData[] = [
                             $surveyDomain->domain,
-                            strip_tags($question->question),
                             strip_tags($question->element_print),
+                            $question->phase_description,
+                            str_replace("\n", "-", strip_tags($question->question)),
                             $userAnswer->answer == 1 ? 'Yes' : 'No',
                             $userAnswer->answer_text,
                         ];
@@ -736,17 +576,18 @@ class SurveyController extends Controller
         }
         $fileName = Str::random(10);
 
-        $csvFileName =  'survey_' . $fileName .'.csv';
+        $csvFileName = 'survey_' . $fileName . '.csv';
         $filePath = storage_path($csvFileName);
 
         $file = fopen($filePath, 'w');
-        fputcsv($file, ['Domain','Element','Question Text', 'Answer', 'Answer Text']); // Header row
-
+//        fputcsv($file, ['Domain', 'Element', 'Question Text', 'Answer', 'Answer Text']); // Header row
         foreach ($csvData as $row) {
             fputcsv($file, $row);
         }
 
         fclose($file);
+        $time_elapsed_secs = microtime(true) - $start;
+        Log::info('Time took for csv export function ' . $time_elapsed_secs);
 
         return response()->download($filePath, $csvFileName)->deleteFileAfterSend(true);
     }
