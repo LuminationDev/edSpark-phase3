@@ -18,6 +18,7 @@ use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
 class SurveyResource extends Resource
 {
     protected static ?string $model = Survey::class;
+    protected static ?int $navigationSort = 1;
 
     protected static ?string $navigationIcon = 'heroicon-o-academic-cap';
     protected static ?string $navigationGroup = 'DMA Tool';

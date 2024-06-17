@@ -44,6 +44,7 @@ const catalogueStore = useCatalogueStore()
 const showResetFilterButton = computed(() => {
     return selectedVendor.value.length ||
         selectedCategory.value.length ||
+        selectedBrand.value.length ||
         selectedType.value.length ||
         selectedProcessor.value.length ||
         selectedMemory.value.length ||

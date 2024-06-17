@@ -5,6 +5,7 @@ import {computed, onMounted, ref} from 'vue';
 
 import BaseLandingHero from "@/js/components/bases/BaseLandingHero.vue";
 import BaseLandingSection from "@/js/components/bases/BaseLandingSection.vue";
+import GenericButton from '@/js/components/button/GenericButton.vue';
 import CircleDiagram from "@/js/components/dma/CircleDiagram.vue";
 import DomainSummary from "@/js/components/dma/DomainSummary.vue";
 import FaqEntry from "@/js/components/dma/FaqEntry.vue";
@@ -15,7 +16,6 @@ import WarningModal from "@/js/components/dma/WarningModal.vue";
 import InspirationAndGuidesRobot from "@/js/components/inspirationandguides/InspirationAndGuidesRobot.vue";
 import {LandingHeroText} from "@/js/constants/PageBlurb";
 import {dmaService} from "@/js/service/dmaService";
-import GenericButton from '@/js/components/button/GenericButton.vue';
 
 const showSurveyModal = ref(false);
 const showReportModal = ref(false);
@@ -171,6 +171,12 @@ const handleResetSurvey = async () => {
     })
 }
 
+onMounted(() =>{
+    axios.get('http://localhost:8000/api/user/survey/answer').then(res =>{
+        console.log(res.data)
+    })
+})
+
 </script>
 
 <template>
@@ -236,13 +242,13 @@ const handleResetSurvey = async () => {
                                     </h3>
                                     <p
                                         v-if="isCompleted"
-                                        class="text-lg font-thin"
+                                        class="font-thin text-lg"
                                     >
                                         This chart shows your performance in each of the assessed elements.
                                     </p>
                                     <p
                                         v-else
-                                        class="text-lg font-thin"
+                                        class="font-thin text-lg"
                                     >
                                         After completing your evaluation, this
                                         chart will be updated with your
@@ -255,14 +261,18 @@ const handleResetSurvey = async () => {
                                     <CircleDiagram :scores="indicatorScores" />
                                     <RoundButton
                                         v-if="isCompleted"
+                                        class="!normal-case
+                                            
+                                            
+                                            hover:!bg-secondary-coolGrey
+                                            hover:!brightness-[1.1]"
                                         @click="showReportModal = true"
-                                        class="!normal-case  hover:!brightness-[1.1] hover:!bg-secondary-coolGrey"
                                     >
                                         View assessment report
                                     </RoundButton>
                                 </div>
                             </div>
-                            <p class="text-lg font-thin px-4 md:!px-5 lg:!px-0">
+                            <p class="font-thin px-4 text-lg md:!px-5 lg:!px-0">
                                 <!-- TODO correct this information -->
                               
                                 The tool is for you and your school. Your data is stored on the edSpark platform. 
@@ -278,14 +288,15 @@ const handleResetSurvey = async () => {
                                         v-if="isInProgress && !isDomainResetting()"
                                         class="
                                             !text-black
-                                            hover:!brightness-[1.2]
-                                            hover:!bg-secondary-coolGrey
                                             bg-secondary-coolGrey
                                             brightness-[1.1]
                                             font-medium
                                             px-12
                                             py-2
-                                            text-lg"
+                                            text-lg
+                                            hover:!bg-secondary-coolGrey
+                                            hover:!brightness-[1.2]
+                                            "
                                         @click="showResetModal = true"
                                     >
                                         Reset progress
@@ -301,9 +312,9 @@ const handleResetSurvey = async () => {
                         >
                             <DomainSummary
                                 v-for="domain of domains"
+                                id="DomainSummary"
                                 :key="domain.id"
                                 :domain="domain"
-                                id="DomainSummary"
                                 :resetting="isDomainResetting(domain.id)"
                                 @click="handleLaunchSurvey(domain.id)"
                             />
@@ -369,7 +380,10 @@ const handleResetSurvey = async () => {
                             </template>
                             <template #answer>
                                 Your Digital Maturity Assessment data is stored on the edSpark platform, which is managed by the SA Department for Education
-                                in accordance with the <a href="https://www.education.sa.gov.au/your-privacy" target="_blank">privacy policy</a>. The edSpark 
+                                in accordance with the <a
+                                    href="https://www.education.sa.gov.au/your-privacy"
+                                    target="_blank"
+                                >privacy policy</a>. The edSpark 
                                 platform is integrated with edPass, and makes use of relevant information including but not limited to your role, site name and other details on an as-needed basis.
                             </template>
                         </FaqEntry>
