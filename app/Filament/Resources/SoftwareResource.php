@@ -113,6 +113,7 @@ class SoftwareResource extends Resource
                     ->schema([
                         TinyEditor::make('how_to_access')
                             ->label('How to access')
+                            ->profile('edspark')
                             ->fileAttachmentsDisk('local')
                             ->fileAttachmentsVisibility('public')
                             ->fileAttachmentsDirectory('public/uploads/software'),
