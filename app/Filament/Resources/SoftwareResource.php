@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources;
 
+use AmidEsfahani\FilamentTinyEditor\TinyEditor;
 use App\Filament\Resources\SoftwareResource\Pages;
 use App\Filament\Resources\SoftwareResource\RelationManagers;
 use App\Helpers\CustomHtmlable;
@@ -25,10 +26,8 @@ use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
-use Mohamedsabil83\FilamentFormsTinyeditor\Components\TinyEditor;
 use PhpOffice\PhpSpreadsheet\Calculation\Statistical\Distributions\F;
 use SplFileInfo;
-
 
 class SoftwareResource extends Resource
 {

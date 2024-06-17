@@ -6,7 +6,7 @@ use Filament\Forms;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Repeater;
 use Guava\FilamentIconPicker\Forms\IconPicker;
-use Mohamedsabil83\FilamentFormsTinyeditor\Components\TinyEditor;
+use AmidEsfahani\FilamentTinyEditor\TinyEditor;
 
 
 final class IconList
@@ -28,6 +28,7 @@ final class IconList
                     ->sets(['fontawesome-solid']),
                 TextInput::make('heading'),
                 TinyEditor::make('content')
+                    ->profile('edspark')
                     ->label('Content')->fileAttachmentsDisk('local')
                     ->fileAttachmentsVisibility('public')
                     ->fileAttachmentsDirectory('public/uploads/image')

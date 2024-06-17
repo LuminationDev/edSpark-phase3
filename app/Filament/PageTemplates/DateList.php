@@ -2,11 +2,10 @@
 
 namespace App\Filament\PageTemplates;
 
+use AmidEsfahani\FilamentTinyEditor\TinyEditor;
 use Filament\Forms;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Repeater;
-use Mohamedsabil83\FilamentFormsTinyeditor\Components\TinyEditor;
-
 final class DateList
 {
     public static function title()
@@ -20,6 +19,7 @@ final class DateList
             Repeater::make('item')->schema([
                 TextInput::make('heading'),
                 TinyEditor::make('content')
+                    ->profile('edspark')
                     ->label('Content')->fileAttachmentsDisk('local')
                     ->fileAttachmentsVisibility('public')
                     ->fileAttachmentsDirectory('public/uploads/image')

@@ -28,6 +28,7 @@ class EdsparkFormComponents
         return EdsparkTinyEditor::make('content')
             ->label('Content')->fileAttachmentsDisk('azure')
             ->fileAttachmentsDirectory($fileAttachmentDirectory)
+            ->profile('edspark')
             ->required();
     }
 }

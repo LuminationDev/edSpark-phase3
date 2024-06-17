@@ -6,7 +6,7 @@ use Filament\Forms;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\Repeater;
-use Mohamedsabil83\FilamentFormsTinyeditor\Components\TinyEditor;
+use AmidEsfahani\FilamentTinyEditor\TinyEditor;
 
 final class ExtraResource
 {
@@ -86,6 +86,7 @@ final class ExtraResource
             Repeater::make('item')->schema([
                 TextInput::make('heading'),
                 TinyEditor::make('content')
+                    ->profile('edspark')
                     ->label('Content')->fileAttachmentsDisk('local')
                     ->fileAttachmentsVisibility('public')
                     ->fileAttachmentsDirectory('public/uploads/image')
