@@ -15,6 +15,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\DB;
+use Str;
 
 class SurveyController extends Controller
 {
@@ -99,12 +100,12 @@ class SurveyController extends Controller
     }
 
     public function getDescriptionForElements(Request $request, $user_domain_id): JsonResponse
-    {        
+    {
         $userDomain = UserSurveyDomain::find($user_domain_id);
 
         $elementDescription = Question::selectRaw('domain, element, element_print, element_description')
             ->where('domain', $userDomain->domain)
-            ->where('element_description', '<>', '')            
+            ->where('element_description', '<>', '')
             ->get();
 
         return response()->json(
@@ -119,7 +120,6 @@ class SurveyController extends Controller
             ]
         );
     }
-
 
 
     public function getUserReflection(Request $request): JsonResponse
@@ -241,6 +241,7 @@ class SurveyController extends Controller
             ]
         );
     }
+
     public function deleteUserActionPlan(Request $request, $user_domain_id): JsonResponse
     {
         $user = User::find(Auth::user()->id);
@@ -381,7 +382,7 @@ class SurveyController extends Controller
                 $currentUserSurveyDomain->save();
 
                 // if there are no other domains In Progress -> set the survey to completed
-                $numInProgress = UserSurveyDomain::where('user_survey_id', $userSurvey->survey_id)
+                $numInProgress = UserSurveyDomain::where('user_survey_id', $userSurvey->id)
                     ->where('status', 'In Progress')
                     ->count();
                 if ($numInProgress == 0) {
@@ -515,6 +516,82 @@ class SurveyController extends Controller
             ->get();
         return $result->pluck('generated_variable');
     }
+
+
+    /**
+     * @return \Symfony\Component\HttpFoundation\BinaryFileResponse
+     * This function takes all completed survey and return a csv containing all answers in completed survey
+     *
+     */
+    public function getAllCompletedSurveysCSV(): \Symfony\Component\HttpFoundation\BinaryFileResponse
+    {
+        $start = microtime(true);
+        $completedSurveys = UserSurvey::where('status', 'Complete')->get();
+
+        if ($completedSurveys->isEmpty()) {
+            $emptyResponse = [
+                'success' => true,
+                'message' => 'No completed surveys found',
+                'data' => [],
+                'code' => 0,
+                'locale' => 'en',
+            ];
+            return response()->json($emptyResponse);
+        }
+
+        $csvData = [];
+
+        foreach ($completedSurveys as $userSurvey) {
+            $user = User::find($userSurvey->user_id);
+            $userData = [
+                $user->full_name,
+                $user->site->site_name,
+            ];
+            $csvData[] = $userData;
+            $csvData[] = ['Domain', 'Element', 'Question Text', 'Answer', 'Answer Text'];
+
+            $surveyDomains = UserSurveyDomain::where('user_survey_id', $userSurvey->id)
+                ->where('status', 'Complete')
+                ->get();
+
+            foreach ($surveyDomains as $surveyDomain) {
+                $userAnswers = UserAnswer::where('user_survey_domain_id', $surveyDomain->id)->get();
+
+                foreach ($userAnswers as $userAnswer) {
+                    $question = Question::find($userAnswer->question_id);
+
+                    if ($question && $question->question) {
+                        $csvData[] = [
+                            $surveyDomain->domain,
+                            strip_tags($question->element_print),
+                            $question->phase_description,
+                            str_replace("\n", "-", strip_tags($question->question)),
+                            $userAnswer->answer == 1 ? 'Yes' : 'No',
+                            $userAnswer->answer_text,
+                        ];
+                    }
+                }
+            }
+            $csvData[] = ['--------------------------------------------------------------'];
+        }
+        $fileName = Str::random(10);
+
+        $csvFileName = 'survey_' . $fileName . '.csv';
+        $filePath = storage_path($csvFileName);
+
+        $file = fopen($filePath, 'w');
+//        fputcsv($file, ['Domain', 'Element', 'Question Text', 'Answer', 'Answer Text']); // Header row
+        foreach ($csvData as $row) {
+            fputcsv($file, $row);
+        }
+
+        fclose($file);
+        $time_elapsed_secs = microtime(true) - $start;
+        Log::info('Time took for csv export function ' . $time_elapsed_secs);
+
+        return response()->download($filePath, $csvFileName)->deleteFileAfterSend(false);
+    }
+
 
     public function domainNotFound(): JsonResponse
     {
