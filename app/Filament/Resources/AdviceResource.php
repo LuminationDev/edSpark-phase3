@@ -2,7 +2,6 @@
 
 namespace App\Filament\Resources;
 
-use App\Components\EdsparkTinyEditor;
 use App\Filament\Resources\AdviceResource\Pages;
 use App\Filament\Resources\AdviceResource\RelationManagers;
 use App\Helpers\EdsparkFormComponents;
@@ -87,7 +86,7 @@ class AdviceResource extends Resource
                 Forms\Components\Grid::make(2)->schema([
                     Forms\Components\Select::make('author_id')
                         ->relationship(name: 'author', titleAttribute: 'display_name')
-                        ->disabled(fn() => !RoleHelpers::has_minimum_privilege(UserRole::ADMIN))
+                        ->disabled(fn() => !RoleHelpers::has_minimum_privilege(UserRole::MODERATOR))
                         ->required()
                         ->searchable(),
                     Forms\Components\Select::make('status')

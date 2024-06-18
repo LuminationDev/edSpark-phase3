@@ -126,7 +126,7 @@ class EventResource extends Resource
                             ->schema([
                                 Forms\Components\Select::make('author_id')
                                     ->relationship(name: 'author', titleAttribute: 'display_name')
-                                    ->disabled(fn() => !RoleHelpers::has_minimum_privilege(UserRole::ADMIN))
+                                    ->disabled(fn() => !RoleHelpers::has_minimum_privilege(UserRole::MODERATOR))
                                     ->required()
                                     ->searchable(),
                                 Forms\Components\Select::make('status')

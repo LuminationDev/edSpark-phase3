@@ -54,9 +54,9 @@ class SurveyDownloadResource extends Resource
                     ->getStateUsing(function ($record): string {
                         $userId = $record->user_id;
                         $user = User::find($userId);
-                        if(!empty($user)){
+                        if (!empty($user)) {
                             return $user->full_name;
-                        }else{
+                        } else {
                             return '';
                         }
                     }),
@@ -65,16 +65,14 @@ class SurveyDownloadResource extends Resource
                     ->getStateUsing(function ($record): string {
                         $userId = $record->user_id;
                         $user = User::find($userId);
-                        if(!empty($user)){
+                        if (!empty($user)) {
                             return $user->site->site_name;
-                        }else{
+                        } else {
                             return '';
                         }
                     }),
                 Tables\Columns\TextColumn::make('updated_at')
-                ->label('Completion date')
-
-
+                    ->label('Completion date')
             ])
             ->modifyQueryUsing(function (Builder $query) {
                 return $query->where('status', 'Complete')->orderBy('updated_at', 'asc');
@@ -87,7 +85,7 @@ class SurveyDownloadResource extends Resource
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     BulkAction::make('download_res')
-                    ->label('Download results')
+                        ->label('Download results')
                         ->action(function (Collection $records) {
                             $start = microtime(true);
                             $selectedSurveys = $records;
@@ -112,7 +110,7 @@ class SurveyDownloadResource extends Resource
                                     $user->site->site_name,
                                 ];
                                 $csvData[] = $userData;
-                                $csvData[] = ['Domain', 'Element', 'Question Text', 'Answer', 'Answer Text'];
+                                $csvData[] = ['Domain', 'Element', 'Indicator', 'Phase','Answer', 'Question Text', 'Answer Text'];
 
                                 $surveyDomains = UserSurveyDomain::where('user_survey_id', $userSurvey->id)
                                     ->where('status', 'Complete')
