@@ -1,13 +1,15 @@
 <?php
 
-namespace App\Filament\Resources\AdviceResource\Pages;
+namespace App\Filament\Resources\LearningtaskResource\Pages;
 
 use App\Filament\Resources\AdviceResource;
+use App\Filament\Resources\LearningtaskResource;
 use App\Helpers\NotificationActionType;
 use App\Helpers\NotificationResource;
 use App\Helpers\NotificationResourceType;
 use App\Helpers\StatusHelpers;
 use App\Models\Advice;
+use App\Models\Advicetype;
 use App\Models\User;
 use App\Notifications\ResourceCreated;
 use App\Traits\UseNotification;
@@ -17,13 +19,13 @@ use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 
-class CreateAdvice extends CreateRecord
+class CreateLearningtask extends CreateRecord
 {
     use useNotification;
 
     private string $notificationResourceType = NotificationResourceType::ADVICE;
 
-    protected static string $resource = AdviceResource::class;
+    protected static string $resource = LearningtaskResource::class;
 
     protected function handleRecordCreation(array $data): Model
     {
@@ -55,6 +57,6 @@ class CreateAdvice extends CreateRecord
 
     protected function getCreatedNotificationTitle(): ?string
     {
-        return 'Advice created successfully';
+        return 'Learning task created successfully';
     }
 }

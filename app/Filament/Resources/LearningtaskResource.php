@@ -2,39 +2,32 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\AdviceResource\Pages;
+use App\Filament\Resources\LearningtaskResource\Pages;
+
 use App\Helpers\EdsparkFormComponents;
 use App\Helpers\RoleHelpers;
 use App\Helpers\StatusHelpers;
 use App\Helpers\UserRole;
 use App\Models\Advice;
+use App\Models\Advicetype;
 use App\Models\Label;
-use Filament\Forms;
 use Filament\Forms\Form;
-use Filament\Resources\Resource;
-use Filament\Tables\Table;
-use Filament\Tables;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Support\Facades\Auth;
+use Filament\Forms;
 
-
-use Illuminate\Filesystem\Filesystem;
-use Illuminate\Support\Collection;
-use Illuminate\Support\Str;
-use SplFileInfo;
-
-
-class AdviceResource extends Resource
+class LearningtaskResource extends AdviceResource
 {
     protected static ?string $model = Advice::class;
-    protected static ?string $modelLabel = 'Advice';
+    protected static ?string $modelLabel = 'Learning Task';
+    protected static ?string $navigationLabel = 'Learning Tasks';
 
     protected static ?string $navigationGroup = 'Content Management';
     protected static ?string $navigationGroupIcon = 'heroicon-o-rectangle-stack';
 
-    protected static ?int $navigationSort = 1;
+    protected static ?int $navigationSort = 2;
 
     protected static ?string $navigationIcon = 'heroicon-o-light-bulb';
+
 
     public static function form(Form $form): Form
     {
@@ -78,7 +71,10 @@ class AdviceResource extends Resource
                             ->label('Advice type')
                             ->relationship('advice_types', 'advice_type_name')
                             ->required()
-                            ->columns(3),
+                            ->columns(3)
+                            ->default(function () {
+                                return Advicetype::where('advice_type_name', 'Learning Task')->first()->id;
+                            }),
                         ...$labelColumns
                     ]),
 
@@ -117,117 +113,22 @@ class AdviceResource extends Resource
         ]);
     }
 
-    public static function getTemplates(): Collection
-    {
-        return static::getTemplateClasses()->mapWithKeys(fn($class) => [$class => $class::title()]);
-    }
 
-    public static function getTemplateClasses(): Collection
-    {
-        $filesystem = app(Filesystem::class);
-
-        return collect($filesystem->allFiles(app_path('Filament/PageTemplates')))
-            ->map(function (SplFileInfo $file): string {
-                return (string)Str::of('App\\Filament\\PageTemplates')
-                    ->append('\\', $file->getRelativePathname())
-                    ->replace(['/', '.php'], ['\\', '']);
-            });
-    }
-
-    public static function getTemplateSchemas(): array
-    {
-        return static::getTemplateClasses()
-            ->map(fn($class) => Forms\Components\Group::make($class::schema())
-                ->columnSpan(2)
-                ->afterStateHydrated(fn($component, $state) => $component->getChildComponentContainer()->fill($state))
-                ->statePath('extra_content.' . static::getTemplateName($class))
-                // ->statePath(static::getTemplateName($class))
-                ->visible(fn($get) => $get('template') == $class)
-            )
-            ->toArray();
-
-    }
-
-    public static function getTemplateName($class)
-    {
-        return Str::of($class)->afterLast('\\')->snake()->toString();
-    }
-
-    public static function table(Table $table): Table
-    {
-        return $table
-            ->columns([
-                Tables\Columns\TextColumn::make('title')
-                    ->label('Title')
-                    ->limit(25)
-                    ->sortable()
-                    ->searchable(),
-                Tables\Columns\ImageColumn::make('cover_image')
-                    ->square()
-                    ->getStateUsing(function ($record): string {
-                        $imgPath = $record->cover_image;
-                        if ($imgPath) {
-                            return env('AZURE_STORAGE_ENDPOINT') . env('AZURE_STORAGE_CONTAINER') . '/' . stripslashes($imgPath);
-                        } else {
-                            return '';
-                        }
-                    }),
-                Tables\Columns\TextColumn::make('advice_types.advice_type_name')
-                    ->sortable()
-                    ->label('Type')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('author.display_name')->label('Author')
-                    ->searchable()
-                    ->limit(15)
-                ,
-                Tables\Columns\TextColumn::make('status')
-                    ->label('Status')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('updated_at')
-                    ->date()
-                    ->label('Last modified')
-                    ->sortable()
-            ])
-            ->defaultSort('updated_at', 'desc')
-            ->filters([
-                Tables\Filters\SelectFilter::make('status')
-                    ->options(StatusHelpers::getStatusList())
-                    ->label('Guide status')
-                    ->default('published')
-                    ->attribute('status'),
-            ])
-            ->actions([
-                Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
-            ])
-            ->bulkActions([Tables\Actions\DeleteBulkAction::make()]);
-    }
-
-    public static function getRelations(): array
+    public static function getPages(): array
     {
         return [
-            //
+            'index' => Pages\ListLearningtask::route('/'),
+            'create' => Pages\CreateLearningtask::route('/create'),
+            'edit' => Pages\EditLearningtask::route('/{record}/edit'),
         ];
     }
 
     public static function getEloquentQuery(): Builder
     {
-        return Advice::whereDoesntHave('advice_types', function ($query) {
+        return Advice::whereHas('advice_types', function ($query) {
             $query->where('advice_type_name', 'Learning Task');
         });
     }
 
-    public static function getPages(): array
-    {
-        return [
-            'index' => Pages\ListAdvice::route('/'),
-            'create' => Pages\CreateAdvice::route('/create'),
-            'edit' => Pages\EditAdvice::route('/{record}/edit'),
-        ];
-    }
 
-    public static function shouldRegisterNavigation(): bool
-    {
-        return RoleHelpers::has_minimum_privilege('site_leader');
-    }
 }
