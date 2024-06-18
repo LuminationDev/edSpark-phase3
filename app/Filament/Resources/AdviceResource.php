@@ -3,7 +3,6 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\AdviceResource\Pages;
-use App\Filament\Resources\AdviceResource\RelationManagers;
 use App\Helpers\EdsparkFormComponents;
 use App\Helpers\RoleHelpers;
 use App\Helpers\StatusHelpers;
@@ -15,6 +14,7 @@ use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables\Table;
 use Filament\Tables;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Auth;
 
 
@@ -38,7 +38,6 @@ class AdviceResource extends Resource
 
     public static function form(Form $form): Form
     {
-        $current_user = Auth::user();
         $groupedLabels = Label::all()->groupBy('type');
 
         $labelColumns = [];
@@ -115,8 +114,6 @@ class AdviceResource extends Resource
                         ])
                         ->label('Extra content')
                 ])
-
-
         ]);
     }
 
@@ -211,6 +208,13 @@ class AdviceResource extends Resource
         return [
             //
         ];
+    }
+
+    public static function getEloquentQuery(): Builder
+    {
+        return Advice::whereDoesntHave('advice_types', function ($query) {
+            $query->where('advice_type_name', 'Learning Task');
+        });
     }
 
     public static function getPages(): array

@@ -12,6 +12,7 @@ class ListLearningtask extends ListRecords
 {
     protected static string $resource = LearningtaskResource::class;
 
+
     protected function getHeaderActions(): array
     {
         return [
