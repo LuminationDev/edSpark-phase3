@@ -96,7 +96,7 @@ class SoftwareResource extends Resource
                             ->schema([
                                 Forms\Components\Select::make('author_id')
                                     ->relationship(name: 'author', titleAttribute: 'display_name')
-                                    ->disabled(fn() => !RoleHelpers::has_minimum_privilege(UserRole::ADMIN))
+                                    ->disabled(fn() => !RoleHelpers::has_minimum_privilege(UserRole::MODERATOR))
                                     ->required()
                                     ->searchable(),
 
@@ -113,6 +113,7 @@ class SoftwareResource extends Resource
                     ->schema([
                         TinyEditor::make('how_to_access')
                             ->label('How to access')
+                            ->profile('edspark')
                             ->fileAttachmentsDisk('local')
                             ->fileAttachmentsVisibility('public')
                             ->fileAttachmentsDirectory('public/uploads/software'),
