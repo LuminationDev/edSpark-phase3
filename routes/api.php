@@ -66,6 +66,8 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::get('learningtask', [AdviceController::class, 'fetchLearningTask']);
 
+    Route::get('dag', [AdviceController::class, 'fetchDAG']);
+
     // Software APIs
     Route::post('createSoftwarePost', [SoftwareController::class, 'createSoftwarePost']);
     Route::get('fetchSoftwarePosts', [SoftwareController::class, 'handleFetchSoftwarePosts']);
@@ -175,7 +177,6 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('updateOrCreateUserAvatar/{user_id}', [UserController::class, 'updateOrCreateUserAvatar']);
 
 
-
     // Notification
 //    Route::get('user/notification/{user_id}', [NotificationController::class,'getUserNotification']);
 //    Route::get('user/notification/{user_id}', [NotificationController::class,'getUserNotification']);
@@ -210,8 +211,6 @@ Route::middleware('auth:sanctum')->group(function () {
     });
     //vendor
     Route::get('/vendor/{vendor_name}', [CartController::class, 'getVendorInfo']);
-
-
 
 
 });

@@ -6,6 +6,7 @@ use App\Filament\Resources\AdvicetypeResource\Pages;
 use App\Filament\Resources\AdvicetypeResource\RelationManagers;
 use App\Helpers\RoleHelpers;
 use App\Helpers\UserRole;
+use App\Models\Advice;
 use App\Models\Advicetype;
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -96,4 +97,8 @@ class AdvicetypeResource extends Resource
         return RoleHelpers::has_minimum_privilege(UserRole::ADMIN);
     }
 
+    public static function getEloquentQuery(): Builder
+    {
+        return Advicetype::whereNotIn('advice_type_name', ['DAG', 'Learning Task']);
+    }
 }
