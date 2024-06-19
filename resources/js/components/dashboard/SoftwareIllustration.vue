@@ -73,7 +73,7 @@ onUnmounted(() => {
                 No cost
             </h5>
             <p class="font-light">
-                These are applications are available with no cost to schools, these applications have been formally risk assessed by Cyber Security centrally.
+                These applications are available with no cost to schools, these applications have been formally risk assessed by Cyber Security centrally.
             </p>
         </div>
 
@@ -88,7 +88,7 @@ onUnmounted(() => {
             <h5 class="font-medium text-xl">
                 Cyber assessed
             </h5>
-            <p class="pb-4 font-light">
+            <p class="font-light pb-4">
                 These are applications that have been risk assessed by Cyber Security but are not provided by the Department, site leaders should be aware of the risks prior to being used at your school.
             </p>
         </div>
@@ -107,7 +107,7 @@ onUnmounted(() => {
             <h5 class="font-medium text-xl">
                 Negotiated deals
             </h5>
-            <p class="pb-4 font-light">
+            <p class="font-light pb-4">
                 Still risk assessed, these applications have an agreement
                 in place for schools to receive better value. Schools will
                 need to fund purchases

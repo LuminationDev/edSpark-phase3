@@ -225,7 +225,7 @@ const formattedSearchBlurb = computed(() => {
                     :key="data['key']"
                 >
                     <template
-                        v-if="searchType === 'guide'"
+                        v-if="searchType === 'guide' || searchType === 'task'"
                     >
                         <div
                             :key="data.id"

@@ -22,5 +22,10 @@ export const adviceService = {
         return axios.get(API_ENDPOINTS.ADVICE.FETCH_ADVICE_POSTS_BY_TYPE_YOUR).then(res => {
             return cardDataWithGuid(res.data)
         })
+    },
+    fetchLearningTask: () =>{
+        return axios.get(API_ENDPOINTS.ADVICE.LEARNING_TASK).then(res =>{
+            return cardDataWithGuid(res.data)
+        })
     }
 }

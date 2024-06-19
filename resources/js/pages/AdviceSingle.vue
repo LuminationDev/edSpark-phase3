@@ -9,11 +9,10 @@ import TinyMceContentRenderer from "@/js/components/bases/frontendform/TinyMceEd
 import LabelRowContentDisplay from "@/js/components/global/LabelRowContentDisplay.vue";
 import ExtraResourceTemplateDisplay from "@/js/components/renderer/ExtraResourceTemplateDisplay.vue";
 import {formatDateToDayTime} from "@/js/helpers/dateHelper";
-import {edSparkContentSanitizer} from "@/js/helpers/objectHelpers";
 /**
  *  type AdviceSingleContent = {
  *      post_id: number
- *      advice_type: string,
+ *      type: String[],
  *      author: string,
  *      post_title: string
  *      post_excerpt
@@ -27,13 +26,6 @@ import {edSparkContentSanitizer} from "@/js/helpers/objectHelpers";
  *  }
  */
 
-const timeFormatter = (originalFormat) => {
-    const dateObj = new Date(originalFormat);
-    const options = {year: 'numeric', month: 'short', day: 'numeric'};
-    const formattedDate = dateObj.toLocaleDateString(undefined, options);
-
-    return formattedDate !== 'Invalid Date' ? formattedDate : '';
-}
 
 </script>
 <template>
@@ -45,8 +37,8 @@ const timeFormatter = (originalFormat) => {
                 <template #breadcrumb>
                     <BaseBreadcrumb
                         :child-page="contentFromBase.title"
-                        parent-page="Guides"
-                        :parent-page-link="'browse/guide'"
+                        :parent-page="contentFromBase['type'] ? (contentFromBase['type'][0] === 'Learning Task' ? 'Learning tasks' : 'Guides' ) : ''"
+                        :parent-page-link="contentFromBase['type'] ? (contentFromBase['type'][0] === 'Learning Task' ? 'learning' : 'browse/guides' ) : ''"
                     />
                 </template>
                 <template #titleText>

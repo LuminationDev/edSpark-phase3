@@ -64,6 +64,8 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('fetchAdviceTypes', [AdviceController::class, 'fetchAdviceTypes']);
     Route::get('fetchUserAdvice', [AdviceController::class, 'handleFetchAdvicePosts']);
 
+    Route::get('learningtask', [AdviceController::class, 'fetchLearningTask']);
+
     // Software APIs
     Route::post('createSoftwarePost', [SoftwareController::class, 'createSoftwarePost']);
     Route::get('fetchSoftwarePosts', [SoftwareController::class, 'handleFetchSoftwarePosts']);

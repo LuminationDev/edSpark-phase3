@@ -49,7 +49,8 @@ const customText = computed(() => {
         </router-link>
         <ChevronRight class="h-3 w-3" />
         <router-link
-            class="flex grow"
+            class="flex grow w-fit"
+
             :to="`/${props.parentPageLink ? props.parentPageLink : props.parentPage}`"
         >
             <div

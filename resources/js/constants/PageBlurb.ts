@@ -72,6 +72,14 @@ export const LandingHeroText = {
         title: 'Review quote',
         subtitle: 'Items in quotes are grouped based on vendors and quote for each vendor must be generated individually. Use the download quote button to access quote for the vendor or the download all button',
     },
+    learningTask:{
+        title: 'Learning tasks',
+        subtitle: 'Learning tasks have been curated to be as easy as possible to utilise in the classroom'
+    },
+    dag:{
+        title: 'Digital Adoption Group',
+        subtitle: 'Digital Adoption Group helps you integrate digital technology to your day to day teaching'
+    }
 
 }
 
@@ -81,6 +89,7 @@ export const SearchTitleByType = {
     school: 'school profiles',
     event: 'events',
     guide: 'guides and resources',
-    partner: 'partner profiles'
+    partner: 'partner profiles',
+    task: 'learning tasks'
 
 }

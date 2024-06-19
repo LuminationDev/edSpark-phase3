@@ -28,6 +28,7 @@ import EventSingle from "@/js/pages/EventSingle.vue";
 import HardwareSingle from '@/js/pages/HardwareSingle.vue';
 import InspirationAndGuides from "@/js/pages/InspirationAndGuides.vue";
 import InspirationLanding from "@/js/pages/InspirationLanding.vue";
+import LearningTask from "@/js/pages/LearningTask.vue";
 import PartnerSingle from "@/js/pages/PartnerSingle.vue";
 import ProvidersAndEvents from "@/js/pages/ProvidersAndEvents.vue";
 import SchoolSingle from "@/js/pages/SchoolSingle.vue";
@@ -170,7 +171,20 @@ const routes: any = [
                     requiresAuth: true,
                     navigation: true
                 } as RouteMeta
-            }
+            },
+            {
+                name: 'learning-tasks',
+                path: '/learning',
+                component: LearningTask,
+                meta: {
+                    requiresAuth: true,
+                    partnerCanAccess: false,
+                    navigation: true,
+                    customText: 'Learning tasks'
+
+                }
+            },
+
         ]
     },
     {
@@ -341,6 +355,16 @@ const routes: any = [
     {
         name: 'guides',
         path: '/guides',
+        component: InspirationAndGuides,
+        meta: {
+            requiresAuth: true,
+            partnerCanAccess: false
+        }
+    },
+
+    {
+        name: 'dag',
+        path: '/dag',
         component: InspirationAndGuides,
         meta: {
             requiresAuth: true,
