@@ -49,6 +49,7 @@ export const API_ENDPOINTS: Endpoints = appendServerURL({
         FETCH_ADVICE_TYPES: `/fetchAdviceTypes`,
         FETCH_USER_ADVICE: `/fetchUserAdvice`,
         LEARNING_TASK: '/learningtask',
+        DAG: '/dag'
 
     },
     SOFTWARE: {

@@ -35,6 +35,7 @@ import SchoolSingle from "@/js/pages/SchoolSingle.vue";
 import TechnologyLanding from "@/js/pages/TechnologyLanding.vue";
 import TheCatalogue from "@/js/pages/TheCatalogue.vue";
 import TheCreator from "@/js/pages/TheCreator.vue";
+import TheDag from "@/js/pages/TheDag.vue";
 import TheForbidden from "@/js/pages/TheForbidden.vue";
 import TheHardware from "@/js/pages/TheHardware.vue";
 import TheHome from "@/js/pages/TheHome.vue";
@@ -182,6 +183,17 @@ const routes: any = [
                     navigation: true,
                     customText: 'Learning tasks'
 
+                }
+            },
+            {
+                name: 'dag',
+                path: '/dag',
+                component: TheDag,
+                meta: {
+                    requiresAuth: true,
+                    partnerCanAccess: false,
+                    navigation: true,
+                    customText: 'DAG'
                 }
             },
 
@@ -362,15 +374,7 @@ const routes: any = [
         }
     },
 
-    {
-        name: 'dag',
-        path: '/dag',
-        component: InspirationAndGuides,
-        meta: {
-            requiresAuth: true,
-            partnerCanAccess: false
-        }
-    },
+
     {
         name: 'guide-single',
         path: '/guide/resources/:id/:slug?',

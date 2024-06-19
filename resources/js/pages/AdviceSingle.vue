@@ -9,6 +9,7 @@ import TinyMceContentRenderer from "@/js/components/bases/frontendform/TinyMceEd
 import LabelRowContentDisplay from "@/js/components/global/LabelRowContentDisplay.vue";
 import ExtraResourceTemplateDisplay from "@/js/components/renderer/ExtraResourceTemplateDisplay.vue";
 import {formatDateToDayTime} from "@/js/helpers/dateHelper";
+
 /**
  *  type AdviceSingleContent = {
  *      post_id: number
@@ -26,6 +27,34 @@ import {formatDateToDayTime} from "@/js/helpers/dateHelper";
  *  }
  */
 
+const getAdviceBreadcrumbParentTitle = (type) => {
+    console.log(type)
+    if (!type || !type.length) {
+        return ''
+    }
+    if (type[0] === 'Learning task') {
+        return 'Learning task'
+    } else if (type[0] === "DAG") {
+        return 'DAG'
+    } else {
+        return 'Guides'
+    }
+
+}
+
+const getAdviceBreadcrumbParentLink = (type) => {
+    if (!type || !type.length) {
+        return ''
+    }
+    if (type[0] === 'Learning task') {
+        return 'learning'
+    } else if (type[0] === "DAG") {
+        return 'dag'
+    } else {
+        return 'browse/guides'
+    }
+}
+
 
 </script>
 <template>
@@ -37,8 +66,8 @@ import {formatDateToDayTime} from "@/js/helpers/dateHelper";
                 <template #breadcrumb>
                     <BaseBreadcrumb
                         :child-page="contentFromBase.title"
-                        :parent-page="contentFromBase['type'] ? (contentFromBase['type'][0] === 'Learning Task' ? 'Learning tasks' : 'Guides' ) : ''"
-                        :parent-page-link="contentFromBase['type'] ? (contentFromBase['type'][0] === 'Learning Task' ? 'learning' : 'browse/guides' ) : ''"
+                        :parent-page="getAdviceBreadcrumbParentTitle(contentFromBase['type'])"
+                        :parent-page-link="getAdviceBreadcrumbParentLink(contentFromBase['type'])"
                     />
                 </template>
                 <template #titleText>

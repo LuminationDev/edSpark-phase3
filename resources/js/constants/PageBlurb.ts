@@ -90,6 +90,7 @@ export const SearchTitleByType = {
     event: 'events',
     guide: 'guides and resources',
     partner: 'partner profiles',
-    task: 'learning tasks'
+    task: 'learning tasks',
+    dag: 'DAG resources'
 
 }
