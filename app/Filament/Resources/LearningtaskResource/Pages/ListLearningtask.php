@@ -2,13 +2,11 @@
 
 namespace App\Filament\Resources\LearningtaskResource\Pages;
 
-use App\Filament\Resources\AdviceResource;
-use App\Filament\Resources\LabelResource;
+use App\Filament\Resources\AdviceResource\Pages\ListAdvice;
 use App\Filament\Resources\LearningtaskResource;
 use Filament\Pages\Actions;
-use Filament\Resources\Pages\ListRecords;
 
-class ListLearningtask extends ListRecords
+class ListLearningtask extends ListAdvice
 {
     protected static string $resource = LearningtaskResource::class;
 
