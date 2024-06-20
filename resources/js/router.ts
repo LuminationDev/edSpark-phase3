@@ -584,40 +584,81 @@ const partnerRouteChecker = (to, from, next) => {
 
 router.beforeEach(partnerRouteChecker)
 // regular authentication
+// router.beforeEach(async (to, from, next) => {
+//     const authStore = useAuthStore();
+//     const userStore = useUserStore();
+//     const {userEntryLink} = storeToRefs(userStore)
+//     // it will only fill in userEntryLink if the entry link is null or not 'finished
+//     if (!userEntryLink.value && userEntryLink.value !== 'finished') {
+//         userEntryLink.value = to.fullPath
+//     }
+//     if (!to.meta.requiresAuth) {
+//         return next();
+//     }
+//     if (authStore.isAuthenticated instanceof Promise) {
+//         await authStore.isAuthenticated?.then(() => {
+//             if (authStore.isAuthenticated) {
+//                 next();
+//             } else {
+//                 console.log("Auth promise false");
+//                 console.log(authStore.isAuthenticated)
+//                 const state = encodeURIComponent(`custom_redirect_url=${userEntryLink.value}`);
+//                 const loginUrl = `/login?state=${state}`;
+//                 window.location.href = loginUrl;
+//             }
+//         })
+//     } else { // authStore.isAuthenticated is boolean
+//         if (authStore.isAuthenticated) {
+//             next();
+//         } else {
+//             console.log("Auth bool false");
+//             console.log(authStore.isAuthenticated)
+//             const state = encodeURIComponent(`custom_redirect_url=${userEntryLink.value}`);
+//             const loginUrl = `/login?state=${state}`;
+//             window.location.href = loginUrl;
+//         }
+//     }
+//     // If the route doesn't require authentication, move on.
+// });
+
+
 router.beforeEach(async (to, from, next) => {
+    console.log('router before each here')
     const authStore = useAuthStore();
     const userStore = useUserStore();
-    const {userEntryLink} = storeToRefs(userStore)
-    // it will only fill in userEntryLink if the entry link is null or not 'finished
-    if (!userEntryLink.value && userEntryLink.value !== 'finished') {
-        userEntryLink.value = to.fullPath
+    const {userEntryLink} = storeToRefs(userStore);
+
+    if (!userEntryLink.value || userEntryLink.value !== 'finished') {
+        userEntryLink.value = to.fullPath;
     }
+
     if (!to.meta.requiresAuth) {
         return next();
     }
-    if (authStore.isAuthenticated instanceof Promise) {
-        await authStore.isAuthenticated?.then(() => {
-            if (authStore.isAuthenticated) {
-                next();
-            } else {
-                console.log("Auth promise false");
-                console.log(authStore.isAuthenticated)
-                const state = encodeURIComponent(`custom_redirect_url=${userEntryLink.value}`);
-                const loginUrl = `/login?state=${state}`;
-                window.location.href = loginUrl;
-            }
-        })
-    } else { // authStore.isAuthenticated is boolean
-        if (authStore.isAuthenticated) {
+
+    try {
+        if (authStore.getAuthStatus instanceof Promise) {
+            console.log('before await')
+            await authStore.getAuthStatus;
+            console.log('after await')
+        }
+
+        if (authStore.getAuthStatus) {
             next();
         } else {
-            console.log("Auth bool false");
-            console.log(authStore.isAuthenticated)
+            console.log("User is not authenticated");
+            console.log(authStore.getAuthStatus)
             const state = encodeURIComponent(`custom_redirect_url=${userEntryLink.value}`);
             const loginUrl = `/login?state=${state}`;
-            window.location.href = loginUrl;
+            window.location.href = loginUrl; // External redirect
+            next(false);
         }
+    } catch (error) {
+        // console.error("Authentication check failed", error);
+        // const state = encodeURIComponent(`custom_redirect_url=${userEntryLink.value}`);
+        // const loginUrl = `/login?state=${state}`;
+        // window.location.href = loginUrl; // External redirect
     }
-    // If the route doesn't require authentication, move on.
 });
+
 export default router;

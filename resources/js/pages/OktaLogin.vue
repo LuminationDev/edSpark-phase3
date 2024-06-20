@@ -1,5 +1,5 @@
 <script setup>
-import {onBeforeMount, ref} from 'vue';
+import {onBeforeMount, onMounted, ref} from 'vue';
 import {useRouter} from "vue-router";
 
 import {appURL} from "@/js/constants/serverUrl";
@@ -17,11 +17,17 @@ const redirectToOkta = () => {
     window.location = '/login';
 }
 
-onBeforeMount(async() =>{
-    await authStore.checkAuthenticationStatus()
-    if(authStore.isAuthenticated){
-        console.log('pushing from login page to dashboard')
-        await router.push('/dashboard')
+onMounted(async () => {
+    if (authStore.isAuthenticated instanceof Promise) {
+        console.log('before await')
+        await authStore.isAuthenticated;
+        console.log('after await')
+    }
+    console.log('here is login page')
+    console.log(authStore.isAuthenticated)
+    if (authStore.isAuthenticated) {
+        console.log('about to send to dashboard')
+        await router.push('/dashboard');
     }
 })
 
@@ -39,8 +45,10 @@ const loginWithOktaButtonPressed = ref(false);
                 Welcome to edSpark!
             </h2>
             <p class="font-thin mb-2">
-                edSpark is provided by the Department for Education, South Australia. Access to edSpark is granted through EdPass.
-            </p><p class="font-thin mb-4">
+                edSpark is provided by the Department for Education, South Australia. Access to edSpark is granted
+                through EdPass.
+            </p>
+            <p class="font-thin mb-4">
                 You'll be redirected within a few seconds, or click the button below.
             </p>
             <p />

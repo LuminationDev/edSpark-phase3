@@ -21,7 +21,6 @@ export const useNotificationStore = defineStore('notification', {
                 this.unreadNotifications = res.data.data.filter(notification => !notification.read_at)
             } catch (error) {
                 console.error("Error fetching notifications:", error)
-                throw error
             }
         }
     }

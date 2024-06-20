@@ -1,3 +1,4 @@
+import {useStorage} from "@vueuse/core";
 import axios from "axios";
 import {defineStore} from 'pinia';
 import {Ref} from "vue";
@@ -10,7 +11,7 @@ interface AuthState {
 
 export const useAuthStore = defineStore('auth', {
     state: (): AuthState => <AuthState>({
-        isAuthenticated: false,
+        isAuthenticated: useStorage('edspark-auth', false, sessionStorage),
     }),
     getters: {
         getAuthStatus() {
