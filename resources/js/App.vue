@@ -73,13 +73,13 @@ const handleAuth = async () => {
         window.location.href = loginUrl;
         return false; // Indicate that the user is not authenticated
     } else {
-        if(userEntryLink.value === '/'){
+        axios.get(`${appURL}/sanctum/csrf-cookie`);
+        userStore.fetchCurrentUserAndLoadIntoStore();
+        if (userEntryLink.value === '/') {
             const userEntryLink = sessionStorage.getItem('edspark-entry-link');
             console.log(userEntryLink);
             await router.push('/dashboard')
         }
-        await axios.get(`${appURL}/sanctum/csrf-cookie`);
-        await userStore.fetchCurrentUserAndLoadIntoStore();
 
 
         return true; // Indicate that the user is authenticated
