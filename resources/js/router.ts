@@ -623,7 +623,6 @@ router.beforeEach(partnerRouteChecker)
 
 
 router.beforeEach(async (to, from, next) => {
-    console.log('router before each here')
     const authStore = useAuthStore();
     const userStore = useUserStore();
     const {userEntryLink} = storeToRefs(userStore);
@@ -638,16 +637,12 @@ router.beforeEach(async (to, from, next) => {
 
     try {
         if (authStore.getAuthStatus instanceof Promise) {
-            console.log('before await')
             await authStore.getAuthStatus;
-            console.log('after await')
         }
 
         if (authStore.getAuthStatus) {
             next();
         } else {
-            console.log("User is not authenticated");
-            console.log(authStore.getAuthStatus)
             const state = encodeURIComponent(`custom_redirect_url=${userEntryLink.value}`);
             const loginUrl = `/login?state=${state}`;
             window.location.href = loginUrl; // External redirect

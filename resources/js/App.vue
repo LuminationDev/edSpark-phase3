@@ -58,13 +58,9 @@ const removeEventListeners = () => {
  * @throws Will throw an error if network requests within the function fail.
  */
 const handleAuth = async () => {
-    console.log('app.vue handle auth')
     await authStore.checkAuthenticationStatus(); // populate isAuth with promise
-    console.log(authStore.isAuthenticated);
     if (authStore.isAuthenticated instanceof Promise) {
-        console.log('before await')
         await authStore.isAuthenticated;
-        console.log('after await')
     }
     if (!authStore.isAuthenticated) {
         const userEntryLink = sessionStorage.getItem('edspark-entry-link');
@@ -75,13 +71,6 @@ const handleAuth = async () => {
     } else {
         axios.get(`${appURL}/sanctum/csrf-cookie`);
         userStore.fetchCurrentUserAndLoadIntoStore();
-        if (userEntryLink.value === '/') {
-            const userEntryLink = sessionStorage.getItem('edspark-entry-link');
-            console.log(userEntryLink);
-            await router.push('/dashboard')
-        }
-
-
         return true; // Indicate that the user is authenticated
     }
 };

@@ -44,7 +44,7 @@ class LoginController extends Controller
             Log::info('Success login ' . $user->email);
             Log::info('From ' . $request->ip());
 
-            if ($redirectUrl) {
+            if ($redirectUrl && $redirectUrl !== "/") {
                 return redirect($redirectUrl);
             } else {
                 return redirect('/dashboard');
