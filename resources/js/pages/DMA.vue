@@ -171,12 +171,6 @@ const handleResetSurvey = async () => {
     })
 }
 
-onMounted(() =>{
-    axios.get('http://localhost:8000/api/user/survey/answer').then(res =>{
-        console.log(res.data)
-    })
-})
-
 </script>
 
 <template>

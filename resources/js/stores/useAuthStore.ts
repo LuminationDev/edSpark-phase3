@@ -1,14 +1,17 @@
+import {useStorage} from "@vueuse/core";
 import axios from "axios";
 import {defineStore} from 'pinia';
 import {Ref} from "vue";
 
 import {appURL} from "@/js/constants/serverUrl";
+
 interface AuthState {
-    isAuthenticated : Ref<Promise<boolean> | boolean>
+    isAuthenticated: Ref<Promise<boolean> | boolean>
 }
+
 export const useAuthStore = defineStore('auth', {
     state: (): AuthState => <AuthState>({
-        isAuthenticated: false,
+        isAuthenticated: useStorage('edspark-auth', false, sessionStorage),
     }),
     getters: {
         getAuthStatus() {
@@ -16,15 +19,15 @@ export const useAuthStore = defineStore('auth', {
         }
     },
     actions: {
-        async init(){
+        async init() {
 
         },
-        checkAuthenticationStatus() {
+        async checkAuthenticationStatus() {
             try {
-                this.isAuthenticated = axios.get(`${appURL}/auth/check`).then(res => {
-                    console.log('AUTHSTORE IS AUTHENTICATED IS FULFILLED ' + res.data.authenticated)
-                    this.isAuthenticated = res.data?.authenticated
-                })
+                const result = await axios.get(`${appURL}/auth/check`)
+                this.isAuthenticated = result.data.authenticated
+                return this.isAuthenticated;
+
             } catch (error) {
                 this.isAuthenticated = false;
                 throw new Error('Failed to check authentication status');

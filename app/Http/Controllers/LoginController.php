@@ -15,10 +15,15 @@ use Illuminate\Support\Facades\Log;
 
 class LoginController extends Controller
 {
-    public function redirectToOkta()
+    public function redirectToOkta(Request $request)
     {
-        // TODO: SCOPE ONCE WE MIGRATE TO REAL OKTA
-        return Socialite::driver('okta')->scopes(['edspark', 'email', 'address'])->redirect();
+        $state = $request->input('state', '');
+
+        return Socialite::driver('okta')
+            ->scopes(['edspark', 'email', 'address'])
+            ->with(['state' => $state])
+            ->redirect();
+//        return Socialite::driver('okta')->scopes(['edspark', 'email', 'address'])->redirect();
 
     }
 
@@ -26,6 +31,10 @@ class LoginController extends Controller
     {
         try {
             $state = $request->get('state');
+            parse_str($state, $stateParams);
+            if (isset($stateParams['custom_redirect_url'])) {
+                $redirectUrl = urldecode($stateParams['custom_redirect_url']);
+            }
             $request->session()->put('state', $state);
 
             $user = $this->getOktaUser();
@@ -35,8 +44,13 @@ class LoginController extends Controller
             Log::info('Success login ' . $user->email);
             Log::info('From ' . $request->ip());
 
+            if ($redirectUrl && $redirectUrl !== "/") {
+                return redirect($redirectUrl);
+            } else {
+                return redirect('/dashboard');
 
-            return redirect('/dashboard');
+            }
+
         } catch (\Throwable $e) {
             Log::error('Failed login ' . $user->email);
             return redirect('/error?errtype=failed+login', 302);
@@ -45,11 +59,11 @@ class LoginController extends Controller
 
     private function getOktaUser()
     {
-        try{
+        try {
             return Socialite::driver('okta')->user();
 
-        } catch (\Exception $e){
-            Log::error('Failed to getOktaUser from Socialiate Driver ' .  $e->getMessage());
+        } catch (\Exception $e) {
+            Log::error('Failed to getOktaUser from Socialiate Driver ' . $e->getMessage());
             return NULL;
         }
     }
@@ -58,7 +72,7 @@ class LoginController extends Controller
     {
         try {
             $idToken = $user->token;
-	    Log::info(json_encode($user));
+            Log::info(json_encode($user));
 
             // Get the user's edSpark profile/data
             $userEdSpark = isset($user->email) ? User::where('email', $user->email)->first() : NULL;
@@ -77,7 +91,7 @@ class LoginController extends Controller
             }
             $dataToBeUpdatedOrCreated = [
                 'full_name' => $user->name,
-                'display_name' => (isset($userEdSpark) && $userEdSpark->display_name) ? $userEdSpark->display_name :$user->name,
+                'display_name' => (isset($userEdSpark) && $userEdSpark->display_name) ? $userEdSpark->display_name : $user->name,
                 'remember_token' => Str::random(15),
                 'token' => $idToken ?? "",
                 'first_visit' => false,
@@ -94,7 +108,7 @@ class LoginController extends Controller
             } else if (!$userEdSparkId) { // User has no current account, get role from Okta or default to viewer
                 try {
                     $userHasMainrolecode = isset($user->user['mainrolecode']);
-                    $userRoleOnEdSpark = $userHasMainrolecode ? Role::where('role_name', $user->user['mainrolecode'])->first() : NULL ;
+                    $userRoleOnEdSpark = $userHasMainrolecode ? Role::where('role_name', $user->user['mainrolecode'])->first() : NULL;
                     $role = $userRoleOnEdSpark ?? Role::where('role_name', 'OTHER')->first();
                     $dataToBeUpdatedOrCreated['role_id'] = $role->id;
                 } catch (\Exception $e) {
