@@ -135,7 +135,7 @@ class SurveyDownloadResource extends Resource
                                         }
                                     }
                                 }
-                                $csvData[] = ['--------------------------------------------------------------'];
+                                $csvData[] = ['---','---','---','---','---','---','---'];
                             }
                             $fileName = Str::random(10);
 

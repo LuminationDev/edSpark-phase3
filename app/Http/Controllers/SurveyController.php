@@ -25,12 +25,15 @@ class SurveyController extends Controller
         $user = User::find(Auth::user()->id);
         // check if they have an active survey
         $userSurvey = UserSurvey::where('user_id', $user->id)
-            ->where('status', '<>', 'Abandoned')
+//            ->where('status', '<>', 'Abandoned')
+            ->whereNotIn('status',['Abandoned', 'Superseded'])
             ->first();
 
         if ($userSurvey != null) {
             $survey_domains = UserSurveyDomain::where('user_survey_id', $userSurvey->id)
-                ->where('status', '<>', 'Abandoned')
+//                ->where('status', '<>', 'Abandoned')
+                ->whereNotIn('status',['Abandoned', 'Superseded'])
+
                 ->get();
             foreach ($survey_domains as &$survey_domain) {
 
@@ -126,7 +129,8 @@ class SurveyController extends Controller
     {
         $user = User::find(Auth::user()->id);
         $userSurvey = UserSurvey::where('user_id', $user->id)
-            ->where('status', '<>', 'Abandoned')
+            //                ->where('status', '<>', 'Abandoned')
+            ->whereNotIn('status',['Abandoned', 'Superseded'])
             ->first();
 
         if ($userSurvey == null) {
@@ -134,7 +138,8 @@ class SurveyController extends Controller
         }
 
         $survey_domains = UserSurveyDomain::where('user_survey_id', $userSurvey->id)
-            ->where('status', '<>', 'Abandoned')
+            //                ->where('status', '<>', 'Abandoned')
+            ->whereNotIn('status',['Abandoned', 'Superseded'])
             ->get();
 
         foreach ($survey_domains as $survey_domain) {
@@ -159,7 +164,8 @@ class SurveyController extends Controller
     {
         $user = User::find(Auth::user()->id);
         $userSurvey = UserSurvey::where('user_id', $user->id)
-            ->where('status', '<>', 'Abandoned')
+            //                ->where('status', '<>', 'Abandoned')
+            ->whereNotIn('status',['Abandoned', 'Superseded'])
             ->first();
 
         if ($userSurvey == null) {
@@ -167,7 +173,8 @@ class SurveyController extends Controller
         }
 
         $survey_domains = UserSurveyDomain::where('user_survey_id', $userSurvey->id)
-            ->where('status', '<>', 'Abandoned')
+            //                ->where('status', '<>', 'Abandoned')
+            ->whereNotIn('status',['Abandoned', 'Superseded'])
             ->get();
 
         foreach ($survey_domains as $survey_domain) {
@@ -191,7 +198,8 @@ class SurveyController extends Controller
     {
         $user = User::find(Auth::user()->id);
         $userSurvey = UserSurvey::where('user_id', $user->id)
-            ->where('status', '<>', 'Abandoned')
+           //                ->where('status', '<>', 'Abandoned')
+                ->whereNotIn('status',['Abandoned', 'Superseded'])
             ->first();
 
         if ($userSurvey == null) {
@@ -246,7 +254,8 @@ class SurveyController extends Controller
     {
         $user = User::find(Auth::user()->id);
         $userSurvey = UserSurvey::where('user_id', $user->id)
-            ->where('status', '<>', 'Abandoned')
+           //                ->where('status', '<>', 'Abandoned')
+                ->whereNotIn('status',['Abandoned', 'Superseded'])
             ->first();
 
         if ($userSurvey == null) {
@@ -304,7 +313,8 @@ class SurveyController extends Controller
     {
         $user = User::find(Auth::user()->id);
         $userSurvey = UserSurvey::where('user_id', $user->id)
-            ->where('status', '<>', 'Abandoned')
+           //                ->where('status', '<>', 'Abandoned')
+                ->whereNotIn('status',['Abandoned', 'Superseded'])
             ->first();
 
         if ($userSurvey == null) {
@@ -351,7 +361,8 @@ class SurveyController extends Controller
         $increaseCompletedElementCount = $request['increase_completed_element_count'];
 
         $userSurvey = UserSurvey::where('user_id', $user->id)
-            ->where('status', '<>', 'Abandoned')
+           //                ->where('status', '<>', 'Abandoned')
+                ->whereNotIn('status',['Abandoned', 'Superseded'])
             ->first();
 
         if ($userSurvey == null) {
@@ -416,7 +427,8 @@ class SurveyController extends Controller
     {
         $user = User::find(Auth::user()->id);
         $userSurvey = UserSurvey::where('user_id', $user->id)
-            ->where('status', '<>', 'Abandoned')
+           //                ->where('status', '<>', 'Abandoned')
+                ->whereNotIn('status',['Abandoned', 'Superseded'])
             ->first();
 
         if ($userSurvey) {
@@ -445,7 +457,8 @@ class SurveyController extends Controller
         //make a new user survey domain
         $user = User::find(Auth::user()->id);
         $userSurvey = UserSurvey::where('user_id', $user->id)
-            ->where('status', '<>', 'Abandoned')
+           //                ->where('status', '<>', 'Abandoned')
+                ->whereNotIn('status',['Abandoned', 'Superseded'])
             ->first();
         if ($userSurvey) {
             UserSurveyDomain::makeNew($userSurvey, $currentUserSurveyDomain->domain);

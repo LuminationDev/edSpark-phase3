@@ -11,7 +11,7 @@ class UserSurvey extends Model
 
     protected $table = 'user_surveys';
 
-    public static array $STATUS_TYPES = ['In Progress', 'Abandoned', 'Complete'];
+    public static array $STATUS_TYPES = ['In Progress', 'Abandoned', 'Complete', 'Superseded'];
 
     protected $fillable = [
         'user_id',
@@ -31,13 +31,21 @@ class UserSurvey extends Model
 
     public function abandon(): void
     {
-        $this['status'] = 'Abandoned';
+        if ($this['status'] === 'Complete') {
+            $this['status'] = 'Superseded';
+        } else {
+            $this['status'] = 'Abandoned';
+        }
         $surveyDomains = UserSurveyDomain::where('user_survey_id', $this->id)
             ->get();
         foreach ($surveyDomains as $surveyDomain) {
             if ($surveyDomain) {
                 // abandon all domains
-                $surveyDomain['status'] = 'Abandoned';
+                if ($surveyDomain['status'] === 'Complete') {
+                    $surveyDomain['status'] = 'Superseded';
+                } else {
+                    $surveyDomain['status'] = 'Abandoned';
+                }
                 $surveyDomain->save();
             }
         }
