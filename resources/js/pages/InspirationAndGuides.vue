@@ -31,9 +31,7 @@ onMounted(() => {
         featuredSites.value = res
     )
     adviceService.fetchAllAdvice().then(res => {
-        console.log(res)
         allAdvice.value = res
-        console.log(allAdvice.value)
 
     })
 
