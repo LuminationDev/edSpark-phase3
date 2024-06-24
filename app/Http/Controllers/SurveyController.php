@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Helpers\RoleHelpers;
+use App\Helpers\UserRole;
 use App\Models\Question;
 use App\Models\Survey;
 use App\Models\User;
@@ -19,18 +21,34 @@ use Str;
 
 class SurveyController extends Controller
 {
+    private function getUserSiteSurvey()
+    {
+        $user = User::find(Auth::user()->id);
+        $userSiteId = $user->site->site_id;
+        $userSurvey = UserSurvey::whereHas('user', function ($query) use ($userSiteId) {
+            $query->whereHas('site', function ($query) use ($userSiteId) {
+                $query->where('site_id', $userSiteId);
+            });
+        })
+            ->whereNotIn('status', ['Abandoned', 'Superseded'])
+            ->first();
+        return $userSurvey;
+    }
 
     public function getUserSurvey(Request $request): JsonResponse
     {
+        if (!RoleHelpers::has_minimum_privilege(UserRole::SITE_LEADER)) {
+            return $this->userNotAuthorized();
+        }
+
         $user = User::find(Auth::user()->id);
         // check if they have an active survey
-        $userSurvey = UserSurvey::where('user_id', $user->id)
-            ->where('status', '<>', 'Abandoned')
-            ->first();
+        $userSurvey = $this->getUserSiteSurvey();
 
         if ($userSurvey != null) {
             $survey_domains = UserSurveyDomain::where('user_survey_id', $userSurvey->id)
-                ->where('status', '<>', 'Abandoned')
+//                ->where('status', '<>', 'Abandoned')
+                ->whereNotIn('status', ['Abandoned', 'Superseded'])
                 ->get();
             foreach ($survey_domains as &$survey_domain) {
 
@@ -54,7 +72,12 @@ class SurveyController extends Controller
                 $user_survey_domain['met_dependencies'] = [];
                 $survey_domains[] = $user_survey_domain;
             }
-        }
+        };
+        $survey_info = [
+            "survey_created_by" => $userSurvey->user->full_name,
+            "survey_created_date" => $userSurvey->created_at,
+            "survey_site_name" => $userSurvey->user->site->site_name,
+        ];
 
         return response()->json([
             'success' => true,
@@ -62,9 +85,9 @@ class SurveyController extends Controller
             'code' => 0,
             'locale' => 'en',
             'data' => [
-                //n.b. misnomer - this is actually the user_survey_id
                 'survey_id' => $userSurvey->id,
-                'survey_domains' => $survey_domains
+                'survey_domains' => $survey_domains,
+                'survey_info' => $survey_info,
             ],
         ]);
     }
@@ -125,16 +148,15 @@ class SurveyController extends Controller
     public function getUserReflection(Request $request): JsonResponse
     {
         $user = User::find(Auth::user()->id);
-        $userSurvey = UserSurvey::where('user_id', $user->id)
-            ->where('status', '<>', 'Abandoned')
-            ->first();
+        $userSurvey = $this->getUserSiteSurvey();
 
         if ($userSurvey == null) {
             return $this->surveyNotFound();
         }
 
         $survey_domains = UserSurveyDomain::where('user_survey_id', $userSurvey->id)
-            ->where('status', '<>', 'Abandoned')
+            //                ->where('status', '<>', 'Abandoned')
+            ->whereNotIn('status', ['Abandoned', 'Superseded'])
             ->get();
 
         foreach ($survey_domains as $survey_domain) {
@@ -158,16 +180,15 @@ class SurveyController extends Controller
     public function getUserActionPlan(Request $request): JsonResponse
     {
         $user = User::find(Auth::user()->id);
-        $userSurvey = UserSurvey::where('user_id', $user->id)
-            ->where('status', '<>', 'Abandoned')
-            ->first();
+        $userSurvey = $this->getUserSurvey();
 
         if ($userSurvey == null) {
             return $this->surveyNotFound();
         }
 
         $survey_domains = UserSurveyDomain::where('user_survey_id', $userSurvey->id)
-            ->where('status', '<>', 'Abandoned')
+            //                ->where('status', '<>', 'Abandoned')
+            ->whereNotIn('status', ['Abandoned', 'Superseded'])
             ->get();
 
         foreach ($survey_domains as $survey_domain) {
@@ -190,9 +211,7 @@ class SurveyController extends Controller
     public function saveUserActionPlan(Request $request, $user_domain_id): JsonResponse
     {
         $user = User::find(Auth::user()->id);
-        $userSurvey = UserSurvey::where('user_id', $user->id)
-            ->where('status', '<>', 'Abandoned')
-            ->first();
+        $userSurvey = $this->getUserSiteSurvey();
 
         if ($userSurvey == null) {
             return $this->surveyNotFound();
@@ -245,9 +264,7 @@ class SurveyController extends Controller
     public function deleteUserActionPlan(Request $request, $user_domain_id): JsonResponse
     {
         $user = User::find(Auth::user()->id);
-        $userSurvey = UserSurvey::where('user_id', $user->id)
-            ->where('status', '<>', 'Abandoned')
-            ->first();
+        $userSurvey = $this->getUserSiteSurvey();
 
         if ($userSurvey == null) {
             return $this->surveyNotFound();
@@ -303,9 +320,7 @@ class SurveyController extends Controller
     public function saveUserReflection(Request $request, $user_domain_id): JsonResponse
     {
         $user = User::find(Auth::user()->id);
-        $userSurvey = UserSurvey::where('user_id', $user->id)
-            ->where('status', '<>', 'Abandoned')
-            ->first();
+        $userSurvey = $this->getUserSiteSurvey();
 
         if ($userSurvey == null) {
             return $this->surveyNotFound();
@@ -350,9 +365,7 @@ class SurveyController extends Controller
         $nextQuestionId = $request['next_question_id'];
         $increaseCompletedElementCount = $request['increase_completed_element_count'];
 
-        $userSurvey = UserSurvey::where('user_id', $user->id)
-            ->where('status', '<>', 'Abandoned')
-            ->first();
+        $userSurvey = $this->getUserSiteSurvey();
 
         if ($userSurvey == null) {
             return $this->surveyNotFound();
@@ -415,9 +428,7 @@ class SurveyController extends Controller
     public function resetUserSurvey(Request $request): JsonResponse
     {
         $user = User::find(Auth::user()->id);
-        $userSurvey = UserSurvey::where('user_id', $user->id)
-            ->where('status', '<>', 'Abandoned')
-            ->first();
+        $userSurvey = $this->getUserSiteSurvey();
 
         if ($userSurvey) {
             $userSurvey->abandon();
@@ -444,9 +455,9 @@ class SurveyController extends Controller
 
         //make a new user survey domain
         $user = User::find(Auth::user()->id);
-        $userSurvey = UserSurvey::where('user_id', $user->id)
-            ->where('status', '<>', 'Abandoned')
-            ->first();
+        $userSurvey = $this->getUserSiteSurvey();
+
+
         if ($userSurvey) {
             UserSurveyDomain::makeNew($userSurvey, $currentUserSurveyDomain->domain);
         }
@@ -633,6 +644,17 @@ class SurveyController extends Controller
             'message' => 'Element not found',
             'data' => (object)[],
             'code' => 34,
+            'locale' => 'en',
+        ], 422);
+    }
+
+    public function userNotAuthorized(): JsonResponse
+    {
+        return response()->json([
+            'success' => false,
+            'message' => 'User not authorized',
+            'data' => (object)[],
+            'code' => 30,
             'locale' => 'en',
         ], 422);
     }
