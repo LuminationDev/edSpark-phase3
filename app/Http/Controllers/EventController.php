@@ -110,7 +110,7 @@ class EventController extends Controller
         $data = [];
 
         foreach ($events as $event) {
-            $result = $this->postService->eventModelToJson($event, $request);
+            $result = $this->postService->eventModelToJson($event, $request, false);
             $data[] = $result;
         }
 

@@ -118,7 +118,7 @@ class SoftwareController extends Controller
                     'meta_key',
                     'meta_value'
                 );
-                $result = $this->postService->softwareModelToJson($software, $softwareMetadataToSend, $request);
+                $result = $this->postService->softwareModelToJson($software, $softwareMetadataToSend, $request, false);
                 $data[] = $result;
             }
 

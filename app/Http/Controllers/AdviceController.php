@@ -104,11 +104,11 @@ class AdviceController extends Controller
     {
 
 
-        $advices = Advice::where('status', \App\Helpers\StatusHelpers::PUBLISHED)->orderBy('created_at', 'DESC')->get();
+        $advices = Advice::where('status', StatusHelpers::PUBLISHED)->orderBy('created_at', 'DESC')->get();
         $data = [];
 
         foreach ($advices as $advice) {
-            $result = $this->postService->adviceModelToJson($advice, $request);
+            $result = $this->postService->adviceModelToJson($advice, $request, false);
             $data[] = $result;
         }
 
@@ -329,6 +329,35 @@ class AdviceController extends Controller
 
         return response()->json($adviceTypes);
     }
+
+    public function fetchLearningTask(Request $request): \Illuminate\Http\JsonResponse{
+        $learningTasks = Advice::whereHas('advice_types', function ($query) {
+            $query->where('advice_type_name', 'Learning Task');
+        })->where('status', StatusHelpers::PUBLISHED)->orderBy('created_at', 'DESC')->get();
+
+        $data = [];
+
+        foreach ($learningTasks as $learningTask) {
+            $result = $this->postService->adviceModelToJson($learningTask, $request);
+            $data[] = $result;
+        }
+
+        return response()->json($data);
+    }
+    public function fetchDAG(Request $request): \Illuminate\Http\JsonResponse{
+    $learningTasks = Advice::whereHas('advice_types', function ($query) {
+        $query->where('advice_type_name', 'DAG');
+    })->where('status', StatusHelpers::PUBLISHED)->orderBy('created_at', 'DESC')->get();
+
+    $data = [];
+
+    foreach ($learningTasks as $learningTask) {
+        $result = $this->postService->adviceModelToJson($learningTask, $request);
+        $data[] = $result;
+    }
+
+    return response()->json($data);
+}
 }
 
 

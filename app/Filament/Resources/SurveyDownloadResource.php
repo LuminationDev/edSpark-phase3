@@ -44,11 +44,6 @@ class SurveyDownloadResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('status')
-                    ->label('Status')
-                    ->limit(15)
-                    ->sortable()
-                    ->searchable(),
                 Tables\Columns\TextColumn::make('user_name')
                     ->label('Name')
                     ->getStateUsing(function ($record): string {
@@ -73,9 +68,10 @@ class SurveyDownloadResource extends Resource
                     }),
                 Tables\Columns\TextColumn::make('updated_at')
                     ->label('Completion date')
+                    ->dateTime('j M y, h:i a')
             ])
             ->modifyQueryUsing(function (Builder $query) {
-                return $query->where('status', 'Complete')->orderBy('updated_at', 'asc');
+                return $query->whereIn('status', ['Complete', 'Superseded'])->orderBy('updated_at', 'desc');
             })
             ->filters([
                 //
@@ -110,10 +106,10 @@ class SurveyDownloadResource extends Resource
                                     $user->site->site_name,
                                 ];
                                 $csvData[] = $userData;
-                                $csvData[] = ['Domain', 'Element', 'Indicator', 'Phase','Answer', 'Question Text', 'Answer Text'];
+                                $csvData[] = ['Domain', 'Element', 'Indicator', 'Phase', 'Answer', 'Question Text', 'Answer Text'];
 
                                 $surveyDomains = UserSurveyDomain::where('user_survey_id', $userSurvey->id)
-                                    ->where('status', 'Complete')
+                                    ->whereIn('status', ['Complete', 'Superseded'])
                                     ->get();
 
                                 foreach ($surveyDomains as $surveyDomain) {
@@ -135,7 +131,7 @@ class SurveyDownloadResource extends Resource
                                         }
                                     }
                                 }
-                                $csvData[] = ['--------------------------------------------------------------'];
+                                $csvData[] = ['---', '---', '---', '---', '---', '---', '---'];
                             }
                             $fileName = Str::random(10);
 
