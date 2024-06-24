@@ -4,7 +4,8 @@ namespace App\Components;
 
 use Illuminate\Filesystem\FilesystemAdapter;
 use League\Flysystem\UnableToCheckFileExistence;
-use Mohamedsabil83\FilamentFormsTinyeditor\Components\TinyEditor;
+//use Mohamedsabil83\FilamentFormsTinyeditor\Components\TinyEditor;
+use AmidEsfahani\FilamentTinyEditor\TinyEditor;
 
 class EdsparkTinyEditor extends TinyEditor
 {

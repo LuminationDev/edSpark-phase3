@@ -133,7 +133,7 @@ class CartController extends Controller
     public function clear()
     {
         $user = Auth::user();
-        $cart = Cart::where('user_id', $user->id)->first();
+        $cart = Cart::where('user_id', $user->id)->where('status','ACTIVE')->first();
         if (!$cart) {
             return response()->json(['message' => 'Cart is already empty'], 200);
         }
@@ -207,7 +207,7 @@ class CartController extends Controller
 
     private function generateQuoteContent($vendorCartItems, $cartId, $additionalNotes)
     {
-        return $vendorCartItems->map(function ($item) use ($cartId,$additionalNotes) {
+        return $vendorCartItems->map(function ($item) use ($cartId, $additionalNotes) {
             $itemCatalogue = $item->catalogue;
             $itemImageUUID = '';
             $itemImageExtension = '';
@@ -219,7 +219,7 @@ class CartController extends Controller
                     $itemImageExtension = $itemImage->file_extension ?? '';
                 }
             }
-            $uniqueReference= $itemCatalogue->unique_reference;
+            $uniqueReference = $itemCatalogue->unique_reference;
             $notes = $additionalNotes[$uniqueReference] ?? '';
 
             return [
@@ -287,7 +287,7 @@ class CartController extends Controller
 
         return $quote;
     }
-  
+
     private function generateQuoteRef($quoteId)
     {
         $date = date('Ymd'); // Get current date in YYYYMMDD format
@@ -329,12 +329,12 @@ class CartController extends Controller
 
     public function getVendorInfo(Request $request, $vendorName)
     {
-        $vendor = Vendor::where('vendor_name', $vendorName)->first();
+        $vendor = Vendor::where('vendor', $vendorName)->first();
         if (!$vendor) {
             return response()->json(['message' => 'Vendor not found'], 410);
         }
         $result = [
-            'Name' => $vendor->vendor_name ?? '',
+            'Name' => $vendor->vendor ?? '',
             'Address' => $vendor->address ?? '',
             'ABN' => $vendor->abn ?? '',
             'Order Email' => $vendor->order_email ?? '',

@@ -9,11 +9,11 @@ import TinyMceContentRenderer from "@/js/components/bases/frontendform/TinyMceEd
 import LabelRowContentDisplay from "@/js/components/global/LabelRowContentDisplay.vue";
 import ExtraResourceTemplateDisplay from "@/js/components/renderer/ExtraResourceTemplateDisplay.vue";
 import {formatDateToDayTime} from "@/js/helpers/dateHelper";
-import {edSparkContentSanitizer} from "@/js/helpers/objectHelpers";
+
 /**
  *  type AdviceSingleContent = {
  *      post_id: number
- *      advice_type: string,
+ *      type: String[],
  *      author: string,
  *      post_title: string
  *      post_excerpt
@@ -27,13 +27,34 @@ import {edSparkContentSanitizer} from "@/js/helpers/objectHelpers";
  *  }
  */
 
-const timeFormatter = (originalFormat) => {
-    const dateObj = new Date(originalFormat);
-    const options = {year: 'numeric', month: 'short', day: 'numeric'};
-    const formattedDate = dateObj.toLocaleDateString(undefined, options);
+const getAdviceBreadcrumbParentTitle = (type) => {
+    console.log(type)
+    if (!type || !type.length) {
+        return ''
+    }
+    if (type[0] === 'Learning task') {
+        return 'Learning task'
+    } else if (type[0] === "DAG") {
+        return 'DAG'
+    } else {
+        return 'Guides'
+    }
 
-    return formattedDate !== 'Invalid Date' ? formattedDate : '';
 }
+
+const getAdviceBreadcrumbParentLink = (type) => {
+    if (!type || !type.length) {
+        return ''
+    }
+    if (type[0] === 'Learning task') {
+        return 'learning'
+    } else if (type[0] === "DAG") {
+        return 'dag'
+    } else {
+        return 'browse/guides'
+    }
+}
+
 
 </script>
 <template>
@@ -45,8 +66,8 @@ const timeFormatter = (originalFormat) => {
                 <template #breadcrumb>
                     <BaseBreadcrumb
                         :child-page="contentFromBase.title"
-                        parent-page="Guides"
-                        :parent-page-link="'browse/guide'"
+                        :parent-page="getAdviceBreadcrumbParentTitle(contentFromBase['type'])"
+                        :parent-page-link="getAdviceBreadcrumbParentLink(contentFromBase['type'])"
                     />
                 </template>
                 <template #titleText>

@@ -155,9 +155,9 @@ const formattedSearchBlurb = computed(() => {
             "for your own classroom."
 
     else return "Discover inspiration for your own classroom"
-
-
 })
+
+
 
 </script>
 
@@ -225,7 +225,7 @@ const formattedSearchBlurb = computed(() => {
                     :key="data['key']"
                 >
                     <template
-                        v-if="searchType === 'guide'"
+                        v-if="searchType === 'guide' || searchType === 'task' || searchType === 'dag'"
                     >
                         <div
                             :key="data.id"

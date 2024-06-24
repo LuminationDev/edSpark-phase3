@@ -9,12 +9,12 @@ import PopularResourceShortcuts from "@/js/components/bases/PopularResourceShort
 import GenericButton from "@/js/components/button/GenericButton.vue";
 import CaseStudyGuides from "@/js/components/inspirationandguides/CaseStudyGuides.vue";
 import DAGCardsRowGuides from "@/js/components/inspirationandguides/DAGCardsRowGuides.vue";
-import RobotSearch from "@/js/components/svg/RobotSearch.vue";
-import SoftwareRobot from "@/js/components/svg/software/SoftwareRobot.vue";
 import InspirationAndGuidesRobot from "@/js/components/inspirationandguides/InspirationAndGuidesRobot.vue";
 import SchoolProfileGuidesQuickFilters from "@/js/components/inspirationandguides/SchoolProfileGuidesQuickFilters.vue";
 import SchoolProfilesGuides from "@/js/components/inspirationandguides/SchoolProfilesGuides.vue";
 import Loader from "@/js/components/spinner/Loader.vue";
+import RobotSearch from "@/js/components/svg/RobotSearch.vue";
+import SoftwareRobot from "@/js/components/svg/software/SoftwareRobot.vue";
 import {LandingHeroText} from "@/js/constants/PageBlurb";
 import {lowerSlugify} from "@/js/helpers/stringHelpers";
 import {adviceService} from "@/js/service/adviceService";
@@ -31,15 +31,11 @@ onMounted(() => {
         featuredSites.value = res
     )
     adviceService.fetchAllAdvice().then(res => {
-        console.log(res)
         allAdvice.value = res
-        console.log(allAdvice.value)
 
     })
 
 })
-
-
 const handleClickViewAllGuides = () => {
     return router.push('/browse/guide')
 }
@@ -66,17 +62,26 @@ const handleClickGoToDMA = () =>{
         :title-paragraph="LandingHeroText['inspiration']['subtitle']"
         swoosh-color="teal"
     >
-    <template #robotIllustration>
-        <RobotSearch class="absolute top-16 left-36" />
-    </template>
+        <template #robotIllustration>
+            <RobotSearch class="absolute top-16 left-36" />
+        </template>
     </BaseLandingHero>
     <BaseLandingSection>
         <template #title>
-            <div class="flex justify-between items-center flex-row w-full align-center">
-                <div class="font-semibold             
-                        text-3xl    sm:text-3xl         md:text-3xl     lg:text-4xl
-                        max-w-full  sm:max-w-[500px]    md:max-w-[600px] lg:max-w-[700px]">
-
+            <div class="align-center flex justify-between items-center flex-row w-full">
+                <div
+                    class="
+                        font-semibold
+                        max-w-full
+                        sm:max-w-[500px]
+                        md:max-w-[600px]
+                        lg:max-w-[700px]
+                        text-3xl
+                        sm:text-3xl
+                        md:text-3xl
+                        lg:text-4xl
+                        "
+                >
                     Unsure how your school stacks up? 
                     Assess your digital maturity.
                 </div>
