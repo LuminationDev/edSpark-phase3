@@ -15,6 +15,7 @@ import SurveyModal from "@/js/components/dma/SurveyModal.vue";
 import WarningModal from "@/js/components/dma/WarningModal.vue";
 import InspirationAndGuidesRobot from "@/js/components/inspirationandguides/InspirationAndGuidesRobot.vue";
 import {LandingHeroText} from "@/js/constants/PageBlurb";
+import {formatDateToDayTime} from "@/js/helpers/dateHelper";
 import {dmaService} from "@/js/service/dmaService";
 
 const showSurveyModal = ref(false);
@@ -26,6 +27,7 @@ const selectedDomainId = ref(null);
 const resetting = ref(false);
 
 const showResetModal = ref(false);
+const showStartNewSurveyModal = ref(false);
 const showErrorModal = ref(false);
 const showSurveyError = ref(false);
 
@@ -70,7 +72,7 @@ const indicatorScores = computed(() => {
             for (const result of domain.results) {
                 let element = elements.find(c => c.name === result.element);
                 if (!element) {
-                    element = { name: result.element, scores: [], completed: false};
+                    element = {name: result.element, scores: [], completed: false};
                     elements.push(element);
                 }
                 if (elements.length <= domain.completed_element_count) {
@@ -82,7 +84,7 @@ const indicatorScores = computed(() => {
                 // if no questions have been answered, score is 0;
                 // otherwise, it is the average of all indicator scores
                 let score = 0;
-                if(element.completed) {
+                if (element.completed) {
                     score = Math.round(element.scores.reduce((sum, val) => {
                         return sum + (val || 1); // treat 0 as 1
                     }, 0) / element.scores.length);
@@ -171,6 +173,20 @@ const handleResetSurvey = async () => {
     })
 }
 
+const surveyInfo = computed(() => {
+    if (surveyDetails.value && surveyDetails.value.survey_info) {
+        return {
+            created_by: surveyDetails.value.survey_info.survey_created_by,
+            created_date: surveyDetails.value.survey_info.survey_created_date,
+            site_name: surveyDetails.value.survey_info.survey_site_name
+        }
+
+    } else {
+        return false
+    }
+})
+
+
 </script>
 
 <template>
@@ -189,16 +205,25 @@ const handleResetSurvey = async () => {
                 background-color="white"
             >
                 <template #title>
-                    <h2 class="px-4 text-h2 md:text-h3 md:!px-5 lg:!px-0">
+                    <h2 class="mb-4 px-4 text-h2 md:text-h3 md:!px-5 lg:!px-0">
                         Your DMA
                     </h2>
+                    <div
+                        v-if="surveyInfo"
+                        class="flex flex-col subtitle text-lg"
+                    >
+                        <div>Created by: {{ surveyInfo.created_by }}</div>
+                        <div>Created on: {{ formatDateToDayTime(surveyInfo.created_date) }}</div>
+                        <div>Site name: {{ surveyInfo.site_name }}</div>
+                    </div>
                 </template>
                 <template #content>
                     <div
                         v-if="showSurveyError"
                         class="font-bold my-2"
                     >
-                        There was a network error obtaining your latest assessment data. <button
+                        There was a network error obtaining your latest assessment data.
+                        <button
                             class="underline"
                             @click="fetchUserSurvey"
                         >
@@ -268,16 +293,17 @@ const handleResetSurvey = async () => {
                             </div>
                             <p class="font-thin px-4 text-lg md:!px-5 lg:!px-0">
                                 <!-- TODO correct this information -->
-                              
-                                The tool is for you and your school. Your data is stored on the edSpark platform. 
-                                You can generate a PDF report below for sharing within your school or including in your next
+
+                                The tool is for you and your school. Your data is stored on the edSpark platform.
+                                You can generate a PDF report below for sharing within your school or including in your
+                                next
                                 round of School Improvement planning.
 
 
                                 <!-- <span class="flex flex-row w-full gap-10 justify-between mt-6"> -->
-                                
 
-                                <span class="block h-6 mt-7">
+
+                                <span class="flex justify-between flex-row h-10 mt-7">
                                     <GenericButton
                                         v-if="isInProgress && !isDomainResetting()"
                                         class="
@@ -295,9 +321,26 @@ const handleResetSurvey = async () => {
                                     >
                                         Reset progress
                                     </GenericButton>
+                                    <GenericButton
+                                        v-if="isInProgress && !isDomainResetting() && isCompleted"
+                                        class="
+                                            !text-black
+                                            bg-secondary-coolGrey
+                                            brightness-[1.1]
+                                            font-medium
+                                            px-12
+                                            py-2
+                                            text-lg
+                                            hover:!bg-secondary-coolGrey
+                                            hover:!brightness-[1.2]
+                                            "
+                                        @click="showStartNewSurveyModal = true"
+                                    >
+                                        Start over
+                                    </GenericButton>
                                 </span>
 
-                            <!-- </span> -->
+                                <!-- </span> -->
                             </p>
                         </div>
 
@@ -327,6 +370,21 @@ const handleResetSurvey = async () => {
                         </template>
                         <template #confirm>
                             Reset
+                        </template>
+                    </WarningModal>
+                    <WarningModal
+                        v-if="showStartNewSurveyModal"
+                        @cancel="showStartNewSurveyModal=false"
+                        @confirm="handleResetSurvey"
+                    >
+                        <template #title>
+                            Are you sure?
+                        </template>
+                        <template #message>
+                            Starting over will mark your old survey as superseded and present a new survey.
+                        </template>
+                        <template #confirm>
+                            Start over
                         </template>
                     </WarningModal>
                 </template>
@@ -373,12 +431,14 @@ const handleResetSurvey = async () => {
                                 Where is my data stored?
                             </template>
                             <template #answer>
-                                Your Digital Maturity Assessment data is stored on the edSpark platform, which is managed by the SA Department for Education
+                                Your Digital Maturity Assessment data is stored on the edSpark platform, which is
+                                managed by the SA Department for Education
                                 in accordance with the <a
                                     href="https://www.education.sa.gov.au/your-privacy"
                                     target="_blank"
-                                >privacy policy</a>. The edSpark 
-                                platform is integrated with edPass, and makes use of relevant information including but not limited to your role, site name and other details on an as-needed basis.
+                                >privacy policy</a>. The edSpark
+                                platform is integrated with edPass, and makes use of relevant information including but
+                                not limited to your role, site name and other details on an as-needed basis.
                             </template>
                         </FaqEntry>
                     </div>

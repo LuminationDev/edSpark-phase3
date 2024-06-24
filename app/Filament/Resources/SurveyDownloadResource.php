@@ -44,11 +44,6 @@ class SurveyDownloadResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('status')
-                    ->label('Status')
-                    ->limit(15)
-                    ->sortable()
-                    ->searchable(),
                 Tables\Columns\TextColumn::make('user_name')
                     ->label('Name')
                     ->getStateUsing(function ($record): string {

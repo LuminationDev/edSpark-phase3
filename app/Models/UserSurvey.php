@@ -19,6 +19,11 @@ class UserSurvey extends Model
         'status'
     ];
 
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
     public static function makeNew($survey, $userId): UserSurvey
     {
         $userSurvey = new UserSurvey();
