@@ -1,9 +1,9 @@
 {
   "node_modules/canvg/lib/index.es.js": {
     "css": [
-      "assets/app-b0e2b2b8.css"
+      "assets/app-12ed8ffe.css"
     ],
-    "file": "assets/index.es-627c39ea.js",
+    "file": "assets/index.es-7d6eead9.js",
     "imports": [
       "resources/js/app.ts"
     ],
@@ -141,7 +141,7 @@
     "src": "resources/assets/video/temporary.mp4"
   },
   "resources/css/app.css": {
-    "file": "assets/app-b0e2b2b8.css",
+    "file": "assets/app-12ed8ffe.css",
     "isEntry": true,
     "src": "resources/css/output.css"
   },
@@ -215,7 +215,7 @@
     "src": "resources/css/font/museosans-700-webfont.woff2"
   },
   "resources/css/output.css": {
-    "file": "assets/app-b0e2b2b8.css",
+    "file": "assets/app-12ed8ffe.css",
     "isEntry": true,
     "src": "resources/css/output.css"
   },
@@ -273,14 +273,14 @@
     ],
     "css": [
       "assets/app-3d9cfdbf.css",
-      "assets/app-b0e2b2b8.css"
+      "assets/app-12ed8ffe.css"
     ],
     "dynamicImports": [
       "node_modules/html2canvas/dist/html2canvas.esm.js",
       "node_modules/jspdf/node_modules/dompurify/dist/purify.es.js",
       "node_modules/canvg/lib/index.es.js"
     ],
-    "file": "assets/app-f6db01ed.js",
+    "file": "assets/app-cf7aea04.js",
     "isEntry": true,
     "src": "resources/js/app.ts"
   }

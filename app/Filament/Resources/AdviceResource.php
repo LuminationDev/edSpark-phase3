@@ -2,9 +2,7 @@
 
 namespace App\Filament\Resources;
 
-use App\Components\EdsparkTinyEditor;
 use App\Filament\Resources\AdviceResource\Pages;
-use App\Filament\Resources\AdviceResource\RelationManagers;
 use App\Helpers\EdsparkFormComponents;
 use App\Helpers\RoleHelpers;
 use App\Helpers\StatusHelpers;
@@ -16,6 +14,7 @@ use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables\Table;
 use Filament\Tables;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Auth;
 
 
@@ -39,7 +38,6 @@ class AdviceResource extends Resource
 
     public static function form(Form $form): Form
     {
-        $current_user = Auth::user();
         $groupedLabels = Label::all()->groupBy('type');
 
         $labelColumns = [];
@@ -87,7 +85,7 @@ class AdviceResource extends Resource
                 Forms\Components\Grid::make(2)->schema([
                     Forms\Components\Select::make('author_id')
                         ->relationship(name: 'author', titleAttribute: 'display_name')
-                        ->disabled(fn() => !RoleHelpers::has_minimum_privilege(UserRole::ADMIN))
+                        ->disabled(fn() => !RoleHelpers::has_minimum_privilege(UserRole::MODERATOR))
                         ->required()
                         ->searchable(),
                     Forms\Components\Select::make('status')
@@ -116,8 +114,6 @@ class AdviceResource extends Resource
                         ])
                         ->label('Extra content')
                 ])
-
-
         ]);
     }
 
@@ -171,7 +167,7 @@ class AdviceResource extends Resource
                     ->getStateUsing(function ($record): string {
                         $imgPath = $record->cover_image;
                         if ($imgPath) {
-                            return env('AZURE_STORAGE_ENDPOINT') . env('AZURE_STORAGE_CONTAINER') . '/' . $imgPath;
+                            return env('AZURE_STORAGE_ENDPOINT') . env('AZURE_STORAGE_CONTAINER') . '/' . stripslashes($imgPath);
                         } else {
                             return '';
                         }
@@ -212,6 +208,13 @@ class AdviceResource extends Resource
         return [
             //
         ];
+    }
+
+    public static function getEloquentQuery(): Builder
+    {
+        return Advice::whereDoesntHave('advice_types', function ($query) {
+            $query->where('advice_type_name', 'Learning Task');
+        });
     }
 
     public static function getPages(): array

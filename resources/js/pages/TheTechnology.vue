@@ -153,7 +153,7 @@ const handleClickPopularTech = (techId, title) => {
         </template>
         <template #button>
             <GenericButton
-                :id="equipBtn"
+                id="equipBtn"
                 :callback="() => router.push('/browse/hardware')"
                 :type="'purple'"
             >

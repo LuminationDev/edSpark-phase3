@@ -64,6 +64,10 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('fetchAdviceTypes', [AdviceController::class, 'fetchAdviceTypes']);
     Route::get('fetchUserAdvice', [AdviceController::class, 'handleFetchAdvicePosts']);
 
+    Route::get('learningtask', [AdviceController::class, 'fetchLearningTask']);
+
+    Route::get('dag', [AdviceController::class, 'fetchDAG']);
+
     // Software APIs
     Route::post('createSoftwarePost', [SoftwareController::class, 'createSoftwarePost']);
     Route::get('fetchSoftwarePosts', [SoftwareController::class, 'handleFetchSoftwarePosts']);
@@ -173,7 +177,6 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('updateOrCreateUserAvatar/{user_id}', [UserController::class, 'updateOrCreateUserAvatar']);
 
 
-
     // Notification
 //    Route::get('user/notification/{user_id}', [NotificationController::class,'getUserNotification']);
 //    Route::get('user/notification/{user_id}', [NotificationController::class,'getUserNotification']);
@@ -191,6 +194,7 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::get('/actionplans', [SurveyController::class, 'getUserActionPlan']);
         Route::post('/answer', [SurveyController::class, 'saveUserAnswerToQuestion']);
         Route::delete('/domain/{domain_id}', [SurveyController::class, 'resetUserSurveyDomain']);
+        Route::get('/answer', [SurveyController::class, 'getAllCompletedSurveysCSV']);
     });
 
     Route::group(['prefix' => 'quote'], function () {
@@ -207,8 +211,6 @@ Route::middleware('auth:sanctum')->group(function () {
     });
     //vendor
     Route::get('/vendor/{vendor_name}', [CartController::class, 'getVendorInfo']);
-
-
 
 
 });

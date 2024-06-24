@@ -2,10 +2,12 @@
 
 namespace App\Filament\Resources;
 
+use AmidEsfahani\FilamentTinyEditor\TinyEditor;
 use App\Filament\Resources\SoftwareResource\Pages;
 use App\Filament\Resources\SoftwareResource\RelationManagers;
 use App\Helpers\CustomHtmlable;
 use App\Helpers\EdsparkFormComponents;
+use App\Helpers\JsonHelper;
 use App\Helpers\RoleHelpers;
 use App\Helpers\StatusHelpers;
 use App\Helpers\UserRole;
@@ -24,10 +26,8 @@ use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
-use Mohamedsabil83\FilamentFormsTinyeditor\Components\TinyEditor;
 use PhpOffice\PhpSpreadsheet\Calculation\Statistical\Distributions\F;
 use SplFileInfo;
-
 
 class SoftwareResource extends Resource
 {
@@ -96,7 +96,7 @@ class SoftwareResource extends Resource
                             ->schema([
                                 Forms\Components\Select::make('author_id')
                                     ->relationship(name: 'author', titleAttribute: 'display_name')
-                                    ->disabled(fn() => !RoleHelpers::has_minimum_privilege(UserRole::ADMIN))
+                                    ->disabled(fn() => !RoleHelpers::has_minimum_privilege(UserRole::MODERATOR))
                                     ->required()
                                     ->searchable(),
 
@@ -113,6 +113,7 @@ class SoftwareResource extends Resource
                     ->schema([
                         TinyEditor::make('how_to_access')
                             ->label('How to access')
+                            ->profile('edspark')
                             ->fileAttachmentsDisk('local')
                             ->fileAttachmentsVisibility('public')
                             ->fileAttachmentsDirectory('public/uploads/software'),
@@ -189,7 +190,7 @@ class SoftwareResource extends Resource
                     ->getStateUsing(function ($record): string {
                         $imgPath = $record->cover_image;
                         if ($imgPath) {
-                            return env('AZURE_STORAGE_ENDPOINT') . env('AZURE_STORAGE_CONTAINER') . '/' . $imgPath;
+                            return env('AZURE_STORAGE_ENDPOINT') . env('AZURE_STORAGE_CONTAINER') . '/' . stripcslashes($imgPath);
                         } else {
                             return '';
                         }
