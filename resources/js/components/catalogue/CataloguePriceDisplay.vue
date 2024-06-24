@@ -24,13 +24,13 @@ const props = defineProps({
 })
 
 const extGstPrice = computed(() =>{
-    if(!props.includeGst) return props.priceValue
+    if(!props.includeGst) return props.priceValue.toFixed(2)
     else{
         return (props.priceValue - (props.priceValue / 11)).toFixed(2)
     }
 })
 const incGstPrice = computed(() =>{
-    if(props.includeGst) return props.priceValue
+    if(props.includeGst) return props.priceValue.toFixed(2)
     else{
         return (props.priceValue * 1.1).toFixed(2)
     }

@@ -28,12 +28,14 @@ import EventSingle from "@/js/pages/EventSingle.vue";
 import HardwareSingle from '@/js/pages/HardwareSingle.vue';
 import InspirationAndGuides from "@/js/pages/InspirationAndGuides.vue";
 import InspirationLanding from "@/js/pages/InspirationLanding.vue";
+import LearningTask from "@/js/pages/LearningTask.vue";
 import PartnerSingle from "@/js/pages/PartnerSingle.vue";
 import ProvidersAndEvents from "@/js/pages/ProvidersAndEvents.vue";
 import SchoolSingle from "@/js/pages/SchoolSingle.vue";
 import TechnologyLanding from "@/js/pages/TechnologyLanding.vue";
 import TheCatalogue from "@/js/pages/TheCatalogue.vue";
 import TheCreator from "@/js/pages/TheCreator.vue";
+import TheDag from "@/js/pages/TheDag.vue";
 import TheForbidden from "@/js/pages/TheForbidden.vue";
 import TheHardware from "@/js/pages/TheHardware.vue";
 import TheHome from "@/js/pages/TheHome.vue";
@@ -170,7 +172,31 @@ const routes: any = [
                     requiresAuth: true,
                     navigation: true
                 } as RouteMeta
-            }
+            },
+            {
+                name: 'learning-tasks',
+                path: '/learning',
+                component: LearningTask,
+                meta: {
+                    requiresAuth: true,
+                    partnerCanAccess: false,
+                    navigation: true,
+                    customText: 'Learning tasks'
+
+                }
+            },
+            {
+                name: 'dag',
+                path: '/dag',
+                component: TheDag,
+                meta: {
+                    requiresAuth: true,
+                    partnerCanAccess: false,
+                    navigation: true,
+                    customText: 'DAG'
+                }
+            },
+
         ]
     },
     {
@@ -347,6 +373,8 @@ const routes: any = [
             partnerCanAccess: false
         }
     },
+
+
     {
         name: 'guide-single',
         path: '/guide/resources/:id/:slug?',
@@ -556,36 +584,76 @@ const partnerRouteChecker = (to, from, next) => {
 
 router.beforeEach(partnerRouteChecker)
 // regular authentication
+// router.beforeEach(async (to, from, next) => {
+//     const authStore = useAuthStore();
+//     const userStore = useUserStore();
+//     const {userEntryLink} = storeToRefs(userStore)
+//     // it will only fill in userEntryLink if the entry link is null or not 'finished
+//     if (!userEntryLink.value && userEntryLink.value !== 'finished') {
+//         userEntryLink.value = to.fullPath
+//     }
+//     if (!to.meta.requiresAuth) {
+//         return next();
+//     }
+//     if (authStore.isAuthenticated instanceof Promise) {
+//         await authStore.isAuthenticated?.then(() => {
+//             if (authStore.isAuthenticated) {
+//                 next();
+//             } else {
+//                 console.log("Auth promise false");
+//                 console.log(authStore.isAuthenticated)
+//                 const state = encodeURIComponent(`custom_redirect_url=${userEntryLink.value}`);
+//                 const loginUrl = `/login?state=${state}`;
+//                 window.location.href = loginUrl;
+//             }
+//         })
+//     } else { // authStore.isAuthenticated is boolean
+//         if (authStore.isAuthenticated) {
+//             next();
+//         } else {
+//             console.log("Auth bool false");
+//             console.log(authStore.isAuthenticated)
+//             const state = encodeURIComponent(`custom_redirect_url=${userEntryLink.value}`);
+//             const loginUrl = `/login?state=${state}`;
+//             window.location.href = loginUrl;
+//         }
+//     }
+//     // If the route doesn't require authentication, move on.
+// });
+
+
 router.beforeEach(async (to, from, next) => {
     const authStore = useAuthStore();
     const userStore = useUserStore();
-    const {userEntryLink} = storeToRefs(userStore)
-    // it will only fill in userEntryLink if the entry link is null or not 'finished
-    if (!userEntryLink.value && userEntryLink.value !== 'finished') {
-        userEntryLink.value = to.fullPath
+    const {userEntryLink} = storeToRefs(userStore);
+
+    if (!userEntryLink.value || userEntryLink.value !== 'finished') {
+        userEntryLink.value = to.fullPath;
     }
+
     if (!to.meta.requiresAuth) {
         return next();
     }
-    if (authStore.isAuthenticated instanceof Promise) {
-        await authStore.isAuthenticated?.then(() => {
-            if (authStore.isAuthenticated) {
-                next();
-            } else {
-                console.log("Auth promise false");
-                console.log(authStore.isAuthenticated)
-                window.location = '/login'
-            }
-        })
-    } else { // authStore.isAuthenticated is boolean
-        if (authStore.isAuthenticated) {
+
+    try {
+        if (authStore.getAuthStatus instanceof Promise) {
+            await authStore.getAuthStatus;
+        }
+
+        if (authStore.getAuthStatus) {
             next();
         } else {
-            console.log("Auth bool false");
-            console.log(authStore.isAuthenticated)
-            window.location = '/login'
+            const state = encodeURIComponent(`custom_redirect_url=${userEntryLink.value}`);
+            const loginUrl = `/login?state=${state}`;
+            window.location.href = loginUrl; // External redirect
+            next(false);
         }
+    } catch (error) {
+        // console.error("Authentication check failed", error);
+        // const state = encodeURIComponent(`custom_redirect_url=${userEntryLink.value}`);
+        // const loginUrl = `/login?state=${state}`;
+        // window.location.href = loginUrl; // External redirect
     }
-    // If the route doesn't require authentication, move on.
 });
+
 export default router;

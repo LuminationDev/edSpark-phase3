@@ -157,13 +157,13 @@ onMounted(async () => {
                         <Profile />
                         Profile
                     </ProfileDropdownItem>
-                    <ProfileDropdownItem
-                        :is-router-link="true"
-                        target-path="/create"
-                    >
-                        <CreateIcon />
-                        Create
-                    </ProfileDropdownItem>
+                    <!--                    <ProfileDropdownItem-->
+                    <!--                        :is-router-link="true"-->
+                    <!--                        target-path="/create"-->
+                    <!--                    >-->
+                    <!--                        <CreateIcon />-->
+                    <!--                        Create-->
+                    <!--                    </ProfileDropdownItem>-->
                     <ProfileDropdownItem
                         v-if="mySchoolTargetPath"
                         :is-router-link="true"

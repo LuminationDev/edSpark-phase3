@@ -3,6 +3,8 @@
 namespace App\Filament\Resources\CatalogueversionResource\Pages;
 
 use App\Filament\Resources\CatalogueversionResource;
+use App\Models\Cart;
+use App\Models\CartItem;
 use App\Models\Catalogue;
 use Filament\Actions;
 use Filament\Resources\Pages\CreateRecord;
@@ -36,6 +38,7 @@ class CreateCatalogueversion extends CreateRecord
             $headers = str_getcsv(array_shift($rows));
         } catch (\Exception $e) {
             Log::error("Failed reading csv file");
+            $record->delete();
             throw $e;
         }
 
@@ -73,15 +76,22 @@ class CreateCatalogueversion extends CreateRecord
             Log::error("Failed formatting or processing data in batch: " . $e->getMessage());
             // Rollback if an error occurs
             DB::rollBack();
+            $record->delete();
             throw $e;
         }
 
+        $this->abandonAllActiveCarts();
         Log::info("Processed $batchCount batches successfully.");
+//        CartItem::truncate();
         return $record;
+    }
+    private function abandonAllActiveCarts(){
+        Cart::where('status', "ACTIVE")->update(['status' => "ABANDONED"]);
     }
 
 
-    private function findExistingImageId($titles) {
+    private function findExistingImageId($titles)
+    {
         return Image::whereIn('title', $titles)->pluck('id')->first() ?? '';
     }
 

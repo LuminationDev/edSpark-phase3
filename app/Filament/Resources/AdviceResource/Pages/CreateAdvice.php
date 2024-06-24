@@ -1,5 +1,7 @@
 <?php
+
 namespace App\Filament\Resources\AdviceResource\Pages;
+
 use App\Filament\Resources\AdviceResource;
 use App\Helpers\NotificationActionType;
 use App\Helpers\NotificationResource;
@@ -18,13 +20,14 @@ use Illuminate\Database\Eloquent\Model;
 class CreateAdvice extends CreateRecord
 {
     use useNotification;
+
     private string $notificationResourceType = NotificationResourceType::ADVICE;
 
     protected static string $resource = AdviceResource::class;
 
     protected function handleRecordCreation(array $data): Model
     {
-        $record =  parent::handleRecordCreation($data);
+        $record = parent::handleRecordCreation($data);
         //handle tags
         if (isset($data['tags'])) {
             $thatEvent = Advice::find($record->id);
@@ -36,14 +39,9 @@ class CreateAdvice extends CreateRecord
         $currentUser = Auth::user();
         $usersExceptCurrent = User::whereKeyNot($currentUser)->get();
 
-        foreach ($usersExceptCurrent as $eachUser){
+        foreach ($usersExceptCurrent as $eachUser) {
             $this->sendNotification($eachUser, $record->id, $record->title, $currentUser->id, $this->notificationResourceType, NotificationActionType::PUBLISHED);
         }
-
-//        $notificationObject = new NotificationResource($record->id, $record->title, $currentUser->id, NotificationResourceType::ADVICE, NotificationActionType::PUBLISHED);
-//        foreach ($usersExceptCurrent as $eachUser){
-//            $eachUser->notify(new ResourceCreated($notificationObject));
-//        }
         // end of notification code
 
 
