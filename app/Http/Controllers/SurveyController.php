@@ -180,7 +180,7 @@ class SurveyController extends Controller
     public function getUserActionPlan(Request $request): JsonResponse
     {
         $user = User::find(Auth::user()->id);
-        $userSurvey = $this->getUserSurvey();
+        $userSurvey = $this->getUserSiteSurvey();
 
         if ($userSurvey == null) {
             return $this->surveyNotFound();
