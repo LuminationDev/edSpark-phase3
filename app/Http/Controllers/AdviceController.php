@@ -108,7 +108,7 @@ class AdviceController extends Controller
         $data = [];
 
         foreach ($advices as $advice) {
-            $result = $this->postService->adviceModelToJson($advice, $request);
+            $result = $this->postService->adviceModelToJson($advice, $request, false);
             $data[] = $result;
         }
 

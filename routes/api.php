@@ -57,12 +57,13 @@ Route::middleware('auth:sanctum')->group(function () {
 
     // Advice APIs
     Route::post('createAdvicePost', [AdviceController::class, 'createAdvicePost']);
-    Route::get('fetchAdvicePosts', [AdviceController::class, 'handleFetchAdvicePosts']);
     Route::post('fetchAdvicePostById', [AdviceController::class, 'fetchAdvicePostById']);
     Route::get('fetchAdvicePostByType/{type}', [AdviceController::class, 'fetchAdvicePostByType']);
     Route::post('fetchRelatedAdvice', [AdviceController::class, 'fetchRelatedAdvice']);
     Route::get('fetchAdviceTypes', [AdviceController::class, 'fetchAdviceTypes']);
     Route::get('fetchUserAdvice', [AdviceController::class, 'handleFetchAdvicePosts']);
+
+    Route::get('advices', [AdviceController::class, 'handleFetchAdvicePosts']);
 
     Route::get('learningtask', [AdviceController::class, 'fetchLearningTask']);
 

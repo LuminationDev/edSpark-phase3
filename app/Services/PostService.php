@@ -59,7 +59,7 @@ class PostService
         return $data;
     }
 
-    public function adviceModelToJson($advice, $request): array
+    public function adviceModelToJson($advice, $request, $withContent = true): array
     {
 
         $userId = Auth::user()->id;
@@ -72,7 +72,7 @@ class PostService
         return [
             'id' => $advice->id,
             'title' => $advice->title,
-            'content' => $advice->content,
+            'content' => $withContent ? $advice->content : NULL,
             'excerpt' => $advice->excerpt,
             'author' => [
                 'author_id' => $author->id,
@@ -81,7 +81,7 @@ class PostService
             ],
             'cover_image' => ($advice->cover_image) ?: NULL,
             'template' => ($advice->template) ?: NULL,
-            'extra_content' => ($advice->extra_content) ?: NULL,
+            'extra_content' =>$withContent ?(($advice->extra_content) ?: NULL) : NULL,
             'created_at' => $advice->created_at,
             'updated_at' => $advice->updated_at,
             'status' => $advice->status,
@@ -103,7 +103,7 @@ class PostService
     }
 
 
-    public function softwareModelToJson($software, $schoolMetadata = NULL, $request = NULL): array
+    public function softwareModelToJson($software, $schoolMetadata = NULL, $request = NULL,  $withContent = true): array
     {
 
         $userId = Auth::user()->id;
@@ -114,7 +114,7 @@ class PostService
         return [
             'id' => $software->id,
             'title' => $software->title,
-            'content' => $software->content,
+            'content' => $withContent? $software->content : NULL,
             'excerpt' => $software->excerpt,
             'author' => [
                 'author_id' => $author->id ?? '',
@@ -132,8 +132,8 @@ class PostService
                 : null,
             'post_type' => 'software',
             'template' => $software->template ?? null,
-            'extra_content' => $software->extra_content ?? null,
-            'how_to_access' => ($software->how_to_access) ?: NULL,
+            'extra_content' => $withContent ? ($software->extra_content ?? NULL) : NULL,
+            'how_to_access' => $withContent ? (($software->how_to_access) ?: NULL) : NULL,
             'metadata' => $softwareMetadataToSend ?? null,
             'isLikedByUser' => $isLikedByUser,
             'isBookmarkedByUser' => $isBookmarkedByUser,
@@ -149,7 +149,7 @@ class PostService
         ];
     }
 
-    public function eventModelToJson($event, $request): array
+    public function eventModelToJson($event, $request,  $withContent = true): array
     {
         $author = $event->author;
         $author_logo = $this->getAuthorLogo($author);
@@ -160,7 +160,7 @@ class PostService
         return [
             'id' => $event->id,
             'title' => $event->title,
-            'content' => $event->content,
+            'content' => $withContent ? $event->content : NULL,
             'excerpt' => $event->excerpt,
             'location' => json_decode($event->location),
             'author' => [
@@ -179,7 +179,7 @@ class PostService
             'post_type' => 'event',
             'created_at' => $event->created_at,
             'updated_at' => $event->updated_at,
-            'extra_content' => ($event->extra_content) ?? NULL,
+            'extra_content' => $withContent ? (($event->extra_content) ?? NULL) : NULL,
             'isLikedByUser' => $isLikedByUser,
             'isBookmarkedByUser' => $isBookmarkedByUser,
             'tags' => $event->tags->pluck('name'),
