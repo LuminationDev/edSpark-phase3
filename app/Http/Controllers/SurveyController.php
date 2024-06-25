@@ -125,8 +125,11 @@ class SurveyController extends Controller
     public function getDescriptionForElements(Request $request, $user_domain_id): JsonResponse
     {
         $userDomain = UserSurveyDomain::find($user_domain_id);
+        $userSurvey = UserSurvey::find($userDomain->user_survey_id);
+
 
         $elementDescription = Question::selectRaw('domain, element, element_print, element_description')
+            ->where('survey_id', $userSurvey->survey_id)
             ->where('domain', $userDomain->domain)
             ->where('element_description', '<>', '')
             ->get();
