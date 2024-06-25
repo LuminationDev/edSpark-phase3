@@ -19,7 +19,7 @@ import {useWindowStore} from "@/js/stores/useWindowStore";
 const router = useRouter();
 
 const userStore = useUserStore()
-const {currentUser, userEntryLink} = storeToRefs(userStore)
+const {currentUser} = storeToRefs(userStore)
 
 const windowStore = useWindowStore()
 const {isMobile, windowWidth, showGlobalSearch} = storeToRefs(windowStore)

@@ -113,6 +113,7 @@ class UserController extends Controller
             'site' => [
                 'site_name' => $user->site ? $user->site->site_name : null,
                 'site_id' => $user->site_id ?: NULL,
+                'site_category' => $user->site ? $user->site->category_code : NULL,
             ]
         ];
     }

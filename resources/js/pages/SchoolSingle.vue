@@ -50,7 +50,16 @@ const isPreviewMode = computed(() => {
 
 onBeforeMount(async () => {
     // will automatically create school if user is principal and school has not been created
-    await schoolService.getUserSchoolByUserSiteId(currentUser.value.id, currentUser.value.site_id) // will trigger create the user's school based on the site id
+    try {
+        if (userStore.isUserSiteSchool) {
+            await schoolService.getUserSchoolByUserSiteId(currentUser.value.id, currentUser.value.site_id)
+        }
+    } // will trigger create the user's school based on the site id
+    catch (e) {
+        console.log('Error inside before mount')
+        console.log(e.message)
+    }
+
     await fetchSchoolByNameAsync(currentSchoolName.value)
 
 })
@@ -110,7 +119,7 @@ const handleSaveNewSchoolInfo = async (contentBlocks, techUsed, techLandscape) =
     try {
         // update school might return some stuff.
         await schoolService.updateSchool(
-            schoolContent.value, contentBlocks, techUsed,techLandscape, logoStorage.value, coverImageStorage.value, colorTheme.value
+            schoolContent.value, contentBlocks, techUsed, techLandscape, logoStorage.value, coverImageStorage.value, colorTheme.value
         );
     } catch (err) {
         console.log('Something wrong while attempting to post');
@@ -122,7 +131,7 @@ const handleChangeColorTheme = (newColor) => {
     colorTheme.value = newColor
 }
 
-const handleResetColorTheme = () =>{
+const handleResetColorTheme = () => {
     colorTheme.value = originalColorTheme.value
 }
 
@@ -229,7 +238,6 @@ const handleCloseModerationTab = (): void => {
                                             md:items-start
                                             flex-row
                                             pl-8
-                                            lg:pl-0
                                             lg:pl-0
                                             gap-4
                                             sm:mx-0
@@ -345,7 +353,7 @@ const handleCloseModerationTab = (): void => {
     </div>
     <div
         v-else-if="!isSchoolContentPopulated && showSchoolNotAvailable"
-        class="flex justify-center items-center flex-col h-36 mt-[10vh]"
+        class="flex justify-center items-center flex-col"
     >
         <EdsparkPageNotFound
             :error-message="schoolNotAvailableMessage ? schoolNotAvailableMessage : 'School not available. Please check again later'"
