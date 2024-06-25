@@ -46,7 +46,7 @@ export const API_ENDPOINTS: Endpoints = appendServerURL({
         FETCH_ADVICE_POSTS_BY_TYPE_YOUR: `/fetchAdvicePostByType/${['Your Classroom', 'Your Work', 'Your Learning']}`,
         FETCH_ADVICE_POST_BY_ID: `/fetchAdvicePostById`,
         FETCH_RELATED_ADVICE: `/fetchRelatedAdvice`,
-        FETCH_ADVICE_TYPES: `/fetchAdviceTypes`,
+        FETCH_ADVICE_TYPES: `/advice/types`,
         FETCH_USER_ADVICE: `/fetchUserAdvice`,
         LEARNING_TASK: '/learningtask',
         DAG: '/dag'
