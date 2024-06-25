@@ -8,9 +8,7 @@ export default function useIsLoading(fetchFunction : () => Promise<any>) {
     const fetchData = async (): void => {
         try {
             isLoading.value = true;
-            console.log('beofre fetch')
             const response = await fetchFunction();
-            console.log('after fetch')
             data.value = response;
         } catch (err) {
             error.value = err;
