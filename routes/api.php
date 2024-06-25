@@ -81,7 +81,8 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('createEventPost', [EventController::class, 'createEventPost']);
     Route::get('fetchEventPosts', [EventController::class, 'handleFetchEventPosts']);
     Route::post('fetchEventPostById', [EventController::class, 'fetchEventPostById']);
-    Route::get('fetchEventTypes', [EventController::class, 'fetchEventTypes']);
+    Route::get('events/types', [EventController::class, 'fetchEventTypes']);
+    Route::get('events/formats', [EventController::class, 'fetchEventFormats']);
 
     // Community APIs
     Route::get('fetchCommunityPosts', [CommunityController::class, 'fetchCommunityPosts']);
