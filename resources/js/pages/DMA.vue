@@ -163,8 +163,7 @@ const isDomainResetting = (domainId = null) => {
 
 const handleResetSurvey = async () => {
     showResetModal.value = false;
-
-
+    showStartNewSurveyModal.value = false
     dmaService.resetSurveyProgress().then(() => {
         showResetting();
     }).catch((error) => {
