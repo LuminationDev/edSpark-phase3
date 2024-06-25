@@ -74,7 +74,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('fetchSoftwarePosts', [SoftwareController::class, 'handleFetchSoftwarePosts']);
     Route::post('fetchSoftwarePostById', [SoftwareController::class, 'fetchSoftwarePostById']);
     Route::post('fetchRelatedSoftware', [SoftwareController::class, 'fetchRelatedSoftware']);
-    Route::get('fetchSoftwareTypes', [SoftwareController::class, 'fetchSoftwareTypes']);
+    Route::get('software/types', [SoftwareController::class, 'fetchSoftwareTypes']);
     Route::get('fetchUserSoftware', [SoftwareController::class, 'handleFetchSoftwarePosts']);
 
     // Event APIs

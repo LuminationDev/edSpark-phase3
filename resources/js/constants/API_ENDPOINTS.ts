@@ -57,7 +57,7 @@ export const API_ENDPOINTS: Endpoints = appendServerURL({
         FETCH_SOFTWARE_POSTS: `/fetchSoftwarePosts`,
         FETCH_SOFTWARE_POST_BY_ID: `/fetchSoftwarePostById`,
         FETCH_RELATED_SOFTWARE: `/fetchRelatedSoftware`,
-        FETCH_SOFTWARE_TYPES: `/fetchSoftwareTypes`,
+        FETCH_SOFTWARE_TYPES: `/software/types`,
         FETCH_USER_SOFTWARE: '/fetchUserSoftware'
 
     },

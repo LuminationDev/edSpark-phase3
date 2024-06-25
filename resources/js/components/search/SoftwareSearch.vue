@@ -1,6 +1,6 @@
 <script setup>
 import useSWRV from "swrv";
-import {ref} from "vue";
+import {onMounted, ref} from "vue";
 import {useRoute} from "vue-router";
 
 import BaseSearch from "@/js/components/search/BaseSearch.vue";
@@ -11,7 +11,7 @@ import {LandingHeroText} from "@/js/constants/PageBlurb";
 import {swrvOptions} from "@/js/constants/swrvConstants";
 import {axiosFetcher} from "@/js/helpers/fetcher";
 import router from "@/js/router";
-import {useUserStore} from "@/js/stores/useUserStore";
+import {softwareService} from "@/js/service/softwareService";
 
 const route = useRoute()
 
@@ -20,15 +20,41 @@ const {
     data: softwareList,
     error: softwareError
 } = useSWRV(API_ENDPOINTS.SOFTWARE.FETCH_SOFTWARE_POSTS, axiosFetcher, swrvOptions)
+const isLoadingFilters = ref(true)
 
-const softwareFilterList = [
-    {name: "No cost", value: "No cost"},
-    {name: "Cyber Assessed", value: "Cyber Assessed"},
-    {name: "Negotiated Deals", value:"Negotiated Deals"},
-]
+const softwareFilterList = ref([])
 
 const filterObject = ref({})
 
+onMounted(async () => {
+    softwareFilterList.value = await softwareService.fetchSoftwareTypes();
+    if (route.params || route.params.filter) {
+        switch (route.params.filter) {
+        case "nocost":
+            preselectedFilterObject.value = {name: "No cost", value: "No cost"}
+            break;
+        case "assessed":
+            preselectedFilterObject.value = {name: "Cyber Assessed", value: "Cyber Assessed"}
+            break;
+        case "negotiated":
+            preselectedFilterObject.value = {
+                name: "Negotiated Deals",
+                value: "Negotiated Deals"
+            }
+            break;
+        default:
+            router.push('/browse/software')        }
+    }
+    isLoadingFilters.value = false
+
+})
+
+
+/*
+    {name: "No cost", value: "No cost"},
+    {name: "Cyber Assessed", value: "Cyber Assessed"},
+    {name: "Negotiated Deals", value:"Negotiated Deals"},
+ */
 
 // Handle Emit that is emitted by GenericMultiSelectFilter
 const handleFilter = (filters, dataPath) => {
@@ -37,24 +63,6 @@ const handleFilter = (filters, dataPath) => {
 
 const preselectedFilterObject = ref('');
 
-if (route.params || route.params.filter) {
-    switch (route.params.filter) {
-    case "provided":
-        preselectedFilterObject.value = {name: "Department Provided", value: "Department Provided"}
-        break;
-    case "approved":
-        preselectedFilterObject.value = {name: "Department Approved", value: "Department Approved"}
-        break;
-    case "negotiated":
-        preselectedFilterObject.value = {
-            name: "Department Approved and Negotiated",
-            value: "Approved and Negotiated"
-        }
-        break;
-    default:
-        router.push('/browse/software')
-    }
-}
 
 </script>
 
@@ -69,6 +77,7 @@ if (route.params || route.params.filter) {
     >
         <template #filterBar>
             <GenericMultiSelectFilter
+                v-if="!isLoadingFilters"
                 id="softwareType"
                 placeholder="Filter by type"
                 :filter-list="softwareFilterList"
