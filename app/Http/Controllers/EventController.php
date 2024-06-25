@@ -7,6 +7,7 @@ use App\Helpers\StatusHelpers;
 use App\Helpers\UserRole;
 use App\Http\Middleware\ResourceAccessControl;
 use App\Models\Advice;
+use App\Models\Eventformat;
 use App\Models\Eventmeta;
 use App\Models\Eventtype;
 use App\Models\Feedback;
@@ -232,6 +233,21 @@ class EventController extends Controller
             ->toArray();
 
         return response()->json($eventTypes);
+    }
+
+    public function fetchEventFormats(Request $request): \Illuminate\Http\JsonResponse
+    {
+        $eventFormats = Eventformat::all()
+            ->map(function ($eventFormat) {
+                return [
+                    'id' => $eventFormat->id,
+                    'name' => $eventFormat->event_format_name,
+                    'value' => $eventFormat->event_format_value
+                ];
+            })
+            ->toArray();
+
+        return response()->json($eventFormats);
     }
 
     public function addOrEditEMSLink(Request $request): \Illuminate\Http\JsonResponse

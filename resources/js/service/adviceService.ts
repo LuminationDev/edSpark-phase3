@@ -32,5 +32,10 @@ export const adviceService = {
         return axios.get(API_ENDPOINTS.ADVICE.DAG).then(res =>{
             return cardDataWithGuid(res.data)
         })
+    },
+    fetchAdviceTypes: () =>{
+        return axios.get(API_ENDPOINTS.ADVICE.FETCH_ADVICE_TYPES).then(res =>{
+            return res.data
+        })
     }
 }

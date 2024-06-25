@@ -9,11 +9,9 @@ import RoundButton from "@/js/components/dma/RoundButton.vue";
 import TextButton from "@/js/components/dma/TextButton.vue";
 import ToggleButton from "@/js/components/dma/ToggleButton.vue";
 import WarningModal from "@/js/components/dma/WarningModal.vue";
+import PDFBuilder from "@/js/components/global/PDFBuilder.vue";
 import Spinner from "@/js/components/spinner/Spinner.vue";
 import {dmaService} from "@/js/service/dmaService";
-
-
-import PDFBuilder from "@/js/components/global/PDFBuilder.vue";
 
 
 const props = defineProps({
@@ -237,6 +235,7 @@ const reportData = computed(() => {
         };
         data.push(reportDomain);
     }
+    console.log(data)
     return data;
 })
 
@@ -427,10 +426,10 @@ const handleCloseReport = () => {
 
                     <PDFBuilder
                         :domains="domains"
-                        :questionData="questionData"
-                        :reportData="reportData"
-                        :elementData="elementData"
-                        />
+                        :question-data="questionData"
+                        :report-data="reportData"
+                        :element-data="elementData"
+                    />
 
 
                     <div class="flex lg:flex-row flex-col gap-10">
@@ -487,19 +486,19 @@ const handleCloseReport = () => {
                                         <h3
                                             class="
                                                 bg-secondary-coolGrey
+                                                bg-secondary-coolGrey
                                                 flex
                                                 items-center
                                                 flex-row
+                                                mb-6
+                                                mt-10
                                                 p-2
                                                 pl-4
                                                 rounded
                                                 text-h4
-                                                bg-secondary-coolGrey 
-                                                mt-10 mb-6
                                                 "
                                             :class="{'brightness-75': selectedElement === `${domain.domain}|${element.element}`}"
                                         >
-
                                             <ToggleButton
                                                 v-model="actionPlan[domain.domain][element.element].selected"
                                                 @click="handleTogglePlan(domain, element.element)"
@@ -516,8 +515,6 @@ const handleCloseReport = () => {
                                                 class="!text-xs underline"
                                                 @click="() => toggleShowAdvice(element.domain, element.element)"
                                             >
-
-
                                                 <!--span class="hidden md:block !normal-case text-sm">{{ actionPlan[domain.domain][element.element].expanded ? 'Hide' : 'Show' }} advice & action plan</span-->
 
                                                 <span class="hidden md:block">
@@ -607,10 +604,11 @@ const handleCloseReport = () => {
                     </div>
                     <div class="mt-10 text-center">
                         <RoundButton                         
-                        color="bg-white"
-                        text-color="black"
-                        class="hover:!bg-secondary-coolGrey hover:!brightness-100"
-                        @click="handleCloseReport">
+                            color="bg-white"
+                            text-color="black"
+                            class="hover:!bg-secondary-coolGrey hover:!brightness-100"
+                            @click="handleCloseReport"
+                        >
                             Close
                         </RoundButton>
                     </div>

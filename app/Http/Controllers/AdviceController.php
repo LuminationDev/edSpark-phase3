@@ -89,7 +89,7 @@ class AdviceController extends Controller
     public function handleFetchAdvicePosts(Request $request)
     {
         $request_user_id = $request->input('user_id');
-        if(isset($request_user_id)){
+        if (isset($request_user_id)) {
             $is_requesting_partner_advice = User::find($request_user_id)->isPartner();
         } else $is_requesting_partner_advice = false;
 
@@ -104,7 +104,9 @@ class AdviceController extends Controller
     {
 
 
-        $advices = Advice::where('status', StatusHelpers::PUBLISHED)->orderBy('created_at', 'DESC')->get();
+        $advices = Advice::where('status', StatusHelpers::PUBLISHED)->whereDoesntHave('advice_types', function ($query) {
+            $query->whereIn('advice_type_name', ['Learning Task', 'DAG']);
+        })->orderBy('created_at', 'DESC')->get();
         $data = [];
 
         foreach ($advices as $advice) {
@@ -116,7 +118,7 @@ class AdviceController extends Controller
 
     }
 
-    public function fetchUserPostsAndRelated(Request $request):JsonResponse
+    public function fetchUserPostsAndRelated(Request $request): JsonResponse
     {
         try {
             $userId = $request->input('user_id');
@@ -317,7 +319,7 @@ class AdviceController extends Controller
     public function fetchAdviceTypes(Request $request): JsonResponse
     {
 
-        $adviceTypes = AdviceType::all()
+        $adviceTypes = AdviceType::whereNotIn('advice_type_name', ['Learning Task', "DAG"])->get()
             ->map(function ($adviceType) {
                 return [
                     'id' => $adviceType->id,
@@ -330,7 +332,8 @@ class AdviceController extends Controller
         return response()->json($adviceTypes);
     }
 
-    public function fetchLearningTask(Request $request): \Illuminate\Http\JsonResponse{
+    public function fetchLearningTask(Request $request): \Illuminate\Http\JsonResponse
+    {
         $learningTasks = Advice::whereHas('advice_types', function ($query) {
             $query->where('advice_type_name', 'Learning Task');
         })->where('status', StatusHelpers::PUBLISHED)->orderBy('created_at', 'DESC')->get();
@@ -344,20 +347,22 @@ class AdviceController extends Controller
 
         return response()->json($data);
     }
-    public function fetchDAG(Request $request): \Illuminate\Http\JsonResponse{
-    $learningTasks = Advice::whereHas('advice_types', function ($query) {
-        $query->where('advice_type_name', 'DAG');
-    })->where('status', StatusHelpers::PUBLISHED)->orderBy('created_at', 'DESC')->get();
 
-    $data = [];
+    public function fetchDAG(Request $request): \Illuminate\Http\JsonResponse
+    {
+        $learningTasks = Advice::whereHas('advice_types', function ($query) {
+            $query->where('advice_type_name', 'DAG');
+        })->where('status', StatusHelpers::PUBLISHED)->orderBy('created_at', 'DESC')->get();
 
-    foreach ($learningTasks as $learningTask) {
-        $result = $this->postService->adviceModelToJson($learningTask, $request);
-        $data[] = $result;
+        $data = [];
+
+        foreach ($learningTasks as $learningTask) {
+            $result = $this->postService->adviceModelToJson($learningTask, $request);
+            $data[] = $result;
+        }
+
+        return response()->json($data);
     }
-
-    return response()->json($data);
-}
 }
 
 

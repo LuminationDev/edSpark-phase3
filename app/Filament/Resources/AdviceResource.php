@@ -213,7 +213,7 @@ class AdviceResource extends Resource
     public static function getEloquentQuery(): Builder
     {
         return Advice::whereDoesntHave('advice_types', function ($query) {
-            $query->where('advice_type_name', 'Learning Task');
+            $query->whereIn('advice_type_name', ['Learning Task','DAG']);
         });
     }
 

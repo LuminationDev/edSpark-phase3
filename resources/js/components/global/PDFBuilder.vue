@@ -1,10 +1,10 @@
 <script setup>
 import * as htmlToImage from 'html-to-image';
-import { jsPDF } from 'jspdf';
+import {jsPDF} from 'jspdf';
 import moment from 'moment';
-import { ref } from 'vue';
+import {ref} from 'vue';
 
-import { useUserStore } from "@/js/stores/useUserStore";
+import {useUserStore} from "@/js/stores/useUserStore";
 
 import GenericButton from '../button/GenericButton.vue';
 import bgImageTitle from './../../../../resources/assets/images/DMA-Report-bg-title.png';
@@ -17,10 +17,10 @@ import MuseoSans700 from './MuseoSans-700-normal.js';
 
 const userStore = useUserStore()
 
-var doc  = null;
+let doc = null;
 
 const initialiseDoc = () => {
-        doc = new jsPDF({
+    doc = new jsPDF({
         orientation: 'portrait',
         unit: 'cm',
         format: 'a4',
@@ -47,7 +47,7 @@ const initialiseDoc = () => {
     doc.addFont('MuseoSans-500-normal.ttf', 'MuseoSans-500', 'normal');
 
     doc.addFileToVFS('MuseoSans-700-normal.ttf', MuseoSans700);
-doc.addFont('MuseoSans-700-normal.ttf', 'MuseoSans-700', 'normal');
+    doc.addFont('MuseoSans-700-normal.ttf', 'MuseoSans-700', 'normal');
 
 }
 
@@ -81,13 +81,23 @@ const props = defineProps({
 })
 
 
-import { dmaService } from "@/js/service/dmaService";
+import {dmaService} from "@/js/service/dmaService";
 // import { current } from 'tailwindcss/colors';
 const actionData = ref(null);
 const reflectionData = ref(null);
 
-const domainColorsLabelBorders = { "teaching": '#223c91', "learning": '#339999', "leading": '#BC3242', "managing": '#FD9141' };
-const domainColorsLabelFills = { "teaching": '#6985B7', "learning": '#5eadb2', "leading": '#d8747f', "managing": '#f4b07e' };
+const domainColorsLabelBorders = {
+    "teaching": '#223c91',
+    "learning": '#339999',
+    "leading": '#BC3242',
+    "managing": '#FD9141'
+};
+const domainColorsLabelFills = {
+    "teaching": '#6985B7',
+    "learning": '#5eadb2',
+    "leading": '#d8747f',
+    "managing": '#f4b07e'
+};
 
 const domainColorsBorder = Object.values(domainColorsLabelBorders);//['#223c91', '#5eadb2', '#d8747f', '#f4b07e'];
 const domainColorsFills = Object.values(domainColorsLabelFills);//['#223c91', '#5eadb2', '#d8747f', '#f4b07e'];
@@ -121,7 +131,7 @@ const loadImages = () => {
 loadImages();
 
 const chunk = (arr, size) =>
-    Array.from({ length: Math.ceil(arr.length / size) }, (v, i) =>
+    Array.from({length: Math.ceil(arr.length / size)}, (v, i) =>
         arr.slice(i * size, i * size + size)
     );
 
@@ -232,7 +242,7 @@ const setBodyText = () => {
 }
 
 
-var selectedPlans = ref([]);
+let selectedPlans = ref([]);
 const isSelected = (string) => {
     if (selectedPlans.value.includes(string)) {
         return true;
@@ -290,8 +300,8 @@ const generatePDF = async () => {
 
     const origElement = document.getElementsByClassName('radial-chart')[0];
 
-    var bgElement = origElement.cloneNode(true);
-    var elementForImage = origElement.cloneNode(true);
+    const bgElement = origElement.cloneNode(true);
+    const elementForImage = origElement.cloneNode(true);
 
     // elementForImage.setAttribute("style", "position: absolute; width: 100%;"); //so it overlaps the other
     bgElement.setAttribute("style", "position: absolute; width: 100%;");
@@ -303,7 +313,7 @@ const generatePDF = async () => {
 
     console.log(document.getElementById("holderDiv"));
 
-    var holderDiv = document.createElement('div');
+    const holderDiv = document.createElement('div');
     document.getElementsByTagName("body")[0].appendChild(holderDiv);
     holderDiv.setAttribute("id", "holderDiv");
     holderDiv.setAttribute("style", "position: relative;");
@@ -313,11 +323,11 @@ const generatePDF = async () => {
     elementForImage.getElementsByTagName('g')[0].setAttribute('mask', '');
     bgElement.getElementsByTagName('g')[0].setAttribute('mask', '');
 
-    var highlights = elementForImage.getElementsByTagName('path'); 
-    var bgPath = bgElement.getElementsByTagName('path'); 
-    
-    var emptyCount = 0;
-    var elementCellCount = 0;
+    const highlights = elementForImage.getElementsByTagName('path');
+    const bgPath = bgElement.getElementsByTagName('path');
+
+    let emptyCount = 0;
+    let elementCellCount = 0;
 
     //put basic borders in place
     for (const thisCellbg of bgPath) {
@@ -333,8 +343,6 @@ const generatePDF = async () => {
         const domainLabel = getDomainForElement(elementLabel);
 
         if (isSelected(elementLabel)) {
-            console.log("Got selected item in " + domainLabel + ", " + domainColorsLabelBorders[domainLabel], elementLabel);
-            // console.log(thisCell);
             thisCell.setAttribute("style", "");
             if (thisCell.classList.contains('empty') && emptyCount == 0) {
                 emptyCount++;
@@ -361,7 +369,7 @@ const generatePDF = async () => {
     console.log("PLANS", selectedPlans);
 
 
-    htmlToImage.toPng(holderDiv, { skipFonts: true, quality: 1.0 }).then(function (dataUrl) {
+    htmlToImage.toPng(holderDiv, {skipFonts: true, quality: 1.0}).then(function (dataUrl) {
         const img = new Image();
         img.src = dataUrl;
 
@@ -408,7 +416,7 @@ const generatePDF = async () => {
             // doc.saveGraphicsState();
 
             doc.setTextColor(domainColorsBorder[0]);
-            doc.text("Technical skills", leftOffset + 10.52, imageOffset-0.4, {align: 'center', angle: -13});            
+            doc.text("Technical skills", leftOffset + 10.52, imageOffset - 0.4, {align: 'center', angle: -13});
             doc.text("Pedagogy", leftOffset + 13.6, imageOffset + 0.9, {align: 'center', angle: -42});
             doc.text("Assessment", leftOffset + 15.6, imageOffset + 3.12, {align: 'center', angle: -72});
             doc.text("Curriculum", leftOffset + 16.5, imageOffset + 5.95, {align: 'center', angle: -96});
@@ -418,23 +426,23 @@ const generatePDF = async () => {
 
             //learning domain labels
             doc.setTextColor(domainColorsBorder[1]);
-            doc.text("Digital technologies", leftOffset + 12.4, imageOffset + 12.9,  {align: 'center', angle: 27});
-            doc.text("Digital literacy", leftOffset + 9.11, imageOffset + 13.1,  {align: 'center', angle: 0});
-            doc.text("Environment", leftOffset + 5.8, imageOffset + 11.8,  {align: 'center', angle: -27.5});
+            doc.text("Digital technologies", leftOffset + 12.4, imageOffset + 12.9, {align: 'center', angle: 27});
+            doc.text("Digital literacy", leftOffset + 9.11, imageOffset + 13.1, {align: 'center', angle: 0});
+            doc.text("Environment", leftOffset + 5.8, imageOffset + 11.8, {align: 'center', angle: -27.5});
 
 
             //leading domain labels
             doc.setTextColor(domainColorsBorder[2]);
-            doc.text("Culture", leftOffset + 3.55, imageOffset + 9.65,  {align: 'center', angle: -58});
-            doc.text("Connections", leftOffset + 3.5, imageOffset + 7.8,  {align: 'center', angle: 96});
+            doc.text("Culture", leftOffset + 3.55, imageOffset + 9.65, {align: 'center', angle: -58});
+            doc.text("Connections", leftOffset + 3.5, imageOffset + 7.8, {align: 'center', angle: 96});
 
             //managing domain labels
             doc.setTextColor(domainColorsBorder[3]);
-            doc.text("Practices", leftOffset + 3.3, imageOffset + 4.5,  {align: 'center', angle: 72});
-            doc.text("Resources", leftOffset + 4.8, imageOffset + 1.7,  {align: 'center', angle: 40});
-            doc.text("Administration", leftOffset + 7.5, imageOffset+0.1,  {align: 'center', angle: 13});
+            doc.text("Practices", leftOffset + 3.3, imageOffset + 4.5, {align: 'center', angle: 72});
+            doc.text("Resources", leftOffset + 4.8, imageOffset + 1.7, {align: 'center', angle: 40});
+            doc.text("Administration", leftOffset + 7.5, imageOffset + 0.1, {align: 'center', angle: 13});
 
-            //teaching domain labels            
+            //teaching domain labels
             // doc.setTextColor(domainColorsBorder[0]);
             // doc.text("Technical skills", leftOffset + 12, imageOffset, 'center');
             // doc.text("Pedagogy", leftOffset + 14.2, imageOffset + 1.35, 'center');
@@ -486,7 +494,7 @@ const generatePDF = async () => {
                 const elementCount = props.elementData[i].elements.element.length;
                 for (let j = 0; j < elementCount; j++) {
                     const elementTitle = capitalizeFirstLetter(props.elementData[i].elements.element[j].element_print);
-                    const elementLabel = props.reportData[i].elements[j].label;
+                    const elementLabel = props.reportData[i]?.elements[j]?.label ? props.reportData[i]?.elements[j]?.label : '';
 
                     //element line
                     doc.setDrawColor(domainColorsBorder[i]);
@@ -548,7 +556,7 @@ const generatePDF = async () => {
                     //get indicator data
                     const indicatorsForSection = element.indicators.length;
                     let indicatorCount = 0;
-                    var inset = 0;
+                    const inset = 0;
 
                     // loop through indicators
 
@@ -601,7 +609,6 @@ const generatePDF = async () => {
                         textOffset = textOffset + drawSuggestionsBlock(i, textOffset, introText, listItems, isSelected);
 
                     }
-
 
 
                     // var isSelected = true; //currentPlan.selected;
@@ -695,10 +702,10 @@ const generatePDF = async () => {
 
             doc.save("DMA-Report_" + siteName.replace(" ", "-") + "_" + date + ".pdf"); //download as PDF
 
-            
-            var holder = document.getElementById("holderDiv");
+
+            const holder = document.getElementById("holderDiv");
             console.log(holder);
-            if(holder){
+            if (holder) {
                 holder.remove();
             }
 
@@ -711,18 +718,16 @@ const generatePDF = async () => {
 };
 
 
-
-
-
-
-
 </script>
 
 
 <template>
     <div class="flex justify-end flex-row m-auto max-w-[800px]">
-        <GenericButton :callback="generatePDF" button-id="pdfDownload"
-            class="font-medium mb-10 px-12 py-2 text-lg text-white hover:!brightness-[1.1]">
+        <GenericButton
+            :callback="generatePDF"
+            button-id="pdfDownload"
+            class="font-medium mb-10 px-12 py-2 text-lg text-white hover:!brightness-[1.1]"
+        >
             Download report
         </GenericButton>
     </div>

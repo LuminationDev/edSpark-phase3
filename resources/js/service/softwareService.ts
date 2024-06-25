@@ -33,5 +33,10 @@ export const softwareService = {
             return cardDataWithGuid(res.data)
         })
     },
+    fetchSoftwareTypes: () =>{
+        return axios.get(API_ENDPOINTS.SOFTWARE.FETCH_SOFTWARE_TYPES).then(res =>{
+            return res.data
+        })
+    }
 
 }

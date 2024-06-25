@@ -60,7 +60,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('fetchAdvicePostById', [AdviceController::class, 'fetchAdvicePostById']);
     Route::get('fetchAdvicePostByType/{type}', [AdviceController::class, 'fetchAdvicePostByType']);
     Route::post('fetchRelatedAdvice', [AdviceController::class, 'fetchRelatedAdvice']);
-    Route::get('fetchAdviceTypes', [AdviceController::class, 'fetchAdviceTypes']);
+    Route::get('advice/types', [AdviceController::class, 'fetchAdviceTypes']);
     Route::get('fetchUserAdvice', [AdviceController::class, 'handleFetchAdvicePosts']);
 
     Route::get('advices', [AdviceController::class, 'handleFetchAdvicePosts']);
@@ -74,14 +74,15 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('fetchSoftwarePosts', [SoftwareController::class, 'handleFetchSoftwarePosts']);
     Route::post('fetchSoftwarePostById', [SoftwareController::class, 'fetchSoftwarePostById']);
     Route::post('fetchRelatedSoftware', [SoftwareController::class, 'fetchRelatedSoftware']);
-    Route::get('fetchSoftwareTypes', [SoftwareController::class, 'fetchSoftwareTypes']);
+    Route::get('software/types', [SoftwareController::class, 'fetchSoftwareTypes']);
     Route::get('fetchUserSoftware', [SoftwareController::class, 'handleFetchSoftwarePosts']);
 
     // Event APIs
     Route::post('createEventPost', [EventController::class, 'createEventPost']);
     Route::get('fetchEventPosts', [EventController::class, 'handleFetchEventPosts']);
     Route::post('fetchEventPostById', [EventController::class, 'fetchEventPostById']);
-    Route::get('fetchEventTypes', [EventController::class, 'fetchEventTypes']);
+    Route::get('events/types', [EventController::class, 'fetchEventTypes']);
+    Route::get('events/formats', [EventController::class, 'fetchEventFormats']);
 
     // Community APIs
     Route::get('fetchCommunityPosts', [CommunityController::class, 'fetchCommunityPosts']);

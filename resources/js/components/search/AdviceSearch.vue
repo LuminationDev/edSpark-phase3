@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import useSWRV from "swrv";
-import { ref} from "vue";
+import {onMounted, ref} from "vue";
 import {useRoute, useRouter} from "vue-router";
 
 import BaseSearch from "@/js/components/search/BaseSearch.vue";
@@ -10,6 +10,7 @@ import {API_ENDPOINTS} from "@/js/constants/API_ENDPOINTS";
 import {LandingHeroText} from "@/js/constants/PageBlurb";
 import {swrvOptions} from "@/js/constants/swrvConstants";
 import {axiosFetcher} from "@/js/helpers/fetcher";
+import {adviceService} from "@/js/service/adviceService";
 
 const route = useRoute()
 const router = useRouter()
@@ -19,16 +20,23 @@ const {
     error: adviceError
 } = useSWRV(API_ENDPOINTS.ADVICE.FETCH_ADVICE_POSTS, axiosFetcher, swrvOptions)
 
-const adviceFilterList = [
-    {name: "DAG", value: "DAG"},
-    {name: "Partner", value: "Partner"},
-    {name: "Your Classroom", value: "Your Classroom"},
-    {name: "Your Work", value: "Your Work"},
-    {name: "Your Learning", value: "Your Learning"},
-    {name: "Case Study", value: "Case Study"},
-]
+const isLoadingFilter = ref(true)
 
+// const adviceFilterList = [
+//     {name: "DAG", value: "DAG"},
+//     {name: "Partner", value: "Partner"},
+//     {name: "Your Classroom", value: "Your Classroom"},
+//     {name: "Your Work", value: "Your Work"},
+//     {name: "Your Learning", value: "Your Learning"},
+//     {name: "Case Study", value: "Case Study"},
+// ]
 
+const adviceFilterList = ref([])
+
+onMounted(async () =>{
+    adviceFilterList.value = await adviceService.fetchAdviceTypes()
+    isLoadingFilter.value =false
+})
 
 const filterObject = ref({})
 
@@ -66,6 +74,7 @@ if (route.params || route.params.filter) {
     >
         <template #filterBar>
             <GenericMultiSelectFilter
+                v-if="!isLoadingFilter"
                 id="adviceFilter"
                 placeholder="Filter by type"
                 :filter-list="adviceFilterList"

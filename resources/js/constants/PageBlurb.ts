@@ -61,7 +61,11 @@ export const LandingHeroText = {
         subtitle: 'Keep up with what has been happening on edSpark',
     },
     '404':{
-        title: "404 | Oops! Page you were looking for does not exist",
+        title: "Oops! Page you were looking for does not exist",
+        subtitle: "If you believe this was a mistake, please tell us by using the 'Feedbacks & suggestions' button on the bottom right corner of the page"
+    },
+    siteNotSchool:{
+        title: "The site you are trying to visit is not a school and doesn't have a profile page on edSpark",
         subtitle: "If you believe this was a mistake, please tell us by using the 'Feedbacks & suggestions' button on the bottom right corner of the page"
     },
     comparison:{

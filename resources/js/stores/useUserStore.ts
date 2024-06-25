@@ -92,6 +92,19 @@ export const useUserStore = defineStore('user', {
                 "PSACT"
             ];
             return rolesWithModRights.includes(userRole)
+        },
+        isUserSiteSchool(): boolean {
+            try {
+                const userSite = this.currentUser.site
+                const siteCat = userSite.site_category
+                if (siteCat === 'SCHL' || siteCat === 'PRESC') {
+                    return true
+                } else {
+                    return false
+                }
+            } catch (e) {
+                return false
+            }
         }
     },
 
