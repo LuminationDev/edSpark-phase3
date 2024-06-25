@@ -67,9 +67,14 @@ const messageTargetPath = computed(() => {
 })
 
 const mySchoolTargetPath = computed(() => {
-    if (currentUser.value?.site?.site_name) {
-        return `/schools/${currentUser.value.site.site_name}`
-    } else return ''
+    if(userStore.isUserSiteSchool){
+        if (currentUser.value?.site?.site_name) {
+            return `/schools/${currentUser.value.site.site_name}`
+        } else return ''
+
+    } else{
+        return ''
+    }
 })
 
 const avatarUrl = computed(() => {

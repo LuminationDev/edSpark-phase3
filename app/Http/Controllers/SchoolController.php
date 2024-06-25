@@ -203,6 +203,11 @@ class SchoolController extends Controller
             return response()->json(['message' => 'Site not found', 'status' => 404], 404);
         }
 
+        if($site->category_code !== "SCHL" || $site->category_code !== "PRESC") {
+            return response()->json(['message' => 'Site is not school', 'status' => 410], 410);
+
+        }
+
 //        // If user is not 'SCHLDR' or 'Superadmin', just fetch the school
 //        if ($user->role->role_name !== 'SCHLDR' && $user->role->role_name !== 'Superadmin') {
 //            $school = School::where('site_id', $siteId)->where('status', 'Published')->first();
