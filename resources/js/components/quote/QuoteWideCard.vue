@@ -59,7 +59,7 @@ const onClickRemove = async () => {
     try {
         await quoteService.deleteItemInCart(props.itemData.unique_reference)
     } catch (err) {
-        toast.error(err.message)
+        // toast.error(err.message)
     }
 }
 
