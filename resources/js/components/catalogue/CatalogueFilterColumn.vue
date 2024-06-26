@@ -88,6 +88,13 @@ const debouncedHandleSearchTerm = debounce(handleSearchTerm,500)
                 View Quotes
             </GenericButton>
         </router-link>
+        <GenericButton
+            v-if="showResetFilterButton"
+            :callback="onClickResetFilters"
+            type="teal"
+        >
+            Reset filters
+        </GenericButton>
         <SearchBar
             class="mt-8"
             @emit-search-term="debouncedHandleSearchTerm"
@@ -151,13 +158,7 @@ const debouncedHandleSearchTerm = debounce(handleSearchTerm,500)
             v-model:price-range="priceRange"
             @price-changed="onReceivePriceChanged"
         />
-        <GenericButton
-            v-if="showResetFilterButton"
-            :callback="onClickResetFilters"
-            type="teal"
-        >
-            Reset filters
-        </GenericButton>
+
 
         <CataloguePerPageSelector v-model="perPage" />
     </div>
