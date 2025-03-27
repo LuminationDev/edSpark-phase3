@@ -37,7 +37,7 @@ jobs:
         run: ls -la && npm --version && npm install && npm run prod
 
       - name: Zip artifact for deployment
-        run: zip release.zip ./public/* -r
+        run: zip release.zip ./public -r
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v4
